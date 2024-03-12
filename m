@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C32878FAC
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7905878FA9
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxQ2-0005sn-CN; Tue, 12 Mar 2024 04:23:30 -0400
+	id 1rjxQ7-000668-6O; Tue, 12 Mar 2024 04:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPy-0005rj-He
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:26 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQ4-00062O-1V
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:32 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxPv-0001BM-RZ
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:26 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4131b1f8c91so25236155e9.3
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rjxQ1-0001CV-4x
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:23:31 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-33e8b957a89so1580176f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:23:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710231801; x=1710836601; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710231807; x=1710836607; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=29XjHGwit3vYXMB9dG4vvP3w+ZRgmYEAu29xmgeR40E=;
- b=AX4t/VahYZcM87BIA5LZ0LFDZ899y3UkP1QNKUqZRGY1b0s10GoKAdJXtJMeJY7KHz
- 7drWnOAcSx1IthKJR2u9JZ+UCE4gIqgiD2E4jza07NjkiTqD5KMQpUyOn70tlJhotcwf
- /jWuvbra6vCETc3LeA9Szgc9yIYqWelcQ/gL9gCNCpoCpP6hfJiL2VRQRVj2oVqzRpMu
- GTQtjuQoF5aedpn7+ip3Zi9TSNYHoCRW+YFUp3+j3f2CkiGFy+dR0YYg9ASxLjaHvHOH
- gdDgOvC7vZj+Gkb75n2UwgoyTclB7wqU2XSUIzKqnVASViZzlhbFImVMWXLtYFBDTgW+
- Uw+Q==
+ bh=Eq8dPdS4O29YZHMSjUomBAXNnVOWg/nPlLYlOBRYYnw=;
+ b=TcVF8q6CVfURTxPJpFVhmfBYNF3AcQyeUARzttJCWT6au5QoD2EK4TnbjV0DAz4o17
+ V2eVZZwVvivJNj2qn8Fut3l8cG35tFybALy4IgnxM+i5j9cmcaThLrikdrx5u/bGFEsP
+ dfnIak911LM0Ygi8aU2nXkIfD/fB6pepAczg6oFsMmypp2mrwT8ujsd4w+T+qm7kt4ze
+ u7U/ZdsL03pUFhL0Vk8Gfq/wsN8/GzUmvjqk9jeS76n5n8gZDrbWpuBmDcs1++JKZJt6
+ WhoNMP+TaIWlpIXSRl0y6UL4cFjW7rE1WrKvpldJd+5PP1PFjGpt8/OEf0r+GTBsvZOq
+ gt9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710231801; x=1710836601;
+ d=1e100.net; s=20230601; t=1710231807; x=1710836607;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=29XjHGwit3vYXMB9dG4vvP3w+ZRgmYEAu29xmgeR40E=;
- b=noD13LpemdhPA/IQhQmRPHwNf4OJMn9E6lIczPnCO+NDfmnIxQ931ZL4GyAcTGLsuf
- 9K9UEQ4kqFRbCJdfI+X9IL85HXEgMYN58lndvCm8xEDvdclmhP7INnT0wMmRdx01HK7Q
- MJHGr+GVYsydtEyJoKVITveQNsiiga2rAxB9/F83wLqbJeqRtQp5rjrGNzA9oHJg4vPN
- ChOY6dTE7Y8Nup7XWjsDSQua5B7JoJ4w2zv29/5hb3g675I1MqrOK5W7/qdXkY9mLy+g
- WTtnmNp1Sdi62zxKsnGTsFSLkM1oupReX3d5a4NxljRAC3jyyG+sdP8uMsa6X/q8XaJI
- ngBg==
-X-Gm-Message-State: AOJu0Yw6JA1oaBrm568HHtUtqjNfhSxFNjXgrB1Qo8y9pK343r2XeJwj
- FfUZIZawavEyi79r6EWTPldLpxEXR0TMpP5rNN7zEjn03pCWK+h5Vv7pwjseVIz5A0tNNAWDXQE
- b
-X-Google-Smtp-Source: AGHT+IFoVsmNpQuLbqfqPyDiurVI8kvgNzArr/AiPDLgxLg6ygTQnedi38jg1zpokb5Jo2ZwV0KXIw==
-X-Received: by 2002:a05:600c:5190:b0:413:27d0:44ff with SMTP id
- fa16-20020a05600c519000b0041327d044ffmr4080264wmb.8.1710231801005; 
- Tue, 12 Mar 2024 01:23:21 -0700 (PDT)
+ bh=Eq8dPdS4O29YZHMSjUomBAXNnVOWg/nPlLYlOBRYYnw=;
+ b=UiHK63kFY00iiB4Jl1N8ztOdIbqtDA9p/9A4lwSTnsRFijLiEw9CAlh0Y/hTlLhtQ2
+ yBFlD7wNRhYyNAQPzBHOZmU5sRolLCC4UVgmPb61EWzMEOz5GFckpWOX04ZKjrAdymil
+ ikA9xmgDMS+mwfnJJL1EUZWtJNmTMHRH4HprUmaxGycbp0kmOreb2SyQTiInADtVSdI0
+ q0NVAKmK44Hispf8qKtvraM2y5w4wODNQwnwK8TqBSHwA1ckL0fCg67lWAannUs3ZdKp
+ x1jH0gpeFUsRqxMybleAPzMjcMHcI958ViO3CYhaVUi/Ec3lKJnOtk6tkM1PeJEidO68
+ NdAg==
+X-Gm-Message-State: AOJu0YxeiThGYuco1Sfb85RtPWreD8a/Jq+mCaSpLtKaKY2tGYGkwbbO
+ tpy3VesdQljrZvO9iOWwwzOYs4w1CdGs/n3kybzSiqNTTl0uOEeCt0DYuWAAaWDQj1ujWyYUGlp
+ A
+X-Google-Smtp-Source: AGHT+IFHYt65s7EEaSlDZ6EY6Mu48qwjmIYfw3xS43O3GxR51c7APuxncTcj8Zkr7G4BUn2581D0rA==
+X-Received: by 2002:a5d:5505:0:b0:33d:277d:a2c7 with SMTP id
+ b5-20020a5d5505000000b0033d277da2c7mr5082955wrv.16.1710231807243; 
+ Tue, 12 Mar 2024 01:23:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.139])
  by smtp.gmail.com with ESMTPSA id
- a7-20020a05600c348700b0041330d49604sm2480108wmq.45.2024.03.12.01.23.19
+ bx33-20020a5d5b21000000b0033e93e00f68sm5279431wrb.61.2024.03.12.01.23.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 12 Mar 2024 01:23:20 -0700 (PDT)
+ Tue, 12 Mar 2024 01:23:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Juan Quintela <quintela@trasno.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Michael Galaxy <mgalaxy@akamai.com>,
- Steve Sistare <steven.sistare@oracle.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/13] hw/misc/ivshmem: Fix missing ERRP_GUARD() for
- error_prepend()
-Date: Tue, 12 Mar 2024 09:22:31 +0100
-Message-ID: <20240312082239.69696-7-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PULL 07/13] sun4u: remap ebus BAR0 to use unassigned_io_ops instead
+ of alias to PCI IO space
+Date: Tue, 12 Mar 2024 09:22:32 +0100
+Message-ID: <20240312082239.69696-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240312082239.69696-1-philmd@linaro.org>
 References: <20240312082239.69696-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,61 +95,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-As the comment in qapi/error, passing @errp to error_prepend() requires
-ERRP_GUARD():
+During kernel startup OpenBSD accesses addresses mapped by BAR0 of the ebus device
+but at offsets where no IO devices exist. Before commit 4aa07e8649 ("hw/sparc64/ebus:
+Access memory regions via pci_address_space_io()") BAR0 was mapped to legacy IO
+space which allows accesses to unmapped devices to succeed, but afterwards these
+accesses to unmapped PCI IO space cause a memory fault which prevents OpenBSD from
+booting.
 
-* = Why, when and how to use ERRP_GUARD() =
-*
-* Without ERRP_GUARD(), use of the @errp parameter is restricted:
-...
-* - It should not be passed to error_prepend(), error_vprepend() or
-*   error_append_hint(), because that doesn't work with &error_fatal.
-* ERRP_GUARD() lifts these restrictions.
-*
-* To use ERRP_GUARD(), add it right at the beginning of the function.
-* @errp can then be used without worrying about the argument being
-* NULL or &error_fatal.
+Since no devices are mapped at the addresses accessed by OpenBSD, change ebus BAR0
+from a PCI IO space alias to an IO memory region using unassigned_io_ops which allows
+these accesses to succeed and so allows OpenBSD to boot once again.
 
-ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
-can't see this additional information, because exit() happens in
-error_setg earlier than information is added [1].
-
-The ivshmem_common_realize() passes @errp to error_prepend(), and as a
-DeviceClass.realize method, there are too many possible callers to check
-the impact of this defect; it may or may not be harmless. Thus it is
-necessary to protect @errp with ERRP_GUARD().
-
-To avoid the issue like [1] said, add missing ERRP_GUARD() at the
-beginning of this function.
-
-[1]: Issue description in the commit message of commit ae7c80a7bd73
-     ("error: New macro ERRP_GUARD()").
-
-Cc: Juan Quintela <quintela@trasno.org>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: Michael Galaxy <mgalaxy@akamai.com>
-Cc: Steve Sistare <steven.sistare@oracle.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240311033822.3142585-17-zhao1.liu@linux.intel.com>
+Fixes: 4aa07e8649 ("hw/sparc64/ebus: Access memory regions via pci_address_space_io()")
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240311064345.2531197-1-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/ivshmem.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/sparc64/sun4u.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/misc/ivshmem.c b/hw/misc/ivshmem.c
-index a2fd0bc365..de49d1b8a8 100644
---- a/hw/misc/ivshmem.c
-+++ b/hw/misc/ivshmem.c
-@@ -832,6 +832,7 @@ static void ivshmem_write_config(PCIDevice *pdev, uint32_t address,
+diff --git a/hw/sparc64/sun4u.c b/hw/sparc64/sun4u.c
+index eda9b58a21..cff6d5abaf 100644
+--- a/hw/sparc64/sun4u.c
++++ b/hw/sparc64/sun4u.c
+@@ -360,8 +360,13 @@ static void ebus_realize(PCIDevice *pci_dev, Error **errp)
+     pci_dev->config[0x09] = 0x00; // programming i/f
+     pci_dev->config[0x0D] = 0x0a; // latency_timer
  
- static void ivshmem_common_realize(PCIDevice *dev, Error **errp)
- {
-+    ERRP_GUARD();
-     IVShmemState *s = IVSHMEM_COMMON(dev);
-     Error *err = NULL;
-     uint8_t *pci_conf;
+-    memory_region_init_alias(&s->bar0, OBJECT(s), "bar0",
+-                             pci_address_space_io(pci_dev), 0, 0x1000000);
++    /*
++     * BAR0 is accessed by OpenBSD but not for ebus device access: allow any
++     * memory access to this region to succeed which allows the OpenBSD kernel
++     * to boot.
++     */
++    memory_region_init_io(&s->bar0, OBJECT(s), &unassigned_io_ops, s,
++                          "bar0", 0x1000000);
+     pci_register_bar(pci_dev, 0, PCI_BASE_ADDRESS_SPACE_MEMORY, &s->bar0);
+     memory_region_init_alias(&s->bar1, OBJECT(s), "bar1",
+                              pci_address_space_io(pci_dev), 0, 0x8000);
 -- 
 2.41.0
 
