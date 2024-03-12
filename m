@@ -2,77 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFB6879C03
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BB0879C02
 	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:03:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk7OF-0002jN-VS; Tue, 12 Mar 2024 15:02:20 -0400
+	id 1rk7OF-0002j6-12; Tue, 12 Mar 2024 15:02:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rk7OC-0002h9-80
+ id 1rk7OC-0002hD-GZ
  for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1rk7OA-0005HK-OS
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:15 -0400
+ id 1rk7OB-0005HM-3x
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710270134;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=oSDtm5zvcwto5PRbuw1B3KDgHFY5VH5ss8AqxSTgCoE=;
- b=Pa5vOd4tHl05+3cohqIKuMWuA2oGWkDZIrpGaEljZFWV8piKJDJiR0ea2qejhpVeEHBAG4
- L6pdXN2OwtWQchfek0a8TEowIaK4aazH/mwb6pEH49mYEUwTE67Ou7/a1QH7ct7xuHl+w6
- Sw123SAHvlzNwvYVb5cIYAqVd0enXSw=
+ bh=1z20Ola8WoNHbTJ59KLrXnejzZoAY332/4KgkDEhWUw=;
+ b=OvBc0k6CtnCOwmYxIdI4erkT53HUGnykXKyH91Au3H84rm8JzalciSyWvBGKOo6F0sHDE3
+ i8JTKoN2Vfso13R6QHzTZBqCEkjND9pG6EU1dvZma4tVRmAcN0qDiqjC+UKQ7HJLw3txk+
+ 3SOXrdg+f9cw9QoFTfzxgeTsY0rrx4w=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-626-4hCAqajhPEeccnKzIewVOg-1; Tue, 12 Mar 2024 15:02:10 -0400
-X-MC-Unique: 4hCAqajhPEeccnKzIewVOg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-577-FuCg1KHPNM6z3QYm8uR9kA-1; Tue, 12 Mar 2024 15:02:12 -0400
+X-MC-Unique: FuCg1KHPNM6z3QYm8uR9kA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 89C65800268;
- Tue, 12 Mar 2024 19:02:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EB0CD101A523;
+ Tue, 12 Mar 2024 19:02:11 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D2D9C492BC7;
- Tue, 12 Mar 2024 19:02:08 +0000 (UTC)
-Date: Tue, 12 Mar 2024 14:50:57 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 35A7F202451F;
+ Tue, 12 Mar 2024 19:02:11 +0000 (UTC)
+Date: Tue, 12 Mar 2024 14:52:24 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Eric Blake <eblake@redhat.com>, Mads Ynddal <mads@ynddal.dk>,
- Paolo Bonzini <pbonzini@redhat.com>,
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Eric Blake <eblake@redhat.com>, John Snow <jsnow@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Paolo Bonzini <pbonzini@redhat.com>,
  =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
  Cleber Rosa <crosa@redhat.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH 1/2] tracetool: remove redundant --target-type /
- --target-name args
-Message-ID: <20240312185057.GE389553@fedora>
+Subject: Re: [PATCH 0/2] trace: fix ability to use systemtap with qemu tools
+Message-ID: <20240312185224.GF389553@fedora>
 References: <20240108171356.1037059-1-berrange@redhat.com>
- <20240108171356.1037059-2-berrange@redhat.com>
- <CAFn=p-bJNzH7_iFDjV-Fwg_yO3HPvwaSSxBnuhXD-T6tCTR1Fg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="osJ9JKGD4wSD0OZh"
+ protocol="application/pgp-signature"; boundary="pGRfHWUUOmRa2zHb"
 Content-Disposition: inline
-In-Reply-To: <CAFn=p-bJNzH7_iFDjV-Fwg_yO3HPvwaSSxBnuhXD-T6tCTR1Fg@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+In-Reply-To: <20240108171356.1037059-1-berrange@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,46 +85,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---osJ9JKGD4wSD0OZh
-Content-Type: text/plain; charset=utf-8
+--pGRfHWUUOmRa2zHb
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 08, 2024 at 04:50:40PM -0500, John Snow wrote:
-> On Mon, Jan 8, 2024 at 12:14=E2=80=AFPM Daniel P. Berrang=C3=A9 <berrange=
-@redhat.com> wrote:
-> >
-> > The --target-type and --target-name args are used to construct
-> > the default probe prefix if '--probe-prefix' is not given. The
-> > meson.build will always pass '--probe-prefix', so the other args
-> > are effectively redundant.
-> >
-> > Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+On Mon, Jan 08, 2024 at 05:13:54PM +0000, Daniel P. Berrang=E9 wrote:
+> Currently we're only generating .stp definitions for the system and
+> user emulators forgetting all about the tools which support tracing
+> too.
 >=20
-> Fine by me, provided there's no reason anyone is calling tracetool
-> manually for some reason I haven't thought about. I assume we'll hear
-> about it if so...
+> Daniel P. Berrang=E9 (2):
+>   tracetool: remove redundant --target-type / --target-name args
+>   meson: generate .stp files for tools too
+>=20
+>  docs/devel/tracing.rst |  3 +-
+>  meson.build            | 63 +++++++++++++++++++++++++++---------------
+>  scripts/tracetool.py   | 24 ++++------------
+>  3 files changed, 46 insertions(+), 44 deletions(-)
+>=20
+> --=20
+> 2.43.0
+>=20
 
-That's okay. tracetool.py is internal to QEMU so we're free to change
-the command-line options.
+Thanks, applied to my tracing tree:
+https://gitlab.com/stefanha/qemu/commits/tracing
 
 Stefan
 
---osJ9JKGD4wSD0OZh
+--pGRfHWUUOmRa2zHb
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwpBEACgkQnKSrs4Gr
-c8h21gf/SMcf9XIyW6TAT3xx+rVCmOoopASAeLxXrcrKRH4Nk9CJUZ2L+qwUYdrB
-/VgBPi+qKiayKtJQkMHTzqU39Gz9hDY0m6aFW7p6TPPJu8TrWzzJtyKOXCSsnX/H
-Qvt5/OSklzTLGOHtpY6xcEJ8L77W16ARvlYAMlKJOkm/wuwQAVJ2Dvahd6jetB5P
-5+5f0UCi/ouD9XpJ1KWvZ5B9kFepb0UYCXCeUfpiliZVcPp34a01XdqlwucXoDg9
-cw1bnsxOJEzdkF5rc8brR0wUXSfSPl1BHsK0Vu5dkYgJ60g0Rj5oN6dCx1lSrNpX
-vxxdSv8NzM/qWX5HNc6ASMvL43sygA==
-=EOJr
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwpGgACgkQnKSrs4Gr
+c8gUSQf8CkAj/ccw905J7D4xixpAmFHIOeU3QBnGAX6dqrJwNOHgo6YwKs1Rx5+j
+MXr5GDp+hOx9cwnclnvzUxyfJHjDeHZnVHMgyMtrhS3D1IhMjPNMxCSP1ziUdUkI
+VNV9/jD9cD4fzvt05IMlM5HUaoNR1iJQSe6PcrkK5pQrMbukIoEi+KC5/1PgVHxs
+yqhZfj1ar5TPUj4O0OPh48dG+m5tERC5s2LINhzfnvkUSsIhmJxZc6O0xUw873l3
+4rBKi7isz6TQVYrAvum3LSmysduDVjpc09+6DqFza+3A7w8mVlsyZLrRP85X5PSI
+hl0k7agEspaPt5bFQPRLTx5xOK8Izg==
+=Q3aI
 -----END PGP SIGNATURE-----
 
---osJ9JKGD4wSD0OZh--
+--pGRfHWUUOmRa2zHb--
 
 
