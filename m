@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C2B879625
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:28:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCEB879646
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 15:30:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk37E-0005OK-Qe; Tue, 12 Mar 2024 10:28:30 -0400
+	id 1rk394-00089y-5t; Tue, 12 Mar 2024 10:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1rk36z-0005NF-89
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:28:13 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk390-00088b-W8
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:30:19 -0400
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1rk36w-0005Pz-8c
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:28:12 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-41331166961so6692685e9.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:28:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rk38y-0005jd-DO
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 10:30:18 -0400
+Received: by mail-lj1-x22c.google.com with SMTP id
+ 38308e7fff4ca-2d24a727f78so53151fa.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 07:30:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1710253688; x=1710858488; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/HKnaDlEe60prpVqOOnUpQEQIKkbmlWPjhwDXh5f4Us=;
- b=Wb9z11oVwuwSlKwq5ldVsQWjefRIfBPWJVH9dHK3oDPAnJvKP9VOOFkpp3UdjJKi/1
- ZMiMVnDosDlJQVD6WiuF4J7i4afNQx5g1ujoM4kAbATod7yQbORz8t8ZI4WNzLpSVg9R
- JiCrrxKifYeEWzHi2Rf4bVNRqLKwKrN+Vn8po=
+ d=linaro.org; s=google; t=1710253810; x=1710858610; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=JG/YXMoKnwQo01L5oBgZCUH9wQP+hUMZv1HkcjW5hIc=;
+ b=tSiza8TfHb+sdAeqW3/x3CK/ihlfyEkxPiCM1PMetIcUYYu6sd7s4tcCZqDw3lKt1v
+ +5fOLepwRkaLRrJTRn+x80eV7MZ23Gkt/ViBLQbzifP+pDH226ULubpSsQ1+ClUISU3I
+ jc64qWBcfl8+vl3OEi0T/12kv+g7hBmCds9mxwJ4XAH3GY7J7/M1NeZhJ5Sv//BC0gB7
+ i9WgheYAlyqF31M8ny2Whdji8NPegDFKrnVLDAGAPnWD0KtRorpz2DTjfS8CTWJgXLAB
+ kpvGhECfrgzno9+jbaJPp0RyY6Mxyo4de2I5kT4X8ml19kJyUACcKimgT2uCQpzzxeIT
+ svyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710253688; x=1710858488;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/HKnaDlEe60prpVqOOnUpQEQIKkbmlWPjhwDXh5f4Us=;
- b=a/REEEWSO4XdLowfjavV8F4y2aF7gPjv1Er9o0MGUTyFFBDw5WSe4oXk7Mrl0ctLqd
- pGpthZplhFJJdcXgKBiHDeVX8+i2wVh7lxx71GjpxZ/m6VG8U7NLZOtkSCJhXB7btFHl
- mFNdzVhL+h0oS9vzJBP2/zujnz+WU+cCrKF9lBLQOF7lPQEDcNe0P+HOtR5puJlgXnKG
- H2moZlIXCZHkHH3fvOKVA3JtBseMUgJWd2+7ziaTM8bQvYoLAAKR+FDtsF4lnvrXHU8f
- A9WblRgCqFM+Sj+qMf+KykSQn0tCw6Ymi7vXTPaRZUJ3jhiJ6jjp+Q8U9geTl4wV3M43
- Es6g==
-X-Gm-Message-State: AOJu0YwJtQPxN/k4IWuS6VwJ8/unkjgjRbyBvOy9zRXnIYMWtQn6mgfu
- X+UhVkturBpnjSuOszWDJC0yD0rjw35IEWq9GaIozwplEq+tiieAJtwRxXstWoweEfVB1K0gWdU
- x
-X-Google-Smtp-Source: AGHT+IE75osoSUzpQVWxFnEp79N1bEFbcdqUUk+T0bTtBjE9bDwyEXvCsJAWLfQieFqh+wyQzP3z1w==
-X-Received: by 2002:a05:600c:3b8d:b0:413:1f8d:f97f with SMTP id
- n13-20020a05600c3b8d00b004131f8df97fmr6714661wms.29.1710253688564; 
- Tue, 12 Mar 2024 07:28:08 -0700 (PDT)
-Received: from localhost.localdomain
- (cpc92320-cmbg19-2-0-cust35.5-4.cable.virginm.net. [82.13.64.36])
- by smtp.gmail.com with ESMTPSA id
- t13-20020a05600c198d00b00412b0e51ef9sm12810270wmq.31.2024.03.12.07.28.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 07:28:08 -0700 (PDT)
-From: Anthony PERARD <anthony.perard@citrix.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-Subject: [PULL 3/3] i386: load kernel on xen using DMA
-Date: Tue, 12 Mar 2024 14:27:57 +0000
-Message-Id: <20240312142757.34141-4-anthony.perard@citrix.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240312142757.34141-1-anthony.perard@citrix.com>
-References: <20240312142757.34141-1-anthony.perard@citrix.com>
+ d=1e100.net; s=20230601; t=1710253810; x=1710858610;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=JG/YXMoKnwQo01L5oBgZCUH9wQP+hUMZv1HkcjW5hIc=;
+ b=UAC9uUGzx1et6ax+mrZ0uRyWIW5LyfAGo4VxLbj+jwwPMZVwAI4DcNz1FTFyZoIhPQ
+ Mm5eSEWzkq95Frrq0eXSqP1KhcHdHDy5MJmGBHI+gREoSTVKds4P4NAv7LT6wFICrlOv
+ gD2D+6KzL5cs8/w0+hOS3217/KZL380Q9GHUHLs2veFueSl9D8wgK9R/iER4ksveWcBf
+ +kLrj9dAC0U2aDYS/idszSCE9XNanYRXFdml9xAJWdD8DPzzwKjy6WPBy54RylxdlOZT
+ 4BNwHNcClVsyXOg7uqH71mhelp241wCk7cfBc7jQgnBvPb0IAxHFzr3Mh6mx+qu401S3
+ G5KA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUTKRYmZhAlKV50D2FlqQF0xiECIvArgt0OZl1Qk19Gk2Ds6DZiCvdShkPWXj4mN94eaJhFFUpVVeY6UlB9SuRPQX7oLQQ=
+X-Gm-Message-State: AOJu0YxeqhIEhWQuwAEgZuBbkUfVV0NZWUdlDhMxkeX9k9uSFfYu2wJ3
+ ocjiOY15vWspd3s1Q+L8cIaINulA9G/5La7pHSrDo0z47cKU1X6Dn03AQIK6sz+R/MqJX6+Jb5j
+ +ubsNQ9NvQOIccnWJGjs1cmJxtLR3ns9GJ/IOXQ==
+X-Google-Smtp-Source: AGHT+IHHTcNb5kbXcaVd6mYKV3nySbPdwwaM+cWfZWMSuObGdEtOHREi9NugEnIPPwbSV0VyRIU2t8v7xO+pWksMjLk=
+X-Received: by 2002:a2e:9256:0:b0:2d4:49f5:1c29 with SMTP id
+ v22-20020a2e9256000000b002d449f51c29mr2635903ljg.25.1710253810448; Tue, 12
+ Mar 2024 07:30:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=anthony.perard@cloud.com; helo=mail-wm1-x332.google.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+References: <20240307110318.170319-1-rathc@linux.ibm.com>
+ <CZRO4Y67CBPV.2IAKB80EFDKEY@wheely>
+ <0c7c6be1-12fb-4267-9d41-bd51637d104a@linaro.org>
+ <CZRU903MDUJ1.6S9RSO5A4RDG@wheely>
+In-Reply-To: <CZRU903MDUJ1.6S9RSO5A4RDG@wheely>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 12 Mar 2024 14:29:59 +0000
+Message-ID: <CAFEAcA8im7S-bsx-hYqgUy4tsc8yXjWQf7Sb-=KnuREyqqC8mw@mail.gmail.com>
+Subject: Re: [PATCH] target/ppc: Move floating-point arithmetic instructions
+ to decodetree.
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Chinmay Rath <rathc@linux.ibm.com>, 
+ qemu-ppc@nongnu.org, qemu-devel@nongnu.org, danielhb413@gmail.com, 
+ clg@kaod.org, harshpb@linux.ibm.com, sbhat@linux.ibm.com
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::22c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,42 +94,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+On Tue, 12 Mar 2024 at 14:25, Nicholas Piggin <npiggin@gmail.com> wrote:
+>
+> On Wed Mar 13, 2024 at 12:01 AM AEST, Richard Henderson wrote:
+> > On 3/11/24 23:36, Nicholas Piggin wrote:
+>
+> [snip]
+>
+> > >
+> > > #define FPU_HELPER(name, op, flags_handler)                           \
+> > > float64 helper_##name(CPUPPCState *env, float64 arg1, float64 arg2)   \
+> > > {                                                                     \
+> > >      float64 ret = op(arg1, arg2, &env->fp_status);                    \
+> > >      int flags = get_float_exception_flags(&env->fp_status);           \
+> > >      flags_handler(env, flags)                                         \
+> > >      return ret;                                                       \
+> > > }
+> > >
+> > > static inline void addsub_flags_handler(CPUPPCState *env, int flags)
+> > > {
+> > >      if (unlikely(flags & float_flag_invalid)) {
+> > >          float_invalid_op_addsub(env, flags, 1, GETPC());
+> > >      }
+> > > }
+> > >
+> > > static inline void mul_flags_handler(CPUPPCState *env, int flags)
+> > > {
+> > >      if (unlikely(flags & float_flag_invalid)) {
+> > >          float_invalid_op_mul(env, flags, 1, GETPC());
+> > >      }
+> > > }
+> > >
+> > > static inline void div_flags_handler(CPUPPCState *env, int flags)
+> > > {
+> > >      if (unlikely(flags & float_flag_invalid)) {
+> > >          float_invalid_op_div(env, flags, 1, GETPC());
+> > >      }
+> > >      if (unlikely(flags & float_flag_divbyzero)) {
+> > >          float_zero_divide_excp(env, GETPC());
+> > >      }
+> > > }
+> >
+> > Beware -- GETPC() may only be called from the outermost helper.
+>
+> Ah, because it's using __builtin_return_address. Good to know.
+> Using always_inline and a comment should do the trick then.
 
-Kernel on Xen is loaded via fw_cfg. Previously it used non-DMA version,
-which loaded the kernel (and initramfs) byte by byte. Change this
-to DMA, to load in bigger chunks.
-This change alone reduces load time of a (big) kernel+initramfs from
-~10s down to below 1s.
+The standard way to fix this is that you call GETPC() at the
+outermost helper and then pass that value around as an extra
+uintptr_t ra argument to called functions that need it.
 
-This change was suggested initially here:
-https://lore.kernel.org/xen-devel/20180216204031.000052e9@gmail.com/
-Apparently this alone is already enough to get massive speedup.
-
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Anthony PERARD <anthony.perard@citrix.com>
-Message-Id: <20210426034709.595432-1-marmarek@invisiblethingslab.com>
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
----
- hw/i386/pc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index f5ff970acf..4f322e0856 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -718,7 +718,8 @@ void xen_load_linux(PCMachineState *pcms)
- 
-     assert(MACHINE(pcms)->kernel_filename != NULL);
- 
--    fw_cfg = fw_cfg_init_io(FW_CFG_IO_BASE);
-+    fw_cfg = fw_cfg_init_io_dma(FW_CFG_IO_BASE, FW_CFG_IO_BASE + 4,
-+                                &address_space_memory);
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     rom_set_fw(fw_cfg);
- 
--- 
-Anthony PERARD
-
+thanks
+-- PMM
 
