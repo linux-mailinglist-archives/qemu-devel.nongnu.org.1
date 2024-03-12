@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230BF879F8C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 00:13:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B4C87A07F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 02:08:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkBIz-0002lD-Qh; Tue, 12 Mar 2024 19:13:09 -0400
+	id 1rkD5N-0008D9-RQ; Tue, 12 Mar 2024 21:07:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rkBIt-0002jz-H3
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:13:06 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <andrew@daynix.com>) id 1rkBIr-0003l7-JC
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:13:03 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a4627a7233aso56844566b.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 16:13:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710285180; x=1710889980;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=72K5TEDCSTaAnZCwZRGbEfY47LiMWx5ImxrGs18pxLY=;
- b=3NHWPPVrAQxplAydQv1JpCOF5wfyBxod3l+kjzNw106FGuLB+6g7wtOrOh+Zslu2bz
- BUSwILQ2CPlqsAg6op6DRKg2hLxoRjEbsGsx0/uSHnyaDfm4mkR6UXpD+vJDZS0AS9MR
- hIe8H6eZ9+D9pMkTS87CBKPX7lPItdvoknF6hRPOHT0dHHEm/jALmr5lrcG7CPMgyBih
- 0xU0ellue2g73GcIFLR2ltzMnKwSFoIijPZMiJSNz4/o7EwtogemXw+hlmWQljidyTJ2
- EdUbz/DM0GkKUc+Dif58tHmWCDv5Kox+JflcOsCeCjvcsSliqKPjSt+cNaGNGs4UBJ3z
- floQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710285180; x=1710889980;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=72K5TEDCSTaAnZCwZRGbEfY47LiMWx5ImxrGs18pxLY=;
- b=JZIUOpFFuNdi/cU5sBy7MOHv2gPRsY8W0F6ue41PHfEMOWildMINnMd6xjPQ0B/vBJ
- lspV8iPIa5AUpoWIhblShFkeriokoSu7mdqfpT3nkDbaRdEnaQUovZSfUf+TlQFzjJTy
- uUIK5N12h4iZKS38tlGfjlxM/OOkOUFx97ZwRJb8JqBra25UAw1ZSIkB6KW4U4yZvBU8
- 6mpMm38uCtzkTuJWdqnvouPbHtbXYVyzkDWO6H5hnmlE3WO7wezNuSPPJRO4S3stDKen
- BUiCUG16d6D6TEvUDPibcMPLPpWDUgeydU0dvju4poThJ6CDBJEfZtK59OKVs54Sru2Y
- SXNQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVeRVDG8SpySJeiDJmMcz1JxRUHGcVwFU++/D7RBsVLH+pyoYLVaBhXib3Ebr6DCxM3fcoCkx3Ad8cOuBt09f67gan+n80=
-X-Gm-Message-State: AOJu0YxmCbfN3CnriZ9oL/jY8OHv0ho9G159rL6PLG76mT7G78uPOWAt
- hfvjkKIlEZqipdyU8+m24UnB8sayetw4POibLOfaK+T39xyn7SWRZyN07RaJrI8UfjnUgnQwIDb
- 7qOgtTCfwbUV7bhYWVkU1eSrSYlVxUBYUKnh2YQ==
-X-Google-Smtp-Source: AGHT+IHndEPHFAAUg2gs2IipJ4gp1s97Z483Nj2dUChiXFwGph1bujqCbt8338J6qqLZuPJXcf2lbhdVuVqWldrfsg4=
-X-Received: by 2002:a17:906:b182:b0:a46:4beb:d06 with SMTP id
- w2-20020a170906b18200b00a464beb0d06mr750016ejy.31.1710285179593; Tue, 12 Mar
- 2024 16:12:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1rkB9B-0007vy-QV
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:03:12 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <isaku.yamahata@intel.com>)
+ id 1rkB98-00027Q-Vq
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 19:03:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710284579; x=1741820579;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=IrT1/YF8DYrgsN6ccIFZAd6be3RlcYlS+yhDN8FYwes=;
+ b=NxQt2gKyfLAcMhmTwWrn+7oGNxo8jLSntYEJ0VZsd+UQficvQStg92Xf
+ qvkcUkxsGxPF7wh2MjnNg6pyNuf1aBvW7qgcURv72Ibo2stot1XEYYu7/
+ LbJUas/RSKsnyrJCO1BC0JFID6X+0ObfTszmr87RhZaqEe4dXOi6ZdhYt
+ r9StJ/Bmmc93x9Zbu6VKpUSsbCdq+n7HYQ5EjibskFH2UZAFCkKHD7n9Y
+ dos61ODlNG1dW0/Aa2epXC35I5YQrXgcH1+dE6fQThyzO9bp98mbadloT
+ CirYnqJcBaCICVEuJHtx1YG0QQbhtokozF4z6C9XE6jLS1ZsmQ43gw1NM A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="5148064"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="5148064"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 16:02:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11598309"
+Received: from ls.sc.intel.com (HELO localhost) ([172.25.112.31])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 16:02:55 -0700
+Date: Tue, 12 Mar 2024 16:02:54 -0700
+From: Isaku Yamahata <isaku.yamahata@intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Claudio Fontana <cfontana@suse.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Isaku Yamahata <isaku.yamahata@gmail.com>,
+ Chenyi Qiang <chenyi.qiang@intel.com>, isaku.yamahata@intel.com,
+ isaku.yamahata@linux.intel.com
+Subject: Re: [PATCH v5 15/65] i386/tdx: Get tdx_capabilities via
+ KVM_TDX_CAPABILITIES
+Message-ID: <20240312230254.GJ935089@ls.amr.corp.intel.com>
+References: <20240229063726.610065-1-xiaoyao.li@intel.com>
+ <20240229063726.610065-16-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-References: <20240205165437.1965981-1-andrew@daynix.com>
- <20240205165437.1965981-5-andrew@daynix.com>
- <CACGkMEtdYosQAGYE47sMLDvC-OvFV7JM-mNvxirHwsZTDTtcOQ@mail.gmail.com>
-In-Reply-To: <CACGkMEtdYosQAGYE47sMLDvC-OvFV7JM-mNvxirHwsZTDTtcOQ@mail.gmail.com>
-From: Andrew Melnichenko <andrew@daynix.com>
-Date: Wed, 13 Mar 2024 00:47:31 +0200
-Message-ID: <CABcq3pEQ9-RW5w+4gOaQJZbcPuYnFjoVk6axoj4g53OArbso+w@mail.gmail.com>
-Subject: Re: [PATCH v9 4/5] qmp: Added new command to retrieve eBPF blob.
-To: Jason Wang <jasowang@redhat.com>
-Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
- qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
- yan@daynix.com, akihiko.odaki@daynix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: none client-ip=2a00:1450:4864:20::62b;
- envelope-from=andrew@daynix.com; helo=mail-ej1-x62b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240229063726.610065-16-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=198.175.65.16;
+ envelope-from=isaku.yamahata@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 12 Mar 2024 21:07:11 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,58 +94,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all,
-I've checked - apparently, qapi/ebpf.json should be added to
-MAINTAINERS - I'll fix it.
+On Thu, Feb 29, 2024 at 01:36:36AM -0500,
+Xiaoyao Li <xiaoyao.li@intel.com> wrote:
 
-On Fri, Mar 8, 2024 at 10:14=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Tue, Feb 6, 2024 at 12:55=E2=80=AFAM Andrew Melnychenko <andrew@daynix=
-.com> wrote:
-> >
-> > Now, the binary objects may be retrieved by id.
-> > It would require for future qmp commands that may require specific
-> > eBPF blob.
-> >
-> > Added command "request-ebpf". This command returns
-> > eBPF program encoded base64. The program taken from the
-> > skeleton and essentially is an ELF object that can be
-> > loaded in the future with libbpf.
-> >
-> > The reason to use the command to provide the eBPF object
-> > instead of a separate artifact was to avoid issues related
-> > to finding the eBPF itself. eBPF object is an ELF binary
-> > that contains the eBPF program and eBPF map description(BTF).
-> > Overall, eBPF object should contain the program and enough
-> > metadata to create/load eBPF with libbpf. As the eBPF
-> > maps/program should correspond to QEMU, the eBPF can't
-> > be used from different QEMU build.
-> >
-> > The first solution was a helper that comes with QEMU
-> > and loads appropriate eBPF objects. And the issue is
-> > to find a proper helper if the system has several
-> > different QEMUs installed and/or built from the source,
-> > which helpers may not be compatible.
-> >
-> > Another issue is QEMU updating while there is a running
-> > QEMU instance. With an updated helper, it may not be
-> > possible to hotplug virtio-net device to the already
-> > running QEMU. Overall, requesting the eBPF object from
-> > QEMU itself solves possible failures with acceptable effort.
-> >
-> > Links:
-> > [PATCH 3/5] qmp: Added the helper stamp check.
-> > https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com/
-> >
-> > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
-> > ---
-> >  ebpf/ebpf.c           | 69 +++++++++++++++++++++++++++++++++++++++++++
->
-> Let's add ebpf.c to MAINTAINERS otherwise CI may warn like:
->
-> https://gitlab.com/jasowang/qemu/-/jobs/6349138969
->
-> Thanks
->
+> KVM provides TDX capabilities via sub command KVM_TDX_CAPABILITIES of
+> IOCTL(KVM_MEMORY_ENCRYPT_OP). Get the capabilities when initializing
+> TDX context. It will be used to validate user's setting later.
+> 
+> Since there is no interface reporting how many cpuid configs contains in
+> KVM_TDX_CAPABILITIES, QEMU chooses to try starting with a known number
+> and abort when it exceeds KVM_MAX_CPUID_ENTRIES.
+> 
+> Besides, introduce the interfaces to invoke TDX "ioctls" at different
+> scope (KVM, VM and VCPU) in preparation.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> ---
+> Changes in v4:
+> - use {} to initialize struct kvm_tdx_cmd, to avoid memset();
+> - remove tdx_platform_ioctl() because no user;
+> 
+> Changes in v3:
+> - rename __tdx_ioctl() to tdx_ioctl_internal()
+> - Pass errp in get_tdx_capabilities();
+> 
+> changes in v2:
+>   - Make the error message more clear;
+> 
+> changes in v1:
+>   - start from nr_cpuid_configs = 6 for the loop;
+>   - stop the loop when nr_cpuid_configs exceeds KVM_MAX_CPUID_ENTRIES;
+> ---
+>  target/i386/kvm/kvm.c      |  2 -
+>  target/i386/kvm/kvm_i386.h |  2 +
+>  target/i386/kvm/tdx.c      | 91 +++++++++++++++++++++++++++++++++++++-
+>  3 files changed, 92 insertions(+), 3 deletions(-)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 52d99d30bdc8..0e68e80f4291 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -1685,8 +1685,6 @@ static int hyperv_init_vcpu(X86CPU *cpu)
+>  
+>  static Error *invtsc_mig_blocker;
+>  
+> -#define KVM_MAX_CPUID_ENTRIES  100
+> -
+>  static void kvm_init_xsave(CPUX86State *env)
+>  {
+>      if (has_xsave2) {
+> diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
+> index 55fb25fa8e2e..c3ef46a97a7b 100644
+> --- a/target/i386/kvm/kvm_i386.h
+> +++ b/target/i386/kvm/kvm_i386.h
+> @@ -13,6 +13,8 @@
+>  
+>  #include "sysemu/kvm.h"
+>  
+> +#define KVM_MAX_CPUID_ENTRIES  100
+> +
+>  #ifdef CONFIG_KVM
+>  
+>  #define kvm_pit_in_kernel() \
+> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
+> index d9a1dd46dc69..2b956450a083 100644
+> --- a/target/i386/kvm/tdx.c
+> +++ b/target/i386/kvm/tdx.c
+> @@ -12,18 +12,107 @@
+>   */
+>  
+>  #include "qemu/osdep.h"
+> +#include "qemu/error-report.h"
+> +#include "qapi/error.h"
+>  #include "qom/object_interfaces.h"
+> +#include "sysemu/kvm.h"
+>  
+>  #include "hw/i386/x86.h"
+> +#include "kvm_i386.h"
+>  #include "tdx.h"
+>  
+> +static struct kvm_tdx_capabilities *tdx_caps;
+> +
+> +enum tdx_ioctl_level{
+> +    TDX_VM_IOCTL,
+> +    TDX_VCPU_IOCTL,
+> +};
+> +
+> +static int tdx_ioctl_internal(void *state, enum tdx_ioctl_level level, int cmd_id,
+> +                        __u32 flags, void *data)
+> +{
+> +    struct kvm_tdx_cmd tdx_cmd = {};
+> +    int r;
+> +
+> +    tdx_cmd.id = cmd_id;
+> +    tdx_cmd.flags = flags;
+> +    tdx_cmd.data = (__u64)(unsigned long)data;
+> +
+> +    switch (level) {
+> +    case TDX_VM_IOCTL:
+> +        r = kvm_vm_ioctl(kvm_state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
+> +        break;
+> +    case TDX_VCPU_IOCTL:
+> +        r = kvm_vcpu_ioctl(state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
+> +        break;
+> +    default:
+> +        error_report("Invalid tdx_ioctl_level %d", level);
+> +        exit(1);
+> +    }
+> +
+> +    return r;
+> +}
+> +
+> +static inline int tdx_vm_ioctl(int cmd_id, __u32 flags, void *data)
+> +{
+> +    return tdx_ioctl_internal(NULL, TDX_VM_IOCTL, cmd_id, flags, data);
+> +}
+> +
+> +static inline int tdx_vcpu_ioctl(void *vcpu_fd, int cmd_id, __u32 flags,
+> +                                 void *data)
+
+As kvm_vcpu_ioctl(CPUState *cpu, int type, ...) takes CPUState *, this can be
+tdx_vcpu_ioctl(CPUState *cpu, ) instead of void *.
+I struggled to fin my mistake to pass "int vcpu_fd" to this function.
+-- 
+Isaku Yamahata <isaku.yamahata@intel.com>
 
