@@ -2,82 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0A9879AF8
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2AC4879AE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:57:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk6Wj-0004uY-3G; Tue, 12 Mar 2024 14:07:01 -0400
+	id 1rk6Lp-0007ZV-Uw; Tue, 12 Mar 2024 13:55:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk6WV-0004qH-Ow
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:06:49 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rk6WU-0004Dx-6Z
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:06:47 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-513173e8191so6186555e87.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:06:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710266803; x=1710871603; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xR5iGUQZiCoR8k2pSi0KOW7ASeWFuNA9cHveRST8/e8=;
- b=FnazQzBcj56hv9Iz8Ya85ajgHriYyG2Kb3epCRKQIIcMMQIE8yWi6NtWJX5L7t/iv9
- JXhcUoqhM+FqYNf1uyJ9/gjyNLf53KSwoUxZmviElKSk56p2Oi6Wme6QAsPxINBlB4SY
- SLVWjboMplwOsNhfehcXGePyiD8pYLRBPm0NNMikTh2SLvcf9gopuJSe190EPmL2q3Tc
- nAKwsayusUkjeOFLbOzaeNxvDzjVwtD+xPgwMWUsz7SVPKkrNnM1mUs6LqJ2tZsRia4n
- Xv+W3F7tOIxiISihwVq6xRCMFWxRyMwMSevF/NiBhwzagpjXrcX7bHIU5EYSwAGU61Rl
- l0pA==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk6Ll-0007Yk-Eb
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:55:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk6Lj-0002OL-0r
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:55:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710266137;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=rqxg+bRkO1FTqkgtei/TrIiKOv15eEm0HgYedbw/mlY=;
+ b=GM8lKYKSnxWux66ue+T6grbjFEWdUdN4yjhMhoYl0948RBh8T2xaFZ3XGGGMGbmLP+HfcM
+ RDJOZiu8FLUkKxLceohAoNCh7CZsks6MylwIz939TqZA8LHUkpvE38l/SRoS1mGoJOkili
+ G/zuWLHl4+CNobn4u0jPsL7IDrjIL/E=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-JgC7ftbkNyiPbFr3rSS7rA-1; Tue, 12 Mar 2024 13:55:36 -0400
+X-MC-Unique: JgC7ftbkNyiPbFr3rSS7rA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-33e8b535e27so2049533f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 10:55:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710266803; x=1710871603;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1710266135; x=1710870935;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xR5iGUQZiCoR8k2pSi0KOW7ASeWFuNA9cHveRST8/e8=;
- b=tC1VTpBVIgPVDZqVRXLIQFiiwnX3zzZc15Q0AKW+XvlcTShQhaUhjvoGbGt03z72/t
- JuEEqLkyavtrdsFP0cI4g3QDbSLTtaZMPmh8be01a0LL8K+tRYBhZvdsb65aLgrPenmB
- il9i9kHR1BLak6WbGrUm5LstpX/H9cFE4tg1/+dzkWGik0rMDlXLN9c2F7jQsO87FKFm
- 1OXL7b36nhJKlFhlExZxwBQluNRIMclEGaw8072FswbdzbKa4JH+c5VVI4yGcp8BuJ72
- xtKs88N6NPDIgOHc5kKPB9+4LTXXF1Y2YVEqBv5sdPe/P8NxoxVbFDZ/zBQdVciW8K00
- 7PWg==
-X-Gm-Message-State: AOJu0YwQxRBjynCWHVWOzEVXcUVOA0vD8mPU5k55saPstBlX70/8mezu
- zCwSiCtSWmxtEDbYe1pfhnuOrf+13MXMxBTWsWDvtlNITy75S6YcvSLplfJcnas=
-X-Google-Smtp-Source: AGHT+IGlEBG40OBhYaUrcYn7hzV7aIkFm7Gb8sYx514Q95Jbzc32qkiM+I91vty2BOw9gju8nB1Z9w==
-X-Received: by 2002:ac2:4da7:0:b0:513:b062:98bf with SMTP id
- h7-20020ac24da7000000b00513b06298bfmr535934lfe.20.1710266802251; 
- Tue, 12 Mar 2024 11:06:42 -0700 (PDT)
-Received: from [192.168.122.175] (93.red-88-29-160.dynamicip.rima-tde.net.
- [88.29.160.93]) by smtp.gmail.com with ESMTPSA id
- f6-20020a05600c154600b004131ae36ac4sm15361917wmg.20.2024.03.12.11.06.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 11:06:41 -0700 (PDT)
-Message-ID: <4b17e2fa-3b6c-4c7e-a888-661d1bf1324b@linaro.org>
-Date: Tue, 12 Mar 2024 18:51:15 +0100
+ bh=rqxg+bRkO1FTqkgtei/TrIiKOv15eEm0HgYedbw/mlY=;
+ b=nOa1oEhezUd8X6tXbxUE2brxSq8CxM3O3uV1BthxOjIuiWvSymcpjDEpJhv05k9sXw
+ tHwjWFeaJC+qsbazaLOgxhNmCxQohhVptX2rfq9Z1HIeNiQnTcgzEC7vjWTnCK/dzTMc
+ C32yjWOHMipgLm+WC8WlYpbsvL7WOVaxWT/n89bcTCLnsgl7NORnWY+k2tfkFs6dozAY
+ Tf7XWeyqH02E/1xzeWmNIjZI/8I0/lMteQd/YzbWAKWAkaQEubg0H5hoKJS1wYEpEkMX
+ Zpb3z2hD7nfNnbAuU7qKATH7fZ1Q0Z0NFkU6Q4AUGoM8WurvwNaaJp9/f/B0rnOwGh8i
+ F2Iw==
+X-Gm-Message-State: AOJu0Yz68TdfcSQFrAkImLUudO5JTmFGR+a0l5zhyOIlrscqcombplJS
+ ch12RmDWmTrtn51PS5EOIb+g2wnElx/1v+BHlllfnB1euJyjT0s4S6OFj6xZ6UGOi3x5M3tWmee
+ aXliYalm4tacgGWT1cU4s+9Z3yqbJTSDG2/oRBie3wXC4EPPeXhmS
+X-Received: by 2002:adf:fa52:0:b0:33e:7b36:e17d with SMTP id
+ y18-20020adffa52000000b0033e7b36e17dmr134234wrr.22.1710266134694; 
+ Tue, 12 Mar 2024 10:55:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFo+Bu45HprZlWraqjiPb4d/ft2m5DKXvU8LTRFNe44lyyVMqt2FGf1wz6R+e9UucANxOpo8Q==
+X-Received: by 2002:adf:fa52:0:b0:33e:7b36:e17d with SMTP id
+ y18-20020adffa52000000b0033e7b36e17dmr134216wrr.22.1710266134219; 
+ Tue, 12 Mar 2024 10:55:34 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f0:532c:5ae4:fce6:76e1:fa1a])
+ by smtp.gmail.com with ESMTPSA id
+ g5-20020a5d6985000000b0033d6c928a95sm9609837wru.63.2024.03.12.10.55.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 12 Mar 2024 10:55:33 -0700 (PDT)
+Date: Tue, 12 Mar 2024 13:55:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>
+Cc: qemu-devel@nongnu.org, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH] docs/specs/pvpanic: document shutdown event
+Message-ID: <20240312135414-mutt-send-email-mst@kernel.org>
+References: <20240310-pvpanic-shutdown-spec-v1-1-b258e182ce55@t-8ch.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
- parameter
-Content-Language: en-US
-To: Zhao Liu <zhao1.liu@intel.com>, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
- Juan Quintela <quintela@redhat.com>
-References: <20240312141343.3168265-1-armbru@redhat.com>
- <20240312141343.3168265-9-armbru@redhat.com> <ZfB0Oq7SSQgiqbz5@intel.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ZfB0Oq7SSQgiqbz5@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20240310-pvpanic-shutdown-spec-v1-1-b258e182ce55@t-8ch.de>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,65 +101,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/3/24 16:26, Zhao Liu wrote:
-> On Tue, Mar 12, 2024 at 03:13:41PM +0100, Markus Armbruster wrote:
->> Date: Tue, 12 Mar 2024 15:13:41 +0100
->> From: Markus Armbruster <armbru@redhat.com>
->> Subject: [PATCH 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
->>   parameter
->>
->> From: Philippe Mathieu-Daud√© <philmd@linaro.org>
->>
->> QERR_INVALID_PARAMETER_VALUE is defined as:
->>
->>    #define QERR_INVALID_PARAMETER_VALUE \
->>        "Parameter '%s' expects %s"
->>
->> The current error is formatted as:
->>
->>    "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then 1 MB/s"
->>
->> Replace by:
->>
->>    "Parameter 'vcpu_dirty_limit' is invalid, it must greater than 1 MB/s"
+On Sun, Mar 10, 2024 at 04:04:51PM +0100, Thomas Weiﬂschuh wrote:
+> Shutdown requests are normally hardware dependent.
+> By extending pvpanic to also handle shutdown requests, guests can
+> submit such requests with an easily implementable and cross-platform
+> mechanism.
 > 
-> Is there a grammar error here? Maybe
-> 
-> s/it must greater/it must be greater/
+> Signed-off-by: Thomas Weiﬂschuh <thomas@t-8ch.de>
 
-Oops indeed!
 
-> 
->> Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
->> Reviewed-by: Juan Quintela <quintela@redhat.com>
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   migration/options.c | 5 ++---
->>   1 file changed, 2 insertions(+), 3 deletions(-)
->>
->> diff --git a/migration/options.c b/migration/options.c
->> index 40eb930940..c5115f1b5c 100644
->> --- a/migration/options.c
->> +++ b/migration/options.c
->> @@ -1264,9 +1264,8 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
->>   
->>       if (params->has_vcpu_dirty_limit &&
->>           (params->vcpu_dirty_limit < 1)) {
->> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
->> -                   "vcpu_dirty_limit",
->> -                   "is invalid, it must greater then 1 MB/s");
->> +        error_setg(errp, "Parameter 'vcpu_dirty_limit' is invalid,"
->> +                         " it must greater than 1 MB/s");
+Okay I merged this to get us out of the bind.
+Pls post a fixup patch adding something like (to be implemented)
+so people reading this do not become confused.
 
-So s/it must greater/it must be greater/ :)
-
->>           return false;
->>       }
->>
+> ---
+> This patch was split out from my earlier pvpanic-shutdown series [0].
+> The original series dropped the usage of the linux/pvpanic.h UAPI
+> header.
+> As we decided to keep the linux header [1] this first commit only adds
+> the spec definition.
+> Then a patch to Linux will add the new events to linux/pvpanic.h.
+> After this the rest of the changes to QEMU will be submitted again.
 > 
-> Otherwise,
+> [0] https://lore.kernel.org/qemu-devel/20240208-pvpanic-shutdown-v6-0-965580ac057b@t-8ch.de/
+> [1] https://lore.kernel.org/lkml/20240213053953-mutt-send-email-mst@kernel.org/
+> ---
+>  docs/specs/pvpanic.rst | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+> diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
+> index f894bc19555f..61a80480edb8 100644
+> --- a/docs/specs/pvpanic.rst
+> +++ b/docs/specs/pvpanic.rst
+> @@ -29,6 +29,8 @@ bit 1
+>    a guest panic has happened and will be handled by the guest;
+>    the host should record it or report it, but should not affect
+>    the execution of the guest.
+> +bit 2
+> +  a regular guest shutdown has happened and should be processed by the host
+>  
+>  PCI Interface
+>  -------------
 > 
+> ---
+> base-commit: f901bf11b3ddf852e591593b09b8aa7a177f9a0b
+> change-id: 20240310-pvpanic-shutdown-spec-4ea2172529e8
+> 
+> Best regards,
+> -- 
+> Thomas Weiﬂschuh <thomas@t-8ch.de>
 
 
