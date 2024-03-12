@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221B387948F
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:55:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE0687947D
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Um-0003S6-3b; Tue, 12 Mar 2024 08:44:40 -0400
+	id 1rk1Uo-0003bW-Qz; Tue, 12 Mar 2024 08:44:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uh-0003Kc-Qm
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1Uk-0003Rv-LJ
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UV-0000HI-1k
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1UY-0000He-0D
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:44:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247462;
+ s=mimecast20190719; t=1710247465;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fLtGuSyRSgnThUkYAyagqw7OiUMsEPwwga8dD6kaisE=;
- b=d1Y8P72Pm3nbhDtN0672AeYjz4i5W3F2gmT1qHLuFKMfyYJPfvNruFYyQB1h1Ei989C40Y
- olSgUHlnndl6NUCfMJ0b/lk7WdI1lcs6NEL1qBW8l1UMIdXo3S0K+6VDZ/zjCtp6HDnkFD
- JRUPzOiTpVBpmNlWwrmGsz3tGiHh0K0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-532-hsIAcClLMuSpwLwpvkyHgQ-1; Tue,
- 12 Mar 2024 08:44:19 -0400
-X-MC-Unique: hsIAcClLMuSpwLwpvkyHgQ-1
+ bh=SMkq97UOvrjCqwKdwwcOgk3dpsdofdAU28+qNsNqBmU=;
+ b=Mp8XrJ4WMLaW7pcKOPOugW2OKL1AR38Wmu14lyNir+ipStInqHPeHXkqc+3hC1uCn7jiQy
+ CizBVV1auO/iJseXzSzPF/CYNTYVH6TVj76ThQS3gTMFu12cH+aEtbI5OJjrPSmUqcMxnI
+ aiAVNjffMyd11FFw2Sd75NApA5yMGMQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-680-aO2L5-MrNHCb-05MxuU9bQ-1; Tue, 12 Mar 2024 08:44:22 -0400
+X-MC-Unique: aO2L5-MrNHCb-05MxuU9bQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E809328C97CA;
- Tue, 12 Mar 2024 12:44:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C895F101A56C;
+ Tue, 12 Mar 2024 12:44:21 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F3709492BC4;
- Tue, 12 Mar 2024 12:44:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 47541492BC4;
+ Tue, 12 Mar 2024 12:44:19 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>, Zhao Liu <zhao1.liu@intel.com>,
- Fam Zheng <fam@euphon.net>, Kevin Wolf <kwolf@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
  Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org
-Subject: [PULL 18/55] block/vmdk: Fix missing ERRP_GUARD() for error_prepend()
-Date: Tue, 12 Mar 2024 13:43:02 +0100
-Message-ID: <20240312124339.761630-19-thuth@redhat.com>
+Subject: [PULL 19/55] block/virtio-blk: Fix missing ERRP_GUARD() for
+ error_prepend()
+Date: Tue, 12 Mar 2024 13:43:03 +0100
+Message-ID: <20240312124339.761630-20-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -100,41 +102,41 @@ ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
 can't see this additional information, because exit() happens in
 error_setg earlier than information is added [1].
 
-The vmdk_parse_extents() passes @errp to error_prepend(), and its @errp
-is from vmdk_open().
+The virtio_blk_vq_aio_context_init() passes @errp to error_prepend().
 
-Though, vmdk_open(), as a BlockDriver.bdrv_open(), gets the @errp
-parameter which is pointer of its caller's local_err, to follow the
-requirement of @errp, add missing ERRP_GUARD() at the beginning of this
-function.
+Though its @errp points its caller's local @err variable, to follow the
+requirement of @errp, add missing ERRP_GUARD() at the beginning of
+virtio_blk_vq_aio_context_init().
 
 [1]: Issue description in the commit message of commit ae7c80a7bd73
      ("error: New macro ERRP_GUARD()").
 
-Cc: Fam Zheng <fam@euphon.net>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: Kevin Wolf <kwolf@redhat.com>
 Cc: Hanna Reitz <hreitz@redhat.com>
 Cc: qemu-block@nongnu.org
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240311033822.3142585-13-zhao1.liu@linux.intel.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Acked-by: "Michael S. Tsirkin" <mst@redhat.com>
+Message-ID: <20240311033822.3142585-14-zhao1.liu@linux.intel.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- block/vmdk.c | 1 +
+ hw/block/virtio-blk.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/block/vmdk.c b/block/vmdk.c
-index bf78e12383..3b82979fdf 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -1147,6 +1147,7 @@ static int GRAPH_RDLOCK
- vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
-                    Error **errp)
+diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
+index 738cb2ac36..92de315f17 100644
+--- a/hw/block/virtio-blk.c
++++ b/hw/block/virtio-blk.c
+@@ -1682,6 +1682,7 @@ static bool apply_iothread_vq_mapping(
+ /* Context: BQL held */
+ static bool virtio_blk_vq_aio_context_init(VirtIOBlock *s, Error **errp)
  {
 +    ERRP_GUARD();
-     int ret;
-     int matches;
-     char access[11];
+     VirtIODevice *vdev = VIRTIO_DEVICE(s);
+     VirtIOBlkConf *conf = &s->conf;
+     BusState *qbus = BUS(qdev_get_parent_bus(DEVICE(vdev)));
 -- 
 2.44.0
 
