@@ -2,66 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA0687918B
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:59:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EB6879190
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 10:59:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjytg-0004po-8f; Tue, 12 Mar 2024 05:58:12 -0400
+	id 1rjyuU-0005oa-Jj; Tue, 12 Mar 2024 05:59:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjytd-0004pP-Nm
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rjyuS-0005md-NB
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:59:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rjytb-0000Fw-8a
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:58:09 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rjyuR-0000Ti-0N
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 05:59:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710237485;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1710237537;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=thrmEBnXVSz3D+YPyEDtVqxJDxCUTidCfOOfM/dsWnw=;
- b=Yz4np3EWjwkGcMR0O3X8DRXexYxkdJ2hugZLSpubmdQ+3lkDuNG7roNdNgeWxzrdMVNnys
- zQwqz61Tpp+lKzXpG3yJtG88qjHk40Uk0vARRE1+7AQETxN1ckaVhFMNxa+J9JvhIJXVcR
- iretk5nkxfbuHL9qnJVb7a6fcXCFYIM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-91--jXTpBd2Mj2-9-CNp11-Jg-1; Tue,
- 12 Mar 2024 05:58:01 -0400
-X-MC-Unique: -jXTpBd2Mj2-9-CNp11-Jg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 574161C07F46;
- Tue, 12 Mar 2024 09:58:01 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.60])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 5B5DC492BD1;
- Tue, 12 Mar 2024 09:58:00 +0000 (UTC)
-Date: Tue, 12 Mar 2024 09:57:58 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PATCH 2/2] migration: Fix error handling after dup in file
- migration
-Message-ID: <ZfAnJjka5KHR1Mnu@redhat.com>
-References: <20240311233335.17299-1-farosas@suse.de>
- <20240311233335.17299-3-farosas@suse.de>
+ bh=0vOyGKNd60ezd9YR4EHU29lm1VRuZYwsUMveYQvYC7Y=;
+ b=WcO3Q2qGuH/rewsESocR0SAcH0q2lesH/+WgBSGX821cSelVJ/z93CfvpxmWb1QbxtUi9i
+ PI21xPIY11ZHI2FIvaD1zs8ChrRdwbBIOkmEFqT8dhqVVf7qIRSs6KxSJf4jE6BsgRe4AK
+ EiyaToBKXOKkKzJxSbirYEnIW7vdhVA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-W5dXPdoOMeWIpKyn-fBDbg-1; Tue, 12 Mar 2024 05:58:56 -0400
+X-MC-Unique: W5dXPdoOMeWIpKyn-fBDbg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a4623e798aeso85299666b.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 02:58:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710237535; x=1710842335;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0vOyGKNd60ezd9YR4EHU29lm1VRuZYwsUMveYQvYC7Y=;
+ b=LzVEQkl19cJ9vj6nTkk+9oZNRpxVzk/9jRmCQCFx1U8Z9iCA4PlvAUgwoBF0gBuKEn
+ Xnrj3u42FhhMLfYmBTEduQ01pXgE0t0/O2vYAQTk294IsAAxByeTnbMZa/WAV0YyIJ9y
+ VHo8+bXVNKTrRIxtil9JtvYKsJ5QUuu7NC5vqJSwgsxc+JGQY5iURo/8qMqO22xUv7W7
+ HCzNLJ7h36tDqfCanbVrnvL5s2+P6suNzUnGds5NuDWDC13UOXA6674b1ciHDjYxhdRm
+ rAHBRl9Kq7wxUCg7I4avxVsYbg3es2nsnUFucKZbR6EihXAr36s+buRnSFmYTqgtoiM1
+ lbWQ==
+X-Gm-Message-State: AOJu0YyEhgvEB6r7Sr9QGZ01hT2Ng74K3TiPVw4d48CuAi0+Am86BfRP
+ iHOW0dQZTVT41/R+9V81a3uktMOJ726wiJSsZWlLpOYSxv7n7ywh7VyMsLjTccwgR3Ol7iLmHe2
+ tX3o9y1ROhckx80QhsgbULbc/g5xs/aE6PaEyejvXAMa9ObfWL+YA
+X-Received: by 2002:a17:907:3ea5:b0:a45:bea5:806a with SMTP id
+ hs37-20020a1709073ea500b00a45bea5806amr6633376ejc.68.1710237534969; 
+ Tue, 12 Mar 2024 02:58:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHFPnm2HNT546bRKISAA0anrGbCRe1oyLVhtyyTUAX2BKXQ81sphqiqTy9DI64ujf4KWJv00Q==
+X-Received: by 2002:a17:907:3ea5:b0:a45:bea5:806a with SMTP id
+ hs37-20020a1709073ea500b00a45bea5806amr6633357ejc.68.1710237534629; 
+ Tue, 12 Mar 2024 02:58:54 -0700 (PDT)
+Received: from [192.168.43.219] (lib59-h05-176-171-156-58.dsl.sta.abo.bbox.fr.
+ [176.171.156.58]) by smtp.gmail.com with ESMTPSA id
+ uz26-20020a170907119a00b00a45c9945251sm3672189ejb.192.2024.03.12.02.58.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Mar 2024 02:58:54 -0700 (PDT)
+Message-ID: <5ca62745-deae-41b5-a9ef-2269a7220830@redhat.com>
+Date: Tue, 12 Mar 2024 10:58:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/25] migration: Improve error reporting
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+References: <20240306133441.2351700-1-clg@redhat.com> <ZerJDAdaakTCtECF@x1n>
+ <Ze9ogyFZT73gB-La@x1n> <0a1c329e-e6ab-4329-815d-e6be3e64c2ae@redhat.com>
+In-Reply-To: <0a1c329e-e6ab-4329-815d-e6be3e64c2ae@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240311233335.17299-3-farosas@suse.de>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -82,118 +100,54 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 11, 2024 at 08:33:35PM -0300, Fabiano Rosas wrote:
-> The file migration code was allowing a possible -1 from a failed call
-> to dup() to propagate into the new QIOFileChannel::fd before checking
-> for validity. Coverity doesn't like that, possibly due to the the
-> lseek(-1, ...) call that would ensue before returning from the channel
-> creation routine.
+On 3/12/24 08:16, Cédric Le Goater wrote:
+> On 3/11/24 21:24, Peter Xu wrote:
+>> On Fri, Mar 08, 2024 at 04:15:08PM +0800, Peter Xu wrote:
+>>> On Wed, Mar 06, 2024 at 02:34:15PM +0100, Cédric Le Goater wrote:
+>>>> * [1-4] already queued in migration-next.
+>>>>    migration: Report error when shutdown fails
+>>>>    migration: Remove SaveStateHandler and LoadStateHandler typedefs
+>>>>    migration: Add documentation for SaveVMHandlers
+>>>>    migration: Do not call PRECOPY_NOTIFY_SETUP notifiers in case of error
+>>>> * [5-9] are prequisite changes in other components related to the
+>>>>    migration save_setup() handler. They make sure a failure is not
+>>>>    returned without setting an error.
+>>>>    s390/stattrib: Add Error** argument to set_migrationmode() handler
+>>>>    vfio: Always report an error in vfio_save_setup()
+>>>>    migration: Always report an error in block_save_setup()
+>>>>    migration: Always report an error in ram_save_setup()
+>>>>    migration: Add Error** argument to vmstate_save()
+>>>>
+>>>> * [10-15] are the core changes in migration and memory components to
+>>>>    propagate an error reported in a save_setup() handler.
+>>>>
+>>>>    migration: Add Error** argument to qemu_savevm_state_setup()
+>>>>    migration: Add Error** argument to .save_setup() handler
+>>>>    migration: Add Error** argument to .load_setup() handler
+>>>
+>>> Further queued 5-12 in migration-staging (until here), thanks.
+>>
+>> Just to keep a record: due to the virtio failover test failure and the
+>> other block migration uncertainty in patch 7 (in which case we may want to
+>> have a fix on sectors==0 case), I unqueued this chunk for 9.0.
 > 
-> Use the newly introduced qio_channel_file_dupfd() to properly check
-> the return of dup() before proceeding.
-> 
-> Fixes: CID 1539961
-> Fixes: CID 1539965
-> Fixes: CID 1539960
-> Fixes: 2dd7ee7a51 ("migration/multifd: Add incoming QIOChannelFile support")
-> Fixes: decdc76772 ("migration/multifd: Add mapped-ram support to fd: URI")
-> Reported-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
->  migration/fd.c   |  9 ++++-----
->  migration/file.c | 14 +++++++-------
->  2 files changed, 11 insertions(+), 12 deletions(-)
-> 
-> diff --git a/migration/fd.c b/migration/fd.c
-> index d4ae72d132..4e2a63a73d 100644
-> --- a/migration/fd.c
-> +++ b/migration/fd.c
-> @@ -80,6 +80,7 @@ static gboolean fd_accept_incoming_migration(QIOChannel *ioc,
->  void fd_start_incoming_migration(const char *fdname, Error **errp)
->  {
->      QIOChannel *ioc;
-> +    QIOChannelFile *fioc;
->      int fd = monitor_fd_param(monitor_cur(), fdname, errp);
->      if (fd == -1) {
->          return;
-> @@ -103,15 +104,13 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
->          int channels = migrate_multifd_channels();
->  
->          while (channels--) {
-> -            ioc = QIO_CHANNEL(qio_channel_file_new_fd(dup(fd)));
-> -
-> -            if (QIO_CHANNEL_FILE(ioc)->fd == -1) {
-> -                error_setg(errp, "Failed to duplicate fd %d", fd);
-> +            fioc = qio_channel_file_new_dupfd(fd, errp);
-> +            if (!fioc) {
->                  return;
->              }
->  
->              qio_channel_set_name(ioc, "migration-fd-incoming");
-> -            qio_channel_add_watch_full(ioc, G_IO_IN,
-> +            qio_channel_add_watch_full(QIO_CHANNEL(fioc), G_IO_IN,
->                                         fd_accept_incoming_migration,
->                                         NULL, NULL,
->                                         g_main_context_get_thread_default());
+> ok. I will ask the block folks for help to understand if sectors==0
+> is also an error in the save_setup context. May be  we can still
+> merge these in 9.0 cycle.
 
-Nothing is free'ing the already created channels, if this while()
-loop fails on the 2nd or later iterations.
+I discussed with Kevin and sectors==0 is not an error case, the loop
+should simply continue. That said, commit 66db46ca83b8 ("migration:
+Deprecate block migration") would let us remove all that code in
+the next cycle which is even simpler.
 
-> diff --git a/migration/file.c b/migration/file.c
-> index 164b079966..d458f48269 100644
-> --- a/migration/file.c
-> +++ b/migration/file.c
-> @@ -58,12 +58,13 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
->      int fd = fd_args_get_fd();
->  
->      if (fd && fd != -1) {
-> -        ioc = qio_channel_file_new_fd(dup(fd));
-> +        ioc = qio_channel_file_new_dupfd(fd, errp);
->      } else {
->          ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
-> -        if (!ioc) {
-> -            goto out;
-> -        }
-> +    }
-> +
-> +    if (!ioc) {
-> +        goto out;
->      }
->  
->      multifd_channel_connect(opaque, QIO_CHANNEL(ioc));
-> @@ -147,10 +148,9 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
->                                     NULL, NULL,
->                                     g_main_context_get_thread_default());
->  
-> -        fioc = qio_channel_file_new_fd(dup(fioc->fd));
-> +        fioc = qio_channel_file_new_dupfd(fioc->fd, errp);
->  
-> -        if (!fioc || fioc->fd == -1) {
-> -            error_setg(errp, "Error creating migration incoming channel");
-> +        if (!fioc) {
->              break;
->          }
->      } while (++i < channels);
+Thanks,
 
-Again, nothing is free'ing when the loops fails on 2nd or later
-iterations.
+C.
 
-So a weak
 
-  Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-on the basis that it fixes the bugs that it claims to fix, but there
-are more bugs that still need fixing here.
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
