@@ -2,69 +2,139 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70579878FBB
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:30:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C29E878FF5
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 09:50:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rjxWA-0001Ne-62; Tue, 12 Mar 2024 04:29:50 -0400
+	id 1rjxow-0002So-8q; Tue, 12 Mar 2024 04:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjxW7-0001Mi-Ed; Tue, 12 Mar 2024 04:29:47 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjxoP-0002N5-G9
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:48:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rjxW5-00026n-8A; Tue, 12 Mar 2024 04:29:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710232185; x=1741768185;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ZSSpFddo5gHNV5jEQzmHwmnXBeHiCAwgL53FK035/cE=;
- b=FChstYSt8YDLWwefwlcVoOF+0lZDAK9J2ff4nWSlCLEowPYt7WIZl3JK
- 4Wa/dj86tKDseBdAANwa/9hIkrYgL6dp7HVDdnqjvJ1eg/TrBx4nM+80+
- 5jotLnKIuXpwv2OACbQK5127XxDUSAgf5GpRi316quOQkovuKoTHBTQsL
- /IzlCmOkrzLieBCspJy4qRcIj9+KNPWirmIRLdv6mQVP1ewJM6fxt/QUM
- IGgZxm1z1rW9YKN4SseSqPVJGYdtHjgPLCPKWIQs+qMeoCvd8VzzZUtNe
- byBQMaiK0Ij8LG4hg8gTA3dY7tkgPBGeGImuCcZegseUgREwNDPaZA7Dv w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11010"; a="7873312"
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; 
-   d="scan'208";a="7873312"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 01:29:42 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,118,1708416000"; d="scan'208";a="15953968"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa005.fm.intel.com with ESMTP; 12 Mar 2024 01:29:40 -0700
-Date: Tue, 12 Mar 2024 16:43:29 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
- Markus Armbruster <armbru@redhat.com>
-Cc: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org,
- qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH v2 00/29] Cleanup up to fix missing ERRP_GUARD() for
- error_prepend()
-Message-ID: <ZfAVsQTIOgAOjd0Y@intel.com>
-References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
- <d48e5d05-0e1e-4bb0-b10a-f0c943b055f6@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rjxoN-0005Ry-9t
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 04:48:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710233317;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=xsvRwEKQ5DNSqCnUYTAZ8wt3un7Gm4lXwSy4Ck0iSbE=;
+ b=GOmBPssSbTe9JYmoLbbpcAXcbDjCWhxZjBo/zIjzeYgQGPmPms1rMqaHx6Ptda6VGgmR0i
+ 1Xr7VS2rj9oSro5inlJJgvow2cIbVz6u0M6pRhmvPXj/m+lSSBOP4LKbfRavphvVv2cAXx
+ 7tOjDzm8zASrknqZh9/EfbJfg/7Uo28=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-534-ej7yXnO4NYaH-947M-SGwQ-1; Tue, 12 Mar 2024 04:48:35 -0400
+X-MC-Unique: ej7yXnO4NYaH-947M-SGwQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33e6dab9d4cso3011483f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 01:48:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710233314; x=1710838114;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xsvRwEKQ5DNSqCnUYTAZ8wt3un7Gm4lXwSy4Ck0iSbE=;
+ b=ot4QC+GFySXoNx6TAVK0cI4Xm8VXbL9Onmp5464TyIQIinEbTGMzP8EqYXvNs2mOiP
+ JUiAXmdJMKUigA7Zvvu/XZRe/TAGM5TDokiz7ohfQOfdifIBSOvvyhGakep8xgQP5Frp
+ mhEB7fhz39Mao/Jz6udvxeOSZ6w8FhOVX1zmYsSYR8l6b5+MboWiVwYo5sJ2/q1NkVzw
+ 5LmKYtA3Twhi5bHSHAovFDN5fOZTTybklNyePl6v65CYGFZtz2DAjK7TUgOIfTgP1gBV
+ u6+4+A676oDriHfCN852m9z7HgxsQ4KFNOIS+pj0bKe3ym8BTVVzK6FZQ/EpfBiC1zOC
+ 7iWw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXofyOK67sSqg3ifXmSG1VdGN4j33TniohKH8Y+jCF36RUBksiQi1dDVOtkLN9dXpUkeF+A+0JiyNdxp670JDB9N9PB82U=
+X-Gm-Message-State: AOJu0Yyj3m3M142bsmHgEUv8mOvfVyqcJuI82XRLlhcnifJe6Wa6ghXX
+ 6XuD/X4QsiVBiESaurvF+8NXlosBcp9MS7SLFBrYr2KWmLKpqKI9oiqtytul7/92Sz/GCrKU/fv
+ pkugbdpkACLnraqDq7yYxoCFY4KUhiXtoL238BREEyt7h4MijwsKR
+X-Received: by 2002:a05:6000:ad0:b0:33e:8775:9e93 with SMTP id
+ di16-20020a0560000ad000b0033e87759e93mr5032831wrb.65.1710233314718; 
+ Tue, 12 Mar 2024 01:48:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2xzeO0CyQuZRGWxCXmYaNIGNH/F6RjZtJXcxK4sN0P2eUVZoC26o2dybHL77AzZP9fbZxUA==
+X-Received: by 2002:a05:6000:ad0:b0:33e:8775:9e93 with SMTP id
+ di16-20020a0560000ad000b0033e87759e93mr5032818wrb.65.1710233314356; 
+ Tue, 12 Mar 2024 01:48:34 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-177-86.web.vodafone.de.
+ [109.43.177.86]) by smtp.gmail.com with ESMTPSA id
+ w4-20020a5d6084000000b0033de10c9efcsm8435361wrt.114.2024.03.12.01.48.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Mar 2024 01:48:34 -0700 (PDT)
+Message-ID: <65c4004f-5093-4806-8e5a-42d84017e96a@redhat.com>
+Date: Tue, 12 Mar 2024 09:48:32 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d48e5d05-0e1e-4bb0-b10a-f0c943b055f6@linaro.org>
-Received-SPF: none client-ip=192.198.163.13;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 17/29] hw/scsi/vhost-scsi: Fix missing ERRP_GUARD() for
+ error_prepend()
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20240311033822.3142585-1-zhao1.liu@linux.intel.com>
+ <20240311033822.3142585-18-zhao1.liu@linux.intel.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240311033822.3142585-18-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
 X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.029,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,31 +150,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Thomas/Markus/Michael,
-
-For the remaing patches, could you please help me merge them next?
-
-Many thanks!
-Zhao
-
-On Tue, Mar 12, 2024 at 09:17:30AM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Tue, 12 Mar 2024 09:17:30 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v2 00/29] Cleanup up to fix missing ERRP_GUARD() for
->  error_prepend()
+On 11/03/2024 04.38, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
 > 
-> On 11/3/24 04:37, Zhao Liu wrote:
+> As the comment in qapi/error, passing @errp to error_prepend() requires
+> ERRP_GUARD():
 > 
-> > ---
-> > Zhao Liu (29):
+> * = Why, when and how to use ERRP_GUARD() =
+> *
+> * Without ERRP_GUARD(), use of the @errp parameter is restricted:
+> ...
+> * - It should not be passed to error_prepend(), error_vprepend() or
+> *   error_append_hint(), because that doesn't work with &error_fatal.
+> * ERRP_GUARD() lifts these restrictions.
+> *
+> * To use ERRP_GUARD(), add it right at the beginning of the function.
+> * @errp can then be used without worrying about the argument being
+> * NULL or &error_fatal.
 > 
-> >    hw/core/loader-fit: Fix missing ERRP_GUARD() for error_prepend()
-> >    hw/core/qdev-properties-system: Fix missing ERRP_GUARD() for
-> >      error_prepend()
-> >    hw/misc/ivshmem: Fix missing ERRP_GUARD() for error_prepend()
+> ERRP_GUARD() could avoid the case when @errp is &error_fatal, the user
+> can't see this additional information, because exit() happens in
+> error_setg earlier than information is added [1].
 > 
-> I'm queuing these 3 patches, thanks!
+> The vhost_scsi_realize() passes @errp to error_prepend(), and as a
+> VirtioDeviceClass.realize method, its @errp is from DeviceClass.realize
+> so that there is no guarantee that the @errp won't point to
+> @error_fatal.
+> 
+> To avoid the issue like [1] said, add missing ERRP_GUARD() at the
+> beginning of this function.
+> 
+> [1]: Issue description in the commit message of commit ae7c80a7bd73
+>       ("error: New macro ERRP_GUARD()").
+> 
+> Cc: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: Fam Zheng <fam@euphon.net>
+> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> ---
+>   hw/scsi/vhost-scsi.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+> index 58a00336c2db..ae26bc19a457 100644
+> --- a/hw/scsi/vhost-scsi.c
+> +++ b/hw/scsi/vhost-scsi.c
+> @@ -220,6 +220,7 @@ static int vhost_scsi_set_workers(VHostSCSICommon *vsc, bool per_virtqueue)
+>   
+>   static void vhost_scsi_realize(DeviceState *dev, Error **errp)
+>   {
+> +    ERRP_GUARD();
+>       VirtIOSCSICommon *vs = VIRTIO_SCSI_COMMON(dev);
+>       VHostSCSICommon *vsc = VHOST_SCSI_COMMON(dev);
+>       Error *err = NULL;
 
-
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
