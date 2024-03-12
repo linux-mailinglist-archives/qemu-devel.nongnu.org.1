@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E866879497
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FE8879476
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:48:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1Y4-0000tm-9b; Tue, 12 Mar 2024 08:48:04 -0400
+	id 1rk1YB-00016Q-OZ; Tue, 12 Mar 2024 08:48:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VQ-0004yU-1J
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VS-00058A-Is
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VN-0000eU-4K
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:19 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rk1VQ-0000qT-Dk
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:45:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710247516;
+ s=mimecast20190719; t=1710247519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=y6ZbGTCAWeBMMZ2CTH7Cqh0akX4u3D/q5yzE4MTVwog=;
- b=A0kvg1FWVuvTo6N6dB0Yd/lI3oy9ui0jw7J24tBUDc4m6vSw84Rr0lTpqDN8p551HzgNbS
- vzq5sWQvUhbpZ3P4RoCst1t0mrGgAA9O9Dc9i945tdo4FP1QaQ1ZbVm/U17vArAzQrPJEp
- 0qUweNuJRpEvCtelrXBg34OelHprMIk=
+ bh=4xozeGQhwIBngkiKbaCD6gMNeCrtvDlcM6z3DqF/RLw=;
+ b=Sf6C3vzycw22wHokPnwNBPFg3KsRKdR9gftQbV5O1UsWwo1s1SW/nyOSdpoHZQM5R/6USl
+ zWMrvtljbKOuLZ16RZXViujzfgnKVoPYGLqO+PPMZjAMUgDedgTjonlNqPxEDnYt6tMaWx
+ BCJ/wLp2P2DrdsJaru5wBhxmz05G4yg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-iSGEBXR4PX61l84jtGLlwg-1; Tue,
- 12 Mar 2024 08:45:13 -0400
-X-MC-Unique: iSGEBXR4PX61l84jtGLlwg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-446-wS8k9vi3MYmQSfoEYwGa3Q-1; Tue,
+ 12 Mar 2024 08:45:14 -0400
+X-MC-Unique: wS8k9vi3MYmQSfoEYwGa3Q-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E1EFD386A0B7;
- Tue, 12 Mar 2024 12:45:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D6621C41A05;
+ Tue, 12 Mar 2024 12:45:14 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.69])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BB59C492BD0;
- Tue, 12 Mar 2024 12:45:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 328F9492BC4;
+ Tue, 12 Mar 2024 12:45:13 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 50/55] target/rx: Prefer fast cpu_env() over slower CPU QOM
+Subject: [PULL 51/55] target/sh4: Prefer fast cpu_env() over slower CPU QOM
  cast macro
-Date: Tue, 12 Mar 2024 13:43:34 +0100
-Message-ID: <20240312124339.761630-51-thuth@redhat.com>
+Date: Tue, 12 Mar 2024 13:43:35 +0100
+Message-ID: <20240312124339.761630-52-thuth@redhat.com>
 In-Reply-To: <20240312124339.761630-1-thuth@redhat.com>
 References: <20240312124339.761630-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -86,95 +86,187 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 Mechanical patch produced running the command documented
 in scripts/coccinelle/cpu_env.cocci_template header.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240129164514.73104-24-philmd@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240129164514.73104-26-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/rx/cpu.c       | 4 ++--
- target/rx/gdbstub.c   | 6 ++----
- target/rx/helper.c    | 6 ++----
- target/rx/translate.c | 3 +--
- 4 files changed, 7 insertions(+), 12 deletions(-)
+ target/sh4/cpu.c       | 18 ++++++------------
+ target/sh4/gdbstub.c   |  6 ++----
+ target/sh4/helper.c    | 14 ++++----------
+ target/sh4/translate.c |  6 ++----
+ 4 files changed, 14 insertions(+), 30 deletions(-)
 
-diff --git a/target/rx/cpu.c b/target/rx/cpu.c
-index 26ff822e71..da673a595d 100644
---- a/target/rx/cpu.c
-+++ b/target/rx/cpu.c
-@@ -71,9 +71,9 @@ static int riscv_cpu_mmu_index(CPUState *cs, bool ifunc)
- 
- static void rx_cpu_reset_hold(Object *obj)
+diff --git a/target/sh4/cpu.c b/target/sh4/cpu.c
+index eb7c551e9b..4f5a4a3d98 100644
+--- a/target/sh4/cpu.c
++++ b/target/sh4/cpu.c
+@@ -71,8 +71,7 @@ static void superh_restore_state_to_opc(CPUState *cs,
+ static bool superh_io_recompile_replay_branch(CPUState *cs,
+                                               const TranslationBlock *tb)
  {
--    RXCPU *cpu = RX_CPU(obj);
-+    CPUState *cs = CPU(obj);
-     RXCPUClass *rcc = RX_CPU_GET_CLASS(obj);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
-     uint32_t *resetvec;
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
  
-     if (rcc->parent_phases.hold) {
-diff --git a/target/rx/gdbstub.c b/target/rx/gdbstub.c
-index d7e0e6689b..f222bf003b 100644
---- a/target/rx/gdbstub.c
-+++ b/target/rx/gdbstub.c
-@@ -21,8 +21,7 @@
- 
- int rx_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     if ((env->flags & (TB_FLAG_DELAY_SLOT | TB_FLAG_DELAY_SLOT_COND))
+         && !(cs->tcg_cflags & CF_PCREL) && env->pc != tb->pc) {
+@@ -107,9 +106,8 @@ static int sh4_cpu_mmu_index(CPUState *cs, bool ifetch)
+ static void superh_cpu_reset_hold(Object *obj)
  {
--    RXCPU *cpu = RX_CPU(cs);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
+     CPUState *cs = CPU(obj);
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+     SuperHCPUClass *scc = SUPERH_CPU_GET_CLASS(obj);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
+ 
+     if (scc->parent_phases.hold) {
+         scc->parent_phases.hold(obj);
+@@ -159,8 +157,7 @@ out:
+ 
+ static void sh7750r_cpu_initfn(Object *obj)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(obj);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(CPU(obj));
+ 
+     env->id = SH_CPU_SH7750R;
+     env->features = SH_FEATURE_BCR3_AND_BCR4;
+@@ -177,8 +174,7 @@ static void sh7750r_class_init(ObjectClass *oc, void *data)
+ 
+ static void sh7751r_cpu_initfn(Object *obj)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(obj);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(CPU(obj));
+ 
+     env->id = SH_CPU_SH7751R;
+     env->features = SH_FEATURE_BCR3_AND_BCR4;
+@@ -195,8 +191,7 @@ static void sh7751r_class_init(ObjectClass *oc, void *data)
+ 
+ static void sh7785_cpu_initfn(Object *obj)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(obj);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(CPU(obj));
+ 
+     env->id = SH_CPU_SH7785;
+     env->features = SH_FEATURE_SH4A;
+@@ -231,8 +226,7 @@ static void superh_cpu_realizefn(DeviceState *dev, Error **errp)
+ 
+ static void superh_cpu_initfn(Object *obj)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(obj);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(CPU(obj));
+ 
+     env->movcal_backup_tail = &(env->movcal_backup);
+ }
+diff --git a/target/sh4/gdbstub.c b/target/sh4/gdbstub.c
+index d8e199fc06..75926d4e04 100644
+--- a/target/sh4/gdbstub.c
++++ b/target/sh4/gdbstub.c
+@@ -26,8 +26,7 @@
+ 
+ int superh_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
  
      switch (n) {
-     case 0 ... 15:
-@@ -53,8 +52,7 @@ int rx_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+     case 0 ... 7:
+@@ -76,8 +75,7 @@ int superh_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
  
- int rx_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+ int superh_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
  {
--    RXCPU *cpu = RX_CPU(cs);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
-     uint32_t psw;
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
+ 
      switch (n) {
-     case 0 ... 15:
-diff --git a/target/rx/helper.c b/target/rx/helper.c
-index dad5fb4976..80912e8dcb 100644
---- a/target/rx/helper.c
-+++ b/target/rx/helper.c
-@@ -45,8 +45,7 @@ void rx_cpu_unpack_psw(CPURXState *env, uint32_t psw, int rte)
- #define INT_FLAGS (CPU_INTERRUPT_HARD | CPU_INTERRUPT_FIR)
- void rx_cpu_do_interrupt(CPUState *cs)
- {
--    RXCPU *cpu = RX_CPU(cs);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
-     int do_irq = cs->interrupt_request & INT_FLAGS;
-     uint32_t save_psw;
+     case 0 ... 7:
+diff --git a/target/sh4/helper.c b/target/sh4/helper.c
+index 5a6f653c12..7c6f9d374a 100644
+--- a/target/sh4/helper.c
++++ b/target/sh4/helper.c
+@@ -55,8 +55,7 @@ int cpu_sh4_is_cached(CPUSH4State *env, target_ulong addr)
  
-@@ -122,8 +121,7 @@ void rx_cpu_do_interrupt(CPUState *cs)
- 
- bool rx_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ void superh_cpu_do_interrupt(CPUState *cs)
  {
--    RXCPU *cpu = RX_CPU(cs);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
-     int accept = 0;
-     /* hardware interrupt (Normal) */
-     if ((interrupt_request & CPU_INTERRUPT_HARD) &&
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index f6bf68e00e..f6e9e0ec90 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -131,8 +131,7 @@ static int bdsp_s(DisasContext *ctx, int d)
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
+     int do_irq = cs->interrupt_request & CPU_INTERRUPT_HARD;
+     int do_exp, irq_vector = cs->exception_index;
  
- void rx_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+@@ -432,11 +431,10 @@ static int get_physical_address(CPUSH4State * env, target_ulong * physical,
+ 
+ hwaddr superh_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
  {
--    RXCPU *cpu = RX_CPU(cs);
--    CPURXState *env = &cpu->env;
-+    CPURXState *env = cpu_env(cs);
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+     target_ulong physical;
+     int prot;
+ 
+-    if (get_physical_address(&cpu->env, &physical, &prot, addr, MMU_DATA_LOAD)
++    if (get_physical_address(cpu_env(cs), &physical, &prot, addr, MMU_DATA_LOAD)
+             == MMU_OK) {
+         return physical;
+     }
+@@ -782,11 +780,8 @@ int cpu_sh4_is_cached(CPUSH4State * env, target_ulong addr)
+ bool superh_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+ {
+     if (interrupt_request & CPU_INTERRUPT_HARD) {
+-        SuperHCPU *cpu = SUPERH_CPU(cs);
+-        CPUSH4State *env = &cpu->env;
+-
+         /* Delay slots are indivisible, ignore interrupts */
+-        if (env->flags & TB_FLAG_DELAY_SLOT_MASK) {
++        if (cpu_env(cs)->flags & TB_FLAG_DELAY_SLOT_MASK) {
+             return false;
+         } else {
+             superh_cpu_do_interrupt(cs);
+@@ -800,8 +795,7 @@ bool superh_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+                          MMUAccessType access_type, int mmu_idx,
+                          bool probe, uintptr_t retaddr)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
+     int ret;
+ 
+     target_ulong physical;
+diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+index 6a6d862b10..a9b1bc7524 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -159,8 +159,7 @@ void sh4_translate_init(void)
+ 
+ void superh_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+ {
+-    SuperHCPU *cpu = SUPERH_CPU(cs);
+-    CPUSH4State *env = &cpu->env;
++    CPUSH4State *env = cpu_env(cs);
      int i;
-     uint32_t psw;
  
+     qemu_fprintf(f, "pc=0x%08x sr=0x%08x pr=0x%08x fpscr=0x%08x\n",
+@@ -2186,7 +2185,6 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
+ static void sh4_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+ {
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+-    CPUSH4State *env = cpu_env(cs);
+     uint32_t tbflags;
+     int bound;
+ 
+@@ -2196,7 +2194,7 @@ static void sh4_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
+     /* We don't know if the delayed pc came from a dynamic or static branch,
+        so assume it is a dynamic branch.  */
+     ctx->delayed_pc = -1; /* use delayed pc from env pointer */
+-    ctx->features = env->features;
++    ctx->features = cpu_env(cs)->features;
+     ctx->has_movcal = (tbflags & TB_FLAG_PENDING_MOVCA);
+     ctx->gbank = ((tbflags & (1 << SR_MD)) &&
+                   (tbflags & (1 << SR_RB))) * 0x10;
 -- 
 2.44.0
 
