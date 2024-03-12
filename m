@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554EB8799C7
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403B5879A22
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:07:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5WR-0000R3-5F; Tue, 12 Mar 2024 13:02:39 -0400
+	id 1rk5X4-0004Bx-PV; Tue, 12 Mar 2024 13:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5US-0006Bd-32; Tue, 12 Mar 2024 13:00:38 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rk5UX-0006JN-IO; Tue, 12 Mar 2024 13:00:44 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rk5UN-0008NB-Lu; Tue, 12 Mar 2024 13:00:35 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6e5dddd3b95so28358b3a.1; 
- Tue, 12 Mar 2024 10:00:30 -0700 (PDT)
+ id 1rk5UT-0008P7-Uh; Tue, 12 Mar 2024 13:00:41 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e6b5432439so29711b3a.1; 
+ Tue, 12 Mar 2024 10:00:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710262830; x=1710867630; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710262833; x=1710867633; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MoKRCKsm4E9lna6+NySazE4WVLMGHBKm/4jK5soogyI=;
- b=h/wPq5d7Hnz2CMC2PHvQdnGYFZ7R/MTebEFEOnc3He/T68OvaGqY1UotH+wxA8Z+Cn
- L7FejViyW3Iwudr9EtKciPxd/35LAZ4IUB0BqdQCvQ0TQK2oNNX8LRksMptwzLvV6KVB
- ZbJBPHWTs/movfpv8Z4th/mhb3Q/kGA4U64w7EfEUadxbXi4cJl7DftaRvRh58YmsMsP
- ZYnk76Yg1qBUGCBY8W6ImnQ54637IWMRdyVWk4+CSGdinUGmxMi0cJJfSiVrFb7su56V
- zkxb2GNl0dP6TNbNPDSEbSiGx1iL3s9fX1ju2zYddrcJLligzYtPxgXL5OoCWUEm99UZ
- H1uQ==
+ bh=pBITymDFeDXiJDgONKwZL8oLgmw8A0Gg/g7pdbBRahU=;
+ b=V+59vRHJxwkgA1EaDCKFw8r/RqI1IF/1hOdqVGMDE2vJcbC33Wk+KVx+vwh+ELYOrv
+ G3njQmkhz0cihQcQ9OWbi1HogpX2quYmaTIRm4B0FeTDpp1m/xGPQYGjbFf1JrydWRZe
+ WshmlBT77nlmDse/HBudbWqNySI0ncu+eSirvUfuXE0qlyefkqF3CSTHIzEbniTfj5oW
+ dPDSp2Dyd2Oik1UR4jKqcwRfVoj7do1hUtf1DGKCHbFhx8Uv2fdOGgmHLwfFSX9SYllc
+ 7rtDSweddrnH0Mqi7nDJy5WkW2iLbqXgYw9zM2NiCJn68cmqwfpjk+JDbYEsTRMwgw44
+ 1NuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710262830; x=1710867630;
+ d=1e100.net; s=20230601; t=1710262833; x=1710867633;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MoKRCKsm4E9lna6+NySazE4WVLMGHBKm/4jK5soogyI=;
- b=KPVzImCD9dZMScfEXx7Ax+EtfL4Ha6G2Df26SKu35K2xRT+Rz2wAMRfACTrkXrPGWH
- anRHHWK5PVMnBUnAUwbntZdDNGxcDgToTpGWDG7jLxqpMuRJYuUvCd+xOPwR01NJgTuF
- ix7+Ynzja2DvVRl/vobWp1ipiKWkYOmaGwsPIU+Tc2CXernO5Oh+3uADnogA7sYG+Cib
- 3bokJLWGYPBddN7wu1StIeEszfmrA8vSDUAoANn3lCuXCqzqnh6IQjKj4RTBEcWJNHkE
- 5z/99cXbKS9uIRQs7NmH7OM41Wqgq+0zzRs/dE8pWOI7Xri/oAOKhSnlJ7ZcbhRXMq79
- fx7g==
+ bh=pBITymDFeDXiJDgONKwZL8oLgmw8A0Gg/g7pdbBRahU=;
+ b=LE/nt+JSoY60N+xkodLCQEXxsMKllU5hjFf3ZxIjx0H6B4o8MtMtcDC4hkiymZ1bOL
+ bl1Su8+X+vLIxnY7iuvgrr6/VPF4jMeyZ8mQjSqrIa/baWUvMvM7FHN1jtxzc1FXnPN8
+ n+KtwLfFT0YISXw17w5fXaelbf1+u7KxD5OLxza4/PJj4A40/5w8UJH0ufLw/ffzzZeV
+ /E288GbS3BEwrepPJ/9Xltj+aSMstzQ9fKKCrImDNcBgAQ9Ck8LKysooroMe9KihNmvO
+ zgcXeXgqXw5k9jo6aDKrFK5uo9mnZOO4eS++1Yoo2UVmj1m8Fkv3cFDK+HN7Rqbvo0hS
+ MIEA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWOrxi1aNl8jqCLOFUZDaDxqG7zizkcuzuHrS+vFQDXm0sFM6qwNfTXJMAEtAXs8Hw/330ICK7nj0cqiwEfpooHK+ue
-X-Gm-Message-State: AOJu0YzKQ6w5HKGYy65bIJGsatsthy+DXje10BZ9KXP4c9s2ArFq+/sq
- X064pd4jnFcOtOiCXFvrqMxGnL8wUnCdL8gN1++qzFs21d5XgzX0kx14cXuyse8=
-X-Google-Smtp-Source: AGHT+IF1p01VJJTEl2S+CqTXnh4h3YJRrxS9Kc2zlICgMzRwtJj7wCs+ILpowdv8u55j3xlBrgb2bw==
-X-Received: by 2002:a05:6a21:32a5:b0:1a1:6cf3:265b with SMTP id
- yt37-20020a056a2132a500b001a16cf3265bmr207438pzb.18.1710262829814; 
- Tue, 12 Mar 2024 10:00:29 -0700 (PDT)
+ AJvYcCW+qKKT3XrBv0aF4vGeaRDXl8VwbVElIoiLfrNj2EURm9Dzy5qjfLZkABIsqh3uWVa59gPWqbwQkX4cSTZLj9e9Up31
+X-Gm-Message-State: AOJu0Yw3Qcxw5Wp6E6yr4sJLM9LwXY+DXebR1oomfpphBzb2WEnfaK6g
+ d3bhjKG3ktPwvZg0DCBdvQ/sUKJVFbMSAYz1lNah/zXy0v2/F4l18A16R7EqYvs=
+X-Google-Smtp-Source: AGHT+IFT0vRE1D+15HxGvwOVUTyBmL1xSAgU61PIwj17yKZEPoZa83WSAekJ/c9j96PLZKcC0CZJ+g==
+X-Received: by 2002:a05:6a20:12c2:b0:1a3:2fea:936c with SMTP id
+ v2-20020a056a2012c200b001a32fea936cmr322711pzg.41.1710262833625; 
+ Tue, 12 Mar 2024 10:00:33 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.26
+ t34-20020a056a0013a200b006e6a684a6ddsm1362330pfg.220.2024.03.12.10.00.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:00:29 -0700 (PDT)
+ Tue, 12 Mar 2024 10:00:33 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
  Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PULL 24/38] target/ppc: Remove interrupt handler wrapper functions
-Date: Wed, 13 Mar 2024 02:58:35 +1000
-Message-ID: <20240312165851.2240242-25-npiggin@gmail.com>
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 25/38] spapr: nested: register nested-hv api hcalls only for
+ cap-nested-hv
+Date: Wed, 13 Mar 2024 02:58:36 +1000
+Message-ID: <20240312165851.2240242-26-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 References: <20240312165851.2240242-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,123 +94,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-These wrappers call out to handle POWER7 and newer in separate
-functions but reduce to the generic case when TARGET_PPC64 is not
-defined. It is easy enough to include the switch in the beginning of
-the generic functions to branch out to the specific functions and get
-rid of these wrappers. This avoids one indirection and entirely
-compiles out the switch without TARGET_PPC64.
+Since cap-nested-hv is an optional capability, it makes sense to register
+api specfic hcalls only when respective capability is enabled. This
+requires to introduce a new API to unregister hypercalls to maintain
+sanity across guest reboot since caps are re-applied across reboots and
+re-registeration of hypercalls would hit assert otherwise.
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 67 +++++++++++++++++-----------------------
- 1 file changed, 28 insertions(+), 39 deletions(-)
+ hw/ppc/spapr.c                |  1 +
+ hw/ppc/spapr_hcall.c          | 24 ++++++++++++++++++++++--
+ hw/ppc/spapr_nested.c         | 25 +++++++++++++++++++++++--
+ include/hw/ppc/spapr.h        |  4 ++++
+ include/hw/ppc/spapr_nested.h |  1 -
+ 5 files changed, 50 insertions(+), 5 deletions(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index a9efda7626..ded488fcd8 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1978,8 +1978,21 @@ static int p9_next_unmasked_interrupt(CPUPPCState *env)
- }
- #endif /* TARGET_PPC64 */
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index abd484023a..7321c35174 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -1734,6 +1734,7 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
  
--static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
-+static int ppc_next_unmasked_interrupt(CPUPPCState *env)
- {
-+#ifdef TARGET_PPC64
-+    switch (env->excp_model) {
-+    case POWERPC_EXCP_POWER7:
-+        return p7_next_unmasked_interrupt(env);
-+    case POWERPC_EXCP_POWER8:
-+        return p8_next_unmasked_interrupt(env);
-+    case POWERPC_EXCP_POWER9:
-+    case POWERPC_EXCP_POWER10:
-+        return p9_next_unmasked_interrupt(env);
-+    default:
-+        break;
+     pef_kvm_reset(machine->cgs, &error_fatal);
+     spapr_caps_apply(spapr);
++    spapr_nested_reset(spapr);
+ 
+     first_ppc_cpu = POWERPC_CPU(first_cpu);
+     if (kvm_enabled() && kvmppc_has_cap_mmu_radix() &&
+diff --git a/hw/ppc/spapr_hcall.c b/hw/ppc/spapr_hcall.c
+index 75c2d12978..5e1d020e3d 100644
+--- a/hw/ppc/spapr_hcall.c
++++ b/hw/ppc/spapr_hcall.c
+@@ -1525,6 +1525,28 @@ void spapr_register_hypercall(target_ulong opcode, spapr_hcall_fn fn)
+     *slot = fn;
+ }
+ 
++void spapr_unregister_hypercall(target_ulong opcode)
++{
++    spapr_hcall_fn *slot;
++
++    if (opcode <= MAX_HCALL_OPCODE) {
++        assert((opcode & 0x3) == 0);
++
++        slot = &papr_hypercall_table[opcode / 4];
++    } else if (opcode >= SVM_HCALL_BASE && opcode <= SVM_HCALL_MAX) {
++        /* we only have SVM-related hcall numbers assigned in multiples of 4 */
++        assert((opcode & 0x3) == 0);
++
++        slot = &svm_hypercall_table[(opcode - SVM_HCALL_BASE) / 4];
++    } else {
++        assert((opcode >= KVMPPC_HCALL_BASE) && (opcode <= KVMPPC_HCALL_MAX));
++
++        slot = &kvmppc_hypercall_table[opcode - KVMPPC_HCALL_BASE];
 +    }
-+#endif
-     bool async_deliver;
- 
-     /* External reset */
-@@ -2090,23 +2103,6 @@ static int ppc_next_unmasked_interrupt_generic(CPUPPCState *env)
-     return 0;
- }
- 
--static int ppc_next_unmasked_interrupt(CPUPPCState *env)
--{
--    switch (env->excp_model) {
--#ifdef TARGET_PPC64
--    case POWERPC_EXCP_POWER7:
--        return p7_next_unmasked_interrupt(env);
--    case POWERPC_EXCP_POWER8:
--        return p8_next_unmasked_interrupt(env);
--    case POWERPC_EXCP_POWER9:
--    case POWERPC_EXCP_POWER10:
--        return p9_next_unmasked_interrupt(env);
--#endif
--    default:
--        return ppc_next_unmasked_interrupt_generic(env);
--    }
--}
--
- /*
-  * Sets CPU_INTERRUPT_HARD if there is at least one unmasked interrupt to be
-  * delivered and clears CPU_INTERRUPT_HARD otherwise.
-@@ -2336,8 +2332,21 @@ static void p9_deliver_interrupt(CPUPPCState *env, int interrupt)
- }
- #endif /* TARGET_PPC64 */
- 
--static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
-+static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
++
++    *slot = NULL;
++}
++
+ target_ulong spapr_hypercall(PowerPCCPU *cpu, target_ulong opcode,
+                              target_ulong *args)
  {
-+#ifdef TARGET_PPC64
-+    switch (env->excp_model) {
-+    case POWERPC_EXCP_POWER7:
-+        return p7_deliver_interrupt(env, interrupt);
-+    case POWERPC_EXCP_POWER8:
-+        return p8_deliver_interrupt(env, interrupt);
-+    case POWERPC_EXCP_POWER9:
-+    case POWERPC_EXCP_POWER10:
-+        return p9_deliver_interrupt(env, interrupt);
-+    default:
-+        break;
+@@ -1638,8 +1660,6 @@ static void hypercall_register_types(void)
+     spapr_register_hypercall(KVMPPC_H_CAS, h_client_architecture_support);
+ 
+     spapr_register_hypercall(KVMPPC_H_UPDATE_DT, h_update_dt);
+-
+-    spapr_register_nested();
+ }
+ 
+ type_init(hypercall_register_types)
+diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+index 121aa96ddc..8e0ee0d22f 100644
+--- a/hw/ppc/spapr_nested.c
++++ b/hw/ppc/spapr_nested.c
+@@ -7,6 +7,14 @@
+ #include "hw/ppc/spapr_cpu_core.h"
+ #include "hw/ppc/spapr_nested.h"
+ 
++void spapr_nested_reset(SpaprMachineState *spapr)
++{
++    if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_KVM_HV)) {
++        spapr_unregister_nested_hv();
++        spapr_register_nested_hv();
 +    }
-+#endif
-     PowerPCCPU *cpu = env_archcpu(env);
++}
++
+ #ifdef CONFIG_TCG
+ #define PRTS_MASK      0x1f
  
-     switch (interrupt) {
-@@ -2440,26 +2449,6 @@ static void ppc_deliver_interrupt_generic(CPUPPCState *env, int interrupt)
-     }
+@@ -375,20 +383,33 @@ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+     address_space_unmap(CPU(cpu)->as, regs, len, len, true);
  }
  
--static void ppc_deliver_interrupt(CPUPPCState *env, int interrupt)
--{
--    switch (env->excp_model) {
--#ifdef TARGET_PPC64
--    case POWERPC_EXCP_POWER7:
--        p7_deliver_interrupt(env, interrupt);
--        break;
--    case POWERPC_EXCP_POWER8:
--        p8_deliver_interrupt(env, interrupt);
--        break;
--    case POWERPC_EXCP_POWER9:
--    case POWERPC_EXCP_POWER10:
--        p9_deliver_interrupt(env, interrupt);
--        break;
--#endif
--    default:
--        ppc_deliver_interrupt_generic(env, interrupt);
--    }
--}
--
- void ppc_cpu_do_system_reset(CPUState *cs)
+-void spapr_register_nested(void)
++void spapr_register_nested_hv(void)
  {
-     PowerPCCPU *cpu = POWERPC_CPU(cs);
+     spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+     spapr_register_hypercall(KVMPPC_H_ENTER_NESTED, h_enter_nested);
+     spapr_register_hypercall(KVMPPC_H_TLB_INVALIDATE, h_tlb_invalidate);
+     spapr_register_hypercall(KVMPPC_H_COPY_TOFROM_GUEST, h_copy_tofrom_guest);
+ }
++
++void spapr_unregister_nested_hv(void)
++{
++    spapr_unregister_hypercall(KVMPPC_H_SET_PARTITION_TABLE);
++    spapr_unregister_hypercall(KVMPPC_H_ENTER_NESTED);
++    spapr_unregister_hypercall(KVMPPC_H_TLB_INVALIDATE);
++    spapr_unregister_hypercall(KVMPPC_H_COPY_TOFROM_GUEST);
++}
+ #else
+ void spapr_exit_nested(PowerPCCPU *cpu, int excp)
+ {
+     g_assert_not_reached();
+ }
+ 
+-void spapr_register_nested(void)
++void spapr_register_nested_hv(void)
++{
++    /* DO NOTHING */
++}
++
++void spapr_unregister_nested_hv(void)
+ {
+     /* DO NOTHING */
+ }
+diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
+index 5b5ba9ef77..78a736297b 100644
+--- a/include/hw/ppc/spapr.h
++++ b/include/hw/ppc/spapr.h
+@@ -631,6 +631,7 @@ typedef target_ulong (*spapr_hcall_fn)(PowerPCCPU *cpu, SpaprMachineState *sm,
+                                        target_ulong *args);
+ 
+ void spapr_register_hypercall(target_ulong opcode, spapr_hcall_fn fn);
++void spapr_unregister_hypercall(target_ulong opcode);
+ target_ulong spapr_hypercall(PowerPCCPU *cpu, target_ulong opcode,
+                              target_ulong *args);
+ 
+@@ -1028,5 +1029,8 @@ void spapr_vof_client_dt_finalize(SpaprMachineState *spapr, void *fdt);
+ 
+ /* H_WATCHDOG */
+ void spapr_watchdog_init(SpaprMachineState *spapr);
++void spapr_register_nested_hv(void);
++void spapr_unregister_nested_hv(void);
++void spapr_nested_reset(SpaprMachineState *spapr);
+ 
+ #endif /* HW_SPAPR_H */
+diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+index d312a5d61d..09d95182b2 100644
+--- a/include/hw/ppc/spapr_nested.h
++++ b/include/hw/ppc/spapr_nested.h
+@@ -95,7 +95,6 @@ struct nested_ppc_state {
+     int64_t tb_offset;
+ };
+ 
+-void spapr_register_nested(void);
+ void spapr_exit_nested(PowerPCCPU *cpu, int excp);
+ 
+ #endif /* HW_SPAPR_NESTED_H */
 -- 
 2.42.0
 
