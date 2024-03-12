@@ -2,79 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8AC6879BAF
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 19:40:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825FD879C09
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 20:04:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk71E-0003Wo-BM; Tue, 12 Mar 2024 14:38:32 -0400
+	id 1rk7OD-0002hh-LJ; Tue, 12 Mar 2024 15:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rk710-0003N6-8A
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:19 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rk70x-0000cW-MO
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 14:38:18 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4133100bccdso9412895e9.0
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 11:38:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710268694; x=1710873494; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=F5TgssMb195QO0ZRrXOaRa+rjmUvH1NGzSH3Wll6Fnw=;
- b=hMfWKLE5AxQwmn41SKLaRp/xO5wwJwTHhSFHLkoSTBACEurGgfsK4OSWP2/WQDzj/o
- xFS8YMg/lqbQ0mYGy9pc3zSvStea9TDx6SwbAcT4ITTevnm0mo50YTNRnQVzzC7cjmGI
- j1eU5RU3MJZcU/GKls4+CsukvBeT23fuh+2SV7JSQ8pl13DhWOvZvVF0AgXnwZsdh2He
- W4xQa2vZsqbtkn18sOuIONjTUbYvLC4q4PdvXFIJWOWHzTwQlcK2ItNR+TlOQFJMukz6
- ERWBb+dAAMu5xeQCSkWJTvDfWHdwN903B2UHSppZv6a4ARLBEvWGQvvjX3c2GwU5i18R
- gF6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710268694; x=1710873494;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=F5TgssMb195QO0ZRrXOaRa+rjmUvH1NGzSH3Wll6Fnw=;
- b=Kj0/XY/asZPKMozyFlJmseRST33MJv4+dN5VVGTo0tbnVu1d50yr2QU6XN9eqG7hyO
- cl4Zzc0VS7ixae2TJla8qEvGSlHKAh1i4CnSQVdM2MkpPaCAxo5FJ1VxuF0swKrq1m2j
- kP4har9DK9kzUFGVOrpxt9d49ghglLqlsyrIUAWDqi74xt5/KiY+F8mV3OVLgYZYK8ep
- N1kK+d5dK7TKOp78sS+eK5hZPkZEKrH87C5FmsZpXAVW2xQWKNBap8mTCjDVcKig/Olb
- 7Rm+f8iJH0n8qrk2ePWEwHWBoCJx1HnCLg5ubGs8b5bWgEOW3hZU7ht4jRZvSc5sQR8j
- ofMQ==
-X-Gm-Message-State: AOJu0YwesTITl9eR1QERaosJTmhSZv/gEMrn1lpLgWdC39lRU6r9tJzF
- 6SMPUtV6s6LRkk4WQTHrNxeKNH88ZuqGa0RvUldGEdf19nSO7kvi8oNULClyIDNqIFlxpQEVGjn
- 7
-X-Google-Smtp-Source: AGHT+IGq9kJXvc10MuvsO5ujDoDaQDnM4ynzQdE718yRq2UBDtH365OgrAlqBCi+sOjH1x64XGNNPA==
-X-Received: by 2002:a05:600c:1d12:b0:413:2ea4:1731 with SMTP id
- l18-20020a05600c1d1200b004132ea41731mr3970648wms.15.1710268694341; 
- Tue, 12 Mar 2024 11:38:14 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- v17-20020a05600c471100b00412ee8e2f2asm19836337wmo.9.2024.03.12.11.38.14
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 11:38:14 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 7/7] tests/qtest/libqtest.c: Check for g_setenv() failure
-Date: Tue, 12 Mar 2024 18:38:10 +0000
-Message-Id: <20240312183810.557768-8-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240312183810.557768-1-peter.maydell@linaro.org>
-References: <20240312183810.557768-1-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7O8-0002gR-AH
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rk7O4-0005GA-5R
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 15:02:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710270127;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=hv9lhU99pUSNTR3RVVRjelenMP8k22L+YjIcDh7PNUg=;
+ b=DebAo0tIy0zPIZ0/RT210QYSBuIApylrLWsiJFPuLOY+ZQK4a8xr9DpET4aOR4i/gPDrjv
+ 3GRtlGZYBQ/wYDKD2EJHyw1hOq7KwRnFiSD0RrZ+d0ezLdkZN2rbJ9yDsAyXSok+VSBBc2
+ dlU+BWsv/4tyV8881SODCHxqwgKAfTM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-672-DrpNYdq4NFWwkn0bI6-jqw-1; Tue, 12 Mar 2024 15:02:05 -0400
+X-MC-Unique: DrpNYdq4NFWwkn0bI6-jqw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E519A87A387;
+ Tue, 12 Mar 2024 19:02:04 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.51])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 446122166AE4;
+ Tue, 12 Mar 2024 19:02:03 +0000 (UTC)
+Date: Tue, 12 Mar 2024 14:41:06 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH for 9.0] migration: Skip only empty block devices
+Message-ID: <20240312184106.GC389553@fedora>
+References: <20240312120431.550054-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="+q6CGGAFNnxF8uth"
+Content-Disposition: inline
+In-Reply-To: <20240312120431.550054-1-clg@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,38 +82,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity points out that g_setenv() can fail and we don't
-check for this in qtest_inproc_init(). In practice this will
-only fail if a memory allocation failed in setenv() or if
-the caller passed an invalid architecture name (e.g. one
-with an '=' in it), so rather than requiring the callsite
-to check for failure, make g_setenv() failure fatal here,
-similarly to what we did in commit aca68d95c515.
 
-Resolves: Coverity CID 1497485
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- tests/qtest/libqtest.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+--+q6CGGAFNnxF8uth
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index f33a2108610..d8f80d335e7 100644
---- a/tests/qtest/libqtest.c
-+++ b/tests/qtest/libqtest.c
-@@ -1814,7 +1814,11 @@ QTestState *qtest_inproc_init(QTestState **s, bool log, const char* arch,
-      * way, qtest_get_arch works for inproc qtest.
-      */
-     gchar *bin_path = g_strconcat("/qemu-system-", arch, NULL);
--    g_setenv("QTEST_QEMU_BINARY", bin_path, 0);
-+    if (!g_setenv("QTEST_QEMU_BINARY", bin_path, 0)) {
-+        fprintf(stderr,
-+                "Could not set environment variable QTEST_QEMU_BINARY\n");
-+        exit(1);
-+    }
-     g_free(bin_path);
- 
-     return qts;
--- 
-2.34.1
+On Tue, Mar 12, 2024 at 01:04:31PM +0100, C=E9dric Le Goater wrote:
+> The block .save_setup() handler calls a helper routine
+> init_blk_migration() which builds a list of block devices to take into
+> account for migration. When one device is found to be empty (sectors
+> =3D=3D 0), the loop exits and all the remaining devices are ignored. This
+> is a regression introduced when bdrv_iterate() was removed.
+>=20
+> Change that by skipping only empty devices.
+>=20
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Suggested: Kevin Wolf <kwolf@redhat.com>
+> Fixes: fea68bb6e9fa ("block: Eliminate bdrv_iterate(), use bdrv_next()")
+
+It's not clear to me that fea68bb6e9fa introduced the bug. The code is
+still <=3D 0 there and I don't see anything else that skips empty devices.
+Can you explain the bug in fea68bb6e9fa?
+
+Otherwise:
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+
+--+q6CGGAFNnxF8uth
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmXwocIACgkQnKSrs4Gr
+c8hF0wf/UuTJ5zj2VdVOY4FLuSmdbN7IoynUemxKq93t2AVt7Aipbn1Jd25HByV+
+ycV5S/7Gq/yJpWc+laolWhQE+/GHc/MABNmI49X1cOeb+qI2RXYY0jREyVAw//cJ
+mf3pcXKlijGBoX7Tea3rHgQDde9HEatwLM2bdp2dQdOGO1+f6AzA6+Ir4RI13dzT
+nwbHRDo49RhNZGFxsVk7zrXd5LNANm3iiQlpdbiGBluKQgHJWnOSftN2KJv8x0+A
+ZsuPY4FrPG8BoACFQpHM78HFJvh7U1umei/mTAeS0N4wqKM3QN4mvHXC5pPdc0p9
+YX/QjV9nRxhPqzOrMEGNMaelRFkDgw==
+=Ck5Q
+-----END PGP SIGNATURE-----
+
+--+q6CGGAFNnxF8uth--
 
 
