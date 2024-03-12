@@ -2,95 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BC0879A6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:15:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9199A879A99
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 18:28:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk5hx-0008SY-H1; Tue, 12 Mar 2024 13:14:33 -0400
+	id 1rk5tu-00029e-T4; Tue, 12 Mar 2024 13:26:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk5hv-0008SN-8z
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:14:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rk5tk-00024m-Kb; Tue, 12 Mar 2024 13:26:45 -0400
+Received: from wfout4-smtp.messagingengine.com ([64.147.123.147])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rk5ht-0002hO-LI
- for qemu-devel@nongnu.org; Tue, 12 Mar 2024 13:14:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710263668;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=1VCZN46NWcj5S9HthzW9vZvsQBJ96s3KYdr/dNzsH5c=;
- b=Aj/hCkPaL8wexs5OJGYfqaYMSSQmlinF5YrnYFFiW5TUDzj3LbY7ZicFGYPlKUm+USCwoU
- yqqEl7orw9xGwRTNBtxnZeMOZ3eX7YErS4pM+hJOwWMEyxDHRfWwjznQM2J/Hhaewq7q9W
- 09Z31ElZEX+8OeQ8n92ZIV4PvEQ61Hg=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-251-e8ufA2EfNL6sJb-_Y17jMA-1; Tue, 12 Mar 2024 13:14:27 -0400
-X-MC-Unique: e8ufA2EfNL6sJb-_Y17jMA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-412db0e24aeso944185e9.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 10:14:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710263666; x=1710868466;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=1VCZN46NWcj5S9HthzW9vZvsQBJ96s3KYdr/dNzsH5c=;
- b=tfZ3YhmEuAVMVSVDxRrqVUcwe46h156s0F9de6Ks9/n7k3sxVEHXWe5MDIppSKpD1a
- m3gwFhOL7A0zhs/GUdc3GQmOA+N9Qd5pgPFxKGV8V6Zu9CXc7EYKTBxddxB+UtemTDwN
- CFrETL8nvH+JalIZvWD2vIfhcPVrs5wIZpuKfotcUfqTGcOBxfeJGA1ZkW1fL3Taoy35
- zSb4pY16r/bLhN6Rz5lcsRI5II5OoVUmsCZlFMeE88d7QkU+XBcqHOPWU2n6QqMk81SY
- RJ2bpKb6mIt8hzVrGr7vZ1dzimw1kitoTBYZOf0bFieQ1Di5PUxYpoNM4e0EimGrnTXi
- Smzg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVPaIKUuCGkLye2GRX8y9Q7zJUiVnaDtiXZ0VeIcqR7TfzjgH9UjnqzOyJq7RTRdl97TlNLovfffIrLhsD+dguqghKbt3c=
-X-Gm-Message-State: AOJu0YwG8H+9FP18jKgQqT9Kbj1nx0e5FKEKVn7j9AGSLwwuAZQ1IAgq
- pfG1erH+8ixheqr8IAJDOXEcqMQkHXYJh6yEwRrsFIlz6euICQZxlW+CpGOslvK8M/w6gT5ds+5
- jjIgQNSZ5JNGasxLj0YBs4K1ETlCHdvo1jZV166gHOcK21uULrSnt
-X-Received: by 2002:a05:600c:3109:b0:413:1bb9:1b9e with SMTP id
- g9-20020a05600c310900b004131bb91b9emr3213680wmo.21.1710263665899; 
- Tue, 12 Mar 2024 10:14:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGz9DZZCNXE2k9LyP4PdfNxJdbhZvUzl2YbV1MgfEJ1WTo1PBhVNj0G3DLzYk1tfe0qMG7hPA==
-X-Received: by 2002:a05:600c:3109:b0:413:1bb9:1b9e with SMTP id
- g9-20020a05600c310900b004131bb91b9emr3213649wmo.21.1710263665322; 
- Tue, 12 Mar 2024 10:14:25 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f0:532c:5ae4:fce6:76e1:fa1a])
- by smtp.gmail.com with ESMTPSA id
- fb4-20020a05600c520400b00413294ddb72sm7863394wmb.20.2024.03.12.10.14.21
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 12 Mar 2024 10:14:24 -0700 (PDT)
-Date: Tue, 12 Mar 2024 13:14:19 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1rk5tZ-0005NT-L3; Tue, 12 Mar 2024 13:26:41 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailfout.west.internal (Postfix) with ESMTP id 97B2D1C000A3;
+ Tue, 12 Mar 2024 13:26:29 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute2.internal (MEProxy); Tue, 12 Mar 2024 13:26:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-transfer-encoding:content-type:content-type
+ :date:date:from:from:in-reply-to:message-id:mime-version
+ :reply-to:subject:subject:to:to; s=fm3; t=1710264389; x=
+ 1710350789; bh=bpZlDmHeeYMkGRSBKslj+yLQcGqHxFo5l8rTXgouWhU=; b=V
+ JZCYAzOlGhPjzsdq5CXt611VrC4LTuW+QBaY9TJ3NvEy+yYRPLPViiJeyix+eLOf
+ Tkb8A1CZ5wqHO75kL1gI5jP0/XyvYwYQBcyonv+8qxIpQbRlzEKzn/BPQLbbYD9e
+ TMEqhyZbgtQ2F/jM6bDZa6hkctaFKCJUcDqinXHg+rVfS56G4l2adlG1HPfpvsDw
+ j6EvbPg0sTnXSC4B1+4yPGHIuR4G5LDIPKflgzCd/6WEi2y0ebko1m7W4YjCHqFN
+ /1QuI3MaG6zeV7mhdH1rkNyl63Fkehra38AkRFgm9537WVIJpVPITOCWpvtidaQo
+ J7G1UnsrnqAU/cSyS32oQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm1; t=1710264389; x=1710350789; bh=bpZlDmHeeYMkG
+ RSBKslj+yLQcGqHxFo5l8rTXgouWhU=; b=EbXaWt2xmaDPmIVc9Y7L3rL5IkjRs
+ 3BOuKKYoInQnwPuNYS7s71YN1gucsPozSDKAJtQaw7VMWNSmRkvbGM67n3dxAPSC
+ R9zWqBpJVtiQOgvqcF6hajxnveQSoQ/AEULb25d1NtY/uA81t3tcRoIBLOEB6uST
+ WzT/sRQUwbvWOdWT5cWeFSPr46VMMpt96OKGKG0AXFrpssotJuNTQOxmLRLqMpO6
+ /FzdvFu/ztBexd2ya+lZmGbsb5Wgi2LByTHZ+Wn21FfPbaIrsgfRrBY6IA02Rsbk
+ G4caxXZZeOkjjHA037MpksDjB9B2RXa+ATCuTQe0+9uxa0zAs2r/7gSiQ==
+X-ME-Sender: <xms:Q5DwZcAzUQ-Ut81kPidQ7GOZ01uyZBJxpMGz8VbC9ZidYh1WHTpZQA>
+ <xme:Q5DwZeikB_ebBmT7H_umbYEdPx9w2jKc6XLNumgbI_vLUx35DD2PTYJRi6GLerLfm
+ tzOTTWbmhN_tIw1OeM>
+X-ME-Received: <xmr:Q5DwZfn-qTn3wfx2nlejH2RNjHZDRM7YDXdim08F2XX9M_y-cQdi7XKebrk27DTHCDYmP9QRKA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrjeefgddutddtucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+ cujfgurhephffvvefufffkofgtggfgsehtkeertdertdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpefhgeetffffteegfeevueeiieeujefhvdekleejvefhffdugedtveejieejtddt
+ geenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+ enucfrrghrrghmpehmrghilhhfrhhomhepihhtshesihhrrhgvlhgvvhgrnhhtrdgukh
+X-ME-Proxy: <xmx:Q5DwZSyy5IhMZVCvLGOEQyzPUD4ZOQQ0XcIQjsuaXH7VwKcP8CpN3Q>
+ <xmx:Q5DwZRQpR2Z47Ga-u8nnLIBH6UI71x5RX1HbIwp8D71MCxPifC0eOw>
+ <xmx:Q5DwZdYRizKDIGpixRDnSF_xA6jr-ev97OsEH21emeNZ92tfUM23Sg>
+ <xmx:Q5DwZaRtIu_SZCJ8slZ74uv2N6nm657KyGuCF14SpD5JWT4gUS8CzQ>
+ <xmx:RZDwZQIfldGEre95dkqQuq634dukmkiDdIJuPxPtjWLBy-4lYP1_4y-HK4Q>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 12 Mar 2024 13:26:25 -0400 (EDT)
+From: Klaus Jensen <its@irrelevant.dk>
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
+ Yanan Wang <wangyanan55@huawei.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?iso-8859-1?B?IkRhbmllbCBQIC4gQmVycmFuZ+ki?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Julia Suvorova <jusual@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v5] pc: q35: Bump max_cpus to 4096 vcpus
-Message-ID: <20240312131413-mutt-send-email-mst@kernel.org>
-References: <20240228143351.3967-1-anisinha@redhat.com>
- <8F921979-45DC-4235-9F6E-8F54DDE33FB7@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jesper Devantier <foss@defmacro.it>, Klaus Jensen <k.jensen@samsung.com>
+Subject: [PULL v2 0/6] hw/nvme updates 
+Date: Tue, 12 Mar 2024 18:26:23 +0100
+Message-ID: <20240312172622.58652-8-its@irrelevant.dk>
+X-Mailer: git-send-email 2.44.0
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2139; i=k.jensen@samsung.com;
+ h=from:subject; bh=fn5ANUNjtNZoh6tLNkVn0SGYiji31WPRhC75juru88E=;
+ b=owJ4nAFtAZL+kA0DAAoBTeGvMW1PDekByyZiAGXwkD77zqjyRyTCj1ufCd/9rWtoFHCMjH4QZ
+ s1IZB6Uu02cC4kBMwQAAQoAHRYhBFIoM6p14tzmokdmwE3hrzFtTw3pBQJl8JA+AAoJEE3hrzFt
+ Tw3pZosH/3BOpRLx0LqhoIDoqdNQBJC1gHM9eDFbBX7IVIhsfQJXmD09jxkhkzEWTV8NfA0k5yj
+ /YcoXApPW2VKn6fNN8ChPRaWyorb9uhpBjDDG36bTZFCS2N37powg7nwZPL0QZqnAFe75DSXPYb
+ FFUD3GA0gfinGCt5kH/pZry5nUhu7+DNDcAJsb/p5Ke01Qn37IATSvf1BVpPXsCD7C1ZMGGy83c
+ q6KyF9Qk71LIH/Vd7pgLDDGKG4zuI26JboNibMJbwpF2fSjm6c/Km9+bMkTpdMtspmnBKPxwuCd
+ poWXu+BOxZBHNiHPOHlxBWqfJfgG9x6pmTOvozu1wqQjUjc5mO7zkKhQ
+X-Developer-Key: i=k.jensen@samsung.com; a=openpgp;
+ fpr=DDCA4D9C9EF931CC3468427263D56FC5E55DA838
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8F921979-45DC-4235-9F6E-8F54DDE33FB7@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=64.147.123.147; envelope-from=its@irrelevant.dk;
+ helo=wfout4-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,86 +115,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 12, 2024 at 12:04:37PM +0530, Ani Sinha wrote:
-> 
-> 
-> > On 28-Feb-2024, at 20:03, Ani Sinha <anisinha@redhat.com> wrote:
-> > 
-> > Since commit f10a570b093e6 ("KVM: x86: Add CONFIG_KVM_MAX_NR_VCPUS to allow up to 4096 vCPUs")
-> > Linux kernel can support upto a maximum number of 4096 vcpus when MAXSMP is
-> > enabled in the kernel. At present, QEMU has been tested to correctly boot a
-> > linux guest with 4096 vcpus using the current edk2 upstream master branch that
-> > has the fixes corresponding to the following two PRs:
-> > 
-> > https://github.com/tianocore/edk2/pull/5410
-> > https://github.com/tianocore/edk2/pull/5418
-> > 
-> > The changes merged into edk2 with the above PRs will be in the upcoming 2024-05
-> > release. With current seabios firmware, it boots fine with 4096 vcpus already.
-> > So bump up the value max_cpus to 4096 for q35 machines versions 9 and newer.
-> > Q35 machines versions 8.2 and older continue to support 1024 maximum vcpus
-> > as before for compatibility reasons.
-> > 
-> > If KVM is not able to support the specified number of vcpus, QEMU would
-> > return the following error messages:
-> > 
-> > $ ./qemu-system-x86_64 -cpu host -accel kvm -machine q35 -smp 1728
-> > qemu-system-x86_64: -accel kvm: warning: Number of SMP cpus requested (1728) exceeds the recommended cpus supported by KVM (12)
-> > qemu-system-x86_64: -accel kvm: warning: Number of hotpluggable cpus requested (1728) exceeds the recommended cpus supported by KVM (12)
-> > Number of SMP cpus requested (1728) exceeds the maximum cpus supported by KVM (1024)
-> > 
-> > Cc: Daniel P. Berrangé <berrange@redhat.com>
-> > Cc: Igor Mammedov <imammedo@redhat.com>
-> > Cc: Michael S. Tsirkin <mst@redhat.com>
-> > Cc: Julia Suvorova <jusual@redhat.com>
-> > Cc: kraxel@redhat.com
-> > Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> > Reviewed-by: Igor Mammedov <imammedo@redhat.com>
-> > Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> 
-> Ping .. who is picking this up? The soft code freeze starts today?
+From: Klaus Jensen <k.jensen@samsung.com>
+
+Hi,
+
+Sorry about the compilation error in v1. Did a full CI run for v2.
+
+  https://gitlab.com/birkelund/qemu/-/pipelines/1210559370
 
 
-I did.
 
-> > ---
-> > hw/i386/pc_q35.c | 3 ++-
-> > 1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > Changelog:
-> > v5: mention the PRs in the commit message. Add tags.
-> > v4: tweaked commit message as per suggestion from danpb explicitly
-> > stating that 4096 vcpus work with edk2 fixes that are going to be
-> > available in the coming edk2 release.
-> > v3: bump up to 4096 vcpus. It has now been tested to work with edk2.
-> > See RH Jira: https://issues.redhat.com/browse/RHEL-22202
-> > v2: bump up the vcpu number to 1856. Add failure messages from ekd2 in
-> > the commit description.
-> > 
-> > diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-> > index 45a4102e75..df63a92b78 100644
-> > --- a/hw/i386/pc_q35.c
-> > +++ b/hw/i386/pc_q35.c
-> > @@ -350,7 +350,7 @@ static void pc_q35_machine_options(MachineClass *m)
-> >     m->default_nic = "e1000e";
-> >     m->default_kernel_irqchip_split = false;
-> >     m->no_floppy = 1;
-> > -    m->max_cpus = 1024;
-> > +    m->max_cpus = 4096;
-> >     m->no_parallel = !module_object_class_by_name(TYPE_ISA_PARALLEL);
-> >     machine_class_allow_dynamic_sysbus_dev(m, TYPE_AMD_IOMMU_DEVICE);
-> >     machine_class_allow_dynamic_sysbus_dev(m, TYPE_INTEL_IOMMU_DEVICE);
-> > @@ -371,6 +371,7 @@ static void pc_q35_8_2_machine_options(MachineClass *m)
-> > {
-> >     pc_q35_9_0_machine_options(m);
-> >     m->alias = NULL;
-> > +    m->max_cpus = 1024;
-> >     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-> >     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-> > }
-> > -- 
-> > 2.42.0
-> > 
+The following changes since commit 8f3f329f5e0117bd1a23a79ab751f8a7d3471e4b:
+
+  Merge tag 'migration-20240311-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-03-12 11:35:41 +0000)
+
+are available in the Git repository at:
+
+  https://gitlab.com/birkelund/qemu.git tags/nvme-next-pull-request
+
+for you to fetch changes up to fa905f65c5549703279f68c253914799b10ada47:
+
+  hw/nvme: add machine compatibility parameter to enable msix exclusive bar (2024-03-12 16:05:53 +0100)
+
+----------------------------------------------------------------
+hw/nvme updates
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmXwj+wACgkQTeGvMW1P
+DelOsAf+Jg51zf3vtWpe4MS/WtULjSr5GtnXMJ5hkHS0WdKOiLW3P+pUZXbsohmh
+faVlYeCWptF1CFGfxBf4Trc7XzJy8J6W1YJEofs/07hIAnazo9pwk5shoVu4oiex
+HVsBg7/9y7DuiEEg1MRvVvW895cP60WmG1AqU63SYwrVgxZ51ZH0XNuyRhQeYC/6
+OSXJ3FDYu2iJQ58uEzGEwv8vhskIpEFTdz0J6gQVxIdzFBbuk87VgZo6pqwgfMBm
+/65K85TgFBT4SASc7a2iSUv+iAqSCA6Jdy0VWxCYCikiv5nuPCMCrlbvqcVp+i2B
+GKtgfFXhtgepxx6jmYd03EkRjCrxUA==
+=W3gg
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Klaus Jensen (4):
+  hw/nvme: fix invalid check on mcl
+  MAINTAINERS: add Jesper as reviewer on hw/nvme
+  hw/nvme: generalize the mbar size helper
+  hw/nvme: add machine compatibility parameter to enable msix exclusive
+    bar
+
+Minwoo Im (1):
+  hw/nvme: separate 'serial' property for VFs
+
+Roque Arcudia Hernandez (1):
+  hw/nvme: Add NVMe NGUID property
+
+ MAINTAINERS                  |   1 +
+ docs/system/devices/nvme.rst |   7 ++
+ hw/core/machine.c            |   1 +
+ hw/nvme/ctrl.c               |  99 +++++++++++++------
+ hw/nvme/meson.build          |   2 +-
+ hw/nvme/nguid.c              | 187 +++++++++++++++++++++++++++++++++++
+ hw/nvme/ns.c                 |   2 +
+ hw/nvme/nvme.h               |  27 +++--
+ 8 files changed, 291 insertions(+), 35 deletions(-)
+ create mode 100644 hw/nvme/nguid.c
+
+-- 
+2.44.0
 
 
