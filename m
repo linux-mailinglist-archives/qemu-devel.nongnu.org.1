@@ -2,108 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E155879494
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46B5879498
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 13:56:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk1cN-0008QF-UC; Tue, 12 Mar 2024 08:52:32 -0400
+	id 1rk1cn-0003HY-Sc; Tue, 12 Mar 2024 08:52:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rk1bq-0008DS-FN; Tue, 12 Mar 2024 08:52:03 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1rk1bn-0001nf-1g; Tue, 12 Mar 2024 08:51:58 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42CBq5Q4016881; Tue, 12 Mar 2024 12:51:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=6pPbkDreYIZfY15R+DzvWBdSa6Gt/TBZIq5dPN68Hxw=;
- b=JcUNcGsFSCRbBQhdVBXkc9qyr9Z/r3oR7NQ3vPOjAljtbEPU6X001FA//T8/MU7rcTBu
- DSGDavmAIrzcmZxwbR9MTn4crhkdtDRH1cZH/7tNHBMjAOD2pFecredKT5c+ZokugoeB
- 2kuNfg4AHHXd8IhWPWPlBnPzg6glVf8UBZKxnEoIbhdauzlmYBylAMJM9ACysOBBTE1w
- Jgkt1CC9SfFB2lzjZjefnEfrx6gKNGk0gMSPvRZwyFCb8lZ0EVUzyqpGZg1crCwnth4o
- vdsvg5khFt9+1+1o/Z/VYtzWBr5uFBk9n3F2FUuEV08kZWKRCYDbZOmKkx/kAmfsXGWV /Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtpj4h8nn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 12:51:46 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CCglYQ018724;
- Tue, 12 Mar 2024 12:51:45 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtpj4h8mw-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 12:51:45 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42CCpKtJ014931; Tue, 12 Mar 2024 12:51:44 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws33nq2ck-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 12 Mar 2024 12:51:44 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com
- [10.39.53.228])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42CCpekm22282930
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 12 Mar 2024 12:51:43 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D1E4458059;
- Tue, 12 Mar 2024 12:51:40 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CD4A058066;
- Tue, 12 Mar 2024 12:51:36 +0000 (GMT)
-Received: from [9.171.52.145] (unknown [9.171.52.145])
- by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 12 Mar 2024 12:51:36 +0000 (GMT)
-Message-ID: <c8f6dc45-33e0-431d-8650-bb7e7f516b54@linux.ibm.com>
-Date: Tue, 12 Mar 2024 18:21:29 +0530
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rk1ch-00032k-6R
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:52:51 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rk1cY-0001ry-Sc
+ for qemu-devel@nongnu.org; Tue, 12 Mar 2024 08:52:50 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1ddbad11823so4277755ad.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 05:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710247961; x=1710852761; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yc6iRIfEDdUlwWA7oqFfy6lGyjMJI0wLwlAMhYZQvcg=;
+ b=Y9YTXFTPvUjIDGQPSTHzG+SxwTd+JTNaBdS3IkEAyRBU1dkVZi1ZAYReCM8IwKTwIL
+ Ycm9HHheZ2U1ktuSgIEwds4XdE/ZNs1LmdPrX5LQi67Xwu+eoMdqEelQFK5ZK09wMnhL
+ dS/BeSp2kvbJGeXMNZ2djQLIIKNKgm53+5g2DhWcJ32tAkM7w/bNlubpGXtI6E11cC7w
+ c7vp2jfP2UnD3k+y890z8Iy3q9De7SaxyXVs13FXLHiIJ74FChMtnoNeneEvSAIN+3F+
+ C866u4xphL37Z3KM38OKc2l+w9yKiMvnEy2YzNpkIEz84Cjb14VmY26pirDIcanrfXsO
+ Xv3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710247961; x=1710852761;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yc6iRIfEDdUlwWA7oqFfy6lGyjMJI0wLwlAMhYZQvcg=;
+ b=ZNdzUndWt7/q0RBRqHPNVcuMC8VS35T1Pkw7Wt7IeiYWjzmYTVNOc7eNoZJ4sEpNiY
+ NiRlSNAPzaMqGqUAGZhH2rBWBLA/TRJR1ZA0b91cH/dao4bUuh2+FxyGMwQg17R7wj/h
+ Y037hlbWYzaSIOpuMoOFwvwkULldU0nRZI6aOCbz0045DbzhkDqJo2twvVbG71P4RQB/
+ qxFcfgxBRxu2xMXFHFxIOtp4yst91oKLYA09jmid9BCWP4G+lzHba9WlJ3fmZMNMr1OV
+ SW8Ty48EbIGijs9Fvm5MMDLppjOhORj+aulZw10YoLTcezluercFkPc8WOGVbA+a2lLB
+ foLQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVWfggiX936dws20VJ7nbSAM+e72Wn4fRDmns0bEDJxccW5baLFZyfpApESLqYah8HBiOm0NfRuTViQSfOH4bMWSJbbG5Y=
+X-Gm-Message-State: AOJu0Yx6JkAoZmXn0UgC9MPx6T1BIyZE/cnfk6wzoinvtQfev08ZjkV2
+ nYF4BmNQ/YrL3BLPXPNq90xRsv7y5Outal67rhIGBc3XNxE8CRckdI+IVWUfVnw=
+X-Google-Smtp-Source: AGHT+IEXkQ0eshI5KSh9PduugLLBzgadc+SxJ8VB1qqNgm1aOY1mjEvILlpVc/balqG7IfgEnlrbbA==
+X-Received: by 2002:a17:902:7441:b0:1dc:7279:8a3e with SMTP id
+ e1-20020a170902744100b001dc72798a3emr8862563plt.21.1710247961160; 
+ Tue, 12 Mar 2024 05:52:41 -0700 (PDT)
+Received: from [192.168.68.110] ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ b15-20020a170903228f00b001dd1bdee6d9sm6608666plh.31.2024.03.12.05.52.35
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 12 Mar 2024 05:52:40 -0700 (PDT)
+Message-ID: <4b4c39ef-3315-48fb-a8ed-f9d3fc1c7865@ventanamicro.com>
+Date: Tue, 12 Mar 2024 09:52:33 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 14/14] spapr: nested: Introduce cap-nested-papr for
- Nested PAPR API
+Subject: Re: [RISC-V][tech-server-soc] [RFC 2/2] target/riscv: Add server
+ platform reference cpu
 Content-Language: en-US
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org
-Cc: clg@kaod.org, mikey@neuling.org, amachhiw@linux.vnet.ibm.com,
- vaibhav@linux.ibm.com, sbhat@linux.ibm.com, danielhb413@gmail.com,
- qemu-devel@nongnu.org
-References: <20240308111940.1617660-1-harshpb@linux.ibm.com>
- <20240308111940.1617660-15-harshpb@linux.ibm.com>
- <CZRQZUIK2SFV.1WJ6FACW9RGSQ@wheely>
- <d7ca6bc6-ffe2-461f-b6b6-b4029f04f80f@linux.ibm.com>
- <85ef9f8f-15be-4c4c-aa25-ed9a8960b48f@linux.ibm.com>
-In-Reply-To: <85ef9f8f-15be-4c4c-aa25-ed9a8960b48f@linux.ibm.com>
+To: "Wu, Fei" <fei2.wu@intel.com>, tech-server-soc@lists.riscv.org,
+ pbonzini@redhat.com, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, andrei.warkentin@intel.com,
+ shaolin.xie@alibaba-inc.com, ved@rivosinc.com, sunilvl@ventanamicro.com,
+ haibo1.xu@intel.com, evan.chai@intel.com, yin.wang@intel.com,
+ tech-server-platform@lists.riscv.org
+References: <20240304102540.2789225-1-fei2.wu@intel.com>
+ <20240304102540.2789225-3-fei2.wu@intel.com>
+ <bd34501b-3dda-40eb-aa92-73ea289297d1@ventanamicro.com>
+ <8ad091f3-c00f-4786-a89b-799304eace73@intel.com>
+ <56448108-c655-4684-bab9-b8d7747f79f7@intel.com>
+ <4e16f394-fe9b-4edf-80eb-fc3220bcf6e1@intel.com>
+ <52159cae-2f95-45e4-85c5-14b36984039c@ventanamicro.com>
+ <603b8000-3949-4710-bcd1-7ce2f0fb9fbc@intel.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <603b8000-3949-4710-bcd1-7ce2f0fb9fbc@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: fELQ-K--J1cSsFdpcEisEfPrSsnQtT4f
-X-Proofpoint-ORIG-GUID: eBdnmUGR6pnUbAHRlZgDq0pEsl80PuwT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_08,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- impostorscore=0 spamscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403120098
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=harshpb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,252 +110,361 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 3/12/24 18:17, Harsh Prateek Bora wrote:
-> Hi Nick,
-> 
-> On 3/12/24 17:41, Harsh Prateek Bora wrote:
->> Hi Nick,
+On 3/12/24 09:33, Wu, Fei wrote:
+> On 3/8/2024 3:15 AM, Daniel Henrique Barboza wrote:
 >>
->> On 3/12/24 17:21, Nicholas Piggin wrote:
->>> On Fri Mar 8, 2024 at 9:19 PM AEST, Harsh Prateek Bora wrote:
->>>> Introduce a SPAPR capability cap-nested-papr which enables nested PAPR
->>>> API for nested guests. This new API is to enable support for KVM on 
->>>> PowerVM
->>>> and the support in Linux kernel has already merged upstream.
+>>
+>> On 3/7/24 04:36, Wu, Fei wrote:
+>>> On 3/6/2024 9:26 PM, Wu, Fei wrote:
+>>>> On 3/5/2024 1:58 PM, Wu, Fei wrote:
+>>>>> On 3/5/2024 3:43 AM, Daniel Henrique Barboza wrote:
+>>>>>>
+>>>>>>
+>>>>>> On 3/4/24 07:25, Fei Wu wrote:
+>>>>>>> The harts requirements of RISC-V server platform [1] require RVA23
+>>>>>>> ISA
+>>>>>>> profile support, plus Sv48, Svadu, H, Sscofmpf etc. This patch
+>>>>>>> provides
+>>>>>>> a virt CPU type (rvsp-ref) as compliant as possible.
+>>>>>>>
+>>>>>>> [1]
+>>>>>>> https://github.com/riscv-non-isa/riscv-server-platform/blob/main/server_platform_requirements.adoc
+>>>>>>>
+>>>>>>> Signed-off-by: Fei Wu <fei2.wu@intel.com>
+>>>>>>> --->   hw/riscv/server_platform_ref.c |  6 +++-
+>>>>>>>     target/riscv/cpu-qom.h         |  1 +
+>>>>>>>     target/riscv/cpu.c             | 62
+>>>>>>> ++++++++++++++++++++++++++++++++++
+>>>>>>>     3 files changed, 68 insertions(+), 1 deletion(-)
+>>>>>>>
+>>>>>>> diff --git a/hw/riscv/server_platform_ref.c
+>>>>>>> b/hw/riscv/server_platform_ref.c
+>>>>>>> index ae90c4b27a..52ec607cee 100644
+>>>>>>> --- a/hw/riscv/server_platform_ref.c
+>>>>>>> +++ b/hw/riscv/server_platform_ref.c
+>>>>>>> @@ -1205,11 +1205,15 @@ static void
+>>>>>>> rvsp_ref_machine_class_init(ObjectClass *oc, void *data)
+>>>>>>>     {
+>>>>>>>         char str[128];
+>>>>>>>         MachineClass *mc = MACHINE_CLASS(oc);
+>>>>>>> +    static const char * const valid_cpu_types[] = {
+>>>>>>> +        TYPE_RISCV_CPU_RVSP_REF,
+>>>>>>> +    };
+>>>>>>>           mc->desc = "RISC-V Server SoC Reference board";
+>>>>>>>         mc->init = rvsp_ref_machine_init;
+>>>>>>>         mc->max_cpus = RVSP_CPUS_MAX;
+>>>>>>> -    mc->default_cpu_type = TYPE_RISCV_CPU_BASE;
+>>>>>>> +    mc->default_cpu_type = TYPE_RISCV_CPU_RVSP_REF;
+>>>>>>> +    mc->valid_cpu_types = valid_cpu_types;
+>>>>>>
+>>>>>> I suggest introducing this patch first, then the new machine type that
+>>>>>> will use it as a default
+>>>>>> CPU. The reason is to facilitate future bisects. If we introduce the
+>>>>>> board first, a future bisect
+>>>>>> might hit the previous patch, the board will be run using RV64 instead
+>>>>>> of the correct CPU, and
+>>>>>> we'll have different results because of it.
+>>>>>>
+>>>>> Good suggestion.
+>>>>>
+>>>>>>>         mc->pci_allow_0_address = true;
+>>>>>>>         mc->default_nic = "e1000e";
+>>>>>>>         mc->possible_cpu_arch_ids = riscv_numa_possible_cpu_arch_ids;
+>>>>>>> diff --git a/target/riscv/cpu-qom.h b/target/riscv/cpu-qom.h
+>>>>>>> index 3670cfe6d9..adb934d19e 100644
+>>>>>>> --- a/target/riscv/cpu-qom.h
+>>>>>>> +++ b/target/riscv/cpu-qom.h
+>>>>>>> @@ -49,6 +49,7 @@
+>>>>>>>     #define TYPE_RISCV_CPU_SIFIVE_U54
+>>>>>>> RISCV_CPU_TYPE_NAME("sifive-u54")
+>>>>>>>     #define TYPE_RISCV_CPU_THEAD_C906
+>>>>>>> RISCV_CPU_TYPE_NAME("thead-c906")
+>>>>>>>     #define TYPE_RISCV_CPU_VEYRON_V1
+>>>>>>> RISCV_CPU_TYPE_NAME("veyron-v1")
+>>>>>>> +#define TYPE_RISCV_CPU_RVSP_REF
+>>>>>>> RISCV_CPU_TYPE_NAME("rvsp-ref")
+>>>>>>>     #define TYPE_RISCV_CPU_HOST
+>>>>>>> RISCV_CPU_TYPE_NAME("host")
+>>>>>>>       OBJECT_DECLARE_CPU_TYPE(RISCVCPU, RISCVCPUClass, RISCV_CPU)
+>>>>>>> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+>>>>>>> index 5ff0192c52..bc91be702b 100644
+>>>>>>> --- a/target/riscv/cpu.c
+>>>>>>> +++ b/target/riscv/cpu.c
+>>>>>>> @@ -2282,6 +2282,67 @@ static void
+>>>>>>> rva22s64_profile_cpu_init(Object *obj)
+>>>>>>>           RVA22S64.enabled = true;
+>>>>>>>     }
+>>>>>>> +
+>>>>>>> +static void rv64_rvsp_ref_cpu_init(Object *obj)
+>>>>>>> +{
+>>>>>>> +    CPURISCVState *env = &RISCV_CPU(obj)->env;
+>>>>>>> +    RISCVCPU *cpu = RISCV_CPU(obj);
+>>>>>>> +
+>>>>>>> +    riscv_cpu_set_misa_ext(env, RVG | RVC | RVS | RVU | RVH | RVV);
+>>>>>>> +
+>>>>>>> +    /* FIXME: change to 1.13 */
+>>>>>>> +    env->priv_ver = PRIV_VERSION_1_12_0;
+>>>>>>> +
+>>>>>>> +    /* RVA22U64 */
+>>>>>>> +    cpu->cfg.mmu = true;
+>>>>>>> +    cpu->cfg.ext_zifencei = true;
+>>>>>>> +    cpu->cfg.ext_zicsr = true;
+>>>>>>> +    cpu->cfg.ext_zicntr = true;
+>>>>>>> +    cpu->cfg.ext_zihpm = true;
+>>>>>>> +    cpu->cfg.ext_zihintpause = true;
+>>>>>>> +    cpu->cfg.ext_zba = true;
+>>>>>>> +    cpu->cfg.ext_zbb = true;
+>>>>>>> +    cpu->cfg.ext_zbs = true;
+>>>>>>> +    cpu->cfg.zic64b = true;
+>>>>>>> +    cpu->cfg.ext_zicbom = true;
+>>>>>>> +    cpu->cfg.ext_zicbop = true;
+>>>>>>> +    cpu->cfg.ext_zicboz = true;
+>>>>>>> +    cpu->cfg.cbom_blocksize = 64;
+>>>>>>> +    cpu->cfg.cbop_blocksize = 64;
+>>>>>>> +    cpu->cfg.cboz_blocksize = 64;
+>>>>>>> +    cpu->cfg.ext_zfhmin = true;
+>>>>>>> +    cpu->cfg.ext_zkt = true;
+>>>>>>
+>>>>>> You can change this whole block with:
+>>>>>>
+>>>>>> RVA22U64.enabled = true;
+>>>>>>
+>>>>>>
+>>>>>> riscv_cpu_add_profiles() will check if we have a profile enabled
+>>>>>> and, if
+>>>>>> that's the
+>>>>>> case, we'll enable all its extensions in the CPU.
+>>>>>>
+>>>>>> In the near future, when we implement a proper RVA23 support, we'll be
+>>>>>> able to just do
+>>>>>> a single RVA23S64.enabled = true in this cpu_init(). But for now we
+>>>>>> can
+>>>>>> at least declare
+>>>>>> RVA22U64 (perhaps RVA22S64) support for this CPU.
+>>>>>>
 >>>>
->>>> Signed-off-by: Michael Neuling <mikey@neuling.org>
->>>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->>>> ---
->>>>   include/hw/ppc/spapr.h |  6 +++-
->>>>   hw/ppc/spapr.c         |  2 ++
->>>>   hw/ppc/spapr_caps.c    | 62 
->>>> ++++++++++++++++++++++++++++++++++++++++++
->>>>   hw/ppc/spapr_nested.c  |  8 ++++--
->>>>   4 files changed, 74 insertions(+), 4 deletions(-)
+>>>> Hi Daniel,
 >>>>
->>>> diff --git a/include/hw/ppc/spapr.h b/include/hw/ppc/spapr.h
->>>> index 6223873641..4aaf23d28f 100644
->>>> --- a/include/hw/ppc/spapr.h
->>>> +++ b/include/hw/ppc/spapr.h
->>>> @@ -81,8 +81,10 @@ typedef enum {
->>>>   #define SPAPR_CAP_RPT_INVALIDATE        0x0B
->>>>   /* Support for AIL modes */
->>>>   #define SPAPR_CAP_AIL_MODE_3            0x0C
->>>> +/* Nested PAPR */
->>>> +#define SPAPR_CAP_NESTED_PAPR           0x0D
->>>>   /* Num Caps */
->>>> -#define SPAPR_CAP_NUM                   (SPAPR_CAP_AIL_MODE_3 + 1)
->>>> +#define SPAPR_CAP_NUM                   (SPAPR_CAP_NESTED_PAPR + 1)
->>>>   /*
->>>>    * Capability Values
->>>> @@ -592,6 +594,7 @@ struct SpaprMachineState {
->>>>   #define H_GUEST_CREATE_VCPU      0x474
->>>>   #define H_GUEST_GET_STATE        0x478
->>>>   #define H_GUEST_SET_STATE        0x47C
->>>> +#define H_GUEST_RUN_VCPU         0x480
->>>>   #define H_GUEST_DELETE           0x488
->>>>   #define MAX_HCALL_OPCODE         H_GUEST_DELETE
->>>> @@ -996,6 +999,7 @@ extern const VMStateDescription 
->>>> vmstate_spapr_cap_sbbc;
->>>>   extern const VMStateDescription vmstate_spapr_cap_ibs;
->>>>   extern const VMStateDescription vmstate_spapr_cap_hpt_maxpagesize;
->>>>   extern const VMStateDescription vmstate_spapr_cap_nested_kvm_hv;
->>>> +extern const VMStateDescription vmstate_spapr_cap_nested_papr;
->>>>   extern const VMStateDescription vmstate_spapr_cap_large_decr;
->>>>   extern const VMStateDescription vmstate_spapr_cap_ccf_assist;
->>>>   extern const VMStateDescription vmstate_spapr_cap_fwnmi;
->>>> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
->>>> index 54fc01e462..beb23fae8f 100644
->>>> --- a/hw/ppc/spapr.c
->>>> +++ b/hw/ppc/spapr.c
->>>> @@ -2121,6 +2121,7 @@ static const VMStateDescription vmstate_spapr = {
->>>>           &vmstate_spapr_cap_fwnmi,
->>>>           &vmstate_spapr_fwnmi,
->>>>           &vmstate_spapr_cap_rpt_invalidate,
->>>> +        &vmstate_spapr_cap_nested_papr,
->>>>           NULL
->>>>       }
->>>>   };
->>>> @@ -4687,6 +4688,7 @@ static void 
->>>> spapr_machine_class_init(ObjectClass *oc, void *data)
->>>>       smc->default_caps.caps[SPAPR_CAP_IBS] = SPAPR_CAP_WORKAROUND;
->>>>       smc->default_caps.caps[SPAPR_CAP_HPT_MAXPAGESIZE] = 16; /* 
->>>> 64kiB */
->>>>       smc->default_caps.caps[SPAPR_CAP_NESTED_KVM_HV] = SPAPR_CAP_OFF;
->>>> +    smc->default_caps.caps[SPAPR_CAP_NESTED_PAPR] = SPAPR_CAP_OFF;
->>>>       smc->default_caps.caps[SPAPR_CAP_LARGE_DECREMENTER] = 
->>>> SPAPR_CAP_ON;
->>>>       smc->default_caps.caps[SPAPR_CAP_CCF_ASSIST] = SPAPR_CAP_ON;
->>>>       smc->default_caps.caps[SPAPR_CAP_FWNMI] = SPAPR_CAP_ON;
->>>> diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
->>>> index e889244e52..d6d5a6b8df 100644
->>>> --- a/hw/ppc/spapr_caps.c
->>>> +++ b/hw/ppc/spapr_caps.c
->>>> @@ -487,6 +487,58 @@ static void 
->>>> cap_nested_kvm_hv_apply(SpaprMachineState *spapr,
->>>>               error_append_hint(errp, "Try appending -machine 
->>>> cap-nested-hv=off "
->>>>                                       "or use threads=1 with -smp\n");
->>>>           }
->>>> +        if (spapr_nested_api(spapr) &&
->>>> +            spapr_nested_api(spapr) != NESTED_API_KVM_HV) {
->>>> +            error_setg(errp, "Nested-HV APIs are mutually 
->>>> exclusive/incompatible");
->>>> +            error_append_hint(errp, "Please use either 
->>>> cap-nested-hv or "
->>>> +                                    "cap-nested-papr to proceed.\n");
->>>> +            return;
->>>> +        } else {
->>>> +            spapr->nested.api = NESTED_API_KVM_HV;
->>>> +        }
->>>> +    }
->>>> +}
->>>> +
->>>> +static void cap_nested_papr_apply(SpaprMachineState *spapr,
->>>> +                                    uint8_t val, Error **errp)
->>>> +{
->>>> +    ERRP_GUARD();
->>>> +    PowerPCCPU *cpu = POWERPC_CPU(first_cpu);
->>>> +    CPUPPCState *env = &cpu->env;
->>>> +
->>>> +    if (!val) {
->>>> +        /* capability disabled by default */
->>>> +        return;
->>>> +    }
->>>> +
->>>> +    if (tcg_enabled()) {
->>>> +        if (!(env->insns_flags2 & PPC2_ISA300)) {
->>>> +            error_setg(errp, "Nested-PAPR only supported on POWER9 
->>>> and later");
->>>> +            error_append_hint(errp,
->>>> +                              "Try appending -machine 
->>>> cap-nested-papr=off\n");
->>>> +            return;
->>>> +        }
->>>> +        if (spapr_nested_api(spapr) &&
->>>> +            spapr_nested_api(spapr) != NESTED_API_PAPR) {
->>>> +            error_setg(errp, "Nested-HV APIs are mutually 
->>>> exclusive/incompatible");
->>>> +            error_append_hint(errp, "Please use either 
->>>> cap-nested-hv or "
->>>> +                                    "cap-nested-papr to proceed.\n");
->>>> +            return;
->>>> +        } else {
->>>> +            spapr->nested.api = NESTED_API_PAPR;
->>>> +        }
->>>> +
->>>> +    } else if (kvm_enabled()) {
->>>> +        /*
->>>> +         * this gets executed in L1 qemu when L2 is launched,
->>>> +         * needs kvm-hv support in L1 kernel.
->>>> +         */
->>>> +        if (!kvmppc_has_cap_nested_kvm_hv()) {
->>>> +            error_setg(errp,
->>>> +                       "KVM implementation does not support 
->>>> Nested-HV");
->>>> +        } else if (kvmppc_set_cap_nested_kvm_hv(val) < 0) {
->>>> +            error_setg(errp, "Error enabling Nested-HV with KVM");
->>>> +        }
->>>
->>> I'll just disable this on KVM for now. With that changed,
->>>
->>> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+>>>> I'm not sure if it's a regression or the usage has been changed. I'm not
+>>>> able to use '-cpu rva22s64' on latest qemu (db596ae190).
+>>>>
+>>> I did a quick git bisect and found that commit d06f28db6 "target/riscv:
+>>> move 'mmu' to riscv_cpu_properties[]" disabled mmu by default, so that
+>>> an explicit mmu option should be added to qemu command line like '-cpu
+>>> rva22s64,mmu=true', I think rva22s64 should enable it by default.
 >>>
 >>
->> AFAIK, v2 api also expects this capability to be enabled on L1 kernel.
->> I guess the reason is the L1 implementation has used the same capab and
->> extended to be used with v2 api. So, this check is needed in L1 Qemu for
->> now. We may revisit L1 implementation later to see if a change is
->> appropriate.
-> 
-> Please ignore above response. I think my observation was based on older 
-> version of L1 implementation. This doesnt seem to be an issue with 
-> upstream L1. You may disable the kvm_enabled() path for now. I just 
-> tested and it works fine.
-
-Here's the incremental fix:
-
-diff --git a/hw/ppc/spapr_caps.c b/hw/ppc/spapr_caps.c
-index d6d5a6b8df..c14fdd32f5 100644
---- a/hw/ppc/spapr_caps.c
-+++ b/hw/ppc/spapr_caps.c
-@@ -528,17 +528,6 @@ static void cap_nested_papr_apply(SpaprMachineState 
-*spapr,
-              spapr->nested.api = NESTED_API_PAPR;
-          }
-
--    } else if (kvm_enabled()) {
--        /*
--         * this gets executed in L1 qemu when L2 is launched,
--         * needs kvm-hv support in L1 kernel.
--         */
--        if (!kvmppc_has_cap_nested_kvm_hv()) {
--            error_setg(errp,
--                       "KVM implementation does not support Nested-HV");
--        } else if (kvmppc_set_cap_nested_kvm_hv(val) < 0) {
--            error_setg(errp, "Error enabling Nested-HV with KVM");
--        }
-      }
-  }
-
-regards,
-Harsh
-> 
-> regards,
-> Harsh
-> 
+>> This is fixed in alistair/riscv-to-apply.next by this commit:
 >>
->> regards,
->> Harsh
+> Hi Daniel,
+> 
+> The following still doesn't work for me with this commit (already
+> upstreamed now)
+> 
+>    RVA22S64.enabled = true;
+> 
+> cpu_set_profile() does nothing for vendor cpu as it checks
+> riscv_cpu_is_vendor() at the beginning, and it's still not working even
+> if it's removed. I think rvsp-ref is supposed to be
+> TYPE_RISCV_VENDOR_CPU, changing to other type such as DYNAMIC doesn't
+> work either, how to make this work?
+
+Hmm yeah, set_profile() is filtering vendor CPUs because, although we are exposing
+profiles as command line options, users would be able to enable profiles in vendor
+CPUs, pottentialy enable extensions that the CPU doesn't have, and we don't want
+that.
+
+One way to keep this behavior but allowing the usage I mentioned for rvsp-ref is
+to put everything that's after this point in cpu_set_profile():
+
+     if (!visit_type_bool(v, name, &value, errp)) {
+         return;
+     }
+
+in it's own helper, and then we would be able to enable profile extensions for
+vendor CPUs outside of this setter.
+
+
+This is out of scope for your RFC though. I thought this was a use case we can use for
+rvsp-ref right now, but I was wrong. I believe we can keep what you've already done
+(i.e. setting all exts by hand). We can rework in a generic way to enable profile
+extensions for all CPUs later.
+
+
+Thanks,
+
+Daniel
+
+
+> 
+> Thanks,
+> Fei.
+> 
+>> commit 5b8d66e6bf7904535ee277e9c70b332c4462f10a
+>> Author: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+>> Date:   Thu Feb 15 19:39:50 2024 -0300
 >>
->>>>       }
->>>>   }
->>>> @@ -735,6 +787,15 @@ SpaprCapabilityInfo 
->>>> capability_table[SPAPR_CAP_NUM] = {
->>>>           .type = "bool",
->>>>           .apply = cap_nested_kvm_hv_apply,
->>>>       },
->>>> +    [SPAPR_CAP_NESTED_PAPR] = {
->>>> +        .name = "nested-papr",
->>>> +        .description = "Allow Nested HV (PAPR API)",
->>>> +        .index = SPAPR_CAP_NESTED_PAPR,
->>>> +        .get = spapr_cap_get_bool,
->>>> +        .set = spapr_cap_set_bool,
->>>> +        .type = "bool",
->>>> +        .apply = cap_nested_papr_apply,
->>>> +    },
->>>>       [SPAPR_CAP_LARGE_DECREMENTER] = {
->>>>           .name = "large-decr",
->>>>           .description = "Allow Large Decrementer",
->>>> @@ -919,6 +980,7 @@ SPAPR_CAP_MIG_STATE(sbbc, SPAPR_CAP_SBBC);
->>>>   SPAPR_CAP_MIG_STATE(ibs, SPAPR_CAP_IBS);
->>>>   SPAPR_CAP_MIG_STATE(hpt_maxpagesize, SPAPR_CAP_HPT_MAXPAGESIZE);
->>>>   SPAPR_CAP_MIG_STATE(nested_kvm_hv, SPAPR_CAP_NESTED_KVM_HV);
->>>> +SPAPR_CAP_MIG_STATE(nested_papr, SPAPR_CAP_NESTED_PAPR);
->>>>   SPAPR_CAP_MIG_STATE(large_decr, SPAPR_CAP_LARGE_DECREMENTER);
->>>>   SPAPR_CAP_MIG_STATE(ccf_assist, SPAPR_CAP_CCF_ASSIST);
->>>>   SPAPR_CAP_MIG_STATE(fwnmi, SPAPR_CAP_FWNMI);
->>>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
->>>> index 597dba7fdc..8db9dc19e3 100644
->>>> --- a/hw/ppc/spapr_nested.c
->>>> +++ b/hw/ppc/spapr_nested.c
->>>> @@ -13,13 +13,15 @@
->>>>   void spapr_nested_reset(SpaprMachineState *spapr)
->>>>   {
->>>>       if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_KVM_HV)) {
->>>> -        spapr->nested.api = NESTED_API_KVM_HV;
->>>>           spapr_unregister_nested_hv();
->>>>           spapr_register_nested_hv();
->>>> -    } else {
->>>> -        spapr->nested.api = 0;
->>>> +    } else if (spapr_get_cap(spapr, SPAPR_CAP_NESTED_PAPR)) {
->>>>           spapr->nested.capabilities_set = false;
->>>> +        spapr_unregister_nested_papr();
->>>> +        spapr_register_nested_papr();
->>>>           spapr_nested_gsb_init();
->>>> +    } else {
->>>> +        spapr->nested.api = 0;
->>>>       }
->>>>   }
+>>      target/riscv/tcg: set 'mmu' with 'satp' in cpu_set_profile()
+>>          Recent changes in options handling removed the 'mmu' default the
+>> bare
+>>      CPUs had, meaning that we must enable 'mmu' by hand when using the
+>>      rva22s64 profile CPU.
+>>          Given that this profile is setting a satp mode, it already
+>> implies that
+>>      we need a 'mmu'. Enable the 'mmu' in this case.
+>>
+>>
+>>
+>> Thanks,
+>>
+>> Daniel
+>>
+>>
+>>> Thanks,
+>>> Fei.
 >>>
+>>>> -- latest qemu, cannot see linux boot message and blocked
+>>>>
+>>>> $Q -machine virt -nographic -m 2G -smp 2 \
+>>>>     -cpu rva22s64 \
+>>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
+>>>>     -kernel $Kernel
+>>>>
+>>>> Boot HART ID              : 1
+>>>> Boot HART Domain          : root
+>>>> Boot HART Priv Version    : v1.12
+>>>> Boot HART Base ISA        : rv64imafdc
+>>>> Boot HART ISA Extensions  : time
+>>>> Boot HART PMP Count       : 0
+>>>> Boot HART PMP Granularity : 0
+>>>> Boot HART PMP Address Bits: 0
+>>>> Boot HART MHPM Count      : 16
+>>>> Boot HART MIDELEG         : 0x0000000000000222
+>>>> Boot HART MEDELEG         : 0x000000000000b109
+>>>>
+>>>> -- latest qemu, w/o rva22s64, looks good
+>>>>
+>>>> $Q -machine virt -nographic -m 2G -smp 2 \
+>>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
+>>>>     -kernel $Kernel
+>>>>
+>>>> Boot HART ID              : 0
+>>>> Boot HART Domain          : root
+>>>> Boot HART Priv Version    : v1.12
+>>>> Boot HART Base ISA        : rv64imafdch
+>>>> Boot HART ISA Extensions  : time,sstc
+>>>> Boot HART PMP Count       : 16
+>>>> Boot HART PMP Granularity : 4
+>>>> Boot HART PMP Address Bits: 54
+>>>> Boot HART MHPM Count      : 16
+>>>> Boot HART MIDELEG         : 0x0000000000001666
+>>>> Boot HART MEDELEG         : 0x0000000000f0b509
+>>>> [    0.000000] Linux version 6.8.0-rc6+ (box@riscv-sw-lvm-1)
+>>>> (riscv64-linux-gnu-gcc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0, GNU ld (GNU
+>>>> Binutils for Ubuntu) 2.34) #17 SMP Wed Feb 28 08:38:42 UTC 2024
+>>>>
+>>>> -- commit dfa3c4c57, patch to enable rva22s64, looks good
+>>>>
+>>>> $Q -machine virt -nographic -m 2G -smp 2 \
+>>>>     -cpu rva22s64 \
+>>>>     -bios /usr/lib/riscv64-linux-gnu/opensbi/generic/fw_jump.elf \
+>>>>     -kernel $Kernel
+>>>>
+>>>> Boot HART ID              : 0
+>>>> Boot HART Domain          : root
+>>>> Boot HART Priv Version    : v1.12
+>>>> Boot HART Base ISA        : rv64imafdc
+>>>> Boot HART ISA Extensions  : time
+>>>> Boot HART PMP Count       : 16
+>>>> Boot HART PMP Granularity : 4
+>>>> Boot HART PMP Address Bits: 54
+>>>> Boot HART MHPM Count      : 16
+>>>> Boot HART MIDELEG         : 0x0000000000000222
+>>>> Boot HART MEDELEG         : 0x000000000000b109
+>>>> [    0.000000] Linux version 6.8.0-rc6+ (box@riscv-sw-lvm-1)
+>>>> (riscv64-linux-gnu-gcc (Ubuntu 9.4.0-1ubuntu1~20.04) 9.4.0, GNU ld (GNU
+>>>> Binutils for Ubuntu) 2.34) #17 SMP Wed Feb 28 08:38:42 UTC 2024
+>>>>
+>>>> Thanks,
+>>>> Fei
+>>>>
+>>>>> Let me try.
+>>>>>
+>>>>> Thanks,
+>>>>> Fei.
+>>>>>
+>>>>>>
+>>>>>> Thanks,
+>>>>>>
+>>>>>> Daniel
+>>>>>>
+>>>>>>
+>>>>>>> +
+>>>>>>> +    /* RVA23U64 */
+>>>>>>> +    cpu->cfg.ext_zvfhmin = true;
+>>>>>>> +    cpu->cfg.ext_zvbb = true;
+>>>>>>> +    cpu->cfg.ext_zvkt = true;
+>>>>>>> +    cpu->cfg.ext_zihintntl = true;
+>>>>>>> +    cpu->cfg.ext_zicond = true;
+>>>>>>> +    cpu->cfg.ext_zcb = true;
+>>>>>>> +    cpu->cfg.ext_zfa = true;
+>>>>>>> +    cpu->cfg.ext_zawrs = true;
+>>>>>>> +
+>>>>>>> +    /* RVA23S64 */
+>>>>>>> +    cpu->cfg.ext_zifencei = true;
+>>>>>>> +    cpu->cfg.svade = true;
+>>>>>>> +    cpu->cfg.ext_svpbmt = true;
+>>>>>>> +    cpu->cfg.ext_svinval = true;
+>>>>>>> +    cpu->cfg.ext_svnapot = true;
+>>>>>>> +    cpu->cfg.ext_sstc = true;
+>>>>>>> +    cpu->cfg.ext_sscofpmf = true;
+>>>>>>> +    cpu->cfg.ext_smstateen = true;
+>>>>>>> +
+>>>>>>> +    cpu->cfg.ext_smaia = true;
+>>>>>>> +    cpu->cfg.ext_ssaia = true;
+>>>>>>> +
+>>>>>>> +    /* Server Platform */
+>>>>>>> +#ifndef CONFIG_USER_ONLY
+>>>>>>> +    set_satp_mode_max_supported(cpu, VM_1_10_SV48);
+>>>>>>> +#endif
+>>>>>>> +    cpu->cfg.ext_svadu = true;
+>>>>>>> +    cpu->cfg.ext_zkr = true;
+>>>>>>> +}
+>>>>>>>     #endif
+>>>>>>>       static const gchar *riscv_gdb_arch_name(CPUState *cs)
+>>>>>>> @@ -2547,6 +2608,7 @@ static const TypeInfo riscv_cpu_type_infos[]
+>>>>>>> = {
+>>>>>>>         DEFINE_BARE_CPU(TYPE_RISCV_CPU_RV64E,        MXL_RV64,
+>>>>>>> rv64e_bare_cpu_init),
+>>>>>>>         DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22U64,  MXL_RV64,
+>>>>>>> rva22u64_profile_cpu_init),
+>>>>>>>         DEFINE_PROFILE_CPU(TYPE_RISCV_CPU_RVA22S64,  MXL_RV64,
+>>>>>>> rva22s64_profile_cpu_init),
+>>>>>>> +    DEFINE_VENDOR_CPU(TYPE_RISCV_CPU_RVSP_REF,   MXL_RV64,
+>>>>>>> rv64_rvsp_ref_cpu_init),
+>>>>>>>     #endif
+>>>>>>>     };
+>>>>>>>     
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+>>
+>> -=-=-=-=-=-=-=-=-=-=-=-
+>> Links: You receive all messages sent to this group.
+>> View/Reply Online (#135):
+>> https://lists.riscv.org/g/tech-server-soc/message/135
+>> Mute This Topic: https://lists.riscv.org/mt/104719379/7152971
+>> Group Owner: tech-server-soc+owner@lists.riscv.org
+>> Unsubscribe:
+>> https://lists.riscv.org/g/tech-server-soc/leave/12737993/7152971/1793629631/xyzzy [fei2.wu@intel.com]
+>> -=-=-=-=-=-=-=-=-=-=-=-
+>>
+>>
+> 
 
