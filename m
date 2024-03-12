@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682D8879706
-	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:01:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F160887971A
+	for <lists+qemu-devel@lfdr.de>; Tue, 12 Mar 2024 16:05:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rk3cc-0002vG-9p; Tue, 12 Mar 2024 11:00:55 -0400
+	id 1rk3g9-0005O2-AL; Tue, 12 Mar 2024 11:04:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3cG-0002uf-U4; Tue, 12 Mar 2024 11:00:33 -0400
-Received: from mgamail.intel.com ([198.175.65.13])
+ id 1rk3g6-0005Mz-Pq; Tue, 12 Mar 2024 11:04:30 -0400
+Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rk3cD-0003Yw-Ln; Tue, 12 Mar 2024 11:00:31 -0400
+ id 1rk3g4-0003wS-B5; Tue, 12 Mar 2024 11:04:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710255630; x=1741791630;
+ t=1710255868; x=1741791868;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=3GukMVtZzS1toW2RJTzhuu9AwGS5RRRUx9YsIDuK9xs=;
- b=LLshQdmJd4HnW9Y4II4/9eh8HYDefCzYCwKU8C7yts/J6ihA732fLJW2
- 60766OMjFqYAQSxT3J97+rDIqYl9tS3bkEUBGo4pI3GBWb6r3WPQnJO+w
- r69tLTNoTuxRQfsBokK/a0PSA1fsjxI03JbL5NODyR5+cWTZfcPad9q1j
- ldN1B5SYQBmuPrtXhlF1XTSa5eswGrZsD6xpo7pmhGjL0g4GOWcUKlqvG
- Q78NCQq2sgeLoR+aCxgqg1ArgOYoxbVHhsm7xyZfigW1G7MesZnZ/bm4L
- NrYsjNt0sCspyIodHDc42PFKQ3VrXQqtAWYfXI2K4A8Q6YHoZQmQv88nO w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="16110556"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16110556"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 08:00:27 -0700
+ bh=zKVu4CIIFGU5Pv0k8/n8uDFwylm40wNiRfakYrrfwEI=;
+ b=RjMSxj0rEjTGQUhaEkAtqq3lmaEcxfgkUvnwM7CQzHeR9XEZ57YU4wRh
+ w0wFnuB+E7ReZ1LS/be5rwLWbStIcLYshh5KbQEpt3hTa8HHiRP+LGExC
+ eF+DTNhLNUV/j50Peeha/WSbSC6l8uIfqgKJDftaZ03SJm0EBeBij1MNj
+ QWz74Gwo6zLDzO0LUvNPUk1Zz/MHa0ylb97grqYILGHMngHuqE3/0UgL0
+ bVsrgBqHuiAnSrR9QZrsX3xSnmtMiGCPsURhL1ztraxR/LT1aVDO14W9a
+ 0Ffc6Y7C+Rl17uVJ37r/SmDwRi5euktpW5cHqEX6MwBgDq0cbEZbMs59z g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="8785603"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="8785603"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 08:04:24 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="11469247"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16134554"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 12 Mar 2024 08:00:25 -0700
-Date: Tue, 12 Mar 2024 23:14:14 +0800
+ by fmviesa003.fm.intel.com with ESMTP; 12 Mar 2024 08:04:22 -0700
+Date: Tue, 12 Mar 2024 23:18:11 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
  philmd@linaro.org
-Subject: Re: [PATCH 05/10] qapi: Inline and remove QERR_INVALID_PARAMETER
- definition
-Message-ID: <ZfBxRqpjownNjA0o@intel.com>
+Subject: Re: [PATCH 06/10] qapi: Inline QERR_INVALID_PARAMETER_TYPE
+ definition (constant value)
+Message-ID: <ZfByM/+eJYxHsIbm@intel.com>
 References: <20240312141343.3168265-1-armbru@redhat.com>
- <20240312141343.3168265-6-armbru@redhat.com>
+ <20240312141343.3168265-7-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240312141343.3168265-6-armbru@redhat.com>
-Received-SPF: pass client-ip=198.175.65.13; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240312141343.3168265-7-armbru@redhat.com>
+Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -77,11 +78,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 12, 2024 at 03:13:38PM +0100, Markus Armbruster wrote:
-> Date: Tue, 12 Mar 2024 15:13:38 +0100
+On Tue, Mar 12, 2024 at 03:13:39PM +0100, Markus Armbruster wrote:
+> Date: Tue, 12 Mar 2024 15:13:39 +0100
 > From: Markus Armbruster <armbru@redhat.com>
-> Subject: [PATCH 05/10] qapi: Inline and remove QERR_INVALID_PARAMETER
->  definition
+> Subject: [PATCH 06/10] qapi: Inline QERR_INVALID_PARAMETER_TYPE definition
+>  (constant value)
 > 
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
 > 
@@ -93,21 +94,40 @@ On Tue, Mar 12, 2024 at 03:13:38PM +0100, Markus Armbruster wrote:
 >    * in new code, and do not add new ones!
 >    */
 > 
-> Mechanical transformation using:
+> Mechanical transformation using the following
+> coccinelle semantic patch:
 > 
->   $ sed -i -e "s/QERR_INVALID_PARAMETER,/\"Invalid parameter '%s'\",/" \
->     $(git grep -lw QERR_INVALID_PARAMETER)
+>     @match@
+>     expression errp;
+>     expression param;
+>     constant value;
+>     @@
+>          error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
 > 
-> Manually simplify qemu_opts_create(), and remove the macro definition
-> in include/qapi/qmp/qerror.h.
+>     @script:python strformat depends on match@
+>     value << match.value;
+>     fixedfmt; // new var
+>     @@
+>     fixedfmt = f'"Invalid parameter type for \'%s\', expected: {value[1:-1]}"'
+>     coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
+> 
+>     @replace@
+>     expression match.errp;
+>     expression match.param;
+>     constant match.value;
+>     identifier strformat.fixedfmt;
+>     @@
+>     -    error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
+>     +    error_setg(errp, fixedfmt, param);
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  include/qapi/qmp/qerror.h |  3 ---
->  qapi/opts-visitor.c       |  2 +-
->  util/qemu-option.c        | 10 +++++-----
->  3 files changed, 6 insertions(+), 9 deletions(-)
+>  qapi/qobject-input-visitor.c | 32 ++++++++++++++++----------------
+>  qapi/string-input-visitor.c  |  8 ++++----
+>  qom/object.c                 | 12 ++++++++----
+>  3 files changed, 28 insertions(+), 24 deletions(-)
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+
 
