@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A1E87AA33
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C322B87AA21
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQEo-0003jL-3V; Wed, 13 Mar 2024 11:09:50 -0400
+	id 1rkQF1-0003yo-Uo; Wed, 13 Mar 2024 11:10:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEd-0003bd-UD; Wed, 13 Mar 2024 11:09:40 -0400
+ id 1rkQEd-0003bb-Mc; Wed, 13 Mar 2024 11:09:40 -0400
 Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEc-0005ub-4U; Wed, 13 Mar 2024 11:09:39 -0400
+ id 1rkQEc-0005v2-2G; Wed, 13 Mar 2024 11:09:39 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:8793:0:640:b059:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 5EFE860DBC;
- Wed, 13 Mar 2024 18:09:35 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 60FBA60DC4;
+ Wed, 13 Mar 2024 18:09:36 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 99pZB52GZiE0-c2AmYShI; Wed, 13 Mar 2024 18:09:34 +0300
+ ESMTPSA id 99pZB52GZiE0-rCUQI333; Wed, 13 Mar 2024 18:09:35 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1710342574;
- bh=liHibTBSkdOt/5J9R1x/HYZXfHhL5kuhxB6+ewel9tw=;
+ s=default; t=1710342575;
+ bh=A1BY/pFcCKjtke681ulBTN+3FD51P3WVGDNwn/IH6Pc=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=DCMqfg7gL7mJlFm7JH+TGuAacMKjTeOo1wRaid8wLbEsxpXU3dAJhRJtIclFkmDb5
- ISUC1+3fyzVB6Jwh3aNj4GSJBgbA1LQDTiY/FUaM96ZAzXoUxbrscLXvhFlEjdXSMt
- oHVtPbkSIrPBYIopB15DPDzSjk/xosUZCxDGjsaA=
+ b=Pvjru6O/RqBrJxwlPSuSV78JeoCs2/omK+0/8axaubsXOsyADuWSoHC4LXBkNTkK6
+ oBIdr0zFm2MWH0Dx+MNodIWHOB1vMV3Gl1iYIryAtcGu0dOqqHQlKSJ057OsiYdkob
+ wUioMUUGh+z0JUfi+OgxVE7CYuJ/cGUXjbdqPe6Y=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,9 +40,9 @@ Cc: qemu-devel@nongnu.org, jsnow@redhat.com, vsementsov@yandex-team.ru,
  kwolf@redhat.com, hreitz@redhat.com, devel@lists.libvirt.org,
  eblake@redhat.com, armbru@redhat.com, michael.roth@amd.com,
  pbonzini@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-Subject: [RFC 10/15] qapi: query-jobs: add information specific for job type
-Date: Wed, 13 Mar 2024 18:09:02 +0300
-Message-Id: <20240313150907.623462-11-vsementsov@yandex-team.ru>
+Subject: [RFC 11/15] job-qmp: job_query_single_locked: add assertion on job ret
+Date: Wed, 13 Mar 2024 18:09:03 +0300
+Message-Id: <20240313150907.623462-12-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 References: <20240313150907.623462-1-vsementsov@yandex-team.ru>
@@ -72,132 +72,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Duplicate the feature from query-block-jobs. It's a step to finally
-deprecate query-block-jobs command and move to query-jobs.
+job->ret must be always set together with job->err. Let's assert this.
+Reproting no-error to the user, when job->err is unset and job->ret is
+somehow set would be a bug.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/mirror.c     | 14 ++++++++++++--
- include/qemu/job.h |  5 +++++
- job-qmp.c          |  6 ++++++
- qapi/job.json      | 22 +++++++++++++++++++---
- 4 files changed, 42 insertions(+), 5 deletions(-)
+ job-qmp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/mirror.c b/block/mirror.c
-index e95c54fbc6..96dcbbc3e8 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -1294,7 +1294,7 @@ static bool mirror_change(Job *job, JobChangeOptions *opts, Error **errp)
-     return true;
- }
- 
--static void mirror_query(BlockJob *job, BlockJobInfo *info)
-+static void mirror_query_old(BlockJob *job, BlockJobInfo *info)
- {
-     MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
- 
-@@ -1303,6 +1303,15 @@ static void mirror_query(BlockJob *job, BlockJobInfo *info)
-     };
- }
- 
-+static void mirror_query(Job *job, JobInfo *info)
-+{
-+    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common.job);
-+
-+    info->u.mirror = (JobInfoMirror) {
-+        .actively_synced = qatomic_read(&s->actively_synced),
-+    };
-+}
-+
- static const BlockJobDriver mirror_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(MirrorBlockJob),
-@@ -1316,9 +1325,10 @@ static const BlockJobDriver mirror_job_driver = {
-         .complete               = mirror_complete,
-         .cancel                 = mirror_cancel,
-         .change                 = mirror_change,
-+        .query                  = mirror_query,
-     },
-     .drained_poll           = mirror_drained_poll,
--    .query                  = mirror_query,
-+    .query                  = mirror_query_old,
- };
- 
- static bool commit_active_change(Job *job, JobChangeOptions *opts, Error **errp)
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index eee1d5b50f..8a238b8658 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -315,6 +315,11 @@ struct JobDriver {
-      */
-     bool (*change)(Job *job, JobChangeOptions *opts, Error **errp);
- 
-+    /*
-+     * Query information specific to this kind of block job.
-+     */
-+    void (*query)(Job *job, JobInfo *info);
-+
-     /**
-      * Called when the job is freed.
-      */
 diff --git a/job-qmp.c b/job-qmp.c
-index c048e03d9f..9643c5424d 100644
+index 9643c5424d..3e2172c26a 100644
 --- a/job-qmp.c
 +++ b/job-qmp.c
-@@ -177,6 +177,12 @@ static JobInfo *job_query_single_locked(Job *job, Error **errp)
-                               g_strdup(error_get_pretty(job->err)) : NULL,
-     };
+@@ -163,6 +163,7 @@ static JobInfo *job_query_single_locked(Job *job, Error **errp)
+     uint64_t progress_total;
  
-+    if (job->driver->query) {
-+        job_unlock();
-+        job->driver->query(job, info);
-+        job_lock();
-+    }
-+
-     return info;
- }
+     assert(!job_is_internal(job));
++    assert(!job->err == !job->ret);
+     progress_get_snapshot(&job->progress, &progress_current,
+                           &progress_total);
  
-diff --git a/qapi/job.json b/qapi/job.json
-index 2f1b839cfc..036fec1b57 100644
---- a/qapi/job.json
-+++ b/qapi/job.json
-@@ -251,6 +251,20 @@
- ##
- { 'command': 'job-finalize', 'data': { 'id': 'str' } }
- 
-+##
-+# @JobInfoMirror:
-+#
-+# Information specific to mirror block jobs.
-+#
-+# @actively-synced: Whether the source is actively synced to the
-+#     target, i.e. same data and new writes are done synchronously to
-+#     both.
-+#
-+# Since: 9.1
-+##
-+{ 'struct': 'JobInfoMirror',
-+  'data': { 'actively-synced': 'bool' } }
-+
- ##
- # @JobInfo:
- #
-@@ -281,10 +295,12 @@
- #
- # Since: 3.0
- ##
--{ 'struct': 'JobInfo',
--  'data': { 'id': 'str', 'type': 'JobType', 'status': 'JobStatus',
-+{ 'union': 'JobInfo',
-+  'base': { 'id': 'str', 'type': 'JobType', 'status': 'JobStatus',
-             'current-progress': 'int', 'total-progress': 'int',
--            '*error': 'str' } }
-+            '*error': 'str' },
-+  'discriminator': 'type',
-+  'data': { 'mirror': 'JobInfoMirror' } }
- 
- ##
- # @query-jobs:
 -- 
 2.34.1
 
