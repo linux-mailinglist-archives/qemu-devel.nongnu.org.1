@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C0687B1EB
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 20:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C052B87B20F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 20:41:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkUKL-0007I5-Ec; Wed, 13 Mar 2024 15:31:49 -0400
+	id 1rkUSG-0005dM-LM; Wed, 13 Mar 2024 15:40:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rkUK8-0006xO-KX
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 15:31:44 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rkUS4-0005aq-3r
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 15:39:49 -0400
+Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rkUK6-0002TX-SA
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 15:31:36 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6e6adc557b6so262917b3a.2
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 12:31:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rkUS1-0003p6-68
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 15:39:47 -0400
+Received: by mail-lj1-x22f.google.com with SMTP id
+ 38308e7fff4ca-2d220e39907so2525001fa.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 12:39:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710358292; x=1710963092; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=linaro.org; s=google; t=1710358783; x=1710963583; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dQxZomeoNn9i8QHNEyNqDc/x9f1sWSuEH/Pg+YiDFJs=;
- b=Lh1hCjNRKlM3JWhIhH15gG3iRWX3+JFCiW4n5kFAccOsYg1hBjgpVNz/0iASjBUYGq
- H8BL2+R04dVXL/mme2iEwBmM0NzoY4nw5ZvjF1QF3EqsKT2nNgT5Tzej2o9atOBwffBl
- JN1qdzzF/4ZFvUtEVWwCrX1zufi8w+pMftc1Mwhth8EHCag+g33bWWprpD/LEqRWc2nv
- T/FKaxEzHegipFkelKcGfDlRodBr+UARciY00Zz9z/l23A7CR82lV3wrNS3MYHCEP0rm
- MbeGFXEbaa/XeHrfO9FQUn0/jhagzfgacGAoclJERO6gFMcpIhPRywjooBoT2oLLuFDE
- bBwg==
+ bh=ePwrOhCqD6QcBntpos1ixTsxkp9ZbNWVANNVJnLwFRQ=;
+ b=mqQrrVT6obgnOLTHjenvroj4xWhyRt/nKElHaNw+ygvevscY1+15MmrkxQ0YbjxbMI
+ ATE65Egry5NnKntwIuhV+OriWj1JqK+Lxgdtn7S49vMw2cRh5/665P3Or+/Rdy3Kq3Hz
+ M6khc9TRhdCUpxLBPZ40soGc4vjyCqNIMlB7YR2j9f2ORqhs8Ql16ZJo0mahiSA/R5I5
+ lYfUagjTdkNvC7Hminkgeqk4WdvPt7OR1+zsQbrzRWqY8MNUPCd8yOrJmTILOErLo8bV
+ QF7BdHkybAsSfJDiGDc7W5XBe3wiHLGDJXGd2SOBROIf25PLwonfxhP4q6jueNNQF5YX
+ fZvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710358292; x=1710963092;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1710358783; x=1710963583;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dQxZomeoNn9i8QHNEyNqDc/x9f1sWSuEH/Pg+YiDFJs=;
- b=P6uFbNQLToZ2PIgBRsq9NoCjT6eyhCKXZjM3ixeyzGj8VczIAM8YYD21hsBN4+PLbq
- leSppSHuKB6gJpjuqdjJWVb1g0iiFRcWY5lgHGM5ZCKMFvxyHdb+Tuf6gIZ35S5VjMVA
- FjpOjgvK9mBosfCsxSXZ+FhcKrTnGhVZ9IPgxqj5iHtg8ET/PAockhaMbtH1UnypwB76
- flMbiOPKKQMJEJx4HK0/INGPbTTuSFnfSaF5t6/sUe6E7JPZvQRW9NPWN+bSea72ZU0T
- +irPVzpGeGPdvijxro071CjuIOzitKcT0IxtQ0ch+o4PuIfwXksrSpzzlXemeqwX0tV9
- bxBQ==
-X-Gm-Message-State: AOJu0YzPc8uv4eDg+SNtpSuBxQfu5Luysa/8r7QK7apCm4OQPImpGu2s
- +OlN4aWF5ue/ryz6VHIzT6bDRA3O8dVnbKTre5jIxSVy9eX/jP8VkvNGwZjRcHCMg0Uc0mEwv4x
- r
-X-Google-Smtp-Source: AGHT+IF2IX4GlWL8B//geHu6J/3ylLHGbQPkKJgNj0PnC8OacyeZ0YJWzqR6qpytVWYSCktvcZN47g==
-X-Received: by 2002:a05:6a20:d90b:b0:1a2:a596:4dce with SMTP id
- jd11-20020a056a20d90b00b001a2a5964dcemr3971976pzb.58.1710358292105; 
- Wed, 13 Mar 2024 12:31:32 -0700 (PDT)
-Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- k10-20020a628e0a000000b006e5a915a9e7sm8912421pfe.10.2024.03.13.12.31.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Mar 2024 12:31:31 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, philmd@linaro.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 v13 8/8] target/riscv/vector_helper.c: optimize loops
- in ldst helpers
-Date: Wed, 13 Mar 2024 16:30:59 -0300
-Message-ID: <20240313193059.405329-9-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240313193059.405329-1-dbarboza@ventanamicro.com>
-References: <20240313193059.405329-1-dbarboza@ventanamicro.com>
+ bh=ePwrOhCqD6QcBntpos1ixTsxkp9ZbNWVANNVJnLwFRQ=;
+ b=rFagIbpBagmMfNQ0rYVDPK81/QLBAz0JOHavVDBAcA7ZTX9zRzqK+VcZNtb2se8ku1
+ KFqGjrdu1ieaIDXzvXzJ8e8PF0pV4iup2fLTdlVz0hafRMgSvDQDZucAoILOyyiifN91
+ CZMNJ04+ggUAKHaYxZ+mHKV6CYJsw08GIzGJyxmiMO3y5qUClo7na6RcKf5espYgH6DS
+ 32Ss6vsvqnMnQy+62QwD5blg5CBSk4V3DCMkqU4JJgQelH0JzmO7Br/OzAXiyYCg4W4d
+ Wu5IcmWQGrF2ukDi+T1sPZlGtDDujHxim97eTmqj/cVRnVsQiR6XcXQQe51fEBQAPc4E
+ 09Mg==
+X-Gm-Message-State: AOJu0YzX6f+6L0T4YhbiRuaZLDJtG/uSksIHWUB+p2qY+eqXyttZwWzv
+ yVyLTy8ix98ftKCnPaJTfcj/I0VdRu2mcUe08A+H3jsE+xONP3G18voQdcrjuFCh5dvFVBMN11I
+ ugqnHDKt9SCue35V6OQIrfdrTUalqAPEMDYdDTw==
+X-Google-Smtp-Source: AGHT+IHWoCRupv9NNRuOudLIq7LC3JxoPndrft4/POvIAW7mvfVaYI/USK1YJ0aXmGe7mP9xdPiM+LAeh54JBCcoHvE=
+X-Received: by 2002:a2e:b52d:0:b0:2d4:6a6a:22bf with SMTP id
+ z13-20020a2eb52d000000b002d46a6a22bfmr2084044ljm.23.1710358783153; Wed, 13
+ Mar 2024 12:39:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x436.google.com
+References: <20240313184954.42513-1-philmd@linaro.org>
+ <20240313184954.42513-4-philmd@linaro.org>
+In-Reply-To: <20240313184954.42513-4-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 13 Mar 2024 19:39:31 +0000
+Message-ID: <CAFEAcA9ZtyRG5G=vLXNJdA3RPKsvLGh-v8MO2tq1mC3ch5_asw@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0 3/4] qtest/libqos: Un-inline size_to_prdtl()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, John Snow <jsnow@redhat.com>,
+ Alexander Graf <agraf@csgraf.de>, 
+ Eric Auger <eric.auger@redhat.com>, qemu-block@nongnu.org, 
+ Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,50 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the for loops in ldst helpers to do a single increment in the
-counter, and assign it env->vstart, to avoid re-reading from vstart
-every time.
+On Wed, 13 Mar 2024 at 18:50, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> See previous commit and commit 9de9fa5cf2 ("Avoid using inlined
+> functions with external linkage") for rationale.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  tests/qtest/libqos/ahci.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
+> index a2c94c6e06..135b23ffd9 100644
+> --- a/tests/qtest/libqos/ahci.c
+> +++ b/tests/qtest/libqos/ahci.c
+> @@ -662,7 +662,7 @@ unsigned ahci_pick_cmd(AHCIQState *ahci, uint8_t port=
+)
+>      g_assert_not_reached();
+>  }
+>
+> -inline unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
+> +unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
+>  {
+>      /* Each PRD can describe up to 4MiB */
+>      g_assert_cmphex(bytes_per_prd, <=3D, 4096 * 1024);
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/riscv/vector_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+It looks like this function is only used in this file, so
+we could make it static ?
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 7260a5972b..b29b8f9116 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -209,7 +209,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
- 
-     VSTART_CHECK_EARLY_EXIT(env);
- 
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
-@@ -277,7 +277,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     VSTART_CHECK_EARLY_EXIT(env);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < evl; i++, env->vstart++) {
-+    for (i = env->vstart; i < evl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             target_ulong addr = base + ((i * nf + k) << log2_esz);
-@@ -393,7 +393,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     VSTART_CHECK_EARLY_EXIT(env);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
--- 
-2.43.2
-
+-- PMM
 
