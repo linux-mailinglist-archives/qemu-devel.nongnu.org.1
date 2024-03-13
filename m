@@ -2,89 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C2F87A2BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 06:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA9C87A2E0
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 07:09:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkHK9-0001l1-RS; Wed, 13 Mar 2024 01:38:46 -0400
+	id 1rkHmV-0008An-MC; Wed, 13 Mar 2024 02:08:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rkHK7-0001kV-1G
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 01:38:43 -0400
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rkHK5-0003JB-0n
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 01:38:42 -0400
-Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-29bb3d62949so3420062a91.1
- for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 22:38:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710308319; x=1710913119; darn=nongnu.org;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BJLjiyJW4471YgTtt3S7IB/synTzjVT9S8z3v4x/PYY=;
- b=AwRFzWg4LtxklDzcz3BG60lX17EtfK9TV7k4wjbfRPYxJZd0YNKY+YHEsg2nwjxc2t
- STCTryIUv8BrQ3mbYVkAJUge4i08jYWpcnJrZ8zcO2eNSy0tyFT1tLSCqdnkaXOJYa5C
- sxFk8kVHWFa9rkhLSnrjh4EFm7hmAdYmJTk2m7WslwsDs69F9Qp6P4TbTvNrxtyPX02f
- xfD7UdQqKOGZCfXm+0f/q5QhXHGJ4wAya8aj/t+4AyAqj5lH/agaKgZsWvjXFFLAeyvP
- 7v7IoQHiwVaOCVMqoZJLukeDLrpkZYZHohfOiX3TYgBT8azKOm3yhi4KK8U69zQxrZts
- NI/w==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rkHmQ-00088m-Ut
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:07:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rkHmI-00085b-Tc
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:07:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710310067;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lvUXW0uE7MgDRroLrCKTwIlpczc9KZnPpiDSgdPbn/k=;
+ b=Yc/BzZTNVoLy9PhOyDYgiRO+8lyCVk4f6jGu3SM3/ku0TPXy02OXohAXDFOuJXCy4uqf6P
+ QAs0kpp+sP/HJP2Xzc2gwdsTHByNkRubQJpbKAh3jrBSNK9PwzNBn6cNORs/Uh0urxzdGa
+ VYKxcrQs5YkYCB/6TtDK329bhgH96iM=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-2LSmMX9dPtKszSb2p1UaqA-1; Wed, 13 Mar 2024 02:07:45 -0400
+X-MC-Unique: 2LSmMX9dPtKszSb2p1UaqA-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-29ba8f333easo5135436a91.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 23:07:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710308319; x=1710913119;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=BJLjiyJW4471YgTtt3S7IB/synTzjVT9S8z3v4x/PYY=;
- b=GlR7XKQWKV7b+zoLj2a+9CbtibmMOxDcSB7A84T/JkIjxmgfv8+zYr6D58LsNHbY1d
- YYChNGSdLwXw9xVMoxgFfdYF2vSCy0ivH7gQzPZYPBUFPtOqc6j6NpgR3Iz/xUwbVKBy
- 3oYUaIj2GkSKP60HPMck7Bt8aNAhxVt6rzUYpJHRtjHlMESP1s1G8MCXLQ+CuMbLAP6n
- bUNhyAFCKT70zQuDYDi20tHZdZfdAllPYUW+Ky0iCHa5kw0f0Uh28p6QakMtKgfjyUO/
- WANbuu2QqoOwhdj66eOjhu76bB42JVfsJ0J2l0hd2P0gAHgrjuzyqzzaJm7J6ANEJIzW
- bgPw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU6XwaFK/UV53wkTAz4cpNgsqmTd+qVKp1gk24V51ASf7ithRh6H1jriWRea/K7edjSuF3anU5DXRcGrF7XGDU1e5GdXz0=
-X-Gm-Message-State: AOJu0YwljYg/44ANtOgLRNO5Cq/0BgS44l3CgpMxP8W1R3k4nhPpWeWm
- hqRsOhq06LEoOoQ2LqOX0lYz9roMaDuLj8+vCWb43yw03Ejj6F3P
-X-Google-Smtp-Source: AGHT+IGE8iiMtQCJrEIBskNNWaspPDJm4HeCnoPX2RayrQMkr9rjk7xNJgiwC2OIWsqXM8vPd8YxPg==
-X-Received: by 2002:a17:90a:e508:b0:29b:aee7:5937 with SMTP id
- t8-20020a17090ae50800b0029baee75937mr4006748pjy.23.1710308319115; 
- Tue, 12 Mar 2024 22:38:39 -0700 (PDT)
-Received: from localhost ([1.146.20.17]) by smtp.gmail.com with ESMTPSA id
- s21-20020a17090aa11500b0029beec8e86csm511287pjp.36.2024.03.12.22.38.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 12 Mar 2024 22:38:38 -0700 (PDT)
-Mime-Version: 1.0
+ d=1e100.net; s=20230601; t=1710310064; x=1710914864;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lvUXW0uE7MgDRroLrCKTwIlpczc9KZnPpiDSgdPbn/k=;
+ b=j82LNnOwtXBDdz7s2vIifN76rEAA9PDhsBe4KOIhTmOPNL7XwFJqoueK1yva0k2OxU
+ toEskJ+gm5zR5HK2yhxAEMdLcJYKwJNY0DGfhqalQPmZpVS3WmyZAQBV1D628FltlC33
+ d6KKz6ev+QEoK+rAyLuBncn+W5ESTi79TzsSMA1KlZAUxyNKZuk8WdVC22KMa0RW0SMx
+ AWP/h/r7thcu7hkW4o/n+v1dBcxLWsm4+16uFfNncqk4+rmJQ1WKAHNEk1k2Qw6S/zll
+ KD55d+7Lq1JlSohQZRUKTWBsfI93aIcQsxsjXJeTp9scOhQhmY4kxyDZGg8nKBQa8oKM
+ nAgg==
+X-Gm-Message-State: AOJu0Yx8a7ZaHmY9hCCfsS187BwCSi2JWT4PcMC+4YttRwR7XghQYikV
+ 1hiYcBikZMae+5Ug3HoqX3C3tIiejWSoedcD8rhSbUN9POllovytB+qthCGYfu2kLF8zT3u8WiA
+ j7fAk7cCW9vUzGNp7llUBbx/HUw/INb03E9FKGRQt2g8fIEDA9EyO
+X-Received: by 2002:a17:90b:2204:b0:29b:a149:2ff6 with SMTP id
+ kw4-20020a17090b220400b0029ba1492ff6mr10901308pjb.38.1710310064511; 
+ Tue, 12 Mar 2024 23:07:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPVP9DDJc/iaFhEKZYcgbFp+NTMCoEeL5VXzHkATf17Eio8UJPT/bhZ3MzD3Os0tbgQfwujQ==
+X-Received: by 2002:a17:90b:2204:b0:29b:a149:2ff6 with SMTP id
+ kw4-20020a17090b220400b0029ba1492ff6mr10901298pjb.38.1710310064140; 
+ Tue, 12 Mar 2024 23:07:44 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.155.110])
+ by smtp.gmail.com with ESMTPSA id
+ mz9-20020a17090b378900b0029c09574b43sm599270pjb.20.2024.03.12.23.07.42
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 12 Mar 2024 23:07:43 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH] SMBIOS: fix long lines
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <9bce53c4f7ffda8e4a49353902626702fa01e5a6.1710282571.git.mst@redhat.com>
+Date: Wed, 13 Mar 2024 11:37:30 +0530
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ Igor Mammedov <imammedo@redhat.com>
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Mar 2024 15:38:23 +1000
-Message-Id: <CZSDOZT1RURT.3FBGNCY6GQ1WE@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Pavel Dovgalyuk" <pavel.dovgalyuk@ispras.ru>, <qemu-devel@nongnu.org>
-Cc: =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, "Richard
- Henderson" <richard.henderson@linaro.org>, =?utf-8?q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "Paolo Bonzini" <pbonzini@redhat.com>, "John
- Snow" <jsnow@redhat.com>, "Cleber Rosa" <crosa@redhat.com>, "Wainer dos
- Santos Moschetta" <wainersm@redhat.com>, "Beraldo Leal" <bleal@redhat.com>,
- "Michael Tokarev" <mjt@tls.msk.ru>
-Subject: Re: [PATCH v4 11/24] net: Use virtual time for net announce
-X-Mailer: aerc 0.15.2
-References: <20240311174026.2177152-1-npiggin@gmail.com>
- <20240311174026.2177152-12-npiggin@gmail.com>
- <6e9b8e49-f00f-46fc-bbf8-4af27e0c3906@ispras.ru>
- <CZRQ0IX3UQRZ.KXS6OX3HY1RD@wheely>
- <13c1e838-0c0a-42e9-baa4-2418569311d5@ispras.ru>
-In-Reply-To: <13c1e838-0c0a-42e9-baa4-2418569311d5@ispras.ru>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x1035.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Message-Id: <85FF2C3B-CC90-45C9-AF6F-9E02E5EB4114@redhat.com>
+References: <9bce53c4f7ffda8e4a49353902626702fa01e5a6.1710282571.git.mst@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,64 +101,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue Mar 12, 2024 at 9:12 PM AEST, Pavel Dovgalyuk wrote:
-> On 12.03.2024 14:05, Nicholas Piggin wrote:
-> > On Tue Mar 12, 2024 at 7:09 PM AEST, Pavel Dovgalyuk wrote:
-> >> This won't work, as needed. Announce timer can't be enabled, because
-> >> it is set in post_load function. Therefore announce callbacks break
-> >> the replay, when virtio-net is used with snapshots.
-> >=20
-> > I see. Is that somehow marked as being incompatible with rr?
->
-> Here's the prior discussion on it:=20
-> https://lore.kernel.org/qemu-devel/8735ovx0zd.fsf@linaro.org/t/
 
-Thanks for that context. You already fixed some of these, lol that
-would have saved me a few hours. Maybe clearing the announce flag
-is the right way to solve this, I might take that instead.
 
-Trouble is we have virtio-net selftests in tests already and this
-causes failures. So we need to get it fixed. I do think the bh API
-is a bit clunky and could be revised into a name that makes more
-sense for the non-replay developer, but that's really a separate
-issue and should not prevent this bug fixes being merged.
+> On 13-Mar-2024, at 03:59, Michael S. Tsirkin <mst@redhat.com> wrote:
+>=20
+> Break up long lines to fit under 80/90 char limit.
+>=20
+> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-We really need non-flaky rr testing upstream because it's quite
-easy to break. So I will keep trying to get these merged.
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 
-Thanks,
-Nick
-
->
->
-> >=20
-> > Thanks,
-> > Nick
-> >=20
-> >>
-> >> On 11.03.2024 20:40, Nicholas Piggin wrote:
-> >>> Using virtual time for announce ensures that guest visible effects
-> >>> are deterministic and don't break replay.
-> >>>
-> >>> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-> >>> ---
-> >>>    net/announce.c | 2 +-
-> >>>    1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/net/announce.c b/net/announce.c
-> >>> index 9e99044422..70b5d5e822 100644
-> >>> --- a/net/announce.c
-> >>> +++ b/net/announce.c
-> >>> @@ -187,7 +187,7 @@ static void qemu_announce_self_once(void *opaque)
-> >>>   =20
-> >>>    void qemu_announce_self(AnnounceTimer *timer, AnnounceParameters *=
-params)
-> >>>    {
-> >>> -    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_REALTIME,
-> >>> +    qemu_announce_timer_reset(timer, params, QEMU_CLOCK_VIRTUAL,
-> >>>                                  qemu_announce_self_once, timer);
-> >>>        if (params->rounds) {
-> >>>            qemu_announce_self_once(timer);
-> >=20
+> ---
+> hw/smbios/smbios.c | 9 ++++++---
+> 1 file changed, 6 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+> index e3d5d8f2e2..949c2d74a1 100644
+> --- a/hw/smbios/smbios.c
+> +++ b/hw/smbios/smbios.c
+> @@ -1592,12 +1592,15 @@ void smbios_entry_add(QemuOpts *opts, Error =
+**errp)
+>             t =3D g_new0(struct type9_instance, 1);
+>             save_opt(&t->slot_designation, opts, "slot_designation");
+>             t->slot_type =3D qemu_opt_get_number(opts, "slot_type", =
+0);
+> -            t->slot_data_bus_width =3D qemu_opt_get_number(opts, =
+"slot_data_bus_width", 0);
+> +            t->slot_data_bus_width =3D
+> +                qemu_opt_get_number(opts, "slot_data_bus_width", 0);
+>             t->current_usage =3D qemu_opt_get_number(opts, =
+"current_usage", 0);
+>             t->slot_length =3D qemu_opt_get_number(opts, =
+"slot_length", 0);
+>             t->slot_id =3D qemu_opt_get_number(opts, "slot_id", 0);
+> -            t->slot_characteristics1 =3D qemu_opt_get_number(opts, =
+"slot_characteristics1", 0);
+> -            t->slot_characteristics2 =3D qemu_opt_get_number(opts, =
+"slot_characteristics2", 0);
+> +            t->slot_characteristics1 =3D
+> +                qemu_opt_get_number(opts, "slot_characteristics1", =
+0);
+> +            t->slot_characteristics2 =3D
+> +                qemu_opt_get_number(opts, "slot_characteristics2", =
+0);
+>             save_opt(&t->pcidev, opts, "pcidev");
+>             QTAILQ_INSERT_TAIL(&type9, t, next);
+>             return;
+> --=20
+> MST
+>=20
 
 
