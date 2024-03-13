@@ -2,60 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E68E687A426
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2894187A43D
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:51:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkK8Q-00080R-Vd; Wed, 13 Mar 2024 04:38:51 -0400
+	id 1rkKJK-0002n7-9Y; Wed, 13 Mar 2024 04:50:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rkK8H-000805-0s; Wed, 13 Mar 2024 04:38:42 -0400
-Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rkKJ3-0002jE-I3
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:49:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rkK8D-0006U9-QL; Wed, 13 Mar 2024 04:38:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1710319102; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
- bh=mn345pKhc48JP8shvQPWdOY1zWmG8wfRyHOjI0n2VqE=;
- b=b1ORzfEMNeScAeAZ9UW+sg9qBfgA6w1GA8yQ35hZ4A3FW4oJ/m0UKhJz5+ocZvWE7GX9xPS6zcFLZOv68KR88PvDOt08r0JND9LV4fZla3kSqwmIq1s1V9ed94Yc6W/gZkKntc2xD6GMcUj8+PavI5T/5/YpPjgPI3N/eaWAejw=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R141e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
- MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
- TI=SMTPD_---0W2ObjtA_1710319099; 
-Received: from 30.21.185.204(mailfrom:eric.huang@linux.alibaba.com
- fp:SMTPD_---0W2ObjtA_1710319099) by smtp.aliyun-inc.com;
- Wed, 13 Mar 2024 16:38:20 +0800
-Message-ID: <b97ceb4f-e284-411c-aeb9-228ef8c92144@linux.alibaba.com>
-Date: Wed, 13 Mar 2024 16:38:19 +0800
+ (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
+ id 1rkKJ1-0000DA-KW
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:49:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710319785;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=nak0yr6B3kWAnErxNK2rR0lCio2XzH+ueyZd9XmZcIQ=;
+ b=aaB8EWS5+mdu1YmNQ2fR9F8aQB6dzGMbJQZuLvdkKrYcDgS8/kIkhZ+NpfGvfr9Sd1MjBR
+ N41ySPWxDdw3CLyVB4ZHXsBda4A8nQgNtHF4gdAjEstOIi4CdW26IgYVukKyH61yJ7Ms22
+ wnrFkiuRTu73Xzg6eup3bgumv5VdIvQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-u_PmLlb_O_6gG8VO9zmm9w-1; Wed,
+ 13 Mar 2024 04:49:44 -0400
+X-MC-Unique: u_PmLlb_O_6gG8VO9zmm9w-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DBC04380228B;
+ Wed, 13 Mar 2024 08:49:43 +0000 (UTC)
+Received: from kaapi.redhat.com (unknown [10.67.24.5])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C63F7492BC6;
+ Wed, 13 Mar 2024 08:49:39 +0000 (UTC)
+From: Prasad Pandit <ppandit@redhat.com>
+To: stefanha@redhat.com
+Cc: kwolf@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
+ mtosatti@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
+Subject: [PATCH v3] linux-aio: add IO_CMD_FDSYNC command support
+Date: Wed, 13 Mar 2024 14:19:35 +0530
+Message-ID: <20240313084935.1412274-1-ppandit@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: Implement dynamic establishment of
- custom decoder
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
- alistair.francis@wdc.com, palmer@dabbelt.com,
- Christoph Muellner <christoph.muellner@vrull.eu>
-References: <20240312054553.11811-1-eric.huang@linux.alibaba.com>
- <8f23924f-af5c-4bc1-94f1-143bc5c8184d@linaro.org>
-From: Huang Tao <eric.huang@linux.alibaba.com>
-In-Reply-To: <8f23924f-af5c-4bc1-94f1-143bc5c8184d@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.101;
- envelope-from=eric.huang@linux.alibaba.com;
- helo=out30-101.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,38 +76,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'm sorry for making this mistake and thank you for your patience.
+From: Prasad Pandit <pjp@fedoraproject.org>
 
-In the next version, I will use GPtrArray you mentioned earlier to solve 
-the problem.
+Libaio defines IO_CMD_FDSYNC command to sync all outstanding
+asynchronous I/O operations, by flushing out file data to the
+disk storage.
 
-Thanks,
+Enable linux-aio to submit such aio request. This helps to
+reduce latency induced via pthread_create calls by
+thread-pool (aio=threads).
 
-Huang Tao
+Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+---
+ block/file-posix.c |  7 +++++++
+ block/linux-aio.c  | 22 +++++++++++++++++++++-
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-On 2024/3/12 21:57, Richard Henderson wrote:
-> On 3/11/24 19:45, Huang Tao wrote:
->> +static void riscv_cpu_finalize_dynamic_decoder(RISCVCPU *cpu)
->> +{
->> +    decode_fn *dynamic_decoders;
->> +    dynamic_decoders = g_new0(decode_fn, decoder_table_size);
->
-> Allocating ARRAY_SIZE(decoder_table)...
->
->> +    int j = 0;
->> +    for (size_t i = 0; i < decoder_table_size; ++i) {
->> +        if (decoder_table[i].guard_func &&
->> +            decoder_table[i].guard_func(&cpu->cfg)) {
->> +            dynamic_decoders[j] = decoder_table[i].decode_fn;
->> +            j++;
->> +        }
->
-> Potentially enabling all elements...
->
->> +        for (size_t i = 0; ctx->decoders[i]; ++i) {
->
-> Reading past the end of the array expecting an extra NULL entry.
->
->
-> r~
+v3: check if host kernel supports aio_fsync call
+  -> https://lists.nongnu.org/archive/html/qemu-devel/2024-03/msg03210.html
+
+diff --git a/block/file-posix.c b/block/file-posix.c
+index 35684f7e21..a30494d1a8 100644
+--- a/block/file-posix.c
++++ b/block/file-posix.c
+@@ -2453,6 +2453,8 @@ static inline bool raw_check_linux_io_uring(BDRVRawState *s)
+ #endif
+ 
+ #ifdef CONFIG_LINUX_AIO
++extern bool laio_has_fdsync(int);
++
+ static inline bool raw_check_linux_aio(BDRVRawState *s)
+ {
+     Error *local_err = NULL;
+@@ -2599,6 +2601,11 @@ static int coroutine_fn raw_co_flush_to_disk(BlockDriverState *bs)
+     if (raw_check_linux_io_uring(s)) {
+         return luring_co_submit(bs, s->fd, 0, NULL, QEMU_AIO_FLUSH);
+     }
++#endif
++#ifdef CONFIG_LINUX_AIO
++    if (raw_check_linux_aio(s) && laio_has_fdsync(s->fd)) {
++        return laio_co_submit(s->fd, 0, NULL, QEMU_AIO_FLUSH, 0);
++    }
+ #endif
+     return raw_thread_pool_submit(handle_aiocb_flush, &acb);
+ }
+diff --git a/block/linux-aio.c b/block/linux-aio.c
+index ec05d946f3..ed20a503e9 100644
+--- a/block/linux-aio.c
++++ b/block/linux-aio.c
+@@ -67,6 +67,7 @@ struct LinuxAioState {
+     int event_max;
+ };
+ 
++bool laio_has_fdsync(int);
+ static void ioq_submit(LinuxAioState *s);
+ 
+ static inline ssize_t io_event_ret(struct io_event *ev)
+@@ -384,6 +385,9 @@ static int laio_do_submit(int fd, struct qemu_laiocb *laiocb, off_t offset,
+     case QEMU_AIO_READ:
+         io_prep_preadv(iocbs, fd, qiov->iov, qiov->niov, offset);
+         break;
++    case QEMU_AIO_FLUSH:
++        io_prep_fdsync(iocbs, fd);
++        break;
+     /* Currently Linux kernel does not support other operations */
+     default:
+         fprintf(stderr, "%s: invalid AIO request type 0x%x.\n",
+@@ -412,7 +416,7 @@ int coroutine_fn laio_co_submit(int fd, uint64_t offset, QEMUIOVector *qiov,
+     AioContext *ctx = qemu_get_current_aio_context();
+     struct qemu_laiocb laiocb = {
+         .co         = qemu_coroutine_self(),
+-        .nbytes     = qiov->size,
++        .nbytes     = qiov ? qiov->size : 0,
+         .ctx        = aio_get_linux_aio(ctx),
+         .ret        = -EINPROGRESS,
+         .is_read    = (type == QEMU_AIO_READ),
+@@ -486,3 +490,19 @@ void laio_cleanup(LinuxAioState *s)
+     }
+     g_free(s);
+ }
++
++bool laio_has_fdsync(int fd)
++{
++    struct iocb cb;
++    struct iocb *cbs[] = {&cb, NULL};
++
++    io_context_t ctx = 0;
++    io_setup(1, &ctx);
++
++    /* check if host kernel supports IO_CMD_FDSYNC */
++    io_prep_fdsync(&cb, fd);
++    int ret = io_submit(ctx, 1, cbs);
++
++    io_destroy(ctx);
++    return (ret == -EINVAL) ? false : true;
++}
+-- 
+2.44.0
+
 
