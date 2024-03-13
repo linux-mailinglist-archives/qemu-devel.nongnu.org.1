@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0245087AA32
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5659987AA2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:12:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQGM-0005UB-Pb; Wed, 13 Mar 2024 11:11:34 -0400
+	id 1rkQGg-0006NM-Tr; Wed, 13 Mar 2024 11:11:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rkQFx-0005Ff-Cv
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 11:11:01 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ id 1rkQGK-0005ii-By
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 11:11:30 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rkQFu-0006f9-S4
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 11:11:00 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2d46dd5f222so8417811fa.1
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 08:10:58 -0700 (PDT)
+ id 1rkQG8-0006ix-GY
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 11:11:24 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d28387db09so76731941fa.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 08:11:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710342656; x=1710947456; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710342671; x=1710947471; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=uaXkTqI9EpAo9HeThMs5S2pqOUSLOb0LeiEjrTeuZg4=;
- b=t0jK0mOMA8R+32v4DGnOWQtAITokB0okQadi+qy9ASG4PDqntU8Mys33dOmpoYIPxW
- icrf1uBNRCVqnRgbhRWmBoIDbzh/8aRZ6YymFajaq4Nt+ivDjprXf5QqrKDV1yMz+gIS
- baqzPjPh/5IQNQQusj6Egw1BKL7JWUpr/qBZJHfwJJTRUfaxAHN1h76YPke5ESNGga4/
- HlU2P+wp8tMtdu2av8uIWIE71WcpV8p4CAgseoNTBcqXA8iVhb8De1tHtYgpzldShw5i
- O8myZUSSRFxsvKcqyAWfm1fWQ0tAD5P04LRWi0UFhrRh5ghBDtXMbX7URZy+X9JEIObx
- 18uA==
+ bh=Pcuf9ExumrJw+NY8zgL95k/yxfqZ38jP6HeYvh0wAKY=;
+ b=JqBUsRflzyjBbnlKCPWkHk1wakqBm02mfrtAcQufJ0JcEWImVJCxnAYiPZ2tFIvVQe
+ qD2yJzJHwWKlighYuBDz9OBHtb+SfEZqlg2THaJ/vOnFhGDLIsHQ7wTBQj3oI2J43g/Z
+ Sx58fnjZa8xd6qaopK5EQ+Trso3A8bAR1w0hMkqeqm0TIrVdrb/QUpsAb2sbwCWSnVc3
+ AJIP2KRpGvSOpwKG6Bq9P75gnb4qg4tHrGs8Wp5iPI1jAVhHEIOGhUKa0BHLOkXrKR3T
+ frkCXkqsYcLbOKy1k26tIrfBOxF6fdUtm7LI8fkCa4JvR0In9RnTitUB+MCHNSjxdmlT
+ Mpiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710342656; x=1710947456;
+ d=1e100.net; s=20230601; t=1710342671; x=1710947471;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=uaXkTqI9EpAo9HeThMs5S2pqOUSLOb0LeiEjrTeuZg4=;
- b=tEAQTqcGzAbYhYrWAbP4RN8JcD7VLL2CbMfmu8F3f6yNALDG2qiOZdnr1/sYXiPx49
- lH8wYhL7tev+m2U9UmmIYLHttys1KADW5N+afbfjXRWwzTtL9AM1zVYCISbOqH60FsqD
- AULxcMNasjz7meOJENbJ98mPZWF0MJVqkNbB/ZmoQDhbU2risjWpZoxiyjhelCbHSTWR
- qcSFJN8FdmGWROXnGrqJlNzUxOnS6/P/RNdHhDrqoWXNMYDyD9okLmC14krB/kITADUB
- aDslbC6ifamkpncHzlSBNLcyJ4vUDUylwhmBAnLFWBcBjWmJ16h+xabZFXwaHO+kcexY
- Ad9w==
-X-Gm-Message-State: AOJu0Yxe3aC59awDS5aoePXuVXiQwoFrgMDr6ZN5DSXAkE7ZwYjsgRgg
- dxxfNsR/+j+29SLN9eFH+sNv3/IudtfePfhk2QJdKkCAl1tirendDR4xpk16f4TUQak21Yfcct6
- 4+FXPPY/H/QaEoNkMJ3jJ0wyz7Z4RF27pLhS8Ew==
-X-Google-Smtp-Source: AGHT+IFFiHSOT2HsxOzXBZ40h2MudHD+8DJ+DGj3iXy4o982atqu62l+igLAUYks8TDAoG4BiGqGiWbhy5SJXSRQ81s=
-X-Received: by 2002:a2e:350d:0:b0:2d4:16a5:b361 with SMTP id
- z13-20020a2e350d000000b002d416a5b361mr2472179ljz.25.1710342655996; Wed, 13
- Mar 2024 08:10:55 -0700 (PDT)
+ bh=Pcuf9ExumrJw+NY8zgL95k/yxfqZ38jP6HeYvh0wAKY=;
+ b=m38qJpE4xFrzaad30xzQdToLdAdjFbdHJ4IlekroJmuTjOSR+DOiVvDNZiqrzXGGJb
+ AGiW89s0ZrC9JmwjFgPEVtqhxHdgYFENWv5M9kmT7pg4s2Vy9o7uWgZq4GDE9SbOiwmp
+ TN0zkGjEgTJPEoZGseBJkvlOJlmncZooYguQjbLvUMn3CzmE3aJnNGrQ2T1hKP0+Y5qz
+ MNxFM9v+fi8WZlTgLaDSDN8Xn8hs7mL5EbEoeV6sEbfaW0zijo7GROHeeN74Ga83oL8Y
+ 9BN7HTEilcbEbubvfb14PD3kk67v1bBciS4jkDskQxiWx2ArxjnK9iB/df9w1KfYCLKY
+ jCNA==
+X-Gm-Message-State: AOJu0Yz+RsQq5nPhopwWKlyT6U4RZfmWGJu3CZcjPu+lYO0J8GUOUlT/
+ GPSYEisAH4vzMVCO5lpNWXgOXCTBpUS9XNKMWVVUnOeHu0WmiFlJJ5j3pvd5BUHLAbqcIvcQDMh
+ /rIiVPQOrx4t5jF2Jr8FrPb2YvscTtkUK6FcrQA==
+X-Google-Smtp-Source: AGHT+IHVSV9AaflNPIKnXkwz3dAo5Qzv+l0Yx+tjBUSHsRLrhYwme4Oeqh7VPVVpTMc1CqNLI/aKLvhXq7Y7l/VY7Sc=
+X-Received: by 2002:a2e:b889:0:b0:2d2:e2b1:4488 with SMTP id
+ r9-20020a2eb889000000b002d2e2b14488mr10121095ljp.22.1710342670895; Wed, 13
+ Mar 2024 08:11:10 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240312190144.433336-1-stefanha@redhat.com>
-In-Reply-To: <20240312190144.433336-1-stefanha@redhat.com>
+References: <20240312165851.2240242-1-npiggin@gmail.com>
+In-Reply-To: <20240312165851.2240242-1-npiggin@gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 13 Mar 2024 15:10:44 +0000
-Message-ID: <CAFEAcA98gQQBhQJbA-i7G034hmb0vRgrcmgTxGGKGZcTxiiVDw@mail.gmail.com>
-Subject: Re: [PULL 0/2] Tracing patches
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- John Snow <jsnow@redhat.com>
+Date: Wed, 13 Mar 2024 15:10:59 +0000
+Message-ID: <CAFEAcA-XDaVY_0RSy48rdC6Co_B6d0dE2afJi2_fgbdV-O8Y3Q@mail.gmail.com>
+Subject: Re: [PULL 00/38] ppc-for-9.0-2 queue
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,22 +87,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Mar 2024 at 19:04, Stefan Hajnoczi <stefanha@redhat.com> wrote:
+On Tue, 12 Mar 2024 at 16:59, Nicholas Piggin <npiggin@gmail.com> wrote:
 >
-> The following changes since commit 8f3f329f5e0117bd1a23a79ab751f8a7d3471e4b:
+> The following changes since commit 35ac6831d98e18e2c78c85c93e3a6ca1f1ae3e58:
 >
->   Merge tag 'migration-20240311-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-03-12 11:35:41 +0000)
+>   Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-03-12 13:42:57 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/stefanha/qemu.git tags/tracing-pull-request
+>   https://gitlab.com/npiggin/qemu.git tags/pull-ppc-for-9.0-2-20240313
 >
-> for you to fetch changes up to 2b608e16ca00017509fa2a211b7b49aacdedb760:
+> for you to fetch changes up to e1617b845104032f0aaad9b91dcda56c7c437998:
 >
->   meson: generate .stp files for tools too (2024-03-12 14:52:07 -0400)
+>   spapr: nested: Introduce cap-nested-papr for Nested PAPR API (2024-03-13 02:47:04 +1000)
 >
 > ----------------------------------------------------------------
-> Pull request
+> * PAPR nested hypervisor host implementation for spapr TCG
+> * excp_helper.c code cleanups and improvements
+> * Move more ops to decodetree
+> * Deprecate pseries-2.12 machines and P9 and P10 DD1.0 CPUs
+> * Document running Linux on AmigaNG
+> * Update dt feature advertising POWER CPUs.
+> * Add P10 PMU SPRs
+> * Improve pnv topology calculation for SMT8 CPUs.
+> * Various bug fixes.
 >
 
 
