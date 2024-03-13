@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F2887AF53
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A14B87AF55
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:22:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkTDr-0002nw-E6; Wed, 13 Mar 2024 14:21:03 -0400
+	id 1rkTDs-0002o8-2b; Wed, 13 Mar 2024 14:21:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rkTDp-0002n2-Ex
+ id 1rkTDp-0002n3-H0
  for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:21:01 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rkTDm-0007vn-CD
+ id 1rkTDo-0007w1-0m
  for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:21:01 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6e6c38be762so32334b3a.1
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:20:58 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e6b459b457so50663b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710354057; x=1710958857; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1710354058; x=1710958858; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rH1IZxFnTB29OgOKliVMKa8CVeUZ97GXo3gLLU6YFSU=;
- b=Mm9DwHJp26QoRo5twDnoUap3DfaHJcieTQy/+k1CBFa1CiUqyRZOv9KQSHbKMko1ha
- KQwAz1b/5WWw0JWfZBN86cL4Yj7/ONWgUQtBfTQisQaCc8LmlHdp9AZLVtBstabWAmlm
- kkC00uNqEzBG19q5iImhMSectOchhv16ZJbHUefXJAZy+UwMDBrXDJo2vWBdanMyCkmI
- WZoASDksuqXjTkr1E80/BevUTpvIXMWsKftR/isveRgjGdPFiGlUOzVKV5eTAfGaSeF4
- EERpNtw04MdTtgDoy/zADmXnNfROO78kcA0QptqWt3wVmS7wElu07OTZz8SDQBDL+ifj
- rb7w==
+ :reply-to; bh=y5Oe5PylNVWZYqe4Ru7IuPn5NqtA63B9U4CZo1rmTfM=;
+ b=QWBvvpt+JAdqVN95D1Tqr9TCY5QIzaIqALPJEhSAm7VU+HorE1gF5Z2HYG7RwPYggH
+ rxqF0ZkSYTXdBTbz6JHoyaiY7VeqifTkmLNjrJGT9DNUXsvP4n5N75PjMJzCQlBwuOep
+ L9uEO7OAWeF+Pi7dfJmho3TUO+qeLyJTFkeshy4U367SHDFvwdRISTfxUdtNG7fNAJkv
+ Q2Z8EhxqEKi2OjDlGjK8E+b/oYm6XTOO3CdqAlxY1gtdC9I79GKHvEeATwU0C6y04hhr
+ oLSoSazkIURu02eAeQmHcdC4rLhcLbfPLANSk0UTc23gG+MdiFSwOW3GIdjx6M+ZjPpU
+ l+zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710354057; x=1710958857;
+ d=1e100.net; s=20230601; t=1710354058; x=1710958858;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rH1IZxFnTB29OgOKliVMKa8CVeUZ97GXo3gLLU6YFSU=;
- b=Jc5JmLnam1+HFeciQM9p66CitziCiDBaP7M2cFq9cd02OcI+ClaEG9E49R3N7Ge9mm
- 368xBKGEE64OAukyuJvF6sP8vdfDStMrFuF6Vu3jMW61cfaB9+a9mNgiDlWVY4acAtIm
- D292fc5M5HoN+ONM00NOU8l9FzciGCwUiT3oBK+m51l0nymW1IRSgIykTSCFC7PqgylR
- ca2TwR3EnHW8BVDEC7kh0x9QreROI4HxUvO5VqsXBF4BZQQQpyiB274yEscD/UZqlvbx
- uJi5kjNiACNzJp7i7cTrY3IChsbycAWSYcfUM4LUUcKok0O1RhJDoQmIdcVkXFsrgsTD
- nhGw==
+ bh=y5Oe5PylNVWZYqe4Ru7IuPn5NqtA63B9U4CZo1rmTfM=;
+ b=qXM47D0xyEm3mXTnAffxp7ewv/nbT84C35E6W2f6PYNy6Boz3V0onSDEIJ8+wTd2Q+
+ 5yVkFxOHIed0wz50X4dOY3G91lEjm84VsjRCMBsY61FxoYdXNSE8BurbZzsNMmln+VrL
+ kRkCkQQ61QHrXuO1fdRTAVUdwY62RcpcvKm92YqdgJNKi5U2By2G6izbcevSmK2UnXup
+ /0MNpe30znl0LswAw/zNqk3yLPm5taHc8Jn+aQCelcoA2NF1eeDYiYaejLNKI033K7j7
+ thcY/jcot+g/fYRfVZn7Ac755gj53IAXjE/yUWmbYlyck3rihLccSdhfqwijSsC8QKrm
+ 5xiQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVARyyPTkr4A9JmEzeASQdjXGmQNdSgD6dt+DXR8mMZcCLMovoWr5PMrq3ThUz0rKF6iVt11RjRRSZECiz3/HERik1eXkE=
-X-Gm-Message-State: AOJu0Yzo5Ye1aIX6kewL+ADxVO2s5ZvcbzQGHfGxOW0eAbwhJOioGYoC
- qHHBOhU/wOjhXywuzOphTSwD+YSSBKlhf/EyNwBdKzSKt9bIDb6CW8TjZa9+iZYD4cL0PcAisA3
- Zk9c=
-X-Google-Smtp-Source: AGHT+IG8p2fAkQShZAzBFqaNHGI+t7NIpwu2LFoPwzU6SbjWH0AB/r72vVl3C8gGI5e+JQt5lxDDjQ==
-X-Received: by 2002:a05:6a20:2d0b:b0:1a1:4766:5b1a with SMTP id
- g11-20020a056a202d0b00b001a147665b1amr2474279pzl.1.1710354056912; 
- Wed, 13 Mar 2024 11:20:56 -0700 (PDT)
+ AJvYcCUWp9689FSFWbvHJernbSeykzSKV8t1SR6MDtaw8Pg/1gWKhK/PZLzrA+g34E2kCtt1vXPQZ7D7vZ61mwz+JygsY6kvcaU=
+X-Gm-Message-State: AOJu0YwVRrq1nse/5u9q7ITqjR1V6/8q+hPQx/7pFrL4rRXwiMzKPrR5
+ BBOBhnywCI7dovtR+CG8sZGAf93vOncXwk/ArzoUh6H8T+vrnAfQg2IZVd3i3rk=
+X-Google-Smtp-Source: AGHT+IFInqwzooRcyp3lKolnKQP+vSRNSZQNiMbfvikaLAeAENg0ujwpFcInV7NErrnUw9jLIu2lLg==
+X-Received: by 2002:a05:6a20:43a9:b0:1a1:67a6:511e with SMTP id
+ i41-20020a056a2043a900b001a167a6511emr2965946pzl.2.1710354058592; 
+ Wed, 13 Mar 2024 11:20:58 -0700 (PDT)
 Received: from localhost.localdomain ([49.37.251.185])
  by smtp.gmail.com with ESMTPSA id
- l22-20020a62be16000000b006e6a16acf85sm3457528pff.87.2024.03.13.11.20.55
+ l22-20020a62be16000000b006e6a16acf85sm3457528pff.87.2024.03.13.11.20.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Mar 2024 11:20:56 -0700 (PDT)
+ Wed, 13 Mar 2024 11:20:58 -0700 (PDT)
 From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
-Subject: [PATCH v5 2/3] target/riscv: Expose sdtrig ISA extension
-Date: Wed, 13 Mar 2024 23:50:08 +0530
-Message-Id: <20240313182009.608685-3-hchauhan@ventanamicro.com>
+Subject: [PATCH v5 3/3] target/riscv: Enable sdtrig for Ventana's Veyron CPUs
+Date: Wed, 13 Mar 2024 23:50:09 +0530
+Message-Id: <20240313182009.608685-4-hchauhan@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313182009.608685-1-hchauhan@ventanamicro.com>
 References: <20240313182009.608685-1-hchauhan@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,53 +92,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds "sdtrig" in the ISA string when sdtrig extension is enabled.
-The sdtrig extension may or may not be implemented in a system. Therefore, the
-           -cpu rv64,sdtrig=<true/false>
-option can be used to dynamically turn sdtrig extension on or off.
-
-Since, the sdtrig ISA extension is a superset of debug specification, disable
-the debug property when sdtrig is enabled. A warning is printed when this is
-done.
-
-By default, the sdtrig extension is disabled and debug property enabled as usual.
+Ventana's Veyron CPUs support sdtrig ISA extension. By default, enable
+the sdtrig extension and disable the debug property for these CPUs.
 
 Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
 ---
- target/riscv/cpu.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ target/riscv/cpu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 2602aae9f5..e0710010f5 100644
+index e0710010f5..a7ea66c7fa 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -175,6 +175,7 @@ const RISCVIsaExtData isa_edata_arr[] = {
-     ISA_EXT_DATA_ENTRY(zvkt, PRIV_VERSION_1_12_0, ext_zvkt),
-     ISA_EXT_DATA_ENTRY(zhinx, PRIV_VERSION_1_12_0, ext_zhinx),
-     ISA_EXT_DATA_ENTRY(zhinxmin, PRIV_VERSION_1_12_0, ext_zhinxmin),
-+    ISA_EXT_DATA_ENTRY(sdtrig, PRIV_VERSION_1_12_0, ext_sdtrig),
-     ISA_EXT_DATA_ENTRY(smaia, PRIV_VERSION_1_12_0, ext_smaia),
-     ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
-     ISA_EXT_DATA_ENTRY(smstateen, PRIV_VERSION_1_12_0, ext_smstateen),
-@@ -1008,6 +1009,10 @@ static void riscv_cpu_reset_hold(Object *obj)
-     set_default_nan_mode(1, &env->fp_status);
- 
- #ifndef CONFIG_USER_ONLY
-+    if (!cpu->cfg.debug && cpu->cfg.ext_sdtrig) {
-+	    cpu->cfg.debug = 1;
-+    }
-+
-     if (cpu->cfg.debug || cpu->cfg.ext_sdtrig) {
-         riscv_trigger_reset_hold(env);
-     }
-@@ -1480,6 +1485,7 @@ const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     MULTI_EXT_CFG_BOOL("zvfhmin", ext_zvfhmin, false),
-     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
- 
-+    MULTI_EXT_CFG_BOOL("sdtrig", ext_sdtrig, false),
-     MULTI_EXT_CFG_BOOL("smaia", ext_smaia, false),
-     MULTI_EXT_CFG_BOOL("smepmp", ext_smepmp, false),
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
+@@ -568,7 +568,9 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
+     cpu->cfg.ext_zicbom = true;
+     cpu->cfg.cbom_blocksize = 64;
+     cpu->cfg.cboz_blocksize = 64;
++    cpu->cfg.debug = false;
+     cpu->cfg.ext_zicboz = true;
++    cpu->cfg.ext_sdtrig = true;
+     cpu->cfg.ext_smaia = true;
+     cpu->cfg.ext_ssaia = true;
+     cpu->cfg.ext_sscofpmf = true;
 -- 
 2.34.1
 
