@@ -2,71 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C9C87A556
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 10:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB1687A596
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 11:10:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkLMb-0007ee-OF; Wed, 13 Mar 2024 05:57:33 -0400
+	id 1rkLXR-0001qs-IL; Wed, 13 Mar 2024 06:08:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkLMY-0007eV-UU
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 05:57:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1rkLXF-0001pR-IG; Wed, 13 Mar 2024 06:08:35 -0400
+Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkLMU-0004tX-Dz
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 05:57:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710323845;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=u8sMROQ3yib4xGEnFk8bKAONZocACo5qE86giw+lzeU=;
- b=bCVCMYD/YsqLr8F6Zh/ndlrSh8FRo1MoG1Ytm0M0aXqO1vShqMgcohTYrZj1YhQQgfyE9E
- lzvyB+cIhLRu7GkJi6E/vloJ4HNXdHqEH57DX6mw1kjmrDKXA2I7JOiCo5t/vL0uGqpkLc
- fcm/l6FvGDqHAKgJT90L2fw8XhH4OUE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-587-MlqI8cGpNySajLvg3Pp2fg-1; Wed, 13 Mar 2024 05:57:21 -0400
-X-MC-Unique: MlqI8cGpNySajLvg3Pp2fg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 45F32101A552;
- Wed, 13 Mar 2024 09:57:21 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.193.119])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C2F492166B4F;
- Wed, 13 Mar 2024 09:57:19 +0000 (UTC)
-Date: Wed, 13 Mar 2024 10:57:18 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH for 9.0] migration: Skip only empty block devices
-Message-ID: <ZfF4fhtyZOho51KN@redhat.com>
-References: <20240312120431.550054-1-clg@redhat.com>
- <ZfBKNhRkAt2_7hmc@x1n>
+ (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
+ id 1rkLXA-0006UK-T7; Wed, 13 Mar 2024 06:08:33 -0400
+Received: from localhost (localhost [127.0.0.1])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 76F3726084A;
+ Wed, 13 Mar 2024 11:08:23 +0100 (CET)
+X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
+Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
+ by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id NFR7it6ewZO2; Wed, 13 Mar 2024 11:08:21 +0100 (CET)
+Received: from [172.17.0.1] (83.11.22.169.ipv4.supernova.orange.pl
+ [83.11.22.169])
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id B39032601CE;
+ Wed, 13 Mar 2024 11:08:20 +0100 (CET)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Subject: [PATCH 0/3] tests/avocado: update sbsa-ref firmware to latest
+Date: Wed, 13 Mar 2024 11:08:18 +0100
+Message-Id: <20240313-sbsa-ref-firmware-update-v1-0-e166703c5424@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZfBKNhRkAt2_7hmc@x1n>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABJ78WUC/x2MSQqAMAwAvyI5G3CX+hXxUG2qObiQuIH4d4vHg
+ Zl5QEmYFJroAaGTldclQBpHMEx2GQnZBYYsyYokT3PUXi0KefQs82WF8Nic3QnrsjbO+MqVpoe
+ Qb0Hi+1+33ft+NPfWumoAAAA=
+To: qemu-devel@nongnu.org
+Cc: Radoslaw Biernacki <rad@semihalf.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Beraldo Leal <bleal@redhat.com>, Brad Smith <brad@comstyle.com>, 
+ qemu-arm@nongnu.org, Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+X-Mailer: b4 0.12.3
+Received-SPF: softfail client-ip=213.251.184.221;
+ envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +68,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 12.03.2024 um 13:27 hat Peter Xu geschrieben:
-> On Tue, Mar 12, 2024 at 01:04:31PM +0100, Cédric Le Goater wrote:
-> > The block .save_setup() handler calls a helper routine
-> > init_blk_migration() which builds a list of block devices to take into
-> > account for migration. When one device is found to be empty (sectors
-> > == 0), the loop exits and all the remaining devices are ignored. This
-> > is a regression introduced when bdrv_iterate() was removed.
-> > 
-> > Change that by skipping only empty devices.
-> > 
-> > Cc: Markus Armbruster <armbru@redhat.com>
-> > Suggested: Kevin Wolf <kwolf@redhat.com>
-> 
-> This should be:
-> 
-> Suggested-by: Kevin Wolf <kwolf@redhat.com>
-> 
-> I think the missed "by" caused Kevin not in the cc list, I added Kevin in.
-> 
-> I'll hold a bit for Kevin to ACK, no repost needed just for above; I can
-> fix it.
+Updating sbsa-ref firmware for QEMU CI was manual task. Now it is
+replaced by CI job run on CodeLinaro Gitlab instance.
 
-Thanks.
+This patchset updates to current state:
 
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+- Trusted Firmware v2.10.2 (latest LTS)
+- Tianocore EDK2 stable202402 (latest release)
+
+And Tianocore EDK2-platforms commit 085c2fb (edk2-platforms does not
+have releases).
+
+Firmware images were built using Debian 'bookworm' cross gcc 12.2.0
+compiler.
+
+And while I am in that file I dropped use of 'virtio-rng-pci' device as
+sbsa-ref is supposed to emulate physical hardware.
+
+OpenBSD updated to 7.4 version.
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+---
+Marcin Juszkiewicz (3):
+      tests/avocado: update sbsa-ref firmware
+      tests/avocado: drop virtio-rng from sbsa-ref tests
+      tests/avocado: use OpenBSD 7.4 for sbsa-ref
+
+ tests/avocado/machine_aarch64_sbsaref.py | 74 +++++++++++++++-----------------
+ 1 file changed, 34 insertions(+), 40 deletions(-)
+---
+base-commit: 0748129684be2773117b0b8fc3c60161abdb7bb8
+change-id: 20240313-sbsa-ref-firmware-update-7579d9f6d59b
+
+Best regards,
+-- 
+Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
 
