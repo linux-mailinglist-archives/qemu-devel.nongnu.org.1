@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB9B87B37D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:34:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F42087B382
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:35:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWEw-0001TD-Ks; Wed, 13 Mar 2024 17:34:22 -0400
+	id 1rkWF4-0001Ve-1C; Wed, 13 Mar 2024 17:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEu-0001RT-Cq
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:20 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWF2-0001V1-L2
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:28 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEr-0007pA-Uv
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:20 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-33e8e9a4edaso271771f8f.2
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEy-0007py-N7
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:28 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-413eee86528so2228745e9.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710365656; x=1710970456; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710365663; x=1710970463; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NkVZlzl/unZoGeVbI26i1HdVvdJ7WXs7uWwXIhdDAMs=;
- b=gB7ip64r1fdNpnHsSjG5CdD8P922Cnz0a82bUpmC+KxhBJP8JGhIvQtuqzBSXDTgZj
- GEkR4/fbsmJLj6YsXtpKXTIltVT0lGGIajLQY978/pGNNcXcQVIxiW9gxo9fdzqYjzro
- QsHe92zj248IurTwK4MWF0DQBJx8h04tzDxvi9cx0/W1n20R0aUz9OKrRvXY77y1zytf
- fcMKe5KQoTqUKC6kgS0ZUstW7sU+NjgYmOACkrRpn8m5e9ZBO6EaHQMkxsXs7/Vt3UMg
- fJOsilg3d3bhiZvnSbqcbgq3VkXjLpWYx/p2zfBJiXU3cGmAvHFAe8jC6eVyLQGM3Zro
- kZkw==
+ bh=RBkHrPM3L+Twu6UqfDL2FrSyFRu3n6fnatxa83i/Hyg=;
+ b=I437kgiG66I2bLr5WT0oT0B9o0NyniwhC/BMdRWe4TKKo35fnN6bIgTH1BwGeeC1Cr
+ o5JDfgvq2bXcnsFsqzCH0tzyCnNkCN3MzOmpgUuy1A0OZP1fo/c4yCmrxsNYv6bCNdC4
+ B0hss/24ZGin+5X60hFwupaP/Qyg4+M86knPdtRJRaz5smobddUEB6Ap9R5g0M24M8YU
+ wKLkck4DmiFShN+rx7Xw4oJO+RRWUA8UUbyUhR65ti8BsjRt4xf8ZJRgd4+G6YDhTDnr
+ vW4oUbpSK15BH/Pmx4p13kjTQq1MScT/dxO0y7e0JhXGjCtfWc/P7ROPkq2PSrsPJVcg
+ 4ACg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710365656; x=1710970456;
+ d=1e100.net; s=20230601; t=1710365663; x=1710970463;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NkVZlzl/unZoGeVbI26i1HdVvdJ7WXs7uWwXIhdDAMs=;
- b=t8buDaftgp0CEOeaeffM2KzstBhBMePeIn75lxS2n5PyBSkv9mKbdx6g2zZq85J7Xs
- 8qpp8rLChuqVI9ylFNe/cZg5v/dkNwnPr8dWgZPHJDvinPjX2aUh7UolSo5DANObCNhR
- 7o4FSb1qWIruTebwUqVRGkydhlkt6m9v56QiSLpMKr6PObdLREGh+SK2ciD0QnQm0WVw
- E9OBTIPYGnUNPxjkY/ystH+HR7tT1E7KbQlLG8/TeA2jVZeHpt2KLlt1NILTac0spEti
- S45KKnnYd59g8eXTXFZLT8AqZAry8MGBw+EZauTFs+T/G9qMdL9hhZcq9EYJIKcMNgPA
- dYkw==
+ bh=RBkHrPM3L+Twu6UqfDL2FrSyFRu3n6fnatxa83i/Hyg=;
+ b=QQVTGKDedf0rVWhwZEQRmaWLbPOkbvgf6koNc7zyMjxAXi2OQ2E8RIRyuSa/vwgr5P
+ 5iOJY0yQuZxQxxg6gWbNeWFZH1SaM5MMBTt5/TLfqVNlNC/gafBFDxihP+h8tLMKoCaU
+ AdGOuHpiaEjBGjpCwCykeDxPHkYdSDvc58Unogc8VkRrJTiYcl61oFDqo8ccQU/wLSPR
+ i8YiAjitFi0tFlcUwroXOacdJkqJ3+V4CPsKZ5EtzBcamxqt5VVzLDmgCpXwHw769KhG
+ cfv3sKgHoPR6p0lk856n+PSBdnarDALM6ogKBxrjzeO95VW2PqANfMWaibO9KrjaZ7bG
+ lUEw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVc5Y1S7BA0wJXSdB33cFiHDNvYrDjYsZ6KhrMK5TV+v26/Yhr+hobdxMlbEpzjkjHjwTTnkEjd9VC1C9/izP45zO2+m6c=
-X-Gm-Message-State: AOJu0YxqJxgbLJ1yrbtt+m92l36bN0OUNyocrpkJjV+OVoe12eUL2qg7
- h/EEtXvsCqHDiB07p2Os23D5Fez1ifhzLww0K8CJGjUbg+p2aK0wrh8uwXoR6zY=
-X-Google-Smtp-Source: AGHT+IF5WsGDrQo+P8+wndsqpq5rlWIg5Ja2k0U+H9QTbYxLwXBZ95dP9G4hsSowSlDC1YwVTcVYWQ==
-X-Received: by 2002:adf:f801:0:b0:33e:bb5c:f60a with SMTP id
- s1-20020adff801000000b0033ebb5cf60amr1934560wrp.66.1710365656644; 
- Wed, 13 Mar 2024 14:34:16 -0700 (PDT)
+ AJvYcCXHUrBrygIX6CPzrrAL0V2fhavBCAj4bHu8xTbMo337T8PaA/7HCK2e9LXn9dVCstG/pKyEogtFc2IVdHoh6+46lULttD0=
+X-Gm-Message-State: AOJu0YwWdWTgpepqM/qjmJI+W1+Fh/gE5LX3TMLMrm7d/5jvd0xkiC7X
+ ABWbvk0ORMOlo4KHf18OM0p0EhN9etKlT3JDNW3u8VNySWO2t7r2/grCFH8LxII=
+X-Google-Smtp-Source: AGHT+IEWLRD6Rh+ERvL57+fMf1xEvhJUJETwoZ1vcdA8xOEE01AU/8Y6q9JfqJq+DbaVOo4wDpWZRQ==
+X-Received: by 2002:adf:e8ce:0:b0:33b:62c0:6181 with SMTP id
+ k14-20020adfe8ce000000b0033b62c06181mr2353388wrn.42.1710365663045; 
+ Wed, 13 Mar 2024 14:34:23 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- q11-20020a05600c46cb00b0041312d21a35sm3550340wmo.7.2024.03.13.14.34.14
+ j30-20020a05600c1c1e00b004133825e6cfsm3459020wms.24.2024.03.13.14.34.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 14:34:16 -0700 (PDT)
+ Wed, 13 Mar 2024 14:34:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -63,20 +63,19 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>
-Subject: [PATCH-for-9.0? 05/12] target/ppc: Rename init_excp_4xx_softmmu() ->
- init_excp_4xx()
-Date: Wed, 13 Mar 2024 22:33:32 +0100
-Message-ID: <20240313213339.82071-6-philmd@linaro.org>
+ qemu-ppc@nongnu.org
+Subject: [PATCH-for-9.1 06/12] tcg/sparc64: Check for USER_ONLY definition
+ instead of SOFTMMU one
+Date: Wed, 13 Mar 2024 22:33:33 +0100
+Message-ID: <20240313213339.82071-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313213339.82071-1-philmd@linaro.org>
 References: <20240313213339.82071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,35 +98,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unify with other init_excp_FOO() in the same file.
+Since we *might* have user emulation with softmmu,
+replace the system emulation check by !user emulation one.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/ppc/cpu_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tcg/sparc64/tcg-target.c.inc | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 7e65f08147..b208bd91a0 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -1642,7 +1642,7 @@ static void register_8xx_sprs(CPUPPCState *env)
+diff --git a/tcg/sparc64/tcg-target.c.inc b/tcg/sparc64/tcg-target.c.inc
+index 176c98740b..56915a913b 100644
+--- a/tcg/sparc64/tcg-target.c.inc
++++ b/tcg/sparc64/tcg-target.c.inc
+@@ -78,7 +78,7 @@ static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+ #define TCG_REG_T2  TCG_REG_G2
+ #define TCG_REG_T3  TCG_REG_O7
  
- /*****************************************************************************/
- /* Exception vectors models                                                  */
--static void init_excp_4xx_softmmu(CPUPPCState *env)
-+static void init_excp_4xx(CPUPPCState *env)
- {
- #if !defined(CONFIG_USER_ONLY)
-     env->excp_vectors[POWERPC_EXCP_CRITICAL] = 0x00000100;
-@@ -2120,7 +2120,7 @@ static void init_proc_405(CPUPPCState *env)
-     env->id_tlbs = 0;
-     env->tlb_type = TLB_EMB;
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+ # define TCG_GUEST_BASE_REG TCG_REG_I5
  #endif
--    init_excp_4xx_softmmu(env);
-+    init_excp_4xx(env);
-     env->dcache_line_size = 32;
-     env->icache_line_size = 32;
-     /* Allocate hardware IRQ controller */
+ 
+@@ -961,7 +961,7 @@ static void tcg_target_qemu_prologue(TCGContext *s)
+     tcg_out32(s, SAVE | INSN_RD(TCG_REG_O6) | INSN_RS1(TCG_REG_O6) |
+               INSN_IMM13(-frame_size));
+ 
+-#ifndef CONFIG_SOFTMMU
++#ifdef CONFIG_USER_ONLY
+     if (guest_base != 0) {
+         tcg_out_movi_int(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG,
+                          guest_base, true, TCG_REG_T1);
+@@ -1075,7 +1075,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+     h->aa.align = MAX(h->aa.align, s_bits);
+     a_mask = (1u << h->aa.align) - 1;
+ 
+-#ifdef CONFIG_SOFTMMU
++#ifndef CONFIG_USER_ONLY
+     int mem_index = get_mmuidx(oi);
+     int fast_off = tlb_mask_table_ofs(s, mem_index);
+     int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
+@@ -1147,7 +1147,7 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
+         tcg_out_bpcc0(s, COND_NE, BPCC_PN | BPCC_ICC, 0);
+     }
+     h->base = guest_base ? TCG_GUEST_BASE_REG : TCG_REG_G0;
+-#endif
++#endif /* CONFIG_USER_ONLY */
+ 
+     /* If the guest address must be zero-extended, do in the delay slot.  */
+     if (addr_type == TCG_TYPE_I32) {
 -- 
 2.41.0
 
