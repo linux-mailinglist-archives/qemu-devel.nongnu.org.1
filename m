@@ -2,91 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6B387A43E
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A6487A461
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:58:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkKJL-0002mw-5u; Wed, 13 Mar 2024 04:50:07 -0400
+	id 1rkKQ7-0006ld-Ry; Wed, 13 Mar 2024 04:57:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkKJ0-0002iM-U7
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:49:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkKIz-0000Cy-0E
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:49:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710319783;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VI5qXcQmHliVr/vkZedxJKPYii9xPvXlf7TybALd8lM=;
- b=g4c9xJFw7VakhsZPlXJ8h5Vr1XKvlcnP2BG12wAuJVHaiBoNHT620hZNkk46Ty+QAYqfvK
- 3SZ5NJ0m0INhd2A0rxVIDxlxxz3D9bbGqBMA61hv5753+hPJYsL8c7WmHH8To7ZIOSZYl8
- 3+9A+e7+JS6tS+QIAWjZvCUJtmO+5jc=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-120-flrAxR6cM8mwglL9S_bTtA-1; Wed, 13 Mar 2024 04:49:42 -0400
-X-MC-Unique: flrAxR6cM8mwglL9S_bTtA-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d45c7efcb0so11973771fa.1
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 01:49:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rkKQ6-0006lF-0m
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:57:06 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rkKQ3-0001wN-W7
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:57:05 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33d90dfe73cso324124f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 01:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710320219; x=1710925019; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=zzeXVOwj4j/YDqEdvW6/fBZnpKw/FuA6FRyIKZNEoVw=;
+ b=W0U38b8kM2/8/20439EwSh0IsKOi5FyeI5E3EVMvUyhJoi2iWO+31kBKi188LFm5/m
+ 6CO5VOM7MsduOw6EQKEErTO+g+pa+51BSbr+6v6CAxJgMnOJQpng150HomEQI7Y4tblg
+ 4Tvu+/MxDACSyrCIAHmYfJJJCzKNQCYa2XfbmVU8S2lCdVaYBSgsE1LGxI/ewX+akqoH
+ FMnf7IgI5XpRbGnhqhHu8Cbcwm1Xf81FKvLB5bH8OCjzfQB/AqO3RQsP9KMydVH2LkPS
+ QOcyLvKi8nGx0XmeVTiGS/964/XUtCM9c/dRsuKutgDNcDCG+2vvO7H/7s/+2rriGhJ/
+ NZzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710319780; x=1710924580;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VI5qXcQmHliVr/vkZedxJKPYii9xPvXlf7TybALd8lM=;
- b=P4Txnfl1CeRaIobWgY7XPAXAPzBd7xcSWqTXgn7PsKeg3XWgL/b7/k7YR7mOjkXmva
- PNMo/ICIH+d8wKxkEqPd5zdWGQYUihx3GF0vVoS+vm5VkyL6+tl0MvAtPfj0+wZ5L+mb
- c4PALutDBx4qsXRZYM3hD3jlQPzxwCUzXsZu0GAvSpQhDd0EIyMpJ0ZV+vPI4tg3MAzW
- pMyjxUIVGa7wKz4vulSuKOgaSN9PxVELrCKRrVX1KDpgARKlMLHrbzNdYFj/SlmibRjX
- Z4UJ5/QEEsOMnchhIhnWL4O/sBfEq+gWqui/ZYWrB2aitGSQESDn3rymQeL3WCNJfiGA
- Jl6w==
-X-Gm-Message-State: AOJu0YxUewNpOVHVectX0rDji9bTDeUMaR4YwTdqVwUPG5dvnbVqaMz2
- xGJJL8QxNptzZ7JARAZWy6ktpBsXZCWgz6vfl7czMPpTEVpCQ40M123yQ2yl14aSagY1ioIFJOZ
- 8HJPxQLiwPSzm8crSUpS3wk1SRjDIjAomcFXlMwzvSdv2RDSgu3so
-X-Received: by 2002:ac2:4c38:0:b0:513:1a9c:ae77 with SMTP id
- u24-20020ac24c38000000b005131a9cae77mr7331937lfq.52.1710319780755; 
- Wed, 13 Mar 2024 01:49:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQibgph1KiPh7vAeHyKeOyFElekIBSmNdKm3RDU2Kn8HqBdxvhS8IeOh0OSh0zs8EFDHjQeQ==
-X-Received: by 2002:ac2:4c38:0:b0:513:1a9c:ae77 with SMTP id
- u24-20020ac24c38000000b005131a9cae77mr7331923lfq.52.1710319780424; 
- Wed, 13 Mar 2024 01:49:40 -0700 (PDT)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
- [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
- i7-20020a5d5227000000b0033b7ce8b496sm11124748wra.108.2024.03.13.01.49.39
+ d=1e100.net; s=20230601; t=1710320219; x=1710925019;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zzeXVOwj4j/YDqEdvW6/fBZnpKw/FuA6FRyIKZNEoVw=;
+ b=TBfkYLSR6eqPGSp54MPSq3JG9QkRjYqEfY5HnE1pesEYqjU/CLuKkmtR7r6i3lhXVo
+ yRF7UahpFcgy0IJtQEnNagZ2ueGaYLhM1gycfvTuSCDkhUMck3sHUTpiQwDkCi759muE
+ 8WQig4afRRCf8uyNG4U5ItVVrvJ48IEPgdus9T8x5iN07UkLdp4pRrW9LkfP15YEqyC4
+ p8dT0x5mBpP1ffuX1MnTP375ZYTIcdLBd4ZnPu//itCF7++itqCqfE3gHE8Uqafu2ZHY
+ 5J0JvuBGy870s5bzSoQ3Vp02I9Kig0tUKmryIlEXpTXP/6VybRs6TF9r7J/piPDrVcaL
+ 7/2Q==
+X-Gm-Message-State: AOJu0Yyi/YaJq/R4RuRVSALSPWrVhjZoz9kaHKxJfHdHr1X7Vern8QYU
+ 9tjr62lV967KdfVNyZ1GCrwo9tva03OLI3D8iuIRP/UBHxlNzj7gmlkn9CzCuF8=
+X-Google-Smtp-Source: AGHT+IFsTPMYvibcG3IfeN0KXC3CUkO5eaGAhCqPOBPryOwWsAcS2CKxby7Yl3sOI3T/ShHm9e7Kyg==
+X-Received: by 2002:adf:cb92:0:b0:33d:61c7:9b2c with SMTP id
+ q18-20020adfcb92000000b0033d61c79b2cmr1411915wrh.34.1710320219272; 
+ Wed, 13 Mar 2024 01:56:59 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ n20-20020a05600c4f9400b00412f8bf2d82sm1636864wmq.28.2024.03.13.01.56.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Mar 2024 01:49:40 -0700 (PDT)
-Date: Wed, 13 Mar 2024 09:49:39 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH v3 00/20] Workaround Windows failing to find 64bit
- SMBIOS entry point with SeaBIOS
-Message-ID: <20240313094939.7221a1ec@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240312133056-mutt-send-email-mst@kernel.org>
-References: <20240312161050.2248814-1-imammedo@redhat.com>
- <20240312133056-mutt-send-email-mst@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
+ Wed, 13 Mar 2024 01:56:58 -0700 (PDT)
+Date: Wed, 13 Mar 2024 09:56:52 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, greentime.hu@sifive.com, 
+ vincent.chen@sifive.com, frank.chang@sifive.com, jim.shu@sifive.com, 
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>, 
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH 1/1] target/riscv/kvm: fix timebase-frequency when using
+ KVM acceleration
+Message-ID: <20240313-d11a0490609909bd354f01b2@orel>
+References: <20240313081359.20845-1-yongxuan.wang@sifive.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240313081359.20845-1-yongxuan.wang@sifive.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,112 +98,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Mar 2024 13:31:39 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
-
-> On Tue, Mar 12, 2024 at 05:10:30PM +0100, Igor Mammedov wrote:
-> > Changelog:
-> >  v3:
-> >    * whitespace missed by checkpatch
-> >    * fix idndent in QAPI
-> >    * reorder 17/20 before 1st 'auto' can be used
-> >    * pick up acks
-> >  v2:
-> >    * QAPI style fixes (Markus Armbruster <armbru@redhat.com>)
-> >    * squash 11/19 into 10/19 (Ani Sinha <anisinha@redhat.com>)
-> >    * split '[PATCH 09/19] smbios: build legacy mode code only for 'pc' machine'
-> >      in 3 smaller patches, to make it more readable
-> >        smbios: add smbios_add_usr_blob_size() helper                                  
-> >        smbios: rename/expose structures/bitmaps used by both legacy and modern code                                                                  
-> >        smbios: build legacy mode code only for 'pc' machine
-> >    * pick up acks  
+On Wed, Mar 13, 2024 at 04:13:57PM +0800, Yong-Xuan Wang wrote:
+> The timebase-frequency of guest OS should be the same with host
+> machine. The timebase-frequency value in DTS should be got from
+> hypervisor when using KVM acceleration.
 > 
-> thanks!
-> of course this conflicts with
-> SMBIOS type 9
-> and I am trying to figure out how to resolve this again.
-
-I'll rebase once your pull req is merged. 
-
-> Do you ack SMBIOS type 9 btw?
-nope, and it seems it's too late do so now.
-
+> Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+> ---
+>  hw/riscv/virt.c              | 11 +++++++++--
+>  target/riscv/kvm/kvm-cpu.c   |  9 +++++++++
+>  target/riscv/kvm/kvm_riscv.h | 13 +++++++++++++
+>  3 files changed, 31 insertions(+), 2 deletions(-)
 > 
-> > Windows (10) bootloader when running on top of SeaBIOS, fails to find            
-> > SMBIOSv3 entry point. Tracing it shows that it looks for v2 anchor markers       
-> > only and not v3. Tricking it into believing that entry point is found            
-> > lets Windows successfully locate and parse SMBIOSv3 tables. Whether it           
-> > will be fixed on Windows side is not clear so here goes a workaround.            
-> >                                                                                  
-> > Idea is to try build v2 tables if QEMU configuration permits,                    
-> > and fallback to v3 tables otherwise. That will mask Windows issue                
-> > form majority of users.                                                          
-> > However if VM configuration can't be described (typically large VMs)             
-> > by v2 tables, QEMU will use SMBIOSv3 and Windows will hit the issue              
-> > again. In this case complain to Microsoft and/or use UEFI instead of             
-> > SeaBIOS (requires reinstall).                                                    
-> >                                                                                  
-> > Default compat setting of smbios-entry-point-type after series                   
-> > for pc/q35 machines:                                                             
-> >   * 9.0-newer: 'auto'                                                            
-> >   * 8.1-8.2: '64'                                                                
-> >   * 8.0-older: '32'                                                              
-> >                                                                                  
-> > Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2008                        
-> > CC: imammedo@redhat.com                                                          
-> > CC: mst@redhat.com
-> > 
-> > Igor Mammedov (20):
-> >   tests: smbios: make it possible to write SMBIOS only test
-> >   tests: smbios: add test for -smbios type=11 option
-> >   tests: smbios: add test for legacy mode CLI options
-> >   smbios: cleanup smbios_get_tables() from legacy handling
-> >   smbios: get rid of smbios_smp_sockets global
-> >   smbios: get rid of smbios_legacy global
-> >   smbios: avoid mangling user provided tables
-> >   smbios: don't check type4 structures in legacy mode
-> >   smbios: add smbios_add_usr_blob_size() helper
-> >   smbios: rename/expose structures/bitmaps used by both legacy and
-> >     modern code
-> >   smbios: build legacy mode code only for 'pc' machine
-> >   smbios: handle errors consistently
-> >   smbios: get rid of global smbios_ep_type
-> >   smbios: clear smbios_type4_count before building tables
-> >   smbios: extend smbios-entry-point-type with 'auto' value
-> >   smbios: in case of entry point is 'auto' try to build v2 tables 1st
-> >   smbios: error out when building type 4 table is not possible
-> >   tests: acpi/smbios: whitelist expected blobs
-> >   pc/q35: set SMBIOS entry point type to 'auto' by default
-> >   tests: acpi: update expected SSDT.dimmpxm blob
-> > 
-> >  hw/i386/fw_cfg.h                     |   3 +-
-> >  include/hw/firmware/smbios.h         |  28 +-
-> >  hw/arm/virt.c                        |   6 +-
-> >  hw/i386/Kconfig                      |   1 +
-> >  hw/i386/fw_cfg.c                     |  14 +-
-> >  hw/i386/pc.c                         |   4 +-
-> >  hw/i386/pc_piix.c                    |   4 +
-> >  hw/i386/pc_q35.c                     |   3 +
-> >  hw/loongarch/virt.c                  |   7 +-
-> >  hw/riscv/virt.c                      |   6 +-
-> >  hw/smbios/Kconfig                    |   2 +
-> >  hw/smbios/meson.build                |   4 +
-> >  hw/smbios/smbios.c                   | 481 +++++++++++----------------
-> >  hw/smbios/smbios_legacy.c            | 185 +++++++++++
-> >  hw/smbios/smbios_legacy_stub.c       |  15 +
-> >  qapi/machine.json                    |   5 +-
-> >  tests/data/acpi/q35/SSDT.dimmpxm     | Bin 1815 -> 1815 bytes
-> >  tests/data/smbios/type11_blob        | Bin 0 -> 11 bytes
-> >  tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
-> >  tests/qtest/bios-tables-test.c       |  81 ++++-
-> >  20 files changed, 533 insertions(+), 316 deletions(-)
-> >  create mode 100644 hw/smbios/smbios_legacy.c
-> >  create mode 100644 hw/smbios/smbios_legacy_stub.c
-> >  create mode 100644 tests/data/smbios/type11_blob
-> >  create mode 100644 tests/data/smbios/type11_blob.legacy
-> > 
-> > -- 
-> > 2.39.3  
-> 
+> diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+> index a094af97c32a..a7ed7fa13010 100644
+> --- a/hw/riscv/virt.c
+> +++ b/hw/riscv/virt.c
+> @@ -710,8 +710,15 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+>      int socket_count = riscv_socket_count(ms);
+>  
+>      qemu_fdt_add_subnode(ms->fdt, "/cpus");
+> -    qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
+> -                          RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
+> +
+> +    if (kvm_enabled()) {
+> +        qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
+> +                              kvm_riscv_get_timebase_frequency(first_cpu));
+> +    } else {
+> +        qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
+> +                              RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
+> +    }
+> +
+>      qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
+>      qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
+>      qemu_fdt_add_subnode(ms->fdt, "/cpus/cpu-map");
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index c7afdb1e81b7..bbb115eaa867 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -739,6 +739,15 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+>      env->kvm_timer_dirty = false;
+>  }
+>  
+> +uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
+> +{
+> +    uint64_t reg;
+> +
+> +    KVM_RISCV_GET_TIMER(cs, frequency, reg);
+> +
+> +    return reg;
+> +}
+> +
+>  static int kvm_riscv_get_regs_vector(CPUState *cs)
+>  {
+>      RISCVCPU *cpu = RISCV_CPU(cs);
+> diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+> index 4bd98fddc776..130a4bde0480 100644
+> --- a/target/riscv/kvm/kvm_riscv.h
+> +++ b/target/riscv/kvm/kvm_riscv.h
+> @@ -29,4 +29,17 @@ void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+>  int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+>  void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
+>  
+> +#ifdef CONFIG_KVM
+> +
+> +uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs);
+> +
+> +#else
+> +
+> +static inline uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
+> +{
+> +    g_assert_not_reached();
+> +}
+> +
+> +#endif
+> +
 
+I think we've decided we don't need stubs like these since kvm_riscv_*
+functions should always be called within 'if (kvm_enabled())' blocks (as
+you have above), and then we leave it to the compile testing to point
+out kvm function calls without kvm_enabled().
+
+>  #endif
+> -- 
+> 2.17.1
+>
+
+Besides dropping the stubs,
+
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+
+Thanks,
+drew
 
