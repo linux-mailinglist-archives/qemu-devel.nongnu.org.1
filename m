@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9ADF87B38D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E89FF87B389
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWEe-0001LI-7D; Wed, 13 Mar 2024 17:34:04 -0400
+	id 1rkWEn-0001OK-OQ; Wed, 13 Mar 2024 17:34:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEZ-0001KD-CU
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:00 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEh-0001Lt-QR
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:07 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEX-0007je-Qg
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:33:59 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-33e8f906f3dso208539f8f.3
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:33:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEe-0007lP-6t
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:07 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-33eaafc4419so929705f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710365636; x=1710970436; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710365643; x=1710970443; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iTsiFHK/uF9NgxMDORids06OFuVswudli5ZoOdNSsFQ=;
- b=Y6oYHtn+bMl+ot6cerwX657JfbR3QfYL/Uu03YQXoZnipC+f7H+jUkl1LqqiwMVwsQ
- LCRXqFe7Vy+nFFOJ2jSz5fCSidqJy1qhv8vwWqXcjWOdhJJ4jei+esIVocmOVNxiSNeW
- rPz9r4G7Brl1WnGw79iYCQb3u4yYyGu4w6UGjrUTh1mMZ28Bq3H1+nBa6gpUMXMD8SuN
- it/IrafvP6ICtcMOOdMjRgZzopl0jEDfEK7A3wIF8Q0P88RXquSkyOLpD5R6e9s8/P8i
- IOa3j8FyKY3HAowVeg5AT+Gc59xTP1NlkZLEG9kXgV3CZHE/J52C6eiOeAJLRoG7lDkC
- 7Cgg==
+ bh=uuIA7snzjzJiFQGDzy7Q/aN2eTCJoDKnsUbMdeEplEw=;
+ b=FSHEEgOgac6vBkgLCgzc4U3EOB8nYfdwa62xIazqXk9886zyIozSCgD8/M3eZk8Li3
+ s5Ow3QncZWOci54U+378xve2pXL9VsonR/M6vNJ8Sq4RxTM5y2nH7UudRKyhlFyyOSr+
+ uua9fMpwvDarW9kAjOwk1k71HMF7vxI7t4wLaw96ZgW74f2C3O3qH4SocAV87BmkXH8s
+ /Kg6MxxyTUzXBVuB5AwkYnVIc0EOKVxvJnKSZgfh4wu9kp4qL1uzTVp07o4fgyM1d5xt
+ fXlFvo8Z1bbruFfq+zi2eL9Pq1jvln9yE4e5bZJHnM3utnxSRL8H+2RCk6SOIjeUFvEN
+ Do/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710365636; x=1710970436;
+ d=1e100.net; s=20230601; t=1710365643; x=1710970443;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iTsiFHK/uF9NgxMDORids06OFuVswudli5ZoOdNSsFQ=;
- b=NjvgNxC4cEsfoZy4QXVA65Q6W2dNfS6/tLh9Q3GIxlk94ob98i496aOIzU6jg6PHTN
- YcLGFP3iGkk5/8dnNZVev5Yp4LJonKiRzTv1fXRF+izdqZylf6cgCgC4ntfKkAPaBr1V
- mcV0xST+NdMcHb+6iIhF6Vv9WD7RSsnhKjyrZW8rsNq+AZnaktpz769CSztUex7hu+1U
- v/Um7p7psGjkqsyCw3d/SUL7k8o7eFJXOTKzAtpad/bSqbYFLCQnHHgoQCtHO6ujoYlM
- EzK3aEbsCV70zRlefHY9/AqKjTD4IFa5HFWlNpDh2eybRywy6IH4BGEZHk8gwBNKd2Hl
- 8wiA==
+ bh=uuIA7snzjzJiFQGDzy7Q/aN2eTCJoDKnsUbMdeEplEw=;
+ b=ROeRKRlk6pGIYpt7jfx9KDhGt40IxYfzfTMUyCL38f3kdpx6lFniKD1antQwCE66aj
+ pzkfoTrZv1mgTvWUjhIZSBur1zxF20J3HkpT6lYv8rRHsMxqTgvwRWekEwEmCQqVOLek
+ UO7qIrZhzWAk4Tmr3e3lo0Lm6B+Kn9FfC5g6TKzTdgau252nTNDl+yQdazRPighUwoWX
+ 3XxoZICIrDA27WMnQ2s/ftqL5BWRZVnw/g10zrbXwGTRSnSkNnipUlTYcbQnOKGaQesJ
+ Wf8Z5YNu5FUZebKQcQkTQPa636qXkSj4YnazhGPK4wYIKxeEu1xkNYg67f7kjQVv+NuD
+ 7vkg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXg1a3ipugsjBoZ2D+R+V7v1XflDRp7T3MNIbdwZd4Vg48sgmXMQmNdfFHf+v/bZ4YIDE/d4aGpLDrKzt/5c2DWtyiN3OI=
-X-Gm-Message-State: AOJu0Yy2dHXOMb+/sUPcSMY8W6v5tbxTx80kFE10B3jRuIE2v+32GKsW
- aOWFg4Afyw8ySeciGbtfutTQipUL4Mlxz6Z+Oln+ekmhniwdR1j9h3NxiD8PPfU=
-X-Google-Smtp-Source: AGHT+IHr+4irDYSUYuGmE9r0OP+ToaNRWO1OWvg9+2yh587hghskU8qIrwYdnBrm111iMFxdZ/OUCg==
-X-Received: by 2002:a5d:58c7:0:b0:33d:b2dd:7585 with SMTP id
- o7-20020a5d58c7000000b0033db2dd7585mr2385663wrf.9.1710365636529; 
- Wed, 13 Mar 2024 14:33:56 -0700 (PDT)
+ AJvYcCUcygHxUszxwuig1DJA/dFvrCLTm8yaiULLGejIEVKvDz5HrLAevsC0f+dYMGL19isYbm7cbgg4UHhK9CJdEScNO6tELe8=
+X-Gm-Message-State: AOJu0YymeAe2sC5Ec8rxLMR8faUZx72hopb92GCnJsk3RRG09Hb7+UFj
+ WjiWKsj3wP2G5bbCVHsQh+81p8qN/kFTKtqpm8pfK42AwmBlqir6q+e9LMj9u3A=
+X-Google-Smtp-Source: AGHT+IF8GIBRoGhlQMCieR/Zp6nPhkmxqt6EJQqbxmZNV+EaNoeNivyzrnwDdv7z2KeoSRV67WmEVg==
+X-Received: by 2002:adf:fece:0:b0:33d:7e9:9543 with SMTP id
+ q14-20020adffece000000b0033d07e99543mr25952wrs.32.1710365642885; 
+ Wed, 13 Mar 2024 14:34:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- d18-20020a5d6452000000b0033e48db23bdsm60088wrw.100.2024.03.13.14.33.54
+ p3-20020a5d4e03000000b0033e9e26a2d0sm74645wrt.37.2024.03.13.14.34.01
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 14:33:56 -0700 (PDT)
+ Wed, 13 Mar 2024 14:34:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -63,26 +63,26 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-ppc@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH-for-9.0? 02/12] travis-ci: Rename SOFTMMU -> SYSTEM
-Date: Wed, 13 Mar 2024 22:33:29 +0100
-Message-ID: <20240313213339.82071-3-philmd@linaro.org>
+ qemu-ppc@nongnu.org
+Subject: [PATCH-for-9.0? 03/12] gdbstub: Correct invalid mentions of 'softmmu'
+ by 'system'
+Date: Wed, 13 Mar 2024 22:33:30 +0100
+Message-ID: <20240313213339.82071-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313213339.82071-1-philmd@linaro.org>
 References: <20240313213339.82071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,55 +98,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we *might* have user emulation with softmmu,
-rename MAIN_SOFTMMU_TARGETS as MAIN_SYSTEM_TARGETS
-to express 'system emulation targets'.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- .travis.yml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ gdbstub/internals.h | 20 ++++++++++----------
+ gdbstub/system.c    |  2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/.travis.yml b/.travis.yml
-index 76859d48da..597d151b80 100644
---- a/.travis.yml
-+++ b/.travis.yml
-@@ -35,7 +35,7 @@ env:
-     - TEST_BUILD_CMD=""
-     - TEST_CMD="make check V=1"
-     # This is broadly a list of "mainline" system targets which have support across the major distros
--    - MAIN_SOFTMMU_TARGETS="aarch64-softmmu,mips64-softmmu,ppc64-softmmu,riscv64-softmmu,s390x-softmmu,x86_64-softmmu"
-+    - MAIN_SYSTEM_TARGETS="aarch64-softmmu,mips64-softmmu,ppc64-softmmu,riscv64-softmmu,s390x-softmmu,x86_64-softmmu"
-     - CCACHE_SLOPPINESS="include_file_ctime,include_file_mtime"
-     - CCACHE_MAXSIZE=1G
-     - G_MESSAGES_DEBUG=error
-@@ -114,7 +114,7 @@ jobs:
-       env:
-         - TEST_CMD="make check check-tcg V=1"
-         - CONFIG="--disable-containers --enable-fdt=system
--                  --target-list=${MAIN_SOFTMMU_TARGETS} --cxx=/bin/false"
-+                  --target-list=${MAIN_SYSTEM_TARGETS} --cxx=/bin/false"
-         - UNRELIABLE=true
+diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+index b472459838..7055138dee 100644
+--- a/gdbstub/internals.h
++++ b/gdbstub/internals.h
+@@ -115,7 +115,7 @@ void gdb_read_byte(uint8_t ch);
  
-     - name: "[ppc64] GCC check-tcg"
-@@ -185,7 +185,7 @@ jobs:
-       env:
-         - TEST_CMD="make check check-tcg V=1"
-         - CONFIG="--disable-containers --enable-fdt=system
--                  --target-list=${MAIN_SOFTMMU_TARGETS},s390x-linux-user"
-+                  --target-list=${MAIN_SYSTEM_TARGETS},s390x-linux-user"
-         - UNRELIABLE=true
-       script:
-         - BUILD_RC=0 && make -j${JOBS} || BUILD_RC=$?
-@@ -226,7 +226,7 @@ jobs:
-           - genisoimage
-       env:
-         - CONFIG="--disable-containers --enable-fdt=system --audio-drv-list=sdl
--                  --disable-user --target-list-exclude=${MAIN_SOFTMMU_TARGETS}"
-+                  --disable-user --target-list-exclude=${MAIN_SYSTEM_TARGETS}"
+ /*
+  * Packet acknowledgement - we handle this slightly differently
+- * between user and softmmu mode, mainly to deal with the differences
++ * between user and system mode, mainly to deal with the differences
+  * between the flexible chardev and the direct fd approaches.
+  *
+  * We currently don't support a negotiated QStartNoAckMode
+@@ -125,7 +125,7 @@ void gdb_read_byte(uint8_t ch);
+  * gdb_got_immediate_ack() - check ok to continue
+  *
+  * Returns true to continue, false to re-transmit for user only, the
+- * softmmu stub always returns true.
++ * system stub always returns true.
+  */
+ bool gdb_got_immediate_ack(void);
+ /* utility helpers */
+@@ -135,12 +135,12 @@ CPUState *gdb_first_attached_cpu(void);
+ void gdb_append_thread_id(CPUState *cpu, GString *buf);
+ int gdb_get_cpu_index(CPUState *cpu);
+ unsigned int gdb_get_max_cpus(void); /* both */
+-bool gdb_can_reverse(void); /* softmmu, stub for user */
++bool gdb_can_reverse(void); /* system emulation, stub for user */
+ int gdb_target_sigtrap(void); /* user */
  
-     - name: "[s390x] GCC (user)"
-       arch: s390x
+ void gdb_create_default_process(GDBState *s);
+ 
+-/* signal mapping, common for softmmu, specialised for user-mode */
++/* signal mapping, common for system, specialised for user-mode */
+ int gdb_signal_to_target(int sig);
+ int gdb_target_signal_to_gdb(int sig);
+ 
+@@ -157,12 +157,12 @@ void gdb_continue(void);
+ int gdb_continue_partial(char *newstates);
+ 
+ /*
+- * Helpers with separate softmmu and user implementations
++ * Helpers with separate system and user implementations
+  */
+ void gdb_put_buffer(const uint8_t *buf, int len);
+ 
+ /*
+- * Command handlers - either specialised or softmmu or user only
++ * Command handlers - either specialised or system or user only
+  */
+ void gdb_init_gdbserver_state(void);
+ 
+@@ -187,7 +187,7 @@ typedef union GdbCmdVariant {
+ 
+ #define get_param(p, i)    (&g_array_index(p, GdbCmdVariant, i))
+ 
+-void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* softmmu */
++void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* system */
+ void gdb_handle_query_offsets(GArray *params, void *user_ctx); /* user */
+ void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx); /*user */
+ void gdb_handle_v_file_open(GArray *params, void *user_ctx); /* user */
+@@ -202,7 +202,7 @@ bool gdb_handle_detach_user(uint32_t pid); /* user */
+ 
+ void gdb_handle_query_attached(GArray *params, void *user_ctx); /* both */
+ 
+-/* softmmu only */
++/* system only */
+ void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *user_ctx);
+ void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx);
+ 
+@@ -212,11 +212,11 @@ bool gdb_handled_syscall(void);
+ void gdb_disable_syscalls(void);
+ void gdb_syscall_reset(void);
+ 
+-/* user/softmmu specific syscall handling */
++/* user/system specific syscall handling */
+ void gdb_syscall_handling(const char *syscall_packet);
+ 
+ /*
+- * Break/Watch point support - there is an implementation for softmmu
++ * Break/Watch point support - there is an implementation for system
+  * and user mode.
+  */
+ bool gdb_supports_guest_debug(void);
+diff --git a/gdbstub/system.c b/gdbstub/system.c
+index 83fd452800..a3ce384cd1 100644
+--- a/gdbstub/system.c
++++ b/gdbstub/system.c
+@@ -1,5 +1,5 @@
+ /*
+- * gdb server stub - softmmu specific bits
++ * gdb server stub - system specific bits
+  *
+  * Debug integration depends on support from the individual
+  * accelerators so most of this involves calling the ops helpers.
 -- 
 2.41.0
 
