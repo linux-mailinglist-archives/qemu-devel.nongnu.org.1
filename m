@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665C687ACF5
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 18:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFA587AD73
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 18:35:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkSId-0003VI-Ay; Wed, 13 Mar 2024 13:21:55 -0400
+	id 1rkSUL-0006ok-D2; Wed, 13 Mar 2024 13:34:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkSIV-0003TD-7D
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 13:21:47 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkSUI-0006oJ-S3
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 13:33:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkSIT-00054n-Iu
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 13:21:46 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkSUH-0007YF-8z
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 13:33:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ECFDD55B84;
- Wed, 13 Mar 2024 20:22:46 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 40E0D55B8A;
+ Wed, 13 Mar 2024 20:34:57 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 68C5A9890C;
- Wed, 13 Mar 2024 20:21:42 +0300 (MSK)
-Message-ID: <7f6ecc97-8c32-4929-8ae1-b296e874ced2@tls.msk.ru>
-Date: Wed, 13 Mar 2024 20:21:41 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id D2A7498917;
+ Wed, 13 Mar 2024 20:33:52 +0300 (MSK)
+Message-ID: <3b054ce9-3f4f-49f6-aa42-dea33264466f@tls.msk.ru>
+Date: Wed, 13 Mar 2024 20:33:52 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PULL 2/3] xen: Drop out of coroutine context
  xen_invalidate_map_cache_entry
 Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: Anthony PERARD <anthony.perard@citrix.com>, qemu-devel@nongnu.org
 Cc: Peng Fan <peng.fan@nxp.com>
 References: <20240312142757.34141-1-anthony.perard@citrix.com>
  <20240312142757.34141-3-anthony.perard@citrix.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
+ <7f6ecc97-8c32-4929-8ae1-b296e874ced2@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
  bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
@@ -58,9 +59,9 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240312142757.34141-3-anthony.perard@citrix.com>
+In-Reply-To: <7f6ecc97-8c32-4929-8ae1-b296e874ced2@tls.msk.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -84,15 +85,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-12.03.2024 17:27, Anthony PERARD wrote:
-> From: Peng Fan <peng.fan@nxp.com>
+13.03.2024 20:21, Michael Tokarev:
+> 12.03.2024 17:27, Anthony PERARD wrote:
+>> From: Peng Fan <peng.fan@nxp.com>
+>>
+>> xen_invalidate_map_cache_entry is not expected to run in a
+>> coroutine. Without this, there is crash:
 > 
-> xen_invalidate_map_cache_entry is not expected to run in a
-> coroutine. Without this, there is crash:
+> Hi!  Is this a stable material? (It applies cleanly and builds on 8.2 and 7.2)
 
-Hi!  Is this a stable material? (It applies cleanly and builds on 8.2 and 7.2)
+Actually for 7.2 it needed a minor tweak:
 
-Thanks,
+-void coroutine_mixed_fn xen_invalidate_map_cache_entry(uint8_t *buffer)
++void xen_invalidate_map_cache_entry(uint8_t *buffer)
+
+but the rest is okay.
 
 /mjt
 
