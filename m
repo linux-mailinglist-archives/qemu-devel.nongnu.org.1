@@ -2,62 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81FE87A2FF
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 07:42:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6360D87A305
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 07:44:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkIIc-0001Ve-As; Wed, 13 Mar 2024 02:41:14 -0400
+	id 1rkILU-0002vw-Ef; Wed, 13 Mar 2024 02:44:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rkIIX-0001VG-20
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:41:09 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkILJ-0002tv-OR
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:44:03 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rkIIT-00077y-Pm
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:41:08 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkILI-0007co-9S
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:44:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710312064;
+ s=mimecast20190719; t=1710312238;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8/kV++lUUeiBr4UOrLPcxrX5Gp/TGALOULyj2c3tvDw=;
- b=ba7oSzpJ3O0T9itX8LZS362huZ2mUmMVZmpWPAEBC+WgF4f5pV+FpAKTXN9b19n9NRCji5
- 9q1iu7aS5l0R5Q8Nyd/8+fEPU/701US1aH8m1VJB4Sl+drqREMcZlljIr4lJBeIYdntuoY
- qo7tKquQvkT+37hiiAHbqypR2qzpGAk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-656-RurN1rbwOfaXITLIzP_S-g-1; Wed,
- 13 Mar 2024 02:41:02 -0400
-X-MC-Unique: RurN1rbwOfaXITLIzP_S-g-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AEC5828B7404;
- Wed, 13 Mar 2024 06:41:01 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 85925492BC4;
- Wed, 13 Mar 2024 06:41:01 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 57D3821E6A24; Wed, 13 Mar 2024 07:41:00 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Lukas Stockner <lstockner@genesiscloud.com>,  qemu-devel@nongnu.org,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: Re: [PATCH] pcie: Support PCIe Gen5/Gen6 link speeds
-In-Reply-To: <20240312111631-mutt-send-email-mst@kernel.org> (Michael
- S. Tsirkin's message of "Tue, 12 Mar 2024 11:19:24 -0400")
-References: <20240215012326.3272366-1-lstockner@genesiscloud.com>
- <20240312111631-mutt-send-email-mst@kernel.org>
-Date: Wed, 13 Mar 2024 07:41:00 +0100
-Message-ID: <87jzm6iqgz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ bh=yx4EM9JMYrPj7CF22F6uCP0VZeb2Af2fb7imMmp9nUA=;
+ b=I4LDVJtfzl/hJf8ISw+afAkxxeG89DxL2Y9vFHkJwd5RNh/EDsfPTS8M4XxxMDyYJl0OJ0
+ R/MHiqlHe9VWLdvNk17CKU98p6RqiJf0711AAoYV8I7JSbRRaEJDHAXQGjMVJPNonDLGMX
+ v4VT7O69jDq6Xj/GSs6gOXhSCDVQekM=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-654-NUgMG3w-OrmVUKTI0TZQLA-1; Wed, 13 Mar 2024 02:43:57 -0400
+X-MC-Unique: NUgMG3w-OrmVUKTI0TZQLA-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-5a1def46ac7so3436195eaf.0
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 23:43:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710312236; x=1710917036;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yx4EM9JMYrPj7CF22F6uCP0VZeb2Af2fb7imMmp9nUA=;
+ b=rY7MZAtSvv6vGlbW8Tou8pVMh8BLR2VHdbZXoEq/8QbPZe4/S0qq/oiQI0lruiNnT6
+ 2tJFPEUfC0bb0BWuoPKviL6otrc1LSFecu4eYCad6KvUiZhJMZ+Cls5wg8I8gawWo9IN
+ CzkBAXRmQ+VqdglXR5E9HGU+36AAh9GyUeXmOivgRzXw/eRHeMnf9FBfSUL9Yxx1WvrX
+ u1D68bvVCQtv/vp4B8tb7S+GNkNpwlDNZslMPBNoC8fUEIEvgtbBaIL903gEFcrpiZYu
+ LMMwCjMPmWgIDYVYQKs4P+wl1C7+/QfWp94iuADBSo0dXAwRTYWnLvy8Uo/ey3Cd1+ok
+ 5H+g==
+X-Gm-Message-State: AOJu0Yx5nQFGKFTO0nWNNHXdqcbERstKMeSHXgM/a4CIp3huCXR8e4vw
+ QpYyH+O7oF2HGXt6jtldrJmNuvFMaPtu8Jzn9iVsSnZUOwd7pPK0VJoPcoGKscg/1SKCROmrdXz
+ Yh1yHwEyvYNDQCgwGiBPHR27XfIQ5nQ9C15MDTks08r5auXtJdr9TcqBDOs+tTP4Yo2gn1cSDqh
+ 4J+k0j+l81Q2ep+w30bcXhBb25psY=
+X-Received: by 2002:a05:6358:5482:b0:17e:6dd9:d7d1 with SMTP id
+ v2-20020a056358548200b0017e6dd9d7d1mr3090342rwe.31.1710312236333; 
+ Tue, 12 Mar 2024 23:43:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGV3SiCRdNvChk6iJSjRjUvgKwfz67VjGvX8X9DzqqJrFthDP6qTZssccfPyuzQ23UL7Uuw6q/3NGhjjGU7mcc=
+X-Received: by 2002:a05:6358:5482:b0:17e:6dd9:d7d1 with SMTP id
+ v2-20020a056358548200b0017e6dd9d7d1mr3090330rwe.31.1710312235994; Tue, 12 Mar
+ 2024 23:43:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+References: <20240312113642.36862-1-jasowang@redhat.com>
+ <c10c6ec3-faaa-4e1a-bfb6-41eea38fdcb2@tls.msk.ru>
+In-Reply-To: <c10c6ec3-faaa-4e1a-bfb6-41eea38fdcb2@tls.msk.ru>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 13 Mar 2024 14:43:44 +0800
+Message-ID: <CACGkMEtvUHmbKCvNPauTnUR7+fXctwOVYxo45P3TZR7yEPsVsA@mail.gmail.com>
+Subject: Re: [PULL 0/8] Net patches
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, Laurent Vivier <laurent@vivier.eu>, 
+ Nick Briggs <nicholas.h.briggs@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -82,48 +97,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
-
-> On Thu, Feb 15, 2024 at 02:23:26AM +0100, Lukas Stockner wrote:
->> diff --git a/qapi/common.json b/qapi/common.json
->> index f1bb841951..867a9ad9b0 100644
->> --- a/qapi/common.json
->> +++ b/qapi/common.json
->> @@ -107,10 +107,14 @@
->>  #
->>  # @16: 16.0GT/s
->>  #
->> +# @32: 32.0GT/s
->> +#
->> +# @64: 64.0GT/s
->> +#
->>  # Since: 4.0
->>  ##
->>  { 'enum': 'PCIELinkSpeed',
->> -  'data': [ '2_5', '5', '8', '16' ] }
->> +  'data': [ '2_5', '5', '8', '16', '32', '64' ] }
->>  
->>  ##
->>  # @PCIELinkWidth:
->> -- 
+On Wed, Mar 13, 2024 at 1:56=E2=80=AFAM Michael Tokarev <mjt@tls.msk.ru> wr=
+ote:
 >
+> 12.03.2024 14:36, Jason Wang wrote:
+> ...
+> > ----------------------------------------------------------------
+> > Andrew Melnychenko (5):
+> >        ebpf: Added eBPF map update through mmap.
+> >        ebpf: Added eBPF initialization by fds.
+> >        virtio-net: Added property to load eBPF RSS with fds.
+> >        qmp: Added new command to retrieve eBPF blob.
+> >        ebpf: Updated eBPF program and skeleton.
+> >
+> > Laurent Vivier (2):
+> >        igb: fix link state on resume
+> >        e1000e: fix link state on resume
+> >
+> > Nick Briggs (1):
+> >        Avoid unaligned fetch in ladr_match()
 >
-> I'll merge this but I really don't know how one documents
-> that some enum options have been added since some version
-> of qemu.
+>  From the above, I'm picking up igb & e100e "fix link state on resume"
+> and "Avoid unaligned fetch in ladr_match()" for stable.
+>
+> Please let me know if this is incorrect.
+>
 
-Common style:
+It's correct.
 
-    #
-    # @16: 16.0GT/s
-    #
-    # @32: 32.0GT/s (since 9.0)
-    #
-    # @64: 64.0GT/s (since 9.0)
-    #
-    # Since: 4.0
-    ##
+Thanks
 
-Please add that for the merge.
+> Thanks,
+>
+> /mjt
+>
 
 
