@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F185587A466
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B01487A467
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 09:59:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkKRk-0007aH-6q; Wed, 13 Mar 2024 04:58:48 -0400
+	id 1rkKRl-0007aV-9H; Wed, 13 Mar 2024 04:58:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKRi-0007Zn-9E
+ id 1rkKRi-0007Zm-5w
  for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:58:46 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKRd-0002Bi-Ve
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:58:46 -0400
+ id 1rkKRg-0002Ci-O6
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:58:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=qByUFJgtA6VIhxdvtzTQjbGdS8p4RoxAkkEIt7l5gNQ=; b=HARrkNW1Q7J7ZHeZMZluwJ79sI
- q4O9sJw0vN6Ruyv6VNQRml9LfJ0upJxmCEt5Jj/HizBQNTbF86TZ/Sk7D89XVGSnIBF8jyPSv6ln1
- FisTZU8ADyBmPV4VgbvoKrknuY/fDe9MiVKejgETn5kWivo/6fCYY9ZXFh3dln1/O0Ca9NRJ+Ndmu
- GNChASDrzu1GAJNPEm+tyGdGpOoWmCUYBMNjKLLK4ZgNWvyDr1uJipgk4Fj61p82kApnNakh2KMDY
- fbCAXbdTisT2R+owPHcv5KpmsmDfOvy92EzZdJjPCfQdgkYIS1ixiFz1/K1j7jTCZ3BAr/s77ImRn
- TYC1il94jjOOhCXqr42UxlBrVx3+gTm5tAVJH54fhaMtU2RcJNuWRAqvHAP/H+22TEUqZ0tKpWe+K
- TBGoIoJVek7IgiyTZPyDJqHF7e3o9CQUoFoZpC3rweLWuu239Lzc9PsRS6r/yBiqsX2s4DkIDWIvK
- fhS6DktHnlT4jRNWa9b3U+MyquUDonMNNNT4MtD/LWEK4q6vPMqASDwyFqhOQ1FFYUNVj3gFitgi2
- FKOfsBkztbM40yau1mV3zSp+3ngUTUX4bz6m2hUSjvUpzE4j24ibXWcWZZ0mOuvpF0/3LwKRdRVFl
- NCznhMZ21pkpwcqnKs13+W91gti1ZGwMyOiisvX5Y=;
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=8ou60ZFfGz5wGuATfQwlf3o/Sr8yITEBKcHYAHL8PJg=; b=nRm+swVMS5GtExiogDX+ko214U
+ ZUavRH1cqgLILijo9cmVatQGZYQWkiXjD4L/WpvtOX87yFwVVKVpXlUlo56nmYxf2pWvpZIlm14Pr
+ cqTiSnaXE38hdIkwhF7ID+9HMSS34gjmtFR7t89oO1ONEFPS1GQXDxQ29xPFEv+7MooWoRikdwnBv
+ y6sThI4CQ4Yc35oPKFkOL50g2MxKLDos9LHOWu9f+ggFvvK+y8sW78Oj6QSgsdMNcMkC1JcG4LJen
+ DZ9wQSwKqI+JDzOPW5PUpg4/5/WLQgoN5SvWZng7TpPqZZGgqRnikh1ki3RODzFwAL5j5SPSTshRc
+ y34E+8W+LC7CpBOMwU3TO2L4z+OtEx8/2iXRXMvRrYjkJx9zyw6WdUAG3RGunAnCQZllVqiil/ouL
+ uh/qiaYQAMQw0mG2VWiNZu8JjGtbPb9/orECuR2QwDM/AdhwQD302JmRf7hg1IVIOWUq8pZ9dseGw
+ OGoy6l4Q8e5hR45iVH47D7km7SVdW+y0x+xJKlJEX9UjalFGZn2mys8lGw2i1VyTo4foZFkz2+WQf
+ lxa/gnkMf5AACpPvYJb5M6SXzF9C6eus2ZaKxrzNYQ6/3urv5ii/CWuWu0HyuUXHNcsVbf0gooW1V
+ OLnawhpRAkFqS0MzSsY+ZgJDaD1u76VN46RSh4OQ4=;
 Received: from [2a00:23c4:8bb3:1000:1218:d855:1998:7fa8]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKQh-000CUN-1d; Wed, 13 Mar 2024 08:57:47 +0000
+ id 1rkKQl-000CUN-9d; Wed, 13 Mar 2024 08:57:51 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu,
  qemu-devel@nongnu.org
-Date: Wed, 13 Mar 2024 08:57:54 +0000
-Message-Id: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 13 Mar 2024 08:57:55 +0000
+Message-Id: <20240313085810.2655062-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
+References: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb3:1000:1218:d855:1998:7fa8
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 00/16] [for-9.0] esp: avoid explicit setting of DRQ within
- ESP state machine
+Subject: [PATCH v2 01/16] esp.c: replace cmdfifo use of esp_fifo_pop_buf() in
+ do_command_phase()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,99 +78,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[MCA: Since v1 I've received a few reports of FIFO assert()s being triggered and a
-cmdfifo buffer overflow discovered by fuzzing the updated ESP code. The updating of
-all FIFO push/pop operations to use the esp_fifo_*() functions in this series
-provides protection against this, and in conjunction with new patches 9-11 is
-enough to prevent all qtest reproducers that I have been sent.
-
-For these reasons I would recommend that this series be applied for 9.0. Many thanks
-to Chuhong Yuan <hslester96@gmail.com> for reporting the issues and providing qtest
-reproducers.]
-
-The ESP device has a DRQ (DMA request) signal that is used to handle flow control
-during DMA transfers. At the moment the DRQ signal is explicitly raised and
-lowered at various points in the ESP state machine as required, rather than
-implementing the logic described in the datasheet:
-
-"DREQ will remain true as long as either the FIFO contains at least one word (or
-one byte if 8-bit mode) to send to memory during DMA read, or has room for one more
-word (or byte if 8-bit mode) in the FIFO during DMA write."
-
-This series updates the ESP device to use the same logic as described above which
-also fixes a couple of outstanding GitLab issues related to recovery handling
-during FIFO overflow on 68k Macs using PDMA.
-
-Patches 1-3 update existing users of esp_fifo_pop_buf() and esp_fifo_pop() with
-the internal cmdfifo to use the underlying Fifo8 device directly. The aim is
-to ensure that all the esp_fifo_*() functions only operate on the ESP's hardware
-FIFO.
-
-Patches 4-5 update esp_fifo_push() and esp_fifo_pop() to take ESPState directly
-as a parameter to prevent any usage that doesn't reference the ESP hardware
-FIFO.
-
-Patch 6 ensures that any usage of fifo8_push() for the ESP hardware FIFO is
-updated to use esp_fifo_push() instead.
-
-Patch 7 updates esp_fifo_pop_buf() to take ESPState directly as a parameter
-to prevent any usage that doesn't reference the ESP hardware FIFO.
-
-Patch 8 introduces the esp_fifo_push_buf() function for pushing multiple bytes
-to the ESP hardware FIFO, and updates callers to use it accordingly.
-
-Patches 9-11 incorporate additional protection to prevent FIFO assert()s and a
-cmdfifo buffer overflow discovered via fuzzing.
-
-Patch 12 is just code movement which avoids the use of a forward declaration whilst
-also making it easier to locate the mapping between ESP SCSI phases and their
-names.
-
-Patches 13 introduce a new esp_update_drq() function that implements the above
-DRQ logic which is called by both esp_fifo_{push,pop}_buf().
-
-Patch 14 updates esp_fifo_push() and esp_fifo_pop() to use the new esp_update_drq()
-function. At this point all reads/writes to the ESP FIFO use the esp_fifo_*()
-functions and will set DRQ correctly.
-
-Patch 15 is a small update to the logic in esp_pdma_write() to ensure that
-esp_fifo_push() is always called for PDMA writes to the FIFO, thereby ensuring
-that esp_update_drq() remains correct even in the case of FIFO overflow.
-
-Finally patch 16 removes all manual calls to esp_raise_drq() and esp_lower_drq()
-since the DRQ signal is now updated correctly upon each FIFO read/write access.
+The aim is to restrict the esp_fifo_*() functions so that they only operate on
+the hardware FIFO. When reading from cmdfifo in do_command_phase() use the
+underlying Fifo8 functions directly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/scsi/esp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-v2:
-- Rebase onto master
-- Add patches 9-12 to handle FIFO assert()s and cmdfifo overflow as reported by
-  Chuhong Yuan <hslester96@gmail.com>
-
-
-Mark Cave-Ayland (16):
-  esp.c: replace cmdfifo use of esp_fifo_pop_buf() in do_command_phase()
-  esp.c: replace cmdfifo use of esp_fifo_pop_buf() in do_message_phase()
-  esp.c: replace cmdfifo use of esp_fifo_pop() in do_message_phase()
-  esp.c: change esp_fifo_push() to take ESPState
-  esp.c: change esp_fifo_pop() to take ESPState
-  esp.c: use esp_fifo_push() instead of fifo8_push()
-  esp.c: change esp_fifo_pop_buf() to take ESPState
-  esp.c: introduce esp_fifo_push_buf() function for pushing to the FIFO
-  esp.c: don't assert() if FIFO empty when executing non-DMA SELATNS
-  esp.c: don't assert() if FIFO empty when executing esp_cdb_length()
-  esp.c: don't overflow cmdfifo if cmdfifo_cdb_offset >= ESP_CMDFIFO_SZ
-  esp.c: move esp_set_phase() and esp_get_phase() towards the beginning
-    of the file
-  esp.c: introduce esp_update_drq() and update esp_fifo_{push,pop}_buf()
-    to use it
-  esp.c: update esp_fifo_{push,pop}() to call esp_update_drq()
-  esp.c: ensure esp_pdma_write() always calls esp_fifo_push()
-  esp.c: remove explicit setting of DRQ within ESP state machine
-
- hw/scsi/esp.c | 193 ++++++++++++++++++++++++++++++++------------------
- 1 file changed, 123 insertions(+), 70 deletions(-)
-
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index 590ff99744..f8230c74b3 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -265,7 +265,7 @@ static void esp_do_nodma(ESPState *s);
+ 
+ static void do_command_phase(ESPState *s)
+ {
+-    uint32_t cmdlen;
++    uint32_t cmdlen, n;
+     int32_t datalen;
+     SCSIDevice *current_lun;
+     uint8_t buf[ESP_CMDFIFO_SZ];
+@@ -275,7 +275,7 @@ static void do_command_phase(ESPState *s)
+     if (!cmdlen || !s->current_dev) {
+         return;
+     }
+-    esp_fifo_pop_buf(&s->cmdfifo, buf, cmdlen);
++    memcpy(buf, fifo8_pop_buf(&s->cmdfifo, cmdlen, &n), cmdlen);
+ 
+     current_lun = scsi_device_find(&s->bus, 0, s->current_dev->id, s->lun);
+     if (!current_lun) {
 -- 
 2.39.2
 
