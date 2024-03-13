@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219BE87AEF9
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:14:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4082D87AF52
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:22:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkT66-0000gA-AA; Wed, 13 Mar 2024 14:13:02 -0400
+	id 1rkTDo-0002kg-7O; Wed, 13 Mar 2024 14:21:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkT63-0000fP-Lz
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:12:59 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkT61-0006OJ-Po
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:12:59 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 52DEB55B9F;
- Wed, 13 Mar 2024 21:13:48 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 56D1898955;
- Wed, 13 Mar 2024 21:12:43 +0300 (MSK)
-Message-ID: <41f0f7b4-ce3d-4e60-8567-1aa34a616b1a@tls.msk.ru>
-Date: Wed, 13 Mar 2024 21:12:42 +0300
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rkTDl-0002jN-0E
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:20:57 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rkTDj-0007vI-9N
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:20:56 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e6aa270d55so40636b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710354054; x=1710958854; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=4P1Y9DU//c5f5UPKRjdSsKnX1qZro47d4XTjh0nhijE=;
+ b=hDCtqBmIbfcWwkT9PlBYVNjyE4DYlm0Clsvz4Dlotox818LFbmtdlhWdBjGp3kZGSJ
+ t+U0lETOygqQjlA91L2KwCkeJn8XYrmenyS54FY7oMeQGk3QO0sLwST+L9vwKrFFJwu0
+ KYM2/scVZmL4lEKiS17c/r+MFdBCPCyxOfoyPdqOvHmzSOgBTCwTxrYJ0Q6WFS2R7OQN
+ nnDi6r6N8zcIMS1l3qY6P8QVeIaW8E4bbJvUtXbFOBuwY0qYxrinvTurn5Xla14nqet3
+ 2uuZvoSDQjA3PiPV2CWCS3QO5U3PHLI1WMmiC++6i0ux7cS5VTy9Xf/Z7eke+Z8TMRWb
+ /cKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710354054; x=1710958854;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=4P1Y9DU//c5f5UPKRjdSsKnX1qZro47d4XTjh0nhijE=;
+ b=SF0V/dlwHpXnVr7ZiQ89eX+S0d2Ho8rSAyBHSFRHA+1g1geitSwlaa+EjA+BdR9ODF
+ hpPbdaWCb8Qy2zO71YTut0re7TKTqjIUuIiSBXI1EleZX4lplYN8j4Z1TJo8OslZonjp
+ /sxCWagEuQPj7mzJ1a8my1sXB3XoMsjL9FWtkB7g2k5rjKfaAdoyV8OE0HdKpqMHvBRT
+ Z2toCU4iWeWeKLtHRByehPn8RTXGSMfuMRyNxJrf2XLt/ISn2jpNaJSAzYvueROMxhRR
+ 39uHITvLT/W91khj5f15vNnvBh9ctQq7+l4PqN+3VLwSe421uVi//c0apc9NXfeX7afO
+ RbcA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUyBIAcmi99zCTn0Bxx/CjUCwdlytKBJIltlSi6MKca4GJ0htZsToRV6Dhq012Ghmngh1aTYI9MBu4EJyCkwcV+cahvjJ0=
+X-Gm-Message-State: AOJu0Ywdetz3zdv/anck3v2V/zqssmyNUI0xqLHVUWnUreK2UBL6y5cH
+ /uqks/PMCL0K7wUiKMf42y3Nt9EibEyVBNgXBdPAnQEHtS00pRpghte0uBuuYb4=
+X-Google-Smtp-Source: AGHT+IFkt91b0cgZaM3nQms9WW1oIWnAisEiKsNeGsIelTX3n9RRwZYurMWUlKzsmwBpXtfe1Hl2oA==
+X-Received: by 2002:a05:6a21:2d8a:b0:1a1:6ced:a0e0 with SMTP id
+ ty10-20020a056a212d8a00b001a16ceda0e0mr2606232pzb.1.1710354053470; 
+ Wed, 13 Mar 2024 11:20:53 -0700 (PDT)
+Received: from localhost.localdomain ([49.37.251.185])
+ by smtp.gmail.com with ESMTPSA id
+ l22-20020a62be16000000b006e6a16acf85sm3457528pff.87.2024.03.13.11.20.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Mar 2024 11:20:53 -0700 (PDT)
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v5 0/3] Introduce sdtrig ISA extension
+Date: Wed, 13 Mar 2024 23:50:06 +0530
+Message-Id: <20240313182009.608685-1-hchauhan@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/12] vdpa: fix network breakage after cancelling
- migration
-Content-Language: en-US
-To: Si-Wei Liu <si-wei.liu@oracle.com>, jasowang@redhat.com, mst@redhat.com,
- dtatulea@nvidia.com, leiyang@redhat.com, yin31149@gmail.com,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <1707910082-10243-1-git-send-email-si-wei.liu@oracle.com>
- <1707910082-10243-13-git-send-email-si-wei.liu@oracle.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <1707910082-10243-13-git-send-email-si-wei.liu@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,55 +89,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-14.02.2024 14:28, Si-Wei Liu wrote:
-> Fix an issue where cancellation of ongoing migration ends up
-> with no network connectivity.
-> 
-> When canceling migration, SVQ will be switched back to the
-> passthrough mode, but the right call fd is not programed to
-> the device and the svq's own call fd is still used. At the
-> point of this transitioning period, the shadow_vqs_enabled
-> hadn't been set back to false yet, causing the installation
-> of call fd inadvertently bypassed.
-> 
-> Fixes: a8ac88585da1 ("vhost: Add Shadow VirtQueue call forwarding capabilities")
-> Cc: Eugenio Pérez <eperezma@redhat.com>
-> Acked-by: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-> ---
->   hw/virtio/vhost-vdpa.c | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
+All the CPUs may or may not implement the debug triggers. Some CPUs
+may implement only debug specification v0.13 and not sdtrig ISA
+extension.
 
-Is this a -stable material?
+This patchset, adds sdtrig ISA as an extension which can be turned on or off by
+sdtrig=<true/false> option. It is turned off by default.
 
-If yes, is it also applicable for stable-7.2 (mentioned commit is in 7.2.0),
-which lacks v7.2.0-2327-gb276524386 "vdpa: Remember last call fd set",
-or should this one also be picked up?
+When debug is true and sdtrig is false, the behaviour is as defined in debug
+specification v0.13. If sdtrig is turned on, the behaviour is as defined
+in the sdtrig ISA extension.
 
-Thanks,
+The "sdtrig" string is concatenated to ISA string when debug or sdtrig is enabled.
 
-/mjt
+Changes from v1:
+  - Replaced the debug property with ext_sdtrig
+  - Marked it experimenatal by naming it x-sdtrig
+  - x-sdtrig is added to ISA string
+  - Reversed the patch order
 
-> diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-> index 004110f..dfeca8b 100644
-> --- a/hw/virtio/vhost-vdpa.c
-> +++ b/hw/virtio/vhost-vdpa.c
-> @@ -1468,7 +1468,15 @@ static int vhost_vdpa_set_vring_call(struct vhost_dev *dev,
->   
->       /* Remember last call fd because we can switch to SVQ anytime. */
->       vhost_svq_set_svq_call_fd(svq, file->fd);
-> -    if (v->shadow_vqs_enabled) {
-> +    /*
-> +     * When SVQ is transitioning to off, shadow_vqs_enabled has
-> +     * not been set back to false yet, but the underlying call fd
-> +     * will have to switch back to the guest notifier to signal the
-> +     * passthrough virtqueues. In other situations, SVQ's own call
-> +     * fd shall be used to signal the device model.
-> +     */
-> +    if (v->shadow_vqs_enabled &&
-> +        v->shared->svq_switching != SVQ_TSTATE_DISABLING) {
->           return 0;
->       }
->   
+Changes from v2:
+  - Mark debug property as deprecated and replace internally with sdtrig extension
+  - setting/unsetting debug property shows warning and sets/unsets ext_sdtrig
+  - sdtrig is added to ISA string as RISC-V debug specification is frozen
+
+Changes from v3:
+  - debug propery is not deprecated but it is superceded by sdtrig extension
+  - Mcontrol6 support is not published when only debug property is turned
+    on as debug spec v0.13 doesn't define mcontrol6 match triggers.
+  - Enabling sdtrig extension turns of debug property and a warning is printed.
+    This doesn't break debug specification implemenation since sdtrig is
+    backward compatible with debug specification.
+  - Disable debug property and enable sdtrig by default for Ventana's Veyron
+    CPUs.
+
+Changes from v4:
+  - Enable debug flag if sdtrig was enabled but debug was disabled.
+  - Other cosmetic changes.
+
+Himanshu Chauhan (3):
+  target/riscv: Enable mcontrol6 triggers only when sdtrig is selected
+  target/riscv: Expose sdtrig ISA extension
+  target/riscv: Enable sdtrig for Ventana's Veyron CPUs
+
+ target/riscv/cpu.c     | 12 +++++-
+ target/riscv/cpu_cfg.h |  1 +
+ target/riscv/csr.c     |  2 +-
+ target/riscv/debug.c   | 90 +++++++++++++++++++++++++-----------------
+ target/riscv/machine.c |  2 +-
+ 5 files changed, 66 insertions(+), 41 deletions(-)
+
+-- 
+2.34.1
 
 
