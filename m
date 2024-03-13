@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B81287AA61
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:30:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0E387AA6A
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:30:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQX8-0003kZ-Ij; Wed, 13 Mar 2024 11:28:46 -0400
+	id 1rkQXT-0003pL-Lh; Wed, 13 Mar 2024 11:29:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQX4-0003iu-Cw; Wed, 13 Mar 2024 11:28:43 -0400
+ id 1rkQX6-0003jA-FA; Wed, 13 Mar 2024 11:28:44 -0400
 Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQWz-0002kF-Sm; Wed, 13 Mar 2024 11:28:41 -0400
+ id 1rkQWz-0002kG-Sp; Wed, 13 Mar 2024 11:28:44 -0400
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net
  [IPv6:2a02:6b8:c2a:3dc:0:640:1e66:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id C5BA860FFA;
- Wed, 13 Mar 2024 18:28:30 +0300 (MSK)
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 927E060F6D;
+ Wed, 13 Mar 2024 18:28:31 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id OSpDOX0Xl4Y0-unUOAePT; Wed, 13 Mar 2024 18:28:30 +0300
+ ESMTPSA id OSpDOX0Xl4Y0-ARKtmx8j; Wed, 13 Mar 2024 18:28:30 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1710343710;
- bh=QATKThshj4hm7c8e+tFurKPyhtJsoxzdweCGcDYoTRY=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=BZDRRNHZrLheLmtBCP0PJbvQNagSy42Lkmana5UNS42xnAcaAcGJAVso50su2LIrE
- D3xCc1qwqyqTGIa10Skfq42Q9pNd2C54GfWEybUJiqW+2HZY/oGPDhqje+mNQB47Hq
- gg6HhZ/F68khhwW6h36hzjfa9vi4XK6ZFIT/A42c=
+ bh=oqIPycj4I9M/uIhA8eSv68y6EK4Kuz2hMhWWTOOGZ3M=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=U3AOh0hvH0DUAMN/1aQoInYT//6qaYN5y9FMIOATVrFcV6JcZL4YbFlSYP21KALz3
+ 2eAPDHGEY+Ll9ohDCYDjDLUuikLb4esGhgzloK3qOpuO6dap/QJrC/Qublih0kPaNa
+ Gq6D+fdy/UmE+EZvHDftlhQA+gBTQY38BMA+75+g=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,10 +40,12 @@ Cc: qemu-devel@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  xiechanglong.d@gmail.com, wencongyang2@huawei.com, hreitz@redhat.com,
  kwolf@redhat.com, vsementsov@yandex-team.ru, jsnow@redhat.com,
  f.ebner@proxmox.com
-Subject: [PATCH v4 0/5] backup: discard-source parameter
-Date: Wed, 13 Mar 2024 18:28:17 +0300
-Message-Id: <20240313152822.626493-1-vsementsov@yandex-team.ru>
+Subject: [PATCH v4 1/5] block/copy-before-write: fix permission
+Date: Wed, 13 Mar 2024 18:28:18 +0300
+Message-Id: <20240313152822.626493-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240313152822.626493-1-vsementsov@yandex-team.ru>
+References: <20240313152822.626493-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=178.154.239.72;
@@ -70,38 +72,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi all! The main patch is 04, please look at it for description and
-diagram.
+In case when source node does not have any parents, the condition still
+works as required: backup job do create the parent by
 
-v4: add t-b by Fiona
-    add r-b by Fiona to 02-05 (patch 01 still lack an r-b)
-    05: fix copyrights and subject in the test
-    04: since 9.0 --> since 9.1 (we missed a soft freeze for 9.0)
+  block_job_create -> block_job_add_bdrv -> bdrv_root_attach_child
 
-Vladimir Sementsov-Ogievskiy (5):
-  block/copy-before-write: fix permission
-  block/copy-before-write: support unligned snapshot-discard
-  block/copy-before-write: create block_copy bitmap in filter node
-  qapi: blockdev-backup: add discard-source parameter
-  iotests: add backup-discard-source
+Still, in this case checking @perm variable doesn't work, as backup job
+creates the root blk with empty permissions (as it rely on CBW filter
+to require correct permissions and don't want to create extra
+conflicts).
 
- block/backup.c                                |   5 +-
- block/block-copy.c                            |  12 +-
- block/copy-before-write.c                     |  39 ++++-
- block/copy-before-write.h                     |   1 +
- block/replication.c                           |   4 +-
- blockdev.c                                    |   2 +-
- include/block/block-common.h                  |   2 +
- include/block/block-copy.h                    |   2 +
- include/block/block_int-global-state.h        |   2 +-
- qapi/block-core.json                          |   4 +
- tests/qemu-iotests/257.out                    | 112 ++++++-------
- .../qemu-iotests/tests/backup-discard-source  | 152 ++++++++++++++++++
- .../tests/backup-discard-source.out           |   5 +
- 13 files changed, 272 insertions(+), 70 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/backup-discard-source
- create mode 100644 tests/qemu-iotests/tests/backup-discard-source.out
+So, we should not check @perm.
 
+The hack may be dropped entirely when transactional insertion of
+filter (when we don't try to recalculate permissions in intermediate
+state, when filter does conflict with original parent of the source
+node) merged (old big series
+"[PATCH v5 00/45] Transactional block-graph modifying API"[1] and it's
+current in-flight part is "[PATCH v8 0/7] blockdev-replace"[2])
+
+[1] https://patchew.org/QEMU/20220330212902.590099-1-vsementsov@openvz.org/
+[2] https://patchew.org/QEMU/20231017184444.932733-1-vsementsov@yandex-team.ru/
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ block/copy-before-write.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+index 8aba27a71d..3e3af30c08 100644
+--- a/block/copy-before-write.c
++++ b/block/copy-before-write.c
+@@ -364,9 +364,13 @@ cbw_child_perm(BlockDriverState *bs, BdrvChild *c, BdrvChildRole role,
+                            perm, shared, nperm, nshared);
+ 
+         if (!QLIST_EMPTY(&bs->parents)) {
+-            if (perm & BLK_PERM_WRITE) {
+-                *nperm = *nperm | BLK_PERM_CONSISTENT_READ;
+-            }
++            /*
++             * Note, that source child may be shared with backup job. Backup job
++             * does create own blk parent on copy-before-write node, so this
++             * works even if source node does not have any parents before backup
++             * start
++             */
++            *nperm = *nperm | BLK_PERM_CONSISTENT_READ;
+             *nshared &= ~(BLK_PERM_WRITE | BLK_PERM_RESIZE);
+         }
+     }
 -- 
 2.34.1
 
