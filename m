@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E3887AA1C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E62B87AA23
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQEt-0003ts-7B; Wed, 13 Mar 2024 11:09:55 -0400
+	id 1rkQEq-0003pC-KI; Wed, 13 Mar 2024 11:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEd-0003bZ-G8; Wed, 13 Mar 2024 11:09:40 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1rkQEa-0003aD-3F; Wed, 13 Mar 2024 11:09:37 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEV-0005se-O3; Wed, 13 Mar 2024 11:09:39 -0400
+ id 1rkQEY-0005t4-1i; Wed, 13 Mar 2024 11:09:35 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:8793:0:640:b059:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 3016D60E56;
- Wed, 13 Mar 2024 18:09:30 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 4DE6660E2C;
+ Wed, 13 Mar 2024 18:09:31 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 99pZB52GZiE0-6Cfukku8; Wed, 13 Mar 2024 18:09:29 +0300
+ ESMTPSA id 99pZB52GZiE0-CsQfF6Nt; Wed, 13 Mar 2024 18:09:30 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1710342569;
- bh=z/o77ZBizUBxnCNHSRVifBjl5Rg0JJeqoaiwZHtzozY=;
+ s=default; t=1710342570;
+ bh=cEJJa7Y2kfX6gm4lD1BYvT1prEfuPN4uHYFH/69RoYA=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=zBH2HsiKUheV56XqzUCYE/3gnZw506OzWaONG4JJhyRKvXSs6x622Ew2KB/kt8Mpe
- fDHa3neIJmlt2ViIfG2l850PNabShldyOWOobOpRurtZSzxqdkKvMHLtJGNn/LRZE+
- kkvJyUaiiydLWleU5vc5TgrjtfxK5R9XZPmZDBAg=
+ b=U6bFoIfb3rFVeI1IkmXS9LfHkDm6syRb2JhVYeZplZkiBZUgYDwLt303xjDOBYFhG
+ 5GuRNJi6CHoGR3O9FUtXp8aTuD2DckmtLDXYhXo71YDzKc08t5baFSe2jxDok5UY70
+ k5Q+1akh2xOfrZi515864g5pimqfiszPdqiFJnv8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,16 +40,16 @@ Cc: qemu-devel@nongnu.org, jsnow@redhat.com, vsementsov@yandex-team.ru,
  kwolf@redhat.com, hreitz@redhat.com, devel@lists.libvirt.org,
  eblake@redhat.com, armbru@redhat.com, michael.roth@amd.com,
  pbonzini@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-Subject: [RFC 05/15] qapi: JobChangeOptions: make type member optional and
- deprecated
-Date: Wed, 13 Mar 2024 18:08:57 +0300
-Message-Id: <20240313150907.623462-6-vsementsov@yandex-team.ru>
+Subject: [RFC 06/15] blockjob: move change action implementation to job from
+ block-job
+Date: Wed, 13 Mar 2024 18:08:58 +0300
+Message-Id: <20240313150907.623462-7-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 References: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+Received-SPF: pass client-ip=178.154.239.136;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -74,131 +73,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now QEMU can understand type directly from the job itself, type is
-redundant.
+Like for other block-job-* APIs we want have the actual functionality
+in job layer and make block-job-change to be a deprecated duplication
+of job-change in the following commit.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- blockjob.c                           |  2 +-
- docs/about/deprecated.rst            |  6 ++++++
- job-qmp.c                            | 17 +++++++++++++++++
- qapi/block-core.json                 | 10 ++++++++--
- stubs/meson.build                    |  1 +
- stubs/qapi-jobchangeoptions-mapper.c |  8 ++++++++
- 6 files changed, 41 insertions(+), 3 deletions(-)
- create mode 100644 stubs/qapi-jobchangeoptions-mapper.c
+ block/mirror.c               |  7 +++----
+ blockdev.c                   |  2 +-
+ blockjob.c                   | 26 --------------------------
+ include/block/blockjob.h     | 11 -----------
+ include/block/blockjob_int.h |  7 -------
+ include/qemu/job.h           | 12 ++++++++++++
+ job-qmp.c                    |  1 +
+ job.c                        | 23 +++++++++++++++++++++++
+ 8 files changed, 40 insertions(+), 49 deletions(-)
 
+diff --git a/block/mirror.c b/block/mirror.c
+index 2d0cd22c06..e670d0dd4f 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -1251,10 +1251,9 @@ static bool commit_active_cancel(Job *job, bool force)
+     return force || !job_is_ready(job);
+ }
+ 
+-static void mirror_change(BlockJob *job, JobChangeOptions *opts,
+-                          Error **errp)
++static void mirror_change(Job *job, JobChangeOptions *opts, Error **errp)
+ {
+-    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
++    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common.job);
+     JobChangeOptionsMirror *change_opts = &opts->u.mirror;
+     MirrorCopyMode current;
+ 
+@@ -1310,9 +1309,9 @@ static const BlockJobDriver mirror_job_driver = {
+         .pause                  = mirror_pause,
+         .complete               = mirror_complete,
+         .cancel                 = mirror_cancel,
++        .change                 = mirror_change,
+     },
+     .drained_poll           = mirror_drained_poll,
+-    .change                 = mirror_change,
+     .query                  = mirror_query,
+ };
+ 
+diff --git a/blockdev.c b/blockdev.c
+index 7881f6e5a6..7e13213040 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -3256,7 +3256,7 @@ void qmp_block_job_change(JobChangeOptions *opts, Error **errp)
+         return;
+     }
+ 
+-    block_job_change_locked(job, opts, errp);
++    job_change_locked(&job->job, opts, errp);
+ }
+ 
+ void qmp_change_backing_file(const char *device,
 diff --git a/blockjob.c b/blockjob.c
-index 788cb1e07d..33c40e7d25 100644
+index 33c40e7d25..2769722b37 100644
 --- a/blockjob.c
 +++ b/blockjob.c
-@@ -319,7 +319,7 @@ void block_job_change_locked(BlockJob *job, JobChangeOptions *opts,
+@@ -312,32 +312,6 @@ static bool block_job_set_speed(BlockJob *job, int64_t speed, Error **errp)
+     return block_job_set_speed_locked(job, speed, errp);
+ }
  
-     GLOBAL_STATE_CODE();
+-void block_job_change_locked(BlockJob *job, JobChangeOptions *opts,
+-                             Error **errp)
+-{
+-    const BlockJobDriver *drv = block_job_driver(job);
+-
+-    GLOBAL_STATE_CODE();
+-
+-    if (opts->has_type && job_type(&job->job) != opts->type) {
+-        error_setg(errp, "Job '%s' is '%s' job, not '%s'", job->job.id,
+-                   job_type_str(&job->job), JobType_str(opts->type));
+-        return;
+-    }
+-
+-    if (job_apply_verb_locked(&job->job, JOB_VERB_CHANGE, errp)) {
+-        return;
+-    }
+-
+-    if (drv->change) {
+-        job_unlock();
+-        drv->change(job, opts, errp);
+-        job_lock();
+-    } else {
+-        error_setg(errp, "Job type does not support change");
+-    }
+-}
+-
+ void block_job_ratelimit_processed_bytes(BlockJob *job, uint64_t n)
+ {
+     IO_CODE();
+diff --git a/include/block/blockjob.h b/include/block/blockjob.h
+index 5dd1b08909..72e849a140 100644
+--- a/include/block/blockjob.h
++++ b/include/block/blockjob.h
+@@ -173,17 +173,6 @@ bool block_job_has_bdrv(BlockJob *job, BlockDriverState *bs);
+  */
+ bool block_job_set_speed_locked(BlockJob *job, int64_t speed, Error **errp);
  
--    if (job_type(&job->job) != opts->type) {
-+    if (opts->has_type && job_type(&job->job) != opts->type) {
-         error_setg(errp, "Job '%s' is '%s' job, not '%s'", job->job.id,
-                    job_type_str(&job->job), JobType_str(opts->type));
-         return;
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index dfd681cd02..64981e5e4a 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -142,6 +142,12 @@ accepted incorrect commands will return an error. Users should make sure that
- all arguments passed to ``device_add`` are consistent with the documented
- property types.
+-/**
+- * block_job_change_locked:
+- * @job: The job to change.
+- * @opts: The new options.
+- * @errp: Error object.
+- *
+- * Change the job according to opts.
+- */
+-void block_job_change_locked(BlockJob *job, JobChangeOptions *opts,
+-                             Error **errp);
+-
+ /**
+  * block_job_query_locked:
+  * @job: The job to get information about.
+diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
+index d9c3b911d0..58bc7a5cea 100644
+--- a/include/block/blockjob_int.h
++++ b/include/block/blockjob_int.h
+@@ -68,13 +68,6 @@ struct BlockJobDriver {
  
+     void (*set_speed)(BlockJob *job, int64_t speed);
+ 
+-    /*
+-     * Change the @job's options according to @opts.
+-     *
+-     * Note that this can already be called before the job coroutine is running.
+-     */
+-    void (*change)(BlockJob *job, JobChangeOptions *opts, Error **errp);
+-
+     /*
+      * Query information specific to this kind of block job.
+      */
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index 9ea98b5927..d44cdb0cc8 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -27,6 +27,7 @@
+ #define JOB_H
+ 
+ #include "qapi/qapi-types-job.h"
++#include "qapi/qapi-types-block-core.h"
+ #include "qemu/queue.h"
+ #include "qemu/progress_meter.h"
+ #include "qemu/coroutine.h"
+@@ -307,6 +308,12 @@ struct JobDriver {
+      */
+     bool (*cancel)(Job *job, bool force);
+ 
++    /**
++     * Change the @job's options according to @opts.
++     *
++     * Note that this can already be called before the job coroutine is running.
++     */
++    void (*change)(Job *job, JobChangeOptions *opts, Error **errp);
+ 
+     /**
+      * Called when the job is freed.
+@@ -705,6 +712,11 @@ void job_finalize_locked(Job *job, Error **errp);
+  */
+ void job_dismiss_locked(Job **job, Error **errp);
+ 
++/**
++ * Change the job according to opts.
++ */
++void job_change_locked(Job *job, JobChangeOptions *opts, Error **errp);
 +
-+``block-job-change`` argument ``type`` (since 9.1)
-+''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+QEMU can get job type from the job itself (by @id), @type field is redundant.
-+
- QEMU Machine Protocol (QMP) events
- ----------------------------------
- 
+ /**
+  * Synchronously finishes the given @job. If @finish is given, it is called to
+  * trigger completion or cancellation of the job.
 diff --git a/job-qmp.c b/job-qmp.c
-index 9e26fa899f..c486df9579 100644
+index c486df9579..abe9b59487 100644
 --- a/job-qmp.c
 +++ b/job-qmp.c
-@@ -26,6 +26,8 @@
- #include "qemu/osdep.h"
- #include "qemu/job.h"
+@@ -28,6 +28,7 @@
  #include "qapi/qapi-commands-job.h"
-+#include "qapi/qapi-types-block-core.h"
-+#include "qapi/qapi-visit-block-core.h"
+ #include "qapi/qapi-types-block-core.h"
+ #include "qapi/qapi-visit-block-core.h"
++#include "qapi/qapi-commands-block-core.h"
  #include "qapi/error.h"
  #include "trace/trace-root.h"
  
-@@ -186,3 +188,18 @@ JobInfoList *qmp_query_jobs(Error **errp)
- 
-     return head;
+diff --git a/job.c b/job.c
+index 660ce22c56..69630852dc 100644
+--- a/job.c
++++ b/job.c
+@@ -1262,3 +1262,26 @@ int job_finish_sync_locked(Job *job,
+     job_unref_locked(job);
+     return ret;
  }
 +
-+bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
++void job_change_locked(Job *job, JobChangeOptions *opts, Error **errp)
 +{
-+    Job *job;
++    GLOBAL_STATE_CODE();
 +
-+    JOB_LOCK_GUARD();
-+
-+    job = find_job_locked(opts->id, errp);
-+    if (!job) {
-+        return false;
++    if (opts->has_type && job_type(job) != opts->type) {
++        error_setg(errp, "Job '%s' is '%s' job, not '%s'", job->id,
++                   job_type_str(job), JobType_str(opts->type));
++        return;
 +    }
 +
-+    *out = job_type(job);
-+    return true;
-+}
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 6041e7bd8f..3d890dfcd0 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3082,11 +3082,17 @@
- #
- # @type: The job type
- #
-+# Features:
-+#
-+# @deprecated: Members @type is deprecated. Qemu can get type from
-+#     the job itself, @type is redundant.
-+#
- # Since: 8.2
- ##
- { 'union': 'JobChangeOptions',
--  'base': { 'id': 'str', 'type': 'JobType' },
--  'discriminator': 'type',
-+  'base': { 'id': 'str',
-+            '*type': { 'type': 'JobType', 'features': ['deprecated'] } },
-+  'discriminator': 'JobType',
-   'data': { 'mirror': 'JobChangeOptionsMirror' } }
- 
- ##
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 0bf25e6ca5..e480400a6c 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -31,6 +31,7 @@ stub_ss.add(files('module-opts.c'))
- stub_ss.add(files('monitor.c'))
- stub_ss.add(files('monitor-core.c'))
- stub_ss.add(files('physmem.c'))
-+stub_ss.add(files('qapi-jobchangeoptions-mapper.c'))
- stub_ss.add(files('qemu-timer-notify-cb.c'))
- stub_ss.add(files('memory_device.c'))
- stub_ss.add(files('qmp-command-available.c'))
-diff --git a/stubs/qapi-jobchangeoptions-mapper.c b/stubs/qapi-jobchangeoptions-mapper.c
-new file mode 100644
-index 0000000000..e4acfd91b3
---- /dev/null
-+++ b/stubs/qapi-jobchangeoptions-mapper.c
-@@ -0,0 +1,8 @@
-+#include "qemu/osdep.h"
-+#include "qapi/qapi-visit-block-core.h"
-+#include "qapi/qapi-types-job.h"
++    if (job_apply_verb_locked(job, JOB_VERB_CHANGE, errp)) {
++        return;
++    }
 +
-+bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
-+{
-+    g_assert_not_reached();
++    if (job->driver->change) {
++        job_unlock();
++        job->driver->change(job, opts, errp);
++        job_lock();
++    } else {
++        error_setg(errp, "Job type does not support change");
++    }
 +}
 -- 
 2.34.1
