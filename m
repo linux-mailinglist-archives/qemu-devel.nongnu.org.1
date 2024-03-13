@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05D987AA22
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1125687AA35
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:14:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQEt-0003uo-8B; Wed, 13 Mar 2024 11:09:55 -0400
+	id 1rkQEo-0003m5-TE; Wed, 13 Mar 2024 11:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEb-0003bC-Jy; Wed, 13 Mar 2024 11:09:39 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ id 1rkQEc-0003bE-97; Wed, 13 Mar 2024 11:09:38 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEZ-0005td-G5; Wed, 13 Mar 2024 11:09:37 -0400
+ id 1rkQEa-0005u8-3B; Wed, 13 Mar 2024 11:09:38 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:8793:0:640:b059:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 5E81960DBA;
- Wed, 13 Mar 2024 18:09:33 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6FE6160E62;
+ Wed, 13 Mar 2024 18:09:34 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 99pZB52GZiE0-Jw55lBFV; Wed, 13 Mar 2024 18:09:32 +0300
+ ESMTPSA id 99pZB52GZiE0-vwBb8tYZ; Wed, 13 Mar 2024 18:09:33 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1710342572;
- bh=oAmIBIVRoPB9IV/Df1MWhYDzUX/APDm0FauUKs5ntZ8=;
+ s=default; t=1710342573;
+ bh=WCIpyT0J+TRD9V0WFqJbUQtYMgyzqP59utLlBS1GDpE=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=F7Dsbg1ACHRopfkwf282Lw4tAvMlupvlIwO62Q46ggJKqyTl68bHUNbbMXTHEVX8T
- VU43j/4RUOjl1f4dOEGDeVFECMbimayUX/9Y77RMRquMqfFCh5/SjPv3Nllvu2Bv9x
- CITx2MkucSZz09IdybfZQFJceDep1qf1y5sRved8=
+ b=IBPSb9vUM5Tw8Qsb8Nk4ziMv1+o0O8c8nNqOoY5CGidQ4jph1lO62/aV5YbZ0Bpw8
+ 3xRJ7kRtBEEVYcWk0oiY15YsYLw1VSwBGuQC4errBhzfp4DidT8kscSo7BxDlW8Cy+
+ ZHOGJEaXZgBakNpiESdfiC8uuOdirhTvr6OgPkeM=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -40,16 +40,17 @@ Cc: qemu-devel@nongnu.org, jsnow@redhat.com, vsementsov@yandex-team.ru,
  kwolf@redhat.com, hreitz@redhat.com, devel@lists.libvirt.org,
  eblake@redhat.com, armbru@redhat.com, michael.roth@amd.com,
  pbonzini@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-Subject: [RFC 08/15] qapi: job-change: support speed parameter
-Date: Wed, 13 Mar 2024 18:09:00 +0300
-Message-Id: <20240313150907.623462-9-vsementsov@yandex-team.ru>
+Subject: [RFC 09/15] qapi: job-complete: introduce no-block-replace option for
+ mirror
+Date: Wed, 13 Mar 2024 18:09:01 +0300
+Message-Id: <20240313150907.623462-10-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 References: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -72,303 +73,297 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow change job speed through job-change command. Old
-block-job-set-speed would be deprecated soon.
+That's an alternative to block-job-cancel(hard=false) behavior for
+mirror, which exactly is: complete the job, wait for in-flight
+requests, but don't do any block graph modifications.
+
+Why:
+
+1. We move to deprecating block-job-* APIs and use job-* APIs instead.
+   So we need to port somehow the functionality to job- API.
+
+2. The specified behavior was also a kind of "quirk". It's strange to
+   "cancel" something in a normal success path of user scenario. This
+   block-job-cancel(hard=false) results in BLOCK_JOB_COMPLETE event, so
+   definitely it's just another mode of "complete", not "cancel".
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/backup.c           |  8 ++++++
- block/commit.c           | 10 ++++++-
- block/mirror.c           | 60 ++++++++++++++++++++++++----------------
- block/stream.c           |  8 ++++++
- blockjob.c               | 13 +++++++++
- include/block/blockjob.h |  7 +++++
- include/qemu/job.h       |  2 +-
- qapi/block-core.json     | 23 +++++++++++++--
- 8 files changed, 103 insertions(+), 28 deletions(-)
+ block/mirror.c                       |  8 +++++---
+ include/qemu/job.h                   |  8 +++++++-
+ job-qmp.c                            | 20 +++++++++++++++-----
+ job.c                                | 12 ++++++++++--
+ qapi/job.json                        | 28 +++++++++++++++++++++++++---
+ stubs/qapi-jobchangeoptions-mapper.c |  5 +++++
+ tests/unit/test-bdrv-drain.c         |  2 +-
+ tests/unit/test-block-iothread.c     |  2 +-
+ tests/unit/test-blockjob.c           |  2 +-
+ 9 files changed, 70 insertions(+), 17 deletions(-)
 
-diff --git a/block/backup.c b/block/backup.c
-index ec29d6b810..bf086dc5f9 100644
---- a/block/backup.c
-+++ b/block/backup.c
-@@ -336,6 +336,13 @@ static bool backup_cancel(Job *job, bool force)
-     return true;
- }
- 
-+static bool backup_change(Job *job, JobChangeOptions *opts, Error **errp)
-+{
-+    BlockJob *bjob = container_of(job, BlockJob, job);
-+
-+    return block_job_change(bjob, &opts->u.backup, errp);
-+}
-+
- static const BlockJobDriver backup_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(BackupBlockJob),
-@@ -348,6 +355,7 @@ static const BlockJobDriver backup_job_driver = {
-         .clean                  = backup_clean,
-         .pause                  = backup_pause,
-         .cancel                 = backup_cancel,
-+        .change                 = backup_change,
-     },
-     .set_speed = backup_set_speed,
- };
-diff --git a/block/commit.c b/block/commit.c
-index 7c3fdcb0ca..ccb6097679 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -204,6 +204,13 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
-     return 0;
- }
- 
-+static bool commit_change(Job *job, JobChangeOptions *opts, Error **errp)
-+{
-+    BlockJob *bjob = container_of(job, BlockJob, job);
-+
-+    return block_job_change(bjob, &opts->u.commit, errp);
-+}
-+
- static const BlockJobDriver commit_job_driver = {
-     .job_driver = {
-         .instance_size = sizeof(CommitBlockJob),
-@@ -213,7 +220,8 @@ static const BlockJobDriver commit_job_driver = {
-         .run           = commit_run,
-         .prepare       = commit_prepare,
-         .abort         = commit_abort,
--        .clean         = commit_clean
-+        .clean         = commit_clean,
-+        .change        = commit_change,
-     },
- };
- 
 diff --git a/block/mirror.c b/block/mirror.c
-index e670d0dd4f..f474b87079 100644
+index f474b87079..e95c54fbc6 100644
 --- a/block/mirror.c
 +++ b/block/mirror.c
-@@ -1251,41 +1251,45 @@ static bool commit_active_cancel(Job *job, bool force)
-     return force || !job_is_ready(job);
+@@ -69,6 +69,7 @@ typedef struct MirrorBlockJob {
+      */
+     bool actively_synced;
+     bool should_complete;
++    bool no_block_replace;
+     int64_t granularity;
+     size_t buf_size;
+     int64_t bdev_length;
+@@ -740,7 +741,7 @@ static int mirror_exit_common(Job *job)
+     }
+     bdrv_graph_rdunlock_main_loop();
+ 
+-    if (s->should_complete && !abort) {
++    if (s->should_complete && !abort && !s->no_block_replace) {
+         BlockDriverState *to_replace = s->to_replace ?: src;
+         bool ro = bdrv_is_read_only(to_replace);
+ 
+@@ -1167,7 +1168,7 @@ immediate_exit:
+     return ret;
  }
  
--static void mirror_change(Job *job, JobChangeOptions *opts, Error **errp)
-+static bool mirror_change(Job *job, JobChangeOptions *opts, Error **errp)
+-static void mirror_complete(Job *job, Error **errp)
++static void mirror_complete(Job *job, JobComplete *opts, Error **errp)
  {
-+    BlockJob *bjob = container_of(job, BlockJob, job);
      MirrorBlockJob *s = container_of(job, MirrorBlockJob, common.job);
-     JobChangeOptionsMirror *change_opts = &opts->u.mirror;
--    MirrorCopyMode current;
--
--    /*
--     * The implementation relies on the fact that copy_mode is only written
--     * under the BQL. Otherwise, further synchronization would be required.
--     */
-+    MirrorCopyMode old_mode;
  
-     GLOBAL_STATE_CODE();
- 
--    if (!change_opts->has_copy_mode) {
--        /* Nothing to do */
--        return;
--    }
-+    if (change_opts->has_copy_mode) {
-+        old_mode = qatomic_read(&s->copy_mode);
- 
--    if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
--        return;
--    }
-+        if (old_mode != change_opts->copy_mode) {
-+            if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
-+                error_setg(errp, "Change to copy mode '%s' is not implemented",
-+                           MirrorCopyMode_str(change_opts->copy_mode));
-+                return false;
-+            }
- 
--    if (change_opts->copy_mode != MIRROR_COPY_MODE_WRITE_BLOCKING) {
--        error_setg(errp, "Change to copy mode '%s' is not implemented",
--                   MirrorCopyMode_str(change_opts->copy_mode));
--        return;
-+            if (old_mode != MIRROR_COPY_MODE_BACKGROUND) {
-+                error_setg(errp, "Expected current copy mode '%s', got '%s'",
-+                           MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
-+                           MirrorCopyMode_str(old_mode));
-+                return false;
-+            }
-+        }
+@@ -1178,7 +1179,7 @@ static void mirror_complete(Job *job, Error **errp)
      }
  
--    current = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
--                              change_opts->copy_mode);
--    if (current != MIRROR_COPY_MODE_BACKGROUND) {
--        error_setg(errp, "Expected current copy mode '%s', got '%s'",
--                   MirrorCopyMode_str(MIRROR_COPY_MODE_BACKGROUND),
--                   MirrorCopyMode_str(current));
-+    if (!block_job_change(bjob, qapi_JobChangeOptionsMirror_base(change_opts),
-+                          errp))
-+    {
-+        return false;
+     /* block all operations on to_replace bs */
+-    if (s->replaces) {
++    if (s->replaces && !opts->u.mirror.no_block_replace) {
+         s->to_replace = bdrv_find_node(s->replaces);
+         if (!s->to_replace) {
+             error_setg(errp, "Node name '%s' not found", s->replaces);
+@@ -1193,6 +1194,7 @@ static void mirror_complete(Job *job, Error **errp)
      }
-+
-+    old_mode = qatomic_cmpxchg(&s->copy_mode, MIRROR_COPY_MODE_BACKGROUND,
-+                               change_opts->copy_mode);
-+    assert(old_mode == MIRROR_COPY_MODE_BACKGROUND);
-+
-+    return true;
- }
  
- static void mirror_query(BlockJob *job, BlockJobInfo *info)
-@@ -1315,6 +1319,13 @@ static const BlockJobDriver mirror_job_driver = {
-     .query                  = mirror_query,
- };
+     s->should_complete = true;
++    s->no_block_replace = opts->u.mirror.no_block_replace;
  
-+static bool commit_active_change(Job *job, JobChangeOptions *opts, Error **errp)
-+{
-+    BlockJob *bjob = container_of(job, BlockJob, job);
-+
-+    return block_job_change(bjob, &opts->u.commit, errp);
-+}
-+
- static const BlockJobDriver commit_active_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(MirrorBlockJob),
-@@ -1327,6 +1338,7 @@ static const BlockJobDriver commit_active_job_driver = {
-         .pause                  = mirror_pause,
-         .complete               = mirror_complete,
-         .cancel                 = commit_active_cancel,
-+        .change                 = commit_active_change,
-     },
-     .drained_poll           = mirror_drained_poll,
- };
-diff --git a/block/stream.c b/block/stream.c
-index 7031eef12b..34f4588537 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -239,6 +239,13 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
-     return error;
- }
- 
-+static bool stream_change(Job *job, JobChangeOptions *opts, Error **errp)
-+{
-+    BlockJob *bjob = container_of(job, BlockJob, job);
-+
-+    return block_job_change(bjob, &opts->u.stream, errp);
-+}
-+
- static const BlockJobDriver stream_job_driver = {
-     .job_driver = {
-         .instance_size = sizeof(StreamBlockJob),
-@@ -248,6 +255,7 @@ static const BlockJobDriver stream_job_driver = {
-         .prepare       = stream_prepare,
-         .clean         = stream_clean,
-         .user_resume   = block_job_user_resume,
-+        .change        = stream_change,
-     },
- };
- 
-diff --git a/blockjob.c b/blockjob.c
-index 2769722b37..d3cd4f4fbf 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -312,6 +312,19 @@ static bool block_job_set_speed(BlockJob *job, int64_t speed, Error **errp)
-     return block_job_set_speed_locked(job, speed, errp);
- }
- 
-+bool block_job_change(BlockJob *job, JobChangeOptionsBlockJob *opts,
-+                      Error **errp)
-+{
-+    GLOBAL_STATE_CODE();
-+
-+    if (!opts->has_speed) {
-+        /* Nothing to do */
-+        return true;
-+    }
-+
-+    return block_job_set_speed(job, opts->speed, errp);
-+}
-+
- void block_job_ratelimit_processed_bytes(BlockJob *job, uint64_t n)
- {
-     IO_CODE();
-diff --git a/include/block/blockjob.h b/include/block/blockjob.h
-index 72e849a140..fe433c8d35 100644
---- a/include/block/blockjob.h
-+++ b/include/block/blockjob.h
-@@ -224,4 +224,11 @@ bool block_job_is_internal(BlockJob *job);
-  */
- const BlockJobDriver *block_job_driver(BlockJob *job);
- 
-+/**
-+ * Common part of .change handler for block-jobs.
-+ * Applies changes described in opts to the job.
-+ */
-+bool block_job_change(BlockJob *job, JobChangeOptionsBlockJob *opts,
-+                      Error **errp);
-+
- #endif
+     /* If the job is paused, it will be re-entered when it is resumed */
+     WITH_JOB_LOCK_GUARD() {
 diff --git a/include/qemu/job.h b/include/qemu/job.h
-index d44cdb0cc8..1c9da74a0c 100644
+index 1c9da74a0c..eee1d5b50f 100644
 --- a/include/qemu/job.h
 +++ b/include/qemu/job.h
-@@ -313,7 +313,7 @@ struct JobDriver {
-      *
-      * Note that this can already be called before the job coroutine is running.
+@@ -254,7 +254,7 @@ struct JobDriver {
+      * Optional callback for job types whose completion must be triggered
+      * manually.
       */
--    void (*change)(Job *job, JobChangeOptions *opts, Error **errp);
-+    bool (*change)(Job *job, JobChangeOptions *opts, Error **errp);
+-    void (*complete)(Job *job, Error **errp);
++    void (*complete)(Job *job, JobComplete *opts, Error **errp);
  
      /**
-      * Called when the job is freed.
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index f5cefa441b..93f96e747e 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -3062,6 +3062,17 @@
- { 'command': 'block-job-finalize', 'data': { 'id': 'str' },
-   'allow-preconfig': true }
+      * If the callback is not NULL, prepare will be invoked when all the jobs
+@@ -634,6 +634,12 @@ void job_early_fail(Job *job);
+  */
+ void job_transition_to_ready(Job *job);
  
-+##
-+# @JobChangeOptionsBlockJob:
-+#
-+# @speed: Change job speed (in bytes per second).  Supported for
-+#     for backup, mirror, commit and stream jobs.
++/**
++ * Asynchronously complete the specified @job.
++ * Called with job lock held, but might release it temporarily.
++ */
++void job_complete_opts_locked(Job *job, JobComplete *opts, Error **errp);
++
+ /**
+  * Asynchronously complete the specified @job.
+  * Called with job lock held, but might release it temporarily.
+diff --git a/job-qmp.c b/job-qmp.c
+index 011a8736ea..c048e03d9f 100644
+--- a/job-qmp.c
++++ b/job-qmp.c
+@@ -93,19 +93,19 @@ void qmp_job_resume(const char *id, Error **errp)
+     job_user_resume_locked(job, errp);
+ }
+ 
+-void qmp_job_complete(const char *id, Error **errp)
++void qmp_job_complete(JobComplete *opts, Error **errp)
+ {
+     Job *job;
+ 
+     JOB_LOCK_GUARD();
+-    job = find_job_locked(id, errp);
++    job = find_job_locked(opts->id, errp);
+ 
+     if (!job) {
+         return;
+     }
+ 
+     trace_qmp_job_complete(job);
+-    job_complete_locked(job, errp);
++    job_complete_opts_locked(job, opts, errp);
+ }
+ 
+ void qmp_job_finalize(const char *id, Error **errp)
+@@ -204,13 +204,13 @@ JobInfoList *qmp_query_jobs(Error **errp)
+     return head;
+ }
+ 
+-bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
++static bool job_mapper(const char *id, JobType *out, Error **errp)
+ {
+     Job *job;
+ 
+     JOB_LOCK_GUARD();
+ 
+-    job = find_job_locked(opts->id, errp);
++    job = find_job_locked(id, errp);
+     if (!job) {
+         return false;
+     }
+@@ -218,3 +218,13 @@ bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
+     *out = job_type(job);
+     return true;
+ }
++
++bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
++{
++    return job_mapper(opts->id, out, errp);
++}
++
++bool JobComplete_mapper(JobComplete *opts, JobType *out, Error **errp)
++{
++    return job_mapper(opts->id, out, errp);
++}
+diff --git a/job.c b/job.c
+index 69630852dc..3726ba2c9e 100644
+--- a/job.c
++++ b/job.c
+@@ -1214,11 +1214,14 @@ int job_complete_sync_locked(Job *job, Error **errp)
+     return job_finish_sync_locked(job, job_complete_locked, errp);
+ }
+ 
+-void job_complete_locked(Job *job, Error **errp)
++void job_complete_opts_locked(Job *job, JobComplete *opts, Error **errp)
+ {
++    JobComplete local_opts = {};
++
+     /* Should not be reachable via external interface for internal jobs */
+     assert(job->id);
+     GLOBAL_STATE_CODE();
++
+     if (job_apply_verb_locked(job, JOB_VERB_COMPLETE, errp)) {
+         return;
+     }
+@@ -1229,10 +1232,15 @@ void job_complete_locked(Job *job, Error **errp)
+     }
+ 
+     job_unlock();
+-    job->driver->complete(job, errp);
++    job->driver->complete(job, opts ?: &local_opts, errp);
+     job_lock();
+ }
+ 
++void job_complete_locked(Job *job, Error **errp)
++{
++    job_complete_opts_locked(job, NULL, errp);
++}
++
+ int job_finish_sync_locked(Job *job,
+                            void (*finish)(Job *, Error **errp),
+                            Error **errp)
+diff --git a/qapi/job.json b/qapi/job.json
+index b3957207a4..2f1b839cfc 100644
+--- a/qapi/job.json
++++ b/qapi/job.json
+@@ -182,15 +182,37 @@
+ { 'command': 'job-cancel', 'data': { 'id': 'str' } }
+ 
+ ##
+-# @job-complete:
++# @JobCompleteMirror:
+ #
+-# Manually trigger completion of an active job in the READY state.
++# @no-block-replace: Supported only for mirror job. If true, alter
++#     the mirror job completion behavior so that final switch to
++#     target block node is not done. Since 9.1
 +#
 +# Since: 9.1
 +##
-+{ 'struct': 'JobChangeOptionsBlockJob',
-+  'data': { '*speed' : 'uint64' } }
++{ 'struct': 'JobCompleteMirror',
++  'data': { '*no-block-replace': 'bool' } }
 +
- ##
- # @JobChangeOptionsMirror:
++##
++# @JobComplete:
  #
-@@ -3071,12 +3082,17 @@
- # Since: 8.2
+ # @id: The job identifier.
+ #
+ # Since: 3.0
  ##
- { 'struct': 'JobChangeOptionsMirror',
-+  'base': 'JobChangeOptionsBlockJob',
-   'data': { '*copy-mode' : 'MirrorCopyMode' } }
- 
+-{ 'command': 'job-complete', 'data': { 'id': 'str' } }
++{ 'union': 'JobComplete',
++  'base': { 'id': 'str' },
++  'discriminator': 'JobType',
++  'data': { 'mirror': 'JobCompleteMirror' } }
 +
- ##
- # @JobChangeOptions:
- #
--# Block job options that can be changed after job creation.
-+# Job options that can be changed after job creation. When option is
-+# not specified the corresponding job parameter remains unchanged.
-+# The change is transactional: on success all changes are applied
-+# successfully, on failure nothing is changed.
- #
- # @id: The job identifier
- #
-@@ -3093,7 +3109,10 @@
-   'base': { 'id': 'str',
-             '*type': { 'type': 'JobType', 'features': ['deprecated'] } },
-   'discriminator': 'JobType',
--  'data': { 'mirror': 'JobChangeOptionsMirror' } }
-+  'data': { 'mirror': 'JobChangeOptionsMirror',
-+            'backup': 'JobChangeOptionsBlockJob',
-+            'stream': 'JobChangeOptionsBlockJob',
-+            'commit': 'JobChangeOptionsBlockJob' } }
++##
++# @job-complete:
++#
++# Manually trigger completion of an active job in the READY state.
++#
++# Since: 3.0
++##
++{ 'command': 'job-complete', 'data': 'JobComplete', 'boxed': true }
  
  ##
- # @block-job-change:
+ # @job-dismiss:
+diff --git a/stubs/qapi-jobchangeoptions-mapper.c b/stubs/qapi-jobchangeoptions-mapper.c
+index e4acfd91b3..8031a5317c 100644
+--- a/stubs/qapi-jobchangeoptions-mapper.c
++++ b/stubs/qapi-jobchangeoptions-mapper.c
+@@ -6,3 +6,8 @@ bool JobChangeOptions_mapper(JobChangeOptions *opts, JobType *out, Error **errp)
+ {
+     g_assert_not_reached();
+ }
++
++bool JobComplete_mapper(JobComplete *opts, JobType *out, Error **errp)
++{
++    g_assert_not_reached();
++}
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index 666880472b..933d3dd990 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -682,7 +682,7 @@ static int coroutine_fn test_job_run(Job *job, Error **errp)
+     return s->run_ret;
+ }
+ 
+-static void test_job_complete(Job *job, Error **errp)
++static void test_job_complete(Job *job, JobComplete *opts, Error **errp)
+ {
+     TestBlockJob *s = container_of(job, TestBlockJob, common.job);
+     s->should_complete = true;
+diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
+index 3766d5de6b..dce33a8b9b 100644
+--- a/tests/unit/test-block-iothread.c
++++ b/tests/unit/test-block-iothread.c
+@@ -529,7 +529,7 @@ static int coroutine_fn test_job_run(Job *job, Error **errp)
+     return 0;
+ }
+ 
+-static void test_job_complete(Job *job, Error **errp)
++static void test_job_complete(Job *job, JobComplete *opts, Error **errp)
+ {
+     TestBlockJob *s = container_of(job, TestBlockJob, common.job);
+     s->should_complete = true;
+diff --git a/tests/unit/test-blockjob.c b/tests/unit/test-blockjob.c
+index fe3e0d2d38..027a2dd886 100644
+--- a/tests/unit/test-blockjob.c
++++ b/tests/unit/test-blockjob.c
+@@ -165,7 +165,7 @@ typedef struct CancelJob {
+     bool should_complete;
+ } CancelJob;
+ 
+-static void cancel_job_complete(Job *job, Error **errp)
++static void cancel_job_complete(Job *job, JobComplete *opts, Error **errp)
+ {
+     CancelJob *s = container_of(job, CancelJob, common.job);
+     s->should_complete = true;
 -- 
 2.34.1
 
