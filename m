@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F309187A46D
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 10:00:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC3787A46C
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 10:00:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkKSG-0008K9-BT; Wed, 13 Mar 2024 04:59:20 -0400
+	id 1rkKSK-00008f-4N; Wed, 13 Mar 2024 04:59:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKSD-0008Du-5S
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:59:17 -0400
+ id 1rkKSH-0008Pt-8x
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:59:21 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKSB-0002Jc-PE
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:59:16 -0400
+ id 1rkKSF-0002KK-TG
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 04:59:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=zo6qBEL1QSeFZLNolV3DrVpqMBTkyiEf6bkbgHwJp1M=; b=VF33LB3X0NMWtsV9JEm4ag0k4n
- svLqY8LdaJpJMyO6pZIS0LBK0zeHQfBSFJNiHBqAkbwvYus9X5508z3i7xLesGS1vzPsHDWinXhmn
- dC72KyCxN2Jfx0lXaIqfzktxFe6gd7PQAU3II3VF7A1ISfeyXoeM3RngInlZVxgdxyXejTQmPjxM2
- kq+dQzj16VhXTlGSjZADz149VscRFJfqYWGRev5rpZfhsrJP7BtekyfCIcOAWXbF3f8ojKeWwuBYv
- tsg6EVBwziSNWqFR6qeX5q5KT+DXzfC5yw5eeKynCPTH1hYkOVyQK2WxdnIl6umjVWHP61vlaht36
- K7j/X02Y6Zil0WLMAC9eFxxbp+yQAEmS2CFsdJd+56qJ6seZSybQXcx+AtnH9TDcsUMqNKiQKS08L
- tSMXMaF7PjVMX9PQRHrPZQlExpWGlcdeWmLR5XPxp4hPWQXvgOAVL4Lk5Rnue1Y0pwdKuZT96zO51
- afbLgUuA12FnR5h1khcdT6RaupOWluobFSpAwIPUDSnTutBljPEPdH66Fm2DU3zVrNs4MLUi1P7zG
- KuCcBvI/9kjXegKKj8Cj1QFRFmOTaRD/uy9PtPrExRaqQee5coPlgYFKBPrd2Kg3J5V27MYrfRSM9
- dVZGHujqj16PTi8BRJJc1u2Z2aEOUZM7ObkzMsva4=;
+ bh=EtgVSaI4FwDRYAfcTxXw0jb8uPvvtv54Q8eHTb3fSt4=; b=HkMo6dbM4qOG3oKq17lRhwsiGM
+ Dkji7WjjqY5N38+ejnobQrWK0JQVr8ZtGZhl8zwoxFTP/3waoS58pGUCoLU8kFcHpyY5OPS2HoCos
+ kfw65Nwf0rmoDg7PskNbiX4cPxDIN9Jrj63IA/piovHP73lCSl4KBnrqHUGmEwNaPWuXizmWoeBSA
+ x6yU/OJ2u2TqPMMowUvCSCF6NIMmvAUdXa0fHy9zCqdvGaXf60+3S1ce8EIJpsZnpQ93rlhaJGg4+
+ hAbR/mt2yIEr6P746ykh9UrdcDWgUMvWi2/fUbBbZTCQk/uCwyz1pxq3n6ueNqGNjvWidiQsmds13
+ fh+PqDkROzgEBq4g7tnEedTQVpS3scwm2OqWkcfZh97CVXQuzhfSSAkbaKlKalBVUjdAETzPT3Nb9
+ mDv958rKPMhQfNKPuICC4zKmkvzC6PplAEISkwUsIKN6elfN7CTi2GTxEhZyLaLOGceXiBjvNePpb
+ arlYqAbKbweAdxAPmsmpQldPkbJrUZLJS07DDDzW7QJFY6NufDQWa2bt/g5JXmocYMaVxJs23YqF7
+ 4Dc/UPBxXn2VhbZ1ezFVUOGmp1ta1HyG29WPxbExf4UyW/o0kZZzcyZHdu28ESmi4LdZSThfjjRP3
+ 1hS3eLY2j2lY7CvyJepVO2miKc57ERUQHeCCDgfnU=;
 Received: from [2a00:23c4:8bb3:1000:1218:d855:1998:7fa8]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rkKRG-000CUN-TO; Wed, 13 Mar 2024 08:58:23 +0000
+ id 1rkKRL-000CUN-4i; Wed, 13 Mar 2024 08:58:27 +0000
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu,
  qemu-devel@nongnu.org
-Date: Wed, 13 Mar 2024 08:58:04 +0000
-Message-Id: <20240313085810.2655062-11-mark.cave-ayland@ilande.co.uk>
+Date: Wed, 13 Mar 2024 08:58:05 +0000
+Message-Id: <20240313085810.2655062-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
 References: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
@@ -51,8 +51,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8bb3:1000:1218:d855:1998:7fa8
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v2 10/16] esp.c: don't assert() if FIFO empty when executing
- esp_cdb_length()
+Subject: [PATCH v2 11/16] esp.c: don't overflow cmdfifo if cmdfifo_cdb_offset
+ >= ESP_CMDFIFO_SZ
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,25 +78,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This does not happen during normal usage, but can occur if the guest issues an
-invalid ESP command sequence.
+If cmdfifo contains ESP_CMDFIFO_SZ bytes and cmdfifo_cdb_offset is also
+ESP_CMDFIFO_SZ then if the guest issues an ESP command sequence that invokes
+esp_cdb_length(), scsi_cdb_length() can read one byte beyond the end of the
+FIFO buffer.
+
+Add an extra length check to esp_cdb_length() to prevent reading past the
+end of the cmdfifo data in this case.
 
 Reported-by: Chuhong Yuan <hslester96@gmail.com>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/scsi/esp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 55143a1208..0050493e18 100644
+index 0050493e18..05784b3f77 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -431,7 +431,7 @@ static int esp_cdb_length(ESPState *s)
+@@ -431,7 +431,8 @@ static int esp_cdb_length(ESPState *s)
      int cmdlen, len;
  
      cmdlen = fifo8_num_used(&s->cmdfifo);
--    if (cmdlen < s->cmdfifo_cdb_offset) {
-+    if (cmdlen == 0 || cmdlen < s->cmdfifo_cdb_offset) {
+-    if (cmdlen == 0 || cmdlen < s->cmdfifo_cdb_offset) {
++    if (cmdlen == 0 || cmdlen < s->cmdfifo_cdb_offset ||
++            cmdlen >= ESP_CMDFIFO_SZ) {
          return 0;
      }
  
