@@ -2,85 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D9DE87B3A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F405687B412
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 23:03:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWLj-0003zn-Hc; Wed, 13 Mar 2024 17:41:23 -0400
+	id 1rkWfa-0007Lm-Kt; Wed, 13 Mar 2024 18:01:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWLg-0003zO-KW
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:41:21 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rkWfY-0007LO-Rf
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 18:01:52 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWLf-00013D-71
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:41:20 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5131a9b3d5bso446604e87.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:41:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rkWfX-0004Hj-8z
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 18:01:52 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e62c65865cso309907b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 15:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710366077; x=1710970877; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JyHIKVFnW4IAENh7a1NH3TNXnVQr2Vjt/G0GlwYn3qg=;
- b=ka06MIp4mh9VRBXuDcrq+DdLzGSDNQf6zj7+r47RrSWgJ0S9LoDU2KhbgWe4hy32RZ
- ujchEafPLF5WSHhFMYucbKfwkbXxFPsU+p76OG+aNotkJdjVsTkEt8J+RPFyFKBX56O5
- NSHYsaxc0AZhUa5huiUARWrttwTO0eo+JPZEnmswalVz+a+5svKFzoVERAPkCXeSxMhJ
- LQYKjQApJBcU6EavlWFHxYFx/oISYVR2P6RUPH8C4vAQJsjJdbaJ0AwJIypoYNnGeA5S
- /wGidf+pvjmLEI+vvzywOKZiWzqFQT0IJZoMtCToNhPNw6wmTLei8Bd9PUrfXcJ5+Sp6
- B1Yw==
+ d=ventanamicro.com; s=google; t=1710367308; x=1710972108; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TFSTxgYADHLh8+V+Iz9O32AiQ4sAxnyxrW0wt9c8bw0=;
+ b=jwRUyFV2ds/2nqY84aGKXh+UVwifRJt73hSmD/ShQSIE6wPPnSrGYdBVz6OF7RXN0e
+ JcNWIjE+clHX0orACYf/gcq31LbdN8gqzdl6wbT+On35I8Pm4IZA7ah1VCNR6AfoGxlf
+ nznaVNjdh4v0Lkt7M5g3mv8XuZQUkvcTfQpepm9ruGrmErx9vhj9RoG+KUOF8yg8xGKD
+ 2rBK/1YiiQEBtYb1MHbvLj/8PjFfjwLVTKV0L1SqjvnkyJ2NWHs5puagUp3U0JDv7/kF
+ E+UkLm/mGyKM3xpnuJgYpkzAUL2rQmmNaJqFHC0bA7I7phIu6cFhDAqMl+h7QuspwvL+
+ A1TQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710366077; x=1710970877;
- h=content-transfer-encoding:in-reply-to:references:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JyHIKVFnW4IAENh7a1NH3TNXnVQr2Vjt/G0GlwYn3qg=;
- b=vxeK4lFDtNVARnBst5K+7z//3PGonxvmYYlOt6qtnXUvO36U6g4KEVdEpVXxx26evV
- Rljizp4450i4oeu04olhNruCm3i5newWWv6SQi0ZGZgbPA958nYkKZZtfZjHRwmIAR2b
- 91BzqtskuipjTuK4da3P01xPk/bk7hs1qolrmOKUJfIzXk3FX17sNYJu2tQX1FNnY8Pd
- Y4OE9Zzf1tkz0kvtmsrQyXtj6GFoY+PenqRlB5Acnc8b05Sedfb4srA+t0eEKQ2dQKIW
- TZDvY6w8tVjccbJJP7Tbgb5UeQWMgGJ1KYrnvr2x16tSG/HboXLaj7cEiWRhJ4VyXHol
- wCYw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUDXX6vkGEKeNn0Z7l8AyCpXysSfpL/n5mmo2S4gOEPfcxBsX0ZIabD0R8TjSsu141N2RWnW3ddv/7YdKHwGvnEbbwLmmw=
-X-Gm-Message-State: AOJu0YwCwrtbMkcqjKs62/JSELg0Iu0lYsQ6K/HD161awuMJIIxc4YHA
- oG8qnAVi2od8nVIkWzZTaCi5jUM9fAXlXW5xVeHn4yFgZDQZxiz1Mr1on/5krDI=
-X-Google-Smtp-Source: AGHT+IHy2+c4rTgZrWSqpGWc0ZF42twxi2F4uuTX3VLSGtvOm4EditJ+v4Zs5m5MaEa6d0BKVoe38A==
-X-Received: by 2002:a05:6512:46a:b0:513:c813:bdf1 with SMTP id
- x10-20020a056512046a00b00513c813bdf1mr1966390lfd.5.1710366077223; 
- Wed, 13 Mar 2024 14:41:17 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.182.179])
+ d=1e100.net; s=20230601; t=1710367308; x=1710972108;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TFSTxgYADHLh8+V+Iz9O32AiQ4sAxnyxrW0wt9c8bw0=;
+ b=rSDbWiqJOMUvebzrMMcYN5AxB6w+GIXx375Vu3wjBRLuWwSlDs+6fIFQo1FZ9YYmSP
+ irRlz9JLjadW94aKDAYPbfGTt8d5a6PU64h+HlTfb5ckN+bRxCsy2miK++aPU3Ts4VAP
+ k/8/iMNCboEGtuEscfRP/h2JBxWHxCYlQCFyhepvIJyBF665A0ZB62e5PBtJRh2dOsL6
+ OCquivJHxDI93c2EnaIdzY2oR0FJseFJy0Owx/8xm64Z1hzECNMU34Y5GZoWy/zEiZrq
+ TsjxV25Bro55pDDaXp8CFX2BOMYw7wGxU5lyko87f+vmJhJ43TVpOfSg5JnakE7/M7tH
+ CEnQ==
+X-Gm-Message-State: AOJu0YzH04rqFnNVje8v0II1r3zkO0xbLLXZdNFTd3hLZvzXLaDmeHqX
+ djDEBCjXbP0nu3h1Ljo9UQUuwoILRYOHMN549+0O735DN/19ZAdhZuIx5040fTjTqJO9DC2wS/B
+ m
+X-Google-Smtp-Source: AGHT+IHPRM2HWffacRomXtzzdOOyiLwLjAVVEWcc/6cmVH4TG/9keS9jLb+76tR297BytnCu6wg2CA==
+X-Received: by 2002:a05:6a00:1790:b0:6e6:4dfe:4c7 with SMTP id
+ s16-20020a056a00179000b006e64dfe04c7mr26127pfg.6.1710367308430; 
+ Wed, 13 Mar 2024 15:01:48 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
  by smtp.gmail.com with ESMTPSA id
- r8-20020a05600c458800b00413e8df267bsm276831wmo.48.2024.03.13.14.41.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Mar 2024 14:41:16 -0700 (PDT)
-Message-ID: <e630b670-acec-4d6d-b89d-dafcdcbfee84@linaro.org>
-Date: Wed, 13 Mar 2024 22:41:15 +0100
+ ln17-20020a056a003cd100b006e6bcbea9e0sm95812pfb.88.2024.03.13.15.01.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 13 Mar 2024 15:01:48 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org, philmd@linaro.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.0 v14 0/8] riscv: set vstart_eq_zero on vector insns
+Date: Wed, 13 Mar 2024 19:01:33 -0300
+Message-ID: <20240313220141.427730-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/16] esp.c: replace cmdfifo use of esp_fifo_pop_buf()
- in do_message_phase()
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
- fam@euphon.net, laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20240313085810.2655062-1-mark.cave-ayland@ilande.co.uk>
- <20240313085810.2655062-3-mark.cave-ayland@ilande.co.uk>
- <9c36ddab-59a9-47fa-ab2e-ab0e9cff5fb6@linaro.org>
-In-Reply-To: <9c36ddab-59a9-47fa-ab2e-ab0e9cff5fb6@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,44 +93,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 13/3/24 12:03, Philippe Mathieu-Daudé wrote:
-> On 13/3/24 09:57, Mark Cave-Ayland wrote:
->> The aim is to restrict the esp_fifo_*() functions so that they only 
->> operate on
->> the hardware FIFO. When reading from cmdfifo in do_message_phase() use 
->> the
->> underlying Fifo8 functions directly.
->>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/scsi/esp.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
->> index f8230c74b3..100560244b 100644
->> --- a/hw/scsi/esp.c
->> +++ b/hw/scsi/esp.c
->> @@ -309,6 +309,8 @@ static void do_command_phase(ESPState *s)
->>   static void do_message_phase(ESPState *s)
->>   {
->> +    uint32_t n;
->> +
->>       if (s->cmdfifo_cdb_offset) {
->>           uint8_t message = esp_fifo_pop(&s->cmdfifo);
->> @@ -320,7 +322,10 @@ static void do_message_phase(ESPState *s)
->>       /* Ignore extended messages for now */
->>       if (s->cmdfifo_cdb_offset) {
->>           int len = MIN(s->cmdfifo_cdb_offset, 
->> fifo8_num_used(&s->cmdfifo));
->> -        esp_fifo_pop_buf(&s->cmdfifo, NULL, len);
->> +
->> +        if (len) {
->> +            fifo8_pop_buf(&s->cmdfifo, len, &n);
-> 
-> 'n' is unused, use NULL?
+Hi,
 
-Using NULL:
+In this version we're fixing a redundant check in the vmvr_v helper that
+was pointed out by in v13.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+To make this change easier patches 3 and 4 switched places. A trivial
+change was made in patch 4 that don't warrant another review.
+
+We're missing acks in patch 3 only.  
+
+Series based on master. 
+
+Changes from v13:
+- patches 3 and 4: switched places
+- patch 3:
+  - fixed commit msg: from
+    "(...) now sure that vstart is being clearer"
+    to
+    "(...) now sure that vstart is being cleared"
+- patch 4:
+  - do not check for vstart >= vl (i.e. add VSTART_CHECK_EARLY_EXIT())
+    in the 'vmvr_v' helper
+- v13 link: https://lore.kernel.org/qemu-riscv/20240313193059.405329-1-dbarboza@ventanamicro.com/
+
+Daniel Henrique Barboza (7):
+  target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+  trans_rvv.c.inc: set vstart = 0 in int scalar move insns
+  target/riscv: always clear vstart in whole vec move insns
+  target/riscv/vector_helpers: do early exit when vstart >= vl
+  target/riscv: remove 'over' brconds from vector trans
+  trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+  target/riscv/vector_helper.c: optimize loops in ldst helpers
+
+Ivan Klokov (1):
+  target/riscv: enable 'vstart_eq_zero' in the end of insns
+
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +-
+ target/riscv/insn_trans/trans_rvv.c.inc    | 198 +++++----------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vcrypto_helper.c              |  32 ++++
+ target/riscv/vector_helper.c               | 100 ++++++++++-
+ target/riscv/vector_internals.c            |   4 +
+ target/riscv/vector_internals.h            |   9 +
+ 8 files changed, 205 insertions(+), 192 deletions(-)
+
+-- 
+2.43.2
 
 
