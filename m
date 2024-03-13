@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D3A87AA2C
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:12:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5825F87AA24
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQEl-0003fY-9d; Wed, 13 Mar 2024 11:09:47 -0400
+	id 1rkQEw-0003x8-FW; Wed, 13 Mar 2024 11:09:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEW-0003Zk-Uc; Wed, 13 Mar 2024 11:09:33 -0400
+ id 1rkQEY-0003Zz-Cf; Wed, 13 Mar 2024 11:09:35 -0400
 Received: from forwardcorp1c.mail.yandex.net
  ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEU-0005s8-Tm; Wed, 13 Mar 2024 11:09:32 -0400
+ id 1rkQEV-0005sM-1a; Wed, 13 Mar 2024 11:09:34 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:8793:0:640:b059:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 35B2160D96;
- Wed, 13 Mar 2024 18:09:28 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 318D160D9A;
+ Wed, 13 Mar 2024 18:09:29 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 99pZB52GZiE0-2fUmio67; Wed, 13 Mar 2024 18:09:27 +0300
+ ESMTPSA id 99pZB52GZiE0-YxMB9SvB; Wed, 13 Mar 2024 18:09:28 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1710342567;
- bh=yLJaDyEAelrXRgY1Ri4RSUibfQW2G7z/Oefqj6dQnvE=;
+ s=default; t=1710342568;
+ bh=5ZvJ46KgdVpnV5C4Q/6UM2kcQMZH+kF/RNKW8X+vZEk=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=kXoH2gLKghNwvWq45ERhPV17k26UJ/WIjhI1ccL/s4oUPdw10Ywq7jatYgn3duIOY
- Ao8k9TLrpA7+yaOAs4zxKydugDF2wkPqC1/NP/xdh5kVYpkPwtCCIgOHSCTwDeGlSv
- ipCpNdEE0wcqIbtabImHIYt+pmkEZxf2lJD/fGTM=
+ b=IJ9rSzFJ3O5UmlSuvX/2XV+NyVLBQWZ0WVWtANn2NncM+/pGFHiIiCjdvgM2V3H0U
+ pQSGZLrou+DJ9bgDfa3DAvc1P3ZTXdja6TcBobYepa2kUOX5dretj0p5Y7s2aPFkWr
+ D7lP8biyVMwnmiEmmLLv35X8g7OzTX3Adr5Kbwrs=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,9 +41,9 @@ Cc: qemu-devel@nongnu.org, jsnow@redhat.com, vsementsov@yandex-team.ru,
  kwolf@redhat.com, hreitz@redhat.com, devel@lists.libvirt.org,
  eblake@redhat.com, armbru@redhat.com, michael.roth@amd.com,
  pbonzini@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-Subject: [RFC 03/15] blockjob: block_job_change_locked(): check job type
-Date: Wed, 13 Mar 2024 18:08:55 +0300
-Message-Id: <20240313150907.623462-4-vsementsov@yandex-team.ru>
+Subject: [RFC 04/15] qapi: block-job-change: make copy-mode parameter optional
+Date: Wed, 13 Mar 2024 18:08:56 +0300
+Message-Id: <20240313150907.623462-5-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 References: <20240313150907.623462-1-vsementsov@yandex-team.ru>
@@ -72,30 +72,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-User may specify wrong type for the job id. Let's check it.
+We are going to add more parameters to change. We want to make possible
+to change only one or any subset of available options. So all the
+options should be optional.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- blockjob.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/mirror.c       | 5 +++++
+ qapi/block-core.json | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/blockjob.c b/blockjob.c
-index 8cfbb15543..788cb1e07d 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -319,6 +319,12 @@ void block_job_change_locked(BlockJob *job, JobChangeOptions *opts,
+diff --git a/block/mirror.c b/block/mirror.c
+index a177502e4f..2d0cd22c06 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -1265,6 +1265,11 @@ static void mirror_change(BlockJob *job, JobChangeOptions *opts,
  
      GLOBAL_STATE_CODE();
  
-+    if (job_type(&job->job) != opts->type) {
-+        error_setg(errp, "Job '%s' is '%s' job, not '%s'", job->job.id,
-+                   job_type_str(&job->job), JobType_str(opts->type));
++    if (!change_opts->has_copy_mode) {
++        /* Nothing to do */
 +        return;
 +    }
 +
-     if (job_apply_verb_locked(&job->job, JOB_VERB_CHANGE, errp)) {
+     if (qatomic_read(&s->copy_mode) == change_opts->copy_mode) {
          return;
      }
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 67dd0ef038..6041e7bd8f 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3071,7 +3071,7 @@
+ # Since: 8.2
+ ##
+ { 'struct': 'JobChangeOptionsMirror',
+-  'data': { 'copy-mode' : 'MirrorCopyMode' } }
++  'data': { '*copy-mode' : 'MirrorCopyMode' } }
+ 
+ ##
+ # @JobChangeOptions:
 -- 
 2.34.1
 
