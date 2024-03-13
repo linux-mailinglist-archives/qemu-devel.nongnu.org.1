@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E03E87B38A
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DCE87B38B
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWFO-0002Q4-G3; Wed, 13 Mar 2024 17:34:50 -0400
+	id 1rkWFT-0002cr-4J; Wed, 13 Mar 2024 17:34:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFJ-0002FR-PO
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:45 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFR-0002c6-0E
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:53 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFH-0007rq-TR
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:45 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33ddd1624beso231733f8f.1
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFO-0007tU-KN
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:52 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4132a5b38fbso2086485e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710365682; x=1710970482; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710365689; x=1710970489; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8X472is1XN7Nm+dILoz/idT0Hrtz/X3rNIf8XYJ+iTQ=;
- b=ftxLuPcoqiHOwjaIRz+nXm/cc7GnJ3LW5N4apU5H+5lyzFyK3BP4t1lXikkODggPzJ
- vkW5KoGIrfo1gOd/vZDiehQukxmZF0z/QfOJxQXlD6LoUnjX5IsOnmg5rFATOExSMAja
- pO9FgmdPNuS+Qyl/rabRkWgiXOlm1J2P9263Q+T2SXQxekzQ81OqBYE58UH782hWBdSF
- I3kGY/dUM0kOtIAgrGPmMWWV/vJHuBiyb4M7o01e/NWgVH7rhC72+7omatG5Z7m5rPd2
- Glx1Gj44hSaZv68pJh5YgbwHA2nHqsPbqSzwGsK+VSOl34wiSysPE5iKL6nuzGLxLnl8
- QDUQ==
+ bh=3uu686tnG06TpkmPsbRE86bvugnt/Usf4psLcD+gc/E=;
+ b=AxGAq4QMy5A/QgWF6JL6N7f6QdupQaZLQLmubj5JeXIupiTEq5RLWn5Ff6EmnDLSWH
+ M8ZfAOBPk7puhI4zX0y2qnhy1FDXfn1QMbXHnsfxLK47k7fnz88svlMn/Fsg5sqQUzzq
+ axBQfzpskT/4nn6WcC909jP/CX3DxdXCBI3hBKCXhMDWq6wpEHh6Cnx7CxKgX+4Jb7cX
+ VhCrVdaOO5z7WH6mW5IIAAGH0OKlmTv7jP8/p2DkSDGcWSDK/5ItyCnGIN7WMdSKYO0n
+ eVgxvk9as43UpE8NaCFAtJ8wr6DIFt8lMx0TWtFqVX/LjCvxcS4ELM3ZErJHcFKXhDBX
+ 43aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710365682; x=1710970482;
+ d=1e100.net; s=20230601; t=1710365689; x=1710970489;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8X472is1XN7Nm+dILoz/idT0Hrtz/X3rNIf8XYJ+iTQ=;
- b=SDNMkZPGzSdvxQif9NrZbTWByfOqwYQDsWN2HsqKLdjDul0Zz078EF3umsq2obKm51
- bqzTQrSQdXbEI1ihj9LzdMCNmBvPEIJxOKpqNRxEFxhG2qcVLD1kvRNswkBmMrqXmZ4c
- kZUm769QckB4K32I5M/VYVaXI1SXL8IJO2GlfqmvoyYaFEscPgbzY0bDWY19j0YQADqb
- q+I9AMIcvCTbGy0vlmlzrPGfls7HFWSDLgXzcOGq+2s0yDTiF0uQgT7dcCHST3S+9TqG
- mE5yy87PTHLX+omH6Set/ZSeiQCz9TB6jU9nrooxzSqCZJFA9KU6R8l6+XVWJwWw4wEP
- h+Tw==
+ bh=3uu686tnG06TpkmPsbRE86bvugnt/Usf4psLcD+gc/E=;
+ b=XyE53FnlPG2Eygr7uExSxWsOCXsSD4LSNtHKnSpGLvOMDgjdiQbw0lCOd5oXSDLUIE
+ B7PTGxwJqzvnZglQ6vatdu28C7qdZrg/zVntcAjmD+bUM+X8GrIMhFOtj0mfki1UnYoT
+ +cHl0rR+EyTGMKEZx/f4IW/tW4EWXLp/MEasNrhKUHQJwG90M/4GzwM8EIwzqHt2vq8p
+ I/cVkVsbPqmKKbw6tG8P+ZCDOiU589T2kGJmN6howK5lRGYcFUnQ0vU+QGY4vV0Rmr+E
+ kNb7feYmzCWE/f7ltf6j7QcC8MXHnmKjiyPn8PK6M16c/iPiovaYlqA7ElqOjU/o84mu
+ dQ8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXKquW5yDCGVlKLV0eQW/VMJ2r2rUd8U/qqHBJcO/N+O0nTKuIdJs+9aRV8LOqbvLAvlPZwlQ0T60exLp2HmhNC5M6dw+Q=
-X-Gm-Message-State: AOJu0YzJtyCs2QEfP6XUhyGpdL5j+fxBVmqmJxarh89nyDOu5V/5xfhq
- GlVgbtnIf8VU1RoHnwBob5lS0GThc5c0qeeKk0+QsnWhxADkBxAzwL90SAVHAUE=
-X-Google-Smtp-Source: AGHT+IFQ+X44STFpsLaI99RVxnAcASp7BBxTUJTZK6/k7vY0xknW8WQ41XVXSu0eVbwc2O4gAu+F1A==
-X-Received: by 2002:adf:a296:0:b0:33e:bc7f:edd7 with SMTP id
- s22-20020adfa296000000b0033ebc7fedd7mr2372862wra.7.1710365682559; 
- Wed, 13 Mar 2024 14:34:42 -0700 (PDT)
+ AJvYcCXESPyyxYal/YLsV6qHNQX69kOpxiSDtA3z8MjXtQKM7l+lIHuggX8zIuZo/uoXcwP78cGLRynJ29Syh5bQz5dfDWQA6XY=
+X-Gm-Message-State: AOJu0YyfT1kpLOVof+n5F38WcX44vTlRIVgF/As44QAIUU839/Ri3/QW
+ Q6SkIN+8nA/vpMuBj1iKplYQnkiQBPoHu/3+aAzg29/B1khlzrgcZ7AqqBC/tmo=
+X-Google-Smtp-Source: AGHT+IGiuF+Aa5rKZPPtadT+fLXgv7qzCfe5ZTRT4axz5tB3YN85/HvxM3f+BnzLn75/HGTqUIgB0w==
+X-Received: by 2002:a5d:4c51:0:b0:33e:bf71:3665 with SMTP id
+ n17-20020a5d4c51000000b0033ebf713665mr1085514wrt.8.1710365689065; 
+ Wed, 13 Mar 2024 14:34:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- bk1-20020a0560001d8100b0033e95794186sm57071wrb.83.2024.03.13.14.34.40
+ t14-20020adff04e000000b0033e239040d8sm63824wro.84.2024.03.13.14.34.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 14:34:42 -0700 (PDT)
+ Wed, 13 Mar 2024 14:34:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -64,25 +64,25 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-9.1 09/12] accel/tcg/internal: Check for USER_ONLY
- definition instead of SOFTMMU
-Date: Wed, 13 Mar 2024 22:33:36 +0100
-Message-ID: <20240313213339.82071-10-philmd@linaro.org>
+Subject: [PATCH-for-9.1 10/12] exec/cpu-defs: Restrict SOFTMMU specific
+ definitions to accel/tcg/
+Date: Wed, 13 Mar 2024 22:33:37 +0100
+Message-ID: <20240313213339.82071-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313213339.82071-1-philmd@linaro.org>
 References: <20240313213339.82071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,79 +98,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we *might* have user emulation with softmmu,
-replace the system emulation check by !user emulation one.
+CPU_TLB_foo definitions are specific to SoftMMU and
+only used in accel/tcg/.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- accel/tcg/internal-target.h | 6 +++---
- accel/tcg/tb-hash.h         | 4 ++--
- accel/tcg/tcg-all.c         | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ accel/tcg/internal-target.h | 26 ++++++++++++++++++++++++++
+ include/exec/cpu-defs.h     | 26 --------------------------
+ 2 files changed, 26 insertions(+), 26 deletions(-)
 
 diff --git a/accel/tcg/internal-target.h b/accel/tcg/internal-target.h
-index 4e36cf858e..b22b29c461 100644
+index b22b29c461..9b5cc9168b 100644
 --- a/accel/tcg/internal-target.h
 +++ b/accel/tcg/internal-target.h
-@@ -24,7 +24,7 @@
- #define assert_memory_lock()
+@@ -12,6 +12,32 @@
+ #include "exec/exec-all.h"
+ #include "exec/translate-all.h"
+ 
++#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
++#define CPU_TLB_DYN_MIN_BITS 6
++#define CPU_TLB_DYN_DEFAULT_BITS 8
++
++# if HOST_LONG_BITS == 32
++/* Make sure we do not require a double-word shift for the TLB load */
++#  define CPU_TLB_DYN_MAX_BITS (32 - TARGET_PAGE_BITS)
++# else /* HOST_LONG_BITS == 64 */
++/*
++ * Assuming TARGET_PAGE_BITS==12, with 2**22 entries we can cover 2**(22+12) ==
++ * 2**34 == 16G of address space. This is roughly what one would expect a
++ * TLB to cover in a modern (as of 2018) x86_64 CPU. For instance, Intel
++ * Skylake's Level-2 STLB has 16 1G entries.
++ * Also, make sure we do not size the TLB past the guest's address space.
++ */
++#  ifdef TARGET_PAGE_BITS_VARY
++#   define CPU_TLB_DYN_MAX_BITS                                  \
++    MIN(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
++#  else
++#   define CPU_TLB_DYN_MAX_BITS                                  \
++    MIN_CONST(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
++#  endif
++# endif
++
++#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
++
+ /*
+  * Access to the various translations structures need to be serialised
+  * via locks for consistency.  In user-mode emulation access to the
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index 3915438b83..955cbefe81 100644
+--- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -54,30 +54,4 @@
+ 
+ #include "exec/target_long.h"
+ 
+-#if defined(CONFIG_SOFTMMU) && defined(CONFIG_TCG)
+-#define CPU_TLB_DYN_MIN_BITS 6
+-#define CPU_TLB_DYN_DEFAULT_BITS 8
+-
+-# if HOST_LONG_BITS == 32
+-/* Make sure we do not require a double-word shift for the TLB load */
+-#  define CPU_TLB_DYN_MAX_BITS (32 - TARGET_PAGE_BITS)
+-# else /* HOST_LONG_BITS == 64 */
+-/*
+- * Assuming TARGET_PAGE_BITS==12, with 2**22 entries we can cover 2**(22+12) ==
+- * 2**34 == 16G of address space. This is roughly what one would expect a
+- * TLB to cover in a modern (as of 2018) x86_64 CPU. For instance, Intel
+- * Skylake's Level-2 STLB has 16 1G entries.
+- * Also, make sure we do not size the TLB past the guest's address space.
+- */
+-#  ifdef TARGET_PAGE_BITS_VARY
+-#   define CPU_TLB_DYN_MAX_BITS                                  \
+-    MIN(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
+-#  else
+-#   define CPU_TLB_DYN_MAX_BITS                                  \
+-    MIN_CONST(22, TARGET_VIRT_ADDR_SPACE_BITS - TARGET_PAGE_BITS)
+-#  endif
+-# endif
+-
+-#endif /* CONFIG_SOFTMMU && CONFIG_TCG */
+-
  #endif
- 
--#if defined(CONFIG_SOFTMMU) && defined(CONFIG_DEBUG_TCG)
-+#if !defined(CONFIG_USER_ONLY) && defined(CONFIG_DEBUG_TCG)
- void assert_no_pages_locked(void);
- #else
- static inline void assert_no_pages_locked(void) { }
-@@ -62,12 +62,12 @@ void tb_unlock_page1(tb_page_addr_t, tb_page_addr_t);
- void tb_unlock_pages(TranslationBlock *);
- #endif
- 
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
-                                    unsigned size,
-                                    uintptr_t retaddr);
- G_NORETURN void cpu_io_recompile(CPUState *cpu, uintptr_t retaddr);
--#endif /* CONFIG_SOFTMMU */
-+#endif /* !CONFIG_USER_ONLY */
- 
- TranslationBlock *tb_gen_code(CPUState *cpu, vaddr pc,
-                               uint64_t cs_base, uint32_t flags,
-diff --git a/accel/tcg/tb-hash.h b/accel/tcg/tb-hash.h
-index a0c61f25cd..45a484ce82 100644
---- a/accel/tcg/tb-hash.h
-+++ b/accel/tcg/tb-hash.h
-@@ -25,7 +25,7 @@
- #include "qemu/xxhash.h"
- #include "tb-jmp-cache.h"
- 
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- 
- /* Only the bottom TB_JMP_PAGE_BITS of the jump cache hash bits vary for
-    addresses on the same page.  The top bits are the same.  This allows
-@@ -58,7 +58,7 @@ static inline unsigned int tb_jmp_cache_hash_func(vaddr pc)
-     return (pc ^ (pc >> TB_JMP_CACHE_BITS)) & (TB_JMP_CACHE_SIZE - 1);
- }
- 
--#endif /* CONFIG_SOFTMMU */
-+#endif /* CONFIG_USER_ONLY */
- 
- static inline
- uint32_t tb_hash_func(tb_page_addr_t phys_pc, vaddr pc,
-diff --git a/accel/tcg/tcg-all.c b/accel/tcg/tcg-all.c
-index c6619f5b98..929af1f64c 100644
---- a/accel/tcg/tcg-all.c
-+++ b/accel/tcg/tcg-all.c
-@@ -116,7 +116,7 @@ static int tcg_init_machine(MachineState *ms)
-     tb_htable_init();
-     tcg_init(s->tb_size * MiB, s->splitwx_enabled, max_cpus);
- 
--#if defined(CONFIG_SOFTMMU)
-+#if !defined(CONFIG_USER_ONLY)
-     /*
-      * There's no guest base to take into account, so go ahead and
-      * initialize the prologue now.
 -- 
 2.41.0
 
