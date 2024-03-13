@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89FF87B389
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4482987B381
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:34:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWEn-0001OK-OQ; Wed, 13 Mar 2024 17:34:13 -0400
+	id 1rkWF7-0001Vq-DP; Wed, 13 Mar 2024 17:34:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEh-0001Lt-QR
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:07 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWF2-0001V3-M0
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:28 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEe-0007lP-6t
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:07 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-33eaafc4419so929705f8f.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWEm-0007mM-Gm
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:28 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-413f1853b64so174785e9.3
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710365643; x=1710970443; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710365650; x=1710970450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uuIA7snzjzJiFQGDzy7Q/aN2eTCJoDKnsUbMdeEplEw=;
- b=FSHEEgOgac6vBkgLCgzc4U3EOB8nYfdwa62xIazqXk9886zyIozSCgD8/M3eZk8Li3
- s5Ow3QncZWOci54U+378xve2pXL9VsonR/M6vNJ8Sq4RxTM5y2nH7UudRKyhlFyyOSr+
- uua9fMpwvDarW9kAjOwk1k71HMF7vxI7t4wLaw96ZgW74f2C3O3qH4SocAV87BmkXH8s
- /Kg6MxxyTUzXBVuB5AwkYnVIc0EOKVxvJnKSZgfh4wu9kp4qL1uzTVp07o4fgyM1d5xt
- fXlFvo8Z1bbruFfq+zi2eL9Pq1jvln9yE4e5bZJHnM3utnxSRL8H+2RCk6SOIjeUFvEN
- Do/A==
+ bh=Mop7Z5XVl4lLMq97v4+OC8Djyhqf7oPYLBMfdu8kMMs=;
+ b=xnE1TCbdcHZLbLA3PLHxjeFkfqg1YXQWcgdoUf4YOYT53SMouZcmS1sgvYkJMr9DLM
+ 4quU5Dk03xpicflLj/TlVbPCZL/Z41SaOOow0lpXCNkHrmwTkp+rzCMOqagDi8NFUkmi
+ p/Bet2YqBkA2aJKmUX5lEetcrppVEg4F/npkh5ei8u5oTw/GX0AVX2vy/Bh86CVihFUe
+ bmgnJsbvdjabR2pnooEHXcoRgYrbg2r52V4MuLJ6ktotuNzgW9QRXI9FohAQJ8asvDfE
+ jm7gWsltXIn/OmoM5Wpx8FLCjidsZ/7CFlkArgprQWe/6/luC8YZEfdnp8kHIsUA1OmQ
+ VEyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710365643; x=1710970443;
+ d=1e100.net; s=20230601; t=1710365650; x=1710970450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uuIA7snzjzJiFQGDzy7Q/aN2eTCJoDKnsUbMdeEplEw=;
- b=ROeRKRlk6pGIYpt7jfx9KDhGt40IxYfzfTMUyCL38f3kdpx6lFniKD1antQwCE66aj
- pzkfoTrZv1mgTvWUjhIZSBur1zxF20J3HkpT6lYv8rRHsMxqTgvwRWekEwEmCQqVOLek
- UO7qIrZhzWAk4Tmr3e3lo0Lm6B+Kn9FfC5g6TKzTdgau252nTNDl+yQdazRPighUwoWX
- 3XxoZICIrDA27WMnQ2s/ftqL5BWRZVnw/g10zrbXwGTRSnSkNnipUlTYcbQnOKGaQesJ
- Wf8Z5YNu5FUZebKQcQkTQPa636qXkSj4YnazhGPK4wYIKxeEu1xkNYg67f7kjQVv+NuD
- 7vkg==
+ bh=Mop7Z5XVl4lLMq97v4+OC8Djyhqf7oPYLBMfdu8kMMs=;
+ b=OdFgLg5w0dg0+vy0rKdAYzhKjac4xrEJ2vtcv0FqcXo9saP9fBfL2QcnKNmHUiabA3
+ ClW7IuQfrWdgXXszWv2tc4nepp4wUg1JKW2uazyFWRF0puxOJ2T0Ugc/9ee7hqxRiiT1
+ qMO7I6MN3sQo7UtRhvodNFqg4yLlT5Ee7oKPwtj39g8OHPP1h4dClU1leM6DsrP+yjgo
+ PDoV1M2rdC0UQkSo+u7pgehQYikw4hzNz5Ip+8Xwc3K/Vcpy9vel/e8qhnsM+poXERFm
+ A9KLHadNrBwIEH2HpuerDyRCjZY2PcGhQobuVYMeb5QdTv1mu9du1uZY60zj4oYgp4jv
+ rhkQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUcygHxUszxwuig1DJA/dFvrCLTm8yaiULLGejIEVKvDz5HrLAevsC0f+dYMGL19isYbm7cbgg4UHhK9CJdEScNO6tELe8=
-X-Gm-Message-State: AOJu0YymeAe2sC5Ec8rxLMR8faUZx72hopb92GCnJsk3RRG09Hb7+UFj
- WjiWKsj3wP2G5bbCVHsQh+81p8qN/kFTKtqpm8pfK42AwmBlqir6q+e9LMj9u3A=
-X-Google-Smtp-Source: AGHT+IF8GIBRoGhlQMCieR/Zp6nPhkmxqt6EJQqbxmZNV+EaNoeNivyzrnwDdv7z2KeoSRV67WmEVg==
-X-Received: by 2002:adf:fece:0:b0:33d:7e9:9543 with SMTP id
- q14-20020adffece000000b0033d07e99543mr25952wrs.32.1710365642885; 
- Wed, 13 Mar 2024 14:34:02 -0700 (PDT)
+ AJvYcCUWdHacJiFGyJsAv/8TyTytiO8V7cjKIva057VKyZ92d/nakKsA1nWJ49LyliLGzDoqBy9KLqegSu0DDPWCs5UIepCL9IE=
+X-Gm-Message-State: AOJu0YznJ6foLMRIkYWe7k3lPKAoBIYzOMHuSaUEnxFla/z/miwA+5UK
+ I4mXdD2zQ8dKhva1xhx2tdxY0Q6lb5M7gCHit8g4NtJZeGY/XSGw8DyrQd8YnQo=
+X-Google-Smtp-Source: AGHT+IHCuF1wlxBec2FSTOP7Kfl2CcKkxtYeqc0aUQOMU/oOnhiirnhopkXorE8z+tIt+NfNOUXPIg==
+X-Received: by 2002:a05:600c:19cd:b0:413:ea5a:7787 with SMTP id
+ u13-20020a05600c19cd00b00413ea5a7787mr25095wmq.22.1710365650111; 
+ Wed, 13 Mar 2024 14:34:10 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- p3-20020a5d4e03000000b0033e9e26a2d0sm74645wrt.37.2024.03.13.14.34.01
+ h2-20020a05600c350200b00413177c3f1dsm280038wmq.18.2024.03.13.14.34.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 14:34:02 -0700 (PDT)
+ Wed, 13 Mar 2024 14:34:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -64,24 +64,24 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
  qemu-ppc@nongnu.org
-Subject: [PATCH-for-9.0? 03/12] gdbstub: Correct invalid mentions of 'softmmu'
- by 'system'
-Date: Wed, 13 Mar 2024 22:33:30 +0100
-Message-ID: <20240313213339.82071-4-philmd@linaro.org>
+Subject: [PATCH-for-9.0? 04/12] gdbstub/system: Rename 'user_ctx' argument as
+ 'ctx'
+Date: Wed, 13 Mar 2024 22:33:31 +0100
+Message-ID: <20240313213339.82071-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313213339.82071-1-philmd@linaro.org>
 References: <20240313213339.82071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,105 +100,76 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- gdbstub/internals.h | 20 ++++++++++----------
- gdbstub/system.c    |  2 +-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ gdbstub/internals.h | 8 ++++----
+ gdbstub/system.c    | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index b472459838..7055138dee 100644
+index 7055138dee..e39c4b113c 100644
 --- a/gdbstub/internals.h
 +++ b/gdbstub/internals.h
-@@ -115,7 +115,7 @@ void gdb_read_byte(uint8_t ch);
- 
- /*
-  * Packet acknowledgement - we handle this slightly differently
-- * between user and softmmu mode, mainly to deal with the differences
-+ * between user and system mode, mainly to deal with the differences
-  * between the flexible chardev and the direct fd approaches.
-  *
-  * We currently don't support a negotiated QStartNoAckMode
-@@ -125,7 +125,7 @@ void gdb_read_byte(uint8_t ch);
-  * gdb_got_immediate_ack() - check ok to continue
-  *
-  * Returns true to continue, false to re-transmit for user only, the
-- * softmmu stub always returns true.
-+ * system stub always returns true.
-  */
- bool gdb_got_immediate_ack(void);
- /* utility helpers */
-@@ -135,12 +135,12 @@ CPUState *gdb_first_attached_cpu(void);
- void gdb_append_thread_id(CPUState *cpu, GString *buf);
- int gdb_get_cpu_index(CPUState *cpu);
- unsigned int gdb_get_max_cpus(void); /* both */
--bool gdb_can_reverse(void); /* softmmu, stub for user */
-+bool gdb_can_reverse(void); /* system emulation, stub for user */
- int gdb_target_sigtrap(void); /* user */
- 
- void gdb_create_default_process(GDBState *s);
- 
--/* signal mapping, common for softmmu, specialised for user-mode */
-+/* signal mapping, common for system, specialised for user-mode */
- int gdb_signal_to_target(int sig);
- int gdb_target_signal_to_gdb(int sig);
- 
-@@ -157,12 +157,12 @@ void gdb_continue(void);
- int gdb_continue_partial(char *newstates);
- 
- /*
-- * Helpers with separate softmmu and user implementations
-+ * Helpers with separate system and user implementations
-  */
- void gdb_put_buffer(const uint8_t *buf, int len);
- 
- /*
-- * Command handlers - either specialised or softmmu or user only
-+ * Command handlers - either specialised or system or user only
-  */
- void gdb_init_gdbserver_state(void);
- 
 @@ -187,7 +187,7 @@ typedef union GdbCmdVariant {
  
  #define get_param(p, i)    (&g_array_index(p, GdbCmdVariant, i))
  
--void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* softmmu */
-+void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* system */
+-void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* system */
++void gdb_handle_query_rcmd(GArray *params, void *ctx); /* system */
  void gdb_handle_query_offsets(GArray *params, void *user_ctx); /* user */
  void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx); /*user */
  void gdb_handle_v_file_open(GArray *params, void *user_ctx); /* user */
-@@ -202,7 +202,7 @@ bool gdb_handle_detach_user(uint32_t pid); /* user */
+@@ -200,11 +200,11 @@ void gdb_handle_query_supported_user(const char *gdb_supported); /* user */
+ bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid); /* user */
+ bool gdb_handle_detach_user(uint32_t pid); /* user */
  
- void gdb_handle_query_attached(GArray *params, void *user_ctx); /* both */
+-void gdb_handle_query_attached(GArray *params, void *user_ctx); /* both */
++void gdb_handle_query_attached(GArray *params, void *ctx); /* both */
  
--/* softmmu only */
-+/* system only */
- void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *user_ctx);
- void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx);
+ /* system only */
+-void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *user_ctx);
+-void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx);
++void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *ctx);
++void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *ctx);
  
-@@ -212,11 +212,11 @@ bool gdb_handled_syscall(void);
- void gdb_disable_syscalls(void);
- void gdb_syscall_reset(void);
- 
--/* user/softmmu specific syscall handling */
-+/* user/system specific syscall handling */
- void gdb_syscall_handling(const char *syscall_packet);
- 
- /*
-- * Break/Watch point support - there is an implementation for softmmu
-+ * Break/Watch point support - there is an implementation for system
-  * and user mode.
-  */
- bool gdb_supports_guest_debug(void);
+ /* sycall handling */
+ void gdb_handle_file_io(GArray *params, void *user_ctx);
 diff --git a/gdbstub/system.c b/gdbstub/system.c
-index 83fd452800..a3ce384cd1 100644
+index a3ce384cd1..d235403855 100644
 --- a/gdbstub/system.c
 +++ b/gdbstub/system.c
-@@ -1,5 +1,5 @@
- /*
-- * gdb server stub - softmmu specific bits
-+ * gdb server stub - system specific bits
-  *
-  * Debug integration depends on support from the individual
-  * accelerators so most of this involves calling the ops helpers.
+@@ -488,13 +488,13 @@ bool gdb_can_reverse(void)
+  */
+ 
+ void gdb_handle_query_qemu_phy_mem_mode(GArray *params,
+-                                        void *user_ctx)
++                                        void *ctx)
+ {
+     g_string_printf(gdbserver_state.str_buf, "%d", phy_memory_mode);
+     gdb_put_strbuf();
+ }
+ 
+-void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx)
++void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *ctx)
+ {
+     if (!params->len) {
+         gdb_put_packet("E22");
+@@ -509,7 +509,7 @@ void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx)
+     gdb_put_packet("OK");
+ }
+ 
+-void gdb_handle_query_rcmd(GArray *params, void *user_ctx)
++void gdb_handle_query_rcmd(GArray *params, void *ctx)
+ {
+     const guint8 zero = 0;
+     int len;
+@@ -539,7 +539,7 @@ void gdb_handle_query_rcmd(GArray *params, void *user_ctx)
+  * Execution state helpers
+  */
+ 
+-void gdb_handle_query_attached(GArray *params, void *user_ctx)
++void gdb_handle_query_attached(GArray *params, void *ctx)
+ {
+     gdb_put_packet("1");
+ }
 -- 
 2.41.0
 
