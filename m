@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF0AC87B055
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7EA87B052
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:51:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkTgW-0001dw-AA; Wed, 13 Mar 2024 14:50:40 -0400
+	id 1rkTge-0001pH-GV; Wed, 13 Mar 2024 14:50:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkTgR-0001br-BG
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:50:35 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkTga-0001ig-N0
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:50:46 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkTgO-0004FI-Uc
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:50:35 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-413eb7cf7dfso1645725e9.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:50:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkTgX-0004GK-Ku
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:50:44 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41324a16c9eso1120705e9.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:50:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710355831; x=1710960631; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710355839; x=1710960639; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X17Ya2bvpA+4v4TFaE60WLvpjjO6zpu/JP88j5/yX/w=;
- b=f9EtNz/ZHx+4BCXzeEHkXEpAhnaN8ZnZyFxpL5FjMAdnfsbQ/1Of/RbL9xShaJUS5F
- yULqqs6v5sOFcH77Ogc+/+BcentQA1brFuEVqO0jZSaI/w8BWyiNaePKU6m+6lyC+4SG
- eBUJlmYMULvB5pCyz/ZXFFOnWBOpT+yGUZqMiR97+gMTTYUpsmxgxgavA+bixsaOhJEZ
- 6c+xmKvmEQj8NFBWccqKjFfWjAN5d+WU8VBrg6khXE2W5ZCRIGRVKf96Z4nxiMiWHRfG
- kWtMAJBh8s60PS/HxeeN/NQhV/2UQil+32yGgpCrq7U3twnBCvqxrubLvuRQWmJeIt6z
- Cb3A==
+ bh=FWk3AJvtwG4+M7tAK6vUDxEOFolgTz5/lAeIi0nhTag=;
+ b=WQBs14mQmdx4bWTKOZGi9MDsZizypAaGwIHTJrn0xyQQpGx0vrHjbD6XQUOPwtkjMN
+ 0egPfX+B8/3uwQOa+qWavGBdcJOzruXY5qDHb2rcolYYWZUzsJ+5J6E2C3yzliMEZ8E4
+ Ggo6vzpmH/1QtMYM5QX7Kv7IB75HKMw+Ko0sHZsNLz6TPepKty0CKyL2mzWfZKF2fIB1
+ CJj57Su3NiaztYBuqQlg7IxyACSk9fszeWEb5n09s+X4HWuqk1EpP0UUfMtWNigGPGbw
+ TgNlFfYlXuR2wiw4TBEHilHlnpVtinR6Q/GKai8+DUhqEojxT67Xm2a9au2Qum7/OLji
+ E0Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710355831; x=1710960631;
+ d=1e100.net; s=20230601; t=1710355839; x=1710960639;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X17Ya2bvpA+4v4TFaE60WLvpjjO6zpu/JP88j5/yX/w=;
- b=rXXYulfN0XlJEmOTpUD9lj9MJvQgaE0qRLjGbJzjrFoHkwB1yWpp8y5GZn/v1XTe9h
- XYum2YyPZezdWhYxIQ7XtqoN1WOmwR6pjbfx+MimGy0jMDwWx2k/HPbooBlGeZ5IRerA
- 5PoKUUWcPgjnmW/EtLUDswRN4rPnydXlwivwiI+8JFrKUDewfR1PfHy0s33mb2SFacaZ
- RMQPlsO/dWPolurB2jEGUo/MIEEk5e2ScAw66cE5wSBkxBqQLEafOEp0zEoa3WcyOoeq
- oYSPP2LWWLljt/n0xy4vKrd5POCA22tG4mWWB6vt6JykLJ6BWroGH6LBdLnX4rPz0jDG
- A/0w==
-X-Gm-Message-State: AOJu0Yw2zEvY6BxKgqYP72EkwA1BfPqHcfbyViaeGh1ym7NJUwz5oiLZ
- uB0ghkkGy9QPs2asfXYTP1sRkVSt7+/92Lb+9kaUVeQOE3OI8lVfpoHuoWalfEq+Qk78nrsvzsz
- z
-X-Google-Smtp-Source: AGHT+IGsvzdgN7ucAIoiomxDKoaZWax6gBU734zZCqWs/3xAkyQ7rw8GWiUctzeOxTFbc1yXyiTzdA==
-X-Received: by 2002:a05:600c:1910:b0:413:1ee4:692e with SMTP id
- j16-20020a05600c191000b004131ee4692emr631218wmq.9.1710355831312; 
- Wed, 13 Mar 2024 11:50:31 -0700 (PDT)
+ bh=FWk3AJvtwG4+M7tAK6vUDxEOFolgTz5/lAeIi0nhTag=;
+ b=DAZ4ko60CgnsB+L7dvNEUk9yvV5zF2syTbcz3HkgLeBaB6GnlqWcXyjKYYcuEZHk/7
+ GiQV3hSB7BVwhldJql/UO6nGGp+uPNoXkbrdelyq7/875KG6Su1pmVBUPLvumu3BIrTv
+ AMUEv1GvYDHXBn5DCw2KhcRFcAhJwrP+3Nc0ZO4Xk3KZer79ENRWZjsAnbvqroLOI/Q2
+ XgDNbMaGyBDevvHqRXyN4bopI94PJlCAWnuGIqlD1cbwPlYOzFviFi95HBKeDzNDX76r
+ qpaDWnFlj5twX0tsMNwtBW1d+ahidvGOC78qm/y3eBW2ORGzqGvK1Jl0eCL6afvJDLNq
+ 48Xw==
+X-Gm-Message-State: AOJu0Yx6WVM4t0e5/1WOSj5yJlHd7qM0bapV2EZfloq8qjEmbGVKcaWO
+ 01HVI8FsaWNhtBRIoT6+nLmIBBbGIuaZcvm8SIPeTOs0GBX5UUKG/1UvPJqosrruPOKCW944DCT
+ 2
+X-Google-Smtp-Source: AGHT+IHVCvYGdXOqSvhG0TkqF8/nwJckNMnZ5dORAkrkWJrRClth+omh0ZGW0c16mbE21+ad/grISA==
+X-Received: by 2002:a05:600c:1f94:b0:412:ea32:e7b0 with SMTP id
+ je20-20020a05600c1f9400b00412ea32e7b0mr540827wmb.40.1710355838743; 
+ Wed, 13 Mar 2024 11:50:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- fj14-20020a05600c0c8e00b00413385ec7e6sm3088148wmb.47.2024.03.13.11.50.28
+ w10-20020a5d680a000000b0033e0dd83be1sm12254046wru.91.2024.03.13.11.50.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 11:50:30 -0700 (PDT)
+ Wed, 13 Mar 2024 11:50:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
@@ -66,17 +66,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Cameron Esfahani <dirty@apple.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 3/4] qtest/libqos: Un-inline size_to_prdtl()
-Date: Wed, 13 Mar 2024 19:49:53 +0100
-Message-ID: <20240313184954.42513-4-philmd@linaro.org>
+Subject: [PATCH-for-9.0 4/4] meson: Enable -Wstatic-in-inline
+Date: Wed, 13 Mar 2024 19:49:54 +0100
+Message-ID: <20240313184954.42513-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313184954.42513-1-philmd@linaro.org>
 References: <20240313184954.42513-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,27 +99,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-See previous commit and commit 9de9fa5cf2 ("Avoid using inlined
-functions with external linkage") for rationale.
+Compilers are clever enough to inline code when necessary.
+
+The only case we accept an inline function is static in
+header (we use C, not C++).
+
+Add the -Wstatic-in-inline CPPFLAG to prevent public and
+inline function to be added in the code base.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/qtest/libqos/ahci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ meson.build | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
-index a2c94c6e06..135b23ffd9 100644
---- a/tests/qtest/libqos/ahci.c
-+++ b/tests/qtest/libqos/ahci.c
-@@ -662,7 +662,7 @@ unsigned ahci_pick_cmd(AHCIQState *ahci, uint8_t port)
-     g_assert_not_reached();
- }
- 
--inline unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
-+unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
- {
-     /* Each PRD can describe up to 4MiB */
-     g_assert_cmphex(bytes_per_prd, <=, 4096 * 1024);
+diff --git a/meson.build b/meson.build
+index b375248a76..f57397aa53 100644
+--- a/meson.build
++++ b/meson.build
+@@ -591,6 +591,7 @@ warn_flags = [
+   '-Wold-style-definition',
+   '-Wredundant-decls',
+   '-Wshadow=local',
++  '-Wstatic-in-inline',
+   '-Wstrict-prototypes',
+   '-Wtype-limits',
+   '-Wundef',
 -- 
 2.41.0
 
