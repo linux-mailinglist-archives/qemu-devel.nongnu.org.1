@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C76FA87AA1F
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7886387AA36
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 16:14:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkQEp-0003nv-JD; Wed, 13 Mar 2024 11:09:51 -0400
+	id 1rkQEr-0003q9-4e; Wed, 13 Mar 2024 11:09:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEg-0003cx-Vu; Wed, 13 Mar 2024 11:09:43 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1rkQEj-0003eC-20; Wed, 13 Mar 2024 11:09:45 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rkQEf-0005wK-5h; Wed, 13 Mar 2024 11:09:42 -0400
+ id 1rkQEg-0005wk-5f; Wed, 13 Mar 2024 11:09:43 -0400
 Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:8793:0:640:b059:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 8B74B60E6F;
- Wed, 13 Mar 2024 18:09:39 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 94F9960A95;
+ Wed, 13 Mar 2024 18:09:40 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:7318::1:20])
  by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 99pZB52GZiE0-DuSxYLHO; Wed, 13 Mar 2024 18:09:38 +0300
+ ESMTPSA id 99pZB52GZiE0-JHfDYuY9; Wed, 13 Mar 2024 18:09:39 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1710342578;
- bh=uHlV1VxR+xuxKKQhx3yCtAq9mela0KYBVFHBDmPaDZ0=;
+ s=default; t=1710342579;
+ bh=zZ0mJmmMXx0Ma28KnRdTxgIgXnMdPfvZcjlQY7vKVTk=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=f7UwSCrJpI6dcBWdlPH4MBiVJT/daT7Kz2eszmbOrxRKCu16AkYdceGs96XKbLRoW
- ahqYAAET12k9hdkmnbMzgzo99OI0HiGCVFJET46GwCokhA2QCEKiCkIVcnbd6U4t1E
- gQcURW+K6jhRPIJpab2ZyH/HYBED/gGCj1NujlIE=
+ b=M3VPzHR3RQxmRKskoAN0Ss5qNI12Mgfvn9ArfOKV/xXnkgt2+E20vsLN5GqNpkTEa
+ JFsBuSL5xodXZScZQp/7Y7d50OlG67HnAvoqVukyTx7jcny2L4opzb07Huy0tsAhZL
+ /s/fM8ShrXidoTDH6BmGKXad/GHPrNHOA7s+z6Ek=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -41,16 +40,16 @@ Cc: qemu-devel@nongnu.org, jsnow@redhat.com, vsementsov@yandex-team.ru,
  kwolf@redhat.com, hreitz@redhat.com, devel@lists.libvirt.org,
  eblake@redhat.com, armbru@redhat.com, michael.roth@amd.com,
  pbonzini@redhat.com, pkrempa@redhat.com, f.ebner@proxmox.com
-Subject: [RFC 14/15] qapi: query-job: add block-job specific information
-Date: Wed, 13 Mar 2024 18:09:06 +0300
-Message-Id: <20240313150907.623462-15-vsementsov@yandex-team.ru>
+Subject: [RFC 15/15] qapi/block-core: derpecate block-job- APIs
+Date: Wed, 13 Mar 2024 18:09:07 +0300
+Message-Id: <20240313150907.623462-16-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 References: <20240313150907.623462-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -73,215 +72,296 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add io-status and speed, which make sense only for block-jobs. This
-allows us to finally deprecate old query-block-jobs API in the next
-commit.
+For change, pause, resume, complete, dismiss and finalize actions
+corresponding job- and block-job commands are almost equal. The
+difference is in find_block_job_locked() vs find_job_locked()
+functions. What's different?
+
+1. find_block_job_locked() do check, is found job a block-job. This OK
+   when moving to more generic API, no needs to document this change.
+
+2. find_block_job_locked() reports DeviceNotActive on failure, when
+   find_job_locked() reports GenericError. So, lets document this
+   difference in deprecated.txt. Still, for dismiss and finalize errors
+   are not documented at all, so be silent in deprecated.txt as well.
+
+For cancel, we have a new solution about soft-cancelling mirror:
+job-complete(no-block-replace=true)
+
+For set-speed, the action is supported by job-change.
+
+For query, query-jobs is not equal to query-block-jobs, but now it has
+enough information (see documentation changes for details).
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/backup.c           |  6 ++++++
- block/commit.c           |  6 ++++++
- block/mirror.c           |  8 ++++++++
- block/stream.c           |  6 ++++++
- blockjob.c               | 10 ++++++++++
- include/block/blockjob.h |  6 ++++++
- qapi/job.json            | 21 ++++++++++++++++++++-
- 7 files changed, 62 insertions(+), 1 deletion(-)
+ docs/about/deprecated.rst | 73 +++++++++++++++++++++++++++++++++++++--
+ qapi/block-core.json      | 59 ++++++++++++++++++++++++++++++-
+ 2 files changed, 129 insertions(+), 3 deletions(-)
 
-diff --git a/block/backup.c b/block/backup.c
-index bf086dc5f9..55bbe85bf6 100644
---- a/block/backup.c
-+++ b/block/backup.c
-@@ -343,6 +343,11 @@ static bool backup_change(Job *job, JobChangeOptions *opts, Error **errp)
-     return block_job_change(bjob, &opts->u.backup, errp);
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 5ff98ef95f..7db3ba983b 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -128,6 +128,75 @@ options are removed in favor of using explicit ``blockdev-create`` and
+ ``blockdev-add`` calls. See :doc:`/interop/live-block-operations` for
+ details.
  
-+static void backup_query(Job *job, JobInfo *info)
-+{
-+    block_job_query(job, &info->u.backup);
-+}
++``block-job-pause`` (since 9.1)
++'''''''''''''''''''''''''''''''
 +
- static const BlockJobDriver backup_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(BackupBlockJob),
-@@ -356,6 +361,7 @@ static const BlockJobDriver backup_job_driver = {
-         .pause                  = backup_pause,
-         .cancel                 = backup_cancel,
-         .change                 = backup_change,
-+        .query                  = backup_query,
-     },
-     .set_speed = backup_set_speed,
- };
-diff --git a/block/commit.c b/block/commit.c
-index ccb6097679..9199a6adc8 100644
---- a/block/commit.c
-+++ b/block/commit.c
-@@ -211,6 +211,11 @@ static bool commit_change(Job *job, JobChangeOptions *opts, Error **errp)
-     return block_job_change(bjob, &opts->u.commit, errp);
- }
- 
-+static void commit_query(Job *job, JobInfo *info)
-+{
-+    block_job_query(job, &info->u.commit);
-+}
++Use ``job-pause`` instead. The only difference is that ``job-pause``
++always reports GenericError on failure when ``block-job-pause`` reports
++DeviceNotActive when block-job is not found.
 +
- static const BlockJobDriver commit_job_driver = {
-     .job_driver = {
-         .instance_size = sizeof(CommitBlockJob),
-@@ -222,6 +227,7 @@ static const BlockJobDriver commit_job_driver = {
-         .abort         = commit_abort,
-         .clean         = commit_clean,
-         .change        = commit_change,
-+        .query         = commit_query,
-     },
- };
- 
-diff --git a/block/mirror.c b/block/mirror.c
-index 8e672f3309..e8092d56be 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -1310,6 +1310,8 @@ static void mirror_query(Job *job, JobInfo *info)
-     info->u.mirror = (JobInfoMirror) {
-         .actively_synced = qatomic_read(&s->actively_synced),
-     };
++``block-job-resume`` (since 9.1)
++''''''''''''''''''''''''''''''''
 +
-+    block_job_query(job, qapi_JobInfoMirror_base(&info->u.mirror));
- }
- 
- static const BlockJobDriver mirror_job_driver = {
-@@ -1338,6 +1340,11 @@ static bool commit_active_change(Job *job, JobChangeOptions *opts, Error **errp)
-     return block_job_change(bjob, &opts->u.commit, errp);
- }
- 
-+static void commit_active_query(Job *job, JobInfo *info)
-+{
-+    block_job_query(job, &info->u.commit);
-+}
++Use ``job-resume`` instead. The only difference is that ``job-resume``
++always reports GenericError on failure when ``block-job-resume`` reports
++DeviceNotActive when block-job is not found.
 +
- static const BlockJobDriver commit_active_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(MirrorBlockJob),
-@@ -1351,6 +1358,7 @@ static const BlockJobDriver commit_active_job_driver = {
-         .complete               = mirror_complete,
-         .cancel                 = commit_active_cancel,
-         .change                 = commit_active_change,
-+        .query                  = commit_active_query,
-     },
-     .drained_poll           = mirror_drained_poll,
- };
-diff --git a/block/stream.c b/block/stream.c
-index 34f4588537..e5e4d0bc77 100644
---- a/block/stream.c
-+++ b/block/stream.c
-@@ -246,6 +246,11 @@ static bool stream_change(Job *job, JobChangeOptions *opts, Error **errp)
-     return block_job_change(bjob, &opts->u.stream, errp);
- }
- 
-+static void stream_query(Job *job, JobInfo *info)
-+{
-+    block_job_query(job, &info->u.stream);
-+}
++``block-job-complete`` (since 9.1)
++''''''''''''''''''''''''''''''''''
 +
- static const BlockJobDriver stream_job_driver = {
-     .job_driver = {
-         .instance_size = sizeof(StreamBlockJob),
-@@ -256,6 +261,7 @@ static const BlockJobDriver stream_job_driver = {
-         .clean         = stream_clean,
-         .user_resume   = block_job_user_resume,
-         .change        = stream_change,
-+        .query         = stream_query,
-     },
- };
- 
-diff --git a/blockjob.c b/blockjob.c
-index de1dd03b2d..7dd1ed3ff2 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -306,6 +306,16 @@ bool block_job_set_speed_locked(BlockJob *job, int64_t speed, Error **errp)
-     return true;
- }
- 
-+void block_job_query(Job *job, JobInfoBlockJob *info)
-+{
-+    BlockJob *bjob = container_of(job, BlockJob, job);
++Use ``job-complete`` instead. The only difference is that ``job-complete``
++always reports GenericError on failure when ``block-job-complete`` reports
++DeviceNotActive when block-job is not found.
 +
-+    JOB_LOCK_GUARD();
++``block-job-dismiss`` (since 9.1)
++'''''''''''''''''''''''''''''''''
 +
-+    info->speed = bjob->speed;
-+    info->io_status = bjob->iostatus;
-+}
++Use ``job-dismiss`` instead.
 +
- static bool block_job_set_speed(BlockJob *job, int64_t speed, Error **errp)
- {
-     JOB_LOCK_GUARD();
-diff --git a/include/block/blockjob.h b/include/block/blockjob.h
-index fd7ba1a285..bc33c2ba77 100644
---- a/include/block/blockjob.h
-+++ b/include/block/blockjob.h
-@@ -231,4 +231,10 @@ const BlockJobDriver *block_job_driver(BlockJob *job);
- bool block_job_change(BlockJob *job, JobChangeOptionsBlockJob *opts,
-                       Error **errp);
++``block-job-finalize`` (since 9.1)
++''''''''''''''''''''''''''''''''''
++
++Use ``job-finalize`` instead.
++
++``block-job-set-speed`` (since 9.1)
++'''''''''''''''''''''''''''''''''''
++
++Use ``job-change`` instead.
++
++``block-job-change`` (since 9.1)
++''''''''''''''''''''''''''''''''
++
++Use ``job-change`` instead.
++
++``block-job-cancel`` (since 9.1)
++''''''''''''''''''''''''''''''''
++
++Use ``job-cancel`` instead which correspond to
++``block-job-cancel`` (``force`` = true ).  For special case of
++soft-cancelling mirror in ready state, use ``job-complete``
++(``no-block-replace`` = true ).
++
++``query-block-jobs`` (since 9.1)
++
++Use ``query-jobs`` instead. Per-field recommendations:
++
++``query-block-jobs`` ``device`` field: use ``query-jobs`` ``id`` field.
++
++``query-block-jobs`` ``len`` and ``offset`` fields: use ``query-jobs``
++``current-progress`` and ``total-progress`` fields.
++
++``query-block-jobs`` ``paused``, ``ready``:
++use ``qeury-jobs`` ``status``.
++
++``auto-finalize``, ``auto-dismiss``: these are parameters set by user
++on job creation and never changed. So, no reason to query them. No
++support in ``query-jobs``.
++
++``busy``: it actually means nothing for user, it's a mistake to rely on
++it. No support in ``query-jobs``.
++
++
+ Incorrectly typed ``device_add`` arguments (since 6.2)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
-+/**
-+ * Common part of .query handler for block-jobs.
-+ * Adds block-job specific information to @info.
-+ */
-+void block_job_query(Job *job, JobInfoBlockJob *info);
-+
- #endif
-diff --git a/qapi/job.json b/qapi/job.json
-index 036fec1b57..7bd9f8112c 100644
---- a/qapi/job.json
-+++ b/qapi/job.json
-@@ -4,6 +4,7 @@
- ##
- # = Background jobs
- ##
-+{ 'include': 'common.json' }
+@@ -143,8 +212,8 @@ all arguments passed to ``device_add`` are consistent with the documented
+ property types.
  
- ##
- # @JobType:
-@@ -251,6 +252,20 @@
- ##
- { 'command': 'job-finalize', 'data': { 'id': 'str' } }
  
-+##
-+# @JobInfoBlockJob:
-+#
-+# Information specific to block jobs like mirror and backup.
-+#
-+# @io-status: the io status of the job
-+#
-+# @speed: the rate limit, bytes per second
-+#
-+# Since: 9.1
-+##
-+{ 'struct': 'JobInfoBlockJob',
-+  'data': { 'io-status': 'IoStatus', 'speed': 'uint64' } }
-+
- ##
- # @JobInfoMirror:
+-``block-job-change`` and ``job-change``  argument ``type`` (since 9.1)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++``job-change`` argument ``type`` (since 9.1)
++''''''''''''''''''''''''''''''''''''''''''''
+ 
+ QEMU can get job type from the job itself (by @id), @type field is redundant.
+ 
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 75c02e1586..793155f174 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1422,9 +1422,15 @@
  #
-@@ -263,6 +278,7 @@
- # Since: 9.1
+ # Returns: a list of @BlockJobInfo for each active block job
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @query-jobs
++#     instead.
++#
+ # Since: 1.1
  ##
- { 'struct': 'JobInfoMirror',
-+  'base': 'JobInfoBlockJob',
-   'data': { 'actively-synced': 'bool' } }
+ { 'command': 'query-block-jobs', 'returns': ['BlockJobInfo'],
++  'features': ['deprecated'],
+   'allow-preconfig': true }
  
  ##
-@@ -300,7 +316,10 @@
-             'current-progress': 'int', 'total-progress': 'int',
-             '*error': 'str' },
-   'discriminator': 'type',
--  'data': { 'mirror': 'JobInfoMirror' } }
-+  'data': { 'mirror': 'JobInfoMirror',
-+            'backup': 'JobInfoBlockJob',
-+            'stream': 'JobInfoBlockJob',
-+            'commit': 'JobInfoBlockJob' } }
+@@ -2875,6 +2881,11 @@
+ # @speed: the maximum speed, in bytes per second, or 0 for unlimited.
+ #     Defaults to 0.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-change
++#     instead.
++#
+ # Errors:
+ #     - If no background operation is active on this device,
+ #       DeviceNotActive
+@@ -2883,6 +2894,7 @@
+ ##
+ { 'command': 'block-job-set-speed',
+   'data': { 'device': 'str', 'speed': 'int' },
++ 'features': ['deprecated'],
+   'allow-preconfig': true }
  
  ##
- # @query-jobs:
+@@ -2919,13 +2931,22 @@
+ #     paused) instead of waiting for the destination to complete its
+ #     final synchronization (since 1.3)
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-cancel
++#     instead which correspond to block-job-cancel(force=true).
++#     For special case of soft-cancelling mirror in ready state,
++#     use job-complete(no-block-replace=true) instead.
++#
+ # Errors:
+ #     - If no background operation is active on this device,
+ #       DeviceNotActive
+ #
+ # Since: 1.1
+ ##
+-{ 'command': 'block-job-cancel', 'data': { 'device': 'str', '*force': 'bool' },
++{ 'command': 'block-job-cancel',
++  'features': ['deprecated'],
++  'data': { 'device': 'str', '*force': 'bool' },
+   'allow-preconfig': true }
+ 
+ ##
+@@ -2945,6 +2966,11 @@
+ #     the name of the parameter), but since QEMU 2.7 it can have other
+ #     values.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-pause
++#     instead.
++#
+ # Errors:
+ #     - If no background operation is active on this device,
+ #       DeviceNotActive
+@@ -2952,6 +2978,7 @@
+ # Since: 1.3
+ ##
+ { 'command': 'block-job-pause', 'data': { 'device': 'str' },
++  'features': ['deprecated'],
+   'allow-preconfig': true }
+ 
+ ##
+@@ -2969,6 +2996,11 @@
+ #     the name of the parameter), but since QEMU 2.7 it can have other
+ #     values.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-resume
++#     instead.
++#
+ # Errors:
+ #     - If no background operation is active on this device,
+ #       DeviceNotActive
+@@ -2976,6 +3008,7 @@
+ # Since: 1.3
+ ##
+ { 'command': 'block-job-resume', 'data': { 'device': 'str' },
++  'features': ['deprecated'],
+   'allow-preconfig': true }
+ 
+ ##
+@@ -3000,6 +3033,11 @@
+ #     the name of the parameter), but since QEMU 2.7 it can have other
+ #     values.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-complete
++#     instead.
++#
+ # Errors:
+ #     - If no background operation is active on this device,
+ #       DeviceNotActive
+@@ -3007,6 +3045,7 @@
+ # Since: 1.3
+ ##
+ { 'command': 'block-job-complete', 'data': { 'device': 'str' },
++  'features': ['deprecated'],
+   'allow-preconfig': true }
+ 
+ ##
+@@ -3024,9 +3063,15 @@
+ #
+ # @id: The job identifier.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-dismiss
++#     instead.
++#
+ # Since: 2.12
+ ##
+ { 'command': 'block-job-dismiss', 'data': { 'id': 'str' },
++  'features': ['deprecated'],
+   'allow-preconfig': true }
+ 
+ ##
+@@ -3041,9 +3086,15 @@
+ #
+ # @id: The job identifier.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-finalize
++#     instead.
++#
+ # Since: 2.12
+ ##
+ { 'command': 'block-job-finalize', 'data': { 'id': 'str' },
++  'features': ['deprecated'],
+   'allow-preconfig': true }
+ 
+ ##
+@@ -3103,9 +3154,15 @@
+ #
+ # Change the block job's options.
+ #
++# Features:
++#
++# @deprecated: This command is deprecated.  Use @job-change
++#     instead.
++#
+ # Since: 8.2
+ ##
+ { 'command': 'block-job-change',
++  'features': ['deprecated'],
+   'data': 'JobChangeOptions', 'boxed': true }
+ 
+ ##
 -- 
 2.34.1
 
