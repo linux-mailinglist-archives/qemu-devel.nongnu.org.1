@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A93987A273
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 05:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8716087A265
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 05:43:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkGRA-0007xQ-Lm; Wed, 13 Mar 2024 00:41:56 -0400
+	id 1rkGRJ-00084Q-4k; Wed, 13 Mar 2024 00:42:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQt-0007uE-MP
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:40 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQs-0007tO-ON
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQq-0001rE-Kt
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:39 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQp-0001qO-1o
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710304896;
+ s=mimecast20190719; t=1710304894;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nmE9ahkr205qFik1K8btaIxpo/2jE6pdxITtjDV4o6o=;
- b=CssBRUDDWrw7c+zNU6dQK9ssZUIOJlOWRwO4ypi5YZD7VuGBTXWzBqYC+omFiC+XwgjUK3
- fVMSlqBPky2V7bhDARfrg+UqUYBwTVB7Ifu8VBRAYfR4ZqUIhzM+GCJbKOGZ9t3EVbNULI
- qX3OOLzLY4KAOyECcvMyM3MkWhk3ie0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-530-RzS_5vf1PFmRzfeyRIuFUA-1; Wed,
- 13 Mar 2024 00:41:31 -0400
-X-MC-Unique: RzS_5vf1PFmRzfeyRIuFUA-1
+ bh=Nwi1PGS3inlBc0HsQP+/+WWdThZFkOacbyB9odUZxNc=;
+ b=R3ryTRxutj02P6XyFnqBLKAYesTrc6tY7p0UaLTlK0VTFXOaExEBov7GzRmxcWZmlTiJuV
+ pvvGJd+ajTENFxZjGEy0jRDVPUFVx/Ty54dMdjsk4WiVME8otR0rQR9wEEpZHIi3rfCLOQ
+ QxEsW/DY/jV5QUDkiOhUvenYKlEPBTY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-532-NlxeUEr_OvaLeJjetaQXNA-1; Wed, 13 Mar 2024 00:41:32 -0400
+X-MC-Unique: NlxeUEr_OvaLeJjetaQXNA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6197C29AB3EF;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8C3080F7E9;
  Wed, 13 Mar 2024 04:41:31 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.16.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2419710F53;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6FEB510E4B;
  Wed, 13 Mar 2024 04:41:31 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
  John Snow <jsnow@redhat.com>
-Subject: [PATCH v4 07/23] qapi/schema: declare type for
- QAPISchemaArrayType.element_type
-Date: Wed, 13 Mar 2024 00:41:11 -0400
-Message-ID: <20240313044127.49089-8-jsnow@redhat.com>
+Subject: [PATCH v4 08/23] qapi/schema: make c_type() and json_type() abstract
+ methods
+Date: Wed, 13 Mar 2024 00:41:12 -0400
+Message-ID: <20240313044127.49089-9-jsnow@redhat.com>
 In-Reply-To: <20240313044127.49089-1-jsnow@redhat.com>
 References: <20240313044127.49089-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -80,42 +80,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A QAPISchemaArrayType's element type gets resolved only during .check().
-We have QAPISchemaArrayType.__init__() initialize self.element_type =
-None, and .check() assign the actual type.  Using .element_type before
-.check() is wrong, and hopefully crashes due to the value being None.
-Works.
-
-However, it makes for awkward typing.  With .element_type:
-Optional[QAPISchemaType], mypy is of course unable to see that it's None
-before .check(), and a QAPISchemaType after.  To help it over the hump,
-we'd have to assert self.element_type is not None before all the (valid)
-uses.  The assertion catches invalid uses, but only at run time; mypy
-can't flag them.
-
-Instead, declare .element_type in .__init__() as QAPISchemaType
-*without* initializing it.  Using .element_type before .check() now
-certainly crashes, which is an improvement.  Mypy still can't flag
-invalid uses, but that's okay.
+These methods should always return a str, it's only the default abstract
+implementation that doesn't. They can be marked "abstract", which
+requires subclasses to override the method with the proper return type.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- scripts/qapi/schema.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/qapi/schema.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 8440a7243d8..c549a4e3bd0 100644
+index c549a4e3bd0..c316660adda 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -381,7 +381,7 @@ def __init__(self, name, info, element_type):
-         super().__init__(name, info, None)
-         assert isinstance(element_type, str)
-         self._element_type_name = element_type
--        self.element_type = None
-+        self.element_type: QAPISchemaType
+@@ -16,6 +16,7 @@
  
-     def need_has_if_optional(self):
-         # When FOO is an array, we still need has_FOO to distinguish
+ # TODO catching name collisions in generated code would be nice
+ 
++from abc import ABC, abstractmethod
+ from collections import OrderedDict
+ import os
+ import re
+@@ -245,9 +246,10 @@ def visit(self, visitor):
+         visitor.visit_include(self._sub_module.name, self.info)
+ 
+ 
+-class QAPISchemaType(QAPISchemaDefinition):
++class QAPISchemaType(QAPISchemaDefinition, ABC):
+     # Return the C type for common use.
+     # For the types we commonly box, this is a pointer type.
++    @abstractmethod
+     def c_type(self):
+         pass
+ 
+@@ -259,6 +261,7 @@ def c_param_type(self):
+     def c_unboxed_type(self):
+         return self.c_type()
+ 
++    @abstractmethod
+     def json_type(self):
+         pass
+ 
 -- 
 2.44.0
 
