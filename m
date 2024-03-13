@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7587587A277
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 05:46:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA387A293
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 06:06:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkGRO-00086Z-5P; Wed, 13 Mar 2024 00:42:10 -0400
+	id 1rkGo4-0001Vr-E3; Wed, 13 Mar 2024 01:05:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQx-0007vE-1a
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkGo1-0001Vi-RR
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 01:05:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rkGQt-0001sV-Lt
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 00:41:42 -0400
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkGo0-000646-2q
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 01:05:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710304899;
+ s=mimecast20190719; t=1710306330;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RvtrkMOEfqhsQDoRE6/5bd/EgdkgzrqkxiRpjpwJPnw=;
- b=PFxJIBFMbVzvWQODIoOEdq7MqAGryrgeZeDsI1lOm7ait22uDb2RFS0VQ8ZekTUn7WOGsw
- lSF9Nc+YIWzfZeeChFj3fTHQJ8U35zGPpJmTL5kdijP6uIcS7SIBOFHz5s3vCeFYSSL0fr
- +9nBBuD2VmgWzy+Z8xWYpyjyAFt5wts=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-f3uAtmCSOC2ik3yLYTtKmg-1; Wed,
- 13 Mar 2024 00:41:36 -0400
-X-MC-Unique: f3uAtmCSOC2ik3yLYTtKmg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3EF5E1C05AE9;
- Wed, 13 Mar 2024 04:41:36 +0000 (UTC)
-Received: from scv.redhat.com (unknown [10.22.16.65])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 03928111E5;
- Wed, 13 Mar 2024 04:41:35 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Michael Roth <michael.roth@amd.com>, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH v4 23/23] qapi/schema: remove unnecessary asserts
-Date: Wed, 13 Mar 2024 00:41:27 -0400
-Message-ID: <20240313044127.49089-24-jsnow@redhat.com>
-In-Reply-To: <20240313044127.49089-1-jsnow@redhat.com>
-References: <20240313044127.49089-1-jsnow@redhat.com>
+ bh=T10gB/MhJAUovYtZmYoIOakNAuS+et11MT2zR11xuxE=;
+ b=KPwcMbJrDMGoqexPriwZ11HN2mssFz7a02WXlzkptmO+tqF1L19nftKen41M3N4IIOvhHX
+ obR3iZAgXpqOng8N1ohfwz6cgqRl7+1MsZKCza096rWY/AtjlcDYgMSZuL1qgvSSiZXSdo
+ qp5kVgHQU2tzTnKn9Q7S+SYzz/MQOfQ=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-94-ux5vD0EfNKiygZ9AzLMBDQ-1; Wed, 13 Mar 2024 01:05:28 -0400
+X-MC-Unique: ux5vD0EfNKiygZ9AzLMBDQ-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-29b8f702cbfso5069880a91.1
+ for <qemu-devel@nongnu.org>; Tue, 12 Mar 2024 22:05:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710306327; x=1710911127;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T10gB/MhJAUovYtZmYoIOakNAuS+et11MT2zR11xuxE=;
+ b=k9BcZ/oXvwmSGbcHy0FBaJk4hzNQQPFfRlhjWLF5gULxUxiCPAvo14V10tQZFUA19V
+ SP4POVNwA41s3+WozodIep7PBFw4Y1tbZyPlK+ToG1b4EMDC79fyfOn+BAYNwiHk176r
+ czIN09XiUTit0zT4RTj2de3uck/M6lpklw6Nq+gTpCvPJphPSVqppJJwhUS3tk7EeTab
+ eAEIFWB4hAGkWkUwwHUpa0qDWovxISBpm24OeAtkYMMD/fmaimiWWIzq3EN6FimXHg6D
+ KgxHW26fY8Zh4xBPb8QPg0tBIZF+IuOWS5eiz3/5vTSrT+Jr6zv30EDPl957toDoF+8n
+ ErYg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVsApvOryAPjHSf4N3tThrrDTc83d+9iWNivA1VLoFtUWn+OIrb0UEfqeIyK6NKcoVfY/veaRKQjBqy7qG0egUp0fI/tms=
+X-Gm-Message-State: AOJu0Yy3UfFc1XvxnnI/HSCS1/1+Peibmwo9FwfTdWO1khMO3Zq1UQ0F
+ vmhbrfwyYVdHV/BvBZ6+sabVgABj0KyBN+FwerGManaoM+4CnfsU2wGQ2x8u5XTtN/fM6+3LXx2
+ Z6/jFn71M/MHsrG5w25P7Hz0fVSFwhpYUIIKUqg1przBSOXPWPJjnfa2pK1z987wSuSIGo+mtLm
+ G2pc5g4MYaPr4cMVe0Fln4o86tbhM=
+X-Received: by 2002:a17:90a:7896:b0:29c:3908:8473 with SMTP id
+ x22-20020a17090a789600b0029c39088473mr3014432pjk.46.1710306327206; 
+ Tue, 12 Mar 2024 22:05:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrxZ/XFI2PMVah6AfTrrSo9DO6MFPsogHM8eQR/6yx0Xr4Wj9cJx5F2hcukmg4INP41cr7VbUMFD8Ft2AlPHg=
+X-Received: by 2002:a17:90a:7896:b0:29c:3908:8473 with SMTP id
+ x22-20020a17090a789600b0029c39088473mr3014421pjk.46.1710306326848; Tue, 12
+ Mar 2024 22:05:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+References: <20240205165437.1965981-1-andrew@daynix.com>
+ <20240205165437.1965981-5-andrew@daynix.com>
+ <CACGkMEtdYosQAGYE47sMLDvC-OvFV7JM-mNvxirHwsZTDTtcOQ@mail.gmail.com>
+ <CABcq3pEQ9-RW5w+4gOaQJZbcPuYnFjoVk6axoj4g53OArbso+w@mail.gmail.com>
+In-Reply-To: <CABcq3pEQ9-RW5w+4gOaQJZbcPuYnFjoVk6axoj4g53OArbso+w@mail.gmail.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 13 Mar 2024 13:05:14 +0800
+Message-ID: <CACGkMEseH32rxhpWkBshe+d8YArbmTL60d8C9Rd0sXV5PYziVQ@mail.gmail.com>
+Subject: Re: [PATCH v9 4/5] qmp: Added new command to retrieve eBPF blob.
+To: Andrew Melnichenko <andrew@daynix.com>
+Cc: mst@redhat.com, armbru@redhat.com, eblake@redhat.com, 
+ qemu-devel@nongnu.org, berrange@redhat.com, yuri.benditovich@daynix.com, 
+ yan@daynix.com, akihiko.odaki@daynix.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,170 +102,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With strict typing enabled, these runtime statements aren't necessary
-anymore; we can prove them statically.
+On Wed, Mar 13, 2024 at 7:13=E2=80=AFAM Andrew Melnichenko <andrew@daynix.c=
+om> wrote:
+>
+> Hi all,
+> I've checked - apparently, qapi/ebpf.json should be added to
+> MAINTAINERS - I'll fix it.
 
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- scripts/qapi/schema.py | 25 -------------------------
- 1 file changed, 25 deletions(-)
+I've fixed this by myself and the pull request has been merged.
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index d2faaea6eac..ffd9170f577 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -123,10 +123,8 @@ def __init__(
-         ifcond: Optional[QAPISchemaIfCond] = None,
-         features: Optional[List[QAPISchemaFeature]] = None,
-     ):
--        assert isinstance(name, str)
-         super().__init__(info)
-         for f in features or []:
--            assert isinstance(f, QAPISchemaFeature)
-             f.set_defined_in(name)
-         self.name = name
-         self.doc = doc
-@@ -163,7 +161,6 @@ def is_implicit(self) -> bool:
-         return not self.info
- 
-     def describe(self) -> str:
--        assert self.meta
-         return "%s '%s'" % (self.meta, self.name)
- 
- 
-@@ -377,7 +374,6 @@ def check(self, schema: QAPISchema) -> None:
-                     f"feature '{feat.name}' is not supported for types")
- 
-     def describe(self) -> str:
--        assert self.meta
-         return "%s type '%s'" % (self.meta, self.name)
- 
- 
-@@ -386,7 +382,6 @@ class QAPISchemaBuiltinType(QAPISchemaType):
- 
-     def __init__(self, name: str, json_type: str, c_type: str):
-         super().__init__(name, None, None)
--        assert not c_type or isinstance(c_type, str)
-         assert json_type in ('string', 'number', 'int', 'boolean', 'null',
-                              'value')
-         self._json_type_name = json_type
-@@ -429,9 +424,7 @@ def __init__(
-     ):
-         super().__init__(name, info, doc, ifcond, features)
-         for m in members:
--            assert isinstance(m, QAPISchemaEnumMember)
-             m.set_defined_in(name)
--        assert prefix is None or isinstance(prefix, str)
-         self.members = members
-         self.prefix = prefix
- 
-@@ -474,7 +467,6 @@ def __init__(
-         self, name: str, info: Optional[QAPISourceInfo], element_type: str
-     ):
-         super().__init__(name, info, None)
--        assert isinstance(element_type, str)
-         self._element_type_name = element_type
-         self.element_type: QAPISchemaType
- 
-@@ -519,7 +511,6 @@ def visit(self, visitor: QAPISchemaVisitor) -> None:
-                                  self.element_type)
- 
-     def describe(self) -> str:
--        assert self.meta
-         return "%s type ['%s']" % (self.meta, self._element_type_name)
- 
- 
-@@ -539,12 +530,9 @@ def __init__(
-         # union has base, variants, and no local_members
-         super().__init__(name, info, doc, ifcond, features)
-         self.meta = 'union' if variants else 'struct'
--        assert base is None or isinstance(base, str)
-         for m in local_members:
--            assert isinstance(m, QAPISchemaObjectTypeMember)
-             m.set_defined_in(name)
-         if variants is not None:
--            assert isinstance(variants, QAPISchemaVariants)
-             variants.set_defined_in(name)
-         self._base_name = base
-         self.base = None
-@@ -666,7 +654,6 @@ def __init__(
-         variants: QAPISchemaVariants,
-     ):
-         super().__init__(name, info, doc, ifcond, features)
--        assert isinstance(variants, QAPISchemaVariants)
-         assert variants.tag_member
-         variants.set_defined_in(name)
-         variants.tag_member.set_defined_in(self.name)
-@@ -742,8 +729,6 @@ def __init__(
-         assert bool(tag_member) != bool(tag_name)
-         assert (isinstance(tag_name, str) or
-                 isinstance(tag_member, QAPISchemaObjectTypeMember))
--        for v in variants:
--            assert isinstance(v, QAPISchemaVariant)
-         self._tag_name = tag_name
-         self.info = info
-         self._tag_member = tag_member
-@@ -857,7 +842,6 @@ def __init__(
-         info: Optional[QAPISourceInfo],
-         ifcond: Optional[QAPISchemaIfCond] = None,
-     ):
--        assert isinstance(name, str)
-         self.name = name
-         self.info = info
-         self.ifcond = ifcond or QAPISchemaIfCond()
-@@ -925,7 +909,6 @@ def __init__(
-     ):
-         super().__init__(name, info, ifcond)
-         for f in features or []:
--            assert isinstance(f, QAPISchemaFeature)
-             f.set_defined_in(name)
-         self.features = features or []
- 
-@@ -954,10 +937,7 @@ def __init__(
-         features: Optional[List[QAPISchemaFeature]] = None,
-     ):
-         super().__init__(name, info, ifcond)
--        assert isinstance(typ, str)
--        assert isinstance(optional, bool)
-         for f in features or []:
--            assert isinstance(f, QAPISchemaFeature)
-             f.set_defined_in(name)
-         self._type_name = typ
-         self.type: QAPISchemaType  # set during check()
-@@ -965,7 +945,6 @@ def __init__(
-         self.features = features or []
- 
-     def need_has(self) -> bool:
--        assert self.type
-         return self.optional and self.type.need_has_if_optional()
- 
-     def check(self, schema: QAPISchema) -> None:
-@@ -1016,8 +995,6 @@ def __init__(
-         coroutine: bool,
-     ):
-         super().__init__(name, info, doc, ifcond, features)
--        assert not arg_type or isinstance(arg_type, str)
--        assert not ret_type or isinstance(ret_type, str)
-         self._arg_type_name = arg_type
-         self.arg_type: Optional[QAPISchemaObjectType] = None
-         self._ret_type_name = ret_type
-@@ -1057,7 +1034,6 @@ def check(self, schema: QAPISchema) -> None:
-             if self.name not in self.info.pragma.command_returns_exceptions:
-                 typ = self.ret_type
-                 if isinstance(typ, QAPISchemaArrayType):
--                    assert typ
-                     typ = typ.element_type
-                 if not isinstance(typ, QAPISchemaObjectType):
-                     raise QAPISemError(
-@@ -1095,7 +1071,6 @@ def __init__(
-         boxed: bool,
-     ):
-         super().__init__(name, info, doc, ifcond, features)
--        assert not arg_type or isinstance(arg_type, str)
-         self._arg_type_name = arg_type
-         self.arg_type: Optional[QAPISchemaObjectType] = None
-         self.boxed = boxed
--- 
-2.44.0
+Thanks
+
+>
+> On Fri, Mar 8, 2024 at 10:14=E2=80=AFAM Jason Wang <jasowang@redhat.com> =
+wrote:
+> >
+> > On Tue, Feb 6, 2024 at 12:55=E2=80=AFAM Andrew Melnychenko <andrew@dayn=
+ix.com> wrote:
+> > >
+> > > Now, the binary objects may be retrieved by id.
+> > > It would require for future qmp commands that may require specific
+> > > eBPF blob.
+> > >
+> > > Added command "request-ebpf". This command returns
+> > > eBPF program encoded base64. The program taken from the
+> > > skeleton and essentially is an ELF object that can be
+> > > loaded in the future with libbpf.
+> > >
+> > > The reason to use the command to provide the eBPF object
+> > > instead of a separate artifact was to avoid issues related
+> > > to finding the eBPF itself. eBPF object is an ELF binary
+> > > that contains the eBPF program and eBPF map description(BTF).
+> > > Overall, eBPF object should contain the program and enough
+> > > metadata to create/load eBPF with libbpf. As the eBPF
+> > > maps/program should correspond to QEMU, the eBPF can't
+> > > be used from different QEMU build.
+> > >
+> > > The first solution was a helper that comes with QEMU
+> > > and loads appropriate eBPF objects. And the issue is
+> > > to find a proper helper if the system has several
+> > > different QEMUs installed and/or built from the source,
+> > > which helpers may not be compatible.
+> > >
+> > > Another issue is QEMU updating while there is a running
+> > > QEMU instance. With an updated helper, it may not be
+> > > possible to hotplug virtio-net device to the already
+> > > running QEMU. Overall, requesting the eBPF object from
+> > > QEMU itself solves possible failures with acceptable effort.
+> > >
+> > > Links:
+> > > [PATCH 3/5] qmp: Added the helper stamp check.
+> > > https://lore.kernel.org/all/20230219162100.174318-4-andrew@daynix.com=
+/
+> > >
+> > > Signed-off-by: Andrew Melnychenko <andrew@daynix.com>
+> > > ---
+> > >  ebpf/ebpf.c           | 69 +++++++++++++++++++++++++++++++++++++++++=
+++
+> >
+> > Let's add ebpf.c to MAINTAINERS otherwise CI may warn like:
+> >
+> > https://gitlab.com/jasowang/qemu/-/jobs/6349138969
+> >
+> > Thanks
+> >
+>
 
 
