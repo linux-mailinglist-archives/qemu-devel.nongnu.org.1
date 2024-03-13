@@ -2,80 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A14B87AF55
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B48A87AF6D
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 19:24:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkTDs-0002o8-2b; Wed, 13 Mar 2024 14:21:04 -0400
+	id 1rkTGx-000647-8Y; Wed, 13 Mar 2024 14:24:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rkTDp-0002n3-H0
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:21:01 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
- id 1rkTDo-0007w1-0m
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:21:01 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e6b459b457so50663b3a.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 11:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710354058; x=1710958858; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y5Oe5PylNVWZYqe4Ru7IuPn5NqtA63B9U4CZo1rmTfM=;
- b=QWBvvpt+JAdqVN95D1Tqr9TCY5QIzaIqALPJEhSAm7VU+HorE1gF5Z2HYG7RwPYggH
- rxqF0ZkSYTXdBTbz6JHoyaiY7VeqifTkmLNjrJGT9DNUXsvP4n5N75PjMJzCQlBwuOep
- L9uEO7OAWeF+Pi7dfJmho3TUO+qeLyJTFkeshy4U367SHDFvwdRISTfxUdtNG7fNAJkv
- Q2Z8EhxqEKi2OjDlGjK8E+b/oYm6XTOO3CdqAlxY1gtdC9I79GKHvEeATwU0C6y04hhr
- oLSoSazkIURu02eAeQmHcdC4rLhcLbfPLANSk0UTc23gG+MdiFSwOW3GIdjx6M+ZjPpU
- l+zA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710354058; x=1710958858;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=y5Oe5PylNVWZYqe4Ru7IuPn5NqtA63B9U4CZo1rmTfM=;
- b=qXM47D0xyEm3mXTnAffxp7ewv/nbT84C35E6W2f6PYNy6Boz3V0onSDEIJ8+wTd2Q+
- 5yVkFxOHIed0wz50X4dOY3G91lEjm84VsjRCMBsY61FxoYdXNSE8BurbZzsNMmln+VrL
- kRkCkQQ61QHrXuO1fdRTAVUdwY62RcpcvKm92YqdgJNKi5U2By2G6izbcevSmK2UnXup
- /0MNpe30znl0LswAw/zNqk3yLPm5taHc8Jn+aQCelcoA2NF1eeDYiYaejLNKI033K7j7
- thcY/jcot+g/fYRfVZn7Ac755gj53IAXjE/yUWmbYlyck3rihLccSdhfqwijSsC8QKrm
- 5xiQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUWp9689FSFWbvHJernbSeykzSKV8t1SR6MDtaw8Pg/1gWKhK/PZLzrA+g34E2kCtt1vXPQZ7D7vZ61mwz+JygsY6kvcaU=
-X-Gm-Message-State: AOJu0YwVRrq1nse/5u9q7ITqjR1V6/8q+hPQx/7pFrL4rRXwiMzKPrR5
- BBOBhnywCI7dovtR+CG8sZGAf93vOncXwk/ArzoUh6H8T+vrnAfQg2IZVd3i3rk=
-X-Google-Smtp-Source: AGHT+IFInqwzooRcyp3lKolnKQP+vSRNSZQNiMbfvikaLAeAENg0ujwpFcInV7NErrnUw9jLIu2lLg==
-X-Received: by 2002:a05:6a20:43a9:b0:1a1:67a6:511e with SMTP id
- i41-20020a056a2043a900b001a167a6511emr2965946pzl.2.1710354058592; 
- Wed, 13 Mar 2024 11:20:58 -0700 (PDT)
-Received: from localhost.localdomain ([49.37.251.185])
- by smtp.gmail.com with ESMTPSA id
- l22-20020a62be16000000b006e6a16acf85sm3457528pff.87.2024.03.13.11.20.57
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 13 Mar 2024 11:20:58 -0700 (PDT)
-From: Himanshu Chauhan <hchauhan@ventanamicro.com>
-To: qemu-riscv@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v5 3/3] target/riscv: Enable sdtrig for Ventana's Veyron CPUs
-Date: Wed, 13 Mar 2024 23:50:09 +0530
-Message-Id: <20240313182009.608685-4-hchauhan@ventanamicro.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240313182009.608685-1-hchauhan@ventanamicro.com>
-References: <20240313182009.608685-1-hchauhan@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkTGu-00063z-IQ
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:24:12 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rkTGs-0008FK-Qd
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 14:24:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 9F15755BA9;
+ Wed, 13 Mar 2024 21:25:11 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9FC3E9895E;
+ Wed, 13 Mar 2024 21:24:06 +0300 (MSK)
+Message-ID: <24d738c6-27d6-4ff3-8b52-d0639deae855@tls.msk.ru>
+Date: Wed, 13 Mar 2024 21:24:06 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=hchauhan@ventanamicro.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] hmat acpi: Fix out of bounds access due to missing
+ use of indirection
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Liu Jingqi <jingqi.liu@intel.com>, qemu-devel@nongnu.org, ankita@nvidia.com,
+ "Michael S . Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Cc: linuxarm@huawei.com, Markus Armbruster <armbru@redhat.com>,
+ Daniel Black <daniel@linux.ibm.com>
+References: <20240307160326.31570-1-Jonathan.Cameron@huawei.com>
+ <20240307160326.31570-3-Jonathan.Cameron@huawei.com>
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240307160326.31570-3-Jonathan.Cameron@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,29 +88,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ventana's Veyron CPUs support sdtrig ISA extension. By default, enable
-the sdtrig extension and disable the debug property for these CPUs.
+07.03.2024 19:03, Jonathan Cameron via wrote:
+> With a numa set up such as
+> 
+> -numa nodeid=0,cpus=0 \
+> -numa nodeid=1,memdev=mem \
+> -numa nodeid=2,cpus=1
+> 
+> and appropriate hmat_lb entries the initiator list is correctly
+> computed and writen to HMAT as 0,2 but then the LB data is accessed
+> using the node id (here 2), landing outside the entry_list array.
+> 
+> Stash the reverse lookup when writing the initiator list and use
+> it to get the correct array index index.
+> 
+> Fixes: 4586a2cb83 ("hmat acpi: Build System Locality Latency and Bandwidth Information Structure(s)")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
----
- target/riscv/cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+This seems like a -stable material, is it not?
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index e0710010f5..a7ea66c7fa 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -568,7 +568,9 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
-     cpu->cfg.ext_zicbom = true;
-     cpu->cfg.cbom_blocksize = 64;
-     cpu->cfg.cboz_blocksize = 64;
-+    cpu->cfg.debug = false;
-     cpu->cfg.ext_zicboz = true;
-+    cpu->cfg.ext_sdtrig = true;
-     cpu->cfg.ext_smaia = true;
-     cpu->cfg.ext_ssaia = true;
-     cpu->cfg.ext_sscofpmf = true;
--- 
-2.34.1
+Thanks,
+
+/mjt
+
+> ---
+>   hw/acpi/hmat.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
+> index 723ae28d32..b933ae3c06 100644
+> --- a/hw/acpi/hmat.c
+> +++ b/hw/acpi/hmat.c
+> @@ -78,6 +78,7 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+>                             uint32_t *initiator_list)
+>   {
+>       int i, index;
+> +    uint32_t initiator_to_index[MAX_NODES] = {};
+>       HMAT_LB_Data *lb_data;
+>       uint16_t *entry_list;
+>       uint32_t base;
+> @@ -121,6 +122,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+>       /* Initiator Proximity Domain List */
+>       for (i = 0; i < num_initiator; i++) {
+>           build_append_int_noprefix(table_data, initiator_list[i], 4);
+> +        /* Reverse mapping for array possitions */
+> +        initiator_to_index[initiator_list[i]] = i;
+>       }
+>   
+>       /* Target Proximity Domain List */
+> @@ -132,7 +135,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+>       entry_list = g_new0(uint16_t, num_initiator * num_target);
+>       for (i = 0; i < hmat_lb->list->len; i++) {
+>           lb_data = &g_array_index(hmat_lb->list, HMAT_LB_Data, i);
+> -        index = lb_data->initiator * num_target + lb_data->target;
+> +        index = initiator_to_index[lb_data->initiator] * num_target +
+> +            lb_data->target;
+>   
+>           entry_list[index] = (uint16_t)(lb_data->data / hmat_lb->base);
+>       }
 
 
