@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B5687B38E
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 415C587B38F
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:36:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkWFD-0001g9-UH; Wed, 13 Mar 2024 17:34:39 -0400
+	id 1rkWFH-0001xj-Md; Wed, 13 Mar 2024 17:34:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWF8-0001X3-5p
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:36 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFE-0001mN-UK
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:40 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWF6-0007qS-KK
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:33 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-33e99b639e0so175680f8f.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rkWFB-0007qn-Td
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:34:39 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-413e61525c2so2147735e9.2
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:34:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710365669; x=1710970469; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710365676; x=1710970476; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JMlHJDMRIAHpHLqTr2iQoA8Xh8BaIO4Idzn+WvdthY0=;
- b=UOZLtLlM8K1O0iwuXrxMRLJoEOld5PAD7vaQigr/873cQ5Fjrk8NVcL1B1Rda2Q7gT
- t7VVUDaX6aWX4v8HMvqCewkp7fz2CPGi1bhikt2L6h7Jqb2dQr+wwWvGRq2zTOqpPg62
- xKy8iVsTDC+G3KUOu9NQhtdwBRFJILCKq8v7wDAnxhce4KqXrKgfGoe7x2VojGCEf5nl
- GTc4/SahZ4vOSbLJUv7frGdOBy8iEkSlcWSLu19V1amuvvKcLzURVQ/UQL0G6mHgI3Mz
- xc5c2QsMs0Oh2wNIj1ePWieDwG5GqJfd0cbd8+XDq/ngdkSQhfikUZHp3GBUIHEp5+oE
- eBLg==
+ bh=Z7QKVDun1Xxye4YCDRYj878clGJ9eUXYpBHFwgHMFxg=;
+ b=TKAmqZdUJEE11Gb9yaIlSEm4NaD7oZG32wKRl5W1CQHRlGha2U7T9Z3D6BwZf0Pb4f
+ 6VOgWnPVvrpVMy0cBsQ/WCAYv9nYbNPyCZCNYHGqhJTOfW/ifu4LG9jaMCTxz1aFkA4Z
+ k32TU0FT/z/fjauyQPp3EUmWWa5t0Z/7/wM6mWfvmcwOrniTBNZhsPKpKG4LYf48Omy0
+ 9oByzrUyO/pedJbcJMaQWbM944Ey11e5LfehGQ9L5A2B/+9D6tETV4vVku3GNqHOURRW
+ TFG5QDkgh9X0mMtovxNv5s1fVbJm2rHkuL0fFy8LsZfCRgNhQ7rv6Iuk6aJtETMzBDxi
+ kxgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710365669; x=1710970469;
+ d=1e100.net; s=20230601; t=1710365676; x=1710970476;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JMlHJDMRIAHpHLqTr2iQoA8Xh8BaIO4Idzn+WvdthY0=;
- b=duc/6gIjDp+ih4iUqs7HcMYCpOBuzAFcK2BYThcyOWYPOdTFShGQkCYtcESDztaI4V
- vi4qjpIdx0R5opCH4r2KakG/EJ9wxVnpqKF5sJKVzN4ER07inRSNaJvmnglesr0+A4Up
- Y+HJDL4tD6pod6WmWgfNPFxAN/Qe/vJ2ydCVB1aQ9rVgv5iSfJ9PQnRcKslu/uwFdB/S
- EInwJnnMdXpFnJpE3d2LcfeoBaVETFqFDuPeWY/d++soW4Fqy2nXRUjF4eUAgZp8EsT0
- h1icW1rL9/g2QBWW+0ZpFMB0gOyc39TgvMaK6gBsV9EnbU9SaAZQBXjbYPvWzuVzRLrg
- 9sBA==
+ bh=Z7QKVDun1Xxye4YCDRYj878clGJ9eUXYpBHFwgHMFxg=;
+ b=pAqmOsVC/dpxBBgRbujWLLL50kQllbd7otXRGp5sxD/fzfAZZ33CiJgs5EhClr68Lf
+ i2goWalN2H+uUYSFf3SK8Rc8x2yqKA5QNKj6oXu34WUFb9xq0uT5jYxqTnnzHJ74LBbZ
+ n8nrq+meQ38qLfrBiglNYAkxiXJmWB6KAjOYhTQzmjTgCH3XW5a4KDpd30zP3XYtj+/4
+ EGSoUdliTonGyjTZr4kaDRqVnDlV8NO27/Gud0yw5Fm4pXy+jOHUXG+aXYAtAWp0DGjd
+ cRzmYcVpezcc2wLUr3TplS5EM8C7sF8bjR9ooy0p9q9InPHrIA5Cj4D6fBrdE56dYc8B
+ ke8w==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUnWGvzL9zLH+/r/9WHw1kl9PgX5nc/HX9nCRGPqeveQg2LAZlyKG+P+GyRd/efOM/SNOwORHWpERbYAQfBkG5cfEhQ3OQ=
-X-Gm-Message-State: AOJu0YyNYPv4Qh+Xd1GwT/70n0hgDT/mKioXxv1Pgvskhbl60ohVhAed
- KxlTjDELhIZZeL/ZhXdY5zO4QSY9GuhcmVp0ArJoDjk7Emw3tfqPYWs8ON4wvYo=
-X-Google-Smtp-Source: AGHT+IE5YdWXUTth27hEU1V1E8fyQOBWq8O4KldeXvftJ706S8dQ/FVUZAk+M0ATF9M7WGc3KFO16g==
-X-Received: by 2002:adf:f549:0:b0:33e:8aba:cd0a with SMTP id
- j9-20020adff549000000b0033e8abacd0amr2538518wrp.9.1710365669722; 
- Wed, 13 Mar 2024 14:34:29 -0700 (PDT)
+ AJvYcCXARqFTSkCCjAYV9hTEsG46XL4ucUKGf0Pg3JBZfxOnhwyfqXzKx165/tFHYlaNxeUNfuhh2KEhOellYH3UJGCPByfshQ8=
+X-Gm-Message-State: AOJu0Yx7aSlcGFPcLfiN/n93HtTi+WgvX7RHWpSBPZ2BYwDIgJx1EJJd
+ Y2wlG5a9l9kOIwa3PdBNxQHix73YF7i2bV0SqT9S4Wb50ZR6w/33sHlh9fMhhFw=
+X-Google-Smtp-Source: AGHT+IH+ZSfYe+WoJZbIdFQiDUgcZwW8XQH2GNDaXxO8FguIU0KbDmRBhsozRcnnrjcGuPo1GGFMHw==
+X-Received: by 2002:adf:f905:0:b0:33e:78f7:51f7 with SMTP id
+ b5-20020adff905000000b0033e78f751f7mr2510415wrr.56.1710365676126; 
+ Wed, 13 Mar 2024 14:34:36 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.182.179])
  by smtp.gmail.com with ESMTPSA id
- k6-20020a5d5186000000b0033b48190e5esm62867wrv.67.2024.03.13.14.34.27
+ v6-20020a05600c444600b00412f83e0c11sm3478553wmn.22.2024.03.13.14.34.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 13 Mar 2024 14:34:29 -0700 (PDT)
+ Wed, 13 Mar 2024 14:34:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Richard Henderson <richard.henderson@linaro.org>,
 	qemu-devel@nongnu.org
@@ -63,27 +63,26 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-ppc@nongnu.org, Alexandre Iooss <erdnaxe@crans.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH-for-9.1 07/12] plugins/api: Check for USER_ONLY definition
- instead of SOFTMMU one
-Date: Wed, 13 Mar 2024 22:33:34 +0100
-Message-ID: <20240313213339.82071-8-philmd@linaro.org>
+ qemu-ppc@nongnu.org
+Subject: [PATCH-for-9.0? 08/12] accel/tcg/tb-maint: Add comments around system
+ emulation
+Date: Wed, 13 Mar 2024 22:33:35 +0100
+Message-ID: <20240313213339.82071-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240313213339.82071-1-philmd@linaro.org>
 References: <20240313213339.82071-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,62 +98,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we *might* have user emulation with softmmu,
-replace the system emulation check by !user emulation one.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- plugins/api.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ accel/tcg/tb-maint.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/plugins/api.c b/plugins/api.c
-index 8fa5a600ac..06d3e95da2 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -294,14 +294,14 @@ bool qemu_plugin_mem_is_store(qemu_plugin_meminfo_t info)
-  * Virtual Memory queries
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index da39a43bd8..2fef7db9e1 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -147,7 +147,8 @@ static PageForEachNext foreach_tb_next(PageForEachNext tb,
+     return NULL;
+ }
+ 
+-#else
++#else /* !CONFIG_USER_ONLY */
++
+ /*
+  * In system mode we want L1_MAP to be based on ram offsets.
   */
- 
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
- static __thread struct qemu_plugin_hwaddr hwaddr_info;
- #endif
- 
- struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
-                                                   uint64_t vaddr)
- {
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
-     CPUState *cpu = current_cpu;
-     unsigned int mmu_idx = get_mmuidx(info);
-     enum qemu_plugin_mem_rw rw = get_plugin_meminfo_rw(info);
-@@ -323,7 +323,7 @@ struct qemu_plugin_hwaddr *qemu_plugin_get_hwaddr(qemu_plugin_meminfo_t info,
- 
- bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
- {
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
-     return haddr->is_io;
- #else
-     return false;
-@@ -332,7 +332,7 @@ bool qemu_plugin_hwaddr_is_io(const struct qemu_plugin_hwaddr *haddr)
- 
- uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
- {
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
-     if (haddr) {
-         return haddr->phys_addr;
+@@ -1088,7 +1089,7 @@ bool tb_invalidate_phys_page_unwind(tb_page_addr_t addr, uintptr_t pc)
      }
-@@ -342,7 +342,7 @@ uint64_t qemu_plugin_hwaddr_phys_addr(const struct qemu_plugin_hwaddr *haddr)
+     return false;
+ }
+-#else
++#else /* !CONFIG_USER_ONLY */
+ /*
+  * @p must be non-NULL.
+  * Call with all @pages locked.
+@@ -1226,4 +1227,4 @@ void tb_invalidate_phys_range_fast(ram_addr_t ram_addr,
+     page_collection_unlock(pages);
+ }
  
- const char *qemu_plugin_hwaddr_device_name(const struct qemu_plugin_hwaddr *h)
- {
--#ifdef CONFIG_SOFTMMU
-+#ifndef CONFIG_USER_ONLY
-     if (h && h->is_io) {
-         MemoryRegion *mr = h->mr;
-         if (!mr->name) {
+-#endif /* CONFIG_USER_ONLY */
++#endif /* !CONFIG_USER_ONLY */
 -- 
 2.41.0
 
