@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7164287A2D3
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 07:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB87387A301
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 07:43:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkHfc-00069P-4W; Wed, 13 Mar 2024 02:00:56 -0400
+	id 1rkIK2-0001wO-2V; Wed, 13 Mar 2024 02:42:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rkHfE-00068z-Eo; Wed, 13 Mar 2024 02:00:32 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1rkIJs-0001uZ-SE
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:42:33 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rkHfA-00070S-D4; Wed, 13 Mar 2024 02:00:32 -0400
+ (Exim 4.90_1) (envelope-from <tao1.su@linux.intel.com>)
+ id 1rkIJq-0007Lz-89
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 02:42:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710309629; x=1741845629;
+ t=1710312150; x=1741848150;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=PVsToUiCUiOhSzkdiRM4zUD+fdyiF34qLsiHYhQsYC4=;
- b=NxhHUwDnuxK9Twb5dAvsc/4ilkervYNghh2cDUqLEMKXhJBXw5OTSyX7
- FWHI1uCfH0rnUcVFEhaZ/ccxVe0nVWF46cZF1WQmYsYXoyqBdZUSfOu0i
- tBA2wKORViNni/YTFYnUBpGrtc1N5eXkqEykbPJp1mLmKzks5CEDogXS3
- tQ9U9ZJ1Z8uksv5DQHyfycoAwn1weJiRN8DtxPJ6uwTUA6qhPxLSjPFbp
- qyHAC97uMUTyc4IAyW+ZXWr7nivdK0NjaGjI0Dbz/nzVqKqxD1uGvOyS5
- jQUcGlmu2JhEfLbFCsgMhWc4aHRIEpt4AvNlWDAgqhY8l8DfUyuwRMlVo Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="16501385"
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16501385"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Mar 2024 23:00:22 -0700
+ bh=ZBE+YJupWeH0/Kewj5YOOn1eqy+YbjLU/TgIWDjKO4c=;
+ b=I4uS+CTBxbPPTC+Y3w5i4Yh7XqyrPjZiGn2et4cJhbTPaywv9/EakbrW
+ 2DccdNh2l8pVqWuCj93AksLZQhGDzs9WKyckI2y+jUF/4jRNukckgeiau
+ o3YQ0CQpJVCCDJNLq0mjlFBQGAbu6Cq/P0CPcYhVSAzAOp1CeX+kX4Pu0
+ 2vIe/Zybt1JbF3RxHir4TyJ6yP9r2tsBZLp4YkSizzbXt00tIsqw2fWZz
+ 9HxYhXNUQBQVqFBv7ogv4Zep/BcItZrB5YT6iNOfKtedO4xS9wn2ZWuyz
+ N08EB0zWIhK3TTQkfQL7wQzicXlCRoBMbvESLJ2yrF2cGm0KtsRHbjF+v Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11011"; a="8876152"
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; 
+   d="scan'208";a="8876152"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 23:42:26 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16519824"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 12 Mar 2024 23:00:12 -0700
-Date: Wed, 13 Mar 2024 14:14:02 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com,
- andrew.jones@linux.dev, david@redhat.com, philmd@linaro.org,
- eric.auger@redhat.com, oliver.upton@linux.dev, pbonzini@redhat.com,
- mst@redhat.com, will@kernel.org, gshan@redhat.com,
- rafael@kernel.org, alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com,
- wangyanan55@huawei.com, jiakernel2@gmail.com, maobibo@loongson.cn,
- lixianglai@loongson.cn, linuxarm@huawei.com
-Subject: Re: [PATCH V8 3/8] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Message-ID: <ZfFEKgpRiEOZo9xd@intel.com>
-References: <20240312020000.12992-1-salil.mehta@huawei.com>
- <20240312020000.12992-4-salil.mehta@huawei.com>
+X-IronPort-AV: E=Sophos;i="6.07,119,1708416000"; d="scan'208";a="16461521"
+Received: from linux.bj.intel.com ([10.238.157.71])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Mar 2024 23:42:25 -0700
+Date: Wed, 13 Mar 2024 14:39:32 +0800
+From: Tao Su <tao1.su@linux.intel.com>
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] kvm: add support for guest physical bits
+Message-ID: <ZfFKJPYoE5bacb6+@linux.bj.intel.com>
+References: <20240305105233.617131-1-kraxel@redhat.com>
+ <20240305105233.617131-3-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240312020000.12992-4-salil.mehta@huawei.com>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+In-Reply-To: <20240305105233.617131-3-kraxel@redhat.com>
+Received-SPF: none client-ip=198.175.65.14;
+ envelope-from=tao1.su@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -26
+X-Spam_score: -2.7
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.687,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,63 +79,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
+On Tue, Mar 05, 2024 at 11:52:33AM +0100, Gerd Hoffmann wrote:
+> Query kvm for supported guest physical address bits, in cpuid
+> function 80000008, eax[23:16].  Usually this is identical to host
+> physical address bits.  With NPT or EPT being used this might be
+> restricted to 48 (max 4-level paging address space size) even if
+> the host cpu supports more physical address bits.
+> 
+> When set pass this to the guest, using cpuid too.  Guest firmware
+> can use this to figure how big the usable guest physical address
+> space is, so PCI bar mapping are actually reachable.
 
-It seems my comment [1] in v7 was missed, but I still hit the same
-issue. Pls let me paste the previous comment here again.
-
-[1]: https://lore.kernel.org/qemu-devel/ZXCqp32ggIFvUweu@intel.com/
-
-[snip]
-
-> @@ -400,6 +411,12 @@ static void acpi_ged_initfn(Object *obj)
->      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
->                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
->      sysbus_init_mmio(sbd, &ged_st->regs);
-> +
-> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
-> +                       ACPI_CPU_HOTPLUG_REG_LEN);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
-> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-> +                        &s->cpuhp_state, 0);
->  }
->
-
-I find this cpu_hotplug_hw_init() can still cause qtest errors (for v8)
-on x86 platforms as you mentioned in v6:
-https://lore.kernel.org/qemu-devel/15e70616-6abb-63a4-17d0-820f4a254607@opnsrc.net/T/#m108f102b2fe92b7dd7218f2f942f7b233a9d6af3
-
-IIUC, microvm machine has its own 'possible_cpus_arch_ids' and that is
-inherited from its parent x86 machine.
-
-The above error is because device-introspect-test sets the none-machine:
-
-# starting QEMU: exec ./qemu-system-i386 -qtest unix:/tmp/qtest-3094820.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-3094820.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -nodefaults -machine none -accel qtest
-
-So what about just checking mc->possible_cpu_arch_ids instead of an
-assert in cpu_hotplug_hw_init()?
-
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 4b24a2500361..303f1f1f57bc 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -221,7 +221,10 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-     const CPUArchIdList *id_list;
-     int i;
-
--    assert(mc->possible_cpu_arch_ids);
-+    if (!mc->possible_cpu_arch_ids) {
-+        return;
-+    }
-+
-     id_list = mc->possible_cpu_arch_ids(machine);
-     state->dev_count = id_list->len;
-     state->devs = g_new0(typeof(*state->devs), state->dev_count);
-
-This check seems to be acceptable in the general code path? Not all machines
-have possible_cpu_arch_ids, after all.
+If this patch is applied, do you have plans to implement it in
+OVMF/Seabios?
 
 Thanks,
-Zhao
+Tao
 
+> 
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  target/i386/cpu.h     |  1 +
+>  target/i386/cpu.c     |  1 +
+>  target/i386/kvm/kvm.c | 17 +++++++++++++++++
+>  3 files changed, 19 insertions(+)
+> 
+> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+> index 952174bb6f52..d427218827f6 100644
+> --- a/target/i386/cpu.h
+> +++ b/target/i386/cpu.h
+> @@ -2026,6 +2026,7 @@ struct ArchCPU {
+>  
+>      /* Number of physical address bits supported */
+>      uint32_t phys_bits;
+> +    uint32_t guest_phys_bits;
+>  
+>      /* in order to simplify APIC support, we leave this pointer to the
+>         user */
+> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+> index 2666ef380891..1a6cfc75951e 100644
+> --- a/target/i386/cpu.c
+> +++ b/target/i386/cpu.c
+> @@ -6570,6 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+>          if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+>              /* 64 bit processor */
+>               *eax |= (cpu_x86_virtual_addr_width(env) << 8);
+> +             *eax |= (cpu->guest_phys_bits << 16);
+>          }
+>          *ebx = env->features[FEAT_8000_0008_EBX];
+>          if (cs->nr_cores * cs->nr_threads > 1) {
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 7298822cb511..ce22dfcaa661 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -238,6 +238,15 @@ static int kvm_get_tsc(CPUState *cs)
+>      return 0;
+>  }
+>  
+> +/* return cpuid fn 8000_0008 eax[23:16] aka GuestPhysBits */
+> +static int kvm_get_guest_phys_bits(KVMState *s)
+> +{
+> +    uint32_t eax;
+> +
+> +    eax = kvm_arch_get_supported_cpuid(s, 0x80000008, 0, R_EAX);
+> +    return (eax >> 16) & 0xff;
+> +}
+> +
+>  static inline void do_kvm_synchronize_tsc(CPUState *cpu, run_on_cpu_data arg)
+>  {
+>      kvm_get_tsc(cpu);
+> @@ -1730,6 +1739,7 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>      X86CPU *cpu = X86_CPU(cs);
+>      CPUX86State *env = &cpu->env;
+>      uint32_t limit, i, j, cpuid_i;
+> +    uint32_t guest_phys_bits;
+>      uint32_t unused;
+>      struct kvm_cpuid_entry2 *c;
+>      uint32_t signature[3];
+> @@ -1765,6 +1775,13 @@ int kvm_arch_init_vcpu(CPUState *cs)
+>  
+>      env->apic_bus_freq = KVM_APIC_BUS_FREQUENCY;
+>  
+> +    guest_phys_bits = kvm_get_guest_phys_bits(cs->kvm_state);
+> +    if (guest_phys_bits &&
+> +        (cpu->guest_phys_bits == 0 ||
+> +         cpu->guest_phys_bits > guest_phys_bits)) {
+> +        cpu->guest_phys_bits = guest_phys_bits;
+> +    }
+> +
+>      /*
+>       * kvm_hyperv_expand_features() is called here for the second time in case
+>       * KVM_CAP_SYS_HYPERV_CPUID is not supported. While we can't possibly handle
+> -- 
+> 2.44.0
+> 
+> 
 
