@@ -2,96 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADA887B36A
-	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:23:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AAB87B377
+	for <lists+qemu-devel@lfdr.de>; Wed, 13 Mar 2024 22:29:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkW3v-0005fX-NA; Wed, 13 Mar 2024 17:22:59 -0400
+	id 1rkW9Q-0007R6-7b; Wed, 13 Mar 2024 17:28:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rkW3q-0005f9-23
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:22:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rkW3n-00065T-Ut
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:22:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710364970;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8N7JwHnp0Ttoav2b4x6ciXuazHrUsMH7ZGOHLQBF4PE=;
- b=VrvivIQCkjTht5YBr39an6omYmV+KpmWigaFmo22uv5pSlRiICkA5/UwUU7yNcAIAjvS4b
- SlLOPEnbCCt6X+sHDjLD+Fjxd5RzDgHaSpnNIL+zFAMRf0gTz+VP5fkj5MNOaGIyrTIWi4
- /LAny5GHh6wddkKNwI6LwDkQb3yLKjQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-6-QrngziMhMCWmQYTBNVaeIQ-1; Wed, 13 Mar 2024 17:22:49 -0400
-X-MC-Unique: QrngziMhMCWmQYTBNVaeIQ-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-33ec4a5ec46so72782f8f.1
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 14:22:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710364968; x=1710969768;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8N7JwHnp0Ttoav2b4x6ciXuazHrUsMH7ZGOHLQBF4PE=;
- b=LCH6vX1jx/RJMNqAGAuS4bL+y3JTBgfSTmUq+slolouixMPIbLDQkQsUeOXsmQ7zkz
- Py16ShrRcuFhP/nVVnPSnxS3KIzBRYYD92oPoPyV25bOrELxKB1Z6yaFtj40dnciv2X4
- HLwuiRF4ER6LaND2ggysrkpSxeGRyjHoWCMiuLcMzkgJersFeevFa/W/a3SxQZwYBrNe
- NuMt+IT7QtOxeS6qxlabPxVYdgwtNxbdNax2KfJTKdEtNaZOiKCgaAdGxAOk/f+9nbH2
- Rb8rEapNsWLaJkbaQlglg1ZLTXvtyWddes2dYRamAzEV94VVEg5UodF4WSGS6QIKJmD3
- NVMg==
-X-Gm-Message-State: AOJu0Yz17RoMVs3Lh0Nt/uxp9LmEk3wNmcYDYiNizAwUD/778oWQNt5q
- o3NNFo5hxl5ZraN6Ra6ZemASuqQ70LT55gblnq96rq8V9VyYI4l/N57XJNhSlCsMsFZqjpfWSoG
- wwbo0BGeLCr+aFLLYzn6ihMrMz6ifajq4cd5Kghu+GgCA6doqHWYx
-X-Received: by 2002:a5d:5108:0:b0:33d:b03a:5e2f with SMTP id
- s8-20020a5d5108000000b0033db03a5e2fmr2330056wrt.10.1710364968106; 
- Wed, 13 Mar 2024 14:22:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCcRw9S+uwTIgBx343SgoZcbDjeCfLHR522Av4JWrz7I27reA4rNYhP8xQP3INRZn0//1jHg==
-X-Received: by 2002:a5d:5108:0:b0:33d:b03a:5e2f with SMTP id
- s8-20020a5d5108000000b0033db03a5e2fmr2330048wrt.10.1710364967767; 
- Wed, 13 Mar 2024 14:22:47 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae?
- ([2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae])
- by smtp.gmail.com with ESMTPSA id
- dv13-20020a0560000d8d00b0033e75e5f280sm40615wrb.113.2024.03.13.14.22.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 13 Mar 2024 14:22:47 -0700 (PDT)
-Message-ID: <375cdc79-9854-459c-9ba2-08312645b89c@redhat.com>
-Date: Wed, 13 Mar 2024 22:22:45 +0100
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rkW9M-0007QY-Dj
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:28:38 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rkW9J-0006op-Bj
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 17:28:34 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 28FA41F7EB;
+ Wed, 13 Mar 2024 21:28:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710365309; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=x05CQlcb6Yvi/3eCSTsya6CX3q4bjBsSk5RmGMDTU8c=;
+ b=LgEIoSbsrJ6KREBVECPrc0JhlZvjqTc39ACA9FSJZEmDOSPP6/iCXKf2lbr/0F+SpEyk8A
+ Nkt1AQs3v59kqVTB8G5rkaN9Nsw0jehvTPTKCa75oLslGfNVGTIuBDUYZJduIbQFVrNAE+
+ AK1X7itmZWv5BdeR/9KwMIvJf+LwKMo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710365309;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=x05CQlcb6Yvi/3eCSTsya6CX3q4bjBsSk5RmGMDTU8c=;
+ b=sdMncz8hqctHiJI/YAnoZCYqplK4KjCyMagGa7UDPkTS9xWfwOqQ7eaPX6bexRe1BpPeoD
+ 4XcKfccYsLX9qRCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710365309; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=x05CQlcb6Yvi/3eCSTsya6CX3q4bjBsSk5RmGMDTU8c=;
+ b=LgEIoSbsrJ6KREBVECPrc0JhlZvjqTc39ACA9FSJZEmDOSPP6/iCXKf2lbr/0F+SpEyk8A
+ Nkt1AQs3v59kqVTB8G5rkaN9Nsw0jehvTPTKCa75oLslGfNVGTIuBDUYZJduIbQFVrNAE+
+ AK1X7itmZWv5BdeR/9KwMIvJf+LwKMo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710365309;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=x05CQlcb6Yvi/3eCSTsya6CX3q4bjBsSk5RmGMDTU8c=;
+ b=sdMncz8hqctHiJI/YAnoZCYqplK4KjCyMagGa7UDPkTS9xWfwOqQ7eaPX6bexRe1BpPeoD
+ 4XcKfccYsLX9qRCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E79C413977;
+ Wed, 13 Mar 2024 21:28:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id +leXKnsa8mX/ZQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 13 Mar 2024 21:28:27 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Xu <peterx@redhat.com>
+Subject: [PATCH v2 0/2] migration mapped-ram fixes
+Date: Wed, 13 Mar 2024 18:28:22 -0300
+Message-Id: <20240313212824.16974-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V4 10/14] migration: stop vm for cpr
-Content-Language: en-US, fr
-To: Steven Sistare <steven.sistare@oracle.com>, Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- Marc-Andre Lureau <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>
-References: <1708622920-68779-1-git-send-email-steven.sistare@oracle.com>
- <1708622920-68779-11-git-send-email-steven.sistare@oracle.com>
- <ZdvyuazPp6Lrn5Mr@x1n> <9d560585-8f3b-4ad4-82e6-333e8c74b496@oracle.com>
- <ZeEvSLgKW96KCy-N@x1n> <00ac45c5-2c46-41c1-9cb3-585498d0ded9@oracle.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <00ac45c5-2c46-41c1-9cb3-585498d0ded9@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.971,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Score: 2.78
+X-Spamd-Result: default: False [2.78 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
+ RCPT_COUNT_THREE(0.00)[3]; R_MISSING_CHARSET(2.50)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
+ BROKEN_CONTENT_TYPE(1.50)[]; TO_DN_SOME(0.00)[];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.com:url];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-0.92)[86.27%]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,89 +108,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/13/24 15:18, Steven Sistare wrote:
-> On 2/29/2024 8:28 PM, Peter Xu wrote:
->> On Thu, Feb 29, 2024 at 10:21:14AM -0500, Steven Sistare wrote:
->>> On 2/25/2024 9:08 PM, Peter Xu wrote:
->>>> On Thu, Feb 22, 2024 at 09:28:36AM -0800, Steve Sistare wrote:
->>>>> When migration for cpr is initiated, stop the vm and set state
->>>>> RUN_STATE_FINISH_MIGRATE before ram is saved.  This eliminates the
->>>>> possibility of ram and device state being out of sync, and guarantees
->>>>> that a guest in the suspended state remains suspended, because qmp_cont
->>>>> rejects a cont command in the RUN_STATE_FINISH_MIGRATE state.
->>>>>
->>>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>>
->>>> Reviewed-by: Peter Xu <peterx@redhat.com>
->>>>
->>>> cpr-reboot mode keeps changing behavior.
->>>>
->>>> Could we declare it "experimental" until it's solid?  Maybe a patch to
->>>> document this?
->>>>
->>>> Normally IMHO we shouldn't merge a feature if it's not complete, however
->>>> cpr-reboot is so special that the mode itself is already merged in 8.2
->>>> before I started to merge patches, and it keeps changing things.  I don't
->>>> know what else we can do here besides declaring it experimental and not
->>>> declare it a stable feature.
->>>
->>> Hi Peter, the planned/committed functionality for cpr-reboot changed only once, in:
->>>      migration: stop vm for cpr
->>>
->>> Suspension to support vfio is an enhancement which adds to the basic functionality,
->>> it does not change it.  This was planned all along, but submitted as a separate
->>
->> If VFIO used to migrate without suspension and now it won't, it's a
->> behavior change?
-> 
-> VFIO could not cpr-reboot migrate without suspension.  The existing vfio migration blockers applied to all modes:
->    Error: 0000:3a:10.0: VFIO migration is not supported in kernel
-> 
-> Now, with suspension, it will.  An addition, not a change.
+Hi,
 
-Still, I wonder if we should not have a per-device toggle to block
-migration for CPR_REBOOT mode. This to maintain the pre-9.0 behavior
-and to manage possible incompatibilities we haven't thought of yet.
+In this v2:
 
-A config option to deactivate CPR_REBOOT mode in downstream could be
-useful too.
+patch 1 - The fix for the ioc leaks, now including the main channel
 
-Thanks,
+patch 2 - A fix for an fd: migration case I thought I had written code
+          for, but obviously didn't.
 
-C.
+Thank you for your patience.
 
+based-on: https://gitlab.com/peterx/qemu/-/commits/migration-stable
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1212483701
 
+Fabiano Rosas (2):
+  migration: Fix iocs leaks during file and fd migration
+  migration/multifd: Ensure we're not given a socket for file migration
 
+ migration/fd.c   | 35 +++++++++++---------------
+ migration/file.c | 65 ++++++++++++++++++++++++++++++++----------------
+ migration/file.h |  1 +
+ 3 files changed, 60 insertions(+), 41 deletions(-)
 
-> 
->>> series to manage complexity, as I outlined in my qemu community presentation,
->>> which I emailed you at the time.
->>>
->>> Other "changes" that arose during review were just clarifications and explanations.
->>>
->>> So, I don't think cpr-reboot deserves to be condemned to experimental limbo.
->>
->> IMHO it's not about a feature being condemned, it's about a kindful
->> heads-up to the users that one needs to take risk on using it until it
->> becomes stable, it also makes developers easier because of no limitation on
->> behavior change.  If all the changes are landing, then there's no need for
->> such a patch.
->>
->> If so, please propose the planned complete document patch. I had a feeling
->> that cpr is still not fully understood by even many developers on the list.
->> It'll be great that such document will contain all the details one needs to
->> know on the feature, etc. meaning of the name cpr-reboot (what is "cpr"),
->> when to use it, how to use it, how it differs from "normal" mode
->> (etc. lifted limitations on some devices that used to block migration?),
->> what is enforced (vm stop, suspension, etc.) and what is optionally offered
->> (VFIO, shared-mem, etc.), the expected behaviors, etc.
->>
->> When send it, please copy relevant people (Alex & Cedric for VFIO, while
->> Markus could also be a good candidate considering the QMP involvement).
-> 
-> Submitted.
-> 
-> - Steve
-> 
+-- 
+2.35.3
 
 
