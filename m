@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299FB87B967
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 09:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD72387B8FB
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 08:55:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkgbT-0001W0-QT; Thu, 14 Mar 2024 04:38:19 -0400
+	id 1rkfur-0007KK-5f; Thu, 14 Mar 2024 03:54:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rkgbP-0001VW-Fw
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 04:38:15 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
+ id 1rkfup-0007K9-Ea
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 03:54:15 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rkgbM-00089t-Qv
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 04:38:15 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42E7mxGB012842; Thu, 14 Mar 2024 08:38:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references; s=corp-2023-11-20;
- bh=GftM3n2kT/YzCq/D6V6E8jox3mMN184tFG6mgRbPj6I=;
- b=UCxlxJKjc/mlp1HfeTitcyMgBjZVSGPyyUpxC6hnUyb2q0tbqTTt/+md1/R6looj4FY6
- T4IQAgLcaOeGfdqEI3mrTCvLCiXmPzA8BAWHl88uKZpLjtIVKYoGT4z4Y8OEuUZN7CFR
- G99pZJnpNzk3zEE72y7Go9uQIP36RNBus1YOBn8sQi8kKXo1mWClG2wgZKEE1Jf8U6lQ
- 6rmHd7nWwjSUH4nk/0wOJ4MuOoa00VQ+VEFjCbmEBel3PZdwZEulmRIaf6nrRqABadFp
- fG7Hl2/JLRNxsRvzdzOFHWQtpYM86uHmGvtUrTZGNRnfjCSEUVgyb33Ug87U5U9LGFKL 2g== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wre6ejvjn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Mar 2024 08:38:10 +0000
-Received: from pps.filterd
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42E75JFB028544; Thu, 14 Mar 2024 08:38:10 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3wre7a316p-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 14 Mar 2024 08:38:10 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42E8c9dP010829;
- Thu, 14 Mar 2024 08:38:09 GMT
-Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
- [10.153.73.24])
- by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3wre7a3168-2; Thu, 14 Mar 2024 08:38:09 +0000
-From: Si-Wei Liu <si-wei.liu@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
- joao.m.martins@oracle.com, si-wei.liu@oracle.com
-Subject: [PATCH v3 2/2] vhost: Perform memory section dirty scans once per
- iteration
-Date: Thu, 14 Mar 2024 00:26:55 -0700
-Message-Id: <1710401215-25490-2-git-send-email-si-wei.liu@oracle.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <1710401215-25490-1-git-send-email-si-wei.liu@oracle.com>
-References: <1710401215-25490-1-git-send-email-si-wei.liu@oracle.com>
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_07,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
- bulkscore=0 adultscore=0
- mlxscore=0 phishscore=0 spamscore=0 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2403140058
-X-Proofpoint-GUID: rs9UcoQ7PK_ZTHK-cZWZfK4rlPOY5k1N
-X-Proofpoint-ORIG-GUID: rs9UcoQ7PK_ZTHK-cZWZfK4rlPOY5k1N
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0b-00069f02.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ (Exim 4.90_1) (envelope-from <ying.huang@intel.com>)
+ id 1rkfum-0007C0-L1
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 03:54:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710402853; x=1741938853;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=BSNFSHcbJc+JWKcff7iLUgr8ujlh8aLQK4K89Zi3fLw=;
+ b=KeuFjPmMKaB/speTBfYTNV3FlVszFxxhYDFOwoPbFPdSr4XSvsrqbCLg
+ dK5hyOjAQ7EfxsaWLq5DWvmP38yS+CgOmHTpxcJS1kJtIaaPiw4/IICR8
+ GxQq19ARNGEJT8O+Q3eFDQfD3E4saTxMlO1ErMcuOLGRv3zK1aXARKCSz
+ LRY9fDcwrD/grVExmWNJmyaYfelOooGyf+FaK0dVIYTyIzwlVSc4g/3Oj
+ FMqeHhTW57zwAkJtmQgcb2A1VWuv/mV+EjhWQ4HYdIf03VPJbkrqHhVFf
+ G4pJ3FzSdzWxuisQL963mq9m8PQlZ5RiA0/3mV2FkAtIFaWpJh45fCjU5 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="5400751"
+X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; 
+   d="scan'208";a="5400751"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 00:54:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,124,1708416000"; d="scan'208";a="16798148"
+Received: from yhuang6-desk2.sh.intel.com (HELO
+ yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Mar 2024 00:54:01 -0700
+From: "Huang, Ying" <ying.huang@intel.com>
+To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+Cc: Gregory Price <gourry.memverge@gmail.com>,  aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com,  tj@kernel.org,  john@jagalactic.com,  Eishan Mirakhur
+ <emirakhur@micron.com>,  Vinicius Tavares Petrucci
+ <vtavarespetr@micron.com>,  Ravis OpenSrc <Ravis.OpenSrc@micron.com>,
+ Alistair Popple <apopple@nvidia.com>,  "Rafael J. Wysocki"
+ <rafael@kernel.org>,  Len Brown <lenb@kernel.org>,  Dan Williams
+ <dan.j.williams@intel.com>,  Vishal Verma <vishal.l.verma@intel.com>,
+ Dave Jiang <dave.jiang@intel.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>,  linux-acpi@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org,  linux-mm@kvack.org,  "Ho-Ren (Jack) Chuang"
+ <horenc@vt.edu>,  "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>,
+ qemu-devel@nongnu.org,  Hao Xiang <hao.xiang@bytedance.com>
+Subject: Re: [External] Re: [PATCH v2 1/1] memory tier: acpi/hmat: create
+ CPUless memory tiers after obtaining HMAT info
+In-Reply-To: <CAKPbEqpTNN5GKKCXmyTv0szpL-N1pdKFZYPHCJjyhgpKZGMiWw@mail.gmail.com>
+ (Ho-Ren Chuang's message of "Wed, 13 Mar 2024 01:16:27 -0700")
+References: <20240312061729.1997111-1-horenchuang@bytedance.com>
+ <20240312061729.1997111-2-horenchuang@bytedance.com>
+ <874jdb4xk8.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAKPbEqpTNN5GKKCXmyTv0szpL-N1pdKFZYPHCJjyhgpKZGMiWw@mail.gmail.com>
+Date: Thu, 14 Mar 2024 15:52:07 +0800
+Message-ID: <8734st2qu0.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=192.198.163.14; envelope-from=ying.huang@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.971,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,179 +96,400 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On setups with one or more virtio-net devices with vhost on,
-dirty tracking iteration increases cost the bigger the number
-amount of queues are set up e.g. on idle guests migration the
-following is observed with virtio-net with vhost=on:
+"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
 
-48 queues -> 78.11%  [.] vhost_dev_sync_region.isra.13
-8 queues -> 40.50%   [.] vhost_dev_sync_region.isra.13
-1 queue -> 6.89%     [.] vhost_dev_sync_region.isra.13
-2 devices, 1 queue -> 18.60%  [.] vhost_dev_sync_region.isra.14
+> On Tue, Mar 12, 2024 at 2:21=E2=80=AFAM Huang, Ying <ying.huang@intel.com=
+> wrote:
+>>
+>> "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> writes:
+>>
+>> > The current implementation treats emulated memory devices, such as
+>> > CXL1.1 type3 memory, as normal DRAM when they are emulated as normal m=
+emory
+>> > (E820_TYPE_RAM). However, these emulated devices have different
+>> > characteristics than traditional DRAM, making it important to
+>> > distinguish them. Thus, we modify the tiered memory initialization pro=
+cess
+>> > to introduce a delay specifically for CPUless NUMA nodes. This delay
+>> > ensures that the memory tier initialization for these nodes is deferred
+>> > until HMAT information is obtained during the boot process. Finally,
+>> > demotion tables are recalculated at the end.
+>> >
+>> > * Abstract common functions into `find_alloc_memory_type()`
+>>
+>> We should move kmem_put_memory_types() (renamed to
+>> mt_put_memory_types()?) too.  This can be put in a separate patch.
+>>
+>
+> Will do! Thanks,
+>
+>
+>>
+>> > Since different memory devices require finding or allocating a memory =
+type,
+>> > these common steps are abstracted into a single function,
+>> > `find_alloc_memory_type()`, enhancing code scalability and conciseness.
+>> >
+>> > * Handle cases where there is no HMAT when creating memory tiers
+>> > There is a scenario where a CPUless node does not provide HMAT informa=
+tion.
+>> > If no HMAT is specified, it falls back to using the default DRAM tier.
+>> >
+>> > * Change adist calculation code to use another new lock, mt_perf_lock.
+>> > In the current implementation, iterating through CPUlist nodes requires
+>> > holding the `memory_tier_lock`. However, `mt_calc_adistance()` will en=
+d up
+>> > trying to acquire the same lock, leading to a potential deadlock.
+>> > Therefore, we propose introducing a standalone `mt_perf_lock` to prote=
+ct
+>> > `default_dram_perf`. This approach not only avoids deadlock but also
+>> > prevents holding a large lock simultaneously.
+>> >
+>> > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
+>> > Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
+>> > ---
+>> >  drivers/acpi/numa/hmat.c     | 11 ++++++
+>> >  drivers/dax/kmem.c           | 13 +------
+>> >  include/linux/acpi.h         |  6 ++++
+>> >  include/linux/memory-tiers.h |  8 +++++
+>> >  mm/memory-tiers.c            | 70 +++++++++++++++++++++++++++++++++---
+>> >  5 files changed, 92 insertions(+), 16 deletions(-)
+>> >
+>> > diff --git a/drivers/acpi/numa/hmat.c b/drivers/acpi/numa/hmat.c
+>> > index d6b85f0f6082..28812ec2c793 100644
+>> > --- a/drivers/acpi/numa/hmat.c
+>> > +++ b/drivers/acpi/numa/hmat.c
+>> > @@ -38,6 +38,8 @@ static LIST_HEAD(targets);
+>> >  static LIST_HEAD(initiators);
+>> >  static LIST_HEAD(localities);
+>> >
+>> > +static LIST_HEAD(hmat_memory_types);
+>> > +
+>>
+>> HMAT isn't a device driver for some memory devices.  So I don't think we
+>> should manage memory types in HMAT.
+>
+> I can put it back in memory-tier.c. How about the list? Do we still
+> need to keep a separate list for storing late_inited memory nodes?
+> And how about the list name if we need to remove the prefix "hmat_"?
 
-With high memory rates the symptom is lack of convergence as soon
-as it has a vhost device with a sufficiently high number of queues,
-the sufficient number of vhost devices.
+I don't think we need a separate list for memory-less nodes.  Just
+iterate all memory-less nodes.
 
-On every migration iteration (every 100msecs) it will redundantly
-query the *shared log* the number of queues configured with vhost
-that exist in the guest. For the virtqueue data, this is necessary,
-but not for the memory sections which are the same. So essentially
-we end up scanning the dirty log too often.
+>
+>> Instead, if the memory_type of a
+>> node isn't set by the driver, we should manage it in memory-tier.c as
+>> fallback.
+>>
+>
+> Do you mean some device drivers may init memory tiers between
+> memory_tier_init() and late_initcall(memory_tier_late_init);?
+> And this is the reason why you mention to exclude
+> "node_memory_types[nid].memtype !=3D NULL" in memory_tier_late_init().
+> Is my understanding correct?
 
-To fix that, select a vhost device responsible for scanning the
-log with regards to memory sections dirty tracking. It is selected
-when we enable the logger (during migration) and cleared when we
-disable the logger. If the vhost logger device goes away for some
-reason, the logger will be re-selected from the rest of vhost
-devices.
+Yes.
 
-After making mem-section logger a singleton instance, constant cost
-of 7%-9% (like the 1 queue report) will be seen, no matter how many
-queues or how many vhost devices are configured:
+>> >  static DEFINE_MUTEX(target_lock);
+>> >
+>> >  /*
+>> > @@ -149,6 +151,12 @@ int acpi_get_genport_coordinates(u32 uid,
+>> >  }
+>> >  EXPORT_SYMBOL_NS_GPL(acpi_get_genport_coordinates, CXL);
+>> >
+>> > +struct memory_dev_type *hmat_find_alloc_memory_type(int adist)
+>> > +{
+>> > +     return find_alloc_memory_type(adist, &hmat_memory_types);
+>> > +}
+>> > +EXPORT_SYMBOL_GPL(hmat_find_alloc_memory_type);
+>> > +
+>> >  static __init void alloc_memory_initiator(unsigned int cpu_pxm)
+>> >  {
+>> >       struct memory_initiator *initiator;
+>> > @@ -1038,6 +1046,9 @@ static __init int hmat_init(void)
+>> >       if (!hmat_set_default_dram_perf())
+>> >               register_mt_adistance_algorithm(&hmat_adist_nb);
+>> >
+>> > +     /* Post-create CPUless memory tiers after getting HMAT info */
+>> > +     memory_tier_late_init();
+>> > +
+>>
+>> This should be called in memory-tier.c via
+>>
+>> late_initcall(memory_tier_late_init);
+>>
+>> Then, we don't need hmat to call it.
+>>
+>
+> Thanks. Learned!
+>
+>
+>> >       return 0;
+>> >  out_put:
+>> >       hmat_free_structures();
+>> > diff --git a/drivers/dax/kmem.c b/drivers/dax/kmem.c
+>> > index 42ee360cf4e3..aee17ab59f4f 100644
+>> > --- a/drivers/dax/kmem.c
+>> > +++ b/drivers/dax/kmem.c
+>> > @@ -55,21 +55,10 @@ static LIST_HEAD(kmem_memory_types);
+>> >
+>> >  static struct memory_dev_type *kmem_find_alloc_memory_type(int adist)
+>> >  {
+>> > -     bool found =3D false;
+>> >       struct memory_dev_type *mtype;
+>> >
+>> >       mutex_lock(&kmem_memory_type_lock);
+>> > -     list_for_each_entry(mtype, &kmem_memory_types, list) {
+>> > -             if (mtype->adistance =3D=3D adist) {
+>> > -                     found =3D true;
+>> > -                     break;
+>> > -             }
+>> > -     }
+>> > -     if (!found) {
+>> > -             mtype =3D alloc_memory_type(adist);
+>> > -             if (!IS_ERR(mtype))
+>> > -                     list_add(&mtype->list, &kmem_memory_types);
+>> > -     }
+>> > +     mtype =3D find_alloc_memory_type(adist, &kmem_memory_types);
+>> >       mutex_unlock(&kmem_memory_type_lock);
+>> >
+>> >       return mtype;
+>> > diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> > index b7165e52b3c6..3f927ff01f02 100644
+>> > --- a/include/linux/acpi.h
+>> > +++ b/include/linux/acpi.h
+>> > @@ -434,12 +434,18 @@ int thermal_acpi_critical_trip_temp(struct acpi_=
+device *adev, int *ret_temp);
+>> >
+>> >  #ifdef CONFIG_ACPI_HMAT
+>> >  int acpi_get_genport_coordinates(u32 uid, struct access_coordinate *c=
+oord);
+>> > +struct memory_dev_type *hmat_find_alloc_memory_type(int adist);
+>> >  #else
+>> >  static inline int acpi_get_genport_coordinates(u32 uid,
+>> >                                              struct access_coordinate =
+*coord)
+>> >  {
+>> >       return -EOPNOTSUPP;
+>> >  }
+>> > +
+>> > +static inline struct memory_dev_type *hmat_find_alloc_memory_type(int=
+ adist)
+>> > +{
+>> > +     return NULL;
+>> > +}
+>> >  #endif
+>> >
+>> >  #ifdef CONFIG_ACPI_NUMA
+>> > diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers=
+.h
+>> > index 69e781900082..4bc2596c5774 100644
+>> > --- a/include/linux/memory-tiers.h
+>> > +++ b/include/linux/memory-tiers.h
+>> > @@ -48,6 +48,9 @@ int mt_calc_adistance(int node, int *adist);
+>> >  int mt_set_default_dram_perf(int nid, struct access_coordinate *perf,
+>> >                            const char *source);
+>> >  int mt_perf_to_adistance(struct access_coordinate *perf, int *adist);
+>> > +struct memory_dev_type *find_alloc_memory_type(int adist,
+>> > +                                                     struct list_head=
+ *memory_types);
+>> > +void memory_tier_late_init(void);
+>> >  #ifdef CONFIG_MIGRATION
+>> >  int next_demotion_node(int node);
+>> >  void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets);
+>> > @@ -136,5 +139,10 @@ static inline int mt_perf_to_adistance(struct acc=
+ess_coordinate *perf, int *adis
+>> >  {
+>> >       return -EIO;
+>> >  }
+>> > +
+>> > +static inline void memory_tier_late_init(void)
+>> > +{
+>> > +
+>> > +}
+>> >  #endif       /* CONFIG_NUMA */
+>> >  #endif  /* _LINUX_MEMORY_TIERS_H */
+>> > diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
+>> > index 0537664620e5..79f748d60e6f 100644
+>> > --- a/mm/memory-tiers.c
+>> > +++ b/mm/memory-tiers.c
+>> > @@ -6,6 +6,7 @@
+>> >  #include <linux/memory.h>
+>> >  #include <linux/memory-tiers.h>
+>> >  #include <linux/notifier.h>
+>> > +#include <linux/acpi.h>
+>> >
+>> >  #include "internal.h"
+>> >
+>> > @@ -35,6 +36,7 @@ struct node_memory_type_map {
+>> >  };
+>> >
+>> >  static DEFINE_MUTEX(memory_tier_lock);
+>> > +static DEFINE_MUTEX(mt_perf_lock);
+>>
+>> Please add comments about what it protects.  And put it near the data
+>> structure it protects.
+>>
+>
+> Where is better for me to add comments for this? Code? Patch description?
+> Will put it closer to the protected data. Thanks.
 
-48 queues -> 8.71%    [.] vhost_dev_sync_region.isra.13
-2 devices, 8 queues -> 7.97%   [.] vhost_dev_sync_region.isra.14
+Just put the comments at the above of the lock in the source code.
 
-Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
----
-v2 -> v3:
-  - add after-fix benchmark to commit log
-  - rename vhost_log_dev_enabled to vhost_dev_should_log
-  - remove unneeded comparisons for backend_type
-  - use QLIST array instead of single flat list to store vhost
-    logger devices
-  - simplify logger election logic
+>
+>
+>> >  static LIST_HEAD(memory_tiers);
+>> >  static struct node_memory_type_map node_memory_types[MAX_NUMNODES];
+>> >  struct memory_dev_type *default_dram_type;
+>> > @@ -623,6 +625,58 @@ void clear_node_memory_type(int node, struct memo=
+ry_dev_type *memtype)
+>> >  }
+>> >  EXPORT_SYMBOL_GPL(clear_node_memory_type);
+>> >
+>> > +struct memory_dev_type *find_alloc_memory_type(int adist, struct list=
+_head *memory_types)
+>> > +{
+>> > +     bool found =3D false;
+>> > +     struct memory_dev_type *mtype;
+>> > +
+>> > +     list_for_each_entry(mtype, memory_types, list) {
+>> > +             if (mtype->adistance =3D=3D adist) {
+>> > +                     found =3D true;
+>> > +                     break;
+>> > +             }
+>> > +     }
+>> > +     if (!found) {
+>> > +             mtype =3D alloc_memory_type(adist);
+>> > +             if (!IS_ERR(mtype))
+>> > +                     list_add(&mtype->list, memory_types);
+>> > +     }
+>> > +
+>> > +     return mtype;
+>> > +}
+>> > +EXPORT_SYMBOL_GPL(find_alloc_memory_type);
+>> > +
+>> > +static void memory_tier_late_create(int node)
+>> > +{
+>> > +     struct memory_dev_type *mtype =3D NULL;
+>> > +     int adist =3D MEMTIER_ADISTANCE_DRAM;
+>> > +
+>> > +     mt_calc_adistance(node, &adist);
+>> > +     if (adist !=3D MEMTIER_ADISTANCE_DRAM) {
+>>
+>> We can manage default_dram_type() via find_alloc_memory_type()
+>> too.
+>>
+>> And, if "node_memory_types[node].memtype =3D=3D NULL", we can call
+>> mt_calc_adistance(node, &adist) and find_alloc_memory_type() in
+>> set_node_memory_tier().  Then, we can cover hotpluged memory node too.
+>>
+>> > +             mtype =3D hmat_find_alloc_memory_type(adist);
+>> > +             if (!IS_ERR(mtype))
+>> > +                     __init_node_memory_type(node, mtype);
+>> > +             else
+>> > +                     pr_err("Failed to allocate a memory type at %s()=
+\n", __func__);
+>> > +     }
+>> > +
+>> > +     set_node_memory_tier(node);
+>> > +}
+>> > +
+>> > +void memory_tier_late_init(void)
+>> > +{
+>> > +     int nid;
+>> > +
+>> > +     mutex_lock(&memory_tier_lock);
+>> > +     for_each_node_state(nid, N_MEMORY)
+>> > +             if (!node_state(nid, N_CPU))
+>>
+>> We should exclude "node_memory_types[nid].memtype !=3D NULL".  Some memo=
+ry
+>> nodes may be onlined by some device drivers and setup memory tiers
+>> already.
+>>
+>> > +                     memory_tier_late_create(nid);
+>> > +
+>> > +     establish_demotion_targets();
+>> > +     mutex_unlock(&memory_tier_lock);
+>> > +}
+>> > +EXPORT_SYMBOL_GPL(memory_tier_late_init);
+>> > +
+>> >  static void dump_hmem_attrs(struct access_coordinate *coord, const ch=
+ar *prefix)
+>> >  {
+>> >       pr_info(
+>> > @@ -636,7 +690,7 @@ int mt_set_default_dram_perf(int nid, struct acces=
+s_coordinate *perf,
+>> >  {
+>> >       int rc =3D 0;
+>> >
+>> > -     mutex_lock(&memory_tier_lock);
+>> > +     mutex_lock(&mt_perf_lock);
+>> >       if (default_dram_perf_error) {
+>> >               rc =3D -EIO;
+>> >               goto out;
+>> > @@ -684,7 +738,7 @@ int mt_set_default_dram_perf(int nid, struct acces=
+s_coordinate *perf,
+>> >       }
+>> >
+>> >  out:
+>> > -     mutex_unlock(&memory_tier_lock);
+>> > +     mutex_unlock(&mt_perf_lock);
+>> >       return rc;
+>> >  }
+>> >
+>> > @@ -700,7 +754,7 @@ int mt_perf_to_adistance(struct access_coordinate =
+*perf, int *adist)
+>> >           perf->read_bandwidth + perf->write_bandwidth =3D=3D 0)
+>> >               return -EINVAL;
+>> >
+>> > -     mutex_lock(&memory_tier_lock);
+>> > +     mutex_lock(&mt_perf_lock);
+>> >       /*
+>> >        * The abstract distance of a memory node is in direct proportio=
+n to
+>> >        * its memory latency (read + write) and inversely proportional =
+to its
+>> > @@ -713,7 +767,7 @@ int mt_perf_to_adistance(struct access_coordinate =
+*perf, int *adist)
+>> >               (default_dram_perf.read_latency + default_dram_perf.writ=
+e_latency) *
+>> >               (default_dram_perf.read_bandwidth + default_dram_perf.wr=
+ite_bandwidth) /
+>> >               (perf->read_bandwidth + perf->write_bandwidth);
+>> > -     mutex_unlock(&memory_tier_lock);
+>> > +     mutex_unlock(&mt_perf_lock);
+>> >
+>> >       return 0;
+>> >  }
+>> > @@ -836,6 +890,14 @@ static int __init memory_tier_init(void)
+>> >        * types assigned.
+>> >        */
+>> >       for_each_node_state(node, N_MEMORY) {
+>> > +             if (!node_state(node, N_CPU))
+>> > +                     /*
+>> > +                      * Defer memory tier initialization on CPUless n=
+uma nodes.
+>> > +                      * These will be initialized when HMAT informati=
+on is
+>>
+>> HMAT is platform specific, we should avoid to mention it in general code
+>> if possible.
+>>
+>
+> Will fix! Thanks,
+>
+>
+>> > +                      * available.
+>> > +                      */
+>> > +                     continue;
+>> > +
+>> >               memtier =3D set_node_memory_tier(node);
+>> >               if (IS_ERR(memtier))
+>> >                       /*
+>>
 
----
- hw/virtio/vhost.c         | 63 ++++++++++++++++++++++++++++++++++++++++++-----
- include/hw/virtio/vhost.h |  1 +
- 2 files changed, 58 insertions(+), 6 deletions(-)
-
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index efe2f74..d91858b 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -45,6 +45,7 @@
- 
- static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
- static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
-+static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
- 
- /* Memslots used by backends that support private memslots (without an fd). */
- static unsigned int used_memslots;
-@@ -149,6 +150,43 @@ bool vhost_dev_has_iommu(struct vhost_dev *dev)
-     }
- }
- 
-+static inline bool vhost_dev_should_log(struct vhost_dev *dev)
-+{
-+    assert(dev->vhost_ops);
-+    assert(dev->vhost_ops->backend_type > VHOST_BACKEND_TYPE_NONE);
-+    assert(dev->vhost_ops->backend_type < VHOST_BACKEND_TYPE_MAX);
-+
-+    return dev == QLIST_FIRST(&vhost_log_devs[dev->vhost_ops->backend_type]);
-+}
-+
-+static inline void vhost_dev_elect_mem_logger(struct vhost_dev *hdev, bool add)
-+{
-+    VhostBackendType backend_type;
-+
-+    assert(hdev->vhost_ops);
-+
-+    backend_type = hdev->vhost_ops->backend_type;
-+    assert(backend_type > VHOST_BACKEND_TYPE_NONE);
-+    assert(backend_type < VHOST_BACKEND_TYPE_MAX);
-+
-+    if (add && !QLIST_IS_INSERTED(hdev, logdev_entry)) {
-+        if (QLIST_EMPTY(&vhost_log_devs[backend_type])) {
-+            QLIST_INSERT_HEAD(&vhost_log_devs[backend_type],
-+                              hdev, logdev_entry);
-+        } else {
-+            /*
-+             * The first vhost_device in the list is selected as the shared
-+             * logger to scan memory sections. Put new entry next to the head
-+             * to avoid inadvertent change to the underlying logger device.
-+             */
-+            QLIST_INSERT_AFTER(QLIST_FIRST(&vhost_log_devs[backend_type]),
-+                               hdev, logdev_entry);
-+        }
-+    } else if (!add && QLIST_IS_INSERTED(hdev, logdev_entry)) {
-+        QLIST_REMOVE(hdev, logdev_entry);
-+    }
-+}
-+
- static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
-                                    MemoryRegionSection *section,
-                                    hwaddr first,
-@@ -166,12 +204,14 @@ static int vhost_sync_dirty_bitmap(struct vhost_dev *dev,
-     start_addr = MAX(first, start_addr);
-     end_addr = MIN(last, end_addr);
- 
--    for (i = 0; i < dev->mem->nregions; ++i) {
--        struct vhost_memory_region *reg = dev->mem->regions + i;
--        vhost_dev_sync_region(dev, section, start_addr, end_addr,
--                              reg->guest_phys_addr,
--                              range_get_last(reg->guest_phys_addr,
--                                             reg->memory_size));
-+    if (vhost_dev_should_log(dev)) {
-+        for (i = 0; i < dev->mem->nregions; ++i) {
-+            struct vhost_memory_region *reg = dev->mem->regions + i;
-+            vhost_dev_sync_region(dev, section, start_addr, end_addr,
-+                                  reg->guest_phys_addr,
-+                                  range_get_last(reg->guest_phys_addr,
-+                                                 reg->memory_size));
-+        }
-     }
-     for (i = 0; i < dev->nvqs; ++i) {
-         struct vhost_virtqueue *vq = dev->vqs + i;
-@@ -383,6 +423,7 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
-         g_free(log);
-     }
- 
-+    vhost_dev_elect_mem_logger(dev, false);
-     dev->log = NULL;
-     dev->log_size = 0;
- }
-@@ -998,6 +1039,15 @@ static int vhost_dev_set_log(struct vhost_dev *dev, bool enable_log)
-             goto err_vq;
-         }
-     }
-+
-+    /*
-+     * At log start we select our vhost_device logger that will scan the
-+     * memory sections and skip for the others. This is possible because
-+     * the log is shared amongst all vhost devices for a given type of
-+     * backend.
-+     */
-+    vhost_dev_elect_mem_logger(dev, enable_log);
-+
-     return 0;
- err_vq:
-     for (; i >= 0; --i) {
-@@ -2073,6 +2123,7 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
-             VHOST_OPS_DEBUG(r, "vhost_set_log_base failed");
-             goto fail_log;
-         }
-+        vhost_dev_elect_mem_logger(hdev, true);
-     }
-     if (vrings) {
-         r = vhost_dev_set_vring_enable(hdev, true);
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 0247778..d75faf4 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -129,6 +129,7 @@ struct vhost_dev {
-     void *opaque;
-     struct vhost_log *log;
-     QLIST_ENTRY(vhost_dev) entry;
-+    QLIST_ENTRY(vhost_dev) logdev_entry;
-     QLIST_HEAD(, vhost_iommu) iommu_list;
-     IOMMUNotifier n;
-     const VhostDevConfigOps *config_ops;
--- 
-1.8.3.1
-
+--
+Best Regards,
+Huang, Ying
 
