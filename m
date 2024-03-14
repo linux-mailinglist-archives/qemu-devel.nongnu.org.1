@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB96687BF83
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:03:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0930F87BFA2
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:11:53 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkmaq-0008UK-37; Thu, 14 Mar 2024 11:02:04 -0400
+	id 1rkmj8-00020w-Lb; Thu, 14 Mar 2024 11:10:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rkmaX-0008SK-2R
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:01:50 -0400
-Received: from esa10.hc1455-7.c3s2.iphmx.com ([139.138.36.225])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rkmj2-00020P-1b
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:10:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rkmaU-00080B-MP
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:01:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1710428502; x=1741964502;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=T2g5Yd7YALitTC2Ds+N/7bgA3HC76TP1GfD4fOlxj88=;
- b=b/F9QjbwSu+mcaghxUYfa+Nwh4oaq+Q2aWgRDeP+jhYNWoeY6z88tGsd
- uopA8fi8zieI1dEbcTYF6lQbsB95Q1iS3vxo0coP1fBcJjQ0g87510ulY
- uEbaACSgsrFOHadLEwSeMn09CTMUuFsEPk4vEmzRk5ahF24G+evrcHZe8
- 7QUxUlbkXIe11jRL2QRuc0Ch+8nia79driXgJxF7bRl/pmtE+awZzsQmj
- wJRoZHKS9zSVK5fF4fXs7WFILsBk7TfnblG4wpck8fJxijulB54LvX8/w
- FK1prb9qwzeHU/QFzNhNITMb1pSKYyGw5Dj3VNYq841+TIQElsddC/mC8 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="139885379"
-X-IronPort-AV: E=Sophos;i="6.07,125,1708354800"; d="scan'208";a="139885379"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa10.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 00:01:35 +0900
-Received: from oym-m4.gw.nic.fujitsu.com (oym-nat-oym-m4.gw.nic.fujitsu.com
- [192.168.87.61])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 7F41DD4802
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 00:01:33 +0900 (JST)
-Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
- [192.51.206.22])
- by oym-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id AD269D52A5
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 00:01:32 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id 429156B4E0
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 00:01:32 +0900 (JST)
-Received: from [10.193.128.195] (unknown [10.193.128.195])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 545B51A006A;
- Thu, 14 Mar 2024 23:01:31 +0800 (CST)
-Message-ID: <6ffd2214-5309-4e71-b745-ba64c46cdc0e@fujitsu.com>
-Date: Thu, 14 Mar 2024 23:01:30 +0800
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rkmiz-0001Co-76
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:10:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710429025;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Pj3aaqN19j56qx4MelVBDieuga/+og8o6ZW80EXc2Mc=;
+ b=B5PY0lwFyKLvFi9zK2UJtoyFdDmJfnn9MXlUOO7JOT61TiwIcVHGtNRsaou+gL6+WpRL5K
+ JYugjoIao50SPWVkif3HFeKe/CbsDWxXHl9TcOGSY84BjnJOk8dYxwacU8QuBIEHS5WJpM
+ wrCXCxiQK50V0BzzYBn0BPL+gaJmX4E=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-AdilCfpYOuucKOsZ-W5xpw-1; Thu, 14 Mar 2024 11:10:22 -0400
+X-MC-Unique: AdilCfpYOuucKOsZ-W5xpw-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-60a0151f194so17789707b3.1
+ for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 08:10:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710429022; x=1711033822;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Pj3aaqN19j56qx4MelVBDieuga/+og8o6ZW80EXc2Mc=;
+ b=MOwE43PeQ2PvPC7loX1QCsyHkYdvKXtp9nHrQp2p6wJmIyNdxwmh5LypMRAb0H38/N
+ lEMc8bGc7VoLA4avbkCp+0AUKfpeIsqym3dNMQujd0HQH9xw/MkuIpD+T5Q/Y17olg5E
+ CtHiNYCivxe8W5GXj+sZjJejW+uv3yuZbCqBuwvAFGGD4NEbRMbmFTHSxUPwKJ0NEwbQ
+ qJzZjAwIXccqAYEdwzAQpqo1o9ofWEHYeLD3bfJZ1wk+KWQdyGTVOO3RhNNwC3A2D4ho
+ URR+7C8S1/V7yj97qiXrn4Pr31iWQXFlehYvtiGluH+PdHmznsTgePgrGcDxhflTkL4C
+ /E3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWlrJMWbqoal4z/kcRV/nC501+EJk0CuiUoTk5MKvz5fmruSB4Uxx6e4OKPMtrJ00rdd8dI3Y7RSee2ieLwu4lFG4wtvXo=
+X-Gm-Message-State: AOJu0YxNFgoKe++zwVou1Miu+ZfwH5fBbjHhQHL0IhRy/3IibqE7ph+W
+ boco/cm65sPBJbdbrUza9pH+5H0rp11Qu7i3c74EE9d8rzC0dpo70sXfi5ZqdwWNlK5r0YqJyhi
+ yL1MZfDbWT2KVK05jZwiv+qIzGD1mcZnql0XzB2YNSeYsIEJqGZnXkFaE+wIa3LCXNTZ+makS/Y
+ dLg6MoZ/8weUzocCXaAD846vnERSOVBHDm3HM=
+X-Received: by 2002:a05:690c:3413:b0:60c:d234:5c78 with SMTP id
+ fn19-20020a05690c341300b0060cd2345c78mr870537ywb.4.1710429022051; 
+ Thu, 14 Mar 2024 08:10:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExXbQgi7wca5rENcsFtd/VX7cEArG91TSGIc5MPu9U05jXnf1WlIX5idkJBYMt7syEeb24AI2NJ72fJ4iNMZ8=
+X-Received: by 2002:a05:690c:3413:b0:60c:d234:5c78 with SMTP id
+ fn19-20020a05690c341300b0060cd2345c78mr870518ywb.4.1710429021813; Thu, 14 Mar
+ 2024 08:10:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 4/5] cxl/core: add report option for
- cxl_mem_get_poison()
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Jonathan.Cameron@huawei.com, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org
-References: <20240209115417.724638-1-ruansy.fnst@fujitsu.com>
- <20240209115417.724638-7-ruansy.fnst@fujitsu.com>
- <65c71c6e47244_d2d4294f0@dwillia2-xfh.jf.intel.com.notmuch>
-In-Reply-To: <65c71c6e47244_d2d4294f0@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28250.007
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28250.007
-X-TMASE-Result: 10--8.645100-10.000000
-X-TMASE-MatchedRID: X+fKKgQJwrGPvrMjLFD6eJTQgFTHgkhZQTMEQWnELEU61nHU3L1mvwYE
- LASKZobWjhyWkMlRInD9k/FBDAgpqGRByQkQLdDaN70wXhI0DX6Uq+GQ/zyJdOjMOEZ5AL0SK2q
- s1bgqDPiFgt2tSPnIRqepbdVIZ/l3v1l2Uvx6idoVD3y1ctYHYd07eT8GLfmrUEhWy9W70AEgBw
- KKRHe+r23IUdaCIBq715B/S7LI1esUTo5EFSG/ld90NZ/UlwhguLwQYjn2sGE=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.36.225;
- envelope-from=ruansy.fnst@fujitsu.com; helo=esa10.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+References: <13625712.uLZWGnKmhe@valdaarhun>
+ <CAGxU2F4jx5m5_ijNoWZpVK_MepvtDBY8L70-dSZmRUPmTskCNw@mail.gmail.com>
+ <CAJaqyWfOaYmX-6qo-O2xWjge5av_2MDLnQVO41XLskLQC6nXsQ@mail.gmail.com>
+ <6022175.lOV4Wx5bFT@valdaarhun>
+In-Reply-To: <6022175.lOV4Wx5bFT@valdaarhun>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 14 Mar 2024 16:09:45 +0100
+Message-ID: <CAJaqyWcuU_kQpCN+U3ejWgfm+zBv3Mofe0zyi-RB+rbqgDHEgg@mail.gmail.com>
+Subject: Re: Intention to work on GSoC project
+To: Sahil <icegambit91@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ qemu-level <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,32 +98,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shiyang Ruan <ruansy.fnst@fujitsu.com>
-From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, Mar 1, 2024 at 7:29=E2=80=AFPM Sahil <icegambit91@gmail.com> wrote:
+>
+> Hi,
+>
+> On Friday, March 1, 2024 1:10:49 PM IST you wrote:
+> > [...]
+> > You can add the recently published
+> > "virtio-live-migration-technical-deep-dive" :) [1].
+> >
+> > [1]
+> > https://developers.redhat.com/articles/2024/02/21/virtio-live-migration=
+-technical-deep-dive
+>
+> Thank you. This resource will help me cover a lot of ground.
+>
+> > [...]
+> > There are few other tasks pending for QEMU in general and SVQ in
+> > particular. I'll add them as gitlab issues by today.
+> >
+>
+> That would be nice. I'll keep an eye out for the new issues.
+>
 
+Hi Sahil,
 
-在 2024/2/10 14:49, Dan Williams 写道:
-> Shiyang Ruan wrote:
->> When a poison event is received, driver uses GET_POISON_LIST command
->> to get the poison list.  Now driver has cxl_mem_get_poison(), so
->> reuse it and add a parameter 'bool report', report poison record to MCE
->> if set true.
-> 
-> If the memory error record has the poison event, why does the poison
-> list need to be retrieved by the kernel? I would expect it is sufficient
-> to just report the single poison event and leave it to userspace to
-> react to that event and retrieve more data if it wants.
+It's being hard to find a good self-contained small task related to
+the project to be honest. As it would be out of SVQ, would it be ok
+for you if we start straight to the task of adding the packed vq
+format to SVQ?
 
-The GMER has only physical address field, no range/length of the POISON, 
-we can't get the poison range from the single event record.  Since the 
-POISON range is injected by one command, one GMER is sent to driver, we 
-have to use GET_POISON_LIST command to get the length.
+Thanks!
 
-
---
-Thanks,
-Ruan.
 
