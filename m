@@ -2,112 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 337A487C446
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 21:27:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 931B987C4CA
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 22:39:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkrfI-0006hx-4s; Thu, 14 Mar 2024 16:27:00 -0400
+	id 1rksn8-00022a-6D; Thu, 14 Mar 2024 17:39:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1rkrfE-0006hc-S5; Thu, 14 Mar 2024 16:26:56 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
- id 1rkrfA-00014U-Th; Thu, 14 Mar 2024 16:26:56 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 3812C21D60;
- Thu, 14 Mar 2024 20:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710448011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sElH8nAbakcnDQrw6pZA9TEJ9r69EEpC77TqJhFDDBI=;
- b=Yivo40q8qr00W/VvsXqva4ridqbzSl+yiuXsHNdpXK17/sLPOKTX/dBHCEufH2MEzR/z/b
- h2LwdBjnvXJSgji/xmUyerrxFxGNgqhFGBQ1ri+/b9MVrQzkQJI8OpDasmLC3bSiXE/8um
- u144qmLqDGn+o5vsAQhGQmWj3HKJnI4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710448011;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sElH8nAbakcnDQrw6pZA9TEJ9r69EEpC77TqJhFDDBI=;
- b=cbjuEoSZkQYBy2dW+1vCynaw+yrS7KXvO8QZvf6414o1L3DrqY8G+oJPHIO4rpffNSQvtg
- 2fincy9oxgnJb/Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710448011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sElH8nAbakcnDQrw6pZA9TEJ9r69EEpC77TqJhFDDBI=;
- b=Yivo40q8qr00W/VvsXqva4ridqbzSl+yiuXsHNdpXK17/sLPOKTX/dBHCEufH2MEzR/z/b
- h2LwdBjnvXJSgji/xmUyerrxFxGNgqhFGBQ1ri+/b9MVrQzkQJI8OpDasmLC3bSiXE/8um
- u144qmLqDGn+o5vsAQhGQmWj3HKJnI4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710448011;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sElH8nAbakcnDQrw6pZA9TEJ9r69EEpC77TqJhFDDBI=;
- b=cbjuEoSZkQYBy2dW+1vCynaw+yrS7KXvO8QZvf6414o1L3DrqY8G+oJPHIO4rpffNSQvtg
- 2fincy9oxgnJb/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F3FA51368C;
- Thu, 14 Mar 2024 20:26:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id vubSOYpd82XGBgAAD6G6ig
- (envelope-from <cfontana@suse.de>); Thu, 14 Mar 2024 20:26:50 +0000
-Message-ID: <2a7b5636-132b-17f9-bd8c-0ee4f2beef0e@suse.de>
-Date: Thu, 14 Mar 2024 21:26:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] target/s390x: improve cpu compatibility check error
- message
-Content-Language: en-US
-From: Claudio Fontana <cfontana@suse.de>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-s390x <qemu-s390x@nongnu.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20240314190007.19568-1-cfontana@suse.de>
- <226063093bf4dcb200c981dd5b655135d8a47feb.camel@linux.ibm.com>
- <540bb2d3-7bd6-a4b7-32e2-5787dc1ca015@suse.de>
-In-Reply-To: <540bb2d3-7bd6-a4b7-32e2-5787dc1ca015@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- NEURAL_HAM_LONG(-1.00)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- RCPT_COUNT_FIVE(0.00)[5]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- TO_DN_ALL(0.00)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=cfontana@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.534,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
+ id 1rksmv-00022E-6R
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 17:38:57 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
+ id 1rksmt-00080G-C9
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 17:38:56 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42ELDcH6016463; Thu, 14 Mar 2024 21:38:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id; s=corp-2023-11-20;
+ bh=DRPeOZwl5bh4BbTJ0f2bcJMuEm96QltP56PMEsm+Ing=;
+ b=gHIvqKFhe2Yr2Xdsq1f3wWS7QBKNYszqbs9h0URkhLz0rhKlcxfX8smRbDwh1gNqvaAk
+ XvQ7IDWjorZpA8r/434r9CzdpREh3Ev06Qr3vKS2XfnySpxr7sEaLTzpC+jykx9Hs5Rv
+ ZobqCo0NbcSHokQJeY25JIwIpSLGexl+c6svx8kfeYr3c8meURzQyuOpIceSNTaOP0RH
+ P3kDGqAYe46ixFnIoT+UquOMf2QY7TCyw4Jt6c6NA77FO/5dndEm/HCMV80exY+lwH+N
+ k/InoQxnX8jaoo4AfJT78nxWqrQVMEQE9oFkcrQ7eToIiAZC0puBkbpQJ//uwyBJOQhU Xg== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wv0absaur-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Mar 2024 21:38:51 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 42EJmWac019716; Thu, 14 Mar 2024 21:38:50 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3wre7ayv25-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 14 Mar 2024 21:38:50 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42ELco1c002045;
+ Thu, 14 Mar 2024 21:38:50 GMT
+Received: from ban25x6uut24.us.oracle.com (ban25x6uut24.us.oracle.com
+ [10.153.73.24])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3wre7ayv1k-1; Thu, 14 Mar 2024 21:38:50 +0000
+From: Si-Wei Liu <si-wei.liu@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, jasowang@redhat.com, eperezma@redhat.com,
+ joao.m.martins@oracle.com, si-wei.liu@oracle.com
+Subject: [PATCH v4 1/2] vhost: dirty log should be per backend type
+Date: Thu, 14 Mar 2024 13:27:34 -0700
+Message-Id: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
+X-Mailer: git-send-email 1.8.3.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-14_13,2024-03-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
+ mlxscore=0 spamscore=0
+ bulkscore=0 phishscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2403140166
+X-Proofpoint-ORIG-GUID: vJH8_WzYjlUADPob9HPOJGNz8KSwRKUN
+X-Proofpoint-GUID: vJH8_WzYjlUADPob9HPOJGNz8KSwRKUN
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,101 +94,139 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/14/24 21:10, Claudio Fontana wrote:
-> On 3/14/24 20:44, Nina Schoetterl-Glausch wrote:
->> On Thu, 2024-03-14 at 20:00 +0100, Claudio Fontana wrote:
->>> some users were confused by this message showing under TCG:
->>>
->>> Selected CPU generation is too new. Maximum supported model
->>> in the configuration: 'xyz'
->>>
->>> Try to clarify that the maximum can depend on the accel by
->>> adding also the current accelerator to the message as such:
->>>
->>> Selected CPU generation is too new. Maximum supported model
->>> in the accelerator 'tcg' configuration: 'xyz'
->>>
->>> Signed-off-by: Claudio Fontana <cfontana@suse.de>
->>> ---
->>>  target/s390x/cpu_models.c | 11 ++++++-----
->>>  1 file changed, 6 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
->>> index 1a1c096122..0d6d8fc727 100644
->>> --- a/target/s390x/cpu_models.c
->>> +++ b/target/s390x/cpu_models.c
->>> @@ -508,14 +508,14 @@ static void check_compatibility(const S390CPUModel *max_model,
->>>  
->>>      if (model->def->gen > max_model->def->gen) {
->>>          error_setg(errp, "Selected CPU generation is too new. Maximum "
->>> -                   "supported model in the configuration: \'%s\'",
->>> -                   max_model->def->name);
->>> +                   "supported model in the accelerator \'%s\' configuration: \'%s\'",
->>> +                   current_accel_name(), max_model->def->name);
->>>          return;
->>>      } else if (model->def->gen == max_model->def->gen &&
->>>                 model->def->ec_ga > max_model->def->ec_ga) {
->>>          error_setg(errp, "Selected CPU GA level is too new. Maximum "
->>> -                   "supported model in the configuration: \'%s\'",
->>> -                   max_model->def->name);
->>> +                   "supported model in the accelerator \'%s\' configuration: \'%s\'",
->>> +                   current_accel_name(), max_model->def->name);
->>>          return;
->>>      }
->>>  
->>> @@ -537,7 +537,8 @@ static void check_compatibility(const S390CPUModel *max_model,
->>>      error_setg(errp, " ");
->>>      s390_feat_bitmap_to_ascii(missing, errp, error_prepend_missing_feat);
->>>      error_prepend(errp, "Some features requested in the CPU model are not "
->>> -                  "available in the configuration: ");
->>> +                  "available in the accelerator \'%s\' configuration: ",
->>> +                  current_accel_name());
->>>  }
->>
->> I wonder if these might not be confusing in other circumstances, e.g. when
->> running with KVM and the Linux version lacks support for some feature.
-> 
-> Here you are referencing specifically the last hunk right? Ie the "Some features requested..." message.
-> 
->> I think something along the lines of:
->>
->> error_...(errp, "... supported by the current configuration ...", ...);
->> error_append_hint(errp, "Consider using a different accelerator, a different QEMU version or, when using KVM, a different kernel");
->>
->> would be better.
-> 
-> Interesting I'll try something along these lines.
-> 
->>
->> I'm not sure about line breaks in error message, I like the better grepability
->> of unbroken lines but the coding style guide doesn't mention anything.
-> 
-> better greppability in the log (as the error message in the log), or in the source code (or both)?
-> I am generally in favor of both, but there might be constraints on line length, although scripts/checkpatch.pl did not complain when I attempted this (I wonder if bug or feature).
-> 
-> docs/devel/style.rst on the code line length topic says:
-> "Lines should be 80 characters; try not to make them longer..."
-> 
-> and it does talk about exceptions. In the case of error message strings I think this could be one one of those exceptions.
-> 
-> In terms of logs, I did not find anything either, the most pertinent section should be "Error handling and reporting" in the same file,
-> but there is nothing about breaking up [or not] a single message in errors with newlines.
+There could be a mix of both vhost-user and vhost-kernel clients
+in the same QEMU process, where separate vhost loggers for the
+specific vhost type have to be used. Make the vhost logger per
+backend type, and have them properly reference counted.
 
-Ah I forgot the mythical include/qapi/error.h:
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
 
-for error_setg we have:
+---
+v3->v4:
+  - remove checking NULL return value from vhost_log_get
 
-"The resulting message should be a single phrase, with no newline or trailing punctuation."
+v2->v3:
+  - remove non-effective assertion that never be reached
+  - do not return NULL from vhost_log_get()
+  - add neccessary assertions to vhost_log_get()
+---
+ hw/virtio/vhost.c | 45 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 33 insertions(+), 12 deletions(-)
 
-so this helps.
-
-> 
->>>  
->>>  S390CPUModel *get_max_cpu_model(Error **errp)
->>
-> 
-> Thanks,
-> 
-> Claudio
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 2c9ac79..612f4db 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -43,8 +43,8 @@
+     do { } while (0)
+ #endif
+ 
+-static struct vhost_log *vhost_log;
+-static struct vhost_log *vhost_log_shm;
++static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
++static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
+ 
+ /* Memslots used by backends that support private memslots (without an fd). */
+ static unsigned int used_memslots;
+@@ -287,6 +287,10 @@ static int vhost_set_backend_type(struct vhost_dev *dev,
+         r = -1;
+     }
+ 
++    if (r == 0) {
++        assert(dev->vhost_ops->backend_type == backend_type);
++    }
++
+     return r;
+ }
+ 
+@@ -319,16 +323,22 @@ static struct vhost_log *vhost_log_alloc(uint64_t size, bool share)
+     return log;
+ }
+ 
+-static struct vhost_log *vhost_log_get(uint64_t size, bool share)
++static struct vhost_log *vhost_log_get(VhostBackendType backend_type,
++                                       uint64_t size, bool share)
+ {
+-    struct vhost_log *log = share ? vhost_log_shm : vhost_log;
++    struct vhost_log *log;
++
++    assert(backend_type > VHOST_BACKEND_TYPE_NONE);
++    assert(backend_type < VHOST_BACKEND_TYPE_MAX);
++
++    log = share ? vhost_log_shm[backend_type] : vhost_log[backend_type];
+ 
+     if (!log || log->size != size) {
+         log = vhost_log_alloc(size, share);
+         if (share) {
+-            vhost_log_shm = log;
++            vhost_log_shm[backend_type] = log;
+         } else {
+-            vhost_log = log;
++            vhost_log[backend_type] = log;
+         }
+     } else {
+         ++log->refcnt;
+@@ -340,11 +350,20 @@ static struct vhost_log *vhost_log_get(uint64_t size, bool share)
+ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+ {
+     struct vhost_log *log = dev->log;
++    VhostBackendType backend_type;
+ 
+     if (!log) {
+         return;
+     }
+ 
++    assert(dev->vhost_ops);
++    backend_type = dev->vhost_ops->backend_type;
++
++    if (backend_type == VHOST_BACKEND_TYPE_NONE ||
++        backend_type >= VHOST_BACKEND_TYPE_MAX) {
++        return;
++    }
++
+     --log->refcnt;
+     if (log->refcnt == 0) {
+         /* Sync only the range covered by the old log */
+@@ -352,13 +371,13 @@ static void vhost_log_put(struct vhost_dev *dev, bool sync)
+             vhost_log_sync_range(dev, 0, dev->log_size * VHOST_LOG_CHUNK - 1);
+         }
+ 
+-        if (vhost_log == log) {
++        if (vhost_log[backend_type] == log) {
+             g_free(log->log);
+-            vhost_log = NULL;
+-        } else if (vhost_log_shm == log) {
++            vhost_log[backend_type] = NULL;
++        } else if (vhost_log_shm[backend_type] == log) {
+             qemu_memfd_free(log->log, log->size * sizeof(*(log->log)),
+                             log->fd);
+-            vhost_log_shm = NULL;
++            vhost_log_shm[backend_type] = NULL;
+         }
+ 
+         g_free(log);
+@@ -376,7 +395,8 @@ static bool vhost_dev_log_is_shared(struct vhost_dev *dev)
+ 
+ static inline void vhost_dev_log_resize(struct vhost_dev *dev, uint64_t size)
+ {
+-    struct vhost_log *log = vhost_log_get(size, vhost_dev_log_is_shared(dev));
++    struct vhost_log *log = vhost_log_get(dev->vhost_ops->backend_type,
++                                          size, vhost_dev_log_is_shared(dev));
+     uint64_t log_base = (uintptr_t)log->log;
+     int r;
+ 
+@@ -2037,7 +2057,8 @@ int vhost_dev_start(struct vhost_dev *hdev, VirtIODevice *vdev, bool vrings)
+         uint64_t log_base;
+ 
+         hdev->log_size = vhost_get_log_size(hdev);
+-        hdev->log = vhost_log_get(hdev->log_size,
++        hdev->log = vhost_log_get(hdev->vhost_ops->backend_type,
++                                  hdev->log_size,
+                                   vhost_dev_log_is_shared(hdev));
+         log_base = (uintptr_t)hdev->log->log;
+         r = hdev->vhost_ops->vhost_set_log_base(hdev,
+-- 
+1.8.3.1
 
 
