@@ -2,62 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF7B87C00C
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:26:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB1887BFD8
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:24:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkmvP-0007F5-O7; Thu, 14 Mar 2024 11:23:19 -0400
+	id 1rkmv3-00078c-UC; Thu, 14 Mar 2024 11:22:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvN-0007Dg-0Y
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rkmuz-00078J-Av
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:22:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvL-0003kV-Jy
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rkmuw-0003iL-Qs
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:22:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710429794;
+ s=mimecast20190719; t=1710429768;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mEysAxw1rtqLbi7QK6dBGnD+kHUMmHQF+OEuJnW7U90=;
- b=YQxgKb4Lufxo7ViCbJ26SqLTRRX7uEaaLnO5sRWAUADHLO23ljLAN1tPOcAapG7idc7vka
- 6ZGkOMc2ouy4jtpFp/IG3hEzTB6B6MLnF2vIk9mWQZMPusgRrDtvMRT4nP62W6GOYVsp1U
- uaBM12BbOlYySTkfMvgOgxwArdzkPU0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=YBLsaHQRWmgI5xtRyjnZlSrZ5Mfmm95p7kFi0A/ame0=;
+ b=XQCtsBoCQFQlIHUYZEpWLDm0nLc5Ujb1FfvWHCbK9o9oCKxLORpdEL0eJQpb51DFI6rhoe
+ 4IFqg85uucCU8Xe8HNY+syQ+/2kI+vq/oe1m8A6gmepwSbf1lvKm2JtfGtY133crROKLSU
+ 451PcpTRYgkmxt987lf24Tk9/2JPFCk=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-ygMa5OFzP46mBn4ww028wg-1; Thu, 14 Mar 2024 11:23:08 -0400
-X-MC-Unique: ygMa5OFzP46mBn4ww028wg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 063E9185A789;
- Thu, 14 Mar 2024 15:23:08 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com
- (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 26A8917A8E;
- Thu, 14 Mar 2024 15:23:07 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v4 03/21] tests: smbios: add test for legacy mode CLI options
-Date: Thu, 14 Mar 2024 16:22:44 +0100
-Message-Id: <20240314152302.2324164-4-imammedo@redhat.com>
-In-Reply-To: <20240314152302.2324164-1-imammedo@redhat.com>
-References: <20240314152302.2324164-1-imammedo@redhat.com>
+ us-mta-15-UhLMvhIsO42Mzhwjdhgg5g-1; Thu, 14 Mar 2024 11:22:46 -0400
+X-MC-Unique: UhLMvhIsO42Mzhwjdhgg5g-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-690d3f5af86so3691406d6.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 08:22:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710429766; x=1711034566;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=YBLsaHQRWmgI5xtRyjnZlSrZ5Mfmm95p7kFi0A/ame0=;
+ b=D1IeFXZSCiyUOchjjq9s1vVsCtQaymZssAp3LEF0uX5LWfkANTyBZetwIdqL+/w66s
+ 0FAhk2KITeIkee54E7N+jYKSfwyoUgh7ovmyOyp0FafvAUW8hebFcS1hADO1NejFZesX
+ KEqAFo2+8eJJVxJwyE5+WrdpSx/e0m7fpXEB4qSMJJ5If64Jihf97p6fOnJ5VmGX9hJf
+ uQhl5JjYKMM40iytV43PWB//Mtb7ZAQTAKbj1AsZ0GMv/o80ItypikkuHzDf9MKhQ+rT
+ 7j8zjUEZZV/j+dFyEPmMFKy+tJdS5dwcS7TQ6hcsTfyZE4GocrYpPAVySgoO2A3RTP3L
+ X/Qg==
+X-Gm-Message-State: AOJu0YxC1FM34tdoTK/GM8IuTS4aeuWLzZuG+30b+lgM5hmpb/oR4fQw
+ bj3hx9DS0nuNsXug4MHnQ/rCmP5HgLdMeDpzYTHGpfcMNO0Em/BwwP4qb+ntGVhaIa4QMi5Ub8e
+ PWTBTDc7akrP6LTk+xD/Fl/Xfw8o32XRUCaW8Vy8LI8c5QUFmbLhj9HVmFUTQ
+X-Received: by 2002:a05:6214:2b87:b0:690:d74d:7e6d with SMTP id
+ kr7-20020a0562142b8700b00690d74d7e6dmr2111552qvb.3.1710429766057; 
+ Thu, 14 Mar 2024 08:22:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrgr8ZehAZbR6Bcchlz4mFY+tU2MLAQmy9t1bwtYO1AAGIjwUoXsvYUT0fzokglRpQz4nbfg==
+X-Received: by 2002:a05:6214:2b87:b0:690:d74d:7e6d with SMTP id
+ kr7-20020a0562142b8700b00690d74d7e6dmr2111534qvb.3.1710429765625; 
+ Thu, 14 Mar 2024 08:22:45 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 9-20020a0562140d4900b006904d35e1c6sm577741qvr.58.2024.03.14.08.22.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Mar 2024 08:22:45 -0700 (PDT)
+Date: Thu, 14 Mar 2024 11:22:44 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v2 0/2] migration mapped-ram fixes
+Message-ID: <ZfMWRBDN4wPQsOWI@x1n>
+References: <20240313212824.16974-1-farosas@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240313212824.16974-1-farosas@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -82,68 +96,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately having 2.0 machine type deprecated is not enough
-to get rid of legacy SMBIOS handling since 'isapc' also uses
-that and it's staying around.
+On Wed, Mar 13, 2024 at 06:28:22PM -0300, Fabiano Rosas wrote:
+> Hi,
+> 
+> In this v2:
+> 
+> patch 1 - The fix for the ioc leaks, now including the main channel
+> 
+> patch 2 - A fix for an fd: migration case I thought I had written code
+>           for, but obviously didn't.
 
-Hence add test for CLI options handling to be sure that it
-ain't broken during SMBIOS code refactoring.
+Maybe I found one more issue.. I'm looking at fd_start_outgoing_migration().
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
----
- tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
- tests/qtest/bios-tables-test.c       |  17 +++++++++++++++++
- 2 files changed, 17 insertions(+)
- create mode 100644 tests/data/smbios/type11_blob.legacy
+    ioc = qio_channel_new_fd(fd, errp);  <----- here the fd is consumed and
+                                                then owned by the IOC
+    if (!ioc) {
+        close(fd);
+        return;
+    }
 
-diff --git a/tests/data/smbios/type11_blob.legacy b/tests/data/smbios/type11_blob.legacy
-new file mode 100644
-index 0000000000000000000000000000000000000000..aef463aab903405958b0a85f85c5980671c08bee
-GIT binary patch
-literal 10
-Rcmd;PW!S(N;u;*n000Tp0s;U4
+    outgoing_args.fd = fd;               <----- here we use the fd again,
+                                                and "owned" by outgoing_args
+                                                even if it shouldn't?
 
-literal 0
-HcmV?d00001
+The problem is outgoing_args.fd will be cleaned up with a close().  I had a
+feeling that it's possible it will close() something else if the fd reused
+before that close() but after the IOC's.  We may want yet another dup() for
+outgoing_args.fd?
 
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index a116f88e1d..d1ff4db7a2 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2106,6 +2106,21 @@ static void test_acpi_pc_smbios_blob(void)
-     free_test_data(&data);
- }
- 
-+static void test_acpi_isapc_smbios_legacy(void)
-+{
-+    uint8_t req_type11[] = { 1, 11 };
-+    test_data data = {
-+        .machine = "isapc",
-+        .variant = ".pc_smbios_legacy",
-+        .required_struct_types = req_type11,
-+        .required_struct_types_len = ARRAY_SIZE(req_type11),
-+    };
-+
-+    test_smbios("-smbios file=tests/data/smbios/type11_blob.legacy "
-+                "-smbios type=1,family=TEST", &data);
-+    free_test_data(&data);
-+}
-+
- static void test_oem_fields(test_data *data)
- {
-     int i;
-@@ -2261,6 +2276,8 @@ int main(int argc, char *argv[])
-                            test_acpi_pc_smbios_options);
-             qtest_add_func("acpi/piix4/smbios-blob",
-                            test_acpi_pc_smbios_blob);
-+            qtest_add_func("acpi/piix4/smbios-legacy",
-+                           test_acpi_isapc_smbios_legacy);
-         }
-         if (qtest_has_machine(MACHINE_Q35)) {
-             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
+If you agree, we may also want to avoid doing:
+
+    outgoing_args.fd = -1;
+
+We could assert it instead making sure no fd leak.
+
+> 
+> Thank you for your patience.
+> 
+> based-on: https://gitlab.com/peterx/qemu/-/commits/migration-stable
+> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1212483701
+> 
+> Fabiano Rosas (2):
+>   migration: Fix iocs leaks during file and fd migration
+>   migration/multifd: Ensure we're not given a socket for file migration
+> 
+>  migration/fd.c   | 35 +++++++++++---------------
+>  migration/file.c | 65 ++++++++++++++++++++++++++++++++----------------
+>  migration/file.h |  1 +
+>  3 files changed, 60 insertions(+), 41 deletions(-)
+> 
+> -- 
+> 2.35.3
+> 
+
 -- 
-2.39.3
+Peter Xu
 
 
