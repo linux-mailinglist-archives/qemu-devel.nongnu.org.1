@@ -2,52 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4610387C1B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 17:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA587C1B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 17:59:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkoPx-0006Rw-N2; Thu, 14 Mar 2024 12:58:57 -0400
+	id 1rkoPw-0006Ri-2Y; Thu, 14 Mar 2024 12:58:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPl-0006Ou-3J
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:47 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPp-0006PQ-Dp
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPj-0003Xm-2f
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:44 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPk-0003Z4-MI
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710435522;
+ s=mimecast20190719; t=1710435523;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=wOll5lyFhtYNeAOUADWumYDLJEBPlb1Hvjf3Y1fqP/c=;
- b=YAL62wf46pPoR7hCFROlK+M6A70ZxWu3QSWxOKQvpZ/aWOcBUn/OZV0DDrh9RWCpbjpp1q
- Ir44cXhKYjNaSanbDZOCXNXWXza/ojLyG/TPNNexjI8UGWThc18bVr7xqBb2sFnBB2yRlE
- W8I5YRmaPxU0F/BlPUrwmI6kWTCoqRo=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=31gUSxdMtfnI8RfpkSr3yYSOm01I+BkSu6LhD9mu5aw=;
+ b=BHfuMX8qLseNSdQJw7UACHGtcMybTJ9CCLOUQnRovXwOTMKUwMeTIl+zBsxOEgaagVIs2r
+ rhYRoX83FRK8ktAH/o894W6zLCbApNskg/6GOnQqnHsX9jYfUlx2cIqUQCJrUxSJWoBtwl
+ 6DS5EYxfkF1xBl/pcnUxpzB+8HR/Lhw=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-ZueUhkXiMSqRb-nEKooYJw-1; Thu, 14 Mar 2024 12:58:37 -0400
-X-MC-Unique: ZueUhkXiMSqRb-nEKooYJw-1
+ us-mta-13-aA9h54FHNKSx0T7eS7tCbw-1; Thu, 14 Mar 2024 12:58:39 -0400
+X-MC-Unique: aA9h54FHNKSx0T7eS7tCbw-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A677879844;
- Thu, 14 Mar 2024 16:58:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B2B089C661;
+ Thu, 14 Mar 2024 16:58:39 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2CA57111E3F3;
- Thu, 14 Mar 2024 16:58:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BFE83111E40C;
+ Thu, 14 Mar 2024 16:58:37 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
  eblake@redhat.com, aliang@redhat.com, qemu-devel@nongnu.org,
  qemu-stable@nongnu.org
-Subject: [PATCH for-9.0 0/2] nbd: Fix server crash on reset with iothreads
-Date: Thu, 14 Mar 2024 17:58:23 +0100
-Message-ID: <20240314165825.40261-1-kwolf@redhat.com>
+Subject: [PATCH for-9.0 1/2] nbd/server: Fix race in draining the export
+Date: Thu, 14 Mar 2024 17:58:24 +0100
+Message-ID: <20240314165825.40261-2-kwolf@redhat.com>
+In-Reply-To: <20240314165825.40261-1-kwolf@redhat.com>
+References: <20240314165825.40261-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
@@ -76,17 +79,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf (2):
-  nbd/server: Fix race in draining the export
-  iotests: Add test for reset/AioContext switches with NBD exports
+When draining an NBD export, nbd_drained_begin() first sets
+client->quiescing so that nbd_client_receive_next_request() won't start
+any new request coroutines. Then nbd_drained_poll() tries to makes sure
+that we wait for any existing request coroutines by checking that
+client->nb_requests has become 0.
 
- nbd/server.c                                  | 15 ++---
- tests/qemu-iotests/tests/iothreads-nbd-export | 66 +++++++++++++++++++
- .../tests/iothreads-nbd-export.out            | 19 ++++++
- 3 files changed, 92 insertions(+), 8 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/iothreads-nbd-export
- create mode 100644 tests/qemu-iotests/tests/iothreads-nbd-export.out
+However, there is a small window between creating a new request
+coroutine and increasing client->nb_requests. If a coroutine is in this
+state, it won't be waited for and drain returns too early.
 
+In the context of switching to a different AioContext, this means that
+blk_aio_attached() will see client->recv_coroutine != NULL and fail its
+assertion.
+
+Fix this by increasing client->nb_requests immediately when starting the
+coroutine. Doing this after the checks if we should create a new
+coroutine is okay because client->lock is held.
+
+Cc: qemu-stable@nongnu.org
+Fixes: fd6afc501a019682d1b8468b562355a2887087bd
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ nbd/server.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/nbd/server.c b/nbd/server.c
+index 941832f178..c3484cc1eb 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -3007,8 +3007,8 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+ /* Owns a reference to the NBDClient passed as opaque.  */
+ static coroutine_fn void nbd_trip(void *opaque)
+ {
+-    NBDClient *client = opaque;
+-    NBDRequestData *req = NULL;
++    NBDRequestData *req = opaque;
++    NBDClient *client = req->client;
+     NBDRequest request = { 0 };    /* GCC thinks it can be used uninitialized */
+     int ret;
+     Error *local_err = NULL;
+@@ -3037,8 +3037,6 @@ static coroutine_fn void nbd_trip(void *opaque)
+         goto done;
+     }
+ 
+-    req = nbd_request_get(client);
+-
+     /*
+      * nbd_co_receive_request() returns -EAGAIN when nbd_drained_begin() has
+      * set client->quiescing but by the time we get back nbd_drained_end() may
+@@ -3112,9 +3110,7 @@ static coroutine_fn void nbd_trip(void *opaque)
+     }
+ 
+ done:
+-    if (req) {
+-        nbd_request_put(req);
+-    }
++    nbd_request_put(req);
+ 
+     qemu_mutex_unlock(&client->lock);
+ 
+@@ -3143,10 +3139,13 @@ disconnect:
+  */
+ static void nbd_client_receive_next_request(NBDClient *client)
+ {
++    NBDRequestData *req;
++
+     if (!client->recv_coroutine && client->nb_requests < MAX_NBD_REQUESTS &&
+         !client->quiescing) {
+         nbd_client_get(client);
+-        client->recv_coroutine = qemu_coroutine_create(nbd_trip, client);
++        req = nbd_request_get(client);
++        client->recv_coroutine = qemu_coroutine_create(nbd_trip, req);
+         aio_co_schedule(client->exp->common.ctx, client->recv_coroutine);
+     }
+ }
 -- 
 2.44.0
 
