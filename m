@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9940B87C48E
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 22:02:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E03B87C4C9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 22:39:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rksCB-0003P1-5z; Thu, 14 Mar 2024 17:00:59 -0400
+	id 1rksm9-0001p5-W7; Thu, 14 Mar 2024 17:38:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1rksC8-0003O2-2j
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 17:00:56 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.23])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>) id 1rksC6-0007iC-Az
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 17:00:55 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1710450048; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=FY5oE175THP6/kKNwtGw9+YVGFjG5f5uxyW6wdzYeFpbi/R4HxrSLYDuNfxbR6rvgi
- zi1rkneuqABDjeEzrmmvPUtvkYb6cMScH4CHxPlV3WMGDtJCYPnWA9iQ5CzcB+miyxVp
- cGlNO7eN8DzOcQUbaLpWOwbCAEo2vIaZwGHwCupP3jw0ygJc1mkUNPcvASd7qH/K2oY+
- 5jdTy8PHMlohMGoaqoOdpAAVFVxJBHDMzYxMo5GcBPmwE55Jd0IuU7gKtt3caLRvRYW5
- c1B995Q0wVv1J0gHZPcbY9ezucuUCWfAMzdKsseqzDnZrd8hBU0Pzw2+1oefQQqPyIpS
- GIhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1710450048;
- s=strato-dkim-0002; d=strato.com;
- h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=x1EV4L0okCKI7QasZUxX4Pl/TC1PnUyBxbcARD+jOCA=;
- b=jGAl2tFVoGxIglosbcYwq2VvwPuQSuzs5+DMoM7t4ytkPVrqUyKTMsr8fIJFCyQfIW
- nYoL+hsKexPAoQDz1GU/3NioJ7TsYClz3OEB80S5ifupgy2DQtLTz2BNzEq0IHiD10dT
- 2ZYDNvR3oooctwM91gCh9NaK0Gtjfz8vgQw5DIBfQeEKwwtbZ2wARwRh7iIiY6vg/wzH
- SK/4QZXeqXtvKky+wjPRYLeFqcK2EsgpChx3s/KgebRWtinn7P4H63kjn+McsiQyOrCT
- QtaZHKV66VJ7KAXTYCtQsSqqOGDpN1R6D1bHXSJY/3Mip/0cARpJwwJacWEM66hNlirX
- zreA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1710450048;
- s=strato-dkim-0002; d=aepfle.de;
- h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=x1EV4L0okCKI7QasZUxX4Pl/TC1PnUyBxbcARD+jOCA=;
- b=j0DYypQVphn9XdHNmYzG+Bji24BPatdplmfPufv2IA1tG/ZVbloWKFE0WB7KNv1KBv
- RezeDx774/oDNfXIyHAXFb7NXqIxSKtfLBdTRzq8o5nnFz115vHwchESfmpy2/nzQR76
- 0wikAJ1B3ESZxUxYn4Im/oRHdJHqrrONb2cSuUtXJ3BL+XPXI4T6rJf2M0WArMXqpab5
- BDmBZhFhkoxFKxC6saoSzdtVWvypQZTxpE8+36o5c73GP2Sn2g17SRBJRMW861caCMnY
- 6sHJ4DfWRFHmaNFv+mBKogYio4W6we5ax0JUR6ekTmkJ79NRgpWGlMPf+wFeE/0Bj8T0
- gFUw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1710450048;
- s=strato-dkim-0003; d=aepfle.de;
- h=Message-ID:Subject:To:From:Date:Cc:Date:From:Subject:Sender;
- bh=x1EV4L0okCKI7QasZUxX4Pl/TC1PnUyBxbcARD+jOCA=;
- b=IHKbIZxbvfnl9Ir0Xb4rlFcG8gFdyHPF75cDhsyr2TaoalZhnVcCwQRDPk3URb41Dg
- NY/fnsAGHa8WaZdq//Cw==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR5ABaIaxjsvWV3+5zoB6xJde0knZVA/JvNMMXDFQ=="
-Received: from sender by smtp.strato.de (RZmta 50.2.2 AUTH)
- with ESMTPSA id Dfe7e402EL0m0dP
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate) for <qemu-devel@nongnu.org>;
- Thu, 14 Mar 2024 22:00:48 +0100 (CET)
-Date: Thu, 14 Mar 2024 22:00:38 +0100
-From: Olaf Hering <olaf@aepfle.de>
-To: qemu-devel@nongnu.org
-Subject: Regression in v7.2.10 - ui-dbus.so requires -fPIC
-Message-ID: <20240314220038.1aaae79f.olaf@aepfle.de>
-X-Mailer: Claws Mail (olh) 20240223T214820.cce9f45c hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1rksm5-0001ol-Am; Thu, 14 Mar 2024 17:38:05 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <cfontana@suse.de>)
+ id 1rksm3-0007w5-MS; Thu, 14 Mar 2024 17:38:05 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4BB9121D63;
+ Thu, 14 Mar 2024 21:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710452281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pP4betEpGnM5MgnyQWCVs9+190M4LeW8zXrFd8S/FwE=;
+ b=fIR47HO7DE3rFXfY19GA0UTDEsGfZtcL3+A+sy0S1DXraZeESZCukRrBE4sn20QbpT48MG
+ fhFyyyNsB4E4UZz7/pdkzFuszMoXwSHeCPQUxh6RvxJ+86GR+tLDgAgK1ST+lhHnjCrHLI
+ Dj8ZUU9C3mRiGFQcVwnQMAJYURqYeFc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710452281;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pP4betEpGnM5MgnyQWCVs9+190M4LeW8zXrFd8S/FwE=;
+ b=CPN6wgHl737CkLaT5iVE05sKPoJ10EHoZfcEFKFLW2bHG8xOxf/2QOxs4HMKM6V1sqvQf2
+ K5Dbygyq1X8iwyCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710452281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pP4betEpGnM5MgnyQWCVs9+190M4LeW8zXrFd8S/FwE=;
+ b=fIR47HO7DE3rFXfY19GA0UTDEsGfZtcL3+A+sy0S1DXraZeESZCukRrBE4sn20QbpT48MG
+ fhFyyyNsB4E4UZz7/pdkzFuszMoXwSHeCPQUxh6RvxJ+86GR+tLDgAgK1ST+lhHnjCrHLI
+ Dj8ZUU9C3mRiGFQcVwnQMAJYURqYeFc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710452281;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=pP4betEpGnM5MgnyQWCVs9+190M4LeW8zXrFd8S/FwE=;
+ b=CPN6wgHl737CkLaT5iVE05sKPoJ10EHoZfcEFKFLW2bHG8xOxf/2QOxs4HMKM6V1sqvQf2
+ K5Dbygyq1X8iwyCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A5CCE1368B;
+ Thu, 14 Mar 2024 21:38:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 71NoJDhu82XcGQAAD6G6ig
+ (envelope-from <cfontana@suse.de>); Thu, 14 Mar 2024 21:38:00 +0000
+From: Claudio Fontana <cfontana@suse.de>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, Thomas Huth <thuth@redhat.com>
+Cc: Claudio Fontana <cfontana@suse.de>, qemu-devel <qemu-devel@nongnu.org>,
+ qemu-s390x <qemu-s390x@nongnu.org>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2] target/s390x: improve cpu compatibility check error message
+Date: Thu, 14 Mar 2024 22:37:46 +0100
+Message-Id: <20240314213746.27163-1-cfontana@suse.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/GYfzay0mcrWe3xuGjh9Xt7z";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.23; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
+ R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
+ RCPT_COUNT_FIVE(0.00)[6]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ TO_DN_ALL(0.00)[]; NEURAL_HAM_SHORT(-0.20)[-0.999];
+ MID_CONTAINS_FROM(1.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ BAYES_HAM(-3.00)[100.00%]
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=cfontana@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,49 +109,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/GYfzay0mcrWe3xuGjh9Xt7z
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+some users were confused by this message showing under TCG:
 
-ui-dbus.so is a shared library. But it is apparently handled differently
-than all the other shared libraries: it is not compiled with -fPIC.
+Selected CPU generation is too new. Maximum supported model
+in the configuration: 'xyz'
 
-As a result it fails to link. Not sure why this happens only here.
-Everything up to v7.2.9 was fine.
+Clarify that the maximum can depend on the accel, and add a
+hint to try a different one.
 
-Looking at some random other library like libui-spice-core.a,
-every object is compiled with -fPIC.=20
+Also add a hint for features mismatch to suggest trying
+different accel, QEMU and kernel versions.
 
-But ui/dbus-display1.c is compiled with -fPIE instead.
+Signed-off-by: Claudio Fontana <cfontana@suse.de>
+---
+ target/s390x/cpu_models.c | 22 +++++++++++++++-------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
 
-Is this intentional?=20
+diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
+index 1a1c096122..8ed3bb6a27 100644
+--- a/target/s390x/cpu_models.c
++++ b/target/s390x/cpu_models.c
+@@ -500,6 +500,16 @@ static void error_prepend_missing_feat(const char *name, void *opaque)
+     error_prepend((Error **) opaque, "%s ", name);
+ }
+ 
++static void check_compat_model_failed(Error **errp,
++                                      const S390CPUModel *max_model,
++                                      const char *msg)
++{
++    error_setg(errp, "%s. Maximum supported model in the current configuration: \'%s\'",
++               msg, max_model->def->name);
++    error_append_hint(errp, "Consider a different accelerator, try \"-accel help\"\n");
++    return;
++}
++
+ static void check_compatibility(const S390CPUModel *max_model,
+                                 const S390CPUModel *model, Error **errp)
+ {
+@@ -507,15 +517,11 @@ static void check_compatibility(const S390CPUModel *max_model,
+     S390FeatBitmap missing;
+ 
+     if (model->def->gen > max_model->def->gen) {
+-        error_setg(errp, "Selected CPU generation is too new. Maximum "
+-                   "supported model in the configuration: \'%s\'",
+-                   max_model->def->name);
++        check_compat_model_failed(errp, max_model, "Selected CPU generation is too new");
+         return;
+     } else if (model->def->gen == max_model->def->gen &&
+                model->def->ec_ga > max_model->def->ec_ga) {
+-        error_setg(errp, "Selected CPU GA level is too new. Maximum "
+-                   "supported model in the configuration: \'%s\'",
+-                   max_model->def->name);
++        check_compat_model_failed(errp, max_model, "Selected CPU GA level is too new");
+         return;
+     }
+ 
+@@ -537,7 +543,9 @@ static void check_compatibility(const S390CPUModel *max_model,
+     error_setg(errp, " ");
+     s390_feat_bitmap_to_ascii(missing, errp, error_prepend_missing_feat);
+     error_prepend(errp, "Some features requested in the CPU model are not "
+-                  "available in the configuration: ");
++                  "available in the current configuration: ");
++    error_append_hint(errp,
++                      "Consider a different accelerator, QEMU, or kernel version\n");
+ }
+ 
+ S390CPUModel *get_max_cpu_model(Error **errp)
+-- 
+2.26.2
 
-Olaf
-
-ld: ui/libdbus-display1.a.p/meson-generated_.._dbus-display1.c.o: warning: =
-relocation against `qemu_dbus_display1_audio_get_type' in read-only section=
- `.text'
-
---Sig_/GYfzay0mcrWe3xuGjh9Xt7z
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmXzZXYACgkQ86SN7mm1
-DoDYmg//UuS4zVk3UFj871N+h5nUVY1Z2JTRo1KGjvOscUKZzlVsWfW9k2wk3YYX
-LWEGvjlnU+PMDrYdF6T8M6gSk2zLsou485J0Rmca17/JXrL3oa5NSVFhAtxuTKW4
-ZlJzBabDzn2V4j985eZ1GclTlqRBNDo4SzBE2KC03aROPCfkQf+om7kNzmqI6OqV
-wiEBuASnVQhXff8YLqX8+HwQtjCRi770gqTU+x9PX691zNOfa8FjGgeNcfJ7QSn9
-v8JlWMLDA3Zm1BfXCExagqALj6QoSsVOT2f/w+/Hw6Vffu5O7e6P6WAvBsiJu9sB
-XRgpyYCx/FwsadCeg2onIm8uYeEuH5mb8S2LxVTlGKtrsCQHrC76Vx5vGVIPcjTO
-qHfvXhOYvXOML31feoKJfa64hiAKaiQNOqtFLTHOJQxvVLNdc1j2ldLRLY4qDD+l
-yKicu4PUv3GphNuuOC/rcS7ps77VGozKCMRlyukqekmY2FG13kWBZToPdG7pRo8T
-k29H9+UsZUVtVo2Ombx7Mm8du9FJTApPXTso8zPjkyc12xk/fikSIciOZzmsQTJR
-8A7rFKMRKrrs57TbLeOwmxAD13j7EMbR7UOpK53uKEg0aH3zZqtEX2zXY+BmIvRv
-glbAOGLrs1mZu2b90PrneidDjJWWxRv9KZbtGlPmFyTryLeK8Rk=
-=tfIM
------END PGP SIGNATURE-----
-
---Sig_/GYfzay0mcrWe3xuGjh9Xt7z--
 
