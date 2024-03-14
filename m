@@ -2,68 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADFB87C1B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 17:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 151FA87C1D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 18:08:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkoPu-0006Qj-Fy; Thu, 14 Mar 2024 12:58:54 -0400
+	id 1rkoYM-00019J-MP; Thu, 14 Mar 2024 13:07:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPm-0006P5-TL
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rkoPk-0003Ys-Dd
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 12:58:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710435523;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/+cEmQc9bjBuc+D/nWptCsUwj1Y/K/92w9pm5FPLf5E=;
- b=eGAjEMNPVtBo5guo/kfnl5LPpTH/stebho82x6rNKozgt3dOE8fZf0fsbuf5Bq+to+890d
- Pudn1JHe440bL5MPSrQze2jFBSKvdGHczTZ4VsdFB8/PxrZpqgbX7xVjo0nEezCEA3Fa1t
- wBMt9exqyLzKYPCCIJTPv4zdOXrtOFc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-ANGe5-KxPWawvnJd6mA_JA-1; Thu, 14 Mar 2024 12:58:42 -0400
-X-MC-Unique: ANGe5-KxPWawvnJd6mA_JA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BCE35101A586;
- Thu, 14 Mar 2024 16:58:41 +0000 (UTC)
-Received: from merkur.redhat.com (unknown [10.39.194.105])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 60F8B111E408;
- Thu, 14 Mar 2024 16:58:39 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, stefanha@redhat.com, hreitz@redhat.com,
- eblake@redhat.com, aliang@redhat.com, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org
-Subject: [PATCH for-9.0 2/2] iotests: Add test for reset/AioContext switches
- with NBD exports
-Date: Thu, 14 Mar 2024 17:58:25 +0100
-Message-ID: <20240314165825.40261-3-kwolf@redhat.com>
-In-Reply-To: <20240314165825.40261-1-kwolf@redhat.com>
-References: <20240314165825.40261-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rkoYK-00018H-3E
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 13:07:36 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
+ id 1rkoYI-00056p-6A
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 13:07:35 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-5685d46b199so1917757a12.3
+ for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 10:07:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710436052; x=1711040852; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=+uXJho7DjxrNCCW815rjV6N+SXU1gp6Idw3A08Wq44U=;
+ b=Gcute4tGmf+GIKjJsA3k4R3bw/tMCjcsErBhM7o7tv1ky5nLZquZc36oLwwoThy9wk
+ /UZzQ8IIIHlSa9DCXFDDIlQnGixXA/LiKRZaUaIx8ri6KdpvGIT4sqDB5nashyAIBIA8
+ uLYS/hRPUvxV2ruNUXmm1W+z1SQe7a1KQid/CKuuCXhaYxJxwHqNK/hhSMYft2PZvNFY
+ tMbHxqANRgGkoyF/1onBpvdhz+3TuPiVpwcckmqQx3sOvsWwKQjOn1iniw6nkeD5Mjj2
+ z0qbZSHGpiUgpow7bPibYeH3trDYXwR0s+Ba2vZhr0hrvbwz1GTsLokcst2unGFLM+VG
+ P7dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710436052; x=1711040852;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+uXJho7DjxrNCCW815rjV6N+SXU1gp6Idw3A08Wq44U=;
+ b=OX8YC8y3FUUUjnEFIBNiafY4c0XFxfy7Wuf1ltje9xru7y26bVNDIIDTQEkLZ2nood
+ nzphHeLdz3uvvf904rcm3SUu4sqAeYy4+bZ080xHZ/ZKVVV0vODZ5Jl2tvVWuz7Rjxnw
+ xKCQ1riHN08zlO4GPMFlIXe4cXoQuvXoaqr+Gq8DKdo/LdGaFJSEqpwe+Q+nBkW5PfUy
+ ix9CZQUUESrb88kjOk/NPecTq01nlaFEWToW1VDkOonzF5e02Mn9mphtT1yA934/u6f7
+ nwndWF0qa0Uw/yKixLAH/m7cTS7xls0tyctVZDIYLgS31driaydw//KwCzMBKvDi5Q81
+ x6JQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWVut5BW4jP2wy7V2nYGCJ8yO+CxpyxIuzAohw1fBabykKGb0RToq8dWXsY3ZLXur/7IH+Xgguvq1w27K/zfSMex7UghBc=
+X-Gm-Message-State: AOJu0YwsLkd6Li9O7GGGiLzE9R0ye8sBiHyhAuwsKcPV+r6dG2JYw6hv
+ GjOv8lcfhivNbYlmGdoFZuaRuzGAU+3ZuIiMhP+MNg91cHOXbeXxPbXCgUHlHAA=
+X-Google-Smtp-Source: AGHT+IGei9OT3Sq0h6JrGIM6TFdzoHwtiuGbjqakMFr9zSehyFgVUJJLHqwAoJ1Nv/oF3A5lj+EwBw==
+X-Received: by 2002:aa7:da85:0:b0:565:7116:11d with SMTP id
+ q5-20020aa7da85000000b005657116011dmr1384284eds.27.1710436052443; 
+ Thu, 14 Mar 2024 10:07:32 -0700 (PDT)
+Received: from localhost (cst2-173-16.cust.vodafone.cz. [31.30.173.16])
+ by smtp.gmail.com with ESMTPSA id
+ f6-20020a056402160600b005687f8721f9sm866171edv.82.2024.03.14.10.07.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Mar 2024 10:07:31 -0700 (PDT)
+Date: Thu, 14 Mar 2024 18:07:30 +0100
+From: Andrew Jones <ajones@ventanamicro.com>
+To: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
+Subject: Re: [PATCH v6 1/3] target/riscv: Enable mcontrol6 triggers only when
+ sdtrig is selected
+Message-ID: <20240314-00c015519323ddca7ac7de74@orel>
+References: <20240314113510.477862-1-hchauhan@ventanamicro.com>
+ <20240314113510.477862-2-hchauhan@ventanamicro.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240314113510.477862-2-hchauhan@ventanamicro.com>
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x533.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,119 +94,240 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replicates the scenario in which the bug was reported.
-Unfortunately this relies on actually executing a guest (so that the
-firmware initialises the virtio-blk device and moves it to its
-configured iothread), so this can't make use of the qtest accelerator
-like most other test cases. I tried to find a different easy way to
-trigger the bug, but couldn't find one.
+On Thu, Mar 14, 2024 at 05:05:08PM +0530, Himanshu Chauhan wrote:
+> The mcontrol6 triggers are not defined in debug specification v0.13
+> These triggers are defined in sdtrig ISA extension.
+> 
+> This patch:
+>    * Adds ext_sdtrig capability which is used to select mcontrol6 triggers
+>    * Keeps the debug property. All triggers that are defined in v0.13 are
+>      exposed.
+> 
+> Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c     |  4 +-
+>  target/riscv/cpu_cfg.h |  1 +
+>  target/riscv/csr.c     |  2 +-
+>  target/riscv/debug.c   | 90 +++++++++++++++++++++++++-----------------
+>  4 files changed, 57 insertions(+), 40 deletions(-)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index c160b9216b..2602aae9f5 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1008,7 +1008,7 @@ static void riscv_cpu_reset_hold(Object *obj)
+>      set_default_nan_mode(1, &env->fp_status);
+>  
+>  #ifndef CONFIG_USER_ONLY
+> -    if (cpu->cfg.debug) {
+> +    if (cpu->cfg.debug || cpu->cfg.ext_sdtrig) {
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- tests/qemu-iotests/tests/iothreads-nbd-export | 66 +++++++++++++++++++
- .../tests/iothreads-nbd-export.out            | 19 ++++++
- 2 files changed, 85 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/iothreads-nbd-export
- create mode 100644 tests/qemu-iotests/tests/iothreads-nbd-export.out
+I still don't see the point of adding '|| cpu->cfg.ext_sdtrig'. debug must
+be true when ext_sdtrig is true.
 
-diff --git a/tests/qemu-iotests/tests/iothreads-nbd-export b/tests/qemu-iotests/tests/iothreads-nbd-export
-new file mode 100755
-index 0000000000..63cac8fdbf
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-nbd-export
-@@ -0,0 +1,66 @@
-+#!/usr/bin/env python3
-+# group: rw quick
-+#
-+# Copyright (C) 2024 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+# Creator/Owner: Kevin Wolf <kwolf@redhat.com>
-+
-+import asyncio
-+import iotests
-+import qemu
-+import time
-+
-+iotests.script_initialize(supported_fmts=['qcow2'],
-+                          supported_platforms=['linux'])
-+
-+with iotests.FilePath('disk1.img') as path, \
-+     iotests.FilePath('nbd.sock', base_dir=iotests.sock_dir) as nbd_sock, \
-+     qemu.machine.QEMUMachine(iotests.qemu_prog) as vm:
-+
-+    img_size = '10M'
-+
-+    iotests.log('Preparing disk...')
-+    iotests.qemu_img_create('-f', iotests.imgfmt, path, img_size)
-+    vm.add_args('-blockdev', f'file,node-name=disk-file,filename={path}')
-+    vm.add_args('-blockdev', f'qcow2,node-name=disk,file=disk-file')
-+    vm.add_args('-object', 'iothread,id=iothread0')
-+    vm.add_args('-device', 'virtio-blk,drive=disk,iothread=iothread0,share-rw=on')
-+
-+    iotests.log('Launching VM...')
-+    vm.add_args('-accel', 'kvm', '-accel', 'tcg')
-+    #vm.add_args('-accel', 'qtest')
-+    vm.launch()
-+
-+    iotests.log('Exporting to NBD...')
-+    iotests.log(vm.qmp('nbd-server-start',
-+                       addr={'type': 'unix', 'data': {'path': nbd_sock}}))
-+    iotests.log(vm.qmp('block-export-add', type='nbd', id='exp0',
-+                       node_name='disk', writable=True))
-+
-+    iotests.log('Connecting qemu-img...')
-+    qemu_io = iotests.QemuIoInteractive('-f', 'raw',
-+                                        f'nbd+unix:///disk?socket={nbd_sock}')
-+
-+    iotests.log('Moving the NBD export to a different iothread...')
-+    for i in range(0, 10):
-+        iotests.log(vm.qmp('system_reset'))
-+        time.sleep(0.1)
-+
-+    iotests.log('Checking that it is still alive...')
-+    iotests.log(vm.qmp('query-status'))
-+
-+    qemu_io.close()
-+    vm.shutdown()
-diff --git a/tests/qemu-iotests/tests/iothreads-nbd-export.out b/tests/qemu-iotests/tests/iothreads-nbd-export.out
-new file mode 100644
-index 0000000000..bc514e35e5
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-nbd-export.out
-@@ -0,0 +1,19 @@
-+Preparing disk...
-+Launching VM...
-+Exporting to NBD...
-+{"return": {}}
-+{"return": {}}
-+Connecting qemu-img...
-+Moving the NBD export to a different iothread...
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+Checking that it is still alive...
-+{"return": {"running": true, "status": "running"}}
--- 
-2.44.0
+>          riscv_trigger_reset_hold(env);
+>      }
+>  
+> @@ -1168,7 +1168,7 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+>      riscv_cpu_register_gdb_regs_for_features(cs);
+>  
+>  #ifndef CONFIG_USER_ONLY
+> -    if (cpu->cfg.debug) {
+> +    if (cpu->cfg.debug || cpu->cfg.ext_sdtrig) {
+>          riscv_trigger_realize(&cpu->env);
+>      }
+>  #endif
+> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> index 2040b90da0..0c57e1acd4 100644
+> --- a/target/riscv/cpu_cfg.h
+> +++ b/target/riscv/cpu_cfg.h
+> @@ -114,6 +114,7 @@ struct RISCVCPUConfig {
+>      bool ext_zvfbfwma;
+>      bool ext_zvfh;
+>      bool ext_zvfhmin;
+> +    bool ext_sdtrig;
+>      bool ext_smaia;
+>      bool ext_ssaia;
+>      bool ext_sscofpmf;
+> diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+> index 726096444f..26623d3640 100644
+> --- a/target/riscv/csr.c
+> +++ b/target/riscv/csr.c
+> @@ -546,7 +546,7 @@ static RISCVException have_mseccfg(CPURISCVState *env, int csrno)
+>  
+>  static RISCVException debug(CPURISCVState *env, int csrno)
+>  {
+> -    if (riscv_cpu_cfg(env)->debug) {
+> +    if (riscv_cpu_cfg(env)->debug || riscv_cpu_cfg(env)->ext_sdtrig) {
+>          return RISCV_EXCP_NONE;
+>      }
+>  
+> diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+> index e30d99cc2f..674223e966 100644
+> --- a/target/riscv/debug.c
+> +++ b/target/riscv/debug.c
+> @@ -100,13 +100,15 @@ static trigger_action_t get_trigger_action(CPURISCVState *env,
+>      target_ulong tdata1 = env->tdata1[trigger_index];
+>      int trigger_type = get_trigger_type(env, trigger_index);
+>      trigger_action_t action = DBG_ACTION_NONE;
+> +    const RISCVCPUConfig *cfg = riscv_cpu_cfg(env);
+>  
+>      switch (trigger_type) {
+>      case TRIGGER_TYPE_AD_MATCH:
+>          action = (tdata1 & TYPE2_ACTION) >> 12;
+>          break;
+>      case TRIGGER_TYPE_AD_MATCH6:
+> -        action = (tdata1 & TYPE6_ACTION) >> 12;
+> +        if (cfg->ext_sdtrig)
+> +            action = (tdata1 & TYPE6_ACTION) >> 12;
 
+QEMU requires {}, even for single line blocks. I'm not sure if QEMU's
+checkpatch is smart enough to complain about that, but if you haven't
+run checkpatch, then you probably should.
+
+>          break;
+>      case TRIGGER_TYPE_INST_CNT:
+>      case TRIGGER_TYPE_INT:
+> @@ -727,7 +729,12 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
+>          type2_reg_write(env, env->trigger_cur, tdata_index, val);
+>          break;
+>      case TRIGGER_TYPE_AD_MATCH6:
+> -        type6_reg_write(env, env->trigger_cur, tdata_index, val);
+> +        if (riscv_cpu_cfg(env)->ext_sdtrig) {
+> +            type6_reg_write(env, env->trigger_cur, tdata_index, val);
+> +        } else {
+> +            qemu_log_mask(LOG_UNIMP, "trigger type: %d is not supported\n",
+> +                          trigger_type);
+> +        }
+>          break;
+>      case TRIGGER_TYPE_INST_CNT:
+>          itrigger_reg_write(env, env->trigger_cur, tdata_index, val);
+> @@ -750,9 +757,14 @@ void tdata_csr_write(CPURISCVState *env, int tdata_index, target_ulong val)
+>  
+>  target_ulong tinfo_csr_read(CPURISCVState *env)
+>  {
+> -    /* assume all triggers support the same types of triggers */
+> -    return BIT(TRIGGER_TYPE_AD_MATCH) |
+> -           BIT(TRIGGER_TYPE_AD_MATCH6);
+> +    target_ulong ts = 0;
+
+Useless initialization to zero since it's assigned in the next line.
+Actually, should just do
+
+  target_ulong ts = BIT(TRIGGER_TYPE_AD_MATCH);
+
+> +
+> +    ts = BIT(TRIGGER_TYPE_AD_MATCH);
+> +
+> +    if (riscv_cpu_cfg(env)->ext_sdtrig)
+> +        ts |= BIT(TRIGGER_TYPE_AD_MATCH6);
+
+Need {}
+
+> +
+> +    return ts;
+>  }
+>  
+>  void riscv_cpu_debug_excp_handler(CPUState *cs)
+> @@ -803,19 +815,21 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+>                  }
+>                  break;
+>              case TRIGGER_TYPE_AD_MATCH6:
+> -                ctrl = env->tdata1[i];
+> -                pc = env->tdata2[i];
+> -
+> -                if ((ctrl & TYPE6_EXEC) && (bp->pc == pc)) {
+> -                    if (env->virt_enabled) {
+> -                        /* check VU/VS bit against current privilege level */
+> -                        if ((ctrl >> 23) & BIT(env->priv)) {
+> -                            return true;
+> -                        }
+> -                    } else {
+> -                        /* check U/S/M bit against current privilege level */
+> -                        if ((ctrl >> 3) & BIT(env->priv)) {
+> -                            return true;
+> +                if (cpu->cfg.ext_sdtrig) {
+> +                    ctrl = env->tdata1[i];
+> +                    pc = env->tdata2[i];
+> +
+> +                    if ((ctrl & TYPE6_EXEC) && (bp->pc == pc)) {
+> +                        if (env->virt_enabled) {
+> +                            /* check VU/VS bit against current privilege level */
+> +                            if ((ctrl >> 23) & BIT(env->priv)) {
+> +                                return true;
+> +                            }
+> +                        } else {
+> +                            /* check U/S/M bit against current privilege level */
+> +                            if ((ctrl >> 3) & BIT(env->priv)) {
+> +                                return true;
+> +                            }
+>                          }
+>                      }
+>                  }
+> @@ -869,27 +883,29 @@ bool riscv_cpu_debug_check_watchpoint(CPUState *cs, CPUWatchpoint *wp)
+>              }
+>              break;
+>          case TRIGGER_TYPE_AD_MATCH6:
+> -            ctrl = env->tdata1[i];
+> -            addr = env->tdata2[i];
+> -            flags = 0;
+> +            if (cpu->cfg.ext_sdtrig) {
+> +                ctrl = env->tdata1[i];
+> +                addr = env->tdata2[i];
+> +                flags = 0;
+>  
+> -            if (ctrl & TYPE6_LOAD) {
+> -                flags |= BP_MEM_READ;
+> -            }
+> -            if (ctrl & TYPE6_STORE) {
+> -                flags |= BP_MEM_WRITE;
+> -            }
+> +                if (ctrl & TYPE6_LOAD) {
+> +                    flags |= BP_MEM_READ;
+> +                }
+> +                if (ctrl & TYPE6_STORE) {
+> +                    flags |= BP_MEM_WRITE;
+> +                }
+>  
+> -            if ((wp->flags & flags) && (wp->vaddr == addr)) {
+> -                if (env->virt_enabled) {
+> -                    /* check VU/VS bit against current privilege level */
+> -                    if ((ctrl >> 23) & BIT(env->priv)) {
+> -                        return true;
+> -                    }
+> -                } else {
+> -                    /* check U/S/M bit against current privilege level */
+> -                    if ((ctrl >> 3) & BIT(env->priv)) {
+> -                        return true;
+> +                if ((wp->flags & flags) && (wp->vaddr == addr)) {
+> +                    if (env->virt_enabled) {
+> +                        /* check VU/VS bit against current privilege level */
+> +                        if ((ctrl >> 23) & BIT(env->priv)) {
+> +                            return true;
+> +                        }
+> +                    } else {
+> +                        /* check U/S/M bit against current privilege level */
+> +                        if ((ctrl >> 3) & BIT(env->priv)) {
+> +                            return true;
+> +                        }
+>                      }
+>                  }
+>              }
+> -- 
+> 2.34.1
+>
+
+For the two TRIGGER_TYPE_AD_MATCH6 cases above in
+riscv_cpu_debug_check_breakpoint() and riscv_cpu_debug_check_watchpoint()
+I'd just put a
+
+ if (!cpu->cfg.ext_sdtrig) {
+     break;
+ }
+
+at the top of the code, rather than indenting everything. But either way
+is fine.
+
+Thanks,
+drew
 
