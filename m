@@ -2,76 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FB1887BFD8
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:24:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6B187BFF9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:25:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkmv3-00078c-UC; Thu, 14 Mar 2024 11:22:57 -0400
+	id 1rkmvP-0007Ep-KP; Thu, 14 Mar 2024 11:23:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rkmuz-00078J-Av
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:22:53 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rkmvO-0007E6-6n
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rkmuw-0003iL-Qs
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:22:53 -0400
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1rkmvM-0003kX-2B
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710429768;
+ s=mimecast20190719; t=1710429794;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YBLsaHQRWmgI5xtRyjnZlSrZ5Mfmm95p7kFi0A/ame0=;
- b=XQCtsBoCQFQlIHUYZEpWLDm0nLc5Ujb1FfvWHCbK9o9oCKxLORpdEL0eJQpb51DFI6rhoe
- 4IFqg85uucCU8Xe8HNY+syQ+/2kI+vq/oe1m8A6gmepwSbf1lvKm2JtfGtY133crROKLSU
- 451PcpTRYgkmxt987lf24Tk9/2JPFCk=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-15-UhLMvhIsO42Mzhwjdhgg5g-1; Thu, 14 Mar 2024 11:22:46 -0400
-X-MC-Unique: UhLMvhIsO42Mzhwjdhgg5g-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-690d3f5af86so3691406d6.0
- for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 08:22:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710429766; x=1711034566;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=YBLsaHQRWmgI5xtRyjnZlSrZ5Mfmm95p7kFi0A/ame0=;
- b=D1IeFXZSCiyUOchjjq9s1vVsCtQaymZssAp3LEF0uX5LWfkANTyBZetwIdqL+/w66s
- 0FAhk2KITeIkee54E7N+jYKSfwyoUgh7ovmyOyp0FafvAUW8hebFcS1hADO1NejFZesX
- KEqAFo2+8eJJVxJwyE5+WrdpSx/e0m7fpXEB4qSMJJ5If64Jihf97p6fOnJ5VmGX9hJf
- uQhl5JjYKMM40iytV43PWB//Mtb7ZAQTAKbj1AsZ0GMv/o80ItypikkuHzDf9MKhQ+rT
- 7j8zjUEZZV/j+dFyEPmMFKy+tJdS5dwcS7TQ6hcsTfyZE4GocrYpPAVySgoO2A3RTP3L
- X/Qg==
-X-Gm-Message-State: AOJu0YxC1FM34tdoTK/GM8IuTS4aeuWLzZuG+30b+lgM5hmpb/oR4fQw
- bj3hx9DS0nuNsXug4MHnQ/rCmP5HgLdMeDpzYTHGpfcMNO0Em/BwwP4qb+ntGVhaIa4QMi5Ub8e
- PWTBTDc7akrP6LTk+xD/Fl/Xfw8o32XRUCaW8Vy8LI8c5QUFmbLhj9HVmFUTQ
-X-Received: by 2002:a05:6214:2b87:b0:690:d74d:7e6d with SMTP id
- kr7-20020a0562142b8700b00690d74d7e6dmr2111552qvb.3.1710429766057; 
- Thu, 14 Mar 2024 08:22:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFrgr8ZehAZbR6Bcchlz4mFY+tU2MLAQmy9t1bwtYO1AAGIjwUoXsvYUT0fzokglRpQz4nbfg==
-X-Received: by 2002:a05:6214:2b87:b0:690:d74d:7e6d with SMTP id
- kr7-20020a0562142b8700b00690d74d7e6dmr2111534qvb.3.1710429765625; 
- Thu, 14 Mar 2024 08:22:45 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- 9-20020a0562140d4900b006904d35e1c6sm577741qvr.58.2024.03.14.08.22.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 14 Mar 2024 08:22:45 -0700 (PDT)
-Date: Thu, 14 Mar 2024 11:22:44 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v2 0/2] migration mapped-ram fixes
-Message-ID: <ZfMWRBDN4wPQsOWI@x1n>
-References: <20240313212824.16974-1-farosas@suse.de>
+ bh=3/NK4ZQnSPqZ/NjcmuEjo1fejMTyk3aJALKwU//Qpd4=;
+ b=KrrXf3303bADK/U9oHyt2HtQyGsnGWXKQiP5l0Eg0BrQq9vnu26PfLe2LdTzKnVA4g6Ij+
+ r+DvDdtSwZNiM3wuHK9zGSol7msonGjMjJgXSGZT+nmRfaDyHiRWaJK/qEl9d4doo0TJxi
+ qaAk6/dLuFcVPwhNpStr8X4Cbwwy16A=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-Goy66hFEMRS7x3kqJggg5A-1; Thu,
+ 14 Mar 2024 11:23:09 -0400
+X-MC-Unique: Goy66hFEMRS7x3kqJggg5A-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 177C93C0CD49;
+ Thu, 14 Mar 2024 15:23:09 +0000 (UTC)
+Received: from dell-r430-03.lab.eng.brq2.redhat.com
+ (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 362D910F53;
+ Thu, 14 Mar 2024 15:23:08 +0000 (UTC)
+From: Igor Mammedov <imammedo@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PATCH v4 04/21] smbios: cleanup smbios_get_tables() from legacy
+ handling
+Date: Thu, 14 Mar 2024 16:22:45 +0100
+Message-Id: <20240314152302.2324164-5-imammedo@redhat.com>
+In-Reply-To: <20240314152302.2324164-1-imammedo@redhat.com>
+References: <20240314152302.2324164-1-imammedo@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240313212824.16974-1-farosas@suse.de>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -96,60 +83,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 13, 2024 at 06:28:22PM -0300, Fabiano Rosas wrote:
-> Hi,
-> 
-> In this v2:
-> 
-> patch 1 - The fix for the ioc leaks, now including the main channel
-> 
-> patch 2 - A fix for an fd: migration case I thought I had written code
->           for, but obviously didn't.
+smbios_get_tables() bails out right away if leagacy mode is enabled
+and won't generate any SMBIOS tables. At the same time x86 specific
+fw_cfg_build_smbios() will genarate legacy tables and then proceed
+to preparing temporary mem_array for useless call to
+smbios_get_tables() and then discard it.
 
-Maybe I found one more issue.. I'm looking at fd_start_outgoing_migration().
+Drop legacy related check in smbios_get_tables() and return from
+fw_cfg_build_smbios() early if legacy tables where built without
+proceeding to non legacy part of the function.
 
-    ioc = qio_channel_new_fd(fd, errp);  <----- here the fd is consumed and
-                                                then owned by the IOC
-    if (!ioc) {
-        close(fd);
-        return;
-    }
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ hw/i386/fw_cfg.c   | 1 +
+ hw/smbios/smbios.c | 6 ------
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-    outgoing_args.fd = fd;               <----- here we use the fd again,
-                                                and "owned" by outgoing_args
-                                                even if it shouldn't?
-
-The problem is outgoing_args.fd will be cleaned up with a close().  I had a
-feeling that it's possible it will close() something else if the fd reused
-before that close() but after the IOC's.  We may want yet another dup() for
-outgoing_args.fd?
-
-If you agree, we may also want to avoid doing:
-
-    outgoing_args.fd = -1;
-
-We could assert it instead making sure no fd leak.
-
-> 
-> Thank you for your patience.
-> 
-> based-on: https://gitlab.com/peterx/qemu/-/commits/migration-stable
-> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1212483701
-> 
-> Fabiano Rosas (2):
->   migration: Fix iocs leaks during file and fd migration
->   migration/multifd: Ensure we're not given a socket for file migration
-> 
->  migration/fd.c   | 35 +++++++++++---------------
->  migration/file.c | 65 ++++++++++++++++++++++++++++++++----------------
->  migration/file.h |  1 +
->  3 files changed, 60 insertions(+), 41 deletions(-)
-> 
-> -- 
-> 2.35.3
-> 
-
+diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+index 98a478c276..a635234e68 100644
+--- a/hw/i386/fw_cfg.c
++++ b/hw/i386/fw_cfg.c
+@@ -74,6 +74,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+     if (smbios_tables) {
+         fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
+                          smbios_tables, smbios_tables_len);
++        return;
+     }
+ 
+     /* build the array of physical mem area from e820 table */
+diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
+index e3d5d8f2e2..22369b49fb 100644
+--- a/hw/smbios/smbios.c
++++ b/hw/smbios/smbios.c
+@@ -1229,12 +1229,6 @@ void smbios_get_tables(MachineState *ms,
+ {
+     unsigned i, dimm_cnt, offset;
+ 
+-    if (smbios_legacy) {
+-        *tables = *anchor = NULL;
+-        *tables_len = *anchor_len = 0;
+-        return;
+-    }
+-
+     if (!smbios_immutable) {
+         smbios_build_type_0_table();
+         smbios_build_type_1_table();
 -- 
-Peter Xu
+2.39.3
 
 
