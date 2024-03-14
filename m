@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1421A87BFE8
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5A187BFE9
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:24:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkmvr-0007lS-2Y; Thu, 14 Mar 2024 11:23:47 -0400
+	id 1rkmvQ-0007Gn-UI; Thu, 14 Mar 2024 11:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvk-0007Y3-Ed
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rkmvP-0007Eo-2G
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvi-0003pz-Q8
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:40 -0400
+ id 1rkmvN-0003kl-3Q
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710429818;
+ s=mimecast20190719; t=1710429796;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BNuuVqbnFf2X69DI7r1mO8VtMUdjo1Mq9PEC3PxXYoI=;
- b=iNQXo+ug82/EWPBMwHeSPK2DCIgS2ZfippPFb62PJ5TJebJ/j+ECk5qYI0Ndjcc/pslG1c
- NGq1nPoseVyAlT/7Gc9Hsue2KzhOI+S6XYehgdQv9gK60SCkDav6XySzTh4++Cj40DISHD
- d8Y9So+zi5/tAsXxGRwbK0G6TxB5Anw=
+ bh=CRZL1avzWzkFLwaz2cNBVYSLwzPOC1TZbFobGDjGVns=;
+ b=fiVUmBCW5ih33EkiuZYxNCjAn28OGCAmO7b6oh+ClG/LwgUrJ7LXjcrAhWQ4RBZ92jxZh7
+ /lxHM1Bb1iw2ryh4vyt0KZyu5ntIDjbrYJNOtOiGJ+/uPtNTSvpoMFGDb3pVptF4hJW2St
+ LSyUgDH2f8lz/S3mBmJASdEc+bWd+LA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-130-Kx76xNPMN4qrcwmYJ36FDA-1; Thu, 14 Mar 2024 11:23:10 -0400
-X-MC-Unique: Kx76xNPMN4qrcwmYJ36FDA-1
+ us-mta-411-rxb-JrEBNAW_0TmrBhBgSA-1; Thu, 14 Mar 2024 11:23:11 -0400
+X-MC-Unique: rxb-JrEBNAW_0TmrBhBgSA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 254EC1019DFF;
- Thu, 14 Mar 2024 15:23:10 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 53D04185A784;
+ Thu, 14 Mar 2024 15:23:11 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 45DF6111E5;
- Thu, 14 Mar 2024 15:23:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5639C10F53;
+ Thu, 14 Mar 2024 15:23:10 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PATCH v4 05/21] smbios: get rid of smbios_smp_sockets global
-Date: Thu, 14 Mar 2024 16:22:46 +0100
-Message-Id: <20240314152302.2324164-6-imammedo@redhat.com>
+Subject: [PATCH v4 06/21] smbios: get rid of smbios_legacy global
+Date: Thu, 14 Mar 2024 16:22:47 +0100
+Message-Id: <20240314152302.2324164-7-imammedo@redhat.com>
 In-Reply-To: <20240314152302.2324164-1-imammedo@redhat.com>
 References: <20240314152302.2324164-1-imammedo@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -82,118 +83,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-it makes smbios_validate_table() independent from
-smbios_smp_sockets global, which in turn lets
-smbios_get_tables() avoid using not related legacy code.
+clean up smbios_set_defaults() which is reused by legacy
+and non legacy machines from being aware of 'legacy' notion
+and need to turn it off. And push legacy handling up to
+PC machine code where it's relevant.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Acked-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
-goal here is to isolate legacy handling from generic smbios_get_tables()
+PS: I've moved/kept legacy smbios_entries to smbios_get_tables()
+but it at least is not visible to API users. To get rid of it
+as well, it would be necessary to change how '-smbios' CLI
+option is processed. Which is done later in the series.
 ---
  include/hw/firmware/smbios.h |  2 +-
- hw/i386/fw_cfg.c             |  2 +-
- hw/smbios/smbios.c           | 22 +++++++++-------------
- 3 files changed, 11 insertions(+), 15 deletions(-)
+ hw/arm/virt.c                |  2 +-
+ hw/i386/fw_cfg.c             |  7 ++++---
+ hw/loongarch/virt.c          |  2 +-
+ hw/riscv/virt.c              |  2 +-
+ hw/smbios/smbios.c           | 35 +++++++++++++++--------------------
+ 6 files changed, 23 insertions(+), 27 deletions(-)
 
 diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
-index c21b8d3285..36744b6cc9 100644
+index 36744b6cc9..7b42e7b4ac 100644
 --- a/include/hw/firmware/smbios.h
 +++ b/include/hw/firmware/smbios.h
-@@ -313,7 +313,7 @@ void smbios_set_defaults(const char *manufacturer, const char *product,
-                          const char *version, bool legacy_mode,
+@@ -310,7 +310,7 @@ struct smbios_type_127 {
+ void smbios_entry_add(QemuOpts *opts, Error **errp);
+ void smbios_set_cpuid(uint32_t version, uint32_t features);
+ void smbios_set_defaults(const char *manufacturer, const char *product,
+-                         const char *version, bool legacy_mode,
++                         const char *version,
                           bool uuid_encoded, SmbiosEntryPointType ep_type);
  void smbios_set_default_processor_family(uint16_t processor_family);
--uint8_t *smbios_get_table_legacy(MachineState *ms, size_t *length);
-+uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length);
- void smbios_get_tables(MachineState *ms,
-                        const struct smbios_phys_mem_area *mem_array,
-                        const unsigned int mem_array_size,
+ uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length);
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index e5cd935232..b634c908a7 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1650,7 +1650,7 @@ static void virt_build_smbios(VirtMachineState *vms)
+     }
+ 
+     smbios_set_defaults("QEMU", product,
+-                        vmc->smbios_old_sys_ver ? "1.0" : mc->name, false,
++                        vmc->smbios_old_sys_ver ? "1.0" : mc->name,
+                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+ 
+     /* build the array of physical mem area from base_memmap */
 diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index a635234e68..fcb4fb0769 100644
+index fcb4fb0769..c1e9c0fd9c 100644
 --- a/hw/i386/fw_cfg.c
 +++ b/hw/i386/fw_cfg.c
-@@ -70,7 +70,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+@@ -63,15 +63,16 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
+     if (pcmc->smbios_defaults) {
+         /* These values are guest ABI, do not change */
+         smbios_set_defaults("QEMU", mc->desc, mc->name,
+-                            pcmc->smbios_legacy_mode, pcmc->smbios_uuid_encoded,
++                            pcmc->smbios_uuid_encoded,
+                             pcms->smbios_entry_point_type);
+     }
+ 
      /* tell smbios about cpuid version and features */
      smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
  
--    smbios_tables = smbios_get_table_legacy(ms, &smbios_tables_len);
-+    smbios_tables = smbios_get_table_legacy(ms->smp.cpus, &smbios_tables_len);
-     if (smbios_tables) {
+-    smbios_tables = smbios_get_table_legacy(ms->smp.cpus, &smbios_tables_len);
+-    if (smbios_tables) {
++    if (pcmc->smbios_legacy_mode) {
++        smbios_tables = smbios_get_table_legacy(ms->smp.cpus,
++                                                &smbios_tables_len);
          fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
                           smbios_tables, smbios_tables_len);
+         return;
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index efce112310..53bfdcee61 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -355,7 +355,7 @@ static void virt_build_smbios(LoongArchMachineState *lams)
+         return;
+     }
+ 
+-    smbios_set_defaults("QEMU", product, mc->name, false,
++    smbios_set_defaults("QEMU", product, mc->name,
+                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+ 
+     smbios_get_tables(ms, NULL, 0, &smbios_tables, &smbios_tables_len,
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index a094af97c3..535fd047ba 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -1275,7 +1275,7 @@ static void virt_build_smbios(RISCVVirtState *s)
+         product = "KVM Virtual Machine";
+     }
+ 
+-    smbios_set_defaults("QEMU", product, mc->name, false,
++    smbios_set_defaults("QEMU", product, mc->name,
+                         true, SMBIOS_ENTRY_POINT_TYPE_64);
+ 
+     if (riscv_is_32bit(&s->soc[0])) {
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 22369b49fb..50617fa585 100644
+index 50617fa585..1bae36a6e0 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -70,7 +70,7 @@ static SmbiosEntryPoint ep;
- static int smbios_type4_count = 0;
- static bool smbios_immutable;
- static bool smbios_have_defaults;
--static uint32_t smbios_cpuid_version, smbios_cpuid_features, smbios_smp_sockets;
-+static uint32_t smbios_cpuid_version, smbios_cpuid_features;
+@@ -54,7 +54,6 @@ struct smbios_table {
  
- static DECLARE_BITMAP(have_binfile_bitmap, SMBIOS_MAX_TYPE+1);
- static DECLARE_BITMAP(have_fields_bitmap, SMBIOS_MAX_TYPE+1);
-@@ -539,14 +539,11 @@ opts_init(smbios_register_config);
-  */
- #define SMBIOS_21_MAX_TABLES_LEN 0xffff
+ static uint8_t *smbios_entries;
+ static size_t smbios_entries_len;
+-static bool smbios_legacy = true;
+ static bool smbios_uuid_encoded = true;
+ /* end: legacy structures & constants for <= 2.0 machines */
  
--static void smbios_validate_table(MachineState *ms)
-+static void smbios_validate_table(uint32_t expected_t4_count)
+@@ -633,9 +632,16 @@ static void smbios_build_type_1_fields(void)
+ 
+ uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
  {
--    uint32_t expect_t4_count = smbios_legacy ?
--                                        ms->smp.cpus : smbios_smp_sockets;
--
--    if (smbios_type4_count && smbios_type4_count != expect_t4_count) {
-+    if (smbios_type4_count && smbios_type4_count != expected_t4_count) {
-         error_report("Expected %d SMBIOS Type 4 tables, got %d instead",
--                     expect_t4_count, smbios_type4_count);
-+                     expected_t4_count, smbios_type4_count);
-         exit(1);
+-    if (!smbios_legacy) {
+-        *length = 0;
+-        return NULL;
++    /* drop unwanted version of command-line file blob(s) */
++    g_free(smbios_tables);
++    smbios_tables = NULL;
++
++    /* also complain if fields were given for types > 1 */
++    if (find_next_bit(have_fields_bitmap,
++                      SMBIOS_MAX_TYPE + 1, 2) < SMBIOS_MAX_TYPE + 1) {
++        error_report("can't process fields for smbios "
++                     "types > 1 on machine versions < 2.1!");
++        exit(1);
      }
  
-@@ -634,7 +631,7 @@ static void smbios_build_type_1_fields(void)
-     }
+     if (!smbios_immutable) {
+@@ -1129,28 +1135,13 @@ void smbios_set_default_processor_family(uint16_t processor_family)
  }
  
--uint8_t *smbios_get_table_legacy(MachineState *ms, size_t *length)
-+uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
+ void smbios_set_defaults(const char *manufacturer, const char *product,
+-                         const char *version, bool legacy_mode,
++                         const char *version,
+                          bool uuid_encoded, SmbiosEntryPointType ep_type)
  {
-     if (!smbios_legacy) {
-         *length = 0;
-@@ -644,7 +641,7 @@ uint8_t *smbios_get_table_legacy(MachineState *ms, size_t *length)
+     smbios_have_defaults = true;
+-    smbios_legacy = legacy_mode;
+     smbios_uuid_encoded = uuid_encoded;
+     smbios_ep_type = ep_type;
+ 
+-    /* drop unwanted version of command-line file blob(s) */
+-    if (smbios_legacy) {
+-        g_free(smbios_tables);
+-        /* in legacy mode, also complain if fields were given for types > 1 */
+-        if (find_next_bit(have_fields_bitmap,
+-                          SMBIOS_MAX_TYPE+1, 2) < SMBIOS_MAX_TYPE+1) {
+-            error_report("can't process fields for smbios "
+-                         "types > 1 on machine versions < 2.1!");
+-            exit(1);
+-        }
+-    } else {
+-        g_free(smbios_entries);
+-    }
+-
+     SMBIOS_SET_DEFAULT(type1.manufacturer, manufacturer);
+     SMBIOS_SET_DEFAULT(type1.product, product);
+     SMBIOS_SET_DEFAULT(type1.version, version);
+@@ -1226,6 +1217,10 @@ void smbios_get_tables(MachineState *ms,
+ {
+     unsigned i, dimm_cnt, offset;
+ 
++    /* drop unwanted (legacy) version of command-line file blob(s) */
++    g_free(smbios_entries);
++    smbios_entries = NULL;
++
      if (!smbios_immutable) {
-         smbios_build_type_0_fields();
-         smbios_build_type_1_fields();
--        smbios_validate_table(ms);
-+        smbios_validate_table(expected_t4_count);
-         smbios_immutable = true;
-     }
-     *length = smbios_entries_len;
-@@ -1235,10 +1232,9 @@ void smbios_get_tables(MachineState *ms,
-         smbios_build_type_2_table();
-         smbios_build_type_3_table();
- 
--        smbios_smp_sockets = ms->smp.sockets;
--        assert(smbios_smp_sockets >= 1);
-+        assert(ms->smp.sockets >= 1);
- 
--        for (i = 0; i < smbios_smp_sockets; i++) {
-+        for (i = 0; i < ms->smp.sockets; i++) {
-             smbios_build_type_4_table(ms, i);
-         }
- 
-@@ -1284,7 +1280,7 @@ void smbios_get_tables(MachineState *ms,
-         smbios_build_type_41_table(errp);
-         smbios_build_type_127_table();
- 
--        smbios_validate_table(ms);
-+        smbios_validate_table(ms->smp.sockets);
-         smbios_entry_point_setup();
-         smbios_immutable = true;
-     }
+         smbios_build_type_0_table();
+         smbios_build_type_1_table();
 -- 
 2.39.3
 
