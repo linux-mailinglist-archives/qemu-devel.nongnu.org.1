@@ -2,65 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3D2587BBD0
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 12:18:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0095887BC04
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 12:37:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkj69-0005Ab-6t; Thu, 14 Mar 2024 07:18:13 -0400
+	id 1rkjNC-0001NN-73; Thu, 14 Mar 2024 07:35:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rkj5v-00058h-Jz
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 07:17:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ppandit@redhat.com>)
- id 1rkj5u-0003QR-2X
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 07:17:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710415073;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=vCIE0YmZFuvbvv/sX02hPd9ARHpV/dzxOgjsuL+QjFw=;
- b=ThEQUx9Pwp+Jz51vL8FWnMuCZSoA0xg+1RR42s8JVHTTeuEKVAsKciP55FlqtXBCghQ9Ge
- gYGOwcE+5lciD+hMpiXOaqksLLCdnytk2Ge+Jex4oeswv6SENF97Qr5RmHgTwWyQLCXnBF
- dJWpm9H741lmUWUXt7pdhULZvQ0f/zQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-443-_Kqej3gPNw-v4sE_GsavSg-1; Thu, 14 Mar 2024 07:17:49 -0400
-X-MC-Unique: _Kqej3gPNw-v4sE_GsavSg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 42ABE101A586;
- Thu, 14 Mar 2024 11:17:49 +0000 (UTC)
-Received: from kaapi.redhat.com (unknown [10.67.24.5])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F2C1BC1576F;
- Thu, 14 Mar 2024 11:17:45 +0000 (UTC)
-From: Prasad Pandit <ppandit@redhat.com>
-To: stefanha@redhat.com
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, kwolf@redhat.com,
- mtosatti@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH] file-posix: rearrange BDRVRawState fields
-Date: Thu, 14 Mar 2024 16:47:41 +0530
-Message-ID: <20240314111741.1508705-1-ppandit@redhat.com>
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rkjMr-0001Kx-Jk
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 07:35:26 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <hchauhan@ventanamicro.com>)
+ id 1rkjMi-0007Gm-DO
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 07:35:21 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1dde367a10aso247245ad.0
+ for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 04:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710416114; x=1711020914; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VVVLOLyRJ+K930ODIuaC3Y3UaTGDwGJudFyiwPiu4KI=;
+ b=chGoOelmHMsNGMUcD7zuEtIYJRAh14Z/7puGcmT/7L2y/cdxjq+1PY8UiPzQtTdch8
+ IAfyFjd8xsqTAaAYkVZM44n24Q8aLNbHrMD6732GuFCFuhGHAy4riytwrGIlUPcN56/h
+ 3ctVAXzc/lvTZvVLdlbEG4SwXc6kE3vyrVFYV4W9KGiEQC8JF75e60Y5L9g7pFUf2FT5
+ NbOoDrbc30B9Ats4qJXhx4qQdwsOi9qL09KgPpfxXFicV810RSQCnoDa7V0fK5IzvPai
+ 1If0JR5QjYEWVXTUQilVNFylhXb44WNyxJdUzm3chJb++CqIS8tc2461qsT4JpxEf3uc
+ WN8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710416114; x=1711020914;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VVVLOLyRJ+K930ODIuaC3Y3UaTGDwGJudFyiwPiu4KI=;
+ b=LdP67F1r6ZqSkCvWiqT5hgPdj1OlVFgU/mwlHPTMmKzRlZ3HY41o6NWizS+q38zYWX
+ E/eQKn3UuFS1VOV6P4ymTTWpdQflC71Y0SqlE7kdFRUe9gMn3uQXtYIaS2mpEM5SgOTo
+ JQoA4bDW1STFzYGxxfzYSZ9YJSWNj+zCiI40G30qsobs6T7ZFgVTJMXUZeZGjhJ8zS31
+ SySNinK5H9Nlp5PfqpwGxemZF8pHHj3o8GAM6jTwv/YqKDlrDU20CveSy07SGUD448c8
+ yKwLCg5A5WnvPfa9/akU2I4ZJS/ehTCDhCU4skh0HjZeOe9s5RVEq32NRdY/VajOPkAO
+ oJyQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWRUUP7Fdq45z/4QpvEkaTzyYF4TM1P7uGdb7kyf4Xmuj4uVA+KdJkexIylVznQai2ABxSzwnxqz3ucW0fTeZuJvFaVEpQ=
+X-Gm-Message-State: AOJu0Yw4qcoPQs6IDRFbCZF9+ZCPhxcGSXlxH1qaIW/0LG/zFEdVP2wk
+ 4pjNklUQx1Kf0Q0YSIBHdmnKfjHGO2S9uJbmOZdmih34rbnDMG1nK22xjFT+Ik0=
+X-Google-Smtp-Source: AGHT+IHtHeOi51JCCfYD3j7qhpwzHIkGhFu0lWnwYohYWvkccQv882A9wEQrENt+2riU01R9p1FGhQ==
+X-Received: by 2002:a17:902:e551:b0:1db:f23f:676c with SMTP id
+ n17-20020a170902e55100b001dbf23f676cmr1577581plf.0.1710416114162; 
+ Thu, 14 Mar 2024 04:35:14 -0700 (PDT)
+Received: from aryabhatta.. ([49.37.251.185]) by smtp.gmail.com with ESMTPSA id
+ y7-20020a17090322c700b001dc6f7e794dsm1465859plg.16.2024.03.14.04.35.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 14 Mar 2024 04:35:13 -0700 (PDT)
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: ajones@ventanamicro.com
+Subject: [PATCH v6 0/3] Introduce sdtrig ISA extension
+Date: Thu, 14 Mar 2024 17:05:07 +0530
+Message-Id: <20240314113510.477862-1-hchauhan@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=ppandit@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=hchauhan@ventanamicro.com; helo=mail-pl1-x62c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,84 +90,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Prasad Pandit <pjp@fedoraproject.org>
+All the CPUs may or may not implement the debug triggers. Some CPUs
+may implement only debug specification v0.13 and not sdtrig ISA
+extension.
 
-Rearrange BRDVRawState structure fields to avoid memory
-fragments in its object's memory and save some(~8) bytes
-per object.
+This patchset, adds sdtrig ISA as an extension which can be turned on or off by
+sdtrig=<true/false> option. It is turned off by default.
 
-Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
----
- block/file-posix.c | 39 +++++++++++++++++++--------------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+When debug is true and sdtrig is false, the behaviour is as defined in debug
+specification v0.13. If sdtrig is turned on, the behaviour is as defined
+in the sdtrig ISA extension.
 
-diff --git a/block/file-posix.c b/block/file-posix.c
-index 78a8cea03b..584346ea3e 100644
---- a/block/file-posix.c
-+++ b/block/file-posix.c
-@@ -135,12 +135,6 @@
- #define RAW_LOCK_SHARED_BASE           200
- 
- typedef struct BDRVRawState {
--    int fd;
--    bool use_lock;
--    int type;
--    int open_flags;
--    size_t buf_align;
--
-     /* The current permissions. */
-     uint64_t perm;
-     uint64_t shared_perm;
-@@ -151,29 +145,34 @@ typedef struct BDRVRawState {
-     uint64_t locked_shared_perm;
- 
-     uint64_t aio_max_batch;
-+    struct {
-+        uint64_t discard_nb_ok;
-+        uint64_t discard_nb_failed;
-+        uint64_t discard_bytes_ok;
-+    } stats;
- 
-+    PRManager *pr_mgr;
-+    BDRVReopenState *reopen_state;
-+
-+    size_t buf_align;
-+    int fd;
-+    int type;
-+    int open_flags;
-     int perm_change_fd;
-     int perm_change_flags;
--    BDRVReopenState *reopen_state;
-+    int page_cache_inconsistent; /* errno from fdatasync failure */
- 
-+    bool use_lock;
-+    bool has_fallocate;
-+    bool needs_alignment;
-+    bool force_alignment;
-+    bool drop_cache;
-+    bool check_cache_dropped;
-     bool has_discard:1;
-     bool has_write_zeroes:1;
-     bool use_linux_aio:1;
-     bool has_laio_fdsync:1;
-     bool use_linux_io_uring:1;
--    int page_cache_inconsistent; /* errno from fdatasync failure */
--    bool has_fallocate;
--    bool needs_alignment;
--    bool force_alignment;
--    bool drop_cache;
--    bool check_cache_dropped;
--    struct {
--        uint64_t discard_nb_ok;
--        uint64_t discard_nb_failed;
--        uint64_t discard_bytes_ok;
--    } stats;
--
--    PRManager *pr_mgr;
- } BDRVRawState;
- 
- typedef struct BDRVRawReopenState {
+The "sdtrig" string is concatenated to ISA string when debug or sdtrig is enabled.
+
+Changes from v1:
+  - Replaced the debug property with ext_sdtrig
+  - Marked it experimenatal by naming it x-sdtrig
+  - x-sdtrig is added to ISA string
+  - Reversed the patch order
+
+Changes from v2:
+  - Mark debug property as deprecated and replace internally with sdtrig extension
+  - setting/unsetting debug property shows warning and sets/unsets ext_sdtrig
+  - sdtrig is added to ISA string as RISC-V debug specification is frozen
+
+Changes from v3:
+  - debug propery is not deprecated but it is superceded by sdtrig extension
+  - Mcontrol6 support is not published when only debug property is turned
+    on as debug spec v0.13 doesn't define mcontrol6 match triggers.
+  - Enabling sdtrig extension turns of debug property and a warning is printed.
+    This doesn't break debug specification implemenation since sdtrig is
+    backward compatible with debug specification.
+  - Disable debug property and enable sdtrig by default for Ventana's Veyron
+    CPUs.
+
+Changes from v4:
+  - Enable debug flag if sdtrig was enabled but debug was disabled.
+  - Other cosmetic changes.
+
+Changes from v5:
+  - Addressed comments from Andrew Jones
+
+Himanshu Chauhan (3):
+  target/riscv: Enable mcontrol6 triggers only when sdtrig is selected
+  target/riscv: Expose sdtrig ISA extension
+  target/riscv: Enable sdtrig for Ventana's Veyron CPUs
+
+ target/riscv/cpu.c     | 12 +++++-
+ target/riscv/cpu_cfg.h |  1 +
+ target/riscv/csr.c     |  2 +-
+ target/riscv/debug.c   | 90 +++++++++++++++++++++++++-----------------
+ 4 files changed, 65 insertions(+), 40 deletions(-)
+
 -- 
-2.44.0
+2.34.1
 
 
