@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B838D87B6C5
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 04:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA0187B6D6
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 04:25:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkbap-0001D8-OI; Wed, 13 Mar 2024 23:17:19 -0400
+	id 1rkbi9-000374-TV; Wed, 13 Mar 2024 23:24:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rkbao-0001Cx-1i
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 23:17:18 -0400
+ id 1rkbi7-000362-Gh
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 23:24:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rkbam-0004O4-By
- for qemu-devel@nongnu.org; Wed, 13 Mar 2024 23:17:17 -0400
+ id 1rkbi5-0005Rs-Vh
+ for qemu-devel@nongnu.org; Wed, 13 Mar 2024 23:24:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710386235;
+ s=mimecast20190719; t=1710386688;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vIRm92YhYpNm+QdRridioRsN+lBAYV/KCrGfaUe0z4A=;
- b=N/pYqqDUZrEuYPkYnDIfxJYgTukbIAMx3RAuPC4hpjAeyVndbbr6IuTr2WMrbn2LOh4EIQ
- I25RUELDvDPXQyR7Vjt4970XLatYefV6bdjGAeJcDGSrZ+wLIXev3WrpFJXNfwgmJfmplP
- BKLJoVVsX0GlUfi2SpYU/nQBblwTLtg=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8l6GDiQ30I+perZVPKckMJTL3NiBCH47KmE/HyWeOhg=;
+ b=FYX/z4v7YUbKa9pfM6bxTANhS7tvyj43RXwT2IrQIJ0v5fRbNd9yr2D8ORNkqZ5gzYHQgS
+ 0Yq1HNPgN9tqc8Ys4OjOQYkoxQlcHJg4gs9/RoTNHPGC/KCZZVuyNR6HRqgOwGhMdQlGn9
+ wPy+yQDVW/gwQGxxSzSPaz43FFtFyOg=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-HAJcfe-yMo-adZFlsKZ4pQ-1; Wed, 13 Mar 2024 23:17:13 -0400
-X-MC-Unique: HAJcfe-yMo-adZFlsKZ4pQ-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-5e4a072ce28so429677a12.0
- for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 20:17:13 -0700 (PDT)
+ us-mta-121-7VEor4CsOh2b3_K_g8zbGw-1; Wed, 13 Mar 2024 23:24:46 -0400
+X-MC-Unique: 7VEor4CsOh2b3_K_g8zbGw-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-299c5a61099so481818a91.0
+ for <qemu-devel@nongnu.org>; Wed, 13 Mar 2024 20:24:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710386232; x=1710991032;
+ d=1e100.net; s=20230601; t=1710386685; x=1710991485;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vIRm92YhYpNm+QdRridioRsN+lBAYV/KCrGfaUe0z4A=;
- b=V+8DRPxT78ov838SyQtEY2Jk1L0rrQQznErDqsHXOsBOr8zWMY9yNTAe03vNBGsci4
- x52227kwtVhBBEv4d+zs2GPfSoxopqL2EpppJEbMw/Fwy1PTUy2cpnNp8HNbssN9tiyN
- Hmg6N7O4/Y3cyXOjVGbXj8WGPhoQzlE593hPTK99/Vj0FAhWl2E4B5SKrx5pz9OC0Yci
- RSU35SQ/UPwnLVl2uW4bFxhVjGYHdc4CMd7Vi3KtnZkwIuR7/80bL/gH+FXIyPn7ll3c
- EKnNOPhNqiBDeKaIvE9CP42NO8lxsCw+Gr8PIYmkXAiCxc8Z5sGX5PmgVp27sHk5IOSE
- 9rOw==
-X-Gm-Message-State: AOJu0Yx/cXNLQkZJWHgWDGIQKFCIgoy2cnB7kZpr6AMV2x7On3ev7hfS
- oWaDV4Xh3H0rX1T1bR40ZX/b0UNKNtXookPIlxnKpY9TiF1UsKt72VCwya7g8kieh2tA4gSdYNh
- +3OXPXX94rMJ3XOzQYz2lYdes/nuVJvlnl9w2+92+c8YsSqs0v0uCoXNX+Xh02GEghcKYT2R5aJ
- IHIhq0MPFFRkvdt8Y5fewRWfq0GLA=
-X-Received: by 2002:a05:6a20:e07:b0:1a1:4c48:5ca0 with SMTP id
- ej7-20020a056a200e0700b001a14c485ca0mr725225pzb.42.1710386232629; 
- Wed, 13 Mar 2024 20:17:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLjIs/ZlMhWwympvqImj06yPMBgPKTtnjlzM3T6o1Wg9ZwQN9e8P4luNff4JCq5KghC/AOWDwdLyKgFBduc7w=
-X-Received: by 2002:a05:6a20:e07:b0:1a1:4c48:5ca0 with SMTP id
- ej7-20020a056a200e0700b001a14c485ca0mr725212pzb.42.1710386232295; Wed, 13 Mar
- 2024 20:17:12 -0700 (PDT)
+ bh=8l6GDiQ30I+perZVPKckMJTL3NiBCH47KmE/HyWeOhg=;
+ b=hz8OP9NSh/oBtyemhrOwAHBy9ZJ2SHZbil+ra1jVQwokEHNsjptUBleGkKQs5rvgYK
+ k1gVq93b9ySDLzlQAhWwC+8aUX+kEU9iWT6YEn4FpBxTbNVe3brAXfn2BmIsFIB/A5js
+ iuzdFwH6p72QXJo2VixoGAsOn9sdFUcnQF0TUbWw+vHefFxVJqfUj83b7MbHYZH6zvVn
+ khUpGrLNiLjbzZDZFqH/Zg7wSv8y7rz/SKt+C0bwZpgYaOD2sI4uGf2k2awshUSXyjjK
+ STpPVPQuYJFF7vF+w73M0K42sJPo/+cVgnfjDLeN0hGkF0Qdp1WwcKjbI7ICaTn7b7We
+ +J3Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX383xy1zGecFvNvd6OM4lPpV2rMwkWgvkDghghJKRj3qZU4BZvwJAMPDvkBT0UMfBVzHVbXXI8Xgxr44z+52qexpZ+lNw=
+X-Gm-Message-State: AOJu0YyOb2Wt5pKCv8P9yqyX3cxXVMYMq9lBa0oUzoSrn2hktqVVjbLl
+ 7yf3hv+J4mcyIX7te3vVEEW7uRBHzdXxYxfUjgrRUGAdvHxKusAiSxvxqDlN6oZmzeeLI0JWNCd
+ xp8WY7f0tQ7/ipZ3+rGGQ18tYlUtfyEZLmgYetygr/ZyLPcWSGLMGdT9vOhwiUzm1ItDO93sYaF
+ CKVs2zgGEK3IA9Eh4/Jc/IP80ZAp4=
+X-Received: by 2002:a05:6a21:78a7:b0:1a3:260a:aad5 with SMTP id
+ bf39-20020a056a2178a700b001a3260aaad5mr1008326pzc.3.1710386685221; 
+ Wed, 13 Mar 2024 20:24:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEu3BBVHW7Zcct6ivl/fXRSf/vLfnJaXljhkMkmh5iNRTdDb4rh4obSXYHIhpQ2Oc0IMsU4AosXeInqRXCdAAU=
+X-Received: by 2002:a05:6a21:78a7:b0:1a3:260a:aad5 with SMTP id
+ bf39-20020a056a2178a700b001a3260aaad5mr1008313pzc.3.1710386684925; Wed, 13
+ Mar 2024 20:24:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240207092702.25242-1-sgarzare@redhat.com>
-In-Reply-To: <20240207092702.25242-1-sgarzare@redhat.com>
+References: <20240221073802.2888022-1-chenh@yusur.tech>
+ <d9e4f3b4-9c2e-466c-b5f4-3387ce88c6b9@t-8ch.de>
+ <20240313155136-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20240313155136-mutt-send-email-mst@kernel.org>
 From: Jason Wang <jasowang@redhat.com>
-Date: Thu, 14 Mar 2024 11:17:01 +0800
-Message-ID: <CACGkMEvRizRGOjOz_AVQw8wsGU3g8+-yHtnKM=yn=3RtY-Hayg@mail.gmail.com>
-Subject: Re: [PATCH] vhost-vdpa: check vhost_vdpa_set_vring_ready() return
- value
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, lulu@redhat.com, kwolf@redhat.com, 
- eperezma@redhat.com
+Date: Thu, 14 Mar 2024 11:24:33 +0800
+Message-ID: <CACGkMEtSSb-9PsmQKPA4i-UWVJJ4ZVog8rt+1PKoqE+ABhpRTA@mail.gmail.com>
+Subject: Re: [PATCH] hw/virtio: Add support for VDPA network simulation devices
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>, 
+ Hao Chen <chenh@yusur.tech>, qemu-devel@nongnu.org, cohuck@redhat.com, 
+ pbonzini@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
@@ -96,115 +100,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Feb 7, 2024 at 5:27=E2=80=AFPM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
+On Thu, Mar 14, 2024 at 3:52=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
 >
-> vhost_vdpa_set_vring_ready() could already fail, but if Linux's
-> patch [1] will be merged, it may fail with more chance if
-> userspace does not activate virtqueues before DRIVER_OK when
-> VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
+> On Wed, Mar 13, 2024 at 07:51:08PM +0100, Thomas Wei=C3=9Fschuh wrote:
+> > On 2024-02-21 15:38:02+0800, Hao Chen wrote:
+> > > This patch adds support for VDPA network simulation devices.
+> > > The device is developed based on virtio-net and tap backend,
+> > > and supports hardware live migration function.
+> > >
+> > > For more details, please refer to "docs/system/devices/vdpa-net.rst"
+> > >
+> > > Signed-off-by: Hao Chen <chenh@yusur.tech>
+> > > ---
+> > >  MAINTAINERS                                 |   5 +
+> > >  docs/system/device-emulation.rst            |   1 +
+> > >  docs/system/devices/vdpa-net.rst            | 121 +++++++++++++
+> > >  hw/net/virtio-net.c                         |  16 ++
+> > >  hw/virtio/virtio-pci.c                      | 189 ++++++++++++++++++=
++-
 
-I wonder what happens if we just leave it as is.
+I think those modifications should belong to a separate file as it
+might conflict with virito features in the future.
 
-VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK: We do know enabling could be
-done after driver_ok.
-Without VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK: We don't know whether
-enabling could be done after driver_ok or not.
+> > >  hw/virtio/virtio.c                          |  39 ++++
+> > >  include/hw/virtio/virtio-pci.h              |   5 +
+> > >  include/hw/virtio/virtio.h                  |  19 ++
+> > >  include/standard-headers/linux/virtio_pci.h |   7 +
+> > >  9 files changed, 399 insertions(+), 3 deletions(-)
+> > >  create mode 100644 docs/system/devices/vdpa-net.rst
+> >
+> > [..]
+> >
+> > > diff --git a/include/standard-headers/linux/virtio_pci.h b/include/st=
+andard-headers/linux/virtio_pci.h
+> > > index b7fdfd0668..fb5391cef6 100644
+> > > --- a/include/standard-headers/linux/virtio_pci.h
+> > > +++ b/include/standard-headers/linux/virtio_pci.h
+> > > @@ -216,6 +216,13 @@ struct virtio_pci_cfg_cap {
+> > >  #define VIRTIO_PCI_COMMON_Q_NDATA  56
+> > >  #define VIRTIO_PCI_COMMON_Q_RESET  58
+> > >
+> > > +#define LM_LOGGING_CTRL                 0
+> > > +#define LM_BASE_ADDR_LOW                4
+> > > +#define LM_BASE_ADDR_HIGH               8
+> > > +#define LM_END_ADDR_LOW                 12
+> > > +#define LM_END_ADDR_HIGH                16
+> > > +#define LM_VRING_STATE_OFFSET           0x20
+> >
+> > These changes are not in upstream Linux and will be undone by
+> > ./scripts/update-linux-headers.sh.
+> >
+> > Are they intentionally in this header?
+>
+>
+> Good point. Pls move.
+
+Right and this part, it's not a part of standard virtio.
 
 Thanks
 
 >
-> So better check its return value anyway.
->
-> [1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarza=
-re@redhat.com/T/#u
->
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
-> Note: This patch conflicts with [2], but the resolution is simple,
-> so for now I sent a patch for the current master, but I'll rebase
-> this patch if we merge the other one first.
->
-> [2] https://lore.kernel.org/qemu-devel/20240202132521.32714-1-kwolf@redha=
-t.com/
-> ---
->  hw/virtio/vdpa-dev.c |  8 +++++++-
->  net/vhost-vdpa.c     | 15 ++++++++++++---
->  2 files changed, 19 insertions(+), 4 deletions(-)
->
-> diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
-> index eb9ecea83b..d57cd76c18 100644
-> --- a/hw/virtio/vdpa-dev.c
-> +++ b/hw/virtio/vdpa-dev.c
-> @@ -259,7 +259,11 @@ static int vhost_vdpa_device_start(VirtIODevice *vde=
-v, Error **errp)
->          goto err_guest_notifiers;
->      }
->      for (i =3D 0; i < s->dev.nvqs; ++i) {
-> -        vhost_vdpa_set_vring_ready(&s->vdpa, i);
-> +        ret =3D vhost_vdpa_set_vring_ready(&s->vdpa, i);
-> +        if (ret < 0) {
-> +            error_setg_errno(errp, -ret, "Error starting vring %d", i);
-> +            goto err_dev_stop;
-> +        }
->      }
->      s->started =3D true;
->
-> @@ -274,6 +278,8 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev=
-, Error **errp)
->
->      return ret;
->
-> +err_dev_stop:
-> +    vhost_dev_stop(&s->dev, vdev, false);
->  err_guest_notifiers:
->      k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false);
->  err_host_notifiers:
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index 3726ee5d67..e3d8036479 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -381,7 +381,10 @@ static int vhost_vdpa_net_data_load(NetClientState *=
-nc)
->      }
->
->      for (int i =3D 0; i < v->dev->nvqs; ++i) {
-> -        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-> +        int ret =3D vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-> +        if (ret < 0) {
-> +            return ret;
-> +        }
->      }
->      return 0;
->  }
-> @@ -1213,7 +1216,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState =
-*nc)
->
->      assert(nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA);
->
-> -    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-> +    r =3D vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-> +    if (unlikely(r < 0)) {
-> +        return r;
-> +    }
->
->      if (v->shadow_vqs_enabled) {
->          n =3D VIRTIO_NET(v->dev->vdev);
-> @@ -1252,7 +1258,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState =
-*nc)
->      }
->
->      for (int i =3D 0; i < v->dev->vq_index; ++i) {
-> -        vhost_vdpa_set_vring_ready(v, i);
-> +        r =3D vhost_vdpa_set_vring_ready(v, i);
-> +        if (unlikely(r < 0)) {
-> +            return r;
-> +        }
->      }
->
->      return 0;
-> --
-> 2.43.0
+> > > +
+> > >  #endif /* VIRTIO_PCI_NO_MODERN */
+> > >
+> > >  #endif
 >
 
 
