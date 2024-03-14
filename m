@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD5587BFDB
-	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:24:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2557B87C00B
+	for <lists+qemu-devel@lfdr.de>; Thu, 14 Mar 2024 16:26:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rkmvi-0007OK-13; Thu, 14 Mar 2024 11:23:40 -0400
+	id 1rkmvn-0007et-Qs; Thu, 14 Mar 2024 11:23:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvY-0007MM-JM
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rkmva-0007NA-4C
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
- id 1rkmvX-0003oN-7d
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:28 -0400
+ id 1rkmvY-0003ot-Fn
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 11:23:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710429806;
+ s=mimecast20190719; t=1710429807;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7igaEh31g9P/EUDqnJLqJXf4FuWyr/DSDVJ/9clU3ZY=;
- b=BsgBJ+lFpVFetxWc8Qtj2n5PtqoPGxkSe1/NaO6U8UDZ8hTSwY8bvMavS075Xcq8EyZUql
- 9J9f0inWKFuAhckUzm+WS6DRRapH21IIJsrBUbwr2VjSsNNT6mYvymXOmXY4tPxurodKog
- +CydwbH+wooq/BDm1sQe3mu3hoQuoxE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-k8dfL0jUMMaPEtYQnmqFTQ-1; Thu,
- 14 Mar 2024 11:23:25 -0400
-X-MC-Unique: k8dfL0jUMMaPEtYQnmqFTQ-1
+ bh=QK3VzflXInySfueK+SfexWiK/O+z9FeBvoPlrZmIFkU=;
+ b=XA0tq8H9oL/jSMXjDvbOUlCJ+kMHEKoUbYuTUStNlTdVGpp5sHvnKZwm98Bo0SKCuzJMEJ
+ TfBs8mslFbmSO79oAPK0iGBJ5pRZznbBRu1aSEQ0EfKLgxkCwVrWhF5mIDb+I2mLF7l2TJ
+ 4v0Zwnhnr0/A1F8E86AQly+Bli6hkMo=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-688--9ani6VjO1GVqn51y520ZQ-1; Thu, 14 Mar 2024 11:23:25 -0400
+X-MC-Unique: -9ani6VjO1GVqn51y520ZQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BA8238008B7
- for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 15:23:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A56E800277;
+ Thu, 14 Mar 2024 15:23:25 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com
  (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 46A8317A9A;
- Thu, 14 Mar 2024 15:23:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3BE0917A8E;
+ Thu, 14 Mar 2024 15:23:24 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: mst@redhat.com,
-	Ani Sinha <anisinha@redhat.com>
-Subject: [PATCH v4 18/21] tests: acpi/smbios: whitelist expected blobs
-Date: Thu, 14 Mar 2024 16:22:59 +0100
-Message-Id: <20240314152302.2324164-19-imammedo@redhat.com>
+Cc: mst@redhat.com, Ani Sinha <anisinha@redhat.com>,
+ Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PATCH v4 19/21] pc/q35: set SMBIOS entry point type to 'auto' by
+ default
+Date: Thu, 14 Mar 2024 16:23:00 +0100
+Message-Id: <20240314152302.2324164-20-imammedo@redhat.com>
 In-Reply-To: <20240314152302.2324164-1-imammedo@redhat.com>
 References: <20240314152302.2324164-1-imammedo@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=imammedo@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
@@ -82,19 +83,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Acked-by: Ani Sinha <anisinha@redhat.com>
----
- tests/qtest/bios-tables-test-allowed-diff.h | 1 +
- 1 file changed, 1 insertion(+)
+Use smbios-entry-point-type='auto' for newer machine types as a workaround
+for Windows not detecting SMBIOS tables. Which makes QEMU pick SMBIOS tables
+based on configuration (with 2.x preferred and fallback to 3.x if the former
+isn't compatible with configuration)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8b..81148a604f 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,2 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/SSDT.dimmpxm",
+Default compat setting of smbios-entry-point-type after series
+for pc/q35 machines:
+  * 9.0-newer: 'auto'
+  * 8.1-8.2: '64'
+  * 8.0-older: '32'
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2008
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+---
+ hw/i386/pc.c      | 2 +-
+ hw/i386/pc_piix.c | 4 ++++
+ hw/i386/pc_q35.c  | 3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 44eb073abd..e80f02bef4 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1832,7 +1832,7 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+     mc->nvdimm_supported = true;
+     mc->smp_props.dies_supported = true;
+     mc->default_ram_id = "pc.ram";
+-    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_AUTO;
+ 
+     object_class_property_add(oc, PC_MACHINE_MAX_RAM_BELOW_4G, "size",
+         pc_machine_get_max_ram_below_4g, pc_machine_set_max_ram_below_4g,
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index c9a6c0aa68..18ba076609 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -525,12 +525,16 @@ DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
+ 
+ static void pc_i440fx_8_2_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_i440fx_9_0_machine_options(m);
+     m->alias = NULL;
+     m->is_default = false;
+ 
+     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
+     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
++    /* For pc-i44fx-8.2 and 8.1, use SMBIOS 3.X by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
+ }
+ 
+ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 8a427c4647..b5922b44af 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -376,11 +376,14 @@ DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
+ 
+ static void pc_q35_8_2_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_9_0_machine_options(m);
+     m->alias = NULL;
+     m->max_cpus = 1024;
+     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
+     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
++    /* For pc-q35-8.2 and 8.1, use SMBIOS 3.X by default */
++    pcmc->default_smbios_ep_type = SMBIOS_ENTRY_POINT_TYPE_64;
+ }
+ 
+ DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
 -- 
 2.39.3
 
