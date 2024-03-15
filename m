@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADECA87CD45
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94C087CD4A
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6hi-0002J8-46; Fri, 15 Mar 2024 08:30:30 -0400
+	id 1rl6hq-0002oE-2Q; Fri, 15 Mar 2024 08:30:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6hE-0002Dc-OL
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:02 -0400
+ id 1rl6hI-0002Gj-P7
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:06 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6h6-0006OU-UE
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:29:58 -0400
+ id 1rl6h8-0006OQ-Na
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=t7XlrqutVCUHR7SEHqbK4gTTxIOu1rtpDU+8vOsVCKg=; b=BFDlUavUltkB
- t7k6TF7NjogYRJIsCxRJ3ZNKAYsgrRz+zFG9WGJCHaYnk0JB1vhbF8+94pKcOrhbsxg2zpevESGdM
- +sOm1tmGCjMt1wEiePKWs5tIgaNzoQHUkVB7/xsYfOoRHhMZ3bGLS2g8kAEYvZAOEE9FvjR3iSx8C
- XqggWWznrinCKZ8DV7X5A7tpz3otyGedxzJIODkTBUUOKzpp0O+RTCMOGHPvV2JslnNhhdnw5plO0
- lh1xgVt9fRrTtm+AVQkGDYUxoAlUIPnpJkKKdPxbUkzHrc4ZNiCIxbxBFo5wx3aNXl5GaTEWeuGmX
- 73ZlN99IJK3Ct5EIluzr9Q==;
+ Content-Type; bh=rzhBDkOhn7PA/qCuliUHOgVG1zAo7JXrGfpije2w0fg=; b=XzD7HIs0EOHQ
+ BLN5Dg6Zzc3fkcrHqp3/KzcxrXl9w2cj03Y4R0fzUipYGMNuXHnOSVcJN+mTTXa08nW0fyBmQDAQP
+ 6Zim8fIT3RSph5uToHwH/n7RCbykfFg2jwDKpTZdoFR/SK57/BjcOIZmxcFsrbjEgJY+zc5uomc7/
+ QBNHAemBEXGEI01DbuE0L4yupDeV+mHiNqTtRihKejtVClZC6kz9ivaIl/UobLas3cro5zbkoBj6A
+ bPfZu76TZ439acMKSIqg4aeLhAml0zAk1YVtBuZTfGNK/SEoLBm6H8J7IbSM//lKZVdojyn99iYpk
+ BDOlfuwDYJeN3iIg+mCLbA==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0S;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0d;
  Fri, 15 Mar 2024 13:29:46 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  marcandre.lureau@redhat.com, philmd@linaro.org,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v3 4/7] qga/commands-posix: qmp_guest_set_time: use
+Subject: [PATCH v3 5/7] qga/commands-posix: execute_fsfreeze_hook: use
  ga_run_command helper
-Date: Fri, 15 Mar 2024 14:29:43 +0200
-Message-Id: <20240315122946.39168-5-andrey.drobyshev@virtuozzo.com>
+Date: Fri, 15 Mar 2024 14:29:44 +0200
+Message-Id: <20240315122946.39168-6-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
 References: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
@@ -68,45 +68,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's no need to check for the existence of "/sbin/hwclock", the
+There's no need to check for the existence of the hook executable, as the
 exec() call will do that for us.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qga/commands-posix.c | 43 +++----------------------------------------
- 1 file changed, 3 insertions(+), 40 deletions(-)
+ qga/commands-posix.c | 35 +++--------------------------------
+ 1 file changed, 3 insertions(+), 32 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index d4025e0c1e..94b652d54e 100644
+index 94b652d54e..610d225d30 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -279,21 +279,9 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
- void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
+@@ -736,8 +736,6 @@ static const char *fsfreeze_hook_arg_string[] = {
+ 
+ static void execute_fsfreeze_hook(FsfreezeHookArg arg, Error **errp)
  {
-     int ret;
 -    int status;
 -    pid_t pid;
+     const char *hook;
+     const char *arg_str = fsfreeze_hook_arg_string[arg];
      Error *local_err = NULL;
-     struct timeval tv;
--    static const char hwclock_path[] = "/sbin/hwclock";
--    static int hwclock_available = -1;
--
--    if (hwclock_available < 0) {
--        hwclock_available = (access(hwclock_path, X_OK) == 0);
--    }
--
--    if (!hwclock_available) {
--        error_setg(errp, QERR_UNSUPPORTED);
+@@ -746,42 +744,15 @@ static void execute_fsfreeze_hook(FsfreezeHookArg arg, Error **errp)
+     if (!hook) {
+         return;
+     }
+-    if (access(hook, X_OK) != 0) {
+-        error_setg_errno(errp, errno, "can't access fsfreeze hook '%s'", hook);
 -        return;
 -    }
-+    const char *argv[] = {"/sbin/hwclock", has_time ? "-w" : "-s", NULL};
  
-     /* If user has passed a time, validate and set it. */
-     if (has_time) {
-@@ -324,37 +312,12 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-      * just need to synchronize the hardware clock. However, if no time was
-      * passed, user is requesting the opposite: set the system time from the
-      * hardware clock (RTC). */
+-    slog("executing fsfreeze hook with arg '%s'", arg_str);
 -    pid = fork();
 -    if (pid == 0) {
 -        setsid();
@@ -114,35 +106,35 @@ index d4025e0c1e..94b652d54e 100644
 -        reopen_fd_to_null(1);
 -        reopen_fd_to_null(2);
 -
--        /* Use '/sbin/hwclock -w' to set RTC from the system time,
--         * or '/sbin/hwclock -s' to set the system time from RTC. */
--        execl(hwclock_path, "hwclock", has_time ? "-w" : "-s", NULL);
+-        execl(hook, hook, arg_str, NULL);
 -        _exit(EXIT_FAILURE);
 -    } else if (pid < 0) {
 -        error_setg_errno(errp, errno, "failed to create child process");
 -        return;
 -    }
--
++    const char *argv[] = {hook, arg_str, NULL};
+ 
 -    ga_wait_child(pid, &status, &local_err);
-+    ga_run_command(argv, NULL, "set hardware clock to system time",
-+                   &local_err);
++    slog("executing fsfreeze hook with arg '%s'", arg_str);
++    ga_run_command(argv, NULL, "execute fsfreeze hook", &local_err);
      if (local_err) {
          error_propagate(errp, local_err);
          return;
      }
 -
 -    if (!WIFEXITED(status)) {
--        error_setg(errp, "child process has terminated abnormally");
+-        error_setg(errp, "fsfreeze hook has terminated abnormally");
 -        return;
 -    }
 -
--    if (WEXITSTATUS(status)) {
--        error_setg(errp, "hwclock failed to set hardware clock to system time");
+-    status = WEXITSTATUS(status);
+-    if (status) {
+-        error_setg(errp, "fsfreeze hook has failed with status %d", status);
 -        return;
 -    }
  }
  
- typedef enum {
+ /*
 -- 
 2.39.3
 
