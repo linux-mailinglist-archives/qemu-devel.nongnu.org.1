@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690D187D023
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B2C87D01C
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl9PC-0007s3-P8; Fri, 15 Mar 2024 11:23:34 -0400
+	id 1rl9PF-0007tA-Ln; Fri, 15 Mar 2024 11:23:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9PB-0007rp-00
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9PE-0007sw-PU
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9P9-00026a-Fv
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:32 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9PD-00029H-88
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710516210;
+ s=mimecast20190719; t=1710516214;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=BDAqiTc1O9KkVRj0IL6mR+LO3QjyUV8SVrlBKORZQXQ=;
- b=ElHqt4VcG04SBsE8afx/esmgx9aKhlIGZynGJLkHokiohgwl13iKn1NWpr0xrVtVVnVfgP
- BrnlFQDxSmD/NxPGLnyI5euQWfgJf3H4m4AEYmsMVo9woKkdblpELvwal2QCnQYoKEvLJm
- 9mTxX4lpbIPZSBJR96E8DfY27vibmj8=
+ bh=LiJ7o9uq/fUtOOYNqhEIZe59OailaeOvRb7Z/XeKlqE=;
+ b=Abecikcdi5zu87m9KYmkMLfw/YM49jdgM9yFjKFJrv90EKZMEJqqHnIwiZQBBuQfPBic6y
+ IxXCaBAobMCiSxQ52QIR7qVb/bJLJ3KMBkgBkHkLEj0CieovnzvISKQ3VcjrCCrzX5CHJj
+ ApJS2aFNnNG80FqTZt0dh0ViFuCp9gE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-479-OKRsYc3RMve2dgOedUnh9g-1; Fri, 15 Mar 2024 11:23:03 -0400
-X-MC-Unique: OKRsYc3RMve2dgOedUnh9g-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-479-LcfjEOQCM26ppnzujBvSvA-1; Fri, 15 Mar 2024 11:23:04 -0400
+X-MC-Unique: LcfjEOQCM26ppnzujBvSvA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E4F4800262;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E545101A5AD;
  Fri, 15 Mar 2024 15:23:03 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F1DE8200AFA2;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D63CF492BD0;
  Fri, 15 Mar 2024 15:23:02 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D3C7221E6A28; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
+ id D729921E691E; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	peter.maydell@linaro.org,
 	michael.roth@amd.com
-Subject: [PATCH v5 01/25] qapi/parser: fix typo - self.returns.info =>
- self.errors.info
-Date: Fri, 15 Mar 2024 16:22:37 +0100
-Message-ID: <20240315152301.3621858-2-armbru@redhat.com>
+Subject: [PATCH v5 02/25] qapi/parser: shush up pylint
+Date: Fri, 15 Mar 2024 16:22:38 +0100
+Message-ID: <20240315152301.3621858-3-armbru@redhat.com>
 In-Reply-To: <20240315152301.3621858-1-armbru@redhat.com>
 References: <20240315152301.3621858-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
@@ -85,30 +84,27 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Small copy-pasto. The correct info field to use in this conditional
-block is self.errors.info.
+Shhh!
 
-Fixes: 3a025d3d1ffa
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/parser.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/qapi/parser.py | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index d8f76060b8..fed88e9074 100644
+index fed88e9074..ec4ebef4e3 100644
 --- a/scripts/qapi/parser.py
 +++ b/scripts/qapi/parser.py
-@@ -733,7 +733,7 @@ def check_expr(self, expr: QAPIExpression) -> None:
-                     "'Returns' section is only valid for commands")
-             if self.errors:
-                 raise QAPISemError(
--                    self.returns.info,
-+                    self.errors.info,
-                     "'Errors' section is only valid for commands")
+@@ -607,6 +607,7 @@ class QAPIDoc:
+     """
  
-     def check(self) -> None:
+     class Section:
++        # pylint: disable=too-few-public-methods
+         def __init__(self, info: QAPISourceInfo,
+                      tag: Optional[str] = None):
+             # section source info, i.e. where it begins
 -- 
 2.44.0
 
