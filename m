@@ -2,116 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02ADB87C7ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 04:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E59787C81C
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 04:52:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rky80-0003ya-HQ; Thu, 14 Mar 2024 23:21:04 -0400
+	id 1rkybH-0000i9-Ek; Thu, 14 Mar 2024 23:51:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7t-0003xx-Ax
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:57 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7n-0004IW-0s
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:56 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id D62C721D94;
- Fri, 15 Mar 2024 03:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710472849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkybF-0000hu-7k
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:51:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rkybA-0000rc-DY
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:51:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710474670;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=74RrPFY9zjw0wZcmCjd84GqQxrgaar52OmG+YS4MfCg=;
- b=T3AmefCsFJZn6A7+Ium+jlClDi9Mi8Q+y8m9HE+XYfxRuVKNVeY2bgjqGescdz59S4vAUR
- xa/h3jHmXWzn9eH9cSULjNsJO4Ucbca7Fl39QQ8lautB7oHrBJ8Qj+GtN+bzQ0dhfmTtbZ
- fSX3dMJ9hE7jDgUePe7lqUAwEt3TTZs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710472849;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=74RrPFY9zjw0wZcmCjd84GqQxrgaar52OmG+YS4MfCg=;
- b=sWyHrU94irLQV6iv56gz4vBTWMRXd0a1t4ETR/qHhZawXZnNBu65odEJ5kbOZ6wv2q4nVw
- PdD8d39xyBeaZUDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710472849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=74RrPFY9zjw0wZcmCjd84GqQxrgaar52OmG+YS4MfCg=;
- b=T3AmefCsFJZn6A7+Ium+jlClDi9Mi8Q+y8m9HE+XYfxRuVKNVeY2bgjqGescdz59S4vAUR
- xa/h3jHmXWzn9eH9cSULjNsJO4Ucbca7Fl39QQ8lautB7oHrBJ8Qj+GtN+bzQ0dhfmTtbZ
- fSX3dMJ9hE7jDgUePe7lqUAwEt3TTZs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710472849;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=74RrPFY9zjw0wZcmCjd84GqQxrgaar52OmG+YS4MfCg=;
- b=sWyHrU94irLQV6iv56gz4vBTWMRXd0a1t4ETR/qHhZawXZnNBu65odEJ5kbOZ6wv2q4nVw
- PdD8d39xyBeaZUDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3EECA1368C;
- Fri, 15 Mar 2024 03:20:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id wMj3AZC+82XZcQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 15 Mar 2024 03:20:48 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-Subject: [RFC PATCH v3 3/3] migration: Add fd to FileMigrationArgs
-Date: Fri, 15 Mar 2024 00:20:40 -0300
-Message-Id: <20240315032040.7974-4-farosas@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240315032040.7974-1-farosas@suse.de>
-References: <20240315032040.7974-1-farosas@suse.de>
+ bh=QTUJ63Ff/LIQRV+2sxLg6+1LbvZzmyCqap2ksTZlA+g=;
+ b=Sr5Eu4QGJgvoUEPu1b5IdsDNv48tEd3KshWBxz3zypShUQ32DK2FSnghezI0ZCVg3aLmsv
+ dKMESwhHpstcvtJfv4gzq2B5ZsD4yWugBA6DlzG54TckcVNz1vF3cdKXw8dYlagzXm6zmo
+ k/0WazD20g/sZSqedrukV5QuJCKqcwI=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-AdhiyG2sNh6Txvi0YhVd9g-1; Thu, 14 Mar 2024 23:51:08 -0400
+X-MC-Unique: AdhiyG2sNh6Txvi0YhVd9g-1
+Received: by mail-pg1-f199.google.com with SMTP id
+ 41be03b00d2f7-5cfc2041cdfso1321807a12.2
+ for <qemu-devel@nongnu.org>; Thu, 14 Mar 2024 20:51:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710474667; x=1711079467;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=QTUJ63Ff/LIQRV+2sxLg6+1LbvZzmyCqap2ksTZlA+g=;
+ b=T2BiuIeRhl51ZoJ0gV8LRsqvp3oYlD+1K4/4VJwe8+QF3v5eiIXc8wQxpwMCZ0dITF
+ hKWGEoEy2+Pv5sdlwr+k8ylo2nuv50nZEYfTeznpt4TlYeNkNj0SNoiwNkwleMfaiWpf
+ k2zaOhER7N0wEYvj9V18vxGZ7NPQkyiTtyRkopHr6KgUEqleWw8XaCOFh1llzUYlBm38
+ YSp8juZWeY/SeOOm1Xwa8RO0bLpvD/A767/O/F59LIZF4Fs1ogWpVI/VrWEMZYFzt+a/
+ 0AWxsbMemVMTCy0Wkf57LpOlm/es8ayxrEjau5o1s9oQUS164ZMyzDO5R2nP19QNb8Jv
+ yfrA==
+X-Gm-Message-State: AOJu0Yz2IIJlaWsJ6Ccn439hOoZ+VHDU4KASFHfDVDhpG08weoi+dphD
+ lQzIAyshqxt6LI0IfFHOyc0mFjDepIE5hxY+K13yNkMdFihUQUmT4SCH6XrzjR92A1ivNY5Xjuz
+ AJZd+vytbRXRB3Zz2e0XFu664yAoPZI5Fp6RbnA4+MFH5FUawhFvr97PNQlPQ7nIxbTFWafyEA9
+ uPA1kVF+bAMdDlfEgDqvbQn6Dkzns=
+X-Received: by 2002:a05:6a20:7f87:b0:1a3:3db3:48c4 with SMTP id
+ d7-20020a056a207f8700b001a33db348c4mr2334233pzj.18.1710474666948; 
+ Thu, 14 Mar 2024 20:51:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCPtBeyu1ZCKtqbTEH3Uq75yBtC4e4oJ8HjzL6MDwYKQ7xcx/kadlqnekQN7dEoxeaO1PMBSX2F3Wt0jJuitg=
+X-Received: by 2002:a05:6a20:7f87:b0:1a3:3db3:48c4 with SMTP id
+ d7-20020a056a207f8700b001a33db348c4mr2334223pzj.18.1710474666628; Thu, 14 Mar
+ 2024 20:51:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: /
-Authentication-Results: smtp-out1.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T3AmefCs;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sWyHrU94
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- R_MISSING_CHARSET(2.50)[]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- MIME_GOOD(-0.10)[text/plain]; BROKEN_CONTENT_TYPE(1.50)[];
- RCPT_COUNT_FIVE(0.00)[5]; NEURAL_HAM_LONG(-1.00)[-1.000];
- RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
- MID_CONTAINS_FROM(1.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-0.999];
- RCVD_TLS_ALL(0.00)[]; BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: D62C721D94
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+References: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
+In-Reply-To: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Fri, 15 Mar 2024 11:50:55 +0800
+Message-ID: <CACGkMEt2-naXvHjCcPyQAoSfto44OVaSUqPtg_gvS8-wrhNwZA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] vhost: dirty log should be per backend type
+To: Si-Wei Liu <si-wei.liu@oracle.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, eperezma@redhat.com, 
+ joao.m.martins@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,345 +96,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The fd: URI has supported migration to a file or socket since before
-QEMU 8.2. In 8.2 we added the file: URI that supported migration to a
-file. So now we have two ways (three if you count exec:>cat) to
-migrate to a file. Fine.
+On Fri, Mar 15, 2024 at 5:39=E2=80=AFAM Si-Wei Liu <si-wei.liu@oracle.com> =
+wrote:
+>
+> There could be a mix of both vhost-user and vhost-kernel clients
+> in the same QEMU process, where separate vhost loggers for the
+> specific vhost type have to be used. Make the vhost logger per
+> backend type, and have them properly reference counted.
 
-However,
+It's better to describe what's the advantage of doing this.
 
-In 8.2 we also added the new qmp_migrate API that uses a JSON channel
-list instead of the URI. It added two migration transports SOCKET and
-FILE. It was decided that the new API would classify the fd migration
-as a type of socket migration, neglecting the fact that the fd.c code
-also supported file migrations.
+>
+> Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+>
+> ---
+> v3->v4:
+>   - remove checking NULL return value from vhost_log_get
+>
+> v2->v3:
+>   - remove non-effective assertion that never be reached
+>   - do not return NULL from vhost_log_get()
+>   - add neccessary assertions to vhost_log_get()
+> ---
+>  hw/virtio/vhost.c | 45 +++++++++++++++++++++++++++++++++------------
+>  1 file changed, 33 insertions(+), 12 deletions(-)
+>
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index 2c9ac79..612f4db 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -43,8 +43,8 @@
+>      do { } while (0)
+>  #endif
+>
+> -static struct vhost_log *vhost_log;
+> -static struct vhost_log *vhost_log_shm;
+> +static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
+> +static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
+>
+>  /* Memslots used by backends that support private memslots (without an f=
+d). */
+>  static unsigned int used_memslots;
+> @@ -287,6 +287,10 @@ static int vhost_set_backend_type(struct vhost_dev *=
+dev,
+>          r =3D -1;
+>      }
+>
+> +    if (r =3D=3D 0) {
+> +        assert(dev->vhost_ops->backend_type =3D=3D backend_type);
+> +    }
+> +
 
-In 9.0 we're adding support for fd + multifd + mapped-ram, which is
-tied to the file migration. This was implemented in fd.c, which is
-only reachable when the SOCKET address type is used.
+Under which condition could we hit this? It seems not good to assert a
+local logic.
 
-The result of this is that we're asking users of the new API to create   (1)
-something called a "socket" to perform migration to a plain file. And
-creating something called a "file" provides no way of passing in a
-file descriptor. This is confusing.
-
-The new API also parses the old-style URI into the new-style data
-structures, so the old and correct fd:<filefd> now also considers fd:
-to be socket-related only.
-
-Unlike the other migration addresses, the fd comes already setup from
-the user, it's not just a string that QEMU will use to start a
-connection. We need to actually fetch the fd from the monitor before
-even being able to poke at it to know if it is a socket.
-
-Aside from the issue (1) above, the current approach of parsing the fd
-into a SOCKET and only later deciding if it is file-backed doesn't
-work well now that we're adding multifd support for fd: and file:
-migration via the mapped-ram feature. With a larger number of
-combinations, we need to be able to know upfront when an fd is backed
-by a plain file vs. a socket.
-
-We're currently using a trick of allowing socket channels to pass some   (2)
-validation that they shouldn't, to only later verify if the fd was
-indeed a socket.
-
-To clean this up I'm proposing we start requiring users of the new API
-to use the "file" structure when the migration stream will end up in a
-file and use the "socket" structure when the fd points to an actual
-socket. This improves (1).
-
-To keep backward compatibility, I'm still accepting everything that
-was accepted before and only changing the structures internally to
-allow the rest of the code to rely on the MIGRATION_ADDRESS_TYPE. This
-addresses (2).
-
-We can then slowly deprecate the wrong way, i.e. using type socket for
-fd + file migration.
-
-In this patch you'll find:
-
-- a new function migrate_resolve_fd() that fetches the fd from the
-  monitor and converts the MigrationAddress into the correct type;
-
-- the removal of the hacks for (2);
-
-- a helper function to convert the resolved fd that's represented as a
-  string for storage in the MigrationAddress back into an integer for
-  consumption.
-
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
----
- migration/fd.c        |  15 +------
- migration/file.c      |  14 +++---
- migration/migration.c | 100 ++++++++++++++++++++++++++++++++++++------
- migration/migration.h |   1 +
- qapi/migration.json   |  11 ++++-
- 5 files changed, 107 insertions(+), 34 deletions(-)
-
-diff --git a/migration/fd.c b/migration/fd.c
-index fe0d096abd..2d4414c7ea 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -20,9 +20,6 @@
- #include "fd.h"
- #include "file.h"
- #include "migration.h"
--#include "monitor/monitor.h"
--#include "io/channel-file.h"
--#include "io/channel-socket.h"
- #include "io/channel-util.h"
- #include "options.h"
- #include "trace.h"
-@@ -48,8 +45,7 @@ void fd_cleanup_outgoing_migration(void)
- void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **errp)
- {
-     QIOChannel *ioc;
--    int fd = monitor_get_fd(monitor_cur(), fdname, errp);
--    int newfd;
-+    int newfd, fd = migrate_fd_str_to_int(fdname, errp);
- 
-     if (fd == -1) {
-         return;
-@@ -91,7 +87,7 @@ static gboolean fd_accept_incoming_migration(QIOChannel *ioc,
- void fd_start_incoming_migration(const char *fdname, Error **errp)
- {
-     QIOChannel *ioc;
--    int fd = monitor_fd_param(monitor_cur(), fdname, errp);
-+    int fd = migrate_fd_str_to_int(fdname, errp);
-     if (fd == -1) {
-         return;
-     }
-@@ -105,13 +101,6 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-     }
- 
-     if (migrate_multifd()) {
--        if (fd_is_socket(fd)) {
--            error_setg(errp,
--                       "Multifd migration to a socket FD is not supported");
--            object_unref(ioc);
--            return;
--        }
--
-         file_create_incoming_channels(ioc, errp);
-     } else {
-         qio_channel_set_name(ioc, "migration-fd-incoming");
-diff --git a/migration/file.c b/migration/file.c
-index b6e8ba13f2..b29521ffa7 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -59,12 +59,6 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
-     int fd = fd_args_get_fd();
- 
-     if (fd && fd != -1) {
--        if (fd_is_socket(fd)) {
--            error_setg(errp,
--                       "Multifd migration to a socket FD is not supported");
--            goto out;
--        }
--
-         ioc = qio_channel_file_new_dupfd(fd, errp);
-     } else {
-         ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
-@@ -95,6 +89,10 @@ void file_start_outgoing_migration(MigrationState *s,
-     uint64_t offset = file_args->offset;
-     QIOChannel *ioc;
- 
-+    if (file_args->fd) {
-+        return fd_start_outgoing_migration(s, file_args->fd, errp);
-+    }
-+
-     trace_migration_file_outgoing(filename);
- 
-     fioc = qio_channel_file_new_path(filename, O_CREAT | O_WRONLY | O_TRUNC,
-@@ -163,6 +161,10 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-     QIOChannelFile *fioc = NULL;
-     uint64_t offset = file_args->offset;
- 
-+    if (file_args->fd) {
-+        return fd_start_incoming_migration(file_args->fd, errp);
-+    }
-+
-     trace_migration_file_incoming(filename);
- 
-     fioc = qio_channel_file_new_path(filename, O_RDONLY, 0, errp);
-diff --git a/migration/migration.c b/migration/migration.c
-index f60bd371e3..88162205a3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -140,10 +140,6 @@ static bool transport_supports_multi_channels(MigrationAddress *addr)
-     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-         SocketAddress *saddr = &addr->u.socket;
- 
--        if (saddr->type == SOCKET_ADDRESS_TYPE_FD) {
--            return migrate_mapped_ram();
--        }
--
-         return (saddr->type == SOCKET_ADDRESS_TYPE_INET ||
-                 saddr->type == SOCKET_ADDRESS_TYPE_UNIX ||
-                 saddr->type == SOCKET_ADDRESS_TYPE_VSOCK);
-@@ -165,15 +161,6 @@ static bool transport_supports_seeking(MigrationAddress *addr)
-         return true;
-     }
- 
--    /*
--     * At this point QEMU has not yet fetched the fd passed in by the
--     * user, so we cannot know for sure whether it refers to a plain
--     * file or a socket. Let it through anyway and check at fd.c.
--     */
--    if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
--        return addr->u.socket.type == SOCKET_ADDRESS_TYPE_FD;
--    }
--
-     return false;
- }
- 
-@@ -608,6 +595,85 @@ bool migrate_uri_parse(const char *uri, MigrationChannel **channel,
-     return true;
- }
- 
-+/*
-+ * Unlike other types of migration addresses, a file descriptor is not
-+ * just a string that QEMU uses to initiate a connection. An fd has to
-+ * be prepared in advance by the user or management app.  We only know
-+ * whether a file descriptor refers to a socket or a file after
-+ * retrieving it from the monitor.
-+ *
-+ * If the method being used to reference the fds for migration is the
-+ * old "fd:" URI, migrate_uri_parse() always parses it into a
-+ * MIGRATION_ADDRESS_TYPE_SOCKET.
-+ *
-+ * If the method is the new channels API, a file descriptor might come
-+ * via either the MIGRATION_ADDRESS_TYPE_SOCKET or the
-+ * MIGRATION_ADDRESS_TYPE_FILE. For backward compatibility with 8.2
-+ * which allowed a file migration with MIGRATION_ADDRESS_TYPE_SOCKET,
-+ * this is still allowed.
-+ *
-+ * This function converts all of the above into
-+ * MIGRATION_ADDRESS_TYPE_FILE so the rest of code doesn't need to
-+ * care about none of this.
-+ */
-+static bool migrate_resolve_fd(MigrationAddress *addr, Error **errp)
-+{
-+    int fd;
-+
-+    if (addr->transport == MIGRATION_ADDRESS_TYPE_FILE) {
-+        FileMigrationArgs *fargs = &addr->u.file;
-+
-+        if (fargs->fd) {
-+            fd = monitor_fd_param(monitor_cur(), fargs->fd, errp);
-+            if (fd == -1) {
-+                return false;
-+            }
-+
-+            if (!fd_is_socket(fd)) {
-+                addr->u.file.fd = g_strdup_printf("%d", fd);
-+            } else {
-+                error_setg(errp,
-+                           "Migration transport 'file' does not support socket file descriptors");
-+                return false;
-+            }
-+        }
-+    } else if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-+        SocketAddress *saddr = &addr->u.socket;
-+
-+        if (saddr->type == SOCKET_ADDRESS_TYPE_FD) {
-+            fd = monitor_fd_param(monitor_cur(), saddr->u.fd.str, errp);
-+            if (fd == -1) {
-+                return false;
-+            }
-+
-+            g_free(saddr->u.fd.str);
-+
-+            if (!fd_is_socket(fd)) {
-+                addr->transport = MIGRATION_ADDRESS_TYPE_FILE;
-+                addr->u.file.fd = g_strdup_printf("%d", fd);
-+                addr->u.file.filename = NULL;
-+                addr->u.file.offset = 0;
-+            } else {
-+                saddr->u.fd.str = g_strdup_printf("%d", fd);
-+            }
-+        }
-+    }
-+
-+    return true;
-+}
-+
-+int migrate_fd_str_to_int(const char *fdname, Error **errp)
-+{
-+    int err, fd;
-+
-+    err = qemu_strtoi(fdname, NULL, 0, &fd);
-+    if (err) {
-+        error_setg_errno(errp, err, "failed to convert fd");
-+        return -1;
-+    }
-+    return fd;
-+}
-+
- static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-                                           MigrationChannelList *channels,
-                                           Error **errp)
-@@ -641,6 +707,10 @@ static void qemu_start_incoming_migration(const char *uri, bool has_channels,
-         addr = channel->addr;
-     }
- 
-+    if (!migrate_resolve_fd(addr, errp)) {
-+        return;
-+    }
-+
-     /* transport mechanism not suitable for migration? */
-     if (!migration_channels_and_transport_compatible(addr, errp)) {
-         return;
-@@ -2086,6 +2156,10 @@ void qmp_migrate(const char *uri, bool has_channels,
-         addr = channel->addr;
-     }
- 
-+    if (!migrate_resolve_fd(addr, errp)) {
-+        return;
-+    }
-+
-     /* transport mechanism not suitable for migration? */
-     if (!migration_channels_and_transport_compatible(addr, errp)) {
-         return;
-diff --git a/migration/migration.h b/migration/migration.h
-index 8045e39c26..e265d1732c 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -543,5 +543,6 @@ int migration_rp_wait(MigrationState *s);
-  * to remember the target is always the migration thread.
-  */
- void migration_rp_kick(MigrationState *s);
-+int migrate_fd_str_to_int(const char *fdname, Error **errp);
- 
- #endif
-diff --git a/qapi/migration.json b/qapi/migration.json
-index aa1b39bce1..37f4b9c6fb 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -1656,13 +1656,20 @@
- #
- # @filename: The file to receive the migration stream
- #
-+# @fd: A file descriptor name or number.  File descriptors must be
-+#     first added with the 'getfd' command. (since 9.0).
-+#
- # @offset: The file offset where the migration stream will start
- #
-+# Since 9.0, all members are optional, but at least one of @filename
-+# or @fd are required.
-+#
- # Since: 8.2
- ##
- { 'struct': 'FileMigrationArgs',
--  'data': { 'filename': 'str',
--            'offset': 'uint64' } }
-+  'data': { '*filename': 'str',
-+            '*fd': 'str',
-+            '*offset': 'uint64' } }
- 
- ##
- # @MigrationExecCommand:
--- 
-2.35.3
+Thanks
 
 
