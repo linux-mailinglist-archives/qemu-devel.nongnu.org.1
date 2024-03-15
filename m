@@ -2,59 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E23C87D01D
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 690D187D023
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl9Oq-0006yJ-7P; Fri, 15 Mar 2024 11:23:12 -0400
+	id 1rl9PC-0007s3-P8; Fri, 15 Mar 2024 11:23:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Oo-0006xg-7J
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9PB-0007rp-00
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Om-0001zJ-Lh
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:09 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9P9-00026a-Fv
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710516188;
+ s=mimecast20190719; t=1710516210;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=bj4DiZ7JUIsxcANACMuy2TGchukT6F4mCPxP/jTWjoU=;
- b=JKxr2Dgj4SlzIIH73G1L30la8AKYLjidi97TY88HEzqwwp0DCiE6rkAFZvcXtNFdtala1c
- bFo4gdfnS3tuCu3kjTO3U1ULb0ac4IdsEJBE326U8WQ6hLje3tRxCJwSQQUymxbFIk+lWZ
- B3R/sJNWwqeTd/D4iO5XgT/erOCpmsc=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BDAqiTc1O9KkVRj0IL6mR+LO3QjyUV8SVrlBKORZQXQ=;
+ b=ElHqt4VcG04SBsE8afx/esmgx9aKhlIGZynGJLkHokiohgwl13iKn1NWpr0xrVtVVnVfgP
+ BrnlFQDxSmD/NxPGLnyI5euQWfgJf3H4m4AEYmsMVo9woKkdblpELvwal2QCnQYoKEvLJm
+ 9mTxX4lpbIPZSBJR96E8DfY27vibmj8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-sDsJkMhENvKisuHeW6xzuQ-1; Fri, 15 Mar 2024 11:23:04 -0400
-X-MC-Unique: sDsJkMhENvKisuHeW6xzuQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-479-OKRsYc3RMve2dgOedUnh9g-1; Fri, 15 Mar 2024 11:23:03 -0400
+X-MC-Unique: OKRsYc3RMve2dgOedUnh9g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1C1D01869DE6;
- Fri, 15 Mar 2024 15:23:04 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F018C111E3F3;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1E4F4800262;
  Fri, 15 Mar 2024 15:23:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F1DE8200AFA2;
+ Fri, 15 Mar 2024 15:23:02 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D226921E6A24; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
+ id D3C7221E6A28; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	peter.maydell@linaro.org,
 	michael.roth@amd.com
-Subject: [PATCH v5 00/25] qapi: statically type schema.py
-Date: Fri, 15 Mar 2024 16:22:36 +0100
-Message-ID: <20240315152301.3621858-1-armbru@redhat.com>
+Subject: [PATCH v5 01/25] qapi/parser: fix typo - self.returns.info =>
+ self.errors.info
+Date: Fri, 15 Mar 2024 16:22:37 +0100
+Message-ID: <20240315152301.3621858-2-armbru@redhat.com>
+In-Reply-To: <20240315152301.3621858-1-armbru@redhat.com>
+References: <20240315152301.3621858-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
 X-Spam_score: -3.0
@@ -79,50 +83,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v5:
-* PATCH 05: Move QAPISchemaDefinition.check()'s
-  super().check() back to where it was in v3
-* PATCH 12: Replaced, necessitating minor adjustments in PATCH 17+22
-* PATCH 16: Tweak comment
-* PATCH 22: Tighten QAPISchema.lookup_entity()'s type hint
-* PATCH 24+25: New
+From: John Snow <jsnow@redhat.com>
 
-John Snow (22):
-  qapi/parser: fix typo - self.returns.info => self.errors.info
-  qapi/parser: shush up pylint
-  qapi: sort pylint suppressions
-  qapi/schema: add pylint suppressions
-  qapi: create QAPISchemaDefinition
-  qapi/schema: declare type for QAPISchemaObjectTypeMember.type
-  qapi/schema: declare type for QAPISchemaArrayType.element_type
-  qapi/schema: make c_type() and json_type() abstract methods
-  qapi/schema: adjust type narrowing for mypy's benefit
-  qapi/schema: add type narrowing to lookup_type()
-  qapi/schema: assert resolve_type has 'info' and 'what' args on error
-  qapi/schema: fix QAPISchemaArrayType.check's call to resolve_type
-  qapi/schema: assert info is present when necessary
-  qapi/schema: add _check_complete flag
-  qapi/schema: Don't initialize "members" with `None`
-  qapi/schema: fix typing for QAPISchemaVariants.tag_member
-  qapi/schema: assert inner type of QAPISchemaVariants in check_clash()
-  qapi/parser: demote QAPIExpression to Dict[str, Any]
-  qapi/parser.py: assert member.info is present in connect_member
-  qapi/schema: add type hints
-  qapi/schema: turn on mypy strictness
-  qapi/schema: remove unnecessary asserts
+Small copy-pasto. The correct info field to use in this conditional
+block is self.errors.info.
 
-Markus Armbruster (3):
-  qapi: Assert built-in types exist
-  qapi: Tighten check whether implicit object type already exists
-  qapi: Dumb down QAPISchema.lookup_entity()
+Fixes: 3a025d3d1ffa
+Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ scripts/qapi/parser.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- scripts/qapi/introspect.py |   8 +-
- scripts/qapi/mypy.ini      |   5 -
- scripts/qapi/parser.py     |   7 +-
- scripts/qapi/pylintrc      |  11 +-
- scripts/qapi/schema.py     | 794 ++++++++++++++++++++++++-------------
- 5 files changed, 537 insertions(+), 288 deletions(-)
-
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index d8f76060b8..fed88e9074 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -733,7 +733,7 @@ def check_expr(self, expr: QAPIExpression) -> None:
+                     "'Returns' section is only valid for commands")
+             if self.errors:
+                 raise QAPISemError(
+-                    self.returns.info,
++                    self.errors.info,
+                     "'Errors' section is only valid for commands")
+ 
+     def check(self) -> None:
 -- 
 2.44.0
 
