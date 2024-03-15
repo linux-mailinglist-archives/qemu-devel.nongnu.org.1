@@ -2,89 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D5887C7EC
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D5887C7EA
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 04:22:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rky7u-0003y1-AE; Thu, 14 Mar 2024 23:20:58 -0400
+	id 1rky85-0003zF-0d; Thu, 14 Mar 2024 23:21:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7r-0003xn-D7
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:55 -0400
-Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7u-0003yO-G1
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:58 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7m-0004I7-2s
- for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:54 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rky7m-0004IF-9y
+ for qemu-devel@nongnu.org; Thu, 14 Mar 2024 23:20:58 -0400
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7EE7721D92;
- Fri, 15 Mar 2024 03:20:44 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 25ED021D44;
+ Fri, 15 Mar 2024 03:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710472844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=F8qrIv7mQhacO3t8RnUsPVa35XmVTI24qqzcArXw4fo=;
- b=paKuRdAX0KOk8yW0LDxjkb/tH0ncZT77tWOiJ1Jh4PKP1aLUykSiRX1/oLybUVccjM1lRA
- wb4aQVgbfyhMGb7yHClnYb9PtXe40tL7tFovaSDGM0V19TLMDcUjNpL+AuU5a2fM91LUEg
- S57pAgKFvNUroy1ACYDzIwLrwYXtO9c=
+ t=1710472846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=niLMWk+PhaKVhiINpnrFIJE7tK7ZrL4Zx8VBbFS5GxA=;
+ b=edrMNs18Xa6uB38d9MqhEnj7SaNgTqq7kjHyA0vBP9HnAUv3Qg1L4ZLMw05iNSBwVhXuYw
+ jHIBm02E/mYezNYf2TmyhLCxbSFPCd7wvbciZWaqaRl4Q1ErIlJUl393ogEAcxtAYGWzC2
+ /65u2C4zjwuW3YOlNGEWJyyIwWk6sak=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710472844;
+ s=susede2_ed25519; t=1710472846;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=F8qrIv7mQhacO3t8RnUsPVa35XmVTI24qqzcArXw4fo=;
- b=zcaRTAy17fZFELnZ4c3TqOLzAmlibpDQzWbr8dOvmgnePBDYeBc8AZTXVeTU2LmD3oIPZN
- EHKb3H1n5n9uMNBQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=niLMWk+PhaKVhiINpnrFIJE7tK7ZrL4Zx8VBbFS5GxA=;
+ b=aAxkkDEXxZ67eSDUTnDQmDfRsY6ycn2TtkE/RFETtLSgSN4y03t8AaKbh9RL0EGvoDGWGO
+ T3cJ1YhXnTNXqkDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710472844; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=F8qrIv7mQhacO3t8RnUsPVa35XmVTI24qqzcArXw4fo=;
- b=paKuRdAX0KOk8yW0LDxjkb/tH0ncZT77tWOiJ1Jh4PKP1aLUykSiRX1/oLybUVccjM1lRA
- wb4aQVgbfyhMGb7yHClnYb9PtXe40tL7tFovaSDGM0V19TLMDcUjNpL+AuU5a2fM91LUEg
- S57pAgKFvNUroy1ACYDzIwLrwYXtO9c=
+ t=1710472846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=niLMWk+PhaKVhiINpnrFIJE7tK7ZrL4Zx8VBbFS5GxA=;
+ b=edrMNs18Xa6uB38d9MqhEnj7SaNgTqq7kjHyA0vBP9HnAUv3Qg1L4ZLMw05iNSBwVhXuYw
+ jHIBm02E/mYezNYf2TmyhLCxbSFPCd7wvbciZWaqaRl4Q1ErIlJUl393ogEAcxtAYGWzC2
+ /65u2C4zjwuW3YOlNGEWJyyIwWk6sak=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710472844;
+ s=susede2_ed25519; t=1710472846;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=F8qrIv7mQhacO3t8RnUsPVa35XmVTI24qqzcArXw4fo=;
- b=zcaRTAy17fZFELnZ4c3TqOLzAmlibpDQzWbr8dOvmgnePBDYeBc8AZTXVeTU2LmD3oIPZN
- EHKb3H1n5n9uMNBQ==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=niLMWk+PhaKVhiINpnrFIJE7tK7ZrL4Zx8VBbFS5GxA=;
+ b=aAxkkDEXxZ67eSDUTnDQmDfRsY6ycn2TtkE/RFETtLSgSN4y03t8AaKbh9RL0EGvoDGWGO
+ T3cJ1YhXnTNXqkDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 56F801368C;
- Fri, 15 Mar 2024 03:20:43 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F271A1368C;
+ Fri, 15 Mar 2024 03:20:44 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id S+cLB4u+82XZcQAAD6G6ig
- (envelope-from <farosas@suse.de>); Fri, 15 Mar 2024 03:20:43 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id eMaYLYy+82XZcQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 15 Mar 2024 03:20:44 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>
-Subject: [PATCH v3 0/3] migration mapped-ram fixes
-Date: Fri, 15 Mar 2024 00:20:37 -0300
-Message-Id: <20240315032040.7974-1-farosas@suse.de>
+Subject: [PATCH v3 1/3] migration/multifd: Ensure we're not given a socket for
+ file migration
+Date: Fri, 15 Mar 2024 00:20:38 -0300
+Message-Id: <20240315032040.7974-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240315032040.7974-1-farosas@suse.de>
+References: <20240315032040.7974-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spam-Score: 1.87
-X-Spamd-Result: default: False [1.87 / 50.00]; ARC_NA(0.00)[];
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00]; ARC_NA(0.00)[];
  RCVD_VIA_SMTP_AUTH(0.00)[]; FROM_HAS_DN(0.00)[];
  RCPT_COUNT_THREE(0.00)[3]; R_MISSING_CHARSET(2.50)[];
  TO_MATCH_ENVRCPT_ALL(0.00)[]; MIME_GOOD(-0.10)[text/plain];
  BROKEN_CONTENT_TYPE(1.50)[]; TO_DN_SOME(0.00)[];
  NEURAL_HAM_LONG(-1.00)[-1.000]; RCVD_COUNT_THREE(0.00)[3];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-0.988]; MID_CONTAINS_FROM(1.00)[];
+ NEURAL_HAM_SHORT(-0.20)[-0.987]; MID_CONTAINS_FROM(1.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
  FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
  MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- BAYES_HAM(-1.83)[93.99%]
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
- envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+ BAYES_HAM(-3.00)[100.00%]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -107,35 +119,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+When doing migration using the fd: URI, QEMU will fetch the file
+descriptor passed in via the monitor at
+fd_start_outgoing|incoming_migration(), which means the checks at
+migration_channels_and_transport_compatible() happen too soon and we
+don't know at that point whether the FD refers to a plain file or a
+socket.
 
-In this v3:
+For this reason, we've been allowing a migration channel of type
+SOCKET_ADDRESS_TYPE_FD to pass the initial verifications in scenarios
+where the socket migration is not supported, such as with fd + multifd.
 
-patch 1 - The fd_is_socket() verification and an update to the comment
-          in the code;
+The commit decdc76772 ("migration/multifd: Add mapped-ram support to
+fd: URI") was supposed to add a second check prior to starting
+migration to make sure a socket fd is not passed instead of a file fd,
+but failed to do so.
 
-patch 2 - The fix for the fd-reuse bug in outgoing_args;
+Add the missing verification and update the comment explaining this
+situation which is currently incorrect.
 
-patch 3 - A proposal on how to fix the fd-socket vs. fd-file
-          issue. I'm basically moving the fd_is_socket() call earlier
-          to be able to do the checks properly.
+Fixes: decdc76772 ("migration/multifd: Add mapped-ram support to fd: URI")
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ migration/fd.c        | 8 ++++++++
+ migration/file.c      | 7 +++++++
+ migration/migration.c | 6 +++---
+ 3 files changed, 18 insertions(+), 3 deletions(-)
 
-based-on: https://gitlab.com/peterx/qemu/-/commits/migration-stable
-
-CI run: https://gitlab.com/farosas/qemu/-/pipelines/1214405210
-
-Fabiano Rosas (3):
-  migration/multifd: Ensure we're not given a socket for file migration
-  migration/multifd: Duplicate the fd for the outgoing_args
-  migration: Add fd to FileMigrationArgs
-
- migration/fd.c        |  20 ++++++---
- migration/file.c      |   9 ++++
- migration/migration.c | 100 ++++++++++++++++++++++++++++++++++++------
- migration/migration.h |   1 +
- qapi/migration.json   |  11 ++++-
- 5 files changed, 119 insertions(+), 22 deletions(-)
-
+diff --git a/migration/fd.c b/migration/fd.c
+index 39a52e5c90..c07030f715 100644
+--- a/migration/fd.c
++++ b/migration/fd.c
+@@ -22,6 +22,7 @@
+ #include "migration.h"
+ #include "monitor/monitor.h"
+ #include "io/channel-file.h"
++#include "io/channel-socket.h"
+ #include "io/channel-util.h"
+ #include "options.h"
+ #include "trace.h"
+@@ -95,6 +96,13 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
+     }
+ 
+     if (migrate_multifd()) {
++        if (fd_is_socket(fd)) {
++            error_setg(errp,
++                       "Multifd migration to a socket FD is not supported");
++            object_unref(ioc);
++            return;
++        }
++
+         file_create_incoming_channels(ioc, errp);
+     } else {
+         qio_channel_set_name(ioc, "migration-fd-incoming");
+diff --git a/migration/file.c b/migration/file.c
+index ddde0ca818..b6e8ba13f2 100644
+--- a/migration/file.c
++++ b/migration/file.c
+@@ -15,6 +15,7 @@
+ #include "file.h"
+ #include "migration.h"
+ #include "io/channel-file.h"
++#include "io/channel-socket.h"
+ #include "io/channel-util.h"
+ #include "options.h"
+ #include "trace.h"
+@@ -58,6 +59,12 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
+     int fd = fd_args_get_fd();
+ 
+     if (fd && fd != -1) {
++        if (fd_is_socket(fd)) {
++            error_setg(errp,
++                       "Multifd migration to a socket FD is not supported");
++            goto out;
++        }
++
+         ioc = qio_channel_file_new_dupfd(fd, errp);
+     } else {
+         ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
+diff --git a/migration/migration.c b/migration/migration.c
+index 644e073b7d..f60bd371e3 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -166,9 +166,9 @@ static bool transport_supports_seeking(MigrationAddress *addr)
+     }
+ 
+     /*
+-     * At this point, the user might not yet have passed the file
+-     * descriptor to QEMU, so we cannot know for sure whether it
+-     * refers to a plain file or a socket. Let it through anyway.
++     * At this point QEMU has not yet fetched the fd passed in by the
++     * user, so we cannot know for sure whether it refers to a plain
++     * file or a socket. Let it through anyway and check at fd.c.
+      */
+     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
+         return addr->u.socket.type == SOCKET_ADDRESS_TYPE_FD;
 -- 
 2.35.3
 
