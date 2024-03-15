@@ -2,98 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A235C87CDDF
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:13:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C55687CDCD
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:11:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7Lh-0002nt-Pp; Fri, 15 Mar 2024 09:11:49 -0400
+	id 1rl7Jp-0005xE-4e; Fri, 15 Mar 2024 09:09:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Lb-0002ik-IR
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:43 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rl7Ja-0005eI-6Z
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:40 -0400
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7LW-0000Fz-D3
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:43 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-568b6302044so500771a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:11:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
+ id 1rl7JW-0007cq-L2
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:37 -0400
+Received: by mail-pg1-x52c.google.com with SMTP id
+ 41be03b00d2f7-5dbd519bde6so1604038a12.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710508296; x=1711113096; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vnvuw2s/qwtrAi1idHX4CvaMd4PeKiJ3xN49FEYysNQ=;
- b=UnMhEXAzG8RRZ8GrAfBS/lVof3e8c7j2ei5T+TFbAnEIBja8XE71LyWL33mKg7lMG+
- XnXWZAv3PiuGWLhKxYkOW7UCuInlsF1KcRA02RzMn6cOsDTOWDN5PImatMWZEbcwAGS6
- FM2KYtHY1UO5mqb6n0yc4E2WFKdhSSZkJekbmMTSMnM7M1vKusqxmcGWdJcWLfjfXOPH
- T7Bn4T4LCWo7uGXLhsZAD9B2A709ygXIjUVqNu0MEXnVC07Vd57EkP2/FMBbYI37MD+y
- SwoswZi+AmaJn0Bddf/HPQtvv+c7gD3DG9SQPlg8uEhU3VUz0rTiyR1NXdRDditPnNGy
- 4dHA==
+ d=ventanamicro.com; s=google; t=1710508173; x=1711112973; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y4vX0WH0NUhjpqoGC54S3e1oXOXXObwA9DbtQ2MGi0g=;
+ b=dpbDMCxEvWES4UrjeR6mWrMh7ranEAo92ypKgzMniMXuMof1fy2xgtEXXgUtGaO9vJ
+ bUVgFLoXqo7fa1+Nb1MWBpG124tquYFS1TgW4RWjt4osVWjf4zir+cxxnVlLxgzhoK+K
+ RphAs5sWCEA1yyhEcZAV8+r2t+nDC7w2432TGLxnPpaCDjzvhkDtqeTNjc6h+tySquFv
+ PW9vSoOkZ8HSEVOI/BQ/diyif5pYEwM31SCjsPjWP330qTHDQjSQKTM2RX1fbOzeLo7V
+ 6MOE6LGJVA1i6SepTyN7nbvGxlC8Q72wMg/PYlXVjtCs5VZH3fnDMbPDyNdEK9W7XJGd
+ bKYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508296; x=1711113096;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=vnvuw2s/qwtrAi1idHX4CvaMd4PeKiJ3xN49FEYysNQ=;
- b=diJpUVA1rwAW9yv4/a+t6nAaRv3ngsveUrdwuMkhu5cH5/sl4e63rNssFi+9oZ99YJ
- HV6trDnhO/ODUfSFR0lwkwC/CtnIcpTxmHFQhInXkEa2spe61OitdBy8CvPrcvZRtztw
- Hwj6QvReS0jskN27kRixvnBSXlf0yKEXyP8rsmPaIcJOGwhhQ/B/oshk+B/Ts7+APTpr
- iFJpS3P/RnQrjvsJIBrCujZZNHU+qr2PJsoeB55HAI8Z/lT8ruT51W+GSlfntVa9gvbF
- zadZrUTl6sC5B+Bpx/VOF6tUgaReK6PtoRwemnOMwQnwjX+6i28LKCcdnBpu8vcRwBJC
- Dq8A==
-X-Gm-Message-State: AOJu0YyrdsFEZeCxOdYIAaSHO5LnD/tR2RbSD+MNaSCdRiGg0HSElRhu
- Npv9oAY/7l9dbp4dqtHAjtadYQFH8JxY2n+H687M+1IQmMFBRYbs8NGRgMEJeA0Aq6jRpP/xjvM
- 6
-X-Google-Smtp-Source: AGHT+IHkrsOXMB0KMEhHFjzPwy0HpwYtgpPqcJhRXSdQ9oxhn/KVwMnS7VrOrtYo7QVAmF/CxxOTZw==
-X-Received: by 2002:a17:906:a3d5:b0:a46:1f6d:2fef with SMTP id
- ca21-20020a170906a3d500b00a461f6d2fefmr3544428ejb.42.1710508296617; 
- Fri, 15 Mar 2024 06:11:36 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.145.26])
+ d=1e100.net; s=20230601; t=1710508173; x=1711112973;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y4vX0WH0NUhjpqoGC54S3e1oXOXXObwA9DbtQ2MGi0g=;
+ b=aEGQxzVQUvg5i3cshI++yHnraxdYFPEhGzJhH8rz8N+294c1Y+Ljm6d5If4f8ebfI8
+ mv3f41fIaqke97YBWeZj+nnc57lLH3Hbx44bSx5eMlPTHnTBci/HJ7v0YizWBlJO6dyz
+ mp5bMHdAYH2cR1Fh9qDys+6llpYwO3dBbop88U9qDKoiVw7PMK57d3rK0ejeuH0f6Y/j
+ HBzl2FuKfD7wx4w1ahiXg+qzYTZQDr0Mn2RM96agDi4qBVRD4j+aZjvqAjlWpsYN5d1P
+ yI3UOMGztt4dcvRC/ZQZJKb9ptgnQu+YxFfWHInqZ8BWgLxNj7EMjslm6NqO9PyUe2yw
+ Y56g==
+X-Gm-Message-State: AOJu0YzBah3NrL4WfmotDZSSyRg3EAdf8cpsBXYAlcwspgx5m2AahJrI
+ e1zkriMGELATXxTx8yLHTNMdKscleC7Qn59ulDCyVKamgR7uuhZbLfuz33KSwPqqaSTUp7Vp7x0
+ f
+X-Google-Smtp-Source: AGHT+IHrOjBklu9HBEAjzciZt8OGddqy1g0WWGgBjLYwax43oKa2s5ys0rBE6kE14xLzlx8R1BE8Lw==
+X-Received: by 2002:a17:90a:ea0e:b0:29b:b15d:5353 with SMTP id
+ w14-20020a17090aea0e00b0029bb15d5353mr4612835pjy.31.1710508172750; 
+ Fri, 15 Mar 2024 06:09:32 -0700 (PDT)
+Received: from sunil-pc.Dlink ([106.51.184.12])
  by smtp.gmail.com with ESMTPSA id
- w23-20020a1709064a1700b00a462e5d8d4asm1676475eju.114.2024.03.15.06.11.33
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Mar 2024 06:11:36 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ r3-20020a17090ad40300b0029c68206e2bsm2886663pju.0.2024.03.15.06.09.27
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Mar 2024 06:09:32 -0700 (PDT)
+From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
-	Markus Armbruster <armbru@redhat.com>
-Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+	qemu-arm@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Claudio Fontana <cfontana@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Eric Blake <eblake@redhat.com>,
- Song Gao <gaosong@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [RFC PATCH-for-9.1 21/21] qapi: Make @query-cpu-definitions
- target-agnostic
-Date: Fri, 15 Mar 2024 14:09:09 +0100
-Message-ID: <20240315130910.15750-22-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
-References: <20240315130910.15750-1-philmd@linaro.org>
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Alistair Francis <alistair23@gmail.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ Anup Patel <apatel@ventanamicro.com>, Haibo1 Xu <haibo1.xu@intel.com>,
+ Sunil V L <sunilvl@ventanamicro.com>
+Subject: [PATCH 03/12] uefi-test-tools: Add support for python based build
+ script
+Date: Fri, 15 Mar 2024 18:39:15 +0530
+Message-Id: <20240315130924.2378849-1-sunilvl@ventanamicro.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52c;
+ envelope-from=sunilvl@ventanamicro.com; helo=mail-pg1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -116,288 +104,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All targets use the generic_query_cpu_definitions() method,
-which is not target-specific. Make the command target agnostic
-by moving it to machine.json. Rename generic_query_cpu_definitions
-as qmp_query_cpu_definitions.
+edk2-funcs.sh which is used in this Makefile, was removed in the commit
+c28a2891f3 ("edk2: update build script"). It is replaced with a python
+based script. So, update the Makefile and add the configuration file as
+required to support the python based build script.
 
-This is an introspection change for the target that were not
-implementing qmp_query_cpu_definitions(): now query-cpu-definitions
-returns an their CPUs list.
-
-Example with SH4 before:
-
-  { "execute": "query-cpu-definitions" }
-
-  { "error": {"class": "CommandNotFound", "desc": "The command query-cpu-definitions has not been found"} }
-
-and after:
-
-  { "execute": "query-cpu-definitions" }
-
-  { "return": [
-          {"name": "sh7751r", "typename": "sh7751r-superh-cpu", "static": false, "deprecated": false},
-          {"name": "sh7750r", "typename": "sh7750r-superh-cpu", "static": false, "deprecated": false},
-          {"name": "sh7785", "typename": "sh7785-superh-cpu", "static": false, "deprecated": false}
-      ]
-  }
-
-However this allows heterogeneous emulation to return a correct list.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
-Well, not all target got converted, I left the s390x one for later :)
----
- MAINTAINERS                           |  1 -
- qapi/machine-target.json              | 18 ------------------
- qapi/machine.json                     | 11 +++++++++++
- include/qapi/commands-target-compat.h | 14 --------------
- system/cpu-qmp-cmds.c                 |  4 ++--
- target/arm/arm-qmp-cmds.c             |  6 ------
- target/i386/cpu.c                     |  6 ------
- target/loongarch/loongarch-qmp-cmds.c |  6 ------
- target/mips/sysemu/mips-qmp-cmds.c    |  9 ---------
- target/ppc/ppc-qmp-cmds.c             |  7 -------
- target/riscv/riscv-qmp-cmds.c         |  6 ------
- 11 files changed, 13 insertions(+), 75 deletions(-)
- delete mode 100644 include/qapi/commands-target-compat.h
+ tests/uefi-test-tools/Makefile               | 18 +++----
+ tests/uefi-test-tools/uefi-test-build.config | 57 ++++++++++++++++++++
+ 2 files changed, 63 insertions(+), 12 deletions(-)
+ create mode 100644 tests/uefi-test-tools/uefi-test-build.config
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 39d7c14d98..71f446311b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1895,7 +1895,6 @@ F: qapi/machine-target.json
- F: include/hw/boards.h
- F: include/hw/core/cpu.h
- F: include/hw/cpu/cluster.h
--F: include/qapi/commands-target-compat.h
- F: include/sysemu/numa.h
- F: tests/unit/test-smp-parse.c
- T: git https://gitlab.com/ehabkost/qemu.git machine-next
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 7480921d33..2065972d8a 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -212,24 +212,6 @@
-                    'TARGET_LOONGARCH64',
-                    'TARGET_RISCV' ] } }
+diff --git a/tests/uefi-test-tools/Makefile b/tests/uefi-test-tools/Makefile
+index 0c003f2877..f94738b645 100644
+--- a/tests/uefi-test-tools/Makefile
++++ b/tests/uefi-test-tools/Makefile
+@@ -12,7 +12,7 @@
  
--##
--# @query-cpu-definitions:
--#
--# Return a list of supported virtual CPU definitions
--#
--# Returns: a list of CpuDefinitionInfo
--#
--# Since: 1.2
--##
--{ 'command': 'query-cpu-definitions', 'returns': ['CpuDefinitionInfo'],
--  'if': { 'any': [ 'TARGET_PPC',
--                   'TARGET_ARM',
--                   'TARGET_I386',
--                   'TARGET_S390X',
--                   'TARGET_MIPS',
--                   'TARGET_LOONGARCH64',
--                   'TARGET_RISCV' ] } }
+ edk2_dir              := ../../roms/edk2
+ images_dir            := ../data/uefi-boot-images
+-emulation_targets     := arm aarch64 i386 x86_64
++emulation_targets     := arm aarch64 i386 x86_64 riscv64
+ uefi_binaries         := bios-tables-test
+ intermediate_suffixes := .efi .fat .iso.raw
+ 
+@@ -56,7 +56,8 @@ Build/%.iso.raw: Build/%.fat
+ # stripped from, the argument.
+ map_arm_to_uefi     = $(subst arm,ARM,$(1))
+ map_aarch64_to_uefi = $(subst aarch64,AA64,$(call map_arm_to_uefi,$(1)))
+-map_i386_to_uefi    = $(subst i386,IA32,$(call map_aarch64_to_uefi,$(1)))
++map_riscv64_to_uefi = $(subst riscv64,RISCV64,$(call map_aarch64_to_uefi,$(1)))
++map_i386_to_uefi    = $(subst i386,IA32,$(call map_riscv64_to_uefi,$(1)))
+ map_x86_64_to_uefi  = $(subst x86_64,X64,$(call map_i386_to_uefi,$(1)))
+ map_to_uefi         = $(subst .,,$(call map_x86_64_to_uefi,$(1)))
+ 
+@@ -70,7 +71,7 @@ Build/%.fat: Build/%.efi
+ 	uefi_bin_b=$$(stat --format=%s -- $<) && \
+ 		uefi_fat_kb=$$(( (uefi_bin_b * 11 / 10 + 1023) / 1024 )) && \
+ 		uefi_fat_kb=$$(( uefi_fat_kb >= 64 ? uefi_fat_kb : 64 )) && \
+-		mkdosfs -C $@ -n $(basename $(@F)) -- $$uefi_fat_kb
++		mkdosfs -C $@ -n "bios-test" -- $$uefi_fat_kb
+ 	MTOOLS_SKIP_CHECK=1 mmd -i $@ ::EFI
+ 	MTOOLS_SKIP_CHECK=1 mmd -i $@ ::EFI/BOOT
+ 	MTOOLS_SKIP_CHECK=1 mcopy -i $@ -- $< \
+@@ -95,15 +96,8 @@ Build/%.fat: Build/%.efi
+ # we must mark the recipe manually as recursive, by using the "+" indicator.
+ # This way, when the inner "make" starts a parallel build of the target edk2
+ # module, it can communicate with the outer "make"'s job server.
+-Build/bios-tables-test.%.efi: build-edk2-tools
+-	+./build.sh $(edk2_dir) BiosTablesTest $* $@
 -
- ##
- # @CpuS390Polarization:
- #
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 9c44b8fa82..987c64f8e7 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -73,6 +73,17 @@
-             'deprecated' : 'bool' }
- }
+-build-edk2-tools:
+-	cd $(edk2_dir)/BaseTools && git submodule update --init --force
+-	$(MAKE) -C $(edk2_dir)/BaseTools \
+-		PYTHON_COMMAND=$${EDK2_PYTHON_COMMAND:-python3} \
+-		EXTRA_OPTFLAGS='$(EDK2_BASETOOLS_OPTFLAGS)' \
+-		EXTRA_LDFLAGS='$(EDK2_BASETOOLS_LDFLAGS)'
++Build/bios-tables-test.%.efi:
++	$(PYTHON) ../../roms/edk2-build.py --config uefi-test-build.config
  
-+##
-+# @query-cpu-definitions:
-+#
-+# Return a list of supported virtual CPU definitions
-+#
-+# Returns: a list of CpuDefinitionInfo
-+#
-+# Since: 1.2
-+##
-+{ 'command': 'query-cpu-definitions', 'returns': ['CpuDefinitionInfo'] }
+ clean:
+ 	rm -rf Build Conf log
+diff --git a/tests/uefi-test-tools/uefi-test-build.config b/tests/uefi-test-tools/uefi-test-build.config
+new file mode 100644
+index 0000000000..4fb89f7db9
+--- /dev/null
++++ b/tests/uefi-test-tools/uefi-test-build.config
+@@ -0,0 +1,57 @@
++[global]
++core = ../../roms/edk2
 +
- ##
- # @CpuModelInfo:
- #
-diff --git a/include/qapi/commands-target-compat.h b/include/qapi/commands-target-compat.h
-deleted file mode 100644
-index 86d45d8fcc..0000000000
---- a/include/qapi/commands-target-compat.h
-+++ /dev/null
-@@ -1,14 +0,0 @@
--/*
-- * QAPI helpers for target specific QMP commands
-- *
-- * SPDX-FileCopyrightText: 2024 Linaro Ltd.
-- * SPDX-License-Identifier: GPL-2.0-or-later
-- */
--#ifndef QAPI_COMPAT_TARGET_H
--#define QAPI_COMPAT_TARGET_H
--
--#include "qapi/qapi-types-machine.h"
--
--CpuDefinitionInfoList *generic_query_cpu_definitions(Error **errp);
--
--#endif
-diff --git a/system/cpu-qmp-cmds.c b/system/cpu-qmp-cmds.c
-index daeb131159..049e8b9d35 100644
---- a/system/cpu-qmp-cmds.c
-+++ b/system/cpu-qmp-cmds.c
-@@ -7,7 +7,7 @@
- 
- #include "qemu/osdep.h"
- #include "qom/object.h"
--#include "qapi/commands-target-compat.h"
-+#include "qapi/qapi-commands-machine.h"
- #include "sysemu/arch_init.h"
- #include "hw/core/cpu.h"
- #include "hw/core/sysemu-cpu-ops.h"
-@@ -53,7 +53,7 @@ static void arch_add_cpu_definitions(CpuDefinitionInfoList **cpu_list,
-     }
- }
- 
--CpuDefinitionInfoList *generic_query_cpu_definitions(Error **errp)
-+CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
- {
-     CpuDefinitionInfoList *cpu_list = NULL;
- 
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index c5091e64ec..ac8d890bc0 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -28,7 +28,6 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/qapi-commands-machine-target.h"
- #include "qapi/qapi-commands-misc-target.h"
--#include "qapi/commands-target-compat.h"
- #include "qapi/qmp/qdict.h"
- #include "qom/qom-qobject.h"
- 
-@@ -220,8 +219,3 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
- 
-     return expansion_info;
- }
--
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index e5dbd307d8..f26adefd37 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -38,7 +38,6 @@
- #ifndef CONFIG_USER_ONLY
- #include "sysemu/reset.h"
- #include "qapi/qapi-commands-machine-target.h"
--#include "qapi/commands-target-compat.h"
- #include "exec/address-spaces.h"
- #include "hw/boards.h"
- #include "hw/i386/sgx-epc.h"
-@@ -5666,11 +5665,6 @@ static void x86_cpu_definition_entry(gpointer data, gpointer user_data)
-     QAPI_LIST_PREPEND(*cpu_list, info);
- }
- 
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
--
- #endif /* !CONFIG_USER_ONLY */
- 
- uint64_t x86_cpu_get_supported_feature_word(FeatureWord w,
-diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
-index ef5aedc1cd..aaed7bbf93 100644
---- a/target/loongarch/loongarch-qmp-cmds.c
-+++ b/target/loongarch/loongarch-qmp-cmds.c
-@@ -9,17 +9,11 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine-target.h"
--#include "qapi/commands-target-compat.h"
- #include "cpu.h"
- #include "qapi/qmp/qdict.h"
- #include "qapi/qobject-input-visitor.h"
- #include "qom/qom-qobject.h"
- 
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
--
- static const char *cpu_model_advertised_features[] = {
-     "lsx", "lasx", NULL
- };
-diff --git a/target/mips/sysemu/mips-qmp-cmds.c b/target/mips/sysemu/mips-qmp-cmds.c
-index 329db3a028..c3c775acc6 100644
---- a/target/mips/sysemu/mips-qmp-cmds.c
-+++ b/target/mips/sysemu/mips-qmp-cmds.c
-@@ -5,12 +5,3 @@
-  *
-  * SPDX-License-Identifier: LGPL-2.1-or-later
-  */
--
--#include "qemu/osdep.h"
--#include "qapi/qapi-commands-machine-target.h"
--#include "qapi/commands-target-compat.h"
--
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
-diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
-index 267dd84718..f85c4560f9 100644
---- a/target/ppc/ppc-qmp-cmds.c
-+++ b/target/ppc/ppc-qmp-cmds.c
-@@ -28,8 +28,6 @@
- #include "qemu/ctype.h"
- #include "monitor/hmp-target.h"
- #include "monitor/hmp.h"
--#include "qapi/qapi-commands-machine-target.h"
--#include "qapi/commands-target-compat.h"
- #include "cpu-models.h"
- #include "cpu-qom.h"
- 
-@@ -195,8 +193,3 @@ void ppc_add_alias_definitions(CpuDefinitionInfoList **cpu_list)
-         QAPI_LIST_PREPEND(*cpu_list, info);
-     }
- }
--
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
-diff --git a/target/riscv/riscv-qmp-cmds.c b/target/riscv/riscv-qmp-cmds.c
-index 45adc90d3b..170d720b24 100644
---- a/target/riscv/riscv-qmp-cmds.c
-+++ b/target/riscv/riscv-qmp-cmds.c
-@@ -26,7 +26,6 @@
- 
- #include "qapi/error.h"
- #include "qapi/qapi-commands-machine-target.h"
--#include "qapi/commands-target-compat.h"
- #include "qapi/qmp/qbool.h"
- #include "qapi/qmp/qdict.h"
- #include "qapi/qobject-input-visitor.h"
-@@ -54,11 +53,6 @@ void riscv_cpu_add_definition(gpointer data, gpointer user_data)
-     QAPI_LIST_PREPEND(*cpu_list, info);
- }
- 
--CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
--{
--    return generic_query_cpu_definitions(errp);
--}
--
- static void riscv_check_if_cpu_available(RISCVCPU *cpu, Error **errp)
- {
-     if (!riscv_cpu_accelerator_compatible(cpu)) {
++####################################################################################
++# arm
++
++[build.arm]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++module = UefiTestToolsPkg/BiosTablesTest/BiosTablesTest.inf
++dest = ./Build
++arch = ARM
++cpy1 = ARM/BiosTablesTest.efi  bios-tables-test.arm.efi
++
++####################################################################################
++# aarch64
++
++[build.aarch64]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++module = UefiTestToolsPkg/BiosTablesTest/BiosTablesTest.inf
++dest = ./Build
++arch = AARCH64
++cpy1 = AARCH64/BiosTablesTest.efi  bios-tables-test.aarch64.efi
++
++####################################################################################
++# riscv64
++
++[build.riscv]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++module = UefiTestToolsPkg/BiosTablesTest/BiosTablesTest.inf
++dest = ./Build
++arch = RISCV64
++cpy1 = RISCV64/BiosTablesTest.efi  bios-tables-test.riscv64.efi
++
++####################################################################################
++# ia32
++
++[build.ia32]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++module = UefiTestToolsPkg/BiosTablesTest/BiosTablesTest.inf
++dest = ./Build
++arch = IA32
++cpy1 = IA32/BiosTablesTest.efi  bios-tables-test.i386.efi
++
++####################################################################################
++# x64
++
++[build.x64]
++conf = UefiTestToolsPkg/UefiTestToolsPkg.dsc
++plat = UefiTestTools
++module = UefiTestToolsPkg/BiosTablesTest/BiosTablesTest.inf
++dest = ./Build
++arch = X64
++cpy1 = X64/BiosTablesTest.efi  bios-tables-test.x86_64.efi
 -- 
-2.41.0
+2.40.1
 
 
