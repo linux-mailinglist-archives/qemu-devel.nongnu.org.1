@@ -2,47 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E94C087CD4A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DCD87CD46
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6hq-0002oE-2Q; Fri, 15 Mar 2024 08:30:38 -0400
+	id 1rl6hi-0002SM-Nn; Fri, 15 Mar 2024 08:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6hI-0002Gj-P7
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:06 -0400
+ id 1rl6hC-0002DB-PQ
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:29:58 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6h8-0006OQ-Na
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:03 -0400
+ id 1rl6h8-0006OV-Nb
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:29:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=rzhBDkOhn7PA/qCuliUHOgVG1zAo7JXrGfpije2w0fg=; b=XzD7HIs0EOHQ
- BLN5Dg6Zzc3fkcrHqp3/KzcxrXl9w2cj03Y4R0fzUipYGMNuXHnOSVcJN+mTTXa08nW0fyBmQDAQP
- 6Zim8fIT3RSph5uToHwH/n7RCbykfFg2jwDKpTZdoFR/SK57/BjcOIZmxcFsrbjEgJY+zc5uomc7/
- QBNHAemBEXGEI01DbuE0L4yupDeV+mHiNqTtRihKejtVClZC6kz9ivaIl/UobLas3cro5zbkoBj6A
- bPfZu76TZ439acMKSIqg4aeLhAml0zAk1YVtBuZTfGNK/SEoLBm6H8J7IbSM//lKZVdojyn99iYpk
- BDOlfuwDYJeN3iIg+mCLbA==;
+ d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-Id:Date:Subject
+ :From; bh=eKJQrKU9aZiOLAU3zCGqFcD6ur956gr0FfORIR7FeCE=; b=L+WpVR5ELtDahdX/XZ0
+ 4mNduzpPHoVPGFV6w/jlm2CFRUH/WvKabRm2ae9E7K0EeeP5kD1dd4P6T+vMRqV53BAjdnl+p66mN
+ euZwGPMZx2upizrmi0YYT41685AP0tt+F2liOofQLyscC1wTOHAwcnCAon3EAfRIMwKjIF5YFiQbM
+ 1jUarIVVFlR4DBj7vSLeiBUszSXu8P/e2nBDj1llSVfnZ/ny0wdRaRD9iJh1dN58AAPu/SlTLBUwr
+ BCuLKnzp7QZSv2PwVgNca84HLVcPklDajV2tfmEN42sdYNIBrJ6tB17Ay5PWSqlyoy1p/2cFjqzQw
+ lOUxrW4rFbmR6AA==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0d;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0o;
  Fri, 15 Mar 2024 13:29:46 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  marcandre.lureau@redhat.com, philmd@linaro.org,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v3 5/7] qga/commands-posix: execute_fsfreeze_hook: use
- ga_run_command helper
-Date: Fri, 15 Mar 2024 14:29:44 +0200
-Message-Id: <20240315122946.39168-6-andrey.drobyshev@virtuozzo.com>
+Subject: [PATCH v3 6/7] qga/commands-posix: don't do fork()/exec() when
+ suspending via sysfs
+Date: Fri, 15 Mar 2024 14:29:45 +0200
+Message-Id: <20240315122946.39168-7-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
 References: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=130.117.225.111;
  envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
@@ -68,73 +69,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's no need to check for the existence of the hook executable, as the
-exec() call will do that for us.
+Since commit 246d76eba ("qga: guest_suspend: decoupling pm-utils and sys
+logic") pm-utils logic is running in a separate child from the sysfs
+logic.  Now when suspending via sysfs we don't really need to do that in
+a separate process as we only need to perform one write to /sys/power/state.
 
+Let's just use g_file_set_contents() to simplify things here.
+
+Suggested-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qga/commands-posix.c | 35 +++--------------------------------
- 1 file changed, 3 insertions(+), 32 deletions(-)
+ qga/commands-posix.c | 41 +++++------------------------------------
+ 1 file changed, 5 insertions(+), 36 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 94b652d54e..610d225d30 100644
+index 610d225d30..e0ea377f65 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -736,8 +736,6 @@ static const char *fsfreeze_hook_arg_string[] = {
+@@ -1928,52 +1928,21 @@ static bool linux_sys_state_supports_mode(SuspendMode mode, Error **errp)
  
- static void execute_fsfreeze_hook(FsfreezeHookArg arg, Error **errp)
+ static void linux_sys_state_suspend(SuspendMode mode, Error **errp)
  {
--    int status;
+-    Error *local_err = NULL;
++    GError *local_gerr = NULL;
+     const char *sysfile_strs[3] = {"disk", "mem", NULL};
+     const char *sysfile_str = sysfile_strs[mode];
 -    pid_t pid;
-     const char *hook;
-     const char *arg_str = fsfreeze_hook_arg_string[arg];
-     Error *local_err = NULL;
-@@ -746,42 +744,15 @@ static void execute_fsfreeze_hook(FsfreezeHookArg arg, Error **errp)
-     if (!hook) {
+-    int status;
+ 
+     if (!sysfile_str) {
+         error_setg(errp, "unknown guest suspend mode");
          return;
      }
--    if (access(hook, X_OK) != 0) {
--        error_setg_errno(errp, errno, "can't access fsfreeze hook '%s'", hook);
--        return;
--    }
  
--    slog("executing fsfreeze hook with arg '%s'", arg_str);
 -    pid = fork();
--    if (pid == 0) {
+-    if (!pid) {
+-        /* child */
+-        int fd;
+-
 -        setsid();
 -        reopen_fd_to_null(0);
 -        reopen_fd_to_null(1);
 -        reopen_fd_to_null(2);
 -
--        execl(hook, hook, arg_str, NULL);
--        _exit(EXIT_FAILURE);
+-        fd = open(LINUX_SYS_STATE_FILE, O_WRONLY);
+-        if (fd < 0) {
+-            _exit(EXIT_FAILURE);
+-        }
+-
+-        if (write(fd, sysfile_str, strlen(sysfile_str)) < 0) {
+-            _exit(EXIT_FAILURE);
+-        }
+-
+-        _exit(EXIT_SUCCESS);
 -    } else if (pid < 0) {
 -        error_setg_errno(errp, errno, "failed to create child process");
 -        return;
 -    }
-+    const char *argv[] = {hook, arg_str, NULL};
- 
+-
 -    ga_wait_child(pid, &status, &local_err);
-+    slog("executing fsfreeze hook with arg '%s'", arg_str);
-+    ga_run_command(argv, NULL, "execute fsfreeze hook", &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
+-    if (local_err) {
+-        error_propagate(errp, local_err);
++    if (!g_file_set_contents(LINUX_SYS_STATE_FILE, sysfile_str,
++                             -1, &local_gerr)) {
++        error_setg(errp, "suspend: cannot write to '%s': %s",
++                   LINUX_SYS_STATE_FILE, local_gerr->message);
          return;
      }
 -
--    if (!WIFEXITED(status)) {
--        error_setg(errp, "fsfreeze hook has terminated abnormally");
--        return;
+-    if (WEXITSTATUS(status)) {
+-        error_setg(errp, "child process has failed to suspend");
 -    }
 -
--    status = WEXITSTATUS(status);
--    if (status) {
--        error_setg(errp, "fsfreeze hook has failed with status %d", status);
--        return;
--    }
  }
  
- /*
+ static void guest_suspend(SuspendMode mode, Error **errp)
 -- 
 2.39.3
 
