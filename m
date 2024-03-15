@@ -2,105 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B173687CDF4
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A0987CE26
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:36:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7MW-0005gz-Iy; Fri, 15 Mar 2024 09:12:41 -0400
+	id 1rl7iC-0004cA-5t; Fri, 15 Mar 2024 09:35:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl7ME-0005KQ-HX
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:12:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rl7hx-0004aq-Mm; Fri, 15 Mar 2024 09:34:49 -0400
+Received: from forwardcorp1a.mail.yandex.net
+ ([2a02:6b8:c0e:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl7M2-0000MK-5h
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:12:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710508328;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=t3QzGecZxkqmeAovbFozqqZfealShnKvYvbZaHfAxm8=;
- b=OCuWVs9onmrKyLvUkyNPGJ1nX+LrEKpODFO5Vq+NoYpE6SB3Vb+vXOJlyc2rv58LnCNh2A
- fMMpOtItyRNpsoxhxPHVvqh0GNec4H5ke4D5pFbckEkYoTZO7yJRX4m6Srtqxa8WOLfMqJ
- IqbjMSwoCsI9E5inz65azYToH/m+ZEQ=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-GWmCuXgoOnKWmIW0fSrtYw-1; Fri, 15 Mar 2024 09:12:04 -0400
-X-MC-Unique: GWmCuXgoOnKWmIW0fSrtYw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-7830635331bso53818885a.1
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:12:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508324; x=1711113124;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=t3QzGecZxkqmeAovbFozqqZfealShnKvYvbZaHfAxm8=;
- b=xE5ECsFm3wFOyWY4Z3wqCnyaVm+t7+vzwyK4wqfXYmsvUrW7rBorUJv6RzKbWeb7CK
- Xfi6HZjzLtejkyxSBcogYML5Ua602c2c0hNmUApav+u0Lkv5It/Xjh26gSWrTH80pUig
- DCJYWxUy+jvRwhYy6iYE5CraHnkGEhUnXG4Cp3qT6YYC053WEjjawOo1FWSlczrUGpVz
- HUR51iKQ46j2EnKsvtUCStdrXXCfpB9dtZJSgbHOtp4+/a4OvSlGvP9z4as3tyPOSHXf
- YQ8E1QsSoSR2HYMmduohqJojSwnB1NWh9Cf7B6r3Z6d6he4PLFJalSn6NtyM098eAypx
- AJ+w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZy+jr2HJG4Opotl+Rcsk+MVksDj0We9OLu8qyG5BZY/lK4munhafzWIoPSZ+HBQJqtxuvVmR8HtOB145UDVhYUbDEko4=
-X-Gm-Message-State: AOJu0Yz5b1RM0wVRMVZ/z6baX3jHBdkVbpaUUBVsxRyyCQk06iLL9SML
- cyrAU58Gxu3pvKTSFBrUPP8wAJdTZ5CdGMpbqAY1tWjFIpRb6y7rKRgzfIG9nC8T8aPAJZCp1fB
- qC4d3wsB0K3LhmoPA9tCAdTgU1zDAOj3W+QNky12toNJt9kReh5Wt
-X-Received: by 2002:a05:622a:1803:b0:430:ace8:980c with SMTP id
- t3-20020a05622a180300b00430ace8980cmr2762410qtc.1.1710508324393; 
- Fri, 15 Mar 2024 06:12:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGlSkM10vaTojpFVCisS8VCJleQrPXNXLv5wBOUyUmxzN/Chyqk7/kQvlCBCel3tTYOe39hMQ==
-X-Received: by 2002:a05:622a:1803:b0:430:ace8:980c with SMTP id
- t3-20020a05622a180300b00430ace8980cmr2762379qtc.1.1710508323996; 
- Fri, 15 Mar 2024 06:12:03 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- k17-20020ac81411000000b0042c7d11e280sm1960849qtj.90.2024.03.15.06.12.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 06:12:03 -0700 (PDT)
-Date: Fri, 15 Mar 2024 09:11:56 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
- qemu_savevm_state_setup()
-Message-ID: <ZfRJHEya_kPaXWbU@x1n>
-References: <87le6omw0d.fsf@suse.de>
- <9071affc-ffb5-435a-99d1-ca829703e31b@redhat.com>
- <8ba5dba7-1849-46ff-b708-a9caac66be27@redhat.com>
- <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
- <874jdbmst4.fsf@suse.de> <ZfByYiL3Gl9d9u7h@x1n>
- <87wmq7l2xx.fsf@suse.de>
- <b9cb5c16-59a4-4cdc-9d12-6d7c2306b4ff@redhat.com>
- <ZfQqpK0xCwygYYho@x1n>
- <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rl7ht-0005Nx-V6; Fri, 15 Mar 2024 09:34:49 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:486:0:640:cf34:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 6141161288;
+ Fri, 15 Mar 2024 16:34:38 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b70d::1:34] (unknown
+ [2a02:6b8:b081:b70d::1:34])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id aYpbLX6OhqM0-0fuI4SDg; Fri, 15 Mar 2024 16:34:37 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1710509677;
+ bh=9iimvppycDVq4wRWCEja0AOef3bzQF4UXQEprvJqvww=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=HuxOUICS0w5zMHMlTin8AmL/71jG26UjhEJ0bmaZNj7bDF7YH9oWw/QYfpCPHPkwn
+ goERQy27Sf4m2f6e15ULfkgpND4WVPvsvmdcZDNW39PbvuOz3iWlUXcLF5oBa44Xhg
+ VJTGD5296lOz/jAe9MtKUvW+vCWgJGq/QIZpEt28=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <01bbb149-6338-4a67-9ff5-5965112ed66e@yandex-team.ru>
+Date: Fri, 15 Mar 2024 16:34:36 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.933,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/6] qdev-monitor: add option to report GenericError
+ from find_device_state
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, raphael@enfabrica.net, mst@redhat.com,
+ kwolf@redhat.com, hreitz@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, dave@treblig.org,
+ eblake@redhat.com, qemu-devel@nongnu.org, yc-core@yandex-team.ru
+References: <20240301171143.809835-1-vsementsov@yandex-team.ru>
+ <20240301171143.809835-4-vsementsov@yandex-team.ru>
+ <87sf12cr1z.fsf@pond.sub.org>
+ <063ad24f-714d-48df-a092-75e9fc693082@yandex-team.ru>
+ <87jzm3fyja.fsf@pond.sub.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87jzm3fyja.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -112,14 +80,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 15, 2024 at 01:20:49PM +0100, Cédric Le Goater wrote:
-> +static void qemu_savevm_wait_unplug(MigrationState *s, int state)
+On 15.03.24 15:51, Markus Armbruster wrote:
+> Sorry for the late answer.
+> 
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+> 
+>> On 07.03.24 12:46, Markus Armbruster wrote:
+> 
+> [...]
+> 
+>>> I appreciate the attempt to curb the spread of DeviceNotFound errors.
+>>> Two issues:
+>>>
+>>> * Copy-pasting find_device_state() with a false argument is an easy
+>>>    error to make.
+>>>
+>>> * Most uses of find_device_state() are via blk_by_qdev_id() and
+>>>    qmp_get_blk().  Any new uses of qemu_get_blk() will still produce
+>>>    DeviceNotFound.
+>>>
+>>> Hmm.
+>>
+>> Hmm. Right. Wait a bit, I can make the change stricter.
+>>
+>> Could you still explain (or give a link), why and when we decided to use only GenericError? I think, having different "error-codes" is a good thing, why we are trying to get rid of it?
+> 
+> We actually got rid of most of them years ago :)
+> 
+> But you deserve a more complete answer.
+> 
+> QMP initially specified the following error response[1]:
+> 
+>      2.4.2 error
+>      -----------
+>      
+>      The error response is issued when the command execution could not be
+>      completed because of an error condition.
+>      
+>      The format is:
+>      
+>      { "error": { "class": json-string, "data": json-value }, "id": json-value }
+>      
+>       Where,
+>      
+>      - The "class" member contains the error class name (eg. "ServiceUnavailable")
+>      - The "data" member contains specific error data and is defined in a
+>        per-command basis, it will be an empty json-object if the error has no data
+>      - The "id" member contains the transaction identification associated with
+>        the command execution (if issued by the Client)
+> 
+> Note the structure of @data depends on @class.  We documented a
+> command's possible error classes (well, we tried), but never bothered to
+> document the @data it comes with.
+> 
+> Documentation deficits aside, this is looks quite expressive.  There are
+> issues, though:
+> 
+> 1. Formatting errors in human-readable form is bothersome, and creates a
+>     tight coupling between QMP server and client.
+> 
+>     Consider:
+> 
+>      {"class": "DeviceNotFound", "data": {"device": "ide1-cd0"}}
+> 
+>     To format this in human-readable form, you need to know the error.
+> 
+>     The server does.  Fine print: it has a table mapping JSON templates
+>     to human-readable error message templates.
+> 
+>     The client needs to duplicate this somehow.  If it receives an error
+>     it doesn't know, all it can do is barf (possibly dressed up) JSON at
+>     the human.  To avoid that, clients need to track the server closely:
+>     tight coupling.
+> 
+> 2. Errors have notational overhead, which leads to bad errors.
+> 
+>     To create a new error, you have to edit two source files (not
+>     counting clients).  Strong incentive to reuse existing errors.  Even
+>     when they don't quite fit.  When a name provided by the user couldn't
+>     be resolved, reusing DeviceNotFound is easier than creating a new
+>     error that is more precise.
+> 
+> 3. The human-readable error message is hidden from the programmer's
+>     view, which leads to bad error messages.
+> 
+>     At the point in the source where the error is created, we see
+>     something like QERR_DEVICE_NOT_FOUND, name.  To see the
+>     human-readable message, we have to look up macro
+>     QERR_DEVICE_NOT_FOUND's error message template in the table, or
+>     actually test (*gasp*) the error.  People generally do neither, and
+>     bad error messages proliferate.
+> 
+> 4. Too little gain for the pain
+> 
+>     Clients rarely want to handle different errors differently.  More
+>     often than not, all they do with @class and @data is log them.  Only
+>     occasionally do they switch on @class, and basically never on @data.
+> 
+> It me took a considerable fight to get the protocol amended to include a
+> human-readable message[2].  This addressed issue 1.
+> 
+> Over the next two years or so, issues 2. to 4. slowly sank in.  We
+> eventually tired of the complexity, ripped out @data, and dumbed down
+> all error classes to GenericError, except for the few clients actually
+> cared for[3].  We also mandated that new errors avoid the QERR_ macros.
+> 
+> Eliminating the existing QERR_ macros has been slow.  We're down to 13
+> in master, with patches deleting 7 on the list.
+> 
+> This has served us reasonably well.
+> 
+> Questions?
+> 
+> 
+> [1] Commit f544d174dfc
+>      QMP: Introduce specification
+>      Dec 2009
+> 
+> [2] Commit 77e595e7c61q
+>      QMP: add human-readable description to error response
+>      Dec 2009
+> 
+> [3] Commit de253f14912
+>      qmp: switch to the new error format on the wire
+>      Aug 2012
+> 
 
-One more trivial comment: I'd even consider dropping "state" altogether, as
-this should be the only state this function should be invoked.  So we can
-perhaps assert it instead of passing it over?
+Thanks for full-picture story! Now I'm all for it.
 
 -- 
-Peter Xu
+Best regards,
+Vladimir
 
 
