@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F8387D019
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAE787D021
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl9Oz-0007gB-EG; Fri, 15 Mar 2024 11:23:21 -0400
+	id 1rl9Ov-0007Gl-2L; Fri, 15 Mar 2024 11:23:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Ou-0007JD-RI
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Os-00074m-D2
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Oo-00020V-Fz
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:16 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9On-000205-QN
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710516190;
+ s=mimecast20190719; t=1710516189;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VUeEybXIFbIAyZKeYTD0029Suhn6XgJ8GSFdtVT2Eag=;
- b=Lc8unOp/NoC0N3aHzE2moykBQetdRBCDf06JAqTbAxQK8hXc05TnsCRVLwnLfxEOr4KmgP
- tonp5dR5jupWlfBnaf5G8HaKiK4o4H9M7CnVEhOT87JNtZUjONtGb+tc9FFbqE7Sr2iKRx
- Tq4nL27wBdf8KKz/5IFEWweZANZZt6U=
+ bh=HRrbb9DH5OkmCWYHcYU+bw5zdYeYpyw1RfImK11Z4F0=;
+ b=bqpeSGI03qU0YDgoH25NTids76gUXaHmpOfwULCV7+qnm5gsx9goiCTnB896gxn5u7Fj9i
+ iiLd4a0jboasOvOwvqfqNpc1a1oh5XXYom8PW7chVM5GjAOiC7f1PqYZ5WPpm0aSZyxsHh
+ J6v+N8i331x3s1jGG9HWLW2UoBIt35Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-Lrd6Kh5jP0eVM7RdW4Mryw-1; Fri, 15 Mar 2024 11:23:06 -0400
-X-MC-Unique: Lrd6Kh5jP0eVM7RdW4Mryw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-582-E2UC50j6PY-S6mmnUDH34g-1; Fri, 15 Mar 2024 11:23:05 -0400
+X-MC-Unique: E2UC50j6PY-S6mmnUDH34g-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3AB10822491;
- Fri, 15 Mar 2024 15:23:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 213D28007BD;
+ Fri, 15 Mar 2024 15:23:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1AC821C060A4;
- Fri, 15 Mar 2024 15:23:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 00DE62022C23;
+ Fri, 15 Mar 2024 15:23:05 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0087F21E6828; Fri, 15 Mar 2024 16:23:02 +0100 (CET)
+ id 038E921E6829; Fri, 15 Mar 2024 16:23:02 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	peter.maydell@linaro.org,
 	michael.roth@amd.com
-Subject: [PATCH v5 12/25] qapi: Assert built-in types exist
-Date: Fri, 15 Mar 2024 16:22:48 +0100
-Message-ID: <20240315152301.3621858-13-armbru@redhat.com>
+Subject: [PATCH v5 13/25] qapi/schema: fix QAPISchemaArrayType.check's call to
+ resolve_type
+Date: Fri, 15 Mar 2024 16:22:49 +0100
+Message-ID: <20240315152301.3621858-14-armbru@redhat.com>
 In-Reply-To: <20240315152301.3621858-1-armbru@redhat.com>
 References: <20240315152301.3621858-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
@@ -82,42 +83,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPISchema.lookup_type('FOO') returns a QAPISchemaType when type 'FOO'
-exists, else None.  It won't return None for built-in types like
-'int'.
+From: John Snow <jsnow@redhat.com>
 
-Since mypy can't see that, it'll complain that we assign the
-Optional[QAPISchemaType] returned by .lookup_type() to QAPISchemaType
-variables.
+Adjust the expression at the callsite to work around mypy's weak type
+introspection that believes this expression can resolve to
+QAPISourceInfo; it cannot.
 
-Add assertions to help it over the hump.
+(Fundamentally: self.info only resolves to false in a boolean expression
+when it is None; therefore this expression may only ever produce
+Optional[str]. mypy does not know that 'info', when it is a
+QAPISourceInfo object, cannot ever be false.)
 
+Signed-off-by: John Snow <jsnow@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/introspect.py | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ scripts/qapi/schema.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/qapi/introspect.py b/scripts/qapi/introspect.py
-index 67c7d89aae..4679b1bc2c 100644
---- a/scripts/qapi/introspect.py
-+++ b/scripts/qapi/introspect.py
-@@ -227,10 +227,14 @@ def _use_type(self, typ: QAPISchemaType) -> str:
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 0ef9b3398a..087c6e9366 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -395,7 +395,7 @@ def check(self, schema):
+         super().check(schema)
+         self.element_type = schema.resolve_type(
+             self._element_type_name, self.info,
+-            self.info and self.info.defn_meta)
++            self.info.defn_meta if self.info else None)
+         assert not isinstance(self.element_type, QAPISchemaArrayType)
  
-         # Map the various integer types to plain int
-         if typ.json_type() == 'int':
--            typ = self._schema.lookup_type('int')
-+            type_int = self._schema.lookup_type('int')
-+            assert type_int
-+            typ = type_int
-         elif (isinstance(typ, QAPISchemaArrayType) and
-               typ.element_type.json_type() == 'int'):
--            typ = self._schema.lookup_type('intList')
-+            type_intList = self._schema.lookup_type('intList')
-+            assert type_intList
-+            typ = type_intList
-         # Add type to work queue if new
-         if typ not in self._used_types:
-             self._used_types.append(typ)
+     def set_module(self, schema):
 -- 
 2.44.0
 
