@@ -2,56 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32A387CD44
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A1E87CD72
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:53:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6ht-0002vh-E4; Fri, 15 Mar 2024 08:30:41 -0400
+	id 1rl72f-0004Ps-Dg; Fri, 15 Mar 2024 08:52:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6hN-0002JG-Ou
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:13 -0400
-Received: from relay.virtuozzo.com ([130.117.225.111])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl72a-0004PA-9m
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:52:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6h8-0006OW-OF
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=atrtJ9o9Y5R8NzRgsf6pRIlcgshMhbCbGyUrqmxx9xQ=; b=LCeQ/plhqWHb
- 0GBn8yDCgGCXtfxYxiTJ/w+kN8LXzeSA3eKNPYBPBmAeYym/1DUvvSP12sqZ/3RD2/zw/k4aIVgpY
- CEo8hGYW8l9/7Os40PgRvoPAjuMjJi75gshN5G4zcMmge7ulkOCo9YKm7s3IF3iPzVJLQNcZBoysn
- BFSo0CiDNk8OvX40QU57kL/OT3OLZIKds7tOmHjPGaZxRudpovHBZiIHivU1py1X0IRGoQuTE2iXc
- G7z10AUfdz/oa7RtWoq0fvIs0sTUlHehiZ3qvhv5e+m/E9I/xCbVi7CXIrcQ6GJuuCmnLoPH6a9kP
- kFmTChQtLcLYRYM3Bthapg==;
-Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
- by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0z;
- Fri, 15 Mar 2024 13:29:46 +0100
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-To: qemu-devel@nongnu.org
-Cc: berrange@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
- marcandre.lureau@redhat.com, philmd@linaro.org,
- andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v3 7/7] qga/commands-posix: qmp_guest_set_user_password: use
- ga_run_command helper
-Date: Fri, 15 Mar 2024 14:29:46 +0200
-Message-Id: <20240315122946.39168-8-andrey.drobyshev@virtuozzo.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
-References: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl72X-0002qr-Uv
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:52:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710507119;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+JQ8IVbtmJMOlRPYlj0g3UGjs9m3m3Y3pH5nqI9jmyM=;
+ b=eGcz08puBw1RumYG5rhKm4kduxb0ml/lcZEMe7k6uIzaXovL88By+dSndcp879uxnSichD
+ DlGkxwWBYNWkIdcnu/i0f2kEt7BXXTnlY4igAqEl1zD9cfHSm0vts6qvgI/lc/nEVrkbWB
+ z/ZXzy4JLozzPQ7Dp9gAe1/A335Ijwo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-551-KhKXZIjEPwieK1ZBf3NdSA-1; Fri,
+ 15 Mar 2024 08:51:55 -0400
+X-MC-Unique: KhKXZIjEPwieK1ZBf3NdSA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 075DB380671B;
+ Fri, 15 Mar 2024 12:51:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 705B61C060A4;
+ Fri, 15 Mar 2024 12:51:54 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 4E2F221E6A24; Fri, 15 Mar 2024 13:51:53 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org,  raphael@enfabrica.net,  mst@redhat.com,
+ kwolf@redhat.com,  hreitz@redhat.com,  pbonzini@redhat.com,
+ berrange@redhat.com,  eduardo@habkost.net,  dave@treblig.org,
+ eblake@redhat.com,  qemu-devel@nongnu.org,  yc-core@yandex-team.ru
+Subject: Re: [PATCH v2 3/6] qdev-monitor: add option to report GenericError
+ from find_device_state
+In-Reply-To: <063ad24f-714d-48df-a092-75e9fc693082@yandex-team.ru> (Vladimir
+ Sementsov-Ogievskiy's message of "Thu, 7 Mar 2024 13:03:04 +0300")
+References: <20240301171143.809835-1-vsementsov@yandex-team.ru>
+ <20240301171143.809835-4-vsementsov@yandex-team.ru>
+ <87sf12cr1z.fsf@pond.sub.org>
+ <063ad24f-714d-48df-a092-75e9fc693082@yandex-team.ru>
+Date: Fri, 15 Mar 2024 13:51:53 +0100
+Message-ID: <87jzm3fyja.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=130.117.225.111;
- envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -29
+X-Spam_score: -3.0
+X-Spam_bar: ---
+X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.933,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,143 +87,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There's no need to check for the existence of the "chpasswd", "pw"
-executables, as the exec() call will do that for us.
+Sorry for the late answer.
 
-Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
----
- qga/commands-posix.c | 96 ++++++--------------------------------------
- 1 file changed, 13 insertions(+), 83 deletions(-)
+Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 
-diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index e0ea377f65..ffea69c3f0 100644
---- a/qga/commands-posix.c
-+++ b/qga/commands-posix.c
-@@ -2151,14 +2151,8 @@ void qmp_guest_set_user_password(const char *username,
-                                  Error **errp)
- {
-     Error *local_err = NULL;
--    char *passwd_path = NULL;
--    pid_t pid;
--    int status;
--    int datafd[2] = { -1, -1 };
--    char *rawpasswddata = NULL;
-+    g_autofree char *rawpasswddata = NULL;
-     size_t rawpasswdlen;
--    char *chpasswddata = NULL;
--    size_t chpasswdlen;
- 
-     rawpasswddata = (char *)qbase64_decode(password, -1, &rawpasswdlen, errp);
-     if (!rawpasswddata) {
-@@ -2169,95 +2163,31 @@ void qmp_guest_set_user_password(const char *username,
- 
-     if (strchr(rawpasswddata, '\n')) {
-         error_setg(errp, "forbidden characters in raw password");
--        goto out;
-+        return;
-     }
- 
-     if (strchr(username, '\n') ||
-         strchr(username, ':')) {
-         error_setg(errp, "forbidden characters in username");
--        goto out;
-+        return;
-     }
- 
- #ifdef __FreeBSD__
--    chpasswddata = g_strdup(rawpasswddata);
--    passwd_path = g_find_program_in_path("pw");
-+    g_autofree char *chpasswdata = g_strdup(rawpasswddata);
-+    const char *crypt_flag = crypted ? "-H" : "-h";
-+    const char *argv[] = {"pw", "usermod", "-n", username,
-+                          crypt_flag, "0", NULL};
- #else
--    chpasswddata = g_strdup_printf("%s:%s\n", username, rawpasswddata);
--    passwd_path = g_find_program_in_path("chpasswd");
-+    g_autofree char *chpasswddata = g_strdup_printf("%s:%s\n", username,
-+                                                    rawpasswddata);
-+    const char *crypt_flag = crypted ? "-e" : NULL;
-+    const char *argv[] = {"chpasswd", crypt_flag, NULL};
- #endif
- 
--    chpasswdlen = strlen(chpasswddata);
--
--    if (!passwd_path) {
--        error_setg(errp, "cannot find 'passwd' program in PATH");
--        goto out;
--    }
--
--    if (!g_unix_open_pipe(datafd, FD_CLOEXEC, NULL)) {
--        error_setg(errp, "cannot create pipe FDs");
--        goto out;
--    }
--
--    pid = fork();
--    if (pid == 0) {
--        close(datafd[1]);
--        /* child */
--        setsid();
--        dup2(datafd[0], 0);
--        reopen_fd_to_null(1);
--        reopen_fd_to_null(2);
--
--#ifdef __FreeBSD__
--        const char *h_arg;
--        h_arg = (crypted) ? "-H" : "-h";
--        execl(passwd_path, "pw", "usermod", "-n", username, h_arg, "0", NULL);
--#else
--        if (crypted) {
--            execl(passwd_path, "chpasswd", "-e", NULL);
--        } else {
--            execl(passwd_path, "chpasswd", NULL);
--        }
--#endif
--        _exit(EXIT_FAILURE);
--    } else if (pid < 0) {
--        error_setg_errno(errp, errno, "failed to create child process");
--        goto out;
--    }
--    close(datafd[0]);
--    datafd[0] = -1;
--
--    if (qemu_write_full(datafd[1], chpasswddata, chpasswdlen) != chpasswdlen) {
--        error_setg_errno(errp, errno, "cannot write new account password");
--        goto out;
--    }
--    close(datafd[1]);
--    datafd[1] = -1;
--
--    ga_wait_child(pid, &status, &local_err);
-+    ga_run_command(argv, chpasswddata, "set user password", &local_err);
-     if (local_err) {
-         error_propagate(errp, local_err);
--        goto out;
--    }
--
--    if (!WIFEXITED(status)) {
--        error_setg(errp, "child process has terminated abnormally");
--        goto out;
--    }
--
--    if (WEXITSTATUS(status)) {
--        error_setg(errp, "child process has failed to set user password");
--        goto out;
--    }
--
--out:
--    g_free(chpasswddata);
--    g_free(rawpasswddata);
--    g_free(passwd_path);
--    if (datafd[0] != -1) {
--        close(datafd[0]);
--    }
--    if (datafd[1] != -1) {
--        close(datafd[1]);
-+        return;
-     }
- }
- #else /* __linux__ || __FreeBSD__ */
--- 
-2.39.3
+> On 07.03.24 12:46, Markus Armbruster wrote:
+
+[...]
+
+>> I appreciate the attempt to curb the spread of DeviceNotFound errors.
+>> Two issues:
+>>
+>> * Copy-pasting find_device_state() with a false argument is an easy
+>>   error to make.
+>>
+>> * Most uses of find_device_state() are via blk_by_qdev_id() and
+>>   qmp_get_blk().  Any new uses of qemu_get_blk() will still produce
+>>   DeviceNotFound.
+>>
+>> Hmm.
+>
+> Hmm. Right. Wait a bit, I can make the change stricter.
+>
+> Could you still explain (or give a link), why and when we decided to use only GenericError? I think, having different "error-codes" is a good thing, why we are trying to get rid of it?
+
+We actually got rid of most of them years ago :)
+
+But you deserve a more complete answer.
+
+QMP initially specified the following error response[1]:
+
+    2.4.2 error
+    -----------
+    
+    The error response is issued when the command execution could not be
+    completed because of an error condition.
+    
+    The format is:
+    
+    { "error": { "class": json-string, "data": json-value }, "id": json-value }
+    
+     Where,
+    
+    - The "class" member contains the error class name (eg. "ServiceUnavailable")
+    - The "data" member contains specific error data and is defined in a
+      per-command basis, it will be an empty json-object if the error has no data
+    - The "id" member contains the transaction identification associated with
+      the command execution (if issued by the Client)
+
+Note the structure of @data depends on @class.  We documented a
+command's possible error classes (well, we tried), but never bothered to
+document the @data it comes with.
+
+Documentation deficits aside, this is looks quite expressive.  There are
+issues, though:
+
+1. Formatting errors in human-readable form is bothersome, and creates a
+   tight coupling between QMP server and client.
+
+   Consider:
+
+    {"class": "DeviceNotFound", "data": {"device": "ide1-cd0"}}
+
+   To format this in human-readable form, you need to know the error.
+
+   The server does.  Fine print: it has a table mapping JSON templates
+   to human-readable error message templates.
+
+   The client needs to duplicate this somehow.  If it receives an error
+   it doesn't know, all it can do is barf (possibly dressed up) JSON at
+   the human.  To avoid that, clients need to track the server closely:
+   tight coupling.
+
+2. Errors have notational overhead, which leads to bad errors.
+
+   To create a new error, you have to edit two source files (not
+   counting clients).  Strong incentive to reuse existing errors.  Even
+   when they don't quite fit.  When a name provided by the user couldn't
+   be resolved, reusing DeviceNotFound is easier than creating a new
+   error that is more precise.
+
+3. The human-readable error message is hidden from the programmer's
+   view, which leads to bad error messages.
+
+   At the point in the source where the error is created, we see
+   something like QERR_DEVICE_NOT_FOUND, name.  To see the
+   human-readable message, we have to look up macro
+   QERR_DEVICE_NOT_FOUND's error message template in the table, or
+   actually test (*gasp*) the error.  People generally do neither, and
+   bad error messages proliferate.
+
+4. Too little gain for the pain
+
+   Clients rarely want to handle different errors differently.  More
+   often than not, all they do with @class and @data is log them.  Only
+   occasionally do they switch on @class, and basically never on @data.
+
+It me took a considerable fight to get the protocol amended to include a
+human-readable message[2].  This addressed issue 1.
+
+Over the next two years or so, issues 2. to 4. slowly sank in.  We
+eventually tired of the complexity, ripped out @data, and dumbed down
+all error classes to GenericError, except for the few clients actually
+cared for[3].  We also mandated that new errors avoid the QERR_ macros.
+
+Eliminating the existing QERR_ macros has been slow.  We're down to 13
+in master, with patches deleting 7 on the list.
+
+This has served us reasonably well.
+
+Questions?
+
+
+[1] Commit f544d174dfc
+    QMP: Introduce specification
+    Dec 2009
+
+[2] Commit 77e595e7c61q
+    QMP: add human-readable description to error response
+    Dec 2009
+
+[3] Commit de253f14912
+    qmp: switch to the new error format on the wire
+    Aug 2012
 
 
