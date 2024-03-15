@@ -2,103 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A04387CD3A
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:26:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F02887CD43
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:30:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6di-0008N9-CV; Fri, 15 Mar 2024 08:26:22 -0400
+	id 1rl6hk-0002e6-Ge; Fri, 15 Mar 2024 08:30:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1rl6dQ-0008LS-Rb; Fri, 15 Mar 2024 08:26:06 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1rl6hF-0002EI-Od
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:02 -0400
+Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <borntraeger@linux.ibm.com>)
- id 1rl6dN-0005TV-II; Fri, 15 Mar 2024 08:26:04 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42FB1Lg1014235; Fri, 15 Mar 2024 12:25:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=inuPcBOKNpA5aFdaAfhGbBVvv76YoC3NkTIk3n4Dr/c=;
- b=foG2pCEk11DCgw72F27UsE+YJX+339dVkHF4h9IQtW+qmgjMIWVnRM/zNzdvxIcnh1Pa
- ufk/DoD/SGV7o1GppvfOKEtv4O/xRrGHH0vrTEUI85nyCZTVdAKTWd+NfsT2qAgPDONz
- XTJwg7eck2JvG7y2MfJ0TpdyDpvWU9SRJAjpxTzabMwIIDHXI/qgUYvk6P3SrByB78N9
- boEYYKNeopxLzbDimb6VLqkslzWAnKiuHkuaNKVrQZjpC1o9n8Di/KJYxsxYvbLcTHIK
- js3gs7d1GL+RrqajgEzpDPM/m7cape+aMHgOWvHG5SdAhfay5vIu+3Ix9ifDkR4sqrPe pA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wvjhyjqv6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Mar 2024 12:25:56 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42FCPXjT032245;
- Fri, 15 Mar 2024 12:25:56 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wvjhyjqv0-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Mar 2024 12:25:56 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42FBo2EM013553; Fri, 15 Mar 2024 12:25:55 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ws4akuddq-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 15 Mar 2024 12:25:55 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
- [10.20.54.100])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42FCPoKf23462516
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Fri, 15 Mar 2024 12:25:52 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 556422004B;
- Fri, 15 Mar 2024 12:25:50 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 37EBB20040;
- Fri, 15 Mar 2024 12:25:50 +0000 (GMT)
-Received: from [9.152.224.222] (unknown [9.152.224.222])
- by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Fri, 15 Mar 2024 12:25:50 +0000 (GMT)
-Message-ID: <8d42a208-f592-49ad-a914-7568a80eee97@linux.ibm.com>
-Date: Fri, 15 Mar 2024 13:25:49 +0100
+ (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
+ id 1rl6h8-0006OS-OB
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:29:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-Id:Date:Subject
+ :From; bh=j3D0KGA2LQ22vETxw3YoM8fyI2Xn/dRZxp+2hAueLew=; b=oc532/Lg6YaZLdyRRzd
+ 3TnIbyroSifcwEO8cJs/FK+JWRDIDm6Ry+xHpmz7Tt8B2UnE/YIY4ci53Pk84NtyH3d7i2ZnfBRvQ
+ 8xcro3Tdf9zQ5gM1j9EBbQWueZbAwqcP70D2wwruc68/zcOIdsYfvOfdlczkSVkUfJO/iwfdGdPWp
+ PKpP5skWTAjj70JWzJae4v7M3yxp8BHGflWTN+vECD85Pm9io+ZUkrIMKEUoyhAB5N8SVLgjyhJ4d
+ h3txkS1uAUgOeQNaYc2nQ/i/TSODu5XlXUmY4LcAqoCCD2XveAZ0HNm4DL2B0AM+Qi0X73QgbW9oe
+ SaaQAYo8OkyPB7Q==;
+Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
+ by relay.virtuozzo.com with esmtp (Exim 4.96)
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f4-005Caf-2z;
+ Fri, 15 Mar 2024 13:29:46 +0100
+From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
+ marcandre.lureau@redhat.com, philmd@linaro.org,
+ andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
+Subject: [PATCH v3 0/7] qga/commands-posix: replace code duplicating commands
+ with a helper
+Date: Fri, 15 Mar 2024 14:29:39 +0200
+Message-Id: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/s390x: improve cpu compatibility check error
- message
-Content-Language: en-US
-To: Claudio Fontana <cfontana@suse.de>, Thomas Huth <thuth@redhat.com>,
- Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, qemu-s390x <qemu-s390x@nongnu.org>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20240314190007.19568-1-cfontana@suse.de>
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20240314190007.19568-1-cfontana@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 7p7kLj50tPxmNn-gODPaZjfzFBmALmRS
-X-Proofpoint-GUID: MCBzvnX6-iw1A5_NCQRmbS8dY2V0vyx0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_13,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- malwarescore=0 clxscore=1011 adultscore=0 impostorscore=0 spamscore=0
- mlxlogscore=999 phishscore=0 mlxscore=0 bulkscore=0 lowpriorityscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403150100
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=borntraeger@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=130.117.225.111;
+ envelope-from=andrey.drobyshev@virtuozzo.com; helo=relay.virtuozzo.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,61 +67,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 14.03.24 um 20:00 schrieb Claudio Fontana:
-> some users were confused by this message showing under TCG:
-> 
-> Selected CPU generation is too new. Maximum supported model
-> in the configuration: 'xyz'
-> 
-> Try to clarify that the maximum can depend on the accel by
-> adding also the current accelerator to the message as such:
-> 
-> Selected CPU generation is too new. Maximum supported model
-> in the accelerator 'tcg' configuration: 'xyz'
-> 
-> Signed-off-by: Claudio Fontana <cfontana@suse.de>
+v2 -> v3:
+  * Patch 2/7:
+    - ga_pipe_read_str() helper now returns -errno in case of an error
+      during read from pipe, so that the caller may use it to set
+      error_setg_errno();
+    - ga_pipe_read_str() allocates +1 additional byte to make the
+      string read from pipe null-terminated on every iteration;
+  * Patch 6/7: patch is rewritten to completely get rid of fork()/exec()
+    when suspending via sysfs, it now simply uses g_file_set_contents()
+    (suggested by Daniel);
+  * Patch 7/7: cosmetic change: removed unneeded brackets in an
+    expression.
 
-Independent on which message we end up with (see comments
-in this mail thread), I agree that improving the
-error message is helpful.
+v2: https://lists.nongnu.org/archive/html/qemu-devel/2024-03/msg00147.html
 
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Andrey Drobyshev (7):
+  qga: guest-get-fsinfo: add optional 'total-bytes-root' field
+  qga: introduce ga_run_command() helper for guest cmd execution
+  qga/commands-posix: qmp_guest_shutdown: use ga_run_command helper
+  qga/commands-posix: qmp_guest_set_time: use ga_run_command helper
+  qga/commands-posix: execute_fsfreeze_hook: use ga_run_command helper
+  qga/commands-posix: don't do fork()/exec() when suspending via sysfs
+  qga/commands-posix: qmp_guest_set_user_password: use ga_run_command
+    helper
 
-> ---
->   target/s390x/cpu_models.c | 11 ++++++-----
->   1 file changed, 6 insertions(+), 5 deletions(-)
-> 
-> diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-> index 1a1c096122..0d6d8fc727 100644
-> --- a/target/s390x/cpu_models.c
-> +++ b/target/s390x/cpu_models.c
-> @@ -508,14 +508,14 @@ static void check_compatibility(const S390CPUModel *max_model,
->   
->       if (model->def->gen > max_model->def->gen) {
->           error_setg(errp, "Selected CPU generation is too new. Maximum "
-> -                   "supported model in the configuration: \'%s\'",
-> -                   max_model->def->name);
-> +                   "supported model in the accelerator \'%s\' configuration: \'%s\'",
-> +                   current_accel_name(), max_model->def->name);
->           return;
->       } else if (model->def->gen == max_model->def->gen &&
->                  model->def->ec_ga > max_model->def->ec_ga) {
->           error_setg(errp, "Selected CPU GA level is too new. Maximum "
-> -                   "supported model in the configuration: \'%s\'",
-> -                   max_model->def->name);
-> +                   "supported model in the accelerator \'%s\' configuration: \'%s\'",
-> +                   current_accel_name(), max_model->def->name);
->           return;
->       }
->   
-> @@ -537,7 +537,8 @@ static void check_compatibility(const S390CPUModel *max_model,
->       error_setg(errp, " ");
->       s390_feat_bitmap_to_ascii(missing, errp, error_prepend_missing_feat);
->       error_prepend(errp, "Some features requested in the CPU model are not "
-> -                  "available in the configuration: ");
-> +                  "available in the accelerator \'%s\' configuration: ",
-> +                  current_accel_name());
->   }
->   
->   S390CPUModel *get_max_cpu_model(Error **errp)
+ qga/commands-posix.c | 404 +++++++++++++++++++------------------------
+ qga/commands-win32.c |   1 +
+ qga/qapi-schema.json |  12 +-
+ 3 files changed, 193 insertions(+), 224 deletions(-)
+
+-- 
+2.39.3
+
 
