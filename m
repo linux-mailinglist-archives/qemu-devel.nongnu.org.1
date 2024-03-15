@@ -2,98 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F180B87CC30
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 12:19:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EB887CD3B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:27:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl5aU-00030c-Fi; Fri, 15 Mar 2024 07:18:58 -0400
+	id 1rl6dm-0008O8-Ay; Fri, 15 Mar 2024 08:26:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl5aK-0002yz-FC
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:18:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ff@shokubai.tech>) id 1rl5eE-0005TG-MR
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:22:52 -0400
+Received: from 2.mo619.mail-out.ovh.net ([178.33.254.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl5aI-0007xH-Bz
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:18:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710501525;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=O+V9mv7WSb4kbQRcA0HvjKZOFTCbdC0jKfK5WEEq0WU=;
- b=GJ+L4i0JgmrGABGQwMLo6t1AzNJXgzQRMy42lDOC2v79LRcfBR86j4KBdGxSuBK6ajyi07
- k8SMM3Agz4xmk+4yg4C1rhqKanGLwthC2yAOFI8nS8be08XO64eU5oMsXy93EzkX00oN1k
- +ZKeTXrrAjOQbDranvXG9MyTw4/EOcY=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-c10zZG9COROLsDwEtbRbXQ-1; Fri, 15 Mar 2024 07:18:44 -0400
-X-MC-Unique: c10zZG9COROLsDwEtbRbXQ-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-430b4572a97so1162821cf.1
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 04:18:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710501524; x=1711106324;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O+V9mv7WSb4kbQRcA0HvjKZOFTCbdC0jKfK5WEEq0WU=;
- b=PC/HWdKqd1pJyRGbyPhWoIbc+gQGPpdJ9CpdSzCPQWaCDvqspfcRlVk89XWae99u5G
- wXDaBTQohM8qPnPQjrCQjhRD3CgUTBUGY7+s3yZ1EAbP6rtsspBXXuYAiEBejJwDF1bw
- yadCuIIOeWdVf4NYUGF0cRKFiBt1g2fT3ooezYjLzYz/oVTMZaW/LAq1xUVbAZcDDqbZ
- C5D4Y4ky2NrvYs2ub1Ws0MZBgW+VERebmaBjnblsUtycNSyuHFAHjFd513x5Q27z55sy
- 5P+q+0zLwJnjuk/A2n2r8EBQuoRE4XyXDyEVD3js2Cy1Q5AWe4Jy6ETn7E9swsb0v99h
- UBmA==
-X-Gm-Message-State: AOJu0YwJaglwPSFQx5F4gW96OSitAOjJmL+MTHilJPtgsa1O2ZjZ2KnE
- BfhkSkblcFUf+W+gOAVnkfuHJ02+T7Oqfo7RcMJ/lhC55vuvrJmSydmOtNcvZMzObG6fptJQRLm
- CFnJk1aaRKNUDqOqqvhQPNMzmxYXZPZmoP+J0b7W7SbFgo78MQkiy
-X-Received: by 2002:a05:6214:5345:b0:690:3c85:c5b with SMTP id
- kv5-20020a056214534500b006903c850c5bmr1824820qvb.3.1710501523718; 
- Fri, 15 Mar 2024 04:18:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFw40xwPNrz3UXMfvsSlCsfFCkK5wCihhoDGZbhcHWZdHATS5gMIaAyyAEVTc8E0LXIVQBuXA==
-X-Received: by 2002:a05:6214:5345:b0:690:3c85:c5b with SMTP id
- kv5-20020a056214534500b006903c850c5bmr1824804qvb.3.1710501523361; 
- Fri, 15 Mar 2024 04:18:43 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- pp26-20020a056214139a00b00691732938a8sm988670qvb.73.2024.03.15.04.18.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 04:18:42 -0700 (PDT)
-Date: Fri, 15 Mar 2024 07:18:40 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>,
- Paul Durrant <paul@xen.org>, "Michael S. Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH v4 13/25] memory: Add Error** argument to
- .log_global_start() handler
-Message-ID: <ZfQukLXQsgFEap4f@x1n>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-14-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <ff@shokubai.tech>) id 1rl5e9-0000N0-VW
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:22:49 -0400
+Received: from DAG2EX1.indiv5.local (unknown [10.111.182.163])
+ by mo619.mail-out.ovh.net (Postfix) with ESMTPS id 4Tx20S6Txdz1B5q;
+ Fri, 15 Mar 2024 11:22:32 +0000 (UTC)
+Received: from DAG2EX1.indiv5.local (172.16.2.21) by DAG2EX1.indiv5.local
+ (172.16.2.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.37; Fri, 15 Mar
+ 2024 12:22:31 +0100
+Received: from DAG2EX1.indiv5.local ([fe80::8db3:f8fe:2645:753b]) by
+ DAG2EX1.indiv5.local ([fe80::8db3:f8fe:2645:753b%6]) with mapi id
+ 15.01.2507.037; Fri, 15 Mar 2024 12:22:31 +0100
+From: ff <ff@shokubai.tech>
+To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Mark Burton
+ <mburton@qti.qualcomm.com>, Palmer Dabbelt <palmer@dabbelt.com>, "Alistair
+ Francis" <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ "Edgar E.Iglesias" <edgar.iglesias@gmail.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=
+ <philmd@linaro.org>, Don Harbin <don.harbin@linaro.org>, "Alessandro Di
+ Federico" <ale@rev.ng>, Anton Johansson <anjo@rev.ng>, Song Gao
+ <gaosong@loongson.cn>, Michael Rolnik <mrolnik@gmail.com>, Brian Cain
+ <bcain@quicinc.com>, Christoph Muellner <christoph.muellner@vrull.eu>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Max Filippov
+ <jcmvbkbc@gmail.com>, Francisco Iglesias <francisco.iglesias@amd.com>
+Subject: Re: Any interest in the QEMU community attending DVCon Europe October
+ 2024?
+Thread-Topic: Any interest in the QEMU community attending DVCon Europe
+ October 2024?
+Thread-Index: AQHabxTmtvFdRAal3UOLjdxfiBNTJbE4t/o3
+Date: Fri, 15 Mar 2024 11:22:31 +0000
+Message-ID: <9FF2104A-DF54-4475-99CD-0BCAA444F1C7@shokubai.tech>
+References: <8734t4wuco.fsf@draig.linaro.org>
+In-Reply-To: <8734t4wuco.fsf@draig.linaro.org>
+Accept-Language: fr-FR, en-US
+Content-Language: fr-FR
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240306133441.2351700-14-clg@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+DKIM-Signature: v=1; a=rsa-sha256; d=shokubai.tech; s=ovhex1078890-selector1; 
+ c=relaxed/relaxed; t=1710501752; h=from:to:subject:date;
+ bh=WpbzGZ+BKEsbU7Kmi9sVPInkwue4zko+FQv46RMabzw=;
+ b=ry6BtBreaMYSGDqcDN40udW/jPV9dInQtH0FvqKEVSD/2kUlfC5ry42ISow0v6YJxrGEwTvQBcKZEg+BebbsAHATNuEJqasTWEzF9GrxL09agMUldNCLwgPch3xA0TR8xu6hmHR/ozlZJr4V+ld4NN7L6EFf/qnBsF9LsQEz4ZbXJHyW/xVseY7mVNmR35klwA4X89E2+2JZbGAKSgoloWHfTes2651Oxfuij+9/XcDAKfQ8uzJ8r0PxyIxbJ8X6XKvGnhAtvHwCGLbuGXG8pJgxvcN32bRTrc9stb6LI1HziiRVefVAJsG4iNJfYPzgO+SPyrLMZyvGf8DlC4lRhQ==
+X-Ovh-Tracer-Id: 3421046868173045490
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrjeelgddviecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufhtfffkfhgjtgfgggesthgsmhdttddtjeenucfhrhhomhepfhhfuceofhhfsehshhhokhhusggrihdrthgvtghhqeenucggtffrrghtthgvrhhnpeeftdehteeifeefueeitdeijeeggefflefghffhtdfhhfelvdeghfeffeefvedvieenucffohhmrghinhepughvtghonhdqvghurhhophgvrdhorhhgnecukfhppeduvdejrddtrddtrddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehffhesshhhohhkuhgsrghirdhtvggthhdpnhgspghrtghpthhtohepudelpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehmsghurhhtohhnsehqthhirdhquhgrlhgtohhmmhdrtghomhdprhgtphhtthhopehprghlmhgvrhesuggrsggsvghlthdrtghomhdprhgtphhtthhopegrlhhishhtrghirhdrfhhrrghntghishesfigutgdrtghomhdprhgtphhtthhopegsihhnrdhmvghnghesfihinhgurhhivhgvrhdrtghomhdprhgtphhtthhopegvughgrghrrdhighhlvghsihgrshesghhmrghilhdrtghomhdprhgtphhtth
+ hopehsshhtrggsvghllhhinhhisehkvghrnhgvlhdrohhrgh
+Received-SPF: pass client-ip=178.33.254.187; envelope-from=ff@shokubai.tech;
+ helo=2.mo619.mail-out.ovh.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 15 Mar 2024 08:26:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -108,120 +89,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 06, 2024 at 02:34:28PM +0100, Cédric Le Goater wrote:
-> diff --git a/system/memory.c b/system/memory.c
-> index a229a79988fce2aa3cb77e3a130db4c694e8cd49..3600e716149407c10a1f6bf8f0a81c2611cf15ba 100644
-> --- a/system/memory.c
-> +++ b/system/memory.c
-> @@ -2914,9 +2914,27 @@ static unsigned int postponed_stop_flags;
->  static VMChangeStateEntry *vmstate_change;
->  static void memory_global_dirty_log_stop_postponed_run(void);
->  
-> +/*
-> + * Stop dirty logging on all listeners where it was previously enabled.
-> + */
-> +static void memory_global_dirty_log_rollback(MemoryListener *listener,
-> +                                             unsigned int flags)
-> +{
-> +    global_dirty_tracking &= ~flags;
-
-Having a hook rollback function to touch the global_dirty_tracking flag is
-IMHO tricky.
-
-Can we instead provide a helper to call all log_global_start() hooks, but
-allow a gracefully fail (so rollback will be called if it fails)?
-
-  bool memory_global_dirty_log_start_hooks(...)
-
-Or any better names..  Leaving global_dirty_tracking rollback to
-memory_global_dirty_log_start() when it returns false.
-
-Would this be cleaner?
-
-> +    trace_global_dirty_changed(global_dirty_tracking);
-> +
-> +    while (listener) {
-> +        if (listener->log_global_stop) {
-> +            listener->log_global_stop(listener);
-> +        }
-> +        listener = QTAILQ_PREV(listener, link);
-> +    }
-> +}
-> +
->  void memory_global_dirty_log_start(unsigned int flags)
->  {
->      unsigned int old_flags;
-> +    Error *local_err = NULL;
->  
->      assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
->  
-> @@ -2936,7 +2954,25 @@ void memory_global_dirty_log_start(unsigned int flags)
->      trace_global_dirty_changed(global_dirty_tracking);
->  
->      if (!old_flags) {
-> -        MEMORY_LISTENER_CALL_GLOBAL(log_global_start, Forward);
-> +        MemoryListener *listener;
-> +        bool ret = true;
-> +
-> +        QTAILQ_FOREACH(listener, &memory_listeners, link) {
-> +            if (listener->log_global_start) {
-> +                ret = listener->log_global_start(listener, &local_err);
-> +                if (!ret) {
-> +                    break;
-> +                }
-> +            }
-> +        }
-> +
-> +        if (!ret) {
-> +            memory_global_dirty_log_rollback(QTAILQ_PREV(listener, link),
-> +                                             flags);
-> +            error_report_err(local_err);
-> +            return;
-> +        }
-> +
->          memory_region_transaction_begin();
->          memory_region_update_pending = true;
->          memory_region_transaction_commit();
-> @@ -3009,13 +3045,16 @@ static void listener_add_address_space(MemoryListener *listener,
->  {
->      FlatView *view;
->      FlatRange *fr;
-> +    Error *local_err = NULL;
->  
->      if (listener->begin) {
->          listener->begin(listener);
->      }
->      if (global_dirty_tracking) {
->          if (listener->log_global_start) {
-> -            listener->log_global_start(listener);
-> +            if (!listener->log_global_start(listener, &local_err)) {
-> +                error_report_err(local_err);
-> +            }
-
-IMHO we should assert here instead of error report.  We have this to guard
-hot-plug during migration so I think the assert is justified:
-
-qdev_device_add_from_qdict():
-
-    if (!migration_is_idle()) {
-        error_setg(errp, "device_add not allowed while migrating");
-        return NULL;
-    }
-
-If it really happens it's a bug, as listener_add_address_space() will still
-keep the rest things around even if the hook failed.  It'll start to be a
-total mess..
-
-Thanks,
-
->          }
->      }
->  
-> -- 
-> 2.44.0
-> 
-
--- 
-Peter Xu
-
+DQoNCj4gTGUgNSBtYXJzIDIwMjQgw6AgMTY6NTAsIEFsZXggQmVubsOpZSA8YWxleC5iZW5uZWVA
+bGluYXJvLm9yZz4gYSDDqWNyaXQgOg0KPiANCj4g77u/DQo+IEhpLA0KPiANCj4gT3ZlciByZWNl
+bnQgeWVhcnMgdGhlcmUgaGFzIGJlZW4gYSBwdXNoIHRvIG1ha2UgUUVNVSBtb3JlIGZsZXhpYmxl
+IGZvcg0KPiBFREEgdHlwZSBhcHBsaWNhdGlvbnMuIEFzIGxvbmcgdGltZSBkZXZlbG9wZXJzIGtu
+b3cgdGhlcmUgYXJlIGEgbnVtYmVyDQo+IG9mIGRvd25zdHJlYW0gZm9ya3Mgb2YgUUVNVSB3aGlj
+aCBoYXZlIHRoZWlyIG93biBzb2x1dGlvbnMgZm9yIG1vZGVsbGluZw0KPiBoZXRlcm9nZW5lb3Vz
+IHN5c3RlbXMgYW5kIGludGVncmF0aW5nIHdpdGggaGFyZHdhcmUgbW9kZWxzLiBUaGUgd29yayBi
+eQ0KPiBQaGlsaXBwZSwgQW50b24gYW5kIG90aGVycyB0byBidWlsZCBhIHNpbmdsZSBiaW5hcnkg
+d2l0aCBjb21wb3NhYmxlDQo+IGhhcmR3YXJlIGlzIGFpbWluZyBhdCBsZWFzdCB0byBzb2x2ZSB0
+aGUgaGV0ZXJvZ2VuZW91cyBtb2RlbGxpbmcgcHJvYmxlbQ0KPiBpbiB0aGUgdXBzdHJlYW0gcHJv
+amVjdC4NCj4gDQo+IFdoaWxlIHdlIGRvIGRpc2N1c3MgdGhlc2UgIlRDRyIgdG9waWNzIGR1cmlu
+ZyBLVk0gRm9ydW0gdGhlIHByb2plY3QgbWF5DQo+IGJlbmVmaXQgZnJvbSBkb2luZyBzb21lIG91
+dHJlYWNoIGF0IHNvbWUgY29uZmVyZW5jZXMgd2hlcmUgc2ltdWxhdGlvbg0KPiBhbmQgZW11bGF0
+aW9uIGFyZSB0aGUgcHJpbWFyeSBmb2N1cy4NCj4gDQo+IFRoZSBEZXNpZ24gYW5kIFZlcmlmaWNh
+dGlvbiBDb25mZXJlbmNlICYgRXhoaWJpdGlvbiBFdXJvcGUgKERWQ29uDQo+IEV1cm9wZSkgaXMg
+dGhlIHByZW1pZXIgRXVyb3BlYW4gdGVjaG5pY2FsIGNvbmZlcmVuY2Ugb24gc3lzdGVtLA0KPiBz
+b2Z0d2FyZSwgZGVzaWduLCB2ZXJpZmljYXRpb24sIHZhbGlkYXRpb24gYW5kIGludGVncmF0aW9u
+LiBUaGlzIHllYXIgaXQNCj4gd2lsbCBiZSBvbiB0aGUgMTUtMTYgT2N0b2JlciAyMDI0IGluIE11
+bmljaC4gU2VlOiBodHRwczovL2R2Y29uLWV1cm9wZS5vcmcvDQo+IA0KPiBUaGVyZSBoYXZlIGJl
+ZW4gYSBudW1iZXIgb2YgcGFwZXJzIGFuZCB3b3Jrc2hvcHMgb24gUUVNVS9LVk0gdG9waWNzIG92
+ZXINCj4gdGhlIHllYXJzLiBVbmZvcnR1bmF0ZWx5IHRoZSB3ZWJzaXRlIGRvZXNuJ3QgcHJvdmlk
+ZSBzbGlkZXMgb3IgdmlkZW9zIG9mDQo+IHRoZSB0YWxrcyBidXQgdG9waWNzIGhhdmUgaW5jbHVk
+ZWQgaG93IFFFTVUgY2FuIGJlIHVzZWQgYXMgYSBmYXN0DQo+IGluc3RydWN0aW9uIHNpbXVsYXRv
+ciBhbG9uZ3NpZGUgdGhpbmdzIHN1Y2ggYXMgU3lzdGVtQyBtb2RlbHMgb3INCj4gdmlydHVhbGlz
+YXRpb24gY2FuIGJlIGxldmVyYWdlZCB0byBhY2NlbGVyYXRlIGZ1bGwgc3lzdGVtIGVtdWxhdGlv
+bi4NCj4gDQo+IFRoZSBtYWluIHRyYWNrcyBhcmUgZmFpcmx5IGFjYWRlbWljIHdoZXJlIGVuZ2lu
+ZWVyaW5nIGFuZCByZXNlYXJjaA0KPiBwYXBlcnMgYXJlIHN1Ym1pdHRlZCBhbmQgaWYgYWNjZXB0
+ZWQgY2FuIHRoZW4gYmUgcHJlc2VudGVkIGF0IHRoZQ0KPiBjb25mZXJlbmNlLiBUaGlzIGlzIHBy
+b2JhYmx5IG92ZXIgdGhlIHRvcCBmb3IgUUVNVSByZWxhdGVkIHN0dWZmIGJ1dA0KPiB0aGVpciBp
+cyBhIHR1dG9yaWFsIHRyYWNrIChkZWFkbGluZSBmb3IgQWJzdHJhY3RzIDFzdCBKdWx5KSB3aGlj
+aCBjb3VsZA0KPiBiZSBhIGdvb2QgdGFyZ2V0IGZvciBhIGludHJvZHVjdGlvbiB0byB0aGUgZmVh
+dHVyZXMgYW5kIGNhcGFiaWxpdGllcyBvZg0KPiB0aGUgUUVNVSB1cHN0cmVhbS4gSSBzdXNwZWN0
+IHRoZXJlIHdvdWxkIGJlIGludGVyZXN0IGluIHRoZSB3aWRlcg0KPiBtb2RlbGxpbmcgY29tbXVu
+aXR5IHRvIGZpbmQgb3V0IG1vcmUgYWJvdXQgaG93IHRvIHVzZSB0aGUgdXBzdHJlYW0NCj4gcHJv
+amVjdCBkaXJlY3RseS4NCj4gDQo+IFRoZXJlIGlzIGEgY28tbG9jYXRlZCAiU3lzdGVtQyBFdm9s
+dXRpb24gRGF5IiBvbiB0aGUgMTd0aCB3aGVyZSB0aGVyZQ0KPiBtaWdodCB3ZWxsIGJlIGEgc3Ry
+b25nIG92ZXJsYXAgYmV0d2VlbiBTeXN0ZW1DIHVzZXJzIGFuZCBRRU1VLiBNYXJrDQo+IEJ1cnRv
+biBpcyBpbnZvbHZlZCB3aXRoIHRoYXQgYW5kIGlzIGtlZW4gZm9yIHByb3Bvc2FscyB0YWxraW5n
+IGFib3V0DQo+IGludGVncmF0aW5nIFN5c3RlbUMgbW9kZWxzIHdpdGggUUVNVS4gUGxlYXNlIHNl
+bmQgYSBtZXNzYWdlIHRvDQo+IG1idXJ0b25AcXVpY2luYy5jb20gaWYgeW91J3JlIGludGVyZXN0
+ZWQuDQo+IA0KPiBTbyBpcyBhbnlvbmUgaW50ZXJlc3RlZD8NCj4gDQo+IFNob3VsZCB3ZSBkbyBt
+b3JlIHdpdGhpbiB0aGUgY29tbXVuaXR5IHRvIG5ldHdvcmsgYW5kIGRpc2N1c3Mgb3VyIHBsYW5z
+DQo+IGZvciBRRU1VIGFzIGEgbW9kZWxsaW5nIHNvbHV0aW9uPw0KPiANCj4gQW55IG90aGVyIHRo
+b3VnaHRzPw0KDQpJIHdvdWxkIGxvdmUgdG8gaGVhciBob3cgUWVtdSBjYW4gcGFydGljaXBhdGUg
+aW50byBoZXRlcm9nZW5lb3VzIHNpbXVsYXRpb25zLg0KT25lIGNhc2UgaXMgd2hlcmUgbXVsdGlw
+bGUgUWVtdSBpbnN0YW5jZXMgY29sbGFib3JhdGUgd2l0aCBsaW1pdGVkIGludGVyYWN0aW9ucywN
+Ck9uZSBjYXNlIGlzIHdoZXJlIHRoZXJlIGlzIHdpdGggbWVtb3J5IGFsaWFzaW5nIChjb3J0ZXgg
+TS9SIHNlZSBhIMKrIHdpbmRvdyDCuyBvZiB0aGUgbWFpbiBtZW1vcnkgd2l0aCBhIGRpZmZlcmVu
+dCBhZGRyZXNzIGZvciB0aGUgc2FtZSBieXRlKSBiZXR3ZWVuIFFlbXUuDQpPbmUgY2FzZSBRZW11
+IGlzIGludGVncmF0ZWQgd2l0aCAgb3RoZXIgc2ltdWxhdG9ycy4gQW4gaW50ZXJmYWNlIHRvIGhh
+bmRsZSBhbGlhc2luZywgIE1NSU8sIFNNTVUsIEdJQyBhcmUgcmVxdWlyZWQgdG8gYWxsb3cgYWxs
+IHBvc3NpYmxlIGNhc2VzIG9mIHdoaWNoIHNpbXVsYXRvciBlbXVsYXRlIHdoYXQuDQo+IA0KPiAt
+LQ0KPiBBbGV4IEJlbm7DqWUNCj4gVmlydHVhbGlzYXRpb24gVGVjaCBMZWFkIEAgTGluYXJvDQo=
 
