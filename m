@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791F387CD47
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADECA87CD45
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:31:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6hm-0002ks-PB; Fri, 15 Mar 2024 08:30:35 -0400
+	id 1rl6hi-0002J8-46; Fri, 15 Mar 2024 08:30:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6hI-0002Gk-PK
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:06 -0400
+ id 1rl6hE-0002Dc-OL
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:02 -0400
 Received: from relay.virtuozzo.com ([130.117.225.111])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1rl6h6-0006OP-UF
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:30:03 -0400
+ id 1rl6h6-0006OU-UE
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 08:29:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
- Content-Type; bh=+RaGuaEMaX9te6C/lVARGVygYN22wpJAkkpqQaFesuw=; b=UaW7n5x2vUa4
- qnfi4kWz1jp79iAeNTaiB6ps7j8ebeefjCGXt8wh/GzQFcmaeABS1Hi86QMspdMV1UobDB+NoRnxd
- vmr5DEIKXKWVO3008HQroXYGdKEV1AR6ohuNHM/DMvDqH32ynKLzO0I6bx6vQL1mUylkBTxL1DAd2
- VUibrzK8xiaZNRKalfemk4IkwzjIfYq/r77vhwyPiN2Y+OVtXGl5Y9QwoE3IVT0VxgRmkRHjEdHcU
- Ns76GDHeuqEuoauMfWb5MvjI7HjYpLV8wRCUxhr2j82QpKs/JecoUok4hrTFJwcey9uDrrm1ePARi
- aNz+OmolIVysVae00HVDQw==;
+ Content-Type; bh=t7XlrqutVCUHR7SEHqbK4gTTxIOu1rtpDU+8vOsVCKg=; b=BFDlUavUltkB
+ t7k6TF7NjogYRJIsCxRJ3ZNKAYsgrRz+zFG9WGJCHaYnk0JB1vhbF8+94pKcOrhbsxg2zpevESGdM
+ +sOm1tmGCjMt1wEiePKWs5tIgaNzoQHUkVB7/xsYfOoRHhMZ3bGLS2g8kAEYvZAOEE9FvjR3iSx8C
+ XqggWWznrinCKZ8DV7X5A7tpz3otyGedxzJIODkTBUUOKzpp0O+RTCMOGHPvV2JslnNhhdnw5plO0
+ lh1xgVt9fRrTtm+AVQkGDYUxoAlUIPnpJkKKdPxbUkzHrc4ZNiCIxbxBFo5wx3aNXl5GaTEWeuGmX
+ 73ZlN99IJK3Ct5EIluzr9Q==;
 Received: from [130.117.225.1] (helo=dev005.ch-qa.vzint.dev)
  by relay.virtuozzo.com with esmtp (Exim 4.96)
- (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0H;
+ (envelope-from <andrey.drobyshev@virtuozzo.com>) id 1rl6f5-005Caf-0S;
  Fri, 15 Mar 2024 13:29:46 +0100
 From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
  marcandre.lureau@redhat.com, philmd@linaro.org,
  andrey.drobyshev@virtuozzo.com, den@virtuozzo.com
-Subject: [PATCH v3 3/7] qga/commands-posix: qmp_guest_shutdown: use
+Subject: [PATCH v3 4/7] qga/commands-posix: qmp_guest_set_time: use
  ga_run_command helper
-Date: Fri, 15 Mar 2024 14:29:42 +0200
-Message-Id: <20240315122946.39168-4-andrey.drobyshev@virtuozzo.com>
+Date: Fri, 15 Mar 2024 14:29:43 +0200
+Message-Id: <20240315122946.39168-5-andrey.drobyshev@virtuozzo.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
 References: <20240315122946.39168-1-andrey.drobyshev@virtuozzo.com>
@@ -68,88 +68,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Also remove the G_GNUC_UNUSED attribute added in the previous commit from
-the helper.
+There's no need to check for the existence of "/sbin/hwclock", the
+exec() call will do that for us.
 
 Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 ---
- qga/commands-posix.c | 39 ++++++---------------------------------
- 1 file changed, 6 insertions(+), 33 deletions(-)
+ qga/commands-posix.c | 43 +++----------------------------------------
+ 1 file changed, 3 insertions(+), 40 deletions(-)
 
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index ad05630086..d4025e0c1e 100644
+index d4025e0c1e..94b652d54e 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -108,7 +108,6 @@ static ssize_t ga_pipe_read_str(int fd[2], char **str)
-  * sending string to stdin and taking error message from
-  * stdout/err.
-  */
--G_GNUC_UNUSED
- static int ga_run_command(const char *argv[], const char *in_str,
-                           const char *action, Error **errp)
+@@ -279,21 +279,9 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
+ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
  {
-@@ -230,8 +229,6 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
- {
-     const char *shutdown_flag;
-     Error *local_err = NULL;
--    pid_t pid;
+     int ret;
 -    int status;
+-    pid_t pid;
+     Error *local_err = NULL;
+     struct timeval tv;
+-    static const char hwclock_path[] = "/sbin/hwclock";
+-    static int hwclock_available = -1;
+-
+-    if (hwclock_available < 0) {
+-        hwclock_available = (access(hwclock_path, X_OK) == 0);
+-    }
+-
+-    if (!hwclock_available) {
+-        error_setg(errp, QERR_UNSUPPORTED);
+-        return;
+-    }
++    const char *argv[] = {"/sbin/hwclock", has_time ? "-w" : "-s", NULL};
  
- #ifdef CONFIG_SOLARIS
-     const char *powerdown_flag = "-i5";
-@@ -260,46 +257,22 @@ void qmp_guest_shutdown(const char *mode, Error **errp)
-         return;
-     }
- 
+     /* If user has passed a time, validate and set it. */
+     if (has_time) {
+@@ -324,37 +312,12 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
+      * just need to synchronize the hardware clock. However, if no time was
+      * passed, user is requesting the opposite: set the system time from the
+      * hardware clock (RTC). */
 -    pid = fork();
 -    if (pid == 0) {
--        /* child, start the shutdown */
 -        setsid();
 -        reopen_fd_to_null(0);
 -        reopen_fd_to_null(1);
 -        reopen_fd_to_null(2);
 -
-+    const char *argv[] = {"/sbin/shutdown",
- #ifdef CONFIG_SOLARIS
--        execl("/sbin/shutdown", "shutdown", shutdown_flag, "-g0", "-y",
--              "hypervisor initiated shutdown", (char *)NULL);
-+                          shutdown_flag, "-g0", "-y",
- #elif defined(CONFIG_BSD)
--        execl("/sbin/shutdown", "shutdown", shutdown_flag, "+0",
--               "hypervisor initiated shutdown", (char *)NULL);
-+                          shutdown_flag, "+0",
- #else
--        execl("/sbin/shutdown", "shutdown", "-h", shutdown_flag, "+0",
--               "hypervisor initiated shutdown", (char *)NULL);
-+                          "-h", shutdown_flag, "+0",
- #endif
+-        /* Use '/sbin/hwclock -w' to set RTC from the system time,
+-         * or '/sbin/hwclock -s' to set the system time from RTC. */
+-        execl(hwclock_path, "hwclock", has_time ? "-w" : "-s", NULL);
 -        _exit(EXIT_FAILURE);
 -    } else if (pid < 0) {
 -        error_setg_errno(errp, errno, "failed to create child process");
 -        return;
 -    }
-+                          "hypervisor initiated shutdown", (char *) NULL};
- 
+-
 -    ga_wait_child(pid, &status, &local_err);
-+    ga_run_command(argv, NULL, "shutdown", &local_err);
++    ga_run_command(argv, NULL, "set hardware clock to system time",
++                   &local_err);
      if (local_err) {
          error_propagate(errp, local_err);
          return;
      }
- 
+-
 -    if (!WIFEXITED(status)) {
 -        error_setg(errp, "child process has terminated abnormally");
 -        return;
 -    }
 -
 -    if (WEXITSTATUS(status)) {
--        error_setg(errp, "child process has failed to shutdown");
+-        error_setg(errp, "hwclock failed to set hardware clock to system time");
 -        return;
 -    }
--
-     /* succeeded */
  }
  
+ typedef enum {
 -- 
 2.39.3
 
