@@ -2,66 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF7187C99B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 09:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0404B87C9E1
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 09:24:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl2aE-0006PW-45; Fri, 15 Mar 2024 04:06:30 -0400
+	id 1rl2qs-0007mc-TZ; Fri, 15 Mar 2024 04:23:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rl2aC-0006PG-Lz
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 04:06:28 -0400
-Received: from mgamail.intel.com ([198.175.65.9])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rl2qr-0007mS-1L
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 04:23:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rl2aA-0003ni-Aq
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 04:06:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710489987; x=1742025987;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=AXqOAEjv1ZhN0WXjBHth65arkNh1gy2ElebnZPdZC8Y=;
- b=RV8ZB84GYjSNDWOnpSAwj5Cof1Z7BBALzoi77r2VjnNznOJAjHWgUm7v
- zR/AIFusVfUQFQZSnwvYidWJh1g78eLPAczCk2/nDGyPE9bb6EUhSiPqy
- RaqU1qfEevmmSwEX2Ut8sxvbCzUcM3r/gfSYpxKUHinX3WuyyXB2mA+RF
- 0ZeMSyFo9uxiE0OF3qWlXPZFKZfasIdtXnKanRD4FKMJLgD/3vmRCpLOQ
- MgYR3HjmHXbEhEzd5QJi1iruk1FEp3LATLjcNWYqowJOrrhBWXQv3n/zz
- ntbZaz6sLgMTQCXiVIhSx4X/cGKGfnDPz1Nfw9PXosp+VQSTXUDSBx0WB Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11013"; a="27817630"
-X-IronPort-AV: E=Sophos;i="6.07,127,1708416000"; d="scan'208";a="27817630"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Mar 2024 01:06:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,127,1708416000"; d="scan'208";a="35726791"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 15 Mar 2024 01:06:17 -0700
-Date: Fri, 15 Mar 2024 16:20:07 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com,
- eduardo@habkost.net, chao.p.peng@intel.com
-Subject: Re: [PATCH 1/2] qom/object_interfaces: Remove unnecessary local_err
- check
-Message-ID: <ZfQEt45kBG218Vs+@intel.com>
-References: <20240229033739.1123076-1-zhenzhong.duan@intel.com>
- <20240229033739.1123076-2-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rl2qp-0007bi-0J
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 04:23:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710491017;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vuB9NBn86L2nk0F5dZpYQULwcDYPqeXwIkteN9QKYfU=;
+ b=TLVafg3Eu+cSp8T7AuRs5vwAmIotrU83U7N0SiBA4iEVdcMECkeDqR8E63nlYuRHzHhkkP
+ Q1jZPZ6bo+Qd0/P0GiqH2Wx08mRt/2oPsqW5V2ekylCxbF5UlmtBgRONxLFGlVEOSSE9tb
+ KJsIz0elzSBNO7KsecvzqJ01DGqWkLs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-125-gHBZwlTZM9uquBH7ellIRw-1; Fri, 15 Mar 2024 04:23:35 -0400
+X-MC-Unique: gHBZwlTZM9uquBH7ellIRw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-33ecf15c037so526681f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 01:23:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710491014; x=1711095814;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vuB9NBn86L2nk0F5dZpYQULwcDYPqeXwIkteN9QKYfU=;
+ b=wtTkWM6yFS4q2Vx37B25XzprviHZsKVMsY20Q7mfKhUvINBJLzXZTJcIWnwUzFaCQf
+ drWUgoJHiEh69MF24ENcpYecEBZ4BoF1jmcpNCK9YO+GpQMc0hWY6xZfy8wqfrUU1lBi
+ bCCCrmhNHdDwmoXF8/02pFwRJqRiQq1iwNUtKcH7EZMlCUsHTEkyoPzzg9zQgaTc7uKx
+ 4BW/vbbY5oCx33JQ6UbLNZ+ZjYedrQtaTY6xvFf2U47artd9YDYteUZq+6qT2mL8WAh+
+ QsczXelfPxFVo41/VST//VFQRNE+HfwjSHMpRw+0irXEmQLah1+rD/6/BSLi9Aaq4XzM
+ AaTg==
+X-Gm-Message-State: AOJu0YyJWomAGFOtQBkmbARpdJKz+b0WX2XH6lfIktdsSgu+75U2hkn/
+ lN5tfhaajv+9KqJKkDQyd5BoNt0t4ZBpDSJlxWc9oLuBF+PIyFP81cxPDYd/Sq3ACucDszX5Yge
+ ClRm5RhfwAVsI/ipicpLVb1yefPJmyDSlqvSU6h/EOYsPBtJUA6Yn
+X-Received: by 2002:adf:e64c:0:b0:33e:cf4d:c583 with SMTP id
+ b12-20020adfe64c000000b0033ecf4dc583mr1615553wrn.16.1710491013861; 
+ Fri, 15 Mar 2024 01:23:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzJ8cB51EeoIT58TqXj3PUhRHl/f3a6su1dMqiPPNFScx0BvPHkTPhvu7zSrY/N6WqUWXVqA==
+X-Received: by 2002:adf:e64c:0:b0:33e:cf4d:c583 with SMTP id
+ b12-20020adfe64c000000b0033ecf4dc583mr1615535wrn.16.1710491013405; 
+ Fri, 15 Mar 2024 01:23:33 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-33.business.telecomitalia.it.
+ [87.12.25.33]) by smtp.gmail.com with ESMTPSA id
+ m14-20020adfe94e000000b0033cf60e268fsm2583145wrn.116.2024.03.15.01.23.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Mar 2024 01:23:32 -0700 (PDT)
+Date: Fri, 15 Mar 2024 09:23:28 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, mst@redhat.com, lulu@redhat.com, 
+ kwolf@redhat.com, eperezma@redhat.com
+Subject: Re: [PATCH] vhost-vdpa: check vhost_vdpa_set_vring_ready() return
+ value
+Message-ID: <uufps7n6otfwygiszepy76ltohvsqqo45rwyc6axja3isebda2@mn4rjbji66qt>
+References: <20240207092702.25242-1-sgarzare@redhat.com>
+ <CACGkMEvRizRGOjOz_AVQw8wsGU3g8+-yHtnKM=yn=3RtY-Hayg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240229033739.1123076-2-zhenzhong.duan@intel.com>
-Received-SPF: pass client-ip=198.175.65.9; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACGkMEvRizRGOjOz_AVQw8wsGU3g8+-yHtnKM=yn=3RtY-Hayg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -30
 X-Spam_score: -3.1
 X-Spam_bar: ---
 X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.987,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -78,56 +103,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 29, 2024 at 11:37:38AM +0800, Zhenzhong Duan wrote:
-> Date: Thu, 29 Feb 2024 11:37:38 +0800
-> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Subject: [PATCH 1/2] qom/object_interfaces: Remove unnecessary local_err
->  check
-> X-Mailer: git-send-email 2.34.1
-> 
-> In the error return path, local_err is always set, no need to check it.
-
-The original error handling code indicates "local_err is always set",
-and error_propagate() can handle the case that local_err is NULL.
-
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  qom/object_interfaces.c | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
+On Thu, Mar 14, 2024 at 11:17:01AM +0800, Jason Wang wrote:
+>On Wed, Feb 7, 2024 at 5:27 PM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>
+>> vhost_vdpa_set_vring_ready() could already fail, but if Linux's
+>> patch [1] will be merged, it may fail with more chance if
+>> userspace does not activate virtqueues before DRIVER_OK when
+>> VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
 >
-> diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-> index e0833c8bfe..255a7bf659 100644
-> --- a/qom/object_interfaces.c
-> +++ b/qom/object_interfaces.c
-> @@ -128,13 +128,11 @@ Object *user_creatable_add_type(const char *type, const char *id,
->          }
->          goto out;
->      }
-> -out:
-> -    if (local_err) {
-> -        error_propagate(errp, local_err);
-> -        object_unref(obj);
-> -        return NULL;
-> -    }
->      return obj;
-> +out:
+>I wonder what happens if we just leave it as is.
 
-Maybe rename this to "err:"? Since now it's just used to handle error,
-and "goto err" seems more clear.
+Are you referring to this patch or the kernel patch?
 
-> +    error_propagate(errp, local_err);
-> +    object_unref(obj);
-> +    return NULL;
->  }
->  
->  void user_creatable_add_qapi(ObjectOptions *options, Error **errp)
-> -- 
-> 2.34.1
-> 
+Here I'm just checking the return value of vhost_vdpa_set_vring_ready().
+It can return an error also without that kernel patch, so IMHO is
+better to check the return value here in QEMU.
 
-Otherwise,
+What issue do you see with this patch applied?
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+>
+>VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK: We do know enabling could be
+>done after driver_ok.
+>Without VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK: We don't know whether
+>enabling could be done after driver_ok or not.
 
+I see your point, indeed I didn't send a v2 of that patch.
+Maybe we should document that, because it could be interpreted that if
+VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated the enabling
+should always be done before driver_ok (which is true for example in
+VDUSE).
+
+BTW I think we should discuss it in the kernel patch.
+
+Thanks,
+Stefano
+
+>
+>Thanks
+>
+>>
+>> So better check its return value anyway.
+>>
+>> [1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarzare@redhat.com/T/#u
+>>
+>> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>> ---
+>> Note: This patch conflicts with [2], but the resolution is simple,
+>> so for now I sent a patch for the current master, but I'll rebase
+>> this patch if we merge the other one first.
+>>
+>> [2] 
+>> https://lore.kernel.org/qemu-devel/20240202132521.32714-1-kwolf@redhat.com/
+>> ---
+>>  hw/virtio/vdpa-dev.c |  8 +++++++-
+>>  net/vhost-vdpa.c     | 15 ++++++++++++---
+>>  2 files changed, 19 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+>> index eb9ecea83b..d57cd76c18 100644
+>> --- a/hw/virtio/vdpa-dev.c
+>> +++ b/hw/virtio/vdpa-dev.c
+>> @@ -259,7 +259,11 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev, Error **errp)
+>>          goto err_guest_notifiers;
+>>      }
+>>      for (i = 0; i < s->dev.nvqs; ++i) {
+>> -        vhost_vdpa_set_vring_ready(&s->vdpa, i);
+>> +        ret = vhost_vdpa_set_vring_ready(&s->vdpa, i);
+>> +        if (ret < 0) {
+>> +            error_setg_errno(errp, -ret, "Error starting vring %d", i);
+>> +            goto err_dev_stop;
+>> +        }
+>>      }
+>>      s->started = true;
+>>
+>> @@ -274,6 +278,8 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev, Error **errp)
+>>
+>>      return ret;
+>>
+>> +err_dev_stop:
+>> +    vhost_dev_stop(&s->dev, vdev, false);
+>>  err_guest_notifiers:
+>>      k->set_guest_notifiers(qbus->parent, s->dev.nvqs, false);
+>>  err_host_notifiers:
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index 3726ee5d67..e3d8036479 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -381,7 +381,10 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
+>>      }
+>>
+>>      for (int i = 0; i < v->dev->nvqs; ++i) {
+>> -        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
+>> +        int ret = vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
+>> +        if (ret < 0) {
+>> +            return ret;
+>> +        }
+>>      }
+>>      return 0;
+>>  }
+>> @@ -1213,7 +1216,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
+>>
+>>      assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+>>
+>> -    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
+>> +    r = vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
+>> +    if (unlikely(r < 0)) {
+>> +        return r;
+>> +    }
+>>
+>>      if (v->shadow_vqs_enabled) {
+>>          n = VIRTIO_NET(v->dev->vdev);
+>> @@ -1252,7 +1258,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
+>>      }
+>>
+>>      for (int i = 0; i < v->dev->vq_index; ++i) {
+>> -        vhost_vdpa_set_vring_ready(v, i);
+>> +        r = vhost_vdpa_set_vring_ready(v, i);
+>> +        if (unlikely(r < 0)) {
+>> +            return r;
+>> +        }
+>>      }
+>>
+>>      return 0;
+>> --
+>> 2.43.0
+>>
+>
 
 
