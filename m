@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2455287D02E
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:25:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4408F87D01B
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl9Ou-00074o-1h; Fri, 15 Mar 2024 11:23:16 -0400
+	id 1rl9Or-0006yq-C8; Fri, 15 Mar 2024 11:23:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Or-0006zD-77
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Op-0006yD-LN
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Om-0001z8-K9
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:12 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Om-0001zF-LU
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710516187;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Hdk8fTzayiCYnqO037Of9YPuZIIRRU/k2xhHVnFEkW8=;
- b=Pb6abqPR2z2zmI78jnWFK6pGFq5JmG9Oqe4Dr99Q0Dbqk2qslTBnQxO5REJV1tkq2BxYpj
- JrdOwDHxR66uLqca2N871ncc7SHl92WoYhhJEinJJuTWPP0Ggs70dYzG+NKPxmUPY2IFig
- 0/o3aNPJYdWS4E2uKRGR+CeFgcHU2ss=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-z5xSx4SNMFald38MBhypYg-1; Fri, 15 Mar 2024 11:23:03 -0400
-X-MC-Unique: z5xSx4SNMFald38MBhypYg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=HcewSSZK2YF0b2OQgBHpUjKURZjdR2E/SDiyQTmuYTI=;
+ b=DzwoinLBmMu0HJpVfJpJND8zBc7ubQYUXICeC1JQQM8mqcxcrSQm7/ayuf/FZWxMWYZlUH
+ dXWi0WTp5A+GBbD6srGqDr4cvh4zhNemXApOCzBLWyis6Gj8cB7lyuqxPZx/Z/BdR2+tdi
+ 1XQqKBuA/2CarIi1IH/sJ6/q6FJzIhk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-574-FV5Kk748PZiyRTjoHZ6ZtA-1; Fri,
+ 15 Mar 2024 11:23:05 -0400
+X-MC-Unique: FV5Kk748PZiyRTjoHZ6ZtA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3959480026F;
- Fri, 15 Mar 2024 15:23:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 032323CBD52A;
+ Fri, 15 Mar 2024 15:23:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 18D30C04221;
- Fri, 15 Mar 2024 15:23:03 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D574910F53;
+ Fri, 15 Mar 2024 15:23:04 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id DA1E721E692E; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
+ id DCF6821E6939; Fri, 15 Mar 2024 16:23:01 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	peter.maydell@linaro.org,
 	michael.roth@amd.com
-Subject: [PATCH v5 03/25] qapi: sort pylint suppressions
-Date: Fri, 15 Mar 2024 16:22:39 +0100
-Message-ID: <20240315152301.3621858-4-armbru@redhat.com>
+Subject: [PATCH v5 04/25] qapi/schema: add pylint suppressions
+Date: Fri, 15 Mar 2024 16:22:40 +0100
+Message-ID: <20240315152301.3621858-5-armbru@redhat.com>
 In-Reply-To: <20240315152301.3621858-1-armbru@redhat.com>
 References: <20240315152301.3621858-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
@@ -84,35 +84,69 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
+With this patch, pylint is happy with the file, so enable it in the
+configuration.
+
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/pylintrc | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/qapi/pylintrc  | 5 -----
+ scripts/qapi/schema.py | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
-index 90546df534..1342412c3c 100644
+index 1342412c3c..c028a1f9f5 100644
 --- a/scripts/qapi/pylintrc
 +++ b/scripts/qapi/pylintrc
-@@ -16,13 +16,13 @@ ignore-patterns=schema.py,
- # --enable=similarities". If you want to run only the classes checker, but have
- # no Warning level messages displayed, use "--disable=all --enable=classes
- # --disable=W".
--disable=fixme,
-+disable=consider-using-f-string,
-+        fixme,
-         missing-docstring,
-         too-many-arguments,
-         too-many-branches,
--        too-many-statements,
-         too-many-instance-attributes,
--        consider-using-f-string,
-+        too-many-statements,
-         useless-option-value,
+@@ -1,10 +1,5 @@
+ [MASTER]
  
- [REPORTS]
+-# Add files or directories matching the regex patterns to the ignore list.
+-# The regex matches against base names, not paths.
+-ignore-patterns=schema.py,
+-
+-
+ [MESSAGES CONTROL]
+ 
+ # Disable the message, report, category or checker with the given id(s). You
+diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+index 8ba5665bc6..117f0f78f0 100644
+--- a/scripts/qapi/schema.py
++++ b/scripts/qapi/schema.py
+@@ -12,6 +12,8 @@
+ # This work is licensed under the terms of the GNU GPL, version 2.
+ # See the COPYING file in the top-level directory.
+ 
++# pylint: disable=too-many-lines
++
+ # TODO catching name collisions in generated code would be nice
+ 
+ from collections import OrderedDict
+@@ -83,6 +85,7 @@ def c_name(self):
+         return c_name(self.name)
+ 
+     def check(self, schema):
++        # pylint: disable=unused-argument
+         assert not self._checked
+         seen = {}
+         for f in self.features:
+@@ -113,6 +116,7 @@ def is_implicit(self):
+         return not self.info
+ 
+     def visit(self, visitor):
++        # pylint: disable=unused-argument
+         assert self._checked
+ 
+     def describe(self):
+@@ -131,6 +135,7 @@ def visit_module(self, name):
+         pass
+ 
+     def visit_needed(self, entity):
++        # pylint: disable=unused-argument
+         # Default to visiting everything
+         return True
+ 
 -- 
 2.44.0
 
