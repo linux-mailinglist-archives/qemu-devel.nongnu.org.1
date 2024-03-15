@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F88087CDEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E1087CE05
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:19:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7KL-0006mh-V3; Fri, 15 Mar 2024 09:10:26 -0400
+	id 1rl7Ks-0007sJ-7N; Fri, 15 Mar 2024 09:10:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Jo-0005yH-0T
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:52 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Ju-0006GH-Nz
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:59 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Jk-0007kM-P3
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:50 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a36126ee41eso254024766b.2
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Jr-0007oa-Ee
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:58 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-568b8e0f94fso119577a12.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710508187; x=1711112987; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710508194; x=1711112994; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7ztA/s++99kJlJQVkkhi5KVYRPW5VID21TBVzyIGr2Y=;
- b=jiGT8GrZ9igAjQoCC815i0lvzx2CR+1zxy8vL2gf9kgM5JRISixm7OQ3P1GuqzBu/g
- 0b3grywW7QiWjM8vgXTcp3EaDAINKBXocmKH5Y8v0kogi5pWwHZrflfO/B32TUYMo6V+
- CMTkw5qh1pWpDfZlJc/iXBYaGBVoDWokXpiFA9W5oojGQ5u5vQ7w8aSGaJeMS/0l/B8M
- ND8Dss8NO+p3oHwxsW8N9gjSGeiRC6suG7esXapi/yKNAlsuUDkXuhfrQxlU9OGUWeCN
- yfcFuqC7VpwCTSZmWtTvNDgTK9Bc7gzyeNuTCFdwPSs6KCm/lxjJ4Zxyl8ghJ0+xrsmv
- sLMA==
+ bh=ySG/dFK2HZQD+JLMFszQWRBPaJ0ef+Mlaqjr0ZCyRnE=;
+ b=tuqz9HFZlx17dZBgoNJXeIqQekDWSLeSnWaxNzUh2kPjqhh2NI6iM0awgV3ecbynib
+ Bem2/FOZH82gSms8U3TLKflZIPYjNZiEQIaMGhMjt5K/ZDZi/owwQC5ZUIdNO2eWTKNj
+ ba3OU8Joeq7FlwAXszCr7CR0ReNDX+lqABOKd1RORKMAry7J06OHE+hG64GmQqZpMI5R
+ VzpFQynQbfNZL/bquJl7/Xez0Yr+eJ4Qru9X1jII2f0vImtEmjY9eb1XCo5XOd9i9w+T
+ lUaex0zTN7ZbT1BT2f7d6RUcHsdvLQOZFYt2kATeoccRlkTkajGZoqdCGLSh67JYQuDR
+ ImDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508187; x=1711112987;
+ d=1e100.net; s=20230601; t=1710508194; x=1711112994;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7ztA/s++99kJlJQVkkhi5KVYRPW5VID21TBVzyIGr2Y=;
- b=rag2LlJ3wEvZjvc7vpBhrejK0tUtqsd/wS7hYBg+dUP/WyBb0pGH7FZ+1MH3uKDxOV
- hfmy1WlU2N0kGslKXXbwWhjktokVLeqyP6khJRF+wGaQ6X5R/IBwqK6Wkz04hOUFNQNS
- uDMyc0kvsHfV5NG+8vKenDlHkm26Yp4zJdCJl/7GmdR8h9giQVgOvk6JW9RoFFdwrnt+
- Qqxr+DMR2XY7SHHEjYzP6aD9+FUg/TSieqvH0At5jrIykr7YHDfIvMkNRTw7FD2TrueU
- sbNbzdOp/p0wPOD8IQGHg1SMrMOhA+q+kK5jJMmbjvmLPhNwhRrmgQDfn7eAL7JflEgl
- eUXw==
-X-Gm-Message-State: AOJu0YxAyOpGWa3BbtPL43iH3ZZpasa3LodoK0W+fKEbuu/lWU/KTwOj
- rm1oJwRA56lpiqJv0SHwtmqaK3FT5cmszDn6ByABIsWeeK/ug46y9LwUKB8Rr+IqeMVrfJOSR3P
- E
-X-Google-Smtp-Source: AGHT+IHGdVDgE0BV4E6ET1vnyKOiNgQutr60WkuR7/igTVB/b/2IuiYcgezn/mIAKkIya0Cm/N2Kbw==
-X-Received: by 2002:a17:906:6bc8:b0:a46:800a:6358 with SMTP id
- t8-20020a1709066bc800b00a46800a6358mr1492199ejs.15.1710508187195; 
- Fri, 15 Mar 2024 06:09:47 -0700 (PDT)
+ bh=ySG/dFK2HZQD+JLMFszQWRBPaJ0ef+Mlaqjr0ZCyRnE=;
+ b=TOjc3hXiiRrYNHfeJGebj0XzWGCqCe2HCxblcyfQiD4kvNpkC0GgTvLRLDrfa9QeYh
+ xgEsK/QfYnbv3MhxLNvcsOR3xN5pslW0KtU7dGQAE+HoUtDNB66GS0Np41deCUaGSaqP
+ FOcTKrrDNBnWh9mnCVzje6asIHxtNr0hI6LUhOiibMSJYS1JaCaPVtX1PD00GLdA3oYr
+ 8gZscSpV5odigkTzH+TSU1Qyrs06yv3D4+D9xRMMEVziCA9v7iwSu/omM0/WyNzmvS+U
+ 3pMaCIWYRCEPKQSZw0p2hFIYSV0YABoizjgyE7UfBD+xQVcAGxQIMMzzygW/9MuYDc4J
+ 3g0g==
+X-Gm-Message-State: AOJu0YzAtANgifugijgfR/Gl4MeMoJNIGDTCAUaMbKj8umPlOGs5X0gb
+ 5lV72wp14faSkluGRxKEuH7w6QC6lurbvSfeM/IZ+4UItbMx2aaDgqh3i32n53kAZM5R/ta1e8b
+ f
+X-Google-Smtp-Source: AGHT+IExmkLmMqoSeV72lixftAHxYOtVn4ReIk8rzurrdOHIVhJgEKO7oZjURsJA9vDI1+WjYK1UFA==
+X-Received: by 2002:a05:6402:c50:b0:568:93bb:d0c2 with SMTP id
+ cs16-20020a0564020c5000b0056893bbd0c2mr4363087edb.20.1710508193742; 
+ Fri, 15 Mar 2024 06:09:53 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.145.26])
  by smtp.gmail.com with ESMTPSA id
- f23-20020a1709067f9700b00a466a265ffcsm1722093ejr.145.2024.03.15.06.09.45
+ 6-20020a0564021f4600b005682a0e915fsm1675523edz.76.2024.03.15.06.09.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Mar 2024 06:09:46 -0700 (PDT)
+ Fri, 15 Mar 2024 06:09:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
@@ -70,20 +70,19 @@ Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH-for-9.1 05/21] cpus: Open code OBJECT_DECLARE_TYPE() in
- OBJECT_DECLARE_CPU_TYPE()
-Date: Fri, 15 Mar 2024 14:08:53 +0100
-Message-ID: <20240315130910.15750-6-philmd@linaro.org>
+ Laurent Vivier <lvivier@redhat.com>
+Subject: [PATCH-for-9.1 06/21] target/i386: Make X86_CPU common to new
+ I386_CPU / X86_64_CPU types
+Date: Fri, 15 Mar 2024 14:08:54 +0100
+Message-ID: <20240315130910.15750-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
 References: <20240315130910.15750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,67 +105,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the OBJECT_DECLARE_CPU_TYPE() macro uses the abstract ArchCPU
-type, when declaring multiple CPUs of the same ArchCPU type we get
-an error related to the indirect G_DEFINE_AUTOPTR_CLEANUP_FUNC()
-use within OBJECT_DECLARE_TYPE():
+"target/foo/cpu-qom.h" can not use any target specific definitions.
 
-  target/mips/cpu-qom.h:31:1: error: redefinition of 'glib_autoptr_clear_ArchCPU'
-  OBJECT_DECLARE_CPU_TYPE(MIPS64CPU, MIPSCPUClass, MIPS64_CPU)
-  ^
-  include/hw/core/cpu.h:82:5: note: expanded from macro 'OBJECT_DECLARE_CPU_TYPE'
-      OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
-      ^
-  include/qom/object.h:237:5: note: expanded from macro 'OBJECT_DECLARE_TYPE'
-      G_DEFINE_AUTOPTR_CLEANUP_FUNC(InstanceType, object_unref) \
-      ^
-  /usr/include/glib-2.0/glib/gmacros.h:1371:3: note: expanded from macro 'G_DEFINE_AUTOPTR_CLEANUP_FUNC'
-    _GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS(TypeName, TypeName, func)
-    ^
-  /usr/include/glib-2.0/glib/gmacros.h:1354:36: note: expanded from macro '_GLIB_DEFINE_AUTOPTR_CLEANUP_FUNCS'
-    static G_GNUC_UNUSED inline void _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) (TypeName *_ptr)                     \
-                                     ^
-  /usr/include/glib-2.0/glib/gmacros.h:1338:49: note: expanded from macro '_GLIB_AUTOPTR_CLEAR_FUNC_NAME'
-  #define _GLIB_AUTOPTR_CLEAR_FUNC_NAME(TypeName) glib_autoptr_clear_##TypeName
-                                                  ^
-  <scratch space>:54:1: note: expanded from here
-  glib_autoptr_clear_ArchCPU
-  ^
-  target/mips/cpu-qom.h:30:1: note: previous definition is here
-  OBJECT_DECLARE_CPU_TYPE(MIPS32CPU, MIPSCPUClass, MIPS32_CPU)
-  ^
+Currently "target/i386/cpu-qom.h" defines TYPE_X86_CPU depending
+on the i386/x86_64 build type. This doesn't scale in a heterogeneous
+context where we need to access both types concurrently.
 
-Avoid that problem by expanding the OBJECT_DECLARE_TYPE() macro
-within OBJECT_DECLARE_CPU_TYPE().
+In order to do that, introduce the new I386_CPU / X86_64_CPU
+types, both inheriting a common TYPE_X86_CPU base type.
+
+Keep the current "base" and "max" CPU types as 32 or 64-bit,
+depending on the binary built.
+
+Adapt the cpu-plug-test, since the 'base' architecture is now
+common to both 32/64-bit x86 targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-TODO: check rth comment:
-What about adding an OBJECT_DECLARE_CPU_SUBTYPE that omits half the stuff instead?
-We don't need another object typedef at all, for instance.
----
- include/hw/core/cpu.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ target/i386/cpu-qom.h       | 16 ++++++++++------
+ target/i386/cpu.c           | 20 ++++++++++++++++++--
+ tests/qtest/cpu-plug-test.c |  2 +-
+ 3 files changed, 29 insertions(+), 9 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index ec14f74ce5..4c2e5095bf 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -78,7 +78,12 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
-  */
- #define OBJECT_DECLARE_CPU_TYPE(CpuInstanceType, CpuClassType, CPU_MODULE_OBJ_NAME) \
-     typedef struct ArchCPU CpuInstanceType; \
--    OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
-+    typedef struct CpuClassType CpuClassType; \
-+    \
-+    G_DEFINE_AUTOPTR_CLEANUP_FUNC(CpuInstanceType, object_unref) \
-+    \
-+    DECLARE_OBJ_CHECKERS(CpuInstanceType, CpuClassType, \
-+                         CPU_MODULE_OBJ_NAME, TYPE_##CPU_MODULE_OBJ_NAME)
+diff --git a/target/i386/cpu-qom.h b/target/i386/cpu-qom.h
+index d4e216d000..de28d7ea20 100644
+--- a/target/i386/cpu-qom.h
++++ b/target/i386/cpu-qom.h
+@@ -1,5 +1,5 @@
+ /*
+- * QEMU x86 CPU
++ * QEMU x86 CPU QOM header (target agnostic)
+  *
+  * Copyright (c) 2012 SUSE LINUX Products GmbH
+  *
+@@ -22,14 +22,18 @@
  
- typedef enum MMUAccessType {
-     MMU_DATA_LOAD  = 0,
+ #include "hw/core/cpu.h"
+ 
+-#ifdef TARGET_X86_64
+-#define TYPE_X86_CPU "x86_64-cpu"
+-#else
+-#define TYPE_X86_CPU "i386-cpu"
+-#endif
++#define TYPE_X86_CPU    "x86-cpu"
++#define TYPE_I386_CPU   "i386-cpu"
++#define TYPE_X86_64_CPU "x86_64-cpu"
+ 
+ OBJECT_DECLARE_CPU_TYPE(X86CPU, X86CPUClass, X86_CPU)
+ 
++OBJECT_DECLARE_CPU_TYPE(I386CPU, X86CPUClass, I386_CPU)
++OBJECT_DECLARE_CPU_TYPE(X86_64CPU, X86CPUClass, X86_64_CPU)
++
++#define X86_CPU_TYPE_SUFFIX "-" TYPE_X86_CPU
++#define X86_CPU_TYPE_NAME(name) (name X86_CPU_TYPE_SUFFIX)
++
+ #define X86_CPU_TYPE_SUFFIX "-" TYPE_X86_CPU
+ #define X86_CPU_TYPE_NAME(name) (name X86_CPU_TYPE_SUFFIX)
+ 
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index ebf555f50f..07f64c1ea5 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -8057,12 +8057,28 @@ static const TypeInfo x86_cpu_types[] = {
+         .class_size     = sizeof(X86CPUClass),
+         .class_init     = x86_cpu_common_class_init,
+     }, {
+-        .name           = X86_CPU_TYPE_NAME("base"),
++        .name           = TYPE_I386_CPU,
+         .parent         = TYPE_X86_CPU,
++        .abstract       = true,
++    }, {
++        .name           = TYPE_X86_64_CPU,
++        .parent         = TYPE_X86_CPU,
++        .abstract       = true,
++    }, {
++        .name           = X86_CPU_TYPE_NAME("base"),
++#ifdef TARGET_X86_64
++        .parent         = TYPE_X86_64_CPU,
++#else
++        .parent         = TYPE_I386_CPU,
++#endif
+         .class_init     = x86_cpu_base_class_init,
+     }, {
+         .name           = X86_CPU_TYPE_NAME("max"),
+-        .parent         = TYPE_X86_CPU,
++#ifdef TARGET_X86_64
++        .parent         = TYPE_X86_64_CPU,
++#else
++        .parent         = TYPE_I386_CPU,
++#endif
+         .instance_init  = max_x86_cpu_initfn,
+         .class_init     = max_x86_cpu_class_init,
+     }
+diff --git a/tests/qtest/cpu-plug-test.c b/tests/qtest/cpu-plug-test.c
+index 7f5dd5f85a..97316d131f 100644
+--- a/tests/qtest/cpu-plug-test.c
++++ b/tests/qtest/cpu-plug-test.c
+@@ -90,7 +90,7 @@ static void add_pc_test_case(const char *mname)
+     data->machine = g_strdup(mname);
+     data->cpu_model = "Haswell"; /* 1.3+ theoretically */
+     data->device_model = g_strdup_printf("%s-%s-cpu", data->cpu_model,
+-                                         qtest_get_arch());
++                                         qtest_get_base_arch());
+     data->sockets = 1;
+     data->cores = 3;
+     data->threads = 2;
 -- 
 2.41.0
 
