@@ -2,61 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2814F87CF7C
+	by mail.lfdr.de (Postfix) with ESMTPS id 7954887CF7D
 	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 15:54:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl8vO-0004Ah-4f; Fri, 15 Mar 2024 10:52:46 -0400
+	id 1rl8vc-0004Ce-GA; Fri, 15 Mar 2024 10:53:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhukeqian1@huawei.com>)
- id 1rl8vL-0004AS-ER
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:52:43 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl8va-0004CC-8b
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:52:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhukeqian1@huawei.com>)
- id 1rl8vH-0004pU-Kd
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:52:43 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.163])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Tx6dw6NGQz1vwyt
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 22:51:48 +0800 (CST)
-Received: from kwepemd500004.china.huawei.com (unknown [7.221.188.173])
- by mail.maildlp.com (Postfix) with ESMTPS id 1398A180063
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 22:52:33 +0800 (CST)
-Received: from kwepemi500026.china.huawei.com (7.221.188.247) by
- kwepemd500004.china.huawei.com (7.221.188.173) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Fri, 15 Mar 2024 22:52:32 +0800
-Received: from kwepemi500026.china.huawei.com ([7.221.188.247]) by
- kwepemi500026.china.huawei.com ([7.221.188.247]) with mapi id 15.01.2507.035; 
- Fri, 15 Mar 2024 22:52:32 +0800
-To: qemu-devel <qemu-devel@nongnu.org>
-CC: "Wanghaibin (D)" <wanghaibin.wang@huawei.com>, yuzenghui
- <yuzenghui@huawei.com>, Salil Mehta <salil.mehta@huawei.com>
-Subject: [RFC] Is there a bug in pause_all_vcpus()
-Thread-Topic: [RFC] Is there a bug in pause_all_vcpus()
-Thread-Index: AQHaduhoTQUi6xvKuk6NjbJUxzpGig==
-Content-Class: urn:content-classes:message
-Date: Fri, 15 Mar 2024 14:52:32 +0000
-Message-ID: 3A5C0543-A402-4A78-8A12-41D7EF58BB54
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-messagesentrepresentingtype: 1
-Content-Type: multipart/alternative;
- boundary="_000_3A5C0543A4024A788A1241D7EF58BB54_"
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl8vY-0004rJ-7g
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:52:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710514374;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=A5+gGxFX8X/xix/hW5SfeH8NfnkZdkXNhhVLiDtHGSE=;
+ b=JDxHmVdCdnLFFbMJ7t9SwAKNxpsy+h1pQoD30xa9/2o/cyO3Dnwf6b5KE3KhcyP0y9rrLN
+ z5qM0XAxl+UCQqNVLTLbRiQ6cg/2BT8Com02Aw+Uesh5E71//kzknygZq/38X9kHHDVA7t
+ pg5mflUxtPlcQuFiyrAOMoaZ+OxgWMs=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-160-K-8z_6f4Npm4nyljJAfn3w-1; Fri, 15 Mar 2024 10:52:53 -0400
+X-MC-Unique: K-8z_6f4Npm4nyljJAfn3w-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-221d6a92312so664726fac.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 07:52:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710514373; x=1711119173;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=A5+gGxFX8X/xix/hW5SfeH8NfnkZdkXNhhVLiDtHGSE=;
+ b=q9KtfJ4dQTWV2h1x3MHiAfDgC2RQ01pWOn7kmYLkRHfNYZanVteHdfiioh9X9kRjUK
+ JOXX0bUjmVqqProjhubhunQOLVOq5LjM/Zq6EU8HZpgyb+V2xdiNVMRadHxb51H0iRYg
+ yxRcSp11g4RA+2g1+3yUWpK5reUCY2/OI36XTC92/MuWcT50Eox0aczQGuQDe5PgfFWE
+ GhDvGcaBBNqGto8wMEKvBwEA9c9TyhT0CDeoCQcuEsiLfspW5qJXQsm6aFC51djp4Wyi
+ njL6U8ZLhLlAjXtofrHHC+5XnlIKucGaCdeYOjMlKtz2vZPoOKxbPih2EZd85bZbYoDY
+ KCig==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWY6/7fOjJJs/cz4fODinjQY8vKQSdt6O99HGlWn5VhyfTW8UhQze2LMxNhyJyqBQvmFKIEyugeJ4H8+Kxoc/fQqYIfhao=
+X-Gm-Message-State: AOJu0YxMKl6juvOgB0IaNliiGx6DXx0KoCpHGItOnTiUdi5W5jyyz+Y/
+ Cc3yPvdHJcUjVQ2/u8/8L7Q6NLad4GhBapXs0y+hQvP0isNWYsu1bjCJuUAw1dN5Z+YJYwAFMaz
+ Rwd3zhaMnD2eUo6knDjJ041gQF5LtgqZ8I+ETwTtAVPeYswFACVe3
+X-Received: by 2002:a05:6870:9209:b0:222:4480:6577 with SMTP id
+ e9-20020a056870920900b0022244806577mr5307255oaf.0.1710514372600; 
+ Fri, 15 Mar 2024 07:52:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMEh6Ecg/8HNnB0kpEF8eIzEBvTcgRelB1198qxhhvBTNvl+YH1/C7r3HgApeQiipdVexAkA==
+X-Received: by 2002:a05:6870:9209:b0:222:4480:6577 with SMTP id
+ e9-20020a056870920900b0022244806577mr5307219oaf.0.1710514372175; 
+ Fri, 15 Mar 2024 07:52:52 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ wj18-20020a05620a575200b00789e7ddf8a5sm431978qkn.17.2024.03.15.07.52.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 15 Mar 2024 07:52:51 -0700 (PDT)
+Date: Fri, 15 Mar 2024 10:52:48 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
+ qemu_savevm_state_setup()
+Message-ID: <ZfRgwKtRwMo-KQqe@x1n>
+References: <9071affc-ffb5-435a-99d1-ca829703e31b@redhat.com>
+ <8ba5dba7-1849-46ff-b708-a9caac66be27@redhat.com>
+ <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
+ <874jdbmst4.fsf@suse.de> <ZfByYiL3Gl9d9u7h@x1n>
+ <87wmq7l2xx.fsf@suse.de>
+ <b9cb5c16-59a4-4cdc-9d12-6d7c2306b4ff@redhat.com>
+ <ZfQqpK0xCwygYYho@x1n>
+ <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
+ <afcb2934-7e4f-4c49-80a6-8e67026d3bc5@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=zhukeqian1@huawei.com;
- helo=szxga06-in.huawei.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- INVALID_MSGID=0.568, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <afcb2934-7e4f-4c49-80a6-8e67026d3bc5@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.933,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,137 +110,226 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  zhukeqian <zhukeqian1@huawei.com>
-From:  zhukeqian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_3A5C0543A4024A788A1241D7EF58BB54_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+On Fri, Mar 15, 2024 at 03:21:27PM +0100, Cédric Le Goater wrote:
+> On 3/15/24 13:20, Cédric Le Goater wrote:
+> > On 3/15/24 12:01, Peter Xu wrote:
+> > > On Fri, Mar 15, 2024 at 11:17:45AM +0100, Cédric Le Goater wrote:
+> > > > > migrate_set_state is also unintuitive because it ignores invalid state
+> > > > > transitions and we've been using that property to deal with special
+> > > > > states such as POSTCOPY_PAUSED and FAILED:
+> > > > > 
+> > > > > - After the migration goes into POSTCOPY_PAUSED, the resumed migration's
+> > > > >     migrate_init() will try to set the state NONE->SETUP, which is not
+> > > > >     valid.
+> > > > > 
+> > > > > - After save_setup fails, the migration goes into FAILED, but wait_unplug
+> > > > >     will try to transition SETUP->ACTIVE, which is also not valid.
+> > > > > 
+> > > > 
+> > > > I am not sure I understand what the plan is. Both solutions are problematic
+> > > > regarding the state transitions.
+> > > > 
+> > > > Should we consider that waiting for failover devices to unplug is an internal
+> > > > step of the SETUP phase not transitioning to ACTIVE ?
+> > > 
+> > > If to unblock this series, IIUC the simplest solution is to do what Fabiano
+> > > suggested, that we move qemu_savevm_wait_unplug() to be before the check of
+> > > setup() ret.
+> > 
+> > The simplest is IMHO moving qemu_savevm_wait_unplug() before
+> > qemu_savevm_state_setup() and leave patch 10 is unchanged. See
+> > below the extra patch. It looks much cleaner than what we have
+> > today.
+> > 
+> > > In that case, the state change in qemu_savevm_wait_unplug()
+> > > should be benign and we should see a super small window it became ACTIVE
+> > > but then it should be FAILED (and IIUC the patch itself will need to use
+> > > ACTIVE as "old_state", not SETUP anymore).
+> > 
+> > OK. I will give it a try to compare.
+> 
+> Here's the alternative solution. SETUP state failures are handled after
+> transitioning to ACTIVE state, which is unfortunate but probably harmless.
+> I guess it's OK.
 
-DQoNCkR1cmluZyB3ZSB3YWl0ZWQgb24gcWVtdV9wYXVzZV9jb25kIHRoZSBicWwgd2FzIHVubG9j
-a2VkLA0KdGhlIHZjcHUncyBzdGF0ZSBtYXkgaGFzIGJlZW4gY2hhbmdlZCBieSBvdGhlciB0aHJl
-YWQsIHNvDQp3ZSBtdXN0IHJlcXVlc3QgdGhlIHBhdXNlIHN0YXRlIG9uIGFsbCB2Y3B1cyBhZ2Fp
-bi4NCg0KRm9yIGV4YW1wbGU6DQoNCkJvdGggbWFpbiBsb29wIHRocmVhZCBhbmQgdkNQVSB0aHJl
-YWQgYXJlIGFsbG93ZWQgdG8gY2FsbA0KcGF1c2VfYWxsX3ZjcHVzKCksIGFuZCBpbiBnZW5lcmFs
-IHJlc3VtZV9hbGxfdmNwdXMoKSBpcyBjYWxsZWQNCmFmdGVyIGl0Lg0KDQpUaHVzIHRoZXJlIGlz
-IHBvc3NpYmlsaXR5IHRoYXQgZHVyaW5nIHRocmVhZCBUMSB3YWl0cyBvbg0KcWVtdV9wYXVzZV9j
-b25kLCBvdGhlciB0aHJlYWQgaGFzIGNhbGxlZCBwYXVzZV9hbGxfdmNwdXMoKSBhbmQNCnJlc3Vt
-ZV9hbGxfdmNwdXMoKSwgdGhlbiB0aHJlYWQgVDEgd2lsbCBzdHVjaywgYmVjYXVzZSB0aGUgY29u
-ZGl0aW9uDQphbGxfdmNwdXNfcGF1c2VkKCkgaXMgYWx3YXlzIGZhbHNlLg0KDQpQUzoNCkkgaGl0
-IHRoaXMgYnVnIHdoZW4gSSB0ZXN0IHRoZSBSRkMgcGF0Y2ggb2YgQVJNIHZDUFUgaG90cGx1ZyBm
-ZWF0dXJlLg0KVGhpcyBwYXRjaCBpcyBub3QgdmVyaWZpZWQhISEganVzdCBmb3IgUkZDLg0KDQpT
-aWduZWQtb2ZmLWJ5OiBLZXFpYW4gWmh1IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+DQotLS0NCiBz
-eXN0ZW0vY3B1cy5jIHwgMjIgKysrKysrKysrKysrKysrKystLS0tLQ0KIDEgZmlsZSBjaGFuZ2Vk
-LCAxNyBpbnNlcnRpb25zKCspLCA1IGRlbGV0aW9ucygtKQ0KDQpkaWZmIC0tZ2l0IGEvc3lzdGVt
-L2NwdXMuYyBiL3N5c3RlbS9jcHVzLmMNCmluZGV4IDY4ZDE2MWQ5NmIuLjI0YWM4MDg1Y2QgMTAw
-NjQ0DQotLS0gYS9zeXN0ZW0vY3B1cy5jDQorKysgYi9zeXN0ZW0vY3B1cy5jDQpAQCAtNTcxLDEy
-ICs1NzEsMTQgQEAgc3RhdGljIGJvb2wgYWxsX3ZjcHVzX3BhdXNlZCh2b2lkKQ0KICAgICByZXR1
-cm4gdHJ1ZTsNCiB9DQoNCi12b2lkIHBhdXNlX2FsbF92Y3B1cyh2b2lkKQ0KK3N0YXRpYyB2b2lk
-IHJlcXVlc3RfcGF1c2VfYWxsX3ZjcHVzKHZvaWQpDQogew0KICAgICBDUFVTdGF0ZSAqY3B1Ow0K
-DQotICAgIHFlbXVfY2xvY2tfZW5hYmxlKFFFTVVfQ0xPQ0tfVklSVFVBTCwgZmFsc2UpOw0KICAg
-ICBDUFVfRk9SRUFDSChjcHUpIHsNCisgICAgICAgIGlmIChjcHUtPnN0b3BwZWQpIHsNCisgICAg
-ICAgICAgICBjb250aW51ZTsNCisgICAgICAgIH0NCiAgICAgICAgIGlmIChxZW11X2NwdV9pc19z
-ZWxmKGNwdSkpIHsNCiAgICAgICAgICAgICBxZW11X2NwdV9zdG9wKGNwdSwgdHJ1ZSk7DQogICAg
-ICAgICB9IGVsc2Ugew0KQEAgLTU4NCw2ICs1ODYsMTQgQEAgdm9pZCBwYXVzZV9hbGxfdmNwdXMo
-dm9pZCkNCiAgICAgICAgICAgICBxZW11X2NwdV9raWNrKGNwdSk7DQogICAgICAgICB9DQogICAg
-IH0NCit9DQorDQordm9pZCBwYXVzZV9hbGxfdmNwdXModm9pZCkNCit7DQorICAgIENQVVN0YXRl
-ICpjcHU7DQorDQorICAgIHFlbXVfY2xvY2tfZW5hYmxlKFFFTVVfQ0xPQ0tfVklSVFVBTCwgZmFs
-c2UpOw0KKyAgICByZXF1ZXN0X3BhdXNlX2FsbF92Y3B1cygpOw0KDQogICAgIC8qIFdlIG5lZWQg
-dG8gZHJvcCB0aGUgcmVwbGF5X2xvY2sgc28gYW55IHZDUFUgdGhyZWFkcyB3b2tlbiB1cA0KICAg
-ICAgKiBjYW4gZmluaXNoIHRoZWlyIHJlcGxheSB0YXNrcw0KQEAgLTU5Miw5ICs2MDIsMTEgQEAg
-dm9pZCBwYXVzZV9hbGxfdmNwdXModm9pZCkNCg0KICAgICB3aGlsZSAoIWFsbF92Y3B1c19wYXVz
-ZWQoKSkgew0KICAgICAgICAgcWVtdV9jb25kX3dhaXQoJnFlbXVfcGF1c2VfY29uZCwgJmJxbCk7
-DQotICAgICAgICBDUFVfRk9SRUFDSChjcHUpIHsNCi0gICAgICAgICAgICBxZW11X2NwdV9raWNr
-KGNwdSk7DQotICAgICAgICB9DQorICAgICAgICAvKiBEdXJpbmcgd2Ugd2FpdGVkIG9uIHFlbXVf
-cGF1c2VfY29uZCB0aGUgYnFsIHdhcyB1bmxvY2tlZCwNCisgICAgICAgICAqIHRoZSB2Y3B1J3Mg
-c3RhdGUgbWF5IGhhcyBiZWVuIGNoYW5nZWQgYnkgb3RoZXIgdGhyZWFkLCBzbw0KKyAgICAgICAg
-ICogd2UgbXVzdCByZXF1ZXN0IHRoZSBwYXVzZSBzdGF0ZSBvbiBhbGwgdmNwdXMgYWdhaW4uDQor
-ICAgICAgICAgKi8NCisgICAgICAgIHJlcXVlc3RfcGF1c2VfYWxsX3ZjcHVzKCk7DQogICAgIH0N
-Cg0KICAgICBicWxfdW5sb2NrKCk7DQotLQ0KMi4zNi4xDQoNCg0KDQo=
+This also looks good to me, thanks.
 
---_000_3A5C0543A4024A788A1241D7EF58BB54_
-Content-Type: text/html; charset="utf-8"
-Content-ID: <D028A07D658A4C40995C8250DF7EB29E@huawei.com>
-Content-Transfer-Encoding: base64
+One trivial early comment is in this case we can introduce a helper to
+cover both setup() calls and UNPLUG waits and dedup the two paths.
 
-PCFET0NUWVBFIGh0bWw+DQo8aHRtbD4NCjxoZWFkPg0KPG1ldGEgaHR0cC1lcXVpdj0iQ29udGVu
-dC1UeXBlIiBjb250ZW50PSJ0ZXh0L2h0bWw7IGNoYXJzZXQ9dXRmLTgiPg0KPC9tYXRhPjxzdHls
-ZSB0eXBlPSJ0ZXh0L2NzcyI+Cioge2JveC1zaXppbmc6Ym9yZGVyLWJveDt9CmJvZHkge2ZvbnQt
-ZmFtaWx5OiBDYWxpYnJpO30KPC9zdHlsZT4NCjwvaGVhZD4NCjxib2R5Pg0KPGRpdj4NCjxkaXYg
-aWQ9ImZvY3VzIj4NCjxkaXY+PGJyPg0KPGJyPg0KPGRpdj5EdXJpbmcgd2Ugd2FpdGVkIG9uIHFl
-bXVfcGF1c2VfY29uZCB0aGUgYnFsIHdhcyB1bmxvY2tlZCw8L2Rpdj4NCjxkaXY+dGhlIHZjcHUn
-cyBzdGF0ZSBtYXkgaGFzIGJlZW4gY2hhbmdlZCBieSBvdGhlciB0aHJlYWQsIHNvPC9kaXY+DQo8
-ZGl2PndlIG11c3QgcmVxdWVzdCB0aGUgcGF1c2Ugc3RhdGUgb24gYWxsIHZjcHVzIGFnYWluLjwv
-ZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+Rm9yIGV4YW1wbGU6PC9kaXY+DQo8ZGl2Pjxi
-cj4NCjwvZGl2Pg0KPGRpdj5Cb3RoIG1haW4gbG9vcCB0aHJlYWQgYW5kIHZDUFUgdGhyZWFkIGFy
-ZSBhbGxvd2VkIHRvIGNhbGw8L2Rpdj4NCjxkaXY+cGF1c2VfYWxsX3ZjcHVzKCksIGFuZCBpbiBn
-ZW5lcmFsIHJlc3VtZV9hbGxfdmNwdXMoKSBpcyBjYWxsZWQ8L2Rpdj4NCjxkaXY+YWZ0ZXIgaXQu
-PC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj5UaHVzIHRoZXJlIGlzIHBvc3NpYmlsaXR5
-IHRoYXQgZHVyaW5nIHRocmVhZCBUMSB3YWl0cyBvbjwvZGl2Pg0KPGRpdj5xZW11X3BhdXNlX2Nv
-bmQsIG90aGVyIHRocmVhZCBoYXMgY2FsbGVkIHBhdXNlX2FsbF92Y3B1cygpIGFuZDwvZGl2Pg0K
-PGRpdj5yZXN1bWVfYWxsX3ZjcHVzKCksIHRoZW4gdGhyZWFkIFQxIHdpbGwgc3R1Y2ssIGJlY2F1
-c2UgdGhlIGNvbmRpdGlvbjwvZGl2Pg0KPGRpdj5hbGxfdmNwdXNfcGF1c2VkKCkgaXMgYWx3YXlz
-IGZhbHNlLjwvZGl2Pg0KPGRpdj48YnI+DQo8L2Rpdj4NCjxkaXY+UFM6PC9kaXY+DQo8ZGl2Pkkg
-aGl0IHRoaXMgYnVnIHdoZW4gSSB0ZXN0IHRoZSBSRkMgcGF0Y2ggb2YgQVJNIHZDUFUgaG90cGx1
-ZyBmZWF0dXJlLjwvZGl2Pg0KPGRpdj5UaGlzIHBhdGNoIGlzIG5vdCB2ZXJpZmllZCEhISBqdXN0
-IGZvciBSRkMuPC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGRpdj5TaWduZWQtb2ZmLWJ5OiBL
-ZXFpYW4gWmh1ICZsdDt6aHVrZXFpYW4xQGh1YXdlaS5jb20mZ3Q7PC9kaXY+DQo8ZGl2Pi0tLTwv
-ZGl2Pg0KPGRpdj4mbmJzcDtzeXN0ZW0vY3B1cy5jIHwgMjIgJiM0MzsmIzQzOyYjNDM7JiM0Mzsm
-IzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0MzsmIzQzOyYjNDM7JiM0
-MzsmIzQzOy0tLS0tPC9kaXY+DQo8ZGl2PiZuYnNwOzEgZmlsZSBjaGFuZ2VkLCAxNyBpbnNlcnRp
-b25zKCYjNDM7KSwgNSBkZWxldGlvbnMoLSk8L2Rpdj4NCjxkaXY+PGJyPg0KPC9kaXY+DQo8ZGl2
-PmRpZmYgLS1naXQgYS9zeXN0ZW0vY3B1cy5jIGIvc3lzdGVtL2NwdXMuYzwvZGl2Pg0KPGRpdj5p
-bmRleCA2OGQxNjFkOTZiLi4yNGFjODA4NWNkIDEwMDY0NDwvZGl2Pg0KPGRpdj4tLS0gYS9zeXN0
-ZW0vY3B1cy5jPC9kaXY+DQo8ZGl2PiYjNDM7JiM0MzsmIzQzOyBiL3N5c3RlbS9jcHVzLmM8L2Rp
-dj4NCjxkaXY+QEAgLTU3MSwxMiAmIzQzOzU3MSwxNCBAQCBzdGF0aWMgYm9vbCBhbGxfdmNwdXNf
-cGF1c2VkKHZvaWQpPC9kaXY+DQo8ZGl2PiZuYnNwOyAmbmJzcDsgJm5ic3A7cmV0dXJuIHRydWU7
-PC9kaXY+DQo8ZGl2PiZuYnNwO308L2Rpdj4NCjxkaXY+Jm5ic3A7PC9kaXY+DQo8ZGl2Pi12b2lk
-IHBhdXNlX2FsbF92Y3B1cyh2b2lkKTwvZGl2Pg0KPGRpdj4mIzQzO3N0YXRpYyB2b2lkIHJlcXVl
-c3RfcGF1c2VfYWxsX3ZjcHVzKHZvaWQpPC9kaXY+DQo8ZGl2PiZuYnNwO3s8L2Rpdj4NCjxkaXY+
-Jm5ic3A7ICZuYnNwOyAmbmJzcDtDUFVTdGF0ZSAqY3B1OzwvZGl2Pg0KPGRpdj4mbmJzcDs8L2Rp
-dj4NCjxkaXY+LSZuYnNwOyAmbmJzcDsgcWVtdV9jbG9ja19lbmFibGUoUUVNVV9DTE9DS19WSVJU
-VUFMLCBmYWxzZSk7PC9kaXY+DQo8ZGl2PiZuYnNwOyAmbmJzcDsgJm5ic3A7Q1BVX0ZPUkVBQ0go
-Y3B1KSB7PC9kaXY+DQo8ZGl2PiYjNDM7Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7IGlmIChj
-cHUtJmd0O3N0b3BwZWQpIHs8L2Rpdj4NCjxkaXY+JiM0MzsmbmJzcDsgJm5ic3A7ICZuYnNwOyAm
-bmJzcDsgJm5ic3A7ICZuYnNwOyBjb250aW51ZTs8L2Rpdj4NCjxkaXY+JiM0MzsmbmJzcDsgJm5i
-c3A7ICZuYnNwOyAmbmJzcDsgfTwvZGl2Pg0KPGRpdj4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJz
-cDsgJm5ic3A7aWYgKHFlbXVfY3B1X2lzX3NlbGYoY3B1KSkgezwvZGl2Pg0KPGRpdj4mbmJzcDsg
-Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtxZW11X2NwdV9zdG9wKGNw
-dSwgdHJ1ZSk7PC9kaXY+DQo8ZGl2PiZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDt9
-IGVsc2UgezwvZGl2Pg0KPGRpdj5AQCAtNTg0LDYgJiM0Mzs1ODYsMTQgQEAgdm9pZCBwYXVzZV9h
-bGxfdmNwdXModm9pZCk8L2Rpdj4NCjxkaXY+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZu
-YnNwOyAmbmJzcDsgJm5ic3A7cWVtdV9jcHVfa2ljayhjcHUpOzwvZGl2Pg0KPGRpdj4mbmJzcDsg
-Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7fTwvZGl2Pg0KPGRpdj4mbmJzcDsgJm5ic3A7ICZu
-YnNwO308L2Rpdj4NCjxkaXY+JiM0Mzt9PC9kaXY+DQo8ZGl2PiYjNDM7PC9kaXY+DQo8ZGl2PiYj
-NDM7dm9pZCBwYXVzZV9hbGxfdmNwdXModm9pZCk8L2Rpdj4NCjxkaXY+JiM0Mzt7PC9kaXY+DQo8
-ZGl2PiYjNDM7Jm5ic3A7ICZuYnNwOyBDUFVTdGF0ZSAqY3B1OzwvZGl2Pg0KPGRpdj4mIzQzOzwv
-ZGl2Pg0KPGRpdj4mIzQzOyZuYnNwOyAmbmJzcDsgcWVtdV9jbG9ja19lbmFibGUoUUVNVV9DTE9D
-S19WSVJUVUFMLCBmYWxzZSk7PC9kaXY+DQo8ZGl2PiYjNDM7Jm5ic3A7ICZuYnNwOyByZXF1ZXN0
-X3BhdXNlX2FsbF92Y3B1cygpOzwvZGl2Pg0KPGRpdj4mbmJzcDs8L2Rpdj4NCjxkaXY+Jm5ic3A7
-ICZuYnNwOyAmbmJzcDsvKiBXZSBuZWVkIHRvIGRyb3AgdGhlIHJlcGxheV9sb2NrIHNvIGFueSB2
-Q1BVIHRocmVhZHMgd29rZW4gdXA8L2Rpdj4NCjxkaXY+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgKiBj
-YW4gZmluaXNoIHRoZWlyIHJlcGxheSB0YXNrczwvZGl2Pg0KPGRpdj5AQCAtNTkyLDkgJiM0Mzs2
-MDIsMTEgQEAgdm9pZCBwYXVzZV9hbGxfdmNwdXModm9pZCk8L2Rpdj4NCjxkaXY+Jm5ic3A7PC9k
-aXY+DQo8ZGl2PiZuYnNwOyAmbmJzcDsgJm5ic3A7d2hpbGUgKCFhbGxfdmNwdXNfcGF1c2VkKCkp
-IHs8L2Rpdj4NCjxkaXY+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3FlbXVfY29u
-ZF93YWl0KCZhbXA7cWVtdV9wYXVzZV9jb25kLCAmYW1wO2JxbCk7PC9kaXY+DQo8ZGl2Pi0mbmJz
-cDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgQ1BVX0ZPUkVBQ0goY3B1KSB7PC9kaXY+DQo8ZGl2Pi0m
-bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBxZW11X2NwdV9raWNrKGNw
-dSk7PC9kaXY+DQo8ZGl2Pi0mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgfTwvZGl2Pg0KPGRp
-dj4mIzQzOyZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAvKiBEdXJpbmcgd2Ugd2FpdGVkIG9u
-IHFlbXVfcGF1c2VfY29uZCB0aGUgYnFsIHdhcyB1bmxvY2tlZCw8L2Rpdj4NCjxkaXY+JiM0Mzsm
-bmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7KiB0aGUgdmNwdSdzIHN0YXRlIG1heSBo
-YXMgYmVlbiBjaGFuZ2VkIGJ5IG90aGVyIHRocmVhZCwgc288L2Rpdj4NCjxkaXY+JiM0MzsmbmJz
-cDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7KiB3ZSBtdXN0IHJlcXVlc3QgdGhlIHBhdXNl
-IHN0YXRlIG9uIGFsbCB2Y3B1cyBhZ2Fpbi48L2Rpdj4NCjxkaXY+JiM0MzsmbmJzcDsgJm5ic3A7
-ICZuYnNwOyAmbmJzcDsgJm5ic3A7Ki88L2Rpdj4NCjxkaXY+JiM0MzsmbmJzcDsgJm5ic3A7ICZu
-YnNwOyAmbmJzcDsgcmVxdWVzdF9wYXVzZV9hbGxfdmNwdXMoKTs8L2Rpdj4NCjxkaXY+Jm5ic3A7
-ICZuYnNwOyAmbmJzcDt9PC9kaXY+DQo8ZGl2PiZuYnNwOzwvZGl2Pg0KPGRpdj4mbmJzcDsgJm5i
-c3A7ICZuYnNwO2JxbF91bmxvY2soKTs8L2Rpdj4NCjxkaXY+LS08L2Rpdj4NCjxkaXY+Mi4zNi4x
-PC9kaXY+DQo8ZGl2Pjxicj4NCjwvZGl2Pg0KPGJyPg0KPGJyPg0KPC9kaXY+DQo8L2Rpdj4NCjwv
-ZGl2Pg0KPGRpdj48L2Rpdj4NCjwvYm9keT4NCjwvaHRtbD4NCg==
+> 
+> Thanks,
+> 
+> C.
+> 
+> 
+> 
+> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> ---
+>  migration/savevm.h    |  2 +-
+>  migration/migration.c | 29 +++++++++++++++++++++++++++--
+>  migration/savevm.c    | 26 +++++++++++++++-----------
+>  3 files changed, 43 insertions(+), 14 deletions(-)
+> 
+> diff --git a/migration/savevm.h b/migration/savevm.h
+> index 74669733dd63a080b765866c703234a5c4939223..9ec96a995c93a42aad621595f0ed58596c532328 100644
+> --- a/migration/savevm.h
+> +++ b/migration/savevm.h
+> @@ -32,7 +32,7 @@
+>  bool qemu_savevm_state_blocked(Error **errp);
+>  void qemu_savevm_non_migratable_list(strList **reasons);
+>  int qemu_savevm_state_prepare(Error **errp);
+> -void qemu_savevm_state_setup(QEMUFile *f);
+> +int qemu_savevm_state_setup(QEMUFile *f, Error **errp);
+>  bool qemu_savevm_state_guest_unplug_pending(void);
+>  int qemu_savevm_state_resume_prepare(MigrationState *s);
+>  void qemu_savevm_state_header(QEMUFile *f);
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 644e073b7dcc70cb2bdaa9c975ba478952465ff4..0704ad6226df61f2f15bd81a2897f9946d601ca7 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -3427,6 +3427,8 @@ static void *migration_thread(void *opaque)
+>      int64_t setup_start = qemu_clock_get_ms(QEMU_CLOCK_HOST);
+>      MigThrError thr_error;
+>      bool urgent = false;
+> +    Error *local_err = NULL;
+> +    int ret;
+>      thread = migration_threads_add("live_migration", qemu_get_thread_id());
+> @@ -3470,12 +3472,24 @@ static void *migration_thread(void *opaque)
+>      }
+>      bql_lock();
+> -    qemu_savevm_state_setup(s->to_dst_file);
+> +    ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
+>      bql_unlock();
+>      qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+>                                 MIGRATION_STATUS_ACTIVE);
+> +    /*
+> +     * Handle SETUP failures after waiting for virtio-net-failover
+> +     * devices to unplug. This to preserve migration state transitions.
+> +     */
+> +    if (ret) {
+> +        migrate_set_error(s, local_err);
+> +        error_free(local_err);
+> +        migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
+> +                          MIGRATION_STATUS_FAILED);
+> +        goto out;
+> +    }
+> +
+>      s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
+>      trace_migration_thread_setup_complete();
+> @@ -3549,6 +3563,8 @@ static void *bg_migration_thread(void *opaque)
+>      MigThrError thr_error;
+>      QEMUFile *fb;
+>      bool early_fail = true;
+> +    Error *local_err = NULL;
+> +    int ret;
+>      rcu_register_thread();
+>      object_ref(OBJECT(s));
+> @@ -3582,12 +3598,20 @@ static void *bg_migration_thread(void *opaque)
+>      bql_lock();
+>      qemu_savevm_state_header(s->to_dst_file);
+> -    qemu_savevm_state_setup(s->to_dst_file);
+> +    ret = qemu_savevm_state_setup(s->to_dst_file, &local_err);
+>      bql_unlock();
+>      qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
+>                                 MIGRATION_STATUS_ACTIVE);
+> +    if (ret) {
+> +        migrate_set_error(s, local_err);
+> +        error_free(local_err);
+> +        migrate_set_state(&s->state, MIGRATION_STATUS_ACTIVE,
+> +                          MIGRATION_STATUS_FAILED);
+> +        goto fail_setup;
+> +    }
+> +
+>      s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
+>      trace_migration_thread_setup_complete();
+> @@ -3656,6 +3680,7 @@ fail:
+>          bql_unlock();
+>      }
+> +fail_setup:
+>      bg_migration_iteration_finish(s);
+>      qemu_fclose(fb);
+> diff --git a/migration/savevm.c b/migration/savevm.c
+> index 1a7b5cb78a912c36ae16db703afc90ef2906b61f..0eb94e61f888adba2c0732c2cb701b110814c455 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -1310,11 +1310,11 @@ int qemu_savevm_state_prepare(Error **errp)
+>      return 0;
+>  }
+> -void qemu_savevm_state_setup(QEMUFile *f)
+> +int qemu_savevm_state_setup(QEMUFile *f, Error **errp)
+>  {
+> +    ERRP_GUARD();
+>      MigrationState *ms = migrate_get_current();
+>      SaveStateEntry *se;
+> -    Error *local_err = NULL;
+>      int ret = 0;
+>      json_writer_int64(ms->vmdesc, "page_size", qemu_target_page_size());
+> @@ -1323,10 +1323,9 @@ void qemu_savevm_state_setup(QEMUFile *f)
+>      trace_savevm_state_setup();
+>      QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
+>          if (se->vmsd && se->vmsd->early_setup) {
+> -            ret = vmstate_save(f, se, ms->vmdesc, &local_err);
+> +            ret = vmstate_save(f, se, ms->vmdesc, errp);
+>              if (ret) {
+> -                migrate_set_error(ms, local_err);
+> -                error_report_err(local_err);
+> +                migrate_set_error(ms, *errp);
+>                  qemu_file_set_error(f, ret);
+>                  break;
+>              }
+> @@ -1346,18 +1345,19 @@ void qemu_savevm_state_setup(QEMUFile *f)
+>          ret = se->ops->save_setup(f, se->opaque);
+>          save_section_footer(f, se);
+>          if (ret < 0) {
+> +            error_setg(errp, "failed to setup SaveStateEntry with id(name): "
+> +                       "%d(%s): %d", se->section_id, se->idstr, ret);
+>              qemu_file_set_error(f, ret);
+>              break;
+>          }
+>      }
+>      if (ret) {
+> -        return;
+> +        return ret;
+>      }
+> -    if (precopy_notify(PRECOPY_NOTIFY_SETUP, &local_err)) {
+> -        error_report_err(local_err);
+> -    }
+> +    /* TODO: Should we check that errp is set in case of failure ? */
+> +    return precopy_notify(PRECOPY_NOTIFY_SETUP, errp);
+>  }
+>  int qemu_savevm_state_resume_prepare(MigrationState *s)
+> @@ -1725,7 +1725,10 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+>      ms->to_dst_file = f;
+>      qemu_savevm_state_header(f);
+> -    qemu_savevm_state_setup(f);
+> +    ret = qemu_savevm_state_setup(f, errp);
+> +    if (ret) {
+> +        goto cleanup;
+> +    }
+>      while (qemu_file_get_error(f) == 0) {
+>          if (qemu_savevm_state_iterate(f, false) > 0) {
+> @@ -1738,10 +1741,11 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
+>          qemu_savevm_state_complete_precopy(f, false, false);
+>          ret = qemu_file_get_error(f);
+>      }
+> -    qemu_savevm_state_cleanup();
+>      if (ret != 0) {
+>          error_setg_errno(errp, -ret, "Error while writing VM state");
+>      }
+> +cleanup:
+> +    qemu_savevm_state_cleanup();
+>      if (ret != 0) {
+>          status = MIGRATION_STATUS_FAILED;
+> -- 
+> 2.44.0
+> 
+> 
 
---_000_3A5C0543A4024A788A1241D7EF58BB54_--
+-- 
+Peter Xu
+
 
