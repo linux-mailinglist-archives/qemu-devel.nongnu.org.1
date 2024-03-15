@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EB087CDDD
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB44287CDD5
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:12:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7Ku-0007y2-2G; Fri, 15 Mar 2024 09:11:00 -0400
+	id 1rl7Ku-00088q-55; Fri, 15 Mar 2024 09:11:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7K1-0006NK-Gq
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:07 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7KO-0006yq-5z
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:29 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Jy-0007rc-Kp
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:04 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-56845954fffso1900392a12.3
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:10:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7K6-0007wU-Mw
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:26 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5688eaf1165so3196598a12.1
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:10:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710508200; x=1711113000; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710508208; x=1711113008; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fQB6SJNy6yiy7zdv0lmI6ciVyOB2Uy024AmMoGafIwE=;
- b=D5Yow0ZKecc+XgV8kl3Fxp2klHV9pOvF/G2+ZI/Djby9UEMTStT24gk1yvGump1MJl
- MKkrD+pkP5pgDTJKhudDNevRLhRgSs8PL4pZTd9G2sUePI8EJeOlCBlHwT3IYYF4ZRs6
- JhCpKZMNSbP+/r3huUOKAf4M65t39X3AXyvKeobTfq26PlElFA8WMhLT78gKOOx6o8f6
- +bOlu3ydmRnzoSTUxtJZ5ZxmQukqNdodiuZZr1d3hf09n1YlCzoUgbAErfivYRvpS0Ry
- AFY6o61+Hnh5gRH9HeSGysOrs0zqx8bQd3t/Yar2vGrzZh5JGovLdA6puQxfIqt+cJNy
- 9t0g==
+ bh=qDIsKXjb1Jl9yBqR7T/u0FWdWtcs/rDVYwZEhcpoxew=;
+ b=nloCUCPnHdJsTMOe5mB56ubaQqAIRf8Nt8dSaGwx8ZgJNLgL4o5fs/vibYlSdxwQDu
+ 77pUt1NYKxQkxq1Rrm7sDRFClixlech/srG5DqOIi/nd/017iu8LLJ0+iKSFRs4KCZlq
+ mug7V1dobjrxLy02cXPiKoc3tzth37HV5ebQK+vCrC96s54SXJKS38dqAU9nMyMDLglG
+ zjD8vQGdL7FSIneCIPz5NYhk4SkTgKWhTDj+m9DxScoMthRTVLkSQjXugFCbyVfsjeTU
+ kaw2GVYGa+8j7am6YPiBU+E5Z12b2AhtlPRjAYjLvD/+8YflBQPRsmNcEwFhX0mhb0aD
+ spFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508200; x=1711113000;
+ d=1e100.net; s=20230601; t=1710508208; x=1711113008;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fQB6SJNy6yiy7zdv0lmI6ciVyOB2Uy024AmMoGafIwE=;
- b=wA1Q06FQydF8JKpdbbJbtDNth5nHHsAEPR6LxXv2+0KdnJtQXJIYmeZjZc9ANkPhdh
- IAcnML/fnAKkzzJ7RicTogA7oHVMH+kmolD0QZE1gexSQlIkQFnSHKqwuY1+z0pZrefE
- v1uUDRZQb4PQ2otGN4aXcw+7yKb7MN5DadKLV3XLENfPhth/EdS502Pn2dETK+FrCSks
- eXmLEA21i4v7bb9Ecd/rDejIIMQPxeBFiYQ1HZNclYh64CDztqcMSX1QPOK+l1lsDbZV
- NukM4eUR7W43HxFhYbX7GNLqlhkKwvSGD0ohI0tHlIZjRdD4gaiM9I6gWs0FiUoa+OCL
- F85Q==
-X-Gm-Message-State: AOJu0YwRshe073NO21WeonKAJ5m7Th7pwTIrjqHFmQtkTuOJMPN9zIYa
- sF559hWTs+LkcO0gzpvuD7G1lIxpd/gnsxU3X1oEn12Ti5YvdidJauAfo1wlS1lABrrZbNpdIAD
- c
-X-Google-Smtp-Source: AGHT+IERNJD9BeD1ZTNKcgjKR1YrxbrTZMT90NVR2wKIdl/tZTRzhcTVHamLl8tpd/LjDM8xLQUvNQ==
-X-Received: by 2002:aa7:dd0f:0:b0:565:b456:435d with SMTP id
- i15-20020aa7dd0f000000b00565b456435dmr2931558edv.17.1710508200588; 
- Fri, 15 Mar 2024 06:10:00 -0700 (PDT)
+ bh=qDIsKXjb1Jl9yBqR7T/u0FWdWtcs/rDVYwZEhcpoxew=;
+ b=PEtxakO3ZJ9ZxNL+wQxLTU7tfr7OllaGyksgF2VsYh1WQF+FNwE/hPBA8+2xmadxxN
+ NIJXF99K3RBYi7yABwtWJKej15Lb7l07nHOm9t8zwZhDADRO36q+meW7J+RETrP40cyh
+ 7DaPhIh4aYIKeAnBFoWY3FRyDtH/XV0oemIculxVVb/NH23zNW7t2wtazjAAQGVOTvEv
+ 5fRbmfMIboI1nDxlN5krlHTQkSrl6QOv65ZcR0ySEq5dgb8Ubgj5C388iYg8Pdg8hg4n
+ +DiLePoCTO0OIgTOfBlGvL0SIAZgPH7YMHLmuy7u4k3NHoOGGb5HTubAMna5QZvJl/xG
+ 1ENg==
+X-Gm-Message-State: AOJu0YwsMS7uELZvQABsnYb+he8EP2l7UhwniQ72i+kZpsKKfJlCAWID
+ +I+kwQ2Uxe/apyicdm9spjCUMoNvZkBDsRaYgSbbtdW+C+cSl2kl+Efl/yLE6VOD7m+r4YnKg5t
+ P
+X-Google-Smtp-Source: AGHT+IHz6vQYIeOBcjGc+xE2c8P3SUzSTmtoEr2FLDXsqrRWBjGskKgF5u0V0+3R6przXpowCYuWpA==
+X-Received: by 2002:a05:6402:5512:b0:568:9c6b:eb0f with SMTP id
+ fi18-20020a056402551200b005689c6beb0fmr3550192edb.21.1710508207999; 
+ Fri, 15 Mar 2024 06:10:07 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.145.26])
  by smtp.gmail.com with ESMTPSA id
- q10-20020aa7d44a000000b005689d0a97d1sm1657891edr.24.2024.03.15.06.09.58
+ dk4-20020a0564021d8400b0056706105abesm1689843edb.33.2024.03.15.06.10.05
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Mar 2024 06:10:00 -0700 (PDT)
+ Fri, 15 Mar 2024 06:10:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
@@ -70,29 +70,27 @@ Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH-for-9.1 07/21] target/mips: Make MIPS_CPU common to new
- MIPS32_CPU / MIPS64_CPU types
-Date: Fri, 15 Mar 2024 14:08:55 +0100
-Message-ID: <20240315130910.15750-8-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Subject: [PATCH-for-9.1 08/21] target/sparc: Make SPARC_CPU common to new
+ SPARC32_CPU/SPARC64_CPU types
+Date: Fri, 15 Mar 2024 14:08:56 +0100
+Message-ID: <20240315130910.15750-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
 References: <20240315130910.15750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,124 +108,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 "target/foo/cpu-qom.h" can not use any target specific definitions.
 
-Currently "target/mips/cpu-qom.h" defines TYPE_MIPS_CPU depending
-on the mips(32)/mips64 build type. This doesn't scale in a
-heterogeneous context where we need to access both types concurrently.
+Currently "target/sparc/cpu-qom.h" defines TYPE_SPARC_CPU
+depending on the sparc(32)/sparc64 build type. This doesn't
+scale in a heterogeneous context where we need to access both
+types concurrently.
 
-In order to do that, introduce the new MIPS32_CPU / MIPS64_CPU types,
-both inheriting a common TYPE_MIPS_CPU base type.
+In order to do that, introduce the new SPARC32_CPU / SPARC64_CPU
+types, both inheriting a common TYPE_SPARC_CPU base type.
 
-Keep the current CPU types registered in mips_register_cpudef_type()
-as 32 or 64-bit, but instead of depending on the binary built being
-targeting 32/64-bit, check whether the CPU is 64-bit by looking at
-the CPU_MIPS64 bit.
+Keep the current CPU types registered in sparc_register_cpudef_type()
+as 32 or 64-bit, depending on the binary built.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- target/mips/cpu-qom.h              | 13 +++++++------
- target/mips/cpu.c                  | 11 ++++++++++-
- target/mips/sysemu/mips-qmp-cmds.c | 26 ++------------------------
- 3 files changed, 19 insertions(+), 31 deletions(-)
+ target/sparc/cpu-qom.h |  9 +++++----
+ target/sparc/cpu.c     | 12 +++++++++++-
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/target/mips/cpu-qom.h b/target/mips/cpu-qom.h
-index 0eea2a2598..bf464f16b6 100644
---- a/target/mips/cpu-qom.h
-+++ b/target/mips/cpu-qom.h
-@@ -1,5 +1,5 @@
- /*
-- * QEMU MIPS CPU
-+ * QEMU MIPS CPU QOM header (target agnostic)
-  *
-  * Copyright (c) 2012 SUSE LINUX Products GmbH
-  *
+diff --git a/target/sparc/cpu-qom.h b/target/sparc/cpu-qom.h
+index a86331bd58..6ad283506e 100644
+--- a/target/sparc/cpu-qom.h
++++ b/target/sparc/cpu-qom.h
 @@ -22,14 +22,15 @@
  
  #include "hw/core/cpu.h"
  
--#ifdef TARGET_MIPS64
--#define TYPE_MIPS_CPU "mips64-cpu"
+-#ifdef TARGET_SPARC64
+-#define TYPE_SPARC_CPU "sparc64-cpu"
 -#else
--#define TYPE_MIPS_CPU "mips-cpu"
+ #define TYPE_SPARC_CPU "sparc-cpu"
 -#endif
-+#define TYPE_MIPS_CPU   "mips-cpu"
-+#define TYPE_MIPS32_CPU "mips32-cpu"
-+#define TYPE_MIPS64_CPU "mips64-cpu"
++#define TYPE_SPARC32_CPU "sparc32-cpu"
++#define TYPE_SPARC64_CPU "sparc64-cpu"
  
- OBJECT_DECLARE_CPU_TYPE(MIPSCPU, MIPSCPUClass, MIPS_CPU)
+ OBJECT_DECLARE_CPU_TYPE(SPARCCPU, SPARCCPUClass, SPARC_CPU)
  
-+OBJECT_DECLARE_CPU_TYPE(MIPS32CPU, MIPSCPUClass, MIPS32_CPU)
-+OBJECT_DECLARE_CPU_TYPE(MIPS64CPU, MIPSCPUClass, MIPS64_CPU)
++OBJECT_DECLARE_CPU_TYPE(SPARC32CPU, SPARCCPUClass, SPARC32_CPU)
++OBJECT_DECLARE_CPU_TYPE(SPARC64CPU, SPARCCPUClass, SPARC64_CPU)
 +
- #define MIPS_CPU_TYPE_SUFFIX "-" TYPE_MIPS_CPU
- #define MIPS_CPU_TYPE_NAME(model) model MIPS_CPU_TYPE_SUFFIX
+ #define SPARC_CPU_TYPE_SUFFIX "-" TYPE_SPARC_CPU
+ #define SPARC_CPU_TYPE_NAME(model) model SPARC_CPU_TYPE_SUFFIX
  
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index c096d97fe3..f3ea6175f2 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -604,6 +604,14 @@ static const TypeInfo mips_cpu_types[] = {
+diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
+index 42b13ab63f..9e27e16b75 100644
+--- a/target/sparc/cpu.c
++++ b/target/sparc/cpu.c
+@@ -959,6 +959,12 @@ static const TypeInfo sparc_cpu_types[] = {
          .abstract       = true,
-         .class_size     = sizeof(MIPSCPUClass),
-         .class_init     = mips_cpu_class_init,
+         .class_size     = sizeof(SPARCCPUClass),
+         .class_init     = sparc_cpu_class_init,
 +    }, {
-+        .name           = TYPE_MIPS32_CPU,
-+        .parent         = TYPE_MIPS_CPU,
-+        .abstract       = true,
++        .name           = TYPE_SPARC32_CPU,
++        .parent         = TYPE_SPARC_CPU,
 +    }, {
-+        .name           = TYPE_MIPS64_CPU,
-+        .parent         = TYPE_MIPS_CPU,
-+        .abstract       = true,
++        .name           = TYPE_SPARC64_CPU,
++        .parent         = TYPE_SPARC_CPU,
      }
  };
  
-@@ -620,7 +628,8 @@ static void mips_register_cpudef_type(const struct mips_def_t *def)
-     char *typename = mips_cpu_type_name(def->name);
+@@ -975,7 +981,11 @@ static void sparc_register_cpudef_type(const struct sparc_def_t *def)
+     char *typename = sparc_cpu_type_name(def->name);
      TypeInfo ti = {
          .name = typename,
--        .parent = TYPE_MIPS_CPU,
-+        .parent = def->insn_flags & CPU_MIPS64
-+                  ? TYPE_MIPS64_CPU : TYPE_MIPS32_CPU,
-         .class_init = mips_cpu_cpudef_class_init,
+-        .parent = TYPE_SPARC_CPU,
++#ifdef TARGET_SPARC64
++        .parent = TYPE_SPARC64_CPU,
++#else
++        .parent = TYPE_SPARC32_CPU,
++#endif
+         .class_init = sparc_cpu_cpudef_class_init,
          .class_data = (void *)def,
      };
-diff --git a/target/mips/sysemu/mips-qmp-cmds.c b/target/mips/sysemu/mips-qmp-cmds.c
-index 7340ac70ba..329db3a028 100644
---- a/target/mips/sysemu/mips-qmp-cmds.c
-+++ b/target/mips/sysemu/mips-qmp-cmds.c
-@@ -8,31 +8,9 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/qapi-commands-machine-target.h"
--#include "cpu.h"
--
--static void mips_cpu_add_definition(gpointer data, gpointer user_data)
--{
--    ObjectClass *oc = data;
--    CpuDefinitionInfoList **cpu_list = user_data;
--    CpuDefinitionInfo *info;
--    const char *typename;
--
--    typename = object_class_get_name(oc);
--    info = g_malloc0(sizeof(*info));
--    info->name = cpu_model_from_type(typename);
--    info->q_typename = g_strdup(typename);
--
--    QAPI_LIST_PREPEND(*cpu_list, info);
--}
-+#include "qapi/commands-target-compat.h"
- 
- CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
- {
--    CpuDefinitionInfoList *cpu_list = NULL;
--    GSList *list;
--
--    list = object_class_get_list(TYPE_MIPS_CPU, false);
--    g_slist_foreach(list, mips_cpu_add_definition, &cpu_list);
--    g_slist_free(list);
--
--    return cpu_list;
-+    return generic_query_cpu_definitions(errp);
- }
 -- 
 2.41.0
 
