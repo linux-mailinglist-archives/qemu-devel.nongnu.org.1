@@ -2,103 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2567F87CF99
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 15:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC8B087D0FF
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 17:14:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl8zx-0006j7-IW; Fri, 15 Mar 2024 10:57:29 -0400
+	id 1rlABZ-0001YG-Jl; Fri, 15 Mar 2024 12:13:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl8zu-0006iB-1T
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:57:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <lorenz@brun.one>) id 1rl91I-0007iI-Hz
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:58:52 -0400
+Received: from s2.dolansoft.org ([212.51.146.245] helo=mx.dolansoft.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl8zr-0005Yi-2K
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:57:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710514641;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=z3I3ysKjyW5FjGVF6NMjxicsoQkcVIjvj9EUem2iyZ4=;
- b=Tm9IG3+3fOh368aMUdO9Y9MROLEzOSfpYFMgPcKtzTnfPUxhXtImx2tJ3SCCZEvDaDcnqJ
- WY9M1UTqVbcYk6IKYpR1f4RLmimfiH6xPfp0RAZpEXdIZeJavxDW/hj43nqGinQGfaAaZJ
- WhXIYnGlnW+yeTMMQh2pj1Gp+zafg28=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-PEheDFNWMTOPlOp3nqm1TA-1; Fri, 15 Mar 2024 10:57:20 -0400
-X-MC-Unique: PEheDFNWMTOPlOp3nqm1TA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-690ab2b0de1so6446896d6.0
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 07:57:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710514639; x=1711119439;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z3I3ysKjyW5FjGVF6NMjxicsoQkcVIjvj9EUem2iyZ4=;
- b=ULUfDwsoggQUpcI2SzIzUJpdeWe5DhqD/FipplKyZxXDNcrdKiEW3ETK5mZkqwwZNX
- 7ZIN9e0aLXI6dUmlc/ahs6++R8a7vgXS0mbTvQBz+Ynai9Vjsi3iJSNgBd1O6r1xfiI1
- rPtVYZAzXPcMz20B+CZmK9mA4YUxZG4V0AD6fO+B68928VIn8FJbticAy6IRvgjOZlH3
- v8mlK/7xhUPtM8zgtjS3sV1ItFVLLzrPuEZTAf8s17mN3yKayeS7Rla0F4myG2TJp1MM
- 3B9U9qVCpI3TvQ1oIvPswZcece3qMXdgP34wkNftnjHsjEuMV18VF8DbTW5cuRKqInUn
- Paww==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCA1oxZXY46tarQN3Fc0n2EHOsv3dby2WGSzrV22saTZ5WjEVaRlUY6tRAaU+wRaMAFoHVXmkvJp0XN20+8UvIIG048N8=
-X-Gm-Message-State: AOJu0YwcvDTpCt6TRjcl3TuFkvxsALQwlj880KZnAHnmWsPHnZYx4IlT
- ZP7fwPz2nn+kLkQSgtV86H4dJ0CLkRtjFbitl21MfGuYTazZpJv9IZSsibueb0sqpXcJ4sU/GWt
- psofBUYyDpTf3pDxCBi5q/dP557lZgKAK94QyYQNZRCsXtFw3g5yd
-X-Received: by 2002:a05:6214:5c01:b0:68f:e779:70f2 with SMTP id
- ly1-20020a0562145c0100b0068fe77970f2mr5405783qvb.3.1710514639558; 
- Fri, 15 Mar 2024 07:57:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEy6reuFh01BuDyxg3MMfyL1eSJ27dWtoyaLmMpLGTSqyNY1gU47mnJdmXqkwKlMSTQRK7Y7g==
-X-Received: by 2002:a05:6214:5c01:b0:68f:e779:70f2 with SMTP id
- ly1-20020a0562145c0100b0068fe77970f2mr5405756qvb.3.1710514639023; 
- Fri, 15 Mar 2024 07:57:19 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- gv4-20020a056214262400b0068fb6fb217csm2126370qvb.122.2024.03.15.07.57.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 07:57:18 -0700 (PDT)
-Date: Fri, 15 Mar 2024 10:57:16 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
- qemu_savevm_state_setup()
-Message-ID: <ZfRhzMypPVOd5Q83@x1n>
-References: <8ba5dba7-1849-46ff-b708-a9caac66be27@redhat.com>
- <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
- <874jdbmst4.fsf@suse.de> <ZfByYiL3Gl9d9u7h@x1n>
- <87wmq7l2xx.fsf@suse.de>
- <b9cb5c16-59a4-4cdc-9d12-6d7c2306b4ff@redhat.com>
- <ZfQqpK0xCwygYYho@x1n>
- <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
- <ZfRJHEya_kPaXWbU@x1n>
- <36089ba2-7ee3-412f-9050-739a8ead2fbc@redhat.com>
+ (Exim 4.90_1) (envelope-from <lorenz@brun.one>) id 1rl91G-0005oE-Dh
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 10:58:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=brun.one;
+ s=s1; h=MIME-Version:Message-ID:Date:Subject:Cc:To:From:In-Reply-To:
+ References:From:To:Subject:Date:Message-ID:Reply-To;
+ bh=q71kjRy1vgrW30Iwwa+K3qmXkGojyqby1TCUGLaZCwI=; b=KWsaEmWjLLmFA9teN/MSlDWCY/
+ 6q+6uh+TJyuSiEzrtt176fqeFqOHJwsJU+cVZUClNtstWftWoaByRwj9X4iwo/ANe/RnUnjWDuOjK
+ xAtBJcy2uBvmPmorSeD/E5cQdAiZaI4uyn3dJezjzpixN2cwvHSCiLDBtTrcMUBegiRpxIY+41xYA
+ 3cYWPYlPOeZIipZn49DoSO5NyHVwxwWj5I8KeHG+WmnPhgEoJq9y0oUKwQIkOlm3Cn9FuDY4BUsPs
+ XvL+dcRSSDrBzH9O9phRIU2l/vJ3dscuFCsT9+8i/LFxoEPodg1jrQ5ScOKSlaG4woNyAbdewvsqW
+ yzN92W5A==;
+Received: from [212.51.153.89] (helo=localhost.localdomain)
+ by mx.dolansoft.org with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+ (Exim 4.96.2) (envelope-from <lorenz@dolansoft.org>)
+ id 1rl91A-000bvY-2e; Fri, 15 Mar 2024 14:58:44 +0000
+From: Lorenz Brun <lorenz@brun.one>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Fam Zheng <fam@euphon.net>
+Subject: [PATCH] scsi-generic: fix io_timeout property not applying
+Date: Fri, 15 Mar 2024 15:58:31 +0100
+Message-ID: <20240315145831.2531695-1-lorenz@brun.one>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <36089ba2-7ee3-412f-9050-739a8ead2fbc@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.933,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=212.51.146.245; envelope-from=lorenz@brun.one;
+ helo=mx.dolansoft.org
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 15 Mar 2024 12:13:31 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -113,28 +62,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 15, 2024 at 03:31:28PM +0100, Cédric Le Goater wrote:
-> On 3/15/24 14:11, Peter Xu wrote:
-> > On Fri, Mar 15, 2024 at 01:20:49PM +0100, Cédric Le Goater wrote:
-> > > +static void qemu_savevm_wait_unplug(MigrationState *s, int state)
-> > 
-> > One more trivial comment: I'd even consider dropping "state" altogether, as
-> > this should be the only state this function should be invoked.  So we can
-> > perhaps assert it instead of passing it over?
-> 
-> Yes. If you prefer this implementation I will change.
+The io_timeout property, introduced in c9b6609 (part of 6.0) is
+silently overwritten by the hardcoded default value of 30 seconds
+(DEFAULT_IO_TIMEOUT) in scsi_generic_realize because that function is
+being called after the properties have already been applied.
 
-I am fine with either approach, we can wait for 1-2 days to see whether
-others want to say.  Otherwise the other approach actually looks better to
-me in that it avoids SETUP->UNPLUG->SETUP jumps.
+The property definition already has a default value which is applied
+correctly when no value is explicitly set, so we can just remove the
+code which overrides the io_timeout completely.
 
-And then we wait to see whether UNPLUG can be dropped for either way to go,
-perhaps starting from adding it into deprecation list if no objections from
-the relevant folks.
+This has been tested by stracing SG_IO operations with the io_timeout
+property set and unset and now sets the timeout field in the ioctl
+request to the proper value.
 
-Thanks,
+Fixes: c9b6609b69facad ("scsi: make io_timeout configurable")
+Signed-off-by: Lorenz Brun <lorenz@brun.one>
+---
+ hw/scsi/scsi-generic.c | 1 -
+ 1 file changed, 1 deletion(-)
 
+diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
+index b7b04e1d63..ee945f87e3 100644
+--- a/hw/scsi/scsi-generic.c
++++ b/hw/scsi/scsi-generic.c
+@@ -752,7 +752,6 @@ static void scsi_generic_realize(SCSIDevice *s, Error **errp)
+ 
+     /* Only used by scsi-block, but initialize it nevertheless to be clean.  */
+     s->default_scsi_version = -1;
+-    s->io_timeout = DEFAULT_IO_TIMEOUT;
+     scsi_generic_read_device_inquiry(s);
+ }
+ 
 -- 
-Peter Xu
+2.42.0
 
 
