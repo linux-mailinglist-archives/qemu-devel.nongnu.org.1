@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189F987CDDB
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:12:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B15487CE02
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:19:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7LU-000259-Ia; Fri, 15 Mar 2024 09:11:36 -0400
+	id 1rl7LH-00013U-76; Fri, 15 Mar 2024 09:11:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Ku-0008JC-Cd
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:00 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7L1-0000LC-12
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:07 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Kr-0008S2-Bi
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:59 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-565c6cf4819so5313618a12.1
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:10:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7Ky-0008UE-3L
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:06 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d48d75ab70so7099441fa.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:11:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710508255; x=1711113055; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710508262; x=1711113062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=XKSoPbdfR84sDrdE++VJn8/NPQXAflULbgNG03R7vOs=;
- b=GJdmN5QdeNlSHjlc1eKHQ7df0nIAbPKjenT+oX55U5TcaLNyjnHeQP/mf2mcoNgefV
- 3/0N5Gq9dp5+q73f8R90qT5BtgchnGqcvGsrYsntQBibTnpNB5kiGKZtSRwa/CF/ZhKF
- gnZqEJ/ER1wySAZ3pXE5H8htSt3QVSzQYKFkWazihql/bvkK8lU7VwuXPgBN2Gd/BhRE
- +K/31cInbp7bBSTKIRL+i3ArrwMr93NkjnyDHtrd88JtCFGRr2wgggocnB2pbSQYL5aK
- dVmEQD7R10hMyhcYj+HeoXKB/cyQLM2PD3sv5s5o2bgsf1Rhx93zmJJ3/5oLbJbH9HJB
- IcKA==
+ bh=9q6xaVyoPJIMQfl186LF5IP9vgj5sXw3ui9Yz0YXC2Q=;
+ b=TMVOa6AS5DHcYj9w4EjFpStIyqMpbkGn81Fb5r7+qlYyQ4rTH+i+rSeLABMphE+KLN
+ 8Zao5q1pbPFsXliXcmAMyRqM6/W+iBlnktK4DvSz6Is9eElfCqt6N0rxUZ6GXfTDGent
+ p+oJjqjfasjEUcD/J2jrd6JmA5wyD6mAhYebqHmsc2fQd+1GSe4PGghlP6tWyc5DAAwQ
+ WCJHKy32JsDYdxb1D8clU3ws1TSBnI652+pNexEzEnFoOzyzj68k2KkQzDp66anCz1ib
+ a2q26oyfKaBKfJSl/sWZwWrlAvBfS4EIs/nRE8tlC4fw3vAhS1A+xeXAGr2aOLPwzj/q
+ ilWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508255; x=1711113055;
+ d=1e100.net; s=20230601; t=1710508262; x=1711113062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XKSoPbdfR84sDrdE++VJn8/NPQXAflULbgNG03R7vOs=;
- b=atZchh4oiajVyyjjNYzsEr582si7DREMC0BORHzZvKgYiOOpO96teAPL04sJ8JBgFB
- yaeeIEZBLWJBOemvBCODirfHe0aFkJMtWakx0KN9oEiyJiZCkU5opR9kRZRK3vNJOihc
- G5JlV/sMYKSjUKVDAakIahY4HFyD6hq+5fUeQZwEG7ycKjZ+HnBar+tNYB0iHks/auCf
- up4FCtK3FIKbyskZ88Baw6s8ffc4iWVQHffIxeNLVoDT+wx2H2YtggCLdxopRgtLi+iv
- 9s2HwhJEiseQhUzSO36/3oAWVlSqzD/b9s3k03zkf7fuLpcbtJyheuWPawfVQhh26YyB
- 6tOA==
-X-Gm-Message-State: AOJu0YyzbGrwGr53DX8HcUqVfImSijciP4Kq3GKTtmPCh4wM4t4OLMOr
- pKcseIHKaESa7iqJS1w3jzS+9J+DrC8yi/3eSlhoYmITgJeg17qVnmGHOG/9matPWyC65Z1tfHw
- h
-X-Google-Smtp-Source: AGHT+IHYyeLEfVVgN9kci+ZeRoPz5G6i50JiPnnqzD2jONHSLkszD0RljwqLECh5RRITNdvEpl0ANg==
-X-Received: by 2002:a17:906:5a95:b0:a46:74fe:9177 with SMTP id
- l21-20020a1709065a9500b00a4674fe9177mr3636958ejq.21.1710508255621; 
- Fri, 15 Mar 2024 06:10:55 -0700 (PDT)
+ bh=9q6xaVyoPJIMQfl186LF5IP9vgj5sXw3ui9Yz0YXC2Q=;
+ b=bxOEOBysOmNRDl6Hr+dCiHYGNwnxKk/veOg0SnX5HVGtfBmU03zObsUcLfJ7o84tYb
+ jRf2aLXFnJw1QjBnP3FdxQL0mIIYUpvs8znlFL6cV+7937KZD0F7pgEXZsrqMw5ucBPS
+ +vKNY9zh3+qz2KWCehcm50rrJ8LkNSAvhXiXo8fB9oUSlrUcd2u1s/v6b7A6zUGXZVT+
+ AUITwPMRbmB1FOAo+d6TOYvAZsZ9Q0gp4ZqTc02OPgY7d9ad2/fGLl4eM4EawHujZ9U8
+ y39I4J1jWkYt4lP3xqHURHNyZ/rRiklFMAktSq4AC09rk9GX/++QAuZ0/JLcrgVO/EDJ
+ HyFA==
+X-Gm-Message-State: AOJu0Ywk303jt0gu7O0AvDY4r1kySdDld22xgLFhat8ALICrPXIXpVoc
+ zZasMcfOkDEG2Mz998Ro9Py9XRAMYVY+pcVY36Sx7sBXJX2rKbwtC/eQwJCPMOsaVK4Cpnq3cEB
+ K
+X-Google-Smtp-Source: AGHT+IGug9mMTyD+ClS5FiGdRLYqtGhTbiwMx2zP8ulnJSipWbsuMSAlqPeuMtp7D26lqxqXlTB4Zw==
+X-Received: by 2002:a2e:a9a6:0:b0:2d2:65b9:b420 with SMTP id
+ x38-20020a2ea9a6000000b002d265b9b420mr4153813ljq.1.1710508262292; 
+ Fri, 15 Mar 2024 06:11:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.145.26])
  by smtp.gmail.com with ESMTPSA id
- sa15-20020a1709076d0f00b00a45bbeeea9asm1681047ejc.167.2024.03.15.06.10.53
+ d4-20020aa7d5c4000000b0056711540692sm1656538eds.79.2024.03.15.06.11.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Mar 2024 06:10:55 -0700 (PDT)
+ Fri, 15 Mar 2024 06:11:01 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
@@ -69,19 +69,20 @@ Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 15/21] target/arm: Use QMP
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Song Gao <gaosong@loongson.cn>
+Subject: [RFC PATCH-for-9.1 16/21] target/loongarch: Use QMP
  generic_query_cpu_definitions()
-Date: Fri, 15 Mar 2024 14:09:03 +0100
-Message-ID: <20240315130910.15750-16-philmd@linaro.org>
+Date: Fri, 15 Mar 2024 14:09:04 +0100
+Message-ID: <20240315130910.15750-17-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
 References: <20240315130910.15750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,34 +107,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/arm/arm-qmp-cmds.c | 25 ++-----------------------
- 1 file changed, 2 insertions(+), 23 deletions(-)
+ target/loongarch/loongarch-qmp-cmds.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index 3cc8cc738b..c5091e64ec 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -28,6 +28,7 @@
- #include "qapi/qobject-input-visitor.h"
+diff --git a/target/loongarch/loongarch-qmp-cmds.c b/target/loongarch/loongarch-qmp-cmds.c
+index 8721a5eb13..ef5aedc1cd 100644
+--- a/target/loongarch/loongarch-qmp-cmds.c
++++ b/target/loongarch/loongarch-qmp-cmds.c
+@@ -9,34 +9,15 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
  #include "qapi/qapi-commands-machine-target.h"
- #include "qapi/qapi-commands-misc-target.h"
 +#include "qapi/commands-target-compat.h"
+ #include "cpu.h"
  #include "qapi/qmp/qdict.h"
+ #include "qapi/qobject-input-visitor.h"
  #include "qom/qom-qobject.h"
  
-@@ -220,29 +221,7 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     return expansion_info;
- }
- 
--static void arm_cpu_add_definition(gpointer data, gpointer user_data)
+-static void loongarch_cpu_add_definition(gpointer data, gpointer user_data)
 -{
 -    ObjectClass *oc = data;
 -    CpuDefinitionInfoList **cpu_list = user_data;
--    CpuDefinitionInfo *info;
--    const char *typename;
+-    CpuDefinitionInfo *info = g_new0(CpuDefinitionInfo, 1);
+-    const char *typename = object_class_get_name(oc);
 -
--    typename = object_class_get_name(oc);
--    info = g_malloc0(sizeof(*info));
 -    info->name = cpu_model_from_type(typename);
 -    info->q_typename = g_strdup(typename);
 -
@@ -145,13 +142,15 @@ index 3cc8cc738b..c5091e64ec 100644
 -    CpuDefinitionInfoList *cpu_list = NULL;
 -    GSList *list;
 -
--    list = object_class_get_list(TYPE_ARM_CPU, false);
--    g_slist_foreach(list, arm_cpu_add_definition, &cpu_list);
+-    list = object_class_get_list(TYPE_LOONGARCH_CPU, false);
+-    g_slist_foreach(list, loongarch_cpu_add_definition, &cpu_list);
 -    g_slist_free(list);
 -
 -    return cpu_list;
 +    return generic_query_cpu_definitions(errp);
  }
+ 
+ static const char *cpu_model_advertised_features[] = {
 -- 
 2.41.0
 
