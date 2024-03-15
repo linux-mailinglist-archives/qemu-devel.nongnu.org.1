@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4C887CDE1
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:13:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC70C87CDDE
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:13:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7Ky-0000BT-Sl; Fri, 15 Mar 2024 09:11:04 -0400
+	id 1rl7L1-0000Fj-LW; Fri, 15 Mar 2024 09:11:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1rl7KI-0006nF-Mq
+ id 1rl7KK-0006ns-6u
  for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:24 -0400
 Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <sunilvl@ventanamicro.com>)
- id 1rl7K9-0007xN-Jm
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:21 -0400
+ id 1rl7KE-0007zW-0V
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:10:23 -0400
 Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so1215674b3a.2
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:10:12 -0700 (PDT)
+ d2e1a72fcca58-6e6cadfffdbso1802716b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710508210; x=1711113010; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1710508215; x=1711113015; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rLrHBMIvFW4XmoCMhvXju7BN+IFOvSPPXpZv8Qzl0AE=;
- b=FjsiYhaOOz1Y7EjCrVxJQ8uoRJRuFGW3ZL8Re+AsfE2qaviapXbn/OCHLL/LMHr9Zs
- MJ4gr9jHzPUGKxlk8TUFjxoBomiNQODL5lSS0ZbA0r5RWEDPrwcJoW2nAPTrMTqBTmpN
- yWAwezYJTjAtFOMmz32fA92h20hHVxtp9pTpioE++K8r21zroZJhLra39CMZiHFvjrUQ
- H0ajtAEwui4kYNtG20sgttY92sSxFiyUcDjRm3sbqVA1JOGmMZVfiRE89s/W7MkdCUhP
- Ic0LEjvmxE38wPaNGLEEE5EjmxEGbuiKZSnwxg1jZKTbAq2iVDfUuwKuENb1tPszkYZI
- +Azg==
+ bh=KQl+6L0VcZgA50SWnKjH1hfXBn+0RZFkMJcMmqNHbzY=;
+ b=U4fl/FuIfmhvfpd57CuEGSTBZPqomH+zH3R5OGh0AuCywg5JpaW2XO5EUpxzPiqf8y
+ YfzTra2+FBMWVM4CTmILQ3FXSfh2BF57zTF7N2xYfTXxsL3xGOSxVPWLeQI1IP6JM9RF
+ PkvpwAnKhA3pj8QhyIQZBCjMQ5zFRE2+N95l7lBSUcGmEJzTwNzu97XNF6Ch6GrHW8z5
+ jBlNwhj2pydouInDu6n9Dg4Dqn0ZL5CBwh8Z2Fp7nTcghiQ59KdDA5LCxA/nKkvWwAIM
+ peH+ncEN+XsbbF4rKQsBqggbkKZnr8xaY9VXlqAzlenJplZon3SqXFIAE3pdIeUOe8Fw
+ 9f3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508210; x=1711113010;
+ d=1e100.net; s=20230601; t=1710508215; x=1711113015;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rLrHBMIvFW4XmoCMhvXju7BN+IFOvSPPXpZv8Qzl0AE=;
- b=RikTG6tbTZlAXzbw/h0e3Zh5JtqUQbsTg/XhO+j61/uOefK+wAk+BqZ0JsG4AsNDk1
- jemdYuPn+VgTvRc1TWwGvLSk2B4rsH+or7Kj073/EyBjXnznH75LiZPP0HIl4qaZTll+
- 2AyiY834QcVTx/0uUaw1tpbuVCgqWR6uDk63L3qh7YOhWPcb7ZyXdLSMzUsWxzvx3Hv9
- 0mWOKNOytbnj66dAuIB4YDn9WNRPZalRcKtCTWM8j/RV7u5XMMyX1VB2tCHm6uNu0b/r
- rIxmJEwyP/ntrxSN0xtwf6JJ/qPP3obBn01TK7+CJp5Uk6rDnSwjZwgpeU2vzntbOr6o
- ardw==
-X-Gm-Message-State: AOJu0YzopkR/D/2olp4lbfeFnHec+7uRqyDMvnOf6zS3gfQJjZU2aqA4
- /TPxrvcO09MD2c8J/QzrAulj+1QYAHm//Rxx4CaF6Sp63REP2ccYEwFepT79Pj9/pJP/W5h+Bpt
- E
-X-Google-Smtp-Source: AGHT+IHObHc0Ahl0qj6J7KZfwd1HADuvDQ77aHsslrh5XiW6wo7BFk+HQiUOclQqf2aCK83ZbRrP/w==
-X-Received: by 2002:a05:6a20:1591:b0:1a0:e187:87c4 with SMTP id
- h17-20020a056a20159100b001a0e18787c4mr3772557pzj.38.1710508209727; 
- Fri, 15 Mar 2024 06:10:09 -0700 (PDT)
+ bh=KQl+6L0VcZgA50SWnKjH1hfXBn+0RZFkMJcMmqNHbzY=;
+ b=H18cDdURfmup4/QhjwJFQvJuh2T/OVDqOyAS1cMHkVWSHlaFRyukPZspWoYvQlD1l1
+ rS1P2n60WiaQYwB6K5AJzzOlukddIILKdL/8BrauYpM0KCKg4Bdw+2bURdv9Nx4+JKm5
+ WYRHwiI/ABJ8gyCf+b22LaqIiROpdNc2VOnxIrLWP8ZbF9YEXyX5vGH7Z5PuXs7ngXEK
+ Yq+zDbnK6ZnxF+6QQYhH3j7WmKJKkNh56R4jVUuxx5yM1AvzxbhoPIQmyqWjbeqKAtdT
+ x3mY3H+n3Ri/WFF8Gp85sXM5WKWo+9/+Kp22Vx1mPo7sZdHRCIIaLiOL/uJI6QyAPHPh
+ qGmw==
+X-Gm-Message-State: AOJu0Yzj8XzEmkritZlF7UBoc5dp2FT02r76CrvZ1TlzRcUzDPnZyhnR
+ PT4IAbjgKCAclnnCd5ZAfbKSEsJpiiCLmLiLl1yPUUJYEtS+Fy1ZWbO/fWPX4V1Z1y616Leh0jB
+ Y
+X-Google-Smtp-Source: AGHT+IEsZrFnzF0nSF1KB0XYo3jYzZt3uc4XUl0wYPF7n36Mll3laOGigFIGHPKuog3Ig9SRChTing==
+X-Received: by 2002:a05:6a20:8f24:b0:1a3:502d:cb1 with SMTP id
+ b36-20020a056a208f2400b001a3502d0cb1mr1429088pzk.1.1710508214724; 
+ Fri, 15 Mar 2024 06:10:14 -0700 (PDT)
 Received: from sunil-pc.Dlink ([106.51.184.12])
  by smtp.gmail.com with ESMTPSA id
- r3-20020a17090ad40300b0029c68206e2bsm2886663pju.0.2024.03.15.06.10.04
+ r3-20020a17090ad40300b0029c68206e2bsm2886663pju.0.2024.03.15.06.10.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 06:10:09 -0700 (PDT)
+ Fri, 15 Mar 2024 06:10:14 -0700 (PDT)
 From: Sunil V L <sunilvl@ventanamicro.com>
 To: qemu-devel@nongnu.org,
 	qemu-arm@nongnu.org,
@@ -74,9 +74,10 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Andrew Jones <ajones@ventanamicro.com>,
  Anup Patel <apatel@ventanamicro.com>, Haibo1 Xu <haibo1.xu@intel.com>,
  Sunil V L <sunilvl@ventanamicro.com>
-Subject: [PATCH 10/12] tests/data/acpi/rebuild-expected-aml.sh: Add RISC-V
-Date: Fri, 15 Mar 2024 18:39:22 +0530
-Message-Id: <20240315130924.2378849-8-sunilvl@ventanamicro.com>
+Subject: [PATCH 11/12] tests/data/acpi/virt/riscv64: Add expected ACPI tables
+ for RISC-V
+Date: Fri, 15 Mar 2024 18:39:23 +0530
+Message-Id: <20240315130924.2378849-9-sunilvl@ventanamicro.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20240315130924.2378849-1-sunilvl@ventanamicro.com>
 References: <20240315130924.2378849-1-sunilvl@ventanamicro.com>
@@ -106,36 +107,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update the list of supported architectures to include RISC-V.
+Add expected ACPI tables for RISC-V so that bios-table-test can be
+enabled for RISC-V.
 
 Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
 ---
- tests/data/acpi/rebuild-expected-aml.sh | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/data/acpi/virt/riscv64/APIC | Bin 0 -> 116 bytes
+ tests/data/acpi/virt/riscv64/BGRT | Bin 0 -> 56 bytes
+ tests/data/acpi/virt/riscv64/DSDT | Bin 0 -> 3518 bytes
+ tests/data/acpi/virt/riscv64/FACP | Bin 0 -> 276 bytes
+ tests/data/acpi/virt/riscv64/MCFG | Bin 0 -> 60 bytes
+ tests/data/acpi/virt/riscv64/RHCT | Bin 0 -> 314 bytes
+ tests/data/acpi/virt/riscv64/RSDP | Bin 0 -> 36 bytes
+ tests/data/acpi/virt/riscv64/SPCR | Bin 0 -> 80 bytes
+ tests/data/acpi/virt/riscv64/XSDT | Bin 0 -> 84 bytes
+ 9 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100755 tests/data/acpi/virt/riscv64/APIC
+ create mode 100755 tests/data/acpi/virt/riscv64/BGRT
+ create mode 100755 tests/data/acpi/virt/riscv64/DSDT
+ create mode 100755 tests/data/acpi/virt/riscv64/FACP
+ create mode 100755 tests/data/acpi/virt/riscv64/MCFG
+ create mode 100755 tests/data/acpi/virt/riscv64/RHCT
+ create mode 100755 tests/data/acpi/virt/riscv64/RSDP
+ create mode 100755 tests/data/acpi/virt/riscv64/SPCR
+ create mode 100755 tests/data/acpi/virt/riscv64/XSDT
 
-diff --git a/tests/data/acpi/rebuild-expected-aml.sh b/tests/data/acpi/rebuild-expected-aml.sh
-index dcf2e2f221..c1092fb8ba 100755
---- a/tests/data/acpi/rebuild-expected-aml.sh
-+++ b/tests/data/acpi/rebuild-expected-aml.sh
-@@ -12,7 +12,7 @@
- # This work is licensed under the terms of the GNU GPLv2.
- # See the COPYING.LIB file in the top-level directory.
- 
--qemu_arches="x86_64 aarch64"
-+qemu_arches="x86_64 aarch64 riscv64"
- 
- if [ ! -e "tests/qtest/bios-tables-test" ]; then
-     echo "Test: bios-tables-test is required! Run make check before this script."
-@@ -36,7 +36,8 @@ fi
- if [ -z "$qemu_bins" ]; then
-     echo "Only the following architectures are currently supported: $qemu_arches"
-     echo "None of these configured!"
--    echo "To fix, run configure --target-list=x86_64-softmmu,aarch64-softmmu"
-+    echo "To fix, run configure \
-+         --target-list=x86_64-softmmu,aarch64-softmmu,riscv64-softmmu"
-     exit 1;
- fi
- 
+diff --git a/tests/data/acpi/virt/riscv64/APIC b/tests/data/acpi/virt/riscv64/APIC
+new file mode 100755
+index 0000000000000000000000000000000000000000..66a25dfd2d6ea2b607c024722b2eab95873a01e9
+GIT binary patch
+literal 116
+zcmZ<^@N_O=U|?X|;^gn_5v<@85#X!<1dKp25F13pfP@Mo12P{Zj?R|`s)2!c7=s}J
+I#NvT*0o0BN0RR91
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/BGRT b/tests/data/acpi/virt/riscv64/BGRT
+new file mode 100755
+index 0000000000000000000000000000000000000000..dccf14cce4063dbfe18cd8a459aaa8b206d3b3f0
+GIT binary patch
+literal 56
+zcmZ>A4+^nhU|?XZ_Vf#J^-*wj@itNb0w$msh!zG)F#_2V3gY!3S{^7-3}gTR|5yhB
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/DSDT b/tests/data/acpi/virt/riscv64/DSDT
+new file mode 100755
+index 0000000000000000000000000000000000000000..0fb2d5e0e389541209b765d5092d0706f40298f6
+GIT binary patch
+literal 3518
+zcmZvf%WvaU6vnR;w@IBxlQexl(t(j!ppl%0(ryq<oOYV3X-%9`q=14{b;M9K6c~^O
+zgcx<fqhd2ti4B_~D)B!c1W2sdvE#L7!#}_>eCJ*}oI`D?w!iChKA+$9t$orAn%(bn
+zN+n)t?0eh6a^of6TgGN7rRbcFh1Tyc_k%{iceZVNuIr}z+pT7<?)fc<HI?okw3^tr
+z>)qm0&dr&dmZB`a{a^Ra*0&D5Eo1b;X8Qm}E3gQ<btjYVdtTkbz7rISPX6ODvMUs3
+zVE91w&KfCiza7@#@A>YkTOF1_DRa)WNl^t#{A^TNmZNji{btZCtt5&QPNDqU;E!+b
+zecnEQ^xc;~?0jvN=B?69B6sx0n@1<N?!0~c*1N~|jvlD2+E~Xu>-LMCh<kUhvyXCD
+z|GVk1+UV8=+`16nn$W3iZBaGE(t=R0Su8V)L_|(iti)M3i8v3Jc_g_<E!HC$=dr;&
+zZ0_+)tcM-v;WLjB?y(x{F%swTD)SiS9?!;ljK+DKGLIDZSc~;Y#d$nr9_i3y=NsQ^
+zu@zZ&*ReP}{EyK3th+T@*_*eqZ#4FX%O>b{iWO(USDtFAW3{YY{55g*p1P}!a8zWX
+z7lz;IPVBzpJS=7G%wV8y2Q62ba|`EHRm#%1lYm%>L=vK=N;x|_7+?*WxKL3R0`umY
+z&O>M<DHHxW7E8~>hKe$y(1g;N2-TU8l!<C|EEb%J4HacZp-Gd8P@M@$nW#v|VwsuP
+zP=$;-)Haz>@sOMoiwl`i1tW@cj+o4-cu3BPCB-VhD+4MD9hIDroD&Pl#Oi8OIy2%-
+zNlr-4iRFXLXr|LTGn$gL<b>p$V}cX!M^n3=p)tt`$vN>NG_kr`M{qil6Owag1ZPHY
+zW+W#h=gbPutl-Q_PDsv)?-Htwo@Y*Q<|HR1=gbSvyx`1BPDsu<E;z>p=eXpA<eYfp
+zv*(GAkEvZhm4f7i<eWvpSrnW_$qC6hOM<f`I7^Zfl5<W7&I!ReAvqyAXIXHT1!q}u
+zLUPVY!8s{7CnYB&=bRFpQ-X6!azb*>X~8)yIHx5iB<DoK!Jg-g;GB`1keqW?aLx+O
+zS;+~>Ip+lDoZy_3oRFMzUU1F}&UwiR$vGDU=Yrr|kera5b5U?E3eH8z3CTH^1m}|A
+zT#}rSoU<Z0D}u8kIUx;a@2q9hqcop+`Y3zu*6>5@qiM`L8Qmx@>rXnqyVu6bqy3;0
+zSfN$e$O$X-aop-gjFlN1TJ2C(VM8aZsGs9rPsDhcG3gaHcG3%d9rt=N#><R_Ugd1x
+zYt+>h-rEXOMpLn!a_)bcQwbVUYCt>d6Z~go(OKwiV=x$e6rJOWm8FJLZ)jL(gSOQ9
+z(=101Q%{N90rg{iGreXyIPiUy_PU*2Ro)uw?+2cJexkhQVfAu5b@3W?^1b$-wSOuL
+z8($pWumAYmuXoN*92)^EIHqx|osu9QI;oM>2efl4w7)DozPM|Bh$~ecUA>%od=bT&
+z;R0PerC=JrI{7MZ#_1;2tCR9A{Hkc%mp4o`zpVZISFrki`_c5@?b)Ba_T|{c>*}hQ
+pv@F`;cR<_jYzAT_(hnb+<eKANn;)0v1k>|8pBtRxTSGr9{slF`>K_0A
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/FACP b/tests/data/acpi/virt/riscv64/FACP
+new file mode 100755
+index 0000000000000000000000000000000000000000..a5276b65ea8ce46cc9b40d96d98f0669c9089ed4
+GIT binary patch
+literal 276
+zcmZ>BbPf<<WME(ucJg=j2v%^42yj*a0-z8Bhz+8t3k1-OV?`GjD1M-;Zz#xa0OIBc
+A0RR91
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/MCFG b/tests/data/acpi/virt/riscv64/MCFG
+new file mode 100755
+index 0000000000000000000000000000000000000000..37eb923a9320f5573c0c2cdb90bd98409cc7eb6f
+GIT binary patch
+literal 60
+rcmeZuc5}C3U|?Y6aq@Te2v%^42yj*a0!E-1hz+8VfB}^KA4CHH3`GY4
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/RHCT b/tests/data/acpi/virt/riscv64/RHCT
+new file mode 100755
+index 0000000000000000000000000000000000000000..beaa961bbf0f0486c0dee25f543377c928354f84
+GIT binary patch
+literal 314
+zcmXAlu}%Xq42FGxD#XNyI`tt=C&buWx`A2-wkXNvbP-K1O46&8iKjrk6)SI3ey5h~
+z@3-SPa`wCa{iPvl)b_RC9X8vKw|)adiC8n)zP^7d?+~A>`lE(^DK1@Wog4=(iq&1K
+z7;1J`gewX|OE=3Z>{xM3wM)ljIQKa+635YaZ7jrOeGc+eJEnks*|jl=GEUBVQ8WhX
+zK@<flJgso_nMF!k2aE&flg}m^e@2oQd6bm~m(n5!gJ?a<U{EgOALs#2D_Y&qJuA9g
+Pp1|9>GjINg;u`)Bd);9H
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/RSDP b/tests/data/acpi/virt/riscv64/RSDP
+new file mode 100755
+index 0000000000000000000000000000000000000000..55054f8730c389d0d7eba90c24a1dae6d1283b90
+GIT binary patch
+literal 36
+ncmWFvc2Nij2~zmy<nQbetiV+A;QxOW1_p)~KpIFfhygJG?v)Gy
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/SPCR b/tests/data/acpi/virt/riscv64/SPCR
+new file mode 100755
+index 0000000000000000000000000000000000000000..4da9daf65f71a13ac2b488d4e9728f194b569a43
+GIT binary patch
+literal 80
+zcmWFza1IJ!U|?X{>E!S15v<@85#X!<1dKp25F12;fdT`FDF9*%FmM4$c8~z`e;@#f
+G!2kgKJqrN<
+
+literal 0
+HcmV?d00001
+
+diff --git a/tests/data/acpi/virt/riscv64/XSDT b/tests/data/acpi/virt/riscv64/XSDT
+new file mode 100755
+index 0000000000000000000000000000000000000000..c69474889664d72d075419c0a1dcf1d82ec44268
+GIT binary patch
+literal 84
+zcmazDb_oe#U|?VrcJg=j2v%^42yj*a0!E-1h!zG)F&y~+AIN23*Z`#$K<Nokx&cZT
+GKxhCTIu!u`
+
+literal 0
+HcmV?d00001
+
 -- 
 2.40.1
 
