@@ -2,62 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4CB87D030
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:25:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C617E87D01F
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 16:24:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl9P4-0007ig-OK; Fri, 15 Mar 2024 11:23:26 -0400
+	id 1rl9P3-0007iP-0i; Fri, 15 Mar 2024 11:23:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Oz-0007eP-An
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Oz-0007gZ-KA
  for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Oq-00021X-Bn
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rl9Or-00021o-3e
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 11:23:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710516191;
+ s=mimecast20190719; t=1710516192;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LZgZgYfHTFdicpTgNsXXKGTnpGjPlk1Db3JCkh8LiHc=;
- b=D44LNbwRh/k4YRYnimFOCeDwc78VqHBIsKBsAnXmFo/eGsuYHrtd/TfhJFm5bqGwb2YsMF
- XWfQhpuQxkJJJEQ9DcVo1jnuyileaR2hU1uz8Qw7qPjSfWMFZ8qvZA+0KW6EjLGW+UW/H6
- YZkxOt8dLzhw5c7pdkKVj1AuybT3Nzs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-NGBzLZxuNSS_k_fF07X5BQ-1; Fri, 15 Mar 2024 11:23:07 -0400
-X-MC-Unique: NGBzLZxuNSS_k_fF07X5BQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=6LvfBDv/6ZZ+KOH7rQEl5kQgryl3nbbQrXJ8bWzrxik=;
+ b=bz8WFfPjV20nci3/VuYDB7wOVBYOXRlujCZFBIKyGfbR8o6zVOUGYy2M9CTJnjYHKYDd41
+ fPI6Jk/+Bm4HZ/4A1cSGUNkIMMWqdmrzf/KX5Fyw+8+6EA4pE8Ga2uY1ZaW8AE0LhFhv+3
+ IFP+Gn/487Y4UQluvmbUhNMnx+XrtLk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-484-rfGRLOLOPfGR6Fm-cCvGVQ-1; Fri,
+ 15 Mar 2024 11:23:05 -0400
+X-MC-Unique: rfGRLOLOPfGR6Fm-cCvGVQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 327758007B8;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F4933CBD533;
  Fri, 15 Mar 2024 15:23:05 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 123391121306;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3CCC1492BCC;
  Fri, 15 Mar 2024 15:23:05 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 128F721E682E; Fri, 15 Mar 2024 16:23:02 +0100 (CET)
+ id 1570621E683A; Fri, 15 Mar 2024 16:23:02 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: jsnow@redhat.com,
 	peter.maydell@linaro.org,
 	michael.roth@amd.com
-Subject: [PATCH v5 18/25] qapi/schema: assert inner type of QAPISchemaVariants
- in check_clash()
-Date: Fri, 15 Mar 2024 16:22:54 +0100
-Message-ID: <20240315152301.3621858-19-armbru@redhat.com>
+Subject: [PATCH v5 19/25] qapi/parser: demote QAPIExpression to Dict[str, Any]
+Date: Fri, 15 Mar 2024 16:22:55 +0100
+Message-ID: <20240315152301.3621858-20-armbru@redhat.com>
 In-Reply-To: <20240315152301.3621858-1-armbru@redhat.com>
 References: <20240315152301.3621858-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -29
@@ -85,40 +84,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-QAPISchemaVariant's "variants" field is typed as
-List[QAPISchemaVariant], where the typing for QAPISchemaVariant allows
-its type field to be any QAPISchemaType.
+Dict[str, object] is a stricter type, but with the way that code is
+currently arranged, it is infeasible to enforce this strictness.
 
-However, QAPISchemaVariant expects that all of its variants contain the
-narrower QAPISchemaObjectType. This relationship is enforced at runtime
-in QAPISchemaVariants.check(). This relationship is not embedded in the
-type system though, so QAPISchemaVariants.check_clash() needs to
-re-assert this property in order to call
-QAPISchemaVariant.type.check_clash().
+In particular, although expr.py's entire raison d'être is normalization
+and type-checking of QAPI Expressions, that type information is not
+"remembered" in any meaningful way by mypy because each individual
+expression is not downcast to a specific expression type that holds all
+the details of each expression's unique form.
+
+As a result, all of the code in schema.py that deals with actually
+creating type-safe specialized structures has no guarantee (myopically)
+that the data it is being passed is correct.
+
+There are two ways to solve this:
+
+(1) Re-assert that the incoming data is in the shape we expect it to be, or
+(2) Disable type checking for this data.
+
+(1) is appealing to my sense of strictness, but I gotta concede that it
+is asinine to re-check the shape of a QAPIExpression in schema.py when
+expr.py has just completed that work at length. The duplication of code
+and the nightmare thought of needing to update both locations if and
+when we change the shape of these structures makes me extremely
+reluctant to go down this route.
+
+(2) allows us the chance to miss updating types in the case that types
+are updated in expr.py, but it *is* an awful lot simpler and,
+importantly, gets us closer to type checking schema.py *at
+all*. Something is better than nothing, I'd argue.
+
+So, do the simpler dumber thing and worry about future strictness
+improvements later.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- scripts/qapi/schema.py | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/qapi/parser.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index 9c138badb0..177bfa0d11 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -716,7 +716,10 @@ def check(self, schema, seen):
-     def check_clash(self, info, seen):
-         for v in self.variants:
-             # Reset seen map for each variant, since qapi names from one
--            # branch do not affect another branch
-+            # branch do not affect another branch.
-+            #
-+            # v.type's typing is enforced in check() above.
-+            assert isinstance(v.type, QAPISchemaObjectType)
-             v.type.check_clash(info, dict(seen))
+diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
+index ec4ebef4e3..2f3c704fa2 100644
+--- a/scripts/qapi/parser.py
++++ b/scripts/qapi/parser.py
+@@ -19,6 +19,7 @@
+ import re
+ from typing import (
+     TYPE_CHECKING,
++    Any,
+     Dict,
+     List,
+     Mapping,
+@@ -43,7 +44,7 @@
+ _ExprValue = Union[List[object], Dict[str, object], str, bool]
  
  
+-class QAPIExpression(Dict[str, object]):
++class QAPIExpression(Dict[str, Any]):
+     # pylint: disable=too-few-public-methods
+     def __init__(self,
+                  data: Mapping[str, object],
 -- 
 2.44.0
 
