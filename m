@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA60387CDC8
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C563987CDD3
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:11:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7Jh-0005kx-Mf; Fri, 15 Mar 2024 09:09:45 -0400
+	id 1rl7Jo-0005wf-Kj; Fri, 15 Mar 2024 09:09:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7JS-0005cT-E5
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:31 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7JY-0005e6-AS
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:40 -0400
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7JL-0007Yl-9H
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:25 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-5689b7e8387so2720653a12.2
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7JV-0007bn-R6
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:36 -0400
+Received: by mail-lj1-x22b.google.com with SMTP id
+ 38308e7fff4ca-2d228a132acso28949641fa.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710508161; x=1711112961; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710508169; x=1711112969; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NCfHsLOktJnJk/FrjkYW88SQD28CKLAyjY7rSKM5rcw=;
- b=ODJzEgTewYBjA1vbFoVLXqCZ/dmX12nggcch+wbY2JIpDZ7la337XjSWIPaem4ny5X
- GjBb4zdyTaBRk8GBL4lcjQHisbgN+KzSLDGEL8unHJ4/WoJJwfKbFYGgui6i+GlcsoGd
- mJtsgMnOXDOysu8GsEcvziGvAbQt7oHQah5A0P2x99BpnJUb6VIhRcdsUv25HgIEd7by
- FN+OdZmERQcQnCJjHSfre4uYTEAdGtK+37jzUaUnxnEu7M8E0HZM/r8OJX2djlpF6V1c
- MzcSmoyOqp92pk2mdGlZf0pnPFiLFRGwv7vivJy7qGwhYe84ztuIs26nslSLADNrrUdf
- cKnQ==
+ bh=38DwNqP/w4iyE7cU/eTej+AEZTmllcOjbkkM5XAd0Sw=;
+ b=XB5H0U5l83wIbjQjpuYrC5o12zfap5fgJx3f06O+MSzwOlneioTk6FoIpJ4t2tDHN6
+ 8t+1D5KldGYyL1Nm7TIUFScpsoHQj2+miWpenx2W8ytiCpcs++dukYTLuNdXpNCz8tJZ
+ 5aB5zoFCSHB/f7ah2CmUk0ZFEYxlRpOMp+jd6fqH9S+/Ea3rk6m1qd2g/1h50qyRmmIy
+ Zdzwgk5doM//rWBzrUkHlquT7/eexJnaT+NaN5BgJ7vEdZr6Ly5fcxPTkRvUvOah8ARC
+ 2L8h7GCTyL6oorUJ3ceF9qnT4Pu3tz0CeNwW6uHfRqIlY0vqzOih5we19mXj2jIMqai6
+ nsEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508161; x=1711112961;
+ d=1e100.net; s=20230601; t=1710508169; x=1711112969;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NCfHsLOktJnJk/FrjkYW88SQD28CKLAyjY7rSKM5rcw=;
- b=mzmn1h/ot9nlqeHtGHXGxvXOQdk8hAT37N0RV3nGf6GxnlFch47nmIjCYxyJGPZ1yq
- xluKHHUeekSLgFAUb4b5M9LemAJkuwFykzxJY9/Tlauid3z4QNVRweYBxc3TroHSY0we
- np2gpNcC6LCV78INhMPFf6HcGMz6B9XRvoSNjs8C/qQ2Y06lm7N2ocqx/iEz0mYCC6Ty
- 7vvfzw5IekzHHXqHlv0Km9Jh6fHfJjf1fl58kM4vQWG0au5CHbZVsfXYeoFSmCPkwyvO
- 8Lp0HXWxNvjc3ME0tObm90FHDPkcQR7LUz4Wqp+agADQGhOZQam+y/SrWXyK/W82KHyn
- hnAw==
-X-Gm-Message-State: AOJu0YxiBhv21HFJbmldzmib81P+MjNv7lwM532P831C86N6Lqz3UcKZ
- YGXLHTVktchtPC3XxRafhAhy8Z6R9QfQs4bUcmsks135yqlb6drftXnRlNzRsSsNwX5+MsNbdw2
- z
-X-Google-Smtp-Source: AGHT+IEIqbu+dkyYORdlV0Gte9UybiujX61BXzptaCyYsWEUuL7ULvFX0eVwlBjaCfc67LjfUoRRVg==
-X-Received: by 2002:a17:906:360a:b0:a46:9a13:362c with SMTP id
- q10-20020a170906360a00b00a469a13362cmr291836ejb.52.1710508160915; 
- Fri, 15 Mar 2024 06:09:20 -0700 (PDT)
+ bh=38DwNqP/w4iyE7cU/eTej+AEZTmllcOjbkkM5XAd0Sw=;
+ b=PuSfKsenRCYK65/5vM4h7+c0+fhY9PxaLdFFNMax1a3X4hwE4CFfQeXkRmCvacbVd6
+ C6dn8tTJLLnAQLhOr1Dk7HHzg0Sdfg88iqYSzu/5UxvAjvxBVBFjoOi5dJRPso3cS0yx
+ 6g6y/1+1/l+XXNs2ziUf1MJLOfxLn0ppS0mnih62rxhvCfixw4J/17/qqGbicN0mqmsK
+ A8E/2K5vf9qhsAgiZ2usDiMLOgX3qfFCkWZc2lSzNqLUkf10tTGq0u1BPvLJA3fZr/fZ
+ i9GetKZH4q0kZNJbvf4yVxmRv6CVyQbN7IXzciie+MZEh2bb0knqmETOcs0bf3qeh87J
+ W9KQ==
+X-Gm-Message-State: AOJu0YzOaPB2EIkR5ImK9XCLI7jjG+6TVpW7nTsdkZnA+21sa5yVDHtR
+ TG8UGIOSVUvfSHUtSU6VJAjDuxAlpHRNpR0RhfDNe2yV0wkWXtwfVwhAyo2fGSq0G6dHfrkTdY8
+ 9
+X-Google-Smtp-Source: AGHT+IGUqlgwpBs0iVH+nA4YB8mpndxs+sUNctHnYtgA2NyEqcGCBN6lT+1elp7U+umu/qoGxw6VQg==
+X-Received: by 2002:a2e:9850:0:b0:2d4:7829:4d13 with SMTP id
+ e16-20020a2e9850000000b002d478294d13mr2977270ljj.50.1710508167582; 
+ Fri, 15 Mar 2024 06:09:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.145.26])
  by smtp.gmail.com with ESMTPSA id
- g12-20020a17090613cc00b00a45ff1fe8dasm1693781ejc.115.2024.03.15.06.09.18
+ qs28-20020a170906459c00b00a45efdfdd1esm1685202ejc.40.2024.03.15.06.09.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 15 Mar 2024 06:09:20 -0700 (PDT)
+ Fri, 15 Mar 2024 06:09:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
@@ -69,19 +69,22 @@ Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
  Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
  Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 01/21] target/i386: Declare CPU QOM types using
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: [PATCH-for-9.1 02/21] target/mips: Declare CPU QOM types using
  DEFINE_TYPES() macro
-Date: Fri, 15 Mar 2024 14:08:49 +0100
-Message-ID: <20240315130910.15750-2-philmd@linaro.org>
+Date: Fri, 15 Mar 2024 14:08:50 +0100
+Message-ID: <20240315130910.15750-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
 References: <20240315130910.15750-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -114,96 +117,54 @@ the type_register_static() to ease further reviews.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Message-Id: <20231013140116.255-14-philmd@linaro.org>
+Message-Id: <20231013140116.255-15-philmd@linaro.org>
 ---
- target/i386/cpu.c | 50 ++++++++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 27 deletions(-)
+ target/mips/cpu.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9a210d8d92..ebf555f50f 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -4991,13 +4991,6 @@ static void max_x86_cpu_initfn(Object *obj)
-                             &error_abort);
+diff --git a/target/mips/cpu.c b/target/mips/cpu.c
+index 8d8f690a53..c096d97fe3 100644
+--- a/target/mips/cpu.c
++++ b/target/mips/cpu.c
+@@ -594,17 +594,21 @@ static void mips_cpu_class_init(ObjectClass *c, void *data)
+ #endif /* CONFIG_TCG */
  }
  
--static const TypeInfo max_x86_cpu_type_info = {
--    .name = X86_CPU_TYPE_NAME("max"),
--    .parent = TYPE_X86_CPU,
--    .instance_init = max_x86_cpu_initfn,
--    .class_init = max_x86_cpu_class_init,
--};
--
- static char *feature_word_description(FeatureWordInfo *f, uint32_t bit)
- {
-     assert(f->type == CPUID_FEATURE_WORD || f->type == MSR_FEATURE_WORD);
-@@ -8041,19 +8034,6 @@ static void x86_cpu_common_class_init(ObjectClass *oc, void *data)
-     }
- }
- 
--static const TypeInfo x86_cpu_type_info = {
--    .name = TYPE_X86_CPU,
+-static const TypeInfo mips_cpu_type_info = {
+-    .name = TYPE_MIPS_CPU,
 -    .parent = TYPE_CPU,
--    .instance_size = sizeof(X86CPU),
--    .instance_align = __alignof(X86CPU),
--    .instance_init = x86_cpu_initfn,
--    .instance_post_init = x86_cpu_post_initfn,
--
+-    .instance_size = sizeof(MIPSCPU),
+-    .instance_align = __alignof(MIPSCPU),
+-    .instance_init = mips_cpu_initfn,
 -    .abstract = true,
--    .class_size = sizeof(X86CPUClass),
--    .class_init = x86_cpu_common_class_init,
--};
--
- /* "base" CPU model, used by query-cpu-model-expansion */
- static void x86_cpu_base_class_init(ObjectClass *oc, void *data)
- {
-@@ -8065,22 +8045,38 @@ static void x86_cpu_base_class_init(ObjectClass *oc, void *data)
-     xcc->ordering = 8;
- }
- 
--static const TypeInfo x86_base_cpu_type_info = {
--        .name = X86_CPU_TYPE_NAME("base"),
--        .parent = TYPE_X86_CPU,
--        .class_init = x86_cpu_base_class_init,
-+static const TypeInfo x86_cpu_types[] = {
+-    .class_size = sizeof(MIPSCPUClass),
+-    .class_init = mips_cpu_class_init,
++static const TypeInfo mips_cpu_types[] = {
 +    {
-+        .name           = TYPE_X86_CPU,
++        .name           = TYPE_MIPS_CPU,
 +        .parent         = TYPE_CPU,
++        .instance_size  = sizeof(MIPSCPU),
++        .instance_align = __alignof(MIPSCPU),
++        .instance_init  = mips_cpu_initfn,
 +        .abstract       = true,
-+        .instance_size  = sizeof(X86CPU),
-+        .instance_align = __alignof(X86CPU),
-+        .instance_init  = x86_cpu_initfn,
-+        .instance_post_init = x86_cpu_post_initfn,
-+        .class_size     = sizeof(X86CPUClass),
-+        .class_init     = x86_cpu_common_class_init,
-+    }, {
-+        .name           = X86_CPU_TYPE_NAME("base"),
-+        .parent         = TYPE_X86_CPU,
-+        .class_init     = x86_cpu_base_class_init,
-+    }, {
-+        .name           = X86_CPU_TYPE_NAME("max"),
-+        .parent         = TYPE_X86_CPU,
-+        .instance_init  = max_x86_cpu_initfn,
-+        .class_init     = max_x86_cpu_class_init,
++        .class_size     = sizeof(MIPSCPUClass),
++        .class_init     = mips_cpu_class_init,
 +    }
  };
  
-+DEFINE_TYPES(x86_cpu_types)
++DEFINE_TYPES(mips_cpu_types)
 +
- static void x86_cpu_register_types(void)
+ static void mips_cpu_cpudef_class_init(ObjectClass *oc, void *data)
+ {
+     MIPSCPUClass *mcc = MIPS_CPU_CLASS(oc);
+@@ -629,7 +633,6 @@ static void mips_cpu_register_types(void)
  {
      int i;
  
--    type_register_static(&x86_cpu_type_info);
-     for (i = 0; i < ARRAY_SIZE(builtin_x86_defs); i++) {
-         x86_register_cpudef_types(&builtin_x86_defs[i]);
+-    type_register_static(&mips_cpu_type_info);
+     for (i = 0; i < mips_defs_number; i++) {
+         mips_register_cpudef_type(&mips_defs[i]);
      }
--    type_register_static(&max_x86_cpu_type_info);
--    type_register_static(&x86_base_cpu_type_info);
- }
- 
- type_init(x86_cpu_register_types)
 -- 
 2.41.0
 
