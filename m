@@ -2,79 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EB887CD3B
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 13:27:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C9687CC3F
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 12:27:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl6dm-0008O8-Ay; Fri, 15 Mar 2024 08:26:26 -0400
+	id 1rl5hV-000695-2m; Fri, 15 Mar 2024 07:26:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ff@shokubai.tech>) id 1rl5eE-0005TG-MR
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:22:52 -0400
-Received: from 2.mo619.mail-out.ovh.net ([178.33.254.187])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ff@shokubai.tech>) id 1rl5e9-0000N0-VW
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:22:49 -0400
-Received: from DAG2EX1.indiv5.local (unknown [10.111.182.163])
- by mo619.mail-out.ovh.net (Postfix) with ESMTPS id 4Tx20S6Txdz1B5q;
- Fri, 15 Mar 2024 11:22:32 +0000 (UTC)
-Received: from DAG2EX1.indiv5.local (172.16.2.21) by DAG2EX1.indiv5.local
- (172.16.2.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.37; Fri, 15 Mar
- 2024 12:22:31 +0100
-Received: from DAG2EX1.indiv5.local ([fe80::8db3:f8fe:2645:753b]) by
- DAG2EX1.indiv5.local ([fe80::8db3:f8fe:2645:753b%6]) with mapi id
- 15.01.2507.037; Fri, 15 Mar 2024 12:22:31 +0100
-From: ff <ff@shokubai.tech>
-To: =?utf-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Mark Burton
- <mburton@qti.qualcomm.com>, Palmer Dabbelt <palmer@dabbelt.com>, "Alistair
- Francis" <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
- "Edgar E.Iglesias" <edgar.iglesias@gmail.com>, Stefano Stabellini
- <sstabellini@kernel.org>, =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?=
- <philmd@linaro.org>, Don Harbin <don.harbin@linaro.org>, "Alessandro Di
- Federico" <ale@rev.ng>, Anton Johansson <anjo@rev.ng>, Song Gao
- <gaosong@loongson.cn>, Michael Rolnik <mrolnik@gmail.com>, Brian Cain
- <bcain@quicinc.com>, Christoph Muellner <christoph.muellner@vrull.eu>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>, Max Filippov
- <jcmvbkbc@gmail.com>, Francisco Iglesias <francisco.iglesias@amd.com>
-Subject: Re: Any interest in the QEMU community attending DVCon Europe October
- 2024?
-Thread-Topic: Any interest in the QEMU community attending DVCon Europe
- October 2024?
-Thread-Index: AQHabxTmtvFdRAal3UOLjdxfiBNTJbE4t/o3
-Date: Fri, 15 Mar 2024 11:22:31 +0000
-Message-ID: <9FF2104A-DF54-4475-99CD-0BCAA444F1C7@shokubai.tech>
-References: <8734t4wuco.fsf@draig.linaro.org>
-In-Reply-To: <8734t4wuco.fsf@draig.linaro.org>
-Accept-Language: fr-FR, en-US
-Content-Language: fr-FR
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1rl5hD-000642-3E
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:25:56 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1rl5hA-0000xC-07
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 07:25:54 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1def89f0cfdso1420445ad.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 04:25:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1710501948; x=1711106748; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9D1A+47M8HZ4rgmE3RGvdpACQZfP2AsPr6UkrnISCPc=;
+ b=JE2coyS5PoQSzw5BTvIrWX7s5W1QCBp0+VZ9F5/H1/xrJfc7NH+67MfJfHOe55rev+
+ Am+6i1UCoox24XfG//8gzXZXWr082BMLaPSIdNhMKxtCEDj5y+5dx6vwUuED+TCoatN+
+ FNBOoojBrhpiN3C8iI97vsRDRrAA8UkYv5HxI+UvuzQdNy4Vwa/35b8+l2lUgH0RI5mB
+ vko2O2jmroGR/K+8540E0NRd48rxpFe7iVeaZbtO25MUwoaxuWvE9IQwfqgtlGXqNY8t
+ soKSYs2MtWZA0Zti+UmtWXDfhT9S7VlPpNvQt/nB5J6SkH1KcQvpto3PkyxnnvJCufE8
+ SkHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710501948; x=1711106748;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9D1A+47M8HZ4rgmE3RGvdpACQZfP2AsPr6UkrnISCPc=;
+ b=KxUGOp7BaAAwLw5w2gaDBo6gX5sHEwGbDyRxkvcmYZ2uUFprnBpRUG4x8SsIhZqf3l
+ 2n0W2eLpladivfQgNgi9stpL/CLxKd+xD8NenAVhIg7YOAsIKaKu8uTFVmjL3yT3tg6w
+ zrv3pwRsiOgdhTZlRojljIpNSX/fR4gdkrUTabxnANZqCeV5qxjVyRz3vk8oeYOOjhqP
+ XuIuAT0DuXzgB7uO81eJb43B8wIJDRFsu1IiNZ7GoeEiwIsNQskmvYThV7JIW8ECDXE7
+ +nk+6WgkKX1bMune39sVyiv7N//91jLf/g8gN7hRhe1X0tvKpb38fNGpn0IV258P6Yhr
+ 2Xwg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXM5H0GHJ5JvWanZeyj+vx+iWyHIZjo9w5GeAJU2LieqQ9N6pFgas0zqVJ5kW1ndIZOSshU7bW9UtOMQZbMOazGu/kK6xI=
+X-Gm-Message-State: AOJu0YzkY8CQsOXqduu3vB1JKvzCliwa7x0NatYqM24ndl16LVJm7Snb
+ bkfFLSuyn4KkVqLRtcL8fYGXmITfeuftIXkxeZ3wHqNkALX/6IsW9wvnf9y8WHc=
+X-Google-Smtp-Source: AGHT+IFoyHnXZ6rKqjRtFi46/zItbJ8LBZKtMVFyiTTAVKACSwiC06Dmm0D0Vw/7eMdfEbJ5Tf6WyQ==
+X-Received: by 2002:a17:902:bcc2:b0:1dd:8ed0:59d0 with SMTP id
+ o2-20020a170902bcc200b001dd8ed059d0mr5274111pls.17.1710501948340; 
+ Fri, 15 Mar 2024 04:25:48 -0700 (PDT)
+Received: from [100.64.0.1] ([136.226.240.163])
+ by smtp.gmail.com with ESMTPSA id
+ j1-20020a170902c3c100b001ddb57a4dffsm3555571plj.132.2024.03.15.04.25.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 15 Mar 2024 04:25:47 -0700 (PDT)
+Message-ID: <41084cbb-bb01-4dbc-9334-01067eb8550a@sifive.com>
+Date: Fri, 15 Mar 2024 19:25:39 +0800
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; d=shokubai.tech; s=ovhex1078890-selector1; 
- c=relaxed/relaxed; t=1710501752; h=from:to:subject:date;
- bh=WpbzGZ+BKEsbU7Kmi9sVPInkwue4zko+FQv46RMabzw=;
- b=ry6BtBreaMYSGDqcDN40udW/jPV9dInQtH0FvqKEVSD/2kUlfC5ry42ISow0v6YJxrGEwTvQBcKZEg+BebbsAHATNuEJqasTWEzF9GrxL09agMUldNCLwgPch3xA0TR8xu6hmHR/ozlZJr4V+ld4NN7L6EFf/qnBsF9LsQEz4ZbXJHyW/xVseY7mVNmR35klwA4X89E2+2JZbGAKSgoloWHfTes2651Oxfuij+9/XcDAKfQ8uzJ8r0PxyIxbJ8X6XKvGnhAtvHwCGLbuGXG8pJgxvcN32bRTrc9stb6LI1HziiRVefVAJsG4iNJfYPzgO+SPyrLMZyvGf8DlC4lRhQ==
-X-Ovh-Tracer-Id: 3421046868173045490
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrjeelgddviecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufhtfffkfhgjtgfgggesthgsmhdttddtjeenucfhrhhomhepfhhfuceofhhfsehshhhokhhusggrihdrthgvtghhqeenucggtffrrghtthgvrhhnpeeftdehteeifeefueeitdeijeeggefflefghffhtdfhhfelvdeghfeffeefvedvieenucffohhmrghinhepughvtghonhdqvghurhhophgvrdhorhhgnecukfhppeduvdejrddtrddtrddunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehffhesshhhohhkuhgsrghirdhtvggthhdpnhgspghrtghpthhtohepudelpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehmsghurhhtohhnsehqthhirdhquhgrlhgtohhmmhdrtghomhdprhgtphhtthhopehprghlmhgvrhesuggrsggsvghlthdrtghomhdprhgtphhtthhopegrlhhishhtrghirhdrfhhrrghntghishesfigutgdrtghomhdprhgtphhtthhopegsihhnrdhmvghnghesfihinhgurhhivhgvrhdrtghomhdprhgtphhtthhopegvughgrghrrdhighhlvghsihgrshesghhmrghilhdrtghomhdprhgtphhtth
- hopehsshhtrggsvghllhhinhhisehkvghrnhgvlhdrohhrgh
-Received-SPF: pass client-ip=178.33.254.187; envelope-from=ff@shokubai.tech;
- helo=2.mo619.mail-out.ovh.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for 9.0 v15 05/10] target/riscv: always clear vstart for
+ ldst_whole insns
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ richard.henderson@linaro.org
+References: <20240314175704.478276-1-dbarboza@ventanamicro.com>
+ <20240314175704.478276-6-dbarboza@ventanamicro.com>
+From: Max Chou <max.chou@sifive.com>
+In-Reply-To: <20240314175704.478276-6-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=max.chou@sifive.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 15 Mar 2024 08:26:12 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,57 +99,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-DQoNCj4gTGUgNSBtYXJzIDIwMjQgw6AgMTY6NTAsIEFsZXggQmVubsOpZSA8YWxleC5iZW5uZWVA
-bGluYXJvLm9yZz4gYSDDqWNyaXQgOg0KPiANCj4g77u/DQo+IEhpLA0KPiANCj4gT3ZlciByZWNl
-bnQgeWVhcnMgdGhlcmUgaGFzIGJlZW4gYSBwdXNoIHRvIG1ha2UgUUVNVSBtb3JlIGZsZXhpYmxl
-IGZvcg0KPiBFREEgdHlwZSBhcHBsaWNhdGlvbnMuIEFzIGxvbmcgdGltZSBkZXZlbG9wZXJzIGtu
-b3cgdGhlcmUgYXJlIGEgbnVtYmVyDQo+IG9mIGRvd25zdHJlYW0gZm9ya3Mgb2YgUUVNVSB3aGlj
-aCBoYXZlIHRoZWlyIG93biBzb2x1dGlvbnMgZm9yIG1vZGVsbGluZw0KPiBoZXRlcm9nZW5lb3Vz
-IHN5c3RlbXMgYW5kIGludGVncmF0aW5nIHdpdGggaGFyZHdhcmUgbW9kZWxzLiBUaGUgd29yayBi
-eQ0KPiBQaGlsaXBwZSwgQW50b24gYW5kIG90aGVycyB0byBidWlsZCBhIHNpbmdsZSBiaW5hcnkg
-d2l0aCBjb21wb3NhYmxlDQo+IGhhcmR3YXJlIGlzIGFpbWluZyBhdCBsZWFzdCB0byBzb2x2ZSB0
-aGUgaGV0ZXJvZ2VuZW91cyBtb2RlbGxpbmcgcHJvYmxlbQ0KPiBpbiB0aGUgdXBzdHJlYW0gcHJv
-amVjdC4NCj4gDQo+IFdoaWxlIHdlIGRvIGRpc2N1c3MgdGhlc2UgIlRDRyIgdG9waWNzIGR1cmlu
-ZyBLVk0gRm9ydW0gdGhlIHByb2plY3QgbWF5DQo+IGJlbmVmaXQgZnJvbSBkb2luZyBzb21lIG91
-dHJlYWNoIGF0IHNvbWUgY29uZmVyZW5jZXMgd2hlcmUgc2ltdWxhdGlvbg0KPiBhbmQgZW11bGF0
-aW9uIGFyZSB0aGUgcHJpbWFyeSBmb2N1cy4NCj4gDQo+IFRoZSBEZXNpZ24gYW5kIFZlcmlmaWNh
-dGlvbiBDb25mZXJlbmNlICYgRXhoaWJpdGlvbiBFdXJvcGUgKERWQ29uDQo+IEV1cm9wZSkgaXMg
-dGhlIHByZW1pZXIgRXVyb3BlYW4gdGVjaG5pY2FsIGNvbmZlcmVuY2Ugb24gc3lzdGVtLA0KPiBz
-b2Z0d2FyZSwgZGVzaWduLCB2ZXJpZmljYXRpb24sIHZhbGlkYXRpb24gYW5kIGludGVncmF0aW9u
-LiBUaGlzIHllYXIgaXQNCj4gd2lsbCBiZSBvbiB0aGUgMTUtMTYgT2N0b2JlciAyMDI0IGluIE11
-bmljaC4gU2VlOiBodHRwczovL2R2Y29uLWV1cm9wZS5vcmcvDQo+IA0KPiBUaGVyZSBoYXZlIGJl
-ZW4gYSBudW1iZXIgb2YgcGFwZXJzIGFuZCB3b3Jrc2hvcHMgb24gUUVNVS9LVk0gdG9waWNzIG92
-ZXINCj4gdGhlIHllYXJzLiBVbmZvcnR1bmF0ZWx5IHRoZSB3ZWJzaXRlIGRvZXNuJ3QgcHJvdmlk
-ZSBzbGlkZXMgb3IgdmlkZW9zIG9mDQo+IHRoZSB0YWxrcyBidXQgdG9waWNzIGhhdmUgaW5jbHVk
-ZWQgaG93IFFFTVUgY2FuIGJlIHVzZWQgYXMgYSBmYXN0DQo+IGluc3RydWN0aW9uIHNpbXVsYXRv
-ciBhbG9uZ3NpZGUgdGhpbmdzIHN1Y2ggYXMgU3lzdGVtQyBtb2RlbHMgb3INCj4gdmlydHVhbGlz
-YXRpb24gY2FuIGJlIGxldmVyYWdlZCB0byBhY2NlbGVyYXRlIGZ1bGwgc3lzdGVtIGVtdWxhdGlv
-bi4NCj4gDQo+IFRoZSBtYWluIHRyYWNrcyBhcmUgZmFpcmx5IGFjYWRlbWljIHdoZXJlIGVuZ2lu
-ZWVyaW5nIGFuZCByZXNlYXJjaA0KPiBwYXBlcnMgYXJlIHN1Ym1pdHRlZCBhbmQgaWYgYWNjZXB0
-ZWQgY2FuIHRoZW4gYmUgcHJlc2VudGVkIGF0IHRoZQ0KPiBjb25mZXJlbmNlLiBUaGlzIGlzIHBy
-b2JhYmx5IG92ZXIgdGhlIHRvcCBmb3IgUUVNVSByZWxhdGVkIHN0dWZmIGJ1dA0KPiB0aGVpciBp
-cyBhIHR1dG9yaWFsIHRyYWNrIChkZWFkbGluZSBmb3IgQWJzdHJhY3RzIDFzdCBKdWx5KSB3aGlj
-aCBjb3VsZA0KPiBiZSBhIGdvb2QgdGFyZ2V0IGZvciBhIGludHJvZHVjdGlvbiB0byB0aGUgZmVh
-dHVyZXMgYW5kIGNhcGFiaWxpdGllcyBvZg0KPiB0aGUgUUVNVSB1cHN0cmVhbS4gSSBzdXNwZWN0
-IHRoZXJlIHdvdWxkIGJlIGludGVyZXN0IGluIHRoZSB3aWRlcg0KPiBtb2RlbGxpbmcgY29tbXVu
-aXR5IHRvIGZpbmQgb3V0IG1vcmUgYWJvdXQgaG93IHRvIHVzZSB0aGUgdXBzdHJlYW0NCj4gcHJv
-amVjdCBkaXJlY3RseS4NCj4gDQo+IFRoZXJlIGlzIGEgY28tbG9jYXRlZCAiU3lzdGVtQyBFdm9s
-dXRpb24gRGF5IiBvbiB0aGUgMTd0aCB3aGVyZSB0aGVyZQ0KPiBtaWdodCB3ZWxsIGJlIGEgc3Ry
-b25nIG92ZXJsYXAgYmV0d2VlbiBTeXN0ZW1DIHVzZXJzIGFuZCBRRU1VLiBNYXJrDQo+IEJ1cnRv
-biBpcyBpbnZvbHZlZCB3aXRoIHRoYXQgYW5kIGlzIGtlZW4gZm9yIHByb3Bvc2FscyB0YWxraW5n
-IGFib3V0DQo+IGludGVncmF0aW5nIFN5c3RlbUMgbW9kZWxzIHdpdGggUUVNVS4gUGxlYXNlIHNl
-bmQgYSBtZXNzYWdlIHRvDQo+IG1idXJ0b25AcXVpY2luYy5jb20gaWYgeW91J3JlIGludGVyZXN0
-ZWQuDQo+IA0KPiBTbyBpcyBhbnlvbmUgaW50ZXJlc3RlZD8NCj4gDQo+IFNob3VsZCB3ZSBkbyBt
-b3JlIHdpdGhpbiB0aGUgY29tbXVuaXR5IHRvIG5ldHdvcmsgYW5kIGRpc2N1c3Mgb3VyIHBsYW5z
-DQo+IGZvciBRRU1VIGFzIGEgbW9kZWxsaW5nIHNvbHV0aW9uPw0KPiANCj4gQW55IG90aGVyIHRo
-b3VnaHRzPw0KDQpJIHdvdWxkIGxvdmUgdG8gaGVhciBob3cgUWVtdSBjYW4gcGFydGljaXBhdGUg
-aW50byBoZXRlcm9nZW5lb3VzIHNpbXVsYXRpb25zLg0KT25lIGNhc2UgaXMgd2hlcmUgbXVsdGlw
-bGUgUWVtdSBpbnN0YW5jZXMgY29sbGFib3JhdGUgd2l0aCBsaW1pdGVkIGludGVyYWN0aW9ucywN
-Ck9uZSBjYXNlIGlzIHdoZXJlIHRoZXJlIGlzIHdpdGggbWVtb3J5IGFsaWFzaW5nIChjb3J0ZXgg
-TS9SIHNlZSBhIMKrIHdpbmRvdyDCuyBvZiB0aGUgbWFpbiBtZW1vcnkgd2l0aCBhIGRpZmZlcmVu
-dCBhZGRyZXNzIGZvciB0aGUgc2FtZSBieXRlKSBiZXR3ZWVuIFFlbXUuDQpPbmUgY2FzZSBRZW11
-IGlzIGludGVncmF0ZWQgd2l0aCAgb3RoZXIgc2ltdWxhdG9ycy4gQW4gaW50ZXJmYWNlIHRvIGhh
-bmRsZSBhbGlhc2luZywgIE1NSU8sIFNNTVUsIEdJQyBhcmUgcmVxdWlyZWQgdG8gYWxsb3cgYWxs
-IHBvc3NpYmxlIGNhc2VzIG9mIHdoaWNoIHNpbXVsYXRvciBlbXVsYXRlIHdoYXQuDQo+IA0KPiAt
-LQ0KPiBBbGV4IEJlbm7DqWUNCj4gVmlydHVhbGlzYXRpb24gVGVjaCBMZWFkIEAgTGluYXJvDQo=
+Reviewed-by: Max Chou <max.chou@sifive.com>
+
+On 2024/3/15 1:56 AM, Daniel Henrique Barboza wrote:
+> Commit 8ff8ac6329 added a conditional to guard the vext_ldst_whole()
+> helper if vstart >= evl. But by skipping the helper we're also not
+> setting vstart = 0 at the end of the insns, which is incorrect.
+>
+> We'll move the conditional to vext_ldst_whole(), following in line with
+> the removal of all brconds vstart >= vl that the next patch will do. The
+> idea is to make the helpers responsible for their own vstart management.
+>
+> Fix ldst_whole isns by:
+>
+> - remove the brcond that skips the helper if vstart is >= evl;
+>
+> - vext_ldst_whole() now does an early exit with the same check, where
+>    evl = (vlenb * nf) >> log2_esz, but the early exit will also clear
+>    vstart.
+>
+> The 'width' param is now unneeded in ldst_whole_trans() and is also
+> removed. It was used for the evl calculation for the brcond and has no
+> other use now.  The 'width' is reflected in vext_ldst_whole() via
+> log2_esz, which is encoded by GEN_VEXT_LD_WHOLE() as
+> "ctzl(sizeof(ETYPE))".
+>
+> Suggested-by: Max Chou <max.chou@sifive.com>
+> Fixes: 8ff8ac6329 ("target/riscv: rvv: Add missing early exit condition for whole register load/store")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/insn_trans/trans_rvv.c.inc | 52 +++++++++++--------------
+>   target/riscv/vector_helper.c            |  5 +++
+>   2 files changed, 28 insertions(+), 29 deletions(-)
+>
+> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
+> index 52c26a7834..1366445e1f 100644
+> --- a/target/riscv/insn_trans/trans_rvv.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
+> @@ -1097,13 +1097,9 @@ GEN_VEXT_TRANS(vle64ff_v, MO_64, r2nfvm, ldff_op, ld_us_check)
+>   typedef void gen_helper_ldst_whole(TCGv_ptr, TCGv, TCGv_env, TCGv_i32);
+>   
+>   static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+> -                             uint32_t width, gen_helper_ldst_whole *fn,
+> +                             gen_helper_ldst_whole *fn,
+>                                DisasContext *s)
+>   {
+> -    uint32_t evl = s->cfg_ptr->vlenb * nf / width;
+> -    TCGLabel *over = gen_new_label();
+> -    tcg_gen_brcondi_tl(TCG_COND_GEU, cpu_vstart, evl, over);
+> -
+>       TCGv_ptr dest;
+>       TCGv base;
+>       TCGv_i32 desc;
+> @@ -1120,8 +1116,6 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+>   
+>       fn(dest, base, tcg_env, desc);
+>   
+> -    gen_set_label(over);
+> -
+>       return true;
+>   }
+>   
+> @@ -1129,42 +1123,42 @@ static bool ldst_whole_trans(uint32_t vd, uint32_t rs1, uint32_t nf,
+>    * load and store whole register instructions ignore vtype and vl setting.
+>    * Thus, we don't need to check vill bit. (Section 7.9)
+>    */
+> -#define GEN_LDST_WHOLE_TRANS(NAME, ARG_NF, WIDTH)               \
+> +#define GEN_LDST_WHOLE_TRANS(NAME, ARG_NF)                                \
+>   static bool trans_##NAME(DisasContext *s, arg_##NAME * a)                 \
+>   {                                                                         \
+>       if (require_rvv(s) &&                                                 \
+>           QEMU_IS_ALIGNED(a->rd, ARG_NF)) {                                 \
+> -        return ldst_whole_trans(a->rd, a->rs1, ARG_NF, WIDTH,             \
+> +        return ldst_whole_trans(a->rd, a->rs1, ARG_NF,                    \
+>                                   gen_helper_##NAME, s);                    \
+>       }                                                                     \
+>       return false;                                                         \
+>   }
+>   
+> -GEN_LDST_WHOLE_TRANS(vl1re8_v,  1, 1)
+> -GEN_LDST_WHOLE_TRANS(vl1re16_v, 1, 2)
+> -GEN_LDST_WHOLE_TRANS(vl1re32_v, 1, 4)
+> -GEN_LDST_WHOLE_TRANS(vl1re64_v, 1, 8)
+> -GEN_LDST_WHOLE_TRANS(vl2re8_v,  2, 1)
+> -GEN_LDST_WHOLE_TRANS(vl2re16_v, 2, 2)
+> -GEN_LDST_WHOLE_TRANS(vl2re32_v, 2, 4)
+> -GEN_LDST_WHOLE_TRANS(vl2re64_v, 2, 8)
+> -GEN_LDST_WHOLE_TRANS(vl4re8_v,  4, 1)
+> -GEN_LDST_WHOLE_TRANS(vl4re16_v, 4, 2)
+> -GEN_LDST_WHOLE_TRANS(vl4re32_v, 4, 4)
+> -GEN_LDST_WHOLE_TRANS(vl4re64_v, 4, 8)
+> -GEN_LDST_WHOLE_TRANS(vl8re8_v,  8, 1)
+> -GEN_LDST_WHOLE_TRANS(vl8re16_v, 8, 2)
+> -GEN_LDST_WHOLE_TRANS(vl8re32_v, 8, 4)
+> -GEN_LDST_WHOLE_TRANS(vl8re64_v, 8, 8)
+> +GEN_LDST_WHOLE_TRANS(vl1re8_v,  1)
+> +GEN_LDST_WHOLE_TRANS(vl1re16_v, 1)
+> +GEN_LDST_WHOLE_TRANS(vl1re32_v, 1)
+> +GEN_LDST_WHOLE_TRANS(vl1re64_v, 1)
+> +GEN_LDST_WHOLE_TRANS(vl2re8_v,  2)
+> +GEN_LDST_WHOLE_TRANS(vl2re16_v, 2)
+> +GEN_LDST_WHOLE_TRANS(vl2re32_v, 2)
+> +GEN_LDST_WHOLE_TRANS(vl2re64_v, 2)
+> +GEN_LDST_WHOLE_TRANS(vl4re8_v,  4)
+> +GEN_LDST_WHOLE_TRANS(vl4re16_v, 4)
+> +GEN_LDST_WHOLE_TRANS(vl4re32_v, 4)
+> +GEN_LDST_WHOLE_TRANS(vl4re64_v, 4)
+> +GEN_LDST_WHOLE_TRANS(vl8re8_v,  8)
+> +GEN_LDST_WHOLE_TRANS(vl8re16_v, 8)
+> +GEN_LDST_WHOLE_TRANS(vl8re32_v, 8)
+> +GEN_LDST_WHOLE_TRANS(vl8re64_v, 8)
+>   
+>   /*
+>    * The vector whole register store instructions are encoded similar to
+>    * unmasked unit-stride store of elements with EEW=8.
+>    */
+> -GEN_LDST_WHOLE_TRANS(vs1r_v, 1, 1)
+> -GEN_LDST_WHOLE_TRANS(vs2r_v, 2, 1)
+> -GEN_LDST_WHOLE_TRANS(vs4r_v, 4, 1)
+> -GEN_LDST_WHOLE_TRANS(vs8r_v, 8, 1)
+> +GEN_LDST_WHOLE_TRANS(vs1r_v, 1)
+> +GEN_LDST_WHOLE_TRANS(vs2r_v, 2)
+> +GEN_LDST_WHOLE_TRANS(vs4r_v, 4)
+> +GEN_LDST_WHOLE_TRANS(vs8r_v, 8)
+>   
+>   /*
+>    *** Vector Integer Arithmetic Instructions
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index bcc553c0e2..1f4c276b21 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -572,6 +572,11 @@ vext_ldst_whole(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
+>       uint32_t vlenb = riscv_cpu_cfg(env)->vlenb;
+>       uint32_t max_elems = vlenb >> log2_esz;
+>   
+> +    if (env->vstart >= ((vlenb * nf) >> log2_esz)) {
+> +        env->vstart = 0;
+> +        return;
+> +    }
+> +
+>       k = env->vstart / max_elems;
+>       off = env->vstart % max_elems;
+>   
 
