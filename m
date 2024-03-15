@@ -2,102 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0381487CDC6
-	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6F587CDED
+	for <lists+qemu-devel@lfdr.de>; Fri, 15 Mar 2024 14:15:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rl7JH-0005bJ-Td; Fri, 15 Mar 2024 09:09:19 -0400
+	id 1rl7Lb-0002dV-Fk; Fri, 15 Mar 2024 09:11:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl7JE-0005az-4w
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rl7JC-0007Wq-0H
- for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:09:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710508152;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=UzkJW787itOrsdYvMgu3V+FJhc8o3XGIUykwHIG8hgI=;
- b=SOacw1TxGSs6UCTxwKYdnRgLy6VigKHtXNWSR3qee4sK+E2PC7XRnb9iX2jnvG93rbBSG1
- u5yhYHMLK79bW9Q/t/e8eMqOxdtjuZvOVo2TqSzVJOg2yTESIKc9UbnYy51BqliUOo0nrB
- IM1HLOzhoU578KXlZoLBILpj897/Wdo=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-245-xV8g_geKMnqsb057mN3WrA-1; Fri, 15 Mar 2024 09:09:11 -0400
-X-MC-Unique: xV8g_geKMnqsb057mN3WrA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-690c19ee50bso5500386d6.0
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:09:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7LM-0001Y8-6F
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:28 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rl7LI-000073-HM
+ for qemu-devel@nongnu.org; Fri, 15 Mar 2024 09:11:26 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-566e869f631so2383325a12.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 06:11:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710508282; x=1711113082; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JlSnNkdCGhkGJY+zh070ayuUxIbMNrgyLxLLZYypnXY=;
+ b=yx8CFeUcg5ujfCaMKT3THBflLS7I4ltCCOI+0Mpd+ZL8cVVLbQ431Y96W/IvF3+cf5
+ m1JcXoknKpWaYT6rJrvJe+3ZS1tLB3ZnRhMTlw8UkqX2dAyOHI2P5c11g2jaMCC5iEzm
+ b3zLWtqGm3H+wJtlK2mJaJAAjOydrgqNmRyWxQ57li2pUYa3xQUGWL81A2hJOOaeNhyH
+ +tX9QJ36aXlA7qNGw3kQeeJ8KAe7OfNWIQ61dlMpMX9wgWtnLlOEdeVuEwLrQpNLthzD
+ fR6s9+Z0eKGt9SnFXnLeHa91YINZkJad0foQ/a22J0ON/wl3EdYW+fxvoVkoFU3ilYSL
+ aQdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710508151; x=1711112951;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UzkJW787itOrsdYvMgu3V+FJhc8o3XGIUykwHIG8hgI=;
- b=XEtfOulo4glVtmp1N3O4Sdx3XpCkzMZ0kZHOK90wTSNEbnAgxxm9k3S5eXQyXl2FIr
- v+q9scmHeHXOcnmVnN4ePKQ/VsGcopN+o3HLz1g5iD4jgAurxtnJNjOFgsxpSToXQ4Ed
- BRYGL3IPXLA/u9O2AjGkTWK2MzB8Li2BWQYQ4YLzRFjwK1JBYyOgi6ksGVlhYsHymNdc
- 5nute+9HFFvUZuynCPhGVQsTdRdnwdfbRds02GURXlcy8sve2ZkiO0OGqTrjw6Yem/GM
- Ma8dCUgwxNkBrPLOquoPJyx33nPKk30WCEOZqXn5O6cFqbpliCi6wHkW35UDbUaabLzE
- 0fdg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX91jQWtR6+VNt5RGb0VsjS/bM//eR5HEHSu0FcQCV7QMCYhXxCZ0kIBB4KbMCvz3+5MkOvQth8fau7Nebv0FDJWrM2RbY=
-X-Gm-Message-State: AOJu0YzaZTf60Q7m+it7pF9LNzy7JcakjQqI18Tqf4cBE9HaUZ7dF7LB
- 4cEOaJ8Ei7Jmzaof4mjE5Ia+6RV+ZwbvyHj6zaBoH1hPjObMNrQ1gN1FIG7OzJUDcCLkL2oRh+n
- SdK8RmPTFxE2peA1UpAjP9rdOtRhnrJQ3WRuEzGbdTH8eLT7118bj
-X-Received: by 2002:a05:6214:459e:b0:68f:1c80:d78e with SMTP id
- op30-20020a056214459e00b0068f1c80d78emr5103845qvb.0.1710508150641; 
- Fri, 15 Mar 2024 06:09:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4lmsXcQybFErFRw5uvapiRiFrQoLy8MfpfsCur7nBAk3owkfOtw6Mwh6dD+7OpysDaImErA==
-X-Received: by 2002:a05:6214:459e:b0:68f:1c80:d78e with SMTP id
- op30-20020a056214459e00b0068f1c80d78emr5103810qvb.0.1710508150201; 
- Fri, 15 Mar 2024 06:09:10 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- h13-20020a0562140dad00b0069150311189sm2014601qvh.134.2024.03.15.06.09.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 06:09:09 -0700 (PDT)
-Date: Fri, 15 Mar 2024 09:09:07 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Alex Williamson <alex.williamson@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4 10/25] migration: Add Error** argument to
- qemu_savevm_state_setup()
-Message-ID: <ZfRIc1l_PElCVNtL@x1n>
-References: <87le6omw0d.fsf@suse.de>
- <9071affc-ffb5-435a-99d1-ca829703e31b@redhat.com>
- <8ba5dba7-1849-46ff-b708-a9caac66be27@redhat.com>
- <b2b52017-c4cd-43e9-a67b-2ccbb92ad99e@redhat.com>
- <874jdbmst4.fsf@suse.de> <ZfByYiL3Gl9d9u7h@x1n>
- <87wmq7l2xx.fsf@suse.de>
- <b9cb5c16-59a4-4cdc-9d12-6d7c2306b4ff@redhat.com>
- <ZfQqpK0xCwygYYho@x1n>
- <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
+ d=1e100.net; s=20230601; t=1710508282; x=1711113082;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JlSnNkdCGhkGJY+zh070ayuUxIbMNrgyLxLLZYypnXY=;
+ b=BEYhneevTCYokAvDVSo+f9Ly8bC6tA10e7ZIBVwwLkdnHH1VQsBfATVWgjWC9ifz1h
+ q1mIRpzg9etDW2K7gLiyC6ZAFiPNuboVB//e8wB+rwPuOxzZjnj8rd9xUTPi667lTtmN
+ nsTFaUm1VUiv2rJIebkmBYmnFUYIWjNRZDlLiygq01arnkj2GeXQqgo9iatb50GTW/ld
+ Royva0Lbk3YWQuG68e2LNiODFesKlvorzPbUZvVJ2Jtjl+kcWII8uwB0+6GLgK0QWSYW
+ PsJ3iWLXppr7gAb5K25UR2YAh3yFWX9GcAVD8Yoy/pWjK3CPWqIvgg2xFxITGTAr6qGJ
+ HnXA==
+X-Gm-Message-State: AOJu0YwEGh9CQRCKlGgNUkFbTgpio0d3qLURZfBELa+x+zoxrFcEUJPr
+ KieKvI4XRa8Qqvix2CCqkRj559VTa2u+Sk2qr76YmYhMWnVwemPFaxBnFLIWY8P6nJ3A49ErZJ8
+ Q
+X-Google-Smtp-Source: AGHT+IFr5RaqknL50rJ/ULGqKtzSQvYODwR3uxqq5WvgAEMCCYd8EWNHRLvED+eSeGFqUTaVtHbaiA==
+X-Received: by 2002:a05:6402:3819:b0:566:ff31:7974 with SMTP id
+ es25-20020a056402381900b00566ff317974mr2662833edb.34.1710508282572; 
+ Fri, 15 Mar 2024 06:11:22 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.145.26])
+ by smtp.gmail.com with ESMTPSA id
+ er18-20020a056402449200b0056899fc9a94sm1673226edb.12.2024.03.15.06.11.20
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Fri, 15 Mar 2024 06:11:22 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org,
+	Markus Armbruster <armbru@redhat.com>
+Cc: qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Claudio Fontana <cfontana@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PATCH-for-9.1 19/21] target/ppc: Factor ppc_add_alias_definitions()
+ out
+Date: Fri, 15 Mar 2024 14:09:07 +0100
+Message-ID: <20240315130910.15750-20-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240315130910.15750-1-philmd@linaro.org>
+References: <20240315130910.15750-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <c946ae1f-3315-496e-b316-33343e43830f@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.933,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,134 +106,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 15, 2024 at 01:20:49PM +0100, Cédric Le Goater wrote:
-> On 3/15/24 12:01, Peter Xu wrote:
-> > On Fri, Mar 15, 2024 at 11:17:45AM +0100, Cédric Le Goater wrote:
-> > > > migrate_set_state is also unintuitive because it ignores invalid state
-> > > > transitions and we've been using that property to deal with special
-> > > > states such as POSTCOPY_PAUSED and FAILED:
-> > > > 
-> > > > - After the migration goes into POSTCOPY_PAUSED, the resumed migration's
-> > > >     migrate_init() will try to set the state NONE->SETUP, which is not
-> > > >     valid.
-> > > > 
-> > > > - After save_setup fails, the migration goes into FAILED, but wait_unplug
-> > > >     will try to transition SETUP->ACTIVE, which is also not valid.
-> > > > 
-> > > 
-> > > I am not sure I understand what the plan is. Both solutions are problematic
-> > > regarding the state transitions.
-> > > 
-> > > Should we consider that waiting for failover devices to unplug is an internal
-> > > step of the SETUP phase not transitioning to ACTIVE ?
-> > 
-> > If to unblock this series, IIUC the simplest solution is to do what Fabiano
-> > suggested, that we move qemu_savevm_wait_unplug() to be before the check of
-> > setup() ret.
-> 
-> The simplest is IMHO moving qemu_savevm_wait_unplug() before
-> qemu_savevm_state_setup() and leave patch 10 is unchanged. See
-> below the extra patch. It looks much cleaner than what we have
-> today.
+Factor ppc_add_alias_definitions() out of qmp_query_cpu_definitions()
+to clearly see the generic pattern used in all targets.
 
-Yes it looks cleaner indeed, it's just that then we'll have one more
-possible state conversions like SETUP->UNPLUG->SETUP.  I'd say it's fine,
-but let's also copy Laruent and Laine if it's going to be posted formally.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ target/ppc/cpu-models.h   |  4 ++++
+ target/ppc/ppc-qmp-cmds.c | 26 +++++++++++++++-----------
+ 2 files changed, 19 insertions(+), 11 deletions(-)
 
-Thanks,
-
-> 
-> > In that case, the state change in qemu_savevm_wait_unplug()
-> > should be benign and we should see a super small window it became ACTIVE
-> > but then it should be FAILED (and IIUC the patch itself will need to use
-> > ACTIVE as "old_state", not SETUP anymore).
-> 
-> OK. I will give it a try to compare.
-> 
-> > For the long term, maybe we can remove the WAIT_UNPLUG state?
-> 
-> I hope so, it's an internal SETUP state for me.
-> 
-> > The only Libvirt support seems to be here:
-> > 
-> > commit 8a226ddb3602586a2ba2359afc4448c02f566a0e
-> > Author: Laine Stump <laine@redhat.com>
-> > Date:   Wed Jan 15 16:38:57 2020 -0500
-> > 
-> >      qemu: add wait-unplug to qemu migration status enum
-> > 
-> > Considering that qemu_savevm_wait_unplug() can be a noop if the device is
-> > already unplugged, I think it means no upper layer app should rely on this
-> > state to present.
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> > 
-> @@ -3383,11 +3383,10 @@ bool migration_rate_limit(void)
->   * unplugged
->   */
-> -static void qemu_savevm_wait_unplug(MigrationState *s, int old_state,
-> -                                    int new_state)
-> +static void qemu_savevm_wait_unplug(MigrationState *s, int state)
->  {
->      if (qemu_savevm_state_guest_unplug_pending()) {
-> -        migrate_set_state(&s->state, old_state, MIGRATION_STATUS_WAIT_UNPLUG);
-> +        migrate_set_state(&s->state, state, MIGRATION_STATUS_WAIT_UNPLUG);
->          while (s->state == MIGRATION_STATUS_WAIT_UNPLUG &&
->                 qemu_savevm_state_guest_unplug_pending()) {
-> @@ -3410,9 +3409,7 @@ static void qemu_savevm_wait_unplug(Migr
->              }
->          }
-> -        migrate_set_state(&s->state, MIGRATION_STATUS_WAIT_UNPLUG, new_state);
-> -    } else {
-> -        migrate_set_state(&s->state, old_state, new_state);
-> +        migrate_set_state(&s->state, MIGRATION_STATUS_WAIT_UNPLUG, state);
->      }
->  }
-> @@ -3469,17 +3466,19 @@ static void *migration_thread(void *opaq
->          qemu_savevm_send_colo_enable(s->to_dst_file);
->      }
-> +    qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP);
-> +
->      bql_lock();
->      qemu_savevm_state_setup(s->to_dst_file);
->      bql_unlock();
-> -    qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-> -                               MIGRATION_STATUS_ACTIVE);
-> -
->      s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
->      trace_migration_thread_setup_complete();
-> +    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-> +                      MIGRATION_STATUS_ACTIVE);
-> +
->      while (migration_is_active()) {
->          if (urgent || !migration_rate_exceeded(s->to_dst_file)) {
->              MigIterateState iter_state = migration_iteration_run(s);
-> @@ -3580,18 +3579,20 @@ static void *bg_migration_thread(void *o
->      ram_write_tracking_prepare();
->  #endif
-> +    qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP);
-> +
->      bql_lock();
->      qemu_savevm_state_header(s->to_dst_file);
->      qemu_savevm_state_setup(s->to_dst_file);
->      bql_unlock();
-> -    qemu_savevm_wait_unplug(s, MIGRATION_STATUS_SETUP,
-> -                               MIGRATION_STATUS_ACTIVE);
-> -
->      s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
->      trace_migration_thread_setup_complete();
-> +    migrate_set_state(&s->state, MIGRATION_STATUS_SETUP,
-> +                      MIGRATION_STATUS_ACTIVE);
-> +
->      bql_lock();
->      if (migration_stop_vm(s, RUN_STATE_PAUSED)) {
-> 
-
+diff --git a/target/ppc/cpu-models.h b/target/ppc/cpu-models.h
+index 0229ef3a9a..89a5e232b7 100644
+--- a/target/ppc/cpu-models.h
++++ b/target/ppc/cpu-models.h
+@@ -21,6 +21,8 @@
+ #ifndef TARGET_PPC_CPU_MODELS_H
+ #define TARGET_PPC_CPU_MODELS_H
+ 
++#include "qapi/qapi-types-machine.h"
++
+ /**
+  * PowerPCCPUAlias:
+  * @alias: The alias name.
+@@ -480,4 +482,6 @@ enum {
+     POWERPC_SVR_8641D              = 0x80900121,
+ };
+ 
++void ppc_add_alias_definitions(CpuDefinitionInfoList **cpu_list);
++
+ #endif
+diff --git a/target/ppc/ppc-qmp-cmds.c b/target/ppc/ppc-qmp-cmds.c
+index a25d86a8d1..528cc3e4af 100644
+--- a/target/ppc/ppc-qmp-cmds.c
++++ b/target/ppc/ppc-qmp-cmds.c
+@@ -189,17 +189,9 @@ static void ppc_cpu_defs_entry(gpointer data, gpointer user_data)
+     QAPI_LIST_PREPEND(*first, info);
+ }
+ 
+-CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
++void ppc_add_alias_definitions(CpuDefinitionInfoList **cpu_list)
+ {
+-    CpuDefinitionInfoList *cpu_list = NULL;
+-    GSList *list;
+-    int i;
+-
+-    list = object_class_get_list(TYPE_POWERPC_CPU, false);
+-    g_slist_foreach(list, ppc_cpu_defs_entry, &cpu_list);
+-    g_slist_free(list);
+-
+-    for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
++    for (unsigned i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
+         PowerPCCPUAlias *alias = &ppc_cpu_aliases[i];
+         ObjectClass *oc;
+         CpuDefinitionInfo *info;
+@@ -213,8 +205,20 @@ CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
+         info->name = g_strdup(alias->alias);
+         info->q_typename = g_strdup(object_class_get_name(oc));
+ 
+-        QAPI_LIST_PREPEND(cpu_list, info);
++        QAPI_LIST_PREPEND(*cpu_list, info);
+     }
++}
++
++CpuDefinitionInfoList *qmp_query_cpu_definitions(Error **errp)
++{
++    CpuDefinitionInfoList *cpu_list = NULL;
++    GSList *list;
++
++    list = object_class_get_list(TYPE_POWERPC_CPU, false);
++    g_slist_foreach(list, ppc_cpu_defs_entry, &cpu_list);
++    g_slist_free(list);
++
++    ppc_add_alias_definitions(&cpu_list);
+ 
+     return cpu_list;
+ }
 -- 
-Peter Xu
+2.41.0
 
 
