@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B8787D7E7
-	for <lists+qemu-devel@lfdr.de>; Sat, 16 Mar 2024 03:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 199A587D7EF
+	for <lists+qemu-devel@lfdr.de>; Sat, 16 Mar 2024 03:01:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlJJR-00032Q-Ba; Fri, 15 Mar 2024 21:58:17 -0400
+	id 1rlJJO-00030r-6Q; Fri, 15 Mar 2024 21:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rlJJE-0002xO-7W
+ id 1rlJJE-0002xM-7W
  for qemu-devel@nongnu.org; Fri, 15 Mar 2024 21:58:05 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rlJJ9-0000md-Rb
+ id 1rlJJB-0000n0-S7
  for qemu-devel@nongnu.org; Fri, 15 Mar 2024 21:58:03 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1def59b537cso8376075ad.2
- for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 18:57:59 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-29b7caa88c6so2138075a91.0
+ for <qemu-devel@nongnu.org>; Fri, 15 Mar 2024 18:58:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710554278; x=1711159078; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710554280; x=1711159080; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aXNCxUw+xNH5pFREtrweHMcItwOMy2358ghWL5eYh0A=;
- b=VWyWNssJ4rLZ6EAcfD2JJO6Rrc+YuJA6pYt9il/iy3rtihEEeR+96ecZ5VMc/ih49W
- 3yHGrIox1ox1NpdsrhrmdXpzzlHsQX8nhFzkg9dIQ2Kguj8C2Feyoc+aAVRvUTUMdtmA
- oDRwf9RPQmJQchdTH6lFccbKBlL4c020a5rI2o53VBrg500guxg9wJCWJ8V03diV1yDA
- 2AkOPI8FTl7IYfkT/ZRsQuGDnd2Sq5ircz0Rmxjufwx3m/90nFpqf2CGlIC5irjrZHJ6
- uz4yO1JX14/dD5I80U/nr13PwwBYf0KhFIhrJx8xtt+Xe32sYSK0VNVuXgXvYHIRfiMG
- a3jg==
+ bh=6vZ2v0E2G9TI2cbvq58iFtaf/WAOAxyxcbXki0MuPsM=;
+ b=ELUq04eM19IBBI8w78PudLEx6js0bvZL56QiN73/cOSGSSG5n0LZztIbjhkU4qZfja
+ A/h7mwnrYwLPnMI0b0uOgr9P6im2obwsjrZm8YXEb3MUhZVEqT5rs47d/+X9qz6eE6t/
+ XnTFGzrGyVVI7Ce7Q9vHV25WFHAyLoCTG701mNd41FX1bzcx5ArVi0ms42NLg/BLgEZ/
+ K5Hmv9Puc3i9L7QVmztjcN++6ap9v4OKG55PebdYP+6XwMnMmH1K8XNnEawHGsp06dx/
+ VbbnRpuhD62Uy3Us4LOb2lE2w2U07lI36Wil+A4JFStEyoaujXNk5gHc80FdV4uyvZfI
+ wnLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710554278; x=1711159078;
+ d=1e100.net; s=20230601; t=1710554280; x=1711159080;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aXNCxUw+xNH5pFREtrweHMcItwOMy2358ghWL5eYh0A=;
- b=p0bfvRvfhoRyFWACeoE6svKNeChk+Ucwn/SjsZG3BF1PQLLmlIqqaNGZznrY8UcJCl
- 2r0//0vAVMd6AbJart7SkD2zNkLVg/3rnVT4WYZTdjGNb3sOVX1YiM7XmAzyvJSgWhin
- CFx3IBXTCQ+K5MnlDQTdMQolEwcLtnTfS6YMcAq2X1CvyP4PSoSIRr2TkmS+MKoM98o3
- fqCAAght16zuYh+AIRw5AruNlq1HJm5T8Ur113Wer/+ZKQSL498S9OvGvkwCSEXK2iOl
- aSJ3OknuzA+9oby475Ay4jncujtqZApASUr4kP3D/1a2B0MF3FX+bneT6j8LilckpZQs
- 32kw==
-X-Gm-Message-State: AOJu0YyDHeyo7lO5HiiRnqNVz9i6KYOgy+9Hf96DA+eJ9USF/vtVXD/P
- 7YXaAaRo5wrhz6PzL7UoKyadq6jXVnyMq4idevilgOmgoOiKhbVCqQhlz+KkyL+bCSJtqGNUqca
- W
-X-Google-Smtp-Source: AGHT+IEa7/xVuz/BjBPjS7ki6yuhBcu8dAus7uMDFzYQCplrSliiYzMZn/x3ZvT9oOF0V00UjY3u3g==
-X-Received: by 2002:a17:902:e54c:b0:1dd:a33f:5916 with SMTP id
- n12-20020a170902e54c00b001dda33f5916mr5630078plf.4.1710554278476; 
- Fri, 15 Mar 2024 18:57:58 -0700 (PDT)
+ bh=6vZ2v0E2G9TI2cbvq58iFtaf/WAOAxyxcbXki0MuPsM=;
+ b=iHPRnNMS+SLa500DO42YC4VHpF/k98iBmRUx/VR1fCGl0AAdkzfmKmFQPRlH/0YQ1P
+ J3ClOU1GLIIIVRt3c3v8O23OXuvWa73M+WBgi1dQB7+uYJPwm0lbDfROhD0Hi5CvcE3M
+ AfY8OyYyFwGJbQeMlt4zHXHaqJWodL10A814FlGCHBEr6nne3HQ26LWLBSwjy1VB7r8C
+ 8qXx5w1QVoqRu2LIxMB4lpMnms0yBeBYRVZunDof250FFeMDkq+GtTS6v+mc8Rjgv1yf
+ 076z2Jji21DELWVpZIFvcLv5Ay2Mm7lR8WJCUvOZiGisuzFjoAr5E6Vp3EdKEzlakZnE
+ n/+Q==
+X-Gm-Message-State: AOJu0YxBzSHyr7p/+BqyjSqBxlA0GEiztqXIav0lRYOIXL3mWS9N+1HV
+ EpZvoEbUhkeK13A4t+aZU8GIMWl2u/qMSOkMSvdYcppD8VnWLedlHkT3p1PbNfJH/uJ9A5l3dk6
+ G
+X-Google-Smtp-Source: AGHT+IG/tcZgAvWOBK3LBZCBk/nweKj8eJ7PCS+5319GOiNpb5HYWh1qojDtO1ga4WuaKc/H5Js8OA==
+X-Received: by 2002:a17:903:2443:b0:1dd:7d64:8f35 with SMTP id
+ l3-20020a170903244300b001dd7d648f35mr7444411pls.31.1710554280457; 
+ Fri, 15 Mar 2024 18:58:00 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- b3-20020a170903228300b001dd42bbb08asm4592985plh.253.2024.03.15.18.57.56
+ b3-20020a170903228300b001dd42bbb08asm4592985plh.253.2024.03.15.18.57.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 15 Mar 2024 18:57:57 -0700 (PDT)
+ Fri, 15 Mar 2024 18:57:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org,
 	alex.bennee@linaro.org
-Subject: [PATCH 17/22] plugins: Replace pr_ops with a proper debug dump flag
-Date: Fri, 15 Mar 2024 15:57:15 -1000
-Message-Id: <20240316015720.3661236-18-richard.henderson@linaro.org>
+Subject: [PATCH 18/22] plugins: Split out common cb expanders
+Date: Fri, 15 Mar 2024 15:57:16 -1000
+Message-Id: <20240316015720.3661236-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240316015720.3661236-1-richard.henderson@linaro.org>
 References: <20240316015720.3661236-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,215 +93,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The DEBUG_PLUGIN_GEN_OPS ifdef is replaced with "-d op_plugin".
-The second pr_ops call can be obtained with "-d op".
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/log.h     |  1 +
- include/tcg/tcg.h      |  1 +
- accel/tcg/plugin-gen.c | 68 ++++++++----------------------------------
- tcg/tcg.c              | 29 +++++++++++++++++-
- util/log.c             |  4 +++
- 5 files changed, 46 insertions(+), 57 deletions(-)
+ accel/tcg/plugin-gen.c | 84 +++++++++++++++++++++---------------------
+ 1 file changed, 41 insertions(+), 43 deletions(-)
 
-diff --git a/include/qemu/log.h b/include/qemu/log.h
-index df59bfabcd..e10e24cd4f 100644
---- a/include/qemu/log.h
-+++ b/include/qemu/log.h
-@@ -36,6 +36,7 @@ bool qemu_log_separate(void);
- #define LOG_STRACE         (1 << 19)
- #define LOG_PER_THREAD     (1 << 20)
- #define CPU_LOG_TB_VPU     (1 << 21)
-+#define LOG_TB_OP_PLUGIN   (1 << 22)
- 
- /* Lock/unlock output. */
- 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index df66e8f012..753d7ca3e0 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -1065,5 +1065,6 @@ static inline const TCGOpcode *tcg_swap_vecop_list(const TCGOpcode *n)
- }
- 
- bool tcg_can_emit_vecop_list(const TCGOpcode *, TCGType, unsigned);
-+void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs);
- 
- #endif /* TCG_H */
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 6f0731b479..10d917abd3 100644
+index 10d917abd3..28414c4ff1 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -44,6 +44,7 @@
-  */
- #include "qemu/osdep.h"
- #include "qemu/plugin.h"
-+#include "qemu/log.h"
- #include "cpu.h"
- #include "tcg/tcg.h"
- #include "tcg/tcg-temp-internal.h"
-@@ -58,6 +59,7 @@
- # define CONFIG_SOFTMMU_GATE 0
- #endif
- 
-+/* Update plugin_from_name in tcg.c. */
- enum plugin_gen_from {
-     PLUGIN_GEN_FROM_TB,
-     PLUGIN_GEN_FROM_INSN,
-@@ -192,66 +194,21 @@ static void gen_mem_cb(struct qemu_plugin_dyn_cb *cb,
+@@ -194,6 +194,37 @@ static void gen_mem_cb(struct qemu_plugin_dyn_cb *cb,
      tcg_temp_free_i32(cpu_index);
  }
  
--/* #define DEBUG_PLUGIN_GEN_OPS */
--static void pr_ops(void)
--{
--#ifdef DEBUG_PLUGIN_GEN_OPS
--    TCGOp *op;
--    int i = 0;
--
--    QTAILQ_FOREACH(op, &tcg_ctx->ops, link) {
--        const char *name = "";
--        const char *type = "";
--
--        if (op->opc == INDEX_op_plugin_cb_start) {
--            switch (op->args[0]) {
--            case PLUGIN_GEN_FROM_TB:
--                name = "tb";
--                break;
--            case PLUGIN_GEN_FROM_INSN:
--                name = "insn";
--                break;
--            case PLUGIN_GEN_FROM_MEM:
--                name = "mem";
--                break;
--            case PLUGIN_GEN_AFTER_INSN:
--                name = "after insn";
--                break;
--            default:
--                break;
--            }
--            switch (op->args[1]) {
--            case PLUGIN_GEN_CB_UDATA:
--                type = "udata";
--                break;
--            case PLUGIN_GEN_CB_INLINE:
--                type = "inline";
--                break;
--            case PLUGIN_GEN_CB_MEM:
--                type = "mem";
--                break;
--            case PLUGIN_GEN_ENABLE_MEM_HELPER:
--                type = "enable mem helper";
--                break;
--            case PLUGIN_GEN_DISABLE_MEM_HELPER:
--                type = "disable mem helper";
--                break;
--            default:
--                break;
--            }
--        }
--        printf("op[%2i]: %s %s %s\n", i, tcg_op_defs[op->opc].name, name, type);
--        i++;
--    }
--#endif
--}
--
++static void inject_cb(struct qemu_plugin_dyn_cb *cb)
++
++{
++    switch (cb->type) {
++    case PLUGIN_CB_REGULAR:
++        gen_udata_cb(cb);
++        break;
++    case PLUGIN_CB_INLINE:
++        gen_inline_cb(cb);
++        break;
++    default:
++        g_assert_not_reached();
++    }
++}
++
++static void inject_mem_cb(struct qemu_plugin_dyn_cb *cb,
++                          enum qemu_plugin_mem_rw rw,
++                          qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
++{
++    if (cb->rw & rw) {
++        switch (cb->type) {
++        case PLUGIN_CB_MEM_REGULAR:
++            gen_mem_cb(cb, meminfo, addr);
++            break;
++        default:
++            inject_cb(cb);
++            break;
++        }
++    }
++}
++
  static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
  {
      TCGOp *op, *next;
-     int insn_idx = -1;
+@@ -255,19 +286,8 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
  
--    pr_ops();
-+    if (unlikely(qemu_loglevel_mask(LOG_TB_OP_PLUGIN)
-+                 && qemu_log_in_addr_range(plugin_tb->vaddr))) {
-+        FILE *logfile = qemu_log_trylock();
-+        if (logfile) {
-+            fprintf(logfile, "OP before plugin injection:\n");
-+            tcg_dump_ops(tcg_ctx, logfile, false);
-+            fprintf(logfile, "\n");
-+            qemu_log_unlock(logfile);
-+        }
-+    }
- 
-     /*
-      * While injecting code, we cannot afford to reuse any ebb temps
-@@ -389,7 +346,6 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-             break;
-         }
-     }
--    pr_ops();
- }
- 
- bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 363a065e28..d248c52e96 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -2540,6 +2540,15 @@ static const char bswap_flag_name[][6] = {
-     [TCG_BSWAP_IZ | TCG_BSWAP_OS] = "iz,os",
- };
- 
-+#ifdef CONFIG_PLUGIN
-+static const char * const plugin_from_name[] = {
-+    "from-tb",
-+    "from-insn",
-+    "after-insn",
-+    "after-tb",
-+};
-+#endif
-+
- static inline bool tcg_regset_single(TCGRegSet d)
- {
-     return (d & (d - 1)) == 0;
-@@ -2558,7 +2567,7 @@ static inline TCGReg tcg_regset_first(TCGRegSet d)
- #define ne_fprintf(...) \
-     ({ int ret_ = fprintf(__VA_ARGS__); ret_ >= 0 ? ret_ : 0; })
- 
--static void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
-+void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
- {
-     char buf[128];
-     TCGOp *op;
-@@ -2714,6 +2723,24 @@ static void tcg_dump_ops(TCGContext *s, FILE *f, bool have_prefs)
-                     i = k = 1;
+                 cbs = plugin_tb->cbs;
+                 for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
+-                    struct qemu_plugin_dyn_cb *cb =
+-                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i);
+-
+-                    switch (cb->type) {
+-                    case PLUGIN_CB_REGULAR:
+-                        gen_udata_cb(cb);
+-                        break;
+-                    case PLUGIN_CB_INLINE:
+-                        gen_inline_cb(cb);
+-                        break;
+-                    default:
+-                        g_assert_not_reached();
+-                    }
++                    inject_cb(
++                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i));
                  }
                  break;
-+#ifdef CONFIG_PLUGIN
-+            case INDEX_op_plugin_cb:
-+                {
-+                    TCGArg from = op->args[k++];
-+                    const char *name = NULL;
-+
-+                    if (from < ARRAY_SIZE(plugin_from_name)) {
-+                        name = plugin_from_name[from];
-+                    }
-+                    if (name) {
-+                        col += ne_fprintf(f, "%s", name);
-+                    } else {
-+                        col += ne_fprintf(f, "$0x%" TCG_PRIlx, from);
-+                    }
-+                    i = 1;
-+                }
-+                break;
-+#endif
-             default:
-                 i = 0;
+ 
+@@ -278,19 +298,8 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+ 
+                 cbs = insn->insn_cbs;
+                 for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
+-                    struct qemu_plugin_dyn_cb *cb =
+-                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i);
+-
+-                    switch (cb->type) {
+-                    case PLUGIN_CB_REGULAR:
+-                        gen_udata_cb(cb);
+-                        break;
+-                    case PLUGIN_CB_INLINE:
+-                        gen_inline_cb(cb);
+-                        break;
+-                    default:
+-                        g_assert_not_reached();
+-                    }
++                    inject_cb(
++                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i));
+                 }
                  break;
-diff --git a/util/log.c b/util/log.c
-index d36c98da0b..6219819855 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -466,6 +466,10 @@ const QEMULogItem qemu_log_items[] = {
-       "show micro ops after optimization" },
-     { CPU_LOG_TB_OP_IND, "op_ind",
-       "show micro ops before indirect lowering" },
-+#ifdef CONFIG_PLUGIN
-+    { LOG_TB_OP_PLUGIN, "op_plugin",
-+      "show micro ops before plugin injection" },
-+#endif
-     { CPU_LOG_INT, "int",
-       "show interrupts/exceptions in short format" },
-     { CPU_LOG_EXEC, "exec",
+ 
+@@ -307,33 +316,22 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+         {
+             TCGv_i64 addr = temp_tcgv_i64(arg_temp(op->args[0]));
+             qemu_plugin_meminfo_t meminfo = op->args[1];
++            enum qemu_plugin_mem_rw rw =
++                (qemu_plugin_mem_is_store(meminfo)
++                 ? QEMU_PLUGIN_MEM_W : QEMU_PLUGIN_MEM_R);
+             struct qemu_plugin_insn *insn;
+             const GArray *cbs;
+-            int i, n, rw;
++            int i, n;
+ 
+             assert(insn_idx >= 0);
+             insn = g_ptr_array_index(plugin_tb->insns, insn_idx);
+-            rw = qemu_plugin_mem_is_store(meminfo) ? 2 : 1;
+ 
+             tcg_ctx->emit_before_op = op;
+ 
+             cbs = insn->mem_cbs;
+             for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
+-                struct qemu_plugin_dyn_cb *cb =
+-                    &g_array_index(cbs, struct qemu_plugin_dyn_cb, i);
+-
+-                if (cb->rw & rw) {
+-                    switch (cb->type) {
+-                    case PLUGIN_CB_MEM_REGULAR:
+-                        gen_mem_cb(cb, meminfo, addr);
+-                        break;
+-                    case PLUGIN_CB_INLINE:
+-                        gen_inline_cb(cb);
+-                        break;
+-                    default:
+-                        g_assert_not_reached();
+-                    }
+-                }
++                inject_mem_cb(&g_array_index(cbs, struct qemu_plugin_dyn_cb, i),
++                              rw, meminfo, addr);
+             }
+ 
+             tcg_ctx->emit_before_op = NULL;
 -- 
 2.34.1
 
