@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4830187E01C
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E46887E01B
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlxaC-0002BY-Sa; Sun, 17 Mar 2024 16:58:17 -0400
+	id 1rlxaC-0002BX-SM; Sun, 17 Mar 2024 16:58:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaB-0002BA-Cj
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:15 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaA-0002B8-ML
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxa9-0002ZH-F9
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxa8-0002Ye-T7
  for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710709092;
+ s=mimecast20190719; t=1710709091;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=yj6+2OOOZFRaDx1wfLqi3Ph0h7MLz2jfHulxgc/o+KM=;
- b=WrpefUN6uqA9sRXeSKH2rdkXyLlUmTyREWh+P2LDSRVchmVlDqxRkWHB+m+0UE/PwLsrzh
- myEUDtLRJsonsamm+OBsy7eZBkCjnvZ+rgWLc60Fk2xPGaVYVDhXy0AFBeNmu/A0SB/mue
- MzttqSSzPUB2gmZ2Mh5uHvM84YUW1GU=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=MbTnciHLM6snyuE4srqwTppUYesQqhHUAcBa6gwlgSM=;
+ b=KG072rqFFUgPjMD+peQ1xzQ//JZJR2FJI0UDZvK1I7s+BFN+ioC9Mf6taAeedQLLw1SDRx
+ heMA0a3WjWtbFMk7rnuXVd5KZZT4dGC6VQWbsTiaDYxDJXSUh2/LmSQlfVqo7yqFCObnFX
+ eFeNSA5BkTCoAPkR7StPtXsk2pqEjsM=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-rpqmfsFBMga4p6vyURRWCA-1; Sun, 17 Mar 2024 16:58:08 -0400
-X-MC-Unique: rpqmfsFBMga4p6vyURRWCA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-430b4572a97so12822091cf.1
- for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:08 -0700 (PDT)
+ us-mta-610-kaKBa3-xOXGfWYj9T5aLAQ-1; Sun, 17 Mar 2024 16:58:09 -0400
+X-MC-Unique: kaKBa3-xOXGfWYj9T5aLAQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-430b4572a97so12822251cf.1
+ for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710709087; x=1711313887;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yj6+2OOOZFRaDx1wfLqi3Ph0h7MLz2jfHulxgc/o+KM=;
- b=mbCI/DW1z7mDaLO0vQnWYla5BIkAhKyEioW1dr71GAJhfufw+jtThipdet4GLMGcq1
- TP+tbQWz7gKVwQDrdxlkbObfKbhUfd13OscZo1XS4Z85U8TPuH2zPp/7PC7TvNEDIotT
- YdRg7WFPjcjZcVjsE6R8KmgOqc6MoRI42boy7dvNGs3SPQkzgHj51w6Xd9/W+i8jOqKl
- doJ8ntteNFCalcgWCUWAVlp4GXX7abBPeoyX5JZNPFHRugAq6SUT8lt9AfSc8BQSZB8y
- Rumwt3xdpn1AHFF+NtalZ+6K17wvzh5StDTn8R/A1KkALB9WSoANpDDkwTJjfjdpJVhj
- y20g==
-X-Gm-Message-State: AOJu0YxcAoF7qSvqfDwGhgWy3AdVmmrrnyB0IgiZsg/bCA0L28jG+JAB
- 8TvEsUKydMgyBDms483s0Vr2HKDAhULuXWz+kp7PcftX3WmqFVzzg3m5eRV7vrd6ioFTqnD877K
- aiUh4fpW/xGuw55sCGgOat4VpaG7B8Oll0oTthG2KqJY8gPTL9qorq5Vn6/BiB2ErR8oWiH9F0J
- yoKkKbDzGvKR2nbmFGBhSyjaHYd7/rX+VD4Q==
-X-Received: by 2002:a05:6214:5d87:b0:68f:deb6:2f48 with SMTP id
- mf7-20020a0562145d8700b0068fdeb62f48mr8998334qvb.5.1710709087449; 
- Sun, 17 Mar 2024 13:58:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEmJgaRvyvNVGetIzjPvzyu6PPehOeQPQTq/v1+iYlIl/fmAzOSOuqqbM5Dfb0Cp1Gwu8+XDQ==
-X-Received: by 2002:a05:6214:5d87:b0:68f:deb6:2f48 with SMTP id
- mf7-20020a0562145d8700b0068fdeb62f48mr8998310qvb.5.1710709086896; 
- Sun, 17 Mar 2024 13:58:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710709089; x=1711313889;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=MbTnciHLM6snyuE4srqwTppUYesQqhHUAcBa6gwlgSM=;
+ b=sZea3u+unS65sxlU44IQCD/2etmqS3XZuVE0nMfd9i/TayRM+lHgYYFOVckleLmGub
+ hj2taYMYlvwkjNjtxNVyvWjxw6DAfIW4D4MKHD2bigeuSPhN5zG9o/Tw8iNcwxOLRWGL
+ NbtxjzbX8K7qXfY7brUR3NOPRbEyAp8Buqo4WyZDnYYHSoSbIK3wO7IRbiHxL1wjF1y1
+ 3V+wdqkDGcyRq5dNBT+5zKfH7DPcPGaD7HIIMg9KuUy1jNR3cNfB/83bv4t7rgWqvpNt
+ V9pHL0eoo0zHYG4JpPeVGYOi31Eq9sj5UTO4GQAaf8qT5Xaj+5NKfWKe8V6mnJwNXDCo
+ kbIQ==
+X-Gm-Message-State: AOJu0YysBYOx3uBxwQ6PCVoLldQ8yWV6bKCQ8DX+GQWTbSkWdMu2um+8
+ ON/unyh8ypnfJUIk2g7ZM7fEwtQXAbPpAqdaIjYhNAhaAjqvIzWXmeTQTKDTmTPnGEUb9cuQDuV
+ pBOA/V6mdMxyLjhO6sXmMIOwD3LVIRhAoKf7pvZyNsozQZ5nlM1hWnhG/MS7j7+XbVnkDrkNIPh
+ sCKxP7PrQuf3Y+fWzIwsFBD9bxqEQR3ZLn6w==
+X-Received: by 2002:a05:6214:2c0a:b0:691:ca1:ce8a with SMTP id
+ qq10-20020a0562142c0a00b006910ca1ce8amr8883214qvb.6.1710709088810; 
+ Sun, 17 Mar 2024 13:58:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFp0W3MZ3YXyHbOiPw9/LK7NYkTThLMeP+OylfAnrLosrxy4uQEO8S8lm8eRe4EotLqOG3/Fg==
+X-Received: by 2002:a05:6214:2c0a:b0:691:ca1:ce8a with SMTP id
+ qq10-20020a0562142c0a00b006910ca1ce8amr8883192qvb.6.1710709088414; 
+ Sun, 17 Mar 2024 13:58:08 -0700 (PDT)
 Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.05
+ ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Mar 2024 13:58:06 -0700 (PDT)
+ Sun, 17 Mar 2024 13:58:07 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 00/10] Migration 20240317 patches
-Date: Sun, 17 Mar 2024 16:57:53 -0400
-Message-ID: <20240317205803.361163-1-peterx@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PULL 01/10] io: Introduce qio_channel_file_new_dupfd
+Date: Sun, 17 Mar 2024 16:57:54 -0400
+Message-ID: <20240317205803.361163-2-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240317205803.361163-1-peterx@redhat.com>
+References: <20240317205803.361163-1-peterx@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -98,66 +102,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Xu <peterx@redhat.com>
+From: Fabiano Rosas <farosas@suse.de>
 
-The following changes since commit 35ac6831d98e18e2c78c85c93e3a6ca1f1ae3e58:
+Add a new helper function for creating a QIOChannelFile channel with a
+duplicated file descriptor. This saves the calling code from having to
+do error checking on the dup() call.
 
-  Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-03-12 13:42:57 +0000)
+Suggested-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Link: https://lore.kernel.org/r/20240311233335.17299-2-farosas@suse.de
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ include/io/channel-file.h | 18 ++++++++++++++++++
+ io/channel-file.c         | 12 ++++++++++++
+ 2 files changed, 30 insertions(+)
 
-are available in the Git repository at:
-
-  https://gitlab.com/peterx/qemu.git tags/migration-20240317-pull-request
-
-for you to fetch changes up to 9adfb308c1513562d6acec02aa780c5ef9b0193d:
-
-  migration/multifd: Duplicate the fd for the outgoing_args (2024-03-15 11:26:33 -0400)
-
-----------------------------------------------------------------
-Migration pull for 9.0-rc0
-
-- Nicholas/Phil's fix on migration corruption / inconsistent for tcg
-- Cedric's fix on block migration over n_sectors==0
-- Steve's CPR reboot documentation page
-- Fabiano's misc fixes on mapped-ram (IOC leak, dup() errors, fd checks, fd
-  use race, etc.)
-
-----------------------------------------------------------------
-
-Cédric Le Goater (1):
-  migration: Skip only empty block devices
-
-Fabiano Rosas (5):
-  io: Introduce qio_channel_file_new_dupfd
-  migration: Fix error handling after dup in file migration
-  migration: Fix iocs leaks during file and fd migration
-  migration/multifd: Ensure we're not given a socket for file migration
-  migration/multifd: Duplicate the fd for the outgoing_args
-
-Nicholas Piggin (2):
-  physmem: Factor cpu_physical_memory_dirty_bits_cleared() out
-  physmem: Fix migration dirty bitmap coherency with TCG memory access
-
-Philippe Mathieu-Daudé (1):
-  physmem: Expose tlb_reset_dirty_range_all()
-
-Steve Sistare (1):
-  migration: cpr-reboot documentation
-
- docs/devel/migration/CPR.rst      | 147 ++++++++++++++++++++++++++++++
- docs/devel/migration/features.rst |   1 +
- include/exec/exec-all.h           |   1 +
- include/exec/ram_addr.h           |  12 +++
- include/io/channel-file.h         |  18 ++++
- migration/file.h                  |   1 +
- io/channel-file.c                 |  12 +++
- migration/block.c                 |   5 +-
- migration/fd.c                    |  51 ++++++-----
- migration/file.c                  |  75 +++++++++------
- migration/migration.c             |   6 +-
- system/physmem.c                  |  10 +-
- 12 files changed, 279 insertions(+), 60 deletions(-)
- create mode 100644 docs/devel/migration/CPR.rst
-
+diff --git a/include/io/channel-file.h b/include/io/channel-file.h
+index 50e8eb1138..d373a4e44d 100644
+--- a/include/io/channel-file.h
++++ b/include/io/channel-file.h
+@@ -68,6 +68,24 @@ struct QIOChannelFile {
+ QIOChannelFile *
+ qio_channel_file_new_fd(int fd);
+ 
++/**
++ * qio_channel_file_new_dupfd:
++ * @fd: the file descriptor
++ * @errp: pointer to initialized error object
++ *
++ * Create a new IO channel object for a file represented by the @fd
++ * parameter. Like qio_channel_file_new_fd(), but the @fd is first
++ * duplicated with dup().
++ *
++ * The channel will own the duplicated file descriptor and will take
++ * responsibility for closing it, the original FD is owned by the
++ * caller.
++ *
++ * Returns: the new channel object
++ */
++QIOChannelFile *
++qio_channel_file_new_dupfd(int fd, Error **errp);
++
+ /**
+  * qio_channel_file_new_path:
+  * @path: the file path
+diff --git a/io/channel-file.c b/io/channel-file.c
+index a6ad7770c6..6436cfb6ae 100644
+--- a/io/channel-file.c
++++ b/io/channel-file.c
+@@ -45,6 +45,18 @@ qio_channel_file_new_fd(int fd)
+     return ioc;
+ }
+ 
++QIOChannelFile *
++qio_channel_file_new_dupfd(int fd, Error **errp)
++{
++    int newfd = dup(fd);
++
++    if (newfd < 0) {
++        error_setg_errno(errp, errno, "Could not dup FD %d", fd);
++        return NULL;
++    }
++
++    return qio_channel_file_new_fd(newfd);
++}
+ 
+ QIOChannelFile *
+ qio_channel_file_new_path(const char *path,
 -- 
 2.44.0
 
