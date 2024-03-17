@@ -2,92 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBE387E018
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B573287E011
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlxaF-0002D3-Du; Sun, 17 Mar 2024 16:58:19 -0400
+	id 1rlxaF-0002DC-WB; Sun, 17 Mar 2024 16:58:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaD-0002C3-4a
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaD-0002CO-NP
  for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaB-0002a1-G7
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaB-0002aR-S4
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710709094;
+ s=mimecast20190719; t=1710709095;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XYUowG+n3GNsgXqb2DaoNPh3LIqkGmyhv13NH0L54Fw=;
- b=MeVV0+E4GmKZtzbuSkqAWyaScAkaBJGGeJRKFaopTblM+3qwW7NExS1YAqWuBV9I8IKqqM
- QohaZ1Rufwr0LN1qM5+vD2bzkLHM3VD2n8TtE95nBZ/BzLrnNfHnZ3xPBDIj/s3cY921cz
- oNCuj3itES+WizW5su6bCZ9X7DLvrq0=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rBrNqzZr7Hr6AbPSVoBq/JdhO106IzGnwVAYkki9vHs=;
+ b=b91thGd7VwN+ZKN2PbQbtcZrcUdxjpnchAaSaH/GXvF1Yxe0OsaGJhAHFcyEnbBakt5lIi
+ eLr0eCfbCimtLshAtL0VMvlKzqgf6kWe4aAs3VZ5pD1dmDh5zxxdQlcuTiVLpM448b2v7L
+ 08xDKJkbJWvlvTmiOaPDidoNFAx7yrk=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-VIVV1DZ1NwS9VYbWReMSyg-1; Sun, 17 Mar 2024 16:58:12 -0400
-X-MC-Unique: VIVV1DZ1NwS9VYbWReMSyg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-42f30752eb4so12381271cf.1
- for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:12 -0700 (PDT)
+ us-mta-622-dj2BnyOlOcmvkq08ABwK-g-1; Sun, 17 Mar 2024 16:58:13 -0400
+X-MC-Unique: dj2BnyOlOcmvkq08ABwK-g-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-430c76df729so3705081cf.0
+ for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710709092; x=1711313892;
+ d=1e100.net; s=20230601; t=1710709093; x=1711313893;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=XYUowG+n3GNsgXqb2DaoNPh3LIqkGmyhv13NH0L54Fw=;
- b=NygyC4QlYAvFDARBi/Vz2rsJ6ubVMcYK5MR267ro83kWHX2upCERF1S61rqGj3jwEf
- tjpkeRqi+ZzIuEsuPO8qHBfTE4Eg/OAbnHf3kmXHeTm1kcAYwSCAqhUmE/H4Yuw4N75R
- /RUrkLgWpRK9Y3hdOmyu+4u2Pa/SdFGL/ZBAPIQDuDjGONojprkJ6CAEHIGsAS/CgKTp
- 7CHSo+Wl5UtlNZOnxkZPeVWWy/BFtoi5l/8oGM3JLs9YbTzFxDMFRtog6ZUPEUgHNUBn
- zzB4FpYtVYeP6gaBlIJhu6TmCAH7tMcMOeViSLF4JnwjTmddxNReYxzFrgXtDt5E/q4F
- Wcjw==
-X-Gm-Message-State: AOJu0YwykcfxljpqLR0gYke9OZyVwCP53tBQFkMvlnAgr2NtaohrUT3f
- a+tBU3cF0oM8YuRiPg85xI5harIwyoFz6Vs21l2mHLPKtxkmU/GHa4ZlPHJdxfvEUIEIAH0QPkc
- eAVepXTO3WHdRazAexeMSYaegrwFUmHuBRRTsjT8yZ3QUwTF2Emb5g/ZSVxHI5hD3PhGtPta73x
- BPUApeKEKHZZk4C/plpgKQmh/Nm7s/OyOFtA==
-X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
- om26-20020a0562143d9a00b00691456f415amr12266596qvb.4.1710709091702; 
- Sun, 17 Mar 2024 13:58:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGZSJinvIUlCV+HoP3OhPxtYoNF8P+oixWGF4tk64l5jNNcKe4wk1uiJ8DcIQYEPd311LE8PA==
-X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
- om26-20020a0562143d9a00b00691456f415amr12266577qvb.4.1710709091248; 
- Sun, 17 Mar 2024 13:58:11 -0700 (PDT)
+ bh=rBrNqzZr7Hr6AbPSVoBq/JdhO106IzGnwVAYkki9vHs=;
+ b=U/KPGp0vZ7m27GBgrTKsIISjMNklKbexEEYfMXUh5PIdqc/WCk71HO+A66puY1st9O
+ WCI6c3lpOywupSK38Xfgaj4LAZo+IopksHjZEOZ7V28jtmEajG4S/aLeptQiEy/RRz6H
+ JErUXRg7kFXNGNRxeyUNws5+HWo3556nCilrxAO6sIBxbb9GStB7jfip4nEcIfBrU/aT
+ gjq17erp9DA3ahkUwr0y+Qm5VpxMfIBI+kYG3prRDIGazdtzdio21xWGMz8VQACD9w+V
+ p7EcVJcaKVhNOtBPMyDLznyIOsCD1VNElVhQ7egQn4vnab+9jtTUyQYeoA2GfuNh+9lE
+ W9gA==
+X-Gm-Message-State: AOJu0Yw60+AdyH5vX15SHY62zXC9/VlkZh3miC/wl8bsuFVkHEL8TEZ3
+ HMk0I16cipvrNeiiQk0tWf7MUjUiwZpJAcemFSCZIKJLSjYvwDFZF60K197no/vQjxlwrfsY9TD
+ z2rTyPBdpcd23UcrLb0iEo0C6OdvLX+UOpO6mfmn1X8R5/dIBqlERBXW7JSW+dZiXQ4WWm0Daxm
+ Eyz2j5dw8eg61YfoxkJDOHJTruj35puuO0Lg==
+X-Received: by 2002:a05:6214:5345:b0:690:3c85:c5b with SMTP id
+ kv5-20020a056214534500b006903c850c5bmr8961136qvb.3.1710709093146; 
+ Sun, 17 Mar 2024 13:58:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2GXGuZfEQ4KPnVk3RegospeQLPcJekWOLOy2ws/e+5Wn9HY6GSrFBn9Kj8LYmk1rFwfV7Sg==
+X-Received: by 2002:a05:6214:5345:b0:690:3c85:c5b with SMTP id
+ kv5-20020a056214534500b006903c850c5bmr8961106qvb.3.1710709092510; 
+ Sun, 17 Mar 2024 13:58:12 -0700 (PDT)
 Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.09
+ ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Mar 2024 13:58:10 -0700 (PDT)
+ Sun, 17 Mar 2024 13:58:12 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, David Hildenbrand <david@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 03/10] physmem: Expose tlb_reset_dirty_range_all()
-Date: Sun, 17 Mar 2024 16:57:56 -0400
-Message-ID: <20240317205803.361163-4-peterx@redhat.com>
+Subject: [PULL 04/10] physmem: Factor cpu_physical_memory_dirty_bits_cleared()
+ out
+Date: Sun, 17 Mar 2024 16:57:57 -0400
+Message-ID: <20240317205803.361163-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240317205803.361163-1-peterx@redhat.com>
 References: <20240317205803.361163-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
+X-Spam_score_int: -8
+X-Spam_score: -0.9
+X-Spam_bar: /
+X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,45 +105,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-In order to call tlb_reset_dirty_range_all() outside of
-system/physmem.c, expose its prototype.
-
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Message-ID: <20240219061731.232570-1-npiggin@gmail.com>
+[PMD: Split patch in 2: part 1/2]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Link: https://lore.kernel.org/r/20240312201458.79532-2-philmd@linaro.org
+Link: https://lore.kernel.org/r/20240312201458.79532-3-philmd@linaro.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- include/exec/exec-all.h | 1 +
- system/physmem.c        | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ include/exec/ram_addr.h | 9 +++++++++
+ system/physmem.c        | 8 +++-----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index ce36bb10d4..3e53501691 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -655,6 +655,7 @@ static inline void mmap_unlock(void) {}
+diff --git a/include/exec/ram_addr.h b/include/exec/ram_addr.h
+index 90676093f5..b060ea9176 100644
+--- a/include/exec/ram_addr.h
++++ b/include/exec/ram_addr.h
+@@ -25,6 +25,7 @@
+ #include "sysemu/tcg.h"
+ #include "exec/ramlist.h"
+ #include "exec/ramblock.h"
++#include "exec/exec-all.h"
  
- void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
- void tlb_set_dirty(CPUState *cpu, vaddr addr);
-+void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+ extern uint64_t total_dirty_pages;
  
- MemoryRegionSection *
- address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
+@@ -443,6 +444,14 @@ uint64_t cpu_physical_memory_set_dirty_lebitmap(unsigned long *bitmap,
+ }
+ #endif /* not _WIN32 */
+ 
++static inline void cpu_physical_memory_dirty_bits_cleared(ram_addr_t start,
++                                                          ram_addr_t length)
++{
++    if (tcg_enabled()) {
++        tlb_reset_dirty_range_all(start, length);
++    }
++
++}
+ bool cpu_physical_memory_test_and_clear_dirty(ram_addr_t start,
+                                               ram_addr_t length,
+                                               unsigned client);
 diff --git a/system/physmem.c b/system/physmem.c
-index 6cfb7a80ab..5441480ff0 100644
+index 5441480ff0..a4fe3d2bf8 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -819,7 +819,7 @@ found:
-     return block;
- }
+@@ -881,8 +881,8 @@ bool cpu_physical_memory_test_and_clear_dirty(ram_addr_t start,
+         memory_region_clear_dirty_bitmap(ramblock->mr, mr_offset, mr_size);
+     }
  
--static void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length)
-+void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length)
- {
-     CPUState *cpu;
-     ram_addr_t start1;
+-    if (dirty && tcg_enabled()) {
+-        tlb_reset_dirty_range_all(start, length);
++    if (dirty) {
++        cpu_physical_memory_dirty_bits_cleared(start, length);
+     }
+ 
+     return dirty;
+@@ -929,9 +929,7 @@ DirtyBitmapSnapshot *cpu_physical_memory_snapshot_and_clear_dirty
+         }
+     }
+ 
+-    if (tcg_enabled()) {
+-        tlb_reset_dirty_range_all(start, length);
+-    }
++    cpu_physical_memory_dirty_bits_cleared(start, length);
+ 
+     memory_region_clear_dirty_bitmap(mr, offset, length);
+ 
 -- 
 2.44.0
 
