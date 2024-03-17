@@ -2,111 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA8C87E0A4
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 23:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461D787E09E
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 23:16:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlymd-0003eo-Qa; Sun, 17 Mar 2024 18:15:12 -0400
+	id 1rlymf-0003f4-Mh; Sun, 17 Mar 2024 18:15:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rlymK-0003cc-I5
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 18:14:56 -0400
-Received: from kudu.cherry.relay.mailchannels.net ([23.83.223.97])
+ id 1rlymJ-0003bw-Cs
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 18:14:51 -0400
+Received: from cheetah.pear.relay.mailchannels.net ([23.83.216.34])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rlymF-0005jV-M5
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 18:14:52 -0400
+ id 1rlymF-0005jw-M7
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 18:14:51 -0400
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id 031B47A26D3
- for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 22:14:43 +0000 (UTC)
-Received: from outbound5c.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 06897102D53
+ for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 22:14:46 +0000 (UTC)
+Received: from outbound1g.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 5BB257A25BE
- for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 22:14:42 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1710713682; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id 6A31D102CFE
+ for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 22:14:45 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1710713685; a=rsa-sha256;
  cv=pass;
- b=bys+K8/cIL6lKimpDTbYoj7+F5sdFwHrbhC+NC5dqJ12q+5L7ec+bnRCr4Qc9kyt2FBEBa
- K4vUNYFSn8oYAzCCiE9IV75F8vk+yNoY8ei7XdN8lsFUz9rL3mEBKFu5wxzK3aPE8e41OJ
- NRBrfQ+FAS19xWg75VS9RjYOt5hV87vWDCEGHIM3IoW2GCYrVTjaoLCmBw+WZN2FssdJZZ
- R91XEYX/Us4zHm/sKgsRvYKx1dTZf8PMArRmkZp76VIOwsF4S3vvPETaF1/3If0BmNXqMo
- 9ZsHrCLDRHgMoXiHFitm3nrckNuPCA4G+jAtW8K2OnjwbEFnuXLx7XClK3KAhA==
+ b=Qkxu6V+wkb4GTy/nVLHq7VOn88mzyiGRlKaNaN/8D/k1he3nFaL7BRV8bk46Uuv5SHnisI
+ CRfKXR1GjibUBntQOV0zh9+Y6GH9yVJo55fj6mST85deQnGqcHZBteDGGiRmC6ZszVYmWY
+ LEaL2ukqXydkrRYxKLAatfksl3ZxRNQocoGajyMXqjjHNUHIAMEoCzbWF+HezV5PuPZqTp
+ 8oGXRZiogKr2yFedrRYaYwGZDcVnzefJpKvRqIRCyIdq/RzTQ9qHICoyw6F+cuEqoEmaHC
+ wkLel6t21RKRe5Le9ALJ1xL9UtMvMXbbz7FqHLAP4e5rRddt5iGQLMHtBmDeeQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1710713682;
+ d=mailchannels.net; s=arc-2022; t=1710713685;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=XIaZGXOlzOcFaNSLv1z7QHkqmwxhFrui26Dl781DBp0=;
- b=BKj/Pu0XvZPMbyW76MG46hEzZ82HbdYgQPbdG8zIncYVky7EdDIOVVhkZOJ1XSZKeNMqwX
- EY+97gYBdra1zCXIlvGnYsu32f+0j51a8MG+QyAQjkqLqbWYjF7yDx/CbOI1oSGRoN6iuw
- jnvFDViYRhCUQ9IYTt+LttulW6fIz9YKA3ipUjQW/c08Tkwz25CsLfJie9IvWttQtp9PJ3
- hRFBNAvW+DaDc+4x5Xzjln59LGbvr1s0sU2LnLR/CFpLs26UG/ZdacANsYMtmKdnTIFOZm
- ulHiMDmzEh/U8bNc1EFkSgAlCUcY58IcmJSfynmRj6l59Osl5AbgZcqwXOU56w==
-ARC-Authentication-Results: i=2; rspamd-76c7995f89-p48d7;
+ bh=QCLrGkCK+xiEWzkgx+AT2kPkptcNlffHXwOeGyEBSx4=;
+ b=quKtzi6bB9nj01ENI2/yINkDtuhrZiWCJ39cwcq/FqxSTFkeWe/h7IuHOJ1SxN1Dfvu8yu
+ nAs7q55YuqYworE0dD/9BBoFdQQk/wCHGEZRT7VqHaNos83w7HVVcuK4UD5mYR4tVnXV5S
+ wT7d2DCN7bpO2LSlmARPgkGc/Ydhdalm3WHjQtzSUD2bMzAqe/ydFNEa0YMUU0mSsz7s2B
+ VvVUr4EiohO6WRJTVoOll9M4B8pYtFpH4WgUlToNXX55Mwm4ASY3QcRNKjibEJ7nLgg9uS
+ qvAnyLe5hFT5PReogsy/6rXZ/YNDxe+a5Oo366xpEuU75Ut7PDILP2R11cjhCw==
+ARC-Authentication-Results: i=2; rspamd-76c7995f89-sx7pk;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Troubled-Absorbed: 4ab606dc27b57978_1710713682875_515434682
-X-MC-Loop-Signature: 1710713682875:4021988264
-X-MC-Ingress-Time: 1710713682875
-Received: from outbound5c.eu.mailhop.org (outbound5c.eu.mailhop.org
- [3.125.148.246]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.119.164.55 (trex/6.9.2); Sun, 17 Mar 2024 22:14:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1710713648; cv=none;
+X-Shrill-Belong: 33a55f680decd55a_1710713685922_2844729222
+X-MC-Loop-Signature: 1710713685922:2183214641
+X-MC-Ingress-Time: 1710713685922
+Received: from outbound1g.eu.mailhop.org (outbound1g.eu.mailhop.org
+ [52.28.6.212]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.111.46.219 (trex/6.9.2); Sun, 17 Mar 2024 22:14:45 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1710713649; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=OMSyAlxoMekr+VGC0hFHEF5JzrD04fwPMaFcnp/1eaIkAb9tcLovyaiEbTSLxLBlT//oiUDyb7NvD
- VzXjZWt5HjVx5f25j4vK7TnGR6UJ9kZIrsPEqNbNOfoijulUksivrl48TbwuPQLlsrH2exqgy12xn8
- 3ofxNJo3V7d46B8bG3rM/+gddMQfUJJAG5fQuP8U/I2oNk0IYxZ9NHgGK/QIOH/9eSHIec6JwdEI5T
- cwiO+1V14ySYL3ecJEvw08lG5/1h6GRiyfFl29DYEPCP5tdNw1QCxxI5DT8raoY2oDUKli4p+RhKQR
- HmGirHZw6lBA9M0kLD5dBp2f9RjHvPg==
+ b=RHQzGj6AGd2Enxcj4+hTdgKgKjQxBn2hA1KS3VpJobpUvEejkjqZWQd+7LkO0UWZwC/UbLXIGZBf8
+ b27zS+NBEKy29BSeLmyCYhSdoyLrjcgrI4Xk/esUPEbq0hZ94+v9AoVvv80vZwm1CiF82jUK5Z1NG1
+ CClyw/VBZ7ZaqkaIgx3S1jqESVt2IQ7cC5pCtp2Y50GyDtGxwxZ/bJPDM/VFA9Fwrv1L6CzIN5qoOi
+ 1rfulG555WK+TTujfLLV2tw8pNvSHVDfvwMDMbJxrSkCQl8i0rFVO6JVbiOM7Y0fnYpjn2j+/xxz6i
+ n3f462+s0eUtaaHmaee3k5gfanaJVgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=XIaZGXOlzOcFaNSLv1z7QHkqmwxhFrui26Dl781DBp0=;
- b=d3cnsjAbBZk+M2Fea+x+FrfgmknIcDkaFQp2WJSuLQScAEk91OdaSxGkbdNFXEqmSxpzRB3Cl0lZp
- xbk3T4L+dX+07tmOS2wIIVVvkH9+ekB2OyXfuP8G5dDDLMRGzf/N821LDMGDZeEA2ROqWfaxVtrXwN
- C7pOJRjHV26x5mR13vY182fxKvAQCo7BMGpV2Ei1RPHtkz/hu4YxMlYaAS7C5lgbtuRujNyDP+KAal
- 9YhiX15B4Yin8d0wwVY9F/YvxI9b3XWk7DFFZp9/jawI7y5mZV4DaCt1KbEFLYL7y1Muz+HLbWLnLt
- LrNFVKuMV7ajR5XyTEw6a6Y9xZVCs0A==
+ bh=QCLrGkCK+xiEWzkgx+AT2kPkptcNlffHXwOeGyEBSx4=;
+ b=iNFc8KnDT00Uq92va6nSnYH2q2NRf2JIchT+sOm4ue+4Md/iXs4wvE/Ttej13OcJQnmer/CDd4xlM
+ DYSRWI5CqetGbnPfBgZhDFli43LKBRMuuZ63sDvQL8Xn/f4jF9W7O4cNchSEdImgTz9AkcOUQZg5x9
+ a1nUISGOfRW0kE3oetpHSMxIe+AbMuvtGhuKCTVzCRJAzYdCU+FaPOXeqv53TMRPrMUCFMKxY4ITsS
+ dE6+UVGzbT3eDM1+lLbC9XQSHFKh35NTk96LSor2x47XqSFyggdfa8YWO1d9lKYq8zG8HvumN9mMBR
+ 1tj4dQaJ4c7ZoY2wGf4jD0Zd++h27ig==
 ARC-Authentication-Results: i=1; outbound3.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=HvghZ8zc; 
+ header.b=UoRa7K7U; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=XIaZGXOlzOcFaNSLv1z7QHkqmwxhFrui26Dl781DBp0=;
- b=ocy48Vb2QzffA6up4as507TOLZbgjxX4SUwO5BuSFUv3o02pWQW4hnUaTt6cYPoE7IkxeufVNbOLE
- IrxaWlY0oAbjtXOARTx4abXhrz3l5RX4VA5pAPTjAmINukMmp0olfgWedSaiwTIQHDUBBC1NmrRKL8
- lGEmYtMejzViivac=
+ bh=QCLrGkCK+xiEWzkgx+AT2kPkptcNlffHXwOeGyEBSx4=;
+ b=GHpkYwBnbFMnkyfwXD5D1WLdr4rLm6PwsBhR+rI71Of5iZEfCEjoztLdqUmuRQ6nFQi4GWf8z+ZAm
+ 4/2wIxj7n9qbkH53qnVptAnmnPzpwf+TkxMQQESw6so7ZY8eof0K254n+pGx/aD5FshJhoI6jAw/AC
+ Hy8lOe/h8+vX7u5k=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=XIaZGXOlzOcFaNSLv1z7QHkqmwxhFrui26Dl781DBp0=;
- b=V2e3XTGsOBN6moGA62Gr2DY89bQSjACwrC/aPS+i7ZoNSTflTYwkQcNjK13gzn9EqrUq0gH2seDyj
- 7UY5JR8UhBHB64WhqgGk+Sia15WUr0Mo9x7ohBc7W27H/3HRKnplGehAUhzIlhkpMMdKZBgRGdPmGC
- 0w+DJZfRP7j0WtRMxF4RKsn/ymQ7GHuM1ZrpaVNcuNAb6U0T1fAz+R8wh4dylcDZ2PGr2d40SohgWE
- i4mYke4UiDf9r9zfJ1qVuP2tpC40EP3etGhGubxt043reLSFvSFjB/2P+wockhV4+hPhxFRf4iFF3k
- Vsn46NMVE8lrZ0r5bAFpM8DDXiRgw/A==
+ bh=QCLrGkCK+xiEWzkgx+AT2kPkptcNlffHXwOeGyEBSx4=;
+ b=ZYYvsPtJ5hkwziKqC1FKNXe5Qe/Ie3epeDHBqBRskP+s6UgByxkQhCXpPt38DWHlJlRQhkMN/2Xem
+ JXhowewT8NDXv+vcnHEX0QFTJt3vl6m+YqllwgF1zHYgf9/AdtutaEd5NbRjt7qIdgNGgVHeAx8Kfl
+ 4ZSWhjSFfvs3BWfUhScoJX9xySBlesna82lM/yix7ftfu+Y+SQK1hYNytWz4R76BW82nAlT/hiRHGh
+ CPvCxWJdKWaNDzIDYyncgv4UDYOa8G/84xIKBHDDudAYFCMCf8a3gYkMoBs6qm4CvT32FVHmuYqcxY
+ eXPraCQ7+fEZ53OtcrqJ5iLbENOdsXw==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: ab3de6b9-e4ab-11ee-b1ba-eda7e384987e
+X-MHO-User: ab7347fc-e4ab-11ee-b1ba-eda7e384987e
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
  by outbound3.eu.mailhop.org (Halon) with ESMTPSA
- id ab3de6b9-e4ab-11ee-b1ba-eda7e384987e;
+ id ab7347fc-e4ab-11ee-b1ba-eda7e384987e;
  Sun, 17 Mar 2024 22:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
@@ -114,31 +114,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=XIaZGXOlzOcFaNSLv1z7QHkqmwxhFrui26Dl781DBp0=; b=HvghZ8zcwVBm04xeR2HwkcZqtY
- PEF5vVtSrtXpsRXlc/0i/jR0ilH9U9W6G5JvehfefP85oHgMhqx/JFKX4l0I2UYziJ2xw2BQv75OJ
- mKmKQVzUPhCPc0sG+Dlygw+IJ9pZMPMyO5b/gOf1WAhXLhWLrKI53JksDyEsrb7X18DrFs6exXwlK
- 9+fLH2kHfiII6FwNxbHmXSDcttEQMphFvD95FoHB7B1KIMAXg/vyyaT5OcmsSbzWRaxMx5HoytIGq
- ExvEJbfW+mQph5BXWTyJXvNHNHbYCFEgs2DynEqS2ezeRqSV9xPjJpJ5YHzi301XIxLseZs35OoqR
- 99DR2EHA==;
+ bh=QCLrGkCK+xiEWzkgx+AT2kPkptcNlffHXwOeGyEBSx4=; b=UoRa7K7U1pg/IKeFyQy/zFsBEW
+ 58aKsXkkWV0u5VD/B5HV0JmvI596dXx6FQWFyRhX3v0Vlu82t5V3E00lYjFSgldkH/k6a1Fta59B+
+ jQEanY6gHDv+Zu2pTflnYdpHfWmOUFtpEnuRZifd3U05cby2tELtLCYXJeT/foeEaZRnNDCvxrtvi
+ Z+g9tqp4tqLf84Fft0WP0Sg455/1r81HJXsg20qEZeWYK01fy2pDXXyifVvTvBEClHWRKT2IMQ8t5
+ FxdGucz6DhNRgC6mIvBjCM3n+UVs9uWG+uDCeQ/ZD7sUDInogm4TMdPzehRlpj5BGyHTvbhCW5t4g
+ GP80jXvQ==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rlym5-004C3C-3D;
+ (envelope-from <svens@stackframe.org>) id 1rlym6-004C3C-17;
  Sun, 17 Mar 2024 23:14:38 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
  Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 4/7] target/hppa: exit tb on flush cache instructions
-Date: Sun, 17 Mar 2024 23:14:28 +0100
-Message-ID: <20240317221431.251515-5-svens@stackframe.org>
+Subject: [PATCH 5/7] target/hppa: copy new_spc to iasq_f on be,n instruction
+Date: Sun, 17 Mar 2024 23:14:29 +0100
+Message-ID: <20240317221431.251515-6-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240317221431.251515-1-svens@stackframe.org>
 References: <20240317221431.251515-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.223.97; envelope-from=svens@stackframe.org;
- helo=kudu.cherry.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.216.34; envelope-from=svens@stackframe.org;
+ helo=cheetah.pear.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -162,35 +162,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the guest modifies the tb it is currently executing from,
-it executes a fic instruction. Exit the tb on such instruction,
-otherwise we might execute stale code.
+Otherwise the first instruction at the new location gets executed from
+the old space.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- target/hppa/translate.c | 2 ++
- 1 file changed, 2 insertions(+)
+ target/hppa/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8ba31567e8..58d7ec1ade 100644
+index 58d7ec1ade..a09112e4ae 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -1940,6 +1940,7 @@ static void do_page_zero(DisasContext *ctx)
- static bool trans_nop(DisasContext *ctx, arg_nop *a)
- {
-     cond_free(&ctx->null_cond);
-+    ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-     return true;
- }
- 
-@@ -2290,6 +2291,7 @@ static bool trans_nop_addrx(DisasContext *ctx, arg_ldst *a)
-         save_gpr(ctx, a->b, dest);
+@@ -3777,6 +3777,9 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+         }
+         copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
+         tcg_gen_mov_i64(cpu_iasq_b, new_spc);
++        if (a->n) {
++            tcg_gen_mov_i64(cpu_iasq_f, new_spc);
++        }
+         nullify_set(ctx, a->n);
      }
-     cond_free(&ctx->null_cond);
-+    ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-     return true;
- }
- 
+     tcg_gen_lookup_and_goto_ptr();
 -- 
 2.43.2
 
