@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE1387E020
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 22:00:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5C387E012
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlxaR-0002Fp-6b; Sun, 17 Mar 2024 16:58:31 -0400
+	id 1rlxaS-0002Fs-Pd; Sun, 17 Mar 2024 16:58:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaJ-0002F6-N7
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:23 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaK-0002FU-L0
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaI-0002do-5m
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:23 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaJ-0002eB-3o
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710709101;
+ s=mimecast20190719; t=1710709102;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nz8vhY0nyugAeRv9MWQlmYdsswd/VLGriTQno8XhX7U=;
- b=UKENncML9wKXjtQFF3dsDWULEhd9iVIqPcwa0c/KbR0su+QOIVsrX8pPrNLZWuSl8WbHGA
- uB9+Bd/FZ/3+ERxaTx6mW5p92O5+J0WOvrgVFKp0bKW5C6EduYV5QiYpMpbFhLJtY6aZ3K
- 8CiAS17sQifsTgj4Sn/xKJHW7aFSsHw=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2/dYvsDyDFOzN5fd9fyhA5B4S0ZtJhXWR0ak14NU83A=;
+ b=K6UaqosRW7DFw0IagjLsJYYAEry2PgUEQxlaATD6azyP4rST8GUD3MlZ3SQG3ceZ6nH9tv
+ I4yxJ2PFberQ2h4uayJJYIteLOGw6eOLifVMQXkOOLmadvwnjKUfAUj4H97bAySP1IfAQU
+ KOfi5+66+kDhyDrHwVpupHAcij0oWYc=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-589-xHFKda0IOzijUt9iLfLtWw-1; Sun, 17 Mar 2024 16:58:20 -0400
-X-MC-Unique: xHFKda0IOzijUt9iLfLtWw-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-430d45c66acso372621cf.1
+ us-mta-515-DR4brby5MneDeA9lfEib8g-1; Sun, 17 Mar 2024 16:58:20 -0400
+X-MC-Unique: DR4brby5MneDeA9lfEib8g-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-430b9ee6bfbso4063311cf.0
  for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710709099; x=1711313899;
+ d=1e100.net; s=20230601; t=1710709100; x=1711313900;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nz8vhY0nyugAeRv9MWQlmYdsswd/VLGriTQno8XhX7U=;
- b=b0zA0wHKA7MOvytQCLUhQNv0XWezgdHCpzY9AeQMPAn+HpjON6VDaZ81q7N/YzzSRB
- zDISVoFOQQEoBcccEkU3SqP462jiY3iTlkV4rP/rKhM5kETWJTbyvszrDHefM/2nXxqF
- XAeieXnUwTJa8eDo7y+o/uV+SSecumoOl3A/DuilYHoihewm1eBuIdm0O6n0d2QBsaaD
- /yeHufdmtkmz1M2LiwcocbYjrRJ9HlvHeJniy915oUgCsr7oJnpnHjf6n6MXskSVcQA8
- j/txdkhuqmBxgvAIDsqQ9BzdFrqAUvevgNbHreigcj2MN96FsDSl0iemjSqxLGwjp6T5
- KIZQ==
-X-Gm-Message-State: AOJu0YwlTgwC9dTe8KSkcSwgRdPJl6WWV5iTRxtVBSKfwUh/PBtAtsci
- WjSaHyXZ7HHnOyXuvEiri/cz8k6BCUFxcqt/zK6YcQuQwYdub3M/lV8ryJUAm/mLl1wto5eFqJ6
- JefL+OuucDClyJXLf93vVGvpHKOO5wsTekAGlt/DtH1huAxppGbGPy2wLXIIMIi4ptA0NGEjNYz
- xkV26G5f5xZU4QY1A13n4vIfg5NGst7GZxmg==
-X-Received: by 2002:ad4:41cc:0:b0:691:87dd:f836 with SMTP id
- a12-20020ad441cc000000b0069187ddf836mr6382254qvq.5.1710709099164; 
+ bh=2/dYvsDyDFOzN5fd9fyhA5B4S0ZtJhXWR0ak14NU83A=;
+ b=FW1e6+5y/7mwG3S/ylbtWvotXHykbeYc+lJ9B5bDkwh6bnyYOnXLAVkOy63TXnebtb
+ zKC7jlv72MvAKMiZNHKJ1bvNfDFPoutB1Lk6gZKNqVtGVWjdMOm7D8gGmgAiGj7sKHsI
+ K808/H8dQH82AqSCP+xrr+hWj4gawB1uNxqE5KY/1c4m3FaXDdLkNxxl9Lf+dplLcsWO
+ qxK/W5kElvC52plX2yXY/jquAZ3L4jTctDOaw0L0N3bdF0TRhBECHeahrFzL5Gez876t
+ +dP0JCjxHQl5AiGY4Vs26aSG089GYx/ZmQLHM6I7jod5apuAZ07Nf85pZMiadFZbENU7
+ z+5w==
+X-Gm-Message-State: AOJu0YzckwzhV39F/2I1+eedgh0fgJ9kVX3QpZPvJcqo2+j+HT+mBSPM
+ bnFMJEm70Yy9PWZ99MhBBis7OcJ/EiTVCqJX4zjnJon4eyRueR3io3v9QlxSEn8Zu2qLHsP5LLV
+ C7pKn4e2zRM2z/ajGWoXO+qxPzbm1etnsYeZPuwOXGQetjm8JUdd7Czd4dHOtwZNHNGsn/2gTl2
+ r1rTalIx60l2e2CXchkA6yRx7eDnryRsPt+g==
+X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
+ om26-20020a0562143d9a00b00691456f415amr12266806qvb.4.1710709100095; 
+ Sun, 17 Mar 2024 13:58:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHATVsL922WTpVpieM6CBIj9hhmoIIY7wU/do2vt1iq6/Y/zKNh54++8r6oTSjtt+c05el91Q==
+X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
+ om26-20020a0562143d9a00b00691456f415amr12266788qvb.4.1710709099599; 
  Sun, 17 Mar 2024 13:58:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE0hAPoh8PVF19JyzM3bDv5NCa9eyF5V5INCZ/GqxFjfehjwVscBnYO8Eozt1fUPIOGGXpCsw==
-X-Received: by 2002:ad4:41cc:0:b0:691:87dd:f836 with SMTP id
- a12-20020ad441cc000000b0069187ddf836mr6382223qvq.5.1710709098636; 
- Sun, 17 Mar 2024 13:58:18 -0700 (PDT)
 Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.17
+ ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Mar 2024 13:58:18 -0700 (PDT)
+ Sun, 17 Mar 2024 13:58:19 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, David Hildenbrand <david@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 09/10] migration/multifd: Ensure we're not given a socket for
- file migration
-Date: Sun, 17 Mar 2024 16:58:02 -0400
-Message-ID: <20240317205803.361163-10-peterx@redhat.com>
+Subject: [PULL 10/10] migration/multifd: Duplicate the fd for the outgoing_args
+Date: Sun, 17 Mar 2024 16:58:03 -0400
+Message-ID: <20240317205803.361163-11-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240317205803.361163-1-peterx@redhat.com>
 References: <20240317205803.361163-1-peterx@redhat.com>
@@ -78,14 +77,14 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -8
-X-Spam_score: -0.9
-X-Spam_bar: /
-X-Spam_report: (-0.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
+X-Spam_score_int: -23
+X-Spam_score: -2.4
+X-Spam_bar: --
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,104 +102,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-When doing migration using the fd: URI, QEMU will fetch the file
-descriptor passed in via the monitor at
-fd_start_outgoing|incoming_migration(), which means the checks at
-migration_channels_and_transport_compatible() happen too soon and we
-don't know at that point whether the FD refers to a plain file or a
-socket.
+We currently store the file descriptor used during the main outgoing
+channel creation to use it again when creating the multifd
+channels.
 
-For this reason, we've been allowing a migration channel of type
-SOCKET_ADDRESS_TYPE_FD to pass the initial verifications in scenarios
-where the socket migration is not supported, such as with fd + multifd.
+Since this fd is used for the first iochannel, there's risk that the
+QIOChannel gets freed and the fd closed while outgoing_args.fd still
+has it available. This could lead to an fd-reuse bug.
 
-The commit decdc76772 ("migration/multifd: Add mapped-ram support to
-fd: URI") was supposed to add a second check prior to starting
-migration to make sure a socket fd is not passed instead of a file fd,
-but failed to do so.
+Duplicate the outgoing_args fd to avoid this issue.
 
-Add the missing verification and update the comment explaining this
-situation which is currently incorrect.
-
-Fixes: decdc76772 ("migration/multifd: Add mapped-ram support to fd: URI")
+Suggested-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240315032040.7974-2-farosas@suse.de
+Link: https://lore.kernel.org/r/20240315032040.7974-3-farosas@suse.de
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/fd.c        | 8 ++++++++
- migration/file.c      | 7 +++++++
- migration/migration.c | 6 +++---
- 3 files changed, 18 insertions(+), 3 deletions(-)
+ migration/fd.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/migration/fd.c b/migration/fd.c
-index 39a52e5c90..c07030f715 100644
+index c07030f715..fe0d096abd 100644
 --- a/migration/fd.c
 +++ b/migration/fd.c
-@@ -22,6 +22,7 @@
- #include "migration.h"
- #include "monitor/monitor.h"
- #include "io/channel-file.h"
-+#include "io/channel-socket.h"
- #include "io/channel-util.h"
- #include "options.h"
- #include "trace.h"
-@@ -95,6 +96,13 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
+@@ -49,8 +49,7 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
+ {
+     QIOChannel *ioc;
+     int fd = monitor_get_fd(monitor_cur(), fdname, errp);
+-
+-    outgoing_args.fd = -1;
++    int newfd;
+ 
+     if (fd == -1) {
+         return;
+@@ -63,7 +62,17 @@ void fd_start_outgoing_migration(MigrationState *s, const char *fdname, Error **
+         return;
      }
  
-     if (migrate_multifd()) {
-+        if (fd_is_socket(fd)) {
-+            error_setg(errp,
-+                       "Multifd migration to a socket FD is not supported");
-+            object_unref(ioc);
-+            return;
-+        }
-+
-         file_create_incoming_channels(ioc, errp);
-     } else {
-         qio_channel_set_name(ioc, "migration-fd-incoming");
-diff --git a/migration/file.c b/migration/file.c
-index ddde0ca818..b6e8ba13f2 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -15,6 +15,7 @@
- #include "file.h"
- #include "migration.h"
- #include "io/channel-file.h"
-+#include "io/channel-socket.h"
- #include "io/channel-util.h"
- #include "options.h"
- #include "trace.h"
-@@ -58,6 +59,12 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
-     int fd = fd_args_get_fd();
+-    outgoing_args.fd = fd;
++    /*
++     * This is dup()ed just to avoid referencing an fd that might
++     * be already closed by the iochannel.
++     */
++    newfd = dup(fd);
++    if (newfd == -1) {
++        error_setg_errno(errp, errno, "Could not dup FD %d", fd);
++        object_unref(ioc);
++        return;
++    }
++    outgoing_args.fd = newfd;
  
-     if (fd && fd != -1) {
-+        if (fd_is_socket(fd)) {
-+            error_setg(errp,
-+                       "Multifd migration to a socket FD is not supported");
-+            goto out;
-+        }
-+
-         ioc = qio_channel_file_new_dupfd(fd, errp);
-     } else {
-         ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
-diff --git a/migration/migration.c b/migration/migration.c
-index 644e073b7d..f60bd371e3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -166,9 +166,9 @@ static bool transport_supports_seeking(MigrationAddress *addr)
-     }
- 
-     /*
--     * At this point, the user might not yet have passed the file
--     * descriptor to QEMU, so we cannot know for sure whether it
--     * refers to a plain file or a socket. Let it through anyway.
-+     * At this point QEMU has not yet fetched the fd passed in by the
-+     * user, so we cannot know for sure whether it refers to a plain
-+     * file or a socket. Let it through anyway and check at fd.c.
-      */
-     if (addr->transport == MIGRATION_ADDRESS_TYPE_SOCKET) {
-         return addr->u.socket.type == SOCKET_ADDRESS_TYPE_FD;
+     qio_channel_set_name(ioc, "migration-fd-outgoing");
+     migration_channel_connect(s, ioc, NULL, NULL);
 -- 
 2.44.0
 
