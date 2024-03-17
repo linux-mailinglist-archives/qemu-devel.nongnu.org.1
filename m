@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17BC87E010
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBE387E018
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 21:59:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlxaE-0002CX-Oc; Sun, 17 Mar 2024 16:58:18 -0400
+	id 1rlxaF-0002D3-Du; Sun, 17 Mar 2024 16:58:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaC-0002Bc-L1
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:16 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaD-0002C3-4a
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaA-0002ZJ-Ld
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rlxaB-0002a1-G7
  for qemu-devel@nongnu.org; Sun, 17 Mar 2024 16:58:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710709092;
+ s=mimecast20190719; t=1710709094;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IMe8E26pD9FoMazJMsajFgDf38rg/H2KYQdjS+f1E6g=;
- b=BO59lIBzuqrttBXCPSTLliu6jIT50/L0tvTrjYqwHXNYi2R9Y9EDiuMXwX+m2GcJfnhjf2
- PI2iJNmkdG++LgjS6AgwYtSLi/ujScy9X8wZffJ6bPzBG43LZ37yvBszS7MMTe5/Ax/k4H
- plrVYLOQsCXNGlEZWc4M00AuvX7ch8g=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=XYUowG+n3GNsgXqb2DaoNPh3LIqkGmyhv13NH0L54Fw=;
+ b=MeVV0+E4GmKZtzbuSkqAWyaScAkaBJGGeJRKFaopTblM+3qwW7NExS1YAqWuBV9I8IKqqM
+ QohaZ1Rufwr0LN1qM5+vD2bzkLHM3VD2n8TtE95nBZ/BzLrnNfHnZ3xPBDIj/s3cY921cz
+ oNCuj3itES+WizW5su6bCZ9X7DLvrq0=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-331-tPndS4gYMs6I4ry2Y1hqtA-1; Sun, 17 Mar 2024 16:58:11 -0400
-X-MC-Unique: tPndS4gYMs6I4ry2Y1hqtA-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-78315f4f5c2so120640185a.0
- for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:11 -0700 (PDT)
+ us-mta-549-VIVV1DZ1NwS9VYbWReMSyg-1; Sun, 17 Mar 2024 16:58:12 -0400
+X-MC-Unique: VIVV1DZ1NwS9VYbWReMSyg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-42f30752eb4so12381271cf.1
+ for <qemu-devel@nongnu.org>; Sun, 17 Mar 2024 13:58:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710709090; x=1711313890;
+ d=1e100.net; s=20230601; t=1710709092; x=1711313892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IMe8E26pD9FoMazJMsajFgDf38rg/H2KYQdjS+f1E6g=;
- b=soJpHYNzKy7skwi31ajMjwpBmHYyOHHRSSg1LtD7X/IGN6HCH0L3mJHwHOAmwAm+7f
- xh21ii5afYJmvByRbogrx5VsQi8Dso9gASIIytW4py+A7nh3/hxY+sJGE3ktsm1N7w6O
- 5/mgcd0ornBPioh+/XglnRSfd+O99/bopafnWE837Rgea2Fh3cXmdZrLsQihxcTWn3TR
- A5LjMLySWcRLWwjkgD3G5Offrr+q+LXbORyrtRf9gC5KRVM0+CizEFpgDpc2WNKLHonm
- Fge2xttY2BowvicinAADIQFmnopQdWJjM0zRumgj6Aefzv3FjpjvMgruJKOZ0uatF4Ms
- V/9g==
-X-Gm-Message-State: AOJu0YwmIpmLB7crE6oRh6Xs6Ok/UtpVEDBCymtkMPZQ8YsUwnMlLJh/
- DCsqwqtVnNfvaL5FeuWAx0oia4JSU7ARFjDKPSpPiLIIlKrGoUnkTsLooj6OH5v3us8Wn30NJuh
- vf0edkVb8lPkmBakjWis4crJ9/Easos36OrZvR03YriH94tD9GRYh+9U+5OA8b1UgxCLjvzy913
- YVFi8ACmchesmQDPuPbGWgh9gHwfubaLs9vg==
-X-Received: by 2002:a05:6214:2b9d:b0:690:cdd5:ea47 with SMTP id
- kr29-20020a0562142b9d00b00690cdd5ea47mr12279967qvb.4.1710709090195; 
- Sun, 17 Mar 2024 13:58:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQZiv5gWBvvpDvr6dXloatQiTjUR7sercRv8Pl0iHMx9zO5+GpczT/N1BacS2YqQo79Iy5VQ==
-X-Received: by 2002:a05:6214:2b9d:b0:690:cdd5:ea47 with SMTP id
- kr29-20020a0562142b9d00b00690cdd5ea47mr12279945qvb.4.1710709089781; 
- Sun, 17 Mar 2024 13:58:09 -0700 (PDT)
+ bh=XYUowG+n3GNsgXqb2DaoNPh3LIqkGmyhv13NH0L54Fw=;
+ b=NygyC4QlYAvFDARBi/Vz2rsJ6ubVMcYK5MR267ro83kWHX2upCERF1S61rqGj3jwEf
+ tjpkeRqi+ZzIuEsuPO8qHBfTE4Eg/OAbnHf3kmXHeTm1kcAYwSCAqhUmE/H4Yuw4N75R
+ /RUrkLgWpRK9Y3hdOmyu+4u2Pa/SdFGL/ZBAPIQDuDjGONojprkJ6CAEHIGsAS/CgKTp
+ 7CHSo+Wl5UtlNZOnxkZPeVWWy/BFtoi5l/8oGM3JLs9YbTzFxDMFRtog6ZUPEUgHNUBn
+ zzB4FpYtVYeP6gaBlIJhu6TmCAH7tMcMOeViSLF4JnwjTmddxNReYxzFrgXtDt5E/q4F
+ Wcjw==
+X-Gm-Message-State: AOJu0YwykcfxljpqLR0gYke9OZyVwCP53tBQFkMvlnAgr2NtaohrUT3f
+ a+tBU3cF0oM8YuRiPg85xI5harIwyoFz6Vs21l2mHLPKtxkmU/GHa4ZlPHJdxfvEUIEIAH0QPkc
+ eAVepXTO3WHdRazAexeMSYaegrwFUmHuBRRTsjT8yZ3QUwTF2Emb5g/ZSVxHI5hD3PhGtPta73x
+ BPUApeKEKHZZk4C/plpgKQmh/Nm7s/OyOFtA==
+X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
+ om26-20020a0562143d9a00b00691456f415amr12266596qvb.4.1710709091702; 
+ Sun, 17 Mar 2024 13:58:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGZSJinvIUlCV+HoP3OhPxtYoNF8P+oixWGF4tk64l5jNNcKe4wk1uiJ8DcIQYEPd311LE8PA==
+X-Received: by 2002:a05:6214:3d9a:b0:691:456f:415a with SMTP id
+ om26-20020a0562143d9a00b00691456f415amr12266577qvb.4.1710709091248; 
+ Sun, 17 Mar 2024 13:58:11 -0700 (PDT)
 Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.08
+ ed8-20020ad44ea8000000b00691879d7a50sm2391566qvb.115.2024.03.17.13.58.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 17 Mar 2024 13:58:09 -0700 (PDT)
+ Sun, 17 Mar 2024 13:58:10 -0700 (PDT)
 From: peterx@redhat.com
 To: qemu-devel@nongnu.org,
 	Peter Maydell <peter.maydell@linaro.org>
 Cc: Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>,
  peterx@redhat.com, David Hildenbrand <david@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 02/10] migration: Fix error handling after dup in file migration
-Date: Sun, 17 Mar 2024 16:57:55 -0400
-Message-ID: <20240317205803.361163-3-peterx@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 03/10] physmem: Expose tlb_reset_dirty_range_all()
+Date: Sun, 17 Mar 2024 16:57:56 -0400
+Message-ID: <20240317205803.361163-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240317205803.361163-1-peterx@redhat.com>
 References: <20240317205803.361163-1-peterx@redhat.com>
@@ -102,98 +103,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-The file migration code was allowing a possible -1 from a failed call
-to dup() to propagate into the new QIOFileChannel::fd before checking
-for validity. Coverity doesn't like that, possibly due to the the
-lseek(-1, ...) call that would ensue before returning from the channel
-creation routine.
+In order to call tlb_reset_dirty_range_all() outside of
+system/physmem.c, expose its prototype.
 
-Use the newly introduced qio_channel_file_dupfd() to properly check
-the return of dup() before proceeding.
-
-Fixes: CID 1539961
-Fixes: CID 1539965
-Fixes: CID 1539960
-Fixes: 2dd7ee7a51 ("migration/multifd: Add incoming QIOChannelFile support")
-Fixes: decdc76772 ("migration/multifd: Add mapped-ram support to fd: URI")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
-Link: https://lore.kernel.org/r/20240311233335.17299-3-farosas@suse.de
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Link: https://lore.kernel.org/r/20240312201458.79532-2-philmd@linaro.org
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/fd.c   |  9 ++++-----
- migration/file.c | 14 +++++++-------
- 2 files changed, 11 insertions(+), 12 deletions(-)
+ include/exec/exec-all.h | 1 +
+ system/physmem.c        | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/migration/fd.c b/migration/fd.c
-index d4ae72d132..4e2a63a73d 100644
---- a/migration/fd.c
-+++ b/migration/fd.c
-@@ -80,6 +80,7 @@ static gboolean fd_accept_incoming_migration(QIOChannel *ioc,
- void fd_start_incoming_migration(const char *fdname, Error **errp)
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index ce36bb10d4..3e53501691 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -655,6 +655,7 @@ static inline void mmap_unlock(void) {}
+ 
+ void tlb_reset_dirty(CPUState *cpu, ram_addr_t start1, ram_addr_t length);
+ void tlb_set_dirty(CPUState *cpu, vaddr addr);
++void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length);
+ 
+ MemoryRegionSection *
+ address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr addr,
+diff --git a/system/physmem.c b/system/physmem.c
+index 6cfb7a80ab..5441480ff0 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -819,7 +819,7 @@ found:
+     return block;
+ }
+ 
+-static void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length)
++void tlb_reset_dirty_range_all(ram_addr_t start, ram_addr_t length)
  {
-     QIOChannel *ioc;
-+    QIOChannelFile *fioc;
-     int fd = monitor_fd_param(monitor_cur(), fdname, errp);
-     if (fd == -1) {
-         return;
-@@ -103,15 +104,13 @@ void fd_start_incoming_migration(const char *fdname, Error **errp)
-         int channels = migrate_multifd_channels();
- 
-         while (channels--) {
--            ioc = QIO_CHANNEL(qio_channel_file_new_fd(dup(fd)));
--
--            if (QIO_CHANNEL_FILE(ioc)->fd == -1) {
--                error_setg(errp, "Failed to duplicate fd %d", fd);
-+            fioc = qio_channel_file_new_dupfd(fd, errp);
-+            if (!fioc) {
-                 return;
-             }
- 
-             qio_channel_set_name(ioc, "migration-fd-incoming");
--            qio_channel_add_watch_full(ioc, G_IO_IN,
-+            qio_channel_add_watch_full(QIO_CHANNEL(fioc), G_IO_IN,
-                                        fd_accept_incoming_migration,
-                                        NULL, NULL,
-                                        g_main_context_get_thread_default());
-diff --git a/migration/file.c b/migration/file.c
-index b0b963e0ce..e56c5eb0a5 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -58,12 +58,13 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
-     int fd = fd_args_get_fd();
- 
-     if (fd && fd != -1) {
--        ioc = qio_channel_file_new_fd(dup(fd));
-+        ioc = qio_channel_file_new_dupfd(fd, errp);
-     } else {
-         ioc = qio_channel_file_new_path(outgoing_args.fname, flags, 0, errp);
--        if (!ioc) {
--            goto out;
--        }
-+    }
-+
-+    if (!ioc) {
-+        goto out;
-     }
- 
-     multifd_channel_connect(opaque, QIO_CHANNEL(ioc));
-@@ -147,10 +148,9 @@ void file_start_incoming_migration(FileMigrationArgs *file_args, Error **errp)
-                                    NULL, NULL,
-                                    g_main_context_get_thread_default());
- 
--        fioc = qio_channel_file_new_fd(dup(fioc->fd));
-+        fioc = qio_channel_file_new_dupfd(fioc->fd, errp);
- 
--        if (!fioc || fioc->fd == -1) {
--            error_setg(errp, "Error creating migration incoming channel");
-+        if (!fioc) {
-             break;
-         }
-     } while (++i < channels);
+     CPUState *cpu;
+     ram_addr_t start1;
 -- 
 2.44.0
 
