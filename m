@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2917187DC9F
-	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 09:38:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E6287DC9D
+	for <lists+qemu-devel@lfdr.de>; Sun, 17 Mar 2024 09:38:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rlm1c-00070g-79; Sun, 17 Mar 2024 04:37:48 -0400
+	id 1rlm1d-00070w-Gt; Sun, 17 Mar 2024 04:37:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhukeqian1@huawei.com>)
- id 1rlm1Z-00070K-Ta
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 04:37:45 -0400
+ id 1rlm1b-00070W-5i
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 04:37:47 -0400
 Received: from szxga07-in.huawei.com ([45.249.212.35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhukeqian1@huawei.com>)
- id 1rlm1Y-000861-0a
- for qemu-devel@nongnu.org; Sun, 17 Mar 2024 04:37:45 -0400
+ id 1rlm1Y-00086e-9y
+ for qemu-devel@nongnu.org; Sun, 17 Mar 2024 04:37:46 -0400
 Received: from mail.maildlp.com (unknown [172.19.88.234])
- by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TyBBF2jsJz1Q9x9;
- Sun, 17 Mar 2024 16:35:01 +0800 (CST)
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TyBBJ2HG5z1QBFP;
+ Sun, 17 Mar 2024 16:35:04 +0800 (CST)
 Received: from kwepemi500026.china.huawei.com (unknown [7.221.188.247])
- by mail.maildlp.com (Postfix) with ESMTPS id 664431402C6;
- Sun, 17 Mar 2024 16:37:32 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 57B2E1402C6;
+ Sun, 17 Mar 2024 16:37:35 +0800 (CST)
 Received: from DESKTOP-5IS4806.china.huawei.com (10.174.187.224) by
  kwepemi500026.china.huawei.com (7.221.188.247) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Sun, 17 Mar 2024 16:37:31 +0800
+ 15.1.2507.35; Sun, 17 Mar 2024 16:37:34 +0800
 To: <qemu-devel@nongnu.org>, Peter Maydell <peter.maydell@linaro.org>, Igor
  Mammedov <imammedo@redhat.com>, David Hildenbrand <david@redhat.com>, Stefan
  Hajnoczi <stefanha@redhat.com>
 CC: <wanghaibin.wang@huawei.com>, Zenghui Yu <yuzenghui@huawei.com>,
  <jiangkunkun@huawei.com>, <salil.mehta@huawei.com>
-Subject: [PATCH v1 1/2] system/cpus: Fix pause_all_vcpus() under concurrent
- environment
-Date: Sun, 17 Mar 2024 16:37:03 +0800
-Message-ID: <20240317083704.23244-2-zhukeqian1@huawei.com>
+Subject: [PATCH v1 2/2] system/cpus: Fix resume_all_vcpus() under vCPU hotplug
+ condition
+Date: Sun, 17 Mar 2024 16:37:04 +0800
+Message-ID: <20240317083704.23244-3-zhukeqian1@huawei.com>
 X-Mailer: git-send-email 2.8.4.windows.1
 In-Reply-To: <20240317083704.23244-1-zhukeqian1@huawei.com>
 References: <20240317083704.23244-1-zhukeqian1@huawei.com>
@@ -70,88 +70,40 @@ From:  Keqian Zhu via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Both main loop thread and vCPU thread are allowed to call
-pause_all_vcpus(), and in general resume_all_vcpus() is called
-after it. Two issues live in pause_all_vcpus():
+For vCPU being hotplugged, qemu_init_vcpu() is called. In this
+function, we set vcpu state as stopped, and then wait vcpu thread
+to be created.
 
-1. There is possibility that during thread T1 waits on
-qemu_pause_cond with bql unlocked, other thread has called
-pause_all_vcpus() and resume_all_vcpus(), then thread T1 will
-stuck, because the condition all_vcpus_paused() is always false.
+As the vcpu state is stopped, it will inform us it has been created
+and then wait on halt_cond. After we has realized vcpu object, we
+will resume the vcpu thread.
 
-2. After all_vcpus_paused() has been checked as true, we will
-unlock bql to relock replay_mutex. During the bql was unlocked,
-the vcpu's state may has been changed by other thread, so we
-must retry.
+However, during we wait vcpu thread to be created, the bql is
+unlocked, and other thread is allowed to call resume_all_vcpus(),
+which will resume the un-realized vcpu.
+
+This fixes the issue by filter out un-realized vcpu during
+resume_all_vcpus().
 
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 ---
- system/cpus.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ system/cpus.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/system/cpus.c b/system/cpus.c
-index 68d161d96b..4e41abe23e 100644
+index 4e41abe23e..8871f5dfa9 100644
 --- a/system/cpus.c
 +++ b/system/cpus.c
-@@ -571,12 +571,14 @@ static bool all_vcpus_paused(void)
-     return true;
- }
+@@ -638,6 +638,9 @@ void resume_all_vcpus(void)
  
--void pause_all_vcpus(void)
-+static void request_pause_all_vcpus(void)
- {
-     CPUState *cpu;
- 
--    qemu_clock_enable(QEMU_CLOCK_VIRTUAL, false);
+     qemu_clock_enable(QEMU_CLOCK_VIRTUAL, true);
      CPU_FOREACH(cpu) {
-+        if (cpu->stopped) {
++        if (!object_property_get_bool(OBJECT(cpu), "realized", &error_abort)) {
 +            continue;
 +        }
-         if (qemu_cpu_is_self(cpu)) {
-             qemu_cpu_stop(cpu, true);
-         } else {
-@@ -584,6 +586,14 @@ void pause_all_vcpus(void)
-             qemu_cpu_kick(cpu);
-         }
+         cpu_resume(cpu);
      }
-+}
-+
-+void pause_all_vcpus(void)
-+{
-+    qemu_clock_enable(QEMU_CLOCK_VIRTUAL, false);
-+
-+retry:
-+    request_pause_all_vcpus();
- 
-     /* We need to drop the replay_lock so any vCPU threads woken up
-      * can finish their replay tasks
-@@ -592,14 +602,23 @@ void pause_all_vcpus(void)
- 
-     while (!all_vcpus_paused()) {
-         qemu_cond_wait(&qemu_pause_cond, &bql);
--        CPU_FOREACH(cpu) {
--            qemu_cpu_kick(cpu);
--        }
-+        /* During we waited on qemu_pause_cond the bql was unlocked,
-+         * the vcpu's state may has been changed by other thread, so
-+         * we must request the pause state on all vcpus again.
-+         */
-+        request_pause_all_vcpus();
-     }
- 
-     bql_unlock();
-     replay_mutex_lock();
-     bql_lock();
-+
-+    /* During the bql was unlocked, the vcpu's state may has been
-+     * changed by other thread, so we must retry.
-+     */
-+    if (!all_vcpus_paused()) {
-+        goto retry;
-+    }
  }
- 
- void cpu_resume(CPUState *cpu)
 -- 
 2.33.0
 
