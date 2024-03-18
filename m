@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BC987E463
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE60387E494
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:59:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7oB-0002xx-MB; Mon, 18 Mar 2024 03:53:23 -0400
+	id 1rm7sX-00062p-VA; Mon, 18 Mar 2024 03:57:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7o8-0002xe-LP
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:20 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rm7sV-00061g-8C
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:57:51 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7o7-000061-1v
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:20 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e6ee9e3cffso2314020b3a.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:53:18 -0700 (PDT)
+ id 1rm7sS-0000ji-Tg
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:57:51 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1dddad37712so38458205ad.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:57:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748398; x=1711353198;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748667; x=1711353467;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=AtoTEhnfQvLOFmj6OES89MI4C55bFzE0mr1LF1KLIWc=;
- b=fl/a+18pY3/Jrqxfpd9rCyNKteMXPdKms94Dz/1tKb+xu08RYSTA2OaG3Lxt1/hEZ9
- BqPlnHfVA+FDoq7D4kHsWQk+49GhlsXZQXEczaBO8msXQl2cv22ZkWw9RuT03KyYvyW1
- qhcgksASQAhWLMLgFbEdEG3FBh9yNnAejB6QlQ0/XLAkBFOrX6Sxlf5LtFitspNqWF04
- Fn9ncnS65qOwM+hNovWso+SJTbDCM2zZ2P3V9y0PMDk5gN776CNRCZB0OZYILc9UQ21p
- HlCF5BM3Afb4ZaQByadMMnz7vY5nqiGpz8o7RahMxeYwpub1fNM49JL9RsEqyPw+nC6/
- ZTqQ==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cVs7WwcQJDh8Ok+AUw7pFOFNfDPqsJnTku4KwUANzlI=;
+ b=werqyhIxS5s3h1orgm0E+NFodEkqMIiVcwqzvGWS9+jIyXx+iY69Fv4BhbVyDqbhdI
+ +ZWkSUzQeqYVQNwGaJI+iBjxKNeXm5VwEtwMovQdN6W+5/U52oN6g8pu5gdfs2FD5aFX
+ iedsrS4a/toGu7w66kW8zM3jAjxWw4H0JrqeMZO9V+hYCTz5xyVW92OhnuDUgIWN3M4I
+ jMgo9FPRoJBkHJThbejMng4iHczsHe4fiGb2iLiXLT9w0rUQpbN7HybJYvw1HUHzC5H+
+ GTM1w7zh0BEhkgTXD+HML7dCphkPQ4adpu7OuNCkBZStJ4o2ij3oqu+loRe8Fm5mDRhG
+ weBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710748398; x=1711353198;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AtoTEhnfQvLOFmj6OES89MI4C55bFzE0mr1LF1KLIWc=;
- b=weDRao4WUEVlopmZoYURbCmBhb4BAaqMv68LjrsWaSqY9NdX14K8QpvVyBpih1gdwZ
- VTFOPrA9ZA7mwxCec9k9RBXBGXKneEj+9Ojvm9J9STaz7wZ4dxszOmpPR1J9jZD6tHzJ
- zgZstlXmNjxLHKf74M1OOGG1W9PNhEfi0HZhbsbWi6oQ25z2d1WSH79iH7NOssuLq0Xi
- Eu3NxRm89Nd2GN2sLFGoz+nfHBgXI6VtDfnw2prFfAmG2Hy1pg0aSAftUdmxyNh7J9R3
- H3cJynIHf+fHFcNaQq6AHgIAQZ0Rf9ssp9nBdkLWW+iJqHrmyiXsR2z5izW/xg0yCBJ9
- WIcQ==
-X-Gm-Message-State: AOJu0Yy4xjjgLw7QGwyj2r446a1zUAt1AbXf23osv4KBxoYlevi6s+Qi
- dUa/5EMi9rI+BnIP22kUjRz1m+RJRzGjS131S9p/zW11pkLBCQWg3/286IMVktc=
-X-Google-Smtp-Source: AGHT+IHlBlXs60U8nB/1EDgFflfJ+qej5tA5hB92VOMr45YO1GtC1ESZWobSME00btK5xrmyZfeJCg==
-X-Received: by 2002:a05:6a00:21d4:b0:6e7:933:9ecf with SMTP id
- t20-20020a056a0021d400b006e709339ecfmr8880852pfj.16.1710748397739; 
- Mon, 18 Mar 2024 00:53:17 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710748667; x=1711353467;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cVs7WwcQJDh8Ok+AUw7pFOFNfDPqsJnTku4KwUANzlI=;
+ b=D1TZD/YS2dM61nBvM0OBeHIOGV4VidykGrTsiaQqzPHmuqM5ImyPZ8cEmiQEjCW4hl
+ 2nNrz9F56cQ4PiguuxMBOZrhtPxg45Un8ALBgm9lEKF9BeVoKUABNHh4o5TWa8fFF5vi
+ LDKiNgdEyJO/0K1Lf60j8DlvGTe3moD21lW9ohrGDJwM4cRyBLoCU0+Ekb2cnmsbWMRd
+ MwePAHZhD6OaIm84XluEjcRo0u7pk0zadVAaXoZEU5dEkcAvDqpsBm0NeepMaz/hWHTq
+ juCrT1VnELlQtQ+UaEmE7P2VfH2U+hEIor4t9TmD8jeDyCoadPNbbX3BkB8griLPNPpe
+ Y8Dg==
+X-Gm-Message-State: AOJu0Yy57+QIjLFcLU6aMLibO1QsqTv1lVLplENxFFqbCYl2RZ4DViKx
+ +oQE3+zQQIayuIBWMOU/cbm9Un+WUtKg4nHHo6L/JW3wJzQj/whJLJq3UOiPEqU=
+X-Google-Smtp-Source: AGHT+IG7+F9yBZ3/Z0eOXipfZfGQJ7VvVh0/3btKQkOPNnsxgb7uO5aaMlGs4SfzUPI+Rjb6m1AWAg==
+X-Received: by 2002:a17:903:2306:b0:1e0:1bff:59e2 with SMTP id
+ d6-20020a170903230600b001e01bff59e2mr3637166plh.39.1710748667300; 
+ Mon, 18 Mar 2024 00:57:47 -0700 (PDT)
 Received: from localhost ([157.82.200.213])
  by smtp.gmail.com with UTF8SMTPSA id
- p13-20020a62ab0d000000b006e53cc789c3sm7258871pff.107.2024.03.18.00.53.16
+ kt7-20020a170903088700b001dd0d090954sm8587802plb.269.2024.03.18.00.57.45
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 00:53:17 -0700 (PDT)
+ Mon, 18 Mar 2024 00:57:47 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 18 Mar 2024 16:53:02 +0900
-Subject: [PATCH 3/3] ui/cocoa: Use NSTrackingInVisibleRect
+Subject: [PATCH 0/4] ui/console: Remove console_select()
+Date: Mon, 18 Mar 2024 16:57:41 +0900
+Message-Id: <20240318-console-v1-0-f4efbfa71253@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-fixes-v1-3-34f1a849b0d9@daynix.com>
-References: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
-In-Reply-To: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAPXz92UC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDY0Nz3eT8vOL8nFRdM3MTkxSTxCSLpEQzJaDqgqLUtMwKsEnRsbW1AMi
+ vhINZAAAA
+To: Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,102 +95,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I observed [NSTrackingArea rect] becomes de-synchronized with the view
-frame with some unknown condition. Specify NSTrackingInVisibleRect
-option to let Cocoa automatically update NSTrackingArea, which also
-saves code for synchronization.
+ui/console has a concept of "active" console; the active console is used
+when NULL is set for DisplayListener::con, and console_select() updates
+the active console state. However, the global nature of the state cause
+odd behaviors, and replacing NULL with the active console also resulted
+in extra code. Remove it to solve these problems.
 
-Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
+The active console state is shared, so if there are two displays
+referring to the active console, switching the console for one will also
+affect the other. All displays that use the active console state,
+namely cocoa, curses, and vnc, need to reset some of its state before
+switching the console, and such a reset operation cannot be performed if
+the console is switched by another display. This can result in stuck
+keys, for example.
+
+While the active console state is shared, displays other than cocoa,
+curses, and vnc don't update the state. A chardev-vc inherits the
+size of the active console, but it does not make sense for such a
+display.
+
+This series removes the shared "active" console state from ui/console.
+curses, cocoa, and vnc will hold the reference to the console currently
+shown with DisplayListener::con. This also eliminates the need to
+replace NULL with the active console and save code.
+
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- ui/cocoa.m | 48 ++++++++++++++----------------------------------
- 1 file changed, 14 insertions(+), 34 deletions(-)
+Akihiko Odaki (4):
+      ui/vc: Do not inherit the size of active console
+      ui/vnc: Do not use console_select()
+      ui/cocoa: Do not use console_select()
+      ui/curses: Do not use console_select()
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 1324be6d32fe..1e2b7d931905 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -306,7 +306,6 @@ static void handleAnyDeviceErrors(Error * err)
- */
- @interface QemuCocoaView : NSView
- {
--    NSTrackingArea *trackingArea;
-     QEMUScreen screen;
-     pixman_image_t *pixman_image;
-     QKbdState *kbd;
-@@ -359,6 +358,19 @@ - (id)initWithFrame:(NSRect)frameRect
-     self = [super initWithFrame:frameRect];
-     if (self) {
- 
-+        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
-+                                        NSTrackingMouseEnteredAndExited |
-+                                        NSTrackingMouseMoved |
-+                                        NSTrackingInVisibleRect;
-+
-+        NSTrackingArea *trackingArea =
-+            [[NSTrackingArea alloc] initWithRect:CGRectZero
-+                                         options:options
-+                                           owner:self
-+                                        userInfo:nil];
-+
-+        [self addTrackingArea:trackingArea];
-+        [trackingArea release];
-         screen.width = frameRect.size.width;
-         screen.height = frameRect.size.height;
-         kbd = qkbd_state_init(dcl.con);
-@@ -392,41 +404,9 @@ - (BOOL) isOpaque
-     return YES;
- }
- 
--- (void) removeTrackingRect
--{
--    if (trackingArea) {
--        [self removeTrackingArea:trackingArea];
--        [trackingArea release];
--        trackingArea = nil;
--    }
--}
--
--- (void) frameUpdated
--{
--    [self removeTrackingRect];
--
--    if ([self window]) {
--        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
--                                        NSTrackingMouseEnteredAndExited |
--                                        NSTrackingMouseMoved;
--        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
--                                                    options:options
--                                                      owner:self
--                                                   userInfo:nil];
--        [self addTrackingArea:trackingArea];
--        [self updateUIInfo];
--    }
--}
--
- - (void) viewDidMoveToWindow
- {
-     [self resizeWindow];
--    [self frameUpdated];
--}
--
--- (void) viewWillMoveToWindow:(NSWindow *)newWindow
--{
--    [self removeTrackingRect];
- }
- 
- - (void) hideCursor
-@@ -1284,7 +1264,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
- - (void)windowDidResize:(NSNotification *)notification
- {
-     [cocoaView updateBounds];
--    [cocoaView frameUpdated];
-+    [cocoaView updateUIInfo];
- }
- 
- /* Called when the user clicks on a window's close button */
+ include/ui/console.h   |   2 +-
+ include/ui/kbd-state.h |  11 ++++
+ ui/console-priv.h      |   2 +-
+ ui/console-vc-stubs.c  |   2 +-
+ ui/console-vc.c        |   7 ++-
+ ui/console.c           | 133 ++++++++++++-------------------------------------
+ ui/curses.c            |  48 ++++++++++--------
+ ui/kbd-state.c         |   6 +++
+ ui/vnc.c               |  14 ++++--
+ ui/cocoa.m             |  37 ++++++++++----
+ 10 files changed, 118 insertions(+), 144 deletions(-)
+---
+base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+change-id: 20240317-console-6744d4ab8ba6
 
+Best regards,
 -- 
-2.44.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
