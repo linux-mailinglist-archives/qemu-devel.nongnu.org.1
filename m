@@ -2,78 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1865687E493
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:59:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F6DA87E4D7
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:16:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7u7-0007XO-74; Mon, 18 Mar 2024 03:59:33 -0400
+	id 1rm895-0002Oz-UV; Mon, 18 Mar 2024 04:14:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm7tv-0007Db-UJ; Mon, 18 Mar 2024 03:59:21 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1rm893-0002NX-Cs; Mon, 18 Mar 2024 04:14:57 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([81.169.146.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm7tu-00014J-HJ; Mon, 18 Mar 2024 03:59:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710748758; x=1742284758;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=K3oyBVjD9yERzrexxJjy+LSwuy7gM46KXG2e0fpWMCY=;
- b=Sr/bcVkKMFiwerAmPvyY+itDvUjSL3FDzru5nUfyUhb1LDvgEp6KmcWz
- 3zPxEQ6CQXJ02G3y74rDu8qkAyEpdKlHiHG7sPcyBE1Sk1kg6zo1hOdma
- CM2xmqOeyXlz/Cf9HACOj0NQRyQl5ckicJE7nbPPby5iDjCOowL2FJl16
- c1r+JQOxY9whHnFcmJMB5hS8x8n2iqFRTBAjt+zNMD2ydhDKX0TztJgtQ
- bc1QCmYDstYmHo7rzzfvvf5DYz15rD7VKZyHgHMFM12Ym68sEBbmp4eh0
- MveMBqg/3hDo7KAVmADssA5xio18Fm9upt2UvpTmoqTLbvMslsLNVUhDn w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5678421"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
-   d="scan'208";a="5678421"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 00:59:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="18072582"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 18 Mar 2024 00:59:10 -0700
-Date: Mon, 18 Mar 2024 16:13:01 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Claudio Fontana <cfontana@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: Re: [PATCH-for-9.1 02/21] target/mips: Declare CPU QOM types using
- DEFINE_TYPES() macro
-Message-ID: <Zff3jcV6H6u2zwtQ@intel.com>
-References: <20240315130910.15750-1-philmd@linaro.org>
- <20240315130910.15750-3-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
+ id 1rm891-0003L1-Fh; Mon, 18 Mar 2024 04:14:57 -0400
+ARC-Seal: i=1; a=rsa-sha256; t=1710749690; cv=none;
+ d=strato.com; s=strato-dkim-0002;
+ b=U8XPXAX5nNH0Ow2UeMvN4hmQWdt1O0JthA1Zn8dpKhn+ilu/cZ8WzuDucM9O8bv0s2
+ 6vMm90arPaMFY7JzlqIm71CRJVAAGkSjW/DbNg8cwnSnBiV786zR16xgVtMYIX/2LzAZ
+ TAbMS8iUAnYDUrlcATs4jjwWNmJQN5b714hLyF2d9YrbJ7MLMD+bJp9cNV69naXY11nT
+ c5fQWxJkuvkdpkGDo+/d3utv6y5USHp4NfUp7XuuHTHGaYvxhNMUoxgVfe3phM1HlDtM
+ eodKxDY9FTbGugZlpAgzBjb2ztW073EKWT7qqDMpi3U9DHRBXvhmFxwp0EaX9WBMngHz
+ i/eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1710749690;
+ s=strato-dkim-0002; d=strato.com;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=aB5JtzWUCB4K9dAVzX213ZjUL2cozuT0dstO0lWsREY=;
+ b=ltQEUbr9GaoU9iNefCQ7qcFh7dW/rimR/ZtvlCICKVovV6nhQinlW9tG/zofG2EAVs
+ WtcOdZNyVEum87P32t80lEdT6XeVmN81aF38+RvSL4e8OLW5+H9YEt7qJgiLHEw8bEU1
+ OaX+O2wvYLRtrgT/shVFtooDTzYDDEZOxZgtGPMF83EJt4tfNZ0WE0Uyd8HfFPnqxnKh
+ p+b6tkKAw+aeim2bzNiDCtUQmStk5PYkra72pNy2YKNSOZiLbjS0MqMzxteGFx6gj5xB
+ ABUf5rHyZUj2pA4SKQ9YM4k7dPajf3Pli03LHhUvphQdp3dx2b958yxwedNVSoNIlYDf
+ FR0Q==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1710749690;
+ s=strato-dkim-0002; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=aB5JtzWUCB4K9dAVzX213ZjUL2cozuT0dstO0lWsREY=;
+ b=W/t0vJU2U9B2XhUVRi/NmSfbCUoolF/pMBe1c3FLNNgX3mgrxWREzrexUPS63gH2nt
+ A2+Rwi5XdG7bVcUcQifA5P6r2qMz6OJJzbi+cUQdcHO6Nz3A6QppkDPfTJ87iQKbi+gs
+ 2fKAXxaT+Z4o97Yc/iBqm6SAsLkbiFxk5822lv+ZVHhK5gkjpDbCJTxQDVbZFsJCXUWA
+ LY7iay1yhNlHYBOwoOw3A11+TOx9W9cPxpzznAHo9b8OTRM1bEzDalcu8L6pkDUwa16f
+ sYOBKMuUkk0pLhCg/NjIbAtTn6bRuiu6P2oIRaCsfFQt871sspKM8TV9cXwJBqEJ4aq/
+ IQgw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1710749690;
+ s=strato-dkim-0003; d=aepfle.de;
+ h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+ From:Subject:Sender;
+ bh=aB5JtzWUCB4K9dAVzX213ZjUL2cozuT0dstO0lWsREY=;
+ b=1GI9TK7oQg3SBkh8D8khCl4GQL8+l2t4lazfZK/FsA/nhgFrQiCUakdIKll+yWvLon
+ JEWrnpqMYW4psQt0FjBg==
+X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR5ABaIaxjsvWV3+5zoB6xJde0knZVA/JvNMMXDFQ=="
+Received: from sender by smtp.strato.de (RZmta 50.2.2 AUTH)
+ with ESMTPSA id 6fe76102I8EnAYf
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+ (Client did not present a certificate);
+ Mon, 18 Mar 2024 09:14:49 +0100 (CET)
+Date: Mon, 18 Mar 2024 09:14:41 +0100
+From: Olaf Hering <olaf@aepfle.de>
+To: =?UTF-8?B?TWFyYy1BbmRyw6k=?= Lureau <marcandre.lureau@gmail.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org, qemu-stable
+ <qemu-stable@nongnu.org>
+Subject: Re: Regression in v7.2.10 - ui-dbus.so requires -fPIC
+Message-ID: <20240318091441.54272fbf.olaf@aepfle.de>
+In-Reply-To: <CAJ+F1CJyhEYhXewLV4SOGNfgiA3V2kfotVqYgcGEckvO4XLp7A@mail.gmail.com>
+References: <20240314220038.1aaae79f.olaf@aepfle.de>
+ <4b803768-09df-4b6c-a745-f0158543310d@tls.msk.ru>
+ <20240316231945.7bcfac09.olaf@aepfle.de>
+ <a9e4fac5-2a1e-4d15-afa5-bae42756ec42@tls.msk.ru>
+ <CAJ+F1CJyhEYhXewLV4SOGNfgiA3V2kfotVqYgcGEckvO4XLp7A@mail.gmail.com>
+X-Mailer: Claws Mail (olh) 20240223T214820.cce9f45c hat ein Softwareproblem,
+ kann man nichts machen.
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240315130910.15750-3-philmd@linaro.org>
-Received-SPF: none client-ip=198.175.65.18;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: multipart/signed; boundary="Sig_/zG=9/E=uwtByW9iCMJTVBVj";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Transfer-Encoding: 7bit
+Received-SPF: none client-ip=81.169.146.221; envelope-from=olaf@aepfle.de;
+ helo=mo4-p00-ob.smtp.rzone.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,28 +107,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Mar 15, 2024 at 02:08:50PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 15 Mar 2024 14:08:50 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH-for-9.1 02/21] target/mips: Declare CPU QOM types using
->  DEFINE_TYPES() macro
-> X-Mailer: git-send-email 2.41.0
-> 
-> When multiple QOM types are registered in the same file,
-> it is simpler to use the the DEFINE_TYPES() macro. In
-> particular because type array declared with such macro
-> are easier to review.
-> 
-> In few commits we are going to add more types, so replace
-> the type_register_static() to ease further reviews.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> Message-Id: <20231013140116.255-15-philmd@linaro.org>
-> ---
->  target/mips/cpu.c | 23 +++++++++++++----------
->  1 file changed, 13 insertions(+), 10 deletions(-)
+--Sig_/zG=9/E=uwtByW9iCMJTVBVj
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Mon, 18 Mar 2024 11:35:54 +0400 Marc-Andr=C3=A9 Lureau <marcandre.lureau@gm=
+ail.com>:
 
+> Alternatively, we could always build with pic: true (or pic:
+> enable_modules), but that's not ideal either.
+
+I'm sure that unconditionally building with -fPIC has no downsides in this =
+context.
+
+
+Olaf
+
+--Sig_/zG=9/E=uwtByW9iCMJTVBVj
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmX39/EACgkQ86SN7mm1
+DoBGjQ//aMrEw9IVyhElBhDsxHWQ+qfcTDpY10/WAe3h/5C20c2dwzYOl0bqwhGs
+ALHA+sC8Uin+Oni4JCzA9uf7CF47lgZYL2H/fojM36J7fc8x+g/dAOk6HL/vPl1s
+w0WslvZNiUX2np+PjznQPlF1nRP1e5tPfdY3JyY89CR/iHRJQLIIdKQQdEOHsSxs
+/YF5mH/uXZfyj4gBkEcqDKqDHmy2cc0fEkjapyrnEpAB4WrE45P8OQaqCPTIYFrU
+351bLvXU7xO1T3AEYbIFT/d2LrL5JXG4ho7aMctSBVicSnZ6+sBlX0Gwy1mpjz3R
+3P4cW2MOUVfO5K0qKD+oRtKkQczN4xx6vY5NdybnMo1rjrWORfq41BUc1othCOpK
+OkEwVX1HXFciT/N21Aww9h+MT4W7uyHUiXPBH4RW/n62kkgvsdRrJ+10S7vGKjvf
+kUANqaKkztOPZNQLPb/Lp6mJgWNa6JcaJJslnOj8ZMRZN1wg6OwisszGakay9Ezo
+fnYci8pFwJzMFvy5dNEN2Dut4c3OOkK++JC0K9W55p38xbmfxQlKhPrLtf6tgqqt
+Jurr8ugYNoH1gT7GS4z6p1ZhslU52RO+6LjnI+9piDQ8xyEK4ducdyrrdg7h9MQS
+hXAn9GtaXLsxJPxElSuEEsLXs9rHU+Z4tXzuYznZCllsAUU8khA=
+=KPYj
+-----END PGP SIGNATURE-----
+
+--Sig_/zG=9/E=uwtByW9iCMJTVBVj--
 
