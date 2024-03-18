@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6CA87E9BE
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:04:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A23087E9C2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:04:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmCez-0007Cu-Oi; Mon, 18 Mar 2024 09:04:13 -0400
+	id 1rmCf1-0007RB-9E; Mon, 18 Mar 2024 09:04:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCch-0002W3-At
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCch-0002WI-DM
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcd-0007iC-3O
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:50 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCce-0007ja-CL
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710766900;
+ s=mimecast20190719; t=1710766902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EeJoEvjgRGK1LSEdiiMo8SoTYpSLZPuLxY3/8JYZabw=;
- b=MstexYYgji/awR758LPMzqtSN245fsgclYOo2Jgjtszf7yemoiRGF2Ft79ZV5FuEzDN+En
- +ZzM366wSQc6f5gXz0nj5nCBnVC9jCRIafid15EpcbtT9KwVkdxkOO9MofjnAzmXe8ijJ0
- JT+sWHQRwO/YSXdKDoTEEardgOm17F8=
+ bh=UGKKjvaXxYmFKHQMdtSjAoUHjNEkrd8PSJrjEXtTN2M=;
+ b=SgrrrCr7BgrQ8mddKSk4U1o2SkXKoqFyFUu2wkHO3AeSmxJmYdAh8xfVIF6lQhfGv2l/oX
+ QOj+Go0j33wEoQRJcZ/YY8XG7W8vRVuUIyRFIOx8LL9gnQKMG0cmLigV4yfFyI9X0d4tMw
+ 1q7HOVTXiHcQpVOvs/6qaCIiB24F5Ic=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-67-oRAvZGMvMbK6JljPj65oKg-1; Mon,
- 18 Mar 2024 09:01:37 -0400
-X-MC-Unique: oRAvZGMvMbK6JljPj65oKg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-FsilWBCDP3afuQUFoVe2ow-1; Mon,
+ 18 Mar 2024 09:01:39 -0400
+X-MC-Unique: FsilWBCDP3afuQUFoVe2ow-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3246B1C00D33;
- Mon, 18 Mar 2024 13:01:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 001843C0D7CD;
+ Mon, 18 Mar 2024 13:01:39 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9A7CD2166B33;
- Mon, 18 Mar 2024 13:01:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 677842166B5D;
+ Mon, 18 Mar 2024 13:01:37 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 14/15] tests/qemu-iotests: Restrict tests using "--blockdev
- file" to the file protocol
-Date: Mon, 18 Mar 2024 14:01:17 +0100
-Message-ID: <20240318130118.358920-15-kwolf@redhat.com>
+Subject: [PULL 15/15] iotests: adapt to output change for recently introduced
+ 'detached header' field
+Date: Mon, 18 Mar 2024 14:01:18 +0100
+Message-ID: <20240318130118.358920-16-kwolf@redhat.com>
 In-Reply-To: <20240318130118.358920-1-kwolf@redhat.com>
 References: <20240318130118.358920-1-kwolf@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -79,46 +80,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-Tests that use "--blockdev" with the "file" driver cannot work with
-other protocols, so we should mark them accordingly.
+Failure was noticed when running the tests for the qcow2 image format.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240315111108.153201-10-thuth@redhat.com>
+Fixes: 0bd779e27e ("crypto: Introduce 'detached-header' field in QCryptoBlockInfoLUKS")
+Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20240216101415.293769-1-f.ebner@proxmox.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/tests/qcow2-internal-snapshots | 2 +-
- tests/qemu-iotests/tests/qsd-jobs                 | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tests/qemu-iotests/198.out | 2 ++
+ tests/qemu-iotests/206.out | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/tests/qemu-iotests/tests/qcow2-internal-snapshots b/tests/qemu-iotests/tests/qcow2-internal-snapshots
-index 36523aba06..9f83aa8903 100755
---- a/tests/qemu-iotests/tests/qcow2-internal-snapshots
-+++ b/tests/qemu-iotests/tests/qcow2-internal-snapshots
-@@ -39,7 +39,7 @@ trap "_cleanup; exit \$status" 0 1 2 3 15
- 
- # This tests qcow2-specific low-level functionality
- _supported_fmt qcow2
--_supported_proto generic
-+_supported_proto file
- # Internal snapshots are (currently) impossible with refcount_bits=1,
- # and generally impossible with external data files
- _unsupported_imgopts 'compat=0.10' 'refcount_bits=1[^0-9]' data_file
-diff --git a/tests/qemu-iotests/tests/qsd-jobs b/tests/qemu-iotests/tests/qsd-jobs
-index 510bf0a9dc..9b843af631 100755
---- a/tests/qemu-iotests/tests/qsd-jobs
-+++ b/tests/qemu-iotests/tests/qsd-jobs
-@@ -40,7 +40,7 @@ cd ..
- . ./common.filter
- 
- _supported_fmt qcow2
--_supported_proto generic
-+_supported_proto file
- 
- size=128M
- 
+diff --git a/tests/qemu-iotests/198.out b/tests/qemu-iotests/198.out
+index 805494916f..62fb73fa3e 100644
+--- a/tests/qemu-iotests/198.out
++++ b/tests/qemu-iotests/198.out
+@@ -39,6 +39,7 @@ Format specific information:
+     compression type: COMPRESSION_TYPE
+     encrypt:
+         ivgen alg: plain64
++        detached header: false
+         hash alg: sha256
+         cipher alg: aes-256
+         uuid: 00000000-0000-0000-0000-000000000000
+@@ -84,6 +85,7 @@ Format specific information:
+     compression type: COMPRESSION_TYPE
+     encrypt:
+         ivgen alg: plain64
++        detached header: false
+         hash alg: sha256
+         cipher alg: aes-256
+         uuid: 00000000-0000-0000-0000-000000000000
+diff --git a/tests/qemu-iotests/206.out b/tests/qemu-iotests/206.out
+index 7e95694777..979f00f9bf 100644
+--- a/tests/qemu-iotests/206.out
++++ b/tests/qemu-iotests/206.out
+@@ -114,6 +114,7 @@ Format specific information:
+     refcount bits: 16
+     encrypt:
+         ivgen alg: plain64
++        detached header: false
+         hash alg: sha1
+         cipher alg: aes-128
+         uuid: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 -- 
 2.44.0
 
