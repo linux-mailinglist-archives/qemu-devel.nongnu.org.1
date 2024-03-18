@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5399187EAE2
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:25:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFDB87EAF1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:29:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmDuM-0001R1-Ap; Mon, 18 Mar 2024 10:24:10 -0400
+	id 1rmDyI-0003Xz-Lk; Mon, 18 Mar 2024 10:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rmDuG-0001QW-Uk
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:24:06 -0400
+ id 1rmDyC-0003W7-Ck
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:28:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rmDuC-0000tV-Cq
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:24:04 -0400
+ id 1rmDy7-0001mC-Tu
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:28:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710771839;
+ s=mimecast20190719; t=1710772082;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UgLbnnCPTPbQjyiazg1DCM+1FQd9opTAwIkPBI+4zs4=;
- b=C64HrmaXpF8qc8NuP5W6wvueAwCCIPwemOc4gcgImtxxfgXQyLIp5jA9vbvrHU6syI5PxP
- QXSRxWsJRTSgr/LFbwNd4P3wUUGX/ZryTQdR8UmvAVEhkB0NZFg2UB8wEzxDoorLgOMaOD
- S9QlxLd6psqAX+aikvZwQBpNt0k5r5g=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=eB+TbMW7Irvz7hKTC16oT//XnPoSt6ghTnGVhEFLUBc=;
+ b=WwMCl0qFJHPiubPw62S04CF/ztDPsI+0RWAQvC/t6ayY0BbFiSPa95bGsvETCadr3Z4uIV
+ iMXEuGl/y4XsAF2vNZHeg0bj9luvD4nLhMIbB3q+FuoKDtnhJlqSKDa2nd0j+M4f6oFJi+
+ pz5G5rdbRYO9b14MECqZUlM1ix/PF6c=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-2stLNWbnNoewX4y_JIPAVw-1; Mon, 18 Mar 2024 10:23:57 -0400
-X-MC-Unique: 2stLNWbnNoewX4y_JIPAVw-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-789e0996c3cso525513285a.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 07:23:57 -0700 (PDT)
+ us-mta-247-lmlauYQyPYeoo1AX8Uf_LQ-1; Mon, 18 Mar 2024 10:27:59 -0400
+X-MC-Unique: lmlauYQyPYeoo1AX8Uf_LQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-789d981ae87so564939985a.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 07:27:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710771837; x=1711376637;
+ d=1e100.net; s=20230601; t=1710772079; x=1711376879;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UgLbnnCPTPbQjyiazg1DCM+1FQd9opTAwIkPBI+4zs4=;
- b=fJ8VxdzCDfN9Wb4D8srDwc98Zf6rCyxywoi8BDKG9O+n5f0zN24zyTKwoHSf+iWS9H
- 5PGek7JOJ2h03cmzul7dWPgQsUtgyQdGZfDmAS22i5PnQapLFvO182cEN4yMc/jEL4AI
- sChglYSBcqqyxOHrbs6JSElih3NBIEb4d0qxNLJweBD2PeyRd2MbKanB+ytUuxL0fSNq
- x/GeqVsCdFKINVAOocRdShzhJ4MO9LUx1XnOoFtPM0cdA4YV/u4P3n0+/uOZk2+yZx5q
- iGZOwAXfnIIzMg4A2QmGqOEB+mqxvAySWPe51rT/+DtZXEeAJIwuNr92NciuQI/oYyuU
- 0igw==
+ bh=eB+TbMW7Irvz7hKTC16oT//XnPoSt6ghTnGVhEFLUBc=;
+ b=v0D91tVAEIMEFDFZouqNByZJQpSgzezWxYJlDmlTnJtdKcvYCfDM+j4jUu2+8jeH91
+ z9Epef1JbKJbBlnG01tew7LYwHS0almsM+CjeGXKMC2P7PwBQ7hSy2uN+qjBNha2k+br
+ xKgh3frcxzNZrDfSLgNx1eQMHEICLPp5QkExyvodiqYvMnAKWqWEnrtvracvW+dVDjuI
+ gSPgNLk7NZAnMh3OiW8knlsT1zaz+b8ocz5ui3KB6XL+9EFW6CbTnyV4X0I4lP65Cfwg
+ yQ1l18SmfQ01ge9Iif7hLH5uxbV7WDTLymuD+GUQ2O1/sFmAflB8miaYR1Jg/UQcu0Vz
+ 6RjQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU50nzmDtkc/R8wJNtCOyhkGqkyinrkLwLB+/Zm5fyktlG+J9EZOzEpAsZ01Aj7aeA8r+IsSg3OMIAJ0Mrn8+YhfsWxvk4=
-X-Gm-Message-State: AOJu0YxtMG3TLiKr6lIhfDo+G8QOEk5yFMGwjNDNauYs/cstRn5dIS+f
- 7+lrzeHOdTCkoiNBD/CTZDgAaFDufVpcY8qrIUro6RBVnepjOOKuJYKisGvfkjdxSK0o3kWw9dg
- 99eR6Tn2BLZs9ZgSH1t3oI8uqajmBJYXr4iEOjtjaGdQxCFNYswKN
-X-Received: by 2002:a05:620a:4e2:b0:789:f500:cdc0 with SMTP id
- b2-20020a05620a04e200b00789f500cdc0mr5001205qkh.22.1710771837258; 
- Mon, 18 Mar 2024 07:23:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7iCu6ixhqeZDYIUJuyWgzeMgRLZSAv5KpoMhBKeCxsjvcyLb3W0FwKMH5o/UiG7WmA/eTJw==
-X-Received: by 2002:a05:620a:4e2:b0:789:f500:cdc0 with SMTP id
- b2-20020a05620a04e200b00789f500cdc0mr5001194qkh.22.1710771837030; 
- Mon, 18 Mar 2024 07:23:57 -0700 (PDT)
+ AJvYcCX4DfCttgKuSiUGf3wzORmwmJfS7jt7agCx11c1O9YQLObUtRuJlloXRoPRmBLj2/IxR0wUNCMP/rpCFZKHfNBSBbfk82o=
+X-Gm-Message-State: AOJu0Yw3QbBe2ulxO7civRyQuP6UjfCha40fu6uoFpNRveOnMMKAX5zM
+ OiPu3bfnqeQ8gYJiVHJF14uJP3TGTHBNAsoENdpcH/H3b2Q+PDzUMRMbeRf8/CRDSVZiJ2aMydo
+ UUeU3UOzo4mdtjyghn+g5UEdpOpQKSi7OuAsVBCfQNyOxePKIRfj8
+X-Received: by 2002:a05:620a:1a24:b0:78a:ef:fcb8 with SMTP id
+ bk36-20020a05620a1a2400b0078a00effcb8mr4190329qkb.67.1710772079235; 
+ Mon, 18 Mar 2024 07:27:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHBlw75w6oGcD83rrds1VHg6R4fvRdGJs9w2NNyF/cNG3qCe+uLpdq36GEX0tuK+58qzzpdvA==
+X-Received: by 2002:a05:620a:1a24:b0:78a:ef:fcb8 with SMTP id
+ bk36-20020a05620a1a2400b0078a00effcb8mr4190299qkb.67.1710772078977; 
+ Mon, 18 Mar 2024 07:27:58 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- z7-20020ae9c107000000b00789e1c94cf4sm3693189qki.113.2024.03.18.07.23.54
+ pi20-20020a05620a379400b00788406f9c7dsm4595947qkn.101.2024.03.18.07.27.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 07:23:56 -0700 (PDT)
-Message-ID: <2d9b6b71-6913-4169-9759-0b25ae9eddbc@redhat.com>
-Date: Mon, 18 Mar 2024 15:23:54 +0100
+ Mon, 18 Mar 2024 07:27:58 -0700 (PDT)
+Message-ID: <750d1d70-37cd-4e00-a092-204f0dbbe61c@redhat.com>
+Date: Mon, 18 Mar 2024 15:27:54 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
- HostIOMMUDevice
+Subject: Re: [PATCH v1 08/11] vfio/pci: Allocate and initialize
+ HostIOMMUDevice after attachment
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
@@ -81,9 +81,9 @@ Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
  joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com
 References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
- <20240228035900.1085727-2-zhenzhong.duan@intel.com>
+ <20240228035900.1085727-9-zhenzhong.duan@intel.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240228035900.1085727-2-zhenzhong.duan@intel.com>
+In-Reply-To: <20240228035900.1085727-9-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124;
@@ -112,53 +112,39 @@ Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
+
+
 On 2/28/24 04:58, Zhenzhong Duan wrote:
-> HostIOMMUDevice will be inherited by two sub classes,
-> legacy and iommufd currently.
-As this patch introduces the object, you describe what the object is
-meant for and used for. Maybe reuse text from the cover letter
-
-Thanks
-
-Eric
->
-> Introduce a helper function host_iommu_base_device_init to initialize it.
->
-> Suggested-by: Eric Auger <eric.auger@redhat.com>
 > Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > ---
->  include/sysemu/host_iommu_device.h | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->  create mode 100644 include/sysemu/host_iommu_device.h
+>  hw/vfio/pci.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> diff --git a/include/sysemu/host_iommu_device.h b/include/sysemu/host_iommu_device.h
-> new file mode 100644
-> index 0000000000..fe80ab25fb
-> --- /dev/null
-> +++ b/include/sysemu/host_iommu_device.h
-> @@ -0,0 +1,22 @@
-> +#ifndef HOST_IOMMU_DEVICE_H
-> +#define HOST_IOMMU_DEVICE_H
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 4fa387f043..6cc7de5d10 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -3006,6 +3006,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>          goto error;
+>      }
+>  
+> +    /* Allocate and initialize HostIOMMUDevice after attachment succeed */
+after successful attachment?
+> +    host_iommu_device_create(vbasedev);
 > +
-> +typedef enum HostIOMMUDevice_Type {
-> +    HID_LEGACY,
-> +    HID_IOMMUFD,
-> +    HID_MAX,
-> +} HostIOMMUDevice_Type;
-> +
-> +typedef struct HostIOMMUDevice {
-> +    HostIOMMUDevice_Type type;
-> +    size_t size;
-> +} HostIOMMUDevice;
-> +
-> +static inline void host_iommu_base_device_init(HostIOMMUDevice *dev,
-> +                                               HostIOMMUDevice_Type type,
-> +                                               size_t size)
-> +{
-> +    dev->type = type;
-> +    dev->size = size;
-> +}
-> +#endif
+you shall free on error: as well
+
+Eric
+>      vfio_populate_device(vdev, &err);
+>      if (err) {
+>          error_propagate(errp, err);
+> @@ -3244,6 +3247,7 @@ static void vfio_instance_finalize(Object *obj)
+>  
+>      vfio_display_finalize(vdev);
+>      vfio_bars_finalize(vdev);
+> +    g_free(vdev->vbasedev.base_hdev);
+>      g_free(vdev->emulated_config_bits);
+>      g_free(vdev->rom);
+>      /*
 
 
