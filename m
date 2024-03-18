@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F250487ED64
+	by mail.lfdr.de (Postfix) with ESMTPS id DF2C587ED63
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFfT-00008o-UT; Mon, 18 Mar 2024 12:16:55 -0400
+	id 1rmFfa-0000kP-57; Mon, 18 Mar 2024 12:17:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfM-0008Ib-ED
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:49 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfS-0000Ba-Qz
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfK-0004mI-RL
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfQ-0004n7-Mt
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778605;
+ s=mimecast20190719; t=1710778611;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=v7D6ze7bzSDpMd9lkDC7i4XBFfIEIjDkSkct4Vx/D5I=;
- b=ZMC98pu5uGHq3JGMm/HvBdFov6FXMVkUT0A0dSfrX+x9TGsYoRr7XEKRM7DF3d4W7b8B0V
- UPd2LWYV2si8cCJSkyP6NKoDRm8vx81ad/XxpTPFz1gBJv7lwPvVbf2QGF5XQyG/OIPFNB
- U0spB/HTKub9kLNXoppoM6oCWQIUmC8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6/92uxUK8rityKiz36sQzzfXKAYAnQ5fkEB0NWVuirw=;
+ b=XoYbyUIxSDs88hU5sGv8fPOWaR4GFhvs/yWTqr1k0z+El67F8biefD5O6vyQNliHxl4M2f
+ n4WLKVKi/wG0CHBlWOzbBMhTebXIzqeuvlLXQ9IomTp6IF7/Cn8QQ3COXtg8M+I/RT2qPn
+ vBAJEeiCQncm3PA6+JjIvTn8qE3052g=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-GULcyox2MbGPl_nVZt_HhQ-1; Mon, 18 Mar 2024 12:16:43 -0400
-X-MC-Unique: GULcyox2MbGPl_nVZt_HhQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33ec604d3b3so3044477f8f.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:43 -0700 (PDT)
+ us-mta-290-c0vqcgjHMSC-VdmxF_hbbg-1; Mon, 18 Mar 2024 12:16:48 -0400
+X-MC-Unique: c0vqcgjHMSC-VdmxF_hbbg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3418412a734so76634f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778602; x=1711383402;
+ d=1e100.net; s=20230601; t=1710778607; x=1711383407;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=v7D6ze7bzSDpMd9lkDC7i4XBFfIEIjDkSkct4Vx/D5I=;
- b=pLl0gamj9DQcawQtO3UG7ZE4N5/QxR+PBBSH8ixSnro4RxzydB5jGH9cW0K6B0BOFd
- uHhkNA7fkl84KuaHWvWuiC6RsBBlxAbvRtAT6Bz3aC3c1tkRH/s43hQv1+yyYMm3yEyG
- u7WtE/WqHV9vT5tiL/0qlykbBF/FftodviChJRzvBTG19YXVDSOLyDCcFS4WcrLH5qR2
- iggnWIWyy5tHSC9k3qnfML/nc8ZgsirBRvhswJK0fAMHW7FOY3zCqnH+86hYFb8/PQRl
- +xM/aVNowFEAviaKkbSegwIgZEkHbmXYItwSzeoEUNh3ZG3rGQzSPju+F19nmqbMB6oo
- pImA==
-X-Gm-Message-State: AOJu0YyEcO4KmFjAJYogessgxGXJNXd0ej58u2BG4q1qOh38Qo8PYGdq
- LyyS7s0JYp+hCxxYC9EdAeJKfaU52LDlNBIBiZzpXa9pSX0Yee3RuYxW7kFXWsebx3jkNqAx8yH
- cZ3duJusKhf+OB/0tk89XDGsh1OS7ehYC6Fxfg5WwNrFm/KDzK6BjCLX726ZOS4w/DGR3Q07dLu
- BJcOsmc0vHBlWkupxOHb9agA4qH/66AQ==
-X-Received: by 2002:adf:f20f:0:b0:33e:c0db:441 with SMTP id
- p15-20020adff20f000000b0033ec0db0441mr9641748wro.7.1710778602131; 
- Mon, 18 Mar 2024 09:16:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEVK8ajBREh60Dig4xkRE8jRcSGY9kgqxC5PB8myzqUthBgMW0gE+p9nBw6hpXPGpiPurXNXA==
-X-Received: by 2002:adf:f20f:0:b0:33e:c0db:441 with SMTP id
- p15-20020adff20f000000b0033ec0db0441mr9641714wro.7.1710778601554; 
- Mon, 18 Mar 2024 09:16:41 -0700 (PDT)
+ bh=6/92uxUK8rityKiz36sQzzfXKAYAnQ5fkEB0NWVuirw=;
+ b=ZkLo6HIhXiDTamD9uTaXXfokAcy07WdkKrjN92ato1vROsd/Nhjmg8q5j4CDWWxdOv
+ K89UafC5Fy+uiwtvfxHJ7c1dVZGF4FopBvLJ3YQGfNNit/X2kZIeCaPsCHAU0RlsigS0
+ 7Ku3uKfaUK23Y/x/GEVk1zT6dxkSZmU854IrguUcuYPpUaafxqBiskpmx5n8JQ7+qSa0
+ FrQibGUmkoLByBVlps3mXeIPtrYoNqEjHxtHH6bMR/Pqog6ou+x6J6w8GPpIRhl7pAxq
+ zT8VYEOAXnf4bj31sX2hy5j4iKbaWKMCCZj8bBnwbqYHONu4/YU0xGvPJ0QFIDZGaS+b
+ ugtg==
+X-Gm-Message-State: AOJu0Yxtvlsm2+Z4v3ZByQP8S9OvmSHiEHKBXF9c/dth6fHt/pFJNx+b
+ bsMdqXDbOBu6y46Hr5Yx0CAxyGbEAVkcqTVvcbrOpF2sTnip/o758rBbA/qE5QZLT+ioPw1FSWI
+ Zvd1fN/wiMBLp2uoZI8Ogml0FjYd3olyaAy1sQhEsdRGoAlwVSMf9eHa+bcPBIdJF/nMBQ2/S4S
+ QALp1oGB30xt357giD9jrc1xvawvVvhg==
+X-Received: by 2002:adf:eed2:0:b0:33e:7f51:c2f7 with SMTP id
+ a18-20020adfeed2000000b0033e7f51c2f7mr7866619wrp.52.1710778606835; 
+ Mon, 18 Mar 2024 09:16:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG6QpQAIjuYOnlYNrQIC08dF1KZwnCS0o21u8gcqH627NL54m1Bj78w5u2D9tV+oXzJTq44yQ==
+X-Received: by 2002:adf:eed2:0:b0:33e:7f51:c2f7 with SMTP id
+ a18-20020adfeed2000000b0033e7f51c2f7mr7866595wrp.52.1710778606365; 
+ Mon, 18 Mar 2024 09:16:46 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- n2-20020a5d4002000000b0033e93e00f68sm10122463wrp.61.2024.03.18.09.16.40
+ t14-20020a05600001ce00b0033d6c928a95sm10153073wrx.63.2024.03.18.09.16.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:16:41 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:16:38 -0400
+ Mon, 18 Mar 2024 09:16:45 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:16:41 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>,
  Ani Sinha <anisinha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>
-Subject: [PULL 19/24] smbios: in case of entry point is 'auto' try to build
- v2 tables 1st
-Message-ID: <4840c8a2b4666cf1b320a387c3f8b609258e7654.1710778506.git.mst@redhat.com>
+Subject: [PULL 20/24] smbios: error out when building type 4 table is not
+ possible
+Message-ID: <5ed7948213af8cba0c6153611aa0aea55069bac2.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -103,122 +103,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-QEMU for some time now uses SMBIOS 3.0 for PC/Q35 machines by
-default, however Windows has a bug in locating SMBIOS 3.0
-entrypoint and fails to find tables when booted on SeaBIOS
-(on UEFI SMBIOS 3.0 tables work fine since firmware hands
-over tables in another way)
+If SMBIOS v2 version is requested but number of cores/threads
+are more than it's possible to describe with v2, error out
+instead of silently ignoring the fact and filling core/thread
+count with bogus values.
 
-Missing SMBIOS tables may lead to some issues for guest
-though (worst are: possible reactiveation, inability to
-get virtio drivers from 'Windows Update')
-
-It's unclear  at this point if MS will fix the issue on their
-side. So instead of it (or rather in addition) this patch
-will try to workaround the issue.
-
-aka, use smbios-entry-point-type=auto to make QEMU try
-generating conservative SMBIOS 2.0 tables and if that
-fails (due to limits/requested configuration) fallback
-to SMBIOS 3.0 tables.
-
-With this in place majority of users will use SMBIOS 2.0
-tables which work fine with (Windows + legacy BIOS).
-The configurations that is not to possible to describe
-with SMBIOS 2.0 will switch automatically to SMBIOS 3.0
-(which will trigger Windows bug but there is nothing
-QEMU can do here, so go and aks Microsoft to real fix).
+This will help caller to decide if it should fallback to
+SMBIOSv3 when smbios-entry-point-type='auto'
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-Id: <20240314152302.2324164-17-imammedo@redhat.com>
+Message-Id: <20240314152302.2324164-18-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/smbios/smbios.c | 52 +++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 49 insertions(+), 3 deletions(-)
+ hw/smbios/smbios.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 48713aa505..b0467347c5 100644
+index b0467347c5..eed5787b15 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -1082,7 +1082,7 @@ static void smbios_entry_point_setup(SmbiosEntryPointType ep_type)
-     }
+@@ -669,7 +669,8 @@ static void smbios_build_type_3_table(void)
  }
  
--void smbios_get_tables(MachineState *ms,
-+static bool smbios_get_tables_ep(MachineState *ms,
-                        SmbiosEntryPointType ep_type,
-                        const struct smbios_phys_mem_area *mem_array,
-                        const unsigned int mem_array_size,
-@@ -1091,6 +1091,7 @@ void smbios_get_tables(MachineState *ms,
-                        Error **errp)
+ static void smbios_build_type_4_table(MachineState *ms, unsigned instance,
+-                                      SmbiosEntryPointType ep_type)
++                                      SmbiosEntryPointType ep_type,
++                                      Error **errp)
  {
-     unsigned i, dimm_cnt, offset;
-+    ERRP_GUARD();
- 
-     assert(ep_type == SMBIOS_ENTRY_POINT_TYPE_32 ||
-            ep_type == SMBIOS_ENTRY_POINT_TYPE_64);
-@@ -1177,11 +1178,56 @@ void smbios_get_tables(MachineState *ms,
-         abort();
+     char sock_str[128];
+     size_t tbl_len = SMBIOS_TYPE_4_LEN_V28;
+@@ -723,6 +724,12 @@ static void smbios_build_type_4_table(MachineState *ms, unsigned instance,
+     if (tbl_len == SMBIOS_TYPE_4_LEN_V30) {
+         t->core_count2 = t->core_enabled2 = cpu_to_le16(cores_per_socket);
+         t->thread_count2 = cpu_to_le16(threads_per_socket);
++    } else if (t->core_count == 0xFF || t->thread_count == 0xFF) {
++        error_setg(errp, "SMBIOS 2.0 doesn't support number of processor "
++                         "cores/threads more than 255, use "
++                         "-machine smbios-entry-point-type=64 option to enable "
++                         "SMBIOS 3.0 support");
++        return;
      }
  
--    return;
-+    return true;
- err_exit:
-     g_free(smbios_tables);
-     smbios_tables = NULL;
--    return;
-+    return false;
-+}
-+
-+void smbios_get_tables(MachineState *ms,
-+                       SmbiosEntryPointType ep_type,
-+                       const struct smbios_phys_mem_area *mem_array,
-+                       const unsigned int mem_array_size,
-+                       uint8_t **tables, size_t *tables_len,
-+                       uint8_t **anchor, size_t *anchor_len,
-+                       Error **errp)
-+{
-+    Error *local_err = NULL;
-+    bool is_valid;
-+    ERRP_GUARD();
-+
-+    switch (ep_type) {
-+    case SMBIOS_ENTRY_POINT_TYPE_AUTO:
-+    case SMBIOS_ENTRY_POINT_TYPE_32:
-+        is_valid = smbios_get_tables_ep(ms, SMBIOS_ENTRY_POINT_TYPE_32,
-+                                        mem_array, mem_array_size,
-+                                        tables, tables_len,
-+                                        anchor, anchor_len,
-+                                        &local_err);
-+        if (is_valid || ep_type != SMBIOS_ENTRY_POINT_TYPE_AUTO) {
-+            break;
-+        }
-+        /*
-+         * fall through in case AUTO endpoint is selected and
-+         * SMBIOS 2.x tables can't be generated, to try if SMBIOS 3.x
-+         * tables would work
-+         */
-+    case SMBIOS_ENTRY_POINT_TYPE_64:
-+        error_free(local_err);
-+        local_err = NULL;
-+        is_valid = smbios_get_tables_ep(ms, SMBIOS_ENTRY_POINT_TYPE_64,
-+                                        mem_array, mem_array_size,
-+                                        tables, tables_len,
-+                                        anchor, anchor_len,
-+                                        &local_err);
-+        break;
-+    default:
-+        abort();
-+    }
-+    if (!is_valid) {
-+        error_propagate(errp, local_err);
-+    }
- }
+     SMBIOS_BUILD_TABLE_POST;
+@@ -1111,7 +1118,10 @@ static bool smbios_get_tables_ep(MachineState *ms,
+     assert(ms->smp.sockets >= 1);
  
- static void save_opt(const char **dest, QemuOpts *opts, const char *name)
+     for (i = 0; i < ms->smp.sockets; i++) {
+-        smbios_build_type_4_table(ms, i, ep_type);
++        smbios_build_type_4_table(ms, i, ep_type, errp);
++        if (*errp) {
++            goto err_exit;
++        }
+     }
+ 
+     smbios_build_type_8_table();
 -- 
 MST
 
