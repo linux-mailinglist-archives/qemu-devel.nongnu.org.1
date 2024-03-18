@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B99887E4B0
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BB387E462
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:53:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7z8-0000Ty-IT; Mon, 18 Mar 2024 04:04:42 -0400
+	id 1rm7o1-0002uU-E2; Mon, 18 Mar 2024 03:53:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rm7z5-0000Tg-Bt
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:04:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rm7nn-0002u2-W4
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:01 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rm7ys-0001jh-Dd
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:04:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710749062;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MKezJqL4w19nBxCNntscYpJbXJ7ro8ADsyqjjBLcNog=;
- b=VAO6ofoARjgRxfjTV0K8H8P6kY8ZetdKlR4mNll5ZqOYTbm1eA+y7EbV52VZx1iu38iU5k
- xqtgDW2UyIoqenO1IkARUH5FcLz4Heoongz2lQEWsuwN9afK6+qyLlAkU0Trku7MrU/UEx
- 6idgkdEfmS+I+9EvhOXM7pO05HI3FuA=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-315-F7hsex17ORSgyyPlPPwnTA-1; Mon, 18 Mar 2024 04:04:21 -0400
-X-MC-Unique: F7hsex17ORSgyyPlPPwnTA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-33ed0a8beb5so1793707f8f.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 01:04:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710749059; x=1711353859;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MKezJqL4w19nBxCNntscYpJbXJ7ro8ADsyqjjBLcNog=;
- b=KKtXpEr/PT9pu7qUUL/6FYHFM3YiCU/HnNBObNcysecS51cpthOz9onRz6JtO1KoC7
- iSKxASn6MLkCY66M+tY29lOJ/pDZ73SkRObEcrUgy21p6LJleoOahpE2pdzPSJxavkqb
- xSZP+MwX0md3jfmA8MqyZe2q+HFal5uGwi6vX/39c8oK9n31rzZCfZQXkusPLUu2IUGB
- vZkikzeUiLEoc1vI7GohaEuY9zdn4qRSLM0vZUn9tzT077fNX7g4TtjuNb4aS56C42FY
- TxY3ndh9TZ1kRQSwQeoRw8jDjWrqzNRO/Q7jxwotCJmIsBUzLVNi+joFZOuv8HkVJU1b
- WOpQ==
-X-Gm-Message-State: AOJu0YzTEtMZykiHYD4TP9TEOUigNJUXHHizue8LnR3mrIAgG2KBrfLf
- oN5n5kc2klsPcRdh6p6MiFn4O7dBhFkY5LBBtaFITtOXf+3iiQzPv4z10ARGKPaB7wzFqW61I12
- pEITxpgr6tZ5+4XMYAMHt/QaQOd/UINwC9PdOTbYe/HAwQ97vMhJA48gks4S+
-X-Received: by 2002:adf:fa87:0:b0:33e:7946:4cd2 with SMTP id
- h7-20020adffa87000000b0033e79464cd2mr6872288wrr.10.1710749058954; 
- Mon, 18 Mar 2024 01:04:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFkr0uPssNWJWwnp5pkdKug8aJ/HKyly1Ewh4Lb046Mda2kJBDtu+abVoHZi3gPWKdcNJ2Qtg==
-X-Received: by 2002:adf:fa87:0:b0:33e:7946:4cd2 with SMTP id
- h7-20020adffa87000000b0033e79464cd2mr6872260wrr.10.1710749058299; 
- Mon, 18 Mar 2024 01:04:18 -0700 (PDT)
-Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- w16-20020adfcd10000000b0033e5c54d0d9sm9208566wrm.38.2024.03.18.01.04.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 01:04:17 -0700 (PDT)
-Date: Mon, 18 Mar 2024 04:04:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Jiqian Chen <Jiqian.Chen@amd.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [QEMU PATCH v6 1/1] virtio-pci: implement No_Soft_Reset bit
-Message-ID: <20240318035505-mutt-send-email-mst@kernel.org>
-References: <20240222034010.887390-1-Jiqian.Chen@amd.com>
- <20240222034010.887390-2-Jiqian.Chen@amd.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rm7nj-0008U8-Lc
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:52:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710748376; x=1742284376;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=WQn8QPeV+2aIGgkNJLr2LGepKhFCY7X2ShJr+Wuilng=;
+ b=KLMINBr6dnygcyJA1Qe/W1hogOtBEj2tqsYCRk/KOaDJbAB6L2eOOyWV
+ KzOQG2TbQAwcNhPOlN6rE3W2El8Ur5Mgcmh7ic+nH2ug5qN15Z33e6fls
+ J2oLRUz3Em2a/YRazGll73kNmd7fZOAJ9r8fVUSKU7xYv4cuel7rn/CvS
+ cjRUQATcC8roJLTT0QkSWyRHtUw8hRfhRC2dy0RfVU18PbGnil27yt8Nd
+ 0/zEvhfuGTZq8vS1D1ugDC0i9TqMNMOqg4VWGVtQN0tErfdL6XiVPX+46
+ YacoQYgA4pmS0rdzSO269DD8fHzjeVd4usDwlGYPr22sUgh88qXQhpxaO w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16944784"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="16944784"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2024 00:52:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="50827487"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orviesa001.jf.intel.com with ESMTP; 18 Mar 2024 00:52:47 -0700
+Date: Mon, 18 Mar 2024 16:06:38 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Prasad Pandit <ppandit@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
+ Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Prasad Pandit <pjp@fedoraproject.org>
+Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
+ initialization in machine_parse_smp_config()
+Message-ID: <Zff2DgJa+eHPBhgJ@intel.com>
+References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
+ <20240306095407.3058909-4-zhao1.liu@linux.intel.com>
+ <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
+ <Zesv4W8DKteGeE/a@intel.com>
+ <CAE8KmOxHNTGkE-8Xd+RXOuHNmyHqPwU4HcYRO6qHBGVAy6nAew@mail.gmail.com>
+ <Ze6UmDoFD5Qd8AC/@intel.com>
+ <CAE8KmOzwrLY5ag_FKvX-ovAopfPeYSqFHc3-sdQj_zt_28tH5A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240222034010.887390-2-Jiqian.Chen@amd.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+In-Reply-To: <CAE8KmOzwrLY5ag_FKvX-ovAopfPeYSqFHc3-sdQj_zt_28tH5A@mail.gmail.com>
+Received-SPF: none client-ip=192.198.163.10;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,143 +89,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Feb 22, 2024 at 11:40:10AM +0800, Jiqian Chen wrote:
-> In current code, when guest does S3, virtio devices are reset due to
-> the bit No_Soft_Reset is not set. After resetting, the display resources
-> of virtio-gpu are destroyed, then the display can't come back and only
-> show blank after resuming.
+On Wed, Mar 13, 2024 at 04:22:30PM +0530, Prasad Pandit wrote:
+> Date: Wed, 13 Mar 2024 16:22:30 +0530
+> From: Prasad Pandit <ppandit@redhat.com>
+> Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
+>  initialization in machine_parse_smp_config()
 > 
-> Implement No_Soft_Reset bit of PCI_PM_CTRL register, then guest can check
-> this bit, if this bit is set, the devices resetting will not be done, and
-> then the display can work after resuming.
+> Hello Zhao,
 > 
-> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> ---
->  hw/virtio/virtio-pci.c         | 37 +++++++++++++++++++++++++++++++++-
->  include/hw/virtio/virtio-pci.h |  5 +++++
->  2 files changed, 41 insertions(+), 1 deletion(-)
+> > (Communicating with you also helped me to understand the QAPI related parts.)
 > 
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index 1a7039fb0c68..da5312010345 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -2197,6 +2197,11 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
->              pcie_cap_lnkctl_init(pci_dev);
->          }
->  
-> +        if (proxy->flags & VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET) {
-> +            pci_set_word(pci_dev->config + pos + PCI_PM_CTRL,
-> +                         PCI_PM_CTRL_NO_SOFT_RESET);
-> +        }
-> +
->          if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
->              /* Init Power Management Control Register */
->              pci_set_word(pci_dev->wmask + pos + PCI_PM_CTRL,
+> * I'm also visiting QAPI code parts for the first time. Thanks to you. :)
+> 
+> On Mon, 11 Mar 2024 at 10:36, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
+> > SMPConfiguration is created and set in machine_set_smp().
+> > Firstly, it is created by g_autoptr(), and then it is initialized by
+> > visit_type_SMPConfiguration().
+> >
+> > The visit_type_SMPConfiguration() is generated by
+> > gen_visit_object_members() in scripts/qapi/visit.py.
+> >
+> > IIUC, in visit_type_SMPConfiguration() (let's have a look at
+> > gen_visit_object_members()), there's no explicit initialization of
+> > SMPConfiguration() (i.e., the parameter named "%(c_name)s *obj" in
+> > gen_visit_object_members()). For int type, has_* means that the field is
+> > set.
+> >
+> 
+> * Thank you for the above details, appreciate it. I added few
+> fprintf() calls to visit_type_SMPConfiguration() to see what user
+> values it receives
+> ===
+> $ ./qemu-system-x86_64 -smp cores=2,maxcpus=2,cpus=1,sockets=2
+> visit_type_SMPConfiguration: name: smp
+>         has_cpus: 1:1
+>  has_drawvers: 0:0
+>       has_books: 0:0
+>   has_sockets: 1:2
+>         has_dies: 0:0
+>  has_clusters: 0:0
+>      has_cores: 1:2
+>   has_threads: 0:0
+> has_maxcpus: 1:2
+> qemu-system-x86_64: Invalid CPU topology: product of the hierarchy
+> must match maxcpus: sockets (2) * dies (1) * cores (2) * threads (0)
+> != maxcpus (2)
+> ===
+> * As seen above, undefined -smp fields (both has_xxxx and xxxx) are
+> set to zero(0).
+> 
+> ===
+> main
+>  qemu_init
+>   qemu_apply_machine_options
+>    object_set_properties_from_keyval
+>     object_set_properties_from_qdict
+>      object_property_set
+>       machine_set_smp
+>        visit_type_SMPConfiguration
+>         visit_start_struct
+> (gdb) p v->start_struct
+> $4 = ... 0x5555570248e4 <qobject_input_start_struct>
+> (gdb)
+> (gdb)
+>  qobject_input_start_struct
+>    if (obj) {
+>         *obj = g_malloc0(size);
+>     }
+> ===
+> * Stepping through function calls in gdb(1) revealed above call
+> sequence which leads to  'SMPConfiguration **'  objects allocation by
+> g_malloc0.
 
+Thanks! I misunderstood, it turns out that the initialization is done here.
 
-Don't we need compat machinery to avoid breaking migration for
-existing machine types?
+> 
+> > This means if user doesn't initialize some field, the the value should
+> > be considerred as unreliable. And I guess for int, the default
+> > initialization value is the same as if we had declared a regular integer
+> > variable. But anyway, fields that are not explicitly initialized should
+> > not be accessed.
+> 
+> * g_malloc0() allocating 'SMPConfiguration **' object above assures us
+> that undefined -smp fields shall always be zero(0).
+> 
+> * 'obj->has_xxxx' field is set only if the user has supplied the
+> variable value, otherwise it remains set to zero(0).
+>    visit_type_SMPConfiguration_members
+>      ->visit_optional
+>        ->v->optional
+>         -> qobject_input_optional
 
-> @@ -2259,18 +2264,46 @@ static void virtio_pci_reset(DeviceState *qdev)
->      }
->  }
->  
-> +static bool device_no_need_reset(PCIDevice *dev)
-> +{
-> +    if (pci_is_express(dev)) {
-> +        uint16_t pmcsr;
-> +
-> +        pmcsr = pci_get_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL);
-> +        /*
-> +         * When No_Soft_Reset bit is set and device
+Yes, you're right!
 
-the device
+> 
+> * Overall, I think there is scope to simplify the
+> 'machine_parse_smp_config()' function by using SMPConfiguration
+> field(s) ones.
 
-> +         * is in D3hot state, can't reset device
+Indeed, as you say, these items are initialized to 0 by default.
 
-can't? or don't?
+I think, however, that the initialization is so far away from where the
+smp is currently parsed that one can't easily confirm it (thanks for
+your confirmation!).
 
-> +         */
-> +        if ((pmcsr & PCI_PM_CTRL_NO_SOFT_RESET) &&
-> +            (pmcsr & PCI_PM_CTRL_STATE_MASK) == 3)
-> +            return true;
+From a code readability view, the fact that we're explicitly
+initializing to 0 again here brings little overhead, but makes the code
+more readable as well as easier to maintain. I think the small redundancy
+here is worth it.
 
-coding style violation
+Also, in other use cases people always relies on fields marked by has_*,
+and there is no (or less?) precedent for direct access to places where
+has_* is not set. I understand that this is also a habit, i.e., fields
+with a has_* of False by default are unreliable and avoid going directly
+to them.
 
-> +    }
-> +
-> +    return false;
-> +}
-> +
->  static void virtio_pci_bus_reset_hold(Object *obj)
->  {
->      PCIDevice *dev = PCI_DEVICE(obj);
->      DeviceState *qdev = DEVICE(obj);
->  
-> +    if (device_no_need_reset(dev))
-> +        return;
-> +
->      virtio_pci_reset(qdev);
->  
->      if (pci_is_express(dev)) {
-> +        uint16_t pmcsr;
-> +        uint16_t val = 0;
-> +
->          pcie_cap_deverr_reset(dev);
->          pcie_cap_lnkctl_reset(dev);
->  
-> -        pci_set_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL, 0);
-> +        /* don't reset the RO bits */
-> +        pmcsr = pci_get_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL);
-> +        val = val | (pmcsr & PCI_PM_CTRL_NO_SOFT_RESET) |
-> +                (pmcsr & PCI_PM_CTRL_DATA_SCALE_MASK);
-> +        pci_set_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL, val);
-
-First, we have test and clear for this.
-
-Second, this has to be conditional on the flag, no?
-Without the flag don't we reset everything?
-Or you can reuse wmask for this, also an option.
-
-Also what's going on with PCI_PM_CTRL_DATA_SCALE_MASK?
-Where does that come from?
-
->      }
->  }
->  
-> @@ -2297,6 +2330,8 @@ static Property virtio_pci_properties[] = {
->                      VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT, true),
->      DEFINE_PROP_BIT("x-pcie-pm-init", VirtIOPCIProxy, flags,
->                      VIRTIO_PCI_FLAG_INIT_PM_BIT, true),
-> +    DEFINE_PROP_BIT("x-pcie-pm-no-soft-reset", VirtIOPCIProxy, flags,
-> +                    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT, true),
->      DEFINE_PROP_BIT("x-pcie-flr-init", VirtIOPCIProxy, flags,
->                      VIRTIO_PCI_FLAG_INIT_FLR_BIT, true),
->      DEFINE_PROP_BIT("aer", VirtIOPCIProxy, flags,
-> diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-> index 59d88018c16a..9e67ba38c748 100644
-> --- a/include/hw/virtio/virtio-pci.h
-> +++ b/include/hw/virtio/virtio-pci.h
-> @@ -43,6 +43,7 @@ enum {
->      VIRTIO_PCI_FLAG_INIT_FLR_BIT,
->      VIRTIO_PCI_FLAG_AER_BIT,
->      VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT,
-> +    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT,
->  };
->  
->  /* Need to activate work-arounds for buggy guests at vmstate load. */
-> @@ -79,6 +80,10 @@ enum {
->  /* Init Power Management */
->  #define VIRTIO_PCI_FLAG_INIT_PM (1 << VIRTIO_PCI_FLAG_INIT_PM_BIT)
->  
-> +/* Init The No_Soft_Reset bit of Power Management */
-> +#define VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET \
-> +  (1 << VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT)
-> +
->  /* Init Function Level Reset capability */
->  #define VIRTIO_PCI_FLAG_INIT_FLR (1 << VIRTIO_PCI_FLAG_INIT_FLR_BIT)
->  
-> -- 
-> 2.34.1
+Regards,
+Zhao
 
 
