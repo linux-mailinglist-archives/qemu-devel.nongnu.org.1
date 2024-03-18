@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5B887E505
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:34:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB2B87E550
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:57:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm8Rw-0000iP-7W; Mon, 18 Mar 2024 04:34:29 -0400
+	id 1rm8n8-0006fS-By; Mon, 18 Mar 2024 04:56:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm8Ro-0000i4-KY; Mon, 18 Mar 2024 04:34:20 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm8Rk-0006XI-7O; Mon, 18 Mar 2024 04:34:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710750856; x=1742286856;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=JUZW5gGldw4BXTAwUQ0eaRr94wgH03/4Fmcn9iVi/8o=;
- b=gFbU9WFDoNIqE611BLAeg2Ai9ft6HA4HQxtZaAHn6wpM81Mth7cVm8eQ
- JUQGr1OjBCRN8CgBX9vogT2q73yLVxNLxPzILqN96FUwrWp7p3TgFvjDt
- 9faoD4rJkMZFswr+1C4aRrHzzddslbZRfMeIlRv4+WvhNLl2CTCWSDKR6
- MHdJtDFRdeAsMxh1Hvy2fLRGHIet1Y6IrXAKOylfP1KUKRHQZPlGCwE5Z
- Cs/jkXmU4FU2KjbC2nwY4WDjGGkjvK+fKvtlUhVZrW+zeT3V4Tbsv/NT1
- TSC9wT5zOoX6IfeE1B6ZK/BjApDoLjHaIBFAAiiI5tUVFYHbAnR+NzL7p g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16951484"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="16951484"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 01:34:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="13286825"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 18 Mar 2024 01:34:07 -0700
-Date: Mon, 18 Mar 2024 16:47:59 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
- qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Claudio Fontana <cfontana@suse.de>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Subject: Re: [PATCH-for-9.1 06/21] target/i386: Make X86_CPU common to new
- I386_CPU / X86_64_CPU types
-Message-ID: <Zff/v7aK182oxbM2@intel.com>
-References: <20240315130910.15750-1-philmd@linaro.org>
- <20240315130910.15750-7-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rm8n6-0006fA-A8; Mon, 18 Mar 2024 04:56:20 -0400
+Received: from mail-vk1-xa29.google.com ([2607:f8b0:4864:20::a29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rm8ms-0001pl-FZ; Mon, 18 Mar 2024 04:56:20 -0400
+Received: by mail-vk1-xa29.google.com with SMTP id
+ 71dfb90a1353d-4d42d18bd63so1239739e0c.2; 
+ Mon, 18 Mar 2024 01:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710752165; x=1711356965; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=jK7I1oMqOUtvGmi/aaRpnmqT1Z+iytKnO9Az1DAavgc=;
+ b=WMZLQgnghJn9TIjEmVeIPIaVHmw9JNVkA5p+392RgTqBBx4oMJcAh0QjLw3cqFiW1f
+ FhnnFupnxTBOzgp5+af+Unycu/niSN+HDnOhl7axfNjV07eBmhdVs0TDQnotcN4oAv1e
+ 3ybaI9CWlV3hhAA9kAEMgw+dgTAks01OSEsGtikt8Qe7Ijt0ZdQw+6hlFIRVmjhdYzMZ
+ jGPMLTHXUH5l2/cTZasu9UsFE+30lPE75yU8mmS3u3DSIdWvrEWqzYWLtHFUpW3SynQi
+ n4Vs1TAY/ZhPGmjLDgzkYBeWD6hMZndeNLAxCxNIbO2++Etppphzu5ibfjV/oa/VUBqz
+ CyxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710752165; x=1711356965;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jK7I1oMqOUtvGmi/aaRpnmqT1Z+iytKnO9Az1DAavgc=;
+ b=V3RNCTLFTGbMd5ootT9gmmTkdObQjpW3UgLx18BUrc/yrOYYd4oKcUxd7hO2SxxXgo
+ rDBubbR0AiVVoZBXkOIz5hp8vzJBfRwBf9Jr6UuI+3bv5n/SmQctlOOTy15y5J0JzVO3
+ ipxkrNbOFR+L5N1Ulel+p0a8C/NvLa9BwxrRkfayJk1uISVso+ImaAeVgDyDfYVa9z24
+ RoMynJStO2YC7WnhJ5mub4f1xjVQw3zHjQzD7ONUDrAlVdydKQ2sakILayS+XbdWrvQ8
+ 3PPM3sPsSrbmaBGgus9j/KV/jwB1+wDFneMxXIdeCtVg6kSYUPeO7rQCDlgvDKRfmIOS
+ sDpw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWqok4bOdnptVDzYV5LtCleQlxscvIF4rGxLxtngrq59pzV4OXJ1/i1g7hPkR/5Io4xfMF77unWDRhr6v8C355ZVE+QmL0=
+X-Gm-Message-State: AOJu0YyVGjvJh3I5A62sxMCyVIZ4AXiRIZJci92vwLuXIs2DrlkhxBGG
+ MAU1AmTqUXUbArur1LOOOHRinwzi5Ak0afDQ1lblwh1c/Z06NDv5VtYMU07UifH1LcAyuiXqIqD
+ mQVFGLjy0SzXkKJnOS48uiYdELV4=
+X-Google-Smtp-Source: AGHT+IF9O2hE92M/CVZftRdCZAduK/cz1EWlEmlW123IzOl4W+PguHSNmGCjvtAq9I9G74E2a2tNg+LLRDeF7DvMZrU=
+X-Received: by 2002:a05:6122:997:b0:4d4:5124:17b2 with SMTP id
+ g23-20020a056122099700b004d4512417b2mr1452548vkd.6.1710752164971; Mon, 18 Mar
+ 2024 01:56:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240315130910.15750-7-philmd@linaro.org>
-Received-SPF: none client-ip=192.198.163.10;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.316,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+References: <20240314175704.478276-1-dbarboza@ventanamicro.com>
+ <20240314175704.478276-5-dbarboza@ventanamicro.com>
+In-Reply-To: <20240314175704.478276-5-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 18 Mar 2024 18:55:38 +1000
+Message-ID: <CAKmqyKNN6zR7m+rfM1-gi5T9AMHH9VRf5GfXvEVgF1LBKntWYQ@mail.gmail.com>
+Subject: Re: [PATCH for 9.0 v15 04/10] target/riscv: always clear vstart in
+ whole vec move insns
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, max.chou@sifive.com, richard.henderson@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::a29;
+ envelope-from=alistair23@gmail.com; helo=mail-vk1-xa29.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,119 +91,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+On Fri, Mar 15, 2024 at 3:58=E2=80=AFAM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> These insns have 2 paths: we'll either have vstart already cleared if
+> vstart_eq_zero or we'll do a brcond to check if vstart >=3D maxsz to call
+> the 'vmvr_v' helper. The helper will clear vstart if it executes until
+> the end, or if vstart >=3D vl.
+>
+> For starters, the check itself is wrong: we're checking vstart >=3D maxsz=
+,
+> when in fact we should use vstart in bytes, or 'startb' like 'vmvr_v' is
+> calling, to do the comparison. But even after fixing the comparison we'll
+> still need to clear vstart in the end, which isn't happening too.
+>
+> We want to make the helpers responsible to manage vstart, including
+> these corner cases, precisely to avoid these situations:
+>
+> - remove the wrong vstart >=3D maxsz cond from the translation;
+> - add a 'startb >=3D maxsz' cond in 'vmvr_v', and clear vstart if that
+>   happens.
+>
+> This way we're now sure that vstart is being cleared in the end of the
+> execution, regardless of the path taken.
+>
+> Fixes: f714361ed7 ("target/riscv: rvv-1.0: implement vstart CSR")
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-On Fri, Mar 15, 2024 at 02:08:54PM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 15 Mar 2024 14:08:54 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH-for-9.1 06/21] target/i386: Make X86_CPU common to new
->  I386_CPU / X86_64_CPU types
-> X-Mailer: git-send-email 2.41.0
-> 
-> "target/foo/cpu-qom.h" can not use any target specific definitions.
-> 
-> Currently "target/i386/cpu-qom.h" defines TYPE_X86_CPU depending
-> on the i386/x86_64 build type. This doesn't scale in a heterogeneous
-> context where we need to access both types concurrently.
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 
-Does this mean that there would be a TCG case contains both 64-bit and
-32-bit i386 core? ;-)
+Alistair
 
-> In order to do that, introduce the new I386_CPU / X86_64_CPU
-> types, both inheriting a common TYPE_X86_CPU base type.
-> 
-> Keep the current "base" and "max" CPU types as 32 or 64-bit,
-> depending on the binary built.
-> 
-> Adapt the cpu-plug-test, since the 'base' architecture is now
-> common to both 32/64-bit x86 targets.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Acked-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  target/i386/cpu-qom.h       | 16 ++++++++++------
->  target/i386/cpu.c           | 20 ++++++++++++++++++--
->  tests/qtest/cpu-plug-test.c |  2 +-
->  3 files changed, 29 insertions(+), 9 deletions(-)
-> 
-> diff --git a/target/i386/cpu-qom.h b/target/i386/cpu-qom.h
-> index d4e216d000..de28d7ea20 100644
-> --- a/target/i386/cpu-qom.h
-> +++ b/target/i386/cpu-qom.h
-> @@ -1,5 +1,5 @@
->  /*
-> - * QEMU x86 CPU
-> + * QEMU x86 CPU QOM header (target agnostic)
->   *
->   * Copyright (c) 2012 SUSE LINUX Products GmbH
->   *
-> @@ -22,14 +22,18 @@
->  
->  #include "hw/core/cpu.h"
->  
-> -#ifdef TARGET_X86_64
-> -#define TYPE_X86_CPU "x86_64-cpu"
-> -#else
-> -#define TYPE_X86_CPU "i386-cpu"
-> -#endif
-> +#define TYPE_X86_CPU    "x86-cpu"
-> +#define TYPE_I386_CPU   "i386-cpu"
-> +#define TYPE_X86_64_CPU "x86_64-cpu"
->  
->  OBJECT_DECLARE_CPU_TYPE(X86CPU, X86CPUClass, X86_CPU)
->  
-> +OBJECT_DECLARE_CPU_TYPE(I386CPU, X86CPUClass, I386_CPU)
-> +OBJECT_DECLARE_CPU_TYPE(X86_64CPU, X86CPUClass, X86_64_CPU)
+>  target/riscv/insn_trans/trans_rvv.c.inc | 3 ---
+>  target/riscv/vector_helper.c            | 5 +++++
+>  2 files changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_=
+trans/trans_rvv.c.inc
+> index 8c16a9f5b3..52c26a7834 100644
+> --- a/target/riscv/insn_trans/trans_rvv.c.inc
+> +++ b/target/riscv/insn_trans/trans_rvv.c.inc
+> @@ -3664,12 +3664,9 @@ static bool trans_##NAME(DisasContext *s, arg_##NA=
+ME * a)               \
+>                               vreg_ofs(s, a->rs2), maxsz, maxsz);        =
+\
+>              mark_vs_dirty(s);                                           =
+\
+>          } else {                                                        =
+\
+> -            TCGLabel *over =3D gen_new_label();                         =
+  \
+> -            tcg_gen_brcondi_tl(TCG_COND_GEU, cpu_vstart, maxsz, over);  =
+\
+>              tcg_gen_gvec_2_ptr(vreg_ofs(s, a->rd), vreg_ofs(s, a->rs2), =
+\
+>                                 tcg_env, maxsz, maxsz, 0, gen_helper_vmvr=
+_v); \
+>              mark_vs_dirty(s);                                           =
+\
+> -            gen_set_label(over);                                        =
+\
+>          }                                                               =
+\
+>          return true;                                                    =
+\
+>      }                                                                   =
+\
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 34ac4aa808..bcc553c0e2 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -5075,6 +5075,11 @@ void HELPER(vmvr_v)(void *vd, void *vs2, CPURISCVS=
+tate *env, uint32_t desc)
+>      uint32_t startb =3D env->vstart * sewb;
+>      uint32_t i =3D startb;
+>
+> +    if (startb >=3D maxsz) {
+> +        env->vstart =3D 0;
+> +        return;
+> +    }
 > +
-> +#define X86_CPU_TYPE_SUFFIX "-" TYPE_X86_CPU
-> +#define X86_CPU_TYPE_NAME(name) (name X86_CPU_TYPE_SUFFIX)
-> +
-
-X86_CPU_TYPE_NAME seems to be duplicated because the following line is
-the existing X86_CPU_TYPE_NAME definition.
-
->  #define X86_CPU_TYPE_SUFFIX "-" TYPE_X86_CPU
->  #define X86_CPU_TYPE_NAME(name) (name X86_CPU_TYPE_SUFFIX)
->  
-> diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-> index ebf555f50f..07f64c1ea5 100644
-> --- a/target/i386/cpu.c
-> +++ b/target/i386/cpu.c
-> @@ -8057,12 +8057,28 @@ static const TypeInfo x86_cpu_types[] = {
->          .class_size     = sizeof(X86CPUClass),
->          .class_init     = x86_cpu_common_class_init,
->      }, {
-> -        .name           = X86_CPU_TYPE_NAME("base"),
-> +        .name           = TYPE_I386_CPU,
->          .parent         = TYPE_X86_CPU,
-> +        .abstract       = true,
-> +    }, {
-> +        .name           = TYPE_X86_64_CPU,
-> +        .parent         = TYPE_X86_CPU,
-> +        .abstract       = true,
-> +    }, {
-
-Should TYPE_I386_CPU/TYPE_X86_64_CPU be also wrapped with TARGET_X86_64?
-
-Otherwise, we would keep the 32-bit CPU type definition of TYPE_I386_CPU
-in the 64-bit case.
-
-> +        .name           = X86_CPU_TYPE_NAME("base"),
-> +#ifdef TARGET_X86_64
-> +        .parent         = TYPE_X86_64_CPU,
-> +#else
-> +        .parent         = TYPE_I386_CPU,
-> +#endif
->          .class_init     = x86_cpu_base_class_init,
->      }, {
->          .name           = X86_CPU_TYPE_NAME("max"),
-> -        .parent         = TYPE_X86_CPU,
-> +#ifdef TARGET_X86_64
-> +        .parent         = TYPE_X86_64_CPU,
-> +#else
-> +        .parent         = TYPE_I386_CPU,
-> +#endif
->          .instance_init  = max_x86_cpu_initfn,
->          .class_init     = max_x86_cpu_class_init,
->      }
+>      if (HOST_BIG_ENDIAN && i % 8 !=3D 0) {
+>          uint32_t j =3D ROUND_UP(i, 8);
+>          memcpy((uint8_t *)vd + H1(j - 1),
+> --
+> 2.44.0
+>
+>
 
