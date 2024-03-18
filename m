@@ -2,102 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C339F87EAAE
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:17:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FBA87EAE1
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:25:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmDn0-0007Ru-K4; Mon, 18 Mar 2024 10:16:34 -0400
+	id 1rmDuC-0001Pu-JI; Mon, 18 Mar 2024 10:24:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmDmr-0007QC-VF
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:16:30 -0400
-Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmDmm-0007lF-Jc
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:16:23 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 82BFB5C5EA;
- Mon, 18 Mar 2024 14:16:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710771377; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rmDu7-0001PN-T2
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:23:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rmDu4-0000o2-2D
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:23:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710771827;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CBGAO0DBMcjFbhDCyiGsKZPdnS8c2wL9ynmKGk7JUbk=;
- b=Wrd2slXcQE9uZlK2MDWXKY6OdJHpT3R9dV9F5SbVHaOWe1tSRaaMgjSsQZ8C+Yzu6vQptw
- iKS6qHKi0bbDpEGYFX0/fEjaLQCXN6jfmJHiehRtb1neZClxzIOYHJvq/rq1NrYIXZy1n7
- mUIaMQW4xtum2TZJrXVqqVOeAOb+KAA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710771377;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CBGAO0DBMcjFbhDCyiGsKZPdnS8c2wL9ynmKGk7JUbk=;
- b=50p26qRXohYslpnVjUEXx7DVyfYIexF+xFFTyiHmhEDQvIUQiJQ2W1+YZ0qrl1gv6p1xN/
- 45+7vVFB2u+xKJAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1710771377; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CBGAO0DBMcjFbhDCyiGsKZPdnS8c2wL9ynmKGk7JUbk=;
- b=Wrd2slXcQE9uZlK2MDWXKY6OdJHpT3R9dV9F5SbVHaOWe1tSRaaMgjSsQZ8C+Yzu6vQptw
- iKS6qHKi0bbDpEGYFX0/fEjaLQCXN6jfmJHiehRtb1neZClxzIOYHJvq/rq1NrYIXZy1n7
- mUIaMQW4xtum2TZJrXVqqVOeAOb+KAA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1710771377;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CBGAO0DBMcjFbhDCyiGsKZPdnS8c2wL9ynmKGk7JUbk=;
- b=50p26qRXohYslpnVjUEXx7DVyfYIexF+xFFTyiHmhEDQvIUQiJQ2W1+YZ0qrl1gv6p1xN/
- 45+7vVFB2u+xKJAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0D7581349D;
- Mon, 18 Mar 2024 14:16:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap1.dmz-prg2.suse.org with ESMTPSA id TvuBMbBM+GULNgAAD6G6ig
- (envelope-from <farosas@suse.de>); Mon, 18 Mar 2024 14:16:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com
-Subject: Re: [PATCH v7 3/8] tests/qtest/migration: Replace
- migrate_get_connect_uri inplace of migrate_get_socket_address
-In-Reply-To: <c25c8cf7-ea28-4c5f-962a-1fe5abc51870@nutanix.com>
-References: <20240312202634.63349-1-het.gala@nutanix.com>
- <20240312202634.63349-4-het.gala@nutanix.com> <871q8b8xeg.fsf@suse.de>
- <c25c8cf7-ea28-4c5f-962a-1fe5abc51870@nutanix.com>
-Date: Mon, 18 Mar 2024 11:16:14 -0300
-Message-ID: <87bk7baamp.fsf@suse.de>
+ bh=CL+eEXIhv3zhA8cEpzzRJKQ2cH3vW68BPm9wQM+b40Y=;
+ b=K/Fg2FOK4CcgYf08b83THWiTiMDniRv6qescYAhkb9htKe0k4hlBAWaimk53EkRrIFQxSP
+ TaoTtGqaH35mTKnd6b3GNeCma5MZqhuq3JQM/5wt3Ee0y99g8JVxF83tbpEm7R9pFWWNYw
+ qv9A0XO8MCkDwdxtQeXqa1jfVJfd4P8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-ZERax6M4MMijz_NzI_GHnQ-1; Mon, 18 Mar 2024 10:23:45 -0400
+X-MC-Unique: ZERax6M4MMijz_NzI_GHnQ-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-789eae32c8aso351528485a.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 07:23:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710771825; x=1711376625;
+ h=content-transfer-encoding:in-reply-to:references:reply-to:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CL+eEXIhv3zhA8cEpzzRJKQ2cH3vW68BPm9wQM+b40Y=;
+ b=Ztatmp0mHiy/IkJ2SyIOXjfkPjsewh3fnvYpCHO6Ts/JXlEIop2E2Hgw61V7al7xi1
+ gAuvOFRGxEiKh2oEt0EG1Prs+LKCcLYZyCUkCYdjEUfRgg3GkS0D9PcN116ze5uFfHv6
+ h6MyX7zRwVrivWPvATPxJOsv8NFeiqhWkR8GxNoFYvEw0aFcr8+J/VjSC8PMc6R/98dS
+ 4eyU77c69bqfMdLWfzw56hlqa30I8d/mGmMjAu6vhK1YeHjTffS3Ob7Ue7gs6GyDYeBX
+ i353b13PWtg52QrduDFEF8BYJXnLkVUw6gRuCM8xEBAi/X1rK8cURVNop1YUPnjFvj56
+ Eb3g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU9OCUqcMnwzgtXx4WO0fml9tLWXy7v/HvPxhQuak0bKBmZ0CpQYY7jTIIz3eGMSv5vTQHDzb46472kz4cnYzjMDZI/S98=
+X-Gm-Message-State: AOJu0YxV6kW0HLsXNYk3q76Jf6OJ5XI6IGn8NLQwg+U0qs0xIERZZrT6
+ +2luCZV3G0f+A77KWwpxVihdn7xmXtItNzTdpQxuEK909sDd6WO7QZe0SwT9mGjFYCO08bxeaC7
+ WaF4B2DwE2qPsbUGv1Kx8VHssc6DtcWFtTpf0B4k4Kc4Z8/TKFzra
+X-Received: by 2002:a05:620a:a93:b0:78a:533:208c with SMTP id
+ v19-20020a05620a0a9300b0078a0533208cmr1533690qkg.15.1710771825264; 
+ Mon, 18 Mar 2024 07:23:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvHRU/hawZPqpbXotWY4ZwmAtlBr1REdQ8NzXVqTGd3cZDnfjxCx3t1klw7Cm5EMzALkHd/Q==
+X-Received: by 2002:a05:620a:a93:b0:78a:533:208c with SMTP id
+ v19-20020a05620a0a9300b0078a0533208cmr1533657qkg.15.1710771824712; 
+ Mon, 18 Mar 2024 07:23:44 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ z7-20020ae9c107000000b00789e1c94cf4sm3693189qki.113.2024.03.18.07.23.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Mar 2024 07:23:43 -0700 (PDT)
+Message-ID: <6cb774f4-4e09-4560-95e5-917bd0668f15@redhat.com>
+Date: Mon, 18 Mar 2024 15:23:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00]; ARC_NA(0.00)[];
- RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-0.99)[-0.994];
- MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
- DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
- FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
- MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
- MID_RHS_MATCH_FROM(0.00)[]
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
- envelope-from=farosas@suse.de; helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 05/11] vfio: Introduce host_iommu_device_create callback
+Content-Language: en-US
+From: Eric Auger <eric.auger@redhat.com>
+To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
+ jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com
+References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
+ <20240228035900.1085727-6-zhenzhong.duan@intel.com>
+ <d386b8e4-b597-492c-b0ab-4b4246906f94@redhat.com>
+In-Reply-To: <d386b8e4-b597-492c-b0ab-4b4246906f94@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,134 +108,80 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
 
-> On 15/03/24 6:28 pm, Fabiano Rosas wrote:
->> Het Gala<het.gala@nutanix.com>  writes:
+
+On 3/18/24 14:52, Eric Auger wrote:
+> Hi ZHenzhong,
+> 
+> On 2/28/24 04:58, Zhenzhong Duan wrote:
+>> Introduce host_iommu_device_create callback and a wrapper for it.
 >>
->>> Refactor migrate_get_socket_address to internally utilize 'socket-address'
->>> parameter, reducing redundancy in the function definition.
->>>
->>> migrate_get_socket_address implicitly converts SocketAddress into str.
->>> Move migrate_get_socket_address inside migrate_get_connect_uri which
->>> should return the uri string instead.
->>>
->>> Signed-off-by: Het Gala<het.gala@nutanix.com>
->>> Suggested-by: Fabiano Rosas<farosas@suse.de>
->>> Reviewed-by: Fabiano Rosas<farosas@suse.de>
->>> ---
->>>   tests/qtest/migration-helpers.c | 29 +++++++++++++++++++----------
->>>   1 file changed, 19 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
->>> index 3e8c19c4de..8806dc841e 100644
->>> --- a/tests/qtest/migration-helpers.c
->>> +++ b/tests/qtest/migration-helpers.c
->>> @@ -48,28 +48,37 @@ static char *SocketAddress_to_str(SocketAddress *addr)
->>>       }
->>>   }
->>>   
->>> -static char *
->>> -migrate_get_socket_address(QTestState *who, const char *parameter)
->>> +static SocketAddress *migrate_get_socket_address(QTestState *who)
->>>   {
->>>       QDict *rsp;
->>> -    char *result;
->>>       SocketAddressList *addrs;
->>> +    SocketAddress *addr;
->>>       Visitor *iv = NULL;
->>>       QObject *object;
->>>   
->>>       rsp = migrate_query(who);
->>> -    object = qdict_get(rsp, parameter);
->>> +    object = qdict_get(rsp, "socket-address");
->> Just a heads up, none of what I'm about to say applies to current
->> master.
+>> This callback is used to allocate a host iommu device instance and
+>> initialize it based on type.
 >>
->> This can return NULL if there is no socket-address, such as with a file
->> migration. Then the visitor code below just barfs. It would be nice if
->> we touched this up eventually.
->
-> Yes. I agree this is not full proof solution and covers for all the cases.
-> It would only for 'socket-address'. Could you elaborate on what other than
-> socket-address the QObject can have ?
-
-I can just not have the socket-address, AFAICS. We'd just need to not
-crash if that's the case.
-
->
->> I only noticed this because I was fiddling with the file migration API
->> and this series helped me a lot to test my changes. So thanks for that,
->> Het.
+>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>> ---
+>>  include/hw/vfio/vfio-common.h         | 1 +
+>>  include/hw/vfio/vfio-container-base.h | 1 +
+>>  hw/vfio/common.c                      | 8 ++++++++
+>>  3 files changed, 10 insertions(+)
 >>
->> Another point is: we really need to encourage people to write tests
->> using the new channels API. I added the FileMigrationArgs with the
->> 'offset' as a required parameter, not even knowing optional parameters
->> were a thing. So it's obviously not enough to write support for the new
->> API if no tests ever touch it.
-> Yes, definitely we need more tests with the new channels API to test other
-> than just tcp connection. I could give a try for vsock and unix with the
-> new QAPI syntax, and add some tests.
->
-> I also wanted to bring in attention that, this solution I what i feel is 
-> also
-> not complete. If we are using new channel syntax for migrate_qmp, then the
-> same syntax should also be used for migrate_qmp_incoming. But we haven't
-> touch that, and it still prints the old syntax. We might need a lot changes
-> in design maybe to incorporate that too in new tests totally with the new
-> syntax.
+>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+>> index b6676c9f79..9fefea4b89 100644
+>> --- a/include/hw/vfio/vfio-common.h
+>> +++ b/include/hw/vfio/vfio-common.h
+>> @@ -208,6 +208,7 @@ struct vfio_device_info *vfio_get_device_info(int fd);
+>>  int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>>                         AddressSpace *as, Error **errp);
+>>  void vfio_detach_device(VFIODevice *vbasedev);
+>> +void host_iommu_device_create(VFIODevice *vbasedev);
+>>  
+>>  int vfio_kvm_device_add_fd(int fd, Error **errp);
+>>  int vfio_kvm_device_del_fd(int fd, Error **errp);
+>> diff --git a/include/hw/vfio/vfio-container-base.h b/include/hw/vfio/vfio-container-base.h
+>> index b2813b0c11..dc003f6eb2 100644
+>> --- a/include/hw/vfio/vfio-container-base.h
+>> +++ b/include/hw/vfio/vfio-container-base.h
+>> @@ -120,6 +120,7 @@ struct VFIOIOMMUClass {
+>>      int (*attach_device)(const char *name, VFIODevice *vbasedev,
+>>                           AddressSpace *as, Error **errp);
+>>      void (*detach_device)(VFIODevice *vbasedev);
+>> +    void (*host_iommu_device_create)(VFIODevice *vbasedev);
+>>      /* migration feature */
+>>      int (*set_dirty_page_tracking)(const VFIOContainerBase *bcontainer,
+>>                                     bool start);
+>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>> index 059bfdc07a..41e9031c59 100644
+>> --- a/hw/vfio/common.c
+>> +++ b/hw/vfio/common.c
+>> @@ -1521,3 +1521,11 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>>      }
+>>      vbasedev->bcontainer->ops->detach_device(vbasedev);
+>>  }
+>> +
+>> +void host_iommu_device_create(VFIODevice *vbasedev)
+>> +{
+>> +    const VFIOIOMMUClass *ops = vbasedev->bcontainer->ops;
+>> +
+>> +    assert(ops->host_iommu_device_create);
+> at this stage ops actual implementation do not exist yet so this will
+> break the bisection
 
-Adding migrate_qmp_incoming support should be relatively simple. You had
-patches for that in another version, no?
+Sorry it is OK at the function only is called in
+[PATCH v1 08/11] vfio/pci: Allocate and initialize HostIOMMUDevice after
+attachment
 
->
-> Another thing that you also noted down while discussing on the patches that
-> we should have a standard pattern on how to define the migration tests. Even
-> that would be helpful for the users, on how to add new tests, where to add
-> new tests in the file, and which test is needed to run if a specific change
-> needs to be tested.
->
->>>   
->>>       iv = qobject_input_visitor_new(object);
->>>       visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
->>> +    addr = addrs->value;
->>>       visit_free(iv);
->>>   
->>> -    /* we are only using a single address */
->>> -    result = SocketAddress_to_str(addrs->value);
->>> -
->>> -    qapi_free_SocketAddressList(addrs);
->>>       qobject_unref(rsp);
->>> -    return result;
->>> +    return addr;
->>> +}
->>> +
->>> +static char *
->>> +migrate_get_connect_uri(QTestState *who)
->>> +{
->>> +    SocketAddress *addrs;
->>> +    char *connect_uri;
->>> +
->>> +    addrs = migrate_get_socket_address(who);
->>> +    connect_uri = SocketAddress_to_str(addrs);
->>> +
->>> +    qapi_free_SocketAddress(addrs);
->>> +    return connect_uri;
->>>   }
->>>   
->>>   bool migrate_watch_for_events(QTestState *who, const char *name,
->>> @@ -129,7 +138,7 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
->>>   
->>>       g_assert(!qdict_haskey(args, "uri"));
->>>       if (!uri) {
->>> -        connect_uri = migrate_get_socket_address(to, "socket-address");
->>> +        connect_uri = migrate_get_connect_uri(to);
->>>       }
->>>       qdict_put_str(args, "uri", uri ? uri : connect_uri);
->
-> Regards,
-> Het Gala
+Sorry for the noise
+
+Eric
+> 
+> Eric
+>> +    ops->host_iommu_device_create(vbasedev);
+>> +}
+> 
+
 
