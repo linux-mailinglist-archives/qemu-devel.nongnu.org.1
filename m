@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F127F87E48D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 929C387E48E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:59:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7tQ-0006RQ-1R; Mon, 18 Mar 2024 03:58:48 -0400
+	id 1rm7tM-0006PF-9K; Mon, 18 Mar 2024 03:58:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7tM-0006Pf-1U
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:58:44 -0400
-Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
+ id 1rm7tJ-0006MJ-BE
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:58:42 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7tE-00011C-9w
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:58:43 -0400
-Received: by mail-pj1-x102b.google.com with SMTP id
- 98e67ed59e1d1-29fb11f4b34so323686a91.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:58:35 -0700 (PDT)
+ id 1rm7tH-00011Q-Rh
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:58:41 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-5d8b519e438so2678193a12.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:58:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748715; x=1711353515;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748718; x=1711353518;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0XM3xdzPI4uVUMqsF0fbvM8bgAigPZTBLc/D9c25dcs=;
- b=gtXtjSH2EOa0Ba1257x+KcP+OYDfG3a3cHuiiFawJ/kr2EggkbNlOMPlHC5D2RBRMF
- 2PvemncC7i3XHVk07Ut1VuuDPxE4a0wsTYc+plzkNmDl7IwAe19aMTHpqVK5s/394yMw
- uDV+EoUH0lmeR0PrNV9HgeJ3zg9+cdq4YENn9agy0IJLn2eT943RfCp08PEwI1ORYmZs
- eZX/Dlq/Tk5RywUuNoAEH1aKwOYHuxsSqomW40dvJmiUNlIthjd+IWeGOJIRPaKOBy04
- oyoGokRIU9QT2SfA1uw0LtHmUO1KsnVJ+JHVWrwvAVSmA9dAz3YyKDcx3ysEAwwwW3FR
- SWIw==
+ :reply-to; bh=7omncbBFnXPn26MWJ5RizssmxUalSXb3km7TZBwCRKQ=;
+ b=oW6O0ZFfl+A/Irs/DUmVdUDTVvy+8am3UdSFmzeg3ooLYd5AtecxM4LJTo7wsvfjA2
+ OMKI/KwZPl1Nr1N9F6+yHddQM/I1nGdgmWpdoMT9Kxex6lWv5UGXW7unuunRqDv86ZwW
+ H/KlY5EKTdnuSiwAsyaQkjNRKWtp34Vy0hm/aErXV/12O8FXOh2chee2UdkBZa5RsHmt
+ aWpIf7wLGX7DM9PshVSw51YEGmcSszim8/5+sdFZliv6sutwl5q4Jjx92+UB+OeKL6ya
+ oM98xXV4/sZJsxmVHfQ6bIwvh1z78l0/QPWIDpe+Mj36HFeJ14GwtGrqakKH/btBqlcC
+ ub7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710748715; x=1711353515;
+ d=1e100.net; s=20230601; t=1710748718; x=1711353518;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0XM3xdzPI4uVUMqsF0fbvM8bgAigPZTBLc/D9c25dcs=;
- b=ODI/sI+wLs6nmSUGWDU6sVlUBHMql0I12crni3a5Vq4W/+tSnpx19o8Yx/rgGLDJRb
- uE2yegpxvoGZePI1JUvzoZF/UV7EC8ltwJ8OuuPSgPBiIRNZoJhPuGt+k0XNfbeMDPW9
- Jh143AW0LIKvGvdLFxQpu1oYkfovQy1+i0jdvYEzZlVmku8lbrg1Hcb0yH1AQQ4LQagk
- ujyxgiuwS1IrHuuUfgUeYgGrggR6ovd7I8bCIIjhMdW/jefpzmmkTTt3oWQgI6PefcN5
- 7O6rD8H2YEITn6eM5gUDeeHYlfMwDo0NkQkP4F4lmaWnZSnqyyqAoMn3Rx4hTPVVqIzb
- UBgw==
-X-Gm-Message-State: AOJu0YwlGFTpECRGhVovy2s2vVAlZ5bA6XQkWDRue+9kGeZiA4TzvvH7
- HtvtkF35LFkKaIoPYdLRdH9h8KAym2DlmzF+GZZaDNr2ndwV+d2OCRKSs3h5IMMm0XVvm4ltJNt
- d
-X-Google-Smtp-Source: AGHT+IEyS9/Vl07fsmLu5muMa9uNvqiiOgLriqUbePm+YvLYrZyOKxpgn8HN+KQ9Q5IGzXJfUdK4eg==
-X-Received: by 2002:a17:90a:f0c6:b0:29d:e0fc:b7a4 with SMTP id
- fa6-20020a17090af0c600b0029de0fcb7a4mr14485462pjb.22.1710748714694; 
- Mon, 18 Mar 2024 00:58:34 -0700 (PDT)
+ bh=7omncbBFnXPn26MWJ5RizssmxUalSXb3km7TZBwCRKQ=;
+ b=tVlydU6M19zDUCnVSMQNQeb8rBiy9K67hHPA43DIHsQiGMdWddlSyIAvx04A9NZXzt
+ QU2FhJdI7HvBrd8drjoqUCJ5d/oDjYBxVNkYW85q32Y4ABYSe9aC8XmIWy+vKURXqUpx
+ ZuU9eMVvhm+NWjJOizCzrzJHbfENbgSGoYFVmhAvrT4ZwAk/zptEuGTntqg/EIPFfCp6
+ kNBHWODG/Vp1ff9/nfaCkHF+w8lup3eXcfvVwdrF+ShYYqZQr9KdZryjH6xt0rYbMlhh
+ kfIQrxmQtbytj6riICcHKcpldy/WqpV4HDPKFrvRQLnL5g/R9QM3T6rB8PSo6PJ66Ets
+ nwlw==
+X-Gm-Message-State: AOJu0YzveOYsdbCc+WPT5/O9I+q25Ayu9ZyxeSeMTmcN4aGUI2qyuRkD
+ S/YkJt50DyPOaOs6LnJZeswIhoCDehWSPE9P6hqhWMywWmZD0SSi4ACgqvvMVDm0xmFphRxaNZW
+ r
+X-Google-Smtp-Source: AGHT+IGtaByUPjXfLY/OJifM6QpaOKksDLe9+gMj0dUnUYLg7vFQ25IUG8DeNoZxmm5W2qvROn7GKg==
+X-Received: by 2002:a17:903:1c9:b0:1de:f32d:f5ba with SMTP id
+ e9-20020a17090301c900b001def32df5bamr9995657plh.42.1710748718468; 
+ Mon, 18 Mar 2024 00:58:38 -0700 (PDT)
 Received: from localhost ([157.82.200.213])
  by smtp.gmail.com with UTF8SMTPSA id
- w13-20020a17090ad60d00b0029baef194f7sm7080050pju.38.2024.03.18.00.58.32
+ mp14-20020a170902fd0e00b001dc3c3be4adsm8548688plb.297.2024.03.18.00.58.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 00:58:34 -0700 (PDT)
+ Mon, 18 Mar 2024 00:58:38 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 18 Mar 2024 16:58:13 +0900
-Subject: [PATCH 1/2] ui/cocoa: Add cursor composition
+Date: Mon, 18 Mar 2024 16:58:14 +0900
+Subject: [PATCH 2/2] ui/console: Remove dpy_cursor_define_supported()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-cursor-v1-1-0bbe6c382217@daynix.com>
+Message-Id: <20240318-cursor-v1-2-0bbe6c382217@daynix.com>
 References: <20240318-cursor-v1-0-0bbe6c382217@daynix.com>
 In-Reply-To: <20240318-cursor-v1-0-0bbe6c382217@daynix.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, 
@@ -75,8 +75,8 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
  Dmitry Fleytman <dmitry.fleytman@gmail.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::102b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pj1-x102b.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::529;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -98,189 +98,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add accelerated cursor composition to ui/cocoa. This does not only
-improve performance for display devices that exposes the capability to
-the guest according to dpy_cursor_define_supported(), but fixes the
-cursor display for devices that unconditionally expects the availability
-of the capability (e.g., virtio-gpu).
+Remove dpy_cursor_define_supported() as it brings no benefit today and
+it has a few inherent problems.
 
-The common pattern to implement accelerated cursor composition is to
-replace the cursor and warp it so that the replaced cursor is shown at
-the correct position on the guest display. Unfortunately, ui/cocoa
-cannot do the same because warping the cursor position interfers with
-the mouse input so it uses CALayer instead; although it is not
-specialized for cursor composition, it still can compose images with
-hardware acceleration.
+All graphical displays except egl-headless support cursor composition
+without DMA-BUF, and egl-headless is meant to be used in conjunction
+with another graphical display, so dpy_cursor_define_supported()
+always returns true and meaningless.
+
+Even if we add a new display without cursor composition in the future,
+dpy_cursor_define_supported() will be problematic as a cursor display
+fix for it because some display devices like virtio-gpu cannot tell the
+lack of cursor composition capability to the guest and are unable to
+utilize the value the function returns. Therefore, all non-headless
+graphical displays must actually implement cursor composition for
+correct cursor display.
+
+Another problem with dpy_cursor_define_supported() is that it returns
+true even if only some of the display listeners support cursor
+composition, which is wrong unless all display listeners that lack
+cursor composition is headless.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- meson.build |  3 +-
- ui/cocoa.m  | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+), 1 deletion(-)
+ include/ui/console.h    |  1 -
+ hw/display/qxl-render.c |  4 ----
+ hw/display/vmware_vga.c |  6 ++----
+ ui/console.c            | 13 -------------
+ 4 files changed, 2 insertions(+), 22 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index b375248a7614..b198ca2972ed 100644
---- a/meson.build
-+++ b/meson.build
-@@ -1044,7 +1044,8 @@ if get_option('attr').allowed()
-   endif
- endif
+diff --git a/include/ui/console.h b/include/ui/console.h
+index a4a49ffc640c..7566282be986 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -342,7 +342,6 @@ void dpy_text_update(QemuConsole *con, int x, int y, int w, int h);
+ void dpy_text_resize(QemuConsole *con, int w, int h);
+ void dpy_mouse_set(QemuConsole *con, int x, int y, int on);
+ void dpy_cursor_define(QemuConsole *con, QEMUCursor *cursor);
+-bool dpy_cursor_define_supported(QemuConsole *con);
+ bool dpy_gfx_check_format(QemuConsole *con,
+                           pixman_format_code_t format);
  
--cocoa = dependency('appleframeworks', modules: ['Cocoa', 'CoreVideo'],
-+cocoa = dependency('appleframeworks',
-+                   modules: ['Cocoa', 'CoreVideo', 'QuartzCore'],
-                    required: get_option('cocoa'))
- 
- vmnet = dependency('appleframeworks', modules: 'vmnet', required: get_option('vmnet'))
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index fa879d7dcd4b..c13c2a01e947 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -25,6 +25,7 @@
- #include "qemu/osdep.h"
- 
- #import <Cocoa/Cocoa.h>
-+#import <QuartzCore/QuartzCore.h>
- #include <crt_externs.h>
- 
- #include "qemu/help-texts.h"
-@@ -92,12 +93,16 @@ static void cocoa_switch(DisplayChangeListener *dcl,
-                          DisplaySurface *surface);
- 
- static void cocoa_refresh(DisplayChangeListener *dcl);
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, int on);
-+static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor);
- 
- static const DisplayChangeListenerOps dcl_ops = {
-     .dpy_name          = "cocoa",
-     .dpy_gfx_update = cocoa_update,
-     .dpy_gfx_switch = cocoa_switch,
-     .dpy_refresh = cocoa_refresh,
-+    .dpy_mouse_set = cocoa_mouse_set,
-+    .dpy_cursor_define = cocoa_cursor_define,
- };
- static DisplayChangeListener dcl = {
-     .ops = &dcl_ops,
-@@ -313,6 +318,11 @@ @interface QemuCocoaView : NSView
-     BOOL isMouseGrabbed;
-     BOOL isAbsoluteEnabled;
-     CFMachPortRef eventsTap;
-+    CALayer *cursorLayer;
-+    QEMUCursor *cursor;
-+    int mouseX;
-+    int mouseY;
-+    int mouseOn;
- }
- - (void) switchSurface:(pixman_image_t *)image;
- - (void) grabMouse;
-@@ -365,6 +375,12 @@ - (id)initWithFrame:(NSRect)frameRect
- #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
-         [self setClipsToBounds:YES];
- #endif
-+        [self setWantsLayer:YES];
-+        cursorLayer = [[CALayer alloc] init];
-+        [cursorLayer setAnchorPoint:CGPointMake(0, 1)];
-+        [cursorLayer setAutoresizingMask:kCALayerMaxXMargin |
-+                                         kCALayerMinYMargin];
-+        [[self layer] addSublayer:cursorLayer];
- 
+diff --git a/hw/display/qxl-render.c b/hw/display/qxl-render.c
+index ec99ec887a6e..837d2446cd52 100644
+--- a/hw/display/qxl-render.c
++++ b/hw/display/qxl-render.c
+@@ -307,10 +307,6 @@ int qxl_render_cursor(PCIQXLDevice *qxl, QXLCommandExt *ext)
+         return 1;
      }
-     return self;
-@@ -445,6 +461,72 @@ - (void) unhideCursor
-     [NSCursor unhide];
+ 
+-    if (!dpy_cursor_define_supported(qxl->vga.con)) {
+-        return 0;
+-    }
+-
+     if (qxl->debug > 1 && cmd->type != QXL_CURSOR_MOVE) {
+         fprintf(stderr, "%s", __func__);
+         qxl_log_cmd_cursor(qxl, cmd, ext->group_id);
+diff --git a/hw/display/vmware_vga.c b/hw/display/vmware_vga.c
+index 1c0f9d9a991d..fadfefc4c67c 100644
+--- a/hw/display/vmware_vga.c
++++ b/hw/display/vmware_vga.c
+@@ -904,10 +904,8 @@ static uint32_t vmsvga_value_read(void *opaque, uint32_t address)
+         caps |= SVGA_CAP_RECT_FILL;
+ #endif
+ #ifdef HW_MOUSE_ACCEL
+-        if (dpy_cursor_define_supported(s->vga.con)) {
+-            caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
+-                    SVGA_CAP_CURSOR_BYPASS;
+-        }
++        caps |= SVGA_CAP_CURSOR | SVGA_CAP_CURSOR_BYPASS_2 |
++                SVGA_CAP_CURSOR_BYPASS;
+ #endif
+         ret = caps;
+         break;
+diff --git a/ui/console.c b/ui/console.c
+index 832055675c50..6b6f57441c53 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1058,19 +1058,6 @@ void dpy_cursor_define(QemuConsole *c, QEMUCursor *cursor)
+     }
  }
  
-+- (void)setMouseX:(int)x y:(int)y on:(int)on
-+{
-+    CGPoint position;
-+
-+    mouseX = x;
-+    mouseY = y;
-+    mouseOn = on;
-+
-+    position.x = mouseX;
-+    position.y = screen.height - mouseY;
-+
-+    [CATransaction begin];
-+    [CATransaction setDisableActions:YES];
-+    [cursorLayer setPosition:position];
-+    [cursorLayer setHidden:!mouseOn];
-+    [CATransaction commit];
-+}
-+
-+- (void)setCursor:(QEMUCursor *)given_cursor
-+{
-+    CGDataProviderRef provider;
-+    CGImageRef image;
-+    CGRect bounds = CGRectZero;
-+
-+    cursor_unref(cursor);
-+    cursor = given_cursor;
-+
-+    if (!cursor) {
-+        return;
-+    }
-+
-+    cursor_ref(cursor);
-+
-+    bounds.size.width = cursor->width;
-+    bounds.size.height = cursor->height;
-+
-+    provider = CGDataProviderCreateWithData(
-+        NULL,
-+        cursor->data,
-+        cursor->width * cursor->height * 4,
-+        NULL
-+    );
-+
-+    image = CGImageCreate(
-+        cursor->width, //width
-+        cursor->height, //height
-+        8, //bitsPerComponent
-+        32, //bitsPerPixel
-+        cursor->width * 4, //bytesPerRow
-+        CGColorSpaceCreateWithName(kCGColorSpaceSRGB), //colorspace
-+        kCGBitmapByteOrder32Little | kCGImageAlphaFirst, //bitmapInfo
-+        provider, //provider
-+        NULL, //decode
-+        0, //interpolate
-+        kCGRenderingIntentDefault //intent
-+    );
-+
-+    CGDataProviderRelease(provider);
-+    [CATransaction begin];
-+    [CATransaction setDisableActions:YES];
-+    [cursorLayer setBounds:bounds];
-+    [cursorLayer setContents:(id)image];
-+    [CATransaction commit];
-+    CGImageRelease(image);
-+}
-+
- - (void) drawRect:(NSRect) rect
+-bool dpy_cursor_define_supported(QemuConsole *con)
+-{
+-    DisplayState *s = con->ds;
+-    DisplayChangeListener *dcl;
+-
+-    QLIST_FOREACH(dcl, &s->listeners, next) {
+-        if (dcl->ops->dpy_cursor_define) {
+-            return true;
+-        }
+-    }
+-    return false;
+-}
+-
+ QEMUGLContext dpy_gl_ctx_create(QemuConsole *con,
+                                 struct QEMUGLParams *qparams)
  {
-     COCOA_DEBUG("QemuCocoaView: drawRect\n");
-@@ -1982,6 +2064,21 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
-     [pool release];
- }
- 
-+static void cocoa_mouse_set(DisplayChangeListener *dcl, int x, int y, int on)
-+{
-+    dispatch_async(dispatch_get_main_queue(), ^{
-+        [cocoaView setMouseX:x y:y on:on];
-+    });
-+}
-+
-+static void cocoa_cursor_define(DisplayChangeListener *dcl, QEMUCursor *cursor)
-+{
-+    dispatch_async(dispatch_get_main_queue(), ^{
-+        BQL_LOCK_GUARD();
-+        [cocoaView setCursor:qemu_console_get_cursor(dcl->con)];
-+    });
-+}
-+
- static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
- {
-     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
 -- 
 2.44.0
