@@ -2,86 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B2187F2AA
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 22:54:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB83287F2B9
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 22:57:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmKvY-0007Bh-OW; Mon, 18 Mar 2024 17:53:52 -0400
+	id 1rmKyW-00083r-1A; Mon, 18 Mar 2024 17:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmKvU-0007Ao-G9
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 17:53:49 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmKvT-0007Qw-4l
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 17:53:48 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1e032fc60a0so8585135ad.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 14:53:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710798824; x=1711403624; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0J0b3IdvIfK/4G2vKtuFbY6rYDZPYOgKETKbw4b9mbY=;
- b=vBiaei0iPI1rTLAzwsiQmY8C8r5NOEYXhbb3rEKk4OaTQLM3FcqGQpYIJeSvAMqqEF
- XgNu5LPTIYawPfBSeitMpcGHUVVnb1nhuRCp8EHzmot1ItJ1DxEUfZ8sNUkx3x0EjaME
- rHTapv5chsQLYMYJWE05XK9vZAr4y9uLWvmG7WfRMTlGP8MgRjn+Hnfjn4QpHRi8yyQC
- lj8ALn1FMEP/WlQqLWjQwXGJZAeW51c1ezKInCR4LKv2K9+4UDt0ds7TnTVToJoDSMXE
- IslY/11ddsaq71XDP2tyRPe1/Mh7LazD2V4ZYoFf5wU26ZxEkXucLfKmgFYWWLmrRNbt
- 05Zw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmKyS-000838-AW
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 17:56:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmKyQ-0008D0-0c
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 17:56:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710799008;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=kyrs8DQKm3mB5tvpT9KIQIKSyXwZlM215EY1DJThRxM=;
+ b=D7bkFqVhhWC8lQhgEy7KrSCNtuVgAlFhMQsFLn3GqLF/mShjF5kxEQ3Cb0cQEjn6hG8PlZ
+ V4uqd3/vdekE8apVVupcwH/uVYTW+i7VRBBj1ArByJXwb816rFfZCQL0uqYiZKcrMHOED+
+ IhbVmch86ZerE+6apmCaLEIEDE6dSVE=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-428-FQXoN0-YN-mL9Uh2AVGVWA-1; Mon, 18 Mar 2024 17:56:45 -0400
+X-MC-Unique: FQXoN0-YN-mL9Uh2AVGVWA-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-56b8c7b5086so406163a12.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 14:56:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710798824; x=1711403624;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0J0b3IdvIfK/4G2vKtuFbY6rYDZPYOgKETKbw4b9mbY=;
- b=ai/p2KQUR48Ib4hZhK/zP54dgHUkcr6HZWuGGQC8bkHUHXw+or42NHz/D9g01kXQPj
- zF8cUJcQJdmYxxFoMt4/ULFMjHww1nzsZsN7x2raBVemyq/br15Rv8i9I2DstZ/z0fol
- kNqoopBcTRZsSi2e+El9f870DB3N1C+oYadraOWViDCJzFK3wMSKCmDCTxX1bL1SW13s
- UNJ2SWf/bRVo23McLRPhPjdVr0eZAFCYcxO6aZ6Y26CKQoBrhfjErW/3TEfqRgmVAkD7
- eUACAyrlo0tOVzakV2+FS0YlsiDN5a0SKywMUaBspZs2+NIx8U+56HHwpM0ZC8dIgD8y
- pX9Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU14y83efg9CFTm6iBX+gy/sm/7Vl5MNhujhZF1eT66yYw7JICyrTJ8AAy+6/VM24XhNT+ov1+gzEPEWUy3fW5K8tNSPvI=
-X-Gm-Message-State: AOJu0Yw9LwQykLGPAFd9TDAGfOfaFhqwe32Uje3lODAahSiRkPq/un7x
- wajaA18tzUKIDnTz2jcudZ0aqNc6zLx32kuTdSWqWJU7dThXPTexS9KlAZUxXsI=
-X-Google-Smtp-Source: AGHT+IHC4b2VZz9rCV7cUPgRuUv7fowp/XdGj7u4rWTi5FfVN5j9eDA/dGyS4rtRSFGzM492tHsbBA==
-X-Received: by 2002:a17:902:fa44:b0:1e0:30ca:62c with SMTP id
- lb4-20020a170902fa4400b001e030ca062cmr1089054plb.1.1710798824299; 
- Mon, 18 Mar 2024 14:53:44 -0700 (PDT)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- v2-20020a170903238200b001dc3c4e7a12sm9857342plh.14.2024.03.18.14.53.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 14:53:43 -0700 (PDT)
-Message-ID: <7481d134-af52-4c27-8029-c59e56ad6bde@linaro.org>
-Date: Mon, 18 Mar 2024 11:53:40 -1000
+ d=1e100.net; s=20230601; t=1710799003; x=1711403803;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=kyrs8DQKm3mB5tvpT9KIQIKSyXwZlM215EY1DJThRxM=;
+ b=dA+P7VXKAGsOexyd8GwQA7Vo9NLU01b1Zx242sa1BTt1ssUB6vNF1CIivaI5phNL7a
+ VdF1OEsCMi09+Ua9iGXwQLjJjXlUoJ10zASzUwpiwKPfD79j2aaqQ9gItOUROKcMpU7E
+ ePsFDzxQ0HQ1gtoBOteflP/VVUCf3cM+6F6PFSDgU1/YiK4Mrqf7X7Cw72EwYNoTGbwo
+ Q9Z+69kO8tkAvJ9d5HwunB21RU8wOFOKqDFDBoDR7oD+P6dVPWkZ6cwUI3dPAIOEHoza
+ 2tKUPggYQjQ2Mr0T2PvDqGIo6kzrwvF1xU8pa2ztDaaTnjjNAEAX73/YKMnGym1QYhts
+ B3Lw==
+X-Gm-Message-State: AOJu0YyOjUiU/x9J/xJIEp6hGDr7+o55QkWzdzXHOWNdmGfv8XDg/GYg
+ jYir/277jUZ8iYQl2GA64jBJ14Kto0E4YQefxplUxZ0O8dMvubeuIE7AfWhwi//qt5xDQYmY2S4
+ fMqMhVDmEAZrHRwWSs4OOqu6hUlWhEBrTG/Zi2BonQqmvIKjGGcwN7hW7Pfx2CgcAzjbq1TXkY0
+ Vh++DdAG7LsYLdh9u0NEAlD+ESoCHY/sk4BQCh
+X-Received: by 2002:a05:6402:5409:b0:56a:fbe9:80a4 with SMTP id
+ ev9-20020a056402540900b0056afbe980a4mr1468245edb.1.1710799003106; 
+ Mon, 18 Mar 2024 14:56:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHMili55tenXxfre8Uvci2WhUS3mi7plKSV4pJR8JduNyMciAIAFL6edQVgAGJb6vKm6vjklg==
+X-Received: by 2002:a05:6402:5409:b0:56a:fbe9:80a4 with SMTP id
+ ev9-20020a056402540900b0056afbe980a4mr1468238edb.1.1710799002694; 
+ Mon, 18 Mar 2024 14:56:42 -0700 (PDT)
+Received: from [192.168.10.118] ([151.95.49.219])
+ by smtp.gmail.com with ESMTPSA id
+ n6-20020a509346000000b0056b924663ecsm163291eda.59.2024.03.18.14.56.42
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 18 Mar 2024 14:56:42 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/2] avoid assertion failure when trying confidential guests
+ without KVM
+Date: Mon, 18 Mar 2024 22:56:39 +0100
+Message-ID: <20240318215641.978308-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] tests/tcg/s390x: Test TEST AND SET
-Content-Language: en-US
-To: Ilya Leoshkevich <iii@linux.ibm.com>, David Hildenbrand
- <david@redhat.com>, Thomas Huth <thuth@redhat.com>
-Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
-References: <20240318202722.20675-1-iii@linux.ibm.com>
- <20240318202722.20675-2-iii@linux.ibm.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240318202722.20675-2-iii@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,17 +98,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/18/24 10:27, Ilya Leoshkevich wrote:
-> Add a small test to prevent regressions.
-> 
-> Signed-off-by: Ilya Leoshkevich<iii@linux.ibm.com>
-> ---
->   tests/tcg/s390x/Makefile.target |  1 +
->   tests/tcg/s390x/ts.c            | 35 +++++++++++++++++++++++++++++++++
->   2 files changed, 36 insertions(+)
->   create mode 100644 tests/tcg/s390x/ts.c
+When using confidential guests and forgetting the accelerator, the result
+is not very nice:
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+    $ qemu-system-x86_64 -object sev-guest,id=sev0,policy=0x5,id=sev0,cbitpos=51,reduced-phys-bits=1 -M confidential-guest-support=sev0
+    qemu-system-x86_64: ../softmmu/vl.c:2619: qemu_machine_creation_done: Assertion `machine->cgs->ready' failed.
 
-r~
+Assume that the lack of initialization is due to missing code in the
+accelerator to look at current_machine->cgs, and report a nicer
+error error.
+
+Paolo Bonzini (2):
+  vl: convert qemu_machine_creation_done() to Error **
+  vl: do not assert if sev-guest is used together with TCG
+
+ system/vl.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+
+-- 
+2.44.0
+
 
