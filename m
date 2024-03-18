@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC0487ED57
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1722687ED6D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:22:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFi2-0000Tf-PV; Mon, 18 Mar 2024 12:19:35 -0400
+	id 1rmFkJ-00081q-DE; Mon, 18 Mar 2024 12:21:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmFhy-0000GA-T0
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:19:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmFkH-000813-3v
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:21:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmFhw-00057T-5N
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:19:30 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmFkF-00062A-7o
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:21:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778767;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1710778910;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ToI491DyfPVgNpnbJx66XI3E6aMMz5/BsiyF7vi5XvU=;
- b=gl4q01Q7XCsNtS8Cb/BpX2pcbIkmdgMXaaowuVUZomOIcoPjjaj/VCqnp6K/MUF41NUwMj
- RPhLgo1K7B2SU60FKDbcMfwLWuY1Bi4gf/pZ+ZY+c4kluQl6r73g7aGdpPdmEl2idvlnX9
- TeZatBy+M32jdyHJAYqFMLA+H9aFr0c=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-oeO0vYiZNLm5Zc0dNY0M5A-1; Mon, 18 Mar 2024 12:19:25 -0400
-X-MC-Unique: oeO0vYiZNLm5Zc0dNY0M5A-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-34176bb228dso438422f8f.3
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:19:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778764; x=1711383564;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ToI491DyfPVgNpnbJx66XI3E6aMMz5/BsiyF7vi5XvU=;
- b=gnjfFIJjWZcZhSaASMXe5Vj4R/oaqooSL5ZN9yZevhqsQgx5b3De+XXYexaO4+ELBC
- lweJIDMyAKjotxTyr2p6eVwpapLlzlobZHk8/R/yxA8p8mYDB2wYQRCCz8EWtxvwIvL/
- wo8D4+5U92Wr3MtEPG7rNkdDFIy92UP/CXDr0TiGwntUHFwjedYBTl/TjWJhSdgOBIh/
- QQudf74bqHcCUgJjOelKKbJRRZdPjv0mrwwbvNKG0omuXlBpsLk53mzCREtzQZbX3x/m
- 0gsl5SLsIQmTiZ3dmS3h1jahYn2DxycQrB/ogPNnhexAfP7TQZfOgikdZSNyY1MO5f3K
- zOww==
-X-Gm-Message-State: AOJu0Yydx7SPr1rHtBq8nWDFNNIKcPVUUBbB4q9SnpXqcpULmcasp0gh
- NuCpqEavwOQtBapt6FjMh99zV45m5YU2Gtg8X0ibSlOfletjcI2hKcmD97lKAQ3oy/kdLocwNgS
- gwGyI5aWOj8jlWPoueaIqjHBFLE3qq6JNppnoXmZ5kOWu58hwNKsQ
-X-Received: by 2002:a5d:49ca:0:b0:33e:c924:5486 with SMTP id
- t10-20020a5d49ca000000b0033ec9245486mr7776497wrs.46.1710778764054; 
- Mon, 18 Mar 2024 09:19:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG5efDxTGPku6kMtscJEaTiFyUVPXVgiwIiWaRnPJDvzXmdQzpEN6lyQp8P4uNkNB+RQ0fSqg==
-X-Received: by 2002:a5d:49ca:0:b0:33e:c924:5486 with SMTP id
- t10-20020a5d49ca000000b0033ec9245486mr7776478wrs.46.1710778763713; 
- Mon, 18 Mar 2024 09:19:23 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- t11-20020adfe44b000000b0033e122a9a91sm10128397wrm.105.2024.03.18.09.19.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 09:19:23 -0700 (PDT)
-Message-ID: <b5131f0c-5d38-4d26-a5d3-0ff159b16c2c@redhat.com>
-Date: Mon, 18 Mar 2024 17:19:20 +0100
+ bh=mze+uWWzFSSGRXHftwoyuBA6Olxp/vCU6tWugxyVSjU=;
+ b=LLDnQafn4U2qF3xwvY1hTFbdF6NBD7N9YwqrAWNF8NbWr1btVmb4tXybh3akfG8qsTW8QB
+ cnKH881MYge4ofmGwP9tiUD66NY/TVDZrvZ+M8fymGQ5j1eQW9hqn8VTcv7yxhTKVmhSIm
+ YQ50O5H9KOk55L0YFc8NIt4eZbFiChw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-fOW1NKMLNa-jFI7Cwtg3-w-1; Mon,
+ 18 Mar 2024 12:21:47 -0400
+X-MC-Unique: fOW1NKMLNa-jFI7Cwtg3-w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95A8A3C025B1;
+ Mon, 18 Mar 2024 16:21:46 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E37B10F53;
+ Mon, 18 Mar 2024 16:21:43 +0000 (UTC)
+Date: Mon, 18 Mar 2024 16:21:36 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Roy Hopkins <roy.hopkins@suse.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
+Subject: Re: [PATCH 9/9] docs/system: Add documentation on support for IGVM
+Message-ID: <ZfhqEL0-wCiDJJtm@redhat.com>
+References: <cover.1709044754.git.roy.hopkins@suse.com>
+ <2f98be192cf6ffd36b984266570ea2eed4dfe364.1709044754.git.roy.hopkins@suse.com>
+ <ZeIL9Tco7PCRxdg-@redhat.com>
+ <46d91ba880f566e7ced7c01b18682b749185c9ba.camel@suse.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 14/25] memory: Add Error** argument to the
- global_dirty_log routines
-Content-Language: en-US, fr
-To: Yong Huang <yong.huang@smartx.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Alex Williamson
- <alex.williamson@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Prasad Pandit
- <pjp@fedoraproject.org>, Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>
-References: <20240306133441.2351700-1-clg@redhat.com>
- <20240306133441.2351700-15-clg@redhat.com>
- <CAK9dgmb4fMb8VJ+ERenMrP_PbgjxxApzGfjJfkmE6w1aN2Y+gw@mail.gmail.com>
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <CAK9dgmb4fMb8VJ+ERenMrP_PbgjxxApzGfjJfkmE6w1aN2Y+gw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+In-Reply-To: <46d91ba880f566e7ced7c01b18682b749185c9ba.camel@suse.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -108,250 +93,109 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/16/24 03:41, Yong Huang wrote:
+On Mon, Mar 18, 2024 at 03:59:31PM +0000, Roy Hopkins wrote:
+> On Fri, 2024-03-01 at 17:10 +0000, Daniel P. Berrangé wrote:
+> > On Tue, Feb 27, 2024 at 02:50:15PM +0000, Roy Hopkins wrote:
+> > > IGVM support has been implemented for Confidential Guests that support
+> > > AMD SEV and AMD SEV-ES. Add some documentation that gives some
+> > > background on the IGVM format and how to use it to configure a
+> > > confidential guest.
+> > > 
+> > > Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
+> > > ---
+> > >  docs/system/igvm.rst  | 58 +++++++++++++++++++++++++++++++++++++++++++
+> > >  docs/system/index.rst |  1 +
+> > >  2 files changed, 59 insertions(+)
+> > >  create mode 100644 docs/system/igvm.rst
+> > 
+> > 
+> > > +Firmware Images with IGVM
+> > > +-------------------------
+> > > +
+> > > +When an IGVM filename is specified for a Confidential Guest Support object
+> > > it
+> > > +overrides the default handling of system firmware: the firmware image, such
+> > > as
+> > > +an OVMF binary should be contained as a payload of the IGVM file and not
+> > > +provided as a flash drive. The default QEMU firmware is not automatically
+> > > mapped
+> > > +into guest memory.
+> > 
+> > IIUC, in future the IGVM file could contain both the OVMF and SVSM
+> > binaries ?
+> > 
+> > I'm also wondering if there can be dependancies between the IGVM
+> > file and the broader QEMU configuration ?  eg if SVSM gains suupport
+> > for data persistence, potentially we might need some pflash device
+> > exposed as storage for SVSM to use. Would such a dependancy be
+> > something expressed in the IGVM file, or would it be knowledge that
+> > is out of band ?
+> > 
+> Yes, the IGVM file can indeed contain both OVMF and SVSM binaries. In fact, that
+> is exactly what we are doing with the COCONUT-SVSM project. See [1] for the IGVM
+> builder we use to package OVMF, bootloader components and the SVSM ELF binary.
 > 
+> Data persistence is something that is definitely going to be needed in the SVSM.
+> At present, this cannot be configured using any of the directives in the IGVM
+> specification but instead requires QEMU to be configured correctly to support
+> the application embedded within the IGVM file itself. You could however populate
+> metadata pages using IGVM that describe the storage that is _expected_ to be
+> present, and validate that within the firmware itself. 
 > 
-> On Wed, Mar 6, 2024 at 9:35 PM Cédric Le Goater <clg@redhat.com <mailto:clg@redhat.com>> wrote:
-> 
->     Now that the log_global*() handlers take an Error** parameter and
->     return a bool, do the same for memory_global_dirty_log_start() and
->     memory_global_dirty_log_stop(). The error is reported in the callers
->     for now and it will be propagated in the call stack in the next
->     changes. 
-> 
-> 
->     To be noted a functional change in ram_init_bitmaps(), if the dirty
-> 
-> Hi, Cédric Le Goater. Could the functional modification be made
-> separately from the patch? 
+> The real value from IGVM comes from the ability to describe the initial memory
+> and initial CPU state which all forms part of the launch measurement and initial
+> boot procedure, allowing the expected launch measurement to be calculated from a
+> single IGVM file for multiple virtualisation stacks or configurations. Thus,
+> most of the directives in the IGVM file directly have an effect on the launch
+> measurement. I'm not sure configuring a storage device or other hardware
+> configuration fits well with this.
 
-Are you suggesting one patch to add the Error ** parameter and a second
-to report the error if there is a failure ? From the moment the prototype
-is modified, all handlers need to take the change into account to avoid
-a build break. Looks difficult.
+Yeah, I can understand if IGVM scope should be limited to just memory
+and CPU setup.
 
-> And my "Reviewed-by" is attached
-> to the first patch that refines memory_global_dirty_log_start's
-> function declaration.
+If we use the firmeware descriptor files, we could define capabilities
+in that to express a need for a particular type of persistent storage
+to back the vTPM. So having this info in IGVM files isn't critical.
 
-OK. I should resend a v5 anyhow, I will remove your R-b and you can
-reconsider.
+> > Finally, if we think of the IGVM file as simply yet another firmware
+> > file format, then it raises of question of integration into the
+> > QEMU firmware descriptors.
+> > 
+> > Right now when defining a guest in libvirt if you can say 'type=bios'
+> > or 'type=uefi', and libvirt consults the firmware descriptors to find
+> > the binary to use.
+> > 
+> > If the OS distro provides IGVM files instead of traditional raw OVMF
+> > binaries for SEV/TDX/etc, then from libvirt's POV I think having this
+> > expressed in the firmware descriptors is highly desirable.
+> > 
+> 
+> Whether IGVM is just another firmware file format or not, it certainly is used
+> mutually exclusively with other firmware files. Integration with firmware
+> descriptors does seem to make sense. 
+> 
+> One further question if this is the case, would we want to switch from
+> specifying an "igvm-file" as a parameter on the "ConfidentialGuestSupport"
+> object to providing the file using the "-bios" parameter, or maybe even a
+> dedicated "-igvm" parameter?
 
-Thanks,
+If the IGVM format is flexible enough that it could be used for any VM
+type, even non-confidential VMs, then having its config be separate from
+ConfidentialGuestSUpport would make sense. If it is fundamentally tied
+to CVMs, then just a property is fine I guess.
 
-C.
+Probably best to stay away from -bios, to avoid overloading new semantics
+onto a long standing argument.
 
-
-> 
->     pages logger fails to start, there is no need to synchronize the dirty
->     pages bitmaps. colo_incoming_start_dirty_log() could be modified in a
->     similar way.
-> 
->     Cc: Stefano Stabellini <sstabellini@kernel.org <mailto:sstabellini@kernel.org>>
->     Cc: Anthony Perard <anthony.perard@citrix.com <mailto:anthony.perard@citrix.com>>
->     Cc: Paul Durrant <paul@xen.org <mailto:paul@xen.org>>
->     Cc: "Michael S. Tsirkin" <mst@redhat.com <mailto:mst@redhat.com>>
->     Cc: Paolo Bonzini <pbonzini@redhat.com <mailto:pbonzini@redhat.com>>
->     Cc: David Hildenbrand <david@redhat.com <mailto:david@redhat.com>>
->     Cc: Hyman Huang <yong.huang@smartx.com <mailto:yong.huang@smartx.com>>
->     Reviewed-by: Hyman Huang <yong.huang@smartx.com <mailto:yong.huang@smartx.com>>
->     Signed-off-by: Cédric Le Goater <clg@redhat.com <mailto:clg@redhat.com>>
->     ---
-> 
->       Changes in v4:
-> 
->       - Dropped log_global_stop() and log_global_sync() changes
-> 
->       include/exec/memory.h |  5 ++++-
->       hw/i386/xen/xen-hvm.c |  2 +-
->       migration/dirtyrate.c | 13 +++++++++++--
->       migration/ram.c       | 22 ++++++++++++++++++++--
->       system/memory.c       | 11 +++++------
->       5 files changed, 41 insertions(+), 12 deletions(-)
-> 
->     diff --git a/include/exec/memory.h b/include/exec/memory.h
->     index 5555567bc4c9fdb53e8f63487f1400980275687d..c129ee6db7162504bd72d4cfc69b5affb2cd87e8 100644
->     --- a/include/exec/memory.h
->     +++ b/include/exec/memory.h
->     @@ -2570,8 +2570,11 @@ void memory_listener_unregister(MemoryListener *listener);
->        * memory_global_dirty_log_start: begin dirty logging for all regions
->        *
->        * @flags: purpose of starting dirty log, migration or dirty rate
->     + * @errp: pointer to Error*, to store an error if it happens.
->     + *
->     + * Return: true on success, else false setting @errp with error.
->        */
->     -void memory_global_dirty_log_start(unsigned int flags);
->     +bool memory_global_dirty_log_start(unsigned int flags, Error **errp);
-> 
->       /**
->        * memory_global_dirty_log_stop: end dirty logging for all regions
->     diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
->     index 0608ca99f5166fd6379ee674442484e805eff9c0..57cb7df50788a6c31eff68c95e8eaa856fdebede 100644
->     --- a/hw/i386/xen/xen-hvm.c
->     +++ b/hw/i386/xen/xen-hvm.c
->     @@ -654,7 +654,7 @@ void xen_hvm_modified_memory(ram_addr_t start, ram_addr_t length)
->       void qmp_xen_set_global_dirty_log(bool enable, Error **errp)
->       {
->           if (enable) {
->     -        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
->     +        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
->           } else {
->               memory_global_dirty_log_stop(GLOBAL_DIRTY_MIGRATION);
->           }
->     diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
->     index 1d2e85746fb7b10eb7f149976970f9a92125af8a..d02d70b7b4b86a29d4d5540ded416543536d8f98 100644
->     --- a/migration/dirtyrate.c
->     +++ b/migration/dirtyrate.c
->     @@ -90,9 +90,15 @@ static int64_t do_calculate_dirtyrate(DirtyPageRecord dirty_pages,
-> 
->       void global_dirty_log_change(unsigned int flag, bool start)
->       {
->     +    Error *local_err = NULL;
->     +    bool ret;
->     +
->           bql_lock();
->           if (start) {
->     -        memory_global_dirty_log_start(flag);
->     +        ret = memory_global_dirty_log_start(flag, &local_err);
->     +        if (!ret) {
->     +            error_report_err(local_err);
->     +        }
->           } else {
->               memory_global_dirty_log_stop(flag);
->           }
->     @@ -608,9 +614,12 @@ static void calculate_dirtyrate_dirty_bitmap(struct DirtyRateConfig config)
->       {
->           int64_t start_time;
->           DirtyPageRecord dirty_pages;
->     +    Error *local_err = NULL;
-> 
->           bql_lock();
->     -    memory_global_dirty_log_start(GLOBAL_DIRTY_DIRTY_RATE);
->     +    if (!memory_global_dirty_log_start(GLOBAL_DIRTY_DIRTY_RATE, &local_err)) {
->     +        error_report_err(local_err);
->     +    }
-> 
->           /*
->            * 1'round of log sync may return all 1 bits with
->     diff --git a/migration/ram.c b/migration/ram.c
->     index c5149b7d717aefad7f590422af0ea4a40e7507be..397b4c0f218a66d194e44f9c5f9fe8e9885c48b6 100644
->     --- a/migration/ram.c
->     +++ b/migration/ram.c
->     @@ -2836,18 +2836,31 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
-> 
->       static void ram_init_bitmaps(RAMState *rs)
->       {
->     +    Error *local_err = NULL;
->     +    bool ret = true;
->     +
->           qemu_mutex_lock_ramlist();
-> 
->           WITH_RCU_READ_LOCK_GUARD() {
->               ram_list_init_bitmaps();
->               /* We don't use dirty log with background snapshots */
->               if (!migrate_background_snapshot()) {
->     -            memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
->     +            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
->     +                                                &local_err);
->     +            if (!ret) {
->     +                error_report_err(local_err);
->     +                goto out_unlock;
->     +            }
->                   migration_bitmap_sync_precopy(rs, false);
->               }
->           }
->     +out_unlock:
->           qemu_mutex_unlock_ramlist();
-> 
->     +    if (!ret) {
->     +        return;
->     +    }
->     +
->           /*
->            * After an eventual first bitmap sync, fixup the initial bitmap
->            * containing all 1s to exclude any discarded pages from migration.
->     @@ -3631,6 +3644,8 @@ int colo_init_ram_cache(void)
->       void colo_incoming_start_dirty_log(void)
->       {
->           RAMBlock *block = NULL;
->     +    Error *local_err = NULL;
->     +
->           /* For memory_global_dirty_log_start below. */
->           bql_lock();
->           qemu_mutex_lock_ramlist();
->     @@ -3642,7 +3657,10 @@ void colo_incoming_start_dirty_log(void)
->                   /* Discard this dirty bitmap record */
->                   bitmap_zero(block->bmap, block->max_length >> TARGET_PAGE_BITS);
->               }
->     -        memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION);
->     +        if (!memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
->     +                                           &local_err)) {
->     +            error_report_err(local_err);
->     +        }
->           }
->           ram_state->migration_dirty_pages = 0;
->           qemu_mutex_unlock_ramlist();
->     diff --git a/system/memory.c b/system/memory.c
->     index 3600e716149407c10a1f6bf8f0a81c2611cf15ba..cbc098216b789f50460f1d1bc7ec122030693d9e 100644
->     --- a/system/memory.c
->     +++ b/system/memory.c
->     @@ -2931,10 +2931,9 @@ static void memory_global_dirty_log_rollback(MemoryListener *listener,
->           }
->       }
-> 
->     -void memory_global_dirty_log_start(unsigned int flags)
->     +bool memory_global_dirty_log_start(unsigned int flags, Error **errp)
->       {
->           unsigned int old_flags;
->     -    Error *local_err = NULL;
-> 
->           assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
-> 
->     @@ -2946,7 +2945,7 @@ void memory_global_dirty_log_start(unsigned int flags)
-> 
->           flags &= ~global_dirty_tracking;
->           if (!flags) {
->     -        return;
->     +        return true;
->           }
-> 
->           old_flags = global_dirty_tracking;
->     @@ -2959,7 +2958,7 @@ void memory_global_dirty_log_start(unsigned int flags)
-> 
->               QTAILQ_FOREACH(listener, &memory_listeners, link) {
->                   if (listener->log_global_start) {
->     -                ret = listener->log_global_start(listener, &local_err);
->     +                ret = listener->log_global_start(listener, errp);
->                       if (!ret) {
->                           break;
->                       }
->     @@ -2969,14 +2968,14 @@ void memory_global_dirty_log_start(unsigned int flags)
->               if (!ret) {
->                   memory_global_dirty_log_rollback(QTAILQ_PREV(listener, link),
->                                                    flags);
->     -            error_report_err(local_err);
->     -            return;
->     +            return false;
->               }
-> 
->               memory_region_transaction_begin();
->               memory_region_update_pending = true;
->               memory_region_transaction_commit();
->           }
->     +    return true;
->       }
-> 
->       static void memory_global_dirty_log_do_stop(unsigned int flags)
->     -- 
->     2.44.0
-> 
-> 
-> 
-> -- 
-> Best regards
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
