@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9CE487E466
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:54:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99BC987E463
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:53:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7o7-0002x3-3W; Mon, 18 Mar 2024 03:53:19 -0400
+	id 1rm7oB-0002xx-MB; Mon, 18 Mar 2024 03:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7o5-0002vo-6x
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:17 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1rm7o8-0002xe-LP
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:20 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rm7o3-0008WN-PO
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:16 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3c38855957cso601455b6e.3
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:53:15 -0700 (PDT)
+ id 1rm7o7-000061-1v
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:20 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e6ee9e3cffso2314020b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 00:53:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748394; x=1711353194;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710748398; x=1711353198;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Gjy0iQjWgIZLIa9AZQWBmLKx4VYA0d/vzgnq4H2fgLY=;
- b=FtETl3gzt1O4YqE4UdqsfNF4cQZdKMAq2x80KaNWaPrAzcajOadsjgNFQ0KZ7g51yo
- j7G89I79pUvs2XfvJHqgeoGEgCO8XtE3yBKYz4ftri0FcGiHJ7FPGpB/Q9l+ul4rHig/
- DXE8VH2ToK2z6L9ayaOWOFIENZjAcLbn8ehFpa6UHEVWNS2mbJ9gafnIDDxvK4MXnVky
- dVOLmzqUN46sofhmrkWNs2I2XZchWN0z1XoTPLcZZjss3jJoGj/R8HrXLKgSdeZuWGtz
- ++fVpQC3cAmfaq65igccdC1T+5lP16+rp7F+022V2hFTPNfokxuZllwmkX3bWPn2VEx8
- hSvg==
+ :reply-to; bh=AtoTEhnfQvLOFmj6OES89MI4C55bFzE0mr1LF1KLIWc=;
+ b=fl/a+18pY3/Jrqxfpd9rCyNKteMXPdKms94Dz/1tKb+xu08RYSTA2OaG3Lxt1/hEZ9
+ BqPlnHfVA+FDoq7D4kHsWQk+49GhlsXZQXEczaBO8msXQl2cv22ZkWw9RuT03KyYvyW1
+ qhcgksASQAhWLMLgFbEdEG3FBh9yNnAejB6QlQ0/XLAkBFOrX6Sxlf5LtFitspNqWF04
+ Fn9ncnS65qOwM+hNovWso+SJTbDCM2zZ2P3V9y0PMDk5gN776CNRCZB0OZYILc9UQ21p
+ HlCF5BM3Afb4ZaQByadMMnz7vY5nqiGpz8o7RahMxeYwpub1fNM49JL9RsEqyPw+nC6/
+ ZTqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710748394; x=1711353194;
+ d=1e100.net; s=20230601; t=1710748398; x=1711353198;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Gjy0iQjWgIZLIa9AZQWBmLKx4VYA0d/vzgnq4H2fgLY=;
- b=GwhCpDaVNjdM5OX0hGpzojyglC4g5jDrI0juW2E0E3tfBhLTPEc2R51QDRNQzj90bp
- ftch+abqjQW3/12V9Zye5epaLpsohF9OMgdLdIFgJ6Epe4I47A5tZa0V+ahNaQbQyhJl
- 8xSxLDUBDUraCrQRFgpKgxUSkJLaUxV+zrRHH+5wq7s2SYwLF8DlxTOM5J+LnENFoJrz
- /sMmpgQaE8DkeXF9elgTL/mOjBEFUwTWKPSxZvdPwp2inHSanOA6BKJr0isn5tqKvtrl
- 5QX7RGlugfQ3aHij/QI6nYE5rEnVKHWwLyxMGpzzcJYN1ZTDZDV8n6xBAULH8xJX7lPW
- secg==
-X-Gm-Message-State: AOJu0YxTNvgzvi8XY37V8VBuLm2L7Q5Q0cOo2yFJavflnTRhs06JcJgz
- OBUXvmGMsoJgOgDof221mpBrTdhAe0JIC56GklA8gwcMQDvW6vfg+FnDF6LnnyE=
-X-Google-Smtp-Source: AGHT+IFk1eXoi865iE+hGOtbhZmI95vKmzluYra71ibzf54zR27uj+i3bnE6sMJs7NhXd9GH5Izz3g==
-X-Received: by 2002:a05:6808:394a:b0:3c3:76d4:b687 with SMTP id
- en10-20020a056808394a00b003c376d4b687mr9730335oib.22.1710748394647; 
- Mon, 18 Mar 2024 00:53:14 -0700 (PDT)
+ bh=AtoTEhnfQvLOFmj6OES89MI4C55bFzE0mr1LF1KLIWc=;
+ b=weDRao4WUEVlopmZoYURbCmBhb4BAaqMv68LjrsWaSqY9NdX14K8QpvVyBpih1gdwZ
+ VTFOPrA9ZA7mwxCec9k9RBXBGXKneEj+9Ojvm9J9STaz7wZ4dxszOmpPR1J9jZD6tHzJ
+ zgZstlXmNjxLHKf74M1OOGG1W9PNhEfi0HZhbsbWi6oQ25z2d1WSH79iH7NOssuLq0Xi
+ Eu3NxRm89Nd2GN2sLFGoz+nfHBgXI6VtDfnw2prFfAmG2Hy1pg0aSAftUdmxyNh7J9R3
+ H3cJynIHf+fHFcNaQq6AHgIAQZ0Rf9ssp9nBdkLWW+iJqHrmyiXsR2z5izW/xg0yCBJ9
+ WIcQ==
+X-Gm-Message-State: AOJu0Yy4xjjgLw7QGwyj2r446a1zUAt1AbXf23osv4KBxoYlevi6s+Qi
+ dUa/5EMi9rI+BnIP22kUjRz1m+RJRzGjS131S9p/zW11pkLBCQWg3/286IMVktc=
+X-Google-Smtp-Source: AGHT+IHlBlXs60U8nB/1EDgFflfJ+qej5tA5hB92VOMr45YO1GtC1ESZWobSME00btK5xrmyZfeJCg==
+X-Received: by 2002:a05:6a00:21d4:b0:6e7:933:9ecf with SMTP id
+ t20-20020a056a0021d400b006e709339ecfmr8880852pfj.16.1710748397739; 
+ Mon, 18 Mar 2024 00:53:17 -0700 (PDT)
 Received: from localhost ([157.82.200.213])
  by smtp.gmail.com with UTF8SMTPSA id
- i2-20020a632202000000b005e2b0671987sm6542630pgi.51.2024.03.18.00.53.13
+ p13-20020a62ab0d000000b006e53cc789c3sm7258871pff.107.2024.03.18.00.53.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 00:53:14 -0700 (PDT)
+ Mon, 18 Mar 2024 00:53:17 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Mon, 18 Mar 2024 16:53:01 +0900
-Subject: [PATCH 2/3] ui/cocoa: Resize window after toggling zoom-to-fit
+Date: Mon, 18 Mar 2024 16:53:02 +0900
+Subject: [PATCH 3/3] ui/cocoa: Use NSTrackingInVisibleRect
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-fixes-v1-2-34f1a849b0d9@daynix.com>
+Message-Id: <20240318-fixes-v1-3-34f1a849b0d9@daynix.com>
 References: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
 In-Reply-To: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
@@ -71,8 +71,8 @@ To: Peter Maydell <peter.maydell@linaro.org>,
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::231;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x231.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,26 +94,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Resize the window so that the content will fit without zooming.
+I observed [NSTrackingArea rect] becomes de-synchronized with the view
+frame with some unknown condition. Specify NSTrackingInVisibleRect
+option to let Cocoa automatically update NSTrackingArea, which also
+saves code for synchronization.
 
 Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- ui/cocoa.m | 1 +
- 1 file changed, 1 insertion(+)
+ ui/cocoa.m | 48 ++++++++++++++----------------------------------
+ 1 file changed, 14 insertions(+), 34 deletions(-)
 
 diff --git a/ui/cocoa.m b/ui/cocoa.m
-index d6a5b462f78b..1324be6d32fe 100644
+index 1324be6d32fe..1e2b7d931905 100644
 --- a/ui/cocoa.m
 +++ b/ui/cocoa.m
-@@ -1378,6 +1378,7 @@ - (void)zoomToFit:(id) sender
+@@ -306,7 +306,6 @@ static void handleAnyDeviceErrors(Error * err)
+ */
+ @interface QemuCocoaView : NSView
+ {
+-    NSTrackingArea *trackingArea;
+     QEMUScreen screen;
+     pixman_image_t *pixman_image;
+     QKbdState *kbd;
+@@ -359,6 +358,19 @@ - (id)initWithFrame:(NSRect)frameRect
+     self = [super initWithFrame:frameRect];
+     if (self) {
  
-     [[cocoaView window] setStyleMask:styleMask];
-     [sender setState:styleMask & NSWindowStyleMaskResizable ? NSControlStateValueOn : NSControlStateValueOff];
-+    [cocoaView resizeWindow];
++        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
++                                        NSTrackingMouseEnteredAndExited |
++                                        NSTrackingMouseMoved |
++                                        NSTrackingInVisibleRect;
++
++        NSTrackingArea *trackingArea =
++            [[NSTrackingArea alloc] initWithRect:CGRectZero
++                                         options:options
++                                           owner:self
++                                        userInfo:nil];
++
++        [self addTrackingArea:trackingArea];
++        [trackingArea release];
+         screen.width = frameRect.size.width;
+         screen.height = frameRect.size.height;
+         kbd = qkbd_state_init(dcl.con);
+@@ -392,41 +404,9 @@ - (BOOL) isOpaque
+     return YES;
  }
  
- - (void)toggleZoomInterpolation:(id) sender
+-- (void) removeTrackingRect
+-{
+-    if (trackingArea) {
+-        [self removeTrackingArea:trackingArea];
+-        [trackingArea release];
+-        trackingArea = nil;
+-    }
+-}
+-
+-- (void) frameUpdated
+-{
+-    [self removeTrackingRect];
+-
+-    if ([self window]) {
+-        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
+-                                        NSTrackingMouseEnteredAndExited |
+-                                        NSTrackingMouseMoved;
+-        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
+-                                                    options:options
+-                                                      owner:self
+-                                                   userInfo:nil];
+-        [self addTrackingArea:trackingArea];
+-        [self updateUIInfo];
+-    }
+-}
+-
+ - (void) viewDidMoveToWindow
+ {
+     [self resizeWindow];
+-    [self frameUpdated];
+-}
+-
+-- (void) viewWillMoveToWindow:(NSWindow *)newWindow
+-{
+-    [self removeTrackingRect];
+ }
+ 
+ - (void) hideCursor
+@@ -1284,7 +1264,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
+ - (void)windowDidResize:(NSNotification *)notification
+ {
+     [cocoaView updateBounds];
+-    [cocoaView frameUpdated];
++    [cocoaView updateUIInfo];
+ }
+ 
+ /* Called when the user clicks on a window's close button */
 
 -- 
 2.44.0
