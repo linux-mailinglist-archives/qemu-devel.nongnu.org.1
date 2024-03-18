@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF9787E9B7
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:03:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A83D487E9BB
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:04:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmCcj-0002Sn-86; Mon, 18 Mar 2024 09:01:53 -0400
+	id 1rmCeq-00069u-EB; Mon, 18 Mar 2024 09:04:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcS-0002Oa-8Y
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcd-0002Rl-0R
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcL-0007eS-Ii
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:31 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcY-0007ei-D2
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710766888;
+ s=mimecast20190719; t=1710766889;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ReNmBLEe/G35l3tlnKmgGtREauwHmcX2xc1FDhyZGWg=;
- b=QXHJMP2D3nkpU5705XQlJ3p3ci3InbDVPDBHqvUwNMdNx0OHrgAqoenaXnkFlu72zLTcWz
- i7FBZWVU38v0ZUaTEWLkfQkH1fd/p5zt/ogT/L+dZVEHPQjq2Wy2iw7xaY/Zx2dG1krZws
- nBtc1QTMlvFqDapftpOHYI6V5c5yf1s=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-hYPZwLYsMYSKZh2egWM6Bw-1; Mon,
- 18 Mar 2024 09:01:27 -0400
-X-MC-Unique: hYPZwLYsMYSKZh2egWM6Bw-1
+ bh=VMgn9wPdUVxdSNXAYOjNfBipUlAU7SOC3OtijJaKeCI=;
+ b=ChJZPiygsW2r6eC78YgRQnomigTQ+UwSYX3AeIX1xjbQrhkHrt2985Va1KB55rj5THl2V8
+ xMLEy3W/Ld+3RnquAvVmV/+a1kdnecFHfC9lYmMVOdeeGwTohjsEKIgS7zjBcD2ykwXVAX
+ 7qeNeCU8mlafZWXwaTXHiXFH1ydQ/WY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-484-liX711enNoavPHI5w0keKg-1; Mon, 18 Mar 2024 09:01:27 -0400
+X-MC-Unique: liX711enNoavPHI5w0keKg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9E522801E6B;
- Mon, 18 Mar 2024 13:01:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A6B7A101A523;
+ Mon, 18 Mar 2024 13:01:27 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4BF372166B33;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 19DD92166AE1;
  Mon, 18 Mar 2024 13:01:26 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 01/15] mirror: Don't call job_pause_point() under graph lock
-Date: Mon, 18 Mar 2024 14:01:04 +0100
-Message-ID: <20240318130118.358920-2-kwolf@redhat.com>
+Subject: [PULL 02/15] nbd/server: Fix race in draining the export
+Date: Mon, 18 Mar 2024 14:01:05 +0100
+Message-ID: <20240318130118.358920-3-kwolf@redhat.com>
 In-Reply-To: <20240318130118.358920-1-kwolf@redhat.com>
 References: <20240318130118.358920-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -78,78 +78,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Calling job_pause_point() while holding the graph reader lock
-potentially results in a deadlock: bdrv_graph_wrlock() first drains
-everything, including the mirror job, which pauses it. The job is only
-unpaused at the end of the drain section, which is when the graph writer
-lock has been successfully taken. However, if the job happens to be
-paused at a pause point where it still holds the reader lock, the writer
-lock can't be taken as long as the job is still paused.
+When draining an NBD export, nbd_drained_begin() first sets
+client->quiescing so that nbd_client_receive_next_request() won't start
+any new request coroutines. Then nbd_drained_poll() tries to makes sure
+that we wait for any existing request coroutines by checking that
+client->nb_requests has become 0.
 
-Mark job_pause_point() as GRAPH_UNLOCKED and fix mirror accordingly.
+However, there is a small window between creating a new request
+coroutine and increasing client->nb_requests. If a coroutine is in this
+state, it won't be waited for and drain returns too early.
+
+In the context of switching to a different AioContext, this means that
+blk_aio_attached() will see client->recv_coroutine != NULL and fail its
+assertion.
+
+Fix this by increasing client->nb_requests immediately when starting the
+coroutine. Doing this after the checks if we should create a new
+coroutine is okay because client->lock is held.
 
 Cc: qemu-stable@nongnu.org
-Buglink: https://issues.redhat.com/browse/RHEL-28125
-Fixes: 004915a96a7a ("block: Protect bs->backing with graph_lock")
+Fixes: fd6afc501a01 ("nbd/server: Use drained block ops to quiesce the server")
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240313153000.33121-1-kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20240314165825.40261-2-kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- include/qemu/job.h |  2 +-
- block/mirror.c     | 10 ++++++----
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ nbd/server.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index 9ea98b5927..2b873f2576 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -483,7 +483,7 @@ void job_enter(Job *job);
-  *
-  * Called with job_mutex *not* held.
-  */
--void coroutine_fn job_pause_point(Job *job);
-+void coroutine_fn GRAPH_UNLOCKED job_pause_point(Job *job);
- 
- /**
-  * @job: The job that calls the function.
-diff --git a/block/mirror.c b/block/mirror.c
-index 5145eb53e1..1bdce3b657 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -479,9 +479,9 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
-     return bytes_handled;
- }
- 
--static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
-+static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
+diff --git a/nbd/server.c b/nbd/server.c
+index 941832f178..c3484cc1eb 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -3007,8 +3007,8 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+ /* Owns a reference to the NBDClient passed as opaque.  */
+ static coroutine_fn void nbd_trip(void *opaque)
  {
--    BlockDriverState *source = s->mirror_top_bs->backing->bs;
-+    BlockDriverState *source;
-     MirrorOp *pseudo_op;
-     int64_t offset;
-     /* At least the first dirty chunk is mirrored in one iteration. */
-@@ -489,6 +489,10 @@ static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
-     bool write_zeroes_ok = bdrv_can_write_zeroes_with_unmap(blk_bs(s->target));
-     int max_io_bytes = MAX(s->buf_size / MAX_IN_FLIGHT, MAX_IO_BYTES);
+-    NBDClient *client = opaque;
+-    NBDRequestData *req = NULL;
++    NBDRequestData *req = opaque;
++    NBDClient *client = req->client;
+     NBDRequest request = { 0 };    /* GCC thinks it can be used uninitialized */
+     int ret;
+     Error *local_err = NULL;
+@@ -3037,8 +3037,6 @@ static coroutine_fn void nbd_trip(void *opaque)
+         goto done;
+     }
  
-+    bdrv_graph_co_rdlock();
-+    source = s->mirror_top_bs->backing->bs;
-+    bdrv_graph_co_rdunlock();
+-    req = nbd_request_get(client);
+-
+     /*
+      * nbd_co_receive_request() returns -EAGAIN when nbd_drained_begin() has
+      * set client->quiescing but by the time we get back nbd_drained_end() may
+@@ -3112,9 +3110,7 @@ static coroutine_fn void nbd_trip(void *opaque)
+     }
+ 
+ done:
+-    if (req) {
+-        nbd_request_put(req);
+-    }
++    nbd_request_put(req);
+ 
+     qemu_mutex_unlock(&client->lock);
+ 
+@@ -3143,10 +3139,13 @@ disconnect:
+  */
+ static void nbd_client_receive_next_request(NBDClient *client)
+ {
++    NBDRequestData *req;
 +
-     bdrv_dirty_bitmap_lock(s->dirty_bitmap);
-     offset = bdrv_dirty_iter_next(s->dbi);
-     if (offset < 0) {
-@@ -1066,9 +1070,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-                 mirror_wait_for_free_in_flight_slot(s);
-                 continue;
-             } else if (cnt != 0) {
--                bdrv_graph_co_rdlock();
-                 mirror_iteration(s);
--                bdrv_graph_co_rdunlock();
-             }
-         }
- 
+     if (!client->recv_coroutine && client->nb_requests < MAX_NBD_REQUESTS &&
+         !client->quiescing) {
+         nbd_client_get(client);
+-        client->recv_coroutine = qemu_coroutine_create(nbd_trip, client);
++        req = nbd_request_get(client);
++        client->recv_coroutine = qemu_coroutine_create(nbd_trip, req);
+         aio_co_schedule(client->exp->common.ctx, client->recv_coroutine);
+     }
+ }
 -- 
 2.44.0
 
