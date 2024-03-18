@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FD087E9BC
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEEC87E9B8
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:04:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmCcm-0002at-12; Mon, 18 Mar 2024 09:01:56 -0400
+	id 1rmCe5-0003g9-Rw; Mon, 18 Mar 2024 09:03:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcV-0002Ox-02
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:42 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcY-0002Pz-Mg
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcR-0007f8-Cb
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:37 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcT-0007fH-7H
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710766891;
+ s=mimecast20190719; t=1710766892;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zk605ADpoqaOceha7qtetKquvuZ3laMCUAYTj3eR7pk=;
- b=bz693XPN5EzFlqQxdqSEzpw10D4tnsX1vlk8Kmyjbs/uGmQ2Hi4UZ+7rrARIjkWOHZFWKo
- uWevwUGlUK1hapOJYMQF3AQHeEQrigiyFYnB3JIIVNqXvOroGPBwfxwfY5JabbYqZm7Wut
- 9QAyYj1CEwjVBBSHyOPCEV1w4I1li3Q=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-94-_BRx5i_DO2q1SAKZH9Qv0g-1; Mon,
- 18 Mar 2024 09:01:28 -0400
-X-MC-Unique: _BRx5i_DO2q1SAKZH9Qv0g-1
+ bh=g3jNVJL+TPRTc7qM7FMTbTvzN6eQvCs8I146qFdXDVE=;
+ b=A6vprPx+WHldJk6VXE0tl+0DaTy8VcrMozWuTWrjLs0CVtOxyxSMOcchKKZFuTGNFAPQFX
+ kCsSEckb2LpdD76qmU7BxHu6y19YWpFx/F7vNlcKG/lANcsYK0u5KMaruA7hn6OZ0znE4v
+ 3KPOQAxu7nctE9Ioh8cOktvRZmM3OSM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-212-PoPS26mBPCK5n0-tS_Xb2A-1; Mon, 18 Mar 2024 09:01:29 -0400
+X-MC-Unique: PoPS26mBPCK5n0-tS_Xb2A-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7413C3801F5B;
- Mon, 18 Mar 2024 13:01:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 421BD891E6A;
+ Mon, 18 Mar 2024 13:01:29 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DBF5F2166B33;
- Mon, 18 Mar 2024 13:01:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A966E2166B33;
+ Mon, 18 Mar 2024 13:01:28 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 03/15] iotests: Add test for reset/AioContext switches with NBD
- exports
-Date: Mon, 18 Mar 2024 14:01:06 +0100
-Message-ID: <20240318130118.358920-4-kwolf@redhat.com>
+Subject: [PULL 04/15] blockdev: Fix blockdev-snapshot-sync error reporting for
+ no medium
+Date: Mon, 18 Mar 2024 14:01:07 +0100
+Message-ID: <20240318130118.358920-5-kwolf@redhat.com>
 In-Reply-To: <20240318130118.358920-1-kwolf@redhat.com>
 References: <20240318130118.358920-1-kwolf@redhat.com>
 MIME-Version: 1.0
@@ -63,7 +63,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,120 +79,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replicates the scenario in which the bug was reported.
-Unfortunately this relies on actually executing a guest (so that the
-firmware initialises the virtio-blk device and moves it to its
-configured iothread), so this can't make use of the qtest accelerator
-like most other test cases. I tried to find a different easy way to
-trigger the bug, but couldn't find one.
+From: Markus Armbruster <armbru@redhat.com>
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240314165825.40261-3-kwolf@redhat.com>
+When external_snapshot_abort() rejects a BlockDriverState without a
+medium, it creates an error like this:
+
+        error_setg(errp, "Device '%s' has no medium", device);
+
+Trouble is @device can be null.  My system formats null as "(null)",
+but other systems might crash.  Reproducer:
+
+1. Create a block device without a medium
+
+    -> {"execute": "blockdev-add", "arguments": {"driver": "host_cdrom", "node-name": "blk0", "filename": "/dev/sr0"}}
+    <- {"return": {}}
+
+3. Attempt to snapshot it
+
+    -> {"execute":"blockdev-snapshot-sync", "arguments": { "node-name": "blk0", "snapshot-file":"/tmp/foo.qcow2","format":"qcow2"}}
+    <- {"error": {"class": "GenericError", "desc": "Device '(null)' has no medium"}}
+
+Broken when commit 0901f67ecdb made @device optional.
+
+Use bdrv_get_device_or_node_name() instead.  Now it fails as it
+should:
+
+    <- {"error": {"class": "GenericError", "desc": "Device 'blk0' has no medium"}}
+
+Fixes: 0901f67ecdb7 ("qmp: Allow to take external snapshots on bs graphs node.")
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+Message-ID: <20240306142831.2514431-1-armbru@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- tests/qemu-iotests/tests/iothreads-nbd-export | 66 +++++++++++++++++++
- .../tests/iothreads-nbd-export.out            | 19 ++++++
- 2 files changed, 85 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/iothreads-nbd-export
- create mode 100644 tests/qemu-iotests/tests/iothreads-nbd-export.out
+ blockdev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tests/qemu-iotests/tests/iothreads-nbd-export b/tests/qemu-iotests/tests/iothreads-nbd-export
-new file mode 100755
-index 0000000000..037260729c
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-nbd-export
-@@ -0,0 +1,66 @@
-+#!/usr/bin/env python3
-+# group: rw quick
-+#
-+# Copyright (C) 2024 Red Hat, Inc.
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+# Creator/Owner: Kevin Wolf <kwolf@redhat.com>
-+
-+import time
-+import qemu
-+import iotests
-+
-+iotests.script_initialize(supported_fmts=['qcow2'],
-+                          supported_platforms=['linux'])
-+
-+with iotests.FilePath('disk1.img') as path, \
-+     iotests.FilePath('nbd.sock', base_dir=iotests.sock_dir) as nbd_sock, \
-+     qemu.machine.QEMUMachine(iotests.qemu_prog) as vm:
-+
-+    img_size = '10M'
-+
-+    iotests.log('Preparing disk...')
-+    iotests.qemu_img_create('-f', iotests.imgfmt, path, img_size)
-+    vm.add_args('-blockdev', f'file,node-name=disk-file,filename={path}')
-+    vm.add_args('-blockdev', 'qcow2,node-name=disk,file=disk-file')
-+    vm.add_args('-object', 'iothread,id=iothread0')
-+    vm.add_args('-device',
-+                'virtio-blk,drive=disk,iothread=iothread0,share-rw=on')
-+
-+    iotests.log('Launching VM...')
-+    vm.add_args('-accel', 'kvm', '-accel', 'tcg')
-+    #vm.add_args('-accel', 'qtest')
-+    vm.launch()
-+
-+    iotests.log('Exporting to NBD...')
-+    iotests.log(vm.qmp('nbd-server-start',
-+                       addr={'type': 'unix', 'data': {'path': nbd_sock}}))
-+    iotests.log(vm.qmp('block-export-add', type='nbd', id='exp0',
-+                       node_name='disk', writable=True))
-+
-+    iotests.log('Connecting qemu-img...')
-+    qemu_io = iotests.QemuIoInteractive('-f', 'raw',
-+                                        f'nbd+unix:///disk?socket={nbd_sock}')
-+
-+    iotests.log('Moving the NBD export to a different iothread...')
-+    for i in range(0, 10):
-+        iotests.log(vm.qmp('system_reset'))
-+        time.sleep(0.1)
-+
-+    iotests.log('Checking that it is still alive...')
-+    iotests.log(vm.qmp('query-status'))
-+
-+    qemu_io.close()
-+    vm.shutdown()
-diff --git a/tests/qemu-iotests/tests/iothreads-nbd-export.out b/tests/qemu-iotests/tests/iothreads-nbd-export.out
-new file mode 100644
-index 0000000000..bc514e35e5
---- /dev/null
-+++ b/tests/qemu-iotests/tests/iothreads-nbd-export.out
-@@ -0,0 +1,19 @@
-+Preparing disk...
-+Launching VM...
-+Exporting to NBD...
-+{"return": {}}
-+{"return": {}}
-+Connecting qemu-img...
-+Moving the NBD export to a different iothread...
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+{"return": {}}
-+Checking that it is still alive...
-+{"return": {"running": true, "status": "running"}}
+diff --git a/blockdev.c b/blockdev.c
+index d8fb3399f5..057601dcf0 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -1395,7 +1395,8 @@ static void external_snapshot_action(TransactionAction *action,
+     bdrv_drained_begin(state->old_bs);
+ 
+     if (!bdrv_is_inserted(state->old_bs)) {
+-        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, device);
++        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM,
++                   bdrv_get_device_or_node_name(state->old_bs));
+         return;
+     }
+ 
 -- 
 2.44.0
 
