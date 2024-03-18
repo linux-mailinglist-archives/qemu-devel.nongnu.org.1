@@ -2,76 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8B687ED52
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:19:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEE087ED48
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:19:07 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFex-0007RY-TS; Mon, 18 Mar 2024 12:16:23 -0400
+	id 1rmFf7-0007dV-DU; Mon, 18 Mar 2024 12:16:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFev-0007Pn-OR
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFez-0007TU-Lc
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFes-0004gX-M1
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:21 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFew-0004i2-Fv
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778576;
+ s=mimecast20190719; t=1710778581;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Uc/CeWRDvT/TFblRTj0MYAUNkQhIh6oufOKqKBoDnoc=;
- b=Uj9TjfDBMsYJ9pQFRXh3H4Xf+C6JQd0RC81OouQGwy7jgTkWA7nr59B+qzOxGarMXDeFDG
- IME7DaK+/EAtXXQB/iIFVRfAif4l5rll6888ncjlE6NNdz+3Eeat8E/4v1GldAW4JNjEIE
- mAtq9zJpOPsSC+RPJKoXCBxdC1KT6qM=
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com
- [209.85.221.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=EmhlT2tArR795qwjPsN2LzEPLg2rhync7H6puhjrXTE=;
+ b=BUv0BQTH82hAVLmzhiuVX2okSzODjP8bzqROCNyskbsYP9p3C/W4sNRuSnKBd6mONDraPA
+ Jvwwr9xC4aCzg3MGj2gxt0HFqebS09Hmc/gcZcPWCAvkfTya8wNJx9kuJ7PQhd5WqsR4v8
+ bf/974LjjQ0AWaP95Kgrc9gcR81HXTY=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-Go5CynVXOdmWlA5TycfM6Q-1; Mon, 18 Mar 2024 12:16:15 -0400
-X-MC-Unique: Go5CynVXOdmWlA5TycfM6Q-1
-Received: by mail-vk1-f198.google.com with SMTP id
- 71dfb90a1353d-4d425addd29so3653145e0c.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:15 -0700 (PDT)
+ us-mta-693-mFuCNvOkObKmi0pMRNOh1Q-1; Mon, 18 Mar 2024 12:16:19 -0400
+X-MC-Unique: mFuCNvOkObKmi0pMRNOh1Q-1
+Received: by mail-pj1-f70.google.com with SMTP id
+ 98e67ed59e1d1-29a5bae5b3fso4044828a91.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778574; x=1711383374;
+ d=1e100.net; s=20230601; t=1710778578; x=1711383378;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Uc/CeWRDvT/TFblRTj0MYAUNkQhIh6oufOKqKBoDnoc=;
- b=irKpIB393oVQS8wXjHQhs4JX3afdDK1GiWyixcY6e9Z3Qf/ts8zUOYoEGONqihn5yZ
- C17JJ/wCrUpUoEX0JoAu1gLPgtnwMTdG2sCAvlz7j4/kLtdjDxY3yfzxifv41RxTQU5t
- Snq64p6dzotOb2zT2moHlqd4DOXMIjtOC2GqU+Ni79wzqx4fpeytIVWx7nELqKl3hNKm
- 85OBObxo+AQ0Lw8FFLpLDKzXI4DRU/x1ghycjnhhhDsHtvmlIjuqOJK38of2YMHIlx5M
- J3biLb2e4PjdtVLp7gIB/MW95EEcRCfyrDa77gE0GMRl1MjglAJzluIxMqXuZYJOnJXf
- 7IhQ==
-X-Gm-Message-State: AOJu0Yy/jgdQYwakFpuycJUpBdCIDSnI0RjrzG+ASYtmAgDOJNEpzVni
- FVYY94s8z7lvosacC3XQifhEAiS1EKOL5NHzAraR4+MNR9v7pbr6OxO2FlzXRRPH4jr3q69Wf1S
- s6N2KlhlzZKf2iRYa3WaJJV8d+59x6AtJfi/C0gYBFXAaC5RAqOp08MPa9KIB2/y9W58sRxHNjb
- xIKTWf+8xohwDvsvAlGCeHRY5f78s0ag==
-X-Received: by 2002:a05:6122:984:b0:4b9:e8bd:3b2 with SMTP id
- g4-20020a056122098400b004b9e8bd03b2mr115579vkd.2.1710778572915; 
- Mon, 18 Mar 2024 09:16:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETP5FEgOUGFTFcQyI0HbOtCrOPlBmF9GhKeAAjmWaTleBFtXv6KRKeK0GeSbtKBvpFjmWU9g==
-X-Received: by 2002:a05:6122:984:b0:4b9:e8bd:3b2 with SMTP id
- g4-20020a056122098400b004b9e8bd03b2mr115371vkd.2.1710778571091; 
- Mon, 18 Mar 2024 09:16:11 -0700 (PDT)
+ bh=EmhlT2tArR795qwjPsN2LzEPLg2rhync7H6puhjrXTE=;
+ b=v1VTvedDmLMxKkLnLSXzuBf5ClWOCXF0lVMb7Le3qbZN05ZGGzkiWBgXSUPmMa+BpZ
+ bhtheGb3rT1g9O9LxdLNCzuCRc6F/ncIyo97K2o6JqPR7JfinrBOey6n31o0Mr3f/o26
+ avfNxM9FjblS75ouV7eG9iI/HPMb/RRvvVYnYSEE3lUZu0dhOBiYPUow5EkK/gQtU+qP
+ XrtgovdFz8A4lpa5WAD4UFFvevDCFXAR1heUGfo6rCENPHkce/s6coJ7SnwOnkPrSL9p
+ 0L19YvHaaorBkrdd/Mo8+Zrdy0XvqDhxe10D/kvFaHeHyV9jiaijLG6re56Vl3Z26tVn
+ xoyg==
+X-Gm-Message-State: AOJu0YwjEwHYM4+yMZOxVsN0Li/f9NrQuUSSQhkTqjFdkARYgM2lVdIe
+ 9OEBU/BjPfUtnLU7Aah8cixb/cew1F0kwuz3SWe79lKuofMnTdaLAeEZ0A9OlU15/lc4dpANW2y
+ 39DJdx4REOZBLcVGA8kF1Dy/Bkjqhuq6KJn46z6H0t/1uMbMeOcoVK4ef1sAUVrz2hMi+3hy0fZ
+ czU5X5R3b/nioy3lu7M77Ln8b1Af22CQ==
+X-Received: by 2002:a17:90b:ecc:b0:29b:9a08:6007 with SMTP id
+ gz12-20020a17090b0ecc00b0029b9a086007mr8519066pjb.46.1710778577621; 
+ Mon, 18 Mar 2024 09:16:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHq121vnI5TfSb1cb5Zm2WAVcSJJ9HyL76IXwiR6QccA5HrGz7qOv4smfwulKfkJqNi0qGxUw==
+X-Received: by 2002:a17:90b:ecc:b0:29b:9a08:6007 with SMTP id
+ gz12-20020a17090b0ecc00b0029b9a086007mr8519021pjb.46.1710778576841; 
+ Mon, 18 Mar 2024 09:16:16 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- p5-20020ac5cca5000000b004d33a329719sm1104519vkm.38.2024.03.18.09.16.07
+ so10-20020a17090b1f8a00b0029df6fd2780sm6453073pjb.9.2024.03.18.09.16.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:16:09 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:16:05 -0400
+ Mon, 18 Mar 2024 09:16:16 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:16:11 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 11/24] smbios: don't check type4 structures in legacy mode
-Message-ID: <9cd7fd69cfad9180e22b9adb728fc7b596b4bc1e.1710778506.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 12/24] smbios: add smbios_add_usr_blob_size() helper
+Message-ID: <684b49fda6735fef7ee07bb2c628b37fa114ca1e.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -106,120 +101,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-legacy mode doesn't support structures of type 2 and more,
-and CLI has a check for '-smbios type' option, however it's
-still possible to sneak in type4 as a blob with '-smbios file'
-option. However doing the later makes SMBIOS tables broken
-since SeaBIOS doesn't expect that.
-
-Rather than trying to add support for type4 to legacy code
-(both QEMU and SeaBIOS), simplify smbios_get_table_legacy()
-by dropping not relevant check in legacy code and error out
-on type4 blob.
+it will be used by follow up patch when legacy handling
+is moved out into a separate file.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Ani Sinha <anisinha@redhat.com>
-Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-Id: <20240314152302.2324164-9-imammedo@redhat.com>
+Message-Id: <20240314152302.2324164-10-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/firmware/smbios.h |  2 +-
- hw/i386/fw_cfg.c             |  3 +--
- hw/smbios/smbios.c           | 18 ++++++++++++++----
- 3 files changed, 16 insertions(+), 7 deletions(-)
+ hw/smbios/smbios.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
-index 7b42e7b4ac..0f0dca8f83 100644
---- a/include/hw/firmware/smbios.h
-+++ b/include/hw/firmware/smbios.h
-@@ -313,7 +313,7 @@ void smbios_set_defaults(const char *manufacturer, const char *product,
-                          const char *version,
-                          bool uuid_encoded, SmbiosEntryPointType ep_type);
- void smbios_set_default_processor_family(uint16_t processor_family);
--uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length);
-+uint8_t *smbios_get_table_legacy(size_t *length);
- void smbios_get_tables(MachineState *ms,
-                        const struct smbios_phys_mem_area *mem_array,
-                        const unsigned int mem_array_size,
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index c1e9c0fd9c..d1281066f4 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -71,8 +71,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg)
-     smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
- 
-     if (pcmc->smbios_legacy_mode) {
--        smbios_tables = smbios_get_table_legacy(ms->smp.cpus,
--                                                &smbios_tables_len);
-+        smbios_tables = smbios_get_table_legacy(&smbios_tables_len);
-         fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
-                          smbios_tables, smbios_tables_len);
-         return;
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index aab4ffb4cb..30196d2911 100644
+index 30196d2911..090a6eb018 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -545,14 +545,17 @@ opts_init(smbios_register_config);
-  */
- #define SMBIOS_21_MAX_TABLES_LEN 0xffff
+@@ -1411,6 +1411,14 @@ static bool save_opt_list(size_t *ndest, char ***dest, QemuOpts *opts,
+     return true;
+ }
  
--static void smbios_validate_table(uint32_t expected_t4_count)
-+static void smbios_check_type4_count(uint32_t expected_t4_count)
- {
-     if (smbios_type4_count && smbios_type4_count != expected_t4_count) {
-         error_report("Expected %d SMBIOS Type 4 tables, got %d instead",
-                      expected_t4_count, smbios_type4_count);
-         exit(1);
-     }
-+}
- 
-+static void smbios_validate_table(void)
++static void smbios_add_usr_blob_size(size_t size)
 +{
-     if (smbios_ep_type == SMBIOS_ENTRY_POINT_TYPE_32 &&
-         smbios_tables_len > SMBIOS_21_MAX_TABLES_LEN) {
-         error_report("SMBIOS 2.1 table length %zu exceeds %d",
-@@ -637,7 +640,7 @@ static void smbios_build_type_1_fields(void)
-     }
- }
- 
--uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
-+uint8_t *smbios_get_table_legacy(size_t *length)
- {
-     int i;
-     size_t usr_offset;
-@@ -650,6 +653,12 @@ uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
-         exit(1);
-     }
- 
-+    if (test_bit(4, have_binfile_bitmap)) {
-+        error_report("can't process table for smbios "
-+                     "type 4 on machine versions < 2.1!");
-+        exit(1);
++    if (!usr_blobs_sizes) {
++        usr_blobs_sizes = g_array_new(false, false, sizeof(size_t));
 +    }
++    g_array_append_val(usr_blobs_sizes, size);
++}
 +
-     g_free(smbios_entries);
-     smbios_entries_len = sizeof(uint16_t);
-     smbios_entries = g_malloc0(smbios_entries_len);
-@@ -676,7 +685,7 @@ uint8_t *smbios_get_table_legacy(uint32_t expected_t4_count, size_t *length)
+ void smbios_entry_add(QemuOpts *opts, Error **errp)
+ {
+     const char *val;
+@@ -1458,10 +1466,12 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
+             smbios_type4_count++;
+         }
  
-     smbios_build_type_0_fields();
-     smbios_build_type_1_fields();
--    smbios_validate_table(expected_t4_count);
-+    smbios_validate_table();
-     *length = smbios_entries_len;
-     return smbios_entries;
- }
-@@ -1304,7 +1313,8 @@ void smbios_get_tables(MachineState *ms,
-     smbios_build_type_41_table(errp);
-     smbios_build_type_127_table();
- 
--    smbios_validate_table(ms->smp.sockets);
-+    smbios_check_type4_count(ms->smp.sockets);
-+    smbios_validate_table();
-     smbios_entry_point_setup();
- 
-     /* return tables blob and entry point (anchor), and their sizes */
+-        if (!usr_blobs_sizes) {
+-            usr_blobs_sizes = g_array_new(false, false, sizeof(size_t));
+-        }
+-        g_array_append_val(usr_blobs_sizes, size);
++        /*
++         * preserve blob size for legacy mode so it could build its
++         * blobs flavor from 'usr_blobs'
++         */
++        smbios_add_usr_blob_size(size);
++
+         usr_blobs_len += size;
+         if (size > usr_table_max) {
+             usr_table_max = size;
 -- 
 MST
 
