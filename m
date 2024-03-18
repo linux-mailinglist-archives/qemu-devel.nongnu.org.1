@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47DE887EC91
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2CE87EC88
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:48:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFDG-00042n-6N; Mon, 18 Mar 2024 11:47:46 -0400
+	id 1rmFDH-0004Dk-25; Mon, 18 Mar 2024 11:47:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDA-0003fl-UO
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:40 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDD-0003uy-A1
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:43 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFD3-0007un-RR
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:39 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e6ce174d45so3553898b3a.3
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:47:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFD8-0007v5-1G
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:43 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e4d48a5823so2993825b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:47:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710776850; x=1711381650; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710776856; x=1711381656; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GoDLXObhG4ujv0wbwxxQpClK8TDNZa/JMTih0Qwb1tc=;
- b=ad2rU37ui/oO9hSX3qwv/duKbLJ9NpAMttwkXKRi9uxn0opTTPsfxpL2x3i109Bt2w
- czu73QVgWalufSrKhY5styYlWghQ4ndjm5wdNIY6s0LSyLEHn8phPZ3GFOS2cEeKusoy
- MmcyAU/PjhXLLGwl9tSuK5+1kojvqwGMa7hgJyJCeBezP9rf5+mJIOCjOwX0ZIy24BQ2
- emcKkvaeqjMaJlfbZYKOgC3bxY/NpjAaY5zpFSK7Uaam6u/8A44Afi2FKQyT8BF/f5Lz
- md51JTEyhQSLKtKC47V0iidswpac0y/rY+hPPnf6SLD1XX3M3oFg7h7+tSI4S2dGi4Su
- vzZQ==
+ bh=DhbUaEW+2x4ajdSm7F1FWUPuBN/KHA6Xi8kM/8vXMJ0=;
+ b=U5jzI1Ox0JCI00vOS7yfpJzg57QPNNEZqI/nHhOq51SgcGug4Z2A1cE+iBZ7lThUfd
+ 3TsHIDnTLjkRHQIIih1m9jGh3ct6p5e1qTSuXUODivTqoz1THv7/rmGmkOZlQ/dVkawJ
+ xymNyXNbNa48LsSPwFtXEsF/BOajz/W7b/ZfovWC0VVbqV1xJFoNa+wMRqY30MZRpkDo
+ JIKnwwCLNZ3reJUrqTRVAI+pVlwTcHssTVI9OHopXH3ZoWfeCZcmU/EKj5Mz2Mcdg02x
+ D2m4UYuJPZFWl0oQRTZ1TPQ/HfaVOQey8Us3WcXvPXiE2JKMoIRMCtmMw1NEHeGILPCG
+ CJMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710776850; x=1711381650;
+ d=1e100.net; s=20230601; t=1710776856; x=1711381656;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GoDLXObhG4ujv0wbwxxQpClK8TDNZa/JMTih0Qwb1tc=;
- b=RzQw9U+SHOXwnYkn8qyluD/kUC1fL+i4fSk8ymqruWEHQouyP3NhZaA8nzyYYY5G8D
- L/A5tAT0JKLbFshrteNVXYRojla3aNYwSZ9Q3aUnoZikczNldYob+tE83z3G0VNk3rm9
- WcaSgHfRn19IQWyOM5uhLHqV4lm3MaK61XL+sdDkBfGpsb4utiXcnxmHPdfvwtBMRYhK
- 5wGyFmZOQQQY4XACMtLfmMvSUA4QQ53EDWlTz5/ZJpKBkl4Vd2P3bO5rliFqQ+VhSOCH
- 7KKUUHkMFCRHfzmExhhdjMdMZOKzUh9scrLO7JegtUkDKy0Fy4Kboyy0aU1QwVwRWCoh
- tNUQ==
-X-Gm-Message-State: AOJu0Yz+EIUb8PLalRY3g8XcUfbUXhGuW+z+be0TA8cqqalUnTU3IHw5
- 4BTEe3Itw61yg5UKnDoqZbxo8zqACQwWk9c+3QFT+TXpsO4egSIsGUtSzIhxI7M=
-X-Google-Smtp-Source: AGHT+IGWfK+rmzWf5q5aR4t1hEjCHNOz0uM+W+FYn09GuRDdUGyHPGO3v61FT+umbmMHl/5hCANgNg==
-X-Received: by 2002:a05:6a20:d81b:b0:1a3:5235:8e04 with SMTP id
- iv27-20020a056a20d81b00b001a352358e04mr9006341pzb.36.1710776850309; 
- Mon, 18 Mar 2024 08:47:30 -0700 (PDT)
+ bh=DhbUaEW+2x4ajdSm7F1FWUPuBN/KHA6Xi8kM/8vXMJ0=;
+ b=AFA2YdO5EMFyqShM/MB4q02pDPvJTgTCU/cZAjxy/0V4qh4ChfyUWDZO0dmLtbLh/j
+ vIGioyWe55fXYhpiBdIqrt8elGbhMKApeP6yhUiC/nySe32fsOiC4j3t+5IND9vq5cdX
+ YRAteWH7fSJex7sOe6qcmn+scuLrPz0/lrP0GVwgQiqp9Mq51Rj+6InSecVZNthqnNPi
+ gJNKRyAsv1KMaDRAIxDYWv7RqJNPY8nfIarZg4xXd7se11F2/Bo+Tmsby9I7VuTUtsju
+ fF+QZzsm1C99n7jDjyocuDKcis0ie2zo9THa2GOemuc6qB+g1unKD3qImmmJv+bE1Z79
+ SENQ==
+X-Gm-Message-State: AOJu0Yw17IHSrgtYsxLTKWrJSZLWAq0yOAv1j8ylHc+LtTgJPrtcO+L6
+ PWvYTM0b0LEzcvGlzhVQiedCPVewczlk5IZiPSHEwlhxZazG4plTValz9jU/GaI=
+X-Google-Smtp-Source: AGHT+IGHcljV3Nj8rWLf1bqsA9WylQbg5aH0ShA1ONiyqUkMxIGubGk/T9sjveQA9bM7KT9gH4HxrQ==
+X-Received: by 2002:a05:6a21:920f:b0:1a3:4a1d:1092 with SMTP id
+ tl15-20020a056a21920f00b001a34a1d1092mr11893355pzb.35.1710776856307; 
+ Mon, 18 Mar 2024 08:47:36 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.47.24
+ v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.47.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 08:47:30 -0700 (PDT)
+ Mon, 18 Mar 2024 08:47:36 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,17 +65,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v5 10/24] virtio-net: Use replay_schedule_bh_event for bhs
- that affect machine state
-Date: Tue, 19 Mar 2024 01:46:07 +1000
-Message-ID: <20240318154621.2361161-11-npiggin@gmail.com>
+Subject: [PATCH v5 11/24] virtio-net: Use virtual time for RSC timers
+Date: Tue, 19 Mar 2024 01:46:08 +1000
+Message-ID: <20240318154621.2361161-12-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318154621.2361161-1-npiggin@gmail.com>
 References: <20240318154621.2361161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,71 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The regular qemu_bh_schedule() calls result in non-deterministic
-execution of the bh in record-replay mode, which causes replay failure.
+Receive coalescing is visible to the target machine, so its timers
+should use virtual time like other timers in virtio-net, to be
+compatible with record-replay.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/net/virtio-net.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/net/virtio-net.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9959f1932b..6ac737f2cf 100644
+index 6ac737f2cf..894df25222 100644
 --- a/hw/net/virtio-net.c
 +++ b/hw/net/virtio-net.c
-@@ -40,6 +40,7 @@
- #include "migration/misc.h"
- #include "standard-headers/linux/ethtool.h"
- #include "sysemu/sysemu.h"
-+#include "sysemu/replay.h"
- #include "trace.h"
- #include "monitor/qdev.h"
- #include "monitor/monitor.h"
-@@ -416,7 +417,7 @@ static void virtio_net_set_status(struct VirtIODevice *vdev, uint8_t status)
-                 timer_mod(q->tx_timer,
-                                qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
-             } else {
--                qemu_bh_schedule(q->tx_bh);
-+                replay_bh_schedule_event(q->tx_bh);
-             }
-         } else {
-             if (q->tx_timer) {
-@@ -2724,7 +2725,7 @@ static void virtio_net_tx_complete(NetClientState *nc, ssize_t len)
-          */
-         virtio_queue_set_notification(q->tx_vq, 0);
-         if (q->tx_bh) {
--            qemu_bh_schedule(q->tx_bh);
-+            replay_bh_schedule_event(q->tx_bh);
-         } else {
-             timer_mod(q->tx_timer,
-                       qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + n->tx_timeout);
-@@ -2879,7 +2880,7 @@ static void virtio_net_handle_tx_bh(VirtIODevice *vdev, VirtQueue *vq)
-         return;
+@@ -2176,7 +2176,7 @@ static void virtio_net_rsc_purge(void *opq)
+     chain->stat.timer++;
+     if (!QTAILQ_EMPTY(&chain->buffers)) {
+         timer_mod(chain->drain_timer,
+-              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
++              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
      }
-     virtio_queue_set_notification(vq, 0);
--    qemu_bh_schedule(q->tx_bh);
-+    replay_bh_schedule_event(q->tx_bh);
  }
  
- static void virtio_net_tx_timer(void *opaque)
-@@ -2962,7 +2963,7 @@ static void virtio_net_tx_bh(void *opaque)
-     /* If we flush a full burst of packets, assume there are
-      * more coming and immediately reschedule */
-     if (ret >= n->tx_burst) {
--        qemu_bh_schedule(q->tx_bh);
-+        replay_bh_schedule_event(q->tx_bh);
-         q->tx_waiting = 1;
-         return;
+@@ -2412,7 +2412,7 @@ static size_t virtio_net_rsc_do_coalesce(VirtioNetRscChain *chain,
+         chain->stat.empty_cache++;
+         virtio_net_rsc_cache_buf(chain, nc, buf, size);
+         timer_mod(chain->drain_timer,
+-              qemu_clock_get_ns(QEMU_CLOCK_HOST) + chain->n->rsc_timeout);
++              qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL) + chain->n->rsc_timeout);
+         return size;
      }
-@@ -2976,7 +2977,7 @@ static void virtio_net_tx_bh(void *opaque)
-         return;
-     } else if (ret > 0) {
-         virtio_queue_set_notification(q->tx_vq, 0);
--        qemu_bh_schedule(q->tx_bh);
-+        replay_bh_schedule_event(q->tx_bh);
-         q->tx_waiting = 1;
+ 
+@@ -2650,7 +2650,7 @@ static VirtioNetRscChain *virtio_net_rsc_lookup_chain(VirtIONet *n,
+         chain->max_payload = VIRTIO_NET_MAX_IP6_PAYLOAD;
+         chain->gso_type = VIRTIO_NET_HDR_GSO_TCPV6;
      }
- }
+-    chain->drain_timer = timer_new_ns(QEMU_CLOCK_HOST,
++    chain->drain_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
+                                       virtio_net_rsc_purge, chain);
+     memset(&chain->stat, 0, sizeof(chain->stat));
+ 
 -- 
 2.42.0
 
