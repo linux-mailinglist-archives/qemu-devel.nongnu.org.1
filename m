@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368B187ED34
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:17:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4562A87ED60
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:32 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFfb-0000sp-2U; Mon, 18 Mar 2024 12:17:03 -0400
+	id 1rmFfT-00005t-LM; Mon, 18 Mar 2024 12:16:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfU-0000IG-2o
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfJ-00085L-74
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfF-0004lI-Nh
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfH-0004lg-5v
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:16:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778600;
+ s=mimecast20190719; t=1710778601;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=yZWruUO8dFIZZVtmp1f4qBT11vEoiubRwmFIaapjlUQ=;
- b=XrkIIXGIb8qds5B4eY4ptU1HtID0iKvYZ3sUv3d/HJHnHBqSqa4vHfYxAPwmlRsEyTTLnO
- e9G0VXBbMAOct9ffuKIw0227P5Xjb2hGlx9aBnURatunmyQ5nwhL0ebIHOkofr2RIVcnhk
- CzYcwMSdiuHj+DODQD6V5qyNt3gGJLM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3PquRgok1zJPddWo+hTweh0skOewFWtqO+jh37rKiqc=;
+ b=YrhbaJjDf2cl4f6ZccV5BaQ9W/EXxtHfoZvWS2B3Zlpc95pK/VXY7Nkbr0r1zRsY+CmsOp
+ TeRUzTPSb0FDomXQeukpXBwDCD3mfR3c4XADHVzmGL0C4f62zbHARc+oj7emUDav8mzbWg
+ fMLOZXrzNDADsywk7qGINHU6PBJv4qA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-Sv6FKCiAM5q8QsAj1TghUw-1; Mon, 18 Mar 2024 12:16:37 -0400
-X-MC-Unique: Sv6FKCiAM5q8QsAj1TghUw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4140e6bbc87so6434255e9.2
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:37 -0700 (PDT)
+ us-mta-160-s6eihdbTOjitqOEeH2D97Q-1; Mon, 18 Mar 2024 12:16:40 -0400
+X-MC-Unique: s6eihdbTOjitqOEeH2D97Q-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-41413823c1bso3959425e9.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:16:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778595; x=1711383395;
+ d=1e100.net; s=20230601; t=1710778599; x=1711383399;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yZWruUO8dFIZZVtmp1f4qBT11vEoiubRwmFIaapjlUQ=;
- b=hoq+LRtVEeQT4EmBBbobdbm5HijNWXlh90ojpTmMg1a4wRQV+6MLUvZYmPzugi5zUc
- UawdqC0mqWmfxe/UKWaCYtoGPXPnHdk3NYipMyFV1/tkY/5GFkXetUaY4xfLhxI1MYZB
- YOETV6xzTydE/zm3LAKdwu5azIOuYu6HI5sMI6WPMuHWA22myrEUxi/jzZFAA+0A64rz
- J+soAeKIornasxhYj6BIDuh+vhOJFne17UTRbNro4bg9gbsAXg2L4qnkrolCHvEcHDkq
- 1ev3LNu0UsOrqWalsK9e+VlqoWDPI5EDiRWJHBhL0TR1d1nbEkVbl4Qp4xhoCPLyH2no
- wAcw==
-X-Gm-Message-State: AOJu0Yz9DUIjnL9EOes+wtKKGjUrSaK8Osx2rTL7XUkqUbzz9mzbbILa
- eWuW00MNHRZbmTqyS5FHFKextZF/psjFPkLftEB1h7ENWJHL50Iqzf5EMKCDcick1ChuFtR/1MH
- OurwzZlisfzVokEHG/06OC4KcatQ9iSKR04DqTaLSl0P48Mdz0UjRMHrEcwWepbDODOJhv4DVmG
- CwgSjllPOK5H77RCyIxxuJA1uIPALWXA==
-X-Received: by 2002:a05:600c:4686:b0:414:c5:8503 with SMTP id
- p6-20020a05600c468600b0041400c58503mr7514997wmo.38.1710778595538; 
- Mon, 18 Mar 2024 09:16:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1mjFKLM9C6mWEK/TfGwcNV8csr5z5QmQ7yGuXKF2/URoCEXjkN/r64bXmyxuf3aNtm8JMCA==
-X-Received: by 2002:a05:600c:4686:b0:414:c5:8503 with SMTP id
- p6-20020a05600c468600b0041400c58503mr7514977wmo.38.1710778595036; 
- Mon, 18 Mar 2024 09:16:35 -0700 (PDT)
+ bh=3PquRgok1zJPddWo+hTweh0skOewFWtqO+jh37rKiqc=;
+ b=dt9GqFo4G5BmXKbWLa8W8Kvv0pVzofwpw+ed7EswzGwWF1RcgSCghVDccyvk9i8ONz
+ kqjh/tznCvrJeLB2y8VubDvICxXk1B9LNSU2WvcZ+wvnG17BuU823ppLQghOdTjyU44q
+ /+i6oSm9gYy4jv4jql5gUJl8oEl2BGn6UHrISfDPkx4kDfVPNPExM0yoxPDZG6oCZkXN
+ 0Q660jjfrpOgsfUi8fDeayHh7+QbZE3YMQNgSyISP8G2N38G1AW75WlK+rLwirTzHF4F
+ yeX9u5s9SgvCEHnr8CeAWLYb36vDsA5dFy/ZX2rOAeWWTuSCAg3yDJfJjmbAgDIBPVVt
+ XSJw==
+X-Gm-Message-State: AOJu0YyY+3Hjs8T8OzrXVJ+MBky0ZO6yMm/4ZKasaQAIeNdsGm/h+UML
+ Xw8pj98/vNltCCQYX+0wPv/9VaQUCrtOHHLmFW3nL3DLI/h/x9s/hyUu25k23VlGtz3wJXepzlh
+ 2wFA3/Soa8qGOzQiej3MHcofG4WtRtdL9yxijhngDQWJPo+Jgg4EHBFOuwRRZZbVst1Cov58CSb
+ 6ggCAiHLuIzFM9XDr4dK79v8c5ZjeY5w==
+X-Received: by 2002:a05:600c:4f04:b0:412:e0f7:ef52 with SMTP id
+ l4-20020a05600c4f0400b00412e0f7ef52mr57448wmq.19.1710778599271; 
+ Mon, 18 Mar 2024 09:16:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG3ORGzjXCzfKbfbFOBylAYK6/00IVbsyv1+VlkO7ECWTb6uBUCjoOkRbmYJYJ/DAoUZqzYMQ==
+X-Received: by 2002:a05:600c:4f04:b0:412:e0f7:ef52 with SMTP id
+ l4-20020a05600c4f0400b00412e0f7ef52mr57409wmq.19.1710778598704; 
+ Mon, 18 Mar 2024 09:16:38 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- q11-20020a05600c46cb00b0041312d21a35sm18649855wmo.7.2024.03.18.09.16.33
+ bt3-20020a056000080300b0033f20497d4asm5965569wrb.5.2024.03.18.09.16.36
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:16:34 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:16:32 -0400
+ Mon, 18 Mar 2024 09:16:38 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:16:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>,
- Fiona Ebner <f.ebner@proxmox.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 17/24] smbios: clear smbios_type4_count before building tables
-Message-ID: <6735a4943e024715cf256625f02231e88f76c40b.1710778506.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>,
+ Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 18/24] smbios: extend smbios-entry-point-type with 'auto' value
+Message-ID: <4901b80e13be62fc8ea2d8844941f336076af266.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -75,13 +79,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1710778506.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,30 +106,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-it will help to keep type 4 tables accounting correct in case
-SMBIOS tables are built multiple times.
+later patches will use it to pick SMBIOS version at runtime
+depending on configuration.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Tested-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-Id: <20240314152302.2324164-15-imammedo@redhat.com>
+Message-Id: <20240314152302.2324164-16-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/smbios/smbios.c | 1 +
- 1 file changed, 1 insertion(+)
+ qapi/machine.json | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index 0ab77b5ec8..48713aa505 100644
---- a/hw/smbios/smbios.c
-+++ b/hw/smbios/smbios.c
-@@ -1096,6 +1096,7 @@ void smbios_get_tables(MachineState *ms,
-            ep_type == SMBIOS_ENTRY_POINT_TYPE_64);
+diff --git a/qapi/machine.json b/qapi/machine.json
+index bb5a178909..0840c91e70 100644
+--- a/qapi/machine.json
++++ b/qapi/machine.json
+@@ -1797,10 +1797,13 @@
+ #
+ # @64: SMBIOS version 3.0 (64-bit) Entry Point
+ #
++# @auto: Either 2.x or 3.x SMBIOS version, 2.x if configuration can be
++#     described by it and 3.x otherwise (since: 9.0)
++#
+ # Since: 7.0
+ ##
+ { 'enum': 'SmbiosEntryPointType',
+-  'data': [ '32', '64' ] }
++  'data': [ '32', '64', 'auto' ] }
  
-     g_free(smbios_tables);
-+    smbios_type4_count = 0;
-     smbios_tables = g_memdup2(usr_blobs, usr_blobs_len);
-     smbios_tables_len = usr_blobs_len;
-     smbios_table_max = usr_table_max;
+ ##
+ # @MemorySizeConfiguration:
 -- 
 MST
 
