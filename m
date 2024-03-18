@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC8287EC86
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DB987EC89
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:48:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFDy-0007WO-OQ; Mon, 18 Mar 2024 11:48:30 -0400
+	id 1rmFE3-0007r8-7t; Mon, 18 Mar 2024 11:48:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDp-0006f9-PM
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:23 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDw-0007RL-6r
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:28 -0400
+Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDn-0007z2-D8
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:21 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6e6b22af648so4003068b3a.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:48:17 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDr-0007ze-H0
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:27 -0400
+Received: by mail-oi1-x232.google.com with SMTP id
+ 5614622812f47-3c1a2f7e1d2so2937403b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:48:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710776896; x=1711381696; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710776902; x=1711381702; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=R6v5RIqN05KI0hc+5mWXKMx4NLEtwOgII4cjIlr9z1c=;
- b=V5s8e2bIsqGlE+F1Ow3ByvYN1acSY3LdZDX8k3uNVMHKzPS0dcHFdY7wrPG6dAQhbk
- R2ee5uZi/UOznoiO0j2Kz4XH5qG+kyTMOlQE9bklaoou4iprwaXsLM9XswtLLpkDSW5Z
- KWA6HJkKVT0R5zjGF8ZuCUCreP6BP/+Ogso7Xn1PVvLWfoO7iXlzqKAQsaZBbdwzO8NT
- /sQfA/fhTQhQ/N09wGntpDYkjhkVIvZLaxvbdUMpSgpQHhH7SUlRlbPnLbCo9A9w4FG4
- 1pJjbOyL/syrxi28/eHqtRD0yVy6dOEpd8nn/inh8vQyT8x/6vZy5X5XndTIhreY1eGp
- cU3g==
+ bh=vChGyrdMAwhGNcUz/tevOgrJdP+StcBef0qjQjfUcXs=;
+ b=Ir2+eH/Xaks/awcpxsz22giE0TcUfME2txLzh8Z2+1k0k0cAHIrvRN/JVy+/COJbRY
+ cdq3AcQxgzl0h13pJUJKjWLPwRm7nUfelVs/sRznkPzMwZ7jC29F5cXTMKuY77GZ0BOi
+ xAPU5iSq9zK0WjW6NTS9l3+8h0u/S6F5R1LQZDuzESDkGiurqM/n+vDHXeKijsMCpKLP
+ /tPEjVxCowFfX9Ln9c7AEkKNPxifBw5whdPchKiOjFdSXaTVt6fycXS2yg4iqzobVXmD
+ S0k/uoZ3/DOT1GrSTN89aOlSSmBMVt8fdyL1bHYnVOjzn30jJyA/CpNbaAC0itYFQtSy
+ WSFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710776896; x=1711381696;
+ d=1e100.net; s=20230601; t=1710776902; x=1711381702;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R6v5RIqN05KI0hc+5mWXKMx4NLEtwOgII4cjIlr9z1c=;
- b=aX7hFUnIXdCf/wJjyo2VlS0vrSi+Z5/pjc4Sxe+pw2djkequM+GuEGIoHLA+zAtwJO
- RhqiDJZAqMUJyn43caSvertA7GcGQsJy0KuoIzEjaZhYCq+Gb1tv9hhYfm4MgQxBqBSX
- DcikJwNt+9ECLxqbIgFEHIsuC7kFK7TCdB35elQ0r5b89NsoKUl8/+/WQuZ43UUMSAfc
- 0D1y8XTFOxMSxW+61bIAUobMBpZ7B3/487dBM3wPPYlIP9etjWtxotIF3ZkWYomw3qBw
- HGx4vf1wLm4RG613fAlXk1RE4e+QKW21CUxMoxX1W/g1uJKDU3jxX4zmRuvyov6rzZAT
- PbJA==
-X-Gm-Message-State: AOJu0Yww4MhTWEZAQkFidQzIIcn1Yd+XeeZ5gs4bZPu4hRP5dqMFpVMr
- r+bc38m2lGcBCeRGm3CjhW5KUlyauHYdOM91yC4Ve6q607GUPbAEgRAs3q0mMq4=
-X-Google-Smtp-Source: AGHT+IH+cHz0Rby4vdmsY9QoFOKyCKlo+HbfsYU5RN+HtmE0hDtbUO3ldOFUVa7h/P/zdkmXAMmkcA==
-X-Received: by 2002:a05:6a21:99aa:b0:1a3:4a3a:6e22 with SMTP id
- ve42-20020a056a2199aa00b001a34a3a6e22mr14624063pzb.24.1710776896259; 
- Mon, 18 Mar 2024 08:48:16 -0700 (PDT)
+ bh=vChGyrdMAwhGNcUz/tevOgrJdP+StcBef0qjQjfUcXs=;
+ b=tj1PtYPwLGjs6eRm0rlg9EUOpO9seVRdTjrNGnGw7I8+8YA3lhFryZwihX7lXTzVTX
+ lNQi5vaaIw3gQoaiDYyOnPnsGY2DVI2KrtT2OwvY20NG7Dh9IZdNsTXj4kId0ct9X+7f
+ cJTUHNrby0llCbz7sZmpU3+An4A4Q4UBA2IricFhxOZAZ1HjBXvl1+0A7tQnQVSF5bYz
+ Y5UqrKHWUnGTqNhmNf/IeyGzDp714xU7iiEylx/QQQ7+genKRkuW3L8UcQHYibuRFS43
+ TwwciO4UMUOO5vQnunn9URJQ9+BotSuYm8/FzD0rdZt4hCfWpx0h5+9L6MObGQAwAALG
+ Ogtg==
+X-Gm-Message-State: AOJu0YyVny4LMWRdnVAE4owEMCb8Jgp3OpA7xUNeP+KSCdq7d0gBa3Ft
+ znm1RNeHFQEwdlJrOxmsBmg6TzUSBYlgzzqaTekgvoIGyCCI9+ChRtXVmNN5kuE=
+X-Google-Smtp-Source: AGHT+IH+xu9UG0qY5T3oCoz48+mzAT1WNd+fxXiFmnh1dJQorE2yMYpLRQTEZ4x54/XXgd7uxJjP/A==
+X-Received: by 2002:a05:6808:13d3:b0:3c2:c82:904f with SMTP id
+ d19-20020a05680813d300b003c20c82904fmr14360335oiw.58.1710776902250; 
+ Mon, 18 Mar 2024 08:48:22 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.48.10
+ v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.48.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 08:48:16 -0700 (PDT)
+ Mon, 18 Mar 2024 08:48:22 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,17 +65,17 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v5 18/24] tests/avocado: reverse_debugging reverse-step at the
- end of the trace
-Date: Tue, 19 Mar 2024 01:46:15 +1000
-Message-ID: <20240318154621.2361161-19-npiggin@gmail.com>
+Subject: [PATCH v5 19/24] tests/avocado: reverse_debugging.py add snapshot
+ testing
+Date: Tue, 19 Mar 2024 01:46:16 +1000
+Message-ID: <20240318154621.2361161-20-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318154621.2361161-1-npiggin@gmail.com>
 References: <20240318154621.2361161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
+ envelope-from=npiggin@gmail.com; helo=mail-oi1-x232.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,146 +98,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The longer a trace is played for, the more chance there is for bugs
-to cause it to go out of synch with the initial recording. Stepping
-backward from the end of a trace can be a good way to find problems.
+Make a manual snapshot halfway though initial building of the address
+map in record mode.
 
-This extends the runtime of the record phase to 1 second, to build a
-bigger trace, and it adds a replay test that runs to the end of the
-trace, steps back then forward and verifies the pc.
-
-x86_64 and aarch64 have problems with verifying the pc at the end of
-the trace after reverse-stepping, so add a workaround to skip that
-check for them.
+This will cause the reverse-step and reverse-continue tests to load that
+snapshot when beginning from later points in the trace, exercising the
+post-initial snapshot saving and loading.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/reverse_debugging.py | 65 +++++++++++++++++++++++++++++-
- 1 file changed, 63 insertions(+), 2 deletions(-)
+ tests/avocado/reverse_debugging.py | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index bdc9082c85..c0cf580d5c 100644
+index c0cf580d5c..185f055cf9 100644
 --- a/tests/avocado/reverse_debugging.py
 +++ b/tests/avocado/reverse_debugging.py
-@@ -9,6 +9,7 @@
- # later.  See the COPYING file in the top-level directory.
- import os
- import logging
-+import time
- 
- from avocado import skipUnless
- from avocado_qemu import BUILD_DIR
-@@ -31,10 +32,15 @@ class ReverseDebugging(LinuxKernelTest):
-     that the execution is stopped at the last of them.
-     """
- 
--    timeout = 10
-+    timeout = 30
-     STEPS = 10
-     endian_is_le = True
- 
-+    # If long_trace is true, record execution for some time, and verify
-+    # reverse-stepping from the end of the trace as well. If false, only the
-+    # first 10 instructions are stepped.
-+    verify_end = True
-+
-     # If first_step_workaround is true, check whether the first step moved
-     # icount, and if not then step again.
-     first_step_workaround = False
-@@ -91,6 +97,19 @@ def check_pc(self, g, addr):
-         if pc != addr:
-             self.fail('Invalid PC (read %x instead of %x)' % (pc, addr))
+@@ -59,7 +59,7 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
+         vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init' %
+                     (shift, mode, replay_path),
+                     '-net', 'none')
+-        vm.add_args('-drive', 'file=%s,if=none' % image_path)
++        vm.add_args('-drive', 'file=%s,if=none,id=disk0' % image_path)
+         if args:
+             vm.add_args(*args)
+         vm.launch()
+@@ -133,6 +133,14 @@ def gdb_bstep(g):
+     def vm_get_icount(vm):
+         return vm.qmp('query-replay')['return']['icount']
  
 +    @staticmethod
-+    def gdb_break(g):
-+        # The avocado GDBRemote does not have a good way to send this break
-+        # packet, which is different from others.
-+        g._socket.send(b'\x03')
-+        transmission_result = g._socket.recv(1)
-+        if transmission_result == '-':
-+            raise Exception("Bad ack")
-+        result = g._socket.recv(1024)
-+        response_payload = g.decode(result)
-+        if response_payload != b'T02thread:01;':
-+            raise Exception("Unexpected response" + response_payload.decode())
++    def vm_snapshot(vm):
++        return vm.qmp('snapshot-save',
++                      {'job-id': 'snapshot-job',
++                       'tag': 'manual',
++                       'vmstate': 'disk0',
++                       'devices': []})
 +
-     @staticmethod
-     def gdb_cont(g):
-         g.cmd(b'c')
-@@ -162,9 +181,15 @@ def reverse_debugging(self, shift=7, args=None):
+     def reverse_debugging(self, shift=7, args=None):
+         logger = logging.getLogger('replay')
  
-         logger.info('continue running')
-         self.gdb_cont_nowait(g)
--
-+        logger.info('running for 1s...')
-+        time.sleep(1)
-         logger.info('stopping to read final icount')
-         vm.qmp('stop')
-+        self.gdb_break(g)
-+
-+        last_pc = self.get_pc(g)
-+        logger.info('saving position %x' % last_pc)
-+        self.gdb_step(g)
-         last_icount = self.vm_get_icount(vm)
-         logger.info('shutdown...')
-         vm.shutdown()
-@@ -200,6 +225,34 @@ def reverse_debugging(self, shift=7, args=None):
-             self.check_pc(g, addr)
+@@ -171,6 +179,9 @@ def reverse_debugging(self, shift=7, args=None):
+             pc = self.get_pc(g)
+             logger.info('saving position %x' % pc)
+             steps.append(pc)
++            if i == self.STEPS//2:
++                logger.info('saving VM snapshot at step %x...' % i)
++                self.vm_snapshot(vm)
+             self.gdb_step(g)
+             if self.first_step_workaround and i == 0 and self.vm_get_icount(vm) == 0:
+                 logger.warn('failed to take first step, stepping again')
+@@ -217,7 +228,9 @@ def reverse_debugging(self, shift=7, args=None):
+             self.gdb_step(g)
              logger.info('found position %x' % addr)
  
-+        # Run to the end of the trace, reverse-step, and then reverse-continue
-+        # back to the start, with no breakpoints. This allows us to get to the
-+        # end of the trace and reverse step from there, without possibly
-+        # hitting a breakpoint that prevents reaching the end, as can happen
-+        # with the later breakpoint tests.
-+        logger.info('running to the end of the trace')
-+        vm.qmp('replay-break', icount=last_icount - 1)
-+        # This should stop at the end and get a T02 return.
-+        self.gdb_cont(g)
-+        if self.vm_get_icount(vm) != last_icount - 1:
-+            self.fail('failed to reach the end (icount %s, reached %s)' % ((last_icount - 1), self.vm_get_icount(vm)))
-+        logger.info('reached end of trace')
-+
-+        if self.verify_end:
-+            self.check_pc(g, last_pc)
-+            logger.info('found position %x' % last_pc)
-+
-+            logger.info('stepping backward')
-+            self.gdb_bstep(g)
-+
-+            logger.info('stepping forward')
-+            self.gdb_step(g)
-+            self.check_pc(g, last_pc)
-+            logger.info('found position %x' % last_pc)
-+
-+        logger.info('reversing to the start of the trace')
-+        g.cmd(b'bc', b'T05thread:01;')
-+
-         # Step forward again
-         logger.info('stepping forward')
-         for addr in steps:
-@@ -250,6 +303,10 @@ class ReverseDebugging_X86_64(ReverseDebugging):
-     # The initial step does not change pc on x86 for some reason.
-     first_step_workaround = True
+-        # Try reverse stepping
++        # Try reverse stepping. The manual snapshot taken in the record
++        # phase should be used for reverse-stepping until the machine
++        # reverses to an icount older than the snapshot.
+         logger.info('stepping backward')
+         for addr in steps[::-1]:
+             self.gdb_bstep(g)
+@@ -242,6 +255,8 @@ def reverse_debugging(self, shift=7, args=None):
+             self.check_pc(g, last_pc)
+             logger.info('found position %x' % last_pc)
  
-+    # Reverse stepping from a long-running trace does not reliably replay
-+    # the trace precisely on x86.
-+    verify_end = False
-+
-     def get_pc(self, g):
-         return self.get_reg_le(g, self.REG_PC) \
-             + self.get_reg_le(g, self.REG_CS) * 0x10
-@@ -279,6 +336,10 @@ class ReverseDebugging_AArch64(ReverseDebugging):
++            # This should load the last snapshot taken. Could that be verified
++            # with QMP?
+             logger.info('stepping backward')
+             self.gdb_bstep(g)
  
-     REG_PC = 32
- 
-+    # Reverse stepping from a long-running trace does not reliably replay
-+    # the trace precisely on aarch64.
-+    verify_end = False
-+
-     def test_aarch64_virt(self):
-         """
-         :avocado: tags=arch:aarch64
 -- 
 2.42.0
 
