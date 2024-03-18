@@ -2,83 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A76F87E5D8
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 10:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4EE87E5F5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 10:39:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm9LC-0002Qf-Tf; Mon, 18 Mar 2024 05:31:35 -0400
+	id 1rm9Qy-0003wk-Lt; Mon, 18 Mar 2024 05:37:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rm9Ks-0002Mt-0p
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 05:31:16 -0400
-Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rm9Kp-0007xU-Nd
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 05:31:13 -0400
-Received: by mail-vs1-xe32.google.com with SMTP id
- ada2fe7eead31-47651248841so1344714137.2
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 02:31:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710754270; x=1711359070; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rU4e3/ACr0PWzolG7no32golfeGkYaE7vSz1CoQwS6M=;
- b=G2ChSQQa02tZAXDO1FdwpnQKgbBHtw0V+WD3zeU75UAzlofAG834+jQAE62t8Jfetx
- vjyikGXaJaSUp02mix7PqyEyCpgOn68pBEUBMA/dX4x7+DViQk9yHJkNl0GAegY5CG7G
- GOkjR9XI/mNGSpES7PnId16HdS0/k26GOuR0qYMnknCGPEVa/Jsc2BEHq1pWPJrm5nuR
- ANnL3KC8t5sRUsPQ16/k/RUrQZwM14NRiTz5aKwtq5LZAZNsP6gVQH8eCiBNeKC+KfUq
- eLqagLuGhRSyYMuko+vzzfBgr37RKM/uDDXVkiO5E3QVmhXAE43NQPFmyv51rhzwh7e9
- YNDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710754270; x=1711359070;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rU4e3/ACr0PWzolG7no32golfeGkYaE7vSz1CoQwS6M=;
- b=QcKWgtg54p8JCo2WE196hosOROtLxOnkope+nTO3yjwBJNemlT3HHvzbXP2f36DC3B
- weMkstm6irVGQgWCOTMG0JFoya81d3KyEnWJpKB08PsDi+5d0e6vu/VzSJpo5YKDpMOO
- rJR2yloogrG2fWfXVBnd527Qic8Y/gqJd1NJYP7clLBtTQATxvKvO9+H/RzHWZwkLvlW
- XqOJumue4z4iBrpcLBLg7pU97qTR5nXXEd+bDTyj/SyroJ/HosIh6Oa/kKPKK09Yg69I
- VqpS8zlt1G1Pk/08USq/Ij/qfZJcvpnY5EwUD7tXftnxX46E50QKJw7hWCcSn+PoRbTJ
- yhog==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX1kZ5GjFrA4bNlCqwlCAh1S5JrOj8cRGNcCyuOHIcABuWcibI0+DuUM26NJZ83rougtnG9fvzniMi3DCRyWjtd4dhTmVY=
-X-Gm-Message-State: AOJu0YzYqf+MfAbJxhgJJxxIvuAXKoBpSRrVTMT+PwcntJAG8gAArOLt
- 2vT/ceBBLaf4zc94+4CmvD9iE4uG5RFsz/IJmyuq4aV9i7eVUAZFY4nbeuUiht6VrvXBnZMiT41
- Tp3GwiE2BBQxTUmasTtmY2XtDt68=
-X-Google-Smtp-Source: AGHT+IHApNekvRCa9CsztyvI/DZ5Raubrk3jtCnREffDALQzR3jsz5uC8DlOmf6PhffHqaoQdUkanhoaHRnjc1eb+E4=
-X-Received: by 2002:a67:f308:0:b0:474:bbe6:9261 with SMTP id
- p8-20020a67f308000000b00474bbe69261mr7592233vsf.19.1710754269578; Mon, 18 Mar
- 2024 02:31:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rm9Qm-0003tM-CA; Mon, 18 Mar 2024 05:37:21 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rm9Qh-0000tt-4v; Mon, 18 Mar 2024 05:37:20 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4TyqSL6XCbz1h1sJ;
+ Mon, 18 Mar 2024 17:34:26 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 53DBA1A0172;
+ Mon, 18 Mar 2024 17:36:58 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Mar
+ 2024 17:36:57 +0800
+To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH v8 00/23] target/arm: Implement FEAT_NMI and FEAT_GICv3_NMI
+Date: Mon, 18 Mar 2024 09:35:22 +0000
+Message-ID: <20240318093546.2786144-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240318-console-v1-0-f4efbfa71253@daynix.com>
- <20240318-console-v1-2-f4efbfa71253@daynix.com>
- <CAJ+F1C+PipwudTRDF=BFJyqVkw0ORwpnXfumQ=kUadtf0HEfVA@mail.gmail.com>
- <e27ee189-3b72-413a-b1ab-f4b26cb37812@daynix.com>
-In-Reply-To: <e27ee189-3b72-413a-b1ab-f4b26cb37812@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 18 Mar 2024 13:30:57 +0400
-Message-ID: <CAJ+F1CLomtQL-PySRFd3Akghiv4i9OgPwu2ZC2a7ao5F_z6zAg@mail.gmail.com>
-Subject: Re: [PATCH 2/4] ui/vnc: Do not use console_select()
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-vs1-xe32.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.191;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga05-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,181 +61,172 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+This patch set implements FEAT_NMI and FEAT_GICv3_NMI for armv8. These
+introduce support for a new category of interrupts in the architecture
+which we can use to provide NMI like functionality.
 
-On Mon, Mar 18, 2024 at 1:05=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
->
-> On 2024/03/18 17:21, Marc-Andr=C3=A9 Lureau wrote:
-> > Hi
-> >
-> > On Mon, Mar 18, 2024 at 11:58=E2=80=AFAM Akihiko Odaki <akihiko.odaki@d=
-aynix.com> wrote:
-> >>
-> >> console_select() is shared by other displays and a console_select() ca=
-ll
-> >> from one of them triggers console switching also in ui/curses,
-> >> circumventing key state reinitialization that needs to be performed in
-> >> preparation and resulting in stuck keys.
-> >>
-> >> Use its internal state to track the current active console to prevent
-> >> such a surprise console switch.
-> >>
-> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >> ---
-> >>   include/ui/console.h   |  1 +
-> >>   include/ui/kbd-state.h | 11 +++++++++++
-> >>   ui/console.c           | 12 ++++++++++++
-> >>   ui/kbd-state.c         |  6 ++++++
-> >>   ui/vnc.c               | 14 +++++++++-----
-> >>   5 files changed, 39 insertions(+), 5 deletions(-)
-> >>
-> >> diff --git a/include/ui/console.h b/include/ui/console.h
-> >> index a4a49ffc640c..a703f7466499 100644
-> >> --- a/include/ui/console.h
-> >> +++ b/include/ui/console.h
-> >> @@ -413,6 +413,7 @@ void qemu_console_early_init(void);
-> >>
-> >>   void qemu_console_set_display_gl_ctx(QemuConsole *con, DisplayGLCtx =
-*ctx);
-> >>
-> >> +QemuConsole *qemu_console_lookup_first_graphic_console(void);
-> >>   QemuConsole *qemu_console_lookup_by_index(unsigned int index);
-> >>   QemuConsole *qemu_console_lookup_by_device(DeviceState *dev, uint32_=
-t head);
-> >>   QemuConsole *qemu_console_lookup_by_device_name(const char *device_i=
-d,
-> >> diff --git a/include/ui/kbd-state.h b/include/ui/kbd-state.h
-> >> index fb79776128cf..1f37b932eb62 100644
-> >> --- a/include/ui/kbd-state.h
-> >> +++ b/include/ui/kbd-state.h
-> >> @@ -99,4 +99,15 @@ bool qkbd_state_modifier_get(QKbdState *kbd, QKbdMo=
-difier mod);
-> >>    */
-> >>   void qkbd_state_lift_all_keys(QKbdState *kbd);
-> >>
-> >> +/**
-> >> + * qkbd_state_switch_console: Switch console.
-> >> + *
-> >> + * This sends key up events to the previous console for all keys whic=
-h are in
-> >> + * down state to prevent keys being stuck, and remembers the new cons=
-ole.
-> >> + *
-> >> + * @kbd: state tracker state.
-> >> + * @con: new QemuConsole for this state tracker.
-> >> + */
-> >> +void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con);
-> >> +
-> >>   #endif /* QEMU_UI_KBD_STATE_H */
-> >> diff --git a/ui/console.c b/ui/console.c
-> >> index 832055675c50..6bf02a23414c 100644
-> >> --- a/ui/console.c
-> >> +++ b/ui/console.c
-> >> @@ -1325,6 +1325,18 @@ void graphic_console_close(QemuConsole *con)
-> >>       dpy_gfx_replace_surface(con, surface);
-> >>   }
-> >>
-> >> +QemuConsole *qemu_console_lookup_first_graphic_console(void)
-> >> +{
-> >> +    QemuConsole *con;
-> >> +
-> >> +    QTAILQ_FOREACH(con, &consoles, next) {
-> >> +        if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
-> >> +            return con;
-> >> +        }
-> >> +    }
-> >> +    return NULL;
-> >> +}
-> >> +
-> >>   QemuConsole *qemu_console_lookup_by_index(unsigned int index)
-> >>   {
-> >>       QemuConsole *con;
-> >> diff --git a/ui/kbd-state.c b/ui/kbd-state.c
-> >> index 62d42a7a22e1..52ed28b8a89b 100644
-> >> --- a/ui/kbd-state.c
-> >> +++ b/ui/kbd-state.c
-> >> @@ -117,6 +117,12 @@ void qkbd_state_lift_all_keys(QKbdState *kbd)
-> >>       }
-> >>   }
-> >>
-> >> +void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con)
-> >> +{
-> >> +    qkbd_state_lift_all_keys(kbd);
-> >> +    kbd->con =3D con;
-> >> +}
-> >> +
-> >>   void qkbd_state_set_delay(QKbdState *kbd, int delay_ms)
-> >>   {
-> >>       kbd->key_delay_ms =3D delay_ms;
-> >> diff --git a/ui/vnc.c b/ui/vnc.c
-> >> index fc12b343e254..94564b196ba8 100644
-> >> --- a/ui/vnc.c
-> >> +++ b/ui/vnc.c
-> >> @@ -1872,12 +1872,16 @@ static void do_key_event(VncState *vs, int dow=
-n, int keycode, int sym)
-> >>       /* QEMU console switch */
-> >>       switch (qcode) {
-> >>       case Q_KEY_CODE_1 ... Q_KEY_CODE_9: /* '1' to '9' keys */
-> >> -        if (vs->vd->dcl.con =3D=3D NULL && down &&
-> >> +        if (down &&
-> >>               qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_CTRL) &&
-> >>               qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_ALT)) {
-> >> -            /* Reset the modifiers sent to the current console */
-> >> -            qkbd_state_lift_all_keys(vs->vd->kbd);
-> >> -            console_select(qcode - Q_KEY_CODE_1);
-> >> +            QemuConsole *con =3D qemu_console_lookup_by_index(qcode -=
- Q_KEY_CODE_1);
-> >> +            if (con) {
-> >> +                unregister_displaychangelistener(&vs->vd->dcl);
-> >> +                qkbd_state_switch_console(vs->vd->kbd, con);
-> >> +                vs->vd->dcl.con =3D con;
-> >> +                register_displaychangelistener(&vs->vd->dcl);
-> >> +            }
-> >>               return;
-> >>           }
-> >>       default:
-> >> @@ -4206,7 +4210,7 @@ void vnc_display_open(const char *id, Error **er=
-rp)
-> >>               goto fail;
-> >>           }
-> >>       } else {
-> >> -        con =3D NULL;
-> >> +        con =3D qemu_console_lookup_first_graphic_console();
-> >
-> > why this change here?
->
-> console_select() is to change the console that is used when
-> DisplayChangeListener::con is NULL. console_select() is no longer called
-> so DisplayChangeListener::con must not be NULL.
+There are two modes for using this FEAT_NMI. When PSTATE.ALLINT or
+PSTATE.SP & SCTLR_ELx.SCTLR_SPINTMASK is set, any entry to ELx causes all
+interrupts including those with superpriority to be masked on entry to ELn
+until the mask is explicitly removed by software or hardware. PSTATE.ALLINT
+can be managed by software using the new register control ALLINT.ALLINT.
+Independent controls are provided for this feature at each EL, usage at EL1
+should not disrupt EL2 or EL3.
 
+I have tested it with the following linux patches which try to support
+FEAT_NMI in linux kernel:
 
-But qemu_console_lookup_first_graphic_console() can return NULL. It's
-problematic for the next patches also which seem to assume that NULL
-console is no longer a valid argument.
+	https://lore.kernel.org/linux-arm-kernel/Y4sH5qX5bK9xfEBp@lpieralisi/T/#mb4ba4a2c045bf72c10c2202c1dd1b82d3240dc88
 
-We would need a lot of assert(con !=3D NULL) or similar to ensure this hold=
-s.
+In the test, SGI, PPI and SPI interrupts can all be set to have super priority
+to be converted to a hardware NMI interrupt. The SGI is tested with kernel
+IPI as NMI framework, softlockup, hardlockup and kgdb test cases, and the PPI
+interrupt is tested with "perf top" command with hardware NMI enabled, and
+the SPI interrupt is tested with a custom test module, in which NMI interrupts
+can be received and sent normally.
 
-> >
-> > otherwise, lgtm
-> >
-> >>       }
-> >>
-> >>       if (con !=3D vd->dcl.con) {
-> >>
-> >> --
-> >> 2.44.0
-> >>
-> >>
-> >
-> >
+And the Virtual NMI(VNMI) SGI, PPI and SPI interrupt has also been tested
+by accessing the GICD_INMIR, GICR_INMIR0, GICR_ISPENDR0 and GICD_ISPENDR
+registers with devmem command.
 
+         +-------------------------------------------------+
+         |               Distributor                       |
+         +-------------------------------------------------+
+             SPI |  NMI                         |  NMI
+                \/                            \/
+            +--------+                     +-------+
+            | Redist |                     | Redist|
+            +--------+                     +-------+
+            SGI  | NMI                     PPI | NMI
+                \/                            \/
+          +-------------+             +---------------+
+          |CPU Interface|   ...       | CPU Interface |
+          +-------------+             +---------------+
+               | NMI                         | NMI
+              \/                            \/
+            +-----+                       +-----+
+            |  PE |                       |  PE |
+            +-----+                       +-----+
 
+Changes in v8:
+- Fix the rcu stall after sending a VNMI in qemu VM.
+- Fix an unexpected interrupt bug when sending VNMI by running qemu VM.
+- Test the VNMI interrupt.
+- Update the commit message.
+- Add Reviewed-by.
 
---=20
-Marc-Andr=C3=A9 Lureau
+Changes in v7:
+- env->cp15.hcrx_el2 -> arm_hcrx_el2_eff().
+- Reorder the irqbetter() code for clarity.
+- Eliminate the has_superprio local variable for gicv3_get_priority().
+- false -> cs->hpplpi.superprio in gicv3_redist_update_noirqset().
+- 0x0 -> false in arm_gicv3_common_reset_hold().
+- Clear superprio in several places for hppi, hpplpi and hppvlpi.
+- Add Reviewed-by.
+
+Changes in v6:
+- Fix DISAS_TOO_MANY to DISAS_UPDATE_EXIT for ALLINT MSR (immediate).
+- Verify that HCR_EL2.VF is set before checking VFNMI.
+- env->cp15.hcr_el2 -> arm_hcr_el2_eff().
+- env->cp15.hcrx_el2 -> arm_hcrx_el2_eff().
+- Not combine VFNMI with CPU_INTERRUPT_VNMI.
+- Implement icv_nmiar1_read().
+- Put the "extract superprio info" code into gicv3_get_priority().
+- Update the comment in irqbetter().
+- Reset the cs->hppi.superprio to 0x0.
+- Set hppi.superprio to false for LPI.
+- Add Reviewed-by.
+
+Changes in v5:
+- Remove the comment for ALLINT in cpu.h.
+- Merge allint_check() to msr_i_allint to clear the ALLINT MSR (immediate)
+  implementation.
+- Rename msr_i_allint() to msr_set_allint_el1() to make it clearer.
+- Drop the & 1 in trans_MSR_i_ALLINT().
+- Add Reviewed-by.
+
+Changes in v4:
+- Handle VNMI within the CPU and the GIC.
+- Keep PSTATE.ALLINT in env->pstate but not env->allint.
+- Fix the ALLINT MSR (immediate) decodetree implementation.
+- Accept NMI unconditionally for arm_cpu_has_work() but add comment.
+- Improve nmi mask in arm_excp_unmasked().
+- Make the GICR_INMIR0 and GICD_INMIR implementation more clearer.
+- Improve ICC_NMIAR1_EL1 implementation
+- Extract gicv3_get_priority() to avoid priority code repetition.
+- Add Reviewed-by.
+
+Changes in v3:
+- Remove the FIQ NMI.
+- Adjust the patches Sequence.
+- Reomve the patch "Set pstate.ALLINT in arm_cpu_reset_hold".
+- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
+- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+- Not include NMI logic when FEAT_NMI or SCTLR_ELx.NMI not enabled.
+- Refator nmi mask in arm_excp_unmasked().
+- Add VNMI definitions, add HCRX_VINMI and HCRX_VFNMI support in HCRX_EL2.
+- Add Reviewed-by and Acked-by.
+- Update the commit message.
+
+Changes in v2:
+- Break up the patches so that each one does only one thing.
+- Remove the command line option and just implement it in "max" cpu.
+
+Jinjie Ruan (23):
+  target/arm: Handle HCR_EL2 accesses for bits introduced with FEAT_NMI
+  target/arm: Add PSTATE.ALLINT
+  target/arm: Add support for FEAT_NMI, Non-maskable Interrupt
+  target/arm: Implement ALLINT MSR (immediate)
+  target/arm: Support MSR access to ALLINT
+  target/arm: Add support for Non-maskable Interrupt
+  target/arm: Add support for NMI in arm_phys_excp_target_el()
+  target/arm: Handle IS/FS in ISR_EL1 for NMI
+  target/arm: Handle PSTATE.ALLINT on taking an exception
+  hw/arm/virt: Wire NMI and VNMI irq lines from GIC to CPU
+  hw/intc/arm_gicv3: Add external IRQ lines for NMI
+  target/arm: Handle NMI in arm_cpu_do_interrupt_aarch64()
+  hw/intc/arm_gicv3: Add irq superpriority information
+  hw/intc/arm_gicv3_redist: Implement GICR_INMIR0
+  hw/intc/arm_gicv3: Implement GICD_INMIR
+  hw/intc: Enable FEAT_GICv3_NMI Feature
+  hw/intc/arm_gicv3: Add NMI handling CPU interface registers
+  hw/intc/arm_gicv3: Handle icv_nmiar1_read() for icc_nmiar1_read()
+  hw/intc/arm_gicv3: Implement NMI interrupt prioirty
+  hw/intc/arm_gicv3: Report the NMI interrupt in gicv3_cpuif_update()
+  hw/intc/arm_gicv3: Report the VNMI interrupt
+  target/arm: Add FEAT_NMI to max
+  hw/arm/virt: Add FEAT_GICv3_NMI feature support in virt GIC
+
+ docs/system/arm/emulation.rst      |   1 +
+ hw/arm/virt.c                      |  25 +++++-
+ hw/intc/arm_gicv3.c                |  69 ++++++++++++++--
+ hw/intc/arm_gicv3_common.c         |  10 +++
+ hw/intc/arm_gicv3_cpuif.c          | 127 ++++++++++++++++++++++++++---
+ hw/intc/arm_gicv3_dist.c           |  36 ++++++++
+ hw/intc/arm_gicv3_redist.c         |  22 +++++
+ hw/intc/gicv3_internal.h           |   8 ++
+ hw/intc/trace-events               |   2 +
+ include/hw/intc/arm_gic_common.h   |   2 +
+ include/hw/intc/arm_gicv3_common.h |   7 ++
+ target/arm/cpu-features.h          |   5 ++
+ target/arm/cpu-qom.h               |   4 +-
+ target/arm/cpu.c                   |  85 +++++++++++++++++--
+ target/arm/cpu.h                   |   7 ++
+ target/arm/helper.c                |  67 +++++++++++++++
+ target/arm/internals.h             |  12 +++
+ target/arm/tcg/a64.decode          |   1 +
+ target/arm/tcg/cpu64.c             |   1 +
+ target/arm/tcg/helper-a64.c        |  12 +++
+ target/arm/tcg/helper-a64.h        |   1 +
+ target/arm/tcg/translate-a64.c     |  19 +++++
+ 22 files changed, 496 insertions(+), 27 deletions(-)
+
+-- 
+2.34.1
+
 
