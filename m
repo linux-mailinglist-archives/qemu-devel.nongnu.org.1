@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BB387E462
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:53:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1865687E493
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 08:59:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm7o1-0002uU-E2; Mon, 18 Mar 2024 03:53:13 -0400
+	id 1rm7u7-0007XO-74; Mon, 18 Mar 2024 03:59:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm7nn-0002u2-W4
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:53:01 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ id 1rm7tv-0007Db-UJ; Mon, 18 Mar 2024 03:59:21 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rm7nj-0008U8-Lc
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 03:52:58 -0400
+ id 1rm7tu-00014J-HJ; Mon, 18 Mar 2024 03:59:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710748376; x=1742284376;
+ t=1710748758; x=1742284758;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=WQn8QPeV+2aIGgkNJLr2LGepKhFCY7X2ShJr+Wuilng=;
- b=KLMINBr6dnygcyJA1Qe/W1hogOtBEj2tqsYCRk/KOaDJbAB6L2eOOyWV
- KzOQG2TbQAwcNhPOlN6rE3W2El8Ur5Mgcmh7ic+nH2ug5qN15Z33e6fls
- J2oLRUz3Em2a/YRazGll73kNmd7fZOAJ9r8fVUSKU7xYv4cuel7rn/CvS
- cjRUQATcC8roJLTT0QkSWyRHtUw8hRfhRC2dy0RfVU18PbGnil27yt8Nd
- 0/zEvhfuGTZq8vS1D1ugDC0i9TqMNMOqg4VWGVtQN0tErfdL6XiVPX+46
- YacoQYgA4pmS0rdzSO269DD8fHzjeVd4usDwlGYPr22sUgh88qXQhpxaO w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="16944784"
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="16944784"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 00:52:50 -0700
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=K3oyBVjD9yERzrexxJjy+LSwuy7gM46KXG2e0fpWMCY=;
+ b=Sr/bcVkKMFiwerAmPvyY+itDvUjSL3FDzru5nUfyUhb1LDvgEp6KmcWz
+ 3zPxEQ6CQXJ02G3y74rDu8qkAyEpdKlHiHG7sPcyBE1Sk1kg6zo1hOdma
+ CM2xmqOeyXlz/Cf9HACOj0NQRyQl5ckicJE7nbPPby5iDjCOowL2FJl16
+ c1r+JQOxY9whHnFcmJMB5hS8x8n2iqFRTBAjt+zNMD2ydhDKX0TztJgtQ
+ bc1QCmYDstYmHo7rzzfvvf5DYz15rD7VKZyHgHMFM12Ym68sEBbmp4eh0
+ MveMBqg/3hDo7KAVmADssA5xio18Fm9upt2UvpTmoqTLbvMslsLNVUhDn w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="5678421"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; 
+   d="scan'208";a="5678421"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Mar 2024 00:59:15 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="50827487"
+X-IronPort-AV: E=Sophos;i="6.07,134,1708416000"; d="scan'208";a="18072582"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 18 Mar 2024 00:52:47 -0700
-Date: Mon, 18 Mar 2024 16:06:38 +0800
+ by orviesa005.jf.intel.com with ESMTP; 18 Mar 2024 00:59:10 -0700
+Date: Mon, 18 Mar 2024 16:13:01 +0800
 From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ qemu-riscv@nongnu.org, Anton Johansson <anjo@rev.ng>,
+ qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
  Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org,
- Xiaoling Song <xiaoling.song@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
- initialization in machine_parse_smp_config()
-Message-ID: <Zff2DgJa+eHPBhgJ@intel.com>
-References: <20240306095407.3058909-1-zhao1.liu@linux.intel.com>
- <20240306095407.3058909-4-zhao1.liu@linux.intel.com>
- <c2bd5503-7ab1-41b7-af81-2f5bf5992ad3@redhat.com>
- <Zesv4W8DKteGeE/a@intel.com>
- <CAE8KmOxHNTGkE-8Xd+RXOuHNmyHqPwU4HcYRO6qHBGVAy6nAew@mail.gmail.com>
- <Ze6UmDoFD5Qd8AC/@intel.com>
- <CAE8KmOzwrLY5ag_FKvX-ovAopfPeYSqFHc3-sdQj_zt_28tH5A@mail.gmail.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Claudio Fontana <cfontana@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Aurelien Jarno <aurelien@aurel32.net>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Subject: Re: [PATCH-for-9.1 02/21] target/mips: Declare CPU QOM types using
+ DEFINE_TYPES() macro
+Message-ID: <Zff3jcV6H6u2zwtQ@intel.com>
+References: <20240315130910.15750-1-philmd@linaro.org>
+ <20240315130910.15750-3-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAE8KmOzwrLY5ag_FKvX-ovAopfPeYSqFHc3-sdQj_zt_28tH5A@mail.gmail.com>
-Received-SPF: none client-ip=192.198.163.10;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240315130910.15750-3-philmd@linaro.org>
+Received-SPF: none client-ip=198.175.65.18;
  envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -89,122 +90,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 13, 2024 at 04:22:30PM +0530, Prasad Pandit wrote:
-> Date: Wed, 13 Mar 2024 16:22:30 +0530
-> From: Prasad Pandit <ppandit@redhat.com>
-> Subject: Re: [PATCH 03/14] hw/core/machine-smp: Simplify variables'
->  initialization in machine_parse_smp_config()
+On Fri, Mar 15, 2024 at 02:08:50PM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Fri, 15 Mar 2024 14:08:50 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH-for-9.1 02/21] target/mips: Declare CPU QOM types using
+>  DEFINE_TYPES() macro
+> X-Mailer: git-send-email 2.41.0
 > 
-> Hello Zhao,
+> When multiple QOM types are registered in the same file,
+> it is simpler to use the the DEFINE_TYPES() macro. In
+> particular because type array declared with such macro
+> are easier to review.
 > 
-> > (Communicating with you also helped me to understand the QAPI related parts.)
+> In few commits we are going to add more types, so replace
+> the type_register_static() to ease further reviews.
 > 
-> * I'm also visiting QAPI code parts for the first time. Thanks to you. :)
-> 
-> On Mon, 11 Mar 2024 at 10:36, Zhao Liu <zhao1.liu@linux.intel.com> wrote:
-> > SMPConfiguration is created and set in machine_set_smp().
-> > Firstly, it is created by g_autoptr(), and then it is initialized by
-> > visit_type_SMPConfiguration().
-> >
-> > The visit_type_SMPConfiguration() is generated by
-> > gen_visit_object_members() in scripts/qapi/visit.py.
-> >
-> > IIUC, in visit_type_SMPConfiguration() (let's have a look at
-> > gen_visit_object_members()), there's no explicit initialization of
-> > SMPConfiguration() (i.e., the parameter named "%(c_name)s *obj" in
-> > gen_visit_object_members()). For int type, has_* means that the field is
-> > set.
-> >
-> 
-> * Thank you for the above details, appreciate it. I added few
-> fprintf() calls to visit_type_SMPConfiguration() to see what user
-> values it receives
-> ===
-> $ ./qemu-system-x86_64 -smp cores=2,maxcpus=2,cpus=1,sockets=2
-> visit_type_SMPConfiguration: name: smp
->         has_cpus: 1:1
->  has_drawvers: 0:0
->       has_books: 0:0
->   has_sockets: 1:2
->         has_dies: 0:0
->  has_clusters: 0:0
->      has_cores: 1:2
->   has_threads: 0:0
-> has_maxcpus: 1:2
-> qemu-system-x86_64: Invalid CPU topology: product of the hierarchy
-> must match maxcpus: sockets (2) * dies (1) * cores (2) * threads (0)
-> != maxcpus (2)
-> ===
-> * As seen above, undefined -smp fields (both has_xxxx and xxxx) are
-> set to zero(0).
-> 
-> ===
-> main
->  qemu_init
->   qemu_apply_machine_options
->    object_set_properties_from_keyval
->     object_set_properties_from_qdict
->      object_property_set
->       machine_set_smp
->        visit_type_SMPConfiguration
->         visit_start_struct
-> (gdb) p v->start_struct
-> $4 = ... 0x5555570248e4 <qobject_input_start_struct>
-> (gdb)
-> (gdb)
->  qobject_input_start_struct
->    if (obj) {
->         *obj = g_malloc0(size);
->     }
-> ===
-> * Stepping through function calls in gdb(1) revealed above call
-> sequence which leads to  'SMPConfiguration **'  objects allocation by
-> g_malloc0.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Message-Id: <20231013140116.255-15-philmd@linaro.org>
+> ---
+>  target/mips/cpu.c | 23 +++++++++++++----------
+>  1 file changed, 13 insertions(+), 10 deletions(-)
 
-Thanks! I misunderstood, it turns out that the initialization is done here.
-
-> 
-> > This means if user doesn't initialize some field, the the value should
-> > be considerred as unreliable. And I guess for int, the default
-> > initialization value is the same as if we had declared a regular integer
-> > variable. But anyway, fields that are not explicitly initialized should
-> > not be accessed.
-> 
-> * g_malloc0() allocating 'SMPConfiguration **' object above assures us
-> that undefined -smp fields shall always be zero(0).
-> 
-> * 'obj->has_xxxx' field is set only if the user has supplied the
-> variable value, otherwise it remains set to zero(0).
->    visit_type_SMPConfiguration_members
->      ->visit_optional
->        ->v->optional
->         -> qobject_input_optional
-
-Yes, you're right!
-
-> 
-> * Overall, I think there is scope to simplify the
-> 'machine_parse_smp_config()' function by using SMPConfiguration
-> field(s) ones.
-
-Indeed, as you say, these items are initialized to 0 by default.
-
-I think, however, that the initialization is so far away from where the
-smp is currently parsed that one can't easily confirm it (thanks for
-your confirmation!).
-
-From a code readability view, the fact that we're explicitly
-initializing to 0 again here brings little overhead, but makes the code
-more readable as well as easier to maintain. I think the small redundancy
-here is worth it.
-
-Also, in other use cases people always relies on fields marked by has_*,
-and there is no (or less?) precedent for direct access to places where
-has_* is not set. I understand that this is also a habit, i.e., fields
-with a has_* of False by default are unreliable and avoid going directly
-to them.
-
-Regards,
-Zhao
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
