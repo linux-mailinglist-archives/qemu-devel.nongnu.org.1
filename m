@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADA387EC92
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BA587EC8D
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:49:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFDK-0004sJ-U7; Mon, 18 Mar 2024 11:47:51 -0400
+	id 1rmFDS-0005nF-3d; Mon, 18 Mar 2024 11:47:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDJ-0004ls-IX
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:49 -0400
-Received: from mail-oa1-x2e.google.com ([2001:4860:4864:20::2e])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDP-0005eu-EE
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:55 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDE-0007vT-4E
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:49 -0400
-Received: by mail-oa1-x2e.google.com with SMTP id
- 586e51a60fabf-222ba2a19bdso1130783fac.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:47:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFDJ-0007vg-J1
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:55 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-5a4a14c52fcso759073eaf.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710776862; x=1711381662; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710776868; x=1711381668; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1Yo6kstUG7IdEJmEbbwMKG5M1XxH4YUOFuFB6HSlPrc=;
- b=SvK3BRzWofyIPS8FSZLGZVIgVq6HCZZsytJwoQ4+92GZdIkeNZyU06CTbQZ/A2H7ZJ
- eIhBUwOAA+stGbvdd87GbU/aHNAYpKmv3w/gyYQa3V8yQT45oaPI9JWockTj266KWiFS
- oRoeyFfyFwgJGW3cm5d9Ust9qj79DC1jHzT4CMn/pyukTL06Kw59pkLravVFMmdqd8zO
- gR28AD5gWwjeWvULy6fZfaNkyd72DbAdqCYAQf4QloPidWFq0dGBXrEXtq07Wl+rsk2O
- 0dtdfet8XhDUq4Tcb2chcmtNMxHZU0V0B6EF+ajUbrc+3/AccHDdVO8LBeEoPrvgngVJ
- j2bA==
+ bh=Y7iKS4ySAYhb/qoRHukxiwY3seRoSpbokwbgQj4S8po=;
+ b=Fz/kx71l0TyrFJCtmkoZvoO940yLDrxhcTEIYsExnfg9IkipfK0Ft3SHJIXcVWL1Ta
+ LnL2iUpCZXgVNXAIWwACtbJP+91AienUclqRyFskmhXB87gVh4kyQJYw5OMrmskBNbXQ
+ S0VAPqI1t2g/EcqHZ60UCuX6YEIOisAsJEkDUEhUGmCaeKBJxBWYtxfgUEk1l/zJRExP
+ q98HZYR6wMcBeL2540hos7xFs3M6jrxQtXD8x9M6fx88FLYpibqCBGzLY5XnoYA8xmT3
+ BJ9m5xevxqCM4nJgVVcC3qMXRRIj/oTyFxG4mqJCk6S4Rrkkz5E2zOsbc7bbmD00zsI0
+ 3ohQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710776862; x=1711381662;
+ d=1e100.net; s=20230601; t=1710776868; x=1711381668;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1Yo6kstUG7IdEJmEbbwMKG5M1XxH4YUOFuFB6HSlPrc=;
- b=eNSpNyRuBwKsxoXga5dk/KiP29BEyLbMBCQJrS/mvRHDVYtlUq0YU/E9Wh3rbEXVcP
- tBt0YZ+gTw0H+6q954YieoI/mh7D38kx3fv8xPS+3kzMGwRbt0fth8RjWHLtNWkIhEMm
- TrsCkD9QC8dlR7Nm5W6RVfpmtSrPS3YjD8GuGheVEb+ADLmv+wSgISqSzcHNZq/zP3lo
- +xDyVJMLH6Q26r6R5eux1dow2JPQJhmwTNJkPSHy/olpq+gzojNw6G70qE+8NFGBlWO+
- bMMou7CdxQHlxrmKQHc7feeajoOrX4XGofh5AXqEyVXpaCs5YaQqgSDqub56aUYL6Fwg
- quFg==
-X-Gm-Message-State: AOJu0Yw5Dj1nqdCXBw31+r/g+PRgA6MZIrsmTn3rKOfCF9yDA2Dcq0kU
- Et5LAAv0CI6xf6IympKAmf6TNxhLBBDivWqkN3grbzK/+9ODdAph+C6Y9lnPBjM=
-X-Google-Smtp-Source: AGHT+IH+IwnNiNvlQCiSiva9/yzfqOpU/c2lNEBaIQAcEpu3btpL1kDwO+4g7/bqQgbBHcXolcriHQ==
-X-Received: by 2002:a05:6870:648d:b0:21e:624d:56f3 with SMTP id
- cz13-20020a056870648d00b0021e624d56f3mr12881158oab.56.1710776862663; 
- Mon, 18 Mar 2024 08:47:42 -0700 (PDT)
+ bh=Y7iKS4ySAYhb/qoRHukxiwY3seRoSpbokwbgQj4S8po=;
+ b=FDOJ/61lBRm9DyTq1I3fcju6fXj/9xgEUabdQ7EaeLygXjqeQ03Ca1nSitjtPaDzgY
+ cW4zAJWoWvMV1sgkTmeUGLEPyMHb5Y1H3BI5kcLGIo/c5ndzsiG6qxbJhXJ1liHUAN8R
+ NfDA8xy4+kPdtCYAx1G8kdJykRWLezkfLWcVw1H38FL8bmcMc0pXbeSNnefPsCVcuvvI
+ 1RO5GeljOBfAstbXFAFFpVoAZOV5qt7sSn/pPOHvNRNqFq+df9H9KRUatICtFMfN9T2u
+ ebxr8ca3KjWxr1BykXFO76s+OxDuXkVccTO3cuwae/EgmxwrQUAZwCfLCy4zWlX+t8DD
+ VZvg==
+X-Gm-Message-State: AOJu0YzklehKmHuXJLXXedI3ZcDjk8gqGnCeiHQMd4GUeKb4khcbqybI
+ 3iy/xnOAWWr0TlGmriKHVR5MAGlDSAnqHLnp3bROVNGy9ZAaQQN0BYMNfT9wl3U=
+X-Google-Smtp-Source: AGHT+IHefwOVxIJiTQcrL5Q2YsFjHszFDaji+Izo63z/a9hoij9o2F0GmjFS/Jh4weBpRaLMCNFKBQ==
+X-Received: by 2002:a05:6820:1344:b0:5a4:bbf6:9e0c with SMTP id
+ b4-20020a056820134400b005a4bbf69e0cmr3051543oow.1.1710776867953; 
+ Mon, 18 Mar 2024 08:47:47 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.47.36
+ v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.47.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 08:47:42 -0700 (PDT)
+ Mon, 18 Mar 2024 08:47:47 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,23 +65,24 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v5 12/24] savevm: Fix load_snapshot error path crash
-Date: Tue, 19 Mar 2024 01:46:09 +1000
-Message-ID: <20240318154621.2361161-13-npiggin@gmail.com>
+Subject: [PATCH v5 13/24] tests/avocado: replay_linux.py remove the timeout
+ expected guards
+Date: Tue, 19 Mar 2024 01:46:10 +1000
+Message-ID: <20240318154621.2361161-14-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318154621.2361161-1-npiggin@gmail.com>
 References: <20240318154621.2361161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::2e;
- envelope-from=npiggin@gmail.com; helo=mail-oa1-x2e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=npiggin@gmail.com; helo=mail-oo1-xc32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,25 +98,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-An error path missed setting *errp, which can cause a NULL deref.
+replay_linux tests with virtio on aarch64 gciv3 and x86-64 q35 machines
+seems to be more reliable now, so timeouts are no longer expected.
+pc_i440fx, gciv2, and non-virtio still have problems, so mark them as
+flaky: they are not just long-running, but can hang indefinitely.
+
+These tests take about 400 seconds each, so add the SPEED=slow guard.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- migration/savevm.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/avocado/replay_linux.py | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 388d7af7cd..10c187dd10 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3260,6 +3260,7 @@ bool load_snapshot(const char *name, const char *vmstate,
-     /* Don't even try to load empty VM states */
-     ret = bdrv_snapshot_find(bs_vm_state, &sn, name);
-     if (ret < 0) {
-+        error_setg(errp, "Snapshot can not be found");
-         return false;
-     } else if (sn.vm_state_size == 0) {
-         error_setg(errp, "This is a disk-only snapshot. Revert to it "
+diff --git a/tests/avocado/replay_linux.py b/tests/avocado/replay_linux.py
+index b3b91ddd9a..b3b74a367c 100644
+--- a/tests/avocado/replay_linux.py
++++ b/tests/avocado/replay_linux.py
+@@ -118,7 +118,7 @@ def run_replay_dump(self, replay_path):
+         except subprocess.CalledProcessError:
+             self.fail('replay-dump.py failed')
+ 
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxX8664(ReplayLinux):
+     """
+     :avocado: tags=arch:x86_64
+@@ -127,19 +127,21 @@ class ReplayLinuxX8664(ReplayLinux):
+ 
+     chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
+ 
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable')
+     def test_pc_i440fx(self):
+         """
+         :avocado: tags=machine:pc
+         """
+         self.run_rr(shift=1)
+ 
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable')
+     def test_pc_q35(self):
+         """
+         :avocado: tags=machine:q35
+         """
+         self.run_rr(shift=3)
+ 
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxX8664Virtio(ReplayLinux):
+     """
+     :avocado: tags=arch:x86_64
+@@ -153,6 +155,7 @@ class ReplayLinuxX8664Virtio(ReplayLinux):
+ 
+     chksum = 'e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0'
+ 
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable')
+     def test_pc_i440fx(self):
+         """
+         :avocado: tags=machine:pc
+@@ -165,7 +168,7 @@ def test_pc_q35(self):
+         """
+         self.run_rr(shift=3)
+ 
+-@skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
++@skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+ class ReplayLinuxAarch64(ReplayLinux):
+     """
+     :avocado: tags=accel:tcg
+@@ -187,6 +190,7 @@ def get_common_args(self):
+                 '-device', 'virtio-rng-pci,rng=rng0',
+                 '-object', 'rng-builtin,id=rng0')
+ 
++    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is unstable')
+     def test_virt_gicv2(self):
+         """
+         :avocado: tags=machine:gic-version=2
 -- 
 2.42.0
 
