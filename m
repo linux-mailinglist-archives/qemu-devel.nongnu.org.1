@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF4F87ED53
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F35A87ED55
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFfo-00026d-Ap; Mon, 18 Mar 2024 12:17:16 -0400
+	id 1rmFfv-0002PF-P0; Mon, 18 Mar 2024 12:17:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfh-0001vG-LJ
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfq-0002OQ-LK
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfg-0004pr-4l
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfp-0004rf-8r
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778627;
+ s=mimecast20190719; t=1710778636;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Oudmh77QqdmxVDf9O5bZqapc21I8SNv8IFbcNJgWAaM=;
- b=BP88uBLdXlRSt+JNpUJeu2eFQu+wqBbqSVVAQKAeWOtQRN7XeL7Uw897i6I9c8/Kgza7ty
- QLwf7b6DWkSM+naBS4SOLu91Q9LlJYDN/YsqrEyrNU8TRyS9ON2mcsPeB9kCrOAQz5j+T6
- uE/iwmsag5nYEoVDCjd543Qw2XnhpxM=
-Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
- [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=UeZ5d5rzVIIFteQdA/cbu9zu3ciyKvxSa3RVrtkb9L4=;
+ b=bCvpnqFjD3khaVKUKv8QYbGRBeIVrGM2X3QWlJpnXFKb/URbDXisxBUL5eGriaSOfyYgnZ
+ AFM1Coo0shv26gOzsc8D6XQODohBewnqBukkWzlraitmDxhC4i49rC40SvzUNdHlkhFqQM
+ sld8Nj1YcEY7nhB4VHiB+rmG0zq8zMI=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-M8xD82bEM6KZu7ZQ_1_pdQ-1; Mon, 18 Mar 2024 12:17:06 -0400
-X-MC-Unique: M8xD82bEM6KZu7ZQ_1_pdQ-1
-Received: by mail-oa1-f72.google.com with SMTP id
- 586e51a60fabf-221bd0d2bf6so5985654fac.2
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:17:05 -0700 (PDT)
+ us-mta-44-bk3MCaTgMmC4njHIIivwMg-1; Mon, 18 Mar 2024 12:17:15 -0400
+X-MC-Unique: bk3MCaTgMmC4njHIIivwMg-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-29c7932c5f5so3232638a91.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:17:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778625; x=1711383425;
+ d=1e100.net; s=20230601; t=1710778631; x=1711383431;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Oudmh77QqdmxVDf9O5bZqapc21I8SNv8IFbcNJgWAaM=;
- b=LgDhzbTdLHt9IRHRQ+aVyppY+FRerlSVDSaLPVfZc0XRxYX5rZRd/X4QmI7oVZLLyh
- rCvUmkMs3kjFJuiaKgT7rJS9QoKasQpiGmiGjLL/3QXh2CjhZWACx7Xo04nF1lLpQioP
- Dqn4RnOPH4rMRtnzMQwwnsFaPoYiLULS/iMSbrE1ZiqlHk2ch49bdBtiVa0WpNn97PE2
- ZzdL7zLU/k7a9KZj2qTVW6FoImOWXEwJ0cpqMikJWymV+CeHzWb8r6FuGuDhvQJlJaJD
- CmVZo+ewV237Ztq1jfimH01Wbm1q5nIrBaB7ZzgzwOogj4RZTQ88197IHa2jdv+AxQew
- B2Eg==
-X-Gm-Message-State: AOJu0YyDDtwWTtvP5L9TqU/5Bw+eCqQre3HS/rgFcxy9wKaPVVw1m8nn
- 2kzZzbq0GjEnHtTx3F4IkGcBgXfc/3jj97S5xppk1Fpwu3uEVuk9A6yYJ6QPtccSbL2E1fYQ58M
- 5aU4rNrcCBUVUKmo5oqR2Ltd2flNpZqjMqw5fyfEpXdhJM6F7dwkZr6J/1SN+JE99zF8Ouras+d
- b1UkPaCXBeSKTCMbWp0c+Ro3p50gkheQ==
-X-Received: by 2002:a05:6871:586:b0:220:8c56:d30d with SMTP id
- u6-20020a056871058600b002208c56d30dmr13292983oan.42.1710778624784; 
- Mon, 18 Mar 2024 09:17:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjOfmy111eUVW7u5ws+pOO/oIKXxreARKaqddZH2bSwYwY4uGjqF2RiUYv5s1Z5QLnyfZ45Q==
-X-Received: by 2002:a05:6871:586:b0:220:8c56:d30d with SMTP id
- u6-20020a056871058600b002208c56d30dmr13292937oan.42.1710778624091; 
- Mon, 18 Mar 2024 09:17:04 -0700 (PDT)
+ bh=UeZ5d5rzVIIFteQdA/cbu9zu3ciyKvxSa3RVrtkb9L4=;
+ b=F90xzUmLuFq0igMpuroZA6DJGKOnxmtIkF9r6RoNrIrXhS8980ciyRxl7NPL8cNArv
+ kmwdgM6l/s5Pi48pGa5TUEppZq1hXt+3opCX+tdSRbK/vVzkXH0U1yiEsRyL/SHyUDLf
+ QA6nJf5AOydW6TTjcB0aeGp/C0X9kJ+aFUFpRK1vZNssuIYlu+YxF/053o2FS42qvt8K
+ I8AYJJYkEbfJV0/9V/isoWSVscGeLXWtqf73ak83657wnp/p7bq16RzcBV+gte2GRLVZ
+ ++VagMBOr73mBTAReo2vuOmqv3VyzswADIBFx5D1Y8kTGIXC8TuhtygAlVs72CtRBk4L
+ 5gIQ==
+X-Gm-Message-State: AOJu0YwcZCLLrTrYKS1a7seesr1hxwpeCyMC7ROPvvpy1x9AIYf2GsQh
+ bbcxP4WPQbHI9K2hezqaXKmY5B1E90P/RXJzbLM8SQee1jd2AAbPwiIAPdlfUmYMB/Vj9ClVj9h
+ NzuKrWMjMcUcVdji3IcTLp2bw9Lk+imQRYGo9I+J9K1FJ3jIC+SROcxJ+v7G5K++wyruFeoBbyO
+ 5qDqeMp/QghzDU6/cPqBXq4VP36+m1+w==
+X-Received: by 2002:a17:90a:d70f:b0:29f:76d4:306a with SMTP id
+ y15-20020a17090ad70f00b0029f76d4306amr95136pju.24.1710778630841; 
+ Mon, 18 Mar 2024 09:17:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHF5MzdmXdTDIjt9SelZTOOy/8UTPKC7Mtw7+npeEpjgginsbYIssEdKu1ldBGXCEMzfMgLbQ==
+X-Received: by 2002:a17:90a:d70f:b0:29f:76d4:306a with SMTP id
+ y15-20020a17090ad70f00b0029f76d4306amr95087pju.24.1710778630185; 
+ Mon, 18 Mar 2024 09:17:10 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- y71-20020a62ce4a000000b006e6b989514bsm8431082pfg.60.2024.03.18.09.17.01
+ v10-20020a17090ac90a00b0029be7922b32sm7959526pjt.26.2024.03.18.09.17.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:17:03 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:16:59 -0400
+ Mon, 18 Mar 2024 09:17:09 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:17:04 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 23/24] tests: acpi: update expected SSDT.dimmpxm blob
-Message-ID: <86e372ad1e22df373878e5c1cbda2d5026a34331.1710778506.git.mst@redhat.com>
+Subject: [PULL 24/24] smbios: add extra comments to smbios_get_table_legacy()
+Message-ID: <bb949df637bdb6136a9acca55a2371fe1721e109.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,16 +74,16 @@ Content-Disposition: inline
 In-Reply-To: <cover.1710778506.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -9
-X-Spam_score: -1.0
-X-Spam_bar: -
-X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,41 +101,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Igor Mammedov <imammedo@redhat.com>
 
-address shift is caused by switch to 32-bit SMBIOS entry point
-which has slightly different size from 64-bit one and happens
-to trigger a bit different memory layout.
-
-Expected diff:
-
--    Name (MEMA, 0x07FFE000)
-+    Name (MEMA, 0x07FFF000)
-
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Acked-by: Ani Sinha <anisinha@redhat.com>
-Message-Id: <20240314152302.2324164-21-imammedo@redhat.com>
+Message-Id: <20240314152302.2324164-22-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- tests/qtest/bios-tables-test-allowed-diff.h |   1 -
- tests/data/acpi/q35/SSDT.dimmpxm            | Bin 1815 -> 1815 bytes
- 2 files changed, 1 deletion(-)
+ hw/smbios/smbios_legacy.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index 81148a604f..dfb8523c8b 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1,2 +1 @@
- /* List of comma-separated changed AML files to ignore */
--"tests/data/acpi/q35/SSDT.dimmpxm",
-diff --git a/tests/data/acpi/q35/SSDT.dimmpxm b/tests/data/acpi/q35/SSDT.dimmpxm
-index 70f133412f5e0aa128ab210245a8de7304eeb843..9ea4e0d0ceaa8a5cbd706afb6d49de853fafe654 100644
-GIT binary patch
-delta 23
-ecmbQvH=U0wIM^jboSlJzam_|9E_UV*|JeaVTLvQl
-
-delta 23
-ecmbQvH=U0wIM^jboSlJzanD9BE_UVz|JeaVy9Ofw
-
+diff --git a/hw/smbios/smbios_legacy.c b/hw/smbios/smbios_legacy.c
+index 06907cd16c..c37a8ee821 100644
+--- a/hw/smbios/smbios_legacy.c
++++ b/hw/smbios/smbios_legacy.c
+@@ -151,6 +151,9 @@ uint8_t *smbios_get_table_legacy(size_t *length, Error **errp)
+     smbios_entries_len = sizeof(uint16_t);
+     smbios_entries = g_malloc0(smbios_entries_len);
+ 
++    /*
++     * build a set of legacy smbios_table entries using user provided blobs
++     */
+     for (i = 0, usr_offset = 0; usr_blobs_sizes && i < usr_blobs_sizes->len;
+          i++)
+     {
+@@ -166,6 +169,10 @@ uint8_t *smbios_get_table_legacy(size_t *length, Error **errp)
+         table->header.length = cpu_to_le16(sizeof(*table) + size);
+         memcpy(table->data, header, size);
+         smbios_entries_len += sizeof(*table) + size;
++        /*
++         * update number of entries in the blob,
++         * see SeaBIOS: qemu_cfg_legacy():QEMU_CFG_SMBIOS_ENTRIES
++         */
+         (*(uint16_t *)smbios_entries) =
+             cpu_to_le16(le16_to_cpu(*(uint16_t *)smbios_entries) + 1);
+         usr_offset += size;
 -- 
 MST
 
