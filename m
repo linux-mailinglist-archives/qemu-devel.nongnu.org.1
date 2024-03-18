@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E35B87E4DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:18:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC9D287E4E3
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 09:22:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm8Bq-0003aa-82; Mon, 18 Mar 2024 04:17:50 -0400
+	id 1rm8FQ-0005ZO-JF; Mon, 18 Mar 2024 04:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rm8Bj-0003YS-MD
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:17:43 -0400
-Received: from mail-qk1-x729.google.com ([2607:f8b0:4864:20::729])
+ id 1rm8FO-0005YT-Oc
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:21:30 -0400
+Received: from mail-yw1-x1135.google.com ([2607:f8b0:4864:20::1135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rm8Bd-0003sf-LD
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:17:42 -0400
-Received: by mail-qk1-x729.google.com with SMTP id
- af79cd13be357-789f3bbe3d6so91257285a.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 01:17:36 -0700 (PDT)
+ id 1rm8FM-0004UV-3l
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 04:21:29 -0400
+Received: by mail-yw1-x1135.google.com with SMTP id
+ 00721157ae682-609f359b7b1so48048917b3.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 01:21:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710749855; x=1711354655; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710750087; x=1711354887; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1XOZvYPBVWOqR5SKXkSC97yn35rc6DIsD39gcm/ym80=;
- b=goxrttfg6LyOWj5v6bkKMualrZdoXR59nGASdrY5koxk2UHsSccdUNaYuTZH1acyct
- ySnBmltdYBMrIqEHCtDnXJ0vW5IyMIL/WaBrGtNYXDabq0RlH909vXuoNLvqRImvNR60
- +dJdWI50aIYEBSlcZokPktuWVlstTfpdJAksoaRoJZ8ph8Bt72C1yGeow1ZGJZ0bFjdk
- m8semRzFrL4x6oOT95VRzq7UMSzJr3AthmAk5emOJBLVl6FTX5rJCGsKemm6zigZYAyC
- ZM+vjOUQeaWRH8P8KJcQ1S2u3JQWeeB6N11IJbXzTweXhJtkl0KzVwrW8E1O+q2z1Ion
- wUPA==
+ bh=mpW87qs8sCFW9zaApb8r9nhQGYa10Pb87TZFSlWWg/8=;
+ b=B5frSuRehXBfU/yWPB/Wg/MPL8Jbd6Eoi8KjWX5GkTIN0ozNKqTWxCa8p88ghAjVLW
+ JoShvYFDEg06RWdA9W2kmd6dfrODzrNjg8HtmZpHmpyb1Lt6mFsYGoqtbL/NNTHFU+5H
+ kmMmo1OQuXVN0aMmpurAztzfc4MiXUt1Dz6mETVMcWv0Sgp0hHRs0icr5Lrg7X3LW/ZZ
+ K+TU+2IxblVhSt4jiVH9HUGh8YTRs6SM4s6x7/5euHBKK0uznYUIVMqgnhvHlV0gmEmX
+ 9nBrH9FORVbNAfhO1USQCPT6yomVheLIlDq1tRl4LF1xFtWsTrCM8mZmw6owjeKyl2xR
+ B5FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710749855; x=1711354655;
+ d=1e100.net; s=20230601; t=1710750087; x=1711354887;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1XOZvYPBVWOqR5SKXkSC97yn35rc6DIsD39gcm/ym80=;
- b=fvbyPLpbQcfVD3Z3o6/JuDa+jXekSsPU58D19ko97+Ihj9NdTOZBvb40SUNnNmI5zK
- sZwQ3nsPDg6yObEECb8bbD6L4+uXmSG3iPSsrPwvGul8Eafd/GXJJU0VYouH7jNca81s
- 8XGwcSEp/FqxhowUTcR0NDFQhjHeAYvrXmnLyOXTZo2calo5AqD4Gzk4soiDOAbw0Dcd
- FjzBV+cfaVt7nBNrotxlzAB7ei0KtTQP7s3TZuTaS9NavbB6rD8934xN49AJa+6DpXqX
- 3vr+STRyhyJ+/mCPni4VFKzKFVXqeURD1j7tmOiynXGlqRvn36Ry84CSXDgNN2gTH5so
- WWjA==
+ bh=mpW87qs8sCFW9zaApb8r9nhQGYa10Pb87TZFSlWWg/8=;
+ b=vfU4vtxnZiAB0wh9Vy3+jib9QqB2gsNTesk8IgGMTHiYDjjiZ9jIWCvDGm9A4bV6bB
+ eswIPPVpkt2pecRIaccio46TInK+BWra2WkEvjZB82n2B3nrfrndAf0xPKBLCzwkMC1j
+ Cu6CvBPxJMbGat/Rv6T+92kbOCcTVZAbwRhNzg2qS8kMuvSx3vDLMvBZ0nQ7xYz9UGvK
+ m8rrajc0R8jDJi4QCofgtKm9jg7bHJK0OZVigylgsJXYnPi5vuCq5caOn0o547OwezW7
+ wjR5/io2MpDrBrP4aA4MEmi+J3m1ZSFBGnopzD7MAu4oCuwidf8KhLwslOZji67ZsGeU
+ z5hA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW+J1opd/JreQc6UTtmR/5OcHGir901COiXiX7U521qqeanMeIGtT/zrPBn/MiOqeOTFGJ1AcyC4OmjTXP22QynqNTCsiE=
-X-Gm-Message-State: AOJu0YymY/+jnPEV+t+GiBvayT+ID/Imd0cfuMGQyZCnWoDvEDYSZqy3
- +qU7favtjWd0NoniXv7Dk/3ZpDCAGLdtHO9eM7jEJnmV+gikb2/3xdFnFD5RzVQp9QkZCvg8WAd
- Me1CU0Ew3/QfbD9ejyFfma695I0Y=
-X-Google-Smtp-Source: AGHT+IEw2HNTd2hvFrkYUXRdkTGu4/DsSdgDS6ZdWPd0btduCZ7xRh7LTXh7USgRhKSHxJvnqN6eYKLHKCjXxucXfyE=
-X-Received: by 2002:a05:622a:14a:b0:430:c64d:45bf with SMTP id
- v10-20020a05622a014a00b00430c64d45bfmr4885358qtw.22.1710749855303; Mon, 18
- Mar 2024 01:17:35 -0700 (PDT)
+ AJvYcCV5PGYqIiynYJhBDb3or29h1WdGE2G/DVsg22Fg10A2Hphn3SYzPjGL8Emcldcbgd6CKwWdEBspNITl5pT+H3mJOo2pTPs=
+X-Gm-Message-State: AOJu0Yx/lJK26XEyl8EJitOmAw8NpuyRx5o4vNuOb6KbAh6EtprFeQGN
+ b/4DOvJn0QtwA4krD/hqktrD5yfO3IwXyoRncloa/JzohDailCDxVECZmkGLBp6c+xIpjgQryGr
+ pHWusxN8BZGXjT+uNkLBND8U2K6M=
+X-Google-Smtp-Source: AGHT+IG0BkkwrTbbd09x9m7znUyvQZmXWNLo6bIqo3gK+KzT2u8iZzq6LSwITy9vlFiRNyDOi6WgpF+3ErSIxpIZYN4=
+X-Received: by 2002:a0d:c542:0:b0:60f:9c31:e8a4 with SMTP id
+ h63-20020a0dc542000000b0060f9c31e8a4mr7451094ywd.41.1710750086888; Mon, 18
+ Mar 2024 01:21:26 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240318-console-v1-0-f4efbfa71253@daynix.com>
- <20240318-console-v1-1-f4efbfa71253@daynix.com>
-In-Reply-To: <20240318-console-v1-1-f4efbfa71253@daynix.com>
+ <20240318-console-v1-2-f4efbfa71253@daynix.com>
+In-Reply-To: <20240318-console-v1-2-f4efbfa71253@daynix.com>
 From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 18 Mar 2024 12:17:23 +0400
-Message-ID: <CAJ+F1CLFdNfqKs3EZRDz8pYtCz7=a5y_WSKFmU+0MCJQ4XV0Mw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ui/vc: Do not inherit the size of active console
+Date: Mon, 18 Mar 2024 12:21:16 +0400
+Message-ID: <CAJ+F1C+PipwudTRDF=BFJyqVkw0ORwpnXfumQ=kUadtf0HEfVA@mail.gmail.com>
+Subject: Re: [PATCH 2/4] ui/vnc: Do not use console_select()
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::729;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x729.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1135;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,40 +92,146 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 18, 2024 at 11:59=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+Hi
+
+On Mon, Mar 18, 2024 at 11:58=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
 x.com> wrote:
 >
-> A chardev-vc used to inherit the size of a graphic console when its
-> size not explicitly specified, but it often did not make sense. If a
-> chardev-vc is instantiated during the startup, the active graphic
-> console has no content at the time, so it will have the size of graphic
-> console placeholder, which contains no useful information. It's better
-> to have the standard size of text console instead.
+> console_select() is shared by other displays and a console_select() call
+> from one of them triggers console switching also in ui/curses,
+> circumventing key state reinitialization that needs to be performed in
+> preparation and resulting in stuck keys.
+>
+> Use its internal state to track the current active console to prevent
+> such a surprise console switch.
 >
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-
 > ---
->  ui/console-vc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  include/ui/console.h   |  1 +
+>  include/ui/kbd-state.h | 11 +++++++++++
+>  ui/console.c           | 12 ++++++++++++
+>  ui/kbd-state.c         |  6 ++++++
+>  ui/vnc.c               | 14 +++++++++-----
+>  5 files changed, 39 insertions(+), 5 deletions(-)
 >
-> diff --git a/ui/console-vc.c b/ui/console-vc.c
-> index 9c13cc2981b0..f22c8e23c2ed 100644
-> --- a/ui/console-vc.c
-> +++ b/ui/console-vc.c
-> @@ -990,8 +990,8 @@ static void vc_chr_open(Chardev *chr,
->      trace_console_txt_new(width, height);
->      if (width =3D=3D 0 || height =3D=3D 0) {
->          s =3D QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_TEXT_CONSOLE));
-> -        width =3D qemu_console_get_width(NULL, 80 * FONT_WIDTH);
-> -        height =3D qemu_console_get_height(NULL, 24 * FONT_HEIGHT);
-> +        width =3D 80 * FONT_WIDTH;
-> +        height =3D 24 * FONT_HEIGHT;
->      } else {
->          s =3D QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_FIXED_TEXT_CONSOLE)=
+> diff --git a/include/ui/console.h b/include/ui/console.h
+> index a4a49ffc640c..a703f7466499 100644
+> --- a/include/ui/console.h
+> +++ b/include/ui/console.h
+> @@ -413,6 +413,7 @@ void qemu_console_early_init(void);
+>
+>  void qemu_console_set_display_gl_ctx(QemuConsole *con, DisplayGLCtx *ctx=
 );
+>
+> +QemuConsole *qemu_console_lookup_first_graphic_console(void);
+>  QemuConsole *qemu_console_lookup_by_index(unsigned int index);
+>  QemuConsole *qemu_console_lookup_by_device(DeviceState *dev, uint32_t he=
+ad);
+>  QemuConsole *qemu_console_lookup_by_device_name(const char *device_id,
+> diff --git a/include/ui/kbd-state.h b/include/ui/kbd-state.h
+> index fb79776128cf..1f37b932eb62 100644
+> --- a/include/ui/kbd-state.h
+> +++ b/include/ui/kbd-state.h
+> @@ -99,4 +99,15 @@ bool qkbd_state_modifier_get(QKbdState *kbd, QKbdModif=
+ier mod);
+>   */
+>  void qkbd_state_lift_all_keys(QKbdState *kbd);
+>
+> +/**
+> + * qkbd_state_switch_console: Switch console.
+> + *
+> + * This sends key up events to the previous console for all keys which a=
+re in
+> + * down state to prevent keys being stuck, and remembers the new console=
+.
+> + *
+> + * @kbd: state tracker state.
+> + * @con: new QemuConsole for this state tracker.
+> + */
+> +void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con);
+> +
+>  #endif /* QEMU_UI_KBD_STATE_H */
+> diff --git a/ui/console.c b/ui/console.c
+> index 832055675c50..6bf02a23414c 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -1325,6 +1325,18 @@ void graphic_console_close(QemuConsole *con)
+>      dpy_gfx_replace_surface(con, surface);
+>  }
+>
+> +QemuConsole *qemu_console_lookup_first_graphic_console(void)
+> +{
+> +    QemuConsole *con;
+> +
+> +    QTAILQ_FOREACH(con, &consoles, next) {
+> +        if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
+> +            return con;
+> +        }
+> +    }
+> +    return NULL;
+> +}
+> +
+>  QemuConsole *qemu_console_lookup_by_index(unsigned int index)
+>  {
+>      QemuConsole *con;
+> diff --git a/ui/kbd-state.c b/ui/kbd-state.c
+> index 62d42a7a22e1..52ed28b8a89b 100644
+> --- a/ui/kbd-state.c
+> +++ b/ui/kbd-state.c
+> @@ -117,6 +117,12 @@ void qkbd_state_lift_all_keys(QKbdState *kbd)
 >      }
+>  }
+>
+> +void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con)
+> +{
+> +    qkbd_state_lift_all_keys(kbd);
+> +    kbd->con =3D con;
+> +}
+> +
+>  void qkbd_state_set_delay(QKbdState *kbd, int delay_ms)
+>  {
+>      kbd->key_delay_ms =3D delay_ms;
+> diff --git a/ui/vnc.c b/ui/vnc.c
+> index fc12b343e254..94564b196ba8 100644
+> --- a/ui/vnc.c
+> +++ b/ui/vnc.c
+> @@ -1872,12 +1872,16 @@ static void do_key_event(VncState *vs, int down, =
+int keycode, int sym)
+>      /* QEMU console switch */
+>      switch (qcode) {
+>      case Q_KEY_CODE_1 ... Q_KEY_CODE_9: /* '1' to '9' keys */
+> -        if (vs->vd->dcl.con =3D=3D NULL && down &&
+> +        if (down &&
+>              qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_CTRL) &&
+>              qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_ALT)) {
+> -            /* Reset the modifiers sent to the current console */
+> -            qkbd_state_lift_all_keys(vs->vd->kbd);
+> -            console_select(qcode - Q_KEY_CODE_1);
+> +            QemuConsole *con =3D qemu_console_lookup_by_index(qcode - Q_=
+KEY_CODE_1);
+> +            if (con) {
+> +                unregister_displaychangelistener(&vs->vd->dcl);
+> +                qkbd_state_switch_console(vs->vd->kbd, con);
+> +                vs->vd->dcl.con =3D con;
+> +                register_displaychangelistener(&vs->vd->dcl);
+> +            }
+>              return;
+>          }
+>      default:
+> @@ -4206,7 +4210,7 @@ void vnc_display_open(const char *id, Error **errp)
+>              goto fail;
+>          }
+>      } else {
+> -        con =3D NULL;
+> +        con =3D qemu_console_lookup_first_graphic_console();
+
+why this change here?
+
+otherwise, lgtm
+
+>      }
+>
+>      if (con !=3D vd->dcl.con) {
 >
 > --
 > 2.44.0
