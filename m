@@ -2,83 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD2887ED37
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C50E87ED33
 	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:17:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFeY-00075p-KU; Mon, 18 Mar 2024 12:15:58 -0400
+	id 1rmFeZ-00077K-6g; Mon, 18 Mar 2024 12:15:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeN-00073F-Go
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeR-00075J-8C
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeM-0004aW-1z
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeO-0004aw-I9
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778545;
+ s=mimecast20190719; t=1710778547;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LgMKQIgmrlt2/gT6pFRai77FFjqKkjfoJlKBE508wB8=;
- b=RkY7VGSv/opIpEYO+fJDuXC8Us1SbTw6YhJeQF0JuPCsTUxKSCU4+kl5Iy10wLa/XmdgwY
- xGJxEbgPckMTPkxP+7H+qZ46srYu2Q6RtphA6Bd7ljdcWgn1UmD8VCICbAsOXiClkMtOQq
- Ln80ernAMXTVZ+L4KIlVQlkVXm7KFv0=
+ bh=VAGzRhA3KrnZclGngelP6JYgHXE64SaHbxnIXaBAvLk=;
+ b=RkBXWT+msnhb6cuYe51trIZo0aBTrL4991MH8Jo8gfFDzhGMaBpylC93YZgavzFKB7lT/C
+ /PVDhHUKeBfvqULGvJt+ApSWqSBfEM+uAFJWJCIAc3uDeeE8RLvh++MzSYP62uLku6ZfPf
+ g+wHwb3a9rPV1mdlW+44sbKhymD9PoA=
 Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
  [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-610-lxgHLeZfPj68QKUEYpm96A-1; Mon, 18 Mar 2024 12:15:43 -0400
-X-MC-Unique: lxgHLeZfPj68QKUEYpm96A-1
+ us-mta-517-0bVnEgNSMnmdVVIkGr3x5g-1; Mon, 18 Mar 2024 12:15:45 -0400
+X-MC-Unique: 0bVnEgNSMnmdVVIkGr3x5g-1
 Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-513da602cafso2722871e87.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:42 -0700 (PDT)
+ 2adb3069b0e04-514b4c75fc5so512202e87.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778540; x=1711383340;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=LgMKQIgmrlt2/gT6pFRai77FFjqKkjfoJlKBE508wB8=;
- b=DdId0dRqm0dwhjlYkUFrGKwyBfjrjJXK7XmCZo3Us1mXq1zq+4rCLXL3WbiWoszrsU
- liYXWGtUMYTek7LAG766Jt+8Mg9bv6lgp+9oo1V/Juqd5GY1FwqXrXzIXX8Q/4NgkQtC
- k4m6vo7zMTt7AA1SB1j2a7lGweTR8yYFsUX+ZUSO1I5B/O+yJ4nYqcwXug61FeheJcpo
- IT2iOi0hleBgpKHlWSdKJYtZGVfcAzVTEpLBctUARtMiTOKFZRedYW7w6/AHG6ctSKpU
- jXF8M6pKLrbu2gUnZgT82+dbkiBx97c6HRWDCNds/NV6cBLN/wJgo4yzNljzQ7MEv72V
- YGbg==
-X-Gm-Message-State: AOJu0YxS4I3hlecXQekl9g0tZNXIqPW6LjNNljPErC56TZwIK0ASVDjB
- Nc9jg0FBNhmWmiXBivMLkvHSrtgFJAFU19/jP9G0jXIwKJgf/rmStMLK7N2Ar1JY0B88cdBSKBM
- IPrVM9kH0PWmbVOnfZePo8nuI3618VQfZLOf+cwCD2hC/wJtBvuvS1z0tx6V5vQLFtP0AQdgIvx
- FzJjw0B9cpmxLwtJQao9dcovnvBm39HA==
-X-Received: by 2002:ac2:5b5e:0:b0:513:d1cd:b902 with SMTP id
- i30-20020ac25b5e000000b00513d1cdb902mr7678065lfp.32.1710778540153; 
- Mon, 18 Mar 2024 09:15:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfJwSLvV25bVw3/ZZn9bT44TODshzLSpj0xAhllnCGOWmBpEh3o1Ykms8ughzKUiZITIY4VA==
-X-Received: by 2002:ac2:5b5e:0:b0:513:d1cd:b902 with SMTP id
- i30-20020ac25b5e000000b00513d1cdb902mr7678048lfp.32.1710778539643; 
- Mon, 18 Mar 2024 09:15:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710778543; x=1711383343;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VAGzRhA3KrnZclGngelP6JYgHXE64SaHbxnIXaBAvLk=;
+ b=W1wz1Y1X5P1zlr+1e1Cb5VoJbswaottoNmWSe+hEqgqfv5WNtgn/Kk5x8zdMo2mHxZ
+ uWBt+Q01tj/nPG1QK4nt5jSHeRVXN7hW12lFqIBjAPkzCiZYpNcOcDBFFDj51/T6zNtq
+ NhY56bNOzZwVrxWl6fl6JsM1r0Dsk/t8ylTFlmhheAGvJ2HSz+CEsSGgnno5pj9Wt4dt
+ CfLy+jZ5JGd9BFGOecn7pBudjGcan3wrSnF6HBGjwsf2iPJsYR0xLgId33myqRTY/oII
+ dOZqtILv+fXhW4heAUWju5Y4hEdeoiersBaCkXe4ND/Io61gSmjvXe8uzMHa/QVWsKUN
+ iSag==
+X-Gm-Message-State: AOJu0YzBHLKJOUMxjODYkeECa/vDvV6F9fr4ktvtnNsDtz9+0jKJ/yye
+ Q+xEOoyQ5CqMWj+qrxeGDUSB1N/xIwNCmAevijy1bsz2STcC30o/GpV0N72bZWPcdNmZhYxDT54
+ DtvNGFFPjkNu5qAH21Z0uxkIqWF8K20neG02aQMop7B3+0m+mkmyWpaTtvWFfG3UyfVGh4/tBKL
+ jLaMFGEe6richmtTLjkkDIxypnau5FzQ==
+X-Received: by 2002:a19:5f5a:0:b0:513:d372:20f7 with SMTP id
+ a26-20020a195f5a000000b00513d37220f7mr7541813lfj.21.1710778543410; 
+ Mon, 18 Mar 2024 09:15:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFgek161MYUHnJIbjyYLQZ0h22d8qmpM22vUfL3pAJbbWqVTj8oNWXTIjsVD8Jq+m/tE9Bclg==
+X-Received: by 2002:a19:5f5a:0:b0:513:d372:20f7 with SMTP id
+ a26-20020a195f5a000000b00513d37220f7mr7541794lfj.21.1710778542845; 
+ Mon, 18 Mar 2024 09:15:42 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- w9-20020a05600c474900b0041408af4b34sm7818539wmo.10.2024.03.18.09.15.37
+ t14-20020a05600c450e00b0041409db0349sm7074200wmo.48.2024.03.18.09.15.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:15:38 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:15:36 -0400
+ Mon, 18 Mar 2024 09:15:42 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:15:39 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/24] docs/specs/pvpanic: mark shutdown event as not
- implemented
-Message-ID: <e739d1935c461d0668057e9dbba9d06f728d29ec.1710778506.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Fiona Ebner <f.ebner@proxmox.com>
+Subject: [PULL 04/24] tests: smbios: make it possible to write SMBIOS only test
+Message-ID: <53002d9028f9d8b3215dafd7c0a55047bb5c9804.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710778506.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -103,33 +100,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Weißschuh <thomas@t-8ch.de>
+From: Igor Mammedov <imammedo@redhat.com>
 
-Mention the fact that this event is not yet implemented
-to avoid confusion.
-As requested by Michael.
+Cureently it not possible to run SMBIOS test without ACPI one,
+which gets into the way when testing ACPI-less configs.
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Message-Id: <20240313-pvpanic-note-v1-1-7f2571cdaedc@t-8ch.de>
+Extract SMBIOS testing into separate routines that could also
+be run without ACPI dependency and use that for testing SMBIOS.
+
+As the 1st user add "acpi/piix4/smbios-options" test case.
+
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+Tested-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-Id: <20240314152302.2324164-2-imammedo@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- docs/specs/pvpanic.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/qtest/bios-tables-test.c | 47 +++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 9 deletions(-)
 
-diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
-index 61a80480ed..b0f27860ec 100644
---- a/docs/specs/pvpanic.rst
-+++ b/docs/specs/pvpanic.rst
-@@ -29,7 +29,7 @@ bit 1
-   a guest panic has happened and will be handled by the guest;
-   the host should record it or report it, but should not affect
-   the execution of the guest.
--bit 2
-+bit 2 (to be implemented)
-   a regular guest shutdown has happened and should be processed by the host
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index 21811a1ab5..b2992bafa8 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -858,6 +858,27 @@ static void test_vm_prepare(const char *params, test_data *data)
+     g_free(args);
+ }
  
- PCI Interface
++static void process_smbios_tables_noexit(test_data *data)
++{
++    /*
++     * TODO: make SMBIOS tests work with UEFI firmware,
++     * Bug on uefi-test-tools to provide entry point:
++     * https://bugs.launchpad.net/qemu/+bug/1821884
++     */
++    if (!(data->uefi_fl1 && data->uefi_fl2)) {
++        SmbiosEntryPointType ep_type = test_smbios_entry_point(data);
++        test_smbios_structs(data, ep_type);
++    }
++}
++
++static void test_smbios(const char *params, test_data *data)
++{
++    test_vm_prepare(params, data);
++    boot_sector_test(data->qts);
++    process_smbios_tables_noexit(data);
++    qtest_quit(data->qts);
++}
++
+ static void process_acpi_tables_noexit(test_data *data)
+ {
+     test_acpi_load_tables(data);
+@@ -868,15 +889,7 @@ static void process_acpi_tables_noexit(test_data *data)
+         test_acpi_asl(data);
+     }
+ 
+-    /*
+-     * TODO: make SMBIOS tests work with UEFI firmware,
+-     * Bug on uefi-test-tools to provide entry point:
+-     * https://bugs.launchpad.net/qemu/+bug/1821884
+-     */
+-    if (!(data->uefi_fl1 && data->uefi_fl2)) {
+-        SmbiosEntryPointType ep_type = test_smbios_entry_point(data);
+-        test_smbios_structs(data, ep_type);
+-    }
++    process_smbios_tables_noexit(data);
+ }
+ 
+ static void process_acpi_tables(test_data *data)
+@@ -2064,6 +2077,20 @@ static void test_acpi_q35_pvpanic_isa(void)
+     free_test_data(&data);
+ }
+ 
++static void test_acpi_pc_smbios_options(void)
++{
++    uint8_t req_type11[] = { 11 };
++    test_data data = {
++        .machine = MACHINE_PC,
++        .variant = ".pc_smbios_options",
++        .required_struct_types = req_type11,
++        .required_struct_types_len = ARRAY_SIZE(req_type11),
++    };
++
++    test_smbios("-smbios type=11,value=TEST", &data);
++    free_test_data(&data);
++}
++
+ static void test_oem_fields(test_data *data)
+ {
+     int i;
+@@ -2215,6 +2242,8 @@ int main(int argc, char *argv[])
+ #ifdef CONFIG_POSIX
+             qtest_add_func("acpi/piix4/acpierst", test_acpi_piix4_acpi_erst);
+ #endif
++            qtest_add_func("acpi/piix4/smbios-options",
++                           test_acpi_pc_smbios_options);
+         }
+         if (qtest_has_machine(MACHINE_Q35)) {
+             qtest_add_func("acpi/q35", test_acpi_q35_tcg);
 -- 
 MST
 
