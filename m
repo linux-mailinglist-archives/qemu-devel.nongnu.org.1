@@ -2,100 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AFB87EF97
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 19:17:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1826987EFB2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 19:24:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmHX5-0000N0-Vc; Mon, 18 Mar 2024 14:16:24 -0400
+	id 1rmHeF-0002Ax-WE; Mon, 18 Mar 2024 14:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rmHX1-0000MD-Rs; Mon, 18 Mar 2024 14:16:19 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmHeD-0002A3-RE
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:23:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rmHWy-0002TN-S7; Mon, 18 Mar 2024 14:16:18 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42IHfaJY012761; Mon, 18 Mar 2024 18:16:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=x+2+C/wdmIuQMxQNZFIKEYER90cpmH6hKJ2Mdu2L8XU=;
- b=VvunnAwDFrowY2aiPg8OWYAqZFCwMR9RVSGpnqrAt6T6THVCZiB2SJ8a6qHwThKGQzGy
- t4h+nJ/PPeD+NcybMB3NYrEb7y25utM34UAExiOnbD7L+6XHCU6nFlfpQmMeyNThGOjV
- 20Jmcs01CqVqKO0FWpvtOrRmlm/CJC0VPTfCwVi4mdfSJ3x5yYBdpBP/KQfMw3R/Lbcl
- pBD2hRXF3zf1RlIStXMzqcdLn4Ol9uQwPNU8cvwpzjmrCDAne+4F8jR8OqDfnLU5vBbu
- zHXa84hZqQi9bIiiIJoSAnvN9mE9mjrp7insmIB31Yj1AiI3tw7CrPiwyfMBa7qZ04hX 3w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wxt3r07m7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Mar 2024 18:16:12 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42IICb8l021283;
- Mon, 18 Mar 2024 18:16:12 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wxt3r07m5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Mar 2024 18:16:12 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42IHMWAX017218; Mon, 18 Mar 2024 18:16:11 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wwnrt2ryr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 18 Mar 2024 18:16:11 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
- [10.241.53.102])
- by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42IIG9I019464738
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 18 Mar 2024 18:16:11 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 6EEA658056;
- Mon, 18 Mar 2024 18:16:09 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 4AB9F5803F;
- Mon, 18 Mar 2024 18:16:09 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 18 Mar 2024 18:16:09 +0000 (GMT)
-Message-ID: <6f9acf388883bfe15e27ee26dcacff91f330e485.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH v2] ppc/pnv: I2C controller is not user creatable
-From: Miles Glenn <milesg@linux.vnet.ibm.com>
-To: =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>, qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, Thomas Huth
- <thuth@redhat.com>
-Date: Mon, 18 Mar 2024 13:16:09 -0500
-In-Reply-To: <20240318155844.224193-1-clg@redhat.com>
-References: <20240318155844.224193-1-clg@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmHe9-0003j0-8N
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:23:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710786219;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=3Rq8qA9wFTOqwueklBZgafNhF22LkdA+IQy8uPN2odU=;
+ b=jFZE+uzqJBgCR3FBenuqa4H/0k7nedgc8aZhb0RFEil6m4p/cV02gw6jEb8MXwd3UPA7po
+ XysG1IYCJjv00iQNEm46cw5pqqDM3ctc0aqo0YCcby1nG7KD2ie6LhKuZssVPrYrzt10Gb
+ aqNo0jvx09UASrmAGLbsbIWZ1K2QuBE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-425-Xe5Rgf9CNFOEXoSHey0nUg-1; Mon, 18 Mar 2024 14:23:37 -0400
+X-MC-Unique: Xe5Rgf9CNFOEXoSHey0nUg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 000D08007C0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 18:23:36 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 751B917B3A;
+ Mon, 18 Mar 2024 18:23:35 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+Subject: [PATCH 0/3 for 9.0] Fix TLS support for chardevs and incoming data
+ loss on EOF
+Date: Mon, 18 Mar 2024 18:23:27 +0000
+Message-ID: <20240318182330.96738-1-berrange@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SIaHDDoPcJvQ3yCaVDQQv8hhdWMHeYWa
-X-Proofpoint-ORIG-GUID: Qququ7e4bIcGeqp1asjI77A2i837M4E_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-18_12,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- suspectscore=0 malwarescore=0 adultscore=0 mlxlogscore=999 mlxscore=0
- phishscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403140000 definitions=main-2403180138
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_NONE=0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,49 +80,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2024-03-18 at 16:58 +0100, Cédric Le Goater wrote:
+This fixes a problem with TLS support on chardevs that Thomas has
+previously attempted to deal with:
 
-Thanks for fixing that!
+  https://lists.nongnu.org/archive/html/qemu-devel/2024-02/msg06915.html
 
--Glenn
+Unfortunately that fix caused unexpected side effects that resulted
+in premature termination of the TLS connection. See patch 2 for
+details.
 
-Reviewed-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+I've since identified the root cause of the problem that Thomas was
+trying to fix - bad assumptions about GSource 'prepare' functions
+always being run. See patch 3 for details.
 
-> The I2C controller is a subunit of the processor. Make it so and
-> avoid
-> QEMU crashes.
-> 
->   $ build/qemu-system-ppc64 -S -machine powernv9 -device pnv-i2c
->   qemu-system-ppc64: ../hw/ppc/pnv_i2c.c:521: pnv_i2c_realize:
-> Assertion `i2c->chip' failed.
->   Aborted (core dumped)
-> 
-> Fixes: 263b81ee15af ("ppc/pnv: Add an I2C controller model")
-> Cc: Glenn Miles <milesg@linux.vnet.ibm.com>
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
-> ---
->  hw/ppc/pnv_i2c.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
-> index
-> 4581cc5e5d4645ab3e358d983a633e33a214c425..eec5047ce83f842108b53a6e2bd
-> 9869a81f14ac1 100644
-> --- a/hw/ppc/pnv_i2c.c
-> +++ b/hw/ppc/pnv_i2c.c
-> @@ -557,6 +557,9 @@ static void pnv_i2c_class_init(ObjectClass
-> *klass, void *data)
-> 
->      xscomc->dt_xscom = pnv_i2c_dt_xscom;
-> 
-> +    /* Reason: This device is part of the CPU and cannot be used
-> separately */
-> +    dc->user_creatable = false;
-> +
->      dc->desc = "PowerNV I2C";
->      dc->realize = pnv_i2c_realize;
->      device_class_set_props(dc, pnv_i2c_properties);
+Patch 3 re-exposed a bug we've know about for a while whereby incoming
+data on chardevs is sometimes discarded when POLLHUP is reported at the
+same time. This required patch 1 to be applied before doing the revert
+in patch 3, otherwise test-char would now very frequently fail.
+
+So we get 2 bug fixes for the price of one :-)
+
+Daniel P. Berrangé (3):
+  chardev: lower priority of the HUP GSource in socket chardev
+  Revert "chardev/char-socket: Fix TLS io channels sending too much data
+    to the backend"
+  Revert "chardev: use a child source for qio input source"
+
+ chardev/char-io.c     | 55 +++++++++++++++++++++++++++++++++++++++----
+ chardev/char-socket.c | 22 ++++++++++++++---
+ 2 files changed, 69 insertions(+), 8 deletions(-)
+
+-- 
+2.43.0
 
 
