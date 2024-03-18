@@ -2,88 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E027B87E8B2
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 12:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2D287E8B5
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 12:34:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmBDO-00080S-EO; Mon, 18 Mar 2024 07:31:38 -0400
+	id 1rmBDa-00084f-MS; Mon, 18 Mar 2024 07:31:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmBDJ-0007xx-W8
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 07:31:34 -0400
-Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmBDX-000843-Jj
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 07:31:47 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmBDI-0006xl-GR
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 07:31:33 -0400
-Received: by mail-lf1-x130.google.com with SMTP id
- 2adb3069b0e04-513d599dbabso4538082e87.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 04:31:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmBDW-0006zV-5A
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 07:31:47 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-513e10a4083so1946809e87.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 04:31:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710761490; x=1711366290; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fDmCLBD//ZweQwGs2iMb1fxkUila8cEUmpEOfPUyJd8=;
- b=N0qpNtuSfB4WhMHTvC/HeRQqmsXJGNzOxm4RyZWprVeTNAXMRlAZh0t3Rx5nZpts88
- /o1y0zWv5B4Y8TlhQxDgmVRXkas1sUoFnjNJFo+6l0we4Jpz6XGfc4ib6TwgsltvCWxl
- HVQLsTbDLWuhzMTuIZt3+3VDFgwiHQzOc834As5UjgSI8id+0OEXU/pDhOrJBF0+LinT
- SPD+DpDVnuUehb1DF79a86VU6nl/MCJ95MyX/nPt6Ix67ds1d2D+SX1mX0aJ/7h6Mq0z
- HqcobrH1evKPc9HJjkMPzm1HX8hg3nIapJiIfhjBdSDWwa8dBY+5nuvNQlnuUvlDpN1o
- qpQA==
+ d=linaro.org; s=google; t=1710761504; x=1711366304; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=6qFVEtjnBNyYIKhYM/YbU7sKs/Pl5l+VfwM1ydNA6OE=;
+ b=CZ2jhm/gKFTGxQxDdO5cFcxRw487Z4RfgODQsRa1XOW0JUQn8LJPEAKCuge0HTsmiV
+ n3rY5tYtYees9eHMN8vpX4uM3jwOLCa8dCmOtlxMl1XjzBCRgB3nSX7otnnyDYOWUnNH
+ y4BDx30ybXMZgFQqFuEq8wM6De7u1OjCI3bIEYz/SnDxVndvRNseoJ7805FH2Iacg0jp
+ LZKjtb+Tlossxe+gy2h5kz5Y66rcptG8/dZymS0BbN5y+PctWUyAgx4IUd4dZLy9jPdI
+ h5UKOqTrthXecx/Ir1KdC2V5U/uAX1BBhIRXj0vQMMNb30d2klIIXhKXnVHy7QDwubfy
+ J3oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710761490; x=1711366290;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fDmCLBD//ZweQwGs2iMb1fxkUila8cEUmpEOfPUyJd8=;
- b=SX4IkHv2Z+9HkOOfTZ92FiaelTxe2H9ElABQjVkI66twqqm+hEMOl5qnqhtMiQX73R
- MGhXyyx/R9Rt/aQzoDME50sED+77epQkFmiXRuDrtRnMDBToW+Oj3cVz3BMBRy1wdDx8
- AvmICgTYu1py/EkZbX7opCGUIxY8SKsln67Mylm0pqYGDODHWtyOevUNKBmMxKqMF8lE
- tEDTR6D4dJN+u4x02ajkBiO6NQ2ymFXtsoC0j4Uc9Jeq2PkZQ+9UFnnRJCl7RKty1+2J
- J7QK0mDJAt4LEg1jvmXGWr47OvlvDE9Z7Hy+nLsX0XLIGiJ/iWxDrGCOhzxpCSIC8mNv
- EPpA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWRWc+TWokHqtx8sO4rAZYi/hkmGc7QHqcd00MQZT9hsWDm861cJEldS9wSfWubPoVkdd/V/+M7/f5FNJe82/NCOHh9l2A=
-X-Gm-Message-State: AOJu0YwU+lQc6EqDpLJQKaBrjq5m54rVR614Mxu2XpS7V36jfDo1z7gR
- tX666ivs5Pk38dSK/q77x4D7SUZHy1Vvvd9Dy5YtxoZchbLwRJSV6Mr1xBLgWGM=
-X-Google-Smtp-Source: AGHT+IGHZXOh0v/VNKSEJVVd9oxS9VsQBGoPfRd1ayUWAzkXjpuxXWWa0EnUzEJfoLNbqGycj4+t3A==
-X-Received: by 2002:ac2:596c:0:b0:513:a944:704e with SMTP id
- h12-20020ac2596c000000b00513a944704emr7513142lfp.63.1710761490153; 
- Mon, 18 Mar 2024 04:31:30 -0700 (PDT)
-Received: from [192.168.69.100] (vit94-h02-176-184-29-165.dsl.sta.abo.bbox.fr.
+ d=1e100.net; s=20230601; t=1710761504; x=1711366304;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6qFVEtjnBNyYIKhYM/YbU7sKs/Pl5l+VfwM1ydNA6OE=;
+ b=PLx2vew/EMLyV510MkC1/BKbt9GVccrK+MbRjBrzLczino+9lrowfgdhPJ+9vXuqPe
+ 7v5VOJn/lPCECt9HJhYxm9xQEvdk0roZqSRjjS38jEVoQRx9kO7PT8jFhLa3E1NmZ5lP
+ jK356sHMCN5SPTlFCCLiFQBIebByrjzB488TgLIg4hJAslP77LySCAFwclnIuDLBnm42
+ EIriCqsUlE4SWOVH1qdud1zbKL2pOOXCM2xkH7ilfvjfXtoyZaZjiuRs78J7uihwk8Tq
+ gTZ+l2iOeKCx3QegvDpZcuVvjoKVLWyhYx0bi8QgOjf5qUwLPHgUrIT8ydiPfNU5bbAk
+ +S5Q==
+X-Gm-Message-State: AOJu0YzcToImpJk6WH28hf04rGdiLA+Bm5JWnpUXoaivkkIGtX050WC1
+ fKACDipYAneJW/m9Jvs+Jp/YGQCtCIrfBJ6s3TuOyB9ZiAjfPiIUEC9moT8mKhGQLw50fIM/8L2
+ 2
+X-Google-Smtp-Source: AGHT+IFb4/xTtr77HNHSJ7WzvW2vSrhynefj+rO6yvdUc/90oOXiPs8K3bRhnmvXNXI2WiGec+Gaaw==
+X-Received: by 2002:a05:6512:201:b0:512:fc00:7c6 with SMTP id
+ a1-20020a056512020100b00512fc0007c6mr7886810lfo.51.1710761503668; 
+ Mon, 18 Mar 2024 04:31:43 -0700 (PDT)
+Received: from m1x-phil.lan (vit94-h02-176-184-29-165.dsl.sta.abo.bbox.fr.
  [176.184.29.165]) by smtp.gmail.com with ESMTPSA id
- h11-20020a5d504b000000b0033e7a102cfesm9575335wrt.64.2024.03.18.04.31.28
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 04:31:29 -0700 (PDT)
-Message-ID: <4f718ba5-4ca3-4412-802e-54e1c57668d2@linaro.org>
-Date: Mon, 18 Mar 2024 12:31:27 +0100
+ h4-20020a05600c350400b00414128462c2sm2046822wmq.33.2024.03.18.04.31.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 18 Mar 2024 04:31:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@gmail.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 0/3] ui/display: Introduce API to change console
+ orientation
+Date: Mon, 18 Mar 2024 12:31:37 +0100
+Message-ID: <20240318113140.88151-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1 3/3] ui/console: Add 'rotate_arcdegree' field to
- allow per-console rotation
-Content-Language: en-US
-To: Akihiko Odaki <akihiko.odaki@gmail.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-References: <20240318100543.78846-1-philmd@linaro.org>
- <20240318100543.78846-4-philmd@linaro.org>
- <ab5892b3-38ec-43c5-9c82-8595ad4c77e0@gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <ab5892b3-38ec-43c5-9c82-8595ad4c77e0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::130;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,17 +94,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 18/3/24 11:36, Akihiko Odaki wrote:
-> On 2024/03/18 19:05, Philippe Mathieu-Daudé wrote:
->> Add the 'rotate_arcdegree' field to QemuConsole and remove
->> the use of the 'graphic_rotate' global.
-> 
-> I think QemuGraphicConsole is a better place to put the field.
+Since v1:
+- Move rotate_arcdegree to QemuGraphicConsole (Akihiko)
 
-Good point.
+Hi,
 
-> 
-> Regards,
-> Akihiko Odaki
+The idea behind this series is to reduce the use of the
+'graphic_rotate' global. It is only used by the Spitz
+machine, so we could convert the '-rotate' argument to
+a sugar property on the PXA2XX_LCD_TYPE model, but since
+the Spitz machine has been deprecated recently (commit
+a2531bb855 "Deprecate various old Arm machine types") it
+doesn't seem worthwhile. So just extract the API to change
+console orientation.
+
+Regards,
+
+Phil.
+
+Philippe Mathieu-Daudé (3):
+  ui/console: Introduce API to change console orientation
+  hw/display/pxa2xx_lcd: Set rotation angle using
+    qemu_console_set_rotate
+  ui/console: Add 'rotate_arcdegree' field to allow per-console rotation
+
+ include/ui/console.h    |  3 +++
+ hw/display/pxa2xx_lcd.c |  1 +
+ ui/console.c            | 23 +++++++++++++++++++++++
+ ui/input.c              |  9 ++++-----
+ 4 files changed, 31 insertions(+), 5 deletions(-)
+
+-- 
+2.41.0
 
 
