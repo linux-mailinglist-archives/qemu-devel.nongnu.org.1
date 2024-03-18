@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E603A87EA9C
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:10:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857D487EA9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:10:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmDfA-0001Vk-O7; Mon, 18 Mar 2024 10:08:28 -0400
+	id 1rmDf8-0001Vt-Qs; Mon, 18 Mar 2024 10:08:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rmDez-0001TQ-W6; Mon, 18 Mar 2024 10:08:18 -0400
+ id 1rmDf1-0001Th-9s; Mon, 18 Mar 2024 10:08:20 -0400
 Received: from muminek.juszkiewicz.com.pl ([213.251.184.221])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rmDet-0006Fo-C5; Mon, 18 Mar 2024 10:08:16 -0400
+ id 1rmDet-0006Fq-Pa; Mon, 18 Mar 2024 10:08:19 -0400
 Received: from localhost (localhost [127.0.0.1])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 8A950260CC8;
- Mon, 18 Mar 2024 15:08:07 +0100 (CET)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTP id 5EFCC2600DA;
+ Mon, 18 Mar 2024 15:08:08 +0100 (CET)
 X-Virus-Scanned: Debian amavis at juszkiewicz.com.pl
 Received: from muminek.juszkiewicz.com.pl ([127.0.0.1])
  by localhost (muminek.juszkiewicz.com.pl [127.0.0.1]) (amavis, port 10024)
- with ESMTP id WnRG1pdPX_zP; Mon, 18 Mar 2024 15:08:05 +0100 (CET)
+ with ESMTP id fIiQz__vXvSu; Mon, 18 Mar 2024 15:08:06 +0100 (CET)
 Received: from [172.17.0.1] (83.11.22.169.ipv4.supernova.orange.pl
  [83.11.22.169])
- by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 7367C2600DA;
- Mon, 18 Mar 2024 15:08:04 +0100 (CET)
+ by muminek.juszkiewicz.com.pl (Postfix) with ESMTPSA id 7C9D6260AB8;
+ Mon, 18 Mar 2024 15:08:05 +0100 (CET)
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Subject: [PATCH v3 0/4] tests/avocado: update sbsa-ref firmware to latest
-Date: Mon, 18 Mar 2024 15:08:00 +0100
-Message-Id: <20240318-sbsa-ref-firmware-update-v3-0-1c33b995a538@linaro.org>
+Date: Mon, 18 Mar 2024 15:08:01 +0100
+Subject: [PATCH v3 1/4] tests/avocado: update sbsa-ref firmware
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMBK+GUC/43NSw7CIBCA4asY1o7hTXDlPYwLCrQl0dJARU3Tu
- 0u70o1x+U9mvplR9in4jI67GSVfQg5xqMH2O2R7M3QegquNKKYcM8IgN9lA8i20Id0eJnm4j85
- MHpRQ2ulWOqEbVM/HuhSeG32+1O5DnmJ6bZ8KWad/oIUABk+kVJhZwSk/XcNgUjzE1KFVLfRT4
- j8kWqVGCGWFFEJb9yUty/IGeDTaXQsBAAA=
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240318-sbsa-ref-firmware-update-v3-1-1c33b995a538@linaro.org>
+References: <20240318-sbsa-ref-firmware-update-v3-0-1c33b995a538@linaro.org>
+In-Reply-To: <20240318-sbsa-ref-firmware-update-v3-0-1c33b995a538@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Radoslaw Biernacki <rad@semihalf.com>, 
  Peter Maydell <peter.maydell@linaro.org>, 
@@ -49,12 +47,11 @@ Cc: Radoslaw Biernacki <rad@semihalf.com>,
 X-Mailer: b4 0.12.3
 Received-SPF: softfail client-ip=213.251.184.221;
  envelope-from=marcin.juszkiewicz@linaro.org; helo=muminek.juszkiewicz.com.pl
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+X-Spam_score_int: -11
+X-Spam_score: -1.2
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- T_SCC_BODY_TEXT_LINE=-0.01,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_SOFTFAIL=0.665, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,67 +67,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Updating sbsa-ref firmware for QEMU CI was manual task. Now it is
-replaced by CI job run on CodeLinaro Gitlab instance.
+We now have CI job to build those and publish in space with
+readable urls.
 
-This patchset updates to current state:
+Firmware is built using Debian 'bookworm' cross toolchain (gcc 12.2.0).
 
-- Trusted Firmware v2.10.2 (latest LTS)
-- Tianocore EDK2 stable202402 (latest release)
+Used versions:
 
-And Tianocore EDK2-platforms commit 085c2fb (edk2-platforms does not
-have releases).
-
-Firmware images were built using Debian 'bookworm' cross gcc 12.2.0
-compiler.
-
-And while I am in that file I dropped use of 'virtio-rng-pci' device as
-sbsa-ref is supposed to emulate physical hardware.
-
-Added 'max' tests with 'pauth=off' and 'pauth-impdef=on' variants.
-
-(01/11) test_sbsaref_edk2_firmware: PASS (2.51 s)
-(02/11) test_sbsaref_alpine_linux_cortex_a57: PASS (23.72 s)
-(03/11) test_sbsaref_alpine_linux_neoverse_n1: PASS (23.70 s)
-(04/11) test_sbsaref_alpine_linux_max_pauth_off: PASS (23.00 s)
-(05/11) test_sbsaref_alpine_linux_max_pauth_impdef: PASS (29.03 s)
-(06/11) test_sbsaref_alpine_linux_max: PASS (80.69 s)
-(07/11) test_sbsaref_openbsd73_cortex_a57: PASS (16.05 s)
-(08/11) test_sbsaref_openbsd73_neoverse_n1: PASS (15.97 s)
-(09/11) test_sbsaref_openbsd73_max_pauth_off: PASS (16.22 s)
-(10/11) test_sbsaref_openbsd73_max_pauth_impdef: PASS (16.11 s)
-(11/11) test_sbsaref_openbsd73_max: PASS (16.08 s)
+- Trusted Firmware v2.10.2
+- Tianocore EDK2 stable202402
+- Tianocore EDK2 Platforms code commit 085c2fb
 
 Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 ---
-Changes in v3:
-- left OpenBSD at 7.3 (7.4+ is known to not boot)
-  https://gitlab.com/qemu-project/qemu/-/issues/2224
-  https://marc.info/?l=openbsd-arm&m=171050428327850&w=2
-- added pauth variants of 'max' to OpenBSD tests
-- Link to v2: https://lore.kernel.org/r/20240314-sbsa-ref-firmware-update-v2-0-b557c56559cd@linaro.org
+ tests/avocado/machine_aarch64_sbsaref.py | 40 +++++++++++++++++---------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
-Changes in v2:
-- disabled 'max' tests on OpenBSD
-- moved tags to 'one tag per line'
-- added 'os:linux' tags to Alpine ones
-- Link to v1: https://lore.kernel.org/r/20240313-sbsa-ref-firmware-update-v1-0-e166703c5424@linaro.org
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index 528c7d2934..cbab793455 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -1,6 +1,6 @@
+ # Functional test that boots a Linux kernel and checks the console
+ #
+-# SPDX-FileCopyrightText: 2023 Linaro Ltd.
++# SPDX-FileCopyrightText: 2023-2024 Linaro Ltd.
+ # SPDX-FileContributor: Philippe Mathieu-Daudé <philmd@linaro.org>
+ # SPDX-FileContributor: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+ #
+@@ -32,34 +32,36 @@ def fetch_firmware(self):
+         """
+         Flash volumes generated using:
+ 
+-        - Fedora GNU Toolchain version 13.2.1 20230728 (Red Hat 13.2.1-1)
++        Toolchain from Debian:
++        aarch64-linux-gnu-gcc (Debian 12.2.0-14) 12.2.0
+ 
+-        - Trusted Firmware-A
+-          https://github.com/ARM-software/arm-trusted-firmware/tree/7c3ff62d
++        Used components:
++
++        - Trusted Firmware 2.10.2
++        - Tianocore EDK2 stable202402
++        - Tianocore EDK2-platforms commit 085c2fb
+ 
+-        - Tianocore EDK II
+-          https://github.com/tianocore/edk2/tree/0f9283429dd4
+-          https://github.com/tianocore/edk2/tree/ad1c0394b177
+-          https://github.com/tianocore/edk2-platforms/tree/d03a60523a60
+         """
+ 
+         # Secure BootRom (TF-A code)
+         fs0_xz_url = (
+-            "https://fileserver.linaro.org/s/rE43RJyTfxPtBkc/"
+-            "download/SBSA_FLASH0.fd.xz"
++            "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
++            "20240313-116475/edk2/SBSA_FLASH0.fd.xz"
+         )
+-        fs0_xz_hash = "cdb8e4ffdaaa79292b7b465693f9e5fae6b7062d"
+-        tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
++        fs0_xz_hash = "637593749cc307dea7dc13265c32e5d020267552f22b18a31850b8429fc5e159"
++        tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash,
++                                      algorithm='sha256')
+         archive.extract(tar_xz_path, self.workdir)
+         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
+ 
+         # Non-secure rom (UEFI and EFI variables)
+         fs1_xz_url = (
+-            "https://fileserver.linaro.org/s/AGWPDXbcqJTKS4R/"
+-            "download/SBSA_FLASH1.fd.xz"
++            "https://artifacts.codelinaro.org/artifactory/linaro-419-sbsa-ref/"
++            "20240313-116475/edk2/SBSA_FLASH1.fd.xz"
+         )
+-        fs1_xz_hash = "411155ae6984334714dff08d5d628178e790c875"
+-        tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash)
++        fs1_xz_hash = "cb0a5e8cf5e303c5d3dc106cfd5943ffe9714b86afddee7164c69ee1dd41991c"
++        tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash,
++                                      algorithm='sha256')
+         archive.extract(tar_xz_path, self.workdir)
+         fs1_path = os.path.join(self.workdir, "SBSA_FLASH1.fd")
+ 
+@@ -96,15 +98,15 @@ def test_sbsaref_edk2_firmware(self):
+ 
+         # AP Trusted ROM
+         wait_for_console_pattern(self, "Booting Trusted Firmware")
+-        wait_for_console_pattern(self, "BL1: v2.9(release):v2.9")
++        wait_for_console_pattern(self, "BL1: v2.10.2(release):")
+         wait_for_console_pattern(self, "BL1: Booting BL2")
+ 
+         # Trusted Boot Firmware
+-        wait_for_console_pattern(self, "BL2: v2.9(release)")
++        wait_for_console_pattern(self, "BL2: v2.10.2(release)")
+         wait_for_console_pattern(self, "Booting BL31")
+ 
+         # EL3 Runtime Software
+-        wait_for_console_pattern(self, "BL31: v2.9(release)")
++        wait_for_console_pattern(self, "BL31: v2.10.2(release)")
+ 
+         # Non-trusted Firmware
+         wait_for_console_pattern(self, "UEFI firmware (version 1.0")
 
----
-Marcin Juszkiewicz (4):
-      tests/avocado: update sbsa-ref firmware
-      tests/avocado: drop virtio-rng from sbsa-ref tests
-      tests/avocado: sbsa-ref: add Alpine tests for misc 'max' setup
-      tests/avocado: sbsa-ref: add OpenBSD tests for misc 'max' setup
-
- tests/avocado/machine_aarch64_sbsaref.py | 86 +++++++++++++++++++++-----------
- 1 file changed, 58 insertions(+), 28 deletions(-)
----
-base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
-change-id: 20240313-sbsa-ref-firmware-update-7579d9f6d59b
-
-Best regards,
 -- 
-Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+2.44.0
 
 
