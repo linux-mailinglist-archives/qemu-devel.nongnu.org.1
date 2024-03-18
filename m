@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F35A87ED55
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1201387ED58
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:20:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFfv-0002PF-P0; Mon, 18 Mar 2024 12:17:27 -0400
+	id 1rmFhP-0004gj-Hb; Mon, 18 Mar 2024 12:18:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfq-0002OQ-LK
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmFhJ-0004HT-I2
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:18:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFfp-0004rf-8r
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:17:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmFhH-00051L-VE
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:18:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778636;
+ s=mimecast20190719; t=1710778727;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=UeZ5d5rzVIIFteQdA/cbu9zu3ciyKvxSa3RVrtkb9L4=;
- b=bCvpnqFjD3khaVKUKv8QYbGRBeIVrGM2X3QWlJpnXFKb/URbDXisxBUL5eGriaSOfyYgnZ
- AFM1Coo0shv26gOzsc8D6XQODohBewnqBukkWzlraitmDxhC4i49rC40SvzUNdHlkhFqQM
- sld8Nj1YcEY7nhB4VHiB+rmG0zq8zMI=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=O45Q78VjajUmhNjZ9bxV6fifz/tZTUgcZtomuFaGtXo=;
+ b=ZOr9+2WbNFQ8uq3F+sq9kov9tpcShIU4X8zm1w5bQfaMpYhg3BDvcNFAop+7XUpqqaXz9j
+ FpIid18ZF2kL76N83/JiScq8cChwP7WCO5GiHouIABBAFehKYm14Dm6P3MXG2LpqX1BY0c
+ NTAUHF5kUspLsolaE+11n81XX6Rvg0M=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-44-bk3MCaTgMmC4njHIIivwMg-1; Mon, 18 Mar 2024 12:17:15 -0400
-X-MC-Unique: bk3MCaTgMmC4njHIIivwMg-1
-Received: by mail-pj1-f71.google.com with SMTP id
- 98e67ed59e1d1-29c7932c5f5so3232638a91.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:17:12 -0700 (PDT)
+ us-mta-654-0CMDQSwNOly2cvbYtFmXUg-1; Mon, 18 Mar 2024 12:18:45 -0400
+X-MC-Unique: 0CMDQSwNOly2cvbYtFmXUg-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-690ab2b0de1so13037556d6.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:18:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778631; x=1711383431;
+ d=1e100.net; s=20230601; t=1710778725; x=1711383525;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UeZ5d5rzVIIFteQdA/cbu9zu3ciyKvxSa3RVrtkb9L4=;
- b=F90xzUmLuFq0igMpuroZA6DJGKOnxmtIkF9r6RoNrIrXhS8980ciyRxl7NPL8cNArv
- kmwdgM6l/s5Pi48pGa5TUEppZq1hXt+3opCX+tdSRbK/vVzkXH0U1yiEsRyL/SHyUDLf
- QA6nJf5AOydW6TTjcB0aeGp/C0X9kJ+aFUFpRK1vZNssuIYlu+YxF/053o2FS42qvt8K
- I8AYJJYkEbfJV0/9V/isoWSVscGeLXWtqf73ak83657wnp/p7bq16RzcBV+gte2GRLVZ
- ++VagMBOr73mBTAReo2vuOmqv3VyzswADIBFx5D1Y8kTGIXC8TuhtygAlVs72CtRBk4L
- 5gIQ==
-X-Gm-Message-State: AOJu0YwcZCLLrTrYKS1a7seesr1hxwpeCyMC7ROPvvpy1x9AIYf2GsQh
- bbcxP4WPQbHI9K2hezqaXKmY5B1E90P/RXJzbLM8SQee1jd2AAbPwiIAPdlfUmYMB/Vj9ClVj9h
- NzuKrWMjMcUcVdji3IcTLp2bw9Lk+imQRYGo9I+J9K1FJ3jIC+SROcxJ+v7G5K++wyruFeoBbyO
- 5qDqeMp/QghzDU6/cPqBXq4VP36+m1+w==
-X-Received: by 2002:a17:90a:d70f:b0:29f:76d4:306a with SMTP id
- y15-20020a17090ad70f00b0029f76d4306amr95136pju.24.1710778630841; 
- Mon, 18 Mar 2024 09:17:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF5MzdmXdTDIjt9SelZTOOy/8UTPKC7Mtw7+npeEpjgginsbYIssEdKu1ldBGXCEMzfMgLbQ==
-X-Received: by 2002:a17:90a:d70f:b0:29f:76d4:306a with SMTP id
- y15-20020a17090ad70f00b0029f76d4306amr95087pju.24.1710778630185; 
- Mon, 18 Mar 2024 09:17:10 -0700 (PDT)
-Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- v10-20020a17090ac90a00b0029be7922b32sm7959526pjt.26.2024.03.18.09.17.07
+ bh=O45Q78VjajUmhNjZ9bxV6fifz/tZTUgcZtomuFaGtXo=;
+ b=k1yXmczzWGfkLjLuabItcBD9oo9QWVZTMOUkHvgyHCwfF/pgAYvz4JeUW+f3XG2D04
+ nhW64prOhBtUs5i5dGXrAdxP9kUYylyGT4dlNDeAlvtrnkLCoeMQoRuhxFIBEKiLMBu2
+ AsGEzgpUX1zsIHZ/VS8F8DBRcg2Vxf59lBZrmHsC1SboCp4qUCMvZI2184+I50xVBAxV
+ rZCpA6MsHPrqZnsg09zfOlnd6pp9g5aSbvwbmorYK2Vaiz+N4JpBR3qMnHeyA4e4iahR
+ t1ToM87B9no/BDRP15gLoXqOhiTJE6MX85VC9/kbttNgFC/0NVDWmxwV2xX6qRhb4EXU
+ Q6+w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUZBrRyQfGjhvlogLsJPg9IxcZCfkjkh/ReGHs9o3eMfa8ihMSCSSZIVaA/NW6YXnpvnsmx4cJN+x40XjvN9OoIh8k/UpA=
+X-Gm-Message-State: AOJu0YxrcfJh4E4JfmlcmVx9bdureQqE2hLJRMaliPRxSr2Gwa6Oh5lA
+ jtwFXUOpaEw3cLJ83n9xwL7WoQng5+lX8N+IcGt1DTZx04On9a5MM+7rC5x258E53PJUd81ahUF
+ VQkMlX/Nk8K9IcED3eb+anI4lGV/77CUE+StmGtK10gxbUaSjJpCmkK1sx5nh
+X-Received: by 2002:a05:6214:3b81:b0:691:402f:510a with SMTP id
+ nf1-20020a0562143b8100b00691402f510amr14500120qvb.0.1710778724782; 
+ Mon, 18 Mar 2024 09:18:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbRzv/hVoyy1LyRnGKHsxmDeohwenvD7dGt0D3rzIDvP5EC6H42MzxEayCO4v3ynAZFZL+LA==
+X-Received: by 2002:a05:6214:3b81:b0:691:402f:510a with SMTP id
+ nf1-20020a0562143b8100b00691402f510amr14500101qvb.0.1710778724342; 
+ Mon, 18 Mar 2024 09:18:44 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ gs13-20020a056214226d00b00690f4a73726sm5349034qvb.61.2024.03.18.09.18.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:17:09 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:17:04 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 24/24] smbios: add extra comments to smbios_get_table_legacy()
-Message-ID: <bb949df637bdb6136a9acca55a2371fe1721e109.1710778506.git.mst@redhat.com>
-References: <cover.1710778506.git.mst@redhat.com>
+ Mon, 18 Mar 2024 09:18:44 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:18:42 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>, qemu-devel@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH 2/2] hw/usb/hcd-xhci.c: allow unaligned access to
+ Capability Registers
+Message-ID: <ZfhpYpHysSM1oA7_@x1n>
+References: <20231211071204.30156-1-tomoyuki.hirose@igel.co.jp>
+ <20231211071204.30156-3-tomoyuki.hirose@igel.co.jp>
+ <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1710778506.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <CAFEAcA90fJgPGAjO0c4a=G+ge9bp1piVw40zt_rNHEoCTc_ngg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -99,42 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Igor Mammedov <imammedo@redhat.com>
+On Mon, Dec 11, 2023 at 01:57:42PM +0000, Peter Maydell wrote:
+> On Mon, 11 Dec 2023 at 07:13, Tomoyuki HIROSE
+> <tomoyuki.hirose@igel.co.jp> wrote:
+> >
+> > According to xHCI spec rev 1.2, unaligned access to xHCI Host
+> > Controller Capability Registers is not prohibited. In Addition, the
+> > limit of access size is also unspecified. Actually, some real devices
+> > allow unaligned access and 8-byte access to these registers.
+> > This commit makes it possible to unaligned access and 8-byte access
+> > to Host Controller Capability Registers.
+> 
+> We should definitely look at fixing the unaligned access
+> stuff, but the linked bug report is not trying to do an
+> unaligned access -- it wants to do a 2-byte read from offset 2,
+> which is aligned.
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Message-Id: <20240314152302.2324164-22-imammedo@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/smbios/smbios_legacy.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+IIUC the issue is the xHCI xhci_cap_ops defines impl.min_access_size=4.
+Then it'll be enlarged to 4 bytes read on offset 0x2.  IOW, I think it'll
+also work if xhci_cap_ops can support impl.min_access_size=2, however I
+don't know whether that can be more than that register, so that the memory
+patch is still a more generic approach.
 
-diff --git a/hw/smbios/smbios_legacy.c b/hw/smbios/smbios_legacy.c
-index 06907cd16c..c37a8ee821 100644
---- a/hw/smbios/smbios_legacy.c
-+++ b/hw/smbios/smbios_legacy.c
-@@ -151,6 +151,9 @@ uint8_t *smbios_get_table_legacy(size_t *length, Error **errp)
-     smbios_entries_len = sizeof(uint16_t);
-     smbios_entries = g_malloc0(smbios_entries_len);
- 
-+    /*
-+     * build a set of legacy smbios_table entries using user provided blobs
-+     */
-     for (i = 0, usr_offset = 0; usr_blobs_sizes && i < usr_blobs_sizes->len;
-          i++)
-     {
-@@ -166,6 +169,10 @@ uint8_t *smbios_get_table_legacy(size_t *length, Error **errp)
-         table->header.length = cpu_to_le16(sizeof(*table) + size);
-         memcpy(table->data, header, size);
-         smbios_entries_len += sizeof(*table) + size;
-+        /*
-+         * update number of entries in the blob,
-+         * see SeaBIOS: qemu_cfg_legacy():QEMU_CFG_SMBIOS_ENTRIES
-+         */
-         (*(uint16_t *)smbios_entries) =
-             cpu_to_le16(le16_to_cpu(*(uint16_t *)smbios_entries) + 1);
-         usr_offset += size;
+Thanks,
+
 -- 
-MST
+Peter Xu
 
 
