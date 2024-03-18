@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEFD87ED36
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:17:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B132487ED46
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:19:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFe8-000702-Ps; Mon, 18 Mar 2024 12:15:32 -0400
+	id 1rmFeQ-000733-TP; Mon, 18 Mar 2024 12:15:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmFe4-0006yW-62
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:28 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeC-00071A-8G
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmFe2-0004Ps-BV
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeA-0004UP-HD
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778523;
+ s=mimecast20190719; t=1710778533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PYKUVe+R/AI6Jux+MQS3obISa51Dg5rB22KdrQYfWcY=;
- b=OCSn2VEMnhocLXJmSGjpSuCH4gSb05/Tg1pSVePYIvSdo9obJZmJBQX8EJfMdU2pDYuetk
- mn66dchaG5aJx1SJqhgolsQCb9GrX5FSykAemJFoEHC6sAXhg5WKFB/Zr/nxw3BooiF9TL
- HKoHpwA5EEB7yaMrAuFIl2FciOr8Uaw=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=00h93f70ec4XHII5CBafc0py/HlgrIQOPPmoAXMXwQs=;
+ b=JiSDThbY2q0t7Ul3ty1XlUUX1TSYNlMCT4C1jwBTRckungEM8l0BtzG/21KaTo4AIlXFIa
+ w0BSdFrDgJJHfbUmCQ5yyrXzm9GJAokGjHRJ2Rlp1hsFQF4qBNg5W50BdmwFOFARqU8ecn
+ KofhWVzB89gckT8rRY5gZbulqqAyx7g=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-9aUJN2wFPqG6c6ScUfR4rw-1; Mon, 18 Mar 2024 12:15:20 -0400
-X-MC-Unique: 9aUJN2wFPqG6c6ScUfR4rw-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-430d73c0492so2604701cf.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:20 -0700 (PDT)
+ us-mta-341-TeztwhREOZKQBIYgpInJlA-1; Mon, 18 Mar 2024 12:15:31 -0400
+X-MC-Unique: TeztwhREOZKQBIYgpInJlA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-41413c99712so3682055e9.3
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778520; x=1711383320;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PYKUVe+R/AI6Jux+MQS3obISa51Dg5rB22KdrQYfWcY=;
- b=Wl7vbn1hqu3mydQwZ7tCdDrrRN/szdEn88dr5dl/U6ZF/NUhw2/w3s+wRVaRRnBK15
- DT5yVFdRKfkEpRfzdQjWlqb8cs/RXsCoMsJ8uoMo0ndRUOlzPW/BzFut/Q4aeZuHnmya
- +o/lrjuSRyte+t5pQoWdxY1DO96Fadt2FNsD5Kx/NbotjT5kiWqkymdBt4yFgak5OM/m
- 6f8FiY98/h8+8hxbB3U8hNeDQTOl7g8jW3CMh1l8MInkJ8piBAfr9Kiu/4QNCM34W5xj
- FiOgtwQrw3OT1jd5A8fGy++TUXCBu9k/dZfpKA4YPpnlZxWEPG9QCcqPStHhYde/Yb4p
- QCeA==
-X-Gm-Message-State: AOJu0YyOK/Zn5g4fOFwmSlLujuvhhJRUQnSe+DBkRmPO1Rq+i8YTzfKl
- YQpql+ksamumUhO9y5SqJ6sEblZRbuTZTMezqBi7j5PjOcZhj4FPWrQVJ0/EJ7Zp0Us/m+nPZz2
- 7MxkdiktUrkq4NWJmbIDA9DrX/LZFxmwNxEkUG2GPJz//hbEN2cLU
-X-Received: by 2002:a05:6214:4384:b0:691:2524:2d87 with SMTP id
- oh4-20020a056214438400b0069125242d87mr14276354qvb.2.1710778519759; 
- Mon, 18 Mar 2024 09:15:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyg1Zs2TFt2knjFawIurlWGWL9rEMIkaTXzXQcy6YOYzDkt91KmE7edm/Ce7fUnDslS5HXjg==
-X-Received: by 2002:a05:6214:4384:b0:691:2524:2d87 with SMTP id
- oh4-20020a056214438400b0069125242d87mr14276324qvb.2.1710778519257; 
- Mon, 18 Mar 2024 09:15:19 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- gm9-20020a056214268900b00691865eae7bsm3403408qvb.4.2024.03.18.09.15.18
+ d=1e100.net; s=20230601; t=1710778530; x=1711383330;
+ h=content-transfer-encoding:content-disposition:mime-version
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=00h93f70ec4XHII5CBafc0py/HlgrIQOPPmoAXMXwQs=;
+ b=vSXeG5oy7vYoA2A07+8iFMaLUVdFGYST1gITMi2Qmc0m/2ZTFnPnVnIgz25erGQOqV
+ 8tSmuboh2RNhrhNKayO2ozSHHtppabFZ5Up9/kdJ7AnmQo48GcDk0syOUzt7vw/9Q5qp
+ eIDmpqdb4WzvgDSQBcHevkfxgXM7NT5sHY8H7Zk4n6Hcxz2six+r8Egu4mJ7gTrssadS
+ nQ51Bzl+lNBnrzBCwBqcgggycmHN0pz2hAIcIIvL1W5+raXssjegYjjdiW8ppEvfyBJl
+ kEba20BMKJo/ml5iE5jVXS/UAEGBQXs+G3STJ5QiyOzmCTpznPvR4LCjClq8NmWNsfSc
+ 9pAA==
+X-Gm-Message-State: AOJu0Yybe2Zv/sXPxHaPw9T5WoGmspQTB8UJQ3CFuYod5PAeDh8YXbiu
+ J9A6dE8YaLziDB4Uoe6NKoM2ooDCwVJcj7y24wQSPBagbX4yCKsuiQKXpmTr2F296+JJzEJFqZS
+ B8TFnb2UibSwsMO84NfcroAFFFKHk5tMOmgvcGrGL6chwsNLM3Ale8dTsW/GUR/2CYXnObg3H8D
+ pK/Bxd5PCZ5tAJnLrP2ZyRJicblSRNWw==
+X-Received: by 2002:a05:600c:4f06:b0:414:1363:53a6 with SMTP id
+ l6-20020a05600c4f0600b00414136353a6mr1390947wmq.35.1710778530178; 
+ Mon, 18 Mar 2024 09:15:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcEktHYiUK+GxHuMPm5md59CwWzyRFk6Xof143WvkBN1zWNNLewchUOyqTeL84MrUteBMnaQ==
+X-Received: by 2002:a05:600c:4f06:b0:414:1363:53a6 with SMTP id
+ l6-20020a05600c4f0600b00414136353a6mr1390928wmq.35.1710778529583; 
+ Mon, 18 Mar 2024 09:15:29 -0700 (PDT)
+Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
+ g14-20020a5d540e000000b0033e95bf4796sm10119527wrv.27.2024.03.18.09.15.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:15:18 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:15:16 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2 1/2] system/memory.c: support unaligned access
-Message-ID: <ZfholB7fuWEbuBss@x1n>
-References: <20240201081313.1339788-1-tomoyuki.hirose@igel.co.jp>
- <20240201081313.1339788-2-tomoyuki.hirose@igel.co.jp>
+ Mon, 18 Mar 2024 09:15:28 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:15:26 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 00/24] virtio,pc,pci: bugfixes
+Message-ID: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240201081313.1339788-2-tomoyuki.hirose@igel.co.jp>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -99,114 +97,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+The following changes since commit ba49d760eb04630e7b15f423ebecf6c871b8f77b:
 
-On Thu, Feb 01, 2024 at 05:13:12PM +0900, Tomoyuki HIROSE wrote:
-> The previous code ignored 'impl.unaligned' and handled unaligned accesses
-> as is. But this implementation cannot emulate specific registers of some
-> devices that allow unaligned access such as xHCI Host Controller Capability
-> Registers.
-> This commit checks 'impl.unaligned' and if it is false, QEMU emulates
-> unaligned access with multiple aligned access.
+  Merge tag 'pull-maintainer-final-130324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-13 15:12:14 +0000)
 
-This patch looks mostly good to me.  Just a few trivial comments.
+are available in the Git repository at:
 
-Firstly, can we provide the USB example here (or also the bug link) so that
-we can still pick up the context of why this will start to be useful when
-people read about this commit separately?
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
 
-> 
-> Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
-> ---
->  system/memory.c | 38 +++++++++++++++++++++++++-------------
->  1 file changed, 25 insertions(+), 13 deletions(-)
-> 
-> diff --git a/system/memory.c b/system/memory.c
-> index a229a79988..a7ca0c9f54 100644
-> --- a/system/memory.c
-> +++ b/system/memory.c
-> @@ -535,10 +535,17 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
->                                        MemTxAttrs attrs)
->  {
->      uint64_t access_mask;
-> +    unsigned access_mask_shift;
-> +    unsigned access_mask_start_offset;
-> +    unsigned access_mask_end_offset;
->      unsigned access_size;
-> -    unsigned i;
->      MemTxResult r = MEMTX_OK;
->      bool reentrancy_guard_applied = false;
-> +    bool is_big_endian = memory_region_big_endian(mr);
-> +    signed start_diff;
-> +    signed current_offset;
-> +    signed access_shift;
-> +    hwaddr current_addr;
->  
->      if (!access_size_min) {
->          access_size_min = 1;
-> @@ -560,19 +567,24 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
->          reentrancy_guard_applied = true;
->      }
->  
-> -    /* FIXME: support unaligned access? */
->      access_size = MAX(MIN(size, access_size_max), access_size_min);
-> -    access_mask = MAKE_64BIT_MASK(0, access_size * 8);
-> -    if (memory_region_big_endian(mr)) {
-> -        for (i = 0; i < size; i += access_size) {
-> -            r |= access_fn(mr, addr + i, value, access_size,
-> -                        (size - access_size - i) * 8, access_mask, attrs);
-> -        }
-> -    } else {
-> -        for (i = 0; i < size; i += access_size) {
-> -            r |= access_fn(mr, addr + i, value, access_size, i * 8,
-> -                        access_mask, attrs);
-> -        }
-> +    start_diff = mr->ops->impl.unaligned ? 0 : addr & (access_size - 1);
-> +    current_addr = addr - start_diff;
-> +    for (current_offset = -start_diff; current_offset < (signed)size;
-> +         current_offset += access_size, current_addr += access_size) {
-> +        access_shift = is_big_endian
-> +                          ? (signed)size - (signed)access_size - current_offset
-> +                          : current_offset;
-> +        access_mask_shift = current_offset > 0 ? 0 : -current_offset;
-> +        access_mask_start_offset = current_offset > 0 ? current_offset : 0;
-> +        access_mask_end_offset = current_offset + access_size > size
-> +                                     ? size
-> +                                     : current_offset + access_size;
+for you to fetch changes up to bb949df637bdb6136a9acca55a2371fe1721e109:
 
-Maybe this looks slightly easier to read?
+  smbios: add extra comments to smbios_get_table_legacy() (2024-03-18 08:42:46 -0400)
 
-        if (current_offset < 0) {
-            access_mask_shift = -current_offset;
-            access_mask_start_offset = 0;
-        } else {
-            access_mask_shift = 0;
-            access_mask_start_offset = current_offset;
-        }
-        access_mask_end_offset = MIN(current_offset + access_size, size);
+----------------------------------------------------------------
+virtio,pc,pci: bugfixes
 
-But I confess this can be pretty subjective..
+Some minor fixes plus a big patchset from Igor fixing
+a regression with windows.
 
-Since PeterM used to comment, please remember to copy PeterM too in the
-future post in case this got overlooked.
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 
-Peter, do you still have any other comments or concerns?
+----------------------------------------------------------------
+Igor Mammedov (21):
+      tests: smbios: make it possible to write SMBIOS only test
+      tests: smbios: add test for -smbios type=11 option
+      tests: smbios: add test for legacy mode CLI options
+      smbios: cleanup smbios_get_tables() from legacy handling
+      smbios: get rid of smbios_smp_sockets global
+      smbios: get rid of smbios_legacy global
+      smbios: avoid mangling user provided tables
+      smbios: don't check type4 structures in legacy mode
+      smbios: add smbios_add_usr_blob_size() helper
+      smbios: rename/expose structures/bitmaps used by both legacy and modern code
+      smbios: build legacy mode code only for 'pc' machine
+      smbios: handle errors consistently
+      smbios: get rid of global smbios_ep_type
+      smbios: clear smbios_type4_count before building tables
+      smbios: extend smbios-entry-point-type with 'auto' value
+      smbios: in case of entry point is 'auto' try to build v2 tables 1st
+      smbios: error out when building type 4 table is not possible
+      tests: acpi/smbios: whitelist expected blobs
+      pc/q35: set SMBIOS entry point type to 'auto' by default
+      tests: acpi: update expected SSDT.dimmpxm blob
+      smbios: add extra comments to smbios_get_table_legacy()
 
-Thanks,
+Michael S. Tsirkin (2):
+      SMBIOS: fix long lines
+      qapi: document PCIe Gen5/Gen6 speeds since 9.0
 
-> +        access_mask = MAKE_64BIT_MASK(access_mask_shift * 8,
-> +            (access_mask_end_offset - access_mask_start_offset) * 8);
-> +
-> +        r |= access_fn(mr, current_addr, value, access_size, access_shift * 8,
-> +                       access_mask, attrs);
->      }
->      if (mr->dev && reentrancy_guard_applied) {
->          mr->dev->mem_reentrancy_guard.engaged_in_io = false;
-> -- 
-> 2.39.2
-> 
+Thomas Weißschuh (1):
+      docs/specs/pvpanic: mark shutdown event as not implemented
 
--- 
-Peter Xu
+ qapi/common.json                     |   4 +-
+ qapi/machine.json                    |   5 +-
+ hw/i386/fw_cfg.h                     |   3 +-
+ include/hw/firmware/smbios.h         |  28 +-
+ hw/arm/virt.c                        |   6 +-
+ hw/i386/fw_cfg.c                     |  14 +-
+ hw/i386/pc.c                         |   4 +-
+ hw/i386/pc_piix.c                    |   4 +
+ hw/i386/pc_q35.c                     |   3 +
+ hw/loongarch/virt.c                  |   7 +-
+ hw/riscv/virt.c                      |   6 +-
+ hw/smbios/smbios.c                   | 508 +++++++++++++++--------------------
+ hw/smbios/smbios_legacy.c            | 192 +++++++++++++
+ hw/smbios/smbios_legacy_stub.c       |  15 ++
+ tests/qtest/bios-tables-test.c       |  81 +++++-
+ docs/specs/pvpanic.rst               |   2 +-
+ hw/i386/Kconfig                      |   1 +
+ hw/smbios/Kconfig                    |   2 +
+ hw/smbios/meson.build                |   4 +
+ tests/data/acpi/q35/SSDT.dimmpxm     | Bin 1815 -> 1815 bytes
+ tests/data/smbios/type11_blob        | Bin 0 -> 11 bytes
+ tests/data/smbios/type11_blob.legacy | Bin 0 -> 10 bytes
+ 22 files changed, 558 insertions(+), 331 deletions(-)
+ create mode 100644 hw/smbios/smbios_legacy.c
+ create mode 100644 hw/smbios/smbios_legacy_stub.c
+ create mode 100644 tests/data/smbios/type11_blob
+ create mode 100644 tests/data/smbios/type11_blob.legacy
 
 
