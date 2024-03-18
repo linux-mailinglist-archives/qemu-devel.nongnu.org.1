@@ -2,91 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6C4B87EB78
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:56:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6153487EB7F
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 15:58:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmEOD-0003GY-5z; Mon, 18 Mar 2024 10:55:01 -0400
+	id 1rmER2-0004u0-CZ; Mon, 18 Mar 2024 10:57:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rmEO7-0003Fs-PX
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:54:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rmEQz-0004tq-OK
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:57:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1rmEO5-0006uL-6V
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:54:55 -0400
+ id 1rmEQu-0007fG-NY
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 10:57:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710773690;
+ s=mimecast20190719; t=1710773868;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6aEuYRjBQEZI5V8EC4/CRtllUeT8VoS3YDZXi2ULUjk=;
- b=dqsmeMZb60vrL4kqK7dvX4Fz0VWkK1FTsdxPni5uB653Z0Uqb12LHUay9XOu8ZZeE1bCKM
- Hpd1OpiFq+lcG3kFYgkgRokMWhuAl5jUKPie4ekPhiGr/tGC+eqN5PrUfSpPITQUv8JFmJ
- qE2n843tXBk7Bmc/4lvR9G01wJeu1KU=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jMIBgqI3MkwAF4ZPtjxTDESi3HDz0gCjneWLhECjKps=;
+ b=cPDjCeCz/25n72u1OaK8LrEw829Rh/y+tSwos6j5A2sG6JEwjKJBCzbk09Kl59yicU8Kcq
+ KzkmIUduzPApRiO5TR0Ypb8FB9bl+OkPpDe+A0qpgoDVRK4HLoIZv60CcbTQCaB5klimVf
+ 3334gLfs7Oi+R5KRNhsSvhoptXm3nqw=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-235-i_A-ADz3OVai7AlsNdbizQ-1; Mon, 18 Mar 2024 10:54:49 -0400
-X-MC-Unique: i_A-ADz3OVai7AlsNdbizQ-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-dccc49ef73eso5500803276.2
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 07:54:49 -0700 (PDT)
+ us-mta-324-kdXGbToEM62HgHwEgBdA6A-1; Mon, 18 Mar 2024 10:57:40 -0400
+X-MC-Unique: kdXGbToEM62HgHwEgBdA6A-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-690e820dd84so81684786d6.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 07:57:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710773689; x=1711378489;
+ d=1e100.net; s=20230601; t=1710773860; x=1711378660;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6aEuYRjBQEZI5V8EC4/CRtllUeT8VoS3YDZXi2ULUjk=;
- b=QQ6PN1UZEItK3sbmYmzjS9X+ZGaJ9CfymJAQwie+jD+GBiG0E5TaWqwLyZnwoEJIlG
- ltyKlVndX8JjXTY1JpPpTJST0kTgxgMIPqTEySgoQbZuJjh5/xl+5uLtKwF345MUa77t
- 6P++w3Ah2/+1urhV5ZxMZjsxQPHdigTO/LFnVFPEYado/we+CmA71P0nnIHtsWiFjgyi
- KxuISNpnhguf/cT13AP8g/LZ4MV00ioccxi5WS2wgpYmh8249yo5erSO5C0A7vLUr9bM
- xK5ysUe4X3t58yv/MqA1BhH8gLKcwW2x5MtXdJy3dQT1HqSQqCabaBobNTfgvo/+AC65
- 3pOA==
+ bh=jMIBgqI3MkwAF4ZPtjxTDESi3HDz0gCjneWLhECjKps=;
+ b=qZpWlX544VIDBisBAUulaqsfCHMzFs6knl4KsMQVmdw7QZUoA8UglRs5qwnV8UisXp
+ wliSdN+SkmLYm0hMTf3+4AUKGEP32U+Nc4l9cPPH2nC2W4nKL+s9IxnAAVkcFw3p2/fV
+ bOEPY1F1DSmAgT5Cm5ApX08+TNYicBU96vnN2+vx22HfU77Y5UYCWm9xh7DxmI68dl1x
+ SX2RXcm9lMm/vhZEQHoOcb8oM4RWBXp8JsUeYx6NGtB6VGpDE5dLd3qcHD8M00NvRZWD
+ I0Uw5TOqYB/kbj2BAfDilbOogKEfzhriLwBGlHKQHt7tCDM7uux1IHdYhNoBEebFBqDT
+ wILg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXm2xqcF2jq2+wOYjMb3VIxH1yddVwvYxhdFJl0sosVkcFlD18GYlD4M3KHHOjdKBBPIJog2AXtZWdXpVDaqo3XtRMP6lw=
-X-Gm-Message-State: AOJu0Yw5kLQ+1QFy5yPOftcECURT2oOijC4Qsi1k1sc8mX5ghqDPDn+m
- 2nFU3ctdxNY0/lW2+0319YfUq9iC0bS1e8zWZCkjLTYj1AZ+XgVgLFRSG4oVRTEz+5Vtivqnwpx
- LFC5Yak3qJw1ki/1YOAsxzlx564lPfa5lRsZFqL/5sj9pivxVJk3e
-X-Received: by 2002:a05:6902:82:b0:dc2:2041:fc49 with SMTP id
- h2-20020a056902008200b00dc22041fc49mr7149467ybs.5.1710773687494; 
- Mon, 18 Mar 2024 07:54:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEYGV+O2/PW24LEV3XLKpAXIwUiWGUaVuxW2YhMnjHwAWakFj1Z0/Q5EIXy2OnuOS8Bv6VukA==
-X-Received: by 2002:a05:6902:82:b0:dc2:2041:fc49 with SMTP id
- h2-20020a056902008200b00dc22041fc49mr7149449ybs.5.1710773687204; 
- Mon, 18 Mar 2024 07:54:47 -0700 (PDT)
+ AJvYcCVoWpvrMlTotqjH2cGLEHpwQcq1wX0AbJj10PItICxV/4eK/oV+d7LcoWvm4ias0cx1H739fB2PG+ZfxVLBmBb4dNyoHbc=
+X-Gm-Message-State: AOJu0YzskxsmVshO27NMfJOKLP17e1Yia7NugyFRJLGo9PojjC4TTY13
+ 0nT524hWpxEvwh8Tjs3U4+ELfCx2+A5Y90PXTTRmvYJYT6+w3qRji5xdy8qfKo8Wtmg4N9IVZ32
+ BRukKiB1hn0XHAOpGzOqagC5EVt04YgZlfC6xZdRA5klEF17Gcg3x
+X-Received: by 2002:a0c:9c0a:0:b0:691:2de1:296c with SMTP id
+ v10-20020a0c9c0a000000b006912de1296cmr17472023qve.11.1710773859978; 
+ Mon, 18 Mar 2024 07:57:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1YTy0gW5z94WC0hKqeeD7D/OroJPX58zlVDKX3KidzjVLP9dhgPegweN3F0XB7QQwbM0KGA==
+X-Received: by 2002:a0c:9c0a:0:b0:691:2de1:296c with SMTP id
+ v10-20020a0c9c0a000000b006912de1296cmr17471992qve.11.1710773859658; 
+ Mon, 18 Mar 2024 07:57:39 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- f3-20020ac84983000000b0042f0504229esm4995727qtq.60.2024.03.18.07.54.44
+ pp26-20020a056214139a00b00691732938a8sm4484902qvb.73.2024.03.18.07.57.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 07:54:46 -0700 (PDT)
-Message-ID: <db2f0780-7817-423b-a286-c3c67b95367c@redhat.com>
-Date: Mon, 18 Mar 2024 15:54:43 +0100
+ Mon, 18 Mar 2024 07:57:39 -0700 (PDT)
+Message-ID: <0d8cba1e-a422-421b-9c02-c60452cf5f80@redhat.com>
+Date: Mon, 18 Mar 2024 15:57:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 11/11] backends/iommufd: Introduce helper function
- iommufd_device_get_info()
+Subject: Re: [PATCH v1 00/11] Add a host IOMMU device abstraction
 Content-Language: en-US
 To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, peterx@redhat.com,
  jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
  joao.m.martins@oracle.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, Yi Sun <yi.y.sun@linux.intel.com>
+ yi.y.sun@intel.com, chao.p.peng@intel.com
 References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
- <20240228035900.1085727-12-zhenzhong.duan@intel.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20240228035900.1085727-12-zhenzhong.duan@intel.com>
+In-Reply-To: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -112,81 +110,93 @@ Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhenzhong,
 
-On 2/28/24 04:59, Zhenzhong Duan wrote:
-> Introduce a helper function iommufd_device_get_info() to get
-> host IOMMU related information through iommufd uAPI.
-Looks strange to have this patch in this series. I Would rather put it
-in your second series alongs with its user.
+
+On 2/28/24 04:58, Zhenzhong Duan wrote:
+> Hi,
+>
+> Based on Joao's suggestion, the iommufd nesting prerequisite series [1]
+> is further splitted to host IOMMU device abstract part and vIOMMU
+> check/sync part. This series implements the 1st part.
+>
+> This split also faciliates the dirty tracking series [2] and virtio-iommu
+> series [3] to depend on 1st part.
+>
+> PATCH1-3: Introduce HostIOMMUDevice and two sub class
+> PATCH4: Define HostIOMMUDevice handle in VFIODevice
+> PATCH5-8: Introdcue host_iommu_device_create callback to allocate and intialize HostIOMMUDevice
+Introduce, here and below
 
 Eric
+> PATCH9-10: Introdcue set/unset_iommu_device to pass HostIOMMUDevice to vIOMMU
+> PATCH11: a helper to get host IOMMU info
 >
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->  include/sysemu/iommufd.h |  4 ++++
->  backends/iommufd.c       | 23 ++++++++++++++++++++++-
->  2 files changed, 26 insertions(+), 1 deletion(-)
+> Because it's becoming clear on community's suggestion, I'd like to remove
+> rfc tag from this version.
 >
-> diff --git a/include/sysemu/iommufd.h b/include/sysemu/iommufd.h
-> index d509ff88ef..518b97bfed 100644
-> --- a/include/sysemu/iommufd.h
-> +++ b/include/sysemu/iommufd.h
-> @@ -4,6 +4,7 @@
->  #include "qom/object.h"
->  #include "exec/hwaddr.h"
->  #include "exec/cpu-common.h"
-> +#include <linux/iommufd.h>
->  #include "sysemu/host_iommu_device.h"
->  
->  #define TYPE_IOMMUFD_BACKEND "iommufd"
-> @@ -48,4 +49,7 @@ typedef struct IOMMUFDDevice {
->  
->  void iommufd_device_init(IOMMUFDDevice *idev,
->                           IOMMUFDBackend *iommufd, int devid);
-> +int iommufd_device_get_info(IOMMUFDDevice *idev,
-> +                            enum iommu_hw_info_type *type,
-> +                            uint32_t len, void *data, Error **errp);
->  #endif
-> diff --git a/backends/iommufd.c b/backends/iommufd.c
-> index 6d280e4aea..69f3f75ea5 100644
-> --- a/backends/iommufd.c
-> +++ b/backends/iommufd.c
-> @@ -20,7 +20,6 @@
->  #include "monitor/monitor.h"
->  #include "trace.h"
->  #include <sys/ioctl.h>
-> -#include <linux/iommufd.h>
->  
->  static void iommufd_backend_init(Object *obj)
->  {
-> @@ -240,3 +239,25 @@ void iommufd_device_init(IOMMUFDDevice *idev,
->      idev->iommufd = iommufd;
->      idev->devid = devid;
->  }
-> +
-> +int iommufd_device_get_info(IOMMUFDDevice *idev,
-> +                            enum iommu_hw_info_type *type,
-> +                            uint32_t len, void *data, Error **errp)
-> +{
-> +    struct iommu_hw_info info = {
-> +        .size = sizeof(info),
-> +        .dev_id = idev->devid,
-> +        .data_len = len,
-> +        .data_uptr = (uintptr_t)data,
-> +    };
-> +    int ret;
-> +
-> +    ret = ioctl(idev->iommufd->fd, IOMMU_GET_HW_INFO, &info);
-> +    if (ret) {
-> +        error_setg_errno(errp, errno, "Failed to get hardware info");
-> +    } else {
-> +        *type = info.out_data_type;
-> +    }
-> +
-> +    return ret;
-> +}
+> Qemu code can be found at:
+> https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_preq_part1_v1
+>
+> [1] https://lore.kernel.org/qemu-devel/20240201072818.327930-1-zhenzhong.duan@intel.com/
+> [2] https://lore.kernel.org/qemu-devel/20240212135643.5858-1-joao.m.martins@oracle.com/
+> [3] https://lore.kernel.org/qemu-devel/20240117080414.316890-1-eric.auger@redhat.com/
+>
+> Thanks
+> Zhenzhong
+>
+> Changelog:
+> v1:
+> - use HostIOMMUDevice handle instead of union in VFIODevice (Eric)
+> - change host_iommu_device_init to host_iommu_device_create
+> - allocate HostIOMMUDevice in host_iommu_device_create callback
+>   and set the VFIODevice base_hdev handle (Eric)
+> - refine pci_device_set/unset_iommu_device doc (Eric)
+> - use HostIOMMUDevice handle instead of union in VTDHostIOMMUDevice (Eric)
+>
+> rfcv2:
+> - introduce common abstract HostIOMMUDevice and sub struct for different BEs (Eric, Cédric)
+> - remove iommufd_device.[ch] (Cédric)
+> - remove duplicate iommufd/devid define from VFIODevice (Eric)
+> - drop the p in aliased_pbus and aliased_pdevfn (Eric)
+> - assert devfn and iommu_bus in pci_device_get_iommu_bus_devfn (Cédric, Eric)
+> - use errp in iommufd_device_get_info (Eric)
+> - split and simplify cap/ecap check/sync code in intel_iommu.c (Cédric)
+> - move VTDHostIOMMUDevice declaration to intel_iommu_internal.h (Cédric)
+> - make '(vtd->cap_reg >> 16) & 0x3fULL' a MACRO and add missed '+1' (Cédric)
+> - block migration if vIOMMU cap/ecap updated based on host IOMMU cap/ecap
+> - add R-B
+>
+>
+> Yi Liu (1):
+>   hw/pci: Introduce pci_device_set/unset_iommu_device()
+>
+> Zhenzhong Duan (10):
+>   Introduce a common abstract struct HostIOMMUDevice
+>   backends/iommufd: Introduce IOMMUFDDevice
+>   vfio: Introduce IOMMULegacyDevice
+>   vfio: Add HostIOMMUDevice handle into VFIODevice
+>   vfio: Introduce host_iommu_device_create callback
+>   vfio/container: Implement host_iommu_device_create callback in legacy
+>     mode
+>   vfio/iommufd: Implement host_iommu_device_create callback in iommufd
+>     mode
+>   vfio/pci: Allocate and initialize HostIOMMUDevice after attachment
+>   vfio: Pass HostIOMMUDevice to vIOMMU
+>   backends/iommufd: Introduce helper function iommufd_device_get_info()
+>
+>  include/hw/pci/pci.h                  | 38 +++++++++++++++-
+>  include/hw/vfio/vfio-common.h         |  8 ++++
+>  include/hw/vfio/vfio-container-base.h |  1 +
+>  include/sysemu/host_iommu_device.h    | 22 ++++++++++
+>  include/sysemu/iommufd.h              | 19 ++++++++
+>  backends/iommufd.c                    | 32 +++++++++++++-
+>  hw/pci/pci.c                          | 62 +++++++++++++++++++++++++--
+>  hw/vfio/common.c                      |  8 ++++
+>  hw/vfio/container.c                   |  9 ++++
+>  hw/vfio/iommufd.c                     | 10 +++++
+>  hw/vfio/pci.c                         | 24 ++++++++---
+>  11 files changed, 223 insertions(+), 10 deletions(-)
+>  create mode 100644 include/sysemu/host_iommu_device.h
+>
 
 
