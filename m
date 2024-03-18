@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C204987E5F2
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 10:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 853BE87E5ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 10:38:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rm9R6-00042N-EL; Mon, 18 Mar 2024 05:37:40 -0400
+	id 1rm9Qq-0003tm-SX; Mon, 18 Mar 2024 05:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rm9Qw-0003x9-QJ; Mon, 18 Mar 2024 05:37:31 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
+ id 1rm9Qk-0003se-Ko; Mon, 18 Mar 2024 05:37:19 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rm9Ql-0000vY-5j; Mon, 18 Mar 2024 05:37:30 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TyqVc00rSz1vx6n;
- Mon, 18 Mar 2024 17:36:23 +0800 (CST)
+ id 1rm9Qg-0000vd-8K; Mon, 18 Mar 2024 05:37:17 -0400
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4TyqSZ4cBlz2BgQr;
+ Mon, 18 Mar 2024 17:34:38 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 5DBA61A016F;
- Mon, 18 Mar 2024 17:37:09 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 4042F1400CB;
+ Mon, 18 Mar 2024 17:37:10 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Mar
- 2024 17:37:08 +0800
+ 2024 17:37:09 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [RFC PATCH v8 12/23] target/arm: Handle NMI in
- arm_cpu_do_interrupt_aarch64()
-Date: Mon, 18 Mar 2024 09:35:34 +0000
-Message-ID: <20240318093546.2786144-13-ruanjinjie@huawei.com>
+Subject: [RFC PATCH v8 13/23] hw/intc/arm_gicv3: Add irq superpriority
+ information
+Date: Mon, 18 Mar 2024 09:35:35 +0000
+Message-ID: <20240318093546.2786144-14-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240318093546.2786144-1-ruanjinjie@huawei.com>
 References: <20240318093546.2786144-1-ruanjinjie@huawei.com>
@@ -44,8 +44,8 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
- helo=szxga06-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -69,39 +69,55 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-with superpriority is always IRQ, never FIQ, so the NMI exception trap entry
-behave like IRQ. And VNMI(vIRQ with Superpriority) can be raised from the
-GIC or come from the hcrx_el2.HCRX_VINMI bit.
+A SPI, PPI or SGI interrupt can have a superpriority property. So
+maintain superpriority information in PendingIrq and GICR/GICD.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v7:
-- Add Reviewed-by.
-v6:
-- Not combine VFNMI with CPU_INTERRUPT_VNMI.
-v4:
-- Also handle VNMI in arm_cpu_do_interrupt_aarch64().
 v3:
-- Remove the FIQ NMI handle.
+- Place this ahead of implement GICR_INMIR.
+- Add Acked-by.
 ---
- target/arm/helper.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/hw/intc/arm_gicv3_common.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 81f4a8f194..e279b26e9d 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11625,6 +11625,8 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-         break;
-     case EXCP_IRQ:
-     case EXCP_VIRQ:
-+    case EXCP_NMI:
-+    case EXCP_VNMI:
-         addr += 0x80;
-         break;
-     case EXCP_FIQ:
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 7324c7d983..df4380141d 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -146,6 +146,7 @@ typedef struct {
+     int irq;
+     uint8_t prio;
+     int grp;
++    bool superprio;
+ } PendingIrq;
+ 
+ struct GICv3CPUState {
+@@ -172,6 +173,7 @@ struct GICv3CPUState {
+     uint32_t gicr_ienabler0;
+     uint32_t gicr_ipendr0;
+     uint32_t gicr_iactiver0;
++    uint32_t gicr_isuperprio;
+     uint32_t edge_trigger; /* ICFGR0 and ICFGR1 even bits */
+     uint32_t gicr_igrpmodr0;
+     uint32_t gicr_nsacr;
+@@ -274,6 +276,7 @@ struct GICv3State {
+     GIC_DECLARE_BITMAP(active);       /* GICD_ISACTIVER */
+     GIC_DECLARE_BITMAP(level);        /* Current level */
+     GIC_DECLARE_BITMAP(edge_trigger); /* GICD_ICFGR even bits */
++    GIC_DECLARE_BITMAP(superprio);    /* GICD_INMIR */
+     uint8_t gicd_ipriority[GICV3_MAXIRQ];
+     uint64_t gicd_irouter[GICV3_MAXIRQ];
+     /* Cached information: pointer to the cpu i/f for the CPUs specified
+@@ -313,6 +316,7 @@ GICV3_BITMAP_ACCESSORS(pending)
+ GICV3_BITMAP_ACCESSORS(active)
+ GICV3_BITMAP_ACCESSORS(level)
+ GICV3_BITMAP_ACCESSORS(edge_trigger)
++GICV3_BITMAP_ACCESSORS(superprio)
+ 
+ #define TYPE_ARM_GICV3_COMMON "arm-gicv3-common"
+ typedef struct ARMGICv3CommonClass ARMGICv3CommonClass;
 -- 
 2.34.1
 
