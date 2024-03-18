@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BF987ED4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:19:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD2887ED37
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:17:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFeR-00074s-MS; Mon, 18 Mar 2024 12:15:51 -0400
+	id 1rmFeY-00075p-KU; Mon, 18 Mar 2024 12:15:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeM-000736-Eb
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeN-00073F-Go
  for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeI-0004YC-Ac
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:45 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rmFeM-0004aW-1z
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:15:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778540;
+ s=mimecast20190719; t=1710778545;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Vb2XPO70AEln4QjXZz3yhsVjTizmmAgSKUpNYloZ4WY=;
- b=L8xP/mfujITQSvXXTxqTtukjFBht4alfg2cNi0c4NdUu+ZZ5yLQDGq9lJaTw1CwyBfTBNp
- alTahWAt/Q6vgSgJQ4JWq91KpGcsMDGbfeEsPqgaacf3J0OpMw4otjhyWbPZgE21gdTjXD
- /kHMEvsStr5f6qAQIIUH6JSCmMBhGMU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LgMKQIgmrlt2/gT6pFRai77FFjqKkjfoJlKBE508wB8=;
+ b=RkY7VGSv/opIpEYO+fJDuXC8Us1SbTw6YhJeQF0JuPCsTUxKSCU4+kl5Iy10wLa/XmdgwY
+ xGJxEbgPckMTPkxP+7H+qZ46srYu2Q6RtphA6Bd7ljdcWgn1UmD8VCICbAsOXiClkMtOQq
+ Ln80ernAMXTVZ+L4KIlVQlkVXm7KFv0=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-Uu2O5rtpMLKvFUwUfz0uMg-1; Mon, 18 Mar 2024 12:15:39 -0400
-X-MC-Unique: Uu2O5rtpMLKvFUwUfz0uMg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-513e3ed9bc4so1433167e87.3
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:39 -0700 (PDT)
+ us-mta-610-lxgHLeZfPj68QKUEYpm96A-1; Mon, 18 Mar 2024 12:15:43 -0400
+X-MC-Unique: lxgHLeZfPj68QKUEYpm96A-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-513da602cafso2722871e87.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 09:15:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710778537; x=1711383337;
+ d=1e100.net; s=20230601; t=1710778540; x=1711383340;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Vb2XPO70AEln4QjXZz3yhsVjTizmmAgSKUpNYloZ4WY=;
- b=udtaa8qCTTb72652P61YUXEEaLxtYD0dMyuAsWAHfrgIoxJCJeCIL3MK7BAmT9Hikf
- LoWLBje5f1zCXHGwf516lM9eHZtDTSvImdMgKMfOIXaDDnNlQ0PeVczjA6HgWLqXjPBB
- fTtmNcQgQ/NzJr0WSbmAOpaFDyd/bBMiIQ4/G9CzbQ5tfDQHoKu0jIBYBVAPD3+tQn0b
- one0UnTM+y2sDWkiBeZlL0lXvJNvXp8I/ph4ki08cRPN+/d9kwg+JqdBP4sd3Nbk0TUB
- pXPOO5UyenckMqq5yJnjiWdo89fJCyuyePryOvsgAORixPQoO0qJbFNcpxGNkkOZgZn9
- EwjA==
-X-Gm-Message-State: AOJu0Yywa1jSZ8tR0V2QJdVWEgyKbVl66PhdKEFJL41/pe3xcJVbRXIE
- oGsppf2rj/Cgf6LbUdETwcc1JMzuFmoLFiYHznVAZHZGe908k0cGzGgrmX6zL01zGbteUHAN5i5
- 2msoFoVP6pNk8aIY4DF92OKz5S04k+sFKU28eD1wuJeTGL59fwsk4Wq4FbM7Td+tkEtivpQy3Vx
- 9lY9TfdEbo/RucESvlkr+hmQ1Wa0E7GQ==
-X-Received: by 2002:ac2:5b4c:0:b0:513:dbcd:7b87 with SMTP id
- i12-20020ac25b4c000000b00513dbcd7b87mr5935277lfp.45.1710778536947; 
- Mon, 18 Mar 2024 09:15:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHIgj/Lp5jF3nKobkQnCf+d2quJ4MMXqroBLW0H1WUuvzdCxIjmS2bO6kCJAs7EkSMzyroqew==
-X-Received: by 2002:ac2:5b4c:0:b0:513:dbcd:7b87 with SMTP id
- i12-20020ac25b4c000000b00513dbcd7b87mr5935247lfp.45.1710778536311; 
- Mon, 18 Mar 2024 09:15:36 -0700 (PDT)
+ bh=LgMKQIgmrlt2/gT6pFRai77FFjqKkjfoJlKBE508wB8=;
+ b=DdId0dRqm0dwhjlYkUFrGKwyBfjrjJXK7XmCZo3Us1mXq1zq+4rCLXL3WbiWoszrsU
+ liYXWGtUMYTek7LAG766Jt+8Mg9bv6lgp+9oo1V/Juqd5GY1FwqXrXzIXX8Q/4NgkQtC
+ k4m6vo7zMTt7AA1SB1j2a7lGweTR8yYFsUX+ZUSO1I5B/O+yJ4nYqcwXug61FeheJcpo
+ IT2iOi0hleBgpKHlWSdKJYtZGVfcAzVTEpLBctUARtMiTOKFZRedYW7w6/AHG6ctSKpU
+ jXF8M6pKLrbu2gUnZgT82+dbkiBx97c6HRWDCNds/NV6cBLN/wJgo4yzNljzQ7MEv72V
+ YGbg==
+X-Gm-Message-State: AOJu0YxS4I3hlecXQekl9g0tZNXIqPW6LjNNljPErC56TZwIK0ASVDjB
+ Nc9jg0FBNhmWmiXBivMLkvHSrtgFJAFU19/jP9G0jXIwKJgf/rmStMLK7N2Ar1JY0B88cdBSKBM
+ IPrVM9kH0PWmbVOnfZePo8nuI3618VQfZLOf+cwCD2hC/wJtBvuvS1z0tx6V5vQLFtP0AQdgIvx
+ FzJjw0B9cpmxLwtJQao9dcovnvBm39HA==
+X-Received: by 2002:ac2:5b5e:0:b0:513:d1cd:b902 with SMTP id
+ i30-20020ac25b5e000000b00513d1cdb902mr7678065lfp.32.1710778540153; 
+ Mon, 18 Mar 2024 09:15:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGfJwSLvV25bVw3/ZZn9bT44TODshzLSpj0xAhllnCGOWmBpEh3o1Ykms8ughzKUiZITIY4VA==
+X-Received: by 2002:ac2:5b5e:0:b0:513:d1cd:b902 with SMTP id
+ i30-20020ac25b5e000000b00513d1cdb902mr7678048lfp.32.1710778539643; 
+ Mon, 18 Mar 2024 09:15:39 -0700 (PDT)
 Received: from redhat.com ([2.52.5.113]) by smtp.gmail.com with ESMTPSA id
- fj14-20020a05600c0c8e00b00413385ec7e6sm18525269wmb.47.2024.03.18.09.15.34
+ w9-20020a05600c474900b0041408af4b34sm7818539wmo.10.2024.03.18.09.15.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 09:15:35 -0700 (PDT)
-Date: Mon, 18 Mar 2024 12:15:33 -0400
+ Mon, 18 Mar 2024 09:15:38 -0700 (PDT)
+Date: Mon, 18 Mar 2024 12:15:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Lukas Stockner <lstockner@genesiscloud.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>
-Subject: [PULL 02/24] qapi: document PCIe Gen5/Gen6 speeds since 9.0
-Message-ID: <1bdef7a6290b1a7ed820aa2e9c25fa85069b2b85.1710778506.git.mst@redhat.com>
+ Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 03/24] docs/specs/pvpanic: mark shutdown event as not
+ implemented
+Message-ID: <e739d1935c461d0668057e9dbba9d06f728d29ec.1710778506.git.mst@redhat.com>
 References: <cover.1710778506.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -80,7 +78,7 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1710778506.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -105,35 +103,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Document that PCIe Gen5/Gen6 speeds are only in QAPI
-since 9.0 - the rest is since 4.0.
+From: Thomas Weißschuh <thomas@t-8ch.de>
 
-Cc: Lukas Stockner <lstockner@genesiscloud.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Fixes: c08da86dc4 ("pcie: Support PCIe Gen5/Gen6 link speeds")
-Suggested-by: Markus Armbruster <armbru@redhat.com>
+Mention the fact that this event is not yet implemented
+to avoid confusion.
+As requested by Michael.
+
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+Message-Id: <20240313-pvpanic-note-v1-1-7f2571cdaedc@t-8ch.de>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qapi/common.json | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ docs/specs/pvpanic.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/common.json b/qapi/common.json
-index 867a9ad9b0..7558ce5430 100644
---- a/qapi/common.json
-+++ b/qapi/common.json
-@@ -107,9 +107,9 @@
- #
- # @16: 16.0GT/s
- #
--# @32: 32.0GT/s
-+# @32: 32.0GT/s (since 9.0)
- #
--# @64: 64.0GT/s
-+# @64: 64.0GT/s (since 9.0)
- #
- # Since: 4.0
- ##
+diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
+index 61a80480ed..b0f27860ec 100644
+--- a/docs/specs/pvpanic.rst
++++ b/docs/specs/pvpanic.rst
+@@ -29,7 +29,7 @@ bit 1
+   a guest panic has happened and will be handled by the guest;
+   the host should record it or report it, but should not affect
+   the execution of the guest.
+-bit 2
++bit 2 (to be implemented)
+   a regular guest shutdown has happened and should be processed by the host
+ 
+ PCI Interface
 -- 
 MST
 
