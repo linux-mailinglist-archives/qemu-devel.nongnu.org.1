@@ -2,84 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1722687ED6D
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:22:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C2687ED80
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 17:27:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFkJ-00081q-DE; Mon, 18 Mar 2024 12:21:55 -0400
+	id 1rmFp3-0001Yg-TD; Mon, 18 Mar 2024 12:26:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmFkH-000813-3v
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:21:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rmFp1-0001XC-3Z; Mon, 18 Mar 2024 12:26:47 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmFkF-00062A-7o
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 12:21:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710778910;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mze+uWWzFSSGRXHftwoyuBA6Olxp/vCU6tWugxyVSjU=;
- b=LLDnQafn4U2qF3xwvY1hTFbdF6NBD7N9YwqrAWNF8NbWr1btVmb4tXybh3akfG8qsTW8QB
- cnKH881MYge4ofmGwP9tiUD66NY/TVDZrvZ+M8fymGQ5j1eQW9hqn8VTcv7yxhTKVmhSIm
- YQ50O5H9KOk55L0YFc8NIt4eZbFiChw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-fOW1NKMLNa-jFI7Cwtg3-w-1; Mon,
- 18 Mar 2024 12:21:47 -0400
-X-MC-Unique: fOW1NKMLNa-jFI7Cwtg3-w-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 95A8A3C025B1;
- Mon, 18 Mar 2024 16:21:46 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3E37B10F53;
- Mon, 18 Mar 2024 16:21:43 +0000 (UTC)
-Date: Mon, 18 Mar 2024 16:21:36 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Roy Hopkins <roy.hopkins@suse.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>,
- =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
-Subject: Re: [PATCH 9/9] docs/system: Add documentation on support for IGVM
-Message-ID: <ZfhqEL0-wCiDJJtm@redhat.com>
-References: <cover.1709044754.git.roy.hopkins@suse.com>
- <2f98be192cf6ffd36b984266570ea2eed4dfe364.1709044754.git.roy.hopkins@suse.com>
- <ZeIL9Tco7PCRxdg-@redhat.com>
- <46d91ba880f566e7ced7c01b18682b749185c9ba.camel@suse.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>)
+ id 1rmFoy-0006Y4-DV; Mon, 18 Mar 2024 12:26:46 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42IFxHCZ019374; Mon, 18 Mar 2024 16:26:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=2pCitAtjcFXj2Y6ow4c6rUy2SqwRVagiJ8MCZEo58co=;
+ b=Fxf2ACxbhMfs0ezSasj9lb60DPNdNH9Xed1cf7CoZ/wPWhr37+Za4ev91grRCmZ8vyDM
+ HEzgg5LGz1qWEvthL+bwPpj7EV5txItTUBiofuBWK+5t4gTnXSUR98XSc2+c8LQLycM2
+ oWsBRD63LrF2vOXSvM368/JeMfOLDF2xe7P4Bzg2FZJggNa+VJkXeMZBLUiJ/zCnbZ1M
+ Eom1nb/q8eZGvfUe7ZNv/rSD0k5Zc5l9WErUfdlw9R5Dr7IBFapscEl64yBQKHe2sBhT
+ bonZ80S5EkcTjf0xCjjHcgT8O7xCmGVVvwe8+cFbyu83LrxSEMoS/i6VaKWy/WTq52tT YQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wxr0hghus-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Mar 2024 16:26:41 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42IGKBFA001601;
+ Mon, 18 Mar 2024 16:26:40 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wxr0hghum-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Mar 2024 16:26:40 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42IGJddH019891; Mon, 18 Mar 2024 16:26:39 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wwqyk9ntb-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 18 Mar 2024 16:26:39 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com
+ [10.20.54.104])
+ by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42IGQaUX47645180
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 18 Mar 2024 16:26:38 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E148820043;
+ Mon, 18 Mar 2024 16:26:34 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6C1C92006C;
+ Mon, 18 Mar 2024 16:26:34 +0000 (GMT)
+Received: from heavy.ibm.com (unknown [9.171.85.188])
+ by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 18 Mar 2024 16:26:34 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, Ido Plat <ido.plat@ibm.com>, 
+ Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 1/2] target/s390x: Use mutable temporary value for op_ts
+Date: Mon, 18 Mar 2024 17:26:05 +0100
+Message-ID: <20240318162633.13017-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46d91ba880f566e7ced7c01b18682b749185c9ba.camel@suse.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MBjuyuX8RvSWPH4Omt3579QvxNhWbqyQ
+X-Proofpoint-ORIG-GUID: aI_9dMAxYQYK3omYZTAfAxxah0Svqb8-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-18_12,2024-03-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ malwarescore=0 bulkscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ mlxscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=885 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403140000 definitions=main-2403180122
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,109 +106,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 18, 2024 at 03:59:31PM +0000, Roy Hopkins wrote:
-> On Fri, 2024-03-01 at 17:10 +0000, Daniel P. Berrangé wrote:
-> > On Tue, Feb 27, 2024 at 02:50:15PM +0000, Roy Hopkins wrote:
-> > > IGVM support has been implemented for Confidential Guests that support
-> > > AMD SEV and AMD SEV-ES. Add some documentation that gives some
-> > > background on the IGVM format and how to use it to configure a
-> > > confidential guest.
-> > > 
-> > > Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
-> > > ---
-> > >  docs/system/igvm.rst  | 58 +++++++++++++++++++++++++++++++++++++++++++
-> > >  docs/system/index.rst |  1 +
-> > >  2 files changed, 59 insertions(+)
-> > >  create mode 100644 docs/system/igvm.rst
-> > 
-> > 
-> > > +Firmware Images with IGVM
-> > > +-------------------------
-> > > +
-> > > +When an IGVM filename is specified for a Confidential Guest Support object
-> > > it
-> > > +overrides the default handling of system firmware: the firmware image, such
-> > > as
-> > > +an OVMF binary should be contained as a payload of the IGVM file and not
-> > > +provided as a flash drive. The default QEMU firmware is not automatically
-> > > mapped
-> > > +into guest memory.
-> > 
-> > IIUC, in future the IGVM file could contain both the OVMF and SVSM
-> > binaries ?
-> > 
-> > I'm also wondering if there can be dependancies between the IGVM
-> > file and the broader QEMU configuration ?  eg if SVSM gains suupport
-> > for data persistence, potentially we might need some pflash device
-> > exposed as storage for SVSM to use. Would such a dependancy be
-> > something expressed in the IGVM file, or would it be knowledge that
-> > is out of band ?
-> > 
-> Yes, the IGVM file can indeed contain both OVMF and SVSM binaries. In fact, that
-> is exactly what we are doing with the COCONUT-SVSM project. See [1] for the IGVM
-> builder we use to package OVMF, bootloader components and the SVSM ELF binary.
-> 
-> Data persistence is something that is definitely going to be needed in the SVSM.
-> At present, this cannot be configured using any of the directives in the IGVM
-> specification but instead requires QEMU to be configured correctly to support
-> the application embedded within the IGVM file itself. You could however populate
-> metadata pages using IGVM that describe the storage that is _expected_ to be
-> present, and validate that within the firmware itself. 
-> 
-> The real value from IGVM comes from the ability to describe the initial memory
-> and initial CPU state which all forms part of the launch measurement and initial
-> boot procedure, allowing the expected launch measurement to be calculated from a
-> single IGVM file for multiple virtualisation stacks or configurations. Thus,
-> most of the directives in the IGVM file directly have an effect on the launch
-> measurement. I'm not sure configuring a storage device or other hardware
-> configuration fits well with this.
+From: Ido Plat <ido.plat@ibm.com>
 
-Yeah, I can understand if IGVM scope should be limited to just memory
-and CPU setup.
+Otherwise TCG would assume the register that holds t1 would be constant
+and reuse whenever it needs the value within it.
 
-If we use the firmeware descriptor files, we could define capabilities
-in that to express a need for a particular type of persistent storage
-to back the vTPM. So having this info in IGVM files isn't critical.
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+[iii: Adjust a newline and capitalization]
+Signed-off-by: Ido Plat <ido.plat@ibm.com>
+---
+ target/s390x/tcg/translate.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> > Finally, if we think of the IGVM file as simply yet another firmware
-> > file format, then it raises of question of integration into the
-> > QEMU firmware descriptors.
-> > 
-> > Right now when defining a guest in libvirt if you can say 'type=bios'
-> > or 'type=uefi', and libvirt consults the firmware descriptors to find
-> > the binary to use.
-> > 
-> > If the OS distro provides IGVM files instead of traditional raw OVMF
-> > binaries for SEV/TDX/etc, then from libvirt's POV I think having this
-> > expressed in the firmware descriptors is highly desirable.
-> > 
-> 
-> Whether IGVM is just another firmware file format or not, it certainly is used
-> mutually exclusively with other firmware files. Integration with firmware
-> descriptors does seem to make sense. 
-> 
-> One further question if this is the case, would we want to switch from
-> specifying an "igvm-file" as a parameter on the "ConfidentialGuestSupport"
-> object to providing the file using the "-bios" parameter, or maybe even a
-> dedicated "-igvm" parameter?
-
-If the IGVM format is flexible enough that it could be used for any VM
-type, even non-confidential VMs, then having its config be separate from
-ConfidentialGuestSUpport would make sense. If it is fundamentally tied
-to CVMs, then just a property is fine I guess.
-
-Probably best to stay away from -bios, to avoid overloading new semantics
-onto a long standing argument.
-
-With regards,
-Daniel
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 0d0c672c959..3fdddac7684 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -4781,8 +4781,9 @@ static DisasJumpType op_trXX(DisasContext *s, DisasOps *o)
+ 
+ static DisasJumpType op_ts(DisasContext *s, DisasOps *o)
+ {
+-    TCGv_i32 t1 = tcg_constant_i32(0xff);
++    TCGv_i32 t1 = tcg_temp_new_i32();
+ 
++    tcg_gen_movi_i32(t1, 0xff);
+     tcg_gen_atomic_xchg_i32(t1, o->in2, t1, get_mem_index(s), MO_UB);
+     tcg_gen_extract_i32(cc_op, t1, 7, 1);
+     set_cc_static(s);
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.44.0
 
 
