@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DF187EC8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:49:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BB687EC98
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:50:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFEH-0001yy-1P; Mon, 18 Mar 2024 11:48:50 -0400
+	id 1rmFEK-0002WX-MC; Mon, 18 Mar 2024 11:48:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFED-0001RU-AZ
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:45 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFEH-0002G5-EH
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:50 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFE3-000813-Rp
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:45 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5e4b775e1d6so3181365a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:48:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFEB-00083s-5B
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:48:49 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so2270407b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:48:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710776914; x=1711381714; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710776920; x=1711381720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sgE3bLqYmURNZ5foTV5tmX1mGq2Gl0HCA4fK1Z1dU4Y=;
- b=HNTtH5TK6mUJb6Uy4dcAkZsYUrUNWU01jzSkBPbZPkk1ErGxo1g679xe5BE5C8E6Gi
- KmmJGicOdIpbxr/P89IpjM12bpK5nvLaL6bZtITGToeOlhDfOuzD17ktd7UQXVQ28coc
- Xy8yTosXIhM+3DcTAPWEiLEBvvwfaEInElG1AcAFdK8Hy9HEwKMNCQAOV8z7iVWT3Olu
- pktwgTT7n9ENjXRda9E3B7FNA7cvIIydQWRdlWi3izOOJKA5WvWlHPOMBmJctYj36/rL
- 5JiBzgos+S1/2wnrWlf0zmPkECTiTVTwjPcn5Ox4RURyAeKcjs+pASLRwEbmZeugHJJ8
- Ws3g==
+ bh=qZKKrRbt8NfIdpSLaUG4B3mAPFv2qCZwxs6w2FhzEZc=;
+ b=FOBDrnzM6lkcnewnKz4jqJvkT589Jvv7Gqx0Noe+n5BpfhPIpMCr0z9thxdoo94J6n
+ EcNvQm32L24Bp5ulKJKRLCA07XCgsBLflyEIjgu/nBmYILnBDvgpCQChvZoU3nlmDxrd
+ TSzFbsbrr7wMoOZrEYIcWg5MqooHPBeKycH6LROibR8lKU2/lz8pXqAEBEFMHa+w5ZR+
+ Tq6ISgHqvBRYPd8He0EiGVhbxHFI+O5SnxD+wN9fCFlc2Q5AnrhcDUKW/VsWO9U+CbCO
+ zl3vlpC7T50qjSdZmDx4jIQSQvQ1FZ12ZBgqo7rHDhEIFzWI7A7br0AxTsz+UXnGFRvh
+ DYHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710776914; x=1711381714;
+ d=1e100.net; s=20230601; t=1710776920; x=1711381720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sgE3bLqYmURNZ5foTV5tmX1mGq2Gl0HCA4fK1Z1dU4Y=;
- b=mFuOTcCzLstOQV/YgQXMOZUJOwj5gzXxVTUh7rj8KaBuaI7jlRUuee1VAGQoJrb7Nh
- RA6Utdql3Em4WnWFdQzg3Psl7mqRwZaeYFMlmrlll5jx2mXB+ivaVsnHdaLKOs3Ok7vg
- RrpOK2q4zdZHIl1uINXvgIbUC2Ie3OBngS+apiAjAzmJXF1PkolQcKyvkKU0o4CtxvmW
- 80Ec/u6H6PvGq/IWPdodYUSqIUpTlVhhTW3Qf2x6NoVbB3eBo3NNSEmZmIkgfKMQE6tD
- s28+J5+REfgaOfe3ay18HNdiI7HPpBMCho5U9Xs64YY3gVBnfWGlOl8Ttqcj7OOObV+v
- POLA==
-X-Gm-Message-State: AOJu0YxD45H0g5u32vmMY3OjRZfZw+JtGv2/XHw0U3BKuOJfJXiKZXXn
- xXO2x67dKDh1MymcyDoPNTM0uoOehdKQrO1RUaqxiuxq6dvsEU3uCFDxY3/Tboc=
-X-Google-Smtp-Source: AGHT+IGfESP0nmp53QdR6tRaa0ATfrkvxEg9EnhAWgL3oJ04ccBMEhA8fRglwNfWQmMbgqfOJUMaSA==
-X-Received: by 2002:a17:90a:5218:b0:29f:931a:8b63 with SMTP id
- v24-20020a17090a521800b0029f931a8b63mr6222374pjh.17.1710776914289; 
- Mon, 18 Mar 2024 08:48:34 -0700 (PDT)
+ bh=qZKKrRbt8NfIdpSLaUG4B3mAPFv2qCZwxs6w2FhzEZc=;
+ b=RDNfZUgUohRSnozZb2eEWWOOp2+qh8KSXAZGnTMe1zzqUJud9/CYltzz5FlghNY+o5
+ ohMRrcZVDWbmtMOxVqUYlQyL9Ciiockv+zQAZVFK3PmMRZ6co2R2iqZmoeYfDf9iJBqA
+ UjEbZR6CZGhiGcTmPvhAJIoE/U4VGujYm6l7nGTFbT52USZx0AHr3OoN/ijg63QsTkxC
+ DS7ILiR8fzJ3kzTnqDZHCW7nKqmZhXe/57s3zJ71MoJdkd/nPZIa9kKPghrO33J6C3rK
+ GN+MRNu4Hj+QTxVz/vXhYxyfV5E4bsUcfMTJICRVO8OVqqKM/UtEdPFc7xV9gje79mmf
+ TfVg==
+X-Gm-Message-State: AOJu0Yy6UnCUnRdrL+5M+5WbxsILSo2/1BiYS06zTiea7AUwvzB87SmZ
+ JVSfJeaZU5LqqdYewK0YdBgd6LDbFYhc18BYdUbC+wzrSz0foNyPBJdS3Iap+kE=
+X-Google-Smtp-Source: AGHT+IHkAWlKjilg0CXooIlZffDQ1tO1mobBU6pAHFHYVoR2lAQjJVQlhq9Tjq6pPMJGGOvrseaqYQ==
+X-Received: by 2002:a05:6a20:325a:b0:1a3:3d58:e508 with SMTP id
+ hm26-20020a056a20325a00b001a33d58e508mr11927836pzc.53.1710776920421; 
+ Mon, 18 Mar 2024 08:48:40 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.48.29
+ v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.48.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 08:48:34 -0700 (PDT)
+ Mon, 18 Mar 2024 08:48:40 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,17 +65,16 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v5 21/24] tests/avocado: reverse_debugging.py test
- auto-snapshot mode
-Date: Tue, 19 Mar 2024 01:46:18 +1000
-Message-ID: <20240318154621.2361161-22-npiggin@gmail.com>
+Subject: [PATCH v5 22/24] target/ppc: fix timebase register reset state
+Date: Tue, 19 Mar 2024 01:46:19 +1000
+Message-ID: <20240318154621.2361161-23-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318154621.2361161-1-npiggin@gmail.com>
 References: <20240318154621.2361161-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,91 +97,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This runs the recording phase with a periodic auto-snapshot.
+(H)DEC and PURR get reset before icount does, which causes them to be
+skewed and not match the init state. This can cause replay to not
+match the recorded trace exactly. For DEC and HDEC this is usually not
+noticable since they tend to get programmed before affecting the
+target machine. PURR has been observed to cause replay bugs when
+running Linux.
 
-It also runs the machine for 5 seconds after creating the initial
-address map, so as to alow time for a some auto snapshots to be
-taken.
-
-In the replay mode a reverse-debugging sequence is added where the
-test is run to the end, and reverse-stepped from there. This should
-load the last auto-snapshot taken.
-
-The test hangs on x86-64 and aarch64 with autosnapshots, so it is
-disabled for them.
+Fix this by resetting using a time of 0.
 
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/reverse_debugging.py | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ hw/ppc/ppc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/tests/avocado/reverse_debugging.py b/tests/avocado/reverse_debugging.py
-index 185f055cf9..36e5e1be05 100644
---- a/tests/avocado/reverse_debugging.py
-+++ b/tests/avocado/reverse_debugging.py
-@@ -41,6 +41,9 @@ class ReverseDebugging(LinuxKernelTest):
-     # first 10 instructions are stepped.
-     verify_end = True
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index e6fa5580c0..ddcbf8972b 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -1122,16 +1122,21 @@ void cpu_ppc_tb_reset(CPUPPCState *env)
+         timer_del(tb_env->hdecr_timer);
+         ppc_set_irq(cpu, PPC_INTERRUPT_HDECR, 0);
+         tb_env->hdecr_next = 0;
++        _cpu_ppc_store_hdecr(cpu, 0, 0, 0, 64);
+     }
  
-+    # Enable the autosnapshot test, requires long_trace = True.
-+    autosnapshot = True
-+
-     # If first_step_workaround is true, check whether the first step moved
-     # icount, and if not then step again.
-     first_step_workaround = False
-@@ -56,9 +59,14 @@ def run_vm(self, record, shift, args, replay_path, image_path, port):
-             logger.info('replaying the execution...')
-             mode = 'replay'
-         vm.add_args('-gdb', 'tcp::%d' % port, '-S')
--        vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init' %
--                    (shift, mode, replay_path),
--                    '-net', 'none')
-+        if self.autosnapshot:
-+            vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init'
-+                                   ',rrsnapmode=periodic,rrsnapcount=10,'
-+                                   'rrsnaptime=1' % (shift, mode, replay_path))
-+        else:
-+            vm.add_args('-icount', 'shift=%s,rr=%s,rrfile=%s,rrsnapshot=init'
-+                                   % (shift, mode, replay_path))
-+        vm.add_args('-net', 'none')
-         vm.add_args('-drive', 'file=%s,if=none,id=disk0' % image_path)
-         if args:
-             vm.add_args(*args)
-@@ -192,8 +200,12 @@ def reverse_debugging(self, shift=7, args=None):
+     /*
+      * There is a bug in Linux 2.4 kernels:
+      * if a decrementer exception is pending when it enables msr_ee at startup,
+      * it's not ready to handle it...
++     *
++     * On machine reset, in this is called before icount is reset, so
++     * for icount-mode, setting TB registers using now=qemu_clock_get_ns
++     * results in them being skewed when icount does get reset. Use an
++     * explicit 0 to get a consistent reset state.
+      */
+-    cpu_ppc_store_decr(env, -1);
+-    cpu_ppc_store_hdecr(env, -1);
+-    cpu_ppc_store_purr(env, 0x0000000000000000ULL);
++    _cpu_ppc_store_decr(cpu, 0, 0, -1, 64);
++    _cpu_ppc_store_purr(env, 0, 0);
+ }
  
-         logger.info('continue running')
-         self.gdb_cont_nowait(g)
--        logger.info('running for 1s...')
--        time.sleep(1)
-+        if self.autosnapshot:
-+            logger.info('running for 5s...')
-+            time.sleep(5)
-+        else:
-+            logger.info('running for 1s...')
-+            time.sleep(1)
-         logger.info('stopping to read final icount')
-         vm.qmp('stop')
-         self.gdb_break(g)
-@@ -322,6 +334,9 @@ class ReverseDebugging_X86_64(ReverseDebugging):
-     # the trace precisely on x86.
-     verify_end = False
- 
-+    # x86 doesn't like autosnapshot
-+    autosnapshot = False
-+
-     def get_pc(self, g):
-         return self.get_reg_le(g, self.REG_PC) \
-             + self.get_reg_le(g, self.REG_CS) * 0x10
-@@ -355,6 +370,9 @@ class ReverseDebugging_AArch64(ReverseDebugging):
-     # the trace precisely on aarch64.
-     verify_end = False
- 
-+    # aarch64 doesn't like autosnapshot
-+    autosnapshot = False
-+
-     def test_aarch64_virt(self):
-         """
-         :avocado: tags=arch:aarch64
+ void cpu_ppc_tb_free(CPUPPCState *env)
 -- 
 2.42.0
 
