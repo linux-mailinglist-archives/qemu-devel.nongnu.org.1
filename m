@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A56F87E9AE
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF9787E9B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 14:03:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmCcp-0002eP-SK; Mon, 18 Mar 2024 09:01:59 -0400
+	id 1rmCcj-0002Sn-86; Mon, 18 Mar 2024 09:01:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcS-0002Ob-8n
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcS-0002Oa-8Y
  for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcL-0007eO-Id
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmCcL-0007eS-Ii
  for qemu-devel@nongnu.org; Mon, 18 Mar 2024 09:01:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710766888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=xQX9GP1gk5DXFtS7l3lo8iA5EQC/5pxNmFjeUDgOxw0=;
- b=f4bwKj3o9Q12H+ueXLPNynQPFbe35xu1OZdRVXtFUUWFqMe0l1Q6YidiX4TC3St012Na7h
- K8ZeYkSWX+8aeKcMQ+QQ1RG5Sdj/3tLwsAtOKSCXIluMS0i16xrguBVPiX7GtlwbAvsxoo
- 1A+H35QA6wUVnmCSDgTH/OwfNsFah1A=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ReNmBLEe/G35l3tlnKmgGtREauwHmcX2xc1FDhyZGWg=;
+ b=QXHJMP2D3nkpU5705XQlJ3p3ci3InbDVPDBHqvUwNMdNx0OHrgAqoenaXnkFlu72zLTcWz
+ i7FBZWVU38v0ZUaTEWLkfQkH1fd/p5zt/ogT/L+dZVEHPQjq2Wy2iw7xaY/Zx2dG1krZws
+ nBtc1QTMlvFqDapftpOHYI6V5c5yf1s=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-9PbCJ3E-NEySRdKZwW0wtQ-1; Mon,
- 18 Mar 2024 09:01:26 -0400
-X-MC-Unique: 9PbCJ3E-NEySRdKZwW0wtQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-351-hYPZwLYsMYSKZh2egWM6Bw-1; Mon,
+ 18 Mar 2024 09:01:27 -0400
+X-MC-Unique: hYPZwLYsMYSKZh2egWM6Bw-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 177263801F5C;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D9E522801E6B;
  Mon, 18 Mar 2024 13:01:26 +0000 (UTC)
 Received: from merkur.redhat.com (unknown [10.39.194.127])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7DD4B2166B33;
- Mon, 18 Mar 2024 13:01:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4BF372166B33;
+ Mon, 18 Mar 2024 13:01:26 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	qemu-devel@nongnu.org
-Subject: [PULL 00/15] Block layer patches
-Date: Mon, 18 Mar 2024 14:01:03 +0100
-Message-ID: <20240318130118.358920-1-kwolf@redhat.com>
+Subject: [PULL 01/15] mirror: Don't call job_pause_point() under graph lock
+Date: Mon, 18 Mar 2024 14:01:04 +0100
+Message-ID: <20240318130118.358920-2-kwolf@redhat.com>
+In-Reply-To: <20240318130118.358920-1-kwolf@redhat.com>
+References: <20240318130118.358920-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -76,85 +78,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit ba49d760eb04630e7b15f423ebecf6c871b8f77b:
+Calling job_pause_point() while holding the graph reader lock
+potentially results in a deadlock: bdrv_graph_wrlock() first drains
+everything, including the mirror job, which pauses it. The job is only
+unpaused at the end of the drain section, which is when the graph writer
+lock has been successfully taken. However, if the job happens to be
+paused at a pause point where it still holds the reader lock, the writer
+lock can't be taken as long as the job is still paused.
 
-  Merge tag 'pull-maintainer-final-130324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-13 15:12:14 +0000)
+Mark job_pause_point() as GRAPH_UNLOCKED and fix mirror accordingly.
 
-are available in the Git repository at:
+Cc: qemu-stable@nongnu.org
+Buglink: https://issues.redhat.com/browse/RHEL-28125
+Fixes: 004915a96a7a ("block: Protect bs->backing with graph_lock")
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Message-ID: <20240313153000.33121-1-kwolf@redhat.com>
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+---
+ include/qemu/job.h |  2 +-
+ block/mirror.c     | 10 ++++++----
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-  https://repo.or.cz/qemu/kevin.git tags/for-upstream
-
-for you to fetch changes up to 39a94d7c34ce9d222fa9c0c99a14e20a567456d7:
-
-  iotests: adapt to output change for recently introduced 'detached header' field (2024-03-18 13:33:54 +0100)
-
-----------------------------------------------------------------
-Block layer patches
-
-- mirror: Fix deadlock
-- nbd/server: Fix race in draining the export
-- qemu-img snapshot: Fix formatting with large values
-- Fix blockdev-snapshot-sync error reporting for no medium
-- iotests fixes
-
-----------------------------------------------------------------
-Abhiram Tilak (1):
-      qemu-img: Fix Column Width and Improve Formatting in snapshot list
-
-Fiona Ebner (1):
-      iotests: adapt to output change for recently introduced 'detached header' field
-
-Kevin Wolf (3):
-      mirror: Don't call job_pause_point() under graph lock
-      nbd/server: Fix race in draining the export
-      iotests: Add test for reset/AioContext switches with NBD exports
-
-Markus Armbruster (1):
-      blockdev: Fix blockdev-snapshot-sync error reporting for no medium
-
-Thomas Huth (9):
-      tests/qemu-iotests: Fix test 033 for running with non-file protocols
-      tests/qemu-iotests: Restrict test 066 to the 'file' protocol
-      tests/qemu-iotests: Restrict test 114 to the 'file' protocol
-      tests/qemu-iotests: Restrict test 130 to the 'file' protocol
-      tests/qemu-iotests: Restrict test 134 and 158 to the 'file' protocol
-      tests/qemu-iotests: Restrict test 156 to the 'file' protocol
-      tests/qemu-iotests: Restrict tests that use --image-opts to the 'file' protocol
-      tests/qemu-iotests: Fix some tests that use --image-opts for other protocols
-      tests/qemu-iotests: Restrict tests using "--blockdev file" to the file protocol
-
- include/qemu/job.h                                 |  2 +-
- block/mirror.c                                     | 10 ++--
- block/qapi.c                                       | 10 ++--
- blockdev.c                                         |  3 +-
- nbd/server.c                                       | 15 +++--
- tests/qemu-iotests/033                             |  6 +-
- tests/qemu-iotests/066                             |  2 +-
- tests/qemu-iotests/114                             |  2 +-
- tests/qemu-iotests/130                             |  2 +-
- tests/qemu-iotests/134                             |  2 +-
- tests/qemu-iotests/156                             |  2 +-
- tests/qemu-iotests/158                             |  2 +-
- tests/qemu-iotests/176.out                         | 16 +++---
- tests/qemu-iotests/188                             |  2 +-
- tests/qemu-iotests/189                             |  2 +-
- tests/qemu-iotests/198                             |  2 +-
- tests/qemu-iotests/198.out                         |  2 +
- tests/qemu-iotests/206.out                         |  1 +
- tests/qemu-iotests/261                             |  4 +-
- tests/qemu-iotests/263                             |  6 +-
- tests/qemu-iotests/267.out                         | 48 ++++++++--------
- tests/qemu-iotests/284                             |  7 +--
- tests/qemu-iotests/286                             |  3 +-
- tests/qemu-iotests/286.out                         |  2 +-
- .../tests/detect-zeroes-registered-buf             |  4 +-
- tests/qemu-iotests/tests/iothreads-nbd-export      | 66 ++++++++++++++++++++++
- tests/qemu-iotests/tests/iothreads-nbd-export.out  | 19 +++++++
- tests/qemu-iotests/tests/qcow2-internal-snapshots  |  2 +-
- .../tests/qcow2-internal-snapshots.out             | 14 ++---
- tests/qemu-iotests/tests/qsd-jobs                  |  2 +-
- 30 files changed, 178 insertions(+), 82 deletions(-)
- create mode 100755 tests/qemu-iotests/tests/iothreads-nbd-export
- create mode 100644 tests/qemu-iotests/tests/iothreads-nbd-export.out
+diff --git a/include/qemu/job.h b/include/qemu/job.h
+index 9ea98b5927..2b873f2576 100644
+--- a/include/qemu/job.h
++++ b/include/qemu/job.h
+@@ -483,7 +483,7 @@ void job_enter(Job *job);
+  *
+  * Called with job_mutex *not* held.
+  */
+-void coroutine_fn job_pause_point(Job *job);
++void coroutine_fn GRAPH_UNLOCKED job_pause_point(Job *job);
+ 
+ /**
+  * @job: The job that calls the function.
+diff --git a/block/mirror.c b/block/mirror.c
+index 5145eb53e1..1bdce3b657 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -479,9 +479,9 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
+     return bytes_handled;
+ }
+ 
+-static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
++static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
+ {
+-    BlockDriverState *source = s->mirror_top_bs->backing->bs;
++    BlockDriverState *source;
+     MirrorOp *pseudo_op;
+     int64_t offset;
+     /* At least the first dirty chunk is mirrored in one iteration. */
+@@ -489,6 +489,10 @@ static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
+     bool write_zeroes_ok = bdrv_can_write_zeroes_with_unmap(blk_bs(s->target));
+     int max_io_bytes = MAX(s->buf_size / MAX_IN_FLIGHT, MAX_IO_BYTES);
+ 
++    bdrv_graph_co_rdlock();
++    source = s->mirror_top_bs->backing->bs;
++    bdrv_graph_co_rdunlock();
++
+     bdrv_dirty_bitmap_lock(s->dirty_bitmap);
+     offset = bdrv_dirty_iter_next(s->dbi);
+     if (offset < 0) {
+@@ -1066,9 +1070,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
+                 mirror_wait_for_free_in_flight_slot(s);
+                 continue;
+             } else if (cnt != 0) {
+-                bdrv_graph_co_rdlock();
+                 mirror_iteration(s);
+-                bdrv_graph_co_rdunlock();
+             }
+         }
+ 
+-- 
+2.44.0
 
 
