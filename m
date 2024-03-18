@@ -2,63 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E546E87EFB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 19:24:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D78387EFD2
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 19:36:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmHeI-0002Ci-3H; Mon, 18 Mar 2024 14:23:50 -0400
+	id 1rmHoy-0006KH-6J; Mon, 18 Mar 2024 14:34:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmHeF-0002CY-Oj
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:23:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rmHoo-0006IL-GD
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:34:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmHeD-0003jh-RX
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:23:47 -0400
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1rmHom-0005WJ-2o
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 14:34:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710786224;
+ s=mimecast20190719; t=1710786878;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TdZ3kCB5zvIKEzBCdWrLUr1ksdmEF/TRdxxVtwG2b1A=;
- b=SJfNiOwpPvCkXKSqPqElBG+DtsW1fDeLRDh0mLmY5NaF0PT5SOHHzbceGvvUn/gf5hvN8+
- QWRvZPIBnH7IGsHJV/TmcKCmnlNCz47n6JRGHvQfY3O62Bnf9JIUqDmgms8Yt8g/JGbtjM
- jHaJC1NjSY+BpKD782CcXSf1wl5reDE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-Dj8xFvr_MyWltylOwaerww-1; Mon, 18 Mar 2024 14:23:42 -0400
-X-MC-Unique: Dj8xFvr_MyWltylOwaerww-1
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=VhIaSNoGIHi+u3KiQKOsDPOvuJCs9TYShOMlHgIZrcw=;
+ b=NxuBQHTo5ao8uiS0N0mB9VjrrgnKa50PLUdE/CIP9Ggp3UFMi4MNgiSp4wRc4pK+cKgc/Q
+ DeApxRbB3PlclPeuNWKL85sKcHz/sCUZqLhf9oBOssU+v6xwYT7E4nfMmn6IhRkoKY71/j
+ 3x3uCZJvpAUm3p0eO3qObmUkX6X25ro=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-519-6YBwpsOwMyOADtwL78Q8GA-1; Mon,
+ 18 Mar 2024 14:34:37 -0400
+X-MC-Unique: 6YBwpsOwMyOADtwL78Q8GA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C72C21013660
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 18:23:41 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8A2C517A9A;
- Mon, 18 Mar 2024 18:23:40 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C43E829AC036
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 18:34:36 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.74])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9446B17A97;
+ Mon, 18 Mar 2024 18:34:35 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 3/3 for 9.0] Revert "chardev: use a child source for qio input
- source"
-Date: Mon, 18 Mar 2024 18:23:30 +0000
-Message-ID: <20240318182330.96738-4-berrange@redhat.com>
-In-Reply-To: <20240318182330.96738-1-berrange@redhat.com>
-References: <20240318182330.96738-1-berrange@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ Sanjay Rao <srao@redhat.com>, Boaz Ben Shabat <bbenshab@redhat.com>,
+ Joe Mario <jmario@redhat.com>
+Subject: [PATCH] coroutine: cap per-thread local pool size
+Date: Mon, 18 Mar 2024 14:34:29 -0400
+Message-ID: <20240318183429.1039340-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -83,200 +78,408 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This reverts commit a7077b8e354d90fec26c2921aa2dea85b90dff90,
-and add comments to explain why child sources cannot be used.
+The coroutine pool implementation can hit the Linux vm.max_map_count
+limit, causing QEMU to abort with "failed to allocate memory for stack"
+or "failed to set up stack guard page" during coroutine creation.
 
-When a GSource is added as a child of another GSource, if its
-'prepare' function indicates readiness, then the parent's
-'prepare' function will never be run. The io_watch_poll_prepare
-absolutely *must* be run on every iteration of the main loop,
-to ensure that the chardev backend doesn't feed data to the
-frontend that it is unable to consume.
+This happens because per-thread pools can grow to tens of thousands of
+coroutines. Each coroutine causes 2 virtual memory areas to be created.
+Eventually vm.max_map_count is reached and memory-related syscalls fail.
+The per-thread pool sizes are non-uniform and depend on past coroutine
+usage in each thread, so it's possible for one thread to have a large
+pool while another thread's pool is empty.
 
-At the time a7077b8e354d90fec26c2921aa2dea85b90dff90 was made,
-all the child GSource impls were relying on poll'ing an FD,
-so their 'prepare' functions would never indicate readiness
-ahead of poll() being invoked. So the buggy behaviour was
-not noticed and lay dormant.
+Switch to a new coroutine pool implementation with a global pool that
+grows to a maximum number of coroutines and per-thread local pools that
+are capped at hardcoded small number of coroutines.
 
-Relatively recently the QIOChannelTLS impl introduced a
-level 2 child GSource, which checks with GNUTLS whether it
-has cached any data that was decoded but not yet consumed:
+This approach does not leave large numbers of coroutines pooled in a
+thread that may not use them again. In order to perform well it
+amortizes the cost of global pool accesses by working in batches of
+coroutines instead of individual coroutines.
 
-  commit ffda5db65aef42266a5053a4be34515106c4c7ee
-  Author: Antoine Damhet <antoine.damhet@shadow.tech>
-  Date:   Tue Nov 15 15:23:29 2022 +0100
+The global pool is a list. Threads donate batches of coroutines to when
+they have too many and take batches from when they have too few:
 
-    io/channel-tls: fix handling of bigger read buffers
+.-----------------------------------.
+| Batch 1 | Batch 2 | Batch 3 | ... | global_pool
+`-----------------------------------'
 
-    Since the TLS backend can read more data from the underlying QIOChannel
-    we introduce a minimal child GSource to notify if we still have more
-    data available to be read.
+Each thread has up to 2 batches of coroutines:
 
-    Signed-off-by: Antoine Damhet <antoine.damhet@shadow.tech>
-    Signed-off-by: Charles Frey <charles.frey@shadow.tech>
-    Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+.-------------------.
+| Batch 1 | Batch 2 | per-thread local_pool (maximum 2 batches)
+`-------------------'
 
-With this, it is now quite common for the 'prepare' function
-on a QIOChannelTLS GSource to indicate immediate readiness,
-bypassing the parent GSource 'prepare' function. IOW, the
-critical 'io_watch_poll_prepare' is being skipped on some
-iterations of the main loop. As a result chardev frontend
-asserts are now being triggered as they are fed data they
-are not ready to consume.
+The goal of this change is to reduce the excessive number of pooled
+coroutines that cause QEMU to abort when vm.max_map_count is reached
+without losing the performance of an adequately sized coroutine pool.
 
-A reproducer is as follows:
+Here are virtio-blk disk I/O benchmark results:
 
- * In terminal 1 run a GNUTLS *echo* server
+      RW BLKSIZE IODEPTH    OLD    NEW CHANGE
+randread      4k       1 113725 117451 +3.3%
+randread      4k       8 192968 198510 +2.9%
+randread      4k      16 207138 209429 +1.1%
+randread      4k      32 212399 215145 +1.3%
+randread      4k      64 218319 221277 +1.4%
+randread    128k       1  17587  17535 -0.3%
+randread    128k       8  17614  17616 +0.0%
+randread    128k      16  17608  17609 +0.0%
+randread    128k      32  17552  17553 +0.0%
+randread    128k      64  17484  17484 +0.0%
 
-   $ gnutls-serv --echo \
-                 --x509cafile ca-cert.pem \
-                 --x509keyfile server-key.pem \
-		 --x509certfile server-cert.pem \
-		 -p 9000
+See files/{fio.sh,test.xml.j2} for the benchmark configuration:
+https://gitlab.com/stefanha/virt-playbooks/-/tree/coroutine-pool-fix-sizing
 
- * In terminal 2 run a QEMU guest
-
-   $ qemu-system-s390x \
-       -nodefaults \
-       -display none \
-       -object tls-creds-x509,id=tls0,dir=$PWD,endpoint=client \
-       -chardev socket,id=con0,host=localhost,port=9000,tls-creds=tls0 \
-       -device sclpconsole,chardev=con0 \
-       -hda Fedora-Cloud-Base-39-1.5.s390x.qcow2
-
-After the previous patch revert, but before this patch revert,
-this scenario will crash:
-
-  qemu-system-s390x: ../hw/char/sclpconsole.c:73: chr_read: Assertion
-  `size <= SIZE_BUFFER_VT220 - scon->iov_data_len' failed.
-
-This assert indicates that 'tcp_chr_read' was called without
-'tcp_chr_read_poll' having first been checked for ability to
-receive more data
-
-QEMU's use of a 'prepare' function to create/delete another
-GSource is rather a hack and not normally the kind of thing that
-is expected to be done by a GSource. There is no mechanism to
-force GLib to always run the 'prepare' function of a parent
-GSource. The best option is to simply not use the child source
-concept, and go back to the functional approach previously
-relied on.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Buglink: https://issues.redhat.com/browse/RHEL-28947
+Reported-by: Sanjay Rao <srao@redhat.com>
+Reported-by: Boaz Ben Shabat <bbenshab@redhat.com>
+Reported-by: Joe Mario <jmario@redhat.com>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- chardev/char-io.c | 55 ++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 50 insertions(+), 5 deletions(-)
+This patch obsoletes "[PATCH v2] virtio-blk: iothread-vq-mapping
+coroutine pool sizing" because the pool size is now global instead of
+per thread:
+https://lore.kernel.org/qemu-devel/20240312151204.412624-1-stefanha@redhat.com/
 
-diff --git a/chardev/char-io.c b/chardev/char-io.c
-index 4451128cba..3c725f530b 100644
---- a/chardev/char-io.c
-+++ b/chardev/char-io.c
-@@ -33,6 +33,7 @@ typedef struct IOWatchPoll {
-     IOCanReadHandler *fd_can_read;
-     GSourceFunc fd_read;
-     void *opaque;
-+    GMainContext *context;
- } IOWatchPoll;
+Please don't apply "[PATCH v2] virtio-blk: iothread-vq-mapping coroutine
+pool sizing".
+
+ util/qemu-coroutine.c | 282 +++++++++++++++++++++++++++++++++---------
+ 1 file changed, 223 insertions(+), 59 deletions(-)
+
+diff --git a/util/qemu-coroutine.c b/util/qemu-coroutine.c
+index 5fd2dbaf8b..2790959eaf 100644
+--- a/util/qemu-coroutine.c
++++ b/util/qemu-coroutine.c
+@@ -18,39 +18,200 @@
+ #include "qemu/atomic.h"
+ #include "qemu/coroutine_int.h"
+ #include "qemu/coroutine-tls.h"
++#include "qemu/cutils.h"
+ #include "block/aio.h"
  
- static IOWatchPoll *io_watch_poll_from_source(GSource *source)
-@@ -50,28 +51,58 @@ static gboolean io_watch_poll_prepare(GSource *source,
-         return FALSE;
-     }
- 
-+    /*
-+     * We do not register the QIOChannel watch as a child GSource.
-+     * The 'prepare' function on the parent GSource will be
-+     * skipped if a child GSource's 'prepare' function indicates
-+     * readiness. We need this prepare function be guaranteed
-+     * to run on *every* iteration of the main loop, because
-+     * it is critical to ensure we remove the QIOChannel watch
-+     * if 'fd_can_read' indicates the frontend cannot receive
-+     * more data.
-+     */
-     if (now_active) {
-         iwp->src = qio_channel_create_watch(
-             iwp->ioc, G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL);
-         g_source_set_callback(iwp->src, iwp->fd_read, iwp->opaque, NULL);
--        g_source_add_child_source(source, iwp->src);
--        g_source_unref(iwp->src);
-+        g_source_attach(iwp->src, iwp->context);
-     } else {
--        g_source_remove_child_source(source, iwp->src);
-+        g_source_destroy(iwp->src);
-+        g_source_unref(iwp->src);
-         iwp->src = NULL;
-     }
-     return FALSE;
- }
- 
-+static gboolean io_watch_poll_check(GSource *source)
-+{
-+    return FALSE;
-+}
-+
- static gboolean io_watch_poll_dispatch(GSource *source, GSourceFunc callback,
-                                        gpointer user_data)
- {
--    return G_SOURCE_CONTINUE;
-+    abort();
-+}
-+
-+static void io_watch_poll_finalize(GSource *source)
-+{
-+    /* Due to a glib bug, removing the last reference to a source
-+     * inside a finalize callback causes recursive locking (and a
-+     * deadlock).  This is not a problem inside other callbacks,
-+     * including dispatch callbacks, so we call io_remove_watch_poll
-+     * to remove this source.  At this point, iwp->src must
-+     * be NULL, or we would leak it.
-+     */
-+    IOWatchPoll *iwp = io_watch_poll_from_source(source);
-+    assert(iwp->src == NULL);
- }
- 
- static GSourceFuncs io_watch_poll_funcs = {
-     .prepare = io_watch_poll_prepare,
-+    .check = io_watch_poll_check,
-     .dispatch = io_watch_poll_dispatch,
-+    .finalize = io_watch_poll_finalize,
+-/**
+- * The minimal batch size is always 64, coroutines from the release_pool are
+- * reused as soon as there are 64 coroutines in it. The maximum pool size starts
+- * with 64 and is increased on demand so that coroutines are not deleted even if
+- * they are not immediately reused.
+- */
+ enum {
+-    POOL_MIN_BATCH_SIZE = 64,
+-    POOL_INITIAL_MAX_SIZE = 64,
++    COROUTINE_POOL_BATCH_MAX_SIZE = 128,
  };
  
- GSource *io_add_watch_poll(Chardev *chr,
-@@ -91,6 +122,7 @@ GSource *io_add_watch_poll(Chardev *chr,
-     iwp->ioc = ioc;
-     iwp->fd_read = (GSourceFunc) fd_read;
-     iwp->src = NULL;
-+    iwp->context = context;
+-/** Free list to speed up creation */
+-static QSLIST_HEAD(, Coroutine) release_pool = QSLIST_HEAD_INITIALIZER(pool);
+-static unsigned int pool_max_size = POOL_INITIAL_MAX_SIZE;
+-static unsigned int release_pool_size;
++/*
++ * Coroutine creation and deletion is expensive so a pool of unused coroutines
++ * is kept as a cache. When the pool has coroutines available, they are
++ * recycled instead of creating new ones from scratch. Coroutines are added to
++ * the pool upon termination.
++ *
++ * The pool is global but each thread maintains a small local pool to avoid
++ * global pool contention. Threads fetch and return batches of coroutines from
++ * the global pool to maintain their local pool. The local pool holds up to two
++ * batches whereas the maximum size of the global pool is controlled by the
++ * qemu_coroutine_inc_pool_size() API.
++ *
++ * .-----------------------------------.
++ * | Batch 1 | Batch 2 | Batch 3 | ... | global_pool
++ * `-----------------------------------'
++ *
++ * .-------------------.
++ * | Batch 1 | Batch 2 | per-thread local_pool (maximum 2 batches)
++ * `-------------------'
++ */
++typedef struct CoroutinePoolBatch {
++    /* Batches are kept in a list */
++    QSLIST_ENTRY(CoroutinePoolBatch) next;
  
-     name = g_strdup_printf("chardev-iowatch-%s", chr->label);
-     g_source_set_name((GSource *)iwp, name);
-@@ -101,10 +133,23 @@ GSource *io_add_watch_poll(Chardev *chr,
-     return (GSource *)iwp;
- }
+-typedef QSLIST_HEAD(, Coroutine) CoroutineQSList;
+-QEMU_DEFINE_STATIC_CO_TLS(CoroutineQSList, alloc_pool);
+-QEMU_DEFINE_STATIC_CO_TLS(unsigned int, alloc_pool_size);
+-QEMU_DEFINE_STATIC_CO_TLS(Notifier, coroutine_pool_cleanup_notifier);
++    /* This batch holds up to @COROUTINE_POOL_BATCH_MAX_SIZE coroutines */
++    QSLIST_HEAD(, Coroutine) list;
++    unsigned int size;
++} CoroutinePoolBatch;
  
-+static void io_remove_watch_poll(GSource *source)
-+{
-+    IOWatchPoll *iwp;
+-static void coroutine_pool_cleanup(Notifier *n, void *value)
++typedef QSLIST_HEAD(, CoroutinePoolBatch) CoroutinePool;
 +
-+    iwp = io_watch_poll_from_source(source);
-+    if (iwp->src) {
-+        g_source_destroy(iwp->src);
-+        g_source_unref(iwp->src);
-+        iwp->src = NULL;
-+    }
-+    g_source_destroy(&iwp->parent);
++/* Host operating system limit on number of pooled coroutines */
++static unsigned int global_pool_hard_max_size;
++
++static QemuMutex global_pool_lock; /* protects the following variables */
++static CoroutinePool global_pool = QSLIST_HEAD_INITIALIZER(global_pool);
++static unsigned int global_pool_size;
++static unsigned int global_pool_max_size = COROUTINE_POOL_BATCH_MAX_SIZE;
++
++QEMU_DEFINE_STATIC_CO_TLS(CoroutinePool, local_pool);
++QEMU_DEFINE_STATIC_CO_TLS(Notifier, local_pool_cleanup_notifier);
++
++static CoroutinePoolBatch *coroutine_pool_batch_new(void)
++{
++    CoroutinePoolBatch *batch = g_new(CoroutinePoolBatch, 1);
++
++    QSLIST_INIT(&batch->list);
++    batch->size = 0;
++    return batch;
 +}
 +
- void remove_fd_in_watch(Chardev *chr)
++static void coroutine_pool_batch_delete(CoroutinePoolBatch *batch)
  {
-     if (chr->gsource) {
--        g_source_destroy(chr->gsource);
-+        io_remove_watch_poll(chr->gsource);
-         chr->gsource = NULL;
+     Coroutine *co;
+     Coroutine *tmp;
+-    CoroutineQSList *alloc_pool = get_ptr_alloc_pool();
+ 
+-    QSLIST_FOREACH_SAFE(co, alloc_pool, pool_next, tmp) {
+-        QSLIST_REMOVE_HEAD(alloc_pool, pool_next);
++    QSLIST_FOREACH_SAFE(co, &batch->list, pool_next, tmp) {
++        QSLIST_REMOVE_HEAD(&batch->list, pool_next);
+         qemu_coroutine_delete(co);
      }
++    g_free(batch);
++}
++
++static void local_pool_cleanup(Notifier *n, void *value)
++{
++    CoroutinePool *local_pool = get_ptr_local_pool();
++    CoroutinePoolBatch *batch;
++    CoroutinePoolBatch *tmp;
++
++    QSLIST_FOREACH_SAFE(batch, local_pool, next, tmp) {
++        QSLIST_REMOVE_HEAD(local_pool, next);
++        coroutine_pool_batch_delete(batch);
++    }
++}
++
++/* Ensure the atexit notifier is registered */
++static void local_pool_cleanup_init_once(void)
++{
++    Notifier *notifier = get_ptr_local_pool_cleanup_notifier();
++    if (!notifier->notify) {
++        notifier->notify = local_pool_cleanup;
++        qemu_thread_atexit_add(notifier);
++    }
++}
++
++/* Helper to get the next unused coroutine from the local pool */
++static Coroutine *coroutine_pool_get_local(void)
++{
++    CoroutinePool *local_pool = get_ptr_local_pool();
++    CoroutinePoolBatch *batch = QSLIST_FIRST(local_pool);
++    Coroutine *co;
++
++    if (unlikely(!batch)) {
++        return NULL;
++    }
++
++    co = QSLIST_FIRST(&batch->list);
++    QSLIST_REMOVE_HEAD(&batch->list, pool_next);
++    batch->size--;
++
++    if (batch->size == 0) {
++        QSLIST_REMOVE_HEAD(local_pool, next);
++        coroutine_pool_batch_delete(batch);
++    }
++    return co;
++}
++
++/* Get the next batch from the global pool */
++static void coroutine_pool_refill_local(void)
++{
++    CoroutinePool *local_pool = get_ptr_local_pool();
++    CoroutinePoolBatch *batch;
++
++    WITH_QEMU_LOCK_GUARD(&global_pool_lock) {
++        batch = QSLIST_FIRST(&global_pool);
++
++        if (batch) {
++            QSLIST_REMOVE_HEAD(&global_pool, next);
++            global_pool_size -= batch->size;
++        }
++    }
++
++    if (batch) {
++        QSLIST_INSERT_HEAD(local_pool, batch, next);
++        local_pool_cleanup_init_once();
++    }
++}
++
++/* Add a batch of coroutines to the global pool */
++static void coroutine_pool_put_global(CoroutinePoolBatch *batch)
++{
++    WITH_QEMU_LOCK_GUARD(&global_pool_lock) {
++        unsigned int max = MIN(global_pool_max_size,
++                               global_pool_hard_max_size);
++
++        if (global_pool_size < max) {
++            QSLIST_INSERT_HEAD(&global_pool, batch, next);
++
++            /* Overshooting the max pool size is allowed */
++            global_pool_size += batch->size;
++            return;
++        }
++    }
++
++    /* The global pool was full, so throw away this batch */
++    coroutine_pool_batch_delete(batch);
++}
++
++/* Get the next unused coroutine from the pool or return NULL */
++static Coroutine *coroutine_pool_get(void)
++{
++    Coroutine *co;
++
++    co = coroutine_pool_get_local();
++    if (!co) {
++        coroutine_pool_refill_local();
++        co = coroutine_pool_get_local();
++    }
++    return co;
++}
++
++static void coroutine_pool_put(Coroutine *co)
++{
++    CoroutinePool *local_pool = get_ptr_local_pool();
++    CoroutinePoolBatch *batch = QSLIST_FIRST(local_pool);
++
++    if (unlikely(!batch)) {
++        batch = coroutine_pool_batch_new();
++        QSLIST_INSERT_HEAD(local_pool, batch, next);
++        local_pool_cleanup_init_once();
++    }
++
++    if (unlikely(batch->size >= COROUTINE_POOL_BATCH_MAX_SIZE)) {
++        CoroutinePoolBatch *next = QSLIST_NEXT(batch, next);
++
++        /* Is the local pool full? */
++        if (next) {
++            QSLIST_REMOVE_HEAD(local_pool, next);
++            coroutine_pool_put_global(batch);
++        }
++
++        batch = coroutine_pool_batch_new();
++        QSLIST_INSERT_HEAD(local_pool, batch, next);
++    }
++
++    QSLIST_INSERT_HEAD(&batch->list, co, pool_next);
++    batch->size++;
+ }
+ 
+ Coroutine *qemu_coroutine_create(CoroutineEntry *entry, void *opaque)
+@@ -58,31 +219,7 @@ Coroutine *qemu_coroutine_create(CoroutineEntry *entry, void *opaque)
+     Coroutine *co = NULL;
+ 
+     if (IS_ENABLED(CONFIG_COROUTINE_POOL)) {
+-        CoroutineQSList *alloc_pool = get_ptr_alloc_pool();
+-
+-        co = QSLIST_FIRST(alloc_pool);
+-        if (!co) {
+-            if (release_pool_size > POOL_MIN_BATCH_SIZE) {
+-                /* Slow path; a good place to register the destructor, too.  */
+-                Notifier *notifier = get_ptr_coroutine_pool_cleanup_notifier();
+-                if (!notifier->notify) {
+-                    notifier->notify = coroutine_pool_cleanup;
+-                    qemu_thread_atexit_add(notifier);
+-                }
+-
+-                /* This is not exact; there could be a little skew between
+-                 * release_pool_size and the actual size of release_pool.  But
+-                 * it is just a heuristic, it does not need to be perfect.
+-                 */
+-                set_alloc_pool_size(qatomic_xchg(&release_pool_size, 0));
+-                QSLIST_MOVE_ATOMIC(alloc_pool, &release_pool);
+-                co = QSLIST_FIRST(alloc_pool);
+-            }
+-        }
+-        if (co) {
+-            QSLIST_REMOVE_HEAD(alloc_pool, pool_next);
+-            set_alloc_pool_size(get_alloc_pool_size() - 1);
+-        }
++        co = coroutine_pool_get();
+     }
+ 
+     if (!co) {
+@@ -100,19 +237,10 @@ static void coroutine_delete(Coroutine *co)
+     co->caller = NULL;
+ 
+     if (IS_ENABLED(CONFIG_COROUTINE_POOL)) {
+-        if (release_pool_size < qatomic_read(&pool_max_size) * 2) {
+-            QSLIST_INSERT_HEAD_ATOMIC(&release_pool, co, pool_next);
+-            qatomic_inc(&release_pool_size);
+-            return;
+-        }
+-        if (get_alloc_pool_size() < qatomic_read(&pool_max_size)) {
+-            QSLIST_INSERT_HEAD(get_ptr_alloc_pool(), co, pool_next);
+-            set_alloc_pool_size(get_alloc_pool_size() + 1);
+-            return;
+-        }
++        coroutine_pool_put(co);
++    } else {
++        qemu_coroutine_delete(co);
+     }
+-
+-    qemu_coroutine_delete(co);
+ }
+ 
+ void qemu_aio_coroutine_enter(AioContext *ctx, Coroutine *co)
+@@ -223,10 +351,46 @@ AioContext *qemu_coroutine_get_aio_context(Coroutine *co)
+ 
+ void qemu_coroutine_inc_pool_size(unsigned int additional_pool_size)
+ {
+-    qatomic_add(&pool_max_size, additional_pool_size);
++    QEMU_LOCK_GUARD(&global_pool_lock);
++    global_pool_max_size += additional_pool_size;
+ }
+ 
+ void qemu_coroutine_dec_pool_size(unsigned int removing_pool_size)
+ {
+-    qatomic_sub(&pool_max_size, removing_pool_size);
++    QEMU_LOCK_GUARD(&global_pool_lock);
++    global_pool_max_size -= removing_pool_size;
++}
++
++static unsigned int get_global_pool_hard_max_size(void)
++{
++#ifdef __linux__
++    g_autofree char *contents = NULL;
++    int max_map_count;
++
++    /*
++     * Linux processes can have up to max_map_count virtual memory areas
++     * (VMAs). mmap(2), mprotect(2), etc fail with ENOMEM beyond this limit. We
++     * must limit the coroutine pool to a safe size to avoid running out of
++     * VMAs.
++     */
++    if (g_file_get_contents("/proc/sys/vm/max_map_count", &contents, NULL,
++                            NULL) &&
++        qemu_strtoi(contents, NULL, 10, &max_map_count) == 0) {
++        /*
++         * This is a conservative upper bound that avoids exceeding
++         * max_map_count. Leave half for non-coroutine users like library
++         * dependencies, vhost-user, etc. Each coroutine takes up 2 VMAs so
++         * halve the amount again.
++         */
++        return max_map_count / 4;
++    }
++#endif
++
++    return UINT_MAX;
++}
++
++static void __attribute__((constructor)) qemu_coroutine_init(void)
++{
++    qemu_mutex_init(&global_pool_lock);
++    global_pool_hard_max_size = get_global_pool_hard_max_size();
  }
 -- 
-2.43.0
+2.44.0
 
 
