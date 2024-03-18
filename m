@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626D587EC84
-	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:48:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE1A287EC7E
+	for <lists+qemu-devel@lfdr.de>; Mon, 18 Mar 2024 16:48:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmFCf-0002ln-1R; Mon, 18 Mar 2024 11:47:09 -0400
+	id 1rmFCh-0002mo-Oh; Mon, 18 Mar 2024 11:47:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFCW-0002j6-JP
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:00 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFCf-0002mR-Pn
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:09 -0400
+Received: from mail-ot1-x32f.google.com ([2607:f8b0:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFCT-0007qp-DP
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:00 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-5cf2d73a183so3725403a12.1
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:46:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1rmFCa-0007rF-8B
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 11:47:09 -0400
+Received: by mail-ot1-x32f.google.com with SMTP id
+ 46e09a7af769-6e675db6fbaso2634665a34.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 08:47:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710776816; x=1711381616; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1710776821; x=1711381621; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SaaO9SZsKEZz6NFFljqKDw7YBSQBKN32a+oOPm6wNWc=;
- b=VQ8JuSZorzEpV1lWWLO3T/j1tttnkMl5OGdNZnkK0HYmMD05n0U3YH+OYcwCj3isya
- BL1Z4HZSe4pDKYK7KOj72otbgkTEpWGZjoDnNsVAiZ7LZIdm3f6XzVY2sGMI0vWarW6T
- lJ5iXFLoHdvE8U5bOlwAfaxEpcikgQTP7BRa7rb7fPzWnCf01BhsWngds9yon056r3jA
- MY2cNCxzP4A1QZhAXAVxCqtfsmTYhXxvrZGZzraN4dDwSz0orv5sd+WXgoGWWoTx1adz
- QSUniuh/h85diuteuifFJf9toF4zSxNvDgFGAgx4kTln76p75uzkQJbXBAQMug2vxKvi
- +GUQ==
+ bh=eKpzpXj/rNwSAlMipdDJMEvIfQrihazLg7YHWN/oksU=;
+ b=cejnqJC2fZhv8J58rFo4uI5m97t+7z3PUOidixe6tBiXd8PC8pxm8Wem+JRviOGBhN
+ dKMn2GYnVy9ssr3CiZnBQAorVsi+HsDZksFpnOkpQUxPCk6fYNqUDXTI9sB1ng4+EvFf
+ YNlxFgd87x45ddJcqXMCFx+vkb5E5RSVtiRkMiEL5u5Mx/iXuPojTXy/V7K2Np2mJ7+P
+ ANCLbwnNX+4BphHZkY20XVGk1AuZqR+C2OAGAHbTujjCeetyVh2GAGccfBTyzo0NZmLl
+ 6H8BWrCnwbzn4jvtVh2bNew8NGWnJ0TK18MzTOiyNBpM781HCVwfrIw0znvyj0uArb7G
+ DRXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710776816; x=1711381616;
+ d=1e100.net; s=20230601; t=1710776821; x=1711381621;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SaaO9SZsKEZz6NFFljqKDw7YBSQBKN32a+oOPm6wNWc=;
- b=YlwFuVEJxLVRGU+AALyd/FTQXReg3Fd9LyGoCwlFnu3Vp7EssnkcqWIUzj+rMv1/EA
- aCgMHWQdcT2BhJEwLbXjhzk425IFsRJlsQ4MnzkM/dfTRCxByda6i6ibJCSOZ3o4vWco
- 2d1a3YV9DA5bw5uOeFJawESvcqEAz5g+NBufstRYdxcTjjlb03EuNDUKVdt/tCE8mCSa
- pcf3eqrGKskATX/gPnPdKqBk8135bIWA/9a6VRNH2/boAtHVQvJbffeQ/rv6UHi7kboV
- 02k542GcM0koc58PtV5+kveu6PxNvEBXlpsPh8SQNrBBz5JXjcKokVGSVvEPHCurSXq/
- /Vdg==
-X-Gm-Message-State: AOJu0Yw6CYqChtPveg8z6dCZJ8SpYNRZjw0U6MivY4WfakydC6y60KEz
- kCQzPf7dQhNr1obytXpX1l+HqMxhmRVUZY5ckYiaJA0djj0pZuc4flNd1Nk6w8w=
-X-Google-Smtp-Source: AGHT+IHSOTr/2u6EkLz5/ck5gYpngRGlREmPs99jsA/1P1jPYsWVpLVuF8CDdT9H06jNHjpZlRjxiQ==
-X-Received: by 2002:a17:90b:34c:b0:29e:89b:9446 with SMTP id
- fh12-20020a17090b034c00b0029e089b9446mr18621pjb.1.1710776815695; 
- Mon, 18 Mar 2024 08:46:55 -0700 (PDT)
+ bh=eKpzpXj/rNwSAlMipdDJMEvIfQrihazLg7YHWN/oksU=;
+ b=o5Z71DQYPOcX9zoV2Kfps0a1jogAU2do46WxKwCUy37TWAg9Wi04B6r/KHWzBgaWCy
+ 4KazT8GQYAwRrmkrB+9TYYd/eB9z6N4ewd2kNU4q+LOVK54UZQpdhM3h3+PKly5I4MwR
+ yiPCEHB+iS6irabbS/7UwRXWca+hYfFRaXbTi+11EiaLHUnWg7926/ZqhOyWmSVT24q3
+ 0MRcNhTxvwiWl96miNaWLxmrAaT2EG2xbUv50Yi7UEl5FIOXz4UAv4yS8pLDSwAgT2KE
+ V2PGwQQa7Fpv0OPRmIOR+BHid/fQ/nn13D0SHHNZ1bisr866f9NEQZqpO3A8kAS0Estv
+ svaA==
+X-Gm-Message-State: AOJu0YwZ4ZHqT02/ZmmBFHXkH6oPl4NY4ySbYU0/Un59RJDR/uwcWXpm
+ 8aXtvxGqKuzCe9BBs9QDKnesCfG5BJeW4LYftQ55rA6FKtZB7eLn9XehRr50nNg=
+X-Google-Smtp-Source: AGHT+IGkUFdHxsrsNruOAN0Rj049+O1vLPe/LU/3Vi7YHIKGXgOa9KqmeqwBpoJmTiLG/AdBaDHCNA==
+X-Received: by 2002:a05:6870:418d:b0:220:941d:18be with SMTP id
+ y13-20020a056870418d00b00220941d18bemr13353120oac.25.1710776821348; 
+ Mon, 18 Mar 2024 08:47:01 -0700 (PDT)
 Received: from wheely.local0.net ([118.208.155.46])
  by smtp.gmail.com with ESMTPSA id
- v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.46.50
+ v22-20020a634816000000b005dc26144d96sm7332108pga.75.2024.03.18.08.46.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 18 Mar 2024 08:46:55 -0700 (PDT)
+ Mon, 18 Mar 2024 08:47:01 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -65,25 +65,23 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH v5 04/24] replay: allow runstate shutdown->running when
- replaying trace
-Date: Tue, 19 Mar 2024 01:46:01 +1000
-Message-ID: <20240318154621.2361161-5-npiggin@gmail.com>
+Subject: [PATCH v5 05/24] Revert "replay: stop us hanging in rr_wait_io_event"
+Date: Tue, 19 Mar 2024 01:46:02 +1000
+Message-ID: <20240318154621.2361161-6-npiggin@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240318154621.2361161-1-npiggin@gmail.com>
 References: <20240318154621.2361161-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=npiggin@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32f;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,106 +97,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When replaying a trace, it is possible to go from shutdown to running
-with a reverse-debugging step. This can be useful if the problem being
-debugged triggers a reset or shutdown.
+This reverts commit 1f881ea4a444ef36a8b6907b0b82be4b3af253a2.
 
-This can be tested by making a recording of a machine that shuts down,
-then using -action shutdown=pause when replaying it. Continuing to the
-end of the trace then reverse-stepping in gdb crashes due to invalid
-runstate transition.
+That commit causes reverse_debugging.py test failures, and does
+not seem to solve the root cause of the problem x86-64 still
+hangs in record/replay tests.
 
-Just permitting the transition seems to be all that's necessary for
-reverse-debugging to work well in such a state.
+The problem with short-cutting the iowait that was taken during
+record phase is that related events will not get consumed at the
+same points (e.g., reading the clock).
 
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
+A hang with zero icount always seems to be a symptom of an earlier
+problem that has caused the recording to become out of synch with
+the execution and consumption of events by replay.
+
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- include/sysemu/runstate.h |  1 +
- replay/replay.c           |  2 ++
- system/runstate.c         | 31 ++++++++++++++++++++++++++++---
- 3 files changed, 31 insertions(+), 3 deletions(-)
+ include/sysemu/replay.h      |  5 -----
+ accel/tcg/tcg-accel-ops-rr.c |  2 +-
+ replay/replay.c              | 21 ---------------------
+ 3 files changed, 1 insertion(+), 27 deletions(-)
 
-diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-index 0117d243c4..fe25eed3c0 100644
---- a/include/sysemu/runstate.h
-+++ b/include/sysemu/runstate.h
-@@ -9,6 +9,7 @@ void runstate_set(RunState new_state);
- RunState runstate_get(void);
- bool runstate_is_running(void);
- bool runstate_needs_reset(void);
-+void runstate_replay_enable(void);
+diff --git a/include/sysemu/replay.h b/include/sysemu/replay.h
+index f229b2109c..8102fa54f0 100644
+--- a/include/sysemu/replay.h
++++ b/include/sysemu/replay.h
+@@ -73,11 +73,6 @@ int replay_get_instructions(void);
+ /*! Updates instructions counter in replay mode. */
+ void replay_account_executed_instructions(void);
  
- typedef void VMChangeStateHandler(void *opaque, bool running, RunState state);
+-/**
+- * replay_can_wait: check if we should pause for wait-io
+- */
+-bool replay_can_wait(void);
+-
+ /* Processing clocks and other time sources */
  
+ /*! Save the specified clock */
+diff --git a/accel/tcg/tcg-accel-ops-rr.c b/accel/tcg/tcg-accel-ops-rr.c
+index 894e73e52c..a942442a33 100644
+--- a/accel/tcg/tcg-accel-ops-rr.c
++++ b/accel/tcg/tcg-accel-ops-rr.c
+@@ -109,7 +109,7 @@ static void rr_wait_io_event(void)
+ {
+     CPUState *cpu;
+ 
+-    while (all_cpu_threads_idle() && replay_can_wait()) {
++    while (all_cpu_threads_idle()) {
+         rr_stop_kick_timer();
+         qemu_cond_wait_bql(first_cpu->halt_cond);
+     }
 diff --git a/replay/replay.c b/replay/replay.c
-index a2c576c16e..b8564a4813 100644
+index b8564a4813..895fa6b67a 100644
 --- a/replay/replay.c
 +++ b/replay/replay.c
-@@ -385,6 +385,8 @@ static void replay_enable(const char *fname, int mode)
-         replay_fetch_data_kind();
-     }
- 
-+    runstate_replay_enable();
-+
-     replay_init_events();
+@@ -451,27 +451,6 @@ void replay_start(void)
+     replay_enable_events();
  }
  
-diff --git a/system/runstate.c b/system/runstate.c
-index d6ab860eca..8f9ee034de 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -182,6 +182,12 @@ static const RunStateTransition runstate_transitions_def[] = {
-     { RUN_STATE__MAX, RUN_STATE__MAX },
- };
- 
-+static const RunStateTransition replay_play_runstate_transitions_def[] = {
-+    { RUN_STATE_SHUTDOWN, RUN_STATE_RUNNING},
-+
-+    { RUN_STATE__MAX, RUN_STATE__MAX },
-+};
-+
- static bool runstate_valid_transitions[RUN_STATE__MAX][RUN_STATE__MAX];
- 
- bool runstate_check(RunState state)
-@@ -189,14 +195,33 @@ bool runstate_check(RunState state)
-     return current_run_state == state;
- }
- 
--static void runstate_init(void)
-+static void transitions_set_valid(const RunStateTransition *rst)
+-/*
+- * For none/record the answer is yes.
+- */
+-bool replay_can_wait(void)
+-{
+-    if (replay_mode == REPLAY_MODE_PLAY) {
+-        /*
+-         * For playback we shouldn't ever be at a point we wait. If
+-         * the instruction count has reached zero and we have an
+-         * unconsumed event we should go around again and consume it.
+-         */
+-        if (replay_state.instruction_count == 0 && replay_state.has_unread_data) {
+-            return false;
+-        } else {
+-            replay_sync_error("Playback shouldn't have to iowait");
+-        }
+-    }
+-    return true;
+-}
+-
+-
+ void replay_finish(void)
  {
-     const RunStateTransition *p;
- 
--    memset(&runstate_valid_transitions, 0, sizeof(runstate_valid_transitions));
--    for (p = &runstate_transitions_def[0]; p->from != RUN_STATE__MAX; p++) {
-+    for (p = rst; p->from != RUN_STATE__MAX; p++) {
-         runstate_valid_transitions[p->from][p->to] = true;
-     }
-+}
-+
-+void runstate_replay_enable(void)
-+{
-+    assert(replay_mode != REPLAY_MODE_NONE);
-+
-+    if (replay_mode == REPLAY_MODE_PLAY) {
-+        /*
-+         * When reverse-debugging, it is possible to move state from
-+         * shutdown to running.
-+         */
-+        transitions_set_valid(&replay_play_runstate_transitions_def[0]);
-+    }
-+}
-+
-+static void runstate_init(void)
-+{
-+    memset(&runstate_valid_transitions, 0, sizeof(runstate_valid_transitions));
-+
-+    transitions_set_valid(&runstate_transitions_def[0]);
- 
-     qemu_mutex_init(&vmstop_lock);
- }
+     if (replay_mode == REPLAY_MODE_NONE) {
 -- 
 2.42.0
 
