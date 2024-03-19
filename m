@@ -2,67 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8702387FF4F
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:06:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E9087FF55
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:12:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rma6C-0004Rt-Gl; Tue, 19 Mar 2024 10:05:52 -0400
+	id 1rmaBf-0008RW-6G; Tue, 19 Mar 2024 10:11:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma67-0004PX-Rz
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma66-0008NX-3h
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710857145;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vWgDqLVUGMnlNILpKAU83zv3AF1R8UCIRu3dt5BeHGA=;
- b=XFOnEuyglgPzWgmZ4j3fyZ5UP027iRr9xHFpWONU31kI0qeiCdmG25HP/dqYhlDft8AAq0
- rhjjYDgX7m33heI5aazlsmssfKaCPqYPnSIn/ettjGs3KHIrT1VHNotJ/tiw6dsZwU6QNy
- qJcSlRMyRnNn422PARaWGhwrVXuoh9w=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-610-re5I9qv7ObOfGrP4fyGRmQ-1; Tue,
- 19 Mar 2024 10:05:44 -0400
-X-MC-Unique: re5I9qv7ObOfGrP4fyGRmQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C776D1C05AF8
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 14:05:42 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F1C673C54;
- Tue, 19 Mar 2024 14:05:41 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PULL 3/3] aspeed/smc: Only wire flash devices at reset
-Date: Tue, 19 Mar 2024 15:05:16 +0100
-Message-ID: <20240319140516.392542-4-clg@redhat.com>
-In-Reply-To: <20240319140516.392542-1-clg@redhat.com>
-References: <20240319140516.392542-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmaAa-0007yg-Ca
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:10:29 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmaA6-0000yk-7S
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:10:14 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-566e869f631so6363284a12.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:09:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710857347; x=1711462147; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=XxQvUt2uI2IhUP1FT7oId3U60tlbSgrIj/rYEOujcW8=;
+ b=H5M4ISx5eGNOeGjq3xIvW8s+0MuqpY/h6CfXEVuwj1EtI8Z+LEZQB/bIbMNA5BhQ3A
+ EBaklY7VtIpadMnCTMmGug3kAzlYpI7T8JNyHgjkfMswaLM/RFn2a+IPl/Kye+XQFgAr
+ owVg4zbf7zUoGIGP0L5ErmmIX2XJqMJ6nbF0QC5NOYKsbZkuhtR2QSw2Xu8g0qdIZDhz
+ T9CqPt1Kig4KnegCdUaCVoslXbemPzz4K9hAUh6xG0zfsbPKVGgr68Vael9StMqSZplm
+ v9TCtSJ0FPcydetdNfYcvGrmXV5nDZRQ9HM4sccet6XCsAvxM+hOl//bfItsMwbGskmz
+ KFBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710857347; x=1711462147;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XxQvUt2uI2IhUP1FT7oId3U60tlbSgrIj/rYEOujcW8=;
+ b=RtFyd4F5hhGmyChqCAH8zHezviK6LElakc9jcbClEZgpQJWHz22Bzo1BZZSc7b++AH
+ 2TbzGkMOZdvAeUPQgZLh1JmmVuF+BLeWS73Ns+7SkTwhysLUZLSds+2jJIy207u/t/vq
+ AU+5I+3VhwIFehNLPtEwvC2Z3HR8vaQtkXIcYJNeUyw9pL7YqW9N3bomw5K+X1hW4F8T
+ e6t1bj9RBgrgqK3lgIs8ZK0BsBw0urL0Cuf1OncWTKqjWXxf0JteJpHpKTKD9vxGRkei
+ 0VbuW/qElBUpXpUiMe3hwrf1/z0pjQjdh38fSLQtFPkP7eYh7pD3yVgbqAAAQmmsfgDI
+ AabQ==
+X-Gm-Message-State: AOJu0YxB0tTWJ22BPiZnKlq9fZ2jOUp3iguMrqxr9YAOXEVL5p3igE1f
+ 4ss7cW/6v60oEA3wQkWIpOXL1HGAnoeBb1F+85F1eNra7kq8/QZJ/Cb9IWIA0eTKUzhpjSWAlA/
+ 0VpEm/Xw8PtHuR1Fdw2WLB25zCILZDm06GBxv4w==
+X-Google-Smtp-Source: AGHT+IEdYtzt/V/W39LlmbTi8RxkdvCW5TbR6RncsOsdWWNpqxXZhA+u3Q4rwXYpT3VSrQj9WsGj5IQHY1ka8JHWtHQ=
+X-Received: by 2002:a05:6402:3645:b0:568:af3d:4a5f with SMTP id
+ em5-20020a056402364500b00568af3d4a5fmr2640438edb.22.1710857347052; Tue, 19
+ Mar 2024 07:09:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20240201081313.1339788-1-tomoyuki.hirose@igel.co.jp>
+ <20240201081313.1339788-2-tomoyuki.hirose@igel.co.jp>
+In-Reply-To: <20240201081313.1339788-2-tomoyuki.hirose@igel.co.jp>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Mar 2024 14:08:55 +0000
+Message-ID: <CAFEAcA9Z8CbD2U9D0=DBrmRbV_OiVbeUUmTLdwRExhnS0HRnhQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] system/memory.c: support unaligned access
+To: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,111 +88,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Aspeed machines have many Static Memory Controllers (SMC), up to
-8, which can only drive flash memory devices. Commit 27a2c66c92ec
-("aspeed/smc: Wire CS lines at reset") tried to ease the definitions
-of these devices by allowing flash devices from the command line to be
-attached to a SSI bus. For that, the wiring of the CS lines of the
-Aspeed SMC controller was moved at reset. Two assumptions are made
-though, first that the device has a SSI_GPIO_CS GPIO line, which is
-not always the case, and second that it is a flash device.
+On Thu, 1 Feb 2024 at 08:15, Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp> wrote:
+>
+> The previous code ignored 'impl.unaligned' and handled unaligned accesses
+> as is. But this implementation cannot emulate specific registers of some
+> devices that allow unaligned access such as xHCI Host Controller Capability
+> Registers.
+> This commit checks 'impl.unaligned' and if it is false, QEMU emulates
+> unaligned access with multiple aligned access.
+>
+> Signed-off-by: Tomoyuki HIROSE <tomoyuki.hirose@igel.co.jp>
+> ---
+>  system/memory.c | 38 +++++++++++++++++++++++++-------------
+>  1 file changed, 25 insertions(+), 13 deletions(-)
+>
+> diff --git a/system/memory.c b/system/memory.c
+> index a229a79988..a7ca0c9f54 100644
+> --- a/system/memory.c
+> +++ b/system/memory.c
+> @@ -535,10 +535,17 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+>                                        MemTxAttrs attrs)
+>  {
+>      uint64_t access_mask;
+> +    unsigned access_mask_shift;
+> +    unsigned access_mask_start_offset;
+> +    unsigned access_mask_end_offset;
+>      unsigned access_size;
+> -    unsigned i;
+>      MemTxResult r = MEMTX_OK;
+>      bool reentrancy_guard_applied = false;
+> +    bool is_big_endian = memory_region_big_endian(mr);
+> +    signed start_diff;
+> +    signed current_offset;
+> +    signed access_shift;
 
-Correct this problem by ensuring that the devices attached to the bus
-are of the correct flash type. This fixes a QEMU abort when devices
-without a CS line, such as the max111x, are passed on the command
-line.
+"signed foo" is a weird way to specify this type, which we use almost
+nowhere else in the codebase -- this is equivalent to "int foo".
 
-While at it, export TYPE_M25P80 used in the Xilinx Versal Virtual
-machine.
+> +    hwaddr current_addr;
+>
+>      if (!access_size_min) {
+>          access_size_min = 1;
+> @@ -560,19 +567,24 @@ static MemTxResult access_with_adjusted_size(hwaddr addr,
+>          reentrancy_guard_applied = true;
+>      }
+>
+> -    /* FIXME: support unaligned access? */
+>      access_size = MAX(MIN(size, access_size_max), access_size_min);
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2228
-Fixes: 27a2c66c92ec ("aspeed/smc: Wire CS lines at reset")
-Reported-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-[ clg: minor fixes in the commit log ]
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- include/hw/block/flash.h  | 2 ++
- hw/arm/xlnx-versal-virt.c | 3 ++-
- hw/block/m25p80.c         | 1 -
- hw/ssi/aspeed_smc.c       | 9 +++++++++
- 4 files changed, 13 insertions(+), 2 deletions(-)
+This still has a problem I noted for the v1 patch:
+we compute the access_size without thinking about the alignment,
+so for an access like:
+ * addr = 2, size = 4, access_size_min = 2, access_size_max = 8
+we will calculate access_size = 4 and do two 4-byte accesses
+(at addresses 0 and 4) when we should do two 2-byte accesses
+(at addresses 2 and 4).
 
-diff --git a/include/hw/block/flash.h b/include/hw/block/flash.h
-index de93756cbe8f261edf0ff4b4cf2fa811a9c0463d..2b5ccd92f46393b81e373bdd537a08d66bfd3b8a 100644
---- a/include/hw/block/flash.h
-+++ b/include/hw/block/flash.h
-@@ -78,6 +78,8 @@ extern const VMStateDescription vmstate_ecc_state;
- 
- /* m25p80.c */
- 
-+#define TYPE_M25P80 "m25p80-generic"
-+
- BlockBackend *m25p80_get_blk(DeviceState *dev);
- 
- #endif
-diff --git a/hw/arm/xlnx-versal-virt.c b/hw/arm/xlnx-versal-virt.c
-index bfaed1aebfc6f1b60a85520bba44e5276d549cd8..962f98fee2ea9b8643d120100e694cfb00348200 100644
---- a/hw/arm/xlnx-versal-virt.c
-+++ b/hw/arm/xlnx-versal-virt.c
-@@ -13,6 +13,7 @@
- #include "qemu/error-report.h"
- #include "qapi/error.h"
- #include "sysemu/device_tree.h"
-+#include "hw/block/flash.h"
- #include "hw/boards.h"
- #include "hw/sysbus.h"
- #include "hw/arm/fdt.h"
-@@ -759,7 +760,7 @@ static void versal_virt_init(MachineState *machine)
-             flash_klass = object_class_by_name(s->ospi_model);
-             if (!flash_klass ||
-                 object_class_is_abstract(flash_klass) ||
--                !object_class_dynamic_cast(flash_klass, "m25p80-generic")) {
-+                !object_class_dynamic_cast(flash_klass, TYPE_M25P80)) {
-                 error_setg(&error_fatal, "'%s' is either abstract or"
-                        " not a subtype of m25p80", s->ospi_model);
-                 return;
-diff --git a/hw/block/m25p80.c b/hw/block/m25p80.c
-index 08a00a6d9b89b2883ccab70e665dcf6539caf752..8dec134832a14b03d065080db49a029d0450acdd 100644
---- a/hw/block/m25p80.c
-+++ b/hw/block/m25p80.c
-@@ -515,7 +515,6 @@ struct M25P80Class {
-     FlashPartInfo *pi;
- };
- 
--#define TYPE_M25P80 "m25p80-generic"
- OBJECT_DECLARE_TYPE(Flash, M25P80Class, M25P80)
- 
- static inline Manufacturer get_man(Flash *s)
-diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
-index 3c93936fd1ff98d20b6d6a940768f488d433d879..6e1a84c197130118d022d1b9fb607e74e844f4e2 100644
---- a/hw/ssi/aspeed_smc.c
-+++ b/hw/ssi/aspeed_smc.c
-@@ -23,6 +23,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "hw/block/flash.h"
- #include "hw/sysbus.h"
- #include "migration/vmstate.h"
- #include "qemu/log.h"
-@@ -695,6 +696,14 @@ static void aspeed_smc_reset(DeviceState *d)
-     for (i = 0; i < asc->cs_num_max; i++) {
-         DeviceState *dev = ssi_get_cs(s->spi, i);
-         if (dev) {
-+            Object *o = OBJECT(dev);
-+
-+            if (!object_dynamic_cast(o, TYPE_M25P80)) {
-+                warn_report("Aspeed SMC %s.%d : Invalid %s device type",
-+                            BUS(s->spi)->name, i, object_get_typename(o));
-+                continue;
-+            }
-+
-             qemu_irq cs_line = qdev_get_gpio_in_named(dev, SSI_GPIO_CS, 0);
-             qdev_connect_gpio_out_named(DEVICE(s), "cs", i, cs_line);
-         }
--- 
-2.44.0
+> -    access_mask = MAKE_64BIT_MASK(0, access_size * 8);
+> -    if (memory_region_big_endian(mr)) {
+> -        for (i = 0; i < size; i += access_size) {
+> -            r |= access_fn(mr, addr + i, value, access_size,
+> -                        (size - access_size - i) * 8, access_mask, attrs);
+> -        }
+> -    } else {
+> -        for (i = 0; i < size; i += access_size) {
+> -            r |= access_fn(mr, addr + i, value, access_size, i * 8,
+> -                        access_mask, attrs);
+> -        }
+> +    start_diff = mr->ops->impl.unaligned ? 0 : addr & (access_size - 1);
+> +    current_addr = addr - start_diff;
+> +    for (current_offset = -start_diff; current_offset < (signed)size;
+> +         current_offset += access_size, current_addr += access_size) {
+> +        access_shift = is_big_endian
+> +                          ? (signed)size - (signed)access_size - current_offset
+> +                          : current_offset;
+> +        access_mask_shift = current_offset > 0 ? 0 : -current_offset;
+> +        access_mask_start_offset = current_offset > 0 ? current_offset : 0;
+> +        access_mask_end_offset = current_offset + access_size > size
+> +                                     ? size
+> +                                     : current_offset + access_size;
+> +        access_mask = MAKE_64BIT_MASK(access_mask_shift * 8,
+> +            (access_mask_end_offset - access_mask_start_offset) * 8);
 
+I don't understand here why the access_mask_shift and the
+access_mask_start_offset are different. Aren't we trying to create
+a mask value with 1s from start through to end ?
+
+> +
+> +        r |= access_fn(mr, current_addr, value, access_size, access_shift * 8,
+> +                       access_mask, attrs);
+>      }
+>      if (mr->dev && reentrancy_guard_applied) {
+>          mr->dev->mem_reentrancy_guard.engaged_in_io = false;
+
+I agree with Philippe that we could be a lot more confident in
+this change if we had some unit tests that tested whether
+various combinations of unaligned accesses turned into the
+right sequence of accesses to the underlying device.
+
+thanks
+-- PMM
 
