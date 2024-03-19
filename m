@@ -2,95 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670CA880419
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 18:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDCF88041D
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 19:00:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmdjz-0007Yq-V7; Tue, 19 Mar 2024 13:59:12 -0400
+	id 1rmdjt-0007Lq-3p; Tue, 19 Mar 2024 13:59:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rmdjZ-0007I3-Ih
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rmdjS-0006ch-Fr
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710871118;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=jYmU+L2QgZldk4KcApW+ioelmr5/F2Py6BDqP9YORtA=;
- b=PKzcgcwYbI2ZZkSQ6t7yTtZcXx0P5m1/Dz4AWWKkCbLvqB+6Xaa3K4AUrj7/jV+DvLj96H
- sM/Bq45blsocfXFtgGROzBUG7cjlpshlnvVBnKYJ/d6RDfOIP6BtZFNQzkAppdHWqEYhli
- FMxipWzGLrQnRZmpf4yxaX7K8xgYNAg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-3PAoL73mOFqY1Ttn4McKiw-1; Tue, 19 Mar 2024 13:58:36 -0400
-X-MC-Unique: 3PAoL73mOFqY1Ttn4McKiw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33ec0700091so3718327f8f.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 10:58:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rmdjU-0007Fi-Uw
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:43 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1rmdjS-0006cd-2h
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:40 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-513e134f73aso3703265e87.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 10:58:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710871116; x=1711475916; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=W78Zc6G5lsi0HCi6vbvdjkDkkRnTZ4lv1NHIrHicZJw=;
+ b=c8w6Ym/jXznkT6+93q3MWjscbUrcLoGjEulcdxWWvAO3f6n2IipDYXWo9i0oN0ZqLG
+ qI7/rn7nv42uwNXv3+0EOlEVzpVGjPFiO39qaiU6irjU1B9fRFVDebG34+gxgltDadIL
+ X+URNIila8b9prGHL12NMLCV0OQrH70+oWTdUxV1ip+GC71DAPZXi9ihnO5XkU0EM/qF
+ BM8mbTYPeT2jNgJii8sa7geq6PHdM6MpR0HwN7BVAvPbHJBfJOAmod80KasuxAK3mFDi
+ EFM2v6qA0bw/Bxah38CQYK32GZcW432IqjiXQq6jgWKiduszUq+Ea3oZxfaha/Txi7kb
+ KnfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710871115; x=1711475915;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jYmU+L2QgZldk4KcApW+ioelmr5/F2Py6BDqP9YORtA=;
- b=NsxTYUGWSTZcL+Dd8PgfAmdiD5kDvZNLgKYpbKbb+xYJk09j/HaN3z+3u5nireZOUZ
- m3HxOkOLQI7NtmSD/eZJCMz2uO/I87h7tvGTwF5F4TyGMAcY82OMqWnCOLqyjJLA/cCj
- +lxJm/0JYXBo4O5T403Y4/sOuPS1L8XHKEp5sN+wQd5w6E/pyjc09394FMCm5OdqAYld
- w5ODfduww84H01jVlofH9SEJNY/d5ZuJxU/pPHg7rLrGXnbth6cy2dt9INo9pUk77pQR
- P8zHWT3m5s6xPPKeZhOlA7g0lKsX2LnDJLZdAy+3wAk9JS7FW+aMjkwqFakOl5ahKZLw
- eFQQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWB5yHFdEB5LCweZhJbKkT9utyB3sZiv4mpWn36YBcBpSlXegzqNpKdNRewBwv7OD+14MIsi3x6linDgwpgDWZR/nhzknk=
-X-Gm-Message-State: AOJu0Yws/9ZP0IWrj1FYBpDGKaXknwUTEeurKVVsonNdKZTvMVmvX+0k
- KeDjUPomU7gV5hGy3hy5iE4608PNYOu68bam/skggWn/xvXfrySvpIjAJVwRMp7eXr7gpQeTA2M
- LbBS6FMzmiUqnxtNiGEL1vaARjOLPR+e4c/6WhekdazomORK0nyuM
-X-Received: by 2002:adf:f583:0:b0:341:8efd:e20d with SMTP id
- f3-20020adff583000000b003418efde20dmr1471613wro.23.1710871115200; 
+ d=1e100.net; s=20230601; t=1710871116; x=1711475916;
+ h=content-transfer-encoding:mime-version:message-id:date:user-agent
+ :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=W78Zc6G5lsi0HCi6vbvdjkDkkRnTZ4lv1NHIrHicZJw=;
+ b=a5U6mMerbOVbGaZs3PS1FRxaloWR6BbjSfFgty8Ol8jc6sOkEv000qIowZY0PN588X
+ oVwoDVF/30stWF+d6/zzFn0eZR91jQbhA76xo4cGgX/qX4TQcDXcWVQUXbIwgR2YCGKo
+ tPXwvlV0HexU/iqre9rGvOihKCfQMuzlpfJD5lUXf1hTOUiSgsuxRcEoGPt1SM/5Gxiw
+ hQFe/1dKlxcuVnfkRDe/RTXy5I80DVdDiYichuE+oaqcsbh1pbikM3PnTamrjG+FFLat
+ C5x+vvhYbLFP9BZ3iffHpYmVrM2DsN8pPVts1N+rXC2S9pgEpY/Tdah4qg2/Ltb89kMW
+ GWmw==
+X-Gm-Message-State: AOJu0YxGzeLwg9zxmxHihyEw4kUlGn4zRk9uO8xSxzahd0vY+mzXnVwx
+ Y39ypKZTAfuJ1olVlS3R2WZm5fG0yJUSHIgvxMcF6GvinyzIeWOoJjNWEwuEGO4=
+X-Google-Smtp-Source: AGHT+IEJrWNVfyUf0veAX04Dy6ikcGWp7I+IggTiJsfz6k4/H8RaFCzbQOJzdhSZCLB9tR9st8xb6A==
+X-Received: by 2002:a05:6512:419:b0:513:d22c:419a with SMTP id
+ u25-20020a056512041900b00513d22c419amr2376756lfk.61.1710871116011; 
+ Tue, 19 Mar 2024 10:58:36 -0700 (PDT)
+Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
+ l3-20020a1709061c4300b00a46a3ad035esm4381473ejg.179.2024.03.19.10.58.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 19 Mar 2024 10:58:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJaj9GK+Gn5lZ9KkbZqTGQDZfNRc+e2z6IHIpdRPOxzqcjSQsXBXG/qADG5Bw+HKzuiR6uMA==
-X-Received: by 2002:adf:f583:0:b0:341:8efd:e20d with SMTP id
- f3-20020adff583000000b003418efde20dmr1471599wro.23.1710871114880; 
- Tue, 19 Mar 2024 10:58:34 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- y10-20020a5d4aca000000b0033e03d37685sm12909668wrs.55.2024.03.19.10.58.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Mar 2024 10:58:34 -0700 (PDT)
-Message-ID: <84e01fa8-0de6-4d2b-8696-53cd3c3f42fa@redhat.com>
-Date: Tue, 19 Mar 2024 18:58:33 +0100
+Received: from draig (localhost [IPv6:::1])
+ by draig.lan (Postfix) with ESMTP id 454825F75D;
+ Tue, 19 Mar 2024 17:58:35 +0000 (GMT)
+From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Nicholas Piggin <npiggin@gmail.com>
+Cc: qemu-devel@nongnu.org,  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Richard
+ Henderson
+ <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
+ John Snow <jsnow@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Wainer
+ dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
+ <bleal@redhat.com>,  Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [PATCH v5 06/24] tests/avocado: replay_kernel.py add x86-64 q35
+ machine test
+In-Reply-To: <20240318154621.2361161-7-npiggin@gmail.com> (Nicholas Piggin's
+ message of "Tue, 19 Mar 2024 01:46:03 +1000")
+References: <20240318154621.2361161-1-npiggin@gmail.com>
+ <20240318154621.2361161-7-npiggin@gmail.com>
+User-Agent: mu4e 1.12.2; emacs 29.2
+Date: Tue, 19 Mar 2024 17:58:35 +0000
+Message-ID: <875xxi3xys.fsf@draig.linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>
-Cc: qemu-arm@nongnu.org, Sebastian Ott <sebott@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
- <pbonzini@redhat.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
-References: <20240221063431.76992-1-shahuang@redhat.com>
- <ZfmtxxlATpvhK61y@redhat.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <ZfmtxxlATpvhK61y@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,130 +103,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Daniel,
+Nicholas Piggin <npiggin@gmail.com> writes:
 
-On 3/19/24 16:22, Daniel P. Berrangé wrote:
-> On Wed, Feb 21, 2024 at 01:34:31AM -0500, Shaoqin Huang wrote:
->> The KVM_ARM_VCPU_PMU_V3_FILTER provides the ability to let the VMM decide
->> which PMU events are provided to the guest. Add a new option
->> `kvm-pmu-filter` as -cpu sub-option to set the PMU Event Filtering.
->> Without the filter, all PMU events are exposed from host to guest by
->> default. The usage of the new sub-option can be found from the updated
->> document (docs/system/arm/cpu-features.rst).
->>
->> Here is an example which shows how to use the PMU Event Filtering, when
->> we launch a guest by use kvm, add such command line:
->>
->>   # qemu-system-aarch64 \
->>         -accel kvm \
->>         -cpu host,kvm-pmu-filter="D:0x11-0x11"
-> 
-> snip
-> 
->> @@ -517,6 +533,12 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
->>                               kvm_steal_time_set);
->>      object_property_set_description(obj, "kvm-steal-time",
->>                                      "Set off to disable KVM steal time.");
->> +
->> +    object_property_add_str(obj, "kvm-pmu-filter", kvm_pmu_filter_get,
->> +                            kvm_pmu_filter_set);
->> +    object_property_set_description(obj, "kvm-pmu-filter",
->> +                                    "PMU Event Filtering description for "
->> +                                    "guest PMU. (default: NULL, disabled)");
->>  }
-> 
-> Passing a string property, but....[1]
-> 
->>  
->>  bool kvm_arm_pmu_supported(void)
->> @@ -1706,6 +1728,62 @@ static bool kvm_arm_set_device_attr(ARMCPU *cpu, struct kvm_device_attr *attr,
->>      return true;
->>  }
->>  
->> +static void kvm_arm_pmu_filter_init(ARMCPU *cpu)
->> +{
->> +    static bool pmu_filter_init;
->> +    struct kvm_pmu_event_filter filter;
->> +    struct kvm_device_attr attr = {
->> +        .group      = KVM_ARM_VCPU_PMU_V3_CTRL,
->> +        .attr       = KVM_ARM_VCPU_PMU_V3_FILTER,
->> +        .addr       = (uint64_t)&filter,
->> +    };
->> +    int i;
->> +    g_auto(GStrv) event_filters;
->> +
->> +    if (!cpu->kvm_pmu_filter) {
->> +        return;
->> +    }
->> +    if (kvm_vcpu_ioctl(CPU(cpu), KVM_HAS_DEVICE_ATTR, &attr)) {
->> +        warn_report("The KVM doesn't support the PMU Event Filter!");
-> 
-> If the user requested a filter and it can't be supported, QEMU
-> must exit with an error, not ignore the user's request.
-> 
->> +        return;
->> +    }
->> +
->> +    /*
->> +     * The filter only needs to be initialized through one vcpu ioctl and it
->> +     * will affect all other vcpu in the vm.
->> +     */
->> +    if (pmu_filter_init) {
->> +        return;
->> +    } else {
->> +        pmu_filter_init = true;
->> +    }
->> +
->> +    event_filters = g_strsplit(cpu->kvm_pmu_filter, ";", -1);
->> +    for (i = 0; event_filters[i]; i++) {
->> +        unsigned short start = 0, end = 0;
->> +        char act;
->> +
->> +        if (sscanf(event_filters[i], "%c:%hx-%hx", &act, &start, &end) != 3) {
->> +            warn_report("Skipping invalid PMU filter %s", event_filters[i]);
->> +            continue;
-> 
-> Warning on user syntax errors is undesirable - it should be a fatal
-> error of the user gets this wrong.
-> 
->> +        }
->> +
->> +        if ((act != 'A' && act != 'D') || start > end) {
->> +            warn_report("Skipping invalid PMU filter %s", event_filters[i]);
->> +            continue;
-> 
-> Likewise should be fatal.
-> 
->> +        }
->> +
->> +        filter.base_event = start;
->> +        filter.nevents = end - start + 1;
->> +        filter.action = (act == 'A') ? KVM_PMU_EVENT_ALLOW :
->> +                                       KVM_PMU_EVENT_DENY;
->> +
->> +        if (!kvm_arm_set_device_attr(cpu, &attr, "PMU_V3_FILTER")) {
->> +            break;
->> +        }
->> +    }
->> +}
-> 
-> ..[1] then implementing a custom parser is rather a QEMU design anti-pattern,
-> especially when the proposed syntax is incapable of being mapped into the
-> normal QAPI syntax for a list of structs should we want to fully convert
-> -cpu to QAPI parsing later. I wonder if can we model this property with
-> QAPI now ?
-I guess you mean creating a new property like those in
-hw/core/qdev-properties-system.c for instance  and populating an array
-of those at CPU object level?
+> The x86-64 pc machine is flaky with record/replay, but q35 is more
+> stable. Add a q35 test to replay_kernel.py.
+>
+> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 
-Note there is v8 but most of your comments still apply
-https://lore.kernel.org/all/20240312074849.71475-1-shahuang@redhat.com/
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-Thanks
-
-Eric
-> 
-> With regards,
-> Daniel
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
