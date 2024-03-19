@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8726587F5F0
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A84787F5F1
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 04:09:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmPqP-00054f-3V; Mon, 18 Mar 2024 23:08:53 -0400
+	id 1rmPqT-00055C-6E; Mon, 18 Mar 2024 23:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rmPqN-00054K-0Q
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:51 -0400
-Received: from mail-oi1-x22c.google.com ([2607:f8b0:4864:20::22c])
+ id 1rmPqR-000552-5A
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:55 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rmPqL-0007Wl-3N
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:50 -0400
-Received: by mail-oi1-x22c.google.com with SMTP id
- 5614622812f47-3c3747e7f8cso2617479b6e.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 20:08:48 -0700 (PDT)
+ id 1rmPqP-0007X6-MP
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:54 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6e6f4ad4c57so3379509b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 20:08:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710817728; x=1711422528;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710817731; x=1711422531;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KhkmixV0UNWnVdRSOs7jdu6zrE4p/BMI06IEhm7UZBw=;
- b=kc6bCip8IJed0RFYJt9ghSAnNWUx6HkY2iTQfkMNZDitrTvcwv7banK+7fVmVggK2+
- HM+7BdCDlrVEFxUpn3jG3hP8rfhjsur4Gaffb5eU1t4vNZDCN4j46URPTNGxlWbfEbKK
- SbgYlaFrV2eF+78pLDhnt2Kl4myu+GZjpTN2aU90FFzl23agkcGFcYHPPQv16n3kenjc
- PYXp3SRtOysO9IkEr7/NzEc3R6m2NpQeKawfxs/1KSlLkyFZTbku6DYRLyaHrvntwcbi
- Mku10No243wTE0W6dQhhaDuRClAcBjdarPK5kEU58DUf+z99FQCUiJzC2YJcuNRbOgri
- Zbig==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=XowM64zrU2NjONErBWF/HPd63ZVWSh7A17WtT67xQVs=;
+ b=UDxzwMh2//+rbj7pLtf4IFc9dsCrQcMGDvwCSkLMsRONl5if9tHgh5WgGkskV/BqmA
+ 9I4G+1shLVHweAK0ixIMRx8EBaGl9NDH8zKgkgjFWEI15mKOX74dgatR7D4SvQSKuBYo
+ PmJHf9pxV1HNa032Clm+N3tiYFrsT/PyJwAJgdxJr/NKZTxowxwrhdYXHL5sVkqEQYKD
+ RbEYHx1wp8/V2mwINklgUD6hkCatLLS3Oo5d1hX6sxKe7SBFCyC8a78j6jxr93E7XRsi
+ RS2uuTkeI5f+F1d5Te9HQbK4OJX7UPr1qMfIgXg37+CHwc/2CC2MsY82BZqfSqomK7+L
+ zEPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710817728; x=1711422528;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KhkmixV0UNWnVdRSOs7jdu6zrE4p/BMI06IEhm7UZBw=;
- b=CjLFEHe9kNQ4g9SbVhKq0zY3EE98SOdAsCrKGAOFL/vAGKJr0RGNwZRyM6SJauCaBW
- kFPKhxMKt6cabtx36Yh365UMIAep/91ybPGsUVsp4ZjvW8pDHuZaFPeRj/XYI0sGr2O8
- O3GGy558hTjoKr0d+zNLfISqZi8sSxd3LBkFEDr3VZkVvgIzXkGDAQWnHHJ6YxFZHgZp
- H60NbjZk8+n+5SDe75Fndk9Vk5rm3Tdr6vOsmaV3lubdcLEqFTY4hFUy2c9L5gZEDECP
- 00QJ67UtDjRxLIK5E+H3sz6gwfSY6+ncuuX42EhE87Kz7yzv3jmUp5uUAiqN850B0ipz
- Fe7g==
-X-Gm-Message-State: AOJu0Yx/ExH5rZR73pInxK7s5CJdvZO5+LTYYnJusIMXXXsoHVtRBoHT
- eH7S44EOEFQ5sDv9QcilJuoAzt7q6Zh/u4q++PRB5D44FAJjqp2DhRulMyix58jzc8On/79NmIi
- a
-X-Google-Smtp-Source: AGHT+IGQQbp46+UU6/2dOZhZjr1/2zDsKwj/3rcOd4KCkY1YMIGsuo22xC3Q6avnjlhkAU+H5oTqWw==
-X-Received: by 2002:a05:6808:2020:b0:3c3:7fc7:3ade with SMTP id
- q32-20020a056808202000b003c37fc73ademr10154498oiw.3.1710817727809; 
- Mon, 18 Mar 2024 20:08:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710817731; x=1711422531;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=XowM64zrU2NjONErBWF/HPd63ZVWSh7A17WtT67xQVs=;
+ b=Pi7rnToZtqT28O/fAHEpum2G5dxiUk13xGq7dXwee8g3ietrq0MLBgSrzBnMf/RXGf
+ fGPH459m9vBf6eOGBzYVGTg5B0Em9mX+ygeQvhebihf6iAOn5+zZTO8ujnw3597VxFH3
+ 2yisOCCtQ0C7j/14c3k6R3bi/NvHpDzuo21gVCOx42CeSvpkq284Gk4urZhbM/1x3hOe
+ lCImPeKiUv6M22+WH19n8rjj5BVK6aJGVH9Lj4CGFFTZ0fFFZkT4OMVUAeD2htXgoSyz
+ buxz9vaHGQ8/jJ2r853geKToQb2MRr6cawFDmAgpajCJandqTK7dVMfb8/rNlnqctsKF
+ BIZA==
+X-Gm-Message-State: AOJu0Yx/7ivW8NfgjoANFGdilbw5P6WsKtBFGs4ShwSiLXut8eVjcXRH
+ cZvvFT6LRj33Nmqcw3tew+98WX/PgbCnZCLDiaKVAKkwNf/ybhIPyThnb5xgVTNaxMFtmoozfQ6
+ I
+X-Google-Smtp-Source: AGHT+IGtV933BcJffZU1qTV9Ixf4+VPPA5piGnjMLrRQ3aix02TYS/kwzuEvPGu89EsblQj0Jv0tBw==
+X-Received: by 2002:a05:6a20:3c9e:b0:1a3:4e19:1831 with SMTP id
+ b30-20020a056a203c9e00b001a34e191831mr1679132pzj.13.1710817731154; 
+ Mon, 18 Mar 2024 20:08:51 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- x7-20020a056a00188700b006e6931a50e8sm3024295pfh.79.2024.03.18.20.08.46
+ a6-20020a170902ecc600b001dffe8a22aesm5475837plh.262.2024.03.18.20.08.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 20:08:47 -0700 (PDT)
+ Mon, 18 Mar 2024 20:08:50 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/4] ui/console: Remove console_select()
-Date: Tue, 19 Mar 2024 12:08:38 +0900
-Message-Id: <20240319-console-v2-0-3fd6feef321a@daynix.com>
+Date: Tue, 19 Mar 2024 12:08:39 +0900
+Subject: [PATCH v2 1/4] ui/vc: Do not inherit the size of active console
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALYB+WUC/z3MQQrDIBCF4auEWdeixsbQVe9RslAzNgOtBi2SE
- HL32kC7/B+Pb4OMiTDDtdkgYaFMMdSQpwbcZMIDGY21QXKpeCs0czHk+ETWaaVGZWxvTQf1PSf
- 0tBzSfag9UX7HtB5wEd/1Z/R/owjGmVforTdayEt7G80aaDm7+IJh3/cPdAIy658AAAA=
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240319-console-v2-1-3fd6feef321a@daynix.com>
+References: <20240319-console-v2-0-3fd6feef321a@daynix.com>
+In-Reply-To: <20240319-console-v2-0-3fd6feef321a@daynix.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
  Peter Maydell <peter.maydell@linaro.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::22c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x22c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -96,61 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ui/console has a concept of "active" console; the active console is used
-when NULL is set for DisplayListener::con, and console_select() updates
-the active console state. However, the global nature of the state cause
-odd behaviors, and replacing NULL with the active console also resulted
-in extra code. Remove it to solve these problems.
-
-The active console state is shared, so if there are two displays
-referring to the active console, switching the console for one will also
-affect the other. All displays that use the active console state,
-namely cocoa, curses, and vnc, need to reset some of its state before
-switching the console, and such a reset operation cannot be performed if
-the console is switched by another display. This can result in stuck
-keys, for example.
-
-While the active console state is shared, displays other than cocoa,
-curses, and vnc don't update the state. A chardev-vc inherits the
-size of the active console, but it does not make sense for such a
-display.
-
-This series removes the shared "active" console state from ui/console.
-curses, cocoa, and vnc will hold the reference to the console currently
-shown with DisplayListener::con. This also eliminates the need to
-replace NULL with the active console and save code.
+A chardev-vc used to inherit the size of a graphic console when its
+size not explicitly specified, but it often did not make sense. If a
+chardev-vc is instantiated during the startup, the active graphic
+console has no content at the time, so it will have the size of graphic
+console placeholder, which contains no useful information. It's better
+to have the standard size of text console instead.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
-Changes in v2:
-- Changed to fall back to a text console if there is no graphical
-  console as previously done.
-- Link to v1: https://lore.kernel.org/r/20240318-console-v1-0-f4efbfa71253@daynix.com
+ ui/console-vc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
----
-Akihiko Odaki (4):
-      ui/vc: Do not inherit the size of active console
-      ui/vnc: Do not use console_select()
-      ui/cocoa: Do not use console_select()
-      ui/curses: Do not use console_select()
+diff --git a/ui/console-vc.c b/ui/console-vc.c
+index 9c13cc2981b0..f22c8e23c2ed 100644
+--- a/ui/console-vc.c
++++ b/ui/console-vc.c
+@@ -990,8 +990,8 @@ static void vc_chr_open(Chardev *chr,
+     trace_console_txt_new(width, height);
+     if (width == 0 || height == 0) {
+         s = QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_TEXT_CONSOLE));
+-        width = qemu_console_get_width(NULL, 80 * FONT_WIDTH);
+-        height = qemu_console_get_height(NULL, 24 * FONT_HEIGHT);
++        width = 80 * FONT_WIDTH;
++        height = 24 * FONT_HEIGHT;
+     } else {
+         s = QEMU_TEXT_CONSOLE(object_new(TYPE_QEMU_FIXED_TEXT_CONSOLE));
+     }
 
- include/ui/console.h   |   2 +-
- include/ui/kbd-state.h |  11 ++++
- ui/console-priv.h      |   2 +-
- ui/console-vc-stubs.c  |   2 +-
- ui/console-vc.c        |   7 ++-
- ui/console.c           | 133 ++++++++++++-------------------------------------
- ui/curses.c            |  48 ++++++++++--------
- ui/kbd-state.c         |   6 +++
- ui/vnc.c               |  14 ++++--
- ui/cocoa.m             |  37 ++++++++++----
- 10 files changed, 118 insertions(+), 144 deletions(-)
----
-base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
-change-id: 20240317-console-6744d4ab8ba6
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.44.0
 
 
