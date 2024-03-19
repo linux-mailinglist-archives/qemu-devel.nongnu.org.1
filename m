@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5648800B8
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5458800C1
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:33:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbR5-0008Hm-Fq; Tue, 19 Mar 2024 11:31:31 -0400
+	id 1rmbSU-00019l-Mh; Tue, 19 Mar 2024 11:32:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rmbQq-0008FS-65
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:31:18 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rmbSO-00017x-S0
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:32:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rmbQl-0002ZI-Q0
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:31:14 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rmbSL-00039M-8h
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:32:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710862267;
+ s=mimecast20190719; t=1710862368;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=iGWjjGr997LVBjLLFPRncequwPhUDZF7nClH4loSotw=;
- b=CfIn1vU0OuWhCe64n8mMcNypS6TG5gr3eqmh2FsDSWzgTL/Fhg6Hxj52Skpv+7vta3XwIZ
- CeUzE3vwZsxpt2gVzchUwGCNkybnrHZWXAVqT2+1rMae+UGnAIbZM/1JZFt8lDNM/tgl0P
- 84SO/BY4wH5RYWtI9jAyz4vgZd8RKlg=
-Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
- [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V0Y6pFLbRXsgygkfoGIXNA6pa4F4yqsGm07wH5k2a18=;
+ b=PVH/6FPWjCtNaNhjkDEmaDVfzob/o+2qf+LxYPyTsoOBEqWqOd6kQkyL0ThiIUMR7+nEM1
+ A3kPpD+6NviZtdWqbF43sHMDHVbMViJYMwchKt2G997ypGU6RdTnu3ORWhxmaAzZICZbso
+ vkmqUaXHconRIWhZPM9VazQ9TOqQynw=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-428-IGITSao4Puy8th5kk6nuLg-1; Tue, 19 Mar 2024 11:31:04 -0400
-X-MC-Unique: IGITSao4Puy8th5kk6nuLg-1
-Received: by mail-pj1-f72.google.com with SMTP id
- 98e67ed59e1d1-29dfa2c256fso3067009a91.3
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:31:04 -0700 (PDT)
+ us-mta-94-wRhIRStwN0O0kqCZDTe1gg-1; Tue, 19 Mar 2024 11:32:43 -0400
+X-MC-Unique: wRhIRStwN0O0kqCZDTe1gg-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-5c65e666609so4970612a12.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:32:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710862263; x=1711467063;
+ d=1e100.net; s=20230601; t=1710862363; x=1711467163;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=iGWjjGr997LVBjLLFPRncequwPhUDZF7nClH4loSotw=;
- b=FHsa5vj5erOS+jUwq4RkWlNKOlEgc9WmrxbDBXDqv+ZQ7glYaaAlskNr+biCHKukpq
- UWn0MHlXPFzP1z84WYPbILNQ/JH7kn8ReZD6z/kS6BxJXG4zarFFyVlvhx/sWZ8GOnv6
- 429otMvzyeR7MouQuOdBmScFf7n9N7gUXUO9MploHBY/dpbiSuEIBV/4t9+7q/pCJ1gW
- OKdmtvx6jI6aj5H2iZ0MS7lmjEeEbIKAo2AcIjVYKcTkORNsrrta7ycyccq0/rz30OUb
- hwcBT5DAJgU6L2a6drybpmRnfFaW2Nh+1T8HNBIOBGCquT2P6DOOnbW5Tk0R380veiZj
- TPPw==
-X-Gm-Message-State: AOJu0Yzn7eBRmiCgoHj5gV/Qc+Re145nGzp8J4eIwsoM2ASnKOxS881F
- 5zOXbCe4i3SG6pbcUeRT/YPBKD6uI+yXXdapYBbG52YYl0fe3MLQ5xw9Rycr8HXv4N3c4hhL1qh
- KbI9DxoRL5hxQb05ozgumUeZtzuQm9qgnFADMy/SMId6q+l0FHRESoXEEtv/F1YRITIiyh1IbQM
- Twug0hJPh6Li6yZD5AZ58ErepVldc=
-X-Received: by 2002:a17:90b:fcb:b0:29b:9f1e:ab2d with SMTP id
- gd11-20020a17090b0fcb00b0029b9f1eab2dmr13846953pjb.36.1710862263216; 
- Tue, 19 Mar 2024 08:31:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSBZg54i4mJwHW9TxEHgp7M4+jG1CeqJgBELlzEDbwABjm/OUBX61bW2/V6KTDwtGt5FwuZiFIYL8Lc3ygJJ4=
-X-Received: by 2002:a17:90b:fcb:b0:29b:9f1e:ab2d with SMTP id
- gd11-20020a17090b0fcb00b0029b9f1eab2dmr13846927pjb.36.1710862262875; Tue, 19
- Mar 2024 08:31:02 -0700 (PDT)
+ bh=V0Y6pFLbRXsgygkfoGIXNA6pa4F4yqsGm07wH5k2a18=;
+ b=OzVA9+3cfSSntK+hNf8LZN2lL6uMhnY7vurLErrKZn+Qe6gx8lKC+zr5v4JYuDNtHH
+ Z6By9GDZTJhdTinJSmLa7Hb6HHQYOWyaGSJ7UGhAEMNIOU1kJAe/SncBrimkcEqmjPYL
+ 2JSufN84B6nP/Lnm8fvIntHgPO3FVQnMfc01Yd/0Xt1nnNy6O3LkjbbI0MqTsAaB2HPL
+ gZKNyTSgmsIIdEZFlCeorcgxG/2qeGLcUP3FfHfZGBXcUhhk26Rcuuo+ezjFLvjsCQgz
+ o+RuvlboRQb9C56Qz57hdFr5Psemdyd+2iruuPS7UnZR9nS4MJpkalIctpRX7DyJuYJS
+ BVOQ==
+X-Gm-Message-State: AOJu0Yy3Krs1JyMrj4aa9ICvntk36Bj/cMmoREUOyd+pzBQ1i7R1XwwQ
+ i0AHvBNZ+oKd3eDXOR6wWmK3aWrthqGQUGsY9p6Vmo0U1qTQ0/U06UzRZPcamS8YRateNEXiQuc
+ f9q5HDuZuy1ctHSTuuBbQQjP8Bt3w9N4WX8FBkdQfmuXPSf3tSyDIvpjs5XgsEWrdTuMo8wKztw
+ D0BoYSQ1fYpu27zzUpVhrxcSThtsc=
+X-Received: by 2002:a17:90a:6d01:b0:29b:c9ac:c563 with SMTP id
+ z1-20020a17090a6d0100b0029bc9acc563mr13320685pjj.19.1710862362741; 
+ Tue, 19 Mar 2024 08:32:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcZwEOd7WKHYD3aDBiAueREF/HiG3NArGO1zCjXVYEGmf9PNL9p4+IVjb+5/jwL7VwHs7Dw6aFfL7y2S/ToZc=
+X-Received: by 2002:a17:90a:6d01:b0:29b:c9ac:c563 with SMTP id
+ z1-20020a17090a6d0100b0029bc9acc563mr13320621pjj.19.1710862361654; Tue, 19
+ Mar 2024 08:32:41 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240315152301.3621858-1-armbru@redhat.com>
- <20240315152301.3621858-25-armbru@redhat.com>
-In-Reply-To: <20240315152301.3621858-25-armbru@redhat.com>
+ <20240315152301.3621858-26-armbru@redhat.com>
+In-Reply-To: <20240315152301.3621858-26-armbru@redhat.com>
 From: John Snow <jsnow@redhat.com>
-Date: Tue, 19 Mar 2024 11:30:50 -0400
-Message-ID: <CAFn=p-YuKWRvGcxDApVt3kXg22c1YJDogWJG9g4AXud_tgbZag@mail.gmail.com>
-Subject: Re: [PATCH v5 24/25] qapi: Tighten check whether implicit object type
- already exists
+Date: Tue, 19 Mar 2024 11:32:29 -0400
+Message-ID: <CAFn=p-aVawvAWicGZFkbPFqRQghJ33y7Gi0pUW=S5o9jWm+6wg@mail.gmail.com>
+Subject: Re: [PATCH v5 25/25] qapi: Dumb down QAPISchema.lookup_entity()
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>,
  Peter Maydell <peter.maydell@linaro.org>, 
  Michael Roth <michael.roth@amd.com>
-Content-Type: multipart/alternative; boundary="000000000000704bc506140529bd"
+Content-Type: multipart/alternative; boundary="0000000000005399d90614052f81"
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -95,49 +94,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000704bc506140529bd
+--0000000000005399d90614052f81
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Mar 15, 2024, 11:23=E2=80=AFAM Markus Armbruster <armbru@redhat.com=
 > wrote:
 
-> Entities with names starting with q_obj_ are implicit object types.
-> Therefore, QAPISchema._make_implicit_object_type()'s .lookup_entity()
-> can only return a QAPISchemaObjectType.  Assert that.
+> QAPISchema.lookup_entity() takes an optional type argument, a subtype
+> of QAPISchemaDefinition, and returns that type or None.  Callers can
+> use this to save themselves an isinstance() test.
+>
+> The only remaining user of this convenience feature is .lookup_type().
+> But we don't actually save anything anymore there: we still the
+> isinstance() to help mypy over the hump.
+>
+> Drop the .lookup_entity() argument, and adjust .lookup_type().
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > ---
->  scripts/qapi/schema.py | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  scripts/qapi/schema.py | 18 ++++++------------
+>  1 file changed, 6 insertions(+), 12 deletions(-)
 >
 > diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-> index e52930a48a..a6180f93c6 100644
+> index a6180f93c6..5924947fc3 100644
 > --- a/scripts/qapi/schema.py
 > +++ b/scripts/qapi/schema.py
-> @@ -1297,8 +1297,9 @@ def _make_implicit_object_type(
->              return None
->          # See also QAPISchemaObjectTypeMember.describe()
->          name =3D 'q_obj_%s-%s' % (name, role)
-> -        typ =3D self.lookup_entity(name, QAPISchemaObjectType)
+> @@ -1157,20 +1157,14 @@ def _def_definition(self, defn:
+> QAPISchemaDefinition) -> None:
+>                  defn.info, "%s is already defined" %
+> other_defn.describe())
+>          self._entity_dict[defn.name] =3D defn
+>
+> -    def lookup_entity(
+> -        self,
+> -        name: str,
+> -        typ: Optional[type] =3D None,
+> -    ) -> Optional[QAPISchemaDefinition]:
+> -        ent =3D self._entity_dict.get(name)
+> -        if typ and not isinstance(ent, typ):
+> -            return None
+> -        return ent
+> +    def lookup_entity(self,name: str) -> Optional[QAPISchemaEntity]:
+> +        return self._entity_dict.get(name)
+>
+>      def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
+> -        typ =3D self.lookup_entity(name, QAPISchemaType)
+> -        assert typ is None or isinstance(typ, QAPISchemaType)
+> -        return typ
 > +        typ =3D self.lookup_entity(name)
->          if typ:
-> +            assert(isinstance(typ, QAPISchemaObjectType))
->              # The implicit object type has multiple users.  This can
->              # only be a duplicate definition, which will be flagged
->              # later.
+> +        if isinstance(typ, QAPISchemaType):
+> +            return typ
+> +        return None
+>
+>      def resolve_type(
+>          self,
 > --
 > 2.44.0
 >
 
-Seems obviously fine, though I don't suppose this narrowing will be
-"remembered" by the type system. Do we care?
+Sure, dealer's choice.
+
+with your commit message fixup:
 
 Reviewed-by: John Snow <jsnow@redhat.com>
 
 >
 
---000000000000704bc506140529bd
+--0000000000005399d90614052f81
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -145,49 +169,74 @@ Content-Transfer-Encoding: quoted-printable
 class=3D"gmail_attr">On Fri, Mar 15, 2024, 11:23=E2=80=AFAM Markus Armbrust=
 er &lt;<a href=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; wrote=
 :<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bor=
-der-left:1px #ccc solid;padding-left:1ex">Entities with names starting with=
- q_obj_ are implicit object types.<br>
-Therefore, QAPISchema._make_implicit_object_type()&#39;s .lookup_entity()<b=
+der-left:1px #ccc solid;padding-left:1ex">QAPISchema.lookup_entity() takes =
+an optional type argument, a subtype<br>
+of QAPISchemaDefinition, and returns that type or None.=C2=A0 Callers can<b=
 r>
-can only return a QAPISchemaObjectType.=C2=A0 Assert that.<br>
+use this to save themselves an isinstance() test.<br>
+<br>
+The only remaining user of this convenience feature is .lookup_type().<br>
+But we don&#39;t actually save anything anymore there: we still the<br>
+isinstance() to help mypy over the hump.<br>
+<br>
+Drop the .lookup_entity() argument, and adjust .lookup_type().<br>
 <br>
 Signed-off-by: Markus Armbruster &lt;<a href=3D"mailto:armbru@redhat.com" t=
 arget=3D"_blank" rel=3D"noreferrer">armbru@redhat.com</a>&gt;<br>
 ---<br>
-=C2=A0scripts/qapi/schema.py | 3 ++-<br>
-=C2=A01 file changed, 2 insertions(+), 1 deletion(-)<br>
+=C2=A0scripts/qapi/schema.py | 18 ++++++------------<br>
+=C2=A01 file changed, 6 insertions(+), 12 deletions(-)<br>
 <br>
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py<br>
-index e52930a48a..a6180f93c6 100644<br>
+index a6180f93c6..5924947fc3 100644<br>
 --- a/scripts/qapi/schema.py<br>
 +++ b/scripts/qapi/schema.py<br>
-@@ -1297,8 +1297,9 @@ def _make_implicit_object_type(<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return None<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# See also QAPISchemaObjectTypeMember.des=
-cribe()<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0name =3D &#39;q_obj_%s-%s&#39; % (name, r=
-ole)<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 typ =3D self.lookup_entity(name, QAPISchemaObj=
-ectType)<br>
+@@ -1157,20 +1157,14 @@ def _def_definition(self, defn: QAPISchemaDefinitio=
+n) -&gt; None:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<a href=3D"ht=
+tp://defn.info" rel=3D"noreferrer noreferrer" target=3D"_blank">defn.info</=
+a>, &quot;%s is already defined&quot; % other_defn.describe())<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0self._entity_dict[<a href=3D"http://defn.=
+name" rel=3D"noreferrer noreferrer" target=3D"_blank">defn.name</a>] =3D de=
+fn<br>
+<br>
+-=C2=A0 =C2=A0 def lookup_entity(<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 self,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 name: str,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 typ: Optional[type] =3D None,<br>
+-=C2=A0 =C2=A0 ) -&gt; Optional[QAPISchemaDefinition]:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 ent =3D self._entity_dict.get(name)<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 if typ and not isinstance(ent, typ):<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return None<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 return ent<br>
++=C2=A0 =C2=A0 def lookup_entity(self,name: str) -&gt; Optional[QAPISchemaE=
+ntity]:<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return self._entity_dict.get(name)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0def lookup_type(self, name: str) -&gt; Optional[QAPISch=
+emaType]:<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 typ =3D self.lookup_entity(name, QAPISchemaTyp=
+e)<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 assert typ is None or isinstance(typ, QAPISche=
+maType)<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 return typ<br>
 +=C2=A0 =C2=A0 =C2=A0 =C2=A0 typ =3D self.lookup_entity(name)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if typ:<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(isinstance(typ, QAPISchem=
-aObjectType))<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# The implicit object type =
-has multiple users.=C2=A0 This can<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# only be a duplicate defin=
-ition, which will be flagged<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# later.<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 if isinstance(typ, QAPISchemaType):<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return typ<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return None<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0def resolve_type(<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0self,<br>
 -- <br>
 2.44.0<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"=
-auto">Seems obviously fine, though I don&#39;t suppose this narrowing will =
-be &quot;remembered&quot; by the type system. Do we care?</div><div dir=3D"=
-auto"><br></div><div dir=3D"auto">Reviewed-by: John Snow &lt;<a href=3D"mai=
-lto:jsnow@redhat.com">jsnow@redhat.com</a>&gt;</div><div dir=3D"auto"><div =
-class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0=
- 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"></blockquote></div></d=
-iv></div>
+auto">Sure, dealer&#39;s choice.</div><div dir=3D"auto"><br></div><div dir=
+=3D"auto">with your commit message fixup:</div><div dir=3D"auto"><br></div>=
+<div dir=3D"auto">Reviewed-by: John Snow &lt;<a href=3D"mailto:jsnow@redhat=
+.com">jsnow@redhat.com</a>&gt;</div><div dir=3D"auto"><div class=3D"gmail_q=
+uote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-l=
+eft:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
 
---000000000000704bc506140529bd--
+--0000000000005399d90614052f81--
 
 
