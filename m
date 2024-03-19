@@ -2,86 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5459880109
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B31988011A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:51:00 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbe3-0007qM-3p; Tue, 19 Mar 2024 11:44:55 -0400
+	id 1rmbeE-0000OT-K7; Tue, 19 Mar 2024 11:45:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdp-0007XM-41
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:41 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdY-0005BE-En
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdn-0007Uw-Tr
  for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:40 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-41462295004so8923485e9.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:44:23 -0700 (PDT)
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdd-0005EA-J9
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:39 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-41461c256c4so9418585e9.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:44:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710863062; x=1711467862; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710863068; x=1711467868; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DikP2L6ARWdRvFee2b+GuSHD2n5uD5QzEz8674gqbFw=;
- b=zXh3ae0I+/g/ICjQH+F22BreXtfQUlFlBxw9CB5c6raSZYiVC6JPuZ6MNjSwddOPaw
- mMzzCcQ4P5N9omMMZmxhlje91ihdRYgN4yNpt/kN5sPo8GotoFJWI2ZNY0isPkLMYJEO
- yRNyvdzAucfI/rfhoDtBJU4XTJLemHu1BaVauD9WgE1icpVq4p3ZE3pMT+xcQ2ZgydNy
- MrZGBsZmC3SVAqHJhAb7AO211gA9FxjwGhc0jK93+9iDKYtI2NInD/Pqt1LgIMfOXhty
- 565CE0LWg/a6/C87pcyznRWWomEmPvtskIwCE1UQPb/xkfWVvsdRsssot69T8YD226u9
- dIIg==
+ bh=goVPZjhGsrNSLmW6IZIplIeGALKCmKT21+JRh5OPT4g=;
+ b=RF89ge2MZ0jHRN0KR97wC/9dNKrOWqZ5vxM1+bvJ3kk78z1eRgfNk6GmenC7ohxWES
+ GHcgFnzAm8Jx34p0plVoWm4BjvSojifDphY+U/zubykc+9Q7pOLhmbLxURSY7HPliMGm
+ nInSFUdVY0T0mbO+Rpqr6NyumiHbHD9IcPsGCUTFUIf/t1u9IS9vLAWHlJ2M7j6zKfRs
+ PilbfkICYH12MtRjOe3UtVLp0j+XhWb5n+38peOWDHAw09MnDDxOF7ksyvR/t9DBpl2j
+ 4XcVAyTnNEokZkCkG0Q3UUYu5/9A9kXTBI9m0857V9JRisLR0PV3/M1WIOLtt6eHLZUh
+ 4n7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710863062; x=1711467862;
+ d=1e100.net; s=20230601; t=1710863068; x=1711467868;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DikP2L6ARWdRvFee2b+GuSHD2n5uD5QzEz8674gqbFw=;
- b=cR6lw3cugGPMN44vNpFHzD3BY9Tj4Ph0WFOVaa/+hzyymVL0VSaUrqXWLEs254BABo
- pEla+5rHWoHAqhbdoDPrTiv/go8YoEGX1lYNoKW2559p8T093KzriLOMOFneHA0xyyQy
- fshmIWOoeAY8xzLJ/p/4+mjUUNHKFuYv+PobYuuWrpty+7nRmb0a8qOCgpG/wF88KMCQ
- tM0BXZ5vZi1+6R3QjHFTxLvqqCGWqLrmpWMSGpkKVZdSN+2bvSNNBKws7eBLycEnIDgg
- RWTTaldCCHi3/+w/nt3XHL+0ACWJVoAKk+tZQ+6oVdC6e9isyzGBtdFqfuGxv0dawmSG
- 9mJQ==
-X-Gm-Message-State: AOJu0YwrYS46OoFlOV/4tuRSAu4KFyBhMDo8xnglpOQ+V3L8/yhLmaMy
- g4xkvYZEpJ+S5kFYcFkA8G4ggFmqxsJVqVEs2qT50pU2szYVNw7FZL2ASTskSRtVzI8qHyRpQ5C
- Q
-X-Google-Smtp-Source: AGHT+IEJx5mjdFGa37Y+wvYZLXZQwUenWjIV2n3tAdANSv7H6lnRvgL3m/AqbzvingXDJslVgGt31g==
-X-Received: by 2002:a5d:5a0e:0:b0:33e:76db:9bf8 with SMTP id
- bq14-20020a5d5a0e000000b0033e76db9bf8mr13665980wrb.68.1710863062221; 
- Tue, 19 Mar 2024 08:44:22 -0700 (PDT)
+ bh=goVPZjhGsrNSLmW6IZIplIeGALKCmKT21+JRh5OPT4g=;
+ b=JmbrClUXmmFGxm+A2qH7X2vMTieX3Jrqtc0HwpViQXj5X26Hh0Nij+TYXKuBrvWTIr
+ UW+4cDeyV/Mitc2lAUchHnvsv8xwQuap3mle9h5lhFE+VEl8DWpY6KEdTpC0v9bxhVqP
+ xeRP8Wf3aywgp3HpOlmiVMb0bl+wDLU7CT521oMByaz8IFHbpqG1ZDkU0Tj1/MCahFIj
+ hEStS/H6LcvtMoRZEVxbRaEwfiH4PoXuCt0GI9xzPnEzcSpvI1ugbUSnyyaa+bNR8zYU
+ wW1auD/S+jPvlHuyn28kn0dZauEvTv88Fh/69xTy8avzN+b8GaSvm9KuL46WeMEkCBB8
+ UO8g==
+X-Gm-Message-State: AOJu0Yxtzq4ghJewbYj1s+twZUPStjfzUGckVYJLMgo70p61w8kO474Z
+ Jv8yxQwO0IYMfBH54P7dUprKWh02MZReFWGr3ZmPcUd6FLgyCsO6HtVj4Xilc4dSlDvCmkY9yih
+ p
+X-Google-Smtp-Source: AGHT+IEIacTEdvl1U5cLP5qgpG54E3GpTrl4MV3+Gl+NTqo1PltbQ0v3NatBwJnd9sALG/hnmUlpvw==
+X-Received: by 2002:a05:600c:314e:b0:413:ee58:db7e with SMTP id
+ h14-20020a05600c314e00b00413ee58db7emr2335980wmo.3.1710863067825; 
+ Tue, 19 Mar 2024 08:44:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- w10-20020adff9ca000000b0033e72e104c5sm12592777wrr.34.2024.03.19.08.44.20
+ u6-20020a05600c19c600b0041413546e5bsm5695602wmq.0.2024.03.19.08.44.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 19 Mar 2024 08:44:21 -0700 (PDT)
+ Tue, 19 Mar 2024 08:44:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PATCH-for-9.1 14/27] target/mips: Convert to
+ Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>
+Subject: [PATCH-for-9.1 15/27] target/nios2: Convert to
  TCGCPUOps::get_cpu_state()
-Date: Tue, 19 Mar 2024 16:42:43 +0100
-Message-ID: <20240319154258.71206-15-philmd@linaro.org>
+Date: Tue, 19 Mar 2024 16:42:44 +0100
+Message-ID: <20240319154258.71206-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240319154258.71206-1-philmd@linaro.org>
 References: <20240319154258.71206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,76 +100,64 @@ Convert cpu_get_tb_cpu_state() to TCGCPUOps::get_cpu_state().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/cpu.h              | 11 -----------
- target/mips/tcg/tcg-internal.h |  2 ++
- target/mips/cpu.c              |  1 +
- target/mips/tcg/translate.c    |  9 +++++++++
- 4 files changed, 12 insertions(+), 11 deletions(-)
+ target/nios2/cpu.h | 14 --------------
+ target/nios2/cpu.c | 13 +++++++++++++
+ 2 files changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/target/mips/cpu.h b/target/mips/cpu.h
-index caa12a2dd3..9d2f7e0194 100644
---- a/target/mips/cpu.h
-+++ b/target/mips/cpu.h
-@@ -1362,17 +1362,6 @@ void cpu_mips_clock_init(MIPSCPU *cpu);
- /* helper.c */
- target_ulong exception_resume_pc(CPUMIPSState *env);
+diff --git a/target/nios2/cpu.h b/target/nios2/cpu.h
+index 32002b819a..d0616723fe 100644
+--- a/target/nios2/cpu.h
++++ b/target/nios2/cpu.h
+@@ -286,18 +286,4 @@ FIELD(TBFLAGS, CRS0, 0, 1)  /* Set if CRS == 0. */
+ FIELD(TBFLAGS, U, 1, 1)     /* Overlaps CR_STATUS_U */
+ FIELD(TBFLAGS, R0_0, 2, 1)  /* Set if R0 == 0. */
  
 -#define TARGET_HAS_CPU_GET_TB_CPU_STATE
 -
--static inline void cpu_get_tb_cpu_state(CPUMIPSState *env, vaddr *pc,
+-static inline void cpu_get_tb_cpu_state(CPUNios2State *env, vaddr *pc,
 -                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    *pc = env->active_tc.PC;
+-    unsigned crs = FIELD_EX32(env->ctrl[CR_STATUS], CR_STATUS, CRS);
+-
+-    *pc = env->pc;
 -    *cs_base = 0;
--    *flags = env->hflags & (MIPS_HFLAG_TMASK | MIPS_HFLAG_BMASK |
--                            MIPS_HFLAG_HWRENA_ULR);
+-    *flags = (env->ctrl[CR_STATUS] & CR_STATUS_U)
+-           | (crs ? 0 : R_TBFLAGS_CRS0_MASK)
+-           | (env->regs[0] ? 0 : R_TBFLAGS_R0_0_MASK);
 -}
 -
- /**
-  * mips_cpu_create_with_clock:
-  * @typename: a MIPS CPU type.
-diff --git a/target/mips/tcg/tcg-internal.h b/target/mips/tcg/tcg-internal.h
-index aef032c48d..c54d5c64b2 100644
---- a/target/mips/tcg/tcg-internal.h
-+++ b/target/mips/tcg/tcg-internal.h
-@@ -24,6 +24,8 @@ G_NORETURN void mips_cpu_do_unaligned_access(CPUState *cpu, vaddr addr,
- void mips_restore_state_to_opc(CPUState *cs,
-                                const TranslationBlock *tb,
-                                const uint64_t *data);
-+void mips_get_cpu_state(CPUMIPSState *env, vaddr *pc,
-+                        uint64_t *cs_base, uint32_t *flags);
- 
- const char *mips_exception_name(int32_t exception);
- 
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 8d8f690a53..6cc64b7628 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -551,6 +551,7 @@ static const TCGCPUOps mips_tcg_ops = {
-     .initialize = mips_tcg_init,
-     .synchronize_from_tb = mips_cpu_synchronize_from_tb,
-     .restore_state_to_opc = mips_restore_state_to_opc,
-+    .get_cpu_state = mips_get_cpu_state,
- 
- #if !defined(CONFIG_USER_ONLY)
-     .tlb_fill = mips_cpu_tlb_fill,
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 06c108cc9c..4ecac13a8f 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -15581,3 +15581,12 @@ void mips_restore_state_to_opc(CPUState *cs,
-         break;
-     }
+ #endif /* NIOS2_CPU_H */
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index 679aff5730..d1a98c47ad 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -43,6 +43,18 @@ static void nios2_restore_state_to_opc(CPUState *cs,
+     cpu_env(cs)->pc = data[0];
  }
-+
-+void mips_get_cpu_state(CPUMIPSState *env, vaddr *pc,
-+                        uint64_t *cs_base, uint32_t *flags)
+ 
++static void nios2_get_cpu_state(CPUNios2State *env, vaddr *pc,
++                                uint64_t *cs_base, uint32_t *flags)
 +{
-+    *pc = env->active_tc.PC;
++    unsigned crs = FIELD_EX32(env->ctrl[CR_STATUS], CR_STATUS, CRS);
++
++    *pc = env->pc;
 +    *cs_base = 0;
-+    *flags = env->hflags & (MIPS_HFLAG_TMASK | MIPS_HFLAG_BMASK |
-+                            MIPS_HFLAG_HWRENA_ULR);
++    *flags = (env->ctrl[CR_STATUS] & CR_STATUS_U)
++             | (crs ? 0 : R_TBFLAGS_CRS0_MASK)
++             | (env->regs[0] ? 0 : R_TBFLAGS_R0_0_MASK);
 +}
++
+ static bool nios2_cpu_has_work(CPUState *cs)
+ {
+     return cs->interrupt_request & CPU_INTERRUPT_HARD;
+@@ -354,6 +366,7 @@ static const struct SysemuCPUOps nios2_sysemu_ops = {
+ static const TCGCPUOps nios2_tcg_ops = {
+     .initialize = nios2_tcg_init,
+     .restore_state_to_opc = nios2_restore_state_to_opc,
++    .get_cpu_state = nios2_get_cpu_state,
+ 
+ #ifndef CONFIG_USER_ONLY
+     .tlb_fill = nios2_cpu_tlb_fill,
 -- 
 2.41.0
 
