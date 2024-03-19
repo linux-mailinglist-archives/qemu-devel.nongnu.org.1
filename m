@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7888800FC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE108880113
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:49:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbeP-0001B9-D5; Tue, 19 Mar 2024 11:45:18 -0400
+	id 1rmbef-0001Sl-1C; Tue, 19 Mar 2024 11:45:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbeL-0000zw-VT
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:45:14 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbeO-0001Cd-Jf
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:45:16 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbeF-0005SZ-IM
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:45:13 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41465864644so4586245e9.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:45:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbeH-0005eP-Kt
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:45:16 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-41409fd8b6bso22694175e9.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:45:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710863102; x=1711467902; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710863108; x=1711467908; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EJDlH3IcOyAIPXzpINjBXtBvgS8Gcx3JXjLnmPdWxeM=;
- b=hE8RTnq/ClWfhEVo2r5OHgqY/W+Lzq0pFD1B5JiE+JHTY5eNm+rck4WAceJlLf8/Yd
- D5E1RZ1SJNYM2njYFVnxWrirMCEUWRi8iunskkIYV2x9bXTkiCCtmvShuE4jvxcIRr+B
- Y5NPki0V+jrDim93T1ARAs2um1ZirzW7mUDgK2EcB7PzqeloLvMRqsw5+PuKHq2zMmh2
- ILHuNz27tvpLZ4YmVrvDMQ79FkvbiOCyJ+NRJ04jy9x3W1NEbRznPpEvCkRW3T7jUbMc
- WpWWFyYtwpjhS0Svxa0Yl1ZGps1lMj0nKfdATI1Pi4nwdxUryvtF5MFeHo4TgZE9gJf5
- G31A==
+ bh=obVPvpYss9xjXntv+zHtCP4dsVUmvSV/g5EeFxAwv28=;
+ b=JEDll7kW8NCROw2F/aJWV6dWwlRhSVzzg2Kuv9ZIBGZKFQt/hV9MpxxV6mvDcn9K3q
+ T92fMeK/XBV6e6ZYre6UEx7oRoz4k+qJSnxUUZfWttUk95ZGo9rHsmTHB0K2rG8vG2uL
+ 6yS61X85xMyGYkyqUxOhoYsOH5LRLFLlZ4km6T7UCbR5NK/rfXAx7FdWSfrzmb1ZvTcg
+ pg6UkgJvDN3LlBlYuSeq33dC0VKgKMzTNKEraAgMv9YMybG9KL2KzT5ywHTR13aZsAuI
+ 8EFnYF14YEQ5c+oxAEx7ZWTz4J4kKdGHLe0mBVmrqUT0UA+Q7aVFNsNLm2lA6yDKbM/F
+ O70g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710863102; x=1711467902;
+ d=1e100.net; s=20230601; t=1710863108; x=1711467908;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EJDlH3IcOyAIPXzpINjBXtBvgS8Gcx3JXjLnmPdWxeM=;
- b=FtTdhPfeXE09mah3Gd5Va/2mhOIu92+wle8UnMdxS+20IDbw+zQvRF7Gx9+E6Bhmvm
- o5poOl5ge1w/zhf9/nTef5wZmX1f387LgKxvjUiV+z5BI5ZqTYkrLNlLSX8TSykRNgPo
- vMi7RNOnrGMS9HeuiZmqw8ryFf5XgT/MYs+y5IBFLoxbZsS4PNefwdz2XUqmCjqxCbLJ
- +n+F6dwagAF7CVnRBOjAKdN30oW2fTr0cdEWO6mpyhCMG7w4ljEvaRlyDVHxDcCgHj71
- oQYTWdsOEapTyFWcfYkCKHBsBwA64swd2/5OwdSg/G8clFbwPIzJCUnXvpGUQenXYfT6
- ML8g==
-X-Gm-Message-State: AOJu0YxptzBJefkm78lbwB0wgimZi5L0L01MZLtbGHERmRF1T7EIW/G/
- AfzVb9fy8mqbFxflh48+xI1yczAZkd0oERyHZCpCG5hTmIdZowABXRPmTfgNiFHLpiog5yTGHRO
- v
-X-Google-Smtp-Source: AGHT+IGwQrOEEKFq39kvMb2rUEIJJbIzrkejECZTx4zU2qkt2Jf2TBS5atBbo3GFJHP+7teutPYluA==
-X-Received: by 2002:a05:600c:3503:b0:412:c285:1091 with SMTP id
- h3-20020a05600c350300b00412c2851091mr2952541wmq.7.1710863102010; 
- Tue, 19 Mar 2024 08:45:02 -0700 (PDT)
+ bh=obVPvpYss9xjXntv+zHtCP4dsVUmvSV/g5EeFxAwv28=;
+ b=Cy59xi1riFde/JCSGQVi7vg4z9E1s+shTWwL+CMrhep8s5o6MDfiqWIhhaMHiDDrrM
+ 7ClOTrsmNBICOJvrGcGlbuMqsd4X/xKXVsbJkccfK6niuYqA2HxMrwwJZ1ZgDme/Jov3
+ n6+tICrKftqDhE3rGCUIGu77i2w4bjqiR0cL9cyDN8Jf06LhQwUMflvn7s5FEOV9Ytti
+ 7ZlJFxeR10OlSod6XIPTLQ5PxAS5dQlyJzkhAdZy7BStvczd5nYunnf+Pu/PjSFLr/oQ
+ T+kaEyBcivm738hLm51mJdyMl+oRVUKp9kY98E8BI5HEIG3Yu+7e9dTM0cQB0dNbqe/Y
+ pAwg==
+X-Gm-Message-State: AOJu0Yy6ja2wdGgPyX/wTmAYaBKmDqbj0nuBfxF/Y3Yk3Q0W0f7oDY+G
+ 3g8DLLJD/F3/WdOhxGCzaVM9s4gkTPgiXDaAz3wwERsis/bNrM67vjOmtaRFo+jhVxziuSZQKq4
+ r
+X-Google-Smtp-Source: AGHT+IGAPpsVFRMXwyGR6AHHpUgvaLHwCY/rNd2n9r5LxZzbL23U8tDx92dVOHvVdGDrG0f8eCMeyg==
+X-Received: by 2002:adf:fe0d:0:b0:33e:96c1:3da6 with SMTP id
+ n13-20020adffe0d000000b0033e96c13da6mr9902776wrr.65.1710863107848; 
+ Tue, 19 Mar 2024 08:45:07 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- fl6-20020a05600c0b8600b00414692977c3sm426238wmb.14.2024.03.19.08.45.00
+ v2-20020a5d59c2000000b0033e7503ce7esm6748445wry.46.2024.03.19.08.45.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 19 Mar 2024 08:45:01 -0700 (PDT)
+ Tue, 19 Mar 2024 08:45:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
@@ -63,17 +63,18 @@ Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH-for-9.1 21/27] target/s390x: Restrict TCG-specific declarations
-Date: Tue, 19 Mar 2024 16:42:50 +0100
-Message-ID: <20240319154258.71206-22-philmd@linaro.org>
+Subject: [PATCH-for-9.1 22/27] target/s390x: Convert to
+ TCGCPUOps::get_cpu_state()
+Date: Tue, 19 Mar 2024 16:42:51 +0100
+Message-ID: <20240319154258.71206-23-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240319154258.71206-1-philmd@linaro.org>
 References: <20240319154258.71206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,28 +97,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Convert cpu_get_tb_cpu_state() to TCGCPUOps::get_cpu_state().
+
+Note, now s390x_get_cpu_state() is restricted to TCG.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/s390x-internal.h | 2 ++
- 1 file changed, 2 insertions(+)
+ target/s390x/cpu.h            | 30 ------------------------------
+ target/s390x/s390x-internal.h |  2 ++
+ target/s390x/cpu.c            |  1 +
+ target/s390x/tcg/mem_helper.c |  2 +-
+ target/s390x/tcg/translate.c  | 23 +++++++++++++++++++++++
+ 5 files changed, 27 insertions(+), 31 deletions(-)
 
+diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+index 2e184aabf5..c84ab43928 100644
+--- a/target/s390x/cpu.h
++++ b/target/s390x/cpu.h
+@@ -412,36 +412,6 @@ static inline int s390x_env_mmu_index(CPUS390XState *env, bool ifetch)
+ #endif
+ }
+ 
+-#ifdef CONFIG_TCG
+-
+-#include "tcg/tcg_s390x.h"
+-
+-#define TARGET_HAS_CPU_GET_TB_CPU_STATE
+-
+-static inline void cpu_get_tb_cpu_state(CPUS390XState *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
+-{
+-    if (env->psw.addr & 1) {
+-        /*
+-         * Instructions must be at even addresses.
+-         * This needs to be checked before address translation.
+-         */
+-        env->int_pgm_ilen = 2; /* see s390_cpu_tlb_fill() */
+-        tcg_s390_program_interrupt(env, PGM_SPECIFICATION, 0);
+-    }
+-    *pc = env->psw.addr;
+-    *cs_base = env->ex_value;
+-    *flags = (env->psw.mask >> FLAG_MASK_PSW_SHIFT) & FLAG_MASK_PSW;
+-    if (env->cregs[0] & CR0_AFP) {
+-        *flags |= FLAG_MASK_AFP;
+-    }
+-    if (env->cregs[0] & CR0_VECTOR) {
+-        *flags |= FLAG_MASK_VECTOR;
+-    }
+-}
+-
+-#endif /* CONFIG_TCG */
+-
+ /* PER bits from control register 9 */
+ #define PER_CR9_EVENT_BRANCH           0x80000000
+ #define PER_CR9_EVENT_IFETCH           0x40000000
 diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-index 825252d728..559c9f561d 100644
+index 559c9f561d..f9796c2742 100644
 --- a/target/s390x/s390x-internal.h
 +++ b/target/s390x/s390x-internal.h
-@@ -398,10 +398,12 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
- 
- 
- /* translate.c */
-+#ifdef CONFIG_TCG
- void s390x_translate_init(void);
+@@ -403,6 +403,8 @@ void s390x_translate_init(void);
  void s390x_restore_state_to_opc(CPUState *cs,
                                  const TranslationBlock *tb,
                                  const uint64_t *data);
-+#endif /* CONFIG_TCG */
++void s390x_get_cpu_state(CPUS390XState *env, vaddr *pc,
++                         uint64_t *cs_base, uint32_t *flags);
+ #endif /* CONFIG_TCG */
  
  /* sigp.c */
- int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3);
+diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
+index f7194534ae..afade52b76 100644
+--- a/target/s390x/cpu.c
++++ b/target/s390x/cpu.c
+@@ -327,6 +327,7 @@ static void s390_cpu_reset_full(DeviceState *dev)
+ static const TCGCPUOps s390_tcg_ops = {
+     .initialize = s390x_translate_init,
+     .restore_state_to_opc = s390x_restore_state_to_opc,
++    .get_cpu_state = s390x_get_cpu_state,
+ 
+ #ifdef CONFIG_USER_ONLY
+     .record_sigsegv = s390_cpu_record_sigsegv,
+diff --git a/target/s390x/tcg/mem_helper.c b/target/s390x/tcg/mem_helper.c
+index 557831def4..e1d0133439 100644
+--- a/target/s390x/tcg/mem_helper.c
++++ b/target/s390x/tcg/mem_helper.c
+@@ -2391,7 +2391,7 @@ uint64_t HELPER(lra)(CPUS390XState *env, uint64_t r1, uint64_t addr)
+    it does not change the program counter.
+ 
+    Perform this by recording the modified instruction in env->ex_value.
+-   This will be noticed by cpu_get_tb_cpu_state and thus tb translation.
++   This will be noticed by s390x_get_cpu_state and thus tb translation.
+ */
+ void HELPER(ex)(CPUS390XState *env, uint32_t ilen, uint64_t r1, uint64_t addr)
+ {
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 0d0c672c95..bf8d00ecef 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -44,6 +44,7 @@
+ #include "exec/translator.h"
+ #include "exec/log.h"
+ #include "qemu/atomic128.h"
++#include "tcg_s390x.h"
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
+@@ -6569,3 +6570,25 @@ void s390x_restore_state_to_opc(CPUState *cs,
+     /* Record ILEN.  */
+     env->int_pgm_ilen = data[2];
+ }
++
++void s390x_get_cpu_state(CPUS390XState *env, vaddr *pc,
++                         uint64_t *cs_base, uint32_t *flags)
++{
++    if (env->psw.addr & 1) {
++        /*
++         * Instructions must be at even addresses.
++         * This needs to be checked before address translation.
++         */
++        env->int_pgm_ilen = 2; /* see s390_cpu_tlb_fill() */
++        tcg_s390_program_interrupt(env, PGM_SPECIFICATION, 0);
++    }
++    *pc = env->psw.addr;
++    *cs_base = env->ex_value;
++    *flags = (env->psw.mask >> FLAG_MASK_PSW_SHIFT) & FLAG_MASK_PSW;
++    if (env->cregs[0] & CR0_AFP) {
++        *flags |= FLAG_MASK_AFP;
++    }
++    if (env->cregs[0] & CR0_VECTOR) {
++        *flags |= FLAG_MASK_VECTOR;
++    }
++}
 -- 
 2.41.0
 
