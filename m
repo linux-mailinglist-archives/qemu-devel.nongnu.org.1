@@ -2,144 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44CEC8801F5
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1AE8801F7
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 17:20:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmcBg-0005YW-LP; Tue, 19 Mar 2024 12:19:40 -0400
+	id 1rmcBf-0005YF-Nr; Tue, 19 Mar 2024 12:19:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rmcBe-0005XY-II
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:19:38 -0400
-Received: from kudu.cherry.relay.mailchannels.net ([23.83.223.97])
+ id 1rmcBd-0005Wp-8w
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:19:37 -0400
+Received: from ivory.cherry.relay.mailchannels.net ([23.83.223.94])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rmcBc-0004Ac-5D
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:19:38 -0400
+ id 1rmcBb-0004AC-Lb
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:19:36 -0400
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id D1EB31438E6;
- Tue, 19 Mar 2024 16:19:34 +0000 (UTC)
-Received: from outbound5h.eu.mailhop.org (unknown [127.0.0.6])
- (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 1E7A9143928
+ by relay.mailchannels.net (Postfix) with ESMTP id 661392C3041
  for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 16:19:33 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1710865174; a=rsa-sha256;
+Received: from outbound2.eu.mailhop.org (unknown [127.0.0.6])
+ (Authenticated sender: duocircle)
+ by relay.mailchannels.net (Postfix) with ESMTPA id B7FA82C2D8D
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 16:19:32 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1710865173; a=rsa-sha256;
  cv=pass;
- b=4MStel1Yfjimf1BLP4rQA1PtZj01EEOvmzDObLcNMfg21qXC+5mB2gdnts026FscUnvF1D
- HpG0xaKyCimH1JlK225NGjnGA1UXe/cXv3tweEiFfddfCcS3rZ4IoAOR7Qd0Gm2Bf8wiGd
- d4KVmSRB7JEPTCdv9Al7sxFc33Eapt3WmTHytdfmLJwm2pJdyoSHKFc/WQM3tN/1bhGqkM
- 5PS7F8OO7RV027dMR0Nyku1cwyh149CPlOfD/Iw3C7BLyClZ+yfo+9lOeyMNmCATEKCxn0
- 8hBguXyAkWJYAIUbML63ZZdC2086O27PWMGRopyexfWRpSjC6CY/drUusRnbeA==
+ b=B3aNSDCU8LME82PqEDxlmT6RomoV+OcY/41+jScKZLKirhe+Qu7jJ+PWFAlHPqA5tCqcji
+ VLnPuS5kjXTB8a72hOQiZfcMqPdvBi9t3RfPoHpjLqqv/R+iEMBPFy+bb6rLciZ5whfkau
+ 0ZcisgQAWjEusb1nrZwizkfk3vuR4lfKCK9q66CPw3aonjMKbHPUPSuyIsvtl9rh0wZuw9
+ AMhv7PbHQrFGvli1eRJbZ5u3kxQZ3Rs2f2hoFVyGXSGyFV0eGUX0vGg4W4+61liepW+Knp
+ 8717KVWbGYK2k95fmyiQtlRyla+wfg9zqmtMbyMO0Y6GKsLSqdFwPQyCy65PZQ==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1710865174;
+ d=mailchannels.net; s=arc-2022; t=1710865173;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:dkim-signature;
- bh=ttyEA0+itqx5bj0YYDKwAEzgmyfASs7xeVqfmIShSNs=;
- b=smmDifAsN41IuPS4H7ubVovw5aaeA/Q2Z2YVxtGK0nwf2f9K7bSd1f0IHxF+Dr4E3kdoC+
- CBjyzrhOFeaSd0kCVvLJKBKkH7chcxgiQmnlRcIx6OFSiZCKgkD9KNxGvvK9O9g4yVRGff
- eZpfdaitGgAEU0qrMzWXLc0RhdRmLpFLmcFK2KOnnmKmcizNWkiqfB0WcTvNn7h8ICH2/y
- QibR9ppt6YZ/dBfIT/9vm9V+GPh1u5OyI+5Ol0kgpaXS5mJZOkYZYBdpPgb6AIxkP01yTo
- sWcL8Jk5O/2QD47MCFZI+uj5NDb7MrIwytHuZ0LC7HzV+vWk05GiZ+ip3/OqcQ==
-ARC-Authentication-Results: i=2; rspamd-76c7995f89-gbclf;
+ bh=DipQ3AMaAdAtn5EwnSvutFf3vANlprVUYGAtGwQ8xJA=;
+ b=RMPMtlNINOFqwWPXhjrPQHRSnEsszlLHKhXmURFYkhuG6dQhV2WZaht+At22hfkLVKftbL
+ 9YZvreW8SUe8+4Igrq1dBqM04JiJtoke6UhxrrZmZVLVtIW+zK3vxGsZnKjZskQYoKVYIG
+ Ov51NQyVV9s3J8U+ntCkmW18b7qkfCI8xSG2Ldeye0ZwdUhcDzE+VG1f00joQ/siJJjvQ5
+ vg11Mn5EdUXq9unQ1lFK9XrEkCsdgyqKzToawR1TRpikOVcbsnACVKNRlhEuF9RADc0uZ9
+ sXENnuOF7JOLujiJSzgCrj4DZlIGMNvJ0GVRQMbt+OUj6ek2o0e8C25zad4hSA==
+ARC-Authentication-Results: i=2; rspamd-76c7995f89-jnsbj;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
-X-MC-Copy: exfiltrated-credentials
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Macabre-Inform: 0b7041685b281673_1710865174668_104288648
-X-MC-Loop-Signature: 1710865174668:1499908159
-X-MC-Ingress-Time: 1710865174667
-Received: from outbound5h.eu.mailhop.org (outbound5h.eu.mailhop.org
- [18.156.94.234]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.122.162.95 (trex/6.9.2); Tue, 19 Mar 2024 16:19:34 +0000
-ARC-Seal: i=1; a=rsa-sha256; t=1710865056; cv=none;
+X-Little-Whistle: 16923f862ce836b0_1710865173276_1987288883
+X-MC-Loop-Signature: 1710865173276:484894446
+X-MC-Ingress-Time: 1710865173275
+Received: from outbound2.eu.mailhop.org (outbound2.eu.mailhop.org
+ [35.157.29.171]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.105.100.41 (trex/6.9.2); Tue, 19 Mar 2024 16:19:33 +0000
+ARC-Seal: i=1; a=rsa-sha256; t=1710865057; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=Hb0ShrSpVnwr8B7S2b444FLXsfM6eLOOsMQ3pQx25l+Lgcy216FN6FZOxaMDnQyRYoE12Cc5m55tI
- cBMU1KXi8RcsidKstbFb893XBvzl/V8lBRutLYk3AsxRyPixXWXAGOeWo22W1H3V7IDTeFKlevIi1J
- 8VvwbWi4rLH4pjXeKIj+4u0FsAo1Pfrw+R1DyPNOpPQY/C/R8D+MjrAQEHr2A/QNp4Jd3EjR7hNbb+
- lgibPg8YQGWA34pCW9d/3axAayoA32Jvpv1oqTThGJrfavB+2xPczzHsepFmDrxQ/8GAz71T0R4h1c
- tOVLt2/poznLNfJDuXpybdqA/4zb8Qw==
+ b=wAIHBA+mMpqm3dAgW0MfJmWzS2bn93US6uYnZ4xL81PvuEGc6wFI8HlRi/l1x27kYm0SRHIqs5DIb
+ m04edhKpVXrzzNUxH9yU6w5qrcgTOobO3z5QXAb60+OAj08A5fE6wQMOBOpUDY7y3Rx68FVCiVj4yf
+ otvEofa0iHnljw2yZrjbBfm8Bq6P+6/h08mJMsNcF2mY+MxpOOFvhRRDHP2r1Cox09mPeQLexAwk86
+ xarmLaVSr8RzEd2a9vwH/3PRHSqmDqYJ3h+RNhhlydeTICy/sVMECtSKndydNp8vnshuw2fN2e55p5
+ 5hWoz5taWDn/ItIa36hwaT/rY42WDXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
- bh=ttyEA0+itqx5bj0YYDKwAEzgmyfASs7xeVqfmIShSNs=;
- b=oVgo/2IlrZMU2KHTxWdePCiyeYT0gi6Hc0vnq7InBqJ9L2C7c4+vxrvqPJ4G1MvTBmuEX7t1IY9YW
- W2YTPNDXR38vnt2C/0o4OIyvgP0B0zkZ0+h0ArlyZKJC0dbfdXu4nmOc2KsasCYm5KtWq10SwK4q9B
- tCbOI1X4GawFQbCMJHHZrCH+TcP+XROqUvZD7a7H78oLzLNQBfdxpVMH7q4iuKv/yhlPb2BliudhXx
- 04POne5ud5YyKwQue6TouA8WguYDG3967a4aTJgDSMTT5JEQoM1hSSrvX44fkFG7ofTWYmIgSHRmeH
- aSRCkA5yq90cMNdzCP79yYlsgfxjTVQ==
+ bh=DipQ3AMaAdAtn5EwnSvutFf3vANlprVUYGAtGwQ8xJA=;
+ b=iHhB0xkAR/3COAq37SRKs2cQNxCecqscIgfKyeLGGPVuWOeYauSE2W0xaU7tY4AJkDa7IuKrxaava
+ WLzVTgPUeriimrot0AjIP280nbpq81znmdFvxc44jU5qa3rr8yq1eTi95Am7x4EMj6Uv+bwBtt9tZY
+ C2rfNPaMdJoH1UPa5M+SrVKLGaGM9kgnNofZc4ibei/uN5hfZQHrvlZMXz7OVa9eUAPbJbBOTBbx5O
+ aNbaZodFl4OAuLeG9OqNs8R63vcFLVH4f/AVcHAAyCDqDT2rugqFRxOXQ2FhVjbCTOGpJ6cZqFMiDi
+ fxCsOS17taN4+ZXh58yVXqwe/UAzQ1Q==
 ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=B/GKnclm; 
+ header.b=c1a37i5O; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=ttyEA0+itqx5bj0YYDKwAEzgmyfASs7xeVqfmIShSNs=;
- b=BwYTuYnvWkioC4BWzUKBiZHjhYHHUWy/hgh3tJBwYcX8RNQrD0wX8kQ9UkSt5AWWbIEAr5egZ4oeo
- V0/cdsP/w+ezKzCb2NhGiAr+uO5xWIgpvKabYpjMnVWzuh6eazyXNhfYFhxZrLnHw+YLGu91SaEzl9
- PYDuPJZzfNiRj+Mw=
+ bh=DipQ3AMaAdAtn5EwnSvutFf3vANlprVUYGAtGwQ8xJA=;
+ b=D52o95d7vzIUq1x0HXSdNPMfcIMZ6N8k4PBLkIFzFF7vM5c3qBCRH/LSqnlLH3JSBToF75VVGM5Vh
+ 2Ir6Fm62YKkezUrFJSu2Iep+Mwre9KBx3qiFDCzwZKWewU4czepLmzkfp6o9CS1hOYPfbEWyWhce2c
+ Ktp1oTHALzCb8sW4=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
  h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
  subject:cc:to:from:from;
- bh=ttyEA0+itqx5bj0YYDKwAEzgmyfASs7xeVqfmIShSNs=;
- b=p83fsFAqdVn0owjFBQcbzHqODeBuVBXQT6kkrhxoaCw/KdK5VoVSHVvuUmjLjujoCP17HzL7x8T4F
- EPuz+UUD0uvEvxKHHoU6sn6qEWnvV8P3itVppXK2qNK+BnUfx+FU/paqtOzncCKQcxc6ChyLC1U4+A
- gWqT0A7HLUZGHhKKhz6oRoTDEADd9Ji7uZHfrTNy/LSD0R/ceG5FLNgEqcRXDoKOHU4SivCsYfbKn6
- yaP4Z+56c5AqgIZRmO9RFr5GkiRL7ctgUuVovkOgOrR81R8xKTkWN+YnCS2pjSe91lYo95ZqtZLiyG
- vqMFeDdEIfGejnZjhuUJDtGn3E1/yUg==
+ bh=DipQ3AMaAdAtn5EwnSvutFf3vANlprVUYGAtGwQ8xJA=;
+ b=Jlo+pwFuyvNJmFZuGd7MbRX+GnaMYp4GACq9BPd+qi0zpOfH07/16pcjL0rNhazJBL7U/NwYZxq60
+ P8xlA6YIuJwz7Yaado8NoBQIl3I7d50sFuAgSkC1bnHaS6gx5iHz41XbeWtu/w9SHdhgBZkXgBem5k
+ bQLMyzML16PoEWVoI/Aq7XHhHREhwIzgcxFgQBm8HFtjovtHuLJxTQDeS0zWSiK6sCchY6t1fJUn60
+ j6pA3rflmAcOAt+TICllKCdsY2El0rccji1IJbB/DQZQHUGPHqyZ4m/OVItrYP0vGF4RFwqMUlh9Ax
+ kHz37CqMmVUDpLc9U83I9H7SAsfAwFA==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 3120a9a4-e60c-11ee-b7d4-9b9d9be6ef2c
+X-MHO-User: 31e644c4-e60c-11ee-b7d4-9b9d9be6ef2c
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
  by outbound2.eu.mailhop.org (Halon) with ESMTPSA
- id 3120a9a4-e60c-11ee-b7d4-9b9d9be6ef2c;
- Tue, 19 Mar 2024 16:17:33 +0000 (UTC)
+ id 31e644c4-e60c-11ee-b7d4-9b9d9be6ef2c;
+ Tue, 19 Mar 2024 16:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=ttyEA0+itqx5bj0YYDKwAEzgmyfASs7xeVqfmIShSNs=; b=B/GKnclmLdPXyw95UJJIQvKjYF
- 5tHByChEdbQO0AfWABgZk7zlyE90RNtqkJBnskkLZiuVu+O540rpm9zzYufpH3hkZ6lv9OK4DaUyf
- Oc1Wba+YZpjasinXW8ZJTWKUm+Czpj5djpaLATPy1XRmuyRv3R8x0IsP1Gf7qmbzb0aCk0+Dswjw/
- ohyuC8hlzP5QXZ83dcTwP2D3wZJZ02WjJacirUK2Qxf2zuDUsesBvG4GhSx7xGUEYf1l0t5b/noI6
- 3DDasiLHp7OESfyANuwHNZBLSbRcTjWsy0ayOTYbg+TMch2ofLTa5VVVXLO5M8BcSTiLRvNWablCT
- +GFmREbg==;
+ bh=DipQ3AMaAdAtn5EwnSvutFf3vANlprVUYGAtGwQ8xJA=; b=c1a37i5O+1UVmk9Bbkb06hUQxS
+ XMs5+dEJ5ag8lyaFaGTum5R1SDySbl/ZjuHwFEroALguH32nPitQzvHaO0vHHXEy1uliyZI/xNenK
+ WdmLoN9k+1Ml1L7witHoo00I3/m6Yuub/QknlK1/v3TJBRiZ14w+BfeD0Qk2l7AQ5fvBVFub2g5BV
+ ee+CRYlEoy332gLg5LvjQ2cL+/+m0uv9di/OW9bjv3+W7kVEk9PR/it0A0+4iYPBqsyDguYyoHqh5
+ do0oNh0kZadei+QIopLYfLL4MZjg1+ysHmS7gClUOu8PAPNnHdZhheNp3K3zYF/q5Wo/l8oDDfkHX
+ se7+DADg==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rmcBQ-004VVI-23;
+ (envelope-from <svens@stackframe.org>) id 1rmcBQ-004VVI-2o;
  Tue, 19 Mar 2024 17:19:24 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
  Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH v2 4/6] target/hppa: exit tb on flush cache instructions
-Date: Tue, 19 Mar 2024 17:19:19 +0100
-Message-ID: <20240319161921.487080-5-svens@stackframe.org>
+Subject: [PATCH v2 5/6] target/hppa: mask privilege bits in mfia
+Date: Tue, 19 Mar 2024 17:19:20 +0100
+Message-ID: <20240319161921.487080-6-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240319161921.487080-1-svens@stackframe.org>
 References: <20240319161921.487080-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.223.97; envelope-from=svens@stackframe.org;
- helo=kudu.cherry.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.223.94; envelope-from=svens@stackframe.org;
+ helo=ivory.cherry.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -163,55 +162,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the guest modifies the tb it is currently executing from,
-it executes a fic instruction. Exit the tb on such instruction,
-otherwise we might execute stale code.
+mfia should return only the iaoq bits without privilege
+bits.
 
+Fixes: 98a9cb792c8 ("target-hppa: Implement system and memory-management insns")
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
 ---
- target/hppa/insns.decode |  6 +++---
- target/hppa/translate.c  | 11 +++++++++++
- 2 files changed, 14 insertions(+), 3 deletions(-)
+ target/hppa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index f5a3f02fd1..409e3ea9c9 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -143,9 +143,9 @@ getshadowregs   1111 1111 1111 1101 1110 1010 1101 0010
- nop             000001 ----- ----- -- 11001010 0 -----         # fdc, disp
- nop_addrx       000001 ..... ..... -- 01001010 . -----  @addrx # fdc, index
- nop_addrx       000001 ..... ..... -- 01001011 . -----  @addrx # fdce
--nop_addrx       000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
--nop_addrx       000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
--nop_addrx       000001 ..... ..... --- 0001011 . -----  @addrx # fice
-+fic             000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
-+fic             000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
-+fic             000001 ..... ..... --- 0001011 . -----  @addrx # fice
- nop_addrx       000001 ..... ..... -- 01001110 . 00000  @addrx # pdc
- 
- probe           000001 b:5 ri:5 sp:2 imm:1 100011 write:1 0 t:5
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8ba31567e8..46da546eb9 100644
+index 46da546eb9..51bf1b06c9 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2293,6 +2293,17 @@ static bool trans_nop_addrx(DisasContext *ctx, arg_ldst *a)
-     return true;
- }
- 
-+static bool trans_fic(DisasContext *ctx, arg_fic *a)
-+{
-+    arg_ldst b;
-+
-+    b.b = a->b;
-+    b.x = a->x;
-+    b.m = a->m;
-+    ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-+    return trans_nop_addrx(ctx, &b);
-+}
-+
- static bool trans_probe(DisasContext *ctx, arg_probe *a)
+@@ -1961,7 +1961,7 @@ static bool trans_mfia(DisasContext *ctx, arg_mfia *a)
  {
-     TCGv_i64 dest, ofs;
+     unsigned rt = a->t;
+     TCGv_i64 tmp = dest_gpr(ctx, rt);
+-    tcg_gen_movi_i64(tmp, ctx->iaoq_f);
++    tcg_gen_movi_i64(tmp, ctx->iaoq_f & ~3ULL);
+     save_gpr(ctx, rt, tmp);
+ 
+     cond_free(&ctx->null_cond);
 -- 
 2.43.2
 
