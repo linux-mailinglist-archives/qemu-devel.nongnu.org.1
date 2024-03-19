@@ -2,87 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62FC880121
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:51:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3089288012A
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:52:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbk1-0007Kq-5C; Tue, 19 Mar 2024 11:51:06 -0400
+	id 1rmbl8-0004kJ-1A; Tue, 19 Mar 2024 11:52:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbjj-0007Be-MM
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:50:51 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbjh-0006i1-QX
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:50:47 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-41467d697a2so3692445e9.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710863441; x=1711468241; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sAFmieUWILTCKRkamo/d7jrRPjeosX/hmTYF3Y7FJ0I=;
- b=KNkjRW2lqyeqiwDFdJs1Ze7yY7Nekcd0ibal82qnyqN9k0m3K0M3YWaKADVQ0PqaJC
- P43ei1b0HD4nY+uM572NdlPzvRLeeMJRBCh21S9KfcQuLgpeNLqgo+na0iKIJfjUfefv
- OiFJJe3Oj3RXzDSlM19utDa42OxbbqCjYn45D2eVcnqVTHCSSGAEtWD4HQt3pd66nwyq
- j/jlJKYlXG6s8+2DbE0Vkx8SjlxqCIpEIfMjfUDPgyCxAVthih+9gtHKgKJKpOOJLHRz
- vB8UmVC6DkPr8/OcP+tAgL64xJyjjgZLrSnVDdu04c9DDw+nlgQH+rpYXfn88Lipr4T+
- 6cPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710863441; x=1711468241;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sAFmieUWILTCKRkamo/d7jrRPjeosX/hmTYF3Y7FJ0I=;
- b=YI5/jojzvN60l4RuhriyEBE8eS15Yqhe6XEx6i+DHip3QmaFz6D8yMD2UBa+vByEh/
- /1f7pDSgwTbiNpLp1b4YSaJnJHkLsmsLtsFyYvbyA9UyHvbL0w0WHNIW+aXZqkrnPfn9
- O4nQy5XROsaOiSV4o4u301THrpJcGOdSXqKPxL+DS4cdjjUpjA1JnBxjKI7oglm7p4yz
- Z6Y35u3qfVFPzcDKKT7nkHR4JZPEQDRWMx1ZM8bYBsr5JfxHm4B/AhO+8/OsXboesgac
- SXSbdYmuWwmva+0ePWclmiFwbBGUBnrZReDavfk9gbtlfA+Hk5arwSRmGm6GSCeO9EO+
- FSHA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW0lAFa9uMmV56eEuT+jhQVWpsjJhedECiKbethMrtk6evhx/uMUu7TNPaAjFf3j7A8kdACaQDtB5uR5/oe6PwlWXtJ9A8=
-X-Gm-Message-State: AOJu0YztfTb4rQNMwYmcWkxQc+EXkEebp6jirD9qyF76qnAlp28yHap1
- /CIC+RvjQlRyIyIiifJLzqjAokmdgal+LzmoWNqjlwwaeXgxKyHpzg4Iw2zMHIbMDceVLcj094z
- h
-X-Google-Smtp-Source: AGHT+IFjZJs9yHA1Qd49SEy6w619cWg3XTOm1XRIHhSnEzfzA3znnekvzy8MRXaT+MYRqmYKuCrlpA==
-X-Received: by 2002:a05:600c:a4c:b0:414:729:1189 with SMTP id
- c12-20020a05600c0a4c00b0041407291189mr7961730wmq.21.1710863441396; 
- Tue, 19 Mar 2024 08:50:41 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.166.129])
- by smtp.gmail.com with ESMTPSA id
- u6-20020a05600c19c600b0041413546e5bsm5711005wmq.0.2024.03.19.08.50.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Mar 2024 08:50:41 -0700 (PDT)
-Message-ID: <61da973d-e017-41d2-bafe-12570956aa8e@linaro.org>
-Date: Tue, 19 Mar 2024 16:50:39 +0100
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rmbkr-0004Qd-17
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:51:58 -0400
+Received: from rev.ng ([5.9.113.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rmbkp-0006tE-1v
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:51:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=lZapTB7uIvBZ/rkcRNjiHr0xGC6XXgImEMweN9A/43Y=; b=WG3Qv/GS+vP5wc1R7KGLmqxyu/
+ EQBLzIbJPgRcr0AY9Lw/NE2nVM5L7CebTd1qMqsS84EUZh52VSlZvanUdSLxjGp6iw0zEiYOXuCmv
+ RhIzLvmwrjvFOdx66eS6mU6foygCbKFnSg47ESi+aRogTCdbEC1UBbLZfDotpOtMzR2c=;
+Date: Tue, 19 Mar 2024 16:52:33 +0100
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ Laurent Vivier <laurent@vivier.eu>, Alistair Francis <alistair@alistair23.me>
+Subject: Re: [PATCH-for-9.1 1/8] target/microblaze: Use correct string format
+ in do_unaligned_access()
+Message-ID: <twwnjcapdjqwd4yhfmpzv75op7unsrzoialxa3jc5r73kmu2xt@7fqr6frphdkk>
+References: <20240319062855.8025-1-philmd@linaro.org>
+ <20240319062855.8025-2-philmd@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] aspeed: Make the ast1030-a1 SoC not user creatable
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org, qemu-devel@nongnu.org
-References: <20240319150903.413662-1-clg@redhat.com>
- <20240319150903.413662-2-clg@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240319150903.413662-2-clg@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+In-Reply-To: <20240319062855.8025-2-philmd@linaro.org>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,21 +59,38 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/3/24 16:09, Cédric Le Goater wrote:
-> Aspeed SoCs are complex devices that can not be specified on the
-> command line. Fix that to avoid QEMU aborts.
+On 19/03/24, Philippe Mathieu-Daudé wrote:
+> 'addr' is of type 'vaddr'; no need to cast, use the
+> corresponding format string.
 > 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2227
-> Fixes: 356b230ed138 ("aspeed/soc : Add AST1030 support")
-> Reported-by: Thomas Huth <thuth@redhat.com>
-> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> Fixes: ab0c8d0f5b ("target/microblaze: Use cc->do_unaligned_access")
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/arm/aspeed_ast10x0.c | 2 ++
->   1 file changed, 2 insertions(+)
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
+>  target/microblaze/helper.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/microblaze/helper.c b/target/microblaze/helper.c
+> index d25c9eb4d3..0a12c4ea94 100644
+> --- a/target/microblaze/helper.c
+> +++ b/target/microblaze/helper.c
+> @@ -279,8 +279,8 @@ void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+>      iflags = cpu->env.iflags;
+>  
+>      qemu_log_mask(CPU_LOG_INT,
+> -                  "Unaligned access addr=" TARGET_FMT_lx " pc=%x iflags=%x\n",
+> -                  (target_ulong)addr, cpu->env.pc, iflags);
+> +                  "Unaligned access addr=0x%"VADDR_PRIx" pc=0x%x iflags=0x%x\n",
+> +                  addr, cpu->env.pc, iflags);
+>  
+>      esr = ESR_EC_UNALIGNED_DATA;
+>      if (likely(iflags & ESR_ESS_FLAG)) {
+> -- 
+> 2.41.0
+> 
+Reviewed-by: Anton Johansson <anjo@rev.ng>
 
