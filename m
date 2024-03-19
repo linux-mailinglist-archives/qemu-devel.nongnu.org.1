@@ -2,51 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E05F880157
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 17:03:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5743C88015B
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 17:03:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbuZ-0004Uw-MD; Tue, 19 Mar 2024 12:01:59 -0400
+	id 1rmbvW-0005wc-Mw; Tue, 19 Mar 2024 12:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rmbuK-00049u-Vu
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:01:47 -0400
-Received: from rev.ng ([5.9.113.41])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmbvU-0005u6-GJ
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:02:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1rmbuE-0000OL-9D
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:01:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=p77Q65+5OkY8UkCQDN13ilJmVC0j2BZ2/0nTLk/N8QA=; b=bpDUlF++MDdXZ2LYC3foHUN19j
- BFbVPqRcJoaciFZTvWm6F0YLF/KsRGbIhvNk1a97ecgxWhKiGEFSRA7uOFAmTc2TteKo1qkEtqM0p
- ApeM6iQUs4P7/YQlk6zXDnDMziODxrmc40hvaMLHADQLNZneGyXSxPMxQ42R3nAOb0B8=;
-Date: Tue, 19 Mar 2024 17:02:26 +0100
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
- Laurent Vivier <laurent@vivier.eu>, Alistair Francis <alistair@alistair23.me>
-Subject: Re: [PATCH-for-9.1 6/8] target/microblaze: Rename helper.c ->
- sys_helper.c
-Message-ID: <gmvj55xm6bafiooxbsef3257rutvsi6om632xf5l7ax7u6lewd@zixw6murfoml>
-References: <20240319062855.8025-1-philmd@linaro.org>
- <20240319062855.8025-7-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmbvS-0000ai-Ph
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 12:02:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710864173;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=I8VFDBunFP1TsbC9ZqFD7YmyyvENN6UTAtuBUk9DlcA=;
+ b=iNY0Up7q7RkJMPlcUvSEaYN+4TfjsM60ul4Kp2X6/9g6YPlzBKqfr+jbn3vcIsYURTaczN
+ +ZBYxBsM4utBb1xhQf8UpVjqJ8yv3t+O9ZCC2zcO1b9eiFwClM8cXlmO3vKwTGrgf/1gsz
+ HM23z9q1dI76L9FUh2gR7vucHt9WN3k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-2hJK3zmfM-me62hMaUX84Q-1; Tue, 19 Mar 2024 12:02:50 -0400
+X-MC-Unique: 2hJK3zmfM-me62hMaUX84Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AFB3800262;
+ Tue, 19 Mar 2024 16:02:50 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1F3D640C6DB7;
+ Tue, 19 Mar 2024 16:02:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 35E6121E6A28; Tue, 19 Mar 2024 17:02:32 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Michael Roth <michael.roth@amd.com>
+Subject: Re: [PATCH v5 24/25] qapi: Tighten check whether implicit object
+ type already exists
+In-Reply-To: <CAFn=p-YuKWRvGcxDApVt3kXg22c1YJDogWJG9g4AXud_tgbZag@mail.gmail.com>
+ (John Snow's message of "Tue, 19 Mar 2024 11:30:50 -0400")
+References: <20240315152301.3621858-1-armbru@redhat.com>
+ <20240315152301.3621858-25-armbru@redhat.com>
+ <CAFn=p-YuKWRvGcxDApVt3kXg22c1YJDogWJG9g4AXud_tgbZag@mail.gmail.com>
+Date: Tue, 19 Mar 2024 17:02:32 +0100
+Message-ID: <87r0g6yztz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240319062855.8025-7-philmd@linaro.org>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,76 +83,51 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/03/24, Philippe Mathieu-Daudé wrote:
-> helper.c only contains system emulation helpers,
-> rename it as sys_helper.c.
-> Adapt meson and remove pointless #ifdef'ry.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  target/microblaze/{helper.c => sys_helper.c} | 5 +----
->  target/microblaze/meson.build                | 2 +-
->  2 files changed, 2 insertions(+), 5 deletions(-)
->  rename target/microblaze/{helper.c => sys_helper.c} (99%)
-> 
-> diff --git a/target/microblaze/helper.c b/target/microblaze/sys_helper.c
-> similarity index 99%
-> rename from target/microblaze/helper.c
-> rename to target/microblaze/sys_helper.c
-> index 3f410fc7b5..5180500354 100644
-> --- a/target/microblaze/helper.c
-> +++ b/target/microblaze/sys_helper.c
-> @@ -1,5 +1,5 @@
->  /*
-> - *  MicroBlaze helper routines.
-> + *  MicroBlaze system helper routines.
->   *
->   *  Copyright (c) 2009 Edgar E. Iglesias <edgar.iglesias@gmail.com>
->   *  Copyright (c) 2009-2012 PetaLogix Qld Pty Ltd.
-> @@ -24,7 +24,6 @@
->  #include "qemu/host-utils.h"
->  #include "exec/log.h"
->  
-> -#ifndef CONFIG_USER_ONLY
->  static bool mb_cpu_access_is_secure(MicroBlazeCPU *cpu,
->                                      MMUAccessType access_type)
->  {
-> @@ -266,8 +265,6 @@ bool mb_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
->      return false;
->  }
->  
-> -#endif /* !CONFIG_USER_ONLY */
-> -
->  void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
->                                  MMUAccessType access_type,
->                                  int mmu_idx, uintptr_t retaddr)
-> diff --git a/target/microblaze/meson.build b/target/microblaze/meson.build
-> index 3ed4fbb67a..013ea542be 100644
-> --- a/target/microblaze/meson.build
-> +++ b/target/microblaze/meson.build
-> @@ -5,7 +5,6 @@ microblaze_ss.add(gen)
->  microblaze_ss.add(files(
->    'cpu.c',
->    'gdbstub.c',
-> -  'helper.c',
->    'op_helper.c',
->    'translate.c',
->  ))
-> @@ -14,6 +13,7 @@ microblaze_system_ss = ss.source_set()
->  microblaze_system_ss.add(files(
->    'mmu.c',
->    'machine.c',
-> +  'sys_helper.c',
->  ))
->  
->  target_arch += {'microblaze': microblaze_ss}
-> -- 
-> 2.41.0
-> 
-Reviewed-by: Anton Johansson <anjo@rev.ng>
+John Snow <jsnow@redhat.com> writes:
+
+> On Fri, Mar 15, 2024, 11:23=E2=80=AFAM Markus Armbruster <armbru@redhat.c=
+om> wrote:
+>
+>> Entities with names starting with q_obj_ are implicit object types.
+>> Therefore, QAPISchema._make_implicit_object_type()'s .lookup_entity()
+>> can only return a QAPISchemaObjectType.  Assert that.
+>>
+>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+>> ---
+>>  scripts/qapi/schema.py | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
+>> index e52930a48a..a6180f93c6 100644
+>> --- a/scripts/qapi/schema.py
+>> +++ b/scripts/qapi/schema.py
+>> @@ -1297,8 +1297,9 @@ def _make_implicit_object_type(
+>>              return None
+>>          # See also QAPISchemaObjectTypeMember.describe()
+>>          name =3D 'q_obj_%s-%s' % (name, role)
+>> -        typ =3D self.lookup_entity(name, QAPISchemaObjectType)
+>> +        typ =3D self.lookup_entity(name)
+>>          if typ:
+>> +            assert(isinstance(typ, QAPISchemaObjectType))
+>>              # The implicit object type has multiple users.  This can
+>>              # only be a duplicate definition, which will be flagged
+>>              # later.
+>> --
+>> 2.44.0
+>>
+>
+> Seems obviously fine, though I don't suppose this narrowing will be
+> "remembered" by the type system. Do we care?
+
+mypy passes without it.  It's for catching programming errors and
+helping the reader along.  The former are unlikely, and the latter is
+debatable, but when in doubt, assert.
+
+> Reviewed-by: John Snow <jsnow@redhat.com>
+
+Thanks!
+
 
