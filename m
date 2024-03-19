@@ -2,85 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563A58805F4
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 21:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7FE880601
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 21:22:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmfrw-0007M2-2n; Tue, 19 Mar 2024 16:15:32 -0400
+	id 1rmfxl-00012j-CR; Tue, 19 Mar 2024 16:21:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmfrt-0007FI-EX
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:15:29 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmfxj-00012a-Mt
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmfrr-0006fg-5q
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:15:29 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rmfxh-0007WO-Uj
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710879325;
+ s=mimecast20190719; t=1710879689;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d3Km3zthjTJ2X4w4a9sXT7ieqazOORF+q9x8wTj8Jsw=;
- b=i8Kv5nh08vfvJwNye3SH35Sg7R27+vgBjSftM9GPl046TZTGnpS5Jb8bVifZSirjHYD5ea
- hOSVDoTNfZMD+G139NW3ujNhSjr/wP2OGAWdv5TE+MVenG452si78dAYRo0uklgIBwgOtC
- Si1tsXRSC6arBqPBf2dhJqKOLogJ6W0=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-390-B7FDdgerNcubVFEj1N8-1Q-1; Tue, 19 Mar 2024 16:15:23 -0400
-X-MC-Unique: B7FDdgerNcubVFEj1N8-1Q-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-69120b349c9so15737436d6.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 13:15:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710879323; x=1711484123;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d3Km3zthjTJ2X4w4a9sXT7ieqazOORF+q9x8wTj8Jsw=;
- b=gt6nZo+J7OE12voh9eoAWLmqhuhetL9glRwh1iaqIZIhvHqawbuL/AFizunJ8aPqiW
- n2ftGwNewLmeTwwdfR4NtFuj+Oa3gw/8Erh/EfOg3EH3XdFpqcPLxumzwhJEuJ0kufmN
- QSoxB3YGGQ8/HaRk0fM65tcN36kJOpIvE9hvivV4HlUBBgYAAlNhj2pRLela63wVVV6A
- 4AzdWUr06OKT+6hVGBDktJWmrtjdxa+N8cAchcNIfQ2iHdFTyrLXcPi5s8W8RjbL/hys
- dp7a4t5e9IpiKwcHRqslSogG+9aR2BWXdrlEaPIGFCgSjZsEXP9mpl/LfeJtcam6lMgQ
- emog==
-X-Forwarded-Encrypted: i=1;
- AJvYcCURr5j33pU95hd7IE4feltECc/2l8yovnvM7vqwVyAanOrLa0Cklzl5OxuO+sVukHgsjOwkk6lEj54H/xkBrexo63Fcr2w=
-X-Gm-Message-State: AOJu0YxMX8xnhs1/iNEeH0K14l6REYwUw1TexizOV5kMg0GB8oFVOcPA
- YIwuB6mMGb9tceJHHD0poZ5xIVNoROYyNN1fmnusrKVS62EsWVUIIZbQtj2raZ9dA402BBEfNN1
- RzunDYriiWdbUqEsBK5w75dpZvNVSTuVdfqamVWh3v3f/npzBdsZg
-X-Received: by 2002:a05:6214:5409:b0:691:402f:510a with SMTP id
- ql9-20020a056214540900b00691402f510amr3789211qvb.0.1710879323322; 
- Tue, 19 Mar 2024 13:15:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJ1RLSUMsM1bkTVj+gBNpcRtNoE2uqsH/ClYIiDPIle8ACMSil5qBehmfBPGWLnufsCjSJ/g==
-X-Received: by 2002:a05:6214:5409:b0:691:402f:510a with SMTP id
- ql9-20020a056214540900b00691402f510amr3789184qvb.0.1710879322818; 
- Tue, 19 Mar 2024 13:15:22 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- iu10-20020ad45cca000000b006914cd7a8b1sm6847700qvb.48.2024.03.19.13.15.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 13:15:22 -0700 (PDT)
-Date: Tue, 19 Mar 2024 16:15:20 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [RFC PATCH v3 3/3] migration: Add fd to FileMigrationArgs
-Message-ID: <ZfnyWHh1MWRKFaOH@x1n>
-References: <20240315032040.7974-1-farosas@suse.de>
- <20240315032040.7974-4-farosas@suse.de>
- <ZfQNDv--4BnN5zYx@redhat.com> <ZfRxwml7m0DQVO2b@x1n>
- <87y1aj74t6.fsf@suse.de> <ZfS1g8YvZ7if9j5M@x1n>
- <Zfm8fCqyNMfkq9Jw@redhat.com> <Zfnmni5bZ7q_UQcx@x1n>
- <ZfntD00Mz3i9vOky@redhat.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ufPr2ImucRQLayZWcqnZxJmlRarFbCkY0Xq/mhDhkek=;
+ b=Fvuoe6lk5QASt8XI8jvmGEFppfByqCkfHVc+KhIyRxBU/XbAj3Etlchbho6U2ySTGdfFtz
+ jspo0d5Hl24XXkbmDWP1K32NDSuYCIU52+PpP+xWCZYTYcqbxFrFgbrP2yG5TEKffbgoOe
+ k4mkup+fJ3VsGkWUWS+yPqVOq/NV3Ks=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-308--1H-hH32NzGse3z5Fk5FsA-1; Tue,
+ 19 Mar 2024 16:21:27 -0400
+X-MC-Unique: -1H-hH32NzGse3z5Fk5FsA-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4687528043E4
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 20:21:27 +0000 (UTC)
+Received: from toolbox.redhat.com (unknown [10.42.28.88])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 16BA110F53;
+ Tue, 19 Mar 2024 20:21:25 +0000 (UTC)
+From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 0/8] Misc fixes patches
+Date: Tue, 19 Mar 2024 20:21:13 +0000
+Message-ID: <20240319202121.233130-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZfntD00Mz3i9vOky@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -105,97 +79,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 19, 2024 at 07:52:47PM +0000, Daniel P. Berrangé wrote:
-> On Tue, Mar 19, 2024 at 03:25:18PM -0400, Peter Xu wrote:
-> > On Tue, Mar 19, 2024 at 04:25:32PM +0000, Daniel P. Berrangé wrote:
-> > > On Fri, Mar 15, 2024 at 04:54:27PM -0400, Peter Xu wrote:
-> > > > On Fri, Mar 15, 2024 at 03:01:09PM -0300, Fabiano Rosas wrote:
-> > > > > Peter Xu <peterx@redhat.com> writes:
-> > > > > 
-> > > > > > [I queued patch 1-2 into -stable, leaving this patch for further
-> > > > > >  discussions]
-> > > > > >
-> > > > > > On Fri, Mar 15, 2024 at 08:55:42AM +0000, Daniel P. Berrangé wrote:
-> > > > > >> The 'file:' protocol eventually calls into qemu_open, and this
-> > > > > >> transparently allows for FD passing using /dev/fdset/NNN syntax
-> > > > > >> to pass in FDs. 
-> > > > > >
-> > > > > > If it always use /dev/fdsets for files, does it mean that the newly added
-> > > > > > SOCKET_ADDRESS_TYPE_FD support on mapped-ram will never be used (so we can
-> > > > > > drop them)?
-> > > > > 
-> > > > > We already have SOCKET_ADDRESS_TYPE_FD + file since 8.2 when the
-> > > > > MigrationAddress was added. So this:
-> > > > > 
-> > > > > 'channels': [ { 'channel-type': 'main',
-> > > > >                 'addr': { 'transport': 'socket',
-> > > > >                 'type': 'fd',
-> > > > >                 'str': 'fdname' } } ]
-> > > > > 
-> > > > > works without multifd and without mapped-ram if the fd is a file or
-> > > > > socket.
-> > > > > 
-> > > > > So yes, you're correct, but given we already have this^ it would be
-> > > > > perhaps more confusing for users to allow it, but not allow the very
-> > > > > same JSON when multifd=true, mapped-ram=true.
-> > > > 
-> > > > I don't think the fd: protocol (no matter the old "fd:", or the new JSON
-> > > > format) is trivial to use. If libvirt didn't use it I won't be surprised to
-> > > > see nobody using it.  I want us to avoid working on things that nobody is
-> > > > using, or has a better replacement.
-> > > > 
-> > > > So even if Libvirt supports both, I'm wondering whether /dev/fdset/ works
-> > > > for all the cases that libvirt needs.  I am aware that the old getfd has
-> > > > the monitor limitation so that if the QMP disconnected and reconnect, the
-> > > > fd can be gone.  However I'm not sure whether that's the only reason to
-> > > > have add-fd, and also not sure whether it means add-fd is always preferred,
-> > > > so that maybe we can consider obsolete getfd?
-> > > 
-> > > Historically libvirt primariily uses the 'fd:' protocol, with a
-> > > socket FD. It never gives QEMU a plain file FD, since it has
-> > > always added its "iohelper" as a MITM, in order to add O_DIRECT
-> > > on top.
-> > > 
-> > > The 'getfd' command is something that is needed when talking to
-> > > QEMU for any API that involves a "SocketAddress" QAPI type,
-> > > which is applicable for migration.
-> > > 
-> > > With the introduction of 'MigrationAddress', the 'socket' protocol
-> > > is backed by 'SocketAddress' and thus supports FD passing for
-> > > sockets (or potentally pipes too), in combination with 'getfd'.
-> > > 
-> > > With the 'file' protocol in 'MigrationAddress', since it gets
-> > > backed by qemu_open(), then /dev/fdset/NN and 'add-fd' provide
-> > > passing for plain files.
-> > 
-> > I see.  I assume it means we still have multiple users of getfd so it's
-> > still in use where add-fd is not yet avaiable.
-> > 
-> > But then, SOCKET_ADDRESS_TYPE_FD is then not used for libvirt in the whole
-> > mapped-ram effort, neither do we need any support on file migrations over
-> > "fd", e.g. fd_start_incoming_migration() for files. So we can drop these
-> > parts, am I right?
-> 
-> Correct, libvirt hasn't got any impl for 'mapped-ram' yet, at least
-> not something merged.
-> 
-> Since this is new functionality, libvirt could go straight for the
-> 'file' protocol / address type.
-> 
-> At some point I think we can stop using 'fd' for traditional migration
-> too and pass the socket address to QEMU and let QEMU open the socket.
+The following changes since commit c62d54d0a8067ffb3d5b909276f7296d7df33fa7:
 
-Thanks for confirming this, that sounds good.  I quickly discussed this
-with Fabiano just now, I think there's a plan we start to mark fd migration
-deprecated for the next release (9.1), then there is a chance we drop it in
-migration for 9.3.  That'll copy libvirt list so we can re-check there.
+  Update version for v9.0.0-rc0 release (2024-03-19 19:13:52 +0000)
 
-Fabiano will then prepare patches to remove the "fd:" support on file
-migrations; that will be for 9.0.
+are available in the Git repository at:
 
-Thanks,
+  https://gitlab.com/berrange/qemu tags/misc-fixes-pull-request
+
+for you to fetch changes up to c3b1aa1c1ae66e0174704072b1fb7d10d6e4a4b7:
+
+  crypto: report which ciphers are being skipped during tests (2024-03-19 20:17:12 +0000)
+
+----------------------------------------------------------------
+ * Use EPERM for seccomp filter instead of killing QEMU when
+   an attempt to spawn child process is made
+ * Reduce priority of POLLHUP handling for socket chardevs
+   to increase likelihood of pending data being processed
+ * Fix chardev I/O main loop integration when TLS is enabled
+ * Fix broken crypto test suite when distro disables
+   SM4 algorithm
+ * Improve diagnosis of failed crypto tests
+
+----------------------------------------------------------------
+
+Daniel P. Berrangé (8):
+  seccomp: report EPERM instead of killing process for spawn set
+  chardev: lower priority of the HUP GSource in socket chardev
+  Revert "chardev/char-socket: Fix TLS io channels sending too much data
+    to the backend"
+  Revert "chardev: use a child source for qio input source"
+  crypto: factor out conversion of QAPI to gcrypt constants
+  crypto: query gcrypt for cipher availability
+  crypto: use error_abort for unexpected failures
+  crypto: report which ciphers are being skipped during tests
+
+ chardev/char-io.c               |  56 +++++++++++++--
+ chardev/char-socket.c           |  22 +++++-
+ crypto/cipher-gcrypt.c.inc      | 121 +++++++++++++++++---------------
+ system/qemu-seccomp.c           |  10 +--
+ tests/unit/test-crypto-cipher.c |   7 +-
+ 5 files changed, 145 insertions(+), 71 deletions(-)
 
 -- 
-Peter Xu
+2.43.0
 
 
