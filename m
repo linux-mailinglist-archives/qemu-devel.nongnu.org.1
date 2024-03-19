@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F2087FFBC
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:37:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5987FFC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:40:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmaZz-0006gl-IG; Tue, 19 Mar 2024 10:36:39 -0400
+	id 1rmacs-0000ex-C6; Tue, 19 Mar 2024 10:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmaZx-0006gP-P0
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:36:37 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmaZv-0000my-9D
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:36:37 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-33eee0258abso1498473f8f.3
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:36:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710858993; x=1711463793; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0efgDKKkLGerMPweoEieQnx14k1OlzDjgpUUyMAKWC0=;
- b=DVLQmZkuHPlaV2TxzpmFUc351BLeWj8UR8cBjKGOCZynUwx/dxIj7ioG5ZKGMtUvlq
- 4fAPvjqLPstDM6NduufIq6LVTdYNUq2tPUgKeUyE2dlPO9z3U8+W1yqqMiIaxLvK4Oao
- EVTdKvvT7hrS3pySIQmI1Z8gFOU0+ypwREVe3G9hdRUO/eViMHHUY++6NjCh1/r348b5
- 9v4hySK3Xayo61nUtf0fTTPJW8TuQlJFmMmQxnMv67tJ2C1Rk19MmcjtOKjjpOkE0zp2
- QcBpVMWz0iFWago4JLPA7ksnTAn03Z4OvmjIKDQw8/ah00eBFAeuws2CdxhFGWkuijrF
- iqRw==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rmacq-0000du-08
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:39:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rmaco-0001bl-6Y
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:39:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710859173;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=hgG0NZ+0z0biH2pbA6OYlxjpwUaDcFiE13+7TcVLAyY=;
+ b=icT1w0QlFEClmbWZVnIZZH/LJSohJT1cZv7DJ26JRQmHECBHVPGGiRIi8Zf7mYB12KxMPx
+ TGAs50mx4bjEJznXHgktZykUKE/vEhkecOTaWB/JL14sU530NzCXIJtOJFZ9IMB1X58Srl
+ HyR7Ey3FzCjfdHqzZb4Rm9GFP5DS+QA=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-132-i7BHK4_bN62p6u14cFCYGQ-1; Tue, 19 Mar 2024 10:39:31 -0400
+X-MC-Unique: i7BHK4_bN62p6u14cFCYGQ-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-dcc4563611cso8006754276.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:39:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710858993; x=1711463793;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0efgDKKkLGerMPweoEieQnx14k1OlzDjgpUUyMAKWC0=;
- b=XOYbgNtND47LyiXJsXXZlozxCTBD8ukF6/JGPSKtMuiZtHAjkP4LaLe59qo4gOydxN
- 2162IUWX+aJ2OcvXTpp5OdXdr0CDmXDSMIkfgYL12udEklSmZsgZi0IYKJjuXWAwW6a7
- tSkKLvWek75fUe/Ttcb454mVHAszeo6wrpBJlyulkH+GPQ1yRwGKvJc0MzLVtUH5C8JK
- w8uxYB0yOb/fiG0WdKu4CjwslWgNnbNxcC+hdBNOgUk8O3yyMcnP6iR8td35fL9J4J5r
- DTx8GKG5Gz+EQZ7lTGmIUdJNvxEFu/9BcIhVNe9fbJyebj4qTkc9+7Wn2WUoe/uG3P+d
- uFtQ==
-X-Gm-Message-State: AOJu0Yzq6SGcWoEUP/SPu+tYdHabHCLXZ8uT3YKvDyX85rReL4YR+oeA
- EbdIn+MLX0Fvac6m6KTJjpdXKeCzYzATjNlQ2sHWEalq4r2AWj4dRVAwh5iY744=
-X-Google-Smtp-Source: AGHT+IFQ2AO8+WjjsFwxyYigYtouP0IjZjLRKMSlkApWghbKMjzW1pMLApEgEzmayBJZW2WbZi62lA==
-X-Received: by 2002:a5d:46c2:0:b0:341:7656:d358 with SMTP id
- g2-20020a5d46c2000000b003417656d358mr3423310wrs.38.1710858993357; 
- Tue, 19 Mar 2024 07:36:33 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.166.129])
- by smtp.gmail.com with ESMTPSA id
- bt14-20020a056000080e00b003417893ef1asm4051601wrb.14.2024.03.19.07.36.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Mar 2024 07:36:32 -0700 (PDT)
-Message-ID: <adb7c11b-cf09-471f-9ddb-43bd32b47895@linaro.org>
-Date: Tue, 19 Mar 2024 15:36:30 +0100
+ d=1e100.net; s=20230601; t=1710859171; x=1711463971;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hgG0NZ+0z0biH2pbA6OYlxjpwUaDcFiE13+7TcVLAyY=;
+ b=vzket4hX9BtJxnGHT9PpiqFqP19EHTyAYTvPZd0MOyaQhUPoeYx/32KdVVMI05aN3E
+ Km5kK1GeCxy5JpkoUPiwFb1qgUykTVW64UzDFUAwTk/XbiZo5HXLM8Ud2iKfK8w65m/C
+ q8DwHLxn0DIai7YCkNg32+mlxIQ5B88A6stpruhkOYxOTjgcA7uLkYW4JlRGOTUA3LG5
+ IYe7M0E/A5GIxR5o+UL6eZ2qIzsIfRHqdO4RCTpwfdOCIMfGE6SxLFQFQRmmhS0Agpy3
+ fg5BfEatlMjsW2+738QgZvcwstBcrxPt3w1aKcM/uODGYU01J1d1vJOAolZfIFhU5yYP
+ jD6Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW0sKtSIaRrkniiTgHSkA1Vvt1S24fiqnTXsLA/6mSmZq+yL0gGmZh0nGG4KwwE9Y7nqyE49Y94ecxcNWyUAfQVL9OQeTI=
+X-Gm-Message-State: AOJu0Yy9txYYf2LJihBC9uhzrE6LRkmLIZ2q96fxeOsemsNOzhZQilV/
+ qBkWfjpzTejjVKMWrYTcNItfYKMxsPvvE+/0tT7IX4XFb65nrll8pvvgvghjVTp+r1VG8wSwoME
+ 87QDrwbg4RIVoDuLQtn2ieKCJgvGYwqAduB6jzKYwE1fdJ6wJ9gRMO2NJkWmgLyYiNwDOUBM98r
+ xna74z0zDrXEG5+LvW2SAdf4CdXx0=
+X-Received: by 2002:a5b:444:0:b0:dc6:9daf:35c7 with SMTP id
+ s4-20020a5b0444000000b00dc69daf35c7mr9839589ybp.28.1710859171238; 
+ Tue, 19 Mar 2024 07:39:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENO5Yw+aZRHZQbHRR4Kmy3/AKFsggJXKrUySF1WYoat5fuiDQBrER6zFnfGYex050q6CtMy04wrbdPEj+Gcqo=
+X-Received: by 2002:a5b:444:0:b0:dc6:9daf:35c7 with SMTP id
+ s4-20020a5b0444000000b00dc69daf35c7mr9839573ybp.28.1710859170981; Tue, 19 Mar
+ 2024 07:39:30 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL v2 0/4] machine development tool
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>,
- Maksim Davydov <davydov-max@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, jsnow@redhat.com,
- armbru@redhat.com, peterx@redhat.com, farosas@suse.de, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net
-References: <20240318213550.155573-1-davydov-max@yandex-team.ru>
- <CAFEAcA9Kcowzuy84SeBqi9zQv6e9Ojo57Wknw2BON2NKms=JcA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CAFEAcA9Kcowzuy84SeBqi9zQv6e9Ojo57Wknw2BON2NKms=JcA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240315155949.86066-1-kwolf@redhat.com>
+ <CACGkMEvuu4rkgZr7sBFwXztZLHdamBKML++6cvA+GDKyGDGibA@mail.gmail.com>
+ <20240318050212-mutt-send-email-mst@kernel.org>
+ <CAJaqyWc5_T=c+i0EvoYJ4Ly9XOaRBLvUE8w0n6duhm-b2Si0FA@mail.gmail.com>
+ <ZfliRJ-7ueG0_OlJ@redhat.com>
+In-Reply-To: <ZfliRJ-7ueG0_OlJ@redhat.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 19 Mar 2024 15:38:54 +0100
+Message-ID: <CAJaqyWd+aafjz02NdwSKWZZ_1=4OzKbaAsNb-DP3PWt9RSY_Mg@mail.gmail.com>
+Subject: Re: [PATCH for-9.0 v3] vdpa-dev: Fix initialisation order to restore
+ VDUSE compatibility
+To: Kevin Wolf <kwolf@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-block@nongnu.org, 
+ sgarzare@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,44 +104,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Maksim,
+On Tue, Mar 19, 2024 at 11:00=E2=80=AFAM Kevin Wolf <kwolf@redhat.com> wrot=
+e:
+>
+> Am 18.03.2024 um 20:27 hat Eugenio Perez Martin geschrieben:
+> > On Mon, Mar 18, 2024 at 10:02=E2=80=AFAM Michael S. Tsirkin <mst@redhat=
+.com> wrote:
+> > >
+> > > On Mon, Mar 18, 2024 at 12:31:26PM +0800, Jason Wang wrote:
+> > > > On Fri, Mar 15, 2024 at 11:59=E2=80=AFPM Kevin Wolf <kwolf@redhat.c=
+om> wrote:
+> > > > >
+> > > > > VDUSE requires that virtqueues are first enabled before the DRIVE=
+R_OK
+> > > > > status flag is set; with the current API of the kernel module, it=
+ is
+> > > > > impossible to enable the opposite order in our block export code =
+because
+> > > > > userspace is not notified when a virtqueue is enabled.
+> > > > >
+> > > > > This requirement also mathces the normal initialisation order as =
+done by
+> > > > > the generic vhost code in QEMU. However, commit 6c482547 accident=
+ally
+> > > > > changed the order for vdpa-dev and broke access to VDUSE devices =
+with
+> > > > > this.
+> > > > >
+> > > > > This changes vdpa-dev to use the normal order again and use the s=
+tandard
+> > > > > vhost callback .vhost_set_vring_enable for this. VDUSE devices ca=
+n be
+> > > > > used with vdpa-dev again after this fix.
+> > > > >
+> > > > > vhost_net intentionally avoided enabling the vrings for vdpa and =
+does
+> > > > > this manually later while it does enable them for other vhost bac=
+kends.
+> > > > > Reflect this in the vhost_net code and return early for vdpa, so =
+that
+> > > > > the behaviour doesn't change for this device.
+> > > > >
+> > > > > Cc: qemu-stable@nongnu.org
+> > > > > Fixes: 6c4825476a4351530bcac17abab72295b75ffe98
+> > > > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> > > > > ---
+> > > > > v2:
+> > > > > - Actually make use of the @enable parameter
+> > > > > - Change vhost_net to preserve the current behaviour
+> > > > >
+> > > > > v3:
+> > > > > - Updated trace point [Stefano]
+> > > > > - Fixed typo in comment [Stefano]
+> > > > >
+> > > > >  hw/net/vhost_net.c     | 10 ++++++++++
+> > > > >  hw/virtio/vdpa-dev.c   |  5 +----
+> > > > >  hw/virtio/vhost-vdpa.c | 29 ++++++++++++++++++++++++++---
+> > > > >  hw/virtio/vhost.c      |  8 +++++++-
+> > > > >  hw/virtio/trace-events |  2 +-
+> > > > >  5 files changed, 45 insertions(+), 9 deletions(-)
+> > > > >
+> > > > > diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+> > > > > index e8e1661646..fd1a93701a 100644
+> > > > > --- a/hw/net/vhost_net.c
+> > > > > +++ b/hw/net/vhost_net.c
+> > > > > @@ -541,6 +541,16 @@ int vhost_set_vring_enable(NetClientState *n=
+c, int enable)
+> > > > >      VHostNetState *net =3D get_vhost_net(nc);
+> > > > >      const VhostOps *vhost_ops =3D net->dev.vhost_ops;
+> > > > >
+> > > > > +    /*
+> > > > > +     * vhost-vdpa network devices need to enable dataplane virtq=
+ueues after
+> > > > > +     * DRIVER_OK, so they can recover device state before starti=
+ng dataplane.
+> > > > > +     * Because of that, we don't enable virtqueues here and leav=
+e it to
+> > > > > +     * net/vhost-vdpa.c.
+> > > > > +     */
+> > > > > +    if (nc->info->type =3D=3D NET_CLIENT_DRIVER_VHOST_VDPA) {
+> > > > > +        return 0;
+> > > > > +    }
+> > > >
+> > > > I think we need some inputs from Eugenio, this is only needed for
+> > > > shadow virtqueue during live migration but not other cases.
+> > > >
+> > > > Thanks
+> > >
+> > >
+> > > Yes I think we had a backend flag for this, right? Eugenio can you
+> > > comment please?
+> > >
+> >
+> > We have the VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK backend flag,
+> > right. If the backend does not offer it, it is better to enable all
+> > the queues here and add a migration blocker in net/vhost-vdpa.c.
+> >
+> > So the check should be:
+> > nc->info->type =3D=3D VHOST_VDPA && (backend_features &
+> > VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK).
+> >
+> > I can manage to add the migration blocker on top of this patch.
+>
+> Note that my patch preserves the current behaviour for vhost_net. The
+> callback wasn't implemented for vdpa so far, so we never called anything
+> even if the flag wasn't set. This patch adds an implementation for the
+> callback, so we have to skip it here to have everything in vhost_net
+> work as before - which is what the condition as written does.
+>
+> If we add a check for the flag now (I don't know if that's correct or
+> not), that would be a second, unrelated change of behaviour in the same
+> patch. So if it's necessary, that's a preexisting problem and I'd argue
+> it doesn't belong in this patch, but should be done separately.
+>
 
-On 19/3/24 11:24, Peter Maydell wrote:
-> On Mon, 18 Mar 2024 at 21:36, Maksim Davydov <davydov-max@yandex-team.ru> wrote:
->>
->> The following changes since commit ba49d760eb04630e7b15f423ebecf6c871b8f77b:
->>
->>    Merge tag 'pull-maintainer-final-130324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-13 15:12:14 +0000)
->>
->> are available in the Git repository at:
->>
->>    https://gitlab.com/davydov-max/qemu.git tags/pull-compare-mt-2024-03-19
->>
->> for you to fetch changes up to e12b89f71ba5b93877b6a3adc379a6369d0c9bab:
->>
->>    scripts: add script to compare compatibility properties (2024-03-19 00:13:54 +0300)
->>
->> ----------------------------------------------------------------
->> Please note. This is the first pull request from me.
->> My public GPG key is available here
->> https://keys.openpgp.org/vks/v1/by-fingerprint/CDB5BEEF8837142579F5CDFE8E927E10F72F78D4
->>
->> ----------------------------------------------------------------
->> scripts: add a new script for machine development
->>
-> 
-> I said I wanted this to go via some other sub-maintainer's tree.
+Right, that's a very good point. I'll add proper checking on top of
+your patch when it is merged.
 
-I'm OK to take the first 3 machine-core patches, but the
-tree is currently frozen to stabilize before the next release.
-Since your patches add a new feature, I'll merge them once the
-tree re-opens in ~1 month, see the announced schedule:
-https://lore.kernel.org/qemu-devel/CAFEAcA_ncrw8nsD50Ov=Fse=gYFw3CabpURWM9yK3yWmL5CTQw@mail.gmail.com/
+Reviewed-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-I haven't looked at the last patch yet, at a glance I'm not objecting
-to it, but having an Ack-by tag by John (Python maintainer) would be nice.
+Thanks!
 
-Regards,
-
-Phil.
 
