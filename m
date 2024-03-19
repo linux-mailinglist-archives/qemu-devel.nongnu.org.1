@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 878B187FF49
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:05:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2461987FF4C
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:06:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rma52-0003WC-O3; Tue, 19 Mar 2024 10:04:40 -0400
+	id 1rma65-0004P8-89; Tue, 19 Mar 2024 10:05:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rma4s-0003QB-Du
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:04:30 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rma4d-0007sW-Sm
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:04:29 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-a46aaf6081fso399440166b.2
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:04:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710857052; x=1711461852; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=vrZ7HwaNTkrShRf5kjtf7bdXIPHLyXYiECWytiHWVGY=;
- b=MtaMunoWQ4jmXvmlgvK6ZLMH7QL/KjvQWGjY7kQHWxbRsTsIgHHAR/RGM++ZBRSVZF
- SZAlH5jdWrS/Vl/NHIs4xn44132U6Ct8g/PLXddQCT4a2jQCR5JWe/EcuOiBk7YgJTpQ
- kkzgimNKlmFE7nJeJfuyaeqscG9rOrzGI6mIwo7beLQBGopZ5YRGe+5iSbvYj1/IidxS
- NyuqYp8+4qxszZJE+DDdvRZvq95iDmQ7sLM4quiQJKsH9DcVdoA7juNAYAYIsuu0UKIB
- Or/2jVWd6tRSYFQepgwMyanq0bcxn0s2PGp9J/9N1AkxJe7IvcpgEqNtZChTUntQo7i4
- 7snA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710857053; x=1711461853;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=vrZ7HwaNTkrShRf5kjtf7bdXIPHLyXYiECWytiHWVGY=;
- b=pNE/3jXb5PwhFLLWUcnTxzmoDFZtoKbQCp5ijnN9UZoiLjTDpdENY6BOVNiwLDqu91
- 4GC3W7z5mNitS7qtFDsZnKDfOUIvO10G8ZCLQNGB7AKts2Ny7mvzAXZfm+NOqpipTLy9
- ieEV6pFYxJNTJ80B4M97u9V87x+36qbXF9cWQMlsfJ/p0mKIyi3zJMd/aGGJH+Jd9ALW
- vIiDZN3YOSRc6QboZPiczXfnt0fHx/WyhRbc7yMD5CGl1Y/L5Fozh+XfBG3gd02hfQB/
- 3COrpHI0+rmoCb02jCjjoL3hhycMIpzbc0JmO9A+YiKEPj0w/Mr/RcbqgvK34KcsaG3b
- V+dg==
-X-Gm-Message-State: AOJu0YzpgJxkF7O5UdjT6S4S+XvC2HVO/G6iwMNRVac9yWQhWX23Tg4V
- JZ9vKXjJ0zvWPH+rHXeuQo40ToUwcJCUKEfiCxJMway2oXfwORUJKmhag3mQ30U=
-X-Google-Smtp-Source: AGHT+IEoBFAfB0fMaxMbILq+KTngP3OKjjxio6Xt3sZeRku1sNLua+/QvjXkLWMZSwTuealyhlcbOw==
-X-Received: by 2002:a17:906:6958:b0:a46:7794:2c00 with SMTP id
- c24-20020a170906695800b00a4677942c00mr1812374ejs.40.1710857052615; 
- Tue, 19 Mar 2024 07:04:12 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- l3-20020a1709061c4300b00a46a3ad035esm4166467ejg.179.2024.03.19.07.04.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 07:04:12 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 890625F8A2;
- Tue, 19 Mar 2024 14:04:11 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org,  pierrick.bouvier@linaro.org
-Subject: Re: [PATCH 01/22] tcg: Add TCGContext.emit_before_op
-In-Reply-To: <20240316015720.3661236-2-richard.henderson@linaro.org> (Richard
- Henderson's message of "Fri, 15 Mar 2024 15:56:59 -1000")
-References: <20240316015720.3661236-1-richard.henderson@linaro.org>
- <20240316015720.3661236-2-richard.henderson@linaro.org>
-User-Agent: mu4e 1.12.2; emacs 29.2
-Date: Tue, 19 Mar 2024 14:04:11 +0000
-Message-ID: <871q865ndw.fsf@draig.linaro.org>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma64-0004P0-6b
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma62-0008N5-Ik
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710857141;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=+MyJV01TPbOVh+Z+5doXHBhA/AcQghAwHkKKDsrkAY4=;
+ b=d1dgxf+Zw5gpDqZV/vtQCQI+5YKIHGidkmMi/c3EhqJ4unrmVuN4rnJLWz1Usif2oqzRk/
+ dsBxWyQSLPR8Rl0WsLigam5zQBT/EXJFcxNUhcTH9biEhDgZ/D74DSUseC8ZTJe7hnik7l
+ t8+Qa417EuPZK2fZy44hWWoKnXIHQwU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-329--3yEGyHpMceCj1lEbnXJPw-1; Tue, 19 Mar 2024 10:05:39 -0400
+X-MC-Unique: -3yEGyHpMceCj1lEbnXJPw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF1FC185A783
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 14:05:38 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2CBC73C54;
+ Tue, 19 Mar 2024 14:05:38 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 0/3] for-9.0 queue
+Date: Tue, 19 Mar 2024 15:05:13 +0100
+Message-ID: <20240319140516.392542-1-clg@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,32 +75,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Richard Henderson <richard.henderson@linaro.org> writes:
+The following changes since commit 4511400fb78e72d4d9916ed60e04f4e99e594f65:
 
-> Allow operations to be emitted via normal expanders
-> into the middle of the opcode stream.
->
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  include/tcg/tcg.h |  1 +
->  tcg/tcg.c         | 14 ++++++++++++--
->  2 files changed, 13 insertions(+), 2 deletions(-)
->
-> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-> index 451f3fec41..e9d05f40b0 100644
-> --- a/include/tcg/tcg.h
-> +++ b/include/tcg/tcg.h
-> @@ -552,6 +552,7 @@ struct TCGContext {
->=20=20
->      QTAILQ_HEAD(, TCGOp) ops, free_ops;
->      QSIMPLEQ_HEAD(, TCGLabel) labels;
-> +    TCGOp *emit_before_op;
+  Merge tag 'for-upstream' of https://repo.or.cz/qemu/kevin into staging (2024-03-18 17:16:08 +0000)
 
-Could we add some kdoc comments to the TCGContext describing what each
-variables is for. Is this just a list of ops to emit before the current
-instruction emulation? Is it cleared between instruction boundaries?
+are available in the Git repository at:
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+  https://github.com/legoater/qemu/ tags/pull-for-9.0-20240319
+
+for you to fetch changes up to a7538ca0791880b6aeb2cc4cc8c00305e2d975f8:
+
+  aspeed/smc: Only wire flash devices at reset (2024-03-19 11:58:15 +0100)
+
+----------------------------------------------------------------
+aspeed, pnv, vfio queue:
+
+* user device fixes for Aspeed and PowerNV machines
+* coverity fix for iommufd
+
+----------------------------------------------------------------
+Cédric Le Goater (3):
+      vfio/iommufd: Fix memory leak
+      ppc/pnv: I2C controller is not user creatable
+      aspeed/smc: Only wire flash devices at reset
+
+ include/hw/block/flash.h  |  2 ++
+ hw/arm/xlnx-versal-virt.c |  3 ++-
+ hw/block/m25p80.c         |  1 -
+ hw/ppc/pnv_i2c.c          |  3 +++
+ hw/ssi/aspeed_smc.c       |  9 +++++++++
+ hw/vfio/iommufd.c         | 19 ++++++++-----------
+ 6 files changed, 24 insertions(+), 13 deletions(-)
+
 
