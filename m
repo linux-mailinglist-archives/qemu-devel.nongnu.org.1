@@ -2,157 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1D6880653
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 21:55:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0ECF880673
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 22:02:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmgUN-0001Ta-F8; Tue, 19 Mar 2024 16:55:15 -0400
+	id 1rmgZp-0003MY-Se; Tue, 19 Mar 2024 17:00:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rmgUM-0001TQ-0v
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:55:14 -0400
-Received: from mx0a-002c1b01.pphosted.com ([148.163.151.68])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1rmgUJ-0004io-H4
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:55:13 -0400
-Received: from pps.filterd (m0127838.ppops.net [127.0.0.1])
- by mx0a-002c1b01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
- 42JKP3pk028046; Tue, 19 Mar 2024 13:55:09 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-type:message-id:date:subject:to:cc:references:from
- :in-reply-to:mime-version; s=proofpoint20171006; bh=0j8U5EUwnjDM
- qAcXojIn3eMF2F4MzL51bzgOzlTkzoI=; b=IWB1FpD2ed2nPfLJiWg+q7FKSLv9
- PXIMq8IGLPsAxoEX2nGNVJxZEK7Kk2faU690mWXrXZrDrmqpznmTIhtoWLbRNXeM
- MSzozedmQRrrprdLvSrQCMZqTPuCobKlYi8i0G+b78IsEFMbGDZhYKkxy6fj+hXy
- zdIz9s+77xcni1fcyPQLc/uf5mUMhheCnpq3PYyvB9KhLV+32fhCb8g8xcfSae7K
- qCvYs6pxQ8xodr8uyKzi7C0L//qelYcVcyFTwqDkMNouaz1AHNr1bL7VdRpxWpnD
- aN32oabU6P3dzSUSBY80m/4kpDtqKwFFTIPUUYygOVGq4zcOEVN0v02PfQ==
-Received: from nam11-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
- by mx0a-002c1b01.pphosted.com (PPS) with ESMTPS id 3wyhqmr1qy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 19 Mar 2024 13:55:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=j3e6AoYMcZdPb1xbgCznQOnvqEs7yC+FwNOjbpVjHMf13vKh3oHJYKmWQfXP4jHtwFwUxTwFb1mLeUMMpy6DgB6ZX/3DsSYhr1+3/clXiRNG1HdT4u4QuC4p30CWkKz5NIs1SJG0SeIe4nUEalmRMuWm0in+oIbaK4HFK1eSLadOpsTm+7X9wIonXJ5U8fAhgqZoJ+c0beXUThQaZCPi5Xy+6oUV89UZjPxSFSKjbJL9TIXhmWLxTb/OoddJhqcu++lpsxZHzi62dEoqA7nis4ZRtUB+UTnD9hjmhSDA+sYgVorc/tFBu3dVU3/9NX8AQL0ELLkARxb4qR2rUPjZoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0j8U5EUwnjDMqAcXojIn3eMF2F4MzL51bzgOzlTkzoI=;
- b=h032feIqZjcsPwovzKqrlLAWZAyBuPCl3hLd7W8nFEuaIoNYRu1XinFMulwMZz4bdp16Ro0F2HVmjKkyfL3k1gOwWDiJ51euGUs736go5eBzAFJAkgtNY2L5bd54BBGYqAAFKM0KKMPCs3PNY1yctTuSPk2x84aAeUTPOaoUYuqKzbDVhvEPsQ+XC4ZzsNYjPnegxjkPKCA3MiMGuuRP8wlW73GXPpR3oOBNu4WizyFV0i90u5+USuwQ91hrnSnUIIs/ETKgaoR5DR6BGi1yhLrN5WzEmGJjv6F0S1gt++ChPc1yiH8Ijn3mnJNfdsUwnGX3NmRc84mfudUHCVdaXA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0j8U5EUwnjDMqAcXojIn3eMF2F4MzL51bzgOzlTkzoI=;
- b=eyxVoH9wftJvMFIDvqwbUpb8vkBCme9j/jILsQDzPxrZ0XJIv28sKyU8rauQraDEnBwlP/x0A7x9dLBUFFbcfYwOotGeOX3hG6f6hRPmwYQ8N1IV1o82neMdMWeKMYFxsvixvLfDqdMz3Mfunv02SsMkHWFpmrEpRlk0zssoJ8GI66RGmHYiSTQjku09ZFqT211BQUcrzBpfT+cKHUF3UuSrqOMtY+8QpP8jXCd/+PQaStb8BZThduuBEX8DQ6ARBf3knxv065EBthiAOrTxO8cxDwvzeM9IRlHw7VDQ6fB25d8y1pzPlMIu7mdoCHL5skkTL0tbUTTo/Lcg+axsDA==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by CH2PR02MB6998.namprd02.prod.outlook.com (2603:10b6:610:88::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.30; Tue, 19 Mar
- 2024 20:55:06 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7386.025; Tue, 19 Mar 2024
- 20:55:06 +0000
-Content-Type: multipart/alternative;
- boundary="------------2ANTiUlTL0EquwI41QBbKp51"
-Message-ID: <0a888d34-4c4b-4943-b7ae-214c47e74bd7@nutanix.com>
-Date: Wed, 20 Mar 2024 02:24:59 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/8] tests/qtest/migration: Replace
- migrate_get_connect_uri inplace of migrate_get_socket_address
-Content-Language: en-US
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com, thuth@redhat.com, lvivier@redhat.com,
- pbonzini@redhat.com, peterx@redhat.com
-References: <20240312202634.63349-1-het.gala@nutanix.com>
- <20240312202634.63349-4-het.gala@nutanix.com> <871q8b8xeg.fsf@suse.de>
- <c25c8cf7-ea28-4c5f-962a-1fe5abc51870@nutanix.com> <87bk7baamp.fsf@suse.de>
- <32c4cf1d-91d0-48ed-84a9-e21ad7bcc254@nutanix.com> <871q869h8r.fsf@suse.de>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <871q869h8r.fsf@suse.de>
-X-ClientProxiedBy: MAXP287CA0012.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a00:49::22) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1rmgZk-0003Lw-Vl
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 17:00:52 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1rmgZj-0005f0-Aa
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 17:00:48 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-513d599dbabso6970609e87.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 14:00:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710882045; x=1711486845; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=7/OnOw4OUQmhx9rP+AgZ1Oe+KaHMNvT+1NBhX9H1kko=;
+ b=ULqdFUuSu6TRs7vRliv0+FGZmP212VY8Hv4tH9gam1R9lOr76TpdF4l15YSGryUWeb
+ MjeZz9Ii3s4BcuzcA6XVmGjZSiVt3g/kZqHpU5L8e8iARuWUsfU/WeEmBqOmW3SXnYzI
+ nngDYoPFzbRQxIOeHblzHSMQvNr5/qVITotdfKycxFNgOOI9GvETHqD2APpSlALJtilE
+ D3sGsHmsDp0VMpzx6+6WURcgwqIhuWHEEFhXBe4dTLfI4urPFkrgEq+Uj1oFzSengWKz
+ rdfkL6+SYyjp5a3eEVyK7w464n1IDlfcUsdkFfEMlUVSPZTrCLayNdPGpHnKZfW0bpaW
+ HF4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710882045; x=1711486845;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=7/OnOw4OUQmhx9rP+AgZ1Oe+KaHMNvT+1NBhX9H1kko=;
+ b=tPqrIQhy+Kdiwc3bQke9iFBurXr7BlXB/eNecpsvMCLr5lDdLu1EwyshQyoqoLHpFb
+ JizdQaxf3I/0lBiiDXpqyj7QYaUxEYkC45GiCdsWmE3YqxQnb/vK4rSzdB5hfVSIVdGH
+ C7UygpEUQC0vicbFaPrLC9rH/4P3UCtg5n5vmEYiQ5KSo7pQpxy2lRVKe6amH3cCNq0A
+ RiCbcnZUsopg3z8iEfrmy2VpBv5G6/fOHbOgTYVTPZp+RgQsNuesSM5ehEKOXHbmJiCU
+ yRh2NobA1vA1+R9KvNws7KTjY65KU3n02ha1nQOX5cdFmcPQi4A2hHRi70h/yKYbLuR+
+ 2yMQ==
+X-Gm-Message-State: AOJu0Yx/9QMr8VSbOpbA8+ZqixB9qngBl6JKdlf4rJhCPl6Jc/zNMVq/
+ IBXRqQT2zHd0zIrc+acuwuQimEt3CWnauVHZw6dPCcXHR6zKUROUiNRQtMpQBiuMHw==
+X-Google-Smtp-Source: AGHT+IE8W0DXLoSPfO8vIAhNE4lZc3AtL3sc0yuXhR7xF80DTbzvyKp2erkdeEEnldh2ECFzX9aPcw==
+X-Received: by 2002:a19:c219:0:b0:513:5971:10c9 with SMTP id
+ l25-20020a19c219000000b00513597110c9mr2507607lfc.56.1710882045130; 
+ Tue, 19 Mar 2024 14:00:45 -0700 (PDT)
+Received: from gmail.com (213-67-3-247-no600.tbcn.telia.com. [213.67.3.247])
+ by smtp.gmail.com with ESMTPSA id
+ y18-20020a197512000000b00513a11e9dc3sm1620743lfe.211.2024.03.19.14.00.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Mar 2024 14:00:44 -0700 (PDT)
+Date: Tue, 19 Mar 2024 22:00:44 +0100
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>, Anton Johansson <anjo@rev.ng>,
+ Alistair Francis <alistair@alistair23.me>
+Subject: Re: [PATCH-for-9.1 3/8] target/microblaze: Widen vaddr in
+ mmu_translate()
+Message-ID: <Zfn8_Hz21GajuT1U@toto>
+References: <20240319062855.8025-1-philmd@linaro.org>
+ <20240319062855.8025-4-philmd@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CH2PR02MB6998:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10072c32-4d4a-496b-ad3c-08dc4856dad6
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Hhfp6eC88ejqTuxOwVHQE2BE50+F5QEYTQbYBMPe7cK7BNpRgWvBf5hfCKLhGKRMxPTmVjtpliGgG4gsYqomMu6wmEQCmWiwOzSPolBozpu1kJiH769bGf7ywfU4y6PIJVlDbvhLsgd/UXNbg+JAEEsIGxCwjLnd7HjklsA7FiRIvbWN7u36wxAHxfUrQ3Dt6smMcWRIFplJQuKSFUsVO4/Dj2m8iU/UMQhaqvFYKJKUuGxc88WqDcNJVYYTPRiy262l572bZ88bEpM1AjS59mPVjxIu7HN6gRZ65ohHGmieRvGiIyPdAwKB9x9XlrbFJg/fodMT3BL1uG5npwnJXrBl7PHDrXSoXMGm5YmamOUJR+kQWJFdO9YnZpgrRRwFy+JXM9p13CDu7Ttq8UKef8co8aAPX+rGp62UXUfKUR6+IlA+fyorF0mazQISO49tYBNkvPWYxxsDVxOZbAhckkBYmBligwNJasxOonaMLuqsj+ylFr7s5W8NDntqr0wixIp+QsllDxDN4Ffk3XvtOWSug2pZTMbm5/JhwbHzJKtRSEi7MYk+U1eVCIhY6+TLCQ/3b7g5n+KuJUDef9pH1X8DzpPy146pLM5O45Izx3w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V25MQzFWK0lJTXhqVXZCVm1kMDJVOW9QSmZzUnNNcEt0VnBTREJuNEJFd3dS?=
- =?utf-8?B?Nk1aZmFoVXd5MEFUU2hneW5ZUi9LWVBOdy9qcXQ2WDE0ZzhtTlR5ZkNpYzlU?=
- =?utf-8?B?elZEakpWeElQbE9vUjdUNTl6TnRTWU40QUk2dksyM1RNN3hoVXkrTTlqVlkw?=
- =?utf-8?B?RXVSWDVEa2ZHa2VXSm50TXgyUTZwUjd1QkpISWFlK1o1NmYxd3RyVFF5V0xF?=
- =?utf-8?B?dkNnSmNXQ3VCWGF4NzBFaEpwbXBUTFdyVnZGcUFEYTIyZEc5c1MrMTEyc29z?=
- =?utf-8?B?YVlEaDc0aGROMDhTbFVOSWtkMUFMa0R4QXJLMVV6bnA5bDNsWU83c3J5RGhT?=
- =?utf-8?B?QXpiWkxBeHMvZHNMUlVvRVVyTElUYnpSem5TN1VtSUxvVEVPTjZLZUVjcmdK?=
- =?utf-8?B?T3Rrb1UyWlhtaHpEY2xhaEQxRFdJNkJXWGlkZ0FpYmNVYmZGU1hUWmgzT3ZM?=
- =?utf-8?B?ZUZmeEJ2d2pqVElpdFRraE9EeXBaRE1XWnJiVExzT0ZFZTVycGdYM3BYbnU3?=
- =?utf-8?B?RURaUG9jb2Nsd2V1ZDZjRjQyT0V4NS9yVXpBOGxCMFFMSmh5Z3k1OXZsQlJN?=
- =?utf-8?B?YnJZRktvTGJJNDMyMnJUSHk3V05jbXRtYUR1YThZZk9IK3U1aGtzYzk0a2Y3?=
- =?utf-8?B?ZUZTRm96MXl4WGdLV1IxNHN0WEFIQmZ6Vyt2aEFFdzIxY1VHazQzN0dSR3ky?=
- =?utf-8?B?NzdNTXVwNG1GK0tyZG54bzV4YXhJclR3WVJhamFqYzRKekNUbFVxOHlSdmxE?=
- =?utf-8?B?UGEwcmtwRnk5azl4M0VCRWdCWDJaNG1lRkVKK3BueE9TOVdVUzIxMEJxdmFY?=
- =?utf-8?B?VVRqUzlCWERFa3FVTThrbXc1cTRycHFSYjNmbnBuVGJ5Z3BHNXRNZkptTkVs?=
- =?utf-8?B?WUxQN2dKNDkzU2JUamtNL0QvMTBibmJOd1kreW12cmkrY3J1WTFFd1Z4aVFm?=
- =?utf-8?B?YWVBdlM2QkNaTWxvZEtXV2lHWnhiZTM1Z2RYbXhFMlhQQWpRZkljQVFkSy8x?=
- =?utf-8?B?UWVoT1A1dzEyay9uWGk1VmFTblpxZlRpT2o5Y1JxZXJkQk1TQkdPa2RLWFVF?=
- =?utf-8?B?UFlDeGZMM0FlY3BRb3Y2RHFsdzgwazhWN3FnUFdyQzlVd0szamlLamJEMzlO?=
- =?utf-8?B?d2pOdVdGbld0Q1ZNYkMraWdTb3RyTUY3UDlNUTRrbk5HbDlTeEg0R091TG9n?=
- =?utf-8?B?UElpMTdQLzkyWXZpdDNVaGpEdDQ0WVhiZFpGc3ovZFhXOGY3NUs2ZFZUeWlz?=
- =?utf-8?B?RGdnN3F1QytKOXpxL0sva01odFlVQVpraXlKRGZSTjVzaXNlbkZxYnY1Vzhh?=
- =?utf-8?B?NVpRZ01sN1Ztd3M5UHd4RzR1UFljUVJPRS84VGlQQ0FhN1RRTVJJU1lWZGl1?=
- =?utf-8?B?dElZZVZLeTFPYnRPR2h4OVRJdTZ1K0tuUVZuSXpRa2Z3Ry9OUWZaOHZ2UGxr?=
- =?utf-8?B?NzNkRnlYd1NIQUJzaVBBMVVGVGlvSmpiWCtnTGUya1JSUGlhQ2FKQ0RRcy82?=
- =?utf-8?B?VEs4NURiUVRlQVNXRGdNbWZBM3hhSDlmcytjcGtYUkFDaU5yVGI2anJmcHVv?=
- =?utf-8?B?RDRVUDNXem1sRG5TL2tQbktFYk40Z2FYTzlkQzNneEtSYjY2S3NWdTJxVnM3?=
- =?utf-8?B?VXZxTEdUOWZsSUFHWStTanJqSXl1OWxTMThvZkRhTXJneUJZcHp6dktlY2pW?=
- =?utf-8?B?a1h3L1JZSlB4S0hHakFycURnc25VVmt5d2pSYzJHalJlMUFRRW82YzBRT0pP?=
- =?utf-8?B?YkZEZzB4YkhIaFJacHA4V2FYUVVReEMycXVlNjNGTy94NDJUMnZqOVI0dzJE?=
- =?utf-8?B?RjlZdHdaTFArMmV3STFHdUV4bDJSL0l0M05TNEZKZXdBOEJqWG9EVzJOUkdl?=
- =?utf-8?B?SU14Q0ppbndUTXM1ZG85bnpPS2tmYjk3UUUwWDBnWWhwbWhPOUF2aTdiMlZ1?=
- =?utf-8?B?TU1TL1h5VFdMZkxVY1hxZGMvdkc1ZkdQY1VmQTFVZzFpQ2NOOVBMSGZDQy9J?=
- =?utf-8?B?Z1JtQ2g4aXQ4aVNQMGUySTlBdFNjWm1nZkY1cGFZTkJsSXR6SDRnZURZaDY2?=
- =?utf-8?B?bGZJSk1VUnJnM2JxWS9NaTdrb2oxK0lJSUhxMUlJM3pHZnN1Zkt3dWtlb1Q1?=
- =?utf-8?Q?7GxrFTlcTNNVEHlPHuUog9sPs?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10072c32-4d4a-496b-ad3c-08dc4856dad6
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2024 20:55:05.8937 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SO6RKpxyZuSTRLn/0Ja39Zgh3yk8J69w9ug033Xvkyg0McDDiS3vOTAfz1ZpAHHCCoe67pszerCHlK35etR/DA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6998
-X-Proofpoint-ORIG-GUID: 47bfQMEL2Nwl24vtiAKfktQLZsxgnAxl
-X-Proofpoint-GUID: 47bfQMEL2Nwl24vtiAKfktQLZsxgnAxl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-19_08,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.151.68; envelope-from=het.gala@nutanix.com;
- helo=mx0a-002c1b01.pphosted.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240319062855.8025-4-philmd@linaro.org>
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-lf1-x132.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -168,321 +96,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------2ANTiUlTL0EquwI41QBbKp51
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+On Tue, Mar 19, 2024 at 07:28:50AM +0100, Philippe Mathieu-Daud� wrote:
+> Use 'vaddr' type for virtual addresses.
 
 
-On 20/03/24 12:33 am, Fabiano Rosas wrote:
-> Het Gala<het.gala@nutanix.com>  writes:
->
->> On 18/03/24 7:46 pm, Fabiano Rosas wrote:
->>> Het Gala<het.gala@nutanix.com>   writes:
->>>
->>>> On 15/03/24 6:28 pm, Fabiano Rosas wrote:
->>>>> Het Gala<het.gala@nutanix.com>    writes:
->>>>>
->>>>>> Refactor migrate_get_socket_address to internally utilize 'socket-address'
->>>>>> parameter, reducing redundancy in the function definition.
->>>>>>
->>>>>> migrate_get_socket_address implicitly converts SocketAddress into str.
->>>>>> Move migrate_get_socket_address inside migrate_get_connect_uri which
->>>>>> should return the uri string instead.
->>>>>>
->>>>>> -static char *
->>>>>> -migrate_get_socket_address(QTestState *who, const char *parameter)
->>>>>> +static SocketAddress *migrate_get_socket_address(QTestState *who)
->>>>>>     {
->>>>>>         QDict *rsp;
->>>>>> -    char *result;
->>>>>>         SocketAddressList *addrs;
->>>>>> +    SocketAddress *addr;
->>>>>>         Visitor *iv = NULL;
->>>>>>         QObject *object;
->>>>>>     
->>>>>>         rsp = migrate_query(who);
->>>>>> -    object = qdict_get(rsp, parameter);
->>>>>> +    object = qdict_get(rsp, "socket-address");
->>>>> Just a heads up, none of what I'm about to say applies to current
->>>>> master.
->>>>>
->>>>> This can return NULL if there is no socket-address, such as with a file
->>>>> migration. Then the visitor code below just barfs. It would be nice if
->>>>> we touched this up eventually.
->>>> Yes. I agree this is not full proof solution and covers for all the cases.
->>>> It would only for 'socket-address'. Could you elaborate on what other than
->>>> socket-address the QObject can have ?
->>> I can just not have the socket-address, AFAICS. We'd just need to not
->>> crash if that's the case.
->> value: {
->>       "status": "setup",
->>       "socket-address": [
->>           {
->>               "port": "46213",
->>               "ipv4": true,
->>               "host": "127.0.0.1",
->>               "type": "inet"
->>           }
->>       ]
->> }
->>
->> Okay, I understood your ask here. This is what gets printed from the QDict.
->> Let me raise a patch to return with a message if the QDict does not have key
->> with 'socket-address'. This would prevent the crash later on.
->>
->> I wanted to know what other than "socket-address" key can he QDict give us
->> because, if that's the case, for other than socket migration, then we can
->> make this function more generic rather than having it as
->> 'migrate_get_socket_address'
-> For now, there's nothing else. Let's just ignore when socket-address is
-> missing in the reply so we don't break future tests that use a
-> non-socket type.
-Okay, Done. Can find the build here: 
-https://gitlab.com/galahet/Qemu/-/pipelines/1219841944
->>>>> I only noticed this because I was fiddling with the file migration API
->>>>> and this series helped me a lot to test my changes. So thanks for that,
->>>>> Het.
->>>>>
->>>>> Another point is: we really need to encourage people to write tests
->>>>> using the new channels API. I added the FileMigrationArgs with the
->>>>> 'offset' as a required parameter, not even knowing optional parameters
->>>>> were a thing. So it's obviously not enough to write support for the new
->>>>> API if no tests ever touch it.
->>>> Yes, definitely we need more tests with the new channels API to test other
->>>> than just tcp connection. I could give a try for vsock and unix with the
->>>> new QAPI syntax, and add some tests.
->>>>
->>>> I also wanted to bring in attention that, this solution I what i feel is
->>>> also
->>>> not complete. If we are using new channel syntax for migrate_qmp, then the
->>>> same syntax should also be used for migrate_qmp_incoming. But we haven't
->>>> touch that, and it still prints the old syntax. We might need a lot changes
->>>> in design maybe to incorporate that too in new tests totally with the new
->>>> syntax.
->>> Adding migrate_qmp_incoming support should be relatively simple. You had
->>> patches for that in another version, no?
->> No Fabiano, what I meant was, in migration-test.c, change in
->> migrate_incoming_qmp
->> would need to change the callback function and ultimately change all the
->> callback
->> handlers ? In that sense, it would require a big change ?
->> Inside the migrate_incoming_qmp function, adding implementation for
->> channels is
->> same as other migrate_* function.
-> You could add the parameter to migrate_incoming_qmp and use NULL when
-> calling. The callbacks don't need to be changed. When we add more tests
-> then we'd alter the callbacks accordingly.
->
-> I might convert the file tests soon, you can leave that part to me if
-> you want.
-Okay, sure. Will leave those changes to you.
->>>> Another thing that you also noted down while discussing on the patches that
->>>> we should have a standard pattern on how to define the migration tests. Even
->>>> that would be helpful for the users, on how to add new tests, where to add
->>>> new tests in the file, and which test is needed to run if a specific change
->>>> needs to be tested.
->>>>
->>>>>>     
->>>>>>         iv = qobject_input_visitor_new(object);
->>>>>>         visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
->>>>>> +    addr = addrs->value;
->>>>>>         visit_free(iv);
->>>>>>     
->>>>>> -    /* we are only using a single address */
->>>>>>
->>>>>>
-Regards,
-Het Gala
---------------2ANTiUlTL0EquwI41QBbKp51
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 20/03/24 12:33 am, Fabiano Rosas
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:871q869h8r.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">On 18/03/24 7:46 pm, Fabiano Rosas wrote:
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">Het Gala<a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>  writes:
-
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">On 15/03/24 6:28 pm, Fabiano Rosas wrote:
-</pre>
-            <blockquote type="cite">
-              <pre class="moz-quote-pre" wrap="">Het Gala<a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>   writes:
-
-</pre>
-              <blockquote type="cite">
-                <pre class="moz-quote-pre" wrap="">Refactor migrate_get_socket_address to internally utilize 'socket-address'
-parameter, reducing redundancy in the function definition.
-
-migrate_get_socket_address implicitly converts SocketAddress into str.
-Move migrate_get_socket_address inside migrate_get_connect_uri which
-should return the uri string instead.
-
--static char *
--migrate_get_socket_address(QTestState *who, const char *parameter)
-+static SocketAddress *migrate_get_socket_address(QTestState *who)
-   {
-       QDict *rsp;
--    char *result;
-       SocketAddressList *addrs;
-+    SocketAddress *addr;
-       Visitor *iv = NULL;
-       QObject *object;
-   
-       rsp = migrate_query(who);
--    object = qdict_get(rsp, parameter);
-+    object = qdict_get(rsp, &quot;socket-address&quot;);
-</pre>
-              </blockquote>
-              <pre class="moz-quote-pre" wrap="">Just a heads up, none of what I'm about to say applies to current
-master.
-
-This can return NULL if there is no socket-address, such as with a file
-migration. Then the visitor code below just barfs. It would be nice if
-we touched this up eventually.
-</pre>
-            </blockquote>
-            <pre class="moz-quote-pre" wrap="">Yes. I agree this is not full proof solution and covers for all the cases.
-It would only for 'socket-address'. Could you elaborate on what other than
-socket-address the QObject can have ?
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">I can just not have the socket-address, AFAICS. We'd just need to not
-crash if that's the case.
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-value: {
- &nbsp;&nbsp;&nbsp; &quot;status&quot;: &quot;setup&quot;,
- &nbsp;&nbsp;&nbsp; &quot;socket-address&quot;: [
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;port&quot;: &quot;46213&quot;,
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;ipv4&quot;: true,
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;host&quot;: &quot;127.0.0.1&quot;,
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;type&quot;: &quot;inet&quot;
- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
- &nbsp;&nbsp;&nbsp; ]
-}
-
-Okay, I understood your ask here. This is what gets printed from the QDict.
-Let me raise a patch to return with a message if the QDict does not have key
-with 'socket-address'. This would prevent the crash later on.
-
-I wanted to know what other than &quot;socket-address&quot; key can he QDict give us
-because, if that's the case, for other than socket migration, then we can
-make this function more generic rather than having it as 
-'migrate_get_socket_address'
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-For now, there's nothing else. Let's just ignore when socket-address is
-missing in the reply so we don't break future tests that use a
-non-socket type.</pre>
-    </blockquote>
-    <font face="monospace">Okay, Done. Can find the build here:
-      <a class="moz-txt-link-freetext" href="https://gitlab.com/galahet/Qemu/-/pipelines/1219841944">https://gitlab.com/galahet/Qemu/-/pipelines/1219841944</a></font><span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:871q869h8r.fsf@suse.de">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <blockquote type="cite">
-              <pre class="moz-quote-pre" wrap="">I only noticed this because I was fiddling with the file migration API
-and this series helped me a lot to test my changes. So thanks for that,
-Het.
-
-Another point is: we really need to encourage people to write tests
-using the new channels API. I added the FileMigrationArgs with the
-'offset' as a required parameter, not even knowing optional parameters
-were a thing. So it's obviously not enough to write support for the new
-API if no tests ever touch it.
-</pre>
-            </blockquote>
-            <pre class="moz-quote-pre" wrap="">Yes, definitely we need more tests with the new channels API to test other
-than just tcp connection. I could give a try for vsock and unix with the
-new QAPI syntax, and add some tests.
-
-I also wanted to bring in attention that, this solution I what i feel is
-also
-not complete. If we are using new channel syntax for migrate_qmp, then the
-same syntax should also be used for migrate_qmp_incoming. But we haven't
-touch that, and it still prints the old syntax. We might need a lot changes
-in design maybe to incorporate that too in new tests totally with the new
-syntax.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Adding migrate_qmp_incoming support should be relatively simple. You had
-patches for that in another version, no?
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">No Fabiano, what I meant was, in migration-test.c, change in 
-migrate_incoming_qmp
-would need to change the callback function and ultimately change all the 
-callback
-handlers ? In that sense, it would require a big change ?
-Inside the migrate_incoming_qmp function, adding implementation for 
-channels is
-same as other migrate_* function.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-You could add the parameter to migrate_incoming_qmp and use NULL when
-calling. The callbacks don't need to be changed. When we add more tests
-then we'd alter the callbacks accordingly.
-
-I might convert the file tests soon, you can leave that part to me if
-you want.</pre>
-    </blockquote>
-    <font face="monospace">Okay, sure. Will leave those changes to you.</font><br>
-    <blockquote type="cite" cite="mid:871q869h8r.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Another thing that you also noted down while discussing on the patches that
-we should have a standard pattern on how to define the migration tests. Even
-that would be helpful for the users, on how to add new tests, where to add
-new tests in the file, and which test is needed to run if a specific change
-needs to be tested.
-
-</pre>
-            <blockquote type="cite">
-              <blockquote type="cite">
-                <pre class="moz-quote-pre" wrap="">   
-       iv = qobject_input_visitor_new(object);
-       visit_type_SocketAddressList(iv, NULL, &amp;addrs, &amp;error_abort);
-+    addr = addrs-&gt;value;
-       visit_free(iv);
-   
--    /* we are only using a single address */
+Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 
 
-</pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-    <font face="monospace">Regards,<br>
-      Het Gala</font><br>
-  </body>
-</html>
-
---------------2ANTiUlTL0EquwI41QBbKp51--
+> 
+> Signed-off-by: Philippe Mathieu-Daud� <philmd@linaro.org>
+> ---
+>  target/microblaze/mmu.h | 2 +-
+>  target/microblaze/mmu.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/target/microblaze/mmu.h b/target/microblaze/mmu.h
+> index 1068bd2d52..2aca39c923 100644
+> --- a/target/microblaze/mmu.h
+> +++ b/target/microblaze/mmu.h
+> @@ -86,7 +86,7 @@ typedef struct {
+>  } MicroBlazeMMULookup;
+>  
+>  unsigned int mmu_translate(MicroBlazeCPU *cpu, MicroBlazeMMULookup *lu,
+> -                           target_ulong vaddr, MMUAccessType rw, int mmu_idx);
+> +                           vaddr vaddr, MMUAccessType rw, int mmu_idx);
+>  uint32_t mmu_read(CPUMBState *env, bool ea, uint32_t rn);
+>  void mmu_write(CPUMBState *env, bool ea, uint32_t rn, uint32_t v);
+>  void mmu_init(MicroBlazeMMU *mmu);
+> diff --git a/target/microblaze/mmu.c b/target/microblaze/mmu.c
+> index 234006634e..eb7c683020 100644
+> --- a/target/microblaze/mmu.c
+> +++ b/target/microblaze/mmu.c
+> @@ -75,7 +75,7 @@ static void mmu_change_pid(CPUMBState *env, unsigned int newpid)
+>  
+>  /* rw - 0 = read, 1 = write, 2 = fetch.  */
+>  unsigned int mmu_translate(MicroBlazeCPU *cpu, MicroBlazeMMULookup *lu,
+> -                           target_ulong vaddr, MMUAccessType rw, int mmu_idx)
+> +                           vaddr vaddr, MMUAccessType rw, int mmu_idx)
+>  {
+>      MicroBlazeMMU *mmu = &cpu->env.mmu;
+>      unsigned int i, hit = 0;
+> -- 
+> 2.41.0
+> 
 
