@@ -2,74 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7067C87FE6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 14:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 669AF87FE82
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 14:19:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmZIx-0001dA-8V; Tue, 19 Mar 2024 09:14:59 -0400
+	id 1rmZMu-0003eQ-J0; Tue, 19 Mar 2024 09:19:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmZIm-0001Vx-HC
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 09:14:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmZIZ-0006ZM-6c
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 09:14:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710854074;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lVE5JViJ40Md1+mEJOs3jOjBeakDYIzuCSeE8EVZ9pk=;
- b=JoBKtU8ngFyvvLxMtI8UuRAbjDyEGfd5KsnffSIbcm2VqXjXD51MpHDyVleS0W6wrq2xRT
- HVAyorsIU289Wo5bXcUHOW5rn+KVfLjd1o0EB7uUR4nBcFXuYFKBRCltZatzReVAObqsuT
- rakrV6j/rHLW94ilQoQ28AhxpJMnn6o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-633-53eoeGSsMW-wE2nURZkkoA-1; Tue,
- 19 Mar 2024 09:14:32 -0400
-X-MC-Unique: 53eoeGSsMW-wE2nURZkkoA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C40228B6AA4
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 13:14:32 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.88])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9FE49492BD1;
- Tue, 19 Mar 2024 13:14:31 +0000 (UTC)
-Date: Tue, 19 Mar 2024 13:14:25 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/3 for 9.0] Revert "chardev/char-socket: Fix TLS io
- channels sending too much data to the backend"
-Message-ID: <ZfmPse9su6yGdfm9@redhat.com>
-References: <20240318182330.96738-1-berrange@redhat.com>
- <20240318182330.96738-3-berrange@redhat.com>
- <CAMxuvaz6_pRAaNX8zD-EGdTvhPhGcTEs8n+=tZOAYNLVAAc8hw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rmZMq-0003aL-Dg
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 09:19:00 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rmZMo-0007J3-0z
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 09:18:59 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-34173b6b985so1639304f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 06:18:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710854335; x=1711459135; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=9is3wRDqnKK9nkNr7GpZXnLeUKxzIUEZI5RDqBcsf54=;
+ b=hW9buH+99n4Bq/kjKD+FWYdQDTXpbosjtApRuE8hH4y7GbLqS8YAQxOSJ3R1QWmI6o
+ PTqOtNYDouOyIBmANdHLFXTMmVIrn9GpRwGgagaIpJRPey58hwpBzYT4tiCYmMe4ms6F
+ bQR+M7kJzlIGSndMehUvevFfyZmQdWJYNFD8n8NTeKXfMNtUYLr/JUhQJLPifSRxQ+8G
+ vUYpMC64062R3EPSYOQd5SJjnnZ8qSTDZFD3GuLqoZTr5yzJlytrJPPqDDbrgm7Yt174
+ 7YXICKy5/UtgrzfqDKSeR2+KNyhBfujW2jKA9exLK6RH7F/D4H2KMDYrH/VQ340eQ1cH
+ IVbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710854335; x=1711459135;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9is3wRDqnKK9nkNr7GpZXnLeUKxzIUEZI5RDqBcsf54=;
+ b=IF1XFW6JRWHLuqgUiC1lBZXQ1Qlg8h2Woe4h/E+7atspYiMr//qfn9x/KXjHWAIoDk
+ LSC8ulyU/f/g1BG6f3CfbndVvgYXXw9/LJjz3RxbTcufRv4KHR9V1/UFpJglzDx/pORp
+ KZjJ5VteDy3lfFHVc0n8ifoLy/JcGTb0ktGjkQsR3aXi8C2Is4kPerjJAW9yG5XNrYYF
+ rFGrKctiLxnLaJbeGaD2QAWvctgr+QDAagqkyu37r5o9UbSJDv5Qv0kjKvRj+9ZVuMw7
+ aWQsQjfcnyi/Q8Wys0jtsPFSMVGX2eOpJaN+MiJ3gsqq7BavDPz9KiIcFdgEeTblRu/q
+ Qu+Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXP+fJoj7AN71RbFbdFBnvxTYXc4Smv1pYf1/6k5EVsKpRKFDnIJ0ckbULx0NallNrMY2AvV6SIOlsMDPTjHmYaEOexSMQ=
+X-Gm-Message-State: AOJu0YxgexkYF+oWSK4siaeYIhonfbK+BoZ2N2jo8BoBZOGc0M4uuaqI
+ Yx3aS55Sx/al2dAkhXrCZm9tDgmfyDIg0N2jh8r3tse37SQ60EvLQtlidSk6oTw=
+X-Google-Smtp-Source: AGHT+IHD7Rvsa33O4s8jd+zIiPAxjM68sLT4mcH4dH+QP9rf9tTCRfLxUAKd4PidjZ3oBfenzAGOEA==
+X-Received: by 2002:a05:6000:124e:b0:33d:7afa:fb0b with SMTP id
+ j14-20020a056000124e00b0033d7afafb0bmr8761042wrx.15.1710854335434; 
+ Tue, 19 Mar 2024 06:18:55 -0700 (PDT)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ bo6-20020a056000068600b003418016b04csm3512135wrb.76.2024.03.19.06.18.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Mar 2024 06:18:55 -0700 (PDT)
+Message-ID: <aeeb7f81-1e43-4a89-bec3-faf047e4d53a@linaro.org>
+Date: Tue, 19 Mar 2024 17:18:52 +0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMxuvaz6_pRAaNX8zD-EGdTvhPhGcTEs8n+=tZOAYNLVAAc8hw@mail.gmail.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 05/22] plugins: Move function pointer in qemu_plugin_dyn_cb
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org
+References: <20240316015720.3661236-1-richard.henderson@linaro.org>
+ <20240316015720.3661236-6-richard.henderson@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240316015720.3661236-6-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,70 +93,103 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 18, 2024 at 11:09:23PM +0400, Marc-André Lureau wrote:
-> Hi
+On 3/16/24 05:57, Richard Henderson wrote:
+> The out-of-line function pointer is mutually exclusive
+> with inline expansion, so move it into the union.
+> Wrap the pointer in a structure named 'regular' to match
+> PLUGIN_CB_REGULAR.
 > 
-> On Mon, Mar 18, 2024 at 10:23 PM Daniel P. Berrangé <berrange@redhat.com> wrote:
-> >
-> > This commit results in unexpected termination of the TLS connection.
-> > When 'fd_can_read' returns 0, the code goes on to pass a zero length
-> > buffer to qio_channel_read. The TLS impl calls into gnutls_recv()
-> > with this zero length buffer, at which point GNUTLS returns an error
-> > GNUTLS_E_INVALID_REQUEST. This is treated as fatal by QEMU's TLS code
-> > resulting in the connection being torn down by the chardev.
-> >
-> > Simply skipping the qio_channel_read when the buffer length is zero
-> > is also not satisfactory, as it results in a high CPU burn busy loop
-> > massively slowing QEMU's functionality.
-> >
-> > The proper solution is to avoid tcp_chr_read being called at all
-> > unless the frontend is able to accept more data. This will be done
-> > in a followup commit.
-> >
-> > This reverts commit 1907f4d149c3589ade641423c6a33fd7598fa4d3.
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/qemu/plugin.h  | 4 +++-
+>   accel/tcg/plugin-gen.c | 4 ++--
+>   plugins/core.c         | 8 ++++----
+>   3 files changed, 9 insertions(+), 7 deletions(-)
 > 
-> Actually 462945cd22d2bcd233401ed3aa167d83a8e35b05 upstream.
+> diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+> index 12a96cea2a..143262dca8 100644
+> --- a/include/qemu/plugin.h
+> +++ b/include/qemu/plugin.h
+> @@ -84,13 +84,15 @@ enum plugin_dyn_cb_subtype {
+>    * instance of a callback to be called upon the execution of a particular TB.
+>    */
+>   struct qemu_plugin_dyn_cb {
+> -    union qemu_plugin_cb_sig f;
+>       void *userp;
+>       enum plugin_dyn_cb_subtype type;
+>       /* @rw applies to mem callbacks only (both regular and inline) */
+>       enum qemu_plugin_mem_rw rw;
+>       /* fields specific to each dyn_cb type go here */
+>       union {
+> +        struct {
+> +            union qemu_plugin_cb_sig f;
+> +        } regular;
+>           struct {
+>               qemu_plugin_u64 entry;
+>               enum qemu_plugin_op op;
 
-Opps, yes, will fix this before I send a pull.
+While we are cleaning this, maybe this could be only a union (moving rw 
+and userp to fields), and only type + union would be used.
+Even if we duplicate userp in regular, and mem_cb, it would be much more 
+readable.
+For instance, userp is never used by inline operations.
 
-> 
-> >
-> > Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> > ---
-> >  chardev/char-socket.c | 6 +++---
-> >  1 file changed, 3 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/chardev/char-socket.c b/chardev/char-socket.c
-> > index 2c4dffc0e6..812d7aa38a 100644
-> > --- a/chardev/char-socket.c
-> > +++ b/chardev/char-socket.c
-> > @@ -496,9 +496,9 @@ static gboolean tcp_chr_read(QIOChannel *chan, GIOCondition cond, void *opaque)
-> >          s->max_size <= 0) {
-> >          return TRUE;
-> >      }
-> > -    len = tcp_chr_read_poll(opaque);
-> > -    if (len > sizeof(buf)) {
-> > -        len = sizeof(buf);
-> > +    len = sizeof(buf);
-> > +    if (len > s->max_size) {
-> > +        len = s->max_size;
-> >      }
-> >      size = tcp_chr_recv(chr, (void *)buf, len);
-> >      if (size == 0 || (size == -1 && errno != EAGAIN)) {
-> > --
-> > 2.43.0
-> >
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+> diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+> index 8028786c7b..c56f104aee 100644
+> --- a/accel/tcg/plugin-gen.c
+> +++ b/accel/tcg/plugin-gen.c
+> @@ -431,7 +431,7 @@ static TCGOp *append_udata_cb(const struct qemu_plugin_dyn_cb *cb,
+>       }
+>   
+>       /* call */
+> -    op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+> +    op = copy_call(&begin_op, op, cb->regular.f.vcpu_udata, cb_idx);
+>   
+>       return op;
+>   }
+> @@ -479,7 +479,7 @@ static TCGOp *append_mem_cb(const struct qemu_plugin_dyn_cb *cb,
+>   
+>       if (type == PLUGIN_GEN_CB_MEM) {
+>           /* call */
+> -        op = copy_call(&begin_op, op, cb->f.vcpu_udata, cb_idx);
+> +        op = copy_call(&begin_op, op, cb->regular.f.vcpu_udata, cb_idx);
+>       }
+>   
+>       return op;
+> diff --git a/plugins/core.c b/plugins/core.c
+> index 4487cb7c48..837c373690 100644
+> --- a/plugins/core.c
+> +++ b/plugins/core.c
+> @@ -342,7 +342,7 @@ void plugin_register_dyn_cb__udata(GArray **arr,
+>   
+>       dyn_cb->userp = udata;
+>       /* Note flags are discarded as unused. */
+> -    dyn_cb->f.vcpu_udata = cb;
+> +    dyn_cb->regular.f.vcpu_udata = cb;
+>       dyn_cb->type = PLUGIN_CB_REGULAR;
+>   }
+>   
+> @@ -359,7 +359,7 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
+>       /* Note flags are discarded as unused. */
+>       dyn_cb->type = PLUGIN_CB_REGULAR;
+>       dyn_cb->rw = rw;
+> -    dyn_cb->f.generic = cb;
+> +    dyn_cb->regular.f.vcpu_mem = cb;
+>   }
+>   
+>   /*
+> @@ -511,8 +511,8 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
+>           }
+>           switch (cb->type) {
+>           case PLUGIN_CB_REGULAR:
+> -            cb->f.vcpu_mem(cpu->cpu_index, make_plugin_meminfo(oi, rw),
+> -                           vaddr, cb->userp);
+> +            cb->regular.f.vcpu_mem(cpu->cpu_index, make_plugin_meminfo(oi, rw),
+> +                                   vaddr, cb->userp);
+>               break;
+>           case PLUGIN_CB_INLINE:
+>               exec_inline_op(cb, cpu->cpu_index);
 
