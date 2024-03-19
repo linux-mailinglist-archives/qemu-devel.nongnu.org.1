@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8316F87FF40
+	by mail.lfdr.de (Postfix) with ESMTPS id 1172987FF3B
 	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rma19-0005cF-LI; Tue, 19 Mar 2024 10:00:39 -0400
+	id 1rma19-0005bY-F4; Tue, 19 Mar 2024 10:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rma0z-0005Z3-Ta
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:31 -0400
+ id 1rma12-0005Zr-90
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rma0x-00074N-UH
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:29 -0400
+ id 1rma10-00074n-Mx
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710856826;
+ s=mimecast20190719; t=1710856829;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0ZjpHyueZD3HJUScBn+nz3v4c9B3biTjEnBOkJZO1UU=;
- b=TNzHA8Yxr7KZtOPKxqIlvuorBgOsYzoKMYjyBFhi2psz+5XMzlIsCWqhZpskuZo9ecyfT5
- BAOXKv0xa0Yvugb+K+4y9OMcyb6W1IUq0NspTWJU8kkYGsJV6MsUcKgkqrTSFExIjHHQLU
- eJGZzFv7VVdf9bmcqjFWJk93oDaeBp8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wDLmt4dXsnil5+MSxsOmljxdtxv2E/Tbja4ppJhpbW0=;
+ b=Fgfbz6MoXJ+E2kMvME3sIyQG02b2O+Ey9XdgqzOYXYEMDVrc+nl0wws5lC66mfGGYE9+qV
+ Fz/NfWVx4xETeKKyaV/ViKQGZTOHt7OorYljbDZnS9EWBuMfgCN/46531bll4An1t6QuDq
+ COVPuK6qsnYSuTBr7rgVkdmc7pyEU6c=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670-9xDGkLeHNMi7uXuUubOeXg-1; Tue, 19 Mar 2024 10:00:25 -0400
-X-MC-Unique: 9xDGkLeHNMi7uXuUubOeXg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a469d3547c7so333834466b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:00:24 -0700 (PDT)
+ us-mta-102-UBd-x95_NN6nIPXz0UvNrg-1; Tue, 19 Mar 2024 10:00:27 -0400
+X-MC-Unique: UBd-x95_NN6nIPXz0UvNrg-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5689f41cf4dso2955689a12.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:00:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710856823; x=1711461623;
+ d=1e100.net; s=20230601; t=1710856825; x=1711461625;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0ZjpHyueZD3HJUScBn+nz3v4c9B3biTjEnBOkJZO1UU=;
- b=vechZBbDm871YKSYFUMKILKF0Q/SzEjBnUAzxVzKEB7GLPtUYI8suaD4Kw87WoWE+Y
- L8sd7b9gsTJPE339yxo7GNAliEFa4OFnYHNbrj8uePdVj9Ekuyn/AOZX7pP68zu5PQs9
- K0G+3ULR+z0BjLfQW7x8Y4X9qWGEVGrxqbZ+EnWBGsssrJUVRJA0NZK7Js/upUZOga7g
- pq0NLJCf5xGflH8OjMJr84GMzMPIh37gm89kqOdRvNIRDSIj2+bBPeouteqw6xx2Y6ja
- DdA0OSPVMBCEAFgIOQqWFn7B/tEaYTU378lLdTphZOUfOl/Ldna3+CDlNWBmy7Aogal/
- 0mzg==
-X-Gm-Message-State: AOJu0YycFgZInKErj23A+8qIQ0sCkNJ5Cse5WTHovSVw8+vMvr/O4k2U
- 2LlX8VebLMP5Nk3EdsZ6jLYxXY17BUmk1L28DivnetYNX/bnkHefzLYTu/9zfRmbLlO1ZoaZMPp
- bIZtYncNVOULIeEr427ixVQBFyZiETZbwh5o1ktEXXm3w28aPrjdjF+ynqrfeDoE4gycg0PNNm7
- qOHw5dHBgokp9g/gGCpaALlLGgV965gdobpVHr
-X-Received: by 2002:a17:906:e0d8:b0:a44:e5ed:3d5d with SMTP id
- gl24-20020a170906e0d800b00a44e5ed3d5dmr2695637ejb.9.1710856822708; 
- Tue, 19 Mar 2024 07:00:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEWKZnabW3xKHH0RHk6nVwWREPVQcP0UurZ8uOhStIhSrUn/3YIA7ZCKWp7ARyK+QTvxnyz4Q==
-X-Received: by 2002:a17:906:e0d8:b0:a44:e5ed:3d5d with SMTP id
- gl24-20020a170906e0d800b00a44e5ed3d5dmr2695605ejb.9.1710856822269; 
- Tue, 19 Mar 2024 07:00:22 -0700 (PDT)
+ bh=wDLmt4dXsnil5+MSxsOmljxdtxv2E/Tbja4ppJhpbW0=;
+ b=UOgmRrxZzTvGNMeRKCylpQVDqEQ8WjmWw7GrmTfO0Pc2Vf8p785F7VgpPV6iLGqZuR
+ mhALOn8xer9wxvsLcUcQRSlaMze3zyVhd/bIp4FU12cVX+MDmrJb/cOl7FQWnYaHCniT
+ +tksPz1rwG0HfMpsepsoPGFB2GiuWBOS0F+tKQhJv3mfCJxQIfFtGz4YBEfeavW4drbu
+ 2PAZbVpTlL8yTSnwPE0tTSpEwc8hREe02UI4HaCTf71Ynx2oGfwCDFvqo9N+b9sn0GVX
+ wrpwlF3aYYNIutnu25nNSSfwC5rjHVMjRy1CdXzz/XvSiU0rJCA6U/3KK2SbIGYEy4E8
+ 6+eQ==
+X-Gm-Message-State: AOJu0YyL7AcB5Bmvz374vVoEfQoC5JCu4vQqTUbcf/DDAat6eWG9sB0X
+ 8T7m+xgSRHCn/RoLBwkcHtVydIqZ0vvmZD2rU3lKlFYIIoXuw+dZBs62M1B7CemlsBvzzDasimS
+ 2XAx6QLN//bW8JBmcm9nJU4A+bG0IZiPBEt4k0ochw3xuOIM205vzWgQk5vlqphxQYP3CYjGrv6
+ vfwFQI1Rft2X8x8TONHNz7D+xE8QnOk7pEdx/W
+X-Received: by 2002:a05:6402:3884:b0:568:b610:b7f5 with SMTP id
+ fd4-20020a056402388400b00568b610b7f5mr2258210edb.35.1710856825434; 
+ Tue, 19 Mar 2024 07:00:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPSILqxQhc4GvfPEbGVMh0uWkLCws/PfaHqLo/9y9pQnv7wrtdh7HAWznQqTNhvjubZ3JvcQ==
+X-Received: by 2002:a05:6402:3884:b0:568:b610:b7f5 with SMTP id
+ fd4-20020a056402388400b00568b610b7f5mr2258193edb.35.1710856825161; 
+ Tue, 19 Mar 2024 07:00:25 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- pv27-20020a170907209b00b00a4576dd5a8csm6098646ejb.201.2024.03.19.07.00.20
+ c12-20020a0564021f8c00b005682f8b62a6sm5797193edc.97.2024.03.19.07.00.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 07:00:20 -0700 (PDT)
+ Tue, 19 Mar 2024 07:00:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com
-Subject: [PATCH 6/7] target/i386: Implement mc->kvm_type() to get VM type
-Date: Tue, 19 Mar 2024 14:59:59 +0100
-Message-ID: <20240319140000.1014247-7-pbonzini@redhat.com>
+Subject: [PATCH 7/7] target/i386: SEV: use KVM_SEV_INIT2 if possible
+Date: Tue, 19 Mar 2024 15:00:00 +0100
+Message-ID: <20240319140000.1014247-8-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240319140000.1014247-1-pbonzini@redhat.com>
 References: <20240319140000.1014247-1-pbonzini@redhat.com>
@@ -102,177 +102,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+Implement support for the KVM_X86_SEV_VM and KVM_X86_SEV_ES_VM virtual
+machine types, and the KVM_SEV_INIT2 function of KVM_MEMORY_ENCRYPT_OP.
 
-KVM is introducing a new API to create confidential guests, which
-will be used by TDX and SEV-SNP but is also available for SEV and
-SEV-ES.  The API uses the VM type argument to KVM_CREATE_VM to
-identify which confidential computing technology to use.
+These replace the KVM_SEV_INIT and KVM_SEV_ES_INIT functions, and have
+several advantages:
 
-Since there are no other expected uses of VM types, delegate
-mc->kvm_type() for x86 boards to the confidential-guest-support
-object pointed to by ms->cgs.
+- sharing the initialization sequence with SEV-SNP and TDX
 
-For example, if a sev-guest object is specified to confidential-guest-support,
-like,
+- allowing arguments including the set of desired VMSA features
 
-  qemu -machine ...,confidential-guest-support=sev0 \
-       -object sev-guest,id=sev0,...
+- protection against invalid use of KVM_GET/SET_* ioctls for guests
+  with encrypted state
 
-it will check if a VM type KVM_X86_SEV_VM or KVM_X86_SEV_ES_VM
-is supported, and if so use them together with the KVM_SEV_INIT2
-function of the KVM_MEMORY_ENCRYPT_OP ioctl. If not, it will fall back to
-KVM_SEV_INIT and KVM_SEV_ES_INIT.
+If the KVM_X86_SEV_VM and KVM_X86_SEV_ES_VM types are not supported,
+fall back to KVM_SEV_INIT and KVM_SEV_ES_INIT (which use the
+default x86 VM type).
 
-This is a preparatory work towards TDX and SEV-SNP support, but it
-will also enable support for VMSA features such as DebugSwap, which
-are only available via KVM_SEV_INIT2.
-
-Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/confidential-guest.h | 19 ++++++++++++++
- target/i386/kvm/kvm_i386.h       |  2 ++
- hw/i386/x86.c                    |  6 +++++
- target/i386/kvm/kvm.c            | 44 ++++++++++++++++++++++++++++++++
- 4 files changed, 71 insertions(+)
+ target/i386/sev.c | 41 +++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/confidential-guest.h b/target/i386/confidential-guest.h
-index ca12d5a8fba..532e172a60b 100644
---- a/target/i386/confidential-guest.h
-+++ b/target/i386/confidential-guest.h
-@@ -36,5 +36,24 @@ struct X86ConfidentialGuest {
- struct X86ConfidentialGuestClass {
-     /* <private> */
-     ConfidentialGuestSupportClass parent;
-+
-+    /* <public> */
-+    int (*kvm_type)(X86ConfidentialGuest *cg);
- };
-+
-+/**
-+ * x86_confidential_guest_kvm_type:
-+ *
-+ * Calls #X86ConfidentialGuestClass.unplug callback of @plug_handler.
-+ */
-+static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
-+{
-+    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
-+
-+    if (klass->kvm_type) {
-+        return klass->kvm_type(cg);
-+    } else {
-+        return 0;
-+    }
-+}
- #endif
-diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-index 30fedcffea3..02168122787 100644
---- a/target/i386/kvm/kvm_i386.h
-+++ b/target/i386/kvm/kvm_i386.h
-@@ -37,6 +37,7 @@ bool kvm_hv_vpindex_settable(void);
- bool kvm_enable_sgx_provisioning(KVMState *s);
- bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp);
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index ebe36d4c10c..9dab4060b84 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -26,6 +26,7 @@
+ #include "qemu/error-report.h"
+ #include "crypto/hash.h"
+ #include "sysemu/kvm.h"
++#include "kvm/kvm_i386.h"
+ #include "sev.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
+@@ -56,6 +57,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(SevGuestState, SEV_GUEST)
+ struct SevGuestState {
+     X86ConfidentialGuest parent_obj;
  
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type);
- void kvm_arch_reset_vcpu(X86CPU *cs);
- void kvm_arch_after_reset_vcpu(X86CPU *cpu);
- void kvm_arch_do_init_vcpu(X86CPU *cs);
-@@ -49,6 +50,7 @@ void kvm_request_xsave_components(X86CPU *cpu, uint64_t mask);
- 
- #ifdef CONFIG_KVM
- 
-+bool kvm_is_vm_type_supported(int type);
- bool kvm_has_adjust_clock_stable(void);
- bool kvm_has_exception_payload(void);
- void kvm_synchronize_all_tsc(void);
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index ffbda48917f..2d4b148cd25 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1389,6 +1389,11 @@ static void machine_set_sgx_epc(Object *obj, Visitor *v, const char *name,
-     qapi_free_SgxEPCList(list);
++    int kvm_type;
++
+     /* configuration parameters */
+     char *sev_device;
+     uint32_t policy;
+@@ -850,6 +853,26 @@ sev_vm_state_change(void *opaque, bool running, RunState state)
+     }
  }
  
-+static int x86_kvm_type(MachineState *ms, const char *vm_type)
++static int sev_kvm_type(X86ConfidentialGuest *cg)
 +{
-+    return kvm_enabled() ? kvm_get_vm_type(ms, vm_type) : 0;
++    SevGuestState *sev = SEV_GUEST(cg);
++    int kvm_type;
++
++    if (sev->kvm_type != -1) {
++        goto out;
++    }
++
++    kvm_type = (sev->policy & SEV_POLICY_ES) ? KVM_X86_SEV_ES_VM : KVM_X86_SEV_VM;
++    if (kvm_is_vm_type_supported(kvm_type)) {
++        sev->kvm_type = kvm_type;
++    } else {
++        sev->kvm_type = KVM_X86_DEFAULT_VM;
++    }
++
++out:
++    return sev->kvm_type;
 +}
 +
- static void x86_machine_initfn(Object *obj)
+ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
-     X86MachineState *x86ms = X86_MACHINE(obj);
-@@ -1413,6 +1418,7 @@ static void x86_machine_class_init(ObjectClass *oc, void *data)
-     mc->cpu_index_to_instance_props = x86_cpu_index_to_props;
-     mc->get_default_cpu_node_id = x86_get_default_cpu_node_id;
-     mc->possible_cpu_arch_ids = x86_possible_cpu_arch_ids;
-+    mc->kvm_type = x86_kvm_type;
-     x86mc->save_tsc_khz = true;
-     x86mc->fwcfg_dma_enabled = true;
-     nc->nmi_monitor_handler = x86_nmi;
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 0ec69109a2b..e109648f260 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -31,6 +31,7 @@
- #include "sysemu/kvm_int.h"
- #include "sysemu/runstate.h"
- #include "kvm_i386.h"
-+#include "../confidential-guest.h"
- #include "sev.h"
- #include "xen-emu.h"
- #include "hyperv.h"
-@@ -161,6 +162,49 @@ static KVMMSRHandlers msr_handlers[KVM_MSR_FILTER_MAX_RANGES];
- static RateLimit bus_lock_ratelimit_ctrl;
- static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
+     SevGuestState *sev = SEV_GUEST(cgs);
+@@ -929,13 +952,19 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+                          __func__);
+             goto err;
+         }
+-        cmd = KVM_SEV_ES_INIT;
+-    } else {
+-        cmd = KVM_SEV_INIT;
+     }
  
-+static const char *vm_type_name[] = {
-+    [KVM_X86_DEFAULT_VM] = "default",
-+};
+     trace_kvm_sev_init();
+-    ret = sev_ioctl(sev->sev_fd, cmd, NULL, &fw_error);
++    if (sev_kvm_type(X86_CONFIDENTIAL_GUEST(sev)) == KVM_X86_DEFAULT_VM) {
++        cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
 +
-+bool kvm_is_vm_type_supported(int type)
-+{
-+    uint32_t machine_types;
++        ret = sev_ioctl(sev->sev_fd, cmd, NULL, &fw_error);
++    } else {
++        struct kvm_sev_init args = { 0 };
 +
-+    /*
-+     * old KVM doesn't support KVM_CAP_VM_TYPES but KVM_X86_DEFAULT_VM
-+     * is always supported
-+     */
-+    if (type == KVM_X86_DEFAULT_VM) {
-+        return true;
++        ret = sev_ioctl(sev->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
 +    }
 +
-+    machine_types = kvm_check_extension(KVM_STATE(current_machine->accelerator),
-+                                        KVM_CAP_VM_TYPES);
-+    return !!(machine_types & BIT(type));
-+}
-+
-+int kvm_get_vm_type(MachineState *ms, const char *vm_type)
-+{
-+    int kvm_type = KVM_X86_DEFAULT_VM;
-+
-+    if (ms->cgs) {
-+        if (!object_dynamic_cast(OBJECT(ms->cgs), TYPE_X86_CONFIDENTIAL_GUEST)) {
-+            error_report("configuration type %s not supported for x86 guests",
-+                         object_get_typename(OBJECT(ms->cgs)));
-+            exit(1);
-+        }
-+        kvm_type = x86_confidential_guest_kvm_type(
-+            X86_CONFIDENTIAL_GUEST(ms->cgs));
-+    }
-+
-+    if (!kvm_is_vm_type_supported(kvm_type)) {
-+        error_report("vm-type %s not supported by KVM", vm_type_name[kvm_type]);
-+        exit(1);
-+    }
-+
-+    return kvm_type;
-+}
-+
- bool kvm_has_smm(void)
+     if (ret) {
+         error_setg(errp, "%s: failed to initialize ret=%d fw_error=%d '%s'",
+                    __func__, ret, fw_error, fw_error_to_str(fw_error));
+@@ -1327,8 +1356,10 @@ static void
+ sev_guest_class_init(ObjectClass *oc, void *data)
  {
-     return kvm_vm_check_extension(kvm_state, KVM_CAP_X86_SMM);
+     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
+ 
+     klass->kvm_init = sev_kvm_init;
++    x86_klass->kvm_type = sev_kvm_type;
+ 
+     object_class_property_add_str(oc, "sev-device",
+                                   sev_guest_get_sev_device,
+@@ -1357,6 +1388,8 @@ sev_guest_instance_init(Object *obj)
+ {
+     SevGuestState *sev = SEV_GUEST(obj);
+ 
++    sev->kvm_type = -1;
++
+     sev->sev_device = g_strdup(DEFAULT_SEV_DEVICE);
+     sev->policy = DEFAULT_GUEST_POLICY;
+     object_property_add_uint32_ptr(obj, "policy", &sev->policy,
 -- 
 2.44.0
 
