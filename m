@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5921587F756
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B320D87F755
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:31:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmSzS-0007BG-73; Tue, 19 Mar 2024 02:30:26 -0400
+	id 1rmSzU-0007Dg-8h; Tue, 19 Mar 2024 02:30:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSzL-0006zj-Q4
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:30:21 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSzO-00078V-Gi
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:30:23 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSz9-0005jb-NG
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:30:19 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-41462295004so4624455e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:30:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSzM-0005vi-SE
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:30:22 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41464711dc8so2554455e9.1
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:30:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710829804; x=1711434604; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710829819; x=1711434619; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=NEjIFZVV3ii3gf3KrdfEzBc3OBydYvxiLMF1DGBiN20=;
- b=vY45Qe8ycrOMHkwjEXa4POD0++0GeaTnIqppT9w4gURrB3VSBSywg/l7dnccdh8J5n
- Lxf/3SkWndJCfuAxkUDZph6J2DkqCW13i4NwgBkckggL+mrFlUV/St5F/lmUwEt/UWGx
- WaHJgln/v+QGMcENOGBytOik7QXxMBt5d9ef1JHXa5nnD+cTPUNYcWuJBpPsyJgxvk5z
- /9M+4cSJF0+w1m10VnTwywjXsPAuTLiMbaO1+XRkVBx+KpVBDykpPmt0HxPymrr0Jttc
- iuv+jmZhGCSyD/E61HrNl8lfJ6rVCHPsN5sfAeVDknClmDr/zsGo9qwul5eRbxz4L3ej
- VdjA==
+ bh=95a8RmWWJhCHbGXfxMOgwAw3z/gLUgZ6lpWKi+maq5I=;
+ b=ROHaw/AK/YMVYa6zllnu9t630s05SrG56yx5JkJOYcIoIvXDnyNvw4DZwjxTpp+GDk
+ MdgL7Sa8UIZkgE/PdZlyQGDqgLVm0Cj6Tib+zEEXWPd/+z79KxKL+08daAdm3oCR6zv7
+ VwBvAx4RvFPqtij9nzJEjS1ruw0ostC5OZfa8pOYmM5cyHvAJxaol94aczLmVbVGDIn1
+ pTNnew7bF3tmXy4DUqo7G3zTrNPqAynXo0wuyUlWDT8jP12Q/UMIVi+HyG2NWw8YpQbJ
+ N6T7zB1wtuOtkzYLAA1GvNxvI+tsDXO2zFiCJHbHInyC7efMRkHXx5fPHm5G60izLHx9
+ 0tag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710829804; x=1711434604;
+ d=1e100.net; s=20230601; t=1710829819; x=1711434619;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NEjIFZVV3ii3gf3KrdfEzBc3OBydYvxiLMF1DGBiN20=;
- b=ID//joZip1GP87gZy3kq7QqZUTHkwNyWhubf1Ua2AMjEhRUZoxHdxc2gS60GPoach3
- VSE2XKq/X25vj5P5XcVBkiYYxzc2rBY1iBkmCGbJnohFakSiOyCPtTZ7uaHVwrejQpqQ
- GNq5hUpkCyr29yKwL2WuGZd3pLwwhdYX3xIJuxM1WOU0NnKRHCaPuY/r8OHPJW5rI+35
- V750hMST9hyE6S2iR0W1gt9uWSb+ZbMPxYbSjIrRK+PgE11UQkxN5CaF3QaUial6E/JC
- A9WV525GTelPdCVgZ9Eep0IcVp9NsR54ff8Smik1W51WdfiVQ9Qr2ano6Rx8BmFp+cH4
- rq7g==
-X-Gm-Message-State: AOJu0YyAdpBd3rijSu8t7poQb3/Bs9wrjGP9A+mKX4JHRxEf6VaBRjeb
- 3je2im6qQqKvOQ7V3U2nI3kPRWN3vuHn8NJpSxIKIqGUwYPpfhKdB7cn5SvUEEua5cpSh3fzU6d
- u
-X-Google-Smtp-Source: AGHT+IEmOS/8ngU7S5R9IZKSkRMbWQtAWf1xNM20onldg5oD9PShbaJNl0zVMFQlHX9r5v5PJfU6Ww==
-X-Received: by 2002:a05:600c:350f:b0:414:6391:6afb with SMTP id
- h15-20020a05600c350f00b0041463916afbmr662601wmq.10.1710829804064; 
- Mon, 18 Mar 2024 23:30:04 -0700 (PDT)
+ bh=95a8RmWWJhCHbGXfxMOgwAw3z/gLUgZ6lpWKi+maq5I=;
+ b=dS5k6btgd3NM1rjQOWJiDVmTSTXT0cTzNknqa+NM1+lEx8m3lo/p4+2JK9D/PEw8if
+ L9aARhUzGQyxwaukQvkXwkHmWG0XQo/xHmRBcinsEKudeRBcyldRrqxKakbeKQjbLmTq
+ Cc04mZf/aN9UuvjXnBkvRgprvVzih3AOwOyG3JfNbB2fZzNwaahtQviMUSxeCz8rj8Ze
+ 6F9iKAx5evDSaB1Y2B7C4z0sD8QFchwuGb8Kw5ojbHIwUk/1JOVrLD3Hrl07QA4g7iNB
+ kSuo7eF3xVfdtmJH4B8NLXel669+eNv9BVX8OzQ6/Bko/RR73BQneZZvhQQsD6Hh0m7i
+ mYnw==
+X-Gm-Message-State: AOJu0YwOdFKS1zJIqsW/ZkXKZVSvA4RV8a3HPjVM5rdOfDSVVkJCN6Jr
+ ZRoezA54Zn7Nh/fBwonfXD/V/f0vWegUVa3+NMJJogysUUWk48IYsyNsiNYtTOicB3wLSrBKaZt
+ S
+X-Google-Smtp-Source: AGHT+IHWeiFwaub1Mb+nd516nQYCvTwv+I2oSE7rFB+kmF5IbmXK+0hEcUBXDLL0P9Lj0caqw1zzLA==
+X-Received: by 2002:a05:600c:43d4:b0:413:f1c0:49a8 with SMTP id
+ f20-20020a05600c43d400b00413f1c049a8mr1110336wmn.9.1710829818948; 
+ Mon, 18 Mar 2024 23:30:18 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- v15-20020a05600c470f00b004128fa77216sm20446328wmo.1.2024.03.18.23.30.02
+ v15-20020a05600c470f00b004128fa77216sm20446328wmo.1.2024.03.18.23.30.17
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 23:30:03 -0700 (PDT)
-Message-ID: <5f94eca5-8606-43d4-8599-89316d951e7e@linaro.org>
-Date: Tue, 19 Mar 2024 07:30:02 +0100
+ Mon, 18 Mar 2024 23:30:18 -0700 (PDT)
+Message-ID: <76beabbc-e4e2-419d-b647-7d6aa8983c6c@linaro.org>
+Date: Tue, 19 Mar 2024 07:30:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/ppc/mmu-radix64: Use correct string format in
- walk_tree()
+Subject: Re: [PATCH] target/tricore/helper: Use correct string format in
+ cpu_tlb_fill()
 Content-Language: en-US
 To: qemu-devel@nongnu.org, Anton Johansson <anjo@rev.ng>
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Leandro Lupori <leandro.lupori@eldorado.org.br>
-References: <20240319051021.6752-1-philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+References: <20240319051413.6956-1-philmd@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240319051021.6752-1-philmd@linaro.org>
+In-Reply-To: <20240319051413.6956-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,41 +96,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 +Anton
 
-On 19/3/24 06:10, Philippe Mathieu-Daudé wrote:
-> 'mask', 'nlb' and 'base_addr' are all uin64_t types.
-> Use the corresponding PRIx64 format.
+On 19/3/24 06:14, Philippe Mathieu-Daudé wrote:
+> 'address' got converted from target_ulong to vaddr in commit
+> 68d6eee73c ("target/tricore: Convert to CPUClass::tlb_fill").
+> Use the corresponding format string to avoid casting.
 > 
-> Fixes: d2066bc50d ("target/ppc: Check page dir/table base alignment")
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   target/ppc/mmu-radix64.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+>   target/tricore/helper.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-> index 5823e039e6..690dff7a49 100644
-> --- a/target/ppc/mmu-radix64.c
-> +++ b/target/ppc/mmu-radix64.c
-> @@ -300,8 +300,8 @@ static int ppc_radix64_next_level(AddressSpace *as, vaddr eaddr,
+> diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+> index 6d9e80cc0c..76bd226370 100644
+> --- a/target/tricore/helper.c
+> +++ b/target/tricore/helper.c
+> @@ -76,9 +76,9 @@ bool tricore_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+>       ret = get_physical_address(env, &physical, &prot,
+>                                  address, rw, mmu_idx);
 >   
->           if (nlb & mask) {
->               qemu_log_mask(LOG_GUEST_ERROR,
-> -                "%s: misaligned page dir/table base: 0x"TARGET_FMT_lx
-> -                " page dir size: 0x"TARGET_FMT_lx"\n",
-> +                "%s: misaligned page dir/table base: 0x%" PRIx64
-> +                " page dir size: 0x%" PRIx64 "\n",
->                   __func__, nlb, mask + 1);
->               nlb &= ~mask;
->           }
-> @@ -324,8 +324,8 @@ static int ppc_radix64_walk_tree(AddressSpace *as, vaddr eaddr,
+> -    qemu_log_mask(CPU_LOG_MMU, "%s address=" TARGET_FMT_lx " ret %d physical "
+> +    qemu_log_mask(CPU_LOG_MMU, "%s address=0x%" VADDR_PRIx " ret %d physical "
+>                     HWADDR_FMT_plx " prot %d\n",
+> -                  __func__, (target_ulong)address, ret, physical, prot);
+> +                  __func__, address, ret, physical, prot);
 >   
->       if (base_addr & mask) {
->           qemu_log_mask(LOG_GUEST_ERROR,
-> -            "%s: misaligned page dir base: 0x"TARGET_FMT_lx
-> -            " page dir size: 0x"TARGET_FMT_lx"\n",
-> +            "%s: misaligned page dir base: 0x%" PRIx64
-> +            " page dir size: 0x%" PRIx64 "\n",
->               __func__, base_addr, mask + 1);
->           base_addr &= ~mask;
->       }
+>       if (ret == TLBRET_MATCH) {
+>           tlb_set_page(cs, address & TARGET_PAGE_MASK,
 
 
