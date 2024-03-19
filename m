@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129B887FB68
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 11:02:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E16987FBB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 11:24:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmWH7-00028L-4z; Tue, 19 Mar 2024 06:00:53 -0400
+	id 1rmWd5-00070q-To; Tue, 19 Mar 2024 06:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmWH3-00024T-TI
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 06:00:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rmWH2-0003Oo-CV
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 06:00:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710842447;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=vxU9TAxJqArYd1ToK6WlrtMRtJVrxJsqlXh6eoxj84E=;
- b=V2YRUmvd/bl47GqIQh1+JqnAqX10W1I9oNGS/oMdDr7gIAgU+GEemsVCigTFgCoRXMRcQU
- 26UkRjd0SMn7F9p9Q0jplaRiEf/WunMGK0xN6p4ZLc1vj575fD6MpN8pdDr0EWI/k33Fg1
- 7CHwmJ9q9rkm/BcD8AKiUWcJNbgPUy0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-391-z9x40SIxPQOBV8wehQ4vkQ-1; Tue,
- 19 Mar 2024 06:00:43 -0400
-X-MC-Unique: z9x40SIxPQOBV8wehQ4vkQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23BDC1C041A1;
- Tue, 19 Mar 2024 10:00:43 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.166])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B9661C1576F;
- Tue, 19 Mar 2024 10:00:41 +0000 (UTC)
-Date: Tue, 19 Mar 2024 11:00:36 +0100
-From: Kevin Wolf <kwolf@redhat.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- qemu-block@nongnu.org, sgarzare@redhat.com, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org
-Subject: Re: [PATCH for-9.0 v3] vdpa-dev: Fix initialisation order to restore
- VDUSE compatibility
-Message-ID: <ZfliRJ-7ueG0_OlJ@redhat.com>
-References: <20240315155949.86066-1-kwolf@redhat.com>
- <CACGkMEvuu4rkgZr7sBFwXztZLHdamBKML++6cvA+GDKyGDGibA@mail.gmail.com>
- <20240318050212-mutt-send-email-mst@kernel.org>
- <CAJaqyWc5_T=c+i0EvoYJ4Ly9XOaRBLvUE8w0n6duhm-b2Si0FA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmWd3-00070e-GM
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 06:23:33 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmWd1-0007I4-RM
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 06:23:33 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-56b85146589so2141055a12.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 03:23:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710843810; x=1711448610; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=bPmHxYAXJtSzwlMtLfrxRM+9nElh6nAnY6hVIKy1Xdc=;
+ b=ewRdZ3BkQreQ8m0AUS0dZ0d59W/dvLkaWk0IYKvSPfC+XtvM9GYkc3py3mG/FyWPR0
+ xnpZ2XJ7FP44IVy6ESB3Q6KcbL88hPFsO6ra71EPWkmfpijyH1jjMzHlht4UAZq9LjSJ
+ fRgTg8yRnonA5lJkuzKS8lbw7aeesvV0PdPLl7zhTEIjy8Z5YOcyxmjoar92xSwPN9E/
+ SyDnCu8h6D/mzWbJHepIXd2E8DzNxDPfFweDoWbNJ809BPdefpxjxR7R7/4pxXzIOuOG
+ psCZDCGqubNNsPab81wfD4VKlFi4/jAlKKDTLFMUubdvTM6q9mD6q39DoErqsY60Dk1X
+ jTrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710843810; x=1711448610;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bPmHxYAXJtSzwlMtLfrxRM+9nElh6nAnY6hVIKy1Xdc=;
+ b=Annfmo5EDhIjm/jB8jFYsn0NnoKs5c+/B9iPBJBy8cJvtM6RLSPVcFsPHzU/IoJSAA
+ Rtd9UzFPc8MdEyciPwA8GKaGU0O/bJfcpy8Kr7wGWbXSIhFHES6ITWpx5S+nYps9HgNC
+ HgpmHsYtH1XZ3o//wvdk8xuHsWhOi2rPHN0nohrFn7xWx2DeqmIi35FSvhwRprBRZJ1P
+ Rxb8oX7KHxpgWV5+9YsfwTgdGmAaXCoXzmldZvMiPjjxYR+V1Lh5wv26HhxcV46l/pUV
+ My3FQUSAs64nTcyMjeCxYi6wf7bSyESoJmoNF3lhjT84VAlr6TOD7LjW+PHhBDLZRFQw
+ QIpw==
+X-Gm-Message-State: AOJu0YzYj8vglLNovH9DCUm15ZLxUnRC3dfngHFEQ2zUDbx1zoWw2CX9
+ CJsrenRAZ0OPTNVS4D0fJpNnrMOIxx3wk8mGtNKnin4Hj2LGTP7+oZzR0HrpX8zpyxQGTHL6ofK
+ HGFlT/M4ODe1w7U46OWaB5A8FR8qP7jpg6CzlZw==
+X-Google-Smtp-Source: AGHT+IGsGXQxZMzX1ICa0ArgJ1330Ldp4w9P0dpE3GHY2C0RsjfddcbsVlweyoNpuUT9/pM4yHT1y7rggExvZskEKoA=
+X-Received: by 2002:a50:a6d9:0:b0:568:aced:e5a0 with SMTP id
+ f25-20020a50a6d9000000b00568acede5a0mr2125864edc.14.1710843809730; Tue, 19
+ Mar 2024 03:23:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJaqyWc5_T=c+i0EvoYJ4Ly9XOaRBLvUE8w0n6duhm-b2Si0FA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20240317205803.361163-1-peterx@redhat.com>
+In-Reply-To: <20240317205803.361163-1-peterx@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 19 Mar 2024 10:23:18 +0000
+Message-ID: <CAFEAcA-Bzvj-x1nqhN4N6iU2oSjgJw0Hiy-wM8zndh_XXqihiQ@mail.gmail.com>
+Subject: Re: [PULL 00/10] Migration 20240317 patches
+To: peterx@redhat.com
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>, 
+ Prasad Pandit <ppandit@redhat.com>, David Hildenbrand <david@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,99 +87,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 18.03.2024 um 20:27 hat Eugenio Perez Martin geschrieben:
-> On Mon, Mar 18, 2024 at 10:02 AM Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > On Mon, Mar 18, 2024 at 12:31:26PM +0800, Jason Wang wrote:
-> > > On Fri, Mar 15, 2024 at 11:59 PM Kevin Wolf <kwolf@redhat.com> wrote:
-> > > >
-> > > > VDUSE requires that virtqueues are first enabled before the DRIVER_OK
-> > > > status flag is set; with the current API of the kernel module, it is
-> > > > impossible to enable the opposite order in our block export code because
-> > > > userspace is not notified when a virtqueue is enabled.
-> > > >
-> > > > This requirement also mathces the normal initialisation order as done by
-> > > > the generic vhost code in QEMU. However, commit 6c482547 accidentally
-> > > > changed the order for vdpa-dev and broke access to VDUSE devices with
-> > > > this.
-> > > >
-> > > > This changes vdpa-dev to use the normal order again and use the standard
-> > > > vhost callback .vhost_set_vring_enable for this. VDUSE devices can be
-> > > > used with vdpa-dev again after this fix.
-> > > >
-> > > > vhost_net intentionally avoided enabling the vrings for vdpa and does
-> > > > this manually later while it does enable them for other vhost backends.
-> > > > Reflect this in the vhost_net code and return early for vdpa, so that
-> > > > the behaviour doesn't change for this device.
-> > > >
-> > > > Cc: qemu-stable@nongnu.org
-> > > > Fixes: 6c4825476a4351530bcac17abab72295b75ffe98
-> > > > Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-> > > > ---
-> > > > v2:
-> > > > - Actually make use of the @enable parameter
-> > > > - Change vhost_net to preserve the current behaviour
-> > > >
-> > > > v3:
-> > > > - Updated trace point [Stefano]
-> > > > - Fixed typo in comment [Stefano]
-> > > >
-> > > >  hw/net/vhost_net.c     | 10 ++++++++++
-> > > >  hw/virtio/vdpa-dev.c   |  5 +----
-> > > >  hw/virtio/vhost-vdpa.c | 29 ++++++++++++++++++++++++++---
-> > > >  hw/virtio/vhost.c      |  8 +++++++-
-> > > >  hw/virtio/trace-events |  2 +-
-> > > >  5 files changed, 45 insertions(+), 9 deletions(-)
-> > > >
-> > > > diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-> > > > index e8e1661646..fd1a93701a 100644
-> > > > --- a/hw/net/vhost_net.c
-> > > > +++ b/hw/net/vhost_net.c
-> > > > @@ -541,6 +541,16 @@ int vhost_set_vring_enable(NetClientState *nc, int enable)
-> > > >      VHostNetState *net = get_vhost_net(nc);
-> > > >      const VhostOps *vhost_ops = net->dev.vhost_ops;
-> > > >
-> > > > +    /*
-> > > > +     * vhost-vdpa network devices need to enable dataplane virtqueues after
-> > > > +     * DRIVER_OK, so they can recover device state before starting dataplane.
-> > > > +     * Because of that, we don't enable virtqueues here and leave it to
-> > > > +     * net/vhost-vdpa.c.
-> > > > +     */
-> > > > +    if (nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA) {
-> > > > +        return 0;
-> > > > +    }
-> > >
-> > > I think we need some inputs from Eugenio, this is only needed for
-> > > shadow virtqueue during live migration but not other cases.
-> > >
-> > > Thanks
-> >
-> >
-> > Yes I think we had a backend flag for this, right? Eugenio can you
-> > comment please?
-> >
-> 
-> We have the VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK backend flag,
-> right. If the backend does not offer it, it is better to enable all
-> the queues here and add a migration blocker in net/vhost-vdpa.c.
-> 
-> So the check should be:
-> nc->info->type == VHOST_VDPA && (backend_features &
-> VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK).
-> 
-> I can manage to add the migration blocker on top of this patch.
+On Sun, 17 Mar 2024 at 20:58, <peterx@redhat.com> wrote:
+>
+> From: Peter Xu <peterx@redhat.com>
+>
+> The following changes since commit 35ac6831d98e18e2c78c85c93e3a6ca1f1ae3e58:
+>
+>   Merge tag 'net-pull-request' of https://github.com/jasowang/qemu into staging (2024-03-12 13:42:57 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/peterx/qemu.git tags/migration-20240317-pull-request
+>
+> for you to fetch changes up to 9adfb308c1513562d6acec02aa780c5ef9b0193d:
+>
+>   migration/multifd: Duplicate the fd for the outgoing_args (2024-03-15 11:26:33 -0400)
+>
+> ----------------------------------------------------------------
+> Migration pull for 9.0-rc0
+>
+> - Nicholas/Phil's fix on migration corruption / inconsistent for tcg
+> - Cedric's fix on block migration over n_sectors==0
+> - Steve's CPR reboot documentation page
+> - Fabiano's misc fixes on mapped-ram (IOC leak, dup() errors, fd checks, fd
+>   use race, etc.)
 
-Note that my patch preserves the current behaviour for vhost_net. The
-callback wasn't implemented for vdpa so far, so we never called anything
-even if the flag wasn't set. This patch adds an implementation for the
-callback, so we have to skip it here to have everything in vhost_net
-work as before - which is what the condition as written does.
 
-If we add a check for the flag now (I don't know if that's correct or
-not), that would be a second, unrelated change of behaviour in the same
-patch. So if it's necessary, that's a preexisting problem and I'd argue
-it doesn't belong in this patch, but should be done separately.
+Applied, thanks.
 
-Kevin
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
+-- PMM
 
