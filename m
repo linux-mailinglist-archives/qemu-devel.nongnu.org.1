@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD9D87FF42
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:02:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6912D87FF3D
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:02:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rma12-0005Ya-5T; Tue, 19 Mar 2024 10:00:32 -0400
+	id 1rma17-0005bC-7k; Tue, 19 Mar 2024 10:00:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rma0g-0005Wz-Ia
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:10 -0400
+ id 1rma0k-0005XN-VY
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rma0e-00072j-SH
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:10 -0400
+ id 1rma0j-000731-FW
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:00:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710856807;
+ s=mimecast20190719; t=1710856811;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0hwkQPmRbUVgGdEZ7kTUHbl5qvn1KLyjDLH9eX7JDOM=;
- b=WBn4L/wmyKqPWC4o/cXdoECxJNZcHjgy0/ZdF3x3qYgntVRNgfPMy2RZwTJs4veVoaIMvD
- itEdtm6xn02iWRfnDwVP9sdMsjHnSew4XvmXRWKoNqkOtv93aYHaplRzKtzUS5t6MbvdM1
- YehKVf+foAb1sUsnVItYZVFGtMVZCE8=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pNplvHuiyIzsoOjFcx52HHJTNXwI0XlPnRO8RYJif78=;
+ b=NlcZ4S1kDTRrT+ftnY6X70An5LLLjhDWlVKj3RAlXZFyfUjRfDfowESrGQv3pm6EigJiPt
+ mJs1ADsgljIWKBhJhIPnW/LEqDXHLqKHEQZCqBZM7A3cM53VRoqnJ3ml7Wsu0wmg2is/fY
+ KB55Vwd3VcQ+z0CRt6EThPfAate+ZIw=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-sqAQQlhIPcqw6lSAM_oZwA-1; Tue, 19 Mar 2024 10:00:05 -0400
-X-MC-Unique: sqAQQlhIPcqw6lSAM_oZwA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a468654002fso253689866b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:00:05 -0700 (PDT)
+ us-mta-209-0WMzk2PxMamJLAyta-Q8sg-1; Tue, 19 Mar 2024 10:00:10 -0400
+X-MC-Unique: 0WMzk2PxMamJLAyta-Q8sg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a466c7b0587so411569366b.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 07:00:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710856803; x=1711461603;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0hwkQPmRbUVgGdEZ7kTUHbl5qvn1KLyjDLH9eX7JDOM=;
- b=u0FZ3TrX7gTCUUg3zbaKu6xZ41jK3M5FvIzriU8+LaCFUBFbywW7yZkGlomGDTVJ7j
- xfWohlktN+iSHP9aQbyHP4g81aC2Cc5QgV9slZCUpUXWZ7NNDNKF3E++vhd1IyXl5XH3
- qAEYueaS4mLn+0DdCtorZAtVkWD6PSxxYbtQ7XUq5EzhPWaaaUYwjXXeOd6iLE1K6elU
- nlk6goltU/2yXp+xJIswjUqkC48f3cmZjmnEWwpwyLmy2pk3/jpaqUIEo5sKvr+SRD6o
- wzXlIRFZ91CMzKcmiPaVHzXraOquA+CqGjzsfTzd87ZSeaPJZbw5B5q38//Ci9tKaHBk
- +lnA==
-X-Gm-Message-State: AOJu0Yz+no4uvstJv9kQRTh1579OzYfVgEadP6oDA8dxfknL5qHxTQg5
- PSmhJf4UuwkXhuKOWzs/TYo/S5FLAaOcHfM63/68n2seQl4pBY/v3bfIfHGBgXhozQiOYuI7RDJ
- dD66SoH3doCUcONUg76korSdOY3WOYREnRn5o8YDkTo8P1tjQaNkzSA72P8DBYKZbuQQp96SeS5
- LDIEaph+dgrAG6s0MerBLq7t9yw/eEfDLOSZEB
-X-Received: by 2002:a17:906:2a10:b0:a46:a662:e543 with SMTP id
- j16-20020a1709062a1000b00a46a662e543mr5607948eje.48.1710856803300; 
- Tue, 19 Mar 2024 07:00:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUUWwQijPZN/OHZZqn5xJzTqLl0A8vxd2o111stlcty/EHuC8kPQy8l07ey7me8VsLqKUmLg==
-X-Received: by 2002:a17:906:2a10:b0:a46:a662:e543 with SMTP id
- j16-20020a1709062a1000b00a46a662e543mr5607930eje.48.1710856802781; 
- Tue, 19 Mar 2024 07:00:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710856806; x=1711461606;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=pNplvHuiyIzsoOjFcx52HHJTNXwI0XlPnRO8RYJif78=;
+ b=MOHGWBzaRToTUnz7atr7fYBEqYxF/JIQ3OlQSTKqOioPWzToYjkqj1yiprolhfUuBm
+ W3ebL7MI0b4ZJ+0Fq/h7cH8QTuAwqg+Tm8CdpqmsYEUmJFnk8VnKUwd5PDcoryMvAbMR
+ WXFBxj+75OuRCMf5CJgIGd+eqvQwmcER0p/yTBFrEllcX6NRCtOvKUCWbC0qsq28s7os
+ UNO6+Ao6PgcTFlZh+KXX/ZQfz3Pjjv6Ylni5/q9L3PE48/NZW9qNeOc6LESMo8ys3yAo
+ sW/oqKytAiguJjf5/hP7c2Oui1Nu0x36y22Tm3ncpO4QKRr9xYUXvxmIphcFZl9i1sbi
+ nrug==
+X-Gm-Message-State: AOJu0YxsTDtCl89hSHY4dZFeKUyqzbSkHmgIs42Q3Ef04C96eYGn5xfw
+ O6lbGDb2YYvyN45mtdy6uaVTu7AE97WK4Txy0+x+7s9DVU2nWFEuC88n2gZBq5IRy7NCowUyAtB
+ sSRvbAziTccSD4eIMZKSfhOgA+lGSfNs99yCIhgNgeHVXU5KxAdaIBv/vquzSXLrcaVZEs1/zVr
+ ddT9d2OCA1dDY0dIHDzhc6mC53Vv04ut+fsLzi
+X-Received: by 2002:a17:906:b7cc:b0:a46:ea28:2a4d with SMTP id
+ fy12-20020a170906b7cc00b00a46ea282a4dmr382299ejb.27.1710856806183; 
+ Tue, 19 Mar 2024 07:00:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE4Fpr1EGyljzNaWxZc4ES2iclFXCjqHeGg2DKT4v9qIPcbd1pU1kKnqxw97MhCMsfMrSkzrQ==
+X-Received: by 2002:a17:906:b7cc:b0:a46:ea28:2a4d with SMTP id
+ fy12-20020a170906b7cc00b00a46ea282a4dmr382282ejb.27.1710856805885; 
+ Tue, 19 Mar 2024 07:00:05 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- lb9-20020a170906adc900b00a46b87c32besm2846265ejb.39.2024.03.19.07.00.01
+ s10-20020a1709060c0a00b00a44899a44ddsm6216745ejf.11.2024.03.19.07.00.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 07:00:01 -0700 (PDT)
+ Tue, 19 Mar 2024 07:00:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com
-Subject: [PATCH 0/7] target/i386: VM type infrastructure and KVM_SEV_INIT2
- support
-Date: Tue, 19 Mar 2024 14:59:53 +0100
-Message-ID: <20240319140000.1014247-1-pbonzini@redhat.com>
+Subject: [PATCH 1/7] linux-headers hack
+Date: Tue, 19 Mar 2024 14:59:54 +0100
+Message-ID: <20240319140000.1014247-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240319140000.1014247-1-pbonzini@redhat.com>
+References: <20240319140000.1014247-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -100,59 +102,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds another vendor-neutral part of the SEV-SNP/TDX support
-patches, namely support for KVM_CAP_VM_TYPES.  In Linux 6.10 this will
-also be available for SEV and SEV-ES, so introduce it now already.
+To be replaced by update to kvm/next branch from Linux 6.9, once the
+new API is committed.
+---
+ linux-headers/asm-x86/kvm.h | 8 ++++++++
+ linux-headers/linux/kvm.h   | 2 ++
+ 2 files changed, 10 insertions(+)
 
-Also, Linux 6.10 will _not_ allow KVM_GET/SET_* ioctls for VMs with
-encrypted state and a VM type other than KVM_X86_DEFAULT_VM, so prepare
-for that.
-
-The patches are not yet available in kvm.git, hence the hackish
-linux-headers update in patch 1.  Apart from that, however, the API
-should be final.
-
-Tested by booting a SEV-ES guest.
-
-Paolo
-
-Based-on: <20240229060038.606591-1-xiaoyao.li@intel.com>
-
-Paolo Bonzini (6):
-  linux-headers hack
-  runstate: skip initial CPU reset if reset is not actually possible
-  KVM: track whether guest state is encrypted
-  KVM: remove kvm_arch_cpu_check_are_resettable
-  target/i386: introduce x86-confidential-guest
-  target/i386: SEV: use KVM_SEV_INIT2 if possible
-
-Xiaoyao Li (1):
-  target/i386: Implement mc->kvm_type() to get VM type
-
- include/sysemu/kvm.h             | 12 ++-----
- include/sysemu/kvm_int.h         |  1 +
- linux-headers/asm-x86/kvm.h      |  8 +++++
- linux-headers/linux/kvm.h        |  2 ++
- target/i386/confidential-guest.h | 59 ++++++++++++++++++++++++++++++++
- target/i386/kvm/kvm_i386.h       |  2 ++
- accel/kvm/kvm-accel-ops.c        |  2 +-
- accel/kvm/kvm-all.c              | 19 ++++++----
- hw/i386/x86.c                    |  6 ++++
- system/runstate.c                | 15 +++++++-
- target/arm/kvm.c                 |  5 ---
- target/i386/confidential-guest.c | 33 ++++++++++++++++++
- target/i386/kvm/kvm.c            | 49 +++++++++++++++++++++++---
- target/i386/sev.c                | 48 ++++++++++++++++++++++----
- target/loongarch/kvm/kvm.c       |  5 ---
- target/mips/kvm.c                |  5 ---
- target/ppc/kvm.c                 |  5 ---
- target/riscv/kvm/kvm-cpu.c       |  5 ---
- target/s390x/kvm/kvm.c           |  5 ---
- target/i386/meson.build          |  2 +-
- 20 files changed, 226 insertions(+), 62 deletions(-)
- create mode 100644 target/i386/confidential-guest.h
- create mode 100644 target/i386/confidential-guest.c
-
+diff --git a/linux-headers/asm-x86/kvm.h b/linux-headers/asm-x86/kvm.h
+index 003fb745347..8f58c32d37d 100644
+--- a/linux-headers/asm-x86/kvm.h
++++ b/linux-headers/asm-x86/kvm.h
+@@ -562,5 +562,13 @@ struct kvm_pmu_event_filter {
+ 
+ #define KVM_X86_DEFAULT_VM	0
+ #define KVM_X86_SW_PROTECTED_VM	1
++#define KVM_X86_SEV_VM          2
++#define KVM_X86_SEV_ES_VM       3
++
++struct kvm_sev_init {
++        __u64 vmsa_features;
++        __u32 flags;
++        __u32 pad[9];
++};
+ 
+ #endif /* _ASM_X86_KVM_H */
+diff --git a/linux-headers/linux/kvm.h b/linux-headers/linux/kvm.h
+index 17839229b2a..5fd84fd7d0c 100644
+--- a/linux-headers/linux/kvm.h
++++ b/linux-headers/linux/kvm.h
+@@ -1865,6 +1865,8 @@ enum sev_cmd_id {
+ 	/* Guest Migration Extension */
+ 	KVM_SEV_SEND_CANCEL,
+ 
++	KVM_SEV_INIT2,
++
+ 	KVM_SEV_NR_MAX,
+ };
+ 
 -- 
 2.44.0
 
