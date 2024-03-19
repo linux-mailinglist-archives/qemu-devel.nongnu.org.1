@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF3C87F757
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:31:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 897DD87F752
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:30:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmSyh-0005Dx-LP; Tue, 19 Mar 2024 02:29:41 -0400
+	id 1rmSyl-0005Yh-Ik; Tue, 19 Mar 2024 02:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyY-00059B-HL
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:30 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSye-0005Lb-Bo
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:37 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyW-0005e9-U0
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:30 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-414618e6820so5819905e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:29:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyb-0005ea-Lx
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:36 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-41461c256c4so5250185e9.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:29:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710829766; x=1711434566; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710829772; x=1711434572; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n1MPot1rwOH2sHZ4KnXL6/xrTAyUEmTpRKdgwXMTPjQ=;
- b=owwEE06FNiM1zIBP72Rs2G0t0/gN4g4bRK+GvvWAg29woDcH9ua4qOphaS5MSdsSIR
- 7NVr8JuTTX3OcH9CGZ/1kSCC2ZLbYjQZHfX4gCAKF2kRP+2thVlIQac/KS1KFvdiTxHj
- T/6Lodr+CUvICEtcDaQ1zUiT6fZNVnQsTK8D++3fUAg1s23CoMklEGChN1wO02fXsj4/
- XKyTS0x3h0gmFWoBm6xm/n04cz2HrU2F6MWtQgmgcZGzQnpcjbT0otRRLxKtTkI04soR
- ZNlOfIwQ5I6CHVKX8x2BQenvYfLA4Hz8k3oK6IGfdutunUeZpBYfoMSI8lXmixIaDUhW
- GI5w==
+ bh=jaSTDZWCvnDQFHGWaMWeelLWgiRSqaaIXlBIS7H4n9A=;
+ b=heLJNLTVIkvO4B3F7/mDF8jdEk0hazqFz3rTaMhKKxf4SlX4XCC/i/JoSaDCKwOJyA
+ LDQzE0LJJExZeFNVxHNxXmqvBowtQA+L3h5dTKC0y3Nsc3DysqIOQa9CmVAXNywhXSMo
+ yPhUGoSp7HPtB3HGYS8cpDUx0gYIoc3AcvJZmGYa77zP5FSr1WQR7r4O6JnTVin87CQM
+ COuq51VESAm8PaA8VPKltrbprNDGJy4O60xtvW0yf1ZPGhjjI1apYT2frYjygdVIEWCy
+ uo68xaIRryvBL6WxCWDA3aqPlSALSrZ/lxUMNuX/wN4fK1ScnAZ4z5F1APiZYdj2tHzM
+ Ii0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710829766; x=1711434566;
+ d=1e100.net; s=20230601; t=1710829772; x=1711434572;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n1MPot1rwOH2sHZ4KnXL6/xrTAyUEmTpRKdgwXMTPjQ=;
- b=sO6HR+30Ln0h6q74QSYiPGE+GbnGzDFAhbZUhiMnoWd8tJ5KuFdJqIX6mHL8bW41J+
- 5N/XhV1sYUFAtHrDGLp17lJt8en4vJFaoqh1t6jsL0mSmOGSFFaNkyjKl9Ka4SRcTzLe
- Q+XY0kbakOMUhuqyNvpsa+BFcpZGGpVEqI6zhXUpr5hKcEPZDsqpcZXWQfHny3AcmlXp
- qj2B0LHjkJ8+ZZZKGqBqUo4vQEQ1t/X4Ayn0hJc6IjaXpsz0c4uBRClm72qHh+RtIrN4
- DpqLcJzK/bS/7BFZGmTar+AEmH1NIBCLtpiqvxKKrhRlJRO8asGN6W4xQUeMq4p2esjS
- QpyQ==
-X-Gm-Message-State: AOJu0Ywi07YiGDvodmwsPzY1q5WSqlDCshMHQr8MawEakEejmwDlnn9Q
- f5ADzF3ujxZLxOsoChiVdJIrAOseAtpKXhFYMdOxdW7KtRr/c0adZS7Jo3/JmSq/c1NrsJU9xZK
- e
-X-Google-Smtp-Source: AGHT+IGyFHLXXW0HyzGyYV1/M1fhBfxn2ypbm2zCFU9F3y9AQOSSlXYYFkseD3Hg8quM0HV4dPJMAA==
-X-Received: by 2002:a05:600c:4fc8:b0:414:6172:8366 with SMTP id
- o8-20020a05600c4fc800b0041461728366mr1300185wmq.15.1710829766185; 
- Mon, 18 Mar 2024 23:29:26 -0700 (PDT)
+ bh=jaSTDZWCvnDQFHGWaMWeelLWgiRSqaaIXlBIS7H4n9A=;
+ b=TCpa8E9YhVk2fIlZ8FpNJ087GtciaJQMmqHFHGGxb2I7XgEJ3Jr1yM8wztbCmh6eIG
+ FboPQT1m1pFuiVZ2H7miIlu9loCpu+uU41/ayf4en6+oD8sqTCMDh4r8zFOME90l+LJQ
+ LXzhuZgdIt+JFh1juHmxdFa4YJi/hgcg+loqb1uaRnPOCF1BZfLsVxK8acZ0XpUaqoS1
+ q7SGN4gotxY5oo4OcBR3iUwmnu6vpEmsdN9Jns0hjkCRKv3D3ZFpuWN6sd2OU3DKemS8
+ zCls2sbBvEI5lHQ0xIKU7dt0e5OuJGR76/P3GQScz5zgpRPKefusWwWqXPrYk5nnXiyW
+ qrhQ==
+X-Gm-Message-State: AOJu0YxJD2R3gsIXmu4IWMxjQ5Ny71EuQAZc/pyR7+7DATMvuY1zWQ8p
+ 0RyCzNhvYA8jVoWQw+F5B+9RwgTcv2O9gmqIHoAZgIrj+TM2DfauAYcOGGEp333392dQlfBQ6mj
+ 7
+X-Google-Smtp-Source: AGHT+IHjYWZSLPC41rGSe/+3IByzDksAKUwsz+iLZr3iscOG8H5/z+G8wbNHPGjXWH1a4YJjaV4YWQ==
+X-Received: by 2002:adf:e392:0:b0:33d:746b:f360 with SMTP id
+ e18-20020adfe392000000b0033d746bf360mr939268wrm.51.1710829771832; 
+ Mon, 18 Mar 2024 23:29:31 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- j17-20020a05600c191100b00414659ba8c2sm650763wmq.37.2024.03.18.23.29.25
+ bw28-20020a0560001f9c00b003418364032asm1933168wrb.112.2024.03.18.23.29.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Mar 2024 23:29:25 -0700 (PDT)
+ Mon, 18 Mar 2024 23:29:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -62,18 +62,17 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Anton Johansson <anjo@rev.ng>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 5/8] target/microblaze: Restrict 64-bit 'res_addr' to
- system emulation
-Date: Tue, 19 Mar 2024 07:28:52 +0100
-Message-ID: <20240319062855.8025-6-philmd@linaro.org>
+Subject: [PATCH-for-9.1 6/8] target/microblaze: Rename helper.c -> sys_helper.c
+Date: Tue, 19 Mar 2024 07:28:53 +0100
+Message-ID: <20240319062855.8025-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240319062855.8025-1-philmd@linaro.org>
 References: <20240319062855.8025-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,99 +95,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'res_addr' is only used in system emulation, where we have
-TARGET_LONG_BITS = 64, so we can directly use the native
-uint64_t type instead of target_ulong.
+helper.c only contains system emulation helpers,
+rename it as sys_helper.c.
+Adapt meson and remove pointless #ifdef'ry.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/microblaze/cpu.h       | 10 +++++-----
- target/microblaze/cpu.c       |  2 ++
- target/microblaze/machine.c   |  2 +-
- target/microblaze/translate.c |  9 +++++++--
- 4 files changed, 15 insertions(+), 8 deletions(-)
+ target/microblaze/{helper.c => sys_helper.c} | 5 +----
+ target/microblaze/meson.build                | 2 +-
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+ rename target/microblaze/{helper.c => sys_helper.c} (99%)
 
-diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
-index c0c7574dbd..c3e2aba0ec 100644
---- a/target/microblaze/cpu.h
-+++ b/target/microblaze/cpu.h
-@@ -260,11 +260,6 @@ struct CPUArchState {
-     /* Stack protectors. Yes, it's a hw feature.  */
-     uint32_t slr, shr;
+diff --git a/target/microblaze/helper.c b/target/microblaze/sys_helper.c
+similarity index 99%
+rename from target/microblaze/helper.c
+rename to target/microblaze/sys_helper.c
+index 3f410fc7b5..5180500354 100644
+--- a/target/microblaze/helper.c
++++ b/target/microblaze/sys_helper.c
+@@ -1,5 +1,5 @@
+ /*
+- *  MicroBlaze helper routines.
++ *  MicroBlaze system helper routines.
+  *
+  *  Copyright (c) 2009 Edgar E. Iglesias <edgar.iglesias@gmail.com>
+  *  Copyright (c) 2009-2012 PetaLogix Qld Pty Ltd.
+@@ -24,7 +24,6 @@
+ #include "qemu/host-utils.h"
+ #include "exec/log.h"
  
--    /* lwx/swx reserved address */
--#define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
--    target_ulong res_addr;
--    uint32_t res_val;
--
-     /* Internal flags.  */
- #define IMM_FLAG        (1 << 0)
- #define BIMM_FLAG       (1 << 1)
-@@ -286,6 +281,11 @@ struct CPUArchState {
-     uint32_t iflags;
- 
- #if !defined(CONFIG_USER_ONLY)
-+    /* lwx/swx reserved address */
-+#define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
-+    uint64_t res_addr;
-+    uint32_t res_val;
-+
-     /* Unified MMU.  */
-     MicroBlazeMMU mmu;
- #endif
-diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
-index 96c2b71f7f..9e393cf217 100644
---- a/target/microblaze/cpu.c
-+++ b/target/microblaze/cpu.c
-@@ -193,7 +193,9 @@ static void mb_cpu_reset_hold(Object *obj)
-     }
- 
-     memset(env, 0, offsetof(CPUMBState, end_reset_fields));
-+#ifndef CONFIG_USER_ONLY
-     env->res_addr = RES_ADDR_NONE;
-+#endif
- 
-     /* Disable stack protector.  */
-     env->shr = ~0;
-diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
-index 51705e4f5c..4daf8a2471 100644
---- a/target/microblaze/machine.c
-+++ b/target/microblaze/machine.c
-@@ -78,7 +78,7 @@ static const VMStateField vmstate_env_fields[] = {
-     VMSTATE_UINT32(iflags, CPUMBState),
- 
-     VMSTATE_UINT32(res_val, CPUMBState),
--    VMSTATE_UINTTL(res_addr, CPUMBState),
-+    VMSTATE_UINT64(res_addr, CPUMBState),
- 
-     VMSTATE_STRUCT(mmu, CPUMBState, 0, vmstate_mmu, MicroBlazeMMU),
- 
-diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index d6a42381bb..493850c544 100644
---- a/target/microblaze/translate.c
-+++ b/target/microblaze/translate.c
-@@ -1872,7 +1872,9 @@ void mb_tcg_init(void)
-         SP(iflags),
-         SP(bvalue),
-         SP(btarget),
-+#if !defined(CONFIG_USER_ONLY)
-         SP(res_val),
-+#endif
-     };
- 
- #undef R
-@@ -1883,6 +1885,9 @@ void mb_tcg_init(void)
-           tcg_global_mem_new_i32(tcg_env, i32s[i].ofs, i32s[i].name);
-     }
- 
--    cpu_res_addr =
--        tcg_global_mem_new(tcg_env, offsetof(CPUMBState, res_addr), "res_addr");
-+#if !defined(CONFIG_USER_ONLY)
-+    cpu_res_addr = tcg_global_mem_new_i64(tcg_env,
-+                                          offsetof(CPUMBState, res_addr),
-+                                          "res_addr");
-+#endif
+-#ifndef CONFIG_USER_ONLY
+ static bool mb_cpu_access_is_secure(MicroBlazeCPU *cpu,
+                                     MMUAccessType access_type)
+ {
+@@ -266,8 +265,6 @@ bool mb_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
+     return false;
  }
+ 
+-#endif /* !CONFIG_USER_ONLY */
+-
+ void mb_cpu_do_unaligned_access(CPUState *cs, vaddr addr,
+                                 MMUAccessType access_type,
+                                 int mmu_idx, uintptr_t retaddr)
+diff --git a/target/microblaze/meson.build b/target/microblaze/meson.build
+index 3ed4fbb67a..013ea542be 100644
+--- a/target/microblaze/meson.build
++++ b/target/microblaze/meson.build
+@@ -5,7 +5,6 @@ microblaze_ss.add(gen)
+ microblaze_ss.add(files(
+   'cpu.c',
+   'gdbstub.c',
+-  'helper.c',
+   'op_helper.c',
+   'translate.c',
+ ))
+@@ -14,6 +13,7 @@ microblaze_system_ss = ss.source_set()
+ microblaze_system_ss.add(files(
+   'mmu.c',
+   'machine.c',
++  'sys_helper.c',
+ ))
+ 
+ target_arch += {'microblaze': microblaze_ss}
 -- 
 2.41.0
 
