@@ -2,83 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0004087F589
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 03:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7688687F5E6
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 03:56:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmPRk-0006V0-II; Mon, 18 Mar 2024 22:43:24 -0400
+	id 1rmPcd-0008UY-K3; Mon, 18 Mar 2024 22:54:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1rmPRi-0006Ud-7w
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 22:43:22 -0400
-Received: from mgamail.intel.com ([198.175.65.18])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1rmPRb-0002Vt-NN
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 22:43:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710816196; x=1742352196;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=dPt5ePCniW2OMVq33doq0NPp4q/91R/ZMn9EupR0AO0=;
- b=CyvM/Z43qNnasFa0RYuDhW1uKcoidi5/KE5OALeWZjk7/jkWFaTCLZCD
- yz9sl5rL2r9giDrbfrUyMcnsm2Dn54nx1SiJ3jzC+rivTA0WcFnHuptbc
- LCcWFZ5su7Zez/lnq8BQtI51O/U8uzPBEzPJp0qQbqMVIajgPtNi1Q8AK
- CDYZ3J30NONPkbYlb74gAoSLZ03XE9kCIiH/iRJy7EpMsE6hMwARrtlgt
- 6Uci6jzppUBLjSNAMDK3Ly2hR/8Y8H6ipkN596FXkb5QioK+ZY+d7zXGi
- FIeBtEIjfbRWiENlcmq/LVWSC0wJBPLBA4IxJbBoOccUefzhPe/Rpbbhy g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11017"; a="5786958"
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; 
-   d="scan'208";a="5786958"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 19:43:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,135,1708416000"; d="scan'208";a="13751779"
-Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.124.244.145])
- ([10.124.244.145])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Mar 2024 19:43:06 -0700
-Message-ID: <956432d9-68df-4591-a880-48e671435351@intel.com>
-Date: Tue, 19 Mar 2024 10:43:04 +0800
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1rmPca-0008T3-TG; Mon, 18 Mar 2024 22:54:36 -0400
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@gmail.com>)
+ id 1rmPcV-0004fv-Pt; Mon, 18 Mar 2024 22:54:36 -0400
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3c38b875a1aso780032b6e.1; 
+ Mon, 18 Mar 2024 19:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1710816870; x=1711421670; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Nm7Kk4CzPWmaV5HfOkntNZglV6jxDGCgaL98QUQsbQA=;
+ b=Dvr8xGl8cEsGL2Wghu/taBqSZl+bN4liLhx3I810Fe8xjp3HgOP+tac5OBMjT6FKhC
+ ExuJ7wnZhSoAW3J61uHZgPAQu3Eo511MoIJ0BUcRdtYuNH0sUP08HF3nEApnouLGrL1K
+ GAV9CEHLhMX9106nJ4MsCKgnZsCrrdSYTEmEeEDHUGTbKV9nQfxIvsmathFDKU2Hs3nC
+ 7xUZwVDxUzDRBcEWySQg1mQdaVXSGg4lwKMGSPwt8RmC9Rd/yAePMmU4ZWxD9Il4nBiV
+ UjTqb9E+Gu1LDaWD9WTDgVEmndMv0FEdM0X+FgPDJ1+NAXwXIj/H8wWRZd3OGc3crWGF
+ YyuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710816870; x=1711421670;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Nm7Kk4CzPWmaV5HfOkntNZglV6jxDGCgaL98QUQsbQA=;
+ b=jkUQjwjlaS8KhdPgG1JSnSnOt7NxnzsBUGREeyzbXT8Vo03S8VgRk3XZ7LWCC0N19X
+ wPERmZZr3KBDIWzuT4dh2busdL4Y2ll+zsb+u0ZIlB0zGPxXIJBtwIKJ4t6SlPN+8ujJ
+ rl9agR00blTRZBftDEnCLz9jAsw32fwZl21nNddEwVwiA1hyZRB8lQTKP+s53gL3/wSb
+ /mBLUPqoW1Q25ACFNhPEw985HvZXK17r5JjZ1LrDi1OKG1RpKympAsBuAoibCCkia2NH
+ BcJPQy236QupzWdfmuc8tlINitY7hNENrM6NLjbNgj/6DBXVsPzza1e/Z1F6d1WgpFir
+ 8XiA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX62EkdGJITzoxaH2DuU4QkNa7dn2G37+G2lo0xu/5btNHQlQms6MFyqQug2TDgx5zEB5MlTyNVeoj+8Ip9XlDn5fCDE3T+uVXTppS/bIm3yxnQrggffxJm/pk=
+X-Gm-Message-State: AOJu0YxWVoynrfYMLdd3JhsqKePxsH1QK5284jgaoCqeA85T1xJLz9Ow
+ Nj/r18yhh/PS1wiEuucRUXuxGmFqInuw81E1iIfXnJU4a+WA/DKv
+X-Google-Smtp-Source: AGHT+IH2K0YLQr9U9B2+/vvyZOP6fxCIy7trQorEdzntP1DZpVnJnwe+N5Ac1j2brj+QxVNq45Gv4A==
+X-Received: by 2002:a05:6808:20a9:b0:3c3:7434:78be with SMTP id
+ s41-20020a05680820a900b003c3743478bemr14148895oiw.27.1710816870069; 
+ Mon, 18 Mar 2024 19:54:30 -0700 (PDT)
+Received: from ?IPV6:2400:4050:a840:1e00:9ac7:6d57:2b16:6932?
+ ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
+ by smtp.gmail.com with ESMTPSA id
+ o8-20020a056a001b4800b006e68bff396csm8605735pfv.215.2024.03.18.19.54.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 18 Mar 2024 19:54:29 -0700 (PDT)
+Message-ID: <954c07cc-7894-44a6-b6d4-bde1460a4391@gmail.com>
+Date: Tue, 19 Mar 2024 11:54:26 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 15/65] i386/tdx: Get tdx_capabilities via
- KVM_TDX_CAPABILITIES
+Subject: Re: [PATCH-for-9.1 v2 1/3] ui/console: Introduce API to change
+ console orientation
 Content-Language: en-US
-To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>, Peter Xu <peterx@redhat.com>,
- Cornelia Huck <cohuck@redhat.com>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Cc: kvm@vger.kernel.org, qemu-devel@nongnu.org,
- Michael Roth <michael.roth@amd.com>, Claudio Fontana <cfontana@suse.de>,
- Gerd Hoffmann <kraxel@redhat.com>, Isaku Yamahata
- <isaku.yamahata@gmail.com>, Chenyi Qiang <chenyi.qiang@intel.com>
-References: <20240229063726.610065-1-xiaoyao.li@intel.com>
- <20240229063726.610065-16-xiaoyao.li@intel.com>
-From: "Wang, Lei" <lei4.wang@intel.com>
-In-Reply-To: <20240229063726.610065-16-xiaoyao.li@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=198.175.65.18; envelope-from=lei4.wang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
+References: <20240318113140.88151-1-philmd@linaro.org>
+ <20240318113140.88151-2-philmd@linaro.org>
+From: Akihiko Odaki <akihiko.odaki@gmail.com>
+In-Reply-To: <20240318113140.88151-2-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=akihiko.odaki@gmail.com; helo=mail-oi1-x229.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.374,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,181 +99,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/29/2024 14:36, Xiaoyao Li wrote:> KVM provides TDX capabilities via sub
-command KVM_TDX_CAPABILITIES of
-> IOCTL(KVM_MEMORY_ENCRYPT_OP). Get the capabilities when initializing
-> TDX context. It will be used to validate user's setting later.
+On 2024/03/18 20:31, Philippe Mathieu-Daudé wrote:
+> Extract the following methods:
 > 
-> Since there is no interface reporting how many cpuid configs contains in
-> KVM_TDX_CAPABILITIES, QEMU chooses to try starting with a known number
-> and abort when it exceeds KVM_MAX_CPUID_ENTRIES.
+>    - qemu_console_set_rotate()
+>    - qemu_console_is_rotated()
+>    - qemu_console_get_rotate_arcdegree()
 > 
-> Besides, introduce the interfaces to invoke TDX "ioctls" at different
-> scope (KVM, VM and VCPU) in preparation.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-tdx_platform_ioctl() is dropped because no user so suggest rephrasing this
-statement because no KVM scope ioctl interface is introduced in this patch.
+Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
-> Changes in v4:
-> - use {} to initialize struct kvm_tdx_cmd, to avoid memset();
-> - remove tdx_platform_ioctl() because no user;
+>   include/ui/console.h |  3 +++
+>   ui/console.c         | 16 ++++++++++++++++
+>   ui/input.c           |  9 ++++-----
+>   3 files changed, 23 insertions(+), 5 deletions(-)
 > 
-> Changes in v3:
-> - rename __tdx_ioctl() to tdx_ioctl_internal()
-> - Pass errp in get_tdx_capabilities();
-> 
-> changes in v2:
->   - Make the error message more clear;
-> 
-> changes in v1:
->   - start from nr_cpuid_configs = 6 for the loop;
->   - stop the loop when nr_cpuid_configs exceeds KVM_MAX_CPUID_ENTRIES;
-> ---
->  target/i386/kvm/kvm.c      |  2 -
->  target/i386/kvm/kvm_i386.h |  2 +
->  target/i386/kvm/tdx.c      | 91 +++++++++++++++++++++++++++++++++++++-
->  3 files changed, 92 insertions(+), 3 deletions(-)
-> 
-> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-> index 52d99d30bdc8..0e68e80f4291 100644
-> --- a/target/i386/kvm/kvm.c
-> +++ b/target/i386/kvm/kvm.c
-> @@ -1685,8 +1685,6 @@ static int hyperv_init_vcpu(X86CPU *cpu)
->  
->  static Error *invtsc_mig_blocker;
->  
-> -#define KVM_MAX_CPUID_ENTRIES  100
-> -
->  static void kvm_init_xsave(CPUX86State *env)
->  {
->      if (has_xsave2) {
-> diff --git a/target/i386/kvm/kvm_i386.h b/target/i386/kvm/kvm_i386.h
-> index 55fb25fa8e2e..c3ef46a97a7b 100644
-> --- a/target/i386/kvm/kvm_i386.h
-> +++ b/target/i386/kvm/kvm_i386.h
-> @@ -13,6 +13,8 @@
->  
->  #include "sysemu/kvm.h"
->  
-> +#define KVM_MAX_CPUID_ENTRIES  100
-> +
->  #ifdef CONFIG_KVM
->  
->  #define kvm_pit_in_kernel() \
-> diff --git a/target/i386/kvm/tdx.c b/target/i386/kvm/tdx.c
-> index d9a1dd46dc69..2b956450a083 100644
-> --- a/target/i386/kvm/tdx.c
-> +++ b/target/i386/kvm/tdx.c
-> @@ -12,18 +12,107 @@
->   */
->  
->  #include "qemu/osdep.h"
-> +#include "qemu/error-report.h"
-> +#include "qapi/error.h"
->  #include "qom/object_interfaces.h"
-> +#include "sysemu/kvm.h"
->  
->  #include "hw/i386/x86.h"
-> +#include "kvm_i386.h"
->  #include "tdx.h"
->  
-> +static struct kvm_tdx_capabilities *tdx_caps;
-> +
-> +enum tdx_ioctl_level{
-> +    TDX_VM_IOCTL,
-> +    TDX_VCPU_IOCTL,
-> +};
-> +
-> +static int tdx_ioctl_internal(void *state, enum tdx_ioctl_level level, int cmd_id,
-> +                        __u32 flags, void *data)
+> diff --git a/include/ui/console.h b/include/ui/console.h
+> index a4a49ffc64..86ba36e391 100644
+> --- a/include/ui/console.h
+> +++ b/include/ui/console.h
+> @@ -422,15 +422,18 @@ bool qemu_console_is_visible(QemuConsole *con);
+>   bool qemu_console_is_graphic(QemuConsole *con);
+>   bool qemu_console_is_fixedsize(QemuConsole *con);
+>   bool qemu_console_is_gl_blocked(QemuConsole *con);
+> +bool qemu_console_is_rotated(QemuConsole *con);
+>   char *qemu_console_get_label(QemuConsole *con);
+>   int qemu_console_get_index(QemuConsole *con);
+>   uint32_t qemu_console_get_head(QemuConsole *con);
+>   int qemu_console_get_width(QemuConsole *con, int fallback);
+>   int qemu_console_get_height(QemuConsole *con, int fallback);
+> +unsigned qemu_console_get_rotate_arcdegree(QemuConsole *con);
+>   /* Return the low-level window id for the console */
+>   int qemu_console_get_window_id(QemuConsole *con);
+>   /* Set the low-level window id for the console */
+>   void qemu_console_set_window_id(QemuConsole *con, int window_id);
+> +void qemu_console_set_rotate(QemuConsole *con, unsigned arcdegree);
+>   
+>   void console_select(unsigned int index);
+>   void qemu_console_resize(QemuConsole *con, int width, int height);
+> diff --git a/ui/console.c b/ui/console.c
+> index 832055675c..84aee76846 100644
+> --- a/ui/console.c
+> +++ b/ui/console.c
+> @@ -37,6 +37,7 @@
+>   #include "trace.h"
+>   #include "exec/memory.h"
+>   #include "qom/object.h"
+> +#include "sysemu/sysemu.h"
+>   
+>   #include "console-priv.h"
+>   
+> @@ -207,6 +208,21 @@ void qemu_console_set_window_id(QemuConsole *con, int window_id)
+>       con->window_id = window_id;
+>   }
+>   
+> +void qemu_console_set_rotate(QemuConsole *con, unsigned arcdegree)
 > +{
-> +    struct kvm_tdx_cmd tdx_cmd = {};
-> +    int r;
-> +
-> +    tdx_cmd.id = cmd_id;
-> +    tdx_cmd.flags = flags;
-> +    tdx_cmd.data = (__u64)(unsigned long)data;
-> +
-> +    switch (level) {
-> +    case TDX_VM_IOCTL:
-> +        r = kvm_vm_ioctl(kvm_state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
-> +        break;
-> +    case TDX_VCPU_IOCTL:
-> +        r = kvm_vcpu_ioctl(state, KVM_MEMORY_ENCRYPT_OP, &tdx_cmd);
-> +        break;
-> +    default:
-> +        error_report("Invalid tdx_ioctl_level %d", level);
-> +        exit(1);
-> +    }
-> +
-> +    return r;
+> +    graphic_rotate = arcdegree;
 > +}
 > +
-> +static inline int tdx_vm_ioctl(int cmd_id, __u32 flags, void *data)
+> +bool qemu_console_is_rotated(QemuConsole *con)
 > +{
-> +    return tdx_ioctl_internal(NULL, TDX_VM_IOCTL, cmd_id, flags, data);
+> +    return graphic_rotate != 0;
 > +}
 > +
-> +static inline int tdx_vcpu_ioctl(void *vcpu_fd, int cmd_id, __u32 flags,
-> +                                 void *data)
+> +unsigned qemu_console_get_rotate_arcdegree(QemuConsole *con)
 > +{
-> +    return  tdx_ioctl_internal(vcpu_fd, TDX_VCPU_IOCTL, cmd_id, flags, data);
+> +    return graphic_rotate;
 > +}
 > +
-> +static int get_tdx_capabilities(Error **errp)
-> +{
-> +    struct kvm_tdx_capabilities *caps;
-> +    /* 1st generation of TDX reports 6 cpuid configs */
-> +    int nr_cpuid_configs = 6;
-> +    size_t size;
-> +    int r;
-> +
-> +    do {
-> +        size = sizeof(struct kvm_tdx_capabilities) +
-> +               nr_cpuid_configs * sizeof(struct kvm_tdx_cpuid_config);
-> +        caps = g_malloc0(size);
-> +        caps->nr_cpuid_configs = nr_cpuid_configs;
-> +
-> +        r = tdx_vm_ioctl(KVM_TDX_CAPABILITIES, 0, caps);
-> +        if (r == -E2BIG) {
-> +            g_free(caps);
-> +            nr_cpuid_configs *= 2;
-> +            if (nr_cpuid_configs > KVM_MAX_CPUID_ENTRIES) {
-> +                error_setg(errp, "%s: KVM TDX seems broken that number of CPUID "
-> +                           "entries in kvm_tdx_capabilities exceeds limit %d",
-> +                           __func__, KVM_MAX_CPUID_ENTRIES);
-> +                return r;
-> +            }
-> +        } else if (r < 0) {
-> +            g_free(caps);
-> +            error_setg_errno(errp, -r, "%s: KVM_TDX_CAPABILITIES failed", __func__);
-> +            return r;
-> +        }
-> +    }
-> +    while (r == -E2BIG);
-> +
-> +    tdx_caps = caps;
-> +
-> +    return 0;
-> +}
-> +
->  static int tdx_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
->  {
->      MachineState *ms = MACHINE(qdev_get_machine());
-> +    int r = 0;
->  
->      ms->require_guest_memfd = true;
->  
-> -    return 0;
-> +    if (!tdx_caps) {
-> +        r = get_tdx_capabilities(errp);
-> +    }
-> +
-> +    return r;
->  }
->  
->  /* tdx guest */
+>   void graphic_hw_invalidate(QemuConsole *con)
+>   {
+>       if (!con) {
+> diff --git a/ui/input.c b/ui/input.c
+> index dc745860f4..951806bf05 100644
+> --- a/ui/input.c
+> +++ b/ui/input.c
+> @@ -1,5 +1,4 @@
+>   #include "qemu/osdep.h"
+> -#include "sysemu/sysemu.h"
+>   #include "qapi/error.h"
+>   #include "qapi/qapi-commands-ui.h"
+>   #include "trace.h"
+> @@ -179,10 +178,10 @@ static int qemu_input_transform_invert_abs_value(int value)
+>     return (int64_t)INPUT_EVENT_ABS_MAX - value + INPUT_EVENT_ABS_MIN;
+>   }
+>   
+> -static void qemu_input_transform_abs_rotate(InputEvent *evt)
+> +static void qemu_input_transform_abs_rotate(QemuConsole *src, InputEvent *evt)
+>   {
+>       InputMoveEvent *move = evt->u.abs.data;
+> -    switch (graphic_rotate) {
+> +    switch (qemu_console_get_rotate_arcdegree(src)) {
+>       case 90:
+>           if (move->axis == INPUT_AXIS_X) {
+>               move->axis = INPUT_AXIS_Y;
+> @@ -341,8 +340,8 @@ void qemu_input_event_send_impl(QemuConsole *src, InputEvent *evt)
+>       qemu_input_event_trace(src, evt);
+>   
+>       /* pre processing */
+> -    if (graphic_rotate && (evt->type == INPUT_EVENT_KIND_ABS)) {
+> -            qemu_input_transform_abs_rotate(evt);
+> +    if (qemu_console_is_rotated(src) && (evt->type == INPUT_EVENT_KIND_ABS)) {
+> +        qemu_input_transform_abs_rotate(src, evt);
+>       }
+>   
+>       /* send event */
 
