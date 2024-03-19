@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D461A87F5F4
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 04:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E32B87F5F2
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 04:09:42 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmPqV-000562-Tj; Mon, 18 Mar 2024 23:09:00 -0400
+	id 1rmPqb-00056o-MN; Mon, 18 Mar 2024 23:09:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rmPqT-00055b-Mn
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:57 -0400
-Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ id 1rmPqX-00056N-An
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:09:01 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rmPqR-0007Y1-Vy
- for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:08:57 -0400
-Received: by mail-oi1-x235.google.com with SMTP id
- 5614622812f47-3c390030af2so616855b6e.3
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 20:08:55 -0700 (PDT)
+ id 1rmPqV-0007Z9-Lo
+ for qemu-devel@nongnu.org; Mon, 18 Mar 2024 23:09:01 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-5dca1efad59so3248575a12.2
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 20:08:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710817735; x=1711422535;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1710817738; x=1711422538;
  darn=nongnu.org; 
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=+9JJHiJKPYQ910oe663PRFvMAxXiI7j+0dOR4wlpAGM=;
- b=jzxCDKuuRKQRSz1Em0GwEe9XOdG6MWFi1KgmFeebI4Xmrl/jc2yyhnxqjkvuYpyUyW
- hYy5JYNpdkO3u7K/wEL6av2Pay7bYaHgjy+/bo/ad+4Vbh7dM8tawcAnvtcXYdBPuwlk
- 8FZ4+Z3NOmZDluYHD/kj1d8Wiboe8rDYnWwVuX5P/kLYSmiMGT+9fD8GCYm5Qani9eM6
- PtcAIBPmgf5WoyWPTN4QXhW2957xp5x6hZEkmlX6SiIepXO62WIyXKk4kjYpS+7dr3Ab
- ZB+B9kWLGRrYWH1JCWgMSD8QXYrfd1qoX9yvJy7sdsYta4frsAC6cHR49pNHuu3ECqvd
- OCrg==
+ :reply-to; bh=3RegtZ3nIGTQTRcqp9yX+20kk5CmZ38gK/hIVQ4XCFU=;
+ b=aHIsog4fxq4Y0HpDndsBOBByn7qe+ubxK1SNc9uwwBQzuJW2JxwVtSBqvLVs/u5OoN
+ 8BSSoBCPwuSlv9B/0Ky6hnovIybp0Ztm6nXT6jZtHnmyiqcwHA30/7YsiX2B3gfKOlGO
+ DeKiG2S4T66horFsq81Lmz11uLTIRKbc9uJbZQs9p6BKSryvgrybsLb1y4JINM1+2qYt
+ Lpz1Nkhrzt2BtA3Hk1TDQg5e7oAWSfJXolcvIko97XqQelZGD/5DWskeGPxsZZKVzk5Q
+ warxaA+2zePRDQuOVVz7SHwuW6T73KpCF02ccvtQGIYDBO6x15xbcXS4g3bX3SX6Cm+f
+ E8EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710817735; x=1711422535;
+ d=1e100.net; s=20230601; t=1710817738; x=1711422538;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+9JJHiJKPYQ910oe663PRFvMAxXiI7j+0dOR4wlpAGM=;
- b=euN7Qbuy5PTwgXy+3hliqTVm3snl8rPeZR2L9NrilVrSQ2wAim40OYWajujds3TlSM
- QRnQ5oPuPYwbEQS80SzOIOBHTzNArEVSLz8wsrv62c+FXlNwb2qZ/77wak6JYWKTSSPm
- UCQ9NTjiTg3JqvQJR8ypWEnoUxT7qJzukyQFVPkCmCwlYBYjSEqxeltj63QDxKUZx5ru
- KMUGk1mIvbpDFT+5/88Slf3LXNav1Zg2HqzgQl0yIUa59KyOTYDNL+s1A1i+gOHhGb5u
- suKJ4jPy2dSY29Ap86kzW8B77Gjr4skN5Jpv8VKHIzlJRrLxNWmbZ7hMoYrtVyf0y+TZ
- zCGA==
-X-Gm-Message-State: AOJu0YwjOyvFmfk8hLqp15drUobj2kj0T3y10DCP7QOEfRhlDadMorkj
- AZ0f2FlEUpCqOBBpoUFhjIR8YQOYaY6Jx96MzSXgYS8M78rqEmSvrOBZ5kxCwb+OOV3+DCvh9Np
- E
-X-Google-Smtp-Source: AGHT+IFDuqREv7hNGTgJNZKKYROO29r/dWm7qnNqI0TvcHDkAbsqTagyf7zVP5Jc4anijRfzHB5RjQ==
-X-Received: by 2002:a05:6808:190a:b0:3c2:5d2f:ef1e with SMTP id
- bf10-20020a056808190a00b003c25d2fef1emr2121764oib.31.1710817734837; 
- Mon, 18 Mar 2024 20:08:54 -0700 (PDT)
+ bh=3RegtZ3nIGTQTRcqp9yX+20kk5CmZ38gK/hIVQ4XCFU=;
+ b=gseHmEowBK/ZQvrmror9h2CkMIQ4ajK4jxzOuRfUvzdY/0XUL5vblf7GjnMflPGhD0
+ BFNtzoPaAp+ytiRqa829WCfpl5MSDIrO2TQvZDS3aYGlVS2DXqrxVEoHbDT5S9WbMtf5
+ De6IE/8AIfuZqereLfIitqi7tsU5RJAkziP7VOcEE85GdJf3jXbWM262knlhaV3nVVG0
+ uEd4e3MZ30jnKCTGMk3xDpY9ntjwtM6vYT1GZSCwZBQrwQtSWNAqrx8LFa1i0qs/qou6
+ 8fPRjGJI9ZK4cIrTsjfaE2TA2mnNvCqLdC3+JUqooIm5J0Q/etmQveHw6FAGgNbX0xfS
+ D3TQ==
+X-Gm-Message-State: AOJu0Yz3I2FKuM192iVX4bI+Kwma3y7w5mkdeO580SjtKyAt1n7IfGSl
+ NpW377vzw8J6t/jOxaUNl5UjwlVjVTlsLORJ4IA7YnRZ5oIe5BLW01jmA6ctIEiH2qeaYfsq6Ay
+ A
+X-Google-Smtp-Source: AGHT+IHApxg3ocwopxlieR8lp8f3LVosY0Fo7Z/S9rJ2GEJpDUnzBiNfjdjjQfTDRJu2ERYtR7ntHw==
+X-Received: by 2002:a05:6a21:a58f:b0:1a1:476b:81a8 with SMTP id
+ gd15-20020a056a21a58f00b001a1476b81a8mr13405475pzc.6.1710817738028; 
+ Mon, 18 Mar 2024 20:08:58 -0700 (PDT)
 Received: from localhost ([2400:4050:a840:1e00:9ac7:6d57:2b16:6932])
  by smtp.gmail.com with UTF8SMTPSA id
- x1-20020a631701000000b005e83b64021fsm4440611pgl.25.2024.03.18.20.08.53
+ lb4-20020a170902fa4400b001e0287592c4sm2736497plb.267.2024.03.18.20.08.56
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 18 Mar 2024 20:08:54 -0700 (PDT)
+ Mon, 18 Mar 2024 20:08:57 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 19 Mar 2024 12:08:40 +0900
-Subject: [PATCH v2 2/4] ui/vnc: Do not use console_select()
+Date: Tue, 19 Mar 2024 12:08:41 +0900
+Subject: [PATCH v2 3/4] ui/cocoa: Do not use console_select()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240319-console-v2-2-3fd6feef321a@daynix.com>
+Message-Id: <20240319-console-v2-3-3fd6feef321a@daynix.com>
 References: <20240319-console-v2-0-3fd6feef321a@daynix.com>
 In-Reply-To: <20240319-console-v2-0-3fd6feef321a@daynix.com>
 To: Gerd Hoffmann <kraxel@redhat.com>, 
@@ -72,8 +72,8 @@ To: Gerd Hoffmann <kraxel@redhat.com>,
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::235;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-oi1-x235.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::531;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -95,129 +95,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-console_select() is shared by other displays and a console_select() call
-from one of them triggers console switching also in ui/curses,
-circumventing key state reinitialization that needs to be performed in
-preparation and resulting in stuck keys.
+ui/cocoa needs to update the UI info and reset the keyboard state
+tracker when switching the console, or the new console will see the
+stale UI info or keyboard state. Previously, updating the UI info was
+done with cocoa_switch(), but it is meant to be called when the surface
+is being replaced, and may be called even when not switching the
+console. ui/cocoa never reset the keyboard state, which resulted in
+stuck keys.
 
-Use its internal state to track the current active console to prevent
-such a surprise console switch.
+Add ui/cocoa's own implementation of console_select(), which updates the
+UI info and resets the keyboard state tracker.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- include/ui/console.h   |  1 +
- include/ui/kbd-state.h | 11 +++++++++++
- ui/console.c           | 12 ++++++++++++
- ui/kbd-state.c         |  6 ++++++
- ui/vnc.c               | 14 +++++++++-----
- 5 files changed, 39 insertions(+), 5 deletions(-)
+ ui/cocoa.m | 37 ++++++++++++++++++++++++++-----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index a4a49ffc640c..3729d2db29c7 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -413,6 +413,7 @@ void qemu_console_early_init(void);
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index fa879d7dcd4b..810751cf2644 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -102,6 +102,7 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+ static DisplayChangeListener dcl = {
+     .ops = &dcl_ops,
+ };
++static QKbdState *kbd;
+ static int cursor_hide = 1;
+ static int left_command_key_enabled = 1;
+ static bool swap_opt_cmd;
+@@ -309,7 +310,6 @@ @interface QemuCocoaView : NSView
+     NSTrackingArea *trackingArea;
+     QEMUScreen screen;
+     pixman_image_t *pixman_image;
+-    QKbdState *kbd;
+     BOOL isMouseGrabbed;
+     BOOL isAbsoluteEnabled;
+     CFMachPortRef eventsTap;
+@@ -361,7 +361,6 @@ - (id)initWithFrame:(NSRect)frameRect
  
- void qemu_console_set_display_gl_ctx(QemuConsole *con, DisplayGLCtx *ctx);
+         screen.width = frameRect.size.width;
+         screen.height = frameRect.size.height;
+-        kbd = qkbd_state_init(dcl.con);
+ #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
+         [self setClipsToBounds:YES];
+ #endif
+@@ -378,8 +377,6 @@ - (void) dealloc
+         pixman_image_unref(pixman_image);
+     }
  
-+QemuConsole *qemu_console_lookup_default(void);
- QemuConsole *qemu_console_lookup_by_index(unsigned int index);
- QemuConsole *qemu_console_lookup_by_device(DeviceState *dev, uint32_t head);
- QemuConsole *qemu_console_lookup_by_device_name(const char *device_id,
-diff --git a/include/ui/kbd-state.h b/include/ui/kbd-state.h
-index fb79776128cf..1f37b932eb62 100644
---- a/include/ui/kbd-state.h
-+++ b/include/ui/kbd-state.h
-@@ -99,4 +99,15 @@ bool qkbd_state_modifier_get(QKbdState *kbd, QKbdModifier mod);
-  */
- void qkbd_state_lift_all_keys(QKbdState *kbd);
- 
-+/**
-+ * qkbd_state_switch_console: Switch console.
-+ *
-+ * This sends key up events to the previous console for all keys which are in
-+ * down state to prevent keys being stuck, and remembers the new console.
-+ *
-+ * @kbd: state tracker state.
-+ * @con: new QemuConsole for this state tracker.
-+ */
-+void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con);
-+
- #endif /* QEMU_UI_KBD_STATE_H */
-diff --git a/ui/console.c b/ui/console.c
-index 832055675c50..fbc1b9b8b57c 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1325,6 +1325,18 @@ void graphic_console_close(QemuConsole *con)
-     dpy_gfx_replace_surface(con, surface);
+-    qkbd_state_free(kbd);
+-
+     if (eventsTap) {
+         CFRelease(eventsTap);
+     }
+@@ -429,6 +426,20 @@ - (void) viewWillMoveToWindow:(NSWindow *)newWindow
+     [self removeTrackingRect];
  }
  
-+QemuConsole *qemu_console_lookup_default(void)
++- (void) selectConsoleLocked:(unsigned int)index
 +{
-+    QemuConsole *con;
-+
-+    QTAILQ_FOREACH(con, &consoles, next) {
-+        if (QEMU_IS_GRAPHIC_CONSOLE(con)) {
-+            return con;
-+        }
++    QemuConsole *con = qemu_console_lookup_by_index(index);
++    if (!con) {
++        return;
 +    }
-+    return QTAILQ_FIRST(&consoles);
++
++    unregister_displaychangelistener(&dcl);
++    qkbd_state_switch_console(kbd, con);
++    dcl.con = con;
++    register_displaychangelistener(&dcl);
++    [self updateUIInfo];
 +}
 +
- QemuConsole *qemu_console_lookup_by_index(unsigned int index)
+ - (void) hideCursor
  {
-     QemuConsole *con;
-diff --git a/ui/kbd-state.c b/ui/kbd-state.c
-index 62d42a7a22e1..52ed28b8a89b 100644
---- a/ui/kbd-state.c
-+++ b/ui/kbd-state.c
-@@ -117,6 +117,12 @@ void qkbd_state_lift_all_keys(QKbdState *kbd)
+     if (!cursor_hide) {
+@@ -718,7 +729,8 @@ - (void) handleMonitorInput:(NSEvent *)event
+     }
+ 
+     if (keysym) {
+-        qemu_text_console_put_keysym(NULL, keysym);
++        QemuTextConsole *con = QEMU_TEXT_CONSOLE(dcl.con);
++        qemu_text_console_put_keysym(con, keysym);
      }
  }
  
-+void qkbd_state_switch_console(QKbdState *kbd, QemuConsole *con)
-+{
-+    qkbd_state_lift_all_keys(kbd);
-+    kbd->con = con;
-+}
-+
- void qkbd_state_set_delay(QKbdState *kbd, int delay_ms)
- {
-     kbd->key_delay_ms = delay_ms;
-diff --git a/ui/vnc.c b/ui/vnc.c
-index fc12b343e254..b3fd78022b19 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -1872,12 +1872,16 @@ static void do_key_event(VncState *vs, int down, int keycode, int sym)
-     /* QEMU console switch */
-     switch (qcode) {
-     case Q_KEY_CODE_1 ... Q_KEY_CODE_9: /* '1' to '9' keys */
--        if (vs->vd->dcl.con == NULL && down &&
-+        if (down &&
-             qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_CTRL) &&
-             qkbd_state_modifier_get(vs->vd->kbd, QKBD_MOD_ALT)) {
--            /* Reset the modifiers sent to the current console */
--            qkbd_state_lift_all_keys(vs->vd->kbd);
--            console_select(qcode - Q_KEY_CODE_1);
-+            QemuConsole *con = qemu_console_lookup_by_index(qcode - Q_KEY_CODE_1);
-+            if (con) {
-+                unregister_displaychangelistener(&vs->vd->dcl);
-+                qkbd_state_switch_console(vs->vd->kbd, con);
-+                vs->vd->dcl.con = con;
-+                register_displaychangelistener(&vs->vd->dcl);
-+            }
-             return;
-         }
-     default:
-@@ -4206,7 +4210,7 @@ void vnc_display_open(const char *id, Error **errp)
-             goto fail;
-         }
-     } else {
--        con = NULL;
-+        con = qemu_console_lookup_default();
-     }
+@@ -898,7 +910,7 @@ - (bool) handleEventLocked:(NSEvent *)event
  
-     if (con != vd->dcl.con) {
+                         // enable graphic console
+                         case '1' ... '9':
+-                            console_select(key - '0' - 1); /* ascii math */
++                            [self selectConsoleLocked:key - '0' - 1]; /* ascii math */
+                             return true;
+ 
+                         // release the mouse grab
+@@ -909,7 +921,7 @@ - (bool) handleEventLocked:(NSEvent *)event
+                 }
+             }
+ 
+-            if (qemu_console_is_graphic(NULL)) {
++            if (qemu_console_is_graphic(dcl.con)) {
+                 qkbd_state_key_event(kbd, keycode, true);
+             } else {
+                 [self handleMonitorInput: event];
+@@ -924,7 +936,7 @@ - (bool) handleEventLocked:(NSEvent *)event
+                 return true;
+             }
+ 
+-            if (qemu_console_is_graphic(NULL)) {
++            if (qemu_console_is_graphic(dcl.con)) {
+                 qkbd_state_key_event(kbd, keycode, false);
+             }
+             return true;
+@@ -1374,7 +1386,7 @@ - (void)toggleZoomInterpolation:(id) sender
+ - (void)displayConsole:(id)sender
+ {
+     with_bql(^{
+-        console_select([sender tag]);
++        [cocoaView selectConsoleLocked:[sender tag]];
+     });
+ }
+ 
+@@ -1945,7 +1957,6 @@ static void cocoa_switch(DisplayChangeListener *dcl,
+     pixman_image_ref(image);
+ 
+     dispatch_async(dispatch_get_main_queue(), ^{
+-        [cocoaView updateUIInfo];
+         [cocoaView switchSurface:image];
+     });
+ }
+@@ -1955,7 +1966,7 @@ static void cocoa_refresh(DisplayChangeListener *dcl)
+     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+ 
+     COCOA_DEBUG("qemu_cocoa: cocoa_refresh\n");
+-    graphic_hw_update(NULL);
++    graphic_hw_update(dcl->con);
+ 
+     if (qemu_input_is_absolute(dcl->con)) {
+         dispatch_async(dispatch_get_main_queue(), ^{
+@@ -2039,8 +2050,12 @@ static void cocoa_display_init(DisplayState *ds, DisplayOptions *opts)
+     add_console_menu_entries();
+     addRemovableDevicesMenuItems();
+ 
++    dcl.con = qemu_console_lookup_default();
++    kbd = qkbd_state_init(dcl.con);
++
+     // register vga output callbacks
+     register_displaychangelistener(&dcl);
++    [cocoaView updateUIInfo];
+ 
+     qemu_event_init(&cbevent, false);
+     cbowner = [[QemuCocoaPasteboardTypeOwner alloc] init];
 
 -- 
 2.44.0
