@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8AD8800EB
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:45:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704908800FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 16:46:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmbdi-0006al-1U; Tue, 19 Mar 2024 11:44:34 -0400
+	id 1rmbdk-0006xR-M6; Tue, 19 Mar 2024 11:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdH-0005vl-JN
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:09 -0400
-Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdL-00060C-B6
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:14 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbd8-00052C-9J
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:06 -0400
-Received: by mail-lf1-x133.google.com with SMTP id
- 2adb3069b0e04-5157af37806so1070901e87.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:43:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmbdD-00053F-42
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 11:44:08 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-41413f7b2dfso14209355e9.2
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 08:44:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710863034; x=1711467834; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710863040; x=1711467840; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=t3jAlnMMCXdnlaBpDRUrvP0z17b0GYkDdt6gJNRf5/M=;
- b=gk8RxjF4dRv5mDJtAzKIf5SxxB0vVxgxbZFAiEjdwnK9GSKZDDlbtjDo+3U8um0KYA
- BnvjK970PetZXAlrNTB8LSnfwoRtRgIgahB5BCLzn4oY1RDJIQJDQhRAFMzyqn5cCi/n
- QmtSf9E8Z/lwzNE000f9qsNpGUVFB7gp67mZ+pf2pO5coYhfZLx6yYTdLCM2mZHf+xMS
- AjGcsfeZXznL/7nd2J9G7CtKh15zV3CvE/6qC+Kil/k2USoOZybtOrmSbV714Y9LHZGW
- R0yUTDG4xIJA5/2gzq2L4UwHLHd68E6Ety1asbnI5y6zO3S+EdmCJNXWlIyxFW/8pAYe
- gjZw==
+ bh=j7owAJrs+Pq1wtN5iEuRd7D9oJWUcLUFndnuD7FxVak=;
+ b=CxT1DYqduBuo7jh1s3Atk2ea4hwd8bl8FQSlasG5Y+TlwP4GAYi+1WLElSpNoyQcZW
+ Xv8NGDFynY7Z3qn2M0Vmd8N3OXgOI61TknkB+nsZhU7tFGmtF2Kt6BQVfRs4OfIZS8/y
+ 8e9mDs0bOu7YpNSH0aoNBn1ZOU+aRr0izAql0IPzz3DuWu5x4B7ENr5MBJdcQcLpGkk8
+ AkGswTh1gJYKdLnqaq/VzhZQlcAQPrI0Yunww/ukLO6CAwYZcgY/Mz0JUA2yIK7+2dfk
+ NJZr64zCl15Fjwik4qJxGderB3uZoqi1jLQjE6+b3d/r/spEQhJ4ZWzRd0uWIyWhNVpE
+ hLXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710863034; x=1711467834;
+ d=1e100.net; s=20230601; t=1710863040; x=1711467840;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=t3jAlnMMCXdnlaBpDRUrvP0z17b0GYkDdt6gJNRf5/M=;
- b=Wc/yS68jPQj6Q8NIeMo1TlFi8DEr6AnWNlDv/gM3xLE+NaTRG89PSdxkMrCJ17SNju
- 4z4kpPDt2KG0+1gx+JURiBAu+pJS2Etkq1lhutL/wGi2qS6+H3ilwfkVsS69mS18Hrtg
- eCZuQKJp3LFQSjil2zqweTBiYiTxWPm4Or0CXqYTXVsc9rE1sxJRuOGuQUbgKB6mL9gn
- KBpkKMzdkVZdHAEy3a3TLnLnTWOZcVHXcqOLFcVmB2MnwN0T9+9vyHjpbtbvWCKlkaG2
- Rg8klFKOBYixBqMvjkVk7IXXfK2REQHHo4Tsu1875de+gHwCon7U3aBafD36A+LYipc0
- 8B9w==
-X-Gm-Message-State: AOJu0YzhTx7RL+yt5wRCWSm5daRNJGTVJ424q/Qb69BalQgYRpJion2s
- nyrOwkRwXzIh8aX6hXRSRoRL/OCC9oW2gib5u5Adh4hsYNky8z2hcCKMNTGn6yUO6GA3B1BIjf4
- R
-X-Google-Smtp-Source: AGHT+IFO246xEgnjbNWMXFACyMLgKsfoAEGZx9gvLG2mpZU/dfCvAQ4351GyO4Z1s9O7GEhcQQSbnA==
-X-Received: by 2002:a2e:be8a:0:b0:2d4:522e:62f3 with SMTP id
- a10-20020a2ebe8a000000b002d4522e62f3mr11483591ljr.44.1710863034373; 
- Tue, 19 Mar 2024 08:43:54 -0700 (PDT)
+ bh=j7owAJrs+Pq1wtN5iEuRd7D9oJWUcLUFndnuD7FxVak=;
+ b=Svg9aCGu6EBCY2Puuv/pQNtQqPHLZBL02PtI6o/Mb8KwWOsZ7r2vd0ogU9C7wyUtcQ
+ AGZqpAb14W6SQ/ZwcfpIB6slmm+9t8JkVk/Oy1+8W8yd9qcBuxgtaESH1zRqRQQR4NiF
+ gB/50iUmA9Dpa6E+y32rxX7xfp6eC/1z7CqreMoVmeaVVFIWKNBY2Ll+p28S1aVVPS3I
+ igeNSFFknnW8SIN5FQ0RSYgfRKeri6afsDykQ5WzrfD4Q2PtZN2WCWJx52SPGfEB8S2p
+ kt5K0tDhpdtQeI4uLgYSkwrJvifSlz8BWa+aFWlXGjBiVjPh+SvORGKhxkZ/Nij5M98c
+ ebYQ==
+X-Gm-Message-State: AOJu0YxSVUwu0pdZHD9Ryzp3MjNUJkp0LQixnRMXdQUR8GtxUFzgrr6w
+ jxfehYKQGrRobGuCcTXDynWLfIXhXKRy/7DCcsnvCcxnDa0+q3fYyLe/2LWP3ekQaENWN9p/LCj
+ h
+X-Google-Smtp-Source: AGHT+IEr3tvQQ2BJ2uYpQtPQOGMw73oJkZ/bY430DOKgy7XAnwwBkzdu2JHE8CMGs3vSVnNfNiaa7w==
+X-Received: by 2002:a05:6000:bc6:b0:33e:c974:1294 with SMTP id
+ dm6-20020a0560000bc600b0033ec9741294mr10840337wrb.17.1710863039961; 
+ Tue, 19 Mar 2024 08:43:59 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- n2-20020a5d4002000000b0033e93e00f68sm12609359wrp.61.2024.03.19.08.43.53
+ b16-20020adfee90000000b0033ec7182673sm12742529wro.52.2024.03.19.08.43.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 19 Mar 2024 08:43:53 -0700 (PDT)
+ Tue, 19 Mar 2024 08:43:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
  Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 09/27] target/hppa: Convert to
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH-for-9.1 10/27] target/i386: Convert to
  TCGCPUOps::get_cpu_state()
-Date: Tue, 19 Mar 2024 16:42:38 +0100
-Message-ID: <20240319154258.71206-10-philmd@linaro.org>
+Date: Tue, 19 Mar 2024 16:42:39 +0100
+Message-ID: <20240319154258.71206-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240319154258.71206-1-philmd@linaro.org>
 References: <20240319154258.71206-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::133;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x133.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,128 +98,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Convert cpu_get_tb_cpu_state() to TCGCPUOps::get_cpu_state().
 
+Note, now x86_get_cpu_state() is restricted to TCG.
+
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/hppa/cpu.h | 44 --------------------------------------------
- target/hppa/cpu.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+), 44 deletions(-)
+ target/i386/cpu.h         | 16 ----------------
+ target/i386/cpu.c         |  2 +-
+ target/i386/tcg/tcg-cpu.c | 15 +++++++++++++++
+ 3 files changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index cdb2904936..9bc54124c1 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -314,50 +314,6 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr);
- #define TB_FLAG_PRIV_SHIFT  8
- #define TB_FLAG_UNALIGN     0x400
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 954495fff0..390abc969e 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2354,22 +2354,6 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
+ #include "hw/i386/apic.h"
+ #endif
  
 -#define TARGET_HAS_CPU_GET_TB_CPU_STATE
 -
--static inline void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
--                                        uint64_t *cs_base, uint32_t *pflags)
+-static inline void cpu_get_tb_cpu_state(CPUX86State *env, vaddr *pc,
+-                                        uint64_t *cs_base, uint32_t *flags)
 -{
--    uint32_t flags = env->psw_n * PSW_N;
--
--    /* TB lookup assumes that PC contains the complete virtual address.
--       If we leave space+offset separate, we'll get ITLB misses to an
--       incomplete virtual address.  This also means that we must separate
--       out current cpu privilege from the low bits of IAOQ_F.  */
--#ifdef CONFIG_USER_ONLY
--    *pc = env->iaoq_f & -4;
--    *cs_base = env->iaoq_b & -4;
--    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
--#else
--    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
--    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
--    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
--
--    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
--                            env->iaoq_f & -4);
--    *cs_base = env->iasq_f;
--
--    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
--       low 32-bits of CS_BASE.  This will succeed for all direct branches,
--       which is the primary case we care about -- using goto_tb within a page.
--       Failure is indicated by a zero difference.  */
--    if (env->iasq_f == env->iasq_b) {
--        target_long diff = env->iaoq_b - env->iaoq_f;
--        if (diff == (int32_t)diff) {
--            *cs_base |= (uint32_t)diff;
--        }
+-    *flags = env->hflags |
+-        (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
+-    if (env->hflags & HF_CS64_MASK) {
+-        *cs_base = 0;
+-        *pc = env->eip;
+-    } else {
+-        *cs_base = env->segs[R_CS].base;
+-        *pc = (uint32_t)(*cs_base + env->eip);
 -    }
--    if ((env->sr[4] == env->sr[5])
--        & (env->sr[4] == env->sr[6])
--        & (env->sr[4] == env->sr[7])) {
--        flags |= TB_FLAG_SR_SAME;
--    }
--#endif
--
--    *pflags = flags;
 -}
 -
- target_ulong cpu_hppa_get_psw(CPUHPPAState *env);
- void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong);
- void cpu_hppa_loaded_fr0(CPUHPPAState *env);
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 3831cb6db2..f2dc1e79e9 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -89,6 +89,48 @@ static void hppa_restore_state_to_opc(CPUState *cs,
-     cpu->env.psw_n = 0;
+ void do_cpu_init(X86CPU *cpu);
+ 
+ #define MCE_INJECT_BROADCAST    1
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 9a210d8d92..249b6fe0bb 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -7679,7 +7679,7 @@ static vaddr x86_cpu_get_pc(CPUState *cs)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+ 
+-    /* Match cpu_get_tb_cpu_state. */
++    /* Match x86_get_cpu_state. */
+     return cpu->env.eip + cpu->env.segs[R_CS].base;
  }
  
-+static void hppa_get_cpu_state(CPUHPPAState *env, vaddr *pc,
-+                               uint64_t *cs_base, uint32_t *pflags)
+diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+index cca19cd40e..a89c11a34b 100644
+--- a/target/i386/tcg/tcg-cpu.c
++++ b/target/i386/tcg/tcg-cpu.c
+@@ -93,6 +93,20 @@ static void x86_restore_state_to_opc(CPUState *cs,
+     }
+ }
+ 
++static inline void x86_get_cpu_state(CPUX86State *env, vaddr *pc,
++                                     uint64_t *cs_base, uint32_t *flags)
 +{
-+    uint32_t flags = env->psw_n * PSW_N;
-+
-+    /* TB lookup assumes that PC contains the complete virtual address.
-+       If we leave space+offset separate, we'll get ITLB misses to an
-+       incomplete virtual address.  This also means that we must separate
-+       out current cpu privilege from the low bits of IAOQ_F.  */
-+#ifdef CONFIG_USER_ONLY
-+    *pc = env->iaoq_f & -4;
-+    *cs_base = env->iaoq_b & -4;
-+    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
-+#else
-+    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
-+    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
-+    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
-+
-+    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
-+                            env->iaoq_f & -4);
-+    *cs_base = env->iasq_f;
-+
-+    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
-+       low 32-bits of CS_BASE.  This will succeed for all direct branches,
-+       which is the primary case we care about -- using goto_tb within a page.
-+       Failure is indicated by a zero difference.  */
-+    if (env->iasq_f == env->iasq_b) {
-+        target_long diff = env->iaoq_b - env->iaoq_f;
-+        if (diff == (int32_t)diff) {
-+            *cs_base |= (uint32_t)diff;
-+        }
++    *flags = env->hflags |
++        (env->eflags & (IOPL_MASK | TF_MASK | RF_MASK | VM_MASK | AC_MASK));
++    if (env->hflags & HF_CS64_MASK) {
++        *cs_base = 0;
++        *pc = env->eip;
++    } else {
++        *cs_base = env->segs[R_CS].base;
++        *pc = (uint32_t)(*cs_base + env->eip);
 +    }
-+    if ((env->sr[4] == env->sr[5])
-+        & (env->sr[4] == env->sr[6])
-+        & (env->sr[4] == env->sr[7])) {
-+        flags |= TB_FLAG_SR_SAME;
-+    }
-+#endif
-+
-+    *pflags = flags;
 +}
 +
- static bool hppa_cpu_has_work(CPUState *cs)
- {
-     return cs->interrupt_request & (CPU_INTERRUPT_HARD | CPU_INTERRUPT_NMI);
-@@ -186,6 +228,7 @@ static const TCGCPUOps hppa_tcg_ops = {
-     .initialize = hppa_translate_init,
-     .synchronize_from_tb = hppa_cpu_synchronize_from_tb,
-     .restore_state_to_opc = hppa_restore_state_to_opc,
-+    .get_cpu_state = hppa_get_cpu_state,
- 
  #ifndef CONFIG_USER_ONLY
-     .tlb_fill = hppa_cpu_tlb_fill,
+ static bool x86_debug_check_breakpoint(CPUState *cs)
+ {
+@@ -110,6 +124,7 @@ static const TCGCPUOps x86_tcg_ops = {
+     .initialize = tcg_x86_init,
+     .synchronize_from_tb = x86_cpu_synchronize_from_tb,
+     .restore_state_to_opc = x86_restore_state_to_opc,
++    .get_cpu_state = x86_get_cpu_state,
+     .cpu_exec_enter = x86_cpu_exec_enter,
+     .cpu_exec_exit = x86_cpu_exec_exit,
+ #ifdef CONFIG_USER_ONLY
 -- 
 2.41.0
 
