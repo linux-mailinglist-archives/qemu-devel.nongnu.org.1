@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7E2880604
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 21:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84F6880608
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 21:23:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmfxu-0001CY-QH; Tue, 19 Mar 2024 16:21:42 -0400
+	id 1rmfxx-0001EG-QJ; Tue, 19 Mar 2024 16:21:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmfxt-0001AF-0N
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rmfxu-0001DN-Kg
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmfxr-0007Xa-JJ
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:40 -0400
+ id 1rmfxt-0007Xo-7j
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 16:21:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710879699;
+ s=mimecast20190719; t=1710879700;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=GmyzAPxjTgeKDjVJ0AWjCjntKl9QWcHfcWNyKOLGQb8=;
- b=gTKm+JNsHVdc2SADBmvngtiMmMuMR707XaXueYJL8blabq/D9tWyyBAF765trq4YKazI3V
- reaDiWOqRNwB3P9Ooue3xUOpTlIxe6IJ0i1qlFgwZ67JREfNLLM+bJicifEF0wtN/sTy4B
- dSgfflM1uHMD4GlGif1Udf/ftF5oFrU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-62-pHaeTyxDOwm7T4-xieEC-Q-1; Tue,
- 19 Mar 2024 16:21:37 -0400
-X-MC-Unique: pHaeTyxDOwm7T4-xieEC-Q-1
+ bh=rAe8uvlkz7XpDmQJy4XUSJsfk1Xu+IZacqAncnrJWk4=;
+ b=PnFUvAzHhYyy/+r2CT70sjq5wBIjgWzZ1Z/W4KWBQ6CENgohQzkgO9EiZqYgni0bE+DdG6
+ j1AzzGEO97eCe2C5NNwO5ULAbQTjoK7KgdOE6Pk3FWEGpGoajd9WyLFbV8FGuu/0bWguqc
+ Ml/xTij0livjPfCuWbZ1qxBgkjrKUy4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-275-6TE2O_e2PxSPmQXaT-fGUQ-1; Tue, 19 Mar 2024 16:21:38 -0400
+X-MC-Unique: 6TE2O_e2PxSPmQXaT-fGUQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21A833C0252B;
- Tue, 19 Mar 2024 20:21:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74AAF85A58C;
+ Tue, 19 Mar 2024 20:21:38 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.88])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 928C017A91;
- Tue, 19 Mar 2024 20:21:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6581810E47;
+ Tue, 19 Mar 2024 20:21:37 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
@@ -50,16 +50,16 @@ Cc: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PULL 6/8] crypto: query gcrypt for cipher availability
-Date: Tue, 19 Mar 2024 20:21:19 +0000
-Message-ID: <20240319202121.233130-7-berrange@redhat.com>
+Subject: [PULL 7/8] crypto: use error_abort for unexpected failures
+Date: Tue, 19 Mar 2024 20:21:20 +0000
+Message-ID: <20240319202121.233130-8-berrange@redhat.com>
 In-Reply-To: <20240319202121.233130-1-berrange@redhat.com>
 References: <20240319202121.233130-1-berrange@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -84,38 +84,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just because a cipher is defined in the gcrypt header file, does not
-imply that it can be used. Distros can filter the list of ciphers when
-building gcrypt. For example, RHEL-9 disables the SM4 cipher. It is
-also possible that running in FIPS mode might dynamically change what
-ciphers are available at runtime.
+This improves the error diagnosis from the unit test when a cipher
+is unexpected not available from
 
-qcrypto_cipher_supports must therefore query gcrypt directly to check
-for cipher availability.
+ERROR:../tests/unit/test-crypto-cipher.c:683:test_cipher: assertion failed: (err == NULL)
+Bail out! ERROR:../tests/unit/test-crypto-cipher.c:683:test_cipher: assertion failed: (err == NULL)
+Aborted (core dumped)
+
+to
+
+Unexpected error in qcrypto_cipher_ctx_new() at ../crypto/cipher-gcrypt.c.inc:262:
+./build//tests/unit/test-crypto-cipher: Cannot initialize cipher: Invalid cipher algorithm
+Aborted (core dumped)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- crypto/cipher-gcrypt.c.inc | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/unit/test-crypto-cipher.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/crypto/cipher-gcrypt.c.inc b/crypto/cipher-gcrypt.c.inc
-index 6b82280f90..4a8314746d 100644
---- a/crypto/cipher-gcrypt.c.inc
-+++ b/crypto/cipher-gcrypt.c.inc
-@@ -93,6 +93,11 @@ bool qcrypto_cipher_supports(QCryptoCipherAlgorithm alg,
-         return false;
-     }
- 
-+    if (gcry_cipher_algo_info(qcrypto_cipher_alg_to_gcry_alg(alg),
-+                              GCRYCTL_TEST_ALGO, NULL, NULL) != 0) {
-+        return false;
-+    }
-+
-     switch (mode) {
-     case QCRYPTO_CIPHER_MODE_ECB:
-     case QCRYPTO_CIPHER_MODE_CBC:
+diff --git a/tests/unit/test-crypto-cipher.c b/tests/unit/test-crypto-cipher.c
+index 11ab1a54fc..d0ea7b4d8e 100644
+--- a/tests/unit/test-crypto-cipher.c
++++ b/tests/unit/test-crypto-cipher.c
+@@ -676,9 +676,8 @@ static void test_cipher(const void *opaque)
+     cipher = qcrypto_cipher_new(
+         data->alg, data->mode,
+         key, nkey,
+-        &err);
++        data->plaintext ? &error_abort : &err);
+     if (data->plaintext) {
+-        g_assert(err == NULL);
+         g_assert(cipher != NULL);
+     } else {
+         error_free_or_abort(&err);
 -- 
 2.43.0
 
