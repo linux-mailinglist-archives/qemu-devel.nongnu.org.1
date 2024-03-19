@@ -2,92 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6143880413
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 18:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 670CA880419
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 18:59:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmdj4-0006gZ-My; Tue, 19 Mar 2024 13:58:14 -0400
+	id 1rmdjz-0007Yq-V7; Tue, 19 Mar 2024 13:59:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmdj2-0006eH-4g
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:12 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmdj0-0006bk-KR
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:11 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a3ddc13bbb3so21675166b.0
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 10:58:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710871089; x=1711475889; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XIzJ0MlYTeAqrvebZ9zPQC8YI+EGPXH5EFCGUk6b4CQ=;
- b=hFDsSJ9pkRUijPtJWZuXfNmZ4c8gJ8AlBKxY+cotHO+zjlE+8MmEG/YT14wBPAmmFD
- 8GPx/csQxzuCITpfj6uSii4XohVUsxUohLOqpu8uvOqLhltmsxncu88h6hwYp9SWD6tH
- o3XLNtD0d1qyE4HdynG2EQXKyNq1QowVJyXHadUod3/DFahEq2Ei2/egTq6oz6N46pKo
- cZ0LgZumwAWw+TxsmPAr5kOMa+hA1hnXUtZcRyOEzV8GrChcywUt6nrcFO0fTbW/dNoK
- nEK9Z7qixj4S3ZthLTUtXJCYChO/O90oe5RXvzlRCqOq6c7lgoP9ampAbl1i2t9b5iGk
- 1/MA==
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rmdjZ-0007I3-Ih
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1rmdjS-0006ch-Fr
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 13:58:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710871118;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jYmU+L2QgZldk4KcApW+ioelmr5/F2Py6BDqP9YORtA=;
+ b=PKzcgcwYbI2ZZkSQ6t7yTtZcXx0P5m1/Dz4AWWKkCbLvqB+6Xaa3K4AUrj7/jV+DvLj96H
+ sM/Bq45blsocfXFtgGROzBUG7cjlpshlnvVBnKYJ/d6RDfOIP6BtZFNQzkAppdHWqEYhli
+ FMxipWzGLrQnRZmpf4yxaX7K8xgYNAg=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-412-3PAoL73mOFqY1Ttn4McKiw-1; Tue, 19 Mar 2024 13:58:36 -0400
+X-MC-Unique: 3PAoL73mOFqY1Ttn4McKiw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-33ec0700091so3718327f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 10:58:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710871089; x=1711475889;
- h=content-transfer-encoding:mime-version:message-id:date:user-agent
- :references:in-reply-to:subject:cc:to:from:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to;
- bh=XIzJ0MlYTeAqrvebZ9zPQC8YI+EGPXH5EFCGUk6b4CQ=;
- b=WDEqgUPFUR5c4k3GlHlknjehwFAg7AYQ8msThYXRUtzge8xCnd98tzPXWcGHfeAgJh
- XfkfPvIZDA77nkd+bFV/KGoa8wCWU4J8JgV/T3Sn6jrmb7cWGZFhQ48iRjDDDlWZJeoa
- t61HmYGRt+cRr3HE2tg3wtl4UYRXrFWGifj4dAUY0S4ftV07huDYq9uCDAZ9+kfd7xmO
- Gf1m11EHsnrJLF4p8/Gu1BckjhWpHMZoySPmnUWA7jd8DHgINYM0vNHS4ED2qmFW190E
- 1ntGKpMKZadKxhMJqSQ4yEab3Uz8DOLuKXSvEg5ve9iqFHiMRxNODOq8OqcEs9QfeBd8
- tqCQ==
-X-Gm-Message-State: AOJu0Yxenccoy5wIDziuPjtjl7NLX5242Z93ELAvaRg+m89WGrtelyzR
- DC2UKcEWMMz/w29ZrmU/Q+oRtAtvRPh1SdVpavX1CTyLLGjOBHj17BoNIub+Ybo=
-X-Google-Smtp-Source: AGHT+IHGcI4h4HE5ihojCSROY6YWxho900M1tKSH2gffea9ZSi/0sorb7pT3BqTQIi6WV1MJ0Tc9Gg==
-X-Received: by 2002:a17:906:8a58:b0:a45:40e4:8c8 with SMTP id
- gx24-20020a1709068a5800b00a4540e408c8mr3022992ejc.16.1710871089091; 
- Tue, 19 Mar 2024 10:58:09 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- ww2-20020a170907084200b00a46cc48ab07sm2052514ejb.221.2024.03.19.10.58.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 10:58:08 -0700 (PDT)
-Received: from draig (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 83BE65F75D;
- Tue, 19 Mar 2024 17:58:08 +0000 (GMT)
-From: =?utf-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org,  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Richard
- Henderson
- <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>,
- John Snow <jsnow@redhat.com>,  Cleber Rosa <crosa@redhat.com>,  Wainer
- dos Santos Moschetta <wainersm@redhat.com>,  Beraldo Leal
- <bleal@redhat.com>,  Michael Tokarev <mjt@tls.msk.ru>
-Subject: Re: [PATCH v5 05/24] Revert "replay: stop us hanging in
- rr_wait_io_event"
-In-Reply-To: <20240318154621.2361161-6-npiggin@gmail.com> (Nicholas Piggin's
- message of "Tue, 19 Mar 2024 01:46:02 +1000")
-References: <20240318154621.2361161-1-npiggin@gmail.com>
- <20240318154621.2361161-6-npiggin@gmail.com>
-User-Agent: mu4e 1.12.2; emacs 29.2
-Date: Tue, 19 Mar 2024 17:58:08 +0000
-Message-ID: <87bk7a3xzj.fsf@draig.linaro.org>
+ d=1e100.net; s=20230601; t=1710871115; x=1711475915;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jYmU+L2QgZldk4KcApW+ioelmr5/F2Py6BDqP9YORtA=;
+ b=NsxTYUGWSTZcL+Dd8PgfAmdiD5kDvZNLgKYpbKbb+xYJk09j/HaN3z+3u5nireZOUZ
+ m3HxOkOLQI7NtmSD/eZJCMz2uO/I87h7tvGTwF5F4TyGMAcY82OMqWnCOLqyjJLA/cCj
+ +lxJm/0JYXBo4O5T403Y4/sOuPS1L8XHKEp5sN+wQd5w6E/pyjc09394FMCm5OdqAYld
+ w5ODfduww84H01jVlofH9SEJNY/d5ZuJxU/pPHg7rLrGXnbth6cy2dt9INo9pUk77pQR
+ P8zHWT3m5s6xPPKeZhOlA7g0lKsX2LnDJLZdAy+3wAk9JS7FW+aMjkwqFakOl5ahKZLw
+ eFQQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWB5yHFdEB5LCweZhJbKkT9utyB3sZiv4mpWn36YBcBpSlXegzqNpKdNRewBwv7OD+14MIsi3x6linDgwpgDWZR/nhzknk=
+X-Gm-Message-State: AOJu0Yws/9ZP0IWrj1FYBpDGKaXknwUTEeurKVVsonNdKZTvMVmvX+0k
+ KeDjUPomU7gV5hGy3hy5iE4608PNYOu68bam/skggWn/xvXfrySvpIjAJVwRMp7eXr7gpQeTA2M
+ LbBS6FMzmiUqnxtNiGEL1vaARjOLPR+e4c/6WhekdazomORK0nyuM
+X-Received: by 2002:adf:f583:0:b0:341:8efd:e20d with SMTP id
+ f3-20020adff583000000b003418efde20dmr1471613wro.23.1710871115200; 
+ Tue, 19 Mar 2024 10:58:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJaj9GK+Gn5lZ9KkbZqTGQDZfNRc+e2z6IHIpdRPOxzqcjSQsXBXG/qADG5Bw+HKzuiR6uMA==
+X-Received: by 2002:adf:f583:0:b0:341:8efd:e20d with SMTP id
+ f3-20020adff583000000b003418efde20dmr1471599wro.23.1710871114880; 
+ Tue, 19 Mar 2024 10:58:34 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ y10-20020a5d4aca000000b0033e03d37685sm12909668wrs.55.2024.03.19.10.58.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 19 Mar 2024 10:58:34 -0700 (PDT)
+Message-ID: <84e01fa8-0de6-4d2b-8696-53cd3c3f42fa@redhat.com>
+Date: Tue, 19 Mar 2024 18:58:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] arm/kvm: Enable support for KVM_ARM_VCPU_PMU_V3_FILTER
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>
+Cc: qemu-arm@nongnu.org, Sebastian Ott <sebott@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, qemu-devel@nongnu.org, kvm@vger.kernel.org
+References: <20240221063431.76992-1-shahuang@redhat.com>
+ <ZfmtxxlATpvhK61y@redhat.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <ZfmtxxlATpvhK61y@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,27 +106,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Nicholas Piggin <npiggin@gmail.com> writes:
+Hi Daniel,
 
-> This reverts commit 1f881ea4a444ef36a8b6907b0b82be4b3af253a2.
->
-> That commit causes reverse_debugging.py test failures, and does
-> not seem to solve the root cause of the problem x86-64 still
-> hangs in record/replay tests.
->
-> The problem with short-cutting the iowait that was taken during
-> record phase is that related events will not get consumed at the
-> same points (e.g., reading the clock).
->
-> A hang with zero icount always seems to be a symptom of an earlier
-> problem that has caused the recording to become out of synch with
-> the execution and consumption of events by replay.
->
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+On 3/19/24 16:22, Daniel P. Berrangé wrote:
+> On Wed, Feb 21, 2024 at 01:34:31AM -0500, Shaoqin Huang wrote:
+>> The KVM_ARM_VCPU_PMU_V3_FILTER provides the ability to let the VMM decide
+>> which PMU events are provided to the guest. Add a new option
+>> `kvm-pmu-filter` as -cpu sub-option to set the PMU Event Filtering.
+>> Without the filter, all PMU events are exposed from host to guest by
+>> default. The usage of the new sub-option can be found from the updated
+>> document (docs/system/arm/cpu-features.rst).
+>>
+>> Here is an example which shows how to use the PMU Event Filtering, when
+>> we launch a guest by use kvm, add such command line:
+>>
+>>   # qemu-system-aarch64 \
+>>         -accel kvm \
+>>         -cpu host,kvm-pmu-filter="D:0x11-0x11"
+> 
+> snip
+> 
+>> @@ -517,6 +533,12 @@ void kvm_arm_add_vcpu_properties(ARMCPU *cpu)
+>>                               kvm_steal_time_set);
+>>      object_property_set_description(obj, "kvm-steal-time",
+>>                                      "Set off to disable KVM steal time.");
+>> +
+>> +    object_property_add_str(obj, "kvm-pmu-filter", kvm_pmu_filter_get,
+>> +                            kvm_pmu_filter_set);
+>> +    object_property_set_description(obj, "kvm-pmu-filter",
+>> +                                    "PMU Event Filtering description for "
+>> +                                    "guest PMU. (default: NULL, disabled)");
+>>  }
+> 
+> Passing a string property, but....[1]
+> 
+>>  
+>>  bool kvm_arm_pmu_supported(void)
+>> @@ -1706,6 +1728,62 @@ static bool kvm_arm_set_device_attr(ARMCPU *cpu, struct kvm_device_attr *attr,
+>>      return true;
+>>  }
+>>  
+>> +static void kvm_arm_pmu_filter_init(ARMCPU *cpu)
+>> +{
+>> +    static bool pmu_filter_init;
+>> +    struct kvm_pmu_event_filter filter;
+>> +    struct kvm_device_attr attr = {
+>> +        .group      = KVM_ARM_VCPU_PMU_V3_CTRL,
+>> +        .attr       = KVM_ARM_VCPU_PMU_V3_FILTER,
+>> +        .addr       = (uint64_t)&filter,
+>> +    };
+>> +    int i;
+>> +    g_auto(GStrv) event_filters;
+>> +
+>> +    if (!cpu->kvm_pmu_filter) {
+>> +        return;
+>> +    }
+>> +    if (kvm_vcpu_ioctl(CPU(cpu), KVM_HAS_DEVICE_ATTR, &attr)) {
+>> +        warn_report("The KVM doesn't support the PMU Event Filter!");
+> 
+> If the user requested a filter and it can't be supported, QEMU
+> must exit with an error, not ignore the user's request.
+> 
+>> +        return;
+>> +    }
+>> +
+>> +    /*
+>> +     * The filter only needs to be initialized through one vcpu ioctl and it
+>> +     * will affect all other vcpu in the vm.
+>> +     */
+>> +    if (pmu_filter_init) {
+>> +        return;
+>> +    } else {
+>> +        pmu_filter_init = true;
+>> +    }
+>> +
+>> +    event_filters = g_strsplit(cpu->kvm_pmu_filter, ";", -1);
+>> +    for (i = 0; event_filters[i]; i++) {
+>> +        unsigned short start = 0, end = 0;
+>> +        char act;
+>> +
+>> +        if (sscanf(event_filters[i], "%c:%hx-%hx", &act, &start, &end) != 3) {
+>> +            warn_report("Skipping invalid PMU filter %s", event_filters[i]);
+>> +            continue;
+> 
+> Warning on user syntax errors is undesirable - it should be a fatal
+> error of the user gets this wrong.
+> 
+>> +        }
+>> +
+>> +        if ((act != 'A' && act != 'D') || start > end) {
+>> +            warn_report("Skipping invalid PMU filter %s", event_filters[i]);
+>> +            continue;
+> 
+> Likewise should be fatal.
+> 
+>> +        }
+>> +
+>> +        filter.base_event = start;
+>> +        filter.nevents = end - start + 1;
+>> +        filter.action = (act == 'A') ? KVM_PMU_EVENT_ALLOW :
+>> +                                       KVM_PMU_EVENT_DENY;
+>> +
+>> +        if (!kvm_arm_set_device_attr(cpu, &attr, "PMU_V3_FILTER")) {
+>> +            break;
+>> +        }
+>> +    }
+>> +}
+> 
+> ..[1] then implementing a custom parser is rather a QEMU design anti-pattern,
+> especially when the proposed syntax is incapable of being mapped into the
+> normal QAPI syntax for a list of structs should we want to fully convert
+> -cpu to QAPI parsing later. I wonder if can we model this property with
+> QAPI now ?
+I guess you mean creating a new property like those in
+hw/core/qdev-properties-system.c for instance  and populating an array
+of those at CPU object level?
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Note there is v8 but most of your comments still apply
+https://lore.kernel.org/all/20240312074849.71475-1-shahuang@redhat.com/
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Thanks
+
+Eric
+> 
+> With regards,
+> Daniel
+
 
