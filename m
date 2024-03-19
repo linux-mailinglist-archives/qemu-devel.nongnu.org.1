@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B715687F74E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:29:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF3C87F757
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 07:31:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmSyY-000596-Ah; Tue, 19 Mar 2024 02:29:30 -0400
+	id 1rmSyh-0005Dx-LP; Tue, 19 Mar 2024 02:29:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyU-00058R-7N
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:26 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyY-00059B-HL
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:30 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyQ-0005dh-MC
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:25 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41461c256c4so5249425e9.0
- for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:29:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmSyW-0005e9-U0
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 02:29:30 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-414618e6820so5819905e9.0
+ for <qemu-devel@nongnu.org>; Mon, 18 Mar 2024 23:29:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710829760; x=1711434560; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710829766; x=1711434566; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OUMu/SnjGuIrmF5U5VN8reZH7HV2LtE5n6DxI3xZ0h0=;
- b=plwc0dqHA3AAP69WtK89dB9Fxl5671UXEgvyOfgBFEuM0sSHjjO6kydLN/MTb7/a/X
- 0ir43r0E7gUd1AE7+rb8cykUPLCD2uFq3Osqtt8MDpy7pUOb7EbV6KRXR8MlsIpcVlq0
- X4k87UCgvJUf1xMhudJDZ/kuK9UuAIV7UnBYPkt3nA9aUiH0FfVl92B3hSjf3c6Gp5+H
- VfFnW+b6nUfbKCQu3YVv9xXCp1WtM2gOUfYSCdcMTQ+Ut+wkW1T2M3cT0MbHtqPRcwok
- U+NONCg1rZS0QtFk2alGozJV599qc/Dsx+eHv2+apNM9DcJ7gCbMQ71SC0lyHXo7oWA8
- NlHw==
+ bh=n1MPot1rwOH2sHZ4KnXL6/xrTAyUEmTpRKdgwXMTPjQ=;
+ b=owwEE06FNiM1zIBP72Rs2G0t0/gN4g4bRK+GvvWAg29woDcH9ua4qOphaS5MSdsSIR
+ 7NVr8JuTTX3OcH9CGZ/1kSCC2ZLbYjQZHfX4gCAKF2kRP+2thVlIQac/KS1KFvdiTxHj
+ T/6Lodr+CUvICEtcDaQ1zUiT6fZNVnQsTK8D++3fUAg1s23CoMklEGChN1wO02fXsj4/
+ XKyTS0x3h0gmFWoBm6xm/n04cz2HrU2F6MWtQgmgcZGzQnpcjbT0otRRLxKtTkI04soR
+ ZNlOfIwQ5I6CHVKX8x2BQenvYfLA4Hz8k3oK6IGfdutunUeZpBYfoMSI8lXmixIaDUhW
+ GI5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710829760; x=1711434560;
+ d=1e100.net; s=20230601; t=1710829766; x=1711434566;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OUMu/SnjGuIrmF5U5VN8reZH7HV2LtE5n6DxI3xZ0h0=;
- b=nJ2Cxc3UT3ABm8JAqQiy7636BR4ikjJGJ71BpJorZVsjhKo6htWxvIodDfKtzAdKYl
- peoeTqMcZEqHXCcFT+BGQvMcT+FkRTWT290OC25lvNCfxuUj9kxitGAZtnkVczcf+BxF
- Y9ZIZdSXgIfDzxSnEidZW19QEiVKpLF1msmF82khYL347Zext9QkD4jTcBoiU76017xZ
- ZGcxhGbBPoGCZNANZNfEh1FfBWBvHB+6HxuiMUqf1y/QssUa5xyN1tJPEICoeX8Qtrid
- Upb5Yrh8WPLDhcVMCYJw28DcUS/GMgj4s+EQ0XVXXOpHwNG4UOUJuK3Uu3lzieMGmkCm
- s92w==
-X-Gm-Message-State: AOJu0YxkaPKkX0mU5Jna9y42nTpyPVFS0cjkJr+nTh3pdhLFGCH0KkNI
- wJYMidIS5cA+zyKS/oBjWuD/+h5YUXcgcGO+cXquvxqX1cAcFm7PdBXSmpyfzs8Hp/KTO9m0Moc
- A
-X-Google-Smtp-Source: AGHT+IHP//CRIEiNinf9+UhocTaax5slUcGi81qSrKwN1DEZtshK6yksOSk63XTSyfk7Dol9GWtjlA==
-X-Received: by 2002:a05:600c:5494:b0:414:624c:aaf with SMTP id
- iv20-20020a05600c549400b00414624c0aafmr866477wmb.35.1710829760636; 
- Mon, 18 Mar 2024 23:29:20 -0700 (PDT)
+ bh=n1MPot1rwOH2sHZ4KnXL6/xrTAyUEmTpRKdgwXMTPjQ=;
+ b=sO6HR+30Ln0h6q74QSYiPGE+GbnGzDFAhbZUhiMnoWd8tJ5KuFdJqIX6mHL8bW41J+
+ 5N/XhV1sYUFAtHrDGLp17lJt8en4vJFaoqh1t6jsL0mSmOGSFFaNkyjKl9Ka4SRcTzLe
+ Q+XY0kbakOMUhuqyNvpsa+BFcpZGGpVEqI6zhXUpr5hKcEPZDsqpcZXWQfHny3AcmlXp
+ qj2B0LHjkJ8+ZZZKGqBqUo4vQEQ1t/X4Ayn0hJc6IjaXpsz0c4uBRClm72qHh+RtIrN4
+ DpqLcJzK/bS/7BFZGmTar+AEmH1NIBCLtpiqvxKKrhRlJRO8asGN6W4xQUeMq4p2esjS
+ QpyQ==
+X-Gm-Message-State: AOJu0Ywi07YiGDvodmwsPzY1q5WSqlDCshMHQr8MawEakEejmwDlnn9Q
+ f5ADzF3ujxZLxOsoChiVdJIrAOseAtpKXhFYMdOxdW7KtRr/c0adZS7Jo3/JmSq/c1NrsJU9xZK
+ e
+X-Google-Smtp-Source: AGHT+IGyFHLXXW0HyzGyYV1/M1fhBfxn2ypbm2zCFU9F3y9AQOSSlXYYFkseD3Hg8quM0HV4dPJMAA==
+X-Received: by 2002:a05:600c:4fc8:b0:414:6172:8366 with SMTP id
+ o8-20020a05600c4fc800b0041461728366mr1300185wmq.15.1710829766185; 
+ Mon, 18 Mar 2024 23:29:26 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.166.129])
  by smtp.gmail.com with ESMTPSA id
- t6-20020a05600c450600b004133365bbc6sm20189118wmo.19.2024.03.18.23.29.19
+ j17-20020a05600c191100b00414659ba8c2sm650763wmq.37.2024.03.18.23.29.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 18 Mar 2024 23:29:20 -0700 (PDT)
+ Mon, 18 Mar 2024 23:29:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -62,18 +62,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>, Anton Johansson <anjo@rev.ng>,
  Alistair Francis <alistair@alistair23.me>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 4/8] target/microblaze: Use 32-bit destination in
- gen_goto_tb()
-Date: Tue, 19 Mar 2024 07:28:51 +0100
-Message-ID: <20240319062855.8025-5-philmd@linaro.org>
+Subject: [PATCH-for-9.1 5/8] target/microblaze: Restrict 64-bit 'res_addr' to
+ system emulation
+Date: Tue, 19 Mar 2024 07:28:52 +0100
+Message-ID: <20240319062855.8025-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240319062855.8025-1-philmd@linaro.org>
 References: <20240319062855.8025-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,26 +96,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-cpu_pc and jmp_dest are 32-bit.
+'res_addr' is only used in system emulation, where we have
+TARGET_LONG_BITS = 64, so we can directly use the native
+uint64_t type instead of target_ulong.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/microblaze/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/microblaze/cpu.h       | 10 +++++-----
+ target/microblaze/cpu.c       |  2 ++
+ target/microblaze/machine.c   |  2 +-
+ target/microblaze/translate.c |  9 +++++++--
+ 4 files changed, 15 insertions(+), 8 deletions(-)
 
+diff --git a/target/microblaze/cpu.h b/target/microblaze/cpu.h
+index c0c7574dbd..c3e2aba0ec 100644
+--- a/target/microblaze/cpu.h
++++ b/target/microblaze/cpu.h
+@@ -260,11 +260,6 @@ struct CPUArchState {
+     /* Stack protectors. Yes, it's a hw feature.  */
+     uint32_t slr, shr;
+ 
+-    /* lwx/swx reserved address */
+-#define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
+-    target_ulong res_addr;
+-    uint32_t res_val;
+-
+     /* Internal flags.  */
+ #define IMM_FLAG        (1 << 0)
+ #define BIMM_FLAG       (1 << 1)
+@@ -286,6 +281,11 @@ struct CPUArchState {
+     uint32_t iflags;
+ 
+ #if !defined(CONFIG_USER_ONLY)
++    /* lwx/swx reserved address */
++#define RES_ADDR_NONE 0xffffffff /* Use 0xffffffff to indicate no reservation */
++    uint64_t res_addr;
++    uint32_t res_val;
++
+     /* Unified MMU.  */
+     MicroBlazeMMU mmu;
+ #endif
+diff --git a/target/microblaze/cpu.c b/target/microblaze/cpu.c
+index 96c2b71f7f..9e393cf217 100644
+--- a/target/microblaze/cpu.c
++++ b/target/microblaze/cpu.c
+@@ -193,7 +193,9 @@ static void mb_cpu_reset_hold(Object *obj)
+     }
+ 
+     memset(env, 0, offsetof(CPUMBState, end_reset_fields));
++#ifndef CONFIG_USER_ONLY
+     env->res_addr = RES_ADDR_NONE;
++#endif
+ 
+     /* Disable stack protector.  */
+     env->shr = ~0;
+diff --git a/target/microblaze/machine.c b/target/microblaze/machine.c
+index 51705e4f5c..4daf8a2471 100644
+--- a/target/microblaze/machine.c
++++ b/target/microblaze/machine.c
+@@ -78,7 +78,7 @@ static const VMStateField vmstate_env_fields[] = {
+     VMSTATE_UINT32(iflags, CPUMBState),
+ 
+     VMSTATE_UINT32(res_val, CPUMBState),
+-    VMSTATE_UINTTL(res_addr, CPUMBState),
++    VMSTATE_UINT64(res_addr, CPUMBState),
+ 
+     VMSTATE_STRUCT(mmu, CPUMBState, 0, vmstate_mmu, MicroBlazeMMU),
+ 
 diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
-index 4e52ef32db..d6a42381bb 100644
+index d6a42381bb..493850c544 100644
 --- a/target/microblaze/translate.c
 +++ b/target/microblaze/translate.c
-@@ -121,7 +121,7 @@ static void gen_raise_hw_excp(DisasContext *dc, uint32_t esr_ec)
-     gen_raise_exception_sync(dc, EXCP_HW_EXCP);
- }
+@@ -1872,7 +1872,9 @@ void mb_tcg_init(void)
+         SP(iflags),
+         SP(bvalue),
+         SP(btarget),
++#if !defined(CONFIG_USER_ONLY)
+         SP(res_val),
++#endif
+     };
  
--static void gen_goto_tb(DisasContext *dc, int n, target_ulong dest)
-+static void gen_goto_tb(DisasContext *dc, int n, uint32_t dest)
- {
-     if (translator_use_goto_tb(&dc->base, dest)) {
-         tcg_gen_goto_tb(n);
+ #undef R
+@@ -1883,6 +1885,9 @@ void mb_tcg_init(void)
+           tcg_global_mem_new_i32(tcg_env, i32s[i].ofs, i32s[i].name);
+     }
+ 
+-    cpu_res_addr =
+-        tcg_global_mem_new(tcg_env, offsetof(CPUMBState, res_addr), "res_addr");
++#if !defined(CONFIG_USER_ONLY)
++    cpu_res_addr = tcg_global_mem_new_i64(tcg_env,
++                                          offsetof(CPUMBState, res_addr),
++                                          "res_addr");
++#endif
+ }
 -- 
 2.41.0
 
