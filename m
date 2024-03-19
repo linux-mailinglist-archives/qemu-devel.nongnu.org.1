@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC62487FF4E
-	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:06:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2340387FF4D
+	for <lists+qemu-devel@lfdr.de>; Tue, 19 Mar 2024 15:06:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rma6C-0004Q2-0r; Tue, 19 Mar 2024 10:05:52 -0400
+	id 1rma6F-0004Va-CZ; Tue, 19 Mar 2024 10:05:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma67-0004PQ-C9
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma68-0004Pj-Tq
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma65-0008NV-Tt
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:47 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rma67-0008Ng-FR
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 10:05:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710857145;
+ s=mimecast20190719; t=1710857146;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=psQLqUsTh68XjulWEvqdNd/ZYkzRdTMVoBlpRemrBz8=;
- b=WibiUe5urgs2bLKWNSzCDf/cU0dCMA2bEj1QkYlzR5aXsuN6sBDWDOaNBIOgkwe5dVkQ9I
- 0vbp9zeRP3ZZVLYY8quOonqwbNiBH9E2TqEhJ7uJCjo/kTRyM5WEmm0cDX2K/ZtJzVbxUw
- uvx+k+sqqALiNc3msHCiaEx/ZidrW34=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-695-81on02_uM8qZEN0NMznQdQ-1; Tue, 19 Mar 2024 10:05:40 -0400
-X-MC-Unique: 81on02_uM8qZEN0NMznQdQ-1
+ bh=GeuJyXmk87ew7gCuQ5ySXtgH3p1fHidr/s3r/qeVRMI=;
+ b=P/oc62qXbsaannbhCjIPESS40TPVjNrkCpKqv6MKPCI9gteUKRZNQSPk1h4mO1Tllnl+AA
+ XXu3PfcJ6XCKa1Lb+96Mj1icNu997uVF1pkBcI1zCO6tKMpl9+MRjZ4OVWvNWLdZhL75oC
+ AkgfKUhbPmXlYHZbl5R6x2BjybpQHf4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-163-WGZLw505Okya4wVKHccKhg-1; Tue,
+ 19 Mar 2024 10:05:42 -0400
+X-MC-Unique: WGZLw505Okya4wVKHccKhg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D49B8007A4;
- Tue, 19 Mar 2024 14:05:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAA041C04B5B;
+ Tue, 19 Mar 2024 14:05:41 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2268A3C20;
- Tue, 19 Mar 2024 14:05:39 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A4DBB3C21;
+ Tue, 19 Mar 2024 14:05:40 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Yi Liu <yi.l.liu@intel.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PULL 1/3] vfio/iommufd: Fix memory leak
-Date: Tue, 19 Mar 2024 15:05:14 +0100
-Message-ID: <20240319140516.392542-2-clg@redhat.com>
+ Glenn Miles <milesg@linux.vnet.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/3] ppc/pnv: I2C controller is not user creatable
+Date: Tue, 19 Mar 2024 15:05:15 +0100
+Message-ID: <20240319140516.392542-3-clg@redhat.com>
 In-Reply-To: <20240319140516.392542-1-clg@redhat.com>
 References: <20240319140516.392542-1-clg@redhat.com>
 MIME-Version: 1.0
@@ -80,85 +80,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reported a memory leak on variable 'contents' in routine
-iommufd_cdev_getfd(). Use g_autofree variables to simplify the exit
-path and get rid of g_free() calls.
+The I2C controller is a subunit of the processor. Make it so and avoid
+QEMU crashes.
 
-Cc: Eric Auger <eric.auger@redhat.com>
-Cc: Yi Liu <yi.l.liu@intel.com>
-Fixes: CID 1540007
-Fixes: 5ee3dc7af785 ("vfio/iommufd: Implement the iommufd backend")
-Suggested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+  $ build/qemu-system-ppc64 -S -machine powernv9 -device pnv-i2c
+  qemu-system-ppc64: ../hw/ppc/pnv_i2c.c:521: pnv_i2c_realize: Assertion `i2c->chip' failed.
+  Aborted (core dumped)
+
+Fixes: 263b81ee15af ("ppc/pnv: Add an I2C controller model")
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>
+Reported-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/iommufd.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ hw/ppc/pnv_i2c.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/vfio/iommufd.c b/hw/vfio/iommufd.c
-index bafddb8f5a9433a3af6a1ce7f5c5a26428da48ea..8827ffe636e2aba1551ba794bf666a7a214590b7 100644
---- a/hw/vfio/iommufd.c
-+++ b/hw/vfio/iommufd.c
-@@ -118,10 +118,12 @@ static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
- {
-     ERRP_GUARD();
-     long int ret = -ENOTTY;
--    char *path, *vfio_dev_path = NULL, *vfio_path = NULL;
-+    g_autofree char *path = NULL;
-+    g_autofree char *vfio_dev_path = NULL;
-+    g_autofree char *vfio_path = NULL;
-     DIR *dir = NULL;
-     struct dirent *dent;
--    gchar *contents;
-+    g_autofree gchar *contents = NULL;
-     gsize length;
-     int major, minor;
-     dev_t vfio_devt;
-@@ -130,7 +132,7 @@ static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
-     dir = opendir(path);
-     if (!dir) {
-         error_setg_errno(errp, errno, "couldn't open directory %s", path);
--        goto out_free_path;
-+        goto out;
-     }
+diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+index 4581cc5e5d4645ab3e358d983a633e33a214c425..eec5047ce83f842108b53a6e2bd9869a81f14ac1 100644
+--- a/hw/ppc/pnv_i2c.c
++++ b/hw/ppc/pnv_i2c.c
+@@ -557,6 +557,9 @@ static void pnv_i2c_class_init(ObjectClass *klass, void *data)
  
-     while ((dent = readdir(dir))) {
-@@ -147,14 +149,13 @@ static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
+     xscomc->dt_xscom = pnv_i2c_dt_xscom;
  
-     if (!g_file_get_contents(vfio_dev_path, &contents, &length, NULL)) {
-         error_setg(errp, "failed to load \"%s\"", vfio_dev_path);
--        goto out_free_dev_path;
-+        goto out_close_dir;
-     }
- 
-     if (sscanf(contents, "%d:%d", &major, &minor) != 2) {
-         error_setg(errp, "failed to get major:minor for \"%s\"", vfio_dev_path);
--        goto out_free_dev_path;
-+        goto out_close_dir;
-     }
--    g_free(contents);
-     vfio_devt = makedev(major, minor);
- 
-     vfio_path = g_strdup_printf("/dev/vfio/devices/%s", dent->d_name);
-@@ -164,17 +165,13 @@ static int iommufd_cdev_getfd(const char *sysfs_path, Error **errp)
-     }
- 
-     trace_iommufd_cdev_getfd(vfio_path, ret);
--    g_free(vfio_path);
- 
--out_free_dev_path:
--    g_free(vfio_dev_path);
- out_close_dir:
-     closedir(dir);
--out_free_path:
-+out:
-     if (*errp) {
-         error_prepend(errp, VFIO_MSG_PREFIX, path);
-     }
--    g_free(path);
- 
-     return ret;
- }
++    /* Reason: This device is part of the CPU and cannot be used separately */
++    dc->user_creatable = false;
++
+     dc->desc = "PowerNV I2C";
+     dc->realize = pnv_i2c_realize;
+     device_class_set_props(dc, pnv_i2c_properties);
 -- 
 2.44.0
 
