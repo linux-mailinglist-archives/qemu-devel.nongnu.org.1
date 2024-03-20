@@ -2,71 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB91881414
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:05:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81C4688141E
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:06:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmxVD-0006fX-EB; Wed, 20 Mar 2024 11:05:15 -0400
+	id 1rmxVP-0006wc-S4; Wed, 20 Mar 2024 11:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxV9-0006ad-71
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:11 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ id 1rmxVM-0006vj-Jt
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:24 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxV7-0006XJ-DZ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:10 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-56ba6c83805so1726350a12.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 08:05:07 -0700 (PDT)
+ id 1rmxVH-0006a3-K9
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:21 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-56b93b45779so2854324a12.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 08:05:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710947106; x=1711551906; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=5TwREnoFguuc4bHCWYG9YC9AfNOvRRdOdH1BCOSOsUA=;
- b=bJvBBHu88WSA3jmo+OVsHuc1qzNJotCW6pJ/r6lNKzkHM+734i/m45v4PPhBhOec3o
- t7QkhmcyWqPsCQQ1rhNgEzz0INmfUcyttjIwdowVtREZOpk9ZUYKdpFkvwbozdiwNxKG
- KuzM+iTU/6UpahuIaytLdxy3V2w8gZ1kcWts8CeOEYWWLTIhlUaMY2hRWHJegcn4F7Lz
- bKJjQ64iAKAIj9H/8QODtTWsW0/lj0pScvLkGq2p10eMe9cEtFhY0MMzQucB9f5FC9CO
- awmYoo18ux6uwC4WpnSuyzsIHfC3BaEv7Z1gCqyBl1J4eD+RKVQuWQ2d4NBN9Nc/A00d
- VBsg==
+ d=linaro.org; s=google; t=1710947118; x=1711551918; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=NzUProAvjXhm78+6TwWe8Z0xRDRtmvavrWZ1HGtmQEE=;
+ b=oWbM0ru5zAmcWOwQCnHT0ItiZa5jxPQRVgvnJIMlJZfHCQRGCd+xtDhAOk5nND/s/Q
+ BRuIqerjwWzLkO4BAKOe7sQEseOt7p+vhKhUOgB5p+mN2q8gWWYQ4ZbiN8scmoNf+RTe
+ d7iE8vsvCyDrOEddETINEUh9h0IqpiMmKNooXRYf0xbw2/22c5NicPahWasoL99HZEuT
+ 6ezqEDnBvIu6KMPjqpjTxBjglPrn87sWPgLO2sIXfHSAl2zCzRMGtNIGfVr0npIO0TL1
+ 5DPPIgRETGpxobnZV1NziCA+wAGsD0XHE4Tp8s8/ZTFo0aQmcSN4Ayll4Gz5i7s76nLy
+ sw5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710947106; x=1711551906;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5TwREnoFguuc4bHCWYG9YC9AfNOvRRdOdH1BCOSOsUA=;
- b=R+W0RvdR9TfbMof5yHtqBIpWiHiLdzQkM0T29VTO2rUhXHEXZ2wcbW56fDLFzHkRnb
- +bq1ISvpPp6rAMuRZFDl65nROsD5PddeY41V9W6n5JRO8VG/me4vg1qQFdu0dkNgWOIo
- AeXjqZFI2ZTw3bzTHnM9AmqtLPeB4pJ4vmiUi4CLsSN5/VvCi7ti7H8Gk0XmfjQnwsce
- JOEpMRyl2T8q2hrD2QRosaG4eZf6tQ2syCaqm1slNCua4SDnpg0TYIQY9EcPaMyyaa6w
- sNB0RlxCZK1V2F9PT83e/o4eat8ClYhZOzMtmbNYiyDgQn+AytT6XAYhTpr824D3bOhq
- 441g==
-X-Gm-Message-State: AOJu0YwjK41xiwHwvhPtqtI5JCA8+ElWvtytdEDKyuc+CJUAy9DI77YZ
- nq9nJgEJ54yvdtorBCSduTJtfe2UIQgZsjc5EhtYrtG7JCiMVAoZRoJ9wMiHCN9/4lVqjM7VqI7
- iBT6uQywK66apmIASVlMq1sMd1T/Ef4/I2nzy8w==
-X-Google-Smtp-Source: AGHT+IEddrE1rvL9rWaqtplkXrJo2J91vi1dOLfPI7HKtxiVBdKXbeWlkaoB1s3fA1GoPdwQqLjqUoIBTWYHeAH6kJ4=
-X-Received: by 2002:a05:6402:4290:b0:565:980d:5ba9 with SMTP id
- g16-20020a056402429000b00565980d5ba9mr11018886edc.32.1710947106469; Wed, 20
- Mar 2024 08:05:06 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710947118; x=1711551918;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NzUProAvjXhm78+6TwWe8Z0xRDRtmvavrWZ1HGtmQEE=;
+ b=sRTZyUbZVQldJXLTad4QvSuAb5NaVuBGfjItZWmc0vTL6ZNI5/bNNNtzJXZMED0cew
+ s3MBUYiSAR85JkFzmB6PJSQ/x28QHBNIoZTm2RImkSVgKUQIVBsebwTqPeC3nrdQwDap
+ di9SZyZPTvujIUU7OT9g+gNonrCp2keQswaJV53xONmYrwh5zn2sYMEHdV8JsrarmcWZ
+ an60CnSsGR3Xd0Q45jfoAZBnXOuDiToy1S2HJL6lCSaCIuMKkP6yGEjFbsB3wd1k7ADp
+ kgcQGJk9Fs+jALj3yujveZBuGwzKBog6zTvrJ5JxbhL8as/fr2y8gZhMogkvJjLQsQQw
+ tbRQ==
+X-Gm-Message-State: AOJu0Yw5Iu+nWKmvIuIH6z3ShY2Dcl4NfWrTOMz9FZ1NBQlLm28V9OjN
+ 2P9SmOuccoypqvlG6At4xfWQfVH56iiRWujaVc9t2yu2AI5ABB+/fTlaLCcuZch0uScmiDXz18B
+ Zbf9EX10DZ8scxDCnWCvz5Zll+RDENQj7d53nPxob9Rba/gg3
+X-Google-Smtp-Source: AGHT+IEPVOWPGUqAblD5YAFDJlVh3aOQJ2239xXf/Wx2GYeP3D9AIW1yRqPUeorky2jwB/0YRc/cyjXxc3/FI9inT4A=
+X-Received: by 2002:a05:6402:3881:b0:567:2870:1f1c with SMTP id
+ fd1-20020a056402388100b0056728701f1cmr12502300edb.19.1710947118182; Wed, 20
+ Mar 2024 08:05:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240319202121.233130-1-berrange@redhat.com>
-In-Reply-To: <20240319202121.233130-1-berrange@redhat.com>
+References: <20240320003223.554145-1-richard.henderson@linaro.org>
+In-Reply-To: <20240320003223.554145-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 20 Mar 2024 15:04:55 +0000
-Message-ID: <CAFEAcA-o65bd7JZVu5XjkAz9_05cPhooW7DeL-T_ARP6yGHVZg@mail.gmail.com>
-Subject: Re: [PULL 0/8] Misc fixes patches
-To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 20 Mar 2024 15:05:07 +0000
+Message-ID: <CAFEAcA9juruSER3V=u=JUuc7z2Uuc_e0pdk9gbrq7PjscbJB7A@mail.gmail.com>
+Subject: Re: [PULL 0/9] target/hppa fixes for 9.0
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,32 +85,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 19 Mar 2024 at 20:22, Daniel P. Berrang=C3=A9 <berrange@redhat.com>=
- wrote:
+On Wed, 20 Mar 2024 at 00:33, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> The following changes since commit c62d54d0a8067ffb3d5b909276f7296d7df33f=
-a7:
+> The following changes since commit c62d54d0a8067ffb3d5b909276f7296d7df33fa7:
 >
 >   Update version for v9.0.0-rc0 release (2024-03-19 19:13:52 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/berrange/qemu tags/misc-fixes-pull-request
+>   https://gitlab.com/rth7680/qemu.git tags/pull-pa-20240319
 >
-> for you to fetch changes up to c3b1aa1c1ae66e0174704072b1fb7d10d6e4a4b7:
+> for you to fetch changes up to 518d2f4300e5c50a3e6416fd46e58373781a5267:
 >
->   crypto: report which ciphers are being skipped during tests (2024-03-19=
- 20:17:12 +0000)
+>   target/hppa: fix do_stdby_e() (2024-03-19 14:08:02 -1000)
 >
 > ----------------------------------------------------------------
->  * Use EPERM for seccomp filter instead of killing QEMU when
->    an attempt to spawn child process is made
->  * Reduce priority of POLLHUP handling for socket chardevs
->    to increase likelihood of pending data being processed
->  * Fix chardev I/O main loop integration when TLS is enabled
->  * Fix broken crypto test suite when distro disables
->    SM4 algorithm
->  * Improve diagnosis of failed crypto tests
+> target/hppa: Fix load/store offset assembly for wide mode
+> target/hppa: Fix LDCW,S shift
+> target/hppa: Fix SHRPD conditions
+> target/hppa: Fix access_id checks
+> target/hppa: Exit TB after Flush Instruction Cache
+> target/hppa: Fix MFIA result
+> target hppa: Fix STDBY,E
 >
 
 
