@@ -2,177 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF568818E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 22:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 760D7881961
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 23:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn35Y-0003R6-AG; Wed, 20 Mar 2024 17:03:08 -0400
+	id 1rn486-0001ub-QK; Wed, 20 Mar 2024 18:09:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rn35V-0003Qi-Tf
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 17:03:06 -0400
-Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rn482-0001uA-QT
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 18:09:46 -0400
+Received: from mail-bn8nam11on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2414::601]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <si-wei.liu@oracle.com>)
- id 1rn35S-0006n6-Uf
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 17:03:05 -0400
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42KITOiS025615; Wed, 20 Mar 2024 21:02:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=ox7+KbubiQjDXgvr6oSN1xfnZ+4uA/RknnbC6FqTyP8=;
- b=H/kgef9TWHIleS8fIfpiPbGsvNkXb68/sM4aBxL2gCrXwBuu4JgnOajthqyHeOSIYpaS
- Ejm/cuZ9Z2/8LFO2fR3K1LrHkfduWiW1YNG2m/SoXhRwrZC/xcE79GnXXtyqcpA6Fv9G
- NDCrhMh0vc2+xiN9ZIDuxji1u5jImqMPxIAmSi+eTvPJ4teVHe+ZPoh7Gk4/gzKQNvYP
- dvtWxf5fJTocaQjnk633Fyk2ouTsqO9ySbplbNl/iM6G4CESy0fbc+2PUMQGGZi4zDLP
- uDIwfhCxVC13bIF8KYDjXPwxBAInD1tlHNJleFUVDZw/atgZ+ZhTxYDnRtuw/b6YlSxr 6w== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
- (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ww211950m-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Mar 2024 21:02:55 +0000
-Received: from pps.filterd
- (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42KKhjFF006044; Wed, 20 Mar 2024 21:02:54 GMT
-Received: from nam04-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam04lp2040.outbound.protection.outlook.com [104.47.74.40])
- by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3ww1v8kx03-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 20 Mar 2024 21:02:54 +0000
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rn47z-0001r6-SE
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 18:09:46 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Cgk2ECACr06ha9WwuHU5uFdrP5xSWArujvxsEX/LQgyhsq+jLQB1JRh0RHn50gG7cq+IWDeO+ziso2AbU5+dnkjBsKHvQiEvzR57a2Y89mPLdeu8bJXbNvpV1PXhTXr17nnIsi9NASm0S+24wNGKYeHOzGYsXogp4TImcFArq8L0ryxg4xQB1tTpHdKLQIwU04jZ3WfbkFtKwctXN6gHLjePioh56KCpeA2BN0zIDaqZ2tklJblekb0cGyQgt9NkL4z/etW6VAACxkCVG8gwAO+Or77kSXpJjbc8cG57Q7NMxGvlryF8b5SdR9MaPEanIzdMFic9VN1JXfGRFpnl2Q==
+ b=lsx6crFrdksF3bK0tpKQ6TCfB8jr+P0e2JCs+T1O8So+3JnKW8/X7CtwGev9s8sKy9n7xRjpFuwGSDMv7uC180zAXBek7qS2aQ1Oqlq5yOJD5Dtf7tgNhmB8m57qhRqpHjfw5b0fcQXHqnXe297yffn9ETNj3lCqKFTysHJtzZxwGqZp4jYE7CtovvyASdDsg0wQlDlBf/+zwJaeS/Ktw88rap4F8AG1uOCIOJtmPKsq1ZxUJW71c8i2ey5DowG6BUOLgd8PsRXAcyGkO6CbSg3l8ZX1LWCgptMEznpfIVWhm4+wvZBMixOq2At+OVlvpwFGHCPt8yRiCIOphxbVMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ox7+KbubiQjDXgvr6oSN1xfnZ+4uA/RknnbC6FqTyP8=;
- b=GPHIeWjeMXzqh/7GLJshvEC/FAvl7fKfX2iE2zHMMOhMKHxXwSsYPugR5bJUa3RQXJ1PGnuSjVWqA/uYt59x1sEZDMO7cEk2TNaRx7cy67YVWuZu/XvI7jnWv4X5t0mKetM/Mj4XQnZ1jn6yMvea6HfRL4duaDdbhysX8IiriHSzk2mk3B4/eb32RnV3paD/VuqM/T+yXRkV3Wjo8xeWmextC8HV3UBCObOSmAJP9olImlPz9jCDAYxYAzxmVtr/bbP8G5FZrk5BGKT/TX35HpF/0FpD5jGhi3KqX5TM0MeUtKBC/b8QqZPp7jalp1q5Je2mz/CZ0/RL68RUYy9Tcg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ bh=KnyyD6jgDzKC2PBBuc7EA1ac8pVWFDccEiqVen1Zazc=;
+ b=OfF6YrCaBzAqz+bcGAgdyjUtTF8yLdPnW71j3Vtco7gKO6YBzvfh9x3MEoU+EAtuIIOZNqE2dQeC61nwMuH+no6tbl9cYLC23/FmfZYDIqXB3y7W/yRi4dPvgQauwohf3b2RrDWDNZNMXboHB9TqE6g8Q89eUMb9JUB6xU5N0G33AIvisWXwkCQmOqX0zWT8MDJ1p4BqtPkRlfS6hDtKThjWSlXKiJk/SKDGBu5vrIt9c2bPcSCp9WiK0r1BPS5i/hDssr4tNha2bl885XnFOcD+Ya7bPo5MYEhldJWiBXyEOFEnHdW5lyw5MvOfXTdy0NHn2qIanyj75pxXUb2jWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ox7+KbubiQjDXgvr6oSN1xfnZ+4uA/RknnbC6FqTyP8=;
- b=O6FSNPOMeSPZRJgOLpwDWb9bmUF1CeuNoZulHNPJQCzZuYQ9Na+odmo+wUzNdvR1RkFcqi1ytMQP4+E4MtL6N3pdrB7yUTMRh3zSU8/6JDuVFyVSCZiAp9YUXWaQlMtdQMzFv7Y/tw5+ZnRdi/v4xK3ff98FSqud19+DCjEexH4=
-Received: from MW4PR10MB6535.namprd10.prod.outlook.com (2603:10b6:303:225::12)
- by MW5PR10MB5825.namprd10.prod.outlook.com (2603:10b6:303:19a::11)
+ bh=KnyyD6jgDzKC2PBBuc7EA1ac8pVWFDccEiqVen1Zazc=;
+ b=H1nzUDJZ3N3jPJhKUh4Ioqz0i2XtlB0ASh/uxmMUzSHgSLMWS2++2xpVR5NkxtATLYzhceLQ4OU2xR2N9KKNyPa0O5MI5TXNX8iYtai4gtgnVof09ZRY90FZz2LaNiw8Pd+B24hkVZi81LPFoRljlhZd9CHbkZ3q+IU0o7fpHwQ=
+Received: from SJ0PR13CA0104.namprd13.prod.outlook.com (2603:10b6:a03:2c5::19)
+ by PH7PR12MB5710.namprd12.prod.outlook.com (2603:10b6:510:1e1::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27; Wed, 20 Mar
- 2024 21:02:52 +0000
-Received: from MW4PR10MB6535.namprd10.prod.outlook.com
- ([fe80::bf6e:420b:90be:3cff]) by MW4PR10MB6535.namprd10.prod.outlook.com
- ([fe80::bf6e:420b:90be:3cff%4]) with mapi id 15.20.7386.031; Wed, 20 Mar 2024
- 21:02:52 +0000
-Message-ID: <35fc446d-61e3-49a3-b79d-c44aa2e65fea@oracle.com>
-Date: Wed, 20 Mar 2024 14:02:49 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] vhost: Perform memory section dirty scans once per
- iteration
-Content-Language: en-US
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, eperezma@redhat.com,
- joao.m.martins@oracle.com
-References: <1710448055-11709-1-git-send-email-si-wei.liu@oracle.com>
- <1710448055-11709-2-git-send-email-si-wei.liu@oracle.com>
- <CACGkMEukLmTSfuXxSMsZuO_B7o7623x=gmLD5s-xoinEq=dWYQ@mail.gmail.com>
- <d6c1769c-049e-47a3-8705-bdfe1b2a6fd8@oracle.com>
- <CACGkMEtEtmOZB53xibp5G7ZeVdKpZogEnetfnfj1QCSX-RWY8w@mail.gmail.com>
- <0dec84ec-289b-4026-8098-010ec4c5c315@oracle.com>
- <CACGkMEtWe59mNWORwS=OMg3MXFRdkPwmjJu8wR2rTXBr4w2_MQ@mail.gmail.com>
-From: Si-Wei Liu <si-wei.liu@oracle.com>
-Organization: Oracle Corporation
-In-Reply-To: <CACGkMEtWe59mNWORwS=OMg3MXFRdkPwmjJu8wR2rTXBr4w2_MQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0369.namprd03.prod.outlook.com
- (2603:10b6:a03:3a1::14) To MW4PR10MB6535.namprd10.prod.outlook.com
- (2603:10b6:303:225::12)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.34; Wed, 20 Mar
+ 2024 22:09:38 +0000
+Received: from SJ1PEPF00001CE7.namprd03.prod.outlook.com
+ (2603:10b6:a03:2c5:cafe::a8) by SJ0PR13CA0104.outlook.office365.com
+ (2603:10b6:a03:2c5::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.11 via Frontend
+ Transport; Wed, 20 Mar 2024 22:09:38 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00001CE7.mail.protection.outlook.com (10.167.242.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 22:09:38 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
+ 2024 17:09:37 -0500
+Date: Wed, 20 Mar 2024 16:36:17 -0500
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, "Markus
+ Armbruster" <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ "Xiaoyao Li" <xiaoyao.li@intel.com>, Isaku Yamahata
+ <isaku.yamahata@linux.intel.com>
+Subject: Re: [PATCH v3 21/49] i386/sev: Introduce "sev-common" type to
+ encapsulate common SEV state
+Message-ID: <20240320213617.frro6gesyxnuyiwm@amd.com>
+References: <20240320083945.991426-1-michael.roth@amd.com>
+ <20240320083945.991426-22-michael.roth@amd.com>
+ <ZfrMDYk-gSQF04gQ@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZfrMDYk-gSQF04gQ@redhat.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR10MB6535:EE_|MW5PR10MB5825:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3450e42b-6d0e-416d-b492-08dc49211b4d
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|PH7PR12MB5710:EE_
+X-MS-Office365-Filtering-Correlation-Id: cf51da77-c7e7-4116-5b3c-08dc492a6f48
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 49BPFY0irlbQIsqC4I5jopMSe868V97gq3bBCc1FQ++RCf56DzoL5h1RFenEB3gnuqWEPLTdwInu/I9klEfB/JMO8xJn8Fkp0ll/N4eZCAWNgyN8cjwrivck1Avn0D0tWv/QrYEriamIh5SzEgAilP8L75ALtz16Azi6fpb/0dpNRWdc+shirUkq/1FYnO1oCUCvGf1/DNfrXCOLG9SBxA/FDI5CBWOh9p7iUQligIly7kvFaszUXYXr1zhYGMMk+22IVmmC3eyXoznr59b5NQl9b9JQXAo51PfifKTalkX6Xi/gXJgcGlB5bVUDBuhtmvZ90zHscNvbt4I1vQY7bhgqYzEjkp1bi9qLUZ4K9JB32BuHShFI1O55zdDy7XewRE7kFQSAyyWju9Zr1NbxqNlWlOtHd1bAiWxVf4KZokMDfUVtZ0SpNudk8kEnCEM27kWTcAPrGxFpBP8qc9v8m/BmhfQhTNqRu0mmlVDd3LAhySMoM1VQie9KBmaNrvOnjydtz9LGWm7CuGUs2LmADOkQf0MejOtWZHgjNV1cxaxFtC6o3/0eSVuwzBEBo9EWBcC81FMnkzStQi0q16k/Yd5Jefl6K89Cd7QWFBd+K2NOfKPnpc7lU4pCZHUQe4dKx/plo2LzEPnXKArPbO3VvoKR9vN8YzqgxA9Cl46I91U=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR10MB6535.namprd10.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHQxTUZJQ3BKamVzZWI5RG9iOTFJK1poNTJVQ1NnT2QxdEhRRU04dUExVDk5?=
- =?utf-8?B?QUtWUHJZd1JOR3Z3c1FYVXJ0eVV6RVZBekw1aG1rV1pEdytKR21mSkVxeXN0?=
- =?utf-8?B?SVc3OFZVZ2FFWXcyZDVWdjU5SHcwTzJTdUJndUd4QXJTM3c0SDFHZ1VxUTVQ?=
- =?utf-8?B?WCszbk90c3pPdTFPZ0g4Umt1MWhhVDh2aXR0dVpDK2h0N0xVUXcxZlpocDQw?=
- =?utf-8?B?RnBudlpneStwNzdLL0NMSGUzdkhSSjEyNXpJQXVCVlhoSlBzUkdHMmMrS1VJ?=
- =?utf-8?B?eWVQWU4vNDVjR1lMeFVjL1JDSEdMbjRVM2VNVkxST1h4bCtobUJFU01uT2Ri?=
- =?utf-8?B?a0M3STE2TGhEaWlxSzJLQnJCNCtMVS9jOTNhRFRoMnI5VENRbmxKaXI4NG52?=
- =?utf-8?B?MVdON1ltSXdzT0U1WnZkSnc0Mi9Fb3o0ZVh5T0hmaVY5dkNWcU9DblMyNll2?=
- =?utf-8?B?SC9LUExraDJQMnRQVjYrR2MxMngrZTZENk5EQngxbXFRSTdIdjN0UWlmbUQr?=
- =?utf-8?B?QVl5RUFvSDJad1F0dlhjLzROZEc3am8rbFl0dmliS1FpTTZCa0pnWHFsSjBX?=
- =?utf-8?B?QTBObk9SRlYyMm8xbXBTNGI3dmxlVXVpTXhDRVJQV1dKdGtQTnp6Mmtlclln?=
- =?utf-8?B?MmRNeVNzT0kyeXpCOVhpT1JzZTBKNlowVjAwaTRTeTNZV2pMVmhuWGJLS2hz?=
- =?utf-8?B?aFR5ZnkvZHFCV0lhclc5dE5qK0hoV21aWXZoU1F4STl1T0NuTXdCSkc2Tkc0?=
- =?utf-8?B?UytUUUNCWXkvajdNUWliQVJyYVBaRzRMNUlWVmNLVXhoUm5DLzNKR3pRcFcv?=
- =?utf-8?B?V0hucEtjZEZYOTJudWxna2dFWHJNbFJoYWhuakdlM2hXR29HVnVRQXRZWWdY?=
- =?utf-8?B?S21YaTZJUVllb3JtdzZjeE5RRjJKbmdXY1Y5KzFrd2Z6bk5kUlUybUhIdFBT?=
- =?utf-8?B?TTBMVEg4Wm1USXRidkNUU0ZOWThXSmloemMwbmtmQ29ENk81WE16RURXdUE5?=
- =?utf-8?B?Z3JXcWh5UHhpZWdJWkRkZ240ODg1b09YdkhHREEzclV1Q202MG5nSGlodW1k?=
- =?utf-8?B?UnMrS2REdEd2dTU4akZoYUxVNGJMR2p1RndYYlV0Tk5hZjV2UjFkVkVvUVJq?=
- =?utf-8?B?ZUJvQnVTWUlpYW5ydUcxQTcvWGNvUDFpcWZxZ0R0Y0Q0VDFORFV6WXZWcmlj?=
- =?utf-8?B?YzlrUzdsUVVKV2F1bDgwSk9LUzlnMURkMVZFaE5QTER6cldhSjdSM1hTS1NB?=
- =?utf-8?B?WmhMQ1pEalhOYnhBYTAxLzVsd1ZRU2ltZGVmU3VySnpEMmx6ZHpYemxSWHBt?=
- =?utf-8?B?RittMTJrL1RCQVpBWlNPak1lQ3BBU1V2S0FqSFRaQjEwU0xzaXoxUGVGdVB0?=
- =?utf-8?B?WEZyUnVxRnp0djhqNTFMY3FHU3hjbURybytaN0diV3czZ3dWMTNqc2M3M0lV?=
- =?utf-8?B?RjNPUTR0YlBBdGUxK0svMFNBZm0yWHdCRDZNSTlWeHBqN2tlbG9OY3BnZ0hm?=
- =?utf-8?B?TUw4dEIwa1ZldG5jWFkrcHZzWFN5TXRTRTE5Y0w1Z1Z6SytvQlUza3dwZXI2?=
- =?utf-8?B?dE5LaEZnMkhyMU5Ba3FiUU1rN3hMSTdQZ3lSVzRFVTNWN2Q1ckt4dkN3UTdV?=
- =?utf-8?B?VU8vMUhxaWVSYllxWmVoTHdVMWlVZitTWmZkRHgvaHorQ1UwazNaRER1T2pM?=
- =?utf-8?B?UFhoai9WbVRIaHc2NVlHWnM1emx1c09vOVRPU2NtY3EvU1U1Uko2cFZDV0hS?=
- =?utf-8?B?cTl1emhtMm1JaG1UbVhlTzQ2L0tiVkl4cEZ6a0cvT0JMbjVDY05peVpCRm1z?=
- =?utf-8?B?SUdaZEVibHZpQ0dGbitMTCtlcnhYcktHUHUwSVhFVkR1UFBoNlJEZGhFVXdR?=
- =?utf-8?B?VmIrTjZ2VE45aDJFTEsrS085S0FoOEd4ZXVIZ2p3ZU55cm0xOXFVLzdsTi9y?=
- =?utf-8?B?SW84ZUtzRGE4eEJWYWFGaFE4bHFyb1JTNzNxOWc0UE10Zk5mY3ZwLythRmty?=
- =?utf-8?B?N0dBSmpKaklIU29PaHJRZnFmdXpaSFJvQk9zQ1FjQ1NSYm1jRU5uZDNGR3Ba?=
- =?utf-8?B?aXZMbG9UNm5Gd1o2c3pYUW1LUkNqS2RqblVZQkxYamNMMnhFM09KZXB1c2Jx?=
- =?utf-8?Q?z1z9Z9/dfJZEq2EDMORhOE+eH?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Wt0E17EFeU9+N3/GTmF/ALigNV5Z1YcIWIubkxjmr4aDFcSX3jBP/1owxPXTDTvk1/RMOIUwZ0C7+Z/d9OsLKoN6dmK2SAGIF9t/HmOrF519ksZshwB88pygyvjzZUvUjIk3Q7s1FhqwfJJnHDwJqmppCZw9cX/NiC9sM6jD7gcImx081UeFSXNyWpqfy8dNWFC2kWsonm8fKaVEnZg7ScTUsNihRs9gZfSsv+xyWdlwjtBV+5VBQ4K1toMcR/uL3sZ554Xp1obeONS7yCizSKw8WAJ1sBfClbFLZzdJ7tD889wKPO8hWaormiEw6E6kPq+an6K5JRqg2OmhyBGp9y0G1QECRkbXDVesXg7mgYl4/v+2V5F98Lih6MEIHR6hfDkCEoH6DuI5FAu5ogVwKvvBNL0zRmS6vSZzNRBg7vhaWovQrUWWCXzmXa+I4kaeKzzVUslPtt27NkFykFmYykGpwZdUKMeAbp5Y9EPPCeYgIxfrSLxUSbsfk8SuPaqLqdx9qm+FqbyeRv3/pDEGR5GpzitooShS9ObZLHqzzk8J1hJeWKrEnDmfYEBeGx3e27AkuWBqT7ztA8Xz9lLGi3oEWJyqXkG7WPPI8tewqK0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3450e42b-6d0e-416d-b492-08dc49211b4d
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR10MB6535.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 21:02:52.2835 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MBs6/mu6Ky4yFXjZYWyxHnXr9C9vgwgJI89UIBVqvQ4+p9E+J3OVI2lvNyff/GChfXtTuFo+yX22h1KUghRZeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5825
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-20_11,2024-03-18_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- mlxlogscore=999
- phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403140000 definitions=main-2403200168
-X-Proofpoint-GUID: 1aMjU4MSGz2jn9T_M1MCZg1i8VS8Shke
-X-Proofpoint-ORIG-GUID: 1aMjU4MSGz2jn9T_M1MCZg1i8VS8Shke
-Received-SPF: pass client-ip=205.220.165.32;
- envelope-from=si-wei.liu@oracle.com; helo=mx0a-00069f02.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Microsoft-Antispam-Message-Info: QbWi3NMJEAn+zpKFdH/fuE/y9hfJ8T08tbmFj0wA7KYngfO4Lj9+sMg7cCnUp5yxpmXEU3Po7fcyCZGkCWp34RPmJyDyQds01BqccE9Vj0U8XusYp1ptikxgM3+6XQApSgXPazlLlNKYDVHpLRL6LAw6qe6OxhE6w7O3u0DVR4IUrXJHYJse6rIiDdMH58p9hJUluVtypzhqYTC/dp5bXqb3aASp0cEuwgPDxZhRDOHZrGG+0CJPYwVGCbnrtqysn4rJWkGbizFuiAEj4ZVfJXKTyLn2xzSXrsk81yJODy41UgwY4m/5EKsWOTlLlfCbv0K6MVfOHjtigA7Y30hfFd9vzNlwwmGZhBi4FenIfBeIJMU3pVm/knAPZAF+KB/y+a0JxNlsdOhCs1TdyVM7x+e2458/kuQE3s0lhB2txixWD1FET8pdIYmeToZgY+4/+9Ftmol+51/xQMpzsOJtxOHrIfAus07UJh3l7+++ELV6XCAfj3V1ONp0C0gpdLOAa06qScCrYGxCEtFMdbz6SICFDhjRwli+Vk7OGZtuGE0VRxsoHApMR8cZKKr2v0GMK/8p6sC62MxFFzQ2TLOYPeaHadsDyygZJ0E7sydte+yLTOvxNXf1gmp9LB9mPAPXpCHwDr9/Xd4Bvvo9AkAxd58Ej+gIVnZvo+ZnBvhzoNUIMSDoeZioPQBsm6ieLx+VkRf2jy8kRZ91dkWgMOAK+g==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(82310400014)(376005)(36860700004)(1800799015); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 22:09:38.2984 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf51da77-c7e7-4116-5b3c-08dc492a6f48
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CE7.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5710
+Received-SPF: permerror client-ip=2a01:111:f403:2414::601;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -185,155 +123,550 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Michael Roth <michael.roth@amd.com>
+From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, Mar 20, 2024 at 11:44:13AM +0000, Daniel P. Berrang� wrote:
+> On Wed, Mar 20, 2024 at 03:39:17AM -0500, Michael Roth wrote:
+> > Currently all SEV/SEV-ES functionality is managed through a single
+> > 'sev-guest' QOM type. With upcoming support for SEV-SNP, taking this
+> > same approach won't work well since some of the properties/state
+> > managed by 'sev-guest' is not applicable to SEV-SNP, which will instead
+> > rely on a new QOM type with its own set of properties/state.
+> > 
+> > To prepare for this, this patch moves common state into an abstract
+> > 'sev-common' parent type to encapsulate properties/state that are
+> > common to both SEV/SEV-ES and SEV-SNP, leaving only SEV/SEV-ES-specific
+> > properties/state in the current 'sev-guest' type. This should not
+> > affect current behavior or command-line options.
+> > 
+> > As part of this patch, some related changes are also made:
+> > 
+> >   - a static 'sev_guest' variable is currently used to keep track of
+> >     the 'sev-guest' instance. SEV-SNP would similarly introduce an
+> >     'sev_snp_guest' static variable. But these instances are now
+> >     available via qdev_get_machine()->cgs, so switch to using that
+> >     instead and drop the static variable.
+> > 
+> >   - 'sev_guest' is currently used as the name for the static variable
+> >     holding a pointer to the 'sev-guest' instance. Re-purpose the name
+> >     as a local variable referring the 'sev-guest' instance, and use
+> >     that consistently throughout the code so it can be easily
+> >     distinguished from sev-common/sev-snp-guest instances.
+> > 
+> >   - 'sev' is generally used as the name for local variables holding a
+> >     pointer to the 'sev-guest' instance. In cases where that now points
+> >     to common state, use the name 'sev_common'; in cases where that now
+> >     points to state specific to 'sev-guest' instance, use the name
+> >     'sev_guest'
+> > 
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >  qapi/qom.json     |  32 ++--
+> >  target/i386/sev.c | 457 ++++++++++++++++++++++++++--------------------
+> >  target/i386/sev.h |   3 +
+> >  3 files changed, 281 insertions(+), 211 deletions(-)
+> > 
+> > diff --git a/qapi/qom.json b/qapi/qom.json
+> > index baae3a183f..66b5781ca6 100644
+> > --- a/qapi/qom.json
+> > +++ b/qapi/qom.json
+> > @@ -875,12 +875,29 @@
+> >    'data': { '*filename': 'str' } }
+> >  
+> >  ##
+> > -# @SevGuestProperties:
+> > +# @SevCommonProperties:
+> >  #
+> > -# Properties for sev-guest objects.
+> > +# Properties common to objects that are derivatives of sev-common.
+> >  #
+> >  # @sev-device: SEV device to use (default: "/dev/sev")
+> >  #
+> > +# @cbitpos: C-bit location in page table entry (default: 0)
+> > +#
+> > +# @reduced-phys-bits: number of bits in physical addresses that become
+> > +#     unavailable when SEV is enabled
+> > +#
+> > +# Since: 2.12
+> 
+> Not quite sure what we've done in this scenario before.
+> It feels wierd to use '2.12' for the new base type, even
+> though in effect the properties all existed since 2.12 in
+> the sub-class.
+> 
+> Perhaps 'Since: 9.1' for the type, but 'Since: 2.12' for the
+> properties, along with an explanatory comment about stuff
+> moving into the new base type ?
+> 
+> Markus, opinions ?
 
+My thinking is that the internal details are less important than what's
+actually exposed to users in the form of command-line options/etc. So
+in that context the "Since: 2.12" sort of becomes the "default" for when
+those properties were first made available to users, and then anything we
+add after would then get special treatment with the per-property
+versioning. But no issue with taking a different approach if that's
+preferred.
 
-On 3/19/2024 8:27 PM, Jason Wang wrote:
-> On Tue, Mar 19, 2024 at 6:16 AM Si-Wei Liu <si-wei.liu@oracle.com> wrote:
->>
->>
->> On 3/17/2024 8:22 PM, Jason Wang wrote:
->>> On Sat, Mar 16, 2024 at 2:45 AM Si-Wei Liu <si-wei.liu@oracle.com> wrote:
->>>>
->>>> On 3/14/2024 9:03 PM, Jason Wang wrote:
->>>>> On Fri, Mar 15, 2024 at 5:39 AM Si-Wei Liu <si-wei.liu@oracle.com> wrote:
->>>>>> On setups with one or more virtio-net devices with vhost on,
->>>>>> dirty tracking iteration increases cost the bigger the number
->>>>>> amount of queues are set up e.g. on idle guests migration the
->>>>>> following is observed with virtio-net with vhost=on:
->>>>>>
->>>>>> 48 queues -> 78.11%  [.] vhost_dev_sync_region.isra.13
->>>>>> 8 queues -> 40.50%   [.] vhost_dev_sync_region.isra.13
->>>>>> 1 queue -> 6.89%     [.] vhost_dev_sync_region.isra.13
->>>>>> 2 devices, 1 queue -> 18.60%  [.] vhost_dev_sync_region.isra.14
->>>>>>
->>>>>> With high memory rates the symptom is lack of convergence as soon
->>>>>> as it has a vhost device with a sufficiently high number of queues,
->>>>>> the sufficient number of vhost devices.
->>>>>>
->>>>>> On every migration iteration (every 100msecs) it will redundantly
->>>>>> query the *shared log* the number of queues configured with vhost
->>>>>> that exist in the guest. For the virtqueue data, this is necessary,
->>>>>> but not for the memory sections which are the same. So essentially
->>>>>> we end up scanning the dirty log too often.
->>>>>>
->>>>>> To fix that, select a vhost device responsible for scanning the
->>>>>> log with regards to memory sections dirty tracking. It is selected
->>>>>> when we enable the logger (during migration) and cleared when we
->>>>>> disable the logger. If the vhost logger device goes away for some
->>>>>> reason, the logger will be re-selected from the rest of vhost
->>>>>> devices.
->>>>>>
->>>>>> After making mem-section logger a singleton instance, constant cost
->>>>>> of 7%-9% (like the 1 queue report) will be seen, no matter how many
->>>>>> queues or how many vhost devices are configured:
->>>>>>
->>>>>> 48 queues -> 8.71%    [.] vhost_dev_sync_region.isra.13
->>>>>> 2 devices, 8 queues -> 7.97%   [.] vhost_dev_sync_region.isra.14
->>>>>>
->>>>>> Co-developed-by: Joao Martins <joao.m.martins@oracle.com>
->>>>>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>>>>> Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
->>>>>>
->>>>>> ---
->>>>>> v3 -> v4:
->>>>>>      - add comment to clarify effect on cache locality and
->>>>>>        performance
->>>>>>
->>>>>> v2 -> v3:
->>>>>>      - add after-fix benchmark to commit log
->>>>>>      - rename vhost_log_dev_enabled to vhost_dev_should_log
->>>>>>      - remove unneeded comparisons for backend_type
->>>>>>      - use QLIST array instead of single flat list to store vhost
->>>>>>        logger devices
->>>>>>      - simplify logger election logic
->>>>>> ---
->>>>>>     hw/virtio/vhost.c         | 67 ++++++++++++++++++++++++++++++++++++++++++-----
->>>>>>     include/hw/virtio/vhost.h |  1 +
->>>>>>     2 files changed, 62 insertions(+), 6 deletions(-)
->>>>>>
->>>>>> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
->>>>>> index 612f4db..58522f1 100644
->>>>>> --- a/hw/virtio/vhost.c
->>>>>> +++ b/hw/virtio/vhost.c
->>>>>> @@ -45,6 +45,7 @@
->>>>>>
->>>>>>     static struct vhost_log *vhost_log[VHOST_BACKEND_TYPE_MAX];
->>>>>>     static struct vhost_log *vhost_log_shm[VHOST_BACKEND_TYPE_MAX];
->>>>>> +static QLIST_HEAD(, vhost_dev) vhost_log_devs[VHOST_BACKEND_TYPE_MAX];
->>>>>>
->>>>>>     /* Memslots used by backends that support private memslots (without an fd). */
->>>>>>     static unsigned int used_memslots;
->>>>>> @@ -149,6 +150,47 @@ bool vhost_dev_has_iommu(struct vhost_dev *dev)
->>>>>>         }
->>>>>>     }
->>>>>>
->>>>>> +static inline bool vhost_dev_should_log(struct vhost_dev *dev)
->>>>>> +{
->>>>>> +    assert(dev->vhost_ops);
->>>>>> +    assert(dev->vhost_ops->backend_type > VHOST_BACKEND_TYPE_NONE);
->>>>>> +    assert(dev->vhost_ops->backend_type < VHOST_BACKEND_TYPE_MAX);
->>>>>> +
->>>>>> +    return dev == QLIST_FIRST(&vhost_log_devs[dev->vhost_ops->backend_type]);
->>>>> A dumb question, why not simple check
->>>>>
->>>>> dev->log == vhost_log_shm[dev->vhost_ops->backend_type]
->>>> Because we are not sure if the logger comes from vhost_log_shm[] or
->>>> vhost_log[]. Don't want to complicate the check here by calling into
->>>> vhost_dev_log_is_shared() everytime when the .log_sync() is called.
->>> It has very low overhead, isn't it?
->> Whether this has low overhead will have to depend on the specific
->> backend's implementation for .vhost_requires_shm_log(), which the common
->> vhost layer should not assume upon or rely on the current implementation.
->>
->>> static bool vhost_dev_log_is_shared(struct vhost_dev *dev)
->>> {
->>>       return dev->vhost_ops->vhost_requires_shm_log &&
->>>              dev->vhost_ops->vhost_requires_shm_log(dev);
->>> }
-> For example, if I understand the code correctly, the log type won't be
-> changed during runtime, so we can endup with a boolean to record that
-> instead of a query ops?
-Right now the log type won't change during runtime, but I am not sure if 
-this may prohibit future revisit to allow change at the runtime, then 
-there'll be complex code involvled to maintain the state.
+> 
+> > +##
+> > +{ 'struct': 'SevCommonProperties',
+> > +  'data': { '*sev-device': 'str',
+> > +            '*cbitpos': 'uint32',
+> > +            'reduced-phys-bits': 'uint32' } }
+> > +
+> > +##
+> > +# @SevGuestProperties:
+> > +#
+> > +# Properties for sev-guest objects.
+> > +#
+> >  # @dh-cert-file: guest owners DH certificate (encoded with base64)
+> >  #
+> >  # @session-file: guest owners session parameters (encoded with base64)
+> > @@ -889,11 +906,6 @@
+> >  #
+> >  # @handle: SEV firmware handle (default: 0)
+> >  #
+> > -# @cbitpos: C-bit location in page table entry (default: 0)
+> > -#
+> > -# @reduced-phys-bits: number of bits in physical addresses that become
+> > -#     unavailable when SEV is enabled
+> > -#
+> >  # @kernel-hashes: if true, add hashes of kernel/initrd/cmdline to a
+> >  #     designated guest firmware page for measured boot with -kernel
+> >  #     (default: false) (since 6.2)
+> > @@ -901,13 +913,11 @@
+> >  # Since: 2.12
+> >  ##
+> >  { 'struct': 'SevGuestProperties',
+> > -  'data': { '*sev-device': 'str',
+> > -            '*dh-cert-file': 'str',
+> > +  'base': 'SevCommonProperties',
+> > +  'data': { '*dh-cert-file': 'str',
+> >              '*session-file': 'str',
+> >              '*policy': 'uint32',
+> >              '*handle': 'uint32',
+> > -            '*cbitpos': 'uint32',
+> > -            'reduced-phys-bits': 'uint32',
+> >              '*kernel-hashes': 'bool' } }
+> >  
+> >  ##
+> 
+> > diff --git a/target/i386/sev.c b/target/i386/sev.c
+> > index 9dab4060b8..63a220de5e 100644
+> > --- a/target/i386/sev.c
+> > +++ b/target/i386/sev.c
+> > @@ -40,48 +40,53 @@
+> >  #include "hw/i386/pc.h"
+> >  #include "exec/address-spaces.h"
+> >  
+> > -#define TYPE_SEV_GUEST "sev-guest"
+> > +OBJECT_DECLARE_SIMPLE_TYPE(SevCommonState, SEV_COMMON)
+> >  OBJECT_DECLARE_SIMPLE_TYPE(SevGuestState, SEV_GUEST)
+> >  
+> > -
+> > -/**
+> > - * SevGuestState:
+> > - *
+> > - * The SevGuestState object is used for creating and managing a SEV
+> > - * guest.
+> > - *
+> > - * # $QEMU \
+> > - *         -object sev-guest,id=sev0 \
+> > - *         -machine ...,memory-encryption=sev0
+> > - */
+> > -struct SevGuestState {
+> > +struct SevCommonState {
+> >      X86ConfidentialGuest parent_obj;
+> >  
+> >      int kvm_type;
+> >  
+> >      /* configuration parameters */
+> >      char *sev_device;
+> > -    uint32_t policy;
+> > -    char *dh_cert_file;
+> > -    char *session_file;
+> >      uint32_t cbitpos;
+> >      uint32_t reduced_phys_bits;
+> > -    bool kernel_hashes;
+> >  
+> >      /* runtime state */
+> > -    uint32_t handle;
+> >      uint8_t api_major;
+> >      uint8_t api_minor;
+> >      uint8_t build_id;
+> >      int sev_fd;
+> >      SevState state;
+> > -    gchar *measurement;
+> >  
+> >      uint32_t reset_cs;
+> >      uint32_t reset_ip;
+> >      bool reset_data_valid;
+> >  };
+> >  
+> > +/**
+> > + * SevGuestState:
+> > + *
+> > + * The SevGuestState object is used for creating and managing a SEV
+> > + * guest.
+> > + *
+> > + * # $QEMU \
+> > + *         -object sev-guest,id=sev0 \
+> > + *         -machine ...,memory-encryption=sev0
+> > + */
+> > +struct SevGuestState {
+> > +    SevCommonState sev_common;
+> > +    gchar *measurement;
+> > +
+> > +    /* configuration parameters */
+> > +    uint32_t handle;
+> > +    uint32_t policy;
+> > +    char *dh_cert_file;
+> > +    char *session_file;
+> > +    bool kernel_hashes;
+> > +};
+> > +
+> >  #define DEFAULT_GUEST_POLICY    0x1 /* disable debug */
+> >  #define DEFAULT_SEV_DEVICE      "/dev/sev"
+> >  
+> > @@ -127,7 +132,6 @@ typedef struct QEMU_PACKED PaddedSevHashTable {
+> >  
+> >  QEMU_BUILD_BUG_ON(sizeof(PaddedSevHashTable) % 16 != 0);
+> >  
+> > -static SevGuestState *sev_guest;
+> >  static Error *sev_mig_blocker;
+> >  
+> >  static const char *const sev_fw_errlist[] = {
+> > @@ -208,21 +212,21 @@ fw_error_to_str(int code)
+> >  }
+> >  
+> >  static bool
+> > -sev_check_state(const SevGuestState *sev, SevState state)
+> > +sev_check_state(const SevCommonState *sev_common, SevState state)
+> >  {
+> > -    assert(sev);
+> > -    return sev->state == state ? true : false;
+> > +    assert(sev_common);
+> > +    return sev_common->state == state ? true : false;
+> >  }
+> >  
+> >  static void
+> > -sev_set_guest_state(SevGuestState *sev, SevState new_state)
+> > +sev_set_guest_state(SevCommonState *sev_common, SevState new_state)
+> >  {
+> >      assert(new_state < SEV_STATE__MAX);
+> > -    assert(sev);
+> > +    assert(sev_common);
+> >  
+> > -    trace_kvm_sev_change_state(SevState_str(sev->state),
+> > +    trace_kvm_sev_change_state(SevState_str(sev_common->state),
+> >                                 SevState_str(new_state));
+> > -    sev->state = new_state;
+> > +    sev_common->state = new_state;
+> >  }
+> >  
+> >  static void
+> > @@ -289,111 +293,61 @@ static struct RAMBlockNotifier sev_ram_notifier = {
+> >      .ram_block_removed = sev_ram_block_removed,
+> >  };
+> >  
+> > -static void
+> > -sev_guest_finalize(Object *obj)
+> > -{
+> > -}
+> > -
+> > -static char *
+> > -sev_guest_get_session_file(Object *obj, Error **errp)
+> > -{
+> > -    SevGuestState *s = SEV_GUEST(obj);
+> > -
+> > -    return s->session_file ? g_strdup(s->session_file) : NULL;
+> > -}
+> > -
+> > -static void
+> > -sev_guest_set_session_file(Object *obj, const char *value, Error **errp)
+> > -{
+> > -    SevGuestState *s = SEV_GUEST(obj);
+> > -
+> > -    s->session_file = g_strdup(value);
+> > -}
+> > -
+> > -static char *
+> > -sev_guest_get_dh_cert_file(Object *obj, Error **errp)
+> > -{
+> > -    SevGuestState *s = SEV_GUEST(obj);
+> > -
+> > -    return g_strdup(s->dh_cert_file);
+> > -}
+> > -
+> > -static void
+> > -sev_guest_set_dh_cert_file(Object *obj, const char *value, Error **errp)
+> > -{
+> > -    SevGuestState *s = SEV_GUEST(obj);
+> > -
+> > -    s->dh_cert_file = g_strdup(value);
+> > -}
+> > -
+> > -static char *
+> > -sev_guest_get_sev_device(Object *obj, Error **errp)
+> > -{
+> > -    SevGuestState *sev = SEV_GUEST(obj);
+> > -
+> > -    return g_strdup(sev->sev_device);
+> > -}
+> > -
+> > -static void
+> > -sev_guest_set_sev_device(Object *obj, const char *value, Error **errp)
+> > -{
+> > -    SevGuestState *sev = SEV_GUEST(obj);
+> > -
+> > -    sev->sev_device = g_strdup(value);
+> > -}
+> > -
+> > -static bool sev_guest_get_kernel_hashes(Object *obj, Error **errp)
+> > -{
+> > -    SevGuestState *sev = SEV_GUEST(obj);
+> > -
+> > -    return sev->kernel_hashes;
+> > -}
+> > -
+> > -static void sev_guest_set_kernel_hashes(Object *obj, bool value, Error **errp)
+> > -{
+> > -    SevGuestState *sev = SEV_GUEST(obj);
+> > -
+> > -    sev->kernel_hashes = value;
+> > -}
+> > -
+> >  bool
+> >  sev_enabled(void)
+> >  {
+> > -    return !!sev_guest;
+> > +    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
+> > +
+> > +    return !!object_dynamic_cast(OBJECT(cgs), TYPE_SEV_COMMON);
+> >  }
+> >  
+> >  bool
+> >  sev_es_enabled(void)
+> >  {
+> > -    return sev_enabled() && (sev_guest->policy & SEV_POLICY_ES);
+> > +    ConfidentialGuestSupport *cgs = MACHINE(qdev_get_machine())->cgs;
+> > +
+> > +    return sev_enabled() && (SEV_GUEST(cgs)->policy & SEV_POLICY_ES);
+> >  }
+> >  
+> >  uint32_t
+> >  sev_get_cbit_position(void)
+> >  {
+> > -    return sev_guest ? sev_guest->cbitpos : 0;
+> > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > +
+> > +    return sev_common ? sev_common->cbitpos : 0;
+> >  }
+> >  
+> >  uint32_t
+> >  sev_get_reduced_phys_bits(void)
+> >  {
+> > -    return sev_guest ? sev_guest->reduced_phys_bits : 0;
+> > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > +
+> > +    return sev_common ? sev_common->reduced_phys_bits : 0;
+> >  }
+> >  
+> >  static SevInfo *sev_get_info(void)
+> >  {
+> >      SevInfo *info;
+> > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > +    SevGuestState *sev_guest =
+> > +        (SevGuestState *)object_dynamic_cast(OBJECT(sev_common),
+> > +                                             TYPE_SEV_GUEST);
+> >  
+> >      info = g_new0(SevInfo, 1);
+> >      info->enabled = sev_enabled();
+> >  
+> >      if (info->enabled) {
+> > -        info->api_major = sev_guest->api_major;
+> > -        info->api_minor = sev_guest->api_minor;
+> > -        info->build_id = sev_guest->build_id;
+> > -        info->policy = sev_guest->policy;
+> > -        info->state = sev_guest->state;
+> > -        info->handle = sev_guest->handle;
+> > +        if (sev_guest) {
+> > +            info->handle = sev_guest->handle;
+> > +        }
+> > +        info->api_major = sev_common->api_major;
+> > +        info->api_minor = sev_common->api_minor;
+> > +        info->build_id = sev_common->build_id;
+> > +        info->state = sev_common->state;
+> > +        /* we only report the lower 32-bits of policy for SNP, ok for now... */
+> > +        info->policy =
+> > +            (uint32_t)object_property_get_uint(OBJECT(sev_common),
+> > +                                               "policy", NULL);
+> >      }
+> 
+> I think we can change this 'policy' field to 'int64'.
+> 
+> Going from int32 to int64 doesn't change the encoding in JSON
+> or cli properites. SEV/SEV-ES guests will still only use values
+> that fit within int32, so existing users of QEMU won't notice
+> a change.
+> 
+> Apps that want to use SEV-SNP will know that they can have
+> policy values exceeding int32, but since that's net new code
+> to suupport SEV-SNP there's no back compat issue.
 
-Other than this, I think it's insufficient to just check the shm log 
-v.s. normal log. The logger device requires to identify a leading logger 
-device that gets elected in vhost_dev_elect_mem_logger(), as all the 
-dev->log points to the same logger that is refenerce counted, that we 
-have to add extra field and complex logic to maintain the election 
-status. I thought that Eugenio's previous suggestion tried to simplify 
-the logic in vhost_dev_elect_mem_logger(), as the QLIST_FIRST macro that 
-gets expanded to use the lh_first field for the QLIST would simply 
-satisfy the basic need. Why extra logic to make the check ever more 
-complex, is there any benefit by adding more fields to the vhost_dev?
+In subsequent patch:
 
+  "i386/sev: Update query-sev QAPI format to handle SEV-SNP"
 
-Thanks,
--Siwei
+we end up reporting SNP policy via a new 64-bit field, 'snp_policy',
+based on a discussion:
 
->
->>> And it helps to simplify the logic.
->> Generally yes, but when it comes to hot path operations the performance
->> consideration could override this principle. I think there's no harm to
->> check against logger device cached in vhost layer itself, and the
->> current patch does not create a lot of complexity or performance side
->> effect (actually I think the conditional should be very straightforward
->> to turn into just a couple of assembly compare and branch instructions
->> rather than indirection through another jmp call).
-> Thanks
->
->> -Siwei
->>
->>> Thanks
->>>
->>>> -Siwei
->>>>> ?
->>>>>
->>>>> Thanks
->>>>>
+  https://lore.kernel.org/kvm/YTdSlg5NymDQex5T@work-vm/T/#mac6758af9bfc41ee49ff3ef5c3ec3779ec275ff9
 
+I think the concern was some 'old_mgmt' tool trying to interact with an
+SNP guest launched through other means and misinterpreting SNP-specific
+policy bits as SEV ones.
+
+So because if that, there isn't really a need to make the policy bit
+64-bit as part of this patch.
+
+One thing that does need to be addressed here in the confusing comment:
+
+  /* we only report the lower 32-bits of policy for SNP, ok for now... */
+
+which I think was a relic from v2 that can be dropped now.
+
+> 
+> 
+> > @@ -519,6 +473,8 @@ static SevCapability *sev_get_capabilities(Error **errp)
+> >      size_t pdh_len = 0, cert_chain_len = 0, cpu0_id_len = 0;
+> >      uint32_t ebx;
+> >      int fd;
+> > +    SevCommonState *sev_common;
+> > +    char *sev_device;
+> 
+> Declare 'g_autofree char *sev_device = NULL;'
+> 
+> >  
+> >      if (!kvm_enabled()) {
+> >          error_setg(errp, "KVM not enabled");
+> > @@ -529,12 +485,21 @@ static SevCapability *sev_get_capabilities(Error **errp)
+> >          return NULL;
+> >      }
+> >  
+> > -    fd = open(DEFAULT_SEV_DEVICE, O_RDWR);
+> > +    sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > +    if (!sev_common) {
+> > +        error_setg(errp, "SEV is not configured");
+> > +    }
+> 
+> Missing 'return' ?
+> 
+> > +
+> > +    sev_device = object_property_get_str(OBJECT(sev_common), "sev-device",
+> > +                                         &error_abort);
+> > +    fd = open(sev_device, O_RDWR);
+> >      if (fd < 0) {
+> >          error_setg_errno(errp, errno, "SEV: Failed to open %s",
+> >                           DEFAULT_SEV_DEVICE);
+> > +        g_free(sev_device);
+> >          return NULL;
+> >      }
+> > +    g_free(sev_device);
+> 
+> These 'g_free' are redundant with g_autofree usage on the declaration.
+> 
+> >  
+> >      if (sev_get_pdh_info(fd, &pdh_data, &pdh_len,
+> >                           &cert_chain_data, &cert_chain_len, errp)) {
+> > @@ -577,7 +542,7 @@ static SevAttestationReport *sev_get_attestation_report(const char *mnonce,
+> >  {
+> >      struct kvm_sev_attestation_report input = {};
+> >      SevAttestationReport *report = NULL;
+> > -    SevGuestState *sev = sev_guest;
+> > +    SevCommonState *sev_common;
+> 
+> I think it would have been nicer to just keep the variable
+> just called 'sev', except in the few cases where you needed to
+> have variables for both parent & subclass in the same method.
+> This diff would be much smaller too.
+> 
+> That's a bit bikeshedding though, so not too bothered either
+> way.
+
+Yah, I think at the time I'd considered that, but always anchoring
+the variable name to the underlying type makes it easy to always
+know what type of instance you're working with which I'm hoping is
+worth the initial investment of doing the conversion consistently.
+
+> 
+> >      g_autofree guchar *data = NULL;
+> >      g_autofree guchar *buf = NULL;
+> >      gsize len;
+> > @@ -602,8 +567,10 @@ static SevAttestationReport *sev_get_attestation_report(const char *mnonce,
+> >          return NULL;
+> >      }
+> >  
+> > +    sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
+> > +
+> >      /* Query the report length */
+> > -    ret = sev_ioctl(sev->sev_fd, KVM_SEV_GET_ATTESTATION_REPORT,
+> > +    ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_GET_ATTESTATION_REPORT,
+> >              &input, &err);
+> >      if (ret < 0) {
+> >          if (err != SEV_RET_INVALID_LEN) {
+> > @@ -619,7 +586,7 @@ static SevAttestationReport *sev_get_attestation_report(const char *mnonce,
+> >      memcpy(input.mnonce, buf, sizeof(input.mnonce));
+> >  
+> >      /* Query the report */
+> > -    ret = sev_ioctl(sev->sev_fd, KVM_SEV_GET_ATTESTATION_REPORT,
+> > +    ret = sev_ioctl(sev_common->sev_fd, KVM_SEV_GET_ATTESTATION_REPORT,
+> >              &input, &err);
+> >      if (ret) {
+> >          error_setg_errno(errp, errno, "SEV: Failed to get attestation report"
+> 
+> > +
+> > +/* sev guest info common to sev/sev-es/sev-snp */
+> > +static const TypeInfo sev_common_info = {
+> > +    .parent = TYPE_X86_CONFIDENTIAL_GUEST,
+> > +    .name = TYPE_SEV_COMMON,
+> > +    .instance_size = sizeof(SevCommonState),
+> > +    .class_init = sev_common_class_init,
+> > +    .instance_init = sev_common_instance_init,
+> > +    .abstract = true,
+> > +    .interfaces = (InterfaceInfo[]) {
+> > +        { TYPE_USER_CREATABLE },
+> > +        { }
+> > +    }
+> > +};
+> 
+> It feels wierd to declare a type as "abstract", and at
+> the same time declare it "user creatable". I know this
+> was a simple short-cut to avoid repeating the .interfaces
+> on every sub-class, but I still think it would be better
+> to put the "user creatable" marker on the concrete impls
+> instead.
+> 
+> Also how about using OBJECT_DEFINE_ABSTRACT_TYPE here
+> and also converting the subclasses to use
+> OBJECT_DEFINE_TYPE_WITH_INTERFACES ?
+
+Makes sense, will implement these for v4.
+
+-Mike
+
+> 
+> 
+> 
+> With regards,
+> Daniel
+> -- 
+> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
 
