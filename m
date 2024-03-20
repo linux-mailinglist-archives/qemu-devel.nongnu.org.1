@@ -2,125 +2,121 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0FA880E0D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B17CC880E19
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:58:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmrlJ-0000Mf-0w; Wed, 20 Mar 2024 04:57:29 -0400
+	id 1rmrmd-0003vC-Rg; Wed, 20 Mar 2024 04:58:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrlG-0000Ic-Qs
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:57:26 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmrmb-0003uE-H1
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:58:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrlF-0002lF-7d
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:57:26 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmrma-000396-3p
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:58:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710925044;
+ s=mimecast20190719; t=1710925126;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=yeoQxtV68NI2pJx0Fr2sZhrQUf02wD/C+fL7yygsjeY=;
- b=dQ50UEBPmWiOoYZyF5NhCD8F1fKjfNGSf8bpqHO9Q+nDvwslKEbEwzRLo+dcmEAg9EbLh/
- QK5JRbMr4Ow4Lu6u+/u10Wz8XY+5NXokcnys2Xa35OOO6r3pVQvmvM5IfjJhVjWK9tD/cB
- ANc9x2QVhJxDdQCxLnBEmRnr9/n/UTw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wQDZtMbY+JWVnRii+RiA+HNGn+8BKQoCCXR2CaoP1hc=;
+ b=WaojCDGaUV45ecOc1fWdphxoP57h0ZYcr7rDa+baTi7QEzJ5YtrlvWEL9v98zz6i987A1h
+ 9vYZkXOTq6pQSGsnzfVVq/iUrtDB/ZHqP5hQGEhpU9XnOZeHbRbSHZnBNwOb3W24AUJozZ
+ dY2/16aZnnw8UR1WpCf8ZRWv1+vYVv0=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-111-WAs23dwEOjqvAGizs3VCOA-1; Wed, 20 Mar 2024 04:56:42 -0400
-X-MC-Unique: WAs23dwEOjqvAGizs3VCOA-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a46852c2239so320522466b.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:56:41 -0700 (PDT)
+ us-mta-373-n3tZiGisPpqLmSq7EptKVg-1; Wed, 20 Mar 2024 04:58:44 -0400
+X-MC-Unique: n3tZiGisPpqLmSq7EptKVg-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-a469d3547c7so66937066b.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:58:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710925001; x=1711529801;
- h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
- :from:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yeoQxtV68NI2pJx0Fr2sZhrQUf02wD/C+fL7yygsjeY=;
- b=Ii8DO6XMxmBqoiLwhpQAyZ890gBroz4VFzZECNGyAmzYJxcdoIL+S/aRk6eOXY7Zl5
- /Phb88Bz7OlrMmocuchml9qGJpfQUvJuMPXoADlRAzr3TuKYC6q+M26sDXP84HVOo4x6
- iIFteNgRoeLelck2REKeCTBC7EAmSJDvkk/LId0kfu6PWAy167wZvZUvevKsLioRdp+f
- ByXeupR+3VkIJlk6qvWyxg+8i8g+wFvYgmV/Eb4tVxDTBJsULrh/BB8k1HfkAjDdMw/n
- +UrqGNCnPqZW06JZ2qTQCu7Wj5g/jAOsX5tjgZBAot4w81DB6C5qb6a5kv6hCEKTgwtH
- wCUA==
-X-Gm-Message-State: AOJu0Yy3E2DgD3v5tiEA5PzDV1wNtcTS9JPlXIgXKXkNhROA5RpFG6zG
- XhYfSUzlmE2MfRaczGzGigg67Op8TnC3OmrADv+KKxCOst1TO12lUtcaukQREBoQ87AWCQrUJJv
- 7zGTc1tamc0yTKRWGorz8wUWnZW2Vp8eWJRwmSgA0grqJxedlTDO2
-X-Received: by 2002:a17:906:e951:b0:a44:dc35:df19 with SMTP id
- jw17-20020a170906e95100b00a44dc35df19mr11330056ejb.67.1710925000925; 
- Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHxdMcZjyJmzIs2RCZUyanVXOyRTN7Zu6cwGLCNNGfw2pkm4f7zqy7p2u2AqxVjveC9fzG/Wg==
-X-Received: by 2002:a17:906:e951:b0:a44:dc35:df19 with SMTP id
- jw17-20020a170906e95100b00a44dc35df19mr11330039ejb.67.1710925000605; 
- Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-177-50.web.vodafone.de.
- [109.43.177.50]) by smtp.gmail.com with ESMTPSA id
- hz13-20020a1709072ced00b00a46a9cdcfa5sm4710252ejc.162.2024.03.20.01.56.39
+ d=1e100.net; s=20230601; t=1710925123; x=1711529923;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+ :to:content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wQDZtMbY+JWVnRii+RiA+HNGn+8BKQoCCXR2CaoP1hc=;
+ b=ea7apDOMzXQCWof4L8JDCZPjgsS3nGvgNPruEedSQofJrsqLTfAsjjSQbJfshJdDRO
+ sCfRHlAOC7Lz95RRDXjwz9jBjVKT9BpQPyV74EL5+DXPRCkH+VNMJTxSlJ7LhYjufj8T
+ b8q/rMt9nM5lHHc9S7IHxr61vEoyH8ish/AF2k3B7yHXcKH/9xGxpaMVyaG5Jgpi3aEb
+ sKv3RxVJBKodNTYgXxxdffMasMek2h8vd70ZKq6A1HviTUHE8aKnuL56S+dxumbIfZJd
+ JruNLaR9hP1f/Eb50KJjmJLLUTdMxFUNYx/+V/R5QgfweT8f2i7N/nYKVyfdV7PPZhpU
+ zRDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVH4Gido9VNJpf8IYTglFPHtRO8iujAGDaeqjFeqzekMkYtF5u8AxrygHucirGo3SZW+48Vc9xQuvr2Sdy9gBEQMop2n1k=
+X-Gm-Message-State: AOJu0Yx7vgqa4KX82t1aIS0EcnpuTFgkt1yKkV9aRE/MkcfZ71n+k5g4
+ +REZKWO5DbpNPJw90yyWfUXfu5SYWWQzH26+akPVtLuVks8GRan3KyAt0kPYSCI+2R6Wj8Cj1Up
+ ycYCpmIilQms0TxLaKZYhB86MbSLzyFFj3Z+ElQ4O4hWmn5axJQap
+X-Received: by 2002:a17:906:dfe5:b0:a46:a929:8432 with SMTP id
+ lc5-20020a170906dfe500b00a46a9298432mr4558659ejc.4.1710925123382; 
+ Wed, 20 Mar 2024 01:58:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGe8y4Fy2LR8hpIO7lRb98twjhHE8d8mXCCtRkO7HKN7qyZkazprV2HxDS+OdjlvFLBc7gorw==
+X-Received: by 2002:a17:906:dfe5:b0:a46:a929:8432 with SMTP id
+ lc5-20020a170906dfe500b00a46a9298432mr4558644ejc.4.1710925123064; 
+ Wed, 20 Mar 2024 01:58:43 -0700 (PDT)
+Received: from [192.168.10.118] ([151.95.49.219])
+ by smtp.googlemail.com with ESMTPSA id
+ g17-20020a17090670d100b00a46a04d7dc4sm5104428ejk.61.2024.03.20.01.58.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
-Message-ID: <8cf83c55-3557-4589-a37e-d832109cc703@redhat.com>
-Date: Wed, 20 Mar 2024 09:56:39 +0100
+ Wed, 20 Mar 2024 01:58:42 -0700 (PDT)
+Message-ID: <af9cdba4-ef07-4b91-8371-94f3f3b46812@redhat.com>
+Date: Wed, 20 Mar 2024 09:58:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/7] configure: add --enable-qpl build option
+Subject: Re: [PULL 32/68] hw/virtio: Add support for VDPA network simulation
+ devices
 Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-To: Yuan Liu <yuan1.liu@intel.com>, peterx@redhat.com, farosas@suse.de
-Cc: qemu-devel@nongnu.org, hao.xiang@bytedance.com,
- bryan.zhang@bytedance.com, nanhai.zou@intel.com
-References: <20240319164527.1873891-1-yuan1.liu@intel.com>
- <20240319164527.1873891-4-yuan1.liu@intel.com>
- <a7e38ec4-641f-409b-86d7-ea09d9ac1b18@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <a7e38ec4-641f-409b-86d7-ea09d9ac1b18@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>, Hao Chen <chenh@yusur.tech>,
+ Jason Wang <jasowang@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+References: <cover.1710282274.git.mst@redhat.com>
+ <cd341fd1ffded978b2aa0b5309b00be7c42e347c.1710282274.git.mst@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <cd341fd1ffded978b2aa0b5309b00be7c42e347c.1710282274.git.mst@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -145,72 +141,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20/03/2024 09.55, Thomas Huth wrote:
-> On 19/03/2024 17.45, Yuan Liu wrote:
->> add --enable-qpl and --disable-qpl options to enable and disable
->> the QPL compression method for multifd migration.
->>
->> the Query Processing Library (QPL) is an open-source library
->> that supports data compression and decompression features.
->>
->> The QPL compression is based on the deflate compression algorithm
->> and use Intel In-Memory Analytics Accelerator(IAA) hardware for
->> compression and decompression acceleration.
->>
->> Please refer to the following for more information about QPL
->> https://intel.github.io/qpl/documentation/introduction_docs/introduction.html
->>
->> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
->> ---
->>   meson.build                   | 16 ++++++++++++++++
->>   meson_options.txt             |  2 ++
->>   scripts/meson-buildoptions.sh |  3 +++
->>   3 files changed, 21 insertions(+)
->>
->> diff --git a/meson.build b/meson.build
->> index b375248a76..bee7dcd53b 100644
->> --- a/meson.build
->> +++ b/meson.build
->> @@ -1200,6 +1200,20 @@ if not get_option('zstd').auto() or have_block
->>                       required: get_option('zstd'),
->>                       method: 'pkg-config')
->>   endif
->> +qpl = not_found
->> +if not get_option('qpl').auto()
-> 
-> Do you really only want to enable this if the user explicitly specified 
-> "--enable-qpl" ? Otherwise, I think this should be:
-> 
->   if not get_option('qpl').auto() or have_system
-> 
-> ?
-> 
->   Thomas
-> 
-> 
-> 
-> 
->> +  libqpl = cc.find_library('qpl', required: false)
+On 3/12/24 23:27, Michael S. Tsirkin wrote:
+> diff --git a/include/standard-headers/linux/virtio_pci.h b/include/standard-headers/linux/virtio_pci.h
+> index 3e2bc2c97e..86733278ba 100644
+> --- a/include/standard-headers/linux/virtio_pci.h
+> +++ b/include/standard-headers/linux/virtio_pci.h
+> @@ -221,6 +221,13 @@ struct virtio_pci_cfg_cap {
+>   #define VIRTIO_PCI_COMMON_ADM_Q_IDX	60
+>   #define VIRTIO_PCI_COMMON_ADM_Q_NUM	62
+>   
+> +#define LM_LOGGING_CTRL                 0
+> +#define LM_BASE_ADDR_LOW                4
+> +#define LM_BASE_ADDR_HIGH               8
+> +#define LM_END_ADDR_LOW                 12
+> +#define LM_END_ADDR_HIGH                16
+> +#define LM_VRING_STATE_OFFSET           0x20
 
-... and it should use "required: get_option('qpl')" in that case.
+I cannot find these constants in upstream Linux (what will be 6.9). Is 
+there a tree that defines these constants, or should they be moved to 
+include/hw/virtio/vdpa-dev.h (or something like that)?
 
-  Thomas
+Thanks,
 
-
->> +  if not libqpl.found()
->> +    error('libqpl not found, please install it from ' +
->> +    
->> 'https://intel.github.io/qpl/documentation/get_started_docs/installation.html')
->> +  endif
->> +  libaccel = dependency('libaccel-config', version: '>=4.0.0',
->> +                        required: true,
->> +                        method: 'pkg-config')
->> +  qpl = declare_dependency(dependencies: [libqpl, libaccel,
->> +        cc.find_library('dl', required: get_option('qpl'))],
->> +        link_args: ['-lstdc++'])
->> +endif
->>   virgl = not_found
-> 
+Paolo
 
 
