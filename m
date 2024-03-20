@@ -2,90 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A9F88154B
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA6488154D
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 17:15:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmyZX-0002yi-Mj; Wed, 20 Mar 2024 12:13:47 -0400
+	id 1rmyZm-00031S-UD; Wed, 20 Mar 2024 12:14:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmyZV-0002ya-V6
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:45 -0400
-Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
+ id 1rmyZZ-000307-TX
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:49 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmyZU-00035M-CM
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:45 -0400
-Received: by mail-ej1-x62c.google.com with SMTP id
- a640c23a62f3a-a46db55e64fso274465566b.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 09:13:43 -0700 (PDT)
+ id 1rmyZY-00035u-7o
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:49 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-513a08f2263so25691e87.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 09:13:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710951222; x=1711556022; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710951225; x=1711556025; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OxFF+lXeHd0yKI0Ua/EbWo5MYrhYmKhteKonFtX7/6E=;
- b=UYUusye8mqKGJe+0Zog8qq84r9yQSf2f8VdlNPlgqgfVTEDybf7cdKnCk3fEXsj1RY
- 0DQ1p0dIg/MAD6SR90FNJA+ubgt0KRZvS2b7lBt7bUsd9o0Wka4NzlRvi+q0zZcP0uuA
- mDrPkzF0GNlPHLGL9KruUNrK9TzD89YxNWyyNAa7eHbfcuxExNU+1orOiJgr7ZY1qkG5
- OQgqYIv65JZkjBkcZYTf2EKnyvvE+dVVFcOcF1A5YlNIkRVb6F5NPWl5+S0kkpgRQDMc
- i/rm6YRvPODi15l5yvpXb8O+Zjij5hSZEUAM+4DwdVFmaZP+qp8+C9uGYJ5nq4pORiZX
- Nisg==
+ bh=a/x0YSZtzRIY30vUkQYvc9W5wyQ/P/3DVs+8N5NQ/6c=;
+ b=TGPKOCVHBYWJhbEG7IrRl0oTnP/+Nauy/sxN7T1jC01WUzWZD+v9Leh7+jI6pgMMlT
+ 5MzZbp7JJYB3mOLMsCT8Dtst05VtQFRbFzNJsmETCllz0HtjtDZn3yFa7WVc6EC6//Qr
+ WQD3gX1YSRcl3/bjU7WGN0Kfi5AHn0BHn55IIUH8rC8Ho27py6C0XkfqlUFd2TCzZ6/h
+ p1gr/IadVvd5+heG7HAjGRw3yd/lTZj7oX14JlfhvnQj/fTfAIi1SJpT+LRWkWn4nkBv
+ xM3vxHn0+Lc0FZuiSmKjxd6b5QWcwQnOILFH/QoQbj/3HXWL+sM7HWKZogsc8Vb56gTz
+ 47IA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710951222; x=1711556022;
+ d=1e100.net; s=20230601; t=1710951225; x=1711556025;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OxFF+lXeHd0yKI0Ua/EbWo5MYrhYmKhteKonFtX7/6E=;
- b=BmnsUYBnB680I221a7wDpNCyGuHms1N26fLRLhVm6c31tEdVih/0Vw1SrtjQMhHKNo
- pQuft9AqSRQFgvuhENvUbz3QVEsPBlfNl8b5zdIdEh+1ogSgoy34WMg7x8qMLlWWPpl5
- +m4DYsjBZb+dT/i+NLyviR3RANnQEPJIupFLWQrpyhF4JswjKN6h0BAYihmnYeFKKd8F
- 0u69AjajXVZZLhd4qYaK0/9c5Vs1kguY3PIowNNGhEGNKEhIADIsIqPei0UHfdQQ9wnU
- hX4LDln8toB2OFN9ytxZ/PY0u5Cwvo02TxNW1AAgnV7vhoPiI1juasgWfy5UvYCjqRFZ
- ea5g==
-X-Gm-Message-State: AOJu0Yw8W4SJDDxkYs1SskB9R74C5EI7VL9DIR20XLRt/TIJ5KlFCEzG
- dXAeEkXNtqhUvmjFQNXqoXZuI9fcc12ZfG9cq6zEinaYHtu4nfYh1gkhoHrO974=
-X-Google-Smtp-Source: AGHT+IE5gzyKXVTa3S93dRUtPoBZtGMvGH2W39MChXIfJWWnkLO80NqNJRrvqdYrQ6AljztcYtMfpA==
-X-Received: by 2002:a17:906:1856:b0:a46:643d:9a3 with SMTP id
- w22-20020a170906185600b00a46643d09a3mr10914707eje.61.1710951222070; 
- Wed, 20 Mar 2024 09:13:42 -0700 (PDT)
+ bh=a/x0YSZtzRIY30vUkQYvc9W5wyQ/P/3DVs+8N5NQ/6c=;
+ b=kUU5DcA0kxac8No7BRPwdGtlhELQi30H2c5Vs1lGJu6ZmLCuGbVcHBROei/RdLHgX/
+ 3L+C5v+2//sJYJxKhtHMUiUb7hc/36fkMj64VbxgfZFTUYWb/B/qv0mJEUWhasQWnlHr
+ MaueywpYR25/4ni+NdDWeOUVh1PFgDGPfpC6lpWjrewjtbNlgTdbZxnSbACRBqjZX+bU
+ xjN/rkhhnqgkNzlFGkat95jLjjBnWR6NdD1+77tEVOZknu15J5sxRw7J8ATxuBDpmlUl
+ XCqq6rll0ueWjA28iwOuuGOops+rjyFMnWluNM1NcaOkSelm/RAAj1kIRxcDFqY0howc
+ l3nQ==
+X-Gm-Message-State: AOJu0YxrDaMu3aOPrdbZ0/2Q6C5EgMqTlJ9PNa0PQyhT/Q+ZGeHKoeLq
+ a+C+QtNathH6CGF/yftMFxVIAstGMuyTI7Dvt336pK41vwr0b+Nc2NrpfgBIfcI=
+X-Google-Smtp-Source: AGHT+IHtxb8zJP4T2n5Hl9NyK7Yfn6X+03+Sz4+8Vd7ueMRSfFQSqQ0xMaCuCBgbtIliEOP26tieaQ==
+X-Received: by 2002:a19:6408:0:b0:513:d32a:89e1 with SMTP id
+ y8-20020a196408000000b00513d32a89e1mr4875122lfb.51.1710951225469; 
+ Wed, 20 Mar 2024 09:13:45 -0700 (PDT)
 Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- u16-20020a1709063b9000b00a46e35bef66sm1940559ejf.219.2024.03.20.09.13.41
+ h25-20020a17090634d900b00a46196a7faesm7416406ejb.57.2024.03.20.09.13.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 20 Mar 2024 09:13:41 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 3D7735FB8A;
+ by draig.lan (Postfix) with ESMTP id 505025FB8B;
  Wed, 20 Mar 2024 16:13:41 +0000 (GMT)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Radoslaw Biernacki <rad@semihalf.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, qemu-arm@nongnu.org (open list:SBSA-REF)
-Subject: [PULL 3/5] tests/avocado: drop virtio-rng from sbsa-ref tests
-Date: Wed, 20 Mar 2024 16:13:38 +0000
-Message-Id: <20240320161340.391798-4-alex.bennee@linaro.org>
+Subject: [PULL 4/5] tests/avocado: sbsa-ref: add Alpine tests for misc 'max'
+ setup
+Date: Wed, 20 Mar 2024 16:13:39 +0000
+Message-Id: <20240320161340.391798-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240320161340.391798-1-alex.bennee@linaro.org>
 References: <20240320161340.391798-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62c;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x62c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-lf1-x12b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,39 +104,56 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-sbsa-ref is supposed to emulate real hardware so virtio-rng-pci
-does not fit here
+PAuth makes run timeout on CI so add tests using 'max' without it
+and with impdef one.
 
 Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-Id: <20240318-sbsa-ref-firmware-update-v3-2-1c33b995a538@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240318-sbsa-ref-firmware-update-v3-3-1c33b995a538@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index cbab793455..259225f15f 100644
+index 259225f15f..cf8954d02e 100644
 --- a/tests/avocado/machine_aarch64_sbsaref.py
 +++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -132,10 +132,6 @@ def boot_alpine_linux(self, cpu):
-             cpu,
-             "-drive",
-             f"file={iso_path},format=raw",
--            "-device",
--            "virtio-rng-pci,rng=rng0",
--            "-object",
--            "rng-random,id=rng0,filename=/dev/urandom",
-         )
+@@ -140,18 +140,36 @@ def boot_alpine_linux(self, cpu):
+     def test_sbsaref_alpine_linux_cortex_a57(self):
+         """
+         :avocado: tags=cpu:cortex-a57
++        :avocado: tags=os:linux
+         """
+         self.boot_alpine_linux("cortex-a57")
  
-         self.vm.launch()
-@@ -179,10 +175,6 @@ def boot_openbsd73(self, cpu):
-             cpu,
-             "-drive",
-             f"file={img_path},format=raw",
--            "-device",
--            "virtio-rng-pci,rng=rng0",
--            "-object",
--            "rng-random,id=rng0,filename=/dev/urandom",
-         )
+     def test_sbsaref_alpine_linux_neoverse_n1(self):
+         """
+         :avocado: tags=cpu:neoverse-n1
++        :avocado: tags=os:linux
+         """
+         self.boot_alpine_linux("neoverse-n1")
  
-         self.vm.launch()
++    def test_sbsaref_alpine_linux_max_pauth_off(self):
++        """
++        :avocado: tags=cpu:max
++        :avocado: tags=os:linux
++        """
++        self.boot_alpine_linux("max,pauth=off")
++
++    def test_sbsaref_alpine_linux_max_pauth_impdef(self):
++        """
++        :avocado: tags=cpu:max
++        :avocado: tags=os:linux
++        """
++        self.boot_alpine_linux("max,pauth-impdef=on")
++
++    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
+     def test_sbsaref_alpine_linux_max(self):
+         """
+         :avocado: tags=cpu:max
++        :avocado: tags=os:linux
+         """
+         self.boot_alpine_linux("max")
+ 
 -- 
 2.39.2
 
