@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1F1B880BB7
+	by mail.lfdr.de (Postfix) with ESMTPS id AE02A880BB5
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmq4m-0005C0-8P; Wed, 20 Mar 2024 03:09:28 -0400
+	id 1rmq4r-0005G6-9x; Wed, 20 Mar 2024 03:09:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4d-0005Az-VA
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:20 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4k-0005Da-KX
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4c-000737-Ga
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:19 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4h-00074M-3H
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710918557;
+ s=mimecast20190719; t=1710918562;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RN378LBciNz3SPfxHyk8OuNHw06Gmus29kjmKACDUxk=;
- b=IAIjY8EjPvx3dEMzskQMdDsrrg3ckq2fLadvZnFxKSwTzZ9UbB4bVO5NA/AHyU3q2YSHfr
- wHgbOejW7kabvw5rSw8ENFFHwsW8Z35A4Pwt6JjedoVLLePgAmCUM6s+xZuJtdslGUNtKO
- gK8NewYWRTkEkdUVd3OKpqSjrHXd4kA=
+ bh=rNP75maIU6HiUztmhSt6mvWTZVD3zQj8BstoZG1nQJA=;
+ b=ahAN3wps6AhoqFwy9d6BmvczYbLomRe180cfF2lk0rzS3LoAbzFTU0QR4sFtjCxUP3ApSQ
+ BgHHZxWA81Xr297pWezcPk+G+SwdUHcVO7hy33+L/LS/YKM/lnSeoyYBuQpnnic+m1lsA8
+ SLtBwRCFLqV5BbfRMDynXST0UdxwhUM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-OPYziv4PPtKL-uE4IQGZHA-1; Wed, 20 Mar 2024 03:09:13 -0400
-X-MC-Unique: OPYziv4PPtKL-uE4IQGZHA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-354-OG0W82r5PSCUFQij5nZ_cQ-1; Wed, 20 Mar 2024 03:09:18 -0400
+X-MC-Unique: OG0W82r5PSCUFQij5nZ_cQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0441789F9E4;
- Wed, 20 Mar 2024 07:09:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6146E101CF8C;
+ Wed, 20 Mar 2024 07:09:18 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.134])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AE023C20;
- Wed, 20 Mar 2024 07:09:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0669A200E1B3;
+ Wed, 20 Mar 2024 07:09:18 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 96A801800DD6; Wed, 20 Mar 2024 08:08:51 +0100 (CET)
+ id A37491800DD8; Wed, 20 Mar 2024 08:08:51 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 1/5] roms/efi: clean up edk2 build config
-Date: Wed, 20 Mar 2024 08:08:44 +0100
-Message-ID: <20240320070851.18933-2-kraxel@redhat.com>
+Subject: [PULL 2/5] roms/efi: drop workaround for edk2-stable202308
+Date: Wed, 20 Mar 2024 08:08:45 +0100
+Message-ID: <20240320070851.18933-3-kraxel@redhat.com>
 In-Reply-To: <20240320070851.18933-1-kraxel@redhat.com>
 References: <20240320070851.18933-1-kraxel@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
@@ -81,27 +80,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Needed to avoid stale toolchain configurations breaking firmware builds.
+Not needed for newer edk2 versions.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20240314115307.628118-2-kraxel@redhat.com>
+Message-ID: <20240314115307.628118-3-kraxel@redhat.com>
 ---
- roms/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ roms/edk2-build.config | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/roms/Makefile b/roms/Makefile
-index 8e5d8d26a9a0..edc234a0e886 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -187,6 +187,7 @@ clean:
- 	rm -rf seabios/.config seabios/out seabios/builds
- 	$(MAKE) -C ipxe/src veryclean
- 	$(MAKE) -C edk2/BaseTools clean
-+	rm -rf edk2/Conf/{.cache,BuildEnv.sh,build_rule.txt,target.txt,tools_def.txt}
- 	$(MAKE) -C SLOF clean
- 	rm -rf u-boot/build-e500
- 	$(MAKE) -C u-boot-sam460ex distclean
+diff --git a/roms/edk2-build.config b/roms/edk2-build.config
+index 0d367dbdb775..05cbafef70cb 100644
+--- a/roms/edk2-build.config
++++ b/roms/edk2-build.config
+@@ -32,9 +32,6 @@ PcdDxeNxMemoryProtectionPolicy = 0xC000000000007FD1
+ # shim.efi has broken MemAttr code
+ PcdUninstallMemAttrProtocol    = TRUE
+ 
+-[pcds.workaround.202308]
+-PcdFirstTimeWakeUpAPsBySipi = FALSE
+-
+ ####################################################################################
+ # i386
+ 
+@@ -66,7 +63,6 @@ desc = ovmf build (64-bit)
+ conf = OvmfPkg/OvmfPkgX64.dsc
+ arch = X64
+ opts = common
+-pcds = workaround.202308
+ plat = OvmfX64
+ dest = ../pc-bios
+ cpy1 = FV/OVMF_CODE.fd edk2-x86_64-code.fd
+@@ -77,7 +73,6 @@ conf = OvmfPkg/OvmfPkgIa32X64.dsc
+ arch = IA32 X64
+ opts = common
+        ovmf.sb.smm
+-pcds = workaround.202308
+ plat = Ovmf3264
+ dest = ../pc-bios
+ cpy1 = FV/OVMF_CODE.fd edk2-x86_64-secure-code.fd
+@@ -87,7 +82,6 @@ desc = ovmf build for microvm
+ conf = OvmfPkg/Microvm/MicrovmX64.dsc
+ arch = X64
+ opts = common
+-pcds = workaround.202308
+ plat = MicrovmX64
+ dest = ../pc-bios
+ cpy1 = FV/MICROVM.fd  edk2-x86_64-microvm.fd
 -- 
 2.44.0
 
