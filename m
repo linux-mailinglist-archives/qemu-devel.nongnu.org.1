@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E77880FED
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA32880FE6
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:33:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmtFN-0007Yk-92; Wed, 20 Mar 2024 06:32:37 -0400
+	id 1rmtFO-0007ab-RH; Wed, 20 Mar 2024 06:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmtFF-0007PW-73
+ id 1rmtFH-0007PY-Jd
  for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmtFD-0004Hp-GQ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:28 -0400
+ id 1rmtFE-0004IC-HH
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710930746;
+ s=mimecast20190719; t=1710930747;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TJjqOAFTCPJQwJBApDGw8XyG9n4ZFOpcZP/DpSbnm10=;
- b=A4/nZtkvA+fH2D6nmhUhR8/ZeUUv6sz+msg5FLt8fm54plJCKDxgJ6SXVlVV/JzPc16bjc
- 4XGELRezn81FlbDLjfubzI3ASAc6/BU0JMv9P69ckcqmfruYNzvIv8EfISleKlD+vGWiL9
- hZnWHAIxNm5yLF+InV9ySJu8Antn8IA=
+ bh=tP3AQ3pbPz8m6UOga6Zsv2ln7wozO0aBuqOElcXzXaQ=;
+ b=Q7nLzq+T27FMwKVZr9Zt5cHGxDtskenD0Tir7lgORPzg/pEwYnZZ2Ss5ZpLka6BTmhv52Z
+ 7rhenb8BhhLhUjHq8TvxTJkHl2Hv3Hnk8Yql6r94uUnQ28oVUzhxzAYrNFgZ/P+AlTUbQk
+ pd9n6zzBOY+o1n3kWCrSxm4bNJMDEJ4=
 Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
  [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-619-SvetAhwMPDycPIb_vnnqcA-1; Wed, 20 Mar 2024 06:32:24 -0400
-X-MC-Unique: SvetAhwMPDycPIb_vnnqcA-1
+ us-mta-356-x3VMJdPkPFC8G37QMFCYJg-1; Wed, 20 Mar 2024 06:32:26 -0400
+X-MC-Unique: x3VMJdPkPFC8G37QMFCYJg-1
 Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a46b82df33cso215929666b.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 03:32:24 -0700 (PDT)
+ a640c23a62f3a-a46fd54fbc1so5647266b.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 03:32:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710930742; x=1711535542;
+ d=1e100.net; s=20230601; t=1710930745; x=1711535545;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TJjqOAFTCPJQwJBApDGw8XyG9n4ZFOpcZP/DpSbnm10=;
- b=vJ4DHRDBopJG9DgApuCYzJkEZqb3QKAp79YmqGtU0QcNdyc2ZpT5WZx1CWnKwqp5Ol
- yBcwCGzLlQZ6q3BrOZiF3Y9dQZgQr2XookUtTAM0mMF/qwmlz0p0kk7R8iJ2c0pXUcOz
- Q9b0d0CFqLlpI7wN/o+CfCv+3wKCEt8kXKZ58CqSkUuVUIHXpM9zyXNJpqifzjISd5XS
- bdFOWQCC81ru7wy6jtIVvLPQJVtuqgMTN0sLdbfKx+RZtq5wjMg53sXQTDTX8mi3+f7T
- aQePvEbIvLiCUYPYrS0lfXn8AEbXBKVTbIzxLKpNgM2KkUEju6oLRSbN9/ENUO9FUPW/
- wCAg==
-X-Gm-Message-State: AOJu0Yy5awba4mFpjH/4Giv9iiHI3FQPb4R93iGZUfIMXjiChHgT7Wb1
- fgf9F+/MXQJBgVQaiYhl5R+mwDCW36Qfpv3m/nLJMHQmQvY7S2YxFBuyfUENirNPxKIMe9C9F4l
- KWBzFSw0iuc62BMsb88qk8FdZJtnAse2sjjL0DpTxl5mhmYyI5KlksyI+YXoHkPd8L2Hq98PxGU
- JfQL/LHyAD8iDy1bOk5f/q092l7G9HGrmLhvfu
-X-Received: by 2002:a17:907:971c:b0:a46:9a9e:f3b0 with SMTP id
- jg28-20020a170907971c00b00a469a9ef3b0mr11742603ejc.67.1710930742645; 
- Wed, 20 Mar 2024 03:32:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFaEb0C9fzby7FgomWCCS7qA66uyuh7JtG9q0oEd/uBa++hL9BfNW+/Ka90JNRZGkBNIZfCMQ==
-X-Received: by 2002:a17:907:971c:b0:a46:9a9e:f3b0 with SMTP id
- jg28-20020a170907971c00b00a469a9ef3b0mr11742593ejc.67.1710930742275; 
- Wed, 20 Mar 2024 03:32:22 -0700 (PDT)
+ bh=tP3AQ3pbPz8m6UOga6Zsv2ln7wozO0aBuqOElcXzXaQ=;
+ b=Y2p+BHEf2gHIEq5aVQIoIeOWzPFUSPoTD5Vy3jS0aVT+PG1cULmuwBWR18dwXt97Jl
+ coHLd4HnHVMjl/AFVstwVwOkb8PyYBTZdKJNDmzvlDoxLc5S8/cZkjWslINEE4w0S8zI
+ Mjl/I9/A3P40VbHifD5GoHTr4PZ+OCAPl9pHD9P2e9dQ8D3aMuVO3wVZBLk/LwwEsSxZ
+ d6D9wg1dDljZv5rkpIZpahxcue3RU/I4nUCambohWJi0p3ic0qd3bcNLoQ/Gr5PkKgy7
+ orAv0xTlGAAJ6leSFIMXcWqoXielFm6RXnPyRzF3h4MoRxLsyNzm3QHdpgtOBnm2M4A6
+ maWQ==
+X-Gm-Message-State: AOJu0YzZSMhvm4mL7Qx+Fko0Jw99oqwAdI48nwTsZsKWY6Dlcsf2cc1d
+ yvrdwr7Bp7jcGzxDIBCjj8vSQcHKsW+NDAQtTns8FruL2C8rObMkcBZorhcvObR/i5AIVkKbCWr
+ 4rPZV+xIqpCRu6/8fOiqdQ/hCD4yKsMYEPLsEIzSvlbLGdFm8GUcHk0jOYVV4W0u3IhCun0W4dt
+ gI/jOPTtH59YC8jy+6T7cVh+K6TMtJNaQHX8T0
+X-Received: by 2002:a05:6402:528c:b0:568:c624:9177 with SMTP id
+ en12-20020a056402528c00b00568c6249177mr10709816edb.35.1710930745156; 
+ Wed, 20 Mar 2024 03:32:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1pzCibz8Uhdu+ZMuSMseOfPsBi64Hi7C2qmjOdz0qzDHzGrZkEXyOGQJV7LhNxDpiTboHKA==
+X-Received: by 2002:a05:6402:528c:b0:568:c624:9177 with SMTP id
+ en12-20020a056402528c00b00568c6249177mr10709795edb.35.1710930744698; 
+ Wed, 20 Mar 2024 03:32:24 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- ww2-20020a170907084200b00a46cc48ab07sm2843130ejb.221.2024.03.20.03.32.20
- for <qemu-devel@nongnu.org>
+ cn25-20020a0564020cb900b00568c3a2f4f8sm4527242edb.74.2024.03.20.03.32.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Mar 2024 03:32:20 -0700 (PDT)
+ Wed, 20 Mar 2024 03:32:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 3/6] vl: do not assert if sev-guest is used together with TCG
-Date: Wed, 20 Mar 2024 11:32:10 +0100
-Message-ID: <20240320103213.1048405-4-pbonzini@redhat.com>
+Cc: Tao Su <tao1.su@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 4/6] target/i386: Revert monitor_puts() in do_inject_x86_mce()
+Date: Wed, 20 Mar 2024 11:32:11 +0100
+Message-ID: <20240320103213.1048405-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240320103213.1048405-1-pbonzini@redhat.com>
 References: <20240320103213.1048405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -101,31 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Tao Su <tao1.su@linux.intel.com>
+
+monitor_puts() doesn't check the monitor pointer, but do_inject_x86_mce()
+may have a parameter with NULL monitor pointer. Revert monitor_puts() in
+do_inject_x86_mce() to fix, then the fact that we send the same message to
+monitor and log is again more obvious.
+
+Fixes: bf0c50d4aa85 (monitor: expose monitor_puts to rest of code)
+Reviwed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Message-ID: <20240320083640.523287-1-tao1.su@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/vl.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ target/i386/helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/system/vl.c b/system/vl.c
-index 0c970cf0203..c6442229824 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2676,11 +2676,10 @@ static bool qemu_machine_creation_done(Error **errp)
- 
-     qdev_machine_creation_done();
- 
--    if (machine->cgs) {
--        /*
--         * Verify that Confidential Guest Support has actually been initialized
--         */
--        assert(machine->cgs->ready);
-+    if (machine->cgs && !machine->cgs->ready) {
-+        error_setg(errp, "accelerator does not support confidential guest %s",
-+                   object_get_typename(OBJECT(machine->cgs)));
-+        exit(1);
-     }
- 
-     if (foreach_device_config(DEV_GDB, gdbserver_start) < 0) {
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 2070dd0dda1..23ccb23a5b4 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -430,7 +430,7 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+         if (need_reset) {
+             emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
+                                       recursive);
+-            monitor_puts(params->mon, msg);
++            monitor_printf(params->mon, "%s", msg);
+             qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
 -- 
 2.44.0
 
