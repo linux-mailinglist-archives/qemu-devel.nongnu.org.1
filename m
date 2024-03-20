@@ -2,90 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F37881628
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 18:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7656B88165E
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 18:19:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmzQt-0007HN-Dr; Wed, 20 Mar 2024 13:08:55 -0400
+	id 1rmzZh-0002GT-KS; Wed, 20 Mar 2024 13:18:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmzQr-0007FB-Uc
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:08:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmzQn-00053Q-8O
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:08:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710954528;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+Dx/KkOu8yQ9ngPZdFWgD3kMSWkzh3jScXmleF4Z6hM=;
- b=GDkN8BU9fAgHgAH5izT39wICuaZWc8UZj7/EGVd46q9rzZnwdABoaxHsjr83oRF1FHRTn1
- 4Ia2Gc5jLaWBvxb1oJJBrpxhj1NXxYhSftKVc+3Ulr2iAhVsxoA4L5/Psq3eD5qXLHEYRz
- OQmhC1XVo330JAFsZ5sOe6+GXjVm/H8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-tawpRSutPuWg0ouoh9M19Q-1; Wed, 20 Mar 2024 13:08:46 -0400
-X-MC-Unique: tawpRSutPuWg0ouoh9M19Q-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-41463916b89so266925e9.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 10:08:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmzZg-0002Fw-4R
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:18:00 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rmzZd-0006Wg-4V
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:17:59 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-56bb22ff7baso1130871a12.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 10:17:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1710955075; x=1711559875; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=33F1//D2fVsuIjqVnoLzC6cYCRfMhnqisnhO1dhobsc=;
+ b=wTjIEk5wqDvhqN5pP56g0QGFTNkHtDmBDsrgHwcnmZtfWNV5qWtoZJAk6YpM7+4UoJ
+ /g4YXsB6Y24TW/HpziSl1BFQauJfzR5EceQAdWrrnZO69LMoKgseQ2ryMzZoj0bqq7Xr
+ ciZTfpi2p1IYJs4bxBZNrFpEe0usWAEDUAzPsThHm2Am3tQTGdL1wtE2ThVfjMTqtc21
+ 2ouv+NMC8kPljNHuriboxNiPQK+lZVfxTmz6V9z0881ulIJ4LhR4rarF3pnhoORr3t3j
+ 5EAK+2VP0vpdQuHanFR+yxJj8Cb0KpepPzzqTgzhF3h15JKWiLFLqYC2r6RFkQzjGsX8
+ s9JA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710954525; x=1711559325;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+Dx/KkOu8yQ9ngPZdFWgD3kMSWkzh3jScXmleF4Z6hM=;
- b=UDM7VyQ/W4EKrZ7qp0n+7Qv+2UMZVhI2Ex2URM4hHZgBdlj1Ad7+WnD9iU6JaUZKOC
- zKI7YooN1gMxqUbVqz1a2hwlxu/8i2MIBV2DoNq2ZHuNA9nFQ8mqFTHFKmSa6CAgJIYe
- Mtpvr7N1XH22bZSLsyVuSApdvfIMVVjMz+YYzsr2oxNth3Ox+wZV2MbA9dgszZnCzwQI
- uuTST6GG7bP4XCBopwLI2N/A66NE/XIbUuIdOgLChJdr06ijRDhYznqr+61t30YT6NUk
- s+l5p1dMH8IeY0ADN79srIWqdkWYDRwFmtZoCNkH11k4Blo45Ts7ZozxNLR88CmGOgn3
- 77WQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUaduYld+54fpLYv6sye+P1yYaJFhdjR65oS0RawW9SoMIeLlyJDhM212OCHSVOfBOonMLvbRfh6mcYm6C2TfsmMHPwdLc=
-X-Gm-Message-State: AOJu0YxqWblY8d4c7SbJx1EiQV4mdmefmTnZVl/7/cHMqw02trwxPQlY
- iV+z4j9rc8mgjl/HQhkgUyhK7z+0Gr6DczqWsGsTNwP0cDpPbjMHil+7FMHvQyq5gbyMG0KWVhQ
- INyiA+H4KfWwchW8K6gRoq6i5ZUXpnJrTMkhvQrG/THJQI+Q+S49PBZttIiR3/lCZgZE0SLE+xn
- cPZFtbcmN26Vt+RAQ8pqDkqZj17TB9wXOkoWGjgg==
-X-Received: by 2002:adf:ed12:0:b0:33d:b2d7:6264 with SMTP id
- a18-20020adfed12000000b0033db2d76264mr2367260wro.51.1710954524424; 
- Wed, 20 Mar 2024 10:08:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBq75XBCT/NdZxSgf9I0aEHnDuET5ViX0lIeqf2bX8Rj4ozUU/7SKBimseB1cuN8gFZQeL7738ssmPIavs81M=
-X-Received: by 2002:adf:ed12:0:b0:33d:b2d7:6264 with SMTP id
- a18-20020adfed12000000b0033db2d76264mr2367243wro.51.1710954524048; Wed, 20
- Mar 2024 10:08:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710955075; x=1711559875;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=33F1//D2fVsuIjqVnoLzC6cYCRfMhnqisnhO1dhobsc=;
+ b=I+3czMXRSdxqHOizX/ROiAFSdB9W5h1utFIo3SyKF1mB81cFRVGCzuPf1AW2NPeMyV
+ o0VLS0GrEIMXZMRBSBHD7knNKQ5l+VO51Le7RIF/ULH4lXNGXFnK3ce15O1ddAbsY9U3
+ fRbJjdhaWH748lpVramDSmjrma90k0LLh+JGI2SqL09SvB4mpRNJxRcnhq94Nih0MFnu
+ GoRPnnrAeKWxdhrzMZh2kJzBE2fWQU1pvxLwRny8MT/evkWIveWUoJZE+fmMOjpz1iEp
+ cvsxesfiVjE5yiCBvlyFGULgPoKUW9nOaVscpY/UdzyUGHol/h6cVCbQFjA9j0bvuThQ
+ uvvQ==
+X-Gm-Message-State: AOJu0Yxuc50/Yx/ZnXinGXXGruTJlwJWjVR5sGVzDvPO0eFOo05MzBdA
+ O8N3otGBaP/zBzX3AUY15rxfo1cqShes4XyxzC9XLKTPZUMS+8DtgJA/ylDuO0UBn4VkPHHlF/7
+ +lwZIDZrxjSB/LayhDn+gvnr+3mGBl559ae3oqCKZA9dOnXo/
+X-Google-Smtp-Source: AGHT+IGypr6vcyDFxgdjfErmrgzvn4GBXX5EaJq2Nl7edaxdaUO/tMFMWVp58UUqCiH3ayzi3eDB4SKSW5VnMt7yPYw=
+X-Received: by 2002:a05:6402:4346:b0:56a:ae8a:acb3 with SMTP id
+ n6-20020a056402434600b0056aae8aacb3mr5817083edc.42.1710955075311; Wed, 20 Mar
+ 2024 10:17:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240320083945.991426-1-michael.roth@amd.com>
- <eea690c2-7d2f-4a35-b5c3-078c12ef228b@redhat.com>
-In-Reply-To: <eea690c2-7d2f-4a35-b5c3-078c12ef228b@redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 20 Mar 2024 18:08:31 +0100
-Message-ID: <CABgObfYzNksaaHgZ5kozXohwWWyDgfw3ue2juEbZmVteb5Trqw@mail.gmail.com>
-Subject: Re: [PATCH RFC v3 00/49] Add AMD Secure Nested Paging (SEV-SNP)
- support
-To: Michael Roth <michael.roth@amd.com>, qemu-devel@nongnu.org
-Cc: kvm@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Content-Type: multipart/mixed; boundary="000000000000a22ce206141aa4eb"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+References: <20240320164055.60319-1-philmd@linaro.org>
+ <CAFEAcA81u9J9iijs-CNDbsANb6c0Cdb4qQKmBd=DiQAoFA4U=w@mail.gmail.com>
+ <5deec986-7a22-402d-abe1-4e40f5bb427a@linaro.org>
+In-Reply-To: <5deec986-7a22-402d-abe1-4e40f5bb427a@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 20 Mar 2024 17:17:43 +0000
+Message-ID: <CAFEAcA_4J32gpUgxXxND8ZVhrEEhFK=gPG2SF8xsVJ+jpkV0WA@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0 0/2] target/monitor: Deprecate 'info tlb/mem' in
+ favor of 'info mmu'
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, 
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, qemu-ppc@nongnu.org, 
+ Thomas Huth <thuth@redhat.com>, devel@lists.libvirt.org, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,160 +97,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a22ce206141aa4eb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, 20 Mar 2024 at 17:06, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
+g> wrote:
+>
+> +Alex/Daniel
+>
+> On 20/3/24 17:53, Peter Maydell wrote:
+> > On Wed, 20 Mar 2024 at 16:40, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+> >>
+> >> 'info tlb' and 'info mem' commands don't scale in heterogeneous
+> >> emulation. They will be reworked after the next release, hidden
+> >> behind the 'info mmu' command. It is not too late to deprecate
+> >> commands, so add the 'info mmu' command as wrapper to the other
+> >> ones, but already deprecate them.
+> >>
+> >> Philippe Mathieu-Daud=C3=A9 (2):
+> >>    target/monitor: Introduce 'info mmu' command
+> >>    target/monitor: Deprecate 'info tlb' and 'info mem' commands
+> >
+> > This seems to replace "info tlb" and "info mem" with "info mmu -t"
+> > and "info mmu -m", but it doesn't really say anything about:
+> >   * what the difference is between these two things
+>
+> I really don't know; I'm only trying to keep the monitor interface
+> identical.
 
-On Wed, Mar 20, 2024 at 10:59=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com=
-> wrote:
-> I will now focus on reviewing patches 6-20.  This way we can prepare a
-> common tree for SEV_INIT2/SNP/TDX, for both vendors to build upon.
+You don't, though: you change it from "info tlb" to "info mmu -t" etc.
 
-Ok, the attachment is the delta that I have. The only major change is
-requiring discard (thus effectively blocking VFIO support for
-SEV-SNP/TDX, at least for now).
+> >   * which targets implement which and why
+>
+> This one is easy to answer:
+>
+> #if defined(TARGET_I386) || defined(TARGET_SH4) || defined(TARGET_SPARC)
+> || \
+>      defined(TARGET_PPC) || defined(TARGET_XTENSA) || defined(TARGET_M68K=
+)
+>      {
+>          .name       =3D "tlb",
+>
+> #if defined(TARGET_I386) || defined(TARGET_RISCV)
+>      {
+>          .name       =3D "mem",
+>
+> >   * what the plan is for the future
+>
+> My problem is with linking a single QEMU binary, as these two symbols
+> (hmp_info_mem and hmp_info_tlb) clash.
 
-I will push it shortly to the same sevinit2 branch, and will post the
-patches sometime soon.
+Yes, but they both (implicitly) operate on the current HMP CPU,
+so the problem with linking into a single binary is that they're
+not indirected through a method on the CPU object, not the syntax
+used in the monitor to invoke them, presumably.
 
-Xiaoyao, you can use that branch too (it's on
-https://gitlab.com/bonzini/qemu) as the basis for your TDX work.
+> I'm indeed only postponing the problem, without looking at what
+> this code does. I did it adding hmp_info_mmu_tlb/mem hooks in
+> TCGCPUOps ("hw/core/tcg-cpu-ops.h"), so the command can be
+> dispatched per target vcpu as target-agnostic code in
+> monitor/hmp-cmds.c:
+>
+> +#include "hw/core/tcg-cpu-ops.h"
+> +
+> +static void hmp_info_mmu_tlb(Monitor *mon, CPUState *cpu)
+> +{
+> +    const TCGCPUOps *tcg_ops =3D cpu->cc->tcg_ops;
+> +
+> +    if (tcg_ops->hmp_info_mmu_tlb) {
+> +        tcg_ops->hmp_info_mmu_tlb(mon, cpu_env(cpu));
+> +    } else {
+> +        monitor_puts(mon, "No per-CPU information available on this
+> target\n");
+> +    }
+> +}
 
-Paolo
+These aren't TCG specific though, so why TCGCPUOps ?
 
---000000000000a22ce206141aa4eb
-Content-Type: application/x-patch; name="ff.patch"
-Content-Disposition: attachment; filename="ff.patch"
-Content-Transfer-Encoding: base64
-Content-ID: <f_lu01wrrk0>
-X-Attachment-Id: f_lu01wrrk0
+> > I am definitely not a fan of either of these commands, because
+> > (as we currently implement them) they effectively require each
+> > target architecture to implement a second copy of the page table
+> > walking code. But before we can deprecate them we need to be
+> > pretty sure that "info mmu" is what we want to replace them with.
+>
+> An alternative is to just deprecate them, without adding "info mmu" :)
+>
+> It is OK to un-deprecate stuff if we realize its usefulness.
 
-ZGlmZiAtLWdpdCBhL2FjY2VsL2t2bS9rdm0tYWxsLmMgYi9hY2NlbC9rdm0va3ZtLWFsbC5jCmlu
-ZGV4IGJmMGFlMGM4YWRiLi40Mjg0Njg5NTBkOSAxMDA2NDQKLS0tIGEvYWNjZWwva3ZtL2t2bS1h
-bGwuYworKysgYi9hY2NlbC9rdm0va3ZtLWFsbC5jCkBAIC0yODUsMTkgKzI4NSw4IEBAIHN0YXRp
-YyBpbnQga3ZtX3NldF91c2VyX21lbW9yeV9yZWdpb24oS1ZNTWVtb3J5TGlzdGVuZXIgKmttbCwg
-S1ZNU2xvdCAqc2xvdCwgYm9vCiB7CiAgICAgS1ZNU3RhdGUgKnMgPSBrdm1fc3RhdGU7CiAgICAg
-c3RydWN0IGt2bV91c2Vyc3BhY2VfbWVtb3J5X3JlZ2lvbjIgbWVtOwotICAgIHN0YXRpYyBpbnQg
-Y2FwX3VzZXJfbWVtb3J5MiA9IC0xOwogICAgIGludCByZXQ7CiAKLSAgICBpZiAoY2FwX3VzZXJf
-bWVtb3J5MiA9PSAtMSkgewotICAgICAgICBjYXBfdXNlcl9tZW1vcnkyID0ga3ZtX2NoZWNrX2V4
-dGVuc2lvbihzLCBLVk1fQ0FQX1VTRVJfTUVNT1JZMik7Ci0gICAgfQotCi0gICAgaWYgKCFjYXBf
-dXNlcl9tZW1vcnkyICYmIHNsb3QtPmd1ZXN0X21lbWZkID49IDApIHsKLSAgICAgICAgZXJyb3Jf
-cmVwb3J0KCIlcywgS1ZNIGRvZXNuJ3Qgc3VwcG9ydCBLVk1fQ0FQX1VTRVJfTUVNT1JZMiwiCi0g
-ICAgICAgICAgICAgICAgICAgICAiIHdoaWNoIGlzIHJlcXVpcmVkIGJ5IGd1ZXN0IG1lbWZkISIs
-IF9fZnVuY19fKTsKLSAgICAgICAgZXhpdCgxKTsKLSAgICB9Ci0KICAgICBtZW0uc2xvdCA9IHNs
-b3QtPnNsb3QgfCAoa21sLT5hc19pZCA8PCAxNik7CiAgICAgbWVtLmd1ZXN0X3BoeXNfYWRkciA9
-IHNsb3QtPnN0YXJ0X2FkZHI7CiAgICAgbWVtLnVzZXJzcGFjZV9hZGRyID0gKHVuc2lnbmVkIGxv
-bmcpc2xvdC0+cmFtOwpAQCAtMzEwLDcgKzI5OSw3IEBAIHN0YXRpYyBpbnQga3ZtX3NldF91c2Vy
-X21lbW9yeV9yZWdpb24oS1ZNTWVtb3J5TGlzdGVuZXIgKmttbCwgS1ZNU2xvdCAqc2xvdCwgYm9v
-CiAgICAgICAgICAqIHZhbHVlLiBUaGlzIGlzIG5lZWRlZCBiYXNlZCBvbiBLVk0gY29tbWl0IDc1
-ZDYxZmJjLiAqLwogICAgICAgICBtZW0ubWVtb3J5X3NpemUgPSAwOwogCi0gICAgICAgIGlmIChj
-YXBfdXNlcl9tZW1vcnkyKSB7CisgICAgICAgIGlmIChrdm1fZ3Vlc3RfbWVtZmRfc3VwcG9ydGVk
-KSB7CiAgICAgICAgICAgICByZXQgPSBrdm1fdm1faW9jdGwocywgS1ZNX1NFVF9VU0VSX01FTU9S
-WV9SRUdJT04yLCAmbWVtKTsKICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgIHJldCA9IGt2
-bV92bV9pb2N0bChzLCBLVk1fU0VUX1VTRVJfTUVNT1JZX1JFR0lPTiwgJm1lbSk7CkBAIC0zMjAs
-NyArMzA5LDcgQEAgc3RhdGljIGludCBrdm1fc2V0X3VzZXJfbWVtb3J5X3JlZ2lvbihLVk1NZW1v
-cnlMaXN0ZW5lciAqa21sLCBLVk1TbG90ICpzbG90LCBib28KICAgICAgICAgfQogICAgIH0KICAg
-ICBtZW0ubWVtb3J5X3NpemUgPSBzbG90LT5tZW1vcnlfc2l6ZTsKLSAgICBpZiAoY2FwX3VzZXJf
-bWVtb3J5MikgeworICAgIGlmIChrdm1fZ3Vlc3RfbWVtZmRfc3VwcG9ydGVkKSB7CiAgICAgICAg
-IHJldCA9IGt2bV92bV9pb2N0bChzLCBLVk1fU0VUX1VTRVJfTUVNT1JZX1JFR0lPTjIsICZtZW0p
-OwogICAgIH0gZWxzZSB7CiAgICAgICAgIHJldCA9IGt2bV92bV9pb2N0bChzLCBLVk1fU0VUX1VT
-RVJfTUVNT1JZX1JFR0lPTiwgJm1lbSk7CkBAIC0zMzIsNyArMzIxLDcgQEAgZXJyOgogICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgbWVtLnVzZXJzcGFjZV9hZGRyLCBtZW0uZ3Vlc3RfbWVt
-ZmQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBtZW0uZ3Vlc3RfbWVtZmRfb2Zmc2V0
-LCByZXQpOwogICAgIGlmIChyZXQgPCAwKSB7Ci0gICAgICAgIGlmIChjYXBfdXNlcl9tZW1vcnky
-KSB7CisgICAgICAgIGlmIChrdm1fZ3Vlc3RfbWVtZmRfc3VwcG9ydGVkKSB7CiAgICAgICAgICAg
-ICAgICAgZXJyb3JfcmVwb3J0KCIlczogS1ZNX1NFVF9VU0VSX01FTU9SWV9SRUdJT04yIGZhaWxl
-ZCwgc2xvdD0lZCwiCiAgICAgICAgICAgICAgICAgICAgICAgICAiIHN0YXJ0PTB4JSIgUFJJeDY0
-ICIsIHNpemU9MHglIiBQUkl4NjQgIiwiCiAgICAgICAgICAgICAgICAgICAgICAgICAiIGZsYWdz
-PTB4JSIgUFJJeDMyICIsIGd1ZXN0X21lbWZkPSUiIFBSSWQzMiAiLCIKQEAgLTUwMiw2ICs0OTEs
-NyBAQCBzdGF0aWMgaW50IGt2bV9tZW1fZmxhZ3MoTWVtb3J5UmVnaW9uICptcikKICAgICAgICAg
-ZmxhZ3MgfD0gS1ZNX01FTV9SRUFET05MWTsKICAgICB9CiAgICAgaWYgKG1lbW9yeV9yZWdpb25f
-aGFzX2d1ZXN0X21lbWZkKG1yKSkgeworICAgICAgICBhc3NlcnQoa3ZtX2d1ZXN0X21lbWZkX3N1
-cHBvcnRlZCk7CiAgICAgICAgIGZsYWdzIHw9IEtWTV9NRU1fR1VFU1RfTUVNRkQ7CiAgICAgfQog
-ICAgIHJldHVybiBmbGFnczsKQEAgLTEzMTAsMTggKzEzMDAsNyBAQCBzdGF0aWMgaW50IGt2bV9z
-ZXRfbWVtb3J5X2F0dHJpYnV0ZXMoaHdhZGRyIHN0YXJ0LCBod2FkZHIgc2l6ZSwgdWludDY0X3Qg
-YXR0cikKICAgICBzdHJ1Y3Qga3ZtX21lbW9yeV9hdHRyaWJ1dGVzIGF0dHJzOwogICAgIGludCBy
-OwogCi0gICAgaWYgKGt2bV9zdXBwb3J0ZWRfbWVtb3J5X2F0dHJpYnV0ZXMgPT0gMCkgewotICAg
-ICAgICBlcnJvcl9yZXBvcnQoIk5vIG1lbW9yeSBhdHRyaWJ1dGUgc3VwcG9ydGVkIGJ5IEtWTVxu
-Iik7Ci0gICAgICAgIHJldHVybiAtRUlOVkFMOwotICAgIH0KLQotICAgIGlmICgoYXR0ciAmIGt2
-bV9zdXBwb3J0ZWRfbWVtb3J5X2F0dHJpYnV0ZXMpICE9IGF0dHIpIHsKLSAgICAgICAgZXJyb3Jf
-cmVwb3J0KCJtZW1vcnkgYXR0cmlidXRlIDB4JWx4IG5vdCBzdXBwb3J0ZWQgYnkgS1ZNLCIKLSAg
-ICAgICAgICAgICAgICAgICAgICIgc3VwcG9ydGVkIGJpdHMgYXJlIDB4JWx4XG4iLAotICAgICAg
-ICAgICAgICAgICAgICAgYXR0ciwga3ZtX3N1cHBvcnRlZF9tZW1vcnlfYXR0cmlidXRlcyk7Ci0g
-ICAgICAgIHJldHVybiAtRUlOVkFMOwotICAgIH0KLQorICAgIGFzc2VydCgoYXR0ciAmIGt2bV9z
-dXBwb3J0ZWRfbWVtb3J5X2F0dHJpYnV0ZXMpID09IGF0dHIpOwogICAgIGF0dHJzLmF0dHJpYnV0
-ZXMgPSBhdHRyOwogICAgIGF0dHJzLmFkZHJlc3MgPSBzdGFydDsKICAgICBhdHRycy5zaXplID0g
-c2l6ZTsKQEAgLTI0ODgsMTEgKzI0NjcsMTQgQEAgc3RhdGljIGludCBrdm1faW5pdChNYWNoaW5l
-U3RhdGUgKm1zKQogICAgIH0KICAgICBzLT5hcyA9IGdfbmV3MChzdHJ1Y3QgS1ZNQXMsIHMtPm5y
-X2FzKTsKIAotICAgIGt2bV9ndWVzdF9tZW1mZF9zdXBwb3J0ZWQgPSBrdm1fY2hlY2tfZXh0ZW5z
-aW9uKHMsIEtWTV9DQVBfR1VFU1RfTUVNRkQpOwotCiAgICAgcmV0ID0ga3ZtX2NoZWNrX2V4dGVu
-c2lvbihzLCBLVk1fQ0FQX01FTU9SWV9BVFRSSUJVVEVTKTsKICAgICBrdm1fc3VwcG9ydGVkX21l
-bW9yeV9hdHRyaWJ1dGVzID0gcmV0ID4gMCA/IHJldCA6IDA7CiAKKyAgICBrdm1fZ3Vlc3RfbWVt
-ZmRfc3VwcG9ydGVkID0KKyAgICAgICAga3ZtX2NoZWNrX2V4dGVuc2lvbihzLCBLVk1fQ0FQX0dV
-RVNUX01FTUZEKSAmJgorICAgICAgICBrdm1fY2hlY2tfZXh0ZW5zaW9uKHMsIEtWTV9DQVBfVVNF
-Ul9NRU1PUlkyKSAmJgorICAgICAgICAoa3ZtX3N1cHBvcnRlZF9tZW1vcnlfYXR0cmlidXRlcyAm
-IEtWTV9NRU1PUllfQVRUUklCVVRFX1BSSVZBVEUpOworCiAgICAgaWYgKG9iamVjdF9wcm9wZXJ0
-eV9maW5kKE9CSkVDVChjdXJyZW50X21hY2hpbmUpLCAia3ZtLXR5cGUiKSkgewogICAgICAgICBn
-X2F1dG9mcmVlIGNoYXIgKmt2bV90eXBlID0gb2JqZWN0X3Byb3BlcnR5X2dldF9zdHIoT0JKRUNU
-KGN1cnJlbnRfbWFjaGluZSksCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAia3ZtLXR5cGUiLApAQCAtMjk2MiwxNCArMjk0NCwxMCBA
-QCBpbnQga3ZtX2NvbnZlcnRfbWVtb3J5KGh3YWRkciBzdGFydCwgaHdhZGRyIHNpemUsIGJvb2wg
-dG9fcHJpdmF0ZSkKICAgICAgICAgICAgICAgICAqLwogICAgICAgICAgICAgICAgIHJldHVybiAw
-OwogICAgICAgICAgICAgfSBlbHNlIHsKLSAgICAgICAgICAgICAgICByZXQgPSByYW1fYmxvY2tf
-ZGlzY2FyZF9pc19kaXNhYmxlZCgpCi0gICAgICAgICAgICAgICAgICAgICAgPyByYW1fYmxvY2tf
-ZGlzY2FyZF9yYW5nZShyYiwgb2Zmc2V0LCBzaXplKQotICAgICAgICAgICAgICAgICAgICAgIDog
-MDsKKyAgICAgICAgICAgICAgICByZXQgPSByYW1fYmxvY2tfZGlzY2FyZF9yYW5nZShyYiwgb2Zm
-c2V0LCBzaXplKTsKICAgICAgICAgICAgIH0KICAgICAgICAgfSBlbHNlIHsKLSAgICAgICAgICAg
-IHJldCA9IHJhbV9ibG9ja19kaXNjYXJkX2lzX2Rpc2FibGVkKCkKLSAgICAgICAgICAgICAgICAg
-ID8gcmFtX2Jsb2NrX2Rpc2NhcmRfZ3Vlc3RfbWVtZmRfcmFuZ2UocmIsIG9mZnNldCwgc2l6ZSkK
-LSAgICAgICAgICAgICAgICAgIDogMDsKKyAgICAgICAgICAgIHJldCA9IHJhbV9ibG9ja19kaXNj
-YXJkX2d1ZXN0X21lbWZkX3JhbmdlKHJiLCBvZmZzZXQsIHNpemUpOwogICAgICAgICB9CiAgICAg
-fSBlbHNlIHsKICAgICAgICAgZXJyb3JfcmVwb3J0KCJDb252ZXJ0IG5vbiBndWVzdF9tZW1mZCBi
-YWNrZWQgbWVtb3J5IHJlZ2lvbiAiCmRpZmYgLS1naXQgYS9zeXN0ZW0vcGh5c21lbS5jIGIvc3lz
-dGVtL3BoeXNtZW0uYwppbmRleCA4YmU4MDUzY2Y3Ny4uYjgzOWJlNTg1MzggMTAwNjQ0Ci0tLSBh
-L3N5c3RlbS9waHlzbWVtLmMKKysrIGIvc3lzdGVtL3BoeXNtZW0uYwpAQCAtMTgxMCw2ICsxODEw
-LDcgQEAgc3RhdGljIHZvaWQgcmFtX2Jsb2NrX2FkZChSQU1CbG9jayAqbmV3X2Jsb2NrLCBFcnJv
-ciAqKmVycnApCiAgICAgY29uc3QgYm9vbCBzaGFyZWQgPSBxZW11X3JhbV9pc19zaGFyZWQobmV3
-X2Jsb2NrKTsKICAgICBSQU1CbG9jayAqYmxvY2s7CiAgICAgUkFNQmxvY2sgKmxhc3RfYmxvY2sg
-PSBOVUxMOworICAgIGJvb2wgZnJlZV9vbl9lcnJvciA9IGZhbHNlOwogICAgIHJhbV9hZGRyX3Qg
-b2xkX3JhbV9zaXplLCBuZXdfcmFtX3NpemU7CiAgICAgRXJyb3IgKmVyciA9IE5VTEw7CiAKQEAg
-LTE4MzksMTcgKzE4NDAsMjYgQEAgc3RhdGljIHZvaWQgcmFtX2Jsb2NrX2FkZChSQU1CbG9jayAq
-bmV3X2Jsb2NrLCBFcnJvciAqKmVycnApCiAgICAgICAgICAgICAgICAgcmV0dXJuOwogICAgICAg
-ICAgICAgfQogICAgICAgICAgICAgbWVtb3J5X3RyeV9lbmFibGVfbWVyZ2luZyhuZXdfYmxvY2st
-Pmhvc3QsIG5ld19ibG9jay0+bWF4X2xlbmd0aCk7CisgICAgICAgICAgICBmcmVlX29uX2Vycm9y
-ID0gdHJ1ZTsKICAgICAgICAgfQogICAgIH0KIAotICAgIGlmIChrdm1fZW5hYmxlZCgpICYmIChu
-ZXdfYmxvY2stPmZsYWdzICYgUkFNX0dVRVNUX01FTUZEKSkgeworICAgIGlmIChuZXdfYmxvY2st
-PmZsYWdzICYgUkFNX0dVRVNUX01FTUZEKSB7CisgICAgICAgIGFzc2VydChrdm1fZW5hYmxlZCgp
-KTsKICAgICAgICAgYXNzZXJ0KG5ld19ibG9jay0+Z3Vlc3RfbWVtZmQgPCAwKTsKIAorICAgICAg
-ICBpZiAocmFtX2Jsb2NrX2Rpc2NhcmRfcmVxdWlyZSh0cnVlKSA8IDApIHsKKyAgICAgICAgICAg
-IGVycm9yX3NldGdfZXJybm8oZXJycCwgZXJybm8sCisgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICJjYW5ub3Qgc2V0IHVwIHByaXZhdGUgZ3Vlc3QgbWVtb3J5OiBkaXNjYXJkIGN1cnJlbnRs
-eSBibG9ja2VkIik7CisgICAgICAgICAgICBlcnJvcl9hcHBlbmRfaGludChlcnJwLCAiQXJlIHlv
-dSB1c2luZyBhc3NpZ25lZCBkZXZpY2VzP1xuIik7CisgICAgICAgICAgICBnb3RvIG91dF9mcmVl
-OworICAgICAgICB9CisKICAgICAgICAgbmV3X2Jsb2NrLT5ndWVzdF9tZW1mZCA9IGt2bV9jcmVh
-dGVfZ3Vlc3RfbWVtZmQobmV3X2Jsb2NrLT5tYXhfbGVuZ3RoLAogICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAwLCBlcnJwKTsKICAgICAgICAg
-aWYgKG5ld19ibG9jay0+Z3Vlc3RfbWVtZmQgPCAwKSB7CiAgICAgICAgICAgICBxZW11X211dGV4
-X3VubG9ja19yYW1saXN0KCk7Ci0gICAgICAgICAgICByZXR1cm47CisgICAgICAgICAgICBnb3Rv
-IG91dF9mcmVlOwogICAgICAgICB9CiAgICAgfQogCkBAIC0xOTAxLDYgKzE5MTEsMTMgQEAgc3Rh
-dGljIHZvaWQgcmFtX2Jsb2NrX2FkZChSQU1CbG9jayAqbmV3X2Jsb2NrLCBFcnJvciAqKmVycnAp
-CiAgICAgICAgIHJhbV9ibG9ja19ub3RpZnlfYWRkKG5ld19ibG9jay0+aG9zdCwgbmV3X2Jsb2Nr
-LT51c2VkX2xlbmd0aCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmV3X2Jsb2NrLT5t
-YXhfbGVuZ3RoKTsKICAgICB9CisgICAgcmV0dXJuOworCitvdXRfZnJlZToKKyAgICBpZiAoZnJl
-ZV9vbl9lcnJvcikgeworICAgICAgICBxZW11X2Fub25fcmFtX2ZyZWUobmV3X2Jsb2NrLT5ob3N0
-LCBuZXdfYmxvY2stPm1heF9sZW5ndGgpOworICAgICAgICBuZXdfYmxvY2stPmhvc3QgPSBOVUxM
-OworICAgIH0KIH0KIAogI2lmZGVmIENPTkZJR19QT1NJWApAQCAtMjAzMiw3ICsyMDQ5LDcgQEAg
-UkFNQmxvY2sgKnFlbXVfcmFtX2FsbG9jX2ludGVybmFsKHJhbV9hZGRyX3Qgc2l6ZSwgcmFtX2Fk
-ZHJfdCBtYXhfc2l6ZSwKICAgICBpbnQgYWxpZ247CiAKICAgICBhc3NlcnQoKHJhbV9mbGFncyAm
-IH4oUkFNX1NIQVJFRCB8IFJBTV9SRVNJWkVBQkxFIHwgUkFNX1BSRUFMTE9DIHwKLSAgICAgICAg
-ICAgICAgICAgICAgICAgICAgUkFNX05PUkVTRVJWRXwgUkFNX0dVRVNUX01FTUZEKSkgPT0gMCk7
-CisgICAgICAgICAgICAgICAgICAgICAgICAgIFJBTV9OT1JFU0VSVkUgfCBSQU1fR1VFU1RfTUVN
-RkQpKSA9PSAwKTsKICAgICBhc3NlcnQoIWhvc3QgXiAocmFtX2ZsYWdzICYgUkFNX1BSRUFMTE9D
-KSk7CiAKICAgICBhbGlnbiA9IHFlbXVfcmVhbF9ob3N0X3BhZ2Vfc2l6ZSgpOwpAQCAtMjEwMSw2
-ICsyMTE4LDcgQEAgc3RhdGljIHZvaWQgcmVjbGFpbV9yYW1ibG9jayhSQU1CbG9jayAqYmxvY2sp
-CiAKICAgICBpZiAoYmxvY2stPmd1ZXN0X21lbWZkID49IDApIHsKICAgICAgICAgY2xvc2UoYmxv
-Y2stPmd1ZXN0X21lbWZkKTsKKyAgICAgICAgcmFtX2Jsb2NrX2Rpc2NhcmRfcmVxdWlyZShmYWxz
-ZSk7CiAgICAgfQogCiAgICAgZ19mcmVlKGJsb2NrKTsK
---000000000000a22ce206141aa4eb--
+The commands are there because some users find them useful.
+I just dislike them because I think they're a bit niche and
+annoying to implement and not consistent across target
+architectures and not very well documented...
 
+By the way, we have no obligation to follow the deprecate-and-drop
+process for HMP commands; unlike QMP, we give ourselves the
+license to vary it when we feel like it, because the users are
+humans, not programs or scripts.
+
+-- PMM
 
