@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5905880BDE
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A8ED880BDF
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:17:56 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmqBe-00020f-1Z; Wed, 20 Mar 2024 03:16:34 -0400
+	id 1rmqCo-0003Lf-AS; Wed, 20 Mar 2024 03:17:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmqBa-0001zn-C9
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:16:30 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmqCl-0003LU-Bp
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:17:43 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmqBM-0000Nc-6i
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:16:30 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-414618e6820so15549345e9.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 00:16:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rmqCi-0000fl-QY
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:17:43 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4146bcff793so2792315e9.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 00:17:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710918967; x=1711523767; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1710919058; x=1711523858; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=etOEZgJbxNy6BpwJ08+aVQlxpXozs6yKhUiMuGswoSs=;
- b=YDER/GLdbKxFaNxAhEbQ96QEdzHsDiOLIjazs/NAqjnbAU/iN1yxBs7JBcCUzb+11O
- pyGn73eMDJ/olqc9rtktsqXtx6e8js4f5HZarMp+zyx89BsGodR+XwZ9WnT/KL7ljUQL
- 1i1H+EuRYPAu7puxIrh0Jw9hvPlwDBgWTbC93RgI2SlFNa85LPyGFLjf3p8nk4z74MTK
- oXmZqz/ZmdlNftQO10YrC6LZDlAt1lA6Bs/0KfYiyWig0Sa5s1RG9jtJQUdhbUF7Xbc3
- 7Yt9zna4DZrbq7CFOo/ehES9xNlYS9C/9yKi5xAbuvgHMnxy7jeSb0k/zoOXN1U5I7ff
- h4SQ==
+ bh=LWAYh2T5XYbZ/9cqinlrmi89DO1EQKNUZJ4eIIso0LA=;
+ b=u5zCRkY4LocclyzjnRQE22jhHzp0IdJX/aLwiCjdT45ouCAkMy8ImuBVKiarMB9WWz
+ ZDVRpIHSwdS+bLcUB1xBCRCuV9AnYFr1c8GXLGgovumU6whjOeiVDnl2kEhqU70oQNYR
+ irXl6WtbfZCHlFo2/YTwPQ760J+gb2uWi71NlVN879wlS4bISMw4AOIVxk0DVTTbOj1G
+ bd5VFqEcvr6B9z+qNgZ0WrLs4YK/B2T3miAe3QKxXH8/NvYpvVVqaAqAitZCqme2+QDr
+ Yogklez2LGhFCJaOqM9c5uhzfDvJBjAYFuNLtyQ3BGEX2NdUfnb7v2DWrCQ7ENoHA8pQ
+ JOew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710918967; x=1711523767;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1710919058; x=1711523858;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=etOEZgJbxNy6BpwJ08+aVQlxpXozs6yKhUiMuGswoSs=;
- b=bX80FSdX6CaNe6EBZBDj+WVdTko4rga0O1woD0sIeuGzesz20EI6Yb6rGBjAneYwCg
- rSuAuVVE0lo1GzioOfediuINxTbzqU3oHTdiwO4Iup26qmexYBZqtCUmsJOaWfFXItMa
- cjYpXuburROkgGTKA/B37UcETkny0Qw8RWhir5lMfTVq5j7ixf16P6I6hcNsj4iNHLLm
- 2A9x6qwJNYmIqpO/T5E0yDPfayId1TKh6pGgQR+pViFdQDGzTmQu63FIAP3EJBsiaXsF
- GxSpztfaSIMBH3A+tSHwGHGH9a2iyH/RoHqUa27ggbdO3PF8EERKrjTbDemGbZNHKTYx
- zN+w==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWP4wTEUcce3KLdyrZxzUJOXSGvMGrGzp1bkRY8ZxxdEvkkJHM1muthefAN3llhdmAwCWC2GbpXVpMhtKzvK1EjqgYi8vA=
-X-Gm-Message-State: AOJu0YzND8NPTXYqzETD8sGRoQdCB86jhFenPa6P0iAn+royN8rUd87X
- QUtsBC/uc+B/nuBE8xRJd2dcpNWqZaJ5nLfKvolT+eFhACcacXeKUdhgZmXk5pPFax+cLn9z6bM
- g
-X-Google-Smtp-Source: AGHT+IHPnYSXWAPLPM6w9dipaR0s8LCdSOFudNjg1iZROwr5eAl1v1rJDusUOnBlTRyHO1u9EngCSQ==
-X-Received: by 2002:a05:600c:3ba7:b0:414:3713:e9a2 with SMTP id
- n39-20020a05600c3ba700b004143713e9a2mr4047453wms.3.1710918966891; 
- Wed, 20 Mar 2024 00:16:06 -0700 (PDT)
+ bh=LWAYh2T5XYbZ/9cqinlrmi89DO1EQKNUZJ4eIIso0LA=;
+ b=epamPJMds5Nr1n9pW/3RhThmkMEhXtzOGBacKFSYI5q8Of/vmm+OrM84w7xxTXFIbT
+ BOQIVTT5Y409zllp5On327qwbfirgNMfXLpZBbjxVCQHV3WIdfYi2u4XHON+S81TOlf7
+ 5Rai2Mwau9dFHMTeUNiIq5ufYNIB2V3Ngg45aJBeEMwma7c/sEzEUm6oDLquwDo9Id/Q
+ A/FrF/5O7GAegu4MSS66HTi6M3SP08vUOYetZMDQm37foDp9rzL4XVchycKTrEpXvpEW
+ Vn61QNcWAtWjIhBcZLFoqElf9GjsnyvyL0mNTL/PL3nrppxVZjrHvCWmMLKBBc4NLUxz
+ g0NQ==
+X-Gm-Message-State: AOJu0YzhiSsPjDEUF6Ui/08XK/uI6o+dxVHzQ05MwuOoalaiAzVMbmzD
+ r79i2LVN+WMLb/BGKQi7tfhw8aku+7AuoFmyuwBM/7zYeegqiTvOGEjKUFc3NRA=
+X-Google-Smtp-Source: AGHT+IHjLNox3iuUTx+z6ll0U/VljQ6wo42JTIb3a5UX36qZY/tcTsvHjArrkgDTqpkconP+jxpfbg==
+X-Received: by 2002:a05:600c:524f:b0:414:6c34:a411 with SMTP id
+ fc15-20020a05600c524f00b004146c34a411mr517308wmb.24.1710919058152; 
+ Wed, 20 Mar 2024 00:17:38 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.156.105])
  by smtp.gmail.com with ESMTPSA id
- jh2-20020a05600ca08200b00413e63bb140sm1220747wmb.41.2024.03.20.00.16.05
+ jh2-20020a05600ca08200b00413e63bb140sm1220747wmb.41.2024.03.20.00.17.36
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Mar 2024 00:16:06 -0700 (PDT)
-Message-ID: <26ce98f5-9145-411d-9cb3-8bbe0e452610@linaro.org>
-Date: Wed, 20 Mar 2024 08:16:04 +0100
+ Wed, 20 Mar 2024 00:17:37 -0700 (PDT)
+Message-ID: <740bcdb9-4a5e-4510-a0b4-0121608f5ab3@linaro.org>
+Date: Wed, 20 Mar 2024 08:17:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ui/console: initialize QemuDmaBuf from ui/console.
+Subject: Re: [PATCH] target/i386: Check NULL monitor pointer when injecting MCE
 Content-Language: en-US
-To: dongwon.kim@intel.com, qemu-devel@nongnu.org
-References: <20240320034229.3347130-1-dongwon.kim@intel.com>
+To: Markus Armbruster <armbru@redhat.com>, Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
+ alex.bennee@linaro.org
+References: <20240320052118.520378-1-tao1.su@linux.intel.com>
+ <87le6dwid5.fsf@pond.sub.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240320034229.3347130-1-dongwon.kim@intel.com>
+In-Reply-To: <87le6dwid5.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,65 +93,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Dongwon,
+Hi Tao,
 
-On 20/3/24 04:42, dongwon.kim@intel.com wrote:
-> From: Dongwon Kim <dongwon.kim@intel.com>
+On 20/3/24 07:02, Markus Armbruster wrote:
+> Tao Su <tao1.su@linux.intel.com> writes:
 > 
-> It is safer to create, initialize, and access all the parameters
-> in QemuDmaBuf from a central location, ui/console, instead of
-> hw/virtio-gpu or hw/vfio modules.
+>> monitor_puts() doesn't check the monitor pointer, but do_inject_x86_mce()
+>> may have a parameter with NULL monitor pointer. Check the monitor pointer
+>> before calling monitor_puts().
+>>
+>> Fixes: bf0c50d4aa85 (monitor: expose monitor_puts to rest of code)
+>> Reviwed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+>> ---
+>>   target/i386/helper.c | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/target/i386/helper.c b/target/i386/helper.c
+>> index 2070dd0dda..a9ff830a17 100644
+>> --- a/target/i386/helper.c
+>> +++ b/target/i386/helper.c
+>> @@ -430,7 +430,8 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+>>           if (need_reset) {
+>>               emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
+>>                                         recursive);
+>> -            monitor_puts(params->mon, msg);
+>> +            if (params->mon)
+
+Missing braces, see QEMU coding style:
+https://www.qemu.org/docs/master/devel/style.html#block-structure
+
+>> +                monitor_puts(params->mon, msg);
+>>               qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+>>               qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+>>               return;
 > 
-> Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
-> ---
->   hw/display/virtio-gpu-udmabuf.c | 27 +++++++---------
->   hw/vfio/display.c               | 35 ++++++++++++---------
->   include/hw/vfio/vfio-common.h   |  2 +-
->   include/hw/virtio/virtio-gpu.h  |  2 +-
->   include/ui/console.h            | 10 ++++++
->   ui/console.c                    | 55 +++++++++++++++++++++++++++++++++
->   6 files changed, 98 insertions(+), 33 deletions(-)
-
-
-> diff --git a/include/ui/console.h b/include/ui/console.h
-> index a4a49ffc64..0b823efb2e 100644
-> --- a/include/ui/console.h
-> +++ b/include/ui/console.h
-> @@ -279,6 +279,7 @@ typedef struct DisplayChangeListenerOps {
->       /* optional */
->       void (*dpy_gl_cursor_position)(DisplayChangeListener *dcl,
->                                      uint32_t pos_x, uint32_t pos_y);
-> +
->       /* optional */
->       void (*dpy_gl_release_dmabuf)(DisplayChangeListener *dcl,
->                                     QemuDmaBuf *dmabuf);
-> @@ -358,6 +359,15 @@ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
->                             bool have_hot, uint32_t hot_x, uint32_t hot_y);
->   void dpy_gl_cursor_position(QemuConsole *con,
->                               uint32_t pos_x, uint32_t pos_y);
-> +QemuDmaBuf *dpy_gl_create_dmabuf(uint32_t width, uint32_t height,
-> +                                 uint32_t stride, uint32_t x,
-> +                                 uint32_t y, uint32_t backing_width,
-> +                                 uint32_t backing_height, uint32_t fourcc,
-> +                                 uint32_t modifier, uint32_t dmabuf_fd,
-> +                                 bool allow_fences);
-
-In order to ease review, can we split this patch, introducing getters,
-then adding the create method as final patch?
-
-Also consider enabling scripts/git.orderfile.
-
-Regards,
-
-Phil.
-
-> +uint32_t dpy_gl_dmabuf_get_width(QemuDmaBuf *dmabuf);
-> +uint32_t dpy_gl_dmabuf_get_height(QemuDmaBuf *dmabuf);
-> +int32_t dpy_gl_dmabuf_get_fd(QemuDmaBuf *dmabuf);
->   void dpy_gl_release_dmabuf(QemuConsole *con,
->                              QemuDmaBuf *dmabuf);
->   void dpy_gl_update(QemuConsole *con,
+> Could instead revert the broken part of commit bf0c50d4aa85:
+> 
+>    -            monitor_puts(params->mon, msg);
+>    +            monitor_printf(params->mon, "%s", msg);
+>                 qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+> 
+> Then the fact that we send the same message to monitor and log is again
+> more obvious.
+> 
+> Either way:
+> Reviewed-by: Markus Armbruster <armbru@redhat.com>
+> 
+> 
 
 
