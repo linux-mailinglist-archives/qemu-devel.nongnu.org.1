@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAD79880DF6
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0FA880E0D
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:57:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmrjV-0004j4-GV; Wed, 20 Mar 2024 04:55:37 -0400
+	id 1rmrlJ-0000Mf-0w; Wed, 20 Mar 2024 04:57:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrjT-0004ha-KJ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:55:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrlG-0000Ic-Qs
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:57:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrjM-0001yl-Ce
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:55:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmrlF-0002lF-7d
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:57:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710924917;
+ s=mimecast20190719; t=1710925044;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=jT0WMqvhzo7oE0EGNsiQoQcxm6uetUBEz6/cnlj+r9g=;
- b=TaHaqitBehJilpwC5IXPOyc0cCK8IOkN9gEg67bdzFam4AAyRESAjXIUrgRIpSVGZ9RG1M
- Mu+fdONhKpTWyV5z4HSIOaoq4MHlQtIvrXoqTt16vtorapRC8WpKY6WzVP8yfxDJwOgYHK
- YEGEi3eBdPP28yRxEyCK8Q3j4ywdC4U=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yeoQxtV68NI2pJx0Fr2sZhrQUf02wD/C+fL7yygsjeY=;
+ b=dQ50UEBPmWiOoYZyF5NhCD8F1fKjfNGSf8bpqHO9Q+nDvwslKEbEwzRLo+dcmEAg9EbLh/
+ QK5JRbMr4Ow4Lu6u+/u10Wz8XY+5NXokcnys2Xa35OOO6r3pVQvmvM5IfjJhVjWK9tD/cB
+ ANc9x2QVhJxDdQCxLnBEmRnr9/n/UTw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-kxq1oKYlPhiyQQ2K18D0Vg-1; Wed, 20 Mar 2024 04:55:15 -0400
-X-MC-Unique: kxq1oKYlPhiyQQ2K18D0Vg-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a46ba1a19fdso231083866b.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:55:13 -0700 (PDT)
+ us-mta-111-WAs23dwEOjqvAGizs3VCOA-1; Wed, 20 Mar 2024 04:56:42 -0400
+X-MC-Unique: WAs23dwEOjqvAGizs3VCOA-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a46852c2239so320522466b.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:56:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710924913; x=1711529713;
- h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
- :to:content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jT0WMqvhzo7oE0EGNsiQoQcxm6uetUBEz6/cnlj+r9g=;
- b=nTuffhbTZa2KmPe2jJKwkSJzdTVTmtlFLYFiTjidX2XullbOoB1xZjYNONKvnUjxcy
- x7QwgRODvSmB+yLvF6XSMTLqHCSAcJbHcZUr8zmNEchMsCyPag5GyCgTGfoDr/rHO6rX
- TNo3VvobcHTXd8RT8i2X7JPUu7DgDYK61kP9VbYblHy/TLxJ3lmw8woR/y6bqcumkdWb
- rCFIJ9laaGYGJFuuB1W8cv47zbUSo2YDGDzRxDz3F1PXKs7hwNjbjYqPLfVM0YSvqcK3
- 4wKngl2inyDlNKXR6puXcpA8IzoW9XFqaaYtLcSyXqK/VQn5aUUBr8Idr3HKsg4LTwfm
- fpjg==
-X-Gm-Message-State: AOJu0Ywvm2Uh8KvSUq82czvHrJTAFJzEDwYc4bCI0SylsGitUdrTeuuB
- F6UlmZydENc+zhOAjpCCK9JQYEbEe/MxsoyZqlxo6AY7ULP0D4/wd99xmzxvKEdj7yo42T9meVz
- nc9Wuck3x0pvKJbO4qArRzyAktS8z3fwnO3rTk6DI4YWDybIQuHz+
-X-Received: by 2002:a17:906:39c9:b0:a46:cea6:a7f1 with SMTP id
- i9-20020a17090639c900b00a46cea6a7f1mr3079992eje.51.1710924912975; 
- Wed, 20 Mar 2024 01:55:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzKct3DfQPqOHFQkj3BBhLlJFsFmhcT2gTNoUKvfTPzk8YuCMrlLh5dppu24SDkCS3e/ehHQ==
-X-Received: by 2002:a17:906:39c9:b0:a46:cea6:a7f1 with SMTP id
- i9-20020a17090639c900b00a46cea6a7f1mr3079971eje.51.1710924912618; 
- Wed, 20 Mar 2024 01:55:12 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1710925001; x=1711529801;
+ h=content-transfer-encoding:in-reply-to:autocrypt:references:cc:to
+ :from:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yeoQxtV68NI2pJx0Fr2sZhrQUf02wD/C+fL7yygsjeY=;
+ b=Ii8DO6XMxmBqoiLwhpQAyZ890gBroz4VFzZECNGyAmzYJxcdoIL+S/aRk6eOXY7Zl5
+ /Phb88Bz7OlrMmocuchml9qGJpfQUvJuMPXoADlRAzr3TuKYC6q+M26sDXP84HVOo4x6
+ iIFteNgRoeLelck2REKeCTBC7EAmSJDvkk/LId0kfu6PWAy167wZvZUvevKsLioRdp+f
+ ByXeupR+3VkIJlk6qvWyxg+8i8g+wFvYgmV/Eb4tVxDTBJsULrh/BB8k1HfkAjDdMw/n
+ +UrqGNCnPqZW06JZ2qTQCu7Wj5g/jAOsX5tjgZBAot4w81DB6C5qb6a5kv6hCEKTgwtH
+ wCUA==
+X-Gm-Message-State: AOJu0Yy3E2DgD3v5tiEA5PzDV1wNtcTS9JPlXIgXKXkNhROA5RpFG6zG
+ XhYfSUzlmE2MfRaczGzGigg67Op8TnC3OmrADv+KKxCOst1TO12lUtcaukQREBoQ87AWCQrUJJv
+ 7zGTc1tamc0yTKRWGorz8wUWnZW2Vp8eWJRwmSgA0grqJxedlTDO2
+X-Received: by 2002:a17:906:e951:b0:a44:dc35:df19 with SMTP id
+ jw17-20020a170906e95100b00a44dc35df19mr11330056ejb.67.1710925000925; 
+ Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHxdMcZjyJmzIs2RCZUyanVXOyRTN7Zu6cwGLCNNGfw2pkm4f7zqy7p2u2AqxVjveC9fzG/Wg==
+X-Received: by 2002:a17:906:e951:b0:a44:dc35:df19 with SMTP id
+ jw17-20020a170906e95100b00a44dc35df19mr11330039ejb.67.1710925000605; 
+ Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
 Received: from [192.168.0.9] (ip-109-43-177-50.web.vodafone.de.
  [109.43.177.50]) by smtp.gmail.com with ESMTPSA id
- hz13-20020a1709072ced00b00a46a9cdcfa5sm4710252ejc.162.2024.03.20.01.55.11
+ hz13-20020a1709072ced00b00a46a9cdcfa5sm4710252ejc.162.2024.03.20.01.56.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Mar 2024 01:55:12 -0700 (PDT)
-Message-ID: <a7e38ec4-641f-409b-86d7-ea09d9ac1b18@redhat.com>
-Date: Wed, 20 Mar 2024 09:55:10 +0100
+ Wed, 20 Mar 2024 01:56:40 -0700 (PDT)
+Message-ID: <8cf83c55-3557-4589-a37e-d832109cc703@redhat.com>
+Date: Wed, 20 Mar 2024 09:56:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v5 3/7] configure: add --enable-qpl build option
 Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
 To: Yuan Liu <yuan1.liu@intel.com>, peterx@redhat.com, farosas@suse.de
 Cc: qemu-devel@nongnu.org, hao.xiang@bytedance.com,
  bryan.zhang@bytedance.com, nanhai.zou@intel.com
 References: <20240319164527.1873891-1-yuan1.liu@intel.com>
  <20240319164527.1873891-4-yuan1.liu@intel.com>
-From: Thomas Huth <thuth@redhat.com>
+ <a7e38ec4-641f-409b-86d7-ea09d9ac1b18@redhat.com>
 Autocrypt: addr=thuth@redhat.com; keydata=
  xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
  yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
@@ -115,18 +117,19 @@ Autocrypt: addr=thuth@redhat.com; keydata=
  oiT+z+/E59qj/EKfyce3sbC9XLjXv3mHMrq1tKX4G7IJGnS989E/fg6crv6NHae9Ckm7+lSs
  IQu4bBP2GxiRQ+NV3iV/KU3ebMRzqIC//DCOxzQNFNJAKldPe/bKZMCxEqtVoRkuJtNdp/5a
  yXFZ6TfE1hGKrDBYAm4vrnZ4CXFSBDllL59cFFOJCkn4Xboj/aVxxJxF30bn
-In-Reply-To: <20240319164527.1873891-4-yuan1.liu@intel.com>
+In-Reply-To: <a7e38ec4-641f-409b-86d7-ea09d9ac1b18@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -142,63 +145,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/03/2024 17.45, Yuan Liu wrote:
-> add --enable-qpl and --disable-qpl options to enable and disable
-> the QPL compression method for multifd migration.
+On 20/03/2024 09.55, Thomas Huth wrote:
+> On 19/03/2024 17.45, Yuan Liu wrote:
+>> add --enable-qpl and --disable-qpl options to enable and disable
+>> the QPL compression method for multifd migration.
+>>
+>> the Query Processing Library (QPL) is an open-source library
+>> that supports data compression and decompression features.
+>>
+>> The QPL compression is based on the deflate compression algorithm
+>> and use Intel In-Memory Analytics Accelerator(IAA) hardware for
+>> compression and decompression acceleration.
+>>
+>> Please refer to the following for more information about QPL
+>> https://intel.github.io/qpl/documentation/introduction_docs/introduction.html
+>>
+>> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+>> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+>> ---
+>>   meson.build                   | 16 ++++++++++++++++
+>>   meson_options.txt             |  2 ++
+>>   scripts/meson-buildoptions.sh |  3 +++
+>>   3 files changed, 21 insertions(+)
+>>
+>> diff --git a/meson.build b/meson.build
+>> index b375248a76..bee7dcd53b 100644
+>> --- a/meson.build
+>> +++ b/meson.build
+>> @@ -1200,6 +1200,20 @@ if not get_option('zstd').auto() or have_block
+>>                       required: get_option('zstd'),
+>>                       method: 'pkg-config')
+>>   endif
+>> +qpl = not_found
+>> +if not get_option('qpl').auto()
 > 
-> the Query Processing Library (QPL) is an open-source library
-> that supports data compression and decompression features.
+> Do you really only want to enable this if the user explicitly specified 
+> "--enable-qpl" ? Otherwise, I think this should be:
 > 
-> The QPL compression is based on the deflate compression algorithm
-> and use Intel In-Memory Analytics Accelerator(IAA) hardware for
-> compression and decompression acceleration.
+>   if not get_option('qpl').auto() or have_system
 > 
-> Please refer to the following for more information about QPL
-> https://intel.github.io/qpl/documentation/introduction_docs/introduction.html
+> ?
 > 
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> ---
->   meson.build                   | 16 ++++++++++++++++
->   meson_options.txt             |  2 ++
->   scripts/meson-buildoptions.sh |  3 +++
->   3 files changed, 21 insertions(+)
+>   Thomas
 > 
-> diff --git a/meson.build b/meson.build
-> index b375248a76..bee7dcd53b 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -1200,6 +1200,20 @@ if not get_option('zstd').auto() or have_block
->                       required: get_option('zstd'),
->                       method: 'pkg-config')
->   endif
-> +qpl = not_found
-> +if not get_option('qpl').auto()
+> 
+> 
+> 
+>> +  libqpl = cc.find_library('qpl', required: false)
 
-Do you really only want to enable this if the user explicitly specified 
-"--enable-qpl" ? Otherwise, I think this should be:
-
-  if not get_option('qpl').auto() or have_system
-
-?
+... and it should use "required: get_option('qpl')" in that case.
 
   Thomas
 
 
-
-
-> +  libqpl = cc.find_library('qpl', required: false)
-> +  if not libqpl.found()
-> +    error('libqpl not found, please install it from ' +
-> +    'https://intel.github.io/qpl/documentation/get_started_docs/installation.html')
-> +  endif
-> +  libaccel = dependency('libaccel-config', version: '>=4.0.0',
-> +                        required: true,
-> +                        method: 'pkg-config')
-> +  qpl = declare_dependency(dependencies: [libqpl, libaccel,
-> +        cc.find_library('dl', required: get_option('qpl'))],
-> +        link_args: ['-lstdc++'])
-> +endif
->   virgl = not_found
+>> +  if not libqpl.found()
+>> +    error('libqpl not found, please install it from ' +
+>> +    
+>> 'https://intel.github.io/qpl/documentation/get_started_docs/installation.html')
+>> +  endif
+>> +  libaccel = dependency('libaccel-config', version: '>=4.0.0',
+>> +                        required: true,
+>> +                        method: 'pkg-config')
+>> +  qpl = declare_dependency(dependencies: [libqpl, libaccel,
+>> +        cc.find_library('dl', required: get_option('qpl'))],
+>> +        link_args: ['-lstdc++'])
+>> +endif
+>>   virgl = not_found
+> 
 
 
