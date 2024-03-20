@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4D9880892
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB35880890
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:33:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmjso-00007D-5a; Tue, 19 Mar 2024 20:32:42 -0400
+	id 1rmjss-00008F-PS; Tue, 19 Mar 2024 20:32:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsm-000075-VD
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:40 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rmjsq-00007s-C4
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:44 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsk-0005YD-HT
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:39 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e6cb0f782bso5317820b3a.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 17:32:38 -0700 (PDT)
+ id 1rmjsl-0005Ya-O5
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:44 -0400
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5a4817189c8so2641977eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 17:32:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710894757; x=1711499557; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710894758; x=1711499558; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=cO2X5S7tqJGiWrlcfntAVFYIYWCP/fDIWBwAR5uSNVs=;
- b=ogt6z+as5yO6mstuX90JGCEYjaqbCktLMtFl7yKSA6HrawJRWKJRdf+721vP0R7mMI
- cYwd8TejwbOg7E3uYY01cpv6CLvkHU1XeEzs5OQcBqDo+yFkTjL1EcfJNOAyT21ZL07u
- GDt0YNsLUHzcG40eVMe9JWLx6Wkr/GDekiJj7j85tOpgC0Tk6DK6MHbJOwA6PDIT5+uC
- eggiXFdqzUW4IoMl5oHrIgnjBJ94HA7+Y7V8pP+5DMG/LX0JJSuHmrZ5+9ZPECyozXAP
- vTW7NxCpF0DD6n8RDJawEH3owwHOb9V3mlDJaR4Z1QZqwleG2+O7R4MbZ+B/gzOYK9tu
- y1WQ==
+ bh=BhOWQohjArqAQE2458CrIktVxPOWZvRPD9t4+1OeJxA=;
+ b=N85ty/y/u6oN3Rd6/FxduBnywisHKLKODM2cqMrHHmVO65S1FU7QeP5Fb+t8oi0yiB
+ +Mqp0tXVuGQAgxhpK079RAZDYo7E8VryP9uSFZFPst1SPM0u3RIxovjJCsD9KkRsjYj3
+ qdUe7U6u2pj4yLLFgjpLMIuHNlg/qzlN8657RfKQwKFbmJZUERXmcGAQOkFo/FfHjqVS
+ BTvzh/JzWw7nDmAdh8/oeHE0e0iqlh79I7U/teBekhw99X30oiFkdC7JqMyuzSUWR0qL
+ s13qBKJrC1VaE/8AHhQeoglkxsO+fW9eQM4BCDNRVcpDTGCw8yDOwP7t5moGlsDVO66U
+ H1HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710894757; x=1711499557;
+ d=1e100.net; s=20230601; t=1710894758; x=1711499558;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cO2X5S7tqJGiWrlcfntAVFYIYWCP/fDIWBwAR5uSNVs=;
- b=B0V5uDI1llO6zhY09UI5A64SUUk1J39+WSV62yRozt5/ipdUjqX30mYaQGgHkJdtxH
- Co6AW93ia2Zq52X7GSWJReGJl8eTJ9BnZkogCGqfwMeQRMo49EPoukqAM9ME6JmP2NS6
- olAxRUpcUD6u6VZnGkbsbuQOIEjKCeDn2MemJmGDXT8EkVhlWVyZTo9PamwieBioAySN
- Lb6alDMdhdaGJKrmECiRkm2XGN+8z8aiEDdMaJsmJWW+ZyArVboYDA1WyY7RQP8edRXn
- qoVvs1BzI7CjiZFN6DQrvpXK0Yod9PlFRu6bTvrJOjI1mK7s5PewDDh+OY6D5pUwnGC2
- pmrA==
-X-Gm-Message-State: AOJu0YxM91ARbf7uRXj4aIzyotwa9AzqphC+O5ITeM5gaHFPvmVj3b98
- ao0M3L+mq6QH9NQXZKK/j9dDbFsg+Rz5ZVR5ewCtKhHMs4cDIgbI7hrzePSC08PNQrq1eS87iJ8
- L
-X-Google-Smtp-Source: AGHT+IHyc8ap3rwGtbsNcmselb1ASo2is238oSP5Giz4iOGR8502IiASq8nllAcK6HLCS/mdqeLrAQ==
-X-Received: by 2002:a05:6a20:9f4d:b0:1a3:5991:4845 with SMTP id
- ml13-20020a056a209f4d00b001a359914845mr798239pzb.38.1710894757118; 
- Tue, 19 Mar 2024 17:32:37 -0700 (PDT)
+ bh=BhOWQohjArqAQE2458CrIktVxPOWZvRPD9t4+1OeJxA=;
+ b=pT/YZ2oeQtV4FMdtG0/O79mhEl6kntWliA/GwbbibRjcNvZxNFV54rQ/C67o3SuXY1
+ FwKcMpMxEzYNjreFfiPUiO8Xt9+OqSST3P7GSRRKbcMttwY/0HbYsp29E2sNtO4Fhiwp
+ SG6gSF2OGXjork6ksZoQKPZwqVkR/aHbJELFl15qsuxD2+viAD5WrriTmX7ufdsayy1a
+ kl1mJ6Sf7CP4nOl1RfN3w+1dduZDY5Np9o5dUZUn4PNb7P8BqHsGX86GSGoIoPQ2GTUu
+ K06pyUDJyzXlb20/J1MbNyCMrZpkut4YByxrJ+3gl97i5aGNFyUfFRkQwXoP6mJvSHhi
+ pIhg==
+X-Gm-Message-State: AOJu0YygYLm2BShxXvZCX0HLF/oaAvO97JxWkcoz4c/AXlLD19Q4rnfZ
+ Ck1X+PlEe5YS+LMsQtEcplJAurMnNGGyuVmgcc+l6SjZlhGmMCUW287grKLIgvfJ4fjNQPphO+0
+ Z
+X-Google-Smtp-Source: AGHT+IGswSzZVWeIz4Wgdpkxs3WR7PR1MIVk4iY9pZo/EBhIdY2ew9uSTlVuNEzOgSvjoRbxvKuk9Q==
+X-Received: by 2002:a05:6820:2018:b0:5a4:d7df:9233 with SMTP id
+ by24-20020a056820201800b005a4d7df9233mr4038772oob.2.1710894758554; 
+ Tue, 19 Mar 2024 17:32:38 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d19-20020a63d653000000b005d553239b16sm8475645pgj.20.2024.03.19.17.32.35
+ d19-20020a63d653000000b005d553239b16sm8475645pgj.20.2024.03.19.17.32.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 17:32:36 -0700 (PDT)
+ Tue, 19 Mar 2024 17:32:38 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PULL 8/9] target/hppa: mask privilege bits in mfia
-Date: Tue, 19 Mar 2024 14:32:22 -1000
-Message-Id: <20240320003223.554145-9-richard.henderson@linaro.org>
+Cc: Sven Schnelle <svens@stackframe.org>
+Subject: [PULL 9/9] target/hppa: fix do_stdby_e()
+Date: Tue, 19 Mar 2024 14:32:23 -1000
+Message-Id: <20240320003223.554145-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240320003223.554145-1-richard.henderson@linaro.org>
 References: <20240320003223.554145-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,32 +94,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-mfia should return only the iaoq bits without privilege
-bits.
+stdby,e,m was writing data from the wrong half of the register
+into memory for cases 0-3.
 
-Fixes: 98a9cb792c8 ("target-hppa: Implement system and memory-management insns")
+Fixes: 25460fc5a71 ("target/hppa: Implement STDBY")
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Helge Deller <deller@gmx.de>
-Message-Id: <20240319161921.487080-6-svens@stackframe.org>
+Message-Id: <20240319161921.487080-7-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/hppa/op_helper.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 107d7f1a85..19594f917e 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2011,7 +2011,7 @@ static bool trans_mfia(DisasContext *ctx, arg_mfia *a)
- {
-     unsigned rt = a->t;
-     TCGv_i64 tmp = dest_gpr(ctx, rt);
--    tcg_gen_movi_i64(tmp, ctx->iaoq_f);
-+    tcg_gen_movi_i64(tmp, ctx->iaoq_f & ~3ULL);
-     save_gpr(ctx, rt, tmp);
- 
-     cond_free(&ctx->null_cond);
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 480fe80844..6cf49f33b7 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -281,17 +281,17 @@ static void do_stdby_e(CPUHPPAState *env, target_ulong addr, uint64_t val,
+     case 3:
+         /* The 3 byte store must appear atomic.  */
+         if (parallel) {
+-            atomic_store_mask32(env, addr - 3, val, 0xffffff00u, ra);
++            atomic_store_mask32(env, addr - 3, val >> 32, 0xffffff00u, ra);
+         } else {
+-            cpu_stw_data_ra(env, addr - 3, val >> 16, ra);
+-            cpu_stb_data_ra(env, addr - 1, val >> 8, ra);
++            cpu_stw_data_ra(env, addr - 3, val >> 48, ra);
++            cpu_stb_data_ra(env, addr - 1, val >> 40, ra);
+         }
+         break;
+     case 2:
+-        cpu_stw_data_ra(env, addr - 2, val >> 16, ra);
++        cpu_stw_data_ra(env, addr - 2, val >> 48, ra);
+         break;
+     case 1:
+-        cpu_stb_data_ra(env, addr - 1, val >> 24, ra);
++        cpu_stb_data_ra(env, addr - 1, val >> 56, ra);
+         break;
+     default:
+         /* Nothing is stored, but protection is checked and the
 -- 
 2.34.1
 
