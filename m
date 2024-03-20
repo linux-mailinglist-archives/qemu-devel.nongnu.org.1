@@ -2,64 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A34880B71
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B890880B73
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:51:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmplt-0002BQ-0v; Wed, 20 Mar 2024 02:49:57 -0400
+	id 1rmply-0002Er-SI; Wed, 20 Mar 2024 02:50:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplq-0002Ai-Jy
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplw-0002EX-BS
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:50:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmpln-0001Uk-H9
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:53 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplu-0001WP-IB
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:50:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710917390;
+ s=mimecast20190719; t=1710917398;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/1xsCesGr8DmRI05FnWGd3Fvm5jcY0vbWbDDFmosFLo=;
- b=O+8RAh+CTIbVuMOeo9nO77vDtWr+rweqZSmCc0ZwfvTnrvCIJ7hdPDBgLD/wIqSqTHF05q
- HbZYlgphAEivOLug9DoO/5WuzgM0O1qtFpJyb3d9wSzxLEv4jFriV7czxbXt+wmzgQZIy8
- QLcdV264V0wb6r+AT7VMZwrsglPRuUc=
+ bh=YdM+8DlBSfQGNojw2NWBbBFEkSwJYFiGvC2NciZ76U0=;
+ b=LZI++9fZXhaLOckpwJh7w8/l3JoY2cXyvbsswbBOkKU3pJHN3UN0ZMU/0cHJvKhkndIAkG
+ aZywoGOmem5SD4Y9p5AfhliD2qEThKgAVkDjKynE8BwA9yrQyVA0hU8t5pfIFbtLanjANj
+ we0mecQr+7QJCMebhkUoWJFCuJ6ZkXs=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-539-PBUPMybKO3i41YP6mxB3DA-1; Wed,
- 20 Mar 2024 02:49:49 -0400
-X-MC-Unique: PBUPMybKO3i41YP6mxB3DA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-erG_ZhkbPw68buUwpoSCoA-1; Wed,
+ 20 Mar 2024 02:49:53 -0400
+X-MC-Unique: erG_ZhkbPw68buUwpoSCoA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8EFCE3CBDF60;
- Wed, 20 Mar 2024 06:49:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 963471C06901;
+ Wed, 20 Mar 2024 06:49:52 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 960761C060A4;
- Wed, 20 Mar 2024 06:49:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E851A1C060A6;
+ Wed, 20 Mar 2024 06:49:48 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+To: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Cc: Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Fabiano Rosas <farosas@suse.de>, Avihai Horon <avihaih@nvidia.com>,
  Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>
-Subject: [PATCH for-9.1 v5 08/14] migration: Add Error** argument to
- .load_setup() handler
-Date: Wed, 20 Mar 2024 07:49:04 +0100
-Message-ID: <20240320064911.545001-9-clg@redhat.com>
+ Prasad Pandit <pjp@fedoraproject.org>, xen-devel@lists.xenproject.org
+Subject: [PATCH for-9.1 v5 09/14] memory: Add Error** argument to
+ .log_global_start() handler
+Date: Wed, 20 Mar 2024 07:49:05 +0100
+Message-ID: <20240320064911.545001-10-clg@redhat.com>
 In-Reply-To: <20240320064911.545001-1-clg@redhat.com>
 References: <20240320064911.545001-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -84,112 +91,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This will be useful to report errors at a higher level, mostly in VFIO
-today.
+Modify all .log_global_start() handlers to take an Error** parameter
+and return a bool. Adapt memory_global_dirty_log_start() to interrupt
+on the first error the loop on handlers. In such case, a rollback is
+performed to stop dirty logging on all listeners where it was
+previously enabled.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Xu <peterx@redhat.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Anthony Perard <anthony.perard@citrix.com>
+Cc: Paul Durrant <paul@xen.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/migration/register.h |  3 ++-
- hw/vfio/migration.c          |  9 +++++++--
- migration/ram.c              |  3 ++-
- migration/savevm.c           | 11 +++++++----
- 4 files changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/include/migration/register.h b/include/migration/register.h
-index 64fc7c11036c82edd6d69513e56a0216d36c17aa..f60e797894e5faacdf55d2d6de175074ac58944f 100644
---- a/include/migration/register.h
-+++ b/include/migration/register.h
-@@ -234,10 +234,11 @@ typedef struct SaveVMHandlers {
+ Changes in v5:
+
+ - Removed memory_global_dirty_log_rollback
+ - Introduced memory_global_dirty_log_do_start() to call
+   .log_global_start() handlers and do the rollback in case of error.
+ - Kept modification of the global_dirty_tracking flag within
+   memory_global_dirty_log_start()  
+ - Added an assert on error of a .log_global_start() handler in
+   listener_add_address_space()
+
+ include/exec/memory.h |  5 ++++-
+ hw/i386/xen/xen-hvm.c |  3 ++-
+ hw/vfio/common.c      |  4 +++-
+ hw/virtio/vhost.c     |  3 ++-
+ system/memory.c       | 37 +++++++++++++++++++++++++++++++++++--
+ 5 files changed, 46 insertions(+), 6 deletions(-)
+
+diff --git a/include/exec/memory.h b/include/exec/memory.h
+index 8626a355b310ed7b1a1db7978ba4b394032c2f15..5555567bc4c9fdb53e8f63487f1400980275687d 100644
+--- a/include/exec/memory.h
++++ b/include/exec/memory.h
+@@ -998,8 +998,11 @@ struct MemoryListener {
+      * active at that time.
       *
-      * @f: QEMUFile where to receive the data
-      * @opaque: data pointer passed to register_savevm_live()
+      * @listener: The #MemoryListener.
 +     * @errp: pointer to Error*, to store an error if it happens.
-      *
-      * Returns zero to indicate success and negative for error
++     *
++     * Return: true on success, else false setting @errp with error.
       */
--    int (*load_setup)(QEMUFile *f, void *opaque);
-+    int (*load_setup)(QEMUFile *f, void *opaque, Error **errp);
+-    void (*log_global_start)(MemoryListener *listener);
++    bool (*log_global_start)(MemoryListener *listener, Error **errp);
  
      /**
-      * @load_cleanup
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 5763c0b68376b1e24ef3e77c3d19fcd406922c79..06ae40969b6c19037e190008e14f28be646278cd 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -588,12 +588,17 @@ static void vfio_save_state(QEMUFile *f, void *opaque)
-     }
+      * @log_global_stop:
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index 7745cb39631ea423aeb6e5d3eb7f7bcbe27ec6fa..f6e9a1bc86491783077b5cb5aafdb19ab294e392 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -457,11 +457,12 @@ static void xen_log_sync(MemoryListener *listener, MemoryRegionSection *section)
+                           int128_get64(section->size));
  }
  
--static int vfio_load_setup(QEMUFile *f, void *opaque)
-+static int vfio_load_setup(QEMUFile *f, void *opaque, Error **errp)
+-static void xen_log_global_start(MemoryListener *listener)
++static bool xen_log_global_start(MemoryListener *listener, Error **errp)
  {
-     VFIODevice *vbasedev = opaque;
-+    int ret;
+     if (xen_enabled()) {
+         xen_in_migration = true;
+     }
++    return true;
+ }
  
--    return vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
-+    ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_RESUMING,
-                                    vbasedev->migration->device_state);
-+    if (ret) {
-+        error_setg(errp, "%s: Failed to set RESUMING state", vbasedev->name);
+ static void xen_log_global_stop(MemoryListener *listener)
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 011ceaab89433de4496dffadc737286e053f321d..8f9cbdc0264044ce587877a7d19d14b28527291b 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -1066,7 +1066,8 @@ out:
+     return ret;
+ }
+ 
+-static void vfio_listener_log_global_start(MemoryListener *listener)
++static bool vfio_listener_log_global_start(MemoryListener *listener,
++                                           Error **errp)
+ {
+     VFIOContainerBase *bcontainer = container_of(listener, VFIOContainerBase,
+                                                  listener);
+@@ -1083,6 +1084,7 @@ static void vfio_listener_log_global_start(MemoryListener *listener)
+                      ret, strerror(-ret));
+         vfio_set_migration_error(ret);
+     }
++    return !ret;
+ }
+ 
+ static void vfio_listener_log_global_stop(MemoryListener *listener)
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index 2e4e040db87acf45166da86d268077f54511d82c..d405f03caf2fd3a5ea23bdc0392f4c6c072bc10b 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -1044,7 +1044,7 @@ check_dev_state:
+     return r;
+ }
+ 
+-static void vhost_log_global_start(MemoryListener *listener)
++static bool vhost_log_global_start(MemoryListener *listener, Error **errp)
+ {
+     int r;
+ 
+@@ -1052,6 +1052,7 @@ static void vhost_log_global_start(MemoryListener *listener)
+     if (r < 0) {
+         abort();
+     }
++    return true;
+ }
+ 
+ static void vhost_log_global_stop(MemoryListener *listener)
+diff --git a/system/memory.c b/system/memory.c
+index a229a79988fce2aa3cb77e3a130db4c694e8cd49..ca4d91484fb3d06f4b902486fea49dba86dc141b 100644
+--- a/system/memory.c
++++ b/system/memory.c
+@@ -2914,9 +2914,33 @@ static unsigned int postponed_stop_flags;
+ static VMChangeStateEntry *vmstate_change;
+ static void memory_global_dirty_log_stop_postponed_run(void);
+ 
++static bool memory_global_dirty_log_do_start(Error **errp)
++{
++    MemoryListener *listener;
++
++    QTAILQ_FOREACH(listener, &memory_listeners, link) {
++        if (listener->log_global_start) {
++            if (!listener->log_global_start(listener, errp)) {
++                goto err;
++            }
++        }
 +    }
-+    return ret;
- }
- 
- static int vfio_load_cleanup(void *opaque)
-diff --git a/migration/ram.c b/migration/ram.c
-index 6ea5a06e00e30d0d1e4d8a6defdeb86c81fa707b..4cd4f0158c8675e1515ef8476c64d1203eed4458 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -3704,8 +3704,9 @@ void colo_release_ram_cache(void)
-  *
-  * @f: QEMUFile where to receive the data
-  * @opaque: RAMState pointer
-+ * @errp: pointer to Error*, to store an error if it happens.
-  */
--static int ram_load_setup(QEMUFile *f, void *opaque)
-+static int ram_load_setup(QEMUFile *f, void *opaque, Error **errp)
++    return true;
++
++err:
++    while ((listener = QTAILQ_PREV(listener, link)) != NULL) {
++        if (listener->log_global_stop) {
++            listener->log_global_stop(listener);
++        }
++    }
++
++    return false;
++}
++
+ void memory_global_dirty_log_start(unsigned int flags)
  {
-     xbzrle_load_setup();
-     ramblock_recv_map_init();
-diff --git a/migration/savevm.c b/migration/savevm.c
-index 535ad5a32d67057dd172ce25d561a66a07172e97..8f42999a15d1685957de9ed517d6bc9ba49c3f11 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2747,8 +2747,9 @@ static void qemu_loadvm_state_switchover_ack_needed(MigrationIncomingState *mis)
-     trace_loadvm_state_switchover_ack_needed(mis->switchover_ack_pending_num);
- }
+     unsigned int old_flags;
++    Error *local_err = NULL;
  
--static int qemu_loadvm_state_setup(QEMUFile *f)
-+static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
- {
-+    ERRP_GUARD(); /* error_prepend use */
-     SaveStateEntry *se;
-     int ret;
+     assert(flags && !(flags & (~GLOBAL_DIRTY_MASK)));
  
-@@ -2763,10 +2764,11 @@ static int qemu_loadvm_state_setup(QEMUFile *f)
-             }
-         }
+@@ -2936,7 +2960,13 @@ void memory_global_dirty_log_start(unsigned int flags)
+     trace_global_dirty_changed(global_dirty_tracking);
  
--        ret = se->ops->load_setup(f, se->opaque);
-+        ret = se->ops->load_setup(f, se->opaque, errp);
-         if (ret < 0) {
-+            error_prepend(errp, "Load state of device %s failed: ",
-+                          se->idstr);
-             qemu_file_set_error(f, ret);
--            error_report("Load state of device %s failed", se->idstr);
-             return ret;
-         }
+     if (!old_flags) {
+-        MEMORY_LISTENER_CALL_GLOBAL(log_global_start, Forward);
++        if (!memory_global_dirty_log_do_start(&local_err)) {
++            global_dirty_tracking &= ~flags;
++            trace_global_dirty_changed(global_dirty_tracking);
++            error_report_err(local_err);
++            return;
++        }
++
+         memory_region_transaction_begin();
+         memory_region_update_pending = true;
+         memory_region_transaction_commit();
+@@ -3014,8 +3044,11 @@ static void listener_add_address_space(MemoryListener *listener,
+         listener->begin(listener);
      }
-@@ -2947,7 +2949,8 @@ int qemu_loadvm_state(QEMUFile *f)
-         return ret;
-     }
- 
--    if (qemu_loadvm_state_setup(f) != 0) {
-+    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
-+        error_report_err(local_err);
-         return -EINVAL;
+     if (global_dirty_tracking) {
++        /*
++         * Migration has already started. Assert on any error.
++         */
+         if (listener->log_global_start) {
+-            listener->log_global_start(listener);
++            listener->log_global_start(listener, &error_abort);
+         }
      }
  
 -- 
