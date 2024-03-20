@@ -2,114 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DDD880E07
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C86CB880D43
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:41:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmrkU-0007dh-Ty; Wed, 20 Mar 2024 04:56:39 -0400
+	id 1rmrVb-0002cn-CE; Wed, 20 Mar 2024 04:41:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rmrkS-0007WG-UC
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:56:36 -0400
-Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2412::601]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmrVZ-0002cA-EO
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:41:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rmrkR-0002Uu-8M
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:56:36 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ERUPASCW6PMt6/5/HkAc9uaW682IecIoXTOsZeL55Aq2u+CIK8ECYZz+IQOc0QNTkhw49JCDCNGup3IiekeSlFBfdtsX3pq8h/f59rYI0eUVAfNb1b8aMwekCQXMTWfHk8I+Mb689jd1f3TCAd670HWOjmolWBTJ4VZODd8vIuQK+VX01EqibPlAzyQPEx6aByI4Jp7+w37CCguiCbWBE91Gg/THWl+JMdvhG8VFI17lDQodm1GsHgSaGcaP0WXbQ/z0am0J2YaV1xtbmK+5eshhAP0oAjkRTxKlmSUjziNVj7BQcG3wA7IUf2QIuSG1SdIXDGwsonVtuOEUr7RloA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=B0Ga6hkIq4PMlehO1h4QdPsKNE+e6tDuLWJwPmSvLCE=;
- b=eNfkIB5LwsBqxY9IJcy8uLLs+Gn5+SfwgbpgW1x/YLS9Euc0uexYj5xKvvWdoMmkBJWTNJwWJEtfxaDY78BclfdsSNiramNIj+8S0iPtsr5T/9E4iVWO3JjQyw2OBljjH+hWuy+HRpWW0RFPUO8vaN/kdK+5htmnGlVZ9k7d0yzSlq853PS9ByqxBqRMEGODbDVLx6o73lS90sPviGj9oxTITZAFqr9i63n6E4gq720VFDQzZDDL2u17oK10MaSaPirXukh0f+MdtOLKSBPYpPF350NaqanAn0iB1xrIXtwGZG0RPvHwyPTqEPTCI5Dyjwd4msxglxXshINcYbB4xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=B0Ga6hkIq4PMlehO1h4QdPsKNE+e6tDuLWJwPmSvLCE=;
- b=w2jnqHXwNlYrzQTqQNt73DSQwf7WRqUf/h7wsZOUurep7ddWZvmQSFpBHYClE8HuaxwXFuxXpBODy6UiEhQlCt8H4rKUDEbxNo5dx3mSYhTJFM1iiNGFGC3J3YIS+zYCU4gl+ZTrk3PirR3n7QR2+jnegbbrbZiwB5lKqj39o0k=
-Received: from BYAPR07CA0045.namprd07.prod.outlook.com (2603:10b6:a03:60::22)
- by DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7386.28; Wed, 20 Mar 2024 08:56:31 +0000
-Received: from CO1PEPF000044F3.namprd05.prod.outlook.com
- (2603:10b6:a03:60:cafe::3c) by BYAPR07CA0045.outlook.office365.com
- (2603:10b6:a03:60::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26 via Frontend
- Transport; Wed, 20 Mar 2024 08:56:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F3.mail.protection.outlook.com (10.167.241.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 08:56:31 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 03:56:30 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <kvm@vger.kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?=
- <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, Pankaj Gupta
- <pankaj.gupta@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata
- <isaku.yamahata@linux.intel.com>
-Subject: [PATCH v3 49/49] hw/i386: Add support for loading BIOS using
- guest_memfd
-Date: Wed, 20 Mar 2024 03:39:45 -0500
-Message-ID: <20240320083945.991426-50-michael.roth@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240320083945.991426-1-michael.roth@amd.com>
-References: <20240320083945.991426-1-michael.roth@amd.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmrVX-0007PA-4o
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:41:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710924070;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=zCX4Gvp2ULmguV3yxtkiVVrYj/bBffQ1Bvkw6NHId5Q=;
+ b=diV3v/BKYe07m9FDM8wbq/Mo2pGNQLOJQ7GPTPkU8vOikjdD3niNWL9GS5uZ50XTqy1sOt
+ MH2ZFtxna/6Weh46WweP3z1cNg3q0iZFfavXbJC60dhoxvHaRXYYNpN1wU5G1LmUvFqOwU
+ e5x5jGFrzrGm1RZj6bA5TMM8kLcZoUg=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-78-8380TKdYPEK1jJ-nFUyCdg-1; Wed, 20 Mar 2024 04:41:08 -0400
+X-MC-Unique: 8380TKdYPEK1jJ-nFUyCdg-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2d4af32be9fso26968631fa.2
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:41:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710924067; x=1711528867;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=zCX4Gvp2ULmguV3yxtkiVVrYj/bBffQ1Bvkw6NHId5Q=;
+ b=sZASFJ39KBWZfmM+0jkQrD5WIpBRE4V24rmLXOiE/4Yqwmtx4QZhHolnm81rOJ9dBr
+ DUmE4vzNQBpyodF/FLsaEEydKFi/gulfZYJdAt13jpZV8Hy4YbLsKRZL7mdIVelXN6/f
+ /2dJvd0WxNdsd52IBdLCmv7rASduNgixkmV2/imK320pDH1l1MVO/g7CMCQUnSu+HjrP
+ 41Ogq0VtL053aimJdMR/f+mu7SqkeIESk4R1cJ1zCfW6iUHSK4otoOTRYrsxudsR3OGl
+ KTMMvgECeqxHCHyLt7elpnUeD01tLKAONeuXVk33VIrtor1+GDxNmse5JOvU8TwAjAOM
+ V65w==
+X-Gm-Message-State: AOJu0YzaIiu/YB1+TN3l4l/rEzydGJDCu+hNCsCwVbHql6CYQdGusF++
+ MzWoehOFYo95fwyoYTBc/3otBMXG+a0IO6nAV7jemQPsG4CyBQA8CKsRiSUdMdQ1jKnoU0gBrQC
+ hwkzyJvUb7hTaR/P5ldGkElcqsabsADLhWW4IQb/5Mb64iyb/2/3F
+X-Received: by 2002:a2e:a724:0:b0:2d4:8878:a15d with SMTP id
+ s36-20020a2ea724000000b002d48878a15dmr3045366lje.7.1710924066795; 
+ Wed, 20 Mar 2024 01:41:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEm8MpvaWTj1+wc5neM6At/11mqOGaDRHto6zQcNyj5VEPwdxYMG5dApRREf0EVHGcsCs2yXg==
+X-Received: by 2002:a2e:a724:0:b0:2d4:8878:a15d with SMTP id
+ s36-20020a2ea724000000b002d48878a15dmr3045352lje.7.1710924066456; 
+ Wed, 20 Mar 2024 01:41:06 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ q16-20020a05600c46d000b00412a31d2e2asm1462823wmo.32.2024.03.20.01.41.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Mar 2024 01:41:05 -0700 (PDT)
+Message-ID: <a6e0a011-817b-4e9e-9985-8fb64fa0aa5e@redhat.com>
+Date: Wed, 20 Mar 2024 09:41:03 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.1 v5 08/14] migration: Add Error** argument to
+ .load_setup() handler
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Prasad Pandit <pjp@fedoraproject.org>
+References: <20240320064911.545001-1-clg@redhat.com>
+ <20240320064911.545001-9-clg@redhat.com> <87il1htjpc.fsf@pond.sub.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <87il1htjpc.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F3:EE_|DM4PR12MB9072:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17a210e5-dd6a-4b73-0ab1-08dc48bba35c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lud8KTiiKCE/PkaJr7NuWRmzXft5G6zDAx+WQKgbC9yxAO6mP5FjVoJSdry30VmDcsq0U4hgDr6KTNeNsBmkKOCNblwPij3dO229DmUFAHyJ1vZeGzc+k5jnITHlDreFVqvtSpDRi3c08wlTv4E2Ql70Z/eqWJ9328mkwPG3erGGBfKQQ9pCxPk8MO7ZHQjb7AC2BVbl/wl65MABhPi2+6MYfMIZ60+z+ZLgZZ2y3wxaxbHwv8Nzs2euTHmUU5EkP3PY8LpHCqYpO/rSgK22nVpB2keVbBbSdDJPH1QUUn38tnEcohph8LS7kyTCD23p/uhvFd+CkSywzFIFcqJoIlRGzDpkxrsX3Ikv8WsvQ/51o+wUraSkc7GjciW0hXmzAnU8+nWuYnyIbRAp001+qIXH6d9M3BeWiGr+iwLm246Xs6Z/oGZbg+ml1EDV8QeWAdKb0giK5gAztFGwKgH+WQNELBR7Y+Q2rH3Tiyt2v0cJoV0Guyk6RMP1LnHubk1Q2t2rimJetPPIjgIyJ+E15BiYcs3jglRIFgim373BZsmsyTRQkUfdXUVIfoiHhWFU8PofW3CNatj/L1vUxZ7Q5/KVXTIFC7YQ74E+BhQT1BtqgwW4yo8YhdBmwUEVbDIea9dmnh7fsVQEj+ZHaNlLjnkZDiqGS2z0nYcpcVMPwH0OPghUY9sNjZwgTWg/zx7K2zH8GESL46JUNkOcXevUBtQMoQeQ7gDRnXIXYv0UK+az4pUdE383eF9v6unPABO3
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 08:56:31.4851 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17a210e5-dd6a-4b73-0ab1-08dc48bba35c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F3.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9072
-Received-SPF: permerror client-ip=2a01:111:f403:2412::601;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -126,84 +105,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-TODO: - Add proper handling for non-64K-aligned BIOS images.
-      - Add proper handling for BIOS pflash area which should be
-        initially mapped as shared, resulting in unecessary
-        KVM_EXIT_MEMORY_FAULTs
+On 3/20/24 09:02, Markus Armbruster wrote:
+> Cédric Le Goater <clg@redhat.com> writes:
+> 
+>> This will be useful to report errors at a higher level, mostly in VFIO
+>> today.
+>>
+>> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Reviewed-by: Peter Xu <peterx@redhat.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+>> ---
+> 
+> [...]
+> 
+>> diff --git a/migration/savevm.c b/migration/savevm.c
+>> index 535ad5a32d67057dd172ce25d561a66a07172e97..8f42999a15d1685957de9ed517d6bc9ba49c3f11 100644
+>> --- a/migration/savevm.c
+>> +++ b/migration/savevm.c
+>> @@ -2747,8 +2747,9 @@ static void qemu_loadvm_state_switchover_ack_needed(MigrationIncomingState *mis)
+>>       trace_loadvm_state_switchover_ack_needed(mis->switchover_ack_pending_num);
+>>   }
+>>   
+>> -static int qemu_loadvm_state_setup(QEMUFile *f)
+>> +static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
+>>   {
+>> +    ERRP_GUARD(); /* error_prepend use */
+> 
+> The comment is correct, but prone to go stale.  No other use of
+> ERRP_GUARD() is commented.  Suggest to drop it.
 
-When guest_memfd is enabled, the BIOS is generally part of the initial
-encrypted guest image and will be accessed as private guest memory. Add
-the necessary changes to set up the associated RAM region with a
-guest_memfd backend to allow for this.
+OK. I found it interesting, for me at least. Will drop in the VFIO
+patches also.
 
-Current support centers around using -bios to load the BIOS data.
-Support for loading the BIOS via pflash requires additional enablement
-since those interfaces rely on the use of ROM memory regions which make
-use of the KVM_MEM_READONLY memslot flag, which is not supported for
-guest_memfd-backed memslots.
+Thanks,
 
-Signed-off-by: Michael Roth <michael.roth@amd.com>
----
- hw/i386/x86.c | 36 +++++++++++++++++++++++-------------
- 1 file changed, 23 insertions(+), 13 deletions(-)
+C.
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index e3ddc39133..ea2d03cc02 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1147,10 +1147,18 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-     }
-     if (bios_size <= 0 ||
-         (bios_size % 65536) != 0) {
--        goto bios_error;
-+        g_warning("%s: Unaligned BIOS size %d", __func__, bios_size);
-+        if (!machine_require_guest_memfd(ms)) {
-+            goto bios_error;
-+        }
-     }
-     bios = g_malloc(sizeof(*bios));
--    memory_region_init_ram(bios, NULL, "pc.bios", bios_size, &error_fatal);
-+    if (machine_require_guest_memfd(ms)) {
-+        memory_region_init_ram_guest_memfd(bios, NULL, "pc.bios", bios_size,
-+                                           &error_fatal);
-+    } else {
-+        memory_region_init_ram(bios, NULL, "pc.bios", bios_size, &error_fatal);
-+    }
-     if (sev_enabled()) {
-         /*
-          * The concept of a "reset" simply doesn't exist for
-@@ -1173,17 +1181,19 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-     }
-     g_free(filename);
- 
--    /* map the last 128KB of the BIOS in ISA space */
--    isa_bios_size = MIN(bios_size, 128 * KiB);
--    isa_bios = g_malloc(sizeof(*isa_bios));
--    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
--                             bios_size - isa_bios_size, isa_bios_size);
--    memory_region_add_subregion_overlap(rom_memory,
--                                        0x100000 - isa_bios_size,
--                                        isa_bios,
--                                        1);
--    if (!isapc_ram_fw) {
--        memory_region_set_readonly(isa_bios, true);
-+    if (!machine_require_guest_memfd(ms)) {
-+        /* map the last 128KB of the BIOS in ISA space */
-+        isa_bios_size = MIN(bios_size, 128 * KiB);
-+        isa_bios = g_malloc(sizeof(*isa_bios));
-+        memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
-+                                 bios_size - isa_bios_size, isa_bios_size);
-+        memory_region_add_subregion_overlap(rom_memory,
-+                                            0x100000 - isa_bios_size,
-+                                            isa_bios,
-+                                            1);
-+        if (!isapc_ram_fw) {
-+            memory_region_set_readonly(isa_bios, true);
-+        }
-     }
- 
-     /* map all the bios at the top of memory */
--- 
-2.25.1
+
+> 
+>>       SaveStateEntry *se;
+>>       int ret;
+>>   
+>> @@ -2763,10 +2764,11 @@ static int qemu_loadvm_state_setup(QEMUFile *f)
+>>               }
+>>           }
+>>   
+>> -        ret = se->ops->load_setup(f, se->opaque);
+>> +        ret = se->ops->load_setup(f, se->opaque, errp);
+>>           if (ret < 0) {
+>> +            error_prepend(errp, "Load state of device %s failed: ",
+>> +                          se->idstr);
+>>               qemu_file_set_error(f, ret);
+>> -            error_report("Load state of device %s failed", se->idstr);
+>>               return ret;
+>>           }
+>>       }
+>> @@ -2947,7 +2949,8 @@ int qemu_loadvm_state(QEMUFile *f)
+>>           return ret;
+>>       }
+>>   
+>> -    if (qemu_loadvm_state_setup(f) != 0) {
+>> +    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
+>> +        error_report_err(local_err);
+>>           return -EINVAL;
+>>       }
+> 
 
 
