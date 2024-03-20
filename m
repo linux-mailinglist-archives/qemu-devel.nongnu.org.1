@@ -2,116 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24F94881821
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 20:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 037E18816B3
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 18:41:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn1vG-0004tE-R1; Wed, 20 Mar 2024 15:48:26 -0400
+	id 1rmzur-0004hw-U4; Wed, 20 Mar 2024 13:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rn1vD-0004si-TC
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:48:24 -0400
-Received: from mail-dm6nam11on20601.outbound.protection.outlook.com
- ([2a01:111:f403:2415::601]
- helo=NAM11-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmzun-0004hi-Jm
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:39:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rn1v9-0001m2-BZ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:48:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Qy4OjRrT/QuDiysqntTf/UkHyfCUGlnh6QKNBK7OY8PGV60hZdIpbktK5U7vj1HasYQJ599SMhgDLY+gOL+/PaI6XPXCcCPBS7SdOZ8CgS8THtxSRRs4vKryMaXeeKq4Gmk43VQzd/cu6sKNDRU5eBtRxodDMgY4qnmO3sI/XDd2hbY0sOiQi3UbE0xLKReRnsd6fWAiQJqwchsgM7MciBucTh8PG8/t9F4otAeYEankIFiK5ASpTffELI4Y7zNMcs+ozl1AseAGvQTZ1/AH5NphEciGbpH1J8wUMLU3MToGsDMcAYX94kra3dfaVaeQV+7Xx5YHMRl2gqvMWahIsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=drryOzZBx8YabX4Vh+BJ5HVuFkD7OTcdnL78OzNVwyQ=;
- b=ZKZ0A4zDMRCYcSf9ObxCm0txT3kRb/eNiufDOncxKriwUme2V4/78WGvN0RYiPd9bTYOZmL5Of/a8xelB9wK6IKLyh3u+kRoiBCEb6QjWjRnAr6QwwFKsi9OT183rcPhsXe4RfLPFZ/SwKToKKvX7M/YopaGsjcGyLsXc3utrxR6h2Qq99Amtmk76/a+MdxjbCtMzfnHS4DEO8JsirjDaTSlDuvyvcdgqzTtjWSTPquZalA6vwzowx0fD8ZNIS/aklvSKtPXYGBaOJ2kjzQbZ7dPEjCj/BXWonYiXiCNzPI687TLZ1TFagR/81+94zqIEoMyvFo0hOVtpAhYmZNAkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=drryOzZBx8YabX4Vh+BJ5HVuFkD7OTcdnL78OzNVwyQ=;
- b=bz/Goxn+he015NNkmt4dhaM2/8G+/riE+DKJcxT92qd5hwDy8aFoa3tHNE5fzqBQtMQFHjf5y7NZ/mo1zMQKTTv/JDUBVhCPx6n8CluR3d4qv3Wr8O3PepnNJBC09vJ3aLWYwAE2KuzqNrPExBANvSOGRkNJ57Lv9e/8TmcPjN0=
-Received: from SJ0PR13CA0225.namprd13.prod.outlook.com (2603:10b6:a03:2c1::20)
- by SA3PR12MB7879.namprd12.prod.outlook.com (2603:10b6:806:306::5)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.34; Wed, 20 Mar
- 2024 19:48:11 +0000
-Received: from SJ1PEPF00001CDF.namprd05.prod.outlook.com
- (2603:10b6:a03:2c1:cafe::1) by SJ0PR13CA0225.outlook.office365.com
- (2603:10b6:a03:2c1::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12 via Frontend
- Transport; Wed, 20 Mar 2024 19:48:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00001CDF.mail.protection.outlook.com (10.167.242.7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 19:48:11 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 14:48:08 -0500
-Date: Wed, 20 Mar 2024 12:38:02 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: David Hildenbrand <david@redhat.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Tom Lendacky
- <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, Daniel P
- =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>, Xiaoyao Li
- <xiaoyao.li@intel.com>, Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Subject: Re: [PATCH v3 11/49] physmem: Introduce
- ram_block_discard_guest_memfd_range()
-Message-ID: <20240320173802.bygfnr3ppltkoiq4@amd.com>
-References: <20240320083945.991426-1-michael.roth@amd.com>
- <20240320083945.991426-12-michael.roth@amd.com>
- <750e7d5c-cc8b-4794-a7ef-b104c28729fa@redhat.com>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rmzum-0002Nu-6g
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 13:39:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710956386;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LadTrEs32q6JuiUng9QgE0IesXnTjqGpv9qfMYEDVbA=;
+ b=NGSt1YyFQB0yWpKGR3oh4O/N1xt2p/YHEC8Icy+jILdN2VccPUTDeR92+hGWX1W6P7Dkhi
+ e8Fzq705RHrqy33pmmHTR1Pzw+Ctyg6+QtcUIRgUKeIpcjQPcdCcWn0BTCSalobhrkvIKf
+ gduSB83EufGenWo5E3vUSTxO5DXe2Dw=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-Kps6Nz2JN7KXf8tagPnJFA-1; Wed, 20 Mar 2024 13:39:45 -0400
+X-MC-Unique: Kps6Nz2JN7KXf8tagPnJFA-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4311dd10102so244281cf.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 10:39:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710956385; x=1711561185;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=LadTrEs32q6JuiUng9QgE0IesXnTjqGpv9qfMYEDVbA=;
+ b=KtKkLpQG1GEk76C8W5ADnzheEPS5paGSoxSUCZQGYSY6gV9hXrk6KaP59J5YuLMEKN
+ ZjDzLytcy8VkdU7vnUwOmnZ8AH9KdD4boOtlVu7olPmfgLJaRmHdT867dNmrUlIihoiR
+ wz51BQMUU3YzAiDWjwDk0et3GnHScI65u9s212uoq1MhxOm8Y1pFEd9fzHve+RjXSd8V
+ uNXAiDG+ZTHh50Mj8v/NJ+CyNiYan1MIKkCbYxmo6pcofqJ7GvDl91BMCmi0vKIVWxdC
+ icrBox+LVPQUSyWuCHDpcWru6nOT8N3QSP7iTPi5XcL2UVqKqiqE/K9RWZ4NDnJ2SpI0
+ qutA==
+X-Gm-Message-State: AOJu0YzuA3EUcswI6WjvlINgvlrcI3co7FMbVL2KFGmIB0wk1e+b3wH5
+ Yo34lYiEAhXPAT/MpCYt5ihp2VwaPJfaYf1xUNRWbqLW2pOx45+4Xy5+EO7oOqktpb424CRlhMY
+ iCg51I2CsK8sHKkZyLHF/jANOHDuz64D/kGzhP/4zoEc6KKDyF329
+X-Received: by 2002:a05:6214:3f85:b0:690:9db6:f410 with SMTP id
+ ow5-20020a0562143f8500b006909db6f410mr6764872qvb.3.1710956384656; 
+ Wed, 20 Mar 2024 10:39:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLZ2jRy2HZB5vFRERmbsQfn7UkuWfj7vRUfuSEG/rE4h7BJgEFptrr/T99J5Y/I3ZjhMxHSg==
+X-Received: by 2002:a05:6214:3f85:b0:690:9db6:f410 with SMTP id
+ ow5-20020a0562143f8500b006909db6f410mr6764835qvb.3.1710956384209; 
+ Wed, 20 Mar 2024 10:39:44 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ jn10-20020ad45dea000000b00690dd47a41csm8107560qvb.86.2024.03.20.10.39.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Mar 2024 10:39:43 -0700 (PDT)
+Date: Wed, 20 Mar 2024 13:39:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>,
+ Paul Durrant <paul@xen.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Avihai Horon <avihaih@nvidia.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>, xen-devel@lists.xenproject.org
+Subject: Re: [PATCH for-9.1 v5 09/14] memory: Add Error** argument to
+ .log_global_start() handler
+Message-ID: <ZfsfXX48CEV5IfiJ@x1n>
+References: <20240320064911.545001-1-clg@redhat.com>
+ <20240320064911.545001-10-clg@redhat.com> <Zfr10JG2dTChsLVj@x1n>
+ <d58d5134-dbfb-4c07-956a-5e8f3e230798@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <750e7d5c-cc8b-4794-a7ef-b104c28729fa@redhat.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDF:EE_|SA3PR12MB7879:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0170d800-207b-4fe1-da1c-08dc4916ac8e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kd/dxiDsjpLt4WbqCSFSdF/gCtmPFq8XXQMb4p9d+3Q+Hur8NmVmsbGPilO/R6B59pxZByuzzlbbtPeYtSnQEgTndiMw30IfLPH+RSV27bX9w66L+7c/FhLXDhYe8jJQ5NC8a9YgpNWqOXJzufmDGtEd/Bp/w0NIMkCw93s1+fbBO81cCZ7pVqAQ31PUjInsYi3stDhlj0ksLx4OYaHzkxOHdoydBElAkut4mo1aAkhd2vja3JeCMgnecpiU67IadvEDRJbx6ES7izGi/h3x8Ax6mgoWgWQh87l8W0adzWRvW/C0sJ+H8IQAO9lo/Jo0fQt0xGkt6NkX6EX+2l6gwrXX2CkOVPA9GW+RyQxpNkK/aABabxaf2Kbee25bgGfJ3Q9Nzq+1vWzpJ07Ynb6FCRDHK+ZFGQPVdOIJZVEdR74epamYQ2HaY/CufF7xaa39/Npc34aWgQVTrCBvpiSmxcGRFkcXs40NIvjp43B2o17LBu6OghM5pJe3JHSCpUdvN63dhScQJ5ImtADRrVBJoliuBV1uNh4S0sdUDAAlQgifvfDJtE52fx3p3hE0j5b7EG7U30jqZjyQWyEWCEvUckFB86Ev1KLXW5f/qRmKe+D6nw6ARg2i6aXesCWhFKQ3pdGoDzEw+jXSOiD3jOwtY5eqzvBTJDZyo6LE5AFYfftDU0WEOWbJA6OW9/iUkYA4TgVvyrSpz2wiK8n6tsya8mwYIWhx99mC7a7s+AZ+cobNQ+x28UBlwqxQ8i2Z3JTG
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(82310400014)(376005)(36860700004)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 19:48:11.1669 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0170d800-207b-4fe1-da1c-08dc4916ac8e
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CDF.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7879
-Received-SPF: permerror client-ip=2a01:111:f403:2415::601;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM11-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d58d5134-dbfb-4c07-956a-5e8f3e230798@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,53 +112,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 20, 2024 at 10:37:14AM +0100, David Hildenbrand wrote:
-> On 20.03.24 09:39, Michael Roth wrote:
-> > From: Xiaoyao Li <xiaoyao.li@intel.com>
-> > 
-> > When memory page is converted from private to shared, the original
-> > private memory is back'ed by guest_memfd. Introduce
-> > ram_block_discard_guest_memfd_range() for discarding memory in
-> > guest_memfd.
-> > 
-> > Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
-> > Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> 
-> "Co-developed-by"
-> 
-> > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> > Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
-> Your SOB should go here.
-> 
-> > ---
-> > Changes in v5:
-> > - Collect Reviewed-by from David;
-> > 
-> > Changes in in v4:
-> > - Drop ram_block_convert_range() and open code its implementation in the
-> >    next Patch.
-> > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> 
-> I only received 3 patches from this series, and now I am confused: changelog
-> talks about v5 and this is "PATCH v3"
-> 
-> Please make sure to send at least the cover letter along (I might not need
-> the other 46 patches :D ).
+On Wed, Mar 20, 2024 at 05:15:06PM +0100, Cédric Le Goater wrote:
+> Sure, or I will in a v6. Markus had a comment on 8/14.
 
-Sorry for the confusion, you got auto-Cc'd by git, which is good, but
-not sure there's a good way to make sure everyone gets a copy of the
-cover letter. I could see how it would help useful to potential
-reviewers though. I'll try to come up with a script for it and take that
-approach in the future.
+Yeah, I can handle both if they're the only ones.  Thanks,
 
--Mike
+-- 
+Peter Xu
 
-> 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
-> 
 
