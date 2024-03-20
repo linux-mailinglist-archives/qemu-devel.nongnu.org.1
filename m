@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB4B88088D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:33:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D361880894
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:33:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmjsh-0008W1-1f; Tue, 19 Mar 2024 20:32:35 -0400
+	id 1rmjsi-00004q-Dn; Tue, 19 Mar 2024 20:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsf-0008VT-Bo
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:33 -0400
-Received: from mail-oa1-x31.google.com ([2001:4860:4864:20::31])
+ id 1rmjsg-0008W0-KR
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:34 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsd-0005Wt-Os
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:33 -0400
-Received: by mail-oa1-x31.google.com with SMTP id
- 586e51a60fabf-2218a0f55e1so3615827fac.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 17:32:31 -0700 (PDT)
+ id 1rmjsf-0005XB-4w
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:34 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6e6afb754fcso5876874b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 17:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710894750; x=1711499550; darn=nongnu.org;
+ d=linaro.org; s=google; t=1710894752; x=1711499552; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Q6aglnROJwkY+5hRbPbUV1QnS5K81iLfR/yfvt3Y7ig=;
- b=yrcXlrTO+W2TJdZ5XB6kQH+fBIt5M/j6SBaQADFN7FsDliwQJKh3Pc6NBBQsTOijGB
- j4aZFs+RNlE+kzFTWWVXEmo58ry4eeJzB8I8IztsKf5tbCDjWhX29bjVJjPP0RW92Fz5
- BnqUKs9caCvXNFcG/qJ6CZnu485j3dwHt5JRkzHDRox82zl4v9FbwenOYP4LqEqakKwv
- VU/O8qY3WV4g1aY2WRBlVajCu3HjeFHcQeF7u4bsqOTBi9+S4CK2aeakQkCLP8GcGmFi
- 13Hy5c98pI1mpaFpUV7MoNvCV+9q70IeJdN+0yC/PSA9YCHbD9eWKNm180V8Rvw6HvO6
- wk8w==
+ bh=02J+igt5o8+h2PP+0HZoPaFUg0nUo/WrdtySb2LvSHk=;
+ b=LRnPt6hTKt80yKhLCvjqc+4OtR5kdLoQuDm6MS972S6dXNUrHkWuJ+9jCm0MN+DBA8
+ QxIKiCVJtgNdwcxc5y4FRRt6OXKE0AxTXWr4dGM9QsNOucbEd2LPTORB445qYCxQCtDS
+ +8756Hjoq6PALeW2QIazwF78PFuwmoWAcFoIVHrO1y2zx3NNhgsonjP6sgSjiLHybdOZ
+ h87TFXZSpsnFORkXj1xdb4q1FjqqKf1CIph17CQlG2rU7HQhmVC6U/IK8mYxFtZul9bv
+ ONTlQzkmLjuV7RTIF91XPoVszZBXqEmcRB1dGHVtB/hcmOQzxY3q2z0dEkf4n9Dzbdj5
+ yqZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710894750; x=1711499550;
+ d=1e100.net; s=20230601; t=1710894752; x=1711499552;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Q6aglnROJwkY+5hRbPbUV1QnS5K81iLfR/yfvt3Y7ig=;
- b=BsxfYNYFMM9VSgGsf1d7N2SvEB0EkR177J/8Pobc3/044YjKK4xeRhhVFGZezfoEei
- V4TG1izOdYMYDU8pXEc7O4KNlDDgBwPDXUKB5fSYEQTewMkZ1slKUnMLZfRD955B0yXA
- KKtg7kCnuxgvxtgC8yxRxa7eehGl+lMK3BbhjiUqgw/ZA1lEaUpCgovOzl9K+IcUFjYZ
- GsBiuI+kNY9ePeunZe/VG+LeSoA3FVKjzVcxog07c/nqOjdAyXeT3BsEHBJSWrscOkDw
- 1oq5kCuRW8eELNWm+qvoybCoq8n5uCigt7H3tRRUUs8Ol8zbEkNqmUqZLVE7oh86wexe
- hOQA==
-X-Gm-Message-State: AOJu0Yy1Pb0zjLy7smMlSTys2NfJUj9dHM5+eOXnPEnIQX3xHcfmLBIg
- 0faLKYq5a98c38rjqPJ8zJAuzIpRSwAnjy9Jr08wCAMvB/5/RN4RoImeg0qEM/DO77/rwl1P9e6
- a
-X-Google-Smtp-Source: AGHT+IGyRbc2nuVtp18kBdkREds0+qPZ6DOrsUiRn+nOR7eFTgEeL03+Z2w48ZAl2Hu0PaNN5QTkmQ==
-X-Received: by 2002:a05:6870:4723:b0:21e:e476:9170 with SMTP id
- b35-20020a056870472300b0021ee4769170mr17905258oaq.43.1710894750358; 
- Tue, 19 Mar 2024 17:32:30 -0700 (PDT)
+ bh=02J+igt5o8+h2PP+0HZoPaFUg0nUo/WrdtySb2LvSHk=;
+ b=ZyLy2//Nwx5v4Td0/56/VwhvBu68GsWDMvn/6YPHwAuVwWG64iBuCGRKiT7pKELpXm
+ 9e1orsdpWoCpFe9jX6Tpsyw4MiQx5sSBoUOiuBxoqISsNzPnKNylSErV8yJoP4ZBDiHu
+ IfJ2xpUViDPvQrtI0J2tp3KY7oH8Q+zmELxklJ3pea71VNIW6lS2voXsVpcpAHeIAT3U
+ HjRXJ693QpxUukvKBS7b3Cmy7/ay/pXfeHGv8/FD6xz2AZr0JhSHH7sE6pV31pCFQmwY
+ RVlaaSEhr914p9Vn4/P0Mx4cSGZ424FJznCqcvJWPVXw3BCRaTK3JVR/2xk3txntSCLJ
+ /eVQ==
+X-Gm-Message-State: AOJu0YwsEu+bLweks/d+P8kWsPTUcGBX6aw2hQCc1kQjk5ZfFD2cr5GJ
+ +MLHE1v6vV0nA2DW83wKuqihC/c6GecRfw/JcolU+hvNeoxcZ7Y9igf53vkkQiLKdoOB1Uc2rZn
+ G
+X-Google-Smtp-Source: AGHT+IE/8zCzKXxnNpjB9Fk64LBYiZGwaGCXqqFNJe7788Qdlut6kfdEtnrMncEgRd3DL+6KNI8djA==
+X-Received: by 2002:a05:6a00:4648:b0:6e6:5343:c165 with SMTP id
+ kp8-20020a056a00464800b006e65343c165mr723033pfb.16.1710894751641; 
+ Tue, 19 Mar 2024 17:32:31 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- d19-20020a63d653000000b005d553239b16sm8475645pgj.20.2024.03.19.17.32.28
+ d19-20020a63d653000000b005d553239b16sm8475645pgj.20.2024.03.19.17.32.30
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 17:32:29 -0700 (PDT)
+ Tue, 19 Mar 2024 17:32:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>,
-	Sven Schnelle <svens@stackframe.org>
-Subject: [PULL 3/9] target/hppa: Fix assemble_12a insns for wide mode
-Date: Tue, 19 Mar 2024 14:32:17 -1000
-Message-Id: <20240320003223.554145-4-richard.henderson@linaro.org>
+Cc: Sven Schnelle <svens@stackframe.org>
+Subject: [PULL 4/9] target/hppa: ldcw,s uses static shift of 3
+Date: Tue, 19 Mar 2024 14:32:18 -1000
+Message-Id: <20240320003223.554145-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240320003223.554145-1-richard.henderson@linaro.org>
 References: <20240320003223.554145-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::31;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,95 +92,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tested-by: Helge Deller <deller@gmx.de>
-Reported-by: Sven Schnelle <svens@stackframe.org>
+From: Sven Schnelle <svens@stackframe.org>
+
+Fixes: 96d6407f363 ("target-hppa: Implement loads and stores")
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240319161921.487080-2-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/insns.decode | 27 ++++++++++++++++-----------
- target/hppa/translate.c  | 17 +++++++++++++++++
- 2 files changed, 33 insertions(+), 11 deletions(-)
+ target/hppa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 9c6f92444c..5412ff9836 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -26,7 +26,7 @@
- 
- %assemble_11a   4:12 0:1             !function=expand_11a
- %assemble_12    0:s1 2:1 3:10        !function=expand_shl2
--%assemble_12a   0:s1 3:11            !function=expand_shl2
-+%assemble_12a   3:13 0:1             !function=expand_12a
- %assemble_16    0:16                 !function=expand_16
- %assemble_17    0:s1 16:5 2:1 3:10   !function=expand_shl2
- %assemble_22    0:s1 16:10 2:1 3:10  !function=expand_shl2
-@@ -314,8 +314,9 @@ fstd            001011 ..... ..... .. . 1 -- 100 0 . .....      @fldstdi
- @ldstim14m      ...... b:5 t:5 ................          \
-                 &ldst sp=%assemble_sp disp=%assemble_16  \
-                 x=0 scale=0 m=%neg_to_m
--@ldstim12m      ...... b:5 t:5 sp:2 ..............      \
--                &ldst disp=%assemble_12a x=0 scale=0 m=%pos_to_m
-+@ldstim12m      ...... b:5 t:5 ................          \
-+                &ldst sp=%assemble_sp disp=%assemble_12a \
-+                x=0 scale=0 m=%pos_to_m
- 
- # LDB, LDH, LDW, LDWM
- ld              010000 ..... ..... .. ..............    @ldstim14  size=0
-@@ -331,15 +332,19 @@ st              011010 ..... ..... .. ..............    @ldstim14  size=2
- st              011011 ..... ..... .. ..............    @ldstim14m size=2
- st              011111 ..... ..... .. ...........10.    @ldstim12m size=2
- 
--fldw            010110 b:5 ..... sp:2 ..............    \
--                &ldst disp=%assemble_12a t=%rm64 m=%a_to_m x=0 scale=0 size=2
--fldw            010111 b:5 ..... sp:2 ...........0..    \
--                &ldst disp=%assemble_12a t=%rm64 m=0 x=0 scale=0 size=2
-+fldw            010110 b:5 ..... ................        \
-+                &ldst disp=%assemble_12a sp=%assemble_sp \
-+                t=%rm64 m=%a_to_m x=0 scale=0 size=2
-+fldw            010111 b:5 ..... .............0..        \
-+                &ldst disp=%assemble_12a sp=%assemble_sp \
-+                t=%rm64 m=0 x=0 scale=0 size=2
- 
--fstw            011110 b:5 ..... sp:2 ..............    \
--                &ldst disp=%assemble_12a t=%rm64 m=%a_to_m x=0 scale=0 size=2
--fstw            011111 b:5 ..... sp:2 ...........0..    \
--                &ldst disp=%assemble_12a t=%rm64 m=0 x=0 scale=0 size=2
-+fstw            011110 b:5 ..... ................        \
-+                &ldst disp=%assemble_12a sp=%assemble_sp \
-+                t=%rm64 m=%a_to_m x=0 scale=0 size=2
-+fstw            011111 b:5 ..... .............0..        \
-+                &ldst disp=%assemble_12a sp=%assemble_sp \
-+                t=%rm64 m=0 x=0 scale=0 size=2
- 
- ld              010100 ..... ..... .. ............0.    @ldstim11
- fldd            010100 ..... ..... .. ............1.    @ldstim11
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 40b9ff6d59..be0b0494d0 100644
+index be0b0494d0..47c6db78c7 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -155,6 +155,23 @@ static int expand_11a(DisasContext *ctx, int val)
-     return i;
- }
+@@ -3135,7 +3135,7 @@ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
+         dest = dest_gpr(ctx, a->t);
+     }
  
-+/* Expander for assemble_16a(s,im11a,i). */
-+static int expand_12a(DisasContext *ctx, int val)
-+{
-+    /*
-+     * @val is bit 0 and bits [3:15].
-+     * Swizzle thing around depending on PSW.W.
-+     */
-+    int im11a = extract32(val, 1, 11);
-+    int s = extract32(val, 12, 2);
-+    int i = (-(val & 1) << 13) | (im11a << 2);
-+
-+    if (ctx->tb_flags & PSW_W) {
-+        i ^= s << 13;
-+    }
-+    return i;
-+}
-+
- /* Expander for assemble_16(s,im14). */
- static int expand_16(DisasContext *ctx, int val)
- {
+-    form_gva(ctx, &addr, &ofs, a->b, a->x, a->scale ? a->size : 0,
++    form_gva(ctx, &addr, &ofs, a->b, a->x, a->scale ? 3 : 0,
+              a->disp, a->sp, a->m, MMU_DISABLED(ctx));
+ 
+     /*
 -- 
 2.34.1
 
