@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2A6880FEC
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:33:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E77880FED
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:33:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmtFP-0007eT-Hl; Wed, 20 Mar 2024 06:32:39 -0400
+	id 1rmtFN-0007Yk-92; Wed, 20 Mar 2024 06:32:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmtFC-0007Oz-GZ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rmtFF-0007PW-73
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rmtFA-0004H8-8u
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:26 -0400
+ id 1rmtFD-0004Hp-GQ
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:32:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710930743;
+ s=mimecast20190719; t=1710930746;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=WNPPEhUqNxc++TdG1DRwfNWJJ5hRnAz956SbDwj5H6w=;
- b=i/EkhbselR9k2LjGput0c6G8sfI6+Gs42FmPUulig0e75mzN5O/IjizMAycQKwSfjGMA6y
- h+ONVMDHHxeP9jcy6R0G1x8WgHeLx3FoDzWbr0OtAZDj3o8UiLF4THyqt7JO9KAG8fSakK
- ycLPlbLLt74UubEdXD+MhaI8F/1gfW0=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TJjqOAFTCPJQwJBApDGw8XyG9n4ZFOpcZP/DpSbnm10=;
+ b=A4/nZtkvA+fH2D6nmhUhR8/ZeUUv6sz+msg5FLt8fm54plJCKDxgJ6SXVlVV/JzPc16bjc
+ 4XGELRezn81FlbDLjfubzI3ASAc6/BU0JMv9P69ckcqmfruYNzvIv8EfISleKlD+vGWiL9
+ hZnWHAIxNm5yLF+InV9ySJu8Antn8IA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-346-9fW11EPxNaGrrZPuTjM28A-1; Wed, 20 Mar 2024 06:32:22 -0400
-X-MC-Unique: 9fW11EPxNaGrrZPuTjM28A-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-568cd600ee6so1788938a12.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 03:32:21 -0700 (PDT)
+ us-mta-619-SvetAhwMPDycPIb_vnnqcA-1; Wed, 20 Mar 2024 06:32:24 -0400
+X-MC-Unique: SvetAhwMPDycPIb_vnnqcA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-a46b82df33cso215929666b.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 03:32:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710930740; x=1711535540;
+ d=1e100.net; s=20230601; t=1710930742; x=1711535542;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WNPPEhUqNxc++TdG1DRwfNWJJ5hRnAz956SbDwj5H6w=;
- b=fk06wZ6qGU8PSgazrTHYuNmrziKqpXdxvSKlrpqkQ4Zm6xCj4K60CW8peFSSYlwcbP
- A0veuJYZ1GojVuNd1FEZGwfjC50dKN976uUYHqQaavmq9PEoGa9nF7sazv2dMTvF+2f5
- 6skUrf2S7a4Cre2iyenqKoYxu9FCM8MMmKkbJkGVVi8B+C2bzWD3Y8B0Q+JDaBoy2Ip5
- gT5/Ly5GIWJ7KRzh3lAY8LK8gdnA9nXQA2qV8h+KdpJi6jD4n6PTjHx9S8t0tIEV53e1
- k/qggveAmgOUlna28S6VbEOffJLq6Rdd9ve7V9u2P1YBch/fcYPm48MbXtMHkoC0mO+7
- 2ttQ==
-X-Gm-Message-State: AOJu0YwMJQxM4CunTmSpSq+LsX+9EvhGxYNmLBycvFBUfzXhn7WCG2n6
- PCub0qlWpm1qBTMSIRTRflD2CVVVdSnf4VqHzqO6zXIkzS0xHW4XodkXaQYtVpGFQCFSrn2Mdxh
- OmA2Hf08SScR7xQivz4zsVzAacCk5cxAnOGPLxKwBIVPKlhFikNQgODfXWjJYRjq83Oi2mAlzDh
- B1dGg+NZvjlRIn9TUev46o4OMCTWgXZOsVjZSH
-X-Received: by 2002:a05:6402:2486:b0:566:c572:6fa0 with SMTP id
- q6-20020a056402248600b00566c5726fa0mr14862899eda.15.1710930740271; 
- Wed, 20 Mar 2024 03:32:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHelUNNEi5ltwH4SQQLwP2l2wU2AlmxsZ+ZlYfh6zaUmwYi/FqO2XReLVo4voOWKtY/dcGzIQ==
-X-Received: by 2002:a05:6402:2486:b0:566:c572:6fa0 with SMTP id
- q6-20020a056402248600b00566c5726fa0mr14862878eda.15.1710930739786; 
- Wed, 20 Mar 2024 03:32:19 -0700 (PDT)
+ bh=TJjqOAFTCPJQwJBApDGw8XyG9n4ZFOpcZP/DpSbnm10=;
+ b=vJ4DHRDBopJG9DgApuCYzJkEZqb3QKAp79YmqGtU0QcNdyc2ZpT5WZx1CWnKwqp5Ol
+ yBcwCGzLlQZ6q3BrOZiF3Y9dQZgQr2XookUtTAM0mMF/qwmlz0p0kk7R8iJ2c0pXUcOz
+ Q9b0d0CFqLlpI7wN/o+CfCv+3wKCEt8kXKZ58CqSkUuVUIHXpM9zyXNJpqifzjISd5XS
+ bdFOWQCC81ru7wy6jtIVvLPQJVtuqgMTN0sLdbfKx+RZtq5wjMg53sXQTDTX8mi3+f7T
+ aQePvEbIvLiCUYPYrS0lfXn8AEbXBKVTbIzxLKpNgM2KkUEju6oLRSbN9/ENUO9FUPW/
+ wCAg==
+X-Gm-Message-State: AOJu0Yy5awba4mFpjH/4Giv9iiHI3FQPb4R93iGZUfIMXjiChHgT7Wb1
+ fgf9F+/MXQJBgVQaiYhl5R+mwDCW36Qfpv3m/nLJMHQmQvY7S2YxFBuyfUENirNPxKIMe9C9F4l
+ KWBzFSw0iuc62BMsb88qk8FdZJtnAse2sjjL0DpTxl5mhmYyI5KlksyI+YXoHkPd8L2Hq98PxGU
+ JfQL/LHyAD8iDy1bOk5f/q092l7G9HGrmLhvfu
+X-Received: by 2002:a17:907:971c:b0:a46:9a9e:f3b0 with SMTP id
+ jg28-20020a170907971c00b00a469a9ef3b0mr11742603ejc.67.1710930742645; 
+ Wed, 20 Mar 2024 03:32:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFaEb0C9fzby7FgomWCCS7qA66uyuh7JtG9q0oEd/uBa++hL9BfNW+/Ka90JNRZGkBNIZfCMQ==
+X-Received: by 2002:a17:907:971c:b0:a46:9a9e:f3b0 with SMTP id
+ jg28-20020a170907971c00b00a469a9ef3b0mr11742593ejc.67.1710930742275; 
+ Wed, 20 Mar 2024 03:32:22 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- m24-20020aa7d358000000b0056729e902f7sm6762655edr.56.2024.03.20.03.32.17
+ ww2-20020a170907084200b00a46cc48ab07sm2843130ejb.221.2024.03.20.03.32.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Mar 2024 03:32:17 -0700 (PDT)
+ Wed, 20 Mar 2024 03:32:20 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/6] vl: convert qemu_machine_creation_done() to Error **
-Date: Wed, 20 Mar 2024 11:32:09 +0100
-Message-ID: <20240320103213.1048405-3-pbonzini@redhat.com>
+Subject: [PULL 3/6] vl: do not assert if sev-guest is used together with TCG
+Date: Wed, 20 Mar 2024 11:32:10 +0100
+Message-ID: <20240320103213.1048405-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240320103213.1048405-1-pbonzini@redhat.com>
 References: <20240320103213.1048405-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -101,56 +101,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow using Error ** to pass an error string up to qmp_x_exit_preconfig()
-and possibly main().
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/vl.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ system/vl.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/system/vl.c b/system/vl.c
-index 70f4cece7f9..0c970cf0203 100644
+index 0c970cf0203..c6442229824 100644
 --- a/system/vl.c
 +++ b/system/vl.c
-@@ -2653,7 +2653,7 @@ static void qemu_create_cli_devices(void)
-     rom_reset_order_override();
- }
+@@ -2676,11 +2676,10 @@ static bool qemu_machine_creation_done(Error **errp)
  
--static void qemu_machine_creation_done(void)
-+static bool qemu_machine_creation_done(Error **errp)
- {
-     MachineState *machine = MACHINE(qdev_get_machine());
+     qdev_machine_creation_done();
  
-@@ -2684,7 +2684,8 @@ static void qemu_machine_creation_done(void)
+-    if (machine->cgs) {
+-        /*
+-         * Verify that Confidential Guest Support has actually been initialized
+-         */
+-        assert(machine->cgs->ready);
++    if (machine->cgs && !machine->cgs->ready) {
++        error_setg(errp, "accelerator does not support confidential guest %s",
++                   object_get_typename(OBJECT(machine->cgs)));
++        exit(1);
      }
  
      if (foreach_device_config(DEV_GDB, gdbserver_start) < 0) {
--        exit(1);
-+        error_setg(errp, "could not start gdbserver");
-+        return false;
-     }
-     if (!vga_interface_created && !default_vga &&
-         vga_interface_type != VGA_NONE) {
-@@ -2692,6 +2693,7 @@ static void qemu_machine_creation_done(void)
-                     "type does not use that option; "
-                     "No VGA device has been created");
-     }
-+    return true;
- }
- 
- void qmp_x_exit_preconfig(Error **errp)
-@@ -2703,7 +2705,9 @@ void qmp_x_exit_preconfig(Error **errp)
- 
-     qemu_init_board();
-     qemu_create_cli_devices();
--    qemu_machine_creation_done();
-+    if (!qemu_machine_creation_done(errp)) {
-+        return;
-+    }
- 
-     if (loadvm) {
-         RunState state = autostart ? RUN_STATE_RUNNING : runstate_get();
 -- 
 2.44.0
 
