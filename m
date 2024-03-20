@@ -2,73 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C4688141E
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:06:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B03588141D
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:06:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmxVP-0006wc-S4; Wed, 20 Mar 2024 11:05:27 -0400
+	id 1rmxVO-0006wH-Rd; Wed, 20 Mar 2024 11:05:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxVM-0006vj-Jt
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmxVM-0006vl-Kd
  for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:24 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxVH-0006a3-K9
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:21 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-56b93b45779so2854324a12.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 08:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710947118; x=1711551918; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NzUProAvjXhm78+6TwWe8Z0xRDRtmvavrWZ1HGtmQEE=;
- b=oWbM0ru5zAmcWOwQCnHT0ItiZa5jxPQRVgvnJIMlJZfHCQRGCd+xtDhAOk5nND/s/Q
- BRuIqerjwWzLkO4BAKOe7sQEseOt7p+vhKhUOgB5p+mN2q8gWWYQ4ZbiN8scmoNf+RTe
- d7iE8vsvCyDrOEddETINEUh9h0IqpiMmKNooXRYf0xbw2/22c5NicPahWasoL99HZEuT
- 6ezqEDnBvIu6KMPjqpjTxBjglPrn87sWPgLO2sIXfHSAl2zCzRMGtNIGfVr0npIO0TL1
- 5DPPIgRETGpxobnZV1NziCA+wAGsD0XHE4Tp8s8/ZTFo0aQmcSN4Ayll4Gz5i7s76nLy
- sw5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710947118; x=1711551918;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NzUProAvjXhm78+6TwWe8Z0xRDRtmvavrWZ1HGtmQEE=;
- b=sRTZyUbZVQldJXLTad4QvSuAb5NaVuBGfjItZWmc0vTL6ZNI5/bNNNtzJXZMED0cew
- s3MBUYiSAR85JkFzmB6PJSQ/x28QHBNIoZTm2RImkSVgKUQIVBsebwTqPeC3nrdQwDap
- di9SZyZPTvujIUU7OT9g+gNonrCp2keQswaJV53xONmYrwh5zn2sYMEHdV8JsrarmcWZ
- an60CnSsGR3Xd0Q45jfoAZBnXOuDiToy1S2HJL6lCSaCIuMKkP6yGEjFbsB3wd1k7ADp
- kgcQGJk9Fs+jALj3yujveZBuGwzKBog6zTvrJ5JxbhL8as/fr2y8gZhMogkvJjLQsQQw
- tbRQ==
-X-Gm-Message-State: AOJu0Yw5Iu+nWKmvIuIH6z3ShY2Dcl4NfWrTOMz9FZ1NBQlLm28V9OjN
- 2P9SmOuccoypqvlG6At4xfWQfVH56iiRWujaVc9t2yu2AI5ABB+/fTlaLCcuZch0uScmiDXz18B
- Zbf9EX10DZ8scxDCnWCvz5Zll+RDENQj7d53nPxob9Rba/gg3
-X-Google-Smtp-Source: AGHT+IEPVOWPGUqAblD5YAFDJlVh3aOQJ2239xXf/Wx2GYeP3D9AIW1yRqPUeorky2jwB/0YRc/cyjXxc3/FI9inT4A=
-X-Received: by 2002:a05:6402:3881:b0:567:2870:1f1c with SMTP id
- fd1-20020a056402388100b0056728701f1cmr12502300edb.19.1710947118182; Wed, 20
- Mar 2024 08:05:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmxVH-0006Zt-40
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:20 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 1E4AA34684;
+ Wed, 20 Mar 2024 15:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710947117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DDcLYm72HQhutcU6yTV8kxBqGCt+voCwdXLg5XBQnQM=;
+ b=GhyxpIpcAvzcfXfAdOH6/0jE4+H/m33Nt8ZA3jhq08YnnzdungIf+84GfusAUkI91fe55r
+ yBncfsYxSBvIohbS0LR+p5hK1v8t4C1d6dmxtz0ybdzvxKwIh3NixCur1G7+GudV8MTQUr
+ hH7d159NvV9isEoqUFj3YAPPcINsPvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710947117;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DDcLYm72HQhutcU6yTV8kxBqGCt+voCwdXLg5XBQnQM=;
+ b=vO2GSwUZ5xjYmSw3v7KIX4kA+xhPaK63s6GS4MKInTH+4miXVkSo7aaxoRzxhZK07jNeef
+ y1vZo5l8Io/u4HBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710947117; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DDcLYm72HQhutcU6yTV8kxBqGCt+voCwdXLg5XBQnQM=;
+ b=GhyxpIpcAvzcfXfAdOH6/0jE4+H/m33Nt8ZA3jhq08YnnzdungIf+84GfusAUkI91fe55r
+ yBncfsYxSBvIohbS0LR+p5hK1v8t4C1d6dmxtz0ybdzvxKwIh3NixCur1G7+GudV8MTQUr
+ hH7d159NvV9isEoqUFj3YAPPcINsPvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710947117;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DDcLYm72HQhutcU6yTV8kxBqGCt+voCwdXLg5XBQnQM=;
+ b=vO2GSwUZ5xjYmSw3v7KIX4kA+xhPaK63s6GS4MKInTH+4miXVkSo7aaxoRzxhZK07jNeef
+ y1vZo5l8Io/u4HBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9C58F136CD;
+ Wed, 20 Mar 2024 15:05:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id 0NiZGCz7+mXzSwAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 20 Mar 2024 15:05:16 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Markus
+ Armbruster <armbru@redhat.com>, Prasad Pandit <pjp@fedoraproject.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>
+Subject: Re: [PATCH for-9.1 v5 14/14] migration: Modify ram_init_bitmaps()
+ to report dirty tracking errors
+In-Reply-To: <20240320064911.545001-15-clg@redhat.com>
+References: <20240320064911.545001-1-clg@redhat.com>
+ <20240320064911.545001-15-clg@redhat.com>
+Date: Wed, 20 Mar 2024 12:05:14 -0300
+Message-ID: <87edc5lz9x.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240320003223.554145-1-richard.henderson@linaro.org>
-In-Reply-To: <20240320003223.554145-1-richard.henderson@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 20 Mar 2024 15:05:07 +0000
-Message-ID: <CAFEAcA9juruSER3V=u=JUuc7z2Uuc_e0pdk9gbrq7PjscbJB7A@mail.gmail.com>
-Subject: Re: [PULL 0/9] target/hppa fixes for 9.0
-To: Richard Henderson <richard.henderson@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Score: -4.29
+X-Spamd-Result: default: False [-4.29 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-2.99)[99.96%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[9];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,36 +123,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 20 Mar 2024 at 00:33, Richard Henderson
-<richard.henderson@linaro.org> wrote:
->
-> The following changes since commit c62d54d0a8067ffb3d5b909276f7296d7df33fa7:
->
->   Update version for v9.0.0-rc0 release (2024-03-19 19:13:52 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/rth7680/qemu.git tags/pull-pa-20240319
->
-> for you to fetch changes up to 518d2f4300e5c50a3e6416fd46e58373781a5267:
->
->   target/hppa: fix do_stdby_e() (2024-03-19 14:08:02 -1000)
->
-> ----------------------------------------------------------------
-> target/hppa: Fix load/store offset assembly for wide mode
-> target/hppa: Fix LDCW,S shift
-> target/hppa: Fix SHRPD conditions
-> target/hppa: Fix access_id checks
-> target/hppa: Exit TB after Flush Instruction Cache
-> target/hppa: Fix MFIA result
-> target hppa: Fix STDBY,E
->
+C=C3=A9dric Le Goater <clg@redhat.com> writes:
 
+> The .save_setup() handler has now an Error** argument that we can use
+> to propagate errors reported by the .log_global_start() handler. Do
+> that for the RAM. The caller qemu_savevm_state_setup() will store the
+> error under the migration stream for later detection in the migration
+> sequence.
+>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
