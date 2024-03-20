@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503BA881023
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722F4881025
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:43:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmtOm-0006CD-Im; Wed, 20 Mar 2024 06:42:20 -0400
+	id 1rmtOs-0006DH-5A; Wed, 20 Mar 2024 06:42:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOW-00069P-DL
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:42:06 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOW-00069W-N6
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:42:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOU-00073m-VL
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOV-00073r-9z
  for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:42:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1710931322;
@@ -22,33 +22,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o2jVHJU5vYiExdxPV1zFz/jz+Zd76NApu5yKy6lTusE=;
- b=EwKPkAa0mPFGK68IOiwEIPF7siDLNoRNsBXmMblLydvjVAaTyKW32hx2okdl6I6K9Nzln9
- 23uRzzOrfu5QgviQBuAW8j+933o5vHW9hUIkoilE3bQ1NjL/1YaDGF8uoWtey0bodCj73g
- OeR8va5Kb3/6CevAAgi/fIOS2gEIfV0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-dI4spFhfOFWS50RsIUuV2w-1; Wed,
- 20 Mar 2024 06:41:59 -0400
-X-MC-Unique: dI4spFhfOFWS50RsIUuV2w-1
+ bh=wdj3Aeu/rAXpollWbUcToRN3Qzwp1ahBpaF/anjvJ+k=;
+ b=J6E45JG3cYz2yyosbup1WIl3x6D0rH26LmbUZZEPoLkqrC0QSkgxCn7wUhtOF3v9riy09H
+ UXRi5s52brVZR0sHvIY2kULakZQM4chI+ttCyhDctqOarL2vgG3ohWLv4QrPbsgVQ0euGR
+ Z3G5e+fu1gWYbbSvqpR8d7b13+S4w48=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-558-aZGW27j8OamOuBTpNt0zZQ-1; Wed, 20 Mar 2024 06:42:00 -0400
+X-MC-Unique: aZGW27j8OamOuBTpNt0zZQ-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 99D1E1C05145;
- Wed, 20 Mar 2024 10:41:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9EDC1185A781;
+ Wed, 20 Mar 2024 10:42:00 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2B1EA2166B34;
- Wed, 20 Mar 2024 10:41:56 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 326752166B33;
+ Wed, 20 Mar 2024 10:41:58 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: [PATCH 4/6] .travis.yml: Update the jobs to Ubuntu 22.04
-Date: Wed, 20 Mar 2024 11:41:42 +0100
-Message-ID: <20240320104144.823425-5-thuth@redhat.com>
+Subject: [PATCH 5/6] .travis.yml: Remove the unused UNRELIABLE environment
+ variable
+Date: Wed, 20 Mar 2024 11:41:43 +0100
+Message-ID: <20240320104144.823425-6-thuth@redhat.com>
 In-Reply-To: <20240320104144.823425-1-thuth@redhat.com>
 References: <20240320104144.823425-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -79,96 +80,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to our support policy, we'll soon drop our official support
-for Ubuntu 20.04 ("Focal Fossa") in QEMU. Thus we should update the
-Travis jobs now to a newer release (Ubuntu 22.04 - "Jammy Jellyfish")
-for future testing. Since all jobs are using this release now, we
-can drop the entries from the individual jobs and use the global
-setting again.
+This variable was used to allow jobs to fail without spoiling the
+overall result. But the required "allow_failures:" hunk has been
+accidentally removed in commit 9d03f5abed ("travis.yml: Remove the
+"Release tarball" job"), and it was anyway only useful while we
+still had the x86 jobs here around that were our main CI jobs.
+Thus let's simply remove this useless variable now.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .travis.yml | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ .travis.yml | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/.travis.yml b/.travis.yml
-index 8da88c4360..16cf706c07 100644
+index 16cf706c07..7527f71c05 100644
 --- a/.travis.yml
 +++ b/.travis.yml
-@@ -1,5 +1,5 @@
- os: linux
--dist: focal
-+dist: jammy
- language: c
- compiler:
-   - gcc
-@@ -7,7 +7,7 @@ cache:
-   # There is one cache per branch and compiler version.
-   # characteristics of each job are used to identify the cache:
-   # - OS name (currently only linux)
--  # - OS distribution (for Linux, bionic or focal)
-+  # - OS distribution (e.g. "jammy" for Linux)
-   # - Names and values of visible environment variables set in .travis.yml or Settings panel
-   timeout: 1200
-   ccache: true
-@@ -81,7 +81,6 @@ jobs:
- 
-     - name: "[aarch64] GCC check-tcg"
-       arch: arm64
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -117,7 +116,6 @@ jobs:
+@@ -112,7 +112,6 @@ jobs:
+         - TEST_CMD="make check check-tcg V=1"
+         - CONFIG="--disable-containers --enable-fdt=system
+                   --target-list=${MAIN_SYSTEM_TARGETS} --cxx=/bin/false"
+-        - UNRELIABLE=true
  
      - name: "[ppc64] GCC check-tcg"
        arch: ppc64le
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -152,7 +150,6 @@ jobs:
- 
-     - name: "[s390x] GCC check-tcg"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -197,7 +194,6 @@ jobs:
- 
-     - name: "[s390x] GCC (other-system)"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -227,7 +223,6 @@ jobs:
- 
-     - name: "[s390x] GCC (user)"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libgcrypt20-dev
-@@ -242,8 +237,7 @@ jobs:
- 
-     - name: "[s390x] Clang (disable-tcg)"
-       arch: s390x
--      dist: focal
--      compiler: clang-10
-+      compiler: clang
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -269,7 +263,6 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
--          - clang-10
-       env:
+@@ -181,7 +180,6 @@ jobs:
+         - TEST_CMD="make check check-tcg V=1"
+         - CONFIG="--disable-containers
+             --target-list=hppa-softmmu,mips64-softmmu,ppc64-softmmu,riscv64-softmmu,s390x-softmmu,x86_64-softmmu"
+-        - UNRELIABLE=true
+       script:
+         - BUILD_RC=0 && make -j${JOBS} || BUILD_RC=$?
+         - |
+@@ -267,4 +265,3 @@ jobs:
          - TEST_CMD="make check-unit"
          - CONFIG="--disable-containers --disable-tcg --enable-kvm --disable-tools
+                   --enable-fdt=system --host-cc=clang --cxx=clang++"
+-        - UNRELIABLE=true
 -- 
 2.44.0
 
