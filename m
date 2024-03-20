@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BD1880DDA
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:53:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2936880DE3
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:53:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmrh7-0000jq-FC; Wed, 20 Mar 2024 04:53:09 -0400
+	id 1rmrhn-0001vo-69; Wed, 20 Mar 2024 04:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rmrh6-0000jZ-5U
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:53:08 -0400
-Received: from mail-mw2nam10on20600.outbound.protection.outlook.com
- ([2a01:111:f403:2412::600]
- helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ id 1rmrhl-0001vG-6E
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:53:49 -0400
+Received: from mail-bn8nam11on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2414::600]
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rmrh4-0001Ub-GG
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:53:07 -0400
+ id 1rmrhj-0001hV-EV
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:53:48 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MQ6cEHvME7YGx7bYkJeWp9uDOYd/FRldMgrb1Pk/BtO73PsWdh2Iged2j/+7CI1iLUuHEAsMbTkAMX/YIAt0rEd492azOrwevsA/d5TIgGF7kQALH0iiJ/T9Kbo1fxZzHKbv+pFv1p579K5DnlJSqDTfhfYlpynRyYE+lrululWu/gnPqYQaSWaxzgn9dhk/KpKejLFeoXH8dUOU3dBz+mjGkiXbRI4M/r7brsYdIsrobSxGBQUd67yefgSWKeJvmLK1o2zNagLQTAGpReMRVsZdzrNcxTBrzKfVxqniqgUasXoHcMyLTjr/CJdF4JoKMPl+Fxz9CqFysFxAGZ57RQ==
+ b=RL61Kf3hIv5765WCfjCioYH/bQ+OVIfL2FgDaQsOQiIL6GOd6q0Vg7D6OPVrTh3o7aJ0S6Hh/i5TM365mftp7QDYebgXZ6W81LAC08IQ38LAqQQS9MsoXUbuoJhgVMkNC4mf+jQd0ijNioBPMFMybyOTj9uEbdDOnY8VinyeCTVYekiQm+Nf2iGZo+3v6aqU9m4RJ4BYuUR20aB8bvBTmKdzk0czqJVn4kveHcv++vWmiUXPkTGhSnDyVD2/qVy+lOYC3vzRrt/qITIQSEyvXXWt/Zs6++WJoTEGF0+98bjxH5ElzH1Tj8PHq1LQ7R1M61Cr1ku9YOOtZgJdY2l56A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DXZ6Vcykvow/rJgShLM+EiS1n8t73FPvxJCq+B8NpqY=;
- b=cS62bmGVH+KxdayzDzRWhrymYNte2YgTVh+yuR2JprwEAWisROVoUBolj3gErBFXNf/NstROkvA2FYxP0mf39cuQBdu3ccUyiLQQoKQHP/u91P7hnDQVqxmtNfPjLujTvJVNEl60C1xEQRLeBieAH7XFXa071reBtqCrh36wvghDgNJTLpDh5YhhxEbKji0dbfU8OTaUWu8uxRgb9rx0Y5dv9JNsxeHtd76z8EzlOR4cZXnWyJiRg7tjWVvH/Rnkybhf2czLWuT6mOiSw7aogX3B/0/ow8K88a7vihLfphaqA6OwgDpf+EJIAzFP8Ce0XTTDGJqDzUSRhwyaIrdrfg==
+ bh=ZnTjo2V+1LHsI1rt+5gOeerFr+ojKCKSZXbbVpHBn8M=;
+ b=n2Ga9b4H2g47XJcC5UvAqmylYGMxg6mq8ugOstDrarcrzpl1rcQuxMqJX4ggM7zvuzC8Fe2zG0wTaJ6EO/0ETUE3618CFRehDtraZlV5Cp/h/FMakQ0zhlesEGlc7FSE8bHbpo42XtYdo+qU05MJTUYHJvemahvqy/mmO3qZ4+sLuzuF/ZsfpJBzFJzvgyvJzpX3xJDBZdSOVHVVQKNLTab4SYgHer1Uy409mL0fUdSN6Bp/wDY9d0m6P45OfdVqcZ//hdgMonHJl0mVjZ7XMaXI3pLg9NKeDbrP6I1TX1t+VR/2Tv4PMytE4ziI+MEd+5DVzLn96eHLQi5B5dkdYg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DXZ6Vcykvow/rJgShLM+EiS1n8t73FPvxJCq+B8NpqY=;
- b=UJnbGJl6xvJn43o5tU+BPI9oAdkM0Oc9sHXab0n/M4n42HlRrbdepTGQDOnLoIkt6Rzfu/bwexPbRu4dVkd4GRKsdvHVJx8aDXISB6kamdmZS69ze+t5IsY7P0226Bf+8Il9PhXddUgacqOeeJ9Agq9XgZypgcbHV+dQkiMDZJU=
-Received: from BN9PR03CA0056.namprd03.prod.outlook.com (2603:10b6:408:fb::31)
- by DM3PR12MB9349.namprd12.prod.outlook.com (2603:10b6:0:49::12) with
+ bh=ZnTjo2V+1LHsI1rt+5gOeerFr+ojKCKSZXbbVpHBn8M=;
+ b=tx+Y4hbtYePp6or0mSpkcIB0DkoRp8nUd6Yy8pK0+tkPAU/qRynuUorpbFyHFuoGrQlVyRgXloIsdHF7QIfoXJ9tdLZX3pxKgpXjTFPoW07mY28/csqnjHsFy+mpDyAm0juUhxnw8DuQWKKp4noMwHeQ6YR3CkxvqP3/+oNDIxI=
+Received: from BN9PR03CA0207.namprd03.prod.outlook.com (2603:10b6:408:f9::32)
+ by DS0PR12MB7898.namprd12.prod.outlook.com (2603:10b6:8:14c::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.34; Wed, 20 Mar
- 2024 08:53:03 +0000
-Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
- (2603:10b6:408:fb:cafe::15) by BN9PR03CA0056.outlook.office365.com
- (2603:10b6:408:fb::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.28 via Frontend
- Transport; Wed, 20 Mar 2024 08:53:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.30; Wed, 20 Mar
+ 2024 08:53:43 +0000
+Received: from BN1PEPF00004686.namprd03.prod.outlook.com
+ (2603:10b6:408:f9:cafe::c3) by BN9PR03CA0207.outlook.office365.com
+ (2603:10b6:408:f9::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.25 via Frontend
+ Transport; Wed, 20 Mar 2024 08:53:43 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -52,13 +52,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
+ BN1PEPF00004686.mail.protection.outlook.com (10.167.243.91) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 08:53:03 +0000
+ 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 08:53:43 +0000
 Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 03:53:01 -0500
+ 2024 03:53:42 -0500
 From: Michael Roth <michael.roth@amd.com>
 To: <qemu-devel@nongnu.org>
 CC: <kvm@vger.kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, "Paolo
@@ -66,10 +66,10 @@ CC: <kvm@vger.kernel.org>, Tom Lendacky <thomas.lendacky@amd.com>, "Paolo
  <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, Pankaj Gupta
  <pankaj.gupta@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata
  <isaku.yamahata@linux.intel.com>, Brijesh Singh <brijesh.singh@amd.com>
-Subject: [PATCH v3 40/49] hw/i386/sev: Add function to get SEV metadata from
- OVMF header
-Date: Wed, 20 Mar 2024 03:39:36 -0500
-Message-ID: <20240320083945.991426-41-michael.roth@amd.com>
+Subject: [PATCH v3 41/49] i386/sev: Add support for populating OVMF metadata
+ pages
+Date: Wed, 20 Mar 2024 03:39:37 -0500
+Message-ID: <20240320083945.991426-42-michael.roth@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240320083945.991426-1-michael.roth@amd.com>
 References: <20240320083945.991426-1-michael.roth@amd.com>
@@ -81,29 +81,29 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|DM3PR12MB9349:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f738c6a-27d5-4b54-234c-08dc48bb2753
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004686:EE_|DS0PR12MB7898:EE_
+X-MS-Office365-Filtering-Correlation-Id: fc741a56-c424-4c3f-f0c8-08dc48bb3f17
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7ybF6KMqkplJlSZF9pvUfyMEK64ijM8mGTDyMnRKkckrS/xc6jc5MJ4e+iDHU4h65XMAlej9NciI6ZMwW+TAAzEXvFVvzXJLJZw0OgpXnONxEDnmzmtsjLpLfYOLbLrhRcqgc3MVK52pveBIdBnsCi/1bzRjzpbRXOZ5i+BnzDyGRoKX7o0/aATnM1px4XY0DGms1fe0AVAqzIT8O8XWsH+oficjHeFQPm4xxhdIXCDl4HFNwif7v+JYhwxXG0Jky+gnVAj4qsuEP7lMVxBAd4rygNj/70sLeIe+FVoMEVz714VFzSRlW6TShGeRYgmwLunEKd2myzx66biOt7nKGyUxvV49H3kwhR1H4b7f4la5LWTL6wPemwqYbA+i9MQs7nsQ/WzrAu+takHOWv9N2juG+4z5ff6golcn05wjWjyECIMVv2HqSnV1jofZI7A+0+5dYCe5E1YlGNPMODNd/Sbj7Vpeq6fEeTyU7nuhOdwoe9sZqsSCRN+IoGwMjXYv706EDn/3mgo0aAjemtji19SwphhScMKRO7mTBRrZnmW9H3QaDfcnulnoiQW1KzKFMm8TwgjaHKt70mqpTU1RR3fwJI491F/5vVAOVYOxmcXg+Ynz0Y95dhtV/NTxJEnQmBudKdyiHo1c/m/vK0yiXhl1wMQkuEyyAD5mcvHPn8UNrS5hDEx/ghao6x9jxJ8LkAFjpg+grPTQF2SJdEIv9xszYovpdgmwqfti/LbVEhBOngx3Zd0fYFLMSr/sE4jZ
+X-Microsoft-Antispam-Message-Info: fOBNrZJ5dZt4KsZPlb2gXooAcSQTLaXmNtKh14a1NK6VzzUHAQL5kF9Hi4sGwgwb7YtKaYEeX7kSq/9kVcMsiZ8pJ9FQobO1SmaAlPqLLZk1nvhL6l+QlpgqnkSr+GFbj4JhaW/gq5dOMA9pX3xHu+honn2kzAwhLeZFnHqc9ZQhkj7ulZe/EHP47fd0B/tb3L7b7Dg5KIKM2DhXbJOhYCr8S2f9agErfyvINSpAp1v9yjKg+ehl7n2KM69oOHNrR2Z+KHKv8bXHoq5sYSic3wv4HMpvTzCR9vWKjezTM0ci9a73WLGpF8IeIXwuSEHyt7UKXNJ2msh9PMMiCC0O5X4aHEheZYw8fk1/Z4b7L0lGIRV+LbeFcnfqVUkvqm4LpQyKxe5al0GmBGDXna7WR15t2hK7D+zZCvFwOHwQ8kuvvIsaPTgGtVHfKD6Wzbt5yt4plOR7duLYWX7W6ncSdNujgJlzvaeJaTeUoktDAcxuz7vlwEI1+dqUehXOqpIqFrtoepapj6+o3cJL4Bh68IiEsRmJWg92f6+RHqdc8qeB9R8ZwMbIJnEGSg+cm+kI/dZahxaroHoFWH4jEWcNRId8AurnpUuyzGuGUJEDCp9c1frmLwZzgH6j+Kh8t9/JzQpdT5SFiTOnpQflYU/OhUkVbHuXwlQzJIhShNH3FTtxnjb3QWS+GB5beKn1yQyKrbJ94HO6OlZMKKkP56KYRB2hz7Hzyx5qduq6agBMXAySXclAYLa18Md14zSw8V3u
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(1800799015)(82310400014)(36860700004)(376005); DIR:OUT;
+ SFS:(13230031)(82310400014)(36860700004)(1800799015)(376005); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 08:53:03.5143 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f738c6a-27d5-4b54-234c-08dc48bb2753
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 08:53:43.3916 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fc741a56-c424-4c3f-f0c8-08dc48bb3f17
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF0000467F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004686.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR12MB9349
-Received-SPF: permerror client-ip=2a01:111:f403:2412::600;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7898
+Received-SPF: permerror client-ip=2a01:111:f403:2414::600;
  envelope-from=Michael.Roth@amd.com;
- helo=NAM10-MW2-obe.outbound.protection.outlook.com
+ helo=NAM11-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
@@ -128,113 +128,109 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Brijesh Singh <brijesh.singh@amd.com>
 
-A recent version of OVMF expanded the reset vector GUID list to add
-SEV-specific metadata GUID. The SEV metadata describes the reserved
-memory regions such as the secrets and CPUID page used during the SEV-SNP
-guest launch.
-
-The pc_system_get_ovmf_sev_metadata_ptr() is used to retieve the SEV
-metadata pointer from the OVMF GUID list.
+OVMF reserves various pages so they can be pre-initialized/validated
+prior to launching the guest. Add support for populating these pages
+with the expected content.
 
 Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 ---
- hw/i386/pc_sysfw_ovmf.c | 33 +++++++++++++++++++++++++++++++++
- include/hw/i386/pc.h    | 26 ++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+ target/i386/sev.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
 
-diff --git a/hw/i386/pc_sysfw_ovmf.c b/hw/i386/pc_sysfw_ovmf.c
-index 07a4c267fa..32efa34614 100644
---- a/hw/i386/pc_sysfw_ovmf.c
-+++ b/hw/i386/pc_sysfw_ovmf.c
-@@ -35,6 +35,31 @@ static const int bytes_after_table_footer = 32;
- static bool ovmf_flash_parsed;
- static uint8_t *ovmf_table;
- static int ovmf_table_len;
-+static OvmfSevMetadata *ovmf_sev_metadata_table;
-+
-+#define OVMF_SEV_META_DATA_GUID "dc886566-984a-4798-A75e-5585a7bf67cc"
-+typedef struct __attribute__((__packed__)) OvmfSevMetadataOffset {
-+    uint32_t offset;
-+} OvmfSevMetadataOffset;
-+
-+static void pc_system_parse_sev_metadata(uint8_t *flash_ptr, size_t flash_size)
-+{
-+    OvmfSevMetadata     *metadata;
-+    OvmfSevMetadataOffset  *data;
-+
-+    if (!pc_system_ovmf_table_find(OVMF_SEV_META_DATA_GUID, (uint8_t **)&data,
-+                                   NULL)) {
-+        return;
-+    }
-+
-+    metadata = (OvmfSevMetadata *)(flash_ptr + flash_size - data->offset);
-+    if (memcmp(metadata->signature, "ASEV", 4) != 0) {
-+        return;
-+    }
-+
-+    ovmf_sev_metadata_table = g_malloc(metadata->len);
-+    memcpy(ovmf_sev_metadata_table, metadata, metadata->len);
-+}
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index 4d862eef78..6c5166c729 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -949,6 +949,67 @@ sev_launch_finish(SevGuestState *sev_guest)
+     migrate_add_blocker(&sev_mig_blocker, &error_fatal);
+ }
  
- void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size)
++static int
++snp_launch_update_data(uint64_t gpa, void *hva, uint32_t len, int type)
++{
++    SevLaunchUpdateData *data;
++
++    data = g_new0(SevLaunchUpdateData, 1);
++    data->gpa = gpa;
++    data->hva = hva;
++    data->len = len;
++    data->type = type;
++
++    QTAILQ_INSERT_TAIL(&launch_update, data, next);
++
++    return 0;
++}
++
++static int
++snp_metadata_desc_to_page_type(int desc_type)
++{
++    switch(desc_type) {
++    /* Add the umeasured prevalidated pages as a zero page */
++    case SEV_DESC_TYPE_SNP_SEC_MEM: return KVM_SEV_SNP_PAGE_TYPE_ZERO;
++    case SEV_DESC_TYPE_SNP_SECRETS: return KVM_SEV_SNP_PAGE_TYPE_SECRETS;
++    case SEV_DESC_TYPE_CPUID: return KVM_SEV_SNP_PAGE_TYPE_CPUID;
++    default: return -1;
++    }
++}
++
++static void
++snp_populate_metadata_pages(SevSnpGuestState *sev_snp, OvmfSevMetadata *metadata)
++{
++    OvmfSevMetadataDesc *desc;
++    int type, ret, i;
++    void *hva;
++    MemoryRegion *mr = NULL;
++
++    for (i = 0; i < metadata->num_desc; i++) {
++        desc = &metadata->descs[i];
++
++        type = snp_metadata_desc_to_page_type(desc->type);
++        if (type < 0) {
++            error_report("%s: Invalid memory type '%d'\n", __func__, desc->type);
++            exit(1);
++        }
++
++        hva = gpa2hva(&mr, desc->base, desc->len, NULL);
++        if (!hva) {
++            error_report("%s: Failed to get HVA for GPA 0x%x sz 0x%x\n",
++                         __func__, desc->base, desc->len);
++            exit(1);
++        }
++
++        ret = snp_launch_update_data(desc->base, hva, desc->len, type);
++        if (ret) {
++            error_report("%s: Failed to add metadata page gpa 0x%x+%x type %d\n",
++                         __func__, desc->base, desc->len, desc->type);
++            exit(1);
++        }
++    }
++}
++
+ static void
+ sev_snp_launch_finish(SevSnpGuestState *sev_snp)
  {
-@@ -90,6 +115,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size)
-      */
-     memcpy(ovmf_table, ptr - tot_len, tot_len);
-     ovmf_table += tot_len;
-+
-+    /* Copy the SEV metadata table (if exist) */
-+    pc_system_parse_sev_metadata(flash_ptr, flash_size);
- }
+@@ -958,6 +1019,20 @@ sev_snp_launch_finish(SevSnpGuestState *sev_snp)
+     SevLaunchUpdateData *data;
+     struct kvm_sev_snp_launch_finish *finish = &sev_snp->kvm_finish_conf;
  
- /**
-@@ -159,3 +187,8 @@ bool pc_system_ovmf_table_find(const char *entry, uint8_t **data,
-     }
-     return false;
- }
++    /*
++     * To boot the SNP guest, the hypervisor is required to populate the CPUID
++     * and Secrets page before finalizing the launch flow. The location of
++     * the secrets and CPUID page is available through the OVMF metadata GUID.
++     */
++    metadata = pc_system_get_ovmf_sev_metadata_ptr();
++    if (metadata == NULL) {
++        error_report("%s: Failed to locate SEV metadata header\n", __func__);
++        exit(1);
++    }
 +
-+OvmfSevMetadata *pc_system_get_ovmf_sev_metadata_ptr(void)
-+{
-+    return ovmf_sev_metadata_table;
-+}
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index fb1d4106e5..df9a61540d 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -163,6 +163,32 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, int level);
- #define PCI_HOST_ABOVE_4G_MEM_SIZE     "above-4g-mem-size"
- #define PCI_HOST_PROP_SMM_RANGES       "smm-ranges"
- 
-+typedef enum {
-+    SEV_DESC_TYPE_UNDEF,
-+    /* The section contains the region that must be validated by the VMM. */
-+    SEV_DESC_TYPE_SNP_SEC_MEM,
-+    /* The section contains the SNP secrets page */
-+    SEV_DESC_TYPE_SNP_SECRETS,
-+    /* The section contains address that can be used as a CPUID page */
-+    SEV_DESC_TYPE_CPUID,
++    /* Populate all the metadata pages */
++    snp_populate_metadata_pages(sev_snp, metadata);
 +
-+} ovmf_sev_metadata_desc_type;
-+
-+typedef struct __attribute__((__packed__)) OvmfSevMetadataDesc {
-+    uint32_t base;
-+    uint32_t len;
-+    ovmf_sev_metadata_desc_type type;
-+} OvmfSevMetadataDesc;
-+
-+typedef struct __attribute__((__packed__)) OvmfSevMetadata {
-+    uint8_t signature[4];
-+    uint32_t len;
-+    uint32_t version;
-+    uint32_t num_desc;
-+    OvmfSevMetadataDesc descs[];
-+} OvmfSevMetadata;
-+
-+OvmfSevMetadata *pc_system_get_ovmf_sev_metadata_ptr(void);
- 
- void pc_pci_as_mapping_init(MemoryRegion *system_memory,
-                             MemoryRegion *pci_address_space);
+     QTAILQ_FOREACH(data, &launch_update, next) {
+         ret = sev_snp_launch_update(sev_snp, data);
+         if (ret) {
 -- 
 2.25.1
 
