@@ -2,81 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07F8880BA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A21880BB6
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmpwl-0003WD-58; Wed, 20 Mar 2024 03:01:11 -0400
+	id 1rmq4i-0005BT-Le; Wed, 20 Mar 2024 03:09:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rmpwi-0003Vq-DS
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:01:08 -0400
-Received: from mail-yw1-x1133.google.com ([2607:f8b0:4864:20::1133])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rmpwg-0004rl-OH
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:01:08 -0400
-Received: by mail-yw1-x1133.google.com with SMTP id
- 00721157ae682-609ff069a40so75203047b3.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 00:01:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1710918065; x=1711522865; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EgA/RoSDD92C1lm2cc9wCVJeqV18BxuBCchTTG3+6PM=;
- b=d9I8EXz3wy+lduA5lFURAVCy6jSgatBPdO1wM0uP2Sd4aNTgW2dHTvvfMuUoV8sVOQ
- LK7yS9MGFQTStgQ/I7knCHY8egixdtr9SHxoHVhShb+20SPl5HECKn72upn3c5iZDt8W
- K1sfD5DymPRDFjMg6jW5W0U6Wdp2hPpugG77do8mYSjcm0E85jDxNRZBK4SpZoCV+d68
- UscqSYPPJih232y2uh11Rf6MMSketoqCvPh5OSJck4+oVStwmwaol53dgq5+avz6A2oC
- Vy8IGyWUswcnNDr1nxvrB6vTmYpHpRcPgyB3yYUCilK3fbzf952JujCSZjmM6tXv849V
- lLnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710918065; x=1711522865;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EgA/RoSDD92C1lm2cc9wCVJeqV18BxuBCchTTG3+6PM=;
- b=KxyUfMfS3JkqkOZD/NqZz33z3aOfe3vvAVXbQilzhVxvLtp7IqqvUmjHPP47JdCDrR
- 7k6Ff9OPcjn7g13BqnUSkoY5C8aqM6PFpI/R5pcLSKQlTpIOwRToV/2unbhX7CZlxfiw
- jZLjcANYD+Fvvb2xr+y64Xs3/6IXn3k/wZJi0P7D1Gvq5W+FjXk4TKnVSxuZL6TVOtLq
- zyJ5C4KUZ/26d3WKqUAd/t1PS6ABnUMkkaO+MZ8G+SLu2JDii+QsHlaiIcO/n3AC454S
- ulAMs+Gf3eg4pfcenhXKaRbGkT6Rs1RKbDls5YAbQY58WIImWqQkmPiAIK2IoiMsfRGQ
- 2/Qg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUJj79GgiSxf3P+BqBdkL9GXZNb5VnsKCL65QCLoPIwpO1J46JxnJn6nSNgyloIjfHPI6bw5BfaeaHcDVXHZh6XaVSsDlA=
-X-Gm-Message-State: AOJu0YxzbXS8QJk5pOfcXWL8XlgdqxWWV7fUTsGUJR8K6MovnMuN1gT5
- jN0m7lSHIEB3gYmVTLnQkHla2CnU8Q0bHNYerSHuRP9YbGlsO0gp/5fGuEAfMqHZRxQdxX+cG2J
- YRMhFEJxx+ts3DDGJgdT0rKXXWW0=
-X-Google-Smtp-Source: AGHT+IGPkW6aawy8sDp2+LJxXNWfx2nceXrO0aNIF20/NYqbrhzb1Yq2UqGqilD1+MRbSmewXgM1/gVFTOlJa3Kt5Sc=
-X-Received: by 2002:a25:a3a2:0:b0:dcc:4b84:67cd with SMTP id
- e31-20020a25a3a2000000b00dcc4b8467cdmr10795262ybi.9.1710918065503; Wed, 20
- Mar 2024 00:01:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4d-0005Ay-SA
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4c-000736-5a
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710918557;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=QewaxpjhlPhqABmE4vjjO119Hp2LR1bEu5oVOQyA9aI=;
+ b=JytaDbAqBESKeOVi5aKIg5iX2h/AZvXgtek0pVre59DtyjonFLgvdzCqPakU0IMYjdo9U2
+ PYdOU6ERJjbXnJAlMrFcEUD0D5qplFtLPF8LHj8RToQew8wJqqSR4AWATwjyNRD+ViYP71
+ vjfajsKZjIpHaKVv/h9jxqsblz3LD7A=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-SyskY3eFMfm4UaeDli1pjg-1; Wed, 20 Mar 2024 03:09:13 -0400
+X-MC-Unique: SyskY3eFMfm4UaeDli1pjg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0464E89F9ED;
+ Wed, 20 Mar 2024 07:09:13 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.134])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9AE203C21;
+ Wed, 20 Mar 2024 07:09:12 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 8B4891800D4F; Wed, 20 Mar 2024 08:08:51 +0100 (CET)
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PULL 0/5] Edk2 20240320 patches
+Date: Wed, 20 Mar 2024 08:08:43 +0100
+Message-ID: <20240320070851.18933-1-kraxel@redhat.com>
 MIME-Version: 1.0
-References: <20240319-console-v2-0-3fd6feef321a@daynix.com>
- <CAJ+F1CKOuZR5nZxcxRzZyoE56p_nNW11cySEmnFvRgiPv5OAdw@mail.gmail.com>
- <5b8160c8-6774-47b3-a495-f7dc64ebd28d@daynix.com>
-In-Reply-To: <5b8160c8-6774-47b3-a495-f7dc64ebd28d@daynix.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Wed, 20 Mar 2024 11:00:54 +0400
-Message-ID: <CAJ+F1CLP_LNwWQ_4M2w7cVK-DSBy6+92SY5m37fUnZMXN6oBaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] ui/console: Remove console_select()
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1133;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1133.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,63 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+The following changes since commit ba49d760eb04630e7b15f423ebecf6c871b8f77b:
 
-On Wed, Mar 20, 2024 at 7:20=E2=80=AFAM Akihiko Odaki <akihiko.odaki@daynix=
-.com> wrote:
->
-> On 2024/03/19 17:29, Marc-Andr=C3=A9 Lureau wrote:
-> > Hi Akihiko
-> >
-> > On Tue, Mar 19, 2024 at 7:09=E2=80=AFAM Akihiko Odaki <akihiko.odaki@da=
-ynix.com> wrote:
-> >>
-> >> ui/console has a concept of "active" console; the active console is us=
-ed
-> >> when NULL is set for DisplayListener::con, and console_select() update=
-s
-> >> the active console state. However, the global nature of the state caus=
-e
-> >> odd behaviors, and replacing NULL with the active console also resulte=
-d
-> >> in extra code. Remove it to solve these problems.
-> >>
-> >> The active console state is shared, so if there are two displays
-> >> referring to the active console, switching the console for one will al=
-so
-> >> affect the other. All displays that use the active console state,
-> >> namely cocoa, curses, and vnc, need to reset some of its state before
-> >> switching the console, and such a reset operation cannot be performed =
-if
-> >> the console is switched by another display. This can result in stuck
-> >> keys, for example.
-> >>
-> >> While the active console state is shared, displays other than cocoa,
-> >> curses, and vnc don't update the state. A chardev-vc inherits the
-> >> size of the active console, but it does not make sense for such a
-> >> display.
-> >>
-> >> This series removes the shared "active" console state from ui/console.
-> >> curses, cocoa, and vnc will hold the reference to the console currentl=
-y
-> >> shown with DisplayListener::con. This also eliminates the need to
-> >> replace NULL with the active console and save code.
-> >>
-> >> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> >
-> > lgtm
-> > Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > I am willing to take that for 9.0. Is there any bug already opened
-> > about the issues it solves?
->
-> No, I'm not aware of one.
+  Merge tag 'pull-maintainer-final-130324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-13 15:12:14 +0000)
 
-The first patch "Do not inherit the size of active console" is not
-directly related and may not be suitable for merge during freeze. Are
-you ok with merging the rest for 9.0 or delay it for 9.1?
+are available in the Git repository at:
 
+  https://gitlab.com/kraxel/qemu.git tags/edk2-20240320-pull-request
 
---=20
-Marc-Andr=C3=A9 Lureau
+for you to fetch changes up to 4a1babe58a1b3cd2c493ee6e0d774e70f62ad9c3:
+
+  update edk2 binaries for arm, risc-v and x86 secure boot. (2024-03-19 16:42:10 +0100)
+
+----------------------------------------------------------------
+edk2: cleanup fix, update build config, rebuild binaries.
+
+----------------------------------------------------------------
+
+Gerd Hoffmann (5):
+  roms/efi: clean up edk2 build config
+  roms/efi: drop workaround for edk2-stable202308
+  roms/efi: exclude efi shell from secure boot builds
+  roms/efi: use pure 64-bit build for edk2-x86_64-secure-code.fd
+  update edk2 binaries for arm, risc-v and x86 secure boot.
+
+ pc-bios/edk2-aarch64-code.fd.bz2     | Bin 1589320 -> 1589310 bytes
+ pc-bios/edk2-arm-code.fd.bz2         | Bin 1571418 -> 1571693 bytes
+ pc-bios/edk2-i386-secure-code.fd.bz2 | Bin 2130741 -> 1876986 bytes
+ pc-bios/edk2-riscv-code.fd.bz2       | Bin 1345420 -> 1289160 bytes
+ roms/Makefile                        |   1 +
+ roms/edk2-build.config               |  13 ++++---------
+ 6 files changed, 5 insertions(+), 9 deletions(-)
+
+-- 
+2.44.0
+
 
