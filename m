@@ -2,66 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEC78818CD
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 21:53:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 401D58818D8
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 21:55:18 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn2us-0006qJ-16; Wed, 20 Mar 2024 16:52:06 -0400
+	id 1rn2xd-00018X-NM; Wed, 20 Mar 2024 16:54:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rn2up-0006pc-R7
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:52:03 -0400
-Received: from mgamail.intel.com ([198.175.65.11])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rn2xb-00018N-VL
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:54:56 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rn2uo-0004VV-1J
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:52:03 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rn2xY-0004oG-EZ
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:54:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710967922; x=1742503922;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=L3vTPYUk5DmYw8gzl3iAc70BwhOAQ4bK8DaLyOprJrQ=;
- b=nH4MRn6x+X3ERTnC5SEd3fXQoTXpeCPEgpog74ifBG5mI9j0W7xMMey3
- I3XL74SZOabtIANTm1bWCuwXQIPqqtIzv0aRRp4UHJ9AjWmEyGb7Bs7Si
- 4nuBjU9KXIEoHYJ0UdXdrXKPurpDrPSNi2JbX9Tn3ch2dWA2SGJGdaRH1
- LXa1v3OP00Tvqmkk7lS5usmpLI+quJnQ+aqyz2Qh4J1iXziUd23+T+Vm5
- v/Wqxq+CF5u22vqSsdwWOuuUmSPy5kLURNZ6k8tRSU5iuKb7xxRolaRtX
- z0I5uGDKhOFqPyI0MWkZ3dHvvxHsMkm+RF1aXJjJRP1ShnA85WXQIbSyw A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="16463570"
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="16463570"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 13:51:55 -0700
+ t=1710968092; x=1742504092;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=z+uhnrXGcV33J9cLFUCMuRjcEsixfuEkrkh6l1QzBWA=;
+ b=cYQVu/MKA6h8aNl+/jvHUH6OUAiruEDNBv69BEsXezfYLyJ4sv6LAQ5L
+ pDgmm37JCTAkpGZzp55Dd2zukkBJARTjyBhpitmveS0QsCMdti9L+QTCD
+ UyqS4f6qEcE93Bs4xdocLHJyaYlsf7fsROP/saIfNb2KNMZYyjCFVO+P4
+ 3NkODtXcUS1vSEG8EUriSA9sbt4fXHKMnimsRJVCFCR0cbYp6pe2CkK3M
+ /pw4q2N+RJyI0GGHFpndhSRRmX55j9ZAMlw/C4+NPNL+dnrpx2v6sStuf
+ iAR/oDa1mMELOmhrx2KZUYw00/I521vefGueyKUUeeyu8dPZuDg3AsdDp g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="6052207"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="6052207"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 13:54:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="14679718"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by orviesa007.jf.intel.com with ESMTP; 20 Mar 2024 13:51:55 -0700
-From: dongwon.kim@intel.com
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org,
-	marcandre.lureau@redhat.com
-Subject: [PATCH 3/3] ui/console: add methods for allocating,
- intializing and accessing QemuDmaBuf
-Date: Wed, 20 Mar 2024 13:50:18 -0700
-Message-Id: <20240320205018.3351984-4-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320205018.3351984-1-dongwon.kim@intel.com>
-References: <20240320205018.3351984-1-dongwon.kim@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; d="scan'208";a="14929346"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 13:54:48 -0700
+Message-ID: <5c9ee0e8-efbb-48bb-ad8b-804cf80e3bf8@intel.com>
+Date: Thu, 21 Mar 2024 04:54:45 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v3 00/49] Add AMD Secure Nested Paging (SEV-SNP)
+ support
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Michael Roth <michael.roth@amd.com>, 
+ qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Isaku Yamahata <isaku.yamahata@linux.intel.com>
+References: <20240320083945.991426-1-michael.roth@amd.com>
+ <eea690c2-7d2f-4a35-b5c3-078c12ef228b@redhat.com>
+ <CABgObfYzNksaaHgZ5kozXohwWWyDgfw3ue2juEbZmVteb5Trqw@mail.gmail.com>
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <CABgObfYzNksaaHgZ5kozXohwWWyDgfw3ue2juEbZmVteb5Trqw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=198.175.65.11; envelope-from=dongwon.kim@intel.com;
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,124 +87,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+On 3/21/2024 1:08 AM, Paolo Bonzini wrote:
+> On Wed, Mar 20, 2024 at 10:59 AM Paolo Bonzini <pbonzini@redhat.com> wrote:
+>> I will now focus on reviewing patches 6-20.  This way we can prepare a
+>> common tree for SEV_INIT2/SNP/TDX, for both vendors to build upon.
+> 
+> Ok, the attachment is the delta that I have. The only major change is
+> requiring discard (thus effectively blocking VFIO support for
+> SEV-SNP/TDX, at least for now).
+> 
+> I will push it shortly to the same sevinit2 branch, and will post the
+> patches sometime soon.
+> 
+> Xiaoyao, you can use that branch too (it's on
+> https://gitlab.com/bonzini/qemu) as the basis for your TDX work.
 
-This commit introduces new methods within ui/console to handle the allocation,
-initialization, and field retrieval of QemuDmaBuf. By isolating these
-operations within ui/console, it enhances safety and encapsulation of
-the struct.
+Sure, it's really a good news for us.
 
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
----
- include/ui/console.h | 10 ++++++++
- ui/console.c         | 55 ++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 65 insertions(+)
+BTW, there are some minor comments on guest_memfd patches of my v5 
+post[*]. Could you please resolve them it your branch?
 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 0bc7a00ac0..70903f1b0d 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -279,6 +279,7 @@ typedef struct DisplayChangeListenerOps {
-     /* optional */
-     void (*dpy_gl_cursor_position)(DisplayChangeListener *dcl,
-                                    uint32_t pos_x, uint32_t pos_y);
-+
-     /* optional */
-     void (*dpy_gl_release_dmabuf)(DisplayChangeListener *dcl,
-                                   QemuDmaBuf *dmabuf);
-@@ -358,6 +359,15 @@ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
-                           bool have_hot, uint32_t hot_x, uint32_t hot_y);
- void dpy_gl_cursor_position(QemuConsole *con,
-                             uint32_t pos_x, uint32_t pos_y);
-+QemuDmaBuf *dpy_gl_create_dmabuf(uint32_t width, uint32_t height,
-+                                 uint32_t stride, uint32_t x,
-+                                 uint32_t y, uint32_t backing_width,
-+                                 uint32_t backing_height, uint32_t fourcc,
-+                                 uint32_t modifier, uint32_t dmabuf_fd,
-+                                 bool allow_fences);
-+uint32_t dpy_gl_dmabuf_get_width(QemuDmaBuf *dmabuf);
-+uint32_t dpy_gl_dmabuf_get_height(QemuDmaBuf *dmabuf);
-+int32_t dpy_gl_dmabuf_get_fd(QemuDmaBuf *dmabuf);
- void dpy_gl_release_dmabuf(QemuConsole *con,
-                            QemuDmaBuf *dmabuf);
- void dpy_gl_update(QemuConsole *con,
-diff --git a/ui/console.c b/ui/console.c
-index 43226c5c14..bac24756f0 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1132,6 +1132,60 @@ void dpy_gl_cursor_position(QemuConsole *con,
-     }
- }
- 
-+QemuDmaBuf *dpy_gl_create_dmabuf(uint32_t width, uint32_t height,
-+                                 uint32_t stride, uint32_t x,
-+                                 uint32_t y, uint32_t backing_width,
-+                                 uint32_t backing_height, uint32_t fourcc,
-+                                 uint32_t modifier, uint32_t dmabuf_fd,
-+                                 bool allow_fences)
-+{
-+    QemuDmaBuf *dmabuf;
-+
-+    dmabuf = g_new0(QemuDmaBuf, 1);
-+
-+    dmabuf->width = width;
-+    dmabuf->height = height;
-+    dmabuf->stride = stride;
-+    dmabuf->x = x;
-+    dmabuf->y = y;
-+    dmabuf->backing_width = backing_width;
-+    dmabuf->backing_height = backing_height;
-+    dmabuf->fourcc = fourcc;
-+    dmabuf->modifier = modifier;
-+    dmabuf->fd = dmabuf_fd;
-+    dmabuf->allow_fences = allow_fences;
-+    dmabuf->fence_fd = -1;
-+
-+    return dmabuf;
-+}
-+
-+uint32_t dpy_gl_dmabuf_get_width(QemuDmaBuf *dmabuf)
-+{
-+    if (dmabuf) {
-+        return dmabuf->width;
-+    }
-+
-+    return 0;
-+}
-+
-+uint32_t dpy_gl_dmabuf_get_height(QemuDmaBuf *dmabuf)
-+{
-+    if (dmabuf) {
-+        return dmabuf->height;
-+    }
-+
-+    return 0;
-+}
-+
-+int32_t dpy_gl_dmabuf_get_fd(QemuDmaBuf *dmabuf)
-+{
-+    if (dmabuf) {
-+        return dmabuf->fd;
-+    }
-+
-+    return -1;
-+}
-+
- void dpy_gl_release_dmabuf(QemuConsole *con,
-                           QemuDmaBuf *dmabuf)
- {
-@@ -1145,6 +1199,7 @@ void dpy_gl_release_dmabuf(QemuConsole *con,
-         if (dcl->ops->dpy_gl_release_dmabuf) {
-             dcl->ops->dpy_gl_release_dmabuf(dcl, dmabuf);
-         }
-+        g_free(dmabuf);
-     }
- }
- 
--- 
-2.34.1
+[*] 
+https://lore.kernel.org/qemu-devel/20240229063726.610065-1-xiaoyao.li@intel.com/
+
+> Paolo
 
 
