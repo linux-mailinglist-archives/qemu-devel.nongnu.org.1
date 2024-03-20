@@ -2,69 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9AE880AF4
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6E6880B0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:11:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmp2S-00078e-CH; Wed, 20 Mar 2024 02:03:00 -0400
+	id 1rmpA7-0000GO-Kq; Wed, 20 Mar 2024 02:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmp2Q-00078V-8O
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:02:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmp2O-0004sm-MH
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:02:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710914575;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=28pBd+RMF6K0pUYfLahAeinJQgMP9VwJN/XQC/rFAjM=;
- b=GV9msLAdYOpEWtfBUnCn/iy0E55p/BupGhob9/xQ51EKxL35AVmZqWvYzzgM0XC27wD5is
- 9ksQjcPoNpEuScgJMTWVrUq5RTs12JZKIfw5+UNWeErM+aq4F5/WJGjVFBZ0AY6qUvkO1k
- ZU/8EXAS8LPIhJhc9m06/Hdjmy+v70U=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-eY1aS5qAMfexX5uqDymBTw-1; Wed,
- 20 Mar 2024 02:02:52 -0400
-X-MC-Unique: eY1aS5qAMfexX5uqDymBTw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F31703C0245B;
- Wed, 20 Mar 2024 06:02:51 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id ABAEEC04220;
- Wed, 20 Mar 2024 06:02:51 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AC4A721E6A28; Wed, 20 Mar 2024 07:02:46 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: Tao Su <tao1.su@linux.intel.com>
-Cc: qemu-devel@nongnu.org,  pbonzini@redhat.com,  xiaoyao.li@intel.com,
- alex.bennee@linaro.org
-Subject: Re: [PATCH] target/i386: Check NULL monitor pointer when injecting MCE
-In-Reply-To: <20240320052118.520378-1-tao1.su@linux.intel.com> (Tao Su's
- message of "Wed, 20 Mar 2024 13:21:18 +0800")
-References: <20240320052118.520378-1-tao1.su@linux.intel.com>
-Date: Wed, 20 Mar 2024 07:02:46 +0100
-Message-ID: <87le6dwid5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rmpA3-0000Fy-Op
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:10:52 -0400
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rmpA1-0006R2-Ip
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:10:51 -0400
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-789e5021703so261748485a.0
+ for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 23:10:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1710915045; x=1711519845; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xCZgkB2SZu0i/tSjRR46WOtj0M+sNHf+HRU976J1PX4=;
+ b=k6gTqRoZcj9LplZrxV7jAfQpFolGVsgTOAve3LQtRRR89i+IJhT6smzxFgJ6k0O3N7
+ CXNUQ8kd/kTj49MsJf+s9lV9B2X4KL2GHcWxLSDmdHpvM16gvVZEUEjfKfEzqQE4/JWn
+ aQYayVSz4Q5pYNdpiR2fKAHUMeTPDuw7vCfj0aDb2PhRTbwCjgPNgb/Z5tKY4Vz+WAZJ
+ YbigYcaHe6/WoAsaKoA/hA0zGetUcN79mgf7gxVRAmJQAxlbglEP4EFKX0UnXwXU2Ij1
+ FXM7vYi2dpcIDfhEyABrvrWssHSQ3doXAdAopOKVh/7M/M7H3jvCw9odYYNoqzuQ26BR
+ MXOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710915045; x=1711519845;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xCZgkB2SZu0i/tSjRR46WOtj0M+sNHf+HRU976J1PX4=;
+ b=nN3xrg9AkBNMXI6oDRZdouv7blFnyc0qWSoQKyLp5OL8pL4f0OMeudn8Rv+G/D9sX4
+ 3Sc3AKdsGWHqm+45tq4ii+pZeqHUTFRkpThO1InMYqYSa4E87Iq3yFmwLdtDEnpBmx73
+ 9Elk5+gmEJ4+lsCA8Rkvbg343SqgDmXWfMZ3JxC0Al5+e3MmXO6bTQrDZ8y2znDqHib1
+ EHcq76I+p1zSoRJ3GYIj+fQ+LKIhg6h14Y0Vxv5dnLmrdWTJctfRYSqmlEcctJMJOd7m
+ Q53xwOniRW/uz/pGDJM2G6au6jZ33iuk2OiMjWg5wkSs8UoHOe86A1Rli4EXiq4W2GN4
+ x76g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUrol8ZU2i1wz5f04cpRG9jiQJO3AxFp5mGj9P4ceyh2JJaWCTz6y00wHeRtsPv2/imzkZ6qSUn8UO/EVLUHkbu3zYaBYM=
+X-Gm-Message-State: AOJu0YzYt6g8dbV5QIENmAugHll5BUHRAxGBBSl6oj9Ieu8Z2oegW7PZ
+ /5sVIXzWZFN4wivVWBuKLdni5xGPkQBInKD8fD9cC7XcO9kyuxfu095Ir9/FtGQ=
+X-Google-Smtp-Source: AGHT+IFa111kisVq1eXAsilnKhEWjB1FxneYVefed7MzhMngJVWVGZbwSa2ElD7e4aapqGZS/vkJjQ==
+X-Received: by 2002:a05:620a:5d8b:b0:78a:1c41:ac4e with SMTP id
+ xx11-20020a05620a5d8b00b0078a1c41ac4emr2285040qkn.5.1710915045498; 
+ Tue, 19 Mar 2024 23:10:45 -0700 (PDT)
+Received: from n231-228-171.byted.org ([130.44.215.123])
+ by smtp.gmail.com with ESMTPSA id
+ r15-20020a05620a03cf00b0078a042376absm2295914qkm.22.2024.03.19.23.10.44
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 19 Mar 2024 23:10:45 -0700 (PDT)
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Huang, Ying" <ying.huang@intel.com>,
+ "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
+ "Eishan Mirakhur" <emirakhur@micron.com>,
+ "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
+ "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH v3 0/2] Improved Memory Tier Creation for CPUless NUMA Nodes
+Date: Wed, 20 Mar 2024 06:10:38 +0000
+Message-Id: <20240320061041.3246828-1-horenchuang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=horenchuang@bytedance.com; helo=mail-qk1-x733.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,44 +103,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tao Su <tao1.su@linux.intel.com> writes:
+When a memory device, such as CXL1.1 type3 memory, is emulated as
+normal memory (E820_TYPE_RAM), the memory device is indistinguishable
+from normal DRAM in terms of memory tiering with the current implementation.
+The current memory tiering assigns all detected normal memory nodes
+to the same DRAM tier. This results in normal memory devices with
+different attributions being unable to be assigned to the correct memory tier,
+leading to the inability to migrate pages between different types of memory.
+https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
 
-> monitor_puts() doesn't check the monitor pointer, but do_inject_x86_mce()
-> may have a parameter with NULL monitor pointer. Check the monitor pointer
-> before calling monitor_puts().
->
-> Fixes: bf0c50d4aa85 (monitor: expose monitor_puts to rest of code)
-> Reviwed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-> Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-> ---
->  target/i386/helper.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/target/i386/helper.c b/target/i386/helper.c
-> index 2070dd0dda..a9ff830a17 100644
-> --- a/target/i386/helper.c
-> +++ b/target/i386/helper.c
-> @@ -430,7 +430,8 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
->          if (need_reset) {
->              emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
->                                        recursive);
-> -            monitor_puts(params->mon, msg);
-> +            if (params->mon)
-> +                monitor_puts(params->mon, msg);
->              qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
->              qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
->              return;
+This patchset automatically resolves the issues. It delays the initialization
+of memory tiers for CPUless NUMA nodes until they obtain HMAT information
+and after all devices are initialized at boot time, eliminating the need
+for user intervention. If no HMAT is specified, it falls back to
+using `default_dram_type`.
 
-Could instead revert the broken part of commit bf0c50d4aa85:
+Example usecase:
+We have CXL memory on the host, and we create VMs with a new system memory
+device backed by host CXL memory. We inject CXL memory performance attributes
+through QEMU, and the guest now sees memory nodes with performance attributes
+in HMAT. With this change, we enable the guest kernel to construct
+the correct memory tiering for the memory nodes.
 
-  -            monitor_puts(params->mon, msg);
-  +            monitor_printf(params->mon, "%s", msg);
-               qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+-v3:
+ Thanks to Ying's comments,
+ * Make the newly added code independent of HMAT
+ * Upgrade set_node_memory_tier to support more cases
+ * Put all non-driver-initialized memory types into default_memory_types
+   instead of using hmat_memory_types
+ * find_alloc_memory_type -> mt_find_alloc_memory_type
+-v2:
+ Thanks to Ying's comments,
+ * Rewrite cover letter & patch description
+ * Rename functions, don't use _hmat
+ * Abstract common functions into find_alloc_memory_type()
+ * Use the expected way to use set_node_memory_tier instead of modifying it
+ * https://lore.kernel.org/lkml/20240312061729.1997111-1-horenchuang@bytedance.com/T/#u
+-v1:
+ * https://lore.kernel.org/lkml/20240301082248.3456086-1-horenchuang@bytedance.com/T/#u
 
-Then the fact that we send the same message to monitor and log is again
-more obvious.
+Ho-Ren (Jack) Chuang (2):
+  memory tier: dax/kmem: create CPUless memory tiers after obtaining
+    HMAT info
+  memory tier: dax/kmem: abstract memory types put
 
-Either way:
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+ drivers/dax/kmem.c           |  20 +------
+ include/linux/memory-tiers.h |  13 +++++
+ mm/memory-tiers.c            | 106 ++++++++++++++++++++++++++++++++---
+ 3 files changed, 114 insertions(+), 25 deletions(-)
+
+-- 
+Ho-Ren (Jack) Chuang
 
 
