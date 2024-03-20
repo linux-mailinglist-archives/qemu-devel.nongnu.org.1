@@ -2,74 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42C38811BC
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 13:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CA88811CE
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 13:45:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmvAc-0007ZA-6U; Wed, 20 Mar 2024 08:35:50 -0400
+	id 1rmvIY-0001x4-8E; Wed, 20 Mar 2024 08:44:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmvAY-0007Xa-74
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 08:35:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rmvIV-0001wh-Ot
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 08:43:59 -0400
+Received: from mgamail.intel.com ([198.175.65.18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rmvAR-00064t-Hj
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 08:35:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710938138;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=K5bhn2dwTvZHL2QD2WfC2AZX9DEbxPOtGZ1fjXI2/e8=;
- b=Ib2Z/ixCiWMDIBcRmCL1Aoca+rTCJgorH5PyTZpbXjfXXCBL+xlfYV9f7XPqjhdnzAZ33L
- XOckMGkFg3ulsiz9rT359ql7ukcSzv3uRn5WY8LSBQ5e/g5VxgiMBKUjDjfCEcj+B+OamN
- R9cg0Qgly7+BY/GGy/kPx4VPgRB1RyE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-OTNDOuB8PoG4MEsZYgcqHQ-1; Wed, 20 Mar 2024 08:35:34 -0400
-X-MC-Unique: OTNDOuB8PoG4MEsZYgcqHQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F237885A58B;
- Wed, 20 Mar 2024 12:35:33 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.205])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 14E7640C6CB3;
- Wed, 20 Mar 2024 12:35:31 +0000 (UTC)
-Date: Wed, 20 Mar 2024 12:35:09 +0000
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Pankaj Gupta <pankaj.gupta@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Isaku Yamahata <isaku.yamahata@linux.intel.com>
-Subject: Re: [PATCH v3 23/49] i386/sev: Add a sev_snp_enabled() helper
-Message-ID: <ZfrX_SkgXPF1FbCp@redhat.com>
-References: <20240320083945.991426-1-michael.roth@amd.com>
- <20240320083945.991426-24-michael.roth@amd.com>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rmvIU-0008Ep-07
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 08:43:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1710938639; x=1742474639;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=WQRuq3hosaq8AklV8ipALSq5HIOOVOi9Ij25lva5twA=;
+ b=m0ItuainDzmvO+AofIIbVVIhczw1lN0o9bS0rpHTMmgxd4Am1I6FkdKT
+ 9o82ilJ3+vBZdYKe6ZbWZFkP8oX68ieKM/f185puxs4FvhctLscgp9hEo
+ hqnQTbjvUZmI3mTE5bgAa77y7sbsZS8pwGASEv7EyZcSBSdGz0jGe/yxw
+ Cm1CUqeo7qrzO31Jn8GG+P2622ixFz2slTRUII2WVliosOI8Z6/ibjGD+
+ BOj0M0vx8m/g5nbLuIe8GWreF+JvrfVHbyJhbRxQvcDhIFlLeL+kn7FeN
+ 2cDA2VQFrGYdwCn9sudDfaUsVY+BZtvOo19MepjPy6AXVI3PQOezLFXno A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="5980111"
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
+   d="scan'208";a="5980111"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 05:43:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; d="scan'208";a="14119340"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Mar 2024 05:43:50 -0700
+Message-ID: <8498f23d-0e11-46a6-8519-fc3261457ec3@intel.com>
+Date: Wed, 20 Mar 2024 20:43:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240320083945.991426-24-michael.roth@amd.com>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 11/49] physmem: Introduce
+ ram_block_discard_guest_memfd_range()
+To: David Hildenbrand <david@redhat.com>, Michael Roth
+ <michael.roth@amd.com>, qemu-devel@nongnu.org
+Cc: kvm@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
+ Isaku Yamahata <isaku.yamahata@linux.intel.com>
+References: <20240320083945.991426-1-michael.roth@amd.com>
+ <20240320083945.991426-12-michael.roth@amd.com>
+ <750e7d5c-cc8b-4794-a7ef-b104c28729fa@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <750e7d5c-cc8b-4794-a7ef-b104c28729fa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=198.175.65.18; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,51 +85,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 20, 2024 at 03:39:19AM -0500, Michael Roth wrote:
-> Add a simple helper to check if the current guest type is SNP. Also have
-> SNP-enabled imply that SEV-ES is enabled as well, and fix up any places
-> where the sev_es_enabled() check is expecting a pure/non-SNP guest.
+On 3/20/2024 5:37 PM, David Hildenbrand wrote:
+> On 20.03.24 09:39, Michael Roth wrote:
+>> From: Xiaoyao Li <xiaoyao.li@intel.com>
+>>
+>> When memory page is converted from private to shared, the original
+>> private memory is back'ed by guest_memfd. Introduce
+>> ram_block_discard_guest_memfd_range() for discarding memory in
+>> guest_memfd.
+>>
+>> Originally-from: Isaku Yamahata <isaku.yamahata@intel.com>
+>> Codeveloped-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > 
-> Signed-off-by: Michael Roth <michael.roth@amd.com>
-> ---
->  target/i386/sev.c | 13 ++++++++++++-
->  target/i386/sev.h |  2 ++
->  2 files changed, 14 insertions(+), 1 deletion(-)
+> "Co-developed-by"
+
+Michael is using the patch from my TDX-QEMU v5 series[1]. I need to fix it.
+
+>> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+>> Reviewed-by: David Hildenbrand <david@redhat.com>
 > 
-> diff --git a/target/i386/sev.c b/target/i386/sev.c
-> index 7e6dab642a..2eb13ba639 100644
-> --- a/target/i386/sev.c
-> +++ b/target/i386/sev.c
+> Your SOB should go here.
+> 
+>> ---
+>> Changes in v5:
+>> - Collect Reviewed-by from David;
+>>
+>> Changes in in v4:
+>> - Drop ram_block_convert_range() and open code its implementation in the
+>>    next Patch.
+>>
+>> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> 
+> I only received 3 patches from this series, and now I am confused: 
+> changelog talks about v5 and this is "PATCH v3"
+
+As above, because the guest_memfd patches in my TDX-QEMU v5[1] were 
+directly picked for this series, so the change history says v5. They are 
+needed by SEV-SNP as well.
+
+I want to raise the question, how do we want to proceed with the guest 
+memfd patches (patch 2 to 10 in [1])? Can they be merged separately 
+before TDX/SNP patches?
+
+> Please make sure to send at least the cover letter along (I might not 
+> need the other 46 patches :D ).
+> 
 
 
-> @@ -933,7 +942,9 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
->                           __func__);
->              goto err;
->          }
-> +    }
->  
-> +    if (sev_es_enabled() && !sev_snp_enabled()) {
->          if (!(status.flags & SEV_STATUS_FLAGS_CONFIG_ES)) {
->              error_report("%s: guest policy requires SEV-ES, but "
->                           "host SEV-ES support unavailable",
-
-Opps, pre-existing bug here - this method has an 'Error **errp'
-parameter, so should be using 'error_report'.
-
-There are several more examples of this in this method that
-predate your patch series.  Can you put a patch at the start
-of this series that fixes them before introducing SNP.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+[1] 
+https://lore.kernel.org/qemu-devel/20240229063726.610065-1-xiaoyao.li@intel.com/
 
