@@ -2,84 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D7E881881
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 21:19:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB8A881884
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 21:21:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn2OA-0005x1-8Z; Wed, 20 Mar 2024 16:18:18 -0400
+	id 1rn2Qz-00076z-8n; Wed, 20 Mar 2024 16:21:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rn2O8-0005wh-Ge
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:18:16 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rn2O7-00070o-00
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:18:16 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5dbf7b74402so183402a12.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 13:18:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1710965893; x=1711570693; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0g2ewkBwGtZphnyaMlw+pjLQWUdy7YDAogBqxB/fyEE=;
- b=XzsJmQ67iUigxrz9mUZrj/abdJoRUb+S2tMg5BbQHyEtdJc+1zG0bAEOyGWq6xraET
- 9r/CQa12L+nA/wJ6xK9cu8x+Qb8x2PyA9pjcAv0NSsituAJaHubryPbfL5dKCsaAAU77
- z3mu0/btHhykt97tq30wpZ4pRq56aeLvwNRTDGAJvQJClrybU0kaPkg8Wgo6p8tFmyQp
- 4oewD2p65vqQzrzx6+H/Btiy4Q1eMjsZGYCzHOBPWFHvpruMwFuLEv2OHSrA36e6S+oB
- 8YBchXLeLqDWJZFtoafyHVkHP6difQ5MwfQS/ytkt/2pXiURjQQwEXKM9cOLNhRU8cxr
- +L9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710965893; x=1711570693;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0g2ewkBwGtZphnyaMlw+pjLQWUdy7YDAogBqxB/fyEE=;
- b=UqyFO2lf99mZ+XryNMinwAQzSqYvachiJJBQBQpJ61Kjk7nhoUmys4Z/W9nw6aNxhT
- xnuCYc0it/FKyK+brcP+TuIyMOLtEzLDIV0ZpCoisDllmTaCUhK+sI6DF5tJSZ1geYf0
- M2VHy4+N0q/s+yoaFxtOjU3ANf+YPYmwkqjCE7uVCXFBM5TMfJyHscTVbCyRH9LvEB7i
- OHlNVX3HFgEG9dkEu7aTNtCJyemzUO6rXNksE9Tqk461FooQss3ZmY2C9Pl2C5MigunW
- pVFf32GFEZrUtS0/IpTu9ceUySuWRz2iHo/NphpPwcV0bwreISkbEr6P7DphiyLeMlZX
- kcsQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUuSO5bbk7nQlJNNWYClVQ3fs2vXUmaHNpqYmvKsS7FQISGezgCoMRLmBTKveWigO2EP4GA4eZrBSKTLYhpt7+WM+QZlMM=
-X-Gm-Message-State: AOJu0YxyZ1y//muPiSDXK310Mmhyg2TN8t50a2SX7pdD8lP9R8ZSZB+5
- tg3jIqUgEZMuWcBw3MOdxVDmhCXRVCjrPZPBy7xckgd988n4g/g0alrfMEZxAOI=
-X-Google-Smtp-Source: AGHT+IHdr08UWrcnIZlu+i9Se4QkdOMTCKi20OV7MACR8tWqXSYao2n+I3gl8W5HTMF6crbvaKdFig==
-X-Received: by 2002:a05:6a20:9f87:b0:1a3:6b56:d4d8 with SMTP id
- mm7-20020a056a209f8700b001a36b56d4d8mr8905994pzb.48.1710965893556; 
- Wed, 20 Mar 2024 13:18:13 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- mi16-20020a170902fcd000b001dd578121d4sm14102988plb.204.2024.03.20.13.18.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Mar 2024 13:18:13 -0700 (PDT)
-Message-ID: <00c69df0-b097-49a9-8287-f6db63dbbef5@ventanamicro.com>
-Date: Wed, 20 Mar 2024 17:18:09 -0300
+ (Exim 4.90_1) (envelope-from <balbi@kernel.org>) id 1rn2Qu-000768-0A
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:21:08 -0400
+Received: from dfw.source.kernel.org ([139.178.84.217])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balbi@kernel.org>) id 1rn2Qq-0007ru-2Q
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 16:21:07 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by dfw.source.kernel.org (Postfix) with ESMTP id 8113461073;
+ Wed, 20 Mar 2024 20:21:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A78C433F1;
+ Wed, 20 Mar 2024 20:21:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+ s=k20201202; t=1710966062;
+ bh=gYnRr5zNdsSRItA32o+m5syJ2AZGwvS4kK1/Sewk4GQ=;
+ h=From:To:Cc:Subject:Date:From;
+ b=KrCRmai66drbt062i/qDRjZPyKfsji3g99ujvtQuXvndllzhVZZKugBYdR4HSavVO
+ VcY9TK4zU4kLmH+djH7lrmelvm9Z7eUnJFwi6W1Bm1t5O/S7OJgzDZYWNBuvrI3wUU
+ ISkMZCNaqO4fN5pPBYMJdHFQIzd6R6JEaMKJNp2Re5OXdkMWjHkSV23b2IcwjshZ6c
+ KihmWNsa3wLm4yUVFnToNSiV2qs5wW4wop8AVJeIUqf469OWi+po6gIaXf+zEABH+9
+ 6F1SKEegPQZXfPTmQ1d8LQYFG4QMpd+K9tsY3aBWi+F8IQSl6bqN18smRZZo02WYjK
+ i8FoWu4JJdQxQ==
+From: Felipe Balbi <balbi@kernel.org>
+To: qemu-devel@nongnu.org
+Cc: Samuel Tardieu <sam@rfc1149.net>,
+	Felipe Balbi <balbi@kernel.org>
+Subject: [PATCH v2 0/2] Add support for STM32G0 SoC family
+Date: Wed, 20 Mar 2024 22:20:58 +0200
+Message-ID: <20240320202100.820228-1-balbi@kernel.org>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: Fix mode in riscv_tlb_fill
-Content-Language: en-US
-To: Irina Ryapolova <irina.ryapolova@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
- bin.meng@windriver.com, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com
-References: <20240320172828.23965-1-irina.ryapolova@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240320172828.23965-1-irina.ryapolova@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=139.178.84.217; envelope-from=balbi@kernel.org;
+ helo=dfw.source.kernel.org
+X-Spam_score_int: -74
+X-Spam_score: -7.5
+X-Spam_bar: -------
+X-Spam_report: (-7.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,35 +65,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi all,
 
+These two patches add support for STM32G0 family and nucleo-g071rb
+board. Patches have been tested with minimal embedded rust examples.
 
-On 3/20/24 14:28, Irina Ryapolova wrote:
-> Need to convert mmu_idx to privilege mode for PMP function.
-> 
+Changes since v1:
 
-Please add:
+  - Patch 1:
+    - Convert tabs to spaces (checkpatch.pl)
+    - Correct lines longer than 80 characters (checkpatch.pl)
+    - Correct num-prio-bits (Samuel Tardieu)
+    - Correct num-irqs (Found reviewing RM0444)
 
-Fixes: b297129ae1 ("target/riscv: propagate PMP permission to TLB page")
+  - Patch 2:
+    - Convert tabs to spaces (checkpatch.pl)
 
-> Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
-> ---
+Felipe Balbi (2):
+  hw/arm: Add support for stm32g000 SoC family
+  hw/arm: Add nucleo-g071rb board
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+ MAINTAINERS                    |  13 ++
+ hw/arm/Kconfig                 |  12 ++
+ hw/arm/meson.build             |   2 +
+ hw/arm/nucleo-g071rb.c         |  70 +++++++++
+ hw/arm/stm32g000_soc.c         | 253 +++++++++++++++++++++++++++++++++
+ include/hw/arm/stm32g000_soc.h |  62 ++++++++
+ 6 files changed, 412 insertions(+)
+ create mode 100644 hw/arm/nucleo-g071rb.c
+ create mode 100644 hw/arm/stm32g000_soc.c
+ create mode 100644 include/hw/arm/stm32g000_soc.h
 
->   target/riscv/cpu_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index ce7322011d..fc090d729a 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1315,7 +1315,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->       bool two_stage_lookup = mmuidx_2stage(mmu_idx);
->       bool two_stage_indirect_error = false;
->       int ret = TRANSLATE_FAIL;
-> -    int mode = mmu_idx;
-> +    int mode = mmuidx_priv(mmu_idx);
->       /* default TLB page size */
->       target_ulong tlb_size = TARGET_PAGE_SIZE;
->   
+-- 
+2.44.0
+
 
