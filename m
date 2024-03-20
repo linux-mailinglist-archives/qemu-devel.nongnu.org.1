@@ -2,92 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86CB880D43
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:41:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E11880D8A
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 09:48:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmrVb-0002cn-CE; Wed, 20 Mar 2024 04:41:15 -0400
+	id 1rmrbm-0005Qh-Gp; Wed, 20 Mar 2024 04:47:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmrVZ-0002cA-EO
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:41:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmrbk-0005Mg-Nc
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:47:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmrVX-0007PA-4o
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:41:13 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rmrbV-0000LM-GN
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 04:47:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710924070;
+ s=mimecast20190719; t=1710924437;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zCX4Gvp2ULmguV3yxtkiVVrYj/bBffQ1Bvkw6NHId5Q=;
- b=diV3v/BKYe07m9FDM8wbq/Mo2pGNQLOJQ7GPTPkU8vOikjdD3niNWL9GS5uZ50XTqy1sOt
- MH2ZFtxna/6Weh46WweP3z1cNg3q0iZFfavXbJC60dhoxvHaRXYYNpN1wU5G1LmUvFqOwU
- e5x5jGFrzrGm1RZj6bA5TMM8kLcZoUg=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=M4dmy5P6MzwpdSkDcfD/MyK5EonWv8r2KCb25J/iSehgHwQCJRpBRfwEmURIAQUGnI7qHa
+ lpFDM4KKTdpkCdIPMRw6t356rWsP4qKsTW4N93tgMcnmN4hp+p23HkcScB4tgETWGmrSKj
+ swFCN59+ChVLf2hbVwUbcURAzMEwlww=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-8380TKdYPEK1jJ-nFUyCdg-1; Wed, 20 Mar 2024 04:41:08 -0400
-X-MC-Unique: 8380TKdYPEK1jJ-nFUyCdg-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d4af32be9fso26968631fa.2
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:41:07 -0700 (PDT)
+ us-mta-659-ALz6aagwNmW7wYKVF94utQ-1; Wed, 20 Mar 2024 04:47:14 -0400
+X-MC-Unique: ALz6aagwNmW7wYKVF94utQ-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-5684bbeb4b9so3371750a12.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 01:47:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710924067; x=1711528867;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zCX4Gvp2ULmguV3yxtkiVVrYj/bBffQ1Bvkw6NHId5Q=;
- b=sZASFJ39KBWZfmM+0jkQrD5WIpBRE4V24rmLXOiE/4Yqwmtx4QZhHolnm81rOJ9dBr
- DUmE4vzNQBpyodF/FLsaEEydKFi/gulfZYJdAt13jpZV8Hy4YbLsKRZL7mdIVelXN6/f
- /2dJvd0WxNdsd52IBdLCmv7rASduNgixkmV2/imK320pDH1l1MVO/g7CMCQUnSu+HjrP
- 41Ogq0VtL053aimJdMR/f+mu7SqkeIESk4R1cJ1zCfW6iUHSK4otoOTRYrsxudsR3OGl
- KTMMvgECeqxHCHyLt7elpnUeD01tLKAONeuXVk33VIrtor1+GDxNmse5JOvU8TwAjAOM
- V65w==
-X-Gm-Message-State: AOJu0YzaIiu/YB1+TN3l4l/rEzydGJDCu+hNCsCwVbHql6CYQdGusF++
- MzWoehOFYo95fwyoYTBc/3otBMXG+a0IO6nAV7jemQPsG4CyBQA8CKsRiSUdMdQ1jKnoU0gBrQC
- hwkzyJvUb7hTaR/P5ldGkElcqsabsADLhWW4IQb/5Mb64iyb/2/3F
-X-Received: by 2002:a2e:a724:0:b0:2d4:8878:a15d with SMTP id
- s36-20020a2ea724000000b002d48878a15dmr3045366lje.7.1710924066795; 
- Wed, 20 Mar 2024 01:41:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEm8MpvaWTj1+wc5neM6At/11mqOGaDRHto6zQcNyj5VEPwdxYMG5dApRREf0EVHGcsCs2yXg==
-X-Received: by 2002:a2e:a724:0:b0:2d4:8878:a15d with SMTP id
- s36-20020a2ea724000000b002d48878a15dmr3045352lje.7.1710924066456; 
- Wed, 20 Mar 2024 01:41:06 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ d=1e100.net; s=20230601; t=1710924433; x=1711529233;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=Zb2qWfObHm7pdlDfzhQXrj+P4G6SU+tXaErFEf1tAT+NRZA4ueW5iVWp5ffqSeRNQj
+ 5UZvgWfIfK3VzBnvJOvhq2v8haXpRH5nLdgnaRuHA+K6sfieVGghTbYEzgUOpWm/EunK
+ NLK1eyJ84QgzSNZgI+rOB5PSrqIu2mJ2Bh+CXLYM9xvDDj5rPLjaev0xm1/UFDqB5Qk2
+ qWWl6WRyF5p/tIcWGlkfYIe5XUD8do0EVBA5DIh80cT4oO1om0IZzBK757erl5+BNDgk
+ HcNsX5dLS//KUD7+7RzarLbrRsdWadCUXvJbI4cKQpZ00J1TtDECep2xPPuF/sbeHRlM
+ Oc2g==
+X-Gm-Message-State: AOJu0YzM6Jvm0Q7Fp/e9J2ZT3Yn8EpWi1RmvFQXB1xLYSWDL26i4EMe7
+ r2KA3BNpUnBJk1ZldKJWBpcLs/EwAUmVMdjIUgWrPJf4KqszEIIsVQ63+Pyyh0A4TQrg7JOwVvq
+ J6irNPkGXHqjltto+Flg4kzcJDAQR4wf53l/SvWhgDI0bgCYDrYQG
+X-Received: by 2002:a05:6402:4016:b0:56b:9ef8:f630 with SMTP id
+ d22-20020a056402401600b0056b9ef8f630mr2260625eda.2.1710924433570; 
+ Wed, 20 Mar 2024 01:47:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFTPJKaQ33jCPjePWjG8d5PWntLHejYyzd2YoEMdZzvFMdR5VDK8gxaW53KsriIWs8HeFVSjw==
+X-Received: by 2002:a05:6402:4016:b0:56b:9ef8:f630 with SMTP id
+ d22-20020a056402401600b0056b9ef8f630mr2260613eda.2.1710924433285; 
+ Wed, 20 Mar 2024 01:47:13 -0700 (PDT)
+Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- q16-20020a05600c46d000b00412a31d2e2asm1462823wmo.32.2024.03.20.01.41.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 20 Mar 2024 01:41:05 -0700 (PDT)
-Message-ID: <a6e0a011-817b-4e9e-9985-8fb64fa0aa5e@redhat.com>
-Date: Wed, 20 Mar 2024 09:41:03 +0100
+ p8-20020aa7c888000000b00567fa27e75fsm6652350eds.32.2024.03.20.01.47.12
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Mar 2024 01:47:12 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Tao Su <tao1.su@linux.intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, xiaoyao.li@intel.com,
+ alex.bennee@linaro.org, armbru@redhat.com, philmd@linaro.org
+Subject: Re: [PATCH v2] target/i386: Revert monitor_puts() in
+ do_inject_x86_mce()
+Date: Wed, 20 Mar 2024 09:47:11 +0100
+Message-ID: <20240320084711.1036811-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240320083640.523287-1-tao1.su@linux.intel.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1 v5 08/14] migration: Add Error** argument to
- .load_setup() handler
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Avihai Horon <avihaih@nvidia.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>, Prasad Pandit <pjp@fedoraproject.org>
-References: <20240320064911.545001-1-clg@redhat.com>
- <20240320064911.545001-9-clg@redhat.com> <87il1htjpc.fsf@pond.sub.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <87il1htjpc.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,70 +100,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/20/24 09:02, Markus Armbruster wrote:
-> Cédric Le Goater <clg@redhat.com> writes:
-> 
->> This will be useful to report errors at a higher level, mostly in VFIO
->> today.
->>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Peter Xu <peterx@redhat.com>
->> Signed-off-by: Cédric Le Goater <clg@redhat.com>
->> ---
-> 
-> [...]
-> 
->> diff --git a/migration/savevm.c b/migration/savevm.c
->> index 535ad5a32d67057dd172ce25d561a66a07172e97..8f42999a15d1685957de9ed517d6bc9ba49c3f11 100644
->> --- a/migration/savevm.c
->> +++ b/migration/savevm.c
->> @@ -2747,8 +2747,9 @@ static void qemu_loadvm_state_switchover_ack_needed(MigrationIncomingState *mis)
->>       trace_loadvm_state_switchover_ack_needed(mis->switchover_ack_pending_num);
->>   }
->>   
->> -static int qemu_loadvm_state_setup(QEMUFile *f)
->> +static int qemu_loadvm_state_setup(QEMUFile *f, Error **errp)
->>   {
->> +    ERRP_GUARD(); /* error_prepend use */
-> 
-> The comment is correct, but prone to go stale.  No other use of
-> ERRP_GUARD() is commented.  Suggest to drop it.
+Queued, thanks.
 
-OK. I found it interesting, for me at least. Will drop in the VFIO
-patches also.
-
-Thanks,
-
-C.
-
-
-> 
->>       SaveStateEntry *se;
->>       int ret;
->>   
->> @@ -2763,10 +2764,11 @@ static int qemu_loadvm_state_setup(QEMUFile *f)
->>               }
->>           }
->>   
->> -        ret = se->ops->load_setup(f, se->opaque);
->> +        ret = se->ops->load_setup(f, se->opaque, errp);
->>           if (ret < 0) {
->> +            error_prepend(errp, "Load state of device %s failed: ",
->> +                          se->idstr);
->>               qemu_file_set_error(f, ret);
->> -            error_report("Load state of device %s failed", se->idstr);
->>               return ret;
->>           }
->>       }
->> @@ -2947,7 +2949,8 @@ int qemu_loadvm_state(QEMUFile *f)
->>           return ret;
->>       }
->>   
->> -    if (qemu_loadvm_state_setup(f) != 0) {
->> +    if (qemu_loadvm_state_setup(f, &local_err) != 0) {
->> +        error_report_err(local_err);
->>           return -EINVAL;
->>       }
-> 
+Paolo
 
 
