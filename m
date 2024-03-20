@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C605881021
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D3B88102F
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 11:43:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmtOe-00069A-CP; Wed, 20 Mar 2024 06:42:12 -0400
+	id 1rmtOr-0006Cf-8J; Wed, 20 Mar 2024 06:42:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOM-00068Y-Qv
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:41:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOT-00069G-RX
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:42:03 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOL-00072C-KT
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:41:54 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmtOP-00072q-7a
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 06:42:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710931312;
+ s=mimecast20190719; t=1710931316;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=59bCQOZv8U7kCz4diCaXQkDu44/Bs7kwE+USDGANeMg=;
- b=UbY0wZCioCpWI5vmjhPE5cHngBPw8ncG7k3yHcXFX6VZB/4h5NGqjjqONHIjKSOsyUhXul
- fp3sAYxTUO8WQ1esmUIQPgGpGuAYrHZodqMQgTPrqNV5/3BrihWe69uxfeoH1onRth6P5R
- uTZbpfWi50a1fgKMLBtnf6mKd+7mLkQ=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=vGiT6UW7Pro6tpPwiM/KeLk3WhShTsrmy9F147XWFKQ=;
+ b=Zf54Qaoi2f0kRnSZIQY5/Q39j6CUiHd+HjwhX9VsRdKGHmzzdHNIz82rrAvksGEYzqTuUd
+ DjzHkmQLP6JDliXq20ucPMX6WY5vCLPfZgTbdqrBh4vf04nr1wqsd4Tx6BzpTJmm1mP3B/
+ 32OjMy0hHI+oQUu3nRUTDjIv6nYmIXU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-A24gSZigPDaOtm935uA1cQ-1; Wed, 20 Mar 2024 06:41:51 -0400
-X-MC-Unique: A24gSZigPDaOtm935uA1cQ-1
+ us-mta-43-zZKOhe0kN36PtR6RAmrAXA-1; Wed, 20 Mar 2024 06:41:53 -0400
+X-MC-Unique: zZKOhe0kN36PtR6RAmrAXA-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CBB76185A784;
- Wed, 20 Mar 2024 10:41:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF61E101A552;
+ Wed, 20 Mar 2024 10:41:52 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.206])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 779F22166B34;
- Wed, 20 Mar 2024 10:41:49 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 45FEE2166B33;
+ Wed, 20 Mar 2024 10:41:51 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Vaibhav Jain <vaibhav@linux.ibm.com>
-Subject: [PATCH 0/6] Updates for the .travis.yml file
-Date: Wed, 20 Mar 2024 11:41:38 +0100
-Message-ID: <20240320104144.823425-1-thuth@redhat.com>
+Subject: [PATCH 1/6] .travis.yml: Shorten the runtime of the problematic jobs
+Date: Wed, 20 Mar 2024 11:41:39 +0100
+Message-ID: <20240320104144.823425-2-thuth@redhat.com>
+In-Reply-To: <20240320104144.823425-1-thuth@redhat.com>
+References: <20240320104144.823425-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -59,8 +62,8 @@ X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,21 +79,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Travis-CI has been quite neglected in recent times. I now finally
-found some spare minutes to fix some issues with time-outs, clean up
-some old cruft and update the jobs to a newer version of Ubuntu.
+The "[s390x] GCC (other-system)" and the "[s390x] GCC check-tcg"
+jobs are hitting the 50 minutes timeout in Travis quite frequently
+since a while.
 
-Thomas Huth (6):
-  .travis.yml: Shorten the runtime of the problematic jobs
-  .travis.yml: Remove the unused xfslib-dev package
-  Revert ".travis.yml: Cache Avocado cache"
-  .travis.yml: Update the jobs to Ubuntu 22.04
-  .travis.yml: Remove the unused UNRELIABLE environment variable
-  .travis.yml: Do some more testing with Clang
+To fix it, we've got to drop a lot of the targets from the target
+list in the jobs to make them work again.
 
- .travis.yml | 34 ++++++++++++----------------------
- 1 file changed, 12 insertions(+), 22 deletions(-)
+With regards to the "check-tcg" test, we can move the check with
+"s390x-linux-user" to the "user" job instead which also builds
+the s390x-linux-user target.
 
+And while we're at it, remove the "--enable-fdt=system" configure
+switch (since this is not required nowadays anymore).
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ .travis.yml | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/.travis.yml b/.travis.yml
+index 597d151b80..a8d1e12190 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -184,8 +184,8 @@ jobs:
+           - genisoimage
+       env:
+         - TEST_CMD="make check check-tcg V=1"
+-        - CONFIG="--disable-containers --enable-fdt=system
+-                  --target-list=${MAIN_SYSTEM_TARGETS},s390x-linux-user"
++        - CONFIG="--disable-containers
++            --target-list=hppa-softmmu,mips64-softmmu,ppc64-softmmu,riscv64-softmmu,s390x-softmmu,x86_64-softmmu"
+         - UNRELIABLE=true
+       script:
+         - BUILD_RC=0 && make -j${JOBS} || BUILD_RC=$?
+@@ -225,8 +225,8 @@ jobs:
+           # Tests dependencies
+           - genisoimage
+       env:
+-        - CONFIG="--disable-containers --enable-fdt=system --audio-drv-list=sdl
+-                  --disable-user --target-list-exclude=${MAIN_SYSTEM_TARGETS}"
++        - CONFIG="--disable-containers --audio-drv-list=sdl --disable-user
++            --target-list=arm-softmmu,avr-softmmu,microblaze-softmmu,sh4eb-softmmu,sparc64-softmmu,xtensaeb-softmmu"
+ 
+     - name: "[s390x] GCC (user)"
+       arch: s390x
+@@ -240,6 +240,7 @@ jobs:
+           - flex
+           - bison
+       env:
++        - TEST_CMD="make check check-tcg V=1"
+         - CONFIG="--disable-containers --disable-system"
+ 
+     - name: "[s390x] Clang (disable-tcg)"
 -- 
 2.44.0
 
