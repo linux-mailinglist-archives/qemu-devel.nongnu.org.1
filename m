@@ -2,73 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7375688141B
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE71D88145B
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 16:19:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmxVb-00076F-CA; Wed, 20 Mar 2024 11:05:39 -0400
+	id 1rmxiF-0003sL-IB; Wed, 20 Mar 2024 11:18:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxVW-000759-8x
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:34 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmxiB-0003s8-J2
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:18:39 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rmxVU-0006ai-Dn
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:05:33 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-56890b533aaso7826517a12.3
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 08:05:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710947130; x=1711551930; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=eotH6+RELIXOjdjy/MmEvAOcz+5fQKpxBSxzQgsUj2Y=;
- b=A7l4vYWryE9+pt0QvAu3veIVvJPPwxEkjMw4J2YcFqzBb8oEgWE3OS+vWD/352pNux
- GQOtJ/c3J1wvfEt3eI/iD+fV1GK1aDDrhYuSuh8Vs4RBM4TUnE5IVw60VvgljxnVOehf
- +8cM+0QLSLBXJFexK4uBPlI6k4hDPkbjPE6OHr5Ih3XKX2onzydPvgGkMUt9sAT0gVHQ
- p6FgdljR3rNO/euDRRxGkpmnWIlcy0O9zv0EkSir1jaKI4quF0ANwF2HYzL0rQiYjr83
- 50WyQ6yFs/XoYxUNnjQDugTlcX0OhwqERTGniSWs34cgKAR6cJnsXLzcJKB58nI1XdVn
- re6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710947130; x=1711551930;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eotH6+RELIXOjdjy/MmEvAOcz+5fQKpxBSxzQgsUj2Y=;
- b=HGUjMqs0iTSZbmN7ORejs2Y7TNub1+byJHIQksHrxQ2mWoSWvs0wXw6g2kgXFAofAn
- WQt8NzQXnXE2ht0F0Xs2++o4g3I5YAn8NJhW0WfuxIlJNFsA+A3S20nwRV2cN6aMbpd+
- loFAea+yoP6DtJGQpMShbBIFaUFTaZ99Wt6t8vGjprHS+LIXNvanxM24lCmKgzVHiVMa
- 8TqXx3RT9XJTCQNud35DAAXSoaAAkX2ti+M75PsByV1703Chucib60JVbCpwv2MeomyI
- oJe72OgiukAMgAtMR0DIsXhDrUUBryAbrccNMi6ISxhzcIaaqpUualERtcGbWsoanfta
- rGDg==
-X-Gm-Message-State: AOJu0Yx4VHz5Yl8pqLPWcK5Kv9MzuBwKfxVU89GVxu0Nj8y3217rAe3q
- dC/c7rQ7IWXHRrihQ4XxhyGG59x2QA3VpDOWomuCPxRpVJh98ajsUS8wx7nIXnQvyPNSAlI8Yvi
- Qm4GHbgP5+kWV55IeB9fzyNobg6XcERIb//3lwg==
-X-Google-Smtp-Source: AGHT+IFga3DqWVZifOLy4uEd6Haac8vJssSD2a39K9TQF/bm3YTtFVtVqQ2NaQ71ygmbNqlRaurtMHqqbdKoBvl/NOo=
-X-Received: by 2002:a05:6402:1cc4:b0:566:348:fc4a with SMTP id
- ds4-20020a0564021cc400b005660348fc4amr4230617edb.32.1710947129992; Wed, 20
- Mar 2024 08:05:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rmxi9-0000e3-UV
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 11:18:39 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 2F6FC346B2;
+ Wed, 20 Mar 2024 15:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710947916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+oF9V9AbTwdGT7kc6KUZJ0A+tEE0UPUgYOezGRpYrP0=;
+ b=psjv4IogLHd1dcg3cSiCXQgsY+n62LtgxFYXlnEd+QESxDhQ+Fu5OBQR/WWSOieLSnUyyY
+ OAyVpXpRGm5uNFPM3ihwv+76bXFQzewL9UWmX/3Xe784zLQoWu9K+OoEs01Vsc6AWPYwRT
+ OqUplFt7/M0GJq+OPutc3NlCOzY9TUw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710947916;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+oF9V9AbTwdGT7kc6KUZJ0A+tEE0UPUgYOezGRpYrP0=;
+ b=c/ZXBKkPpEEOVW0q4pEVU5qq00+GFA42WgKscFHnoEb6mrakEjL3G7hJrMLGXQUm6rVdM8
+ /LxJi0X810HyIWCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1710947916; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+oF9V9AbTwdGT7kc6KUZJ0A+tEE0UPUgYOezGRpYrP0=;
+ b=psjv4IogLHd1dcg3cSiCXQgsY+n62LtgxFYXlnEd+QESxDhQ+Fu5OBQR/WWSOieLSnUyyY
+ OAyVpXpRGm5uNFPM3ihwv+76bXFQzewL9UWmX/3Xe784zLQoWu9K+OoEs01Vsc6AWPYwRT
+ OqUplFt7/M0GJq+OPutc3NlCOzY9TUw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1710947916;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+oF9V9AbTwdGT7kc6KUZJ0A+tEE0UPUgYOezGRpYrP0=;
+ b=c/ZXBKkPpEEOVW0q4pEVU5qq00+GFA42WgKscFHnoEb6mrakEjL3G7hJrMLGXQUm6rVdM8
+ /LxJi0X810HyIWCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF74A136CD;
+ Wed, 20 Mar 2024 15:18:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id K8BcHUv++mWOUAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Wed, 20 Mar 2024 15:18:35 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Yuan Liu <yuan1.liu@intel.com>, peterx@redhat.com
+Cc: qemu-devel@nongnu.org, hao.xiang@bytedance.com,
+ bryan.zhang@bytedance.com, yuan1.liu@intel.com, nanhai.zou@intel.com
+Subject: Re: [PATCH v5 2/7] migration/multifd: put IOV initialization into
+ compression method
+In-Reply-To: <20240319164527.1873891-3-yuan1.liu@intel.com>
+References: <20240319164527.1873891-1-yuan1.liu@intel.com>
+ <20240319164527.1873891-3-yuan1.liu@intel.com>
+Date: Wed, 20 Mar 2024 12:18:32 -0300
+Message-ID: <87bk79lynr.fsf@suse.de>
 MIME-Version: 1.0
-References: <20240320024010.1659193-1-gaosong@loongson.cn>
-In-Reply-To: <20240320024010.1659193-1-gaosong@loongson.cn>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Wed, 20 Mar 2024 15:05:19 +0000
-Message-ID: <CAFEAcA_2dZPVJ_j1qxG=YpCR_6xwNohh=BSG3p6L9wpo+kp1+Q@mail.gmail.com>
-Subject: Re: [PULL 0/3] loongarch fixes for 9.0
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[]; BAYES_HAM(-3.00)[100.00%];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-1.000]; RCPT_COUNT_SEVEN(0.00)[7];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_TLS_ALL(0.00)[];
+ MID_RHS_MATCH_FROM(0.00)[]
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,28 +114,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 20 Mar 2024 at 02:40, Song Gao <gaosong@loongson.cn> wrote:
->
-> The following changes since commit c62d54d0a8067ffb3d5b909276f7296d7df33fa7:
->
->   Update version for v9.0.0-rc0 release (2024-03-19 19:13:52 +0000)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240320
->
-> for you to fetch changes up to 77642f92c0b71a105aba2a4d03bc62328eae703b:
->
->   target/loongarch: Fix qemu-loongarch64 hang when executing 'll.d $t0, $t0, 0' (2024-03-20 10:20:08 +0800)
->
-> ----------------------------------------------------------------
-> pull-loongarch-20240320
+Yuan Liu <yuan1.liu@intel.com> writes:
 
+> Different compression methods may require different numbers of IOVs.
+> Based on streaming compression of zlib and zstd, all pages will be
+> compressed to a data block, so two IOVs are needed for packet header
+> and compressed data block.
+>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> ---
+>  migration/multifd-zlib.c | 4 ++++
+>  migration/multifd-zstd.c | 6 +++++-
+>  migration/multifd.c      | 8 +++++---
+>  3 files changed, 14 insertions(+), 4 deletions(-)
+>
+> diff --git a/migration/multifd-zlib.c b/migration/multifd-zlib.c
+> index 99821cd4d5..8095ef8e28 100644
+> --- a/migration/multifd-zlib.c
+> +++ b/migration/multifd-zlib.c
+> @@ -70,6 +70,10 @@ static int zlib_send_setup(MultiFDSendParams *p, Error **errp)
+>          goto err_free_zbuff;
+>      }
+>      p->compress_data = z;
+> +
+> +    assert(p->iov == NULL);
+> +    /* For packet header and zlib streaming compression block */
+> +    p->iov = g_new0(struct iovec, 2);
+>      return 0;
+>  
+>  err_free_zbuff:
+> diff --git a/migration/multifd-zstd.c b/migration/multifd-zstd.c
+> index 02112255ad..9c9217794e 100644
+> --- a/migration/multifd-zstd.c
+> +++ b/migration/multifd-zstd.c
+> @@ -52,7 +52,6 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
+>      struct zstd_data *z = g_new0(struct zstd_data, 1);
+>      int res;
+>  
+> -    p->compress_data = z;
+>      z->zcs = ZSTD_createCStream();
+>      if (!z->zcs) {
+>          g_free(z);
+> @@ -77,6 +76,11 @@ static int zstd_send_setup(MultiFDSendParams *p, Error **errp)
+>          error_setg(errp, "multifd %u: out of memory for zbuff", p->id);
+>          return -1;
+>      }
+> +    p->compress_data = z;
+> +
+> +    assert(p->iov == NULL);
+> +    /* For packet header and zstd streaming compression block */
+> +    p->iov = g_new0(struct iovec, 2);
+>      return 0;
+>  }
+>  
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index 0179422f6d..5155e02ae3 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -1181,9 +1181,11 @@ bool multifd_send_setup(void)
+>              p->packet = g_malloc0(p->packet_len);
+>              p->packet->magic = cpu_to_be32(MULTIFD_MAGIC);
+>              p->packet->version = cpu_to_be32(MULTIFD_VERSION);
+> -
+> -            /* We need one extra place for the packet header */
+> -            p->iov = g_new0(struct iovec, page_count + 1);
+> +            /* IOVs are initialized in send_setup of compression method */
+> +            if (!migrate_multifd_compression()) {
+> +                /* We need one extra place for the packet header */
+> +                p->iov = g_new0(struct iovec, page_count + 1);
+> +            }
 
-Applied, thanks.
+This^ should go into nocomp_send_setup:
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
+static int nocomp_send_setup(MultiFDSendParams *p, Error **errp)
+{
+    if (migrate_zero_copy_send()) {
+        p->write_flags |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
+    }
 
--- PMM
+    if (multifd_use_packets()) {
+        /* We need one extra place for the packet header */
+        p->iov = g_new0(struct iovec, p->page_count + 1);
+    } else {
+        p->iov = g_new0(struct iovec, p->page_count);
+    }
+
+    return 0;
+}
+
+>          } else {
+>              p->iov = g_new0(struct iovec, page_count);
+>          }
 
