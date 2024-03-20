@@ -2,114 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9A7881964
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 23:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FB8881954
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 23:01:28 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn48f-0002AF-S1; Wed, 20 Mar 2024 18:10:25 -0400
+	id 1rn3yU-0007OH-7l; Wed, 20 Mar 2024 17:59:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rn48X-00029P-5Y
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 18:10:17 -0400
-Received: from mail-mw2nam04on20600.outbound.protection.outlook.com
- ([2a01:111:f403:240a::600]
- helo=NAM04-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1rn3yR-0007NO-Re; Wed, 20 Mar 2024 17:59:52 -0400
+Received: from mx.treblig.org ([2a00:1098:5b::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rn48U-000283-GL
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 18:10:16 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RaloNNtOlxdQI82T3fSZVd8uaN57xv3tNZkeFzwnqj2yIWAqbZHpqdEJLOTaGUROaK60yKJNB3c8S28kjnxECHrTi65auOnNcKF3IS6iDgeVbLVwQio2jhHBVA2OMdRQttrjNzA2S6/2xMIPPosiqI6DrKJKeqNvlumoo7NzWig4QHQHV7sVOvCVnXdEaq7Tu6Wi/00VVROrcemhmBSDzkzqI56r8nwrfEl2TQBnJ17bM1T/kHBFaBf4ViL+g5mQfaMdE8HgiP8kY6NhGytcivOag+72uSxv0bMpeAoNgZ0KxFvYHgPFoCgjcXGrXCq15srCferzbQ9sr7MuubmYuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8kE3NnTFg467SUQKAu5cy3BIExieW2sn+9C4yH9ceqw=;
- b=ZhrEF4tqnbEO6sZmYkvIej33oOLpNa4pyHfQx8vGmamlieE949N0h1B2iyjvyI/MHXoDMGxfmMo4MQUVYnCEOS0R5BCKMxYt5bK3/St5ek+6V/OCFq84oOaWVQZQc4bnplTjiOcVda12AAxg/W1ZIq4RkGSRVjv8Cwsmv0Z1D7JNl45Mf0tQ+uKQnl42GiGgoYLAMGxv2d77pI/gjiqgITKjog1jGEfkoZwoLy4NaPz5LNoLfqpgqRTmzIDOLZQui5DtOwT15k5uLdhdPloWf8Nzu7Wu+I0L7NZVRrpxKDpkr0zUpoOKGl5beBhfYCkJz5A4/Jnz+X9l6pKWQ52TYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8kE3NnTFg467SUQKAu5cy3BIExieW2sn+9C4yH9ceqw=;
- b=k4QZoQeySKH2ZahQpS/5Xzf6+MaF0GVFMDb941gSjI1yFFb2Aih9/+SIvXI9KBzzZTm9HkkGOiojF01LJJHVsiFbAO3T4mpzZZjjQXlL1clMCy1QeLgHfVl1dnkynLfKN7mBJY7mb3PUFZ3zcXqP0nXC4Ksm3FDEgUDMWA+OXN8=
-Received: from SJ0PR13CA0106.namprd13.prod.outlook.com (2603:10b6:a03:2c5::21)
- by SJ2PR12MB9116.namprd12.prod.outlook.com (2603:10b6:a03:557::18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.30; Wed, 20 Mar
- 2024 22:09:59 +0000
-Received: from SJ1PEPF00001CE6.namprd03.prod.outlook.com
- (2603:10b6:a03:2c5:cafe::fe) by SJ0PR13CA0106.outlook.office365.com
- (2603:10b6:a03:2c5::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.12 via Frontend
- Transport; Wed, 20 Mar 2024 22:09:59 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00001CE6.mail.protection.outlook.com (10.167.242.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 22:09:58 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
- 2024 17:09:58 -0500
-Date: Wed, 20 Mar 2024 16:45:12 -0500
-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Tom Lendacky
- <thomas.lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, "Markus
- Armbruster" <armbru@redhat.com>, Pankaj Gupta <pankaj.gupta@amd.com>,
- "Xiaoyao Li" <xiaoyao.li@intel.com>, Isaku Yamahata
- <isaku.yamahata@linux.intel.com>
-Subject: Re: [PATCH v3 21/49] i386/sev: Introduce "sev-common" type to
- encapsulate common SEV state
-Message-ID: <20240320214512.5m3xe2qve5mwyg4i@amd.com>
-References: <20240320083945.991426-1-michael.roth@amd.com>
- <20240320083945.991426-22-michael.roth@amd.com>
- <ZfrM0KJ78pv53O4j@redhat.com>
+ (Exim 4.90_1) (envelope-from <dg@treblig.org>)
+ id 1rn3yM-0000Lb-0x; Wed, 20 Mar 2024 17:59:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+ ; s=bytemarkmx;
+ h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=BXcp6nmYQiOnkyo3239WHF4QCUPILYG3e0Ystupic7U=; b=OCN7BK/Uc6HGM5dW/cbK0m1ioN
+ zQ1IUSCI1QBaEfh0CiWfAQQb1YhAyhVzmhyNu4YNzW0hzX65FjovxdiVscQnD7PfBozAzjy4Loz13
+ VDSdH+wRFP/B9hCpb0J93Xc5GGhMf/8LOzjuShW16Nv/nBPNVelERIsbMz2hLxZY3cNpsPeidbosq
+ kdgNHOU3q12LMfETPo9ZV+eBkSHv/41gOXFFlj0AZdIF3r+M50Q567lqxQs+qpM8fxL2eMDlP/rRH
+ r4YQZrPoilcEpdwwQQ7APFv3eoYssXrVjwCyesfBpLH/jcnusMprgQ6EVrixmG0qwn7OZYSWi3tZ6
+ pxUSZ0bQ==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+ (envelope-from <dg@treblig.org>) id 1rn3yH-00DZue-13;
+ Wed, 20 Mar 2024 21:59:41 +0000
+Date: Wed, 20 Mar 2024 21:59:41 +0000
+From: "Dr. David Alan Gilbert" <dave@treblig.org>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ qemu-ppc@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ devel@lists.libvirt.org, Paolo Bonzini <pbonzini@redhat.com>,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Subject: Re: [PATCH-for-9.0 0/2] target/monitor: Deprecate 'info tlb/mem' in
+ favor of 'info mmu'
+Message-ID: <ZftcTb2_O8zHPd3Z@gallifrey>
+References: <20240320164055.60319-1-philmd@linaro.org>
+ <CAFEAcA81u9J9iijs-CNDbsANb6c0Cdb4qQKmBd=DiQAoFA4U=w@mail.gmail.com>
+ <5deec986-7a22-402d-abe1-4e40f5bb427a@linaro.org>
+ <CAFEAcA_4J32gpUgxXxND8ZVhrEEhFK=gPG2SF8xsVJ+jpkV0WA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZfrM0KJ78pv53O4j@redhat.com>
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE6:EE_|SJ2PR12MB9116:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb87c9b0-52fb-46f7-d8e2-08dc492a7b9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vJdslEudel7OJVILK2tF3XPhgal/HvztqX5bqYJtIyVaVthYkCba1bOn4q9C7b/HsE/dwmLuWVyXB29Dlh+U+0EozAKD0HznGFKpvX0KKdC2Nwyj0T7KijGM9b7QgC+BzTKq7KElk2ZyUJiByKGoJSrs3H/nfmFlUgkV+JBvyg07LSwgsQENBOqPk3C0GKvBmiML7R8alYTyKoqymCr5J5LmANxdx+apkUV18+jN+XV8oxtn/os2EWRRlHxYiZbSGDR2cXQNuCKHY/I77TcMgmpXcTBEfABElj/MK2veMezgq54U6gUFu+OoZFAognufsicSwFcqcI2iBcR52FZQkmmFEdtNDmNh3fSkf8qZXtAnVgm1qu53dvk/SQRHY1poioc2sQ+AKEbtRjgVPC7mBJjTnPNaIQK8F3ps4zRsNPEq8yy+kn3/i5vLMm5YY2vjUgkSMoFCxiF+/J6sUDgQexyC6NW3fqCnHSkM0rOjrRjtbtyr9KsFwPid19agMSCSgO0Ez4WaQSVt26iViIlJUYjeVO1V0ZDEqkala86Dr/lgw1qSye54lGeydxPdQ6J6GrBUR18HzH66/4xCvSg4MAkMAsdk81WhP/OARW1Hyg0EwAIbzpLGoywmESZC/cEAA7huBopWdPoV/LY4XJ3T3D73xc0XCSZ+4+4FyP2zWjHhGycq4h4kWgXATwOrK2qbPmvYzsCgEIQRFdSEG7yzwg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(82310400014)(376005)(36860700004)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 22:09:58.9888 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb87c9b0-52fb-46f7-d8e2-08dc492a7b9f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CE6.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9116
-Received-SPF: permerror client-ip=2a01:111:f403:240a::600;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM04-MW2-obe.outbound.protection.outlook.com
+In-Reply-To: <CAFEAcA_4J32gpUgxXxND8ZVhrEEhFK=gPG2SF8xsVJ+jpkV0WA@mail.gmail.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-17-amd64 (x86_64)
+X-Uptime: 21:59:13 up 78 days, 48 min,  1 user,  load average: 0.00, 0.00, 0.00
+User-Agent: Mutt/2.2.12 (2023-09-09)
+Received-SPF: pass client-ip=2a00:1098:5b::1; envelope-from=dg@treblig.org;
+ helo=mx.treblig.org
 X-Spam_score_int: -16
 X-Spam_score: -1.7
 X-Spam_bar: -
 X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -123,117 +79,111 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Michael Roth <michael.roth@amd.com>
-From:  Michael Roth via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 20, 2024 at 11:47:28AM +0000, Daniel P. Berrangé wrote:
-> On Wed, Mar 20, 2024 at 03:39:17AM -0500, Michael Roth wrote:
-> > Currently all SEV/SEV-ES functionality is managed through a single
-> > 'sev-guest' QOM type. With upcoming support for SEV-SNP, taking this
-> > same approach won't work well since some of the properties/state
-> > managed by 'sev-guest' is not applicable to SEV-SNP, which will instead
-> > rely on a new QOM type with its own set of properties/state.
-> > 
-> > To prepare for this, this patch moves common state into an abstract
-> > 'sev-common' parent type to encapsulate properties/state that are
-> > common to both SEV/SEV-ES and SEV-SNP, leaving only SEV/SEV-ES-specific
-> > properties/state in the current 'sev-guest' type. This should not
-> > affect current behavior or command-line options.
-> > 
-> > As part of this patch, some related changes are also made:
-> > 
-> >   - a static 'sev_guest' variable is currently used to keep track of
-> >     the 'sev-guest' instance. SEV-SNP would similarly introduce an
-> >     'sev_snp_guest' static variable. But these instances are now
-> >     available via qdev_get_machine()->cgs, so switch to using that
-> >     instead and drop the static variable.
-> > 
-> >   - 'sev_guest' is currently used as the name for the static variable
-> >     holding a pointer to the 'sev-guest' instance. Re-purpose the name
-> >     as a local variable referring the 'sev-guest' instance, and use
-> >     that consistently throughout the code so it can be easily
-> >     distinguished from sev-common/sev-snp-guest instances.
-> > 
-> >   - 'sev' is generally used as the name for local variables holding a
-> >     pointer to the 'sev-guest' instance. In cases where that now points
-> >     to common state, use the name 'sev_common'; in cases where that now
-> >     points to state specific to 'sev-guest' instance, use the name
-> >     'sev_guest'
-> > 
-> > Signed-off-by: Michael Roth <michael.roth@amd.com>
-> > ---
-> >  qapi/qom.json     |  32 ++--
-> >  target/i386/sev.c | 457 ++++++++++++++++++++++++++--------------------
-> >  target/i386/sev.h |   3 +
-> >  3 files changed, 281 insertions(+), 211 deletions(-)
-> > 
+* Peter Maydell (peter.maydell@linaro.org) wrote:
+> On Wed, 20 Mar 2024 at 17:06, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> >
+> > +Alex/Daniel
+> >
+> > On 20/3/24 17:53, Peter Maydell wrote:
+> > > On Wed, 20 Mar 2024 at 16:40, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+> > >>
+> > >> 'info tlb' and 'info mem' commands don't scale in heterogeneous
+> > >> emulation. They will be reworked after the next release, hidden
+> > >> behind the 'info mmu' command. It is not too late to deprecate
+> > >> commands, so add the 'info mmu' command as wrapper to the other
+> > >> ones, but already deprecate them.
+> > >>
+> > >> Philippe Mathieu-Daudé (2):
+> > >>    target/monitor: Introduce 'info mmu' command
+> > >>    target/monitor: Deprecate 'info tlb' and 'info mem' commands
+> > >
+> > > This seems to replace "info tlb" and "info mem" with "info mmu -t"
+> > > and "info mmu -m", but it doesn't really say anything about:
+> > >   * what the difference is between these two things
+> >
+> > I really don't know; I'm only trying to keep the monitor interface
+> > identical.
 > 
-> >  static SevInfo *sev_get_info(void)
-> >  {
-> >      SevInfo *info;
-> > +    SevCommonState *sev_common = SEV_COMMON(MACHINE(qdev_get_machine())->cgs);
-> > +    SevGuestState *sev_guest =
-> > +        (SevGuestState *)object_dynamic_cast(OBJECT(sev_common),
-> > +                                             TYPE_SEV_GUEST);
-> >  
-> >      info = g_new0(SevInfo, 1);
-> >      info->enabled = sev_enabled();
-> >  
-> >      if (info->enabled) {
-> > -        info->api_major = sev_guest->api_major;
-> > -        info->api_minor = sev_guest->api_minor;
-> > -        info->build_id = sev_guest->build_id;
-> > -        info->policy = sev_guest->policy;
-> > -        info->state = sev_guest->state;
-> > -        info->handle = sev_guest->handle;
-> > +        if (sev_guest) {
-> > +            info->handle = sev_guest->handle;
-> > +        }
+> You don't, though: you change it from "info tlb" to "info mmu -t" etc.
 > 
-> If we're not going to provide a value for 'handle', then
-> we should update the QAPI for this to mark the property
-> as optional, which would then require doing
+> > >   * which targets implement which and why
+> >
+> > This one is easy to answer:
+> >
+> > #if defined(TARGET_I386) || defined(TARGET_SH4) || defined(TARGET_SPARC)
+> > || \
+> >      defined(TARGET_PPC) || defined(TARGET_XTENSA) || defined(TARGET_M68K)
+> >      {
+> >          .name       = "tlb",
+> >
+> > #if defined(TARGET_I386) || defined(TARGET_RISCV)
+> >      {
+> >          .name       = "mem",
+> >
+> > >   * what the plan is for the future
+> >
+> > My problem is with linking a single QEMU binary, as these two symbols
+> > (hmp_info_mem and hmp_info_tlb) clash.
 > 
->   info->has_handle = true;
+> Yes, but they both (implicitly) operate on the current HMP CPU,
+> so the problem with linking into a single binary is that they're
+> not indirected through a method on the CPU object, not the syntax
+> used in the monitor to invoke them, presumably.
 > 
-> inside this 'if' block.
-
-I think this is another temporarily-awkward case that gets resolved
-with:
-
-  i386/sev: Update query-sev QAPI format to handle SEV-SNP
-
-With that patch 'handle' is always available for SEV guests, and never
-available for SNP, and that's managed through a discriminated union
-type. I think that info->handle should be treated the same as the
-other fields as part of this patch and any changes in how they are
-reported should be kept in the above-mentioned patch.
-
-This might be another artifact from v2's handling. Will get this fixed
-up.
-
--Mike
-
-> > +        }
-
+> > I'm indeed only postponing the problem, without looking at what
+> > this code does. I did it adding hmp_info_mmu_tlb/mem hooks in
+> > TCGCPUOps ("hw/core/tcg-cpu-ops.h"), so the command can be
+> > dispatched per target vcpu as target-agnostic code in
+> > monitor/hmp-cmds.c:
+> >
+> > +#include "hw/core/tcg-cpu-ops.h"
+> > +
+> > +static void hmp_info_mmu_tlb(Monitor *mon, CPUState *cpu)
+> > +{
+> > +    const TCGCPUOps *tcg_ops = cpu->cc->tcg_ops;
+> > +
+> > +    if (tcg_ops->hmp_info_mmu_tlb) {
+> > +        tcg_ops->hmp_info_mmu_tlb(mon, cpu_env(cpu));
+> > +    } else {
+> > +        monitor_puts(mon, "No per-CPU information available on this
+> > target\n");
+> > +    }
+> > +}
 > 
-> > +        info->api_major = sev_common->api_major;
-> > +        info->api_minor = sev_common->api_minor;
-> > +        info->build_id = sev_common->build_id;
-> > +        info->state = sev_common->state;
-> > +        /* we only report the lower 32-bits of policy for SNP, ok for now... */
-> > +        info->policy =
-> > +            (uint32_t)object_property_get_uint(OBJECT(sev_common),
-> > +                                               "policy", NULL);
-> >      }
+> These aren't TCG specific though, so why TCGCPUOps ?
 > 
-> With regards,
-> Daniel
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> > > I am definitely not a fan of either of these commands, because
+> > > (as we currently implement them) they effectively require each
+> > > target architecture to implement a second copy of the page table
+> > > walking code. But before we can deprecate them we need to be
+> > > pretty sure that "info mmu" is what we want to replace them with.
+> >
+> > An alternative is to just deprecate them, without adding "info mmu" :)
+> >
+> > It is OK to un-deprecate stuff if we realize its usefulness.
 > 
+> The commands are there because some users find them useful.
+> I just dislike them because I think they're a bit niche and
+> annoying to implement and not consistent across target
+> architectures and not very well documented...
+> 
+> By the way, we have no obligation to follow the deprecate-and-drop
+> process for HMP commands; unlike QMP, we give ourselves the
+> license to vary it when we feel like it, because the users are
+> humans, not programs or scripts.
+
+Right, so no rush to get the deprecation in; change it when you agree
+what you'd like a replacement to look like.
+
+Dave
+
+> -- PMM
+-- 
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
