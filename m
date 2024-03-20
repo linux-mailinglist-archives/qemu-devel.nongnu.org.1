@@ -2,89 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFC4880BFC
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:28:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17746880C41
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:45:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmqMK-0006E2-Tr; Wed, 20 Mar 2024 03:27:36 -0400
+	id 1rmqbs-0003fH-07; Wed, 20 Mar 2024 03:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1rmqMJ-0006DT-8G
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:27:35 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
- id 1rmqMH-0003jW-NJ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:27:35 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6e6a9fafacdso5294012b3a.2
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 00:27:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1710919652; x=1711524452; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0mB7j8AGNJd84zJhNNXFzR1ILnT0s2AeibBFP1ll9q8=;
- b=ehNSPAvLOfuDsEsdmLebVian5yZ5QNLj8JZOQPE2HjEdUbVWTkTNDYyF7EgFjujZuM
- gfxwdWIO+upj8u5/5a6AhnGVOI16dyFuthxMWdLQMRgHCWdJaqHnT3yIvoLQ0F+gL/4/
- KKCDLmsMPoDvWrh9VdcLu4yp01Laj/L2yWc1oE66hNjpPVAs/44k7CJuoS7LifH51qr4
- vldv5d5Qn30eB3ntC9xm6xvpho//Q7s3qdqcatfo5QHga0FwH1MRAH/+XjlH/1L/pPBU
- ejpnG3EEVULaYHuVthhhZ71fQq6dS1LdmpAd6R9a2XybBC288qkTaaNFrjFwmNeQrfBa
- waxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710919652; x=1711524452;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0mB7j8AGNJd84zJhNNXFzR1ILnT0s2AeibBFP1ll9q8=;
- b=GVJc5zbuC2eC7Hzpw87wY2iaBXheHiPEJjmd/xcemK+LMEIuua2wH5hP8+9zk5u2tL
- 2jQVk+ZzBfWJ/ogCmGScu0yugY03SkquoKACQZjHFJSclfqhiFgvUJwltOW+txUcs00s
- Pd26sIwO5+b8Nk8ojLf3eYUvrWmE1qo6z7xww5p7QzRnX1yLAbQpQfUVMVA0YPEU+ZTv
- kpzoHoaam+wjozDjz/Nl0qXU8fHWaMrPgD2DbK+G664UL8C7In0rooDe+W73BeJK49V6
- jiS6cxtM/mC6Aq3YX/ApiKHw7SRTTfOV9QQe5j124RmsIXAiiQj7hmbnK+ST0UK7+isg
- mjeg==
-X-Gm-Message-State: AOJu0Yy95kxKbW6QqFgmPhyACsWMVdv7UYvzUbW/rFd55MsOhIwI36j3
- XKgJz7Uc3con7SXn8xSSuyinR+eAH71ON7utpUWfwKrzu01+0N2Arq9m/Lqq/vamKzOFLaXDAfe
- W2oEiCM6kutaIw7+xuxHv6trXXjQJc65Y/S+2k9PC6x2MHx9CFtTGuKoDJYoHNqS8OQCXBIjpzS
- lBN0UEVapqk6VjT2+xss0a72PbVBVVAkvN0DQnwg==
-X-Google-Smtp-Source: AGHT+IGbcJ0cskWqEKqhHDV9HjFrHuflfwV+4LJGPVCaJo+dLuXAq5K9LbCHO3N9M+kukDWRQ6TQWg==
-X-Received: by 2002:a05:6a00:4b52:b0:6e5:6971:55f with SMTP id
- kr18-20020a056a004b5200b006e56971055fmr19479523pfb.28.1710919651826; 
- Wed, 20 Mar 2024 00:27:31 -0700 (PDT)
-Received: from duncan.localdomain (114-35-142-126.hinet-ip.hinet.net.
- [114.35.142.126]) by smtp.gmail.com with ESMTPSA id
- p10-20020a056a000a0a00b006e6b45debe8sm10811376pfh.78.2024.03.20.00.27.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Mar 2024 00:27:31 -0700 (PDT)
-From: Max Chou <max.chou@sifive.com>
-To: qemu-devel@nongnu.org,
-	qemu-riscv@nongnu.org
-Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH] target/riscv: rvv: Remove redudant SEW checking for vector fp
- narrow/widen instructions
-Date: Wed, 20 Mar 2024 15:25:05 +0800
-Message-Id: <20240320072709.1043227-5-max.chou@sifive.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320072709.1043227-1-max.chou@sifive.com>
-References: <20240320072709.1043227-1-max.chou@sifive.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmqbq-0003es-45
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:43:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rmqbe-0007dx-Gz
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:43:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710920605;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=viy/lnJO1Y/zGg7lkH2h/07XOu8sAq27+f9Bq4tQhrY=;
+ b=WLrFilmy8G5+B6yATDDfBhavWFsnl3PY5LiKc4SPXfW8RW28BtzSk+r1OZOdFqFHXeK4vz
+ ldKkEo9HaKQ4nF97GQmPsplSPs4+3iLMoMQmDWdtziS0HelUjhYaN/AOO3yHjfdviva66w
+ vmRy4Nr8MGebkchbPK3hHKFvJlp6yLs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-235-DmAzt-b_MfSsA4CF_CZ97g-1; Wed, 20 Mar 2024 03:43:22 -0400
+X-MC-Unique: DmAzt-b_MfSsA4CF_CZ97g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BEAAE8007A1;
+ Wed, 20 Mar 2024 07:43:21 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.138])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9DF7D492BD6;
+ Wed, 20 Mar 2024 07:43:20 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 96D4A21E6A28; Wed, 20 Mar 2024 08:43:15 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: jsnow@redhat.com,
+	peter.maydell@linaro.org,
+	michael.roth@amd.com
+Subject: [PATCH 0/7] qapi: Refactor QAPISchemaVariants
+Date: Wed, 20 Mar 2024 08:43:08 +0100
+Message-ID: <20240320074315.23167-1-armbru@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=max.chou@sifive.com; helo=mail-pf1-x42f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,91 +79,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the checking functions check both the single and double width
-operators at the same time, then the single width operator checking
-functions (require_rvf[min]) will check whether the SEW is 8.
+QAPISchemaVariants represents either a union type's branches, or an
+alternate type's alternatives.  Much of its code is conditional on
+which one it actually is.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
----
- target/riscv/insn_trans/trans_rvv.c.inc | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+This series moves the conditional code to new subtypes
+QAPISchemaBranches and QAPISchemaAlternatives.
 
-diff --git a/target/riscv/insn_trans/trans_rvv.c.inc b/target/riscv/insn_trans/trans_rvv.c.inc
-index 19059fea5f..08c22f48cb 100644
---- a/target/riscv/insn_trans/trans_rvv.c.inc
-+++ b/target/riscv/insn_trans/trans_rvv.c.inc
-@@ -2333,7 +2333,6 @@ static bool opfvv_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dss(s, a->rd, a->rs1, a->rs2, a->vm);
- }
-@@ -2373,7 +2372,6 @@ static bool opfvf_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_ds(s, a->rd, a->rs2, a->vm);
- }
-@@ -2406,7 +2404,6 @@ static bool opfwv_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dds(s, a->rd, a->rs1, a->rs2, a->vm);
- }
-@@ -2446,7 +2443,6 @@ static bool opfwf_widen_check(DisasContext *s, arg_rmrr *a)
-     return require_rvv(s) &&
-            require_rvf(s) &&
-            require_scale_rvf(s) &&
--           (s->sew != MO_8) &&
-            vext_check_isa_ill(s) &&
-            vext_check_dd(s, a->rd, a->rs2, a->vm);
- }
-@@ -2704,8 +2700,7 @@ static bool opffv_widen_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_widen_check(s, a) &&
-            require_rvfmin(s) &&
--           require_scale_rvfmin(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvfmin(s);
- }
- 
- #define GEN_OPFV_WIDEN_TRANS(NAME, CHECK, HELPER, FRM)             \
-@@ -2810,16 +2805,14 @@ static bool opffv_narrow_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_narrow_check(s, a) &&
-            require_rvfmin(s) &&
--           require_scale_rvfmin(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvfmin(s);
- }
- 
- static bool opffv_rod_narrow_check(DisasContext *s, arg_rmr *a)
- {
-     return opfv_narrow_check(s, a) &&
-            require_rvf(s) &&
--           require_scale_rvf(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvf(s);
- }
- 
- #define GEN_OPFV_NARROW_TRANS(NAME, CHECK, HELPER, FRM)            \
-@@ -2947,8 +2940,7 @@ static bool freduction_widen_check(DisasContext *s, arg_rmrr *a)
- {
-     return reduction_widen_check(s, a) &&
-            require_rvf(s) &&
--           require_scale_rvf(s) &&
--           (s->sew != MO_8);
-+           require_scale_rvf(s);
- }
- 
- GEN_OPFVV_WIDEN_TRANS(vfwredusum_vs, freduction_widen_check)
+This also lets us treat QAPISchemaVariants.tag_member like the other
+attribute that become known only in .check().
+
+Markus Armbruster (7):
+  qapi: New QAPISchemaBranches, QAPISchemaAlternatives
+  qapi: Rename visitor parameter @variants to @branches
+  qapi: Rename visitor parameter @variants to @alternatives
+  qapi: Rename QAPISchemaObjectType.variants to .branches
+  qapi: Rename QAPISchemaAlternateType.variants to .alternatives
+  qapi: Move conditional code from QAPISchemaVariants to its subtypes
+  qapi: Simplify QAPISchemaVariants @tag_member
+
+ docs/sphinx/qapidoc.py         |  21 ++--
+ scripts/qapi/commands.py       |   2 +-
+ scripts/qapi/events.py         |   2 +-
+ scripts/qapi/gen.py            |   2 +-
+ scripts/qapi/introspect.py     |  15 +--
+ scripts/qapi/schema.py         | 223 +++++++++++++++++----------------
+ scripts/qapi/types.py          |  12 +-
+ scripts/qapi/visit.py          |  24 ++--
+ tests/qapi-schema/test-qapi.py |   9 +-
+ 9 files changed, 163 insertions(+), 147 deletions(-)
+
 -- 
-2.31.1
+2.44.0
 
 
