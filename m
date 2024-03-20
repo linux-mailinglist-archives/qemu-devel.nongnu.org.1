@@ -2,64 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2515880B72
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:51:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5346880B7A
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:51:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmplb-00025h-7c; Wed, 20 Mar 2024 02:49:39 -0400
+	id 1rmplg-000289-Dx; Wed, 20 Mar 2024 02:49:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplZ-00025A-1C
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmpld-00026f-5W
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplX-0001QS-Jl
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:36 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmplb-0001RQ-LI
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:49:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710917374;
+ s=mimecast20190719; t=1710917379;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=e5kYKNHQKi1gk6f/JikJQ1jsOlTCVUQDBhJjU7DU+9A=;
- b=CsISVhbn24gnTAXhSLUNR9fOS0GUUwKlAUei1SNYq1U35+RCT8JaWQm9+3uxMc9g+thXOO
- G39sRYi8vDz917D1/oG569mxNbJFvNgXb8RnyDjAfC9Bhp7xTkrLi0//kGn3caDuaA7PQn
- ttHIO67HDFVa2sNh7Jz5iaAUhuvs9nY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-o-Ww6NikOkGr_Qgj9J6Xzw-1; Wed, 20 Mar 2024 02:49:31 -0400
-X-MC-Unique: o-Ww6NikOkGr_Qgj9J6Xzw-1
+ bh=EWgZMSPapRs80HzAlE2Bm1sGCHTu++5Q66lqfwh4cSg=;
+ b=cUHvuRBdlDsB74Nm0qug1M5oNXMnWpshn3gSJmyw1nK1RBfGHy8HPXufM8Mu/fyPJLe8XU
+ uUYNEqeG1shZPlByJXcZ7qUWHI5QYT7iX/4q8bWgbck7w0TgOl5btK55BgXvXNEobGumZC
+ 9/nnboNdXAHnVa89wsGLo6MWsY1sO20=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-47-Fx9759M7PUq7jEJtS8li6w-1; Wed,
+ 20 Mar 2024 02:49:34 -0400
+X-MC-Unique: Fx9759M7PUq7jEJtS8li6w-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 190BA8007A4;
- Wed, 20 Mar 2024 06:49:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E56503CBDF61;
+ Wed, 20 Mar 2024 06:49:33 +0000 (UTC)
 Received: from corto.redhat.com (unknown [10.39.192.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BFDFF1C060A4;
- Wed, 20 Mar 2024 06:49:28 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5FB481C060A6;
+ Wed, 20 Mar 2024 06:49:31 +0000 (UTC)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+To: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Peter Xu <peterx@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Markus Armbruster <armbru@redhat.com>,
- Prasad Pandit <pjp@fedoraproject.org>, Eric Auger <eric.auger@redhat.com>
-Subject: [PATCH for-9.1 v5 02/14] vfio: Always report an error in
- vfio_save_setup()
-Date: Wed, 20 Mar 2024 07:48:58 +0100
-Message-ID: <20240320064911.545001-3-clg@redhat.com>
+ Prasad Pandit <pjp@fedoraproject.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ qemu-block@nongnu.org
+Subject: [PATCH for-9.1 v5 03/14] migration: Always report an error in
+ block_save_setup()
+Date: Wed, 20 Mar 2024 07:48:59 +0100
+Message-ID: <20240320064911.545001-4-clg@redhat.com>
 In-Reply-To: <20240320064911.545001-1-clg@redhat.com>
 References: <20240320064911.545001-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -86,67 +89,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This will prepare ground for future changes adding an Error** argument
 to the save_setup() handler. We need to make sure that on failure,
-vfio_save_setup() always sets a new error.
+block_save_setup() always sets a new error.
 
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/migration.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
-index 1149c6b3740f7f7bb8febdedf435be1adb223e59..bf5a29ddc15b0dbc7ae9c44f289539dd0cdddb0d 100644
---- a/hw/vfio/migration.c
-+++ b/hw/vfio/migration.c
-@@ -381,6 +381,7 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
-     VFIODevice *vbasedev = opaque;
-     VFIOMigration *migration = vbasedev->migration;
-     uint64_t stop_copy_size = VFIO_MIG_DEFAULT_DATA_BUFFER_SIZE;
-+    int ret;
- 
-     qemu_put_be64(f, VFIO_MIG_FLAG_DEV_SETUP_STATE);
- 
-@@ -395,13 +396,13 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+ Changes in v5:
+
+ - Rebased on 2e128776dc56 ("migration: Skip only empty block devices")
+
+ migration/block.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/migration/block.c b/migration/block.c
+index 2b9054889ad2ba739828594c50cf047703757e96..f8a11beb37dac3df5c2cc654db6440509d1181ea 100644
+--- a/migration/block.c
++++ b/migration/block.c
+@@ -367,7 +367,7 @@ static void unset_dirty_tracking(void)
      }
- 
-     if (vfio_precopy_supported(vbasedev)) {
--        int ret;
--
-         switch (migration->device_state) {
-         case VFIO_DEVICE_STATE_RUNNING:
-             ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_PRE_COPY,
-                                            VFIO_DEVICE_STATE_RUNNING);
-             if (ret) {
-+                error_report("%s: Failed to set new PRE_COPY state",
-+                             vbasedev->name);
-                 return ret;
-             }
- 
-@@ -412,6 +413,8 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
-             /* vfio_save_complete_precopy() will go to STOP_COPY */
-             break;
-         default:
-+            error_report("%s: Invalid device state %d", vbasedev->name,
-+                         migration->device_state);
-             return -EINVAL;
-         }
-     }
-@@ -420,7 +423,13 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
- 
-     qemu_put_be64(f, VFIO_MIG_FLAG_END_OF_STATE);
- 
--    return qemu_file_get_error(f);
-+    ret = qemu_file_get_error(f);
-+    if (ret < 0) {
-+        error_report("%s: save setup failed : %s", vbasedev->name,
-+                     strerror(-ret));
-+    }
-+
-+    return ret;
  }
  
- static void vfio_save_cleanup(void *opaque)
+-static int init_blk_migration(QEMUFile *f)
++static int init_blk_migration(QEMUFile *f, Error **errp)
+ {
+     BlockDriverState *bs;
+     BlkMigDevState *bmds;
+@@ -378,7 +378,6 @@ static int init_blk_migration(QEMUFile *f)
+         BlkMigDevState *bmds;
+         BlockDriverState *bs;
+     } *bmds_bs;
+-    Error *local_err = NULL;
+     int ret;
+ 
+     GRAPH_RDLOCK_GUARD_MAINLOOP();
+@@ -406,6 +405,8 @@ static int init_blk_migration(QEMUFile *f)
+             continue;
+         }
+         if (sectors < 0) {
++            error_setg(errp, "Error getting length of block device %s",
++                       bdrv_get_device_name(bs));
+             ret = sectors;
+             bdrv_next_cleanup(&it);
+             goto out;
+@@ -442,9 +443,8 @@ static int init_blk_migration(QEMUFile *f)
+         bs = bmds_bs[i].bs;
+ 
+         if (bmds) {
+-            ret = blk_insert_bs(bmds->blk, bs, &local_err);
++            ret = blk_insert_bs(bmds->blk, bs, errp);
+             if (ret < 0) {
+-                error_report_err(local_err);
+                 goto out;
+             }
+ 
+@@ -714,6 +714,7 @@ static void block_migration_cleanup(void *opaque)
+ static int block_save_setup(QEMUFile *f, void *opaque)
+ {
+     int ret;
++    Error *local_err = NULL;
+ 
+     trace_migration_block_save("setup", block_mig_state.submitted,
+                                block_mig_state.transferred);
+@@ -721,18 +722,27 @@ static int block_save_setup(QEMUFile *f, void *opaque)
+     warn_report("block migration is deprecated;"
+                 " use blockdev-mirror with NBD instead");
+ 
+-    ret = init_blk_migration(f);
++    ret = init_blk_migration(f, &local_err);
+     if (ret < 0) {
++        error_report_err(local_err);
+         return ret;
+     }
+ 
+     /* start track dirty blocks */
+     ret = set_dirty_tracking();
+     if (ret) {
++        error_setg_errno(&local_err, -ret,
++                         "Failed to start block dirty tracking");
++        error_report_err(local_err);
+         return ret;
+     }
+ 
+     ret = flush_blks(f);
++    if (ret) {
++        error_setg_errno(&local_err, -ret, "Flushing block failed");
++        error_report_err(local_err);
++        return ret;
++    }
+     blk_mig_reset_dirty_cursor();
+     qemu_put_be64(f, BLK_MIG_FLAG_EOS);
+ 
 -- 
 2.44.0
 
