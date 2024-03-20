@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE02A880BB5
+	by mail.lfdr.de (Postfix) with ESMTPS id A0815880BB4
 	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 08:10:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmq4r-0005G6-9x; Wed, 20 Mar 2024 03:09:33 -0400
+	id 1rmq4m-0005Dc-OF; Wed, 20 Mar 2024 03:09:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4k-0005Da-KX
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4i-0005Bs-4u
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4h-00074M-3H
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:25 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rmq4g-00074A-II
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 03:09:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710918562;
+ s=mimecast20190719; t=1710918561;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rNP75maIU6HiUztmhSt6mvWTZVD3zQj8BstoZG1nQJA=;
- b=ahAN3wps6AhoqFwy9d6BmvczYbLomRe180cfF2lk0rzS3LoAbzFTU0QR4sFtjCxUP3ApSQ
- BgHHZxWA81Xr297pWezcPk+G+SwdUHcVO7hy33+L/LS/YKM/lnSeoyYBuQpnnic+m1lsA8
- SLtBwRCFLqV5BbfRMDynXST0UdxwhUM=
+ bh=ZCb0Ahly+uLkPyvjKArAjG2PSskNQR97uhuKVZAJGpU=;
+ b=aSBSVJMuIIoU6GrsR2iu/o7eoeXOo3uxcoCeH0F2n1obZtGu7yu/LGFi4rI7yvBmVMfwTy
+ ljQumsH1oWxQLYJwWXk7PzlF6+FKZJ8kVqUNT3umJYCctMlCh4d/uAlMTo8prRLASOfS/P
+ YgBHe+sVQKflvl04JgnPL5P9DZRizng=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-OG0W82r5PSCUFQij5nZ_cQ-1; Wed, 20 Mar 2024 03:09:18 -0400
-X-MC-Unique: OG0W82r5PSCUFQij5nZ_cQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-93-wxkMDjY9PVi-hZ7kFxTJkw-1; Wed, 20 Mar 2024 03:09:18 -0400
+X-MC-Unique: wxkMDjY9PVi-hZ7kFxTJkw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6146E101CF8C;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6607485178E;
  Wed, 20 Mar 2024 07:09:18 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.134])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0669A200E1B3;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0778A492BD0;
  Wed, 20 Mar 2024 07:09:18 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id A37491800DD8; Wed, 20 Mar 2024 08:08:51 +0100 (CET)
+ id B00F41800DD9; Wed, 20 Mar 2024 08:08:51 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 2/5] roms/efi: drop workaround for edk2-stable202308
-Date: Wed, 20 Mar 2024 08:08:45 +0100
-Message-ID: <20240320070851.18933-3-kraxel@redhat.com>
+Subject: [PULL 3/5] roms/efi: exclude efi shell from secure boot builds
+Date: Wed, 20 Mar 2024 08:08:46 +0100
+Message-ID: <20240320070851.18933-4-kraxel@redhat.com>
 In-Reply-To: <20240320070851.18933-1-kraxel@redhat.com>
 References: <20240320070851.18933-1-kraxel@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -80,52 +81,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Not needed for newer edk2 versions.
-
+Bugzilla: https://bugzilla.tianocore.org/show_bug.cgi?id=4641
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20240314115307.628118-3-kraxel@redhat.com>
+Message-ID: <20240314115307.628118-4-kraxel@redhat.com>
 ---
- roms/edk2-build.config | 6 ------
- 1 file changed, 6 deletions(-)
+ roms/edk2-build.config | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/roms/edk2-build.config b/roms/edk2-build.config
-index 0d367dbdb775..05cbafef70cb 100644
+index 05cbafef70cb..ef3eb7beebe7 100644
 --- a/roms/edk2-build.config
 +++ b/roms/edk2-build.config
-@@ -32,9 +32,6 @@ PcdDxeNxMemoryProtectionPolicy = 0xC000000000007FD1
- # shim.efi has broken MemAttr code
- PcdUninstallMemAttrProtocol    = TRUE
+@@ -18,6 +18,7 @@ CAVIUM_ERRATUM_27456     = TRUE
+ [opts.ovmf.sb.smm]
+ SECURE_BOOT_ENABLE       = TRUE
+ SMM_REQUIRE              = TRUE
++BUILD_SHELL              = FALSE
  
--[pcds.workaround.202308]
--PcdFirstTimeWakeUpAPsBySipi = FALSE
--
- ####################################################################################
- # i386
- 
-@@ -66,7 +63,6 @@ desc = ovmf build (64-bit)
- conf = OvmfPkg/OvmfPkgX64.dsc
- arch = X64
- opts = common
--pcds = workaround.202308
- plat = OvmfX64
- dest = ../pc-bios
- cpy1 = FV/OVMF_CODE.fd edk2-x86_64-code.fd
-@@ -77,7 +73,6 @@ conf = OvmfPkg/OvmfPkgIa32X64.dsc
- arch = IA32 X64
- opts = common
-        ovmf.sb.smm
--pcds = workaround.202308
- plat = Ovmf3264
- dest = ../pc-bios
- cpy1 = FV/OVMF_CODE.fd edk2-x86_64-secure-code.fd
-@@ -87,7 +82,6 @@ desc = ovmf build for microvm
- conf = OvmfPkg/Microvm/MicrovmX64.dsc
- arch = X64
- opts = common
--pcds = workaround.202308
- plat = MicrovmX64
- dest = ../pc-bios
- cpy1 = FV/MICROVM.fd  edk2-x86_64-microvm.fd
+ [opts.armvirt.silent]
+ DEBUG_PRINT_ERROR_LEVEL  = 0x80000000
 -- 
 2.44.0
 
