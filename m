@@ -2,52 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A728809A1
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 03:41:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7718809A3
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 03:42:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmlsS-0003Jr-At; Tue, 19 Mar 2024 22:40:28 -0400
+	id 1rmltk-0005cs-B2; Tue, 19 Mar 2024 22:41:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rmlsN-0003I1-P7
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 22:40:23 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rmlsM-0005z9-0N
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 22:40:23 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxPOmQTPpluQ4bAA--.54675S3;
- Wed, 20 Mar 2024 10:40:16 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxfROLTPplkAFeAA--.18372S5; 
- Wed, 20 Mar 2024 10:40:15 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 3/3] target/loongarch: Fix qemu-loongarch64 hang when executing
- 'll.d $t0, $t0, 0'
-Date: Wed, 20 Mar 2024 10:40:10 +0800
-Message-Id: <20240320024010.1659193-4-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240320024010.1659193-1-gaosong@loongson.cn>
-References: <20240320024010.1659193-1-gaosong@loongson.cn>
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rmlti-0005c6-Fw; Tue, 19 Mar 2024 22:41:46 -0400
+Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rmltg-0006BT-41; Tue, 19 Mar 2024 22:41:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linux.alibaba.com; s=default;
+ t=1710902489; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+ bh=zUQbuKIGDIGmQijVfWwtup6rm2YaudwQCJMVWSxE/3U=;
+ b=cUoTSOxzUzRHV90pXjzjCn5GbBwfnaJ+uKz0CS/Om25FrMh9U9VCz7+NMsdclTtSeQUALZDF7DlT4MmaLtNvk+U/L9Nc9JB4aMHR7YDf+r7dA63n7VhjPBRnQhZJ00R46s8pSNtGVVU6EkXHHTSmBzqhkgWYZH1jTSGBsDNtenc=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R921e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046050;
+ MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0W2vb3IZ_1710902487; 
+Received: from 30.21.185.204(mailfrom:eric.huang@linux.alibaba.com
+ fp:SMTPD_---0W2vb3IZ_1710902487) by smtp.aliyun-inc.com;
+ Wed, 20 Mar 2024 10:41:28 +0800
+Message-ID: <c7487e4c-2d9a-42db-b920-30f1463e8a34@linux.alibaba.com>
+Date: Wed, 20 Mar 2024 10:41:26 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] target/riscv: Add right functions to set agnostic
+ elements
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com, liwei1518@gmail.com, 
+ bin.meng@windriver.com, alistair.francis@wdc.com, palmer@dabbelt.com
+References: <20240306092013.21231-1-eric.huang@linux.alibaba.com>
+ <20240306092013.21231-3-eric.huang@linux.alibaba.com>
+ <c765adcb-2702-45d3-b875-6eaa6b6d7d0c@ventanamicro.com>
+ <675f13e6-4030-4099-a97b-f5bd38d030e9@linaro.org>
+From: Huang Tao <eric.huang@linux.alibaba.com>
+In-Reply-To: <675f13e6-4030-4099-a97b-f5bd38d030e9@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxfROLTPplkAFeAA--.18372S5
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.101;
+ envelope-from=eric.huang@linux.alibaba.com;
+ helo=out30-101.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,43 +72,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On gen_ll, if a->imm is zero, make_address_x return src1,
-but the load to destination may clobber src1. We use a new
-destination to fix this problem.
+I will rewrite the patch, and send a new version soon.
 
-Fixes: c5af6628f4be (target/loongarch: Extract make_address_i() helper)
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240320013955.1561311-1-gaosong@loongson.cn>
----
- target/loongarch/tcg/insn_trans/trans_atomic.c.inc | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks,
 
-diff --git a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-index 80c2e286fd..974bc2a70f 100644
---- a/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-+++ b/target/loongarch/tcg/insn_trans/trans_atomic.c.inc
-@@ -5,14 +5,14 @@
- 
- static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
- {
--    TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-+    TCGv t1 = tcg_temp_new();
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     TCGv t0 = make_address_i(ctx, src1, a->imm);
- 
--    tcg_gen_qemu_ld_i64(dest, t0, ctx->mem_idx, mop);
-+    tcg_gen_qemu_ld_i64(t1, t0, ctx->mem_idx, mop);
-     tcg_gen_st_tl(t0, tcg_env, offsetof(CPULoongArchState, lladdr));
--    tcg_gen_st_tl(dest, tcg_env, offsetof(CPULoongArchState, llval));
--    gen_set_gpr(a->rd, dest, EXT_NONE);
-+    tcg_gen_st_tl(t1, tcg_env, offsetof(CPULoongArchState, llval));
-+    gen_set_gpr(a->rd, t1, EXT_NONE);
- 
-     return true;
- }
--- 
-2.25.1
+Huang Tao
 
+On 2024/3/20 07:32, Richard Henderson wrote:
+> On 3/19/24 11:57, Daniel Henrique Barboza wrote:
+>> This seems correct but a bit over complicated at first glance. I 
+>> wonder if we have
+>> something simpler already done somewhere.
+>>
+>> Richard, does ARM (or any other arch) do anything of the sort? Aside 
+>> from more trivial
+>> byte swaps using bswap64() I didn't find anything similar.
+>
+> No, nothing quite like.
+>
+>> We recently posted a big endian related fix here:
+>>
+>> [PATCH for 9.0 v15 03/10] target/riscv/vector_helper.c: fix 'vmvr_v' 
+>> memcpy endianess
+>>
+>> But not sure how to apply it here.
+>
+> It's almost exactly the same, only with memset instead of memcpy.
+>
+>     if (HOST_BIG_ENDIAN && idx % 8 != 0) {
+>         uint32_t j = ROUND_UP(idx, 8);
+>         memset(vd + H(j - 1), -1, j - idx);
+>         idx = j;
+>     }
+>     memset(vd + idx, -1, tot - idx);
+>
+>
+> I'll note that you don't need to change the api of vext_set_elems_1s 
+> -- so most of these patches are not required.
+>
+>
+> r~
 
