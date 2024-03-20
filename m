@@ -2,92 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A709488154E
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 17:15:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27120881555
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 17:15:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmyZm-00031O-To; Wed, 20 Mar 2024 12:14:04 -0400
+	id 1rmyb5-0005bn-0q; Wed, 20 Mar 2024 12:15:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmyZb-000317-OF
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:52 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1rmyZX-00035s-3w
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:13:51 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-a45f257b81fso1807066b.0
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 09:13:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710951225; x=1711556025; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3Yct75axRVllCYvwRsbgggiBS0DJ4rQPjxub5vw7VsY=;
- b=vxV9R140ojGixNPs1ZAjnFlMpwhVzJrJEQAgLcVLYNKW9biWAMqHQipsNoQ7/GZ/u9
- Ro3KZR+Mw5dyUdX5G5bPBEqYQ4kY9W2w0GwzNSw7m0MW48M0XufSLStGoPFW/uodzBVd
- zBLwZ4JdPMANQX2TgBxtOAOebpZH7MRssbxUa+L0ImN1llcJ/u/BqlRIiulAteuvETsr
- m667nuELMAzMqvPFoh65zS/+swp86Zghaks0rNqZr5k0ndoqI84M1y5zkkVRVQvFbzOq
- yt2GVrXHS+EMxTcXkvQn8XlFejYIEWL63FyGfcnE1050rZGelNwIawqAnEeAgOpiSCOw
- NGpw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmyb0-0005L5-VL
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:15:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmyaz-0003Sa-Er
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 12:15:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710951314;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=T4IhxAuWNgzsFqb6tIlcQFajJYSC/Su8joooqt+6RRU=;
+ b=MhVWwfkRVTsHTL55ggC8jH3QlzeEdGBvtfP1jzvqOyuLa9kagWwNdfOo/dZiXD7+iaF8bs
+ dkssLwOAQ2ubvPZ7l1VEAn1/dVrzEwPViGuD/J0hwaXltk1W3Ebcj5Wpn7ypm3fsFJ+EIP
+ BJwXXog9MenSx7zuohcUf0P3i3dmzJo=
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
+ [209.85.210.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-FAAjPmExMyiYA6NeZPaZNQ-1; Wed, 20 Mar 2024 12:15:12 -0400
+X-MC-Unique: FAAjPmExMyiYA6NeZPaZNQ-1
+Received: by mail-ot1-f71.google.com with SMTP id
+ 46e09a7af769-6e46420dca9so4487190a34.3
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 09:15:12 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710951225; x=1711556025;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3Yct75axRVllCYvwRsbgggiBS0DJ4rQPjxub5vw7VsY=;
- b=QUXnOMUz7zZPa/dHeKTGQ2neHV1o7+kL9qNSGmzSkib2Of0JTxyvznGEeGAArTeHcZ
- LLjFemGnl1gisiWJDRoxhDl4FFaYBNUSpfIfB64UxLBf7wkF8+YcCUncaqOM1zR8s40s
- d4OG4/R0sdQIUeyYsFrirqQltmOdBMaB3UMYTlwTvC9WnXeJ4Ublpgzoo2GD6PpwnoOP
- g2GGm256HGoN5LlB8omJJOPJ5ANV5Hl+IucYatbWqhCvZvP8KfnSyMRz692Xi2MrDNR2
- ThKAMEK2CY5DkuDfPIy3UMCQaBZ6jXKDLh5BVMpfqED6OlIAmisodKZrzY3fzdtJF1Nt
- oQNQ==
-X-Gm-Message-State: AOJu0YyzDBfM8IL36qx7iuRNmiKaOtbIeRM4XKV4Xwd006KpeJXxqZSN
- oNXM/wpcd8IOV9+xD1dKgbhuKXAFbJwHJe85WUXXkY6zNd11b9yeB9uTUIuXQ0s=
-X-Google-Smtp-Source: AGHT+IH3R2P5oUEea3iQ+QOueX5BuTWMN9LRK9mD69compRcthq69ELR1BgOebR6+l9vnAfeNIxcYA==
-X-Received: by 2002:a17:906:2a0f:b0:a46:c8e6:b825 with SMTP id
- j15-20020a1709062a0f00b00a46c8e6b825mr1558635eje.26.1710951225664; 
- Wed, 20 Mar 2024 09:13:45 -0700 (PDT)
-Received: from draig.lan ([85.9.250.243]) by smtp.gmail.com with ESMTPSA id
- w28-20020a170907271c00b00a46acfc72a2sm4874276ejk.84.2024.03.20.09.13.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Mar 2024 09:13:42 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
- by draig.lan (Postfix) with ESMTP id 631B85FB8C;
- Wed, 20 Mar 2024 16:13:41 +0000 (GMT)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Radoslaw Biernacki <rad@semihalf.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Brad Smith <brad@comstyle.com>,
- qemu-arm@nongnu.org (open list:SBSA-REF)
-Subject: [PULL 5/5] tests/avocado: sbsa-ref: add OpenBSD tests for misc 'max'
- setup
-Date: Wed, 20 Mar 2024 16:13:40 +0000
-Message-Id: <20240320161340.391798-6-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240320161340.391798-1-alex.bennee@linaro.org>
-References: <20240320161340.391798-1-alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1710951312; x=1711556112;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=T4IhxAuWNgzsFqb6tIlcQFajJYSC/Su8joooqt+6RRU=;
+ b=rOmXY8kNwQPNzfZA4omYhz2gug5hJxbMI8jFGKKzEwlk493IqxQdU2zw2noZ4suOcI
+ Lt0xenpuRolrvqEtFuAOW83uobA2sRPR1JA0Q+DLne7V8ob1mJZUPP+0BFVZQvt2yFmB
+ zt7AljFGp32C4ndudRB1L1DAv8fYNPzSHEvJZuIpNFnzyrr0jl+C0Y8uLU5gmrmBPMRU
+ AbZ7jXGHp4xjJGMyanm12CrDQrOlXeU/XWofAliX6l4J1JAPQP3u1LQTTNfPC0tyVj/n
+ IGTe1mCgs7YG/Kg3mx8tT1cSaibWl1ppD4AVEgN0UB8S+sDD+JreRShPDd4k9N9hXy5e
+ oVjA==
+X-Gm-Message-State: AOJu0YxbbP85/2k/uXPiHJPf2OhfCA3+wD+90bB33W7ZSh64NiMJBuSV
+ a1ac3p2x1V9KRS8YHqoakMdq/Xy2wRTU1VVOUIVVN7MiKkTqdkyl+ATYsImAGR9NHvV9ghyP38a
+ x8egUoKQahkeWlCPlks+/RIsGs9Ybg2RIbovQaCAt7iPeWMHGphtr
+X-Received: by 2002:a05:6830:1d70:b0:6e6:8516:4866 with SMTP id
+ l16-20020a0568301d7000b006e685164866mr12600270oti.16.1710951312134; 
+ Wed, 20 Mar 2024 09:15:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG5SXrLrO24aMjWMzHB6MM12ePW1/UUxpm7nPE1oUi+NjEX/CxeqywPujgO7EBLwXPakP49HA==
+X-Received: by 2002:a05:6830:1d70:b0:6e6:8516:4866 with SMTP id
+ l16-20020a0568301d7000b006e685164866mr12600232oti.16.1710951311827; 
+ Wed, 20 Mar 2024 09:15:11 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ x14-20020ae9e90e000000b00789ea3555acsm4666094qkf.19.2024.03.20.09.15.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 20 Mar 2024 09:15:11 -0700 (PDT)
+Message-ID: <d58d5134-dbfb-4c07-956a-5e8f3e230798@redhat.com>
+Date: Wed, 20 Mar 2024 17:15:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.1 v5 09/14] memory: Add Error** argument to
+ .log_global_start() handler
+Content-Language: en-US, fr
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Avihai Horon <avihaih@nvidia.com>,
+ Markus Armbruster <armbru@redhat.com>, Prasad Pandit
+ <pjp@fedoraproject.org>, xen-devel@lists.xenproject.org
+References: <20240320064911.545001-1-clg@redhat.com>
+ <20240320064911.545001-10-clg@redhat.com> <Zfr10JG2dTChsLVj@x1n>
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <Zfr10JG2dTChsLVj@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=alex.bennee@linaro.org; helo=mail-ej1-x630.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -9
+X-Spam_score: -1.0
+X-Spam_bar: -
+X-Spam_report: (-1.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,60 +113,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+On 3/20/24 15:42, Peter Xu wrote:
+> On Wed, Mar 20, 2024 at 07:49:05AM +0100, Cédric Le Goater wrote:
+>> Modify all .log_global_start() handlers to take an Error** parameter
+>> and return a bool. Adapt memory_global_dirty_log_start() to interrupt
+>> on the first error the loop on handlers. In such case, a rollback is
+>> performed to stop dirty logging on all listeners where it was
+>> previously enabled.
+>>
+>> Cc: Stefano Stabellini <sstabellini@kernel.org>
+>> Cc: Anthony Perard <anthony.perard@citrix.com>
+>> Cc: Paul Durrant <paul@xen.org>
+>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>> Cc: Paolo Bonzini <pbonzini@redhat.com>
+>> Cc: David Hildenbrand <david@redhat.com>
+>> Signed-off-by: Cédric Le Goater <clg@redhat.com>
+> 
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> 
+> Still one comment below:
+> 
+>> @@ -3014,8 +3044,11 @@ static void listener_add_address_space(MemoryListener *listener,
+>>           listener->begin(listener);
+>>       }
+>>       if (global_dirty_tracking) {
+>> +        /*
+>> +         * Migration has already started. Assert on any error.
+> 
+> If you won't mind, I can change this to:
+> 
+>    /*
+>     * Currently only VFIO can fail log_global_start(), and it's not allowed
+>     * to hotplug a VFIO device during migration, so this should never fail
+>     * when invoked.  If it can start to fail in the future, we need to be
+>     * able to fail the whole listener_add_address_space() and its callers.
+>     */
 
-PAuth makes run timeout on CI so add tests using 'max' without
-it and with impdef one.
+Sure, or I will in a v6. Markus had a comment on 8/14.
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240318-sbsa-ref-firmware-update-v3-4-1c33b995a538@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Thanks,
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index cf8954d02e..98c76c1ff7 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -203,18 +203,36 @@ def boot_openbsd73(self, cpu):
-     def test_sbsaref_openbsd73_cortex_a57(self):
-         """
-         :avocado: tags=cpu:cortex-a57
-+        :avocado: tags=os:openbsd
-         """
-         self.boot_openbsd73("cortex-a57")
- 
-     def test_sbsaref_openbsd73_neoverse_n1(self):
-         """
-         :avocado: tags=cpu:neoverse-n1
-+        :avocado: tags=os:openbsd
-         """
-         self.boot_openbsd73("neoverse-n1")
- 
-+    def test_sbsaref_openbsd73_max_pauth_off(self):
-+        """
-+        :avocado: tags=cpu:max
-+        :avocado: tags=os:openbsd
-+        """
-+        self.boot_openbsd73("max,pauth=off")
-+
-+    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-+    def test_sbsaref_openbsd73_max_pauth_impdef(self):
-+        """
-+        :avocado: tags=cpu:max
-+        :avocado: tags=os:openbsd
-+        """
-+        self.boot_openbsd73("max,pauth-impdef=on")
-+
-+    @skipUnless(os.getenv('AVOCADO_TIMEOUT_EXPECTED'), 'Test might timeout')
-     def test_sbsaref_openbsd73_max(self):
-         """
-         :avocado: tags=cpu:max
-+        :avocado: tags=os:openbsd
-         """
-         self.boot_openbsd73("max")
--
--- 
-2.39.2
+C.
 
 
