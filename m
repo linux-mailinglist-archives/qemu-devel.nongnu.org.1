@@ -2,90 +2,115 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DABB88181D
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 20:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 941AC881820
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 20:49:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn1tq-000476-38; Wed, 20 Mar 2024 15:46:58 -0400
+	id 1rn1va-0004zj-8o; Wed, 20 Mar 2024 15:48:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rn1to-00046x-5g
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:46:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rn1vY-0004zR-Qk
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:48:44 -0400
+Received: from mail-bn8nam12on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2418::600]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rn1tj-0001YZ-Kh
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:46:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710964010;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=djk084YAJ518mC5MnmRzuLhoi3UjEbI7QyEQ9cE1z78=;
- b=a+lCv1zLHFE/aVVus6P+biYbaJUke38p9RcXkyLLZhTacDxOFq1OmXbb+6IhBdmdXrRr8l
- oANcF8b4Ho3/OQWF7vjwPDblY+FlCwgBZx83sG9GVl+QRa4LZuGZqkNNzcCBw4qGTYBJks
- MtpH6b1MZlYeE9EwTwPxA2K02IPM+FY=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-R41w-8rAOgSKzFEMO-LaZg-1; Wed, 20 Mar 2024 15:46:48 -0400
-X-MC-Unique: R41w-8rAOgSKzFEMO-LaZg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-7830635331bso4526085a.1
- for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 12:46:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710964007; x=1711568807;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=djk084YAJ518mC5MnmRzuLhoi3UjEbI7QyEQ9cE1z78=;
- b=JFbIwtapOEBg1KJ9M9c6HUb158z8pO8GfI50YuJkMIkKT3lzNAWEpKGVR1WlQlmsIC
- rGxC0kJcbRKVBdk+B8UpfHvhzYx70e8fshyl0o43vcJcLVZH2lnJDqEDtKGUK08C6rJn
- k7/3/dc8zxa884gOJ9FgR1FtU5pZgNM6QIjfESutXLjtmykpcAtrI0DQ6N4m/BdLMG+1
- wYwhQqDAybWem9eP2R7MMSZx0p7euFeCIl7l+/LjsW5WiSQU4PRmBS6s5hblF4U+h9NJ
- TCgGQfYEmJqlLYy9c7TrxYtnuqnWL+yjuwu3/h5u2gFlHo4JBK7s4eADD4P/M167rg9W
- OceQ==
-X-Gm-Message-State: AOJu0Yzz/ncD1N+8QfRqdjOMYy/tcLPMufOfDfZ/IoAdNoqh6GC0XhY6
- +M2D4KsqRtvTP2PihF3k0BzcBVzw+PASTrkvKbgdX6BlRYSs2Q+6gdyVsFrgSQMinHQVShHcrhW
- BF8Q74USDXNOcBMJOQyYQgI4xjA68J5Onr7TWsx6A9xJsrhjhvPR2
-X-Received: by 2002:a37:e107:0:b0:78a:22f0:dbf8 with SMTP id
- c7-20020a37e107000000b0078a22f0dbf8mr2179063qkm.0.1710964007484; 
- Wed, 20 Mar 2024 12:46:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXhmid+dsCsqHoxiMHpveJT0NePx/GRCty/YFLQ0jTNEvtzNWqGywUy8sAI0Qi6z0UanSX/g==
-X-Received: by 2002:a37:e107:0:b0:78a:22f0:dbf8 with SMTP id
- c7-20020a37e107000000b0078a22f0dbf8mr2179042qkm.0.1710964006973; 
- Wed, 20 Mar 2024 12:46:46 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- v7-20020a05620a090700b007887583762csm6842413qkv.94.2024.03.20.12.46.45
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 20 Mar 2024 12:46:46 -0700 (PDT)
-Date: Wed, 20 Mar 2024 15:46:44 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Cc: qemu-devel@nongnu.org, Prasad Pandit <ppandit@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Bandan Das <bdas@redhat.com>,
- Julia Suvorova <jusual@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH 2/3] migration: Drop unnecessary check in ram's
- pending_exact()
-Message-ID: <Zfs9JOBhz-I7D_eI@x1n>
-References: <20240117075848.139045-1-peterx@redhat.com>
- <20240117075848.139045-3-peterx@redhat.com>
- <bc88f4572649084cd38a0880d7e096a939f80b14.camel@linux.ibm.com>
- <ZfsxjS4Phkf34f4J@x1n>
- <7c1f0248465d55ff804c32ed7bb366d4a03abdec.camel@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rn1vU-0001oE-Sj
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 15:48:44 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=i6UxG+pvGUcZKQ4BqFFJZBCunEpA8CJOVO2rpHcuGY/NFNsEChTECYtLpcnH3XnabKXE+k5uJqY3Mmyw4NXJ/AnXqgfYJbSO2L2Pw1Psa4B22EQmsjZkgg8fUM37ZIlwyhJHdFrpJPB4K0vLauG/24O5PVa+aiuydKmUNz4xNY7hbKwynIX7YgYlJ6Qw/I26R6BIy/tIeJjUwyGaeQDwMlRn6mfkKbD+rlKMEtbG1tdBvo/1kDrdsaE7qXozEBJORVaHderGvLb0RjuL7ArxeFJ/nQQDbZBW1kFEqoFtQ1xWteeG4XyNi+Jatu/mQ49f43iskL5bqNraKRwoIHxbkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZOB7bEVoZCnQ1QqKsleDnjUv2vl2SO9ocRy1UYKddww=;
+ b=SWHEDd+t764/zoGUd+c/GYQwKeCFBmXVIiM5TJPHNXLmdyPAkkO7ruTPQ/YsaWahMeRRXchMGsjVAghsbME2lFNcv8Js1c4PJ+jumvl8FDntrFh7pP2a2hz3TRZHYNK9V8cyct7mHreeGDQT4MCy8Q4SIWR8CnHrNG+O4SA7nWajqC+QcTPV7Br1jhtEI9Aamfh+3X9RLvtkPMcXlKADl4KexOstg8AFZp8YE35AMBi94Xvzjvu5TUov7TYSwpFc2WM7LZHqZUh9v9zctoN+w890xgcdhHRTH7qniGIC02VIPLtJVY7F7odxMVh5vOOfakgkQXf2oCzidJ/ZCoTDjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZOB7bEVoZCnQ1QqKsleDnjUv2vl2SO9ocRy1UYKddww=;
+ b=3aZFfbXAjoRCIWI5IHKmzhHjLQV8/srLHnX+uG3PoaqKa0OZgUuGKke0zDHCRd0K0ZU+QzOu0EHZHz3O9/0Pa7AtYGQOp6Crv0Qw5P8U107HVQI9HZcmxQvAxix+8dxNvJyMpSuAi0rT7qS/QXGJZZYhhe7x1O7RgZrVQ4+6K9s=
+Received: from BY3PR10CA0008.namprd10.prod.outlook.com (2603:10b6:a03:255::13)
+ by SA3PR12MB8021.namprd12.prod.outlook.com (2603:10b6:806:305::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Wed, 20 Mar
+ 2024 19:48:34 +0000
+Received: from SJ1PEPF00001CDC.namprd05.prod.outlook.com
+ (2603:10b6:a03:255:cafe::28) by BY3PR10CA0008.outlook.office365.com
+ (2603:10b6:a03:255::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27 via Frontend
+ Transport; Wed, 20 Mar 2024 19:48:34 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00001CDC.mail.protection.outlook.com (10.167.242.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Wed, 20 Mar 2024 19:48:34 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 20 Mar
+ 2024 14:48:29 -0500
+Date: Wed, 20 Mar 2024 14:47:54 -0500
+From: Michael Roth <michael.roth@amd.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+CC: <qemu-devel@nongnu.org>, <kvm@vger.kernel.org>, Tom Lendacky
+ <thomas.lendacky@amd.com>, Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?=
+ <berrange@redhat.com>, Markus Armbruster <armbru@redhat.com>, Pankaj Gupta
+ <pankaj.gupta@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>, Isaku Yamahata
+ <isaku.yamahata@linux.intel.com>
+Subject: Re: [PATCH v3 19/49] kvm: Make kvm_convert_memory() obey
+ ram_block_discard_is_enabled()
+Message-ID: <20240320194754.yfu7zrfwvzdwuw23@amd.com>
+References: <20240320083945.991426-1-michael.roth@amd.com>
+ <20240320083945.991426-20-michael.roth@amd.com>
+ <d6acfbef-96a1-42bc-8866-c12a4de8c57c@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <7c1f0248465d55ff804c32ed7bb366d4a03abdec.camel@linux.ibm.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+In-Reply-To: <d6acfbef-96a1-42bc-8866-c12a4de8c57c@redhat.com>
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CDC:EE_|SA3PR12MB8021:EE_
+X-MS-Office365-Filtering-Correlation-Id: d997ffaa-1d3e-4ad1-7b3e-08dc4916ba5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: mAscZMIM5gHuN67KsoMjy3ZIY/VdOMsrBa4MahnFXeHY8YFEJDXdpsQRB+hsFCSm0OD12R1OviYysnslJp3ETJ6t/eiwkdEQrLYBrqcCez3nUZfbhFpNNz4dulQn+4MDEW06IMTg7YcmYNkNG49EmbrNXpuJhZIhpv53Dcd9kCFFyeTe9jby2lRXgbFu/dYJe26fi52Dp44G8n/p040coWYLDMr9/250KAxpdpbgT8BbpD/GzniTiWwITZeZZeNuS650uBkRik4uaF1pqiU1LxIlgJYha/38ykppb/5ntZlJWOTmDTdVtLKK2M+hZfL+6SR65RCLkbqHBF5GFHpBshGmfqGUiC3MxWZX9cU8aoIzp2Vke17LMiOMW8m17vTStuOHOEQtXW4JLzRsMR6sy0QgrTLr3jhepvnnAL0xlYk/k4BLFPWZDn+1jDxBG/75gmCu+zSF9o3xh4fZ3Da3js8qRxuF8bJPrS4OEioc9JHQt6sPYXSfzSMjcUUTuQjaMBj0PmmEBDwZPk5FfIlLMypcihd0s+vPPiceJ/G5dx1SiEb6Dv+9zXDvmgU0NSDHpR6oNgC1zemZUOY+6hCuTcHrTzer9i4g/uGJo3/47+QAyYxjHfsDjx5Lwayj7yf7snzSPsn+q+Qcw0NTsUZ9cbS82NvdXSwRcm6nxqz4GfjBrSzvYE+NFp48pGV63NDBoq+spEmMGdcQtF0xnJIesA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2024 19:48:34.3289 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d997ffaa-1d3e-4ad1-7b3e-08dc4916ba5f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00001CDC.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8021
+Received-SPF: permerror client-ip=2a01:111:f403:2418::600;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
 X-Spam_bar: --
 X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,113 +127,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 20, 2024 at 08:21:30PM +0100, Nina Schoetterl-Glausch wrote:
-> On Wed, 2024-03-20 at 14:57 -0400, Peter Xu wrote:
-> > On Wed, Mar 20, 2024 at 06:51:26PM +0100, Nina Schoetterl-Glausch wrote:
-> > > On Wed, 2024-01-17 at 15:58 +0800, peterx@redhat.com wrote:
-> > > > From: Peter Xu <peterx@redhat.com>
-> > > > 
-> > > > When the migration frameworks fetches the exact pending sizes, it means
-> > > > this check:
-> > > > 
-> > > >   remaining_size < s->threshold_size
-> > > > 
-> > > > Must have been done already, actually at migration_iteration_run():
-> > > > 
-> > > >     if (must_precopy <= s->threshold_size) {
-> > > >         qemu_savevm_state_pending_exact(&must_precopy, &can_postcopy);
-> > > > 
-> > > > That should be after one round of ram_state_pending_estimate().  It makes
-> > > > the 2nd check meaningless and can be dropped.
-> > > > 
-> > > > To say it in another way, when reaching ->state_pending_exact(), we
-> > > > unconditionally sync dirty bits for precopy.
-> > > > 
-> > > > Then we can drop migrate_get_current() there too.
-> > > > 
-> > > > Signed-off-by: Peter Xu <peterx@redhat.com>
-> > > 
-> > > Hi Peter,
-> > 
-> > Hi, Nina,
-> > 
-> > > 
-> > > could you have a look at this issue:
-> > > https://gitlab.com/qemu-project/qemu/-/issues/1565
-> > > 
-> > > which I reopened. Previous thread here:
-> > > 
-> > > https://lore.kernel.org/qemu-devel/20230324184129.3119575-1-nsg@linux.ibm.com/
-> > > 
-> > > I'm seeing migration failures with s390x TCG again, which look the same to me
-> > > as those a while back.
-> > 
-> > I'm still quite confused how that could be caused of this.
-> > 
-> > What you described in the previous bug report seems to imply some page was
-> > leftover in migration so some page got corrupted after migrated.
-> > 
-> > However what this patch mostly does is it can sync more than before even if
-> > I overlooked the condition check there (I still think the check is
-> > redundant, there's one outlier when remaining_size == threshold_size, but I
-> > don't think it should matter here as of now).  It'll make more sense if
-> > this patch made the sync less, but that's not the case but vice versa.
+On Wed, Mar 20, 2024 at 05:26:00PM +0100, Paolo Bonzini wrote:
+> On 3/20/24 09:39, Michael Roth wrote:
+> > Some subsystems like VFIO might disable ram block discard for
+> > uncoordinated cases. Since kvm_convert_memory()/guest_memfd don't
+> > implement a RamDiscardManager handler to convey discard operations to
+> > various listeners like VFIO. > Because of this, sequences like the
+> > following can result due to stale IOMMU mappings:
 > 
-> [...]
+> Alternatively, should guest-memfd memory regions call
+> ram_block_discard_require(true)?  This will prevent VFIO from operating, but
+> it will avoid consuming twice the memory.
 > 
-> > In the previous discussion, you mentioned that you bisected to the commit
-> > and also verified the fix.  Now you also mentioned in the bz that you can't
-> > reporduce this bug manually.
+> If desirable, guest-memfd support can be changed to implement an extension
+> of RamDiscardManager that notifies about private/shared memory changes, and
+> then guest-memfd would be able to support coordinated discard.  But I wonder
+
+In an earlier/internal version of the SNP+gmem patches (when there was still
+a dedicated hostmem-memfd-private backend for restrictedmem/gmem), we had a
+rough implementation of RamDiscardManager that did this:
+
+  https://github.com/AMDESE/qemu/blob/snp-latest-gmem-v12/backends/hostmem-memfd-private.c#L75
+
+Now that gmem handling is mostly done transparently to the HostMem
+backend in use I'm not sure what the right place would be to implement
+something similar, but maybe it can be done in a more generic way.
+
+There were some notable downsides to that approach though that I'm a
+little hazy on now, but I think they were both kernel limitations:
+
+  - VFIO seemed to have some limitation where it expects that the
+    DMA mapping for a particular iova will be unmapped/mapped with
+    the same granularity, but for an SNP guest there's no guarantee
+    that if you flip a 2MB page from shared->private, that it won't
+    later be flipped private->shared again but this time with a 4K
+    granularity/sub-range. I think the current code still treats
+    this as an -EINVAL case. So we end up needing to do everything
+    with 4K granularity, which I *think* results in 4K IOMMU page
+    table mappings, but I'd need to confirm.
+
+  - VFIO doesn't seem to be optimized for this sort of use case and
+    generally expects a much larger granularity and defaults to 64K
+    max DMA entries, so for a 16GB guest you need to configure VFIO
+    with something like:
+
+      vfio_iommu_type1.dma_entry_limit=4194304
+
+    I didn't see any reason to suggest that's problematic but it
+    makes we wonder if there's other stuff me might run into.
+
+> if that's doable at all - how common are shared<->private flips, and is it
+> feasible to change the IOMMU page tables every time?
+
+- For OVMF+guest kernel that don't do lazy-acceptance:
+
+  I think the bulk of the flipping is during boot where most of
+  shared GPA ranges get converted to private memory, and then
+  later on the guest kernel switches memory back to to shared
+  for stuff like SWIOTLB, and after that I think DMA mappings
+  would be fairly stable.
+
+- For OVMF+guest kernel that support lazy-acceptance:
+
+  The first 4GB get converted to private, and the rest remains
+  shared until guest kernel needs to allocate memory from it.
+  I'm not sure if SWIOTLB allocation is optimized to avoid
+  unecessary flipping if it's allocated from that pool of
+  still-shared memory, but normal/private allocations will
+  result in a steady stream of DMA unmap operations as the
+  guest faults in its working set.
+
+> 
+> If the real solution is SEV-TIO (which means essentially guest_memfd support
+> for VFIO), calling ram_block_discard_require(true) may be the simplest
+> stopgap solution.
+
+Hard to guess how cloud vendors will feel about waiting for trusted I/O.
+It does make sense in the context of CoCo to expect them to wait, but
+would be nice to have a stop-gap to offer like disabling discard, since
+it has minimal requirements on the QEMU/VFIO side and might be enough to
+get early adopters up and running at least.
+
+All that said, if you think something based around RamDiscardManager
+seems tenable given all above then we can re-visit that approach as well.
+
+-Mike
+
+> 
+> Paolo
+> 
+> >    - convert page shared->private
+> >    - discard shared page
+> >    - convert page private->shared
+> >    - new page is allocated
+> >    - issue DMA operations against that shared page
 > > 
-> > Is it still possible to be reproduced with some scripts?  Do you also mean
-> > that it's harder to reproduce comparing to before?  In all cases, some way
-> > to reproduce it would definitely be helpful.
-> 
-> I tried running the kvm-unit-test a bunch of times in a loop and couldn't
-> trigger a failure. I just tried again on a different system and managed just
-> fine, yay. No idea why it wouldn't on the first system tho.
-
-There's probably still a bug somewhere.  If reproduction rate changed, it's
-also a sign that it might not be directly relevant to this change, as
-otherwise it should reproduce the same as before.
-
+> > Address this by taking ram_block_discard_is_enabled() into account when
+> > deciding whether or not to discard pages.
 > > 
-> > Even if we want to revert this change, we'll need to know whether this will
-> > fix your case so we need something to verify it before a revert.  I'll
-> > consider that the last though as I had a feeling this is papering over
-> > something else.
+> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+> > ---
+> >   accel/kvm/kvm-all.c | 8 ++++++--
+> >   1 file changed, 6 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > index 53ce4f091e..6ae03c880f 100644
+> > --- a/accel/kvm/kvm-all.c
+> > +++ b/accel/kvm/kvm-all.c
+> > @@ -2962,10 +2962,14 @@ static int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+> >                   */
+> >                   return 0;
+> >               } else {
+> > -                ret = ram_block_discard_range(rb, offset, size);
+> > +                ret = ram_block_discard_is_disabled()
+> > +                      ? ram_block_discard_range(rb, offset, size)
+> > +                      : 0;
+> >               }
+> >           } else {
+> > -            ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+> > +            ret = ram_block_discard_is_disabled()
+> > +                  ? ram_block_discard_guest_memfd_range(rb, offset, size)
+> > +                  : 0;
+> >           }
+> >       } else {
+> >           error_report("Convert non guest_memfd backed memory region "
 > 
-> I can check if I can reproduce the issue before & after b0504edd ("migration:
-> Drop unnecessary check in ram's pending_exact()").
-> I can also check if I can reproduce it on x86, that worked last time.
-> Anything else? Ideas on how to pinpoint where the corruption happens?
-
-I don't have a solid clue yet, but more information of the single case
-where it reproduced could help.
-
-I saw from the bug link that the cmdline is pretty simple.  However still
-not sure of something that can be relevant.  E.g., did you use postcopy
-(including when postcopy-ram enabled but precopy completed)?  Is there any
-special device, like s390's CMMA (would that simplest cmdline include such
-a device; apologies, I have zero knowledge there before today)?
-
-I _think_ when reading the code I already found something quite unusual,
-but only when postcopy is selected: I notice postcopy will frequently sync
-dirty bitmap while it doesn't really necessarily need to, because
-ram_state_pending_estimate() will report all ram as "can_postcopy"; it
-means it's highly likely that this check will 99.999% always be true simply
-because must_precopy can in most cases be zero:
-
-    if (must_precopy <= s->threshold_size) { <---------------------------- here
-        qemu_savevm_state_pending_exact(&must_precopy, &can_postcopy);
-        pending_size = must_precopy + can_postcopy;
-        trace_migrate_pending_exact(pending_size, must_precopy, can_postcopy);
-    }
-
-I need to think more of this, but this doesn't sound right at all.  There's
-no such issue with precopy-only, and I'm surprised it is like that for years.
-
--- 
-Peter Xu
-
 
