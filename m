@@ -2,65 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300C5880EB0
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 10:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E11BF880EA8
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 10:33:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmsKp-0004DH-Ov; Wed, 20 Mar 2024 05:34:11 -0400
+	id 1rmsJK-0002kj-3R; Wed, 20 Mar 2024 05:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rmsKh-00041r-4A
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 05:34:06 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rmsKe-0003mG-MY
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 05:34:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1710927240; x=1742463240;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=w5bzMcqi3nP6R/BwxpmYoYX2X3RztKeGh8b/f0cv8W0=;
- b=NCXVhJhzRxbZZ9imEVN7u+uiELN63FThb8E0hG1sRbBwt8iiyfzfy7QI
- FK18aFBU9jD4ztWf6n4mLFQjh0BNOhMSs79o+daPGsrqC1hfwiCF1zin0
- liqtAX+pJZJo5XxS/ZBaJFWBAikN0qE9Pb5gE9NA3cuDd6NMHEKuXCiNk
- W6fWJWJpWPF3y3XKyMJRH4tFyR386pLrnHiqD6+OPO9M8DnQU85n1ctkI
- fQ4ZUySn+91IXa6eZVjAg2lFI4cepo0Slr5jZzorLxC08iYBYjfWqvjoI
- ieXV044eIOBVlM67i85ibsV++NZazKcdtYEHeEo6A8rj6TrRWTGfgtIpj g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="16483095"
-X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; d="scan'208";a="16483095"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 02:33:46 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,139,1708416000"; d="scan'208";a="18562299"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Mar 2024 02:33:44 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rmsJF-0002ip-QG
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 05:32:33 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rmsJC-0003Lj-JU
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 05:32:32 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6e6cb0f782bso5609551b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 02:32:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1710927147; x=1711531947; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1lBTSpYR2dXwEYHy3omOeOtfSocMS/pLnUSSLI1d0RI=;
+ b=UXYWoMkjXoRDOvQMyv4yTCjXf6Nj1kAItuJ3hRm3Q+g3EmVp/6rPbeq2g5eV2Os+68
+ LUrAtMqUY84Vi7lrY1bREhQHKSJV91moXyerUs97G+1vu4NRZ4QRlF1+WiOvXLLnvMfO
+ lTyRcZIRY/vrL0ZRv5KOYelUz2etNmLYMXrf6RYF7hqRzBgGahRo0PqmK5zt65waTc7f
+ ylDSBRWOd/mSyMO9TJuQqWkn+UvTnfHuFlP9gfZxg1fU/y7n0ZrzVGzM+joFQ+eFJpTc
+ CxRzVGpp2L+u0bWL8Mknh5bHqB4UqudNr+DsyIB43axLflchqPERb1v3mUVnMQqUO0Eq
+ g7+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710927147; x=1711531947;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1lBTSpYR2dXwEYHy3omOeOtfSocMS/pLnUSSLI1d0RI=;
+ b=KvpFmx6SomUVAItYgs7rVBdYlZC516razbeBpqBfS/ZFndiirI/aFlzfcFXC9B0h8P
+ zOtQ7hnEDRnlA0hszkhvxBU/ti0eSGT7a35Mv510wuSp2vKzGPm1QBW8DsQi5vlcG/WG
+ tUDUkJWioCc1wMrDeNYiOSwvTfO2HwihYT4Q9J+fYv96itSncxLbU7M9fpFm5Qa1PyeX
+ s7dbfka1BrEExYpYNeYILybid8IWFzsicQCgbYT/sIfVylFfAhEfeo3B0ODXHrHCjtf/
+ x3SjFxggJeIdmG8dQVHOnK6OZRtY01/JrE1jVJqR4RonESCUMDJ9FLwi4JMjESTocx+b
+ MP5Q==
+X-Gm-Message-State: AOJu0Yy/LZrZQdzzAsOBy3TkjCIHcnd3JV7laY3N/hFVIYolRpRuaZoq
+ 4RgRZWXrcLn28vc7Z2syHT1V3JmmXV21CB9I3cm+AnGIiz09AEmnqGhvjGfJ4me/yqFLPZ5ike9
+ r
+X-Google-Smtp-Source: AGHT+IGc2LdAhvuKEVF4ZnAkIxgELD5v8Cw4iirGDv9ag0eVnuY0YIh7Y3P9eFzjLgHGz1JliMqZWA==
+X-Received: by 2002:a05:6a20:9c8f:b0:1a3:4469:769b with SMTP id
+ mj15-20020a056a209c8f00b001a34469769bmr1307374pzb.44.1710927147406; 
+ Wed, 20 Mar 2024 02:32:27 -0700 (PDT)
+Received: from grind.dc1.ventanamicro.com ([177.94.15.159])
+ by smtp.gmail.com with ESMTPSA id
+ jj18-20020a170903049200b001dffa017c5esm8707613plb.22.2024.03.20.02.32.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Mar 2024 02:32:27 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, xiaoyao.li@intel.com, xiangfeix.ma@intel.com,
- chao.p.peng@intel.com, Zhenzhong Duan <zhenzhong.duan@intel.com>
-Subject: [PATCH v3 1/1] target/i386: Introduce Icelake-Server-v7 to enable TSX
-Date: Wed, 20 Mar 2024 17:31:38 +0800
-Message-Id: <20240320093138.80267-2-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320093138.80267-1-zhenzhong.duan@intel.com>
-References: <20240320093138.80267-1-zhenzhong.duan@intel.com>
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Joseph Chan <jchan@ventanamicro.com>
+Subject: [PATCH for-9.0] target/riscv/debug: set tval=pc in breakpoint
+ exceptions
+Date: Wed, 20 Mar 2024 06:32:21 -0300
+Message-ID: <20240320093221.220854-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -76,54 +93,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When start L2 guest with both L1/L2 using Icelake-Server-v3 or above,
-QEMU reports below warning:
+We're not setting (s/m)tval when triggering breakpoints of type 2
+(mcontrol) and 6 (mcontrol6). According to the debug spec section
+5.7.12, "Match Control Type 6":
 
-"warning: host doesn't support requested feature: MSR(10AH).taa-no [bit 8]"
+"The Privileged Spec says that breakpoint exceptions that occur on
+instruction fetches, loads, or stores update the tval CSR with either
+zero or the faulting virtual address. The faulting virtual address for
+an mcontrol6 trigger with action = 0 is the address being accessed and
+which caused that trigger to fire."
 
-Reason is QEMU Icelake-Server-v3 has TSX feature disabled but enables taa-no
-bit. It's meaningless that TSX isn't supported but still claim TSX is secure.
-So L1 KVM doesn't expose taa-no to L2 if TSX is unsupported, then starting L2
-triggers the warning.
+A similar text is also found in the Debug spec section 5.7.11 w.r.t.
+mcontrol.
 
-Fix it by introducing a new version Icelake-Server-v7 which has both TSX
-and taa-no features. Then guest can use TSX securely when it see taa-no.
+Given that we always use action = 0, save the faulting address for the
+mcontrol and mcontrol6 trigger breakpoints into env->badaddr, which is
+used as as scratch area for traps with address information. 'tval' is
+then set during riscv_cpu_do_interrupt().
 
-This matches the production Icelake which supports TSX and isn't susceptible
-to TSX Async Abort (TAA) vulnerabilities, a.k.a, taa-no.
-
-Ideally, TSX should have being enabled together with taa-no since v3, but for
-compatibility, we'd better to add v7 to enable it.
-
-Fixes: d965dc35592d ("target/i386: Add ARCH_CAPABILITIES related bits into Icelake-Server CPU model")
-Tested-by: Xiangfei Ma <xiangfeix.ma@intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reported-by: Joseph Chan <jchan@ventanamicro.com>
+Fixes: b5f6379d13 ("target/riscv: debug: Implement debug related TCGCPUOps")
+Fixes: c472c142a7 ("target/riscv: debug: Add initial support of type 6 trigger")
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/i386/cpu.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ target/riscv/cpu_helper.c | 1 +
+ target/riscv/debug.c      | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 9a210d8d92..5f2191cd99 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -3822,6 +3822,16 @@ static const X86CPUDefinition builtin_x86_defs[] = {
-                     { /* end of list */ }
-                 },
-             },
-+            {
-+                .version = 7,
-+                .note = "TSX, taa-no",
-+                .props = (PropValue[]) {
-+                    /* Restore TSX features removed by -v2 above */
-+                    { "hle", "on" },
-+                    { "rtm", "on" },
-+                    { /* end of list */ }
-+                },
-+            },
-             { /* end of list */ }
-         }
-     },
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index ce7322011d..492ca63b1a 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1717,6 +1717,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
+             tval = env->bins;
+             break;
+         case RISCV_EXCP_BREAKPOINT:
++            tval = env->badaddr;
+             if (cs->watchpoint_hit) {
+                 tval = cs->watchpoint_hit->hitaddr;
+                 cs->watchpoint_hit = NULL;
+diff --git a/target/riscv/debug.c b/target/riscv/debug.c
+index e30d99cc2f..b110370ea6 100644
+--- a/target/riscv/debug.c
++++ b/target/riscv/debug.c
+@@ -798,6 +798,7 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                 if ((ctrl & TYPE2_EXEC) && (bp->pc == pc)) {
+                     /* check U/S/M bit against current privilege level */
+                     if ((ctrl >> 3) & BIT(env->priv)) {
++                        env->badaddr = pc;
+                         return true;
+                     }
+                 }
+@@ -810,11 +811,13 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
+                     if (env->virt_enabled) {
+                         /* check VU/VS bit against current privilege level */
+                         if ((ctrl >> 23) & BIT(env->priv)) {
++                            env->badaddr = pc;
+                             return true;
+                         }
+                     } else {
+                         /* check U/S/M bit against current privilege level */
+                         if ((ctrl >> 3) & BIT(env->priv)) {
++                            env->badaddr = pc;
+                             return true;
+                         }
+                     }
 -- 
-2.34.1
+2.44.0
 
 
