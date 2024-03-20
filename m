@@ -2,130 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39924880B5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC80880B77
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 07:51:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmpbS-00081Z-Ff; Wed, 20 Mar 2024 02:39:10 -0400
+	id 1rmpmN-0002d3-Ia; Wed, 20 Mar 2024 02:50:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmpbQ-00081C-M8
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:39:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmpm5-0002Jx-7i
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:50:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rmpbO-0006U7-VR
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:39:08 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rmpm3-0001kg-9L
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 02:50:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1710916745;
+ s=mimecast20190719; t=1710917406;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=ufm/Y1EoFMvkpl5VIargUW/JSv/syJHhyz9ubvjSrDU=;
- b=HiVxkx//WJa7FXOXzgK4UL20WcW2h/mocIhdkA9qOs0v+KXK/wkZoimJpWzVR3n1yzeIkW
- N+NkOYcJ3rJpeEhvEcFqWsd11tnGdLuXGyeCODVRNiJ8JjuieXiEqdK2D+aMZt2UBqE+jO
- UUfrLyW+kJcB7KIerxDMjyAKDL72fuY=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-259-P6QTwE52OBiw2edc3G9oKg-1; Wed, 20 Mar 2024 02:39:03 -0400
-X-MC-Unique: P6QTwE52OBiw2edc3G9oKg-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2d49ce3736aso34135841fa.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 23:39:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710916742; x=1711521542;
- h=content-transfer-encoding:in-reply-to:autocrypt:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ufm/Y1EoFMvkpl5VIargUW/JSv/syJHhyz9ubvjSrDU=;
- b=wfAx0dfLcpVT64nS6MxY7FqN/lMCzeKNuYJ1baQkdvoWu+QPIM4z9fQXq5gTI5I3pD
- u1Wl0W99XaC742sGJvh5juFrQHWAyUAewHIIWhv+20RZCeN1m8qsgCQkLugjYAha+SoE
- J8Rm+FEuCe30IEe2jCVkR+jorUkfK2QPk/llO20is0s7My7i++TxLTizXQXxnpXZx742
- Yccvt+JX+2e0TwhmYEwNqTQbTFrUw5O05N7enq0PN5UibU4iH9rs/XXtm2U6exKGWpzH
- S4dFry+FNBF1LDBkIQL09D73oMHmoZ0K2W83HXviYDm7+6bpN+Uqy/xD1jr6UGp0J7JK
- 5eqw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVxj/eiKiv4Qwa1UbzyYHl/r/M9bxYw8fsyQiXmv4rojxm85mYC6x351mftMZgLaJvJcOb7AO/jwBwg7qqgHxbYs2BqU2A=
-X-Gm-Message-State: AOJu0YwG2sj0WjzApw++QKvr/+3HcLVgPicnX9REQpt9Uy4IGdNjwdgo
- wg6sBMrByx35s6y4oIQ4D5J8pQpXw6DRqPi0B+tvXEm+saj3wi9rcNvqUVf8jzzHxb49ogDoKVw
- cnFcxvea0R9E2av0niQfNxxRXb5C86Ykdnzv3e/rAIYhefcG4RUZS
-X-Received: by 2002:a2e:be0f:0:b0:2d6:8e88:5a8b with SMTP id
- z15-20020a2ebe0f000000b002d68e885a8bmr1160480ljq.32.1710916742127; 
- Tue, 19 Mar 2024 23:39:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjW92Dp913BtwdoA5r+xdwaSveUzuMgujO10qs9imzgk7riQ/IpK3DvOiqq4ZROrkBhHaLFg==
-X-Received: by 2002:a2e:be0f:0:b0:2d6:8e88:5a8b with SMTP id
- z15-20020a2ebe0f000000b002d68e885a8bmr1160451ljq.32.1710916741723; 
- Tue, 19 Mar 2024 23:39:01 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-177-50.web.vodafone.de.
- [109.43.177.50]) by smtp.gmail.com with ESMTPSA id
- my10-20020a1709065a4a00b00a4663d3b2bfsm6876746ejc.217.2024.03.19.23.39.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 19 Mar 2024 23:39:01 -0700 (PDT)
-Message-ID: <ef7a95d9-4a00-466c-b05d-7d1264e89de2@redhat.com>
-Date: Wed, 20 Mar 2024 07:38:59 +0100
+ content-transfer-encoding:content-transfer-encoding;
+ bh=EbyEaqH/Q6jol6d+7ysEWUO7dF3IYwtK68P6MptWg5A=;
+ b=RC2Hej50hEVxz4sbNX8KWRtRvfIJvKxjvU7W+Sopg4kqLVsorHQHS/LvTqWKQqNOEU9j0P
+ z8BmNIRVaWygS+2QoqgjCuTtEHYVVok6UB+175wCeolntPjNBG/3xuL6tnpWA9HGvv+F93
+ HCWjgqFXTWWw3xxN7V5ioQ2oUdlbA20=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-418-f0dbUoOcOB6YQjgzEdQy9Q-1; Wed,
+ 20 Mar 2024 02:49:25 -0400
+X-MC-Unique: f0dbUoOcOB6YQjgzEdQy9Q-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 038AC1C068CB;
+ Wed, 20 Mar 2024 06:49:25 +0000 (UTC)
+Received: from corto.redhat.com (unknown [10.39.192.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 071E71C060A4;
+ Wed, 20 Mar 2024 06:49:22 +0000 (UTC)
+From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Prasad Pandit <pjp@fedoraproject.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PATCH for-9.1 v5 00/14] migration: Improve error reporting
+Date: Wed, 20 Mar 2024 07:48:56 +0100
+Message-ID: <20240320064911.545001-1-clg@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1 21/27] target/s390x: Restrict TCG-specific
- declarations
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-s390x@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Anton Johansson <anjo@rev.ng>, David Hildenbrand <david@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20240319154258.71206-1-philmd@linaro.org>
- <20240319154258.71206-22-philmd@linaro.org>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240319154258.71206-22-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -24
 X-Spam_score: -2.5
@@ -134,7 +65,7 @@ X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.422,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=unavailable autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -150,30 +81,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/03/2024 16.42, Philippe Mathieu-Daudé wrote:
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/s390x/s390x-internal.h | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/target/s390x/s390x-internal.h b/target/s390x/s390x-internal.h
-> index 825252d728..559c9f561d 100644
-> --- a/target/s390x/s390x-internal.h
-> +++ b/target/s390x/s390x-internal.h
-> @@ -398,10 +398,12 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3,
->   
->   
->   /* translate.c */
-> +#ifdef CONFIG_TCG
->   void s390x_translate_init(void);
->   void s390x_restore_state_to_opc(CPUState *cs,
->                                   const TranslationBlock *tb,
->                                   const uint64_t *data);
-> +#endif /* CONFIG_TCG */
->   
->   /* sigp.c */
->   int handle_sigp(CPUS390XState *env, uint8_t order, uint64_t r1, uint64_t r3);
+Hello,
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+The motivation behind these changes is to improve error reporting to
+the upper management layer (libvirt) with a more detailed error, this
+to let it decide, depending on the reported error, whether to try
+migration again later. It would be useful in cases where migration
+fails due to lack of HW resources on the host. For instance, some
+adapters can only initiate a limited number of simultaneous dirty
+tracking requests and this imposes a limit on the the number of VMs
+that can be migrated simultaneously.
+
+We are not quite ready for such a mechanism but what we can do first is
+to cleanup the error reporting in the early save_setup sequence. This
+is what the following changes propose, by adding an Error** argument to
+various handlers and propagating it to the core migration subsystem.
+
+
+Patchset is organized as follow :
+
+* [1-4] are prerequisite changes in other components related to the
+  migration save_setup() handler. They make sure a failure is not
+  returned without setting an error.
+  
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+
+* [5-14] are the core changes in migration and memory components to
+  propagate an error reported in a save_setup() handler.
+
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global_start() handler
+  migration: Introduce ram_bitmaps_destroy()
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Add Error** argument to ram_state_init()
+  migration: Add Error** argument to xbzrle_init()
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+
+The VFIO changes depend on the above. They are simpler and have been
+reviewed already. I kept them for another series.
+
+Thanks,
+
+C.
+
+Changes in v5:
+ 
+ - Rebased on 2e128776dc56 ("migration: Skip only empty block devices")
+ - Removed Fabiano's R-b because of changes 
+ - Handled qemu_savevm_state_setup() failures after waiting for
+   virtio-net-failover devices to unplug.
+ - Removed memory_global_dirty_log_rollback()
+ - Introduced memory_global_dirty_log_do_start() to call
+   .log_global_start() handlers and do the rollback in case of error.
+ - Kept modification of the global_dirty_tracking flag within
+   memory_global_dirty_log_start()  
+ - Added an assert on error of a .log_global_start() handler in
+   listener_add_address_space()
+ - Removed Yong Huang's R-b
+ - Introduced ram_bitmaps_destroy()
+ - Added Error** argument to ram_state_init() and xbzrle_init()
+ - Made use of ram_bitmaps_destroy() in ram_init_bitmaps() to cleanup
+   allocated bitmaps
+ - Took into account changes of ram_state_init() and xbzrle_init() to
+   propagate the error.
+ - Reduced series to migration. VFIO can come later. 
+
+Changes in v4:
+
+ - Fixed frenchism futur to future
+ - Fixed typo in set_migrationmode() handler
+ - Added error_free() in hmp_migrationmode()
+ - Fixed state name printed out in error returned by vfio_save_setup()
+ - Fixed test on error returned by qemu_file_get_error()
+ - Added an error when bdrv_nb_sectors() returns a negative value 
+ - Dropped log_global_stop() and log_global_sync() changes
+ - Dropped MEMORY_LISTENER_CALL_LOG_GLOBAL
+ - Modified memory_global_dirty_log_start() to loop on the list of
+   listeners and handle errors directly.
+ - Introduced memory_global_dirty_log_rollback() to revert operations
+   previously done
+
+Changes in v3:
+
+ - New changes to make sure an error is always set in case of failure.
+   This is the reason behind the 5/6 extra patches. (Markus)
+ - Documentation fixup (Peter + Avihai)
+ - Set migration state to MIGRATION_STATUS_FAILED always
+ - Fixed error handling in bg_migration_thread() (Peter)
+ - Fixed return value of vfio_listener_log_global_start/stop(). 
+   Went unnoticed because value is not tested. (Peter)
+ - Add ERRP_GUARD() when error_prepend is used 
+ - Use error_setg_errno() when possible
+    
+Changes in v2:
+
+- Removed v1 patches addressing the return-path thread termination as
+  they are now superseded by :  
+  https://lore.kernel.org/qemu-devel/20240226203122.22894-1-farosas@suse.de/
+- Documentation updates of handlers
+- Removed call to PRECOPY_NOTIFY_SETUP notifiers in case of errors
+- Modified routines taking an Error** argument to return a bool when
+  possible and made adjustments in callers.
+- new MEMORY_LISTENER_CALL_LOG_GLOBAL macro for .log_global*()
+  handlers
+- Handled SETUP state when migration terminates
+- Modified memory_get_xlat_addr() to take an Error** argument
+- Various refinements on error handling
+
+Cédric Le Goater (14):
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global_start() handler
+  migration: Introduce ram_bitmaps_destroy()
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Add Error** argument to ram_state_init()
+  migration: Add Error** argument to xbzrle_init()
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+
+ include/exec/memory.h                 |  10 ++-
+ include/hw/s390x/storage-attributes.h |   2 +-
+ include/migration/register.h          |   6 +-
+ migration/savevm.h                    |   2 +-
+ hw/i386/xen/xen-hvm.c                 |   5 +-
+ hw/ppc/spapr.c                        |   2 +-
+ hw/s390x/s390-stattrib-kvm.c          |  12 ++-
+ hw/s390x/s390-stattrib.c              |  15 ++--
+ hw/vfio/common.c                      |   4 +-
+ hw/vfio/migration.c                   |  29 +++++--
+ hw/virtio/vhost.c                     |   3 +-
+ migration/block-dirty-bitmap.c        |   4 +-
+ migration/block.c                     |  17 +++--
+ migration/dirtyrate.c                 |  13 +++-
+ migration/migration.c                 |  33 +++++++-
+ migration/ram.c                       | 106 +++++++++++++++++---------
+ migration/savevm.c                    |  57 ++++++++------
+ system/memory.c                       |  40 +++++++++-
+ 18 files changed, 261 insertions(+), 99 deletions(-)
+
+-- 
+2.44.0
 
 
