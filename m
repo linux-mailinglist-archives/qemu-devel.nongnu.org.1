@@ -2,54 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D21D881783
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 19:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38747881798
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 19:58:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn0zD-0003h5-9o; Wed, 20 Mar 2024 14:48:27 -0400
+	id 1rn180-0007Cn-74; Wed, 20 Mar 2024 14:57:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balbi@kernel.org>) id 1rn0zA-0003gi-Oh
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 14:48:24 -0400
-Received: from sin.source.kernel.org ([2604:1380:40e1:4800::1])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rn17x-0007CN-80
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 14:57:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balbi@kernel.org>) id 1rn0z8-0007Ki-IJ
- for qemu-devel@nongnu.org; Wed, 20 Mar 2024 14:48:24 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id C6CF1CE11DF;
- Wed, 20 Mar 2024 18:48:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9826C433F1;
- Wed, 20 Mar 2024 18:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1710960491;
- bh=2mN88b/umYUpNkVd9Y67o3TZZWJCHz6vGznnkN8CKzo=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RHYFlDkWtQpYT+2VLSF+icAxmaWeR6NZynf73KviFdFlAnhz38mA8UHbx+xkJuvtE
- UszUIdNYn6mqxH40a4YVa11bvzQs5hw9eIBBjuauInDQ1fapUaV6+eaMEDdhbNikXU
- /QRJH1tUsmyUQpmQrJdsYNFjPzKv6/dectyi0ykDOoYHgD9HjfHNzifWzHHPczQl17
- iK+lEaUpLdcJ4nsVsZ8OGhTxY0/CPdAoQuChz5DEXSs1bUpW/Eedi9b8I+tlBacpmJ
- 6abYAkJ4VeQhTKy0QwG3/2XKX94Fe7WkfH+nnXAvX6OQyyh4jgFyEOgBjVNoiRGjq5
- 43it2JeA8NDqQ==
-From: Felipe Balbi <balbi@kernel.org>
-To: qemu-devel@nongnu.org
-Cc: Felipe Balbi <felipe@balbi.sh>
-Subject: [PATCH 2/2] hw/arm: Add nucleo-g071rb board
-Date: Wed, 20 Mar 2024 20:47:59 +0200
-Message-ID: <20240320184759.754619-3-balbi@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240320184759.754619-1-balbi@kernel.org>
-References: <20240320184759.754619-1-balbi@kernel.org>
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rn17t-00016o-J0
+ for qemu-devel@nongnu.org; Wed, 20 Mar 2024 14:57:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1710961044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zmvww3LzCjKeexNxgdfwJzX3TPo+pwR1ag2WnPC49os=;
+ b=UeSTJ9Xtg1VqcMLsITWNpo36hUhvoi8uzfv5yRKchOuPqbIwyafRB9JA3PvbA9QuHcBSMD
+ JmOTL3PxJ2EHG9r9MfVxFpm0aLh0aJZDzgMOB4AMPdxV2ywxHo5/AaEEdJYv3WV9qFEB2d
+ HM5n8T9H/kPGsR9IGFvHRSTaEW0BIuY=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-Jn0b1HddM42S4qVXdvjnTQ-1; Wed, 20 Mar 2024 14:57:23 -0400
+X-MC-Unique: Jn0b1HddM42S4qVXdvjnTQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-4311dd10102so467091cf.0
+ for <qemu-devel@nongnu.org>; Wed, 20 Mar 2024 11:57:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1710961042; x=1711565842;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zmvww3LzCjKeexNxgdfwJzX3TPo+pwR1ag2WnPC49os=;
+ b=TUhS+XbSXsfgv0C7LOydNbQNSaMej/Y1L8Q34Xfkzd6XUl6PeT2mlSvU+XSwfbjVHd
+ DcdVLRdgEpatsO2Ph6uNEN11FlFzmr8lRYQvuUnd8qMr/XsTOj5jWYmiKO0zSpQSFdmP
+ SM7QCfEZW9AvFUVSrAs4pA3X2ZiTYSXa3QNrIWIXqjCRpAxGWC56KmqaSzHLbHUHiH4o
+ iPdMmKu5WnyZ3Fp/z5Jy8efss/bZua6hic6Kqc3Xjf241maIchJgmL28lYNXH+heXLAT
+ RXSTRLUL5Y7r4F6qPY+oKYrzhU2Hqjgj/Md44emM6oDoPgvC5eoJ+ZJ5h8ZmTZX6lYSq
+ BC+w==
+X-Gm-Message-State: AOJu0YzT5S/Hh/XOU7OtrEOBUbO1MnZys4UV3pZgptF+eZfkWdGoZADn
+ VXtYDuYUaG7gFzQ/2Hld3zmm+f+wHXRMRXZkrYdU94U93vquCsiyV0EfB6w9MD072QP1H7PhpCG
+ sMPfSBrXc62AbxgHdLzzJ+pJCEDPMcttINjy0Y6dqu8YkcKBXOjyJ
+X-Received: by 2002:a05:6214:2e49:b0:690:d02f:f5df with SMTP id
+ my9-20020a0562142e4900b00690d02ff5dfmr6886210qvb.5.1710961042457; 
+ Wed, 20 Mar 2024 11:57:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqSunSz/3FcPvf08YIQOWHZHVL4GQz37SKRDW6pFy6dJvqKybk4Mr37HzW5A/+pdJT1m7kNQ==
+X-Received: by 2002:a05:6214:2e49:b0:690:d02f:f5df with SMTP id
+ my9-20020a0562142e4900b00690d02ff5dfmr6886196qvb.5.1710961041998; 
+ Wed, 20 Mar 2024 11:57:21 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ jf14-20020a0562142a4e00b00690afbf56d5sm8056819qvb.66.2024.03.20.11.57.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Mar 2024 11:57:19 -0700 (PDT)
+Date: Wed, 20 Mar 2024 14:57:17 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, Prasad Pandit <ppandit@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Bandan Das <bdas@redhat.com>,
+ Julia Suvorova <jusual@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH 2/3] migration: Drop unnecessary check in ram's
+ pending_exact()
+Message-ID: <ZfsxjS4Phkf34f4J@x1n>
+References: <20240117075848.139045-1-peterx@redhat.com>
+ <20240117075848.139045-3-peterx@redhat.com>
+ <bc88f4572649084cd38a0880d7e096a939f80b14.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2604:1380:40e1:4800::1;
- envelope-from=balbi@kernel.org; helo=sin.source.kernel.org
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <bc88f4572649084cd38a0880d7e096a939f80b14.camel@linux.ibm.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.417,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,127 +101,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Felipe Balbi <felipe@balbi.sh>
+On Wed, Mar 20, 2024 at 06:51:26PM +0100, Nina Schoetterl-Glausch wrote:
+> On Wed, 2024-01-17 at 15:58 +0800, peterx@redhat.com wrote:
+> > From: Peter Xu <peterx@redhat.com>
+> > 
+> > When the migration frameworks fetches the exact pending sizes, it means
+> > this check:
+> > 
+> >   remaining_size < s->threshold_size
+> > 
+> > Must have been done already, actually at migration_iteration_run():
+> > 
+> >     if (must_precopy <= s->threshold_size) {
+> >         qemu_savevm_state_pending_exact(&must_precopy, &can_postcopy);
+> > 
+> > That should be after one round of ram_state_pending_estimate().  It makes
+> > the 2nd check meaningless and can be dropped.
+> > 
+> > To say it in another way, when reaching ->state_pending_exact(), we
+> > unconditionally sync dirty bits for precopy.
+> > 
+> > Then we can drop migrate_get_current() there too.
+> > 
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> 
+> Hi Peter,
 
-This board is based around STM32G071RB SoC, a Cortex-M0 based
-device. More information can be found at:
+Hi, Nina,
 
-https://www.st.com/en/product/nucleo-g071rb.html
+> 
+> could you have a look at this issue:
+> https://gitlab.com/qemu-project/qemu/-/issues/1565
+> 
+> which I reopened. Previous thread here:
+> 
+> https://lore.kernel.org/qemu-devel/20230324184129.3119575-1-nsg@linux.ibm.com/
+> 
+> I'm seeing migration failures with s390x TCG again, which look the same to me
+> as those a while back.
 
-Signed-off-by: Felipe Balbi <felipe@balbi.sh>
----
- hw/arm/Kconfig         |  6 ++++
- hw/arm/meson.build     |  1 +
- hw/arm/nucleo-g071rb.c | 70 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 77 insertions(+)
- create mode 100644 hw/arm/nucleo-g071rb.c
+I'm still quite confused how that could be caused of this.
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 28a46d2b1ad3..5938bb8208a1 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -310,6 +310,12 @@ config STM32VLDISCOVERY
-     depends on TCG && ARM
-     select STM32F100_SOC
- 
-+config NUCLEO_G071RB
-+    bool
-+    default y
-+    depends on TCG && ARM
-+    select STM32G000_SOC
-+
- config STRONGARM
-     bool
-     select PXA2XX
-diff --git a/hw/arm/meson.build b/hw/arm/meson.build
-index 9c4137a988e1..580c2d55fc3f 100644
---- a/hw/arm/meson.build
-+++ b/hw/arm/meson.build
-@@ -18,6 +18,7 @@ arm_ss.add(when: 'CONFIG_REALVIEW', if_true: files('realview.c'))
- arm_ss.add(when: 'CONFIG_SBSA_REF', if_true: files('sbsa-ref.c'))
- arm_ss.add(when: 'CONFIG_STELLARIS', if_true: files('stellaris.c'))
- arm_ss.add(when: 'CONFIG_STM32VLDISCOVERY', if_true: files('stm32vldiscovery.c'))
-+arm_ss.add(when: 'CONFIG_NUCLEO_G071RB', if_true: files('nucleo-g071rb.c'))
- arm_ss.add(when: 'CONFIG_ZYNQ', if_true: files('xilinx_zynq.c'))
- arm_ss.add(when: 'CONFIG_SABRELITE', if_true: files('sabrelite.c'))
- 
-diff --git a/hw/arm/nucleo-g071rb.c b/hw/arm/nucleo-g071rb.c
-new file mode 100644
-index 000000000000..580b52bacf2c
---- /dev/null
-+++ b/hw/arm/nucleo-g071rb.c
-@@ -0,0 +1,70 @@
-+/*
-+ * ST Nucleo G071RB
-+ *
-+ * Copyright (c) 2024 Felipe Balbi <felipe@balbi.sh>
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qapi/error.h"
-+#include "hw/boards.h"
-+#include "hw/qdev-properties.h"
-+#include "hw/qdev-clock.h"
-+#include "qemu/error-report.h"
-+#include "hw/arm/stm32g000_soc.h"
-+#include "hw/arm/boot.h"
-+
-+/* nucleo_g071rb implementation is derived from olimex-stm32-h405.c */
-+
-+/* Main SYSCLK frequency in Hz (48MHz) */
-+#define SYSCLK_FRQ 48000000ULL
-+
-+static void nucleo_g071rb_init(MachineState *machine)
-+{
-+    DeviceState *dev;
-+    Clock *sysclk;
-+
-+    /* This clock doesn't need migration because it is fixed-frequency */
-+    sysclk = clock_new(OBJECT(machine), "SYSCLK");
-+    clock_set_hz(sysclk, SYSCLK_FRQ);
-+
-+    dev = qdev_new(TYPE_STM32G000_SOC);
-+    object_property_add_child(OBJECT(machine), "soc", OBJECT(dev));
-+    qdev_connect_clock_in(dev, "sysclk", sysclk);
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    armv7m_load_kernel(ARM_CPU(first_cpu),
-+                       machine->kernel_filename,
-+                       0, FLASH_SIZE);
-+}
-+
-+static void nucleo_g071rb_machine_init(MachineClass *mc)
-+{
-+    static const char * const valid_cpu_types[] = {
-+        ARM_CPU_TYPE_NAME("cortex-m0"),
-+        NULL
-+    };
-+
-+    mc->desc = "ST Nucleo-G071RB (Cortex-M0)";
-+    mc->init = nucleo_g071rb_init;
-+    mc->valid_cpu_types = valid_cpu_types;
-+}
-+
-+DEFINE_MACHINE("nucleo-g071rb", nucleo_g071rb_machine_init)
+What you described in the previous bug report seems to imply some page was
+leftover in migration so some page got corrupted after migrated.
+
+However what this patch mostly does is it can sync more than before even if
+I overlooked the condition check there (I still think the check is
+redundant, there's one outlier when remaining_size == threshold_size, but I
+don't think it should matter here as of now).  It'll make more sense if
+this patch made the sync less, but that's not the case but vice versa.
+
+> 
+> > ---
+> >  migration/ram.c | 9 ++++-----
+> >  1 file changed, 4 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/migration/ram.c b/migration/ram.c
+> > index c0cdcccb75..d5b7cd5ac2 100644
+> > --- a/migration/ram.c
+> > +++ b/migration/ram.c
+> > @@ -3213,21 +3213,20 @@ static void ram_state_pending_estimate(void *opaque, uint64_t *must_precopy,
+> >  static void ram_state_pending_exact(void *opaque, uint64_t *must_precopy,
+> >                                      uint64_t *can_postcopy)
+> >  {
+> > -    MigrationState *s = migrate_get_current();
+> >      RAMState **temp = opaque;
+> >      RAMState *rs = *temp;
+> > +    uint64_t remaining_size;
+> >  
+> > -    uint64_t remaining_size = rs->migration_dirty_pages * TARGET_PAGE_SIZE;
+> > -
+> > -    if (!migration_in_postcopy() && remaining_size < s->threshold_size) {
+> > +    if (!migration_in_postcopy()) {
+> >          bql_lock();
+> >          WITH_RCU_READ_LOCK_GUARD() {
+> >              migration_bitmap_sync_precopy(rs, false);
+> >          }
+> >          bql_unlock();
+> > -        remaining_size = rs->migration_dirty_pages * TARGET_PAGE_SIZE;
+> >      }
+> >  
+> > +    remaining_size = rs->migration_dirty_pages * TARGET_PAGE_SIZE;
+> > +
+> >      if (migrate_postcopy_ram()) {
+> >          /* We can do postcopy, and all the data is postcopiable */
+> >          *can_postcopy += remaining_size;
+> 
+> This basically reverts 28ef5339c3 ("migration: fix ram_state_pending_exact()"), which originally
+> made the issue disappear.
+> 
+> Any thoughts on the matter appreciated.
+
+In the previous discussion, you mentioned that you bisected to the commit
+and also verified the fix.  Now you also mentioned in the bz that you can't
+reporduce this bug manually.
+
+Is it still possible to be reproduced with some scripts?  Do you also mean
+that it's harder to reproduce comparing to before?  In all cases, some way
+to reproduce it would definitely be helpful.
+
+Even if we want to revert this change, we'll need to know whether this will
+fix your case so we need something to verify it before a revert.  I'll
+consider that the last though as I had a feeling this is papering over
+something else.
+
+Thanks,
+
 -- 
-2.44.0
+Peter Xu
 
 
