@@ -2,81 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB35880890
-	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D252A8808C7
+	for <lists+qemu-devel@lfdr.de>; Wed, 20 Mar 2024 01:54:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rmjss-00008F-PS; Tue, 19 Mar 2024 20:32:46 -0400
+	id 1rmkCW-0007xP-0S; Tue, 19 Mar 2024 20:53:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsq-00007s-C4
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:44 -0400
-Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rmjsl-0005Ya-O5
- for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:32:44 -0400
-Received: by mail-oo1-xc2a.google.com with SMTP id
- 006d021491bc7-5a4817189c8so2641977eaf.1
- for <qemu-devel@nongnu.org>; Tue, 19 Mar 2024 17:32:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1710894758; x=1711499558; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BhOWQohjArqAQE2458CrIktVxPOWZvRPD9t4+1OeJxA=;
- b=N85ty/y/u6oN3Rd6/FxduBnywisHKLKODM2cqMrHHmVO65S1FU7QeP5Fb+t8oi0yiB
- +Mqp0tXVuGQAgxhpK079RAZDYo7E8VryP9uSFZFPst1SPM0u3RIxovjJCsD9KkRsjYj3
- qdUe7U6u2pj4yLLFgjpLMIuHNlg/qzlN8657RfKQwKFbmJZUERXmcGAQOkFo/FfHjqVS
- BTvzh/JzWw7nDmAdh8/oeHE0e0iqlh79I7U/teBekhw99X30oiFkdC7JqMyuzSUWR0qL
- s13qBKJrC1VaE/8AHhQeoglkxsO+fW9eQM4BCDNRVcpDTGCw8yDOwP7t5moGlsDVO66U
- H1HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1710894758; x=1711499558;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BhOWQohjArqAQE2458CrIktVxPOWZvRPD9t4+1OeJxA=;
- b=pT/YZ2oeQtV4FMdtG0/O79mhEl6kntWliA/GwbbibRjcNvZxNFV54rQ/C67o3SuXY1
- FwKcMpMxEzYNjreFfiPUiO8Xt9+OqSST3P7GSRRKbcMttwY/0HbYsp29E2sNtO4Fhiwp
- SG6gSF2OGXjork6ksZoQKPZwqVkR/aHbJELFl15qsuxD2+viAD5WrriTmX7ufdsayy1a
- kl1mJ6Sf7CP4nOl1RfN3w+1dduZDY5Np9o5dUZUn4PNb7P8BqHsGX86GSGoIoPQ2GTUu
- K06pyUDJyzXlb20/J1MbNyCMrZpkut4YByxrJ+3gl97i5aGNFyUfFRkQwXoP6mJvSHhi
- pIhg==
-X-Gm-Message-State: AOJu0YygYLm2BShxXvZCX0HLF/oaAvO97JxWkcoz4c/AXlLD19Q4rnfZ
- Ck1X+PlEe5YS+LMsQtEcplJAurMnNGGyuVmgcc+l6SjZlhGmMCUW287grKLIgvfJ4fjNQPphO+0
- Z
-X-Google-Smtp-Source: AGHT+IGswSzZVWeIz4Wgdpkxs3WR7PR1MIVk4iY9pZo/EBhIdY2ew9uSTlVuNEzOgSvjoRbxvKuk9Q==
-X-Received: by 2002:a05:6820:2018:b0:5a4:d7df:9233 with SMTP id
- by24-20020a056820201800b005a4d7df9233mr4038772oob.2.1710894758554; 
- Tue, 19 Mar 2024 17:32:38 -0700 (PDT)
-Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
- by smtp.gmail.com with ESMTPSA id
- d19-20020a63d653000000b005d553239b16sm8475645pgj.20.2024.03.19.17.32.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 19 Mar 2024 17:32:38 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Sven Schnelle <svens@stackframe.org>
-Subject: [PULL 9/9] target/hppa: fix do_stdby_e()
-Date: Tue, 19 Mar 2024 14:32:23 -1000
-Message-Id: <20240320003223.554145-10-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240320003223.554145-1-richard.henderson@linaro.org>
-References: <20240320003223.554145-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1rmkCQ-0007wy-Ge
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:52:58 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1rmkCK-00016V-P5
+ for qemu-devel@nongnu.org; Tue, 19 Mar 2024 20:52:58 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxbetbM_pliAEbAA--.64619S3;
+ Wed, 20 Mar 2024 08:52:45 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Cx_c5bM_plyupdAA--.50189S3; 
+ Wed, 20 Mar 2024 08:52:43 +0800 (CST)
+Subject: Re: [PATCH] hw/intc/loongarch_extioi: Fix interrupt routing update
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: qemu-devel@nongnu.org
+References: <20240313093932.2653518-1-maobibo@loongson.cn>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <59e78e6b-749d-f6b0-6001-daf28bd0cfbb@loongson.cn>
+Date: Wed, 20 Mar 2024 08:52:43 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
+In-Reply-To: <20240313093932.2653518-1-maobibo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
+Content-Language: en-US
+X-CM-TRANSID: AQAAf8Cx_c5bM_plyupdAA--.50189S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrtFy8Cry3JFyDXF15CF1xZwc_yoWfuFX_W3
+ 4xtr93W3Wjqr10gwnYvr15X3W5J3yrZF1Yk3Z7XFy8J348J39Yva15uw45ZF1Iq3yYvrnI
+ yFWDJry3CwnIvosvyTuYvTs0mTUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+ s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+ cSsGvfJTRUUUbxxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+ vaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+ w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+ WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
+ JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4
+ xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v2
+ 6r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCYjI0SjxkI62AI1cAE67
+ vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
+ wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc4
+ 0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AK
+ xVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr
+ 1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUU
+ U
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, MIME_CHARSET_FARAWAY=2.45,
+ NICE_REPLY_A=-2.417, SPF_PASS=-0.001, T_SCC_BODY_TEXT_LINE=-0.01,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,48 +80,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sven Schnelle <svens@stackframe.org>
+ÔÚ 2024/3/13 ÏÂÎç5:39, Bibo Mao Ð´µÀ:
+> Interrupt number in loop sentence should be base irq plus
+> loop index, it is missing on checking whether the irq
+> is pending.
+>
+> Fixes: 428a6ef4396 ("Add vmstate post_load support")
+> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> ---
+>   hw/intc/loongarch_extioi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-stdby,e,m was writing data from the wrong half of the register
-into memory for cases 0-3.
-
-Fixes: 25460fc5a71 ("target/hppa: Implement STDBY")
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240319161921.487080-7-svens@stackframe.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/hppa/op_helper.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
-index 480fe80844..6cf49f33b7 100644
---- a/target/hppa/op_helper.c
-+++ b/target/hppa/op_helper.c
-@@ -281,17 +281,17 @@ static void do_stdby_e(CPUHPPAState *env, target_ulong addr, uint64_t val,
-     case 3:
-         /* The 3 byte store must appear atomic.  */
-         if (parallel) {
--            atomic_store_mask32(env, addr - 3, val, 0xffffff00u, ra);
-+            atomic_store_mask32(env, addr - 3, val >> 32, 0xffffff00u, ra);
-         } else {
--            cpu_stw_data_ra(env, addr - 3, val >> 16, ra);
--            cpu_stb_data_ra(env, addr - 1, val >> 8, ra);
-+            cpu_stw_data_ra(env, addr - 3, val >> 48, ra);
-+            cpu_stb_data_ra(env, addr - 1, val >> 40, ra);
-         }
-         break;
-     case 2:
--        cpu_stw_data_ra(env, addr - 2, val >> 16, ra);
-+        cpu_stw_data_ra(env, addr - 2, val >> 48, ra);
-         break;
-     case 1:
--        cpu_stb_data_ra(env, addr - 1, val >> 24, ra);
-+        cpu_stb_data_ra(env, addr - 1, val >> 56, ra);
-         break;
-     default:
-         /* Nothing is stored, but protection is checked and the
--- 
-2.34.1
+Thanks.
+Song Gao
+> diff --git a/hw/intc/loongarch_extioi.c b/hw/intc/loongarch_extioi.c
+> index bdfa3b481e..0b358548eb 100644
+> --- a/hw/intc/loongarch_extioi.c
+> +++ b/hw/intc/loongarch_extioi.c
+> @@ -151,7 +151,7 @@ static inline void extioi_update_sw_coremap(LoongArchExtIOI *s, int irq,
+>               continue;
+>           }
+>   
+> -        if (notify && test_bit(irq, (unsigned long *)s->isr)) {
+> +        if (notify && test_bit(irq + i, (unsigned long *)s->isr)) {
+>               /*
+>                * lower irq at old cpu and raise irq at new cpu
+>                */
 
 
