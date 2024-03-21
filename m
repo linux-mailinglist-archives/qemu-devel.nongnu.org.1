@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CACE5885C81
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1A5885C99
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:52:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnKf3-0004Jn-NW; Thu, 21 Mar 2024 11:48:57 -0400
+	id 1rnKfT-0004mz-4G; Thu, 21 Mar 2024 11:49:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKf1-0004JT-Iq
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:48:55 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfQ-0004dh-1r
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:20 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKez-0001BU-Lb
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:48:55 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-41466e01965so7931095e9.3
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:48:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKf6-0001E8-3V
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:14 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-41412411622so8240865e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:48:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711036131; x=1711640931; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711036138; x=1711640938; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bTgCkgY7q586A21zu0JSDs5UTTpVyxNoAlIlHHAmSdk=;
- b=d2jICh1dd4XIjkMWk8imYmpKT9o4rOLdhDCls43AAKP3nsU9riB59s0ZTYeXFMY9dj
- FS0F7q8MMIxsR1dvd7n4pvSj0PORqRshsN9wiYCNwyNHME3hGoGIiPVX9FPF16X3kPFI
- 2ZE1ORKaloEMfv6+/wfpA5EurTUEeMDAzfRseHysj8mG+ujmy/HO8rMIH+TAOBZNx+05
- Mb6RHetRCj2peiAKX/IgH5Y0YGZBHmKyD0OgqwgJ8v1Xc+n65CuYLzPX8SPJPvypByrE
- 8ag0DPjWoSYpDGROeS2Mza34EuAYjYeLurz4Y0a4kcLHqeAQP/7gNoSbCf/lyKS/g/Fi
- rkZQ==
+ bh=5Sy5z7ZUuxRw4c3lSjW3Xq5biFR0WjXf8NhA+2yd6fg=;
+ b=hGGUCLk4YhgeywHrCiCGHXS0S7AA7K1n+23mB6egJKReHEUzZxpAu6/q0bKjpz4c23
+ J7hp7QmWP4o775Y9SSU25qeFmYFXLNDJ9/4bf/RedcAlE5qwYM/Wwq/5OSGIDoemGmZP
+ PdSiB5NYODdAOBVT42wvUrLC1k0llhR1DkmPcxFNW97D2tm5nNx+YGiZiuuvm1142m+S
+ Ss+O0vQpxufpHz9ITGwrGSNiQRY7+oEgf5GWVuobxqZmKP+CWhFd0Ixumtzi58IQPQYZ
+ IFqMj+jVXCDGghqjSk+ZDzUC5zHlaFjyv18jmtA98KVTMi5lHtxZSaUZvAz+qlVeuotg
+ OYGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711036131; x=1711640931;
+ d=1e100.net; s=20230601; t=1711036138; x=1711640938;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bTgCkgY7q586A21zu0JSDs5UTTpVyxNoAlIlHHAmSdk=;
- b=xNNcF7V1MkV/6pw6mzeZzTncyizEb5mwLZh+xWh3Mj2ympw0c4TIj/OszloDtK70Uo
- HB4va3NVTswdObdhPii8EXrPG6qdDcpQC1dZxEH/fOWXUEqFHiTK4qvKpxDNI7TDh6BI
- TWDFlYlyeNufNqApNoy97g23ZtnYztz+iXfbaGsysaCSXdy7iZX8fd69dBbNuxDdavMg
- MH6dif4zXBo5pFtrKEvOiI4wpu8dvpMqVP0THSZ9eA5i8pmOv0nyzV6Sf/wZs4SiqNP6
- 14S6s4MxStkPIafBNtx5sOusZ3ifsYxwX9957dGVxHFMWljeptz25xKM+BhOUfMeFQjh
- tRTg==
-X-Gm-Message-State: AOJu0YxXup4WrKglA2WXN3pzkJEdO+Ma02hwniCCktgtIuMcuHukaZAw
- CCx5ivDF5GIrYLpPji7HOk3gDjcWEmqdhaiHWi+ajZhE7CPe7s2W/pXLLFKpaRjfeGiJevSAGUa
- wCKs=
-X-Google-Smtp-Source: AGHT+IE92dHNbX39E5CpL6fzghojPWn69hg0rMxVmayS2tpnQqnqbNz6dlTYqB9LpiS/OQbj/28ECQ==
-X-Received: by 2002:a05:600c:3514:b0:414:63c4:c40d with SMTP id
- h20-20020a05600c351400b0041463c4c40dmr6529657wmq.40.1711036130799; 
- Thu, 21 Mar 2024 08:48:50 -0700 (PDT)
+ bh=5Sy5z7ZUuxRw4c3lSjW3Xq5biFR0WjXf8NhA+2yd6fg=;
+ b=EurLKRE/h821SXPdlFKP86sW0HniHc5Ea5M9ttM6pxsJoBC+fQt+HuK3WfkMcsHOt6
+ LrRFB5MlxnePH4Yujza9e7ZG4N1kgJojXNfbBRekzwn+aNiUvWm+BCwvMC9MoC6CNi3G
+ 8dSz5xPASzy4b3KkXxi6S5l1E2tMIG4M7TemCU3P13n2cEcwqL9bGC8gUd7+kk430Sga
+ rq0dgemoPREDxm+vCVNjOhJLSDns87tqIh3L2VJ35ifQZGv5Sof4SPLFlA0gM5uhIZ+X
+ TDXmlsl+0JLFhw3mUa8dpBNXjEt66x3ks4WyE12G2B0UTGkjiRBQB+Xk+gO8crZhdeyt
+ ldyw==
+X-Gm-Message-State: AOJu0YzWK9uuX3flTLtyQ4fSxIdtp94REcqRNRwRKGgJFZ5wOcYr02kW
+ J/aW/1mvxrU7LDPU0zxIyzqGB8OBTCcjbZU1b25A9U/+92RqJEhq8uh86JiHrYqmL3rAtfjU1yy
+ Yg88=
+X-Google-Smtp-Source: AGHT+IE8OxZ3cOSBAVlgW9eMWvEy1VRRLSZDeMRQmmPBR4vnwTQ7LCZvczOxtWcLs87HZ5ZefGlaXQ==
+X-Received: by 2002:adf:ffc2:0:b0:33e:75e4:d410 with SMTP id
+ x2-20020adfffc2000000b0033e75e4d410mr1795606wrs.22.1711036138214; 
+ Thu, 21 Mar 2024 08:48:58 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.222])
  by smtp.gmail.com with ESMTPSA id
- t6-20020a05600c198600b004131310a29fsm141401wmq.15.2024.03.21.08.48.48
+ dd15-20020a0560001e8f00b0033ce727e728sm17477813wrb.94.2024.03.21.08.48.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 21 Mar 2024 08:48:50 -0700 (PDT)
+ Thu, 21 Mar 2024 08:48:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
@@ -70,25 +70,24 @@ Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
  Laurent Vivier <laurent@vivier.eu>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0? 01/21] host/atomic128: Include missing
- 'qemu/atomic.h' header
-Date: Thu, 21 Mar 2024 16:48:17 +0100
-Message-ID: <20240321154838.95771-2-philmd@linaro.org>
+Subject: [PATCH-for-9.1 02/21] hw/core: Remove check on NEED_CPU_H in
+ tcg-cpu-ops.h
+Date: Thu, 21 Mar 2024 16:48:18 +0100
+Message-ID: <20240321154838.95771-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240321154838.95771-1-philmd@linaro.org>
 References: <20240321154838.95771-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,50 +103,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qatomic_cmpxchg__nocheck(), qatomic_read__nocheck(),
-qatomic_set__nocheck() are defined in "qemu/atomic.h".
-Include it in order to avoid:
-
-  In file included from include/exec/helper-proto.h:10:
-  In file included from include/exec/helper-proto-common.h:10:
-  In file included from include/qemu/atomic128.h:61:
-  In file included from host/include/aarch64/host/atomic128-cas.h:16:
-  host/include/generic/host/atomic128-cas.h:23:11: error: call to undeclared function 'qatomic_cmpxchg__nocheck'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    r.i = qatomic_cmpxchg__nocheck(ptr_align, c.i, n.i);
-          ^
+Commit fd3f7d24d4 ("include/hw/core: Remove i386 conditional
+on fake_user_interrupt") remove the need to check on NEED_CPU_H.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- host/include/generic/host/atomic128-cas.h  | 2 ++
- host/include/generic/host/atomic128-ldst.h | 2 ++
- 2 files changed, 4 insertions(+)
+ include/hw/core/tcg-cpu-ops.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/host/include/generic/host/atomic128-cas.h b/host/include/generic/host/atomic128-cas.h
-index 6b40cc2271..4824f14659 100644
---- a/host/include/generic/host/atomic128-cas.h
-+++ b/host/include/generic/host/atomic128-cas.h
-@@ -11,6 +11,8 @@
- #ifndef HOST_ATOMIC128_CAS_H
- #define HOST_ATOMIC128_CAS_H
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index bf8ff8e3ee..88857eb921 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -49,7 +49,6 @@ struct TCGCPUOps {
+     /** @debug_excp_handler: Callback for handling debug exceptions */
+     void (*debug_excp_handler)(CPUState *cpu);
  
-+#include "qemu/atomic.h"
-+
- #if defined(CONFIG_ATOMIC128)
- static inline Int128 ATTRIBUTE_ATOMIC128_OPT
- atomic16_cmpxchg(Int128 *ptr, Int128 cmp, Int128 new)
-diff --git a/host/include/generic/host/atomic128-ldst.h b/host/include/generic/host/atomic128-ldst.h
-index 691e6a8531..12e4aca2da 100644
---- a/host/include/generic/host/atomic128-ldst.h
-+++ b/host/include/generic/host/atomic128-ldst.h
-@@ -11,6 +11,8 @@
- #ifndef HOST_ATOMIC128_LDST_H
- #define HOST_ATOMIC128_LDST_H
+-#ifdef NEED_CPU_H
+ #ifdef CONFIG_USER_ONLY
+     /**
+      * @fake_user_interrupt: Callback for 'fake exception' handling.
+@@ -174,7 +173,6 @@ struct TCGCPUOps {
+      */
+     bool (*need_replay_interrupt)(int interrupt_request);
+ #endif /* !CONFIG_USER_ONLY */
+-#endif /* NEED_CPU_H */
  
-+#include "qemu/atomic.h"
-+
- #if defined(CONFIG_ATOMIC128)
- # define HAVE_ATOMIC128_RO 1
- # define HAVE_ATOMIC128_RW 1
+ };
+ 
 -- 
 2.41.0
 
