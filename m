@@ -2,138 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8B8860A6
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A4C8860A5
 	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 19:43:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnNNO-0003XZ-Bz; Thu, 21 Mar 2024 14:42:54 -0400
+	id 1rnNNR-0003YE-J0; Thu, 21 Mar 2024 14:42:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rnNNK-0003Wt-Jt
+ id 1rnNNK-0003Ws-J5
  for qemu-devel@nongnu.org; Thu, 21 Mar 2024 14:42:50 -0400
-Received: from bactrian.maple.relay.mailchannels.net ([23.83.214.9])
+Received: from bongo.birch.relay.mailchannels.net ([23.83.209.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <svens@stackframe.org>)
- id 1rnNND-0006ae-I8
+ id 1rnNND-0006ao-Hl
  for qemu-devel@nongnu.org; Thu, 21 Mar 2024 14:42:49 -0400
 X-Sender-Id: _forwarded-from|134.3.94.10
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
- by relay.mailchannels.net (Postfix) with ESMTP id D571DC217E
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 18:42:38 +0000 (UTC)
-Received: from outbound5e.eu.mailhop.org (unknown [127.0.0.6])
+ by relay.mailchannels.net (Postfix) with ESMTP id 474C7C20FC
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 18:42:41 +0000 (UTC)
+Received: from outbound5f.eu.mailhop.org (unknown [127.0.0.6])
  (Authenticated sender: duocircle)
- by relay.mailchannels.net (Postfix) with ESMTPA id 1148EC2A86
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 18:42:36 +0000 (UTC)
-ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1711046557; a=rsa-sha256;
+ by relay.mailchannels.net (Postfix) with ESMTPA id 9244EC21AF
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 18:42:40 +0000 (UTC)
+ARC-Seal: i=2; s=arc-2022; d=mailchannels.net; t=1711046560; a=rsa-sha256;
  cv=pass;
- b=vXmvc9XITKM80bpVL9s/t2sVlr7BN/S0GedMJK4qrGCj7wnTGSkl8oKNAzVmBSxFeEjqHo
- XKtglO4lzyA0BBFL6sX7PC+gQxaTSwHHIGaBlj1y+jl1IMLe5jjMYBZLXb6dtcXda6CP0R
- +ELVL2RBD/BGvlB9iFE3hSNFy6HiOr35rv44cWHTMDbGVGZWhICrmPkqwpuhYMBMWVGVO6
- QjAk6NySM4gDp5YeF4gVqk+pqIPQueW2+hMIGqfUsjt2P8q3J50oGpdT9Yy47oSh58JJez
- 3TWDoXyw6jCaQLs1tCqNFKwBpfWK3S1f4W/65Ii5jjwQRg9/dcFcL7+FW/pmrw==
+ b=5draw1tdoXCsrQ3Nf7sNsCzlT9OTuNu3n85tAnt79+7jj+3yhCMZMhevv21jPl9/GMHOwB
+ eeXlbxq4oXwSwlzivTxPRlMPJPRoPgasRG5NxLhZOK8YXQMJ0w6fedA5xNpDkRC5W4G7ER
+ EFNqnBH4+kge2fWrQnvYA97RpVoAYRJai84yC1yGDvJG+PeoPHadzW+LCDZAPj/VfXuecw
+ GmlElW9d7KXzivZWWteaUHBSKx/aaE3BaCDu0MXXzIvTGfJMIiAb9qk6uWDEMO0+M5YaFX
+ bpUoK0guzd70b6dKNz12QXQaQlERM8ij9dKx8jRg78+cRl7EOLQMAvjech2VDA==
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net; s=arc-2022; t=1711046557;
+ d=mailchannels.net; s=arc-2022; t=1711046560;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:dkim-signature;
- bh=XdxHOAgwmqYTQml5USShe9l976I9+XzBLbbeeGuDPug=;
- b=3hvM17NSI/7fd2qxLeSvCKRx87szEQWIi77qfVY9IsiJDCu9O2vPHnzVhy6BThFkjGvU23
- HBqWtA8/ZskwyBmDdThYqkQXuJ6uFb37wvMnzknvQio7o4nt4NU6CafHW585lTc95sg6aL
- cNwc+W9cXvYuib9IRnZmo0SJMJqPX3q/Gxj1veI3inZQYieqJSToalzOC+lxbKYSIvTToy
- bJSgMB7T2mU9KD49olHBxIYsJcK5TzlYW1XKf7RPQJg2R70DpNarbSa30j/JbS56bgYoDx
- PAZRZrkgmQ4BNJhNIwxi0T3aB7tDnQ//X57O4JR2XG/5nnNjjDY6rjgKgmvIwg==
-ARC-Authentication-Results: i=2; rspamd-b46fcdc5-7drxb;
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:dkim-signature;
+ bh=Xtf50j+DlfNozbMDgzegCVRznHt1CNihl0mHsKkCUmk=;
+ b=syj3m8d+L0l3EAO9mBh0BaLEb1oWqNdqg4IZcW9V0Wfqf1+0gE/Yff61DbjSgmoy9gtOJZ
+ xiZldlvpvpBwItbSKgefAAER0p6jV8mAOl6Am96ssONCpLA82bOnga4mwcm04WtRiiCpI7
+ 5qvp+wKXaGrEoWHRx3Hn2Gfn76ejQW/M54t/3NSFoXhiYdkrQcQFtWrtZOsuIPgoJ93bZ4
+ UsoBm0lGMjNTZEquKTpFK3Xdu9EwTvssLDdogvOAiVbSndbn9D3mGt0Id80V62rReviFsa
+ P22tw6HV//32qPS0degm2xoT9zHcNYkUhjoAuPZrlJ+A5+dMhDTd3SDeeifWYQ==
+ARC-Authentication-Results: i=2; rspamd-b46fcdc5-v5kc4;
  arc=pass ("outbound.mailhop.org:s=arc-outbound20181012:i=1");
  auth=pass smtp.auth=duocircle smtp.mailfrom=svens@stackframe.org
 X-Sender-Id: _forwarded-from|134.3.94.10
 X-MC-Relay: Forwarding
 X-MailChannels-SenderId: _forwarded-from|134.3.94.10
 X-MailChannels-Auth-Id: duocircle
-X-Befitting-Tart: 36ecf81f0da7910d_1711046558583_939074144
-X-MC-Loop-Signature: 1711046558583:846670743
-X-MC-Ingress-Time: 1711046558583
-Received: from outbound5e.eu.mailhop.org (outbound5e.eu.mailhop.org
- [52.28.168.19]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
- by 100.99.130.139 (trex/6.9.2); Thu, 21 Mar 2024 18:42:38 +0000
+X-Cold-Lonely: 2ae42426480f3eba_1711046561113_2795044585
+X-MC-Loop-Signature: 1711046561113:836880450
+X-MC-Ingress-Time: 1711046561112
+Received: from outbound5f.eu.mailhop.org (outbound5f.eu.mailhop.org
+ [3.127.8.113]) (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+ by 100.126.173.87 (trex/6.9.2); Thu, 21 Mar 2024 18:42:41 +0000
 ARC-Seal: i=1; a=rsa-sha256; t=1711046441; cv=none;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- b=vWzQLiVwjp8CZP84igREVIzOgWAmUxoUFed8iVAQvSWBFGNzhen0sLVIdKXgI3kkeY5oscHjeYSob
- l31AGsN/vSMHgegmOl5i7MdF7wZSigc2kyDLAHm2A31pvF+vrpRLAgqZWMtrU1WddPn53wfg6rFxiE
- OvauWNS6DuXiHya/EB+iB83DqMGVkj3tdqwYr1wcZR4lwLObWBLtSO2Fl6t70JQ4qk7LDJ9ftebiUz
- G6u7WC521+kOiIHIw8OsS5yaojQM4mZ6RT/E8vppdt1Ie0RyG4Mt9tOmf6ZzoqvG+keQaw6WNzqAq8
- GanV0IS9bYJdF/K+PD69/3GDDTw4F2Q==
+ b=BeNG4z20k2ESSjAGsC6T34sYRxKiY8D6U79J2HaAVWrRo46JX8ABs76+xXxdNGgOchdvReiK+Anjq
+ vIPK1G3oj1TweOgpt0TTFHSfggHSNdcQEHkOX50i54lCSE2wjdZgCqxAFMLji+KoFzz9bLL+PBbgYv
+ 0MM5sdvg98NYt54F609P2gjhb7s1Ggnfj0RGsmIk9qOPWPMQxHhLYYYPtcU4F4tT5q2NeAEXsE7hSd
+ u4NaJRoNxL6WRl8uozd8YF9FxcVujnptNcokINRAWyaN3aKvgApoS3WuDrDa7t7iroINVygRORKCi2
+ j0gqLS+FKzxxuX6wp4NUJG+eRs+BJhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=arc-outbound20181012;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
- dkim-signature:dkim-signature:dkim-signature:from;
- bh=XdxHOAgwmqYTQml5USShe9l976I9+XzBLbbeeGuDPug=;
- b=m/ujMYNSAQHh/BM2H5pCeGOxcCQAfOec+v9fHLZdIcnB2SMvSMmPdPRYkfysOoZ2eMKtWDrgegGLG
- mxg//GPpnRM0KorQaZLnWFC7VoIpwjcHe8iSKtrAuw9pNTTlanqDKvLks8FZGXhC2jb+9YMuzXgFzg
- kkTtigu2YSlVRB4RFpC0Zuw+FhjAcBIjll30gyvaaOHvkd+OUhoDYDNRaSPMuY91+d4AgO7RsIJ+hL
- 3Q0/NN/yM1Sll1QmZjlJFrqE1DHU/4Pdnhe8V6+j0mhWG+XHj500GLE65zRxIOjueGYiyE2l/QGAst
- j9HOVKdIyDqb8/hcm8ne71EvBhfb8hA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+ subject:cc:to:from:dkim-signature:dkim-signature:dkim-signature:from;
+ bh=Xtf50j+DlfNozbMDgzegCVRznHt1CNihl0mHsKkCUmk=;
+ b=eQcSlxuXplvwWKt2HvcsZRF6ar9wn7ROgNvrPoo30dSTawMDmGcBYz1btKjd93WCVU0P+cDR+VAj8
+ FI+LIMxmzPRni38LXStrIqT1m1SeJg4SuUHzjPxAdBr1HZXoXeW8+vh5BqmiRSK/J8amPUs1qYAXcS
+ ttxCdYKX1+VYCP+Dw0VTHmYn3zoScHBNEVyDLbE60ag40WRE2jJuLP3aqkB6yefYYfhxmSajxOUM7n
+ hk7jXWppKl+25E3U/rI8mnEASEniRgfJyPHQ9t0HqZsWUQlo7utWTxwSv/3AhT8h5g7N6961/4n4Fl
+ ioiPLsQSUYsfVxskRY59ErwHb035hvQ==
 ARC-Authentication-Results: i=1; outbound2.eu.mailhop.org;
  spf=pass smtp.mailfrom=stackframe.org smtp.remote-ip=130.180.31.158;
  dkim=pass header.d=stackframe.org header.s=dkim1 header.a=rsa-sha256
- header.b=Ca5vA2AY; 
+ header.b=mFpD3jl2; 
  dmarc=none header.from=stackframe.org;
  arc=none header.oldest-pass=0;
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=stackframe.org; s=duo-1634547266507-560c42ae;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
- from; bh=XdxHOAgwmqYTQml5USShe9l976I9+XzBLbbeeGuDPug=;
- b=p2bL/NMrjip7GB9Z0wnw17vfSiS8UroXpGBKzoEESwT7nYC/NNxy0XJVRbQ1n1sECchGnQHdvzV83
- S9kYRSa1XadIYcmZgoWug/9dbO4YS0tEaoOU5NjXcLp+HXvdn07DRQnscJtNY/4aUWCxY4SI/dbYna
- gxq9+cCV++jgJ8M4=
+ h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+ subject:cc:to:from:from;
+ bh=Xtf50j+DlfNozbMDgzegCVRznHt1CNihl0mHsKkCUmk=;
+ b=gwcD1+4RyzaO6hwjXq4BZgeuPGn7BA4ryQj+kDtD9rrLEzCuQb0nZ6zWHdUH7R7XQeCtJN3krO8V5
+ qEUk1d7hmxJ9RzdbGbjH790hZV3TeQ9zIUfwq6NlwDx8X7T5gyE3UHMNyCDT72gtIofEiZJ5AQmxmk
+ g8STz7OckRDlv+no=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=outbound.mailhop.org; s=dkim-high;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
- from; bh=XdxHOAgwmqYTQml5USShe9l976I9+XzBLbbeeGuDPug=;
- b=nMH6aRndIQVm9Xf4frY4YChtFjOysUvku7FPl+HHPiBYhjQ9uMDgtL2X3Vgg01NSFNqpl7GYdprtS
- MXdQAmF4W7gTXEHAeiYsY0GysFuZOSDI9NbnMJNCD4nBNxtLlQ1S7a5kLdDknYfLuf18ALPVNfXy8A
- OV8I68Ix86AcmD4VRiZ4ED68sux1tqBRAte46VGbUtz+FGbBKG6xAvGPe/My7BJOTf5YCZ2uhOnr0z
- PaRUY/Kr0/u0WU58KG3bSzbJKfzJtqD75KJeJT3G3yGa/QOWD0I1XZ8kYEGjsInE5i8Wmq9q6SBDL1
- I/zYezjdRQCNphtU74dpZoRWbBCJUMA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
+ subject:cc:to:from:from;
+ bh=Xtf50j+DlfNozbMDgzegCVRznHt1CNihl0mHsKkCUmk=;
+ b=iEy/Pj6Bv4WnUkGNCEruHpFD/EXY/W7R2zxdAewZ5m8NYvxBhsKCv+/Jkqe9+Y++qXnTLtCaPEnGZ
+ 3tSa58tyQScjYirB/2LxL6YhfjmrNKOm3DcBsrUflidV4eMFeZfEQLv9xmsvBKfkMbZldScUywyZ+r
+ Wm4Jr0OeDeE2qxlBtX3ds1qXiZtblyUVHsSfbMsVO8OfzR1Wh9Dn4HC7iOiM2wfL2Ss1/O0+t9mpWf
+ gab7tUqiuyL7LTjxOCkZ/oVip7DKVWQOWaXjA3ertyDlPGktZw/Uc/tUQy+Eh3v4bvl6gGtuaIMGQ2
+ PqJH/IbYHwZj86XhR1EKUBipKKEemeA==
 X-Originating-IP: 130.180.31.158
 X-MHO-RoutePath: dG9ta2lzdG5lcm51
-X-MHO-User: 831a7241-e7b2-11ee-b810-9b9d9be6ef2c
+X-MHO-User: 8343f0f2-e7b2-11ee-b810-9b9d9be6ef2c
 X-Report-Abuse-To: https://support.duocircle.com/support/solutions/articles/5000540958-duocircle-standard-smtp-abuse-information
 X-Mail-Handler: DuoCircle Outbound SMTP
 Received: from mail.duncanthrax.net (mail.duncanthrax.net [130.180.31.158])
  by outbound2.eu.mailhop.org (Halon) with ESMTPSA
- id 831a7241-e7b2-11ee-b810-9b9d9be6ef2c;
- Thu, 21 Mar 2024 18:40:38 +0000 (UTC)
+ id 8343f0f2-e7b2-11ee-b810-9b9d9be6ef2c;
+ Thu, 21 Mar 2024 18:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=stackframe.org; s=dkim1; h=Content-Transfer-Encoding:MIME-Version:
- Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=XdxHOAgwmqYTQml5USShe9l976I9+XzBLbbeeGuDPug=; b=Ca5vA2AY/mcSkU/1HDjh2BroAo
- os8TK743rGm3wZdNKUDywKK0Z2TU3duxYhcnPpXqNTD+zEsgRnk+bpnHy7+SHx84FhyXnZEHHnpYd
- fLues2iP5NVUoUNb2FDWqjvuBNPvyqOAhKjAI+Wwvb9s7jlVgnD1MqZSNvBhGS9ICe/OM3ScOw6PA
- VhDRu6NxLkG8+yB5wCDLmk6eB4v3J/J5DWrySpzlwrhB9Z84HgmDdYy4AexjoBe2qMBwkdjIykLPR
- tWUnPnYqNbY7QthfoKE7x7rs+kYzQbeLz0lOLZVkQtOFJdfyZqrKMEtanPVYVjN8oXXbfeK+X05kG
- wKJwqeEg==;
+ References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=Xtf50j+DlfNozbMDgzegCVRznHt1CNihl0mHsKkCUmk=; b=mFpD3jl29P7lHhkQrDyDLh6/iR
+ LRTdAlXpxaolNlv0kv+/IC43BoZuCqpGpfKBzrj6G1XRcxXbwLd0RW2HVCxgy9P/PXcbQ9Bf5nDo3
+ 6VYMJUMz3tInu2UranVRmTx2vgxb4Tm7bgxdSLyyCkFjuBQmh3j8pFnr6QjJurxIiPFp82lLGhApT
+ l3QLIbXb/0boppWc6ZwMwte7ZVmO5BungrzKZkzkknEfU8ZtBK15rF1oSsUTYhMwNWUeDcwWVI7UV
+ UwW4nk/DRPYZdf4L67bR4WT6sbpJH8fueuh+wB1scTJIi0MXmBHlZMlfi9mppo2s44Bhz3Ae7ckbi
+ xMP3gCBA==;
 Received: from ip-134-003-094-010.um41.pools.vodafone-ip.de ([134.3.94.10]
  helo=t14.stackframe.org)
  by mail.duncanthrax.net with esmtpa (Exim 4.96)
- (envelope-from <svens@stackframe.org>) id 1rnNN2-004uGo-0X;
+ (envelope-from <svens@stackframe.org>) id 1rnNN2-004uGo-1I;
  Thu, 21 Mar 2024 19:42:32 +0100
 From: Sven Schnelle <svens@stackframe.org>
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>,
  Sven Schnelle <svens@stackframe.org>
-Subject: [PATCH 1/3] target/hppa: add unit conditions for wide mode
-Date: Thu, 21 Mar 2024 19:42:26 +0100
-Message-ID: <20240321184228.611897-1-svens@stackframe.org>
+Subject: [PATCH 2/3] target/hppa: sub: fix trap on overflow for narrow mode
+Date: Thu, 21 Mar 2024 19:42:27 +0100
+Message-ID: <20240321184228.611897-2-svens@stackframe.org>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240321184228.611897-1-svens@stackframe.org>
+References: <20240321184228.611897-1-svens@stackframe.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=23.83.214.9; envelope-from=svens@stackframe.org;
- helo=bactrian.maple.relay.mailchannels.net
+Received-SPF: pass client-ip=23.83.209.21; envelope-from=svens@stackframe.org;
+ helo=bongo.birch.relay.mailchannels.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -156,59 +161,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Wide mode provides two more conditions, add them.
-
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 ---
- target/hppa/translate.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ target/hppa/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8a87996fc1..f493e207e1 100644
+index f493e207e1..4d2b96f876 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -963,11 +963,22 @@ static DisasCond do_unit_cond(unsigned cf, bool d, TCGv_i64 res,
- 
-     switch (cf >> 1) {
-     case 0: /* never / TR */
--    case 1: /* undefined */
--    case 5: /* undefined */
-         cond = cond_make_f();
-         break;
- 
-+    case 1:
-+        if (d) {
-+            tmp = tcg_temp_new_i64();
-+            tcg_gen_subi_i64(tmp, res, d_repl * 0x00000001u);
-+            tcg_gen_andc_i64(tmp, tmp, res);
-+            tcg_gen_andi_i64(tmp, tmp, d_repl * 0x80000000u);
-+            cond = cond_make_0(TCG_COND_NE, tmp);
-+        } else {
-+            /* undefined */
-+            cond = cond_make_f();
-+        }
-+        break;
-+
-     case 2: /* SBZ / NBZ */
-         /* See hasless(v,1) from
-          * https://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
-@@ -992,6 +1003,16 @@ static DisasCond do_unit_cond(unsigned cf, bool d, TCGv_i64 res,
-         cond = cond_make_0(TCG_COND_NE, cb);
-         break;
- 
-+    case 5:
-+        if (d) {
-+            tcg_gen_andi_i64(cb, cb, d_repl * 0x80000000u);
-+            cond = cond_make_0(TCG_COND_NE, cb);
-+        } else {
-+            /* undefined */
-+            cond = cond_make_f();
-+        }
-+        break;
-+
-     case 6: /* SBC / NBC */
-         tcg_gen_andi_i64(cb, cb, d_repl * 0x80808080u);
-         cond = cond_make_0(TCG_COND_NE, cb);
+@@ -1213,6 +1213,9 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     if (is_tsv || cond_need_sv(c)) {
+         sv = do_sub_sv(ctx, dest, in1, in2);
+         if (is_tsv) {
++            if (!d) {
++                tcg_gen_ext32s_i64(sv, sv);
++            }
+             gen_helper_tsv(tcg_env, sv);
+         }
+     }
 -- 
 2.43.2
 
