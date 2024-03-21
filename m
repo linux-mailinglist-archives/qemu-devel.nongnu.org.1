@@ -2,84 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C81F885594
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 09:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F578855BF
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 09:33:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnDcv-00015d-NG; Thu, 21 Mar 2024 04:18:17 -0400
+	id 1rnDr8-0004mc-7r; Thu, 21 Mar 2024 04:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnDcq-00015B-E0
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 04:18:13 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rnDr5-0004lm-9y; Thu, 21 Mar 2024 04:32:55 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnDco-0005TO-TR
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 04:18:12 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1dee5daa236so5039005ad.0
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 01:18:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rnDr3-0008VT-FT; Thu, 21 Mar 2024 04:32:55 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e740fff1d8so607746b3a.1; 
+ Thu, 21 Mar 2024 01:32:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711009089; x=1711613889; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=e22/WRojH77uUxTiZE4vkI+RCNjduJDHrgnxZNbBYNc=;
- b=y9aWNFnTvb4HzL8O6OBwgvkMRH9HVdfv+01YlMCapSQIMCLbW2dzxPviqvFqXWUD6O
- 2NQftS1PzYi5nK3mCGAOjxwK1HdgAekTjzk59G4FDk3z75yrJHZ7bRJRFrhOl1JYluxR
- e5XRZBAPf4maxjUmWzRF6nu6265OWqNDed5i/z9xPuxbJ0VUG9U6G6ZSA2hxMQeR7DMN
- 1sESwPHvanDJD/IERsrdi1KUL0BDb6WFEK+oKGOXMAIp2z379EeECPWbVH68GWuvhyXn
- IWu8DH5H4SoLywd+Xl5wEiyx1HZzZ4F97LnK23plkf9yPVB3CAunPzy4FPEvWtnA66jP
- II9g==
+ d=gmail.com; s=20230601; t=1711009971; x=1711614771; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CUUx1lzhsvpVEEQyG7T45YA3v+loYAcCkpS9kUu6u9w=;
+ b=Ucy8hzFYC4kpz1ptkrBd8LRzIsZo0tT95j4QkqlD/5eku+9PcZABspUqsvBQFa9Q7L
+ /JKPiXK5SP1RZBXM0PxM0U9/K/USj+awyWFSiia0uqyfT7/DW82dDvQrkZtdbuCTcKMQ
+ CFAu9bGGdoQ5ZkPWKkB4A9tVO3GDuyC+WkCmI5l+XfHnmDqf81L9IzYMNkPpEjtJkQzM
+ GuVaL5szmSS57phcBpYWKFcSreapevKA8v8zSbqg2byudT360Rc4jQxgNTLPBdFVsxOR
+ IZrAsWBDA8SJuvXBfQ9xP5/t5yJPJg1vp9NKa9wde3oeKZORI7CDnNWrvGiGwD+i+xwQ
+ QQIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711009089; x=1711613889;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=e22/WRojH77uUxTiZE4vkI+RCNjduJDHrgnxZNbBYNc=;
- b=j5aTuSn8ty/gWDMfYzebfqlJBN13pDInfROJsd1OgrNPi6HdYo0PtsKovIYs26B95j
- bTcwmls4SDkB0KJGQM8jZ0dGTfNlqbcYR7dTMJLOWSnpaoM2S1YZzoNryqAKsWIkOV16
- fLrUVZydiCx14rKz49VvPvW90kx7LVud7gDxoAeGu+/Lss51qg/TUEpHfOdKwUO78uVE
- SbY5bqwYRZ6b4yY7d/DmMuOLnpA11RaD4hUwJugevOsXbwBfA2o3kVd2iOyegGqunOpH
- yR9hxzZaz1BTB+lF4COr0YFJLJ4dVzh1Gu3JrK1fKvzq3JnBVHgAe1WSPhPnlUO75SZ2
- yKhA==
+ d=1e100.net; s=20230601; t=1711009971; x=1711614771;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CUUx1lzhsvpVEEQyG7T45YA3v+loYAcCkpS9kUu6u9w=;
+ b=I74e+VyeDj7Y4O/IzyVJPy8xg7P3XZGXyZLrqY6CfjZb2uDjrlpFmUxmVyfF5+uG0d
+ C2tarwkBImuRVyLjJLB7gBLyBUc1JFEgHgButUp+Io8V8dtBV6uXWnRILK2YPxfGoITP
+ jBI7dQXyh+ZzsLNiVJCQbM4soTKrsqi+CAl3+fg0EM8J2Xxl66erGE+ZrWW92wbWn+01
+ A60Jj0awOUIP2FjV9UfkpKOssPW+js5iMHJkR317dMSAn3Z1GyCHg5BwuNP8goTtcTaB
+ hAlgPJsQwEMCQQedcmXhrlb2BN75lOTzh8aKLhkNXWnbbUVGkNwk6QY13sWs9DVm/A1x
+ TAbQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUuLCyvDUDlkTGXRufyW1JxUzAUPqMREuhoNHUDMNLZH4oBBa/jbVkRR9qPclAXpKZBBnR1ujMwn/vkvNUGnBVDUdKJB/0=
-X-Gm-Message-State: AOJu0YxSsLyMcwAl7WFXhWC+lhG2BnFvDa0IGcugY92Cn3U08ag8i4gc
- Y2XKucTGUlNMGFBM1rga+bMU13AiqjZcZh04Kjdva+ME0BdIaCA066REJqeg7xY=
-X-Google-Smtp-Source: AGHT+IEimOKmM7E/hMZ9MZbbV0m1VeEXhAWuMq/QJy5uw0FOS0aZUC9Urq8nyy3k1uHENqmYEDwAeA==
-X-Received: by 2002:a17:902:b08f:b0:1e0:27e5:449c with SMTP id
- p15-20020a170902b08f00b001e027e5449cmr3994558plr.67.1711009089170; 
- Thu, 21 Mar 2024 01:18:09 -0700 (PDT)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- b7-20020a170902650700b001e0648dfd68sm2258032plk.296.2024.03.21.01.18.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Mar 2024 01:18:08 -0700 (PDT)
-Message-ID: <ed5675bc-f82b-4d4e-95e4-1a3045dd1870@linaro.org>
-Date: Wed, 20 Mar 2024 22:18:04 -1000
+ AJvYcCVILFg3Sa8Nf2JXr5U61LBbRf+N7K0AfuQTIPA1CjrTxIkCHYbg34ZyzGA8OSsaHXEAqKfts+uMSpoQ/57hkOdmlLFnOD4=
+X-Gm-Message-State: AOJu0Yw+vXvTvIuTm3IsJPDcT/Nw7KyBe9t4saesXusJzNcomv4NY5Co
+ 80H1ht9yOgemG/BMlRH1fjZKiE5NFXqNn80DorGOTXAcRLlR2jWY9RSgAy+yU+Q=
+X-Google-Smtp-Source: AGHT+IFmKwTjZmRATqGZXmiJe48aETN/vY5rtbDMoh+cyU5nZW8ld3UZmevvEPvImkyiZzzAUyT57w==
+X-Received: by 2002:a05:6a20:1715:b0:1a1:878d:d3f6 with SMTP id
+ bn21-20020a056a20171500b001a1878dd3f6mr1096741pzb.26.1711009505634; 
+ Thu, 21 Mar 2024 01:25:05 -0700 (PDT)
+Received: from wheely.local0.net ([1.146.27.241])
+ by smtp.gmail.com with ESMTPSA id
+ so15-20020a17090b1f8f00b002a0187d84f0sm1081995pjb.20.2024.03.21.01.25.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Mar 2024 01:25:05 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [RFC PATCH] target/ppc: Fix TCG PMC5 instruction counting
+Date: Thu, 21 Mar 2024 18:24:57 +1000
+Message-ID: <20240321082457.2462866-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] target/riscv: Fix the element agnostic function problem
-To: Huang Tao <eric.huang@linux.alibaba.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
- alistair.francis@wdc.com, palmer@dabbelt.com
-References: <20240321035816.99983-1-eric.huang@linux.alibaba.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240321035816.99983-1-eric.huang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
  T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,47 +90,249 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/20/24 17:58, Huang Tao wrote:
-> In RVV and vcrypto instructions, the masked and tail elements are set to 1s
-> using vext_set_elems_1s function if the vma/vta bit is set. It is the element
-> agnostic policy.
-> 
-> However, this function can't deal the big endian situation. This patch fixes
-> the problem by adding handling of such case.
-> 
-> Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
-> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
-> Changes in v2:
-> - Keep the api of vext_set_elems_1s
-> - Reduce the number of patches.
-> ---
->   target/riscv/vector_internals.c | 22 ++++++++++++++++++++++
->   1 file changed, 22 insertions(+)
-> 
-> diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
-> index 12f5964fbb..3e45b9b4a7 100644
-> --- a/target/riscv/vector_internals.c
-> +++ b/target/riscv/vector_internals.c
-> @@ -30,6 +30,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
->       if (tot - cnt == 0) {
->           return ;
->       }
-> +
-> +#if HOST_BIG_ENDIAN
-> +    /*
-> +     * Deal the situation when the elements are insdie
-> +     * only one uint64 block including setting the
-> +     * masked-off element.
-> +     */
-> +    if ((tot - 1) ^ cnt < 8) {
-> +        memset(base + H1(tot - 1), -1, tot - cnt);
-> +        return;
-> +    }
+PMC5 does not count instructions when single stepping (with gdb,
+haven't tried single stepping inside the target), or when taking
+exceptions. At least the single-steppig is a bit of a landmine for
+replay.
 
-(1) tot will always be a multiple of 8, afaik, so there's no need for this first block.
-(2) Using if not #if means that the code is always compile-tested, even if it is eliminated.
+I don't quite understand the logic of the approach taken for
+counting now. AFAIKS instructions must be counted whenever leaving
+the current TB whether it is exiting or going to the next TB
+directly.
 
+This patch fixes up at least the ss and syscall/synchronous exception
+cases, and doesn't seem to break anything. I don't know if there
+is a better or more consistent way to do it though.
 
-r~
+Thanks,
+Nick
+
+---
+ target/ppc/translate.c | 146 +++++++++++++++++++----------------------
+ 1 file changed, 67 insertions(+), 79 deletions(-)
+
+diff --git a/target/ppc/translate.c b/target/ppc/translate.c
+index 93ffec787c..4e4648e02d 100644
+--- a/target/ppc/translate.c
++++ b/target/ppc/translate.c
+@@ -296,11 +296,73 @@ static inline void gen_update_nip(DisasContext *ctx, target_ulong nip)
+     tcg_gen_movi_tl(cpu_nip, nip);
+ }
+ 
++#if defined(TARGET_PPC64)
++static void pmu_count_insns(DisasContext *ctx)
++{
++    /*
++     * Do not bother calling the helper if the PMU isn't counting
++     * instructions.
++     */
++    if (!ctx->pmu_insn_cnt) {
++        return;
++    }
++
++ #if !defined(CONFIG_USER_ONLY)
++    TCGLabel *l;
++    TCGv t0;
++
++    /*
++     * The PMU insns_inc() helper stops the internal PMU timer if a
++     * counter overflows happens. In that case, if the guest is
++     * running with icount and we do not handle it beforehand,
++     * the helper can trigger a 'bad icount read'.
++     */
++    translator_io_start(&ctx->base);
++
++    /* Avoid helper calls when only PMC5-6 are enabled. */
++    if (!ctx->pmc_other) {
++        l = gen_new_label();
++        t0 = tcg_temp_new();
++
++        gen_load_spr(t0, SPR_POWER_PMC5);
++        tcg_gen_addi_tl(t0, t0, ctx->base.num_insns);
++        gen_store_spr(SPR_POWER_PMC5, t0);
++        /* Check for overflow, if it's enabled */
++        if (ctx->mmcr0_pmcjce) {
++            tcg_gen_brcondi_tl(TCG_COND_LT, t0, PMC_COUNTER_NEGATIVE_VAL, l);
++            gen_helper_handle_pmc5_overflow(tcg_env);
++        }
++
++        gen_set_label(l);
++    } else {
++        gen_helper_insns_inc(tcg_env, tcg_constant_i32(ctx->base.num_insns));
++    }
++  #else
++    /*
++     * User mode can read (but not write) PMC5 and start/stop
++     * the PMU via MMCR0_FC. In this case just increment
++     * PMC5 with base.num_insns.
++     */
++    TCGv t0 = tcg_temp_new();
++
++    gen_load_spr(t0, SPR_POWER_PMC5);
++    tcg_gen_addi_tl(t0, t0, ctx->base.num_insns);
++    gen_store_spr(SPR_POWER_PMC5, t0);
++  #endif /* #if !defined(CONFIG_USER_ONLY) */
++}
++#else
++static void pmu_count_insns(DisasContext *ctx)
++{
++    return;
++}
++#endif /* #if defined(TARGET_PPC64) */
++
+ static void gen_exception_err_nip(DisasContext *ctx, uint32_t excp,
+                                   uint32_t error, target_ulong nip)
+ {
+     TCGv_i32 t0, t1;
+ 
++    pmu_count_insns(ctx);
+     gen_update_nip(ctx, nip);
+     t0 = tcg_constant_i32(excp);
+     t1 = tcg_constant_i32(error);
+@@ -323,6 +385,7 @@ static void gen_exception_nip(DisasContext *ctx, uint32_t excp,
+ {
+     TCGv_i32 t0;
+ 
++    pmu_count_insns(ctx);
+     gen_update_nip(ctx, nip);
+     t0 = tcg_constant_i32(excp);
+     gen_helper_raise_exception(tcg_env, t0);
+@@ -4082,67 +4145,6 @@ static inline void gen_update_cfar(DisasContext *ctx, target_ulong nip)
+ #endif
+ }
+ 
+-#if defined(TARGET_PPC64)
+-static void pmu_count_insns(DisasContext *ctx)
+-{
+-    /*
+-     * Do not bother calling the helper if the PMU isn't counting
+-     * instructions.
+-     */
+-    if (!ctx->pmu_insn_cnt) {
+-        return;
+-    }
+-
+- #if !defined(CONFIG_USER_ONLY)
+-    TCGLabel *l;
+-    TCGv t0;
+-
+-    /*
+-     * The PMU insns_inc() helper stops the internal PMU timer if a
+-     * counter overflows happens. In that case, if the guest is
+-     * running with icount and we do not handle it beforehand,
+-     * the helper can trigger a 'bad icount read'.
+-     */
+-    translator_io_start(&ctx->base);
+-
+-    /* Avoid helper calls when only PMC5-6 are enabled. */
+-    if (!ctx->pmc_other) {
+-        l = gen_new_label();
+-        t0 = tcg_temp_new();
+-
+-        gen_load_spr(t0, SPR_POWER_PMC5);
+-        tcg_gen_addi_tl(t0, t0, ctx->base.num_insns);
+-        gen_store_spr(SPR_POWER_PMC5, t0);
+-        /* Check for overflow, if it's enabled */
+-        if (ctx->mmcr0_pmcjce) {
+-            tcg_gen_brcondi_tl(TCG_COND_LT, t0, PMC_COUNTER_NEGATIVE_VAL, l);
+-            gen_helper_handle_pmc5_overflow(tcg_env);
+-        }
+-
+-        gen_set_label(l);
+-    } else {
+-        gen_helper_insns_inc(tcg_env, tcg_constant_i32(ctx->base.num_insns));
+-    }
+-  #else
+-    /*
+-     * User mode can read (but not write) PMC5 and start/stop
+-     * the PMU via MMCR0_FC. In this case just increment
+-     * PMC5 with base.num_insns.
+-     */
+-    TCGv t0 = tcg_temp_new();
+-
+-    gen_load_spr(t0, SPR_POWER_PMC5);
+-    tcg_gen_addi_tl(t0, t0, ctx->base.num_insns);
+-    gen_store_spr(SPR_POWER_PMC5, t0);
+-  #endif /* #if !defined(CONFIG_USER_ONLY) */
+-}
+-#else
+-static void pmu_count_insns(DisasContext *ctx)
+-{
+-    return;
+-}
+-#endif /* #if defined(TARGET_PPC64) */
+-
+ static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+ {
+     if (unlikely(ctx->singlestep_enabled)) {
+@@ -4153,17 +4155,10 @@ static inline bool use_goto_tb(DisasContext *ctx, target_ulong dest)
+ 
+ static void gen_lookup_and_goto_ptr(DisasContext *ctx)
+ {
++    pmu_count_insns(ctx);
+     if (unlikely(ctx->singlestep_enabled)) {
+         gen_debug_exception(ctx, false);
+     } else {
+-        /*
+-         * tcg_gen_lookup_and_goto_ptr will exit the TB if
+-         * CF_NO_GOTO_PTR is set. Count insns now.
+-         */
+-        if (ctx->base.tb->flags & CF_NO_GOTO_PTR) {
+-            pmu_count_insns(ctx);
+-        }
+-
+         tcg_gen_lookup_and_goto_ptr();
+     }
+ }
+@@ -4497,6 +4492,7 @@ static void gen_scv(DisasContext *ctx)
+     uint32_t lev = (ctx->opcode >> 5) & 0x7F;
+ 
+     /* Set the PC back to the faulting instruction. */
++    pmu_count_insns(ctx);
+     gen_update_nip(ctx, ctx->cia);
+     gen_helper_scv(tcg_env, tcg_constant_i32(lev));
+ 
+@@ -7339,6 +7335,8 @@ static void ppc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         return;
+     }
+ 
++    pmu_count_insns(ctx);
++
+     /* Honor single stepping. */
+     if (unlikely(ctx->singlestep_enabled & CPU_SINGLE_STEP)) {
+         bool rfi_type = false;
+@@ -7370,7 +7368,6 @@ static void ppc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+     switch (is_jmp) {
+     case DISAS_TOO_MANY:
+         if (use_goto_tb(ctx, nip)) {
+-            pmu_count_insns(ctx);
+             tcg_gen_goto_tb(0);
+             gen_update_nip(ctx, nip);
+             tcg_gen_exit_tb(ctx->base.tb, 0);
+@@ -7381,14 +7378,6 @@ static void ppc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         gen_update_nip(ctx, nip);
+         /* fall through */
+     case DISAS_CHAIN:
+-        /*
+-         * tcg_gen_lookup_and_goto_ptr will exit the TB if
+-         * CF_NO_GOTO_PTR is set. Count insns now.
+-         */
+-        if (ctx->base.tb->flags & CF_NO_GOTO_PTR) {
+-            pmu_count_insns(ctx);
+-        }
+-
+         tcg_gen_lookup_and_goto_ptr();
+         break;
+ 
+@@ -7396,7 +7385,6 @@ static void ppc_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
+         gen_update_nip(ctx, nip);
+         /* fall through */
+     case DISAS_EXIT:
+-        pmu_count_insns(ctx);
+         tcg_gen_exit_tb(NULL, 0);
+         break;
+ 
+-- 
+2.42.0
+
 
