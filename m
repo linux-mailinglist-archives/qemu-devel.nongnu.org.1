@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1CF885F58
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 18:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1B2885F59
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 18:13:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnLwG-0001bK-Oh; Thu, 21 Mar 2024 13:10:48 -0400
+	id 1rnLyZ-0002ns-HU; Thu, 21 Mar 2024 13:13:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rnLwD-0001Zp-SE
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 13:10:45 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rnLyT-0002k7-QK
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 13:13:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rnLwC-0005xc-6k
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 13:10:45 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rnLyS-0006Nv-8G
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 13:13:05 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E985057DD3;
- Thu, 21 Mar 2024 20:12:01 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id B72C357DD5;
+ Thu, 21 Mar 2024 20:14:21 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id DB0579FDDF;
- Thu, 21 Mar 2024 20:10:40 +0300 (MSK)
-Message-ID: <a6416e86-591f-4b85-a353-dd1dbad9e5a6@tls.msk.ru>
-Date: Thu, 21 Mar 2024 20:10:39 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 9354F9FDE2;
+ Thu, 21 Mar 2024 20:13:01 +0300 (MSK)
+Message-ID: <d46fd950-287a-4d13-8891-bd2fffa91327@tls.msk.ru>
+Date: Thu, 21 Mar 2024 20:13:01 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 2/3] target/loongarch: Fix tlb huge page loading issue
+Subject: Re: [PULL 3/3] target/loongarch: Fix qemu-loongarch64 hang when
+ executing 'll.d $t0, $t0, 0'
 Content-Language: en-US
 To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Xianglai Li <lixianglai@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
 References: <20240320024010.1659193-1-gaosong@loongson.cn>
- <20240320024010.1659193-3-gaosong@loongson.cn>
+ <20240320024010.1659193-4-gaosong@loongson.cn>
 From: Michael Tokarev <mjt@tls.msk.ru>
 Autocrypt: addr=mjt@tls.msk.ru; keydata=
  xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
@@ -58,7 +58,7 @@ Autocrypt: addr=mjt@tls.msk.ru; keydata=
  6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
  rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
  Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240320024010.1659193-3-gaosong@loongson.cn>
+In-Reply-To: <20240320024010.1659193-4-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -84,14 +84,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 20.03.2024 05:40, Song Gao :
-> From: Xianglai Li <lixianglai@loongson.cn>
+> On gen_ll, if a->imm is zero, make_address_x return src1,
+> but the load to destination may clobber src1. We use a new
+> destination to fix this problem.
+> 
+> Fixes: c5af6628f4be (target/loongarch: Extract make_address_i() helper)
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+> Signed-off-by: Song Gao <gaosong@loongson.cn>
+> Message-Id: <20240320013955.1561311-1-gaosong@loongson.cn>
 
+Is it a stable-8.2 material?
 
-> +    if (unlikely((level == 0) || (level > 4))) {
-> +        qemu_log_mask(LOG_GUEST_ERROR,
-> +                      "Attepted LDDIR with level %"PRId64"\n", level);
-
-Attempted.  FWIW, it's applied already.
+Thanks,
 
 /mjt
 
