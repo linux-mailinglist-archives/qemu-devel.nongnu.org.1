@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A917F885C87
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66724885C8A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:50:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnKg3-0006V3-Vj; Thu, 21 Mar 2024 11:50:00 -0400
+	id 1rnKgC-0006wv-Ig; Thu, 21 Mar 2024 11:50:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKg1-0006Oq-DS
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:57 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKg9-0006uB-E5
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:50:05 -0400
 Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfy-0001UM-P8
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:56 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKg5-0001WM-Io
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:50:04 -0400
 Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-414700cffd6so8776605e9.1
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:49:53 -0700 (PDT)
+ 5b1f17b1804b1-414689ba80eso9363545e9.2
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711036192; x=1711640992; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711036200; x=1711641000; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/ByGtnAj40FIgzzc5+9YA5mVdDA+/CNg+MM7X/H831Q=;
- b=eouEY2oGgzd5llVOOxZvaytQsD+HTpAg69ASK6D8w7e17YeBjS7YfBi15/2szVz9Gu
- vywRw+Te3UkA9J+IbhNtZaO5kMxaLvpN2ufnwQ4cspPC5r0i+3vYoXqkVy1tct8vTxlk
- XWEOFEkfGGJ5IEO+zjbeaS1g7Dn/lNJoFtWfmnq5hblBJTvsVCeIJpmX49sjIySItBRF
- UeWLmOMqSxMvsZtZn36NngJ9U3ZJFkATujAhzos83/skqcaAJOUAWazoAY87cisTVT8s
- bg+dCPeyJTOuo7rPgHLia2elJ/OfUoh4xy2X4428nlJXNg1A67ETnzmICgQVlDrg6FyW
- UgqA==
+ bh=QNyIdceODiq/qXWOadWFMGnL31bcMZmdSI8jHE35wz0=;
+ b=Smq9a7zfKTqK+KhZXshSHRabhcw0GtHOyVn4Z/GJUMC/E+Qckk4GtJ8g7cTvQXwmSI
+ BxwLKPD5NDmBzCJgXgStUdjEM/UeWsT2jSwYHkXsMIeEYTnr9/tGvJqvLHZPIaWrlOQK
+ twgLZAUbzroHkMLG+Qv6uwNV7q5AQL58sZ7OY8IHsNkpAIqujiiDaqkhIkI1Uyy4K8OO
+ iZBAcJfQQspILjhhQr3bdG8/AegAxO5egpoxDlEP1kJBkNVzhZKlOspCWund8PBW+ZXT
+ stTUpYc5usgkzAZW+Sfw9qodR56lqCHW0mMQgjHZKs12AQyCePnWL50KpRwSjFRD/+yS
+ Ibsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711036192; x=1711640992;
+ d=1e100.net; s=20230601; t=1711036200; x=1711641000;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/ByGtnAj40FIgzzc5+9YA5mVdDA+/CNg+MM7X/H831Q=;
- b=iXTVruPlFy201zBkx2ZBLdXQ0pWM3y99H/I819yL02G12UkE8nnrUVU4sY61dj9jyR
- AuVHZSZp1VRAGkTz6nIPQNI6ZbYSwFMe+De1hHvo/SXY8tluxG/+nUjnnanxLXP3eSKh
- 77SiNovsXJ+vo/m92DNSqiJ9+/rCqtLkTa5yFeyBiZJV4mk6FF/emawIjbV6ulbwCCeZ
- mxYqrL/5SzCAVWUqF87fV6WkrUsBFuiRpSFlsDqTMjWcgVp1Tjojxm24v7t4SdWleI2o
- bHuaJS1Uj1Cv9MsBEASMmA3RXQe0x4RxtxSaiv5kDQVoUveffN5wmkvmSHbNdK5aEwfg
- hQBg==
-X-Gm-Message-State: AOJu0YwuxpidNh+KLXxq9LApeWwjAtnSmNvegJnpCc8UQuYTVP60NUv9
- RkigaCDObHgwMDcSasNK48vVq3u7zVnTmGKs9C0lHtSQ9xKayNUxVIvWC52kSsPM8udU/qy8YDn
- Mf9E=
-X-Google-Smtp-Source: AGHT+IH/yAHOFp/p/fI7IC+W6jUuAkkKiFdF0KGxCo9t+wlbViIM7IhRlXMf1UHUz2YzS+/8U1P9pQ==
-X-Received: by 2002:a05:600c:a4b:b0:414:85f:1f72 with SMTP id
- c11-20020a05600c0a4b00b00414085f1f72mr4265147wmq.6.1711036191940; 
- Thu, 21 Mar 2024 08:49:51 -0700 (PDT)
+ bh=QNyIdceODiq/qXWOadWFMGnL31bcMZmdSI8jHE35wz0=;
+ b=IrWLXTrECYDREiZWUG1phDpm0r1cvUGI0HnCPGrkWZXYmTfqnZV2APuk9BlJ2RzBtx
+ FLILgTxqKsgE5vWVY+wauChFesihH+oTQBAEYF9ijTqVWEK0Xp8SGlwrgRbd6jU3n9pp
+ PmHDJCD6TQOIBsb8YwdTkmSEt2UqCfBbqNxxs1xJmz304oqxgLOeLyYE9rxbe4M6HuB3
+ v84fenbTkSxuM7mliCNo+zEd6hXMaVviipuuma3MmZlWI0fTs3YzAopij4fRow6FvGcm
+ nCNVSitoVR/UUGD+4KHTNNwWG7RMsAjCO0v5f/BrfY4nch2Ayqwd9d7Z5kJw8c63cN8h
+ jg1A==
+X-Gm-Message-State: AOJu0YwXUVMPeCnHDf7l0eYNUrS8SJkHaFPfusEVbJj3VC9obpMjkfi7
+ NOfTIW0CKaPBv5r1quFhFIQ2g0g6ILv9sLeLBkvRFpWkPCsKPnK02cAufFiT4Mqtp8c/FUKh0wh
+ tn6Q=
+X-Google-Smtp-Source: AGHT+IEMfDVBlpRWNTf5ioGsw32dNSEF5qiU+jNIsLxuEbzb2sWtRQFXvQmOZ7B5T6Oil1bdznnKXQ==
+X-Received: by 2002:a05:600c:3b90:b0:413:2f8e:dd0b with SMTP id
+ n16-20020a05600c3b9000b004132f8edd0bmr4127988wms.26.1711036199798; 
+ Thu, 21 Mar 2024 08:49:59 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.222])
  by smtp.gmail.com with ESMTPSA id
- g8-20020a05600c4ec800b0041408451874sm5958377wmq.17.2024.03.21.08.49.48
+ q18-20020adff792000000b0033ec9b26b7asm17495211wrp.25.2024.03.21.08.49.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 21 Mar 2024 08:49:51 -0700 (PDT)
+ Thu, 21 Mar 2024 08:49:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
@@ -69,12 +69,10 @@ Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
  Laurent Vivier <laurent@vivier.eu>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
-Subject: [PATCH-for-9.1 09/21] target/mips: Prefix MMU API with 'mips_'
-Date: Thu, 21 Mar 2024 16:48:25 +0100
-Message-ID: <20240321154838.95771-10-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.1 10/21] target/nios2: Prefix MMU API with 'nios2_'
+Date: Thu, 21 Mar 2024 16:48:26 +0100
+Message-ID: <20240321154838.95771-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240321154838.95771-1-philmd@linaro.org>
 References: <20240321154838.95771-1-philmd@linaro.org>
@@ -89,7 +87,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,56 +103,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-MIPS MMU API declared in tcg-internal.h has public linkage.
-In order to avoid name clashing with other targets, prefix
-the API with 'mips_'.
+Nios2 MMU API is exposed in "mmu.h". In order to avoid
+name clashing with other targets, prefix the API with
+'nios2_'.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/mips/tcg/tcg-internal.h      | 2 +-
- target/mips/cpu.c                   | 2 +-
- target/mips/tcg/sysemu/tlb_helper.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ target/nios2/mmu.h    | 11 +++++------
+ target/nios2/cpu.c    |  2 +-
+ target/nios2/helper.c |  4 ++--
+ target/nios2/mmu.c    |  7 +++----
+ 4 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/target/mips/tcg/tcg-internal.h b/target/mips/tcg/tcg-internal.h
-index aef032c48d..2dc9d9100f 100644
---- a/target/mips/tcg/tcg-internal.h
-+++ b/target/mips/tcg/tcg-internal.h
-@@ -43,7 +43,7 @@ void do_raise_exception(CPUMIPSState *env,
- void mips_cpu_do_interrupt(CPUState *cpu);
- bool mips_cpu_exec_interrupt(CPUState *cpu, int int_req);
+diff --git a/target/nios2/mmu.h b/target/nios2/mmu.h
+index 5b085900fb..5b16a5facf 100644
+--- a/target/nios2/mmu.h
++++ b/target/nios2/mmu.h
+@@ -42,11 +42,10 @@ typedef struct Nios2MMULookup {
+     int prot;
+ } Nios2MMULookup;
  
--void mmu_init(CPUMIPSState *env, const mips_def_t *def);
-+void mips_mmu_init(CPUMIPSState *env, const mips_def_t *def);
+-void mmu_flip_um(CPUNios2State *env, unsigned int um);
+-unsigned int mmu_translate(CPUNios2State *env,
+-                           Nios2MMULookup *lu,
+-                           target_ulong vaddr, int rw, int mmu_idx);
+-void mmu_write(CPUNios2State *env, uint32_t rn, uint32_t v);
+-void mmu_init(CPUNios2State *env);
++void nios2_mmu_flip_um(CPUNios2State *env, unsigned int um);
++unsigned int nios2_mmu_translate(CPUNios2State *env, Nios2MMULookup *lu,
++                                 target_ulong vaddr, int rw, int mmu_idx);
++void nios2_mmu_write(CPUNios2State *env, uint32_t rn, uint32_t v);
++void nios2_mmu_init(CPUNios2State *env);
  
- void update_pagemask(CPUMIPSState *env, target_ulong arg1, int32_t *pagemask);
+ #endif /* NIOS2_MMU_H */
+diff --git a/target/nios2/cpu.c b/target/nios2/cpu.c
+index 679aff5730..d2a9a0d4f1 100644
+--- a/target/nios2/cpu.c
++++ b/target/nios2/cpu.c
+@@ -113,7 +113,7 @@ static void nios2_cpu_initfn(Object *obj)
+ #if !defined(CONFIG_USER_ONLY)
+     Nios2CPU *cpu = NIOS2_CPU(obj);
  
-diff --git a/target/mips/cpu.c b/target/mips/cpu.c
-index 8d8f690a53..8acf691b0b 100644
---- a/target/mips/cpu.c
-+++ b/target/mips/cpu.c
-@@ -485,7 +485,7 @@ static void mips_cpu_realizefn(DeviceState *dev, Error **errp)
-     env->exception_base = (int32_t)0xBFC00000;
- 
- #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
--    mmu_init(env, env->cpu_model);
-+    mips_mmu_init(env, env->cpu_model);
+-    mmu_init(&cpu->env);
++    nios2_mmu_init(&cpu->env);
  #endif
-     fpu_init(env, env->cpu_model);
-     mvp_init(env);
-diff --git a/target/mips/tcg/sysemu/tlb_helper.c b/target/mips/tcg/sysemu/tlb_helper.c
-index 119eae771e..0167b1162f 100644
---- a/target/mips/tcg/sysemu/tlb_helper.c
-+++ b/target/mips/tcg/sysemu/tlb_helper.c
-@@ -464,7 +464,7 @@ static void r4k_mmu_init(CPUMIPSState *env, const mips_def_t *def)
-     env->tlb->helper_tlbinvf = r4k_helper_tlbinvf;
  }
  
--void mmu_init(CPUMIPSState *env, const mips_def_t *def)
-+void mips_mmu_init(CPUMIPSState *env, const mips_def_t *def)
- {
-     env->tlb = g_malloc0(sizeof(CPUMIPSTLBContext));
+diff --git a/target/nios2/helper.c b/target/nios2/helper.c
+index ac57121afc..2b6bdfbc55 100644
+--- a/target/nios2/helper.c
++++ b/target/nios2/helper.c
+@@ -268,7 +268,7 @@ hwaddr nios2_cpu_get_phys_page_debug(CPUState *cs, vaddr addr)
+     unsigned int hit;
  
+     if (cpu->mmu_present && (addr < 0xC0000000)) {
+-        hit = mmu_translate(env, &lu, addr, 0, 0);
++        hit = nios2_mmu_translate(env, &lu, addr, 0, 0);
+         if (hit) {
+             vaddr = addr & TARGET_PAGE_MASK;
+             paddr = lu.paddr + vaddr - lu.vaddr;
+@@ -335,7 +335,7 @@ bool nios2_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     }
+ 
+     /* Virtual page.  */
+-    hit = mmu_translate(env, &lu, address, access_type, mmu_idx);
++    hit = nios2_mmu_translate(env, &lu, address, access_type, mmu_idx);
+     if (hit) {
+         vaddr = address & TARGET_PAGE_MASK;
+         paddr = lu.paddr + vaddr - lu.vaddr;
+diff --git a/target/nios2/mmu.c b/target/nios2/mmu.c
+index d9b690b78e..272bd9fc6a 100644
+--- a/target/nios2/mmu.c
++++ b/target/nios2/mmu.c
+@@ -28,9 +28,8 @@
+ 
+ 
+ /* rw - 0 = read, 1 = write, 2 = fetch.  */
+-unsigned int mmu_translate(CPUNios2State *env,
+-                           Nios2MMULookup *lu,
+-                           target_ulong vaddr, int rw, int mmu_idx)
++unsigned int nios2_mmu_translate(CPUNios2State *env, Nios2MMULookup *lu,
++                                 target_ulong vaddr, int rw, int mmu_idx)
+ {
+     Nios2CPU *cpu = env_archcpu(env);
+     int pid = FIELD_EX32(env->mmu.tlbmisc_wr, CR_TLBMISC, PID);
+@@ -180,7 +179,7 @@ void helper_mmu_write_pteaddr(CPUNios2State *env, uint32_t v)
+     env->mmu.pteaddr_wr = v;
+ }
+ 
+-void mmu_init(CPUNios2State *env)
++void nios2_mmu_init(CPUNios2State *env)
+ {
+     Nios2CPU *cpu = env_archcpu(env);
+     Nios2MMU *mmu = &env->mmu;
 -- 
 2.41.0
 
