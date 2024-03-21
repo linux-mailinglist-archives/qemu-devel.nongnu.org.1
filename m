@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6E5885AB3
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 15:28:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C807885ABD
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 15:29:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnJOJ-0007yc-JP; Thu, 21 Mar 2024 10:27:35 -0400
+	id 1rnJOO-0007za-4n; Thu, 21 Mar 2024 10:27:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rnJOH-0007yM-O6
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:33 -0400
+ id 1rnJOM-0007zP-Ss
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:38 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rnJOG-0002mA-33
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:33 -0400
+ id 1rnJOL-0002mA-A7
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711031253; x=1742567253;
+ t=1711031258; x=1742567258;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3UyjqNiNiVAdeIlY+2eZ0k8GWu/W/0P3WfykGgG1U78=;
- b=iIrpiqo5wUhgTGlPjDo9mUiddc3xIjY/uAiwKYZf9EIStZmbjI3jOpuf
- bbZg+LOXnycZRxI+OBym1xyEl4qUbPraAOEY1VNrC5K0c00c3+4IS4jqQ
- qMTrOxOK2yvioL+AbjUqlcQRVu6kodw/bbf+OR6w7zEZcrMsl2DVt1k8V
- GrUmzx9cybTYNMsyyCNxO+KjHWszOxZ2I7/e+mYqnA6VeZk00tHkC6jRk
- xT5nCiD3GKcxHwWRDVI9e5mPYK9/zREFyvjT5IEsKrsI87eD0beH+o66B
- TPv2/xQGMG0BMzxW1je8kjOq9P0Xwtg4B9OjLzsDsJkEq7nISoqeFjHhX w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9806410"
+ bh=O2KStJE5a2MoPMypMlBC3/x2H33PnsUliJtrKXRTlFY=;
+ b=JDGF9kGFKR6SxoTkTjTFOD1/2XAhQcej6dWEFDqyAb3DZ8iDCKrHgwKi
+ 1QB4q3mUify8T3r2PZjMZ0vbwYGRh6vRUtopLM0cXE058jSLizrn4MJsH
+ pFcHRtiscSaV4eIWTyIs8hQ2LMznAWCGfRFwp+Qjrq/eyoU8gW2Q3KLYA
+ vRY/YMOpW5nhVTzTXwIFxiuMe4+xRGgNLNtFBQmiXZAH4orcbwBM5Ywag
+ tyHc7r7noExMjEvTMeeAmx6JLioyP5zIlmpQwUe0mcTTbtLrF1yw5nDmT
+ p3hRpNADeg12CpJp4zOEWdihRYRQXbWT+8QIBgTbt1leP2SPWJqOwox1N g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9806429"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="9806410"
+   d="scan'208";a="9806429"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 07:27:32 -0700
+ 21 Mar 2024 07:27:37 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="14527850"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="14527882"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 21 Mar 2024 07:27:27 -0700
+ by orviesa009.jf.intel.com with ESMTP; 21 Mar 2024 07:27:31 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -55,10 +55,12 @@ To: Eduardo Habkost <eduardo@habkost.net>,
 Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v10 04/21] hw/core: Support module-id in numa configuration
-Date: Thu, 21 Mar 2024 22:40:31 +0800
-Message-Id: <20240321144048.3699388-5-zhao1.liu@linux.intel.com>
+ Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Robert Hoo <robert.hu@linux.intel.com>
+Subject: [PATCH v10 05/21] i386/cpu: Fix i/d-cache topology to core level for
+ Intel CPU
+Date: Thu, 21 Mar 2024 22:40:32 +0800
+Message-Id: <20240321144048.3699388-6-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321144048.3699388-1-zhao1.liu@linux.intel.com>
 References: <20240321144048.3699388-1-zhao1.liu@linux.intel.com>
@@ -90,64 +92,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Module is a level above the core, thereby supporting numa
-configuration on the module level can bring user more numa flexibility.
+For i-cache and d-cache, current QEMU hardcodes the maximum IDs for CPUs
+sharing cache (CPUID.04H.00H:EAX[bits 25:14] and CPUID.04H.01H:EAX[bits
+25:14]) to 0, and this means i-cache and d-cache are shared in the SMT
+level.
 
-This is the natural further support for module level.
+This is correct if there's single thread per core, but is wrong for the
+hyper threading case (one core contains multiple threads) since the
+i-cache and d-cache are shared in the core level other than SMT level.
 
-Add module level support in numa configuration.
+For AMD CPU, commit 8f4202fb1080 ("i386: Populate AMD Processor Cache
+Information for cpuid 0x8000001D") has already introduced i/d cache
+topology as core level by default.
 
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Therefore, in order to be compatible with both multi-threaded and
+single-threaded situations, we should set i-cache and d-cache be shared
+at the core level by default.
+
+This fix changes the default i/d cache topology from per-thread to
+per-core. Potentially, this change in L1 cache topology may affect the
+performance of the VM if the user does not specifically specify the
+topology or bind the vCPU. However, the way to achieve optimal
+performance should be to create a reasonable topology and set the
+appropriate vCPU affinity without relying on QEMU's default topology
+structure.
+
+Fixes: 7e3482f82480 ("i386: Helpers to encode cache information consistently")
+Suggested-by: Robert Hoo <robert.hu@linux.intel.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 ---
-Changes since v7:
- * New commit to support module level.
----
- hw/core/machine.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Changes since v3:
+ * Changed the description of current i/d cache encoding status to avoid
+   misleading to "architectural rules". (Xiaoyao)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 9ff5170f8e31..27340392aec8 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -797,6 +797,11 @@ void machine_set_cpu_numa_node(MachineState *machine,
-             return;
-         }
- 
-+        if (props->has_module_id && !slot->props.has_module_id) {
-+            error_setg(errp, "module-id is not supported");
-+            return;
-+        }
-+
-         if (props->has_cluster_id && !slot->props.has_cluster_id) {
-             error_setg(errp, "cluster-id is not supported");
-             return;
-@@ -821,6 +826,11 @@ void machine_set_cpu_numa_node(MachineState *machine,
-                 continue;
-         }
- 
-+        if (props->has_module_id &&
-+            props->module_id != slot->props.module_id) {
-+                continue;
-+        }
-+
-         if (props->has_cluster_id &&
-             props->cluster_id != slot->props.cluster_id) {
-                 continue;
-@@ -1218,6 +1228,12 @@ static char *cpu_slot_to_string(const CPUArchId *cpu)
-         }
-         g_string_append_printf(s, "cluster-id: %"PRId64, cpu->props.cluster_id);
-     }
-+    if (cpu->props.has_module_id) {
-+        if (s->len) {
-+            g_string_append_printf(s, ", ");
-+        }
-+        g_string_append_printf(s, "module-id: %"PRId64, cpu->props.module_id);
-+    }
-     if (cpu->props.has_core_id) {
-         if (s->len) {
-             g_string_append_printf(s, ", ");
+Changes since v1:
+ * Split this fix from the patch named "i386/cpu: Fix number of
+   addressable IDs in CPUID.04H".
+ * Added the explanation of the impact on performance. (Xiaoyao)
+---
+ target/i386/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 33760a2ee163..eedc2c5ea6e0 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6113,12 +6113,12 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+             switch (count) {
+             case 0: /* L1 dcache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1d_cache,
+-                                    1, cs->nr_cores,
++                                    cs->nr_threads, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 1: /* L1 icache info */
+                 encode_cache_cpuid4(env->cache_info_cpuid4.l1i_cache,
+-                                    1, cs->nr_cores,
++                                    cs->nr_threads, cs->nr_cores,
+                                     eax, ebx, ecx, edx);
+                 break;
+             case 2: /* L2 cache info */
 -- 
 2.34.1
 
