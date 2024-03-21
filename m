@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86471885AB2
+	by mail.lfdr.de (Postfix) with ESMTPS id 860A0885AB1
 	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 15:28:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnJOB-0007xJ-L8; Thu, 21 Mar 2024 10:27:27 -0400
+	id 1rnJOJ-0007yD-0b; Thu, 21 Mar 2024 10:27:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rnJO9-0007xA-SM
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:26 -0400
+ id 1rnJOE-0007xo-JN
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:30 -0400
 Received: from mgamail.intel.com ([198.175.65.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rnJO8-0002mA-1I
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:25 -0400
+ id 1rnJOB-0002mA-7Z
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 10:27:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711031245; x=1742567245;
+ t=1711031248; x=1742567248;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lzFCM7hzDzVOEt2eiczVXmyNZngO0ts9zmWVhXGU1nY=;
- b=cBJNHaKOvszfQKG4VUM1Xg3+s3S7bc0UkJKkmJKYs51cBlij3qxRFwYr
- lM9RuRV7QWIeRpFUOG3cBXNTcp5PV6Gh62xaMiutIPopxtT3Y8AvEFC1j
- /+IBpsh3CnzJ/Sd6d6/d3Pi9rZoyVAHWcMcszbraIzfjBbmkJvwHx7Sx4
- PsBhfYE3TgBRJMFo0dn8KJZuCmny54WQV03BvJFZ4css2CnRJ5FQZUDUu
- ayeR9n81zjj2mBoUZBQ0gnWU2Mkq1ADDthBYlD/CuPJ6p83c+Bvsvkq8S
- HWW0VxkvpEqv39cvZ8m8CahbwTY9BJkQoaEUcxAabZiEo2s3nk45yel+H g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9806371"
+ bh=pozxmkQYFmo9TvNo/qUS3XdyUCJrRFtdxe3SYZYL0jA=;
+ b=eIobNBFwEpaHyjXNLEzaTQlcfPTNx9xrluVdeN1fa/YZiVeMPXuoDQ9p
+ eV71it0qHwvBNLhyuVUrSkKh6Wt5W2g+lGWGkYIZcTRQgz4a2jdNfouua
+ RhMQ/QbOI3kgGbYl1E3xruAPF6SpTGKkVqB17dHaq6e38vWn4GtsbiLAh
+ 01E07AqDAJlY7uVIoyNGkcbKNFDCZi4RnfRQoHx7n085YD91ChxqQXuj3
+ 8iXIwqsT+iP6wgAMs+YrYrJtmiEb3m2goljeb1JYMi5hMQvEKxqeJSkRl
+ G1mL/tmbY+tgMeSkVPIy4iHdsYOzRFzHuMAcU4ZBswylCz8BZvvTNpvK3 g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="9806388"
 X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; 
-   d="scan'208";a="9806371"
+   d="scan'208";a="9806388"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Mar 2024 07:27:22 -0700
+ 21 Mar 2024 07:27:27 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="14527816"
+X-IronPort-AV: E=Sophos;i="6.07,143,1708416000"; d="scan'208";a="14527827"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 21 Mar 2024 07:27:17 -0700
+ by orviesa009.jf.intel.com with ESMTP; 21 Mar 2024 07:27:22 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -56,9 +56,10 @@ Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
  Zhenyu Wang <zhenyu.z.wang@intel.com>,
  Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
  Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v10 02/21] hw/core/machine: Support modules in -smp
-Date: Thu, 21 Mar 2024 22:40:29 +0800
-Message-Id: <20240321144048.3699388-3-zhao1.liu@linux.intel.com>
+Subject: [PATCH v10 03/21] hw/core: Introduce module-id as the topology
+ subindex
+Date: Thu, 21 Mar 2024 22:40:30 +0800
+Message-Id: <20240321144048.3699388-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240321144048.3699388-1-zhao1.liu@linux.intel.com>
 References: <20240321144048.3699388-1-zhao1.liu@linux.intel.com>
@@ -90,7 +91,8 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Add "modules" parameter parsing support in -smp.
+Add module-id in CpuInstanceProperties, to locate the CPU with module
+level.
 
 Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Tested-by: Yongwei Ma <yongwei.ma@intel.com>
@@ -98,177 +100,51 @@ Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
 Acked-by: Markus Armbruster <armbru@redhat.com>
 ---
-Changes since v9:
- * Rebased on the SMP changes about unsupported "parameter=1"
-   configurations. (Philippe)
- * Fixed typo about topology field. (Dapeng)
-
-Changes since v8:
- * Added module description in qemu_smp_opts.
-
 Changes since v7:
- * New commit to introduce module level in -smp.
+ * New commit to introduce module_id to locate the CPU with module
+   level.
 ---
- hw/core/machine-smp.c | 39 +++++++++++++++++++++++++++++++++------
- hw/core/machine.c     |  1 +
- qapi/machine.json     |  3 +++
- system/vl.c           |  3 +++
- 4 files changed, 40 insertions(+), 6 deletions(-)
+ hw/core/machine-hmp-cmds.c | 4 ++++
+ qapi/machine.json          | 4 ++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
-index 2e68fcfdfd79..2b93fa99c943 100644
---- a/hw/core/machine-smp.c
-+++ b/hw/core/machine-smp.c
-@@ -51,6 +51,10 @@ static char *cpu_hierarchy_to_string(MachineState *ms)
-         g_string_append_printf(s, " * clusters (%u)", ms->smp.clusters);
-     }
- 
-+    if (mc->smp_props.modules_supported) {
-+        g_string_append_printf(s, " * modules (%u)", ms->smp.modules);
-+    }
-+
-     g_string_append_printf(s, " * cores (%u)", ms->smp.cores);
-     g_string_append_printf(s, " * threads (%u)", ms->smp.threads);
- 
-@@ -88,6 +92,7 @@ void machine_parse_smp_config(MachineState *ms,
-     unsigned sockets = config->has_sockets ? config->sockets : 0;
-     unsigned dies    = config->has_dies ? config->dies : 0;
-     unsigned clusters = config->has_clusters ? config->clusters : 0;
-+    unsigned modules = config->has_modules ? config->modules : 0;
-     unsigned cores   = config->has_cores ? config->cores : 0;
-     unsigned threads = config->has_threads ? config->threads : 0;
-     unsigned maxcpus = config->has_maxcpus ? config->maxcpus : 0;
-@@ -103,6 +108,7 @@ void machine_parse_smp_config(MachineState *ms,
-         (config->has_sockets && config->sockets == 0) ||
-         (config->has_dies && config->dies == 0) ||
-         (config->has_clusters && config->clusters == 0) ||
-+        (config->has_modules && config->modules == 0) ||
-         (config->has_cores && config->cores == 0) ||
-         (config->has_threads && config->threads == 0) ||
-         (config->has_maxcpus && config->maxcpus == 0)) {
-@@ -115,6 +121,20 @@ void machine_parse_smp_config(MachineState *ms,
-      * If not supported by the machine, a topology parameter must be
-      * omitted.
-      */
-+    if (!mc->smp_props.modules_supported && config->has_modules) {
-+        if (config->modules > 1) {
-+            error_setg(errp, "modules not supported by this "
-+                       "machine's CPU topology");
-+            return;
-+        } else {
-+            /* Here modules only equals 1 since we've checked zero case. */
-+            warn_report("Deprecated CPU topology (considered invalid): "
-+                        "Unsupported modules parameter mustn't be "
-+                        "specified as 1");
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index a6ff6a487583..8701f00cc7cc 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -87,6 +87,10 @@ void hmp_hotpluggable_cpus(Monitor *mon, const QDict *qdict)
+             monitor_printf(mon, "    cluster-id: \"%" PRIu64 "\"\n",
+                            c->cluster_id);
+         }
++        if (c->has_module_id) {
++            monitor_printf(mon, "    module-id: \"%" PRIu64 "\"\n",
++                           c->module_id);
 +        }
-+    }
-+    modules = modules > 0 ? modules : 1;
-+
-     if (!mc->smp_props.clusters_supported && config->has_clusters) {
-         if (config->clusters > 1) {
-             error_setg(errp, "clusters not supported by this "
-@@ -185,11 +205,13 @@ void machine_parse_smp_config(MachineState *ms,
-                 cores = cores > 0 ? cores : 1;
-                 threads = threads > 0 ? threads : 1;
-                 sockets = maxcpus /
--                          (drawers * books * dies * clusters * cores * threads);
-+                          (drawers * books * dies * clusters *
-+                           modules * cores * threads);
-             } else if (cores == 0) {
-                 threads = threads > 0 ? threads : 1;
-                 cores = maxcpus /
--                        (drawers * books * sockets * dies * clusters * threads);
-+                        (drawers * books * sockets * dies *
-+                         clusters * modules * threads);
-             }
-         } else {
-             /* prefer cores over sockets since 6.2 */
-@@ -197,22 +219,26 @@ void machine_parse_smp_config(MachineState *ms,
-                 sockets = sockets > 0 ? sockets : 1;
-                 threads = threads > 0 ? threads : 1;
-                 cores = maxcpus /
--                        (drawers * books * sockets * dies * clusters * threads);
-+                        (drawers * books * sockets * dies *
-+                         clusters * modules * threads);
-             } else if (sockets == 0) {
-                 threads = threads > 0 ? threads : 1;
-                 sockets = maxcpus /
--                          (drawers * books * dies * clusters * cores * threads);
-+                          (drawers * books * dies * clusters *
-+                           modules * cores * threads);
-             }
+         if (c->has_core_id) {
+             monitor_printf(mon, "    core-id: \"%" PRIu64 "\"\n", c->core_id);
          }
- 
-         /* try to calculate omitted threads at last */
-         if (threads == 0) {
-             threads = maxcpus /
--                      (drawers * books * sockets * dies * clusters * cores);
-+                      (drawers * books * sockets * dies *
-+                       clusters * modules * cores);
-         }
-     }
- 
--    total_cpus = drawers * books * sockets * dies * clusters * cores * threads;
-+    total_cpus = drawers * books * sockets * dies *
-+                 clusters * modules * cores * threads;
-     maxcpus = maxcpus > 0 ? maxcpus : total_cpus;
-     cpus = cpus > 0 ? cpus : maxcpus;
- 
-@@ -222,6 +248,7 @@ void machine_parse_smp_config(MachineState *ms,
-     ms->smp.sockets = sockets;
-     ms->smp.dies = dies;
-     ms->smp.clusters = clusters;
-+    ms->smp.modules = modules;
-     ms->smp.cores = cores;
-     ms->smp.threads = threads;
-     ms->smp.max_cpus = maxcpus;
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index fe0579b7a7e9..9ff5170f8e31 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -878,6 +878,7 @@ static void machine_get_smp(Object *obj, Visitor *v, const char *name,
-         .has_sockets = true, .sockets = ms->smp.sockets,
-         .has_dies = true, .dies = ms->smp.dies,
-         .has_clusters = true, .clusters = ms->smp.clusters,
-+        .has_modules = true, .modules = ms->smp.modules,
-         .has_cores = true, .cores = ms->smp.cores,
-         .has_threads = true, .threads = ms->smp.threads,
-         .has_maxcpus = true, .maxcpus = ms->smp.max_cpus,
 diff --git a/qapi/machine.json b/qapi/machine.json
-index 0840c91e70ec..3f6a5af10ba8 100644
+index 3f6a5af10ba8..366da6244ab6 100644
 --- a/qapi/machine.json
 +++ b/qapi/machine.json
-@@ -1635,6 +1635,8 @@
+@@ -925,6 +925,9 @@
+ # @cluster-id: cluster number within the parent container the CPU
+ #     belongs to (since 7.1)
  #
- # @clusters: number of clusters per parent container (since 7.0)
- #
-+# @modules: number of modules per parent container (since 9.1)
++# @module-id: module number within the parent container the CPU
++#     belongs to (since 9.1)
 +#
- # @cores: number of cores per parent container
+ # @core-id: core number within the parent container the CPU
+ #     belongs to
  #
- # @threads: number of threads per core
-@@ -1648,6 +1650,7 @@
-      '*sockets': 'int',
-      '*dies': 'int',
-      '*clusters': 'int',
-+     '*modules': 'int',
-      '*cores': 'int',
-      '*threads': 'int',
-      '*maxcpus': 'int' } }
-diff --git a/system/vl.c b/system/vl.c
-index c64422298245..7756eac81e48 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -741,6 +741,9 @@ static QemuOptsList qemu_smp_opts = {
-         }, {
-             .name = "clusters",
-             .type = QEMU_OPT_NUMBER,
-+        }, {
-+            .name = "modules",
-+            .type = QEMU_OPT_NUMBER,
-         }, {
-             .name = "cores",
-             .type = QEMU_OPT_NUMBER,
+@@ -943,6 +946,7 @@
+             '*socket-id': 'int',
+             '*die-id': 'int',
+             '*cluster-id': 'int',
++            '*module-id': 'int',
+             '*core-id': 'int',
+             '*thread-id': 'int'
+   }
 -- 
 2.34.1
 
