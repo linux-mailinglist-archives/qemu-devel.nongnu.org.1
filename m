@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB09885C83
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:49:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C2B885C9F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnKfX-0004wz-Pw; Thu, 21 Mar 2024 11:49:27 -0400
+	id 1rnKfZ-0004yE-SU; Thu, 21 Mar 2024 11:49:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfW-0004wN-J9
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:26 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfX-0004v6-0I
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:27 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfQ-0001I7-4O
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:26 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-414701303f7so10795125e9.2
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:49:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKfT-0001KR-6A
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:49:25 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-414783a9edcso1162645e9.0
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:49:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711036154; x=1711640954; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711036161; x=1711640961; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kPB7wPRU4EbQ/PHDSaLSRsBSA5jdN0249I6tKdnInr4=;
- b=NSChZN961vxgCuV3mTkiixFDOA1rj37FIovTLzqyRyd00VEr7/qwPh0879jruYTUGE
- YJeVdnolDOcu9zdydkK4teZwO9CkOZa2X7bx4m2WBhpkH0iPguOTEsQgm+Sd5xcE2ugF
- kFqoUztLIVhm1WXNvxSaprgTv35JQEOHmkXtj5Y46vywpVhivrim1iuyO3RlwjCIq5zk
- DrJ6X8SY55MlNKTxpiZqbWXSdn0qMdqn34o8CN7V0TpjWG9fUyMybxgMZ0WjxGKHs0/z
- pST3rVICGourwktefcE8pdF3+dVbTOWKTw2J/nTUrd7z0RuAX16N5qHPeitTGRoXhQYj
- JWkg==
+ bh=jOvH0FD2iTYACKTsXepOOjEUMYdyz3d2ohX/Qxb33cM=;
+ b=RMPRmhq5D02gZqUNSF/0sZBodbh/FXvpWO0DJV9nM4TstkqpcQH2H/rexVPCBhlr5D
+ 0ioiL83RIUhqcFks/F/V6vrcc/PW7yQWyhZXwN7ylGJ0QWK/zfTXaYjkdgk7vZM2a79j
+ 5z+53hHQZRkAt/wcOpox/L4WOvbbnK6fJVmnlEjjflRrKxconx6xZE49W+uOpg6BPz1T
+ NI3a54o2A7MZOnoFCvpcxpSpqYf0VIWblKOXzEjjW6yvGuqfitIpYjjUiJSoHoO4Wc0p
+ 9TcnwVukXB+lkrR8SzTa5ShC0qqTWvERXZ7r9FC45wC4imq8SvO2fZaB/17ToNjn1A8/
+ 5jSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711036154; x=1711640954;
+ d=1e100.net; s=20230601; t=1711036161; x=1711640961;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kPB7wPRU4EbQ/PHDSaLSRsBSA5jdN0249I6tKdnInr4=;
- b=ug8ailcDliMbboFUxvS06IWW4ExY0r+WUem5OXdif8Y3IzhDmtNhff+lN6quy5PJre
- axrybCGgOGzxT3H/Us8tPuHiGzG1KpkKRleLzbMcJsUrOLbgxrHYMUhDX1IKnI3XSHKi
- qPhNzl/FRUVEbr9WioskpY+MFrbknCTFmhTIY579GOX+cQP6+nBF1BxJeHI9mcvbNgS4
- kZZLSXtPOhjdOWK7/YveDai9+69SRu30ghyDOKG/aFGXido15Ejrr1Z0IEypRBag4Tv6
- dvY5QtE4lOCw5764iAPS3rxCkHfbfUKW9UJr/RJ2Uh+DScfgFM2KruCjgo1L6EuhbRiN
- oqDA==
-X-Gm-Message-State: AOJu0YzGlLA446nmbipX0mSFMIS3NmUfxVFDP/8RURkYY76TcCOXkbsc
- 9RRSbNPtwTQdZD16mN9bRK/GGdB/c04R/YgOrSA5VopbIwlXYbaUSHLufUG2xnMXOSEHEKTGy8y
- vFDI=
-X-Google-Smtp-Source: AGHT+IE9dq0aSOWu0+Go+xQwyO48QnvBZANp82mdCGdCe9QTAoKEvhJGXJ1ZX9SQy9dmf8KojLeQuQ==
-X-Received: by 2002:a05:600c:19d2:b0:413:ee55:8bba with SMTP id
- u18-20020a05600c19d200b00413ee558bbamr2321713wmq.4.1711036153865; 
- Thu, 21 Mar 2024 08:49:13 -0700 (PDT)
+ bh=jOvH0FD2iTYACKTsXepOOjEUMYdyz3d2ohX/Qxb33cM=;
+ b=IHOjZxqcJosEDtquIQTd3LiTs2BWhlqB5NfX2DL+G52b3kwmes9XENBPewkofj9+0s
+ 5fZAhsj2IiQ41F2q9c4mmr4eNpn9Zz3AWjimpV0hG8uSqQq7xAwzXtS+LTAq8Rv7ME2z
+ CK4IM4TKdRKwPcrc01MukUpaLlNmRqzTWonIJ8FfNl9lCrP2vCdIJ74r7TtPRF+t84aV
+ J8WPwUE8Jp8clHnzIwXlaDGtNXint0tI1j9t1q7xSDiywRn+zNyfBIECmd+OxvPYF55b
+ bU63qP6H2ZoLQFhR1rjFb+w3COr7hekcW1AY91kO/OVgdsYkciQOCK2ojeKV2Cp/RM8G
+ c8gg==
+X-Gm-Message-State: AOJu0YyqQ2i0rD+P5cGEh/E0g4uAyvprm0OIhaJ/W9fOKqH+oUcgeJXw
+ h6ItZ3fbBJgwga9bf8dWCrkLY7a5XTNxeBzx+VMXhlhXIjfw3k0dmfQcfnH6y7IXCsPYZgR61Uh
+ +le8=
+X-Google-Smtp-Source: AGHT+IHaRpML+lFtx0Jaerd+7WHhCNvHSTUSZtk4r37/FpihaA7lUX+X4kwLJk/HZ/vz/lDBAWX4qw==
+X-Received: by 2002:a05:600c:5486:b0:413:2c11:f795 with SMTP id
+ iv6-20020a05600c548600b004132c11f795mr4116109wmb.39.1711036161419; 
+ Thu, 21 Mar 2024 08:49:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.206.222])
  by smtp.gmail.com with ESMTPSA id
- q14-20020a05600c46ce00b004140a757256sm5997663wmo.31.2024.03.21.08.49.10
+ iv20-20020a05600c549400b004146bce65f4sm5887932wmb.13.2024.03.21.08.49.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 21 Mar 2024 08:49:13 -0700 (PDT)
+ Thu, 21 Mar 2024 08:49:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
@@ -70,25 +70,25 @@ Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
  Laurent Vivier <laurent@vivier.eu>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 04/21] target/i386: Extract x86_dump_mmu() from
- hmp_info_tlb()
-Date: Thu, 21 Mar 2024 16:48:20 +0100
-Message-ID: <20240321154838.95771-5-philmd@linaro.org>
+Subject: [PATCH-for-9.1 05/21] target/m68k: Replace qemu_printf() by
+ monitor_printf() in monitor
+Date: Thu, 21 Mar 2024 16:48:21 +0100
+Message-ID: <20240321154838.95771-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240321154838.95771-1-philmd@linaro.org>
 References: <20240321154838.95771-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,513 +104,284 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-hmp_info_tlb() is specific to tcg/system, move it to
-target/i386/tcg/sysemu/hmp-cmds.c, along with the functions
-it depend on (except addr_canonical() which is exposed in
-"cpu.h").
+Replace qemu_printf() by monitor_printf() / monitor_puts() in monitor.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/cpu.h       |   7 ++
- target/i386/mmu.c       | 231 ++++++++++++++++++++++++++++++++++++++++
- target/i386/monitor.c   | 215 -------------------------------------
- target/i386/meson.build |   1 +
- 4 files changed, 239 insertions(+), 215 deletions(-)
- create mode 100644 target/i386/mmu.c
+ target/m68k/cpu.h     |   2 +-
+ target/m68k/helper.c  | 126 +++++++++++++++++++++---------------------
+ target/m68k/monitor.c |   4 +-
+ 3 files changed, 67 insertions(+), 65 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 952174bb6f..055c5b99de 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2342,6 +2342,13 @@ static inline int cpu_mmu_index_kernel(CPUX86State *env)
-     return mmu_index_base + mmu_index_32;
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 346427e144..4e4307956d 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -620,6 +620,6 @@ static inline void cpu_get_tb_cpu_state(CPUM68KState *env, vaddr *pc,
+     }
  }
  
-+#if !defined(CONFIG_USER_ONLY)
-+void x86_dump_mmu(Monitor *mon, CPUX86State *env);
-+
-+/* Perform linear address sign extension */
-+hwaddr addr_canonical(CPUArchState *env, hwaddr addr);
-+#endif
-+
- #define CC_DST  (env->cc_dst)
- #define CC_SRC  (env->cc_src)
- #define CC_SRC2 (env->cc_src2)
-diff --git a/target/i386/mmu.c b/target/i386/mmu.c
-new file mode 100644
-index 0000000000..da9b2263b4
---- /dev/null
-+++ b/target/i386/mmu.c
-@@ -0,0 +1,231 @@
-+/*
-+ * QEMU x86 MMU monitor commands
-+ *
-+ * Copyright (c) 2003-2004 Fabrice Bellard
-+ *
-+ * SPDX-License-Identifier: MIT
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "monitor/monitor.h"
-+#include "monitor/hmp-target.h"
-+#include "cpu.h"
-+
-+hwaddr addr_canonical(CPUArchState *env, hwaddr addr)
-+{
-+#ifdef TARGET_X86_64
-+    if (env->cr[4] & CR4_LA57_MASK) {
-+        if (addr & (1ULL << 56)) {
-+            addr |= (hwaddr)-(1LL << 57);
-+        }
-+    } else {
-+        if (addr & (1ULL << 47)) {
-+            addr |= (hwaddr)-(1LL << 48);
-+        }
-+    }
-+#endif
-+    return addr;
-+}
-+
-+static void print_pte(Monitor *mon, CPUArchState *env, hwaddr addr,
-+                      hwaddr pte, hwaddr mask)
-+{
-+    addr = addr_canonical(env, addr);
-+
-+    monitor_printf(mon, HWADDR_FMT_plx ": " HWADDR_FMT_plx
-+                   " %c%c%c%c%c%c%c%c%c\n",
-+                   addr,
-+                   pte & mask,
-+                   pte & PG_NX_MASK ? 'X' : '-',
-+                   pte & PG_GLOBAL_MASK ? 'G' : '-',
-+                   pte & PG_PSE_MASK ? 'P' : '-',
-+                   pte & PG_DIRTY_MASK ? 'D' : '-',
-+                   pte & PG_ACCESSED_MASK ? 'A' : '-',
-+                   pte & PG_PCD_MASK ? 'C' : '-',
-+                   pte & PG_PWT_MASK ? 'T' : '-',
-+                   pte & PG_USER_MASK ? 'U' : '-',
-+                   pte & PG_RW_MASK ? 'W' : '-');
-+}
-+
-+static void tlb_info_32(Monitor *mon, CPUArchState *env)
-+{
-+    unsigned int l1, l2;
-+    uint32_t pgd, pde, pte;
-+
-+    pgd = env->cr[3] & ~0xfff;
-+    for(l1 = 0; l1 < 1024; l1++) {
-+        cpu_physical_memory_read(pgd + l1 * 4, &pde, 4);
-+        pde = le32_to_cpu(pde);
-+        if (pde & PG_PRESENT_MASK) {
-+            if ((pde & PG_PSE_MASK) && (env->cr[4] & CR4_PSE_MASK)) {
-+                /* 4M pages */
-+                print_pte(mon, env, (l1 << 22), pde, ~((1 << 21) - 1));
-+            } else {
-+                for(l2 = 0; l2 < 1024; l2++) {
-+                    cpu_physical_memory_read((pde & ~0xfff) + l2 * 4, &pte, 4);
-+                    pte = le32_to_cpu(pte);
-+                    if (pte & PG_PRESENT_MASK) {
-+                        print_pte(mon, env, (l1 << 22) + (l2 << 12),
-+                                  pte & ~PG_PSE_MASK,
-+                                  ~0xfff);
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+static void tlb_info_pae32(Monitor *mon, CPUArchState *env)
-+{
-+    unsigned int l1, l2, l3;
-+    uint64_t pdpe, pde, pte;
-+    uint64_t pdp_addr, pd_addr, pt_addr;
-+
-+    pdp_addr = env->cr[3] & ~0x1f;
-+    for (l1 = 0; l1 < 4; l1++) {
-+        cpu_physical_memory_read(pdp_addr + l1 * 8, &pdpe, 8);
-+        pdpe = le64_to_cpu(pdpe);
-+        if (pdpe & PG_PRESENT_MASK) {
-+            pd_addr = pdpe & 0x3fffffffff000ULL;
-+            for (l2 = 0; l2 < 512; l2++) {
-+                cpu_physical_memory_read(pd_addr + l2 * 8, &pde, 8);
-+                pde = le64_to_cpu(pde);
-+                if (pde & PG_PRESENT_MASK) {
-+                    if (pde & PG_PSE_MASK) {
-+                        /* 2M pages with PAE, CR4.PSE is ignored */
-+                        print_pte(mon, env, (l1 << 30) + (l2 << 21), pde,
-+                                  ~((hwaddr)(1 << 20) - 1));
-+                    } else {
-+                        pt_addr = pde & 0x3fffffffff000ULL;
-+                        for (l3 = 0; l3 < 512; l3++) {
-+                            cpu_physical_memory_read(pt_addr + l3 * 8, &pte, 8);
-+                            pte = le64_to_cpu(pte);
-+                            if (pte & PG_PRESENT_MASK) {
-+                                print_pte(mon, env, (l1 << 30) + (l2 << 21)
-+                                          + (l3 << 12),
-+                                          pte & ~PG_PSE_MASK,
-+                                          ~(hwaddr)0xfff);
-+                            }
-+                        }
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+#ifdef TARGET_X86_64
-+static void tlb_info_la48(Monitor *mon, CPUArchState *env,
-+        uint64_t l0, uint64_t pml4_addr)
-+{
-+    uint64_t l1, l2, l3, l4;
-+    uint64_t pml4e, pdpe, pde, pte;
-+    uint64_t pdp_addr, pd_addr, pt_addr;
-+
-+    for (l1 = 0; l1 < 512; l1++) {
-+        cpu_physical_memory_read(pml4_addr + l1 * 8, &pml4e, 8);
-+        pml4e = le64_to_cpu(pml4e);
-+        if (!(pml4e & PG_PRESENT_MASK)) {
-+            continue;
-+        }
-+
-+        pdp_addr = pml4e & 0x3fffffffff000ULL;
-+        for (l2 = 0; l2 < 512; l2++) {
-+            cpu_physical_memory_read(pdp_addr + l2 * 8, &pdpe, 8);
-+            pdpe = le64_to_cpu(pdpe);
-+            if (!(pdpe & PG_PRESENT_MASK)) {
-+                continue;
-+            }
-+
-+            if (pdpe & PG_PSE_MASK) {
-+                /* 1G pages, CR4.PSE is ignored */
-+                print_pte(mon, env, (l0 << 48) + (l1 << 39) + (l2 << 30),
-+                        pdpe, 0x3ffffc0000000ULL);
-+                continue;
-+            }
-+
-+            pd_addr = pdpe & 0x3fffffffff000ULL;
-+            for (l3 = 0; l3 < 512; l3++) {
-+                cpu_physical_memory_read(pd_addr + l3 * 8, &pde, 8);
-+                pde = le64_to_cpu(pde);
-+                if (!(pde & PG_PRESENT_MASK)) {
-+                    continue;
-+                }
-+
-+                if (pde & PG_PSE_MASK) {
-+                    /* 2M pages, CR4.PSE is ignored */
-+                    print_pte(mon, env, (l0 << 48) + (l1 << 39) + (l2 << 30) +
-+                            (l3 << 21), pde, 0x3ffffffe00000ULL);
-+                    continue;
-+                }
-+
-+                pt_addr = pde & 0x3fffffffff000ULL;
-+                for (l4 = 0; l4 < 512; l4++) {
-+                    cpu_physical_memory_read(pt_addr
-+                            + l4 * 8,
-+                            &pte, 8);
-+                    pte = le64_to_cpu(pte);
-+                    if (pte & PG_PRESENT_MASK) {
-+                        print_pte(mon, env, (l0 << 48) + (l1 << 39) +
-+                                (l2 << 30) + (l3 << 21) + (l4 << 12),
-+                                pte & ~PG_PSE_MASK, 0x3fffffffff000ULL);
-+                    }
-+                }
-+            }
-+        }
-+    }
-+}
-+
-+static void tlb_info_la57(Monitor *mon, CPUArchState *env)
-+{
-+    uint64_t l0;
-+    uint64_t pml5e;
-+    uint64_t pml5_addr;
-+
-+    pml5_addr = env->cr[3] & 0x3fffffffff000ULL;
-+    for (l0 = 0; l0 < 512; l0++) {
-+        cpu_physical_memory_read(pml5_addr + l0 * 8, &pml5e, 8);
-+        pml5e = le64_to_cpu(pml5e);
-+        if (pml5e & PG_PRESENT_MASK) {
-+            tlb_info_la48(mon, env, l0, pml5e & 0x3fffffffff000ULL);
-+        }
-+    }
-+}
-+#endif /* TARGET_X86_64 */
-+
-+void x86_dump_mmu(Monitor *mon, CPUX86State *env)
-+{
-+    if (!(env->cr[0] & CR0_PG_MASK)) {
-+        monitor_printf(mon, "PG disabled\n");
-+        return;
-+    }
-+    if (env->cr[4] & CR4_PAE_MASK) {
-+#ifdef TARGET_X86_64
-+        if (env->hflags & HF_LMA_MASK) {
-+            if (env->cr[4] & CR4_LA57_MASK) {
-+                tlb_info_la57(mon, env);
-+            } else {
-+                tlb_info_la48(mon, env, 0, env->cr[3] & 0x3fffffffff000ULL);
-+            }
-+        } else
-+#endif
-+        {
-+            tlb_info_pae32(mon, env);
-+        }
-+    } else {
-+        tlb_info_32(mon, env);
-+    }
-+}
-+
-+void hmp_info_tlb(Monitor *mon, const QDict *qdict)
-+{
-+    CPUArchState *env;
-+
-+    env = mon_get_cpu_env(mon);
-+    if (!env) {
-+        monitor_printf(mon, "No CPU available\n");
-+        return;
-+    }
-+
-+    x86_dump_mmu(mon, env);
-+}
-diff --git a/target/i386/monitor.c b/target/i386/monitor.c
-index 2d766b2637..fa155ac3c9 100644
---- a/target/i386/monitor.c
-+++ b/target/i386/monitor.c
-@@ -32,221 +32,6 @@
- #include "qapi/qapi-commands-misc-target.h"
- #include "qapi/qapi-commands-misc.h"
+-void dump_mmu(CPUM68KState *env);
++void dump_mmu(Monitor *mon, CPUM68KState *env);
  
--/* Perform linear address sign extension */
--static hwaddr addr_canonical(CPUArchState *env, hwaddr addr)
--{
--#ifdef TARGET_X86_64
--    if (env->cr[4] & CR4_LA57_MASK) {
--        if (addr & (1ULL << 56)) {
--            addr |= (hwaddr)-(1LL << 57);
--        }
--    } else {
--        if (addr & (1ULL << 47)) {
--            addr |= (hwaddr)-(1LL << 48);
--        }
--    }
--#endif
--    return addr;
--}
--
--static void print_pte(Monitor *mon, CPUArchState *env, hwaddr addr,
--                      hwaddr pte, hwaddr mask)
--{
--    addr = addr_canonical(env, addr);
--
--    monitor_printf(mon, HWADDR_FMT_plx ": " HWADDR_FMT_plx
--                   " %c%c%c%c%c%c%c%c%c\n",
--                   addr,
--                   pte & mask,
--                   pte & PG_NX_MASK ? 'X' : '-',
--                   pte & PG_GLOBAL_MASK ? 'G' : '-',
--                   pte & PG_PSE_MASK ? 'P' : '-',
--                   pte & PG_DIRTY_MASK ? 'D' : '-',
--                   pte & PG_ACCESSED_MASK ? 'A' : '-',
--                   pte & PG_PCD_MASK ? 'C' : '-',
--                   pte & PG_PWT_MASK ? 'T' : '-',
--                   pte & PG_USER_MASK ? 'U' : '-',
--                   pte & PG_RW_MASK ? 'W' : '-');
--}
--
--static void tlb_info_32(Monitor *mon, CPUArchState *env)
--{
--    unsigned int l1, l2;
--    uint32_t pgd, pde, pte;
--
--    pgd = env->cr[3] & ~0xfff;
--    for(l1 = 0; l1 < 1024; l1++) {
--        cpu_physical_memory_read(pgd + l1 * 4, &pde, 4);
--        pde = le32_to_cpu(pde);
--        if (pde & PG_PRESENT_MASK) {
--            if ((pde & PG_PSE_MASK) && (env->cr[4] & CR4_PSE_MASK)) {
--                /* 4M pages */
--                print_pte(mon, env, (l1 << 22), pde, ~((1 << 21) - 1));
--            } else {
--                for(l2 = 0; l2 < 1024; l2++) {
--                    cpu_physical_memory_read((pde & ~0xfff) + l2 * 4, &pte, 4);
--                    pte = le32_to_cpu(pte);
--                    if (pte & PG_PRESENT_MASK) {
--                        print_pte(mon, env, (l1 << 22) + (l2 << 12),
--                                  pte & ~PG_PSE_MASK,
--                                  ~0xfff);
--                    }
--                }
--            }
--        }
--    }
--}
--
--static void tlb_info_pae32(Monitor *mon, CPUArchState *env)
--{
--    unsigned int l1, l2, l3;
--    uint64_t pdpe, pde, pte;
--    uint64_t pdp_addr, pd_addr, pt_addr;
--
--    pdp_addr = env->cr[3] & ~0x1f;
--    for (l1 = 0; l1 < 4; l1++) {
--        cpu_physical_memory_read(pdp_addr + l1 * 8, &pdpe, 8);
--        pdpe = le64_to_cpu(pdpe);
--        if (pdpe & PG_PRESENT_MASK) {
--            pd_addr = pdpe & 0x3fffffffff000ULL;
--            for (l2 = 0; l2 < 512; l2++) {
--                cpu_physical_memory_read(pd_addr + l2 * 8, &pde, 8);
--                pde = le64_to_cpu(pde);
--                if (pde & PG_PRESENT_MASK) {
--                    if (pde & PG_PSE_MASK) {
--                        /* 2M pages with PAE, CR4.PSE is ignored */
--                        print_pte(mon, env, (l1 << 30) + (l2 << 21), pde,
--                                  ~((hwaddr)(1 << 20) - 1));
--                    } else {
--                        pt_addr = pde & 0x3fffffffff000ULL;
--                        for (l3 = 0; l3 < 512; l3++) {
--                            cpu_physical_memory_read(pt_addr + l3 * 8, &pte, 8);
--                            pte = le64_to_cpu(pte);
--                            if (pte & PG_PRESENT_MASK) {
--                                print_pte(mon, env, (l1 << 30) + (l2 << 21)
--                                          + (l3 << 12),
--                                          pte & ~PG_PSE_MASK,
--                                          ~(hwaddr)0xfff);
--                            }
--                        }
--                    }
--                }
--            }
--        }
--    }
--}
--
--#ifdef TARGET_X86_64
--static void tlb_info_la48(Monitor *mon, CPUArchState *env,
--        uint64_t l0, uint64_t pml4_addr)
--{
--    uint64_t l1, l2, l3, l4;
--    uint64_t pml4e, pdpe, pde, pte;
--    uint64_t pdp_addr, pd_addr, pt_addr;
--
--    for (l1 = 0; l1 < 512; l1++) {
--        cpu_physical_memory_read(pml4_addr + l1 * 8, &pml4e, 8);
--        pml4e = le64_to_cpu(pml4e);
--        if (!(pml4e & PG_PRESENT_MASK)) {
--            continue;
--        }
--
--        pdp_addr = pml4e & 0x3fffffffff000ULL;
--        for (l2 = 0; l2 < 512; l2++) {
--            cpu_physical_memory_read(pdp_addr + l2 * 8, &pdpe, 8);
--            pdpe = le64_to_cpu(pdpe);
--            if (!(pdpe & PG_PRESENT_MASK)) {
--                continue;
--            }
--
--            if (pdpe & PG_PSE_MASK) {
--                /* 1G pages, CR4.PSE is ignored */
--                print_pte(mon, env, (l0 << 48) + (l1 << 39) + (l2 << 30),
--                        pdpe, 0x3ffffc0000000ULL);
--                continue;
--            }
--
--            pd_addr = pdpe & 0x3fffffffff000ULL;
--            for (l3 = 0; l3 < 512; l3++) {
--                cpu_physical_memory_read(pd_addr + l3 * 8, &pde, 8);
--                pde = le64_to_cpu(pde);
--                if (!(pde & PG_PRESENT_MASK)) {
--                    continue;
--                }
--
--                if (pde & PG_PSE_MASK) {
--                    /* 2M pages, CR4.PSE is ignored */
--                    print_pte(mon, env, (l0 << 48) + (l1 << 39) + (l2 << 30) +
--                            (l3 << 21), pde, 0x3ffffffe00000ULL);
--                    continue;
--                }
--
--                pt_addr = pde & 0x3fffffffff000ULL;
--                for (l4 = 0; l4 < 512; l4++) {
--                    cpu_physical_memory_read(pt_addr
--                            + l4 * 8,
--                            &pte, 8);
--                    pte = le64_to_cpu(pte);
--                    if (pte & PG_PRESENT_MASK) {
--                        print_pte(mon, env, (l0 << 48) + (l1 << 39) +
--                                (l2 << 30) + (l3 << 21) + (l4 << 12),
--                                pte & ~PG_PSE_MASK, 0x3fffffffff000ULL);
--                    }
--                }
--            }
--        }
--    }
--}
--
--static void tlb_info_la57(Monitor *mon, CPUArchState *env)
--{
--    uint64_t l0;
--    uint64_t pml5e;
--    uint64_t pml5_addr;
--
--    pml5_addr = env->cr[3] & 0x3fffffffff000ULL;
--    for (l0 = 0; l0 < 512; l0++) {
--        cpu_physical_memory_read(pml5_addr + l0 * 8, &pml5e, 8);
--        pml5e = le64_to_cpu(pml5e);
--        if (pml5e & PG_PRESENT_MASK) {
--            tlb_info_la48(mon, env, l0, pml5e & 0x3fffffffff000ULL);
--        }
--    }
--}
--#endif /* TARGET_X86_64 */
--
--void hmp_info_tlb(Monitor *mon, const QDict *qdict)
--{
--    CPUArchState *env;
--
--    env = mon_get_cpu_env(mon);
--    if (!env) {
+ #endif
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 1a475f082a..310e26dfa1 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -25,7 +25,7 @@
+ #include "exec/helper-proto.h"
+ #include "gdbstub/helpers.h"
+ #include "fpu/softfloat.h"
+-#include "qemu/qemu-print.h"
++#include "monitor/monitor.h"
+ 
+ #define SIGNBIT (1u << 31)
+ 
+@@ -455,28 +455,30 @@ void m68k_switch_sp(CPUM68KState *env)
+ #if !defined(CONFIG_USER_ONLY)
+ /* MMU: 68040 only */
+ 
+-static void print_address_zone(uint32_t logical, uint32_t physical,
++static void print_address_zone(Monitor *mon,
++                               uint32_t logical, uint32_t physical,
+                                uint32_t size, int attr)
+ {
+-    qemu_printf("%08x - %08x -> %08x - %08x %c ",
+-                logical, logical + size - 1,
+-                physical, physical + size - 1,
+-                attr & 4 ? 'W' : '-');
++    monitor_printf(mon, "%08x - %08x -> %08x - %08x %c ",
++                   logical, logical + size - 1,
++                   physical, physical + size - 1,
++                   attr & 4 ? 'W' : '-');
+     size >>= 10;
+     if (size < 1024) {
+-        qemu_printf("(%d KiB)\n", size);
++        monitor_printf(mon, "(%d KiB)\n", size);
+     } else {
+         size >>= 10;
+         if (size < 1024) {
+-            qemu_printf("(%d MiB)\n", size);
++            monitor_printf(mon, "(%d MiB)\n", size);
+         } else {
+             size >>= 10;
+-            qemu_printf("(%d GiB)\n", size);
++            monitor_printf(mon, "(%d GiB)\n", size);
+         }
+     }
+ }
+ 
+-static void dump_address_map(CPUM68KState *env, uint32_t root_pointer)
++static void dump_address_map(Monitor *mon, CPUM68KState *env,
++                             uint32_t root_pointer)
+ {
+     int i, j, k;
+     int tic_size, tic_shift;
+@@ -545,7 +547,7 @@ static void dump_address_map(CPUM68KState *env, uint32_t root_pointer)
+                     if (first_logical != 0xffffffff) {
+                         size = last_logical + (1 << tic_shift) -
+                                first_logical;
+-                        print_address_zone(first_logical,
++                        print_address_zone(mon, first_logical,
+                                            first_physical, size, last_attr);
+                     }
+                     first_logical = logical;
+@@ -556,125 +558,125 @@ static void dump_address_map(CPUM68KState *env, uint32_t root_pointer)
+     }
+     if (first_logical != logical || (attr & 4) != (last_attr & 4)) {
+         size = logical + (1 << tic_shift) - first_logical;
+-        print_address_zone(first_logical, first_physical, size, last_attr);
++        print_address_zone(mon, first_logical, first_physical, size, last_attr);
+     }
+ }
+ 
+ #define DUMP_CACHEFLAGS(a) \
+     switch (a & M68K_DESC_CACHEMODE) { \
+     case M68K_DESC_CM_WRTHRU: /* cacheable, write-through */ \
+-        qemu_printf("T"); \
++        monitor_puts(mon, "T"); \
+         break; \
+     case M68K_DESC_CM_COPYBK: /* cacheable, copyback */ \
+-        qemu_printf("C"); \
++        monitor_puts(mon, "C"); \
+         break; \
+     case M68K_DESC_CM_SERIAL: /* noncachable, serialized */ \
+-        qemu_printf("S"); \
++        monitor_puts(mon, "S"); \
+         break; \
+     case M68K_DESC_CM_NCACHE: /* noncachable */ \
+-        qemu_printf("N"); \
++        monitor_puts(mon, "N"); \
+         break; \
+     }
+ 
+-static void dump_ttr(uint32_t ttr)
++static void dump_ttr(Monitor *mon, uint32_t ttr)
+ {
+     if ((ttr & M68K_TTR_ENABLED) == 0) {
+-        qemu_printf("disabled\n");
++        monitor_puts(mon, "disabled\n");
+         return;
+     }
+-    qemu_printf("Base: 0x%08x Mask: 0x%08x Control: ",
+-                ttr & M68K_TTR_ADDR_BASE,
+-                (ttr & M68K_TTR_ADDR_MASK) << M68K_TTR_ADDR_MASK_SHIFT);
++    monitor_printf(mon, "Base: 0x%08x Mask: 0x%08x Control: ",
++                   ttr & M68K_TTR_ADDR_BASE,
++                   (ttr & M68K_TTR_ADDR_MASK) << M68K_TTR_ADDR_MASK_SHIFT);
+     switch (ttr & M68K_TTR_SFIELD) {
+     case M68K_TTR_SFIELD_USER:
+-        qemu_printf("U");
++        monitor_puts(mon, "U");
+         break;
+     case M68K_TTR_SFIELD_SUPER:
+-        qemu_printf("S");
++        monitor_puts(mon, "S");
+         break;
+     default:
+-        qemu_printf("*");
++        monitor_puts(mon, "*");
+         break;
+     }
+     DUMP_CACHEFLAGS(ttr);
+     if (ttr & M68K_DESC_WRITEPROT) {
+-        qemu_printf("R");
++        monitor_puts(mon, "R");
+     } else {
+-        qemu_printf("W");
++        monitor_puts(mon, "W");
+     }
+-    qemu_printf(" U: %d\n", (ttr & M68K_DESC_USERATTR) >>
++    monitor_printf(mon, " U: %d\n", (ttr & M68K_DESC_USERATTR) >>
+                                M68K_DESC_USERATTR_SHIFT);
+ }
+ 
+-void dump_mmu(CPUM68KState *env)
++void dump_mmu(Monitor *mon, CPUM68KState *env)
+ {
+     if ((env->mmu.tcr & M68K_TCR_ENABLED) == 0) {
+-        qemu_printf("Translation disabled\n");
++        monitor_puts(mon, "Translation disabled\n");
+         return;
+     }
+-    qemu_printf("Page Size: ");
++    monitor_puts(mon, "Page Size: ");
+     if (env->mmu.tcr & M68K_TCR_PAGE_8K) {
+-        qemu_printf("8kB\n");
++        monitor_puts(mon, "8kB\n");
+     } else {
+-        qemu_printf("4kB\n");
++        monitor_puts(mon, "4kB\n");
+     }
+ 
+-    qemu_printf("MMUSR: ");
++    monitor_puts(mon, "MMUSR: ");
+     if (env->mmu.mmusr & M68K_MMU_B_040) {
+-        qemu_printf("BUS ERROR\n");
++        monitor_puts(mon, "BUS ERROR\n");
+     } else {
+-        qemu_printf("Phy=%08x Flags: ", env->mmu.mmusr & 0xfffff000);
++        monitor_printf(mon, "Phy=%08x Flags: ", env->mmu.mmusr & 0xfffff000);
+         /* flags found on the page descriptor */
+         if (env->mmu.mmusr & M68K_MMU_G_040) {
+-            qemu_printf("G"); /* Global */
++            monitor_puts(mon, "G"); /* Global */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+         if (env->mmu.mmusr & M68K_MMU_S_040) {
+-            qemu_printf("S"); /* Supervisor */
++            monitor_puts(mon, "S"); /* Supervisor */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+         if (env->mmu.mmusr & M68K_MMU_M_040) {
+-            qemu_printf("M"); /* Modified */
++            monitor_puts(mon, "M"); /* Modified */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+         if (env->mmu.mmusr & M68K_MMU_WP_040) {
+-            qemu_printf("W"); /* Write protect */
++            monitor_puts(mon, "W"); /* Write protect */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+         if (env->mmu.mmusr & M68K_MMU_T_040) {
+-            qemu_printf("T"); /* Transparent */
++            monitor_puts(mon, "T"); /* Transparent */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+         if (env->mmu.mmusr & M68K_MMU_R_040) {
+-            qemu_printf("R"); /* Resident */
++            monitor_puts(mon, "R"); /* Resident */
+         } else {
+-            qemu_printf(".");
++            monitor_puts(mon, ".");
+         }
+-        qemu_printf(" Cache: ");
++        monitor_puts(mon, " Cache: ");
+         DUMP_CACHEFLAGS(env->mmu.mmusr);
+-        qemu_printf(" U: %d\n", (env->mmu.mmusr >> 8) & 3);
+-        qemu_printf("\n");
++        monitor_printf(mon, " U: %d\n", (env->mmu.mmusr >> 8) & 3);
++        monitor_puts(mon, "\n");
+     }
+ 
+-    qemu_printf("ITTR0: ");
+-    dump_ttr(env->mmu.ttr[M68K_ITTR0]);
+-    qemu_printf("ITTR1: ");
+-    dump_ttr(env->mmu.ttr[M68K_ITTR1]);
+-    qemu_printf("DTTR0: ");
+-    dump_ttr(env->mmu.ttr[M68K_DTTR0]);
+-    qemu_printf("DTTR1: ");
+-    dump_ttr(env->mmu.ttr[M68K_DTTR1]);
++    monitor_puts(mon, "ITTR0: ");
++    dump_ttr(mon, env->mmu.ttr[M68K_ITTR0]);
++    monitor_puts(mon, "ITTR1: ");
++    dump_ttr(mon, env->mmu.ttr[M68K_ITTR1]);
++    monitor_puts(mon, "DTTR0: ");
++    dump_ttr(mon, env->mmu.ttr[M68K_DTTR0]);
++    monitor_puts(mon, "DTTR1: ");
++    dump_ttr(mon, env->mmu.ttr[M68K_DTTR1]);
+ 
+-    qemu_printf("SRP: 0x%08x\n", env->mmu.srp);
+-    dump_address_map(env, env->mmu.srp);
++    monitor_printf(mon, "SRP: 0x%08x\n", env->mmu.srp);
++    dump_address_map(mon, env, env->mmu.srp);
+ 
+-    qemu_printf("URP: 0x%08x\n", env->mmu.urp);
+-    dump_address_map(env, env->mmu.urp);
++    monitor_printf(mon, "URP: 0x%08x\n", env->mmu.urp);
++    dump_address_map(mon, env, env->mmu.urp);
+ }
+ 
+ static int check_TTR(uint32_t ttr, int *prot, target_ulong addr,
+diff --git a/target/m68k/monitor.c b/target/m68k/monitor.c
+index 2bdf6acae0..623c6ab635 100644
+--- a/target/m68k/monitor.c
++++ b/target/m68k/monitor.c
+@@ -15,11 +15,11 @@ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
+     CPUArchState *env1 = mon_get_cpu_env(mon);
+ 
+     if (!env1) {
 -        monitor_printf(mon, "No CPU available\n");
--        return;
--    }
--
--    if (!(env->cr[0] & CR0_PG_MASK)) {
--        monitor_printf(mon, "PG disabled\n");
--        return;
--    }
--    if (env->cr[4] & CR4_PAE_MASK) {
--#ifdef TARGET_X86_64
--        if (env->hflags & HF_LMA_MASK) {
--            if (env->cr[4] & CR4_LA57_MASK) {
--                tlb_info_la57(mon, env);
--            } else {
--                tlb_info_la48(mon, env, 0, env->cr[3] & 0x3fffffffff000ULL);
--            }
--        } else
--#endif
--        {
--            tlb_info_pae32(mon, env);
--        }
--    } else {
--        tlb_info_32(mon, env);
--    }
--}
--
- static void mem_print(Monitor *mon, CPUArchState *env,
-                       hwaddr *pstart, int *plast_prot,
-                       hwaddr end, int prot)
-diff --git a/target/i386/meson.build b/target/i386/meson.build
-index ba8dc68a34..6c6f383e2e 100644
---- a/target/i386/meson.build
-+++ b/target/i386/meson.build
-@@ -18,6 +18,7 @@ i386_system_ss.add(files(
-   'arch_memory_mapping.c',
-   'machine.c',
-   'monitor.c',
-+  'mmu.c',
-   'cpu-apic.c',
-   'cpu-sysemu.c',
- ))
++        monitor_puts(mon, "No CPU available\n");
+         return;
+     }
+ 
+-    dump_mmu(env1);
++    dump_mmu(mon, env1);
+ }
+ 
+ static const MonitorDef monitor_defs[] = {
 -- 
 2.41.0
 
