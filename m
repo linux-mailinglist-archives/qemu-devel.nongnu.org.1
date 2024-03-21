@@ -2,51 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CD4885936
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 13:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB1B78859C4
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 14:12:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnHeg-0008Kh-Pr; Thu, 21 Mar 2024 08:36:22 -0400
+	id 1rnIAq-00077c-Mg; Thu, 21 Mar 2024 09:09:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1rnHed-0008KY-JA
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 08:36:19 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1rnHeW-0003Yn-SH
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 08:36:19 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8DxmfC3KfxlZOAbAA--.1515S3;
- Thu, 21 Mar 2024 20:36:07 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxVMy3KfxltQ5gAA--.59468S2; 
- Thu, 21 Mar 2024 20:36:07 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	philmd@linaro.org,
-	maobibo@loongson.cn
-Subject: [PATCH v3] target/loongarch: Fix qemu-system-loongarch64 assert
- failed with the option '-d int'
-Date: Thu, 21 Mar 2024 20:36:06 +0800
-Message-Id: <20240321123606.1704900-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rnIAn-00075h-Qw; Thu, 21 Mar 2024 09:09:33 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rnIAj-0002o3-RS; Thu, 21 Mar 2024 09:09:33 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V0m433b6sz1vx69;
+ Thu, 21 Mar 2024 21:08:35 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 3DA5B1402CC;
+ Thu, 21 Mar 2024 21:09:22 +0800 (CST)
+Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
+ (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 21 Mar
+ 2024 21:09:21 +0800
+To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
+ <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
+ <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
+ <qemu-arm@nongnu.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [RFC PATCH v9 00/23] target/arm: Implement FEAT_NMI and FEAT_GICv3_NMI
+Date: Thu, 21 Mar 2024 13:07:49 +0000
+Message-ID: <20240321130812.2983113-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxVMy3KfxltQ5gAA--.59468S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.67.174.55]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga06-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,127 +61,188 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu-system-loongarch64 assert failed with the option '-d int',
-the helper_idle() raise an exception EXCP_HLT, but the exception name is undefined.
+This patch set implements FEAT_NMI and FEAT_GICv3_NMI for armv8. These
+introduce support for a new category of interrupts in the architecture
+which we can use to provide NMI like functionality.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
----
- target/loongarch/cpu.c | 74 +++++++++++++++++++++++-------------------
- 1 file changed, 40 insertions(+), 34 deletions(-)
+There are two modes for using this FEAT_NMI. When PSTATE.ALLINT or
+PSTATE.SP & SCTLR_ELx.SCTLR_SPINTMASK is set, any entry to ELx causes all
+interrupts including those with superpriority to be masked on entry to ELn
+until the mask is explicitly removed by software or hardware. PSTATE.ALLINT
+can be managed by software using the new register control ALLINT.ALLINT.
+Independent controls are provided for this feature at each EL, usage at EL1
+should not disrupt EL2 or EL3.
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index f6ffb3aadb..4d681a733e 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -45,33 +45,45 @@ const char * const fregnames[32] = {
-     "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
- };
- 
--static const char * const excp_names[] = {
--    [EXCCODE_INT] = "Interrupt",
--    [EXCCODE_PIL] = "Page invalid exception for load",
--    [EXCCODE_PIS] = "Page invalid exception for store",
--    [EXCCODE_PIF] = "Page invalid exception for fetch",
--    [EXCCODE_PME] = "Page modified exception",
--    [EXCCODE_PNR] = "Page Not Readable exception",
--    [EXCCODE_PNX] = "Page Not Executable exception",
--    [EXCCODE_PPI] = "Page Privilege error",
--    [EXCCODE_ADEF] = "Address error for instruction fetch",
--    [EXCCODE_ADEM] = "Address error for Memory access",
--    [EXCCODE_SYS] = "Syscall",
--    [EXCCODE_BRK] = "Break",
--    [EXCCODE_INE] = "Instruction Non-Existent",
--    [EXCCODE_IPE] = "Instruction privilege error",
--    [EXCCODE_FPD] = "Floating Point Disabled",
--    [EXCCODE_FPE] = "Floating Point Exception",
--    [EXCCODE_DBP] = "Debug breakpoint",
--    [EXCCODE_BCE] = "Bound Check Exception",
--    [EXCCODE_SXD] = "128 bit vector instructions Disable exception",
--    [EXCCODE_ASXD] = "256 bit vector instructions Disable exception",
-+struct TypeExcp {
-+    int32_t exccode;
-+    const char *name;
-+};
-+
-+static const struct TypeExcp excp_names[] = {
-+    {EXCCODE_INT, "Interrupt"},
-+    {EXCCODE_PIL, "Page invalid exception for load"},
-+    {EXCCODE_PIS, "Page invalid exception for store"},
-+    {EXCCODE_PIF, "Page invalid exception for fetch"},
-+    {EXCCODE_PME, "Page modified exception"},
-+    {EXCCODE_PNR, "Page Not Readable exception"},
-+    {EXCCODE_PNX, "Page Not Executable exception"},
-+    {EXCCODE_PPI, "Page Privilege error"},
-+    {EXCCODE_ADEF, "Address error for instruction fetch"},
-+    {EXCCODE_ADEM, "Address error for Memory access"},
-+    {EXCCODE_SYS, "Syscall"},
-+    {EXCCODE_BRK, "Break"},
-+    {EXCCODE_INE, "Instruction Non-Existent"},
-+    {EXCCODE_IPE, "Instruction privilege error"},
-+    {EXCCODE_FPD, "Floating Point Disabled"},
-+    {EXCCODE_FPE, "Floating Point Exception"},
-+    {EXCCODE_DBP, "Debug breakpoint"},
-+    {EXCCODE_BCE, "Bound Check Exception"},
-+    {EXCCODE_SXD, "128 bit vector instructions Disable exception"},
-+    {EXCCODE_ASXD, "256 bit vector instructions Disable exception"},
-+    {EXCP_HLT, "EXCP_HLT"},
- };
- 
- const char *loongarch_exception_name(int32_t exception)
- {
--    assert(excp_names[exception]);
--    return excp_names[exception];
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(excp_names); i++) {
-+        if (excp_names[i].exccode == exception) {
-+            return excp_names[i].name;
-+        }
-+    }
-+    return "Unknown";
- }
- 
- void G_NORETURN do_raise_exception(CPULoongArchState *env,
-@@ -80,7 +92,7 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
- {
-     CPUState *cs = env_cpu(env);
- 
--    qemu_log_mask(CPU_LOG_INT, "%s: %d (%s)\n",
-+    qemu_log_mask(CPU_LOG_INT, "%s: expection: %d (%s)\n",
-                   __func__,
-                   exception,
-                   loongarch_exception_name(exception));
-@@ -154,22 +166,16 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     CPULoongArchState *env = cpu_env(cs);
-     bool update_badinstr = 1;
-     int cause = -1;
--    const char *name;
-     bool tlbfill = FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR);
-     uint32_t vec_size = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, VS);
- 
-     if (cs->exception_index != EXCCODE_INT) {
--        if (cs->exception_index < 0 ||
--            cs->exception_index >= ARRAY_SIZE(excp_names)) {
--            name = "unknown";
--        } else {
--            name = excp_names[cs->exception_index];
--        }
--
-         qemu_log_mask(CPU_LOG_INT,
-                      "%s enter: pc " TARGET_FMT_lx " ERA " TARGET_FMT_lx
--                     " TLBRERA " TARGET_FMT_lx " %s exception\n", __func__,
--                     env->pc, env->CSR_ERA, env->CSR_TLBRERA, name);
-+                     " TLBRERA " TARGET_FMT_lx " exception: %d (%s)\n",
-+                     __func__, env->pc, env->CSR_ERA, env->CSR_TLBRERA,
-+                     cs->exception_index,
-+                     loongarch_exception_name(cs->exception_index));
-     }
- 
-     switch (cs->exception_index) {
+I have tested it with the following linux patches which try to support
+FEAT_NMI in linux kernel:
+
+	https://lore.kernel.org/linux-arm-kernel/Y4sH5qX5bK9xfEBp@lpieralisi/T/#mb4ba4a2c045bf72c10c2202c1dd1b82d3240dc88
+
+In the test, SGI, PPI and SPI interrupts can all be set to have super priority
+to be converted to a hardware NMI interrupt. The SGI is tested with kernel
+IPI as NMI framework, softlockup, hardlockup and kgdb test cases, and the PPI
+interrupt is tested with "perf top" command with hardware NMI enabled, and
+the SPI interrupt is tested with a custom test module, in which NMI interrupts
+can be received and sent normally.
+
+And the Virtual NMI(VNMI) SGI, PPI and SPI interrupt has also been tested
+by accessing the GICD_INMIR, GICR_INMIR0, GICR_ISPENDR0 and GICD_ISPENDR
+registers with devmem command.
+
+         +-------------------------------------------------+
+         |               Distributor                       |
+         +-------------------------------------------------+
+             SPI |  NMI                         |  NMI
+                \/                            \/
+            +--------+                     +-------+
+            | Redist |                     | Redist|
+            +--------+                     +-------+
+            SGI  | NMI                     PPI | NMI
+                \/                            \/
+          +-------------+             +---------------+
+          |CPU Interface|   ...       | CPU Interface |
+          +-------------+             +---------------+
+               | NMI                         | NMI
+              \/                            \/
+            +-----+                       +-----+
+            |  PE |                       |  PE |
+            +-----+                       +-----+
+
+Changes in v9:
+- Move nmi_reginfo and related functions inside an existing ifdef
+  TARGET_AARCH64 to solve the --target-list=aarch64-softmmu,arm-softmmu
+  compilation problem.
+- Check 'isread' when writing to ALLINT.
+- Update the GPIOs passed in the arm_cpu_kvm_set_irq, and update the comment.
+- Definitely not merge VINMI and VFNMI into EXCP_VNMI.
+- ARM_CPU_VNMI -> ARM_CPU_VINMI, CPU_INTERRUPT_VNMI -> CPU_INTERRUPT_VINMI.
+- Update VINMI and VFNMI when writing HCR_EL2 or HCRX_EL2.
+- Update the commit subject and message, VNMI -> VINMI.
+- Handle CPSR_F and ISR_FS according to CPU_INTERRUPT_VFNMI instead of
+  CPU_INTERRUPT_VFIQ and HCRX_EL2.VFNMI.
+- Not check SCTLR_NMI in arm_cpu_do_interrupt_aarch64().
+- Correct the INTID_NMI logic.
+- Declare cpu variable to reuse latter.
+
+Changes in v8:
+- Fix the rcu stall after sending a VNMI in qemu VM.
+- Fix an unexpected interrupt bug when sending VNMI by running qemu VM.
+- Test the VNMI interrupt.
+- Update the commit message.
+- Add Reviewed-by.
+
+Changes in v7:
+- env->cp15.hcrx_el2 -> arm_hcrx_el2_eff().
+- Reorder the irqbetter() code for clarity.
+- Eliminate the has_superprio local variable for gicv3_get_priority().
+- false -> cs->hpplpi.superprio in gicv3_redist_update_noirqset().
+- 0x0 -> false in arm_gicv3_common_reset_hold().
+- Clear superprio in several places for hppi, hpplpi and hppvlpi.
+- Add Reviewed-by.
+
+Changes in v6:
+- Fix DISAS_TOO_MANY to DISAS_UPDATE_EXIT for ALLINT MSR (immediate).
+- Verify that HCR_EL2.VF is set before checking VFNMI.
+- env->cp15.hcr_el2 -> arm_hcr_el2_eff().
+- env->cp15.hcrx_el2 -> arm_hcrx_el2_eff().
+- Not combine VFNMI with CPU_INTERRUPT_VNMI.
+- Implement icv_nmiar1_read().
+- Put the "extract superprio info" code into gicv3_get_priority().
+- Update the comment in irqbetter().
+- Reset the cs->hppi.superprio to 0x0.
+- Set hppi.superprio to false for LPI.
+- Add Reviewed-by.
+
+Changes in v5:
+- Remove the comment for ALLINT in cpu.h.
+- Merge allint_check() to msr_i_allint to clear the ALLINT MSR (immediate)
+  implementation.
+- Rename msr_i_allint() to msr_set_allint_el1() to make it clearer.
+- Drop the & 1 in trans_MSR_i_ALLINT().
+- Add Reviewed-by.
+
+Changes in v4:
+- Handle VNMI within the CPU and the GIC.
+- Keep PSTATE.ALLINT in env->pstate but not env->allint.
+- Fix the ALLINT MSR (immediate) decodetree implementation.
+- Accept NMI unconditionally for arm_cpu_has_work() but add comment.
+- Improve nmi mask in arm_excp_unmasked().
+- Make the GICR_INMIR0 and GICD_INMIR implementation more clearer.
+- Improve ICC_NMIAR1_EL1 implementation
+- Extract gicv3_get_priority() to avoid priority code repetition.
+- Add Reviewed-by.
+
+Changes in v3:
+- Remove the FIQ NMI.
+- Adjust the patches Sequence.
+- Reomve the patch "Set pstate.ALLINT in arm_cpu_reset_hold".
+- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
+- With CPU_INTERRUPT_NMI, both CPSR_I and ISR_IS must be set.
+- Not include NMI logic when FEAT_NMI or SCTLR_ELx.NMI not enabled.
+- Refator nmi mask in arm_excp_unmasked().
+- Add VNMI definitions, add HCRX_VINMI and HCRX_VFNMI support in HCRX_EL2.
+- Add Reviewed-by and Acked-by.
+- Update the commit message.
+
+Changes in v2:
+- Break up the patches so that each one does only one thing.
+- Remove the command line option and just implement it in "max" cpu.
+
+Jinjie Ruan (23):
+  target/arm: Handle HCR_EL2 accesses for bits introduced with FEAT_NMI
+  target/arm: Add PSTATE.ALLINT
+  target/arm: Add support for FEAT_NMI, Non-maskable Interrupt
+  target/arm: Implement ALLINT MSR (immediate)
+  target/arm: Support MSR access to ALLINT
+  target/arm: Add support for Non-maskable Interrupt
+  target/arm: Add support for NMI in arm_phys_excp_target_el()
+  target/arm: Handle IS/FS in ISR_EL1 for NMI, VINMI and VFNMI
+  target/arm: Handle PSTATE.ALLINT on taking an exception
+  hw/arm/virt: Wire NMI and VINMI irq lines from GIC to CPU
+  hw/intc/arm_gicv3: Add external IRQ lines for NMI
+  target/arm: Handle NMI in arm_cpu_do_interrupt_aarch64()
+  hw/intc/arm_gicv3: Add irq superpriority information
+  hw/intc/arm_gicv3_redist: Implement GICR_INMIR0
+  hw/intc/arm_gicv3: Implement GICD_INMIR
+  hw/intc: Enable FEAT_GICv3_NMI Feature
+  hw/intc/arm_gicv3: Add NMI handling CPU interface registers
+  hw/intc/arm_gicv3: Handle icv_nmiar1_read() for icc_nmiar1_read()
+  hw/intc/arm_gicv3: Implement NMI interrupt prioirty
+  hw/intc/arm_gicv3: Report the NMI interrupt in gicv3_cpuif_update()
+  hw/intc/arm_gicv3: Report the VINMI interrupt
+  target/arm: Add FEAT_NMI to max
+  hw/arm/virt: Add FEAT_GICv3_NMI feature support in virt GIC
+
+ docs/system/arm/emulation.rst      |   1 +
+ hw/arm/virt.c                      |  25 +++++-
+ hw/intc/arm_gicv3.c                |  69 ++++++++++++++--
+ hw/intc/arm_gicv3_common.c         |  10 +++
+ hw/intc/arm_gicv3_cpuif.c          | 127 +++++++++++++++++++++++++++--
+ hw/intc/arm_gicv3_dist.c           |  36 ++++++++
+ hw/intc/arm_gicv3_redist.c         |  22 +++++
+ hw/intc/gicv3_internal.h           |   8 ++
+ hw/intc/trace-events               |   2 +
+ include/hw/intc/arm_gic_common.h   |   2 +
+ include/hw/intc/arm_gicv3_common.h |   7 ++
+ target/arm/cpu-features.h          |   5 ++
+ target/arm/cpu-qom.h               |   5 +-
+ target/arm/cpu.c                   | 124 ++++++++++++++++++++++++++--
+ target/arm/cpu.h                   |   9 ++
+ target/arm/helper.c                | 102 +++++++++++++++++++++--
+ target/arm/internals.h             |  21 +++++
+ target/arm/tcg/a64.decode          |   1 +
+ target/arm/tcg/cpu64.c             |   1 +
+ target/arm/tcg/helper-a64.c        |  12 +++
+ target/arm/tcg/helper-a64.h        |   1 +
+ target/arm/tcg/translate-a64.c     |  19 +++++
+ 22 files changed, 575 insertions(+), 34 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
