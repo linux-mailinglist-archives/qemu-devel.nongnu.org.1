@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A56885720
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 11:07:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EC488571F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 11:07:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnFJv-0002KP-Q2; Thu, 21 Mar 2024 06:06:47 -0400
+	id 1rnFK2-0002kY-Em; Thu, 21 Mar 2024 06:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnFJt-0002Gk-H4
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 06:06:45 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnFJz-0002WM-Ts
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 06:06:51 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnFJq-0007xd-TF
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 06:06:44 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-513da1c1f26so1064996e87.3
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 03:06:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnFJy-0007yO-7T
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 06:06:51 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2d220e39907so11242871fa.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 03:06:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711015601; x=1711620401; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=jT8f5WSwiPj+GhT1K0UkKzrSEj04lWZe59MdYABXgNc=;
- b=GNIZuBOlGpQfI9SvvLtOhjnAResjveDzHD5Y5sIBfY4wbkOs1NZzBzx4KiW/h3L9Iq
- U4xv5NQB+daWrMCCJPUBIcrgtHmGrlo6OUGQ8Udt8aQktJP8ObJPZPrMzAs4R3JLUMOt
- WnInAkMaI4N6B49X29QtmrxFDnn0Ccnj7f4Vdizc3ofSeBpfo6VXGoucD87x/lPQUgyZ
- Cywz+1pDbNhmCV2xc0+vHHoMA7oPruSWoeS4rFoA+5xe+11Ezs5m63dVcAGdQxlRegWC
- uE+EC99c15tXD9jBHpMiK2I0rCPRsjWL1VK0RfXFCimxa/DWpzn5VTuJ+xYvRGvLLKV2
- vdaA==
+ d=linaro.org; s=google; t=1711015608; x=1711620408; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=A2dvM+euMDE0v28D1xjaFlsbAEAYgdfmVYQj+HIsXyM=;
+ b=wD7fkTGSyL1WMoaiQ78jb40GiGEEoBFYzNxfpRvELPg0smw4W1/V9H+e3+7XB5QH1w
+ ceQIkhu7WNwcAPLCZZhySqm3e0X6WKa4PEO7BDdtETvean+lRnJVdVngE2qC6dWlrWPc
+ FqdW4QIYAy84s0hzKLMybu3jP4cnPROyHrvG646RmF7+ic0TYAgNhbwEQ7BQsxT8aHml
+ s9kbiwtj/tlvArmUJYIEXCqe8HUokVpjqejr8X+UQnCfdRAs95eRmTnZ0qFXjbW8p24m
+ +wvumGd9i5d0mJOaGlWUvpsmPJ0N2qt+bv/haB5hiWuPzNXXuqKeLQQ8vX+AgbyNI1QE
+ ucgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711015601; x=1711620401;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=jT8f5WSwiPj+GhT1K0UkKzrSEj04lWZe59MdYABXgNc=;
- b=Gt2VK94sud00uzOhdqgV0uMs/Bx6w0un22DCIaiu93qHuSqL4AYcRuGXaLkBXFxkgZ
- L5wkuNc4CAf5oVqkQU2dPA35c/5FremixJfzlY4Mlbsgwe/n/PDhF9BCsOC/k0Bzr5T8
- Q8WppiML5uCbs0QXftMN78nZVRePzP5F7n8YS52fMJsHyQf+X8G3okbUNormOWy3lP1u
- oeIO+Ys3a+wVl5CoLeHXy4DLMW6MhjnqhbIo9LfAJdTBIHGRbRhSkceSQ4NdmtpDeQwa
- gzO+3LHdUJsMwLGivC6lFYXIKYS4AkdqZF6IQTyJz1FPU97fIIJ3Ry0lHra3fFFtzs8v
- UjCw==
+ d=1e100.net; s=20230601; t=1711015608; x=1711620408;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=A2dvM+euMDE0v28D1xjaFlsbAEAYgdfmVYQj+HIsXyM=;
+ b=hp7K82qbPZkfxmfWKw5g9Z97b8K96d8lePjyZUJx87KCYz3znlWWWTTZCxCKh4Eaic
+ pOcnBNA/Kf0sBGjq6DF/zhHm5YP7YAJ8oIjG/46zYwqxVCAxa2keE4EqBKc0kl3o6wWG
+ cHP/q9iFrRiiL+P5J8cmXbHA6YNaTIxhE+zXEZw2gghhtAx5MesepQOZg+O4Uh5RqUuX
+ zvRtHDx/10zv3grUgL1VttFzVa7cNVej4uuRDe5na8qZWKoYCkGQzP60bFKlCwhJQ4JU
+ fauQrvqXPWCPgt/WFPDX0yBNYdHr6fG+Lddr7ysIc+bjMHztFoitCw0lHw3eeirqJCOc
+ WS3g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX4eqDFTGn0Osv/slLH3TuV2J7zTwzVajGKV1BXUCTKo0tQcuMTZ9NQNYuOc1ZPran8mIcfeBLNe6OMJDFTqgppyAW56zg=
-X-Gm-Message-State: AOJu0YyH+swm1F7YQF1JRT9hU362osszAzjBvw3aeFMhN8sUjVtcuONN
- 2EDLu3bWsu73dDMja2tabTq8bDeuT85xAxCjhfCybdFA3Tc0Kk7C2TggcyG08ys=
-X-Google-Smtp-Source: AGHT+IHQeSHZMCbvLrPdPpwE8rKg7MUH3EPXUpePpJx0xHYucWPNvIQbBnQavqAFMkCQk4TfFjwM3g==
-X-Received: by 2002:a05:6512:456:b0:513:dadd:2a83 with SMTP id
- y22-20020a056512045600b00513dadd2a83mr12033754lfk.35.1711015600826; 
- Thu, 21 Mar 2024 03:06:40 -0700 (PDT)
+ AJvYcCX03Ay6twpGkhB08gPmUK5mzMjE173ck98SVTj8LogAgl1aY83nUplguruMr5KIvCxr69/tXMK2ovB5XO+dzEwHKBHdC8Q=
+X-Gm-Message-State: AOJu0YyEPh8BlZbxpxX0l05UPTejr6v+eBE2Vk7FvfKfheEFCV5H3ESL
+ PfVplvGhVS7q3/zaoiOPbpbvQ8u2QRwqPKefe+xrIVYMmNCH55CH85kVs+Qry/s=
+X-Google-Smtp-Source: AGHT+IGU5M1dD5nFfomSZl4U1vrATCQc2rUAJvLBbC8xtzWFzBKAmm1kRYUV8yV1Rs5WnihURTdX/A==
+X-Received: by 2002:a2e:8187:0:b0:2d4:5d56:e559 with SMTP id
+ e7-20020a2e8187000000b002d45d56e559mr14298577ljg.47.1711015608437; 
+ Thu, 21 Mar 2024 03:06:48 -0700 (PDT)
 Received: from localhost.localdomain (10.red-88-29-188.dynamicip.rima-tde.net.
  [88.29.188.10]) by smtp.gmail.com with ESMTPSA id
- fc16-20020a05600c525000b004131310a29fsm5040487wmb.15.2024.03.21.03.06.38
+ g14-20020a5d540e000000b0033e95bf4796sm16765659wrv.27.2024.03.21.03.06.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 21 Mar 2024 03:06:40 -0700 (PDT)
+ Thu, 21 Mar 2024 03:06:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Dongwon Kim <dongwon.kim@intel.com>,
 	qemu-devel@nongnu.org
@@ -64,15 +65,18 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Vivek Kasireddy <vivek.kasireddy@intel.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 0/3] ui/console: initialize QemuDmaBuf in ui/console
-Date: Thu, 21 Mar 2024 11:06:32 +0100
-Message-ID: <20240321100635.64950-1-philmd@linaro.org>
+Subject: [PATCH v3 1/3] ui/console: Introduce dpy_gl_dmabuf_get_height/width()
+ helpers
+Date: Thu, 21 Mar 2024 11:06:33 +0100
+Message-ID: <20240321100635.64950-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240321100635.64950-1-philmd@linaro.org>
+References: <20240321100635.64950-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x230.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,30 +99,127 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Respin of Dongwon v2 split as bisectable changes.
-Unfortunately last patch breaks vhost_user_gpu_handle_display.
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-Should dbus_scanout_texture() use dpy_gl_create_dmabuf()?
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+Message-Id: <20240320034229.3347130-1-dongwon.kim@intel.com>
+[PMD: Split patch in 3, part 1/3]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/ui/console.h            |  2 ++
+ hw/display/virtio-gpu-udmabuf.c |  8 +++++---
+ hw/vfio/display.c               |  9 ++++++---
+ ui/console.c                    | 18 ++++++++++++++++++
+ 4 files changed, 31 insertions(+), 6 deletions(-)
 
-Dongwon, you can use it as a base for a v4.
-
-Regards,
-
-Phil.
-
-Dongwon Kim (3):
-  ui/console: Introduce dpy_gl_dmabuf_get_height/width() helpers
-  ui/console: Introduce dpy_gl_dmabuf_get_fd() helper
-  ui/console: Introduce dpy_gl_create_dmabuf() helper
-
- include/hw/vfio/vfio-common.h   |  2 +-
- include/hw/virtio/virtio-gpu.h  |  2 +-
- include/ui/console.h            | 10 ++++++
- hw/display/virtio-gpu-udmabuf.c | 27 +++++++---------
- hw/vfio/display.c               | 35 ++++++++++++---------
- ui/console.c                    | 55 +++++++++++++++++++++++++++++++++
- 6 files changed, 98 insertions(+), 33 deletions(-)
-
+diff --git a/include/ui/console.h b/include/ui/console.h
+index a4a49ffc64..a7f6cef26d 100644
+--- a/include/ui/console.h
++++ b/include/ui/console.h
+@@ -358,6 +358,8 @@ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
+                           bool have_hot, uint32_t hot_x, uint32_t hot_y);
+ void dpy_gl_cursor_position(QemuConsole *con,
+                             uint32_t pos_x, uint32_t pos_y);
++uint32_t dpy_gl_dmabuf_get_width(QemuDmaBuf *dmabuf);
++uint32_t dpy_gl_dmabuf_get_height(QemuDmaBuf *dmabuf);
+ void dpy_gl_release_dmabuf(QemuConsole *con,
+                            QemuDmaBuf *dmabuf);
+ void dpy_gl_update(QemuConsole *con,
+diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
+index d51184d658..d680e871c1 100644
+--- a/hw/display/virtio-gpu-udmabuf.c
++++ b/hw/display/virtio-gpu-udmabuf.c
+@@ -206,20 +206,22 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
+ {
+     struct virtio_gpu_scanout *scanout = &g->parent_obj.scanout[scanout_id];
+     VGPUDMABuf *new_primary, *old_primary = NULL;
++    uint32_t width, height;
+ 
+     new_primary = virtio_gpu_create_dmabuf(g, scanout_id, res, fb, r);
+     if (!new_primary) {
+         return -EINVAL;
+     }
+ 
++    width = dpy_gl_dmabuf_get_width(&new_primary->buf);
++    height = dpy_gl_dmabuf_get_height(&new_primary->buf);
++
+     if (g->dmabuf.primary[scanout_id]) {
+         old_primary = g->dmabuf.primary[scanout_id];
+     }
+ 
+     g->dmabuf.primary[scanout_id] = new_primary;
+-    qemu_console_resize(scanout->con,
+-                        new_primary->buf.width,
+-                        new_primary->buf.height);
++    qemu_console_resize(scanout->con, width, height);
+     dpy_gl_scanout_dmabuf(scanout->con, &new_primary->buf);
+ 
+     if (old_primary) {
+diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+index 1aa440c663..c962e5f88f 100644
+--- a/hw/vfio/display.c
++++ b/hw/vfio/display.c
+@@ -286,6 +286,7 @@ static void vfio_display_dmabuf_update(void *opaque)
+     VFIOPCIDevice *vdev = opaque;
+     VFIODisplay *dpy = vdev->dpy;
+     VFIODMABuf *primary, *cursor;
++    uint32_t width, height;
+     bool free_bufs = false, new_cursor = false;
+ 
+     primary = vfio_display_get_dmabuf(vdev, DRM_PLANE_TYPE_PRIMARY);
+@@ -296,10 +297,12 @@ static void vfio_display_dmabuf_update(void *opaque)
+         return;
+     }
+ 
++    width = dpy_gl_dmabuf_get_width(&primary->buf);
++    height = dpy_gl_dmabuf_get_height(&primary->buf);
++
+     if (dpy->dmabuf.primary != primary) {
+         dpy->dmabuf.primary = primary;
+-        qemu_console_resize(dpy->con,
+-                            primary->buf.width, primary->buf.height);
++        qemu_console_resize(dpy->con, width, height);
+         dpy_gl_scanout_dmabuf(dpy->con, &primary->buf);
+         free_bufs = true;
+     }
+@@ -328,7 +331,7 @@ static void vfio_display_dmabuf_update(void *opaque)
+         cursor->pos_updates = 0;
+     }
+ 
+-    dpy_gl_update(dpy->con, 0, 0, primary->buf.width, primary->buf.height);
++    dpy_gl_update(dpy->con, 0, 0, width, height);
+ 
+     if (free_bufs) {
+         vfio_display_free_dmabufs(vdev);
+diff --git a/ui/console.c b/ui/console.c
+index 832055675c..edabad64c0 100644
+--- a/ui/console.c
++++ b/ui/console.c
+@@ -1190,6 +1190,24 @@ void dpy_gl_cursor_position(QemuConsole *con,
+     }
+ }
+ 
++uint32_t dpy_gl_dmabuf_get_width(QemuDmaBuf *dmabuf)
++{
++    if (dmabuf) {
++        return dmabuf->width;
++    }
++
++    return 0;
++}
++
++uint32_t dpy_gl_dmabuf_get_height(QemuDmaBuf *dmabuf)
++{
++    if (dmabuf) {
++        return dmabuf->height;
++    }
++
++    return 0;
++}
++
+ void dpy_gl_release_dmabuf(QemuConsole *con,
+                           QemuDmaBuf *dmabuf)
+ {
 -- 
 2.41.0
 
