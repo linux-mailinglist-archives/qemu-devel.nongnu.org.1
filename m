@@ -2,93 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B01E2885CA2
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45652885CCE
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:59:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnKi1-0003Ln-0T; Thu, 21 Mar 2024 11:52:01 -0400
+	id 1rnKnb-0002hV-Th; Thu, 21 Mar 2024 11:57:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKhX-0001ep-Vf
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:51:32 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnKhT-0002GQ-LJ
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 11:51:30 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a468226e135so139422066b.0
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 08:51:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711036278; x=1711641078; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rEjVeypd0HsLhHx5I6xlQvUNDrlh1OFz+E3SoDVtuhE=;
- b=NmZkXEncfPpTqDjB2tOcVtpg183Dh5+IAGmXqzPJg1fXEqkzsEc19g/aJFF36sx1lR
- nJny4steUB+wcYfYpsxsVLDqvIyj1aOVKyOZpjR0YsrTiOE4qWG6i8iaxSJsomEPxeO+
- 12ogRM9UEmFn5VhhqaSBIpbIy5W/dBd1xWVQmGCZj9EbafNU23k5LBVFgmH46J56+FD2
- dbcRueyceq82Zgv0XwEV+wjZuO8yXSgVlhLwMCs3xEu5jHw5CyGOabHZDTWPFhdrsrd5
- +u1UhjghO3fzs4uw4lgoq/iNSd2WiOdosL6ofMGb+crq39iDnSBtgOLX+JljMT9VL39p
- JWJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711036278; x=1711641078;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rEjVeypd0HsLhHx5I6xlQvUNDrlh1OFz+E3SoDVtuhE=;
- b=IvnyXmHpFoHrCgfPeftfVAZRkh8cgpmdUsIfJjNBt+P3LEQeMd2+O3iV8g86i5Qg/W
- 9qk/tcrXz0jzwOjMqEHnuy5x0fK85zaeZ7Z16uSx7ISvGjre6/Zphq6SC7pISrbrjctq
- sUC4SMKFWOWG0qozvbyLj1QrQbD3VCTcjBHl9fVnEiRCyWbVDSkBR53VkYyGkOyLNQIN
- of5N4nFyexlzDILeepBOrqKv3roW1HzV9QHEcPO8m42JKTxPCcaevmfiAYVLd/yJ//Q8
- 2PLtA1yme+ynmheBqIVflmEeHKgAoc5yD2CAGLiV7Jnl5SvWDptFDTDW+RFwhF14nsCZ
- 6YNw==
-X-Gm-Message-State: AOJu0Yx5ARsJCGrKqk8dcEo+0GD/1Xgg7LXKjJTvYAQeLu8Cv2+8h4WI
- H4cvRepCHAJw5iHPnvuA6WmZ+7/Oi+USzdmksRDvvRiWYpMT7GVdlGK7v0nfFSyXRey81za9zPZ
- drYY=
-X-Google-Smtp-Source: AGHT+IH+u8dh6Dd3IoTEkLrunbmBXAcoyeNE0+4XZ8t2uEGI/1Fk6JyfZva3OYGVZRcd8mLZe7oLuQ==
-X-Received: by 2002:a17:906:2dd1:b0:a46:ddba:56ee with SMTP id
- h17-20020a1709062dd100b00a46ddba56eemr6252093eji.4.1711036277914; 
- Thu, 21 Mar 2024 08:51:17 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.206.222])
- by smtp.gmail.com with ESMTPSA id
- la8-20020a170906ad8800b00a46e92e583bsm48071ejb.149.2024.03.21.08.51.15
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 21 Mar 2024 08:51:17 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rnKnW-0002el-LZ; Thu, 21 Mar 2024 11:57:42 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rnKnO-0003yw-Ej; Thu, 21 Mar 2024 11:57:37 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42LCmPmV021726; Thu, 21 Mar 2024 15:57:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=eDsizIPGYiy966xPXRlaRZRemBx6U1D6B6FItJHc13w=;
+ b=OUXw4QXJmEZjG08HNVBEGtUfrL+oElR/Nvouu/3H0yLeH+ZtdbIno4FhvVrO104jj0Ix
+ e+1XZlW5K0rZMHTWR7HXPvqgTml7Yr/5oZXxqy4u3cAeLsyc6v5ZY29XGuCQkGWWwdM2
+ jUxgqt7RSgOvtxfIkC19PLQirgGuc/wW7FFev4YtDFNeamyimG4OalkFoA3hId/lkHQv
+ /pGmFDdaCwwQltq8AZIniim8vpMATNlssmHpE7EjrzBiGkEIubMLjw8Rhn/ojqZ9bkzF
+ PJKeyCAfi2pFnMeMiGXqptVtepWWKRV4BWQufzQGAxZFeRk2MNVlT3JKNEm1lssNuhaQ aQ== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ww3fctxav-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Mar 2024 15:57:21 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 42LFmIIR006145; Thu, 21 Mar 2024 15:57:21 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3ww1v9q1pw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 21 Mar 2024 15:57:20 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42LFsWZG005094;
+ Thu, 21 Mar 2024 15:57:20 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-211-118.vpn.oracle.com
+ [10.39.211.118])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3ww1v9q1p9-1; Thu, 21 Mar 2024 15:57:20 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>, Chris Wulff <crwulff@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Marek Vasut <marex@denx.de>, Max Filippov <jcmvbkbc@gmail.com>,
- "Dr . David Alan Gilbert" <dave@treblig.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Nicholas Piggin <npiggin@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, qemu-ppc@nongnu.org,
- Laurent Vivier <laurent@vivier.eu>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 21/21] target/xtensa: Replace qemu_printf() by
- monitor_printf() in monitor
-Date: Thu, 21 Mar 2024 16:48:37 +0100
-Message-ID: <20240321154838.95771-22-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240321154838.95771-1-philmd@linaro.org>
-References: <20240321154838.95771-1-philmd@linaro.org>
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [RFC 0/8] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Thu, 21 Mar 2024 11:57:09 -0400
+Message-Id: <20240321155717.1392787-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-21_10,2024-03-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ mlxlogscore=779
+ phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403140000 definitions=main-2403210115
+X-Proofpoint-GUID: Ktwzq-xo3oJtWjDUhIukWYhmu8EO91D8
+X-Proofpoint-ORIG-GUID: Ktwzq-xo3oJtWjDUhIukWYhmu8EO91D8
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,222 +97,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace qemu_printf() by monitor_printf() / monitor_puts() in monitor.
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/xtensa/mmu.h     |   2 +-
- target/xtensa/monitor.c | 117 ++++++++++++++++++++--------------------
- 2 files changed, 61 insertions(+), 58 deletions(-)
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-diff --git a/target/xtensa/mmu.h b/target/xtensa/mmu.h
-index 3e1d2c03ea..ef7504e16e 100644
---- a/target/xtensa/mmu.h
-+++ b/target/xtensa/mmu.h
-@@ -90,6 +90,6 @@ int xtensa_get_physical_addr(CPUXtensaState *env, bool update_tlb,
-                              unsigned *access);
- 
- void xtensa_reset_mmu(CPUXtensaState *env);
--void xtensa_dump_mmu(CPUXtensaState *env);
-+void xtensa_dump_mmu(Monitor *mon, CPUXtensaState *env);
- 
- #endif
-diff --git a/target/xtensa/monitor.c b/target/xtensa/monitor.c
-index 9ba068d624..1c3dc85ea1 100644
---- a/target/xtensa/monitor.c
-+++ b/target/xtensa/monitor.c
-@@ -22,7 +22,6 @@
-  * THE SOFTWARE.
-  */
- #include "qemu/osdep.h"
--#include "qemu/qemu-print.h"
- #include "qemu/units.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp-target.h"
-@@ -31,7 +30,7 @@
- #include "mmu.h"
- 
- 
--static void dump_tlb(CPUXtensaState *env, bool dtlb)
-+static void dump_tlb(Monitor *mon, CPUXtensaState *env, bool dtlb)
- {
-     unsigned wi, ei;
-     const xtensa_tlb *conf =
-@@ -40,7 +39,7 @@ static void dump_tlb(CPUXtensaState *env, bool dtlb)
-         xtensa_option_enabled(env->config, XTENSA_OPTION_MMU) ?
-         mmu_attr_to_access : region_attr_to_access;
- 
--    qemu_printf("%s:\n", dtlb ? "DTLB" : "IBLB");
-+    monitor_puts(mon, dtlb ? "DTLB\n" : "IBLB\n");
-     for (wi = 0; wi < conf->nways; ++wi) {
-         uint32_t sz = ~xtensa_tlb_get_addr_mask(env, dtlb, wi) + 1;
-         const char *sz_text;
-@@ -71,35 +70,39 @@ static void dump_tlb(CPUXtensaState *env, bool dtlb)
- 
-                 if (print_header) {
-                     print_header = false;
--                    qemu_printf("Way %u (%d %s)\n", wi, sz, sz_text);
--                    qemu_printf("\tVaddr       Paddr       ASID  Attr RWX Cache\n"
--                                "\t----------  ----------  ----  ---- --- -------\n");
-+                    monitor_printf(mon,
-+                                   "Way %u (%d %s)\n", wi, sz, sz_text);
-+                    monitor_puts(mon,
-+                                 "\tVaddr       Paddr       ASID  Attr RWX Cache\n"
-+                                 "\t----------  ----------  ----  ---- --- -------\n");
-                 }
--                qemu_printf("\t0x%08x  0x%08x  0x%02x  0x%02x %c%c%c %s\n",
--                            entry->vaddr,
--                            entry->paddr,
--                            entry->asid,
--                            entry->attr,
--                            (access & PAGE_READ) ? 'R' : '-',
--                            (access & PAGE_WRITE) ? 'W' : '-',
--                            (access & PAGE_EXEC) ? 'X' : '-',
--                            cache_text[cache_idx] ?
--                            cache_text[cache_idx] : "Invalid");
-+                monitor_printf(mon,
-+                               "\t0x%08x  0x%08x  0x%02x  0x%02x %c%c%c %s\n",
-+                               entry->vaddr,
-+                               entry->paddr,
-+                               entry->asid,
-+                               entry->attr,
-+                               (access & PAGE_READ) ? 'R' : '-',
-+                               (access & PAGE_WRITE) ? 'W' : '-',
-+                               (access & PAGE_EXEC) ? 'X' : '-',
-+                               cache_text[cache_idx] ?
-+                               cache_text[cache_idx] : "Invalid");
-             }
-         }
-     }
- }
- 
--static void dump_mpu(CPUXtensaState *env, const char *map_desc,
-+static void dump_mpu(Monitor *mon, CPUXtensaState *env, const char *map_desc,
-                      const xtensa_mpu_entry *entry, unsigned n)
- {
-     unsigned i;
- 
--    qemu_printf("%s map:\n", map_desc);
--    qemu_printf("\t%s  Vaddr       Attr        Ring0  Ring1  System Type    CPU cache\n"
--                "\t%s  ----------  ----------  -----  -----  -------------  ---------\n",
--                env ? "En" : "  ",
--                env ? "--" : "  ");
-+    monitor_printf(mon, "%s map:\n", map_desc);
-+    monitor_printf(mon,
-+                   "\t%s  Vaddr       Attr        Ring0  Ring1  System Type    CPU cache\n"
-+                   "\t%s  ----------  ----------  -----  -----  -------------  ---------\n",
-+                   env ? "En" : "  ",
-+                   env ? "--" : "  ");
- 
-     for (i = 0; i < n; ++i) {
-         uint32_t attr = entry[i].attr;
-@@ -108,64 +111,64 @@ static void dump_mpu(CPUXtensaState *env, const char *map_desc,
-         unsigned type = mpu_attr_to_type(attr);
-         char cpu_cache = (type & XTENSA_MPU_TYPE_CPU_CACHE) ? '-' : ' ';
- 
--        qemu_printf("\t %c  0x%08x  0x%08x   %c%c%c    %c%c%c   ",
--                    env ?
--                    ((env->sregs[MPUENB] & (1u << i)) ? '+' : '-') : ' ',
--                    entry[i].vaddr, attr,
--                    (access0 & PAGE_READ) ? 'R' : '-',
--                    (access0 & PAGE_WRITE) ? 'W' : '-',
--                    (access0 & PAGE_EXEC) ? 'X' : '-',
--                    (access1 & PAGE_READ) ? 'R' : '-',
--                    (access1 & PAGE_WRITE) ? 'W' : '-',
--                    (access1 & PAGE_EXEC) ? 'X' : '-');
-+        monitor_printf(mon, "\t %c  0x%08x  0x%08x   %c%c%c    %c%c%c   ",
-+                       env ?
-+                       ((env->sregs[MPUENB] & (1u << i)) ? '+' : '-') : ' ',
-+                       entry[i].vaddr, attr,
-+                       (access0 & PAGE_READ) ? 'R' : '-',
-+                       (access0 & PAGE_WRITE) ? 'W' : '-',
-+                       (access0 & PAGE_EXEC) ? 'X' : '-',
-+                       (access1 & PAGE_READ) ? 'R' : '-',
-+                       (access1 & PAGE_WRITE) ? 'W' : '-',
-+                       (access1 & PAGE_EXEC) ? 'X' : '-');
- 
-         switch (type & XTENSA_MPU_SYSTEM_TYPE_MASK) {
-         case XTENSA_MPU_SYSTEM_TYPE_DEVICE:
--            qemu_printf("Device %cB %3s\n",
--                        (type & XTENSA_MPU_TYPE_B) ? ' ' : 'n',
--                        (type & XTENSA_MPU_TYPE_INT) ? "int" : "");
-+            monitor_printf(mon, "Device %cB %3s\n",
-+                           (type & XTENSA_MPU_TYPE_B) ? ' ' : 'n',
-+                           (type & XTENSA_MPU_TYPE_INT) ? "int" : "");
-             break;
-         case XTENSA_MPU_SYSTEM_TYPE_NC:
--            qemu_printf("Sys NC %cB      %c%c%c\n",
--                        (type & XTENSA_MPU_TYPE_B) ? ' ' : 'n',
--                        (type & XTENSA_MPU_TYPE_CPU_R) ? 'r' : cpu_cache,
--                        (type & XTENSA_MPU_TYPE_CPU_W) ? 'w' : cpu_cache,
--                        (type & XTENSA_MPU_TYPE_CPU_C) ? 'c' : cpu_cache);
-+            monitor_printf(mon, "Sys NC %cB      %c%c%c\n",
-+                           (type & XTENSA_MPU_TYPE_B) ? ' ' : 'n',
-+                           (type & XTENSA_MPU_TYPE_CPU_R) ? 'r' : cpu_cache,
-+                           (type & XTENSA_MPU_TYPE_CPU_W) ? 'w' : cpu_cache,
-+                           (type & XTENSA_MPU_TYPE_CPU_C) ? 'c' : cpu_cache);
-             break;
-         case XTENSA_MPU_SYSTEM_TYPE_C:
--            qemu_printf("Sys  C %c%c%c     %c%c%c\n",
--                        (type & XTENSA_MPU_TYPE_SYS_R) ? 'R' : '-',
--                        (type & XTENSA_MPU_TYPE_SYS_W) ? 'W' : '-',
--                        (type & XTENSA_MPU_TYPE_SYS_C) ? 'C' : '-',
--                        (type & XTENSA_MPU_TYPE_CPU_R) ? 'r' : cpu_cache,
--                        (type & XTENSA_MPU_TYPE_CPU_W) ? 'w' : cpu_cache,
--                        (type & XTENSA_MPU_TYPE_CPU_C) ? 'c' : cpu_cache);
-+            monitor_printf(mon, "Sys  C %c%c%c     %c%c%c\n",
-+                           (type & XTENSA_MPU_TYPE_SYS_R) ? 'R' : '-',
-+                           (type & XTENSA_MPU_TYPE_SYS_W) ? 'W' : '-',
-+                           (type & XTENSA_MPU_TYPE_SYS_C) ? 'C' : '-',
-+                           (type & XTENSA_MPU_TYPE_CPU_R) ? 'r' : cpu_cache,
-+                           (type & XTENSA_MPU_TYPE_CPU_W) ? 'w' : cpu_cache,
-+                           (type & XTENSA_MPU_TYPE_CPU_C) ? 'c' : cpu_cache);
-             break;
-         default:
--            qemu_printf("Unknown\n");
-+            monitor_puts(mon, "Unknown\n");
-             break;
-         }
-     }
- }
- 
--void xtensa_dump_mmu(CPUXtensaState *env)
-+void xtensa_dump_mmu(Monitor *mon, CPUXtensaState *env)
- {
-     if (xtensa_option_bits_enabled(env->config,
-                 XTENSA_OPTION_BIT(XTENSA_OPTION_REGION_PROTECTION) |
-                 XTENSA_OPTION_BIT(XTENSA_OPTION_REGION_TRANSLATION) |
-                 XTENSA_OPTION_BIT(XTENSA_OPTION_MMU))) {
- 
--        dump_tlb(env, false);
--        qemu_printf("\n");
--        dump_tlb(env, true);
-+        dump_tlb(mon, env, false);
-+        monitor_puts(mon, "\n");
-+        dump_tlb(mon, env, true);
-     } else if (xtensa_option_enabled(env->config, XTENSA_OPTION_MPU)) {
--        dump_mpu(env, "Foreground",
-+        dump_mpu(mon, env, "Foreground",
-                  env->mpu_fg, env->config->n_mpu_fg_segments);
--        qemu_printf("\n");
--        dump_mpu(NULL, "Background",
-+        monitor_puts(mon, "\n");
-+        dump_mpu(mon, NULL, "Background",
-                  env->config->mpu_bg, env->config->n_mpu_bg_segments);
-     } else {
--        qemu_printf("No TLB for this CPU core\n");
-+        monitor_puts(mon, "No TLB for this CPU core\n");
-     }
- }
- 
-@@ -177,5 +180,5 @@ void hmp_info_tlb(Monitor *mon, const QDict *qdict)
-         monitor_printf(mon, "No CPU available\n");
-         return;
-     }
--    xtensa_dump_mmu(env1);
-+    xtensa_dump_mmu(mon, env1);
- }
+The core feature behind this solution is a buffer mechanism in the form
+of GLib's GHashTable. The decision behind using a hash table was to
+leverage their ability for quick lookup, insertion, and removal
+operations. Given that our keys are simply numbers of an ordered
+sequence, a hash table seemed like the best choice for a buffer
+mechanism.
+
+---------------------
+
+The strategy behind this implementation is as follows:
+
+We know that buffers that are popped from the available ring and enqueued
+for further processing will always done in the same order in which they
+were made available by the driver. Given this, we can note their order
+by assigning the resulting VirtQueueElement a key. This key is a number
+in a sequence that represents the order in which they were popped from
+the available ring, relative to the other VirtQueueElements.
+
+For example, given 3 "elements" that were popped from the available
+ring, we assign a key value to them which represents their order (elem0
+is popped first, then elem1, then lastly elem2):
+
+     elem2   --  elem1   --  elem0   ---> Enqueue for processing
+    (key: 2)    (key: 1)    (key: 0)
+
+Then these elements are enqueued for further processing by the host.
+
+While most devices will return these completed elements in the same
+order in which they were enqueued, some devices may not (e.g.
+virtio-blk). To guarantee that these elements are put on the used ring
+in the same order in which they were enqueued, we can use a buffering
+mechanism that keeps track of the next expected sequence number of an
+element.
+
+In other words, if the completed element does not have a key value that
+matches the next expected sequence number, then we know this element is
+not in-order and we must stash it away in a hash table until an order
+can be made. The element's key value is used as the key for placing it
+in the hash table.
+
+If the completed element has a key value that matches the next expected
+sequence number, then we know this element is in-order and we can push
+it on the used ring. Then we increment the next expected sequence number
+and check if the hash table contains an element at this key location.
+
+If so, we retrieve this element, push it to the used ring, delete the
+key-value pair from the hash table, increment the next expected sequence
+number, and check the hash table again for an element at this new key
+location. This process is repeated until we're unable to find an element
+in the hash table to continue the order.
+
+So, for example, say the 3 elements we enqueued were completed in the
+following order: elem1, elem2, elem0. The next expected sequence number
+is 0:
+
+    exp-seq-num = 0:
+
+     elem1   --> elem1.key == exp-seq-num ? --> No, stash it
+    (key: 1)                                         |
+                                                     |
+                                                     v
+                                               ================
+                                               |key: 1 - elem1|
+                                               ================
+    ---------------------
+    exp-seq-num = 0:
+
+     elem2   --> elem2.key == exp-seq-num ? --> No, stash it
+    (key: 2)                                         |
+                                                     |
+                                                     v
+                                               ================
+                                               |key: 1 - elem1|
+                                               |--------------|
+                                               |key: 2 - elem2|
+                                               ================
+    ---------------------
+    exp-seq-num = 0:
+
+     elem0   --> elem0.key == exp-seq-num ? --> Yes, push to used ring
+    (key: 0)
+
+    exp-seq-num = 1:
+
+    lookup(table, exp-seq-num) != NULL ? --> Yes, push to used ring,
+                                             remove elem from table
+                                                     |
+                                                     v
+                                               ================
+                                               |key: 2 - elem2|
+                                               ================
+
+    exp-seq-num = 2:
+
+    lookup(table, exp-seq-num) != NULL ? --> Yes, push to used ring,
+                                             remove elem from table
+                                                     |
+                                                     v
+                                               ================
+                                               |   *empty*    |
+                                               ================
+
+    exp-seq-num = 3:
+
+    lookup(table, exp-seq-num) != NULL ? --> No, done
+    ---------------------
+
+Jonah Palmer (8):
+  virtio: Define InOrderVQElement
+  virtio: Create/destroy/reset VirtQueue In-Order hash table
+  virtio: Define order variables
+  virtio: Implement in-order handling for virtio devices
+  virtio-net: in-order handling
+  vhost-svq: in-order handling
+  vhost/vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c          |   1 +
+ hw/net/vhost_net.c                 |   2 +
+ hw/net/virtio-net.c                |   6 +-
+ hw/scsi/vhost-scsi.c               |   1 +
+ hw/scsi/vhost-user-scsi.c          |   1 +
+ hw/virtio/vhost-shadow-virtqueue.c |  15 ++++-
+ hw/virtio/vhost-user-fs.c          |   1 +
+ hw/virtio/vhost-user-vsock.c       |   1 +
+ hw/virtio/virtio.c                 | 103 ++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio.h         |  20 +++++-
+ net/vhost-vdpa.c                   |   1 +
+ 11 files changed, 145 insertions(+), 7 deletions(-)
+
 -- 
-2.41.0
+2.39.3
 
 
