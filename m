@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626D5885CC6
+	by mail.lfdr.de (Postfix) with ESMTPS id A3796885CCA
 	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 16:59:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnKnk-0002nj-2g; Thu, 21 Mar 2024 11:57:56 -0400
+	id 1rnKnr-0002p4-JM; Thu, 21 Mar 2024 11:58:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rnKnY-0002fE-IC; Thu, 21 Mar 2024 11:57:44 -0400
+ id 1rnKna-0002gF-38; Thu, 21 Mar 2024 11:57:46 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rnKnU-00041J-40; Thu, 21 Mar 2024 11:57:43 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rnKnY-000427-LC; Thu, 21 Mar 2024 11:57:45 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42LCmR8M019819; Thu, 21 Mar 2024 15:57:28 GMT
+ 42LCmSm3021754; Thu, 21 Mar 2024 15:57:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=C5cfPqclQmEI1p44dvfQN4gtBbzXWqK+9bQ8ubInWk4=;
- b=OPs+0iROHCSP0X1cccabf+8b8OCrlQ1Iti8XrqBvRRi7sE18lak4Hi0Mv1hr08UQXAWM
- XdTw0+QhiVMUPIRparAgfNl4YW36QMwQOJtPCFC9o768KXVwIx8aZrdvLJ2bY1zPeoyg
- zRcQ5MCXFTJC+Yu4qnYPifRv+RpttnHTxfpSdV4WhmyuMpdg3hwjb9Z3bAs96bPHIb0k
- mH3WQgmpT6jbI/PRNnXyljyUHckqXs8QDXyoT6GpLFQ/9V5dr6jC39r1/WPBfBZyQMJQ
- vV7Pb44TkfQ0ifvFOew6fQEGpI551ST5p2kZVFT19b/GKnv3Q08t1eCTVAuDpnbEg+QR 5Q== 
+ bh=IHYGVRbf5620/FdghnuWWk7JhfS+SmHB1NqgpMb+lps=;
+ b=Y01s6mKx/lizXSnMnRQZxTS4LDItAnY4/b0YtmH57xYWnwD/eN4AGXeYgfIjSZywIDNi
+ DNXFSCcmUX2OwkbeqXEAGyIdtgqoX0Cwns/wedMrgWXtZZhWetR2h+tBFV+KEk6JZpHq
+ +AoeGrpdENAvr/el0HgnyMuKME/iOn9IAwrjZDdXpwqAiQ7DzCtc0oiNJqypZzbWCBEh
+ +sl1E/TGt/cwAROhB1UkkAnrGO8zmyfbaf0DCi4VOJ+0yPMh07CeQWuZIF/jg/TTsJZp
+ uxfP0xAUR9PDpuhwTnBJ4lkP7JNB/amG2jQVz736ExyK67MBrfondkY0iN8GDebV8BL2 8g== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ww1udjrbw-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ww3fctxb9-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Mar 2024 15:57:28 +0000
+ Thu, 21 Mar 2024 15:57:29 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42LF8fiV006144; Thu, 21 Mar 2024 15:57:27 GMT
+ with ESMTP id 42LFGOHK005979; Thu, 21 Mar 2024 15:57:28 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3ww1v9q1ss-1
+ 3ww1v9q1tb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 21 Mar 2024 15:57:27 +0000
+ Thu, 21 Mar 2024 15:57:28 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42LFsWZQ005094;
- Thu, 21 Mar 2024 15:57:27 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42LFsWZS005094;
+ Thu, 21 Mar 2024 15:57:28 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-39-211-118.vpn.oracle.com
  [10.39.211.118])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3ww1v9q1p9-6; Thu, 21 Mar 2024 15:57:27 +0000
+ 3ww1v9q1p9-7; Thu, 21 Mar 2024 15:57:27 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
@@ -58,9 +58,9 @@ Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
  eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
  schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [RFC 5/8] virtio-net: in-order handling
-Date: Thu, 21 Mar 2024 11:57:14 -0400
-Message-Id: <20240321155717.1392787-6-jonah.palmer@oracle.com>
+Subject: [RFC 6/8] vhost-svq: in-order handling
+Date: Thu, 21 Mar 2024 11:57:15 -0400
+Message-Id: <20240321155717.1392787-7-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240321155717.1392787-1-jonah.palmer@oracle.com>
 References: <20240321155717.1392787-1-jonah.palmer@oracle.com>
@@ -74,8 +74,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
  phishscore=0 malwarescore=0 mlxscore=0 spamscore=0 adultscore=0
  suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2403140000 definitions=main-2403210115
-X-Proofpoint-GUID: _kPmQFJpMWiUWmn-sbvlklxr5k2dQPtH
-X-Proofpoint-ORIG-GUID: _kPmQFJpMWiUWmn-sbvlklxr5k2dQPtH
+X-Proofpoint-GUID: dWWzOBLhPjmtjmgecPifP6m095WJBN4S
+X-Proofpoint-ORIG-GUID: dWWzOBLhPjmtjmgecPifP6m095WJBN4S
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -100,40 +100,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implements in-order handling for the virtio-net device.
+Implements in-order handling for vhost devices using shadow virtqueues.
 
-Since virtio-net utilizes batching for its Rx VirtQueue, the device is
-responsible for calling virtqueue_flush once it has completed its
-batching operation.
+Since vhost's shadow virtqueues utilize batching in their
+vhost_svq_flush calls, the vhost device is responsible for calling
+virtqueue_flush once it has completed its batching operation.
 
 Note:
 -----
 It's unclear if this implementation is really necessary to "guarantee"
-that used VirtQueueElements are put on the used ring in-order since, by
-design, virtio-net already does this with its Rx VirtQueue.
+in-order handling since, by design, the vhost_svq_flush function puts
+used VirtQueueElements in-order already.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/net/virtio-net.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ hw/virtio/vhost-shadow-virtqueue.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9959f1932b..b0375f7e5e 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2069,7 +2069,11 @@ static ssize_t virtio_net_receive_rcu(NetClientState *nc, const uint8_t *buf,
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index fc5f408f77..3c42adee87 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -493,11 +493,20 @@ static void vhost_svq_flush(VhostShadowVirtqueue *svq,
+                 qemu_log_mask(LOG_GUEST_ERROR,
+                          "More than %u used buffers obtained in a %u size SVQ",
+                          i, svq->vring.num);
+-                virtqueue_fill(vq, elem, len, i);
+-                virtqueue_flush(vq, i);
++                if (virtio_vdev_has_feature(svq->vdev, VIRTIO_F_IN_ORDER)) {
++                    virtqueue_order_element(vq, elem, len, i, i);
++                } else {
++                    virtqueue_fill(vq, elem, len, i);
++                    virtqueue_flush(vq, i);
++                }
+                 return;
+             }
+-            virtqueue_fill(vq, elem, len, i++);
++
++            if (virtio_vdev_has_feature(svq->vdev, VIRTIO_F_IN_ORDER)) {
++                virtqueue_order_element(vq, elem, len, i++, 0);
++            } else {
++                virtqueue_fill(vq, elem, len, i++);
++            }
+         }
  
-     for (j = 0; j < i; j++) {
-         /* signal other side */
--        virtqueue_fill(q->rx_vq, elems[j], lens[j], j);
-+        if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-+            virtqueue_order_element(q->rx_vq, elems[j], lens[j], j, 0);
-+        } else {
-+            virtqueue_fill(q->rx_vq, elems[j], lens[j], j);
-+        }
-         g_free(elems[j]);
-     }
- 
+         virtqueue_flush(vq, i);
 -- 
 2.39.3
 
