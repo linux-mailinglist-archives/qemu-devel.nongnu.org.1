@@ -2,84 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248508862BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 22:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B74D088640A
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 00:45:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnQJB-000888-G6; Thu, 21 Mar 2024 17:50:45 -0400
+	id 1rnS59-0007NV-06; Thu, 21 Mar 2024 19:44:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnQJA-00087j-7p
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 17:50:44 -0400
-Received: from mail-ot1-x336.google.com ([2607:f8b0:4864:20::336])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnQJ8-0005rh-OH
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 17:50:43 -0400
-Received: by mail-ot1-x336.google.com with SMTP id
- 46e09a7af769-6e6ad82cf17so806596a34.3
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 14:50:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711057841; x=1711662641; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RQiwwpF4GBt4EuIrXVlpsYZPnPQQiUvhcbbqjSqKpMM=;
- b=e4BwZxiNHWhrmj7dorcgi9xzpX+2dCXidzzz58rJEZjyAiv4o+lHlNOzcvW9OiYCyv
- Z2U9mM2grIDjeZi+Xu8VKTRzipnyT/e0jEKkiKie+SX0Rb6IVsUcbQFRIXnuH0HTnj0t
- 8xxF6gPlQFP393JFIfVL2UUuTJ0gmebmIF+n7O8iPMdQfq7WgbNX8jMlO3n4WXv7j3nY
- +0HrcWfrijme7XoPbWD9GwNBuauVxWbqgv3W/5OxmUXz/yaoU15eFnjmwH1OdzoU/DJr
- n2D56bBOycXfbOHhEBwXxdBl13s2Fq5dgKB+8v53cl0Rr3vcv0IP4TdRHc/4hRajramu
- 6PuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711057841; x=1711662641;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RQiwwpF4GBt4EuIrXVlpsYZPnPQQiUvhcbbqjSqKpMM=;
- b=tmo8ohiRCVuoYw79UHMxG7lnXC2NrLBZsgNnO3tIjupfFhh7WvMrSbUs+uShlzvR8w
- s4VKKoGc6pEjbtK1MAOgxJnxrecXA6Ty4qxtqx0tZ+A1ciMx0BdKrdqhLQ3MTw1G8+H4
- dcQUP3I4Nfd7U29rh0UpsKj3JN1enwlSCQF/BxPKjI4YF+3fNGpWgddn99zkRNy14bzf
- LHzK3OVeZkg5qNsBHGFbSHmGfJNQ6BC2FRznln1f3es67yCbdvnZVitTRyfXYjiVTwAP
- NsZtl6Z9dZvi9aX8O08tmXN9AggHYxbxViC6zt3ZigGcGc/efOT13J9CfOFeOr/LwUdH
- cp7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUpJ1F2lfNUbp9vAm30653oxV3veec0DUn6q+F2r66KPHXSKowi4aevUzDVXD5sNYk6O742nevzBXLPuEYei0euDyh11iU=
-X-Gm-Message-State: AOJu0YwVJu0aVwKEXsmMWBXWd1yMvi22vX76tu/7ldwM2ef4y03uiK/d
- kXwcTuS1TpSfMSAJpJRjrVhuI6Dy1G/t51iaU0M58Hg7H8cJXOAL90rf2zQ2zsw=
-X-Google-Smtp-Source: AGHT+IFsAqwBygwZoYu6fkqG9jUkoCvb+lmlkXonEMfVelcqGWG1rgO4UrOUws7b0CYqk2SqAy176A==
-X-Received: by 2002:a05:6871:4099:b0:220:bd1c:6d48 with SMTP id
- kz25-20020a056871409900b00220bd1c6d48mr508794oab.49.1711057841589; 
- Thu, 21 Mar 2024 14:50:41 -0700 (PDT)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- g3-20020aa79f03000000b006e6b7a88e64sm314923pfr.73.2024.03.21.14.50.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Mar 2024 14:50:41 -0700 (PDT)
-Message-ID: <ae88e204-1a05-4dea-9b3d-0d32366923b1@linaro.org>
-Date: Thu, 21 Mar 2024 11:50:39 -1000
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rnS55-0007Ms-V8
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 19:44:20 -0400
+Received: from mgamail.intel.com ([198.175.65.16])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rnS53-0007iR-9E
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 19:44:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711064658; x=1742600658;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=o5eeZ5PjQ4guq5ek1JNXl3LG73Va+haATfQ26hcn+UE=;
+ b=OJAg3h0J4Yo6mRkGbQAVS9OQq92Z1JDmTZUYdn01U0+dUCLseQ87YRk5
+ qDemPkqVWoLUjG33OmUaGY85ZrzUmi0IK/gCz255rxEUe8ONJgC8q5QuW
+ t9o1Y6sps9CCFqJpr70fYHXjm/8CHQJrnBj7KPXqqyjt4iYT6rg5B4ga/
+ DHwAOGVgO0bHgxBpVjQ2j6s8RXxRtc8KiAws4lT6b/2AyohUw6Z9Ewun6
+ A3fVBPoMqDydmCuv4pJdOyF+Vdvlwv6DG9fAtrgQtwl4lMcrFLUlbM9ME
+ JpkmgB3eW+h7hT2yRRnmB0/RwJuZXM4RcthqmULrIjoqGUcMRSHCG6T4x w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11020"; a="6217222"
+X-IronPort-AV: E=Sophos;i="6.07,144,1708416000"; 
+   d="scan'208";a="6217222"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2024 16:44:14 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,144,1708416000"; d="scan'208";a="14743273"
+Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
+ by fmviesa006.fm.intel.com with ESMTP; 21 Mar 2024 16:44:13 -0700
+From: dongwon.kim@intel.com
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org,
+	marcandre.lureau@redhat.com
+Subject: [PATCH v4 0/3] ui/console: Introduce helpers for creating and
+Date: Thu, 21 Mar 2024 16:42:33 -0700
+Message-Id: <20240321234236.3476163-1-dongwon.kim@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1 07/21] target/m68k: Move MMU monitor commands from
- helper.c to monitor.c
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-References: <20240321154838.95771-1-philmd@linaro.org>
- <20240321154838.95771-8-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240321154838.95771-8-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::336;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Received-SPF: pass client-ip=198.175.65.16; envelope-from=dongwon.kim@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.372,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -97,17 +74,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/21/24 05:48, Philippe Mathieu-Daudé wrote:
-> Keep all HMP commands in monitor.c.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
-> ---
->   target/m68k/cpu.h     |   3 +-
->   target/m68k/helper.c  | 222 -----------------------------------------
->   target/m68k/monitor.c | 223 +++++++++++++++++++++++++++++++++++++++++-
->   3 files changed, 223 insertions(+), 225 deletions(-)
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+QemuDmaBuf struct is defined and primarily used by ui/console/gl so it is
+better to handle its creation, initialization and access within ui/console
+rather than within hw modules such as hw/display/virtio-gpu,
+hw/display/vhost-user-gpu and hw/vfio as well as ui/dbus-listener.
 
-r~
+v4: refactored patches in the previous series
+    
+    made ui/dbus-listener and hw/display/vhost-user-gpu to use the new
+    helpers
+
+Dongwon Kim (3):
+  ui/console: Introduce dpy_gl_dmabuf_get_height/width() helpers
+  ui/console: Introduce dpy_gl_dmabuf_get_fd() helper
+  ui/console: Introduce dpy_gl_create_dmabuf() helper
+
+ include/hw/vfio/vfio-common.h   |  2 +-
+ include/hw/virtio/virtio-gpu.h  |  2 +-
+ include/ui/console.h            |  9 ++++++
+ hw/display/vhost-user-gpu.c     | 12 +++----
+ hw/display/virtio-gpu-udmabuf.c | 26 ++++++----------
+ hw/vfio/display.c               | 36 +++++++++++----------
+ ui/console.c                    | 55 +++++++++++++++++++++++++++++++++
+ ui/dbus-listener.c              | 22 ++++++-------
+ 8 files changed, 109 insertions(+), 55 deletions(-)
+
+-- 
+2.34.1
+
 
