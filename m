@@ -2,56 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA096881BB8
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 04:59:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAE2881C3A
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 06:56:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rn9Zm-0000gs-EE; Wed, 20 Mar 2024 23:58:46 -0400
+	id 1rnBO7-0000Rp-9q; Thu, 21 Mar 2024 01:54:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rn9Zj-0000gK-QT; Wed, 20 Mar 2024 23:58:43 -0400
-Received: from out30-113.freemail.mail.aliyun.com ([115.124.30.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
- id 1rn9Zf-0001xm-Sn; Wed, 20 Mar 2024 23:58:43 -0400
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rnBNs-0000Qq-6q; Thu, 21 Mar 2024 01:54:38 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
+ id 1rnBNq-0003ig-Kh; Thu, 21 Mar 2024 01:54:35 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1e04ac200a6so4998385ad.1; 
+ Wed, 20 Mar 2024 22:54:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1710993506; h=From:To:Subject:Date:Message-ID:MIME-Version;
- bh=Pug4F6r1CfiMSzEkl8em54qDpzwKLGZq/dMlcjabCJA=;
- b=xS2xahhFsoFmeaDqF5guawDaa5UHu70/zbQmOnVFYENvB4ifHfOn+rZnhOyddVTD07tLl7i8O5W98Et3BmFeQ8fIVi8XV8X+yqaFGgzsGxiwIzkGNF78C0dm0ZyZdTpvfI0oThsIlTghkc1Lj/5kVZvSQC6cMexSa4hV8AbkU30=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R811e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046049;
- MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=10; SR=0;
- TI=SMTPD_---0W2zHuTn_1710993503; 
-Received: from localhost.localdomain(mailfrom:eric.huang@linux.alibaba.com
- fp:SMTPD_---0W2zHuTn_1710993503) by smtp.aliyun-inc.com;
- Thu, 21 Mar 2024 11:58:24 +0800
-From: Huang Tao <eric.huang@linux.alibaba.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
- dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
- alistair.francis@wdc.com, palmer@dabbelt.com,
- Huang Tao <eric.huang@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v2] target/riscv: Fix the element agnostic function problem
-Date: Thu, 21 Mar 2024 11:58:16 +0800
-Message-ID: <20240321035816.99983-1-eric.huang@linux.alibaba.com>
-X-Mailer: git-send-email 2.41.0
+ d=gmail.com; s=20230601; t=1711000466; x=1711605266; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=CRYxNjknx8CxsqzEeMCvnpqao4+OAfW/6TkG7xx3pL0=;
+ b=fu/xHSI1lN2w04K3JV+tLg6wfGgNyi8OxoXlC32IGdTFbkq4xuibn4DPo5SKNsqChj
+ mZPITKJVTkNW3fiBKIFdmjOu0an1WOQDeBea8rcbVsFlfJhyKMCSSSEIo5Sw5o3j2ZPX
+ hsz/8+k4esrungJ+DP2+lMKrNuiWLuT1EMAt1VNUlx760gaa47cr69C8RfngnnQKIb9D
+ vqObrmEMPrpShTfexWkuv18xLN+/9RX9Ls+Ut9xGKaZAuFDyA68tUF3/vXPUYqS9bnzj
+ guNG6SlBkFfRXnl/neDDPEDsgI6AENPny8QvlXX7Rmi1nxxgwNjelhCOp6HDJyxUEC1L
+ wJvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711000466; x=1711605266;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CRYxNjknx8CxsqzEeMCvnpqao4+OAfW/6TkG7xx3pL0=;
+ b=kZNDSGpT4aklw2M5GWCoomzEM+AhoTSYmYgyJCP11+H9MchM8Hp+E9UslpvlBuOoFy
+ gbxspYd6OL6tuUolsGyprfc10QnxQbHfqfVPvZwksUDQ3OmRan4MSdLuV6Fek1OXrcr4
+ Qb8JkB5entXg7FVefMme+iID5jAvVm0VtRSKdAFYT3OzrROnr09pO2SlgjP8CL+hY1v7
+ 74NKYZsX5hpJvW9tPsL/NQnSnS9qGdoqntBvfnoiHSqJb9zP1bP7zRDkGHfJPVZytZlh
+ ekte3TdwzM5X9y5iaeNc/ARDKDmIxRSxXL0HusKE+ArBcKu9nVquujDgdn1f8kBBMoJF
+ Eglg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVnMY2CJYGfcD/tYFPCDqu5Ps719V52KYNVV20pb7nZ3p0ryhrRNRU6B0oHzl4CsHEo1q7OXwtPv4T8dlVeU/Opc6e+fRw=
+X-Gm-Message-State: AOJu0YwYnUhW1walhFcjDCA3z2TadSZV8cVml7VauWF344NDrTCQq5j5
+ fnkOcHDhr5FSqsBY1zDFVknR/U6KPqGFuUXCqPtgIRN3aJ2+mPqTh123xe8S
+X-Google-Smtp-Source: AGHT+IF4OqeRqZOzMvADblKHNgBFcUKu7jQUCzks74MR8DAfaTA+KS7fDZpnJJJ/7dchKR3Hfd7Wzg==
+X-Received: by 2002:a17:903:32d1:b0:1e0:188c:ad4f with SMTP id
+ i17-20020a17090332d100b001e0188cad4fmr2813429plr.26.1711000466216; 
+ Wed, 20 Mar 2024 22:54:26 -0700 (PDT)
+Received: from wheely.local0.net ([1.146.27.241])
+ by smtp.gmail.com with ESMTPSA id
+ lh6-20020a170903290600b001d94678a76csm14746454plb.117.2024.03.20.22.54.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 20 Mar 2024 22:54:25 -0700 (PDT)
+From: Nicholas Piggin <npiggin@gmail.com>
+To: qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PATCH] target/ppc: Do not clear MSR[ME] on MCE interrupts to
+ supervisor
+Date: Thu, 21 Mar 2024 15:54:15 +1000
+Message-ID: <20240321055415.2441812-1-npiggin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.113;
- envelope-from=eric.huang@linux.alibaba.com;
- helo=out30-113.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=npiggin@gmail.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_SCC_BODY_TEXT_LINE=-0.01, UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+ T_SCC_BODY_TEXT_LINE=-0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,57 +91,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In RVV and vcrypto instructions, the masked and tail elements are set to 1s
-using vext_set_elems_1s function if the vma/vta bit is set. It is the element
-agnostic policy.
+Hardware clears the MSR[ME] bit when delivering a machine check
+interrupt, so that is what QEMU does.
 
-However, this function can't deal the big endian situation. This patch fixes
-the problem by adding handling of such case.
+The spapr environment runs in supervisor mode though, and receives
+machine check interrupts after they are processed by the hypervisor,
+and MSR[ME] must always be enabled in supervisor mode (otherwise it
+could checkstop the system). So MSR[ME] must not be cleared when
+delivering machine checks to the supervisor.
 
-Signed-off-by: Huang Tao <eric.huang@linux.alibaba.com>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
+The fix to prevent supervisor mode from modifying MSR[ME] also
+prevented it from re-enabling the incorrectly cleared MSR[ME] bit
+when returning from handling the interrupt. Before that fix, the
+problem was not very noticable with well-behaved code. So the
+Fixes tag is not strictly correct, but practically they go together.
+
+Found by kvm-unit-tests machine check tests (not yet upstream).
+
+Fixes: 678b6f1af75ef ("target/ppc: Prevent supervisor from modifying MSR[ME]")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
-Changes in v2:
-- Keep the api of vext_set_elems_1s
-- Reduce the number of patches.
----
- target/riscv/vector_internals.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ target/ppc/excp_helper.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/riscv/vector_internals.c b/target/riscv/vector_internals.c
-index 12f5964fbb..3e45b9b4a7 100644
---- a/target/riscv/vector_internals.c
-+++ b/target/riscv/vector_internals.c
-@@ -30,6 +30,28 @@ void vext_set_elems_1s(void *base, uint32_t is_agnostic, uint32_t cnt,
-     if (tot - cnt == 0) {
-         return ;
-     }
+diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+index 80f584f933..674c05a2ce 100644
+--- a/target/ppc/excp_helper.c
++++ b/target/ppc/excp_helper.c
+@@ -1345,9 +1345,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
+              * clear (e.g., see FWNMI in PAPR).
+              */
+             new_msr |= (target_ulong)MSR_HVB;
 +
-+#if HOST_BIG_ENDIAN
-+    /*
-+     * Deal the situation when the elements are insdie
-+     * only one uint64 block including setting the
-+     * masked-off element.
-+     */
-+    if ((tot - 1) ^ cnt < 8) {
-+        memset(base + H1(tot - 1), -1, tot - cnt);
-+        return;
-+    }
-+    /*
-+     * Otherwise, at least cross two uint64_t blocks.
-+     * Set first unaligned block.
-+     */
-+    if (cnt % 8 != 0) {
-+        uint32_t j = ROUND_UP(cnt, 8);
-+        memset(base + H1(j - 1), -1, j - cnt);
-+        cnt = j;
-+    }
-+    /* Set other 64bit aligend blocks */
-+#endif
-     memset(base + cnt, -1, tot - cnt);
- }
++            /* HV machine check exceptions don't have ME set */
++            new_msr &= ~((target_ulong)1 << MSR_ME);
+         }
+-        /* machine check exceptions don't have ME set */
+-        new_msr &= ~((target_ulong)1 << MSR_ME);
  
+         msr |= env->error_code;
+         break;
 -- 
-2.41.0
+2.42.0
 
 
