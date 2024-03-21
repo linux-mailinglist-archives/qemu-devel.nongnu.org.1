@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D216886172
-	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 21:06:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D05488616F
+	for <lists+qemu-devel@lfdr.de>; Thu, 21 Mar 2024 21:05:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnOfw-0000GC-Ey; Thu, 21 Mar 2024 16:06:08 -0400
+	id 1rnOdx-0007Da-2l; Thu, 21 Mar 2024 16:04:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnOfs-00009q-Nw
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 16:06:04 -0400
-Received: from mail-qt1-x82b.google.com ([2607:f8b0:4864:20::82b])
+ id 1rnOdv-0007DQ-2y
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 16:04:03 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rnOfr-0004yJ-93
- for qemu-devel@nongnu.org; Thu, 21 Mar 2024 16:06:04 -0400
-Received: by mail-qt1-x82b.google.com with SMTP id
- d75a77b69052e-430c76fbf05so9308051cf.0
- for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 13:06:02 -0700 (PDT)
+ id 1rnOdt-0004ew-GE
+ for qemu-devel@nongnu.org; Thu, 21 Mar 2024 16:04:02 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1dde26f7e1dso10260355ad.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Mar 2024 13:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711051562; x=1711656362; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711051440; x=1711656240; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=xT44wO3PssFz76VTHqsbrAJTdpbeZTsn6CRZFUAW9nY=;
- b=lEfITgaAeXevfLFjYZZjWbHD/Au3DIeRZd6iGi/Yds3oYaEyRoHYbltWZOc+KlvGxr
- OqliKkBFqryAnmV9uFnAa2l9Kj6oGGxKlzi73ji9NAFURavP5qDQWedBawu+y6BY4fWD
- pLjdGL6ylkZMAHGKCbUwaafho7znqLWhj22SiMQP6I7D/Xce6WIJDDvXPOjmNnbgaHjQ
- 0cPBTnuWnVU0hmyzE9a+qmvGBP4hfH6kJZSCBWBKmoBpOFO3IP8soLQhqaAtxQxqjfTx
- 4PEtJ8X8y9a5wf8HpKWoOjMa+X15stvtjJeurP7ixEizX5ZvfaCToMfL31r/mHd7JRqc
- hUdg==
+ bh=IjxEZPKFtcHsfHvdW61Y1eV5ILahDZUUOX9CbImvJNU=;
+ b=JKsmxvbNpFrW6WsBLD8yCuGEvCfFzcdHe9QN3q2glxFcpEDRLzjT6MtW8BckF2vNQn
+ mYNzGpy8zBfDuN+/wcrdmeOmkDpRPeiaYDMkEG9VIhtYMYBFWjI0AZyaygod44+YcIfz
+ JlyAABeBakJ6UzEDXBOs2NJ2h1pTQzBZKanjiIsSNmqUAgIUDtWvcOIZ+GSFHOh1lhQ8
+ I/XdC2u8bEZeDwN7qo8v2+qEx/vWoDpGfBQuJmIZ4rgfUmaH5JT71NUxxwYPXwQmzP0M
+ YQ5tl1jx0friInqYsUW6tNEgnCiP+m4WsazvTZQGxzlGCNftVOSkhcOAimFHKMiGrPgs
+ rIiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711051562; x=1711656362;
+ d=1e100.net; s=20230601; t=1711051440; x=1711656240;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xT44wO3PssFz76VTHqsbrAJTdpbeZTsn6CRZFUAW9nY=;
- b=Tuv48s2jRb6H4H0Jp2pZ/fk0sCazTbNJMKOObpxinhy+qLII4ZFPJZ2V6zTKRhldG5
- GOZFaY2QB1Gybvn4dc/5qGWCl6CVs0ICeYZUQTu9IR2oprmcEaVQ9OCzVBQQehaH/n3G
- LO71MfMz4KEXlo9sBnudqOi8/Yqqb9LTH3IuY+dDfqKByhPl0ta22sxlNhKo4V2PCa8c
- +7ekac8DLZy0sd4ITahOOKqx4p8WULe7btTyxs8rwgo8vpxqW8XjFVDxlL8o8FnaM0p3
- wNsZxefW/q1GByxG9AnJ20DZ9mEyLyj9PhFQWCQ1LuLtKN0irWuU8Z3uEVtmLChdq401
- dSNQ==
-X-Gm-Message-State: AOJu0Yym7FPGN5Ai9OgkxUpGmE/SYDWLsCNS/3dbq17gfuY6oom5mG6J
- n0cPy7EAuuYAls4JeMAy5xDuxXGnvqvZgebfS1U7VCo0TGWoMTFU+0LCI96AKlw2Zc62YBNUhO1
- +
-X-Google-Smtp-Source: AGHT+IGW/ONHGJe4SKo2DdzYYF36M/hTZO5NUPwPl6+/CC+QCNQlH3XmIvRsJ/M4Y3M3JSiLscZIhg==
-X-Received: by 2002:a05:6a20:4a1c:b0:1a3:72d6:641e with SMTP id
- fr28-20020a056a204a1c00b001a372d6641emr439672pzb.20.1711051088596; 
- Thu, 21 Mar 2024 12:58:08 -0700 (PDT)
+ bh=IjxEZPKFtcHsfHvdW61Y1eV5ILahDZUUOX9CbImvJNU=;
+ b=lpZCTGNmGMryiaxK7DLOHgAWgKot/Nltw+blWcbmiupnakOyRWwWrVOVOqBxcHLU6b
+ hiUddTBl0NEITTltpOmBGY7FXopxb0JeN9cnz9dxQOkOpFv5nN9FxhcHKec1pSR6KpAz
+ 0ADkB5Vya/hufC7HW3fFIHGtqA0wOG1dYHWdgRhkUc7OdvAeJD4Jsc/wRiB+l7sFiGD7
+ bfBPgdbdNnXGQe9K3yzQoWHfmV68CzI70UWgauj1DmEzAJL5iCCrDF3QrNWwrzjbyjxn
+ XLgBPpG0yHMB3+sTkZlCKfzNs9c68fFSv3590Zr18NSR/foPE2Pi9uKn/vnHAyH3xAke
+ HT9g==
+X-Gm-Message-State: AOJu0YxfIugN+95E8h3X4JVIu1jvHzLoh066RIyWB2h+ztQFclSzrEo5
+ Ysm0/CtCft3lkuHMVGDW685j/GJp4AGULnZLiqMAikhnXjuZyz0H6jJG2+pH+Kc=
+X-Google-Smtp-Source: AGHT+IFiT+cQJwPQGuSAK/9ViBf49c04bF2uFDwsXblUAHdZWjLUa2cV/GFSzTcPzjUug60OLPxM7w==
+X-Received: by 2002:a17:902:7c95:b0:1e0:4dfd:c121 with SMTP id
+ y21-20020a1709027c9500b001e04dfdc121mr401453pll.68.1711051439885; 
+ Thu, 21 Mar 2024 13:03:59 -0700 (PDT)
 Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
  [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- u16-20020a1709026e1000b001ddc93c5759sm232860plk.196.2024.03.21.12.58.07
+ a11-20020a170902eccb00b001dee1e0beddsm232159plh.246.2024.03.21.13.03.58
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 21 Mar 2024 12:58:08 -0700 (PDT)
-Message-ID: <134f8055-6b5a-4610-93d3-524d2f3de003@linaro.org>
-Date: Thu, 21 Mar 2024 09:58:05 -1000
+ Thu, 21 Mar 2024 13:03:59 -0700 (PDT)
+Message-ID: <ee2d2e6c-1843-4be9-9a0a-3505b20d9926@linaro.org>
+Date: Thu, 21 Mar 2024 10:03:56 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] target/hppa: add unit conditions for wide mode
+Subject: Re: [PATCH 2/3] target/hppa: sub: fix trap on overflow for narrow mode
 Content-Language: en-US
 To: Sven Schnelle <svens@stackframe.org>
 Cc: qemu-devel@nongnu.org, Helge Deller <deller@gmx.de>
 References: <20240321184228.611897-1-svens@stackframe.org>
+ <20240321184228.611897-2-svens@stackframe.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240321184228.611897-1-svens@stackframe.org>
+In-Reply-To: <20240321184228.611897-2-svens@stackframe.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82b;
- envelope-from=richard.henderson@linaro.org; helo=mail-qt1-x82b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,36 +95,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/21/24 08:42, Sven Schnelle wrote:
-> Wide mode provides two more conditions, add them.
-> 
 > Signed-off-by: Sven Schnelle <svens@stackframe.org>
 > ---
->   target/hppa/translate.c | 25 +++++++++++++++++++++++--
->   1 file changed, 23 insertions(+), 2 deletions(-)
+>   target/hppa/translate.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
 > diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-> index 8a87996fc1..f493e207e1 100644
+> index f493e207e1..4d2b96f876 100644
 > --- a/target/hppa/translate.c
 > +++ b/target/hppa/translate.c
-> @@ -963,11 +963,22 @@ static DisasCond do_unit_cond(unsigned cf, bool d, TCGv_i64 res,
->   
->       switch (cf >> 1) {
->       case 0: /* never / TR */
-> -    case 1: /* undefined */
-> -    case 5: /* undefined */
->           cond = cond_make_f();
->           break;
->   
-> +    case 1:
+> @@ -1213,6 +1213,9 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+>       if (is_tsv || cond_need_sv(c)) {
+>           sv = do_sub_sv(ctx, dest, in1, in2);
+>           if (is_tsv) {
+> +            if (!d) {
+> +                tcg_gen_ext32s_i64(sv, sv);
+> +            }
+>               gen_helper_tsv(tcg_env, sv);
+>           }
+>       }
 
-Wants a comment for /* SWZ / NWZ */
-
-> +    case 5:
-
-/* SWC / NWC */
+Difficult to pinpoint exactly which patch should have added this.  :-)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
