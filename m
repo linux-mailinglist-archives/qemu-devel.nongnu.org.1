@@ -2,82 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851AD886A25
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 11:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B90CD886C93
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 14:06:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnc1k-0006vF-Jb; Fri, 22 Mar 2024 06:21:32 -0400
+	id 1rneZm-0001fL-O4; Fri, 22 Mar 2024 09:04:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rnc1g-0006uy-Bl
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 06:21:28 -0400
-Received: from mail-ej1-f52.google.com ([209.85.218.52])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rnc1e-0007xI-T2
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 06:21:28 -0400
-Received: by mail-ej1-f52.google.com with SMTP id
- a640c23a62f3a-a470d7f77eeso229831566b.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 03:21:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711102885; x=1711707685;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=JGqjI6P0mTPBiKZTNOwbVNYIjw9Vw14Zd3G3C6QS6wY=;
- b=t2ya8eKZJFzjVcYcgv+lMfHt9zUKTem+TDhce6g2taVV00ZeCtZYq7DF/HlNE7+5KO
- m4q8JkT79oscs85/TVNlly4bvWLmRKdJuZ6THPBJ2AzlLnDT8lvT3aPjp1vLGSLYK/kC
- 9m/OaGjh3tBCPM76gUSEw8y0olAp1tLdZCQGe6n/JA4S7kXfiRb8lnqXwnrUqBpx3Ovn
- /MujNTMHqhhgLjEo61SMPJQDKs9wg4RPPsGOR/Up4c7w3/9ie8ElMJQ+T+pEO6KNZ8CJ
- QMFVIsq1w3IknK5mY8d9aZBl/I2qpCZpwPl0ei1fsJ1t+VqXq2adnmmoQTEGdpO2krPX
- zj5A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX9ADY1ywoqSnfDEHkL2XUcMoixtLVE5g+1/MMfRIvsBwcmp6Utf+UessTU5fj83gKwXSYwsa4ImszAg0ljIfm84FKQ+Tk=
-X-Gm-Message-State: AOJu0Yz8w2xSWTn4ERmzwY3XnvUaEaZXVHpSwY/AkvyMJr+et8rSE2/Y
- HfKVSqJMFP8lNfw8Yym0S8xDwTnv1dVcoS8osVPJFhzmMnXpegbX
-X-Google-Smtp-Source: AGHT+IGEXDCR4iq9rvwz5B26z4GLijSPqxuBAhYB8+zqYJlK7HGPtfYNr6wzSSm9SN6zugWqLIWZmg==
-X-Received: by 2002:a17:907:7e94:b0:a47:3527:90c0 with SMTP id
- qb20-20020a1709077e9400b00a47352790c0mr673262ejc.14.1711102884800; 
- Fri, 22 Mar 2024 03:21:24 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-004.fbsv.net.
- [2a03:2880:30ff:4::face:b00c]) by smtp.gmail.com with ESMTPSA id
- bo10-20020a170906d04a00b00a4728151908sm705505ejb.93.2024.03.22.03.21.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 03:21:24 -0700 (PDT)
-Date: Fri, 22 Mar 2024 03:21:21 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org,
- "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>
-Subject: Re: [PATCH] virtio_net: Do not send RSS key if it is not supported
-Message-ID: <Zf1bofzE4x0wGEm+@gmail.com>
-References: <20240321165431.3517868-1-leitao@debian.org>
- <1711072822.882584-1-xuanzhuo@linux.alibaba.com>
+ (Exim 4.90_1) (envelope-from <christian.poetzsch@kernkonzept.com>)
+ id 1rnc5V-0008Ni-DF
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 06:25:27 -0400
+Received: from serv1.kernkonzept.com ([2a01:4f8:1c1c:b490::2]
+ helo=mx.kernkonzept.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <christian.poetzsch@kernkonzept.com>)
+ id 1rnc5S-0000Bh-CP
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 06:25:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=kernkonzept.com; s=mx1; h=Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:Subject:Cc:To:From:References:In-Reply-To:
+ Reply-To:Content-ID:Content-Description;
+ bh=uddgZXDiTzQQfpiNSJyLx5dFmvoi3NpsRnqm37BqGtk=; b=DtaDmNE8XeL/FuE43g8/HyOglQ
+ ZD2B/44nck15qzEX/gACG8/ZOApjHs5LfcMDoKDViGV9+ZoARopmscgIUNmgRASXiEMRuyu5FoG2I
+ dgs6rDmOZYHIWkW4aCalA5j2pDYDuxHgVyuSjLB67IFTiePu2Q/DifyRi5WbeZAGTqNp6YdnxV/9J
+ rO3Qs8Y++JqciL6k8WYXuSoJFxF68w9enuwpWjT9fViGh9saEZUZA9WguW8DMODmUW+9Y/vqMljhd
+ SP78aKjzebAfHDwbE+tQQgUP1s4COKCWsLrR7ZXAQoPhp5rqZIDor1r5K0x0k3VTD1bMPe2m/sXqL
+ u5LpXEqA==;
+Received: from ip92349c68.dynamic.kabel-deutschland.de ([146.52.156.104]
+ helo=iris.dd1.int.kernkonzept.com) by mx.kernkonzept.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
+ id 1rnc5J-007ZAZ-0I; Fri, 22 Mar 2024 11:25:13 +0100
+From: =?UTF-8?q?Christian=20P=C3=B6tzsch?= <christian.poetzsch@kernkonzept.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Christian=20P=C3=B6tzsch?= <christian.poetzsch@kernkonzept.com>
+Subject: [PATCH] Add support for abs info in vhost-user-input
+Date: Fri, 22 Mar 2024 11:24:21 +0100
+Message-Id: <20240322102421.2158139-1-christian.poetzsch@kernkonzept.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1711072822.882584-1-xuanzhuo@linux.alibaba.com>
-Received-SPF: pass client-ip=209.85.218.52;
- envelope-from=breno.debian@gmail.com; helo=mail-ej1-f52.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a01:4f8:1c1c:b490::2;
+ envelope-from=christian.poetzsch@kernkonzept.com; helo=mx.kernkonzept.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 22 Mar 2024 09:04:47 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,52 +68,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Xuan,
+Absolute input device did not work, cause VIRTIO_INPUT_CFG_ABS_INFO is
+missing. Fetch this info when available and provide it to any virtio
+client.
 
-On Fri, Mar 22, 2024 at 10:00:22AM +0800, Xuan Zhuo wrote:
-> On Thu, 21 Mar 2024 09:54:30 -0700, Breno Leitao <leitao@debian.org> wrote:
+This is basically the same code as in hw/input/virtio-input-host.c, just
+modified to work here.
 
-> > 4) Since the command above does not have a key, then the last
-> >    scatter-gatter entry will be zeroed, since rss_key_size == 0.
-> >     sg_buf_size = vi->rss_key_size;
-> 
-> 
-> 
-> 	if (vi->has_rss || vi->has_rss_hash_report) {
-> 		vi->rss_indir_table_size =
-> 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
-> 				rss_max_indirection_table_length));
-> 		vi->rss_key_size =
-> 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
-> 
-> 		vi->rss_hash_types_supported =
-> 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
-> 		vi->rss_hash_types_supported &=
-> 				~(VIRTIO_NET_RSS_HASH_TYPE_IP_EX |
-> 				  VIRTIO_NET_RSS_HASH_TYPE_TCP_EX |
-> 				  VIRTIO_NET_RSS_HASH_TYPE_UDP_EX);
-> 
-> 		dev->hw_features |= NETIF_F_RXHASH;
-> 	}
-> 
-> 
-> vi->rss_key_size is initiated here, I wonder if there is something wrong?
+Signed-off-by: Christian Pötzsch <christian.poetzsch@kernkonzept.com>
+---
+ contrib/vhost-user-input/main.c | 46 +++++++++++++++++++++++++++++++--
+ 1 file changed, 44 insertions(+), 2 deletions(-)
 
-Not really, the code above is never executed (in my machines). This is
-because `vi->has_rss` and `vi->has_rss_hash_report` are both unset.
+diff --git a/contrib/vhost-user-input/main.c b/contrib/vhost-user-input/main.c
+index 081230da54..9506e34d04 100644
+--- a/contrib/vhost-user-input/main.c
++++ b/contrib/vhost-user-input/main.c
+@@ -272,6 +272,32 @@ vi_bits_config(VuInput *vi, int type, int count)
+     g_array_append_val(vi->config, bits);
+ }
+ 
++static void
++vi_input_abs_config(VuInput *vi, int axis)
++{
++    virtio_input_config config;
++    struct input_absinfo absinfo;
++    int rc;
++
++    rc = ioctl(vi->evdevfd, EVIOCGABS(axis), &absinfo);
++    if (rc < 0) {
++        return;
++    }
++
++    memset(&config, 0, sizeof(config));
++    config.select = VIRTIO_INPUT_CFG_ABS_INFO;
++    config.subsel = axis;
++    config.size   = sizeof(struct input_absinfo);
++
++    config.u.abs.min  = cpu_to_le32(absinfo.minimum);
++    config.u.abs.max  = cpu_to_le32(absinfo.maximum);
++    config.u.abs.fuzz = cpu_to_le32(absinfo.fuzz);
++    config.u.abs.flat = cpu_to_le32(absinfo.flat);
++    config.u.abs.res  = cpu_to_le32(absinfo.resolution);
++
++    g_array_append_val(vi->config, config);
++}
++
+ static char *opt_evdev;
+ static int opt_fdnum = -1;
+ static char *opt_socket_path;
+@@ -297,11 +323,12 @@ main(int argc, char *argv[])
+ {
+     GMainLoop *loop = NULL;
+     VuInput vi = { 0, };
+-    int rc, ver, fd;
+-    virtio_input_config id;
++    int rc, ver, fd, i, axis;
++    virtio_input_config id, *abs;
+     struct input_id ids;
+     GError *error = NULL;
+     GOptionContext *context;
++    uint8_t byte;
+ 
+     context = g_option_context_new(NULL);
+     g_option_context_add_main_entries(context, entries, NULL);
+@@ -375,6 +402,21 @@ main(int argc, char *argv[])
+     vi_bits_config(&vi, EV_ABS, ABS_CNT);
+     vi_bits_config(&vi, EV_MSC, MSC_CNT);
+     vi_bits_config(&vi, EV_SW,  SW_CNT);
++
++    abs = vi_find_config(&vi, VIRTIO_INPUT_CFG_EV_BITS, EV_ABS);
++    if (abs) {
++        for (i = 0; i < abs->size; i++) {
++            byte = abs->u.bitmap[i];
++            axis = 8 * i;
++            while (byte) {
++                if (byte & 1) {
++                    vi_input_abs_config(&vi, axis);
++                }
++                axis++;
++                byte >>= 1;
++            }
++        }
++    }
+     g_debug("config length: %u", vi.config->len);
+ 
+     if (opt_socket_path) {
+-- 
+2.39.2
 
-Looking further, vdev does not have the VIRTIO_NET_F_RSS and
-VIRTIO_NET_F_HASH_REPORT features.
-
-Also, when I run `ethtool -x`, I got:
-
-	# ethtool  -x eth0
-	RX flow hash indirection table for eth0 with 1 RX ring(s):
-	Operation not supported
-	RSS hash key:
-	Operation not supported
-	RSS hash function:
-	    toeplitz: on
-	    xor: off
-	    crc32: off
 
