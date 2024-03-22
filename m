@@ -2,67 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77985886C7E
+	by mail.lfdr.de (Postfix) with ESMTPS id 78C55886C7F
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 13:59:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rneTc-0006Or-7e; Fri, 22 Mar 2024 08:58:28 -0400
+	id 1rneTp-0006ZV-QI; Fri, 22 Mar 2024 08:58:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rneTa-0006OC-2j
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:58:26 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ id 1rneTm-0006Yb-Fu
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:58:38 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rneTY-0004Tt-2z
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:58:25 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-56bc753f58eso2482929a12.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 05:58:23 -0700 (PDT)
+ id 1rneTk-0004Un-NH
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:58:38 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-55a179f5fa1so2925515a12.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 05:58:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711112302; x=1711717102; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ZhkeEo/UIFFLGByKCGYe1uYmHT0Fqpd3UUx9SW2R1yU=;
- b=muoYCEl5I593UejXWm6F0vTxdiiuZLh65Kr3fm4fZauZ1RyqCMQ6EIg/0UBSituYrg
- qcd0m51AFpoIlVSoHSk+5LLQ7fIROJhGX97tF3iLDarKmK3L2P7Azfm2i5DDMC5+1wlr
- faksg08zjYoPAuHBOU8zHikCA3ogfK8G9QymdVm1UZ0n4YAM525xjn6G79+GGi5rucpM
- 2Nl2hp0WCpVvZ0x6H4hrwQ4n8BkEDJvWF+HeSoRbqjoWxTulGHqVJ3IHeeesuu3dgaAs
- /c0uuTGI3pbo+GS/wXEgJkthMUISn6MN+Gz+/nQ+wqcvq38TC3dC6jIqNG2d48BHGwDO
- 5O0A==
+ d=linaro.org; s=google; t=1711112315; x=1711717115; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=GWM6ZDeJKwoezpXfxD9FjRUizC2BeHNICr/OOtH40rM=;
+ b=ccaIiCbzkkM/Z1YNsvPVmZtX6PAWhWg4MITQlDlZ9UtEjcM0l72q+5MyNwsNJp4Kt6
+ vZamHpAjJ/c2B+EV+ONbgQbcUkn72cIEEI5suDLgasvwTH+Z4I7UaVff3zw20jaLrfYq
+ RZnpV3w6DO0ceAynY7K7aiZ13ecI5qRgeSLqIVx0thfrzup4l7FU/5UU07Z5Q33boVng
+ 8X/W+Jzk+AuQyyKuJ9Mk4Z8wAvO5pE63CFEVmre8ovEcfO9e4GEJmHz9JUIelGlNVCoo
+ MpV+Z7woOVg/eO2DeCGf86L+R8siuqLvNzp4MKqQf8ltCiK2pDASlUE42syWCVQXxhuG
+ ATzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711112302; x=1711717102;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZhkeEo/UIFFLGByKCGYe1uYmHT0Fqpd3UUx9SW2R1yU=;
- b=qE9N8Sh5MVhVLewtY/qxoKZOFcxJCyx5tDcCOGj6S9kdRZMFDhlVigxUHqmPQ5Kr9v
- bmo3YYpi3N/ObfQtJC2npcnY202JhwW57HGjGB4ecXKv6alX9cOnHNqfxfXqpGj9yxd/
- sG+/UVpwad9Y2FFuDrnRQ3Hj3ABoKU+AN0X6GVqHbBfrhXmnxUDxBCXKixGdt9Ybmy8e
- azpOCnXRGO+Ht6Fti69BIsWw+Lo0E7kbLEb2pe6getxPmZYDgjZDbb9LlOusmzIH+4rr
- 1szNRaM4n/uAEupfqLsaO2OmNfgNHAO4TJ15+UA8JlJsqi64GGRKePj/QYkvpx1TZjlj
- ZtKg==
-X-Gm-Message-State: AOJu0YzlN5nJiCrm/IfQldDdSY8WTVVzW03b25LwCkQ1XvtOk7cw337v
- sXF6ZrdsSfgml3/aARt+9hD7VV29GmFB8ZkbBl0sUHk2SjyMcPExN76a6haiLdDxgRx046ZgJvK
- dN/v2jdnxRwK1sZQlbd+jY525Bagf1dWuh/uFM9hjFPn+eL31
-X-Google-Smtp-Source: AGHT+IEsJeCIACebOEeFd1MlSgWVzCNZVWFCr+wuZKXLLV9ZfivBSlOWhmLOov7DmvFqbzUL0IPe5VLIc0elTIh2a2k=
-X-Received: by 2002:a50:d60a:0:b0:56b:a969:e742 with SMTP id
- x10-20020a50d60a000000b0056ba969e742mr1570791edi.4.1711112302351; Fri, 22 Mar
- 2024 05:58:22 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711112315; x=1711717115;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=GWM6ZDeJKwoezpXfxD9FjRUizC2BeHNICr/OOtH40rM=;
+ b=PUnNgDWXTOIL5pqXpIK0dVV/viuNYcHiqMFsm5UJV9XUXJjPEASsrANW0Ts/lY8JLF
+ 2GWUcVyD9wdrhFD6isYdTq0sjx9D+gSUs5XMsOzHwGJ1AYb1npVmvrOGFy4RVURY9D4+
+ 5uQkURWQw8l9VpSQfXC7UVDpJQh5fkBSEBh/D+OK5/ZgPd2n2HAbL+aTKqrrTiqEUh89
+ KTjMfnKnRt2xSjCUZ/tubSCjxwGVKq0nFxdCsfqTvdT2AxUOWKIALTw0HiQPV40yCmDj
+ u7e/9iYQ3BNMARUcZn+9k+ztWSGdp/dwJ3D948V1mkxow1nEPKgkt75J7ZloXgs8M1Nk
+ WBJg==
+X-Gm-Message-State: AOJu0YxxVp3ruXJgPR23X60shbloyXtzvUsU6yJLOMW9zhiiIgoBRlZO
+ tlbNeeHQPEiagL6Fn/cfH73jDPdX4ICtI8ybzldrUPm9CJ6cMFVMxFc1Qp4Le6tguIDvvW18fOw
+ PnNS6mtkYXV07rQp/OKjBxhQ/gKXR4KJYsLbiE6AsE5WRjw0h
+X-Google-Smtp-Source: AGHT+IFptQIagiPub/5RjGeDmwZs7MFKbb3FreOdiLCOz8wpUWoWZo24Hu7T2GzGaw5sqxPg8EDCQnmqt4WCmQ4+d6I=
+X-Received: by 2002:a50:d559:0:b0:567:a318:ac0b with SMTP id
+ f25-20020a50d559000000b00567a318ac0bmr1657909edj.16.1711112314859; Fri, 22
+ Mar 2024 05:58:34 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240322100323.1973836-1-gaosong@loongson.cn>
-In-Reply-To: <20240322100323.1973836-1-gaosong@loongson.cn>
+References: <20240321172251.1542718-1-stefanha@redhat.com>
+In-Reply-To: <20240321172251.1542718-1-stefanha@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 22 Mar 2024 12:58:11 +0000
-Message-ID: <CAFEAcA-9maEMgawxvfndLyZ8uWnCdiD5VLY5H8NMJ8Ph6M05bg@mail.gmail.com>
-Subject: Re: [PULL 0/1] loongarch fix for 9.0
-To: Song Gao <gaosong@loongson.cn>
-Cc: qemu-devel@nongnu.org, mjt@tls.msk.ru
+Date: Fri, 22 Mar 2024 12:58:24 +0000
+Message-ID: <CAFEAcA8fcp1Bzi9mya+tDE53jjRKJdF3JyCCZkoPd+TG7mVi7w@mail.gmail.com>
+Subject: Re: [PULL for-9.0 0/1] Block patches
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, Kevin Wolf <kwolf@redhat.com>, 
+ Hanna Reitz <hreitz@redhat.com>, qemu-block@nongnu.org, 
+ "Michael S. Tsirkin" <mst@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,24 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Mar 2024 at 10:03, Song Gao <gaosong@loongson.cn> wrote:
+On Thu, 21 Mar 2024 at 17:23, Stefan Hajnoczi <stefanha@redhat.com> wrote:
 >
-> The following changes since commit fea445e8fe9acea4f775a832815ee22bdf2b0222:
+> The following changes since commit fea445e8fe9acea4f775a832815ee22bdf2b02=
+22:
 >
->   Merge tag 'pull-maintainer-final-for-real-this-time-200324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-21 10:31:56 +0000)
+>   Merge tag 'pull-maintainer-final-for-real-this-time-200324-1' of https:=
+//gitlab.com/stsquad/qemu into staging (2024-03-21 10:31:56 +0000)
 >
 > are available in the Git repository at:
 >
->   https://gitlab.com/gaosong/qemu.git tags/pull-loongarch-20240322
+>   https://gitlab.com/stefanha/qemu.git tags/block-pull-request
 >
-> for you to fetch changes up to 1590154ee4376819a8c6ee61e849ebf4a4e7cd02:
+> for you to fetch changes up to 9352f80cd926fe2dde7c89b93ee33bb0356ff40e:
 >
->   target/loongarch: Fix qemu-system-loongarch64 assert failed with the option '-d int' (2024-03-22 17:57:49 +0800)
->
-> ----------------------------------------------------------------
-> pull-loongarch-20240322
+>   coroutine: reserve 5,000 mappings (2024-03-21 13:14:30 -0400)
 >
 > ----------------------------------------------------------------
+> Pull request
+>
+> I was too quick in sending the coroutine pool sizing change for -rc0 and =
+still
+> needed to address feedback from Daniel Berrang=C3=A9.
+>
 
 
 Applied, thanks.
