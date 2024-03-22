@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B877886896
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF9C886899
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnafH-0004J5-IV; Fri, 22 Mar 2024 04:54:15 -0400
+	id 1rnafL-0004b3-Oe; Fri, 22 Mar 2024 04:54:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafF-0004FZ-Ro
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:13 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rnafI-0004ON-VL
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:17 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafE-00011t-41
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:13 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1dddad37712so15712665ad.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:11 -0700 (PDT)
+ id 1rnafH-00012N-EL
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:16 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e709e0c123so1540232b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711097650; x=1711702450; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711097653; x=1711702453; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gggN9oJqY5bBdrfB5/j/DAwZ/Z57rRd8F4t6/CMnQ6k=;
- b=Ao3eFCFLIXNv2Uj/pT/2TIPEx8t1r1K4Op7l+XyC35LkRbVB1wNCGKaqnKdhnnoC2m
- mHPic4cL4V/+NE4wzwXsMXJo6M1EYjyQlLCK3Q+yM9xeioswYSiNqpx5tIqL2H5Da2yl
- 957f41oMQOFTJU9gppCZNTHB34Xjr5CvdAxo15Si7WiiQw9oYGLK78GZquDGuGRG7jCe
- pvpTTxyGY0WVQQlWsBHPtiWGhBchY/8wWtVw1st1NpWdZkUjhQDXu4HwPMW8tJsd2H6E
- EZ7vHS3CC+tuQy7JI4HpXuziFL20MYZ8AsHKTldpxjbAJYyh6aKta4QPfJom8A57ofvg
- /WMw==
+ bh=SYRuYu6Nyn7zXJDQL50vurRoO71Bn8A9O+6ORi9MHIc=;
+ b=WWPrwROg38cFGX1ky35ZpI7lJ8wzDtaM+zCSdGwC8VY8BZLtxDlDmkmiCcE7cIOjLl
+ R1TJDMb+CRGRT1y4pNgY0MNaEs9fD5OWvONnZFbdkrMbmkj+5PqTZgYupyfWumAeEkUw
+ vUicYZWD4YmOPuVnqtfANN9bhSnEr9cHvdzZd6/huq+tsVdZ/V/TFILFUn17sIGeYecq
+ vBNIfIlkn/485y0X/vC0iOziSW5r4jrqBWHMY0At7pwlJXoaFkfInMngAtrUS2rw+im5
+ 4BiSOlGaOql59ZlBTRfYD4oXFnWOT8xZT3oHYAuzAHOUySUwgu0jmK1d7q+DbETgs33c
+ hkaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711097650; x=1711702450;
+ d=1e100.net; s=20230601; t=1711097653; x=1711702453;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gggN9oJqY5bBdrfB5/j/DAwZ/Z57rRd8F4t6/CMnQ6k=;
- b=M29AlhEU6uVq9fzGR71EnbByFK4xG8czhSorDvYsjHWsherRzSRkdxfsxjiLCmlbg9
- 4jdDBdKD4mMTL+r1rfRkLiCVf54+07K9uwBKH5yOoICf/iV8YsI2q6i603nRHTL4njGa
- Cw12NX/nrZDSI6ST5025nIqHLvjVEoNewWtajNkTbza4l1x8QOo8Eq3+P2u8llcKkk1v
- 0tnp78yVO3xn2JLW1Qhtekly8iQGKJ1sRJseuuz0tcqiZoguBB49X20FXKBZM6UJTjv0
- 1Gcoh3yGFC36fQ7nsA1S/Dac0nwCTCCBf+9S7WMVhfv/M4c9Q+NO21hoi/mxJlJMwnEp
- rLEg==
-X-Gm-Message-State: AOJu0Yw2IpMXG7/A66MJKpYTvu9aA4Z4Kr2MN3snlSQZTWXry4h/ctwN
- wZkqjh23Uepe+6Hb6C5cqa3qGRYPBl7BhUcIdPfZZSinH9OI/9kPd1cHy6iOPezoxw==
-X-Google-Smtp-Source: AGHT+IEiuqoY3YgKcT+0OGq6dN7j3f4prsO+0GxfLfd/dAoamgkuCvNL/yF1ccWKE2UAA6K1rCXeDg==
-X-Received: by 2002:a17:902:d485:b0:1df:fa83:2cdf with SMTP id
- c5-20020a170902d48500b001dffa832cdfmr2268237plg.18.1711097650472; 
- Fri, 22 Mar 2024 01:54:10 -0700 (PDT)
+ bh=SYRuYu6Nyn7zXJDQL50vurRoO71Bn8A9O+6ORi9MHIc=;
+ b=DSDKfF2KKA+ARkqRpVuEwOJBMh+Oio93RfLkTRJCOgjcXkY9BxgKRPUOj3MVHWbqVC
+ t4Eg/IoUebnrMihFztmkey0NHp+LCTXs7lBMlRjk5QMcskNlsGlXVD3CoRblHW4IyuhR
+ oEEZ3oVl7kzM2rSDwWEzY5AAydluzhP5A19LoluAoe95jAYCRBuHI8yMhWhYDULNsME5
+ deFIeO4QF6c4mhQ1EIzq6u6O+nB0e70E4xXaJkbKT5HvSgYb4Xl8qGZd5/X7gY/3BLnR
+ d6I9Q2t36FjWIEJYARJrp0iNHFksgtGB7P8+uoZXHvRvYgGAGZrgunDXKjmLi/GvgBiK
+ bOCw==
+X-Gm-Message-State: AOJu0YwHXOXq/lec+R4sSER+mOHIZyTwkt/Z/ucTzYFPWSVCmI+YB49Z
+ n4DDR5Lul5iRROO78Yldr6Hhxxybu+Wtj4zUfIl5e3YFN0ojTi+aZXfjWYSqzbgezg==
+X-Google-Smtp-Source: AGHT+IFH6/kCtfYWPkatpO2OdwfvTL7AFvu/F83LklLVrc89fsjfPZk99J5JAm9/EQvetj2f7cdjDQ==
+X-Received: by 2002:a17:902:ec8b:b0:1e0:98f3:fe56 with SMTP id
+ x11-20020a170902ec8b00b001e098f3fe56mr134456plg.26.1711097653512; 
+ Fri, 22 Mar 2024 01:54:13 -0700 (PDT)
 Received: from toolbox.wdc.com ([129.253.180.114])
  by smtp.gmail.com with ESMTPSA id
- h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.07
+ h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 01:54:10 -0700 (PDT)
+ Fri, 22 Mar 2024 01:54:13 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
- Jim Shu <jim.shu@sifive.com>, Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 12/15] hw/intc: Update APLIC IDC after claiming iforce register
-Date: Fri, 22 Mar 2024 18:53:16 +1000
-Message-ID: <20240322085319.1758843-13-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 13/15] target/riscv: rvv: Remove the dependency of Zvfbfmin to
+ Zfbfmin
+Date: Fri, 22 Mar 2024 18:53:17 +1000
+Message-ID: <20240322085319.1758843-14-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322085319.1758843-1-alistair.francis@wdc.com>
 References: <20240322085319.1758843-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,38 +95,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Frank Chang <frank.chang@sifive.com>
+From: Max Chou <max.chou@sifive.com>
 
-Currently, QEMU only sets the iforce register to 0 and returns early
-when claiming the iforce register. However, this may leave mip.meip
-remains at 1 if a spurious external interrupt triggered by iforce
-register is the only pending interrupt to be claimed, and the interrupt
-cannot be lowered as expected.
+According to the Zvfbfmin definition in the RISC-V BF16 extensions spec,
+the Zvfbfmin extension only requires either the V extension or the
+Zve32f extension.
 
-This commit fixes this issue by calling riscv_aplic_idc_update() to
-update the IDC status after the iforce register is claimed.
-
-Signed-off-by: Frank Chang <frank.chang@sifive.com>
-Reviewed-by: Jim Shu <jim.shu@sifive.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240321104951.12104-1-frank.chang@sifive.com>
+Message-ID: <20240321170929.1162507-1-max.chou@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- hw/intc/riscv_aplic.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/riscv/tcg/tcg-cpu.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
-index 6a7fbfa861..fc5df0d598 100644
---- a/hw/intc/riscv_aplic.c
-+++ b/hw/intc/riscv_aplic.c
-@@ -488,6 +488,7 @@ static uint32_t riscv_aplic_idc_claimi(RISCVAPLICState *aplic, uint32_t idc)
- 
-     if (!topi) {
-         aplic->iforce[idc] = 0;
-+        riscv_aplic_idc_update(aplic, idc);
-         return 0;
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 63192ef54f..b5b95e052d 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -530,11 +530,6 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+         return;
      }
  
+-    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
+-        error_setg(errp, "Zvfbfmin extension depends on Zfbfmin extension");
+-        return;
+-    }
+-
+     if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
+         error_setg(errp, "Zvfbfmin extension depends on Zve32f extension");
+         return;
 -- 
 2.44.0
 
