@@ -2,71 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32226886E2F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:11:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1440A886E28
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:11:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfaO-00038K-Vz; Fri, 22 Mar 2024 10:09:33 -0400
+	id 1rnfb7-0005DL-SS; Fri, 22 Mar 2024 10:10:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaN-00034D-Dy
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaH-0003ZC-M1
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711116565;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=S4C55i6IAIl4qPCE77V/yWVbt/+VSC8lBH0rGwhYOs4=;
- b=gvQ0rXXNgv1dCWuNTdRCUgtzOG0/xiljRhl+qccBTz42mPEskSfeMLtwfayDh6oSomq2IQ
- 5Q/PmsUWo8tGMU60mJGNPxwap70Zmk8lhbll2dtRS30AZVWxTCR+yhM9enGPO9kMymJEAY
- PWmyj0FhmZaUlifXIMRkLjuS7J6CX5g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-60-wuxf7zdxN4ix8PjcEiKnKQ-1; Fri,
- 22 Mar 2024 10:09:21 -0400
-X-MC-Unique: wuxf7zdxN4ix8PjcEiKnKQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rnfb0-00053p-Op
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:10:11 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1rnfax-0003hL-LX
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:10:09 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED4FE282D3CF;
- Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CCE5D492BD3;
- Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E08DE21E5D32; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com,
-	michael.roth@amd.com,
-	kkostiuk@redhat.com
-Subject: [PATCH 12/12] qga/qapi-schema: Refill doc comments to conform to
- current conventions
-Date: Fri, 22 Mar 2024 15:09:10 +0100
-Message-ID: <20240322140910.328840-13-armbru@redhat.com>
-In-Reply-To: <20240322140910.328840-1-armbru@redhat.com>
-References: <20240322140910.328840-1-armbru@redhat.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id B32F638636;
+ Fri, 22 Mar 2024 14:10:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1711116605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UPDCqm8/mgfEPmKQeH0ZPqYLsag7HuzWiSwYq5rPD0A=;
+ b=a2pslFh0Z/JTfQumMjqR30iEKfsgcra9kEPuyCFjKcadqjSrwSztt+pGmtqzndOaD84Gfy
+ 7fNGMG9lQFoNg2o3L7JuuTRWIx08eJYbp/UcuBqC1dhn5W6JWHUENoxVRxWlkLZBSMjsNn
+ EA33FlAWpwNn5cE3zVIYBaTmfqr7sLs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1711116605;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UPDCqm8/mgfEPmKQeH0ZPqYLsag7HuzWiSwYq5rPD0A=;
+ b=q7OiRvFL3XiC0p4o53IfFjNmtmIwlpF5UW/Dt92e9EKftc1bpYWeXdv4ThgA5viQxrpqZY
+ Dz5B0IMXz63ML8Cg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1711116605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UPDCqm8/mgfEPmKQeH0ZPqYLsag7HuzWiSwYq5rPD0A=;
+ b=a2pslFh0Z/JTfQumMjqR30iEKfsgcra9kEPuyCFjKcadqjSrwSztt+pGmtqzndOaD84Gfy
+ 7fNGMG9lQFoNg2o3L7JuuTRWIx08eJYbp/UcuBqC1dhn5W6JWHUENoxVRxWlkLZBSMjsNn
+ EA33FlAWpwNn5cE3zVIYBaTmfqr7sLs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1711116605;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=UPDCqm8/mgfEPmKQeH0ZPqYLsag7HuzWiSwYq5rPD0A=;
+ b=q7OiRvFL3XiC0p4o53IfFjNmtmIwlpF5UW/Dt92e9EKftc1bpYWeXdv4ThgA5viQxrpqZY
+ Dz5B0IMXz63ML8Cg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3EE72136A1;
+ Fri, 22 Mar 2024 14:10:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id HRTyAT2R/WXtKgAAD6G6ig
+ (envelope-from <farosas@suse.de>); Fri, 22 Mar 2024 14:10:05 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, eblake@redhat.com, berrange@redhat.com
+Subject: Re: [PATCH 2/3] qapi: Resync MigrationParameter and
+ MigrateSetParameters
+In-Reply-To: <20240322135117.195489-3-armbru@redhat.com>
+References: <20240322135117.195489-1-armbru@redhat.com>
+ <20240322135117.195489-3-armbru@redhat.com>
+Date: Fri, 22 Mar 2024 11:10:02 -0300
+Message-ID: <8734simk79.fsf@suse.de>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -22
-X-Spam_score: -2.3
-X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.222,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=a2pslFh0;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=q7OiRvFL
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-6.50 / 50.00]; ARC_NA(0.00)[];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; BAYES_HAM(-2.99)[99.96%];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim]; RCPT_COUNT_FIVE(0.00)[5];
+ RCVD_COUNT_THREE(0.00)[3];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ DKIM_TRACE(0.00)[suse.de:+]; MX_GOOD(-0.01)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email];
+ FUZZY_BLOCKED(0.00)[rspamd.com]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ RCVD_TLS_ALL(0.00)[]; MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -6.50
+X-Rspamd-Queue-Id: B32F638636
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,85 +121,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For legibility, wrap text paragraphs so every line is at most 70
-characters long.
+Markus Armbruster <armbru@redhat.com> writes:
 
-To check the generated documentation does not change, I compared the
-generated HTML before and after this commit with "wdiff -3".  Finds no
-differences.  Comparing with diff is not useful, as the refilled
-paragraphs are visible there.
+> Enum MigrationParameter mirrors the members of struct
+> MigrateSetParameters.  Differences to MigrateSetParameters's member
+> documentation are pointless.  Clean them up:
+>
+> * @compress-level, @compress-threads, @decompress-threads, and
+>   x-checkpoint-delay are more thoroughly documented for
+>   MigrationParameter, so use that version for both.
+>
+> * @max-cpu-throttle is almost the same.  Use MigrationParameter's
+>   version for both.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- qga/qapi-schema.json | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 9554b566a7..d5af155007 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1220,13 +1220,13 @@
- # @signal: signal number (linux) or unhandled exception code (windows)
- #     if the process was abnormally terminated.
- #
--# @out-data: base64-encoded stdout of the process. This field will only
--#     be populated after the process exits.
-+# @out-data: base64-encoded stdout of the process.  This field will
-+#     only be populated after the process exits.
- #
--# @err-data: base64-encoded stderr of the process. Note: @out-data and
--#     @err-data are present only if 'capture-output' was specified for
--#     'guest-exec'. This field will only be populated after the process
--#     exits.
-+# @err-data: base64-encoded stderr of the process.  Note: @out-data
-+#     and @err-data are present only if 'capture-output' was specified
-+#     for 'guest-exec'.  This field will only be populated after the
-+#     process exits.
- #
- # @out-truncated: true if stdout was not fully captured due to size
- #     limitation.
-@@ -1273,12 +1273,16 @@
- # An enumeration of guest-exec capture modes.
- #
- # @none: do not capture any output
-+#
- # @stdout: only capture stdout
-+#
- # @stderr: only capture stderr
-+#
- # @separated: capture both stdout and stderr, but separated into
--#             GuestExecStatus out-data and err-data, respectively
--# @merged: capture both stdout and stderr, but merge together
--#          into out-data. not effective on windows guests.
-+#     GuestExecStatus out-data and err-data, respectively
-+#
-+# @merged: capture both stdout and stderr, but merge together into
-+#     out-data.  Not effective on windows guests.
- #
- # Since: 8.0
- ##
-@@ -1291,8 +1295,9 @@
- #
- # Controls what guest-exec output gets captures.
- #
--# @flag: captures both stdout and stderr if true. Equivalent
--#        to GuestExecCaptureOutputMode::all. (since 2.5)
-+# @flag: captures both stdout and stderr if true.  Equivalent to
-+#     GuestExecCaptureOutputMode::all.  (since 2.5)
-+#
- # @mode: capture mode; preferred interface
- #
- # Since: 8.0
-@@ -1315,7 +1320,7 @@
- # @input-data: data to be passed to process stdin (base64 encoded)
- #
- # @capture-output: bool flag to enable capture of stdout/stderr of
--#     running process.  defaults to false.
-+#     running process.  Defaults to false.
- #
- # Returns: PID
- #
--- 
-2.44.0
-
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
