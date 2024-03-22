@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AFB886E16
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 164E8886E1B
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:44 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfaG-0002wa-DM; Fri, 22 Mar 2024 10:09:24 -0400
+	id 1rnfaI-0002xV-Sl; Fri, 22 Mar 2024 10:09:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaE-0002vc-Be
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaG-0002x9-UQ
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaC-0003Y4-Uz
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaF-0003Yh-CP
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711116560;
+ s=mimecast20190719; t=1711116562;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kjn8QpKX4fe/hTlb9r3XI72HaUYlTbI+EynHoKLCJ8o=;
- b=iUWCjcuI+rBKJLL7cqDJ4NnC3APMe6DMPO4RJK77yrkL56kGPVfWI2Ie8yRUPSOBE2YIwF
- DzGdl7ARTV3RWr6ScPskUcQ4tgQGo/RV3YPJv+xboJUfw+q39HqnZM8+0BRHZAJ8wJaMVa
- JbYUN4VBRxrO9inAtMbB5cjCLET2EXY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-asGjacgHMWGPjklsvJkujA-1; Fri, 22 Mar 2024 10:09:16 -0400
-X-MC-Unique: asGjacgHMWGPjklsvJkujA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=JyaNqmMiyj163W2hmIq2F2eKalZCSACQzS7SKVDGlUE=;
+ b=O0iXIoEpkFKBCBYCVYEnShsxvhocwp9ZqxAh3Cdli3fdzJ6alxDIgjpMcToNNXl9Y8uhMb
+ 5FkN7CsCuQ9ZXRmu+qNaVD5pKKiL39nFwHtfXFBNA4iWeLZ3NjhHfam0h5CdwcfCWu2DvV
+ zKV18adlr6sVNlBHwpBvXdePGJHPF1E=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-ROr7_PCfNz2XRFOuzmN4pw-1; Fri,
+ 22 Mar 2024 10:09:21 -0400
+X-MC-Unique: ROr7_PCfNz2XRFOuzmN4pw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DF8A9101A586;
- Fri, 22 Mar 2024 14:09:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED539383DCC0;
+ Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C03FB1C060A4;
- Fri, 22 Mar 2024 14:09:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CCD1C2022C1D;
+ Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C9DA521E5D2A; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
+ id CC97821E5D2B; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com,
 	michael.roth@amd.com,
 	kkostiuk@redhat.com
-Subject: [PATCH 04/12] qapi: Tidy up indentation of add_client's example
-Date: Fri, 22 Mar 2024 15:09:02 +0100
-Message-ID: <20240322140910.328840-5-armbru@redhat.com>
+Subject: [PATCH 05/12] qapi: Fix argument markup in drive-mirror documentation
+Date: Fri, 22 Mar 2024 15:09:03 +0100
+Message-ID: <20240322140910.328840-6-armbru@redhat.com>
 In-Reply-To: <20240322140910.328840-1-armbru@redhat.com>
 References: <20240322140910.328840-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -81,39 +81,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit d23055b8db8 (qapi: Require descriptions and tagged sections to
-be indented) indented add_client's example too much.  Revert that.
-
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/misc.json | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ qapi/block-core.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/misc.json b/qapi/misc.json
-index 1b0c5dad88..ec30e5c570 100644
---- a/qapi/misc.json
-+++ b/qapi/misc.json
-@@ -32,9 +32,9 @@
- #
- # Example:
- #
--#         -> { "execute": "add_client", "arguments": { "protocol": "vnc",
--#                                                      "fdname": "myclient" } }
--#         <- { "return": {} }
-+#     -> { "execute": "add_client", "arguments": { "protocol": "vnc",
-+#                                                  "fdname": "myclient" } }
-+#     <- { "return": {} }
- ##
- { 'command': 'add_client',
-   'data': { 'protocol': 'str', 'fdname': 'str', '*skipauth': 'bool',
-@@ -142,7 +142,7 @@
- #     option was passed on the command line.
- #
- #     In the "suspended" state, it will completely stop the VM and
--#     cause a transition to the "paused" state. (Since 9.0)
-+#     cause a transition to the "paused" state.  (Since 9.0)
- #
- # Example:
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 1874f880a8..64668b080d 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -2117,7 +2117,7 @@
+ # Start mirroring a block device's writes to a new destination.
+ # target specifies the target of the new image.  If the file exists,
+ # or if it is a device, it will be used as the new destination for
+-# writes.  If it does not exist, a new file will be created.  format
++# writes.  If it does not exist, a new file will be created.  @format
+ # specifies the format of the mirror image, default is to probe if
+ # mode='existing', else the format of the source.
  #
 -- 
 2.44.0
