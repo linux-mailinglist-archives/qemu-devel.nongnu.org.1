@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388BA8870B5
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 17:15:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A368870B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 17:16:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnhXc-0000eQ-JC; Fri, 22 Mar 2024 12:14:48 -0400
+	id 1rnhXi-0000fX-8R; Fri, 22 Mar 2024 12:14:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnhXa-0000do-6w
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 12:14:46 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnhXg-0000f9-Ak
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 12:14:52 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnhXY-0000nw-PO
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 12:14:45 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-33e285a33bdso1081206f8f.2
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 09:14:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rnhXe-0000oT-U8
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 12:14:52 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4147f659353so648445e9.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 09:14:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711124083; x=1711728883; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5bUm49VP7Mf87j+48prRGAAOIN94P6PXBy1Yvr/+KsI=;
- b=DsnVaNC0u1x0tY9SWJ390lBM7+E8o4arrq1tut23czpCWaa/G4ny3t4acAPMJ0xqTF
- FMZFSU2K9guMcY8cRqbuzOA8DisRkVv4tzNMnwTqOlib4BJw3WubuJh4wt5eRxRu0EOH
- yw2RFlfMeFwtypGuFlAU3eBXrS+rzBI++vG4IiU45H7GDEKo77jX2G6yI3YF+1sSTxz4
- HuPbwLzHuozwpgOeNRLzMXZs16et1LwezU0sJBXpeftD5i4HT4xTIBklzTulK4BqZgBv
- UOAAaJQwXoKhTM8gGgwtFju6knun1FAV/Yp7fgcRIsdHhFtOrFj1KXsn0DIRhvlPoxHU
- Xgeg==
+ d=linaro.org; s=google; t=1711124089; x=1711728889; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=M3jectw/kExol21Tl/VOhcbnait7BaHf+x9145daJsc=;
+ b=pABTf919d9+eW0pdvw9yCl9wg1eJD/xtdWDH+WhEf7Gz+ykAH68Pj3pWqmwzSG5NUY
+ p1OzkP42tXwKipPZivi/P/rmbuEeRhRKr4x6lTWlNnT93ZiVhM+u/ZANW5OW8cQQTLwl
+ sMvobVBQ925x6aq28lpYgC4Evas+kqMLTPSROxQ37qHNARFU1BpOE8bfAkFtFSM8Ee92
+ DVHgnxde+RA+xQouxccekHde+aqbKqv5+XQmvf/9/SvEaGKommVBNSaZw6dEzxAMjYE4
+ G/oZYi6XtJPOBEynIkD/I6YCMNXmU5Fb1024MvtICTQ476MbTQzXFpSYLGNE1oplZ/O1
+ 5UVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711124083; x=1711728883;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=5bUm49VP7Mf87j+48prRGAAOIN94P6PXBy1Yvr/+KsI=;
- b=qq2U6WMvdq6uxMYejHVJ0CJkC0EHVkFyNJH6hX3nil/FSyKkWretqAi+Gs6281AdKr
- b6Pd1FW8WQH26g1H9y4dOoVmS+moUq+E/gv/eS7ToD9UZ4VOLPu8hbuP7CgpDyrJtCP5
- jFpgvF9eH8mE8VGA3uIK2g3+w7kqj/dj/AxHKIc0M0ph9tJupMM3/xnP4U3RCs4XDwKE
- o5RhCrIoptr+93qP6koaODrMakHJV9miywYlNy//tnui0cp1hNMx5LZVP7s+Iijge+xe
- 0lMhbBJ6gskhyFjMdM9sGk+ltcAf6IQpz3IcG3Z3Y6tk1z479XOGMx3TFOVS6bVcxWeH
- lbaw==
-X-Gm-Message-State: AOJu0Yy/psx/kA58NLixm/WBqaDVBO33Q7EKEPJO3KvnEEtvMvAkE/YA
- orlS7fPKkAeXpvvrMbeahF5FZ4+7SV2AcfUC6yw2a0Co9wvSijx3UAs1w9OAWuMpV8wJfqO8P90
- A
-X-Google-Smtp-Source: AGHT+IEDVYp6n8N+kPfYR9rh0qkEGDmpS/Fpb1POBgZYiskRZi37vL1PkK9XsuJ+ID4QEuHo2Z50CQ==
-X-Received: by 2002:a05:6000:1143:b0:33e:d7c1:a132 with SMTP id
- d3-20020a056000114300b0033ed7c1a132mr1565774wrx.29.1711124082879; 
- Fri, 22 Mar 2024 09:14:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711124089; x=1711728889;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=M3jectw/kExol21Tl/VOhcbnait7BaHf+x9145daJsc=;
+ b=tWujU4YU5ilvsZ2KDmgRhWpVQTPNpkF4ngewID/N1DECxhOC6dPrpKNWZmkfuf9Q4S
+ fBahfh1Q6D/X9EMsQSbBovc3A0kcZ0+XeBKDzPP/9nQTC1R4xjgSm/KP84o157/b7vxe
+ aEiLsdpqs277f6dhRrIBx6GjPdriRPcQkbcVTF6iJD1FG3/iyWDBFZKrNgcx7DouZV3a
+ l2DoL7X8hHgliR+4PI+H27yXJMRMWIkS/TOhdOMxjf/qUv/+APJAcFSBXF+z2aRJFeBK
+ eedYNGnU9yarijDVPK6se5jbYKYxRP6K9KzumceWm+QAcmP4uMoiDU/5qS5Q5uHduK9s
+ yOhw==
+X-Gm-Message-State: AOJu0YzSeU7ikIKPrKLKV2W8wohsBSbFbnqlrhATywdy8LPsyQ5Bm6Wm
+ Uizl0nJlGinI/QFqNKHnWx3ePoze38puHK3GvC+72KV+Qg/1nmh7zCWmp0I/YuKgRCNnWqWV5+3
+ 9
+X-Google-Smtp-Source: AGHT+IHnzpEOVwPDsBW32NjuihDhDnLtCe0iw73ewhehZA9lITU/6L8eY957zXmL0DGUCSwgDESxUw==
+X-Received: by 2002:a05:600c:5617:b0:413:315f:9e8d with SMTP id
+ jr23-20020a05600c561700b00413315f9e8dmr1991336wmb.18.1711124089140; 
+ Fri, 22 Mar 2024 09:14:49 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.178.251])
  by smtp.gmail.com with ESMTPSA id
- o3-20020a5d62c3000000b0033ec94c6277sm2351162wrv.115.2024.03.22.09.14.41
+ j8-20020a05600c1c0800b004146bcdde06sm3530094wms.6.2024.03.22.09.14.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Fri, 22 Mar 2024 09:14:42 -0700 (PDT)
+ Fri, 22 Mar 2024 09:14:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
@@ -63,15 +64,17 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH-for-9.1 v2 0/3] exec: Rename NEED_CPU_H -> COMPILING_PER_TARGET
-Date: Fri, 22 Mar 2024 17:14:36 +0100
-Message-ID: <20240322161439.6448-1-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 1/3] gdbstub: Simplify #ifdef'ry in helpers.h
+Date: Fri, 22 Mar 2024 17:14:37 +0100
+Message-ID: <20240322161439.6448-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240322161439.6448-1-philmd@linaro.org>
+References: <20240322161439.6448-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,37 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- prerequisites merged
-- s/CONFIG_TARGET/COMPILING_PER_TARGET/ (Peter)
+Slightly simplify by checking NEED_CPU_H definition in header.
 
-'NEED_CPU_H' guard target-specific code.
-Clarify by renaming as COMPILING_PER_TARGET.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/gdbstub/helpers.h | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Philippe Mathieu-Daudé (3):
-  gdbstub: Simplify #ifdef'ry in helpers.h
-  hw/core: Remove check on NEED_CPU_H in tcg-cpu-ops.h
-  exec: Rename NEED_CPU_H -> COMPILING_PER_TARGET
-
- meson.build                   | 4 ++--
- include/exec/cpu-defs.h       | 2 +-
- include/exec/helper-head.h    | 4 ++--
- include/exec/memop.h          | 4 ++--
- include/exec/memory.h         | 4 ++--
- include/exec/tswap.h          | 4 ++--
- include/gdbstub/helpers.h     | 9 ++++-----
- include/hw/core/cpu.h         | 4 ++--
- include/hw/core/tcg-cpu-ops.h | 3 ---
- include/qemu/osdep.h          | 2 +-
- include/sysemu/hvf.h          | 8 ++++----
- include/sysemu/kvm.h          | 6 +++---
- include/sysemu/nvmm.h         | 4 ++--
- include/sysemu/whpx.h         | 4 ++--
- include/sysemu/xen.h          | 4 ++--
- target/arm/kvm-consts.h       | 4 ++--
- scripts/analyze-inclusions    | 6 +++---
- 17 files changed, 36 insertions(+), 40 deletions(-)
-
+diff --git a/include/gdbstub/helpers.h b/include/gdbstub/helpers.h
+index c573aef2dc..53e88d807c 100644
+--- a/include/gdbstub/helpers.h
++++ b/include/gdbstub/helpers.h
+@@ -12,7 +12,10 @@
+ #ifndef _GDBSTUB_HELPERS_H_
+ #define _GDBSTUB_HELPERS_H_
+ 
+-#ifdef NEED_CPU_H
++#ifndef NEED_CPU_H
++#error "gdbstub helpers should only be included by target specific code"
++#endif
++
+ #include "cpu.h"
+ 
+ /*
+@@ -96,8 +99,4 @@ static inline uint8_t *gdb_get_reg_ptr(GByteArray *buf, int len)
+ #define ldtul_p(addr) ldl_p(addr)
+ #endif
+ 
+-#else
+-#error "gdbstub helpers should only be included by target specific code"
+-#endif
+-
+ #endif /* _GDBSTUB_HELPERS_H_ */
 -- 
 2.41.0
 
