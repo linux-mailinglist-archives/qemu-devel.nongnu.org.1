@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C348872D0
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:15:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3648872B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:12:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnjN4-0006Iq-Qt; Fri, 22 Mar 2024 14:12:02 -0400
+	id 1rnjN6-0006Ju-R5; Fri, 22 Mar 2024 14:12:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjN2-0006IC-TG
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:00 -0400
+ id 1rnjN3-0006IZ-PQ
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjN1-00070r-FR
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:00 -0400
+ id 1rnjN2-000712-2g
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711131118;
+ s=mimecast20190719; t=1711131119;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9UbgN6L5wwHBr2/dEFTK02U3qWZ6pGNJNZEj7uTD6i0=;
- b=FFqqARWxIWXPlrKuBaDhEif/+s0irCbpS70MxEYHj/nPrnJvS/bKRe7Y8wU4OTkaDm3QTX
- flSFyiRUgqt0QZm74BkNIJjg+BOHoqgiocoquFOzb2ck4xd8BZuPFMIIkImFEZrD3nUE8i
- 8M0qQsINBeTsEyMFeABVfKZZr6bO/WA=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mKoN19oHMDcrobaP2i6e/+46nFqFio8cvzkfoUlaEf0=;
+ b=DV6YPXqCEPd3oDD520Cy6f8bcohaplOany+goBs3M/D3/M2099LCCtFp8atpPl7m/LE2v/
+ Cgbreos4hrFJo6fcVZ3n2M17B3wfO8BEIcD3loB0LRWzSZf98in4OcSwG+McjIj6BYrJkX
+ IXjOOhEHXH0kGTBcXqJbtBtGFr1BLXY=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-497-QJmSKQ2gPIGHIMvzTguNLA-1; Fri, 22 Mar 2024 14:11:55 -0400
-X-MC-Unique: QJmSKQ2gPIGHIMvzTguNLA-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-558aafe9bf2so1970146a12.1
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:11:55 -0700 (PDT)
+ us-mta-375-tdqMKmOyMpiX6QSTdRGg_Q-1; Fri, 22 Mar 2024 14:11:58 -0400
+X-MC-Unique: tdqMKmOyMpiX6QSTdRGg_Q-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a4711e69b9bso130010666b.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:11:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711131111; x=1711735911;
+ d=1e100.net; s=20230601; t=1711131115; x=1711735915;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9UbgN6L5wwHBr2/dEFTK02U3qWZ6pGNJNZEj7uTD6i0=;
- b=gQAzFb+vpm7TbvpsUdDZ3tx3yHy7f0kNiYm9jHro9F0zC3tMb3GPcfrEeSiZ8kGdgw
- su/mBnTbZ2lqDRZWttit1fqgoo00g10u8awQeT+PNgDW4bsJZp22KRUThoOfx4cCN+U2
- 2tc9+Fa8/HChXbZ4hlcVTOxcHGEt74iRj8msyFX3QATZdDTSsVIy7ovMcdt1rtTX6vNO
- NO4qx8PJVqw6NVZ74HfUxxAhkL5qFkI2gbJadVrIkX7539xMF4t7r07TsQlHDgW1Og4i
- PUfjaIZjPPSUXPpkTKqHAXMs4WCWvaNpinDmoD7wn4ABDO8hpMs4btFohX9PlKd4qmL1
- tPwQ==
-X-Gm-Message-State: AOJu0YxKsvoOk8kKWLT7v2jR1oaxSGhSlvs9IfHdjlmGImx0HupQSE3C
- NnWP+DemUx/XZs51TKNicry+kjO1qhx8y9kH5eIGmF9wzpVrVXWEuAeMd3KC7UdSHDo1ryFPxrF
- gZ6IkSarphBZMFm/ipgfF3ChzldyZc7VtcXY8byTsUNs9xWIQ14wNkesla1UXHMad3ne5eQMdF8
- rGVV8MhPKBZFSme51Cure7RZI8WfmJhLmkASPx
-X-Received: by 2002:a50:9e45:0:b0:568:145a:4a19 with SMTP id
- z63-20020a509e45000000b00568145a4a19mr198268ede.4.1711131111404; 
- Fri, 22 Mar 2024 11:11:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3Ex6mGzd3lN6OgvfZj+75F8N+ee2vQZGBNPCaTnQxJzKUrFeu8JolWZO5nC6UuWwKroZoRg==
-X-Received: by 2002:a50:9e45:0:b0:568:145a:4a19 with SMTP id
- z63-20020a509e45000000b00568145a4a19mr198250ede.4.1711131111061; 
- Fri, 22 Mar 2024 11:11:51 -0700 (PDT)
+ bh=mKoN19oHMDcrobaP2i6e/+46nFqFio8cvzkfoUlaEf0=;
+ b=SbByCXEP/eFEJoZLER58jv89T0pIuvYF2xdl9BjTdkdP2PR4u10jCMkYCGkhdjbg8j
+ tRoLJuRTF15Uiq8pXffibGBCFF+b52oal8O7RoSoDRCjjOzTNhx0BJt7fCB/jJ8LM8Oe
+ ejh2w1ZGQ9vAgtVS+5HcsT5RKMDiJN9WoTgW/UxGq148c3r9IUh8Vk24gloznKMJ1+R4
+ fr1V4WlF7FmeVexK0Z/iN0/Gy1NeY+YSzfhuejixP8WxJttudZN5N4J7RUCvf7d39Y2O
+ hkiR4N8m37P7uavGx2MqqDTG44e8A8hoxkQPf3OQRKs+P5fjC6AiQjlBB7UBiGIjKNF1
+ uFkA==
+X-Gm-Message-State: AOJu0YzqdH5LN0soEig60Mwexo3qh/Ud7fgEP2EDzc9Xdo6FwcW6ayuK
+ p8LQ7vvJMTDCJqx6/MP3QEw8+roCNEXLuDYkm9KdOSB3LUMb3kiDsg0DaQ8o3jikqBNVnV1Fy6P
+ 9lybz3tQoVRu+C+2HE+5eFC8Fya33/U8Zu63WceLHtSoViRdKLwAYij+QSkGF7Ku2/BaMva3904
+ WMpVh2zSqg9JYQ/HNVGPa+Wbs+Tu0ZYthycppD
+X-Received: by 2002:a17:907:1706:b0:a47:1911:51d9 with SMTP id
+ le6-20020a170907170600b00a47191151d9mr381091ejc.73.1711131115690; 
+ Fri, 22 Mar 2024 11:11:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvOFRaIAM+HpVA3SMdT24B5mRFLIptJh+Et/HFrqFPSE2dgxP/ZS0KzsCmEJ7KEPohisiRsw==
+X-Received: by 2002:a17:907:1706:b0:a47:1911:51d9 with SMTP id
+ le6-20020a170907170600b00a47191151d9mr381081ejc.73.1711131115413; 
+ Fri, 22 Mar 2024 11:11:55 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- e25-20020a50fb99000000b0056be8a21ec4sm74579edq.32.2024.03.22.11.11.50
+ p2-20020a1709060e8200b00a46cddf1efbsm78830ejf.29.2024.03.22.11.11.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 11:11:50 -0700 (PDT)
+ Fri, 22 Mar 2024 11:11:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com,
 	david@redhat.com
-Subject: [PATCH 10/26] [TO SQUASH] hw/i386: Remove redeclaration of struct
- setup_data
-Date: Fri, 22 Mar 2024 19:11:00 +0100
-Message-ID: <20240322181116.1228416-11-pbonzini@redhat.com>
+Subject: [PATCH 11/26] runstate: skip initial CPU reset if reset is not
+ actually possible
+Date: Fri, 22 Mar 2024 19:11:01 +0100
+Message-ID: <20240322181116.1228416-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322181116.1228416-1-pbonzini@redhat.com>
 References: <20240322181116.1228416-1-pbonzini@redhat.com>
@@ -103,39 +103,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Roth <michael.roth@amd.com>
+Right now, the system reset is concluded by a call to
+cpu_synchronize_all_post_reset() in order to sync any changes
+that the machine reset callback applied to the CPU state.
 
-It is now provided by kernel headers.
+However, for VMs with encrypted state such as SEV-ES guests (currently
+the only case of guests with non-resettable CPUs) this cannot be done,
+because guest state has already been finalized by machine-init-done notifiers.
+cpu_synchronize_all_post_reset() does nothing on these guests, and actually
+we would like to make it fail if called once guest has been encrypted.
+So, assume that boards that support non-resettable CPUs do not touch
+CPU state and that all such setup is done before, at the time of
+cpu_synchronize_all_post_init().
 
-This needs to be squashed with the header update to avoid temporary
-build bisect breakage. Keeping it separate for reference.
-
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Message-ID: <20240320083945.991426-6-michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/x86.c | 8 --------
- 1 file changed, 8 deletions(-)
+ system/runstate.c | 15 ++++++++++++++-
+ roms/edk2         |  2 +-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index ffbda48917f..84a48019770 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -679,14 +679,6 @@ DeviceState *ioapic_init_secondary(GSIState *gsi_state)
-     return dev;
+diff --git a/system/runstate.c b/system/runstate.c
+index d6ab860ecaa..cb4905a40fc 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -501,7 +501,20 @@ void qemu_system_reset(ShutdownCause reason)
+     default:
+         qapi_event_send_reset(shutdown_caused_by_guest(reason), reason);
+     }
+-    cpu_synchronize_all_post_reset();
++
++    /*
++     * Some boards use the machine reset callback to point CPUs to the firmware
++     * entry point.  Assume that this is not the case for boards that support
++     * non-resettable CPUs (currently used only for confidential guests), in
++     * which case cpu_synchronize_all_post_init() is enough because
++     * it does _more_  than cpu_synchronize_all_post_reset().
++     */
++    if (cpus_are_resettable()) {
++        cpu_synchronize_all_post_reset();
++    } else {
++        assert(runstate_check(RUN_STATE_PRELAUNCH));
++    }
++
+     vm_set_suspended(false);
  }
  
--struct setup_data {
--    uint64_t next;
--    uint32_t type;
--    uint32_t len;
--    uint8_t data[];
--} __attribute__((packed));
--
--
- /*
-  * The entry point into the kernel for PVH boot is different from
-  * the native entry point.  The PVH entry is defined by the x86/HVM
+diff --git a/roms/edk2 b/roms/edk2
+index edc6681206c..819cfc6b42a 160000
+--- a/roms/edk2
++++ b/roms/edk2
+@@ -1 +1 @@
+-Subproject commit edc6681206c1a8791981a2f911d2fb8b3d2f5768
++Subproject commit 819cfc6b42a68790a23509e4fcc58ceb70e1965e
 -- 
 2.44.0
 
