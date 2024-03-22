@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF9C886899
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 139FF88689A
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:55:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnafL-0004b3-Oe; Fri, 22 Mar 2024 04:54:19 -0400
+	id 1rnafO-0004h8-HJ; Fri, 22 Mar 2024 04:54:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafI-0004ON-VL
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:17 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rnafM-0004fJ-6G
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:20 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafH-00012N-EL
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:16 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6e709e0c123so1540232b3a.1
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:15 -0700 (PDT)
+ id 1rnafK-00012Y-MV
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:19 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1dfff641d10so12230625ad.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711097653; x=1711702453; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711097657; x=1711702457; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SYRuYu6Nyn7zXJDQL50vurRoO71Bn8A9O+6ORi9MHIc=;
- b=WWPrwROg38cFGX1ky35ZpI7lJ8wzDtaM+zCSdGwC8VY8BZLtxDlDmkmiCcE7cIOjLl
- R1TJDMb+CRGRT1y4pNgY0MNaEs9fD5OWvONnZFbdkrMbmkj+5PqTZgYupyfWumAeEkUw
- vUicYZWD4YmOPuVnqtfANN9bhSnEr9cHvdzZd6/huq+tsVdZ/V/TFILFUn17sIGeYecq
- vBNIfIlkn/485y0X/vC0iOziSW5r4jrqBWHMY0At7pwlJXoaFkfInMngAtrUS2rw+im5
- 4BiSOlGaOql59ZlBTRfYD4oXFnWOT8xZT3oHYAuzAHOUySUwgu0jmK1d7q+DbETgs33c
- hkaA==
+ bh=oSFo3fIToAxpMkyPRv8jExYnTdr2jvQxba3OkQ37IQ0=;
+ b=YY7VDde5wrf1rJZ9hGDIqoqb/84e5admDpIWkdicTlLS+MbCx7mg7bzrQJNqI7Sqbe
+ zRKLhDmX+PBRYS/OrtR+HKE1ExfeYw+YQoRcAwCx7n+8SaZkEySwDdWORPTje4yu/DI1
+ lsCTQxDE3+RK5ud+m6lnGsCDc5ezwgEuEIyOeJ6KEt6PtTg+spxmsqdKMGq0LuecnddH
+ TDueOXYJ0CcdFF+1hwPQMV2nZt4eehgbsTsMOulQIG9gMmS7mFR1NFvN/yLAqVYpabvY
+ i3BUjKkr9axoF9S1wosbSIWMbRHLsE8sJ4ps/d6i5FkBpyavAghRlfs3etydKfCLGY4T
+ AElg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711097653; x=1711702453;
+ d=1e100.net; s=20230601; t=1711097657; x=1711702457;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SYRuYu6Nyn7zXJDQL50vurRoO71Bn8A9O+6ORi9MHIc=;
- b=DSDKfF2KKA+ARkqRpVuEwOJBMh+Oio93RfLkTRJCOgjcXkY9BxgKRPUOj3MVHWbqVC
- t4Eg/IoUebnrMihFztmkey0NHp+LCTXs7lBMlRjk5QMcskNlsGlXVD3CoRblHW4IyuhR
- oEEZ3oVl7kzM2rSDwWEzY5AAydluzhP5A19LoluAoe95jAYCRBuHI8yMhWhYDULNsME5
- deFIeO4QF6c4mhQ1EIzq6u6O+nB0e70E4xXaJkbKT5HvSgYb4Xl8qGZd5/X7gY/3BLnR
- d6I9Q2t36FjWIEJYARJrp0iNHFksgtGB7P8+uoZXHvRvYgGAGZrgunDXKjmLi/GvgBiK
- bOCw==
-X-Gm-Message-State: AOJu0YwHXOXq/lec+R4sSER+mOHIZyTwkt/Z/ucTzYFPWSVCmI+YB49Z
- n4DDR5Lul5iRROO78Yldr6Hhxxybu+Wtj4zUfIl5e3YFN0ojTi+aZXfjWYSqzbgezg==
-X-Google-Smtp-Source: AGHT+IFH6/kCtfYWPkatpO2OdwfvTL7AFvu/F83LklLVrc89fsjfPZk99J5JAm9/EQvetj2f7cdjDQ==
-X-Received: by 2002:a17:902:ec8b:b0:1e0:98f3:fe56 with SMTP id
- x11-20020a170902ec8b00b001e098f3fe56mr134456plg.26.1711097653512; 
- Fri, 22 Mar 2024 01:54:13 -0700 (PDT)
+ bh=oSFo3fIToAxpMkyPRv8jExYnTdr2jvQxba3OkQ37IQ0=;
+ b=Z1ES4rGe64paqMko/VwgB3RuyY3yRZAaGThHUa5R/CjZJQnc1cFnxOXljl68ngvIMD
+ EF5/HqVo0i3ZzMPH/bYFsUBfyRK4+1U+knzPoZTb4v99DtVwwgZdaldBpGiv+vCaE9ki
+ yoRk+j+lvYjQ4OIpx+xnjr+hUrlphUHGz46bjk1cXzdOmsMOqno89W058N2QFYJZLrdP
+ jp0eSdtV4QJZCq/yixayUV4XRdMyMuNLAAWQMZQJ81jA9yhHV76blX6yp2C79jKvHPPs
+ urkh0pa31GO3m/s/PLgCV0+rwwOhNVomjRp/XWYgEI2hfLM46heVPC7EXJgee7GbbF15
+ wYEA==
+X-Gm-Message-State: AOJu0YymYSAwp0xNqK1fsR3SHOOXgyQPFuaj6eLoLbbQ2CuczHmsVssQ
+ JAWShFdtx48xcza/gw2Y5g8tVA1qYvbpLVhoA+bTsszKL5Yl7gkduSAaXGTzRzx62Q==
+X-Google-Smtp-Source: AGHT+IGaRQNrh8prHyItgTFsN50K1NZ4FsYvWQaiRTBFjhjxiIpzzeVj0AYqYr7f4zRlHPBlcwGaBw==
+X-Received: by 2002:a17:903:2a86:b0:1de:ee01:56d7 with SMTP id
+ lv6-20020a1709032a8600b001deee0156d7mr1915632plb.51.1711097656797; 
+ Fri, 22 Mar 2024 01:54:16 -0700 (PDT)
 Received: from toolbox.wdc.com ([129.253.180.114])
  by smtp.gmail.com with ESMTPSA id
- h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.10
+ h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 01:54:13 -0700 (PDT)
+ Fri, 22 Mar 2024 01:54:16 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Max Chou <max.chou@sifive.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 13/15] target/riscv: rvv: Remove the dependency of Zvfbfmin to
- Zfbfmin
-Date: Fri, 22 Mar 2024 18:53:17 +1000
-Message-ID: <20240322085319.1758843-14-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Irina Ryapolova <irina.ryapolova@syntacore.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PULL 14/15] target/riscv: Fix mode in riscv_tlb_fill
+Date: Fri, 22 Mar 2024 18:53:18 +1000
+Message-ID: <20240322085319.1758843-15-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322085319.1758843-1-alistair.francis@wdc.com>
 References: <20240322085319.1758843-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=alistair23@gmail.com; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,36 +95,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Max Chou <max.chou@sifive.com>
+From: Irina Ryapolova <irina.ryapolova@syntacore.com>
 
-According to the Zvfbfmin definition in the RISC-V BF16 extensions spec,
-the Zvfbfmin extension only requires either the V extension or the
-Zve32f extension.
+Need to convert mmu_idx to privilege mode for PMP function.
 
-Signed-off-by: Max Chou <max.chou@sifive.com>
+Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
+Fixes: b297129ae1 ("target/riscv: propagate PMP permission to TLB page")
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20240321170929.1162507-1-max.chou@sifive.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-ID: <20240320172828.23965-1-irina.ryapolova@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 5 -----
- 1 file changed, 5 deletions(-)
+ target/riscv/cpu_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 63192ef54f..b5b95e052d 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -530,11 +530,6 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
-         return;
-     }
+diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+index ce7322011d..fc090d729a 100644
+--- a/target/riscv/cpu_helper.c
++++ b/target/riscv/cpu_helper.c
+@@ -1315,7 +1315,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     bool two_stage_lookup = mmuidx_2stage(mmu_idx);
+     bool two_stage_indirect_error = false;
+     int ret = TRANSLATE_FAIL;
+-    int mode = mmu_idx;
++    int mode = mmuidx_priv(mmu_idx);
+     /* default TLB page size */
+     target_ulong tlb_size = TARGET_PAGE_SIZE;
  
--    if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zfbfmin) {
--        error_setg(errp, "Zvfbfmin extension depends on Zfbfmin extension");
--        return;
--    }
--
-     if (cpu->cfg.ext_zvfbfmin && !cpu->cfg.ext_zve32f) {
-         error_setg(errp, "Zvfbfmin extension depends on Zve32f extension");
-         return;
 -- 
 2.44.0
 
