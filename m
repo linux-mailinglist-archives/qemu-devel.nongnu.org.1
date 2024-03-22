@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DB5886DDE
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABA3886DDF
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 14:52:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfIw-0004xY-He; Fri, 22 Mar 2024 09:51:30 -0400
+	id 1rnfJA-0004yn-4W; Fri, 22 Mar 2024 09:51:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfIu-0004wu-Ee
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 09:51:28 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfJ8-0004yf-N5
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 09:51:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfIs-0007jk-Ml
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 09:51:28 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfJ6-0007l4-Sv
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 09:51:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711115484;
+ s=mimecast20190719; t=1711115500;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=F2j3MGbPvnryVhZQN2FWP7gAyDeQ6czpXAsXLIytySQ=;
- b=bQ+8EyvFIqoDJUGjjJTot5+Mbb8HKwzxEmlVzWaiTDGhQ7PnqDEkU5UGcBCuAFLoZ8l4af
- WItniaYJMM/NgpJMjhlPOd99uYcy8uynDF0mTOYB04NYxRlsusvN0A9agTIVx5ThHQVqUv
- xTmyrk3U/gDoJ+OsaGAlyxVtvYantU8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-0d-9fLo8NsCA0Bd937TRzA-1; Fri,
- 22 Mar 2024 09:51:22 -0400
-X-MC-Unique: 0d-9fLo8NsCA0Bd937TRzA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HE1/LAbBgKNGZUN4vVfwfMG2XgQCV3fyiLC2K6eI99Q=;
+ b=WYjCebqV8yFbB618yR/oFWmcPGJ5prrsX1Uqz69irzzjNInJlwtvLzZsLIz9n3eB6f5aO7
+ 0SBhHijQTio5F2+xDfcAqQ3XhZQ3TLr1IhqPEXyIqYdbcesAne8JZ3zI0Qu72dgujNtkrt
+ mmqj+gYoak5XfuZuwTdBCRUqkS5nrJs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-PHdL2ihnNOqjEDv1gbHG8g-1; Fri, 22 Mar 2024 09:51:38 -0400
+X-MC-Unique: PHdL2ihnNOqjEDv1gbHG8g-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4DBC03C021A7;
- Fri, 22 Mar 2024 13:51:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B71285CBAC;
+ Fri, 22 Mar 2024 13:51:38 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D9C41121306;
- Fri, 22 Mar 2024 13:51:22 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2FBCC3C54;
+ Fri, 22 Mar 2024 13:51:38 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0F84521E6145; Fri, 22 Mar 2024 14:51:17 +0100 (CET)
+ id 1124E21E5D27; Fri, 22 Mar 2024 14:51:17 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, farosas@suse.de, eblake@redhat.com, berrange@redhat.com
-Subject: [PATCH 0/3] qapi/migration: Doc fixes
-Date: Fri, 22 Mar 2024 14:51:14 +0100
-Message-ID: <20240322135117.195489-1-armbru@redhat.com>
+Subject: [PATCH 1/3] qapi: Improve migration TLS documentation
+Date: Fri, 22 Mar 2024 14:51:15 +0100
+Message-ID: <20240322135117.195489-2-armbru@redhat.com>
+In-Reply-To: <20240322135117.195489-1-armbru@redhat.com>
+References: <20240322135117.195489-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -76,16 +79,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I'd like to get these into the release.  Please review.
+MigrateSetParameters is about setting parameters, and
+MigrationParameters is about querying them.  Their documentation of
+@tls-creds and @tls-hostname has residual damage from a failed attempt
+at de-duplicating them (see commit de63ab61241 "migrate: Share common
+MigrationParameters struct" and commit 1bda8b3c695 "migration: Unshare
+MigrationParameters struct for now").
 
-Markus Armbruster (3):
-  qapi: Improve migration TLS documentation
-  qapi: Resync MigrationParameter and MigrateSetParameters
-  qapi: Fix bogus documentation of query-migrationthreads
+MigrateSetParameters documentation issues:
 
- qapi/migration.json | 91 +++++++++++++++++++++++++--------------------
- 1 file changed, 50 insertions(+), 41 deletions(-)
+* It claims plain text mode "was reported by omitting tls-creds"
+  before 2.9.  MigrateSetParameters is not used for reporting, so this
+  is misleading.  Delete.
 
+* It similarly claims hostname defaulting to migration URI "was
+  reported by omitting tls-hostname" before 2.9.  Delete as well.
+
+Rephrase the remaining @tls-hostname contents for clarity.
+
+Enum MigrationParameter mirrors the members of struct
+MigrateSetParameters.  Differences to MigrateSetParameters's member
+documentation are pointless.  Copy the new text to MigrationParameter.
+
+MigrationParameters documentation issues:
+
+* @tls-creds runs the two last sentences together without punctuation.
+  Fix that.
+
+* Much of the contents on @tls-hostname only applies to setting
+  parameters, resulting in confusion.  Replace by a suitable abridged
+  version of the new MigrateSetParameters text, and a note on
+  @tls-hostname omission in 2.8.
+
+Additional damage is due to flawed doc fix commit
+66fcb9d651d (qapi/migration: Add missing tls-authz documentation):
+since it copied the missing MigrateSetParameters text from
+MigrationParameters instead of MigrationParameter, the part on
+recreating @tls-authz on the fly is missing.  Copy that, too.
+
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ qapi/migration.json | 63 +++++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 31 deletions(-)
+
+diff --git a/qapi/migration.json b/qapi/migration.json
+index aa1b39bce1..cbcc6946eb 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -809,16 +809,19 @@
+ #     for establishing a TLS connection over the migration data
+ #     channel.  On the outgoing side of the migration, the credentials
+ #     must be for a 'client' endpoint, while for the incoming side the
+-#     credentials must be for a 'server' endpoint.  Setting this will
+-#     enable TLS for all migrations.  The default is unset, resulting
+-#     in unsecured migration at the QEMU level.  (Since 2.7)
++#     credentials must be for a 'server' endpoint.  Setting this to a
++#     non-empty string enables TLS for all migrations.  An empty
++#     string means that QEMU will use plain text mode for migration,
++#     rather than TLS.  (Since 2.7)
+ #
+-# @tls-hostname: hostname of the target host for the migration.  This
+-#     is required when using x509 based TLS credentials and the
+-#     migration URI does not already include a hostname.  For example
+-#     if using fd: or exec: based migration, the hostname must be
+-#     provided so that the server's x509 certificate identity can be
+-#     validated.  (Since 2.7)
++# @tls-hostname: migration target's hostname for validating the
++#     server's x509 certificate identify.  If empty, QEMU will use the
++#     hostname from the migration URI, if any.  A non-empty value is
++#     required when using x509 based TLS credentials and the migration
++#     URI does not include a hostname, such as fd: or exec: based
++#     migration.  (Since 2.7)
++#
++#     Note: empty value works only since 2.9.
+ #
+ # @tls-authz: ID of the 'authz' object subclass that provides access
+ #     control checking of the TLS x509 certificate distinguished name.
+@@ -1006,22 +1009,22 @@
+ #     credentials must be for a 'server' endpoint.  Setting this to a
+ #     non-empty string enables TLS for all migrations.  An empty
+ #     string means that QEMU will use plain text mode for migration,
+-#     rather than TLS (Since 2.9) Previously (since 2.7), this was
+-#     reported by omitting tls-creds instead.
++#     rather than TLS.  This is the default.  (Since 2.7)
+ #
+-# @tls-hostname: hostname of the target host for the migration.  This
+-#     is required when using x509 based TLS credentials and the
+-#     migration URI does not already include a hostname.  For example
+-#     if using fd: or exec: based migration, the hostname must be
+-#     provided so that the server's x509 certificate identity can be
+-#     validated.  (Since 2.7) An empty string means that QEMU will use
+-#     the hostname associated with the migration URI, if any.  (Since
+-#     2.9) Previously (since 2.7), this was reported by omitting
+-#     tls-hostname instead.
++# @tls-hostname: migration target's hostname for validating the
++#     server's x509 certificate identify.  If empty, QEMU will use the
++#     hostname from the migration URI, if any.  A non-empty value is
++#     required when using x509 based TLS credentials and the migration
++#     URI does not include a hostname, such as fd: or exec: based
++#     migration.  (Since 2.7)
++#
++#     Note: empty value works only since 2.9.
+ #
+ # @tls-authz: ID of the 'authz' object subclass that provides access
+ #     control checking of the TLS x509 certificate distinguished name.
+-#     (Since 4.0)
++#     This object is only resolved at time of use, so can be deleted
++#     and recreated on the fly while the migration server is active.
++#     If missing, it will default to denying access (Since 4.0)
+ #
+ # @max-bandwidth: to set maximum speed for migration.  maximum speed
+ #     in bytes per second.  (Since 2.8)
+@@ -1240,17 +1243,15 @@
+ #     must be for a 'client' endpoint, while for the incoming side the
+ #     credentials must be for a 'server' endpoint.  An empty string
+ #     means that QEMU will use plain text mode for migration, rather
+-#     than TLS (Since 2.7) Note: 2.8 reports this by omitting
+-#     tls-creds instead.
++#     than TLS.  (Since 2.7)
+ #
+-# @tls-hostname: hostname of the target host for the migration.  This
+-#     is required when using x509 based TLS credentials and the
+-#     migration URI does not already include a hostname.  For example
+-#     if using fd: or exec: based migration, the hostname must be
+-#     provided so that the server's x509 certificate identity can be
+-#     validated.  (Since 2.7) An empty string means that QEMU will use
+-#     the hostname associated with the migration URI, if any.  (Since
+-#     2.9) Note: 2.8 reports this by omitting tls-hostname instead.
++#     Note: 2.8 omits empty @tls-creds instead.
++#
++# @tls-hostname: migration target's hostname for validating the
++#     server's x509 certificate identify.  If empty, QEMU will use the
++#     hostname from the migration URI, if any.  (Since 2.7)
++#
++#     Note: 2.8 omits empty @tls-hostname instead.
+ #
+ # @tls-authz: ID of the 'authz' object subclass that provides access
+ #     control checking of the TLS x509 certificate distinguished name.
 -- 
 2.44.0
 
