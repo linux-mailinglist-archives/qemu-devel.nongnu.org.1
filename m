@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164E8886E1B
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F11886E2D
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:11:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfaI-0002xV-Sl; Fri, 22 Mar 2024 10:09:26 -0400
+	id 1rnfaV-0003DP-QN; Fri, 22 Mar 2024 10:09:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaG-0002x9-UQ
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaT-0003Ch-IU
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaF-0003Yh-CP
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaR-0003af-N3
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711116562;
+ s=mimecast20190719; t=1711116574;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JyaNqmMiyj163W2hmIq2F2eKalZCSACQzS7SKVDGlUE=;
- b=O0iXIoEpkFKBCBYCVYEnShsxvhocwp9ZqxAh3Cdli3fdzJ6alxDIgjpMcToNNXl9Y8uhMb
- 5FkN7CsCuQ9ZXRmu+qNaVD5pKKiL39nFwHtfXFBNA4iWeLZ3NjhHfam0h5CdwcfCWu2DvV
- zKV18adlr6sVNlBHwpBvXdePGJHPF1E=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-630-ROr7_PCfNz2XRFOuzmN4pw-1; Fri,
- 22 Mar 2024 10:09:21 -0400
-X-MC-Unique: ROr7_PCfNz2XRFOuzmN4pw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=h++xHPlDfip5cmYx+i1JO+ppTMeDrZlDhdmAYT13zvY=;
+ b=XD75vRJQamJXzMzAlGchEmuBkzBA9Oczcd2PFUFxxCk/SHVKPdhSfLEJeziBQITvbH6ssk
+ KBsjnpuONs914DAoggDhFKYXGQ68aiXt5AFb8BqXMzQ67R9mNAUqTMYzjJi9GFw+kPIXol
+ XjRgGHRCSFr+xl3/PM9PsP7Nw66aLDU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-73-Wn36b7H7MyGg7pSEP1Rbhw-1; Fri, 22 Mar 2024 10:09:33 -0400
+X-MC-Unique: Wn36b7H7MyGg7pSEP1Rbhw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED539383DCC0;
- Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1BBAD185A78E;
+ Fri, 22 Mar 2024 14:09:33 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CCD1C2022C1D;
- Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id F026440C6CB5;
+ Fri, 22 Mar 2024 14:09:32 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CC97821E5D2B; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
+ id CF45921E5D2C; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com,
 	michael.roth@amd.com,
 	kkostiuk@redhat.com
-Subject: [PATCH 05/12] qapi: Fix argument markup in drive-mirror documentation
-Date: Fri, 22 Mar 2024 15:09:03 +0100
-Message-ID: <20240322140910.328840-6-armbru@redhat.com>
+Subject: [PATCH 06/12] qapi: Fix typo in request-ebpf documentation
+Date: Fri, 22 Mar 2024 15:09:04 +0100
+Message-ID: <20240322140910.328840-7-armbru@redhat.com>
 In-Reply-To: <20240322140910.328840-1-armbru@redhat.com>
 References: <20240322140910.328840-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -83,22 +83,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/block-core.json | 2 +-
+ qapi/ebpf.json | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qapi/block-core.json b/qapi/block-core.json
-index 1874f880a8..64668b080d 100644
---- a/qapi/block-core.json
-+++ b/qapi/block-core.json
-@@ -2117,7 +2117,7 @@
- # Start mirroring a block device's writes to a new destination.
- # target specifies the target of the new image.  If the file exists,
- # or if it is a device, it will be used as the new destination for
--# writes.  If it does not exist, a new file will be created.  format
-+# writes.  If it does not exist, a new file will be created.  @format
- # specifies the format of the mirror image, default is to probe if
- # mode='existing', else the format of the source.
+diff --git a/qapi/ebpf.json b/qapi/ebpf.json
+index f413d00154..61359e1c0f 100644
+--- a/qapi/ebpf.json
++++ b/qapi/ebpf.json
+@@ -51,7 +51,7 @@
+ # @request-ebpf:
  #
+ # Retrieve an eBPF object that can be loaded with libbpf.  Management
+-# applications (g.e. libvirt) may load it and pass file descriptors to
++# applications (e.g. libvirt) may load it and pass file descriptors to
+ # QEMU, so they can run running QEMU without BPF capabilities.
+ #
+ # @id: The ID of the program to return.
 -- 
 2.44.0
 
