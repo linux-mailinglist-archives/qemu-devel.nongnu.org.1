@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3648872B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:12:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9B48872B5
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:12:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnjN6-0006Ju-R5; Fri, 22 Mar 2024 14:12:04 -0400
+	id 1rnjN9-0006KP-Qx; Fri, 22 Mar 2024 14:12:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjN3-0006IZ-PQ
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rnjN7-0006KE-Jt
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjN2-000712-2g
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:01 -0400
+ id 1rnjN6-000726-4U
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711131119;
+ s=mimecast20190719; t=1711131123;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mKoN19oHMDcrobaP2i6e/+46nFqFio8cvzkfoUlaEf0=;
- b=DV6YPXqCEPd3oDD520Cy6f8bcohaplOany+goBs3M/D3/M2099LCCtFp8atpPl7m/LE2v/
- Cgbreos4hrFJo6fcVZ3n2M17B3wfO8BEIcD3loB0LRWzSZf98in4OcSwG+McjIj6BYrJkX
- IXjOOhEHXH0kGTBcXqJbtBtGFr1BLXY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ybGTeJ15j23uaLcwCaC0bXlA3wGJbYUuGHTm8RBxdns=;
+ b=T2zRmUyHA3VUhzmyDrWZzONgcezAbWCxYpL68N5YiNZ90W/JLcDqCmwx/My2Vg51f1s4Hk
+ 8wZG56xkKO5wKAarq0XKdMYTamCi69e4peEHzIPRH6VVep6P34SWdza3t29aPnY0uYzPpx
+ IESpdxTiHAnk2rcRPxV+fkkfd+VSOUw=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-375-tdqMKmOyMpiX6QSTdRGg_Q-1; Fri, 22 Mar 2024 14:11:58 -0400
-X-MC-Unique: tdqMKmOyMpiX6QSTdRGg_Q-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a4711e69b9bso130010666b.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:11:57 -0700 (PDT)
+ us-mta-596-x0NdHLI-N42n0hB3yKGLTA-1; Fri, 22 Mar 2024 14:12:00 -0400
+X-MC-Unique: x0NdHLI-N42n0hB3yKGLTA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-56b829a3b41so1372145a12.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:12:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711131115; x=1711735915;
+ d=1e100.net; s=20230601; t=1711131119; x=1711735919;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mKoN19oHMDcrobaP2i6e/+46nFqFio8cvzkfoUlaEf0=;
- b=SbByCXEP/eFEJoZLER58jv89T0pIuvYF2xdl9BjTdkdP2PR4u10jCMkYCGkhdjbg8j
- tRoLJuRTF15Uiq8pXffibGBCFF+b52oal8O7RoSoDRCjjOzTNhx0BJt7fCB/jJ8LM8Oe
- ejh2w1ZGQ9vAgtVS+5HcsT5RKMDiJN9WoTgW/UxGq148c3r9IUh8Vk24gloznKMJ1+R4
- fr1V4WlF7FmeVexK0Z/iN0/Gy1NeY+YSzfhuejixP8WxJttudZN5N4J7RUCvf7d39Y2O
- hkiR4N8m37P7uavGx2MqqDTG44e8A8hoxkQPf3OQRKs+P5fjC6AiQjlBB7UBiGIjKNF1
- uFkA==
-X-Gm-Message-State: AOJu0YzqdH5LN0soEig60Mwexo3qh/Ud7fgEP2EDzc9Xdo6FwcW6ayuK
- p8LQ7vvJMTDCJqx6/MP3QEw8+roCNEXLuDYkm9KdOSB3LUMb3kiDsg0DaQ8o3jikqBNVnV1Fy6P
- 9lybz3tQoVRu+C+2HE+5eFC8Fya33/U8Zu63WceLHtSoViRdKLwAYij+QSkGF7Ku2/BaMva3904
- WMpVh2zSqg9JYQ/HNVGPa+Wbs+Tu0ZYthycppD
-X-Received: by 2002:a17:907:1706:b0:a47:1911:51d9 with SMTP id
- le6-20020a170907170600b00a47191151d9mr381091ejc.73.1711131115690; 
- Fri, 22 Mar 2024 11:11:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGvOFRaIAM+HpVA3SMdT24B5mRFLIptJh+Et/HFrqFPSE2dgxP/ZS0KzsCmEJ7KEPohisiRsw==
-X-Received: by 2002:a17:907:1706:b0:a47:1911:51d9 with SMTP id
- le6-20020a170907170600b00a47191151d9mr381081ejc.73.1711131115413; 
- Fri, 22 Mar 2024 11:11:55 -0700 (PDT)
+ bh=ybGTeJ15j23uaLcwCaC0bXlA3wGJbYUuGHTm8RBxdns=;
+ b=jUxjfneoawOupOKF5UxfLhyiy2z0LuqDCJawNHA9tU3WgB35XlADBZYn1nNVA2rBEt
+ rFeR+bUkyjh4FbvV3RNpw+M4ewYZno8iBjRPsc32uvNfh7Zx9As/AQMPGNyBAaJeOJCT
+ 5I+J1DJCSVD5AMZ2/cSzM3SvmGep2v6thf2Y40vjavxaA5yPzRVW1gKAA/4A141XItpM
+ 3Ng9Pi0GdU8wFXV7Quw7x7zmOP+lBqpJf8R9ziwiB0jaNm1HDlW0YXG2W77Ylvae0ZjQ
+ wWcHkodO+ie+ZehTinXm0Oh8T8kXEM2LK3HP0PH4qIj/ZzIdvGQZtHqQ0L+7Emz6gOT+
+ +zyA==
+X-Gm-Message-State: AOJu0Yz8xFh4WRHXBuEWEk3NyHC0gsvf1nGVOjQjHt+f+qoPjpGcCYZD
+ nGgo/SKLnDjaXUugxJok0Wm9yTCv/0fiaNYFYVlFxlGBjS6TN4ZBU8Bc33LEHwayyF0OLhz5A0W
+ KpHtydMu7TIhDRxmwDNjmAongN11TIOOQjDgfjuO7y6kMByRYrVjMePP3z9u4Jfuvksb25rjsD7
+ //HndFfZ4Rcbr/SJd5fgEJ6EUauB0nCGfhJCgt
+X-Received: by 2002:a50:d594:0:b0:56b:902e:b144 with SMTP id
+ v20-20020a50d594000000b0056b902eb144mr192619edi.12.1711131118930; 
+ Fri, 22 Mar 2024 11:11:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKOHI4Z9v+6MSVTyAgMg95WsgYfetbNPWZowO9qwc+UeYAk0Gh4Y2YLlm2Ospf8Dcyb1c7bw==
+X-Received: by 2002:a50:d594:0:b0:56b:902e:b144 with SMTP id
+ v20-20020a50d594000000b0056b902eb144mr192607edi.12.1711131118656; 
+ Fri, 22 Mar 2024 11:11:58 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- p2-20020a1709060e8200b00a46cddf1efbsm78830ejf.29.2024.03.22.11.11.51
+ h26-20020a50ed9a000000b005689baaae61sm74449edr.26.2024.03.22.11.11.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 11:11:52 -0700 (PDT)
+ Fri, 22 Mar 2024 11:11:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com,
 	david@redhat.com
-Subject: [PATCH 11/26] runstate: skip initial CPU reset if reset is not
- actually possible
-Date: Fri, 22 Mar 2024 19:11:01 +0100
-Message-ID: <20240322181116.1228416-12-pbonzini@redhat.com>
+Subject: [PATCH 12/26] KVM: track whether guest state is encrypted
+Date: Fri, 22 Mar 2024 19:11:02 +0100
+Message-ID: <20240322181116.1228416-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322181116.1228416-1-pbonzini@redhat.com>
 References: <20240322181116.1228416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -103,58 +102,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Right now, the system reset is concluded by a call to
-cpu_synchronize_all_post_reset() in order to sync any changes
-that the machine reset callback applied to the CPU state.
+So far, KVM has allowed KVM_GET/SET_* ioctls to execute even if the
+guest state is encrypted, in which case they do nothing.  For the new
+API using VM types, instead, the ioctls will fail which is a safer and
+more robust approach.
 
-However, for VMs with encrypted state such as SEV-ES guests (currently
-the only case of guests with non-resettable CPUs) this cannot be done,
-because guest state has already been finalized by machine-init-done notifiers.
-cpu_synchronize_all_post_reset() does nothing on these guests, and actually
-we would like to make it fail if called once guest has been encrypted.
-So, assume that boards that support non-resettable CPUs do not touch
-CPU state and that all such setup is done before, at the time of
-cpu_synchronize_all_post_init().
+The new API will be the only one available for SEV-SNP and TDX, but it
+is also usable for SEV and SEV-ES.  In preparation for that, require
+architecture-specific KVM code to communicate the point at which guest
+state is protected (which must be after kvm_cpu_synchronize_post_init(),
+though that might change in the future in order to suppor migration).
+From that point, skip reading registers so that cpu->vcpu_dirty is
+never true: if it ever becomes true, kvm_arch_put_registers() will
+fail miserably.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/runstate.c | 15 ++++++++++++++-
- roms/edk2         |  2 +-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ include/sysemu/kvm.h     |  2 ++
+ include/sysemu/kvm_int.h |  1 +
+ accel/kvm/kvm-all.c      | 14 ++++++++++++--
+ target/i386/sev.c        |  1 +
+ 4 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/system/runstate.c b/system/runstate.c
-index d6ab860ecaa..cb4905a40fc 100644
---- a/system/runstate.c
-+++ b/system/runstate.c
-@@ -501,7 +501,20 @@ void qemu_system_reset(ShutdownCause reason)
-     default:
-         qapi_event_send_reset(shutdown_caused_by_guest(reason), reason);
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index fad9a7e8ff3..302e8f6f1e5 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -539,6 +539,8 @@ bool kvm_dirty_ring_enabled(void);
+ 
+ uint32_t kvm_dirty_ring_size(void);
+ 
++void kvm_mark_guest_state_protected(void);
++
+ /**
+  * kvm_hwpoisoned_mem - indicate if there is any hwpoisoned page
+  * reported for the VM.
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index 882e37e12c5..3496be7997a 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -87,6 +87,7 @@ struct KVMState
+     bool kernel_irqchip_required;
+     OnOffAuto kernel_irqchip_split;
+     bool sync_mmu;
++    bool guest_state_protected;
+     uint64_t manual_dirty_log_protect;
+     /* The man page (and posix) say ioctl numbers are signed int, but
+      * they're not.  Linux, glibc and *BSD all treat ioctl numbers as
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index a8cecd040eb..05fa3533c66 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2698,7 +2698,7 @@ bool kvm_cpu_check_are_resettable(void)
+ 
+ static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
+         int ret = kvm_arch_get_registers(cpu);
+         if (ret) {
+             error_report("Failed to get registers: %s", strerror(-ret));
+@@ -2712,7 +2712,7 @@ static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+ 
+ void kvm_cpu_synchronize_state(CPUState *cpu)
+ {
+-    if (!cpu->vcpu_dirty) {
++    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
+         run_on_cpu(cpu, do_kvm_cpu_synchronize_state, RUN_ON_CPU_NULL);
      }
--    cpu_synchronize_all_post_reset();
-+
+ }
+@@ -2747,6 +2747,11 @@ static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
+ 
+ void kvm_cpu_synchronize_post_init(CPUState *cpu)
+ {
 +    /*
-+     * Some boards use the machine reset callback to point CPUs to the firmware
-+     * entry point.  Assume that this is not the case for boards that support
-+     * non-resettable CPUs (currently used only for confidential guests), in
-+     * which case cpu_synchronize_all_post_init() is enough because
-+     * it does _more_  than cpu_synchronize_all_post_reset().
++     * This runs before the machine_init_done notifiers, and is the last
++     * opportunity to synchronize the state of confidential guests.
 +     */
-+    if (cpus_are_resettable()) {
-+        cpu_synchronize_all_post_reset();
-+    } else {
-+        assert(runstate_check(RUN_STATE_PRELAUNCH));
-+    }
-+
-     vm_set_suspended(false);
++    assert(!kvm_state->guest_state_protected);
+     run_on_cpu(cpu, do_kvm_cpu_synchronize_post_init, RUN_ON_CPU_NULL);
  }
  
-diff --git a/roms/edk2 b/roms/edk2
-index edc6681206c..819cfc6b42a 160000
---- a/roms/edk2
-+++ b/roms/edk2
-@@ -1 +1 @@
--Subproject commit edc6681206c1a8791981a2f911d2fb8b3d2f5768
-+Subproject commit 819cfc6b42a68790a23509e4fcc58ceb70e1965e
+@@ -4094,3 +4099,8 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
+         query_stats_schema_vcpu(first_cpu, &stats_args);
+     }
+ }
++
++void kvm_mark_guest_state_protected(void)
++{
++    kvm_state->guest_state_protected = true;
++}
+diff --git a/target/i386/sev.c b/target/i386/sev.c
+index b8f79d34d19..c49a8fd55eb 100644
+--- a/target/i386/sev.c
++++ b/target/i386/sev.c
+@@ -755,6 +755,7 @@ sev_launch_get_measure(Notifier *notifier, void *unused)
+         if (ret) {
+             exit(1);
+         }
++        kvm_mark_guest_state_protected();
+     }
+ 
+     /* query the measurement blob length */
 -- 
 2.44.0
 
