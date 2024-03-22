@@ -2,80 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A952886C13
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 13:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 557C7886C60
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 13:52:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rne0x-0004fy-Nf; Fri, 22 Mar 2024 08:28:51 -0400
+	id 1rneMS-00023v-Ba; Fri, 22 Mar 2024 08:51:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rne0v-0004fg-E7
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:28:49 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rne0t-0007hu-Tu
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:28:49 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-513e134f73aso2632576e87.2
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 05:28:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711110525; x=1711715325; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OuoV62rdX4upOdLa7ME4Zj//MWBhiH7bt8BB6pdrXqU=;
- b=TG8rsj+PGbxGNctWIXmQaNsp0OcJjZ5JWktuN8Q58/AqyzsZ8y1OlnHna2xvoHkKky
- ISAsOCCJ6jieutI9KoGh3uZai9WD/PkTfi4TaPqaaA/P+8sKCtlA6Cx3utiw0aZRhD9b
- 3+LpMA4eUUMpFPc5uXWA88D6V2mcFllWULvBvygvAc+pND/tIGaWq0xfwyGTvrdELe1S
- CUpNawPgYlBB0nod26Z+R3aV3Edf16ADFCHnkjqV3hiWbtMYi8gYegFe8fRJVz0drc7F
- uewWkDh/zFBE0npGNnUJ1e7wKYP4IwezIydRZ8UgSuwQQFPuLtIyaixYHIM4EiutCHMi
- BkgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711110525; x=1711715325;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OuoV62rdX4upOdLa7ME4Zj//MWBhiH7bt8BB6pdrXqU=;
- b=lK6LUVRO1jp3IjEvhtnIv9R1dxkma0Yycq1HNGBQ4oxb+7dtZNb+VAsDAWXUOBMXuo
- ++I2Za9YOxd0gCNKjK7TaooP2IMzxu1MsBiZpqt+/s5l/2xbQ0Pez1qTLLJFiMSSFnJX
- +hatzYJHtWgoEPbMt3lKduOnCOIKwFzW0ZMfD3UgFy7uZ9eEvrpgK/+XMdg/ixEExpgS
- Q3cJl/nktvVm+cwfWocWS9DPMwwmLSOKE1f014UKOI6ar4nIsdfUuVcRiWTSyOcrO0Vh
- 2KWgaQ4zuXfVbEqTSzaho7vlTOJpU0rPZ62AKhnf+CoONgDNkoxgcelWjSC/ka9NjvNu
- /weg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXM4pbp8kmysz1vGQnUTLKej8YKptdNGgN5YuOFhHk0mTsvFxpfS8io70muSO+VrYGyKNRI5fUJSb7cICEIcvCm5Fn2DDQ=
-X-Gm-Message-State: AOJu0YyxKsYleISVLfbs4u91Xahsog4fP8Ro9wTG6sECDO4MR6dq+8kj
- AFM7z54r1l0UpOl2curKs5Kde/9qiLZBT6zNFgcda1oyw2ZnB5KgTDmrbX37fdHzSy2bsa8CjKa
- UjOji2QEZ0Cg2rny+5x6ziXPMjnSvegotEEhfKA==
-X-Google-Smtp-Source: AGHT+IEyHWXDxwS8aayLW/p7kPK9KNLfZClCbQ/Sum3HELDJXY7xdJOzgPPC5o/t5lsVSStQpWeSDZ9l5rAKy2I+x9g=
-X-Received: by 2002:a19:4302:0:b0:513:df6:dcd3 with SMTP id
- q2-20020a194302000000b005130df6dcd3mr1620554lfa.48.1711110525576; Fri, 22 Mar
- 2024 05:28:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rneMM-00022a-3p
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:50:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rneMK-0003Ae-Bc
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 08:50:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711111853;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=WooMsR1THrWNs3sSPXkMGo7sE9cVLAC8nCveF1oP/UU=;
+ b=FNhnlqR7pKstmT8g11R/IAN57SflLpXu/jTRvlC+HIUgbzR15XDE5zsICHPWOzjIwZbb3k
+ f520EN5BbN4Zh1wPS3TrBwP+0dgZISLByanNOcIngKI/1D03O1ebaAxps9rCe64/3qbF6o
+ sE4x/75LTfJn1a5jRmff08CQ3PxJu3Y=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-BXuJwiB0NCOlqhzb0oaKrw-1; Fri, 22 Mar 2024 08:50:50 -0400
+X-MC-Unique: BXuJwiB0NCOlqhzb0oaKrw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCC8A800265;
+ Fri, 22 Mar 2024 12:50:49 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.134])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B690C2022C1D;
+ Fri, 22 Mar 2024 12:50:49 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 8756518014AE; Fri, 22 Mar 2024 13:50:44 +0100 (CET)
+Date: Fri, 22 Mar 2024 13:50:44 +0100
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: qemu-devel@nongnu.org, Tom Lendacky <thomas.lendacky@amd.com>, 
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v4 1/2] kvm: add support for guest physical bits
+Message-ID: <6gxghpqxu3756dddw7eia7hkmr4ufwhdm4pdun2iukq7fv2q4w@mt3u5ijgmhyx>
+References: <20240318155336.156197-1-kraxel@redhat.com>
+ <20240318155336.156197-2-kraxel@redhat.com>
+ <54e8b518-2bea-4a5b-a75a-4fd45535c6fa@intel.com>
 MIME-Version: 1.0
-References: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
- <20240318-fixes-v1-3-34f1a849b0d9@daynix.com>
-In-Reply-To: <20240318-fixes-v1-3-34f1a849b0d9@daynix.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 22 Mar 2024 12:28:34 +0000
-Message-ID: <CAFEAcA96rHXOmmdE2OLkc3Gou5sFfTLpV1VbnAwESpr8K4t60w@mail.gmail.com>
-Subject: Re: [PATCH 3/3] ui/cocoa: Use NSTrackingInVisibleRect
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <54e8b518-2bea-4a5b-a75a-4fd45535c6fa@intel.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.222,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,23 +82,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 18 Mar 2024 at 07:53, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->
-> I observed [NSTrackingArea rect] becomes de-synchronized with the view
-> frame with some unknown condition. Specify NSTrackingInVisibleRect
-> option to let Cocoa automatically update NSTrackingArea, which also
-> saves code for synchronization.
->
-> Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > +    if (cpu->host_phys_bits_limit &&
+> > +        cpu->guest_phys_bits > cpu->host_phys_bits_limit) {
+> > +        cpu->guest_phys_bits = cpu->host_phys_bits_limit;
+> 
+> host_phys_bits_limit takes effect only when cpu->host_phys_bits is set.
+> 
+> If users pass configuration like "-cpu
+> qemu64,phys-bits=52,host-phys-bits-limit=45", the cpu->guest_phys_bits will
+> be set to 45. I think this is not what we want, though the usage seems
+> insane.
+> 
+> We can guard it as
+> 
+>  if (cpu->host_phys_bits && cpu->host_phys_bits_limit &&
+>      cpu->guest_phys_bits > cpu->host_phys_bits_limt)
+> {
+> }
 
-It would be nice to specify in the commit message what
-the user-visible consequences of this problem are (presumably
-that the guest mouse stops following the host mouse correctly?)
-but anyway
+Yes, makes sense.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> Simpler, we can guard with cpu->phys_bits like below, because
+> cpu->host_phys_bits_limit is used to guard cpu->phys_bits in
+> host_cpu_realizefn()
+> 
+>  if (cpu->guest_phys_bits > cpu->phys_bits) {
+> 	cpu->guest_phys_bits = cpu->phys_bits;
+> }
 
-thanks
--- PMM
+I think I prefer the first version.  The logic is already difficult
+enough to follow because it is spread across a bunch of files due to
+the different cases we have to handle (tcg, kvm-with-host_phys_bits,
+kvm-without-host_phys_bits).
+
+It's not in any way performance-critical, so I happily trade some extra
+checks for code which is easier to read.
+
+take care,
+  Gerd
+
 
