@@ -2,74 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929BF88688B
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:52:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CDF8868BB
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 10:01:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnacd-0002ZS-O5; Fri, 22 Mar 2024 04:51:31 -0400
+	id 1rnalO-0001X3-J5; Fri, 22 Mar 2024 05:00:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rnaca-0002X8-8j
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:51:28 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rnacW-0000rE-Mh
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:51:28 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:400c:0:640:9907:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id D638D60A41;
- Fri, 22 Mar 2024 11:51:19 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b406::1:29] (unknown
- [2a02:6b8:b081:b406::1:29])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id HpCeMl0IhOs0-6FrucWng; Fri, 22 Mar 2024 11:51:18 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1711097478;
- bh=N/X3gc5neBgMa9Rnqfbuz4YQyI4OoUNtTGvdwsMmmkM=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=c7axtAFRv8R2llVJwe44SwMfichR3Y5CvHew4Z58Wo9taim2nzmwJDz+X4o3Sx7cO
- B3PPLyuJ77/3DbGQm/WG10kSb9XNn9awxX1itTEIshycJQnm+em6nDhThRa4sYY1Gs
- Jd5sstoDvYSa7Ok6IDmfH6m7Y6t2RPwW++tg/j3Y=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <cfc3e69f-86ed-4d60-ba70-64a51a41a75f@yandex-team.ru>
-Date: Fri, 22 Mar 2024 11:51:17 +0300
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rnalL-0001VR-0b
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:00:31 -0400
+Received: from mail-qv1-xf31.google.com ([2607:f8b0:4864:20::f31])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1rnalJ-0002Dy-6T
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:00:30 -0400
+Received: by mail-qv1-xf31.google.com with SMTP id
+ 6a1803df08f44-696499bd61eso19436736d6.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 02:00:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711098027; x=1711702827; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ATuiYoLpuugVHqI4OxAuRWcDc9r7aEih/KU8sNmRL4c=;
+ b=GSiYAUd7x89PHoP0HRZ1jE7egdAAglwJ3BOjmStshbF0DaCdnLIW7J8Q/RyurX7Hif
+ I7WnJROd0z4+WjWxMXr+KiVfLXrmFy0c20p9BzPygW8uv4lz2VXecKF8GNcJV173yRDH
+ YNLJZPE7kh0pHC0NvNwzxq9uu3PCXU0/kAWsHOXhfmhbWLs01tlPfDcYLBK74IfrKNDa
+ WtVQJnaEeW56goGYd2Ui66JqCGFssuDlbc2NBFLbV3qyn85kv4eFd11BYRRIf797lUAe
+ hl/yje62JF/0pNeU0Wq8ieESkE5hqsI2+BmuBCMl34kqDtqjeXS/rl5J29NBJ784by0Z
+ z25Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711098027; x=1711702827;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ATuiYoLpuugVHqI4OxAuRWcDc9r7aEih/KU8sNmRL4c=;
+ b=KQ4qQocJHOEkcHgDRWLOHBFWLchDlNa8lc0P+3cFkRF7ESKBkI8qVrOLg+ZrKb3Rm4
+ upx1m7hvCtc4C903WGkFS6iMJL2Toe/470WCShMa6V73sR7GQSBYsIblSrSwM5KP4Pvn
+ 9Zc3Yd4l8gC7AHpm/uR0ctbt+37yysCE9dOTB+6QjtzY3zWIa739Of4waRwY/CEJ7wJj
+ DZUWXjymlT4JIq2gM1U0y9gNIzj2DgIG6q0O0JO6JNmwzzssuI8orgXLAe5V28iLI6eZ
+ PgYnQ2dUkzhlqotYdOVbO73GLJtc2HLR6TiAv/4BbKK0+i6JztUG+q3IXDVxMaVUwRS+
+ yh3g==
+X-Gm-Message-State: AOJu0YxVU0Vydl95EeokaxQAzbEv4fgAh8wAk5EBiWnZiY8nJRkBUWbQ
+ Az/8h9+Sz+Wz3l+woWeTLxBSw/XsY8xARMtPXQ4GA1146yM2FXX90PrkGjBkllia+A==
+X-Google-Smtp-Source: AGHT+IGf0UQnk9gURlkpnZI411JmI7DGsJS1ePKX6nvcxV33RfvisW+HGheayyNWlrVUS0U8q4JmPw==
+X-Received: by 2002:a05:6a20:3d1f:b0:1a3:a94e:9d64 with SMTP id
+ y31-20020a056a203d1f00b001a3a94e9d64mr398993pzi.53.1711097607164; 
+ Fri, 22 Mar 2024 01:53:27 -0700 (PDT)
+Received: from toolbox.wdc.com ([129.253.180.114])
+ by smtp.gmail.com with ESMTPSA id
+ h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.53.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Mar 2024 01:53:26 -0700 (PDT)
+From: Alistair Francis <alistair23@gmail.com>
+X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
+To: qemu-devel@nongnu.org
+Cc: alistair23@gmail.com,
+	Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 00/15] riscv-to-apply queue
+Date: Fri, 22 Mar 2024 18:53:04 +1000
+Message-ID: <20240322085319.1758843-1-alistair.francis@wdc.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: qemu fuzz crash in virtio_net_queue_reset()
-Content-Language: en-US
-To: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, alxndr@bu.edu,
- Paolo Bonzini <pbonzini@redhat.com>, bsd@redhat.com,
- Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- darren.kenny@oracle.com, Qiuhao.Li@outlook.com, si-wei.liu@oracle.com,
- yc-core@yandex-team.ru, Denis Plotnikov <den-plotnikov@yandex-team.ru>,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- kangjie.xu@linux.alibaba.com
-References: <25d616db-6db5-47ed-afc7-8e285d069d8a@yandex-team.ru>
- <1711073849.8330412-2-xuanzhuo@linux.alibaba.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <1711073849.8330412-2-xuanzhuo@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f31;
+ envelope-from=alistair23@gmail.com; helo=mail-qv1-xf31.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -81,111 +92,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22.03.24 05:17, Xuan Zhuo wrote:
-> On Wed, 20 Mar 2024 00:24:37 +0300, "Vladimir Sementsov-Ogievskiy" <vsementsov@yandex-team.ru> wrote:
->> Hi all!
->>
->>   From fuzzing I've got a fuzz-data, which produces the following crash:
->>
->> qemu-fuzz-x86_64: ../hw/net/virtio-net.c:134: void flush_or_purge_queued_packets(NetClientState *): Assertion `!virtio_net_get_subqueue(nc)->async_tx.elem' failed.
->> ==2172308== ERROR: libFuzzer: deadly signal
->>       #0 0x5bd8c748b5a1 in __sanitizer_print_stack_trace (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x26f05a1) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #1 0x5bd8c73fde38 in fuzzer::PrintStackTrace() (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x2662e38) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #2 0x5bd8c73e38b3 in fuzzer::Fuzzer::CrashCallback() (/home/settlements/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x26488b3) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #3 0x739eec84251f  (/lib/x86_64-linux-gnu/libc.so.6+0x4251f) (BuildId: c289da5071a3399de893d2af81d6a30c62646e1e)
->>       #4 0x739eec8969fb in __pthread_kill_implementation nptl/./nptl/pthread_kill.c:43:17
->>       #5 0x739eec8969fb in __pthread_kill_internal nptl/./nptl/pthread_kill.c:78:10
->>       #6 0x739eec8969fb in pthread_kill nptl/./nptl/pthread_kill.c:89:10
->>       #7 0x739eec842475 in gsignal signal/../sysdeps/posix/raise.c:26:13
->>       #8 0x739eec8287f2 in abort stdlib/./stdlib/abort.c:79:7
->>       #9 0x739eec82871a in __assert_fail_base assert/./assert/assert.c:92:3
->>       #10 0x739eec839e95 in __assert_fail assert/./assert/assert.c:101:3
->>       #11 0x5bd8c995d9e2 in flush_or_purge_queued_packets /home/vsementsov/work/src/qemu/yc7-fuzz/build/../hw/net/virtio-net.c:134:5
->>       #12 0x5bd8c9918a5f in virtio_net_queue_reset /home/vsementsov/work/src/qemu/yc7-fuzz/build/../hw/net/virtio-net.c:563:5
->>       #13 0x5bd8c9b724e5 in virtio_queue_reset /home/vsementsov/work/src/qemu/yc7-fuzz/build/../hw/virtio/virtio.c:2492:9
->>       #14 0x5bd8c8bcfb7c in virtio_pci_common_write /home/vsementsov/work/src/qemu/yc7-fuzz/build/../hw/virtio/virtio-pci.c:1372:13
->>       #15 0x5bd8c9e19cf3 in memory_region_write_accessor /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/memory.c:492:5
->>       #16 0x5bd8c9e19631 in access_with_adjusted_size /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/memory.c:554:18
->>       #17 0x5bd8c9e17f3c in memory_region_dispatch_write /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/memory.c:1514:16
->>       #18 0x5bd8c9ea3bbe in flatview_write_continue /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/physmem.c:2825:23
->>       #19 0x5bd8c9e91aab in flatview_write /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/physmem.c:2867:12
->>       #20 0x5bd8c9e91568 in address_space_write /home/vsementsov/work/src/qemu/yc7-fuzz/build/../softmmu/physmem.c:2963:18
->>       #21 0x5bd8c74c8a90 in __wrap_qtest_writeq /home/vsementsov/work/src/qemu/yc7-fuzz/build/../tests/qtest/fuzz/qtest_wrappers.c:187:9
->>       #22 0x5bd8c74dc4da in op_write /home/vsementsov/work/src/qemu/yc7-fuzz/build/../tests/qtest/fuzz/generic_fuzz.c:487:13
->>       #23 0x5bd8c74d942e in generic_fuzz /home/vsementsov/work/src/qemu/yc7-fuzz/build/../tests/qtest/fuzz/generic_fuzz.c:714:17
->>       #24 0x5bd8c74c016e in LLVMFuzzerTestOneInput /home/vsementsov/work/src/qemu/yc7-fuzz/build/../tests/qtest/fuzz/fuzz.c:152:5
->>       #25 0x5bd8c73e4e43 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x2649e43) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #26 0x5bd8c73cebbf in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x2633bbf) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #27 0x5bd8c73d4916 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x2639916) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #28 0x5bd8c73fe732 in main (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x2663732) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>       #29 0x739eec829d8f in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
->>       #30 0x739eec829e3f in __libc_start_main csu/../csu/libc-start.c:392:3
->>       #31 0x5bd8c73c9484 in _start (/home/vsementsov/work/src/qemu/yc7-fuzz/build/qemu-fuzz-x86_64+0x262e484) (BuildId: b41827f440fd9feaa98c667dbdcc961abb2799ae)
->>
->>
->>
->> How to reproduce:
->> ./configure --target-list=x86_64-softmmu --enable-debug --disable-docs --cc=clang --cxx=clang++ --enable-fuzzing --enable-sanitizers --enable-slirp
->> make -j20 qemu-fuzz-x86_64
->> ./build/qemu-fuzz-x86_64 --fuzz-target=generic-fuzz-virtio-net-pci-slirp ../generic-fuzz-virtio-net-pci-slirp.crash-7707e14adea64d129be88faeb6ca57dab6118ec5
->>
->>
->> This ...crash-7707... file is attached.
->>
->> git-bisect points to 7dc6be52f4ead25e7da8fb758900bdcb527996f7 "virtio-net: support queue reset" as a first bad commit. That's a commit which introduces virtio_net_queue_reset() function.
->>
->>
->> I'm a newbie in qemu-fuzzing, and don't know virtio-net code, so I've no idea how to debug this thing further. I even don't know, how to get a normal coredump file to open it in gdb, it's not produced from fuzzing process...
->>
->>
->> I tried to search for "async_tx.elem" in git log, and found two commits, fixing similar crashes:
->>
->>     bc5add1dadcc140fef9af4fe215167e796cd1a58 "vhost-vdpa: fix assert !virtio_net_get_subqueue(nc)->async_tx.elem in virtio_net_reset"
-> 
-> 
-> This fixed that by updating the vdpa "receive" callback.
-> 
-> You use the slirp, so should we fix that by updating the "receive"
-> callback of slirp?
-> 
+The following changes since commit fea445e8fe9acea4f775a832815ee22bdf2b0222:
 
-Probably.. But receive callback is a lot more complex in virtio-net. And now I tried simple test:
+  Merge tag 'pull-maintainer-final-for-real-this-time-200324-1' of https://gitlab.com/stsquad/qemu into staging (2024-03-21 10:31:56 +0000)
 
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2692,6 +2692,7 @@ static ssize_t virtio_net_receive(NetClientState *nc, const uint8_t *buf,
-                                    size_t size)
-  {
-      VirtIONet *n = qemu_get_nic_opaque(nc);
-+    return size;
-      if ((n->rsc4_enabled || n->rsc6_enabled)) {
-          return virtio_net_rsc_receive(nc, buf, size);
-      } else {
+are available in the Git repository at:
 
+  https://github.com/alistair23/qemu.git tags/pull-riscv-to-apply-20240322
 
-- this doesn't help.
+for you to fetch changes up to 385e575cd5ab2436c123e4b7f8c9b383a64c0dbe:
 
+  target/riscv/kvm: fix timebase-frequency when using KVM acceleration (2024-03-22 15:41:01 +1000)
 
-> 
-> 
->>
->> and
->>
->>     5fe19fb81839ea42b592b409f725349cf3c73551 "net: use peer when purging queue in qemu_flush_or_purge_queue_packets()"
->>
->> but I failed to get helping idea from them.
->>
->>
->>
->> Could someone please help with this?
->>
->>
->> --
->> Best regards,
->> Vladimir
+----------------------------------------------------------------
+RISC-V PR for 9.0
 
--- 
-Best regards,
-Vladimir
+* Do not enable all named features by default
+* A range of Vector fixes
+* Update APLIC IDC after claiming iforce register
+* Remove the dependency of Zvfbfmin to Zfbfmin
+* Fix mode in riscv_tlb_fill
+* Fix timebase-frequency when using KVM acceleration
 
+----------------------------------------------------------------
+Daniel Henrique Barboza (10):
+      target/riscv: do not enable all named features by default
+      target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+      trans_rvv.c.inc: set vstart = 0 in int scalar move insns
+      target/riscv/vector_helper.c: fix 'vmvr_v' memcpy endianess
+      target/riscv: always clear vstart in whole vec move insns
+      target/riscv: always clear vstart for ldst_whole insns
+      target/riscv/vector_helpers: do early exit when vstart >= vl
+      target/riscv: remove 'over' brconds from vector trans
+      trans_rvv.c.inc: remove redundant mark_vs_dirty() calls
+      target/riscv/vector_helper.c: optimize loops in ldst helpers
+
+Frank Chang (1):
+      hw/intc: Update APLIC IDC after claiming iforce register
+
+Irina Ryapolova (1):
+      target/riscv: Fix mode in riscv_tlb_fill
+
+Ivan Klokov (1):
+      target/riscv: enable 'vstart_eq_zero' in the end of insns
+
+Max Chou (1):
+      target/riscv: rvv: Remove the dependency of Zvfbfmin to Zfbfmin
+
+Yong-Xuan Wang (1):
+      target/riscv/kvm: fix timebase-frequency when using KVM acceleration
+
+ target/riscv/cpu_cfg.h                     |   8 +-
+ target/riscv/kvm/kvm_riscv.h               |   1 +
+ target/riscv/vector_internals.h            |   9 ++
+ hw/intc/riscv_aplic.c                      |   1 +
+ hw/riscv/virt.c                            |   2 +
+ target/riscv/cpu.c                         |  40 ++---
+ target/riscv/cpu_helper.c                  |   2 +-
+ target/riscv/kvm/kvm-cpu.c                 |   9 ++
+ target/riscv/tcg/tcg-cpu.c                 |  19 ++-
+ target/riscv/translate.c                   |   6 +
+ target/riscv/vcrypto_helper.c              |  32 ++++
+ target/riscv/vector_helper.c               |  93 ++++++++++-
+ target/riscv/vector_internals.c            |   4 +
+ target/riscv/insn_trans/trans_rvbf16.c.inc |  18 +--
+ target/riscv/insn_trans/trans_rvv.c.inc    | 244 +++++++++--------------------
+ target/riscv/insn_trans/trans_rvvk.c.inc   |  30 +---
+ 16 files changed, 259 insertions(+), 259 deletions(-)
 
