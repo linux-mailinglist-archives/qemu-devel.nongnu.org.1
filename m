@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FFE8872B9
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46488872BD
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:13:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnjNR-0006pq-SI; Fri, 22 Mar 2024 14:12:25 -0400
+	id 1rnjNS-0006os-FF; Fri, 22 Mar 2024 14:12:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjNJ-0006dv-SK
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rnjNK-0006eU-UL
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjNH-00073S-UL
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:17 -0400
+ id 1rnjNI-00073g-CL
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711131134;
+ s=mimecast20190719; t=1711131135;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jWInMz9rmQLUefPoQzYe9Bf7sptu2RteyLyov8JGQb8=;
- b=inVD92AQJfabLyDnMlCOCmzxUwNXBFSrqJ8yaXuRh9LrXQwCQgO32mg6F0xYThokiH2p/W
- jHR4GJO2CHZ9Yk/OX3ooLyl+04qSeuy71ghJPI5XCadoKGGIX0ZOkLRBHWpcWg90htnq52
- unJ33mZdWsGYGfAn1wJU75dqaggCxvU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=PJ1i93OLH0rJPkws1vcaOOsOxlg3B1IE3zBDSu2Pk2c=;
+ b=JJsEkhJGNTKAeDZ2bV7Zfx0c+l4Q/JdFvTsPeGrcMDIQtVtHWJtFNmMbq6DRTNzpjTTMXJ
+ bV/juHisF7NQ7uqmWuhGT9s9OhCrKcs1zYSM+1cXgYaVpIuYVa23uL45tEpnuBFj9v4/OC
+ /4fWttqrtS7VL1rnwq5MfDejVFQlEBc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-310-DEqICODdOayX-UIkZFAqvA-1; Fri, 22 Mar 2024 14:12:12 -0400
-X-MC-Unique: DEqICODdOayX-UIkZFAqvA-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-513e0c5f399so2044809e87.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:12:12 -0700 (PDT)
+ us-mta-379-Veg-52g_MJSBA9af-yaEBQ-1; Fri, 22 Mar 2024 14:12:14 -0400
+X-MC-Unique: Veg-52g_MJSBA9af-yaEBQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a473f5a84aaso3144166b.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:12:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711131130; x=1711735930;
+ d=1e100.net; s=20230601; t=1711131133; x=1711735933;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jWInMz9rmQLUefPoQzYe9Bf7sptu2RteyLyov8JGQb8=;
- b=LbW5IgqOojVHshXYXJlEvhaIpj4rgYJPP51scbEEOPfPMeF8A6YE70iveM6aM8B4tZ
- DUtC8AtmQAt9WoGjllRUXhrU74ceH1UPsoYnsMjj6ZYM4Q7dO2iLsScEKnnoUvO4OTM2
- XFftiUcAlU1mhYvlEuCg2FyO+qbCIt4gAo4dVZ5xTnexWUT7u7eYVVJgERFZNACgeSWT
- F9zSZM4ulTNqHlPituPEmzP+k9Lyr6Uc/nTUY7R5gqcAyXLVsDeWIdYYoAgml5w43Wgr
- hPhCkd4Nb3Zga7d6fVM95tl9+D3uSp/nnu7FVzrhfQCBmXvCjaf4gRt/OP5hLTx/35gM
- AjpQ==
-X-Gm-Message-State: AOJu0YymC80/3MWdx9NZha+bN50Com/MP4Bs8WAY9oYPDzjfrWTyv/yU
- qPRZNuvEO5giOqfY58ZcK5EW1l/FyYOGENTO0txZpAcEDdxXAEWPiUFm4xgX1vpG0EyYBcD2sKo
- b6igk+a4NCjBTZ5D0aseFl7RwGeNRcsbpmZ5MuAT8Rxjz1oqjCuRahadn1cc5NZLgxeThDYK5DM
- BffFeGePisPQZp0W3zfcNFyN6ltWdRr7npUsjP
-X-Received: by 2002:a05:6512:55c:b0:513:ccd1:563e with SMTP id
- h28-20020a056512055c00b00513ccd1563emr174951lfl.8.1711131130321; 
- Fri, 22 Mar 2024 11:12:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOdvTe4TSUyXf9V2XkBMoxfe17psOJpqGWG723gMrqQYeklUrighyAEIlmTWp4EEgq/heV3Q==
-X-Received: by 2002:a05:6512:55c:b0:513:ccd1:563e with SMTP id
- h28-20020a056512055c00b00513ccd1563emr174930lfl.8.1711131129978; 
- Fri, 22 Mar 2024 11:12:09 -0700 (PDT)
+ bh=PJ1i93OLH0rJPkws1vcaOOsOxlg3B1IE3zBDSu2Pk2c=;
+ b=rNa/616bjzbKDbTVTTyjT6Lj99Ik19fEbWbfdUD8qFcedgAuMpSOd964n0AP17T6nZ
+ 8IFu8vtRCj7NZFWvUQxeQaSjX1KXLtW3ps+rBIjkNPNUPkQhDywxawGHHPMl+/cPxqWn
+ RX7/KSvucQ+p9BhXCFKbLpig/jtlVhWsX54G577rnhUw3ef3Z5fGxS21rKecGubViPt3
+ 7NxBQcqP4CwFeJxMMKvxZ84ZepGpeNaRxCid4xIOzdOjdqlfShQgkmH6RG/s3X7q81er
+ MhhSpo2RstasabUbwERzP2R6S6Pk+Bw5TlripYKbMaei1/l+myxBYapkG74W5nESyplU
+ q+aA==
+X-Gm-Message-State: AOJu0YxMOAxtmNU7a2yk66bJ9ZroAKczGpbU+Ii47Xt3X1iXuCpw+bBS
+ KTmfv4FEnE2JA/HHKeNMvV+BIVNt7HB6vHlqihyvPs91WQhZcCsMUJpULzABCtUJsBlY3fcrSqZ
+ Y3353Y+ILnr4s0GWJY1KYFuQtZq0MxDu5QX+LVakBRIb5tDm6KSqNa4af3eYOmTRLHMqxkOdEAj
+ ihSjNyax7h2IOoR5iZh+5kuVF9IsVc4ZFLITby
+X-Received: by 2002:a50:8a9a:0:b0:566:4a85:ceba with SMTP id
+ j26-20020a508a9a000000b005664a85cebamr209524edj.1.1711131132846; 
+ Fri, 22 Mar 2024 11:12:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqt7gNETxzL03L2rHMAZAcfDdiAAVL590d7iBvsTPwl9Sc6GtR/QgCVo66oUjJzUTdfcIn8A==
+X-Received: by 2002:a50:8a9a:0:b0:566:4a85:ceba with SMTP id
+ j26-20020a508a9a000000b005664a85cebamr209506edj.1.1711131132549; 
+ Fri, 22 Mar 2024 11:12:12 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- l22-20020aa7c316000000b00568c299eaedsm68240edq.81.2024.03.22.11.12.07
+ m10-20020a50cc0a000000b0056b0af78d80sm74255edi.34.2024.03.22.11.12.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 11:12:07 -0700 (PDT)
+ Fri, 22 Mar 2024 11:12:11 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com,
 	david@redhat.com
-Subject: [PATCH 16/26] target/i386: SEV: use KVM_SEV_INIT2 if possible
-Date: Fri, 22 Mar 2024 19:11:06 +0100
-Message-ID: <20240322181116.1228416-17-pbonzini@redhat.com>
+Subject: [PATCH 17/26] trace/kvm: Split address space and slot id in
+ trace_kvm_set_user_memory()
+Date: Fri, 22 Mar 2024 19:11:07 +0100
+Message-ID: <20240322181116.1228416-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322181116.1228416-1-pbonzini@redhat.com>
 References: <20240322181116.1228416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -102,134 +103,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implement support for the KVM_X86_SEV_VM and KVM_X86_SEV_ES_VM virtual
-machine types, and the KVM_SEV_INIT2 function of KVM_MEMORY_ENCRYPT_OP.
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-These replace the KVM_SEV_INIT and KVM_SEV_ES_INIT functions, and have
-several advantages:
+The upper 16 bits of kvm_userspace_memory_region::slot are
+address space id. Parse it separately in trace_kvm_set_user_memory().
 
-- sharing the initialization sequence with SEV-SNP and TDX
-
-- allowing arguments including the set of desired VMSA features
-
-- protection against invalid use of KVM_GET/SET_* ioctls for guests
-  with encrypted state
-
-If the KVM_X86_SEV_VM and KVM_X86_SEV_ES_VM types are not supported,
-fall back to KVM_SEV_INIT and KVM_SEV_ES_INIT (which use the
-default x86 VM type).
-
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Message-ID: <20240229063726.610065-5-xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/kvm/kvm.c |  2 ++
- target/i386/sev.c     | 41 +++++++++++++++++++++++++++++++++++++----
- 2 files changed, 39 insertions(+), 4 deletions(-)
+ accel/kvm/kvm-all.c    | 5 +++--
+ accel/kvm/trace-events | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index b599a7fae36..2577e345502 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -164,6 +164,8 @@ static int kvm_get_one_msr(X86CPU *cpu, int index, uint64_t *value);
- 
- static const char *vm_type_name[] = {
-     [KVM_X86_DEFAULT_VM] = "default",
-+    [KVM_X86_SEV_VM] = "SEV",
-+    [KVM_X86_SEV_ES_VM] = "SEV-ES",
- };
- 
- bool kvm_is_vm_type_supported(int type)
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index ebe36d4c10c..9dab4060b84 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -26,6 +26,7 @@
- #include "qemu/error-report.h"
- #include "crypto/hash.h"
- #include "sysemu/kvm.h"
-+#include "kvm/kvm_i386.h"
- #include "sev.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/runstate.h"
-@@ -56,6 +57,8 @@ OBJECT_DECLARE_SIMPLE_TYPE(SevGuestState, SEV_GUEST)
- struct SevGuestState {
-     X86ConfidentialGuest parent_obj;
- 
-+    int kvm_type;
-+
-     /* configuration parameters */
-     char *sev_device;
-     uint32_t policy;
-@@ -850,6 +853,26 @@ sev_vm_state_change(void *opaque, bool running, RunState state)
-     }
- }
- 
-+static int sev_kvm_type(X86ConfidentialGuest *cg)
-+{
-+    SevGuestState *sev = SEV_GUEST(cg);
-+    int kvm_type;
-+
-+    if (sev->kvm_type != -1) {
-+        goto out;
-+    }
-+
-+    kvm_type = (sev->policy & SEV_POLICY_ES) ? KVM_X86_SEV_ES_VM : KVM_X86_SEV_VM;
-+    if (kvm_is_vm_type_supported(kvm_type)) {
-+        sev->kvm_type = kvm_type;
-+    } else {
-+        sev->kvm_type = KVM_X86_DEFAULT_VM;
-+    }
-+
-+out:
-+    return sev->kvm_type;
-+}
-+
- static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     SevGuestState *sev = SEV_GUEST(cgs);
-@@ -929,13 +952,19 @@ static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-                          __func__);
-             goto err;
-         }
--        cmd = KVM_SEV_ES_INIT;
--    } else {
--        cmd = KVM_SEV_INIT;
-     }
- 
-     trace_kvm_sev_init();
--    ret = sev_ioctl(sev->sev_fd, cmd, NULL, &fw_error);
-+    if (sev_kvm_type(X86_CONFIDENTIAL_GUEST(sev)) == KVM_X86_DEFAULT_VM) {
-+        cmd = sev_es_enabled() ? KVM_SEV_ES_INIT : KVM_SEV_INIT;
-+
-+        ret = sev_ioctl(sev->sev_fd, cmd, NULL, &fw_error);
-+    } else {
-+        struct kvm_sev_init args = { 0 };
-+
-+        ret = sev_ioctl(sev->sev_fd, KVM_SEV_INIT2, &args, &fw_error);
-+    }
-+
-     if (ret) {
-         error_setg(errp, "%s: failed to initialize ret=%d fw_error=%d '%s'",
-                    __func__, ret, fw_error, fw_error_to_str(fw_error));
-@@ -1327,8 +1356,10 @@ static void
- sev_guest_class_init(ObjectClass *oc, void *data)
- {
-     ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-+    X86ConfidentialGuestClass *x86_klass = X86_CONFIDENTIAL_GUEST_CLASS(oc);
- 
-     klass->kvm_init = sev_kvm_init;
-+    x86_klass->kvm_type = sev_kvm_type;
- 
-     object_class_property_add_str(oc, "sev-device",
-                                   sev_guest_get_sev_device,
-@@ -1357,6 +1388,8 @@ sev_guest_instance_init(Object *obj)
- {
-     SevGuestState *sev = SEV_GUEST(obj);
- 
-+    sev->kvm_type = -1;
-+
-     sev->sev_device = g_strdup(DEFAULT_SEV_DEVICE);
-     sev->policy = DEFAULT_GUEST_POLICY;
-     object_property_add_uint32_ptr(obj, "policy", &sev->policy,
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index a05dea23133..4ac3cf1c9ef 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -303,8 +303,9 @@ static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, boo
+     ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
+     slot->old_flags = mem.flags;
+ err:
+-    trace_kvm_set_user_memory(mem.slot, mem.flags, mem.guest_phys_addr,
+-                              mem.memory_size, mem.userspace_addr, ret);
++    trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
++                              mem.guest_phys_addr, mem.memory_size,
++                              mem.userspace_addr, ret);
+     if (ret < 0) {
+         error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
+                      " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index a25902597b1..9f599abc172 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
+ kvm_irqchip_release_virq(int virq) "virq %d"
+ kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
+ kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
+-kvm_set_user_memory(uint32_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
++kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
+ kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
+ kvm_resample_fd_notify(int gsi) "gsi %d"
+ kvm_dirty_ring_full(int id) "vcpu %d"
 -- 
 2.44.0
 
