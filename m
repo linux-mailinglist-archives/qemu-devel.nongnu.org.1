@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139FF88689A
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E79E886898
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:55:08 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnafO-0004h8-HJ; Fri, 22 Mar 2024 04:54:22 -0400
+	id 1rnafS-0004tO-5H; Fri, 22 Mar 2024 04:54:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafM-0004fJ-6G
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:20 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rnafP-0004hu-Bb
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:23 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnafK-00012Y-MV
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:19 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dfff641d10so12230625ad.2
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:18 -0700 (PDT)
+ id 1rnafN-00012j-RM
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:23 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1e04ac200a6so13924285ad.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711097657; x=1711702457; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711097660; x=1711702460; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=oSFo3fIToAxpMkyPRv8jExYnTdr2jvQxba3OkQ37IQ0=;
- b=YY7VDde5wrf1rJZ9hGDIqoqb/84e5admDpIWkdicTlLS+MbCx7mg7bzrQJNqI7Sqbe
- zRKLhDmX+PBRYS/OrtR+HKE1ExfeYw+YQoRcAwCx7n+8SaZkEySwDdWORPTje4yu/DI1
- lsCTQxDE3+RK5ud+m6lnGsCDc5ezwgEuEIyOeJ6KEt6PtTg+spxmsqdKMGq0LuecnddH
- TDueOXYJ0CcdFF+1hwPQMV2nZt4eehgbsTsMOulQIG9gMmS7mFR1NFvN/yLAqVYpabvY
- i3BUjKkr9axoF9S1wosbSIWMbRHLsE8sJ4ps/d6i5FkBpyavAghRlfs3etydKfCLGY4T
- AElg==
+ bh=ljw0MvRJZooGVgJY7PB96wXwwjw3QI+ulH/dM68Nsmw=;
+ b=AxEjTgd2DLrq2uW00bdkmDXrMegA1fn3eSm7X+BBF/3m26ZqYyY01vTacP4locq7/H
+ ABddoiJwhgQ2rdc/jeyce/epS+0ScYZMGDZ/MuWWIGTshFIGrESHmaW/6XJqtSvMHTjb
+ gUm5SVlznctlbCo8ZztookH0hjgIswHn+puCO3zC9BousTMG4M1qz4Dx48ty1xDen9Cf
+ gIn6yZMIzsKnHsAOXCcVO6it1VVBpK8prlTlKJKr0+w0Mac5WVQRavJTcobXYAcHe63W
+ p6SjFUV9aOvm7PkYOjqIYit4Yd41fNlaYOQub4VU2jY6MqCMsduhU9vFYv64CD66CXPj
+ 5q5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711097657; x=1711702457;
+ d=1e100.net; s=20230601; t=1711097660; x=1711702460;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=oSFo3fIToAxpMkyPRv8jExYnTdr2jvQxba3OkQ37IQ0=;
- b=Z1ES4rGe64paqMko/VwgB3RuyY3yRZAaGThHUa5R/CjZJQnc1cFnxOXljl68ngvIMD
- EF5/HqVo0i3ZzMPH/bYFsUBfyRK4+1U+knzPoZTb4v99DtVwwgZdaldBpGiv+vCaE9ki
- yoRk+j+lvYjQ4OIpx+xnjr+hUrlphUHGz46bjk1cXzdOmsMOqno89W058N2QFYJZLrdP
- jp0eSdtV4QJZCq/yixayUV4XRdMyMuNLAAWQMZQJ81jA9yhHV76blX6yp2C79jKvHPPs
- urkh0pa31GO3m/s/PLgCV0+rwwOhNVomjRp/XWYgEI2hfLM46heVPC7EXJgee7GbbF15
- wYEA==
-X-Gm-Message-State: AOJu0YymYSAwp0xNqK1fsR3SHOOXgyQPFuaj6eLoLbbQ2CuczHmsVssQ
- JAWShFdtx48xcza/gw2Y5g8tVA1qYvbpLVhoA+bTsszKL5Yl7gkduSAaXGTzRzx62Q==
-X-Google-Smtp-Source: AGHT+IGaRQNrh8prHyItgTFsN50K1NZ4FsYvWQaiRTBFjhjxiIpzzeVj0AYqYr7f4zRlHPBlcwGaBw==
-X-Received: by 2002:a17:903:2a86:b0:1de:ee01:56d7 with SMTP id
- lv6-20020a1709032a8600b001deee0156d7mr1915632plb.51.1711097656797; 
- Fri, 22 Mar 2024 01:54:16 -0700 (PDT)
+ bh=ljw0MvRJZooGVgJY7PB96wXwwjw3QI+ulH/dM68Nsmw=;
+ b=jTUtEzVgIfbBsfgc5uz/AE3Xfe62ljfHHsVAdTRpvEyLr9ZgT1SZJYI7WES4u/8l01
+ 1E8lCN4jchitmBFjmclMY9gC3hBHimpudnm8gPQQ2ayR2mEENtjmoamFw3xYeyJSJv9m
+ HV5mEKu/elYWgncNgrLOvHTShh3QbDxbHL4yKl6zQaHJaSszsxUgmJpkpyQQg/xmVtBY
+ B8rqFnhCUqu/RugewxAP6JZQ7DqOGrzbVCExZUtd1ThMNYMPdAUp6qKAmlplbNqJFzi1
+ BnfZNhBabLSKhIClNvyxF24CqdYzYG/yw+8Jw8ZgGMLb1bJk85HI0EGJi+o5cow7sIeE
+ LgaQ==
+X-Gm-Message-State: AOJu0Yx+Yd/wLnvNe/SG996ZMhCqS9fcmBKmreLHmXC9ij3EPnPqv7TT
+ lCynbl+TXMrvm1dbIQAHz1ZL0x4Ejo6wF8kA+86A46tqZ4c7nmD6bSkb5Gi3TC0LPA==
+X-Google-Smtp-Source: AGHT+IHKYCEZLbiYG243f/RtVaRve+3mp80pY5awYn/fFu1TYObDXv4119eyxLh50rGuZoLXWJVbUg==
+X-Received: by 2002:a17:902:6808:b0:1e0:8b17:58b5 with SMTP id
+ h8-20020a170902680800b001e08b1758b5mr1726224plk.13.1711097660268; 
+ Fri, 22 Mar 2024 01:54:20 -0700 (PDT)
 Received: from toolbox.wdc.com ([129.253.180.114])
  by smtp.gmail.com with ESMTPSA id
- h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.14
+ h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 01:54:16 -0700 (PDT)
+ Fri, 22 Mar 2024 01:54:19 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Irina Ryapolova <irina.ryapolova@syntacore.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 14/15] target/riscv: Fix mode in riscv_tlb_fill
-Date: Fri, 22 Mar 2024 18:53:18 +1000
-Message-ID: <20240322085319.1758843-15-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+ Andrew Jones <ajones@ventanamicro.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 15/15] target/riscv/kvm: fix timebase-frequency when using KVM
+ acceleration
+Date: Fri, 22 Mar 2024 18:53:19 +1000
+Message-ID: <20240322085319.1758843-16-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322085319.1758843-1-alistair.francis@wdc.com>
 References: <20240322085319.1758843-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=alistair23@gmail.com; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -95,33 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Irina Ryapolova <irina.ryapolova@syntacore.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-Need to convert mmu_idx to privilege mode for PMP function.
+The timebase-frequency of guest OS should be the same with host
+machine. The timebase-frequency value in DTS should be got from
+hypervisor when using KVM acceleration.
 
-Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
-Fixes: b297129ae1 ("target/riscv: propagate PMP permission to TLB page")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Message-ID: <20240314061510.9800-1-yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-ID: <20240320172828.23965-1-irina.ryapolova@syntacore.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu_helper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/kvm/kvm_riscv.h | 1 +
+ hw/riscv/virt.c              | 2 ++
+ target/riscv/kvm/kvm-cpu.c   | 9 +++++++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index ce7322011d..fc090d729a 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1315,7 +1315,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
-     bool two_stage_lookup = mmuidx_2stage(mmu_idx);
-     bool two_stage_indirect_error = false;
-     int ret = TRANSLATE_FAIL;
--    int mode = mmu_idx;
-+    int mode = mmuidx_priv(mmu_idx);
-     /* default TLB page size */
-     target_ulong tlb_size = TARGET_PAGE_SIZE;
+diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
+index 4bd98fddc7..5851898868 100644
+--- a/target/riscv/kvm/kvm_riscv.h
++++ b/target/riscv/kvm/kvm_riscv.h
+@@ -28,5 +28,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+ void riscv_kvm_aplic_request(void *opaque, int irq, int level);
+ int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
+ void riscv_kvm_cpu_finalize_features(RISCVCPU *cpu, Error **errp);
++uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs);
  
+ #endif
+diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
+index 72a55b8af1..d171e74f7b 100644
+--- a/hw/riscv/virt.c
++++ b/hw/riscv/virt.c
+@@ -711,6 +711,8 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
+ 
+     qemu_fdt_add_subnode(ms->fdt, "/cpus");
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
++                          kvm_enabled() ?
++                          kvm_riscv_get_timebase_frequency(first_cpu) :
+                           RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
+     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index cda7d78a77..6a6c6cae80 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -739,6 +739,15 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
+     env->kvm_timer_dirty = false;
+ }
+ 
++uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
++{
++    uint64_t reg;
++
++    KVM_RISCV_GET_TIMER(cs, frequency, reg);
++
++    return reg;
++}
++
+ static int kvm_riscv_get_regs_vector(CPUState *cs)
+ {
+     RISCVCPU *cpu = RISCV_CPU(cs);
 -- 
 2.44.0
 
