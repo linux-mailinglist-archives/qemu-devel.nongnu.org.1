@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83538886E18
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59D0886E23
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:11:10 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfaJ-0002xt-Ht; Fri, 22 Mar 2024 10:09:27 -0400
+	id 1rnfaP-00039O-H3; Fri, 22 Mar 2024 10:09:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaH-0002xA-0M
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaK-00032s-Hs
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaF-0003Yg-HJ
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaH-0003ZA-MW
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711116562;
+ s=mimecast20190719; t=1711116565;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SGvRNvb/xbqkQlMDZwwzuKEO52MOmr06TILvUFwPl9A=;
- b=JMHO/jYuS+BsI5mfiYZlojdKbQXssc5UX8ADktQ+63GbPKZCqWCWxu4TPIzQUnko4/sepv
- uwcTXtnij0NNuoJ+xRonTkq4Kh9MkjYp0W0uIYwczy4r5P5cdpBW+7SJMQImhS1Hp5NRoq
- XyRoRc/rEDrnYK67+fzvi6Q8MafZeKM=
+ bh=ytSeH8hlqYpjxO7DFtDPWnfCb5fdbG+rduc/ElyoZs4=;
+ b=EnWykzI3CMb8+/Xjc9F6alPzZIjI1LU5/npRVA2x7tWX9VyDd/gVE9iKlRidCUQXu7PKac
+ +JTJG+CO5YP8qfHsJGD2cnjVsLUp6oEowfJyK5ABcHHn6hNdCc4EoHAI++jI4K1fx1QBaa
+ 3XO3dUqa4/eo40An9yZBuORV0cEUhpk=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-64-3MbrDfVfNJe225Ak2Qu0_w-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-NHGVYYaFPWOC9Fx0-cGBJg-1; Fri,
  22 Mar 2024 10:09:21 -0400
-X-MC-Unique: 3MbrDfVfNJe225Ak2Qu0_w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+X-MC-Unique: NHGVYYaFPWOC9Fx0-cGBJg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE91F1C01526;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EEC273C0D86B;
  Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CD3942166AE1;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id CFA331C060D2;
  Fri, 22 Mar 2024 14:09:20 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D4B6421E5D2E; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
+ id D761F21E5D2F; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: eblake@redhat.com,
 	michael.roth@amd.com,
 	kkostiuk@redhat.com
-Subject: [PATCH 08/12] qapi: Start sentences with a capital letter,
- end them with a period
-Date: Fri, 22 Mar 2024 15:09:06 +0100
-Message-ID: <20240322140910.328840-9-armbru@redhat.com>
+Subject: [PATCH 09/12] qapi: Don't repeat member type in its documentation text
+Date: Fri, 22 Mar 2024 15:09:07 +0100
+Message-ID: <20240322140910.328840-10-armbru@redhat.com>
 In-Reply-To: <20240322140910.328840-1-armbru@redhat.com>
 References: <20240322140910.328840-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -82,73 +81,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Documentation generated for the arguments of MEMORY_FAILURE looks like
+
+    "recipient": "MemoryFailureRecipient"
+       recipient is defined as "MemoryFailureRecipient".
+
+    "action": "MemoryFailureAction"
+       action that has been taken.  action is defined as
+       "MemoryFailureAction".
+
+    "flags": "MemoryFailureFlags"
+       flags for MemoryFailureAction.  action is defined as
+       "MemoryFailureFlags".
+
+The "action is defined as ..." are redundant.  Drop.
+
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/migration.json | 16 ++++++++--------
- qapi/ui.json        |  2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ qapi/run-state.json | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index faeb7d1ca9..9ce0f6249f 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -826,8 +826,8 @@
- #     and recreated on the fly while the migration server is active.
- #     If missing, it will default to denying access (Since 4.0)
+diff --git a/qapi/run-state.json b/qapi/run-state.json
+index 789fc34559..ae084e13a0 100644
+--- a/qapi/run-state.json
++++ b/qapi/run-state.json
+@@ -568,11 +568,9 @@
  #
--# @max-bandwidth: to set maximum speed for migration.  maximum speed
--#     in bytes per second.  (Since 2.8)
-+# @max-bandwidth: maximum speed for migration, in bytes per second.
-+#     (Since 2.8)
+ # @recipient: recipient is defined as @MemoryFailureRecipient.
  #
- # @avail-switchover-bandwidth: to set the available bandwidth that
- #     migration can use during switchover phase.  NOTE!  This does not
-@@ -1023,8 +1023,8 @@
- #     control checking of the TLS x509 certificate distinguished name.
- #     (Since 4.0)
+-# @action: action that has been taken.  action is defined as
+-#     @MemoryFailureAction.
++# @action: action that has been taken.
  #
--# @max-bandwidth: to set maximum speed for migration.  maximum speed
--#     in bytes per second.  (Since 2.8)
-+# @max-bandwidth: maximum speed for migration, in bytes per second.
-+#     (Since 2.8)
+-# @flags: flags for MemoryFailureAction.  action is defined as
+-#     @MemoryFailureFlags.
++# @flags: flags for MemoryFailureAction.
  #
- # @avail-switchover-bandwidth: to set the available bandwidth that
- #     migration can use during switchover phase.  NOTE!  This does not
-@@ -1256,8 +1256,8 @@
- #     control checking of the TLS x509 certificate distinguished name.
- #     (Since 4.0)
+ # Since: 5.2
  #
--# @max-bandwidth: to set maximum speed for migration.  maximum speed
--#     in bytes per second.  (Since 2.8)
-+# @max-bandwidth: maximum speed for migration, in bytes per second.
-+#     (Since 2.8)
- #
- # @avail-switchover-bandwidth: to set the available bandwidth that
- #     migration can use during switchover phase.  NOTE!  This does not
-@@ -1949,8 +1949,8 @@
- #
- # @primary: true for primary or false for secondary.
- #
--# @failover: true to do failover, false to stop.  but cannot be
--#     specified if 'enable' is true.  default value is false.
-+# @failover: true to do failover, false to stop.  Cannot be specified
-+#     if 'enable' is true.  Default value is false.
- #
- # Example:
- #
-diff --git a/qapi/ui.json b/qapi/ui.json
-index 5744c24e3c..e71cd2f50b 100644
---- a/qapi/ui.json
-+++ b/qapi/ui.json
-@@ -290,7 +290,7 @@
- # @enabled: true if the SPICE server is enabled, false otherwise
- #
- # @migrated: true if the last guest migration completed and spice
--#     migration had completed as well.  false otherwise.  (since 1.4)
-+#     migration had completed as well, false otherwise (since 1.4)
- #
- # @host: The hostname the SPICE server is bound to.  This depends on
- #     the name resolution on the host and may be an IP address.
 -- 
 2.44.0
 
