@@ -2,58 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE22886E15
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D97886E17
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 15:10:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnfaE-0002v9-2z; Fri, 22 Mar 2024 10:09:22 -0400
+	id 1rnfaG-0002wX-BH; Fri, 22 Mar 2024 10:09:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaC-0002up-7D
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:20 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaD-0002vM-QT
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaA-0003XD-D9
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rnfaC-0003Xm-Br
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 10:09:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711116557;
+ s=mimecast20190719; t=1711116559;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=/ZzgKh7lbHrK/2chbp08P1rMS09VevJ1ZZMNvjesXiQ=;
- b=ZcSf3fTtjUueaVmeSkCp9lQ7edfls3VJSllbw0ETVqe+UxVdL2f+2r88RdSNCJVDQ9uu2z
- +uP2U7/fB/glU42xyp9ym41pnig8RFX+ZBIxD8MjaKjhxUGMcVBqSQ1xvia0+YBfDSiji6
- FPlzvTt0noKquZRr+JDHcipOgH3s1TA=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=/4qnYZOS9CuGbbjENEEP+fU0H+Z/3nkGe8IpTElGF+4=;
+ b=Zr4M/4tJy87dkIkmbxTnLo9UgvpeN+xk/tNHdjhTu87t1HQqTiNZCPzc0UgK9a/EFmlxOZ
+ DdKeWJ/P4AxF/PON1XoF3537CBvtJ1mjmH1TsS3gqcvbn6lEovD9OfBiOcvBX0jJ5GqXjZ
+ ZAb78tboxHgLIZ/mtt/eF5pPXng9iWo=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-153-q3bVP7wvPQaZYjasfGmZeQ-1; Fri, 22 Mar 2024 10:09:16 -0400
-X-MC-Unique: q3bVP7wvPQaZYjasfGmZeQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-317-QB41PN0-OLmQu1KyNSDxoA-1; Fri, 22 Mar 2024 10:09:16 -0400
+X-MC-Unique: QB41PN0-OLmQu1KyNSDxoA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9C21185A786;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8FDC89C949;
  Fri, 22 Mar 2024 14:09:15 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AA3DB200AD5B;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id A9832492BD0;
  Fri, 22 Mar 2024 14:09:15 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BFC8921E680D; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
+ id C17B221E5D27; Fri, 22 Mar 2024 15:09:10 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com,
-	michael.roth@amd.com,
-	kkostiuk@redhat.com
-Subject: [PATCH 00/12] qapi: Fairly trivial documentation work
-Date: Fri, 22 Mar 2024 15:08:58 +0100
-Message-ID: <20240322140910.328840-1-armbru@redhat.com>
+Cc: eblake@redhat.com, michael.roth@amd.com, kkostiuk@redhat.com,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 01/12] qapi: Drop stray Arguments: line from qmp_capabilities
+ docs
+Date: Fri, 22 Mar 2024 15:08:59 +0100
+Message-ID: <20240322140910.328840-2-armbru@redhat.com>
+In-Reply-To: <20240322140910.328840-1-armbru@redhat.com>
+References: <20240322140910.328840-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
@@ -78,41 +81,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster (12):
-  qapi: Drop stray Arguments: line from qmp_capabilities docs
-  qapi: Expand a few awkward abbreviations in documentation
-  qapi: Tidy up block-latency-histogram-set documentation some more
-  qapi: Tidy up indentation of add_client's example
-  qapi: Fix argument markup in drive-mirror documentation
-  qapi: Fix typo in request-ebpf documentation
-  qapi: Fix abbreviation punctuation in doc comments
-  qapi: Start sentences with a capital letter, end them with a period
-  qapi: Don't repeat member type in its documentation text
-  qapi: Refill doc comments to conform to current conventions
-  qapi: Correct documentation indentation and whitespace
-  qga/qapi-schema: Refill doc comments to conform to current conventions
+Reported-by: John Snow <jsnow@redhat.com>
+Fixes: 119ebac1feb2 (qapi-schema: use generated marshaller for 'qmp_capabilities')
+Signed-off-by: Markus Armbruster <armbru@redhat.com>
+---
+ qapi/control.json | 2 --
+ 1 file changed, 2 deletions(-)
 
- qapi/block-core.json     |  46 +++++------
- qapi/block.json          |  14 ++--
- qapi/control.json        |   2 -
- qapi/crypto.json         |  12 +--
- qapi/cxl.json            |   4 +-
- qapi/dump.json           |  18 ++---
- qapi/ebpf.json           |  14 ++--
- qapi/machine-target.json |  22 +++---
- qapi/machine.json        |  18 ++---
- qapi/migration.json      | 162 +++++++++++++++++++--------------------
- qapi/misc.json           |   8 +-
- qapi/net.json            |  27 ++++---
- qapi/qom.json            |  38 ++++-----
- qapi/replay.json         |   4 +-
- qapi/run-state.json      |  19 ++---
- qapi/sockets.json        |   3 +-
- qapi/ui.json             |  16 ++--
- qapi/virtio.json         |  20 +++--
- qga/qapi-schema.json     |  29 ++++---
- 19 files changed, 240 insertions(+), 236 deletions(-)
-
+diff --git a/qapi/control.json b/qapi/control.json
+index f404daef60..6bdbf077c2 100644
+--- a/qapi/control.json
++++ b/qapi/control.json
+@@ -11,8 +11,6 @@
+ #
+ # Enable QMP capabilities.
+ #
+-# Arguments:
+-#
+ # @enable: An optional list of QMPCapability values to enable.  The
+ #     client must not enable any capability that is not mentioned in
+ #     the QMP greeting message.  If the field is not provided, it
 -- 
 2.44.0
 
