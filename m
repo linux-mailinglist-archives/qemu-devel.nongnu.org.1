@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FCA88691F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 10:24:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47346886958
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 10:35:01 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnb7Z-00031M-6i; Fri, 22 Mar 2024 05:23:29 -0400
+	id 1rnbIO-0000DF-Ju; Fri, 22 Mar 2024 05:34:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rnb7X-00030w-5d
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:23:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rnb7U-0005xe-A9
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:23:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711099402;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=K1CCjRVJRVf+ZFfSl/7At/4VX4N9ABNtVU5DQTchqXE=;
- b=K1Vsnt/pZFmQAGbDALHmIHzmf6p2CZaL5A6rdgiOwh0ACtbqRKUZgYOd/r4LA1yduXyXzs
- pUwT3BNx42SJL37hDws8NT/NZzcb83etpDWFvi/Li7d66ejDK4Mbg0COW8PeoVUaJFdzEI
- M4uwT7oedLVJo1wy/YB9Q7YonAWLrbk=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-29ffN5q_N6ypNBLsFiZvew-1; Fri, 22 Mar 2024 05:23:19 -0400
-X-MC-Unique: 29ffN5q_N6ypNBLsFiZvew-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-34172041676so1348658f8f.1
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 02:23:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rnbIM-0000CV-8d
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:34:38 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rnbIK-00087r-B7
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:34:37 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-565c6cf4819so5005503a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 02:34:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711100072; x=1711704872; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=848hfDMfHSWYM8SNdG3tbhtU2pCVUaSart0G0SSujnU=;
+ b=RXFAemRd11Y825O+szmT4PA0TVAsnDRzB1fp35fD0ZsCK3XxU1VBBsnYokWZUdzZKq
+ RtH83VAcXlhyuYrjMoCuwq+T47VPwVngm+4ToBlgshPqbLR1j/fxFfI2PSZ7wEQskhsb
+ bRqDxYFQdHXqw0KTPImo2JqdmAhA6r8gEIhX6cU/TN3HhfV+iFc9/RIlMRurkZJpirmd
+ d+G/+NYOdd5kBQxyvp56O6wgZcfyJpV2itUVRb03booNBnuzogjmZq44Tt6nF7wg/DBm
+ thwPOQCxn+a2DuTnQ02g6CkyCq8d0z0QJgVJ3dgVsz8cazznEvzAr3/QdfENuxnbi8Rn
+ l3KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711099398; x=1711704198;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=K1CCjRVJRVf+ZFfSl/7At/4VX4N9ABNtVU5DQTchqXE=;
- b=MiosMZscs4PORzgxav+gDqa4TyLube+AM2rxT1v4YRUGH59VX/7lzroZlkeAJ7IZjM
- C4ty+R580I5y/i0td3p3QI45XkD7rY2NFxsQulasRLCzOSAxl7asavDAHCdSqwLQf96w
- CZupQmF0Cm70YNhYgt8yFmuR+dwhMf5yR0y6/C16cwOqFKwG10ZP7ldEOYPrn9C5nEjn
- hQhZS7mEtuqA0At+lhvCMfp7QmDZMQeXFuSz+9j+6/f9ICfSDxdqA/RQRWT0RWAJ8rw8
- dQ78BT2GutvIYUXsesj2B4YOtlml3P2/QJo26Cqdeq3iTBwoMUD9gydimfTIpC1WFCoO
- bWDQ==
-X-Gm-Message-State: AOJu0YxBn06jlk9u7hJxJKZ43ckg4TzVffu4BlyVakulX5t57aAE+LG/
- FCmSZIG2A5pWUZVIwWN/SndsFP9ieS4jc9yh087RdJLMKP0Jd6qh2O2sqP9ePf5/mn4MzwuulgF
- /TuSCg2iKlHqBzDXpdhf6dmoTu60Y9/dMGskidPX6JHsdbJT+MWlhpyCFPK5CH8pQmi+tTtrm7o
- T5FvqCTcqXpCVhttLERPM0DwEb7GYGdoiBJ1RX
-X-Received: by 2002:a05:6000:154f:b0:33e:d6cb:34c4 with SMTP id
- 15-20020a056000154f00b0033ed6cb34c4mr1733259wry.4.1711099397935; 
- Fri, 22 Mar 2024 02:23:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLYCw7oVkNkff0+5NTe2zIXSGrkw8EQkaveGcF6UAa2cO9HHPLsLkHVQ4Jgsd1QWsvhGnFAA==
-X-Received: by 2002:a05:6000:154f:b0:33e:d6cb:34c4 with SMTP id
- 15-20020a056000154f00b0033ed6cb34c4mr1733227wry.4.1711099397525; 
- Fri, 22 Mar 2024 02:23:17 -0700 (PDT)
-Received: from step1.redhat.com (host-87-12-25-33.business.telecomitalia.it.
- [87.12.25.33]) by smtp.gmail.com with ESMTPSA id
- x3-20020adfcc03000000b0033e41e1ad93sm1615301wrh.57.2024.03.22.02.23.15
+ d=1e100.net; s=20230601; t=1711100072; x=1711704872;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=848hfDMfHSWYM8SNdG3tbhtU2pCVUaSart0G0SSujnU=;
+ b=wHuLkuOjyqQkI9k6i1LTYWmFMtVbkI61OaKyLYT9uE8vDUNxMM3Gwqb97jxiNqMb5k
+ 5NkriFG/hmwKAaAyhpBzsCNhSpMxnlGpU5ymhTI4O8qrlUZeX2HtEWlk1+4y7H8fGUmU
+ OoyTQEK8XzEdhMg8muq+rlw9CpKCFRyCAh3iOs2fn2JN/gnVeITne5SlDw9WJ7tAvnNZ
+ EHWewstd4y7L/R+J+ifIqqdeexEQGy8A/pLIapecexjQaQg/+fc4VqSAVAisvFo2XqEY
+ kpHW/F4Hp+xm0dFki5y8/NuW1Q+iBu+e9TldhpLI6viB1MbhkozXS2XqmBJkx68c3Fj7
+ 2yoA==
+X-Gm-Message-State: AOJu0Yyptgr3WS1Zv4nO1+xCQSZMzyEXT/8o6pf/ovo+wurEQ0RYOHUt
+ qJ5VCL4cCM1eLAB/MyKSFmgXjWma+TFgcrXiMJi6Q5Z5FZ7605qFNll6m7jdcgI=
+X-Google-Smtp-Source: AGHT+IH/x6VQhwEZsm6gbBqlwFepg/w0s6iVrziCDNqseUb4DYgBD12AdGA/GBXxemRrHwgyT8m8IQ==
+X-Received: by 2002:a17:907:7da7:b0:a47:3076:b572 with SMTP id
+ oz39-20020a1709077da700b00a473076b572mr1081510ejc.18.1711100072119; 
+ Fri, 22 Mar 2024 02:34:32 -0700 (PDT)
+Received: from meli-email.org (adsl-53.37.6.2.tellas.gr. [37.6.2.53])
+ by smtp.gmail.com with ESMTPSA id
+ v23-20020a170906381700b00a46a9425fe5sm814999ejc.212.2024.03.22.02.34.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 02:23:16 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com, mst@redhat.com, lulu@redhat.com, eperezma@redhat.com,
- Jason Wang <jasowang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH for-9.0 v2] vhost-vdpa: check vhost_vdpa_set_vring_ready()
- return value
-Date: Fri, 22 Mar 2024 10:23:15 +0100
-Message-ID: <20240322092315.31885-1-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.44.0
+ Fri, 22 Mar 2024 02:34:31 -0700 (PDT)
+Date: Fri, 22 Mar 2024 11:23:32 +0200
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Zheyu Ma <zheyuma97@gmail.com>, mst@redhat.com, kraxel@redhat.com
+Cc: qemu-devel@nongnu.org, Zheyu Ma <zheyuma97@gmail.com>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH] virtio-snd: Skip invalid message sizes and null streams
+User-Agent: meli 0.8.5-rc.3
+References: <20240321214259.518560-1-zheyuma97@gmail.com>
+In-Reply-To: <20240321214259.518560-1-zheyuma97@gmail.com>
+Message-ID: <aqt9h.5se3l02z75nv@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.372,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PP_MIME_FAKE_ASCII_TEXT=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,70 +93,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost_vdpa_set_vring_ready() could already fail, but if Linux's
-patch [1] will be merged, it may fail with more chance if
-userspace does not activate virtqueues before DRIVER_OK when
-VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK is not negotiated.
+Hello Ma,
 
-So better check its return value anyway.
+On Thu, 21 Mar 2024 23:42, Zheyu Ma <zheyuma97@gmail.com> wrote:
+>This update changes how virtio_snd_handle_tx_xfer handles message size
+>discrepancies and null streams. Instead of using error handling paths
+>which led to unnecessary processing and potential null pointer dereferences,
+>the function now continues to the next loop iteration.
+>
+>ASAN log illustrating the issue addressed:
+>
+>ERROR: AddressSanitizer: SEGV on unknown address 0x0000000000b4 (pc 0x57cea39967b8 bp 0x7ffce84d51b0 sp 0x7ffce84d5160 T0)
+>    #0 0x57cea39967b8 in qemu_mutex_lock_impl qemu/util/qemu-thread-posix.c:92:5
+>    #1 0x57cea128c462 in qemu_mutex_lock qemu/include/qemu/thread.h:122:5
+>    #2 0x57cea128d72f in qemu_lockable_lock qemu/include/qemu/lockable.h:95:5
+>    #3 0x57cea128c294 in qemu_lockable_auto_lock qemu/include/qemu/lockable.h:105:5
+>    #4 0x57cea1285eb2 in virtio_snd_handle_rx_xfer qemu/hw/audio/virtio-snd.c:1026:9
+>    #5 0x57cea2caebbc in virtio_queue_notify_vq qemu/hw/virtio/virtio.c:2268:9
+>    #6 0x57cea2cae412 in virtio_queue_host_notifier_read qemu/hw/virtio/virtio.c:3671:9
+>    #7 0x57cea39822f1 in aio_dispatch_handler qemu/util/aio-posix.c:372:9
+>    #8 0x57cea3979385 in aio_dispatch_handlers qemu/util/aio-posix.c:414:20
+>    #9 0x57cea3978eb1 in aio_dispatch qemu/util/aio-posix.c:424:5
+>    #10 0x57cea3a1eede in aio_ctx_dispatch qemu/util/async.c:360:5
+>
+>Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+>---
+> hw/audio/virtio-snd.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>
+>diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+>index e604d8f30c..d9e9f980f7 100644
+>--- a/hw/audio/virtio-snd.c
+>+++ b/hw/audio/virtio-snd.c
+>@@ -913,13 +913,13 @@ static void virtio_snd_handle_tx_xfer(VirtIODevice *vdev, VirtQueue *vq)
+>                             &hdr,
+>                             sizeof(virtio_snd_pcm_xfer));
+>         if (msg_sz != sizeof(virtio_snd_pcm_xfer)) {
+>-            goto tx_err;
+>+            continue;
+>         }
+>         stream_id = le32_to_cpu(hdr.stream_id);
+> 
+>         if (stream_id >= s->snd_conf.streams
+>             || s->pcm->streams[stream_id] == NULL) {
+>-            goto tx_err;
+>+            continue;
+>         }
+> 
+>         stream = s->pcm->streams[stream_id];
+>-- 
+>2.34.1
+>
 
-[1] https://lore.kernel.org/virtualization/20240206145154.118044-1-sgarzare@redhat.com/T/#u
+While the bug is valid I think the fix is insufficient, but not because 
+it is wrong. The invalid elements are leaked and the guest never gets a 
+BAD_MSG response. The problem is in the error handling logic; I think 
+the invalid queue should be moved to the device struct since it's not 
+stream specific.
 
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
-Based-on: 20240315155949.86066-1-kwolf@redhat.com
+Cc'ing qemu-stable because this bug is present in current versions.
 
-v1: https://patchew.org/QEMU/20240207092702.25242-1-sgarzare@redhat.com/
-v2:
- - added acks
- - rebased on top of https://patchew.org/QEMU/20240315155949.86066-1-kwolf@redhat.com/
----
- net/vhost-vdpa.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Please make the same changes to virtio_snd_handle_rx_xfer() as well and 
+send a v2, cc'ing qemu-stable. With those changes you can add:
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 85e73dd6a7..eda714d1a4 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -399,7 +399,10 @@ static int vhost_vdpa_net_data_load(NetClientState *nc)
-     }
- 
-     for (int i = 0; i < v->dev->nvqs; ++i) {
--        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        int ret = vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
-+        if (ret < 0) {
-+            return ret;
-+        }
-     }
-     return 0;
- }
-@@ -1238,7 +1241,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
- 
-     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
- 
--    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    r = vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
-+    if (unlikely(r < 0)) {
-+        return r;
-+    }
- 
-     if (v->shadow_vqs_enabled) {
-         n = VIRTIO_NET(v->dev->vdev);
-@@ -1277,7 +1283,10 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
-     }
- 
-     for (int i = 0; i < v->dev->vq_index; ++i) {
--        vhost_vdpa_set_vring_ready(v, i);
-+        r = vhost_vdpa_set_vring_ready(v, i);
-+        if (unlikely(r < 0)) {
-+            return r;
-+        }
-     }
- 
-     return 0;
--- 
-2.44.0
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
+I will prepare a patch fixing the invalid element handling logic for 
+when this fix is accepted.
+
+Thanks,
+Manos
 
