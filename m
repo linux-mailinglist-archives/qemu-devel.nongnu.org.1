@@ -2,84 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46488872BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09878872CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 19:15:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnjNS-0006os-FF; Fri, 22 Mar 2024 14:12:26 -0400
+	id 1rnjNY-0007N0-1G; Fri, 22 Mar 2024 14:12:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjNK-0006eU-UL
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rnjNU-00072c-QD
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rnjNI-00073g-CL
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:18 -0400
+ id 1rnjNO-00074i-VJ
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 14:12:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711131135;
+ s=mimecast20190719; t=1711131142;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PJ1i93OLH0rJPkws1vcaOOsOxlg3B1IE3zBDSu2Pk2c=;
- b=JJsEkhJGNTKAeDZ2bV7Zfx0c+l4Q/JdFvTsPeGrcMDIQtVtHWJtFNmMbq6DRTNzpjTTMXJ
- bV/juHisF7NQ7uqmWuhGT9s9OhCrKcs1zYSM+1cXgYaVpIuYVa23uL45tEpnuBFj9v4/OC
- /4fWttqrtS7VL1rnwq5MfDejVFQlEBc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=nUBPSKRBAPOo+lQ/eTxjDUcxZLo5fXSFnvIO2PmnF9k=;
+ b=LVS4bJnXy/s/5z0w/j8wLkHW2tWAaDH1OzDhpUgei66wybMWdCzMJAcX3l8Zk4ak5D1yWF
+ bseJD74nEuPi+T+Dmkh2/M7e+ZSkXtTvFfXA7wPtBHmwZBEDFU1C1lMqOo9ZtOURX1HESZ
+ VECo7u7/Z9p9Q7TDm7tded6sygfhBYI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-379-Veg-52g_MJSBA9af-yaEBQ-1; Fri, 22 Mar 2024 14:12:14 -0400
-X-MC-Unique: Veg-52g_MJSBA9af-yaEBQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a473f5a84aaso3144166b.2
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:12:14 -0700 (PDT)
+ us-mta-306-bCH1RyR1NhecZjXLaOeyRg-1; Fri, 22 Mar 2024 14:12:20 -0400
+X-MC-Unique: bCH1RyR1NhecZjXLaOeyRg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a4711e69b9bso130027166b.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 11:12:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711131133; x=1711735933;
+ d=1e100.net; s=20230601; t=1711131136; x=1711735936;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PJ1i93OLH0rJPkws1vcaOOsOxlg3B1IE3zBDSu2Pk2c=;
- b=rNa/616bjzbKDbTVTTyjT6Lj99Ik19fEbWbfdUD8qFcedgAuMpSOd964n0AP17T6nZ
- 8IFu8vtRCj7NZFWvUQxeQaSjX1KXLtW3ps+rBIjkNPNUPkQhDywxawGHHPMl+/cPxqWn
- RX7/KSvucQ+p9BhXCFKbLpig/jtlVhWsX54G577rnhUw3ef3Z5fGxS21rKecGubViPt3
- 7NxBQcqP4CwFeJxMMKvxZ84ZepGpeNaRxCid4xIOzdOjdqlfShQgkmH6RG/s3X7q81er
- MhhSpo2RstasabUbwERzP2R6S6Pk+Bw5TlripYKbMaei1/l+myxBYapkG74W5nESyplU
- q+aA==
-X-Gm-Message-State: AOJu0YxMOAxtmNU7a2yk66bJ9ZroAKczGpbU+Ii47Xt3X1iXuCpw+bBS
- KTmfv4FEnE2JA/HHKeNMvV+BIVNt7HB6vHlqihyvPs91WQhZcCsMUJpULzABCtUJsBlY3fcrSqZ
- Y3353Y+ILnr4s0GWJY1KYFuQtZq0MxDu5QX+LVakBRIb5tDm6KSqNa4af3eYOmTRLHMqxkOdEAj
- ihSjNyax7h2IOoR5iZh+5kuVF9IsVc4ZFLITby
-X-Received: by 2002:a50:8a9a:0:b0:566:4a85:ceba with SMTP id
- j26-20020a508a9a000000b005664a85cebamr209524edj.1.1711131132846; 
- Fri, 22 Mar 2024 11:12:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqt7gNETxzL03L2rHMAZAcfDdiAAVL590d7iBvsTPwl9Sc6GtR/QgCVo66oUjJzUTdfcIn8A==
-X-Received: by 2002:a50:8a9a:0:b0:566:4a85:ceba with SMTP id
- j26-20020a508a9a000000b005664a85cebamr209506edj.1.1711131132549; 
- Fri, 22 Mar 2024 11:12:12 -0700 (PDT)
+ bh=nUBPSKRBAPOo+lQ/eTxjDUcxZLo5fXSFnvIO2PmnF9k=;
+ b=RfrVCQtB1picmZoGak5Wo3h+z29Nx3HshsjJo4DSSxQ4k8fM/+JaPEYd75qt802CmK
+ qNwG8c5OyrCdVUP5eyfa5Fk4rEWALy9/KPQbPLmcr5GSTYh4AEoUwC2GMvfmZw7mWnDl
+ iOW/gKypvDxnGo2cN2YqDXyM/HG6yEn8gBvWnhdxvcnawOi2agFgGot6c8iUypN5SPp2
+ WzMPM2w7kF1ZccFLC0DGBstoXWRKW7TfkvFYn7HsVpwlW+ZK5Ih5+gY0f69Yejl8+SOF
+ mwsbTb8kKpNRHz/TVCp0NcfMZ2mGXS51kMrHh9vxI/6SfZKXrJxpYc60PwEGPPAlKfM+
+ QSYg==
+X-Gm-Message-State: AOJu0Yyxzvlq28tNMKCfrh1XnAqUQjuruHzZ4FVJqnB2YGpPQucsmuQ4
+ RxfjTKxzf2WzVKoFO7kArbrPtzqSnSgUxm14DO9GhNWc6pSspEryTywoje/mzWBLdjZoJD+9WXO
+ lYO4gEWSXvHh806pWKkwpgs1AKVsbqBBfqcOgL9ip4A8l+KlLtW8mZuAayDLWZ3U7Z6KxjuD1MY
+ 1BIhFNOvkcptvhcjtGaLLmWr238qa4w1Ie/ETv
+X-Received: by 2002:a17:906:128d:b0:a47:25e4:f5c8 with SMTP id
+ k13-20020a170906128d00b00a4725e4f5c8mr326383ejb.65.1711131135837; 
+ Fri, 22 Mar 2024 11:12:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHymEeJZpYlsG7C5LT6JNwxJjbmm9VBD+qbDTCyyq9NKtl0r3gOy9qFplXIbuStRjAaj+8O0A==
+X-Received: by 2002:a17:906:128d:b0:a47:25e4:f5c8 with SMTP id
+ k13-20020a170906128d00b00a4725e4f5c8mr326369ejb.65.1711131135526; 
+ Fri, 22 Mar 2024 11:12:15 -0700 (PDT)
 Received: from [192.168.10.118] ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- m10-20020a50cc0a000000b0056b0af78d80sm74255edi.34.2024.03.22.11.12.10
+ i16-20020a170906091000b00a4735fc654fsm68782ejd.205.2024.03.22.11.12.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 11:12:11 -0700 (PDT)
+ Fri, 22 Mar 2024 11:12:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com,
 	michael.roth@amd.com,
 	david@redhat.com
-Subject: [PATCH 17/26] trace/kvm: Split address space and slot id in
- trace_kvm_set_user_memory()
-Date: Fri, 22 Mar 2024 19:11:07 +0100
-Message-ID: <20240322181116.1228416-18-pbonzini@redhat.com>
+Subject: [PATCH 18/26] kvm: Introduce support for memory_attributes
+Date: Fri, 22 Mar 2024 19:11:08 +0100
+Message-ID: <20240322181116.1228416-19-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322181116.1228416-1-pbonzini@redhat.com>
 References: <20240322181116.1228416-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -22
 X-Spam_score: -2.3
@@ -87,7 +86,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.222,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,46 +104,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-The upper 16 bits of kvm_userspace_memory_region::slot are
-address space id. Parse it separately in trace_kvm_set_user_memory().
+Introduce the helper functions to set the attributes of a range of
+memory to private or shared.
+
+This is necessary to notify KVM the private/shared attribute of each gpa
+range. KVM needs the information to decide the GPA needs to be mapped at
+hva-based shared memory or guest_memfd based private memory.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20240229063726.610065-5-xiaoyao.li@intel.com>
+Message-ID: <20240320083945.991426-11-michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c    | 5 +++--
- accel/kvm/trace-events | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/sysemu/kvm.h |  4 ++++
+ accel/kvm/kvm-all.c  | 31 +++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+)
 
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 54f4d83a370..bda309d5ffa 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -536,4 +536,8 @@ void kvm_mark_guest_state_protected(void);
+  * reported for the VM.
+  */
+ bool kvm_hwpoisoned_mem(void);
++
++int kvm_set_memory_attributes_private(hwaddr start, hwaddr size);
++int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size);
++
+ #endif
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index a05dea23133..4ac3cf1c9ef 100644
+index 4ac3cf1c9ef..36e39fd6514 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -303,8 +303,9 @@ static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, boo
-     ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
-     slot->old_flags = mem.flags;
- err:
--    trace_kvm_set_user_memory(mem.slot, mem.flags, mem.guest_phys_addr,
--                              mem.memory_size, mem.userspace_addr, ret);
-+    trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
-+                              mem.guest_phys_addr, mem.memory_size,
-+                              mem.userspace_addr, ret);
-     if (ret < 0) {
-         error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
-                      " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index a25902597b1..9f599abc172 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
- kvm_irqchip_release_virq(int virq) "virq %d"
- kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
- kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
--kvm_set_user_memory(uint32_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
-+kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
- kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
- kvm_resample_fd_notify(int gsi) "gsi %d"
- kvm_dirty_ring_full(int id) "vcpu %d"
+@@ -91,6 +91,7 @@ bool kvm_msi_use_devid;
+ static bool kvm_has_guest_debug;
+ static int kvm_sstep_flags;
+ static bool kvm_immediate_exit;
++static uint64_t kvm_supported_memory_attributes;
+ static hwaddr kvm_max_slot_size = ~0;
+ 
+ static const KVMCapabilityInfo kvm_required_capabilites[] = {
+@@ -1266,6 +1267,35 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
+     kvm_max_slot_size = max_slot_size;
+ }
+ 
++static int kvm_set_memory_attributes(hwaddr start, hwaddr size, uint64_t attr)
++{
++    struct kvm_memory_attributes attrs;
++    int r;
++
++    assert((attr & kvm_supported_memory_attributes) == attr);
++    attrs.attributes = attr;
++    attrs.address = start;
++    attrs.size = size;
++    attrs.flags = 0;
++
++    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
++    if (r) {
++        error_report("failed to set memory (0x%lx+%#zx) with attr 0x%lx error '%s'",
++                     start, size, attr, strerror(errno));
++    }
++    return r;
++}
++
++int kvm_set_memory_attributes_private(hwaddr start, hwaddr size)
++{
++    return kvm_set_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
++}
++
++int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size)
++{
++    return kvm_set_memory_attributes(start, size, 0);
++}
++
+ /* Called with KVMMemoryListener.slots_lock held */
+ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+                              MemoryRegionSection *section, bool add)
+@@ -2382,6 +2412,7 @@ static int kvm_init(MachineState *ms)
+         goto err;
+     }
+ 
++    kvm_supported_memory_attributes = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+     kvm_immediate_exit = kvm_check_extension(s, KVM_CAP_IMMEDIATE_EXIT);
+     s->nr_slots = kvm_check_extension(s, KVM_CAP_NR_MEMSLOTS);
+ 
 -- 
 2.44.0
 
