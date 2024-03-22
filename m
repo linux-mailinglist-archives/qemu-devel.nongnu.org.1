@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9C78868BF
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 10:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B877886896
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 09:54:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnalF-0001Tj-NS; Fri, 22 Mar 2024 05:00:25 -0400
+	id 1rnafH-0004J5-IV; Fri, 22 Mar 2024 04:54:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnalD-0001TW-7N
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:00:23 -0400
-Received: from mail-yw1-x1131.google.com ([2607:f8b0:4864:20::1131])
+ id 1rnafF-0004FZ-Ro
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:13 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1rnalB-00029J-PS
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 05:00:22 -0400
-Received: by mail-yw1-x1131.google.com with SMTP id
- 00721157ae682-609ff069a40so21235917b3.1
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 02:00:21 -0700 (PDT)
+ id 1rnafE-00011t-41
+ for qemu-devel@nongnu.org; Fri, 22 Mar 2024 04:54:13 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1dddad37712so15712665ad.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 01:54:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711098020; x=1711702820; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711097650; x=1711702450; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JFOwsLoUeHy61UpIhgty+6bsINYXEMHB7YYoX+Io5XM=;
- b=VHfce5NwZBw8a8vzgkYOjL8DvrrOQ4IhUk4TyIJug4xrwbMMK+YwWQiC9ZMzX5o6Ve
- yk9+4Ue9UIzGP87JM6M1R4sHAyeHuf0TqF9FZX6ZS1LQhzVPstNhAhNMuolJF9hb7Med
- UqPG120PTbQHe+29LsVvyjJM7F+9q79OKIIuePkEXMrIY82Kx/z3PcEVk9A2xPNh6ajl
- MzsRog1Bw3S9kIRAhRkfO4aGlXogOKZ39Pu99+iDzJzFQBYCO7eQ8bSASBGIau+znW1k
- 3QmEUukKxsVrNfQVxxaU02UAyDhZjxuqy713CaIY13WU0hUGM3AX1duCvxoP/n8UAZ5f
- zlsw==
+ bh=gggN9oJqY5bBdrfB5/j/DAwZ/Z57rRd8F4t6/CMnQ6k=;
+ b=Ao3eFCFLIXNv2Uj/pT/2TIPEx8t1r1K4Op7l+XyC35LkRbVB1wNCGKaqnKdhnnoC2m
+ mHPic4cL4V/+NE4wzwXsMXJo6M1EYjyQlLCK3Q+yM9xeioswYSiNqpx5tIqL2H5Da2yl
+ 957f41oMQOFTJU9gppCZNTHB34Xjr5CvdAxo15Si7WiiQw9oYGLK78GZquDGuGRG7jCe
+ pvpTTxyGY0WVQQlWsBHPtiWGhBchY/8wWtVw1st1NpWdZkUjhQDXu4HwPMW8tJsd2H6E
+ EZ7vHS3CC+tuQy7JI4HpXuziFL20MYZ8AsHKTldpxjbAJYyh6aKta4QPfJom8A57ofvg
+ /WMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711098020; x=1711702820;
+ d=1e100.net; s=20230601; t=1711097650; x=1711702450;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JFOwsLoUeHy61UpIhgty+6bsINYXEMHB7YYoX+Io5XM=;
- b=GzenIBGhg2zDYCldva4ieoye3G1HD71JLl3DVO57zDrS052AI/9IxOwoE1GqIhiw+u
- yeYJvN2QOb8jgfv2nMAaLX4QBvpFcsfYEVT5pDf+yZaEkbjJA/hYfNZmaduSCWf+J+31
- 27jge9hmhiG0p5kKBp7xMu0YWD2D3l0lwrtybN0qWTP5dl0D/IOHjUiqecknBDAWasJy
- YtI4BKCCMYuEXTycIzBLQZhzqyGY9n6cFnCTovasRc7+2JfD3XZbpvTw+J1rVlAA7kYg
- HSirlZhdsp0KdX1triowvdK532Arta5kcFksRnl9gwT1/tLP1ZIQ3Lqr1TGi10IJFeCO
- FuMw==
-X-Gm-Message-State: AOJu0YwhKYe7563coj9AiIQvY0KSnl4W1/Rw3mWQla+2n6dEeWL54FYl
- G19cgCY4ajbWhMjoTQX7ffROoWFG09y8Gm05dlHOj809iH+Z5jEkQeIrEHawcjZ5Mw==
-X-Google-Smtp-Source: AGHT+IHn+f5j/qhYtuThW/7TrxJMVc2tQJ+O8bbPdtZkUWg3N127WYAui4gWoCGx+Sp68QXw545H/g==
-X-Received: by 2002:a05:6a20:2587:b0:1a3:a9ee:853a with SMTP id
- k7-20020a056a20258700b001a3a9ee853amr308102pzd.40.1711097647260; 
- Fri, 22 Mar 2024 01:54:07 -0700 (PDT)
+ bh=gggN9oJqY5bBdrfB5/j/DAwZ/Z57rRd8F4t6/CMnQ6k=;
+ b=M29AlhEU6uVq9fzGR71EnbByFK4xG8czhSorDvYsjHWsherRzSRkdxfsxjiLCmlbg9
+ 4jdDBdKD4mMTL+r1rfRkLiCVf54+07K9uwBKH5yOoICf/iV8YsI2q6i603nRHTL4njGa
+ Cw12NX/nrZDSI6ST5025nIqHLvjVEoNewWtajNkTbza4l1x8QOo8Eq3+P2u8llcKkk1v
+ 0tnp78yVO3xn2JLW1Qhtekly8iQGKJ1sRJseuuz0tcqiZoguBB49X20FXKBZM6UJTjv0
+ 1Gcoh3yGFC36fQ7nsA1S/Dac0nwCTCCBf+9S7WMVhfv/M4c9Q+NO21hoi/mxJlJMwnEp
+ rLEg==
+X-Gm-Message-State: AOJu0Yw2IpMXG7/A66MJKpYTvu9aA4Z4Kr2MN3snlSQZTWXry4h/ctwN
+ wZkqjh23Uepe+6Hb6C5cqa3qGRYPBl7BhUcIdPfZZSinH9OI/9kPd1cHy6iOPezoxw==
+X-Google-Smtp-Source: AGHT+IEiuqoY3YgKcT+0OGq6dN7j3f4prsO+0GxfLfd/dAoamgkuCvNL/yF1ccWKE2UAA6K1rCXeDg==
+X-Received: by 2002:a17:902:d485:b0:1df:fa83:2cdf with SMTP id
+ c5-20020a170902d48500b001dffa832cdfmr2268237plg.18.1711097650472; 
+ Fri, 22 Mar 2024 01:54:10 -0700 (PDT)
 Received: from toolbox.wdc.com ([129.253.180.114])
  by smtp.gmail.com with ESMTPSA id
- h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.04
+ h5-20020a170902680500b001ddde07af12sm1369048plk.143.2024.03.22.01.54.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Mar 2024 01:54:06 -0700 (PDT)
+ Fri, 22 Mar 2024 01:54:10 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: qemu-devel@nongnu.org
-Cc: alistair23@gmail.com, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 11/15] target/riscv/vector_helper.c: optimize loops in ldst
- helpers
-Date: Fri, 22 Mar 2024 18:53:15 +1000
-Message-ID: <20240322085319.1758843-12-alistair.francis@wdc.com>
+Cc: alistair23@gmail.com, Frank Chang <frank.chang@sifive.com>,
+ Jim Shu <jim.shu@sifive.com>, Alistair Francis <alistair.francis@wdc.com>
+Subject: [PULL 12/15] hw/intc: Update APLIC IDC after claiming iforce register
+Date: Fri, 22 Mar 2024 18:53:16 +1000
+Message-ID: <20240322085319.1758843-13-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240322085319.1758843-1-alistair.francis@wdc.com>
 References: <20240322085319.1758843-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1131;
- envelope-from=alistair23@gmail.com; helo=mail-yw1-x1131.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=alistair23@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,53 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+From: Frank Chang <frank.chang@sifive.com>
 
-Change the for loops in ldst helpers to do a single increment in the
-counter, and assign it env->vstart, to avoid re-reading from vstart
-every time.
+Currently, QEMU only sets the iforce register to 0 and returns early
+when claiming the iforce register. However, this may leave mip.meip
+remains at 1 if a spurious external interrupt triggered by iforce
+register is the only pending interrupt to be claimed, and the interrupt
+cannot be lowered as expected.
 
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+This commit fixes this issue by calling riscv_aplic_idc_update() to
+update the IDC status after the iforce register is claimed.
+
+Signed-off-by: Frank Chang <frank.chang@sifive.com>
+Reviewed-by: Jim Shu <jim.shu@sifive.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240314175704.478276-11-dbarboza@ventanamicro.com>
+Message-ID: <20240321104951.12104-1-frank.chang@sifive.com>
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/vector_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/intc/riscv_aplic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
-index 63a1083f03..fa139040f8 100644
---- a/target/riscv/vector_helper.c
-+++ b/target/riscv/vector_helper.c
-@@ -209,7 +209,7 @@ vext_ldst_stride(void *vd, void *v0, target_ulong base,
+diff --git a/hw/intc/riscv_aplic.c b/hw/intc/riscv_aplic.c
+index 6a7fbfa861..fc5df0d598 100644
+--- a/hw/intc/riscv_aplic.c
++++ b/hw/intc/riscv_aplic.c
+@@ -488,6 +488,7 @@ static uint32_t riscv_aplic_idc_claimi(RISCVAPLICState *aplic, uint32_t idc)
  
-     VSTART_CHECK_EARLY_EXIT(env);
+     if (!topi) {
+         aplic->iforce[idc] = 0;
++        riscv_aplic_idc_update(aplic, idc);
+         return 0;
+     }
  
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
-@@ -277,7 +277,7 @@ vext_ldst_us(void *vd, target_ulong base, CPURISCVState *env, uint32_t desc,
-     VSTART_CHECK_EARLY_EXIT(env);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < evl; i++, env->vstart++) {
-+    for (i = env->vstart; i < evl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             target_ulong addr = base + ((i * nf + k) << log2_esz);
-@@ -393,7 +393,7 @@ vext_ldst_index(void *vd, void *v0, target_ulong base,
-     VSTART_CHECK_EARLY_EXIT(env);
- 
-     /* load bytes from guest memory */
--    for (i = env->vstart; i < env->vl; i++, env->vstart++) {
-+    for (i = env->vstart; i < env->vl; env->vstart = ++i) {
-         k = 0;
-         while (k < nf) {
-             if (!vm && !vext_elem_mask(v0, i)) {
 -- 
 2.44.0
 
