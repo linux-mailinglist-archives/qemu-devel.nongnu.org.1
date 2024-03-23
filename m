@@ -2,87 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DBC38874E8
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Mar 2024 23:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBD688772F
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 07:21:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnndE-0006ij-HO; Fri, 22 Mar 2024 18:45:00 -0400
+	id 1rnuk4-0005wK-R3; Sat, 23 Mar 2024 02:20:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rnndC-0006iG-1H
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 18:44:58 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rnujz-0005vY-Gf
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:28 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1rnnd9-0005Sw-7N
- for qemu-devel@nongnu.org; Fri, 22 Mar 2024 18:44:57 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-513e89d0816so3291314e87.0
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 15:44:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rnujl-0007cN-9w
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:27 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1df01161b39so21371665ad.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:20:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711147493; x=1711752293; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=gVo4vuYThVrKb1Muw9cZOVr3/HHBkWHsD4WaPLPUGP8=;
- b=Qzm0TCRjHVIUZxGrIBPDdXh5Ctm/6B9Win1W0Ks9QgY1Ose3gfEpFRxnNd2hexnNyg
- k6Aid+Ylu+d2fF7NokOGWwIqRDn4Q/kmpSZtYbTuL2DHTmqoesyMDJQWWQ/R3i9EG1rw
- i/veFpF9wGoAN868uZzacsPXyk/1oFoYjppxwZ44+auzRmTGPDyr4SLIctZrAQ1GqZl3
- INTPX6Vr4a+i8LB8M+1on3CifKDB0/5X6NC4BsZR+D2uU8M9z70a/+xdO5Ldfz5rDXYL
- TCExWvE8YNWnvEDUd6surR1gdSWSXwVsi8hbJl6LnhKu6sbrWYdnZPmY/0EFQW+CYZGF
- m38A==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711174812; x=1711779612;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yO/wNaLl7/OjHdUZtag034ckT+zewaxx7h5WeHbtBDg=;
+ b=nwNCNW4kgOhhkuSYneCFKftkrOyf7F8I0ZhncS5p0WPULqqlVZQQy5LlpHEoV6dZvY
+ 67PpOX/TBBQH4d7PWdlblFxiKkB6dCvxojqKATbu2v9EFTQSi0y4Tm71w6QF68hYywGv
+ y0EkJLoVFpT1cUF7RoG5cTq/w38M216r4HSXYOBuSER6bAGEOVzcToTWVX+8l00xhfdc
+ X52xyqs2akMJBFS1Y5T6OlYJbxn4mXMceFHBAEMe16JcOCVsoimypz+gjSMttOEnY7Y5
+ mGOu7rMHxfyxTBVl2YMrG0SZM3fuYrfcWkq+Mbuq5Hkfu0iphRCD38XBENnXTAOvGcgc
+ aIqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711147493; x=1711752293;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1711174812; x=1711779612;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=gVo4vuYThVrKb1Muw9cZOVr3/HHBkWHsD4WaPLPUGP8=;
- b=LjhbNwFs9UInZQyABthDIZ0rNAebLEFih3VuOt1gCjPHpOzHhdQzOGlyQIVkUj5iZf
- hmuV3NLvV+swLVyXoByye8VBVHMZIfTnTD8gKClTkj0oOItxv65zYYuqQzzn6c8DRmCn
- 27fTZxZC790OD4T3Ds5skZwx1K/1cGOqoSQVWGwDRVzsaicBhIw6Hln3nVo1SJTLZeE7
- E4/vYRWh0SNXPdx5oKQNlaS4754DJIRRO7Q4+4i93GZ0M6Pc1nc7z1xMDMvvq+kNORHE
- BmGDZ4eXGDJUtIkn6oM7X7+mHer4u/8xLqQzumb+AUXrv7DFu+Ai1xMB7utofsPscZPJ
- 0onQ==
-X-Gm-Message-State: AOJu0YzCQ+fghDVvlHinArmJSXpAo0KYbaTSBF5Qle7MjgGc4brp91LP
- qRjSzsW6hRVX4zQFzF2zxub5EMoy+iLTvAv4aTaxGfRCNy9Vm89b1SAPcG6ZXyo=
-X-Google-Smtp-Source: AGHT+IFgpjBYJEEc5aNEqHUP+jLXp6oCt9eojTpSvM2ye9ut29+ELNZxZG4MWxKZj9herx+UOPeGsg==
-X-Received: by 2002:a05:6512:e93:b0:515:a257:cbd with SMTP id
- bi19-20020a0565120e9300b00515a2570cbdmr6595lfb.24.1711147492753; 
- Fri, 22 Mar 2024 15:44:52 -0700 (PDT)
-Received: from [192.168.200.106] (83.11.22.169.ipv4.supernova.orange.pl.
- [83.11.22.169]) by smtp.gmail.com with ESMTPSA id
- cx10-20020a05640222aa00b0056bb1b017besm277778edb.23.2024.03.22.15.44.51
+ bh=yO/wNaLl7/OjHdUZtag034ckT+zewaxx7h5WeHbtBDg=;
+ b=C56WnoZYf+rvMFlX+XPUBqUkPx1Wx+jf6IAIJbKIBfe1HSJ2TQC4uTpiED/RUHcIfG
+ W/3d8zOLWSEDLkg3bWVnAD+d5RW9Qo1uRnCv1SIP5C+pZMmkKSCx7EIdignEU9TqZV28
+ AjYKFIdtPeFehqy4vt4Q4bs65f1y62BH0JoJOX1kl9DQEmEwGYhyAavsA2s5nym1BR+u
+ 8T9wSr0wsDGJGFzfxWAYmvOssHc4O1Myb10pxezi6dduILwxh5UNy4dwXObZVP3x4Im1
+ Iq6KqXYNiL3TltKV7w4g74I+CiJG9j7bkPCwTv/r7ug6CHLPj8x9SqJmrT5supuswhg8
+ fyVw==
+X-Gm-Message-State: AOJu0YxYqbj6GjQ+vWPYxGjg2HfGKC/U9UKzTc/Ot9yKZP/BbY6BARRj
+ /sSfheR+DjlUanBt1aYDv7TTkEvSNxIgocaGQAn2Mrwa8rQ+dVCATIINg/YAyRI=
+X-Google-Smtp-Source: AGHT+IEOQRYh4fe8rQLvq8sF3WM4u9pPd71bFLuNdoB2ZOl1/5aFxXT8OLq7E4yMKaTb5Q+zNvsnEQ==
+X-Received: by 2002:a17:903:1247:b0:1dc:b691:85f4 with SMTP id
+ u7-20020a170903124700b001dcb69185f4mr1872143plh.16.1711174811675; 
+ Fri, 22 Mar 2024 23:20:11 -0700 (PDT)
+Received: from localhost ([157.82.200.213])
+ by smtp.gmail.com with UTF8SMTPSA id
+ b6-20020a170902650600b001def18c0cedsm829977plk.179.2024.03.22.23.20.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Mar 2024 15:44:52 -0700 (PDT)
-Message-ID: <c0478bc2-73bb-4048-988b-a05df30cdbd4@linaro.org>
-Date: Fri, 22 Mar 2024 23:44:51 +0100
+ Fri, 22 Mar 2024 23:20:11 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v2 0/3] Fixes for "ui/cocoa: Let the platform toggle
+ fullscreen"
+Date: Sat, 23 Mar 2024 15:20:00 +0900
+Message-Id: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] ARM Sbsa-ref: Enable CPU cluster topology
-Content-Language: pl-PL, en-GB, en-HK
-To: Peter Maydell <peter.maydell@linaro.org>,
- Xiong Yining <xiongyining1480@phytium.com.cn>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, rad@semihalf.com,
- quic_llindhol@quicinc.com, chenbaozi@phytium.com.cn
-References: <20240312083049.3412522-1-xiongyining1480@phytium.com.cn>
- <CAFEAcA8sQnBzFq3b_WscYY1o+J2CutFrEcTGHXvbi8YVn6vorg@mail.gmail.com>
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <CAFEAcA8sQnBzFq3b_WscYY1o+J2CutFrEcTGHXvbi8YVn6vorg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJB0/mUC/12MOw7DIBAFr2JtHSJ+inEq3yNygWEdbxGIIEK2L
+ O4e4jLlvDeaAzImwgz37oCEhTLF0EBeOnCrDU9k5BuD5FJzJQxbaMPM+lmYHp1UN8uhue+E59H
+ Ux9R4pfyJaT+zRfzW/0IRjDOlF2GNHmbuh9HbPdB2dfEFU631CxqRcjSbAAAA
+To: Peter Maydell <peter.maydell@linaro.org>, 
+ =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
+ Gerd Hoffmann <kraxel@redhat.com>, 
+ =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
+X-Mailer: b4 0.12.3
+Received-SPF: none client-ip=2607:f8b0:4864:20::630;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,41 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 22.03.2024 o 19:51, Peter Maydell pisze:
-> On Tue, 12 Mar 2024 at 08:32, Xiong Yining
+This series contains patches for regressions caused by commit 91aa508d0274
+("ui/cocoa: Let the platform toggle fullscreen").
 
->> xiongyining1480 (2):
->>    hw/arm/sbsa-ref:Enable CPU cluster on ARM sbsa machine
->>    hw/arm/sbsa-ref: Add cpu-map to device tree
-> 
-> Thanks for these patches. I think we should squash the two
-> patches together into one, because the first patch is only
-> a single line, and also because we shouldn't say that the
-> machine supports cluster topology until it actually does
-> by putting the information into the device tree.
-> 
-> There's no rush, because we're  now in softfreeze for 9.0, so these
-> will have to wait until 9.0 is released (in about a month's time).
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v2:
+- Added a comment to [QemuCocoaView fixAspectRatio:]. (Peter Maydell)
+- Renamed [QemuCocoaView fixAspectRatio:] parameter to match the
+  comment. (Peter Maydell)
+- Noted that "ui/cocoa: Use NSTrackingInVisibleRect" fixes mouse
+  movement tracking. (Peter Maydell)
+- Link to v1: https://lore.kernel.org/r/20240318-fixes-v1-0-34f1a849b0d9@daynix.com
 
-> I'm also a bit confused by the Reviewed-by: tag from Marcin on patch 2,
-> because I can't see that in my mail archives of the discussion on version
-> 1 of this patchset, only a Tested-by.
-> Marcin, are you OK with these patches?
+---
+Akihiko Odaki (3):
+      ui/cocoa: Fix aspect ratio
+      ui/cocoa: Resize window after toggling zoom-to-fit
+      ui/cocoa: Use NSTrackingInVisibleRect
 
-I only tested them. They are fine, will check on Monday.
+ ui/cocoa.m | 90 ++++++++++++++++++++++++++++++++++++++------------------------
+ 1 file changed, 55 insertions(+), 35 deletions(-)
+---
+base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+change-id: 20240318-fixes-7b187ec236a0
 
-> Also, is this change to the DTB something that would require an
-> increase in the sbsa-ref platform version number, or not?
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
-TF-A will check for "/cpus/cpu-map" node and if it is missing then will 
-not provide it to EDK2. So far I did not saw patches for firmware side.
-
-I would add bump of platform version to 0.4 one. It is cheap operation 
-and so far (from firmware side) we check for >= 0.3 only.
-
- > Should we adjust the documentation in docs/system/arm/sbsa.rst to
- > mention that the DTB might have cluster topology information?
-
-Yes. I will send an update to mention that NUMA configuration can be 
-there too (we already export it from TF-A to EDK2 via SMC calls).
 
