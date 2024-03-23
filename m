@@ -2,33 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A96D8877D3
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 10:40:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFC28877D1
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 10:40:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnxqY-0001pt-5m; Sat, 23 Mar 2024 05:39:26 -0400
+	id 1rnxqW-0001p6-Ck; Sat, 23 Mar 2024 05:39:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqT-0001oe-P7
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqT-0001ob-Mu
  for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:21 -0400
-Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
+Received: from todd.t-8ch.de ([159.69.126.157])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqR-0006wx-EZ
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqR-0006wz-F3
  for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1711186752; bh=/KvE0ibIDZCzGsU2xL4WmYohrL85WVD01hFgWCYQCBY=;
+ t=1711186752; bh=COeUxPMaD1DVJx8UC71ryN/Nb2YKVJ3r+rLd91PtcjA=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=VeRhsNVD7HpSPKWc7iW6mgkdyxtgbGtM2dcsy7VGdUZ/ipi78FlH1ypj+sxhcRZ0z
- wmqIur8kqujCZmxUsGUqriYkc7QKuqnnPfrp4aPP9yaZg+cAWavBJSwfo9qSCGwXbg
- GLf3uAmv7Q38jS2k00t6xgCVy7jClufal92fm0bc=
+ b=cvinKVltPhKKv+fZktQLD2C1ljdHhNlI7CnvNkF3cwSbCLphfC0aAFir7GZbAX+uS
+ BHAfwK4IK4K/Y2RxYHjXmd8/2XPKPy6XY9E/X6OaCmloicF0lzV01cNJtsmQT2P3tW
+ Yymu29akSx+fH6RfwZtGXVf1uqP73plYA0Kof7Gg=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Sat, 23 Mar 2024 10:39:11 +0100
-Subject: [PATCH v7 6/7] tests/qtest/pvpanic: add tests for pvshutdown event
+Date: Sat, 23 Mar 2024 10:39:12 +0100
+Subject: [PATCH v7 7/7] Revert "docs/specs/pvpanic: mark shutdown event as
+ not implemented"
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240323-pvpanic-shutdown-v7-6-4ac1fd546d6f@t-8ch.de>
+Message-Id: <20240323-pvpanic-shutdown-v7-7-4ac1fd546d6f@t-8ch.de>
 References: <20240323-pvpanic-shutdown-v7-0-4ac1fd546d6f@t-8ch.de>
 In-Reply-To: <20240323-pvpanic-shutdown-v7-0-4ac1fd546d6f@t-8ch.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -38,15 +39,15 @@ Cc: qemu-devel@nongnu.org,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711186751; l=3527;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711186751; l=758;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=/KvE0ibIDZCzGsU2xL4WmYohrL85WVD01hFgWCYQCBY=;
- b=+7AH+MDS+anmZlwSe57HRj0fTK9rBppdx2XEBUEsMTc3QisbKFHbLSsLa/Q2Giw9Q4cwvRFmV
- fGwYQtpwi7WDti/DOsE27dqfSBocAZy4VWhrxD5rPtygdRnTJY30idQ
+ bh=COeUxPMaD1DVJx8UC71ryN/Nb2YKVJ3r+rLd91PtcjA=;
+ b=Ykda+L0OHk09gNPbJIZ/IR4GO4R/ZIVEWt6/d4vNdH5eSU2bQtLU6at44FcFWdM2XmB682X6q
+ Hi8P/uAy7OcCb/jDkqtzBC0ZMVu9zSxqvxPTSDDR+caCl4jMECJUAHj
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
- envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
+Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
+ helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -68,116 +69,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Validate that a shutdown via the pvpanic device emits the correct
-QMP events.
+The missing functionality has been implemented now.
+
+This reverts commit e739d1935c461d0668057e9dbba9d06f728d29ec.
 
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/pvpanic-pci-test.c | 39 +++++++++++++++++++++++++++++++++++++++
- tests/qtest/pvpanic-test.c     | 29 +++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+)
+ docs/specs/pvpanic.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/pvpanic-pci-test.c b/tests/qtest/pvpanic-pci-test.c
-index b372caf41dc0..dc021c2fdf77 100644
---- a/tests/qtest/pvpanic-pci-test.c
-+++ b/tests/qtest/pvpanic-pci-test.c
-@@ -85,11 +85,50 @@ static void test_panic(void)
-     qtest_quit(qts);
- }
+diff --git a/docs/specs/pvpanic.rst b/docs/specs/pvpanic.rst
+index b0f27860ec3b..61a80480edb8 100644
+--- a/docs/specs/pvpanic.rst
++++ b/docs/specs/pvpanic.rst
+@@ -29,7 +29,7 @@ bit 1
+   a guest panic has happened and will be handled by the guest;
+   the host should record it or report it, but should not affect
+   the execution of the guest.
+-bit 2 (to be implemented)
++bit 2
+   a regular guest shutdown has happened and should be processed by the host
  
-+static void test_pvshutdown(void)
-+{
-+    uint8_t val;
-+    QDict *response, *data;
-+    QTestState *qts;
-+    QPCIBus *pcibus;
-+    QPCIDevice *dev;
-+    QPCIBar bar;
-+
-+    qts = qtest_init("-device pvpanic-pci,addr=04.0");
-+    pcibus = qpci_new_pc(qts, NULL);
-+    dev = qpci_device_find(pcibus, QPCI_DEVFN(0x4, 0x0));
-+    qpci_device_enable(dev);
-+    bar = qpci_iomap(dev, 0, NULL);
-+
-+    qpci_memread(dev, bar, 0, &val, sizeof(val));
-+    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
-+
-+    val = PVPANIC_SHUTDOWN;
-+    qpci_memwrite(dev, bar, 0, &val, sizeof(val));
-+
-+    response = qtest_qmp_eventwait_ref(qts, "GUEST_PVSHUTDOWN");
-+    qobject_unref(response);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "SHUTDOWN");
-+    g_assert(qdict_haskey(response, "data"));
-+    data = qdict_get_qdict(response, "data");
-+    g_assert(qdict_haskey(data, "guest"));
-+    g_assert(qdict_get_bool(data, "guest"));
-+    g_assert(qdict_haskey(data, "reason"));
-+    g_assert_cmpstr(qdict_get_str(data, "reason"), ==, "guest-shutdown");
-+    qobject_unref(response);
-+
-+    g_free(dev);
-+    qpci_free_pc(pcibus);
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-     qtest_add_func("/pvpanic-pci/panic", test_panic);
-     qtest_add_func("/pvpanic-pci/panic-nopause", test_panic_nopause);
-+    qtest_add_func("/pvpanic-pci/pvshutdown", test_pvshutdown);
- 
-     return g_test_run();
- }
-diff --git a/tests/qtest/pvpanic-test.c b/tests/qtest/pvpanic-test.c
-index ccc603472f5d..d49d2ba9313e 100644
---- a/tests/qtest/pvpanic-test.c
-+++ b/tests/qtest/pvpanic-test.c
-@@ -58,11 +58,40 @@ static void test_panic(void)
-     qtest_quit(qts);
- }
- 
-+static void test_pvshutdown(void)
-+{
-+    uint8_t val;
-+    QDict *response, *data;
-+    QTestState *qts;
-+
-+    qts = qtest_init("-device pvpanic");
-+
-+    val = qtest_inb(qts, 0x505);
-+    g_assert_cmpuint(val, ==, PVPANIC_EVENTS);
-+
-+    qtest_outb(qts, 0x505, PVPANIC_SHUTDOWN);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "GUEST_PVSHUTDOWN");
-+    qobject_unref(response);
-+
-+    response = qtest_qmp_eventwait_ref(qts, "SHUTDOWN");
-+    g_assert(qdict_haskey(response, "data"));
-+    data = qdict_get_qdict(response, "data");
-+    g_assert(qdict_haskey(data, "guest"));
-+    g_assert(qdict_get_bool(data, "guest"));
-+    g_assert(qdict_haskey(data, "reason"));
-+    g_assert_cmpstr(qdict_get_str(data, "reason"), ==, "guest-shutdown");
-+    qobject_unref(response);
-+
-+    qtest_quit(qts);
-+}
-+
- int main(int argc, char **argv)
- {
-     g_test_init(&argc, &argv, NULL);
-     qtest_add_func("/pvpanic/panic", test_panic);
-     qtest_add_func("/pvpanic/panic-nopause", test_panic_nopause);
-+    qtest_add_func("/pvpanic/pvshutdown", test_pvshutdown);
- 
-     return g_test_run();
- }
+ PCI Interface
 
 -- 
 2.44.0
