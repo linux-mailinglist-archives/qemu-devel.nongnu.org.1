@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6566A8879C1
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 18:31:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2B38879C2
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 18:31:51 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ro5C0-0002jF-KA; Sat, 23 Mar 2024 13:30:04 -0400
+	id 1ro5C2-0002jd-Id; Sat, 23 Mar 2024 13:30:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ro5By-0002iq-Mu
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 13:30:02 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1ro5C0-0002jU-D1
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 13:30:04 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ro5Bx-0005sp-4B
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 13:30:02 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1dca3951ad9so20794315ad.3
- for <qemu-devel@nongnu.org>; Sat, 23 Mar 2024 10:30:00 -0700 (PDT)
+ id 1ro5By-0005tg-O5
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 13:30:04 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1e036b76725so23062375ad.1
+ for <qemu-devel@nongnu.org>; Sat, 23 Mar 2024 10:30:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711215000; x=1711819800; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711215001; x=1711819801; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kQVqrnpEFNAMTGSDkWy/XEPY0f16YIjRf/pXZgn4ChY=;
- b=I2+ldY4Eje/9tSyLa30imHZtyycUsA5MqKMLjm3KPcmAf8uLSbvaLGAY/rORvQu7lY
- +0CkmvJsZW3W596vKkwWGFtS0o9ozI5HKw+BrNt5xG4k8Jem1mc94EZMJJ93PqLUWo6w
- 6a+aopXovOjjiVcUVn2ltd6VDWSUHPlfQIYBVdySY1jfavcMii1AkAXiqRTuDjh8SnXX
- JqTBciJHiI1tX+rlWTpFmLIPga43g9Epolg7e90lZmN2wi2Us3Fv4AgQIu19I8uRWR7o
- JwakUK2nJu1s40BKdCFGNHua1BP9ist6oSCbGCIDcI26jh0fKocn0f/b6GKLcgX9y9dh
- fldQ==
+ bh=zUaBJKSO6H1bbGryp1PQTqH1TE2lEnHyVoVrY4Z6LJ4=;
+ b=EKUQBHz/gWiXootyOgWrvCZyndOG6d6PZhWUr9CRXifHOo4swQlQZJCynMp3US5bAi
+ QQY137/SB4CISSeVML3f/KaqadQaguc0o4MoXmcderDA6GSp0RpKj5GV3EoQ/oksyHzY
+ CoWurv8teL8wg683+8LX2ChcONRB8Jcq6/TqB+FkqjMIRN1UY9D/NwQKMt2KKbQU/BuQ
+ 8qofkMktOPLbm18UL+DYHZiOu9cczjpz3JpxQiz7W28HIndk/NJn6qEG2BSsECcojcee
+ znX2rGAduqgpnE/ncJq0g1Aixo3sE88CYZklDlwLHj8oeFrGlqDj22AdZu+2dhL0DmxY
+ aI/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711215000; x=1711819800;
+ d=1e100.net; s=20230601; t=1711215001; x=1711819801;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kQVqrnpEFNAMTGSDkWy/XEPY0f16YIjRf/pXZgn4ChY=;
- b=vkuwFw35prCAcBD88DxuybU/hVroXnZVACcYZMc8qJAuWKdBlr1EZ472CZiU5OJcK5
- wpXoeqTAvdObqgDU+sFvR47hjJ3UdzcS7WHPtSl1ebopKLldicojYrAHthKupZMtby1e
- 6trwzjINPm2mM1lgiNTGTBTl8iw4nfCku0qheyt3HPwTatBVI1o00Ep9znFpmqj27V9X
- QsSDgEzFHLG94u/d5y9rjc603vdPYEbSrtJzqoigzpGbOn84G/u/GKWbfFodvTuHSWBw
- sZG08KjtXd4fQmvQDWnYNNOf0uVJ/Hb7sFINReu+++Dm12ch6/jDVgrpS1bP8PolRpN7
- VrlQ==
-X-Gm-Message-State: AOJu0YyZbB5mJppGY6LuS373Qnus7PLagJGCqAs2Ql7ApnYVHItocup1
- DuR5r0y3w/0TijaTOoG6cABoKANNR7NhnrNWe0dEc/fAIwm+T82scXIigTVaPcmRb4dV6iZIPLF
- Y
-X-Google-Smtp-Source: AGHT+IFa4UXqa78gLeMkvX8GrNGZiTS7y9HCnoFhfi1LSa0/QZURkiuuANcruLwT2WmrvOPrIu7ing==
-X-Received: by 2002:a17:903:247:b0:1dc:9118:515a with SMTP id
- j7-20020a170903024700b001dc9118515amr3897128plh.37.1711214999773; 
- Sat, 23 Mar 2024 10:29:59 -0700 (PDT)
+ bh=zUaBJKSO6H1bbGryp1PQTqH1TE2lEnHyVoVrY4Z6LJ4=;
+ b=pgAp4sf6JC1aK5rdiCJNzNJAMZdezGBm+R+DCxx+rYj7zEdjlo2mIAn+42MucLkybZ
+ OA9Q8lqgLUVeN+817kAhCPeBOC/lWeTXyTIWF+4TezckLyaqluo6TFPVteKdaTPbEc6g
+ K5Gw7avEpHCv5Qv0NGz+SOxo6majCkMDgIStrrrKBIFqVooUVbsCxQ8Azg/i26H5drZR
+ L4PSUGBQcTOYwYM4iJR0qQNjoUw2eh98/vRmWMYcDUWBA6ZUG1HBlo0vWEW653S6WgPN
+ 9vD2DQK+MTjOhRpbb6xFwT6ytFgfZ/BPOFHARdZoXG9ezPdHGtPj/KDJ0Grv/VT9gF0d
+ Rqyw==
+X-Gm-Message-State: AOJu0YyV9TIrFd8pWjgVU9CJK9DBL8XLRqpQZgk7Gw6z5MLXaLKjNnb5
+ Cr8xIVsapMgLO6RynbrQZoWPIB5FHMAkrzCJxzSaFMjW0TPZAE8RwgdT2ayTiW8aElRm7N3L5vr
+ X
+X-Google-Smtp-Source: AGHT+IFGoxjdaizMWgMcVEb0sCy8IeIqKCiVhhAWD8E6hyVywhwuNbEu9Otl4VO4PcD2uP9bLLv+Nw==
+X-Received: by 2002:a17:902:c412:b0:1e0:a7c0:1806 with SMTP id
+ k18-20020a170902c41200b001e0a7c01806mr1948749plk.25.1711215001297; 
+ Sat, 23 Mar 2024 10:30:01 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- n15-20020a170902d2cf00b001dcfaab3457sm1811758plc.104.2024.03.23.10.29.58
+ n15-20020a170902d2cf00b001dcfaab3457sm1811758plc.104.2024.03.23.10.29.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 23 Mar 2024 10:29:59 -0700 (PDT)
+ Sat, 23 Mar 2024 10:30:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: svens@stackframe.org,
-	deller@gmx.de
-Subject: [PATCH v2 1/7] target/hppa: Fix BE,L set of sr0
-Date: Sat, 23 Mar 2024 07:29:48 -1000
-Message-Id: <20240323172954.1041480-2-richard.henderson@linaro.org>
+Cc: svens@stackframe.org, deller@gmx.de,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 2/7] target/hppa: Fix B,GATE for wide mode
+Date: Sat, 23 Mar 2024 07:29:49 -1000
+Message-Id: <20240323172954.1041480-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240323172954.1041480-1-richard.henderson@linaro.org>
 References: <20240323172954.1041480-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,27 +94,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The return address comes from IA*Q_Next, and IASQ_Next
-is always equal to IASQ_Back, not IASQ_Front.
+Do not clobber the high bits of the address by using a 32-bit deposit.
 
+Reviewed-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  target/hppa/translate.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 19594f917e..1766a63001 100644
+index 1766a63001..f875d76a23 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3817,7 +3817,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
-     load_spr(ctx, new_spc, a->sp);
-     if (a->l) {
-         copy_iaoq_entry(ctx, cpu_gr[31], ctx->iaoq_n, ctx->iaoq_n_var);
--        tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_f);
-+        tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_b);
-     }
-     if (a->n && use_nullify_skip(ctx)) {
-         copy_iaoq_entry(ctx, cpu_iaoq_f, -1, tmp);
+@@ -3880,7 +3880,7 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+         }
+         /* No change for non-gateway pages or for priv decrease.  */
+         if (type >= 4 && type - 4 < ctx->privilege) {
+-            dest = deposit32(dest, 0, 2, type - 4);
++            dest = deposit64(dest, 0, 2, type - 4);
+         }
+     } else {
+         dest &= -4;  /* priv = 0 */
 -- 
 2.34.1
 
