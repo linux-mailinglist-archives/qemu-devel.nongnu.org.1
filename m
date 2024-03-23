@@ -2,91 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199B0887737
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 07:30:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 003EA8877D2
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 10:40:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnusj-0001Cg-8K; Sat, 23 Mar 2024 02:29:29 -0400
+	id 1rnxqV-0001oi-QV; Sat, 23 Mar 2024 05:39:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnusf-0001BO-VJ
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:29:26 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnusd-0000yV-Ta
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:29:25 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so1363761b3a.2
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:29:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711175361; x=1711780161;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JDPrjmfd0maarg1eC/XO8MWaaIvrB1qm42Rf8MCKVFY=;
- b=J4UO8oi8gl1VylHQk0KHy6T5/YLaRw24ibkMr5fLKdn6NgFQka4SNGTLCqmrmJcrEr
- tm8OeZICp0m94y/DsAlUSu8Bs8cdusJ8m/Kus98BXvVK+FcxnYsW4iapo3UebQzo4W9O
- v8owfNylJzzmeRJydVJ2OSf7CJUgOVo+/BSHWVfRaRPfsH4bI9OaswO/dRQUUlkd7Ijt
- Y0LtIm+2LphTKecVqSIKJQOfotOR9c8iwRe55A8ILI6hcAJnncVeE/Bvxbcw2oqvpBP8
- I6ZdQa7mnAcrt0/SH6PBSRAF+qssVIGtGuZ7cS21ZuoCzd8lM15FoHpbILB7ofV/zXTS
- Li/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711175361; x=1711780161;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JDPrjmfd0maarg1eC/XO8MWaaIvrB1qm42Rf8MCKVFY=;
- b=rlqKSzbzyirKhykw9zb4TjleJngZILn4e4fhRP/vUtstv562AzH/9o4JrCHhar1pru
- UrF+b14rM0DkyC5QSiBQE2UgyDtb/awDNzIXOORx+mjLO/rZBPk3xiip5UJcjIvT82Qi
- p3yd9DmuBgyNkwH2p7ZPHWNmhaBvy3Pr8hfexWiQI7zG/OJq22WjnAZyQ9TfHdokK145
- cIZ75SUHBcC16XMLYAFlnZ2tIrc/C0lMk2KJIz+l+ZBtKVHQs5Uqf9uAIKCe2cnoQS84
- BBH2kFFvbLhF2CsPzbNh72am+LQfy96TJiyo0ONgdX9ZYBGfmbOE0bZ+2P+bzJHtmPXj
- bLsA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUZ600ZUURXK/jQUK9l1g9XJsWuCvxqpKOK69UHLEo4T9ue/BufgcECNUBSbhxhCikyrYEitmEdsmwlJoHexUVy1BSFOaw=
-X-Gm-Message-State: AOJu0Yy30WnG+QEHsvqZrtqjr6rclk0qqDstKoDl87KKpgBxzGY1xTuR
- 1mdRxHHMcPF1VjeejuIJV2Yu+w5OgdSE8M3B1gApVoL3Md5gEmKozjMpMBjRegc=
-X-Google-Smtp-Source: AGHT+IFYQfBRu+OUGeGvlzyGl6fygjy7rnjzV02kRSD4BdwlXvYqWoCDAF3XDYBB9D5luA8CheJmzQ==
-X-Received: by 2002:a05:6a00:801:b0:6e6:f9b6:4b1a with SMTP id
- m1-20020a056a00080100b006e6f9b64b1amr2124756pfk.11.1711175361101; 
- Fri, 22 Mar 2024 23:29:21 -0700 (PDT)
-Received: from [157.82.200.213] ([157.82.200.213])
- by smtp.gmail.com with ESMTPSA id
- b68-20020a62cf47000000b006e635740126sm802167pfg.112.2024.03.22.23.29.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Mar 2024 23:29:20 -0700 (PDT)
-Message-ID: <5f907e47-9275-4df1-b247-a95e5008bf28@daynix.com>
-Date: Sat, 23 Mar 2024 15:29:18 +0900
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqS-0001nu-1B
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:20 -0400
+Received: from todd.t-8ch.de ([159.69.126.157])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqP-0006wJ-S8
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
+ t=1711186751; bh=eTOuE4cC4RhNgWruqoYaiJD00GB4p3TYcljmZitJZD4=;
+ h=From:Subject:Date:To:Cc:From;
+ b=D1ivHLT6soAJx1c3laa8KFVVdH5HJ9vUOhpe+eFZaqYbFmnUtd18+yST6W9rXkOv2
+ PdH0hFt1bFduasnXOiOaVivHYTcK0Fc2XbCS5iOY8Pe75Ct6JNygRqULbXaFTuFKW+
+ SFiyH9KbZ8i2EjriDe2UOrp0unLnKcibOAp5etFg=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+Subject: [PATCH v7 0/7] hw/misc/pvpanic: add support for normal shutdowns
+Date: Sat, 23 Mar 2024 10:39:05 +0100
+Message-Id: <20240323-pvpanic-shutdown-v7-0-4ac1fd546d6f@t-8ch.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] ui/cocoa: Fix aspect ratio
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org
-References: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
- <20240318-fixes-v1-1-34f1a849b0d9@daynix.com>
- <CAFEAcA80J1zDs1odrHmJGm0sjcg1O_rS0N3su4Gvq+NNLpaUXQ@mail.gmail.com>
- <805177eb-7cd4-463c-9d01-c955d6b91cf8@daynix.com>
- <CAFEAcA9YedzrYosLLa0PaqS72Bq6XjM8GBmUrQwmzD3tC-Ecjg@mail.gmail.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAFEAcA9YedzrYosLLa0PaqS72Bq6XjM8GBmUrQwmzD3tC-Ecjg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADmj/mUC/33QzWrEIBQF4FcZXNdy1Xv9mVXfo3ShxjRukpCk6
+ QxD3r1moDQE6fJc+M5BH2xOU04zu14ebEprnvPQl2BeLix2vv9MPDclMwlSCQHIx3X0fY587r6
+ WZvjuOciEAWNAh44VNk6pzbdn5ftHyV2el2G6PxdWsV//KVsFh9KoSAky1onwtnAbu9cmsb1rl
+ QcvbcXL4q0C5VRAikGfvDp6V/Gq+Oi8tE62kaQ6efz1CAJMxeO+LwjAm4RgxcnTwVf3qfiWPGg
+ I1kSDJ6//vITa+3XxThNZ8BHIHP9v27YfIXb7TO8BAAA=
+To: "Michael S. Tsirkin" <mst@redhat.com>, 
+ Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
+Cc: qemu-devel@nongnu.org, 
+ Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711186751; l=3734;
+ i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
+ bh=eTOuE4cC4RhNgWruqoYaiJD00GB4p3TYcljmZitJZD4=;
+ b=+26432pKI8nGiJgsD/CB6T3fUvRoRpsRS9qa3QEC66NZm2bKUFBx3MHphhkH02YQyjSlTcbHj
+ cuay1bDAz3WAQaUsMSrJCjkEP1PiPE4bZgDoTET7Bt4cJL2Y96z5WJl
+X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
+ helo=todd.t-8ch.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,104 +71,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/03/22 21:55, Peter Maydell wrote:
-> On Fri, 22 Mar 2024 at 12:25, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2024/03/22 21:22, Peter Maydell wrote:
->>> On Mon, 18 Mar 2024 at 07:53, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>> [NSWindow setContentAspectRatio:] does not trigger window resize itself,
->>>> so the wrong aspect ratio will persist if nothing resizes the window.
->>>> Call [NSWindow setContentSize:] in such a case.
->>>>
->>>> Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>> ---
->>>>    ui/cocoa.m | 23 ++++++++++++++++++++++-
->>>>    1 file changed, 22 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/ui/cocoa.m b/ui/cocoa.m
->>>> index fa879d7dcd4b..d6a5b462f78b 100644
->>>> --- a/ui/cocoa.m
->>>> +++ b/ui/cocoa.m
->>>> @@ -508,6 +508,25 @@ - (void) drawRect:(NSRect) rect
->>>>        }
->>>>    }
->>>>
->>>> +- (NSSize)fixAspectRatio:(NSSize)original
->>>> +{
->>>> +    NSSize scaled;
->>>> +    NSSize fixed;
->>>> +
->>>> +    scaled.width = screen.width * original.height;
->>>> +    scaled.height = screen.height * original.width;
->>>> +
->>>> +    if (scaled.width < scaled.height) {
->>>
->>> Is this a standard algorithm for scaling with a fixed
->>> aspect ratio? It looks rather weird to be comparing
->>> a width against a height here, and to be multiplying a
->>> width by a height.
->>
->> Not sure if it's a standard, but it's an algorithm with least error I
->> came up with.
-> 
-> OK. Maybe a comment would help (at least it helps me in thinking
-> through the code :-))
-> 
->   /*
->    * Here screen is our guest's output size, and original is the
->    * size of the largest possible area of the screen we can display on.
->    * We want to scale up (screen.width x screen.height) by either:
->    *   1) original.height / screen.height
->    *   2) original.width / screen.width
->    * With the first scale factor the scale will result in an output
->    * height of original.height (i.e. we will fill the whole height
->    * of the available screen space and have black bars left and right)
->    * and with the second scale factor the scaling will result in an
->    * output width of original.width (i.e. we fill the whole width of
->    * the available screen space and have black bars top and bottom).
->    * We need to pick whichever keeps the whole of the guest output
->    * on the screen, which is to say the smaller of the two scale factors.
->    * To avoid doing more division than strictly necessary, instead
->    * of directly comparing scale factors 1 and 2 we instead
->    * calculate and compare those two scale factors multiplied by
->    * (screen.height * screen.width).
->    */
-> 
-> Having written that out, it seems to me that the variable
-> names here could more clearly reflect what they're doing
-> (eg "screen" is not the size of the screen we're displaying
-> on, "original" is not the old displayable area size but the
-> new one we're trying to fit into, scaled doesn't actually
-> contain a (width, height) that go together with each other,
-> and it doesn't contain the actual scale factor we're going to
-> be using either).
+Shutdown requests are normally hardware dependent.
+By extending pvpanic to also handle shutdown requests, guests can
+submit such requests with an easily implementable and cross-platform
+mechanism.
 
-With v2, I added the comment and renamed original to max as it's the 
-largest area we can display on as described in the comment.
+The background is the usage of minimal Linux kernels with different
+architectures for testing purposes.
+Poweroff support varies highly per architecture and requires a bunch of
+code to be compiled to work.
+pvpanic on the other hand is very small and uniform.
 
-screen and scaled are not renamed. Renaming screen is a bit out of scope 
-of this patch as it's an existing variable. The variable is referenced 
-from several places so a patch to rename it will be a bit large and not 
-suited to include in a bug fix series. I couldn't just invent a good 
-name for scaled.
+Patch 1, 2 and 3 are general cleanups, which seem useful even without this
+proposal being implemented.
+They should also be ready to be picked up from the series on their own.
 
-Regards,
-Akihiko Odaki
+Patch 4 adds a qemu-internal definition PVPANIC_SHUTDOWN.
+It should be removed as soon as the kernel exposes the define and the
+the new kernel header has been reimported into qemu.
 
-> 
->>>> +        fixed.width = scaled.width / screen.height;
->>>> +        fixed.height = original.height;
->>>> +    } else {
->>>> +        fixed.width = original.width;
->>>> +        fixed.height = scaled.height / screen.width;
->>>> +    }
->>>> +
->>>> +    return fixed;
->>>> +}
->>>> +
-> 
-> thanks
-> -- PMM
+A corresponding patch has been submitted for Linux [0].
+This is also where the request was voiced to drop move away from a
+pvpanic uapi header in Linux.
+
+[0] https://lore.kernel.org/lkml/20231104-pvpanic-shutdown-v1-1-5ee7c9b3e301@weissschuh.net/
+
+Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
+---
+Changes in v7:
+- Keep standard-header/pvpanic.h
+- Predefine PVPANIC_SHUTDOWN in include/hw/misc/pvpanic.h
+- Fix alignment in QAPI to comply with newly enforced layout
+- Update Since: tag in QAPI to 9.0
+- Drop note from pvpanic spec about missing implementation
+- Link to v6: https://lore.kernel.org/r/20240208-pvpanic-shutdown-v6-0-965580ac057b@t-8ch.de
+
+Changes in v6:
+- Replace magic constant "4" in tests with PVPANIC_SHUTDOWN
+- Link to v5: https://lore.kernel.org/r/20240129-pvpanic-shutdown-v5-0-f5a060b87c74@t-8ch.de
+
+Changes in v5:
+- Add patch from Alejandro to emit a QMP event.
+- Update cover letter.
+- Add tests.
+- Link to v4: https://lore.kernel.org/r/20240107-pvpanic-shutdown-v4-0-81500a7e4081@t-8ch.de
+
+Changes in v4:
+- Rebase on 8.2 master
+- Resend after tree reopened and holidays
+- Link to v3: https://lore.kernel.org/r/20231129-pvpanic-shutdown-v3-0-c9a2892fc523@t-8ch.de
+
+Changes in v3:
+- Drop from Linux imported pvpanic header as discussed with Cornelia and
+  requested by Greg
+- Link to v2: https://lore.kernel.org/r/20231128-pvpanic-shutdown-v2-0-830393b45cb6@t-8ch.de
+
+Changes in v2:
+- Remove RFC status
+- Add Ack from Thomas to 2nd patch
+- Fix typo in title of 2nd patch
+- Link to v1: https://lore.kernel.org/r/20231104-pvpanic-shutdown-v1-0-02353157891b@t-8ch.de
+
+---
+Alejandro Jimenez (1):
+      pvpanic: Emit GUEST_PVSHUTDOWN QMP event on pvpanic shutdown signal
+
+Thomas Weißschuh (6):
+      hw/misc/pvpanic: centralize definition of supported events
+      tests/qtest/pvpanic: use centralized definition of supported events
+      hw/misc/pvpanic: add local definition for PVPANIC_SHUTDOWN
+      hw/misc/pvpanic: add support for normal shutdowns
+      tests/qtest/pvpanic: add tests for pvshutdown event
+      Revert "docs/specs/pvpanic: mark shutdown event as not implemented"
+
+ docs/specs/pvpanic.rst         |  2 +-
+ hw/misc/pvpanic-isa.c          |  3 +--
+ hw/misc/pvpanic-pci.c          |  3 +--
+ hw/misc/pvpanic.c              |  8 ++++++--
+ include/hw/misc/pvpanic.h      |  9 +++++++++
+ include/sysemu/runstate.h      |  1 +
+ qapi/run-state.json            | 14 ++++++++++++++
+ system/runstate.c              |  6 ++++++
+ tests/qtest/pvpanic-pci-test.c | 44 ++++++++++++++++++++++++++++++++++++++++--
+ tests/qtest/pvpanic-test.c     | 34 ++++++++++++++++++++++++++++++--
+ 10 files changed, 113 insertions(+), 11 deletions(-)
+---
+base-commit: 853546f8128476eefb701d4a55b2781bb3a46faa
+change-id: 20231104-pvpanic-shutdown-02e4b4cb4949
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas@t-8ch.de>
+
 
