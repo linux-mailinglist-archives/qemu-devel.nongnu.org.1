@@ -2,34 +2,33 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7528877D0
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 10:40:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB99C8877D9
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 10:40:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnxqV-0001oa-LN; Sat, 23 Mar 2024 05:39:23 -0400
+	id 1rnxqT-0001oL-Mk; Sat, 23 Mar 2024 05:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqR-0001nY-Ht
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqQ-0001nQ-Gn
  for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:19 -0400
-Received: from todd.t-8ch.de ([159.69.126.157])
+Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqO-0006wK-Lk
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:19 -0400
+ (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1rnxqO-0006wN-4G
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 05:39:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1711186751; bh=fMsU+/qeHEJsWGtnvX3wRLIgPDqabVyVlyBbSHyCcpg=;
+ t=1711186751; bh=8Mxc4ZqehxvEcK8jW0SvLuqPpFPY4SIXY878owFy0XA=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=m7CO9D2yeAAoErp1A7NPZbfReq6T7iqclEAblvMPESpD+6S8Z989AQTnnqxusIRgZ
- pHKNMqbwxRzlXq0Zz4yPE8hF1/pPDFWmK5AlZx9/oIwIoVOiLB+HgPdUaHL74jSvBV
- /fGBLn7tQEug34vZrlN5Xx1fv5EefWydaENZORys=
+ b=USu8nySJST4u9iw97dEzx1YLql6dXBqgTXPeVLdUpnH3U+TYmpw8HEjtJPzORM6YR
+ wzflmLlSEngnoWdmxDBx8vo2ZqOWTUC5ieuBhGDK+crNU24qXfyiUlVijjjwovxhp/
+ MxDwx7EeF5Pa86ShmIHtaTzt5jGpF0jb+xGooBMI=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-Date: Sat, 23 Mar 2024 10:39:08 +0100
-Subject: [PATCH v7 3/7] hw/misc/pvpanic: add local definition for
- PVPANIC_SHUTDOWN
+Date: Sat, 23 Mar 2024 10:39:09 +0100
+Subject: [PATCH v7 4/7] hw/misc/pvpanic: add support for normal shutdowns
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240323-pvpanic-shutdown-v7-3-4ac1fd546d6f@t-8ch.de>
+Message-Id: <20240323-pvpanic-shutdown-v7-4-4ac1fd546d6f@t-8ch.de>
 References: <20240323-pvpanic-shutdown-v7-0-4ac1fd546d6f@t-8ch.de>
 In-Reply-To: <20240323-pvpanic-shutdown-v7-0-4ac1fd546d6f@t-8ch.de>
 To: "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -39,15 +38,15 @@ Cc: qemu-devel@nongnu.org,
  Alejandro Jimenez <alejandro.j.jimenez@oracle.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas@t-8ch.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711186751; l=1026;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711186751; l=2470;
  i=thomas@t-8ch.de; s=20221212; h=from:subject:message-id;
- bh=fMsU+/qeHEJsWGtnvX3wRLIgPDqabVyVlyBbSHyCcpg=;
- b=SyMh2GJ0akgrK4hK9M08UQmS2qmIv8fNyVaZNszYU0zsBcdsn4hd6YxRydVbfeNla+Smgm0VN
- rtXw3pHbsm1BWbbC0Xb/4HQc+/AzCg9+f0NhalYSD/zowtzMyWyIV0b
+ bh=8Mxc4ZqehxvEcK8jW0SvLuqPpFPY4SIXY878owFy0XA=;
+ b=fT0kumyEESrJ8bUNJePRunlO5tJaYXRS/mQlKa0Kkx7oO83R2Ax0I/iQzbntH8FR5fSK1ajmu
+ L24ZrOpZzcLD2/zHlHCCIAeFZ70JXMBKAe7eUoCZ2SfLhiwBeGeEAzr
 X-Developer-Key: i=thomas@t-8ch.de; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-Received-SPF: pass client-ip=159.69.126.157; envelope-from=thomas@t-8ch.de;
- helo=todd.t-8ch.de
+Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
+ envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -69,36 +68,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PVPANIC_* defines are imported from the kernel via
-standard-header/pvpanic.h.
-For that the kernel needs to pick up the changes from
-qemu docs/specs/pvpanic.rst which takes time.
+Shutdown requests are normally hardware dependent.
+By extending pvpanic to also handle shutdown requests, guests can
+submit such requests with an easily implementable and cross-platform
+mechanism.
 
-The actual value of the define is known as the authoritative source
-comes from the qemu tree in docs/specs/pvpanic.rst, where it was added
-in commit 73279cecca03 ("docs/specs/pvpanic: document shutdown event").
-
+Acked-by: Cornelia Huck <cohuck@redhat.com>
 Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
 ---
- include/hw/misc/pvpanic.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ hw/misc/pvpanic.c         | 5 +++++
+ include/hw/misc/pvpanic.h | 2 +-
+ include/sysemu/runstate.h | 1 +
+ system/runstate.c         | 5 +++++
+ 4 files changed, 12 insertions(+), 1 deletion(-)
 
+diff --git a/hw/misc/pvpanic.c b/hw/misc/pvpanic.c
+index a4982cc5928e..0e9505451a7a 100644
+--- a/hw/misc/pvpanic.c
++++ b/hw/misc/pvpanic.c
+@@ -40,6 +40,11 @@ static void handle_event(int event)
+         qemu_system_guest_crashloaded(NULL);
+         return;
+     }
++
++    if (event & PVPANIC_SHUTDOWN) {
++        qemu_system_guest_pvshutdown();
++        return;
++    }
+ }
+ 
+ /* return supported events on read */
 diff --git a/include/hw/misc/pvpanic.h b/include/hw/misc/pvpanic.h
-index 947468b81b1a..926aa64838f9 100644
+index 926aa64838f9..9ffb08bf08bf 100644
 --- a/include/hw/misc/pvpanic.h
 +++ b/include/hw/misc/pvpanic.h
-@@ -20,6 +20,11 @@
+@@ -25,7 +25,7 @@
+ #endif
+ #define PVPANIC_SHUTDOWN	(1 << 2)
  
- #include "standard-headers/linux/pvpanic.h"
- 
-+#ifdef PVPANIC_SHUTDOWN
-+#error PVPANIC_SHUTDOWN is already defined
-+#endif
-+#define PVPANIC_SHUTDOWN	(1 << 2)
-+
- #define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
+-#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED)
++#define PVPANIC_EVENTS (PVPANIC_PANICKED | PVPANIC_CRASH_LOADED | PVPANIC_SHUTDOWN)
  
  #define TYPE_PVPANIC_ISA_DEVICE "pvpanic"
+ #define TYPE_PVPANIC_PCI_DEVICE "pvpanic-pci"
+diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
+index 0117d243c4ed..e210a37abf0f 100644
+--- a/include/sysemu/runstate.h
++++ b/include/sysemu/runstate.h
+@@ -104,6 +104,7 @@ void qemu_system_killed(int signal, pid_t pid);
+ void qemu_system_reset(ShutdownCause reason);
+ void qemu_system_guest_panicked(GuestPanicInformation *info);
+ void qemu_system_guest_crashloaded(GuestPanicInformation *info);
++void qemu_system_guest_pvshutdown(void);
+ bool qemu_system_dump_in_progress(void);
+ 
+ #endif
+diff --git a/system/runstate.c b/system/runstate.c
+index d6ab860ecaa7..572499513034 100644
+--- a/system/runstate.c
++++ b/system/runstate.c
+@@ -572,6 +572,11 @@ void qemu_system_guest_crashloaded(GuestPanicInformation *info)
+     qapi_free_GuestPanicInformation(info);
+ }
+ 
++void qemu_system_guest_pvshutdown(void)
++{
++    qemu_system_shutdown_request(SHUTDOWN_CAUSE_GUEST_SHUTDOWN);
++}
++
+ void qemu_system_reset_request(ShutdownCause reason)
+ {
+     if (reboot_action == REBOOT_ACTION_SHUTDOWN &&
 
 -- 
 2.44.0
