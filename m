@@ -2,77 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30068887731
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 07:21:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 199B0887737
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 07:30:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnuk6-0005x1-Bp; Sat, 23 Mar 2024 02:20:34 -0400
+	id 1rnusj-0001Cg-8K; Sat, 23 Mar 2024 02:29:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnujy-0005tY-GR
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:26 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rnusf-0001BO-VJ
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:29:26 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnujv-0007f2-BC
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:24 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e8f51d0bf0so2223240b3a.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:20:22 -0700 (PDT)
+ id 1rnusd-0000yV-Ta
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:29:25 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6da202aa138so1363761b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:29:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711174821; x=1711779621;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711175361; x=1711780161;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9a+wseDHyW/HqtA3ozakI/wgiKhPEsw9cRXVXB7EC8c=;
- b=1LwpUwnwoIIcsI7NmbnPsNK9N1fNMulsZevfFPKbiTUuaLoYX6jWXu8FgA6Y1Buc6q
- zauUDBKqXLC9fwDJmV5WuQXF9s57ipHCjQCqrQ4SEGlH6F0sq62E2rouBX3mDTM171el
- f8P147q7ensJCTJ9FJ1xHpc97rLUyXrPoiDkqGcMyBnGSRM+emqJN88+o5rcEP8XPHcW
- BxLwwUtzBbhylPO41J7AmslyhfzcLnAs9FWL87z7PMGs3OjZlnpvOU/70Prti7PYww1u
- 7XtyxPPa5WKxkw2aWlO7uamGldo3ry+P6zFmR2s86msmPPM29qrv1bmpSSr6l3wJDBqA
- YzDQ==
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JDPrjmfd0maarg1eC/XO8MWaaIvrB1qm42Rf8MCKVFY=;
+ b=J4UO8oi8gl1VylHQk0KHy6T5/YLaRw24ibkMr5fLKdn6NgFQka4SNGTLCqmrmJcrEr
+ tm8OeZICp0m94y/DsAlUSu8Bs8cdusJ8m/Kus98BXvVK+FcxnYsW4iapo3UebQzo4W9O
+ v8owfNylJzzmeRJydVJ2OSf7CJUgOVo+/BSHWVfRaRPfsH4bI9OaswO/dRQUUlkd7Ijt
+ Y0LtIm+2LphTKecVqSIKJQOfotOR9c8iwRe55A8ILI6hcAJnncVeE/Bvxbcw2oqvpBP8
+ I6ZdQa7mnAcrt0/SH6PBSRAF+qssVIGtGuZ7cS21ZuoCzd8lM15FoHpbILB7ofV/zXTS
+ Li/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711174821; x=1711779621;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9a+wseDHyW/HqtA3ozakI/wgiKhPEsw9cRXVXB7EC8c=;
- b=JYc3bBPicl1AN1HVPAAltMnVdNLvTFPnh/OlOMP2MUEU8h8uSB8jnEYFb+1YRYnBi6
- aKzIseWeGc7oRjcu2s99TbsEDrROgzOQzqH7CgNz/icPMItzX43tKHoQOyVbcur3hQaS
- 65jT/80+h8Aj+t315uHomEHW+iZtIUhHTqnGUAq7qeMon116QCnS+YrwPPJ8XWEPlX6b
- xhR4WNQSD2IIvCOpJL8Se/3LTPiDNmv1NDqr50JtCY9NNfq4+8NNu5HUT+BoO6bRmJu2
- aIxk7CmdZeoMDqFj1zI2hsgFNNoTxchqht+N6mtAVNI/b9dIfNiKJrqdyohB9KNT3BrS
- pZUw==
-X-Gm-Message-State: AOJu0Yzrx/phGgzawTxoVgihmjj+/QWqGzxyOzTBAlsp9dhB2EajFkbd
- aEwTYj5K3WrB30Du7tss7MwLQNSQDKDhWbCgVhoZRpYf7rIH1Xh/s2yjD0P1c5U=
-X-Google-Smtp-Source: AGHT+IGAPNWW1fZoEYmZoZHzyC/I+CeMezcELxhai3dMHJyt9lVldEDALMf1QIz7C/Dr/ZDm/KS1Ww==
-X-Received: by 2002:a05:6a21:7884:b0:1a3:4fcd:86e3 with SMTP id
- bf4-20020a056a21788400b001a34fcd86e3mr1841681pzc.42.1711174821404; 
- Fri, 22 Mar 2024 23:20:21 -0700 (PDT)
-Received: from localhost ([157.82.200.213])
- by smtp.gmail.com with UTF8SMTPSA id
- az2-20020a170902a58200b001e01176682dsm807582plb.27.2024.03.22.23.20.19
+ d=1e100.net; s=20230601; t=1711175361; x=1711780161;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JDPrjmfd0maarg1eC/XO8MWaaIvrB1qm42Rf8MCKVFY=;
+ b=rlqKSzbzyirKhykw9zb4TjleJngZILn4e4fhRP/vUtstv562AzH/9o4JrCHhar1pru
+ UrF+b14rM0DkyC5QSiBQE2UgyDtb/awDNzIXOORx+mjLO/rZBPk3xiip5UJcjIvT82Qi
+ p3yd9DmuBgyNkwH2p7ZPHWNmhaBvy3Pr8hfexWiQI7zG/OJq22WjnAZyQ9TfHdokK145
+ cIZ75SUHBcC16XMLYAFlnZ2tIrc/C0lMk2KJIz+l+ZBtKVHQs5Uqf9uAIKCe2cnoQS84
+ BBH2kFFvbLhF2CsPzbNh72am+LQfy96TJiyo0ONgdX9ZYBGfmbOE0bZ+2P+bzJHtmPXj
+ bLsA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUZ600ZUURXK/jQUK9l1g9XJsWuCvxqpKOK69UHLEo4T9ue/BufgcECNUBSbhxhCikyrYEitmEdsmwlJoHexUVy1BSFOaw=
+X-Gm-Message-State: AOJu0Yy30WnG+QEHsvqZrtqjr6rclk0qqDstKoDl87KKpgBxzGY1xTuR
+ 1mdRxHHMcPF1VjeejuIJV2Yu+w5OgdSE8M3B1gApVoL3Md5gEmKozjMpMBjRegc=
+X-Google-Smtp-Source: AGHT+IFYQfBRu+OUGeGvlzyGl6fygjy7rnjzV02kRSD4BdwlXvYqWoCDAF3XDYBB9D5luA8CheJmzQ==
+X-Received: by 2002:a05:6a00:801:b0:6e6:f9b6:4b1a with SMTP id
+ m1-20020a056a00080100b006e6f9b64b1amr2124756pfk.11.1711175361101; 
+ Fri, 22 Mar 2024 23:29:21 -0700 (PDT)
+Received: from [157.82.200.213] ([157.82.200.213])
+ by smtp.gmail.com with ESMTPSA id
+ b68-20020a62cf47000000b006e635740126sm802167pfg.112.2024.03.22.23.29.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Mar 2024 23:20:21 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 23 Mar 2024 15:20:03 +0900
-Subject: [PATCH v2 3/3] ui/cocoa: Use NSTrackingInVisibleRect
+ Fri, 22 Mar 2024 23:29:20 -0700 (PDT)
+Message-ID: <5f907e47-9275-4df1-b247-a95e5008bf28@daynix.com>
+Date: Sat, 23 Mar 2024 15:29:18 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] ui/cocoa: Fix aspect ratio
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org
+References: <20240318-fixes-v1-0-34f1a849b0d9@daynix.com>
+ <20240318-fixes-v1-1-34f1a849b0d9@daynix.com>
+ <CAFEAcA80J1zDs1odrHmJGm0sjcg1O_rS0N3su4Gvq+NNLpaUXQ@mail.gmail.com>
+ <805177eb-7cd4-463c-9d01-c955d6b91cf8@daynix.com>
+ <CAFEAcA9YedzrYosLLa0PaqS72Bq6XjM8GBmUrQwmzD3tC-Ecjg@mail.gmail.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+In-Reply-To: <CAFEAcA9YedzrYosLLa0PaqS72Bq6XjM8GBmUrQwmzD3tC-Ecjg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240323-fixes-v2-3-18651a2b0394@daynix.com>
-References: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
-In-Reply-To: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
-To: Peter Maydell <peter.maydell@linaro.org>, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Gerd Hoffmann <kraxel@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,104 +102,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I observed [NSTrackingArea rect] becomes de-synchronized with the view
-frame with some unknown condition, and fails to track mouse movement on
-some area of the view. Specify NSTrackingInVisibleRect option to let
-Cocoa automatically update NSTrackingArea, which also saves code for
-synchronization.
+On 2024/03/22 21:55, Peter Maydell wrote:
+> On Fri, 22 Mar 2024 at 12:25, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>
+>> On 2024/03/22 21:22, Peter Maydell wrote:
+>>> On Mon, 18 Mar 2024 at 07:53, Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
+>>>>
+>>>> [NSWindow setContentAspectRatio:] does not trigger window resize itself,
+>>>> so the wrong aspect ratio will persist if nothing resizes the window.
+>>>> Call [NSWindow setContentSize:] in such a case.
+>>>>
+>>>> Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
+>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+>>>> ---
+>>>>    ui/cocoa.m | 23 ++++++++++++++++++++++-
+>>>>    1 file changed, 22 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/ui/cocoa.m b/ui/cocoa.m
+>>>> index fa879d7dcd4b..d6a5b462f78b 100644
+>>>> --- a/ui/cocoa.m
+>>>> +++ b/ui/cocoa.m
+>>>> @@ -508,6 +508,25 @@ - (void) drawRect:(NSRect) rect
+>>>>        }
+>>>>    }
+>>>>
+>>>> +- (NSSize)fixAspectRatio:(NSSize)original
+>>>> +{
+>>>> +    NSSize scaled;
+>>>> +    NSSize fixed;
+>>>> +
+>>>> +    scaled.width = screen.width * original.height;
+>>>> +    scaled.height = screen.height * original.width;
+>>>> +
+>>>> +    if (scaled.width < scaled.height) {
+>>>
+>>> Is this a standard algorithm for scaling with a fixed
+>>> aspect ratio? It looks rather weird to be comparing
+>>> a width against a height here, and to be multiplying a
+>>> width by a height.
+>>
+>> Not sure if it's a standard, but it's an algorithm with least error I
+>> came up with.
+> 
+> OK. Maybe a comment would help (at least it helps me in thinking
+> through the code :-))
+> 
+>   /*
+>    * Here screen is our guest's output size, and original is the
+>    * size of the largest possible area of the screen we can display on.
+>    * We want to scale up (screen.width x screen.height) by either:
+>    *   1) original.height / screen.height
+>    *   2) original.width / screen.width
+>    * With the first scale factor the scale will result in an output
+>    * height of original.height (i.e. we will fill the whole height
+>    * of the available screen space and have black bars left and right)
+>    * and with the second scale factor the scaling will result in an
+>    * output width of original.width (i.e. we fill the whole width of
+>    * the available screen space and have black bars top and bottom).
+>    * We need to pick whichever keeps the whole of the guest output
+>    * on the screen, which is to say the smaller of the two scale factors.
+>    * To avoid doing more division than strictly necessary, instead
+>    * of directly comparing scale factors 1 and 2 we instead
+>    * calculate and compare those two scale factors multiplied by
+>    * (screen.height * screen.width).
+>    */
+> 
+> Having written that out, it seems to me that the variable
+> names here could more clearly reflect what they're doing
+> (eg "screen" is not the size of the screen we're displaying
+> on, "original" is not the old displayable area size but the
+> new one we're trying to fit into, scaled doesn't actually
+> contain a (width, height) that go together with each other,
+> and it doesn't contain the actual scale factor we're going to
+> be using either).
 
-Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
----
- ui/cocoa.m | 48 ++++++++++++++----------------------------------
- 1 file changed, 14 insertions(+), 34 deletions(-)
+With v2, I added the comment and renamed original to max as it's the 
+largest area we can display on as described in the comment.
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 3a1b899ba768..fb60debb9a8e 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -306,7 +306,6 @@ static void handleAnyDeviceErrors(Error * err)
- */
- @interface QemuCocoaView : NSView
- {
--    NSTrackingArea *trackingArea;
-     QEMUScreen screen;
-     pixman_image_t *pixman_image;
-     QKbdState *kbd;
-@@ -359,6 +358,19 @@ - (id)initWithFrame:(NSRect)frameRect
-     self = [super initWithFrame:frameRect];
-     if (self) {
- 
-+        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
-+                                        NSTrackingMouseEnteredAndExited |
-+                                        NSTrackingMouseMoved |
-+                                        NSTrackingInVisibleRect;
-+
-+        NSTrackingArea *trackingArea =
-+            [[NSTrackingArea alloc] initWithRect:CGRectZero
-+                                         options:options
-+                                           owner:self
-+                                        userInfo:nil];
-+
-+        [self addTrackingArea:trackingArea];
-+        [trackingArea release];
-         screen.width = frameRect.size.width;
-         screen.height = frameRect.size.height;
-         kbd = qkbd_state_init(dcl.con);
-@@ -392,41 +404,9 @@ - (BOOL) isOpaque
-     return YES;
- }
- 
--- (void) removeTrackingRect
--{
--    if (trackingArea) {
--        [self removeTrackingArea:trackingArea];
--        [trackingArea release];
--        trackingArea = nil;
--    }
--}
--
--- (void) frameUpdated
--{
--    [self removeTrackingRect];
--
--    if ([self window]) {
--        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
--                                        NSTrackingMouseEnteredAndExited |
--                                        NSTrackingMouseMoved;
--        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
--                                                    options:options
--                                                      owner:self
--                                                   userInfo:nil];
--        [self addTrackingArea:trackingArea];
--        [self updateUIInfo];
--    }
--}
--
- - (void) viewDidMoveToWindow
- {
-     [self resizeWindow];
--    [self frameUpdated];
--}
--
--- (void) viewWillMoveToWindow:(NSWindow *)newWindow
--{
--    [self removeTrackingRect];
- }
- 
- - (void) hideCursor
-@@ -1302,7 +1282,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
- - (void)windowDidResize:(NSNotification *)notification
- {
-     [cocoaView updateBounds];
--    [cocoaView frameUpdated];
-+    [cocoaView updateUIInfo];
- }
- 
- /* Called when the user clicks on a window's close button */
+screen and scaled are not renamed. Renaming screen is a bit out of scope 
+of this patch as it's an existing variable. The variable is referenced 
+from several places so a patch to rename it will be a bit large and not 
+suited to include in a bug fix series. I couldn't just invent a good 
+name for scaled.
 
--- 
-2.44.0
+Regards,
+Akihiko Odaki
 
+> 
+>>>> +        fixed.width = scaled.width / screen.height;
+>>>> +        fixed.height = original.height;
+>>>> +    } else {
+>>>> +        fixed.width = original.width;
+>>>> +        fixed.height = scaled.height / screen.width;
+>>>> +    }
+>>>> +
+>>>> +    return fixed;
+>>>> +}
+>>>> +
+> 
+> thanks
+> -- PMM
 
