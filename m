@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBD688772F
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA6B887730
 	for <lists+qemu-devel@lfdr.de>; Sat, 23 Mar 2024 07:21:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rnuk4-0005wK-R3; Sat, 23 Mar 2024 02:20:32 -0400
+	id 1rnuk3-0005w6-Qz; Sat, 23 Mar 2024 02:20:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnujz-0005vY-Gf
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:28 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rnuju-0005tW-D7
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:24 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rnujl-0007cN-9w
- for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:27 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1df01161b39so21371665ad.3
- for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:20:12 -0700 (PDT)
+ id 1rnujr-0007dA-2k
+ for qemu-devel@nongnu.org; Sat, 23 Mar 2024 02:20:22 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e6f4ad4c57so2040470b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Mar 2024 23:20:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711174812; x=1711779612;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711174815; x=1711779615;
  darn=nongnu.org; 
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=yO/wNaLl7/OjHdUZtag034ckT+zewaxx7h5WeHbtBDg=;
- b=nwNCNW4kgOhhkuSYneCFKftkrOyf7F8I0ZhncS5p0WPULqqlVZQQy5LlpHEoV6dZvY
- 67PpOX/TBBQH4d7PWdlblFxiKkB6dCvxojqKATbu2v9EFTQSi0y4Tm71w6QF68hYywGv
- y0EkJLoVFpT1cUF7RoG5cTq/w38M216r4HSXYOBuSER6bAGEOVzcToTWVX+8l00xhfdc
- X52xyqs2akMJBFS1Y5T6OlYJbxn4mXMceFHBAEMe16JcOCVsoimypz+gjSMttOEnY7Y5
- mGOu7rMHxfyxTBVl2YMrG0SZM3fuYrfcWkq+Mbuq5Hkfu0iphRCD38XBENnXTAOvGcgc
- aIqw==
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=EbyKf2p5kvOfhKqh3XRD8emzriRkVdu9uRtFgfGqp4o=;
+ b=2MUcVtY4kyCbOdKUl+G8bdARjBMBRa1++0cXaZ2fwu8REtp4RHdi7WvDXmzcxRWoxz
+ lNGsBGCJ2ZgHAE1PA5OmDevZGePYK3/wYXz4a7Su8HHEtfTmyDVKVzd5wiyn3O79ICdv
+ BHxAVQlsnL3gesl1MQll4bUlDUvcrw+jyqxkDTR3wiEyqSJ3gbOoJ5Ywm9d8Ol4UBvNe
+ CoCJFvslEujWYkW5nAJEnagpjuDhJ3YTGnbO7vxd+6W/foZf8bSxSuJS5eTsAb3Y5vIa
+ MFY5Ddw1pd9e1m9b5VfMKGBbvor9NxwkdXSRBHSmvMo+wIMcnRBYHYUt4I6KfQQ5L1p2
+ RrPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711174812; x=1711779612;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=yO/wNaLl7/OjHdUZtag034ckT+zewaxx7h5WeHbtBDg=;
- b=C56WnoZYf+rvMFlX+XPUBqUkPx1Wx+jf6IAIJbKIBfe1HSJ2TQC4uTpiED/RUHcIfG
- W/3d8zOLWSEDLkg3bWVnAD+d5RW9Qo1uRnCv1SIP5C+pZMmkKSCx7EIdignEU9TqZV28
- AjYKFIdtPeFehqy4vt4Q4bs65f1y62BH0JoJOX1kl9DQEmEwGYhyAavsA2s5nym1BR+u
- 8T9wSr0wsDGJGFzfxWAYmvOssHc4O1Myb10pxezi6dduILwxh5UNy4dwXObZVP3x4Im1
- Iq6KqXYNiL3TltKV7w4g74I+CiJG9j7bkPCwTv/r7ug6CHLPj8x9SqJmrT5supuswhg8
- fyVw==
-X-Gm-Message-State: AOJu0YxYqbj6GjQ+vWPYxGjg2HfGKC/U9UKzTc/Ot9yKZP/BbY6BARRj
- /sSfheR+DjlUanBt1aYDv7TTkEvSNxIgocaGQAn2Mrwa8rQ+dVCATIINg/YAyRI=
-X-Google-Smtp-Source: AGHT+IEOQRYh4fe8rQLvq8sF3WM4u9pPd71bFLuNdoB2ZOl1/5aFxXT8OLq7E4yMKaTb5Q+zNvsnEQ==
-X-Received: by 2002:a17:903:1247:b0:1dc:b691:85f4 with SMTP id
- u7-20020a170903124700b001dcb69185f4mr1872143plh.16.1711174811675; 
- Fri, 22 Mar 2024 23:20:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711174815; x=1711779615;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EbyKf2p5kvOfhKqh3XRD8emzriRkVdu9uRtFgfGqp4o=;
+ b=A01VoZYBRZr6nxGvjCH5lU8hgeolywsceOg4vvYuI1hnJK/v07t+yO0P3RRyvXDfkK
+ SunTAKK420REmnBewKtCG8+50lj0kQqgmi7TmO60hl7DjwwdviuOGiygUV+EJCZuWKKb
+ N5EOBhYYNZzU6B+j2GVcYM6gxX5r/K4bDxd2SjajW7P/QBSu1Tn31UFtMKOf+WYlfctH
+ OhFxbkK4Q5n4R5mEvfaHxVzI6yjCxD8Wmz7A5PUw/pH0FMQC9LyLmrdcuqRdwQrG7pXT
+ J+Xtx2OAdfilZ2Q4obupWJXXtrWKvR16Nh+m22/Hd448Ggw6pDSFJs0isSaWGmE6musm
+ 4TVQ==
+X-Gm-Message-State: AOJu0YwavZbn2N8GugJYRF966TQyMHX4cD2kV9Ge5NA4EC+klhd7HxR+
+ WyPKt3eJoxxC/VOPypuWgqfWFZDwYr6lIgFU9N60NgsS+jHHkdU7IL/TQUNQj9lglG1QBCvZsa1
+ 3//g=
+X-Google-Smtp-Source: AGHT+IFMn5UfauL0MR85dxcof+9So+t3TjwyNRBX1TCXGsS35UG/OFUVUZpDDS8Q536XzblP2diIcg==
+X-Received: by 2002:a05:6a20:2888:b0:1a3:4469:5967 with SMTP id
+ q8-20020a056a20288800b001a344695967mr1480498pzf.57.1711174815058; 
+ Fri, 22 Mar 2024 23:20:15 -0700 (PDT)
 Received: from localhost ([157.82.200.213])
  by smtp.gmail.com with UTF8SMTPSA id
- b6-20020a170902650600b001def18c0cedsm829977plk.179.2024.03.22.23.20.09
+ u4-20020a170902e5c400b001def0324a64sm803039plf.135.2024.03.22.23.20.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Mar 2024 23:20:11 -0700 (PDT)
+ Fri, 22 Mar 2024 23:20:14 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH v2 0/3] Fixes for "ui/cocoa: Let the platform toggle
- fullscreen"
-Date: Sat, 23 Mar 2024 15:20:00 +0900
-Message-Id: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
+Date: Sat, 23 Mar 2024 15:20:01 +0900
+Subject: [PATCH v2 1/3] ui/cocoa: Fix aspect ratio
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJB0/mUC/12MOw7DIBAFr2JtHSJ+inEq3yNygWEdbxGIIEK2L
- O4e4jLlvDeaAzImwgz37oCEhTLF0EBeOnCrDU9k5BuD5FJzJQxbaMPM+lmYHp1UN8uhue+E59H
- Ux9R4pfyJaT+zRfzW/0IRjDOlF2GNHmbuh9HbPdB2dfEFU631CxqRcjSbAAAA
+Message-Id: <20240323-fixes-v2-1-18651a2b0394@daynix.com>
+References: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
+In-Reply-To: <20240323-fixes-v2-0-18651a2b0394@daynix.com>
 To: Peter Maydell <peter.maydell@linaro.org>, 
  =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
  Gerd Hoffmann <kraxel@redhat.com>, 
  =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
 Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.12.3
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,33 +95,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series contains patches for regressions caused by commit 91aa508d0274
-("ui/cocoa: Let the platform toggle fullscreen").
+[NSWindow setContentAspectRatio:] does not trigger window resize itself,
+so the wrong aspect ratio will persist if nothing resizes the window.
+Call [NSWindow setContentSize:] in such a case.
 
+Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
-Changes in v2:
-- Added a comment to [QemuCocoaView fixAspectRatio:]. (Peter Maydell)
-- Renamed [QemuCocoaView fixAspectRatio:] parameter to match the
-  comment. (Peter Maydell)
-- Noted that "ui/cocoa: Use NSTrackingInVisibleRect" fixes mouse
-  movement tracking. (Peter Maydell)
-- Link to v1: https://lore.kernel.org/r/20240318-fixes-v1-0-34f1a849b0d9@daynix.com
+ ui/cocoa.m | 41 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
----
-Akihiko Odaki (3):
-      ui/cocoa: Fix aspect ratio
-      ui/cocoa: Resize window after toggling zoom-to-fit
-      ui/cocoa: Use NSTrackingInVisibleRect
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index fa879d7dcd4b..834ebf5f6175 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -508,6 +508,43 @@ - (void) drawRect:(NSRect) rect
+     }
+ }
+ 
++- (NSSize)fixAspectRatio:(NSSize)max
++{
++    NSSize scaled;
++    NSSize fixed;
++
++    scaled.width = screen.width * max.height;
++    scaled.height = screen.height * max.width;
++
++    /*
++     * Here screen is our guest's output size, and max is the size of the
++     * largest possible area of the screen we can display on.
++     * We want to scale up (screen.width x screen.height) by either:
++     *   1) max.height / screen.height
++     *   2) max.width / screen.width
++     * With the first scale factor the scale will result in an output height of
++     * max.height (i.e. we will fill the whole height of the available screen
++     * space and have black bars left and right) and with the second scale
++     * factor the scaling will result in an output width of max.width (i.e. we
++     * fill the whole width of the available screen space and have black bars
++     * top and bottom). We need to pick whichever keeps the whole of the guest
++     * output on the screen, which is to say the smaller of the two scale
++     * factors.
++     * To avoid doing more division than strictly necessary, instead of directly
++     * comparing scale factors 1 and 2 we instead calculate and compare those
++     * two scale factors multiplied by (screen.height * screen.width).
++     */
++    if (scaled.width < scaled.height) {
++        fixed.width = scaled.width / screen.height;
++        fixed.height = max.height;
++    } else {
++        fixed.width = max.width;
++        fixed.height = scaled.height / screen.width;
++    }
++
++    return fixed;
++}
++
+ - (NSSize) screenSafeAreaSize
+ {
+     NSSize size = [[[self window] screen] frame].size;
+@@ -525,8 +562,10 @@ - (void) resizeWindow
+         [[self window] setContentSize:NSMakeSize(screen.width, screen.height)];
+         [[self window] center];
+     } else if ([[self window] styleMask] & NSWindowStyleMaskFullScreen) {
+-        [[self window] setContentSize:[self screenSafeAreaSize]];
++        [[self window] setContentSize:[self fixAspectRatio:[self screenSafeAreaSize]]];
+         [[self window] center];
++    } else {
++        [[self window] setContentSize:[self fixAspectRatio:[self frame].size]];
+     }
+ }
+ 
 
- ui/cocoa.m | 90 ++++++++++++++++++++++++++++++++++++++------------------------
- 1 file changed, 55 insertions(+), 35 deletions(-)
----
-base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
-change-id: 20240318-fixes-7b187ec236a0
-
-Best regards,
 -- 
-Akihiko Odaki <akihiko.odaki@daynix.com>
+2.44.0
 
 
