@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3E488AF62
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5026C88AF60
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:06:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ropdP-0001p6-7u; Mon, 25 Mar 2024 15:05:27 -0400
+	id 1ropdP-0001p8-5j; Mon, 25 Mar 2024 15:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropd2-0001Vg-EL
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:12 -0400
-Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
+ id 1ropd7-0001aE-Oi
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:16 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropd0-0004pq-Jm
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:04 -0400
-Received: by mail-io1-xd33.google.com with SMTP id
- ca18e2360f4ac-7c89cd8df36so96298039f.1
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:05:02 -0700 (PDT)
+ id 1ropd5-00051F-Rt
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:09 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e6aaa2f02cso2888087b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711393501; x=1711998301; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711393506; x=1711998306; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Eyoni5qZtSKjt9z3QzKJDUPa9p/nHFzydRxiuFbxHok=;
- b=RNW9FZmLtpjfTnmy47Zm2lqo4TpS4kkDzUJx5hVUyiDcy761ALMhGbIdHhaMA+hIEN
- 1ZFQeW3XtOqC5yMMkyyo1ljMWzDYhve/sPRvfxo87XekBQb/XgO6D7pOYN9xZQDZ6LPu
- A3L/vd1InKKssQr25ryvoncWsR7SKuTDBfvzO+Oe/1M12ADb+R9s7mC5ame2HFmWOgf8
- q3kdlmJa3GaeR2DX9RuWRZ28keQKJ74f+JqzH0h0XiDDPTQZhXE8UksIB0Lu6lbXA/eh
- i9ypHZAr0yzg5aaX6brAITxo4V8Ow5fJsXi/RGl/kuvknZUD6z1SnISGprk69hnHajbY
- liEA==
+ bh=j3xErw1D7pd0Oy+zBQHAytaYYoPYpk9Jd+HPJGbw/j8=;
+ b=NXJ2Ne3wZR/lpP8NaQGH9wJPkXHAiBUutW6vIEBRDFKDWthdk0HFHGnS5VQocVunxQ
+ ydXFHIPVQg/cwkVjv9aguararA07J0MXVg/SfwtPRHN823+3+zBljWgN8Tp72H++lWFV
+ 7h59R1dg7erWBVM5pImGeiDwQSZ+F3gViHIXYbykCWbWvgB1C3tuoE7bQ2Ymo1WF8rpV
+ HwGklJQjMKAS56TADJ95SDO+N7opL3pyRdk+Xd9wUogySiD8HAbC4t2J0KlJXjlqGaqj
+ NwVtN7uS0Fhw4iUwIepYfA3cGvRmdOATOcOE4oENNxecPDVw2SlyUmYmLUOkR0qRIYHx
+ bt/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711393501; x=1711998301;
+ d=1e100.net; s=20230601; t=1711393506; x=1711998306;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Eyoni5qZtSKjt9z3QzKJDUPa9p/nHFzydRxiuFbxHok=;
- b=E3oM0u8bA0ATmK/TVRmtgoeHbaDrQSRpgxGpwyTQEdEqcT7/khN68fas1yXirxS1eo
- s3G7AifzbAafwyFp/lsgMr6ORT446A70PIN4TKHl7cxg5OOapuQbPIyPMj3A6FYGD3DE
- CUktxXCj5PEdkHtfbsrTMyYULBbd2246ucdVNWAhI+8RdLOz+GSvorBQ+x7VgfvO4HLS
- 8IL6QHdRTHNHNxX0H/MMPCIP73tF6vDtHS98U5bNY0zBzBLAtG86TX9GN5QgJynLYK4Q
- Bo654WykgpsoQgYZUB82NVo59SVqlS7047BfOPBB4XUPn/R5De5BU8L+/6Ns4A4Ma+6l
- hGPg==
-X-Gm-Message-State: AOJu0YzJeGIJpkSIb2Z+mh8RWFDxSm7XNjFZPAoqVd/af8OMJ3RF4F5I
- B4OuhxzUkl5+YNkkLZH0zlDWVBa6dFhUhgbvEjFgBakdR+L+iVYtHs54OolG
-X-Google-Smtp-Source: AGHT+IFFOVVYKVLk+nUgND3cD8rgUQNgsrXraNM2gggO8CtW2mKT/2B7DOt2cMvN8p4yrw0yaEYmJg==
-X-Received: by 2002:a05:6602:c5:b0:7d0:3d39:5fbc with SMTP id
- z5-20020a05660200c500b007d03d395fbcmr7642622ioe.1.1711393500891; 
- Mon, 25 Mar 2024 12:05:00 -0700 (PDT)
+ bh=j3xErw1D7pd0Oy+zBQHAytaYYoPYpk9Jd+HPJGbw/j8=;
+ b=kd3MX0Co9oUUPPPOx7se2xVTxsYCtPFlPqFneQOmV1qnQoKd7lYngUW8Ed0U52l0U8
+ AdGy1V8fjjhQ7YuI2to9/P/oOSnOEkNlPHVeWbJD6keZ90f+5ogZ/rL2KzPd4XVu+xv3
+ 6g1q+L5fXy7BjZqToAumaBQQqS6HkMeplD2pSbfQzQcCkG6vAr6tv57ekpXRLoeiv2q/
+ /G4LJ+CUbsVqCyKALJYRxqkTNzGE6A0Qhfj+Oz/ywx7AyTmnpqN3vsA16Vec3HCqvsCu
+ TYaxE3lEopaa9PfOY/ErXwMfJ8d3oIoVOJ4/DluobKb884uYAiKvlI/imeudIfiv3KqK
+ Y0nw==
+X-Gm-Message-State: AOJu0Yyub0s9C2jdfui6YnmNx5oSXbPXpvtJybDQFLdDSGQLwj+w3unr
+ X0uffq9RqJ44FRiJ8iDgDy16TkBNPmc+FBlXXT+ZOJmyhVZrT/hTTNi/Rmxm
+X-Google-Smtp-Source: AGHT+IGAoTYpamTa5d5OnaOZK4Ce1M2BOIOF3MtObyKz38nf/HynrGLAJSbsZFdb3lLdMdbSuUH8OA==
+X-Received: by 2002:a05:6a20:12d5:b0:1a3:647b:b895 with SMTP id
+ v21-20020a056a2012d500b001a3647bb895mr8351996pzg.47.1711393506060; 
+ Mon, 25 Mar 2024 12:05:06 -0700 (PDT)
 Received: from localhost.localdomain ([2601:641:300:14de:7bed:2ef:bead:18b])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.57
+ z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.05.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 12:05:00 -0700 (PDT)
+ Mon, 25 Mar 2024 12:05:05 -0700 (PDT)
 From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
@@ -63,17 +63,17 @@ Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
  nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
  wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v6 11/12] hw/cxl/cxl-mailbox-utils: Add superset extent
- release mailbox support
-Date: Mon, 25 Mar 2024 12:02:29 -0700
-Message-ID: <20240325190339.696686-12-nifan.cxl@gmail.com>
+Subject: [PATCH v6 12/12] hw/mem/cxl_type3: Allow to release extent superset
+ in QMP interface
+Date: Mon, 25 Mar 2024 12:02:30 -0700
+Message-ID: <20240325190339.696686-13-nifan.cxl@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240325190339.696686-1-nifan.cxl@gmail.com>
 References: <20240325190339.696686-1-nifan.cxl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
- envelope-from=nifan.cxl@gmail.com; helo=mail-io1-xd33.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,88 +98,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-With the change, we extend the extent release mailbox command processing
-to allow more flexible release. As long as the DPA range of the extent to
-release is covered by accepted extent(s) in the device, the release can be
-performed.
+Before the change, the QMP interface used for add/release DC extents
+only allows to release an extent whose DPA range is contained by a single
+accepted extent in the device.
+
+With the change, we relax the constraints.  As long as the DPA range of
+the extent is covered by accepted extents, we allow the release.
 
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
 ---
- hw/cxl/cxl-mailbox-utils.c | 41 ++++++++++++++++++++++----------------
- 1 file changed, 24 insertions(+), 17 deletions(-)
+ hw/mem/cxl_type3.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index a0d2239176..3b7949c364 100644
---- a/hw/cxl/cxl-mailbox-utils.c
-+++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1674,6 +1674,12 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
-         dpa = in->updated_entries[i].start_dpa;
-         len = in->updated_entries[i].len;
- 
-+        /* Check if the DPA range is not fully backed with valid extents */
-+        if (!ct3_test_region_block_backed(ct3d, dpa, len)) {
-+            ret = CXL_MBOX_INVALID_PA;
-+            goto free_and_exit;
-+        }
-+        /* After this point, extent overflow is the only error can happen */
-         while (len > 0) {
-             QTAILQ_FOREACH(ent, &tmp_list, node) {
-                 range_init_nofail(&range, ent->start_dpa, ent->len);
-@@ -1713,25 +1719,27 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
-                             goto free_and_exit;
-                         }
-                     } else {
--                        /*
--                         * TODO: we reject the attempt to remove an extent
--                         * that overlaps with multiple extents in the device
--                         * for now, we will allow it once superset release
--                         * support is added.
--                         */
--                        ret = CXL_MBOX_INVALID_PA;
--                        goto free_and_exit;
-+                        len1 = dpa - ent_start_dpa;
-+                        len2 = 0;
-+                        len_done = ent_len - len1 - len2;
-+
-+                        cxl_remove_extent_from_extent_list(&tmp_list, ent);
-+                        cnt_delta--;
-+                        if (len1) {
-+                            cxl_insert_extent_to_extent_list(&tmp_list,
-+                                                             ent_start_dpa,
-+                                                             len1, NULL, 0);
-+                            cnt_delta++;
-+                        }
-                     }
- 
-                     len -= len_done;
--                    /* len == 0 here until superset release is added */
-+                    if (len) {
-+                        dpa = ent_start_dpa + ent_len;
-+                    }
-                     break;
-                 }
+diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+index 2628a6f50f..62c2022477 100644
+--- a/hw/mem/cxl_type3.c
++++ b/hw/mem/cxl_type3.c
+@@ -1935,8 +1935,7 @@ static void qmp_cxl_process_dynamic_capacity(const char *path, CxlEventLog log,
+                            "cannot release extent with pending DPA range");
+                 return;
              }
--            if (len) {
--                ret = CXL_MBOX_INVALID_PA;
--                goto free_and_exit;
--            }
-         }
-     }
- free_and_exit:
-@@ -1819,10 +1827,9 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
-                     }
- 
-                     len -= len_done;
--                    /*
--                     * len will always be 0 until superset release is add.
--                     * TODO: superset release will be added.
--                     */
-+                    if (len > 0) {
-+                        dpa = ent_start_dpa + ent_len;
-+                    }
-                     break;
-                 }
-             }
+-            if (!cxl_extents_contains_dpa_range(&dcd->dc.extents,
+-                                                dpa, len)) {
++            if (!ct3_test_region_block_backed(dcd, dpa, len)) {
+                 error_setg(errp,
+                            "cannot release extent with non-existing DPA range");
+                 return;
 -- 
 2.43.0
 
