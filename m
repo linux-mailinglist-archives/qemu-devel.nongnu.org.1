@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D99C88969C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 09:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C88889698
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 09:54:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rog4g-0003bH-KP; Mon, 25 Mar 2024 04:52:58 -0400
+	id 1rog4e-0003aO-UP; Mon, 25 Mar 2024 04:52:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rog41-00034w-JD; Mon, 25 Mar 2024 04:52:19 -0400
+ id 1rog41-00034t-Ic; Mon, 25 Mar 2024 04:52:19 -0400
 Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rog3w-0007RP-4Y; Mon, 25 Mar 2024 04:52:17 -0400
-Received: from mail.maildlp.com (unknown [172.19.162.254])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4V367H0fKWzwQ9Q;
- Mon, 25 Mar 2024 16:49:31 +0800 (CST)
+ id 1rog3x-0007Rq-Ua; Mon, 25 Mar 2024 04:52:16 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4V367b3J01ztQg3;
+ Mon, 25 Mar 2024 16:49:47 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 175BC18007C;
- Mon, 25 Mar 2024 16:52:09 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 093F814011D;
+ Mon, 25 Mar 2024 16:52:10 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
- 2024 16:52:08 +0800
+ 2024 16:52:09 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v10 22/23] target/arm: Add FEAT_NMI to max
-Date: Mon, 25 Mar 2024 08:48:53 +0000
-Message-ID: <20240325084854.3010562-23-ruanjinjie@huawei.com>
+Subject: [PATCH v10 23/23] hw/arm/virt: Add FEAT_GICv3_NMI feature support in
+ virt GIC
+Date: Mon, 25 Mar 2024 08:48:54 +0000
+Message-ID: <20240325084854.3010562-24-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325084854.3010562-1-ruanjinjie@huawei.com>
 References: <20240325084854.3010562-1-ruanjinjie@huawei.com>
@@ -67,43 +68,61 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enable FEAT_NMI on the 'max' CPU.
+A PE that implements FEAT_NMI and FEAT_GICv3 also implements
+FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
+FEAT_GICv3_NMI
+
+So included support FEAT_GICv3_NMI feature as part of virt platform
+GIC initialization if FEAT_NMI and FEAT_GICv3 supported.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v3:
+v4:
 - Add Reviewed-by.
-- Sorted to last.
+v3:
+- Adjust to be the last after add FEAT_NMI to max.
+- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
 ---
- docs/system/arm/emulation.rst | 1 +
- target/arm/tcg/cpu64.c        | 1 +
- 2 files changed, 2 insertions(+)
+ hw/arm/virt.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
-index 2a7bbb82dc..a9ae7ede9f 100644
---- a/docs/system/arm/emulation.rst
-+++ b/docs/system/arm/emulation.rst
-@@ -64,6 +64,7 @@ the following architecture extensions:
- - FEAT_MTE (Memory Tagging Extension)
- - FEAT_MTE2 (Memory Tagging Extension)
- - FEAT_MTE3 (MTE Asymmetric Fault Handling)
-+- FEAT_NMI (Non-maskable Interrupt)
- - FEAT_NV (Nested Virtualization)
- - FEAT_NV2 (Enhanced nested virtualization support)
- - FEAT_PACIMP (Pointer authentication - IMPLEMENTATION DEFINED algorithm)
-diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
-index 9f7a9f3d2c..62c4663512 100644
---- a/target/arm/tcg/cpu64.c
-+++ b/target/arm/tcg/cpu64.c
-@@ -1175,6 +1175,7 @@ void aarch64_max_tcg_initfn(Object *obj)
-     t = FIELD_DP64(t, ID_AA64PFR1, RAS_FRAC, 0);  /* FEAT_RASv1p1 + FEAT_DoubleFault */
-     t = FIELD_DP64(t, ID_AA64PFR1, SME, 1);       /* FEAT_SME */
-     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_2 */
-+    t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
-     cpu->isar.id_aa64pfr1 = t;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index ef2e6c2c4d..63d9f5b553 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -729,6 +729,19 @@ static void create_v2m(VirtMachineState *vms)
+     vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
+ }
  
-     t = cpu->isar.id_aa64mmfr0;
++/*
++ * A PE that implements FEAT_NMI and FEAT_GICv3 also implements
++ * FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
++ * FEAT_GICv3_NMI.
++ */
++static bool gicv3_nmi_present(VirtMachineState *vms)
++{
++    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
++
++    return cpu_isar_feature(aa64_nmi, cpu) &&
++           (vms->gic_version != VIRT_GIC_VERSION_2);
++}
++
+ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ {
+     MachineState *ms = MACHINE(vms);
+@@ -802,6 +815,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+                               vms->virt);
+         }
+     }
++
++    if (gicv3_nmi_present(vms)) {
++        qdev_prop_set_bit(vms->gic, "has-nmi", true);
++    }
++
+     gicbusdev = SYS_BUS_DEVICE(vms->gic);
+     sysbus_realize_and_unref(gicbusdev, &error_fatal);
+     sysbus_mmio_map(gicbusdev, 0, vms->memmap[VIRT_GIC_DIST].base);
 -- 
 2.34.1
 
