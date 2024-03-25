@@ -2,77 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B984B8891A8
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 07:46:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB2E8892D8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 08:13:54 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1roe5P-0003Yc-IU; Mon, 25 Mar 2024 02:45:35 -0400
+	id 1roeVr-0007G1-FL; Mon, 25 Mar 2024 03:12:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1roe59-0003T2-Hl
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 02:45:22 -0400
-Received: from mail-yw1-x1136.google.com ([2607:f8b0:4864:20::1136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1roe56-0003R1-Ri
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 02:45:19 -0400
-Received: by mail-yw1-x1136.google.com with SMTP id
- 00721157ae682-61130dd21c1so17870307b3.2
- for <qemu-devel@nongnu.org>; Sun, 24 Mar 2024 23:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711349111; x=1711953911; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=OLmvtO39Nt6nmlxrPCOix417UGh0+5kokRqCJbUT3eE=;
- b=J83ZT7vAFjg+XHtkYBhOV0rTiIGh4u8gUA/p9RrmXSRMtvZFSRrT8GZZ7NOPoXc8vu
- sjr24cGBHmQag5J7qN9EJWESn4Jp6alw+JN+NpsQjAED+dmkOdhNQe96SzSWcw9iXgXo
- 4r54Ugq4TnBbuGbHibFfImLtf7dZj5hXvDrgiTJMGAwAQQtLIv3Q0nfRA9mFysSiGwn+
- zc9y1G/ROzSV1GFshCS4gJzMG7ztvLesbt/csSL4FBqgOMfTmLbmV1Ofs8xZm/E1+DVP
- k1zC+0dAQ36tjz8dL8NNaIPCZtn10fCxMtgR3VoJJu89SeEgI/VO+G/nPWW5NLnNS0Dx
- FhuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711349111; x=1711953911;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=OLmvtO39Nt6nmlxrPCOix417UGh0+5kokRqCJbUT3eE=;
- b=B9lG/Zpr3whxnAzKIE+ygyZlXWKS7WzhjpItystmRGWgOjsaYGKfOz8R9mSIllbJAF
- vdrd48hKeOlvnc3l+PH32l4HdEduMgsf8TuOk2wR9nCFTSYbVgCijJiMx9BX+cW3gBGS
- 10+m9Ake1C7Rvjjkl7jdPherDrSrseGzjgzcOBtAmHJAQHWBvB7sdvaRt49vhokGztoj
- JbtlNIC5RVI+9j/FHZkmTMIxyZfvj8/wqzq4ZB3V+VtxP64RmQm9taN3OD37yGGwdWUo
- 8KF38evu2n9I3O6ZHRZgRU147LhEcr/jsYU3vM7xv4C4DkXkrqWPXFEGZixDFHEZZUR+
- Tudw==
-X-Gm-Message-State: AOJu0YzoNufbc/uqt1eZ74DQNCBbmVUKFgvuNTXBSJ4tWvAOQciAjMz8
- cF8FulS1IDXwf6Zw+73Eaa8J6xTC41vXyay1j3J+pY8oPJhp+zJcwluxmXzqjj0LHq/QurSgya3
- VukLfoqVPm2Y5+yzYnU0xJpPPygo=
-X-Google-Smtp-Source: AGHT+IFM+WSOnVDrODbgSnYOuFSEuN5vSrIrQQfYnAwYTdRHP3yKaXODookmAfDr52YXMamOaHnXOCVC9qDJp46+Ocs=
-X-Received: by 2002:a81:5254:0:b0:611:45e9:cfa with SMTP id
- g81-20020a815254000000b0061145e90cfamr3333973ywb.5.1711349111245; Sun, 24 Mar
- 2024 23:45:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1roeVn-0007Fa-El
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 03:12:51 -0400
+Received: from mail-dm6nam10on2048.outbound.protection.outlook.com
+ ([40.107.93.48] helo=NAM10-DM6-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1roeVh-0007MU-Kt
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 03:12:51 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=SUKXxqHNH9Fa8TBsnrijj2kn6DXDD3dWxDWlT9zI/SEqIuZyX9MMJBv7xIGDwqzkfd+EMcDoMnFDELDs2rJHb7f+0VBFCNaO3NhCXlm5QessVMPfJXqUv4w0hKeL6RR0WUD4OlGd9gqwc9Yg1EnweWCF73BRHczJtkXwa0FM86BXOJcOBftB3rBWAgyLs9DipAFzQFeOwSEfHfavwZijR9GCOORHt65I69X2Eq65W5FQDs+wZsYcs9CJLINqM4UYMqYBFtwnJLqAAjFOMd/fYdV/2EQWsXJ5ceozL0Vt81gbeYDe4BpUTNvdpZSayOm7QOedNBHtKvaN2DKj4SrUrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ph95+s7Fuyz6XJh5POQaWZQBtaf6vzmemyD3GqJ0z7c=;
+ b=IqvLddXWEjbVsNQz204+xdeW0tplZdg8MgV2ge/CtYFOLwgep8f0MkwKySfxUreK5zUvdlVi1UFyxj2L/sW/5oC+H5EsWbMGWdiPFfR87F32kFnbyzWpOM4NisNaRabIXjvGGUWmw5sUhgaN/7hIUm4sq++ezc+7R6EqvPNFc0YEMx//7xepcu0x8CNx6BEAEX44qRa/6LgyDmtVCEqU4KPsg8EjQ2c0ocMy9rRvWsUOrgsxh6UsnJvUaoz1XBYyCKcoBReno0U2Wr+QNDrks13d4lgCvdbk215DjuPVA+ZsTYWll9kSP+lG2KIT95sA/atXetVlHYo3I6AlRvuaSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ph95+s7Fuyz6XJh5POQaWZQBtaf6vzmemyD3GqJ0z7c=;
+ b=MkJy5Pw8vqvX7ihiwt0bW9woVzEPfrpDXw6+C2bfEV7zdFYkxZHqy2KOVKK0ZZfIQhwYO3MwcbJ7XCKsdXVCqYcdQHbgOCbPvNudTXLyeEnxx7/wiDTH5SoXNz5TFteh2+ueV3NJNvhF0M/s6JH3zDeDbq7NnDfMBiPCUEpcEmU=
+Received: from CH0PR04CA0014.namprd04.prod.outlook.com (2603:10b6:610:76::19)
+ by DS0PR12MB8317.namprd12.prod.outlook.com (2603:10b6:8:f4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.31; Mon, 25 Mar
+ 2024 07:07:39 +0000
+Received: from CH3PEPF0000000C.namprd04.prod.outlook.com
+ (2603:10b6:610:76:cafe::19) by CH0PR04CA0014.outlook.office365.com
+ (2603:10b6:610:76::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.28 via Frontend
+ Transport; Mon, 25 Mar 2024 07:07:39 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH3PEPF0000000C.mail.protection.outlook.com (10.167.244.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Mon, 25 Mar 2024 07:07:39 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 25 Mar
+ 2024 02:07:37 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>
+CC: Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [RFC QEMU PATCH v7 0/1] S3 support
+Date: Mon, 25 Mar 2024 15:07:23 +0800
+Message-ID: <20240325070724.574508-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240324152150.21506-1-irina.ryapolova@syntacore.com>
-In-Reply-To: <20240324152150.21506-1-irina.ryapolova@syntacore.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 25 Mar 2024 10:44:59 +0400
-Message-ID: <CAJ+F1C+hB4Awoids71q3RU8od+_QfqEm47c=3AE8UoC=7+q74A@mail.gmail.com>
-Subject: Re: [PATCH] chardev/char-win-stdio: Fix keyboard input after exit
- Qemu on
-To: Irina Ryapolova <irina.ryapolova@syntacore.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1136;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-yw1-x1136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF0000000C:EE_|DS0PR12MB8317:EE_
+X-MS-Office365-Filtering-Correlation-Id: 70f245fc-b7bb-4a62-c859-08dc4c9a41f6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: HinkpbeipAXnkxSy+zsz94ai0isOa3p51X4Qnz+NcJtPixJVOZjSSb7KLd1XBJjRVL8+B+DuN3zVSQgqnKbbO1JsNuftOslk88WJh6qZKwjfQmVTydNSNS3MXVL3FLTT4k+CnKSACUhA/hZJdWenH/TeTnu7aK1DAEIuFbepehVLn1dbV6aubI9QMmH+DE59j6E/RRdv+2lLxc9hlMq8nIEW5enlXjDl+wYwAETiBrZl6sh0VEqNe4Ivg5T/PVf1njDBHuAvFtjU75a7GIc6YNAU/ojeov4EZC+o+cClEcVtGloOJFT/PpR9r70I0LU1QwwGzeajyYXlECMNao1MTQwVE2MGGjSzbseviiSjKx21pk9sKatbtsraPPxmUDk73WERt1a7puAYF4Ga0cBDXF+BCCCfs4NMWT+p6XDW4CZUunVfVSFd/nzuzYM49n/IBsOxft2JuMkYrBXC3dK3dlvHmdY+YkQp9WScjbc3qfd4kMxA3x6zUwAemVRrbnkw/CR05dXFvi9LR/sAHdPLVSx78zQ4zt8+jPNbu+PiOOQcxzOov4R8PZNZlBCdDC8dAAxHFXarXjFSCDcxKe4CWbFIl25xhXjNr+cbm4NjYhnn/i1sQMyUwqxALZOemgdEOXdEGOha3GEaNj+sR1IqCI1v3Gh03bK279wquUsbUs8178ecixv74ulmT5P25qv1HgTYoJBO8Sa6gjFGqiRaIw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(36860700004)(376005)(82310400014)(1800799015); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Mar 2024 07:07:39.4509 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70f245fc-b7bb-4a62-c859-08dc4c9a41f6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH3PEPF0000000C.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8317
+Received-SPF: permerror client-ip=40.107.93.48;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM10-DM6-obe.outbound.protection.outlook.com
+X-Spam_score_int: -2
+X-Spam_score: -0.3
+X-Spam_bar: /
+X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FORGED_SPF_HELO=1.899, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,44 +118,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Hi all,
+This is the v7 patch to support S3.
+v7 makes below changes:
+* Tested this patch with Qemu on Xen hypervisor. Depending on kernel
+  patch (virtio: Add support for no-reset virtio PCI PM:
+  https://lore.kernel.org/lkml/20231208070754.3132339-1-stevensd@chromium.org/)
+* Changed the default value of flag VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT to false
+* Fixed coding style violation
+* Modified the content of the comments.
+* Removed useless flag PCI_PM_CTRL_DATA_SCALE_MASK.
 
-On Sun, Mar 24, 2024 at 7:23=E2=80=AFPM Irina Ryapolova
-<irina.ryapolova@syntacore.com> wrote:
->
-> After exit Qemu need to return the terminal to the default state.
->
-> Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
-> ---
->  chardev/char-win-stdio.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-> index 1a18999e78..4fa2c3de8b 100644
-> --- a/chardev/char-win-stdio.c
-> +++ b/chardev/char-win-stdio.c
-> @@ -220,6 +220,7 @@ err1:
->  static void char_win_stdio_finalize(Object *obj)
->  {
->      WinStdioChardev *stdio =3D WIN_STDIO_CHARDEV(obj);
-> +    DWORD dwMode;
->
->      if (stdio->hInputReadyEvent !=3D INVALID_HANDLE_VALUE) {
->          CloseHandle(stdio->hInputReadyEvent);
-> @@ -230,6 +231,10 @@ static void char_win_stdio_finalize(Object *obj)
->      if (stdio->hInputThread !=3D INVALID_HANDLE_VALUE) {
->          TerminateThread(stdio->hInputThread, 0);
->      }
-> +
-> +    GetConsoleMode(stdio->hStdIn, &dwMode);
-> +    dwMode &=3D ~ENABLE_VIRTUAL_TERMINAL_INPUT;
-> +    SetConsoleMode(stdio->hStdIn, dwMode);
 
-I'd suggest saving the mode when opening instead, to make sure we
-restore the same value.
+Best regards,
+Jiqian Chen
 
-thanks
 
---=20
-Marc-Andr=C3=A9 Lureau
+V6:
+In current code, when guest does S3, virtio devices are reset during that process, that
+causes the display resources of virtio-gpu are destroyed, then the display can't come back
+after resuming.
+This v6 patch implement the No_Soft_Reset bit of PCI_PM_CTRL register, when this bit is set,
+the resetting will not be done, so that the display can work after resuming.
+This version abandons all previous version implementations and is a new different solution
+according to the outcome of the discussion and suggestions in the mailing thread of virtio-spec.
+(https://lists.oasis-open.org/archives/virtio-comment/202401/msg00077.html)
+
+
+V5:
+Hi all,
+v5 makes below changes:
+* Since this series patches add a new mechanism that let virtgpu and Qemu can negotiate
+  their reset behavior, and other guys hope me can improve this mechanism to virtio pci
+  level, so that other virtio devices can also benefit from it. So instead of adding
+  new feature flag VIRTIO_GPU_F_FREEZE_S3 only serves for virtgpu, v5 add a new parameter
+  named freeze_mode to struct VirtIODevice, when guest begin suspending, set freeze_mode
+  to VIRTIO_PCI_FREEZE_MODE_FREEZE_S3, and then all virtio devices can get this status,
+  and notice that guest is suspending, then they can change their reset behavior . See
+  the new commit "virtio-pci: Add freeze_mode case for virtio pci"
+* The second commit is just for virtgpu, when freeze_mode is VIRTIO_PCI_FREEZE_MODE_FREEZE_S3,
+  prevent Qemu destroying render resources, so that the display can come back after resuming.
+
+V5 of kernel patch:
+https://lore.kernel.org/lkml/20230919104607.2282248-1-Jiqian.Chen@amd.com/T/#t
+
+The link to trace this issue:
+https://gitlab.com/qemu-project/qemu/-/issues/1860
+
+
+v4:
+Hi all,
+Thanks for Gerd Hoffmann's advice. V4 makes below changes:
+* Use enum for freeze mode, so this can be extended with more
+  modes in the future.
+* Rename functions and paratemers with "_S3" postfix.
+And no functional changes.
+Link:
+https://lore.kernel.org/qemu-devel/20230720120816.8751-1-Jiqian.Chen@amd.com/
+No v4 patch on kernel side.
+
+
+v3:
+Hi all,
+Thanks for Michael S. Tsirkin's advice. V3 makes below changes:
+* Remove changes in file include/standard-headers/linux/virtio_gpu.h
+  I am not supposed to edit this file and it will be imported after
+  the patches of linux kernel was merged.
+Link:
+https://lore.kernel.org/qemu-devel/20230719074726.1613088-1-Jiqian.Chen@amd.com/T/#t
+V3 of kernel patch:
+https://lore.kernel.org/lkml/20230720115805.8206-1-Jiqian.Chen@amd.com/T/#t
+
+
+v2:
+makes below changes:
+* Change VIRTIO_CPU_CMD_STATUS_FREEZING to 0x0400 (<0x1000)
+* Add virtio_gpu_device_unrealize to destroy resources to solve
+  potential memory leak problem. This also needs hot-plug support.
+* Add a new feature flag VIRTIO_GPU_F_FREEZING, so that guest and
+  host can negotiate whenever freezing is supported or not.
+Link:
+https://lore.kernel.org/qemu-devel/20230630070016.841459-1-Jiqian.Chen@amd.com/T/#t
+V2 of kernel patch:
+https://lore.kernel.org/lkml/20230630073448.842767-1-Jiqian.Chen@amd.com/T/#t
+
+
+v1:
+Hi all,
+I am working to implement virtgpu S3 function on Xen.
+
+Currently on Xen, if we start a guest who enables virtgpu, and then run
+"echo mem > /sys/power/state" to suspend guest. And run "sudo xl trigger <guest id> s3resume"
+to resume guest. We can find that the guest kernel comes back, but the display doesn't.
+It just shown a black screen.
+
+Through reading codes, I founded that when guest was during suspending, it called into Qemu to
+call virtio_gpu_gl_reset. In virtio_gpu_gl_reset, it destroyed all resources and reset
+renderer. This made the display gone after guest resumed.
+
+I think we should keep resources or prevent they being destroyed when guest is suspending. So,
+I add a new status named freezing to virtgpu, and add a new ctrl message
+VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from guest. If freezing is set to true, and
+then Qemu will realize that guest is suspending, it will not destroy resources and will not
+reset renderer. If freezing is set to false, Qemu will do its origin actions, and has no other
+impaction.
+
+And now, display can come back and applications can continue their status after guest resumes.
+Link:
+https://lore.kernel.org/qemu-devel/20230608025655.1674357-1-Jiqian.Chen@amd.com/
+V1 of kernel patch:
+https://lore.kernel.org/lkml/20230608063857.1677973-1-Jiqian.Chen@amd.com/
+
+
+Jiqian Chen (1):
+  virtio-pci: implement No_Soft_Reset bit
+
+ hw/virtio/virtio-pci.c         | 38 +++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-pci.h |  5 +++++
+ 2 files changed, 42 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
 
