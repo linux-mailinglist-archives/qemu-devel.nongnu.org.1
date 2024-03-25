@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F9188AF61
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:06:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3E488AF62
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:06:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ropdN-0001a8-D1; Mon, 25 Mar 2024 15:05:25 -0400
+	id 1ropdP-0001p6-7u; Mon, 25 Mar 2024 15:05:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropcy-0001H1-G4
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:00 -0400
-Received: from mail-il1-x133.google.com ([2607:f8b0:4864:20::133])
+ id 1ropd2-0001Vg-EL
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:12 -0400
+Received: from mail-io1-xd33.google.com ([2607:f8b0:4864:20::d33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropcv-0004pE-Vq
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:59 -0400
-Received: by mail-il1-x133.google.com with SMTP id
- e9e14a558f8ab-3666affcb59so22061085ab.2
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:04:57 -0700 (PDT)
+ id 1ropd0-0004pq-Jm
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:05:04 -0400
+Received: by mail-io1-xd33.google.com with SMTP id
+ ca18e2360f4ac-7c89cd8df36so96298039f.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711393497; x=1711998297; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711393501; x=1711998301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9hl+9iwdY1IzIu9iDPkfmumLwvkEBhE4sR7cuyu/dHg=;
- b=fTOkPuTdIQmLWrBQf19jCiaxPpax8cQEOAD8IxI35ULv9RHHZWMmZcfezBLLm6vwjr
- Z2s7OgpfeGRx/9rFWATEnHYL/balYjtP7hfwkhf3C/PU4fu0gH4oDknaD44jdANr007J
- tx/aLHdSg/kpcBD0Yr5yhdfyManZCG2oG35YqmJKdo7NM46+rVCP0WdifgerAGThrsYn
- 8fLt6SnLl+59X/qnspd6gJUVVKHMR0muu/rcxARYrkL704kTqpvCOumFpRi3wmrhPWu8
- X8QdZKQVLCAeqZFplbl0SwiTCJvQa8so67olq8/R3noorZY9pon4qHPGqgpoSrkvtZqP
- mE0Q==
+ bh=Eyoni5qZtSKjt9z3QzKJDUPa9p/nHFzydRxiuFbxHok=;
+ b=RNW9FZmLtpjfTnmy47Zm2lqo4TpS4kkDzUJx5hVUyiDcy761ALMhGbIdHhaMA+hIEN
+ 1ZFQeW3XtOqC5yMMkyyo1ljMWzDYhve/sPRvfxo87XekBQb/XgO6D7pOYN9xZQDZ6LPu
+ A3L/vd1InKKssQr25ryvoncWsR7SKuTDBfvzO+Oe/1M12ADb+R9s7mC5ame2HFmWOgf8
+ q3kdlmJa3GaeR2DX9RuWRZ28keQKJ74f+JqzH0h0XiDDPTQZhXE8UksIB0Lu6lbXA/eh
+ i9ypHZAr0yzg5aaX6brAITxo4V8Ow5fJsXi/RGl/kuvknZUD6z1SnISGprk69hnHajbY
+ liEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711393497; x=1711998297;
+ d=1e100.net; s=20230601; t=1711393501; x=1711998301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9hl+9iwdY1IzIu9iDPkfmumLwvkEBhE4sR7cuyu/dHg=;
- b=Z4m2jqg/OzyM4dO0aurHw9Dg2FM5FiFUZsq/hE/l9yjFTccg0+TxhGbXr0qdqAeCpt
- Fshy/D6LrEcjnNHqoSzG7C2hluXboO2U7ArpQ3g3MLCTjST8adlJK9PSDiU6Ov8ay3JN
- uemERMmQw/DDdTPqACIBgd2q7fxsP45d+d8VBPrOuJN9W6JmCVBst0bGdir3412sgJp7
- 6mB8JX5EmMgaD0+kxIfEgSQ4gzNmCH1UBe6hCsZ6GgCjvh81Rl94d6tF7JTsMz+p+eIc
- 8g2bP9fAoAWm87TpWOMDHDwnKO8QC8OEcHQdI0nlQex6yDiJSw98gayyPMF0/XkcH2JZ
- ukUg==
-X-Gm-Message-State: AOJu0YxbOiQeWwfJ917aQ3Tp24tcwVOGSOEdh/uuUVJlaYS1V9cestKh
- JeLDIQbWQtzY2LiZSMqrvRO95KgqAtXOivbQHX8wvwGRpJDMUgmT27C7XueV
-X-Google-Smtp-Source: AGHT+IGc9FRWx0eL65nIDDAzsuPuf8IL9et/6B2jfyccxqQmw9OSUztCOPmfFxh3U4MmMzExS+vMCQ==
-X-Received: by 2002:a05:6e02:805:b0:366:89f6:82f8 with SMTP id
- u5-20020a056e02080500b0036689f682f8mr8256468ilm.1.1711393496642; 
- Mon, 25 Mar 2024 12:04:56 -0700 (PDT)
+ bh=Eyoni5qZtSKjt9z3QzKJDUPa9p/nHFzydRxiuFbxHok=;
+ b=E3oM0u8bA0ATmK/TVRmtgoeHbaDrQSRpgxGpwyTQEdEqcT7/khN68fas1yXirxS1eo
+ s3G7AifzbAafwyFp/lsgMr6ORT446A70PIN4TKHl7cxg5OOapuQbPIyPMj3A6FYGD3DE
+ CUktxXCj5PEdkHtfbsrTMyYULBbd2246ucdVNWAhI+8RdLOz+GSvorBQ+x7VgfvO4HLS
+ 8IL6QHdRTHNHNxX0H/MMPCIP73tF6vDtHS98U5bNY0zBzBLAtG86TX9GN5QgJynLYK4Q
+ Bo654WykgpsoQgYZUB82NVo59SVqlS7047BfOPBB4XUPn/R5De5BU8L+/6Ns4A4Ma+6l
+ hGPg==
+X-Gm-Message-State: AOJu0YzJeGIJpkSIb2Z+mh8RWFDxSm7XNjFZPAoqVd/af8OMJ3RF4F5I
+ B4OuhxzUkl5+YNkkLZH0zlDWVBa6dFhUhgbvEjFgBakdR+L+iVYtHs54OolG
+X-Google-Smtp-Source: AGHT+IFFOVVYKVLk+nUgND3cD8rgUQNgsrXraNM2gggO8CtW2mKT/2B7DOt2cMvN8p4yrw0yaEYmJg==
+X-Received: by 2002:a05:6602:c5:b0:7d0:3d39:5fbc with SMTP id
+ z5-20020a05660200c500b007d03d395fbcmr7642622ioe.1.1711393500891; 
+ Mon, 25 Mar 2024 12:05:00 -0700 (PDT)
 Received: from localhost.localdomain ([2601:641:300:14de:7bed:2ef:bead:18b])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.53
+ z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 12:04:55 -0700 (PDT)
+ Mon, 25 Mar 2024 12:05:00 -0700 (PDT)
 From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
  a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
  nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
- wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v6 10/12] hw/mem/cxl_type3: Add dpa range validation for
- accesses to DC regions
-Date: Mon, 25 Mar 2024 12:02:28 -0700
-Message-ID: <20240325190339.696686-11-nifan.cxl@gmail.com>
+ wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
+Subject: [PATCH v6 11/12] hw/cxl/cxl-mailbox-utils: Add superset extent
+ release mailbox support
+Date: Mon, 25 Mar 2024 12:02:29 -0700
+Message-ID: <20240325190339.696686-12-nifan.cxl@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240325190339.696686-1-nifan.cxl@gmail.com>
 References: <20240325190339.696686-1-nifan.cxl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::133;
- envelope-from=nifan.cxl@gmail.com; helo=mail-il1-x133.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::d33;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-io1-xd33.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,195 +98,88 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-All dpa ranges in the DC regions are invalid to access until an extent
-covering the range has been added. Add a bitmap for each region to
-record whether a DC block in the region has been backed by DC extent.
-For the bitmap, a bit in the bitmap represents a DC block. When a DC
-extent is added, all the bits of the blocks in the extent will be set,
-which will be cleared when the extent is released.
+With the change, we extend the extent release mailbox command processing
+to allow more flexible release. As long as the DPA range of the extent to
+release is covered by accepted extent(s) in the device, the release can be
+performed.
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Fan Ni <fan.ni@samsung.com>
 ---
- hw/cxl/cxl-mailbox-utils.c  |  6 +++
- hw/mem/cxl_type3.c          | 76 +++++++++++++++++++++++++++++++++++++
- include/hw/cxl/cxl_device.h |  7 ++++
- 3 files changed, 89 insertions(+)
+ hw/cxl/cxl-mailbox-utils.c | 41 ++++++++++++++++++++++----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
 diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-index 7094e007b9..a0d2239176 100644
+index a0d2239176..3b7949c364 100644
 --- a/hw/cxl/cxl-mailbox-utils.c
 +++ b/hw/cxl/cxl-mailbox-utils.c
-@@ -1620,6 +1620,7 @@ static CXLRetCode cmd_dcd_add_dyn_cap_rsp(const struct cxl_cmd *cmd,
+@@ -1674,6 +1674,12 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+         dpa = in->updated_entries[i].start_dpa;
+         len = in->updated_entries[i].len;
  
-         cxl_insert_extent_to_extent_list(extent_list, dpa, len, NULL, 0);
-         ct3d->dc.total_extent_count += 1;
-+        ct3_set_region_block_backed(ct3d, dpa, len);
- 
-         ent = QTAILQ_FIRST(&ct3d->dc.extents_pending);
-         cxl_remove_extent_from_extent_list(&ct3d->dc.extents_pending, ent);
-@@ -1798,18 +1799,23 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
- 
-                     cxl_remove_extent_from_extent_list(extent_list, ent);
-                     ct3d->dc.total_extent_count -= 1;
-+                    ct3_clear_region_block_backed(ct3d, ent_start_dpa,
-+                                                  ent_len);
- 
-                     if (len1) {
-                         cxl_insert_extent_to_extent_list(extent_list,
-                                                          ent_start_dpa,
-                                                          len1, NULL, 0);
-                         ct3d->dc.total_extent_count += 1;
-+                        ct3_set_region_block_backed(ct3d, ent_start_dpa,
-+                                                    len1);
-                     }
-                     if (len2) {
-                         cxl_insert_extent_to_extent_list(extent_list,
-                                                          dpa + len,
-                                                          len2, NULL, 0);
-                         ct3d->dc.total_extent_count += 1;
-+                        ct3_set_region_block_backed(ct3d, dpa + len, len2);
++        /* Check if the DPA range is not fully backed with valid extents */
++        if (!ct3_test_region_block_backed(ct3d, dpa, len)) {
++            ret = CXL_MBOX_INVALID_PA;
++            goto free_and_exit;
++        }
++        /* After this point, extent overflow is the only error can happen */
+         while (len > 0) {
+             QTAILQ_FOREACH(ent, &tmp_list, node) {
+                 range_init_nofail(&range, ent->start_dpa, ent->len);
+@@ -1713,25 +1719,27 @@ static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+                             goto free_and_exit;
+                         }
+                     } else {
+-                        /*
+-                         * TODO: we reject the attempt to remove an extent
+-                         * that overlaps with multiple extents in the device
+-                         * for now, we will allow it once superset release
+-                         * support is added.
+-                         */
+-                        ret = CXL_MBOX_INVALID_PA;
+-                        goto free_and_exit;
++                        len1 = dpa - ent_start_dpa;
++                        len2 = 0;
++                        len_done = ent_len - len1 - len2;
++
++                        cxl_remove_extent_from_extent_list(&tmp_list, ent);
++                        cnt_delta--;
++                        if (len1) {
++                            cxl_insert_extent_to_extent_list(&tmp_list,
++                                                             ent_start_dpa,
++                                                             len1, NULL, 0);
++                            cnt_delta++;
++                        }
                      }
  
                      len -= len_done;
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index 74cb64e843..2628a6f50f 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -672,6 +672,7 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
-             .flags = 0,
-         };
-         ct3d->dc.total_capacity += region->len;
-+        region->blk_bitmap = bitmap_new(region->len / region->block_size);
+-                    /* len == 0 here until superset release is added */
++                    if (len) {
++                        dpa = ent_start_dpa + ent_len;
++                    }
+                     break;
+                 }
+             }
+-            if (len) {
+-                ret = CXL_MBOX_INVALID_PA;
+-                goto free_and_exit;
+-            }
+         }
      }
-     QTAILQ_INIT(&ct3d->dc.extents);
-     QTAILQ_INIT(&ct3d->dc.extents_pending);
-@@ -682,6 +683,8 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
- static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
- {
-     CXLDCExtent *ent, *ent_next;
-+    int i;
-+    CXLDCRegion *region;
+ free_and_exit:
+@@ -1819,10 +1827,9 @@ static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+                     }
  
-     QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
-         cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
-@@ -690,6 +693,11 @@ static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
-         cxl_remove_extent_from_extent_list(&ct3d->dc.extents_pending,
-                                            ent);
-     }
-+
-+    for (i = 0; i < ct3d->dc.num_regions; i++) {
-+        region = &ct3d->dc.regions[i];
-+        g_free(region->blk_bitmap);
-+    }
- }
- 
- static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
-@@ -921,6 +929,70 @@ static void ct3_exit(PCIDevice *pci_dev)
-     }
- }
- 
-+/*
-+ * Mark the DPA range [dpa, dap + len - 1] to be backed and accessible. This
-+ * happens when a DC extent is added and accepted by the host.
-+ */
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len)
-+{
-+    CXLDCRegion *region;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    bitmap_set(region->blk_bitmap, (dpa - region->base) / region->block_size,
-+               len / region->block_size);
-+}
-+
-+/*
-+ * Check whether the DPA range [dpa, dpa + len - 1] is backed with DC extents.
-+ * Used when validating read/write to dc regions
-+ */
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len)
-+{
-+    CXLDCRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return false;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = DIV_ROUND_UP(len, region->block_size);
-+    /*
-+     * if bits between [dpa, dpa + len) are all 1s, meaning the DPA range is
-+     * backed with DC extents, return true; else return false.
-+     */
-+    return find_next_zero_bit(region->blk_bitmap, nr + nbits, nr) == nr + nbits;
-+}
-+
-+/*
-+ * Mark the DPA range [dpa, dap + len -1] to be unbacked and inaccessible.
-+ * This happens when a dc extent is released by the host.
-+ */
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len)
-+{
-+    CXLDCRegion *region;
-+    uint64_t nbits;
-+    long nr;
-+
-+    region = cxl_find_dc_region(ct3d, dpa, len);
-+    if (!region) {
-+        return;
-+    }
-+
-+    nr = (dpa - region->base) / region->block_size;
-+    nbits = len / region->block_size;
-+    bitmap_clear(region->blk_bitmap, nr, nbits);
-+}
-+
- static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwaddr host_addr, uint64_t *dpa)
- {
-     int hdm_inc = R_CXL_HDM_DECODER1_BASE_LO - R_CXL_HDM_DECODER0_BASE_LO;
-@@ -1025,6 +1097,10 @@ static int cxl_type3_hpa_to_as_and_dpa(CXLType3Dev *ct3d,
-         *as = &ct3d->hostpmem_as;
-         *dpa_offset -= vmr_size;
-     } else {
-+        if (!ct3_test_region_block_backed(ct3d, *dpa_offset, size)) {
-+            return -ENODEV;
-+        }
-+
-         *as = &ct3d->dc.host_dc_as;
-         *dpa_offset -= (vmr_size + pmr_size);
-     }
-diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-index b84063d9f4..bc90da2ca2 100644
---- a/include/hw/cxl/cxl_device.h
-+++ b/include/hw/cxl/cxl_device.h
-@@ -450,6 +450,7 @@ typedef struct CXLDCRegion {
-     uint64_t block_size;
-     uint32_t dsmadhandle;
-     uint8_t flags;
-+    unsigned long *blk_bitmap;
- } CXLDCRegion;
- 
- struct CXLType3Dev {
-@@ -563,4 +564,10 @@ bool test_any_bits_set(const unsigned long *addr, unsigned long nr,
-                        unsigned long size);
- bool cxl_extents_contains_dpa_range(CXLDCExtentList *list,
-                                     uint64_t dpa, uint64_t len);
-+void ct3_set_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                 uint64_t len);
-+void ct3_clear_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                   uint64_t len);
-+bool ct3_test_region_block_backed(CXLType3Dev *ct3d, uint64_t dpa,
-+                                  uint64_t len);
- #endif
+                     len -= len_done;
+-                    /*
+-                     * len will always be 0 until superset release is add.
+-                     * TODO: superset release will be added.
+-                     */
++                    if (len > 0) {
++                        dpa = ent_start_dpa + ent_len;
++                    }
+                     break;
+                 }
+             }
 -- 
 2.43.0
 
