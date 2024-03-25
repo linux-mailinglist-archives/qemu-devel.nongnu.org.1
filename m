@@ -2,135 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCFE88A5D6
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CF088A6BF
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:34:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rolvQ-000632-Jd; Mon, 25 Mar 2024 11:07:48 -0400
+	id 1romKU-0006e9-7Y; Mon, 25 Mar 2024 11:33:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rolvO-00062o-Ns
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:07:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKO-0006dS-9u
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:36 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rolvM-0005jK-Co
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:07:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711379263;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=vziyHw6uP4sIz5qJuOs8a63o+uuRY7vtwlSq66O7yjg=;
- b=APktHERZAPoN2FbOH1orjUCkOkgKpijKJ3qkXWb6DyN4VOcu4tX4oZ2+4bdfP8o6ZkFurB
- fB/yNGbuo6qDo2wMBAd4t4okw0fXQYx0Swog7ZV04csnCSYXlfo5kITmbTpLIqz/6OpGmy
- wYrmG5bSQT733YDdSH1JAnES6evTFv0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-411-yqlPR4H6O46eSJi_eQ1Q4Q-1; Mon, 25 Mar 2024 11:07:42 -0400
-X-MC-Unique: yqlPR4H6O46eSJi_eQ1Q4Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4140225e68aso25532535e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 08:07:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711379261; x=1711984061;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :from:references:cc:to:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=vziyHw6uP4sIz5qJuOs8a63o+uuRY7vtwlSq66O7yjg=;
- b=hobHqNS8M1f1jO24dM26L2tHJBZ7Q+ukm3+VfoJFehAV02+3nFGAhcwTId3tAPprYq
- TprRGCdpuxDbgcFCp+TkFt5EjzCnECAm+vjMYN7LXLfm8GEmN8UrhPDMVjpe9C7KCYm2
- OFcRQGGO0olwFo30WOcjh7buT01B6Z3v69IZOeXZwHQTlMFd5w1S5AMV8Kw3J2FQAkph
- /b2yfij7zIS7OWridCI0wuZop/UCTGRJXaEhMWmkqhlpVggFkRD1avyVzaQY11680T39
- q+AJqEdUYLgHTWWr+nq8MWWAwAM0iPOJhkh357yvM4ukN6Al/264dPKMt0ukv3Ow/ddO
- QbcQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUWytJcNesMf9Nk7HThxJp77qvCVSCksRwNd5cFg7bDZVip7xHbpSST25JIenpRC37W44QqnyXsQWPNKB4TbbecwBW9lEA=
-X-Gm-Message-State: AOJu0Yx/0E5bFtb6nnN+md2WpGQBbIs/V64OQHg34x0DlRtwq5uZXIIJ
- i6V2zpjQ1G+k++XqHeklqD1erOkW5BBTPtxChK8fQvkY6FEnneBsYPsGU1HUvKa7tWbr44uBy8h
- 26VuWV6PudC192zTpHUT9msDN0MTpyl033jJ86H6NUzhHyxi0dRXL
-X-Received: by 2002:a05:600c:1547:b0:413:ff10:cee with SMTP id
- f7-20020a05600c154700b00413ff100ceemr5304570wmg.13.1711379260926; 
- Mon, 25 Mar 2024 08:07:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfcN7VfVjeGJA9m4GweBwN2xknwjO5rhC8/zMdsVizGTzihSOnK6WOYyrXAtT47IAEThEqqA==
-X-Received: by 2002:a05:600c:1547:b0:413:ff10:cee with SMTP id
- f7-20020a05600c154700b00413ff100ceemr5304554wmg.13.1711379260623; 
- Mon, 25 Mar 2024 08:07:40 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-176-158.web.vodafone.de.
- [109.43.176.158]) by smtp.gmail.com with ESMTPSA id
- x4-20020a5d60c4000000b00341ce1b64f0sm2496782wrt.17.2024.03.25.08.07.39
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 08:07:40 -0700 (PDT)
-Message-ID: <aa14d73f-7374-4df8-a31a-8909801ef2f8@redhat.com>
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKM-0001B8-C4
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:36 -0400
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42PDiIIV001586; Mon, 25 Mar 2024 15:33:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=Nt/7aLwD1Ryr2kW+Dq6ZqOgE/1Q5GG08X3g2BeRFpfU=;
+ b=qnjJwisRFJuUBlNi835NcnW/CsZV2ZywAi/p/JZ13Q6dFOg3GphdAQgmiw7f6noSedNX
+ awoY+Lxkdp/YJT3d1CRluAhzpgFbAxQt6p/Ky65c/ysTSlqN/GRUXPdBN1jS8DByVATh
+ 5l/IhxkUx71+ztbZCrVd7zP49Rd0al1jPMttwYMzCiqwp2wAO9+LUif8RvnBDPqyWOA9
+ 4nqzyD/4B8+HIADEAxPmphEN1+B92Z2F4+BTAbOLeqvy2+yF9DJYOuxJZKLeO6pT5fA9
+ 9IXEgprxfrgqqDx3N2/MhKw4ARYLkggFnCWIL8cs80VbOR2TI5hz2ZhMgxelaxVx+/Qt SA== 
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x2b71b46r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Mar 2024 15:33:31 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42PDekMR013358; Mon, 25 Mar 2024 15:33:30 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x29t0a6se-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Mar 2024 15:33:30 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
+ [10.20.54.106])
+ by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42PFXQ0o28967528
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Mar 2024 15:33:29 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D36642004E;
+ Mon, 25 Mar 2024 15:33:26 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 7B2892004B;
+ Mon, 25 Mar 2024 15:33:26 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.171.7.191])
+ by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Mar 2024 15:33:26 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH 2/4] linux-user: Fix shmat() strace
 Date: Mon, 25 Mar 2024 16:07:39 +0100
+Message-ID: <20240325153313.526888-3-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240325153313.526888-1-iii@linux.ibm.com>
+References: <20240325153313.526888-1-iii@linux.ibm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1 v5 1/3] hw: Add compat machines for 9.1
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Cornelia Huck <cohuck@redhat.com>, Harsh Prateek Bora
- <harshpb@linux.ibm.com>, Gavin Shan <gshan@redhat.com>
-References: <20240325141422.1380087-1-pbonzini@redhat.com>
- <20240325141422.1380087-2-pbonzini@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240325141422.1380087-2-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: IXLbydQOEVg2-eouF6Brt86Jmj34afIM
+X-Proofpoint-GUID: IXLbydQOEVg2-eouF6Brt86Jmj34afIM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-25_11,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999
+ impostorscore=0 mlxscore=0 spamscore=0 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0
+ clxscore=1015 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403250084
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,61 +105,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/03/2024 15.14, Paolo Bonzini wrote:
-> Add 9.1 machine types for arm/i440fx/m68k/q35/s390x/spapr.
-> 
-> Cc: Cornelia Huck <cohuck@redhat.com>
-> Cc: Thomas Huth <thuth@redhat.com>
-> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Cc: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   include/hw/boards.h        |  3 +++
->   include/hw/i386/pc.h       |  3 +++
->   hw/arm/virt.c              | 11 +++++++++--
->   hw/core/machine.c          |  3 +++
->   hw/i386/pc.c               |  3 +++
->   hw/i386/pc_piix.c          | 17 ++++++++++++++---
->   hw/i386/pc_q35.c           | 14 ++++++++++++--
->   hw/m68k/virt.c             | 11 +++++++++--
->   hw/ppc/spapr.c             | 17 ++++++++++++++---
->   hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
->   10 files changed, 83 insertions(+), 13 deletions(-)
-....
-> diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> index b1dcb3857f0..67e8b0b05e8 100644
-> --- a/hw/s390x/s390-virtio-ccw.c
-> +++ b/hw/s390x/s390-virtio-ccw.c
-> @@ -859,14 +859,26 @@ bool css_migration_enabled(void)
->       }                                                                         \
->       type_init(ccw_machine_register_##suffix)
->   
-> +static void ccw_machine_9_1_instance_options(MachineState *machine)
-> +{
-> +}
-> +
-> +static void ccw_machine_9_1_class_options(MachineClass *mc)
-> +{
-> +}
-> +DEFINE_CCW_MACHINE(9_0, "9.1", true);
-> +
->   static void ccw_machine_9_0_instance_options(MachineState *machine)
->   {
-> +    ccw_machine_9_1_instance_options(machine);
->   }
->   
->   static void ccw_machine_9_0_class_options(MachineClass *mc)
->   {
-> +    ccw_machine_9_1_class_options(machine);
-> +    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
->   }
-> -DEFINE_CCW_MACHINE(9_0, "9.0", true);
-> +DEFINE_CCW_MACHINE(9_0, "9.0", false);
->   
->   static void ccw_machine_8_2_instance_options(MachineState *machine)
->   {
+The indices of arguments passed to print_shmat() are all off-by-1,
+because arg1 is the ipc() command. Fix them.
 
-For s390x:
-Acked-by: Thomas Huth <thuth@redhat.com>
+New output for linux-shmat-maps test:
+
+    3501769 shmat(4784214,0x0000000000800000,SHM_RND) = 0
+
+Fixes: 9f7c97324c27 ("linux-user: Add strace for shmat")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+---
+ linux-user/strace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 9be71af4016..3b4ccd9fa04 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -703,7 +703,7 @@ print_ipc(CPUArchState *cpu_env, const struct syscallname *name,
+         break;
+     case IPCOP_shmat:
+         print_shmat(cpu_env, &(const struct syscallname){ .name = "shmat" },
+-                    arg1, arg4, arg2, 0, 0, 0);
++                    arg2, arg5, arg3, 0, 0, 0);
+         break;
+     default:
+         qemu_log(("%s("
+-- 
+2.44.0
 
 
