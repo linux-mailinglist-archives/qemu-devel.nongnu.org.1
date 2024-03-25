@@ -2,100 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B457C88AEB6
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 19:44:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBDAA88AF41
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:05:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ropHl-0004nj-4g; Mon, 25 Mar 2024 14:43:05 -0400
+	id 1ropcU-0000p7-MD; Mon, 25 Mar 2024 15:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ropHh-0004n2-SV
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 14:43:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1ropHg-0000sw-DV
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 14:43:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711392179;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Qq8q/Mm0zNrkMDJrUiYylqwQQwleQKmqYIx8eShQrIQ=;
- b=OL0Yxy09RXsCX9x2pSrObrhlQD1j4S1v/tYUjBM0iGU37F7M/BJ858yMtGFKTIrOKuh7c2
- phW+ap1RizQJzqgCRKMJVJO2jTaS3cx3GpfSd/h9K9Y5/zzKVRT3hGxMc5rMFriTewY2CL
- QJHBtp/iGOA7ZXhrPKgOt9Fyn7ovhsA=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655--5tDER4cMViavY82i6oHMA-1; Mon, 25 Mar 2024 14:42:57 -0400
-X-MC-Unique: -5tDER4cMViavY82i6oHMA-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-789ffdbd375so951436185a.1
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 11:42:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1ropcM-0000ob-W6
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:23 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1ropcK-0004lF-TM
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:22 -0400
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6e6b729669bso3882708b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711393459; x=1711998259; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y5Zto9K7udTq5AQPakgTtPCJCOiPmQtEfYiG7fTXVFs=;
+ b=UZunfXKeRMJIOAWTh1CDGrDeyMcXUH0o8EgBp+UAhIs5Hhq3tgkn/C+RvVGfLAL40W
+ jtOfQ/SSS5f9MLdsM1zPbGwWprqIZaBbbU4E0mGg7kOWdX/ZWz9ku9v4VLMhSnIA1+O5
+ WEdtwM1CzNS4hIHh1XPeCs7Z7x6N3O4mSh/f6a8bp86THWGJJ86Y5Kl1pT0qSImcceM6
+ bG8n85UXHbWJ4jRjyKXtIAuZMbJWuqcrsuWR75fL8NNt/fdncGhuvbn825rEGdCwHtGb
+ 3tjVWx1CP5MnD+NUp7fXVmxc0GW2wZGSzdDqH8aZEZtFB6CTPMM32dwbJmci5TNgRD9C
+ msAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711392177; x=1711996977;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1711393459; x=1711998259;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Qq8q/Mm0zNrkMDJrUiYylqwQQwleQKmqYIx8eShQrIQ=;
- b=Ih9Zbl1Xj3UVIeOtOp1KBk2f9dZ28v4ayX0KbYkbAqkHe8Y5D2f9L/apGi5nu/G8k/
- VsDQv9JufqtsriY5suFpyWSRWOFGe/du3T1RH2flC722V1gS2hWiAZRbIM1An7iIoqZe
- RLRE/nEv6DNlnO5PuBR6Q/EaV9ig7WrSinUUzbUQ2DdI9OvhfkYoRIgZvgG+Zb/hsDNG
- VxMKqiq8CmDxax2Onsl+MCIlBhUjTcd8yU2CQEJYCoxMOoGZyUdj0FUOZWqEgzEpX4Z1
- +Aw0UVeLJilaBeOXb/LT2gzhqPTjSDD0/3HCH4zzF5LOU5f7yiDv3OwnGRwQlTtsBVr4
- 66SA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVtW2bZDV5naMQW1Fa2EQ0qV4E5l4xdhjwpsQfoOSQSeN8fR9fzNIOk6FTdQcdzzHoOcaKCHxfEit0+s9+gMgrDfRDYNX8=
-X-Gm-Message-State: AOJu0YwWwi2U4w4wgT6Ph+c5udEMTMuF3va1gAtx/prOhIJoeAmr0EEP
- p+oNoY5GURQrwdAk8xdol9ZgC/yvdDpZbyEnb7ThV4VK9xYCS4EgWw4N1YeRj5QyNEJWDGvWEmK
- hCBDGfSp1/caBWCNlOCYFhQ6JWd0sSdgFFfxGuNGGuyBi6CHaMR3C
-X-Received: by 2002:ae9:f504:0:b0:78a:1ebf:12d with SMTP id
- o4-20020ae9f504000000b0078a1ebf012dmr11477599qkg.16.1711392177103; 
- Mon, 25 Mar 2024 11:42:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKhXM2QPX4H58pV7Jtq9OstdFQRlRadnEXgnuus4DST3mqZzZt0s8nYXRlWJJx7NfRRhdU7w==
-X-Received: by 2002:ae9:f504:0:b0:78a:1ebf:12d with SMTP id
- o4-20020ae9f504000000b0078a1ebf012dmr11477569qkg.16.1711392176841; 
- Mon, 25 Mar 2024 11:42:56 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=Y5Zto9K7udTq5AQPakgTtPCJCOiPmQtEfYiG7fTXVFs=;
+ b=bd0KWNbpoPw3wos3dC8M/e+qv5PZXj8Xdi1FW4YNT4RgTeLnfBy5Ex5IIDkWuryP/o
+ 3fbxnA3sWWFDrLEI1kxO3xk5tTHierbZ3U1Q6LInlvZyTPzIcv4E562RVhqi+NqJoM4V
+ +cri21nl0bhZ1o37NOVG8OR97JGcE6/GK3KRgblJuGSBIwiG5AlokI0Ntwb2UzCgkEFu
+ LhToNHczE+tkIJwumqyipTIRNLLktMKzKq42tYevja+/DsXo0vXOLErwrTmoYUVeLzSS
+ 92J3X+AJxVd2PHgP6y5JIJPOCT1NZSEb+SeuCXQzAFwvh4jT3KVYRUwDi4wrYs3/8Lcy
+ lIfg==
+X-Gm-Message-State: AOJu0YyhJdeExoEjHBnTdugbMz8vz4SEhUb7HO26RFSMjNIXp1z0zt0i
+ kMqh8higMe+8vNsdVWZOUai8TZ4atYGI+6gf0u8Bw7WBXiZGkdTqFVWykIrp
+X-Google-Smtp-Source: AGHT+IGZShujGwOKxQ+nptAm5/rMbK7nM5xmkrnfnyDFXq5KsYB7EKXYKiCNBZkCJq9HAY7FI/XqIw==
+X-Received: by 2002:a05:6a20:9147:b0:1a3:bdd6:efef with SMTP id
+ x7-20020a056a20914700b001a3bdd6efefmr7683199pzc.50.1711393458627; 
+ Mon, 25 Mar 2024 12:04:18 -0700 (PDT)
+Received: from localhost.localdomain ([2601:641:300:14de:7bed:2ef:bead:18b])
  by smtp.gmail.com with ESMTPSA id
- w15-20020a05620a148f00b00789f3e53d04sm2342509qkj.126.2024.03.25.11.42.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 11:42:56 -0700 (PDT)
-Message-ID: <4a5e2d39-6d98-4a79-a33c-e4f144d7fcdd@redhat.com>
-Date: Mon, 25 Mar 2024 19:42:52 +0100
+ z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Mar 2024 12:04:18 -0700 (PDT)
+From: nifan.cxl@gmail.com
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
+ a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
+ wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
+Subject: [PATCH v6 00/12] Enabling DCD emulation support in Qemu
+Date: Mon, 25 Mar 2024 12:02:18 -0700
+Message-ID: <20240325190339.696686-1-nifan.cxl@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC v2 4/5] target/arm: Enable feature ARM_FEATURE_EL2 if EL2 is
- supported
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- miguel.luis@oracle.com, haibo.xu@linaro.org, richard.henderson@linaro.org,
- maz@kernel.org, gkulkarni@amperecomputing.com
-References: <20240209160039.677865-1-eric.auger@redhat.com>
- <20240209160039.677865-5-eric.auger@redhat.com>
- <CAFEAcA_y9uHa5cdtqgyneUSj=DzhDfrWc73xyr9x54tF5MedNg@mail.gmail.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <CAFEAcA_y9uHa5cdtqgyneUSj=DzhDfrWc73xyr9x54tF5MedNg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -6
-X-Spam_score: -0.7
-X-Spam_bar: /
-X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,96 +89,88 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Peter,
+From: Fan Ni <fan.ni@samsung.com>
 
-On 3/5/24 17:49, Peter Maydell wrote:
-> On Fri, 9 Feb 2024 at 16:00, Eric Auger <eric.auger@redhat.com> wrote:
->> From: Haibo Xu <haibo.xu@linaro.org>
->>
->> KVM_CAP_ARM_EL2 must be supported by the cpu to enable ARM_FEATURE_EL2.
->> In case the host does support NV, expose the feature.
->>
->> Signed-off-by: Haibo Xu <haibo.xu@linaro.org>
->> Signed-off-by: Miguel Luis <miguel.luis@oracle.com>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>
->> ---
->>
->> v1 -> v2:
->> - remove isar_feature_aa64_aa32_el2 modif in target/arm/cpu.h
->>   [Richard] and use el2_supported in kvm_arch_init_vcpu
->> ---
->>  target/arm/kvm.c | 16 ++++++++++++++++
->>  1 file changed, 16 insertions(+)
->>
->> diff --git a/target/arm/kvm.c b/target/arm/kvm.c
->> index 0996866afe..a08bc68a3f 100644
->> --- a/target/arm/kvm.c
->> +++ b/target/arm/kvm.c
->> @@ -238,6 +238,7 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
->>       */
->>      int fdarray[3];
->>      bool sve_supported;
->> +    bool el2_supported;
->>      bool pmu_supported = false;
->>      uint64_t features = 0;
->>      int err;
->> @@ -268,6 +269,14 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
->>          init.features[0] |= 1 << KVM_ARM_VCPU_SVE;
->>      }
->>
->> +    /*
->> +     * Ask for EL2 if supported.
->> +     */
->> +    el2_supported = kvm_arm_el2_supported();
->> +    if (el2_supported) {
->> +        init.features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
->> +    }
->> +
->>      /*
->>       * Ask for Pointer Authentication if supported, so that we get
->>       * the unsanitized field values for AA64ISAR1_EL1.
->> @@ -449,6 +458,10 @@ static bool kvm_arm_get_host_cpu_features(ARMHostCPUFeatures *ahcf)
->>      features |= 1ULL << ARM_FEATURE_PMU;
->>      features |= 1ULL << ARM_FEATURE_GENERIC_TIMER;
->>
->> +    if (el2_supported) {
->> +        features |= 1ULL << ARM_FEATURE_EL2;
->> +    }
->> +
->>      ahcf->features = features;
->>
->>      return true;
->> @@ -1912,6 +1925,9 @@ int kvm_arch_init_vcpu(CPUState *cs)
->>          cpu->kvm_init_features[0] |= (1 << KVM_ARM_VCPU_PTRAUTH_ADDRESS |
->>                                        1 << KVM_ARM_VCPU_PTRAUTH_GENERIC);
->>      }
->> +    if (kvm_arm_el2_supported()) {
->> +        cpu->kvm_init_features[0] |= 1 << KVM_ARM_VCPU_HAS_EL2;
->> +    }
->>
->>      /* Do KVM_ARM_VCPU_INIT ioctl */
->>      ret = kvm_arm_vcpu_init(cpu);
-> Am I reading this right that if the kernel supports FEAT_NV
-> then we will always ask for a vCPU with that feature?
-> Is that a good idea, or should we arrange to only do it if
-> the user uses the 'virtualization=on' option to -M virt ?
-> (Or does that happen already in some way I'm not seeing?)
-yes you're right, if the host supports it, the feature is currently set
-on the vcpu. I am not totaly clear under which conditions the features
-shall be instantiated in the scratch VM and when the host passthrough
-model shall be altered by machine option.  
+A git tree of his series can be found here (with one extra commit on top
+for printing out accepted/pending extent list): 
+https://github.com/moking/qemu/tree/dcd-v6
 
-Thanks
+v5->v6:
+1. Picked up tags;
+2. Renamed start_region_id to start_rid; (Jonathan)
+3. For get extent list mailbox command, add logic to adjust returned extent
+   count based on output payload size; (Jonathan)
+4. Use Range to detect extent comparison and overlaps; (Jonathan)
+5. Renamed extents_pending_to_add to extents_pending; (Jonathan)
+6. Updated the commit log of the qmp interface patch by renaming "dpa" to offset
+    to align with the code. (Gregory)
+7. For DC extent add response and release mailbox command, we use a 2 pass
+   approach. The first pass is to detect any potential errors, and the second
+   pass to update the in-device data structure;
+8. For QMP interface for add/release DC extents, use 2 pass approach with the
+   first pass detecting any faulty input and second pass filling the event log.
+   Note, based on sswg discussion, we disallow release extents which has DPA
+   range not accepted by the host yet;
+9. We enforce the in-order process of the pending list for DC extent release
+   mailbox command, and the head of pending list is handled accordingly.
+10. The last patch from v5 has been removed from this series.
 
-Eric 
->
-> thanks
-> -- PMM
->
+Note: we do not drop the DC changes in build_dvsecs which was suggested
+by Jonathan, the reason is that during testing, we found in the current
+kernel code, when checking whether the media is ready
+(in cxl_await_media_ready), the devsec range registers are checked, for
+dcd device, if we leave dvsec range registers unset, the device cannot be
+put into "ready" state, which will cause the device inactive.
+The related code is below,
+https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/tree/drivers/cxl/core/pci.c?h=fixes&id=d206a76d7d2726f3b096037f2079ce0bd3ba329b#n195
+
+Compared to v5[1], PATCH 8-9 and PATCH 11-12 are almost re-coded, so need more
+care when review.
+
+The code is tested with similar setup and has passed similar tests as listed
+in the cover letter of v5.
+Also, the code passes similar tests with the latest DCD kernel patchset[2].
+
+[1] Qemu DCD patches v5: https://lore.kernel.org/linux-cxl/20240304194331.1586191-1-nifan.cxl@gmail.com/T/#t
+[2] DCD kernel patches: https://lore.kernel.org/linux-cxl/20240324-dcd-type2-upstream-v1-0-b7b00d623625@intel.com/T/#m11c571e21c4fe17c7d04ec5c2c7bc7cbf2cd07e3
+
+
+
+Fan Ni (12):
+  hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
+    payload of identify memory device command
+  hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
+    and mailbox command support
+  include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
+    type3 memory devices
+  hw/mem/cxl_type3: Add support to create DC regions to type3 memory
+    devices
+  hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr
+    size instead of mr as argument
+  hw/mem/cxl_type3: Add host backend and address space handling for DC
+    regions
+  hw/mem/cxl_type3: Add DC extent list representative and get DC extent
+    list mailbox support
+  hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
+    dynamic capacity response
+  hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
+    extents
+  hw/mem/cxl_type3: Add dpa range validation for accesses to DC regions
+  hw/cxl/cxl-mailbox-utils: Add superset extent release mailbox support
+  hw/mem/cxl_type3: Allow to release extent superset in QMP interface
+
+ hw/cxl/cxl-mailbox-utils.c  | 644 +++++++++++++++++++++++++++++++++++-
+ hw/mem/cxl_type3.c          | 580 +++++++++++++++++++++++++++++---
+ hw/mem/cxl_type3_stubs.c    |  14 +
+ include/hw/cxl/cxl_device.h |  67 +++-
+ include/hw/cxl/cxl_events.h |  18 +
+ qapi/cxl.json               |  61 +++-
+ 6 files changed, 1334 insertions(+), 50 deletions(-)
+
+-- 
+2.43.0
 
 
