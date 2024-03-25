@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0093388A3D9
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:13:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7293588A403
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:16:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rol4G-00034E-7c; Mon, 25 Mar 2024 10:12:53 -0400
+	id 1rol4I-00034o-A0; Mon, 25 Mar 2024 10:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol47-00032i-La
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4B-00033s-M4
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol46-0005nS-4A
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4A-0005pe-4S
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711375961;
+ s=mimecast20190719; t=1711375965;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hSBKxzfQGIXmvWUvXlWhdYTTE+D3xnVPdnyercmVvxo=;
- b=NH7GcbRF832F4Tz6DQtJ/3H+HLCj7nKt1UmffEqaF/ei4/ktQG8KURbuQQeT7vpy4VBx0s
- QD/gMsyS7so4D94AgkxsjL9J+M5hgurrabMm5cdCVZ2MSfBP7JiVIKSYg7qzEaeH1BnKIt
- MTCnq4okvyvRfAHP39+mdJjxgbMSVGI=
+ bh=ycGmDfvDeFicWZJFBS1f9ILM3U5NokHMksdsoOEEHJI=;
+ b=QJWkHp1iyjL/HFmlFEh5WMQyrOg24uT3axpBleiGS/Iuy7s6zBTZo1xJWmn4njkCidDv14
+ fJIe3byb40OeeIZf/5p8Xs7cRc9Sv340sm2By4bkhVsYUX2m4UP/AxOW22UjrBYNiaEhCT
+ Vzq1b4059AU/SO/s5/70xEGvpq6oUpo=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-18KdrlPVPGioAW7iaBc8lQ-1; Mon,
- 25 Mar 2024 10:12:37 -0400
-X-MC-Unique: 18KdrlPVPGioAW7iaBc8lQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-rimA6MAfNDCyE6oL0zYbsw-1; Mon,
+ 25 Mar 2024 10:12:39 -0400
+X-MC-Unique: rimA6MAfNDCyE6oL0zYbsw-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 016281C0152A;
- Mon, 25 Mar 2024 14:12:37 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4213E3C0C483;
+ Mon, 25 Mar 2024 14:12:39 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2DFF748D9;
- Mon, 25 Mar 2024 14:12:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 791A1479;
+ Mon, 25 Mar 2024 14:12:37 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 3/9] hw/microblaze: Do not allow xlnx-zynqmp-pmu-soc to be
- created by the user
-Date: Mon, 25 Mar 2024 15:12:04 +0100
-Message-ID: <20240325141210.788356-4-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 4/9] aspeed: Make the ast2600-a3 SoC not user creatable
+Date: Mon, 25 Mar 2024 15:12:05 +0100
+Message-ID: <20240325141210.788356-5-thuth@redhat.com>
 In-Reply-To: <20240325141210.788356-1-thuth@redhat.com>
 References: <20240325141210.788356-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -77,36 +79,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Using xlnx-zynqmp-pmu-soc on the command line causes QEMU to crash:
+From: Cédric Le Goater <clg@redhat.com>
 
- ./qemu-system-microblazeel -M petalogix-ml605 -device xlnx-zynqmp-pmu-soc
- **
- ERROR:tcg/tcg.c:813:tcg_register_thread: assertion failed: (n < tcg_max_ctxs)
- Bail out!
- Aborted (core dumped)
+Aspeed SoCs are complex devices that can not be specified on the
+command line. Fix that to avoid QEMU aborts.
 
-Mark the device with "user_creatable = false" to avoid that this can happen.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2229
-Message-ID: <20240322183153.1023359-1-thuth@redhat.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2227
+Fixes: f25c0ae1079d ("aspeed/soc: Add AST2600 support")
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240319150903.413662-1-clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/microblaze/xlnx-zynqmp-pmu.c | 2 ++
+ hw/arm/aspeed_ast2600.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/microblaze/xlnx-zynqmp-pmu.c b/hw/microblaze/xlnx-zynqmp-pmu.c
-index 5a2016672a..1bfc9641d2 100644
---- a/hw/microblaze/xlnx-zynqmp-pmu.c
-+++ b/hw/microblaze/xlnx-zynqmp-pmu.c
-@@ -125,6 +125,8 @@ static void xlnx_zynqmp_pmu_soc_class_init(ObjectClass *oc, void *data)
- {
-     DeviceClass *dc = DEVICE_CLASS(oc);
+diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+index 174be53770..31713de74a 100644
+--- a/hw/arm/aspeed_ast2600.c
++++ b/hw/arm/aspeed_ast2600.c
+@@ -656,6 +656,8 @@ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
+     AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
  
-+    /* xlnx-zynqmp-pmu-soc causes crashes when cold-plugged twice */
+     dc->realize      = aspeed_soc_ast2600_realize;
++    /* Reason: The Aspeed SoC can only be instantiated from a board */
 +    dc->user_creatable = false;
-     dc->realize = xlnx_zynqmp_pmu_soc_realize;
- }
  
+     sc->name         = "ast2600-a3";
+     sc->valid_cpu_types = valid_cpu_types;
 -- 
 2.44.0
 
