@@ -2,67 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821B388A2CD
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8339C8899E5
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 11:18:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rokeI-0006MT-EY; Mon, 25 Mar 2024 09:46:02 -0400
+	id 1rohNO-0006Pu-Om; Mon, 25 Mar 2024 06:16:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1rohLq-0004AH-2H; Mon, 25 Mar 2024 06:14:46 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1rohLo-0004SQ-8q; Mon, 25 Mar 2024 06:14:45 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com BAF2BC0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1711361677;
- bh=4/F9Iz/B58YpptQ/lFLdFrpCKHH/DNX8vucZgaupHkc=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=ag0Mv54YoZjjPMSWm23mKxJ1o5UWtOGOVREu/0JUagnByHC5hpDocOghfYflr3CdR
- OXLRxYlujhXV89OAVkX84yz4RwwBDjk442NvSSR6w2wPdIeK05NcZBMNEVHWKubSkv
- ajNBBcNQNuc/TVWYUOOzTZilhv9dHD1jIs8I8RVNEBwK08AAECHnUWJa8NugNJtAMu
- 8ylHws0g90CsyN5RIF3429Wq3qTC3XtysSuY6FqTGs/XERzGG0uy/sLX3QlRzRmfq1
- H8LiI1AyuCu0GTJIiIHhuRftk8YMnl1gWtezM8wAv9sL3r0rsHL0GX8zqSf1CY9aSF
- KUStVtreXlEDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1711361677;
- bh=4/F9Iz/B58YpptQ/lFLdFrpCKHH/DNX8vucZgaupHkc=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=sGP1iAHGrNEdZKJRu/9h2joq7LKaPIimPircM09ojag7+avN7KQ/xtR50bzPy5TO+
- HVhlo1hlozNU7erUpHfyxmP7gFddJoXWoPDePSgu/K4grJJCDRs5sNVBFhs3ES8dR8
- wq/6dNm+cwoittT2TZ9F37Vw9dVV8GSHTwVqswDlT8iM1oXiCANrqAzd0ogOEC5sfF
- TadFyzRV3jFwBLms+DhEgoeEhRtRsdAHpSGM6fiehFYI9uuPp5wAamYBfryMJWbY1Y
- JXZqej2pgHkXGhGLeeO50rHkh03/9WG9fymNSjbuDb3iX6+NCsuoGSKUSXhb1dKL4l
- BKJga1GhQzcfw==
-From: Alexei Filippov <alexei.filippov@syntacore.com>
-To: <palmer@dabbelt.com>, <alistair.francis@wdc.com>,
- <bin.meng@windriver.com>, <liwei1518@gmail.com>, <dbarboza@ventanamicro.com>, 
- <zhiwei_liu@linux.alibaba.com>
-CC: <qemu-riscv@nongnu.org>, <qemu-devel@nongnu.org>, Alexei Filippov
- <alexei.filippov@syntacore.com>
-Subject: [PATCH] target/riscv/kvm/kvm-cpu.c: kvm_riscv_handle_sbi() fail with
- vendor-specific SBI
-Date: Mon, 25 Mar 2024 13:14:28 +0300
-Message-ID: <20240325101428.8875-1-alexei.filippov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rohNK-00065m-0A
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 06:16:18 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rohND-00051G-QS
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 06:16:17 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4148bc73069so1612095e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 03:16:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711361768; x=1711966568; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EdLilOB2BheJAUJyVHlW4eP38wPt2isAu7kNsji37T8=;
+ b=k0wHUjdzg6lLIRyasdltzbIWZ6yuy2MjAohDvuIZXjdv/GIdyTTx6b97yJMEfYlqDO
+ uFAi9q0WMSpxwpuFpy4r20z7KZbaYfhxNzunOBKuxrvsjnxyPKakkRya34E3ihoWI4Yq
+ XY/88cWMBL85bm3CWqE9Qn6Shf/BImG6JzQtZroaObsscg6cAjIxY6a+8UL/BjYNn/Y1
+ KEKwIQvyf26gJMfize6vdlXymmzf3EIPhY8ggjjiWbtVA8bXUKO6QySQAKm5W0Nf2IR9
+ RMqldT1SVyUSot+WlfI8nhN3FzivZIiQ334LRew+im6Fa8xkpNtRcvr6AOpSR/Dteimm
+ J7uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711361768; x=1711966568;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EdLilOB2BheJAUJyVHlW4eP38wPt2isAu7kNsji37T8=;
+ b=petBusY4N96pl9UNvE2WlCgOv+aeurP0xfGTwUWcnltlH85ggmkZX2THoE5DZ1TY/c
+ EtEiltRi+G6Lo+8pMWuAFZA1ud6HcEa55Iuy1Q3aOA4D7WpU83DBYkIqxFyjcscDCFAp
+ wlcooBgM6/ZlKusDPatLqnpnNcfBa5D0fSGx3cMoy/nQweQAPSDoHwc10Z27oomv2zJV
+ HQA0PZIOPC9lPCpcCuBVqViY2aN1AnrKr5KoF/edng8Hr8O9pWQQS7Mr337eiVxncDyg
+ Q7oF/xaZsbGlogu2HGAp393xOTqyy5IiEunEqdC+QF1M6CI4Eeb9xBaUHBbgEzcvO/dm
+ VcPw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVmZryrkF8oD0xqp8LTfgskB17mFY7u0y9hnfDLPjXAraLvTbnJBr7NW6sih6bW9c6Bl7R68/bwm14SKPoNm7YPaaFrrxA=
+X-Gm-Message-State: AOJu0YyHpR2NF9sEhI0L0q6KCdtIH9g6hK+fsWozbg0vlxnzFFgZeKlM
+ 9fmjRu/WLa6CnEATdczlKFqTCfm0r52JM2/djxTsDVM9zfF1w4bueJmlTbWvCo0=
+X-Google-Smtp-Source: AGHT+IG4NNmx2jEwV4/Fb5TmrGwsfZ/84a9kkYmYQY/vnSktxrGBCJaFH5jYrdO8WRTB5nZGThjpAg==
+X-Received: by 2002:a05:6000:1863:b0:341:c9a8:7cb1 with SMTP id
+ d3-20020a056000186300b00341c9a87cb1mr4348122wri.29.1711361768162; 
+ Mon, 25 Mar 2024 03:16:08 -0700 (PDT)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ r25-20020adfa159000000b00341b69e9162sm8509741wrr.90.2024.03.25.03.16.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 25 Mar 2024 03:16:07 -0700 (PDT)
+Message-ID: <3e202821-7f78-4b4c-9b16-ee47c51e2a62@linaro.org>
+Date: Mon, 25 Mar 2024 14:16:03 +0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-Exch-05.corp.yadro.com (172.17.10.109) To
- T-EXCH-12.corp.yadro.com (172.17.11.143)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=alexei.filippov@syntacore.com; helo=mta-04.yadro.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] contrib/plugins/execlog: Fix compiler warning
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Yao Xingtao <yaoxt.fnst@fujitsu.com>, qemu-devel@nongnu.org,
+ alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com
+References: <20240320020115.18801-1-yaoxt.fnst@fujitsu.com>
+ <20240325060657.3934-1-yaoxt.fnst@fujitsu.com>
+ <3afbc002-1077-4bcd-a4e2-582b0c7de88c@linaro.org>
+ <CAFEAcA8AhymqyzF5aPWMKA_R64tFHbyJuQhpPbAuoabHdh0e=A@mail.gmail.com>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <CAFEAcA8AhymqyzF5aPWMKA_R64tFHbyJuQhpPbAuoabHdh0e=A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 25 Mar 2024 09:45:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,61 +99,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_riscv_handle_sbi() may return not supported return code to not trigger
-qemu abort with vendor-specific sbi.
+On 3/25/24 13:58, Peter Maydell wrote:
+> On Mon, 25 Mar 2024 at 06:41, Pierrick Bouvier
+> <pierrick.bouvier@linaro.org> wrote:
+>>
+>> On 3/25/24 10:06, Yao Xingtao wrote:
+>>> diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+>>> index a1dfd59ab7..09654910ee 100644
+>>> --- a/contrib/plugins/execlog.c
+>>> +++ b/contrib/plugins/execlog.c
+>>> @@ -327,8 +327,13 @@ static GPtrArray *registers_init(int vcpu_index)
+>>>                for (int p = 0; p < rmatches->len; p++) {
+>>>                    g_autoptr(GPatternSpec) pat = g_pattern_spec_new(rmatches->pdata[p]);
+>>>                    g_autofree gchar *rd_lower = g_utf8_strdown(rd->name, -1);
+>>> +#if GLIB_CHECK_VERSION(2, 70, 0)
+>>> +                if (g_pattern_spec_match_string(pat, rd->name) ||
+>>> +                    g_pattern_spec_match_string(pat, rd_lower)) {
+>>> +#else
+>>>                    if (g_pattern_match_string(pat, rd->name) ||
+>>>                        g_pattern_match_string(pat, rd_lower)) {
+>>> +#endif
+>>>                        Register *reg = init_vcpu_register(rd);
+>>>                        g_ptr_array_add(registers, reg);
+>>>
+>>
+>> As suggested by Peter on previous version, you can declare a new
+>> function `g_pattern_match_string_qemu` in include/glib-compat.h which
+>> abstract this.
+> 
+> We should have an abstraction function, but it should *not*
+> be in glib-compat.h, but local to this plugin's .c file. This is
+> because the plugins are deliberately standalone binaries which do not
+> rely on any of QEMU's include files or build process (you'll
+> see they don't use osdep.h, for example).
+> 
 
-Added SBI related return code's defines.
+Sorry, I misunderstood that, as it was discussed with Alex that maybe 
+plugins should be able to access glib-compat.h.
 
-Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
----
- target/riscv/kvm/kvm-cpu.c         |  5 +++--
- target/riscv/sbi_ecall_interface.h | 11 +++++++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
-
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 6a6c6cae80..a4f84ad950 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1404,7 +1404,7 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
-         if (ret == sizeof(ch)) {
-             run->riscv_sbi.ret[0] = ch;
-         } else {
--            run->riscv_sbi.ret[0] = -1;
-+            run->riscv_sbi.ret[0] = SBI_ERR_FAILURE;
-         }
-         ret = 0;
-         break;
-@@ -1412,7 +1412,8 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
-         qemu_log_mask(LOG_UNIMP,
-                       "%s: un-handled SBI EXIT, specific reasons is %lu\n",
-                       __func__, run->riscv_sbi.extension_id);
--        ret = -1;
-+        run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
-+        ret = 0;
-         break;
-     }
-     return ret;
-diff --git a/target/riscv/sbi_ecall_interface.h b/target/riscv/sbi_ecall_interface.h
-index 43899d08f6..0279e92a36 100644
---- a/target/riscv/sbi_ecall_interface.h
-+++ b/target/riscv/sbi_ecall_interface.h
-@@ -69,4 +69,15 @@
- #define SBI_EXT_VENDOR_END              0x09FFFFFF
- /* clang-format on */
- 
-+/* SBI return error codes */
-+#define SBI_SUCCESS                  0
-+#define SBI_ERR_FAILURE             -1
-+#define SBI_ERR_NOT_SUPPORTED       -2
-+#define SBI_ERR_INVALID_PARAM       -3
-+#define SBI_ERR_DENIED              -4
-+#define SBI_ERR_INVALID_ADDRESS     -5
-+#define SBI_ERR_ALREADY_AVAILABLE   -6
-+#define SBI_ERR_ALREADY_STARTED     -7
-+#define SBI_ERR_ALREADY_STOPPED     -8
-+
- #endif
--- 
-2.34.1
-
+> thanks
+> -- PMM
 
