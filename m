@@ -2,86 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C449C88AFB2
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9730E88AFE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:25:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ropra-0004lE-Hu; Mon, 25 Mar 2024 15:20:06 -0400
+	id 1ropwO-0006bx-Bv; Mon, 25 Mar 2024 15:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1roprX-0004kr-UN
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:20:03 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1roprP-00070I-EI
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:19:56 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1e0511a4383so33617635ad.2
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:19:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711394392; x=1711999192; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+WFDjnn9LJc0k0JFw5DQ94bVjAEQt/dukoC94eLnnag=;
- b=RGAixrVtA762+ewZ5WlamqGipNgIJn7K/PCkKjFBa0ErhCqr7YnSK7CnjdKgMNejAb
- HHtn9Gp6ErxGvyBRzGfEGu6bO6JdaBnQlqtu8nKALXCrgTOLTEwuALBibDhNRGucdAeO
- NGcOPwxI1kur++RM2jxW5xd+ixyipYU/hCUfvbAGL6fmFpnecfeEDiqsnm7GKpKBwHnu
- SKbCsZFvw7aLrNQJi7ecU00RNFOjqJkVAf6UDtOyvaidmT/V1Zd3mVLVMEue5pXK9Fsy
- z+HUxpRBpHQGCSYWP2X8sNiw9QxMR2o8h4YZhhrKmuwCgobY4P1iHcTvSTSpM1VL1TF5
- kTHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711394392; x=1711999192;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+WFDjnn9LJc0k0JFw5DQ94bVjAEQt/dukoC94eLnnag=;
- b=ju3PdBpzg6ag0vYhJbUc7JhgM+/Tu+kDHhD9kFPjWQ1KNfjlhDhlvvRn28msGKsi34
- S8jG5giTMZlWLYK4QNQw6ZDM4SZlb8N5evmckbe8Zlw+IQQh7NkPvHHUSYVO8P6YPXWt
- BMaV3P8QlmcljOzxJyc0ZJ6rQMXl4fZPFG1ON0O060ZGeeZcOmUXdWebj5UHYM44E6f0
- kMfWMcJZGr6/6d3OdzBoWYOg3YWwr9wxCgEzHaG7bhmNaW/6D+Cir+UtwFdB6L4fNvZO
- KKvAlXqivul5NjFFdIvlCF6z5YePTif/usEoLpzmmWnF8tXkY1f1YI4l+jNoanqozKkR
- Atbg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCULdRvqV933y8PhQaS+VMfpjgQDYP5GzSBsc2jYYM4RKRIDLfRMD3ctD6mekvm6nFQlbD3UXNxH+K20smtdtThVK5yC5KM=
-X-Gm-Message-State: AOJu0YxFWrjpYe6d+9CmKFAfHhKpykKL9ZU7FapYGjgSh8aV2VUg4N3M
- nYMT9zehNqPrHGDK/Q7QtTQZOy1kXgECob33A+e4WkeLiFDLCg85DQ0Nl4ImMj4=
-X-Google-Smtp-Source: AGHT+IE5I84dE8rJCEXnOyP0G5OCmeS/AaFPgj2ISVKCZKI01jyy+Q7M5lUQM2bwmHoQLdHCMM+lZw==
-X-Received: by 2002:a17:903:2308:b0:1e0:b8df:1083 with SMTP id
- d8-20020a170903230800b001e0b8df1083mr4345918plh.0.1711394392454; 
- Mon, 25 Mar 2024 12:19:52 -0700 (PDT)
-Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
- [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
- c4-20020a170902aa4400b001e0d9dcae91sm628644plr.279.2024.03.25.12.19.51
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 12:19:52 -0700 (PDT)
-Message-ID: <21b5d745-5c6e-42e1-97ef-17587f31a304@linaro.org>
-Date: Mon, 25 Mar 2024 09:19:49 -1000
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1ropw9-0006bI-0V
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:24:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1ropw5-0007uV-Py
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:24:48 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42PIxFB2031715; Mon, 25 Mar 2024 19:24:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=PtHzLDtw97KMI8RioTmO4IejAd+WDCiTKGwfhwHtp4w=;
+ b=QGtogi2NWULFUxV+RmnjQ8UltNx4EXHuMjsnADamAuctB6kz2Ximn+2vN4AKg3RfgpIi
+ SOdQnSX4kYqDxFHC0vtGJp043ZftJKFM25LmoopJUlG1XB8siDB8GUlM9XoIOCdWjGDb
+ FQflRgFICY5f6geTqcOApCUaiKeAvfzvFeBli+Sk+okGQ47fxSkrPdYOFX3iro0nIYdI
+ QUdO09Pc74C46BVqxLrTClhwAAi+nPbRE6XIIPGQMcVz9o5z46UgNdy9Gyy+Q2gYUbZI
+ I0wA0kqQS2Krha8JFJkZC9x1ldlQRYK3h/FUAWW/qQc9BeF5x+BCfV6ewijKLxcOh+Ce Gw== 
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3995rwr8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Mar 2024 19:24:43 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42PHCkQd028790; Mon, 25 Mar 2024 19:24:43 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x2adp373b-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Mar 2024 19:24:42 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
+ [10.20.54.100])
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42PJOdre17105184
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Mar 2024 19:24:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0265020043;
+ Mon, 25 Mar 2024 19:24:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 9BBD920040;
+ Mon, 25 Mar 2024 19:24:38 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.171.7.191])
+ by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Mar 2024 19:24:38 +0000 (GMT)
+From: Ilya Leoshkevich <iii@linux.ibm.com>
+To: Richard Henderson <richard.henderson@linaro.org>,
+ Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 0/4] linux-user: Fix shmat(NULL) for h != g
+Date: Mon, 25 Mar 2024 20:22:58 +0100
+Message-ID: <20240325192436.561154-1-iii@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: k_vOrP2kxqI2YmL3X_cxE62G8mNx_9MF
+X-Proofpoint-GUID: k_vOrP2kxqI2YmL3X_cxE62G8mNx_9MF
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 8/8] plugins: extract cpu_index generate
-Content-Language: en-US
-To: Pierrick Bouvier <pierrick.bouvier@linaro.org>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>, Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-References: <20240325124151.336003-1-pierrick.bouvier@linaro.org>
- <20240325124151.336003-9-pierrick.bouvier@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240325124151.336003-9-pierrick.bouvier@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-25_18,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 mlxlogscore=851
+ phishscore=0 mlxscore=0 clxscore=1015 malwarescore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403250116
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,13 +103,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/25/24 02:41, Pierrick Bouvier wrote:
-> Signed-off-by: Pierrick Bouvier<pierrick.bouvier@linaro.org>
-> ---
->   accel/tcg/plugin-gen.c | 28 +++++++++++++---------------
->   1 file changed, 13 insertions(+), 15 deletions(-)
+v1: https://lore.kernel.org/qemu-devel/20240325153313.526888-1-iii@linux.ibm.com/
+v1 -> v2: Remove an unnecessary ifdef, add R-Bs (Richard).
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Hi,
 
-r~
+I noticed that while shmat() now works with /proc/self/maps,
+shmat(NULL) got broken. This series fixes that along with two related
+strace issues, and adds a test.
+
+Best regards,
+Ilya
+
+
+Ilya Leoshkevich (4):
+  linux-user: Fix semctl() strace
+  linux-user: Fix shmat() strace
+  linux-user: Fix shmat(NULL) for h != g
+  tests/tcg: Test shmat(NULL)
+
+ linux-user/mmap.c                            |  2 +-
+ linux-user/strace.c                          | 10 ++----
+ tests/tcg/multiarch/linux/linux-shmat-null.c | 38 ++++++++++++++++++++
+ 3 files changed, 42 insertions(+), 8 deletions(-)
+ create mode 100644 tests/tcg/multiarch/linux/linux-shmat-null.c
+
+-- 
+2.44.0
+
 
