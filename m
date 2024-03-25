@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB15889D28
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 12:37:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39730889D63
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 12:43:11 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1roidN-00035y-05; Mon, 25 Mar 2024 07:36:57 -0400
+	id 1roii6-0005cE-4b; Mon, 25 Mar 2024 07:41:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1roidK-00035a-N6
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 07:36:54 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1roii1-0005bP-Gs
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 07:41:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1roidJ-0002Hx-6U
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 07:36:54 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1roihz-00031K-MK
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 07:41:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711366612;
+ s=mimecast20190719; t=1711366902;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=bvlAHmHsZxYMsujxyxX8BIGPqcB2ObSkwelUh3Qh5AI=;
- b=efrmSO4mJ736SRbWmJxnBnPgvV9O4Ed65x+KPvypNA8PrP4fK5ADrFejyC5l3iMb4egtAG
- fy/Wu0UNkFL74PcEzhKsekxADV9KsqGKlfYOb7y13XaKSU0uyIrhXl8ywgdI7zL0nEuqyX
- /Sz7ozocN9wsSYqx+tlfCQVlLRW0F14=
+ bh=7Be9ZqRKJrAN435G9s8Qnc2WcheUNHnjNPs0LtW+0N8=;
+ b=P359qGUoKdWbQlywweT0jGx+qSQtFiXd7DRg407Brf3jjI70fKdadSDflmczHBfoSxnNEB
+ 2veptwrXbO+865fSjU2QsOXp1aj/oyKJ76TEBJM0+qXd774CrRHfh9YscQH2p6DthnkGlV
+ QWxX2LjYxYfn9tKVHmn5LzTL4zEAXo4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-637-8Dkc2GlSM-eFYixplZcQmw-1; Mon,
- 25 Mar 2024 07:36:50 -0400
-X-MC-Unique: 8Dkc2GlSM-eFYixplZcQmw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-441-7pDvEKkDPpyKe4FRMM9Ltg-1; Mon,
+ 25 Mar 2024 07:41:40 -0400
+X-MC-Unique: 7pDvEKkDPpyKe4FRMM9Ltg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3333328B6934
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 11:36:50 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9388F3815EF5
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 11:41:40 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 131EC112131D
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 11:36:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 740F4492BD3
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 11:41:40 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0FEA621E669D; Mon, 25 Mar 2024 12:36:45 +0100 (CET)
+ id 74C1421E669D; Mon, 25 Mar 2024 12:41:35 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] qapi: document leftover members in qapi/run-state.json
-In-Reply-To: <20240325104502.1358693-1-pbonzini@redhat.com> (Paolo Bonzini's
- message of "Mon, 25 Mar 2024 11:45:02 +0100")
-References: <20240325104502.1358693-1-pbonzini@redhat.com>
-Date: Mon, 25 Mar 2024 12:36:45 +0100
-Message-ID: <87o7b2mtki.fsf@pond.sub.org>
+Subject: Re: [PATCH] qapi: document leftover members in qapi/stats.json
+In-Reply-To: <20240325104504.1358734-1-pbonzini@redhat.com> (Paolo Bonzini's
+ message of "Mon, 25 Mar 2024 11:45:04 +0100")
+References: <20240325104504.1358734-1-pbonzini@redhat.com>
+Date: Mon, 25 Mar 2024 12:41:35 +0100
+Message-ID: <87il1amtcg.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -84,62 +84,53 @@ Paolo Bonzini <pbonzini@redhat.com> writes:
 > Suggested-by: Markus Armbruster <armbru@redhat.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  qapi/run-state.json | 26 +++++++++++++++++++++++++-
->  1 file changed, 25 insertions(+), 1 deletion(-)
+>  qapi/stats.json | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
 >
-> diff --git a/qapi/run-state.json b/qapi/run-state.json
-> index 789fc34559a..cb4a2b43293 100644
-> --- a/qapi/run-state.json
-> +++ b/qapi/run-state.json
-> @@ -377,9 +377,17 @@
+> diff --git a/qapi/stats.json b/qapi/stats.json
+> index ce9d8161ecb..578b52c7ef7 100644
+> --- a/qapi/stats.json
+> +++ b/qapi/stats.json
+> @@ -114,13 +114,13 @@
+>  #
+>  # The arguments to the query-stats command; specifies a target for
+>  # which to request statistics and optionally the required subset of
+> -# information for that target:
+> +# information for that target.
+>  #
+> -# - which vCPUs to request statistics for
+> -# - which providers to request statistics from
+> -# - which named values to return within each provider
+> +# @target: the kind of objects to query.  Note that each possible
+> +#          target may enable additional filtering options
+>  #
+> -# @target: the kind of objects to query
+> +# @providers: which providers to request statistics from, and optionally
+> +#             which named values to return within each provider
+>  #
+>  # Since: 7.1
 >  ##
->  # @watchdog-set-action:
+> @@ -136,6 +136,8 @@
 >  #
-> -# Set watchdog action
-> +# Set watchdog action.
-> +#
-> +# @action: @WatchdogAction action taken when watchdog timer expires.
+>  # @scalar: single unsigned 64-bit integers.
 >  #
->  # Since: 2.11
+> +# @boolean: single boolean value.
 > +#
-> +# Example:
-> +#
-> +#     -> { "execute": "watchdog-set-action",
-> +#          "arguments": { "action": "inject-nmi" } }
-> +#     <- { "return": {} }
->  ##
->  { 'command': 'watchdog-set-action', 'data' : {'action': 'WatchdogAction'} }
->  
-
-Appreciate the example!
-
-> @@ -505,6 +513,22 @@
+>  # @list: list of unsigned 64-bit integers (used for histograms).
 >  #
->  # Hyper-V specific guest panic information (HV crash MSRs)
+>  # Since: 7.1
+> @@ -254,6 +256,8 @@
 >  #
-> +# @arg1: for Windows, STOP code for the guest crash.  For Linux,
-> +#        an error code.
+>  # Return the schema for all available runtime-collected statistics.
+>  #
+> +# @provider: a provider to restrict the query to.
 > +#
-> +# @arg2: for Windows, first argument of the STOP.  For Linux, the
-> +#        guest OS id, which has the kernel version in bits 16-47
-
-Mind if I capitalize ID?
-
-> +#        and 0x8100 in bits 48-63.
-> +#
-> +# @arg3: for Windows, second argument of the STOP.  For Linux, the
-> +#        program counter of the guest.
-> +#
-> +# @arg4: for Windows, third argument of the STOP.  For Linux, the
-> +#        RAX register (x86) or the stack pointer (aarch64) of the guest.
-> +#
-> +# @arg5: for Windows, fourth argument of the STOP.  For x86 Linux, the
-> +#        stack pointer of the guest.
-> +#
->  # Since: 2.9
->  ##
->  {'struct': 'GuestPanicInformationHyperV',
+>  # Note: runtime-collected statistics and their names fall outside
+>  #     QEMU's usual deprecation policies.  QEMU will try to keep the
+>  #     set of available data stable, together with their names, but
 
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
+
+Queued, thanks!
 
 
