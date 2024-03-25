@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5566889FB8
+	by mail.lfdr.de (Postfix) with ESMTPS id 42992889FB5
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojYY-0002Ja-BC; Mon, 25 Mar 2024 08:36:02 -0400
+	id 1rojYV-0002IO-IW; Mon, 25 Mar 2024 08:35:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYS-0002HG-QS
+ id 1rojYS-0002HF-QL
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYQ-0005dO-Nw
+ id 1rojYR-0005dS-3G
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-4148bd2ce39so2075215e9.1
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-414866f92beso7280345e9.3
  for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1711370153; x=1711974953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aGhWsSP/npTCiFe/sHrNCbxR5PPjNjefjYSTRbPwF88=;
- b=Ygo1IaNH6FB5YXtSobiQEt8PzoNuvjYhNUE0vp/X+iAzTm/FcGTJ9FwmOQ+RVDImM9
- FpSERsaIE9OthTglJM9qukogC9Er2aUb1m1o4JpIGeToNxuoYH21/DcJRloZLuIIXMxA
- F7agCAnX3c7HmYxWd6MJo5qh4F8p/TCW06OJrqx7Dsq+FrZiNoaD++bDbsHMGb6e89n7
- B/2f+mPag3y13pJsERp0aokbPb8VFLM6ePKz41nEZ3R2jOX7YitSn+FAHl2slgbaJH4z
- fJlLNcWBAYVf4/FZUDsTdd7wqLSV7EZh6WTZ2JOPxPpzLJ41eu0O4VjZV4klQIvakbud
- pSQA==
+ :reply-to; bh=GCgvA2TmnxeKrt9Gh3RGTnMyC9ymehvv7sEyBNeOPwc=;
+ b=Ub7n9wCgEPxRGmiMrvQ2/W+mRBsbiep1zU7SyHmLQd5rNW2bRSFT8oMIdZembEUPpr
+ J22gx1Z8ZoDFebmlambCthYinal5rwel6TwcoAfMIG1gug9pQ8/HHZ6cG1/cYBkIs6aX
+ v3ERejN0jlCI1DYRw8tBWkz0yq9ED7BbeE3eNyE7pIZt7L/1NSuoXXwOok/AwIYxfEk9
+ daE/kOScckGyIWLx8+WMu+zZRupIs5mMDI2ESfX6UAsW3dAqdqrEGoAT5xYG3t3Ks5Hw
+ rNt0E/A+U2Ug51l1pDkShFomabHStQZ9B4NQurinSJvcx/A9K0JfdMw5PVA1g1PmX08E
+ CVtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1711370153; x=1711974953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aGhWsSP/npTCiFe/sHrNCbxR5PPjNjefjYSTRbPwF88=;
- b=ok5wVQ5CXiFti2jaeOodjrjpE6CZ9Bl90/jsCIkRwfvnCgIiokYvpbhR1R5vw+AAFs
- u6osu6VOGL5OoFKe9Y+By4ipVoPVZzJ/fq/VTizGi/zSaEwRiM4PSvZmSpBdJApAcFam
- xcLj6Vz15Sy8X2uuEgys3rFCuW38LfAsBmfoHLpMrVqnegQnbZKQDFEsVMHYeA6cpcu6
- CCurC9145QyR6G2uZamJdcBGkVsa7xv7AcrxSBxoS7jsI1RCDW9qagodRyKDzVyA4KRb
- jqDc84HaVDTRWAo8vnvjuU739z7gGyBIWviMwZARBikh0DdCfKW8cndMxZXLJdkBa5MQ
- 6Juw==
-X-Gm-Message-State: AOJu0YyyvsOl0XTXtRCjQRNKeDi8lY84LX8Pe07RVoDB7ZSzWzD1B3Fb
- OV1qn98XOItpBtlrIWoevTLD1YmAIelQG9l/l1hMkOJtVD/lANm8tF+ahT78nmwCaT6x430awm7
- w
-X-Google-Smtp-Source: AGHT+IGPkE4pZV9wBlViscRjg8FwWPkFGu4Q3ONXbnxawSC2IxHR9Y6r9g3WFqH3NIs6lCbfZQJmEA==
-X-Received: by 2002:a05:600c:4ece:b0:414:6c72:8df with SMTP id
- g14-20020a05600c4ece00b004146c7208dfmr4809223wmq.38.1711370153346; 
+ bh=GCgvA2TmnxeKrt9Gh3RGTnMyC9ymehvv7sEyBNeOPwc=;
+ b=G+DwC84WGYoHjV95nC+b+gwG6POg+eh6s+MtwmfPU3EhcobWah81CH5aMrQr0plghA
+ 6IwjC8zYqrgqBOjd3aeqFQg7753eLGGfoWJsw3Dp1W4jtm1L0coi8ZG6KNf80wxGd6zv
+ sR89GEilw3jd8Dcm7viw1nAURForX+v+EwWzzXP/BVz/OApJI7AuQmLJQFc3WwH5zHnu
+ HO0i0IOXC6akDuOK6thaKZLAHRiRSBBrjCibuwLp1RFVnLgpddrpB6EdeY/RouOorU1+
+ KQuveu5Wp2b+j37EjUpqQzRHeNBe/bCybqaTxtwesmgLSREWW4rAUAxh1RfVVE54xj4I
+ rsvw==
+X-Gm-Message-State: AOJu0YzkEqu3QcNyZSkdEUO0TGtiFu3KIke65agehSui0eIlGKeWPeeJ
+ htkVQBHeEdcAbTD64mLMe643d1dQcR1yzpkCVzYNgUoDyMYjxh+UVpdKSDxFv2JfWrOVowbOik8
+ K
+X-Google-Smtp-Source: AGHT+IGau3cTAVloogSc3fTcgbX5s68SHA6tDLec6kZKBI0K4E+wqI+Kcr8FEtTwgeSdspxpDLN5KQ==
+X-Received: by 2002:a05:600c:45d5:b0:414:869b:dbd9 with SMTP id
+ s21-20020a05600c45d500b00414869bdbd9mr3072410wmo.9.1711370153770; 
  Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 3/7] net/af-xdp.c: Don't leak sock_fds array in
- net_init_af_xdp()
-Date: Mon, 25 Mar 2024 12:35:46 +0000
-Message-Id: <20240325123550.1991693-4-peter.maydell@linaro.org>
+Subject: [PULL 4/7] hw/misc/pca9554: Correct error check bounds in get/set pin
+ functions
+Date: Mon, 25 Mar 2024 12:35:47 +0000
+Message-Id: <20240325123550.1991693-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325123550.1991693-1-peter.maydell@linaro.org>
 References: <20240325123550.1991693-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,43 +92,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In net_init_af_xdp() we parse the arguments and allocate
-a buffer of ints into sock_fds. However, although we
-free this in the error exit path, we don't ever free it
-in the successful return path. Coverity spots this leak.
+In pca9554_get_pin() and pca9554_set_pin(), we try to detect an
+incorrect pin value, but we get the condition wrong, using ">"
+when ">=" was intended.
 
-Switch to g_autofree so we don't need to manually free the
-array.
+This has no actual effect, because in pca9554_initfn() we
+use the correct test when creating the properties and so
+we'll never be called with an out of range value. However,
+Coverity complains about the mismatch between the check and
+the later use of the pin value in a shift operation.
 
-Resolves: Coverity CID 1534906
+Use the correct condition.
+
+Resolves: Coverity CID 1534917
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240312183810.557768-4-peter.maydell@linaro.org
+Message-id: 20240312183810.557768-5-peter.maydell@linaro.org
 ---
- net/af-xdp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/misc/pca9554.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/af-xdp.c b/net/af-xdp.c
-index 38e600703a3..01c5fb914ec 100644
---- a/net/af-xdp.c
-+++ b/net/af-xdp.c
-@@ -446,7 +446,7 @@ int net_init_af_xdp(const Netdev *netdev,
-     NetClientState *nc, *nc0 = NULL;
-     unsigned int ifindex;
-     uint32_t prog_id = 0;
--    int *sock_fds = NULL;
-+    g_autofree int *sock_fds = NULL;
-     int64_t i, queues;
-     Error *err = NULL;
-     AFXDPState *s;
-@@ -516,7 +516,6 @@ int net_init_af_xdp(const Netdev *netdev,
-     return 0;
- 
- err:
--    g_free(sock_fds);
-     if (nc0) {
-         qemu_del_net_client(nc0);
+diff --git a/hw/misc/pca9554.c b/hw/misc/pca9554.c
+index 778b32e4430..5e31696797d 100644
+--- a/hw/misc/pca9554.c
++++ b/hw/misc/pca9554.c
+@@ -160,7 +160,7 @@ static void pca9554_get_pin(Object *obj, Visitor *v, const char *name,
+         error_setg(errp, "%s: error reading %s", __func__, name);
+         return;
+     }
+-    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
++    if (pin < 0 || pin >= PCA9554_PIN_COUNT) {
+         error_setg(errp, "%s invalid pin %s", __func__, name);
+         return;
+     }
+@@ -187,7 +187,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
+         error_setg(errp, "%s: error reading %s", __func__, name);
+         return;
+     }
+-    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
++    if (pin < 0 || pin >= PCA9554_PIN_COUNT) {
+         error_setg(errp, "%s invalid pin %s", __func__, name);
+         return;
      }
 -- 
 2.34.1
