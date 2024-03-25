@@ -2,61 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B2088A5A9
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:02:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D188A5B7
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:04:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rolq3-0003Cs-S2; Mon, 25 Mar 2024 11:02:15 -0400
+	id 1rolr9-0003x9-Vd; Mon, 25 Mar 2024 11:03:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rolpl-00038F-GY
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:02:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rolqy-0003wj-NR
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:03:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rolpi-00052K-J3
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:01:56 -0400
+ (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rolqw-00056q-PI
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:03:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711378913;
+ s=mimecast20190719; t=1711378989;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=Np8x02mslydTv544dMKcBUtfJb5rzw/F0i7sjBgw0xw=;
- b=bGZ8U29bEVQ6p1yadz2shsH6UHq1f8wtxP8GhsN1P/wfkUhigcCWvdc/1UR1/8NSe/Vur5
- DKBIyVGXbf1Jw2tzStkvbZhWsilm7vzOhNEM7MhnfK8zHvRO96dNX1qI7vul3/kHwu1ap4
- 8trXO5LR3pQwhDMt9UsiSdWdUg42XMQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-7Hs1B1RZNDitXO_767ezBg-1; Mon, 25 Mar 2024 11:01:49 -0400
-X-MC-Unique: 7Hs1B1RZNDitXO_767ezBg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ in-reply-to:in-reply-to:references:references;
+ bh=4n5hTCZfGhmRe/93Daqk0Q+pzqxUPQ87+zx4n9kwBlk=;
+ b=hHS22jyK8yMJwWAeBeV8qwdkb3Fn8a3w9g0h3YpaoNaV7+0T+Fp3LcP9YEmak/7tLqggmr
+ Zckhgg/1emTfWavG/5/3zGro5nhWricZE0cTo85ccxF+jL9htePay9TJII/O4jQ0z/mLk6
+ 3pXOHBF3mA7wArOhvzVKvaJiPPauBBs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-umGS81wCO0qVfIKGMix9kw-1; Mon,
+ 25 Mar 2024 11:03:05 -0400
+X-MC-Unique: umGS81wCO0qVfIKGMix9kw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 329FE868677;
- Mon, 25 Mar 2024 15:01:49 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.193.143])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 64695492BC4;
- Mon, 25 Mar 2024 15:01:46 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Eric Blake <eblake@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v1] qapi: document parameters of query-cpu-model-* QAPI
- commands
-Date: Mon, 25 Mar 2024 16:01:41 +0100
-Message-ID: <20240325150141.342720-1-david@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7163129ABA0A;
+ Mon, 25 Mar 2024 15:03:05 +0000 (UTC)
+Received: from localhost (unknown [10.22.8.95])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 6E317200A384;
+ Mon, 25 Mar 2024 15:03:04 +0000 (UTC)
+From: Cornelia Huck <cohuck@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Thomas Huth <thuth@redhat.com>, Harsh Prateek Bora
+ <harshpb@linux.ibm.com>, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH for-9.1 v5 1/3] hw: Add compat machines for 9.1
+In-Reply-To: <20240325141422.1380087-2-pbonzini@redhat.com>
+Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
+ Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
+ 153243,
+ =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
+ Michael O'Neill, Amy Ross"
+References: <20240325141422.1380087-1-pbonzini@redhat.com>
+ <20240325141422.1380087-2-pbonzini@redhat.com>
+User-Agent: Notmuch/0.37 (https://notmuchmail.org)
+Date: Mon, 25 Mar 2024 16:02:59 +0100
+Message-ID: <87ttku73rw.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,132 +84,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let's document the parameters of these commands, so we can remove them
-from the "documentation-exceptions" list.
+On Mon, Mar 25 2024, Paolo Bonzini <pbonzini@redhat.com> wrote:
 
-While at it, extend the "Returns:" documentation as well, fixing a wrong
-use of CpuModelBaselineInfo vs. CpuModelCompareInfo for
-query-cpu-model-comparison.
+> Add 9.1 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+>
+> Cc: Cornelia Huck <cohuck@redhat.com>
+> Cc: Thomas Huth <thuth@redhat.com>
+> Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>
+> Cc: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  include/hw/boards.h        |  3 +++
+>  include/hw/i386/pc.h       |  3 +++
+>  hw/arm/virt.c              | 11 +++++++++--
+>  hw/core/machine.c          |  3 +++
+>  hw/i386/pc.c               |  3 +++
+>  hw/i386/pc_piix.c          | 17 ++++++++++++++---
+>  hw/i386/pc_q35.c           | 14 ++++++++++++--
+>  hw/m68k/virt.c             | 11 +++++++++--
+>  hw/ppc/spapr.c             | 17 ++++++++++++++---
+>  hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+>  10 files changed, 83 insertions(+), 13 deletions(-)
 
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Eric Blake <eblake@redhat.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-Cc: Yanan Wang <wangyanan55@huawei.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- qapi/machine-target.json | 46 +++++++++++++++++++++++++++-------------
- qapi/pragma.json         |  3 ---
- 2 files changed, 31 insertions(+), 18 deletions(-)
-
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 519adf3220..7883616cce 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -124,11 +124,12 @@
- ##
- # @query-cpu-model-comparison:
- #
--# Compares two CPU models, returning how they compare in a specific
--# configuration.  The results indicates how both models compare
--# regarding runnability.  This result can be used by tooling to make
--# decisions if a certain CPU model will run in a certain configuration
--# or if a compatible CPU model has to be created by baselining.
-+# Compares two CPU models, @modela and @modelb, returning how they
-+# compare in a specific configuration.  The results indicates how
-+# both models compare regarding runnability.  This result can be
-+# used by tooling to make decisions if a certain CPU model will
-+# run in a certain configuration or if a compatible CPU model has
-+# to be created by baselining.
- #
- # Usually, a CPU model is compared against the maximum possible CPU
- # model of a certain configuration (e.g. the "host" model for KVM).
-@@ -154,7 +155,14 @@
- # Some architectures may not support comparing CPU models.  s390x
- # supports comparing CPU models.
- #
--# Returns: a CpuModelBaselineInfo
-+# @modela: description of the first CPU model to compare, referred to as
-+#     "model A" in CpuModelCompareResult
-+#
-+# @modelb: description of the second CPU model to compare, referred to as
-+#     "model B" in CpuModelCompareResult
-+#
-+# Returns: a CpuModelCompareInfo, describing how both CPU models
-+#     compare
- #
- # Errors:
- #     - if comparing CPU models is not supported
-@@ -175,9 +183,9 @@
- ##
- # @query-cpu-model-baseline:
- #
--# Baseline two CPU models, creating a compatible third model.  The
--# created model will always be a static, migration-safe CPU model (see
--# "static" CPU model expansion for details).
-+# Baseline two CPU models, @modela and @modelb, creating a compatible
-+# third model.  The created model will always be a static,
-+# migration-safe CPU model (see "static" CPU model expansion for details).
- #
- # This interface can be used by tooling to create a compatible CPU
- # model out two CPU models.  The created CPU model will be identical
-@@ -204,7 +212,11 @@
- # Some architectures may not support baselining CPU models.  s390x
- # supports baselining CPU models.
- #
--# Returns: a CpuModelBaselineInfo
-+# @modela: description of the first CPU model to baseline
-+#
-+# @modelb: description of the second CPU model to baseline
-+#
-+# Returns: a CpuModelBaselineInfo, describing the baselined CPU model
- #
- # Errors:
- #     - if baselining CPU models is not supported
-@@ -243,10 +255,10 @@
- ##
- # @query-cpu-model-expansion:
- #
--# Expands a given CPU model (or a combination of CPU model +
--# additional options) to different granularities, allowing tooling to
--# get an understanding what a specific CPU model looks like in QEMU
--# under a certain configuration.
-+# Expands a given CPU model, @model, (or a combination of CPU model +
-+# additional options) to different granularities, specified by
-+# @type, allowing tooling to get an understanding what a specific
-+# CPU model looks like in QEMU under a certain configuration.
- #
- # This interface can be used to query the "host" CPU model.
- #
-@@ -269,7 +281,11 @@
- # Some architectures may not support all expansion types.  s390x
- # supports "full" and "static". Arm only supports "full".
- #
--# Returns: a CpuModelExpansionInfo
-+# @model: description of the CPU model to expand
-+#
-+# @type: expansion type, specifying how to expand the CPU model
-+#
-+# Returns: a CpuModelExpansionInfo, describing the expanded CPU model
- #
- # Errors:
- #     - if expanding CPU models is not supported
-diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 6929ab776e..0d82bc1a03 100644
---- a/qapi/pragma.json
-+++ b/qapi/pragma.json
-@@ -90,9 +90,6 @@
-         'XDbgBlockGraph',
-         'YankInstanceType',
-         'blockdev-reopen',
--        'query-cpu-model-baseline',
--        'query-cpu-model-comparison',
--        'query-cpu-model-expansion',
-         'query-rocker',
-         'query-rocker-ports',
-         'query-stats-schemas',
--- 
-2.43.2
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
 
 
