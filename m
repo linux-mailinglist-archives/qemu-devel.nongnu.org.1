@@ -2,86 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E9088A65D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:24:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D7E88A682
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:29:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1romAu-0001k2-Mn; Mon, 25 Mar 2024 11:23:48 -0400
+	id 1romFX-0002iL-Qw; Mon, 25 Mar 2024 11:28:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romAr-0001jF-2K
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:23:45 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romFV-0002hz-HD
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:28:33 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romAn-000893-K0
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:23:44 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4148c650bc7so1329395e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 08:23:40 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romFT-0000EL-P2
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:28:33 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4148ca200a7so401995e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 08:28:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711380219; x=1711985019; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BoLRW9dkVxJWAYtYaL+GL9zQqo0bASk28B+CAIjaBTk=;
- b=njq92TZ69vH4I1A4c39rpIzcXhUu7js861tQMgr0XIKiM2YN77TP70WVIbwM589Z6U
- fK+M6LGIn6jKrmasc8BQDjZoP3O9JUyrFGODR2I7XuIHrS3cNZRDdsbPwmfmCHl/Imqm
- hulW0S4LEsLxnTuUmx68yxPFDoHUOFHDMB0AM1181J+9adCXanHqBEfc6rOESBTBEXSa
- dhz7Iad+u3ZwLGrInY0WgsGTbmuXpAQuNVMWIBaWRUkeq/YZjBmDunLnot5GtxtPNWYH
- BEmuelrLHCse/+ly1LCWwQ5LwmZ76mZTrBzav/Cm3P9wJXbaEvh51iESNdudlrcjNsIs
- plxA==
+ d=linaro.org; s=google; t=1711380510; x=1711985310; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TCoF0Ik2WJOdiDikaxpQR9jUBlogBxY6ArmfBRiXluk=;
+ b=F3+kZXesV0U7HLq97j6uR1pPmQIwFdk/6BIVMoBjd2pC7PbcN+HfsJOmgpPZMQFFuW
+ k0MlIlgK7kmBT5d+CUHqDmKcwBfIpLMar79bVQBXhsKf0uVaNThf3MUbgCr5gf44wkxG
+ K6V612JhtH6kkRwZqCYxQuBVExhgVXc2CHN9my1Ko+lPg8beZO8MGxMTc4GqzdlONBZi
+ UzRjyXrTRZOvWYK8I3rXwVM/f8hUXpeez0OVh+Im3JHsb7kzWsuRivaWTyJlBnNEuRRw
+ acycl64UWHiTYyoSnLVL+p0DGm4WBxfdJ/+NbPPPxQhaLzB8zs5wjZ42dCTZIR6AO0AU
+ Expw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711380219; x=1711985019;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BoLRW9dkVxJWAYtYaL+GL9zQqo0bASk28B+CAIjaBTk=;
- b=md5l46efCk1HCfkFZ8JeKG47xtp9GFZ5wtjisJDdVlSnJNeoaJl4ZLKWJ1XpGhw26U
- 93CyHXlb1wmbJDKvebJInpCni/yT2dc2vDCHvA0PW8eXZH04BD+08hvpcSAeUwN16ycd
- Ue0XiJnM/WlNitDUqLIFOSIYmlNQb5PMGkiEotMNJLh9YyS3qLajcrZ1fBxjNVrwk6lV
- h8HzgyvZ2UItvoXp36MtgIaYfOlSfI5ctDapnZQya2WZ+auClaRpFNcN5kIalXn+9yLp
- MYvEPxe+JFP2dVxsdN7wr6Ax07iFUigE2KWNKpEJi0aIRios9r+8wb8Ru1v5hQ8plctd
- gncw==
-X-Gm-Message-State: AOJu0YxXb/rFprFqwh7STW0nG85W2jS0sTTaZV/PqRA96iYqiMgvBWUa
- WMcPmKE5s5s9xCRnFbJTlZA6rVrOmvRq8Hr3J0jx/jA0ehG/0/i+adtphOyTDPQ=
-X-Google-Smtp-Source: AGHT+IH04r3s5qIcAVJhu0aFuB7TP3vi4I7qv65lR+FP4OvwU/wM1xjHqkAGFJXe+BzKpp4KG+G8XA==
-X-Received: by 2002:a05:600c:a47:b0:414:a49:131a with SMTP id
- c7-20020a05600c0a4700b004140a49131amr5402744wmq.23.1711380219168; 
- Mon, 25 Mar 2024 08:23:39 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.208.214])
+ d=1e100.net; s=20230601; t=1711380510; x=1711985310;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TCoF0Ik2WJOdiDikaxpQR9jUBlogBxY6ArmfBRiXluk=;
+ b=ejKHesYKmr7kPnPCYaLLlBGh6HVhJupSgLGAdIAddwBMTvqBzJmpxGaHj1IKEwdjOD
+ PR0+4oyyPdY+/3lkVkwcRSumHQ8vJUKXTJj0jyy0v0/24B1kgVZMLdPsnasHY1VbBiqy
+ HkIh99rHIhojS+eRQYa1NYNRyQD/hzqRMJn9/AbJt63TMueDBuPSIQOwnhqD3AXC2ueE
+ yxn9KbjWJqCkrJb/UMLRfcH+5nPXYrWiIZBs62RbPuPowM0WlqQEpdXachWDRl6qzf63
+ ictfuIob2m3Roc6kkGDzhn9RpWXDq0BeegwLQQ45LbuX6wJxvu0NP18Kg3q4TpGf8e/r
+ PmWA==
+X-Gm-Message-State: AOJu0YwXvfm1tNy+X2lWxpPw5WVzgr4AB62qU98kivcOaWvuAdp9vIQq
+ RL0mOUr3+PBNoBFV7CQOBfGQAZBLgWmJNUgeI1s/pUuXQqFHd+WevdvsBL9+2oTkmv4PGz8E8Ob
+ G/R4=
+X-Google-Smtp-Source: AGHT+IFPbnQi8nZLrkF/W7wtVL6ILis6jKJ6ES9goxOOqichZ/EJtEQnWe626R3+BCSxzmPLDqQjcQ==
+X-Received: by 2002:a05:600c:1386:b0:414:9fa:1da2 with SMTP id
+ u6-20020a05600c138600b0041409fa1da2mr5053391wmf.15.1711380509796; 
+ Mon, 25 Mar 2024 08:28:29 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.208.214])
  by smtp.gmail.com with ESMTPSA id
- m29-20020a05600c3b1d00b004147b5dd6f8sm8841351wms.9.2024.03.25.08.23.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 08:23:38 -0700 (PDT)
-Message-ID: <b25486c3-77b7-4d5e-afe6-9cf0ba1d645a@linaro.org>
-Date: Mon, 25 Mar 2024 16:23:36 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0? v2 2/8] hw/clock: Pass optional &bool argument to
- clock_set()
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, =?UTF-8?Q?In=C3=A8s_Varhol?=
- <ines.varhol@telecom-paris.fr>,
+ q13-20020adfcd8d000000b0033eab3520a9sm9740497wrj.43.2024.03.25.08.28.28
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 25 Mar 2024 08:28:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
  Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Damien Hedde <damien.hedde@dahe.fr>, qemu-arm@nongnu.org,
- Alistair Francis <alistair@alistair23.me>, Luc Michel <luc@lmichel.fr>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-References: <20240325133259.57235-1-philmd@linaro.org>
- <20240325133259.57235-3-philmd@linaro.org>
- <CAFEAcA9aM8J+0RjYnvr8Xr8Q2j3w_TgxHO-gPDn8MaAcAUDynw@mail.gmail.com>
- <e3806179-47ed-4952-a7b6-c256a2aad197@linaro.org>
- <CAFEAcA_yyWKo7E1Vz2zQXnjetYWEXtt6mUyg+t4mJXt+nsKBgA@mail.gmail.com>
- <c951c51c-3811-4997-b27d-deb8515b1539@linaro.org>
- <CAFEAcA8fMVVBxhH8NoPMcNarRYMZSFN1x5GWLg=KSxg1p_FK3Q@mail.gmail.com>
- <1d42c033-333d-4fdf-b4b7-7dc19b831982@linaro.org>
-In-Reply-To: <1d42c033-333d-4fdf-b4b7-7dc19b831982@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Damien Hedde <damien.hedde@dahe.fr>,
+ Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc@lmichel.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0 v3 0/3] hw/clock: Propagate clock changes when
+ STM32L4X5 MUX is updated
+Date: Mon, 25 Mar 2024 16:28:23 +0100
+Message-ID: <20240325152827.73817-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -104,96 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/3/24 16:11, Philippe Mathieu-Daudé wrote:
-> On 25/3/24 16:03, Peter Maydell wrote:
->> On Mon, 25 Mar 2024 at 15:01, Philippe Mathieu-Daudé 
->> <philmd@linaro.org> wrote:
->>>
->>> On 25/3/24 15:44, Peter Maydell wrote:
->>>> On Mon, 25 Mar 2024 at 14:39, Philippe Mathieu-Daudé 
->>>> <philmd@linaro.org> wrote:
->>>>>
->>>>> On 25/3/24 14:47, Peter Maydell wrote:
->>>>>> On Mon, 25 Mar 2024 at 13:33, Philippe Mathieu-Daudé 
->>>>>> <philmd@linaro.org> wrote:
->>>>>>>
->>>>>>> Currently clock_set() returns whether the clock has
->>>>>>> been changed or not. In order to combine this information
->>>>>>> with other clock calls, pass an optional boolean and do
->>>>>>> not return anything.  The single caller ignores the return
->>>>>>> value, have it use NULL.
->>>>>>>
->>>>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>>>>> ---
->>>>>>>     include/hw/clock.h       | 22 ++++++++++++++++------
->>>>>>>     hw/core/clock.c          |  8 +++++---
->>>>>>>     hw/misc/bcm2835_cprman.c |  2 +-
->>>>>>>     hw/misc/zynq_slcr.c      |  4 ++--
->>>>>>>     4 files changed, 24 insertions(+), 12 deletions(-)
->>>>>>>
->>>>>>> diff --git a/include/hw/clock.h b/include/hw/clock.h
->>>>>>> index bb12117f67..474bbc07fe 100644
->>>>>>> --- a/include/hw/clock.h
->>>>>>> +++ b/include/hw/clock.h
->>>>>>> @@ -180,21 +180,28 @@ static inline bool clock_has_source(const 
->>>>>>> Clock *clk)
->>>>>>>      * clock_set:
->>>>>>>      * @clk: the clock to initialize.
->>>>>>>      * @value: the clock's value, 0 means unclocked
->>>>>>> + * @changed: set to true if the clock is changed, ignored if set 
->>>>>>> to NULL.
->>>>>>>      *
->>>>>>>      * Set the local cached period value of @clk to @value.
->>>>>>> - *
->>>>>>> - * @return: true if the clock is changed.
->>>>>>>      */
->>>>>>> -bool clock_set(Clock *clk, uint64_t value);
->>>>>>> +void clock_set(Clock *clk, uint64_t period, bool *changed);
->>>>>>
->>>>>> What's wrong with using the return value? Generally
->>>>>> returning a value via passing in a pointer is much
->>>>>> clunkier in C than using the return value, so we only
->>>>>> do it if we have to (e.g. the return value is already
->>>>>> being used for something else, or we need to return
->>>>>> more than one thing at once).
->>>>>
->>>>> Then I'd rather remove (by inlining) the clock_update*() methods,
->>>>> to have explicit calls to clock_propagate(), after multiple
->>>>> clock_set*() calls.
->>>>
->>>> You mean, so that we handle "set the clock period" and
->>>> "set the mul/div" the same way, by just setting them and making
->>>> it always the caller's responsibility to call clock_propagate() ?
->>>
->>> Yes, for consistency, to have the clock_set* family behaving
->>> the same way.
->>>
->>>> Would you keep the bool return for clock_set and clock_set_mul_div
->>>> to tell the caller whether a clock_propagate() call is needed ?
->>>
->>> Yes (sorry for not being clearer). The API change would be
->>> less invasive, possibly acceptable during the freeze.
->>
->> Sounds reasonable as an API to me. The other place we currently
->> do an implicit clock_propagate() is from clock_set_source().
->> Should we make that require explicit propagate too?
-> 
-> For API consistency, I'd rather do the same. Luc, any objection?
+Since v2:
+- Simpler approach
 
-Currently changing clock in clock_set_source() is not supported,
-so we can only call this method once (usually before DEVICE_REALIZED).
+Since v1:
+- Rework API to only propagate when both clock_set
+  and clock_set_mul_div modified the clock params
+  (Peter & Luc).
+- Use that in zynq_slcr.
 
-We might never implement such feature, but again, I'd rather modify
-it for API consistency.
+Per https://www.qemu.org/docs/master/devel/clocks.html#clock-multiplier-and-divider-settings:
 
->> For freeze: is there a way to fix this bug without changing all the
->> clock APIs first?
-> 
-> Sure, I'll respin that for Arnaud.
-> 
->>
->> thanks
->> -- PMM
-> 
+  Note that clock_set_mul_div() does not automatically call
+  clock_propagate(). If you make a runtime change to the
+  multiplier or divider you must call clock_propagate() yourself.
+
+Fix what we forgot to do that in recent commit ec7d83acbd
+("hw/misc/stm32l4x5_rcc: Add an internal clock multiplexer object")
+
+Arnaud Minier (1):
+  hw/misc/stm32l4x5_rcc: Propagate period when enabling a clock
+
+Philippe Mathieu-Daudé (2):
+  hw/clock: Let clock_set_mul_div() return a boolean value
+  hw/misc/stm32l4x5_rcc: Inline clock_update() in clock_mux_update()
+
+ docs/devel/clocks.rst   | 4 ++++
+ include/hw/clock.h      | 4 +++-
+ hw/core/clock.c         | 8 +++++++-
+ hw/misc/stm32l4x5_rcc.c | 9 +++++++--
+ 4 files changed, 21 insertions(+), 4 deletions(-)
+
+-- 
+2.41.0
 
 
