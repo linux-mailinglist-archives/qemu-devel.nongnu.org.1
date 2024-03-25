@@ -2,87 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031B388A240
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:35:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0796388A245
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:35:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rokSb-0003ZB-Ty; Mon, 25 Mar 2024 09:33:58 -0400
+	id 1rokT4-0004iz-N8; Mon, 25 Mar 2024 09:34:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rokSY-0003Y3-Sm
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 09:33:54 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rokSX-0007TR-82
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 09:33:54 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56c0613307cso1616439a12.0
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 06:33:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711373631; x=1711978431; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cC2Yz91nzGrohL4G/Awv0+dd4I3kt82iWAFcfxuwSZM=;
- b=c4m9fmaTqK/XPlEjig0UaahEDKAgnSNSNyONhgN2JpiiC+wfIcfy7dBlhYqNmpYUfC
- aCKRiUq70AOpnD71r4N54Woy78+uYREu5w6Rivg3xvEdeUeEP7eEBA9SXC5FUZ9maV0u
- OZhNWV5wOedNB9N6Xer7K1Wme8cPLzA6JjfNh8LSflmQ8vAYeKoaKITVEdiXZpezQjnN
- VKubYafax35ySvIIHThW+3884YE//pMREyfmwCXlBz5F8VvL9v3gv7QGdujosmr8Ol7g
- PcZeeAIWE9sie2oMFo/7pZgqB+p+KKYeUZuzUxBNSaF5Tsus606LtNvgyi53N8fDKqE/
- 6y/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711373631; x=1711978431;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cC2Yz91nzGrohL4G/Awv0+dd4I3kt82iWAFcfxuwSZM=;
- b=kvFZbZwilgfFbe5+C1TSt9mEypqjcLFclLFsMQLvS8vBB0XsBCe2a+EHzaO/qJ9wd6
- t2FdF8Aa7Qzd8oO4g7czeqaeu8fg1hrKUBE9ROAUAsnlf8fFbBMegz2NSicBfzlGWOaK
- 3bYYNvkNMIzRYIFdOH4RGF3RAvOSpPPL6BcT2+nLwPFOFURolhKnKWLGkzBDyOp/v9Hn
- RKIxDAItkJQH2NC6ID1nLDPkXHs0L73X6G8NDkNgy8BJcaoMRJw7eyztCUdVCU12Am0R
- QHVD1wn6BaWa6aSxXsi9C0ttVCWiFN+zCpaTvbqBLJGMS0NjgpjzSqnRacxjj1mGqgk0
- /sMA==
-X-Gm-Message-State: AOJu0Yzzy1SPeLzUB+c+gyxtqKvXw4BpqRsHtMhDLwwKz1wkJffmUjEm
- 3QZGziwo5boyDlxrdB2eqQXm0m59z48ysx5QG+QVIsTf7JCgJ/TXX/E5kORQ16tG3s9y5XXZw2s
- 7MDk=
-X-Google-Smtp-Source: AGHT+IHtZ6daHfU5H7gPIyf5QNciNqdEDsxbY4ibtEBvK90ybXzAWKeFq8GhXwKQb2YchN2ju7FPTg==
-X-Received: by 2002:a17:906:4e8d:b0:a46:cea6:a7f1 with SMTP id
- v13-20020a1709064e8d00b00a46cea6a7f1mr4793519eju.51.1711373630981; 
- Mon, 25 Mar 2024 06:33:50 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.208.214])
- by smtp.gmail.com with ESMTPSA id
- qy34-20020a17090768a200b00a4623030893sm3046795ejc.126.2024.03.25.06.33.49
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 25 Mar 2024 06:33:50 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Damien Hedde <damien.hedde@dahe.fr>, qemu-arm@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>,
- Alistair Francis <alistair@alistair23.me>, Luc Michel <luc@lmichel.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH-for-9.1 v2 8/8] hw/misc/zynq_slcr: Only propagate clock
- changes when necessary
-Date: Mon, 25 Mar 2024 14:32:58 +0100
-Message-ID: <20240325133259.57235-9-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240325133259.57235-1-philmd@linaro.org>
-References: <20240325133259.57235-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=rDMc=K7=kaod.org=clg@ozlabs.org>)
+ id 1rokSw-0004a6-PY; Mon, 25 Mar 2024 09:34:18 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=rDMc=K7=kaod.org=clg@ozlabs.org>)
+ id 1rokSt-0007UN-L5; Mon, 25 Mar 2024 09:34:17 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4V3DRm0Jrwz4wcg;
+ Tue, 26 Mar 2024 00:34:12 +1100 (AEDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4V3DRg4krdz4wyh;
+ Tue, 26 Mar 2024 00:34:07 +1100 (AEDT)
+Message-ID: <26c7a63d-78fe-4378-b950-0673f0c96114@kaod.org>
+Date: Mon, 25 Mar 2024 14:34:05 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/10] pnv/phb4: Mask off LSI Source-ID based on number of
+ interrupts
+To: Saif Abrar <saif.abrar@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, fbarrat@linux.ibm.com, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, cohuck@redhat.com, pbonzini@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com
+References: <20240321100422.5347-1-saif.abrar@linux.vnet.ibm.com>
+ <20240321100422.5347-11-saif.abrar@linux.vnet.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240321100422.5347-11-saif.abrar@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=rDMc=K7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,127 +67,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Pass &bool to zynq_slcr_compute_clocks[_internal](), so we
-can pass it to the clock_set() calls which might update it.
-Then check it and only call zynq_slcr_propagate_clocks()
-and clock_propagate() when necessary.
+On 3/21/24 11:04, Saif Abrar wrote:
+> Add a method to reset the value of LSI Source-ID.
+> Mask off LSI source-id based on number of interrupts in the big/small PHB.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/misc/zynq_slcr.c | 39 ++++++++++++++++++++++++++-------------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+Looks ok.
 
-diff --git a/hw/misc/zynq_slcr.c b/hw/misc/zynq_slcr.c
-index e637798507..ad9c575137 100644
---- a/hw/misc/zynq_slcr.c
-+++ b/hw/misc/zynq_slcr.c
-@@ -269,7 +269,8 @@ static uint64_t zynq_slcr_compute_clock(const uint64_t periods[],
-     zynq_slcr_compute_clock((plls), (state)->regs[reg], \
-                             reg ## _ ## enable_field ## _SHIFT)
- 
--static void zynq_slcr_compute_clocks_internal(ZynqSLCRState *s, uint64_t ps_clk)
-+static void zynq_slcr_compute_clocks_internal(ZynqSLCRState *s, uint64_t ps_clk,
-+                                              bool *changed)
- {
-     uint64_t io_pll = zynq_slcr_compute_pll(ps_clk, s->regs[R_IO_PLL_CTRL]);
-     uint64_t arm_pll = zynq_slcr_compute_pll(ps_clk, s->regs[R_ARM_PLL_CTRL]);
-@@ -279,9 +280,9 @@ static void zynq_slcr_compute_clocks_internal(ZynqSLCRState *s, uint64_t ps_clk)
- 
-     /* compute uartX reference clocks */
-     clock_set(s->uart0_ref_clk,
--              ZYNQ_COMPUTE_CLK(s, uart_mux, R_UART_CLK_CTRL, CLKACT0), NULL);
-+              ZYNQ_COMPUTE_CLK(s, uart_mux, R_UART_CLK_CTRL, CLKACT0), changed);
-     clock_set(s->uart1_ref_clk,
--              ZYNQ_COMPUTE_CLK(s, uart_mux, R_UART_CLK_CTRL, CLKACT1), NULL);
-+              ZYNQ_COMPUTE_CLK(s, uart_mux, R_UART_CLK_CTRL, CLKACT1), changed);
- }
- 
- /**
-@@ -289,7 +290,7 @@ static void zynq_slcr_compute_clocks_internal(ZynqSLCRState *s, uint64_t ps_clk)
-  * But do not propagate them further. Connected clocks
-  * will not receive any updates (See zynq_slcr_compute_clocks())
-  */
--static void zynq_slcr_compute_clocks(ZynqSLCRState *s)
-+static void zynq_slcr_compute_clocks(ZynqSLCRState *s, bool *changed)
- {
-     uint64_t ps_clk = clock_get(s->ps_clk);
- 
-@@ -298,7 +299,7 @@ static void zynq_slcr_compute_clocks(ZynqSLCRState *s)
-         ps_clk = 0;
-     }
- 
--    zynq_slcr_compute_clocks_internal(s, ps_clk);
-+    zynq_slcr_compute_clocks_internal(s, ps_clk, changed);
- }
- 
- /**
-@@ -315,9 +316,12 @@ static void zynq_slcr_propagate_clocks(ZynqSLCRState *s)
- static void zynq_slcr_ps_clk_callback(void *opaque, ClockEvent event)
- {
-     ZynqSLCRState *s = (ZynqSLCRState *) opaque;
-+    bool propagate = false;
- 
--    zynq_slcr_compute_clocks(s);
--    zynq_slcr_propagate_clocks(s);
-+    zynq_slcr_compute_clocks(s, &propagate);
-+    if (propagate) {
-+        zynq_slcr_propagate_clocks(s);
-+    }
- }
- 
- static void zynq_slcr_reset_init(Object *obj, ResetType type)
-@@ -419,19 +423,25 @@ static void zynq_slcr_reset_init(Object *obj, ResetType type)
- static void zynq_slcr_reset_hold(Object *obj)
- {
-     ZynqSLCRState *s = ZYNQ_SLCR(obj);
-+    bool propagate = false;
- 
-     /* will disable all output clocks */
--    zynq_slcr_compute_clocks_internal(s, 0);
--    zynq_slcr_propagate_clocks(s);
-+    zynq_slcr_compute_clocks_internal(s, 0, &propagate);
-+    if (propagate) {
-+        zynq_slcr_propagate_clocks(s);
-+    }
- }
- 
- static void zynq_slcr_reset_exit(Object *obj)
- {
-     ZynqSLCRState *s = ZYNQ_SLCR(obj);
-+    bool propagate = false;
- 
-     /* will compute output clocks according to ps_clk and registers */
--    zynq_slcr_compute_clocks_internal(s, clock_get(s->ps_clk));
--    zynq_slcr_propagate_clocks(s);
-+    zynq_slcr_compute_clocks_internal(s, clock_get(s->ps_clk), &propagate);
-+    if (propagate) {
-+        zynq_slcr_propagate_clocks(s);
-+    }
- }
- 
- static bool zynq_slcr_check_offset(hwaddr offset, bool rnw)
-@@ -516,6 +526,7 @@ static void zynq_slcr_write(void *opaque, hwaddr offset,
-                           uint64_t val, unsigned size)
- {
-     ZynqSLCRState *s = (ZynqSLCRState *)opaque;
-+    bool propagate = false;
-     offset /= 4;
- 
-     DB_PRINT("addr: %08" HWADDR_PRIx " data: %08" PRIx64 "\n", offset * 4, val);
-@@ -569,8 +580,10 @@ static void zynq_slcr_write(void *opaque, hwaddr offset,
-     case R_ARM_PLL_CTRL:
-     case R_DDR_PLL_CTRL:
-     case R_UART_CLK_CTRL:
--        zynq_slcr_compute_clocks(s);
--        zynq_slcr_propagate_clocks(s);
-+        zynq_slcr_compute_clocks(s, &propagate);
-+        if (propagate) {
-+            zynq_slcr_propagate_clocks(s);
-+        }
-         break;
-     }
- }
--- 
-2.41.0
+  
+> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+> ---
+>   hw/pci-host/pnv_phb4.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
+> index f48750ee54..8fbaf6512e 100644
+> --- a/hw/pci-host/pnv_phb4.c
+> +++ b/hw/pci-host/pnv_phb4.c
+> @@ -489,6 +489,7 @@ static void pnv_phb4_update_xsrc(PnvPHB4 *phb)
+>   
+>       lsi_base = GETFIELD(PHB_LSI_SRC_ID, phb->regs[PHB_LSI_SOURCE_ID >> 3]);
+>       lsi_base <<= 3;
+> +    lsi_base &= (xsrc->nr_irqs - 1);
+>   
+>       /* TODO: handle reset values of PHB_LSI_SRC_ID */
+>       if (!lsi_base) {
+> @@ -1966,6 +1967,12 @@ static void pnv_phb4_ro_mask_init(PnvPHB4 *phb)
+>       /* TODO: Add more RO-masks as regs are implemented in the model */
+>   }
+>   
+> +static void pnv_phb4_fund_A_reset(PnvPHB4 *phb)
+
+What is fund_A ?
+
+> +{
+> +    phb->regs[PHB_LSI_SOURCE_ID >> 3] = PPC_BITMASK(4, 12);
+
+Is this mask the default value for HW ?
+
+
+Thanks,
+
+C.
+
+
+> +    pnv_phb4_update_xsrc(phb);
+> +}
+> +
+>   static void pnv_phb4_err_reg_reset(PnvPHB4 *phb)
+>   {
+>       STICKY_RST(PHB_ERR_STATUS,       0, PPC_BITMASK(0, 33));
+> @@ -2023,6 +2030,7 @@ static void pnv_phb4_reset(void *dev)
+>       pnv_phb4_cfg_core_reset(phb);
+>       pnv_phb4_pbl_core_reset(phb);
+>   
+> +    pnv_phb4_fund_A_reset(phb);
+>       pnv_phb4_err_reg_reset(phb);
+>       pnv_phb4_pcie_stack_reg_reset(phb);
+>       pnv_phb4_regb_err_reg_reset(phb);
+> @@ -2102,8 +2110,6 @@ static void pnv_phb4_realize(DeviceState *dev, Error **errp)
+>           return;
+>       }
+>   
+> -    pnv_phb4_update_xsrc(phb);
+> -
+>       phb->qirqs = qemu_allocate_irqs(xive_source_set_irq, xsrc, xsrc->nr_irqs);
+>   
+>       pnv_phb4_xscom_realize(phb);
 
 
