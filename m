@@ -2,87 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF3CC88A6C0
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 147D988A6BE
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:34:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1romKS-0006e3-6S; Mon, 25 Mar 2024 11:33:40 -0400
+	id 1romKV-0006eo-SZ; Mon, 25 Mar 2024 11:33:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKO-0006dP-4g
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:36 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKP-0006dl-MH
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:38 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKL-0001BC-RE
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:35 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+ (Exim 4.90_1) (envelope-from <iii@linux.ibm.com>) id 1romKO-0001BM-2h
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:33:37 -0400
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42PEPKtK007583; Mon, 25 Mar 2024 15:33:32 GMT
+ 42PEMHDi022793; Mon, 25 Mar 2024 15:33:33 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=xsIQz7z80DrbkYrWZ8KO9DLksja9CUgehp3MSWLnL6M=;
- b=UEFhQVoQPWR9UMzj2LQSAia4awqzN6UK74Ql2XtT0cOVNC7sZA2PXuknvYadmrgu122z
- Mv1YJtTuUzGMAzR4t+jJr4w/Np5rJTOtjMKhg+nFgVbsa15jpwfgS2tsqUEd7WuFwpco
- 9VzTlbnHC5EcgzrsQNNehLgn4+z9af180QjGXYM6ES9Y89n2Lg6Z6Pr/JiwGUpDaelA5
- LqNH9s2KDilEy4r6Ok2BoGrnIbAvMKFNMFay3jzfj2D4u4UgGfIYiQLAozJOvXzdVmSB
- Lp9a5DF7NGJYJToF7sVmPGB/D5T2NsyUIShP4/2SDKDwkCzfB/bCBInashyqc70pr1Bt ww== 
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3a7vr8xv-1
+ bh=s8Lxfbqk5T5lmWHnpkB0K02TGMHVtc5oC9L4Q9rrCcI=;
+ b=oxLU+g7TVi+s3lgy6OFEA/KUfohBt76oUVIWvreFn0MclGWZjlQz8Wl8yr/nnwabW0Sm
+ AjWl7F35YoSOHAm+H9j6T4cw1rDyV4Ldf9oyx9vFAPIrqJFYUeozaIgon88ChXPhFyej
+ ozRW7NIqbYomUxjQWfVJ3qqiXTm507pPInyMY3GKrFQjZs5ettaiG2COmptWnpb3oYLW
+ qGWREVk1xFgDr5ujBH7a1Thn737tZ9rGahyu0cGWA0BGLOfU6NmTvsHBUHXBXkFjjH2V
+ c9jRhmk/gq3VxcFY1lHmDdMVfkri/OSyu3K2kH5ubs9JFHnpccWSTnKIIyqB1u/faSQN Tw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3aygr5ey-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Mar 2024 15:33:33 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42PCkYFH011243; Mon, 25 Mar 2024 15:33:32 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2bmkskxr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Mon, 25 Mar 2024 15:33:32 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42PDN35N016410; Mon, 25 Mar 2024 15:33:31 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x29dttav5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Mar 2024 15:33:31 +0000
 Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com
  [10.20.54.106])
- by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42PFXRb152298164
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42PFXSEh32047498
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 25 Mar 2024 15:33:29 GMT
+ Mon, 25 Mar 2024 15:33:30 GMT
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id D13CD2004B;
- Mon, 25 Mar 2024 15:33:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 994F12004F;
+ Mon, 25 Mar 2024 15:33:28 +0000 (GMT)
 Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 77FB120043;
- Mon, 25 Mar 2024 15:33:27 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 485452004D;
+ Mon, 25 Mar 2024 15:33:28 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.171.7.191])
  by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 25 Mar 2024 15:33:27 +0000 (GMT)
+ Mon, 25 Mar 2024 15:33:28 +0000 (GMT)
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 To: Richard Henderson <richard.henderson@linaro.org>,
  Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 Cc: qemu-devel@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 3/4] linux-user: Fix shmat(NULL) for h != g
-Date: Mon, 25 Mar 2024 16:07:40 +0100
-Message-ID: <20240325153313.526888-4-iii@linux.ibm.com>
+Subject: [PATCH 4/4] tests/tcg: Test shmat(NULL)
+Date: Mon, 25 Mar 2024 16:07:41 +0100
+Message-ID: <20240325153313.526888-5-iii@linux.ibm.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240325153313.526888-1-iii@linux.ibm.com>
 References: <20240325153313.526888-1-iii@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2TC536HHhny0i48WcPkpIO2IgpyiImkI
-X-Proofpoint-GUID: 2TC536HHhny0i48WcPkpIO2IgpyiImkI
+X-Proofpoint-GUID: gslabpVkM939FpluGfoU3b_3x77c2Cdy
+X-Proofpoint-ORIG-GUID: gslabpVkM939FpluGfoU3b_3x77c2Cdy
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-25_11,2024-03-21_02,2023-05-22_02
+ definitions=2024-03-25_12,2024-03-21_02,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 clxscore=1011
- mlxlogscore=940 phishscore=0 mlxscore=0 malwarescore=0 impostorscore=0
- spamscore=0 suspectscore=0 adultscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403250084
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=iii@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
+ clxscore=1015 bulkscore=0
+ adultscore=0 mlxlogscore=901 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 phishscore=0 suspectscore=0 priorityscore=1501 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2403250086
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=iii@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -105,33 +105,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the h != g && shmaddr == NULL && !reserved_va case, target_shmat()
-incorrectly mmap()s the initial anonymous range with
-MAP_FIXED_NOREPLACE, even though the earlier mmap_find_vma() has
-already reserved the respective address range.
+Add a small test to prevent regressions.
 
-Fix by using MAP_FIXED when "mapped", which is set after
-mmap_find_vma(), is true.
-
-Fixes: 78bc8ed9a8f0 ("linux-user: Rewrite target_shmat")
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
 ---
- linux-user/mmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/tcg/multiarch/linux/linux-shmat-null.c | 38 ++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 tests/tcg/multiarch/linux/linux-shmat-null.c
 
-diff --git a/linux-user/mmap.c b/linux-user/mmap.c
-index e88faf1ab3d..681b6db1b67 100644
---- a/linux-user/mmap.c
-+++ b/linux-user/mmap.c
-@@ -1358,7 +1358,7 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
-         if (h_len != t_len) {
-             int mmap_p = PROT_READ | (shmflg & SHM_RDONLY ? 0 : PROT_WRITE);
-             int mmap_f = MAP_PRIVATE | MAP_ANONYMOUS
--                       | (reserved_va || (shmflg & SHM_REMAP)
-+                       | (reserved_va || mapped || (shmflg & SHM_REMAP)
-                           ? MAP_FIXED : MAP_FIXED_NOREPLACE);
- 
-             test = mmap(want, m_len, mmap_p, mmap_f, -1, 0);
+diff --git a/tests/tcg/multiarch/linux/linux-shmat-null.c b/tests/tcg/multiarch/linux/linux-shmat-null.c
+new file mode 100644
+index 00000000000..94eaaec371a
+--- /dev/null
++++ b/tests/tcg/multiarch/linux/linux-shmat-null.c
+@@ -0,0 +1,38 @@
++/*
++ * Test shmat(NULL).
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#include <assert.h>
++#include <stdlib.h>
++#include <sys/ipc.h>
++#include <sys/shm.h>
++
++int main(void)
++{
++    int shmid;
++    char *p;
++    int err;
++
++    /* Create, attach and intialize shared memory. */
++    shmid = shmget(IPC_PRIVATE, 1, IPC_CREAT | 0600);
++    assert(shmid != -1);
++    p = shmat(shmid, NULL, 0);
++    assert(p != (void *)-1);
++    *p = 42;
++
++    /* Reattach, check that the value is still there. */
++    err = shmdt(p);
++    assert(err == 0);
++    p = shmat(shmid, NULL, 0);
++    assert(p != (void *)-1);
++    assert(*p == 42);
++
++    /* Detach. */
++    err = shmdt(p);
++    assert(err == 0);
++    err = shmctl(shmid, IPC_RMID, NULL);
++    assert(err == 0);
++
++    return EXIT_SUCCESS;
++}
 -- 
 2.44.0
 
