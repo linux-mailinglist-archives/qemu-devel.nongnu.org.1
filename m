@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0796388A245
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF00988A253
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:36:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rokT4-0004iz-N8; Mon, 25 Mar 2024 09:34:27 -0400
+	id 1rokUJ-0007w1-0I; Mon, 25 Mar 2024 09:35:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=rDMc=K7=kaod.org=clg@ozlabs.org>)
- id 1rokSw-0004a6-PY; Mon, 25 Mar 2024 09:34:18 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1rokUE-0007fM-Ey; Mon, 25 Mar 2024 09:35:39 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=rDMc=K7=kaod.org=clg@ozlabs.org>)
- id 1rokSt-0007UN-L5; Mon, 25 Mar 2024 09:34:17 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4V3DRm0Jrwz4wcg;
- Tue, 26 Mar 2024 00:34:12 +1100 (AEDT)
+ id 1rokUA-0007nl-KL; Mon, 25 Mar 2024 09:35:37 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4V3DTC1k1tz4wcq;
+ Tue, 26 Mar 2024 00:35:27 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits))
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4V3DRg4krdz4wyh;
- Tue, 26 Mar 2024 00:34:07 +1100 (AEDT)
-Message-ID: <26c7a63d-78fe-4378-b950-0673f0c96114@kaod.org>
-Date: Mon, 25 Mar 2024 14:34:05 +0100
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4V3DT66mvcz4wyg;
+ Tue, 26 Mar 2024 00:35:22 +1100 (AEDT)
+Message-ID: <9268c807-27f4-4c50-bb08-8bb97f0d84fe@kaod.org>
+Date: Mon, 25 Mar 2024 14:35:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 10/10] pnv/phb4: Mask off LSI Source-ID based on number of
- interrupts
+Subject: Re: [PATCH 09/10] hw/pci: Set write-mask bits for PCIE Link-Control-2
+ register
 To: Saif Abrar <saif.abrar@linux.vnet.ibm.com>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
 Cc: npiggin@gmail.com, fbarrat@linux.ibm.com, mst@redhat.com,
  marcel.apfelbaum@gmail.com, cohuck@redhat.com, pbonzini@redhat.com,
  thuth@redhat.com, lvivier@redhat.com
 References: <20240321100422.5347-1-saif.abrar@linux.vnet.ibm.com>
- <20240321100422.5347-11-saif.abrar@linux.vnet.ibm.com>
+ <20240321100422.5347-10-saif.abrar@linux.vnet.ibm.com>
 Content-Language: en-US, fr
 From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <20240321100422.5347-11-saif.abrar@linux.vnet.ibm.com>
+In-Reply-To: <20240321100422.5347-10-saif.abrar@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=rDMc=K7=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,41 +68,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 3/21/24 11:04, Saif Abrar wrote:
-> Add a method to reset the value of LSI Source-ID.
-> Mask off LSI source-id based on number of interrupts in the big/small PHB.
+> PHB updates the register PCIE Link-Control-2.
+> Set the write-mask bits for TLS, ENTER_COMP, TX_MARGIN,
+> HASD, MOD_COMP, COMP_SOS and COMP_P_DE.
 
-Looks ok.
 
-  
-> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
-> ---
->   hw/pci-host/pnv_phb4.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
-> index f48750ee54..8fbaf6512e 100644
-> --- a/hw/pci-host/pnv_phb4.c
-> +++ b/hw/pci-host/pnv_phb4.c
-> @@ -489,6 +489,7 @@ static void pnv_phb4_update_xsrc(PnvPHB4 *phb)
->   
->       lsi_base = GETFIELD(PHB_LSI_SRC_ID, phb->regs[PHB_LSI_SOURCE_ID >> 3]);
->       lsi_base <<= 3;
-> +    lsi_base &= (xsrc->nr_irqs - 1);
->   
->       /* TODO: handle reset values of PHB_LSI_SRC_ID */
->       if (!lsi_base) {
-> @@ -1966,6 +1967,12 @@ static void pnv_phb4_ro_mask_init(PnvPHB4 *phb)
->       /* TODO: Add more RO-masks as regs are implemented in the model */
->   }
->   
-> +static void pnv_phb4_fund_A_reset(PnvPHB4 *phb)
-
-What is fund_A ?
-
-> +{
-> +    phb->regs[PHB_LSI_SOURCE_ID >> 3] = PPC_BITMASK(4, 12);
-
-Is this mask the default value for HW ?
+You should resend this patch independently of the PowerNV PHB changes.
 
 
 Thanks,
@@ -110,28 +81,43 @@ Thanks,
 C.
 
 
-> +    pnv_phb4_update_xsrc(phb);
-> +}
+
+> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+> ---
+>   hw/pci/pcie.c                             | 6 ++++++
+>   include/standard-headers/linux/pci_regs.h | 3 +++
+>   2 files changed, 9 insertions(+)
+> 
+> diff --git a/hw/pci/pcie.c b/hw/pci/pcie.c
+> index 4b2f0805c6..e3081f6b84 100644
+> --- a/hw/pci/pcie.c
+> +++ b/hw/pci/pcie.c
+> @@ -212,6 +212,12 @@ int pcie_cap_init(PCIDevice *dev, uint8_t offset,
+>   
+>       pci_set_word(dev->wmask + pos + PCI_EXP_DEVCTL2, PCI_EXP_DEVCTL2_EETLPPB);
+>   
+> +    pci_set_word(dev->wmask + pos + PCI_EXP_LNKCTL2,
+> +            PCI_EXP_LNKCTL2_TLS | PCI_EXP_LNKCTL2_ENTER_COMP |
+> +            PCI_EXP_LNKCTL2_TX_MARGIN | PCI_EXP_LNKCTL2_HASD |
+> +            PCI_EXP_LNKCTL2_MOD_COMP | PCI_EXP_LNKCTL2_COMP_SOS |
+> +            PCI_EXP_LNKCTL2_COMP_P_DE);
 > +
->   static void pnv_phb4_err_reg_reset(PnvPHB4 *phb)
->   {
->       STICKY_RST(PHB_ERR_STATUS,       0, PPC_BITMASK(0, 33));
-> @@ -2023,6 +2030,7 @@ static void pnv_phb4_reset(void *dev)
->       pnv_phb4_cfg_core_reset(phb);
->       pnv_phb4_pbl_core_reset(phb);
->   
-> +    pnv_phb4_fund_A_reset(phb);
->       pnv_phb4_err_reg_reset(phb);
->       pnv_phb4_pcie_stack_reg_reset(phb);
->       pnv_phb4_regb_err_reg_reset(phb);
-> @@ -2102,8 +2110,6 @@ static void pnv_phb4_realize(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> -    pnv_phb4_update_xsrc(phb);
-> -
->       phb->qirqs = qemu_allocate_irqs(xive_source_set_irq, xsrc, xsrc->nr_irqs);
->   
->       pnv_phb4_xscom_realize(phb);
+>       if (dev->cap_present & QEMU_PCIE_EXTCAP_INIT) {
+>           /* read-only to behave like a 'NULL' Extended Capability Header */
+>           pci_set_long(dev->wmask + PCI_CONFIG_SPACE_SIZE, 0);
+> diff --git a/include/standard-headers/linux/pci_regs.h b/include/standard-headers/linux/pci_regs.h
+> index a39193213f..f743defe91 100644
+> --- a/include/standard-headers/linux/pci_regs.h
+> +++ b/include/standard-headers/linux/pci_regs.h
+> @@ -694,6 +694,9 @@
+>   #define  PCI_EXP_LNKCTL2_ENTER_COMP	0x0010 /* Enter Compliance */
+>   #define  PCI_EXP_LNKCTL2_TX_MARGIN	0x0380 /* Transmit Margin */
+>   #define  PCI_EXP_LNKCTL2_HASD		0x0020 /* HW Autonomous Speed Disable */
+> +#define  PCI_EXP_LNKCTL2_MOD_COMP	0x0400 /* Enter Modified Compliance */
+> +#define  PCI_EXP_LNKCTL2_COMP_SOS	0x0800 /* Compliance SOS */
+> +#define  PCI_EXP_LNKCTL2_COMP_P_DE	0xF000 /* Compliance Preset/De-emphasis */
+>   #define PCI_EXP_LNKSTA2		0x32	/* Link Status 2 */
+>   #define  PCI_EXP_LNKSTA2_FLIT		0x0400 /* Flit Mode Status */
+>   #define PCI_CAP_EXP_ENDPOINT_SIZEOF_V2	0x32	/* end of v2 EPs w/ link */
 
 
