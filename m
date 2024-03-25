@@ -2,88 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898A5889FBD
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 119E1889FD6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:42:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojYX-0002JO-Cg; Mon, 25 Mar 2024 08:36:01 -0400
+	id 1rojdy-00088y-Py; Mon, 25 Mar 2024 08:41:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rojYV-0002IP-BT
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:59 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rojYT-0005eG-KD
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:59 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1e0411c0a52so30811265ad.0
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1711370156; x=1711974956; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=fI97XdXEDCdvaQoA+KSfIiFD9UwZRCBaweWdCTvgrl8=;
- b=DrLRACALH/yEmsxkVLDVQ0lcTIgiQAuKoZZyOJi0lRUO7Va1QyXEwj0ERrbczOQlsd
- MKnSlQTiEazrziKqqnGOJlkTZ7qPkawharX/VM9xqmHaOkg+AId+up1qk3B8AT3BwfQc
- 4UxBfkaU8A8LkyAWtaUr/Zt2mW9oxv5cjsgteN/iLINdrLXcrP0M5QdZiyY05uH7d89V
- 9UPPR+cLuMEbbeVhVMEQSXxg4Hw3edWtdXiRz6nPSgDym1+O2qLF/fWexfzH4SHwrbkf
- xU7gJE8lWn+P0JE+kQ7sBChX+jfe1GFF3J9QB9sT85jCEh9pwMFflWC6lDj5KOR6fw5H
- AP3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711370156; x=1711974956;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fI97XdXEDCdvaQoA+KSfIiFD9UwZRCBaweWdCTvgrl8=;
- b=toeLUN8Y+4h3rItCnIjtguFeqGnUbKOezjratqzAItpwmKqIoGAJI9n31VOlRm2twg
- pTSdoZG0Gg2XOgyi4NbCgfqCS5m1wPU3YmqnN00bQN95UttBCR2+9vLVQawGQXT6wYED
- Ffts+p/M/hjR86AvmQBzRyYlzKqAw4wrNSXUWVtzqWlCzMSCLlV08I62DS+rBHtIz/q1
- xZf9zxBnq2EgMwCTO2gThTaM9Mhi3a6Gsqm81gsCz7LwH8vwPFGCKBb2l64zEo7JfiOc
- OML6es5yy5aHlD31FV+5ImN/eAhT/ga9aFRIS0ZvUUNFYdYYkFWwX4mhUiZy+AESxbt4
- dBBw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXRc6wpn3UFElkWqE2g0b9FMVDUnwRvlm0IL3SpjRNNNCkN7ku4IsIda8M3t5kUa0Hff8tzxYtYYQ4+uvKpgJ/Ws9bMJo8=
-X-Gm-Message-State: AOJu0YyDVs19gpD4GNN9K3UTkMqnYFstcVro0HnuGDO/B2epQ3W3YQoH
- cAvJHK46tyeYC4b4DS2VzSnAj54+vKj8OmZ1mCqf05SebA1GkcHKV+JFS4MN3Mo=
-X-Google-Smtp-Source: AGHT+IGv7ZBYvvwz97T0hj9vLPV+kF+G2/6Bmak0zW5QaSjJ7ij3ZLxcxbJHCGRs9F5jXphdeSlSGw==
-X-Received: by 2002:a17:902:ecc8:b0:1e0:d630:f18e with SMTP id
- a8-20020a170902ecc800b001e0d630f18emr530886plh.14.1711370156099; 
- Mon, 25 Mar 2024 05:35:56 -0700 (PDT)
-Received: from [192.168.68.110] ([177.45.186.241])
- by smtp.gmail.com with ESMTPSA id
- mo12-20020a1709030a8c00b001db717d2dbbsm4575825plb.210.2024.03.25.05.35.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 05:35:55 -0700 (PDT)
-Message-ID: <cef9c499-b258-4618-bff8-eeca8da3d184@ventanamicro.com>
-Date: Mon, 25 Mar 2024 09:35:52 -0300
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rojdw-00086f-SM
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:41:36 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rojdv-0006cY-8q
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:41:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=gOKa4y72xcwoBs0sNlWOnYmRNegrXWirYGsY/t6z2DM=; b=wXkHckPV7tKTA/lipWLDmzfXw/
+ SGW6Vxa/SoGunRsTUZPnfj/3g4UehGvyYAwxupXulJut1C4bCt6M905BWgoFbqla7gq3/TNPSCcCM
+ JkAevMgKZJt+RnGYPqTfYVHKXZCXjyHKJWqtz7NZVm9aqV1wwebDdTWtrpez7Ifwf0eoQscFZg585
+ XaARHpMtxagLIdA6cC8FvKabW+Nmi3G+34olqMpIQXIJ19RZsvBh9PJqNlsDp0ZposDddWW05MQoI
+ VxJCrLs/9KxRy7/+RZ8lgyBRaeDzEHiERh/4E9r7AemLu0P3law8nHluROfhutbBI6+wLGFDa+ts7
+ QXySCCFfCXBDZ8/ZIarwL9bcvF4PUqie1ErEaqfSEqcU3o2MlVivFfVzp09dbipTRqzb+bPUUFVq5
+ VhNYMiMpdM2yaZE3zWUEeFHRIPu4VyVoVU+f8MnAZebW0vqZQcCY1mtK+GYWiwnhVI92iX85Vw4EF
+ mRWU7lYbDNo9ewGuVWwVNolW0SVVRMG/uR+7+3sjC7pX5ffcACMwCG3MMMC0hbK5mSqf/UALqdv5V
+ fddYC+7OWpnHH2pepeXebNz7siHUGSBoXaPTp1MCc1JEk0wqKOc+HJo67yqct524LKlU2ryxJYP3U
+ 2/d82Ml1ZD3czlRW/hWq2mWcrw5xh/IMY0YLtDuck=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rojcu-0008KA-QA; Mon, 25 Mar 2024 12:40:36 +0000
+Message-ID: <2fe371b5-07a3-4322-8543-76b15244dbe1@ilande.co.uk>
+Date: Mon, 25 Mar 2024 12:41:18 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 20/34] tests/libqos: add riscv/virt machine nodes
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu, qemu-devel@nongnu.org
+References: <20240324191707.623175-1-mark.cave-ayland@ilande.co.uk>
+ <20240324191707.623175-13-mark.cave-ayland@ilande.co.uk>
+ <aaaad221-9a88-4298-ac87-49d8a827ce9f@linaro.org>
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Alistair Francis <alistair23@gmail.com>,
- qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>, Greg Kurz <groug@kaod.org>,
- Christian Schoenebeck <qemu_oss@crudebyte.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20240308111152.2856137-1-alistair.francis@wdc.com>
- <20240308111152.2856137-21-alistair.francis@wdc.com>
- <b85c8451-57e0-49aa-a7c4-28ae8bf08bf9@redhat.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <b85c8451-57e0-49aa-a7c4-28ae8bf08bf9@redhat.com>
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
+ xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
+ 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
+ E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
+ PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
+ PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
+ AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
+ eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
+ NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
+ mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
+ z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
+ T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
+ DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
+ y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
+ 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
+ 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
+ YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
+ Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
+ BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
+ opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
+ NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
+ Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
+ KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
+ imgcU9TTGC5qd9g=
+In-Reply-To: <aaaad221-9a88-4298-ac87-49d8a827ce9f@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x629.google.com
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH v3 12/17] esp.c: prevent cmdfifo overflow in
+ esp_cdb_ready()
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,62 +105,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 25/03/2024 10:26, Philippe Mathieu-Daudé wrote:
 
-
-On 3/25/24 06:20, Thomas Huth wrote:
-> On 08/03/2024 12.11, Alistair Francis wrote:
->> From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> On 24/3/24 20:17, Mark Cave-Ayland wrote:
+>> During normal use the cmdfifo will never wrap internally and cmdfifo_cdb_offset
+>> will always indicate the start of the SCSI CDB. However it is possible that a
+>> malicious guest could issue an invalid ESP command sequence such that cmdfifo
+>> wraps internally and cmdfifo_cdb_offset could point beyond the end of the FIFO
+>> data buffer.
 >>
->> Add a RISC-V 'virt' machine to the graph. This implementation is a
->> modified copy of the existing arm machine in arm-virt-machine.c
+>> Add an extra check to fifo8_peek_buf() to ensure that if the cmdfifo has wrapped
+>> internally then esp_cdb_ready() will exit rather than allow scsi_cdb_length() to
+>> access data outside the cmdfifo data buffer.
 >>
->> It contains a virtio-mmio and a generic-pcihost controller. The
->> generic-pcihost controller hardcodes assumptions from the ARM 'virt'
->> machine, like ecam and pio_base addresses, so we'll add an extra step to
->> set its parameters after creating it.
->>
->> Our command line is incremented with 'aclint' parameters to allow the
->> machine to run MSI tests.
->>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> Acked-by: Alistair Francis <alistair.francis@wdc.com>
->> Acked-by: Thomas Huth <thuth@redhat.com>
->> Message-ID: <20240217192607.32565-7-dbarboza@ventanamicro.com>
->> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+>> Reported-by: Chuhong Yuan <hslester96@gmail.com>
+>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >> ---
+>>   hw/scsi/esp.c | 12 +++++++++++-
+>>   1 file changed, 11 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+>> index f47abc36d6..d8db33b921 100644
+>> --- a/hw/scsi/esp.c
+>> +++ b/hw/scsi/esp.c
+>> @@ -429,13 +429,23 @@ static bool esp_cdb_ready(ESPState *s)
+>>   {
+>>       int len = fifo8_num_used(&s->cmdfifo) - s->cmdfifo_cdb_offset;
+>>       const uint8_t *pbuf;
+>> +    uint32_t n;
+>>       int cdblen;
+>>       if (len <= 0) {
+>>           return false;
+>>       }
+>> -    pbuf = fifo8_peek_buf(&s->cmdfifo, len, NULL);
+>> +    pbuf = fifo8_peek_buf(&s->cmdfifo, len, &n);
+>> +    if (n < len) {
+>> +        /*
+>> +         * In normal use the cmdfifo should never wrap, but include this check
+>> +         * to prevent a malicious guest from reading past the end of the
+>> +         * cmdfifo data buffer below
+>> +         */
 > 
->   Hi!
-> 
-> I noticed that "make check SPEED=slow" is now failing on the qos-test with both, qemu-system-riscv32 and qemu-system-riscv64. Seems like it fails with the virtio-9p test, when I run the qos-test manually, I get:
-> 
-> $ MALLOC_PERTURB_=21 V=2 QTEST_QEMU_BINARY=./qemu-system-riscv64 \
->     tests/qtest/qos-test -m slow
-> ...
-> # Start of local tests
-> # starting QEMU: exec ./qemu-system-riscv64 -qtest unix:/tmp/qtest-211303.sock -qtest-log /dev/null -chardev socket,path=/tmp/qtest-211303.qmp,id=char0 -mon chardev=char0,mode=control -display none -audio none -M virt,aclint=on,aia=aplic-imsic -fsdev local,id=fsdev0,path='/home/thuth/tmp/qemu-build/qtest-9p-local-MBCML2',security_model=mapped-xattr -device virtio-9p-pci,fsdev=fsdev0,addr=04.0,mount_tag=qtest -accel qtest
-> ok 168 /riscv64/virt/generic-pcihost/pci-bus-generic/pci-bus/virtio-9p-pci/virtio-9p/virtio-9p-tests/local/config
-> Received response 7 (RLERROR) instead of 73 (RMKDIR)
-> Rlerror has errno 17 (File exists)
-> **
-> ERROR:../../devel/qemu/tests/qtest/libqos/virtio-9p-client.c:275:v9fs_req_recv: assertion failed (hdr.id == id): (7 == 73)
-> not ok /riscv64/virt/generic-pcihost/pci-bus-generic/pci-bus/virtio-9p-pci/virtio-9p/virtio-9p-tests/local/create_dir - ERROR:../../devel/qemu/tests/qtest/libqos/virtio-9p-client.c:275:v9fs_req_recv: assertion failed (hdr.id == id): (7 == 73)
-> Bail out!
-> Aborted (core dumped)
-> 
-> Could you please have a look? ... or if it is too cumbersome to fix, could we please always skip the virtio-9p local tests on riscv ?
+> Can we qemu_log_mask(LOG_GUEST_ERROR) something here?
 
-I'll take a look.
+I'm not sure that this makes sense here? The cmdfifo wrapping is internal artifact of 
+the Fifo8 implementation rather than being directly affected by writes to the ESP 
+hardware FIFO (i.e. this is not the same as the ESP hardware FIFO overflow).
 
-Do we run these slow tests in the Gitlab pipeline? I don't recall this
-particular test failing when I first introduced the riscv machine nodes.
+>> +        return false;
+>> +    }
+>> +
+>>       cdblen = scsi_cdb_length((uint8_t *)&pbuf[s->cmdfifo_cdb_offset]);
+>>       return cdblen < 0 ? false : (len >= cdblen);
+>  
 
 
-Thanks,
+ATB,
 
+Mark.
 
-Daniel
-
-> 
->   Thomas
-> 
 
