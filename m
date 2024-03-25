@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537C888A520
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6E788A564
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:56:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rolc2-0005uU-Hn; Mon, 25 Mar 2024 10:47:46 -0400
+	id 1roljd-0000BD-IS; Mon, 25 Mar 2024 10:55:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rolc0-0005uL-Go
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:47:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rolby-0002gE-5b
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:47:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711378061;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=DsJzNPnYlAzllKzELoC8ajG8VB6UCIrLwt5d6+Usjys=;
- b=aowVExhdDK+ZiC9f5DWsyGuy/gPNPdH2sc3bf2AIgo5/2uc8OV7FpkAU2P9aFEUhUAbSw7
- Xfq6JTkM3AHZ/qK1ijQySJ0eLx+rFuQkMZhNi2u2m91jIzBYK8qA9Mks1TKROBR0BsacGd
- FbvgxwW2WHAsLZDpHyqHUhgN8CtZEuo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-403-XMZUEqHON_e8BDus4gvrKg-1; Mon,
- 25 Mar 2024 10:47:36 -0400
-X-MC-Unique: XMZUEqHON_e8BDus4gvrKg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 60FDB2800E8F;
- Mon, 25 Mar 2024 14:47:36 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.158])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 05EA51121306;
- Mon, 25 Mar 2024 14:47:36 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 9AB551801CDC; Mon, 25 Mar 2024 15:47:25 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Tom Lendacky <thomas.lendacky@amd.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v5 2/2] target/i386: add guest-phys-bits cpu property
-Date: Mon, 25 Mar 2024 15:47:24 +0100
-Message-ID: <20240325144725.1089192-3-kraxel@redhat.com>
-In-Reply-To: <20240325144725.1089192-1-kraxel@redhat.com>
-References: <20240325144725.1089192-1-kraxel@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1roljU-0000Aj-Gl
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:55:29 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1roljS-0003mE-3P
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:55:27 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-513e134f73aso5694737e87.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 07:55:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711378522; x=1711983322; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=qY+cucr7njz5e8ZCgvfC9KD0DaTkoI+Uv9JUOxqL04U=;
+ b=R61Ql4SHPNYRj6C1mpGrIdj/KQxmb7fpLcF1q0x6O4jQlkBSnNs0vc1tHiqFPXnUKS
+ bNOGqtow2PVRK7x9hpRl2z1qzCJ4ki6/xS0SRREhWWaRGCByHS50jhXLQCZkwjY+KlZg
+ uS86vHnw4zhY+3FV9yonRSZgfAeJwbsjRE4a80J3unK+R+sOmWgVi4pJE1bI4whD/tWT
+ /E5KalrsY0BRw/+AkUbJ46hftU7nQai05JupQM3sY2r9hgqIj7I9Frg1EOmkEumqd16E
+ QbNnzAwoILx5nwBA9wxXtL6cV9Aoqbpe+JODDOw+Ow+jeQ6tBhm/8toQPNTqkbPHZgf8
+ nEdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711378522; x=1711983322;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qY+cucr7njz5e8ZCgvfC9KD0DaTkoI+Uv9JUOxqL04U=;
+ b=k9ARVNGoCfY+exjGiqWIAN6zws3VrTiA/4khUW87olVTq6PtB17JNkjWR3e3BtIL/i
+ UbUGghQFEQOjgkx0g/M2kEmGNU/JzHa3cy/39TaXGi3qnYK13zzw5slcJv0UBxJjizGk
+ /GFWhwHTmXVQtYSXMZr2ZtcL9gNhv1OVFDNffa8RWM6YOllYe+klr+Z7tZUw7j8ZD+RR
+ rXLt1jskbyNovS4e8jtM6WxdPr3bj/Pwa23TWF5nnke+0ENHFTxlaTgZDxLkad5/J07z
+ WfMW5kn64D0TXcUGpv3tNcEKhaFQ3gnBoC3TRBj4F34UXJ6Ob70Vtv4MGuwpIzNwloNt
+ o8mg==
+X-Gm-Message-State: AOJu0Yws9gCu/VS6iAQOA2AhfjxExj1VkPDZiCnD5+yiAKq1lWwNH0tq
+ GDjnh7etTdrmIAjGjsJM2Xx3IwTGUduxX1z5pVY/iG25pjcVrKj1xiE/sxxaRgezAxfdsFSWGki
+ 76viqFChTo1TUAuKMuKrq6i3VFCCCJZ+aeQwTZQ==
+X-Google-Smtp-Source: AGHT+IEB2EqI0FxxZ12XEep1WClOX3F9XRR6aOPJokYn6Gjufyhc1Fnf8nmYZIDPA+y2EB6fh0TaDoiJ8QwNqiEyCnc=
+X-Received: by 2002:a19:ca1a:0:b0:513:d22c:419a with SMTP id
+ a26-20020a19ca1a000000b00513d22c419amr5284602lfg.61.1711378522224; Mon, 25
+ Mar 2024 07:55:22 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+References: <20240325144440.1069662-1-kraxel@redhat.com>
+In-Reply-To: <20240325144440.1069662-1-kraxel@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 25 Mar 2024 14:55:11 +0000
+Message-ID: <CAFEAcA9PkAyqVcKMLQZw71FMh6YTpNDNwuKoO0u7i_mRxsJizQ@mail.gmail.com>
+Subject: Re: [PATCH] edk2: get version + date from git submodule
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::133;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x133.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,53 +85,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allows to set guest-phys-bits (cpuid leaf 80000008, eax[23:16])
-via -cpu $model,guest-phys-bits=$nr.
+On Mon, 25 Mar 2024 at 14:45, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> Turned out hard-coding version and date in the Makefile wasn't a bright
+> idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
+> from git instead.
+>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+> ---
+>  roms/Makefile | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/roms/Makefile b/roms/Makefile
+> index edc234a0e886..534eba17ebd0 100644
+> --- a/roms/Makefile
+> +++ b/roms/Makefile
+> @@ -51,6 +51,8 @@ SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
+>  # efi ia32, efi x64) into a single rom binary.
+>  #
+>  EDK2_EFIROM = edk2/BaseTools/Source/C/bin/EfiRom
+> +EDK2_STABLE = $(shell cd edk2; git describe --tags --match 'edk2-stable*')
+> +EDK2_DATE = $(shell cd edk2; git show --pretty='format:%cd' --date='format:%m/%d/%Y'| head -1)
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- target/i386/cpu.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I don't think there's any guarantee that the user has 'git'
+installed. scripts/qemu-version avoids using "git describe"
+unless it's building in a git tree.
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 3b7bd506baf1..79bea83b7b1c 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7380,6 +7380,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         if (cpu->phys_bits == 0) {
-             cpu->phys_bits = TCG_PHYS_ADDR_BITS;
-         }
-+        if (cpu->guest_phys_bits &&
-+            (cpu->guest_phys_bits > cpu->phys_bits ||
-+            cpu->guest_phys_bits < 32)) {
-+            error_setg(errp, "guest-phys-bits should be between 32 and %u "
-+                             " (but is %u)",
-+                             cpu->phys_bits, cpu->guest_phys_bits);
-+            return;
-+        }
-     } else {
-         /* For 32 bit systems don't use the user set value, but keep
-          * phys_bits consistent with what we tell the guest.
-@@ -7388,6 +7396,10 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-             error_setg(errp, "phys-bits is not user-configurable in 32 bit");
-             return;
-         }
-+        if (cpu->guest_phys_bits != 0) {
-+            error_setg(errp, "guest-phys-bits is not user-configurable in 32 bit");
-+            return;
-+        }
- 
-         if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
-             cpu->phys_bits = 36;
-@@ -7888,6 +7900,7 @@ static Property x86_cpu_properties[] = {
-     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
-     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
-     DEFINE_PROP_UINT32("phys-bits", X86CPU, phys_bits, 0),
-+    DEFINE_PROP_UINT32("guest-phys-bits", X86CPU, guest_phys_bits, 0),
-     DEFINE_PROP_BOOL("host-phys-bits", X86CPU, host_phys_bits, false),
-     DEFINE_PROP_UINT8("host-phys-bits-limit", X86CPU, host_phys_bits_limit, 0),
-     DEFINE_PROP_BOOL("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
--- 
-2.44.0
+You can avoid the "| head -1" by using
+  git log -1 --pretty='format:%cd' --date='format:%m/%d/%Y'
+I think.
 
+Also, does EDK2 really want month/day/year? Typically silly
+choice if so :-)
+
+thanks
+-- PMM
 
