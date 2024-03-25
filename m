@@ -2,74 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDAA88AF41
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA3988AF4C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 20:05:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ropcU-0000p7-MD; Mon, 25 Mar 2024 15:04:30 -0400
+	id 1ropcU-0000pA-Nj; Mon, 25 Mar 2024 15:04:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropcM-0000ob-W6
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:23 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1ropcO-0000ot-87
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:24 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1ropcK-0004lF-TM
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:22 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6e6b729669bso3882708b3a.3
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:04:20 -0700 (PDT)
+ id 1ropcM-0004lN-MX
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 15:04:23 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1e04ac200a6so32868975ad.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:04:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711393459; x=1711998259; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Y5Zto9K7udTq5AQPakgTtPCJCOiPmQtEfYiG7fTXVFs=;
- b=UZunfXKeRMJIOAWTh1CDGrDeyMcXUH0o8EgBp+UAhIs5Hhq3tgkn/C+RvVGfLAL40W
- jtOfQ/SSS5f9MLdsM1zPbGwWprqIZaBbbU4E0mGg7kOWdX/ZWz9ku9v4VLMhSnIA1+O5
- WEdtwM1CzNS4hIHh1XPeCs7Z7x6N3O4mSh/f6a8bp86THWGJJ86Y5Kl1pT0qSImcceM6
- bG8n85UXHbWJ4jRjyKXtIAuZMbJWuqcrsuWR75fL8NNt/fdncGhuvbn825rEGdCwHtGb
- 3tjVWx1CP5MnD+NUp7fXVmxc0GW2wZGSzdDqH8aZEZtFB6CTPMM32dwbJmci5TNgRD9C
- msAA==
+ d=gmail.com; s=20230601; t=1711393461; x=1711998261; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xakP/WAiR69d8B5B18gJ85sFdqfiQ0c6HHa8yXwoSyo=;
+ b=iAir1Uwwl9WlwmE93JfiOb+CwsUb4gBLalGvcvcIVP3we69YeRgbBCXgn9oloUeUZW
+ maZTPds8FH/72mXtF+9FQk/EcsRZwWqzACA5lAgJoyHDj+45TD0PBBY/4Se8BHZ3GmtV
+ V5UOFD3CfS54ex+fkNJNi9WDU//HaaIPfd4oqczLfrQHzelJnJ1DlyvbWCUK1DpmQbdM
+ MqnGVVgD9/FL1OpFFkhbPdHLPyCGH27dNIfsYGq+o6iKfhePgVdPDUi+uCJ8FfUqAfhf
+ 02FLpqNQQPr/wUi/bLAO659DFgtev0GkKmznyT9ipT+eaUt5B7C+qLDZFVfHik+BZ4je
+ B5Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711393459; x=1711998259;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Y5Zto9K7udTq5AQPakgTtPCJCOiPmQtEfYiG7fTXVFs=;
- b=bd0KWNbpoPw3wos3dC8M/e+qv5PZXj8Xdi1FW4YNT4RgTeLnfBy5Ex5IIDkWuryP/o
- 3fbxnA3sWWFDrLEI1kxO3xk5tTHierbZ3U1Q6LInlvZyTPzIcv4E562RVhqi+NqJoM4V
- +cri21nl0bhZ1o37NOVG8OR97JGcE6/GK3KRgblJuGSBIwiG5AlokI0Ntwb2UzCgkEFu
- LhToNHczE+tkIJwumqyipTIRNLLktMKzKq42tYevja+/DsXo0vXOLErwrTmoYUVeLzSS
- 92J3X+AJxVd2PHgP6y5JIJPOCT1NZSEb+SeuCXQzAFwvh4jT3KVYRUwDi4wrYs3/8Lcy
- lIfg==
-X-Gm-Message-State: AOJu0YyhJdeExoEjHBnTdugbMz8vz4SEhUb7HO26RFSMjNIXp1z0zt0i
- kMqh8higMe+8vNsdVWZOUai8TZ4atYGI+6gf0u8Bw7WBXiZGkdTqFVWykIrp
-X-Google-Smtp-Source: AGHT+IGZShujGwOKxQ+nptAm5/rMbK7nM5xmkrnfnyDFXq5KsYB7EKXYKiCNBZkCJq9HAY7FI/XqIw==
-X-Received: by 2002:a05:6a20:9147:b0:1a3:bdd6:efef with SMTP id
- x7-20020a056a20914700b001a3bdd6efefmr7683199pzc.50.1711393458627; 
- Mon, 25 Mar 2024 12:04:18 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711393461; x=1711998261;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xakP/WAiR69d8B5B18gJ85sFdqfiQ0c6HHa8yXwoSyo=;
+ b=LOQCxNwzvZaLE2JZpiz2PlweZ33t8Tz7xBHd37ci0bG0/0EYfXMezJ70/xuWqMnr+r
+ E4lZN8GYuA07DHA87VXSWz/MgN352Cph9Dkg9rX1vsDzAZvAS2FH3N/2yOjZnJeKEJLd
+ MPJsU5HTuq8EZtbxIZS4iVIg+IfqvOeXtAsAOx6afDJbqAXeXPyvS097jeD6A1o4soXE
+ UMxuH13Qbiz90TcbnCOUJKa2LYfyX1IBxdLe2VBXlX2Uzycb8D7ODJKWE3w52SEVUCe7
+ RSw5/os35sfn924ukK1Z13kBiJuLoQATmhbpnxJv0+IQzchW3533rCe9Meg8qy/RMKbA
+ mLSw==
+X-Gm-Message-State: AOJu0YwujhAZ3LZuEgSwdJg7WaJM6GyVtXo8sC8PD7vb7nHExkG30yc4
+ 6WqrpELXKRBgYvTMjTS7HKEdTwGAU75qlIumNxBEdg4o5WMPbsz03JH8HgVH
+X-Google-Smtp-Source: AGHT+IHIlRLO0pl+CVLunHEPlD8oj7IDD/ym0H18wHpotJXetvT29Z/tMxVqVBK/ih6+S4JVauRffQ==
+X-Received: by 2002:a17:903:22c4:b0:1e0:c070:b082 with SMTP id
+ y4-20020a17090322c400b001e0c070b082mr5039024plg.14.1711393460732; 
+ Mon, 25 Mar 2024 12:04:20 -0700 (PDT)
 Received: from localhost.localdomain ([2601:641:300:14de:7bed:2ef:bead:18b])
  by smtp.gmail.com with ESMTPSA id
- z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.15
+ z7-20020a634c07000000b005f05c9ee8d3sm1722663pga.93.2024.03.25.12.04.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 12:04:18 -0700 (PDT)
+ Mon, 25 Mar 2024 12:04:20 -0700 (PDT)
 From: nifan.cxl@gmail.com
 To: qemu-devel@nongnu.org
 Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
  gregory.price@memverge.com, ira.weiny@intel.com, dan.j.williams@intel.com,
  a.manzanares@samsung.com, dave@stgolabs.net, nmtadam.samsung@gmail.com,
  nifan.cxl@gmail.com, jim.harris@samsung.com, Jorgen.Hansen@wdc.com,
- wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
-Subject: [PATCH v6 00/12] Enabling DCD emulation support in Qemu
-Date: Mon, 25 Mar 2024 12:02:18 -0700
-Message-ID: <20240325190339.696686-1-nifan.cxl@gmail.com>
+ wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v6 01/12] hw/cxl/cxl-mailbox-utils: Add dc_event_log_size
+ field to output payload of identify memory device command
+Date: Mon, 25 Mar 2024 12:02:19 -0700
+Message-ID: <20240325190339.696686-2-nifan.cxl@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240325190339.696686-1-nifan.cxl@gmail.com>
+References: <20240325190339.696686-1-nifan.cxl@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,82 +99,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fan Ni <fan.ni@samsung.com>
 
-A git tree of his series can be found here (with one extra commit on top
-for printing out accepted/pending extent list): 
-https://github.com/moking/qemu/tree/dcd-v6
+Based on CXL spec r3.1 Table 8-127 (Identify Memory Device Output
+Payload), dynamic capacity event log size should be part of
+output of the Identify command.
+Add dc_event_log_size to the output payload for the host to get the info.
 
-v5->v6:
-1. Picked up tags;
-2. Renamed start_region_id to start_rid; (Jonathan)
-3. For get extent list mailbox command, add logic to adjust returned extent
-   count based on output payload size; (Jonathan)
-4. Use Range to detect extent comparison and overlaps; (Jonathan)
-5. Renamed extents_pending_to_add to extents_pending; (Jonathan)
-6. Updated the commit log of the qmp interface patch by renaming "dpa" to offset
-    to align with the code. (Gregory)
-7. For DC extent add response and release mailbox command, we use a 2 pass
-   approach. The first pass is to detect any potential errors, and the second
-   pass to update the in-device data structure;
-8. For QMP interface for add/release DC extents, use 2 pass approach with the
-   first pass detecting any faulty input and second pass filling the event log.
-   Note, based on sswg discussion, we disallow release extents which has DPA
-   range not accepted by the host yet;
-9. We enforce the in-order process of the pending list for DC extent release
-   mailbox command, and the head of pending list is handled accordingly.
-10. The last patch from v5 has been removed from this series.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Fan Ni <fan.ni@samsung.com>
+---
+ hw/cxl/cxl-mailbox-utils.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Note: we do not drop the DC changes in build_dvsecs which was suggested
-by Jonathan, the reason is that during testing, we found in the current
-kernel code, when checking whether the media is ready
-(in cxl_await_media_ready), the devsec range registers are checked, for
-dcd device, if we leave dvsec range registers unset, the device cannot be
-put into "ready" state, which will cause the device inactive.
-The related code is below,
-https://git.kernel.org/pub/scm/linux/kernel/git/cxl/cxl.git/tree/drivers/cxl/core/pci.c?h=fixes&id=d206a76d7d2726f3b096037f2079ce0bd3ba329b#n195
-
-Compared to v5[1], PATCH 8-9 and PATCH 11-12 are almost re-coded, so need more
-care when review.
-
-The code is tested with similar setup and has passed similar tests as listed
-in the cover letter of v5.
-Also, the code passes similar tests with the latest DCD kernel patchset[2].
-
-[1] Qemu DCD patches v5: https://lore.kernel.org/linux-cxl/20240304194331.1586191-1-nifan.cxl@gmail.com/T/#t
-[2] DCD kernel patches: https://lore.kernel.org/linux-cxl/20240324-dcd-type2-upstream-v1-0-b7b00d623625@intel.com/T/#m11c571e21c4fe17c7d04ec5c2c7bc7cbf2cd07e3
-
-
-
-Fan Ni (12):
-  hw/cxl/cxl-mailbox-utils: Add dc_event_log_size field to output
-    payload of identify memory device command
-  hw/cxl/cxl-mailbox-utils: Add dynamic capacity region representative
-    and mailbox command support
-  include/hw/cxl/cxl_device: Rename mem_size as static_mem_size for
-    type3 memory devices
-  hw/mem/cxl_type3: Add support to create DC regions to type3 memory
-    devices
-  hw/mem/cxl-type3: Refactor ct3_build_cdat_entries_for_mr to take mr
-    size instead of mr as argument
-  hw/mem/cxl_type3: Add host backend and address space handling for DC
-    regions
-  hw/mem/cxl_type3: Add DC extent list representative and get DC extent
-    list mailbox support
-  hw/cxl/cxl-mailbox-utils: Add mailbox commands to support add/release
-    dynamic capacity response
-  hw/cxl/events: Add qmp interfaces to add/release dynamic capacity
-    extents
-  hw/mem/cxl_type3: Add dpa range validation for accesses to DC regions
-  hw/cxl/cxl-mailbox-utils: Add superset extent release mailbox support
-  hw/mem/cxl_type3: Allow to release extent superset in QMP interface
-
- hw/cxl/cxl-mailbox-utils.c  | 644 +++++++++++++++++++++++++++++++++++-
- hw/mem/cxl_type3.c          | 580 +++++++++++++++++++++++++++++---
- hw/mem/cxl_type3_stubs.c    |  14 +
- include/hw/cxl/cxl_device.h |  67 +++-
- include/hw/cxl/cxl_events.h |  18 +
- qapi/cxl.json               |  61 +++-
- 6 files changed, 1334 insertions(+), 50 deletions(-)
-
+diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+index 4bcd727f4c..ba1d9901df 100644
+--- a/hw/cxl/cxl-mailbox-utils.c
++++ b/hw/cxl/cxl-mailbox-utils.c
+@@ -21,6 +21,7 @@
+ #include "sysemu/hostmem.h"
+ 
+ #define CXL_CAPACITY_MULTIPLIER   (256 * MiB)
++#define CXL_DC_EVENT_LOG_SIZE 8
+ 
+ /*
+  * How to add a new command, example. The command set FOO, with cmd BAR.
+@@ -780,8 +781,9 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+         uint16_t inject_poison_limit;
+         uint8_t poison_caps;
+         uint8_t qos_telemetry_caps;
++        uint16_t dc_event_log_size;
+     } QEMU_PACKED *id;
+-    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x43);
++    QEMU_BUILD_BUG_ON(sizeof(*id) != 0x45);
+     CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+     CXLType3Class *cvc = CXL_TYPE3_GET_CLASS(ct3d);
+     CXLDeviceState *cxl_dstate = &ct3d->cxl_dstate;
+@@ -807,6 +809,7 @@ static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
+     st24_le_p(id->poison_list_max_mer, 256);
+     /* No limit - so limited by main poison record limit */
+     stw_le_p(&id->inject_poison_limit, 0);
++    stw_le_p(&id->dc_event_log_size, CXL_DC_EVENT_LOG_SIZE);
+ 
+     *len_out = sizeof(*id);
+     return CXL_MBOX_SUCCESS;
 -- 
 2.43.0
 
