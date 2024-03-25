@@ -2,95 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60DF388A094
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:58:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD0E88A2CC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 14:46:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojt6-0000lo-Fl; Mon, 25 Mar 2024 08:57:16 -0400
+	id 1rokeJ-0006Mi-Ax; Mon, 25 Mar 2024 09:46:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rojt4-0000lI-Hw
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:57:14 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
+ id 1rojxH-0002g9-Cd; Mon, 25 Mar 2024 09:01:38 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rojt2-00015B-1P
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:57:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:To:MIME-Version:Date:Message-ID:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=6vUWl5jHLRxIYOzySN2gOxGp5jGhu3yhZACyWaxVYTg=; b=bB5kIXF4r+pY/E1BE4k/dkNsY6
- tRDZGCVfrX5P+7PBLttRzTfKBxYcLw1CyYxxr9dJTiJYcnhLyi4puZcLqoVi6WW0V5/VkvHmo8Ri+
- YwGdyyY+kv+UOy31GuX9HvcjF+bSSUI31soXP4wfPzHUp/9331k1/eTBCLFXMqS92FbZMWdYEfAcx
- 7SOqPVEC5I/SAGo6namjoCtcsh+3YDcfrtb23cwVOJXrN1h2ylL3m9yLrCr7c3l8TNeFboyjBMY0A
- t6j0yO5Q9hFlHkExygdloJrHWuJOvR6z13UCBzQgwugqqt0+rZSURHDUGqCQelsOxq/Bg/Fa2c3IS
- DhKzIUdPjeFw5pX8HEHI9dk/M91aHBPDm3kH81KjOshsCG5ngN3qr46TBRrehFgidBQz8l4hcItv7
- N+oEeMsjbsBMhm8b450E49PNgVhn+aEh8KxIGjCBK88dlce28q1M63G392mHiKdksA9Zs6coLCqQD
- tBJYm5NaU9oC723hOAbo9/pBC3XVg1BymJ/eGe3v9lQ/MrOkkamIIiG7V39LOyNGSbk0Z15rbvZPF
- JU8EJJt4277z+jV2BZto6xB9TOv7Om22lrAbH2Xe2SEt70bTOGCPIg8TRgdVCtrD7L9G74KiVtmPW
- b6IUzKJd+QCE9IR7NrzyOmqdKgAOCyx54z+aqt2ko=;
-Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rojs1-0008Sx-Bo; Mon, 25 Mar 2024 12:56:13 +0000
-Message-ID: <9f6064d0-cb77-47eb-a4c0-25eaf0d184f5@ilande.co.uk>
-Date: Mon, 25 Mar 2024 12:57:00 +0000
+ (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
+ id 1rojxF-0001pz-9k; Mon, 25 Mar 2024 09:01:35 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com BF729C0029
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1711371686;
+ bh=xIIe5O6x22a7VBvnMNb4j1rhvzWw+lgcaBik4NeVUwc=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=br2SgbIcp6hGyWtlKkpxMybxSKPqb+IyrhrB6E8mMUSlpcE7LtiRsHaRMrQhyYZzg
+ C1TgwzxZ6BZXu1ANtkPXvpZ92JOrr5YcArZhEX3vwPFgcJ0x/sq0rAMoggLE6FAPEn
+ k3QymuuY1XLMmMM7lYegSnKq5K62ANXdc1OpTBLAYKZvCikJ4XvhrwC5sSUAWfYPsC
+ q7xNwMppU+xJVYQ+9iL++P+4rWRwUG/S127yFvUOieaMRf6o5pM8ZCDORsNU6Gdark
+ BFHa4EpPvlzwQh31yY1/zh7Jswf6cvs+nRgmutiDWMjmHrnpt8TiaaIQAuPK/87eC3
+ Dudqx6DDAvX7g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1711371686;
+ bh=xIIe5O6x22a7VBvnMNb4j1rhvzWw+lgcaBik4NeVUwc=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+ b=qLCSWfKbxk6jcHHTpDr5dkwYLQY609xuMEu1XKIpeMORkxupv2Wmi6dmTax3HiCV8
+ /KkxGxYt1H2wleY+sSl/4zGTlR5k8wQ5+uLa0ifokITz3qhph3BkZQVkqNlf3WUmrq
+ yEu3EOUhTaADFeWUYSIdeFDyMhBzn+yjVellR5vi+oYShPA1QjoYKLgH7mMWHETvSv
+ ShA6oRD9o09s1WXwfWxDKyOEU6PIo7x/Ne5pbgKn3VhbcfV85dOQPFa5GHfzP96Sly
+ 2TkmXm0LzWAcdoGfg1wv/d/rP0AkVreiLWAwzgcDD7ksC7z0tpx8JNtlsZ6eJebIUQ
+ UUpe/Xu6GUV7Q==
+From: Alexei Filippov <alexei.filippov@syntacore.com>
+To: <dbarboza@ventanamicro.com>
+CC: <alexei.filippov@syntacore.com>, <alistair.francis@wdc.com>,
+ <apatel@ventanamicro.com>, <bin.meng@windriver.com>, <liwei1518@gmail.com>,
+ <palmer@dabbelt.com>, <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>,
+ <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH v2] target/riscv/kvm/kvm-cpu.c: kvm_riscv_handle_sbi() fail
+ with vendor-specific SBI
+Date: Mon, 25 Mar 2024 16:01:16 +0300
+Message-ID: <20240325130116.13194-1-alexei.filippov@syntacore.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <b7fff1e9-f2b3-4a45-8966-1dbd76263457@ventanamicro.com>
+References: <b7fff1e9-f2b3-4a45-8966-1dbd76263457@ventanamicro.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- pbonzini@redhat.com, fam@euphon.net, laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20240324191707.623175-1-mark.cave-ayland@ilande.co.uk>
- <20240324191707.623175-11-mark.cave-ayland@ilande.co.uk>
- <5f8511b6-225d-4197-8785-7fb69a1b1c13@linaro.org>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <5f8511b6-225d-4197-8785-7fb69a1b1c13@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v3 10/17] esp.c: don't assert() if FIFO empty when
- executing non-DMA SELATNS
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Content-Type: text/plain
+X-ClientProxiedBy: T-EXCH-10.corp.yadro.com (172.17.11.60) To
+ T-EXCH-12.corp.yadro.com (172.17.11.143)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=alexei.filippov@syntacore.com; helo=mta-04.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 25 Mar 2024 09:45:59 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,62 +79,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/03/2024 10:49, Philippe Mathieu-Daudé wrote:
+kvm_riscv_handle_sbi() may return not supported return code to not trigger
+qemu abort with vendor-specific sbi.
 
-> On 24/3/24 20:16, Mark Cave-Ayland wrote:
->> The current logic assumes that at least 1 byte is present in the FIFO when
->> executing a non-DMA SELATNS command, but this may not be the case if the
->> guest executes an invalid ESP command sequence.
-> 
-> What is real hardware behavior here?
+Added SBI related return code's defines.
 
-I don't know for sure, but my guess is that if you ask to transfer a single byte from 
-the FIFO to the SCSI bus and the FIFO is empty, you'll either end up with all zeros 
-or a NOOP.
+Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
+Fixes: 4eb47125 ("target/riscv: Handle KVM_EXIT_RISCV_SBI exit")
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
 
->> Reported-by: Chuhong Yuan <hslester96@gmail.com>
->> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->> ---
->>   hw/scsi/esp.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
->> index 1aac8f5564..f3aa5364cf 100644
->> --- a/hw/scsi/esp.c
->> +++ b/hw/scsi/esp.c
->> @@ -762,7 +762,8 @@ static void esp_do_nodma(ESPState *s)
->>           case CMD_SELATNS:
-> 
-> Alternatively logging the guest abuse:
-> 
->                len = fifo8_num_used(&s->fifo);
->                if (len < 1) {
->                    qemu_log_mask(LOG_GUEST_ERROR, ...
->                    break;
->                }
-> 
->>               /* Copy one byte from FIFO into cmdfifo */
->> -            len = esp_fifo_pop_buf(s, buf, 1);
->> +            len = esp_fifo_pop_buf(s, buf,
->> +                                   MIN(fifo8_num_used(&s->fifo), 1));
+Changes since v1:
+        -Add Fixes and Revied-by lines.
+ target/riscv/kvm/kvm-cpu.c         |  5 +++--
+ target/riscv/sbi_ecall_interface.h | 11 +++++++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-This is similar to your previous comment in that it's an artifact of the 
-implementation: when popping data using esp_fifo_pop_buf() I've always allowed the 
-internal Fifo8 assert() if too much data is requested. This was a deliberate design 
-choice that allowed me to catch several memory issues when working on the ESP 
-emulation: it just so happened I missed a case in the last big ESP rework that was 
-found by fuzzing.
-
-It's also worth noting that it's a Fifo8 internal protective assert() that fires here 
-which is different from the previous case whereby an overflow of the internal Fifo8 
-data buffer actually did occur.
-
->>               len = MIN(fifo8_num_free(&s->cmdfifo), len);
->>               fifo8_push_all(&s->cmdfifo, buf, len);
-
-
-ATB,
-
-Mark.
+diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+index 6a6c6cae80..a4f84ad950 100644
+--- a/target/riscv/kvm/kvm-cpu.c
++++ b/target/riscv/kvm/kvm-cpu.c
+@@ -1404,7 +1404,7 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
+         if (ret == sizeof(ch)) {
+             run->riscv_sbi.ret[0] = ch;
+         } else {
+-            run->riscv_sbi.ret[0] = -1;
++            run->riscv_sbi.ret[0] = SBI_ERR_FAILURE;
+         }
+         ret = 0;
+         break;
+@@ -1412,7 +1412,8 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
+         qemu_log_mask(LOG_UNIMP,
+                       "%s: un-handled SBI EXIT, specific reasons is %lu\n",
+                       __func__, run->riscv_sbi.extension_id);
+-        ret = -1;
++        run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
++        ret = 0;
+         break;
+     }
+     return ret;
+diff --git a/target/riscv/sbi_ecall_interface.h b/target/riscv/sbi_ecall_interface.h
+index 43899d08f6..0279e92a36 100644
+--- a/target/riscv/sbi_ecall_interface.h
++++ b/target/riscv/sbi_ecall_interface.h
+@@ -69,4 +69,15 @@
+ #define SBI_EXT_VENDOR_END              0x09FFFFFF
+ /* clang-format on */
+ 
++/* SBI return error codes */
++#define SBI_SUCCESS                  0
++#define SBI_ERR_FAILURE             -1
++#define SBI_ERR_NOT_SUPPORTED       -2
++#define SBI_ERR_INVALID_PARAM       -3
++#define SBI_ERR_DENIED              -4
++#define SBI_ERR_INVALID_ADDRESS     -5
++#define SBI_ERR_ALREADY_AVAILABLE   -6
++#define SBI_ERR_ALREADY_STARTED     -7
++#define SBI_ERR_ALREADY_STOPPED     -8
++
+ #endif
+-- 
+2.34.1
 
 
