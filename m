@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06CB88A3DC
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:14:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0093388A3D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:13:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rol4D-000340-TN; Mon, 25 Mar 2024 10:12:49 -0400
+	id 1rol4G-00034E-7c; Mon, 25 Mar 2024 10:12:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol46-00032d-HK
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol47-00032i-La
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol44-0005n7-6M
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol46-0005nS-4A
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711375959;
+ s=mimecast20190719; t=1711375961;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lhNSQyTbVfldoaIJmJGMUPP6GipDIdrS4xIXkiYc7XA=;
- b=O2SogpXRagqt73HVOhL7Gx1cyMLccrCcoc/VxsRef1CzSuk/R7ehon9pvUbnHtS5Y07B/U
- z58D8TVETwyK0ORpCmW8VGmWOAdTUa1WrBYQFd2AInHInxdTKlYM3HEH0PUXrSn+wai2g/
- bG5U/q4BiQJEu8xGLERfoEd6a/wIAOw=
+ bh=hSBKxzfQGIXmvWUvXlWhdYTTE+D3xnVPdnyercmVvxo=;
+ b=NH7GcbRF832F4Tz6DQtJ/3H+HLCj7nKt1UmffEqaF/ei4/ktQG8KURbuQQeT7vpy4VBx0s
+ QD/gMsyS7so4D94AgkxsjL9J+M5hgurrabMm5cdCVZ2MSfBP7JiVIKSYg7qzEaeH1BnKIt
+ MTCnq4okvyvRfAHP39+mdJjxgbMSVGI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-690-jiZiz9FqMWa0f8mGsCX8FQ-1; Mon,
- 25 Mar 2024 10:12:36 -0400
-X-MC-Unique: jiZiz9FqMWa0f8mGsCX8FQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-130-18KdrlPVPGioAW7iaBc8lQ-1; Mon,
+ 25 Mar 2024 10:12:37 -0400
+X-MC-Unique: 18KdrlPVPGioAW7iaBc8lQ-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C56483CBDFC6;
- Mon, 25 Mar 2024 14:12:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 016281C0152A;
+ Mon, 25 Mar 2024 14:12:37 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7F55A36FF;
- Mon, 25 Mar 2024 14:12:34 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2DFF748D9;
+ Mon, 25 Mar 2024 14:12:36 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/9] .travis.yml: Remove the unused xfslib-dev package
-Date: Mon, 25 Mar 2024 15:12:03 +0100
-Message-ID: <20240325141210.788356-3-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 3/9] hw/microblaze: Do not allow xlnx-zynqmp-pmu-soc to be
+ created by the user
+Date: Mon, 25 Mar 2024 15:12:04 +0100
+Message-ID: <20240325141210.788356-4-thuth@redhat.com>
 In-Reply-To: <20240325141210.788356-1-thuth@redhat.com>
 References: <20240325141210.788356-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -78,29 +77,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Drop the "xfslibs-dev" package which should not be necessary anymore
-since commit a5730b8bd3 ("block/file-posix: Simplify the XFS_IOC_DIOINFO
-handling").
+Using xlnx-zynqmp-pmu-soc on the command line causes QEMU to crash:
 
-Message-ID: <20240320104144.823425-3-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+ ./qemu-system-microblazeel -M petalogix-ml605 -device xlnx-zynqmp-pmu-soc
+ **
+ ERROR:tcg/tcg.c:813:tcg_register_thread: assertion failed: (n < tcg_max_ctxs)
+ Bail out!
+ Aborted (core dumped)
+
+Mark the device with "user_creatable = false" to avoid that this can happen.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2229
+Message-ID: <20240322183153.1023359-1-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .travis.yml | 1 -
- 1 file changed, 1 deletion(-)
+ hw/microblaze/xlnx-zynqmp-pmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/.travis.yml b/.travis.yml
-index a8d1e12190..8a3ae76a7c 100644
---- a/.travis.yml
-+++ b/.travis.yml
-@@ -220,7 +220,6 @@ jobs:
-           - libsnappy-dev
-           - libzstd-dev
-           - nettle-dev
--          - xfslibs-dev
-           - ninja-build
-           # Tests dependencies
-           - genisoimage
+diff --git a/hw/microblaze/xlnx-zynqmp-pmu.c b/hw/microblaze/xlnx-zynqmp-pmu.c
+index 5a2016672a..1bfc9641d2 100644
+--- a/hw/microblaze/xlnx-zynqmp-pmu.c
++++ b/hw/microblaze/xlnx-zynqmp-pmu.c
+@@ -125,6 +125,8 @@ static void xlnx_zynqmp_pmu_soc_class_init(ObjectClass *oc, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(oc);
+ 
++    /* xlnx-zynqmp-pmu-soc causes crashes when cold-plugged twice */
++    dc->user_creatable = false;
+     dc->realize = xlnx_zynqmp_pmu_soc_realize;
+ }
+ 
 -- 
 2.44.0
 
