@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42992889FB5
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4F6889FBC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojYV-0002IO-IW; Mon, 25 Mar 2024 08:35:59 -0400
+	id 1rojYW-0002Ic-PJ; Mon, 25 Mar 2024 08:36:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYS-0002HF-QL
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1rojYU-0002Hs-5x
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:58 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYR-0005dS-3G
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-414866f92beso7280345e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:54 -0700 (PDT)
+ id 1rojYR-0005dW-QR
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:57 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4148c607f31so246485e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711370153; x=1711974953; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711370154; x=1711974954; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GCgvA2TmnxeKrt9Gh3RGTnMyC9ymehvv7sEyBNeOPwc=;
- b=Ub7n9wCgEPxRGmiMrvQ2/W+mRBsbiep1zU7SyHmLQd5rNW2bRSFT8oMIdZembEUPpr
- J22gx1Z8ZoDFebmlambCthYinal5rwel6TwcoAfMIG1gug9pQ8/HHZ6cG1/cYBkIs6aX
- v3ERejN0jlCI1DYRw8tBWkz0yq9ED7BbeE3eNyE7pIZt7L/1NSuoXXwOok/AwIYxfEk9
- daE/kOScckGyIWLx8+WMu+zZRupIs5mMDI2ESfX6UAsW3dAqdqrEGoAT5xYG3t3Ks5Hw
- rNt0E/A+U2Ug51l1pDkShFomabHStQZ9B4NQurinSJvcx/A9K0JfdMw5PVA1g1PmX08E
- CVtg==
+ :reply-to; bh=cPU63vtq7nGV4qBFhe6DUh4SCq/4JARPRKtq5Gn7vKA=;
+ b=iW/PqS6VPldOP78K54KmqaPGL9XCS7yBLaUn2k871mKn+j4dfIK8MJdL+X1sqUK1nF
+ WhoLC4eYZUQILN9x2hQr1X0mBumWApK+yrJS5kEQuWu5Agg2oaxObJJvTCn1o9nW2/xU
+ lu+a6sMPnbZibN7PtRKM+mPmGNgYGGbwgTlXjUggjKOrXUXTR+u46f6OC8WO0J02/A9i
+ lgnK6WQ1rZs3Jw80M78sCWYJKdplMmYeoy+BVvLIw6Yywinj/r0lqxq13ngBdn7zh+oX
+ noo+dtzvWMWC1DESe81wY4TOV09CGCrA9VCl1q5W6a9DQg10BTczpUmW4fPD8KDK3rzz
+ IJ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711370153; x=1711974953;
+ d=1e100.net; s=20230601; t=1711370154; x=1711974954;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GCgvA2TmnxeKrt9Gh3RGTnMyC9ymehvv7sEyBNeOPwc=;
- b=G+DwC84WGYoHjV95nC+b+gwG6POg+eh6s+MtwmfPU3EhcobWah81CH5aMrQr0plghA
- 6IwjC8zYqrgqBOjd3aeqFQg7753eLGGfoWJsw3Dp1W4jtm1L0coi8ZG6KNf80wxGd6zv
- sR89GEilw3jd8Dcm7viw1nAURForX+v+EwWzzXP/BVz/OApJI7AuQmLJQFc3WwH5zHnu
- HO0i0IOXC6akDuOK6thaKZLAHRiRSBBrjCibuwLp1RFVnLgpddrpB6EdeY/RouOorU1+
- KQuveu5Wp2b+j37EjUpqQzRHeNBe/bCybqaTxtwesmgLSREWW4rAUAxh1RfVVE54xj4I
- rsvw==
-X-Gm-Message-State: AOJu0YzkEqu3QcNyZSkdEUO0TGtiFu3KIke65agehSui0eIlGKeWPeeJ
- htkVQBHeEdcAbTD64mLMe643d1dQcR1yzpkCVzYNgUoDyMYjxh+UVpdKSDxFv2JfWrOVowbOik8
- K
-X-Google-Smtp-Source: AGHT+IGau3cTAVloogSc3fTcgbX5s68SHA6tDLec6kZKBI0K4E+wqI+Kcr8FEtTwgeSdspxpDLN5KQ==
-X-Received: by 2002:a05:600c:45d5:b0:414:869b:dbd9 with SMTP id
- s21-20020a05600c45d500b00414869bdbd9mr3072410wmo.9.1711370153770; 
- Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
+ bh=cPU63vtq7nGV4qBFhe6DUh4SCq/4JARPRKtq5Gn7vKA=;
+ b=CkP5Ufgy9sJxE0bnPLC9Hspir0MIkEliRd+9ZQYFJx8C9MPPQKyPMmaPLBcqaJFuzI
+ YoHrTOthpUrDcv16Di0fqTGw1D/OphC6aveu3Lt96ik1H597def7sgKhLAG3KP6XzFfv
+ p9ytKhQWKEdyerCVdNsdIMxYfOdSvUYwZ5cBt5RanTpgeEUICV3BhQRJSdlewBt3OfQz
+ P0BViEyn4frXMf9Jbf1DpoUtCsQRs/aUUGdGCwqIWSUpv5VbmxK+RQAzmxf9YBS7vQ+R
+ 9n8h/1cY+1lNPSUyazQGKhbseeqsrzBVKvcRAOCtOSfmSGeY83q3xBfAIFMhurIG1XKd
+ sAaw==
+X-Gm-Message-State: AOJu0YzcTeJ9lupjZiNBiVvJfbVaidFe1Vf9r/3SmReCrnelvfIPcchm
+ zgGauWAqsc16mPZ0Y5ORlaW6qJmADgD147iwj/kXehWlpEess4+qzgNviTcfamyb3KElfX5t72W
+ e
+X-Google-Smtp-Source: AGHT+IHwYOSADN27vwyXi8KbGnJ1XMry2w9dJYCq48639W+pL+ysrGnwhO1IuC3XI27py29vJLH+mw==
+X-Received: by 2002:a05:600c:450c:b0:414:86a2:a43 with SMTP id
+ t12-20020a05600c450c00b0041486a20a43mr2496920wmo.40.1711370154162; 
+ Mon, 25 Mar 2024 05:35:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  o19-20020a05600c339300b00414041032casm2303877wmp.1.2024.03.25.05.35.53
@@ -59,17 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 4/7] hw/misc/pca9554: Correct error check bounds in get/set pin
- functions
-Date: Mon, 25 Mar 2024 12:35:47 +0000
-Message-Id: <20240325123550.1991693-5-peter.maydell@linaro.org>
+Subject: [PULL 5/7] hw/nvram/mac_nvram: Report failure to write data
+Date: Mon, 25 Mar 2024 12:35:48 +0000
+Message-Id: <20240325123550.1991693-6-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325123550.1991693-1-peter.maydell@linaro.org>
 References: <20240325123550.1991693-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,49 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In pca9554_get_pin() and pca9554_set_pin(), we try to detect an
-incorrect pin value, but we get the condition wrong, using ">"
-when ">=" was intended.
+There's no way for the macio_nvram device to report failure to write
+data, but we can at least report it to the user with error_report()
+as we do in other devices like xlnx-efuse.
 
-This has no actual effect, because in pca9554_initfn() we
-use the correct test when creating the properties and so
-we'll never be called with an out of range value. However,
-Coverity complains about the mismatch between the check and
-the later use of the pin value in a shift operation.
+Spotted by Coverity.
 
-Use the correct condition.
-
-Resolves: Coverity CID 1534917
+Resolves: Coverity CID 1507628
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240312183810.557768-5-peter.maydell@linaro.org
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-id: 20240312183810.557768-6-peter.maydell@linaro.org
 ---
- hw/misc/pca9554.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/nvram/mac_nvram.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/hw/misc/pca9554.c b/hw/misc/pca9554.c
-index 778b32e4430..5e31696797d 100644
---- a/hw/misc/pca9554.c
-+++ b/hw/misc/pca9554.c
-@@ -160,7 +160,7 @@ static void pca9554_get_pin(Object *obj, Visitor *v, const char *name,
-         error_setg(errp, "%s: error reading %s", __func__, name);
-         return;
+diff --git a/hw/nvram/mac_nvram.c b/hw/nvram/mac_nvram.c
+index 5f9d16fb3e3..59277fbc776 100644
+--- a/hw/nvram/mac_nvram.c
++++ b/hw/nvram/mac_nvram.c
+@@ -48,7 +48,10 @@ static void macio_nvram_writeb(void *opaque, hwaddr addr,
+     trace_macio_nvram_write(addr, value);
+     s->data[addr] = value;
+     if (s->blk) {
+-        blk_pwrite(s->blk, addr, 1, &s->data[addr], 0);
++        if (blk_pwrite(s->blk, addr, 1, &s->data[addr], 0) < 0) {
++            error_report("%s: write of NVRAM data to backing store failed",
++                         blk_name(s->blk));
++        }
      }
--    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
-+    if (pin < 0 || pin >= PCA9554_PIN_COUNT) {
-         error_setg(errp, "%s invalid pin %s", __func__, name);
-         return;
-     }
-@@ -187,7 +187,7 @@ static void pca9554_set_pin(Object *obj, Visitor *v, const char *name,
-         error_setg(errp, "%s: error reading %s", __func__, name);
-         return;
-     }
--    if (pin < 0 || pin > PCA9554_PIN_COUNT) {
-+    if (pin < 0 || pin >= PCA9554_PIN_COUNT) {
-         error_setg(errp, "%s invalid pin %s", __func__, name);
-         return;
-     }
+ }
+ 
 -- 
 2.34.1
 
