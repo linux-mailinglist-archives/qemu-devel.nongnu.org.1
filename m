@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DB5889FE4
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:43:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A10B88A095
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:58:21 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojfJ-0000jN-4z; Mon, 25 Mar 2024 08:43:01 -0400
+	id 1rojt0-0000kj-SM; Mon, 25 Mar 2024 08:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rojfA-0000OL-HF
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:42:53 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rojeq-0006gg-Lz
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:42:52 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-515a86daf09so1713448e87.3
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:42:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711370550; x=1711975350; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ZVTG3jxPFJmDWs7WR0b95XLJPKuzwHMgZ07dA9hMpsY=;
- b=a2K5baTf/WfKnDhKFgaK70WEcKnXwEgj4Avj5NXOifiE7kiE74T1PiV8d+6Mbinh5Y
- Ksu3k3KLiQIXNMdatVtDkauZEbRHRyXMq7A4lpjoB0LwUV+Qo+/YVdbPZdqKaDbW4RpB
- bOzoB4/93NJuyNZKzfJMUj6Ii/h4UANp98FkZCC4SBadlVjQYFhrgVlG23OJqSfzu2sB
- 3w7qSR2xZxIdRsXfK02bh00Rbfi4AOf9XHgD9siG/srVTwxK03bOuqEbDXwtlaywf5UR
- +C7Fg11FeL5KyZ7CD2Wl2rF+3E09FFJFWcQ5qdPjC2a5/xxTNdHQ7LyQ2gEIubnkzmG7
- 31qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711370550; x=1711975350;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ZVTG3jxPFJmDWs7WR0b95XLJPKuzwHMgZ07dA9hMpsY=;
- b=eST7PnEsOJ+A0axb+9sx3UpK0+6/SJUCbkdtCgKBhRcSXDjPzYIjpGwPrzYSa4fNaA
- RNs+CbSIEGD6qlSdPiUk/cmoPtHnDMwVXTqi/kUmeiH3V9Cl72Urqoa/ja45iPqlPIEg
- fsOqKcj/Z2tyOgkq5L9I4yMes93jK4YnufIQiyPiXvPw+FkaX/wkNNuhmin+Y4GYEzox
- rjskr0uSveHA2p8ZoVZKJQ8cJrRqQvIpCZrpBSTE/XutmzpAniU2h0IDOU/zaKPF8SR4
- kLPjcJTWYMvmPixyd9kgdrwLhSlc7y8gybesF88efkdoJSUcT51Atl8ui1GXnZWBBSXx
- uC8w==
-X-Gm-Message-State: AOJu0YxColvhjJWxrT9uz/T6J9+rvGLH8Z+EJVB3c5aPPWtVwckVVqOa
- wdukWSEWd9jybSZTgAvZmQXc3IGcDIftNSnnfXF5Kv0DVDqay/LYg9SHzccrj1jpzyK4DppxtQD
- D
-X-Google-Smtp-Source: AGHT+IF33O8+50Vc8/aTpacYxOmPCVTReJPdNIGrTBJEO6Bie5x6CLNtYSAQEpjJ2CEZ4YkLixfiYQ==
-X-Received: by 2002:a19:e001:0:b0:515:9dcd:22ae with SMTP id
- x1-20020a19e001000000b005159dcd22aemr4305654lfg.66.1711370550130; 
- Mon, 25 Mar 2024 05:42:30 -0700 (PDT)
-Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- t20-20020ac243b4000000b00515b1b3a2bdsm35231lfl.194.2024.03.25.05.42.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 05:42:29 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>
-Subject: [PATCH v3 8/8] plugins: extract cpu_index generate
-Date: Mon, 25 Mar 2024 16:41:51 +0400
-Message-Id: <20240325124151.336003-9-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240325124151.336003-1-pierrick.bouvier@linaro.org>
-References: <20240325124151.336003-1-pierrick.bouvier@linaro.org>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rojsy-0000kK-HJ
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:57:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rojsv-00014X-Vs
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:57:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711371424;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=xl5I3hOhdrE4SPWwod0YbylVUbyrRQ7fEH20MbloB1Y=;
+ b=fecWwC+bQNjX6bptoRvUfydj+X6rWVhXG+US0Sf4ALGlie+fgyUkJworBHSWN1yeCvcWba
+ 6Wi9TCPNTcaQ+GaaqSQ6BLXzr6UMfqljnooU0sNVH85A9QqCn5m6eu1R3+ROgxfFaXqD+0
+ HDplHRP3PUsWQRiB4MhHsZYzojsfi1w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-gMw00uYxOAKs9tulaRQVZg-1; Mon,
+ 25 Mar 2024 08:57:03 -0400
+X-MC-Unique: gMw00uYxOAKs9tulaRQVZg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F8CD3CBD4E4
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:57:03 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 106AF40C6DB5
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 12:57:03 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0819C21E669D; Mon, 25 Mar 2024 13:56:42 +0100 (CET)
+From: Markus Armbruster <armbru@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Michal Privoznik <mprivozn@redhat.com>
+Subject: Re: [PATCH] qapi: document leftover members in qapi/run-state.json
+In-Reply-To: <CABgObfbDa57=+tJ_t=nFWY=CnZJq2Kkx7Wdc=PL93NB6yFVBEA@mail.gmail.com>
+ (Paolo Bonzini's message of "Mon, 25 Mar 2024 13:04:14 +0100")
+References: <20240325104502.1358693-1-pbonzini@redhat.com>
+ <87o7b2mtki.fsf@pond.sub.org>
+ <CABgObfbDa57=+tJ_t=nFWY=CnZJq2Kkx7Wdc=PL93NB6yFVBEA@mail.gmail.com>
+Date: Mon, 25 Mar 2024 13:56:42 +0100
+Message-ID: <87plvilbat.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,87 +81,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- accel/tcg/plugin-gen.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 16618adf1bc..e6fd6fdfae5 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -108,12 +108,17 @@ static void gen_disable_mem_helper(void)
-                    offsetof(ArchCPU, env));
- }
- 
-+static TCGv_i32 gen_cpu_index(void)
-+{
-+    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-+    tcg_gen_ld_i32(cpu_index, tcg_env,
-+                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    return cpu_index;
-+}
-+
- static void gen_udata_cb(struct qemu_plugin_regular_cb *cb)
- {
--    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
--
--    tcg_gen_ld_i32(cpu_index, tcg_env,
--                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    TCGv_i32 cpu_index = gen_cpu_index();
-     tcg_gen_call2(cb->f.vcpu_udata, cb->info, NULL,
-                   tcgv_i32_temp(cpu_index),
-                   tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
-@@ -128,9 +133,7 @@ static TCGv_ptr gen_plugin_u64_ptr(qemu_plugin_u64 entry)
-     char *base_ptr = arr->data + entry.offset;
-     size_t entry_size = g_array_get_element_size(arr);
- 
--    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
--    tcg_gen_ld_i32(cpu_index, tcg_env,
--                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    TCGv_i32 cpu_index = gen_cpu_index();
-     tcg_gen_muli_i32(cpu_index, cpu_index, entry_size);
-     tcg_gen_ext_i32_ptr(ptr, cpu_index);
-     tcg_temp_free_i32(cpu_index);
-@@ -163,7 +166,6 @@ static TCGCond plugin_cond_to_tcgcond(enum qemu_plugin_cond cond)
- static void gen_udata_cond_cb(struct qemu_plugin_conditional_cb *cb)
- {
-     TCGv_ptr ptr = gen_plugin_u64_ptr(cb->entry);
--    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-     TCGv_i64 val = tcg_temp_ebb_new_i64();
-     TCGLabel *after_cb = gen_new_label();
- 
-@@ -172,15 +174,14 @@ static void gen_udata_cond_cb(struct qemu_plugin_conditional_cb *cb)
- 
-     tcg_gen_ld_i64(val, ptr, 0);
-     tcg_gen_brcondi_i64(cond, val, cb->imm, after_cb);
--    tcg_gen_ld_i32(cpu_index, tcg_env,
--                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    TCGv_i32 cpu_index = gen_cpu_index();
-     tcg_gen_call2(cb->f.vcpu_udata, cb->info, NULL,
-                   tcgv_i32_temp(cpu_index),
-                   tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
-+    tcg_temp_free_i32(cpu_index);
-     gen_set_label(after_cb);
- 
-     tcg_temp_free_i64(val);
--    tcg_temp_free_i32(cpu_index);
-     tcg_temp_free_ptr(ptr);
- }
- 
-@@ -212,10 +213,7 @@ static void gen_inline_store_u64_cb(struct qemu_plugin_inline_cb *cb)
- static void gen_mem_cb(struct qemu_plugin_regular_cb *cb,
-                        qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
- {
--    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
--
--    tcg_gen_ld_i32(cpu_index, tcg_env,
--                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
-+    TCGv_i32 cpu_index = gen_cpu_index();
-     tcg_gen_call4(cb->f.vcpu_mem, cb->info, NULL,
-                   tcgv_i32_temp(cpu_index),
-                   tcgv_i32_temp(tcg_constant_i32(meminfo)),
--- 
-2.39.2
+> Il lun 25 mar 2024, 12:36 Markus Armbruster <armbru@redhat.com> ha scritto:
+>
+>> Paolo Bonzini <pbonzini@redhat.com> writes:
+>>
+>> > Suggested-by: Markus Armbruster <armbru@redhat.com>
+>> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> > ---
+>> >  qapi/run-state.json | 26 +++++++++++++++++++++++++-
+>> >  1 file changed, 25 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/qapi/run-state.json b/qapi/run-state.json
+>> > index 789fc34559a..cb4a2b43293 100644
+>> > --- a/qapi/run-state.json
+>> > +++ b/qapi/run-state.json
+>> > @@ -377,9 +377,17 @@
+>> >  ##
+>> >  # @watchdog-set-action:
+>> >  #
+>> > -# Set watchdog action
+>> > +# Set watchdog action.
+>> > +#
+>> > +# @action: @WatchdogAction action taken when watchdog timer expires.
+>> >  #
+>> >  # Since: 2.11
+>> > +#
+>> > +# Example:
+>> > +#
+>> > +#     -> { "execute": "watchdog-set-action",
+>> > +#          "arguments": { "action": "inject-nmi" } }
+>> > +#     <- { "return": {} }
+>> >  ##
+>> >  { 'command': 'watchdog-set-action', 'data' : {'action': 'WatchdogAction'} }
+>> >
+>>
+>> Appreciate the example!
+>
+> It may even be worth deprecating the command, since action-set is a clean
+> superset. But I didn't check if libvirt knows about action-set and it's
+> cheap enough to implement watchdog-set-action as well.
+
+Quick grep...  libvirt appears to use watchdog-set-action, but not
+action-set.
+
+>> @@ -505,6 +513,22 @@
+>> >  #
+>> >  # Hyper-V specific guest panic information (HV crash MSRs)
+>> >  #
+>> > +# @arg1: for Windows, STOP code for the guest crash.  For Linux,
+>> > +#        an error code.
+>> > +#
+>> > +# @arg2: for Windows, first argument of the STOP.  For Linux, the
+>> > +#        guest OS id, which has the kernel version in bits 16-47
+>>
+>> Mind if I capitalize ID?
+>>
+>
+> Go ahead if you are going to queue it.
+
+Done.
+
+Queued, thanks!
+
+[...]
 
 
