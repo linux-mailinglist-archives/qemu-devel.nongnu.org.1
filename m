@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B2C88982A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 10:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 124BE88983A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 10:32:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rogdi-0005Hx-0u; Mon, 25 Mar 2024 05:29:10 -0400
+	id 1rogfp-0006se-NG; Mon, 25 Mar 2024 05:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rogdf-0005HP-NR
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 05:29:07 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rogfj-0006qm-AV
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 05:31:18 -0400
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rogde-0004uw-8k
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 05:29:07 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-414859830f2so7375875e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 02:29:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rogfh-0005IA-Bv
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 05:31:15 -0400
+Received: by mail-lf1-x135.google.com with SMTP id
+ 2adb3069b0e04-513dc9d6938so5176434e87.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 02:31:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711358944; x=1711963744; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711359071; x=1711963871; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8UD1KqhjMpRyUpaYxtPeUfGjffxMoqYw1nFKvrqlXt8=;
- b=aZFleA3GHuruddmU2S97ZMKgzGRdNBEeJHj8vCZMVXv7vX3tGRqA+FWNrvEsR5F+Mp
- jfwFyT8VmWZOgc+c+X16FKRzW8niUxjVw4Xq8TNx+7d2tEwnEq+zqdo9HAVtyI3/5DPb
- 2nXTg1afQAkMIxJtDADsoOb9I7g9NJedPTslaFjwzhJuQJAQ6ambYZrQ7CDCBbQ8AsjX
- +5ZUKHKSzrcIin/QMFLIALBc2kpJrDi4hGZB7MPMzRFjNcYPr/rSLejhSkExWFT9rJbC
- /u5Kea9IhQfvv9zjDfsbfASG7npqPMkBYe5ZF1efip9HNhYOEypsl5rHegMQ590UXmRc
- xsig==
+ bh=bvm7q1Z8UDikIjNXuJQ1hwjbYn/l0RMiGmMNh/s4WyM=;
+ b=fuGTP/j9vRwkErUR7OQj4xa/m4I1Vyf6FE6rxjQ31YdBWFL2RbLNMWjQu7UeZuTjeN
+ p2G0xP2Wjwyp7caURHq7sacMRCMyZkhvZnI7sCgAEZNENLkwKCeZMBIt4vk4aUQlFIrN
+ uL4NzLsj7BEROKb0CoBbpatwLI/gKLkj1iAzrUgW2CcALzbza0SamI8GdtJ7XfPcOmZb
+ I45erVO6XJ9tW021PCtjG25MERJD+exZnQ8XFDc3RimjekmSZ2JreslZXm7vt7n6CLRT
+ 6JIQGZgtxNk+QjhFEtpadx5sTK89PoRmyt4TynoMqZped72nsytWWPm7soWMk0GmuD+H
+ l7jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711358945; x=1711963745;
+ d=1e100.net; s=20230601; t=1711359071; x=1711963871;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8UD1KqhjMpRyUpaYxtPeUfGjffxMoqYw1nFKvrqlXt8=;
- b=hh+8b51XVqjZi1OSv5ZQ6SE/wZCU/D9CfuAatHPKiNtDS4Dl1BLDs0/RBpJw7ypyKp
- RGrH08YQHsis7XaglES9hxrdE0DM+bDXfDcJ7xkaQVeaYn+jkvZI4SoMn80CBeFbZ7rE
- 6XOqCzMJk2aN0n25EmZReq7f3Dp+0Kl4XymruvcqDbFCiCJ6ANrQgPnH2AJrVUVVKwnK
- 6tSgErXuNNvMXcX5CT5Viu6f7vaIZvwR3KsaZSxtWHj9kOPju+5UHZrJHbwT9aLGbvii
- VnvQmpfWESnuInXKlg+yQsfGNLFYGbKM6ex3gae0c2egV1WUbQB2Q8cM/G6exrY8jizv
- LE2g==
+ bh=bvm7q1Z8UDikIjNXuJQ1hwjbYn/l0RMiGmMNh/s4WyM=;
+ b=PrzzskQEkixw8ts8DzMgZJLgzZe8NIfEDhiquhIWb29htiGPPpPwjS5wPQGYNAJyL9
+ 1N7u6hv7lRnHp8I0GqWgng/jKMHbMsx6Dxf5jcY6BEVdkfLn1/6OW3TDo44N8OuGhPpV
+ ooXRaYL8NSxv+AH0baBtGO/glp3ddfvZmZpCQLrCzzLTCual6xYTLEli2nnnVN5Bq5/i
+ 70ui7MhtZB25UViaFotYBzjVTXL5SdXHCqpULHJel3deYtiKXp0JX85dPn7kMxoUOhV/
+ AOHWj4b+2WI+tCjkwAB/mjeIZHCMEwHYrVq3i68n5sAmOJg9f5XJNAaijPPRZ+KIz2DX
+ GmSg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVx5oaZ36PQKzzGxwHkCGoNXLZWVNd6pr2PEiRsOHR9O/n8zms2ProaRsZqcbTHUr92JtmeQBEyYa3MktzJ0VeC7hRdygQ=
-X-Gm-Message-State: AOJu0Yy4tmA5yyW40M7vTCBhw6dY/KCL590vYv2YyOG0GiLxF50TtdRZ
- +2nidWPHBZtiXOGBch39Unv0I2swojxTs21pADjpJzsdmubPGevRP/c6/aSxcik=
-X-Google-Smtp-Source: AGHT+IGOECRCJf9ZYfyrTcQre2P4FqB44OVLrlWY2JfyeQdfwoL2S+2mLfttEZQad+w+JhJD3XsfqQ==
-X-Received: by 2002:a05:600c:4da4:b0:413:f290:c747 with SMTP id
- v36-20020a05600c4da400b00413f290c747mr4665447wmp.33.1711358944710; 
- Mon, 25 Mar 2024 02:29:04 -0700 (PDT)
+ AJvYcCV6nmwHswOXl24nts4LUBfBfT9qk2Gsfv3JfLo2hG1PH/YEsoUJCpRfCCNsTcRF2FTkrd4tqxn0HRG+ZOWKMmrs1TxRvDI=
+X-Gm-Message-State: AOJu0YyiP48AzDxsZciMQUS9WxGWaBMsj+dhkMjqP+uII6Kv4VABMTUj
+ r/LrGMc+XEqUoG+a7JZasASkCc34P1605AYgYG/1zEGVCC4FQWwm7GUzrHCGIl4=
+X-Google-Smtp-Source: AGHT+IECrcRQQXsEtIB9P4OftG/ACAhshZY9nSyP7ddrZu3j7OF6AHDJjVb6SUQeshWwvLFsTOEWrg==
+X-Received: by 2002:a05:6512:2188:b0:513:a7ce:525d with SMTP id
+ b8-20020a056512218800b00513a7ce525dmr3373324lft.40.1711359071182; 
+ Mon, 25 Mar 2024 02:31:11 -0700 (PDT)
 Received: from [192.168.163.175] (237.red-88-29-182.dynamicip.rima-tde.net.
  [88.29.182.237]) by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c1d8c00b004148b8fb25fsm792985wms.22.2024.03.25.02.29.02
+ m15-20020a05600c4f4f00b00414037f27a9sm7844004wmq.31.2024.03.25.02.31.09
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Mar 2024 02:29:04 -0700 (PDT)
-Message-ID: <93004298-25d3-485f-9d25-22e9398bbe02@linaro.org>
-Date: Mon, 25 Mar 2024 10:29:01 +0100
+ Mon, 25 Mar 2024 02:31:10 -0700 (PDT)
+Message-ID: <1d708513-d071-4020-84db-fd345b3295a9@linaro.org>
+Date: Mon, 25 Mar 2024 10:31:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/26] target/i386: Implement mc->kvm_type() to get VM type
+Subject: Re: [PATCH 18/26] kvm: Introduce support for memory_attributes
 Content-Language: en-US
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 Cc: xiaoyao.li@intel.com, michael.roth@amd.com, david@redhat.com
 References: <20240322181116.1228416-1-pbonzini@redhat.com>
- <20240322181116.1228416-16-pbonzini@redhat.com>
+ <20240322181116.1228416-19-pbonzini@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240322181116.1228416-16-pbonzini@redhat.com>
+In-Reply-To: <20240322181116.1228416-19-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::135;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,41 +95,34 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 22/3/24 19:11, Paolo Bonzini wrote:
-> KVM is introducing a new API to create confidential guests, which
-> will be used by TDX and SEV-SNP but is also available for SEV and
-> SEV-ES.  The API uses the VM type argument to KVM_CREATE_VM to
-> identify which confidential computing technology to use.
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
 > 
-> Since there are no other expected uses of VM types, delegate
-> mc->kvm_type() for x86 boards to the confidential-guest-support
-
-s/mc/cgs/ here and in subject?
-
-> object pointed to by ms->cgs.
+> Introduce the helper functions to set the attributes of a range of
+> memory to private or shared.
 > 
-> For example, if a sev-guest object is specified to confidential-guest-support,
-> like,
+> This is necessary to notify KVM the private/shared attribute of each gpa
+> range. KVM needs the information to decide the GPA needs to be mapped at
+> hva-based shared memory or guest_memfd based private memory.
 > 
->    qemu -machine ...,confidential-guest-support=sev0 \
->         -object sev-guest,id=sev0,...
-> 
-> it will check if a VM type KVM_X86_SEV_VM or KVM_X86_SEV_ES_VM
-> is supported, and if so use them together with the KVM_SEV_INIT2
-> function of the KVM_MEMORY_ENCRYPT_OP ioctl. If not, it will fall back to
-> KVM_SEV_INIT and KVM_SEV_ES_INIT.
-> 
-> This is a preparatory work towards TDX and SEV-SNP support, but it
-> will also enable support for VMSA features such as DebugSwap, which
-> are only available via KVM_SEV_INIT2.
-> 
-> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Message-ID: <20240320083945.991426-11-michael.roth@amd.com>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   target/i386/confidential-guest.h | 19 ++++++++++++++
->   target/i386/kvm/kvm_i386.h       |  2 ++
->   hw/i386/x86.c                    | 11 ++++++++
->   target/i386/kvm/kvm.c            | 44 ++++++++++++++++++++++++++++++++
->   4 files changed, 76 insertions(+)
+>   include/sysemu/kvm.h |  4 ++++
+>   accel/kvm/kvm-all.c  | 31 +++++++++++++++++++++++++++++++
+>   2 files changed, 35 insertions(+)
+> 
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 54f4d83a370..bda309d5ffa 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -536,4 +536,8 @@ void kvm_mark_guest_state_protected(void);
+>    * reported for the VM.
+>    */
+>   bool kvm_hwpoisoned_mem(void);
+> +
+> +int kvm_set_memory_attributes_private(hwaddr start, hwaddr size);
+> +int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size);
 
+uint64_t size? (kvm_memory_attributes::size is __u64).
 
