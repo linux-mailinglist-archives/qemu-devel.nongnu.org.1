@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5368889E3
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6CB8889E2
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 04:05:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1roadw-0001OP-0v; Sun, 24 Mar 2024 23:05:00 -0400
+	id 1roadw-0001Oo-QY; Sun, 24 Mar 2024 23:05:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1roads-0001La-Po
+ id 1roadt-0001Li-Ad
  for qemu-devel@nongnu.org; Sun, 24 Mar 2024 23:04:57 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1roadq-0001sr-5U
+ id 1roadr-0001t1-4F
  for qemu-devel@nongnu.org; Sun, 24 Mar 2024 23:04:56 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6ea7f2d093aso2228248b3a.3
- for <qemu-devel@nongnu.org>; Sun, 24 Mar 2024 20:04:53 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6e6b5432439so2911153b3a.1
+ for <qemu-devel@nongnu.org>; Sun, 24 Mar 2024 20:04:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711335892; x=1711940692; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711335893; x=1711940693; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PY3KDowjiarkyszs3+7iWfbyLgdSa/+Q7K3ImscRK+k=;
- b=nJdq0UgFIsn2Ia+kUYkM5SjPIxJBOrFN45lSYY2s/23zgFLEUyFe7r/fYlP039VXJ7
- F4B8LZMHrcEkKvrY7zIwnkjGJhsbDZm79lk5l3iz6jwCwj14Oga+/l3V50JTqyAW50Ty
- d+6JZhHj9pqqVjVOlDKCMmMVDZ5voAXUbXYxxPNwV0HHYa/Xwr84utRgnjhg3Uim2tJG
- Xt2JwuFEapBFhxtWs/btyOTHht8/bsuIUrGdLiKGBznv48S0Q6XNwnFT0Ukp1NbhrwlU
- fUSJGHmAfif8BU4yRXZyjgDwDn96R1YQiNkJXFTWJAh/zEjea8ngpK0IP6Z1xVX2Muje
- f+eA==
+ bh=zRr5RGAyB8xudWpBYabctLeDWU/P34mdZOuJNR73ZqU=;
+ b=N+98b+VORINW7YsicSyWdn4tiQB7n6oNJaMggSZXuk7F6/KwGIoSZg6+VYw3m8mXWz
+ ppfeuu96UjpPXdPOQhVsLbBn7NzV4NDcBpCdMwvZhCEoJ3wJ6yks+dU6YydRPlfa5RjI
+ vJaIdm3q8zGtrBO48hUX7h8+nFv2qIatclaCPOFJe/VEDKoclGb4CXf0AASAfyk2mqh/
+ ahORwSsp2bESVn1jkg9KBEmettckbcTx3bP259hDKvylQ5eENGUKd9hME5o0xKr4zUZm
+ Qvo59h0oWHW4HJD2t7auo/Xy7Bh5YWWMd8C7RDT9rir6CPsGlXi4rkn6zKm32yckvQqg
+ pjFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711335892; x=1711940692;
+ d=1e100.net; s=20230601; t=1711335894; x=1711940694;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PY3KDowjiarkyszs3+7iWfbyLgdSa/+Q7K3ImscRK+k=;
- b=k5hy53Ts5yfj8cB3ieec9RsrPEpgk0AQ6eEE//pyzZaSEiRZl/aSf05y04fAueOSdB
- cIhZ5HL21cc2U7tewI0fbvIlwdaVOUUcHQqUEd2a8BixpvsBSOnXBXA5Jc6+i5Ibu9sT
- LcOwYF/sO67usx5ff8aPR0zAvj4Pe4pkEcftXFteuA6lC6GJA4bULb9wCCJDHHJGmQif
- atgQBWTcSsTS4zpghbP694PhYu795XTtQ9TuHu8KSr9ayppeIbw+qcCB9jsXzP6O5qFK
- ac5k6L1o6OEQv5PAb+1UuOn3gob5BDgsGpfPwLNLOWYn2fuZ45DEPF7PQVrnnsFc1Syc
- /wWA==
-X-Gm-Message-State: AOJu0YzmFrJYvyviFiMftOp3k0Z57smXFZNs/FtZtkJWAaQR6aUYhV4g
- aWiSKjAg9e5VCA6QryrrpmPGK+k+Z2Aj5MoJaA0YLl0xMkO+2XX2x4iKU9zgLsOFSBSZ+MxSRaS
- i
-X-Google-Smtp-Source: AGHT+IFJZvXcunAbtaFgRBkpH79777y+zgOJjxFlpoi/cOUBg4fyDx5S/juP4uml87OK3CpBlFgCxA==
-X-Received: by 2002:a05:6a00:13a1:b0:6ea:89e5:99a3 with SMTP id
- t33-20020a056a0013a100b006ea89e599a3mr6760797pfg.8.1711335892359; 
- Sun, 24 Mar 2024 20:04:52 -0700 (PDT)
+ bh=zRr5RGAyB8xudWpBYabctLeDWU/P34mdZOuJNR73ZqU=;
+ b=J47Z0BMqEJd9XzqgF95UWDNRyXeJAskkbW+pjNkqq2uR8xT8Zj0zg12RzubQkyLgw+
+ 4yh6vVYsJsFQ0LkjZP3NeK0p4Zwd9dH/RQga3Ncenl0pmftmKDi/xnHTbnlShYP8awHg
+ RjCnWLR792s+y8ttKQLO+SR74KatydhI6AVrXvf7v56cJf/mZ9RAylV92AVCYw0r2m/9
+ LixdIANz3teng2D5J+8QjijIHXqSEXor8aQwh+mZ9nqjnSYNXnwKXVaUaqmR365/ecCU
+ 9QnDtn6Ye5dg8tvLaEH/sTsHnfeKKDap6gAtnaGh/QX6tA9YX9FFI5l6gczov0eAEGxP
+ RCGQ==
+X-Gm-Message-State: AOJu0Ywkdm9ljm49BfYK+bgOPtwRwqGUfFpqo2SCL5ZWhLuG3XFsVMUq
+ 2ByogYfPsRbq7QwSBO8C9m0TGjeuBf6pJqe0pJsBhUiiAZGemQly9MVoyGWdQlkwjtfzyv9pYB0
+ D
+X-Google-Smtp-Source: AGHT+IE/vrXJPa71F/bZfxXjAwF7pRPStvQxyYeemtMOq99oWsJuzYJ2St4bFUaNWy95eetUod5FTA==
+X-Received: by 2002:a05:6a00:3a22:b0:6ea:7986:638a with SMTP id
+ fj34-20020a056a003a2200b006ea7986638amr6056651pfb.28.1711335893648; 
+ Sun, 24 Mar 2024 20:04:53 -0700 (PDT)
 Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
  by smtp.gmail.com with ESMTPSA id
- q12-20020aa7982c000000b006e6b4c637b6sm3291880pfl.116.2024.03.24.20.04.51
+ q12-20020aa7982c000000b006e6b4c637b6sm3291880pfl.116.2024.03.24.20.04.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Mar 2024 20:04:52 -0700 (PDT)
+ Sun, 24 Mar 2024 20:04:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: deller@gmx.de
-Subject: [PATCH 1/3] targt/hppa: Fix DCOR reconstruction of carry bits
-Date: Sun, 24 Mar 2024 17:04:46 -1000
-Message-Id: <20240325030448.52110-2-richard.henderson@linaro.org>
+Subject: [PATCH 2/3] target/hppa: Optimize UADDCM with no condition
+Date: Sun, 24 Mar 2024 17:04:47 -1000
+Message-Id: <20240325030448.52110-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325030448.52110-1-richard.henderson@linaro.org>
 References: <20240325030448.52110-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,32 +92,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The carry bits for each nibble N are located in bit (N+1)*4,
-so the shift by 3 was off by one.  Furthermore, the carry bit
-for the most significant carry bit is indeed located in bit 64,
-which is located in a different storage word.
-
-Use a double-word shift-right to reassemble into a single word
-and place them all at bit 0 of their respective nibbles.
+With r1 as zero is by far the only usage of UADDCM, as the easiest
+way to invert a register.  The compiler does occasionally use the
+addition step as well, and we can simplify that to avoid a temp
+and write directly into the destination.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/hppa/translate.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index e041310207..a3f425d861 100644
+index a3f425d861..3fc3e7754c 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2791,7 +2791,7 @@ static bool do_dcor(DisasContext *ctx, arg_rr_cf_d *a, bool is_i)
-     nullify_over(ctx);
+@@ -2763,9 +2763,29 @@ static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf_d *a, bool is_tc)
+ {
+     TCGv_i64 tcg_r1, tcg_r2, tmp;
  
-     tmp = tcg_temp_new_i64();
--    tcg_gen_shri_i64(tmp, cpu_psw_cb, 3);
-+    tcg_gen_extract2_i64(tmp, cpu_psw_cb, cpu_psw_cb_msb, 4);
-     if (!is_i) {
-         tcg_gen_not_i64(tmp, tmp);
+-    if (a->cf) {
+-        nullify_over(ctx);
++    if (a->cf == 0) {
++        tcg_r2 = load_gpr(ctx, a->r2);
++        tmp = dest_gpr(ctx, a->t);
++
++        if (a->r1 == 0) {
++            /* UADDCM r0,src,dst is the common idiom for dst = ~src. */
++            tcg_gen_not_i64(tmp, tcg_r2);
++        } else {
++            /*
++             * Recall that r1 - r2 == r1 + ~r2 + 1.
++             * Thus r1 + ~r2 == r1 - r2 - 1,
++             * which does not require an extra temporary.
++             */
++            tcg_r1 = load_gpr(ctx, a->r1);
++            tcg_gen_sub_i64(tmp, tcg_r1, tcg_r2);
++            tcg_gen_subi_i64(tmp, tmp, 1);
++        }
++        save_gpr(ctx, a->t, tmp);
++        cond_free(&ctx->null_cond);
++        return true;
      }
++
++    nullify_over(ctx);
+     tcg_r1 = load_gpr(ctx, a->r1);
+     tcg_r2 = load_gpr(ctx, a->r2);
+     tmp = tcg_temp_new_i64();
 -- 
 2.34.1
 
