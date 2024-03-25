@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C882C88A410
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:17:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB3788A401
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:16:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rol4K-00035Q-9G; Mon, 25 Mar 2024 10:12:56 -0400
+	id 1rol4W-00036i-QN; Mon, 25 Mar 2024 10:13:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4F-00034l-C5
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4I-00035O-U7
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4E-0005so-16
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:51 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4H-0005tz-Iw
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711375969;
+ s=mimecast20190719; t=1711375971;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rxz6eqe82dStmQUwcjm1hBlQoThuAwMk0wigGLvJYPY=;
- b=gYoDPpmcIdOBqLgYjagLDsQFnZj30hTnJu+/72yv7hVWXxpMwyOPkQo5EdBWjij/iPZn/u
- tj4nJ2uhIw4FKZF0te+YuUe2u+GxJW82n3Uvd7b6Vb2ojSwlVettb6EEl9T1Ft4LEBhojI
- p6zbc0X7Iim3P2VUf8pcSO7D0aQWo7c=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-650-KjWBPmGlOsGjz760YwZjeg-1; Mon,
- 25 Mar 2024 10:12:46 -0400
-X-MC-Unique: KjWBPmGlOsGjz760YwZjeg-1
+ bh=jvtDnRWzDZsJoUkIlOW0ywPJ2i2CMssnW163x/f5Cwc=;
+ b=FRmFUtWonkhU8wQGFgu8CYaR8jXnPAuOSw9me+lpAf16KzRPAzggSTohcARGknjifKPo7V
+ RvDbKOZ5YkEFNU6MD4SYzgjilro0Fa/ldXZTyh0ZEQkUlxbQ0PmIi1sUgTu/B0EieyqeJv
+ XuvWh6gRSuaX5AFPK+lNAZ1GZfy/0PM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-490-tUoWFmSBMV2H9ZkoCJnvYA-1; Mon, 25 Mar 2024 10:12:48 -0400
+X-MC-Unique: tUoWFmSBMV2H9ZkoCJnvYA-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DCD261C008C6;
- Mon, 25 Mar 2024 14:12:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B0987822487;
+ Mon, 25 Mar 2024 14:12:47 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2840E3C20;
- Mon, 25 Mar 2024 14:12:43 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 416873C22;
+ Mon, 25 Mar 2024 14:12:45 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Zheyu Ma <zheyuma97@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 7/9] libqos/virtio.c: Correct 'flags' reading in qvirtqueue_kick
-Date: Mon, 25 Mar 2024 15:12:08 +0100
-Message-ID: <20240325141210.788356-8-thuth@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Ido Plat <ido.plat@ibm.com>,
+ qemu-stable@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PULL 8/9] target/s390x: Use mutable temporary value for op_ts
+Date: Mon, 25 Mar 2024 15:12:09 +0100
+Message-ID: <20240325141210.788356-9-thuth@redhat.com>
 In-Reply-To: <20240325141210.788356-1-thuth@redhat.com>
 References: <20240325141210.788356-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
@@ -63,7 +63,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,34 +79,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zheyu Ma <zheyuma97@gmail.com>
+From: Ido Plat <ido.plat@ibm.com>
 
-In qvirtqueue_kick(), the 'flags' were previously being incorrectly read from
-vq->avail instead of the correct vq->used location. This update ensures 'flags'
-are read from the correct location as per the virtio standard.
+Otherwise TCG would assume the register that holds t1 would be constant
+and reuse whenever it needs the value within it.
 
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20240320090442.267525-1-zheyuma97@gmail.com>
+Cc: qemu-stable@nongnu.org
+Fixes: f1ea739bd598 ("target/s390x: Use tcg_constant_* in local contexts")
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+[iii: Adjust a newline and capitalization, add tags]
+Signed-off-by: Ido Plat <ido.plat@ibm.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-ID: <20240318202722.20675-1-iii@linux.ibm.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/libqos/virtio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/s390x/tcg/translate.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/libqos/virtio.c b/tests/qtest/libqos/virtio.c
-index 82a6e122bf..a21b6eee9c 100644
---- a/tests/qtest/libqos/virtio.c
-+++ b/tests/qtest/libqos/virtio.c
-@@ -394,7 +394,7 @@ void qvirtqueue_kick(QTestState *qts, QVirtioDevice *d, QVirtQueue *vq,
-     qvirtio_writew(d, qts, vq->avail + 2, idx + 1);
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 0d0c672c95..57b7db1ee9 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -4781,9 +4781,10 @@ static DisasJumpType op_trXX(DisasContext *s, DisasOps *o)
  
-     /* Must read after idx is updated */
--    flags = qvirtio_readw(d, qts, vq->avail);
-+    flags = qvirtio_readw(d, qts, vq->used);
-     avail_event = qvirtio_readw(d, qts, vq->used + 4 +
-                                 sizeof(struct vring_used_elem) * vq->size);
+ static DisasJumpType op_ts(DisasContext *s, DisasOps *o)
+ {
+-    TCGv_i32 t1 = tcg_constant_i32(0xff);
++    TCGv_i32 ff = tcg_constant_i32(0xff);
++    TCGv_i32 t1 = tcg_temp_new_i32();
  
+-    tcg_gen_atomic_xchg_i32(t1, o->in2, t1, get_mem_index(s), MO_UB);
++    tcg_gen_atomic_xchg_i32(t1, o->in2, ff, get_mem_index(s), MO_UB);
+     tcg_gen_extract_i32(cc_op, t1, 7, 1);
+     set_cc_static(s);
+     return DISAS_NEXT;
 -- 
 2.44.0
 
