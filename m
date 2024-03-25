@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7293588A403
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A706A88A40C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 15:17:20 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rol4I-00034o-A0; Mon, 25 Mar 2024 10:12:54 -0400
+	id 1rol4I-00035A-M7; Mon, 25 Mar 2024 10:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4B-00033s-M4
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4B-00033p-Lv
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4A-0005pe-4S
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rol4A-0005pf-6I
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 10:12:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1711375965;
@@ -22,33 +22,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ycGmDfvDeFicWZJFBS1f9ILM3U5NokHMksdsoOEEHJI=;
- b=QJWkHp1iyjL/HFmlFEh5WMQyrOg24uT3axpBleiGS/Iuy7s6zBTZo1xJWmn4njkCidDv14
- fJIe3byb40OeeIZf/5p8Xs7cRc9Sv340sm2By4bkhVsYUX2m4UP/AxOW22UjrBYNiaEhCT
- Vzq1b4059AU/SO/s5/70xEGvpq6oUpo=
+ bh=0ktztwGv8ypFXJjxcOhjStnaCo/UPh9jx5Tv1NRsv80=;
+ b=Hl8wk/KvCU5XaDaa+pO0ihrOOeKaP/Y+zmIS9dUsHisIM8zgXN2MzOpvNMoMOLZlSmyeBr
+ JE9nzmrdji/D2KI7SNVaG2D4S9+dSun8RHxUeN+o4aq5gt94sY7XMWaVuE3L37X/j96rER
+ q5emJOir+nT1asdqp56efJhCpzPFSX4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-538-rimA6MAfNDCyE6oL0zYbsw-1; Mon,
- 25 Mar 2024 10:12:39 -0400
-X-MC-Unique: rimA6MAfNDCyE6oL0zYbsw-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-594-151oRp74MVSloN4wgYY-4w-1; Mon,
+ 25 Mar 2024 10:12:41 -0400
+X-MC-Unique: 151oRp74MVSloN4wgYY-4w-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
  [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4213E3C0C483;
- Mon, 25 Mar 2024 14:12:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 28AC53800BA0;
+ Mon, 25 Mar 2024 14:12:41 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.90])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 791A1479;
- Mon, 25 Mar 2024 14:12:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 837033C20;
+ Mon, 25 Mar 2024 14:12:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 4/9] aspeed: Make the ast2600-a3 SoC not user creatable
-Date: Mon, 25 Mar 2024 15:12:05 +0100
-Message-ID: <20240325141210.788356-5-thuth@redhat.com>
+Subject: [PULL 5/9] aspeed: Make the ast1030-a1 SoC not user creatable
+Date: Mon, 25 Mar 2024 15:12:06 +0100
+Message-ID: <20240325141210.788356-6-thuth@redhat.com>
 In-Reply-To: <20240325141210.788356-1-thuth@redhat.com>
 References: <20240325141210.788356-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,29 +85,29 @@ Aspeed SoCs are complex devices that can not be specified on the
 command line. Fix that to avoid QEMU aborts.
 
 Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2227
-Fixes: f25c0ae1079d ("aspeed/soc: Add AST2600 support")
+Fixes: 356b230ed138 ("aspeed/soc : Add AST1030 support")
 Reported-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240319150903.413662-1-clg@redhat.com>
+Message-ID: <20240319150903.413662-2-clg@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/arm/aspeed_ast2600.c | 2 ++
+ hw/arm/aspeed_ast10x0.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-index 174be53770..31713de74a 100644
---- a/hw/arm/aspeed_ast2600.c
-+++ b/hw/arm/aspeed_ast2600.c
-@@ -656,6 +656,8 @@ static void aspeed_soc_ast2600_class_init(ObjectClass *oc, void *data)
-     AspeedSoCClass *sc = ASPEED_SOC_CLASS(oc);
+diff --git a/hw/arm/aspeed_ast10x0.c b/hw/arm/aspeed_ast10x0.c
+index 2634e0f654..9f98ad8e87 100644
+--- a/hw/arm/aspeed_ast10x0.c
++++ b/hw/arm/aspeed_ast10x0.c
+@@ -424,6 +424,8 @@ static void aspeed_soc_ast1030_class_init(ObjectClass *klass, void *data)
+     DeviceClass *dc = DEVICE_CLASS(klass);
+     AspeedSoCClass *sc = ASPEED_SOC_CLASS(dc);
  
-     dc->realize      = aspeed_soc_ast2600_realize;
 +    /* Reason: The Aspeed SoC can only be instantiated from a board */
 +    dc->user_creatable = false;
+     dc->realize = aspeed_soc_ast1030_realize;
  
-     sc->name         = "ast2600-a3";
-     sc->valid_cpu_types = valid_cpu_types;
+     sc->name = "ast1030-a1";
 -- 
 2.44.0
 
