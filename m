@@ -2,39 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFEB7889695
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 09:53:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BC748896AB
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 09:55:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rog4S-0003Fr-On; Mon, 25 Mar 2024 04:52:45 -0400
+	id 1rog4a-0003Sr-7b; Mon, 25 Mar 2024 04:52:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rog3v-00031B-5u; Mon, 25 Mar 2024 04:52:12 -0400
-Received: from szxga01-in.huawei.com ([45.249.212.187])
+ id 1rog41-00034v-JE; Mon, 25 Mar 2024 04:52:19 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rog3m-0007PU-OY; Mon, 25 Mar 2024 04:52:08 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.194])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4V36761BcKzwQ9b;
- Mon, 25 Mar 2024 16:49:22 +0800 (CST)
+ id 1rog3q-0007Pf-Rd; Mon, 25 Mar 2024 04:52:16 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+ by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4V367726QYz2Bhcx;
+ Mon, 25 Mar 2024 16:49:23 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 29DBB140429;
- Mon, 25 Mar 2024 16:52:00 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 072131A0172;
+ Mon, 25 Mar 2024 16:52:01 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
- 2024 16:51:59 +0800
+ 2024 16:52:00 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v10 12/23] target/arm: Handle NMI in
- arm_cpu_do_interrupt_aarch64()
-Date: Mon, 25 Mar 2024 08:48:43 +0000
-Message-ID: <20240325084854.3010562-13-ruanjinjie@huawei.com>
+Subject: [PATCH v10 13/23] hw/intc: Enable FEAT_GICv3_NMI Feature
+Date: Mon, 25 Mar 2024 08:48:44 +0000
+Message-ID: <20240325084854.3010562-14-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325084854.3010562-1-ruanjinjie@huawei.com>
 References: <20240325084854.3010562-1-ruanjinjie@huawei.com>
@@ -44,13 +43,14 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.187;
- envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.190;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga04-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,48 +68,79 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-with superpriority is always IRQ, never FIQ, so the NMI exception trap entry
-behave like IRQ. And VINMI(vIRQ with Superpriority) can be raised from the
-GIC or come from the hcrx_el2.HCRX_VINMI bit, VFNMI(vFIQ with Superpriority)
-come from the hcrx_el2.HCRX_VFNMI bit.
+Added properties to enable FEAT_GICv3_NMI feature, setup distributor
+and redistributor registers to indicate NMI support.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v9:
-- Update the commit message.
-- Handle VINMI and VFNMI.
-v7:
-- Add Reviewed-by.
-v6:
-- Not combine VFNMI with CPU_INTERRUPT_VNMI.
+v10:
+- Adjust to before add irq non-maskable property.
 v4:
-- Also handle VNMI in arm_cpu_do_interrupt_aarch64().
-v3:
-- Remove the FIQ NMI handle.
+- Add Reviewed-by.
 ---
- target/arm/helper.c | 3 +++
- 1 file changed, 3 insertions(+)
+ hw/intc/arm_gicv3_common.c         | 1 +
+ hw/intc/arm_gicv3_dist.c           | 2 ++
+ hw/intc/gicv3_internal.h           | 1 +
+ include/hw/intc/arm_gicv3_common.h | 1 +
+ 4 files changed, 5 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 967e833ee8..eef37b801d 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11650,10 +11650,13 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-         break;
-     case EXCP_IRQ:
-     case EXCP_VIRQ:
-+    case EXCP_NMI:
-+    case EXCP_VINMI:
-         addr += 0x80;
-         break;
-     case EXCP_FIQ:
-     case EXCP_VFIQ:
-+    case EXCP_VFNMI:
-         addr += 0x100;
-         break;
-     case EXCP_VSERR:
+diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+index c52f060026..2d2cea6858 100644
+--- a/hw/intc/arm_gicv3_common.c
++++ b/hw/intc/arm_gicv3_common.c
+@@ -569,6 +569,7 @@ static Property arm_gicv3_common_properties[] = {
+     DEFINE_PROP_UINT32("num-irq", GICv3State, num_irq, 32),
+     DEFINE_PROP_UINT32("revision", GICv3State, revision, 3),
+     DEFINE_PROP_BOOL("has-lpi", GICv3State, lpi_enable, 0),
++    DEFINE_PROP_BOOL("has-nmi", GICv3State, nmi_support, 0),
+     DEFINE_PROP_BOOL("has-security-extensions", GICv3State, security_extn, 0),
+     /*
+      * Compatibility property: force 8 bits of physical priority, even
+diff --git a/hw/intc/arm_gicv3_dist.c b/hw/intc/arm_gicv3_dist.c
+index 35e850685c..22ddc0d666 100644
+--- a/hw/intc/arm_gicv3_dist.c
++++ b/hw/intc/arm_gicv3_dist.c
+@@ -389,6 +389,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
+          *                      by GICD_TYPER.IDbits)
+          * MBIS == 0 (message-based SPIs not supported)
+          * SecurityExtn == 1 if security extns supported
++         * NMI = 1 if Non-maskable interrupt property is supported
+          * CPUNumber == 0 since for us ARE is always 1
+          * ITLinesNumber == (((max SPI IntID + 1) / 32) - 1)
+          */
+@@ -402,6 +403,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
+         bool dvis = s->revision >= 4;
+ 
+         *data = (1 << 25) | (1 << 24) | (dvis << 18) | (sec_extn << 10) |
++            (s->nmi_support << GICD_TYPER_NMI_SHIFT) |
+             (s->lpi_enable << GICD_TYPER_LPIS_SHIFT) |
+             (0xf << 19) | itlinesnumber;
+         return true;
+diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
+index 29d5cdc1b6..8f4ebed2f4 100644
+--- a/hw/intc/gicv3_internal.h
++++ b/hw/intc/gicv3_internal.h
+@@ -68,6 +68,7 @@
+ #define GICD_CTLR_E1NWF             (1U << 7)
+ #define GICD_CTLR_RWP               (1U << 31)
+ 
++#define GICD_TYPER_NMI_SHIFT           9
+ #define GICD_TYPER_LPIS_SHIFT          17
+ 
+ /* 16 bits EventId */
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 7324c7d983..4358c5319c 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -249,6 +249,7 @@ struct GICv3State {
+     uint32_t num_irq;
+     uint32_t revision;
+     bool lpi_enable;
++    bool nmi_support;
+     bool security_extn;
+     bool force_8bit_prio;
+     bool irq_reset_nonsecure;
 -- 
 2.34.1
 
