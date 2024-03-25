@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7909889FBF
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5566889FB8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 13:37:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rojYV-0002IN-DU; Mon, 25 Mar 2024 08:35:59 -0400
+	id 1rojYY-0002Ja-BC; Mon, 25 Mar 2024 08:36:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYS-0002HE-Nt
+ id 1rojYS-0002HG-QS
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rojYQ-0005dF-BU
+ id 1rojYQ-0005dO-Nw
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 08:35:56 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-4148c65ea45so148045e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4148bd2ce39so2075215e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 05:35:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1711370153; x=1711974953; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Hzj0HVgtYH8dljqUEAkMRgJehd1werpG8tMX7PZdRLc=;
- b=ac2MfBHYIZalnEmXb7K4Gy1LENJmRojpjcykyPygvY+CeXGAx0OZlf4b6tJ/4CV3MA
- balzCfRm9DoPguLF64SkzjA2msqIwN8fNPUIi9KxfY4COXThlMSuf1kGyofrHTMWDIyh
- T7VUptJYtz9nPiMZLVmOOVS8jylCz9ugeZwufH1oW7OFmZ1IWC+XMvFE86T3m7pUqWOr
- 4i9FF2iFpn7tQc4TBGVv5iePd8S2645DWTFomDcY8THuPB8zFKvtFpW2CBWp5XDH5886
- Y2G7iDT09W3dhcbX2A3B7Dduv24j+q7ye8p9hkiWBdwqraAyY18R9IWdCE/B17wipE5z
- D8mg==
+ :reply-to; bh=aGhWsSP/npTCiFe/sHrNCbxR5PPjNjefjYSTRbPwF88=;
+ b=Ygo1IaNH6FB5YXtSobiQEt8PzoNuvjYhNUE0vp/X+iAzTm/FcGTJ9FwmOQ+RVDImM9
+ FpSERsaIE9OthTglJM9qukogC9Er2aUb1m1o4JpIGeToNxuoYH21/DcJRloZLuIIXMxA
+ F7agCAnX3c7HmYxWd6MJo5qh4F8p/TCW06OJrqx7Dsq+FrZiNoaD++bDbsHMGb6e89n7
+ B/2f+mPag3y13pJsERp0aokbPb8VFLM6ePKz41nEZ3R2jOX7YitSn+FAHl2slgbaJH4z
+ fJlLNcWBAYVf4/FZUDsTdd7wqLSV7EZh6WTZ2JOPxPpzLJ41eu0O4VjZV4klQIvakbud
+ pSQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1711370153; x=1711974953;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hzj0HVgtYH8dljqUEAkMRgJehd1werpG8tMX7PZdRLc=;
- b=SHSwkh9zYlNJvXaBZIvdO0x4vJBPFrlOF8Wmg25DjIDJSF562l3FHKLr/ZYxdrzJZw
- Fv7sHn/zYuH39YCvUupuGov0xODbQshMpWK06GtXjtPUM5aR33fkzhOw+Cs0OMPfnEo4
- Uf8eh4f4BBzrye7vsSKL94TwN7FM61MEfhiK6IwIQ+5IDdDkaw5TH3jXsa3ESvMIxbqM
- ynmEzo+v0yhu3x0UT1XgSCVvgJEjapa0TSiNnDFdAZGGST9v9Ju91SAutruP6q3NZn3v
- lq9RSqrMqafOxt+SJh343xQP85P2YKVDidkos2fB7O6o+3dGu7T+Gtwif8AqHKHaaJQd
- rzJA==
-X-Gm-Message-State: AOJu0Yx9mRKkxnRnGaRxtUA2foXC3LxQT3s/Hcst7Isu/lABd8H7qlxr
- hbxnkIGJj2w1/cNTZuGfQ/Vve5kpTkT9UyRnD2RFFEigYus5pOy2RkvIQ8DNrMftX41h3CZUWH4
- Y
-X-Google-Smtp-Source: AGHT+IFIQWrZfOAHdyaeQqvk2kZnE9gBZkoj465GV2nYPvZDZvGA6zjAdCWpbv7i/l4VHUmaNZ2fMg==
-X-Received: by 2002:a05:600c:560c:b0:413:2c11:f795 with SMTP id
- jr12-20020a05600c560c00b004132c11f795mr5735095wmb.39.1711370152910; 
- Mon, 25 Mar 2024 05:35:52 -0700 (PDT)
+ bh=aGhWsSP/npTCiFe/sHrNCbxR5PPjNjefjYSTRbPwF88=;
+ b=ok5wVQ5CXiFti2jaeOodjrjpE6CZ9Bl90/jsCIkRwfvnCgIiokYvpbhR1R5vw+AAFs
+ u6osu6VOGL5OoFKe9Y+By4ipVoPVZzJ/fq/VTizGi/zSaEwRiM4PSvZmSpBdJApAcFam
+ xcLj6Vz15Sy8X2uuEgys3rFCuW38LfAsBmfoHLpMrVqnegQnbZKQDFEsVMHYeA6cpcu6
+ CCurC9145QyR6G2uZamJdcBGkVsa7xv7AcrxSBxoS7jsI1RCDW9qagodRyKDzVyA4KRb
+ jqDc84HaVDTRWAo8vnvjuU739z7gGyBIWviMwZARBikh0DdCfKW8cndMxZXLJdkBa5MQ
+ 6Juw==
+X-Gm-Message-State: AOJu0YyyvsOl0XTXtRCjQRNKeDi8lY84LX8Pe07RVoDB7ZSzWzD1B3Fb
+ OV1qn98XOItpBtlrIWoevTLD1YmAIelQG9l/l1hMkOJtVD/lANm8tF+ahT78nmwCaT6x430awm7
+ w
+X-Google-Smtp-Source: AGHT+IGPkE4pZV9wBlViscRjg8FwWPkFGu4Q3ONXbnxawSC2IxHR9Y6r9g3WFqH3NIs6lCbfZQJmEA==
+X-Received: by 2002:a05:600c:4ece:b0:414:6c72:8df with SMTP id
+ g14-20020a05600c4ece00b004146c7208dfmr4809223wmq.38.1711370153346; 
+ Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- o19-20020a05600c339300b00414041032casm2303877wmp.1.2024.03.25.05.35.52
+ o19-20020a05600c339300b00414041032casm2303877wmp.1.2024.03.25.05.35.53
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 05:35:52 -0700 (PDT)
+ Mon, 25 Mar 2024 05:35:53 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/7] tests/unit/socket-helpers: Don't close(-1)
-Date: Mon, 25 Mar 2024 12:35:45 +0000
-Message-Id: <20240325123550.1991693-3-peter.maydell@linaro.org>
+Subject: [PULL 3/7] net/af-xdp.c: Don't leak sock_fds array in
+ net_init_af_xdp()
+Date: Mon, 25 Mar 2024 12:35:46 +0000
+Message-Id: <20240325123550.1991693-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325123550.1991693-1-peter.maydell@linaro.org>
 References: <20240325123550.1991693-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,42 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In socket_check_afunix_support() we call socket(PF_UNIX, SOCK_STREAM, 0)
-to see if it works, but we call close() on the result whether it
-worked or not. Only close the fd if the socket() call succeeded.
-Spotted by Coverity.
+In net_init_af_xdp() we parse the arguments and allocate
+a buffer of ints into sock_fds. However, although we
+free this in the error exit path, we don't ever free it
+in the successful return path. Coverity spots this leak.
 
-Resolves: Coverity CID 1497481
+Switch to g_autofree so we don't need to manually free the
+array.
 
+Resolves: Coverity CID 1534906
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-id: 20240312183810.557768-3-peter.maydell@linaro.org
+Message-id: 20240312183810.557768-4-peter.maydell@linaro.org
 ---
- tests/unit/socket-helpers.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/af-xdp.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/unit/socket-helpers.c b/tests/unit/socket-helpers.c
-index 6de27baee2e..f3439cc4e52 100644
---- a/tests/unit/socket-helpers.c
-+++ b/tests/unit/socket-helpers.c
-@@ -160,7 +160,6 @@ void socket_check_afunix_support(bool *has_afunix)
-     int fd;
+diff --git a/net/af-xdp.c b/net/af-xdp.c
+index 38e600703a3..01c5fb914ec 100644
+--- a/net/af-xdp.c
++++ b/net/af-xdp.c
+@@ -446,7 +446,7 @@ int net_init_af_xdp(const Netdev *netdev,
+     NetClientState *nc, *nc0 = NULL;
+     unsigned int ifindex;
+     uint32_t prog_id = 0;
+-    int *sock_fds = NULL;
++    g_autofree int *sock_fds = NULL;
+     int64_t i, queues;
+     Error *err = NULL;
+     AFXDPState *s;
+@@ -516,7 +516,6 @@ int net_init_af_xdp(const Netdev *netdev,
+     return 0;
  
-     fd = socket(PF_UNIX, SOCK_STREAM, 0);
--    close(fd);
- 
- #ifdef _WIN32
-     *has_afunix = (fd != (int)INVALID_SOCKET);
-@@ -168,5 +167,8 @@ void socket_check_afunix_support(bool *has_afunix)
-     *has_afunix = (fd >= 0);
- #endif
- 
-+    if (*has_afunix) {
-+        close(fd);
-+    }
-     return;
- }
+ err:
+-    g_free(sock_fds);
+     if (nc0) {
+         qemu_del_net_client(nc0);
+     }
 -- 
 2.34.1
 
