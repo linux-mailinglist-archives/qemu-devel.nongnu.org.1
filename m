@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F788899C5
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 11:16:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69CFF8899E6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 11:18:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rohMc-0004Yp-T0; Mon, 25 Mar 2024 06:15:34 -0400
+	id 1rohMd-0004ZZ-BN; Mon, 25 Mar 2024 06:15:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from
- <3vk4BZggKCpcJDFJK1617FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--smostafa.bounces.google.com>)
- id 1rohMa-0004Wn-De
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 06:15:32 -0400
-Received: from mail-wm1-x349.google.com ([2a00:1450:4864:20::349])
+ <3wE4BZggKCpkLFHLM3839HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--smostafa.bounces.google.com>)
+ id 1rohMa-0004Xk-W6
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 06:15:33 -0400
+Received: from mail-yb1-xb49.google.com ([2607:f8b0:4864:20::b49])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from
- <3vk4BZggKCpcJDFJK1617FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--smostafa.bounces.google.com>)
- id 1rohMX-0004hY-2n
+ <3wE4BZggKCpkLFHLM3839HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--smostafa.bounces.google.com>)
+ id 1rohMX-0004j1-Kd
  for qemu-devel@nongnu.org; Mon, 25 Mar 2024 06:15:32 -0400
-Received: by mail-wm1-x349.google.com with SMTP id
- 5b1f17b1804b1-41413823c1bso24481495e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 03:15:27 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id
+ 3f1490d57ef6-dbf618042daso6579573276.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 03:15:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1711361726; x=1711966526; darn=nongnu.org;
+ d=google.com; s=20230601; t=1711361728; x=1711966528; darn=nongnu.org;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:from:to:cc:subject:date:message-id:reply-to;
- bh=UqHTaZygPYcO5rxnIuRiQBfEhEaYRf9U7Q9zvZX8j20=;
- b=Aez9hd9mgIyPkakr+KKcqdEJIMmRJy9TjTxjAjZeSc3YQljxNGERODpHw2vT0/tLM0
- lruuHcV7C2rxj6u15H+nxuaiRaQEaHp70Ec3Z69eO2r0w5S2+OMsw22RLXXoxapXc+4R
- FMi4YgvJ8F+mRqZXn3fHl5H+5gtL6SYRtARuqdvGf9oWipbU8I8RsUQsQU0D0aIdrru4
- 8f/beAGzr0dRdFcBin1FOdMCPAulcag0PSEIcy1GmMxcTI02XqoSxPpflRZzhWceNMH9
- uzbVsmWZMgbdECI8Cs1Rtbn2sqlpZ32LSFoYgIdR2RGszYg0gUZTHaw/urzsy2p9s3+s
- 3+dw==
+ bh=PIQyD7fWOKdqPHHegPpRK4rKc0e9PSQxmCaN+UfpwQ4=;
+ b=YiKDHHR27Ts/QTXAbauExWJYru2GsbrYDPhHk13b1aH5LrXdmFk3ENWgvVdGPY8I0c
+ nKf8RYNJmIuFcgVp2N1N4mZOEvQG4bSIsYuAk7csA+fyexSaql4r89/j9HVAHHA5V5vu
+ Iu+Wz5gwzdniMy3x2MuLURFA7zgZ2+QfU5QS/Lsxn2nXT6We2bDcaLC8dNf3aYMry3Oc
+ PfSvOrb08bVY4Av+3QhoKfk4PSDAqheAb5GFy5N/atyjpbGlgBjkJpGW/J+y03+4SkWa
+ ToubZat9o54EGdrGugssdQy+cofmozjF5zZRJA2XVuByerxUaI7C0g4CLmchYudLjmIY
+ 9yvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711361726; x=1711966526;
+ d=1e100.net; s=20230601; t=1711361728; x=1711966528;
  h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
  :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UqHTaZygPYcO5rxnIuRiQBfEhEaYRf9U7Q9zvZX8j20=;
- b=TEuQg+VH6tIpdKhb+d3B0VYJ+B3YZJe86Exng3rW43Ab9t4RgcUugpoqwEVljVlvaG
- hiDCTWavJynZ/HJNeW6Yb12Vqx8kHoCc96pPKHHVMVXAywlMrgxWTOyYY1cPKhm3YGQd
- udl+Lg8xG9EKrOHQ2R2iw6h7V2b5JQ1haGyCTWe9+SxnBUJk4oKvFrg7akbOkgIGA1te
- b+nXMw0wndUn7Tb5ybOG8C/FYQNbbvFyyitq1QqTENzHZxYwRKNRM78WfKcCiHdet+Is
- qxES8Tq6jeHyu+i9RByTL7IysGLe3WGTfCF+pXIwv8FEJNy/yjrO3kJljgvGKcXpatsd
- YY9w==
+ bh=PIQyD7fWOKdqPHHegPpRK4rKc0e9PSQxmCaN+UfpwQ4=;
+ b=QKbf47tLE5vAGFlLx76v6F8ng3GKj3GUIjVH3CbLmX/xDfHSwglNw722NgMUqH0Fsi
+ FTXGHxY6dPR3urFmrozkMSieFGdKRP48afckebH962Jtz21iinpu7FFwprKlwMy/7Ii+
+ 3U6IF/XxHD0hXSMYXXm/5z3cvyw08y5t1aoogEX0+FtNGkyWQt7AWcRZTdhsXEwsgGcB
+ 7G7UprIs36CXXJ4IhZMjJg8Nf2HX+828Saq3V+zlZnRUGS4OFswiFU7w7U59+JZHUFJC
+ yVdaujK4/NkIdcg/yEd1pKSEkOd7QM3PBlRHoE5OxwjQkZhZ4zU9BVdJptOh84NV5FCN
+ fEjQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW27MIwauWvDzjllb4SaVlxNTNLnF/20bHx0nKygdK9+D4wMVBVu0QoiHc6gA2NwFmPSCTe7b9GD6Gov4+t37VrW5qqLUY=
-X-Gm-Message-State: AOJu0Yym/xXcOWZOtrjXAuK8tS2eYJypedstXWBGN/yasHYwKzZaA7eE
- DLavJnLrSue9+Nx+LRcbV1dNo9ERi6nW2+dFxxxbATCtxnCFqyEDQIGHRTOmoH5nNz0IawYueL5
- Zg4tIe/JdAA==
-X-Google-Smtp-Source: AGHT+IE1t+lKZzlbnFZB5V+GeOeAMERzDwRCPrC4b+TazQQ3uYAzYTnWh7CI6q8SW9xI20Bk7kR7DFVqtfDLhQ==
+ AJvYcCWR++jrV6VcGakEl2E+7fU70dOJKu6A7sfiFlSGL2CFFBpNydtU8HPNpb2mVl2QLIIb+KYpNqZR/SAvr1ssOhgegh4yO18=
+X-Gm-Message-State: AOJu0YxiTDO9Xo8yAxCivHq5WUPkT6ZmtmbbrCmU0XzuiYAqApFaYRTs
+ OtiFQ/qe3TIsRewXGx6JChqisygkr1Ir0TRW3dawwKnXFakv5rkNbUTPYiepSqDseTSX6KchxoE
+ 4JHMxsHC3UQ==
+X-Google-Smtp-Source: AGHT+IF/8jxqEryQ332F3IpGb3mlrotrn5WHTTl485//bAS4u0Rj9DpbMmYxICx9IowU22tYToi1vssVuX59MA==
 X-Received: from mostafa.c.googlers.com
  ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a05:600c:1396:b0:414:64b3:5036 with SMTP
- id u22-20020a05600c139600b0041464b35036mr144885wmf.3.1711361726440; Mon, 25
- Mar 2024 03:15:26 -0700 (PDT)
-Date: Mon, 25 Mar 2024 10:14:06 +0000
+ (user=smostafa job=sendgmr) by 2002:a05:6902:1207:b0:dcd:3a37:65 with SMTP id
+ s7-20020a056902120700b00dcd3a370065mr237591ybu.7.1711361728495; Mon, 25 Mar
+ 2024 03:15:28 -0700 (PDT)
+Date: Mon, 25 Mar 2024 10:14:07 +0000
 In-Reply-To: <20240325101442.1306300-1-smostafa@google.com>
 Mime-Version: 1.0
 References: <20240325101442.1306300-1-smostafa@google.com>
 X-Mailer: git-send-email 2.44.0.396.g6e790dbe36-goog
-Message-ID: <20240325101442.1306300-11-smostafa@google.com>
-Subject: [RFC PATCH 10/12] hw/arm/smmu: Refactor SMMU OAS
+Message-ID: <20240325101442.1306300-12-smostafa@google.com>
+Subject: [RFC PATCH 11/12] hw/arm/smmuv3: Add property for OAS
 From: Mostafa Saleh <smostafa@google.com>
 To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
  qemu-devel@nongnu.org
 Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org, 
  nicolinc@nvidia.com, julien@xen.org, Mostafa Saleh <smostafa@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::349;
- envelope-from=3vk4BZggKCpcJDFJK1617FF7C5.3FDH5DL-45M5CEFE7EL.FI7@flex--smostafa.bounces.google.com;
- helo=mail-wm1-x349.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b49;
+ envelope-from=3wE4BZggKCpkLFHLM3839HH9E7.5HFJ7FN-67O7EGHG9GN.HK9@flex--smostafa.bounces.google.com;
+ helo=mail-yb1-xb49.google.com
 X-Spam_score_int: -95
 X-Spam_score: -9.6
 X-Spam_bar: ---------
@@ -94,178 +94,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-SMMUv3 OAS is hardcoded to 44 bits, for nested configurations that
-can be a problem as stage-2 might be shared with the CPU which might
-have different PARANGE, and according to SMMU manual ARM IHI 0070F.b:
-    6.3.6 SMMU_IDR5, OAS must match the system physical address size.
-
-This patch doesn't change the SMMU OAS, but refactors the code to
-make it easier to do that:
-- Rely everywhere on IDR5 for reading OAS instead of using the macro so
-  it is easier just change IDR5 and it propagages correctly.
-- Make the code work if OAS is 52 bits.
-- Remove unused functions/macros: pa_range/MAX_PA
+Add property that sets the OAS of the SMMU, this in not used in this
+patch.
 
 Signed-off-by: Mostafa Saleh <smostafa@google.com>
 ---
- hw/arm/smmu-common.c     |  7 ++++---
- hw/arm/smmuv3-internal.h | 15 ++-------------
- hw/arm/smmuv3.c          | 35 ++++++++++++++++++++++++++++-------
- 3 files changed, 34 insertions(+), 23 deletions(-)
+ hw/arm/smmuv3-internal.h |  2 +-
+ hw/arm/smmuv3.c          | 27 ++++++++++++++++++++++++++-
+ include/hw/arm/smmuv3.h  |  1 +
+ 3 files changed, 28 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/smmu-common.c b/hw/arm/smmu-common.c
-index da8776ecec..a4196ddd22 100644
---- a/hw/arm/smmu-common.c
-+++ b/hw/arm/smmu-common.c
-@@ -359,7 +359,8 @@ static int smmu_ptw_64_s1(SMMUTransCfg *cfg,
-     inputsize = 64 - tt->tsz;
-     level = 4 - (inputsize - 4) / stride;
-     indexmask = VMSA_IDXMSK(inputsize, stride, level);
--    baseaddr = extract64(tt->ttb, 0, 48);
-+
-+    baseaddr = extract64(tt->ttb, 0, cfg->oas);
-     baseaddr &= ~indexmask;
- 
-     while (level < VMSA_LEVELS) {
-@@ -472,8 +473,8 @@ static int smmu_ptw_64_s2(SMMUTransCfg *cfg,
-      * Get the ttb from concatenated structure.
-      * The offset is the idx * size of each ttb(number of ptes * (sizeof(pte))
-      */
--    uint64_t baseaddr = extract64(cfg->s2cfg.vttb, 0, 48) + (1 << stride) *
--                                  idx * sizeof(uint64_t);
-+    uint64_t baseaddr = extract64(cfg->s2cfg.vttb, 0, cfg->s2cfg.eff_ps) +
-+                                  (1 << stride) * idx * sizeof(uint64_t);
-     dma_addr_t indexmask = VMSA_IDXMSK(inputsize, stride, level);
- 
-     baseaddr &= ~indexmask;
 diff --git a/hw/arm/smmuv3-internal.h b/hw/arm/smmuv3-internal.h
-index e4dd11e1e6..a7d53b3854 100644
+index a7d53b3854..9bb4ec9ec6 100644
 --- a/hw/arm/smmuv3-internal.h
 +++ b/hw/arm/smmuv3-internal.h
-@@ -592,23 +592,12 @@ static inline int oas2bits(int oas_field)
-         return 44;
-     case 5:
-         return 48;
-+    case 6:
-+        return 52;
-     }
-     return -1;
- }
+@@ -105,7 +105,7 @@ REG32(IDR5,                0x14)
+      FIELD(IDR5, VAX,        10, 2);
+      FIELD(IDR5, STALL_MAX,  16, 16);
  
--static inline int pa_range(STE *ste)
--{
--    int oas_field = MIN(STE_S2PS(ste), SMMU_IDR5_OAS);
--
--    if (!STE_S2AA64(ste)) {
--        return 40;
--    }
--
--    return oas2bits(oas_field);
--}
--
--#define MAX_PA(ste) ((1 << pa_range(ste)) - 1)
--
- /* CD fields */
+-#define SMMU_IDR5_OAS 4
++#define SMMU_IDR5_OAS_DEF 4
  
- #define CD_VALID(x)   extract32((x)->word[0], 31, 1)
+ REG32(IIDR,                0x18)
+ REG32(AIDR,                0x1c)
 diff --git a/hw/arm/smmuv3.c b/hw/arm/smmuv3.c
-index 288e7cf1ae..2a29e3bccb 100644
+index 2a29e3bccb..9d0db25379 100644
 --- a/hw/arm/smmuv3.c
 +++ b/hw/arm/smmuv3.c
-@@ -411,10 +411,10 @@ static bool s2t0sz_valid(SMMUTransCfg *cfg)
+@@ -299,7 +299,7 @@ static void smmuv3_init_regs(SMMUv3State *s)
+     s->idr[3] = FIELD_DP32(s->idr[3], IDR3, RIL, 1);
+     s->idr[3] = FIELD_DP32(s->idr[3], IDR3, BBML, 2);
+ 
+-    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, SMMU_IDR5_OAS); /* 44 bits */
++    s->idr[5] = FIELD_DP32(s->idr[5], IDR5, OAS, s->oas);
+     /* 4K, 16K and 64K granule support */
+     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN4K, 1);
+     s->idr[5] = FIELD_DP32(s->idr[5], IDR5, GRAN16K, 1);
+@@ -1869,11 +1869,34 @@ static const VMStateDescription vmstate_gbpa = {
      }
+ };
  
-     if (cfg->s2cfg.granule_sz == 16) {
--        return (cfg->s2cfg.tsz >= 64 - oas2bits(SMMU_IDR5_OAS));
-+        return (cfg->s2cfg.tsz >= 64 - cfg->s2cfg.eff_ps);
-     }
- 
--    return (cfg->s2cfg.tsz >= MAX(64 - oas2bits(SMMU_IDR5_OAS), 16));
-+    return (cfg->s2cfg.tsz >= MAX(64 - cfg->s2cfg.eff_ps, 16));
- }
- 
- /*
-@@ -435,8 +435,11 @@ static bool s2_pgtable_config_valid(uint8_t sl0, uint8_t t0sz, uint8_t gran)
-     return nr_concat <= VMSA_MAX_S2_CONCAT;
- }
- 
--static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
-+static int decode_ste_s2_cfg(SMMUv3State *s, SMMUTransCfg *cfg,
-+                             STE *ste)
- {
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
-+
-     if (STE_S2AA64(ste) == 0x0) {
-         qemu_log_mask(LOG_UNIMP,
-                       "SMMUv3 AArch32 tables not supported\n");
-@@ -469,7 +472,15 @@ static int decode_ste_s2_cfg(SMMUTransCfg *cfg, STE *ste)
-     }
- 
-     /* For AA64, The effective S2PS size is capped to the OAS. */
--    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), SMMU_IDR5_OAS));
-+    cfg->s2cfg.eff_ps = oas2bits(MIN(STE_S2PS(ste), oas));
-+    /*
-+     * For SMMUv3.1 and later, when OAS == IAS == 52, the stage 2 input
-+     * range is further limited to 48 bits unless STE.S2TG indicates a
-+     * 64KB granule.
-+     */
-+    if (cfg->s2cfg.granule_sz != 16) {
-+        cfg->s2cfg.eff_ps = MIN(cfg->s2cfg.eff_ps, 48);
++static const VMStateDescription vmstate_oas = {
++    .name = "smmuv3/oas",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .fields = (const VMStateField[]) {
++        VMSTATE_INT32(oas, SMMUv3State),
++        VMSTATE_END_OF_LIST()
 +    }
-     /*
-      * It is ILLEGAL for the address in S2TTB to be outside the range
-      * described by the effective S2PS value.
-@@ -545,6 +556,7 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
-                       STE *ste, SMMUEventInfo *event)
- {
-     uint32_t config;
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
-     int ret;
++};
++
++static int smmuv3_preload(void *opaque)
++{
++    SMMUv3State *s = opaque;
++
++    /*
++     * In case it wasn't migrated, use the value used
++     * by older QEMU.
++     */
++    s->oas = SMMU_IDR5_OAS_DEF;
++    return 0;
++}
++
+ static const VMStateDescription vmstate_smmuv3 = {
+     .name = "smmuv3",
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .priority = MIG_PRI_IOMMU,
++    .pre_load = smmuv3_preload,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(features, SMMUv3State),
+         VMSTATE_UINT8(sid_size, SMMUv3State),
+@@ -1901,6 +1924,7 @@ static const VMStateDescription vmstate_smmuv3 = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_gbpa,
++        &vmstate_oas,
+         NULL
+     }
+ };
+@@ -1913,6 +1937,7 @@ static Property smmuv3_properties[] = {
+      * Defaults to stage 1
+      */
+     DEFINE_PROP_STRING("stage", SMMUv3State, stage),
++    DEFINE_PROP_INT32("oas", SMMUv3State, oas, SMMU_IDR5_OAS_DEF),
+     DEFINE_PROP_END_OF_LIST()
+ };
  
-     if (!STE_VALID(ste)) {
-@@ -591,8 +603,8 @@ static int decode_ste(SMMUv3State *s, SMMUTransCfg *cfg,
-          * Stage-1 OAS defaults to OAS even if not enabled as it would be used
-          * in input address check for stage-2.
-          */
--        cfg->oas = oas2bits(SMMU_IDR5_OAS);
--        ret = decode_ste_s2_cfg(cfg, ste);
-+        cfg->oas = oas2bits(oas);
-+        ret = decode_ste_s2_cfg(s, cfg, ste);
-         if (ret) {
-             goto bad_ste;
-         }
-@@ -718,6 +730,7 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-     int i;
-     SMMUTranslationStatus status;
-     SMMUTLBEntry *entry;
-+    uint8_t oas = FIELD_EX32(s->idr[5], IDR5, OAS);
+diff --git a/include/hw/arm/smmuv3.h b/include/hw/arm/smmuv3.h
+index d183a62766..00a9eb4467 100644
+--- a/include/hw/arm/smmuv3.h
++++ b/include/hw/arm/smmuv3.h
+@@ -63,6 +63,7 @@ struct SMMUv3State {
+     qemu_irq     irq[4];
+     QemuMutex mutex;
+     char *stage;
++    int32_t oas;
+ };
  
-     if (!CD_VALID(cd) || !CD_AARCH64(cd)) {
-         goto bad_cd;
-@@ -736,7 +749,7 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-     cfg->aa64 = true;
- 
-     cfg->oas = oas2bits(CD_IPS(cd));
--    cfg->oas = MIN(oas2bits(SMMU_IDR5_OAS), cfg->oas);
-+    cfg->oas = MIN(oas2bits(oas), cfg->oas);
-     cfg->tbi = CD_TBI(cd);
-     cfg->asid = CD_ASID(cd);
-     cfg->affd = CD_AFFD(cd);
-@@ -765,6 +778,14 @@ static int decode_cd(SMMUv3State *s, SMMUTransCfg *cfg,
-             goto bad_cd;
-         }
- 
-+        /*
-+         * An address greater than 48 bits in size can only be output from a
-+         * TTD when, in SMMUv3.1 and later, the effective IPS is 52 and a 64KB
-+         * granule is in use for that translation table
-+         */
-+        if (tt->granule_sz != 16) {
-+            cfg->oas = MIN(cfg->oas, 48);
-+        }
-         tt->tsz = tsz;
-         tt->ttb = CD_TTB(cd, i);
- 
+ typedef enum {
 -- 
 2.44.0.396.g6e790dbe36-goog
 
