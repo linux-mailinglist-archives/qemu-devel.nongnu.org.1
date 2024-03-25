@@ -2,86 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB6788A68A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5852388A696
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Mar 2024 16:30:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1romFp-0002lp-5v; Mon, 25 Mar 2024 11:28:53 -0400
+	id 1romGv-0005H9-KU; Mon, 25 Mar 2024 11:30:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romFn-0002lD-6K
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:28:51 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1romFl-0000Fr-Pb
- for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:28:50 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-414859830f2so10021835e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 08:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711380527; x=1711985327; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=egg5Mtyn99cCwmy/P18xKwdXOjmaICInZ6LaE2Awphc=;
- b=QAoft+ZpjFuEqdkyjeyCnyG/tB7/55Q5ZnGyqVwppwa2xdKm+ZDMzSxhIXs8t0o4SB
- yUmzcikKumFABwufuHZO/6db4qZNk7pD3rPHt0BA2AVDn+rqTewJ7Fh0dj3AQC488KhB
- aapV0dojbhBoXFZ6n9Y5GvlwR6SflnOmSOa5IF7iTsn6yk8704K9QwjrS3fTEQKXl1nm
- xrn/cBfMV7JALe7RtABz+s8ewZbLHVKd/5Evpk7gp72vxa8B61kqZJodjDX6U1d8iIZV
- eWSicqIk+1DJxVtzkMw5PGlqbz0BrspjgsRfdxm2sK+TCKaU9CD0UdGrED3Oo3WZA3Ow
- 00Hg==
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1romGt-0005GB-Qq
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:29:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <imammedo@redhat.com>)
+ id 1romGs-0000Jn-Dj
+ for qemu-devel@nongnu.org; Mon, 25 Mar 2024 11:29:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711380597;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kXdhjWLcZVSrCzqzMNe5+sdh72XKz5BSXFIujU5V2iM=;
+ b=Asp2GfjlLjWzmmJF89IT4atIuq2jDDoUVmwwhMWa8HJ04olZEBcgw3pdFT+zRzKSQnpEez
+ jCVHR6CVucNb22thsFLZE2nMqjgbzR92RjhRFNmMumPVXzkFeQo2et59L+vvd0PB5QuhEz
+ F9IBelGhWMW5sJ+hVFZRMOTAeLmo4QM=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-269-Kr6rugYKPmeJOAqQMxvPFw-1; Mon, 25 Mar 2024 11:29:53 -0400
+X-MC-Unique: Kr6rugYKPmeJOAqQMxvPFw-1
+Received: by mail-lj1-f198.google.com with SMTP id
+ 38308e7fff4ca-2d48b182917so46259731fa.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 08:29:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711380527; x=1711985327;
+ d=1e100.net; s=20230601; t=1711380592; x=1711985392;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=egg5Mtyn99cCwmy/P18xKwdXOjmaICInZ6LaE2Awphc=;
- b=tLwqkSfKBv5Jbfq0Z7Hhe3B/xcocxiQ/xDQe1vNE4Ke/Ze2z5cFEJPRk4SMvF0Xn/V
- inTg5HvFkazUGkRzt2qR/WtVu32jAgpihr1L3+Fj433tx3psON+8Yw8Kc1LfcHnw5iAt
- eLtOks39QZZetio/cTO9E/nrMdPGtNC2TYNah/Hx4McMW5E1nX/kzoRtiPuc+NzibPZx
- pB8hxWSkEqSMlvy+WbAqErOQLVEDJqpQo1eFulCfs+X5Rh7ub8x4oCSsxYnLNHhuA4Vg
- XgH+COiPvh0blZZ1vU+WB/pElRAJ6DqwVDNtP6LA9UtYkajLAQJqJBl2mkTxNbUSCN3/
- Fe8w==
-X-Gm-Message-State: AOJu0YzuP5XtvSzh8i7WTWugGuBJXJkga7POOWvXZauXtQ8vTW0Po4R+
- ijV1Kxq2s8wKxxBEZkuN/AfDi5EkBqY7uZGmAtfjPhcAOjB2CphcT0I5GxULztD4Y43owIVcsFw
- ozi8=
-X-Google-Smtp-Source: AGHT+IG71BRPXIOaH/SLJY22g2op8AV25bdPmej/JuI/NnWgTbSgHved3Vg5LXS0t6W/jJanYTzpaQ==
-X-Received: by 2002:a05:600c:4f01:b0:414:8948:621c with SMTP id
- l1-20020a05600c4f0100b004148948621cmr2566601wmq.8.1711380527317; 
- Mon, 25 Mar 2024 08:28:47 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.208.214])
- by smtp.gmail.com with ESMTPSA id
- j28-20020a05600c1c1c00b004146c769c79sm8799861wms.0.2024.03.25.08.28.46
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 25 Mar 2024 08:28:46 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- Alistair Francis <alistair@alistair23.me>, qemu-arm@nongnu.org,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- Damien Hedde <damien.hedde@dahe.fr>,
- Peter Maydell <peter.maydell@linaro.org>, Luc Michel <luc@lmichel.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0 v3 3/3] hw/misc/stm32l4x5_rcc: Propagate period when
- enabling a clock
-Date: Mon, 25 Mar 2024 16:28:26 +0100
-Message-ID: <20240325152827.73817-4-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240325152827.73817-1-philmd@linaro.org>
-References: <20240325152827.73817-1-philmd@linaro.org>
+ bh=kXdhjWLcZVSrCzqzMNe5+sdh72XKz5BSXFIujU5V2iM=;
+ b=V0Y1MfnMsUh4WBKJJMlTbltlZ/2oviEnOKyyxjbh9FERI1/ZUI1zSPWYuuuaJf4IRs
+ fsviexZl3U2LlsFGxwAcW3NZGoNxV/T4/qz63vkTl2MMz5OhT5zzXPbX2TXLDRInDU3w
+ lPsD+QtUWFTPmfyraB7RY9O+AUgMyWv4Wp7LNqIRtdGkdjIVZ/mPNU9Da4dPLxps4Z5Y
+ seNydW0OjOEtcXrAd5AYvQV1U7VYo8ZyjjTkaQvsg03eQFFfYDlWmkhkAoRGM3JD85Oz
+ 3md+gJWg8Xeags5ZztHsh0TSzMKplEa1JwnmqAmLRWreB8p0xrfxR/WI8f4H67W3k3aT
+ C6oQ==
+X-Gm-Message-State: AOJu0YxxlULbLLxU0CRICVxo1ouj8IYTB4e+jX51meHDkB94mMqdmOS8
+ ifU60ZYJa1qOGo5gUxLoqpjMigRJL1l2rV8HbIOSQi7A/EZDjikgakTdQKsphaw9CuiOymif0jd
+ fYxYgXFSqV0DtLAcC+JMlUoioe1aHswfd7SUZo5Wqd88WpQoFMH3K
+X-Received: by 2002:a2e:7a0e:0:b0:2d6:cb40:e0a2 with SMTP id
+ v14-20020a2e7a0e000000b002d6cb40e0a2mr98616ljc.53.1711380592407; 
+ Mon, 25 Mar 2024 08:29:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHePtAuOG+6IWrEAQOeI4+FXXtjMz3xtZeNU9g/eXmDML9zOpwT7pAfuR78Cz1uUtTNtQxWlw==
+X-Received: by 2002:a2e:7a0e:0:b0:2d6:cb40:e0a2 with SMTP id
+ v14-20020a2e7a0e000000b002d6cb40e0a2mr98594ljc.53.1711380592053; 
+ Mon, 25 Mar 2024 08:29:52 -0700 (PDT)
+Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com.
+ [213.175.37.10]) by smtp.gmail.com with ESMTPSA id
+ k2-20020a2e8882000000b002d2a710f864sm1498636lji.24.2024.03.25.08.29.51
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Mar 2024 08:29:51 -0700 (PDT)
+Date: Mon, 25 Mar 2024 16:29:50 +0100
+From: Igor Mammedov <imammedo@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org, "Michael S . Tsirkin"
+ <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: Re: [PATCH trivial for-9.0] hw/i386/fw_cfg.c: fix non-legacy smbios
+ build
+Message-ID: <20240325162950.0b8f29c5@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20240325130920.349521-1-mjt@tls.msk.ru>
+References: <20240325130920.349521-1-mjt@tls.msk.ru>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=imammedo@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,39 +101,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+On Mon, 25 Mar 2024 16:09:20 +0300
+Michael Tokarev <mjt@tls.msk.ru> wrote:
 
-The "clock_set_mul_div" function doesn't propagate the clock period
-to the children if it is changed (e.g. by enabling/disabling a clock
-multiplexer).
-This was overlooked during the implementation due to late changes.
+> When building qemu with smbios but not legacy mode (eg minimal microvm build),
+> link fails with:
+> 
+>   hw/i386/fw_cfg.c:74: undefined reference to `smbios_get_table_legacy'
+> 
+> This is because fw_cfg interface can call this function if CONFIG_SMBIOS
+> is defined.  Made this code block to depend on CONFIG_SMBIOS_LEGACY.
+> 
+> Fixes: b42b0e4daaa5 "smbios: build legacy mode code only for 'pc' machine"
+> Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-This commit propagates the change if the multiplier or divider changes.
 
-Fixes: ec7d83acbd ("hw/misc/stm32l4x5_rcc: Add an internal clock multiplexer object")
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-ID: <20240317103918.44375-2-arnaud.minier@telecom-paris.fr>
-[PMD: Check clock_set_mul_div() return value]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/misc/stm32l4x5_rcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+hmh, it looks like MICROVM doesn't select SMBIOS nor FW_CFG_DMA
 
-diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-index 49b90afdf0..ed2dbd9dc3 100644
---- a/hw/misc/stm32l4x5_rcc.c
-+++ b/hw/misc/stm32l4x5_rcc.c
-@@ -61,7 +61,7 @@ static void clock_mux_update(RccClockMuxState *mux, bool bypass_source)
-         freq_multiplier = mux->divider;
-     }
+which looks broken to me,
+does following help:
+
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index a6ee052f9a..54c77b5bcc 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -119,6 +119,8 @@ config MICROVM
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     select USB_XHCI_SYSBUS
+     select I8254
++    select SMBIOS
++    select FW_CFG_DMA
  
--    clock_set_mul_div(mux->out, freq_multiplier, mux->multiplier);
-+    clk_changed |= clock_set_mul_div(mux->out, freq_multiplier, mux->multiplier);
-     clk_changed |= clock_set(mux->out, clock_get(current_source));
-     if (clk_changed) {
-         clock_propagate(mux->out);
--- 
-2.41.0
+ config X86_IOMMU
+     bool
+
+
+> ---
+>  hw/i386/fw_cfg.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
+> index d802d2787f..d5e78a9183 100644
+> --- a/hw/i386/fw_cfg.c
+> +++ b/hw/i386/fw_cfg.c
+> @@ -70,6 +70,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
+>      /* tell smbios about cpuid version and features */
+>      smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
+>  
+> +#ifdef CONFIG_SMBIOS_LEGACY
+>      if (pcmc->smbios_legacy_mode) {
+>          smbios_tables = smbios_get_table_legacy(&smbios_tables_len,
+>                                                  &error_fatal);
+> @@ -77,6 +78,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
+>                           smbios_tables, smbios_tables_len);
+>          return;
+>      }
+> +#endif
+>  
+>      /* build the array of physical mem area from e820 table */
+>      mem_array = g_malloc0(sizeof(*mem_array) * e820_get_num_entries());
 
 
