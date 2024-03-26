@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637C588BAA0
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 07:45:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C91C688BAC9
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 07:52:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp0Xj-0004Vu-N5; Tue, 26 Mar 2024 02:44:19 -0400
+	id 1rp0em-0007ja-Kg; Tue, 26 Mar 2024 02:51:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rp0Xh-0004VY-1v
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 02:44:17 -0400
-Received: from mail-oi1-x22b.google.com ([2607:f8b0:4864:20::22b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rp0Xf-0004YH-A4
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 02:44:16 -0400
-Received: by mail-oi1-x22b.google.com with SMTP id
- 5614622812f47-3c3acf4b0e1so3076828b6e.0
- for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 23:44:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711435452; x=1712040252; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=j9CLORt38yZiQ1fCLl5knbBMBJnlvZ9He6LtCWjt6QA=;
- b=NzZiqrW9kDYmldoioHvJB/RAr5GwRlKw5lfY75aDcrTSHKnrIO8ebFKiPGIVlRs69f
- /Cz4BQOAAI8m/8uNY8rVn7mtroY//0dZNpFHxT9QmLhZp1lVIyB3CCPs8JSrHUsFAkRp
- wagNSSsvSXAgGiadRyshqJnsyD2hXSppmu75JmIBZEVF7utnVorjKh31LMWMSL5cDLlG
- thEWlpe26DRwfVHWDD+JETv49vUTXBrESLPICPy4r8fWtStVWdNXQa8opdCiryEn2Wai
- mBykVJdbqJNI0wbe5gc46c27BmqBksQtAeRxLBMWQQXK3xbL0jotBQA//GZpmpSu+5OW
- 0PvA==
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rp0ek-0007jR-MM
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 02:51:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rp0ej-00060Q-5V
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 02:51:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711435892;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=WOAA07FzmiMSaaIAqGvEUMrm7cgtOrka9v2DPmBLhBs=;
+ b=B4xHEvw1P1FbSUOp0CSzi2Ex6LpeV8/PTx0VkK4InwpUPQxERkZgDTvFTUvXR5OUzccVzs
+ 9u4iXUkWndsrS6hGmXjD8PTw5YDSa/rmKAv64sLPElw8TKC5aJwSYjuwgF0jjChmVQiy5X
+ wetmBt0S5ZhYDj7UD1IUa6ZuoE/Awco=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-56--2jGYMlsO5GMJDjHuZi-lQ-1; Tue, 26 Mar 2024 02:51:27 -0400
+X-MC-Unique: -2jGYMlsO5GMJDjHuZi-lQ-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-5dcab65d604so3644073a12.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Mar 2024 23:51:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711435452; x=1712040252;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1711435886; x=1712040686;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j9CLORt38yZiQ1fCLl5knbBMBJnlvZ9He6LtCWjt6QA=;
- b=kXQH3DsR9x3M2U9kVTxZtEtrXNVJ4H/mM/x4dcZhMXHGNAGxI6woZfnqIwBlB0gc0W
- p6KqaotA9p+D4730PNo0EARWXZpt+fzyGlcY+jb+R1WLYnmJF2SFRkjZkw/iZrmiN9IR
- y9ea7E03c3JBvWgTWyGN9tXwkW456151h50RAJchN9eMPfLAM9+DIGZ+Fi5IchYZoK3f
- 4lnWCVEQ/uvGwt1UeP6KYUAQlT+3y/OWeo7a040guNoP2rBdk5KZ4GwF+4tK4NeElbCR
- 0gD4VRIZ7OHCynN/l8xj/zMA2HyVJ6S6si9uqyL4FdGTkl3LO3Lte41eTsAbRplaPGFe
- MOHg==
-X-Gm-Message-State: AOJu0Yxy720FucOr106PSXYxfiID/i40ZQEcXeNoUWxjjKiN8NYsa4+J
- 9cHu7GPfVVtL6nZeIkjQmwFjelPy5PZXjLqCzh+PAoosmwQNiWIkjIE24RHGf3oIWP/PGepn8v2
- S
-X-Google-Smtp-Source: AGHT+IH2AfhF/A2bXoQ18EVrEes5JiPZsFohpAvLSFVuNMaJjenWZojRob9k5o6u9CkGEKDmn3bAdA==
-X-Received: by 2002:a05:6808:1315:b0:3c1:c124:6d4d with SMTP id
- y21-20020a056808131500b003c1c1246d4dmr10844194oiv.56.1711435452525; 
- Mon, 25 Mar 2024 23:44:12 -0700 (PDT)
-Received: from stoup.. (173-197-098-125.biz.spectrum.com. [173.197.98.125])
- by smtp.gmail.com with ESMTPSA id
- c3-20020a633503000000b005dc36761ad1sm6958819pga.33.2024.03.25.23.44.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Mar 2024 23:44:12 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: deller@gmx.de
-Subject: [PATCH 3/3] target/hppa: Fix overflow computation for shladd
-Date: Mon, 25 Mar 2024 20:44:05 -1000
-Message-Id: <20240326064405.320551-4-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240326064405.320551-1-richard.henderson@linaro.org>
-References: <20240326064405.320551-1-richard.henderson@linaro.org>
+ bh=WOAA07FzmiMSaaIAqGvEUMrm7cgtOrka9v2DPmBLhBs=;
+ b=iWyBXWMSSKBPATUVY3vLvuJ7Ai8ocAzfmt6EzMpiygmap/l5gMS2fEm8bPx4epRaDV
+ Y7BJJOVPa0a4byPCeh610QTTV2xsgEB3ygxSdvD4FkZz5X4L7i6A8IZI1HUekDjWRv4b
+ XxOSE7keyGiUJmr6STvFHrIA+lLvj4J7oOmEbLFeqzCNiQu9qqGsyvaV217d2Lize+e0
+ j2r05NJKTFqF7hq1IHr2eEZGgkiVFEGFI9ETicW3i3rvoZXvt+IrPVURgY9rGTQTMUgC
+ Z9yg66ZHa/8iCox6K9TqihfdvhcEAExUFKFu84CRiaYoVluLoprueOj61G/UI4Fj9+Z5
+ 0lZA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXfpfVWn9zca6Llyn7efNzvRzktiqzfWZws0WOzKGu7bxYXpgKdna28osE15DgrZIMIsmMG4qEy10/oBfdCsSk6PfSpyzs=
+X-Gm-Message-State: AOJu0Yz2LHP0DoNvyV9hHI8dXS5Dd59yS458zWkp5dvh2lsWc9jVYfd4
+ wyVERlFLCJGB80R5dtC5OVzlDe6gKvVYGc0TbyXjmv+F7mtNYDaA2/f/Zh383nA5ulaZBhWcLm6
+ hzIqUoGNHL1PIe0j72ku6v6d21qs/rpgJkSUMPdRso9mFnrXsysA5JB7UP2ku+/xHcuBRYDKGZ3
+ P0U8Glz2JaYo9e8OHVFMdNfJl2dl6fPE049vyqKA==
+X-Received: by 2002:a05:6a20:94cf:b0:1a3:572d:637b with SMTP id
+ ht15-20020a056a2094cf00b001a3572d637bmr354023pzb.33.1711435886209; 
+ Mon, 25 Mar 2024 23:51:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMKrkmHcFZGDAfpL0i+9LdvzIiCQZtAVmeanankVwB4gtwmFZy0DTxo3Um/2NV42kGxwdryshFUxf3p/KB4AI=
+X-Received: by 2002:a05:6a20:94cf:b0:1a3:572d:637b with SMTP id
+ ht15-20020a056a2094cf00b001a3572d637bmr354013pzb.33.1711435885861; Mon, 25
+ Mar 2024 23:51:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22b;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+References: <20240324-tx-v1-1-a3b4135749ec@daynix.com>
+In-Reply-To: <20240324-tx-v1-1-a3b4135749ec@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Tue, 26 Mar 2024 14:51:14 +0800
+Message-ID: <CACGkMEvBoe4XQeHOR64rNwAPM-vBMsfLQApWpUoMtvwsSVCpUQ@mail.gmail.com>
+Subject: Re: [PATCH] hw/net/net_tx_pkt: Fix virtio header without checksum
+ offloading
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,188 +97,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Overflow indicator should include the effect of the shift step.
-We had previously left ??? comments about the issue.
+On Sun, Mar 24, 2024 at 4:32=E2=80=AFPM Akihiko Odaki <akihiko.odaki@daynix=
+.com> wrote:
+>
+> It is incorrect to have the VIRTIO_NET_HDR_F_NEEDS_CSUM set when
+> checksum offloading is disabled so clear the bit. Set the
+> VIRTIO_NET_HDR_F_DATA_VALID bit instead to tell the checksum is valid.
+>
+> TCP/UDP checksum is usually offloaded when the peer requires virtio
+> headers because they can instruct the peer to compute checksum. However,
+> igb disables TX checksum offloading when a VF is enabled whether the
+> peer requires virtio headers because a transmitted packet can be routed
+> to it and it expects the packet has a proper checksum. Therefore, it
+> is necessary to have a correct virtio header even when checksum
+> offloading is disabled.
+>
+> A real TCP/UDP checksum will be computed and saved in the buffer when
+> checksum offloading is disabled. The virtio specification requires to
+> set the packet checksum stored in the buffer to the TCP/UDP pseudo
+> header when the VIRTIO_NET_HDR_F_NEEDS_CSUM bit is set so the bit must
+> be cleared in that case.
+>
+> The VIRTIO_NET_HDR_F_NEEDS_CSUM bit also tells to skip checksum
+> validation. Even if checksum offloading is disabled, it is desirable to
+> skip checksum validation because the checksum is always correct. Use the
+> VIRTIO_NET_HDR_F_DATA_VALID bit to claim the validity of the checksum.
+>
+> Fixes: ffbd2dbd8e64 ("e1000e: Perform software segmentation for loopback"=
+)
+> Buglink: https://issues.redhat.com/browse/RHEL-23067
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> ---
+>  hw/net/net_tx_pkt.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+> index 2e5f58b3c9cc..c225cf706513 100644
+> --- a/hw/net/net_tx_pkt.c
+> +++ b/hw/net/net_tx_pkt.c
+> @@ -833,6 +833,9 @@ bool net_tx_pkt_send_custom(struct NetTxPkt *pkt, boo=
+l offload,
+>
+>      if (offload || gso_type =3D=3D VIRTIO_NET_HDR_GSO_NONE) {
+>          if (!offload && pkt->virt_hdr.flags & VIRTIO_NET_HDR_F_NEEDS_CSU=
+M) {
+> +            pkt->virt_hdr.flags =3D
+> +                (pkt->virt_hdr.flags & ~VIRTIO_NET_HDR_F_NEEDS_CSUM) |
+> +                VIRTIO_NET_HDR_F_DATA_VALID;
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/hppa/translate.c | 85 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 66 insertions(+), 19 deletions(-)
+Why VIRTIO_NET_HDR_F_DATA_VALID is used in TX path?
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 9d31ef5764..0976372d16 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -994,7 +994,8 @@ static TCGv_i64 get_psw_carry(DisasContext *ctx, bool d)
- 
- /* Compute signed overflow for addition.  */
- static TCGv_i64 do_add_sv(DisasContext *ctx, TCGv_i64 res,
--                          TCGv_i64 in1, TCGv_i64 in2)
-+                          TCGv_i64 in1, TCGv_i64 in2,
-+                          TCGv_i64 orig_in1, int shift, bool d)
- {
-     TCGv_i64 sv = tcg_temp_new_i64();
-     TCGv_i64 tmp = tcg_temp_new_i64();
-@@ -1003,9 +1004,50 @@ static TCGv_i64 do_add_sv(DisasContext *ctx, TCGv_i64 res,
-     tcg_gen_xor_i64(tmp, in1, in2);
-     tcg_gen_andc_i64(sv, sv, tmp);
- 
-+    switch (shift) {
-+    case 0:
-+        break;
-+    case 1:
-+        /* Shift left by one and compare the sign. */
-+        tcg_gen_add_i64(tmp, orig_in1, orig_in1);
-+        tcg_gen_xor_i64(tmp, tmp, orig_in1);
-+        /* Incorporate into the overflow. */
-+        tcg_gen_or_i64(sv, sv, tmp);
-+        break;
-+    default:
-+        {
-+            int sign_bit = d ? 63 : 31;
-+            uint64_t mask = MAKE_64BIT_MASK(sign_bit - shift, shift);
-+
-+            /* Compare the sign against all lower bits. */
-+            tcg_gen_sextract_i64(tmp, orig_in1, sign_bit, 1);
-+            tcg_gen_xor_i64(tmp, tmp, orig_in1);
-+            /*
-+             * If one of the bits shifting into or through the sign
-+             * differs, then we have overflow.
-+             */
-+            tcg_gen_movcond_i64(TCG_COND_TSTNE, sv,
-+                                tmp, tcg_constant_i64(mask),
-+                                tcg_constant_i64(-1), sv);
-+        }
-+    }
-     return sv;
- }
- 
-+/* Compute unsigned overflow for addition.  */
-+static TCGv_i64 do_add_uv(DisasContext *ctx, TCGv_i64 cb, TCGv_i64 cb_msb,
-+                          TCGv_i64 in1, int shift, bool d)
-+{
-+    if (shift == 0) {
-+        return get_carry(ctx, d, cb, cb_msb);
-+    } else {
-+        TCGv_i64 tmp = tcg_temp_new_i64();
-+        tcg_gen_extract_i64(tmp, in1, (d ? 63 : 31) - shift, shift);
-+        tcg_gen_or_i64(tmp, tmp, get_carry(ctx, d, cb, cb_msb));
-+        return tmp;
-+    }
-+}
-+
- /* Compute signed overflow for subtraction.  */
- static TCGv_i64 do_sub_sv(DisasContext *ctx, TCGv_i64 res,
-                           TCGv_i64 in1, TCGv_i64 in2)
-@@ -1020,19 +1062,19 @@ static TCGv_i64 do_sub_sv(DisasContext *ctx, TCGv_i64 res,
-     return sv;
- }
- 
--static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
-+static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 orig_in1,
-                    TCGv_i64 in2, unsigned shift, bool is_l,
-                    bool is_tsv, bool is_tc, bool is_c, unsigned cf, bool d)
- {
--    TCGv_i64 dest, cb, cb_msb, cb_cond, sv, tmp;
-+    TCGv_i64 dest, cb, cb_msb, in1, uv, sv, tmp;
-     unsigned c = cf >> 1;
-     DisasCond cond;
- 
-     dest = tcg_temp_new_i64();
-     cb = NULL;
-     cb_msb = NULL;
--    cb_cond = NULL;
- 
-+    in1 = orig_in1;
-     if (shift) {
-         tmp = tcg_temp_new_i64();
-         tcg_gen_shli_i64(tmp, in1, shift);
-@@ -1050,9 +1092,6 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
-         }
-         tcg_gen_xor_i64(cb, in1, in2);
-         tcg_gen_xor_i64(cb, cb, dest);
--        if (cond_need_cb(c)) {
--            cb_cond = get_carry(ctx, d, cb, cb_msb);
--        }
-     } else {
-         tcg_gen_add_i64(dest, in1, in2);
-         if (is_c) {
-@@ -1063,18 +1102,23 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
-     /* Compute signed overflow if required.  */
-     sv = NULL;
-     if (is_tsv || cond_need_sv(c)) {
--        sv = do_add_sv(ctx, dest, in1, in2);
-+        sv = do_add_sv(ctx, dest, in1, in2, orig_in1, shift, d);
-         if (is_tsv) {
-             if (!d) {
-                 tcg_gen_ext32s_i64(sv, sv);
-             }
--            /* ??? Need to include overflow from shift.  */
-             gen_helper_tsv(tcg_env, sv);
-         }
-     }
- 
-+    /* Compute unsigned overflow if required.  */
-+    uv = NULL;
-+    if (cond_need_cb(c)) {
-+        uv = do_add_uv(ctx, cb, cb_msb, orig_in1, shift, d);
-+    }
-+
-     /* Emit any conditional trap before any writeback.  */
--    cond = do_cond(ctx, cf, d, dest, cb_cond, sv);
-+    cond = do_cond(ctx, cf, d, dest, uv, sv);
-     if (is_tc) {
-         tmp = tcg_temp_new_i64();
-         tcg_gen_setcond_i64(cond.c, tmp, cond.a0, cond.a1);
-@@ -2843,7 +2887,6 @@ static bool trans_dcor_i(DisasContext *ctx, arg_rr_cf_d *a)
- static bool trans_ds(DisasContext *ctx, arg_rrr_cf *a)
- {
-     TCGv_i64 dest, add1, add2, addc, in1, in2;
--    TCGv_i64 cout;
- 
-     nullify_over(ctx);
- 
-@@ -2880,19 +2923,23 @@ static bool trans_ds(DisasContext *ctx, arg_rrr_cf *a)
-     tcg_gen_xor_i64(cpu_psw_cb, add1, add2);
-     tcg_gen_xor_i64(cpu_psw_cb, cpu_psw_cb, dest);
- 
--    /* Write back PSW[V] for the division step.  */
--    cout = get_psw_carry(ctx, false);
--    tcg_gen_neg_i64(cpu_psw_v, cout);
-+    /*
-+     * Write back PSW[V] for the division step.
-+     * Shift cb{8} from where it lives in bit 32 to bit 31,
-+     * so that it overlaps r2{32} in bit 31.
-+     */
-+    tcg_gen_shri_i64(cpu_psw_v, cpu_psw_cb, 1);
-     tcg_gen_xor_i64(cpu_psw_v, cpu_psw_v, in2);
- 
-     /* Install the new nullification.  */
-     if (a->cf) {
--        TCGv_i64 sv = NULL;
-+        TCGv_i64 sv = NULL, uv = NULL;
-         if (cond_need_sv(a->cf >> 1)) {
--            /* ??? The lshift is supposed to contribute to overflow.  */
--            sv = do_add_sv(ctx, dest, add1, add2);
-+            sv = do_add_sv(ctx, dest, add1, add2, in1, 1, false);
-+        } else if (cond_need_cb(a->cf >> 1)) {
-+            uv = do_add_uv(ctx, cpu_psw_cb, NULL, in1, 1, false);
-         }
--        ctx->null_cond = do_cond(ctx, a->cf, false, dest, cout, sv);
-+        ctx->null_cond = do_cond(ctx, a->cf, false, dest, uv, sv);
-     }
- 
-     return nullify_end(ctx);
-@@ -3419,7 +3466,7 @@ static bool do_addb(DisasContext *ctx, unsigned r, TCGv_i64 in1,
-         tcg_gen_add_i64(dest, in1, in2);
-     }
-     if (cond_need_sv(c)) {
--        sv = do_add_sv(ctx, dest, in1, in2);
-+        sv = do_add_sv(ctx, dest, in1, in2, in1, 0, d);
-     }
- 
-     cond = do_cond(ctx, c * 2 + f, d, dest, cb_cond, sv);
--- 
-2.34.1
+Thanks
+
+>              net_tx_pkt_do_sw_csum(pkt, &pkt->vec[NET_TX_PKT_L2HDR_FRAG],
+>                                    pkt->payload_frags + NET_TX_PKT_PL_STA=
+RT_FRAG - 1,
+>                                    pkt->payload_len);
+>
+> ---
+> base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+> change-id: 20240324-tx-c57d3c22ad73
+>
+> Best regards,
+> --
+> Akihiko Odaki <akihiko.odaki@daynix.com>
+>
 
 
