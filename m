@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3FC88C424
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5E988C425
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 14:56:03 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp7GW-0004Cv-Jo; Tue, 26 Mar 2024 09:55:00 -0400
+	id 1rp7GX-0004EA-TM; Tue, 26 Mar 2024 09:55:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GU-0004BW-G9
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GV-0004C9-1o
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GT-0001Pp-01
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GT-0001Q9-Ek
  for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1711461296;
@@ -22,40 +22,40 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iiFRDqyPBuCxQcW8SpSU8hf+uTFJyzli3rpm/de5tJE=;
- b=DP25vuDJiL02j91oFthLeLZbNgpoWq3i/2vtGcbb0fB+FqbgSQxJDOG3xoy7Q6WndfDgRv
- 7LAlsjxZSHwWUQxMenJ0TCRsWtl4761fY4E47eTVBKVY8lGQJ9WkC1tj572wCd8OrBFFJ4
- WVP+mgZSeXUI8iCHQTNRCDGtva3V78A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-KXZaZdYPNEOFMyNGUI__xg-1; Tue, 26 Mar 2024 09:54:52 -0400
-X-MC-Unique: KXZaZdYPNEOFMyNGUI__xg-1
+ bh=Coa9Um95coZQAOs2TmVRBiG/R0G8A+PNbpwEgpIM3Tg=;
+ b=ht9wwx1RRuvULiMrxuMnU2idUkp1LsmGbytzvx45+oAp6Qdjk3skSW8JymDwBA6kHMIMCw
+ 5df8UEfw4BkT8NbZfK7AdCgpVxKAPdwaZVTHIi2o/OUZSLDxZfWDEwxrDGbMFYbumObYaR
+ 3/lt235H3hsBRSfbOtrgLChZaj17StI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-rvSwBDJZNxu6Cdy18UcNIQ-1; Tue,
+ 26 Mar 2024 09:54:53 -0400
+X-MC-Unique: rvSwBDJZNxu6Cdy18UcNIQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6529D8007A2;
- Tue, 26 Mar 2024 13:54:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B42128EC11D;
+ Tue, 26 Mar 2024 13:54:53 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B063E1121312;
- Tue, 26 Mar 2024 13:54:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C6593112132A;
+ Tue, 26 Mar 2024 13:54:52 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com,
 	peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Subject: [PULL 5/6] block-backend: fix edge case in bdrv_next_cleanup() where
- BDS associated to BB changes
-Date: Tue, 26 Mar 2024 14:54:39 +0100
-Message-ID: <20240326135440.421609-6-kwolf@redhat.com>
+Subject: [PULL 6/6] iotests: add test for stream job with an unaligned
+ prefetch read
+Date: Tue, 26 Mar 2024 14:54:40 +0100
+Message-ID: <20240326135440.421609-7-kwolf@redhat.com>
 In-Reply-To: <20240326135440.421609-1-kwolf@redhat.com>
 References: <20240326135440.421609-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -81,44 +81,130 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fiona Ebner <f.ebner@proxmox.com>
 
-Same rationale as for commit "block-backend: fix edge case in
-bdrv_next() where BDS associated to BB changes". The block graph might
-change between the bdrv_next() call and the bdrv_next_cleanup() call,
-so it could be that the associated BDS is not the same that was
-referenced previously anymore. Instead, rely on bdrv_next() to set
-it->bs to the BDS it referenced and unreference that one in any case.
+Previously, bdrv_pad_request() could not deal with a NULL qiov when
+a read needed to be aligned. During prefetch, a stream job will pass a
+NULL qiov. Add a test case to cover this scenario.
+
+By accident, also covers a previous race during shutdown, where block
+graph changes during iteration in bdrv_flush_all() could lead to
+unreferencing the wrong block driver state and an assertion failure
+later.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20240322095009.346989-4-f.ebner@proxmox.com>
+Message-ID: <20240322095009.346989-5-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/block-backend.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ .../tests/stream-unaligned-prefetch           | 86 +++++++++++++++++++
+ .../tests/stream-unaligned-prefetch.out       |  5 ++
+ 2 files changed, 91 insertions(+)
+ create mode 100755 tests/qemu-iotests/tests/stream-unaligned-prefetch
+ create mode 100644 tests/qemu-iotests/tests/stream-unaligned-prefetch.out
 
-diff --git a/block/block-backend.c b/block/block-backend.c
-index 28af1eb17a..db6f9b92a3 100644
---- a/block/block-backend.c
-+++ b/block/block-backend.c
-@@ -663,13 +663,10 @@ void bdrv_next_cleanup(BdrvNextIterator *it)
-     /* Must be called from the main loop */
-     assert(qemu_get_current_aio_context() == qemu_get_aio_context());
- 
--    if (it->phase == BDRV_NEXT_BACKEND_ROOTS) {
--        if (it->blk) {
--            bdrv_unref(blk_bs(it->blk));
--            blk_unref(it->blk);
--        }
--    } else {
--        bdrv_unref(it->bs);
-+    bdrv_unref(it->bs);
+diff --git a/tests/qemu-iotests/tests/stream-unaligned-prefetch b/tests/qemu-iotests/tests/stream-unaligned-prefetch
+new file mode 100755
+index 0000000000..546db1d369
+--- /dev/null
++++ b/tests/qemu-iotests/tests/stream-unaligned-prefetch
+@@ -0,0 +1,86 @@
++#!/usr/bin/env python3
++# group: rw quick
++#
++# Test what happens when a stream job does an unaligned prefetch read
++# which requires padding while having a NULL qiov.
++#
++# Copyright (C) Proxmox Server Solutions GmbH
++#
++# This program is free software; you can redistribute it and/or modify
++# it under the terms of the GNU General Public License as published by
++# the Free Software Foundation; either version 2 of the License, or
++# (at your option) any later version.
++#
++# This program is distributed in the hope that it will be useful,
++# but WITHOUT ANY WARRANTY; without even the implied warranty of
++# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++# GNU General Public License for more details.
++#
++# You should have received a copy of the GNU General Public License
++# along with this program.  If not, see <http://www.gnu.org/licenses/>.
++#
 +
-+    if (it->phase == BDRV_NEXT_BACKEND_ROOTS && it->blk) {
-+        blk_unref(it->blk);
-     }
- 
-     bdrv_next_reset(it);
++import os
++import iotests
++from iotests import imgfmt, qemu_img_create, qemu_io, QMPTestCase
++
++image_size = 1 * 1024 * 1024
++cluster_size = 64 * 1024
++base = os.path.join(iotests.test_dir, 'base.img')
++top = os.path.join(iotests.test_dir, 'top.img')
++
++class TestStreamUnalignedPrefetch(QMPTestCase):
++    def setUp(self) -> None:
++        """
++        Create two images:
++        - base image {base} with {cluster_size // 2} bytes allocated
++        - top image {top} without any data allocated and coarser
++          cluster size
++
++        Attach a compress filter for the top image, because that
++        requires that the request alignment is the top image's cluster
++        size.
++        """
++        qemu_img_create('-f', imgfmt,
++                        '-o', 'cluster_size={}'.format(cluster_size // 2),
++                        base, str(image_size))
++        qemu_io('-c', f'write 0 {cluster_size // 2}', base)
++        qemu_img_create('-f', imgfmt,
++                        '-o', 'cluster_size={}'.format(cluster_size),
++                        top, str(image_size))
++
++        self.vm = iotests.VM()
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': imgfmt,
++            'node-name': 'base',
++            'file': {
++                'driver': 'file',
++                'filename': base
++            }
++        }))
++        self.vm.add_blockdev(self.vm.qmp_to_opts({
++            'driver': 'compress',
++            'node-name': 'compress-top',
++            'file': {
++                'driver': imgfmt,
++                'node-name': 'top',
++                'file': {
++                    'driver': 'file',
++                    'filename': top
++                },
++                'backing': 'base'
++            }
++        }))
++        self.vm.launch()
++
++    def tearDown(self) -> None:
++        self.vm.shutdown()
++        os.remove(top)
++        os.remove(base)
++
++    def test_stream_unaligned_prefetch(self) -> None:
++        self.vm.cmd('block-stream', job_id='stream', device='compress-top')
++
++
++if __name__ == '__main__':
++    iotests.main(supported_fmts=['qcow2'], supported_protocols=['file'])
+diff --git a/tests/qemu-iotests/tests/stream-unaligned-prefetch.out b/tests/qemu-iotests/tests/stream-unaligned-prefetch.out
+new file mode 100644
+index 0000000000..ae1213e6f8
+--- /dev/null
++++ b/tests/qemu-iotests/tests/stream-unaligned-prefetch.out
+@@ -0,0 +1,5 @@
++.
++----------------------------------------------------------------------
++Ran 1 tests
++
++OK
 -- 
 2.44.0
 
