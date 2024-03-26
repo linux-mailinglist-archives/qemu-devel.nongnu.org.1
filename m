@@ -2,85 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A7188C7CD
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C9E88C7EA
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:49:40 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp90P-00050Q-Ho; Tue, 26 Mar 2024 11:46:29 -0400
+	id 1rp931-000400-3t; Tue, 26 Mar 2024 11:49:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp90M-0004tu-GK
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:26 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp90K-0001Lj-O9
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:26 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-341c7c8adf3so2025540f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:46:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711467983; x=1712072783; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=usUN06CXz0bBKoHDMc3RGiloPrjkbc783kJkw+v3z/k=;
- b=zL+i41wI2OQLyaW+F97VcEN78Tgz7Y7XJyWGQzfbgsZ9BBWGOSpDMH2++dJiFt+9Pq
- 533oQhTszL7C8hHLwZhaEUprwHJVHabudjQ/0vgJY6le3GfPnEygtVvoWCf3Lp4EOmKI
- JbXPEYGmUk+gom7bFL4f5L/lgASqYu0DwQwyvR5UdCx6KffsYr7MNky+qsXNNd3+5kDH
- py305Y3F4zJBgKg3HjxZeqBREQzpJQqNefSUjoWGqDE1/vjNaEKmTq1a2j9qEECBNQ+D
- jjyFUZpRg/cHJjf8v/BGPiIbI0+8EmYpn4+biajxt1YCzUyjMzBe8TDiB9PXcwIUBoI5
- zMAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711467983; x=1712072783;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=usUN06CXz0bBKoHDMc3RGiloPrjkbc783kJkw+v3z/k=;
- b=QYgGkYNVB56+kwX6UYrRZuUUbzV/dyzVjvoNyNEKWzTnkGSyFlGfIBRxVdpq6jo3KX
- 4Ke6LTu59Z/44VmvFpBZKV171DYWN15ZMYMn3caPxEOioWE7m4iyXsrIFfn3QgZTp8+S
- n49ifKqYJjbB7/Zhh2jeVsRH6JR8qoa54Z/cv/z2/ImTkzgwTno56L9XwRN/jqGIYf+4
- YKuC6oMbm5d8sQpcXwL8oCy+T4ZKHBuRxz/lqDo4BMsDfcMprEOu/8R1yrAxoDBNEEEs
- WQl1Cvaa7net5n5V+tck/Mjr5bSui2qLIuBWahLqpi8PO/rrN84nBhCwEfZX+g4vgsaB
- C2UQ==
-X-Gm-Message-State: AOJu0YwBf6H0yVA5cdEMZApFhkuqd8bdHSsHrH6OMKm8q+FAMjVwVPx7
- 8/zQ9yYIg3qohDxtM6s65UqHzDeoY8rfBjLiN7eC68D8uoJiN1TNf+KbGQ+TuGRMLwXLZfHZ736
- r
-X-Google-Smtp-Source: AGHT+IGOf6ZEMSb7TpgL4kqO++Mk9y+JX94tncdO3Hs4TvnAcC68XNkXOg4saPupWEICcD/XP/0ftg==
-X-Received: by 2002:a05:6000:2c1:b0:341:b836:6318 with SMTP id
- o1-20020a05600002c100b00341b8366318mr45533wry.11.1711467982753; 
- Tue, 26 Mar 2024 08:46:22 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.155.229])
- by smtp.gmail.com with ESMTPSA id
- dk9-20020a0560000b4900b00341cb3489b7sm6710357wrb.71.2024.03.26.08.46.21
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Mar 2024 08:46:22 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PULL 13/13] ui/cocoa: Use NSTrackingInVisibleRect
-Date: Tue, 26 Mar 2024 16:45:04 +0100
-Message-ID: <20240326154505.8300-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240326154505.8300-1-philmd@linaro.org>
-References: <20240326154505.8300-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp92T-0003i1-2t
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:48:39 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp92P-0001oJ-Np
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:48:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711468114; x=1743004114;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=PSDsdy9cCNNUizkkvJKo+ZRNsRTL6uHLRjjn/ZAdyaA=;
+ b=lW4mx5Cw10XVInXvMShL6BumHfrb/Vz/Qv9GITdFjX/rOy9jP1SYGBB2
+ EJkb9YgIVBruN6FVRUw0vVpd/XOu8PlmPOUgqzs/W3KmBoSGVeSj94vjp
+ kJq3PEmV3IHUicSgLCT1Ypu7nh2HLYKtrPGiBzMzKsjaCBJUKN+P6oSKq
+ 1j9wx6VEnkvI2Q33FwHbOLU1CA2YruEjnYpjp9Hypn+nY0bXkYFVKsiHL
+ iEBy5oMTsp9meRQ+9X3O5ev6BgukofwpcdQh911hxYa7DRYuG0eZ14j6y
+ wxRioIy9UCi0gqmcjVtUJAS7h7BHv6P5btEOm/2U5O1v+HC/rczbSs+PF w==;
+X-CSE-ConnectionGUID: JtqEm3c0RaWiUJEsrkmREg==
+X-CSE-MsgGUID: y7h56RDPTxeSD2KfuCP5cg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6466230"
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; 
+   d="scan'208";a="6466230"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 08:48:30 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,156,1708416000"; d="scan'208";a="20717018"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.224.7])
+ ([10.124.224.7])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 08:48:29 -0700
+Message-ID: <62c24e8e-4b6a-4710-a4b8-a26197d0143e@intel.com>
+Date: Tue, 26 Mar 2024 23:48:26 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/26] KVM: track whether guest state is encrypted
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, david@redhat.com
+References: <20240322181116.1228416-1-pbonzini@redhat.com>
+ <20240322181116.1228416-13-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240322181116.1228416-13-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,107 +82,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+On 3/23/2024 2:11 AM, Paolo Bonzini wrote:
+> So far, KVM has allowed KVM_GET/SET_* ioctls to execute even if the
+> guest state is encrypted, in which case they do nothing.  For the new
+> API using VM types, instead, the ioctls will fail which is a safer and
+> more robust approach.
+> 
+> The new API will be the only one available for SEV-SNP and TDX, but it
+> is also usable for SEV and SEV-ES.  In preparation for that, require
+> architecture-specific KVM code to communicate the point at which guest
+> state is protected (which must be after kvm_cpu_synchronize_post_init(),
+> though that might change in the future in order to suppor migration).
+>  From that point, skip reading registers so that cpu->vcpu_dirty is
+> never true: if it ever becomes true, kvm_arch_put_registers() will
+> fail miserably.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/sysemu/kvm.h     |  2 ++
+>   include/sysemu/kvm_int.h |  1 +
+>   accel/kvm/kvm-all.c      | 14 ++++++++++++--
+>   target/i386/sev.c        |  1 +
+>   4 files changed, 16 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index fad9a7e8ff3..302e8f6f1e5 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -539,6 +539,8 @@ bool kvm_dirty_ring_enabled(void);
+>   
+>   uint32_t kvm_dirty_ring_size(void);
+>   
+> +void kvm_mark_guest_state_protected(void);
+> +
+>   /**
+>    * kvm_hwpoisoned_mem - indicate if there is any hwpoisoned page
+>    * reported for the VM.
+> diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+> index 882e37e12c5..3496be7997a 100644
+> --- a/include/sysemu/kvm_int.h
+> +++ b/include/sysemu/kvm_int.h
+> @@ -87,6 +87,7 @@ struct KVMState
+>       bool kernel_irqchip_required;
+>       OnOffAuto kernel_irqchip_split;
+>       bool sync_mmu;
+> +    bool guest_state_protected;
+>       uint64_t manual_dirty_log_protect;
+>       /* The man page (and posix) say ioctl numbers are signed int, but
+>        * they're not.  Linux, glibc and *BSD all treat ioctl numbers as
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index a8cecd040eb..05fa3533c66 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2698,7 +2698,7 @@ bool kvm_cpu_check_are_resettable(void)
+>   
+>   static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+>   {
+> -    if (!cpu->vcpu_dirty) {
+> +    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
+>           int ret = kvm_arch_get_registers(cpu);
+>           if (ret) {
+>               error_report("Failed to get registers: %s", strerror(-ret));
+> @@ -2712,7 +2712,7 @@ static void do_kvm_cpu_synchronize_state(CPUState *cpu, run_on_cpu_data arg)
+>   
+>   void kvm_cpu_synchronize_state(CPUState *cpu)
+>   {
+> -    if (!cpu->vcpu_dirty) {
+> +    if (!cpu->vcpu_dirty && !kvm_state->guest_state_protected) {
+>           run_on_cpu(cpu, do_kvm_cpu_synchronize_state, RUN_ON_CPU_NULL);
+>       }
+>   }
+> @@ -2747,6 +2747,11 @@ static void do_kvm_cpu_synchronize_post_init(CPUState *cpu, run_on_cpu_data arg)
+>   
+>   void kvm_cpu_synchronize_post_init(CPUState *cpu)
+>   {
+> +    /*
+> +     * This runs before the machine_init_done notifiers, and is the last
+> +     * opportunity to synchronize the state of confidential guests.
+> +     */ > +    assert(!kvm_state->guest_state_protected);
 
-I observed [NSTrackingArea rect] becomes de-synchronized with the view
-frame with some unknown condition, and fails to track mouse movement on
-some area of the view. Specify NSTrackingInVisibleRect option to let
-Cocoa automatically update NSTrackingArea, which also saves code for
-synchronization.
+So, this requires confidential guests to call 
+kvm_mark_guest_state_protected() in its machine_init_done notifier callback?
 
-Fixes: 91aa508d0274 ("ui/cocoa: Let the platform toggle fullscreen")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20240323-fixes-v2-3-18651a2b0394@daynix.com>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- ui/cocoa.m | 48 ++++++++++++++----------------------------------
- 1 file changed, 14 insertions(+), 34 deletions(-)
+But for TDX, the guest_state is protected at the beginning, not some 
+time later when machine_init_done.
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 3efa8ac1a9..25e0db9dd0 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -307,7 +307,6 @@ static void handleAnyDeviceErrors(Error * err)
- */
- @interface QemuCocoaView : NSView
- {
--    NSTrackingArea *trackingArea;
-     QEMUScreen screen;
-     pixman_image_t *pixman_image;
-     BOOL isMouseGrabbed;
-@@ -359,6 +358,19 @@ - (id)initWithFrame:(NSRect)frameRect
-     self = [super initWithFrame:frameRect];
-     if (self) {
- 
-+        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
-+                                        NSTrackingMouseEnteredAndExited |
-+                                        NSTrackingMouseMoved |
-+                                        NSTrackingInVisibleRect;
-+
-+        NSTrackingArea *trackingArea =
-+            [[NSTrackingArea alloc] initWithRect:CGRectZero
-+                                         options:options
-+                                           owner:self
-+                                        userInfo:nil];
-+
-+        [self addTrackingArea:trackingArea];
-+        [trackingArea release];
-         screen.width = frameRect.size.width;
-         screen.height = frameRect.size.height;
- #if MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_VERSION_14_0
-@@ -389,41 +401,9 @@ - (BOOL) isOpaque
-     return YES;
- }
- 
--- (void) removeTrackingRect
--{
--    if (trackingArea) {
--        [self removeTrackingArea:trackingArea];
--        [trackingArea release];
--        trackingArea = nil;
--    }
--}
--
--- (void) frameUpdated
--{
--    [self removeTrackingRect];
--
--    if ([self window]) {
--        NSTrackingAreaOptions options = NSTrackingActiveInKeyWindow |
--                                        NSTrackingMouseEnteredAndExited |
--                                        NSTrackingMouseMoved;
--        trackingArea = [[NSTrackingArea alloc] initWithRect:[self frame]
--                                                    options:options
--                                                      owner:self
--                                                   userInfo:nil];
--        [self addTrackingArea:trackingArea];
--        [self updateUIInfo];
--    }
--}
--
- - (void) viewDidMoveToWindow
- {
-     [self resizeWindow];
--    [self frameUpdated];
--}
--
--- (void) viewWillMoveToWindow:(NSWindow *)newWindow
--{
--    [self removeTrackingRect];
- }
- 
- - (void) selectConsoleLocked:(unsigned int)index
-@@ -1314,7 +1294,7 @@ - (void)windowDidExitFullScreen:(NSNotification *)notification
- - (void)windowDidResize:(NSNotification *)notification
- {
-     [cocoaView updateBounds];
--    [cocoaView frameUpdated];
-+    [cocoaView updateUIInfo];
- }
- 
- /* Called when the user clicks on a window's close button */
--- 
-2.41.0
+>       run_on_cpu(cpu, do_kvm_cpu_synchronize_post_init, RUN_ON_CPU_NULL);
+>   }
+>   
+> @@ -4094,3 +4099,8 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
+>           query_stats_schema_vcpu(first_cpu, &stats_args);
+>       }
+>   }
+> +
+> +void kvm_mark_guest_state_protected(void)
+> +{
+> +    kvm_state->guest_state_protected = true;
+> +}
+> diff --git a/target/i386/sev.c b/target/i386/sev.c
+> index b8f79d34d19..c49a8fd55eb 100644
+> --- a/target/i386/sev.c
+> +++ b/target/i386/sev.c
+> @@ -755,6 +755,7 @@ sev_launch_get_measure(Notifier *notifier, void *unused)
+>           if (ret) {
+>               exit(1);
+>           }
+> +        kvm_mark_guest_state_protected();
+>       }
+>   
+>       /* query the measurement blob length */
 
 
