@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428CC88BCE3
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 09:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 207C688BCEC
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 09:57:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp2ZI-0001RA-E8; Tue, 26 Mar 2024 04:54:04 -0400
+	id 1rp2bj-0002zt-Q4; Tue, 26 Mar 2024 04:56:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierre-eric@damsy.net>)
- id 1rp2ZG-0001R1-Hv
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:54:02 -0400
-Received: from mail.damsy.net ([2a01:7e01::f03c:91ff:fe93:d9c3])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp2bh-0002za-Q6
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:56:33 -0400
+Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierre-eric@damsy.net>)
- id 1rp2ZE-0003Xs-BP
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:54:02 -0400
-Message-ID: <20ca2a39-cf41-4a7b-8c94-c4e193018147@damsy.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=damsy.net; s=201803;
- t=1711443228;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xFjPbfFF8Mxh31f2Q1P0/8J/bltLrrx4Y06I0UEXuv8=;
- b=dnaIRgc23uUz3xOG60/r013Vp2tnh7Wlez3aTAw55DqebDQn1DXohc6w+WiJ7P9fqvUm3n
- ErhlNgNpy2Hwz6flWDNTXLr3nIIXrU9iTsHpXQiODCsRNfqVpI30wW8zVsA8sAg4V8n4yk
- b0nhMtG/5G3Pd2EFbgw9fwHwhSZ2xYfBJAVpKfbsw9yNGnBTGh9g3bo7ZczCj8D+jaVjPs
- lEkfVHNJNMQhykAbJm1fg5zwkB8ZNmWoxN08e7ANWkqJ/YiMvg9eHjOpMxVY3BWdM2GW0b
- P1Xm3wgh44ETKCBHNLg2G+KQpcVwKZQ0yEk//+xOVWxhjM620qw5kgdQAweJvw==
-Date: Tue, 26 Mar 2024 09:53:47 +0100
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp2be-0004AI-Db
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:56:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711443390; x=1742979390;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=MEogc2y9SVsZn/zlyU+PJ3ab+ax7hy4nWn69RJbvhsk=;
+ b=O7f1XHiq/gmlf3pb6SINqyuA1T/CPP1qzTMKbVhnMW9YM7jaeCSzb4JT
+ B/8D2g35mLTPWyrJrGXuCtOpqNEkoqV20cJxii/OARdqaWQECH0GbHRMf
+ 1BvCvGD8V+LbMnfedgx4Q8lYaH6dP/MG4N1NuwTZzypMLKxokzvu+Mq73
+ 3zkwCGd8uKKLYslupkz/L0OUOViwQzBJ4mNqCqMkmIwYipmKk7ttCEEQR
+ U6bZwfGYp0zy2n/XCKlbABpjTMgBIYTlEP+P5UlZJbrqS0oLQqAvJ2GES
+ IJf3PYqhRGiiQSyyuCoyYWcAyzO7E/E0LCkLQQKKBbWeUG9av5fWWTAss A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="6418215"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; 
+   d="scan'208";a="6418215"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 01:56:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="20373943"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.224.7])
+ ([10.124.224.7])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 01:56:26 -0700
+Message-ID: <20f2b954-67ee-4c05-b4d3-687670028c79@intel.com>
+Date: Tue, 26 Mar 2024 16:56:23 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH v6 10/11] virtio-gpu: Initialize Venus
-To: Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Dmitry Osipenko <dmitry.osipenko@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
- Gurchetan Singh <gurchetansingh@chromium.org>,
- "ernunes@redhat.com" <ernunes@redhat.com>, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "Stabellini, Stefano" <stefano.stabellini@amd.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Ragiadakou, Xenia" <Xenia.Ragiadakou@amd.com>,
- "Pelloux-Prayer, Pierre-Eric" <Pierre-eric.Pelloux-prayer@amd.com>,
- "Huang, Honglei1" <Honglei1.Huang@amd.com>,
- "Zhang, Julia" <Julia.Zhang@amd.com>, "Chen, Jiqian" <Jiqian.Chen@amd.com>,
- Antonio Caggiano <antonio.caggiano@collabora.com>
-References: <20231219075320.165227-1-ray.huang@amd.com>
- <20231219075320.165227-11-ray.huang@amd.com>
- <CAJ+F1C+gQ7kwAD=Tv7uAgKtgA57wPkZcE_zadAogtMUEFUmFnQ@mail.gmail.com>
- <ZdhiO0ZEZS9lmAeo@amd.com>
-Content-Language: fr
-From: Pierre-Eric Pelloux-Prayer <pierre-eric@damsy.net>
-In-Reply-To: <ZdhiO0ZEZS9lmAeo@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 21/26] kvm/memory: Make memory type private by default if
+ it has guest memfd backend
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, david@redhat.com
+References: <20240322181116.1228416-1-pbonzini@redhat.com>
+ <20240322181116.1228416-22-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240322181116.1228416-22-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a01:7e01::f03c:91ff:fe93:d9c3;
- envelope-from=pierre-eric@damsy.net; helo=mail.damsy.net
-X-Spam_score_int: 16
-X-Spam_score: 1.6
-X-Spam_bar: +
-X-Spam_report: (1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_SBL_CSS=3.335,
- RCVD_IN_XBL=0.375, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=198.175.65.21; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,71 +81,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Le 23/02/2024 à 10:15, Huang Rui a écrit :
-> On Tue, Jan 02, 2024 at 09:33:11PM +0800, Marc-André Lureau wrote:
->> Hi
->>
->> On Tue, Dec 19, 2023 at 11:55 AM Huang Rui <ray.huang@amd.com> wrote:
->>>
->>> From: Antonio Caggiano <antonio.caggiano@collabora.com>
->>>
->>> Request Venus when initializing VirGL.
->>>
->>> Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
->>> Signed-off-by: Huang Rui <ray.huang@amd.com>
->>> ---
->>>
->>> Changes in v6:
->>> - Remove the unstable API flags check because virglrenderer is already 1.0.
->>> - Squash the render server flag support into "Initialize Venus".
->>>
->>>   hw/display/virtio-gpu-virgl.c | 4 ++++
->>>   1 file changed, 4 insertions(+)
->>>
->>> diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
->>> index f35a751824..c523a6717a 100644
->>> --- a/hw/display/virtio-gpu-virgl.c
->>> +++ b/hw/display/virtio-gpu-virgl.c
->>> @@ -964,6 +964,10 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
->>>       }
->>>   #endif
->>>
->>> +#ifdef VIRGL_RENDERER_VENUS
->>> +    flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
->>> +#endif
->>> +
->>
->> I wonder if it's a good idea to initialize venus by default. It
->> doesn't seem to require vulkan during initialization, but this may
->> evolve. Make it optional?
->>
+On 3/23/2024 2:11 AM, Paolo Bonzini wrote:
+> From: Xiaoyao Li <xiaoyao.li@intel.com>
 > 
-> I am fine. In fact, vulkan is widely used for graphic area such as gaming,
-> compute, VR/AR, etc.
+> KVM side leaves the memory to shared by default, while may incur the
 
-Actually, making it optional is useful because Venus support is optional in
-virglrenderer (= having VIRGL_RENDERER_VENUS defined doesn't mean that
-Venus is supported).
+/s/while/which/
 
-Thanks,
-Pierre-Eric
+fix typo from myself.
 
-
+> overhead of paging conversion on the first visit of each page. Because
+> the expectation is that page is likely to private for the VMs that
+> require private memory (has guest memfd).
 > 
-> Thanks,
-> Ray
+> Explicitly set the memory to private when memory region has valid
+> guest memfd backend.
 > 
->>>       ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
->>>       if (ret != 0) {
->>>           error_report("virgl could not be initialized: %d", ret);
->>> --
->>> 2.25.1
->>>
->>
->>
->> -- 
->> Marc-André Lureau
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> Message-ID: <20240320083945.991426-16-michael.roth@amd.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   accel/kvm/kvm-all.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 > 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 7fbaf31cbaf..56b17cbd8aa 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -1430,6 +1430,16 @@ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+>                       strerror(-err));
+>               abort();
+>           }
+> +
+> +        if (memory_region_has_guest_memfd(mr)) {
+> +            err = kvm_set_memory_attributes_private(start_addr, slot_size);
+> +            if (err) {
+> +                error_report("%s: failed to set memory attribute private: %s\n",
+> +                             __func__, strerror(-err));
+> +                exit(1);
+> +            }
+> +        }
+> +
+>           start_addr += slot_size;
+>           ram_start_offset += slot_size;
+>           ram += slot_size;
+
 
