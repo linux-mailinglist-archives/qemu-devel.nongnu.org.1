@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB6388BB67
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F3E88BB66
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:37:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KW-0004jb-Oo; Tue, 26 Mar 2024 03:34:44 -0400
+	id 1rp1KV-0004ir-44; Tue, 26 Mar 2024 03:34:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KT-0004he-35
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KQ-0005Nn-Ny
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KS-0004h7-5R
  for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KQ-0005Np-Le
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1711438478;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pHZmUsjp5/CvjIYa17otqFwOMfhaQB0gc4rWACRm1gA=;
- b=d6IBSE8cYJxKKFo5W03viD7xbptPiPcrhiyl/sMh+T6pvKovE2I6uJuCljNwvv74B92BO8
- 964s56l8vRtdA5cj37HeGJKM2cspqzdiWmt2+EKJFuLAOLt3e4gmBCh8hOcgsPJ5xk33+w
- Iq12Y1Aoqrp/hWKhX6ASV+QgIQU5ZGI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-275-QN8nq9KlOKmeT5IWrsHEDQ-1; Tue, 26 Mar 2024 03:34:36 -0400
-X-MC-Unique: QN8nq9KlOKmeT5IWrsHEDQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=jpPljqVg9QjdtoaeLaWIq1x6laii/MU2HPjfWZbX10U=;
+ b=AEs7whbjmVqAkyXcOQD7g4X1ZmuDVRPPdfZ+HTM4VSrcIf6JEi5b9ErajMdONIhFJfTUye
+ y40hAXFx/F+kfTJKOUOgAkqxSoTMDfFT2W8S2+WWIyjq9RoF4pDc3+RaZs8lalLYn7+p8R
+ EazVNh+OhaHCI7QW8/7lZvkbZyz7q5w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-92-rGjlzsSiMNSf2esFox-v6Q-1; Tue,
+ 26 Mar 2024 03:34:36 -0400
+X-MC-Unique: rGjlzsSiMNSf2esFox-v6Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4C9185A58B;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D414B1C02C9D;
  Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B3F46492BD3;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B3C44200AFA3;
  Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B221821E5D35; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id B502521E5D36; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-Subject: [PULL 15/20] qga/qapi-schema: Refill doc comments to conform to
- current conventions
-Date: Tue, 26 Mar 2024 08:34:15 +0100
-Message-ID: <20240326073420.738016-16-armbru@redhat.com>
+Cc: peter.maydell@linaro.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 16/20] qapi: document InputMultiTouchType
+Date: Tue, 26 Mar 2024 08:34:16 +0100
+Message-ID: <20240326073420.738016-17-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,85 +80,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For legibility, wrap text paragraphs so every line is at most 70
-characters long.
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-To check the generated documentation does not change, I compared the
-generated HTML before and after this commit with "wdiff -3".  Finds no
-differences.  Comparing with diff is not useful, as the refilled
-paragraphs are visible there.
-
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Message-ID: <20240325095648.2835381-1-marcandre.lureau@redhat.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+[Update qapi/pragma.json]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240322140910.328840-13-armbru@redhat.com>
 ---
- qga/qapi-schema.json | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
+ qapi/pragma.json |  2 --
+ qapi/ui.json     | 12 ++++++++++++
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index 9554b566a7..d5af155007 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -1220,13 +1220,13 @@
- # @signal: signal number (linux) or unhandled exception code (windows)
- #     if the process was abnormally terminated.
+diff --git a/qapi/pragma.json b/qapi/pragma.json
+index 6929ab776e..92715d22b3 100644
+--- a/qapi/pragma.json
++++ b/qapi/pragma.json
+@@ -62,8 +62,6 @@
+         'ImageInfoSpecificKind',
+         'InputAxis',
+         'InputButton',
+-        'InputMultiTouchEvent',
+-        'InputMultiTouchType',
+         'IscsiHeaderDigest',
+         'IscsiTransport',
+         'JSONType',
+diff --git a/qapi/ui.json b/qapi/ui.json
+index 9721c1e5af..f610bce118 100644
+--- a/qapi/ui.json
++++ b/qapi/ui.json
+@@ -1080,6 +1080,16 @@
  #
--# @out-data: base64-encoded stdout of the process. This field will only
--#     be populated after the process exits.
-+# @out-data: base64-encoded stdout of the process.  This field will
-+#     only be populated after the process exits.
+ # Type of a multi-touch event.
  #
--# @err-data: base64-encoded stderr of the process. Note: @out-data and
--#     @err-data are present only if 'capture-output' was specified for
--#     'guest-exec'. This field will only be populated after the process
--#     exits.
-+# @err-data: base64-encoded stderr of the process.  Note: @out-data
-+#     and @err-data are present only if 'capture-output' was specified
-+#     for 'guest-exec'.  This field will only be populated after the
-+#     process exits.
- #
- # @out-truncated: true if stdout was not fully captured due to size
- #     limitation.
-@@ -1273,12 +1273,16 @@
- # An enumeration of guest-exec capture modes.
- #
- # @none: do not capture any output
++# @begin: A new touch event sequence has just started.
 +#
- # @stdout: only capture stdout
++# @update: A touch event sequence has been updated.
 +#
- # @stderr: only capture stderr
++# @end: A touch event sequence has finished.
 +#
- # @separated: capture both stdout and stderr, but separated into
--#             GuestExecStatus out-data and err-data, respectively
--# @merged: capture both stdout and stderr, but merge together
--#          into out-data. not effective on windows guests.
-+#     GuestExecStatus out-data and err-data, respectively
++# @cancel: A touch event sequence has been canceled.
 +#
-+# @merged: capture both stdout and stderr, but merge together into
-+#     out-data.  Not effective on windows guests.
- #
- # Since: 8.0
++# @data: Absolute position data.
++#
+ # Since: 8.1
  ##
-@@ -1291,8 +1295,9 @@
+ { 'enum'  : 'InputMultiTouchType',
+@@ -1137,6 +1147,8 @@
  #
- # Controls what guest-exec output gets captures.
+ # MultiTouch input event.
  #
--# @flag: captures both stdout and stderr if true. Equivalent
--#        to GuestExecCaptureOutputMode::all. (since 2.5)
-+# @flag: captures both stdout and stderr if true.  Equivalent to
-+#     GuestExecCaptureOutputMode::all.  (since 2.5)
++# @type: The type of multi-touch event.
 +#
- # @mode: capture mode; preferred interface
+ # @slot: Which slot has generated the event.
  #
- # Since: 8.0
-@@ -1315,7 +1320,7 @@
- # @input-data: data to be passed to process stdin (base64 encoded)
- #
- # @capture-output: bool flag to enable capture of stdout/stderr of
--#     running process.  defaults to false.
-+#     running process.  Defaults to false.
- #
- # Returns: PID
- #
+ # @tracking-id: ID to correlate this event with previously generated
 -- 
 2.44.0
 
