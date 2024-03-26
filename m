@@ -2,95 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4005D88C3B1
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 14:40:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327AB88C428
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 14:56:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp72n-0000MD-6p; Tue, 26 Mar 2024 09:40:49 -0400
+	id 1rp7GR-00049E-Sf; Tue, 26 Mar 2024 09:54:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rp72e-0000Ak-SJ
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:40:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GP-00047y-Ni
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rp72c-0005JS-SK
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:40:40 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GO-0001O3-0q
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711460438;
+ s=mimecast20190719; t=1711461291;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R1WyM23yZC7OHPkKjODH8U9UyVky6gI6o4OQy8pzYy0=;
- b=XamxSrbcknmMXynymWXWyABJZj7TakuW5QmNvWlJqz/CavAV+ubwzBHC9HSWY2J4tNaqhO
- O6PSyUgf8Y4yZspUoxsoXMTFkVcuaXMYeSFhC4DeUjA5FsJcyOHrFSbW3P98oPSGJWv9Yd
- bVIR+u+NYOKmDxjzdJ4SAp1byyF0jQE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-8z9fqjWCM8GwDTBYOpJULQ-1; Tue, 26 Mar 2024 09:40:37 -0400
-X-MC-Unique: 8z9fqjWCM8GwDTBYOpJULQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33ed26afd99so3028542f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 06:40:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711460435; x=1712065235;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=R1WyM23yZC7OHPkKjODH8U9UyVky6gI6o4OQy8pzYy0=;
- b=f0E4enwhPh+w9beyppVAQokkr37oXyWy9lbX4xx5oWWTxC4SraNYXAsSIeYffNujVe
- eoEEUrjD4XNLh13U5JW7zUh4J/dPdEEwr9lpvIeSCEuLa5xaPvUhCbvJSkhlia/ENYKX
- bjmRCxglilQDR36Y6lGGaEQCbyI8JUEZ7bubf6MJV16SHtZjZmOg4wHe7iPNv4oiYh8M
- NNuePueOdfbeyEfTN1it2tk/koVnguY4glsrEVjqNxwqB3ldE57Ma0ci6/AlxFwaesM+
- 4Iy00zi5TiVsEAusbneYaXNwr6usReJUTbffcMg9Zx/7hY9BkGN/a/Li1y1SU0cax4+K
- uprQ==
-X-Gm-Message-State: AOJu0Yx63Bn4mwQMhPfJ28ergx6oOVrt/fCK5Qs8xKEfC5paIRmTqWDe
- tN/liONg1XdqA6eTdimEvvcM+1OmDXXfgdyTNWwfcb+vW+LK+ZpQMtRNIUPtEDNC0ImP0VHCPCB
- z0isr7v+WwB7H9WVra9NoiKhLi7h/dj2gj2yjX/JHryu82CfKvbxQLqOVol+1HDCHvPQ1V3/lA1
- 0AWxKNJLlIRWsvd3NnzQPka6AGUzBcLCIYhMzw
-X-Received: by 2002:a05:6000:183:b0:33e:9292:b194 with SMTP id
- p3-20020a056000018300b0033e9292b194mr6738439wrx.14.1711460435542; 
- Tue, 26 Mar 2024 06:40:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6mIgSTpyQ0Km2N2hF7JemQsv6sAt7ZdtszCF106i+8SR/HsHHnFwygvRT/znoxYpamVAOfg==
-X-Received: by 2002:a05:6000:183:b0:33e:9292:b194 with SMTP id
- p3-20020a056000018300b0033e9292b194mr6738407wrx.14.1711460435268; 
- Tue, 26 Mar 2024 06:40:35 -0700 (PDT)
-Received: from step1.redhat.com (host-87-12-25-33.business.telecomitalia.it.
- [87.12.25.33]) by smtp.gmail.com with ESMTPSA id
- n10-20020adfe34a000000b0033de10c9efcsm12194551wrj.114.2024.03.26.06.40.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Mar 2024 06:40:34 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, gmaglione@redhat.com,
- Eric Blake <eblake@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Hanna Reitz <hreitz@redhat.com>, stefanha@redhat.com,
- Coiby Xu <Coiby.Xu@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Raphael Norwitz <raphael@enfabrica.net>, slp@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- David Hildenbrand <david@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Brad Smith <brad@comstyle.com>, qemu-block@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH for-9.1 v2 11/11] tests/qtest/vhost-user-test: add a test case
- for memory-backend-shm
-Date: Tue, 26 Mar 2024 14:39:36 +0100
-Message-ID: <20240326133936.125332-12-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240326133936.125332-1-sgarzare@redhat.com>
-References: <20240326133936.125332-1-sgarzare@redhat.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Xr1F5MnnKq3YaOXm655zwchlibK1SjVBcFkXGpCrKXk=;
+ b=bRhlH+OUuwCz6+NEVbJma0kKamClfIU5QoXId8svWpb5dC5mZ/s9zuOUhTYD9JxomOCJH+
+ 1hxcLnoaUOiQLIireUuaAblhJe+C7cme7ivvs6xrJSrDNDKs3OBUO/sUEHd8KukZ0kM2X6
+ ZbOxZr0WIeblaXh537bUPpybnzv9xcA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-tdzYvptKNBKMzcnqp8m5Hg-1; Tue,
+ 26 Mar 2024 09:54:47 -0400
+X-MC-Unique: tdzYvptKNBKMzcnqp8m5Hg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 665CD3C0EAAE;
+ Tue, 26 Mar 2024 13:54:47 +0000 (UTC)
+Received: from merkur.fritz.box (unknown [10.39.193.60])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 827A1112132A;
+ Tue, 26 Mar 2024 13:54:46 +0000 (UTC)
+From: Kevin Wolf <kwolf@redhat.com>
+To: qemu-block@nongnu.org
+Cc: kwolf@redhat.com,
+	peter.maydell@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PULL 0/6] Block layer patches
+Date: Tue, 26 Mar 2024 14:54:34 +0100
+Message-ID: <20240326135440.421609-1-kwolf@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -98,7 +60,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -114,77 +76,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`memory-backend-shm` can be used with vhost-user devices, so let's
-add a new test case for it.
+The following changes since commit 096ae430a7b5a704af4cd94dca7200d6cb069991:
 
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- tests/qtest/vhost-user-test.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+  Merge tag 'pull-qapi-2024-03-26' of https://repo.or.cz/qemu/armbru into staging (2024-03-26 09:50:21 +0000)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..8c1d903b2a 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -44,6 +44,8 @@
-                         "mem-path=%s,share=on -numa node,memdev=mem"
- #define QEMU_CMD_MEMFD  " -m %d -object memory-backend-memfd,id=mem,size=%dM," \
-                         " -numa node,memdev=mem"
-+#define QEMU_CMD_SHM    " -m %d -object memory-backend-shm,id=mem,size=%dM," \
-+                        " -numa node,memdev=mem"
- #define QEMU_CMD_CHR    " -chardev socket,id=%s,path=%s%s"
- #define QEMU_CMD_NETDEV " -netdev vhost-user,id=hs0,chardev=%s,vhostforce=on"
- 
-@@ -195,6 +197,7 @@ enum test_memfd {
-     TEST_MEMFD_AUTO,
-     TEST_MEMFD_YES,
-     TEST_MEMFD_NO,
-+    TEST_MEMFD_SHM,
- };
- 
- static void append_vhost_net_opts(TestServer *s, GString *cmd_line,
-@@ -228,6 +231,8 @@ static void append_mem_opts(TestServer *server, GString *cmd_line,
- 
-     if (memfd == TEST_MEMFD_YES) {
-         g_string_append_printf(cmd_line, QEMU_CMD_MEMFD, size, size);
-+    } else if (memfd == TEST_MEMFD_SHM) {
-+        g_string_append_printf(cmd_line, QEMU_CMD_SHM, size, size);
-     } else {
-         const char *root = init_hugepagefs() ? : server->tmpfs;
- 
-@@ -788,6 +793,19 @@ static void *vhost_user_test_setup_memfd(GString *cmd_line, void *arg)
-     return server;
- }
- 
-+static void *vhost_user_test_setup_shm(GString *cmd_line, void *arg)
-+{
-+    TestServer *server = test_server_new("vhost-user-test", arg);
-+    test_server_listen(server);
-+
-+    append_mem_opts(server, cmd_line, 256, TEST_MEMFD_SHM);
-+    server->vu_ops->append_opts(server, cmd_line, "");
-+
-+    g_test_queue_destroy(vhost_user_test_cleanup, server);
-+
-+    return server;
-+}
-+
- static void test_read_guest_mem(void *obj, void *arg, QGuestAllocator *alloc)
- {
-     TestServer *server = arg;
-@@ -1081,6 +1099,11 @@ static void register_vhost_user_test(void)
-                  "virtio-net",
-                  test_read_guest_mem, &opts);
- 
-+    opts.before = vhost_user_test_setup_shm;
-+    qos_add_test("vhost-user/read-guest-mem/shm",
-+                 "virtio-net",
-+                 test_read_guest_mem, &opts);
-+
-     if (qemu_memfd_check(MFD_ALLOW_SEALING)) {
-         opts.before = vhost_user_test_setup_memfd;
-         qos_add_test("vhost-user/read-guest-mem/memfd",
--- 
-2.44.0
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/kevin.git tags/for-upstream
+
+for you to fetch changes up to 12d7b3bbd3333cededd3b695501d8d247239d769:
+
+  iotests: add test for stream job with an unaligned prefetch read (2024-03-26 14:21:26 +0100)
+
+----------------------------------------------------------------
+Block layer patches
+
+- Fix crash with unaligned prefetch requests (e.g. in stream jobs)
+- vdpa-dev: Fix initialisation order to restore VDUSE compatibility
+- iotests fixes
+
+----------------------------------------------------------------
+Fiona Ebner (3):
+      block-backend: fix edge case in bdrv_next() where BDS associated to BB changes
+      block-backend: fix edge case in bdrv_next_cleanup() where BDS associated to BB changes
+      iotests: add test for stream job with an unaligned prefetch read
+
+Kevin Wolf (1):
+      vdpa-dev: Fix initialisation order to restore VDUSE compatibility
+
+Stefan Reiter (1):
+      block/io: accept NULL qiov in bdrv_pad_request
+
+Thomas Huth (1):
+      tests/qemu-iotests: Test 157 and 227 require virtio-blk
+
+ block/block-backend.c                              | 18 ++---
+ block/io.c                                         | 33 +++++----
+ hw/net/vhost_net.c                                 | 10 +++
+ hw/virtio/vdpa-dev.c                               |  5 +-
+ hw/virtio/vhost-vdpa.c                             | 29 +++++++-
+ hw/virtio/vhost.c                                  |  8 +-
+ hw/virtio/trace-events                             |  2 +-
+ tests/qemu-iotests/157                             |  2 +
+ tests/qemu-iotests/227                             |  2 +
+ tests/qemu-iotests/tests/stream-unaligned-prefetch | 86 ++++++++++++++++++++++
+ .../tests/stream-unaligned-prefetch.out            |  5 ++
+ 11 files changed, 167 insertions(+), 33 deletions(-)
+ create mode 100755 tests/qemu-iotests/tests/stream-unaligned-prefetch
+ create mode 100644 tests/qemu-iotests/tests/stream-unaligned-prefetch.out
 
 
