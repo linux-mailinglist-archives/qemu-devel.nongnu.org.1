@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA62888BB5D
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F7588BB5E
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:36:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KX-0004kK-Cd; Tue, 26 Mar 2024 03:34:45 -0400
+	id 1rp1KU-0004iU-Ma; Tue, 26 Mar 2024 03:34:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KU-0004if-9w
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KT-0004hl-61
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KS-0005OS-MC
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:42 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KR-0005O5-H6
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711438480;
+ s=mimecast20190719; t=1711438479;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dCcsGDAqTHp3SKBdBhmBLMwgpfp96QPPVeggh7rLPUU=;
- b=ci/A5RE3sRBlCsm9QKmel1cpkO4LDZB4fTWsIMde1pwnhGBuxkt5xJJSgSQ5pkjSzKy0ZG
- Yn0E8Ej/jWZvC9IMT1GYv7YstkBaKl8SKJgMP4XmRD3FavFOETkoC1OmpQVzwLOkcFaU/2
- JPLJfp3VGGHxduDisVWAOQbBUe4bmxs=
+ bh=usHxnroC+/V02zcv1/xzx3HUcrcsHK3aUDTuWOsh/I0=;
+ b=Ea+RzCLYGugAjCQf+HvEPTaUSzSGIQBnudbePZZEnddZqtYELy1cmVWv+Pb48hrq3aMo9v
+ 1H+SoOWzIOTl1G3c8AmTH9BF6fH/zMecTa5T81lAtV/41BpzoWVqzMfUjxV6hF/3i3Bd4c
+ W4ysEi/VA7bIpqoojJHS8sgkJV9ao0U=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-649-IXdpgMGgMnum4t0KVf1dcQ-1; Tue, 26 Mar 2024 03:34:36 -0400
-X-MC-Unique: IXdpgMGgMnum4t0KVf1dcQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ us-mta-154-s4yAdzf5P9yr4dTe_zSL0Q-1; Tue, 26 Mar 2024 03:34:36 -0400
+X-MC-Unique: s4yAdzf5P9yr4dTe_zSL0Q-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D439D101A526;
- Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 127A2101A552;
+ Tue, 26 Mar 2024 07:34:36 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B3E0F200B3BF;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B3D832166B31;
  Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id BA7A621E5D38; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id BD7AD21E5D39; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 18/20] qapi: document leftover members in qapi/stats.json
-Date: Tue, 26 Mar 2024 08:34:18 +0100
-Message-ID: <20240326073420.738016-19-armbru@redhat.com>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PULL 19/20] qapi/block-core: improve Qcow2OverlapCheckFlags
+ documentation
+Date: Tue, 26 Mar 2024 08:34:19 +0100
+Message-ID: <20240326073420.738016-20-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,83 +81,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Suggested-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240325104504.1358734-1-pbonzini@redhat.com>
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Update qapi/pragma.json]
+Most of fields have no description at all. Let's fix that. Still, no
+reason to place here more detailed descriptions of what these
+structures are, as we have public Qcow2 format specification.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Message-ID: <20240325120054.2693236-1-vsementsov@yandex-team.ru>
+Acked-by: Markus Armbruster <armbru@redhat.com>
+[Capitalize "QEMU", update qapi/pragma.json]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/pragma.json |  5 +----
- qapi/stats.json  | 14 +++++++++-----
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ qapi/block-core.json | 25 +++++++++++++++++++++----
+ qapi/pragma.json     |  1 -
+ 2 files changed, 21 insertions(+), 5 deletions(-)
 
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 7d3fe59f6c..746d1694c2 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3403,14 +3403,31 @@
+ # @Qcow2OverlapCheckFlags:
+ #
+ # Structure of flags for each metadata structure.  Setting a field to
+-# 'true' makes qemu guard that structure against unintended
+-# overwriting.  The default value is chosen according to the template
+-# given.
++# 'true' makes QEMU guard that Qcow2 format structure against
++# unintended overwriting.  See Qcow2 format specification for detailed
++# information on these structures.  The default value is chosen
++# according to the template given.
+ #
+ # @template: Specifies a template mode which can be adjusted using the
+ #     other flags, defaults to 'cached'
+ #
+-# @bitmap-directory: since 3.0
++# @main-header: Qcow2 format header
++#
++# @active-l1: Qcow2 active L1 table
++#
++# @active-l2: Qcow2 active L2 table
++#
++# @refcount-table: Qcow2 refcount table
++#
++# @refcount-block: Qcow2 refcount blocks
++#
++# @snapshot-table: Qcow2 snapshot table
++#
++# @inactive-l1: Qcow2 inactive L1 tables
++#
++# @inactive-l2: Qcow2 inactive L2 tables
++#
++# @bitmap-directory: Qcow2 bitmap directory (since 3.0)
+ #
+ # Since: 2.9
+ ##
 diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 1a302981c1..99e4052ab3 100644
+index 99e4052ab3..9e28de1721 100644
 --- a/qapi/pragma.json
 +++ b/qapi/pragma.json
-@@ -75,8 +75,6 @@
-         'Qcow2OverlapCheckFlags',
+@@ -72,7 +72,6 @@
+         'QCryptoAkCipherKeyType',
+         'QCryptodevBackendServiceType',
+         'QKeyCode',
+-        'Qcow2OverlapCheckFlags',
          'RbdAuthMode',
          'RbdImageEncryptionFormat',
--        'StatsFilter',
--        'StatsValue',
          'String',
-         'StringWrapper',
-         'SysEmuTarget',
-@@ -91,8 +89,7 @@
-         'query-cpu-model-comparison',
-         'query-cpu-model-expansion',
-         'query-rocker',
--        'query-rocker-ports',
--        'query-stats-schemas' ],
-+        'query-rocker-ports' ],
-     # Externally visible types whose member names may use uppercase
-     'member-name-exceptions': [     # visible in:
-         'ACPISlotType',             # query-acpi-ospm-status
-diff --git a/qapi/stats.json b/qapi/stats.json
-index ce9d8161ec..578b52c7ef 100644
---- a/qapi/stats.json
-+++ b/qapi/stats.json
-@@ -114,13 +114,13 @@
- #
- # The arguments to the query-stats command; specifies a target for
- # which to request statistics and optionally the required subset of
--# information for that target:
-+# information for that target.
- #
--# - which vCPUs to request statistics for
--# - which providers to request statistics from
--# - which named values to return within each provider
-+# @target: the kind of objects to query.  Note that each possible
-+#          target may enable additional filtering options
- #
--# @target: the kind of objects to query
-+# @providers: which providers to request statistics from, and optionally
-+#             which named values to return within each provider
- #
- # Since: 7.1
- ##
-@@ -136,6 +136,8 @@
- #
- # @scalar: single unsigned 64-bit integers.
- #
-+# @boolean: single boolean value.
-+#
- # @list: list of unsigned 64-bit integers (used for histograms).
- #
- # Since: 7.1
-@@ -254,6 +256,8 @@
- #
- # Return the schema for all available runtime-collected statistics.
- #
-+# @provider: a provider to restrict the query to.
-+#
- # Note: runtime-collected statistics and their names fall outside
- #     QEMU's usual deprecation policies.  QEMU will try to keep the
- #     set of available data stable, together with their names, but
 -- 
 2.44.0
 
