@@ -2,68 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5E988C425
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 14:56:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3057888C451
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 15:02:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp7GX-0004EA-TM; Tue, 26 Mar 2024 09:55:01 -0400
+	id 1rp7MF-0001LP-5E; Tue, 26 Mar 2024 10:00:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GV-0004C9-1o
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rp7GT-0001Q9-Ek
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 09:54:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711461296;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Coa9Um95coZQAOs2TmVRBiG/R0G8A+PNbpwEgpIM3Tg=;
- b=ht9wwx1RRuvULiMrxuMnU2idUkp1LsmGbytzvx45+oAp6Qdjk3skSW8JymDwBA6kHMIMCw
- 5df8UEfw4BkT8NbZfK7AdCgpVxKAPdwaZVTHIi2o/OUZSLDxZfWDEwxrDGbMFYbumObYaR
- 3/lt235H3hsBRSfbOtrgLChZaj17StI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-rvSwBDJZNxu6Cdy18UcNIQ-1; Tue,
- 26 Mar 2024 09:54:53 -0400
-X-MC-Unique: rvSwBDJZNxu6Cdy18UcNIQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B42128EC11D;
- Tue, 26 Mar 2024 13:54:53 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.60])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C6593112132A;
- Tue, 26 Mar 2024 13:54:52 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com,
-	peter.maydell@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PULL 6/6] iotests: add test for stream job with an unaligned
- prefetch read
-Date: Tue, 26 Mar 2024 14:54:40 +0100
-Message-ID: <20240326135440.421609-7-kwolf@redhat.com>
-In-Reply-To: <20240326135440.421609-1-kwolf@redhat.com>
-References: <20240326135440.421609-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp7MC-0001Jk-Rj
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:00:53 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp7MB-00031L-0E
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:00:52 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-512b3b04995so3034291e87.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 07:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711461649; x=1712066449; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=518rxPStDSiC644PHfV+WPYhM8g47DKTiBbf7OfJSi0=;
+ b=kWBcBdpf792gvdtXC/72MjFfTzItqOcs9LCs6U4mWLk6RS3zOQJ1Bj++2iNdiFfQFX
+ 36znMpFNcAy15WY8wepqaU3WCRId0B4uuP8QMS4q5B8WwHVlaRPkheQpchh/J63PrKzi
+ qXvK4VF4K/QgC1Lwjw24RfshGBfNp153HpNeQaD4n1ytBd/Oez8p1E3N+uVuOeX48Pl4
+ 3WV4HDQvfWH8pKyfIAvk2joKk8QWmHf5MPCG9a0e4gQRki2gzrRzjcbhZnx9oA9/QMOq
+ sH9wTGDHbnihNVYjluw1LPuofMbtKUnWTSAvlDgKh00KqDi8mtx86LTt9jXcw3c4Mozy
+ udDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711461649; x=1712066449;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=518rxPStDSiC644PHfV+WPYhM8g47DKTiBbf7OfJSi0=;
+ b=NjhE1I3XXONIROSh+xAp1wN40WoFKaBdtNTXLG9P3llegDjSuuo5+atAYGNH87fm3R
+ ovhiaUZ8cCMSFED50aIOFNAEAkpDdfx0FKxIn7Bb5nTEIc2hofH1nQZqk9Ot7EkWCinB
+ dJI6EZRTYtkfk+rFWV/N8eZx3v7fx3nxrapMmVS/I9R+Cp91StV9Wts6CD6rh3prL+MG
+ A/vHeciWvT/n/R1o327KWtbjTuePVI1lp3HQW7SWTOKYJIw32EHdJUBLgyV3mUfOtk1g
+ OrE40C0za4xiqD6csHwEWqNjUP1wKpGG2YTjfk97tjeDiJ7zGEbRQGrJM5dgUCUiYQzL
+ lKBQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUE4ddOUruz4qwaIJILoB3nTJDqMILsEuJcL645NmoQnM63yOqUqm0rSLRS0NPBnzJyBUtbuEbZ4LC4HbOJtYkB3TRRZCc=
+X-Gm-Message-State: AOJu0YzxCCsapZKzy8OrS+d1ig2CXhhQYf9xPqrJa2QNzLX0gLNSHgUT
+ vUR8jgEFziU5EP3G+2EbWn/IbvWg4/NlZWpG4O3f0PR0+QgkFGJkxSjnaqZYc8E=
+X-Google-Smtp-Source: AGHT+IHTZfn9haAVcRCw/8INyWm7Ly7DU7TOZaflyvkjX11+WuWsm4pXECrJDW8M1nc7kDWpNyvcLQ==
+X-Received: by 2002:a19:6914:0:b0:513:e249:65fc with SMTP id
+ e20-20020a196914000000b00513e24965fcmr5932355lfc.61.1711461648472; 
+ Tue, 26 Mar 2024 07:00:48 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.155.229])
+ by smtp.gmail.com with ESMTPSA id
+ u15-20020a05600c00cf00b00414041032casm908926wmm.1.2024.03.26.07.00.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Mar 2024 07:00:47 -0700 (PDT)
+Message-ID: <c8a96403-a07f-40ae-8865-bec3fa1a7258@linaro.org>
+Date: Tue, 26 Mar 2024 15:00:45 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.0] docs/about: Mark the iaspc machine type as
+ deprecated
+Content-Language: en-US
+To: Thomas Huth <thuth@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org, Bernhard Beschow <shentey@gmail.com>
+Cc: pbonzini@redhat.com, devel@lists.libvirt.org,
+ richard.henderson@linaro.org, mst@redhat.com, qemu-trivial@nongnu.org
+References: <20240326125104.90103-1-imammedo@redhat.com>
+ <a4a0bb13-d6a0-4665-810d-ecd9a9fb89b1@redhat.com>
+ <8dbba6ae-5910-4a62-9a08-a56e20dfb480@linaro.org>
+ <306fd62e-50d4-4871-ae62-ea554a0fb388@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <306fd62e-50d4-4871-ae62-ea554a0fb388@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,133 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fiona Ebner <f.ebner@proxmox.com>
+On 26/3/24 14:37, Thomas Huth wrote:
+> On 26/03/2024 14.29, Philippe Mathieu-Daudé wrote:
+>> Hi Igor,
+>>
+>> On 26/3/24 14:08, Thomas Huth wrote:
+>>>
+>>> s/iaspc/isapc/ in the subject
+>>>
+>>> On 26/03/2024 13.51, Igor Mammedov wrote:
+>>>> ISAPC machine was introduced 25 years ago and it's a lot of time since
+>>>> such machine was around with real ISA only PC hardware practically 
+>>>> defunct.
+>>>> Also it's slowly bit-rots (for example: I was able to boot RHEL6 on 
+>>>> RHEL9 host
+>>>> in only TCG mode, while in KVM mode it hung in the middle of boot)
+>>
+>> I'm quite opposed to this patch. QEMU models various very-old /
+>> defunct hardware. I'm pretty sure Bernhard and myself are OK to
+>> keep maintaining it, besides we are working in separating it from
+>> the i440fx+piix machine. Also, this machine is particularly
+>> interesting for my single-binary experiments.
+>>
+>> Where I agree is we should stop reporting "KVM on ISA/PC machine"
+>> as supported.
+> 
+> +1
 
-Previously, bdrv_pad_request() could not deal with a NULL qiov when
-a read needed to be aligned. During prefetch, a stream job will pass a
-NULL qiov. Add a test case to cover this scenario.
+Rough plan is to extract 'isapc' machine from PCMachineClass,
+having the latter becoming smth like PcPciMachineClass, on
+top of:
+https://lore.kernel.org/qemu-devel/20240305134221.30924-1-philmd@linaro.org/
 
-By accident, also covers a previous race during shutdown, where block
-graph changes during iteration in bdrv_flush_all() could lead to
-unreferencing the wrong block driver state and an assertion failure
-later.
+> See also:
+> 
+> https://lists.gnu.org/archive/html/qemu-devel/2017-11/msg01367.html
 
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20240322095009.346989-5-f.ebner@proxmox.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- .../tests/stream-unaligned-prefetch           | 86 +++++++++++++++++++
- .../tests/stream-unaligned-prefetch.out       |  5 ++
- 2 files changed, 91 insertions(+)
- create mode 100755 tests/qemu-iotests/tests/stream-unaligned-prefetch
- create mode 100644 tests/qemu-iotests/tests/stream-unaligned-prefetch.out
-
-diff --git a/tests/qemu-iotests/tests/stream-unaligned-prefetch b/tests/qemu-iotests/tests/stream-unaligned-prefetch
-new file mode 100755
-index 0000000000..546db1d369
---- /dev/null
-+++ b/tests/qemu-iotests/tests/stream-unaligned-prefetch
-@@ -0,0 +1,86 @@
-+#!/usr/bin/env python3
-+# group: rw quick
-+#
-+# Test what happens when a stream job does an unaligned prefetch read
-+# which requires padding while having a NULL qiov.
-+#
-+# Copyright (C) Proxmox Server Solutions GmbH
-+#
-+# This program is free software; you can redistribute it and/or modify
-+# it under the terms of the GNU General Public License as published by
-+# the Free Software Foundation; either version 2 of the License, or
-+# (at your option) any later version.
-+#
-+# This program is distributed in the hope that it will be useful,
-+# but WITHOUT ANY WARRANTY; without even the implied warranty of
-+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+# GNU General Public License for more details.
-+#
-+# You should have received a copy of the GNU General Public License
-+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-+#
-+
-+import os
-+import iotests
-+from iotests import imgfmt, qemu_img_create, qemu_io, QMPTestCase
-+
-+image_size = 1 * 1024 * 1024
-+cluster_size = 64 * 1024
-+base = os.path.join(iotests.test_dir, 'base.img')
-+top = os.path.join(iotests.test_dir, 'top.img')
-+
-+class TestStreamUnalignedPrefetch(QMPTestCase):
-+    def setUp(self) -> None:
-+        """
-+        Create two images:
-+        - base image {base} with {cluster_size // 2} bytes allocated
-+        - top image {top} without any data allocated and coarser
-+          cluster size
-+
-+        Attach a compress filter for the top image, because that
-+        requires that the request alignment is the top image's cluster
-+        size.
-+        """
-+        qemu_img_create('-f', imgfmt,
-+                        '-o', 'cluster_size={}'.format(cluster_size // 2),
-+                        base, str(image_size))
-+        qemu_io('-c', f'write 0 {cluster_size // 2}', base)
-+        qemu_img_create('-f', imgfmt,
-+                        '-o', 'cluster_size={}'.format(cluster_size),
-+                        top, str(image_size))
-+
-+        self.vm = iotests.VM()
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': imgfmt,
-+            'node-name': 'base',
-+            'file': {
-+                'driver': 'file',
-+                'filename': base
-+            }
-+        }))
-+        self.vm.add_blockdev(self.vm.qmp_to_opts({
-+            'driver': 'compress',
-+            'node-name': 'compress-top',
-+            'file': {
-+                'driver': imgfmt,
-+                'node-name': 'top',
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': top
-+                },
-+                'backing': 'base'
-+            }
-+        }))
-+        self.vm.launch()
-+
-+    def tearDown(self) -> None:
-+        self.vm.shutdown()
-+        os.remove(top)
-+        os.remove(base)
-+
-+    def test_stream_unaligned_prefetch(self) -> None:
-+        self.vm.cmd('block-stream', job_id='stream', device='compress-top')
-+
-+
-+if __name__ == '__main__':
-+    iotests.main(supported_fmts=['qcow2'], supported_protocols=['file'])
-diff --git a/tests/qemu-iotests/tests/stream-unaligned-prefetch.out b/tests/qemu-iotests/tests/stream-unaligned-prefetch.out
-new file mode 100644
-index 0000000000..ae1213e6f8
---- /dev/null
-+++ b/tests/qemu-iotests/tests/stream-unaligned-prefetch.out
-@@ -0,0 +1,5 @@
-+.
-+----------------------------------------------------------------------
-+Ran 1 tests
-+
-+OK
--- 
-2.44.0
+lol I didn't remember I posted a similar patch =)
 
 
