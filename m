@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E0C88C7D0
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF0988C7DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:48:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp90C-0004Pj-Vg; Tue, 26 Mar 2024 11:46:17 -0400
+	id 1rp90D-0004Sj-Ik; Tue, 26 Mar 2024 11:46:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zx-0003zm-07
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:01 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp901-000436-Cr
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:12 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zt-0001Ea-72
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:59 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2d6ee81bcd4so6777701fa.2
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zx-0001FW-CI
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:04 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-33ed6078884so3745304f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:46:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711467954; x=1712072754; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711467960; x=1712072760; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pILgX4qmWPDEo+FllF7pXDQL2dWnRzBzAqVL780ebL0=;
- b=qd4XxyWrCrUcGvRO7kuuWoY6Wi6laaGq6BfdtucybR0jNF6v6sjhh7ZlqxhjeOW7H+
- YgmnW9WChgHOOopV7wChhrtTTxsHhCejBcFzvkYVMBAcX6ZNMlu7vSMAXMEps1btWy4e
- kfU6fWI74cJ0902WOrAMNaYUz/3B6TU/eDexDKbht7XaECU+o/ygRrHqdWrwN3KJ00PY
- i/cEDQwE6ss3mYFUd3stHUXatea3NuOzB0tRJoHp3i56Fbif/4/Nif4TEISbZfOAWA2U
- sOGfhuZ738k7ptayJT2HxhhkGUfxMJx1acsOayqLT/pajGASdQjL68SO18Z1CYCPT3cq
- 8PXA==
+ bh=PZoPdLMWukYfNxcXkCat/bL6sGsc7qqjORe7Wmplu6s=;
+ b=ZhKSc65n6aSSgjvZCIGZUYBuQTJzohbnxNhKAwvMA3eUDpaP4g8GJMX/qfzP0nRfNF
+ kt/nXs3kCQmTcGFyWIRqoSljunIvDVY8GxP6fNXgFx6QYastUV5U85shDd0+t8//0H4y
+ lFqEnAQMZ62hQaA3uHkXKeFlreoMNMjQcuuIE8/32JwyoOju+5s7lBe9fp/gze6VgPpf
+ iL9B9DYDCPoCq5DgGZqEzmEtYK0NvEhYEf42JGJ8iLslKRzb8r3jVtiDAZn2frGL7t9V
+ lUbpySQ++PRTbCyJOpi2gv86GdyZ0Y1kE907bozMH0X839rLA354SASPmgHZNwEWIUvX
+ bHSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711467954; x=1712072754;
+ d=1e100.net; s=20230601; t=1711467960; x=1712072760;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pILgX4qmWPDEo+FllF7pXDQL2dWnRzBzAqVL780ebL0=;
- b=Ezfdcb1PljyqIW/0rAvFTc9fIxeecWkByZXjqIz4ZmEebxHV1i1BV3MQlG01G+99Rq
- /D/Vskwul6L62rRphIwX6A00tspcsaoz+Tvgz78HFprByAnK+1QRLrJPPRE/WDCUIg2z
- 1kBASWLjcejNWPeLnR/MK9gR3n6Ap4Yuyu6ztXptinTfBFNy4HzVzX1W7OYuXtgQx+DC
- 7/OVKVRJGWSduTqhd1nKaDksGLO9b0yKPaHMCDghhtoz//d3BKAb5ZyAu373J/V88Yzn
- dGrbIevHredU5yDa9UrNCH2I/knHA9NuOl4sTfbmrpGfpGq/i06dE9mWhdwvUmJPvMIH
- +7Iw==
-X-Gm-Message-State: AOJu0YwPqVN5fZMyOJrVfar4RUTfm7MOKtjF3Kj2MPQ7kt+6+4kHWS10
- 2cgkTwyMLEWr1hNLKrrUY/cZxYt1fAcKuoUmIWJNLgjt5NdKY1pP1pl0lFEqZmkpP7Dwi7gDG0B
- i
-X-Google-Smtp-Source: AGHT+IFPSZ+KbdkoTCVxyOu8c8tHBPXiiJjv3g/xhUl6hvPn6M9vNgNFoHQCM/Gc34BJN7BWsUr/1Q==
-X-Received: by 2002:a2e:914b:0:b0:2d6:f100:6e6b with SMTP id
- q11-20020a2e914b000000b002d6f1006e6bmr888577ljg.18.1711467953968; 
- Tue, 26 Mar 2024 08:45:53 -0700 (PDT)
+ bh=PZoPdLMWukYfNxcXkCat/bL6sGsc7qqjORe7Wmplu6s=;
+ b=jXwhNXkU/oZXPGsWh7KTmfKlvKN3jEz+lMkJaZvXIMr5tlQ4vHprGbY2ZKS4+5u3dJ
+ f2lee3T4cwSRAQR95rpiggSvcuJkALMXx4h7vtkHLnmar7r/OUeMaUP5v9FaauavA6Zv
+ ouojo/taGrlDB/7dIeiTS0Z0VJ105Ojmj1HBqPh2yRyJ+oYN7pDGTvDpxmTGRtvk2prX
+ sxXn646N+h5lEuF+Xk5OLaorfbyw69XYcBtO6n2AVM67lUOSGeBHUxpKjc+sB3fHqI0Y
+ FlIRlKAiQDVBM5gj4UjCGou8TZi/FBTxalsj2iVuIdIA7DIj6/sI7+3WPDCOXjP7H4xI
+ 3hgA==
+X-Gm-Message-State: AOJu0YwOx3o/fafe8A2b1UH1tWw38+XQI3JKaytibJYujE8zvdnwcBJX
+ rDf+u4sY9sByDUppqYFPNrOcxftgFSmhdj4jhTgTa0bHApFUy1rH2DyiIKO/0n0lnysNSS5fy0w
+ 4
+X-Google-Smtp-Source: AGHT+IGn9vVSpDNh8rQWuVgF1+Gw5LLVBbsr7W6HSykE2xDWZmuWfsooId8xN1cHVcfv8a/1nR/yzg==
+X-Received: by 2002:adf:e6cc:0:b0:33e:ce08:79b5 with SMTP id
+ y12-20020adfe6cc000000b0033ece0879b5mr1645151wrm.9.1711467959787; 
+ Tue, 26 Mar 2024 08:45:59 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.229])
  by smtp.gmail.com with ESMTPSA id
- b2-20020a05600003c200b00341ddb65b07sm112154wrg.63.2024.03.26.08.45.52
+ s17-20020adfa291000000b00341b7388dafsm11861938wra.77.2024.03.26.08.45.58
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Mar 2024 08:45:53 -0700 (PDT)
+ Tue, 26 Mar 2024 08:45:59 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- BALATON Zoltan <balaton@eik.bme.hu>,
+ Yao Xingtao <yaoxt.fnst@fujitsu.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/13] docs/system/ppc/amigang.rst: Fix formatting
-Date: Tue, 26 Mar 2024 16:44:59 +0100
-Message-ID: <20240326154505.8300-9-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 09/13] contrib/plugins/execlog: Fix compiler warning
+Date: Tue, 26 Mar 2024 16:45:00 +0100
+Message-ID: <20240326154505.8300-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240326154505.8300-1-philmd@linaro.org>
 References: <20240326154505.8300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,42 +98,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 
-Add missing space to fix character formatting where it was missed in
-two places.
+1. The g_pattern_match_string() is deprecated when glib2 version >= 2.70.
+   Use g_pattern_spec_match_string() instead to avoid this problem.
 
-Fixes: 623d9065b6 (docs/system/ppc: Document running Linux on AmigaNG machines)
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+2. The type of second parameter in g_ptr_array_add() is
+   'gpointer' {aka 'void *'}, but the type of reg->name is 'const char*'.
+   Cast the type of reg->name to 'gpointer' to avoid this problem.
+
+compiler warning message:
+
+  contrib/plugins/execlog.c:330:17: warning: ‘g_pattern_match_string’
+  is deprecated: Use 'g_pattern_spec_match_string' instead [-Wdeprecated-declarations]
+    330 |                 if (g_pattern_match_string(pat, rd->name) ||
+        |                 ^~
+  In file included from /usr/include/glib-2.0/glib.h:67,
+                   from contrib/plugins/execlog.c:9:
+  /usr/include/glib-2.0/glib/gpattern.h:57:15: note: declared here
+     57 | gboolean      g_pattern_match_string   (GPatternSpec *pspec,
+        |               ^~~~~~~~~~~~~~~~~~~~~~
+  contrib/plugins/execlog.c:331:21: warning: ‘g_pattern_match_string’
+  is deprecated: Use 'g_pattern_spec_match_string' instead [-Wdeprecated-declarations]
+    331 |                     g_pattern_match_string(pat, rd_lower)) {
+        |                     ^~~~~~~~~~~~~~~~~~~~~~
+  /usr/include/glib-2.0/glib/gpattern.h:57:15: note: declared here
+     57 | gboolean      g_pattern_match_string   (GPatternSpec *pspec,
+        |               ^~~~~~~~~~~~~~~~~~~~~~
+  contrib/plugins/execlog.c:339:63: warning: passing argument 2 of
+  ‘g_ptr_array_add’ discards ‘const’ qualifier from pointer target type [-Wdiscarded-qualifiers]
+    339 |                             g_ptr_array_add(all_reg_names, reg->name);
+        |                                                            ~~~^~~~~~
+  In file included from /usr/include/glib-2.0/glib.h:33:
+  /usr/include/glib-2.0/glib/garray.h:198:62: note: expected
+  ‘gpointer’ {aka ‘void *’} but argument is of type ‘const char *’
+    198 |                                            gpointer          data);
+        |                                            ~~~~~~~~~~~~~~~~~~^~~~
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2210
+Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Message-ID: <20240326015257.21516-1-yaoxt.fnst@fujitsu.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-ID: <20240324161148.4650D4E601F@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/system/ppc/amigang.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ contrib/plugins/execlog.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
-index ba1a3d80b9..e2c9cb74b7 100644
---- a/docs/system/ppc/amigang.rst
-+++ b/docs/system/ppc/amigang.rst
-@@ -16,7 +16,7 @@ firmware to support AmigaOS 4.
- Emulated devices
- ----------------
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index a1dfd59ab7..fab18113d4 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -311,6 +311,24 @@ static Register *init_vcpu_register(qemu_plugin_reg_descriptor *desc)
+     return reg;
+ }
  
-- * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750gx``)
-+ * PowerPC 7457 CPU (can also use ``-cpu g3, 750cxe, 750fx`` or ``750gx``)
-  * Articia S north bridge
-  * VIA VT82C686B south bridge
-  * PCI VGA compatible card (guests may need other card instead)
-@@ -73,7 +73,7 @@ https://www.powerdeveloper.org/platforms/pegasos/schematics.
- Emulated devices
- ----------------
++/*
++ * g_pattern_match_string has been deprecated in Glib since 2.70 and
++ * will complain about it if you try to use it. Fortunately the
++ * signature of both functions is the same making it easy to work
++ * around.
++ */
++static inline
++gboolean g_pattern_spec_match_string_qemu(GPatternSpec *pspec,
++                                          const gchar *string)
++{
++#if GLIB_CHECK_VERSION(2, 70, 0)
++    return g_pattern_spec_match_string(pspec, string);
++#else
++    return g_pattern_match_string(pspec, string);
++#endif
++};
++#define g_pattern_spec_match_string(p, s) g_pattern_spec_match_string_qemu(p, s)
++
+ static GPtrArray *registers_init(int vcpu_index)
+ {
+     g_autoptr(GPtrArray) registers = g_ptr_array_new();
+@@ -327,8 +345,8 @@ static GPtrArray *registers_init(int vcpu_index)
+             for (int p = 0; p < rmatches->len; p++) {
+                 g_autoptr(GPatternSpec) pat = g_pattern_spec_new(rmatches->pdata[p]);
+                 g_autofree gchar *rd_lower = g_utf8_strdown(rd->name, -1);
+-                if (g_pattern_match_string(pat, rd->name) ||
+-                    g_pattern_match_string(pat, rd_lower)) {
++                if (g_pattern_spec_match_string(pat, rd->name) ||
++                    g_pattern_spec_match_string(pat, rd_lower)) {
+                     Register *reg = init_vcpu_register(rd);
+                     g_ptr_array_add(registers, reg);
  
-- * PowerPC 7457 CPU (can also use``-cpu g3`` or ``750cxe``)
-+ * PowerPC 7457 CPU (can also use ``-cpu g3`` or ``750cxe``)
-  * Marvell MV64361 Discovery II north bridge
-  * VIA VT8231 south bridge
-  * PCI VGA compatible card (guests may need other card instead)
+@@ -336,7 +354,7 @@ static GPtrArray *registers_init(int vcpu_index)
+                     if (disas_assist) {
+                         g_mutex_lock(&add_reg_name_lock);
+                         if (!g_ptr_array_find(all_reg_names, reg->name, NULL)) {
+-                            g_ptr_array_add(all_reg_names, reg->name);
++                            g_ptr_array_add(all_reg_names, (gpointer)reg->name);
+                         }
+                         g_mutex_unlock(&add_reg_name_lock);
+                     }
 -- 
 2.41.0
 
