@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23DA88C240
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:36:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B89388C23F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:36:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp61G-0005Mh-OG; Tue, 26 Mar 2024 08:35:10 -0400
+	id 1rp61I-0005NC-G3; Tue, 26 Mar 2024 08:35:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp61C-0005Ju-Or
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:06 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rp61F-0005Mg-UK
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:09 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp619-0000fn-O7
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:06 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6ea9a616cc4so1920518b3a.1
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:35:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rp61C-0000gS-Qp
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4148c6af2d3so8338095e9.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:35:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711456502; x=1712061302;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vX1JmAtVLzm5Q7uBUZ/7EOpmvFGga3JnBjC96Zw0g1A=;
- b=uOS6f4i7CSNTH/0RCXPG2DGfCO0nibQknadqKOOrhYEnQ9idYO7eJu3jYmNN1j1gQa
- kkoWqgbl1xieQfON6VTvx9owKgNLeIJz8swkbCbYctPe5FDjkSkmiP5MIGUig1SRazEq
- Qv2bIj8P05PUUyXh6raMzPJAKS3DUh0OZ6avRmxxcr+ckBvqBluPTdsgsfkNkuT/5ipr
- MhKHJ2dL//dyEou5VcUZJ4L3mu4ohEsi55T4nizWPktr+cIec3HGlSK0nPkNPItTlK7q
- SORXhDaW76Y9o4Pdm5RNepeRkUXz4NvlmAJTyV84Oa9b1YTLWgaRfw53c9URGfJnzPBY
- m/Sw==
+ d=linaro.org; s=google; t=1711456504; x=1712061304; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=V1PJSyLekmQiJMmv7/zxpIRkCdRPSC16cTFoxh7+v0c=;
+ b=OyUSa1LAcJeG3ntTk43VVI6PDnWwG1Mf/BMjtwzB2z+CrOIhfRKp5id/63xnVQ6s7P
+ sRl+XeZGuqpanDeF3KTx6Yzz/KcxyesmB+lNghm+YEZ3BZ/brjDey6vlvIxCmYxwKkEj
+ BkhoI+H8mmCVezVibAgXJt1xkm/Dwr+AqwMiDBXqk+1qsTZSIIhyo3miK8rLUBc9YJn6
+ +QzGHdRFhX+X+4l7OCLsEKBH57MgvxcGVIHqdMAiDT3/UeRyv8KxjYc3zmhkJsKKh6Ue
+ j8mTgZj8cno07RWt4+ueTd4RK31TfwAJpH8tglD4/tfXjWmLhzBJJN93BqaJSzbnQfgl
+ rivA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711456502; x=1712061302;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1711456504; x=1712061304;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vX1JmAtVLzm5Q7uBUZ/7EOpmvFGga3JnBjC96Zw0g1A=;
- b=pgZvpM6vJ6B5/5ciXnvg3LExM3MfRaHhIVxVRvKB7nPP4GMkBZRc8xQXxIzK76WOSY
- h2OWmUxmnejeK+svvnDoo55XUKqRVv7vr2Pxmpr8Sb2BA06NFXKlCGkr2BnyzlpARYtI
- EKgr4WeJXFCoXXPRuf1mCj8LQFDuoPacF/pAj1yLfmCWZ64JD6nN7iiGY4qAqQOuXysC
- ILjSYN5SmpBuMG9+y0SvCyAmxVAyIHDu+c6KYNhc6WIuwL2a2E3N/qpSVGrXoaSB7Xsi
- LLMMurAbI9Me42uKVFfUlfkB4p3PvLnmbG7MvIdJy0+PrmM6K3MWQxMbioq1NXut6tou
- U1pA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVNiOQvW0/+y7FcYYeDLBCFdP6RMSDLIDgDakYb4VkqyrBf3YZPiTCFmMEmC+uiAxRx1swHlf+v13NPO4T5t0f5NUdmh+U=
-X-Gm-Message-State: AOJu0YxPrgDfPfSI9DjQsWBYVAeULS4gzf1ZurDMdNMx09ckdY1T0gux
- stMHGw36sn7fxCOo/RVpaVV7IUFH6TqX4ivr5CgV5O65WVuFDGsGpwpapUrtSq06XnrI6XiEqEI
- q
-X-Google-Smtp-Source: AGHT+IGw781NsosIuzckyyEsihtawzJRU445U3WZQZZ9yet6j29luU2rY6CvelCTeUSAXSot+lhwww==
-X-Received: by 2002:a05:6a00:198e:b0:6ea:b69a:7c71 with SMTP id
- d14-20020a056a00198e00b006eab69a7c71mr3453844pfl.19.1711456502215; 
- Tue, 26 Mar 2024 05:35:02 -0700 (PDT)
-Received: from localhost ([157.82.202.248])
- by smtp.gmail.com with UTF8SMTPSA id
- g4-20020aa78184000000b006e5a6e83f8esm5838952pfi.134.2024.03.26.05.34.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Mar 2024 05:35:01 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 26 Mar 2024 21:34:23 +0900
-Subject: [PATCH for 9.1 v2 2/2] meson: Fix MESONINTROSPECT parsing
+ bh=V1PJSyLekmQiJMmv7/zxpIRkCdRPSC16cTFoxh7+v0c=;
+ b=kZAxUw1POnO9DM7VIXroRUIThDejOEXBil3ToIG8jBntd8uE29VadRS+QYkRhXwifK
+ Ql70xVDo2W9POa6o7E4MqQ+oHbBIF0b7OgVitkq4tJNswwdmY1I8Lr3xqybZrgOdjhwK
+ 6FnbIZs0+djVihJJogPZEWxEjd+lRIX+s1QSWf4HieBDrCXALIcQkPPKWzMV3DuRzmJU
+ 0Eropz/yCtcBXS2FvnnrT3kOMj57FVLl7ruxpLIL3ZzVezMLdsSeUATU+dnGH4DXHEjX
+ el1I4wCo7ho++y8hTqqeEz1xnlvEGTOd+YTLR4y8bIUzNSpA/GFZUc3dWlZl4ebHI40E
+ C+eQ==
+X-Gm-Message-State: AOJu0Yza0bpX2ePXCYGPEV37K0cD5qtSPVls+7tbZtszTdgEkLYP/YyI
+ 3nXDnFVJGocU72yidZz4vfF9ayKiECwgtOuILuwupL3MenIoVEXpm28Ifp01rGLP4Iq4cl6h/ye
+ xXrU=
+X-Google-Smtp-Source: AGHT+IFVl5SsnJTLvqEIU0yusx4gfTw+mzpB1tRpxymY3AJdU0Bq6kWCwulbEiQ6nbTEUNeF6AkYwg==
+X-Received: by 2002:a05:600c:3ba3:b0:413:2966:4bfb with SMTP id
+ n35-20020a05600c3ba300b0041329664bfbmr6620401wms.1.1711456504244; 
+ Tue, 26 Mar 2024 05:35:04 -0700 (PDT)
+Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
+ y19-20020a1c4b13000000b004148090cf85sm716317wma.0.2024.03.26.05.35.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Mar 2024 05:35:03 -0700 (PDT)
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 7/9] plugins: distinct types for callbacks
+Date: Tue, 26 Mar 2024 16:34:24 +0400
+Message-Id: <20240326123426.761473-8-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
+References: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240326-meson-v2-2-d9f9003775e9@daynix.com>
-References: <20240326-meson-v2-0-d9f9003775e9@daynix.com>
-In-Reply-To: <20240326-meson-v2-0-d9f9003775e9@daynix.com>
-To: Beraldo Leal <bleal@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-X-Mailer: b4 0.13.0
-Received-SPF: none client-ip=2607:f8b0:4864:20::429;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x429.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,42 +95,385 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
-must be parsed with shlex.split().
+To prevent errors when writing new types of callbacks or inline
+operations, we split callbacks data to distinct types.
 
-Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- scripts/symlink-install-tree.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/qemu/plugin.h  | 46 ++++++++++++++-----------
+ plugins/plugin.h       |  2 +-
+ accel/tcg/plugin-gen.c | 58 +++++++++++++++++---------------
+ plugins/core.c         | 76 ++++++++++++++++++++++--------------------
+ 4 files changed, 98 insertions(+), 84 deletions(-)
 
-diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
-index 8ed97e3c943d..b72563895c56 100644
---- a/scripts/symlink-install-tree.py
-+++ b/scripts/symlink-install-tree.py
-@@ -4,6 +4,7 @@
- import errno
- import json
- import os
-+import shlex
- import subprocess
- import sys
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index bb224b8e4c7..a078229942f 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -73,34 +73,40 @@ enum plugin_dyn_cb_type {
+     PLUGIN_CB_INLINE_STORE_U64,
+ };
  
-@@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
-     return str(PurePath(d1, *PurePath(d2).parts[1:]))
++struct qemu_plugin_regular_cb {
++    union qemu_plugin_cb_sig f;
++    TCGHelperInfo *info;
++    void *userp;
++    enum qemu_plugin_mem_rw rw;
++};
++
++struct qemu_plugin_inline_cb {
++    qemu_plugin_u64 entry;
++    enum qemu_plugin_op op;
++    uint64_t imm;
++    enum qemu_plugin_mem_rw rw;
++};
++
++struct qemu_plugin_conditional_cb {
++    union qemu_plugin_cb_sig f;
++    TCGHelperInfo *info;
++    void *userp;
++    qemu_plugin_u64 entry;
++    enum qemu_plugin_cond cond;
++    uint64_t imm;
++};
++
+ /*
+  * A dynamic callback has an insertion point that is determined at run-time.
+  * Usually the insertion point is somewhere in the code cache; think for
+  * instance of a callback to be called upon the execution of a particular TB.
+  */
+ struct qemu_plugin_dyn_cb {
+-    void *userp;
+     enum plugin_dyn_cb_type type;
+-    /* @rw applies to mem callbacks only (both regular and inline) */
+-    enum qemu_plugin_mem_rw rw;
+-    /* fields specific to each dyn_cb type go here */
+     union {
+-        struct {
+-            union qemu_plugin_cb_sig f;
+-            TCGHelperInfo *info;
+-        } regular;
+-        struct {
+-            union qemu_plugin_cb_sig f;
+-            TCGHelperInfo *info;
+-            qemu_plugin_u64 entry;
+-            enum qemu_plugin_cond cond;
+-            uint64_t imm;
+-        } cond;
+-        struct {
+-            qemu_plugin_u64 entry;
+-            enum qemu_plugin_op op;
+-            uint64_t imm;
+-        } inline_insn;
++        struct qemu_plugin_regular_cb regular;
++        struct qemu_plugin_conditional_cb cond;
++        struct qemu_plugin_inline_cb inline_insn;
+     };
+ };
  
- introspect = os.environ.get('MESONINTROSPECT')
--out = subprocess.run([*introspect.split(' '), '--installed'],
-+out = subprocess.run([*shlex.split(introspect), '--installed'],
-                      stdout=subprocess.PIPE, check=True).stdout
- for source, dest in json.loads(out).items():
-     bundle_dest = destdir_join('qemu-bundle', dest)
-
+diff --git a/plugins/plugin.h b/plugins/plugin.h
+index 7d4b4e21f7c..80d5daa9171 100644
+--- a/plugins/plugin.h
++++ b/plugins/plugin.h
+@@ -108,7 +108,7 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
+                                  enum qemu_plugin_mem_rw rw,
+                                  void *udata);
+ 
+-void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index);
++void exec_inline_op(struct qemu_plugin_inline_cb *cb, int cpu_index);
+ 
+ int plugin_num_vcpus(void);
+ 
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 1b1dd264e2b..d00a2b3fd67 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -108,13 +108,13 @@ static void gen_disable_mem_helper(void)
+                    offsetof(ArchCPU, env));
+ }
+ 
+-static void gen_udata_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_udata_cb(struct qemu_plugin_regular_cb *cb)
+ {
+     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
+ 
+     tcg_gen_ld_i32(cpu_index, tcg_env,
+                    -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
+-    tcg_gen_call2(cb->regular.f.vcpu_udata, cb->regular.info, NULL,
++    tcg_gen_call2(cb->f.vcpu_udata, cb->info, NULL,
+                   tcgv_i32_temp(cpu_index),
+                   tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
+     tcg_temp_free_i32(cpu_index);
+@@ -160,21 +160,21 @@ static TCGCond plugin_cond_to_tcgcond(enum qemu_plugin_cond cond)
+     }
+ }
+ 
+-static void gen_udata_cond_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_udata_cond_cb(struct qemu_plugin_conditional_cb *cb)
+ {
+-    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->cond.entry);
++    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->entry);
+     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
+     TCGv_i64 val = tcg_temp_ebb_new_i64();
+     TCGLabel *after_cb = gen_new_label();
+ 
+     /* Condition should be negated, as calling the cb is the "else" path */
+-    TCGCond cond = tcg_invert_cond(plugin_cond_to_tcgcond(cb->cond.cond));
++    TCGCond cond = tcg_invert_cond(plugin_cond_to_tcgcond(cb->cond));
+ 
+     tcg_gen_ld_i64(val, ptr, 0);
+-    tcg_gen_brcondi_i64(cond, val, cb->cond.imm, after_cb);
++    tcg_gen_brcondi_i64(cond, val, cb->imm, after_cb);
+     tcg_gen_ld_i32(cpu_index, tcg_env,
+                    -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
+-    tcg_gen_call2(cb->cond.f.vcpu_udata, cb->cond.info, NULL,
++    tcg_gen_call2(cb->f.vcpu_udata, cb->info, NULL,
+                   tcgv_i32_temp(cpu_index),
+                   tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
+     gen_set_label(after_cb);
+@@ -184,37 +184,37 @@ static void gen_udata_cond_cb(struct qemu_plugin_dyn_cb *cb)
+     tcg_temp_free_ptr(ptr);
+ }
+ 
+-static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_inline_add_u64_cb(struct qemu_plugin_inline_cb *cb)
+ {
+-    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->inline_insn.entry);
++    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->entry);
+     TCGv_i64 val = tcg_temp_ebb_new_i64();
+ 
+     tcg_gen_ld_i64(val, ptr, 0);
+-    tcg_gen_addi_i64(val, val, cb->inline_insn.imm);
++    tcg_gen_addi_i64(val, val, cb->imm);
+     tcg_gen_st_i64(val, ptr, 0);
+ 
+     tcg_temp_free_i64(val);
+     tcg_temp_free_ptr(ptr);
+ }
+ 
+-static void gen_inline_store_u64_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_inline_store_u64_cb(struct qemu_plugin_inline_cb *cb)
+ {
+-    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->inline_insn.entry);
+-    TCGv_i64 val = tcg_constant_i64(cb->inline_insn.imm);
++    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->entry);
++    TCGv_i64 val = tcg_constant_i64(cb->imm);
+ 
+     tcg_gen_st_i64(val, ptr, 0);
+ 
+     tcg_temp_free_ptr(ptr);
+ }
+ 
+-static void gen_mem_cb(struct qemu_plugin_dyn_cb *cb,
++static void gen_mem_cb(struct qemu_plugin_regular_cb *cb,
+                        qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
+ {
+     TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
+ 
+     tcg_gen_ld_i32(cpu_index, tcg_env,
+                    -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
+-    tcg_gen_call4(cb->regular.f.vcpu_mem, cb->regular.info, NULL,
++    tcg_gen_call4(cb->f.vcpu_mem, cb->info, NULL,
+                   tcgv_i32_temp(cpu_index),
+                   tcgv_i32_temp(tcg_constant_i32(meminfo)),
+                   tcgv_i64_temp(addr),
+@@ -227,16 +227,16 @@ static void inject_cb(struct qemu_plugin_dyn_cb *cb)
+ {
+     switch (cb->type) {
+     case PLUGIN_CB_REGULAR:
+-        gen_udata_cb(cb);
++        gen_udata_cb(&cb->regular);
+         break;
+     case PLUGIN_CB_COND:
+-        gen_udata_cond_cb(cb);
++        gen_udata_cond_cb(&cb->cond);
+         break;
+     case PLUGIN_CB_INLINE_ADD_U64:
+-        gen_inline_add_u64_cb(cb);
++        gen_inline_add_u64_cb(&cb->inline_insn);
+         break;
+     case PLUGIN_CB_INLINE_STORE_U64:
+-        gen_inline_store_u64_cb(cb);
++        gen_inline_store_u64_cb(&cb->inline_insn);
+         break;
+     default:
+         g_assert_not_reached();
+@@ -247,15 +247,21 @@ static void inject_mem_cb(struct qemu_plugin_dyn_cb *cb,
+                           enum qemu_plugin_mem_rw rw,
+                           qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
+ {
+-    if (cb->rw & rw) {
+-        switch (cb->type) {
+-        case PLUGIN_CB_MEM_REGULAR:
+-            gen_mem_cb(cb, meminfo, addr);
+-            break;
+-        default:
++    switch (cb->type) {
++    case PLUGIN_CB_MEM_REGULAR:
++        if (rw && cb->regular.rw) {
++            gen_mem_cb(&cb->regular, meminfo, addr);
++        }
++        break;
++    case PLUGIN_CB_INLINE_ADD_U64:
++    case PLUGIN_CB_INLINE_STORE_U64:
++        if (rw && cb->inline_insn.rw) {
+             inject_cb(cb);
+-            break;
+         }
++        break;
++    default:
++        g_assert_not_reached();
++        break;
+     }
+ }
+ 
+diff --git a/plugins/core.c b/plugins/core.c
+index b3d0208e022..7ea2ee208db 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -336,13 +336,13 @@ void plugin_register_inline_op_on_entry(GArray **arr,
+ {
+     struct qemu_plugin_dyn_cb *dyn_cb;
+ 
++    struct qemu_plugin_inline_cb inline_cb = { .rw = rw,
++                                               .entry = entry,
++                                               .op = op,
++                                               .imm = imm };
+     dyn_cb = plugin_get_dyn_cb(arr);
+-    dyn_cb->userp = NULL;
+     dyn_cb->type = op_to_cb_type(op);
+-    dyn_cb->rw = rw;
+-    dyn_cb->inline_insn.entry = entry;
+-    dyn_cb->inline_insn.op = op;
+-    dyn_cb->inline_insn.imm = imm;
++    dyn_cb->inline_insn = inline_cb;
+ }
+ 
+ void plugin_register_dyn_cb__udata(GArray **arr,
+@@ -361,14 +361,14 @@ void plugin_register_dyn_cb__udata(GArray **arr,
+                               dh_typemask(i32, 1) |
+                               dh_typemask(ptr, 2))
+     };
++    assert((unsigned)flags < ARRAY_SIZE(info));
+ 
+     struct qemu_plugin_dyn_cb *dyn_cb = plugin_get_dyn_cb(arr);
+-    dyn_cb->userp = udata;
++    struct qemu_plugin_regular_cb regular_cb = { .f.vcpu_udata = cb,
++                                                 .userp = udata,
++                                                 .info = &info[flags] };
+     dyn_cb->type = PLUGIN_CB_REGULAR;
+-    dyn_cb->regular.f.vcpu_udata = cb;
+-
+-    assert((unsigned)flags < ARRAY_SIZE(info));
+-    dyn_cb->regular.info = &info[flags];
++    dyn_cb->regular = regular_cb;
+ }
+ 
+ void plugin_register_dyn_cond_cb__udata(GArray **arr,
+@@ -390,17 +390,17 @@ void plugin_register_dyn_cond_cb__udata(GArray **arr,
+                               dh_typemask(i32, 1) |
+                               dh_typemask(ptr, 2))
+     };
++    assert((unsigned)flags < ARRAY_SIZE(info));
+ 
+     struct qemu_plugin_dyn_cb *dyn_cb = plugin_get_dyn_cb(arr);
+-    dyn_cb->userp = udata;
++    struct qemu_plugin_conditional_cb cond_cb = { .userp = udata,
++                                                  .f.vcpu_udata = cb,
++                                                  .cond = cond,
++                                                  .entry = entry,
++                                                  .imm = imm,
++                                                  .info = &info[flags] };
+     dyn_cb->type = PLUGIN_CB_COND;
+-    dyn_cb->cond.f.vcpu_udata = cb;
+-    dyn_cb->cond.cond = cond;
+-    dyn_cb->cond.entry = entry;
+-    dyn_cb->cond.imm = imm;
+-
+-    assert((unsigned)flags < ARRAY_SIZE(info));
+-    dyn_cb->cond.info = &info[flags];
++    dyn_cb->cond = cond_cb;
+ }
+ 
+ void plugin_register_vcpu_mem_cb(GArray **arr,
+@@ -432,15 +432,15 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
+              dh_typemask(i64, 3) |
+              dh_typemask(ptr, 4))
+     };
++    assert((unsigned)flags < ARRAY_SIZE(info));
+ 
+     struct qemu_plugin_dyn_cb *dyn_cb = plugin_get_dyn_cb(arr);
+-    dyn_cb->userp = udata;
++    struct qemu_plugin_regular_cb regular_cb = { .userp = udata,
++                                                 .rw = rw,
++                                                 .f.vcpu_mem = cb,
++                                                 .info = &info[flags] };
+     dyn_cb->type = PLUGIN_CB_MEM_REGULAR;
+-    dyn_cb->rw = rw;
+-    dyn_cb->regular.f.vcpu_mem = cb;
+-
+-    assert((unsigned)flags < ARRAY_SIZE(info));
+-    dyn_cb->regular.info = &info[flags];
++    dyn_cb->regular = regular_cb;
+ }
+ 
+ /*
+@@ -557,20 +557,20 @@ void qemu_plugin_flush_cb(void)
+     plugin_cb__simple(QEMU_PLUGIN_EV_FLUSH);
+ }
+ 
+-void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index)
++void exec_inline_op(struct qemu_plugin_inline_cb *cb, int cpu_index)
+ {
+-    char *ptr = cb->inline_insn.entry.score->data->data;
++    char *ptr = cb->entry.score->data->data;
+     size_t elem_size = g_array_get_element_size(
+-        cb->inline_insn.entry.score->data);
+-    size_t offset = cb->inline_insn.entry.offset;
++        cb->entry.score->data);
++    size_t offset = cb->entry.offset;
+     uint64_t *val = (uint64_t *)(ptr + offset + cpu_index * elem_size);
+ 
+-    switch (cb->inline_insn.op) {
++    switch (cb->op) {
+     case QEMU_PLUGIN_INLINE_ADD_U64:
+-        *val += cb->inline_insn.imm;
++        *val += cb->imm;
+         break;
+     case QEMU_PLUGIN_INLINE_STORE_U64:
+-        *val = cb->inline_insn.imm;
++        *val = cb->imm;
+         break;
+     default:
+         g_assert_not_reached();
+@@ -590,17 +590,19 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
+         struct qemu_plugin_dyn_cb *cb =
+             &g_array_index(arr, struct qemu_plugin_dyn_cb, i);
+ 
+-        if (!(rw & cb->rw)) {
+-                break;
+-        }
+         switch (cb->type) {
+         case PLUGIN_CB_MEM_REGULAR:
+-            cb->regular.f.vcpu_mem(cpu->cpu_index, make_plugin_meminfo(oi, rw),
+-                                   vaddr, cb->userp);
++            if (rw && cb->regular.rw) {
++                cb->regular.f.vcpu_mem(cpu->cpu_index,
++                                       make_plugin_meminfo(oi, rw),
++                                       vaddr, cb->regular.userp);
++            }
+             break;
+         case PLUGIN_CB_INLINE_ADD_U64:
+         case PLUGIN_CB_INLINE_STORE_U64:
+-            exec_inline_op(cb, cpu->cpu_index);
++            if (rw && cb->inline_insn.rw) {
++                exec_inline_op(&cb->inline_insn, cpu->cpu_index);
++            }
+             break;
+         default:
+             g_assert_not_reached();
 -- 
-2.44.0
+2.39.2
 
 
