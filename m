@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BE588C7BF
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:46:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279C688C7C0
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:46:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp8zQ-0003cl-OO; Tue, 26 Mar 2024 11:45:28 -0400
+	id 1rp8zU-0003fA-02; Tue, 26 Mar 2024 11:45:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zN-0003bL-M7
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:26 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zS-0003e5-8w
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:30 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zL-00017R-05
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:25 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33ed4d8e9edso4188059f8f.2
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zQ-00018g-R5
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:30 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2d6dda3adb9so21223081fa.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711467920; x=1712072720; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711467926; x=1712072726; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=D+2sufPZV1jZbwqSWcGkqalb0YdlIEBcm3JneTAQYPE=;
- b=Wzwyak/7ZiMG+4lNbfNNccr5MkvX3BZdxFaaFdBknzcK/lMETq1KL0b1TzUFScDCOv
- NguG4ApTN7Zpq63mC1hdyC870eWV1XeaAWQ5BqNQxXxGbIGnfdg8J8ikvhBDs/krsitV
- RfHuilSd7d6JCs1NLTziC7tsKf0S9/jQK0qCrOEwn0VKdzv5PJhdRjqeIdkYul8AB0wC
- pSzUGVZ5jve+KThFj0UE5NSnsXdJyhF5sCQNLfybTHbJXI9GiXxhysSm6z1UQHaNRxcq
- LJnPeTyzQKPAWLD3mUw0OopzhfG1UoUU+kB2on+7iwIK7+Ndli/6eA/Ha2uVkoaEHWiZ
- /F2g==
+ bh=rDRJxqQMAhWnh+G5jpK8UG7ljcyYHl8RJLjLiMQKlpg=;
+ b=NGt7zk7NnvkLiO+rmxYS7RMgb414csV3Ce7YRpBUytr4vqQ6harrMRHoCRHpYzgSnP
+ ve4OqizHNcnjwLv/LNyIcvteT4qwfM8Lzn/lzNoD3oWMVBLiA9QrdyoxzTcJDxX5jgDV
+ 5G9ILGB8IsJDu0rjmGu+De/91OHsaN+pQ45vHPsvRiIDgimbtzbuP8I7wy5aleErE266
+ QnjP+F5RBoNv7J714TDXZxQbqp88Gu+30ffj/33LxptrLWJrMKlfkZS9IRd3K2Z9r2YX
+ 0Bo/tBlmt3ouLtslQcBNfTg2R9XSl3p38MoiD4UVKm7MQ1YLTAefEa0tri7gjrJOWcmC
+ jwnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711467920; x=1712072720;
+ d=1e100.net; s=20230601; t=1711467926; x=1712072726;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D+2sufPZV1jZbwqSWcGkqalb0YdlIEBcm3JneTAQYPE=;
- b=PLlvyynr2cAxgidaB7mfB9wkrc9B4kbVaNPq97W9cPxbLCWNXmFLu2bHKua9usKvki
- Em6wctJnmtAVQZIibMiwrS6W3jw7aVqXk5Wz0TsuZYpJG68zJnJXdk4rGZwl2w9wFA8i
- OUmZum4MLeUwB1tyjU2DNaLU81gPe6VDegwsleXpLsvtNnV0/vEyG2p189sAftHfzmw+
- Dksyvk8VDa/rjOSVpxoWdlI/l+iaUPn28Q0i0pJCDaOe/KR0UYTQkKNMGQhaVR835ZPa
- xr1++pGIKEvE6MOgvjF65J8yscNPQDRZd/U+8fKbNJ/kkiJcllpZf1T6Tsjk8t7KDoHx
- oTjg==
-X-Gm-Message-State: AOJu0YwvzGZ9v0ZICM82yckiPyhZYnUTqMYYU7+XtnBCB+OR7mS5+Jf/
- 47gRGPRljuawQDkoUtdy44Lh6Z6V3Z6PNzzumr41PgI3xIb81Wj1TD/7BGJfTNkT1c+HrS5/VmX
- 1
-X-Google-Smtp-Source: AGHT+IHwKtFMeWpq3ZJE9GoM5WPki6NX1BeYC0H8+aqSC47II9qYUq6lKqa65FD9RBme1NGAf6Rm0g==
-X-Received: by 2002:a5d:63d1:0:b0:33e:bb5c:f60a with SMTP id
- c17-20020a5d63d1000000b0033ebb5cf60amr2406678wrw.66.1711467920447; 
- Tue, 26 Mar 2024 08:45:20 -0700 (PDT)
+ bh=rDRJxqQMAhWnh+G5jpK8UG7ljcyYHl8RJLjLiMQKlpg=;
+ b=s/nUc19k7sbNIWVfGbYIEVYMbX1Gs6Ba+06DqEYsQHHi1R1V6b7subeszsm98sRBkY
+ qZwlTCveZETRN71ChUPVij9GdhIkfD2URO/zQKTZywYkokxK5CFAAm0ljix0wJcjYjU2
+ syGxM3zSPXjJMoo9aABUMz5EQW2NRGok9LvPcy7yQxptDCEHw6gPw448BeLOkp2u+Y7k
+ xTIYF1g/nTvj5bSSwjV4pxayg2mrH9m/dsMutJP20+LcR5r1goHNulfdminyPFSm30oa
+ b+ssxar+e7UtFCjFu4MaaZr+5kdURkergzWDdw6fbH/X/N0zn2c/lYS3ciENBuU8wmVm
+ 7t2g==
+X-Gm-Message-State: AOJu0YxGbi/60nkU7nv5h7Zv02BGEhPqX3e4UqZd6bkLrO24V/fL7wBB
+ 8zuWtheBGq12rfG7sx+DN9Ewxfpq+Tv0oMn3zltZp/19jqqQAiOb0eQgxBUs2vGtXSFAyBpvs5K
+ b
+X-Google-Smtp-Source: AGHT+IFqE/msHvMueVXJSeWqeznaanf64OTWLSApiWnDNA5v58x32u5IKEF2KoZoc6z5RuTm+RYh0A==
+X-Received: by 2002:a05:651c:b0f:b0:2d6:a2cd:bb8c with SMTP id
+ b15-20020a05651c0b0f00b002d6a2cdbb8cmr2493212ljr.10.1711467926018; 
+ Tue, 26 Mar 2024 08:45:26 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.229])
  by smtp.gmail.com with ESMTPSA id
- ay26-20020a5d6f1a000000b00341dc343e21sm573910wrb.65.2024.03.26.08.45.19
+ hg9-20020a05600c538900b004101f27737asm11836235wmb.29.2024.03.26.08.45.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Mar 2024 08:45:19 -0700 (PDT)
+ Tue, 26 Mar 2024 08:45:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, Lorenz Brun <lorenz@brun.one>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Yao Xingtao <yaoxt.fnst@fujitsu.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL 02/13] hw/scsi/scsi-generic: Fix io_timeout property not
- applying
-Date: Tue, 26 Mar 2024 16:44:53 +0100
-Message-ID: <20240326154505.8300-3-philmd@linaro.org>
+ "Dr . David Alan Gilbert" <dave@treblig.org>
+Subject: [PULL 03/13] monitor/hmp-cmds-target: Append a space in error message
+ in gpa2hva()
+Date: Tue, 26 Mar 2024 16:44:54 +0100
+Message-ID: <20240326154505.8300-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240326154505.8300-1-philmd@linaro.org>
 References: <20240326154505.8300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,42 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Lorenz Brun <lorenz@brun.one>
+From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 
-The io_timeout property, introduced in c9b6609 (part of 6.0) is
-silently overwritten by the hardcoded default value of 30 seconds
-(DEFAULT_IO_TIMEOUT) in scsi_generic_realize because that function is
-being called after the properties have already been applied.
+In qemu monitor mode, when we use gpa2hva command to print the host
+virtual address corresponding to a guest physical address, if the gpa is
+not in RAM, the error message is below:
 
-The property definition already has a default value which is applied
-correctly when no value is explicitly set, so we can just remove the
-code which overrides the io_timeout completely.
+  (qemu) gpa2hva 0x750000000
+  Memory at address 0x750000000is not RAM
 
-This has been tested by stracing SG_IO operations with the io_timeout
-property set and unset and now sets the timeout field in the ioctl
-request to the proper value.
+A space is missed between '0x750000000' and 'is'.
 
-Fixes: c9b6609b69facad ("scsi: make io_timeout configurable")
-Signed-off-by: Lorenz Brun <lorenz@brun.one>
-Message-ID: <20240315145831.2531695-1-lorenz@brun.one>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Fixes: e9628441df ("hmp: gpa2hva and gpa2hpa hostaddr command")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Message-ID: <20240319021610.2423844-1-ruansy.fnst@fujitsu.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/scsi/scsi-generic.c | 1 -
- 1 file changed, 1 deletion(-)
+ monitor/hmp-cmds-target.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index b7b04e1d63..ee945f87e3 100644
---- a/hw/scsi/scsi-generic.c
-+++ b/hw/scsi/scsi-generic.c
-@@ -752,7 +752,6 @@ static void scsi_generic_realize(SCSIDevice *s, Error **errp)
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index 9338ae8440..ff01cf9d8d 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -261,7 +261,7 @@ void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, uint64_t size, Error **errp)
+     }
  
-     /* Only used by scsi-block, but initialize it nevertheless to be clean.  */
-     s->default_scsi_version = -1;
--    s->io_timeout = DEFAULT_IO_TIMEOUT;
-     scsi_generic_read_device_inquiry(s);
- }
- 
+     if (!memory_region_is_ram(mrs.mr) && !memory_region_is_romd(mrs.mr)) {
+-        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx "is not RAM", addr);
++        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx " is not RAM", addr);
+         memory_region_unref(mrs.mr);
+         return NULL;
+     }
 -- 
 2.41.0
 
