@@ -2,79 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7765E88C871
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 17:03:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DD488C877
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 17:04:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp9GL-0005P5-6d; Tue, 26 Mar 2024 12:02:57 -0400
+	id 1rp9HZ-0007yX-V2; Tue, 26 Mar 2024 12:04:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rp9G6-0005AS-2h
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 12:02:46 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rp9G3-0005Im-4g
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 12:02:41 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-56bf8093dddso1139227a12.0
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 09:02:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711468956; x=1712073756; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=YK43hgjiaGWqspEZFIT8PnwRPXbUGsP2JdXcwjx9h38=;
- b=J39Ktq3mALgac2crmnSgPLXf1CV0lSwiH1aMnHF/Ow/LxA8LB3B1g/F65zZLMT8M3l
- 0/wyG8G6ys9Pofdgj8juhHiCo44D4gkNRxw1qZk5ZrS+jqlRa7O7hMLBTNfTjbWyuUTN
- OuFgAhCLbevq/G8YR4LiCq8IB46TpNAG0x0b86RWStVE+vKXy/ZW924bUY1b5CV/3Dn3
- 9KxWwX/6XCRCYI9Yd2U9ypsAP2uvZQSg1M/vXBK0f9EPMXPyYsgRQucdAl/NHfzrAfZC
- fxVeZxIpPAuYNCsMWmQdjlQBmTKQgXIQzZwTDgJWmUf1qGnF3DAKMsV7F8r2uk3VvWT9
- 4ANQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711468956; x=1712073756;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YK43hgjiaGWqspEZFIT8PnwRPXbUGsP2JdXcwjx9h38=;
- b=TOYYbbA/G1nVlGkKLIz6Dd8CGVpYRPHAUUDV3KhklI9sDJVZmO46JxfyrfeXC/eTXr
- 27KxRWu/x8tA4aiAPLAAM6bsNoa1MrdMthGen0nPGewI1wOIwiX5UYXlebcpfUD0/hPM
- BfiVLEQuvHkdfHy07ykJzQuXyuG9rDyz7o24kN59yz4dG3BP+ke41de6EhpYN6Mm+avK
- AW0NbGD1LrUR/xPL03N7OvmEDpRfcwopsxlkOrWITvi1wksfm+DnjuLpFCIVDc8FWT/P
- TGYIcdf8EeC7cxphDsAOiNGKodBYvbn1lHvrKemYOz+1ekAly+8TyicUWzS3AFFMvP3O
- sdlQ==
-X-Gm-Message-State: AOJu0Yx+rRnrOxkQovcyTuinuSj0XD2c0VYEKyrLJgFaNhLFZfOz1/yx
- RFy8oqyRwiQ6S2jgXEW16ZXUIo1Fn2mZY9ym4DBfSFMUEVGr6ObxtnX2dGp5Ed1gFOurrLmCPEC
- 9B3hETflCTS6Qf4kDcoNZh0/aD77Bq8CR73Mzsw==
-X-Google-Smtp-Source: AGHT+IGW3M0qyG3TTTJ6344s8KCcVArZxh0YinHmQgPbxuu5dv1LUsAcOGcBHXVCvgngh05pGqWp6cscBL/6Us3obzA=
-X-Received: by 2002:a50:d7da:0:b0:56c:18b4:d2ab with SMTP id
- m26-20020a50d7da000000b0056c18b4d2abmr207942edj.42.1711468956018; Tue, 26 Mar
- 2024 09:02:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rp9HR-0007vp-ST; Tue, 26 Mar 2024 12:04:10 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rp9HP-0005Ys-C5; Tue, 26 Mar 2024 12:04:05 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id D1EC459220;
+ Tue, 26 Mar 2024 19:05:26 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D6363A3606;
+ Tue, 26 Mar 2024 19:03:56 +0300 (MSK)
+Message-ID: <f48df4d0-56ff-4e6a-97ec-71e3f14bd91d@tls.msk.ru>
+Date: Tue, 26 Mar 2024 19:03:56 +0300
 MIME-Version: 1.0
-References: <20240312165851.2240242-1-npiggin@gmail.com>
- <20240312165851.2240242-36-npiggin@gmail.com>
-In-Reply-To: <20240312165851.2240242-36-npiggin@gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Mar 2024 16:02:24 +0000
-Message-ID: <CAFEAcA9dLHYvY7-zCntKFZGr1VJUW6b3y5UqFAq-XN8zgVe2WQ@mail.gmail.com>
-Subject: Re: [PULL 35/38] spapr: nested: Introduce H_GUEST_[GET|SET]_STATE
- hcalls.
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, 
- Michael Neuling <mikey@neuling.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH trivial for-9.0] smbios: add stub for
+ smbios_get_table_legacy()
+To: Igor Mammedov <imammedo@redhat.com>, qemu-devel@nongnu.org
+Cc: anisinha@redhat.com, mst@redhat.com, laurent@vivier.eu,
+ qemu-trivial@nongnu.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20240326122630.85989-1-imammedo@redhat.com>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240326122630.85989-1-imammedo@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,69 +84,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 12 Mar 2024 at 17:11, Nicholas Piggin <npiggin@gmail.com> wrote:
->
-> From: Harsh Prateek Bora <harshpb@linux.ibm.com>
->
-> Introduce the nested PAPR hcalls:
->     - H_GUEST_GET_STATE which is used to get state of a nested guest or
->       a guest VCPU. The value field for each element in the request is
->       destination to be updated to reflect current state on success.
->     - H_GUEST_SET_STATE which is used to modify the state of a guest or
->       a guest VCPU. On success, guest (or its VCPU) state shall be
->       updated as per the value field for the requested element(s).
->
-> Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-> Signed-off-by: Michael Neuling <mikey@neuling.org>
-> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-> Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+26.03.2024 15:26, Igor Mammedov wrote:
+> QEMU build fails with
+>    hw/i386/fw_cfg.c:74: undefined reference to `smbios_get_table_legacy'
+> when it's built with only 'microvm' enabled i.e. with config patch
+>     +++ b/configs/devices/i386-softmmu/default.mak
+>     @@ -26,7 +26,7 @@
+> 
+>     # Boards:
+>     #
+>     -CONFIG_ISAPC=y
+>     -CONFIG_I440FX=y
+>     -CONFIG_Q35=y
+>     +CONFIG_ISAPC=n
+>     +CONFIG_I440FX=n
+>     +CONFIG_Q35=n
+> 
+> it happens because I've fogotten/lost smbios_get_table_legacy() stub.
+> 
+> Fix it by adding missing stub as Philippe suggested.
+> 
+> Fixes: b42b0e4daaa5 "smbios: build legacy mode code only for 'pc' machine"
+> Reported-by: Michael Tokarev <mjt@tls.msk.ru>
+> Singned-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 
-Hi; Coverity points out a problem with this code (CID 1540008, 1540009):
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 
+Thanks,
 
-
-> +static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
-> +                                         SpaprMachineState *spapr,
-> +                                         target_ulong *args,
-> +                                         bool set)
-> +{
-> +    target_ulong flags = args[0];
-> +    target_ulong lpid = args[1];
-> +    target_ulong vcpuid = args[2];
-> +    target_ulong buf = args[3];
-> +    target_ulong buflen = args[4];
-> +    struct guest_state_request gsr;
-> +    SpaprMachineStateNestedGuest *guest;
-> +
-> +    guest = spapr_get_nested_guest(spapr, lpid);
-> +    if (!guest) {
-> +        return H_P2;
-> +    }
-> +    gsr.buf = buf;
-> +    assert(buflen <= GSB_MAX_BUF_SIZE);
-> +    gsr.len = buflen;
-> +    gsr.flags = 0;
-> +    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
-
-flags is a target_ulong, which means it might only be 32 bits.
-But H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE has a bit set in the
-upper 32 bits only. So Coverity complains about this condition
-being always-zero and the body of the if being dead code.
-
-What was the intention here?
-
-> +        gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
-> +    }
-> +    if (flags & !H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
-> +        return H_PARAMETER; /* flag not supported yet */
-> +    }
-> +
-> +    if (set) {
-> +        gsr.flags |= GUEST_STATE_REQUEST_SET;
-> +    }
-> +    return map_and_getset_state(cpu, guest, vcpuid, &gsr);
-> +}
-
-thanks
--- PMM
+/mjt
 
