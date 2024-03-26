@@ -2,104 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FA2088B993
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 05:58:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C42588C827
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:55:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1roysw-0004nk-81; Tue, 26 Mar 2024 00:58:09 -0400
+	id 1rp97u-0008F3-1K; Tue, 26 Mar 2024 11:54:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1roysY-0004k3-CB; Tue, 26 Mar 2024 00:57:42 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1roysT-0001lU-Td; Tue, 26 Mar 2024 00:57:42 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42Q40tEc003807; Tue, 26 Mar 2024 04:57:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=3AOS8E6v5/h8eE/cspkgTqdbz3NhPJN+ZjiqK0tDX/Y=;
- b=lsmxKze0V+2fab/ergeOgjp2kCY61P31rdX0QVZk9fcKjAdq48nuXYGslhZ+ycVW4TWo
- cRyJTMkoM9f9V4i1ZQY70y2IesS3R4YARqM2u87Bl7MOXx7geLqg/3fnlfazgpfFqu8V
- m1Z2F6DnTDhT9z/VZ6E+KgRLsHQWsn3MS60Be1Iq0rfyON9ycWjkZIWQDocWuG+Ax+el
- FtLatTea/j2Bq+WNvL0L3ITZUvWW+vbntjQ/GfcvKtisxDcVO6J00rwTIqNGYxBprfIU
- FkNNWBqfTFEHTwVC/8thxtXG80LCa++k38Gm+oXRsF4WfPcTvmCws+KlO8mpkNhGFR8s 7w== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3p6b068j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Mar 2024 04:57:32 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42Q4vVA3021605;
- Tue, 26 Mar 2024 04:57:31 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x3p6b068h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Mar 2024 04:57:31 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42Q2ovcb028685; Tue, 26 Mar 2024 04:57:31 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x2adp5md2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 26 Mar 2024 04:57:31 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42Q4vSEb16843398
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Mar 2024 04:57:30 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7611758059;
- Tue, 26 Mar 2024 04:57:28 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A62E558043;
- Tue, 26 Mar 2024 04:57:26 +0000 (GMT)
-Received: from [9.109.243.35] (unknown [9.109.243.35])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 26 Mar 2024 04:57:26 +0000 (GMT)
-Message-ID: <caf9c25a-6851-4435-8f68-5d5c76443b5e@linux.ibm.com>
-Date: Tue, 26 Mar 2024 10:27:25 +0530
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rp97i-0008Eg-MR
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:54:03 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rp97f-0002t9-1K
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:54:02 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6e6082eab17so4352756b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:53:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711468437; x=1712073237; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=mTH6NyEYRCwdqaZP4q4VPNh/XegFiVeS6drCaYPsuT0=;
+ b=rE1Hz+9n2iKpTBlkCpNAdt+5ZuvyT2KkjqKmVXtXsFnIEtqpGEnqXv/YTFYLlGyWCW
+ 7rGZ9d15jkypIiQux5PoFPJNHJvba2/2o+o6ePiZxyAmVVkGD1TigUtwu+F9nXiqt1PU
+ FcfspwDaiMJf4wNBE55kQFShQgpzVLh9iZjT9lhBLAcg/ufsI49zSDTPw0mG51KPGlOT
+ vcn3mokcDA/vapyQPjln2WROrLILI4/RLKj/VOhGY06WFfS4nAN/mQra/H3CAzHQRGBp
+ aip5z3QucZJAY6tVxsLBF2I0JiSZJ8N6g/mSShg8bgeIfn9T6qZrw5GMR8cfqfGDUUWK
+ ezuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711468437; x=1712073237;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mTH6NyEYRCwdqaZP4q4VPNh/XegFiVeS6drCaYPsuT0=;
+ b=qaQHMvRG9R2h9ZZolBP5ffR9lwIYRdifeUHmeVVFUP2J/50pVqBVtYfDDObw29WY5o
+ /rdKHX9yQxh/nUQPnBtD9BHRk/1b8PWk3AJFwJh/e4S3GBY6AIXsI+ybnuCNQvtAMBhg
+ H1GkIP5+jyvucQ21+1GazOq5jAh49mFcEE1gkLY6Iosb1D94CrAyw1oa1XxDX0wrD522
+ Ag2ggaG7IXGdPSLeuBrLcWp8hBJ/9h1QYzqQjde0409RlxmFqpXX/OSywqB7+N8weiSv
+ Q8mjkYNlETcZ5NuMGnz1Qy+JOGK8RqhbLkBrS3Ll/vVHUqFNK+a3hGOd3zJFK2n+sU5j
+ w8fQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXm5c7Zlo75E4oonNTmlKCrAwN/Ez6T3YVASRKFWO7P8M6qeODwZAtuJY2qtatuspEsioLGD897L2KEJVPU4kvqH6ACza4=
+X-Gm-Message-State: AOJu0Yxwa0hkZ/IG1HEvCKZuPRCpO0ofhCpC8a64Y7AUiPWCC8/6xx7y
+ hf8Wot+ySKpzJdEef8i4YSjBF37oZApfDvLj5T/mrcMNzHWqioOrq4OSgaRnrU0=
+X-Google-Smtp-Source: AGHT+IG/Txea9bMdtJp4aYyPLklKlSm89OBzwO3WqzWOqVfTnVh081OwKZLO2rV0+9ewAmZqEkpvyQ==
+X-Received: by 2002:a05:6a21:999f:b0:1a3:42ea:cbed with SMTP id
+ ve31-20020a056a21999f00b001a342eacbedmr3551033pzb.44.1711468436985; 
+ Tue, 26 Mar 2024 08:53:56 -0700 (PDT)
+Received: from [172.20.1.19] (173-197-098-125.biz.spectrum.com.
+ [173.197.98.125]) by smtp.gmail.com with ESMTPSA id
+ r16-20020a63d910000000b005dc5129ba9dsm7606556pgg.72.2024.03.26.08.53.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Mar 2024 08:53:56 -0700 (PDT)
+Message-ID: <bcbf8200-1ffa-4a39-b7b5-e19a65257962@linaro.org>
+Date: Mon, 25 Mar 2024 19:20:34 -1000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/ppc/spapr: Include missing 'sysemu/tcg.h' header
+Subject: Re: target/hppa: be,n nullifying first insn at branch target?
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>
-References: <20240322162459.7173-1-philmd@linaro.org>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20240322162459.7173-1-philmd@linaro.org>
+To: Sven Schnelle <svens@stackframe.org>
+Cc: Helge Deller <deller@gmx.de>, qemu-devel@nongnu.org
+References: <875xxa14z1.fsf@t14.stackframe.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <875xxa14z1.fsf@t14.stackframe.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 97woMP5exDT7JRONN3L-yBog5CHHXlX8
-X-Proofpoint-ORIG-GUID: mvM9dSoq8AhHm8Pkysuh1ZoRcJFHsVvv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-26_02,2024-03-21_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403260029
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_06_12=1.543,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,35 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 3/22/24 21:54, Philippe Mathieu-Daudé wrote:
-> "sysemu/tcg.h" declares tcg_enabled(), and is implicitly included.
-> Include it explicitly to avoid the following error when refactoring
-> headers:
+On 3/25/24 09:33, Sven Schnelle wrote:
+> diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+> index 7546a5f5a2..56c68a7cbe 100644
+> --- a/target/hppa/translate.c
+> +++ b/target/hppa/translate.c
+> @@ -3847,7 +3849,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+>           copy_iaoq_entry(ctx, cpu_gr[31], ctx->iaoq_n, ctx->iaoq_n_var);
+>           tcg_gen_mov_i64(cpu_sr[0], cpu_iasq_b);
+>       }
+> -    if (a->n && use_nullify_skip(ctx)) {
+> +    if (0 && a->n && use_nullify_skip(ctx)) {
+>           copy_iaoq_entry(ctx, cpu_iaoq_f, -1, tmp);
+>           tcg_gen_addi_i64(tmp, tmp, 4);
+>           copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
 > 
->    hw/ppc/spapr.c:2612:9: error: call to undeclared function 'tcg_enabled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
->      if (tcg_enabled()) {
->          ^
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> So i think the problem is caused by this optimization. Does this ring a
+> bell? Debugging this is rather hard, alone the logfile above is 6GB in
+> size...
 
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+The problem is a missing
 
-> ---
->   hw/ppc/spapr.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-> index c417f9dd52..e9bc97fee0 100644
-> --- a/hw/ppc/spapr.c
-> +++ b/hw/ppc/spapr.c
-> @@ -35,6 +35,7 @@
->   #include "sysemu/sysemu.h"
->   #include "sysemu/hostmem.h"
->   #include "sysemu/numa.h"
-> +#include "sysemu/tcg.h"
->   #include "sysemu/qtest.h"
->   #include "sysemu/reset.h"
->   #include "sysemu/runstate.h"
+     nullify_set(ctx, 0)
+
+within this block.
+
+I have patches queued to reorg the IAQ handling, which I hope will fix the problem Sven 
+saw with spaces.  It would fix this as a consequence of other unification.  But I think 
+it's a bit too big for 9.0.
+
+
+r~
+
 
