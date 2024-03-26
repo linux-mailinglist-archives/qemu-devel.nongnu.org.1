@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913EA88BB69
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C56C88BB53
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:35:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KZ-0004kw-Ir; Tue, 26 Mar 2024 03:34:47 -0400
+	id 1rp1KR-0004f1-1K; Tue, 26 Mar 2024 03:34:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KX-0004kV-HA
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:45 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KO-0004dr-EB
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KW-0005SG-7b
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:45 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KM-0005MR-7H
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711438483;
+ s=mimecast20190719; t=1711438473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=IeOASrwuWAwYhd0qDYIiUYNmKXMfHcrmEKI/tZVEFQ4=;
- b=AFZq2pxBS+oU2I0qnLZNGatVtM5FcZ62xS7GwgzoIq8bKAJ7ZxJLjEBesevTMx4Fpq4hnt
- kZX4RueUeVV7MboO8mxcqlLeRhj6EjM/quiXZltj4L2Sf9yJLdhOga6fDpo/GFWDX2G0kJ
- nUeEid2X/IYIBs64j7DWzPeeKJDPWHE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-ABlbJmR1O6ej1R_KimKQeg-1; Tue, 26 Mar 2024 03:34:42 -0400
-X-MC-Unique: ABlbJmR1O6ej1R_KimKQeg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=7fCazvG21cVXXsNRTJihpEXHxW5+OEqNzaMfMc1ZBbg=;
+ b=CZbLquOOeb1oobLl5FlawJfU9Q2OmuEfNqDYIfG2sL9DamEz+8U2v9t1/GDxuxL8P+Lxsy
+ aS4T3reTxfPxLRYqAKtSdrQFydOLb1HAQ0h1LXKTUmaPB4CWCjn6rKPkL7a3VGuYXevgDr
+ mMMuAYvBes3DibXX0nvNA7/8//unPGs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-230-GSvJVoclMGiKwmYJuR2KRw-1; Tue,
+ 26 Mar 2024 03:34:31 -0400
+X-MC-Unique: GSvJVoclMGiKwmYJuR2KRw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA760185A786;
- Tue, 26 Mar 2024 07:34:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5CE938157AA;
+ Tue, 26 Mar 2024 07:34:30 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8B08B5828;
- Tue, 26 Mar 2024 07:34:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9570B1121312;
+ Tue, 26 Mar 2024 07:34:30 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 935CE21E60CF; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id 9614421E5D27; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 04/20] qapi: Drop stray Arguments: line from qmp_capabilities
- docs
-Date: Tue, 26 Mar 2024 08:34:04 +0100
-Message-ID: <20240326073420.738016-5-armbru@redhat.com>
+Cc: peter.maydell@linaro.org
+Subject: [PULL 05/20] qapi: Expand a few awkward abbreviations in documentation
+Date: Tue, 26 Mar 2024 08:34:05 +0100
+Message-ID: <20240326073420.738016-6-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -81,28 +79,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reported-by: John Snow <jsnow@redhat.com>
-Fixes: 119ebac1feb2 (qapi-schema: use generated marshaller for 'qmp_capabilities')
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240322140910.328840-2-armbru@redhat.com>
-Reviewed-by: John Snow <jsnow@redhat.com>
+Message-ID: <20240322140910.328840-3-armbru@redhat.com>
 ---
- qapi/control.json | 2 --
- 1 file changed, 2 deletions(-)
+ qapi/replay.json | 4 ++--
+ qapi/virtio.json | 8 +++++---
+ 2 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/qapi/control.json b/qapi/control.json
-index f404daef60..6bdbf077c2 100644
---- a/qapi/control.json
-+++ b/qapi/control.json
-@@ -11,8 +11,6 @@
+diff --git a/qapi/replay.json b/qapi/replay.json
+index 8626fb58f4..d3559f9c8f 100644
+--- a/qapi/replay.json
++++ b/qapi/replay.json
+@@ -105,8 +105,8 @@
+ # replaying the execution.  The command automatically loads nearest
+ # snapshot and replays the execution to find the desired instruction.
+ # When there is no preceding snapshot or the execution is not
+-# replayed, then the command fails.  icount for the reference may be
+-# obtained with @query-replay command.
++# replayed, then the command fails.  Instruction count can be obtained
++# with the @query-replay command.
  #
- # Enable QMP capabilities.
+ # @icount: target instruction count
  #
--# Arguments:
--#
- # @enable: An optional list of QMPCapability values to enable.  The
- #     client must not enable any capability that is not mentioned in
- #     the QMP greeting message.  If the field is not provided, it
+diff --git a/qapi/virtio.json b/qapi/virtio.json
+index 95745fdfd7..b0cd41be72 100644
+--- a/qapi/virtio.json
++++ b/qapi/virtio.json
+@@ -642,15 +642,17 @@
+ #
+ # @num: vhost_virtqueue num
+ #
+-# @desc-phys: vhost_virtqueue desc_phys (descriptor area phys. addr.)
++# @desc-phys: vhost_virtqueue desc_phys (descriptor area physical
++#     address)
+ #
+ # @desc-size: vhost_virtqueue desc_size
+ #
+-# @avail-phys: vhost_virtqueue avail_phys (driver area phys. addr.)
++# @avail-phys: vhost_virtqueue avail_phys (driver area physical
++#     address)
+ #
+ # @avail-size: vhost_virtqueue avail_size
+ #
+-# @used-phys: vhost_virtqueue used_phys (device area phys. addr.)
++# @used-phys: vhost_virtqueue used_phys (device area physical address)
+ #
+ # @used-size: vhost_virtqueue used_size
+ #
 -- 
 2.44.0
 
