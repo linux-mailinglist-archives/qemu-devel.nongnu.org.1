@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FFF888C547
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 15:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD61488C56C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 15:41:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp7vP-0003M9-AZ; Tue, 26 Mar 2024 10:37:15 -0400
+	id 1rp7yv-00060h-2k; Tue, 26 Mar 2024 10:40:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rp7vK-0003Kr-Uk
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:37:11 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rp7yo-000605-0i
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:40:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rp7vJ-0002Tm-ET
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:37:10 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rp7yk-0003oz-QO
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 10:40:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711463828;
+ s=mimecast20190719; t=1711464041;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=IrBHHcYUkYfh/fLWeLShn5rV4uvOLA0snSQJbShNg64=;
- b=YEBjHEytkNrGcSD8H9o28toDLbEABjLGfB5cpw7+NNGQqIJJi2iND5VDffpI0iGg9yFdkj
- H22dMZZCSyLHC3Nydp941abYoMlVCk5/3F1vLOEsGTdED1MMTOvPXemwIL2CJkJMc+vIke
- 3yTdekYiH2pMKVJTrOZH0UTLCmT7hWM=
+ bh=6YmZdisNf4h193/qaMhzYQSQ8bTH12Y98KwsiI+ZLzg=;
+ b=Mm3e1x8LnLUPPCusmGTKbDiECvlUFHRlWXx3ksx6nKgZ9i4LetzVP/zu2VnUBS/2IOAjsn
+ 3XfKYW2DwWCzAPLSIvSo40zNweFqHSUhX3Y4Pyh70zjZk0Gby7czn/Po+y/4CM18yzWMhy
+ gT4+jZqV2Nusm6j6UZGpwYWMB14Hhxk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-378-rCXz-_CWP5eO-zf5S-yLdw-1; Tue, 26 Mar 2024 10:37:05 -0400
-X-MC-Unique: rCXz-_CWP5eO-zf5S-yLdw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-570-2ITojYG7NgKRb5fHi8lGUg-1; Tue, 26 Mar 2024 10:40:38 -0400
+X-MC-Unique: 2ITojYG7NgKRb5fHi8lGUg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA23E8007AB;
- Tue, 26 Mar 2024 14:37:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1DB0E101A523;
+ Tue, 26 Mar 2024 14:40:38 +0000 (UTC)
 Received: from redhat.com (unknown [10.2.16.71])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 74380C01600;
- Tue, 26 Mar 2024 14:37:00 +0000 (UTC)
-Date: Tue, 26 Mar 2024 09:36:54 -0500
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E644A40C6CB1;
+ Tue, 26 Mar 2024 14:40:33 +0000 (UTC)
+Date: Tue, 26 Mar 2024 09:40:12 -0500
 From: Eric Blake <eblake@redhat.com>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>, 
@@ -58,17 +58,17 @@ Cc: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-block@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
  Kevin Wolf <kwolf@redhat.com>
-Subject: Re: [PATCH for-9.1 v2 03/11] libvhost-user: mask F_INFLIGHT_SHMFD if
- memfd is not supported
-Message-ID: <ixiutci362bjtfb7n7l7knacx22fy2v4jqcpyc475cnmsyymwf@6yyguuh5j2oz>
+Subject: Re: [PATCH for-9.1 v2 04/11] vhost-user-server: don't abort if we
+ can't set fd non-blocking
+Message-ID: <img3eawf5augdcdnrw6i2bteobxo46wjibdfzugnfikgpi7xuk@2izhutalpmwg>
 References: <20240326133936.125332-1-sgarzare@redhat.com>
- <20240326133936.125332-4-sgarzare@redhat.com>
+ <20240326133936.125332-5-sgarzare@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240326133936.125332-4-sgarzare@redhat.com>
+In-Reply-To: <20240326133936.125332-5-sgarzare@redhat.com>
 User-Agent: NeoMutt/20240201
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -77,7 +77,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,52 +93,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Mar 26, 2024 at 02:39:28PM +0100, Stefano Garzarella wrote:
-> libvhost-user will panic when receiving VHOST_USER_GET_INFLIGHT_FD
-> message if MFD_ALLOW_SEALING is not defined, since it's not able
-> to create a memfd.
+On Tue, Mar 26, 2024 at 02:39:29PM +0100, Stefano Garzarella wrote:
+> In vhost-user-server we set all fd received from the other peer
+> in non-blocking mode. For some of them (e.g. memfd, shm_open, etc.)
+> if we fail, it's not really a problem, because we don't use these
+> fd with blocking operations, but only to map memory.
 > 
-> VHOST_USER_GET_INFLIGHT_FD is used only if
-> VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD is negotiated. So, let's mask
-> that feature if the backend is not able to properly handle these
-> messages.
+> In these cases a failure is not bad, so let's just report a warning
+> instead of panicking if we fail to set some fd in non-blocking mode.
+> 
+> This for example occurs in macOS where setting shm_open() fd
+> non-blocking is failing (errno: 25).
+
+What is errno 25 on MacOS?
+
 > 
 > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
->  subprojects/libvhost-user/libvhost-user.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+>  util/vhost-user-server.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-> index a11afd1960..1c361ffd51 100644
-> --- a/subprojects/libvhost-user/libvhost-user.c
-> +++ b/subprojects/libvhost-user/libvhost-user.c
-> @@ -1674,6 +1674,16 @@ vu_get_protocol_features_exec(VuDev *dev, VhostUserMsg *vmsg)
->          features |= dev->iface->get_protocol_features(dev);
->      }
->  
-> +    /*
-> +     * If MFD_ALLOW_SEALING is not defined, we are not able to handle
-> +     * VHOST_USER_GET_INFLIGHT_FD messages, since we can't create a memfd.
-> +     * Those messages are used only if VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD
-> +     * is negotiated. A device implementation can enable it, so let's mask
-> +     * it to avoid a runtime panic.
-> +     */
-> +#ifndef MFD_ALLOW_SEALING
-> +    features &= ~(1ULL << VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD);
-> +#endif
+> diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
+> index 3bfb1ad3ec..064999f0b7 100644
+> --- a/util/vhost-user-server.c
+> +++ b/util/vhost-user-server.c
+> @@ -66,7 +66,11 @@ static void vmsg_unblock_fds(VhostUserMsg *vmsg)
+>  {
+>      int i;
+>      for (i = 0; i < vmsg->fd_num; i++) {
+> -        qemu_socket_set_nonblock(vmsg->fds[i]);
+> +        int ret = qemu_socket_try_set_nonblock(vmsg->fds[i]);
+> +        if (ret) {
 
-Masking the feature out of advertisement is obviously correct. But
-should we also fix the code for handling
-VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD to return an error to any client
-that requests it in error when the feature was not advertised, instead
-of panicking?
+Should this be 'if (ret < 0)'?
 
->      vmsg_set_reply_u64(vmsg, features);
->      return true;
->  }
-> -- 
-> 2.44.0
-> 
+> +            warn_report("Failed to set fd %d nonblock for request %d: %s",
+> +                        vmsg->fds[i], vmsg->request, strerror(-ret));
+> +        }
+
+This now ignores all errors even on pre-existing fds where we NEED
+non-blocking, rather than just the specific (expected) error we are
+seeing on MacOS.  Should this code be a bit more precise about
+checking that -ret == EXXX for the expected errno value we are
+ignoring for the specific fds where non-blocking is not essential?
 
 -- 
 Eric Blake, Principal Software Engineer
