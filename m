@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D2A88BB6A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA62888BB5D
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:36:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KV-0004jB-Bz; Tue, 26 Mar 2024 03:34:43 -0400
+	id 1rp1KX-0004kK-Cd; Tue, 26 Mar 2024 03:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KT-0004i5-H0
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KU-0004if-9w
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KR-0005OC-To
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KS-0005OS-MC
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711438479;
+ s=mimecast20190719; t=1711438480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TIVOxC2w7Wn/kcJp/FXvScbTguULSLDlLZHfPoA3iyo=;
- b=aDtc5yxZSedJbZlBa9X3AE3eCugiVNZ4vin5eTvnqysGK+oYmRf4lDLYAsjcvLl8DJzNRT
- grkPAc6GH6gpd3gxxz/LBt7oelGq4xTOj/4QWcjXHmcoHzLuxHNSb7kD2DP5PCnqc6wwms
- zwKl8RuSU+2mBSv+ZmLwSf5lp/iNcPY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-c7K1YytkNMaVwPJ8ylKAAA-1; Tue,
- 26 Mar 2024 03:34:36 -0400
-X-MC-Unique: c7K1YytkNMaVwPJ8ylKAAA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=dCcsGDAqTHp3SKBdBhmBLMwgpfp96QPPVeggh7rLPUU=;
+ b=ci/A5RE3sRBlCsm9QKmel1cpkO4LDZB4fTWsIMde1pwnhGBuxkt5xJJSgSQ5pkjSzKy0ZG
+ Yn0E8Ej/jWZvC9IMT1GYv7YstkBaKl8SKJgMP4XmRD3FavFOETkoC1OmpQVzwLOkcFaU/2
+ JPLJfp3VGGHxduDisVWAOQbBUe4bmxs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-IXdpgMGgMnum4t0KVf1dcQ-1; Tue, 26 Mar 2024 03:34:36 -0400
+X-MC-Unique: IXdpgMGgMnum4t0KVf1dcQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D438638157AC;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D439D101A526;
  Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B40AD1074E;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B3E0F200B3BF;
  Tue, 26 Mar 2024 07:34:35 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id B7B0F21E5D37; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id BA7A621E5D38; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 17/20] qapi: document leftover members in qapi/run-state.json
-Date: Tue, 26 Mar 2024 08:34:17 +0100
-Message-ID: <20240326073420.738016-18-armbru@redhat.com>
+Subject: [PULL 18/20] qapi: document leftover members in qapi/stats.json
+Date: Tue, 26 Mar 2024 08:34:18 +0100
+Message-ID: <20240326073420.738016-19-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -84,83 +84,79 @@ From: Paolo Bonzini <pbonzini@redhat.com>
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240325104502.1358693-1-pbonzini@redhat.com>
+Message-ID: <20240325104504.1358734-1-pbonzini@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
-[Capitalize "ID", update qapi/pragma.json]
+[Update qapi/pragma.json]
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- qapi/pragma.json    |  4 +---
- qapi/run-state.json | 26 +++++++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 4 deletions(-)
+ qapi/pragma.json |  5 +----
+ qapi/stats.json  | 14 +++++++++-----
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/qapi/pragma.json b/qapi/pragma.json
-index 92715d22b3..1a302981c1 100644
+index 1a302981c1..99e4052ab3 100644
 --- a/qapi/pragma.json
 +++ b/qapi/pragma.json
-@@ -57,7 +57,6 @@
-         'DummyForceArrays',
-         'DummyVirtioForceArrays',
-         'GrabToggleKeys',
--        'GuestPanicInformationHyperV',
-         'HotKeyMod',
-         'ImageInfoSpecificKind',
-         'InputAxis',
-@@ -93,8 +92,7 @@
+@@ -75,8 +75,6 @@
+         'Qcow2OverlapCheckFlags',
+         'RbdAuthMode',
+         'RbdImageEncryptionFormat',
+-        'StatsFilter',
+-        'StatsValue',
+         'String',
+         'StringWrapper',
+         'SysEmuTarget',
+@@ -91,8 +89,7 @@
+         'query-cpu-model-comparison',
          'query-cpu-model-expansion',
          'query-rocker',
-         'query-rocker-ports',
--        'query-stats-schemas',
--        'watchdog-set-action' ],
-+        'query-stats-schemas' ],
+-        'query-rocker-ports',
+-        'query-stats-schemas' ],
++        'query-rocker-ports' ],
      # Externally visible types whose member names may use uppercase
      'member-name-exceptions': [     # visible in:
          'ACPISlotType',             # query-acpi-ospm-status
-diff --git a/qapi/run-state.json b/qapi/run-state.json
-index 5f07444b84..f8773f23b2 100644
---- a/qapi/run-state.json
-+++ b/qapi/run-state.json
-@@ -376,9 +376,17 @@
+diff --git a/qapi/stats.json b/qapi/stats.json
+index ce9d8161ec..578b52c7ef 100644
+--- a/qapi/stats.json
++++ b/qapi/stats.json
+@@ -114,13 +114,13 @@
+ #
+ # The arguments to the query-stats command; specifies a target for
+ # which to request statistics and optionally the required subset of
+-# information for that target:
++# information for that target.
+ #
+-# - which vCPUs to request statistics for
+-# - which providers to request statistics from
+-# - which named values to return within each provider
++# @target: the kind of objects to query.  Note that each possible
++#          target may enable additional filtering options
+ #
+-# @target: the kind of objects to query
++# @providers: which providers to request statistics from, and optionally
++#             which named values to return within each provider
+ #
+ # Since: 7.1
  ##
- # @watchdog-set-action:
+@@ -136,6 +136,8 @@
  #
--# Set watchdog action
-+# Set watchdog action.
-+#
-+# @action: @WatchdogAction action taken when watchdog timer expires.
+ # @scalar: single unsigned 64-bit integers.
  #
- # Since: 2.11
++# @boolean: single boolean value.
 +#
-+# Example:
-+#
-+#     -> { "execute": "watchdog-set-action",
-+#          "arguments": { "action": "inject-nmi" } }
-+#     <- { "return": {} }
- ##
- { 'command': 'watchdog-set-action', 'data' : {'action': 'WatchdogAction'} }
- 
-@@ -504,6 +512,22 @@
+ # @list: list of unsigned 64-bit integers (used for histograms).
  #
- # Hyper-V specific guest panic information (HV crash MSRs)
+ # Since: 7.1
+@@ -254,6 +256,8 @@
  #
-+# @arg1: for Windows, STOP code for the guest crash.  For Linux,
-+#        an error code.
+ # Return the schema for all available runtime-collected statistics.
+ #
++# @provider: a provider to restrict the query to.
 +#
-+# @arg2: for Windows, first argument of the STOP.  For Linux, the
-+#        guest OS ID, which has the kernel version in bits 16-47
-+#        and 0x8100 in bits 48-63.
-+#
-+# @arg3: for Windows, second argument of the STOP.  For Linux, the
-+#        program counter of the guest.
-+#
-+# @arg4: for Windows, third argument of the STOP.  For Linux, the
-+#        RAX register (x86) or the stack pointer (aarch64) of the guest.
-+#
-+# @arg5: for Windows, fourth argument of the STOP.  For x86 Linux, the
-+#        stack pointer of the guest.
-+#
- # Since: 2.9
- ##
- {'struct': 'GuestPanicInformationHyperV',
+ # Note: runtime-collected statistics and their names fall outside
+ #     QEMU's usual deprecation policies.  QEMU will try to keep the
+ #     set of available data stable, together with their names, but
 -- 
 2.44.0
 
