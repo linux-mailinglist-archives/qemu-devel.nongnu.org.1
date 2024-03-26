@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E835488C23B
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:35:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF2388C257
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:39:05 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp61M-0005Rn-7p; Tue, 26 Mar 2024 08:35:16 -0400
+	id 1rp64m-0004fO-TZ; Tue, 26 Mar 2024 08:38:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rp61K-0005RA-Rl
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:14 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ id 1rp64l-0004fE-PT
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:38:47 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rp61J-0000hx-8y
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:14 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-41490d05b2cso1139365e9.3
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:35:12 -0700 (PDT)
+ id 1rp64j-0001SF-RQ
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:38:47 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-341808b6217so3471311f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711456511; x=1712061311; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+vj9khMMybYoBi53WQZnVBkx0fV+CetJXYOmHrrh01o=;
- b=J+G0K6JbS8wS7l+jGAQm1RQje7YrzpmzneMlMkZ8vd99jbAoX4rafrLYjEZYGSQbkm
- DI96VtjpMNMc9SMlTm6FOt96iULwilqKqhhOE5QBJnbTlIva2xNVqAoyKKodeEsejyLI
- 3B7GL/N/0M80C+Bi017TaXdNdT8jX609/q6fYfu7zbiDSHMnGiRNscg40jivbJhaSFT6
- ui16KnedThoQCdTrWWBLQx4KQk8qh9htdQk/WjicsxfKsiRSBpkXEf0cCZVn5DHy/ReG
- ssO1f4VJMFfrfMtlY0TIwnSxFEZZf2lLtDob/9r69wcpp0swbIfJD7XD4qqFbCHp3XpY
- G0kw==
+ d=linaro.org; s=google; t=1711456724; x=1712061524; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=moj79F80528qTPBI7G4nUqRT3fEvk/Eg8GXtBzL2LD0=;
+ b=gCSak1jUx75Wmpq+e47SwtVV7bc/MN7Ej4Q6fGpJmP2Xoon/JmdiwbqlIBjjDx4MaF
+ LDYN91OxNydZbLPQhMgvxJk/scQ+dirTpLrlHw1L3ZltSOYlQUvJZwglqZM3aMNNpyDS
+ PUTLW+yWOO5efxdFl1FTyG33liDUWU3btcqVntG1BPIKTLPOwWW+8iOV3GyQgs73ATb5
+ 9ucZTq7FI7zf4bJXaMkJOKG1uGWSeFcnNNe1hiMYFYe+nXKeveR2lmvYFSS2FyQpHb+y
+ 2WtLukxjbvB20S7V1H5u8c+juT7m2h4mqCcRTG/joxTkruimfWqjAEJzUj935mLZcCfx
+ yPiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711456511; x=1712061311;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=+vj9khMMybYoBi53WQZnVBkx0fV+CetJXYOmHrrh01o=;
- b=AYOqE+rawIRzeI5cx3E7DrvwCPtCkK6DnkAdXPg8imxj29J8TG3R7Ph8y4fe6s7tHt
- G+S7RSywbP5wPdTHyNqEBEhmDvCIPUmjG/TsnXxy32ebSn4/X+84WGFG9zuVKR7Kf7DS
- b2FHd5NHtUqT1JqniAGSkuCm75EnjYNgMKkfRPh5vlYDwDVCBvJhy6BmkCXtqPcfGfRr
- g0rdl5ifCQyqpWd9fYRCWQkAVqu0RGNO1Fot3nz+hdQQ6xlVK7F0/1CuCiXW84nEUjMm
- Nr5KtqMWrkxhGCDZixpNNcAz0x+F6kS21awmN42J9/7xjY8zh1qzN+GsNHW1P3rkarDk
- MGsg==
-X-Gm-Message-State: AOJu0YxuGDfI1jmjc2lj29ODOQ8nrCW6X4Lf5gDq9BJ7bu2gzBon9P/v
- K+B1mMe+7IQqEtMkGxuk86//cqzTUaYH23mxSacY+ruWXNDLAvxthAioXozHTXf+MdK390e09ej
- qvig=
-X-Google-Smtp-Source: AGHT+IEW2z6C8OOwCwfZ6zUa7Lq4sTm3MXTQlkJJeVaJMOVscAwW0oyaoNKi0/QUS5moS56Hb5deGg==
-X-Received: by 2002:a05:600c:4ed0:b0:414:e24:12b4 with SMTP id
- g16-20020a05600c4ed000b004140e2412b4mr2006116wmq.34.1711456510933; 
- Tue, 26 Mar 2024 05:35:10 -0700 (PDT)
-Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- y19-20020a1c4b13000000b004148090cf85sm716317wma.0.2024.03.26.05.35.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Mar 2024 05:35:10 -0700 (PDT)
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 9/9] plugins: remove op from qemu_plugin_inline_cb
-Date: Tue, 26 Mar 2024 16:34:26 +0400
-Message-Id: <20240326123426.761473-10-pierrick.bouvier@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
-References: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
+ d=1e100.net; s=20230601; t=1711456724; x=1712061524;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=moj79F80528qTPBI7G4nUqRT3fEvk/Eg8GXtBzL2LD0=;
+ b=h4nqygO3d+QQTwGw/nw3n8uCT1MtHw0nLnaY1PHHg0WYfaUUWtav6A2NvnxwX/BT9J
+ W06AWxj4K9QP+IP+0vSNjNYlERmtHrPFzghmhz/xDFB5wrF1gn9tfDrP4ttYXiETk/7N
+ URuqcmlXIVq6vGk3w/Hs3ljO5Ml37/1YDw+KTqeOjKgoX4Z5bEMYwwiJtJ3mJo0QpqPz
+ NC163e6lJxTMX6uVbAgtI6WJHBc+1q3Uhx7MhrfPIqbDClNT+XqWI7vql388XMvVTYEZ
+ mG7K+w7wLmJfMBEUQCcEmVrmaG1EWNH7fTSQYeI+SmLbKe44+yUk5FJyC0QTZzLuCQkr
+ G8VQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXRnCtT3RGJSn/u0L91S27lGMV5PdA66u99oy/XR6nKLuoiR1I/2ZsYTGJigrh4TQMbKv1k48WeIYkyy3C4CGYr0o5WpnM=
+X-Gm-Message-State: AOJu0YzmRRymBDvcsujDwXOPJ0xYTSC2fttEzFtqLK+OKw8swb38rt7Q
+ 7uiZTyQHEuhZ+Lm4fLFJ6jAGr7Yt1EpM+BC2JWMaHTlZt+9nysFc+R9NCAmfA4c=
+X-Google-Smtp-Source: AGHT+IFpgdmbMYl+AZ8VM947U7u4wCGSQJcQExXtPno1TAUpj6aTYlAqJq2jGb4FCXTm+u6Cpf3Inw==
+X-Received: by 2002:a05:6000:e45:b0:33e:d06a:3273 with SMTP id
+ dy5-20020a0560000e4500b0033ed06a3273mr7061999wrb.19.1711456723896; 
+ Tue, 26 Mar 2024 05:38:43 -0700 (PDT)
+Received: from [192.168.1.24] ([102.35.208.160])
+ by smtp.gmail.com with ESMTPSA id
+ ay26-20020a5d6f1a000000b00341dc343e21sm169645wrb.65.2024.03.26.05.38.41
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Mar 2024 05:38:43 -0700 (PDT)
+Message-ID: <c75cf73d-5e8c-48da-a505-3cc0ba858856@linaro.org>
+Date: Tue, 26 Mar 2024 16:38:39 +0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-wm1-x32c.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] contrib/plugins/execlog: Fix compiler warning
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yao Xingtao <yaoxt.fnst@fujitsu.com>, qemu-devel@nongnu.org
+Cc: alex.bennee@linaro.org, erdnaxe@crans.org, ma.mandourr@gmail.com,
+ peter.maydell@linaro.org
+References: <20240320020115.18801-1-yaoxt.fnst@fujitsu.com>
+ <20240326015257.21516-1-yaoxt.fnst@fujitsu.com>
+ <9eb2194e-7efe-448a-a511-9d10e589943e@linaro.org>
+ <c0bdb1f6-b456-4378-a2ee-b2355ad5bb42@linaro.org>
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <c0bdb1f6-b456-4378-a2ee-b2355ad5bb42@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,88 +100,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
----
- include/qemu/plugin.h |  1 -
- plugins/plugin.h      |  4 +++-
- plugins/core.c        | 13 +++++++------
- 3 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index a078229942f..7f7b915e495 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -82,7 +82,6 @@ struct qemu_plugin_regular_cb {
- 
- struct qemu_plugin_inline_cb {
-     qemu_plugin_u64 entry;
--    enum qemu_plugin_op op;
-     uint64_t imm;
-     enum qemu_plugin_mem_rw rw;
- };
-diff --git a/plugins/plugin.h b/plugins/plugin.h
-index 80d5daa9171..30e2299a54d 100644
---- a/plugins/plugin.h
-+++ b/plugins/plugin.h
-@@ -108,7 +108,9 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
-                                  enum qemu_plugin_mem_rw rw,
-                                  void *udata);
- 
--void exec_inline_op(struct qemu_plugin_inline_cb *cb, int cpu_index);
-+void exec_inline_op(enum plugin_dyn_cb_type type,
-+                    struct qemu_plugin_inline_cb *cb,
-+                    int cpu_index);
- 
- int plugin_num_vcpus(void);
- 
-diff --git a/plugins/core.c b/plugins/core.c
-index 7ea2ee208db..a9f19e197aa 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -338,7 +338,6 @@ void plugin_register_inline_op_on_entry(GArray **arr,
- 
-     struct qemu_plugin_inline_cb inline_cb = { .rw = rw,
-                                                .entry = entry,
--                                               .op = op,
-                                                .imm = imm };
-     dyn_cb = plugin_get_dyn_cb(arr);
-     dyn_cb->type = op_to_cb_type(op);
-@@ -557,7 +556,9 @@ void qemu_plugin_flush_cb(void)
-     plugin_cb__simple(QEMU_PLUGIN_EV_FLUSH);
- }
- 
--void exec_inline_op(struct qemu_plugin_inline_cb *cb, int cpu_index)
-+void exec_inline_op(enum plugin_dyn_cb_type type,
-+                    struct qemu_plugin_inline_cb *cb,
-+                    int cpu_index)
- {
-     char *ptr = cb->entry.score->data->data;
-     size_t elem_size = g_array_get_element_size(
-@@ -565,11 +566,11 @@ void exec_inline_op(struct qemu_plugin_inline_cb *cb, int cpu_index)
-     size_t offset = cb->entry.offset;
-     uint64_t *val = (uint64_t *)(ptr + offset + cpu_index * elem_size);
- 
--    switch (cb->op) {
--    case QEMU_PLUGIN_INLINE_ADD_U64:
-+    switch (type) {
-+    case PLUGIN_CB_INLINE_ADD_U64:
-         *val += cb->imm;
-         break;
--    case QEMU_PLUGIN_INLINE_STORE_U64:
-+    case PLUGIN_CB_INLINE_STORE_U64:
-         *val = cb->imm;
-         break;
-     default:
-@@ -601,7 +602,7 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
-         case PLUGIN_CB_INLINE_ADD_U64:
-         case PLUGIN_CB_INLINE_STORE_U64:
-             if (rw && cb->inline_insn.rw) {
--                exec_inline_op(&cb->inline_insn, cpu->cpu_index);
-+                exec_inline_op(cb->type, &cb->inline_insn, cpu->cpu_index);
-             }
-             break;
-         default:
--- 
-2.39.2
-
+DQoNCk9uIDMvMjYvMjQgMTM6NTQsIFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIHdyb3RlOg0K
+PiANCj4gSSB3aWxsIHBvc3QgYSBzbWFsbCBQUiBsYXRlciB0b2RheSwgc28gdW50aWwgUGV0
+ZXIgaGFzIHNvbWV0aGluZw0KPiBlbHNlIHBsYW5uZWQsIEkgY2FuIHRha2UgaXQsIHNpbmNl
+IHRoZSBwYXRjaCBMR1RNIG5vdy4NCj4gDQoNClRoYW5rcyBQaGlsaXBwZSA6KQ0K
 
