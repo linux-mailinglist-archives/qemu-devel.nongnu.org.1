@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114FF88C7D1
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E0C88C7D0
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:47:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp90B-0003zz-Dx; Tue, 26 Mar 2024 11:46:15 -0400
+	id 1rp90C-0004Pj-Vg; Tue, 26 Mar 2024 11:46:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zo-0003ue-G8
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:56 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zx-0003zm-07
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:46:01 -0400
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zm-0001DS-7k
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:51 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-341d730bdfcso923843f8f.1
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zt-0001Ea-72
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:59 -0400
+Received: by mail-lj1-x234.google.com with SMTP id
+ 38308e7fff4ca-2d6ee81bcd4so6777701fa.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711467948; x=1712072748; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711467954; x=1712072754; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fauC/yH9kU0VZHj4feO8NJiXVYDlYdxvHhdtor8Edys=;
- b=mlPpDUJ9MirdFE1yMXxP/N6UEO+gBont64n1BYfZvxhVvR032GOUQkZIC6Ph7U5KQK
- TLyIqb3vdlGRmliGSjpPIVbLbWKJG5mMyQtWYTsoec6XS8unx4A3AspQA0gOEyRzzCP8
- lZ6TYppKqIqfLkOEQDxcjv9EwIei91KNxMQBFkn+nanZqdysQoly1HLA1HtY88y89suT
- dlYdnMU2SBpgNOyuBKO2D2WJQ6pf6zObORJ6W+MJ5Fhtq47iCk52ATMw9Ljy/Fzy7fGA
- 0NrP5qZ0eUdNhN7gm0FKeZc4CMB2bOcwQE1PP4Z5Zs2HeHRixiOZAwexrBxwh1vVb7qt
- K96A==
+ bh=pILgX4qmWPDEo+FllF7pXDQL2dWnRzBzAqVL780ebL0=;
+ b=qd4XxyWrCrUcGvRO7kuuWoY6Wi6laaGq6BfdtucybR0jNF6v6sjhh7ZlqxhjeOW7H+
+ YgmnW9WChgHOOopV7wChhrtTTxsHhCejBcFzvkYVMBAcX6ZNMlu7vSMAXMEps1btWy4e
+ kfU6fWI74cJ0902WOrAMNaYUz/3B6TU/eDexDKbht7XaECU+o/ygRrHqdWrwN3KJ00PY
+ i/cEDQwE6ss3mYFUd3stHUXatea3NuOzB0tRJoHp3i56Fbif/4/Nif4TEISbZfOAWA2U
+ sOGfhuZ738k7ptayJT2HxhhkGUfxMJx1acsOayqLT/pajGASdQjL68SO18Z1CYCPT3cq
+ 8PXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711467948; x=1712072748;
+ d=1e100.net; s=20230601; t=1711467954; x=1712072754;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fauC/yH9kU0VZHj4feO8NJiXVYDlYdxvHhdtor8Edys=;
- b=wzIRs6ZMRQ44sWyHpY+PF31csw4j2vYojvsH8km0r0gtLDE2GIHRc8Do9nBL3rPh/g
- hQclzuFQ579dbbeRYPqCxsbPKpRgxJUCzCYoxOWVroiN5POCHFj2VuHlqkZiM+H7zS/x
- SwMoRNysx5iO92ZwQ3Sl6/2cUQ7MgPhQv+W6kiWMzHxU0YjAgTNB+tmVhI867bWu+Xvb
- 42nimTD6UPR7lO/fGEVhPWB3srv07iDgosOxFbThP4OTtVwjrZsl36uAkPHey8Cj0FZG
- PoPgJzx9f0/F5hgShxd3PjYoCJjQTw6fQ/oOJW3maW9Tmm1BeSn8G2D3LEyfb8BThoEa
- pRgQ==
-X-Gm-Message-State: AOJu0YxlhKEMyAXbxifUDXitbrub0OoDMMgrJY/BI+aK02VGHJyftyHi
- txgSlvyZypE59gDLj4g8YP8j3KL9Ed3jH5qXSASXTbFeI4z28eLOINk6Q3auw57Q86bC/jDz8X0
- F
-X-Google-Smtp-Source: AGHT+IFeH/aj7ObeI42wqjQssteZWuPQWTaK9WbbHadK6sXHo+PXXBu2EBRXcXbvr/1b4dgdMcfKYA==
-X-Received: by 2002:adf:cb12:0:b0:33e:9de3:9037 with SMTP id
- u18-20020adfcb12000000b0033e9de39037mr6604764wrh.59.1711467948446; 
- Tue, 26 Mar 2024 08:45:48 -0700 (PDT)
+ bh=pILgX4qmWPDEo+FllF7pXDQL2dWnRzBzAqVL780ebL0=;
+ b=Ezfdcb1PljyqIW/0rAvFTc9fIxeecWkByZXjqIz4ZmEebxHV1i1BV3MQlG01G+99Rq
+ /D/Vskwul6L62rRphIwX6A00tspcsaoz+Tvgz78HFprByAnK+1QRLrJPPRE/WDCUIg2z
+ 1kBASWLjcejNWPeLnR/MK9gR3n6Ap4Yuyu6ztXptinTfBFNy4HzVzX1W7OYuXtgQx+DC
+ 7/OVKVRJGWSduTqhd1nKaDksGLO9b0yKPaHMCDghhtoz//d3BKAb5ZyAu373J/V88Yzn
+ dGrbIevHredU5yDa9UrNCH2I/knHA9NuOl4sTfbmrpGfpGq/i06dE9mWhdwvUmJPvMIH
+ +7Iw==
+X-Gm-Message-State: AOJu0YwPqVN5fZMyOJrVfar4RUTfm7MOKtjF3Kj2MPQ7kt+6+4kHWS10
+ 2cgkTwyMLEWr1hNLKrrUY/cZxYt1fAcKuoUmIWJNLgjt5NdKY1pP1pl0lFEqZmkpP7Dwi7gDG0B
+ i
+X-Google-Smtp-Source: AGHT+IFPSZ+KbdkoTCVxyOu8c8tHBPXiiJjv3g/xhUl6hvPn6M9vNgNFoHQCM/Gc34BJN7BWsUr/1Q==
+X-Received: by 2002:a2e:914b:0:b0:2d6:f100:6e6b with SMTP id
+ q11-20020a2e914b000000b002d6f1006e6bmr888577ljg.18.1711467953968; 
+ Tue, 26 Mar 2024 08:45:53 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.229])
  by smtp.gmail.com with ESMTPSA id
- z15-20020a5d4d0f000000b003418016b04csm12472452wrt.76.2024.03.26.08.45.47
+ b2-20020a05600003c200b00341ddb65b07sm112154wrg.63.2024.03.26.08.45.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Mar 2024 08:45:48 -0700 (PDT)
+ Tue, 26 Mar 2024 08:45:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Arnaud Minier <arnaud.minier@telecom-paris.fr>,
- =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PULL 07/13] hw/misc/stm32l4x5_rcc: Propagate period when enabling a
- clock
-Date: Tue, 26 Mar 2024 16:44:58 +0100
-Message-ID: <20240326154505.8300-8-philmd@linaro.org>
+ BALATON Zoltan <balaton@eik.bme.hu>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/13] docs/system/ppc/amigang.rst: Fix formatting
+Date: Tue, 26 Mar 2024 16:44:59 +0100
+Message-ID: <20240326154505.8300-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240326154505.8300-1-philmd@linaro.org>
 References: <20240326154505.8300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::234;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x234.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,40 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+From: BALATON Zoltan <balaton@eik.bme.hu>
 
-The "clock_set_mul_div" function doesn't propagate the clock period
-to the children if it is changed (e.g. by enabling/disabling a clock
-multiplexer).
-This was overlooked during the implementation due to late changes.
+Add missing space to fix character formatting where it was missed in
+two places.
 
-This commit propagates the change if the multiplier or divider changes.
-
-Fixes: ec7d83acbd ("hw/misc/stm32l4x5_rcc: Add an internal clock multiplexer object")
-Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
-Signed-off-by: Inès Varhol <ines.varhol@telecom-paris.fr>
-Message-ID: <20240317103918.44375-2-arnaud.minier@telecom-paris.fr>
-[PMD: Check clock_set_mul_div() return value]
+Fixes: 623d9065b6 (docs/system/ppc: Document running Linux on AmigaNG machines)
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-ID: <20240324161148.4650D4E601F@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Message-Id: <20240325152827.73817-4-philmd@linaro.org>
 ---
- hw/misc/stm32l4x5_rcc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/ppc/amigang.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/misc/stm32l4x5_rcc.c b/hw/misc/stm32l4x5_rcc.c
-index 49b90afdf0..ed2dbd9dc3 100644
---- a/hw/misc/stm32l4x5_rcc.c
-+++ b/hw/misc/stm32l4x5_rcc.c
-@@ -61,7 +61,7 @@ static void clock_mux_update(RccClockMuxState *mux, bool bypass_source)
-         freq_multiplier = mux->divider;
-     }
+diff --git a/docs/system/ppc/amigang.rst b/docs/system/ppc/amigang.rst
+index ba1a3d80b9..e2c9cb74b7 100644
+--- a/docs/system/ppc/amigang.rst
++++ b/docs/system/ppc/amigang.rst
+@@ -16,7 +16,7 @@ firmware to support AmigaOS 4.
+ Emulated devices
+ ----------------
  
--    clock_set_mul_div(mux->out, freq_multiplier, mux->multiplier);
-+    clk_changed |= clock_set_mul_div(mux->out, freq_multiplier, mux->multiplier);
-     clk_changed |= clock_set(mux->out, clock_get(current_source));
-     if (clk_changed) {
-         clock_propagate(mux->out);
+- * PowerPC 7457 CPU (can also use``-cpu g3, 750cxe, 750fx`` or ``750gx``)
++ * PowerPC 7457 CPU (can also use ``-cpu g3, 750cxe, 750fx`` or ``750gx``)
+  * Articia S north bridge
+  * VIA VT82C686B south bridge
+  * PCI VGA compatible card (guests may need other card instead)
+@@ -73,7 +73,7 @@ https://www.powerdeveloper.org/platforms/pegasos/schematics.
+ Emulated devices
+ ----------------
+ 
+- * PowerPC 7457 CPU (can also use``-cpu g3`` or ``750cxe``)
++ * PowerPC 7457 CPU (can also use ``-cpu g3`` or ``750cxe``)
+  * Marvell MV64361 Discovery II north bridge
+  * VIA VT8231 south bridge
+  * PCI VGA compatible card (guests may need other card instead)
 -- 
 2.41.0
 
