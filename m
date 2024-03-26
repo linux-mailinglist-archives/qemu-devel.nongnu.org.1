@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49EC188C23A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F11988C238
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:35:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp610-000583-25; Tue, 26 Mar 2024 08:34:54 -0400
+	id 1rp614-0005BP-6I; Tue, 26 Mar 2024 08:34:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rp60y-00057h-EE
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:34:52 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+ id 1rp612-0005A5-BS
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:34:56 -0400
+Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rp60w-0000df-TJ
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:34:52 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-513cf9bacf1so7376858e87.0
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:34:50 -0700 (PDT)
+ id 1rp610-0000e1-Bo
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:34:55 -0400
+Received: by mail-lj1-x22a.google.com with SMTP id
+ 38308e7fff4ca-2d4a8bddc21so73417131fa.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:34:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711456489; x=1712061289; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711456492; x=1712061292; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=l7VfVydk8X6xAOfkDzXyCX6+wA+A3zYuyrN3TJWFm9Y=;
- b=aD7QolHA2fYhHih+ZVPzNwiZTS7Tw/UZk9BRqX1Gh30alZwBTQaEQfeQRU08LrsfUS
- at69T6KyXNTZYqUGnogdQg+zleKzHfgJufj+V7AWu2w1vWo8Iih6a1r66wKGMMokNKyn
- NSq0+3aY5/rd0uAGNZh5rHobpVxFC/colRXzkgcHpkTXHJCf+RJgp+D8PZ2FUbryDlV9
- IgUIghPtbzqNR5pMNY9KtUS7rM8mqw/83KApIKHN2izbVdrSB/Lxv2e1o6/Qq/Z5vR+J
- MUiad68VjsOZfuWeMSDeuy4S/vk22KwMKElQJFZS5eu9saDp4nJGCa9HkbdWa/yivdel
- fI5Q==
+ bh=IJYNwNm35V5xzu7ic8glr0yVgOLlUO7V69uiN6b/dLQ=;
+ b=ImwtXejocYwY03ztl7PcvG+qWx+9sEyjnBtmkQf8mNh782mcjxhbgXY2ToKGqTqyD9
+ cGDO1Rv9/jtZe++yvJpMy3tCF56yc7XNL5UMsSNsIhte2cGk8HgRJiq29hQRLdVwa6xm
+ iWbz+0Y96kxDPiuwHBFIHxT8AwE/6nD6rsbjJabU+ucfQhr5C+V5OCz7ImbhzfDv5wW7
+ 9/9q0OPBvYTgykZESz4Ul/cXNV5b0xqmtpbiePC2zoey2W8Y8fm3w79D2ePhgIHmMeeH
+ 7BK+x9lagdCHTaYogRt9CcQVuLVN7HGW5H4ZKALi5ml52vIV76t8Wzul+Wzz0HGdZ85s
+ QLRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711456489; x=1712061289;
+ d=1e100.net; s=20230601; t=1711456492; x=1712061292;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=l7VfVydk8X6xAOfkDzXyCX6+wA+A3zYuyrN3TJWFm9Y=;
- b=OUayLe+3n53Rnu94y3beXBRUxBsVmS4by5DoyJVlNhsjYcJ5FUv8Gwmxeksyhtr0jj
- LnBmYXzy+aMixice5//Sl+uZ0cynJeD45spE/xNa3R2trRSVVZ6Spx6EEHx0W3rxl3ZJ
- J7bKrRFoGO0xxGG5fuNDVaEP1Jk5uDia2030TBX6BEYfOlAQTVX5HMl2AqL5o2bGkJ33
- YYHNnpqaIonijR/Fs+dL2OaabM2pXM0H+2cvBT77LXoTWj1+J5/UWfjTcd2AsNn1q8PV
- diz6+IZXJxiGmgeWr9LRrdZJyL6hUcQ8BWVCoDL4A3nzz4SbWT801rGUsmjkybj4Yro3
- 45Gg==
-X-Gm-Message-State: AOJu0YwDxpbvJwKKDGvLFWBAivCgNluKK5gbUxYF/I7EKJb4PNZcZESA
- faH3EzdCvQcOy0gWP1nW4XtSjkSdLb7NMi5uq8+776/nWEugeq+JHx3GTq3lp9wIk0PaPAPjMrY
- Sqr8=
-X-Google-Smtp-Source: AGHT+IHWDELf7Ew47iLifPnlmiFC5ibXSsMMmbkiLZLtVNeDz6sd73naskKontGTgFebu3NTrS/Xng==
-X-Received: by 2002:a19:5f5a:0:b0:513:af26:8cd0 with SMTP id
- a26-20020a195f5a000000b00513af268cd0mr5969007lfj.68.1711456488605; 
- Tue, 26 Mar 2024 05:34:48 -0700 (PDT)
+ bh=IJYNwNm35V5xzu7ic8glr0yVgOLlUO7V69uiN6b/dLQ=;
+ b=kr2YIqhmGvd/xu35X1ALH6m2LPaWw4TZet55Aw85hPczBR5iOEr5v1XlF45rry/4QJ
+ KtyIfczqgc+BLf45FuSwMnFR38U/MOCS/E4PpBE/zuCmz1VgSeRBoHQf9F2OCgjGnyCB
+ bbyhv+n4cyKa4dGk/smJ+MJa20L1oSuCNTUn+eb0LFrqIeyo6JT6kEaeldOBbdTqOR4/
+ N+Djn74udXwmDmTnfXklAllU8+n1W2asaplx8a6AijX6TjgiINg82b33GWZT3KLR4s1o
+ yBz+IzGymkC6rRcoxGPLIiM2DMpIxGo5pgr8PnTy+j5Ys3D6XFt1HAJE+kbUJAvIXWJp
+ kGmA==
+X-Gm-Message-State: AOJu0Yy/nbiLhxRKyzbncQuFN2q/Ej49WrwWng10ggNSqnr23mSYWEGr
+ PMUss9dCvh8zzy9GaUkNTf4daJsQ9JGfddRHXX8PF5YbngfCfoabeKy1UdQl0Eo+G8TcXpOqz12
+ XcEc=
+X-Google-Smtp-Source: AGHT+IFF+q4pH2dp2GsZ2JARo/2j7Re9ePv1UenxaKmnmjeL/SoIw3pZ+/ICTHBVBikr0xeTX4YDSA==
+X-Received: by 2002:a2e:9c95:0:b0:2d2:b506:d2cb with SMTP id
+ x21-20020a2e9c95000000b002d2b506d2cbmr7372056lji.9.1711456491775; 
+ Tue, 26 Mar 2024 05:34:51 -0700 (PDT)
 Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
- y19-20020a1c4b13000000b004148090cf85sm716317wma.0.2024.03.26.05.34.45
+ y19-20020a1c4b13000000b004148090cf85sm716317wma.0.2024.03.26.05.34.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Mar 2024 05:34:48 -0700 (PDT)
+ Tue, 26 Mar 2024 05:34:51 -0700 (PDT)
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -63,16 +63,16 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Mahmoud Mandour <ma.mandourr@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
  Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v4 2/9] plugins: extract generate ptr for qemu_plugin_u64
-Date: Tue, 26 Mar 2024 16:34:19 +0400
-Message-Id: <20240326123426.761473-3-pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 3/9] plugins: add new inline op STORE_U64
+Date: Tue, 26 Mar 2024 16:34:20 +0400
+Message-Id: <20240326123426.761473-4-pierrick.bouvier@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
 References: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-lf1-x12f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-lj1-x22a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,56 +98,105 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 27 ++++++++++++++++++---------
- 1 file changed, 18 insertions(+), 9 deletions(-)
+ include/qemu/plugin.h      |  1 +
+ include/qemu/qemu-plugin.h |  4 ++--
+ accel/tcg/plugin-gen.c     | 13 +++++++++++++
+ plugins/core.c             |  6 ++++++
+ 4 files changed, 22 insertions(+), 2 deletions(-)
 
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index 23271fbe36a..d1d9b4490df 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -69,6 +69,7 @@ enum plugin_dyn_cb_type {
+     PLUGIN_CB_REGULAR,
+     PLUGIN_CB_MEM_REGULAR,
+     PLUGIN_CB_INLINE_ADD_U64,
++    PLUGIN_CB_INLINE_STORE_U64,
+ };
+ 
+ /*
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 4fc6c3739b2..c5cac897a0b 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -305,12 +305,12 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
+  * enum qemu_plugin_op - describes an inline op
+  *
+  * @QEMU_PLUGIN_INLINE_ADD_U64: add an immediate value uint64_t
+- *
+- * Note: currently only a single inline op is supported.
++ * @QEMU_PLUGIN_INLINE_STORE_U64: store an immediate value uint64_t
+  */
+ 
+ enum qemu_plugin_op {
+     QEMU_PLUGIN_INLINE_ADD_U64,
++    QEMU_PLUGIN_INLINE_STORE_U64,
+ };
+ 
+ /**
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 41d4d83f547..d3667203546 100644
+index d3667203546..1cfd7908df1 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -120,24 +120,33 @@ static void gen_udata_cb(struct qemu_plugin_dyn_cb *cb)
-     tcg_temp_free_i32(cpu_index);
+@@ -152,6 +152,16 @@ static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
+     tcg_temp_free_ptr(ptr);
  }
  
--static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
-+static TCGv_ptr gen_plugin_u64_ptr(qemu_plugin_u64 entry)
- {
--    GArray *arr = cb->inline_insn.entry.score->data;
--    size_t offset = cb->inline_insn.entry.offset;
--    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
--    TCGv_i64 val = tcg_temp_ebb_new_i64();
-     TCGv_ptr ptr = tcg_temp_ebb_new_ptr();
- 
-+    GArray *arr = entry.score->data;
-+    char *base_ptr = arr->data + entry.offset;
-+    size_t entry_size = g_array_get_element_size(arr);
-+
-+    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
-     tcg_gen_ld_i32(cpu_index, tcg_env,
-                    -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
--    tcg_gen_muli_i32(cpu_index, cpu_index, g_array_get_element_size(arr));
-+    tcg_gen_muli_i32(cpu_index, cpu_index, entry_size);
-     tcg_gen_ext_i32_ptr(ptr, cpu_index);
-     tcg_temp_free_i32(cpu_index);
-+    tcg_gen_addi_ptr(ptr, ptr, (intptr_t) base_ptr);
- 
--    tcg_gen_addi_ptr(ptr, ptr, (intptr_t)arr->data);
--    tcg_gen_ld_i64(val, ptr, offset);
-+    return ptr;
-+}
-+
-+static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
++static void gen_inline_store_u64_cb(struct qemu_plugin_dyn_cb *cb)
 +{
 +    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->inline_insn.entry);
-+    TCGv_i64 val = tcg_temp_ebb_new_i64();
++    TCGv_i64 val = tcg_constant_i64(cb->inline_insn.imm);
 +
-+    tcg_gen_ld_i64(val, ptr, 0);
-     tcg_gen_addi_i64(val, val, cb->inline_insn.imm);
--    tcg_gen_st_i64(val, ptr, offset);
 +    tcg_gen_st_i64(val, ptr, 0);
- 
-     tcg_temp_free_i64(val);
-     tcg_temp_free_ptr(ptr);
++
++    tcg_temp_free_ptr(ptr);
++}
++
+ static void gen_mem_cb(struct qemu_plugin_dyn_cb *cb,
+                        qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
+ {
+@@ -177,6 +187,9 @@ static void inject_cb(struct qemu_plugin_dyn_cb *cb)
+     case PLUGIN_CB_INLINE_ADD_U64:
+         gen_inline_add_u64_cb(cb);
+         break;
++    case PLUGIN_CB_INLINE_STORE_U64:
++        gen_inline_store_u64_cb(cb);
++        break;
+     default:
+         g_assert_not_reached();
+     }
+diff --git a/plugins/core.c b/plugins/core.c
+index a8557b54ff7..e1bf0dc3717 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -321,6 +321,8 @@ static enum plugin_dyn_cb_type op_to_cb_type(enum qemu_plugin_op op)
+     switch (op) {
+     case QEMU_PLUGIN_INLINE_ADD_U64:
+         return PLUGIN_CB_INLINE_ADD_U64;
++    case QEMU_PLUGIN_INLINE_STORE_U64:
++        return PLUGIN_CB_INLINE_STORE_U64;
+     default:
+         g_assert_not_reached();
+     }
+@@ -535,6 +537,9 @@ void exec_inline_op(struct qemu_plugin_dyn_cb *cb, int cpu_index)
+     case QEMU_PLUGIN_INLINE_ADD_U64:
+         *val += cb->inline_insn.imm;
+         break;
++    case QEMU_PLUGIN_INLINE_STORE_U64:
++        *val = cb->inline_insn.imm;
++        break;
+     default:
+         g_assert_not_reached();
+     }
+@@ -562,6 +567,7 @@ void qemu_plugin_vcpu_mem_cb(CPUState *cpu, uint64_t vaddr,
+                                    vaddr, cb->userp);
+             break;
+         case PLUGIN_CB_INLINE_ADD_U64:
++        case PLUGIN_CB_INLINE_STORE_U64:
+             exec_inline_op(cb, cpu->cpu_index);
+             break;
+         default:
 -- 
 2.39.2
 
