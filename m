@@ -2,82 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D599B88BED8
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 11:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5A788BEEC
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 11:10:24 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp3i6-0006B5-SJ; Tue, 26 Mar 2024 06:07:14 -0400
+	id 1rp3kg-00085f-87; Tue, 26 Mar 2024 06:09:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp3i1-0006AZ-LH
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 06:07:09 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp3hz-0000cp-Pm
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 06:07:09 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6e6afb754fcso4677867b3a.3
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 03:07:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711447626; x=1712052426;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=C9ZtEo8zXe/BK9I7qoRpJCkIeC3s39lHzzgTxhX0Iv0=;
- b=IhzhzKIWHF1ZQBNbCOjfxtKoGFA2aA87toZHgJp+LUIHBJOrnaTWa3KX9BcILgZIuL
- ASzcQp4ogu91ozdPoLDwpjdexSyxk2KfJYG8+f6dKtLRu1ULMy4/Bl0d23za485T9tIr
- 8DPWzfPpsvsmg55VVosjHqJ6YxQy9inEqaioaV1UprF6nQ52VH5XrxyyLU5pOq42Vjpk
- tFGSHPh2bnygt7UWuSwGQ9MZqgW6zQipg7UIgyMKj2kt35Or7FKzGEH7Lk0hkPhG+vNX
- YpvPyqE8P5wRYxORNO5PkGMkHBaft0lmylHXhDjog6TvoWwwLFZqrIwg0oib4sQ95/GR
- /D9w==
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rp3ke-00085I-7m
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 06:09:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1rp3kc-0001JY-Hb
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 06:09:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711447789;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=bvZPmz9vy0RCmtvYL34Y8frf70wRFwPX4tjmvWz7bfA=;
+ b=UZovLN2cXC7JBHJ4C8DMXezfrr/Bas9rAjluXAW8GSHMtFuofq/oYy3gMojh6s5lv7N5oY
+ kYXhiI8hM9wxqcrAWpwXtpoO5MzV0/hOUepK13wew9cKgBuKQuBtrHQuziAbjPP2sn3pva
+ 8f1QBdn2bgX9igaW1CmR8aUW3tF2/t4=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-noFJGhFRNp2X4sTxQyBdEA-1; Tue, 26 Mar 2024 06:09:47 -0400
+X-MC-Unique: noFJGhFRNp2X4sTxQyBdEA-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-33ec06aac83so3598382f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 03:09:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711447626; x=1712052426;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C9ZtEo8zXe/BK9I7qoRpJCkIeC3s39lHzzgTxhX0Iv0=;
- b=YsJ7R5IcLITRf8tHbbOsWfK7JI7tA3JPh5pGSpN11mPOma9pWWUIJVbyjBjezaw+8w
- MWUu31b5sN5JV+vyT35/PoNS7jxqGXhuDkpsPsf5mJd3QNMUckGCol9XHm8lwWI2S1uF
- Hecom+xwPEpFsHiQI0nGfqx0V4O/SIxlLF9tzT8v+VbciKmkpNGoEWuOQfqW7lpVoj0L
- zanN7DX6pgM7A2pRgUfTVxpnD9FrnsYP0Dt/+uLSXV5vjScFBlICykfvmjJOPyh4syZR
- xSxMFxrApqOvgo1Xz8A5leDHxY84F3dDJ++jStxFCfBG6qCEUhCgYKZtzJMxNsnvS9Bg
- XgSQ==
-X-Gm-Message-State: AOJu0Yypre8mTsY8f1PxqBwc8OaG1mj0YcWFfPhebgSg0oPtRaa6ZYDR
- RYc6DGgHpi3BUjLxDR4d9FIRJJJATNd+sYj53UhiF0otunwpuzLFOtLYOJX0sZU=
-X-Google-Smtp-Source: AGHT+IET/NGPJWeIfRy0DbO5vQ+KLBUr6O2Tu6dsI/MGhXV8vBFRFAwT3oSrOQSkqFQoXQJ5HTOVsQ==
-X-Received: by 2002:a05:6a00:801:b0:6e6:f9b6:4b1a with SMTP id
- m1-20020a056a00080100b006e6f9b64b1amr12162097pfk.11.1711447626321; 
- Tue, 26 Mar 2024 03:07:06 -0700 (PDT)
-Received: from localhost ([157.82.202.248])
- by smtp.gmail.com with UTF8SMTPSA id
- a9-20020aa78649000000b006e681769ee0sm5725873pfo.145.2024.03.26.03.07.04
+ d=1e100.net; s=20230601; t=1711447783; x=1712052583;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bvZPmz9vy0RCmtvYL34Y8frf70wRFwPX4tjmvWz7bfA=;
+ b=eq02mcXByVi306N5A6gG4d76IcIFMaSmzBj3vEUDQ293PPWg00gBROQX2DJf9iTGGQ
+ MiiC67ZyonORxAjyER2gDru25/eyOiXrynVEX8OQsgXqOYBSfqoVh59OTn/PuD7FI2/2
+ IhRkLeYWWSLvp372BxuuHzyb150DFxXocBfpAj4bCPxYc1rTj5+VAaKOfn2wTliNfSOi
+ XNvzuZeSl/sC0QCS9kOeEwHRgQQRRZa04Gg5ByM4Pl4ZszCtoPbDJEjopWwSq/uSolIT
+ DLyBBahUe2+0T3lK9Lmb9SkBYMmMByB8FlV9ZAvMj6QXwdESbQUtvPIAuAXnLTe7ZLXI
+ WhIQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXNwoRI8T2Gpo+5B4DdUVFOGPlG552cbNvO8xsduUTDqLsbt5ghIhyCM2G3puqi712o4lqecdORY8GJzgyzyeyVWH5LxHQ=
+X-Gm-Message-State: AOJu0Yxblb1BsvTBa2NdQd2GS5/bQNT81JRS/kFqmbo+WFZrYlSjc3rf
+ XENgQUTQk/kKnYdL6lwAWjTLHwS7JzTN6YVwAAJEGE+mJJ4Zl6Bxe4PvTgdcqTJSm6MHbafIWq+
+ 0WGDJ3s/NHEiCoEnMICfPllSbgKwnhIvGqjRLIvXm8LjLgqMw0apC
+X-Received: by 2002:a5d:43c9:0:b0:341:cfd6:42af with SMTP id
+ v9-20020a5d43c9000000b00341cfd642afmr3333260wrr.31.1711447783122; 
+ Tue, 26 Mar 2024 03:09:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG40lViCrK47vXtjWGxe/0UeiHGT3DJutqrbL5eHBd0mKYB/pIKlMBWBxWkaJkRaGG5rAghag==
+X-Received: by 2002:a5d:43c9:0:b0:341:cfd6:42af with SMTP id
+ v9-20020a5d43c9000000b00341cfd642afmr3333248wrr.31.1711447782788; 
+ Tue, 26 Mar 2024 03:09:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ en9-20020a056000420900b00341b451a31asm5552312wrb.36.2024.03.26.03.09.41
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Mar 2024 03:07:06 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 26 Mar 2024 19:06:30 +0900
-Subject: [PATCH 2/2] ebpf: Fix indirections table setting
+ Tue, 26 Mar 2024 03:09:42 -0700 (PDT)
+Message-ID: <f4805b73-b485-46e0-938d-b0cf23ea2aa6@redhat.com>
+Date: Tue, 26 Mar 2024 11:09:41 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC v2 0/5] ARM Nested Virt Support
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ miguel.luis@oracle.com, haibo.xu@linaro.org, richard.henderson@linaro.org,
+ maz@kernel.org, gkulkarni@amperecomputing.com
+References: <20240209160039.677865-1-eric.auger@redhat.com>
+ <CAFEAcA_i7x=F-mDgkoa4Tma1xGH0no+WCfNt2Ljyk3DYhHNTiQ@mail.gmail.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <CAFEAcA_i7x=F-mDgkoa4Tma1xGH0no+WCfNt2Ljyk3DYhHNTiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240326-vhost-v1-2-09bd85b1ba2c@daynix.com>
-References: <20240326-vhost-v1-0-09bd85b1ba2c@daynix.com>
-In-Reply-To: <20240326-vhost-v1-0-09bd85b1ba2c@daynix.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.13.0
-Received-SPF: none client-ip=2607:f8b0:4864:20::431;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x431.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
+X-Spam_bar: --
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +105,81 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The kernel documentation says:
-> The value stored can be of any size, however, all array elements are
-> aligned to 8 bytes.
-https://www.kernel.org/doc/html/v6.8/bpf/map_array.html
+Hi Peter,
 
-Fixes: 333b3e5fab75 ("ebpf: Added eBPF map update through mmap.")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- ebpf/ebpf_rss.h | 2 +-
- ebpf/ebpf_rss.c | 5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+On 3/5/24 17:57, Peter Maydell wrote:
+> On Fri, 9 Feb 2024 at 16:00, Eric Auger <eric.auger@redhat.com> wrote:
+>> This series adds ARM Nested Virtualization support in KVM mode.
+>> This is a respin of previous contributions from Miguel [1] and Haibo [2].
+>>
+>> This was tested with Marc's v11 [3] on Ampere HW with fedora L1 guest and
+>> L2 guests booted without EDK2. However it does not work yet with
+>> EDK2 but it looks unrelated to this qemu integration (host hard lockups).
+>>
+>> The host needs to be booted with "kvm-arm.mode=nested" option and
+>> qemu needs to be invoked with :
+>>
+>> -machine virt,virtualization=on
+>>
+>> There is a known issue with hosts supporting SVE. Kernel does not support both
+>> SVE and NV2 and the current qemu integration has an issue with the
+>> scratch_host_vcpu startup because both are enabled if exposed by the kernel.
+>> This is independent on whether sve is disabled on the command line. Unfortunately
+>> I lost access to the HW that expose that issue so I couldn't fix it in this
+>> version.
+>>
+>> This series can be found at:
+>> https://github.com/eauger/qemu/tree/v8.2-nv-rfcv2
+>>
+>> Previous version from Miguel:
+>> [1] https://lore.kernel.org/all/20230227163718.62003-1-miguel.luis@oracle.com/
+>> Previous version from Haibo:
+>> [2] https://lore.kernel.org/qemu-devel/cover.1617281290.git.haibo.xu@linaro.org/
+>> [3] Marc's kernel v11 series:
+>>     [PATCH v11 00/43] KVM: arm64: Nested Virtualization support (FEAT_NV2 only)
+>>     https://lore.kernel.org/linux-arm-kernel/20231120131027.854038-1-maz@kernel.org/T/
+>>     available at: https://github.com/eauger/linux/tree/nv-6.8-nv2-v11
+>>
+>> Haibo Xu (5):
+>>   [Placeholder] headers: Partial headers update for NV2 enablement
+>>   hw/arm: Allow setting KVM vGIC maintenance IRQ
+>>   target/arm/kvm: Add helper to detect EL2 when using KVM
+>>   target/arm: Enable feature ARM_FEATURE_EL2 if EL2 is supported
+>>   hw/arm/virt: Allow virt extensions with KVM
+>>
+>>  hw/arm/virt.c                      |  6 +++++-
+>>  hw/intc/arm_gicv3_common.c         |  1 +
+>>  hw/intc/arm_gicv3_kvm.c            | 21 +++++++++++++++++++++
+>>  include/hw/intc/arm_gicv3_common.h |  1 +
+>>  linux-headers/asm-arm64/kvm.h      |  1 +
+>>  linux-headers/linux/kvm.h          |  1 +
+>>  target/arm/kvm.c                   | 21 +++++++++++++++++++++
+>>  target/arm/kvm_arm.h               | 12 ++++++++++++
+>>  8 files changed, 63 insertions(+), 1 deletion(-)
+> All the patches in this series seem reasonable, but the series
+> as a whole is so short I wonder if we're missing something :-)
+> Does migration Just Work? (I guess as long as the kernel exposes
+> all the EL2 sysregs via the ONE_REG ioctl interface it ought to...)
+To be honest I have not tested yet. I would also guess there is no mig
+blocker but that definitively deserves some testing. I will check before
+sending the next version.
+>
+> Anyway, I don't think there's anything that stood out as needing
+> major changes, so for now I guess we just wait for whenever the
+> KVM side patches eventually land.
 
-diff --git a/ebpf/ebpf_rss.h b/ebpf/ebpf_rss.h
-index 239242b0d26e..7d15b600bf5b 100644
---- a/ebpf/ebpf_rss.h
-+++ b/ebpf/ebpf_rss.h
-@@ -26,7 +26,7 @@ struct EBPFRSSContext {
-     /* mapped eBPF maps for direct access to omit bpf_map_update_elem() */
-     void *mmap_configuration;
-     void *mmap_toeplitz_key;
--    void *mmap_indirections_table;
-+    uint64_t *mmap_indirections_table;
- };
- 
- struct EBPFRSSConfig {
-diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
-index 2e506f974357..e0f300febb77 100644
---- a/ebpf/ebpf_rss.c
-+++ b/ebpf/ebpf_rss.c
-@@ -190,8 +190,9 @@ static bool ebpf_rss_set_indirections_table(struct EBPFRSSContext *ctx,
-         return false;
-     }
- 
--    memcpy(ctx->mmap_indirections_table, indirections_table,
--            sizeof(*indirections_table) * len);
-+    for (size_t i = 0; i < len; i++) {
-+        ctx->mmap_indirections_table[i] = indirections_table[i];
-+    }
-     return true;
- }
- 
+yup
 
--- 
-2.44.0
+Thanks
+
+Eric
+>
+> thanks
+> -- PMM
+>
 
 
