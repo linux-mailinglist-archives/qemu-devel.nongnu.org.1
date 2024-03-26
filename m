@@ -2,67 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3480B88C855
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 727FF88C870
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 17:03:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp9Cx-0003DX-SI; Tue, 26 Mar 2024 11:59:27 -0400
+	id 1rp9Fm-0004mA-1c; Tue, 26 Mar 2024 12:02:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rp9Cv-0003Cy-3u
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:59:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rp9Fb-0004gN-02
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 12:02:11 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rp9Ct-0004a4-Ge
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:59:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711468761;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=d15WhNfc/b5KrYAViRJoQXka4p4afLDCZN5PnNE3AtA=;
- b=R2W4cVcS49rAvBRWH5EnzTycWkdky5I+MCkah1JfFPQ8LalY0Uqf17icq+3QgP/+B6gkzk
- 3WdI3DWai8FCRaVIBQ3zxdwRaZ2AcZuTCEXLBLXnueizbOT2De3vK/5tXR/1S08C6Cao5u
- FVHyt/FMndoioeI/knS/iHTZ5fsQg+Y=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-482-A2FZS4dQNDOnJF4WMR_IDg-1; Tue, 26 Mar 2024 11:59:19 -0400
-X-MC-Unique: A2FZS4dQNDOnJF4WMR_IDg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DDFAE10189B8;
- Tue, 26 Mar 2024 15:59:18 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.145])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 99368111E406;
- Tue, 26 Mar 2024 15:59:18 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 632BC1801492; Tue, 26 Mar 2024 16:59:13 +0100 (CET)
-Date: Tue, 26 Mar 2024 16:59:13 +0100
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] edk2: get version + date from git submodule
-Message-ID: <z5cuq7sx2islbjm6vpu5ksr4b7vytbe5fhhllp46gm5mmqcky4@npmeowuookgn>
-References: <20240325144440.1069662-1-kraxel@redhat.com>
- <CAFEAcA9PkAyqVcKMLQZw71FMh6YTpNDNwuKoO0u7i_mRxsJizQ@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rp9FO-0005CU-Ve
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 12:02:02 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id CDB5C5921C;
+ Tue, 26 Mar 2024 19:03:21 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 68048A3602;
+ Tue, 26 Mar 2024 19:01:51 +0300 (MSK)
+Message-ID: <1788e23b-1681-4d4e-a281-df5c9ba330e7@tls.msk.ru>
+Date: Tue, 26 Mar 2024 19:01:50 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFEAcA9PkAyqVcKMLQZw71FMh6YTpNDNwuKoO0u7i_mRxsJizQ@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.1] hw/i386: Add a config to only build the microvm
+ machine
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Sergio Lopez <slp@redhat.com>
+Cc: mst@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>
+References: <20240326131410.93866-1-philmd@linaro.org>
+ <517935ff-6f0f-4ef8-878c-9778f6b1bb98@tls.msk.ru>
+ <d5ff6e5e-963f-467a-9d5b-3e2d12e16695@linaro.org>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <d5ff6e5e-963f-467a-9d5b-3e2d12e16695@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,51 +89,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Mar 25, 2024 at 02:55:11PM +0000, Peter Maydell wrote:
-> On Mon, 25 Mar 2024 at 14:45, Gerd Hoffmann <kraxel@redhat.com> wrote:
-> >
-> > Turned out hard-coding version and date in the Makefile wasn't a bright
-> > idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
-> > from git instead.
-> >
-> > Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> > ---
-> >  roms/Makefile | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/roms/Makefile b/roms/Makefile
-> > index edc234a0e886..534eba17ebd0 100644
-> > --- a/roms/Makefile
-> > +++ b/roms/Makefile
-> > @@ -51,6 +51,8 @@ SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
-> >  # efi ia32, efi x64) into a single rom binary.
-> >  #
-> >  EDK2_EFIROM = edk2/BaseTools/Source/C/bin/EfiRom
-> > +EDK2_STABLE = $(shell cd edk2; git describe --tags --match 'edk2-stable*')
-> > +EDK2_DATE = $(shell cd edk2; git show --pretty='format:%cd' --date='format:%m/%d/%Y'| head -1)
+26.03.2024 18:58, Philippe Mathieu-Daudé:
+
+>> This is not enough.  This step is good already, but it lacks default machine
+>> type selection.  In debian we carry a tiny patch to make microvm the default
+>> machine type or else it crashes at startup not finding "pc" machine or one
+>> of its required devices.
 > 
-> I don't think there's any guarantee that the user has 'git'
-> installed. scripts/qemu-version avoids using "git describe"
-> unless it's building in a git tree.
+> No crash here, what is your base commit?
+> 
+> ./qemu-system-x86_64
+> qemu-system-x86_64: No machine specified, and there is no default
+> Use -machine help to list supported machines
 
-Hmm.  Have to figure something else then I guess.
+Well, this is definitely better than a crash.  I haven't looked at that for
+a long time, initially it just crashed.
 
-> You can avoid the "| head -1" by using
->   git log -1 --pretty='format:%cd' --date='format:%m/%d/%Y'
-> I think.
+Still, this current behavior isn't nice, - in my opinion it should select
+microvm by default in this case.
 
-Works.  Thanks.
+https://salsa.debian.org/qemu-team/qemu/-/blob/master/debian/patches/microvm-default-machine-type.patch
+is the outline (from more than 4 years ago), - it's a hack but shows what
+I mean.
 
-> Also, does EDK2 really want month/day/year? Typically silly
-> choice if so :-)
-
-Yes.
-
-It's the smbios spec being silly btw, this lands more or less
-directly in /sys/class/dmi/id/bios_date.  edk2 itself doesn't
-care.
-
-take care,
-  Gerd
-
+/mjt
 
