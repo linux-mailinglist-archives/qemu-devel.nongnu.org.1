@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD41C88BC5C
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 09:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A15E88BCE4
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 09:55:26 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp29y-0005Sh-5x; Tue, 26 Mar 2024 04:27:54 -0400
+	id 1rp2ZG-0001Qz-48; Tue, 26 Mar 2024 04:54:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp29w-0005SW-E2
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:27:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp2ZD-0001QX-6X
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:53:59 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp29v-0007Ha-02
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:27:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711441669;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=54/K5Nf6UMsxw1XiSfhsRlDPT94F3Lu3eDWYDSVOjTI=;
- b=XXc1VLQeGNTIZNaV4/t6A53NI8Zge9BYQR+uksC9VTK5SHl/1jAWv/Woyohzj28paSougY
- HPxh8w0/DJnHXmAJvXhtMnLqC1iarKwDtI1Kqgburx3S6eRePzRe3k5b4FdD2UmMRLyB3P
- nvt2xBOETUc14eKZlIXNkqrRVOFf7qM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-25-rxSSa3bNNXapyD1QMGkKyQ-1; Tue, 26 Mar 2024 04:27:47 -0400
-X-MC-Unique: rxSSa3bNNXapyD1QMGkKyQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A51DB85A58B
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:27:46 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8518E112132A
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:27:46 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 80BB321E668C; Tue, 26 Mar 2024 09:27:41 +0100 (CET)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>
-Subject: Re: Let's close member documentation gaps
-In-Reply-To: <87il1aodow.fsf@pond.sub.org> (Markus Armbruster's message of
- "Mon, 25 Mar 2024 10:36:47 +0100")
-References: <87il1aodow.fsf@pond.sub.org>
-Date: Tue, 26 Mar 2024 09:27:41 +0100
-Message-ID: <87r0fxs8hu.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rp2ZA-0003Y3-9x
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 04:53:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711443236; x=1742979236;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=o6CKEXzuWXuaqzz3HHRs/+rhhgDFmVWiIvroEDORB3A=;
+ b=Xh9a8OxMapI4TnZd0Ecu5qM+L/9vQ0xkOCHtrvmsXoI0qE9XBhd94355
+ feLdFmF0BbdaC0fAz8Kfudd293sd8zGYe1RXQzFWR/6VN7OfyiFjYQfIh
+ rmwI7H6V8xauWUXOOu7Rn3eMorrkwxX0GNevJ9Andezwbo0tK9Cw0zv5j
+ +s5UVfvXveVL0PNm9Q8e+23g96LLIPgfNNimO46d73Pa1ORhNB0ZlPEe2
+ Ai5s6Y9JY6dA69tG3kZlHN0saj4FHUvN1CGHzlvEEKV9s85CL/B3DVYaw
+ sNhA8ALCnT3ragXVukM2haXpF3wUbLoHOt942RtGAXD9X3cnJE7svISRH g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11024"; a="17873534"
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="17873534"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 01:53:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,155,1708416000"; d="scan'208";a="16285527"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.224.7])
+ ([10.124.224.7])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Mar 2024 01:53:51 -0700
+Message-ID: <52df5a0e-6812-41ae-a5c6-7d403b33f84a@intel.com>
+Date: Tue, 26 Mar 2024 16:53:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/26] kvm: handle KVM_EXIT_MEMORY_FAULT
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: michael.roth@amd.com, david@redhat.com
+References: <20240322181116.1228416-1-pbonzini@redhat.com>
+ <20240322181116.1228416-26-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240322181116.1228416-26-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.10; envelope-from=xiaoyao.li@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.065,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,57 +79,195 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+On 3/23/2024 2:11 AM, Paolo Bonzini wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
+> 
+> When geeting KVM_EXIT_MEMORY_FAULT exit, it indicates userspace needs to
 
-> If you're cc'ed, I have a bit of doc work for you.  Search for your
-> name to find it.
->
-> The QAPI generator forces you to document your stuff.  Except for
-> commands, events, enum and object types listed in pragma
-> documentation-exceptions, the generator silently defaults missing
-> documentation to "Not documented".  Right now, we're using this loophole
-> some 500 times.
->
-> Most of the offenders are enumeration values.  Their meaning is perhaps
-> easier to guess than the meaning of command arguments, member data, and
-> object type members.  Ignoring enumerations leaves 62 offenders.  Let's
-> examine them.
+typo: /s/geeting/getting
 
-[...]
+> do the memory conversion on the RAMBlock to turn the memory into desired
+> attribute, i.e., private/shared.
+> 
+> Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+> KVM_EXIT_MEMORY_FAULT happens.
+> 
+> Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+> guest_memfd memory backend.
+> 
+> Note, KVM_EXIT_MEMORY_FAULT returns with -EFAULT, so special handling is
+> added.
+> 
+> When page is converted from shared to private, the original shared
+> memory can be discarded via ram_block_discard_range(). Note, shared
+> memory can be discarded only when it's not back'ed by hugetlb because
+> hugetlb is supposed to be pre-allocated and no need for discarding.
+> 
+> Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+> Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> 
+> Message-ID: <20240320083945.991426-13-michael.roth@amd.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>   include/sysemu/kvm.h   |  2 +
+>   accel/kvm/kvm-all.c    | 99 +++++++++++++++++++++++++++++++++++++-----
+>   accel/kvm/trace-events |  2 +
+>   3 files changed, 93 insertions(+), 10 deletions(-)
+> 
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index 2cb31925091..698f1640fe2 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -541,4 +541,6 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp);
+>   
+>   int kvm_set_memory_attributes_private(hwaddr start, hwaddr size);
+>   int kvm_set_memory_attributes_shared(hwaddr start, hwaddr size);
+> +
+> +int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private);
+>   #endif
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 56b17cbd8aa..afd7f992e39 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -2893,6 +2893,70 @@ static void kvm_eat_signals(CPUState *cpu)
+>       } while (sigismember(&chkset, SIG_IPI));
+>   }
+>   
+> +int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
+> +{
+> +    MemoryRegionSection section;
+> +    ram_addr_t offset;
+> +    MemoryRegion *mr;
+> +    RAMBlock *rb;
+> +    void *addr;
+> +    int ret = -1;
+> +
+> +    trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
+> +
+> +    if (!QEMU_PTR_IS_ALIGNED(start, qemu_real_host_page_size()) ||
+> +        !QEMU_PTR_IS_ALIGNED(size, qemu_real_host_page_size())) {
+> +        return -1;
+> +    }
+> +
+> +    if (!size) {
+> +        return -1;
+> +    }
+> +
+> +    section = memory_region_find(get_system_memory(), start, size);
+> +    mr = section.mr;
+> +    if (!mr) {
+> +        return -1;
+> +    }
+> +
+> +    if (!memory_region_has_guest_memfd(mr)) {
+> +        error_report("Converting non guest_memfd backed memory region "
+> +                     "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
+> +                     start, size, to_private ? "private" : "shared");
+> +        ret = -1;
 
-> = qapi/net.json
->
-> * String
->
->   Lack of the @str: section produces an embarrassing "Not documented" in
->   the generated documentation.  I can post a patch to make it less
->   embarrassing.  I doubt we can make it actually good, as generic
->   wrapper types like this one have meaning only in the context they are
->   used.  Therefore, their meaning can be usefully explained only at
->   their uses, not their definition.
+No need for it. ret is initialized as -1 at the function start.
 
-I decided not to.
+> +        goto out_unref;
+> +    }
+> +
+> +    if (to_private) {
+> +        ret = kvm_set_memory_attributes_private(start, size);
+> +    } else {
+> +        ret = kvm_set_memory_attributes_shared(start, size);
+> +    }
+> +    if (ret) {
+> +        goto out_unref;
+> +    }
+> +
+> +    addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
+> +    rb = qemu_ram_block_from_host(addr, false, &offset);
+> +
+> +    if (to_private) {
+> +        if (rb->page_size == qemu_real_host_page_size()) {
+> +            /*
+> +            * shared memory is back'ed by  hugetlb, which is supposed to be
 
-String is used for NetdevUserOptions members @dnssearch, @hostfwd, and
-@guestfwd.  NetdevUserOptions are the type-specific arguments of
-netdev-add with type "user".
+Please fix the bad comment indentation for me, as well as the extra 
+space before 'hugetlb'
 
-@dnssearch is documented tolerably well, although there's less
-information than for the CLI equivalent in qemu-options.hx.
-
-@hostfwd is not: the string format is not documented at all.  It's its
-own mini-language.  The CLI equivalent in qemu-options.hx documents it.
-
-Of course, encoding information in strings like that is bad practice in
-QMP.  Probably not worth fixing now.
-
-Same for @guestfwd.
-
-These documentation deficiencies are more serious than the "Not
-documented" for String.  Only fixing the latter seems not worthwhile.
-
-Jason, thoughts?
-
-[...]
+> +            * pre-allocated and doesn't need to be discarded
+> +            */
+> +            goto out_unref;
+> +        }
+> +        ret = ram_block_discard_range(rb, offset, size);
+> +    } else {
+> +        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
+> +    }
+> +
+> +out_unref:
+> +    memory_region_unref(section.mr);
+> +    return ret;
+> +}
+> +
+>   int kvm_cpu_exec(CPUState *cpu)
+>   {
+>       struct kvm_run *run = cpu->kvm_run;
+> @@ -2960,18 +3024,20 @@ int kvm_cpu_exec(CPUState *cpu)
+>                   ret = EXCP_INTERRUPT;
+>                   break;
+>               }
+> -            fprintf(stderr, "error: kvm run failed %s\n",
+> -                    strerror(-run_ret));
+> +            if (!(run_ret == -EFAULT && run->exit_reason == KVM_EXIT_MEMORY_FAULT)) {
+> +                fprintf(stderr, "error: kvm run failed %s\n",
+> +                        strerror(-run_ret));
+>   #ifdef TARGET_PPC
+> -            if (run_ret == -EBUSY) {
+> -                fprintf(stderr,
+> -                        "This is probably because your SMT is enabled.\n"
+> -                        "VCPU can only run on primary threads with all "
+> -                        "secondary threads offline.\n");
+> -            }
+> +                if (run_ret == -EBUSY) {
+> +                    fprintf(stderr,
+> +                            "This is probably because your SMT is enabled.\n"
+> +                            "VCPU can only run on primary threads with all "
+> +                            "secondary threads offline.\n");
+> +                }
+>   #endif
+> -            ret = -1;
+> -            break;
+> +                ret = -1;
+> +                break;
+> +            }
+>           }
+>   
+>           trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
+> @@ -3054,6 +3120,19 @@ int kvm_cpu_exec(CPUState *cpu)
+>                   break;
+>               }
+>               break;
+> +        case KVM_EXIT_MEMORY_FAULT:
+> +            trace_kvm_memory_fault(run->memory_fault.gpa,
+> +                                   run->memory_fault.size,
+> +                                   run->memory_fault.flags);
+> +            if (run->memory_fault.flags & ~KVM_MEMORY_EXIT_FLAG_PRIVATE) {
+> +                error_report("KVM_EXIT_MEMORY_FAULT: Unknown flag 0x%" PRIx64,
+> +                             (uint64_t)run->memory_fault.flags);
+> +                ret = -1;
+> +                break;
+> +            }
+> +            ret = kvm_convert_memory(run->memory_fault.gpa, run->memory_fault.size,
+> +                                     run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE);
+> +            break;
+>           default:
+>               ret = kvm_arch_handle_exit(cpu, run);
+>               break;
+> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+> index e8c52cb9e7a..681ccb667d6 100644
+> --- a/accel/kvm/trace-events
+> +++ b/accel/kvm/trace-events
+> @@ -31,3 +31,5 @@ kvm_cpu_exec(void) ""
+>   kvm_interrupt_exit_request(void) ""
+>   kvm_io_window_exit(void) ""
+>   kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index %d, system_even_type %"PRIu32
+> +kvm_convert_memory(uint64_t start, uint64_t size, const char *msg) "start 0x%" PRIx64 " size 0x%" PRIx64 " %s"
+> +kvm_memory_fault(uint64_t start, uint64_t size, uint64_t flags) "start 0x%" PRIx64 " size 0x%" PRIx64 " flags 0x%" PRIx64
 
 
