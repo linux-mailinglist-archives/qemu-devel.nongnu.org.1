@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610F788C6B9
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:21:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1127B88C7BD
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:46:25 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp8aM-0005vz-84; Tue, 26 Mar 2024 11:19:34 -0400
+	id 1rp8zF-0003a9-GY; Tue, 26 Mar 2024 11:45:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rp8aH-0005vW-KJ
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:19:29 -0400
-Received: from mail-lf1-f53.google.com ([209.85.167.53])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zB-0003YT-8I
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:13 -0400
+Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rp8aE-0002jg-1Z
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:19:29 -0400
-Received: by mail-lf1-f53.google.com with SMTP id
- 2adb3069b0e04-515b69e8f38so955673e87.1
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:19:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8z9-00013S-3A
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:13 -0400
+Received: by mail-lj1-x236.google.com with SMTP id
+ 38308e7fff4ca-2d68cf90ec4so93860321fa.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711467909; x=1712072709; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=hn7lLwxhhf3gNG9hNhmhqHwHMzru6i5It7d/ZRKMp5c=;
+ b=Yb5lMLhXOiKn5VkpseRU65m2V2+9vB72Gq7NIpyoOd0vzxJydvcbsgZDZ8Tp9di5M4
+ QyWICCpbJTOqd434AzBzLHiBf9qkZDmkWqCnsK2rUnaBmrNZ7i5urO2x7ZW4jLgx0Jh2
+ xV0dhqjRwFIYCwc0mVk1VBDaf5QbAnHUtWDLDtlr4lXtZqtPtC0EjDhhByZ6Z5dhTM2d
+ C8zwh22r+e9ayzvjwlC3+he10IbdY5zI37WDLzFR0wGFTFxF2H9z1GUjEAfpQ1aEtuS6
+ wFYSBJHINrG32pOOCSdjVz4XRETqB+dmODdwx8qSLRXgcdZXbpNMF9Lt5O1dDotTMnKI
+ 3u2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711466363; x=1712071163;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=JUVslbHxJBsutcvQ73cVdAnF0u3jUnm/TB9Hv1RCS88=;
- b=BYjIR3yeZ8aAPOefDQtLAHrR4I8J4EB3L5nSdArCyE3zJrmL/aUHCMgp/vKm3GK0y9
- vcuvJeqm20JzBf6GEj6pjwpRopWNuJLsWwv86e7AtBSYJ470HwlQm++FJEOghMrvZopa
- WZ0UTM9Z4avfV8WISC2bu31YFoVvHsaF3bzznBWJEjK/tZy24cbRrD9YnBdOH8/YCpn7
- N3HipuTCOlymX3WPdh9JpoHA78rgiIEb/uQ18GYWa2/lyaNAw5Z8wRIzHObnqSLOOkbb
- 3jZneo6E2D1SXr4Ixpn82PgTCX+zhSS0H0BSeaeyyyPhru9UXmpfKOGg5UC+CXf0fDsB
- 903g==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWIvc3IJ+P/3WCH89TCNppMbreZp+AV2BTnk6rSiDLIyJI1HqmPhvoRM3rP2USj8XUkWxBvMi+xX1/Vp9Y0LV7ronFqzbE=
-X-Gm-Message-State: AOJu0Yww5lJKyGzRHbO7srNh0Yd/ic6eaqKVW0QkbxaH8Wt2HHxn5E7q
- cDzRLiW0Unuh4BV629GKDN93bxbrjm4DFoPSKSrkMF22LwUv8Qpj
-X-Google-Smtp-Source: AGHT+IFP2FZZbpvO9c2stqUmT05DnUhkBn3keNu/tRQhmT0rhlV567sSQvXWBoBrIb87kTJm2cF7ag==
-X-Received: by 2002:a05:6512:54e:b0:513:d522:b58c with SMTP id
- h14-20020a056512054e00b00513d522b58cmr6423792lfl.56.1711466363049; 
- Tue, 26 Mar 2024 08:19:23 -0700 (PDT)
-Received: from localhost (fwdproxy-lla-000.fbsv.net.
- [2a03:2880:30ff::face:b00c]) by smtp.gmail.com with ESMTPSA id
- i16-20020a170906091000b00a4735fc654fsm4295335ejd.205.2024.03.26.08.19.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Mar 2024 08:19:22 -0700 (PDT)
-From: Breno Leitao <leitao@debian.org>
-To: hengqi@linux.alibaba.com, xuanzhuo@linux.alibaba.com,
- "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Andrew Melnychenko <andrew@daynix.com>
-Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org,
- virtualization@lists.linux.dev (open list:VIRTIO CORE AND NET DRIVERS),
- netdev@vger.kernel.org (open list:NETWORKING DRIVERS),
- linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net v2 2/2] virtio_net: Do not send RSS key if it is not
- supported
-Date: Tue, 26 Mar 2024 08:19:09 -0700
-Message-ID: <20240326151911.2155689-2-leitao@debian.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240326151911.2155689-1-leitao@debian.org>
-References: <20240326151911.2155689-1-leitao@debian.org>
+ d=1e100.net; s=20230601; t=1711467909; x=1712072709;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hn7lLwxhhf3gNG9hNhmhqHwHMzru6i5It7d/ZRKMp5c=;
+ b=s9a1El1ttMVrpBceqa2WWwqx4VrDUCDUsxebpZoFDZghuS3By4SPz1aqqB4SQDg581
+ QiUO7NqcsNr00jGn9tdIP7DRtjc3gqLXI2CXQTO4y+vOzkeT8MLxORQpu8BIXMFLIpYH
+ Roox8n6ibFq3FDGSUTNHBg2f8QDAjxHwDXAVr8Zg8KId5qs5LBCsE+ql0XbrjPTuipoS
+ 4UZqlcgUHuYti8tbEryc+KhTeHTL/3UF0qaPxjh/VTg0tCAhcMx0ZcRa1TKDLwbLrQO5
+ VLwo1R/eSkqMF6HvPgVpGTsk8DISx/iJvEL3jrNEIExU0iR7fB6F2lonoJySfe1zh7ZV
+ RP0A==
+X-Gm-Message-State: AOJu0Yx5EK0I/ShH5ivv8BVnrO87mFYGGwwSI0bJk7e1Nvwm9gVtDLKK
+ sVKcGYDvgFSrmAFe9s7LDc5aaUWSNKA52MEo+eq0dbI2E9oyQUakvcc/HNNJEB0mC0Yo/nA1HUr
+ Q
+X-Google-Smtp-Source: AGHT+IEALTk4jXcNz+fMQ88/UxCzvbm02IxmYranwLwGcphz5AA31i0Mrh7B9Am48JKgWGWF1x3MBA==
+X-Received: by 2002:a2e:834e:0:b0:2d4:3c32:814d with SMTP id
+ l14-20020a2e834e000000b002d43c32814dmr1302990ljh.26.1711467908686; 
+ Tue, 26 Mar 2024 08:45:08 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.155.229])
+ by smtp.gmail.com with ESMTPSA id
+ fb13-20020a05600c520d00b0041490a19e13sm1084314wmb.7.2024.03.26.08.45.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 26 Mar 2024 08:45:07 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 00/13] Misc HW patches for 2024-03-26
+Date: Tue, 26 Mar 2024 16:44:51 +0100
+Message-ID: <20240326154505.8300-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.167.53;
- envelope-from=breno.debian@gmail.com; helo=mail-lf1-f53.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::236;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,80 +89,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There is a bug when setting the RSS options in virtio_net that can break
-the whole machine, getting the kernel into an infinite loop.
+The following changes since commit 096ae430a7b5a704af4cd94dca7200d6cb069991:
 
-Running the following command in any QEMU virtual machine with virtionet
-will reproduce this problem:
+  Merge tag 'pull-qapi-2024-03-26' of https://repo.or.cz/qemu/armbru into staging (2024-03-26 09:50:21 +0000)
 
-    # ethtool -X eth0  hfunc toeplitz
+are available in the Git repository at:
 
-This is how the problem happens:
+  https://github.com/philmd/qemu.git tags/hw-misc-20240326
 
-1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+for you to fetch changes up to ccebb9ae352eea63cb1491cb829e4cd0f7576f1c:
 
-2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+  ui/cocoa: Use NSTrackingInVisibleRect (2024-03-26 14:32:54 +0100)
 
-3) virtnet_commit_rss_command() populates 4 entries for the rss
-scatter-gather
+A pair of "WARNING: line over 80 characters" are ignored (82 chars).
 
-4) Since the command above does not have a key, then the last
-scatter-gatter entry will be zeroed, since rss_key_size == 0.
-sg_buf_size = vi->rss_key_size;
+----------------------------------------------------------------
+Misc HW patch queue
 
-5) This buffer is passed to qemu, but qemu is not happy with a buffer
-with zero length, and do the following in virtqueue_map_desc() (QEMU
-function):
+[hw]
+- Do not silently overwrite 'io_timeout' property in scsi-generic (Lorenz)
+- Propagate period when enabling a clock in stm32l4x5 mux (Arnaud, Phil)
+- Add missing smbios_get_table_legacy() stub (Igor)
+- Append a space in gpa2hva() HMP error message (Yao)
+- Fix compiler warning in 'execlog' plugin (Yao)
 
-  if (!sz) {
-      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+[target]
+- i386: Enable page walking from MMIO memory (Gregory, Jonathan)
+- tricore: Use correct string format in cpu_tlb_fill (Phil)
 
-6) virtio_error() (also QEMU function) set the device as broken
+[docs]
+- Fix formatting in amigang.rst (Zoltan)
 
-    vdev->broken = true;
+[ui]
+- Fix cocoa regression in platform fullscreen toggling (Akihiko)
 
-7) Qemu bails out, and do not repond this crazy kernel.
+----------------------------------------------------------------
 
-8) The kernel is waiting for the response to come back (function
-virtnet_send_command())
+Akihiko Odaki (3):
+  ui/cocoa: Fix aspect ratio
+  ui/cocoa: Resize window after toggling zoom-to-fit
+  ui/cocoa: Use NSTrackingInVisibleRect
 
-9) The kernel is waiting doing the following :
+Arnaud Minier (1):
+  hw/misc/stm32l4x5_rcc: Propagate period when enabling a clock
 
-      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-	     !virtqueue_is_broken(vi->cvq))
-	      cpu_relax();
+BALATON Zoltan (1):
+  docs/system/ppc/amigang.rst: Fix formatting
 
-10) None of the following functions above is true, thus, the kernel
-loops here forever. Keeping in mind that virtqueue_is_broken() does
-not look at the qemu `vdev->broken`, so, it never realizes that the
-vitio is broken at QEMU side.
+Gregory Price (1):
+  target/i386/tcg: Enable page walking from MMIO memory
 
-Fix it by not sending RSS commands if the feature is not available in
-the device.
+Igor Mammedov (1):
+  hw/smbios: add stub for smbios_get_table_legacy()
 
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Cc: stable@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/virtio_net.c | 3 +++
- 1 file changed, 3 insertions(+)
+Lorenz Brun (1):
+  hw/scsi/scsi-generic: Fix io_timeout property not applying
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index c640fdf28fc5..e6b0eaf08ac2 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3809,6 +3809,9 @@ static int virtnet_set_rxfh(struct net_device *dev,
- 	struct virtnet_info *vi = netdev_priv(dev);
- 	int i;
- 
-+	if (!vi->has_rss && !vi->has_rss_hash_report)
-+		return -EOPNOTSUPP;
-+
- 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
- 	    rxfh->hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
+Philippe Mathieu-Daudé (3):
+  target/tricore/helper: Use correct string format in cpu_tlb_fill()
+  hw/clock: Let clock_set_mul_div() return a boolean value
+  hw/misc/stm32l4x5_rcc: Inline clock_update() in clock_mux_update()
+
+Yao Xingtao (2):
+  monitor/hmp-cmds-target: Append a space in error message in gpa2hva()
+  contrib/plugins/execlog: Fix compiler warning
+
+ docs/devel/clocks.rst                |  4 ++
+ docs/system/ppc/amigang.rst          |  4 +-
+ include/hw/clock.h                   |  4 +-
+ contrib/plugins/execlog.c            | 24 +++++++-
+ hw/core/clock.c                      |  8 ++-
+ hw/misc/stm32l4x5_rcc.c              |  9 ++-
+ hw/scsi/scsi-generic.c               |  1 -
+ hw/smbios/smbios_legacy_stub.c       |  5 ++
+ monitor/hmp-cmds-target.c            |  2 +-
+ target/i386/tcg/sysemu/excp_helper.c | 57 +++++++++---------
+ target/tricore/helper.c              |  4 +-
+ ui/cocoa.m                           | 90 +++++++++++++++++-----------
+ 12 files changed, 137 insertions(+), 75 deletions(-)
+
 -- 
-2.43.0
+2.41.0
 
 
