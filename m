@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279C688C7C0
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:46:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0748788C7C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 16:47:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp8zU-0003fA-02; Tue, 26 Mar 2024 11:45:32 -0400
+	id 1rp8zb-0003hc-11; Tue, 26 Mar 2024 11:45:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zS-0003e5-8w
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:30 -0400
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zZ-0003hQ-6O
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:37 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zQ-00018g-R5
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:30 -0400
-Received: by mail-lj1-x231.google.com with SMTP id
- 38308e7fff4ca-2d6dda3adb9so21223081fa.1
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rp8zX-0001AK-NZ
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 11:45:36 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-341c7c8adf3so2024958f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 08:45:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711467926; x=1712072726; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711467931; x=1712072731; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=rDRJxqQMAhWnh+G5jpK8UG7ljcyYHl8RJLjLiMQKlpg=;
- b=NGt7zk7NnvkLiO+rmxYS7RMgb414csV3Ce7YRpBUytr4vqQ6harrMRHoCRHpYzgSnP
- ve4OqizHNcnjwLv/LNyIcvteT4qwfM8Lzn/lzNoD3oWMVBLiA9QrdyoxzTcJDxX5jgDV
- 5G9ILGB8IsJDu0rjmGu+De/91OHsaN+pQ45vHPsvRiIDgimbtzbuP8I7wy5aleErE266
- QnjP+F5RBoNv7J714TDXZxQbqp88Gu+30ffj/33LxptrLWJrMKlfkZS9IRd3K2Z9r2YX
- 0Bo/tBlmt3ouLtslQcBNfTg2R9XSl3p38MoiD4UVKm7MQ1YLTAefEa0tri7gjrJOWcmC
- jwnw==
+ bh=IDGvrX1ZbW/accSdyb5WOkWj9+BF/HkrY2XWDQDRR/o=;
+ b=CrKUvdeHFUIn/1DnLxGPmmixXaab6TmnvtqQbb2v0FB3q0WBtRyWJqUDO6rnR/u/jA
+ DUnHO4XfvAckIOmygLFv1bqwDwnY3zTFvHbz47o+UoqnrX4rtXeJQ+zkIPp5sQr3Mj+H
+ Ra1gsq2hkB6v8YHv+rGKlXADiZzdGuGHSzIv6ksgCynriOa4+2uYP6d1x60SSFW+V3HS
+ x1v43Tbi5CRej0jpmdadwJvILvzUjoWV5l88i80iob3Hgjtg7BZuA4FPxxpiwO0Ow4K6
+ wvQ3aZio4/CmgkufCmTG31VG2k+yCD2bDXV0T/9/s7V+638p82/PsONUEzwyFpZ6yvWe
+ GaXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711467926; x=1712072726;
+ d=1e100.net; s=20230601; t=1711467931; x=1712072731;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rDRJxqQMAhWnh+G5jpK8UG7ljcyYHl8RJLjLiMQKlpg=;
- b=s/nUc19k7sbNIWVfGbYIEVYMbX1Gs6Ba+06DqEYsQHHi1R1V6b7subeszsm98sRBkY
- qZwlTCveZETRN71ChUPVij9GdhIkfD2URO/zQKTZywYkokxK5CFAAm0ljix0wJcjYjU2
- syGxM3zSPXjJMoo9aABUMz5EQW2NRGok9LvPcy7yQxptDCEHw6gPw448BeLOkp2u+Y7k
- xTIYF1g/nTvj5bSSwjV4pxayg2mrH9m/dsMutJP20+LcR5r1goHNulfdminyPFSm30oa
- b+ssxar+e7UtFCjFu4MaaZr+5kdURkergzWDdw6fbH/X/N0zn2c/lYS3ciENBuU8wmVm
- 7t2g==
-X-Gm-Message-State: AOJu0YxGbi/60nkU7nv5h7Zv02BGEhPqX3e4UqZd6bkLrO24V/fL7wBB
- 8zuWtheBGq12rfG7sx+DN9Ewxfpq+Tv0oMn3zltZp/19jqqQAiOb0eQgxBUs2vGtXSFAyBpvs5K
- b
-X-Google-Smtp-Source: AGHT+IFqE/msHvMueVXJSeWqeznaanf64OTWLSApiWnDNA5v58x32u5IKEF2KoZoc6z5RuTm+RYh0A==
-X-Received: by 2002:a05:651c:b0f:b0:2d6:a2cd:bb8c with SMTP id
- b15-20020a05651c0b0f00b002d6a2cdbb8cmr2493212ljr.10.1711467926018; 
- Tue, 26 Mar 2024 08:45:26 -0700 (PDT)
+ bh=IDGvrX1ZbW/accSdyb5WOkWj9+BF/HkrY2XWDQDRR/o=;
+ b=C88VWTVGtvH/b+TzrzVs2TG390coQS954b0Y8GkZuJvVxzNASg4yAcKqdq31Xak6CC
+ M52rROC0sY23li6PYaWzVumy13lwaV0+t3dmJNee7pLv3/eg4NaiYHRq9E/lsO2voV18
+ c7sz0QuIwH24XXiMccVZokS/Ga7etoEZNu42XZnCEy831fR4rKUxT1/5HDr/Rtjfx32I
+ QvwJF7xe8U+11A6Li3g74NkMRfNDmkO/kZSVG0pazZCkiUEOJkgFS8TpmfJyaO++fWP0
+ bo9jRcbv687mMyuKbdlSjPe/s8s8QaFHA1LYx/H5SfKt2UK1TgOGjzWRKYlbWP4M/hTt
+ xrbw==
+X-Gm-Message-State: AOJu0YzJJiq4IJFBHKYmkbHyzR0RjtBEvV8VeTr8NyL2r2NTobOM/O0M
+ t+rJbIktJzKLwrWluGyAZheBa0Ke7Bz8O6A2CzHGN7FI+5oHNnhs64l4I3FwBka7kUKLeTnqc+p
+ c
+X-Google-Smtp-Source: AGHT+IFjCgXQ0kboXlIItHE5pn4+DVJBuuH9FSd4TH1/vwbksJnhtefvws+bYIlE+GEq+/vOocYLvw==
+X-Received: by 2002:a5d:67cd:0:b0:341:c000:5f02 with SMTP id
+ n13-20020a5d67cd000000b00341c0005f02mr31090wrw.7.1711467931613; 
+ Tue, 26 Mar 2024 08:45:31 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.229])
  by smtp.gmail.com with ESMTPSA id
- hg9-20020a05600c538900b004101f27737asm11836235wmb.29.2024.03.26.08.45.24
+ h8-20020adffd48000000b0033e9d9f891csm12447332wrs.58.2024.03.26.08.45.30
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 26 Mar 2024 08:45:25 -0700 (PDT)
+ Tue, 26 Mar 2024 08:45:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Yao Xingtao <yaoxt.fnst@fujitsu.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Dr . David Alan Gilbert" <dave@treblig.org>
-Subject: [PULL 03/13] monitor/hmp-cmds-target: Append a space in error message
- in gpa2hva()
-Date: Tue, 26 Mar 2024 16:44:54 +0100
-Message-ID: <20240326154505.8300-4-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Subject: [PULL 04/13] target/tricore/helper: Use correct string format in
+ cpu_tlb_fill()
+Date: Tue, 26 Mar 2024 16:44:55 +0100
+Message-ID: <20240326154505.8300-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240326154505.8300-1-philmd@linaro.org>
 References: <20240326154505.8300-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::231;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x231.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,40 +95,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+'address' got converted from target_ulong to vaddr in commit
+68d6eee73c ("target/tricore: Convert to CPUClass::tlb_fill").
+Use the corresponding format string to avoid casting.
 
-In qemu monitor mode, when we use gpa2hva command to print the host
-virtual address corresponding to a guest physical address, if the gpa is
-not in RAM, the error message is below:
-
-  (qemu) gpa2hva 0x750000000
-  Memory at address 0x750000000is not RAM
-
-A space is missed between '0x750000000' and 'is'.
-
-Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
-Fixes: e9628441df ("hmp: gpa2hva and gpa2hpa hostaddr command")
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
-Message-ID: <20240319021610.2423844-1-ruansy.fnst@fujitsu.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240319051413.6956-1-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 ---
- monitor/hmp-cmds-target.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/tricore/helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
-index 9338ae8440..ff01cf9d8d 100644
---- a/monitor/hmp-cmds-target.c
-+++ b/monitor/hmp-cmds-target.c
-@@ -261,7 +261,7 @@ void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, uint64_t size, Error **errp)
-     }
+diff --git a/target/tricore/helper.c b/target/tricore/helper.c
+index 6d9e80cc0c..76bd226370 100644
+--- a/target/tricore/helper.c
++++ b/target/tricore/helper.c
+@@ -76,9 +76,9 @@ bool tricore_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
+     ret = get_physical_address(env, &physical, &prot,
+                                address, rw, mmu_idx);
  
-     if (!memory_region_is_ram(mrs.mr) && !memory_region_is_romd(mrs.mr)) {
--        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx "is not RAM", addr);
-+        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx " is not RAM", addr);
-         memory_region_unref(mrs.mr);
-         return NULL;
-     }
+-    qemu_log_mask(CPU_LOG_MMU, "%s address=" TARGET_FMT_lx " ret %d physical "
++    qemu_log_mask(CPU_LOG_MMU, "%s address=0x%" VADDR_PRIx " ret %d physical "
+                   HWADDR_FMT_plx " prot %d\n",
+-                  __func__, (target_ulong)address, ret, physical, prot);
++                  __func__, address, ret, physical, prot);
+ 
+     if (ret == TLBRET_MATCH) {
+         tlb_set_page(cs, address & TARGET_PAGE_MASK,
 -- 
 2.41.0
 
