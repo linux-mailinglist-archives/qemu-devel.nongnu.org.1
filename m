@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075F888BB57
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:35:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF75988BB51
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:35:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KN-0004dI-PH; Tue, 26 Mar 2024 03:34:35 -0400
+	id 1rp1KM-0004d3-3A; Tue, 26 Mar 2024 03:34:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KL-0004d4-TB
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KJ-0004c8-Ud
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KK-0005Ly-Ds
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:33 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KH-0005LA-W9
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711438471;
+ s=mimecast20190719; t=1711438467;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QpboykxMXozd2FPNmZskFONa6Y0t8ZYUDyxC1MW6nEQ=;
- b=XJpSypB+disKIJNVeKq/DWcd4NGncjgOU6Y+g9IRXoPyPYStDVjHC53frYwJsGMErpmFga
- 1Q64Ic80fATH8VWKOSnEFilefFdSQZBRUILGHiKEwsWDcWGWojg2K35PjFnsEME8U4SN5+
- 8tvou9JfkxQvqA5xX6kaNPL2HJBT5YU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-342-tPfiWpYZOU6gocVCBdbTOg-1; Tue,
- 26 Mar 2024 03:34:26 -0400
-X-MC-Unique: tPfiWpYZOU6gocVCBdbTOg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=fvltjtMXvy1r9lw5NqzV87nAyBFhXNHyMyQgQezIens=;
+ b=GSJ+8LjF4ez3ArzVXMl9v5DG3nAUqb/YsyrLuuLDA6YVHvGLFORz+QMZndl0mUrHawgpqp
+ hmodOnOXa9tbWZBB5cllF8HA35y6dREH3unEBwvoYaVHlMX7LrGkHREV2ZO57VaSuuAgpA
+ WAeIwGyAvQRPnR74tVQSSjnmTuvQKCY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-HpZkEhnTNvO2U9YyPkhXfw-1; Tue, 26 Mar 2024 03:34:25 -0400
+X-MC-Unique: HpZkEhnTNvO2U9YyPkhXfw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9663A1C02C9E;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9CE25185A786;
  Tue, 26 Mar 2024 07:34:25 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 75ED0111F3C6;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7D1C92166B36;
  Tue, 26 Mar 2024 07:34:25 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8D5D121E657E; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id 907AB21E64D0; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>
-Subject: [PULL 02/20] qapi: Resync MigrationParameter and MigrateSetParameters
-Date: Tue, 26 Mar 2024 08:34:02 +0100
-Message-ID: <20240326073420.738016-3-armbru@redhat.com>
+Cc: peter.maydell@linaro.org, John Snow <jsnow@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
+Subject: [PULL 03/20] qapi: Fix bogus documentation of query-migrationthreads
+Date: Tue, 26 Mar 2024 08:34:03 +0100
+Message-ID: <20240326073420.738016-4-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,81 +80,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Enum MigrationParameter mirrors the members of struct
-MigrateSetParameters.  Differences to MigrateSetParameters's member
-documentation are pointless.  Clean them up:
+The doc comment documents an argument that doesn't exist.  Would
+fail compilation if it was marked up correctly.  Delete.
 
-* @compress-level, @compress-threads, @decompress-threads, and
-  x-checkpoint-delay are more thoroughly documented for
-  MigrationParameter, so use that version for both.
+The Returns: section fails to refer to the data type, leaving the user
+to guess.  Fix that.
 
-* @max-cpu-throttle is almost the same.  Use MigrationParameter's
-  version for both.
+The command name violates QAPI naming rules: it should be
+query-migration-threads.  Too late to fix.
 
+Reported-by: John Snow <jsnow@redhat.com>
+Fixes: 671326201dac (migration: Introduce interface query-migrationthreads)
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240322135117.195489-3-armbru@redhat.com>
+Message-ID: <20240322135117.195489-4-armbru@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: John Snow <jsnow@redhat.com>
 ---
- qapi/migration.json | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
+ qapi/migration.json | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index bebe9f71ba..744d05f364 100644
+index 744d05f364..c865ab00c8 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -966,16 +966,26 @@
- # @announce-step: Increase in delay (in milliseconds) between
- #     subsequent packets in the announcement (Since 4.0)
+@@ -2419,9 +2419,7 @@
  #
--# @compress-level: compression level
-+# @compress-level: Set the compression level to be used in live
-+#     migration, the compression level is an integer between 0 and 9,
-+#     where 0 means no compression, 1 means the best compression
-+#     speed, and 9 means best compression ratio which will consume
-+#     more CPU.
+ # Returns information of migration threads
  #
--# @compress-threads: compression thread count
-+# @compress-threads: Set compression thread count to be used in live
-+#     migration, the compression thread count is an integer between 1
-+#     and 255.
+-# data: migration thread name
+-#
+-# Returns: information about migration threads
++# Returns: @MigrationThreadInfo
  #
- # @compress-wait-thread: Controls behavior when all compression
- #     threads are currently busy.  If true (default), wait for a free
- #     compression thread to become available; otherwise, send the page
- #     uncompressed.  (Since 3.1)
- #
--# @decompress-threads: decompression thread count
-+# @decompress-threads: Set decompression thread count to be used in
-+#     live migration, the decompression thread count is an integer
-+#     between 1 and 255. Usually, decompression is at least 4 times as
-+#     fast as compression, so set the decompress-threads to the number
-+#     about 1/4 of compress-threads is adequate.
- #
- # @throttle-trigger-threshold: The ratio of bytes_dirty_period and
- #     bytes_xfer_period to trigger throttling.  It is expressed as
-@@ -1042,8 +1052,8 @@
- # @downtime-limit: set maximum tolerated downtime for migration.
- #     maximum downtime in milliseconds (Since 2.8)
- #
--# @x-checkpoint-delay: the delay time between two COLO checkpoints.
--#     (Since 2.8)
-+# @x-checkpoint-delay: The delay time (in ms) between two COLO
-+#     checkpoints in periodic mode.  (Since 2.8)
- #
- # @block-incremental: Affects how much storage is migrated when the
- #     block migration capability is enabled.  When false, the entire
-@@ -1064,8 +1074,8 @@
- #     postcopy.  Defaults to 0 (unlimited).  In bytes per second.
- #     (Since 3.0)
- #
--# @max-cpu-throttle: maximum cpu throttle percentage.  The default
--#     value is 99. (Since 3.1)
-+# @max-cpu-throttle: maximum cpu throttle percentage.  Defaults to 99.
-+#     (Since 3.1)
- #
- # @multifd-compression: Which compression method to use.  Defaults to
- #     none.  (Since 5.0)
+ # Since: 7.2
+ ##
 -- 
 2.44.0
 
