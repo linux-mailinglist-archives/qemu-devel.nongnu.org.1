@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0A388BB5F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:36:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 947C588BB6B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 08:37:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp1KT-0004ha-Lv; Tue, 26 Mar 2024 03:34:41 -0400
+	id 1rp1KP-0004eF-LH; Tue, 26 Mar 2024 03:34:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KP-0004eG-I5
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KN-0004dD-1t
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KO-0005N8-9a
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:37 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rp1KL-0005MB-Nz
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 03:34:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711438475;
+ s=mimecast20190719; t=1711438473;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iaZAbAEl0I52I9i3YNTrnyDTQd56eGEUzNVhNuqfiWE=;
- b=hXW6MKpELMOErB7/HFOVGwKbob5mF+grAY0fh1WcVsWEbePuWyynpT9liVxM1RBf/d+wNy
- F3tQpeo0TmV3cgl/Mf+4yxzi+2DZHYwx29kqI7/UD2hTcSvbZndsaOgj68rqUCpreF7tm0
- AziF+X7ST2bhSlZgg3AJShlGzRntDtM=
+ bh=oebvQ9k3+tjIp5XFV6vNWQslEKG2TpyUGa0t1LQqJqQ=;
+ b=Uosxh/qsMAdyNAum2qZXEfcuGwX/aazWR6rDF82Q+GDOwqnuAEqJXNO3QBtj/4B86hAgA8
+ Z0hcZdmRCzbL7pBzMKb1tp225s4kpsj/e5472MpgXul+lE4jGU0j2n2QogTvQTRGygAzlW
+ kI3BV9oLO0QzZGl9Nzhaw/8HIA6CtUQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-YFh8R1LgMSqzPT0EZA2cdw-1; Tue, 26 Mar 2024 03:34:31 -0400
-X-MC-Unique: YFh8R1LgMSqzPT0EZA2cdw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ us-mta-230-67aJbkstMW6Wdjoo8Bbn1g-1; Tue, 26 Mar 2024 03:34:31 -0400
+X-MC-Unique: 67aJbkstMW6Wdjoo8Bbn1g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B508584B163;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B5CE4800265;
  Tue, 26 Mar 2024 07:34:30 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9548D1074E;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 95B94492BD3;
  Tue, 26 Mar 2024 07:34:30 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A126121E5D2F; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
+ id A3CF321E5D30; Tue, 26 Mar 2024 08:34:20 +0100 (CET)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org
-Subject: [PULL 09/20] qapi: Fix typo in request-ebpf documentation
-Date: Tue, 26 Mar 2024 08:34:09 +0100
-Message-ID: <20240326073420.738016-10-armbru@redhat.com>
+Subject: [PULL 10/20] qapi: Fix abbreviation punctuation in doc comments
+Date: Tue, 26 Mar 2024 08:34:10 +0100
+Message-ID: <20240326073420.738016-11-armbru@redhat.com>
 In-Reply-To: <20240326073420.738016-1-armbru@redhat.com>
 References: <20240326073420.738016-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -80,24 +80,33 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240322140910.328840-7-armbru@redhat.com>
+Message-ID: <20240322140910.328840-8-armbru@redhat.com>
 ---
- qapi/ebpf.json | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ qapi/migration.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qapi/ebpf.json b/qapi/ebpf.json
-index f413d00154..61359e1c0f 100644
---- a/qapi/ebpf.json
-+++ b/qapi/ebpf.json
-@@ -51,7 +51,7 @@
- # @request-ebpf:
+diff --git a/qapi/migration.json b/qapi/migration.json
+index c865ab00c8..a4319f87bf 100644
+--- a/qapi/migration.json
++++ b/qapi/migration.json
+@@ -1773,7 +1773,7 @@
+ #        default network.
  #
- # Retrieve an eBPF object that can be loaded with libbpf.  Management
--# applications (g.e. libvirt) may load it and pass file descriptors to
-+# applications (e.g. libvirt) may load it and pass file descriptors to
- # QEMU, so they can run running QEMU without BPF capabilities.
+ #     5. For now, number of migration streams is restricted to one,
+-#        i.e number of items in 'channels' list is just 1.
++#        i.e. number of items in 'channels' list is just 1.
  #
- # @id: The ID of the program to return.
+ #     6. The 'uri' and 'channels' arguments are mutually exclusive;
+ #        exactly one of the two should be present.
+@@ -1850,7 +1850,7 @@
+ #     3. The uri format is the same as for -incoming
+ #
+ #     4. For now, number of migration streams is restricted to one,
+-#        i.e number of items in 'channels' list is just 1.
++#        i.e. number of items in 'channels' list is just 1.
+ #
+ #     5. The 'uri' and 'channels' arguments are mutually exclusive;
+ #        exactly one of the two should be present.
 -- 
 2.44.0
 
