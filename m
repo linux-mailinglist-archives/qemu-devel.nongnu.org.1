@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB0088C241
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:36:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70ECA88C239
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 13:35:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rp61A-0005Dy-Cv; Tue, 26 Mar 2024 08:35:04 -0400
+	id 1rp61C-0005FV-D3; Tue, 26 Mar 2024 08:35:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp616-0005DK-S0
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:00 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rp618-0005Dp-Uq
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:02 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rp615-0000en-7L
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:00 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-6ea9a60f7f5so2335637b3a.3
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:34:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rp616-0000ez-GJ
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 08:35:02 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2d47a92cfefso64846731fa.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 05:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711456498; x=1712061298;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=vYBWS+x0cCz2HwpXjLNdbyBk5DIta0GpDi9Mx2R+9is=;
- b=W88syRZ7pBOiLHJltUkR93fphlBbbAD2Fggdo/yF67usBXV/FdOTmmmVRBevavORdG
- eqksBg6NhEdH223fA7QSAMkMywvJ8F+knGVZ3Pfgy5IBcX9aQqFo4y77dZZPZhMtN1il
- AGS3mTalVmzdv2UwvKPZe2+74hEeUxVZ1TDfc1hgl7pQAnYj4Vo00ilNIawNH86KgHiU
- ZPbqECJignwq5EMrWBJUz6Ben68TR2hSq+xScbHAk2Fq55nZ/79bpTsi4V706TFYDxDX
- uDtrhJQGHkWu9nQ7Jb/K2CtmwxfJ3pbMEIhFcQjaUBd4iUF52GvlWf8lXw6wjSYwJPGi
- n4gw==
+ d=linaro.org; s=google; t=1711456498; x=1712061298; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=s1T6XJTpY4BRy8dxlhwxm1WWjcttE9EbPLYKwg8XkHA=;
+ b=Kaqolfc+qat4grIa/730ruXLLX4Ntp6TV0NbWz3r7B0t2Athoi83c5kSNbeSM/dsMM
+ jlzNHN4JIo0DB2VsMkchSFhAxCXDmaBbO12kE6U/rSQXVRwRuZwsy5CeXJLH6p6c9AGC
+ G2SbTWSJ5+L2iSVSMPZ6jD+JQ3Hp6F34sEpmsbujpRhdgA4WPIbcdFYLWXEEMtjUAxOW
+ 9K/w8LRciLvobV2tlsxM5UPrdGI1Pgh3HmSBlmLbLvQzsRhPqwB2So8guI4KHLVCU25D
+ /t1GES3inEYJfl5K5Lk2Jh8GSjezy6bhNeDCc4G5zZop9EzN++iZLY5GrFz5ASGIuWBx
+ EZZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1711456498; x=1712061298;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vYBWS+x0cCz2HwpXjLNdbyBk5DIta0GpDi9Mx2R+9is=;
- b=xLNOcbDubDtR6A/BK7/1nNpMlz3ICoMD9rhizGdHKLgURIO7u40Un9Tp6/YlCQlwDJ
- YB97yyUvVg5RaaAgHekAiBB4gvXxV2cRhzD6Ets3l8bGV0PV8IUqjRE/nY9t7rTKshGe
- R3U/t+fMDGJ74ewmyuqbaCFzVSxbiWyywwdf/6Anp2sEvX25waywz2pzd1SBAhwVOoPC
- kI+myVkAdFpiVVCNiY5wXhZQEZzuW3JZYKu0W2bz067TBHHbedvTyB42YQ91CU5sPWjK
- Yd5w37pN2LvRXJJSGKe+y+8uOFFkjmnVbKn5E8jAxCWhkHXw1kBd28GwmRd3r0HMiajj
- jRQg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXQREiZoIx7ISzggr8tEs7Xtg5IrSnmKW6D7vCDbkSu6q8fylt95L6zAVlOuU3uiVnk+0ZMi+7otFMLlClKP/bgYQfHmoI=
-X-Gm-Message-State: AOJu0Yxo4KH+1/yjZk6y6RqdWYhcrszKouEE7YlTTqAvEAKbNRbmX3df
- CFKfChizp0r6YB3SyMr7UTQMITgKCOH1jg02wkwtM6KiDscZINUM6iKwUTV+Oc8=
-X-Google-Smtp-Source: AGHT+IHK2/a9ocYwQfFGOprp1X5uI0qcJyrqhoEAEfhHKWVq5Z8dj53aenuBibdidfnBJgSG1lmEjA==
-X-Received: by 2002:a05:6a20:12d2:b0:1a3:4671:2285 with SMTP id
- v18-20020a056a2012d200b001a346712285mr9557900pzg.44.1711456497934; 
+ bh=s1T6XJTpY4BRy8dxlhwxm1WWjcttE9EbPLYKwg8XkHA=;
+ b=tsX1DpwyLEOF7BNdPYIOIyzGxJV7/WMYwG787hOc57XGEGDx1Nosf1yTuhX+Y7APAC
+ 3fRunHne7lRFGynvaX8yuhjQOttYJWTYIWSPg96jLdaC5ndikTcVtITwRrJnBz1SR1RI
+ Hqcve1/dDfj3OGAuGUTKaezvM6/giOy4vtMrGI9OIcK+G6d44aO20gfWp9rZsxTCjTFL
+ 0bB4SYrzizQdPdHsFbA97wZNTPT3EiME3TEXb6wWyUM09EMsAovPdkCKd+p/vbxYQS66
+ NWbYZWExi5hkRKatGAwBF7ulvvDnWOsz6aeLrh9ADMuL+/GCB3IQgAwYQY411N2dmAuD
+ K2kA==
+X-Gm-Message-State: AOJu0YxOny/tSwu/tcE9KE6Bw6M+yataT0myH0atgd/oc868bIUj1bzs
+ be5/q/HLQ63SmnwGnB9CYGzKYvQrmxpqTJnoe5Xry+oymmplzttRFINyeYNcrXqpNqlTczGhCgs
+ zQls=
+X-Google-Smtp-Source: AGHT+IErmgE4cE4nLKE9X49o0cY0E4J5IC38aPELzKmpLBlH1mFXxOzNz8mjc8EvcbQKIkEHXMMC+Q==
+X-Received: by 2002:a2e:98c2:0:b0:2d6:9481:b38 with SMTP id
+ s2-20020a2e98c2000000b002d694810b38mr6909542ljj.20.1711456498068; 
+ Tue, 26 Mar 2024 05:34:58 -0700 (PDT)
+Received: from linaro.. ([102.35.208.160]) by smtp.gmail.com with ESMTPSA id
+ y19-20020a1c4b13000000b004148090cf85sm716317wma.0.2024.03.26.05.34.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 26 Mar 2024 05:34:57 -0700 (PDT)
-Received: from localhost ([157.82.202.248])
- by smtp.gmail.com with UTF8SMTPSA id
- d2-20020a170902cec200b001d9a91af8a4sm6691831plg.28.2024.03.26.05.34.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Mar 2024 05:34:57 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 26 Mar 2024 21:34:22 +0900
-Subject: [PATCH for 9.1 v2 1/2] buildsys: Bump known good meson version to
- v1.4.0
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v4 5/9] plugins: conditional callbacks
+Date: Tue, 26 Mar 2024 16:34:22 +0400
+Message-Id: <20240326123426.761473-6-pierrick.bouvier@linaro.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
+References: <20240326123426.761473-1-pierrick.bouvier@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240326-meson-v2-1-d9f9003775e9@daynix.com>
-References: <20240326-meson-v2-0-d9f9003775e9@daynix.com>
-In-Reply-To: <20240326-meson-v2-0-d9f9003775e9@daynix.com>
-To: Beraldo Leal <bleal@redhat.com>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-X-Mailer: b4 0.13.0
-Received-SPF: none client-ip=2607:f8b0:4864:20::434;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,55 +95,361 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need meson v1.4.0 to fix MESONINTROSPECT quoting on Windows:
-https://github.com/mesonbuild/meson/pull/12807
+Extend plugins API to support callback called with a given criteria
+(evaluated inline).
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Added functions:
+- qemu_plugin_register_vcpu_tb_exec_cond_cb
+- qemu_plugin_register_vcpu_insn_exec_cond_cb
+
+They expect as parameter a condition, a qemu_plugin_u64_t (op1) and an
+immediate (op2). Callback is called if op1 |cond| op2 is true.
+
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 ---
- python/scripts/vendor.py                   |   4 ++--
- python/wheels/meson-1.2.3-py3-none-any.whl | Bin 964928 -> 0 bytes
- python/wheels/meson-1.4.0-py3-none-any.whl | Bin 0 -> 935471 bytes
- pythondeps.toml                            |   2 +-
- 4 files changed, 3 insertions(+), 3 deletions(-)
+ include/qemu/plugin.h        |  8 ++++
+ include/qemu/qemu-plugin.h   | 76 ++++++++++++++++++++++++++++++++++++
+ plugins/plugin.h             |  8 ++++
+ accel/tcg/plugin-gen.c       | 48 +++++++++++++++++++++++
+ plugins/api.c                | 39 ++++++++++++++++++
+ plugins/core.c               | 32 +++++++++++++++
+ plugins/qemu-plugins.symbols |  2 +
+ 7 files changed, 213 insertions(+)
 
-diff --git a/python/scripts/vendor.py b/python/scripts/vendor.py
-index 1038b14ae0c8..da463fbde557 100755
---- a/python/scripts/vendor.py
-+++ b/python/scripts/vendor.py
-@@ -41,8 +41,8 @@ def main() -> int:
-     parser.parse_args()
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index d1d9b4490df..bb224b8e4c7 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -67,6 +67,7 @@ union qemu_plugin_cb_sig {
  
-     packages = {
--        "meson==1.2.3":
--        "4533a43c34548edd1f63a276a42690fce15bde9409bcf20c4b8fa3d7e4d7cac1",
-+        "meson==1.4.0":
-+        "476a458d51fcfa322a6bdc64da5138997c542d08e6b2e49b9fa68c46fd7c4475",
+ enum plugin_dyn_cb_type {
+     PLUGIN_CB_REGULAR,
++    PLUGIN_CB_COND,
+     PLUGIN_CB_MEM_REGULAR,
+     PLUGIN_CB_INLINE_ADD_U64,
+     PLUGIN_CB_INLINE_STORE_U64,
+@@ -88,6 +89,13 @@ struct qemu_plugin_dyn_cb {
+             union qemu_plugin_cb_sig f;
+             TCGHelperInfo *info;
+         } regular;
++        struct {
++            union qemu_plugin_cb_sig f;
++            TCGHelperInfo *info;
++            qemu_plugin_u64 entry;
++            enum qemu_plugin_cond cond;
++            uint64_t imm;
++        } cond;
+         struct {
+             qemu_plugin_u64 entry;
+             enum qemu_plugin_op op;
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index c5cac897a0b..337de25ece7 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -262,6 +262,29 @@ enum qemu_plugin_mem_rw {
+     QEMU_PLUGIN_MEM_RW,
+ };
  
-         "tomli==2.0.1":
-         "939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
-diff --git a/python/wheels/meson-1.2.3-py3-none-any.whl b/python/wheels/meson-1.2.3-py3-none-any.whl
-deleted file mode 100644
-index a8b84e5f114a..000000000000
-Binary files a/python/wheels/meson-1.2.3-py3-none-any.whl and /dev/null differ
-diff --git a/python/wheels/meson-1.4.0-py3-none-any.whl b/python/wheels/meson-1.4.0-py3-none-any.whl
-new file mode 100644
-index 000000000000..ca9adc3f024d
-Binary files /dev/null and b/python/wheels/meson-1.4.0-py3-none-any.whl differ
-diff --git a/pythondeps.toml b/pythondeps.toml
-index 0e8841599935..4269decf0e3e 100644
---- a/pythondeps.toml
-+++ b/pythondeps.toml
-@@ -19,7 +19,7 @@
++/**
++ * enum qemu_plugin_cond - condition to enable callback
++ *
++ * @QEMU_PLUGIN_COND_NEVER: false
++ * @QEMU_PLUGIN_COND_ALWAYS: true
++ * @QEMU_PLUGIN_COND_EQ: is equal?
++ * @QEMU_PLUGIN_COND_NE: is not equal?
++ * @QEMU_PLUGIN_COND_LT: is less than?
++ * @QEMU_PLUGIN_COND_LE: is less than or equal?
++ * @QEMU_PLUGIN_COND_GT: is greater than?
++ * @QEMU_PLUGIN_COND_GE: is greater than or equal?
++ */
++enum qemu_plugin_cond {
++    QEMU_PLUGIN_COND_NEVER,
++    QEMU_PLUGIN_COND_ALWAYS,
++    QEMU_PLUGIN_COND_EQ,
++    QEMU_PLUGIN_COND_NE,
++    QEMU_PLUGIN_COND_LT,
++    QEMU_PLUGIN_COND_LE,
++    QEMU_PLUGIN_COND_GT,
++    QEMU_PLUGIN_COND_GE,
++};
++
+ /**
+  * typedef qemu_plugin_vcpu_tb_trans_cb_t - translation callback
+  * @id: unique plugin id
+@@ -301,6 +324,32 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
+                                           enum qemu_plugin_cb_flags flags,
+                                           void *userdata);
  
- [meson]
- # The install key should match the version in python/wheels/
--meson = { accepted = ">=0.63.0", installed = "1.2.3", canary = "meson" }
-+meson = { accepted = ">=0.63.0", installed = "1.4.0", canary = "meson" }
++/**
++ * qemu_plugin_register_vcpu_tb_exec_cond_cb() - register conditional callback
++ * @tb: the opaque qemu_plugin_tb handle for the translation
++ * @cb: callback function
++ * @cond: condition to enable callback
++ * @entry: first operand for condition
++ * @imm: second operand for condition
++ * @flags: does the plugin read or write the CPU's registers?
++ * @userdata: any plugin data to pass to the @cb?
++ *
++ * The @cb function is called when a translated unit executes if
++ * entry @cond imm is true.
++ * If condition is QEMU_PLUGIN_COND_ALWAYS, condition is never interpreted and
++ * this function is equivalent to qemu_plugin_register_vcpu_tb_exec_cb.
++ * If condition QEMU_PLUGIN_COND_NEVER, condition is never interpreted and
++ * callback is never installed.
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_register_vcpu_tb_exec_cond_cb(struct qemu_plugin_tb *tb,
++                                               qemu_plugin_vcpu_udata_cb_t cb,
++                                               enum qemu_plugin_cb_flags flags,
++                                               enum qemu_plugin_cond cond,
++                                               qemu_plugin_u64 entry,
++                                               uint64_t imm,
++                                               void *userdata);
++
+ /**
+  * enum qemu_plugin_op - describes an inline op
+  *
+@@ -344,6 +393,33 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
+                                             enum qemu_plugin_cb_flags flags,
+                                             void *userdata);
  
- [docs]
- sphinx = { accepted = ">=1.6", installed = "5.3.0", canary = "sphinx-build" }
-
++/**
++ * qemu_plugin_register_vcpu_insn_exec_cond_cb() - conditional insn execution cb
++ * @insn: the opaque qemu_plugin_insn handle for an instruction
++ * @cb: callback function
++ * @flags: does the plugin read or write the CPU's registers?
++ * @cond: condition to enable callback
++ * @entry: first operand for condition
++ * @imm: second operand for condition
++ * @userdata: any plugin data to pass to the @cb?
++ *
++ * The @cb function is called when an instruction executes if
++ * entry @cond imm is true.
++ * If condition is QEMU_PLUGIN_COND_ALWAYS, condition is never interpreted and
++ * this function is equivalent to qemu_plugin_register_vcpu_insn_exec_cb.
++ * If condition QEMU_PLUGIN_COND_NEVER, condition is never interpreted and
++ * callback is never installed.
++ */
++QEMU_PLUGIN_API
++void qemu_plugin_register_vcpu_insn_exec_cond_cb(
++    struct qemu_plugin_insn *insn,
++    qemu_plugin_vcpu_udata_cb_t cb,
++    enum qemu_plugin_cb_flags flags,
++    enum qemu_plugin_cond cond,
++    qemu_plugin_u64 entry,
++    uint64_t imm,
++    void *userdata);
++
+ /**
+  * qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu() - insn exec inline op
+  * @insn: the opaque qemu_plugin_insn handle for an instruction
+diff --git a/plugins/plugin.h b/plugins/plugin.h
+index 7c34f23cfcb..7d4b4e21f7c 100644
+--- a/plugins/plugin.h
++++ b/plugins/plugin.h
+@@ -93,6 +93,14 @@ plugin_register_dyn_cb__udata(GArray **arr,
+                               qemu_plugin_vcpu_udata_cb_t cb,
+                               enum qemu_plugin_cb_flags flags, void *udata);
+ 
++void
++plugin_register_dyn_cond_cb__udata(GArray **arr,
++                                   qemu_plugin_vcpu_udata_cb_t cb,
++                                   enum qemu_plugin_cb_flags flags,
++                                   enum qemu_plugin_cond cond,
++                                   qemu_plugin_u64 entry,
++                                   uint64_t imm,
++                                   void *udata);
+ 
+ void plugin_register_vcpu_mem_cb(GArray **arr,
+                                  void *cb,
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index 1cfd7908df1..1b1dd264e2b 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -139,6 +139,51 @@ static TCGv_ptr gen_plugin_u64_ptr(qemu_plugin_u64 entry)
+     return ptr;
+ }
+ 
++static TCGCond plugin_cond_to_tcgcond(enum qemu_plugin_cond cond)
++{
++    switch (cond) {
++    case QEMU_PLUGIN_COND_EQ:
++        return TCG_COND_EQ;
++    case QEMU_PLUGIN_COND_NE:
++        return TCG_COND_NE;
++    case QEMU_PLUGIN_COND_LT:
++        return TCG_COND_LTU;
++    case QEMU_PLUGIN_COND_LE:
++        return TCG_COND_LEU;
++    case QEMU_PLUGIN_COND_GT:
++        return TCG_COND_GTU;
++    case QEMU_PLUGIN_COND_GE:
++        return TCG_COND_GEU;
++    default:
++        /* ALWAYS and NEVER conditions should never reach */
++        g_assert_not_reached();
++    }
++}
++
++static void gen_udata_cond_cb(struct qemu_plugin_dyn_cb *cb)
++{
++    TCGv_ptr ptr = gen_plugin_u64_ptr(cb->cond.entry);
++    TCGv_i32 cpu_index = tcg_temp_ebb_new_i32();
++    TCGv_i64 val = tcg_temp_ebb_new_i64();
++    TCGLabel *after_cb = gen_new_label();
++
++    /* Condition should be negated, as calling the cb is the "else" path */
++    TCGCond cond = tcg_invert_cond(plugin_cond_to_tcgcond(cb->cond.cond));
++
++    tcg_gen_ld_i64(val, ptr, 0);
++    tcg_gen_brcondi_i64(cond, val, cb->cond.imm, after_cb);
++    tcg_gen_ld_i32(cpu_index, tcg_env,
++                   -offsetof(ArchCPU, env) + offsetof(CPUState, cpu_index));
++    tcg_gen_call2(cb->cond.f.vcpu_udata, cb->cond.info, NULL,
++                  tcgv_i32_temp(cpu_index),
++                  tcgv_ptr_temp(tcg_constant_ptr(cb->userp)));
++    gen_set_label(after_cb);
++
++    tcg_temp_free_i64(val);
++    tcg_temp_free_i32(cpu_index);
++    tcg_temp_free_ptr(ptr);
++}
++
+ static void gen_inline_add_u64_cb(struct qemu_plugin_dyn_cb *cb)
+ {
+     TCGv_ptr ptr = gen_plugin_u64_ptr(cb->inline_insn.entry);
+@@ -184,6 +229,9 @@ static void inject_cb(struct qemu_plugin_dyn_cb *cb)
+     case PLUGIN_CB_REGULAR:
+         gen_udata_cb(cb);
+         break;
++    case PLUGIN_CB_COND:
++        gen_udata_cond_cb(cb);
++        break;
+     case PLUGIN_CB_INLINE_ADD_U64:
+         gen_inline_add_u64_cb(cb);
+         break;
+diff --git a/plugins/api.c b/plugins/api.c
+index 3912c9cc8f6..2242d40bbbc 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -96,6 +96,25 @@ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
+     }
+ }
+ 
++void qemu_plugin_register_vcpu_tb_exec_cond_cb(struct qemu_plugin_tb *tb,
++                                               qemu_plugin_vcpu_udata_cb_t cb,
++                                               enum qemu_plugin_cb_flags flags,
++                                               enum qemu_plugin_cond cond,
++                                               qemu_plugin_u64 entry,
++                                               uint64_t imm,
++                                               void *udata)
++{
++    if (cond == QEMU_PLUGIN_COND_NEVER || tb->mem_only) {
++        return;
++    }
++    if (cond == QEMU_PLUGIN_COND_ALWAYS) {
++        qemu_plugin_register_vcpu_tb_exec_cb(tb, cb, flags, udata);
++        return;
++    }
++    plugin_register_dyn_cond_cb__udata(&tb->cbs, cb, flags,
++                                       cond, entry, imm, udata);
++}
++
+ void qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
+     struct qemu_plugin_tb *tb,
+     enum qemu_plugin_op op,
+@@ -117,6 +136,26 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
+     }
+ }
+ 
++void qemu_plugin_register_vcpu_insn_exec_cond_cb(
++    struct qemu_plugin_insn *insn,
++    qemu_plugin_vcpu_udata_cb_t cb,
++    enum qemu_plugin_cb_flags flags,
++    enum qemu_plugin_cond cond,
++    qemu_plugin_u64 entry,
++    uint64_t imm,
++    void *udata)
++{
++    if (cond == QEMU_PLUGIN_COND_NEVER || insn->mem_only) {
++        return;
++    }
++    if (cond == QEMU_PLUGIN_COND_ALWAYS) {
++        qemu_plugin_register_vcpu_insn_exec_cb(insn, cb, flags, udata);
++        return;
++    }
++    plugin_register_dyn_cond_cb__udata(&insn->insn_cbs, cb, flags,
++                                       cond, entry, imm, udata);
++}
++
+ void qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+     struct qemu_plugin_insn *insn,
+     enum qemu_plugin_op op,
+diff --git a/plugins/core.c b/plugins/core.c
+index e1bf0dc3717..b3d0208e022 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -371,6 +371,38 @@ void plugin_register_dyn_cb__udata(GArray **arr,
+     dyn_cb->regular.info = &info[flags];
+ }
+ 
++void plugin_register_dyn_cond_cb__udata(GArray **arr,
++                                        qemu_plugin_vcpu_udata_cb_t cb,
++                                        enum qemu_plugin_cb_flags flags,
++                                        enum qemu_plugin_cond cond,
++                                        qemu_plugin_u64 entry,
++                                        uint64_t imm,
++                                        void *udata)
++{
++    static TCGHelperInfo info[3] = {
++        [QEMU_PLUGIN_CB_NO_REGS].flags = TCG_CALL_NO_RWG,
++        [QEMU_PLUGIN_CB_R_REGS].flags = TCG_CALL_NO_WG,
++        /*
++         * Match qemu_plugin_vcpu_udata_cb_t:
++         *   void (*)(uint32_t, void *)
++         */
++        [0 ... 2].typemask = (dh_typemask(void, 0) |
++                              dh_typemask(i32, 1) |
++                              dh_typemask(ptr, 2))
++    };
++
++    struct qemu_plugin_dyn_cb *dyn_cb = plugin_get_dyn_cb(arr);
++    dyn_cb->userp = udata;
++    dyn_cb->type = PLUGIN_CB_COND;
++    dyn_cb->cond.f.vcpu_udata = cb;
++    dyn_cb->cond.cond = cond;
++    dyn_cb->cond.entry = entry;
++    dyn_cb->cond.imm = imm;
++
++    assert((unsigned)flags < ARRAY_SIZE(info));
++    dyn_cb->cond.info = &info[flags];
++}
++
+ void plugin_register_vcpu_mem_cb(GArray **arr,
+                                  void *cb,
+                                  enum qemu_plugin_cb_flags flags,
+diff --git a/plugins/qemu-plugins.symbols b/plugins/qemu-plugins.symbols
+index a9fac056c7f..aa0a77a319f 100644
+--- a/plugins/qemu-plugins.symbols
++++ b/plugins/qemu-plugins.symbols
+@@ -27,6 +27,7 @@
+   qemu_plugin_register_vcpu_idle_cb;
+   qemu_plugin_register_vcpu_init_cb;
+   qemu_plugin_register_vcpu_insn_exec_cb;
++  qemu_plugin_register_vcpu_insn_exec_cond_cb;
+   qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu;
+   qemu_plugin_register_vcpu_mem_cb;
+   qemu_plugin_register_vcpu_mem_inline_per_vcpu;
+@@ -34,6 +35,7 @@
+   qemu_plugin_register_vcpu_syscall_cb;
+   qemu_plugin_register_vcpu_syscall_ret_cb;
+   qemu_plugin_register_vcpu_tb_exec_cb;
++  qemu_plugin_register_vcpu_tb_exec_cond_cb;
+   qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu;
+   qemu_plugin_register_vcpu_tb_trans_cb;
+   qemu_plugin_reset;
 -- 
-2.44.0
+2.39.2
 
 
