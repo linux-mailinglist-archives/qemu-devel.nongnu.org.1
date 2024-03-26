@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E93F88D167
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EE988D168
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Mar 2024 23:44:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpFWK-0006A1-Pm; Tue, 26 Mar 2024 18:43:52 -0400
+	id 1rpFWM-0006AV-De; Tue, 26 Mar 2024 18:43:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <bryan.zhang@bytedance.com>)
- id 1rpFWI-00069D-IE
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 18:43:50 -0400
-Received: from mail-qk1-x72b.google.com ([2607:f8b0:4864:20::72b])
+ id 1rpFWK-0006AF-LM
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 18:43:52 -0400
+Received: from mail-ot1-x335.google.com ([2607:f8b0:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <bryan.zhang@bytedance.com>)
- id 1rpFWG-0007b3-CK
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 18:43:50 -0400
-Received: by mail-qk1-x72b.google.com with SMTP id
- af79cd13be357-789e6f7f748so352077385a.3
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 15:43:48 -0700 (PDT)
+ id 1rpFWI-0007bq-HS
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 18:43:52 -0400
+Received: by mail-ot1-x335.google.com with SMTP id
+ 46e09a7af769-6e6a5bd015dso2865306a34.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 15:43:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1711493027; x=1712097827; darn=nongnu.org;
+ d=bytedance.com; s=google; t=1711493029; x=1712097829; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QnG6eRKzWdMMY6J8vB7INPN8ux+bZX8gkkiNJp6OwR0=;
- b=WSYjkq87So8LvF1/mU+pPTMJqn+0mkEr0Iy9f00Hte+0tKX2bUpFh0o7UAd3ykZm3r
- w8USULIo8YRiRQpInQ1YzGWaf0yHN5E1430JwW0vRcOyFVkz4qPhR6W+3z3PrLPhjJDL
- FifhSaYyNE39PmLAXmOLZ4Hm5eXnhaiE/TRh2EA9RrwrdYeokWzMoD2UPlN8vVC87oPz
- atUB3e6luwQajR1SjsNQz/747Gd3pdcyQ+g5Cog2OWVZzniT2Wx7zjS6C1iNSFjL4EsW
- 8lHrgHlCCDw4I+naLuW2YXVi295W3dHWHxaRuPhe0NLMsSUuDTwqtenRtKPSx9to7gGk
- cYSQ==
+ bh=E2+htT0Abm6Y4hPWnu3Iu305PtkzW44cwWugxR7RsCs=;
+ b=UdDKIg84WjYOlF3vWLEjzoL8Tbxgo6KAWCB35Sxy3L5f7MO3vaVzqUGMeW3zQPlvHe
+ otetl79JLx5zJ6xU+fv51LwpGjiaJlCaQJ9xsWlCmNNm6P2LK4uG0pIjd+BlIg89R8/K
+ OizUGEd1rOpHC6BBdzt0b6dOTBSrPTg3YBDU4+0bJQU3J8Xw0Lw4s7YaRu9EZJBFj+Aj
+ X10HzvwNdNdx7UlEOibyv7Lup0EiIFQyzPHNmozmESR9g78qpRJZLfunlHYy0DsWS1a1
+ lZJscgDuPYJnpFoV3S0CWy7DQgtYWnNuAlG9vcj2QViJQxi9fOqwhggPK1SrvwMYvzIu
+ Pkiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711493027; x=1712097827;
+ d=1e100.net; s=20230601; t=1711493029; x=1712097829;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QnG6eRKzWdMMY6J8vB7INPN8ux+bZX8gkkiNJp6OwR0=;
- b=KuSg+Z8vy2l1mjlLlTq406tByA+lz0K9TAI7rmSWij+JaEDqMecvD2eaOIFY3GS/Ij
- SETlHX6BMxANSp6N0rACo+CKXXqnTu7qBUL9fShcbyEuutrEQRwSXw2xJq2vbcuNP8LZ
- O0pWvCEzBKdU3TL4uBoLe/PXr2hYl0wk+obXL6z17+1vAyGFlbqBJ9mwBTfZmsgFtSkC
- znNOdK2oYrw/pKhLZ+bEdsKyOyJBkq+JscYyGwucnPyxMnrGHeUT/TYGnJSqPksk/l2R
- 1tmNDCIk3VfCYd2vgdadiDy6MAB1K5YT39UuU7vU541qyQBQ/y2/eN+cUX2hQFrqTuaR
- GMbA==
-X-Gm-Message-State: AOJu0YxLbsLcV4KF3XL9uhuk7UBtcYYGs6JAQOUVWV9E84R+jPF/Kn39
- cmnnwASlMx4Z3zwe0osQuLBOU70c1oFCewleqSrDuuJQxVD7Y1KfbpMYXgip3IbH8jPp+PawGM8
+ bh=E2+htT0Abm6Y4hPWnu3Iu305PtkzW44cwWugxR7RsCs=;
+ b=mwiDszCO2HzdgaKUOObDS5ephqW/B0lUEkruU6ntimbgH6mZWn5lW2APR2DMILqyAf
+ TBJlPDDSYNK10kJWh5Y2JExqUq1J7R/BTkSvI5zQKObZh3yoYIWxyIncPf02UxiAOfQO
+ gLKZUX0WAqN+g7G/7QsunYyvCabz75LXKAntil2B7U9Oo94wAiKcOpeq2CsBioDFKChG
+ drF5ob+Vjo6iXkGtUfvowbb4DYeeRmxRAEcd43uUsBm038ShXYIt1kui4MXfdWAo/SdW
+ V9DFkOit9eoMnYoGVCQr4iOXY7AMustLKz86f4CHW/06uWhkWVxseU+mb3bcn6gzVyEm
+ u0Qw==
+X-Gm-Message-State: AOJu0YwxsVmFFV0Dnvz8RIJA5IlMUAMyNPrP+9KQXSLFkiUrRyC4vrE1
+ wb0VDr6bUxYOD5DLciujuZ9841T74ykxlUQynAWajeQORrZr2UNwUsPAKUKtAHQpNcvOGTz7xR2
  z
-X-Google-Smtp-Source: AGHT+IHqJyVNPKlq2fcCaqqWUKO5DO2lWK9t67D8Y8osn48gUEBRki3rOodRcwBrT7Ovj2K/HUTr5Q==
-X-Received: by 2002:a05:620a:44c4:b0:789:e524:933b with SMTP id
- y4-20020a05620a44c400b00789e524933bmr2950044qkp.31.1711493026968; 
- Tue, 26 Mar 2024 15:43:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQcacerCylv8HxykbNRfarkzrWBGTEbP/GOyYQp2UVoKstb7ui+hN+lhYJVgDKGTx1tvyHCQ==
+X-Received: by 2002:a05:6830:10d0:b0:6e6:6c3b:58bd with SMTP id
+ z16-20020a05683010d000b006e66c3b58bdmr916261oto.29.1711493029015; 
+ Tue, 26 Mar 2024 15:43:49 -0700 (PDT)
 Received: from n36-186-108.byted.org. ([147.160.184.146])
  by smtp.gmail.com with ESMTPSA id
- x15-20020a05620a0ecf00b007887d30dbb7sm3397816qkm.60.2024.03.26.15.43.46
+ x15-20020a05620a0ecf00b007887d30dbb7sm3397816qkm.60.2024.03.26.15.43.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Mar 2024 15:43:46 -0700 (PDT)
+ Tue, 26 Mar 2024 15:43:48 -0700 (PDT)
 From: Bryan Zhang <bryan.zhang@bytedance.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, farosas@suse.de, yuan1.liu@intel.com,
  berrange@redhat.com, nanhai.zou@intel.com, hao.xiang@linux.dev,
  Bryan Zhang <bryan.zhang@bytedance.com>
-Subject: [PATCH v2 2/5] migration: Add migration parameters for QATzip
-Date: Tue, 26 Mar 2024 22:42:18 +0000
-Message-Id: <20240326224221.3623014-3-bryan.zhang@bytedance.com>
+Subject: [PATCH v2 3/5] migration: Introduce unimplemented 'qatzip'
+ compression method
+Date: Tue, 26 Mar 2024 22:42:19 +0000
+Message-Id: <20240326224221.3623014-4-bryan.zhang@bytedance.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20240326224221.3623014-1-bryan.zhang@bytedance.com>
 References: <20240326224221.3623014-1-bryan.zhang@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72b;
- envelope-from=bryan.zhang@bytedance.com; helo=mail-qk1-x72b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::335;
+ envelope-from=bryan.zhang@bytedance.com; helo=mail-ot1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,256 +95,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds support for migration parameters to control QATzip compression
-level and to enable/disable software fallback when QAT hardware is
-unavailable. This is a preparatory commit for a subsequent commit that
-will actually use QATzip compression.
+Adds support for 'qatzip' as an option for the multifd compression
+method parameter, but copy-pastes the no-op logic to leave the actual
+methods effectively unimplemented. This is in preparation of a subsequent
+commit that will implement actually using QAT for compression and
+decompression.
 
 Signed-off-by: Bryan Zhang <bryan.zhang@bytedance.com>
 Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
 ---
-Revision: This commit now includes a parameter for controlling software
-fallback. Fallback is generally intended to be disabled, but having this
-option available enables using software fallback for testing.
+ hw/core/qdev-properties-system.c |   6 +-
+ migration/meson.build            |   1 +
+ migration/multifd-qatzip.c       | 117 +++++++++++++++++++++++++++++++
+ migration/multifd.h              |   1 +
+ qapi/migration.json              |   5 +-
+ tests/qtest/meson.build          |   4 ++
+ 6 files changed, 132 insertions(+), 2 deletions(-)
+ create mode 100644 migration/multifd-qatzip.c
 
-This commit also now has some glue code to properly set parameters.
-
- migration/migration-hmp-cmds.c |  8 +++++
- migration/options.c            | 57 ++++++++++++++++++++++++++++++++++
- migration/options.h            |  2 ++
- qapi/migration.json            | 35 +++++++++++++++++++++
- 4 files changed, 102 insertions(+)
-
-diff --git a/migration/migration-hmp-cmds.c b/migration/migration-hmp-cmds.c
-index 99b49df5dd..4bd23ba14d 100644
---- a/migration/migration-hmp-cmds.c
-+++ b/migration/migration-hmp-cmds.c
-@@ -630,6 +630,14 @@ void hmp_migrate_set_parameter(Monitor *mon, const QDict *qdict)
-         p->has_multifd_zlib_level = true;
-         visit_type_uint8(v, param, &p->multifd_zlib_level, &err);
-         break;
-+    case MIGRATION_PARAMETER_MULTIFD_QATZIP_LEVEL:
-+        p->has_multifd_qatzip_level = true;
-+        visit_type_uint8(v, param, &p->multifd_qatzip_level, &err);
-+        break;
-+    case MIGRATION_PARAMETER_MULTIFD_QATZIP_SW_FALLBACK:
-+        p->has_multifd_qatzip_sw_fallback = true;
-+        visit_type_bool(v, param, &p->multifd_qatzip_sw_fallback, &err);
-+        break;
-     case MIGRATION_PARAMETER_MULTIFD_ZSTD_LEVEL:
-         p->has_multifd_zstd_level = true;
-         visit_type_uint8(v, param, &p->multifd_zstd_level, &err);
-diff --git a/migration/options.c b/migration/options.c
-index 3e3e0b93b4..1316ea605a 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -62,6 +62,15 @@
- #define DEFAULT_MIGRATE_MULTIFD_COMPRESSION MULTIFD_COMPRESSION_NONE
- /* 0: means nocompress, 1: best speed, ... 9: best compress ratio */
- #define DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL 1
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 1a396521d5..d8e48dcb0e 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -658,7 +658,11 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
+ const PropertyInfo qdev_prop_multifd_compression = {
+     .name = "MultiFDCompression",
+     .description = "multifd_compression values, "
+-                   "none/zlib/zstd",
++                   "none/zlib/zstd"
++#ifdef CONFIG_QATZIP
++                   "/qatzip"
++#endif
++                   ,
+     .enum_table = &MultiFDCompression_lookup,
+     .get = qdev_propinfo_get_enum,
+     .set = qdev_propinfo_set_enum,
+diff --git a/migration/meson.build b/migration/meson.build
+index 92b1cc4297..e20f318379 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -40,6 +40,7 @@ if get_option('live_block_migration').allowed()
+   system_ss.add(files('block.c'))
+ endif
+ system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
++system_ss.add(when: qatzip, if_true: files('multifd-qatzip.c'))
+ 
+ specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
+                 if_true: files('ram.c',
+diff --git a/migration/multifd-qatzip.c b/migration/multifd-qatzip.c
+new file mode 100644
+index 0000000000..f66336a4a7
+--- /dev/null
++++ b/migration/multifd-qatzip.c
+@@ -0,0 +1,117 @@
 +/*
-+ * 1: best speed, ... 9: best compress ratio
-+ * There is some nuance here. Refer to QATzip documentation to understand
-+ * the mapping of QATzip levels to standard deflate levels.
++ * Multifd QATzip compression implementation
++ *
++ * Copyright (c) Bytedance
++ *
++ * Authors:
++ *  Bryan Zhang <bryan.zhang@bytedance.com>
++ *  Hao Xiang   <hao.xiang@bytedance.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
 + */
-+#define DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL 1
-+/* QATzip's SW fallback implementation is extremely slow, so avoid fallback */
-+#define DEFAULT_MIGRATE_MULTIFD_QATZIP_SW_FALLBACK false
 +
- /* 0: means nocompress, 1: best speed, ... 20: best compress ratio */
- #define DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL 1
- 
-@@ -143,6 +152,12 @@ Property migration_properties[] = {
-     DEFINE_PROP_UINT8("multifd-zlib-level", MigrationState,
-                       parameters.multifd_zlib_level,
-                       DEFAULT_MIGRATE_MULTIFD_ZLIB_LEVEL),
-+    DEFINE_PROP_UINT8("multifd-qatzip-level", MigrationState,
-+                      parameters.multifd_qatzip_level,
-+                      DEFAULT_MIGRATE_MULTIFD_QATZIP_LEVEL),
-+    DEFINE_PROP_BOOL("multifd-qatzip-sw-fallback", MigrationState,
-+                      parameters.multifd_qatzip_sw_fallback,
-+                      DEFAULT_MIGRATE_MULTIFD_QATZIP_SW_FALLBACK),
-     DEFINE_PROP_UINT8("multifd-zstd-level", MigrationState,
-                       parameters.multifd_zstd_level,
-                       DEFAULT_MIGRATE_MULTIFD_ZSTD_LEVEL),
-@@ -861,6 +876,20 @@ int migrate_multifd_zlib_level(void)
-     return s->parameters.multifd_zlib_level;
- }
- 
-+int migrate_multifd_qatzip_level(void)
++#include "qemu/osdep.h"
++#include "exec/ramblock.h"
++#include "exec/target_page.h"
++#include "qapi/error.h"
++#include "migration.h"
++#include "options.h"
++#include "multifd.h"
++
++/*
++ * This is an intermediary file to introduce 'qatzip' as an option for multifd
++ * compression. The actual method implementations are no-ops.
++ */
++
++static int qatzip_send_setup(MultiFDSendParams *p, Error **errp)
 +{
-+    MigrationState *s = migrate_get_current();
++    if (migrate_zero_copy_send()) {
++        p->write_flags |= QIO_CHANNEL_WRITE_FLAG_ZERO_COPY;
++    }
 +
-+    return s->parameters.multifd_qatzip_level;
++    return 0;
 +}
 +
-+bool migrate_multifd_qatzip_sw_fallback(void)
++static void qatzip_send_cleanup(MultiFDSendParams *p, Error **errp)
 +{
-+    MigrationState *s = migrate_get_current();
-+
-+    return s->parameters.multifd_qatzip_sw_fallback;
++    return;
 +}
 +
- int migrate_multifd_zstd_level(void)
- {
-     MigrationState *s = migrate_get_current();
-@@ -983,6 +1012,11 @@ MigrationParameters *qmp_query_migrate_parameters(Error **errp)
-     params->multifd_compression = s->parameters.multifd_compression;
-     params->has_multifd_zlib_level = true;
-     params->multifd_zlib_level = s->parameters.multifd_zlib_level;
-+    params->has_multifd_qatzip_level = true;
-+    params->multifd_qatzip_level = s->parameters.multifd_qatzip_level;
-+    params->has_multifd_qatzip_sw_fallback = true;
-+    params->multifd_qatzip_sw_fallback =
-+        s->parameters.multifd_qatzip_sw_fallback;
-     params->has_multifd_zstd_level = true;
-     params->multifd_zstd_level = s->parameters.multifd_zstd_level;
-     params->has_xbzrle_cache_size = true;
-@@ -1038,6 +1072,8 @@ void migrate_params_init(MigrationParameters *params)
-     params->has_multifd_channels = true;
-     params->has_multifd_compression = true;
-     params->has_multifd_zlib_level = true;
-+    params->has_multifd_qatzip_level = true;
-+    params->has_multifd_qatzip_sw_fallback = true;
-     params->has_multifd_zstd_level = true;
-     params->has_xbzrle_cache_size = true;
-     params->has_max_postcopy_bandwidth = true;
-@@ -1147,6 +1183,14 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
-         return false;
-     }
- 
-+    if (params->has_multifd_qatzip_level &&
-+        ((params->multifd_qatzip_level > 9) ||
-+        (params->multifd_qatzip_level < 1))) {
-+        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_qatzip_level",
-+                   "a value between 1 and 9");
-+        return false;
++static int qatzip_send_prepare(MultiFDSendParams *p, Error **errp)
++{
++    bool use_zero_copy_send = migrate_zero_copy_send();
++    MultiFDPages_t *pages = p->pages;
++    int ret;
++
++    if (!use_zero_copy_send) {
++        /*
++         * Only !zerocopy needs the header in IOV; zerocopy will
++         * send it separately.
++         */
++        multifd_send_prepare_header(p);
 +    }
 +
-     if (params->has_multifd_zstd_level &&
-         (params->multifd_zstd_level > 20)) {
-         error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "multifd_zstd_level",
-@@ -1312,6 +1356,12 @@ static void migrate_params_test_apply(MigrateSetParameters *params,
-     if (params->has_multifd_compression) {
-         dest->multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_qatzip_level) {
-+        dest->multifd_qatzip_level = params->multifd_qatzip_level;
++    for (int i = 0; i < pages->num; i++) {
++        p->iov[p->iovs_num].iov_base = pages->block->host + pages->offset[i];
++        p->iov[p->iovs_num].iov_len = p->page_size;
++        p->iovs_num++;
 +    }
-+    if (params->has_multifd_qatzip_sw_fallback) {
-+        dest->multifd_qatzip_sw_fallback = params->multifd_qatzip_sw_fallback;
++
++    p->next_packet_size = pages->num * p->page_size;
++    p->flags |= MULTIFD_FLAG_NOCOMP;
++
++    multifd_send_fill_packet(p);
++
++    if (use_zero_copy_send) {
++        /* Send header first, without zerocopy */
++        ret = qio_channel_write_all(p->c, (void *)p->packet,
++                                    p->packet_len, errp);
++        if (ret != 0) {
++            return -1;
++        }
 +    }
-     if (params->has_xbzrle_cache_size) {
-         dest->xbzrle_cache_size = params->xbzrle_cache_size;
-     }
-@@ -1447,6 +1497,13 @@ static void migrate_params_apply(MigrateSetParameters *params, Error **errp)
-     if (params->has_multifd_compression) {
-         s->parameters.multifd_compression = params->multifd_compression;
-     }
-+    if (params->has_multifd_qatzip_level) {
-+        s->parameters.multifd_qatzip_level = params->multifd_qatzip_level;
++
++    return 0;
++}
++
++static int qatzip_recv_setup(MultiFDRecvParams *p, Error **errp)
++{
++    return 0;
++}
++
++static void qatzip_recv_cleanup(MultiFDRecvParams *p)
++{
++}
++
++static int qatzip_recv_pages(MultiFDRecvParams *p, Error **errp)
++{
++    uint32_t flags = p->flags & MULTIFD_FLAG_COMPRESSION_MASK;
++
++    if (flags != MULTIFD_FLAG_NOCOMP) {
++        error_setg(errp, "multifd %u: flags received %x flags expected %x",
++                   p->id, flags, MULTIFD_FLAG_NOCOMP);
++        return -1;
 +    }
-+    if (params->has_multifd_qatzip_sw_fallback) {
-+        s->parameters.multifd_qatzip_sw_fallback =
-+            params->multifd_qatzip_sw_fallback;
++    for (int i = 0; i < p->normal_num; i++) {
++        p->iov[i].iov_base = p->host + p->normal[i];
++        p->iov[i].iov_len = p->page_size;
 +    }
-     if (params->has_xbzrle_cache_size) {
-         s->parameters.xbzrle_cache_size = params->xbzrle_cache_size;
-         xbzrle_cache_resize(params->xbzrle_cache_size, errp);
-diff --git a/migration/options.h b/migration/options.h
-index 246c160aee..94aee24d97 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -87,6 +87,8 @@ MigMode migrate_mode(void);
- int migrate_multifd_channels(void);
- MultiFDCompression migrate_multifd_compression(void);
- int migrate_multifd_zlib_level(void);
-+int migrate_multifd_qatzip_level(void);
-+bool migrate_multifd_qatzip_sw_fallback(void);
- int migrate_multifd_zstd_level(void);
- uint8_t migrate_throttle_trigger_threshold(void);
- const char *migrate_tls_authz(void);
++    return qio_channel_readv_all(p->c, p->iov, p->normal_num, errp);
++}
++
++static MultiFDMethods multifd_qatzip_ops = {
++    .send_setup = qatzip_send_setup,
++    .send_cleanup = qatzip_send_cleanup,
++    .send_prepare = qatzip_send_prepare,
++    .recv_setup = qatzip_recv_setup,
++    .recv_cleanup = qatzip_recv_cleanup,
++    .recv_pages = qatzip_recv_pages
++};
++
++static void multifd_qatzip_register(void)
++{
++    multifd_register_ops(MULTIFD_COMPRESSION_QATZIP, &multifd_qatzip_ops);
++}
++
++migration_init(multifd_qatzip_register);
+diff --git a/migration/multifd.h b/migration/multifd.h
+index b3fe27ae93..ae73f1713c 100644
+--- a/migration/multifd.h
++++ b/migration/multifd.h
+@@ -33,6 +33,7 @@ bool multifd_queue_page(RAMBlock *block, ram_addr_t offset);
+ #define MULTIFD_FLAG_NOCOMP (0 << 1)
+ #define MULTIFD_FLAG_ZLIB (1 << 1)
+ #define MULTIFD_FLAG_ZSTD (2 << 1)
++#define MULTIFD_FLAG_QATZIP (3 << 1)
+ 
+ /* This value needs to be a multiple of qemu_target_page_size() */
+ #define MULTIFD_PACKET_SIZE (512 * 1024)
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 0b33a71ab4..66ea6d32fc 100644
+index 66ea6d32fc..9018166ac8 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -853,6 +853,16 @@
- #     speed, and 9 means best compression ratio which will consume
- #     more CPU. Defaults to 1. (Since 5.0)
+@@ -625,11 +625,14 @@
  #
-+# @multifd-qatzip-level: Set the compression level to be used in live
-+#     migration. The level is an integer between 1 and 9, where 1 means
-+#     the best compression speed, and 9 means the best compression
-+#     ratio which will consume more CPU. Defaults to 1.
-+#
-+# @multifd-qatzip-sw-fallback: Enable software fallback if QAT hardware
-+#     is unavailable. Defaults to false. Software fallback performance
-+#     is very poor compared to regular zlib, so be cautious about
-+#     enabling this option.
-+#
- # @multifd-zstd-level: Set the compression level to be used in live
- #     migration, the compression level is an integer between 0 and 20,
- #     where 0 means no compression, 1 means the best compression
-@@ -915,6 +925,7 @@
-            'xbzrle-cache-size', 'max-postcopy-bandwidth',
-            'max-cpu-throttle', 'multifd-compression',
-            'multifd-zlib-level', 'multifd-zstd-level',
-+           'multifd-qatzip-level', 'multifd-qatzip-sw-fallback',
-            'block-bitmap-mapping',
-            { 'name': 'x-vcpu-dirty-limit-period', 'features': ['unstable'] },
-            'vcpu-dirty-limit',
-@@ -1045,6 +1056,16 @@
- #     speed, and 9 means best compression ratio which will consume
- #     more CPU. Defaults to 1. (Since 5.0)
+ # @zstd: use zstd compression method.
  #
-+# @multifd-qatzip-level: Set the compression level to be used in live
-+#     migration. The level is an integer between 1 and 9, where 1 means
-+#     the best compression speed, and 9 means the best compression
-+#     ratio which will consume more CPU. Defaults to 1.
++# @qatzip: use qatzip compression method.
 +#
-+# @multifd-qatzip-sw-fallback: Enable software fallback if QAT hardware
-+#     is unavailable. Defaults to false. Software fallback performance
-+#     is very poor compared to regular zlib, so be cautious about
-+#     enabling this option.
-+#
- # @multifd-zstd-level: Set the compression level to be used in live
- #     migration, the compression level is an integer between 0 and 20,
- #     where 0 means no compression, 1 means the best compression
-@@ -1125,6 +1146,8 @@
-             '*max-cpu-throttle': 'uint8',
-             '*multifd-compression': 'MultiFDCompression',
-             '*multifd-zlib-level': 'uint8',
-+            '*multifd-qatzip-level': 'uint8',
-+            '*multifd-qatzip-sw-fallback': 'bool',
-             '*multifd-zstd-level': 'uint8',
-             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
-@@ -1273,6 +1296,16 @@
- #     speed, and 9 means best compression ratio which will consume
- #     more CPU. Defaults to 1. (Since 5.0)
- #
-+# @multifd-qatzip-level: Set the compression level to be used in live
-+#     migration. The level is an integer between 1 and 9, where 1 means
-+#     the best compression speed, and 9 means the best compression
-+#     ratio which will consume more CPU. Defaults to 1.
-+#
-+# @multifd-qatzip-sw-fallback: Enable software fallback if QAT hardware
-+#     is unavailable. Defaults to false. Software fallback performance
-+#     is very poor compared to regular zlib, so be cautious about
-+#     enabling this option.
-+#
- # @multifd-zstd-level: Set the compression level to be used in live
- #     migration, the compression level is an integer between 0 and 20,
- #     where 0 means no compression, 1 means the best compression
-@@ -1350,6 +1383,8 @@
-             '*max-cpu-throttle': 'uint8',
-             '*multifd-compression': 'MultiFDCompression',
-             '*multifd-zlib-level': 'uint8',
-+            '*multifd-qatzip-level': 'uint8',
-+            '*multifd-qatzip-sw-fallback': 'bool',
-             '*multifd-zstd-level': 'uint8',
-             '*block-bitmap-mapping': [ 'BitmapMigrationNodeAlias' ],
-             '*x-vcpu-dirty-limit-period': { 'type': 'uint64',
+ # Since: 5.0
+ ##
+ { 'enum': 'MultiFDCompression',
+   'data': [ 'none', 'zlib',
+-            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
++            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
++            { 'name': 'qatzip', 'if': 'CONFIG_QATZIP'} ] }
+ 
+ ##
+ # @MigMode:
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 6ea77893f5..539104c06d 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -315,6 +315,10 @@ if gnutls.found()
+   endif
+ endif
+ 
++if qatzip.found()
++  migration_files += [qatzip]
++endif
++
+ qtests = {
+   'bios-tables-test': [io, 'boot-sector.c', 'acpi-utils.c', 'tpm-emu.c'],
+   'cdrom-test': files('boot-sector.c'),
 -- 
 2.30.2
 
