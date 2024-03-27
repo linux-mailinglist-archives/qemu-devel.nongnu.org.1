@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DAF88E55E
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 15:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 818EF88E5F0
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 15:29:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpU8r-0004r0-7W; Wed, 27 Mar 2024 10:20:37 -0400
+	id 1rpUFw-0008Fd-G6; Wed, 27 Mar 2024 10:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpU8g-0004qR-Dg
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 10:20:26 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rpUFn-0008F5-DQ
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 10:27:48 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpU8e-000130-M4
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 10:20:26 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6da202aa138so3454813b3a.2
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 07:20:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
+ id 1rpUFl-0002YI-Oa
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 10:27:47 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-512e4f4e463so7621224e87.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 07:27:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1711549223; x=1712154023; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=madbT/BaQjt9l0NAIRCdz4iExhKI7w/5+Gn0wJFqL2Y=;
- b=Z1jlY+EY4o+6cSCNlA+gv8rcHEXbk6squr7gomEfjpxZJnVZ/wGxUVvU5TTN3wtSnK
- reRSS095EC5CmPwU2CGfv2ULT6XmAryPDigFJmLoeAYmZInsm0IHLwk5bkyJpe9vIQOM
- GKoYXA+xdiHIefnh0QLAblElYe5Fn8RvHCqLPmA/aVhncNVwuyt9OY1/T4Oaao1AWQuW
- ZGuAbR5yahLNC5/KNDZVDOqhTtZJodfujgeCwABqEBLN3tMpNtxHtS9mMt7Xt5IJmWS1
- kywGr8jM7815ISeVvlqpsKdSVNTO7EmXq/yEkf5hIx0+c48PyBYmUQd4FkCfXEKPV8Vl
- x/1w==
+ d=cloud.com; s=cloud; t=1711549663; x=1712154463; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=6s9TY9/Cn4vJqrwwNmvG7/hGbs5cbUMGy83r/DdqAYU=;
+ b=FJSmS37inbGTkUPLi3exhHThUIkZyHUzf96DJyy2OHKHkWtkZL2e3CaIMLS9ikWu1B
+ WxeNvTzNy46meELwy7j8UHvnIPtQ1VdHo01a8vQury5/INBx69y7TsvqPuYgFmVs2KOR
+ H/dOS0ETOXb1leWYVZj3SbyQ/On1FTtvfz61A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711549223; x=1712154023;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=madbT/BaQjt9l0NAIRCdz4iExhKI7w/5+Gn0wJFqL2Y=;
- b=eMaUSLyjolCryQ1KYh6ybATCQ4TzO4t/Er39oHmn6kRLk8lColnpU++sqqQ3haG/65
- f1RmaaPxub+z++6aUOF9r+VQhMy7QMbsqS4dVTQDcCDU0dEDkIxsgViYZnGLQ3WMj4xF
- Xc9RSLKEgg2XCqz16TmtGvaG6VtP1XcY7Qg+rCXDgzgsP/yWXF9j8DBkislX2XadKQGR
- Oxwb5yOCDIJZfryx7ARjuga8ydAOGoPz2h5ur9Zh3Vw/mSS1DYs1DPhQf0/F5oSuXJGM
- MEGb6WtwL8Jbms13d7Y15iu9Y1dsLrhf0dqYXNAH3OgukZ/cKpZ1NWAL18vIRavwH2RV
- aoPQ==
-X-Gm-Message-State: AOJu0YwHB5IlfA7bmvTpe6ZVNntO0+OuiWgCs1ioeiHCZVdQWPNc6it6
- x6D2jCvT1Q6Yfuhon/Dx8mpFuvGHcoZdsFcW/A514k1256JvVNhn6JVrDBDpf+rcu7t19VSwXJv
- 8
-X-Google-Smtp-Source: AGHT+IFVGNvmJBwhi+KNNR4XYUVaSsL2CWJJO3Tg7N8UrmSXSEvaQCSy1/bGq8FMprjdooOhAej4OQ==
-X-Received: by 2002:a05:6a00:6711:b0:6ea:c7eb:59ff with SMTP id
- hm17-20020a056a00671100b006eac7eb59ffmr2030081pfb.28.1711549222988; 
- Wed, 27 Mar 2024 07:20:22 -0700 (PDT)
-Received: from grind.. ([177.45.186.241]) by smtp.gmail.com with ESMTPSA id
- fa26-20020a056a002d1a00b006ea7b343877sm7891809pfb.9.2024.03.27.07.20.20
+ d=1e100.net; s=20230601; t=1711549663; x=1712154463;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=6s9TY9/Cn4vJqrwwNmvG7/hGbs5cbUMGy83r/DdqAYU=;
+ b=kHLeiX9XeRRIaAv46dPsQtlZ3h3q6EAEjzun94rerk7Qf+MfU/TdZmnM6ZPUT4Wvig
+ PBEkB3gqhVm/w649OB0zQQDPurzBXj1XWsKu91F2OOMZDtIRoDARPH89Vs+ZLUMEPqN6
+ K0GPZ3MpclgLAeQW0sCc/zbJkz9lvKeslmFmGSog44xK7pnishDVbueyIp2i0uJCtZhG
+ QQRRIADWpLJ00Utoh4w9ibSh2YzzJ9k1wS/99MN/BfGqvPfzmEHc4Z+0IKSOrXoE4WQC
+ cKnDokY48MAWL9FT5vVlu6bohSpcxcw5tD03VcLphQl2XPaUi4j6ubZPlnzASQZCIVDY
+ 9WAA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUq7wWgM3GFapjDPhY0vFn9NurBV9nFiY6916rq1W+9o/+Hvc1pBeVJKtZeMOYCjNzPmwIO2fTNtOkpjbdEAjWtj4gPPwY=
+X-Gm-Message-State: AOJu0Yzm6Rklj2+8ae/S2/r1WUgJcWiTZdRiOP89ej/T8jd+diHPUTmM
+ fma6j0Ig5SUajeBn+3/4LFKZFqj2Oo1pDVnIG7Go8dvSOiGMUrG1AToLSBU2FMk=
+X-Google-Smtp-Source: AGHT+IGfOGc5SfDKXbq/6cWQXWrbWdawL9QipNh4y7lGdJ/Uq0Y4kUnfad0T2fo+7kdSA94cBcA4PA==
+X-Received: by 2002:a05:6512:6c3:b0:515:ba94:8929 with SMTP id
+ u3-20020a05651206c300b00515ba948929mr4374913lff.32.1711549662886; 
+ Wed, 27 Mar 2024 07:27:42 -0700 (PDT)
+Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
+ [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
+ jw24-20020a170906e95800b00a49856ae93asm3739062ejb.198.2024.03.27.07.27.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Mar 2024 07:20:22 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: thuth@redhat.com, alistair.francis@wdc.com, groug@kaod.org,
- peter.maydell@linaro.org, qemu_oss@crudebyte.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.0 v3 2/2] qtest/virtio-9p-test.c: remove g_test_slow()
- gate
-Date: Wed, 27 Mar 2024 11:20:11 -0300
-Message-ID: <20240327142011.805728-3-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240327142011.805728-1-dbarboza@ventanamicro.com>
-References: <20240327142011.805728-1-dbarboza@ventanamicro.com>
+ Wed, 27 Mar 2024 07:27:42 -0700 (PDT)
+Date: Wed, 27 Mar 2024 14:27:41 +0000
+From: Anthony PERARD <anthony.perard@cloud.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>, qemu-devel@nongnu.org,
+ Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
+ Paul Durrant <paul@xen.org>, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw2@infradead.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ xen-devel@lists.xenproject.org, qemu-block@nongnu.org,
+ kvm@vger.kernel.org, Thomas Huth <thuth@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH-for-9.0 v2 12/19] hw/xen: Merge 'hw/xen/arch_hvm.h' in
+ 'hw/xen/xen-hvm-common.h'
+Message-ID: <8829dd17-308b-45fe-8d48-a980470316e8@perard>
+References: <20231114143816.71079-1-philmd@linaro.org>
+ <20231114143816.71079-13-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42b.google.com
+In-Reply-To: <20231114143816.71079-13-philmd@linaro.org>
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=anthony.perard@cloud.com; helo=mail-lf1-x12c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,50 +104,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 558f5c42ef gated the local tests with g_test_slow() to skip them
-in 'make check'. The reported issue back then was this following CI
-problem:
+On Tue, Nov 14, 2023 at 03:38:08PM +0100, Philippe Mathieu-Daudé wrote:
+> We don't need a target-specific header for common target-specific
+> prototypes. Declare xen_arch_handle_ioreq() and xen_arch_set_memory()
+> in "hw/xen/xen-hvm-common.h".
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-https://lists.nongnu.org/archive/html/qemu-devel/2020-11/msg05510.html
+Acked-by: Anthony PERARD <anthony.perard@citrix.com>
 
-This problem ended up being fixed after it was detected with the
-recently added risc-v machine nodes [1]. virtio-9p-test.c is now
-creating and removing temporary dirs for each test run, instead of
-creating a single dir for the entire qos-test scope.
+Thanks,
 
-We're now able to run these tests with 'make check' in the CI, so let's
-go ahead and re-enable them.
-
-This reverts commit 558f5c42efded3e0d0b20a90bce2a9a14580d824.
-
-[1] https://mail.gnu.org/archive/html/qemu-devel/2024-03/msg05807.html
-
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- tests/qtest/virtio-9p-test.c | 9 ---------
- 1 file changed, 9 deletions(-)
-
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index 0179b3a394..3c8cd235cf 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -746,15 +746,6 @@ static void register_virtio_9p_test(void)
- 
- 
-     /* 9pfs test cases using the 'local' filesystem driver */
--
--    /*
--     * XXX: Until we are sure that these tests can run everywhere,
--     * keep them as "slow" so that they aren't run with "make check".
--     */
--    if (!g_test_slow()) {
--        return;
--    }
--
-     opts.before = assign_9p_local_driver;
-     qos_add_test("local/config", "virtio-9p", pci_config,  &opts);
-     qos_add_test("local/create_dir", "virtio-9p", fs_create_dir, &opts);
 -- 
-2.44.0
-
+Anthony PERARD
 
