@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E691388D3C0
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C1388D3BE
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 02:31:57 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpI7n-0005Xf-Oi; Tue, 26 Mar 2024 21:30:44 -0400
+	id 1rpI8M-0005ga-20; Tue, 26 Mar 2024 21:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rpI7a-0005X4-3j
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:30:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rpI8F-0005fq-U3
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:31:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rpI7X-0003vI-7T
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:30:29 -0400
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rpI87-0003zc-T7
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:31:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711503024;
+ s=mimecast20190719; t=1711503062;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=8F0MIllH5clWMxBrxgR5uny6vEHitOHBq+RT3SWOBLI=;
- b=G72BJurp2yvLgWoYUmB/JaBP4E1HDI5Wos7ycHCyAYySbkaCOMASmMhJ/xqQduyCOkbP6Z
- ysw7jEMySUNknMds16kEyLdRDzuoqy8bQ1CQDsiHZZzMDvLYJUJUo9VEGTRL6+KY9XN6Pt
- +EDub2s9cATuxRX2i4C3kzkAXQZxVuA=
+ to:to:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LXKZoU8MHcfNRGyo/3SIhLzxK8Y11kXEEXLI+VH1j1Y=;
+ b=GuOV8cP+dJHy9Rprt2pgy7rbbpMAtVEdd/oj90mYLk8fcO09MEh03j2R8jk+WvJR7BpOft
+ ShmqtDSfXvQFCjwga5LZ9uNb++Xm/5M1Nl1vGos4haZDGftw2VyZKdS7ZIoG7VYfwWLIf1
+ 3w+QRizPEAQtckEZfwUp5ZLXS11VSOs=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-66-q31fhu74OWOXANwBjr0OEQ-1; Tue,
- 26 Mar 2024 21:29:14 -0400
-X-MC-Unique: q31fhu74OWOXANwBjr0OEQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-533-nrMtFr7uNAa6U4I6d6Bg7Q-1; Tue,
+ 26 Mar 2024 21:29:21 -0400
+X-MC-Unique: nrMtFr7uNAa6U4I6d6Bg7Q-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
  [10.11.54.10])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E44EA3C29842
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 01:29:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3996F2802E26
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 01:29:21 +0000 (UTC)
 Received: from server.redhat.com (unknown [10.72.112.204])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CA2E6492BD4;
- Wed, 27 Mar 2024 01:29:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 248C4492BD0;
+ Wed, 27 Mar 2024 01:29:18 +0000 (UTC)
 From: Cindy Lu <lulu@redhat.com>
 To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
-Subject: [RFC 0/2] disable the configuration interrupt for the unsupported
+Subject: [RFC 1/2] virtio-net: disable the configure interrupt for not support
  device
-Date: Wed, 27 Mar 2024 09:22:13 +0800
-Message-ID: <20240327012905.70188-1-lulu@redhat.com>
+Date: Wed, 27 Mar 2024 09:22:14 +0800
+Message-ID: <20240327012905.70188-2-lulu@redhat.com>
+In-Reply-To: <20240327012905.70188-1-lulu@redhat.com>
+References: <20240327012905.70188-1-lulu@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lulu@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lulu@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -74,46 +76,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we need a crash in Non-standard image, here is the jira for this https://issues.redhat.com/browse/RHEL-28522
-The root cause of the issue is that an IRQFD was used without initialization..
-
-During the booting process of the Vyatta image, the behavior of the called function in qemu is as follows:
-
-1. vhost_net_stop() was called, this will call the function
-virtio_pci_set_guest_notifiers() with assgin= false, and
-virtio_pci_set_guest_notifiers(） will release the irqfd for vector 0
-
-2. virtio_reset() was called -->set configure vector to VIRTIO_NO_VECTORt
-
-3.vhost_net_start() was called (at this time the configure vector is
-still VIRTIO_NO_VECTOR) and call virtio_pci_set_guest_notifiers() with
-assgin= true, so the irqfd for vector 0 was not "init" during this process
-
-4. The system continues to boot and msix_fire_vector_notifier() was
-called unmask the vector 0 and then met the crash
-[msix_fire_vector_notifier] 112 called vector 0 is_masked 1
-[msix_fire_vector_notifier] 112 called vector 0 is_masked 0
-
-The reason for not reproducing in RHEL/fedora guest image is because
-REHL/Fedora doesn't have the behavior of calling vhost_net_stop and then virtio_reset, and also won't call msix_fire_vector_notifier for vector 0 during system boot.
-
-The reason for not reproducing before configure interrupt support is because
-vector 0 is for configure interrupt,  before the support for configure interrupts, the notifier process will not handle vector 0.
-
-For the device Vyatta using, it doesn't support configure interrupts at all, So we plan to disable the configure interrupts in unsupported device
+Only the vdpa device support configure interrupt, we need to disable the
+configure interrupt process in all other device.
+In order to achieve this, I added a check in the virtio_net_device_realize().
+When the peer's type is vdpa, the value of config_irq_enabled in the structure
+VirtIODevice will set to true.
 
 Signed-off-by: Cindy Lu <lulu@redhat.com>
+---
+ hw/net/virtio-net.c        | 5 ++++-
+ hw/virtio/virtio.c         | 1 +
+ include/hw/virtio/virtio.h | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-Cindy Lu (2):
-  virtio-net: disable the configure interrupt for not support device
-  virtio-pci: check if the configure interrupt enable
-
- hw/net/virtio-net.c        |  5 ++++-
- hw/virtio/virtio-pci.c     | 41 +++++++++++++++++++++-----------------
- hw/virtio/virtio.c         |  1 +
- include/hw/virtio/virtio.h |  1 +
- 4 files changed, 29 insertions(+), 19 deletions(-)
-
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 80c56f0cfc..3b487864a8 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3749,12 +3749,15 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
+ 
+     nc = qemu_get_queue(n->nic);
+     nc->rxfilter_notify_enabled = 1;
++    vdev->config_irq_enabled = false;
+ 
+-   if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_VDPA) {
++    if (nc->peer && nc->peer->info->type == NET_CLIENT_DRIVER_VHOST_VDPA) {
+         struct virtio_net_config netcfg = {};
+         memcpy(&netcfg.mac, &n->nic_conf.macaddr, ETH_ALEN);
+         vhost_net_set_config(get_vhost_net(nc->peer),
+             (uint8_t *)&netcfg, 0, ETH_ALEN, VHOST_SET_CONFIG_TYPE_FRONTEND);
++
++        vdev->config_irq_enabled = true;
+     }
+     QTAILQ_INIT(&n->rsc_chains);
+     n->qdev = dev;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 3a160f86ed..6b52a7190d 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -3255,6 +3255,7 @@ void virtio_init(VirtIODevice *vdev, uint16_t device_id, size_t config_size)
+             virtio_vmstate_change, vdev);
+     vdev->device_endian = virtio_default_endian();
+     vdev->use_guest_notifier_mask = true;
++    vdev->config_irq_enabled = false;
+ }
+ 
+ /*
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index c8f72850bc..a7763b71e0 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -164,6 +164,7 @@ struct VirtIODevice
+      */
+     EventNotifier config_notifier;
+     bool device_iotlb_enabled;
++    bool config_irq_enabled;
+ };
+ 
+ struct VirtioDeviceClass {
 -- 
 2.43.0
 
