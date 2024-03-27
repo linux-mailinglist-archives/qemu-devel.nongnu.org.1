@@ -2,99 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC67288D4E7
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 04:07:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB8288D4E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 04:07:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpJcc-00027x-OQ; Tue, 26 Mar 2024 23:06:38 -0400
+	id 1rpJci-0002Ab-Hs; Tue, 26 Mar 2024 23:06:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1rpJcV-00022V-Nj
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:31 -0400
-Received: from fout3-smtp.messagingengine.com ([103.168.172.146])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rpJcY-00024t-0t
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1rpJcT-0004XI-5t
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:30 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
- by mailfout.nyi.internal (Postfix) with ESMTP id C74C81380165;
- Tue, 26 Mar 2024 23:06:28 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute7.internal (MEProxy); Tue, 26 Mar 2024 23:06:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- invisiblethingslab.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm2; t=1711508788; x=1711595188; bh=MbWNAocmC2
- tXBNyeSris83Z/pJQ9bxIJsFcp7jvH5XI=; b=B9XiLJ1Neg+S24LlG51xvdKE3F
- 09Eso1tQ6eMCxdX8xfVx09URS4QDwDXRVh0fyn7FIxabsDhRjzljbNXrF0Lq2rTG
- cPi2Xo6LK3zo9eaBCWpFzZVIpvSTNQ65CN69nb8TfJXc/V9uJYnTOLjLWAk8iphm
- IHDf6Ep3ZzOWL+rwAKMeQBR0cDJ7QPw/Cg8axiXh7jb6cfLN1n3ZF0jrEKikMYCg
- Fgni1Mrx7OgrHfiOHwKcoi7z4gAbtX6pAsuCE3qlxdvXp1ew0m6HY6bmMEI6Mgj2
- nvJrKwskZcdUm0fhlo96QhwCPz09U0RvGj2+VF8ooZNuIOfg136ADQP87I6w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1711508788; x=
- 1711595188; bh=MbWNAocmC2tXBNyeSris83Z/pJQ9bxIJsFcp7jvH5XI=; b=x
- rn9Iqc7z00/ieKDGMeEHf1xO9LKYNU0XBssT6keiTb7RQ9Hws4K0T5mPmvSejNv/
- UXTuHacyb1TwViEI0fJ0LLH/7qJxA0aVOmxvN03bxmQgPWvAMIAYBcmmNtRC2d8s
- zksfLwnyJDoYRjl/5UeEpBCPuzYCS0FdYMTqZUOBd6gf5j9iAGQdwV0gYdqX+kVl
- L2yHAJJt4cyCM7XKkW4gATx7UOSnPXwNjjA6MVafYQUVfUQJd42VMB1GW4jS85wL
- awikQIvHhpI/gObFsUMzSqsvgopC+osgLzTtFcWNSPvWE0nzLQZVGTDhyvwAng7N
- xkQguMh4PqLAY/npi3PpA==
-X-ME-Sender: <xms:NI0DZkB1xmdqAqKokIWOE8rKVeKXURKjVHxzPc6gvmKyDuGuBGEx9A>
- <xme:NI0DZmiIzVsUYz8nmb9afgtisHplZX5S89WJ45DG2JEg5aEkHMv31pkQn4K5SDSN5
- vW7lZ0JZXU4JA>
-X-ME-Received: <xmr:NI0DZnncUKYLrK2UbFq6A172gjI1Nm5zNdR_404pJvAcfYrtWK43ptApltTdXV5qOyTIn6tAKvSX1MRBasy2-ghLgBlRZWmC0EJPw3fMdGYykUAhJeY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddugedgheeiucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeforghr
- vghkucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesih
- hnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpefg
- ueduhefgvdefheehudejheefudevueeghfekhfehleegveduteeuiedugffgffenucevlh
- hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgv
- khesihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhm
-X-ME-Proxy: <xmx:NI0DZqwB8ug52_A0qWQcpdxwao7sxhvMmNPttlgikr4gASNFw1l7CA>
- <xmx:NI0DZpQCX4tX0DZxHt7entbKHNbZg7slS11YUqGe49UkMqbGlv1inw>
- <xmx:NI0DZlatG-0aai-WFvhZ2vxilJWt7IfYsx-vWj1NounPZlWSq9JQdg>
- <xmx:NI0DZiSjaaSdxjRzuk8xlhig814J8CPPR6opw-nJkRdd5CL2Hwp05w>
- <xmx:NI0DZoGqu7ISBtsYqlNC5hDnT1y_peCtCnt1g79kFsPQSjWEnwhWOw>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Mar 2024 23:06:27 -0400 (EDT)
-From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>, 
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
- xen-devel@lists.xenproject.org (open list:X86 Xen CPUs)
-Subject: [PATCH v3 2/2] xen: fix stubdom PCI addr
-Date: Wed, 27 Mar 2024 04:05:15 +0100
-Message-ID: <35049e99da634a74578a1ff2cb3ae4cc436ede33.1711506237.git-series.marmarek@invisiblethingslab.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.527f002866de2be7c275c5000b6e5edfeb7e8368.1711506237.git-series.marmarek@invisiblethingslab.com>
-References: <cover.527f002866de2be7c275c5000b6e5edfeb7e8368.1711506237.git-series.marmarek@invisiblethingslab.com>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1rpJcW-0004Xj-EZ
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711508791;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Trkrku2CS58c1hJqwhRMI168xh0YiaEitpgCt1lKzts=;
+ b=b5mXUZG/nXSxaduaVWgLa99WV6rJgU5dA5nFrGSJkwC1tV1odVNGC0aUipbp0Dqtmqn3s6
+ 9l3iIXr7StIKN6BaSrnCwKU68liyN/9s3v8L7Y9NceFDmLyOGaxReikwqVz8iPHoQrAzG+
+ iWBTK8WmhfjtZGyHufNEAz909tNoRgQ=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-6d4MVI2JMcaC-gzCZ6eX3g-1; Tue, 26 Mar 2024 23:06:29 -0400
+X-MC-Unique: 6d4MVI2JMcaC-gzCZ6eX3g-1
+Received: by mail-pj1-f69.google.com with SMTP id
+ 98e67ed59e1d1-29905ac5c21so4930879a91.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 20:06:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711508788; x=1712113588;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Trkrku2CS58c1hJqwhRMI168xh0YiaEitpgCt1lKzts=;
+ b=VfaYxQcUXtq+gohlPj+ZmEwGH2qRGCKZ20FPxc5Wp6k/xi4UAJFN6OpjBv1J3sYztk
+ SJdRewHePNwIJM4xmX0ENNGlVZQXinN/pxOgslxGr4JSK3hmo3/A7/OCfJ9e2+u835XC
+ 8fl8/txs/1PEsYxHUKXAu6yzU2tWZQSS2BslvmwVIJfscMbpQd8RWmUYHaJBnr5SyTSV
+ 8vU/hG85DFDQLfqaaL7DLh3BM5v+V4toA1HKGH71eM63giWivCp2iVOemt8rXeyselKJ
+ Td5NBgY5imGGas+BKoYKUF7LiTC7o9KW6C+9T6sXiYZRuGnryVnHpWxdIAvUkoWwUGdu
+ tTtg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUoY72MGlrXsXFgbP28KrAZ8PlYLJ38gjHJSIu9BTO4pJb154U3/4J+9tRyzn2v9VUHevgVmcmigxmQNzph5Qt8+qzCpWo=
+X-Gm-Message-State: AOJu0YxwkAKpWnDeqb6H5LxbdvD1a+wu6gHe7jd5pHFigZ27jtBIFZew
+ o9V3ZhPPe1lvLct8BfbnxsKB7S0/qkl2h2WkqCBezsEDzhiBTPhVmNJj3p2QwAgt1BFYDOReU2l
+ +3ERGQDFOjzqnB202+xcoOAbgIP+C1jgHXw8jlUTx54n3CPZ7qiG6ve2EnQxSVDNDwMU3HVmXQY
+ k9+qMVrvWJC0HvYvEaThmMdaYim1RD4Rcevf/6tw==
+X-Received: by 2002:a17:90a:b009:b0:29c:74a4:72b3 with SMTP id
+ x9-20020a17090ab00900b0029c74a472b3mr1615521pjq.8.1711508788447; 
+ Tue, 26 Mar 2024 20:06:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErs7YrjEYVY29nM3cgASgoGXlZcKdaTtp4ek3lkJFkoX1WkxtfGxzeJ9xxOKtijezCYbykQ1g+ldmSn1LTrW8=
+X-Received: by 2002:a17:90a:b009:b0:29c:74a4:72b3 with SMTP id
+ x9-20020a17090ab00900b0029c74a472b3mr1615512pjq.8.1711508788136; Tue, 26 Mar
+ 2024 20:06:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=103.168.172.146;
- envelope-from=marmarek@invisiblethingslab.com;
- helo=fout3-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+References: <20240324-tx-v1-1-a3b4135749ec@daynix.com>
+ <CACGkMEvBoe4XQeHOR64rNwAPM-vBMsfLQApWpUoMtvwsSVCpUQ@mail.gmail.com>
+ <a31d0734-823b-4b67-8888-46f0c787cf8f@daynix.com>
+ <CACGkMEvYQr2=0DF99ge9DotJg-O3H1FmZQAzhb=6RVWSvvGqmA@mail.gmail.com>
+ <a4bdd207-e069-47ef-8e80-7b27528a315d@daynix.com>
+ <CACGkMEsCTsQ8H6=XYMZ+8Pb9X1o19j9A4N8kiO500Dbgnw-i6g@mail.gmail.com>
+ <cc71e6c8-eca5-4ce1-9c16-8f85c6a5073e@daynix.com>
+In-Reply-To: <cc71e6c8-eca5-4ce1-9c16-8f85c6a5073e@daynix.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 27 Mar 2024 11:06:16 +0800
+Message-ID: <CACGkMEvW+_MTvJ5TwJLNxKC=u0bTTLETuHqK5_0P27GQra5Dng@mail.gmail.com>
+Subject: Re: [PATCH] hw/net/net_tx_pkt: Fix virtio header without checksum
+ offloading
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Dmitry Fleytman <dmitry.fleytman@gmail.com>, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,152 +103,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When running in a stubdomain, the config space access via sysfs needs to
-use BDF as seen inside stubdomain (connected via xen-pcifront), which is
-different from the real BDF. For other purposes (hypercall parameters
-etc), the real BDF needs to be used.
-Get the in-stubdomain BDF by looking up relevant PV PCI xenstore
-entries.
+On Wed, Mar 27, 2024 at 11:05=E2=80=AFAM Akihiko Odaki <akihiko.odaki@dayni=
+x.com> wrote:
+>
+> On 2024/03/27 11:59, Jason Wang wrote:
+> > On Wed, Mar 27, 2024 at 10:53=E2=80=AFAM Akihiko Odaki <akihiko.odaki@d=
+aynix.com> wrote:
+> >>
+> >> On 2024/03/27 11:50, Jason Wang wrote:
+> >>> On Tue, Mar 26, 2024 at 3:04=E2=80=AFPM Akihiko Odaki <akihiko.odaki@=
+daynix.com> wrote:
+> >>>>
+> >>>> On 2024/03/26 15:51, Jason Wang wrote:
+> >>>>> On Sun, Mar 24, 2024 at 4:32=E2=80=AFPM Akihiko Odaki <akihiko.odak=
+i@daynix.com> wrote:
+> >>>>>>
+> >>>>>> It is incorrect to have the VIRTIO_NET_HDR_F_NEEDS_CSUM set when
+> >>>>>> checksum offloading is disabled so clear the bit. Set the
+> >>>>>> VIRTIO_NET_HDR_F_DATA_VALID bit instead to tell the checksum is va=
+lid.
+> >>>>>>
+> >>>>>> TCP/UDP checksum is usually offloaded when the peer requires virti=
+o
+> >>>>>> headers because they can instruct the peer to compute checksum. Ho=
+wever,
+> >>>>>> igb disables TX checksum offloading when a VF is enabled whether t=
+he
+> >>>>>> peer requires virtio headers because a transmitted packet can be r=
+outed
+> >>>>>> to it and it expects the packet has a proper checksum. Therefore, =
+it
+> >>>>>> is necessary to have a correct virtio header even when checksum
+> >>>>>> offloading is disabled.
+> >>>>>>
+> >>>>>> A real TCP/UDP checksum will be computed and saved in the buffer w=
+hen
+> >>>>>> checksum offloading is disabled. The virtio specification requires=
+ to
+> >>>>>> set the packet checksum stored in the buffer to the TCP/UDP pseudo
+> >>>>>> header when the VIRTIO_NET_HDR_F_NEEDS_CSUM bit is set so the bit =
+must
+> >>>>>> be cleared in that case.
+> >>>>>>
+> >>>>>> The VIRTIO_NET_HDR_F_NEEDS_CSUM bit also tells to skip checksum
+> >>>>>> validation. Even if checksum offloading is disabled, it is desirab=
+le to
+> >>>>>> skip checksum validation because the checksum is always correct. U=
+se the
+> >>>>>> VIRTIO_NET_HDR_F_DATA_VALID bit to claim the validity of the check=
+sum.
+> >>>>>>
+> >>>>>> Fixes: ffbd2dbd8e64 ("e1000e: Perform software segmentation for lo=
+opback")
+> >>>>>> Buglink: https://issues.redhat.com/browse/RHEL-23067
+> >>>>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>>>>> ---
+> >>>>>>     hw/net/net_tx_pkt.c | 3 +++
+> >>>>>>     1 file changed, 3 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+> >>>>>> index 2e5f58b3c9cc..c225cf706513 100644
+> >>>>>> --- a/hw/net/net_tx_pkt.c
+> >>>>>> +++ b/hw/net/net_tx_pkt.c
+> >>>>>> @@ -833,6 +833,9 @@ bool net_tx_pkt_send_custom(struct NetTxPkt *p=
+kt, bool offload,
+> >>>>>>
+> >>>>>>         if (offload || gso_type =3D=3D VIRTIO_NET_HDR_GSO_NONE) {
+> >>>>>>             if (!offload && pkt->virt_hdr.flags & VIRTIO_NET_HDR_F=
+_NEEDS_CSUM) {
+> >>>>>> +            pkt->virt_hdr.flags =3D
+> >>>>>> +                (pkt->virt_hdr.flags & ~VIRTIO_NET_HDR_F_NEEDS_CS=
+UM) |
+> >>>>>> +                VIRTIO_NET_HDR_F_DATA_VALID;
+> >>>>>
+> >>>>> Why VIRTIO_NET_HDR_F_DATA_VALID is used in TX path?
+> >>>>
+> >>>> On igb, a packet sent from a PCI function may be routed to another
+> >>>> function. The virtio header updated here will be directly provided t=
+o
+> >>>> the RX path in such a case.
+> >>>
+> >>> But I meant for example net_tx_pkt_send_custom() is used in
+> >>> e1000e_tx_pkt_send() which is the tx path on the host.
+> >>>
+> >>> VIRTIO_NET_HDR_F_DATA_VALID is not necessary in the tx path.
+> >>
+> >> igb passes igb_tx_pkt_vmdq_callback to net_tx_pkt_send_custom().
+> >> igb_tx_pkt_vmdq_callback() passes the packet to its rx path for loopba=
+ck.
+> >>
+> >
+> > You are right, how about igb_tx_pkt_vmdq_callback()?
+> >
+> > We probably need to tweak the name if it is only used in rx path.
+>
+> igb_tx_pkt_vmdq_callback() itself is part of the tx path of a PCI
+> function, and invokes the rx path of another PCI function in case of
+> loopback, or triggers the transmission to the external peer.
 
-Signed-off-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
----
-Changes in v3:
-- reduce 'path' size
-- add two missing error_setg() calls
-- coding style
-Changes in v2:
-- use xs_node_scanf
-- use %d instead of %u to read values written as %d
-- add a comment from another iteration of this patch by Jason Andryuk
----
- hw/xen/xen-host-pci-device.c | 76 ++++++++++++++++++++++++++++++++++++-
- hw/xen/xen-host-pci-device.h |  6 +++-
- 2 files changed, 81 insertions(+), 1 deletion(-)
+Right, so if it's an external TX, VIRTIO_NET_HDR_F_DATA_VALID may not
+work there.
 
-diff --git a/hw/xen/xen-host-pci-device.c b/hw/xen/xen-host-pci-device.c
-index 8c6e9a1..eaf32f2 100644
---- a/hw/xen/xen-host-pci-device.c
-+++ b/hw/xen/xen-host-pci-device.c
-@@ -9,6 +9,8 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "qemu/cutils.h"
-+#include "hw/xen/xen-legacy-backend.h"
-+#include "hw/xen/xen-bus-helper.h"
- #include "xen-host-pci-device.h"
- 
- #define XEN_HOST_PCI_MAX_EXT_CAP \
-@@ -33,13 +35,73 @@
- #define IORESOURCE_PREFETCH     0x00001000      /* No side effects */
- #define IORESOURCE_MEM_64       0x00100000
- 
-+/*
-+ * Non-passthrough (dom0) accesses are local PCI devices and use the given BDF
-+ * Passthough (stubdom) accesses are through PV frontend PCI device.  Those
-+ * either have a BDF identical to the backend's BDF (xen-backend.passthrough=1)
-+ * or a local virtual BDF (xen-backend.passthrough=0)
-+ *
-+ * We are always given the backend's BDF and need to lookup the appropriate
-+ * local BDF for sysfs access.
-+ */
-+static void xen_host_pci_fill_local_addr(XenHostPCIDevice *d, Error **errp)
-+{
-+    unsigned int num_devs, len, i;
-+    unsigned int domain, bus, dev, func;
-+    char *be_path = NULL;
-+    char path[16];
-+
-+    be_path = qemu_xen_xs_read(xenstore, 0, "device/pci/0/backend", &len);
-+    if (!be_path) {
-+        error_setg(errp, "Failed to read device/pci/0/backend");
-+        goto out;
-+    }
-+
-+    if (xs_node_scanf(xenstore, 0, be_path, "num_devs", NULL,
-+                      "%d", &num_devs) != 1) {
-+        error_setg(errp, "Failed to read or parse %s/num_devs", be_path);
-+        goto out;
-+    }
-+
-+    for (i = 0; i < num_devs; i++) {
-+        snprintf(path, sizeof(path), "dev-%d", i);
-+        if (xs_node_scanf(xenstore, 0, be_path, path, NULL,
-+                          "%x:%x:%x.%x", &domain, &bus, &dev, &func) != 4) {
-+            error_setg(errp, "Failed to read or parse %s/%s", be_path, path);
-+            goto out;
-+        }
-+        if (domain != d->domain ||
-+                bus != d->bus ||
-+                dev != d->dev ||
-+                func != d->func)
-+            continue;
-+        snprintf(path, sizeof(path), "vdev-%d", i);
-+        if (xs_node_scanf(xenstore, 0, be_path, path, NULL,
-+                          "%x:%x:%x.%x", &domain, &bus, &dev, &func) != 4) {
-+            error_setg(errp, "Failed to read or parse %s/%s", be_path, path);
-+            goto out;
-+        }
-+        d->local_domain = domain;
-+        d->local_bus = bus;
-+        d->local_dev = dev;
-+        d->local_func = func;
-+        goto out;
-+    }
-+    error_setg(errp, "Failed to find PCI device %x:%x:%x.%x in xenstore",
-+               d->domain, d->bus, d->dev, d->func);
-+
-+out:
-+    free(be_path);
-+}
-+
- static void xen_host_pci_sysfs_path(const XenHostPCIDevice *d,
-                                     const char *name, char *buf, ssize_t size)
- {
-     int rc;
- 
-     rc = snprintf(buf, size, "/sys/bus/pci/devices/%04x:%02x:%02x.%d/%s",
--                  d->domain, d->bus, d->dev, d->func, name);
-+                  d->local_domain, d->local_bus, d->local_dev, d->local_func,
-+                  name);
-     assert(rc >= 0 && rc < size);
- }
- 
-@@ -342,6 +404,18 @@ void xen_host_pci_device_get(XenHostPCIDevice *d, uint16_t domain,
-     d->dev = dev;
-     d->func = func;
- 
-+    if (xen_is_stubdomain) {
-+        xen_host_pci_fill_local_addr(d, errp);
-+        if (*errp) {
-+            goto error;
-+        }
-+    } else {
-+        d->local_domain = d->domain;
-+        d->local_bus = d->bus;
-+        d->local_dev = d->dev;
-+        d->local_func = d->func;
-+    }
-+
-     xen_host_pci_config_open(d, errp);
-     if (*errp) {
-         goto error;
-diff --git a/hw/xen/xen-host-pci-device.h b/hw/xen/xen-host-pci-device.h
-index 4d8d34e..270dcb2 100644
---- a/hw/xen/xen-host-pci-device.h
-+++ b/hw/xen/xen-host-pci-device.h
-@@ -23,6 +23,12 @@ typedef struct XenHostPCIDevice {
-     uint8_t dev;
-     uint8_t func;
- 
-+    /* different from the above in case of stubdomain */
-+    uint16_t local_domain;
-+    uint8_t local_bus;
-+    uint8_t local_dev;
-+    uint8_t local_func;
-+
-     uint16_t vendor_id;
-     uint16_t device_id;
-     uint32_t class_code;
--- 
-git-series 0.9.1
+Thanks
+
+>
+> Regards,
+> Akihiko Odaki
+>
+> >
+> > Thanks
+> >
+> >> Regards,
+> >> Akihiko Odaki
+> >>
+> >>>
+> >>> Thanks
+> >>>
+> >>>>
+> >>>> Regards,
+> >>>> Akihiko Odaki
+> >>>>
+> >>>>>
+> >>>>> Thanks
+> >>>>>
+> >>>>>>                 net_tx_pkt_do_sw_csum(pkt, &pkt->vec[NET_TX_PKT_L2=
+HDR_FRAG],
+> >>>>>>                                       pkt->payload_frags + NET_TX_=
+PKT_PL_START_FRAG - 1,
+> >>>>>>                                       pkt->payload_len);
+> >>>>>>
+> >>>>>> ---
+> >>>>>> base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+> >>>>>> change-id: 20240324-tx-c57d3c22ad73
+> >>>>>>
+> >>>>>> Best regards,
+> >>>>>> --
+> >>>>>> Akihiko Odaki <akihiko.odaki@daynix.com>
+> >>>>>>
+> >>>>>
+> >>>>
+> >>>
+> >>
+> >
+>
+
 
