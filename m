@@ -2,68 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A4F88E35C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9484388E436
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:55:23 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpTc9-0002FE-4q; Wed, 27 Mar 2024 09:46:49 -0400
+	id 1rpTjh-0004Vu-MA; Wed, 27 Mar 2024 09:54:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpTc5-0002F3-Ao
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:46:45 -0400
-Received: from mgamail.intel.com ([192.198.163.12])
+ id 1rpTjg-0004VB-5G; Wed, 27 Mar 2024 09:54:36 -0400
+Received: from mgamail.intel.com ([198.175.65.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpTc2-00022z-0u
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:46:45 -0400
+ id 1rpTjd-0003OR-Ub; Wed, 27 Mar 2024 09:54:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711547202; x=1743083202;
+ t=1711547674; x=1743083674;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2p2UnKsg9rmaiIH6JacynVD4rD0PMYy7fe62WSye7rg=;
- b=Zj1q7UzOiIu1tZlcKkLznWaS6Xi+fLjV351DhDKvWtMPLYmdK8fksTCr
- YkZk8vBoFCKZnogh0CA8J6K6K9pixNLDoiy9nq7v7RamYUbGtTmJngfwi
- 4H+k9LdH93K1A/MBGsyhnUIJCDIQ6fufnKsqOGWDl2WVT37govZlJ95m2
- CKSfZPtcz9NZ0xqal+YLWhREi06JmdVMvm3jiBU37Mp20n2kkXjaNV0at
- L2i7s6nOPIaIzJAR//DgSNlaO54szYDEFl3fgVOoH8cYieIFv1g9C0dHZ
- /LDk3xABBP4pxlY7b+HE3IcXx9tFxmRh4psxpiKCi72nkmg5i4OERJyqB w==;
-X-CSE-ConnectionGUID: q3xMGIkTTq6MiFO6l9QVxg==
-X-CSE-MsgGUID: fvIcVrMhSeOpeARh4dui6Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10430039"
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="10430039"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 06:46:39 -0700
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=iTLGYFoNuY8A1vOqe8hPovHfp1x9Dd+JH6t1fYzYsT0=;
+ b=WnIg2JhKM0tChHVZp7XfUbOBokboJJb54jmSRIcY9RHHb5yNo8hgyoqY
+ vSUxKTeeZf0gdb/WDws1gP9FY6B1/wnWaCRJgT5Puc/HipjMRx+G3Sk45
+ dMiub2OOy3XGtnmqkz0SMxahVbqeYM+oYaMDR+IqIyNVEiOYpws1t0o6b
+ o6xEMwg7ErKajEvLXRwm78SuG5KZjezZ2I/x+toRQQCax/5ynnNL96aTM
+ 7UBZ6D55nqZV854nTEqCWogfExFV4fTySQmYeOmeUEAd95LjP85lSlZnN
+ PT4uWRkkcFqUYv5wwCLxlk+LnW5JhFbRVsV3xz0gbJzztErz/YDjJi6M8 w==;
+X-CSE-ConnectionGUID: idNcBpYcS7KhkFUHcQzlBg==
+X-CSE-MsgGUID: WZcMIFEWR3ahYjRZLhkRAQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="18079594"
+X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="18079594"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 06:54:22 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="21008482"
+X-IronPort-AV: E=Sophos;i="6.07,159,1708416000"; d="scan'208";a="16333882"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 27 Mar 2024 06:46:36 -0700
-Date: Wed, 27 Mar 2024 22:00:31 +0800
+ by fmviesa006.fm.intel.com with ESMTP; 27 Mar 2024 06:54:16 -0700
+Date: Wed, 27 Mar 2024 22:08:12 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Igor Mammedov <imammedo@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH-for-9.1 v2 09/21] hw/i386/pc: Remove
- PCMachineClass::smbios_uuid_encoded
-Message-ID: <ZgQmf4huw0/HXKUR@intel.com>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Song Gao <gaosong@loongson.cn>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-arm@nongnu.org,
+ qemu-riscv@nongnu.org
+Subject: Re: [PATCH-for-9.1 v2 10/21] hw/smbios: Remove 'uuid_encoded'
+ argument from smbios_set_defaults()
+Message-ID: <ZgQoTF3FUOpIZAix@intel.com>
 References: <20240327095124.73639-1-philmd@linaro.org>
- <20240327095124.73639-10-philmd@linaro.org>
- <ZgQkVZMiZnDrjeiR@intel.com>
+ <20240327095124.73639-11-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZgQkVZMiZnDrjeiR@intel.com>
-Received-SPF: pass client-ip=192.198.163.12; envelope-from=zhao1.liu@intel.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240327095124.73639-11-philmd@linaro.org>
+Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -87,13 +91,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> Since this parameter is always ture, then we can drop it and further
-> clean up the static flag "smbios_uuid_encoded" in hw/smbios/smbios.c.
+On Wed, Mar 27, 2024 at 10:51:12AM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Wed, 27 Mar 2024 10:51:12 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH-for-9.1 v2 10/21] hw/smbios: Remove 'uuid_encoded' argument
+>  from smbios_set_defaults()
+> X-Mailer: git-send-email 2.41.0
+> 
+> 'uuid_encoded' is always NULL, remove it.
 
-Oops, my email didn't sync up well, the next two patches were doing
-just that.
+It's a boolean, so,
 
-Thanks,
-Zhao
+s/NULL/true/.
+
+
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  include/hw/firmware/smbios.h | 3 +--
+>  hw/arm/virt.c                | 3 +--
+>  hw/i386/fw_cfg.c             | 2 +-
+>  hw/loongarch/virt.c          | 2 +-
+>  hw/riscv/virt.c              | 2 +-
+>  hw/smbios/smbios.c           | 6 ++----
+>  6 files changed, 7 insertions(+), 11 deletions(-)
+
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
