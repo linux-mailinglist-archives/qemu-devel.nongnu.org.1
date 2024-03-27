@@ -2,56 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19D688D71C
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 08:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243E988D73B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 08:29:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpNYZ-0004qw-Ku; Wed, 27 Mar 2024 03:18:43 -0400
+	id 1rpNhR-0006lU-UY; Wed, 27 Mar 2024 03:27:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wangyuquan1236@phytium.com.cn>)
- id 1rpNYW-0004qn-KQ
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:18:40 -0400
-Received: from zg8tmtyylji0my4xnjqumte4.icoremail.net ([162.243.164.118])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <wangyuquan1236@phytium.com.cn>) id 1rpNYU-0001Pn-1O
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:18:40 -0400
-Received: from prodtpl.icoremail.net (unknown [10.12.1.20])
- by hzbj-icmmx-6 (Coremail) with SMTP id AQAAfwCXnMhAyANmmexMBw--.56847S2;
- Wed, 27 Mar 2024 15:18:24 +0800 (CST)
-Received: from phytium.com.cn (unknown [123.150.8.50])
- by mail (Coremail) with SMTP id AQAAfwAXpvU2yANmWkYAAA--.246S3;
- Wed, 27 Mar 2024 15:18:15 +0800 (CST)
-From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
-To: dan.j.williams@intel.com, jonathan.cameron@huawei.com, y-goto@fujitsu.com
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- qemu-devel@nongnu.org
-Subject: RE: Questions about CXL device (type 3 memory) hotplug
-Date: Wed, 27 Mar 2024 15:18:12 +0800
-Message-Id: <20240327071812.955794-1-wangyuquan1236@phytium.com.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <646c04bbbd96_33fb32944b@dwillia2-xfh.jf.intel.com.notmuch>
-References: <646c04bbbd96_33fb32944b@dwillia2-xfh.jf.intel.com.notmuch>
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rpNhJ-0006kS-K3
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:27:47 -0400
+Received: from mail-qk1-x733.google.com ([2607:f8b0:4864:20::733])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rpNhE-0003Db-Fe
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:27:43 -0400
+Received: by mail-qk1-x733.google.com with SMTP id
+ af79cd13be357-78a01a3012aso439236285a.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 00:27:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1711524451; x=1712129251; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IldNgoyaPcCzFmZ/bstRqOq1SS9MI1jIO9UfiXXSAU4=;
+ b=Usmz6QsZ5v1rz3sIOiHc3WgEkLO44TlSnEB9SFjY3ZScSWak6o0ahXu9XdNvXFCmuK
+ 5qOeiCwn8QVC4tv0x86VAji+q4iUyTkj4PqRcP1Zd7zUphah6SiFN5K8/O6BnAzOS0TH
+ GMbbrZYw3YRjDkdE2bAMyJtJdliW22snMIqJXrSw8Kbo0Fjg20BI5nRTyP47GXDZ3Jqd
+ 07beLD70GjcfPHoLWCBjEvOda3ZGAo42gg6grr93RkVWeDKEy+b5VWaWIzgT2DAY1fY5
+ P9QtdqnoojMC7nuN+J9kUUtapaA2r3vjFcnFa7e5azNyBulRJAaILbyJDrGedBWcgWXd
+ c+iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711524451; x=1712129251;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IldNgoyaPcCzFmZ/bstRqOq1SS9MI1jIO9UfiXXSAU4=;
+ b=GJFQjocyNgCaouBTzT3eMXhhoYRXrTgvRnJ1sw6DswWnJeKxBQR2pzcIhKg3fdX25i
+ RqpMJVBkS/MPNPJTp72+SVsD7RogxrNY8rT25RS9+tau35mumSHZVn9WJP+w6Mi2txKa
+ xGFBeuDWyh8CLaBQD+Knu5cPfP/Js92D/OhLo4mIHM8PNWeKrcOWWGk1f3bWTzritvT2
+ YD3FMimeOiUE6VJwXaNtYCAMwfzqw5rEcPNIKYVWhEpZQYeOw6UwUE+ao+7+1wrmf9Q7
+ 65qN6jb38iXPJV4dK8vVq9Y409hAOK3je85Yk6Kk/tc9tG4cRG8/LXCLY3mTFVcNBTVR
+ SV9Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUyuUNVHztHudLHME+qcM+Rl81NW06MREbkWPi5O3alTIe508RtfsFUfNNNk/Og6+t6kBtPcpYd35r6egJ0SuHnW430+1s=
+X-Gm-Message-State: AOJu0YyUcRwxJUzL025dZvT83zWDszj+VAzE9qu/EEn2yDJjbf9C1GwU
+ RTCW2dRfUmBtDz5w4oVWpe4e27NV6liA+VBEbwpsRR2wqp/MlSFA7cqKd8/Bmzo=
+X-Google-Smtp-Source: AGHT+IGtqBvkGEFUH7xveuxcSGh3Y9WoJxG4fW6RKgQd9gCeDvnBocFndsK1ZVijAA2duJEKfAsBiA==
+X-Received: by 2002:ac8:7f8e:0:b0:431:5f0e:bfa9 with SMTP id
+ z14-20020ac87f8e000000b004315f0ebfa9mr5633221qtj.34.1711524451618; 
+ Wed, 27 Mar 2024 00:27:31 -0700 (PDT)
+Received: from n231-228-171.byted.org ([130.44.212.102])
+ by smtp.gmail.com with ESMTPSA id
+ bq15-20020a05622a1c0f00b00431604af3c1sm2383555qtb.20.2024.03.27.00.27.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Mar 2024 00:27:31 -0700 (PDT)
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Huang, Ying" <ying.huang@intel.com>,
+ "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
+ "Eishan Mirakhur" <emirakhur@micron.com>,
+ "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
+ "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH v6 0/2] Improved Memory Tier Creation for CPUless NUMA Nodes
+Date: Wed, 27 Mar 2024 07:27:26 +0000
+Message-Id: <20240327072729.3381685-1-horenchuang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAfwAXpvU2yANmWkYAAA--.246S3
-X-CM-SenderInfo: 5zdqw5pxtxt0arstlqxsk13x1xpou0fpof0/1tbiAQARAWYDI2QDSwABs6
-Authentication-Results: hzbj-icmmx-6; spf=neutral smtp.mail=wangyuquan
- 1236@phytium.com.cn;
-X-Coremail-Antispam: 1Uk129KBjvJXoWxZr47uryDGryrAry5Gr1xZrb_yoWrGF1kpa
- y7Ja43KrykGw1UW3W0qa4kZa4rG3Z5AayUCF9rJw1xu3ZxJF17tF4rtayYqw1agFZ7Wr12
- v3ZYk3Z2g3WkXaDanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvTs0mT0YCTnIWj
- DUYxn0WfASr-VFAU7a7-sFnT9fnUUIcSsGvfJ3UbIYCTnIWIevJa73UjIFyTuYvj4RJUUU
- UUUUU
-Received-SPF: pass client-ip=162.243.164.118;
- envelope-from=wangyuquan1236@phytium.com.cn;
- helo=zg8tmtyylji0my4xnjqumte4.icoremail.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_MSPIKE_H2=-0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::733;
+ envelope-from=horenchuang@bytedance.com; helo=mail-qk1-x733.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,106 +103,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, May 22, 2023 at 05:11:39PM -0700, Dan Williams wrote:
-> Yasunori Gotou (Fujitsu) wrote:
-[...]
+When a memory device, such as CXL1.1 type3 memory, is emulated as
+normal memory (E820_TYPE_RAM), the memory device is indistinguishable
+from normal DRAM in terms of memory tiering with the current implementation.
+The current memory tiering assigns all detected normal memory nodes
+to the same DRAM tier. This results in normal memory devices with
+different attributions being unable to be assigned to the correct memory tier,
+leading to the inability to migrate pages between different types of memory.
+https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
 
-Hi, all
+This patchset automatically resolves the issues. It delays the initialization
+of memory tiers for CPUless NUMA nodes until they obtain HMAT information
+and after all devices are initialized at boot time, eliminating the need
+for user intervention. If no HMAT is specified, it falls back to
+using `default_dram_type`.
 
-There was some confusions about CXL device hotplug when I recently
-tried to use Qemu to emulate CXL device hotplug and verify the relevant
-functions of kernel.
+Example usecase:
+We have CXL memory on the host, and we create VMs with a new system memory
+device backed by host CXL memory. We inject CXL memory performance attributes
+through QEMU, and the guest now sees memory nodes with performance attributes
+in HMAT. With this change, we enable the guest kernel to construct
+the correct memory tiering for the memory nodes.
 
-> > Q1) Can PCIe hotplug driver detect and call CXL driver?
+-v6:
+ Thanks to Ying's comments,
+ * Move `default_dram_perf_lock` to the function's beginning for clarity
+ * Fix double unlocking at v5
+-v5:
+ Thanks to Ying's comments,
+ * Add comments about what is protected by `default_dram_perf_lock`
+ * Fix an uninitialized pointer mtype
+ * Slightly shorten the time holding `default_dram_perf_lock`
+ * Fix a deadlock bug in `mt_perf_to_adistance`
+ * https://lore.kernel.org/lkml/20240327041646.3258110-1-horenchuang@bytedance.com/T/#u
+-v4:
+ Thanks to Ying's comments,
+ * Remove redundant code
+ * Reorganize patches accordingly
+ * https://lore.kernel.org/lkml/20240322070356.315922-1-horenchuang@bytedance.com/T/#u
+-v3:
+ Thanks to Ying's comments,
+ * Make the newly added code independent of HMAT
+ * Upgrade set_node_memory_tier to support more cases
+ * Put all non-driver-initialized memory types into default_memory_types
+   instead of using hmat_memory_types
+ * find_alloc_memory_type -> mt_find_alloc_memory_type
+ * https://lore.kernel.org/lkml/20240320061041.3246828-1-horenchuang@bytedance.com/T/#u
+-v2:
+ Thanks to Ying's comments,
+ * Rewrite cover letter & patch description
+ * Rename functions, don't use _hmat
+ * Abstract common functions into find_alloc_memory_type()
+ * Use the expected way to use set_node_memory_tier instead of modifying it
+ * https://lore.kernel.org/lkml/20240312061729.1997111-1-horenchuang@bytedance.com/T/#u
+-v1:
+ * https://lore.kernel.org/lkml/20240301082248.3456086-1-horenchuang@bytedance.com/T/#u
 
-[...]
+Ho-Ren (Jack) Chuang (2):
+  memory tier: dax/kmem: introduce an abstract layer for finding,
+    allocating, and putting memory types
+  memory tier: create CPUless memory tiers after obtaining HMAT info
 
-> 
-> Yes.
-> 
-> The cxl_pci driver (drivers/cxl/pci.c) is just a typical PCI driver as
-> far as the PCI hotplug driver is concerned. So add/remove events of a
-> CXL card get turned into probe()/remove() events on the driver.
-> 
+ drivers/dax/kmem.c           |  20 +-----
+ include/linux/memory-tiers.h |  13 ++++
+ mm/memory-tiers.c            | 126 ++++++++++++++++++++++++++++++-----
+ 3 files changed, 125 insertions(+), 34 deletions(-)
 
-1. Can we divide steps of CXL device hotplug into two parts(PCI hotplug & Memory Hotplug)?
-
-PCI Hotplug: the same as the native PCIe hotplug, including initializing cxl.io,
-             assigning PCIe BARs, allocating interrupts, etc. And the cxl_pci driver
-                         is responsible for this part.
-
-Memory Hotplug: focusing on enabling CXL memory including discovering and Configuring HDM,
-                extracting NUMA info from device, notifying memory management, etc.
-
-> > 
-> > Q2) Can QEMU/KVM emulate CXL device hotplug?
-> > 
-> >    I heard that QEMU/KVM has PCIe device hotplug emulation, but I'm not sure
-> >    it can hotplug CXL device.
-> 
-> It can, but as far as the driver is concerned you can achieve the same
-> by:
-> 
-> echo $devname > /sys/bus/pci/drivers/cxl_pci/unbind
-> 
-> ...that exercises the same software flows as physical unplug.
->
-
-2. What is the difference between "echo $devname > /sys/bus/pci/drivers/cxl_pci/unbind" and
-"(qemu) device_del cxl-mem0" ?
-
-According to the test, I found that "(qemu) device_del cxl-mem0" would directly
-unplug the device and cause the interrupts on the cxl root port. It seems like this
-operation would not only trigger cxl_pci driver but also pcieport driver.
-
-The kernel dmesg is like below:
-
-(qemu) device_del cxl-mem0
-# dmesg
-[  699.057907] pcieport 0000:0c:00.0: pciehp: pending interrupts 0x0001 from Slot Status
-[  699.058929] pcieport 0000:0c:00.0: pciehp: Slot(0): Button press: will power off in 5 sec
-[  699.059986] pcieport 0000:0c:00.0: pciehp: pending interrupts 0x0010 from Slot Status
-[  699.060099] pcieport 0000:0c:00.0: pciehp: pciehp_set_indicators: SLOTCTRL 90 write cmd 2c0
-
-Then I also tried "echo $devname > /sys/bus/pci/drivers/cxl_pci/unbind"
-to check the behaviour of kernel. The kernel dmesg is like below:
-
-# echo 0000:0d:00.0 > /sys/bus/pci/drivers/cxl_pci/unbind
-# dmesg
-[70387.978931] cxl_pci 0000:0d:00.0: vgaarb: pci_notify
-[70388.021476] cxl_mem mem0: disconnect mem0 from port1
-[70388.033099] pci 0000:0d:00.0: vgaarb: pci_notify
-
-It seems like this operation would just unbind the cxl_pci driver from the cxl device.
-
-Is my understanding about these two method correct?
-
-3) Can I just use "ndctl/test/cxl-topology.sh" to test the cxl hotplug functions of kernel?
-
-   IIUC, cxl-topology.sh would utilize cxl_test (tools/testing/cxl) which is for regression
-   testing the kernel-user ABI.
-
-PS: My qemu command line:
-qemu-system-x86_64 \
--M q35,nvdimm=on,cxl=on \
--m 4G \
--smp 4 \
--object memory-backend-ram,size=2G,id=mem0 \
--numa node,nodeid=0,cpus=0-1,memdev=mem0 \
--object memory-backend-ram,size=2G,id=mem1 \
--numa node,nodeid=1,cpus=2-3,memdev=mem1 \
--object memory-backend-ram,size=256M,id=cxl-mem0 \
--device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1 \
--device cxl-rp,port=0,bus=cxl.1,id=root_port0,chassis=0,slot=0 \
--device cxl-type3,bus=root_port0,volatile-memdev=cxl-mem0,id=cxl-mem0 \
--M cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=4k \
--hda ../disk/ubuntu_x86_test_new.qcow2 \
--nographic \
-
-Qemu version: 8.2.50, the lastest commit of branch cxl-2024-03-05 in "https://gitlab.com/jic23/qemu"
-Kernel version: 6.8.0-rc6
-
-Many thanks
-Yuquan
+-- 
+Ho-Ren (Jack) Chuang
 
 
