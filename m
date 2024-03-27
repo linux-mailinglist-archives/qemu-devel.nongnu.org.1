@@ -2,68 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7945A88DB3A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B77588DB3B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:28:09 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpQVI-0008Pg-Jr; Wed, 27 Mar 2024 06:27:32 -0400
+	id 1rpQVH-0008Jh-Ah; Wed, 27 Mar 2024 06:27:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQTX-0007Hh-Ff
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rpQUD-0007OE-J4
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQTC-0007G0-B2
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:29 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rpQU9-0007aZ-Tz
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711535119;
+ s=mimecast20190719; t=1711535161;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=P6PRkUOhBn7ufqzSGAyTkRNh5yPALC2fNtcgAgJTwiM=;
- b=DDsW4Y3M1WomiMa7TnKMQbO3s8yNEEEA+exWpB/QIOb1Gln+Ivf3J3V7jfmFOGtHFdRyLb
- SyWKU5lmEpF4s3pUBu5tA1QCBckk3SAgWSzWiJv8eqlL0eAYY9Q4k4RmMQKMTDp6zgq05j
- 5c1bYn19raC5NtAVaGweEApEEPHv2mE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Vdf2NhBV6eT786BOJkf8ciP+Je7U9gv671V5ix95coY=;
+ b=ONEW9jVGaf88NB9CVNKiIlhbUiy9D5S7+rX7FXByuwSVSafGXs68/KywnwAUyd6BSb6N6z
+ O5O1gYiPtAqT0TMOl1HAWHnWyCNRf9YYuC6kMhCCSyCjSP28w7catglCLJxw1k3rJgMdZi
+ XYnQtIV5ZqLFEnlf4z4HeqOGYVGxM3A=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-cb_jk9sPNlOpHekEHInU2A-1; Wed, 27 Mar 2024 06:25:15 -0400
-X-MC-Unique: cb_jk9sPNlOpHekEHInU2A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A609C101A523;
- Wed, 27 Mar 2024 10:25:15 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.194.77])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A7152024517;
- Wed, 27 Mar 2024 10:25:15 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 5FBD91800D54; Wed, 27 Mar 2024 11:24:48 +0100 (CET)
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 3/3] edk2/seabios: use common extra version
-Date: Wed, 27 Mar 2024 11:24:47 +0100
-Message-ID: <20240327102448.61877-4-kraxel@redhat.com>
-In-Reply-To: <20240327102448.61877-1-kraxel@redhat.com>
-References: <20240327102448.61877-1-kraxel@redhat.com>
+ us-mta-196-TrrWn6awPni7jEVpNX5C1A-1; Wed, 27 Mar 2024 06:25:59 -0400
+X-MC-Unique: TrrWn6awPni7jEVpNX5C1A-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-430a74cc3d5so65799731cf.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 03:25:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711535159; x=1712139959;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Vdf2NhBV6eT786BOJkf8ciP+Je7U9gv671V5ix95coY=;
+ b=HhHX2Soooiqi7MhjmpXrC4JuyEMhz9MFeSAKInRC1Ji2MBadxEMRKAcv7zsMDAVJo2
+ 8fwMgMmS5AwyCL+Lc7ndC769pi6EoWIDly6ChZwyfewmzx1fvXlIAzTtsuXzzRnG2tKT
+ F7hbrG50BNnamrKGJGmqIFaRe+LL9jI6wTVRHb7b+3w5SZB2Xtm0aPltPPCrGYw1QjD+
+ JtRJD2kwJAW6eEOg+xeIdk+GXhiDc9FsnAd7u3zjK0XNIgE3HsLKQw6wBy89GozBV1ij
+ Ibbzsd0TOrndhRKBSy+jJDju57NTBcbE5G3ARjlVolCDvZCcvjwMwcf02I7QARfPpZFU
+ r9NQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWUcEyCGnW4Nz9THuuKyArb1XH4hiy9MhFRsGcCfpXSmtdzI8rFEBwucbi1UpOF2LKRi0lkdFOt4VedlLopBQVqOkI54g8=
+X-Gm-Message-State: AOJu0YyFhtNBIc/hE8b/zYS3su75fxpHzvwaXlVkfpTCzowrvNQELljQ
+ +qSgm0IdeT6QhvdacVOCedk8joyjU+GmNIir9285X6LAA/+o+VrLPVAcza8KmUtk4uhmeqM5+Bb
+ Q+yNGA/YvxCme5Wh5xjtLemHIUi7V5WiSBt2niBbXgr0N1Uj1ZUo9
+X-Received: by 2002:ac8:578b:0:b0:430:d794:5a96 with SMTP id
+ v11-20020ac8578b000000b00430d7945a96mr3574722qta.67.1711535158855; 
+ Wed, 27 Mar 2024 03:25:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+Sqn7GLZAW9TLbu5hoNywsOrvaT3TsMjLhPjYUGL+trxJH2IgDY+xs7hDnIZ8d7tModSwFg==
+X-Received: by 2002:ac8:578b:0:b0:430:d794:5a96 with SMTP id
+ v11-20020ac8578b000000b00430d7945a96mr3574705qta.67.1711535158551; 
+ Wed, 27 Mar 2024 03:25:58 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ ge11-20020a05622a5c8b00b004309754810fsm4622687qtb.89.2024.03.27.03.25.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Mar 2024 03:25:58 -0700 (PDT)
+Message-ID: <41d50645-9f81-40b1-9ca5-7bb2e73d90de@redhat.com>
+Date: Wed, 27 Mar 2024 11:25:53 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
+ HostIOMMUDevice
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
+ <20240228035900.1085727-2-zhenzhong.duan@intel.com>
+ <e6af68f4-f38d-413f-a63c-d1ae7254d802@redhat.com>
+ <SJ0PR11MB674439E1DDE3DDE285571AEE922C2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB674439E1DDE3DDE285571AEE922C2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
+X-Spam_score_int: -6
+X-Spam_score: -0.7
+X-Spam_bar: /
+X-Spam_report: (-0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,53 +115,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bring a bit more consistency into the naming.
+Hello Zhenzhong,
 
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
----
- roms/Makefile | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+On 3/19/24 12:58, Duan, Zhenzhong wrote:
+> Hi Cédric,
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Sent: Tuesday, March 19, 2024 4:17 PM
+>> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>; qemu-
+>> devel@nongnu.org
+>> Cc: alex.williamson@redhat.com; eric.auger@redhat.com;
+>> peterx@redhat.com; jasowang@redhat.com; mst@redhat.com;
+>> jgg@nvidia.com; nicolinc@nvidia.com; joao.m.martins@oracle.com; Tian,
+>> Kevin <kevin.tian@intel.com>; Liu, Yi L <yi.l.liu@intel.com>; Sun, Yi Y
+>> <yi.y.sun@intel.com>; Peng, Chao P <chao.p.peng@intel.com>
+>> Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
+>> HostIOMMUDevice
+>>
+>> Hello Zhenzhong,
+>>
+>> On 2/28/24 04:58, Zhenzhong Duan wrote:
+>>> HostIOMMUDevice will be inherited by two sub classes,
+>>> legacy and iommufd currently.
+>>>
+>>> Introduce a helper function host_iommu_base_device_init to initialize it.
+>>>
+>>> Suggested-by: Eric Auger <eric.auger@redhat.com>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>> ---
+>>>    include/sysemu/host_iommu_device.h | 22 ++++++++++++++++++++++
+>>>    1 file changed, 22 insertions(+)
+>>>    create mode 100644 include/sysemu/host_iommu_device.h
+>>>
+>>> diff --git a/include/sysemu/host_iommu_device.h
+>> b/include/sysemu/host_iommu_device.h
+>>> new file mode 100644
+>>> index 0000000000..fe80ab25fb
+>>> --- /dev/null
+>>> +++ b/include/sysemu/host_iommu_device.h
+>>> @@ -0,0 +1,22 @@
+>>> +#ifndef HOST_IOMMU_DEVICE_H
+>>> +#define HOST_IOMMU_DEVICE_H
+>>> +
+>>> +typedef enum HostIOMMUDevice_Type {
+>>> +    HID_LEGACY,
+>>> +    HID_IOMMUFD,
+>>> +    HID_MAX,
+>>> +} HostIOMMUDevice_Type;
+>>> +
+>>> +typedef struct HostIOMMUDevice {
+>>> +    HostIOMMUDevice_Type type;
+>>
+>> A type field is not a good sign and that's where QOM is useful.
+> 
+> Yes, agree.
+> I didn't choose QOM because in iommufd-cdev series, VFIOContainer chooses not using QOM model.
+> See the discussion: https://lore.kernel.org/all/YmuFv2s5TPuw7K%2Fu@yekko/
+> I thought HostIOMMUDevice need to follow same rule.
+> 
+> But after further digging into this, I think it may be ok to use QOM model as long as we don't expose
+> HostIOMMUDevice in qapi/qom.json and not use USER_CREATABLE interface. Your thoughts?
 
-diff --git a/roms/Makefile b/roms/Makefile
-index 783a5cab4f4c..dfed2b216a1e 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -41,8 +41,8 @@ x86_64_cross_prefix := $(call find-cross-prefix,x86_64)
- riscv32_cross_prefix := $(call find-cross-prefix,riscv32)
- riscv64_cross_prefix := $(call find-cross-prefix,riscv64)
- 
--# tag our seabios builds
--SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
-+# tag our firmware builds
-+FIRMWARE_EXTRAVERSION = -prebuilt.qemu.org
- 
- #
- # EfiRom utility is shipped with edk2 / tianocore, in BaseTools/
-@@ -93,12 +93,12 @@ build-seabios-config-%: config.%
- 	mkdir -p seabios/builds/$*
- 	cp $< seabios/builds/$*/.config
- 	$(MAKE) -C seabios \
--		EXTRAVERSION=$(SEABIOS_EXTRAVERSION) \
-+		EXTRAVERSION=$(FIRMWARE_EXTRAVERSION) \
- 		CROSS_PREFIX=$(x86_64_cross_prefix) \
- 		KCONFIG_CONFIG=$(CURDIR)/seabios/builds/$*/.config \
- 		OUT=$(CURDIR)/seabios/builds/$*/ oldnoconfig
- 	$(MAKE) -C seabios \
--		EXTRAVERSION=$(SEABIOS_EXTRAVERSION) \
-+		EXTRAVERSION=$(FIRMWARE_EXTRAVERSION) \
- 		CROSS_PREFIX=$(x86_64_cross_prefix) \
- 		KCONFIG_CONFIG=$(CURDIR)/seabios/builds/$*/.config \
- 		OUT=$(CURDIR)/seabios/builds/$*/ all
-@@ -159,7 +159,7 @@ edk2-version: edk2
- 
- efi: edk2-version
- 	$(PYTHON) edk2-build.py --config edk2-build.config \
--		--version-override "$(EDK2_STABLE)-for-qemu" \
-+		--version-override "$(EDK2_STABLE)$(FIRMWARE_EXTRAVERSION)" \
- 		--release-date "$(EDK2_DATE)" \
- 		--silent --no-logs
- 	rm -f ../pc-bios/edk2-*.fd.bz2
--- 
-2.44.0
+yes. Can we change a bit this series to use QOM ? something like :
+
+     typedef struct HostIOMMUDevice {
+         Object parent;
+     } HostIOMMUDevice;
+     
+     #define TYPE_HOST_IOMMU "host.iommu"
+     OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUClass, HOST_IOMMU)
+     
+     struct HostIOMMUClass {
+         ObjectClass parent_class;
+     
+         int (*get_type)(HostIOMMUDevice *hiod, uint64_t *type, Error **errp);
+         int (*get_cap)(HostIOMMUDevice *hiod, uint64_t *cap, Error **errp);
+     };
+
+Inherited objects would be TYPE_HOST_IOMMU_IOMMUFD and TYPE_HOST_IOMMU_LEGACY.
+Each class implementing the handlers or not (legacy mode).
+
+The class handlers are introduced for the intel-iommu helper vtd_check_hdev()
+in order to avoid using iommufd routines directly. HostIOMMUDevice is supposed
+to abstract the Host IOMMU device, so we need to abstract also all the
+interfaces to this object.
+
+The .host_iommu_device_create() handler could be merged in .attach_device()
+possibly. Anyhow, please use now object_new() and object_unref() instead.
+host_iommu_base_device_init() is useless IMHO.
+
+> 
+>>
+>> Is vtd_check_hdev() the only use of this field ?
+> 
+> Currently yes. virtio-iommu may have similar usage.
+> 
+>> If so, can we simplify with a QOM interface in any way ?
+> 
+> QOM interface is a set of callbacks, guess you mean QOM class,
+> saying HostIOMMUDevice class, IOMMULegacyDevice class and IOMMUFDDevice class?
+
+See above proposal. it should work fine.
+
+Also, I think it is better to use a IOMMUFDBackend* parameter for
+iommufd_device_get_info() to be consistent with the other routines.
+
+Then It would interesting to see how this applies to Eric's series.
+
+Thanks,
+
+C.
+
+
 
 
