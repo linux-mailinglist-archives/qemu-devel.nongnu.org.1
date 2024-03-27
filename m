@@ -2,83 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431DD88E341
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0CD88E40F
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:52:31 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpTa4-0001KO-Q6; Wed, 27 Mar 2024 09:44:41 -0400
+	id 1rpTh6-0003Vm-Jo; Wed, 27 Mar 2024 09:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rpTa2-0001K8-Ke
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:44:38 -0400
-Received: from mail-ed1-f46.google.com ([209.85.208.46])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
- id 1rpTa0-0001I4-Qt
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:44:38 -0400
-Received: by mail-ed1-f46.google.com with SMTP id
- 4fb4d7f45d1cf-568c714a9c7so7906683a12.2
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 06:44:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711547075; x=1712151875;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jLz16fmiK7clzNfffXEiofOH4lXEAbKlwPA6/CgGe8Y=;
- b=GqJo0DZYAsiouB1zAm6fc7A52dgcLlEi2Od+VrIgTfivczHIS2nvBZevLNXmlf4KI4
- ymgFF/jVo8mYKQRydc6pSLLsoDKPGtIRhIKMwhKOjso8pqWzlBdna9XqsVE5IlYDQGgI
- /KKVLlYeWbQ8xay2nqdhEMKAs4lKvPIz1Gbf3bvp/TMSk80WO1Y8bo31jdQX/Ef8CPOb
- ia4o0f1EFIV0lzFhdhPG/4XF1jcH5LZ7UAAmZ44OsaJ3qJasv97iuog6CvoIRg3X03L0
- baqbsloXgOxszHqHRClQ6CfTvi0rHihKDwWjs3U4sbKLWuhY3BEmzkXZhxpfixVAP9WT
- voTA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXcsMfdfM22XdlxUd0vuWifbdwvMa9iuAB6UKyYES1cEzYeDdRXGbDKAgmh5GTtY/xknRDvBzMbnTT6pkalgOCP80keqg8=
-X-Gm-Message-State: AOJu0YyaRo/KNofiESDBvojIAnDLupb7kOjX1NFjKehBbq+TBxsMJcLL
- l54DsAqVLZCHYWAz2VRdlbw6a44gvbopQhxwdF7LGtk7Oc6dxw2N
-X-Google-Smtp-Source: AGHT+IHlsqprzpnxJBYeJapDRINLx/aNTv+m24jMPvBz9QGVUn18hEMdVfXDoR7rOZNE4m03xIbPbA==
-X-Received: by 2002:a17:906:e08a:b0:a4d:fae7:ece3 with SMTP id
- gh10-20020a170906e08a00b00a4dfae7ece3mr2030643ejb.5.1711547074857; 
- Wed, 27 Mar 2024 06:44:34 -0700 (PDT)
-Received: from gmail.com (fwdproxy-lla-004.fbsv.net.
- [2a03:2880:30ff:4::face:b00c]) by smtp.gmail.com with ESMTPSA id
- a11-20020a170906670b00b00a44b90abb1dsm5439004ejp.110.2024.03.27.06.44.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Mar 2024 06:44:34 -0700 (PDT)
-Date: Wed, 27 Mar 2024 06:44:31 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Heng Qi <hengqi@linux.alibaba.com>
-Cc: xuanzhuo@linux.alibaba.com, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>, rbc@meta.com,
- riel@surriel.com, stable@vger.kernel.org, qemu-devel@nongnu.org,
- "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net v2 2/2] virtio_net: Do not send RSS key if it is not
- supported
-Message-ID: <ZgQivw8YG7XT2boy@gmail.com>
-References: <20240326151911.2155689-1-leitao@debian.org>
- <20240326151911.2155689-2-leitao@debian.org>
- <bc5a835b-94c8-4500-b05b-0dd32afddbe8@linux.alibaba.com>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rpTgz-0003VF-2w
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:51:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rpTgv-00032w-Ut
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:51:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711547504;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=LltFgnV96yA+5oaQPxzKWau7+HQi3IGCMTVeFnOaKXE=;
+ b=Lr3uPlbWuu04c2sE4vJBsjLF9IAoFyStpz46VmssSrbEHt15g7KIxv0Dne5ZTLVW4Woxz9
+ CiTeFxcswk5Xnxl/uWlzSpmcTmtSbVoK6Gbtg5iifWSvk7vBZEfDFyRPJZgtgj4Z0fCjVB
+ 9/l66N49CS6x9AzqIM+48tHtinsMCZk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-m4CycnTONQGpQGOzbcOnUA-1; Wed,
+ 27 Mar 2024 09:51:39 -0400
+X-MC-Unique: m4CycnTONQGpQGOzbcOnUA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B74C21C382BD;
+ Wed, 27 Mar 2024 13:51:37 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.186])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DEBB1400D5C6;
+ Wed, 27 Mar 2024 13:51:34 +0000 (UTC)
+Date: Wed, 27 Mar 2024 13:51:07 +0000
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org, Bernhard Beschow <shentey@gmail.com>,
+ pbonzini@redhat.com, devel@lists.libvirt.org,
+ richard.henderson@linaro.org, mst@redhat.com, qemu-trivial@nongnu.org
+Subject: Re: [PATCH for-9.0] docs/about: Mark the iaspc machine type as
+ deprecated
+Message-ID: <ZgQkS4RPmSt5Xa08@redhat.com>
+References: <20240326125104.90103-1-imammedo@redhat.com>
+ <a4a0bb13-d6a0-4665-810d-ecd9a9fb89b1@redhat.com>
+ <8dbba6ae-5910-4a62-9a08-a56e20dfb480@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bc5a835b-94c8-4500-b05b-0dd32afddbe8@linux.alibaba.com>
-Received-SPF: pass client-ip=209.85.208.46;
- envelope-from=breno.debian@gmail.com; helo=mail-ed1-f46.google.com
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <8dbba6ae-5910-4a62-9a08-a56e20dfb480@linaro.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,84 +85,44 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 27, 2024 at 10:27:58AM +0800, Heng Qi wrote:
+On Tue, Mar 26, 2024 at 02:29:58PM +0100, Philippe Mathieu-Daudé wrote:
+> Hi Igor,
 > 
+> On 26/3/24 14:08, Thomas Huth wrote:
+> > 
+> > s/iaspc/isapc/ in the subject
+> > 
+> > On 26/03/2024 13.51, Igor Mammedov wrote:
+> > > ISAPC machine was introduced 25 years ago and it's a lot of time since
+> > > such machine was around with real ISA only PC hardware practically
+> > > defunct.
+> > > Also it's slowly bit-rots (for example: I was able to boot RHEL6 on
+> > > RHEL9 host
+> > > in only TCG mode, while in KVM mode it hung in the middle of boot)
 > 
-> 在 2024/3/26 下午11:19, Breno Leitao 写道:
-> > There is a bug when setting the RSS options in virtio_net that can break
-> > the whole machine, getting the kernel into an infinite loop.
-> > 
-> > Running the following command in any QEMU virtual machine with virtionet
-> > will reproduce this problem:
-> > 
-> >      # ethtool -X eth0  hfunc toeplitz
-> > 
-> > This is how the problem happens:
-> > 
-> > 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-> > 
-> > 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-> > 
-> > 3) virtnet_commit_rss_command() populates 4 entries for the rss
-> > scatter-gather
-> > 
-> > 4) Since the command above does not have a key, then the last
-> > scatter-gatter entry will be zeroed, since rss_key_size == 0.
-> > sg_buf_size = vi->rss_key_size;
-> > 
-> > 5) This buffer is passed to qemu, but qemu is not happy with a buffer
-> > with zero length, and do the following in virtqueue_map_desc() (QEMU
-> > function):
-> > 
-> >    if (!sz) {
-> >        virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-> > 
-> > 6) virtio_error() (also QEMU function) set the device as broken
-> > 
-> >      vdev->broken = true;
-> > 
-> > 7) Qemu bails out, and do not repond this crazy kernel.
-> > 
-> > 8) The kernel is waiting for the response to come back (function
-> > virtnet_send_command())
-> > 
-> > 9) The kernel is waiting doing the following :
-> > 
-> >        while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-> > 	     !virtqueue_is_broken(vi->cvq))
-> > 	      cpu_relax();
-> > 
-> > 10) None of the following functions above is true, thus, the kernel
-> > loops here forever. Keeping in mind that virtqueue_is_broken() does
-> > not look at the qemu `vdev->broken`, so, it never realizes that the
-> > vitio is broken at QEMU side.
-> > 
-> > Fix it by not sending RSS commands if the feature is not available in
-> > the device.
-> > 
-> > Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-> > Cc: stable@vger.kernel.org
-> > Cc: qemu-devel@nongnu.org
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > ---
-> >   drivers/net/virtio_net.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index c640fdf28fc5..e6b0eaf08ac2 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -3809,6 +3809,9 @@ static int virtnet_set_rxfh(struct net_device *dev,
-> >   	struct virtnet_info *vi = netdev_priv(dev);
-> >   	int i;
-> > +	if (!vi->has_rss && !vi->has_rss_hash_report)
-> > +		return -EOPNOTSUPP;
-> > +
+> I'm quite opposed to this patch. QEMU models various very-old /
+> defunct hardware. I'm pretty sure Bernhard and myself are OK to
+> keep maintaining it, besides we are working in separating it from
+> the i440fx+piix machine. Also, this machine is particularly
+> interesting for my single-binary experiments.
 > 
-> Why not make the second patch as the first, this seems to work better.
+> Where I agree is we should stop reporting "KVM on ISA/PC machine"
+> as supported.
 
-Sure, that works for me. Let me update it in v2.
+isapc could arguably be restricted to just 32-bit CPU models, because
+we should not need it to support any feature that didn't exist prior
+to circa 1995. eg refuse to start with isapc, if 'lm' is present in
+the CPU model for example.
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
