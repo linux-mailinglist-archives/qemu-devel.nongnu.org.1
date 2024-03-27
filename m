@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E6A88E28A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:29:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 431DD88E341
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:45:59 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpTKt-0001jP-Br; Wed, 27 Mar 2024 09:28:59 -0400
+	id 1rpTa4-0001KO-Q6; Wed, 27 Mar 2024 09:44:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpTKp-0001fV-Tu
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:28:56 -0400
-Received: from mgamail.intel.com ([192.198.163.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpTKn-0005ri-Vp
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:28:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711546134; x=1743082134;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=8b8c6P2+VCs+jk+qXB65SNmYsNp70KEmrOlascpa9Es=;
- b=jjfHEpVjeHGK3XGl3DoMDuV7FZ/ruQFNtF0UVS7bTp0aXHxVS5PzH8x5
- 4yyU2X0n1FSRzB/vrOKvmxaOFbXph+rgaFdYhNU11pzjbhtm8YplvEm0J
- kBcaAs1+qWTs2uPnt99a8vyzICk7q22NKLqzKR3lTGZfnoNywl/2AxqpP
- bocxJmJeG7/zJ4oxA6fnGeGLZHjRbD+5EgXg5RmNCpW7t06mjMKG9KVa5
- Ch+zbrBBPveAlrNS8B5MtK8zXZiYzdH4+TBTWvSoqGKtjYlZj6kjX1YVK
- SuWRg0tF/Iw5J5v2M0IfSxIbVlKVkwoQwpnnCUXdIjtazFef9asZZdu9G w==;
-X-CSE-ConnectionGUID: RoHcYiL7RIKs15XDSPRC4A==
-X-CSE-MsgGUID: STETCM5qQpKeQKthrTXSYA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6833502"
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
-   d="scan'208";a="6833502"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 06:28:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="20949774"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa004.fm.intel.com with ESMTP; 27 Mar 2024 06:28:49 -0700
-Date: Wed, 27 Mar 2024 21:42:44 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH-for-9.1 v2 07/21] hw/i386/pc: Remove deprecated
- pc-i440fx-2.1 machine
-Message-ID: <ZgQiVBg1psUdm8Fl@intel.com>
-References: <20240327095124.73639-1-philmd@linaro.org>
- <20240327095124.73639-8-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
+ id 1rpTa2-0001K8-Ke
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:44:38 -0400
+Received: from mail-ed1-f46.google.com ([209.85.208.46])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <breno.debian@gmail.com>)
+ id 1rpTa0-0001I4-Qt
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 09:44:38 -0400
+Received: by mail-ed1-f46.google.com with SMTP id
+ 4fb4d7f45d1cf-568c714a9c7so7906683a12.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 06:44:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711547075; x=1712151875;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=jLz16fmiK7clzNfffXEiofOH4lXEAbKlwPA6/CgGe8Y=;
+ b=GqJo0DZYAsiouB1zAm6fc7A52dgcLlEi2Od+VrIgTfivczHIS2nvBZevLNXmlf4KI4
+ ymgFF/jVo8mYKQRydc6pSLLsoDKPGtIRhIKMwhKOjso8pqWzlBdna9XqsVE5IlYDQGgI
+ /KKVLlYeWbQ8xay2nqdhEMKAs4lKvPIz1Gbf3bvp/TMSk80WO1Y8bo31jdQX/Ef8CPOb
+ ia4o0f1EFIV0lzFhdhPG/4XF1jcH5LZ7UAAmZ44OsaJ3qJasv97iuog6CvoIRg3X03L0
+ baqbsloXgOxszHqHRClQ6CfTvi0rHihKDwWjs3U4sbKLWuhY3BEmzkXZhxpfixVAP9WT
+ voTA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXcsMfdfM22XdlxUd0vuWifbdwvMa9iuAB6UKyYES1cEzYeDdRXGbDKAgmh5GTtY/xknRDvBzMbnTT6pkalgOCP80keqg8=
+X-Gm-Message-State: AOJu0YyaRo/KNofiESDBvojIAnDLupb7kOjX1NFjKehBbq+TBxsMJcLL
+ l54DsAqVLZCHYWAz2VRdlbw6a44gvbopQhxwdF7LGtk7Oc6dxw2N
+X-Google-Smtp-Source: AGHT+IHlsqprzpnxJBYeJapDRINLx/aNTv+m24jMPvBz9QGVUn18hEMdVfXDoR7rOZNE4m03xIbPbA==
+X-Received: by 2002:a17:906:e08a:b0:a4d:fae7:ece3 with SMTP id
+ gh10-20020a170906e08a00b00a4dfae7ece3mr2030643ejb.5.1711547074857; 
+ Wed, 27 Mar 2024 06:44:34 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-004.fbsv.net.
+ [2a03:2880:30ff:4::face:b00c]) by smtp.gmail.com with ESMTPSA id
+ a11-20020a170906670b00b00a44b90abb1dsm5439004ejp.110.2024.03.27.06.44.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Mar 2024 06:44:34 -0700 (PDT)
+Date: Wed, 27 Mar 2024 06:44:31 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Heng Qi <hengqi@linux.alibaba.com>
+Cc: xuanzhuo@linux.alibaba.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Melnychenko <andrew@daynix.com>, rbc@meta.com,
+ riel@surriel.com, stable@vger.kernel.org, qemu-devel@nongnu.org,
+ "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
+ "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+ open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net v2 2/2] virtio_net: Do not send RSS key if it is not
+ supported
+Message-ID: <ZgQivw8YG7XT2boy@gmail.com>
+References: <20240326151911.2155689-1-leitao@debian.org>
+ <20240326151911.2155689-2-leitao@debian.org>
+ <bc5a835b-94c8-4500-b05b-0dd32afddbe8@linux.alibaba.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240327095124.73639-8-philmd@linaro.org>
-Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <bc5a835b-94c8-4500-b05b-0dd32afddbe8@linux.alibaba.com>
+Received-SPF: pass client-ip=209.85.208.46;
+ envelope-from=breno.debian@gmail.com; helo=mail-ed1-f46.google.com
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.001, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,29 +94,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 27, 2024 at 10:51:09AM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 27 Mar 2024 10:51:09 +0100
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH-for-9.1 v2 07/21] hw/i386/pc: Remove deprecated
->  pc-i440fx-2.1 machine
-> X-Mailer: git-send-email 2.41.0
+On Wed, Mar 27, 2024 at 10:27:58AM +0800, Heng Qi wrote:
 > 
-> The pc-i440fx-2.1 machine was deprecated for the 8.2
-> release (see commit c7437f0ddb "docs/about: Mark the
-> old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
-> time to remove it.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Reviewed-by: Thomas Huth <thuth@redhat.com>
-> Message-Id: <20240305134221.30924-7-philmd@linaro.org>
-> ---
->  docs/about/deprecated.rst       |  2 +-
->  docs/about/removed-features.rst |  2 +-
->  include/hw/i386/pc.h            |  3 ---
->  hw/i386/pc.c                    |  7 -------
->  hw/i386/pc_piix.c               | 23 -----------------------
->  5 files changed, 2 insertions(+), 35 deletions(-)
+> åœ¨ 2024/3/26 ä¸‹åˆ11:19, Breno Leitao å†™é“:
+> > There is a bug when setting the RSS options in virtio_net that can break
+> > the whole machine, getting the kernel into an infinite loop.
+> > 
+> > Running the following command in any QEMU virtual machine with virtionet
+> > will reproduce this problem:
+> > 
+> >      # ethtool -X eth0  hfunc toeplitz
+> > 
+> > This is how the problem happens:
+> > 
+> > 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+> > 
+> > 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+> > 
+> > 3) virtnet_commit_rss_command() populates 4 entries for the rss
+> > scatter-gather
+> > 
+> > 4) Since the command above does not have a key, then the last
+> > scatter-gatter entry will be zeroed, since rss_key_size == 0.
+> > sg_buf_size = vi->rss_key_size;
+> > 
+> > 5) This buffer is passed to qemu, but qemu is not happy with a buffer
+> > with zero length, and do the following in virtqueue_map_desc() (QEMU
+> > function):
+> > 
+> >    if (!sz) {
+> >        virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+> > 
+> > 6) virtio_error() (also QEMU function) set the device as broken
+> > 
+> >      vdev->broken = true;
+> > 
+> > 7) Qemu bails out, and do not repond this crazy kernel.
+> > 
+> > 8) The kernel is waiting for the response to come back (function
+> > virtnet_send_command())
+> > 
+> > 9) The kernel is waiting doing the following :
+> > 
+> >        while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+> > 	     !virtqueue_is_broken(vi->cvq))
+> > 	      cpu_relax();
+> > 
+> > 10) None of the following functions above is true, thus, the kernel
+> > loops here forever. Keeping in mind that virtqueue_is_broken() does
+> > not look at the qemu `vdev->broken`, so, it never realizes that the
+> > vitio is broken at QEMU side.
+> > 
+> > Fix it by not sending RSS commands if the feature is not available in
+> > the device.
+> > 
+> > Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+> > Cc: stable@vger.kernel.org
+> > Cc: qemu-devel@nongnu.org
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> > ---
+> >   drivers/net/virtio_net.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> > index c640fdf28fc5..e6b0eaf08ac2 100644
+> > --- a/drivers/net/virtio_net.c
+> > +++ b/drivers/net/virtio_net.c
+> > @@ -3809,6 +3809,9 @@ static int virtnet_set_rxfh(struct net_device *dev,
+> >   	struct virtnet_info *vi = netdev_priv(dev);
+> >   	int i;
+> > +	if (!vi->has_rss && !vi->has_rss_hash_report)
+> > +		return -EOPNOTSUPP;
+> > +
+> 
+> Why not make the second patch as the first, this seems to work better.
 
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-
+Sure, that works for me. Let me update it in v2.
 
