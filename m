@@ -2,82 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905E988DA5E
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9734C88DA5D
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:34:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpPfI-0001mv-Aa; Wed, 27 Mar 2024 05:33:48 -0400
+	id 1rpPfx-0002tr-B0; Wed, 27 Mar 2024 05:34:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpPfF-0001gy-09
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:33:45 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPfU-0002jO-D0
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:34:02 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpPf4-0000OT-0w
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:33:44 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6e6f69e850bso5887665b3a.0
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:33:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPfS-0000fV-EX
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:34:00 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-341730bfc46so4649887f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:33:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1711532012; x=1712136812; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711532036; x=1712136836; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=oHTl8gYlsmXfu+P4KVuboaLUZSbMsj4ZZeM4VMTTSS0=;
- b=NK9mBEBWY1Hkoy0GXmIp+fAY3UvLvUfirjedPhGVTPrHNl9uV1pOiN162BUCdY1TsG
- ssXu+7WTR1QH86ts3DqIu5JEyJXBtsmito4/YQYOduwsD019tkp/Q0KSatlQ2a8k//s1
- MI7RXAietoPo7SvMDL6s8PPQrT/7R7v/YGlfWcMrgGUvmZ/25E9XMNMkTgRnD6ZpYmpr
- sXmk6qfVcEAKHK7VLWFJrRe2jdEzc/+bQeYeqLI6VQYvbXlVFsvq9kAWevUbc+0fWhHk
- eSrz446FUZop43kvD2M31p8+TVgj7X8dcI/k/fqqQT5e0g9lVEBhlkwL4IFlyRaRPH6o
- GJFg==
+ bh=NJwhS6jGKEn/GCXsDKej/3MhG1neBdHS5aceARZ7xSk=;
+ b=NKjnUwip0+lz5ocHok2QXIWM2VmSKk45LnwQRGilX9YyGQYCwDhisyAxHFxRzejKGK
+ ccbG4zZAwvkqNUG8wFSBR6EVBaBle+BoNB85oPBg+z3S65QKwh0lWRXiPUfW8gzCP5YT
+ DANPt12gjrojDau6dQU6QraeATIGbJ1FtuwdvzX0yYzE+TH9B/VzJKG4PWU3jasG62ja
+ 2WERhrypSIfJ3G5tNYKvBACLP1pslLbkG19JUIQHJYI6FDvTm4T4GFtUFodpIxhbDTqP
+ aPwOJT4gz9MPKDH/mPjCuPOLDewhMlNMsxNo2PA1KYlLObgkEvX7KqhaH4v0gHTKeYJi
+ RDsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711532012; x=1712136812;
+ d=1e100.net; s=20230601; t=1711532036; x=1712136836;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oHTl8gYlsmXfu+P4KVuboaLUZSbMsj4ZZeM4VMTTSS0=;
- b=MN7eg89R6AdcX463mCwvBaA4ks5ZEDUZOCywvd39+llMlpIHxt3waz5b+t8S3NqqTa
- MeI1uKVHKPU4c/34CKplUhLVbQyaqZ1RGfH6hBGwFto62O02megPoHYsCny0sXueViUc
- wWWlCOr1M4Ghej3rSxiAdh95u063ZCr6fE6aj22R+YNjvnZ4JSqRQI4nFemzBmBFYaIa
- NFgb9GwsHvlW36x/Z8ZZBFxqnK5e2ct6osRUB3hCE92DZn9ZeucfKiSfCDKRPBCnGs/Q
- 8GsCp5PDMOOqV9nKjtkhP2Ad0AygW3PEJHZZkY0Ae9ikauGeA+paxNLbrlVEDrZzFq88
- sS0A==
+ bh=NJwhS6jGKEn/GCXsDKej/3MhG1neBdHS5aceARZ7xSk=;
+ b=Pr4g1YsdRkaTACI/KMgmfLwzj2BmtkYQFw+27Tj6HzuyMLp+Y31ZPr7LQs0rtw3p87
+ 3Q58vzmRb0CAckwLUhcfR81FSqyHNgyDalcQ5iTcUAWxBOBQBLTlTyInPPfYk/L9rXv6
+ 269vgMoAojcybmWUxlEU7NNQz4VhTwwYyIDFtgbRpjreN7V0Y6/DMHyzHkOIqxZXh8fw
+ XicIl5757rhBANtK7dhLDl+HHGdZEEKauCHzeNvcdHVW9ruD/EIzcMqvYr1P8xL0xiNX
+ jWVdPze4uELt66ZJ710gmT7E9m67IFegjvH6vJuNU1NHaOlQ5/MsMvdbCj14iTGJyFzf
+ OG9A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV5ruWKReluNc+q9jQzm+b7vc8BecgxOdNJT5ipjK6p0iE873ypNWS+FmsOgIwefZ7bECxx7Dra6wQvnH+fSYbHFlYg7jY=
-X-Gm-Message-State: AOJu0YwyZ21IL/wte1Pr/fTn+qp2BEs9hP6lmkOY9naaTNwq95FMZEo4
- F67Ivs4Eg+aAA3aZ82LoYyYUCWz954gKSj7F+N5nlilOCdS+YmYUcMM2ZRDkV94=
-X-Google-Smtp-Source: AGHT+IFXo6sqV8t49TDIJlir5M6N8ZgariqGKvpHHSc9CMWzOOw2m36pha61HVyGXUAeciTWp93fsA==
-X-Received: by 2002:a05:6a20:12c1:b0:1a3:be07:7c00 with SMTP id
- v1-20020a056a2012c100b001a3be077c00mr3986536pzg.3.1711532012645; 
- Wed, 27 Mar 2024 02:33:32 -0700 (PDT)
-Received: from [192.168.68.110] ([177.45.186.241])
+ AJvYcCUP+SZF2+QH7miqWI9883WXgt8cdw6ZYKnfbW6ZX+DkMYwTc9NeVH0nGn5p+qG30Dm5wqnvWG/ySAm7Vt7FxvQTA2myepE=
+X-Gm-Message-State: AOJu0YyE3j9WQm/f/tzU7pxuAMtbkH0kebmNTd/nRocx71buURjALT4v
+ E9E2YUSiI6g5VH5TWB2Q7kXWF+r5nxR59VvyWxrtOM7Gh3DsxhuC+Olebj996sY=
+X-Google-Smtp-Source: AGHT+IEhqTZFkGrqwJ9Zl2njJHNGYCGSU3YWNDiNyGdhK9icUq5XRuYsRKy5ohDmFcimsxaVgQzScQ==
+X-Received: by 2002:a05:6000:1808:b0:33e:c6c7:287e with SMTP id
+ m8-20020a056000180800b0033ec6c7287emr3615873wrh.69.1711532035771; 
+ Wed, 27 Mar 2024 02:33:55 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.205.175])
  by smtp.gmail.com with ESMTPSA id
- f1-20020a170902ce8100b001dd6ebd88b0sm8474240plg.198.2024.03.27.02.33.30
+ bs24-20020a056000071800b00341de001396sm1834750wrb.110.2024.03.27.02.33.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Mar 2024 02:33:32 -0700 (PDT)
-Message-ID: <f968c2ac-4056-47bf-af87-70534db82035@ventanamicro.com>
-Date: Wed, 27 Mar 2024 06:33:27 -0300
+ Wed, 27 Mar 2024 02:33:55 -0700 (PDT)
+Message-ID: <18039e1c-123c-45a9-bf84-17dac55d46a0@linaro.org>
+Date: Wed, 27 Mar 2024 10:33:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0 1/3] qtest/virtio-9p-test.c: consolidate create
- dir, file and symlink tests
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz
- <groug@kaod.org>, qemu-devel@nongnu.org
-Cc: thuth@redhat.com, alistair.francis@wdc.com, peter.maydell@linaro.org
-References: <20240326132606.686025-1-dbarboza@ventanamicro.com>
- <20240326180550.3072dd2d@bahia>
- <1f73d065-fcf6-4466-bc86-c8fdbae7bd96@ventanamicro.com>
- <190171404.Ysjo4HZYI3@silver>
+Subject: Re: [PATCH-for-9.1 17/18] target/i386: Remove
+ X86CPU::kvm_no_smi_migration field
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
+Cc: Igor Mammedov <imammedo@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, kvm@vger.kernel.org,
+ Marcelo Tosatti <mtosatti@redhat.com>, devel@lists.libvirt.org,
+ David Hildenbrand <david@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+References: <20240305134221.30924-1-philmd@linaro.org>
+ <20240305134221.30924-18-philmd@linaro.org>
+ <c66d3c14-962d-439d-bc33-6d52d0f776be@redhat.com>
 Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <190171404.Ysjo4HZYI3@silver>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <c66d3c14-962d-439d-bc33-6d52d0f776be@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x432.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,83 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 3/27/24 05:47, Christian Schoenebeck wrote:
-> On Tuesday, March 26, 2024 6:47:17 PM CET Daniel Henrique Barboza wrote:
->> On 3/26/24 14:05, Greg Kurz wrote:
->>> On Tue, 26 Mar 2024 10:26:04 -0300
->>> Daniel Henrique Barboza <dbarboza@ventanamicro.com> wrote:
->>>
->>>> The local 9p driver in virtio-9p-test.c its temporary dir right at the
->>>> start of qos-test (via virtio_9p_create_local_test_dir()) and only
->>>> deletes it after qos-test is finished (via
->>>> virtio_9p_remove_local_test_dir()).
->>>>
->>>> This means that any qos-test machine that ends up running virtio-9p-test local
->>>> tests more than once will end up re-using the same temp dir. This is
->>>> what's happening in [1] after we introduced the riscv machine nodes: if
->>>> we enable slow tests with the '-m slow' flag using qemu-system-riscv64,
->>>> this is what happens:
->>>>
->>>> - a temp dir is created, e.g. qtest-9p-local-WZLDL2;
->>>>
->>>> - virtio-9p-device tests will run virtio-9p-test successfully;
->>>>
->>>> - virtio-9p-pci tests will run virtio-9p-test, and fail right at the
->>>>     first slow test at fs_create_dir() because the "01" file was already
->>>>     created by fs_create_dir() test when running with the virtio-9p-device.
->>>>
->>>> We can fix it by making every test clean up their changes in the
->>>> filesystem after they're done. But we don't need every test either:
->>>> what fs_create_file() does is already exercised in fs_unlinkat_dir(),
->>>> i.e. a dir is created, verified to be created, and then removed. Fixing
->>>> fs_create_file() would turn it into fs_unlikat_dir(), so we don't need
->>>> both. The same theme follows every test in virtio-9p-test.c, where the
->>>> 'unlikat' variant does the same thing the 'create' does but with some
->>>> cleaning in the end.
->>>>
->>>> Consolide some tests as follows:
->>>>
->>>> - fs_create_dir() is removed. fs_unlinkat_dir() is renamed to
->>>>     fs_create_unlinkat_dir();
->>>>
->>>> - fs_create_file() is removed. fs_unlinkat_file() is renamed to
->>>>     fs_create_unlinkat_file(). The "04" dir it uses is now being removed;
->>>>
->>>> - fs_symlink_file() is removed. fs_unlinkat_symlink() is renamed to
->>>>     fs_create_unlinkat_symlink(). Both "real_file" and the "06" dir it
->>>>     creates is now being removed.
->>>>
->>>
->>> The  change looks good functionally but it breaks the legitimate assumption
->>> that files "06/*" come from test #6 and so on... I think you should consider
->>> renumbering to avoid confusion when debugging logs.
->>>
->>> Since this will bring more hunks, please split this in enough reviewable
->>> patches.
+On 6/3/24 19:30, Thomas Huth wrote:
+> On 05/03/2024 14.42, Philippe Mathieu-Daudé wrote:
+>> X86CPU::kvm_no_smi_migration was only used by the
+>> pc-i440fx-2.3 machine, which got removed. Remove it
+>> and simplify kvm_put_vcpu_events().
 >>
->> Fair enough. Let me cook a v2. Thanks,
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   target/i386/cpu.h     | 3 ---
+>>   target/i386/cpu.c     | 2 --
+>>   target/i386/kvm/kvm.c | 6 ------
+>>   3 files changed, 11 deletions(-)
+
+
+>> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+>> index 42970ab046..571cbbf1fc 100644
+>> --- a/target/i386/kvm/kvm.c
+>> +++ b/target/i386/kvm/kvm.c
+>> @@ -4344,12 +4344,6 @@ static int kvm_put_vcpu_events(X86CPU *cpu, int 
+>> level)
+>>               events.smi.pending = 0;
+>>               events.smi.latched_init = 0;
+>>           }
+>> -        /* Stop SMI delivery on old machine types to avoid a reboot
+>> -         * on an inward migration of an old VM.
+>> -         */
+>> -        if (!cpu->kvm_no_smi_migration) {
+>> -            events.flags |= KVM_VCPUEVENT_VALID_SMM;
+>> -        }
 > 
-> Wouldn't it be much simpler to just change the name of the temporary
-> directory, such that it contains the device name as well? Then these tests
-> runs would run on independent directories and won't interfere with each other
-> and that wouldn't need much changes I guess.
+> Shouldn't it be the other way round, i.e. that the flag is now always set?
 
-That's true. If we were just trying to fix the issue then I would go with this
-approach since it's simpler. But given that we're also cutting half the tests while
-retaining the coverage I think this approach is worth the extra code.
-
-
-Thanks,
-
-
-Daniel
-
-
+Oops you are right, good catch!
 
 > 
-> /Christian
+> pc_compat_2_3[] had:
 > 
+>      { TYPE_X86_CPU, "kvm-no-smi-migration", "on" },
 > 
+> ... so I think kvm_no_smi_migration was set to true for the old machines?
+> 
+>   Thomas
+> 
+
 
