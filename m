@@ -2,68 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EDC888DB39
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD9488DB88
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:49:37 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpQV4-0007lk-Hk; Wed, 27 Mar 2024 06:27:19 -0400
+	id 1rpQpH-0007Ts-O6; Wed, 27 Mar 2024 06:48:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rpQUF-0007OO-8v
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:27 -0400
-Received: from mgamail.intel.com ([192.198.163.19])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rpQpG-0007Sl-2i
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:48:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rpQUC-0007aA-SO
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711535185; x=1743071185;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4uBrPQD7j2YTQaH7WlV2kQvQoG/tS0FkvYpS12K77DA=;
- b=UI/4Vz6sBm/rcuaEJKHM5ye+fRUuK3mpCChf6O9zC/O4Xoq+4xiVVeSg
- TeZmROjZz93OjdH/UVYL02PGbusPF/+drADtmpz4UcXM2D92+V9gLQ8aG
- 8CLxS1xRx+HA1Ak5D8u5VzEaEYpoSEu/peicKMVhafUwpIYjCmtvaT1Gj
- 7/dKDsKQ18ZRIqoevWvbHz7k9UV22jlGH8jw+y3q9S6XjzoYgLNA/8zQ7
- +pndGCY1ck/sMU25o/Qeo6JYQYHy4OrFEUTVhfsvp9qUALh7nOjL85Qya
- SJIf89Yt+eI+eh2sltn3nBje3nYM1GQigvSOySordVThmGTcYxvdn5D19 w==;
-X-CSE-ConnectionGUID: xTTVWQA2QYy8YEFGgpb6Ag==
-X-CSE-MsgGUID: VmNjVjLKSAC12qJLLP+Daw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6489761"
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
-   d="scan'208";a="6489761"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 03:26:01 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16354481"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2024 03:26:00 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 3/3] target/i386/cpu: Merge the warning and error messages for
- AMD HT check
-Date: Wed, 27 Mar 2024 18:39:51 +0800
-Message-Id: <20240327103951.3853425-4-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
-References: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rpQpD-0005H5-Qx
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:48:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711536484;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=ZXBxrCu5SpyrX8b+VhoQcqNOoW1fSO7h2QZ8FVVrEr4=;
+ b=YkvovDN1lDVsYDDcVgzjswWfjtw/YYCqZd02Nvab/A+K+s/uJB4OKwXbZtRDmTDtoFgoDC
+ PDwi56u5EObyVdBnB3M69fDaV3Okn3L8ppout6Vb2jAbdnvWAo6Qrfeg0CcNr5QopBNe4R
+ 7/qqemqcUqMB7fFFr/JvtJDkdf5sLuA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-215-4_CiNJjHPzqJ6uGt8iHoEA-1; Wed, 27 Mar 2024 06:48:03 -0400
+X-MC-Unique: 4_CiNJjHPzqJ6uGt8iHoEA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a4698fc37dfso418471966b.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 03:48:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711536482; x=1712141282;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ZXBxrCu5SpyrX8b+VhoQcqNOoW1fSO7h2QZ8FVVrEr4=;
+ b=nsDQQytrVpEFrzwCVWrAJzOOFVGe/OkNvlV/m08TPOfN5u3U4gwDf7RV/4csYPAvcC
+ lDoNk06BCjx4+1z54HUTtmF9muOugZdw+QtVsvtuhCpfUL2Q8XbZsnCg7ekTnk6F6BXH
+ HK4HSFWeTvQw+1y2Z+qpOg5X5pDVpAF5IT1EbjbHsFduutSOauvWbwOXO9mAFatmDfrx
+ wYUqbc5Gh5MwuOhQkz9FZkvBPF44WCZlYDrPQEd1pCqJczRgiEl5mcbe3IVUgZSDCgZL
+ K4JI0fRsVxVAsr8tWBC2DSK7LiTrKj00MpuhVRxzpL3i5GBhix4NSQolmGQBTYXRBYY6
+ OSmw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWPXYeWeYkiJYDPNYpgdV3gqBcsm5Z8IqtXEjYb7uzLY9YrGH5dK+lZQhcd+HisAt5Tuclf6V0Kn0Ed3X/8jQInO6Hzpxw=
+X-Gm-Message-State: AOJu0YyENYMZDV4aGI5w1qS1IhBi3D3m+w9fQYhkGkWK0ZsOyNwJwTHa
+ iP+Dz4jBgEiigYjBYjZVMyMLxNPetu89huEcHLwCJ1dIUo/QWkxuuGrZIGIO+9doOj1VPRAsRlo
+ n6ClwI6s62Imo8AXJUVs1iZHXcQ7nizTF7a/ud3kPSCmsnnr2DPGe
+X-Received: by 2002:a17:906:b30a:b0:a4e:16f:73b6 with SMTP id
+ n10-20020a170906b30a00b00a4e016f73b6mr1248822ejz.61.1711536482027; 
+ Wed, 27 Mar 2024 03:48:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHC6iHiWdA8j6919j4Exb7t6E04fRUSwJEho/7HL8QefjauRTNf4JugZ12APv8neOsTYDC5WA==
+X-Received: by 2002:a17:906:b30a:b0:a4e:16f:73b6 with SMTP id
+ n10-20020a170906b30a00b00a4e016f73b6mr1248803ejz.61.1711536481659; 
+ Wed, 27 Mar 2024 03:48:01 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-12-25-33.business.telecomitalia.it.
+ [87.12.25.33]) by smtp.gmail.com with ESMTPSA id
+ ao18-20020a170907359200b00a46aba003eesm5249366ejc.215.2024.03.27.03.48.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Mar 2024 03:48:01 -0700 (PDT)
+Date: Wed, 27 Mar 2024 11:47:57 +0100
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Yajun Wu <yajunw@nvidia.com>
+Cc: "fengli@smartx.com" <fengli@smartx.com>, 
+ "raphael.norwitz@nutanix.com" <raphael.norwitz@nutanix.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
+ "mst@redhat.com" <mst@redhat.com>, Parav Pandit <parav@nvidia.com>
+Subject: Re: vhost-user-blk  reconnect issue
+Message-ID: <vzwqswsxtiios4mzwab4br2utyrclkfsluwyvyw6r7gqnx55fv@z3rsaj4hs6cz>
+References: <DM4PR12MB5168C0DB5E4B8F30B47738F6B6362@DM4PR12MB5168.namprd12.prod.outlook.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.19;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <DM4PR12MB5168C0DB5E4B8F30B47738F6B6362@DM4PR12MB5168.namprd12.prod.outlook.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,43 +102,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Hi Yajun,
 
-Currently, the difference between warn_report_once() and
-error_report_once() is the former has the "warning:" prefix, while the
-latter does not have a similar level prefix.
+On Mon, Mar 25, 2024 at 10:54:13AM +0000, Yajun Wu wrote:
+>Hi experts,
+>
+>With latest QEMU (8.2.90), we find two vhost-user-blk backend reconnect 
+>failure scenarios:
 
-At the meantime, considering that there is no error handling logic here,
-and the purpose of error_report_once() is only to prompt the user with
-an abnormal message, there is no need to use an error-level message here,
-and instead we can just use a warning.
+Do you know if has it ever worked and so it's a regression, or have we 
+always had this problem?
 
-Therefore, downgrade the message in error_report_once() to warning, and
-merge it into the previous warn_report_once().
+Thanks,
+Stefano
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/cpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 0487469d75f3..ec2787197d42 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7454,9 +7454,9 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
-         cs->nr_threads > 1) {
-             warn_report_once("This family of AMD CPU doesn't support "
--                             "hyperthreading(%d).", cs->nr_threads);
--            error_report_once("Please configure -smp options properly"
--                              " or try enabling topoext feature.");
-+                             "hyperthreading(%d). Please configure -smp "
-+                             "options properly or try enabling topoext "
-+                             "feature.", cs->nr_threads);
-     }
- 
- #ifndef CONFIG_USER_ONLY
--- 
-2.34.1
+>1. Disconnect vhost-user-blk backend before guest driver probe vblk device, then reconnect backend after guest driver probe device. QEMU won't send out any vhost messages to restore backend.
+>This is because vhost->vdev is NULL before guest driver probe vblk device, so vhost_user_blk_disconnect won't be called, s->connected is still true. Next vhost_user_blk_connect will simply return without doing anything.
+>
+>2. modprobe -r virtio-blk inside VM, then disconnect backend, then reconnect backend, then modprobe virtio-blk. QEMU won't send messages in vhost_dev_init.
+>This is because rmmod will let qemu call vhost_user_blk_stop, vhost->vdev also become NULL(in vhost_dev_stop), vhost_user_blk_disconnect won't be called. Again s->connected is still true, even chr connect is closed.
+>
+>I think even vhost->vdev is NULL, vhost_user_blk_disconnect should be called when chr connect close?
+>Hope we can have a fix soon.
+>
+>
+>Thanks,
+>Yajun
+>
 
 
