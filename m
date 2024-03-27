@@ -2,77 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7B688DA82
+	by mail.lfdr.de (Postfix) with ESMTPS id E956688DA83
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:52:19 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpPwW-0002El-Lg; Wed, 27 Mar 2024 05:51:36 -0400
+	id 1rpPwZ-0002FO-B7; Wed, 27 Mar 2024 05:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwT-0002CH-Dr
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:33 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwX-0002F6-7q
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:37 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwR-0006bt-30
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:33 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-513cf9bacf1so8687047e87.0
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:51:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwV-0006cM-DY
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:37 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-56bf6591865so6191541a12.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:51:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711533087; x=1712137887; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=PzptXiz+ck3TSURqGaOmlbce928PdtGTlHWQ8uE8o54=;
- b=t0cX9dUHNXN6qMJJvGnf8TsvNQsKUmZFgieI4C6B04oC3FYwF6r/F5wv5SJ8wIgn5R
- Rj4h63bFKyH7QtcPNdva1kx/ozU7SZNNWOPNpAMUFPu8q123DAAAUUoSujmt7cmvXwdX
- ymWvpGkrY8/DrE8qxQn/A+nhv/wSlTSPxVCsQ3Hs4o7AhSG+SAMnexUQyZsoywCwa79B
- IUD1+F11ruqIbu8LPXC1nYWz30xNuVkhAIgwkckIIs0qkFxN5YSMzTV+s8aKV+hkU885
- 4GtP2VAzYG3qP5taSEQNB8l1+WGAwqCa+vcQTckoZak76sW2wDz3xqvf1G3j9cZzs/aN
- XppA==
+ d=linaro.org; s=google; t=1711533093; x=1712137893; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nBAy082BGnicpTR9HTkkFTBoGpDwmw0PRBVIrlqsu0g=;
+ b=bvsrENBNyBTi72XTAyP7IbOMKmFqRwLZDQXozlVxVpjW+Vf+tGf2kEDB+r4PrNIGOH
+ QcZbIwF/d/QQJ3H9STROQ55FDixzeR3VNUkebvMntYr3x2Qj+JeqneJpTS9kN7mLp74s
+ 2YaL/eDyE/NkpD78ykxs5no4Az0piPrSPIQMZNmflRoDi3KHr8GrkXdRvef6z05cCDRA
+ SoR3uHwezKdRYDixhtHMmCtniOL3ClR/igE1mZEVZUVGViKfssXy1vYskMQluSHZWgKi
+ fQW1TojObe+qLz+cCEilGnaZfJeU5zlyaTVxi0xRrrYjuz60xAdkAsYN0yKQ+Mu1no9K
+ ZV2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711533087; x=1712137887;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PzptXiz+ck3TSURqGaOmlbce928PdtGTlHWQ8uE8o54=;
- b=CuvwDEHk4NosAJZQdggyfDsrooFcMdcZ7ZNPU4/8KJB1npakYMpKqRSw5BhUTsXH5O
- OTUz/1BBuFJXrWLh0xlZdgcFP++xv8mmsMcUmd1f2rSCR+K285cYrFNS9EMb8N9iN/uQ
- isKapIVF8/m9LySRvTJpaGPdW6FMJu0KfdhJtuKVoC5ioY5H8isZa7CikqZlzixSUfsd
- aYHZh14RWieWwUhAXGD9b3JFfdAPFyjhUWJ8V4LF0CwjFQC4Lnpq+vJeFi7SWHDa2mCC
- HsU3mc+FaLMKPXwEFS2xy4tI2kLMzkCnC28EsSQLuV7D72VVw3tTEqgljUAn4YVqOG95
- olmQ==
+ d=1e100.net; s=20230601; t=1711533093; x=1712137893;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nBAy082BGnicpTR9HTkkFTBoGpDwmw0PRBVIrlqsu0g=;
+ b=OiqrGBZrRW85Jn5kzmjuPSaOE5DMoX5lE3/aw5RRPP0ItDOGSJ9wtDvrgWeKS+hpNA
+ IpSEJAU60i8zDUyiXeFCrOwhB/fP4b/syISOCt3ak8SWtEwfNCTkgMKAkhIeoKL96Uem
+ zaWTfPqq+Y9OO/zCx1w0b+bTlQpaUUIeiD3ZAgdwG3iM/xlgN+lODrlRe+VlF2akbzwm
+ HQ7L8pO4A0XgFhwaYKm9FbQYD1YR91t8RwC6pcLaTnRF45T8qSQYz8+KppSThsYUwN+U
+ jvUK6RPekOVT8AHV63D3L6LImK8g8Nz667XOsO1OcJ2pQzv31+LlxBCZqqlmAgWlllOG
+ tuXA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVGlDDwiZciafvRs0Pp3De+PjUg9Wdy21RrEr0mlxZMTDHcVBe3X7X2lbM5wLxd2BzWkx3yjLKq3mrM+fyXWb2z/3k17pk=
-X-Gm-Message-State: AOJu0Yw9M7kL2XsavCYc+zmguYTyJ3nuE8W80+H5BodzMg6mQYVaqEj4
- Ql5ScqDCKNhm84cjFpLqrbM26g70Y2Y0PLbluJp9xoegy6TIUlyjs1URNeAm9d5MnFVwmpZ+D9v
- a
-X-Google-Smtp-Source: AGHT+IFrRLDTgjxDLk+AoLGzBxvzXBGkjLIbnP1BO/QjIp1FKhHVZz5IExLlVWQjmBBbWD16rPwP6A==
-X-Received: by 2002:ac2:4f0a:0:b0:515:c102:c825 with SMTP id
- k10-20020ac24f0a000000b00515c102c825mr294300lfr.19.1711533087243; 
- Wed, 27 Mar 2024 02:51:27 -0700 (PDT)
+ AJvYcCXlcvu19RmtxYj8ea5wz+SaeJQ+n5seuPTwJ6h5vxLA/nnXoIGZRg0ala9suahFqETs65ozkQ34RQW8JCZf8Cvvqhm1Cks=
+X-Gm-Message-State: AOJu0Yy1NHUaVrLka2RNRupAqW6f8vNLrZlpTr5BMvQ6m/CzLfSyAVpv
+ IwilePfZA5UtLG4E3DZxYWUpPGs+r9mgAPIGkTvCCbDgyxu1n4eUa89aTHnuuZw=
+X-Google-Smtp-Source: AGHT+IHRy81znAmxXO5ClOjnVu9DCPLIi8FYLPm1Dap94aWRip8C28mC3sIkpREG+9zqQDJivRmG9A==
+X-Received: by 2002:a17:906:53ce:b0:a47:3526:81a3 with SMTP id
+ p14-20020a17090653ce00b00a47352681a3mr2425820ejo.48.1711533093526; 
+ Wed, 27 Mar 2024 02:51:33 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.205.175])
  by smtp.gmail.com with ESMTPSA id
- c13-20020a056402100d00b00568abb329a3sm5125344edu.88.2024.03.27.02.51.25
+ x15-20020a1709060a4f00b00a455519bcb3sm5236741ejf.55.2024.03.27.02.51.31
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 27 Mar 2024 02:51:26 -0700 (PDT)
+ Wed, 27 Mar 2024 02:51:32 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Igor Mammedov <imammedo@redhat.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 v2 00/21] hw/i386: Remove deprecated pc-i440fx-2.0 ->
- 2.3 machines
-Date: Wed, 27 Mar 2024 10:51:02 +0100
-Message-ID: <20240327095124.73639-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH-for-9.1 v2 01/21] hw/i386/pc: Remove deprecated pc-i440fx-2.0
+ machine
+Date: Wed, 27 Mar 2024 10:51:03 +0100
+Message-ID: <20240327095124.73639-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240327095124.73639-1-philmd@linaro.org>
+References: <20240327095124.73639-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,76 +100,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Missing review: 4-6, 10-12, 16, 19-20
+The pc-i440fx-2.0 machine was deprecated for the 8.2
+release (see commit c7437f0ddb "docs/about: Mark the
+old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+time to remove it.
 
-Since v1:
-- Addressed Zhao and Thomas review comments
-- Removal around ICH9 acpi_memory_hotplug (Thomas)
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20240305134221.30924-2-philmd@linaro.org>
+---
+ docs/about/deprecated.rst       |  2 +-
+ docs/about/removed-features.rst |  2 +-
+ include/hw/i386/pc.h            |  3 ---
+ hw/i386/pc.c                    | 15 -------------
+ hw/i386/pc_piix.c               | 37 ---------------------------------
+ 5 files changed, 2 insertions(+), 57 deletions(-)
 
-Kill legacy code, because we need to evolve.
-
-I ended there via dynamic machine -> ICH9 -> legacy ACPI...
-
-This should also help Igor cleanups:
-http://lore.kernel.org/qemu-devel/20240326171632.3cc7533d@imammedo.users.ipa.redhat.com/
-
-Philippe Mathieu-Daudé (21):
-  hw/i386/pc: Remove deprecated pc-i440fx-2.0 machine
-  hw/usb/hcd-xhci: Remove XHCI_FLAG_FORCE_PCIE_ENDCAP flag
-  hw/usb/hcd-xhci: Remove XHCI_FLAG_SS_FIRST flag
-  hw/i386/acpi: Remove PCMachineClass::legacy_acpi_table_size
-  hw/acpi/ich9: Remove 'memory-hotplug-support' property
-  hw/acpi/ich9: Remove dead code related to 'acpi_memory_hotplug'
-  hw/i386/pc: Remove deprecated pc-i440fx-2.1 machine
-  target/i386/kvm: Remove x86_cpu_change_kvm_default() and 'kvm-cpu.h'
-  hw/i386/pc: Remove PCMachineClass::smbios_uuid_encoded
-  hw/smbios: Remove 'uuid_encoded' argument from smbios_set_defaults()
-  hw/smbios: Remove 'smbios_uuid_encoded', simplify smbios_encode_uuid()
-  hw/i386/pc: Remove PCMachineClass::enforce_aligned_dimm
-  hw/mem/pc-dimm: Remove legacy_align argument from pc_dimm_pre_plug()
-  hw/mem/memory-device: Remove legacy_align from
-    memory_device_pre_plug()
-  hw/i386/pc: Remove deprecated pc-i440fx-2.2 machine
-  hw/i386/pc: Remove PCMachineClass::resizable_acpi_blob
-  hw/i386/pc: Remove PCMachineClass::rsdp_in_ram
-  hw/i386/acpi: Remove AcpiBuildState::rsdp field
-  hw/i386/pc: Remove 2.3 and deprecate 2.4 to 2.7 pc-i440fx machines
-  target/i386: Remove X86CPU::kvm_no_smi_migration field
-  hw/i386/pc: Replace PCMachineClass::acpi_data_size by
-    PC_ACPI_DATA_SIZE
-
- docs/about/deprecated.rst             |   2 +-
- docs/about/removed-features.rst       |   2 +-
- hw/usb/hcd-xhci.h                     |   4 +-
- include/hw/firmware/smbios.h          |   3 +-
- include/hw/i386/pc.h                  |  22 ------
- include/hw/mem/memory-device.h        |   2 +-
- include/hw/mem/pc-dimm.h              |   3 +-
- target/i386/cpu.h                     |   3 -
- target/i386/kvm/kvm-cpu.h             |  41 ----------
- hw/acpi/ich9.c                        |  46 ++---------
- hw/arm/virt.c                         |   5 +-
- hw/i386/acpi-build.c                  |  95 ++---------------------
- hw/i386/fw_cfg.c                      |   3 +-
- hw/i386/pc.c                          | 107 ++++----------------------
- hw/i386/pc_piix.c                     | 101 ------------------------
- hw/loongarch/virt.c                   |   4 +-
- hw/mem/memory-device.c                |  12 +--
- hw/mem/pc-dimm.c                      |   6 +-
- hw/ppc/spapr.c                        |   2 +-
- hw/riscv/virt.c                       |   2 +-
- hw/smbios/smbios.c                    |  13 +---
- hw/usb/hcd-xhci-nec.c                 |   4 -
- hw/usb/hcd-xhci-pci.c                 |   4 +-
- hw/usb/hcd-xhci.c                     |  42 ++--------
- hw/virtio/virtio-md-pci.c             |   2 +-
- target/i386/cpu.c                     |   2 -
- target/i386/kvm/kvm-cpu.c             |   3 +-
- target/i386/kvm/kvm.c                 |   7 +-
- tests/avocado/mem-addr-space-check.py |   3 +-
- 29 files changed, 64 insertions(+), 481 deletions(-)
- delete mode 100644 target/i386/kvm/kvm-cpu.h
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 7b548519b5..b567415d62 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -219,7 +219,7 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
+ 
+-``pc-i440fx-2.0`` up to ``pc-i440fx-2.3`` (since 8.2)
++``pc-i440fx-2.1`` up to ``pc-i440fx-2.3`` (since 8.2)
+ '''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These old machine types are quite neglected nowadays and thus might have
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index f9cf874f7b..51119e623f 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -816,7 +816,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-1.7`` (removed in 4.0 up to 8.2)
++``pc-0.10`` up to ``pc-i440fx-2.0`` (removed in 4.0 up to 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These machine types were very old and likely could not be used for live
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 27a68071d7..67856f54c3 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -285,9 +285,6 @@ extern const size_t pc_compat_2_2_len;
+ extern GlobalProperty pc_compat_2_1[];
+ extern const size_t pc_compat_2_1_len;
+ 
+-extern GlobalProperty pc_compat_2_0[];
+-extern const size_t pc_compat_2_0_len;
+-
+ #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
+     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
+     { \
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index e80f02bef4..e7b6abf237 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -311,21 +311,6 @@ GlobalProperty pc_compat_2_1[] = {
+ };
+ const size_t pc_compat_2_1_len = G_N_ELEMENTS(pc_compat_2_1);
+ 
+-GlobalProperty pc_compat_2_0[] = {
+-    PC_CPU_MODEL_IDS("2.0.0")
+-    { "virtio-scsi-pci", "any_layout", "off" },
+-    { "PIIX4_PM", "memory-hotplug-support", "off" },
+-    { "apic", "version", "0x11" },
+-    { "nec-usb-xhci", "superspeed-ports-first", "off" },
+-    { "nec-usb-xhci", "force-pcie-endcap", "on" },
+-    { "pci-serial", "prog_if", "0" },
+-    { "pci-serial-2x", "prog_if", "0" },
+-    { "pci-serial-4x", "prog_if", "0" },
+-    { "virtio-net-pci", "guest_announce", "off" },
+-    { "ICH9-LPC", "memory-hotplug-support", "off" },
+-};
+-const size_t pc_compat_2_0_len = G_N_ELEMENTS(pc_compat_2_0);
+-
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 18ba076609..585231ef7b 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -441,11 +441,6 @@ static void pc_compat_2_1_fn(MachineState *machine)
+     x86_cpu_change_kvm_default("svm", NULL);
+ }
+ 
+-static void pc_compat_2_0_fn(MachineState *machine)
+-{
+-    pc_compat_2_1_fn(machine);
+-}
+-
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
+ {
+@@ -872,38 +867,6 @@ static void pc_i440fx_2_1_machine_options(MachineClass *m)
+ DEFINE_I440FX_MACHINE(v2_1, "pc-i440fx-2.1", pc_compat_2_1_fn,
+                       pc_i440fx_2_1_machine_options);
+ 
+-static void pc_i440fx_2_0_machine_options(MachineClass *m)
+-{
+-    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+-
+-    pc_i440fx_2_1_machine_options(m);
+-    m->hw_version = "2.0.0";
+-    compat_props_add(m->compat_props, pc_compat_2_0, pc_compat_2_0_len);
+-    pcmc->smbios_legacy_mode = true;
+-    pcmc->has_reserved_memory = false;
+-    /* This value depends on the actual DSDT and SSDT compiled into
+-     * the source QEMU; unfortunately it depends on the binary and
+-     * not on the machine type, so we cannot make pc-i440fx-1.7 work on
+-     * both QEMU 1.7 and QEMU 2.0.
+-     *
+-     * Large variations cause migration to fail for more than one
+-     * consecutive value of the "-smp" maxcpus option.
+-     *
+-     * For small variations of the kind caused by different iasl versions,
+-     * the 4k rounding usually leaves slack.  However, there could be still
+-     * one or two values that break.  For QEMU 1.7 and QEMU 2.0 the
+-     * slack is only ~10 bytes before one "-smp maxcpus" value breaks!
+-     *
+-     * 6652 is valid for QEMU 2.0, the right value for pc-i440fx-1.7 on
+-     * QEMU 1.7 it is 6414.  For RHEL/CentOS 7.0 it is 6418.
+-     */
+-    pcmc->legacy_acpi_table_size = 6652;
+-    pcmc->acpi_data_size = 0x10000;
+-}
+-
+-DEFINE_I440FX_MACHINE(v2_0, "pc-i440fx-2.0", pc_compat_2_0_fn,
+-                      pc_i440fx_2_0_machine_options);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
 -- 
 2.41.0
 
