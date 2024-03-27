@@ -2,95 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C56C88F047
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 21:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F008388F0D3
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 22:23:06 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpa4I-0008Hn-KE; Wed, 27 Mar 2024 16:40:18 -0400
+	id 1rpaiH-0000FR-8W; Wed, 27 Mar 2024 17:21:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rpa4G-0008Gz-8z
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 16:40:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rpa4E-0004Lk-Rg
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 16:40:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711572013;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=krUHF2DrfUxOrhuT3iJBmQP1zr5vBXVBIFziYMSw8/Y=;
- b=fZ2rWhI1Xbo0WooXwYnkPM+7trKyVKodJX/vIw99wWRFwjt9F5cv6w9LANEQw0eqvrfuZD
- YhSCGH/t4RFWCDsw5uwcuOtu2NZ9XmhAQrqwPZzRjPOhQhsIkJHlFEb4TL9mrUHJb81X8d
- XHkQMiImi4yTrxW8trCXBMGXWhsBolw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-281-mzqv2e5ePS6zxdyHG6oahA-1; Wed, 27 Mar 2024 16:40:10 -0400
-X-MC-Unique: mzqv2e5ePS6zxdyHG6oahA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-33e7ef510aaso105519f8f.0
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 13:40:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rpaiF-0000El-Gr; Wed, 27 Mar 2024 17:21:35 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
+ id 1rpaiD-0004dU-Hp; Wed, 27 Mar 2024 17:21:35 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-513e25afabaso223155e87.2; 
+ Wed, 27 Mar 2024 14:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711574490; x=1712179290; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JuSxJn1ijkFMnBjJ6Hb54upktV5uWoGDE3+zkgCVc8Y=;
+ b=gGCIaBbOyD55eGmgcc2ISUlDQnrnVfL1Ptza8Ft+KHt1sPST5fKmbuPZCuB5DZF68b
+ BxTLYm1rREG8Xcd0SK8kscNxPYOvrx/yBEL//lNtBaGI7CuS3456MJl7z/lFkUOaDzAb
+ AYOYBZ2NcJJ5qwqD/rcK3ZBRx+oC2O2N17Cf2Caf7/knP+Vs7jiYBt66SkGAV1XZheXD
+ 61TbWBHzIwpM7YC5jyNcMOO3G1g/MbCeLtFxtbWBiZZPyr6R2EtdQ595oL7xiSrcrYI7
+ xaxAg4fCxEK+lhzRJDWtcT8qW1EbGG49Um0jbUl6XCCLxMN7vaO/r4/aBLivOnHuU+xD
+ /4sA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711572009; x=1712176809;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=krUHF2DrfUxOrhuT3iJBmQP1zr5vBXVBIFziYMSw8/Y=;
- b=MR1gGe2h4zW4e/NIK/uy6apTJ9uhI/7IBRAs9eXmPqehg7JbMcelGrr0HMgj5U0Fh1
- QyhfRmNzvqXnQnIkJ4RKtFbtxhfnwcirWtGPTvHtckelet23ZHGOuIcHbCoVNIGb26tW
- FKIjnos/r/U1CEygeOhHgivFHZAR+FeFhefciwg7K78TJmGocb94BLKXJhUpT+owUgdJ
- OVAIc3CM+tv3+cW6U1S/gM7bgbSHpGaozZW8Pbzi8Zspk/KKMXFAEyVYi1n9vhuGC7j2
- TmTknPaEJ8PydbvvyBUgoAA6H3i2eYI7ULUmmhPH+sWgXZtgBMHV155tCDqp9SKnx1zS
- GNCA==
+ d=1e100.net; s=20230601; t=1711574490; x=1712179290;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JuSxJn1ijkFMnBjJ6Hb54upktV5uWoGDE3+zkgCVc8Y=;
+ b=IQHiHS/nTD/tudrIaJt1N055dQnErmYqjZu8bw8fSpF14iHBHVrJ7yhwumk2gXfVB3
+ MBWMWs5pab7v+fxzUN9NiGiOrBnFSZPbqICc0Tz0OLcX+QMwpEvzajHft1OUiLT4Ag26
+ y95BpPLzZoB/s2yO93TGlQD2v0o9PJsajIp8wbtROQFAsc7/5Cv4lVBeKeoe4nLVE2Ox
+ TtltT0rQW53f0DaXZdYEp+4+PoZbBR0iFjxqiGDL3S/AIseLpn1454JLKGBu9VVk7flp
+ VNMRE9TrvKmJ126r30t3NODSjuPxzDx2uCTIoYonkyBYCAWCKpLZgymZmO7i9jepj/by
+ XaAw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUErCk9P52yHrVpGfGx2oJ+xrntgKUuHJ0+FWanfzILNbGZBPkarNRiZHhe28MXS+2+LACB/XXhbUKwMkqtvwW4gjDLbaA=
-X-Gm-Message-State: AOJu0Ywh6McRDjtU/Dgf6AGj+J/xRyShNEhRy98LsWq7537a0FAlLt8W
- IJiC3pYJJTMfOzmjcNi47msUd9S0bcBRiGX50kGfzV9TZMV6iJT6PjGxqv3RvxZpRy1C2dlXT/f
- tkFOV8uHFj7qwRsS4M8W/l9zZz9AkPSeJLeVBUVxOMCshHk1JMYJWbW/hG64cPk0yKl5NfzLT0j
- ezo//2V7pgKZ14mVQDGQpvF5nYwIk=
-X-Received: by 2002:adf:cd06:0:b0:33e:773c:ff6 with SMTP id
- w6-20020adfcd06000000b0033e773c0ff6mr989969wrm.46.1711572009492; 
- Wed, 27 Mar 2024 13:40:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEXkarStpofujde81FvxJvvHh+jyq9+yHq+cqPK/Qo/S8PI4PIuDajYeke/tgx2pVp6Za9uL9zqDxkHwnEpRGE=
-X-Received: by 2002:adf:cd06:0:b0:33e:773c:ff6 with SMTP id
- w6-20020adfcd06000000b0033e773c0ff6mr989948wrm.46.1711572009139; Wed, 27 Mar
- 2024 13:40:09 -0700 (PDT)
-MIME-Version: 1.0
+ AJvYcCWi1k5ZcGKaQREuKmOafP2ahvBuqc6dGL9VPGT0hD+rgwd9lbBVV7TTkzEncYtaqspIQ+sVnwTjJt7HqoTBcQDmK3sAPDkcgqmsdhGjKSp4F6u6S1aJzXw3+sBTKCqm
+X-Gm-Message-State: AOJu0YwzXbs7PCBvZpEkT98mbK0SP36RckjFvaZ5vWeEtau2uEwOn0VD
+ JPkV1blsohV0+IUpV5VJ8e6RoeQzyeNbqnHfvMaBbGtmmVTL8KIU
+X-Google-Smtp-Source: AGHT+IHHkxgl24ZRYdzxqqFMiOV53K1Y9jUlb/OLvkqhf0DvjtmognATW0U7iJTPSSyFVFwHmKPRMA==
+X-Received: by 2002:ac2:5f8e:0:b0:515:a5b1:1dd0 with SMTP id
+ r14-20020ac25f8e000000b00515a5b11dd0mr372753lfe.55.1711574490191; 
+ Wed, 27 Mar 2024 14:21:30 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-191-040-243.77.191.pool.telefonica.de.
+ [77.191.40.243]) by smtp.gmail.com with ESMTPSA id
+ wr8-20020a170907700800b00a474ba09387sm5072924ejb.22.2024.03.27.14.21.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Mar 2024 14:21:29 -0700 (PDT)
+Date: Wed, 27 Mar 2024 20:47:19 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ qemu-devel@nongnu.org
+CC: pbonzini@redhat.com, devel@lists.libvirt.org, richard.henderson@linaro.org,
+ mst@redhat.com, qemu-trivial@nongnu.org,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_for-9=2E0=5D_docs/about=3A_Mark?=
+ =?US-ASCII?Q?_the_iaspc_machine_type_as_deprecated?=
+In-Reply-To: <8dbba6ae-5910-4a62-9a08-a56e20dfb480@linaro.org>
 References: <20240326125104.90103-1-imammedo@redhat.com>
  <a4a0bb13-d6a0-4665-810d-ecd9a9fb89b1@redhat.com>
  <8dbba6ae-5910-4a62-9a08-a56e20dfb480@linaro.org>
- <20240326171632.3cc7533d@imammedo.users.ipa.redhat.com>
- <ZgP5x3ECYGevla1-@redhat.com>
- <20240327140917.69d86539@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20240327140917.69d86539@imammedo.users.ipa.redhat.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 27 Mar 2024 21:39:57 +0100
-Message-ID: <CABgObfbozdB=8ARjvGdkJ3yhMuHmZC6Ro47BYZA4YE2rFzyhRA@mail.gmail.com>
-Subject: Re: [PATCH for-9.0] docs/about: Mark the iaspc machine type as
- deprecated
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- Bernhard Beschow <shentey@gmail.com>, devel@lists.libvirt.org, 
- Richard Henderson <richard.henderson@linaro.org>, "S. Tsirkin,
- Michael" <mst@redhat.com>, qemu-trivial <qemu-trivial@nongnu.org>
-Content-Type: multipart/alternative; boundary="0000000000009ce0220614aa69d5"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Message-ID: <5365A87A-C33D-40CC-9D9A-B908EBCB4FCF@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=shentey@gmail.com; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,99 +99,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000009ce0220614aa69d5
-Content-Type: text/plain; charset="UTF-8"
 
-Il mer 27 mar 2024, 14:09 Igor Mammedov <imammedo@redhat.com> ha scritto:
 
-> It's question of whether we are willing to do unthinkable,
-> i.e. to break QEMU <-> guest ABI for isapc case by removing
-> corresponding fwcfg entries.
+Am 26=2E M=C3=A4rz 2024 13:29:58 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
+ <philmd@linaro=2Eorg>:
+>Hi Igor,
 >
-
-It's not unthinkable since it's unversioned.
-
-we are loosing a chance to cleanup
-> QEMU code base touching following
+>On 26/3/24 14:08, Thomas Huth wrote:
+>>=20
+>> s/iaspc/isapc/ in the subject
+>>=20
+>> On 26/03/2024 13=2E51, Igor Mammedov wrote:
+>>> ISAPC machine was introduced 25 years ago and it's a lot of time since
+>>> such machine was around with real ISA only PC hardware practically def=
+unct=2E
+>>> Also it's slowly bit-rots (for example: I was able to boot RHEL6 on RH=
+EL9 host
+>>> in only TCG mode, while in KVM mode it hung in the middle of boot)
 >
->     m->option_rom_has_mr = true;
->     m->rom_file_has_mr = false;
->     pcmc->pci_enabled = false;
->     pcmc->has_acpi_build = false;
->     pcmc->smbios_defaults = false;
->     pcmc->gigabyte_align = false;
-> pcmc->smbios_legacy_mode = true;                  pcmc->has_reserved_memory
-> = false;
+>I'm quite opposed to this patch=2E QEMU models various very-old /
+>defunct hardware=2E I'm pretty sure Bernhard and myself are OK to
+>keep maintaining it, besides we are working in separating it from
+>the i440fx+piix machine=2E
+
+Yes, I'd rather keep maintaining the isapc machine and separating it from =
+the i440fx machine seems like a good idea to me=2E I'm confident that we ca=
+n work out a way that allows for moving forward the pc-pci machines while k=
+eeping the isapc machine from getting into the way too much=2E
+
+Best regards,
+Bernhard
+
+> Also, this machine is particularly
+>interesting for my single-binary experiments=2E
 >
-
-Some of these can go away, for the others probably we can think of making
-isapc a direct subclass of X86MachineState.
-
-I would rather keep it because it's the only way to test userspace
-interrupt injection in KVM.
-
-Paolo
-
-they are all marginal but in shared code, and removing them
-> makes code a bit more easier to follow (especially when it
-> comes to memory layout).
+>Where I agree is we should stop reporting "KVM on ISA/PC machine"
+>as supported=2E
 >
-> > With regards,
-> > Daniel
+>Regards,
 >
+>Phil=2E
 >
-
---0000000000009ce0220614aa69d5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il mer 27 mar 2024, 14:09 Igor Mammedov &lt;<a href=3D=
-"mailto:imammedo@redhat.com">imammedo@redhat.com</a>&gt; ha scritto:</div><=
-blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
- #ccc solid;padding-left:1ex">
-It&#39;s question of whether we are willing to do unthinkable,<br>
-i.e. to break QEMU &lt;-&gt; guest ABI for isapc case by removing<br>
-corresponding fwcfg entries.<br></blockquote></div></div><div dir=3D"auto">=
-<br></div><div dir=3D"auto">It&#39;s not unthinkable since it&#39;s unversi=
-oned.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmai=
-l_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;borde=
-r-left:1px #ccc solid;padding-left:1ex">we are loosing a chance to cleanup<=
-br>
-QEMU code base touching following <br>
-<br>
-=C2=A0 =C2=A0 m-&gt;option_rom_has_mr =3D true;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0<br>
-=C2=A0 =C2=A0 m-&gt;rom_file_has_mr =3D false;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0<br>
-=C2=A0 =C2=A0 pcmc-&gt;pci_enabled =3D false;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0=
-<br>
-=C2=A0 =C2=A0 pcmc-&gt;has_acpi_build =3D false;=C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0<br>
-=C2=A0 =C2=A0 pcmc-&gt;smbios_defaults =3D false;=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=C2=A0<br>
-=C2=A0 =C2=A0 pcmc-&gt;gigabyte_align =3D false;=C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 pcmc=
--&gt;smbios_legacy_mode =3D true;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0=C2=A0 =C2=A0pcmc-&gt;has_reserved_memory =3D false;<br></bloc=
-kquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">Some of th=
-ese can go away, for the others probably we can think of making isapc a dir=
-ect subclass of X86MachineState.</div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">I would rather keep it because it&#39;s the only way to test user=
-space interrupt injection in KVM.</div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div cla=
-ss=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 =
-.8ex;border-left:1px #ccc solid;padding-left:1ex">they are all marginal but=
- in shared code, and removing them<br>
-makes code a bit more easier to follow (especially when it<br>
-comes to memory layout).<br>
-<br>
-&gt; With regards,<br>
-&gt; Daniel<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000009ce0220614aa69d5--
-
+>>> Rather than spending time on fixing 'the oldest' no longer tested mach=
+ine type,
+>>> deprecate it so we can clean up QEMU code from legacy fixups and hopef=
+ully
+>>> make it easier to follow=2E
+>>>=20
+>>> Folks who have to use ancient guest that requires ISAPC can still
+>>> use older QEMU to play with it=2E
+>>>=20
+>>> Signed-off-by: Igor Mammedov <imammedo@redhat=2Ecom>
+>>> ---
+>>> =C2=A0 docs/about/deprecated=2Erst | 7 +++++++
+>>> =C2=A0 hw/i386/pc_piix=2Ec=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 | 1 +
+>>> =C2=A0 2 files changed, 8 insertions(+)
+>>>=20
+>>> diff --git a/docs/about/deprecated=2Erst b/docs/about/deprecated=2Erst
+>>> index 7b548519b5=2E=2E5708296991 100644
+>>> --- a/docs/about/deprecated=2Erst
+>>> +++ b/docs/about/deprecated=2Erst
+>>> @@ -226,6 +226,13 @@ These old machine types are quite neglected nowad=
+ays and thus might have
+>>> =C2=A0 various pitfalls with regards to live migration=2E Use a newer =
+machine type
+>>> =C2=A0 instead=2E
+>>> +``isapc`` (since 9=2E0)
+>>> +'''''''''''''''''''''''''''''''''''''''''''''''''''''
+>>> +
+>>> +These old machine type are quite neglected nowadays and thus might ha=
+ve
+>>=20
+>> "This old machine type is =2E=2E=2E" ?
+>>=20
+>>> +various pitfalls with regards to live migration=2E Use a newer machin=
+e type
+>>> +instead=2E
+>>=20
+>> I doubt that isapc could ever be used reliably for live migration, sinc=
+e it's an unversioned machine type, so I think it would be better to not me=
+ntion live migration here=2E
+>>=20
+>>  =C2=A0Thomas
+>>=20
+>>=20
+>
 
