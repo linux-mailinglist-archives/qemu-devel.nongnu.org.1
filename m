@@ -2,54 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E3B88DB34
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD1388DB36
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:27:38 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpQV3-0007gx-Bc; Wed, 27 Mar 2024 06:27:18 -0400
+	id 1rpQV9-0007n9-Ec; Wed, 27 Mar 2024 06:27:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rpQUD-0007OD-Id
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:27 -0400
+ id 1rpQUC-0007NB-3Z
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:24 -0400
 Received: from mgamail.intel.com ([192.198.163.19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rpQU4-0007Zu-IP
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:24 -0400
+ id 1rpQU4-0007aA-JB
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:26:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1711535176; x=1743071176;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=T2q8tIsDejUmCf9z6MLJdMNBBd9A9qw2SbxPUFF/E0E=;
- b=cp9xzuvqmplt7cOQTDGPaRucBjkUMR7arK9WLX5K9XLD9mpJq2bC/zp7
- xhrjkfMsgCGeA3JvjSy5IcnrVS40kIC+Ml7iT/SAmf5a+DBKbvGJ9ZnfF
- mIDqykWb5oMMxY9/tz5uX0Vz3xVEAnKV8r1EJwoRkyFd3EOpFz9AeVssG
- 0DjmKuthl9N0OdnomoFpNARKe6va2EedkE8YzH0NWlH9ycqx7j+Cpm57q
- DnOEVcliXNaRdTgzOVYARGZzbFLVqzEBB1bgsFnn5qhtINUhNNhnLr08V
- jCaDCg5aXOWFdcOAB6zdlq0AEbd4kv5fHSWobNsMt2prvAeHyv7XDxRSn A==;
-X-CSE-ConnectionGUID: KCTid6X8RNyET5rw8RbuJQ==
-X-CSE-MsgGUID: UlhJo3qbRpy60oD6mCCcrg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6489752"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ykBXsEkK2ADVVDuf1AFicY9uXXOp9HytuDaW5JJ5N2Q=;
+ b=BEOFsGLsrTQcTZO8K2PWqSRNpHVx+kU+62QoX/5yiPCKMCcNBaGNMLYS
+ CvJ68bFtRWGlKPgCvx+9ldo9c6jzPkdZp7TXTujsQCSVQQ60w+DiXGgEk
+ 4dksTlj1cNADg0LnuC9FYUJ/AbvK/9WAlW/LqiFYKcNXNr/kwFHYzgjHZ
+ 8mCDgaqhak6jrTckJZsZqWHPU0mfYzfdZX0C8MXosBSThbnImzACxapPD
+ 62im6Yz+GSrzKnWCjWmo6SzL8lcj00MWs1I2y+xDRQ/d6l3KYKUUTS8M/
+ BJ8KDoln1wQ5R8rtuQR/ZC3fcx6XFLEZ1pQUTTViPZT98ku+8tvOtNZH5 w==;
+X-CSE-ConnectionGUID: +hclnJ5NSY6Gx2CQWYwTNg==
+X-CSE-MsgGUID: iAOsyJ2pSeOibG/2V9oSrA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="6489754"
 X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; 
-   d="scan'208";a="6489752"
+   d="scan'208";a="6489754"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 03:25:58 -0700
+ 27 Mar 2024 03:25:59 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16354463"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16354469"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2024 03:25:57 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2024 03:25:58 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org,
 	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 0/3] target/i386/cpu: Misc cleanup for warning message
-Date: Wed, 27 Mar 2024 18:39:48 +0800
-Message-Id: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
+Subject: [PATCH 1/3] target/i386/host-cpu: Consolidate the use of
+ warn_report_once()
+Date: Wed, 27 Mar 2024 18:39:49 +0800
+Message-Id: <20240327103951.3853425-2-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
+References: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=192.198.163.19;
@@ -78,26 +81,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Hi Paolo and list,
+Use warn_report_once() to get rid of the static local variable "warned".
 
-In i386, there're 2 cases useing static variables to implement warning
-only once.
-
-So consolidate the use of warn_report_once() in i386 part. (Based on
-the commit 5012e522aca1 "Update version for v9.0.0-rc1 release")
-
-Thanks and Best Regards,
-Zhao
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
-Zhao Liu (3):
-  target/i386/host-cpu: Consolidate the use of warn_report_once()
-  target/i386/cpu: Consolidate the use of warn_report_once()
-  target/i386/cpu: Merge the warning and error messages for AMD HT check
-
- target/i386/cpu.c      | 13 +++++--------
  target/i386/host-cpu.c | 11 ++++-------
- 2 files changed, 9 insertions(+), 15 deletions(-)
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 92ecb7254b83..280e427c017c 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -55,18 +55,15 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
+     uint32_t phys_bits = cpu->phys_bits;
+-    static bool warned;
+ 
+     /*
+      * Print a warning if the user set it to a value that's not the
+      * host value.
+      */
+-    if (phys_bits != host_phys_bits && phys_bits != 0 &&
+-        !warned) {
+-        warn_report("Host physical bits (%u)"
+-                    " does not match phys-bits property (%u)",
+-                    host_phys_bits, phys_bits);
+-        warned = true;
++    if (phys_bits != host_phys_bits && phys_bits != 0) {
++        warn_report_once("Host physical bits (%u)"
++                         " does not match phys-bits property (%u)",
++                         host_phys_bits, phys_bits);
+     }
+ 
+     if (cpu->host_phys_bits) {
 -- 
 2.34.1
 
