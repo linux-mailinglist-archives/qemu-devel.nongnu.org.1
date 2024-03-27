@@ -2,82 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE45288D3F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 02:51:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7C888D45B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 03:06:36 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpIR5-00023W-Fs; Tue, 26 Mar 2024 21:50:39 -0400
+	id 1rpIfN-0005Yk-EZ; Tue, 26 Mar 2024 22:05:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rpIR3-00020a-Ti
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:50:38 -0400
-Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ id 1rpIfL-0005Yb-Gg
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 22:05:23 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rpIR2-000848-72
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 21:50:37 -0400
-Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1e0d6356ce9so19659165ad.3
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 18:50:35 -0700 (PDT)
+ id 1rpIfJ-0001wp-Ow
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 22:05:23 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1e0d6356ce9so19733715ad.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 19:05:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711504235; x=1712109035;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711505120; x=1712109920;
  darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uREyk6RWhynxkM3LrQEj7fmpTF8ERnyaJjFlw7xKBgk=;
- b=iKCPeQ3SenFUh36E9PsQo077Pc5UCJU6I8nGJcKky/Gq+63atN0MJF7Al0RYOIR+u2
- 8h2ffDDylFPVRyQafocxlLWjGFwQsTeeqAcbBh4wPin8SiXi5W3hW4N2AmltAF176/3C
- DxJCq6CUwL4CLQYz4P48gGTLGYwaByKp+W/XWlzOSzdFtOpu8wNSwYliA24CKhWXHJNA
- N9gWgwTR26meH80vIigxkrtSlFgmZvMbOZZW+UxNRVGw+RqS5RIv0Rwhk2Sc5BV4qcOk
- nOcPCk7V3Sl4RV7JWK9UgllDVZPO3UcT5fos6n9XhbEjg5o6ZXwiJQ7BZa4ecOsP27F3
- UDpA==
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=IMrQNjap7NimL/Y3bzDVmCVdabyr6HixObY1Am7sLmQ=;
+ b=r2WHCXaE2AwgvTkCAIQXlzKqQ3CyJSUc6dO3npLYSVEL9Gv8oQy9VWGhbnRo56GvrD
+ swYBGcKT+hG/4iWNWhtonQmuLqGt74oHmHA50OdHXpwjZ1Ot8M9eYiqVC4uBu6HQHH4f
+ GDoGoVvgGkooM4eI1srO+EI8gV1ZeHk0/QU7ZjuZ2EZAhCQCsV7VHPrlhCDsVotRFQ+/
+ /gb1kFVJdGj8o4SutS0z+rLdad/cXzzUibgW6Vhw4hNhwCVjvbtpzkLOQDZeJurVnry1
+ ljPtZNZ996944eorw5NN5FYe3RKruwN6jDo4cKysql5AfHNaEN7mkkRgLYtKOPTMxWok
+ PJNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711504235; x=1712109035;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uREyk6RWhynxkM3LrQEj7fmpTF8ERnyaJjFlw7xKBgk=;
- b=R4pJUX6Nbj4S0gPXo43v/99zsqpHjHjRadS/ZU27W3fzMKbvWp/FXwVtST7R+dvggQ
- npcxLtEQQKRkaLPT1Mme35hdEqmRKCod0qeWfNcG4wkLW93/cN18klPB0uMN8uQzJYG1
- FG/9Qz9TmfLX/9R1S93doax21XgDm8DkEvdP+eu1OO3VBl+LlpMmd9Z34SGZ9fuY6VAX
- ou9zTPEmuiqtSJ6bKtLm8Dq9iY0WyyHRs3PpkiqWeArO/muIC3KJjQdGOSRWADLXbL+W
- oysTvEViEhHgOfZLTEHkdlJ7mcLOdvGY8Pq6Eimj5IWcqVK9KHh+peODlXeJm+aQQ6kD
- UoQQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDIiRWp4IVAAjb08wRs9TGYg3NHrefFpeKxpwDT99MgDHJxa9JuOuhqAfSvqsgwyPmfF7sfTnLc+3yDRGLmdC90GxBDEw=
-X-Gm-Message-State: AOJu0YzXxqTHgHIh49BI/sLSgbby/oA6Hun/CXpIhl34/tqZ/pgYyBYB
- NPmGERLy2uozTpKsREakLtNGVu7rIJMz7G5pyZHGbCW3QpFjxr0Y1h/k2Xd89pk=
-X-Google-Smtp-Source: AGHT+IEyjhf/HpFqzeTNpW9EIau15kfS5+0EBYTSjnFR43PR2i/61HU1Pvg8VfbcT7gfACtv2FfyCw==
-X-Received: by 2002:a17:902:ce8a:b0:1e0:ca47:4d9b with SMTP id
- f10-20020a170902ce8a00b001e0ca474d9bmr6091515plg.29.1711504234908; 
- Tue, 26 Mar 2024 18:50:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711505120; x=1712109920;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=IMrQNjap7NimL/Y3bzDVmCVdabyr6HixObY1Am7sLmQ=;
+ b=rvVUPye+dYVedJ+UgBiCXdPGKYiNTfvkdt+MY8T/hTWKmo9lt4C4iqdTV+ufRUOD2R
+ PfOC9u24du6yM9nO6lhchThgg7YTAH6sv6+0UvHAbFCBKyBscFpos9X1cAKVKqY4XO76
+ 39YfDyINP4Mv5W/3cW+q8ud0uPDm0mWnjflo0+Mn3XZVevZ2OeZoy9DCabkpje1YmeM0
+ DR4f4cHeXhcgLcwyeuwpVg1JbBUeYajawp/oi3Rr/xeychcAcu3A0XxBeFE7OYXgPeCd
+ ztPu9cr+gFVtc6VtcQlk/Giqc7TibU1IuH48fGmn7MsIsTwnnDYaMebMu62brO4MdHqv
+ itbA==
+X-Gm-Message-State: AOJu0YwCi7c80px5KOjlAwATrfZqQ3TExdza2dD3ylg/jJYELZMot0+r
+ 8psRMiw0Y96XsbDaz4Eu3KGX0+a+MwTSUUHdHZdDwo0/m5hcVf1R2sPwzGBfQtE4Mpq+QYRGxFp
+ U
+X-Google-Smtp-Source: AGHT+IEMFSO6vnjHmM7/ccWb+bJqpcAY0zdV2BcTmHeUzyRblLKQ9wECtsK12LgRuW2hXo27AUhUaQ==
+X-Received: by 2002:a17:902:cec3:b0:1e0:b76b:cfb8 with SMTP id
+ d3-20020a170902cec300b001e0b76bcfb8mr10411766plg.19.1711505120034; 
+ Tue, 26 Mar 2024 19:05:20 -0700 (PDT)
 Received: from localhost ([157.82.202.248])
  by smtp.gmail.com with UTF8SMTPSA id
- x3-20020a170902a38300b001dda608484asm7785894pla.57.2024.03.26.18.50.32
+ p7-20020a170902e74700b001e0b5d4a2a8sm5639770plf.149.2024.03.26.19.05.18
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Mar 2024 18:50:34 -0700 (PDT)
+ Tue, 26 Mar 2024 19:05:19 -0700 (PDT)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 27 Mar 2024 10:49:22 +0900
-Subject: [PATCH for 9.1 v3 2/2] meson: Fix MESONINTROSPECT parsing
+Subject: [PATCH v2 0/2] virtio-net: Fix RSS
+Date: Wed, 27 Mar 2024 11:05:08 +0900
+Message-Id: <20240327-vhost-v2-0-0a89aa21b54b@daynix.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240327-meson-v3-2-7e6cdef1be8a@daynix.com>
-References: <20240327-meson-v3-0-7e6cdef1be8a@daynix.com>
-In-Reply-To: <20240327-meson-v3-0-7e6cdef1be8a@daynix.com>
-To: Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, qemu-devel@nongnu.org, 
- =?utf-8?q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>, 
- =?utf-8?q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- =?utf-8?q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Cleber Rosa <crosa@redhat.com>, 
- John Snow <jsnow@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANR+A2YC/zXMSw7CIBSF4a00dywGrqWpjroP0wEv5Q4EAw1p0
+ 7B3sdHhf3Ly7ZBdIpfh1u2QXKFMMbTAUwfGq/B0jGxrQI49v2DPio95YdLhYEaFVkkF7ftO7kH
+ r4dzn1p7yEtN2sEV8178w/IQiGGf8qu0otdAKzWTVFmg9m/iCudb6Aahr+0ybAAAA
+To: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
 X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::630;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x630.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::635;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -99,64 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The arguments in MESONINTROSPECT are quoted with shlex.quote() so it
-must be parsed with shlex.split().
+Some recent changes made RSS unfunctional so here are fixes.
 
-meson<1.4.0 quotes arguments in MESONINTROSPECT with the
-Windows-specific format on the platform, which is incompatible with
-shlex.split(). meson>=1.4.0 uses shlex.quote() also on the platform and
-fixes the incompatibility so make sure meson>=1.4.0 on Windows.
-
-Fixes: cf60ccc330 ("cutils: Introduce bundle mechanism")
-Reported-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Tested-by: Michael Tokarev <mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- configure                       | 5 +++++
- scripts/symlink-install-tree.py | 3 ++-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+Changes in v2:
+- Fixed a potential problem with big-endian hosts.
+- Link to v1: https://lore.kernel.org/r/20240326-vhost-v1-0-09bd85b1ba2c@daynix.com
 
-diff --git a/configure b/configure
-index 3cd736b139f3..57c2f1a2273d 100755
---- a/configure
-+++ b/configure
-@@ -956,6 +956,11 @@ fi
- $mkvenv ensuregroup --dir "${source_path}/python/wheels" \
-      ${source_path}/pythondeps.toml meson || exit 1
- 
-+# Windows needs: https://github.com/mesonbuild/meson/pull/12807
-+if test "$host_os" = "windows"; then
-+  $mkvenv ensure --dir "$source_path/python/wheels" 'meson>=1.4.0' || exit 1
-+fi
-+
- # At this point, we expect Meson to be installed and available.
- # We expect mkvenv or pip to have created pyvenv/bin/meson for us.
- # We ignore PATH completely here: we want to use the venv's Meson
-diff --git a/scripts/symlink-install-tree.py b/scripts/symlink-install-tree.py
-index 8ed97e3c943d..b72563895c56 100644
---- a/scripts/symlink-install-tree.py
-+++ b/scripts/symlink-install-tree.py
-@@ -4,6 +4,7 @@
- import errno
- import json
- import os
-+import shlex
- import subprocess
- import sys
- 
-@@ -14,7 +15,7 @@ def destdir_join(d1: str, d2: str) -> str:
-     return str(PurePath(d1, *PurePath(d2).parts[1:]))
- 
- introspect = os.environ.get('MESONINTROSPECT')
--out = subprocess.run([*introspect.split(' '), '--installed'],
-+out = subprocess.run([*shlex.split(introspect), '--installed'],
-                      stdout=subprocess.PIPE, check=True).stdout
- for source, dest in json.loads(out).items():
-     bundle_dest = destdir_join('qemu-bundle', dest)
+---
+Akihiko Odaki (2):
+      virtio-net: Fix vhost virtqueue notifiers for RSS
+      ebpf: Fix indirections table setting
 
+ ebpf/ebpf_rss.c     | 9 +++++++--
+ hw/net/virtio-net.c | 4 ++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
+---
+base-commit: ba49d760eb04630e7b15f423ebecf6c871b8f77b
+change-id: 20240324-vhost-5e26c8a2da5a
+
+Best regards,
 -- 
-2.44.0
+Akihiko Odaki <akihiko.odaki@daynix.com>
 
 
