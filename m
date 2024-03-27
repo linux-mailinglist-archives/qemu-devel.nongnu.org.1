@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A3F88E21F
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 14:20:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 713ED88E109
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 13:50:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpSqk-00063Y-Mq; Wed, 27 Mar 2024 08:57:50 -0400
+	id 1rpShx-0007Mj-AP; Wed, 27 Mar 2024 08:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1rpSqh-00060k-Ql; Wed, 27 Mar 2024 08:57:47 -0400
-Received: from mta-04.yadro.com ([89.207.88.248])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rpShs-0007K0-O1
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 08:48:41 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexei.filippov@syntacore.com>)
- id 1rpSqf-0007Vg-Dj; Wed, 27 Mar 2024 08:57:47 -0400
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 09E2EC000E
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-04; t=1711544261;
- bh=igXJmAQBRIraB7SXsgsS6/LWmhtuqbDlP7Kfi3hiOhg=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=a/TpLrqhTwvq5S7a+fC/8MxDQU0UMC3MLsOr6j7DmukAOf6QGyjDQOeiznduPX/eb
- 9GSS98vUxf068MOvndslhBZtLfFmwrTStvY48BAsP4ElrqCx9d6b7JXwhmKW9f5m6k
- mK9PeIKFwq6ETNwYUFnYmBAg/0GYuFD0Ib30qBfOSuYOrKN/JwPDy3116bkXpu0Le8
- dMV51tzbVnI8QEXI/XzFzWEL2LyiPmYSqYTSQe4XTlyEDVJ4+6qB2uuupj8GlB8Vl1
- 8J0eDX8pT3ShIpEPe+Kcr9ueZPBi/3Jn1hSTVgAV3ibU79FruAk3f2KwX+XXgPiNGg
- 4Xq63ztsEtAKg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
- s=mta-03; t=1711544261;
- bh=igXJmAQBRIraB7SXsgsS6/LWmhtuqbDlP7Kfi3hiOhg=;
- h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
- b=UxIg30cK/PhdGXdGnev2pOE4YJMGMUE//4F2sE0LdeR/FjEgbRN82/DdisTDiCNDV
- /Uq9K0vxO/rog7/9ex1o/gjxr0X9eLOcAmWYFOLR81xyzbkYumAypQjWr81Y2XwuzP
- lVuu/RW7qpT+VqLCo4YIvkKpZvM/tV4ke4la1avrc3WRCqU4s2RbAa0SGAz9VBkCA1
- 9pt7LFksQlh5nx4tnjTbskE1Hk2JpuCg98DVWmQRvFmm1NIx18aFPX85Bfxu/vj1l/
- EqopWoYCwbVOGV1OzW5tKchqXXPWxxax5LwXOYE8vY5pSqodjjp+b4sWiadZAjUUvD
- T/U1ihMJ8jARQ==
-From: Alexei Filippov <alexei.filippov@syntacore.com>
-To: <alistair23@gmail.com>
-CC: <alexei.filippov@syntacore.com>, <alistair.francis@wdc.com>,
- <apatel@ventanamicro.com>, <bin.meng@windriver.com>,
- <dbarboza@ventanamicro.com>, <liwei1518@gmail.com>, <palmer@dabbelt.com>,
- <qemu-devel@nongnu.org>, <qemu-riscv@nongnu.org>,
- <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH v3] target/riscv/kvm/kvm-cpu.c: kvm_riscv_handle_sbi() fail
- with vendor-specific SBI
-Date: Wed, 27 Mar 2024 15:57:32 +0300
-Message-ID: <20240327125732.11739-1-alexei.filippov@syntacore.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CAKmqyKNkyxx9YV5ahb-VTO=4+mtu-1D2nMvyP6=-MpZ6KGXomw@mail.gmail.com>
-References: <CAKmqyKNkyxx9YV5ahb-VTO=4+mtu-1D2nMvyP6=-MpZ6KGXomw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1rpShq-00049Z-1d
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 08:48:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711543719; x=1743079719;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=KjhtjLQ0OpS3vgpEUrPdd94QCyefMfbPx68PbnTemcg=;
+ b=GwjQgL+raR093RAA4IBDCLT2uiEt/dJdd3zPhKWBLIFQwMzD/c3d9DpO
+ W+L1Xfe7XwqoXJpWoAGE8nc9zokgbXTb/nrrG3uh0kokXHwPyS5GA6dgq
+ Mu+dvrLjzrGJe5CzsZU58BJnSfOLYDXLRReDw3cyre6ZUVYX0t0yg3wXi
+ ePO6UZQDcGvjVkjq7fuV+gYLysYvz38Dw103sIpT7uBuzuHkZ2I9w7xZD
+ pJK/nbTU9sCW7MdRcrUkXrgm470N6mxuYf8XF46pXJXYOf1gIn/hwbSUb
+ XJOLumXcjndBkXLvUxm5vzACT9YCN3G7IrTOOimuVa08iTsLQCC+dEt24 g==;
+X-CSE-ConnectionGUID: 99Z3ndsnTwCVW7lMenP+Ag==
+X-CSE-MsgGUID: xLdgF7f9Tk6cl6DjxHf6oA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10433581"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="10433581"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 05:48:36 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="20943331"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa004.fm.intel.com with ESMTP; 27 Mar 2024 05:48:34 -0700
+Date: Wed, 27 Mar 2024 21:02:30 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [RFC] util/error-report: Add "error: " prefix for error-level
+ report
+Message-ID: <ZgQY5rQVQJH0Its9@intel.com>
+References: <20240327114609.3858483-1-zhao1.liu@linux.intel.com>
+ <a2d13494-aec2-427b-af9b-e8c41f7057f1@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-09.corp.yadro.com (172.17.11.59) To
- T-EXCH-12.corp.yadro.com (172.17.11.143)
-Received-SPF: permerror client-ip=89.207.88.248;
- envelope-from=alexei.filippov@syntacore.com; helo=mta-04.yadro.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a2d13494-aec2-427b-af9b-e8c41f7057f1@redhat.com>
+Received-SPF: none client-ip=198.175.65.14;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,86 +80,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-kvm_riscv_handle_sbi() may return not supported return code to not trigger
-qemu abort with vendor-specific sbi.
+On Wed, Mar 27, 2024 at 01:36:07PM +0100, Thomas Huth wrote:
 
-Added SBI related return code's defines.
+[snip]
 
-Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
-Fixes: 4eb47125 ("target/riscv: Handle KVM_EXIT_RISCV_SBI exit")
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
+> Sounds like a good idea to me, but I think you should then also remove
+> the hard-coded "error:" strings in the various error_reports():
 
-Changes since v2:
-        -Clear kvm_riscv_handle_sbi()
-        -Add SBI_ERR_NO_SHMEM return code's define
- target/riscv/kvm/kvm-cpu.c         | 13 +++++--------
- target/riscv/sbi_ecall_interface.h | 12 ++++++++++++
- 2 files changed, 17 insertions(+), 8 deletions(-)
+Thanks Thomas! I missed this case, will remove these hard-code prefix
+first.
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 6a6c6cae80..844942d9ba 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1392,7 +1392,6 @@ bool kvm_arch_stop_on_emulation_error(CPUState *cs)
- 
- static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
- {
--    int ret = 0;
-     unsigned char ch;
-     switch (run->riscv_sbi.extension_id) {
-     case SBI_EXT_0_1_CONSOLE_PUTCHAR:
-@@ -1400,22 +1399,20 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
-         qemu_chr_fe_write(serial_hd(0)->be, &ch, sizeof(ch));
-         break;
-     case SBI_EXT_0_1_CONSOLE_GETCHAR:
--        ret = qemu_chr_fe_read_all(serial_hd(0)->be, &ch, sizeof(ch));
--        if (ret == sizeof(ch)) {
-+        if (qemu_chr_fe_read_all(serial_hd(0)->be, &ch, sizeof(ch)) == sizeof(ch)) {
-             run->riscv_sbi.ret[0] = ch;
-         } else {
--            run->riscv_sbi.ret[0] = -1;
-+            run->riscv_sbi.ret[0] = SBI_ERR_FAILURE;
-         }
--        ret = 0;
-         break;
-     default:
-         qemu_log_mask(LOG_UNIMP,
--                      "%s: un-handled SBI EXIT, specific reasons is %lu\n",
-+                      "%s: Unhandled SBI exit with extension-id %lu\n",
-                       __func__, run->riscv_sbi.extension_id);
--        ret = -1;
-+        run->riscv_sbi.ret[0] = SBI_ERR_NOT_SUPPORTED;
-         break;
-     }
--    return ret;
-+    return 0;
- }
- 
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-diff --git a/target/riscv/sbi_ecall_interface.h b/target/riscv/sbi_ecall_interface.h
-index 43899d08f6..a2e21d9b8c 100644
---- a/target/riscv/sbi_ecall_interface.h
-+++ b/target/riscv/sbi_ecall_interface.h
-@@ -69,4 +69,16 @@
- #define SBI_EXT_VENDOR_END              0x09FFFFFF
- /* clang-format on */
- 
-+/* SBI return error codes */
-+#define SBI_SUCCESS                  0
-+#define SBI_ERR_FAILURE             -1
-+#define SBI_ERR_NOT_SUPPORTED       -2
-+#define SBI_ERR_INVALID_PARAM       -3
-+#define SBI_ERR_DENIED              -4
-+#define SBI_ERR_INVALID_ADDRESS     -5
-+#define SBI_ERR_ALREADY_AVAILABLE   -6
-+#define SBI_ERR_ALREADY_STARTED     -7
-+#define SBI_ERR_ALREADY_STOPPED     -8
-+#define SBI_ERR_NO_SHMEM            -9
-+
- #endif
--- 
-2.34.1
-
+> $ grep -ri 'error_report.*"error:'
+> migration/block-dirty-bitmap.c:        error_report("Error: block device name is not set");
+> migration/block-dirty-bitmap.c:                error_report("Error: Unknown bitmap alias '%s' on node "
+> migration/block-dirty-bitmap.c:                error_report("Error: unknown dirty bitmap "
+> migration/block-dirty-bitmap.c:        error_report("Error: block device name is not set");
+> target/i386/kvm/kvm.c:        error_report("error: failed to set MSR 0x%" PRIx32 " to 0x%" PRIx64,
+> target/i386/kvm/kvm.c:        error_report("error: failed to get MSR 0x%" PRIx32,
+> util/vhost-user-server.c:        error_report("Error: too big message request: %d, "
+> accel/hvf/hvf-all.c:        error_report("Error: HV_ERROR");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_BUSY");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_BAD_ARGUMENT");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_NO_RESOURCES");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_NO_DEVICE");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_UNSUPPORTED");
+> accel/hvf/hvf-all.c:        error_report("Error: HV_DENIED");
+> monitor/hmp-cmds.c:        error_reportf_err(err, "Error: ");
+> hw/arm/xlnx-zcu102.c:        error_report("ERROR: RAM size 0x%" PRIx64 " above max supported of "
+> hw/block/dataplane/xen-block.c:        error_report("error: unknown operation (%d)", request->req.operation);
+> hw/block/dataplane/xen-block.c:        error_report("error: write req for ro device");
+> hw/block/dataplane/xen-block.c:            error_report("error: nr_segments too big");
+> hw/block/dataplane/xen-block.c:            error_report("error: first > last sector");
+> hw/block/dataplane/xen-block.c:            error_report("error: page crossing");
+> hw/block/dataplane/xen-block.c:        error_report("error: access beyond end of file");
+> hw/rdma/rdma_backend.c:            rdma_error_report("Error: Not a MAD request, skipping");
+> hw/s390x/s390-skeys.c:        error_report("Error: Setting storage keys for pages with unallocated "
+> hw/s390x/s390-skeys.c:        error_report("Error: Getting storage keys for pages with unallocated "
+> hw/usb/bus.c:        error_report("Error: no usb bus to attach usbdevice %s, "
+> gdbstub/gdbstub.c:            error_report("Error: Bad gdb register numbering for '%s', "
+> 
+>  Thomas
+> 
+> 
 
