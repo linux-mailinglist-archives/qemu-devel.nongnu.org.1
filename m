@@ -2,85 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7188F04D
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 21:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFA188EFF8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 21:13:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpa73-0000nH-LQ; Wed, 27 Mar 2024 16:43:09 -0400
+	id 1rpZdE-0002sH-3a; Wed, 27 Mar 2024 16:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1rpZeI-0003Bi-L7; Wed, 27 Mar 2024 16:13:26 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
- id 1rpZeF-0005xR-HH; Wed, 27 Mar 2024 16:13:24 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1dee27acf7aso1694985ad.2; 
- Wed, 27 Mar 2024 13:13:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711570401; x=1712175201; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dq8wco9LxYm2lwgJnPrcuNFswulKN41BsT8tTWCz16o=;
- b=NAySpR+meuVJYq+vGr8eAzVgGeTktLNMtPoPWOb1+DoTdQTt53rJ35lydio3jk0Ss4
- TJacZofHPKySWV2CAD8UR06YS6fhIVeWaG14HsTeyprUbbVPyDrzD7oCfQe12CjFkJyU
- zbBbx0xZMdGD887eQaPsotb4sbiG+T6csfzTdqAN1D7eR0alZy5VCLDXG3WCp4DvJS1W
- GBR07TsLTVL4waUa+S7zRdBO+NpOxLZaoeAGfBPRzkiI9fxWDuV/9Hb6gE4ntALRSm/q
- g48jWzdn33hJRdrQIMqWWdcmgsiViJPhw0wSidqEpejdFDMc8WfsRy99pxdCr8nlzQ9V
- ZYMQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rpZdB-0002rv-5f
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 16:12:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rpZd9-0005mw-DN
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 16:12:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711570333;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=6nBIaDcT7LUUT5QTvJ9cu4LaeUEx2trqi0MtGL39LRI=;
+ b=Vy1LTToJ3ttu0YhS/EYzdo3nRdufow5ZnOmUFnnSVzqEAODjc+Azhni99bUr/GBbIF8y8c
+ 2H1tnEuF34hKbraFHtHObwLYJVGaOCINwCW013hKzGipCTVYu2oCzGBrLUnx7B6U15iow3
+ 0LKVR1XAKqu+X4GkLDwwPQjAR04uBCs=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-4yK28twIPFKXWlKBjBs0mA-1; Wed, 27 Mar 2024 16:12:12 -0400
+X-MC-Unique: 4yK28twIPFKXWlKBjBs0mA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-33ed489edcaso72266f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 13:12:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711570401; x=1712175201;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=dq8wco9LxYm2lwgJnPrcuNFswulKN41BsT8tTWCz16o=;
- b=rcFpNevvGrP/msHhnSBzSbz+sX+4AWAGWCJ4nXVA+R8n9JyDiMZfRpMt05s24YdQIi
- S+sNj1W66RR3eyczjiKLOirkAFf0eAlDiIYeZk/XaoIKEe3Q7CTosrKlUVpYv2hr3HWB
- /XJEha72XJxo2Slc6hgwkMTt+oWn/lroyu5uv7D+oG0H4vLLCAcmqPwll6numSxDFSXY
- SlIstY+9i5mD/rxfQkW6oSiTAD/ijeJT3w26qqXUAz2SiuQYjp5u02T84Pfptx/cli3h
- dHC7yOLF+lRYooAAf10a2QUVHK5yLQ31/oY58KJDJ6iYX8cBBfQS/0RNI5/L4TmGEaTB
- GDfQ==
+ d=1e100.net; s=20230601; t=1711570330; x=1712175130;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=6nBIaDcT7LUUT5QTvJ9cu4LaeUEx2trqi0MtGL39LRI=;
+ b=H8C+uGjQg6UgyRo3tZtQHej2vjEG5bNzvpWdyGo6l7iN0sjQnP6Iqjn/arHeVaJeUq
+ Dlq0IXxbkzb3PqF2GhihJUphLSMRjZgFghoEzmv4I5CRxPo/t8GZIpgvKUuLcvhRC4jr
+ 94irCf3uDQIMmBLV6eji5vXIyo2Y22QNuZrl2/IeNaHsZe3LGfp/jngdMmaYK0Oj3XF3
+ lruSCNCnQlmUYw2ggi+SIj0eD9sEDJGkoJnSIe68F/YsGi6s0yW/Eic691Jdz/UdILJ5
+ oAhxrHf1p5FTQgCOlym2Rby30CuxrkajP0S/fEoRk9DHvn6+oDDY5CHykGJB5YgywUr0
+ Vh4Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWObuEwThn4sFyjOSmZPfnQ3rrF7uAafo5tS1vAl7z1EoxMM/q9UIAsqZeHMzZsS09eARd+CdhzA8979GCIH/5EZVdFsP4=
-X-Gm-Message-State: AOJu0YxkgvxsVZN3CNy4n1IR06CfbmhzYl9H0PFExLuL/CL8QcLu/VlV
- NAnq2IMjlWMDaQIg1yjbiJD20s0wFlve9Nb/6ORH+sB5D9xZaoutd6uzdJrk5kJD4RbG
-X-Google-Smtp-Source: AGHT+IFHjmKzcKotGaW+Xb3J5dmnycZ9iUC8b7zmjMRrpv/Fl73s8Zghq682oUJYFxqdlFtocJxJzg==
-X-Received: by 2002:a17:902:6808:b0:1e0:e2b1:7395 with SMTP id
- h8-20020a170902680800b001e0e2b17395mr761150plk.14.1711570400992; 
- Wed, 27 Mar 2024 13:13:20 -0700 (PDT)
-Received: from localhost.localdomain ([192.228.205.68])
- by smtp.gmail.com with ESMTPSA id
- b10-20020a170902650a00b001e08d5a7638sm9682673plk.99.2024.03.27.13.13.19
+ AJvYcCXSAzz5S7pdEzpsCTh2tPoaCY8YGCuEnSn13H6HxKtC/XXP+nWcjkI3skWEeTaMlaVUxXT8R9lVJ7lNiObLhjDD640PnDM=
+X-Gm-Message-State: AOJu0YzN4f0aZw+292VfUVBeZkW51WcjGuM64uTE0iHN75F3IpX5sg4s
+ sifKmlyRxZMIT8xRPhjNHFDkHZL97dDreg7ItvkY5VQ6xROTS4mAep1jbNHVIMUZ2zXXCc5AKo4
+ Fd+/KIM8aLLTmtEhNWZqzZ1cFjDhWHg7sPxmut5Cs4DzpAm4OIriJ
+X-Received: by 2002:adf:e291:0:b0:341:7864:a6e3 with SMTP id
+ v17-20020adfe291000000b003417864a6e3mr777060wri.2.1711570330554; 
+ Wed, 27 Mar 2024 13:12:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEqOS1B1IYng0wFCMRvLflHI1VywgJiHL9VKUdTX+xl14v3YTdbY3pG7wS/MfQqo6cdyUV+Dw==
+X-Received: by 2002:adf:e291:0:b0:341:7864:a6e3 with SMTP id
+ v17-20020adfe291000000b003417864a6e3mr777039wri.2.1711570329984; 
+ Wed, 27 Mar 2024 13:12:09 -0700 (PDT)
+Received: from redhat.com ([2.52.20.36]) by smtp.gmail.com with ESMTPSA id
+ en9-20020a056000420900b00341b451a31asm9531152wrb.36.2024.03.27.13.12.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Mar 2024 13:13:20 -0700 (PDT)
-From: Amjad Alsharafi <amjadsharafi10@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org (open list:vvfat),
- Amjad Alsharafi <amjadsharafi10@gmail.com>
-Subject: [PATCH 3/3] ffvat: Fix reading files with non-continuous clusters
-Date: Thu, 28 Mar 2024 04:11:27 +0800
-Message-ID: <20240327201231.31046-4-amjadsharafi10@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240327201231.31046-1-amjadsharafi10@gmail.com>
-References: <20240327201231.31046-1-amjadsharafi10@gmail.com>
+ Wed, 27 Mar 2024 13:12:09 -0700 (PDT)
+Date: Wed, 27 Mar 2024 16:11:37 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Alex Williamson <alex.williamson@redhat.com>
+Cc: Vinayak Kale <vkale@nvidia.com>, qemu-devel@nongnu.org,
+ marcel.apfelbaum@gmail.com, avihaih@nvidia.com, acurrid@nvidia.com,
+ cjia@nvidia.com, zhiw@nvidia.com, targupta@nvidia.com, kvm@vger.kernel.org
+Subject: Re: [PATCH v3] vfio/pci: migration: Skip config space check for
+ Vendor Specific Information in VSC during restore/load
+Message-ID: <20240327161108-mutt-send-email-mst@kernel.org>
+References: <20240322064210.1520394-1-vkale@nvidia.com>
+ <20240327113915.19f6256c.alex.williamson@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=amjadsharafi10@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240327113915.19f6256c.alex.williamson@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 27 Mar 2024 16:43:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,63 +100,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When reading with `read_cluster` we get the `mapping` with
-`find_mapping_for_cluster` and then we call `open_file` for this
-mapping.
-The issue appear when its the same file, but a second cluster that is
-not immediately after it, imagine clusters `500 -> 503`, this will give
-us 2 mappings one has the range `500..501` and another `503..504`, both
-point to the same file, but different offsets.
+On Wed, Mar 27, 2024 at 11:39:15AM -0600, Alex Williamson wrote:
+> On Fri, 22 Mar 2024 12:12:10 +0530
+> Vinayak Kale <vkale@nvidia.com> wrote:
+> 
+> > In case of migration, during restore operation, qemu checks config space of the
+> > pci device with the config space in the migration stream captured during save
+> > operation. In case of config space data mismatch, restore operation is failed.
+> > 
+> > config space check is done in function get_pci_config_device(). By default VSC
+> > (vendor-specific-capability) in config space is checked.
+> > 
+> > Due to qemu's config space check for VSC, live migration is broken across NVIDIA
+> > vGPU devices in situation where source and destination host driver is different.
+> > In this situation, Vendor Specific Information in VSC varies on the destination
+> > to ensure vGPU feature capabilities exposed to the guest driver are compatible
+> > with destination host.
+> > 
+> > If a vfio-pci device is migration capable and vfio-pci vendor driver is OK with
+> > volatile Vendor Specific Info in VSC then qemu should exempt config space check
+> > for Vendor Specific Info. It is vendor driver's responsibility to ensure that
+> > VSC is consistent across migration. Here consistency could mean that VSC format
+> > should be same on source and destination, however actual Vendor Specific Info
+> > may not be byte-to-byte identical.
+> > 
+> > This patch skips the check for Vendor Specific Information in VSC for VFIO-PCI
+> > device by clearing pdev->cmask[] offsets. Config space check is still enforced
+> > for 3 byte VSC header. If cmask[] is not set for an offset, then qemu skips
+> > config space check for that offset.
+> > 
+> > Signed-off-by: Vinayak Kale <vkale@nvidia.com>
+> > ---
+> > Version History
+> > v2->v3:
+> >     - Config space check skipped only for Vendor Specific Info in VSC, check is
+> >       still enforced for 3 byte VSC header.
+> >     - Updated commit description with live migration failure scenario.
+> > v1->v2:
+> >     - Limited scope of change to vfio-pci devices instead of all pci devices.
+> > 
+> >  hw/vfio/pci.c | 24 ++++++++++++++++++++++++
+> >  1 file changed, 24 insertions(+)
+> 
+> 
+> Acked-by: Alex Williamson <alex.williamson@redhat.com>
 
-When we don't open the file since the path is the same, we won't assign
-`s->current_mapping` and thus accessing way out of bound of the file.
 
-From our example above, after `open_file` (that didn't open anything) we
-will get the offset into the file with
-`s->cluster_size*(cluster_num-s->current_mapping->begin)`, which will
-give us `0x2000 * (504-500)`, which is out of bound for this mapping and
-will produce some issues.
+A very reasonable way to do it.
 
-Signed-off-by: Amjad Alsharafi <amjadsharafi10@gmail.com>
----
- block/vvfat.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-diff --git a/block/vvfat.c b/block/vvfat.c
-index cb3ab81e29..87165abc26 100644
---- a/block/vvfat.c
-+++ b/block/vvfat.c
-@@ -1360,15 +1360,22 @@ static int open_file(BDRVVVFATState* s,mapping_t* mapping)
- {
-     if(!mapping)
-         return -1;
-+    int new_path = 1;
-     if(!s->current_mapping ||
--            strcmp(s->current_mapping->path,mapping->path)) {
--        /* open file */
--        int fd = qemu_open_old(mapping->path,
-+            s->current_mapping->first_mapping_index!=mapping->first_mapping_index ||
-+            (new_path = strcmp(s->current_mapping->path,mapping->path))) {
-+
-+        if (new_path) {
-+            /* open file */
-+            int fd = qemu_open_old(mapping->path,
-                                O_RDONLY | O_BINARY | O_LARGEFILE);
--        if(fd<0)
--            return -1;
--        vvfat_close_current_file(s);
--        s->current_fd = fd;
-+            if(fd<0)
-+                return -1;
-+            vvfat_close_current_file(s);
-+
-+            s->current_fd = fd;
-+        }
-+        assert(s->current_fd);
-         s->current_mapping = mapping;
-     }
-     return 0;
--- 
-2.44.0
+Merge through the VFIO tree I presume?
+
+
+>  
+> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> > index d7fe06715c..1026cdba18 100644
+> > --- a/hw/vfio/pci.c
+> > +++ b/hw/vfio/pci.c
+> > @@ -2132,6 +2132,27 @@ static void vfio_check_af_flr(VFIOPCIDevice *vdev, uint8_t pos)
+> >      }
+> >  }
+> >  
+> > +static int vfio_add_vendor_specific_cap(VFIOPCIDevice *vdev, int pos,
+> > +                                        uint8_t size, Error **errp)
+> > +{
+> > +    PCIDevice *pdev = &vdev->pdev;
+> > +
+> > +    pos = pci_add_capability(pdev, PCI_CAP_ID_VNDR, pos, size, errp);
+> > +    if (pos < 0) {
+> > +        return pos;
+> > +    }
+> > +
+> > +    /*
+> > +     * Exempt config space check for Vendor Specific Information during restore/load.
+> > +     * Config space check is still enforced for 3 byte VSC header.
+> > +     */
+> > +    if (size > 3) {
+> > +        memset(pdev->cmask + pos + 3, 0, size - 3);
+> > +    }
+> > +
+> > +    return pos;
+> > +}
+> > +
+> >  static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+> >  {
+> >      PCIDevice *pdev = &vdev->pdev;
+> > @@ -2199,6 +2220,9 @@ static int vfio_add_std_cap(VFIOPCIDevice *vdev, uint8_t pos, Error **errp)
+> >          vfio_check_af_flr(vdev, pos);
+> >          ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+> >          break;
+> > +    case PCI_CAP_ID_VNDR:
+> > +        ret = vfio_add_vendor_specific_cap(vdev, pos, size, errp);
+> > +        break;
+> >      default:
+> >          ret = pci_add_capability(pdev, cap_id, pos, size, errp);
+> >          break;
 
 
