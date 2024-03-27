@@ -2,86 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD14F88D4E0
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 04:06:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A0888D4E2
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 04:06:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpJbU-0000oW-P0; Tue, 26 Mar 2024 23:05:28 -0400
+	id 1rpJcM-0001uM-9K; Tue, 26 Mar 2024 23:06:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rpJbS-0000o2-Of
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:05:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1rpJcK-0001uD-Jv
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:20 -0400
+Received: from fout3-smtp.messagingengine.com ([103.168.172.146])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rpJbQ-0004L9-ID
- for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:05:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711508722;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=zolu8aruGceuT1v64cktuJeg+zYoGrZVmgGVqfVmobc=;
- b=VvkbZhywAnDftqHBt3PZyUVKv3nudgSABBBdYrEXttRFW1cbRkeMLsH86R9SgM96tosEFM
- hO32BGOaMaJORo+SZZXYhtRLOjSJtGY/ngWdRN5fdwb/ED1uh4RePHjP8XlDRHCQ7a374R
- 4uNMU0qqIeRthaLbF3HgoxjDG9rXhlg=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-13qGQ6mrOCGdKAUwPC4ofQ-1; Tue, 26 Mar 2024 23:05:17 -0400
-X-MC-Unique: 13qGQ6mrOCGdKAUwPC4ofQ-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1e09fba31afso24963695ad.1
- for <qemu-devel@nongnu.org>; Tue, 26 Mar 2024 20:05:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711508717; x=1712113517;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zolu8aruGceuT1v64cktuJeg+zYoGrZVmgGVqfVmobc=;
- b=QiReBaa8hdPpsHwv7kXazJMffO62FMXWZLLlSf2S/IxdvnLkxzVCzuf4eq3eH06BWY
- 2EnkBN1ztuXoxOSLd28C9KU+JpNB6Nrn6HAEXEQiLYTqEb9jzDcGFBz8yCbOzRHKPUI4
- bqd+wQ35a0ddgrtsD1ApEq47XYSAyQY/FEZRKkgoycYsf4ScS3sO/rNN87leaG3cx8zL
- 4au+JRMXITJd3xgpcoQD9e3yOSy6Nc9HKK+641C03ETBiJp9fJ80rSyjJbn6+ygF6Fj9
- Frop2rtrDqfe57O2SWZrYSRaZYQVAh44BGoqfoMp24zp0VDWvZ6/a/8r0Hu88RSgIAFL
- UrMg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUsro64Z8ANJQpN3cXpMBaaZc1Csm4EDbRJ4KEgCdJsk5lmG20517iYql7HbfT1AnQRQz/lIboL0LeoELbIGtAUtIsQbjw=
-X-Gm-Message-State: AOJu0YzdpKtZWgxaJdik2i9RBtUVjGonr2iMo00PSxgDbonbygtFnR7P
- RtNZDkd1crOmRbAQn3qxZWyISbcgUkH4NRSWx/ASq2M9C91yPJi/RJBF5YB2HAVUAk0CQKyqfaP
- bZEFnA1DMCYvR0xs91/JolHiMBVUcD1mThZpgnB+vWMmlg1KcSFcwaqpj5ZCYjyop6HZixWr6vS
- z58BeiOOqlWpKTmAbznuyVar2FhXY=
-X-Received: by 2002:a17:902:d48c:b0:1e0:e2a4:1b1b with SMTP id
- c12-20020a170902d48c00b001e0e2a41b1bmr85792plg.0.1711508716691; 
- Tue, 26 Mar 2024 20:05:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1YN8Xh46DtOdiq9i/XfV3wqM6jW0QlwA41epKMr1b3AytgpLDmVkF3av48sWRZyl5vN17UWgf8Rl9Vg9jpvI=
-X-Received: by 2002:a17:902:d48c:b0:1e0:e2a4:1b1b with SMTP id
- c12-20020a170902d48c00b001e0e2a41b1bmr85773plg.0.1711508716325; Tue, 26 Mar
- 2024 20:05:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1rpJcJ-0004V0-2b
+ for qemu-devel@nongnu.org; Tue, 26 Mar 2024 23:06:20 -0400
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+ by mailfout.nyi.internal (Postfix) with ESMTP id E409D1380174;
+ Tue, 26 Mar 2024 23:06:17 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute7.internal (MEProxy); Tue, 26 Mar 2024 23:06:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ invisiblethingslab.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:from:from:in-reply-to
+ :message-id:mime-version:reply-to:subject:subject:to:to; s=fm2;
+ t=1711508777; x=1711595177; bh=n+fL4u4pIY1MP5INUg/5Z6ZGGe3TCZWv
+ qrv4TyLguM0=; b=cqsAgg0DYn2BNGcf+Jt3riRiHWi8lHrqd+qFYi7oW9woTz78
+ j01vb8gyY9bAeG3GPuxSlnkMHLAs6wTG5iP+duoVZAbOtWm4nMeENRpfF8iG2ByV
+ FxAfHJEXpmcN1XnSkRSTH+DXW3V9ban1oEgmSDyFAqJFru5hLrOB9v2O2TFv50kK
+ c+TMeC8yUlpowjcdX0H+OedCtlTy6ZxbmP6smSeq4RAUw5XyUndFEuno+WytZUvu
+ fTQEGkP4ChsPa4DU2qO/vwSPdwSPd2zWR097QTrdqWyZmEO5ShRfK96v7ZaPC+TU
+ Nk1xOMLwaPyJohLDV9yQZNVq6fzeIeFp+DE6sg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:content-type:date:date:feedback-id:feedback-id
+ :from:from:in-reply-to:message-id:mime-version:reply-to:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1711508777; x=1711595177; bh=n+fL4u4pIY1MP
+ 5INUg/5Z6ZGGe3TCZWvqrv4TyLguM0=; b=PhnCCH4OJbq7+1/iqkae6QWGccVHx
+ SRpcphB1WsJHHZklPBaxyOHg5vF2YhsTRz1Om2y6/ISZMU5Yng9skC9ue5zwf6TY
+ iVEjblimj5W2AXbkVX79Tdr8RJwd78YOjofkSmr8T7DfUpT9h0TbN6qzj0/7D3cl
+ TPDTs6sjLcMg6euCymgE6w+6Cl4qSYuL90uJySpjSBjK1nDuHtzvw269uB61J+Sr
+ zF3ZhJWWMsZ3kFUCRbRGoiqrREMWIru4DhZujMWjJPv+4ULXRxp1bZjHMR1rK8/W
+ jIxQRWOICIkhE5gaQtLQ1OWiQKK4DiVJDuw+vJGwzucMUXw+bhq+0pqkw==
+X-ME-Sender: <xms:KY0DZspt-qo_vei4Lrp0KOOjjVsCQ-mlYFFtf1B_HLkuVKfZeYv03A>
+ <xme:KY0DZipXcnWu7W1OD1aSmqtJMq3bxkub25IGIXLOJIMxRksrZmLVhXGKe4WM48T_U
+ IoPS1ivgAPzFA>
+X-ME-Received: <xmr:KY0DZhMxF3qrbe55n7QdoaJSCD4VIm-LFmPMQjkMiBkv6Ttpi63mF8Az6oPZl3ouYQGUFxxrDCmGMQ0kxx3GhYiNrANpTnJMwF5vEhgPqmDAmJ5RVRs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledruddugedgheeiucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+ uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffogggtgfesthekre
+ dtredtjeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggt
+ khhiuceomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+ eqnecuggftrfgrthhtvghrnhepleekhfduleetleelleetteevfeefteffkeetteejheel
+ gfegkeelgeehhfdthedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+ hilhhfrhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdr
+ tghomh
+X-ME-Proxy: <xmx:KY0DZj5jXs4Ed4MnNdTJl7eiyCtMdRzfX8zG23aQg3WHTlxarimGGQ>
+ <xmx:KY0DZr65xSip9qCAVetI3BgR3QxWxwiHzOMIRXgAbv_ihTqTKvyN_g>
+ <xmx:KY0DZjhmH4F2rMNtIjgs0st6gzVN_SUQNhlxGxPi3DWd801n9YlX4w>
+ <xmx:KY0DZl5ncm7im6kvgu7aCRl6DvLEoMVfPxU6qiNGwnCCtWNH7P2AnQ>
+ <xmx:KY0DZrEAG6cNt2bGbkQsQGIyL_zRHZrP-c4eWWeTJWeHE2w4GKh32Q>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 Mar 2024 23:06:17 -0400 (EDT)
+From: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+Subject: [PATCH v3 0/2] Changes necessary to work inside Xen device model
+ stubdomain
+Date: Wed, 27 Mar 2024 04:05:13 +0100
+Message-ID: <cover.527f002866de2be7c275c5000b6e5edfeb7e8368.1711506237.git-series.marmarek@invisiblethingslab.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20240327012905.70188-1-lulu@redhat.com>
-In-Reply-To: <20240327012905.70188-1-lulu@redhat.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Wed, 27 Mar 2024 11:05:05 +0800
-Message-ID: <CACGkMEt5fTtwmeb18Yj0xDT_bCjsJQM2nB-u1GJDfFKnEtSSHA@mail.gmail.com>
-Subject: Re: [RFC 0/2] disable the configuration interrupt for the unsupported
- device
-To: Cindy Lu <lulu@redhat.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=103.168.172.146;
+ envelope-from=marmarek@invisiblethingslab.com;
+ helo=fout3-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.088,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,73 +105,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cindy:
+This is minimal set of changes necessary to run Xen device model inside a
+stubdomain and still support PCI passthrough.
 
-On Wed, Mar 27, 2024 at 9:29=E2=80=AFAM Cindy Lu <lulu@redhat.com> wrote:
->
-> we need a crash in Non-standard image, here is the jira for this https://=
-issues.redhat.com/browse/RHEL-28522
-> The root cause of the issue is that an IRQFD was used without initializat=
-ion..
->
-> During the booting process of the Vyatta image, the behavior of the calle=
-d function in qemu is as follows:
->
-> 1. vhost_net_stop() was called, this will call the function
-> virtio_pci_set_guest_notifiers() with assgin=3D false, and
-> virtio_pci_set_guest_notifiers(=EF=BC=89 will release the irqfd for vecto=
-r 0
+Marek Marczykowski-Górecki (2):
+  hw/xen: detect when running inside stubdomain
+  xen: fix stubdom PCI addr
 
-Before vhost_net_stop(), do we know which vector is used by which queue?
+ hw/i386/xen/xen-hvm.c        | 22 +++++++++++-
+ hw/xen/xen-host-pci-device.c | 76 ++++++++++++++++++++++++++++++++++++-
+ hw/xen/xen-host-pci-device.h |  6 +++-
+ include/hw/xen/xen.h         |  1 +-
+ system/globals.c             |  1 +-
+ 5 files changed, 105 insertions(+), 1 deletion(-)
 
->
-> 2. virtio_reset() was called -->set configure vector to VIRTIO_NO_VECTORt
->
-> 3.vhost_net_start() was called (at this time the configure vector is
-> still VIRTIO_NO_VECTOR) and call virtio_pci_set_guest_notifiers() with
-> assgin=3D true, so the irqfd for vector 0 was not "init" during this proc=
-ess
-
-How does the configure vector differ from the virtqueue vector here?
-
->
-> 4. The system continues to boot and msix_fire_vector_notifier() was
-> called unmask the vector 0 and then met the crash
-> [msix_fire_vector_notifier] 112 called vector 0 is_masked 1
-> [msix_fire_vector_notifier] 112 called vector 0 is_masked 0
->
-> The reason for not reproducing in RHEL/fedora guest image is because
-> REHL/Fedora doesn't have the behavior of calling vhost_net_stop and then =
-virtio_reset, and also won't call msix_fire_vector_notifier for vector 0 du=
-ring system boot.
->
-> The reason for not reproducing before configure interrupt support is beca=
-use
-> vector 0 is for configure interrupt,  before the support for configure in=
-terrupts, the notifier process will not handle vector 0.
->
-> For the device Vyatta using, it doesn't support configure interrupts at a=
-ll, So we plan to disable the configure interrupts in unsupported device
-
-Btw, let's tweak the changelog, it's a little bit hard to understand.
-
-Thanks
-
->
-> Signed-off-by: Cindy Lu <lulu@redhat.com>
->
-> Cindy Lu (2):
->   virtio-net: disable the configure interrupt for not support device
->   virtio-pci: check if the configure interrupt enable
->
->  hw/net/virtio-net.c        |  5 ++++-
->  hw/virtio/virtio-pci.c     | 41 +++++++++++++++++++++-----------------
->  hw/virtio/virtio.c         |  1 +
->  include/hw/virtio/virtio.h |  1 +
->  4 files changed, 29 insertions(+), 19 deletions(-)
->
-> --
-> 2.43.0
->
-
+base-commit: 5012e522aca161be5c141596c66e5cc6082538a9
+-- 
+git-series 0.9.1
 
