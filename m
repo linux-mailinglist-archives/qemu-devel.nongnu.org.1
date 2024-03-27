@@ -2,89 +2,153 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F3788DC86
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 12:29:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD4E88DC96
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 12:33:43 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpRSO-0003Yt-Gx; Wed, 27 Mar 2024 07:28:36 -0400
+	id 1rpRWW-0006RD-4e; Wed, 27 Mar 2024 07:32:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpRSD-0003Y0-4F
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:28:27 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rpRSA-000849-Sh
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:28:24 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-29fa10274e5so4398076a91.3
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 04:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1711538901; x=1712143701; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=WI7D1jP8JCGZdfWAXLpf7TQ8yFh17xzr+m0j4nzM4HI=;
- b=kv28BYBsTMVtDg7xKm0Cc1qT8gvqEnG/Qo3hy/FKDlah8TkgsqGsYrrYDRteF39hvT
- N+6Vg5Y+iBGTt1e6uJ5O4puBlG3w9TA/BnY7w/D15QXLfBHLLsFNQNoTfGazEkztFgrL
- VTW8osE5+bIzIAkqJfuljj1eDGVVUEZPjSqxqOfT7Ylo2JSxhaBfO29AFo80q6TDz584
- ZUjEXQiJFCF6F/mP1AqtxgMoHvAco1Bioly5XvTNqW+y1qdQQNZ8XpQ26I8lxgGKjpr0
- 8SwaBCO8bf6b8/cjRWNSPoETMNdaA9QMA31P/phSuse8bFPSA1rxGwSIcqgyjtoByDtU
- 8JWQ==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rpRWT-0006Qw-Ba
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:32:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rpRWR-0000nD-JD
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:32:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711539160;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=bfDbELUBL42nSNspRHmOQfetn1RK91xgMK0dD6SXkvQ=;
+ b=DfPyX5jW9ViBgqX3N9e0xSf1qbdlRwSnshzrKPXJSorjqTFzK4mBA6BrO3hQ/Jm1TZyg+C
+ G7OpR6o1ynpHHJ8X53M480usj5ywyAa7QhBOTC6E6+/zN+Hcfh1A/BN2D0iN+KcZIIUK9O
+ KBGk9iXxZbrtOu1BUrOgKEqKm5Y98zo=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-438-bClprP5XOom1ggsopxiZkw-1; Wed, 27 Mar 2024 07:32:38 -0400
+X-MC-Unique: bClprP5XOom1ggsopxiZkw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d48b182917so67375121fa.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 04:32:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711538901; x=1712143701;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WI7D1jP8JCGZdfWAXLpf7TQ8yFh17xzr+m0j4nzM4HI=;
- b=uNPGUAgQh+vbt21mT9cPJ0ZpG6xTyp8bP25MuxAQaZCw60fJU/JFFLvnusUz95LhVp
- nTKplHd6ZafjXC5ddnhBhvQiMehQZKZmh7AS/iZCBQHg+gIJmeLFrIzIPNqQ9v9ADziV
- 2USwh4QqqIqMbsonH16/kCyy/v0v4elEfvmOPq8vgJDbqn5FHsL0DYHymhsXcBWVKDO2
- nE0bact8EpQYAVb2rqjtt5DjzNkOzsmPoNldYZBY9FFA2mBQq9au7ha4lwj7Scw6nP7q
- 1rTj48Spua1ntm032eh47wnyBKRsjXWiKQcP34OjH6JhhX3iql7Pi2NP3T5xGgAAlT3Q
- JORg==
+ d=1e100.net; s=20230601; t=1711539157; x=1712143957;
+ h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+ :references:cc:to:content-language:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bfDbELUBL42nSNspRHmOQfetn1RK91xgMK0dD6SXkvQ=;
+ b=LSMFiYnLLihv9v73v9CPHSCqMGwS3EKXn7/ds1aVPrtvNf833SD5jjAmG2ddr9/nud
+ I63qTJZg6wU6Uazp7xpPObH0iBJfYaxuJvE43hh//7FfzvngpPD9EJkhuUjT6Pb2iAwH
+ 2ruVXL9TA7/wgUIdlyoV8v9Ocjr3m7lbTi26HD7MYcONz4e7uu6NU8gzZ93tFrjrfNiw
+ VYUT3E5g1PnwYdRyrxqUe8iTy0pAYqGKhfwJ2TBUIXkbeFkKjzGxco/gbK9IqUrUuOBD
+ n5QpaN9K2A2imxQyGA0pIGf9C/paHkrySOZiPqyYDvVBcbOBd84iXzoW58oO/G4YeaID
+ aXSQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWuoYxSnwP3IW6O1+Dn3Nn9mtiCRQ614/TerG22Rp038mHTzBtQ2mRIf7moQ0suPM3sJ5+ieJPudcOyZ1MzfLdYksGbcN0=
-X-Gm-Message-State: AOJu0Yzx2pl8brcDrHzohyuvmcAWrBAeGhT2yYJB88tzgffHmzzPKzNL
- ux+U8BCdsE+RuEJrqP6Gylg8hMupr46FqTSgINd8hys9AepY/MCqoKjHtUTQQd8=
-X-Google-Smtp-Source: AGHT+IHLP5Txjnstgc/G+Ra5esPwe8UjN+6BHIZk1GbE+Y3Zii/pRB8GUI72N/jenkY0yGEYDupXcA==
-X-Received: by 2002:a17:90a:3f8b:b0:29c:5c56:ffea with SMTP id
- m11-20020a17090a3f8b00b0029c5c56ffeamr4057937pjc.6.1711538900939; 
- Wed, 27 Mar 2024 04:28:20 -0700 (PDT)
-Received: from [192.168.68.110] ([177.45.186.241])
+ AJvYcCUVB6NZ3GaQ9xheV5wL/4TljGd95Zrr4FVsvvByUkfQb75ghg/ihBMnkKDVca/ICaljp78H2U4KB8PdV8qSEnbUjwAy7F0=
+X-Gm-Message-State: AOJu0YxGEyLb92Aml93wq1J8uofv3PRIRs+I2z7yvt1xTK2I4DH/Cyno
+ MPIthKDjBUqS60sYwgetK285KBBnj0jWlS+aB5cIcvbte2mr0/OjFiNeAO7rb53qM17PUXM7C3e
+ Fx/e1VSM/UB4xoM9HP4dmlIRNrHBtTyYEAKuoSm0/UqrS14z+RnH3
+X-Received: by 2002:a2e:97d5:0:b0:2d6:8e88:5a6c with SMTP id
+ m21-20020a2e97d5000000b002d68e885a6cmr3420099ljj.49.1711539157259; 
+ Wed, 27 Mar 2024 04:32:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcy9pFQYxo7zLPFzhhASLFj/6Yp2FCGS46rcfJN5mRoJ8hYM6qDJzj6RJaNgAT046bNo8mPA==
+X-Received: by 2002:a2e:97d5:0:b0:2d6:8e88:5a6c with SMTP id
+ m21-20020a2e97d5000000b002d68e885a6cmr3420079ljj.49.1711539156768; 
+ Wed, 27 Mar 2024 04:32:36 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c708:8a00:362b:7e34:a3bc:9ddf?
+ (p200300cbc7088a00362b7e34a3bc9ddf.dip0.t-ipconnect.de.
+ [2003:cb:c708:8a00:362b:7e34:a3bc:9ddf])
  by smtp.gmail.com with ESMTPSA id
- sn12-20020a17090b2e8c00b002a058159ff8sm1409971pjb.8.2024.03.27.04.28.18
+ e9-20020a05600c218900b00414895d014fsm1835725wme.41.2024.03.27.04.32.35
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Mar 2024 04:28:20 -0700 (PDT)
-Message-ID: <067a79d2-229a-40d8-9a88-28535c2e015d@ventanamicro.com>
-Date: Wed, 27 Mar 2024 08:28:17 -0300
+ Wed, 27 Mar 2024 04:32:36 -0700 (PDT)
+Message-ID: <5efe6309-2c7e-404c-9674-2221606b35ac@redhat.com>
+Date: Wed, 27 Mar 2024 12:32:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0 1/3] qtest/virtio-9p-test.c: consolidate create
- dir, file and symlink tests
+Subject: Re: [PATCH-for-9.1 v2 13/21] hw/mem/pc-dimm: Remove legacy_align
+ argument from pc_dimm_pre_plug()
 Content-Language: en-US
-To: Christian Schoenebeck <qemu_oss@crudebyte.com>, Greg Kurz
- <groug@kaod.org>, qemu-devel@nongnu.org
-Cc: thuth@redhat.com, alistair.francis@wdc.com, peter.maydell@linaro.org
-References: <20240326132606.686025-1-dbarboza@ventanamicro.com>
- <190171404.Ysjo4HZYI3@silver>
- <f968c2ac-4056-47bf-af87-70534db82035@ventanamicro.com>
- <8350437.9EvD175kdC@silver>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <8350437.9EvD175kdC@silver>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+ Zhao Liu <zhao1.liu@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-arm@nongnu.org,
+ qemu-ppc@nongnu.org
+References: <20240327095124.73639-1-philmd@linaro.org>
+ <20240327095124.73639-14-philmd@linaro.org>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240327095124.73639-14-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1033.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,114 +164,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 3/27/24 07:14, Christian Schoenebeck wrote:
-> On Wednesday, March 27, 2024 10:33:27 AM CET Daniel Henrique Barboza wrote:
->> On 3/27/24 05:47, Christian Schoenebeck wrote:
->>> On Tuesday, March 26, 2024 6:47:17 PM CET Daniel Henrique Barboza wrote:
->>>> On 3/26/24 14:05, Greg Kurz wrote:
->>>>> On Tue, 26 Mar 2024 10:26:04 -0300
->>>>> Daniel Henrique Barboza <dbarboza@ventanamicro.com> wrote:
->>>>>
->>>>>> The local 9p driver in virtio-9p-test.c its temporary dir right at the
->>>>>> start of qos-test (via virtio_9p_create_local_test_dir()) and only
->>>>>> deletes it after qos-test is finished (via
->>>>>> virtio_9p_remove_local_test_dir()).
->>>>>>
->>>>>> This means that any qos-test machine that ends up running virtio-9p-test local
->>>>>> tests more than once will end up re-using the same temp dir. This is
->>>>>> what's happening in [1] after we introduced the riscv machine nodes: if
->>>>>> we enable slow tests with the '-m slow' flag using qemu-system-riscv64,
->>>>>> this is what happens:
->>>>>>
->>>>>> - a temp dir is created, e.g. qtest-9p-local-WZLDL2;
->>>>>>
->>>>>> - virtio-9p-device tests will run virtio-9p-test successfully;
->>>>>>
->>>>>> - virtio-9p-pci tests will run virtio-9p-test, and fail right at the
->>>>>>      first slow test at fs_create_dir() because the "01" file was already
->>>>>>      created by fs_create_dir() test when running with the virtio-9p-device.
->>>>>>
->>>>>> We can fix it by making every test clean up their changes in the
->>>>>> filesystem after they're done. But we don't need every test either:
->>>>>> what fs_create_file() does is already exercised in fs_unlinkat_dir(),
->>>>>> i.e. a dir is created, verified to be created, and then removed. Fixing
->>>>>> fs_create_file() would turn it into fs_unlikat_dir(), so we don't need
->>>>>> both. The same theme follows every test in virtio-9p-test.c, where the
->>>>>> 'unlikat' variant does the same thing the 'create' does but with some
->>>>>> cleaning in the end.
->>>>>>
->>>>>> Consolide some tests as follows:
->>>>>>
->>>>>> - fs_create_dir() is removed. fs_unlinkat_dir() is renamed to
->>>>>>      fs_create_unlinkat_dir();
->>>>>>
->>>>>> - fs_create_file() is removed. fs_unlinkat_file() is renamed to
->>>>>>      fs_create_unlinkat_file(). The "04" dir it uses is now being removed;
->>>>>>
->>>>>> - fs_symlink_file() is removed. fs_unlinkat_symlink() is renamed to
->>>>>>      fs_create_unlinkat_symlink(). Both "real_file" and the "06" dir it
->>>>>>      creates is now being removed.
->>>>>>
->>>>>
->>>>> The  change looks good functionally but it breaks the legitimate assumption
->>>>> that files "06/*" come from test #6 and so on... I think you should consider
->>>>> renumbering to avoid confusion when debugging logs.
->>>>>
->>>>> Since this will bring more hunks, please split this in enough reviewable
->>>>> patches.
->>>>
->>>> Fair enough. Let me cook a v2. Thanks,
->>>
->>> Wouldn't it be much simpler to just change the name of the temporary
->>> directory, such that it contains the device name as well? Then these tests
->>> runs would run on independent directories and won't interfere with each other
->>> and that wouldn't need much changes I guess.
->>
->> That's true. If we were just trying to fix the issue then I would go with this
->> approach since it's simpler. But given that we're also cutting half the tests while
->> retaining the coverage I think this approach is worth the extra code.
+On 27.03.24 10:51, Philippe Mathieu-Daudé wrote:
+> 'legacy_align' is always NULL, remove it.
 > 
-> Well, I am actually not so keen into all those changes. These tests were
-> intentionally split, and yes with costs of a bit redundant (test case) code.
-> But they were cleanly build up on each other, from fundamental requirements
-> like whether it is possible to create a directory and file ... and then the
-> subsequent tests would become more and more demanding.
-> 
-> That way it was easier to review if somebody reports a test to fail, because
-> you could immediately see whether the preceding fundamental tests succeeded.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
+> Message-Id: <20240305134221.30924-11-philmd@linaro.org>
+> ---
 
-The current test design is flawed. It's based on a premise that doesn't happen, i.e.
-a new temp dir will be created every time the test suit is executed. In reality the
-temp dir is created only once in the constructor of the test, at the start of qos-test
-(tests/qtest/qos-test.c, run_one_test()) and removed only once at the destructor
-at the end of the run.
+I was really confused for a second until I saw that this series is 
+dependent on another one.
 
-It's not possible to add a 'device name' in the created temp dir because we're too early
-in the process, the tests didn't start at that point. So, with the current temp dir design,
-the tests needs to clean themselves up after each run.
+Please make sure to CC people you CC on patches to also CC on the cover 
+letter.
 
-Here's the alternatives I'm willing to go for:
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-- what I just sent in v2;
+-- 
+Cheers,
 
-- add cleanups in all existing tests. We can keep all of them, but the 'create' tests
-will be carbon copies of the 'unlinkat' tests but with different names. Can be done;
+David / dhildenb
 
-- if we really want the tests untouched we can rework how the 'temp dir' is created/deleted.
-The test dir will be created and removed after each test via the 'before' callback. To be
-honest this seems like the best approach we can take, aside from what I did in v2, and
-it's on par with how tests like vhost-user-test.c works.
-
-
-Thanks,
-
-
-Daniel
-
-> 
-> /Christian
-> 
-> 
 
