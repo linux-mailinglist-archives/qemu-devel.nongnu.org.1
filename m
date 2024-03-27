@@ -2,89 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B47C88DA9A
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:55:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 823EB88DAE2
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:01:39 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpPz8-00084v-7d; Wed, 27 Mar 2024 05:54:19 -0400
+	id 1rpQ4T-0007Xv-Bt; Wed, 27 Mar 2024 05:59:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPyX-0007tn-Ls
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:53:47 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPyV-00075f-P7
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:53:41 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4149571d4b6so2256515e9.2
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711533217; x=1712138017; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=zXPzkwsH5pTrUa0Pgjl4p3bDfrtQHwfhdOq2M84tSsU=;
- b=Jio39v6NHSIQ9dt9tROwMbuiHO3RJiOsPuFLM2NVWbplLlCTfIQmf2Ooqpzu4haoA5
- oXZzduslO2ZSEPnvm+/ULIESwYGCo+0vTXFoDc4tnx80ybzR7WKqNRyWRnYDPr0JSj+H
- aOxFaHGC7Gz63sWjmiO6vrOjBaVzqoCv8e2U19RnxkIB6theN2acixNaXtH/sTeWTSof
- gfhayn3CjxpvVLqdjj2k+cYwOhM3kTHIjUVGbFd387It0MuLOBXSg4kyFf8JzeggS62e
- Qq9Puk1KR9+y1tatnpRpSV5iadSOmwk7TK+Z1x84MGTKCs5DQ4//81QYgoxxj8y7j28Y
- oG6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711533217; x=1712138017;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=zXPzkwsH5pTrUa0Pgjl4p3bDfrtQHwfhdOq2M84tSsU=;
- b=NiAdrqq9c9eiLlrNKhfzKKGeGCdSlXKvn60rBgnuLFwjgvceS/Q8DpZ9L4p3wGaPEU
- fSWPSNwY7KH2eeIkQZ3WwRRNnfPEt9bhRwJRNN1ZmIpzBcQo8MEkm9Ik0JDzpZEuNTul
- jgALHK37tHp4mG9pmnIfDR+Tg1UBjEPyc0/TgcwW0JRc1/cxprTbsWp7lq4s2CwEHWoK
- eWRkUi11oftWSn0Ml/OkM4GuZEV1IwB4vAEzgp2OamKBNXaNQvez/n5hqDO8hL3o4X7n
- xBULCPtIaBSzzW9xus4dRQm/TjgCd/P3DqAoEIfIUupS5YNs6PgLHq71AH/QN/ycBkuu
- JnXg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCX01RRcceKuge0R5Qyetb3KHel3mH8pBo6nN0r6OB0IWJFPiJLnm13FVPQl3FNrGHlGj2CwQ9e7tfE/3o5yu1yWp7jkw6Q=
-X-Gm-Message-State: AOJu0Yy9p+k6T6+omtaMckHE11q23Hg9S342tc/p2oy3EiA3MTtEj6+Y
- 6D4qygB/DwUbE1Nm+4LKnAVJjHrOm49tV1Vhyip9UwC7D6uGtHRTtkKXyhikANY=
-X-Google-Smtp-Source: AGHT+IEaOJx/JFOukmJ9mOgUY91CHYo+Y9oLDQ6ewVtaYGLOtTve7MLMmwbQP5ZoFvz7H2+Mz/UuTQ==
-X-Received: by 2002:a05:600c:6d8:b0:413:3110:2d06 with SMTP id
- b24-20020a05600c06d800b0041331102d06mr1873900wmn.16.1711533217730; 
- Wed, 27 Mar 2024 02:53:37 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.205.175])
- by smtp.gmail.com with ESMTPSA id
- fa21-20020a05600c519500b00412a31d2e2asm1604680wmb.32.2024.03.27.02.53.35
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 27 Mar 2024 02:53:37 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
- Zhao Liu <zhao1.liu@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH-for-9.1 v2 21/21] hw/i386/pc: Replace
- PCMachineClass::acpi_data_size by PC_ACPI_DATA_SIZE
-Date: Wed, 27 Mar 2024 10:51:23 +0100
-Message-ID: <20240327095124.73639-22-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240327095124.73639-1-philmd@linaro.org>
-References: <20240327095124.73639-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
+ id 1rpQ4Q-0007XB-9Q; Wed, 27 Mar 2024 05:59:46 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <saif.abrar@linux.vnet.ibm.com>)
+ id 1rpQ4N-0000MC-UZ; Wed, 27 Mar 2024 05:59:46 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42R9wG1D011318; Wed, 27 Mar 2024 09:59:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=jvubQiXmeYKchE0Kuuc7ZbzpHYAVCfELKU0XblzVAmc=;
+ b=Q7czaGyHxyrx5jbMWniaG2FqSsAQ5HHDX2dE7xK3cIenlI2a6/AmECYDr3sZYQO61Vag
+ edaiyG0Wact/1/iBniz0VKdM/JXE1fN3fxZPFpHZZOg5znbcHmW80QgphAiDVaHBnEM8
+ Cs3nUs3v6hYIv4UGJ/9k0UC/LKfylETE65IxdkwEFLlKfAGcMVUoDI961MCviUrzZlp4
+ cJBoWCHVN8lmF1VMeHlBohlI/vMgvPI7yiqeEL8urTiizzKC52MuWqC+xx5XKtJkSBwY
+ hkn1/Q2MxajIsyuDOswpZZnYKIjIH5gOO7IXHea+WnVcHMcvu+H7QFOGBZ7rhPR5oq7e +w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x4h9br052-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Mar 2024 09:59:31 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42R9xU9k012744;
+ Wed, 27 Mar 2024 09:59:30 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x4h9br04w-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Mar 2024 09:59:30 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42R70CgQ012975; Wed, 27 Mar 2024 09:59:29 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x29t0p2e0-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Mar 2024 09:59:29 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42R9xQv059638134
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Mar 2024 09:59:28 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5EE8D5806B;
+ Wed, 27 Mar 2024 09:59:24 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B36658065;
+ Wed, 27 Mar 2024 09:59:20 +0000 (GMT)
+Received: from [9.43.74.143] (unknown [9.43.74.143])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Wed, 27 Mar 2024 09:59:19 +0000 (GMT)
+Message-ID: <4777474d-fc4b-4ef1-8847-b6568bec4937@linux.vnet.ibm.com>
+Date: Wed, 27 Mar 2024 15:29:17 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 10/10] pnv/phb4: Mask off LSI Source-ID based on number of
+ interrupts
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: npiggin@gmail.com, fbarrat@linux.ibm.com, mst@redhat.com,
+ marcel.apfelbaum@gmail.com, cohuck@redhat.com, pbonzini@redhat.com,
+ thuth@redhat.com, lvivier@redhat.com
+References: <20240321100422.5347-1-saif.abrar@linux.vnet.ibm.com>
+ <20240321100422.5347-11-saif.abrar@linux.vnet.ibm.com>
+ <26c7a63d-78fe-4378-b950-0673f0c96114@kaod.org>
+Content-Language: en-US
+From: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+In-Reply-To: <26c7a63d-78fe-4378-b950-0673f0c96114@kaod.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JK15QO-jmYTHBn7UUYAN0iJ2hBxx6xvp
+X-Proofpoint-GUID: BQ4ajzeMjmdfIHbAbRmvrNFaUdau8fT0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-27_05,2024-03-21_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ mlxlogscore=999 lowpriorityscore=0 suspectscore=0 clxscore=1015 mlxscore=0
+ impostorscore=0 bulkscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
+ definitions=main-2403270067
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=saif.abrar@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,92 +118,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::acpi_data_size was only used by the pc-i440fx-2.0
-machine, which got removed. Since it is constant, replace the class
-field by a definition.
+Hello Cedric,
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240305134221.30924-19-philmd@linaro.org>
----
- include/hw/i386/pc.h |  4 ----
- hw/i386/pc.c         | 19 ++++++++++++-------
- 2 files changed, 12 insertions(+), 11 deletions(-)
+>   }
+>   +static void pnv_phb4_fund_A_reset(PnvPHB4 *phb)
+>
+> What is fund_A ?
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 96ccb4583f..0ad971782c 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -74,9 +74,6 @@ typedef struct PCMachineState {
-  *
-  * Compat fields:
-  *
-- * @acpi_data_size: Size of the chunk of memory at the top of RAM
-- *                  for the BIOS ACPI tables and other BIOS
-- *                  datastructures.
-  * @gigabyte_align: Make sure that guest addresses aligned at
-  *                  1Gbyte boundaries get mapped to host
-  *                  addresses aligned at 1Gbyte boundaries. This
-@@ -100,7 +97,6 @@ struct PCMachineClass {
- 
-     /* ACPI compat: */
-     bool has_acpi_build;
--    unsigned acpi_data_size;
-     int pci_root_uid;
- 
-     /* SMBIOS compat: */
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 27e04c52f6..f01a30d3d9 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -256,6 +256,16 @@ GlobalProperty pc_compat_2_4[] = {
- };
- const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
- 
-+/*
-+ * @PC_ACPI_DATA_SIZE:
-+ * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
-+ * and other BIOS datastructures.
-+ *
-+ * BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K
-+ * reported to be used at the moment, 32K should be enough for a while.
-+ */
-+#define PC_ACPI_DATA_SIZE (0x20000 + 0x8000)
-+
- GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
- {
-     GSIState *s;
-@@ -634,8 +644,7 @@ void xen_load_linux(PCMachineState *pcms)
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     rom_set_fw(fw_cfg);
- 
--    x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                   pcmc->pvh_enabled);
-+    x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     for (i = 0; i < nb_option_roms; i++) {
-         assert(!strcmp(option_rom[i].name, "linuxboot.bin") ||
-                !strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
-@@ -969,8 +978,7 @@ void pc_memory_init(PCMachineState *pcms,
-     }
- 
-     if (linux_boot) {
--        x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                       pcmc->pvh_enabled);
-+        x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     }
- 
-     for (i = 0; i < nb_option_roms; i++) {
-@@ -1722,9 +1730,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->gigabyte_align = true;
-     pcmc->has_reserved_memory = true;
-     pcmc->enforce_amd_1tb_hole = true;
--    /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
--     * to be used at the moment, 32K should be enough for a while.  */
--    pcmc->acpi_data_size = 0x20000 + 0x8000;
-     pcmc->pvh_enabled = true;
-     pcmc->kvmclock_create_always = true;
-     x86mc->apic_xrupt_override = true;
--- 
-2.41.0
+I used 'fund_A' as an abbreviation to "Fundamental Register Set A".
 
+Please let know if you suggest another abbreviation to name this method.
+
+
+>> +{
+>> +    phb->regs[PHB_LSI_SOURCE_ID >> 3] = PPC_BITMASK(4, 12);
+>
+> Is this mask the default value for HW ?
+Yes, the spec defines the bits[04:12] of LSI Source ID having reset 
+value: 0x1FF
+
+
+Regards,
+
+Saif
+
+
+On 25-03-2024 07:04 pm, Cédric Le Goater wrote:
+> On 3/21/24 11:04, Saif Abrar wrote:
+>> Add a method to reset the value of LSI Source-ID.
+>> Mask off LSI source-id based on number of interrupts in the big/small 
+>> PHB.
+>
+> Looks ok.
+>
+>
+>> Signed-off-by: Saif Abrar <saif.abrar@linux.vnet.ibm.com>
+>> ---
+>>   hw/pci-host/pnv_phb4.c | 10 ++++++++--
+>>   1 file changed, 8 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/hw/pci-host/pnv_phb4.c b/hw/pci-host/pnv_phb4.c
+>> index f48750ee54..8fbaf6512e 100644
+>> --- a/hw/pci-host/pnv_phb4.c
+>> +++ b/hw/pci-host/pnv_phb4.c
+>> @@ -489,6 +489,7 @@ static void pnv_phb4_update_xsrc(PnvPHB4 *phb)
+>>         lsi_base = GETFIELD(PHB_LSI_SRC_ID, 
+>> phb->regs[PHB_LSI_SOURCE_ID >> 3]);
+>>       lsi_base <<= 3;
+>> +    lsi_base &= (xsrc->nr_irqs - 1);
+>>         /* TODO: handle reset values of PHB_LSI_SRC_ID */
+>>       if (!lsi_base) {
+>> @@ -1966,6 +1967,12 @@ static void pnv_phb4_ro_mask_init(PnvPHB4 *phb)
+>>       /* TODO: Add more RO-masks as regs are implemented in the model */
+>>   }
+>>   +static void pnv_phb4_fund_A_reset(PnvPHB4 *phb)
+>
+> What is fund_A ?
+>
+>> +{
+>> +    phb->regs[PHB_LSI_SOURCE_ID >> 3] = PPC_BITMASK(4, 12);
+>
+> Is this mask the default value for HW ?
+>
+>
+> Thanks,
+>
+> C.
+>
+>
+>> +    pnv_phb4_update_xsrc(phb);
+>> +}
+>> +
+>>   static void pnv_phb4_err_reg_reset(PnvPHB4 *phb)
+>>   {
+>>       STICKY_RST(PHB_ERR_STATUS,       0, PPC_BITMASK(0, 33));
+>> @@ -2023,6 +2030,7 @@ static void pnv_phb4_reset(void *dev)
+>>       pnv_phb4_cfg_core_reset(phb);
+>>       pnv_phb4_pbl_core_reset(phb);
+>>   +    pnv_phb4_fund_A_reset(phb);
+>>       pnv_phb4_err_reg_reset(phb);
+>>       pnv_phb4_pcie_stack_reg_reset(phb);
+>>       pnv_phb4_regb_err_reg_reset(phb);
+>> @@ -2102,8 +2110,6 @@ static void pnv_phb4_realize(DeviceState *dev, 
+>> Error **errp)
+>>           return;
+>>       }
+>>   -    pnv_phb4_update_xsrc(phb);
+>> -
+>>       phb->qirqs = qemu_allocate_irqs(xive_source_set_irq, xsrc, 
+>> xsrc->nr_irqs);
+>>         pnv_phb4_xscom_realize(phb);
+>
 
