@@ -2,88 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A2A88EF84
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 20:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AFF88F04B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 21:44:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpZHF-0007tB-S8; Wed, 27 Mar 2024 15:49:37 -0400
+	id 1rpa73-0000nU-QP; Wed, 27 Mar 2024 16:43:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rpZHE-0007t3-3A
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 15:49:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rpZHC-0000gF-G3
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 15:49:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711568973;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VGP1nbUwob6qnOGuCJrd2CfKx4tjNYD9uguN5Z08Jp4=;
- b=NnhNcClkQ4GdaVReieFyP8FP6v1TSgWSo54m1rRmJHtL72u50cKJPU3ZROYlDvGiFYyrpR
- 3IGRw6PGbvtDfsISc+8DvWyYNRbsSDL418KrDf2CH/2swrqYEIsB1tlT1eU2ewJbpSZPqq
- zKzjAQDrfu6vsAXHznKUXex/i6kaIDA=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-608-cedrxm-TMpqCD1FbcEN1Pg-1; Wed, 27 Mar 2024 15:49:29 -0400
-X-MC-Unique: cedrxm-TMpqCD1FbcEN1Pg-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-430c9bbe925so390441cf.0
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 12:49:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1rpZeC-0003Ap-TI; Wed, 27 Mar 2024 16:13:21 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <amjadsharafi10@gmail.com>)
+ id 1rpZeB-0005wN-Bc; Wed, 27 Mar 2024 16:13:20 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1e0189323b4so1744455ad.1; 
+ Wed, 27 Mar 2024 13:13:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711570395; x=1712175195; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=rYmzSivCuzTkHZHENmWp2t+nxReUdtRGAqmd8Ig6jN8=;
+ b=UB1OoUeyzACQjREOBMoqjCJNTuJ1nWyLPQXY5fLYKEkb4+JwD6/gvtF3dBo5DNGuze
+ Dn8swkzHcraE/zwyFmat3C2ejSnCaPm9xwsodZeN3JaD1aDjTRF5DPMs2bOIl/+lgn/W
+ NkzqPijrBUzRDmwayzuVymzvYQHW8XMlD6peevf9pd8Q8z45naxFTRtccc21Xt70u/Yk
+ 19i4kXK36hwXoSNMaxRVMQDYqe4fuiThpKjhcJzmmcuNAaFRZEe7S4JRSew2JUJZs0ea
+ 7HIazGdAWzNbA6ajLjZDuedjh5ARaAa7B9bQmXInpU/eoRKiaks9oIE10c6y4Te+Pq0K
+ N7ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711568969; x=1712173769;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=VGP1nbUwob6qnOGuCJrd2CfKx4tjNYD9uguN5Z08Jp4=;
- b=hOI2REboQAFvl+CVDvI0YLIJQKpBJ2PQ+NuBVkVV7UZfpw2p2ciDEVAy0DMlRzlH/J
- jbvkYv3yCcPLfVNLFLK2gGXVgQ+RkS4Vuwla1SWbKYm+/yKPlX/sMZdM21QsmG4ySDeg
- J7o62mq+bWSJ1CEdhzqfkyPPQ9Ri4AQvMcVps0186ZA2reHCnzNkZLeIdS/yD5qofBRo
- SV00bf2/mojTDAR9T+JRqDR9NuqZliTC2tyAPId4ad1QzJa5WnUSt9ymvelKEPYXWBf1
- iRLHG5Sh/xLXRIVeovWdDnmP3FoN7RgCFEqan0wD3grBOZNagSDYifoN7MYfCwublr9q
- FuLg==
+ d=1e100.net; s=20230601; t=1711570395; x=1712175195;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rYmzSivCuzTkHZHENmWp2t+nxReUdtRGAqmd8Ig6jN8=;
+ b=QWJKX8A/T3BNmgcR3ZT6sMPjs37SGPPtxGV+fi/zkG14eT+wwpqrehi2olaBXc4gzf
+ kgDP7/CwxmIH2oHblvP5y3oYHMpCYyPcIhsEFtyc3FevIt5Qa230uwz7qq0U6TwOEUc/
+ 6tPso7T0Y4T/XukEDx8scMv8UB8t103mzJPNReAjWMzrFMfhVlkvRPF3dAjIIrf1NOKn
+ QkNmNP/oyOGQao7cKKXVzVHm9YY7pnAyViR/YClPI9DEf2gMops0r/VNj+CPyOb8KvDP
+ /fjGUOOkuV2OciQQvuLqxIauGHAGK2T3gU3/b/Lpd7M6lzbkGMGaOJlsA6yBARuuukiJ
+ IrWg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUOLFVYHEgPTfq2qWyA4a2MEGzbjuIhb5honYo7YSmNwMa6HkEReFKMu6Tn10a+7l0hUDFXx06L8PscfsTJ3IRy8NvwAjU=
-X-Gm-Message-State: AOJu0YwpGJt3+nydeF5dSzKwFAaB3iYnwvIWXCqj4FvIATZYMEQpzkJb
- v22DwHVOh1M84no0iyVdjJexEhCv/rSO7k3LLhvCQ2h+r3C2s39+2lpBYY2/DA2p00VF/mh3Xs8
- i5/vgbp/PKJidP2kQZAFjbq8cupEJHoiRZBOuKy+D9tvFFjPWxLPv
-X-Received: by 2002:a05:622a:181e:b0:42e:f5bd:da4d with SMTP id
- t30-20020a05622a181e00b0042ef5bdda4dmr827628qtc.5.1711568968891; 
- Wed, 27 Mar 2024 12:49:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHWE24vQB+KzYWS3qGHY/Xf82YTMbkCFrXAFGi5bGJkpgwaH703rxEe7vlxumCtT8lYB5+g4g==
-X-Received: by 2002:a05:622a:181e:b0:42e:f5bd:da4d with SMTP id
- t30-20020a05622a181e00b0042ef5bdda4dmr827601qtc.5.1711568968315; 
- Wed, 27 Mar 2024 12:49:28 -0700 (PDT)
-Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- gd14-20020a05622a5c0e00b0042f21fe66f7sm5100999qtb.73.2024.03.27.12.49.27
+ AJvYcCWbLRGIlIN77/BP5Ee2Ag7QPdQ56S7Hyaq3hc+1kS9t/bUoVp606dY5efAtBV4p6WBahMvMo6rtkkyb8yCwFbYhWT/gCzY=
+X-Gm-Message-State: AOJu0Yyd6mK2yuC4hOE0UL6I8faZbJLKJeJ+8cvssalBUrQBMADVKMS1
+ /RQdeYTCN8g8GCUMZh6LtzpIKLZ4bIMh2i/WTVv/Vh0SVSkPkaQXWXD27d4YjKUsM42n
+X-Google-Smtp-Source: AGHT+IG9qlehlrrOnXZdUqW5lGKPoJgG78qbR6EZ7by9pVAHU7d+ps18dUpJJk6F1aOvliq4qOkhig==
+X-Received: by 2002:a17:902:6e08:b0:1e0:c5aa:58d7 with SMTP id
+ u8-20020a1709026e0800b001e0c5aa58d7mr669243plk.11.1711570394968; 
+ Wed, 27 Mar 2024 13:13:14 -0700 (PDT)
+Received: from localhost.localdomain ([192.228.205.68])
+ by smtp.gmail.com with ESMTPSA id
+ b10-20020a170902650a00b001e08d5a7638sm9682673plk.99.2024.03.27.13.13.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Mar 2024 12:49:28 -0700 (PDT)
-Date: Wed, 27 Mar 2024 15:49:26 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Yuan Liu <yuan1.liu@intel.com>
-Cc: farosas@suse.de, qemu-devel@nongnu.org, hao.xiang@bytedance.com,
- bryan.zhang@bytedance.com, nanhai.zou@intel.com
-Subject: Re: [PATCH v5 4/7] migration/multifd: add qpl compression method
-Message-ID: <ZgR4Rp7J9cCtLGGF@x1n>
-References: <20240319164527.1873891-1-yuan1.liu@intel.com>
- <20240319164527.1873891-5-yuan1.liu@intel.com>
+ Wed, 27 Mar 2024 13:13:14 -0700 (PDT)
+From: Amjad Alsharafi <amjadsharafi10@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org (open list:vvfat),
+ Amjad Alsharafi <amjadsharafi10@gmail.com>
+Subject: [PATCH 0/3] vvfat: Fix bugs in writing and reading files
+Date: Thu, 28 Mar 2024 04:11:24 +0800
+Message-ID: <20240327201231.31046-1-amjadsharafi10@gmail.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240319164527.1873891-5-yuan1.liu@intel.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=amjadsharafi10@gmail.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 27 Mar 2024 16:43:07 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,127 +92,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Mar 20, 2024 at 12:45:24AM +0800, Yuan Liu wrote:
-> add the Query Processing Library (QPL) compression method
-> 
-> Although both qpl and zlib support deflate compression, qpl will
-> only use the In-Memory Analytics Accelerator(IAA) for compression
-> and decompression, and IAA is not compatible with the Zlib in
-> migration, so qpl is used as a new compression method for migration.
-> 
-> How to enable qpl compression during migration:
-> migrate_set_parameter multifd-compression qpl
-> 
-> The qpl only supports one compression level, there is no qpl
-> compression level parameter added, users do not need to specify
-> the qpl compression level.
-> 
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> ---
->  hw/core/qdev-properties-system.c |  2 +-
->  migration/meson.build            |  1 +
->  migration/multifd-qpl.c          | 20 ++++++++++++++++++++
->  migration/multifd.h              |  1 +
->  qapi/migration.json              |  7 ++++++-
->  5 files changed, 29 insertions(+), 2 deletions(-)
->  create mode 100644 migration/multifd-qpl.c
-> 
-> diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-> index d79d6f4b53..6ccd7224f6 100644
-> --- a/hw/core/qdev-properties-system.c
-> +++ b/hw/core/qdev-properties-system.c
-> @@ -659,7 +659,7 @@ const PropertyInfo qdev_prop_fdc_drive_type = {
->  const PropertyInfo qdev_prop_multifd_compression = {
->      .name = "MultiFDCompression",
->      .description = "multifd_compression values, "
-> -                   "none/zlib/zstd",
-> +                   "none/zlib/zstd/qpl",
->      .enum_table = &MultiFDCompression_lookup,
->      .get = qdev_propinfo_get_enum,
->      .set = qdev_propinfo_set_enum,
-> diff --git a/migration/meson.build b/migration/meson.build
-> index 1eeb915ff6..cb177de1d2 100644
-> --- a/migration/meson.build
-> +++ b/migration/meson.build
-> @@ -41,6 +41,7 @@ if get_option('live_block_migration').allowed()
->    system_ss.add(files('block.c'))
->  endif
->  system_ss.add(when: zstd, if_true: files('multifd-zstd.c'))
-> +system_ss.add(when: qpl, if_true: files('multifd-qpl.c'))
->  
->  specific_ss.add(when: 'CONFIG_SYSTEM_ONLY',
->                  if_true: files('ram.c',
-> diff --git a/migration/multifd-qpl.c b/migration/multifd-qpl.c
-> new file mode 100644
-> index 0000000000..056a68a060
-> --- /dev/null
-> +++ b/migration/multifd-qpl.c
-> @@ -0,0 +1,20 @@
-> +/*
-> + * Multifd qpl compression accelerator implementation
-> + *
-> + * Copyright (c) 2023 Intel Corporation
-> + *
-> + * Authors:
-> + *  Yuan Liu<yuan1.liu@intel.com>
-> + *
-> + * This work is licensed under the terms of the GNU GPL, version 2 or later.
-> + * See the COPYING file in the top-level directory.
-> + */
-> +#include "qemu/osdep.h"
-> +#include "qemu/module.h"
-> +
-> +static void multifd_qpl_register(void)
-> +{
-> +    /* noop */
-> +}
-> +
-> +migration_init(multifd_qpl_register);
-> diff --git a/migration/multifd.h b/migration/multifd.h
-> index c9d9b09239..5b7d9b15f8 100644
-> --- a/migration/multifd.h
-> +++ b/migration/multifd.h
-> @@ -40,6 +40,7 @@ MultiFDRecvData *multifd_get_recv_data(void);
->  #define MULTIFD_FLAG_NOCOMP (0 << 1)
->  #define MULTIFD_FLAG_ZLIB (1 << 1)
->  #define MULTIFD_FLAG_ZSTD (2 << 1)
-> +#define MULTIFD_FLAG_QPL (4 << 1)
->  
->  /* This value needs to be a multiple of qemu_target_page_size() */
->  #define MULTIFD_PACKET_SIZE (512 * 1024)
-> diff --git a/qapi/migration.json b/qapi/migration.json
-> index aa1b39bce1..dceb35db5b 100644
-> --- a/qapi/migration.json
-> +++ b/qapi/migration.json
-> @@ -629,11 +629,16 @@
->  #
->  # @zstd: use zstd compression method.
->  #
-> +# @qpl: use qpl compression method. Query Processing Library(qpl) is based on
-> +#       the deflate compression algorithm and use the Intel In-Memory Analytics
-> +#       Accelerator(IAA) accelerated compression and decompression. (Since 9.0)
+These patches fix some bugs found when modifying files in vvfat.
 
-s/9.0/9.1/
+First, there was a bug when writing to the second+ cluster of a file, it
+will copy the cluster before it instead.
 
-> +#
->  # Since: 5.0
->  ##
->  { 'enum': 'MultiFDCompression',
->    'data': [ 'none', 'zlib',
-> -            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' } ] }
-> +            { 'name': 'zstd', 'if': 'CONFIG_ZSTD' },
-> +            { 'name': 'qpl', 'if': 'CONFIG_QPL' } ] }
->  
->  ##
->  # @MigMode:
-> -- 
-> 2.39.3
-> 
+Another issue was modifying the clusters of a file and adding new
+clusters, this showed 2 issues:
+- If the new cluster is not immediately after the last cluster, it will
+  cause issues when reading from this file in the future.
+- Generally, the usage of info.file.offset was incorrect, and the
+  system would crash on abort() when the file is modified and a new
+  cluster was added.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-
--- 
-Peter Xu
 
 
