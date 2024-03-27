@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFF188DA9B
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:56:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281D288DA93
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 10:54:34 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpPwr-0002KN-F2; Wed, 27 Mar 2024 05:51:57 -0400
+	id 1rpPwx-0002UY-Gk; Wed, 27 Mar 2024 05:52:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwp-0002J0-40
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:55 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwu-0002S1-Vx
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:52:01 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPwn-0006iz-3P
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:51:54 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a46ba938de0so866503366b.3
- for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:51:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rpPws-0006k9-UF
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 05:52:00 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a466e53f8c0so855144966b.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 02:51:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711533111; x=1712137911; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711533117; x=1712137917; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=5EOMeI+cmJTs9JUVO4oguXe/gFC99HulgRN8N2p2Hs4=;
- b=s9xWxC7SwkhzkeR+FLXbln33qWvBy2o3AzsBu2eaqp8LSr4c8fyIZM2MKYWe8/q1vq
- ruVbHCXLZkTkawWI8cDW8Uu2qNMxHLVBlk3648iSxhEEMfNP9DLKhEBy96vfxJ2yPvhn
- TGnDNyfHIBe8OItOXHWtvHnjZzQktoepul6LRk2lBdNdv5T2Nm4UYBcfvRE0s4c9/Ix3
- ZNDFSJjpISLQxV/aHtbclwoIXzuFMfpE71cVQgRLp5Hume04m0fSaOsqdx50SbNCOfhd
- W6hiLUHfKCcGBYxBBWENsSJyGvPUe74c8y8j7xz+4hY/+ojXjy0WmkCU7jC4REC1sx0y
- nR1Q==
+ bh=I9jqAsBPS2eVGtQ2Oyj66VMF1DnqaRA4xDyhtZgk1fo=;
+ b=zI2UhLxgzCJ9YeSnbr9CixSjGwTOp2i29IiExWxgvEY2uGvHA2RW2JRXeksgHB47F8
+ 71EL8CA1evLbSktSoMf/K2jTViGVdbbymjgVoyHMAus/G/hT0TYhu3KSrKTmWJ8XoWk4
+ 2sO9tuzIs1bvMgCr/ntHBzt/AUGWJ8AMoj0thnMexQw/GcrFdazHOy/YTBqz4B0EdoiR
+ QI7n7Fi2FwNzRmZsysiPZ8bdX4uos+SmCr9+JAvJBUYwVbWxJ4AT4KLC7Cm2W72OOZjd
+ qhjCnR0kilzq9BIc03MoI1eioyYFFXe8wf6k6Isye4nzmlKLbxFc7jMMR8iN5rxef+GW
+ gLjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711533111; x=1712137911;
+ d=1e100.net; s=20230601; t=1711533117; x=1712137917;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5EOMeI+cmJTs9JUVO4oguXe/gFC99HulgRN8N2p2Hs4=;
- b=dggIbrWugJ1woSCn8hG56uXcE3DGrdNUW1hg1oIwOPQIWX9Tbf6tBdp3wBFCn9vNVW
- 9DTSzW0xJarVVCCY5yjYFyw9D2On1VBmMqBqvKxvXgIvyTRQT2LDtuy9cEtISiLMmWCS
- Lpbu1SV5tg22LZTurZ9qCw/b+qxbQCBhNmInzfrrWHRb9vdX2gf68DJUxPUrTROLq+c9
- xZhBRjzRO7iOhHVan+zlozEAc1zCyjqvarmLT/AGR3w3LTqPjaybw4NxWfmZtlG09Tka
- Jt5rVZCUM+3BQSO0ohP4l5h2DkVWFMANx0ZupHpPbzcW18j5qQeEnBtHbiKIaS7fbRzF
- 2INg==
+ bh=I9jqAsBPS2eVGtQ2Oyj66VMF1DnqaRA4xDyhtZgk1fo=;
+ b=JpkjrFkVjzZohRkGNMFBgdddkN1vvDdar+mDVSNqHUUMh+dE8Z4DNYsJ0tMvQILlTX
+ zcDswXFFMhhtOl0IERmYS1dGglbEnv2VUuup3cBzVuSWpMLvZp1zpisyBsut+a8BcGlu
+ VxBq94tkXvv0sw4aF4/wp82YyMJIQEU9DmU3Jn60/c9RZ6gfzae+pLwbMUpx+qDXbIqG
+ LQxLDyFGwA/EeHUgvK9Ogvgg+4HbHmETNmVCOFK9RtWh1Pa/IJ+9M+Y5m7EC8NVCWU60
+ WnocxCJ4e4lU7CTZSbL71KnRRmTUhIdcXENxLsM8VsnD0MQ02aBVnMwUG0jfdui7jcMd
+ 12pg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXdJac2foieABKQ5kOeJmMno2NzbtK0Q5easSjDK+1oZ8Lt/q029Aw5W1KIkCxTF6xcW9L62pdCK4D9EkM98sxKCoTr4WQ=
-X-Gm-Message-State: AOJu0YyvkEmfVtYktmo4rDfjKT09QM82kDZ2Lsb1w4ckEhgtwWWC/3fh
- +/DNcN+apRXEi8FSlja+QlLuI1DofiDrxWkBGKGo0patBusKvXCKjTlm0i9krDw=
-X-Google-Smtp-Source: AGHT+IEdVi4MDq5ukDcPreLr3dc3lhJOZk6KNTNq2c7gCjryr0VDvxNmdzA7VwdCwJnOWswwpHo/Hw==
-X-Received: by 2002:a17:906:4f85:b0:a46:cef3:4aba with SMTP id
- o5-20020a1709064f8500b00a46cef34abamr3515420eju.75.1711533111466; 
- Wed, 27 Mar 2024 02:51:51 -0700 (PDT)
+ AJvYcCUIPN8VIcvOUvOZvB2lyXWB3U1ldiI3ELdQqkXNT5FY6EC0OqwEAgC1eQxyJXqQVKL3ry+895Orz4Vte9yg0o/DdMZkOrI=
+X-Gm-Message-State: AOJu0YzdHkz/GGK8q8/MTQ9DEW4wc/YFaRruWdZ90npgeOPyrb5sOMF2
+ SbohED466VsUMbUVxPvSNzQKmbzNOF0Nkz2lSNIjDLfB3OCOLedlJgtcrHEZA5k=
+X-Google-Smtp-Source: AGHT+IF8zpfC/haXwmyH4jwHIuokYW+no7M7X2nYUpnPSg3hI59l1b7QNpSddC7ZUtIUIgE4Kf3jgQ==
+X-Received: by 2002:a17:906:2a16:b0:a46:5f04:134 with SMTP id
+ j22-20020a1709062a1600b00a465f040134mr571425eje.70.1711533117342; 
+ Wed, 27 Mar 2024 02:51:57 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.205.175])
  by smtp.gmail.com with ESMTPSA id
- y10-20020a1709063daa00b00a4d9e714efbsm2337434ejh.76.2024.03.27.02.51.49
+ q7-20020a1709060f8700b00a46faaf7427sm5204278ejj.121.2024.03.27.02.51.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 27 Mar 2024 02:51:51 -0700 (PDT)
+ Wed, 27 Mar 2024 02:51:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Igor Mammedov <imammedo@redhat.com>
@@ -63,21 +63,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
  Zhao Liu <zhao1.liu@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH-for-9.1 v2 04/21] hw/i386/acpi: Remove
- PCMachineClass::legacy_acpi_table_size
-Date: Wed, 27 Mar 2024 10:51:06 +0100
-Message-ID: <20240327095124.73639-5-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 05/21] hw/acpi/ich9: Remove
+ 'memory-hotplug-support' property
+Date: Wed, 27 Mar 2024 10:51:07 +0100
+Message-ID: <20240327095124.73639-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240327095124.73639-1-philmd@linaro.org>
 References: <20240327095124.73639-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,128 +98,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::legacy_acpi_table_size was only used by the
-pc-i440fx-2.0 machine, which got removed. Remove it and simplify
-acpi_build().
+No external code sets the 'memory-hotplug-support'
+property, remove it.
 
+Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h |  1 -
- hw/i386/acpi-build.c | 62 +++++++++-----------------------------------
- 2 files changed, 12 insertions(+), 51 deletions(-)
+ hw/acpi/ich9.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 67856f54c3..4ad724601a 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -103,7 +103,6 @@ struct PCMachineClass {
-     /* ACPI compat: */
-     bool has_acpi_build;
-     bool rsdp_in_ram;
--    int legacy_acpi_table_size;
-     unsigned acpi_data_size;
-     int pci_root_uid;
+diff --git a/hw/acpi/ich9.c b/hw/acpi/ich9.c
+index 573d032e8e..9b605af21a 100644
+--- a/hw/acpi/ich9.c
++++ b/hw/acpi/ich9.c
+@@ -351,21 +351,6 @@ static void ich9_pm_get_gpe0_blk(Object *obj, Visitor *v, const char *name,
+     visit_type_uint32(v, name, &value, errp);
+ }
  
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 53f804ac16..a6f8203460 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2499,13 +2499,12 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-     X86MachineState *x86ms = X86_MACHINE(machine);
-     DeviceState *iommu = pcms->iommu;
-     GArray *table_offsets;
--    unsigned facs, dsdt, rsdt, fadt;
-+    unsigned facs, dsdt, rsdt;
-     AcpiPmInfo pm;
-     AcpiMiscInfo misc;
-     AcpiMcfgInfo mcfg;
-     Range pci_hole = {}, pci_hole64 = {};
-     uint8_t *u;
--    size_t aml_len = 0;
-     GArray *tables_blob = tables->table_data;
-     AcpiSlicOem slic_oem = { .id = NULL, .table_id = NULL };
-     Object *vmgenid_dev;
-@@ -2551,19 +2550,12 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-     build_dsdt(tables_blob, tables->linker, &pm, &misc,
-                &pci_hole, &pci_hole64, machine);
- 
--    /* Count the size of the DSDT and SSDT, we will need it for legacy
--     * sizing of ACPI tables.
--     */
--    aml_len += tables_blob->len - dsdt;
+-static bool ich9_pm_get_memory_hotplug_support(Object *obj, Error **errp)
+-{
+-    ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
 -
-     /* ACPI tables pointed to by RSDT */
--    fadt = tables_blob->len;
-     acpi_add_table(table_offsets, tables_blob);
-     pm.fadt.facs_tbl_offset = &facs;
-     pm.fadt.dsdt_tbl_offset = &dsdt;
-     pm.fadt.xdsdt_tbl_offset = &dsdt;
-     build_fadt(tables_blob, tables->linker, &pm.fadt, oem_id, oem_table_id);
--    aml_len += tables_blob->len - fadt;
- 
-     acpi_add_table(table_offsets, tables_blob);
-     acpi_build_madt(tables_blob, tables->linker, x86ms,
-@@ -2694,49 +2686,19 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-      * too simple to be enough.  4k turned out to be too small an
-      * alignment very soon, and in fact it is almost impossible to
-      * keep the table size stable for all (max_cpus, max_memory_slots)
--     * combinations.  So the table size is always 64k for pc-i440fx-2.1
--     * and we give an error if the table grows beyond that limit.
--     *
--     * We still have the problem of migrating from "-M pc-i440fx-2.0".  For
--     * that, we exploit the fact that QEMU 2.1 generates _smaller_ tables
--     * than 2.0 and we can always pad the smaller tables with zeros.  We can
--     * then use the exact size of the 2.0 tables.
--     *
--     * All this is for PIIX4, since QEMU 2.0 didn't support Q35 migration.
-+     * combinations.
-      */
--    if (pcmc->legacy_acpi_table_size) {
--        /* Subtracting aml_len gives the size of fixed tables.  Then add the
--         * size of the PIIX4 DSDT/SSDT in QEMU 2.0.
--         */
--        int legacy_aml_len =
--            pcmc->legacy_acpi_table_size +
--            ACPI_BUILD_LEGACY_CPU_AML_SIZE * x86ms->apic_id_limit;
--        int legacy_table_size =
--            ROUND_UP(tables_blob->len - aml_len + legacy_aml_len,
--                     ACPI_BUILD_ALIGN_SIZE);
--        if ((tables_blob->len > legacy_table_size) &&
--            !pcmc->resizable_acpi_blob) {
--            /* Should happen only with PCI bridges and -M pc-i440fx-2.0.  */
--            warn_report("ACPI table size %u exceeds %d bytes,"
--                        " migration may not work",
--                        tables_blob->len, legacy_table_size);
--            error_printf("Try removing CPUs, NUMA nodes, memory slots"
--                         " or PCI bridges.\n");
--        }
--        g_array_set_size(tables_blob, legacy_table_size);
--    } else {
--        /* Make sure we have a buffer in case we need to resize the tables. */
--        if ((tables_blob->len > ACPI_BUILD_TABLE_SIZE / 2) &&
--            !pcmc->resizable_acpi_blob) {
--            /* As of QEMU 2.1, this fires with 160 VCPUs and 255 memory slots.  */
--            warn_report("ACPI table size %u exceeds %d bytes,"
--                        " migration may not work",
--                        tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
--            error_printf("Try removing CPUs, NUMA nodes, memory slots"
--                         " or PCI bridges.\n");
--        }
--        acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
-+    /* Make sure we have a buffer in case we need to resize the tables. */
-+    if ((tables_blob->len > ACPI_BUILD_TABLE_SIZE / 2) &&
-+        !pcmc->resizable_acpi_blob) {
-+        /* As of QEMU 2.1, this fires with 160 VCPUs and 255 memory slots.  */
-+        warn_report("ACPI table size %u exceeds %d bytes,"
-+                    " migration may not work",
-+                    tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
-+        error_printf("Try removing CPUs, NUMA nodes, memory slots"
-+                     " or PCI bridges.\n");
-     }
-+    acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
- 
-     acpi_align_size(tables->linker->cmd_blob, ACPI_BUILD_ALIGN_SIZE);
- 
+-    return s->pm.acpi_memory_hotplug.is_enabled;
+-}
+-
+-static void ich9_pm_set_memory_hotplug_support(Object *obj, bool value,
+-                                               Error **errp)
+-{
+-    ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
+-
+-    s->pm.acpi_memory_hotplug.is_enabled = value;
+-}
+-
+ static bool ich9_pm_get_cpu_hotplug_legacy(Object *obj, Error **errp)
+ {
+     ICH9LPCState *s = ICH9_LPC_DEVICE(obj);
+@@ -445,9 +430,6 @@ void ich9_pm_add_properties(Object *obj, ICH9LPCPMRegs *pm)
+                         NULL, NULL, pm);
+     object_property_add_uint32_ptr(obj, ACPI_PM_PROP_GPE0_BLK_LEN,
+                                    &gpe0_len, OBJ_PROP_FLAG_READ);
+-    object_property_add_bool(obj, "memory-hotplug-support",
+-                             ich9_pm_get_memory_hotplug_support,
+-                             ich9_pm_set_memory_hotplug_support);
+     object_property_add_bool(obj, "cpu-hotplug-legacy",
+                              ich9_pm_get_cpu_hotplug_legacy,
+                              ich9_pm_set_cpu_hotplug_legacy);
 -- 
 2.41.0
 
