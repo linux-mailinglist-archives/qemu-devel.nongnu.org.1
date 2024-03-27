@@ -2,64 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F3788DC5F
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 12:20:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A190888DC85
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 12:29:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpRJq-0007fM-CJ; Wed, 27 Mar 2024 07:19:46 -0400
+	id 1rpRSH-0003Y4-OB; Wed, 27 Mar 2024 07:28:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1rpRJm-0007eT-UF; Wed, 27 Mar 2024 07:19:43 -0400
-Received: from dfw.source.kernel.org ([139.178.84.217])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <conor@kernel.org>)
- id 1rpRJk-0005pk-UZ; Wed, 27 Mar 2024 07:19:42 -0400
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 5237161505;
- Wed, 27 Mar 2024 11:19:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F6AFC43399;
- Wed, 27 Mar 2024 11:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1711538371;
- bh=hpYMPCMSZ0AeL/zkjNKXlOYlaTMtA4U1a/RTpBTUC0g=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=qz1EXefDCf5HKfFlUW1L3wgcSuYcr3HtxTgTfspHaBXI37JDDunyzmJvkat0Ebvjr
- l7U6eaZ2YwAjAHXBNmAgwZWmnQLsl8749oGFm8trhA2Ctyzzrr01FJboHLvOHZImoo
- C+TTHIxh7zxwV4oWNcSoDBpYzVd0xmy7qdgb6kltqO/02Jb3/oK2rYbCKOpFeFPHJI
- rFaAy7iLbOsnMuG47f/L+ZrTcEPz9A+yQx1Ocegle8WUXSZrMDXSFjiKXnlQHupd1e
- ot9DDPnhC9LFUxTady/YmOLP5OGY3WEVfHSDl9VQrg4jmkXmtKM3hSZzzE8EtuNy63
- H0WZd/6g8lAbw==
-Date: Wed, 27 Mar 2024 11:19:26 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Christoph =?iso-8859-1?Q?M=FCllner?= <christoph.muellner@vrull.eu>,
- LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org,
- Alistair.Francis@wdc.com, palmer@dabbelt.com,
- bin.meng@windriver.com, liwei1518@gmail.com,
- dbarboza@ventanamicro.com, qemu-riscv@nongnu.org, bjorn@kernel.org,
- Philipp Tomsich <philipp.tomsich@vrull.eu>
-Subject: Re: [PATCH v2 2/2] target/riscv: Support xtheadmaee for thead-c906
-Message-ID: <20240327-overrun-outcast-795708a30e8c@spud>
-References: <20240204054228.651-1-zhiwei_liu@linux.alibaba.com>
- <20240204054228.651-3-zhiwei_liu@linux.alibaba.com>
- <CAKmqyKNGMjLg+JjJZAp+EsmfaWAyT7XiHZzBXZxeghS0hv6REg@mail.gmail.com>
- <CAEg0e7i6zaEhyfhRFKcTYjkCqRCzJ5eB+0EHUDVA6t-ypL78eg@mail.gmail.com>
- <CAKmqyKPgAQ4JaSNRmFfR-=w3daDkag-ORz0Ckn7r1JNmf8X2oA@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rpRSB-0003Xj-Lz
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:28:23 -0400
+Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1rpRSA-00083z-BX
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 07:28:23 -0400
+Received: by mail-oo1-xc2d.google.com with SMTP id
+ 006d021491bc7-5a1b6800ba8so2330851eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 04:28:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711538900; x=1712143700; darn=nongnu.org;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=LsuNDLeYxEbDL3IfuJp5bJwG4xh3apF4D2vGRP+Zeog=;
+ b=DlHCtNaxY1bdtilfWMBjkpU4JDk/zESY46ibMIfS9ruW+zPhwRxYY4rghIyxaPOOc2
+ 5a5GQLM6o87MUJRwpvM3Ri6ntz2FUy3IjXdmOsyPH/lSFiq7Xp9hobiw+VomYRhkrnCI
+ /NJrvK4oKU74kXRmUl/WMW28RhGN4koTly3b15J8G8DpQuYOMbTgowkKWr3vqs8urvHP
+ SuChuVEcVxqAcz07WjhJGIy5Tbp4utnKMUjHP7HiMY3LSFZEGeObmeDOLD6Qmr+wNvIA
+ LE1JzkUvlakAzZ/ezaSH73epl23RMC8rYsW6rvx9xcLg2gVFy6yH6Xu+MxuRCkLkiPQX
+ slCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711538900; x=1712143700;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LsuNDLeYxEbDL3IfuJp5bJwG4xh3apF4D2vGRP+Zeog=;
+ b=OS9hOG8EdAMgaCcuYiEb5uF7AkVy8nsiNs+ibfbT/6Ey0qFmw10s4wHEpNrNl5vL3n
+ UXSJmsAYq9RrnMzkzRGvhraFByD0JaifcX3w17j47M1DnOCJWM8jNbGcHPzRv07DZ8eW
+ +0JmChMERT2bILwb1JXjGik3uIsroedM/RkiG7HRdACnIClQGoy/5Pqa6yMsM7L6nsKN
+ keIA5Su8BZZ2l8UOETOCZpw6OxxxeKyy1bmAWrOZibi1zkIx8bjlQAjwFeIdoWc1a7c1
+ PheXMdpvGBu7kBH3+nereMayceuDMpf580tbZChUIzZdcKOzIvKVCu11KGB/50WYcRMe
+ jmKg==
+X-Gm-Message-State: AOJu0YylXGUH/J5gKLAWr/su4Z4pGLSP8RjG31V4JKFv8AdTS7dJozPl
+ CAsSkYJt6wxpqZekblAQc/gdxz80JgIbzHWTYK5+zS4LFxG+1xv7hIiJ21N6b8p3GJxqCRK4tJl
+ OrDaJGKZ45Q1YKQXiLVdOM28eMfCZ2vQuIN/Hbw==
+X-Google-Smtp-Source: AGHT+IFkVrnR0hpadMGxmx+UawoiduZeFXWjLwEY8xlHq+Or850NknPb4v9itBGe1n4SxKfHBePaff1r12RBYEqY7sE=
+X-Received: by 2002:a05:6820:151f:b0:5a1:23a6:e4b9 with SMTP id
+ ay31-20020a056820151f00b005a123a6e4b9mr3406349oob.3.1711538900038; Wed, 27
+ Mar 2024 04:28:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="OGEGKiDEjtufCwoP"
-Content-Disposition: inline
-In-Reply-To: <CAKmqyKPgAQ4JaSNRmFfR-=w3daDkag-ORz0Ckn7r1JNmf8X2oA@mail.gmail.com>
-Received-SPF: pass client-ip=139.178.84.217; envelope-from=conor@kernel.org;
- helo=dfw.source.kernel.org
-X-Spam_score_int: -70
-X-Spam_score: -7.1
-X-Spam_bar: -------
-X-Spam_report: (-7.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Wed, 27 Mar 2024 15:28:08 +0400
+Message-ID: <CAJ+F1CLrKKv=Kv_Aagii4B5eATmXoKGz0ka5-m82+Eeq0uknvA@mail.gmail.com>
+Subject: Compiling QEMU with different optimization levels &
+ -Werror=maybe-uninitialized
+To: QEMU <qemu-devel@nongnu.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-oo1-xc2d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -76,115 +84,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
 
---OGEGKiDEjtufCwoP
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Depending -Doptimization=3D<value>, I get different results (GCC 13.2.1)
+- g: produces -Werror=3Dmaybe-uninitialized errors
+- 0: clean build
+- 1: produces -Werror=3Dmaybe-uninitialized errors
+- 2: clean build
+- 3: produces few -Werror=3Dmaybe-uninitialized errors
+- s: produces -Werror=3Dmaybe-uninitialized errors
 
-Christoph linked here on his submission to Linux of a fix for this, so I
-am reviving this to leave a couple comments :)
+They are about 20, probably false-positives, although it's
+understandable the compiler is confused as I am too sometime!
 
-On Thu, Feb 15, 2024 at 02:24:02PM +1000, Alistair Francis wrote:
-> On Mon, Feb 5, 2024 at 6:37=E2=80=AFPM Christoph M=C3=BCllner
-> <christoph.muellner@vrull.eu> wrote:
-> > On Mon, Feb 5, 2024 at 3:42=E2=80=AFAM Alistair Francis <alistair23@gma=
-il.com> wrote:
-> > > On Sun, Feb 4, 2024 at 3:44=E2=80=AFPM LIU Zhiwei <zhiwei_liu@linux.a=
-libaba.com> wrote:
+Is it a known issue? Are we willing to help the compiler in all those
+optimization levels? I can send a patch series for review in this
+case.
 
-> > > >              ppn =3D (pte & (target_ulong)PTE_PPN_MASK) >> PTE_PPN_=
-SHIFT;
-> > >
-> > > Unfortunately we won't be able to take this upstream. This is core
-> > > QEMU RISC-V code that is now being changed against the spec. I think
-> > > adding the CSR is fine, but we can't take this core change.
-> > >
-> > > A fix that works for everyone should be supporting the th_mxstatus
-> > > CSR, but don't support setting the TH_MXSTATUS_MAEE bit. That way
-> > > guests can detect that the bit isn't set and not use the reserved bits
-> > > in the PTE. From my understanding the extra PTE bits are related to
-> > > cache control in the hardware, which we don't need here
-> >
-> > Sounds good! Let me recap the overall plan:
-> > * QEMU does not emulate MAEE, but signals that MAEE is not available
-> > by setting TH_MXSTATUS_MAEE to 0.
->=20
-> Yep!
->=20
-> > * Consequence: The c906 emulation does not enable any page-base memory
-> > attribute mechanism.
->=20
-> Exactly
->=20
-> > * OpenSBI tests the TH_MXSTATUS_MAEE bit (M-mode only) and provides
-> > that information to user-space (e.g. DTB).
->=20
-> To the kernel, but yep!
->=20
-> > * The current Linux errata code will be enhanced to not assume MAEE
-> > for each core with T-Head vendor ID, but also query the MAEE bit and
-> > ensure it is set.
->=20
-> I feel like it should already do that :)
+thanks
 
-It doesn't quite do this right now. It only makes the assumption for
-CPUs where marchid and mvendorid are zero. The c908, and I think Guo Ren
-confirmed it will be the case going forward, sets these to non-zero
-values. We should have always required a dt property be set, rather than
-using m*id, but we can't go back on that for these devices. Going
-forward, if there are more CPUs that want to use this e.g. C908 in MAEE
-mode (it can do svpbmt too) I'm gonna require it is explicitly set in
-DT.
-
-> > * Booting on a QEMU c906 will not enable MAEE, but will still boot.
->=20
-> That's the hope
->=20
-> >
-> > We never had a complete MAEE implementation upstream, because that's no=
-t needed.
-> > But until recently we could mess with reserved bits how we want.
-> > Now that QEMU is more restrictive about reserved bits in the PTEs, we
-> > need to address this in the kernel.
-> >
-> > The downside is, that the kernel now sees a c906 CPU without MAEE and
-> > such a CPU does not exist.
->=20
-> Yeah, that is the downside. But in reality a CPU could exist that
-> doesn't allow seeing MAEE, so I don't think it's that insane.
-
-Aye, and the case of a new CPU disabling it but not setting m*id will be
-a pain.
-
-> > But that's fine, because this does not require extra code to handle thi=
-s case.
-> > Also, the additional check for the MAEE bit in the kernel errata
-> > probing code is likely needed anyway for future T-Head CPUs.
->=20
-> Exactly
-
-I don't really want to have extension detection side channels like this
-in Linux if it can be at all avoided, I'd rather get this information from
-DT or ACPI. The marchid =3D=3D mvendorid =3D=3D 0x0 case has a pretty high =
-chance
-of needing some special handling in the future though, so something
-targeting those cases when there's some demonstrable problem seems fair
-to me.
-
-Cheers,
-Conor.
-
---OGEGKiDEjtufCwoP
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZgQAvgAKCRB4tDGHoIJi
-0g6zAQDr2e63E2zIUHZChzpArReUVEUVK9tj42YPk1PtIt0J7QD9G9GvoPCzBD7v
-vJBNSplSRr02BZA2M485+RYt06EDDgE=
-=uras
------END PGP SIGNATURE-----
-
---OGEGKiDEjtufCwoP--
+--
+Marc-Andr=C3=A9 Lureau
 
