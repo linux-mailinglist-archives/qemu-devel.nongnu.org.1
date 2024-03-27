@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8D388DB31
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A61488DB38
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 11:27:45 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpQUK-0007OK-Fo; Wed, 27 Mar 2024 06:26:32 -0400
+	id 1rpQVF-00085T-VX; Wed, 27 Mar 2024 06:27:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQT7-0007CM-Nt
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:24 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQTX-0007Hg-FH
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQT5-0007DA-6B
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:16 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rpQTF-0007G6-ET
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 06:25:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711535113;
+ s=mimecast20190719; t=1711535120;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jHbVlOjBtqx0P1bEevoloJAWLqcu0B7esEb/byrU0Mk=;
- b=PBLUxeClIiAl+gx9I/AbAOOHe4pjzEzmPUpxcRpiV3UM8SiDCt7cJmZQEd0xwADNJT4F3v
- dOv+J+h5XgIS5GIS4uVucRn+AU6mtVZPl6EKjhIEs5tYXmTNi6PE2dZ0+RUXnVKA9hHvQ/
- O1tbBk3JCi3VQN2lp2YAegNn5DOGvmg=
+ bh=Uw12KDAd02/02RcYn7DRgZEOh0RPAahT25enFZfoEcA=;
+ b=eNxvs4KJZ/Ai6KPQKu8o8CQJ1qgwXbhhAY7O7Mg4Nu1EVwEcjnD5s7CmGNHjcf9CcRj2K8
+ inF71v4PjOVmDSJedKliBgjpCAmOusNbA0Q0G0Rc+qDdclWngU3QLakRteYxldvUl26KGX
+ f66ZAhsFtcQyXcM3/X5WGET16oahMS8=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-tXhGZapNNxqfQZyDkkjQlg-1; Wed, 27 Mar 2024 06:25:10 -0400
-X-MC-Unique: tXhGZapNNxqfQZyDkkjQlg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-642-c9udmccSOYG65dSDh8UC2Q-1; Wed, 27 Mar 2024 06:25:15 -0400
+X-MC-Unique: c9udmccSOYG65dSDh8UC2Q-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B55248164E1;
- Wed, 27 Mar 2024 10:25:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DB048007A1;
+ Wed, 27 Mar 2024 10:25:15 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.194.77])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 597323C54;
- Wed, 27 Mar 2024 10:25:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D3828C017A0;
+ Wed, 27 Mar 2024 10:25:14 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 450CE18009DD; Wed, 27 Mar 2024 11:24:48 +0100 (CET)
+ id 52E8F18009E6; Wed, 27 Mar 2024 11:24:48 +0100 (CET)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Gerd Hoffmann <kraxel@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 1/3] edk2: get version + date from git submodule
-Date: Wed, 27 Mar 2024 11:24:45 +0100
-Message-ID: <20240327102448.61877-2-kraxel@redhat.com>
+Subject: [PATCH v2 2/3] edk2: commit version info
+Date: Wed, 27 Mar 2024 11:24:46 +0100
+Message-ID: <20240327102448.61877-3-kraxel@redhat.com>
 In-Reply-To: <20240327102448.61877-1-kraxel@redhat.com>
 References: <20240327102448.61877-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
@@ -79,52 +79,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Turned out hard-coding version and date in the Makefile wasn't a bright
-idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
-from git instead.  Store in edk2-version, so this can be committed to
-the repo and is present in tarballs too.
-
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 ---
- roms/Makefile | 17 ++++++++++++++---
- 1 file changed, 14 insertions(+), 3 deletions(-)
+ roms/edk2-version | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 roms/edk2-version
 
-diff --git a/roms/Makefile b/roms/Makefile
-index edc234a0e886..783a5cab4f4c 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -52,6 +52,8 @@ SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
- #
- EDK2_EFIROM = edk2/BaseTools/Source/C/bin/EfiRom
- 
-+-include edk2-version
-+
- default help:
- 	@echo "nothing is build by default"
- 	@echo "available build targets:"
-@@ -147,10 +149,19 @@ skiboot:
- 	$(MAKE) -C skiboot CROSS=$(powerpc64_cross_prefix)
- 	cp skiboot/skiboot.lid ../pc-bios/skiboot.lid
- 
--efi:
-+edk2-version: edk2
-+	if test -e edk2/.git; then \
-+		echo "EDK2_STABLE = $$(cd edk2; git describe --tags --match 'edk2-stable*')" > $@; \
-+		echo "EDK2_DATE = $$(cd edk2; git log -1 --pretty='format:%cd' --date='format:%m/%d/%Y')" >> $@; \
-+	else \
-+		touch $@; \
-+	fi
-+
-+efi: edk2-version
- 	$(PYTHON) edk2-build.py --config edk2-build.config \
--		--version-override "edk2-stable202302-for-qemu" \
--		--release-date "03/01/2023"
-+		--version-override "$(EDK2_STABLE)-for-qemu" \
-+		--release-date "$(EDK2_DATE)" \
-+		--silent --no-logs
- 	rm -f ../pc-bios/edk2-*.fd.bz2
- 	bzip2 --verbose ../pc-bios/edk2-*.fd
- 
+diff --git a/roms/edk2-version b/roms/edk2-version
+new file mode 100644
+index 000000000000..1594ed8c4de9
+--- /dev/null
++++ b/roms/edk2-version
+@@ -0,0 +1,2 @@
++EDK2_STABLE = edk2-stable202402
++EDK2_DATE = 02/14/2024
 -- 
 2.44.0
 
