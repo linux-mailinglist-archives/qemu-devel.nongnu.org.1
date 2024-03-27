@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A08488D7FB
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 08:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB8088D862
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Mar 2024 09:08:41 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpO4T-0004l9-3S; Wed, 27 Mar 2024 03:51:41 -0400
+	id 1rpOKI-0008KJ-6B; Wed, 27 Mar 2024 04:08:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpO4Q-0004km-6w
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:51:38 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ id 1rpOKD-0008Jk-1B
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 04:07:58 -0400
+Received: from mgamail.intel.com ([192.198.163.7])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpO4O-0007dz-AA
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 03:51:37 -0400
+ id 1rpOKA-0002US-Sb
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 04:07:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711525897; x=1743061897;
+ t=1711526875; x=1743062875;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=EKilDtQGUE+aPzFGLkujBkQ0LybksSXRCKVPYJ0Bcxk=;
- b=Z1tmaEQtn6/aW+JTiktQVPhX05/LIeO8TIJEZ6b23v30K7Lr15yDXo/H
- hTvrGCFZDSNxTqUALav95VJFgs2B+F+noSf06XKL/JdkiCSZtmG+Ggfdc
- iRsP3dpozjth9F8U+e2D0y7ecqoLHOS+lKzsxwJCEGH8gqn7iNIuHhBry
- RJBEsrH6y0PPXwneLD5q7OHE0gf5JX9a/lITEeZ2v78opWmmSAtBh0w+j
- VgI2y+UNnCbwDd2dFFjMG+J0IjCiGEoUZyln5s9UfLq2nPZFGmgxmOqYn
- LzJHASDzPWdhcduNqW2w5wCFZTwEgaz53AdBmbVVOaGjRSas9+FxaEWpV g==;
-X-CSE-ConnectionGUID: 5slPcaiCTuG/FswDo34/UA==
-X-CSE-MsgGUID: AsM7DEXaThqjzVPySj27pQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="10412269"
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="10412269"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 00:51:33 -0700
+ bh=HKULoIopCsTwAep+hILqmFUGcig9iPX8QBi+Y4ITq+A=;
+ b=i7TxUDUWHHGkb/GwP0oklCJN2OZjlMeC/PxYcHhxgQZA0spav8tjzgXH
+ oUs20sBYU4VlDgMRVS1PhZticYqCAqmywZvsPrAN6VSpGJ3CbFDuBLYFj
+ cFK8G2/tajBdFHg0ijLKdFAOuFSB14deiDMLjNNJaWTImJ/KA2wuDWLWr
+ isWHpqyQ4xLZkp1sFqNdeEimUYv/rJ68q++r14ZZc+bV7wjWkrsRVQHBo
+ kp0nF+23fJkhymvEN0wmZxlV1sSwjmVz0Sx3wSsBemc0+Gl5TN3NOuqPq
+ CvXYSjRF90Mu0kF3MdFm6pnRfhvcp1z3UlsLqvPbBvUPAF5EE+u+RCiC9 Q==;
+X-CSE-ConnectionGUID: rhlPZmJSSRafE/7euawLgg==
+X-CSE-MsgGUID: +uEIEdncRN2c2KyJUtYAfA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11025"; a="32054040"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="32054040"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 01:07:50 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16145106"
+X-IronPort-AV: E=Sophos;i="6.07,158,1708416000"; d="scan'208";a="16204181"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by fmviesa010.fm.intel.com with ESMTP; 27 Mar 2024 00:51:31 -0700
-Date: Wed, 27 Mar 2024 16:05:27 +0800
+ by fmviesa007.fm.intel.com with ESMTP; 27 Mar 2024 01:07:49 -0700
+Date: Wed, 27 Mar 2024 16:21:44 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
  Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: Re: [PATCH for-9.1 v5 2/3] target/i386: add guest-phys-bits cpu
- property
-Message-ID: <ZgPTR0cdSFODG2Z3@intel.com>
+Subject: Re: [PATCH for-9.1 v5 3/3] kvm: add support for guest physical bits
+Message-ID: <ZgPXGIufIBnC9xCj@intel.com>
 References: <20240325141422.1380087-1-pbonzini@redhat.com>
- <20240325141422.1380087-3-pbonzini@redhat.com>
+ <20240325141422.1380087-4-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240325141422.1380087-3-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.15; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240325141422.1380087-4-pbonzini@redhat.com>
+Received-SPF: pass client-ip=192.198.163.7; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,53 +81,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Hi Paolo,
 
-On Mon, Mar 25, 2024 at 03:14:21PM +0100, Paolo Bonzini wrote:
-> Date: Mon, 25 Mar 2024 15:14:21 +0100
+On Mon, Mar 25, 2024 at 03:14:22PM +0100, Paolo Bonzini wrote:
+> Date: Mon, 25 Mar 2024 15:14:22 +0100
 > From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH for-9.1 v5 2/3] target/i386: add guest-phys-bits cpu
->  property
+> Subject: [PATCH for-9.1 v5 3/3] kvm: add support for guest physical bits
 > X-Mailer: git-send-email 2.44.0
-> 
-> From: Gerd Hoffmann <kraxel@redhat.com>
-> 
-> Allows to set guest-phys-bits (cpuid leaf 80000008, eax[23:16])
-> via -cpu $model,guest-phys-bits=$nr.
-> 
-> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-> Message-ID: <20240318155336.156197-3-kraxel@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> v4->v5:
-> - move here all non-KVM parts
-> - add compat property and support for special value "-1" (accelerator
->   defines value)
-> 
->  target/i386/cpu.h |  1 +
->  hw/i386/pc.c      |  4 +++-
->  target/i386/cpu.c | 22 ++++++++++++++++++++++
->  3 files changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 6b057380791..83e47358451 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2026,6 +2026,7 @@ struct ArchCPU {
+
+[snip]
+
+>  static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+>  {
+>      X86CPU *cpu = X86_CPU(cs);
+>      CPUX86State *env = &cpu->env;
+> +    bool ret;
 >  
->      /* Number of physical address bits supported */
->      uint32_t phys_bits;
-> +    uint32_t guest_phys_bits;
+>      /*
+>       * The realize order is important, since x86_cpu_realize() checks if
+> @@ -50,7 +72,17 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+>                                                     MSR_IA32_UCODE_REV);
+>          }
+>      }
+> -    return host_cpu_realizefn(cs, errp);
+> +    ret = host_cpu_realizefn(cs, errp);
+> +    if (!ret) {
+> +        return ret;
+> +    }
+> +
+> +    if ((env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) &&
+> +        cpu->guest_phys_bits == -1) {
+> +        kvm_set_guest_phys_bits(cs);
+> +    }
+> +
+> +    return true;
+>  }
+>
 
-Maybe here it deserves a comment, just as most any other fields...what
-about copying commit message of patch 3 like:
+Just nit, it seems the comment about "realize order" in
+kvm_cpu_realizefn() should also be updated to include this new
+kvm_set_guest_phys_bits().
 
-/*
- * Number of guest physical address bits supported. Usually this is
- * identical to host physical address bits. With NPT or EPT being used
- * this might be restricted to 48 (max 4-level paging address space
- * size) even if the host cpu supports more physical address bits.
- */
+Or, I feel the guest_phys_bits could also be set in host_cpu_realizefn()
+since it also indicates the host support.
 
-Otherwise,
+Anyway, this won't affect this current series. LGTM,
 
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
