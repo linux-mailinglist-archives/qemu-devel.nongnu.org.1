@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7D589041A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F04289040D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:57:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps5u-00016w-IT; Thu, 28 Mar 2024 11:55:11 -0400
+	id 1rps61-0001GL-UT; Thu, 28 Mar 2024 11:55:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5e-00012h-0W
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:54 -0400
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5i-000179-WA
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:01 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5a-0001pX-Rw
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:53 -0400
-Received: by mail-ej1-x631.google.com with SMTP id
- a640c23a62f3a-a44f2d894b7so140389066b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:54:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5h-0001pu-7P
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:58 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-56bc5a3aeb9so1463066a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:54:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641289; x=1712246089; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641295; x=1712246095; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=8xoyjiIw561YlGIaQRdLbxciG2dWfen0yY52crHbWn0=;
- b=hycLjgOdmSGADLUg7E1++Oeuk4Vs98GbuyXacIb1L+UIUXU89jYl56hdG8XsG9rTdf
- NJpM4rDqoJMjOOB0PBNXf39Ol5iH0THFjjO7y7FU5Ft9qqTbbE/UUU5fHjTl9vbdzF0h
- FxhNx3rKGkbahyu9rmI3XO76tyrNoBuoTSbZK/OkUOqDGn+d/syYxFMW6OQgjPp18Zvt
- GRYLUhU4sohr6EW2MnTty+QUFVt8cVLRjZr8yNgjaoTggQriyUhPn6Q5Tf3RjMAbTKbW
- DMbJd2UiyDLbz28AU6LeKJsDuh9BCFHj3jo3FIzF3u05cnQhk5mtGWM0HHvjIQc1G1wG
- OMsQ==
+ bh=djs4Th+kjoxzBDQIObaEvmf5VGdYfcKG9Is4pj2rcJA=;
+ b=Tz2/lS2gh+gTzG10G/+ARrz8nNZ9sW6JENFRXc0N++KHYnRln5cXL4aBMULEkid4ot
+ 9SsC/TDxS2GIdQJNBp6+R42IokgwmoEF6+w0Wih7qfQoNYZucRjKSEepzglhUZG0wvby
+ fiPhzoTWxSGvg1dbkgwRywZyRPuOLjhZDMfJrLVWAqUr2ypGqVX2rluTPp8ai4O3YTtY
+ NYbKhnDfO4BaAkbcMbwFWPUZ9y61JUza0QiuEeUqv2p7mkp7wMVyToZS3PFd+auXxqQC
+ L+gh1xdqGMPawuJKcpsUk8BhIgnf5881sX7ZdbSMylC6eM34gzRI83tFR4zuy7DApruZ
+ ZqeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641289; x=1712246089;
+ d=1e100.net; s=20230601; t=1711641295; x=1712246095;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=8xoyjiIw561YlGIaQRdLbxciG2dWfen0yY52crHbWn0=;
- b=erjzWY+wHzkN3VGCKSLM9DhWFT3qpGepkaroWIT6glo7ZN/e3wpmTp1JkJ4fpzgYD1
- ikbdh7B8zLASFQsK7ytGZUgwIzyqKZ2xJIbeHdT6CPLEVXG2ABl7GVOpwuSQHDeWCoqv
- y4uGDI4z1qqODxWz7L5jyleUwr/bsx8hDfjZrmmRdFmTYpvNG/gTDUpi6BrUOedKMNo5
- rotdDKCe+4tfMISnpeGn6YT2i+Xxve8iWsnfy9teJE1MZQ2NsyKc1DgjM2v3Shm7TTYB
- nyigCvwXj2jxT7YcaalfNu8UcZpyWarKD6sO4Tu26uI8l63tu/3SRLKxcwo1BfxGQnKs
- 5RzA==
-X-Gm-Message-State: AOJu0YzbQV4FkJwyMMxs12xym+ktLfldIwxSgIhGFar9F5HQW+ehHOMb
- 84oNwMQyFlU1K/tFfKlilsf3HOsTecg3N3qNDUMOJO77S2roDxcTbtNAwmTzEMmjt1RSwJplzZy
- Q
-X-Google-Smtp-Source: AGHT+IF5nPNNk6iWv9K9gmp+zF28jumHMVCID22KWO3BYQCYDbLztVinN6sDOrMp2q9Gec/eNpwGrA==
-X-Received: by 2002:a17:906:4892:b0:a47:3664:1b98 with SMTP id
- v18-20020a170906489200b00a4736641b98mr2095599ejq.7.1711641288815; 
- Thu, 28 Mar 2024 08:54:48 -0700 (PDT)
+ bh=djs4Th+kjoxzBDQIObaEvmf5VGdYfcKG9Is4pj2rcJA=;
+ b=Zl9KITNdXXqHdtH58fbChjNtWNR3whSl/fYnskSicw3/XyvlamiBeb7WGCA+ezy/8y
+ Y2Sft6KAWW9LMlUVvPWCtqhWydk1bZU3HV56BmezplJt5ADATK4u85TbnsuiyeO3d6Q8
+ fc/zQpM9rF6zYaKMYG9MJNP2aUb4yt/1CQRwjMDWo3viouszl8glbspvC9LSMq3KCnv3
+ h8kjUFDqDyicvhdjskHnsrLcBH+gL32mnkUbO1g8GBVexe0AQTB5yAwOiX8xl6XWJxuN
+ qI2gudvPyL3+siYxClXEwH4sugQGztmrjOA8ZUOF+eX1jWYswtvFAEdgHk+NLs5suC5q
+ EHkQ==
+X-Gm-Message-State: AOJu0Yx/6GJP04snQJhoZcXBoOSpsy13SmlyEgfWciHF9cqTdVbaNy0H
+ fAboW3Jf3YbME77qZ7spi5t+d+c432tpRFxqvtRO6yUGhSA3wmGxsyEtNam32QHrzNT3uTQp2RE
+ W
+X-Google-Smtp-Source: AGHT+IEDfKWv0Uve3VOXzzLi06hxTo6fvyAau83kjSqRi6VaUabzP1VqK7SGL6r5ov939b9QS2ny5A==
+X-Received: by 2002:a50:d6d8:0:b0:568:ae7:bc0 with SMTP id
+ l24-20020a50d6d8000000b005680ae70bc0mr2299951edj.34.1711641295199; 
+ Thu, 28 Mar 2024 08:54:55 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- f13-20020a1709062c4d00b00a4df82aa6a7sm882455ejh.219.2024.03.28.08.54.47
+ q4-20020aa7d444000000b00568d6a20717sm991251edr.52.2024.03.28.08.54.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:54:48 -0700 (PDT)
+ Thu, 28 Mar 2024 08:54:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 01/29] hw/i386/pc: Declare CPU QOM types using
- DEFINE_TYPES() macro
-Date: Thu, 28 Mar 2024 16:54:09 +0100
-Message-ID: <20240328155439.58719-2-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1 02/29] hw/i386/pc: Extract
+ pc_machine_is_pci_enabled() helper
+Date: Thu, 28 Mar 2024 16:54:10 +0100
+Message-ID: <20240328155439.58719-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::631;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,61 +102,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When multiple QOM types are registered in the same file,
-it is simpler to use the the DEFINE_TYPES() macro. In
-particular because type array declared with such macro
-are easier to review.
-
-In few commits we are going to add more types, so replace
-the type_register_static() to ease further reviews.
+Introduce the pc_machine_is_pci_enabled() helper to be
+able to alter PCMachineClass fields later.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ include/hw/i386/pc.h |  2 ++
+ hw/i386/pc.c         | 11 +++++++++--
+ hw/i386/pc_piix.c    | 11 ++++++-----
+ hw/i386/pc_q35.c     |  2 +-
+ hw/i386/pc_sysfw.c   | 11 ++++-------
+ 5 files changed, 22 insertions(+), 15 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 0ad971782c..6b885424bb 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -129,6 +129,8 @@ struct PCMachineClass {
+ #define TYPE_PC_MACHINE "generic-pc-machine"
+ OBJECT_DECLARE_TYPE(PCMachineState, PCMachineClass, PC_MACHINE)
+ 
++bool pc_machine_is_pci_enabled(PCMachineState *pcms);
++
+ /* ioapic.c */
+ 
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled);
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 0be8f08c47..2c41b08478 100644
+index 2c41b08478..7065f11e97 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -1810,23 +1810,20 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+@@ -814,6 +814,7 @@ void pc_memory_init(PCMachineState *pcms,
+     hwaddr maxphysaddr, maxusedaddr;
+     hwaddr cxl_base, cxl_resv_end = 0;
+     X86CPU *cpu = X86_CPU(first_cpu);
++    bool pci_enabled = pc_machine_is_pci_enabled(pcms);
+ 
+     assert(machine->ram_size == x86ms->below_4g_mem_size +
+                                 x86ms->above_4g_mem_size);
+@@ -949,7 +950,7 @@ void pc_memory_init(PCMachineState *pcms,
+     option_rom_mr = g_malloc(sizeof(*option_rom_mr));
+     memory_region_init_ram(option_rom_mr, NULL, "pc.rom", PC_ROM_SIZE,
+                            &error_fatal);
+-    if (pcmc->pci_enabled) {
++    if (pci_enabled) {
+         memory_region_set_readonly(option_rom_mr, true);
+     }
+     memory_region_add_subregion_overlap(rom_memory,
+@@ -1642,6 +1643,7 @@ static void pc_machine_initfn(Object *obj)
+ {
+     PCMachineState *pcms = PC_MACHINE(obj);
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
++    bool pci_enabled = pc_machine_is_pci_enabled(pcms);
+ 
+ #ifdef CONFIG_VMPORT
+     pcms->vmport = ON_OFF_AUTO_AUTO;
+@@ -1668,7 +1670,7 @@ static void pc_machine_initfn(Object *obj)
+     pcms->pcspk = isa_new(TYPE_PC_SPEAKER);
+     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
+                               OBJECT(pcms->pcspk), "audiodev");
+-    if (pcmc->pci_enabled) {
++    if (pci_enabled) {
+         cxl_machine_init(obj, &pcms->cxl_devices_state);
+     }
+ 
+@@ -1810,6 +1812,11 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
          pc_machine_set_fd_bootchk);
  }
  
--static const TypeInfo pc_machine_info = {
--    .name = TYPE_PC_MACHINE,
--    .parent = TYPE_X86_MACHINE,
--    .abstract = true,
--    .instance_size = sizeof(PCMachineState),
--    .instance_init = pc_machine_initfn,
--    .class_size = sizeof(PCMachineClass),
--    .class_init = pc_machine_class_init,
--    .interfaces = (InterfaceInfo[]) {
--         { TYPE_HOTPLUG_HANDLER },
--         { }
-+static const TypeInfo pc_machine_types[] = {
-+    {
-+        .name           = TYPE_PC_MACHINE,
-+        .parent         = TYPE_X86_MACHINE,
-+        .abstract       = true,
-+        .instance_size  = sizeof(PCMachineState),
-+        .instance_init  = pc_machine_initfn,
-+        .class_size     = sizeof(PCMachineClass),
-+        .class_init     = pc_machine_class_init,
-+        .interfaces     = (InterfaceInfo[]) {
-+             { TYPE_HOTPLUG_HANDLER },
-+             { }
-+        },
-     },
- };
++bool pc_machine_is_pci_enabled(PCMachineState *pcms)
++{
++    return PC_MACHINE_GET_CLASS(pcms)->pci_enabled;
++}
++
+ static const TypeInfo pc_machine_types[] = {
+     {
+         .name           = TYPE_PC_MACHINE,
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index c00d2a66a6..1be1e050c7 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -117,6 +117,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+     MemoryRegion *rom_memory = system_memory;
+     ram_addr_t lowmem;
+     uint64_t hole64_size = 0;
++    bool pci_enabled = pc_machine_is_pci_enabled(pcms);
  
--static void pc_machine_register_types(void)
--{
--    type_register_static(&pc_machine_info);
--}
+     /*
+      * Calculate ram split, for memory below and above 4G.  It's a bit
+@@ -187,7 +188,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+         kvmclock_create(pcmc->kvmclock_create_always);
+     }
+ 
+-    if (pcmc->pci_enabled) {
++    if (pci_enabled) {
+         pci_memory = g_new(MemoryRegion, 1);
+         memory_region_init(pci_memory, NULL, "pci", UINT64_MAX);
+         rom_memory = pci_memory;
+@@ -234,9 +235,9 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+         }
+     }
+ 
+-    gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
++    gsi_state = pc_gsi_create(&x86ms->gsi, pci_enabled);
+ 
+-    if (pcmc->pci_enabled) {
++    if (pci_enabled) {
+         PCIDevice *pci_dev;
+         DeviceState *dev;
+         size_t i;
+@@ -308,7 +309,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+         x86_register_ferr_irq(x86ms->gsi[13]);
+     }
+ 
+-    pc_vga_init(isa_bus, pcmc->pci_enabled ? pcms->pcibus : NULL);
++    pc_vga_init(isa_bus, pci_enabled ? pcms->pcibus : NULL);
+ 
+     assert(pcms->vmport != ON_OFF_AUTO__MAX);
+     if (pcms->vmport == ON_OFF_AUTO_AUTO) {
+@@ -322,7 +323,7 @@ static void pc_init1(MachineState *machine, const char *pci_type)
+     pc_nic_init(pcmc, isa_bus, pcms->pcibus);
+ 
+ #ifdef CONFIG_IDE_ISA
+-    if (!pcmc->pci_enabled) {
++    if (!pci_enabled) {
+         DriveInfo *hd[MAX_IDE_BUS * MAX_IDE_DEVS];
+         int i;
+ 
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index b5922b44af..43ee1e595c 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -145,7 +145,7 @@ static void pc_q35_init(MachineState *machine)
+     bool keep_pci_slot_hpc;
+     uint64_t pci_hole64_size = 0;
+ 
+-    assert(pcmc->pci_enabled);
++    assert(pc_machine_is_pci_enabled(pcms));
+ 
+     /* Check whether RAM fits below 4G (leaving 1/2 GByte for IO memory
+      * and 256 Mbytes for PCI Express Enhanced Configuration Access Mapping
+diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+index 3efabbbab2..862a082b0a 100644
+--- a/hw/i386/pc_sysfw.c
++++ b/hw/i386/pc_sysfw.c
+@@ -93,9 +93,7 @@ static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
+ 
+ void pc_system_flash_create(PCMachineState *pcms)
+ {
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
 -
--type_init(pc_machine_register_types)
-+DEFINE_TYPES(pc_machine_types)
+-    if (pcmc->pci_enabled) {
++    if (pc_machine_is_pci_enabled(pcms)) {
+         pcms->flash[0] = pc_pflash_create(pcms, "system.flash0",
+                                           "pflash0");
+         pcms->flash[1] = pc_pflash_create(pcms, "system.flash1",
+@@ -108,7 +106,7 @@ void pc_system_flash_cleanup_unused(PCMachineState *pcms)
+     char *prop_name;
+     int i;
+ 
+-    assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
++    assert(pc_machine_is_pci_enabled(pcms));
+ 
+     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+         if (!qdev_is_realized(DEVICE(pcms->flash[i]))) {
+@@ -146,7 +144,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
+     void *flash_ptr;
+     int flash_size;
+ 
+-    assert(PC_MACHINE_GET_CLASS(pcms)->pci_enabled);
++    assert(pc_machine_is_pci_enabled(pcms));
+ 
+     for (i = 0; i < ARRAY_SIZE(pcms->flash); i++) {
+         system_flash = pcms->flash[i];
+@@ -201,11 +199,10 @@ static void pc_system_flash_map(PCMachineState *pcms,
+ void pc_system_firmware_init(PCMachineState *pcms,
+                              MemoryRegion *rom_memory)
+ {
+-    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+     int i;
+     BlockBackend *pflash_blk[ARRAY_SIZE(pcms->flash)];
+ 
+-    if (!pcmc->pci_enabled) {
++    if (!pc_machine_is_pci_enabled(pcms)) {
+         x86_bios_rom_init(MACHINE(pcms), "bios.bin", rom_memory, true);
+         return;
+     }
 -- 
 2.41.0
 
