@@ -2,158 +2,147 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A11AC88F7D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 07:25:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5944088F811
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 07:44:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpjBm-0004kZ-N2; Thu, 28 Mar 2024 02:24:38 -0400
+	id 1rpjU2-0000i9-Et; Thu, 28 Mar 2024 02:43:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
- id 1rpjBj-0004kI-W9
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 02:24:36 -0400
-Received: from esa1.fujitsucc.c3s2.iphmx.com ([68.232.152.245])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rpjTq-0000hY-AI
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 02:43:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yaoxt.fnst@fujitsu.com>)
- id 1rpjBh-0001Lr-Ju
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 02:24:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
- t=1711607074; x=1743143074;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=L6Zde+7j5fkueqRV4rKCRNZTEcIuabRaoV4+hFjTi9A=;
- b=S4me5Firg/l8IcSgOk2L1hA2V+KlNGLFIp2g1qRaEsQ6E9KQG35OSlwb
- M7KAqycpaQd+bj+hoBLj0aNx62HzQYUWhI1x7Yuw9Wj2M1jSdCjX9yUWr
- WyK+KdDgczbY9GLTmt/e0Uh159Y2tP9jIuxVlSiPU/6NNzuBLUEo2Yjv/
- L7XZKWZT3QQaV1B6HYkYlB4SARIn5cbAp1s33Ar46DmZXFxAbYAyznlAK
- Zit7MYKvec9RpKtPj9NA16HsLw7akfVDDVstoDVTifmBOhSgTPIakXEkA
- SO4iD5r+S8LhDLWrXRdYyZvpt+QG4QKioi3H2mrik3SqMZhcnqjEWc1n8 w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="26357739"
-X-IronPort-AV: E=Sophos;i="6.07,161,1708354800"; d="scan'208";a="26357739"
-Received: from mail-japanwestazlp17010000.outbound.protection.outlook.com
- (HELO OS0P286CU010.outbound.protection.outlook.com) ([40.93.130.0])
- by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Mar 2024 15:24:28 +0900
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OVoG3h2iSUuMEly1rWkJdZGYBAQPgPiPucYzulNyvs6bnnLwdc50vp7+/0lAZH9mYx9UiK+nHWUa3yIDfuk9zjHrH3/Kb1qkih182ZSu8ov9Nyc53x/t2cqt05VoFLKZKF050OjdLNllFQVcxMnIgxRDQjzdnx8ZSXyMKGvh0v88XSZVddkqNMqE3hB+UGITNULbOgLS53nPuFKmOqPV7XDCvPkgj3/BQ0ki2pAcTz1wirbMbFucGbGNnOEodvfxMYpsW2yM8177MHEfvX4lJxYs4YD9rltTE3jSVgOkzrrW6wsctvzaplbemy/ktcrQ3HULb+ALYdFgXfl7i4BHCg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uuVdIPds0IkU8I1/mKTbxss+8+r2KAVPMObMk19I17o=;
- b=KYhdAfVzgVO8jFw0OFtJOHSMcjUyn2M8k4XL5lo0aoRHXwzh60RW1fxOkjTfOh+wCwVPvMiQaFt0an3tr4pWyTUwL6qp33g6fWqbnZqsMsQqeuM8dW0rkjfsOyVpXtjO/NRfErugyp7Bx6T8YY+SyCgI4oElBuK/H5xS8b8iRPneOrioyQR+O+dyhgckMq8jLSOuRHmT0uxMzFVJYLih6oliv9qk47zUHdwQDj+a+lBc3GDQ9AwFzV4bt7G405ax0S0k66YYAeAOwW/SlnojcpcHBagZdH4kqyTOMDPsZYgm/4oFmw5mhuAG0Bh+PzOraCZif3heQqDKEqWkW89HEg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
- dkim=pass header.d=fujitsu.com; arc=none
-Received: from OSZPR01MB6453.jpnprd01.prod.outlook.com (2603:1096:604:ed::14)
- by TY1PR01MB10787.jpnprd01.prod.outlook.com (2603:1096:400:325::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
- 2024 06:24:24 +0000
-Received: from OSZPR01MB6453.jpnprd01.prod.outlook.com
- ([fe80::3a1c:a3fe:854f:2e1d]) by OSZPR01MB6453.jpnprd01.prod.outlook.com
- ([fe80::3a1c:a3fe:854f:2e1d%5]) with mapi id 15.20.7409.031; Thu, 28 Mar 2024
- 06:24:24 +0000
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: "fan.ni@samsung.com" <fan.ni@samsung.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "Quanquan Cao (Fujitsu)" <caoqq@fujitsu.com>
-Subject: RE: [PATCH] mem/cxl_type3: fix hpa to dpa logic
-Thread-Topic: [PATCH] mem/cxl_type3: fix hpa to dpa logic
-Thread-Index: AQHaf+jv8Of5xYfdY0OlS5LMTSu6ObFLlWsAgAEVArA=
-Date: Thu, 28 Mar 2024 06:24:24 +0000
-Message-ID: <OSZPR01MB64531A2AA07AF4C7C8C800F68D3B2@OSZPR01MB6453.jpnprd01.prod.outlook.com>
-References: <20240327014653.26623-1-yaoxt.fnst@fujitsu.com>
- <20240327132814.000057c7@Huawei.com>
-In-Reply-To: <20240327132814.000057c7@Huawei.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ActionId=f63a06ab-6f7e-40c3-9f75-7325dbeade0a;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_ContentBits=0;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Enabled=true;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Method=Privileged;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_Name=FUJITSU-PUBLIC?;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SetDate=2024-03-28T05:59:47Z;
- MSIP_Label_1e92ef73-0ad1-40c5-ad55-46de3396802f_SiteId=a19f121d-81e1-4858-a9d8-736e267fd4c7;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=fujitsu.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OSZPR01MB6453:EE_|TY1PR01MB10787:EE_
-x-ms-office365-filtering-correlation-id: 03f91128-923e-4d99-145a-08dc4eefb695
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: QdWeZ5KT2lHtCFBMz8NB6PhBHhN/GJzMM9gsGIXNmiSK2qSrvTypZwSQMWBteQmCCY6CZQLRVL2+/D0TFtftiL8w2cyIMnINIvn4Er/tKVYZwdU4ZrfZqQ4WnB0kRPttKwyGYkb5V6cCj6bB3zoTaPU00oq/MnNIAY5fzgEKWlujgd2flv8XrCMj7YShl+arXGZPy9pVlrMA5+LL5iiQjJingVzllZsqyzMqWZFjYDnFFXow84wIoXOW7mkJt9/lm3jzrhQ/00faFFDLL/bx/MLKf60m5dqtqYzziyvp1UYSw1+zNKdxozNAmw/hafRSORkWU3v0tP8ALYs5jPPHHh8U+umTAOkSdODqsxqpEwDSlLa4/y90Sw6KFIIzfEVc+bjxvSDP0DCYlaDHkkN4pzlganu0vi5+qBP+3LiqaUdeRMV755Mv9DWX9csJMf7X/u4LW5A07XSTD8GQG+y7UaEv0n5YN+4OZqwjBO2cXGWLN+wbfYDC+lUBVD0mFIqrCepSOJOoN87bFPVw1LcP3QylJ+5r/5D3F2c7FWxHMhdKXqKUrVL/Mbx21a5cOQh9WVnI/WlrGEQ4mzask24PMS0xQTmvOBizjX3Uddy0DnDdBcRIMyVS9cqTcEtrdx7Gxr2IyfpCx53hDIBGZEsoR2CtqWD7PZvtdeYgoDmSCa6yHQIMF6m34yrKlTDHZnha
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-cn; SCL:1;
- SRV:; IPV:NLI; SFV:NSPM; H:OSZPR01MB6453.jpnprd01.prod.outlook.com; PTR:;
- CAT:NONE; SFS:(13230031)(366007)(376005)(1800799015)(38070700009)(1580799018);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-2022-jp?B?NmNCdkhWdk5kaFNvM3lVdWZPUGdEY2NLa2luLy9XWGNocXNBL0NVK3NG?=
- =?iso-2022-jp?B?dUFHS1d1bVkxUktRQ0lPT0E5Z09xbkh2NjhmRTBZOXVVT2RrRVNHbWs1?=
- =?iso-2022-jp?B?TmpvMnVaaHh5KzlOVS9YY09WdVZLNUlwN09jSU5FRGpnLzN5UllDcG81?=
- =?iso-2022-jp?B?U1RwWDNJZ0dGdDV0d0dWaUpHU3dZSXBxbENoSGJheGNxeEQxSDlwYkVS?=
- =?iso-2022-jp?B?ZkhicytXSTNydG5BV1VwVjlYR01EbVFIUlZucVlvRnhBWHA3ODRBUFZ0?=
- =?iso-2022-jp?B?N3VRMkJqK2xxeWN5OXV2aXUzSHhkODFLMGxsc05aUko5NVhGem50Z2dW?=
- =?iso-2022-jp?B?NFRqQ3lXbXI1S2V0WkJJRzRwOEYrS0RYcjhLcWtsRTYyOWJyU29nNi9s?=
- =?iso-2022-jp?B?NzZILy9aMTViRGtFSkRTOWxleHJNVFNsWjRIWUxMUGhnbGppaVZPaTNn?=
- =?iso-2022-jp?B?U3R6OUt5NnFGbzVlenp6WUl0cS9wb3R1ZENPVzVkTW5OWjVrNEs0cnph?=
- =?iso-2022-jp?B?a3pjRDlPNWdyMExRdG80ajF2YUlTQ3hYQ0dScGorc2wwcEovempYVXk2?=
- =?iso-2022-jp?B?RHhxZlZkNXBsQ2QvVnBsay9IaGM5U0VPQUJyc0drVHBOa3dvS1JPL2g4?=
- =?iso-2022-jp?B?VXdObVY0NEhXUDhTT2NtVzJQUlp5RVBrd2RvaEFXamJwUFRKSE5iaG53?=
- =?iso-2022-jp?B?MDhPY1Y4a016V29wRTlHcW1DNm5KOHROUUdpZGkxeUh4b0k4VDQwL2xC?=
- =?iso-2022-jp?B?MzE2WEhOUU5pc3BoWk02a3JQRlpZcWp4Nlk5bWN3Z2NRRnIrTDk0WkJG?=
- =?iso-2022-jp?B?UG9tRVZONnZwMDQ0dVlmODJVdjZXenlUZWRjcGNTQlJJUjZWWEZlUXda?=
- =?iso-2022-jp?B?WUhIS2JUa1AydXNJOHJrT0lTZ1EwQjlGTEdhWGk2YWNVejRPTXRsMExj?=
- =?iso-2022-jp?B?QTFkK3ZiYm5xUlJFQW9EY2ErWnVLZkdObS9QZnhHalNIbDhmZkxlMU1W?=
- =?iso-2022-jp?B?RGZ4SUV3a3lYRXYrcncyUXFBNlk1Mno2TUtpRFlURVU1NFN6NFBWMkF6?=
- =?iso-2022-jp?B?TnUrUS9yQTdrQStyRDM4WHZoS25JTHVwQ1lRZ0V3WHBJZEhqZmM5K0Ny?=
- =?iso-2022-jp?B?Rk5ZKzNBQTNScWZNcmpYVGxoZFlGRkk1Unk0eDBLUnBTSS9tNzRua3dN?=
- =?iso-2022-jp?B?bHVrM0Zsb2VJMWJWL3FSV3orelJBMFAweGJaTlAzeno1ZDk1eThMNVNM?=
- =?iso-2022-jp?B?TDVyOUppeXRQeUVlc29LTEhmQVpDVkg3a0NHZ1ZHYVJzOWxzY045eU9F?=
- =?iso-2022-jp?B?THM2S2RVUjFnb2l1N0dFRUprSU1WYmlLcERtUlhOUUtJQk0zd0pndlQx?=
- =?iso-2022-jp?B?dmxCaXNYMnc3UUNablVZd2RXaDBCY081Ui9uMVBHUkpSTVQ0WTFEcTdO?=
- =?iso-2022-jp?B?L24xeUVoRE5JcEFVNXo3azBwZUdPNUZIYlBid2krNmNQUnJ4c2VqMTNL?=
- =?iso-2022-jp?B?d1NMNWtCdENCdk9YUGUvQTRjcUZKYWZkQ1hBeTh4ZStkRGtDZzhhTDhn?=
- =?iso-2022-jp?B?Y3Z4MEIxRGhBcDVhWW51UHl2ZVVWVnUramFqY2JsYlRnY01xZzBZa3E2?=
- =?iso-2022-jp?B?Znhha2xHRjRpQmNQLytVcExja3RRVEhCb1ZoUmlOWitwWW1jS0Q3QzVY?=
- =?iso-2022-jp?B?WkV1L0d4WndTUXBnK21Vb3dvUEd0bUcxaFNhWlYveDF3NjhGd0VWL00z?=
- =?iso-2022-jp?B?ZXJ4SEFSV3NQV1gwN1ZTOWtqemFMaUZIZUFCbGJ6VUZkQkp6ZFJRQlBQ?=
- =?iso-2022-jp?B?SXRERkZUU0VmSFJqaWtFVnBJcGlKLzFxbDhkTXVqaWwzcXBJT1dTc3JF?=
- =?iso-2022-jp?B?K2RKOU4yTzhLd3ZlL1BKd3YzR1kyMlZnaW9Zbm9yREhyWnVWY1ZrWUdP?=
- =?iso-2022-jp?B?SHhydUpIR3BmSkY5cFhncWFlRUw5bnBkWjcwaDlWTUo5TWwrZ1JSYjVE?=
- =?iso-2022-jp?B?SUlCZ0QvcWZHK3hQN2NSNzQxOGVOQWpNNStCajNYMk53Z0JMSEgxakFN?=
- =?iso-2022-jp?B?KzJvdXBsR1d0bnZFVW9xejMweHNDcHBjQ1FMTmhTQ3Z1a1FlY0Mxckhz?=
- =?iso-2022-jp?B?WTY3WEQ4dzBPNlByUHR5aTErczQ1YWhaRjdhMTg4QXZjMGtLcGdoUE04?=
- =?iso-2022-jp?B?THJGb2NvQlE1Q1Y0R0JOTUdPTVVkemEvZzdIOHFJZ3FQbHJWdzEvQXc3?=
- =?iso-2022-jp?B?VE5rVTBtOG93Q2wzOG5ZVnJXakhLVGg1bU1DeFk0L3lqWWh1Zjd3anNF?=
- =?iso-2022-jp?B?UElaWg==?=
-Content-Type: text/plain; charset="iso-2022-jp"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rpjTn-0004eF-SI
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 02:43:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711608194;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=5qmtW71V42Y5BVkepxOwObkaJK5JGfOw2TplHUjcLfY=;
+ b=fonR4yJfuENDlNzzuMf7X4NtnEYLQF7VfPqqv7SdylBB57B7uvhaWQNJIUtiEm2l/EWFP+
+ oYIbgYNvPuYGiXO46nK8ekEvSxNVqXZLZlcSBpfM3v8/4IQYMLdPsQvnSWJoZCqrUrrzCG
+ 7UHvGIOh6yiVuWQXNi17PBQAPdFmAsY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-41-DRWnQHnANmSJGN7-kMvvHg-1; Thu, 28 Mar 2024 02:43:10 -0400
+X-MC-Unique: DRWnQHnANmSJGN7-kMvvHg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-33ed22e92c2so357430f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Mar 2024 23:43:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711608189; x=1712212989;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5qmtW71V42Y5BVkepxOwObkaJK5JGfOw2TplHUjcLfY=;
+ b=NKXLrfolwlobAabv3qGO8KobaCcRUu2DEmHb+byzfWV8pH1lc8vUvfj4snROLYrxjl
+ bG4p0j9ogyDNOf46wk/ZhnF70I0iQFuWn5VaRdrVPv5MWGje+vw/Nsq10d5LLH1X9AIJ
+ 8bIQRW+iFA+1HDKR2M6q+PgS7UAkSeYjsoLgjmxDBrnSUbSiYKuAvUvqyzCcTUC3cl7/
+ R0H6Yv3qwmyS1GaJk00PbiNcYvLUW8zvWM1RyE32tI5Fpd1vveKWCOJN2RiBVB81VHzP
+ Snmiiu3oTmBQDlMaPjvvbO6qZFbJen3XcpoTO5Rx2l2dM1GPWo1VaqBYrAUEqLqPtvKs
+ +5Ag==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXSslvc1gTL/7drJaKpA45IaAgayQz0yE6eU5ZQhk6v6VIf2z3jwnmPkLfOp4nvUu9q5ttoqxwWK5adsx4oP4rOY+vdzF8=
+X-Gm-Message-State: AOJu0YzVGva2kUkmyiqFLB1WbLxVMaU4eJb7d18oGAjNSSjdEVpszl6e
+ +XtzeAfG5NJznDY0NSLpwr5Qk3Re36Y2pBAylmyKy9Zj0HUnd/HjCoIDgzxI1KAkkgWFF09JvK1
+ aVRo2wIRHI4Hfhdm6EKA8ruQ6LGvg9u6JwvA94WbJ4MqE9aJDCBwh
+X-Received: by 2002:a5d:648b:0:b0:341:c14b:9120 with SMTP id
+ o11-20020a5d648b000000b00341c14b9120mr1785004wri.70.1711608189822; 
+ Wed, 27 Mar 2024 23:43:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2ETizkRx+2rJ5PRJvcq6SqTLJgyJO1cl/oULtbRVB6FCPEfBw1VS9zAsqIe7dNiVHZqqqGA==
+X-Received: by 2002:a5d:648b:0:b0:341:c14b:9120 with SMTP id
+ o11-20020a5d648b000000b00341c14b9120mr1784982wri.70.1711608189392; 
+ Wed, 27 Mar 2024 23:43:09 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-177-37.web.vodafone.de.
+ [109.43.177.37]) by smtp.gmail.com with ESMTPSA id
+ u6-20020adfa186000000b00341e2146b53sm858986wru.106.2024.03.27.23.43.07
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Mar 2024 23:43:09 -0700 (PDT)
+Message-ID: <4a43ca17-fc42-402e-8df9-925bc4da8d2c@redhat.com>
+Date: Thu, 28 Mar 2024 07:43:06 +0100
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: Nsu0ppCHBmkwoefGp+fXL4i8LcEhdQSKjRsXPQdU0ccHbAduyag6GNe3Sq2SnsD99lDnWi1V+7b4E+PPa+9DLupdOeSfznRHjwxRfwMmL4ZlStena+p39vCIXQ7Ns9b0Ji3dbNocLHeK6M2SBuXwhVcLFl3W1RTK4kjkfR6zohGbVU1/TILvEuHE0NbsUE5t3aDM8sxhAiXnNiBYtgKDxJv/ix0+rocHD5mcmS81CeZtPEyNEv9ZBlh2Kg3puAZP7rxXtAbi7wQXcnF40aID0KE+UA2eOUOinciqdRWNnffn7ob3n6V3wokFHdKuP4HDDY3ZockTBvGR/f/BcHc5xDXdnhXwGon9K2FGePaW0aZlMWVDhZnFD6tGyX7sOAXW85YdrQicQ29fYES9EuuemKyGoIuO+5eOxGv02xqbMlbKyU+LkhkYd59jXRBsTCJM3z2fFxP6ct91NVLv4mQD0hpY/lGnNFls/gFL28mdcZpiokP5DAF0PJv5TCtwtEnpkxM1xHIs/42D9tP/5BzE9ySfEIVB7iuFoC5EqSdNwAGy2VtJkjHKe6e2XlCtU0W2jCtUC1dxQdylefvOM5XEstjC/WkbvbwEUdGt8eBJBS9hCyWrNcNQmpn81Ai9GIkN
-X-OriginatorOrg: fujitsu.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OSZPR01MB6453.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03f91128-923e-4d99-145a-08dc4eefb695
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Mar 2024 06:24:24.6575 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: HKVwuXpvYR3jM8XHSBlnMH5uB93kWGNr6OZg5sh2/jNR3reyVpcjFRmWEzI12tBvHy7LaRFu1brFb6cPS1jHZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY1PR01MB10787
-Received-SPF: pass client-ip=68.232.152.245;
- envelope-from=yaoxt.fnst@fujitsu.com; helo=esa1.fujitsucc.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.1] rdma: Remove RDMA subsystem and pvrdma device
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, qemu-block@nongnu.org,
+ "Dr. David Alan Gilbert" <dave@treblig.org>, integration@gluster.org,
+ Peter Xu <peterx@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Li Zhijian <lizhijian@fujitsu.com>,
+ devel@lists.libvirt.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Song Gao <gaosong@loongson.cn>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Eric Blake <eblake@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>
+References: <20240327105549.1824-1-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240327105549.1824-1-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -166,118 +155,163 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  "Xingtao Yao (Fujitsu)" <yaoxt.fnst@fujitsu.com>
-From:  "Xingtao Yao (Fujitsu)" via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Jonathan
+On 27/03/2024 11.55, Philippe Mathieu-Daudé wrote:
+> The whole RDMA subsystem was deprecated in commit e9a54265f5
+> ("hw/rdma: Deprecate the pvrdma device and the rdma subsystem")
+> released in v8.2. Time to remove it.
+> 
+> Keep the RAM_SAVE_FLAG_HOOK definition since it might appears
+> in old migration streams.
+> 
+> Remove the dependencies on libibumad and libibverbs.
+> 
+> Remove the generated vmw_pvrdma/ directory from linux-headers.
+> 
+> Remove RDMA handling from migration.
+> 
+> Remove RDMA handling in GlusterFS block driver.
+> 
+> Remove rdmacm-mux tool from contrib/.
+> 
+> Remove PVRDMA device.
+> 
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Li Zhijian <lizhijian@fujitsu.com>
+> Cc: Yuval Shaia <yuval.shaia.ml@gmail.com>
+> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   MAINTAINERS                                   |   17 -
+>   docs/about/deprecated.rst                     |    9 -
+>   docs/about/removed-features.rst               |    4 +
+>   docs/devel/migration/main.rst                 |    6 -
+>   docs/pvrdma.txt                               |  345 --
+>   docs/rdma.txt                                 |  420 --
+>   docs/system/device-url-syntax.rst.inc         |    4 +-
+>   docs/system/loongarch/virt.rst                |    2 +-
+>   docs/system/qemu-block-drivers.rst.inc        |    1 -
+>   meson.build                                   |   59 -
+>   qapi/machine.json                             |   17 -
+>   qapi/migration.json                           |   31 +-
+>   qapi/qapi-schema.json                         |    1 -
+>   qapi/rdma.json                                |   38 -
+>   contrib/rdmacm-mux/rdmacm-mux.h               |   61 -
+>   hw/rdma/rdma_backend.h                        |  129 -
+>   hw/rdma/rdma_backend_defs.h                   |   76 -
+>   hw/rdma/rdma_rm.h                             |   97 -
+>   hw/rdma/rdma_rm_defs.h                        |  146 -
+>   hw/rdma/rdma_utils.h                          |   63 -
+>   hw/rdma/trace.h                               |    1 -
+>   hw/rdma/vmw/pvrdma.h                          |  144 -
+>   hw/rdma/vmw/pvrdma_dev_ring.h                 |   46 -
+>   hw/rdma/vmw/pvrdma_qp_ops.h                   |   28 -
+>   hw/rdma/vmw/trace.h                           |    1 -
+>   include/hw/rdma/rdma.h                        |   37 -
+>   include/monitor/hmp.h                         |    1 -
+>   .../infiniband/hw/vmw_pvrdma/pvrdma_dev_api.h |  685 ---
+>   .../infiniband/hw/vmw_pvrdma/pvrdma_verbs.h   |  348 --
+>   .../standard-headers/rdma/vmw_pvrdma-abi.h    |  310 --
+>   migration/migration-stats.h                   |    6 +-
+>   migration/migration.h                         |    9 -
+>   migration/options.h                           |    2 -
+>   migration/rdma.h                              |   69 -
+>   block/gluster.c                               |   39 -
+>   contrib/rdmacm-mux/main.c                     |  831 ----
+>   hw/core/machine-qmp-cmds.c                    |   32 -
+>   hw/rdma/rdma.c                                |   30 -
+>   hw/rdma/rdma_backend.c                        | 1401 ------
+>   hw/rdma/rdma_rm.c                             |  812 ----
+>   hw/rdma/rdma_utils.c                          |  126 -
+>   hw/rdma/vmw/pvrdma_cmd.c                      |  815 ----
+>   hw/rdma/vmw/pvrdma_dev_ring.c                 |  141 -
+>   hw/rdma/vmw/pvrdma_main.c                     |  735 ---
+>   hw/rdma/vmw/pvrdma_qp_ops.c                   |  298 --
+>   migration/migration-stats.c                   |    5 +-
+>   migration/migration.c                         |   31 -
+>   migration/options.c                           |   16 -
+>   migration/qemu-file.c                         |    1 -
+>   migration/ram.c                               |   86 +-
+>   migration/rdma.c                              | 4184 -----------------
+>   migration/savevm.c                            |    2 +-
+>   monitor/qmp-cmds.c                            |    1 -
+>   Kconfig.host                                  |    3 -
+>   contrib/rdmacm-mux/meson.build                |    7 -
+>   hmp-commands-info.hx                          |   13 -
+>   hw/Kconfig                                    |    1 -
+>   hw/meson.build                                |    1 -
+>   hw/rdma/Kconfig                               |    3 -
+>   hw/rdma/meson.build                           |   12 -
+>   hw/rdma/trace-events                          |   31 -
+>   hw/rdma/vmw/trace-events                      |   17 -
+>   meson_options.txt                             |    4 -
+>   migration/meson.build                         |    1 -
+>   migration/trace-events                        |   68 +-
+>   qapi/meson.build                              |    1 -
+>   qemu-options.hx                               |    6 -
+>   .../ci/org.centos/stream/8/x86_64/configure   |    1 -
+>   scripts/ci/setup/build-environment.yml        |    2 -
+>   scripts/coverity-scan/run-coverity-scan       |    2 +-
+>   scripts/meson-buildoptions.sh                 |    6 -
+>   scripts/update-linux-headers.sh               |   27 -
+>   tests/lcitool/projects/qemu.yml               |    2 -
+>   tests/migration/guestperf/engine.py           |    4 +-
+>   74 files changed, 20 insertions(+), 12991 deletions(-)
+>   delete mode 100644 docs/pvrdma.txt
+>   delete mode 100644 docs/rdma.txt
+>   delete mode 100644 qapi/rdma.json
+>   delete mode 100644 contrib/rdmacm-mux/rdmacm-mux.h
+>   delete mode 100644 hw/rdma/rdma_backend.h
+>   delete mode 100644 hw/rdma/rdma_backend_defs.h
+>   delete mode 100644 hw/rdma/rdma_rm.h
+>   delete mode 100644 hw/rdma/rdma_rm_defs.h
+>   delete mode 100644 hw/rdma/rdma_utils.h
+>   delete mode 100644 hw/rdma/trace.h
+>   delete mode 100644 hw/rdma/vmw/pvrdma.h
+>   delete mode 100644 hw/rdma/vmw/pvrdma_dev_ring.h
+>   delete mode 100644 hw/rdma/vmw/pvrdma_qp_ops.h
+>   delete mode 100644 hw/rdma/vmw/trace.h
+>   delete mode 100644 include/hw/rdma/rdma.h
+>   delete mode 100644 include/standard-headers/drivers/infiniband/hw/vmw_pvrdma/pvrdma_dev_api.h
+>   delete mode 100644 include/standard-headers/drivers/infiniband/hw/vmw_pvrdma/pvrdma_verbs.h
+>   delete mode 100644 include/standard-headers/rdma/vmw_pvrdma-abi.h
+>   delete mode 100644 migration/rdma.h
+>   delete mode 100644 contrib/rdmacm-mux/main.c
+>   delete mode 100644 hw/rdma/rdma.c
+>   delete mode 100644 hw/rdma/rdma_backend.c
+>   delete mode 100644 hw/rdma/rdma_rm.c
+>   delete mode 100644 hw/rdma/rdma_utils.c
+>   delete mode 100644 hw/rdma/vmw/pvrdma_cmd.c
+>   delete mode 100644 hw/rdma/vmw/pvrdma_dev_ring.c
+>   delete mode 100644 hw/rdma/vmw/pvrdma_main.c
+>   delete mode 100644 hw/rdma/vmw/pvrdma_qp_ops.c
+>   delete mode 100644 migration/rdma.c
+>   delete mode 100644 contrib/rdmacm-mux/meson.build
+>   delete mode 100644 hw/rdma/Kconfig
+>   delete mode 100644 hw/rdma/meson.build
+>   delete mode 100644 hw/rdma/trace-events
+>   delete mode 100644 hw/rdma/vmw/trace-events
 
-thanks for your reply!
+  Hi Philippe!
 
-> -----Original Message-----
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Sent: Wednesday, March 27, 2024 9:28 PM
-> To: Yao, Xingtao/=1B$BU-=1B(B =1B$B9,Es=1B(B <yaoxt.fnst@fujitsu.com>
-> Cc: fan.ni@samsung.com; qemu-devel@nongnu.org; Cao, Quanquan/=1B$BAb=1B(B=
- =1B$BA4A4=1B(B
-> <caoqq@fujitsu.com>
-> Subject: Re: [PATCH] mem/cxl_type3: fix hpa to dpa logic
->=20
-> On Tue, 26 Mar 2024 21:46:53 -0400
-> Yao Xingtao <yaoxt.fnst@fujitsu.com> wrote:
->=20
-> > In 3, 6, 12 interleave ways, we could not access cxl memory properly,
-> > and when the process is running on it, a 'segmentation fault' error wil=
-l
-> > occur.
-> >
-> > According to the CXL specification '8.2.4.20.13 Decoder Protection',
-> > there are two branches to convert HPA to DPA:
-> > b1: Decoder[m].IW < 8 (for 1, 2, 4, 8, 16 interleave ways)
-> > b2: Decoder[m].IW >=3D 8 (for 3, 6, 12 interleave ways)
-> >
-> > but only b1 has been implemented.
-> >
-> > To solve this issue, we should implement b2:
-> >   DPAOffset[51:IG+8]=3DHPAOffset[51:IG+IW] / 3
-> >   DPAOffset[IG+7:0]=3DHPAOffset[IG+7:0]
-> >   DPA=3DDPAOffset + Decoder[n].DPABase
-> >
-> > Links:
-> https://lore.kernel.org/linux-cxl/3e84b919-7631-d1db-3e1d-33000f3f3868@fu=
-jits
-> u.com/
-> > Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
->=20
-> Not implementing this was intentional (shouldn't seg fault obviously) but
-> I thought we were not advertising EP support for 3, 6, 12?  The HDM Decod=
-er
-> configuration checking is currently terrible so we don't prevent
-> the bits being set (adding device side sanity checks for those decoders
-> has been on the todo list for a long time).  There are a lot of ways of
-> programming those that will blow up.
->=20
-> Can you confirm that the emulation reports they are supported.
-> https://elixir.bootlin.com/qemu/v9.0.0-rc1/source/hw/cxl/cxl-component-ut=
-ils.c
-> #L246
-> implies it shouldn't and so any software using them is broken.
-yes, the feature is not supported by QEMU, but I can still create a 6-inter=
-leave-ways region on kernel layer.
+Looking at this rdma stuff again after I while, I realized that there are 
+actually 3 parts in QEMU related to RDMA:
+1) The "pvrdma" device in hw/rdma/vmw/
+2) The rdma subsystem in hw/rda/*.[ch]
+3) The rdma migration code in the migration/ folder.
 
-I checked the source code of kernel, and found that the kernel did not chec=
-k this bit when committing decoder.
-we may add some check on kernel side.
+While the deprecation note in docs/about/deprecated.rst clearly talks about 
+the "pvrdma" device and the rdma subsystem, I'm unsure whether that includes 
+the rdma migration code or not.
 
->=20
-> The non power of 2 decodes always made me nervous as the maths is more
-> complex and any changes to that decode will need careful checking.
-> For the power of 2 cases it was a bunch of writes to edge conditions etc
-> and checking the right data landed in the backing stores.
-after applying this modification, I tested some command by using these memo=
-ry, like 'ls', 'top'..
-and they can be executed normally, maybe there are some other problems I ha=
-ven't met yet.
+Anyway, could you please split your patch at least in two (maybe even in 
+three) parts, so that the removal of the rdma migration code is in a 
+separate patch? That way we can discuss that separately (and maybe also 
+revert it more easily in the future if necessary).
 
->=20
-> Joanthan
->=20
->=20
-> > ---
-> >  hw/mem/cxl_type3.c | 15 +++++++++++----
-> >  1 file changed, 11 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-> > index b0a7e9f11b..2c1218fb12 100644
-> > --- a/hw/mem/cxl_type3.c
-> > +++ b/hw/mem/cxl_type3.c
-> > @@ -805,10 +805,17 @@ static bool cxl_type3_dpa(CXLType3Dev *ct3d, hwad=
-dr
-> host_addr, uint64_t *dpa)
-> >              continue;
-> >          }
-> >
-> > -        *dpa =3D dpa_base +
-> > -            ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-> > -             ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) & hpa_of=
-fset)
-> > -              >> iw));
-> > +        if (iw < 8) {
-> > +            *dpa =3D dpa_base +
-> > +                ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-> > +                 ((MAKE_64BIT_MASK(8 + ig + iw, 64 - 8 - ig - iw) &
-> hpa_offset)
-> > +                  >> iw));
-> > +        } else {
-> > +            *dpa =3D dpa_base +
-> > +                ((MAKE_64BIT_MASK(0, 8 + ig) & hpa_offset) |
-> > +                 ((((MAKE_64BIT_MASK(ig + iw, 64 - ig - iw) & hpa_offs=
-et)
-> > +                   >> (ig + iw)) / 3) << (ig + 8)));
-> > +        }
-> >
-> >          return true;
-> >      }
+  Thanks,
+   Thomas
 
 
