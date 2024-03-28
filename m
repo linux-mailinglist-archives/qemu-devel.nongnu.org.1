@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF2B890410
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F07E6890403
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:56:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps6h-0002zs-1a; Thu, 28 Mar 2024 11:55:59 -0400
+	id 1rps6p-0003c1-Ar; Thu, 28 Mar 2024 11:56:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6d-0002zH-Bk
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:55 -0400
-Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6k-0003K1-4S
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:02 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6b-0002HX-RJ
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:55 -0400
-Received: by mail-ed1-x529.google.com with SMTP id
- 4fb4d7f45d1cf-568c714a9c7so1312492a12.2
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:55:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6i-0002IU-9C
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:01 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-566e869f631so1282122a12.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:55:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641352; x=1712246152; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641358; x=1712246158; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZJ3NIU3pO9930vwNFx0mYgma5e7GvztHkS/rmyU15RU=;
- b=g5kDrfi6D4PPgQey6KAAPOIxbj5tQTxWmFhyio+RChkZVTxMAynTp7lD7FmmobGKyy
- GbnE5kxDWImzGZgXLNZeBTxIB/PPbGCingoGu8kja3p0GomhcnNzRDqcrnn7baH1q8jr
- otCzfjr6l5XmXzF//SzKFpZ/cLEoBrxFzZnHYdqEZNmm2uqCssIXyVR/gzrHOHa0Zg1w
- apzn/XvnzPqRejoFPbPG6bOQf7WcYOqq0oLASzWFSXDg9smnNCNPExL2qK0qz2ztLHzd
- Q7dknxJZO0Sslcy1uTACB1ufqgBnCWOEK4lK0d0TVRwmDTY2X878gqN2cXRrfjP940FC
- krLg==
+ bh=jlOZmiJcfWhY/E5lc2Om2vdspo8I2MenAyugtnCqPJ8=;
+ b=f21uSOyCySSMOqPB44Usm/FXaQQGWzlQgVB1SPVdp5pwWlRj5e+0ehCrabNYUgcQ6Q
+ bfXglLE1eZrwidEBkvwC3x0Bo/wevvxz8BYjaHRuvd4Z/5LL0Dkw5VyFHbqfVDwRDojQ
+ Fy4bYKwlwQXLP9nntSXMAsjBYt5FOcWhzgeRbZoC309Bcf/oQgnBwOuZ22h5y5EzhXiH
+ vwWKox+bmLobJHNqTMhEnFztGc3Uu/IKRE7NZ17cftXZn21dyfcPhMbiJ6YhlY4Id8nV
+ h5tw4V/ZR/nXVKk+0KYuZ8haP/OxUBTO/QcK62DPpmOutKriFdfXEt6JAmhn47934ZGm
+ r2Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641352; x=1712246152;
+ d=1e100.net; s=20230601; t=1711641358; x=1712246158;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZJ3NIU3pO9930vwNFx0mYgma5e7GvztHkS/rmyU15RU=;
- b=OdSevUxWIpjBIkxJxfxIEBx+sXrhP1Sn1Bs9uOa3ei3OL+5Gm40GRFxLdh+bHvDHvF
- 1GkLO6lHPKjXrewQj1T/XnbyD1joivzGYUvZphsP9Vc2hjJpIqm03ecFynAlff4OY4EI
- Hg8UAX492j8rYODZR70TSYxrN8mSw66ac1wgWgE6Jc73Gzd3O9Wi8LdKVmSVGGYR04u+
- AmX8ZNyf7Kz2Uz6IYllHvR4L8gWnDcuj1k36g1eLx3U6UCV0UWyWfhLhDBzcRNez2Sri
- PdbenzNPtEwy/qXQn0OurnS3Qn9oZgdhjoEGtdzN0RE5O+JdURAZ1XptCA0sWtFMVfAS
- 0XKg==
-X-Gm-Message-State: AOJu0YzJRL02/n+JdwlDGnBzmdyUakz4+sByJYUuBm/iuKOOzIVxlel/
- T2yNwgqVssAEcgpU2LYkm2WnkWwtBvjO6ap7HeSFamECNtPEpYksiotCnZYmmwWdX/JKDfpoA9Q
- B
-X-Google-Smtp-Source: AGHT+IH3/f3B+fppMfqmjp05mNuhqqUlRQgmruUJACUpH3wuIu7IVWjtNOwP7TTyrIw4MimWKbfy0Q==
-X-Received: by 2002:a50:d6d8:0:b0:568:ae7:bc0 with SMTP id
- l24-20020a50d6d8000000b005680ae70bc0mr2301236edj.34.1711641351948; 
- Thu, 28 Mar 2024 08:55:51 -0700 (PDT)
+ bh=jlOZmiJcfWhY/E5lc2Om2vdspo8I2MenAyugtnCqPJ8=;
+ b=XtTRM9E8GHvSrG2yGlKo9Df6QA0yyx6BfQxKSNe2WYWkXeeveRYj4UXAIOS+JRD4xJ
+ h7bZpsPOS7U76CXMnl4ihjvrExk6KBKPS3EyylWOjnyh3FGDG2v7dsFILXY8r2A4/qMG
+ u8YmBuGikkRwVKCdHmjNcLp4qNkCxC+qWQBSZ8AjB1N1L5rL2p+GbotXVQIdBkZAhb7x
+ FQqDtQ5iEKuWGY27I47D/H8IAaEL2EhwD/SrWdEMxRMGllSI7bGNrqrXyRibhjrpuYIK
+ w91/eHe/cBLjUVH/vHmH5ORDAEw4zppn8HcSI5fZlfr1mNtoLzTtKT6SfBLb/NYLZXn9
+ 0HiA==
+X-Gm-Message-State: AOJu0Yy8s6ucyMIUhGVzHe8X55GY9SygVkyyNF6XjcvVqqqEAdoQCtCg
+ 3UE0kr8jToM+UfG0KEnfwGSsiNvqjMJB+BcWiDgN4yjw9JuTEQtkzbUuFJfo05cbQxaJhDmm+OM
+ +
+X-Google-Smtp-Source: AGHT+IEHlPzirbO0NxvTAiaCR1AzHmEf11L/n2EPgKkmIcgFqhAD5O/Yt/mmGevQB4ExiPCyjyrkcg==
+X-Received: by 2002:a50:d650:0:b0:56b:cda3:6de6 with SMTP id
+ c16-20020a50d650000000b0056bcda36de6mr2166952edj.42.1711641358386; 
+ Thu, 28 Mar 2024 08:55:58 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- u23-20020aa7d897000000b0056ba017ca7fsm953482edq.87.2024.03.28.08.55.50
+ g20-20020aa7c594000000b0056be0d1cd83sm954932edq.97.2024.03.28.08.55.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:55:51 -0700 (PDT)
+ Thu, 28 Mar 2024 08:55:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -67,19 +67,20 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 11/29] hw/i386/pc: Move acpi_setup() call to
- pc_pci_machine_done()
-Date: Thu, 28 Mar 2024 16:54:19 +0100
-Message-ID: <20240328155439.58719-12-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Paul Durrant <paul@xen.org>
+Subject: [RFC PATCH-for-9.1 12/29] hw/i386/pc: Move acpi_build_enabled to
+ PcPciMachineState
+Date: Thu, 28 Mar 2024 16:54:20 +0100
+Message-ID: <20240328155439.58719-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::529;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,46 +103,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-acpi_setup() returns early if acpi_build_enabled is not set:
-
-  2752 void acpi_setup(PCMachineState *pcms)
-  2753 {
-   ...
-  2768     if (!pcms->acpi_build_enabled) {
-  2769         ACPI_BUILD_DPRINTF("ACPI build disabled. Bailing out.\n");
-  2770         return;
-  2771     }
-
-acpi_build_enabled is only set on PCI-based machines, so it
-is pointless to call acpi_setup() from non-PCI like the ISA-only
-machine, move the call to pc_pci_machine_done().
+Since only PCI-based machines use the 'acpi_build_enabled',
+move it to PcPciMachineState.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/i386/acpi-build.h  | 2 +-
+ include/hw/i386/pc.h  | 3 ++-
+ hw/i386/acpi-build.c  | 8 ++++----
+ hw/i386/pc.c          | 5 ++---
+ hw/i386/xen/xen-hvm.c | 3 ++-
+ 5 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index f0dc04e2fc..47fe3a7c02 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -601,7 +601,6 @@ void pc_machine_done(Notifier *notifier, void *data)
-     /* set the number of CPUs */
-     x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
+diff --git a/hw/i386/acpi-build.h b/hw/i386/acpi-build.h
+index 31de5bddbd..4c1511c432 100644
+--- a/hw/i386/acpi-build.h
++++ b/hw/i386/acpi-build.h
+@@ -10,7 +10,7 @@ extern const struct AcpiGenericAddress x86_nvdimm_acpi_dsmio;
+ #define ACPI_PCIHP_SEJ_BASE 0x8
+ #define ACPI_PCIHP_BNMR_BASE 0x10
  
--    acpi_setup(pcms);
-     if (x86ms->fw_cfg) {
-         fw_cfg_build_smbios(pcms, x86ms->fw_cfg, pcms->smbios_entry_point_type);
-         fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
-@@ -627,6 +626,8 @@ static void pc_pci_machine_done(Notifier *notifier, void *data)
+-void acpi_setup(PCMachineState *pcms);
++void acpi_setup(PcPciMachineState *ppms);
+ Object *acpi_get_i386_pci_host(void);
+ 
+ #endif
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index dd5ee448ef..67f8f4730b 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -41,7 +41,6 @@ typedef struct PCMachineState {
+     SmbiosEntryPointType smbios_entry_point_type;
+     const char *south_bridge;
+ 
+-    bool acpi_build_enabled;
+     bool smbus_enabled;
+     bool sata_enabled;
+     bool hpet_enabled;
+@@ -61,6 +60,8 @@ typedef struct PcPciMachineState {
+ 
+     Notifier machine_done;
+ 
++    bool acpi_build_enabled;
++
+     CXLState cxl_devices_state;
+ } PcPciMachineState;
+ 
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index e702d5e9d2..ee0e99a2fa 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2749,9 +2749,9 @@ static const VMStateDescription vmstate_acpi_build = {
+     },
+ };
+ 
+-void acpi_setup(PCMachineState *pcms)
++void acpi_setup(PcPciMachineState *ppms)
+ {
+-    X86MachineState *x86ms = X86_MACHINE(pcms);
++    X86MachineState *x86ms = X86_MACHINE(ppms);
+     AcpiBuildTables tables;
+     AcpiBuildState *build_state;
+     Object *vmgenid_dev;
+@@ -2765,7 +2765,7 @@ void acpi_setup(PCMachineState *pcms)
+         return;
      }
  
+-    if (!pcms->acpi_build_enabled) {
++    if (!ppms->acpi_build_enabled) {
+         ACPI_BUILD_DPRINTF("ACPI build disabled. Bailing out.\n");
+         return;
+     }
+@@ -2778,7 +2778,7 @@ void acpi_setup(PCMachineState *pcms)
+     build_state = g_malloc0(sizeof *build_state);
+ 
+     acpi_build_tables_init(&tables);
+-    acpi_build(&tables, MACHINE(pcms));
++    acpi_build(&tables, MACHINE(ppms));
+ 
+     /* Now expose it all to Guest */
+     build_state->table_mr = acpi_add_rom_blob(acpi_build_update,
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 47fe3a7c02..f184808e3e 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -627,7 +627,7 @@ static void pc_pci_machine_done(Notifier *notifier, void *data)
+ 
      fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
-+
-+    acpi_setup(pcms);
+ 
+-    acpi_setup(pcms);
++    acpi_setup(ppms);
  }
  
  /* setup pci memory address space mapping into system address space */
+@@ -1687,9 +1687,8 @@ static void pc_machine_initfn(Object *obj)
+ static void pc_pci_machine_initfn(Object *obj)
+ {
+     PcPciMachineState *ppms = PC_PCI_MACHINE(obj);
+-    PCMachineState *pcms = PC_MACHINE(obj);
+ 
+-    pcms->acpi_build_enabled = true;
++    ppms->acpi_build_enabled = true;
+ 
+     cxl_machine_init(obj, &ppms->cxl_devices_state);
+ 
+diff --git a/hw/i386/xen/xen-hvm.c b/hw/i386/xen/xen-hvm.c
+index 7745cb3963..ce48d51842 100644
+--- a/hw/i386/xen/xen-hvm.c
++++ b/hw/i386/xen/xen-hvm.c
+@@ -586,6 +586,7 @@ static void xen_wakeup_notifier(Notifier *notifier, void *data)
+ void xen_hvm_init_pc(PCMachineState *pcms, MemoryRegion **ram_memory)
+ {
+     MachineState *ms = MACHINE(pcms);
++    PcPciMachineState *ppms = PC_PCI_MACHINE(pcms);
+     unsigned int max_cpus = ms->smp.max_cpus;
+     int rc;
+     xen_pfn_t ioreq_pfn;
+@@ -624,7 +625,7 @@ void xen_hvm_init_pc(PCMachineState *pcms, MemoryRegion **ram_memory)
+     xen_ram_init(pcms, ms->ram_size, ram_memory);
+ 
+     /* Disable ACPI build because Xen handles it */
+-    pcms->acpi_build_enabled = false;
++    ppms->acpi_build_enabled = false;
+ 
+     return;
+ 
 -- 
 2.41.0
 
