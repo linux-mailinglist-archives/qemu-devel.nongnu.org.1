@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE9089044D
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBA889045A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:01:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps8H-00019r-Kp; Thu, 28 Mar 2024 11:57:37 -0400
+	id 1rps8d-0001ei-6o; Thu, 28 Mar 2024 11:58:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8E-00011d-TP
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:35 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8L-0001KC-Ir
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:43 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8D-0002mw-A7
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:34 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a47385a4379so400471666b.0
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:57:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8J-0002ny-Rx
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:41 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-56be32b9775so1376425a12.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:57:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641451; x=1712246251; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641458; x=1712246258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OhT6+kuDArhB7vl7wmlOYwb5F71/kFsimohZE69/WJ4=;
- b=wPfi4xDZ+OZFr0EK/9vhFd4a6Bhqsc0O6HVjX/5tm+KZQFDfb8HqSLFpGWpfcSiTGX
- eoQZQFMUonQ7Kpd6AAtKo4zHR9uJTIu0GpJXDKTmBvyX3+0Nx+qklnGkoQntyIJCEUbj
- 1Wdb21INEXISlrRDVMC8Kxr7dvgqV2mr6/Op3SIF0sIs8SLo9Lp01Y92zkoYi7dSd/Li
- ptxzP7KyVmegtwYntW7/o8jvB2JTOt46TZ8A8qfOkGPuxAF/oxd+FwJKdt0M0l28MWpq
- ldmXtv/0QRociJA7vO+gnBaq9l86GD+95aXa6KceEA2CrxsVIh5lIYzNNlhRNhxsPSPc
- zIEw==
+ bh=WrzkMtkcnF1yss3niHYQFeUj6lW7JvFYG513ZWQp60s=;
+ b=uIgXU92Ol/NISoRgpNbzf/PzWEwBgS3/kVomi69bd5HXFLehCuA3Afao1WjECHViPF
+ Cnkfnb7ihYF9IrUjgsom4QAbZxpwDE6CqMYds/+sDDnM1oEzgt5F6dLuZcHvz3erkJJS
+ wG8zE10FrhUGKDIDtxtUEVaWBrN+99eT254X8mIZV3CNuaNipG0eag5TwlTOG8JLO9k5
+ 96DeHATjs3LvNAyutPTQ9f4YSVeRn9rQsyCEw7qM9ugyGHt9T/QljWOoyd6rvr5WilTc
+ SSnVHVz94s9UkPsLVqd/S3f/RgFgSFg+/ph8KfZ7Eim92gOMxb6Nnr52Zht6Kerr+oaS
+ nUtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641451; x=1712246251;
+ d=1e100.net; s=20230601; t=1711641458; x=1712246258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OhT6+kuDArhB7vl7wmlOYwb5F71/kFsimohZE69/WJ4=;
- b=lpNbOPh9/LQB++w3aVUA9aF2wIB9ybXfcj8ItCiPvK/rWY61gPRnan6R/BAPhx6lKJ
- 3hq76PAoQIGSXkwJQhbDjEWTozV5HAp51X3AlsFI9I++UTVVbWDWN2o55JhKFF/fvJIw
- 8BBYbslXA7Wl8aYwoCv9KiupHdrLQn/b8zYaRWhuor+uyeZcTTfpgt4bEv8A3GFxHxqN
- g+1IeNGQJaRm446PPifLNh7E/Xr+zyUQnzdgbpclvg4FTz2SkObQdwFgXeyIb0ft7xtb
- VobCNZSPWGTHjC7S3Nolk+/bC+mZ0xmMl6UB4i64RcZfSt5OFlxHjAwNOACx/yO5KWGl
- YKbg==
-X-Gm-Message-State: AOJu0YzBsZpiKngVj3I9Iy7SGEb4iU4E1bUc2a3KZ2YaTa6XL6YdplNf
- +wRcjRrCxrS389L6jiAjkxv0R/uRx3BLwKiWM6yn1/ojZEAzhN20qOBcQzIwNhBBwRWMOkmy5a4
- u
-X-Google-Smtp-Source: AGHT+IE5iPw2wKGziuJIAfhXkqj1URHuVnsVTHRuhgnnHINXGtkc2NpEDzBwrK/9AluQ+8R3bvD5jA==
-X-Received: by 2002:a17:906:48d7:b0:a45:ab98:aec with SMTP id
- d23-20020a17090648d700b00a45ab980aecmr2166613ejt.10.1711641451420; 
- Thu, 28 Mar 2024 08:57:31 -0700 (PDT)
+ bh=WrzkMtkcnF1yss3niHYQFeUj6lW7JvFYG513ZWQp60s=;
+ b=vEv1yVhmlUmQd3IoS9o0NJ67fQZGBiNRMezeUOIEZyUMCLeO7FmW/Ve2jTP3UwM5RE
+ vdI3iUS+Wg4ij5gKuOQ3Elai91FM7DIBbHcqDJbTpj0KB5iJf0l78gYbOfFBPhgNQbyq
+ TastFBpLyJ6a4c022MMGXOv5gB9hXzw1/A97muVE2eZNn8IeUMm45BKa92UgksQSoWeR
+ 1QP0KbUsxCeqhKTY9g/yLkcInwrNTwhAhqbnWe9Cv5r643skvuwOImafsVohtJ6RbrKt
+ uUpcLyNJi6eFt5Iv1yBdhtLz2RbNeCXH8fzyjQ5swafje8bo8I70wprkbIwoBUeonNER
+ J79A==
+X-Gm-Message-State: AOJu0Yy5QdshH5bLce00GOrE7cwClqRjIJDEbCOFLlFG4Sc0xvr4SQyE
+ wOKirrFWtGK+CtHS8U7jlX4p11ycQ+sYl8yCqN89LiWB2B49VbgWdnCeNSbvaeE36N9S55y9boN
+ d
+X-Google-Smtp-Source: AGHT+IEc3JVavZ6Yb+b8wnDqhR3/uKAR+Oeu24avwh9VyWUhM3fQrZfwqOBt+dWLPG1vVVlO5yf/BQ==
+X-Received: by 2002:a50:9b0b:0:b0:56b:dce0:c795 with SMTP id
+ o11-20020a509b0b000000b0056bdce0c795mr2044180edi.4.1711641458009; 
+ Thu, 28 Mar 2024 08:57:38 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- o19-20020a17090637d300b00a46cc48ab07sm894776ejc.221.2024.03.28.08.57.29
+ ek25-20020a056402371900b0056bdc4a5cd6sm959160edb.62.2024.03.28.08.57.35
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:57:31 -0700 (PDT)
+ Thu, 28 Mar 2024 08:57:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -67,19 +67,21 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 27/29] hw/i386/pc: Call
- fw_cfg_build_smbios_legacy() in pc_machine_done()
-Date: Thu, 28 Mar 2024 16:54:35 +0100
-Message-ID: <20240328155439.58719-28-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ =?UTF-8?q?Herv=C3=A9=20Poussineau?= <hpoussin@reactos.org>
+Subject: [RFC PATCH-for-9.1 28/29] hw/i386/pc: Rename pc_init1() ->
+ pc_piix_init()
+Date: Thu, 28 Mar 2024 16:54:36 +0100
+Message-ID: <20240328155439.58719-29-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,73 +104,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Keep fw_cfg_build_smbios() for PCI-based machines, call
-fw_cfg_build_smbios_legacy() directly from pc_machine_done().
+pc_init1() is specific to the isapc and i440fx/piix machines,
+rename it as pc_piix_init(). Expose it in "hw/i386/pc.h" to
+be able to call it externally (see next patch).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/fw_cfg.c | 10 ----------
- hw/i386/pc.c     | 12 +++++++++++-
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ include/hw/i386/pc.h | 1 +
+ hw/i386/pc_piix.c    | 8 ++++----
+ hw/isa/piix.c        | 2 +-
+ hw/pci-host/i440fx.c | 2 +-
+ 4 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index be37e28f46..92e058446f 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -49,11 +49,6 @@ const char *fw_cfg_arch_key_name(uint16_t key)
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 6510914803..9a11835b7e 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -163,6 +163,7 @@ void pc_basic_device_init(struct PCMachineState *pcms,
+                           bool create_fdctrl,
+                           uint32_t hpet_irqs);
+ void pc_nic_init(PCMachineClass *pcmc, ISABus *isa_bus, PCIBus *pci_bus);
++void pc_piix_init(MachineState *machine, const char *pci_type);
+ 
+ void pc_i8259_create(ISABus *isa_bus, qemu_irq *i8259_irqs);
+ 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 4f07476cfa..4a3ae72fe4 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -111,7 +111,7 @@ static bool gigabyte_align(PCMachineState *pcms)
  }
  
- #ifdef CONFIG_SMBIOS
--static bool smbios_legacy_mode(PCMachineState *pcms)
--{
--    return !pc_machine_is_pci_enabled(pcms);
--}
--
- void fw_cfg_build_smbios_legacy(PCMachineState *pcms, FWCfgState *fw_cfg)
+ /* PC hardware initialisation */
+-static void pc_init1(MachineState *machine, const char *pci_type)
++void pc_piix_init(MachineState *machine, const char *pci_type)
  {
-     uint8_t *smbios_tables;
-@@ -81,11 +76,6 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-     MachineClass *mc = MACHINE_GET_CLASS(pcms);
-     X86CPU *cpu = X86_CPU(ms->possible_cpus->cpus[0].cpu);
+     PCMachineState *pcms = PC_MACHINE(machine);
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+@@ -437,7 +437,7 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
+ {
+-    pc_init1(machine, NULL);
++    pc_piix_init(machine, NULL);
+ }
+ #endif
  
--    if (smbios_legacy_mode(pcms)) {
--        fw_cfg_build_smbios_legacy(pcms, fw_cfg);
--        return;
--    }
--
-     /* These values are guest ABI, do not change */
-     smbios_set_defaults("QEMU", mc->desc, mc->name);
+@@ -447,7 +447,7 @@ static void pc_xen_hvm_init_pci(MachineState *machine)
+     const char *pci_type = xen_igd_gfx_pt_enabled() ?
+                 TYPE_IGD_PASSTHROUGH_I440FX_PCI_DEVICE : TYPE_I440FX_PCI_DEVICE;
  
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 7a758a2e84..7d06a088cf 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -591,6 +591,11 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, int level)
-     }
+-    pc_init1(machine, pci_type);
++    pc_piix_init(machine, pci_type);
  }
  
-+static bool smbios_legacy_mode(PCMachineState *pcms)
-+{
-+    return !pc_machine_is_pci_enabled(pcms);
-+}
-+
- static
- void pc_machine_done(Notifier *notifier, void *data)
- {
-@@ -602,7 +607,12 @@ void pc_machine_done(Notifier *notifier, void *data)
-     x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
+ static void pc_xen_hvm_init(MachineState *machine)
+@@ -472,7 +472,7 @@ static void pc_xen_hvm_init(MachineState *machine)
+         if (compat) { \
+             compat(machine); \
+         } \
+-        pc_init1(machine, TYPE_I440FX_PCI_DEVICE); \
++        pc_piix_init(machine, TYPE_I440FX_PCI_DEVICE); \
+     } \
+     DEFINE_PC_MACHINE(suffix, name, pc_init_##suffix, optionfn, \
+                       TYPE_PC_PCI_MACHINE)
+diff --git a/hw/isa/piix.c b/hw/isa/piix.c
+index 2d30711b17..14dc9e78be 100644
+--- a/hw/isa/piix.c
++++ b/hw/isa/piix.c
+@@ -432,7 +432,7 @@ static void pci_piix_class_init(ObjectClass *klass, void *data)
+     k->class_id     = PCI_CLASS_BRIDGE_ISA;
+     /*
+      * Reason: part of PIIX southbridge, needs to be wired up by e.g.
+-     * pc_piix.c's pc_init1()
++     * pc_piix.c's pc_piix_init()
+      */
+     dc->user_creatable = false;
+     device_class_set_props(dc, pci_piix_props);
+diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
+index add99e4f76..9f47d5507a 100644
+--- a/hw/pci-host/i440fx.c
++++ b/hw/pci-host/i440fx.c
+@@ -374,7 +374,7 @@ static void i440fx_pcihost_class_init(ObjectClass *klass, void *data)
+     dc->realize = i440fx_pcihost_realize;
+     dc->fw_name = "pci";
+     device_class_set_props(dc, i440fx_props);
+-    /* Reason: needs to be wired up by pc_init1 */
++    /* Reason: needs to be wired up by pc_piix_init */
+     dc->user_creatable = false;
  
-     if (x86ms->fw_cfg) {
--        fw_cfg_build_smbios(pcms, x86ms->fw_cfg, pcms->smbios_entry_point_type);
-+        if (smbios_legacy_mode(pcms)) {
-+            fw_cfg_build_smbios_legacy(pcms, x86ms->fw_cfg);
-+        } else {
-+            fw_cfg_build_smbios(pcms, x86ms->fw_cfg,
-+                                pcms->smbios_entry_point_type);
-+        }
-         fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
-         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
-         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
+     object_class_property_add(klass, PCI_HOST_PROP_PCI_HOLE_START, "uint32",
 -- 
 2.41.0
 
