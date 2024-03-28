@@ -2,66 +2,116 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9718889009E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 14:43:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F3A89013D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 15:09:15 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpq12-0003Aa-BA; Thu, 28 Mar 2024 09:42:00 -0400
+	id 1rpqR2-0000GA-4f; Thu, 28 Mar 2024 10:08:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@linux-m68k.org>)
- id 1rpq10-00033e-C8; Thu, 28 Mar 2024 09:41:58 -0400
-Received: from mail-out.m-online.net ([2001:a60:0:28:0:1:25:1])
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rpqR0-0000BS-BG
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 10:08:50 -0400
+Received: from mail-bn8nam12on2086.outbound.protection.outlook.com
+ ([40.107.237.86] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <schwab@linux-m68k.org>)
- id 1rpq0x-0007Fz-4Y; Thu, 28 Mar 2024 09:41:57 -0400
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
- by mail-out.m-online.net (Postfix) with ESMTP id 4V54TC0Xrsz1sB8C;
- Thu, 28 Mar 2024 14:41:51 +0100 (CET)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
- by mail.m-online.net (Postfix) with ESMTP id 4V54TB6Gp6z1qqlS;
- Thu, 28 Mar 2024 14:41:50 +0100 (CET)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id s7kMP7KkyLqn; Thu, 28 Mar 2024 14:41:48 +0100 (CET)
-X-Auth-Info: jmFaiXUYkic2QaHYgZczOKIVhMEHHpBDJ+mG8VT3pkCG3aW/QHGf/PFXGDO8x00n
-Received: from hawking (unknown [81.95.8.245])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest
- SHA256) (No client certificate requested)
- by mail.mnet-online.de (Postfix) with ESMTPSA;
- Thu, 28 Mar 2024 14:41:47 +0100 (CET)
-From: Andreas Schwab <schwab@linux-m68k.org>
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>,  qemu-devel@nongnu.org,
- qemu-stable@nongnu.org,  Richard Henderson
- <richard.henderson@linaro.org>,  Vineet Gupta <vineetg@rivosinc.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,  Alistair
- Francis <alistair.francis@wdc.com>
-Subject: Re: [Stable-8.2.1 61/71] linux-user/riscv: Adjust vdso signal frame
- cfa offsets
-In-Reply-To: <CAKmqyKMGODCT3BetDRL_1MLuEKcBhQjUBgZ99eMQvN-Aeo+CAg@mail.gmail.com>
- (Alistair Francis's message of "Wed, 6 Mar 2024 14:27:28 +1000")
-References: <qemu-stable-8.2.1-20240128204849@cover.tls.msk.ru>
- <20240128175035.812352-7-mjt@tls.msk.ru>
- <87ttlnehb1.fsf@linux-m68k.org>
- <CAKmqyKMGODCT3BetDRL_1MLuEKcBhQjUBgZ99eMQvN-Aeo+CAg@mail.gmail.com>
-X-Yow: I feel real SOPHISTICATED being in FRANCE!
-Date: Thu, 28 Mar 2024 14:41:46 +0100
-Message-ID: <mvmbk6yfp7p.fsf@linux-m68k.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <avihaih@nvidia.com>)
+ id 1rpqQy-0004ut-8L
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 10:08:50 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=g0zPlRtbyHgrYqsThqufIxXzCL+GnNe4VsgARWLVBXorVwpJFCPqh1+cHgwIvTgKfU1R/EBRifEFyGwJlbVpAarU7F2PQCYDmtKaEIF7XETIoZgeD83lQTffJ8pBTW5OJCg1VB9pjvHpyBDL6jK89C4v47HGhSHF5yUTqkonsTIGTjNe4TH4BfA/2ahmBPACPpl9w5dT3edJaidA7xBryfiQHvD0fQZAti/D3Dpqge7Nx6VQdkDwdGgvCu34bJQPNZy2QDi6+0lzoFGqpWyq5U+nnMnyhFtMfG9sdsN00hHaSILXdibyeeSILRzVBoU9j9BdVQs3sQRCMpW+AekWFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=IEBOJfZH1NMwuBpz438sGCbB/PKALHGpjlyCGVZxIQo=;
+ b=D4E1lM29xkE7wSCMcxJzt0GHxmlAig2C9T2KiMnd80DO30CS1wVHQ+j8i+wmCZbDVcZ31tiQYQ4vOqhDGWx/mgzTU2+rzTb727oa6QCxMkVmKFJR0rP9x6QIwv4H79jTPx3EWc+nUjv7BDIJxWJBXQhmfQrarKCdkIy8abKdK/yVmzSazURkCsnJpzmjU2MCnmM0Kv4YynyXD2kynAyVFyq9g4gJj0yB+t29ZF1zFBK5isXCrynYfNYUpsefcCzONvgU8Cri8NeKVUaVdSYrYxlY/tftTUmfVQsuwa6jCankEK606OH32DcH2Wx4XR0V1yvajBnNLUqXYZ6oVDQCzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=nongnu.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IEBOJfZH1NMwuBpz438sGCbB/PKALHGpjlyCGVZxIQo=;
+ b=d6sTfJDRg8JfBIdfsJxWiosV4pXonkDI3R9oXWkaeQ/wWsCJrOS40frnTiJIfxP30vlqqpEeKoTgmcXxNhu4b1QusbMa+DhwI1vIrKylidRBv21AQ1CS+O+LzWFYn4jc0Ij7VafZUvTmNu3TxhabjVGxtWLuH4WCCmNO/zvT/WRX9aB7U0KiVGtDs5wxXLBkEAgBOOb6m+7GlxmLVDC+q9MvdXxRkTsfmWQlI3aVIox74Nc+njxz+4xfaGmL8T6rOH8ZHr+QJyFif52MfL9jWYeEFEJS0WK3UPNJXb84WYDkQeq9h/zqqFyoooJhhE5jnvC0gLHOC+3vcxv84gA/sA==
+Received: from SN6PR16CA0055.namprd16.prod.outlook.com (2603:10b6:805:ca::32)
+ by DS7PR12MB8204.namprd12.prod.outlook.com (2603:10b6:8:e1::9) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.32; Thu, 28 Mar 2024 14:03:40 +0000
+Received: from SA2PEPF00001507.namprd04.prod.outlook.com
+ (2603:10b6:805:ca:cafe::6f) by SN6PR16CA0055.outlook.office365.com
+ (2603:10b6:805:ca::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.38 via Frontend
+ Transport; Thu, 28 Mar 2024 14:03:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SA2PEPF00001507.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7409.10 via Frontend Transport; Thu, 28 Mar 2024 14:03:39 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 28 Mar
+ 2024 07:02:55 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 28 Mar
+ 2024 07:02:54 -0700
+Received: from vdi.nvidia.com (10.127.8.9) by mail.nvidia.com (10.129.68.10)
+ with Microsoft SMTP Server id 15.2.1258.12 via Frontend Transport; Thu, 28
+ Mar 2024 07:02:53 -0700
+From: Avihai Horon <avihaih@nvidia.com>
+To: <qemu-devel@nongnu.org>
+CC: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, Avihai Horon
+ <avihaih@nvidia.com>
+Subject: [PATCH for-9.0 0/2] migration: Two migration bug fixes
+Date: Thu, 28 Mar 2024 16:02:50 +0200
+Message-ID: <20240328140252.16756-1-avihaih@nvidia.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2001:a60:0:28:0:1:25:1;
- envelope-from=schwab@linux-m68k.org; helo=mail-out.m-online.net
-X-Spam_score_int: -25
-X-Spam_score: -2.6
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001507:EE_|DS7PR12MB8204:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7c9370f6-6199-4779-0934-08dc4f2fdebb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: CZc/u7/yebczTusHV4jgsxKCjjejWxOufWX/vECRQYA+uOdTPUvghgF7K9Nn1K0x9lKpK9oGztoroZOUZ0nye6HmoG9BvEvRQZeJD4c1c43zG0Fsm9/sh+lAteAsclkVuVOAAZ6yWEaomV6C4z7fKsi9859t0ybbPgyYlP/ALgZAYqexW72BbHOSdk0dBHYMPwIHYHna4++ozPXBhy469L1DFNJK6+r/nwdDkjWi2r18r/4OyDDkezRPCmqYt8rVVr619e4Ry/zMA65ItSYaWJQFWPGaZrYyzlJfgotitUcXu+9YQkGxRkF/Hbi/C1rIMJwv3YlQ6jCjwMjERrscd4Ood83Wzqn3TwrauRuWKmTW9BjLesyzI+P4yUEXUPH4OpE22JRKxsnYgFj/Qv7ruouMBFoRHHTdMs2DrWyAdRul6jXbgVsbbfFbLDR6raUDJXi1oY9E3jRlwqtMbdxRC3GSYzNFnXrMdUvcD2uHuUHQUrJ4pv3BKO225FI8QoJofSCxbXXZUtvfzHeUY2aMXxrFfJri9kIDYpHTFet3WVnxorewA9KhWKucQ0q8NzIBernpl4N+oZ8NbXcvjvCuzBYbFUT6/DdLT5KXBJsKP+KUdHqQZ+mtmx2hmwS3SepGb+sSOzaPcWU1uXVgsuXVSZzSxAhvJuICV/xkmc7ZYo+GWWhAVK/6rR5/t8xMRmelNuFnmLvPIyxHHPRZezvOH1Ub7AkIlVmEjTCFF10A5nsW6ysymD5zbEu61e30P1y3
+X-Forefront-Antispam-Report: CIP:216.228.117.161; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc6edge2.nvidia.com; CAT:NONE;
+ SFS:(13230031)(1800799015)(376005)(82310400014)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 14:03:39.7374 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c9370f6-6199-4779-0934-08dc4f2fdebb
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.117.161];
+ Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00001507.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8204
+Received-SPF: softfail client-ip=40.107.237.86;
+ envelope-from=avihaih@nvidia.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.08,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,296 +127,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mär 06 2024, Alistair Francis wrote:
+Hello,
 
-> On Sun, Mar 3, 2024 at 8:34 PM Andreas Schwab <schwab@linux-m68k.org> wrote:
->>
->> On Jan 28 2024, Michael Tokarev wrote:
->>
->> > From: Richard Henderson <richard.henderson@linaro.org>
->> >
->> > A typo in sizeof_reg put the registers at the wrong offset.
->> >
->> > Simplify the expressions to use positive addresses from the
->> > start of uc_mcontext instead of negative addresses from the
->> > end of uc_mcontext.
->>
->> This breaks the testsuite of libunwind.  The test Gtest-resume-sig and
->> all dependent tests hang.  Reverting this commit fixes them.
->
-> Do you have any more details? It seems strange that this commit is
-> breaking something as it looks to be correct
+This small series fixes two migration bugs I stumbled upon recently.
+Comments are welcome, thanks for reviewing.
 
-It also breaks the Ltest-init-local-signal test, and it is still broken
-in 9.0.0-rc1, and reverting this commit still fixes it.
+Avihai Horon (2):
+  migration: Set migration error in migration_completion()
+  migration/postcopy: Ensure postcopy_start() sets errp if it fails
 
-$ LD_LIBRARY_PATH=../src/.libs /tmp/qemu-riscv64.bad -strace .libs/Ltest-init-local-signal
-24864 brk(NULL) = 0x0000555555559000
-24864 faccessat(AT_FDCWD,"/etc/ld.so.preload",R_OK,AT_EACCESS|0x55557c08) = -1 errno=2 (No such file or directory)
-24864 openat(AT_FDCWD,"../src/.libs/libunwind-riscv.so.8",O_RDONLY|O_CLOEXEC) = 3
-24864 read(3,0x601ff3e0,832) = 832
-24864 fstat(3,0x00007fab601ff260) = 0
-24864 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007fab68c0a000
-24864 getcwd(0x7fab68c0a4c0,128) = 50
-24864 mmap(NULL,156800,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007fab603d9000
-24864 mmap(0x00007fab603e6000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0xd000) = 0x00007fab603e6000
-24864 mmap(0x00007fab603e8000,95360,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007fab603e8000
-24864 close(3) = 0
-24864 openat(AT_FDCWD,"../src/.libs/libunwind.so.8",O_RDONLY|O_CLOEXEC) = 3
-24864 read(3,0x601ff3c0,832) = 832
-24864 fstat(3,0x00007fab601ff240) = 0
-24864 getcwd(0x7fab68c0aa40,128) = 50
-24864 mmap(NULL,156848,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007fab603b2000
-24864 mmap(0x00007fab603bf000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0xd000) = 0x00007fab603bf000
-24864 mmap(0x00007fab603c1000,95408,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007fab603c1000
-24864 close(3) = 0
-24864 openat(AT_FDCWD,"../src/.libs/libc.so.6",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24864 openat(AT_FDCWD,"/etc/ld.so.cache",O_RDONLY|O_CLOEXEC) = 3
-24864 fstat(3,0x00007fab601ff230) = 0
-24864 mmap(NULL,7935,PROT_READ,MAP_PRIVATE,3,0) = 0x00007fab68c08000
-24864 close(3) = 0
-24864 openat(AT_FDCWD,"/lib64/lp64d/libc.so.6",O_RDONLY|O_CLOEXEC) = 3
-24864 read(3,0x601ff3a0,832) = 832
-24864 fstat(3,0x00007fab601ff220) = 0
-24864 mmap(NULL,1473984,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007fab6024a000
-24864 mmap(0x00007fab603a1000,20480,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0x157000) = 0x00007fab603a1000
-24864 mmap(0x00007fab603a6000,48576,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007fab603a6000
-24864 close(3) = 0
-24864 openat(AT_FDCWD,"../src/.libs/liblzma.so.5",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24864 openat(AT_FDCWD,"/home/abuild/rpmbuild/BUILD/libunwind-1.8.1/src/.libs/liblzma.so.5",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24864 newfstatat(AT_FDCWD,"/home/abuild/rpmbuild/BUILD/libunwind-1.8.1/src/.libs/",0x00007fab601ff1e0,0) = 0
-24864 openat(AT_FDCWD,"/lib64/lp64d/liblzma.so.5",O_RDONLY|O_CLOEXEC) = 3
-24864 read(3,0x601ff360,832) = 832
-24864 fstat(3,0x00007fab601ff1e0) = 0
-24864 mmap(NULL,200720,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007fab60218000
-24864 mmap(0x00007fab60248000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0x30000) = 0x00007fab60248000
-24864 close(3) = 0
-24864 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007fab68c06000
-24864 set_tid_address(0x7fab68c064f0) = 24864
-24864 set_robust_list(0x7fab68c06500,24) = -1 errno=38 (Function not implemented)
-24864 mprotect(0x00007fab603a1000,12288,PROT_READ) = 0
-24864 mprotect(0x00007fab60248000,4096,PROT_READ) = 0
-24864 mprotect(0x00007fab603bf000,4096,PROT_READ) = 0
-24864 mprotect(0x00007fab603e6000,4096,PROT_READ) = 0
-24864 mprotect(0x0000555555557000,4096,PROT_READ) = 0
-24864 mprotect(0x00007fab68c2d000,8192,PROT_READ) = 0
-24864 prlimit64(0,RLIMIT_STACK,NULL,0x00007fab601ffe68) = 0 ({rlim_cur=8388608,rlim_max=-1})
-24864 munmap(0x00007fab68c08000,7935) = 0
-24864 rt_sigaction(SIGSEGV,0x00007fab601fff18,NULL) = 0
---- SIGSEGV {si_signo=SIGSEGV, si_code=1, si_pid=0, si_uid=0} ---
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7858,8) = 0
-24864 mmap(NULL,4096,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007fab68c09000
-24864 mmap(NULL,4096,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007fab68c08000
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7858,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 pipe2(0x7fab603e7000,526336) = 0
-24864 read(3,0x601f6e57,1) = -1 errno=11 (Resource temporarily unavailable)
-24864 write(4,0x55556000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 read(3,0x601f6d97,1) = 1
-24864 write(4,0x60200000,1) = 1
-24864 read(3,0x601f7827,1) = 1
-24864 write(4,0x60275000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 read(3,0x601f6e57,1) = 1
-24864 write(4,0x60372000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 read(3,0x601f6e57,1) = 1
-24864 write(4,0x55556000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 read(3,0x601f6d97,1) = 1
-24864 write(4,0x601ff000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 read(3,0x601f6e57,1) = 1
-24864 write(4,0x68c0c000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f6e98,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f6e98,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7278,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7278,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 read(3,0x601f7827,1) = 1
-24864 write(4,0x60200000,1) = 1
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7338,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab603e7050,0x00007fab601f7238,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7238,NULL,8) = 0
-24864 rt_sigprocmask(SIG_SETMASK,0x00007fab601f7338,NULL,8) = 0
-24864 fstat(1,0x00007fab601f7658) = 0
-24864 getrandom(0x7fab603aa5c8,8,1) = 8
-24864 brk(NULL) = 0x0000555555559000
-24864 brk(0x000055555557a000) = 0x000055555557a000
-24864 write(1,0x555592a0,62)unw_getcontext steps was 4, ucontext steps was 3, should be 2
- = 62
-24864 exit_group(-1)
-$ LD_LIBRARY_PATH=../src/.libs /tmp/qemu-riscv64.good -strace .libs/Ltest-init-local-signal
-24875 brk(NULL) = 0x0000555555559000
-24875 faccessat(AT_FDCWD,"/etc/ld.so.preload",R_OK,AT_EACCESS|0x55557c08) = -1 errno=2 (No such file or directory)
-24875 openat(AT_FDCWD,"../src/.libs/libunwind-riscv.so.8",O_RDONLY|O_CLOEXEC) = 3
-24875 read(3,0x3cfff3d0,832) = 832
-24875 fstat(3,0x00007f213cfff250) = 0
-24875 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007f2145a81000
-24875 getcwd(0x7f2145a814c0,128) = 50
-24875 mmap(NULL,156800,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007f2145a5a000
-24875 mmap(0x00007f2145a67000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0xd000) = 0x00007f2145a67000
-24875 mmap(0x00007f2145a69000,95360,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007f2145a69000
-24875 close(3) = 0
-24875 openat(AT_FDCWD,"../src/.libs/libunwind.so.8",O_RDONLY|O_CLOEXEC) = 3
-24875 read(3,0x3cfff3b0,832) = 832
-24875 fstat(3,0x00007f213cfff230) = 0
-24875 getcwd(0x7f2145a81a40,128) = 50
-24875 mmap(NULL,156848,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007f2145a33000
-24875 mmap(0x00007f2145a40000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0xd000) = 0x00007f2145a40000
-24875 mmap(0x00007f2145a42000,95408,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007f2145a42000
-24875 close(3) = 0
-24875 openat(AT_FDCWD,"../src/.libs/libc.so.6",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24875 openat(AT_FDCWD,"/etc/ld.so.cache",O_RDONLY|O_CLOEXEC) = 3
-24875 fstat(3,0x00007f213cfff220) = 0
-24875 mmap(NULL,7935,PROT_READ,MAP_PRIVATE,3,0) = 0x00007f2145a31000
-24875 close(3) = 0
-24875 openat(AT_FDCWD,"/lib64/lp64d/libc.so.6",O_RDONLY|O_CLOEXEC) = 3
-24875 read(3,0x3cfff390,832) = 832
-24875 fstat(3,0x00007f213cfff210) = 0
-24875 mmap(NULL,1473984,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007f213d098000
-24875 mmap(0x00007f213d1ef000,20480,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0x157000) = 0x00007f213d1ef000
-24875 mmap(0x00007f213d1f4000,48576,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS|MAP_FIXED,-1,0) = 0x00007f213d1f4000
-24875 close(3) = 0
-24875 openat(AT_FDCWD,"../src/.libs/liblzma.so.5",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24875 openat(AT_FDCWD,"/home/abuild/rpmbuild/BUILD/libunwind-1.8.1/src/.libs/liblzma.so.5",O_RDONLY|O_CLOEXEC) = -1 errno=2 (No such file or directory)
-24875 newfstatat(AT_FDCWD,"/home/abuild/rpmbuild/BUILD/libunwind-1.8.1/src/.libs/",0x00007f213cfff1d0,0) = 0
-24875 openat(AT_FDCWD,"/lib64/lp64d/liblzma.so.5",O_RDONLY|O_CLOEXEC) = 3
-24875 read(3,0x3cfff350,832) = 832
-24875 fstat(3,0x00007f213cfff1d0) = 0
-24875 mmap(NULL,200720,PROT_EXEC|PROT_READ,MAP_PRIVATE|MAP_DENYWRITE,3,0) = 0x00007f213d066000
-24875 mmap(0x00007f213d096000,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_DENYWRITE|MAP_FIXED,3,0x30000) = 0x00007f213d096000
-24875 close(3) = 0
-24875 mmap(NULL,8192,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007f2145a2f000
-24875 set_tid_address(0x7f2145a2f4f0) = 24875
-24875 set_robust_list(0x7f2145a2f500,24) = -1 errno=38 (Function not implemented)
-24875 mprotect(0x00007f213d1ef000,12288,PROT_READ) = 0
-24875 mprotect(0x00007f213d096000,4096,PROT_READ) = 0
-24875 mprotect(0x00007f2145a40000,4096,PROT_READ) = 0
-24875 mprotect(0x00007f2145a67000,4096,PROT_READ) = 0
-24875 mprotect(0x0000555555557000,4096,PROT_READ) = 0
-24875 mprotect(0x00007f2145aa4000,8192,PROT_READ) = 0
-24875 prlimit64(0,RLIMIT_STACK,NULL,0x00007f213cfffe58) = 0 ({rlim_cur=8388608,rlim_max=-1})
-24875 munmap(0x00007f2145a31000,7935) = 0
-24875 rt_sigaction(SIGSEGV,0x00007f213cffff08,NULL) = 0
---- SIGSEGV {si_signo=SIGSEGV, si_code=1, si_pid=0, si_uid=0} ---
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7848,8) = 0
-24875 mmap(NULL,4096,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007f2145a32000
-24875 mmap(NULL,4096,PROT_READ|PROT_WRITE,MAP_PRIVATE|MAP_ANONYMOUS,-1,0) = 0x00007f2145a31000
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7848,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7228,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7228,NULL,8) = 0
-24875 pipe2(0x7f2145a68000,526336) = 0
-24875 read(3,0x3cff6e47,1) = -1 errno=11 (Resource temporarily unavailable)
-24875 write(4,0x55556000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff6e88,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff6e88,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7268,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7268,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 read(3,0x3cff6d87,1) = 1
-24875 write(4,0x3d000000,1) = 1
-24875 read(3,0x3cff7817,1) = 1
-24875 write(4,0x3d0c3000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7228,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7228,NULL,8) = 0
-24875 read(3,0x3cff6e47,1) = 1
-24875 write(4,0x3d1c0000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff6e88,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff6e88,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7268,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7268,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7228,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7228,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff6e88,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff6e88,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7268,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7268,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7228,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7228,NULL,8) = 0
-24875 read(3,0x3cff6e47,1) = 1
-24875 write(4,0x55556000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff6e88,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff6e88,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7268,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7268,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7228,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7228,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff6e88,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff6e88,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7268,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7268,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 read(3,0x3cff6d87,1) = 1
-24875 write(4,0x3cfff000,1) = 1
-24875 read(3,0x3cff7817,1) = 1
-24875 write(4,0x45a83000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 read(3,0x3cff6d87,1) = 1
-24875 write(4,0x3d000000,1) = 1
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f2145a68050,0x00007f213cff7328,8) = 0
-24875 rt_sigprocmask(SIG_SETMASK,0x00007f213cff7328,NULL,8) = 0
-24875 exit_group(0)
+ migration/migration.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.26.3
 
