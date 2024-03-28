@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F10A890514
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:24:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD6B890511
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:24:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpsWh-00074u-7O; Thu, 28 Mar 2024 12:22:53 -0400
+	id 1rpsWs-00077N-ME; Thu, 28 Mar 2024 12:23:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rpsWX-00071G-JX; Thu, 28 Mar 2024 12:22:41 -0400
+ id 1rpsWX-00071H-Lh; Thu, 28 Mar 2024 12:22:41 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rpsWT-000878-EK; Thu, 28 Mar 2024 12:22:41 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1rpsWT-000874-FD; Thu, 28 Mar 2024 12:22:41 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42SFOwnp009851; Thu, 28 Mar 2024 16:22:10 GMT
+ 42SFOjHv000733; Thu, 28 Mar 2024 16:22:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=Oy5nFN0etsJJPGxpWCIMafxrPnNst3dVL5vKPOpE5qg=;
- b=RKgVt1mLZ4UZumfv/UHz0fd+O5U+jbduo8efFtGExWI3VQz1qU0eTdPK9Jkyncsfg9hi
- GYAmG1/d7gJamSdl1W36GkgGqyUAMW9EcoV8ubRP5wSwG4tt4t8YrXSqXdu/aJPWEva+
- rPJ5AgJ0HLg627bcDIqP/yFqLO+KDuBuU4Fgtvb4vmCD/80xmFJIn2rBuXnS9tZWxo8+
- fZd7ZIf2sJChOn10M46GsQRlMz+fmVtduA7jum/uGF/ZXpu3SguWMJimpR4/HXR4zR60
- 1ryzefN5xTfFmg05sMK5tdoQQPZsKX5hqNa37Rg6FfnQL54vSc+1JOqjC0a1F4WW1ua6 wg== 
+ content-type : content-transfer-encoding; s=corp-2023-11-20;
+ bh=NCxxLo4RlxRydMdSCKc3FePLGo3S5WU5DOyvQHDa3kg=;
+ b=O5+rkGoeZLNWH313Xt8I/2mBLzm1oYLP8ygLT7xJDWIIw+nEI3zXcR7t9DuJilF2lx/G
+ MB5LoY/DxU6HalxTGOYlAsKvTBQ0AYRZVkFdX87MiH2rLTYp+mkjBALjCnHQY5MZiS61
+ DoHCjF+MH5GgAMuHZJNMaxtM+PicALZ+DYOjvIj6Uko9LjXoQzesRPLS79F08HEopaiq
+ WttlTo1Xg9gXTijLw4pVPpjLqwiNXbytH1o/wpmC+9QIJriavkKCkefwxMgyjW9lsq6x
+ 8D+CNesuVx7kWdJ+H+/xHYyNJq/bkPOTHkLd3Z2APuricSXQna87t2ugde1zh/rgvrY5 vQ== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x2f6h8w75-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x4cxy3jc6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Mar 2024 16:22:10 +0000
+ Thu, 28 Mar 2024 16:22:11 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 42SG2jwR015085; Thu, 28 Mar 2024 16:22:10 GMT
+ with ESMTP id 42SG6uJk015089; Thu, 28 Mar 2024 16:22:11 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3x1nhgfgj6-1
+ 3x1nhgfgkp-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Mar 2024 16:22:09 +0000
+ Thu, 28 Mar 2024 16:22:11 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SGM5a1010492;
- Thu, 28 Mar 2024 16:22:09 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SGM5a3010492;
+ Thu, 28 Mar 2024 16:22:10 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-39-220-183.vpn.oracle.com
  [10.39.220.183])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3x1nhgfgcy-4; Thu, 28 Mar 2024 16:22:09 +0000
+ 3x1nhgfgcy-5; Thu, 28 Mar 2024 16:22:10 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
@@ -58,13 +58,15 @@ Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
  eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
  schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [RFC v2 3/5] virtio: In-order support for packed VQs
-Date: Thu, 28 Mar 2024 12:22:01 -0400
-Message-Id: <20240328162203.3775114-4-jonah.palmer@oracle.com>
+Subject: [RFC v2 4/5] vhost,
+ vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+Date: Thu, 28 Mar 2024 12:22:02 -0400
+Message-Id: <20240328162203.3775114-5-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240328162203.3775114-1-jonah.palmer@oracle.com>
 References: <20240328162203.3775114-1-jonah.palmer@oracle.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
@@ -74,8 +76,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
  mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
  definitions=main-2403280111
-X-Proofpoint-GUID: k7Vubl2-zRR0a3m-VmYP5KX2AJ3YbW-E
-X-Proofpoint-ORIG-GUID: k7Vubl2-zRR0a3m-VmYP5KX2AJ3YbW-E
+X-Proofpoint-ORIG-GUID: GBAbzjABFBmkmS9YtKLnshBMZm8A-t79
+X-Proofpoint-GUID: GBAbzjABFBmkmS9YtKLnshBMZm8A-t79
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -100,99 +102,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Implements VIRTIO_F_IN_ORDER feature support for virtio devices using
-the packed virtqueue layout.
+Add support for the VIRTIO_F_IN_ORDER feature across a variety of vhost
+devices.
 
-For a virtio device that has negotiated the VIRTIO_F_IN_ORDER feature
-whose virtqueues use a packed virtqueue layout, it's essential that used
-VirtQueueElements are written to the descriptor ring in-order.
+The inclusion of VIRTIO_F_IN_ORDER in the feature bits arrays for these
+devices ensures that the backend is capable of offering and providing
+support for this feature, and that it can be disabled if the backend
+does not support it.
 
-In the packed virtqueue case, since we already write to the virtqueue's
-used_elems array at the start of virtqueue_fill, we don't need to call
-virtqueue_packed_fill. Furthermore, due to change in behavior of the
-used_elems array and not knowing how many unused in-order elements
-exist, separate logic is required for the flushing operation of packed
-virtqueues.
-
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/virtio/virtio.c | 50 +++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 43 insertions(+), 7 deletions(-)
+ hw/block/vhost-user-blk.c    | 1 +
+ hw/net/vhost_net.c           | 2 ++
+ hw/scsi/vhost-scsi.c         | 1 +
+ hw/scsi/vhost-user-scsi.c    | 1 +
+ hw/virtio/vhost-user-fs.c    | 1 +
+ hw/virtio/vhost-user-vsock.c | 1 +
+ net/vhost-vdpa.c             | 1 +
+ 7 files changed, 8 insertions(+)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 19d3d43816..dc2eabd18b 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -960,7 +960,8 @@ void virtqueue_fill(VirtQueue *vq, const VirtQueueElement *elem,
-         vq->used_elems[seq_idx].out_num = elem->out_num;
-     }
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index 6a856ad51a..d176ed857e 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -51,6 +51,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
--    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
-+    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED) &&
-+        !virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
-         virtqueue_packed_fill(vq, elem, len, idx);
-     } else {
-         virtqueue_split_fill(vq, elem, len, idx);
-@@ -997,18 +998,53 @@ static void virtqueue_split_flush(VirtQueue *vq, unsigned int count)
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index fd1a93701a..eb0b1c06e5 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -48,6 +48,7 @@ static const int kernel_feature_bits[] = {
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
+     VIRTIO_NET_F_HASH_REPORT,
+     VHOST_INVALID_FEATURE_BIT
+ };
+@@ -76,6 +77,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
+     VIRTIO_NET_F_RSS,
+     VIRTIO_NET_F_HASH_REPORT,
+     VIRTIO_NET_F_GUEST_USO4,
+diff --git a/hw/scsi/vhost-scsi.c b/hw/scsi/vhost-scsi.c
+index ae26bc19a4..40e7630191 100644
+--- a/hw/scsi/vhost-scsi.c
++++ b/hw/scsi/vhost-scsi.c
+@@ -38,6 +38,7 @@ static const int kernel_feature_bits[] = {
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_SCSI_F_HOTPLUG,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
- static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
- {
--    unsigned int i, ndescs = 0;
-+    unsigned int i, j, uelem_idx, ndescs = 0;
+diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
+index a63b1f4948..1d59951ab7 100644
+--- a/hw/scsi/vhost-user-scsi.c
++++ b/hw/scsi/vhost-user-scsi.c
+@@ -36,6 +36,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_SCSI_F_HOTPLUG,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
-     if (unlikely(!vq->vring.desc)) {
-         return;
-     }
+diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
+index cca2cd41be..9243dbb128 100644
+--- a/hw/virtio/vhost-user-fs.c
++++ b/hw/virtio/vhost-user-fs.c
+@@ -33,6 +33,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_IOMMU_PLATFORM,
+     VIRTIO_F_RING_RESET,
++    VIRTIO_F_IN_ORDER,
  
--    for (i = 1; i < count; i++) {
--        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
--        ndescs += vq->used_elems[i].ndescs;
-+    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
-+        /* First expected element is used, nothing to do */
-+        if (vq->used_elems[vq->used_idx].in_num +
-+            vq->used_elems[vq->used_idx].out_num <= 0) {
-+            return;
-+        }
-+
-+        j = vq->used_idx;
-+
-+        for (i = j + 1; ; i++) {
-+            uelem_idx = i % vq->vring.num;
-+
-+            /* Stop if element has been used */
-+            if (vq->used_elems[uelem_idx].in_num +
-+                vq->used_elems[uelem_idx].out_num <= 0) {
-+                break;
-+            }
-+
-+            virtqueue_packed_fill_desc(vq, &vq->used_elems[uelem_idx],
-+                                       uelem_idx, false);
-+            ndescs += vq->used_elems[uelem_idx].ndescs;
-+
-+            /* Mark this element as used */
-+            vq->used_elems[uelem_idx].in_num = 0;
-+            vq->used_elems[uelem_idx].out_num = 0;
-+        }
-+
-+        /* Mark first expected element as used */
-+        vq->used_elems[vq->used_idx].in_num = 0;
-+        vq->used_elems[vq->used_idx].out_num = 0;
-+    } else {
-+        j = 0;
-+
-+        for (i = 1; i < count; i++) {
-+            virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
-+            ndescs += vq->used_elems[i].ndescs;
-+        }
-     }
--    virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
--    ndescs += vq->used_elems[0].ndescs;
-+
-+    virtqueue_packed_fill_desc(vq, &vq->used_elems[j], j, true);
-+    ndescs += vq->used_elems[j].ndescs;
+     VHOST_INVALID_FEATURE_BIT
+ };
+diff --git a/hw/virtio/vhost-user-vsock.c b/hw/virtio/vhost-user-vsock.c
+index 9431b9792c..cc7e4e47b4 100644
+--- a/hw/virtio/vhost-user-vsock.c
++++ b/hw/virtio/vhost-user-vsock.c
+@@ -21,6 +21,7 @@ static const int user_feature_bits[] = {
+     VIRTIO_RING_F_INDIRECT_DESC,
+     VIRTIO_RING_F_EVENT_IDX,
+     VIRTIO_F_NOTIFY_ON_EMPTY,
++    VIRTIO_F_IN_ORDER,
+     VHOST_INVALID_FEATURE_BIT
+ };
  
-     vq->inuse -= ndescs;
-     vq->used_idx += ndescs;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 85e73dd6a7..ed3185acfa 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -62,6 +62,7 @@ const int vdpa_feature_bits[] = {
+     VIRTIO_F_RING_PACKED,
+     VIRTIO_F_RING_RESET,
+     VIRTIO_F_VERSION_1,
++    VIRTIO_F_IN_ORDER,
+     VIRTIO_NET_F_CSUM,
+     VIRTIO_NET_F_CTRL_GUEST_OFFLOADS,
+     VIRTIO_NET_F_CTRL_MAC_ADDR,
 -- 
 2.39.3
 
