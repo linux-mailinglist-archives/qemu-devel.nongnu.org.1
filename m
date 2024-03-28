@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8AE689046A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:02:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A453E8903FD
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:56:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps6I-0001n7-7b; Thu, 28 Mar 2024 11:55:34 -0400
+	id 1rps6J-0001uL-AP; Thu, 28 Mar 2024 11:55:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps68-0001Xv-GX
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:26 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6E-0001dE-4H
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:31 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps66-00024h-Fd
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:24 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-56c2c41cbdaso648823a12.2
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:55:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps6C-00028G-K1
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:55:29 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-5688eaf1165so1560004a12.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:55:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641320; x=1712246120; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641327; x=1712246127; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Qqj3zRF0zkE64TiaxdKa2OyadNVq3wsX7i8167PhhDk=;
- b=fpFpEreOmtqPkGN8wZCLxiaQDUL02smlviXnSG1rTHWvb/HCrx5b4grPSWcsNQXRpn
- tZdjG4EDK2g9P7UVasve5CEBL+ydTAaYLbQJgswM0+v+704FhNUSsxUeTXzY1V9n8RO4
- OdBb47UI2Z9f2gQ/8ZszJRdebX1G5UkLYocS2FZ405krHs45dpjkrPoiEkcLd7sjoWz+
- +cYNrApJhKkeoZGPZqWL93aMVqdkcX7YCEvMN9ber2fpA5HjCuiE7Uh8xJjpdinF3hZp
- 1iZ8jIWQvwNkDOVULNMungitVCfgJypewuFUKiYNAoQrnpB3nd8kra7Z9s8nDAx9kIeU
- Xhcw==
+ bh=6t/11DBdsC4+Se7Vaykag7BJymn7PIzchj3B9U9dVz4=;
+ b=m1TOQnBCfg32QxJAem8LWUqmGFVed53ttCwNU1MG3lXrPgjFijU57C7dxp5AO24MPy
+ OAxDYF0nFs9xDWYUwbcTYXNZF88NTPkqlO2K/7TV5N28NGHjxw9hZZ1BeA+3uQZ4HtKP
+ KG9FdQEgXPJeJC4OH7wxjhGfVHSY6dPfoYeTX1zK/hYsYf3rguD5oQ84mFOFmgHdg6tF
+ kWkHN/1cUFV8E4GgoOsQckBiZkn9QDyVzFr3aEyLRlmN351PeSNs9Zj4tl2OuhGPsPo+
+ t4nUfZoiaFLxMl1XAKKuvcWIO+1YZIqRexOUsrbeqPk5QonTnW5jKEf9MxcNzk5cAX9e
+ vXvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641320; x=1712246120;
+ d=1e100.net; s=20230601; t=1711641327; x=1712246127;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Qqj3zRF0zkE64TiaxdKa2OyadNVq3wsX7i8167PhhDk=;
- b=X5YK9aM/Fbb9wWMjwPA/gsTssU4ihRunn1alTYeUT3hwzAvddQT2FoHEz4njWCJ4PR
- k1tS22M47G0Mq43OjQZbPbJTQgmHE0DjN4tBsorZ9lqzPjGdC0OlJROSJRh7eei5r8Qc
- PBgl83bS4q+D59HYYcvZiEez2Dqvpd3PCAQbQC+vPs1DkL0qbH6DU/E4txkDEZj0Sapt
- WUdXdzHD+gk5mNpli2Z3Fd9MGBoDxfbtonhAAWfG+CbLRR5wsu1yf6i1c1QhVTcmQweg
- 711TlzTujrjNgz4p0bPOpiw+GW4hRsZPFGHVdJv5UXkDeczwjnxlapqgeoNJmrziRPR2
- jtGw==
-X-Gm-Message-State: AOJu0YxsvvRYtLCTu78+vui0a1fHaAudJejz9vVyXQoZ5bdw99Gb1Jth
- nl5/xyUAAhwpGCz7iuxVWQRmEcW2akuxXD1E+mHzsezXzlb3FDmMfQ6f+wuWXmuuNnTzMpkopfR
- +
-X-Google-Smtp-Source: AGHT+IHK7QxU7AgeWAocSeLH4R3SrP+9YZVhIuiOSStSg8CKPyXF7V4Tf4M9BXjp5dsE6yThozBjEA==
-X-Received: by 2002:a50:8d08:0:b0:566:ecce:9d3c with SMTP id
- s8-20020a508d08000000b00566ecce9d3cmr2991678eds.26.1711641320462; 
- Thu, 28 Mar 2024 08:55:20 -0700 (PDT)
+ bh=6t/11DBdsC4+Se7Vaykag7BJymn7PIzchj3B9U9dVz4=;
+ b=HIlNYUjQ36I95g4jjqWbhAGIEumG/v1YqBVKgTOCR+FAj91laUL5KbCH5XlOe6drkv
+ Dd1uylpjw6rDZOx1xKwN13txVlJo64bWXYk1JTN6bNICkRNi0rpLRMY+WCWQW1Gkq3r0
+ GtswEpu7y0tejGoXudjq4y7Vag4cUWA/CrLKqQPHr+dUBhiHNd3C54gVUHiXqsmH8p+K
+ UMnMyymX1BqIy+6awMWD/Gu3yiM1Qk/ozO7ST2yVC6DZrBLnsIEtzquYCuHCNUg06Nqp
+ aMJUfSc7tIxGen78CQDwtK/adEB+WWCCySId4YG21Kf1C9mzAzZwTa93tJLveEn/MCyz
+ McWw==
+X-Gm-Message-State: AOJu0Yxa6OkD5KqDTdR/eUF0lZ61o1pLhLomz+gs6X75g2JxESDWH/Dm
+ H6PsGV9795aiFWG/jyE82/nu+bamu5EI2MHN3grr9Tjh5xEIJtULfxD+kDkN1D4olViyyeMNQYB
+ e
+X-Google-Smtp-Source: AGHT+IGa5cOf+IgzGIenKqeTpz5Pqe+oCRGklHarD29ZvICujPU9lddIF/mJjLz/l0UjTGpZalGbwQ==
+X-Received: by 2002:a50:9e64:0:b0:56b:900b:a2e with SMTP id
+ z91-20020a509e64000000b0056b900b0a2emr2672032ede.32.1711641326922; 
+ Thu, 28 Mar 2024 08:55:26 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- ef15-20020a05640228cf00b0056c1380a972sm963818edb.74.2024.03.28.08.55.18
+ k7-20020aa7c047000000b0056c443ce781sm968470edo.85.2024.03.28.08.55.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:55:20 -0700 (PDT)
+ Thu, 28 Mar 2024 08:55:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 06/29] hw/i386/pc: Move pci_root_uid field to
- PcPciMachineClass
-Date: Thu, 28 Mar 2024 16:54:14 +0100
-Message-ID: <20240328155439.58719-7-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1 07/29] hw/i386/pc: Call
+ fw_cfg_add_extra_pci_roots() in pc_pci_machine_done()
+Date: Thu, 28 Mar 2024 16:54:15 +0100
+Message-ID: <20240328155439.58719-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,142 +102,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The 'pci_root_uid' field is irrelevant for non-PCI
-machines, restrict it to the PcPciMachineClass.
+fw_cfg_add_extra_pci_roots() expects a PCI bus, which only
+PCI-based machines have. No need to call it on the ISA-only
+machine. Move it to the PCI-specific machine_done handler.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/i386/pc.h | 4 +++-
- hw/i386/acpi-build.c | 9 +++++++--
- hw/i386/pc_piix.c    | 7 +++++--
- hw/i386/pc_q35.c     | 7 +++++--
- 4 files changed, 20 insertions(+), 7 deletions(-)
+ hw/i386/pc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 0b23e5ec7b..24c8e17e62 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -96,7 +96,6 @@ typedef struct PCMachineClass {
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index a16bb1554c..f9226f7115 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -608,8 +608,6 @@ void pc_machine_done(Notifier *notifier, void *data)
+     /* set the number of CPUs */
+     x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
  
-     /* ACPI compat: */
-     bool has_acpi_build;
--    int pci_root_uid;
+-    fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
+-
+     acpi_setup();
+     if (x86ms->fw_cfg) {
+         fw_cfg_build_smbios(pcms, x86ms->fw_cfg, pcms->smbios_entry_point_type);
+@@ -623,6 +621,12 @@ void pc_machine_done(Notifier *notifier, void *data)
  
-     /* SMBIOS compat: */
-     bool smbios_defaults;
-@@ -127,6 +126,9 @@ typedef struct PCMachineClass {
- 
- typedef struct PcPciMachineClass {
-     PCMachineClass parent_class;
-+
-+    /* ACPI compat: */
-+    int pci_root_uid;
- } PcPciMachineClass;
- 
- #define TYPE_PC_MACHINE "common-pc-machine"
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 6f9925d176..b9890886f6 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1426,6 +1426,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-     CrsRangeSet crs_range_set;
-     PCMachineState *pcms = PC_MACHINE(machine);
-     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(machine);
-+    PcPciMachineClass *ppmc;
-     X86MachineState *x86ms = X86_MACHINE(machine);
-     AcpiMcfgInfo mcfg;
-     bool mcfg_valid = !!acpi_get_mcfg(&mcfg);
-@@ -1448,10 +1449,12 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
- 
-     build_dbg_aml(dsdt);
-     if (i440fx) {
-+        ppmc = PC_PCI_MACHINE_GET_CLASS(machine);
-+
-         sb_scope = aml_scope("_SB");
-         dev = aml_device("PCI0");
-         aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A03")));
--        aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
-+        aml_append(dev, aml_name_decl("_UID", aml_int(ppmc->pci_root_uid)));
-         aml_append(dev, aml_pci_edsm());
-         aml_append(sb_scope, dev);
-         aml_append(dsdt, sb_scope);
-@@ -1461,11 +1464,13 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-         }
-         build_piix4_pci0_int(dsdt);
-     } else if (q35) {
-+        ppmc = PC_PCI_MACHINE_GET_CLASS(machine);
-+
-         sb_scope = aml_scope("_SB");
-         dev = aml_device("PCI0");
-         aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
-         aml_append(dev, aml_name_decl("_CID", aml_eisaid("PNP0A03")));
--        aml_append(dev, aml_name_decl("_UID", aml_int(pcmc->pci_root_uid)));
-+        aml_append(dev, aml_name_decl("_UID", aml_int(ppmc->pci_root_uid)));
-         aml_append(dev, build_q35_osc_method(!pm->pcihp_bridge_en));
-         aml_append(dev, aml_pci_edsm());
-         aml_append(sb_scope, dev);
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 776d02db73..c42dd46e59 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -468,9 +468,11 @@ static void pc_xen_hvm_init(MachineState *machine)
- static void pc_i440fx_machine_options(MachineClass *m)
+ static void pc_pci_machine_done(Notifier *notifier, void *data)
  {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+    PcPciMachineClass *ppmc = PC_PCI_MACHINE_CLASS(m);
-     ObjectClass *oc = OBJECT_CLASS(m);
++    PcPciMachineState *ppms = container_of(notifier,
++                                           PcPciMachineState, machine_done);
++    PCMachineState *pcms = PC_MACHINE(ppms);
++    X86MachineState *x86ms = X86_MACHINE(pcms);
 +
-     pcmc->default_south_bridge = TYPE_PIIX3_DEVICE;
--    pcmc->pci_root_uid = 0;
-+    ppmc->pci_root_uid = 0;
-     pcmc->default_cpu_version = 1;
- 
-     m->family = "pc_piix";
-@@ -622,12 +624,13 @@ DEFINE_I440FX_MACHINE(v5_2, "pc-i440fx-5.2", NULL,
- static void pc_i440fx_5_1_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+    PcPciMachineClass *ppmc = PC_PCI_MACHINE_CLASS(m);
- 
-     pc_i440fx_5_2_machine_options(m);
-     compat_props_add(m->compat_props, hw_compat_5_1, hw_compat_5_1_len);
-     compat_props_add(m->compat_props, pc_compat_5_1, pc_compat_5_1_len);
-     pcmc->kvmclock_create_always = false;
--    pcmc->pci_root_uid = 1;
-+    ppmc->pci_root_uid = 1;
++    fw_cfg_add_extra_pci_roots(pcms->pcibus, x86ms->fw_cfg);
  }
  
- DEFINE_I440FX_MACHINE(v5_1, "pc-i440fx-5.1", NULL,
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index c3b0467ef3..dc0bf85464 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -345,7 +345,9 @@ static void pc_q35_init(MachineState *machine)
- static void pc_q35_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
--    pcmc->pci_root_uid = 0;
-+    PcPciMachineClass *ppmc = PC_PCI_MACHINE_CLASS(m);
-+
-+    ppmc->pci_root_uid = 0;
-     pcmc->default_cpu_version = 1;
- 
-     m->family = "pc_q35";
-@@ -495,12 +497,13 @@ DEFINE_Q35_MACHINE(v5_2, "pc-q35-5.2", NULL,
- static void pc_q35_5_1_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+    PcPciMachineClass *ppmc = PC_PCI_MACHINE_CLASS(m);
- 
-     pc_q35_5_2_machine_options(m);
-     compat_props_add(m->compat_props, hw_compat_5_1, hw_compat_5_1_len);
-     compat_props_add(m->compat_props, pc_compat_5_1, pc_compat_5_1_len);
-     pcmc->kvmclock_create_always = false;
--    pcmc->pci_root_uid = 1;
-+    ppmc->pci_root_uid = 1;
- }
- 
- DEFINE_Q35_MACHINE(v5_1, "pc-q35-5.1", NULL,
+ /* setup pci memory address space mapping into system address space */
 -- 
 2.41.0
 
