@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E646F89092E
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F02A89092C
 	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 20:26:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpvMt-0000yg-Q1; Thu, 28 Mar 2024 15:24:55 -0400
+	id 1rpvMr-0000xB-CN; Thu, 28 Mar 2024 15:24:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rpvMq-0000xp-1P; Thu, 28 Mar 2024 15:24:52 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rpvMn-0000wG-H5; Thu, 28 Mar 2024 15:24:49 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rpvMn-0001SP-K0; Thu, 28 Mar 2024 15:24:51 -0400
-Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ id 1rpvMl-0001Rr-Ih; Thu, 28 Mar 2024 15:24:49 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42SIwaQP000917; Thu, 28 Mar 2024 19:24:37 GMT
+ 42SIeuDU025262; Thu, 28 Mar 2024 19:24:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=P6sUhRPi5NyJq7ZGPqNsjaJv9uG5+7x3koE1N+CaZYw=;
- b=TYMntIdxz10UEloV+iwWn0nYxCPX81wZSu5d0bHKp1wVi3pp+eVqiT2rkagjJYcVqzhX
- jXc5Pa9J04h8LbZ9eFyuEyGVtvhGZFOjzEc5B1w7b3inc5D4bQLPqgei2W1nm9tjKvfG
- ZvIKqVpFgq90AaDmaPTtTrRUoXCsQjzlAkRGRsHrncWqi7fgM3tbIR2Jr8KFXNnBV91F
- EQSKaWGfU5r4WYT55A/TidP7drHJzhOBgP6hn2TJTE1BqTMovaE0Xl9wsSrzXtv0sT3J
- ZMWnuEKfe24ouNFa8qrPBZS8oNbMXKJry0h6iUr+Eu5vxiA4oZs5x/iFdU3wmyt5o6nU Cw== 
+ bh=RIb9jPTRKPhhYur4GjRbwz1VZFP+CXDe02Qi3AUij3Q=;
+ b=L6MurnF+3EACV47gyZLfYeodw0SNVwbd2cQI7RTV45ez3wmOCee9GIaSv4E1ohMdkrEh
+ sF68vyia0BsdW5XBYeX2iHS3w24kc2h94/MEz2Js2ig44sbLsoBVM7PHES/By1MmB7jy
+ LwQzxrXc2K1C2t1oO0hPso+db76AOn+jbLpjqrYVuERbPCjnyL4Lo1EElf/RWS29wQs7
+ 7BqqYGdGwRcUnA2Oyjr7i5uYAbpmUuDi4eya+Wy/9VusxO1GnSUq9jviYnAR98mqd8VT
+ W4D8ElFTAM7QXv9yBoM3oZWmB6H4XiKrvaKDgIZAjKPI4H9lkeBle/+krp85hKJiB+TD Rw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5e9cg266-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5dsjg475-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:36 +0000
-Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SJOaPx013150;
- Thu, 28 Mar 2024 19:24:36 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5e9cg263-1
+ Thu, 28 Mar 2024 19:24:40 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SJOd3g027167;
+ Thu, 28 Mar 2024 19:24:39 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5dsjg473-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:36 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42SJ9TJ0013367; Thu, 28 Mar 2024 19:24:35 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3x29t0yp1a-1
+ Thu, 28 Mar 2024 19:24:39 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42SIW3XZ011243; Thu, 28 Mar 2024 19:24:39 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2bmmf50b-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:35 +0000
+ Thu, 28 Mar 2024 19:24:39 +0000
 Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
  [10.39.53.231])
- by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42SJOWUI42205614
+ by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 42SJOar217498642
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Mar 2024 19:24:34 GMT
+ Thu, 28 Mar 2024 19:24:38 GMT
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE52E58050;
- Thu, 28 Mar 2024 19:24:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 2527558045;
+ Thu, 28 Mar 2024 19:24:36 +0000 (GMT)
 Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 24FF358054;
- Thu, 28 Mar 2024 19:24:32 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 9A04A58056;
+ Thu, 28 Mar 2024 19:24:35 +0000 (GMT)
 Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
  by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 28 Mar 2024 19:24:32 +0000 (GMT)
+ Thu, 28 Mar 2024 19:24:35 +0000 (GMT)
 From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-ppc@nongnu.org
 Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
@@ -71,28 +71,28 @@ Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
  Nicholas Piggin <npiggin@gmail.com>,
  David Gibson <david@gibson.dropbear.id.au>,
  Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v4 2/4] target/ppc: Add recording of taken branches to BHRB
-Date: Thu, 28 Mar 2024 14:23:54 -0500
-Message-Id: <20240328192356.2144086-3-milesg@linux.vnet.ibm.com>
+Subject: [PATCH v4 3/4] target/ppc: Add clrbhrb and mfbhrbe instructions
+Date: Thu, 28 Mar 2024 14:23:55 -0500
+Message-Id: <20240328192356.2144086-4-milesg@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.31.8
 In-Reply-To: <20240328192356.2144086-1-milesg@linux.vnet.ibm.com>
 References: <20240328192356.2144086-1-milesg@linux.vnet.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CwMgaMqSonAJF7lPs9xMnjmRzFz-KX1V
-X-Proofpoint-GUID: xNFU8EghLRN9wvTddVUpyl4OKdsRflza
+X-Proofpoint-ORIG-GUID: tK8WMj3Y6vRbKcYpyYmgP3yp2NXMA6oh
+X-Proofpoint-GUID: -OkRbrWPz45uD4ZOSJDjJezZyniRhdO6
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-28_17,2024-03-28_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 mlxscore=0
- clxscore=1015 bulkscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- suspectscore=0 mlxlogscore=902 impostorscore=0 spamscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
- definitions=main-2403280136
-Received-SPF: none client-ip=148.163.156.1;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0a-001b2d01.pphosted.com
+ clxscore=1015
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 spamscore=0
+ phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=673 adultscore=0
+ suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2403210000 definitions=main-2403280136
+Received-SPF: none client-ip=148.163.158.5;
+ envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -115,24 +115,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit continues adding support for the Branch History
-Rolling Buffer (BHRB) as is provided starting with the P8
-processor and continuing with its successors.  This commit
-is limited to the recording and filtering of taken branches.
+Add support for the clrbhrb and mfbhrbe instructions.
 
-The following changes were made:
+Since neither instruction is believed to be critical to
+performance, both instructions were implemented using helper
+functions.
 
-  - Enabled functionality on P10 processors only due to
-    performance impact seen with P8 and P9 where it is not
-    disabled for non problem state branches.
-  - Added a BHRB buffer for storing branch instruction and
-    target addresses for taken branches
-  - Renamed gen_update_cfar to gen_update_branch_history and
-    added a 'target' parameter to hold the branch target
-    address and 'inst_type' parameter to use for filtering
-  - Added TCG code to gen_update_branch_history that stores
-    data to the BHRB and updates the BHRB offset.
-  - Added BHRB resource initialization and reset functions
+Access to both instructions is controlled by bits in the
+HFSCR (for privileged state) and MMCR0 (for problem state).
+A new function, helper_mmcr0_facility_check, was added for
+checking MMCR0[BHRBA] and raising a facility_unavailable exception
+if required.
+
+NOTE: For P8 and P9, due to a performance issue, branch history will
+not be kept, but the instructions will be allowed to execute
+as normal with the exception that the mfbhrbe instruction will
+always return a zero value.
 
 Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
 Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
@@ -141,437 +139,194 @@ Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 Changes from v3:
   - Rebased on latest master branch
   - Fixed compile errors for non ppc64-softmmu targets
-  - Fixed compile errors from compiling on 32 bit hosts
 
- target/ppc/cpu.h                       | 17 +++++
- target/ppc/cpu_init.c                  | 37 +++++++++-
- target/ppc/power8-pmu.c                | 33 +++++++++
- target/ppc/power8-pmu.h                |  7 ++
- target/ppc/translate.c                 | 98 ++++++++++++++++++++++++--
- target/ppc/translate/branch-impl.c.inc |  2 +-
- 6 files changed, 186 insertions(+), 8 deletions(-)
+ target/ppc/cpu.h                     |  2 ++
+ target/ppc/helper.h                  |  7 ++++
+ target/ppc/insn32.decode             |  8 +++++
+ target/ppc/misc_helper.c             | 50 ++++++++++++++++++++++++++++
+ target/ppc/translate.c               |  2 ++
+ target/ppc/translate/bhrb-impl.c.inc | 43 ++++++++++++++++++++++++
+ 6 files changed, 112 insertions(+)
+ create mode 100644 target/ppc/translate/bhrb-impl.c.inc
 
 diff --git a/target/ppc/cpu.h b/target/ppc/cpu.h
-index 3f6b93ca8f..7a62a82d03 100644
+index 7a62a82d03..76e896fdda 100644
 --- a/target/ppc/cpu.h
 +++ b/target/ppc/cpu.h
-@@ -550,6 +550,8 @@ FIELD(MSR, LE, MSR_LE, 1)
-                          MMCR2_FC4P0 | MMCR2_FC5P0 | MMCR2_FC6P0)
+@@ -537,6 +537,7 @@ FIELD(MSR, LE, MSR_LE, 1)
+ #define MMCR0_PMCjCE PPC_BIT(49)         /* MMCR0 PMCj Condition Enabled */
+ #define MMCR0_FCP    PPC_BIT(34)         /* Freeze Counters/BHRB if PR=1 */
+ #define MMCR0_FCPC   PPC_BIT(51)         /* Condition for FCP bit */
++#define MMCR0_BHRBA_NR PPC_BIT_NR(42)    /* BHRB Available */
+ /* MMCR0 userspace r/w mask */
+ #define MMCR0_UREG_MASK (MMCR0_FC | MMCR0_PMAO | MMCR0_PMAE)
+ /* MMCR2 userspace r/w mask */
+@@ -636,6 +637,7 @@ FIELD(MSR, LE, MSR_LE, 1)
  
- #define MMCRA_BHRBRD    PPC_BIT(26)         /* BHRB Recording Disable */
-+#define MMCRA_IFM_MASK  PPC_BITMASK(32, 33) /* BHRB Instruction Filtering */
-+#define MMCRA_IFM_SHIFT PPC_BIT_NR(33)
+ /* HFSCR bits */
+ #define HFSCR_MSGP     PPC_BIT(53) /* Privileged Message Send Facilities */
++#define HFSCR_BHRB     PPC_BIT(59) /* BHRB Instructions */
+ #define HFSCR_IC_MSGP  0xA
  
- #define MMCR1_EVT_SIZE 8
- /* extract64() does a right shift before extracting */
-@@ -776,6 +778,8 @@ enum {
-     POWERPC_FLAG_SMT      = 0x00400000,
-     /* Using "LPAR per core" mode  (as opposed to per-thread)                */
-     POWERPC_FLAG_SMT_1LPAR = 0x00800000,
-+    /* Has BHRB */
-+    POWERPC_FLAG_BHRB      = 0x01000000,
- };
+ #define DBCR0_ICMP (1 << 27)
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 3df360efe9..8cdb322ed6 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -820,3 +820,10 @@ DEF_HELPER_4(DSCLIQ, void, env, fprp, fprp, i32)
  
- /*
-@@ -1217,6 +1221,9 @@ struct pnv_tod_tbst {
- #define PPC_CPU_OPCODES_LEN          0x40
- #define PPC_CPU_INDIRECT_OPCODES_LEN 0x20
- 
-+#define BHRB_MAX_NUM_ENTRIES_LOG2 (5)
-+#define BHRB_MAX_NUM_ENTRIES      (1 << BHRB_MAX_NUM_ENTRIES_LOG2)
+ DEF_HELPER_1(tbegin, void, env)
+ DEF_HELPER_FLAGS_1(fixup_thrm, TCG_CALL_NO_RWG, void, env)
 +
- struct CPUArchState {
-     /* Most commonly used resources during translated code execution first */
-     target_ulong gpr[32];  /* general purpose registers */
-@@ -1313,6 +1320,16 @@ struct CPUArchState {
-     int dcache_line_size;
-     int icache_line_size;
++#if !defined(CONFIG_USER_ONLY)
++#if defined(TARGET_PPC64)
++DEF_HELPER_1(clrbhrb, void, env)
++DEF_HELPER_FLAGS_2(mfbhrbe, TCG_CALL_NO_WG, i64, env, i32)
++#endif
++#endif
+diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
+index eada59f59f..a343621cdd 100644
+--- a/target/ppc/insn32.decode
++++ b/target/ppc/insn32.decode
+@@ -998,3 +998,11 @@ MSGSND          011111 ----- ----- ..... 0011001110 -   @X_rb
+ MSGCLRP         011111 ----- ----- ..... 0010101110 -   @X_rb
+ MSGSNDP         011111 ----- ----- ..... 0010001110 -   @X_rb
+ MSGSYNC         011111 ----- ----- ----- 1101110110 -
++
++# Branch History Rolling Buffer (BHRB) Instructions
++
++&XFX_bhrbe      rt bhrbe
++@XFX_bhrbe      ...... rt:5 bhrbe:10 .......... -       &XFX_bhrbe
++
++MFBHRBE         011111 ..... ..... ..... 0100101110 -   @XFX_bhrbe
++CLRBHRB         011111 ----- ----- ----- 0110101110 -
+diff --git a/target/ppc/misc_helper.c b/target/ppc/misc_helper.c
+index 58e808dc96..6f419c9346 100644
+--- a/target/ppc/misc_helper.c
++++ b/target/ppc/misc_helper.c
+@@ -150,6 +150,17 @@ void helper_msr_facility_check(CPUPPCState *env, uint32_t bit,
+ 
+ #if !defined(CONFIG_USER_ONLY)
  
 +#ifdef TARGET_PPC64
-+    /* Branch History Rolling Buffer (BHRB) resources */
-+    target_ulong bhrb_num_entries;
-+    intptr_t     bhrb_base;
-+    target_ulong bhrb_filter;
-+    target_ulong bhrb_offset;
-+    target_ulong bhrb_offset_mask;
-+    uint64_t bhrb[BHRB_MAX_NUM_ENTRIES];
-+#endif
-+
-     /* These resources are used during exception processing */
-     /* CPU model definition */
-     target_ulong msr_mask;
-diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
-index 4e65335669..907cdde5a8 100644
---- a/target/ppc/cpu_init.c
-+++ b/target/ppc/cpu_init.c
-@@ -6142,6 +6142,28 @@ POWERPC_FAMILY(POWER7)(ObjectClass *oc, void *data)
-     pcc->l1_icache_size = 0x8000;
- }
- 
-+static void bhrb_init_state(CPUPPCState *env, target_long num_entries_log2)
++static void helper_mmcr0_facility_check(CPUPPCState *env, uint32_t bit,
++                                 uint32_t sprn, uint32_t cause)
 +{
-+    if (env->flags & POWERPC_FLAG_BHRB) {
-+        if (num_entries_log2 > BHRB_MAX_NUM_ENTRIES_LOG2) {
-+            num_entries_log2 = BHRB_MAX_NUM_ENTRIES_LOG2;
-+        }
-+        env->bhrb_num_entries = 1 << num_entries_log2;
-+        env->bhrb_base = (intptr_t)&env->bhrb[0];
-+        env->bhrb_offset_mask = (env->bhrb_num_entries * sizeof(uint64_t)) - 1;
++    if (FIELD_EX64(env->msr, MSR, PR) &&
++        !(env->spr[SPR_POWER_MMCR0] & (1ULL << bit))) {
++        raise_fu_exception(env, bit, sprn, cause, GETPC());
 +    }
 +}
++#endif
 +
-+static void bhrb_reset_state(CPUPPCState *env)
+ void helper_store_sdr1(CPUPPCState *env, target_ulong val)
+ {
+     if (env->spr[SPR_SDR1] != val) {
+@@ -363,3 +374,42 @@ void helper_fixup_thrm(CPUPPCState *env)
+         env->spr[i] = v;
+     }
+ }
++
++#if !defined(CONFIG_USER_ONLY)
++#if defined(TARGET_PPC64)
++void helper_clrbhrb(CPUPPCState *env)
 +{
++    helper_hfscr_facility_check(env, HFSCR_BHRB, "clrbhrb", FSCR_IC_BHRB);
++
++    helper_mmcr0_facility_check(env, MMCR0_BHRBA_NR, 0, FSCR_IC_BHRB);
++
 +    if (env->flags & POWERPC_FLAG_BHRB) {
-+        env->bhrb_offset = 0;
-+        env->bhrb_filter = 0;
 +        memset(env->bhrb, 0, sizeof(env->bhrb));
 +    }
 +}
 +
-+#define POWER8_BHRB_ENTRIES_LOG2 5
- static void init_proc_POWER8(CPUPPCState *env)
- {
-     /* Common Registers */
-@@ -6183,6 +6205,8 @@ static void init_proc_POWER8(CPUPPCState *env)
-     env->dcache_line_size = 128;
-     env->icache_line_size = 128;
- 
-+    bhrb_init_state(env, POWER8_BHRB_ENTRIES_LOG2);
-+
-     /* Allocate hardware IRQ controller */
-     init_excp_POWER8(env);
-     ppcPOWER7_irq_init(env_archcpu(env));
-@@ -6307,6 +6331,7 @@ static struct ppc_radix_page_info POWER9_radix_page_info = {
- };
- #endif /* CONFIG_USER_ONLY */
- 
-+#define POWER9_BHRB_ENTRIES_LOG2 5
- static void init_proc_POWER9(CPUPPCState *env)
- {
-     /* Common Registers */
-@@ -6357,6 +6382,8 @@ static void init_proc_POWER9(CPUPPCState *env)
-     env->dcache_line_size = 128;
-     env->icache_line_size = 128;
- 
-+    bhrb_init_state(env, POWER9_BHRB_ENTRIES_LOG2);
-+
-     /* Allocate hardware IRQ controller */
-     init_excp_POWER9(env);
-     ppcPOWER9_irq_init(env_archcpu(env));
-@@ -6497,6 +6524,7 @@ static struct ppc_radix_page_info POWER10_radix_page_info = {
- };
- #endif /* !CONFIG_USER_ONLY */
- 
-+#define POWER10_BHRB_ENTRIES_LOG2 5
- static void init_proc_POWER10(CPUPPCState *env)
- {
-     /* Common Registers */
-@@ -6546,6 +6574,8 @@ static void init_proc_POWER10(CPUPPCState *env)
-     env->dcache_line_size = 128;
-     env->icache_line_size = 128;
- 
-+    bhrb_init_state(env, POWER10_BHRB_ENTRIES_LOG2);
-+
-     /* Allocate hardware IRQ controller */
-     init_excp_POWER10(env);
-     ppcPOWER9_irq_init(env_archcpu(env));
-@@ -6650,7 +6680,8 @@ POWERPC_FAMILY(POWER10)(ObjectClass *oc, void *data)
-     pcc->flags = POWERPC_FLAG_VRE | POWERPC_FLAG_SE |
-                  POWERPC_FLAG_BE | POWERPC_FLAG_PMM |
-                  POWERPC_FLAG_BUS_CLK | POWERPC_FLAG_CFAR |
--                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV;
-+                 POWERPC_FLAG_VSX | POWERPC_FLAG_SCV |
-+                 POWERPC_FLAG_BHRB;
-     pcc->l1_dcache_size = 0x8000;
-     pcc->l1_icache_size = 0x8000;
- }
-@@ -7220,6 +7251,10 @@ static void ppc_cpu_reset_hold(Object *obj)
-         }
-         env->spr[i] = spr->default_value;
-     }
-+
-+#if defined(TARGET_PPC64)
-+    bhrb_reset_state(env);
-+#endif
- }
- 
- #ifndef CONFIG_USER_ONLY
-diff --git a/target/ppc/power8-pmu.c b/target/ppc/power8-pmu.c
-index 6f5d4e1256..db9ee8e96b 100644
---- a/target/ppc/power8-pmu.c
-+++ b/target/ppc/power8-pmu.c
-@@ -82,6 +82,37 @@ static void pmu_update_summaries(CPUPPCState *env)
-     env->pmc_cyc_cnt = cyc_cnt;
- }
- 
-+static void hreg_bhrb_filter_update(CPUPPCState *env)
++uint64_t helper_mfbhrbe(CPUPPCState *env, uint32_t bhrbe)
 +{
-+    target_long ifm;
++    unsigned int index;
 +
-+    if (!(env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE)) {
-+        /* disable recording to BHRB */
-+        env->bhrb_filter = BHRB_TYPE_NORECORD;
-+        return;
++    helper_hfscr_facility_check(env, HFSCR_BHRB, "mfbhrbe", FSCR_IC_BHRB);
++
++    helper_mmcr0_facility_check(env, MMCR0_BHRBA_NR, 0, FSCR_IC_BHRB);
++
++    if (!(env->flags & POWERPC_FLAG_BHRB) ||
++         (bhrbe >= env->bhrb_num_entries) ||
++         (env->spr[SPR_POWER_MMCR0] & MMCR0_PMAE)) {
++        return 0;
 +    }
 +
-+    ifm = (env->spr[SPR_POWER_MMCRA] & MMCRA_IFM_MASK) >> MMCRA_IFM_SHIFT;
-+    switch (ifm) {
-+    case 0:
-+        /* record all branches */
-+        env->bhrb_filter = -1;
-+        break;
-+    case 1:
-+        /* only record calls (LK = 1) */
-+        env->bhrb_filter = BHRB_TYPE_CALL;
-+        break;
-+    case 2:
-+        /* only record indirect branches */
-+        env->bhrb_filter = BHRB_TYPE_INDIRECT;
-+        break;
-+    case 3:
-+        /* only record conditional branches */
-+        env->bhrb_filter = BHRB_TYPE_COND;
-+        break;
-+    }
++    /*
++     * Note: bhrb_offset is the byte offset for writing the
++     * next entry (over the oldest entry), which is why we
++     * must offset bhrbe by 1 to get to the 0th entry.
++     */
++    index = ((env->bhrb_offset / sizeof(uint64_t)) - (bhrbe + 1)) %
++            env->bhrb_num_entries;
++    return env->bhrb[index];
 +}
-+
- void pmu_mmcr01a_updated(CPUPPCState *env)
- {
-     PowerPCCPU *cpu = env_archcpu(env);
-@@ -95,6 +126,8 @@ void pmu_mmcr01a_updated(CPUPPCState *env)
-         ppc_set_irq(cpu, PPC_INTERRUPT_PERFM, 0);
-     }
- 
-+    hreg_bhrb_filter_update(env);
-+
-     /*
-      * Should this update overflow timers (if mmcr0 is updated) so they
-      * get set in cpu_post_load?
-diff --git a/target/ppc/power8-pmu.h b/target/ppc/power8-pmu.h
-index 87fa8c9334..3f79cfc45b 100644
---- a/target/ppc/power8-pmu.h
-+++ b/target/ppc/power8-pmu.h
-@@ -13,6 +13,13 @@
- #ifndef POWER8_PMU_H
- #define POWER8_PMU_H
- 
-+#define BHRB_TYPE_NORECORD      0x00
-+#define BHRB_TYPE_CALL          0x01
-+#define BHRB_TYPE_INDIRECT      0x02
-+#define BHRB_TYPE_COND          0x04
-+#define BHRB_TYPE_OTHER         0x08
-+#define BHRB_TYPE_XL_FORM       0x10
-+
- #if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
- 
- #define PMC_COUNTER_NEGATIVE_VAL 0x80000000UL
++#endif
++#endif
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index 26bcc720b3..5de82abf7d 100644
+index 5de82abf7d..42446f7d05 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -181,6 +181,7 @@ struct DisasContext {
- #if defined(TARGET_PPC64)
-     bool sf_mode;
-     bool has_cfar;
-+    bool has_bhrb;
- #endif
-     bool fpu_enabled;
-     bool altivec_enabled;
-@@ -4072,14 +4073,86 @@ static void gen_rvwinkle(DisasContext *ctx)
-     gen_exception_nip(ctx, EXCP_HLT, ctx->base.pc_next);
- #endif /* defined(CONFIG_USER_ONLY) */
- }
-+
-+static inline TCGv gen_write_bhrb(TCGv_ptr base, TCGv offset, TCGv mask,
-+                                  TCGv value)
-+{
-+    TCGv_ptr tmp = tcg_temp_new_ptr();
-+
-+    /* add base and offset to get address of bhrb entry */
-+    tcg_gen_add_ptr(tmp, base, (TCGv_ptr)offset);
-+
-+    /* store value into bhrb at bhrb_offset */
-+    tcg_gen_st_i64(value, tmp, 0);
-+
-+    /* add 8 to current bhrb_offset */
-+    tcg_gen_addi_tl(offset, offset, 8);
-+
-+    /* apply offset mask */
-+    tcg_gen_and_tl(offset, offset, mask);
-+
-+    return offset;
-+}
- #endif /* #if defined(TARGET_PPC64) */
+@@ -6450,6 +6450,8 @@ static bool resolve_PLS_D(DisasContext *ctx, arg_D *d, arg_PLS_D *a)
  
--static inline void gen_update_cfar(DisasContext *ctx, target_ulong nip)
-+static inline void gen_update_branch_history(DisasContext *ctx,
-+                                             target_ulong nip,
-+                                             TCGv target,
-+                                             target_long inst_type)
+ #include "translate/storage-ctrl-impl.c.inc"
+ 
++#include "translate/bhrb-impl.c.inc"
++
+ /* Handles lfdp */
+ static void gen_dform39(DisasContext *ctx)
  {
- #if defined(TARGET_PPC64)
-+    TCGv_ptr base;
-+    TCGv tmp;
-+    TCGv offset;
-+    TCGv mask;
-+    TCGLabel *no_update;
+diff --git a/target/ppc/translate/bhrb-impl.c.inc b/target/ppc/translate/bhrb-impl.c.inc
+new file mode 100644
+index 0000000000..3a19bc4555
+--- /dev/null
++++ b/target/ppc/translate/bhrb-impl.c.inc
+@@ -0,0 +1,43 @@
++/*
++ * Power ISA Decode For BHRB Instructions
++ *
++ *  Copyright IBM Corp. 2023
++ *
++ * Authors:
++ *  Glenn Miles      <milesg@linux.vnet.ibm.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
 +
-     if (ctx->has_cfar) {
-         tcg_gen_movi_tl(cpu_cfar, nip);
-     }
++#if defined(TARGET_PPC64) && !defined(CONFIG_USER_ONLY)
 +
-+    if (!ctx->has_bhrb ||
-+        !ctx->bhrb_enable ||
-+        inst_type == BHRB_TYPE_NORECORD) {
-+        return;
-+    }
++static bool trans_MFBHRBE(DisasContext *ctx, arg_XFX_bhrbe *arg)
++{
++    REQUIRE_INSNS_FLAGS2(ctx, ISA207S);
++    TCGv_i32 bhrbe = tcg_constant_i32(arg->bhrbe);
++    gen_helper_mfbhrbe(cpu_gpr[arg->rt], tcg_env, bhrbe);
++    return true;
++}
 +
-+    tmp = tcg_temp_new();
-+    no_update = gen_new_label();
++static bool trans_CLRBHRB(DisasContext *ctx, arg_CLRBHRB *arg)
++{
++    REQUIRE_INSNS_FLAGS2(ctx, ISA207S);
++    gen_helper_clrbhrb(tcg_env);
++    return true;
++}
 +
-+    /* check for bhrb filtering */
-+    tcg_gen_ld_tl(tmp, tcg_env, offsetof(CPUPPCState, bhrb_filter));
-+    tcg_gen_andi_tl(tmp, tmp, inst_type);
-+    tcg_gen_brcondi_tl(TCG_COND_EQ, tmp, 0, no_update);
++#else
 +
-+    base = tcg_temp_new_ptr();
-+    offset = tcg_temp_new();
-+    mask = tcg_temp_new();
++static bool trans_MFBHRBE(DisasContext *ctx, arg_XFX_bhrbe *arg)
++{
++    gen_invalid(ctx);
++    return true;
++}
 +
-+    /* load bhrb base address */
-+    tcg_gen_ld_ptr(base, tcg_env, offsetof(CPUPPCState, bhrb_base));
-+
-+    /* load current bhrb_offset */
-+    tcg_gen_ld_tl(offset, tcg_env, offsetof(CPUPPCState, bhrb_offset));
-+
-+    /* load a BHRB offset mask */
-+    tcg_gen_ld_tl(mask, tcg_env, offsetof(CPUPPCState, bhrb_offset_mask));
-+
-+    offset = gen_write_bhrb(base, offset, mask, tcg_constant_i64(nip));
-+
-+    /* Also record the target address for XL-Form branches */
-+    if (inst_type & BHRB_TYPE_XL_FORM) {
-+
-+        /* Set the 'T' bit for target entries */
-+        tcg_gen_ori_tl(tmp, target, 0x2);
-+
-+        offset = gen_write_bhrb(base, offset, mask, tmp);
-+    }
-+
-+    /* save updated bhrb_offset for next time */
-+    tcg_gen_st_tl(offset, tcg_env, offsetof(CPUPPCState, bhrb_offset));
-+
-+    gen_set_label(no_update);
- #endif
- }
- 
-@@ -4209,8 +4282,10 @@ static void gen_b(DisasContext *ctx)
-     }
-     if (LK(ctx->opcode)) {
-         gen_setlr(ctx, ctx->base.pc_next);
-+        gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_CALL);
-+    } else {
-+        gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_OTHER);
-     }
--    gen_update_cfar(ctx, ctx->cia);
-     gen_goto_tb(ctx, 0, target);
-     ctx->base.is_jmp = DISAS_NORETURN;
- }
-@@ -4225,6 +4300,7 @@ static void gen_bcond(DisasContext *ctx, int type)
-     uint32_t bo = BO(ctx->opcode);
-     TCGLabel *l1;
-     TCGv target;
-+    target_long bhrb_type = BHRB_TYPE_OTHER;
- 
-     if (type == BCOND_LR || type == BCOND_CTR || type == BCOND_TAR) {
-         target = tcg_temp_new();
-@@ -4235,11 +4311,16 @@ static void gen_bcond(DisasContext *ctx, int type)
-         } else {
-             tcg_gen_mov_tl(target, cpu_lr);
-         }
-+        if (!LK(ctx->opcode)) {
-+            bhrb_type |= BHRB_TYPE_INDIRECT;
-+        }
-+        bhrb_type |= BHRB_TYPE_XL_FORM;
-     } else {
-         target = NULL;
-     }
-     if (LK(ctx->opcode)) {
-         gen_setlr(ctx, ctx->base.pc_next);
-+        bhrb_type |= BHRB_TYPE_CALL;
-     }
-     l1 = gen_new_label();
-     if ((bo & 0x4) == 0) {
-@@ -4290,6 +4371,7 @@ static void gen_bcond(DisasContext *ctx, int type)
-                 tcg_gen_brcondi_tl(TCG_COND_EQ, temp, 0, l1);
-             }
-         }
-+        bhrb_type |= BHRB_TYPE_COND;
-     }
-     if ((bo & 0x10) == 0) {
-         /* Test CR */
-@@ -4304,8 +4386,11 @@ static void gen_bcond(DisasContext *ctx, int type)
-             tcg_gen_andi_i32(temp, cpu_crf[bi >> 2], mask);
-             tcg_gen_brcondi_i32(TCG_COND_NE, temp, 0, l1);
-         }
-+        bhrb_type |= BHRB_TYPE_COND;
-     }
--    gen_update_cfar(ctx, ctx->cia);
-+
-+    gen_update_branch_history(ctx, ctx->cia, target, bhrb_type);
-+
-     if (type == BCOND_IM) {
-         target_ulong li = (target_long)((int16_t)(BD(ctx->opcode)));
-         if (likely(AA(ctx->opcode) == 0)) {
-@@ -4421,7 +4506,7 @@ static void gen_rfi(DisasContext *ctx)
-     /* Restore CPU state */
-     CHK_SV(ctx);
-     translator_io_start(&ctx->base);
--    gen_update_cfar(ctx, ctx->cia);
-+    gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_NORECORD);
-     gen_helper_rfi(tcg_env);
-     ctx->base.is_jmp = DISAS_EXIT;
- #endif
-@@ -4436,7 +4521,7 @@ static void gen_rfid(DisasContext *ctx)
-     /* Restore CPU state */
-     CHK_SV(ctx);
-     translator_io_start(&ctx->base);
--    gen_update_cfar(ctx, ctx->cia);
-+    gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_NORECORD);
-     gen_helper_rfid(tcg_env);
-     ctx->base.is_jmp = DISAS_EXIT;
- #endif
-@@ -4451,7 +4536,7 @@ static void gen_rfscv(DisasContext *ctx)
-     /* Restore CPU state */
-     CHK_SV(ctx);
-     translator_io_start(&ctx->base);
--    gen_update_cfar(ctx, ctx->cia);
-+    gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_NORECORD);
-     gen_helper_rfscv(tcg_env);
-     ctx->base.is_jmp = DISAS_EXIT;
- #endif
-@@ -7243,6 +7328,7 @@ static void ppc_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cs)
- #if defined(TARGET_PPC64)
-     ctx->sf_mode = (hflags >> HFLAGS_64) & 1;
-     ctx->has_cfar = !!(env->flags & POWERPC_FLAG_CFAR);
-+    ctx->has_bhrb = !!(env->flags & POWERPC_FLAG_BHRB);
- #endif
-     ctx->lazy_tlb_flush = env->mmu_model == POWERPC_MMU_32B
-         || env->mmu_model & POWERPC_MMU_64;
-diff --git a/target/ppc/translate/branch-impl.c.inc b/target/ppc/translate/branch-impl.c.inc
-index fb0fcf30cc..9ade0c659a 100644
---- a/target/ppc/translate/branch-impl.c.inc
-+++ b/target/ppc/translate/branch-impl.c.inc
-@@ -17,7 +17,7 @@ static bool trans_RFEBB(DisasContext *ctx, arg_XL_s *arg)
-     REQUIRE_INSNS_FLAGS2(ctx, ISA207S);
- 
-     translator_io_start(&ctx->base);
--    gen_update_cfar(ctx, ctx->cia);
-+    gen_update_branch_history(ctx, ctx->cia, NULL, BHRB_TYPE_NORECORD);
-     gen_helper_rfebb(tcg_env, cpu_gpr[arg->s]);
- 
-     ctx->base.is_jmp = DISAS_CHAIN;
++static bool trans_CLRBHRB(DisasContext *ctx, arg_CLRBHRB *arg)
++{
++    gen_invalid(ctx);
++    return true;
++}
++#endif
 -- 
 2.31.8
 
