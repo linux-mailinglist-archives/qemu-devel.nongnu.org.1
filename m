@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7006C89045B
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:01:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A47A890433
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:59:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps7c-00051j-VL; Thu, 28 Mar 2024 11:56:57 -0400
+	id 1rps7e-0005BG-Hm; Thu, 28 Mar 2024 11:56:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps7R-0004f8-Fd
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:46 -0400
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps7X-0004rr-OX
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:52 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps7P-0002XK-UH
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:45 -0400
-Received: by mail-ej1-x632.google.com with SMTP id
- a640c23a62f3a-a46ea03c2a5so216843966b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:56:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps7V-0002ZL-Ta
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:56:51 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a47385a4379so400335866b.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:56:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641402; x=1712246202; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641408; x=1712246208; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=muQ9YYs1garpvhloVWRUiLPzA6iwq65Rr1SdS4smlFw=;
- b=xIviQFS5WkfB3SmaSqmdUiAYqROgybIZKD58pgI+nEQ6LVuoxICa+gUvJ/0tTQwbzF
- o+uLtFAavL7ut4sMimpHF6nxEOCUOeRg6tCtKL3dQnxXVrFop37PE66b9GSDjArbGVpx
- wuwy6fTwtFcrIWsjIHtCew9cfKdqHUayeiBMlVjFq9nClJpotpgJN133Yet1y+CX7S4V
- Fe18wz1fhSljbdc1b0Pae2YXWJ1/xZBXZAmBqZHAPr/hgrw0YyYr/qDdL2dka3PjVB19
- ueZqFa/A4vS4rpcyqBVsrt0ftb9YlaMc3Bpy9/G51V3NPxYAU/6vOFqKjm5/31/hdo75
- Cf1Q==
+ bh=3Aa27ZqAQEFmCBsiqy9XwiiPf6EIjcNyjahGDi9IpJg=;
+ b=wmdnFLj8N4MTTkR7GiUS/vACf4UOgkQnipJ9uaXGwtqukwJjWxXXHCpTdrIfMmaC9O
+ vAypE0B0AyVCEO4LDMYLsR5ktjQUbduAPOUKkwgTeP1dmGemNlFXL6EgWk0yypiHpjP4
+ 0CEe6VRJA2xvnxEtRM4RCH/WzVBdHHGEChi9ZcnQet88RxX4yS0m7M8FPyiLRct61ujf
+ gJT1FBUa9UhqIn47HAdOSGJ8SZWQlmncRI9nHiC/oiBHJQkH4q9tZsrK0sQqGgf2tLY+
+ SPQ8Ov0ceOY0g2oqMNGevizgKfLCrYHFykaHasXTXJkyRK31ObzD1hDYYGn6a3eESre2
+ WZ1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641402; x=1712246202;
+ d=1e100.net; s=20230601; t=1711641408; x=1712246208;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=muQ9YYs1garpvhloVWRUiLPzA6iwq65Rr1SdS4smlFw=;
- b=H1wHNYV0VeiOjpMCZUH19sS5E7C5op114D2gNMaL9XBCDneh2zGNS+gLEu9Q8GjAYh
- wFDCb0wa8UHUFm6IW4VYtO5bPeLDgMax9neYLUmHbftsCjMOpJwSSJ2pY+x3OBBFIcrY
- N/PvQJtNO34Ll8gfdJ39F3BU8DFCclXuPJWGiseHVgC2VALTB6+v124bOTvFTrCDIJDc
- d3k59A0RoRgXB4ZnZuVujNOP2R4aNyGFr7Zn6+nD3e87mmR9sUYEQ0PAwpxI0aHojtQo
- sAfpOtrRyHo2trdLFpdhQS005Ejr2QMw0L16SmkzmTxdj+2AP3GUq5W7yfNKDcD2uiJh
- bABA==
-X-Gm-Message-State: AOJu0Yw92N27Qljkj0evo+0qYu+sh/liQkX3exoA9UlnfXOxKC3SRvO4
- lpiT5QGG8n8XBguTv4Ia3HkJbC5YHZIwfb/YG+ZJ2q35VLigykaEQBjdAUlzenJQbH2OFHzD3iY
- 7
-X-Google-Smtp-Source: AGHT+IFXbYhPHZn5NXBz7Ikr8yC8QHRf+1TONIhT4Hw3waF5CP4z/i4EhLM/5gQv8lw+8vgiP63smA==
-X-Received: by 2002:a17:906:714a:b0:a4e:f91:4694 with SMTP id
- z10-20020a170906714a00b00a4e0f914694mr2568225ejj.27.1711641401851; 
- Thu, 28 Mar 2024 08:56:41 -0700 (PDT)
+ bh=3Aa27ZqAQEFmCBsiqy9XwiiPf6EIjcNyjahGDi9IpJg=;
+ b=Po2+yTlOWTJL6gSRXdkHm0NeTJCbbBXoqYQVIRV/16DPm2qoGho3W5/VlH3AAr8lKe
+ FOHwjVBMFC3kGX9cUEBkxWXrfU7NOm8/hkiZ5/VJBs5m+T2eTWly3GYHmp5NAUKhG3cE
+ EQT2tb4y4IQjX6AmNq6fqbJ73hU3sNWT8vGV4eFg79Npo54YNjJVB1CEO3bL9WgOXrPs
+ TOdB4B0jzAkjhygU4pqBa9sn6yxLKOwwnVsVMAU37Of1TmNkEuEqYYEfo34m/JO3ABrl
+ qKRYxMxyVi1U8ScM/q/eR5/6MwhP8rdOd5SesRI66KXgqQ7xCwn4fpE7OQzkjZYdtNcy
+ DeSg==
+X-Gm-Message-State: AOJu0YxDFLwz1FoW26Neci2HmR1+l1uTKYa291+fJu90vW4yFizRyJUf
+ UTfPGVbrjZNSxH1cUgf9l293XpgpqKz7SpluRcd7iORvVY6hwj1fG5E8XbZZ5YfVIdQNg1VFlWr
+ L
+X-Google-Smtp-Source: AGHT+IGf+dMAnCAltiuzPzgchc+sbbW407Sj1dQczYyJgyomDKws4CVNCOW6jzbL55k6+JJbXoaF8w==
+X-Received: by 2002:a17:906:ccc3:b0:a47:1f61:4d02 with SMTP id
+ ot3-20020a170906ccc300b00a471f614d02mr2207346ejb.36.1711641408058; 
+ Thu, 28 Mar 2024 08:56:48 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- dr3-20020a170907720300b00a4a38d10801sm896023ejc.35.2024.03.28.08.56.40
+ u23-20020a170906125700b00a47522c193asm892212eja.196.2024.03.28.08.56.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:56:41 -0700 (PDT)
+ Thu, 28 Mar 2024 08:56:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 19/29] hw/i386/pc: Pass PcPciMachineState argument
- to CXL helpers
-Date: Thu, 28 Mar 2024 16:54:27 +0100
-Message-ID: <20240328155439.58719-20-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1 20/29] hw/i386/pc: Pass PcPciMachineState argument
+ to pc_pci_hole64_start()
+Date: Thu, 28 Mar 2024 16:54:28 +0100
+Message-ID: <20240328155439.58719-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::632;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x632.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,67 +102,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since CXL helpers expect a PCI-based machine, we
-can directly pass them a PcPciMachineState argument.
+pc_pci_hole64_start() is only used by PCI-based
+machines.  Pass it a PcPciMachineState argument,
+removing a qdev_get_machine() call.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ include/hw/i386/pc.h | 2 +-
+ hw/i386/pc.c         | 8 ++++----
+ hw/pci-host/i440fx.c | 2 +-
+ hw/pci-host/q35.c    | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index df4c813854..7da0bc8aa4 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -157,7 +157,7 @@ void pc_memory_init(PCMachineState *pcms,
+                     MemoryRegion *system_memory,
+                     MemoryRegion *rom_memory,
+                     uint64_t pci_hole64_size);
+-uint64_t pc_pci_hole64_start(void);
++uint64_t pc_pci_hole64_start(PcPciMachineState *ppms);
+ DeviceState *pc_vga_init(ISABus *isa_bus, PCIBus *pci_bus);
+ void pc_basic_device_init(struct PCMachineState *pcms,
+                           ISABus *isa_bus, qemu_irq *gsi,
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index e36d76656b..d8e91d18b8 100644
+index d8e91d18b8..b83abee8e9 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -705,14 +705,14 @@ static void pc_get_device_memory_range(PCMachineState *pcms,
-     *device_mem_size = size;
- }
+@@ -747,7 +747,8 @@ static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
  
--static uint64_t pc_get_cxl_range_start(PCMachineState *pcms)
-+static uint64_t pc_get_cxl_range_start(PcPciMachineState *ppms)
+     if (cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+         /* 64-bit systems */
+-        return pc_pci_hole64_start() + pci_hole64_size - 1;
++        PcPciMachineState *ppms = PC_PCI_MACHINE(pcms);
++        return pc_pci_hole64_start(ppms) + pci_hole64_size - 1;
+     }
+ 
+     /* 32-bit systems */
+@@ -1016,11 +1017,10 @@ void pc_memory_init(PCMachineState *pcms,
+  * The 64bit pci hole starts after "above 4G RAM" and
+  * potentially the space reserved for memory hotplug.
+  */
+-uint64_t pc_pci_hole64_start(void)
++uint64_t pc_pci_hole64_start(PcPciMachineState *ppms)
  {
+-    PCMachineState *pcms = PC_MACHINE(qdev_get_machine());
 +    PCMachineState *pcms = PC_MACHINE(ppms);
-     MachineState *ms = MACHINE(pcms);
-     hwaddr cxl_base;
-     ram_addr_t size;
- 
--    if (has_reserved_memory(pcms) &&
--        (ms->ram_size < ms->maxram_size)) {
-+    if ((ms->ram_size < ms->maxram_size)) {
-         pc_get_device_memory_range(pcms, &cxl_base, &size);
-         cxl_base += size;
-     } else {
-@@ -722,10 +722,9 @@ static uint64_t pc_get_cxl_range_start(PCMachineState *pcms)
-     return cxl_base;
- }
- 
--static uint64_t pc_get_cxl_range_end(PCMachineState *pcms)
-+static uint64_t pc_get_cxl_range_end(PcPciMachineState *ppms)
- {
+     PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
 -    PcPciMachineState *ppms = PC_PCI_MACHINE(pcms);
--    uint64_t start = pc_get_cxl_range_start(pcms) + MiB;
-+    uint64_t start = pc_get_cxl_range_start(ppms) + MiB;
- 
-     if (ppms->cxl_devices_state.fixed_windows) {
-         GList *it;
-@@ -937,7 +936,7 @@ void pc_memory_init(PCMachineState *pcms,
-         MemoryRegion *mr = &ppms->cxl_devices_state.host_mr;
-         hwaddr cxl_size = MiB;
- 
--        cxl_base = pc_get_cxl_range_start(pcms);
-+        cxl_base = pc_get_cxl_range_start(ppms);
-         memory_region_init(mr, OBJECT(machine), "cxl_host_reg", cxl_size);
-         memory_region_add_subregion(system_memory, cxl_base, mr);
-         cxl_resv_end = cxl_base + cxl_size;
-@@ -1027,7 +1026,7 @@ uint64_t pc_pci_hole64_start(void)
+     MachineState *ms = MACHINE(pcms);
+     uint64_t hole64_start = 0;
      ram_addr_t size = 0;
- 
-     if (ppms->cxl_devices_state.is_enabled) {
--        hole64_start = pc_get_cxl_range_end(pcms);
-+        hole64_start = pc_get_cxl_range_end(ppms);
-     } else if (has_reserved_memory(pcms) && (ms->ram_size < ms->maxram_size)) {
-         pc_get_device_memory_range(pcms, &hole64_start, &size);
-         if (!pcmc->broken_reserved_end) {
+diff --git a/hw/pci-host/i440fx.c b/hw/pci-host/i440fx.c
+index 4f0a0438d7..add99e4f76 100644
+--- a/hw/pci-host/i440fx.c
++++ b/hw/pci-host/i440fx.c
+@@ -180,7 +180,7 @@ static uint64_t i440fx_pcihost_get_pci_hole64_start_value(Object *obj)
+     pci_bus_get_w64_range(h->bus, &w64);
+     value = range_is_empty(&w64) ? 0 : range_lob(&w64);
+     if (!value && s->pci_hole64_fix) {
+-        value = pc_pci_hole64_start();
++        value = pc_pci_hole64_start(PC_PCI_MACHINE(qdev_get_machine()));
+     }
+     return value;
+ }
+diff --git a/hw/pci-host/q35.c b/hw/pci-host/q35.c
+index 0d7d4e3f08..baf55897b2 100644
+--- a/hw/pci-host/q35.c
++++ b/hw/pci-host/q35.c
+@@ -123,7 +123,7 @@ static uint64_t q35_host_get_pci_hole64_start_value(Object *obj)
+     pci_bus_get_w64_range(h->bus, &w64);
+     value = range_is_empty(&w64) ? 0 : range_lob(&w64);
+     if (!value && s->pci_hole64_fix) {
+-        value = pc_pci_hole64_start();
++        value = pc_pci_hole64_start(PC_PCI_MACHINE(qdev_get_machine()));
+     }
+     return value;
+ }
 -- 
 2.41.0
 
