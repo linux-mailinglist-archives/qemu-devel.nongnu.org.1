@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428F1890466
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE9089044D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:00:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps8B-0000fO-9k; Thu, 28 Mar 2024 11:57:31 -0400
+	id 1rps8H-00019r-Kp; Thu, 28 Mar 2024 11:57:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps89-0000TB-3U
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:29 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8E-00011d-TP
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:35 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps87-0002l0-8d
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:28 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a466fc8fcccso150255666b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:57:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps8D-0002mw-A7
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:57:34 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-a47385a4379so400471666b.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641445; x=1712246245; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711641451; x=1712246251; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9JGjTd1WToEahvAfY8NVbIAQ8SXrGvIMBj7UnII/d+c=;
- b=tlzTTWfdU3qU6qSN81Ar6w+u/pQDI1vqH0ikHLsAxcPhGNj8J9NQRlEDHc2ERjal7l
- R5QBfGLIxZcSitdvJFhhR0KOnDNdZB8ROLzT3/vmjk/vkGmV5wiFdXbS7Br6pQ4FWvFJ
- Qc+z90m5v3Uv+n8Hn2yn6e9C/P8+sKBvxhgQZMsH14JROgo0vfs46hWsJVxAL7+Np2hk
- cKwQ8W89d7F4+CpYEXTSjvz1kXPa+aUTl07NpwcgeSfctCLIIemxG/uY/jUYb2MuIjSf
- GasRWq+t0YcOJw+Vu962XS1v+iWnpwnTy/8fBMWLXe6OykCPxqioVhVwYpHRnI0xameS
- TKtw==
+ bh=OhT6+kuDArhB7vl7wmlOYwb5F71/kFsimohZE69/WJ4=;
+ b=wPfi4xDZ+OZFr0EK/9vhFd4a6Bhqsc0O6HVjX/5tm+KZQFDfb8HqSLFpGWpfcSiTGX
+ eoQZQFMUonQ7Kpd6AAtKo4zHR9uJTIu0GpJXDKTmBvyX3+0Nx+qklnGkoQntyIJCEUbj
+ 1Wdb21INEXISlrRDVMC8Kxr7dvgqV2mr6/Op3SIF0sIs8SLo9Lp01Y92zkoYi7dSd/Li
+ ptxzP7KyVmegtwYntW7/o8jvB2JTOt46TZ8A8qfOkGPuxAF/oxd+FwJKdt0M0l28MWpq
+ ldmXtv/0QRociJA7vO+gnBaq9l86GD+95aXa6KceEA2CrxsVIh5lIYzNNlhRNhxsPSPc
+ zIEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641445; x=1712246245;
+ d=1e100.net; s=20230601; t=1711641451; x=1712246251;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9JGjTd1WToEahvAfY8NVbIAQ8SXrGvIMBj7UnII/d+c=;
- b=RF+OvI4rZsnGl6Y8EYB1bQG+DHdKcNwr6uFtMTT4tHVfsbs5yp1Jxdxn718qL3O4xl
- kp33VfvNYJTlMlp32dAkaGx/piWdxJ24pP1HGcw5ThokzPVMQqotDr+8JEDx1tuAC+OW
- uIf33bFBwaIbx5xrmqYl6F3K8oGUnqy/dy3P+t5sl97Hi+WRD0HMtav16fQMF8rvubjK
- eS7YvZJfT3Ziwp/H8LQ91tIGDe1gitTGIrgp7eRl8pc6kScSmVIsx1b887x6vNLIc3OI
- pDTuMzMwjGVnVlxH4fSXMXMoX5rjBQnoFpMxEvSN+ILWI8RBiX+XQg281iMop58LgVhK
- 9eRw==
-X-Gm-Message-State: AOJu0Ywn59rLMmfPA0yP93jqMdA8aTyZYbB2tkuk0Lz4J2pwu5Vq/8rP
- schrc3k4hOrV5xFCfre+rGX3i3f9CGsp9QHXnXUmFtJMivDuhHxZO24iTlTQmckdgOfwl0iTpEG
- 9
-X-Google-Smtp-Source: AGHT+IEke0w2rGaQ9eaNpJe9RsSUrMNnkosA5ZqUCdCrrEsx8n7A8+12nHMQifWFPzkMKHDz/PJUtg==
-X-Received: by 2002:a17:907:7d89:b0:a47:5265:9aac with SMTP id
- oz9-20020a1709077d8900b00a4752659aacmr2577836ejc.55.1711641445324; 
- Thu, 28 Mar 2024 08:57:25 -0700 (PDT)
+ bh=OhT6+kuDArhB7vl7wmlOYwb5F71/kFsimohZE69/WJ4=;
+ b=lpNbOPh9/LQB++w3aVUA9aF2wIB9ybXfcj8ItCiPvK/rWY61gPRnan6R/BAPhx6lKJ
+ 3hq76PAoQIGSXkwJQhbDjEWTozV5HAp51X3AlsFI9I++UTVVbWDWN2o55JhKFF/fvJIw
+ 8BBYbslXA7Wl8aYwoCv9KiupHdrLQn/b8zYaRWhuor+uyeZcTTfpgt4bEv8A3GFxHxqN
+ g+1IeNGQJaRm446PPifLNh7E/Xr+zyUQnzdgbpclvg4FTz2SkObQdwFgXeyIb0ft7xtb
+ VobCNZSPWGTHjC7S3Nolk+/bC+mZ0xmMl6UB4i64RcZfSt5OFlxHjAwNOACx/yO5KWGl
+ YKbg==
+X-Gm-Message-State: AOJu0YzBsZpiKngVj3I9Iy7SGEb4iU4E1bUc2a3KZ2YaTa6XL6YdplNf
+ +wRcjRrCxrS389L6jiAjkxv0R/uRx3BLwKiWM6yn1/ojZEAzhN20qOBcQzIwNhBBwRWMOkmy5a4
+ u
+X-Google-Smtp-Source: AGHT+IE5iPw2wKGziuJIAfhXkqj1URHuVnsVTHRuhgnnHINXGtkc2NpEDzBwrK/9AluQ+8R3bvD5jA==
+X-Received: by 2002:a17:906:48d7:b0:a45:ab98:aec with SMTP id
+ d23-20020a17090648d700b00a45ab980aecmr2166613ejt.10.1711641451420; 
+ Thu, 28 Mar 2024 08:57:31 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- k13-20020a1709067acd00b00a47df55cf5esm914850ejo.13.2024.03.28.08.57.23
+ o19-20020a17090637d300b00a46cc48ab07sm894776ejc.221.2024.03.28.08.57.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:57:24 -0700 (PDT)
+ Thu, 28 Mar 2024 08:57:31 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -68,18 +68,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 26/29] hw/i386/fw_cfg: Factor
- fw_cfg_build_smbios_legacy() out
-Date: Thu, 28 Mar 2024 16:54:34 +0100
-Message-ID: <20240328155439.58719-27-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1 27/29] hw/i386/pc: Call
+ fw_cfg_build_smbios_legacy() in pc_machine_done()
+Date: Thu, 28 Mar 2024 16:54:35 +0100
+Message-ID: <20240328155439.58719-28-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
 References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,96 +102,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Factor fw_cfg_build_smbios_legacy() out of
-fw_cfg_build_smbios().
+Keep fw_cfg_build_smbios() for PCI-based machines, call
+fw_cfg_build_smbios_legacy() directly from pc_machine_done().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/fw_cfg.h             |  1 +
- hw/i386/fw_cfg-smbios-stub.c |  4 ++++
- hw/i386/fw_cfg.c             | 33 ++++++++++++++++++++++-----------
- 3 files changed, 27 insertions(+), 11 deletions(-)
+ hw/i386/fw_cfg.c | 10 ----------
+ hw/i386/pc.c     | 12 +++++++++++-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/hw/i386/fw_cfg.h b/hw/i386/fw_cfg.h
-index 7a426119f8..25ce86ec1b 100644
---- a/hw/i386/fw_cfg.h
-+++ b/hw/i386/fw_cfg.h
-@@ -24,6 +24,7 @@
- FWCfgState *fw_cfg_arch_create(MachineState *ms,
-                                uint16_t boot_cpus,
-                                uint16_t apic_id_limit);
-+void fw_cfg_build_smbios_legacy(PCMachineState *pcms, FWCfgState *fw_cfg);
- void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-                          SmbiosEntryPointType ep_type);
- void fw_cfg_build_feature_control(MachineState *ms, FWCfgState *fw_cfg);
-diff --git a/hw/i386/fw_cfg-smbios-stub.c b/hw/i386/fw_cfg-smbios-stub.c
-index 37dbfdee7c..da00ffc9ae 100644
---- a/hw/i386/fw_cfg-smbios-stub.c
-+++ b/hw/i386/fw_cfg-smbios-stub.c
-@@ -13,3 +13,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-                          SmbiosEntryPointType ep_type)
- {
- }
-+
-+void fw_cfg_build_smbios_legacy(PCMachineState *pcms, FWCfgState *fw_cfg)
-+{
-+}
 diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index df05fe060c..be37e28f46 100644
+index be37e28f46..92e058446f 100644
 --- a/hw/i386/fw_cfg.c
 +++ b/hw/i386/fw_cfg.c
-@@ -54,6 +54,22 @@ static bool smbios_legacy_mode(PCMachineState *pcms)
-     return !pc_machine_is_pci_enabled(pcms);
+@@ -49,11 +49,6 @@ const char *fw_cfg_arch_key_name(uint16_t key)
  }
  
-+void fw_cfg_build_smbios_legacy(PCMachineState *pcms, FWCfgState *fw_cfg)
-+{
-+    uint8_t *smbios_tables;
-+    size_t smbios_tables_len;
-+    MachineState *ms = MACHINE(pcms);
-+    X86CPU *cpu = X86_CPU(ms->possible_cpus->cpus[0].cpu);
-+
-+    /* tell smbios about cpuid version and features */
-+    smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
-+
-+    smbios_tables = smbios_get_table_legacy(&smbios_tables_len,
-+                                            &error_fatal);
-+    fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
-+                     smbios_tables, smbios_tables_len);
-+}
-+
- void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
-                          SmbiosEntryPointType ep_type)
+ #ifdef CONFIG_SMBIOS
+-static bool smbios_legacy_mode(PCMachineState *pcms)
+-{
+-    return !pc_machine_is_pci_enabled(pcms);
+-}
+-
+ void fw_cfg_build_smbios_legacy(PCMachineState *pcms, FWCfgState *fw_cfg)
  {
-@@ -65,22 +81,17 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
+     uint8_t *smbios_tables;
+@@ -81,11 +76,6 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
      MachineClass *mc = MACHINE_GET_CLASS(pcms);
      X86CPU *cpu = X86_CPU(ms->possible_cpus->cpus[0].cpu);
  
--    if (!smbios_legacy_mode(pcms)) {
--        /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc, mc->name);
-+    if (smbios_legacy_mode(pcms)) {
-+        fw_cfg_build_smbios_legacy(pcms, fw_cfg);
-+        return;
-     }
- 
-+    /* These values are guest ABI, do not change */
-+    smbios_set_defaults("QEMU", mc->desc, mc->name);
-+
-     /* tell smbios about cpuid version and features */
-     smbios_set_cpuid(cpu->env.cpuid_version, cpu->env.features[FEAT_1_EDX]);
- 
 -    if (smbios_legacy_mode(pcms)) {
--        smbios_tables = smbios_get_table_legacy(&smbios_tables_len,
--                                                &error_fatal);
--        fw_cfg_add_bytes(fw_cfg, FW_CFG_SMBIOS_ENTRIES,
--                         smbios_tables, smbios_tables_len);
+-        fw_cfg_build_smbios_legacy(pcms, fw_cfg);
 -        return;
 -    }
 -
-     /* build the array of physical mem area from e820 table */
-     mem_array = g_malloc0(sizeof(*mem_array) * e820_get_num_entries());
-     for (i = 0, array_count = 0; i < e820_get_num_entries(); i++) {
+     /* These values are guest ABI, do not change */
+     smbios_set_defaults("QEMU", mc->desc, mc->name);
+ 
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 7a758a2e84..7d06a088cf 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -591,6 +591,11 @@ void pc_acpi_smi_interrupt(void *opaque, int irq, int level)
+     }
+ }
+ 
++static bool smbios_legacy_mode(PCMachineState *pcms)
++{
++    return !pc_machine_is_pci_enabled(pcms);
++}
++
+ static
+ void pc_machine_done(Notifier *notifier, void *data)
+ {
+@@ -602,7 +607,12 @@ void pc_machine_done(Notifier *notifier, void *data)
+     x86_rtc_set_cpus_count(x86ms->rtc, x86ms->boot_cpus);
+ 
+     if (x86ms->fw_cfg) {
+-        fw_cfg_build_smbios(pcms, x86ms->fw_cfg, pcms->smbios_entry_point_type);
++        if (smbios_legacy_mode(pcms)) {
++            fw_cfg_build_smbios_legacy(pcms, x86ms->fw_cfg);
++        } else {
++            fw_cfg_build_smbios(pcms, x86ms->fw_cfg,
++                                pcms->smbios_entry_point_type);
++        }
+         fw_cfg_build_feature_control(MACHINE(pcms), x86ms->fw_cfg);
+         /* update FW_CFG_NB_CPUS to account for -device added CPUs */
+         fw_cfg_modify_i16(x86ms->fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
 -- 
 2.41.0
 
