@@ -2,104 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A3589092D
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 20:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E91BF89093E
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 20:28:02 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpvMx-00010M-RX; Thu, 28 Mar 2024 15:24:59 -0400
+	id 1rpvPL-0004ta-I6; Thu, 28 Mar 2024 15:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rpvMv-0000zx-Nx; Thu, 28 Mar 2024 15:24:57 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <milesg@linux.vnet.ibm.com>)
- id 1rpvMu-0001TP-Be; Thu, 28 Mar 2024 15:24:57 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42SJ0glE001640; Thu, 28 Mar 2024 19:24:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=Ef4PM3TipPS+SQ3Q87k5uq0UbPfTnh5ekJ5DvOAxajs=;
- b=MmmQyA51aotLPADs8Fp6AtfIDl61VniBQxIAwBekenPDmwthB6gmvaquwhdCbxhbaRpM
- /tWH2QD+DY+BZhUU536xCThFwq12onODIVqb1A9UW5lwT3aINTFhfo2VinwJJmfcfiYS
- Ky3KLnHE8Dna6y6OO7rCMTzwVQok++iUIZDIYnLTqbjbRq7x4W8h3BzofTEugKePG/qR
- 3kVwaQ+gVUnDPXnfFV5cnCbZEkTkVqimD9TRxyFRjovxma6QIBCIgUv4SQMq3ZJvzNSP
- SNUMCdJ/Eq9YoGOU9hkzNK+lspTZEbrvMBHasR9jSP5Ptv1QoRA1vw/GprLOw4YNwJTe rQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5ccyrc3j-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:44 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SJOiIf007759;
- Thu, 28 Mar 2024 19:24:44 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x5ccyrc3h-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:44 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 42SIGSZA011328; Thu, 28 Mar 2024 19:24:43 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x2bmmf50k-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 28 Mar 2024 19:24:43 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com
- [10.39.53.231])
- by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 42SJOeDv23134832
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 28 Mar 2024 19:24:43 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE0C058045;
- Thu, 28 Mar 2024 19:24:40 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3E4575805E;
- Thu, 28 Mar 2024 19:24:40 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Thu, 28 Mar 2024 19:24:40 +0000 (GMT)
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-ppc@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH v4 4/4] target/ppc: Add migration support for BHRB
-Date: Thu, 28 Mar 2024 14:23:56 -0500
-Message-Id: <20240328192356.2144086-5-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.8
-In-Reply-To: <20240328192356.2144086-1-milesg@linux.vnet.ibm.com>
-References: <20240328192356.2144086-1-milesg@linux.vnet.ibm.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rpvPJ-0004sB-Eg
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 15:27:25 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rpvPH-00021W-SJ
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 15:27:25 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-56bf6591865so2046013a12.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 12:27:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711654042; x=1712258842; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rZS9XFyOQG2i8hCRjoB5xys4mRT4xfclOc6vBgM/M/Q=;
+ b=gMYmi83MCR3YA5gsk+Px+t2a4xS1DuPMj6ZBWoOiabJlaRGeMSxGQluEdQwm7sP4+o
+ T88KeheWg8HH0n2mrfxEmDeTwzy6olKsBRU/MmGDXZg6gUloaPUNHt5mT2ehKoyLYrti
+ 0ZEcNzv+wV8t3IPjdLXmVU1/AhbM6dZIHyBefNx4Ttpvz8DuFaJdPuJgTIpwVBhPKvm6
+ TOYgW3ytChX8gLFHNsTbICAER9TZRz+CLM4LVSdB/L94mRh4pgGBtPypSbtxv1cJQ183
+ TiGMDqUnsElPKSags3lnxoUAi2jbjIlgr8u/jbRVXPNQcKmkyFauiaIA7grotDGye4yt
+ dvYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711654042; x=1712258842;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rZS9XFyOQG2i8hCRjoB5xys4mRT4xfclOc6vBgM/M/Q=;
+ b=UjIAsIEL8tsVSRwWo+m7u6ayhdBqGjXldUn+HJFstQjHE2+rktWDduKkEAXuMmqJpD
+ TAELYJsxiai8/myUKzpCaBZyriX2rgfGdvhe58XoBk+YMKETXNLLBcMN6gweKzWzqS/j
+ cNYNBRTeTw322UWxn/4RJxzZnTDIF9vX8Pj6N0YTtrT0XiELbcLBPyQ0BpI5h3OFTecK
+ 4EF+nwHVy1u4qxeDedKIjDzjojIvo+7L0eCBVFGOhnT/8I9bHMjSAeLERLtmGhzST4XG
+ uGgSFZQ9K7kkw7Ml/+dvBdSO+ohyEXfa07PfBHzS9BBxuJFftHRETAnN/GU4BaqQgEbu
+ ZUpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXsoXCRP8kGHu/QYhFX81oxHmNUp7Ow/ycZMGRc+3tOROfY7DPzfZcIHC5F0HK6BGkc+tbD3WApZpJjJ28c3Yeu9OiT8uA=
+X-Gm-Message-State: AOJu0YwUQLa+CUjR5gHbOSClrhulEnvXF2Lj4GJyeSokbkmA2+5Y9ING
+ EQt4sZ7N1vhAUTkTj46F710mlVXbR9XrhAk75ESrHF7GySu1eZ7DuZEOsvdX1rkbFnjY8yY7Aw2
+ CJCwchZdXcFmXCp933nr7w7g2KyxyFSdbC9Rjh6xokTn48pNG
+X-Google-Smtp-Source: AGHT+IGpMxbdpH7qbU2ZNDqQl6dYaPYELu3rTbekUCYavXLF41VvBMQRSqmvOhdXXM/lRkPOrOfAhzTlyOPzDUSR3EM=
+X-Received: by 2002:a50:9b01:0:b0:56b:d9b0:f1c3 with SMTP id
+ o1-20020a509b01000000b0056bd9b0f1c3mr142023edi.39.1711654041959; Thu, 28 Mar
+ 2024 12:27:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PSPE5cTU25lEDQVT7lRUN95oMWdLL8vH
-X-Proofpoint-ORIG-GUID: aBMxUDC4mqcivTj-JKsFCVbuSeYAm4dK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-28_17,2024-03-28_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 malwarescore=0 suspectscore=0
- adultscore=0 impostorscore=0 phishscore=0 spamscore=0 mlxlogscore=822
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403210000 definitions=main-2403280136
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=milesg@linux.vnet.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+References: <20240325084854.3010562-1-ruanjinjie@huawei.com>
+ <20240325084854.3010562-19-ruanjinjie@huawei.com>
+In-Reply-To: <20240325084854.3010562-19-ruanjinjie@huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 28 Mar 2024 19:27:10 +0000
+Message-ID: <CAFEAcA80e7j+euG9Fqtx5j-BnGMoK-bGoPrfFqfokJQE-kCcUA@mail.gmail.com>
+Subject: Re: [PATCH v10 18/23] hw/intc/arm_gicv3: Handle icv_nmiar1_read() for
+ icc_nmiar1_read()
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
+ wangyanan55@huawei.com, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,59 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds migration support for Branch History Rolling
-Buffer (BHRB) internal state.
+On Mon, 25 Mar 2024 at 08:52, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+>
+> Implement icv_nmiar1_read() for icc_nmiar1_read(), so add definition for
+> ICH_LR_EL2.NMI and ICH_AP1R_EL2.NMI bit.
+>
+> If FEAT_GICv3_NMI is supported, ich_ap_write() should consider ICV_AP1R_EL1.NMI
+> bit. In icv_activate_irq() and icv_eoir_write(), the ICV_AP1R_EL1.NMI bit
+> should be set or clear according to the Non-maskable property. And the RPR
+> priority should also update the NMI bit according to the APR priority NMI bit.
+>
+> By the way, add gicv3_icv_nmiar1_read trace event.
+>
+> If the hpp irq is a NMI, the icv iar read should return 1022 and trap for
+> NMI again
+>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+> v10:
+> - Rename ICH_AP1R_EL2_NMI to ICV_AP1R_EL1_NMI.
+> - Add ICV_RPR_EL1_NMI definition.
+> - Set ICV_RPR_EL1.NMI according to the ICV_AP1R<n>_EL1.NMI in
+>   ich_highest_active_virt_prio().
+> v9:
+> - Correct the INTID_NMI logic.
+> v8:
+> - Fix an unexpected interrupt bug when sending VNMI by running qemu VM.
+> v7:
+> - Add Reviewed-by.
+> v6:
+> - Implement icv_nmiar1_read().
+> ---
+>  hw/intc/arm_gicv3_cpuif.c | 79 +++++++++++++++++++++++++++++++++------
+>  hw/intc/gicv3_internal.h  |  4 ++
+>  hw/intc/trace-events      |  1 +
+>  3 files changed, 73 insertions(+), 11 deletions(-)
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
----
+I haven't done a full review of this yet, but it looks like some of
+the parts that applied to physical interrupts apply here too, eg
+ * don't do the RPR NMI bit handling in ich_highest_active_virt_prio(),
+   deal with NMI in the callers
+ * in the AP registers, set either NMI or a group-priority bit, not both
+ * AP NMI bits are only in the 0 reg, so checking doesn't need to be
+   inside the for loop
 
-Changes from v3:
-  - Rebased onto latest master branch
+You'll also need to update hppvi_index() so it accounts for NMIs
+when it's finding the highest priority interrupt in the list registers:
+compare the HighestPriorityVirtualInterrupt() pseudocode function.
 
- target/ppc/machine.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
-
-diff --git a/target/ppc/machine.c b/target/ppc/machine.c
-index 6b6c31d903..731dd8df35 100644
---- a/target/ppc/machine.c
-+++ b/target/ppc/machine.c
-@@ -711,6 +711,26 @@ static const VMStateDescription vmstate_reservation = {
-     }
- };
- 
-+#ifdef TARGET_PPC64
-+static bool bhrb_needed(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+    return (cpu->env.flags & POWERPC_FLAG_BHRB) != 0;
-+}
-+
-+static const VMStateDescription vmstate_bhrb = {
-+    .name = "cpu/bhrb",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = bhrb_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_UINTTL(env.bhrb_offset, PowerPCCPU),
-+        VMSTATE_UINT64_ARRAY(env.bhrb, PowerPCCPU, BHRB_MAX_NUM_ENTRIES),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+#endif
-+
- const VMStateDescription vmstate_ppc_cpu = {
-     .name = "cpu",
-     .version_id = 5,
-@@ -756,6 +776,7 @@ const VMStateDescription vmstate_ppc_cpu = {
- #ifdef TARGET_PPC64
-         &vmstate_tm,
-         &vmstate_slb,
-+        &vmstate_bhrb,
- #endif /* TARGET_PPC64 */
-         &vmstate_tlb6xx,
-         &vmstate_tlbemb,
--- 
-2.31.8
-
+thanks
+-- PMM
 
