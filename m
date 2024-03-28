@@ -2,47 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B33488FCE6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 11:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C901788FCEB
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 11:25:14 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpmvC-0000g5-KD; Thu, 28 Mar 2024 06:23:46 -0400
+	id 1rpmvj-0001K3-Fv; Thu, 28 Mar 2024 06:24:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rpmvA-0000Uz-BE
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:23:44 -0400
+ id 1rpmvP-00018B-2s
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:24:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1rpmv8-0007yU-Nz
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:23:43 -0400
+ id 1rpmvM-000818-Ei
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:23:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711621422;
+ s=mimecast20190719; t=1711621432;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wk1XRuu9X3DGzJxFGHocnOKx8XCL2jR00QO4qFqvTGA=;
- b=iAaopNLwzm0r6x/0u+IlslFXvQzACzYY8Lx5/n5Aq15gsO3yb5Q+4g5IWGd0JXwnBBF+as
- 8jFWVJi3BKYhm6ev9L1FV9SCp9LyLOGN4BN9oRybxEAD0buVrpiKHcT4ohtn1Xuyx98hB1
- tXOM2+nLwVZZXWZxwiVQ63ZEw55cZBQ=
+ bh=XNL8vvRnydn7jCDetNfo6f12bNGtxUMZ0TRYkoRAnyo=;
+ b=Ik1Fp5jXEBohFkJOM4ODCyL14gdICiJx5FWhWNG0n1DYheZlxeN0hDQLpG8k23/ZegjQqL
+ vVTOJRF51M7cCLs7i5WA/4fSyYFLRfEqQRfW2yW9ahQ9MmvOd9eeKw5bD5U3XLSCAv9IvL
+ ZVMAJbUpzIeFGUFGa65V9jURrUKoi2M=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-228-sSAzZxhyPW6b9zPDUyChhQ-1; Thu,
- 28 Mar 2024 06:23:39 -0400
-X-MC-Unique: sSAzZxhyPW6b9zPDUyChhQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-iPBfTMEtO4mDpBsoSw7A0Q-1; Thu,
+ 28 Mar 2024 06:23:48 -0400
+X-MC-Unique: iPBfTMEtO4mDpBsoSw7A0Q-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C71421C02156;
- Thu, 28 Mar 2024 10:23:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7660E29AC032;
+ Thu, 28 Mar 2024 10:23:47 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.34])
- by smtp.corp.redhat.com (Postfix) with ESMTP id F4235492BC6;
- Thu, 28 Mar 2024 10:23:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 92DF6492BC8;
+ Thu, 28 Mar 2024 10:23:45 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Hyman Huang <yong.huang@smartx.com>,
@@ -65,10 +65,9 @@ Cc: Hyman Huang <yong.huang@smartx.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Alexandre Iooss <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH 15/19] migration: fix -Werror=maybe-uninitialized
- false-positive
-Date: Thu, 28 Mar 2024 14:20:48 +0400
-Message-ID: <20240328102052.3499331-16-marcandre.lureau@redhat.com>
+Subject: [PATCH 16/19] tests: fix -Werror=maybe-uninitialized
+Date: Thu, 28 Mar 2024 14:20:49 +0400
+Message-ID: <20240328102052.3499331-17-marcandre.lureau@redhat.com>
 In-Reply-To: <20240328102052.3499331-1-marcandre.lureau@redhat.com>
 References: <20240328102052.3499331-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
@@ -102,28 +101,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-../migration/ram.c:1873:23: error: ‘dirty’ may be used uninitialized [-Werror=maybe-uninitialized]
-
-When 'block' != NULL, 'dirty' is initialized.
+../tests/unit/test-block-iothread.c:773:17: error: ‘job’ may be used uninitialized [-Werror=maybe-uninitialized]
+/usr/include/glib-2.0/glib/gtestutils.h:73:53: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- migration/ram.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/unit/test-bdrv-drain.c     | 2 +-
+ tests/unit/test-block-iothread.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/migration/ram.c b/migration/ram.c
-index 8deb84984f..4e26bced31 100644
---- a/migration/ram.c
-+++ b/migration/ram.c
-@@ -1847,7 +1847,7 @@ static bool get_queued_page(RAMState *rs, PageSearchStatus *pss)
- {
-     RAMBlock  *block;
-     ram_addr_t offset;
--    bool dirty;
-+    bool dirty = false;
+diff --git a/tests/unit/test-bdrv-drain.c b/tests/unit/test-bdrv-drain.c
+index 666880472b..c112d5b189 100644
+--- a/tests/unit/test-bdrv-drain.c
++++ b/tests/unit/test-bdrv-drain.c
+@@ -722,7 +722,7 @@ static void test_blockjob_common_drain_node(enum drain_type drain_type,
+     BlockJob *job;
+     TestBlockJob *tjob;
+     IOThread *iothread = NULL;
+-    int ret;
++    int ret = -1;
  
-     do {
-         block = unqueue_page(rs, &offset);
+     src = bdrv_new_open_driver(&bdrv_test, "source", BDRV_O_RDWR,
+                                &error_abort);
+diff --git a/tests/unit/test-block-iothread.c b/tests/unit/test-block-iothread.c
+index 3766d5de6b..20ed54f570 100644
+--- a/tests/unit/test-block-iothread.c
++++ b/tests/unit/test-block-iothread.c
+@@ -745,7 +745,7 @@ static void test_propagate_mirror(void)
+     AioContext *main_ctx = qemu_get_aio_context();
+     BlockDriverState *src, *target, *filter;
+     BlockBackend *blk;
+-    Job *job;
++    Job *job = NULL;
+     Error *local_err = NULL;
+ 
+     /* Create src and target*/
 -- 
 2.44.0
 
