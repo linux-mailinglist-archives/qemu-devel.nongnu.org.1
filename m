@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519E589040E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:57:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7D589041A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 16:58:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rps5a-0000yO-Rr; Thu, 28 Mar 2024 11:54:51 -0400
+	id 1rps5u-00016w-IT; Thu, 28 Mar 2024 11:55:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5W-0000q6-JL
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:46 -0400
-Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5e-00012h-0W
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:54 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5U-0001p3-Rw
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:46 -0400
-Received: by mail-ed1-x534.google.com with SMTP id
- 4fb4d7f45d1cf-56c4ca65dc6so1403170a12.1
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:54:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rps5a-0001pX-Rw
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 11:54:53 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-a44f2d894b7so140389066b.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 08:54:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711641282; x=1712246082; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=9jGFJM87g0s+QJiSxyo+fFml0FCFfdp02zPTSZX+zrs=;
- b=Oggw9Wwt2BomueR1nlPZWgmI9Ck66CU8bdSDgoyZ0UWC1MBOohdPk1ZoZ1EgAaoAnB
- Ndrn3A3v+NvwDz8Zl6RQh0Q/EvwcNXUR68+/QQXBowNOU4uIHNyoAAVOLHJJOjhmbtza
- WZP01Rtm3gP6k0po+YG80W6if7SgSVmDOLuxfT9piVqKxTnShwSFFgzqHUima7++ykVq
- UVlhyQ2VVXYCk7ttrwquaFARvayttyzxCECF1hocwB/HK9Tj05mAT6XILbo0FtrFfa5A
- xpRLvkCJS5PlI0lHCQC4r/AU/UvDjLluJPBViQHHEbnbQaZkUkvD45E1z39ppvOQsr7A
- FK4Q==
+ d=linaro.org; s=google; t=1711641289; x=1712246089; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8xoyjiIw561YlGIaQRdLbxciG2dWfen0yY52crHbWn0=;
+ b=hycLjgOdmSGADLUg7E1++Oeuk4Vs98GbuyXacIb1L+UIUXU89jYl56hdG8XsG9rTdf
+ NJpM4rDqoJMjOOB0PBNXf39Ol5iH0THFjjO7y7FU5Ft9qqTbbE/UUU5fHjTl9vbdzF0h
+ FxhNx3rKGkbahyu9rmI3XO76tyrNoBuoTSbZK/OkUOqDGn+d/syYxFMW6OQgjPp18Zvt
+ GRYLUhU4sohr6EW2MnTty+QUFVt8cVLRjZr8yNgjaoTggQriyUhPn6Q5Tf3RjMAbTKbW
+ DMbJd2UiyDLbz28AU6LeKJsDuh9BCFHj3jo3FIzF3u05cnQhk5mtGWM0HHvjIQc1G1wG
+ OMsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711641282; x=1712246082;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=9jGFJM87g0s+QJiSxyo+fFml0FCFfdp02zPTSZX+zrs=;
- b=NEpD8VOyxQzdtWv4va8VzqmA7oGUsV2vTy7ktfnQanysltXcwofNDMgHpaHgOdrfKY
- v746B+tB4yyHJ1ZspiBNJ/j703EwRjdGeNsOH+ICG1nq5kDCDpKDIWALflYvOrcDDxbQ
- sdPcG/IMQNNTtGw5ve6YsEHd4kKbdxNG2ATSZOfGLMI2YguKFTAr9s2zNjKtFXP+EXpD
- 4zr3fZVJdyWsBXAcWMMkMukXYEAPfTDFQ+0waf5EXLTrSktDjeQm036mynI1ZRL3sUy+
- fdn+Iu0M/9LxG4jti87FkcNPVBi3Lp9p86I42p7sNilxaoJl4HkXDnXDOp1rMskspSgV
- nM9g==
-X-Gm-Message-State: AOJu0YzpuD30NlppQH4xoeulQP8JawAAFeqEAxeUnd24VuT91I9aQKMN
- apwgmSeRsahcsuX3nbj8qHIpHSzCLk700qoj445pH5A7oZz2/yifJNmQyUc2eydjviKfbAEm/hM
- H
-X-Google-Smtp-Source: AGHT+IF49DaXGjHZW9HD9cL+HRM/1d+LDb7jwUvaelY4b9yVxDNea692GvPtisYDleFJnYb7JifYOA==
-X-Received: by 2002:a50:99c2:0:b0:56c:2ef7:f3ed with SMTP id
- n2-20020a5099c2000000b0056c2ef7f3edmr2553704edb.35.1711641282639; 
- Thu, 28 Mar 2024 08:54:42 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711641289; x=1712246089;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8xoyjiIw561YlGIaQRdLbxciG2dWfen0yY52crHbWn0=;
+ b=erjzWY+wHzkN3VGCKSLM9DhWFT3qpGepkaroWIT6glo7ZN/e3wpmTp1JkJ4fpzgYD1
+ ikbdh7B8zLASFQsK7ytGZUgwIzyqKZ2xJIbeHdT6CPLEVXG2ABl7GVOpwuSQHDeWCoqv
+ y4uGDI4z1qqODxWz7L5jyleUwr/bsx8hDfjZrmmRdFmTYpvNG/gTDUpi6BrUOedKMNo5
+ rotdDKCe+4tfMISnpeGn6YT2i+Xxve8iWsnfy9teJE1MZQ2NsyKc1DgjM2v3Shm7TTYB
+ nyigCvwXj2jxT7YcaalfNu8UcZpyWarKD6sO4Tu26uI8l63tu/3SRLKxcwo1BfxGQnKs
+ 5RzA==
+X-Gm-Message-State: AOJu0YzbQV4FkJwyMMxs12xym+ktLfldIwxSgIhGFar9F5HQW+ehHOMb
+ 84oNwMQyFlU1K/tFfKlilsf3HOsTecg3N3qNDUMOJO77S2roDxcTbtNAwmTzEMmjt1RSwJplzZy
+ Q
+X-Google-Smtp-Source: AGHT+IF5nPNNk6iWv9K9gmp+zF28jumHMVCID22KWO3BYQCYDbLztVinN6sDOrMp2q9Gec/eNpwGrA==
+X-Received: by 2002:a17:906:4892:b0:a47:3664:1b98 with SMTP id
+ v18-20020a170906489200b00a4736641b98mr2095599ejq.7.1711641288815; 
+ Thu, 28 Mar 2024 08:54:48 -0700 (PDT)
 Received: from m1x-phil.lan (pas38-h02-176-184-5-52.dsl.sta.abo.bbox.fr.
  [176.184.5.52]) by smtp.gmail.com with ESMTPSA id
- f4-20020a056402194400b0056c4cdc987esm968928edz.8.2024.03.28.08.54.40
+ f13-20020a1709062c4d00b00a4df82aa6a7sm882455ejh.219.2024.03.28.08.54.47
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 28 Mar 2024 08:54:42 -0700 (PDT)
+ Thu, 28 Mar 2024 08:54:48 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
@@ -67,16 +68,18 @@ Cc: Richard Henderson <richard.henderson@linaro.org>,
  Anthony Perard <anthony.perard@citrix.com>,
  Ani Sinha <anisinha@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH-for-9.1 00/29] hw/i386/pc: Decouple ISA vs PCI-based
- machines
-Date: Thu, 28 Mar 2024 16:54:08 +0100
-Message-ID: <20240328155439.58719-1-philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1 01/29] hw/i386/pc: Declare CPU QOM types using
+ DEFINE_TYPES() macro
+Date: Thu, 28 Mar 2024 16:54:09 +0100
+Message-ID: <20240328155439.58719-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240328155439.58719-1-philmd@linaro.org>
+References: <20240328155439.58719-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::534;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,71 +102,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Igor,
+When multiple QOM types are registered in the same file,
+it is simpler to use the the DEFINE_TYPES() macro. In
+particular because type array declared with such macro
+are easier to review.
 
-This is the first steps to decouple the isapc VS q35/i440fx
-machines. A new TYPE_PC_PCI_MACHINE is introduced to help
-differentiating. Fields unrelated to the legacy isapc are
-moved to the new PcPciMachineState structure.
+In few commits we are going to add more types, so replace
+the type_register_static() to ease further reviews.
 
-More work remain in hw/i386/pc_piix.c so we can build a
-binary with only CONFIG_ISAPC enabled.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/i386/pc.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-Based-on: <20240327095124.73639-1-philmd@linaro.org>
-"hw/i386: Remove deprecated pc-i440fx-2.0 -> 2.3 machines"
-
-Philippe Mathieu-Daudé (29):
-  hw/i386/pc: Declare CPU QOM types using DEFINE_TYPES() macro
-  hw/i386/pc: Extract pc_machine_is_pci_enabled() helper
-  hw/i386/pc: Pass base machine type as argument to DEFINE_PC_MACHINE()
-  hw/i386/pc: Introduce PC_PCI_MACHINE QOM type
-  hw/i386/pc: Remove PCMachineClass::pci_enabled field
-  hw/i386/pc: Move pci_root_uid field to PcPciMachineClass
-  hw/i386/pc: Call fw_cfg_add_extra_pci_roots() in pc_pci_machine_done()
-  hw/i386/pc: Move CXLState to PcPciMachineState
-  hw/i386/pc: Pass PCMachineState argument to acpi_setup()
-  hw/i386/pc: Remove PCMachineClass::has_acpi_build field
-  hw/i386/pc: Move acpi_setup() call to pc_pci_machine_done()
-  hw/i386/pc: Move acpi_build_enabled to PcPciMachineState
-  hw/i386/pc: Remove non-PCI code from pc_system_firmware_init()
-  hw/i386/pc: Move pc_system_flash_create() to pc_pci_machine_initfn()
-  hw/i386/pc: Move FW/pflash related fields to PcPciMachineState
-  hw/i386/pc: Move south-bridge related fields to PcPciMachine
-  hw/i386/pc: Inline gigabyte_align()
-  hw/i386/pc: Inline has_reserved_memory()
-  hw/i386/pc: Pass PcPciMachineState argument to CXL helpers
-  hw/i386/pc: Pass PcPciMachineState argument to pc_pci_hole64_start()
-  hw/i386/fw_cfg: Include missing 'qapi-types-machine.h' header
-  hw/i386/fw_cfg: Define fw_cfg_build_smbios() stub
-  hw/i386/fw_cfg: Inline smbios_defaults()
-  hw/i386/fw_cfg: Inline smbios_legacy_mode()
-  hw/i386/fw_cfg: Replace smbios_defaults() by !smbios_legacy_mode()
-  hw/i386/fw_cfg: Factor fw_cfg_build_smbios_legacy() out
-  hw/i386/pc: Call fw_cfg_build_smbios_legacy() in pc_machine_done()
-  hw/i386/pc: Rename pc_init1() -> pc_piix_init()
-  hw/i386/pc: Move ISA-only PC machine to pc_isa.c
-
- MAINTAINERS                  |   1 +
- hw/i386/acpi-build.h         |   3 +-
- hw/i386/fw_cfg.h             |   2 +
- include/hw/i386/pc.h         |  78 +++++++-------
- hw/i386/acpi-build.c         |  34 ++++--
- hw/i386/fw_cfg-smbios-stub.c |  19 ++++
- hw/i386/fw_cfg.c             |  35 +++---
- hw/i386/pc.c                 | 199 ++++++++++++++++++++++-------------
- hw/i386/pc_isa.c             |  33 ++++++
- hw/i386/pc_piix.c            |  91 +++++++---------
- hw/i386/pc_q35.c             |  12 ++-
- hw/i386/pc_sysfw.c           |  68 +++++-------
- hw/i386/xen/xen-hvm.c        |   3 +-
- hw/isa/piix.c                |   2 +-
- hw/pci-host/i440fx.c         |   4 +-
- hw/pci-host/q35.c            |   2 +-
- hw/i386/meson.build          |   2 +
- 17 files changed, 342 insertions(+), 246 deletions(-)
- create mode 100644 hw/i386/fw_cfg-smbios-stub.c
- create mode 100644 hw/i386/pc_isa.c
-
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 0be8f08c47..2c41b08478 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1810,23 +1810,20 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
+         pc_machine_set_fd_bootchk);
+ }
+ 
+-static const TypeInfo pc_machine_info = {
+-    .name = TYPE_PC_MACHINE,
+-    .parent = TYPE_X86_MACHINE,
+-    .abstract = true,
+-    .instance_size = sizeof(PCMachineState),
+-    .instance_init = pc_machine_initfn,
+-    .class_size = sizeof(PCMachineClass),
+-    .class_init = pc_machine_class_init,
+-    .interfaces = (InterfaceInfo[]) {
+-         { TYPE_HOTPLUG_HANDLER },
+-         { }
++static const TypeInfo pc_machine_types[] = {
++    {
++        .name           = TYPE_PC_MACHINE,
++        .parent         = TYPE_X86_MACHINE,
++        .abstract       = true,
++        .instance_size  = sizeof(PCMachineState),
++        .instance_init  = pc_machine_initfn,
++        .class_size     = sizeof(PCMachineClass),
++        .class_init     = pc_machine_class_init,
++        .interfaces     = (InterfaceInfo[]) {
++             { TYPE_HOTPLUG_HANDLER },
++             { }
++        },
+     },
+ };
+ 
+-static void pc_machine_register_types(void)
+-{
+-    type_register_static(&pc_machine_info);
+-}
+-
+-type_init(pc_machine_register_types)
++DEFINE_TYPES(pc_machine_types)
 -- 
 2.41.0
 
