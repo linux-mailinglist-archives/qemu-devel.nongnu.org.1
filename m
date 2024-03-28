@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4085B88F636
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 05:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9611B88F623
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 05:04:46 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rphBO-0006g0-Ua; Thu, 28 Mar 2024 00:16:06 -0400
+	id 1rpgzZ-0003BL-LF; Thu, 28 Mar 2024 00:03:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rphBF-0006Yi-Gi; Thu, 28 Mar 2024 00:16:02 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rphBD-0003I1-Di; Thu, 28 Mar 2024 00:15:57 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1e0025ef1efso4272425ad.1; 
- Wed, 27 Mar 2024 21:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711599352; x=1712204152; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BxW8RoTidESLDKkq5eDz3cLjlu91W/7FWMuBF0zDoaM=;
- b=aVJaINa3Ru39QXCEKxMlbSNBvylCDCaPh1qwJ7VOQYMfgI/vGE7VqVIwH+p5JbRcqw
- mo6PvW1j2+89Zg4NjSXv1cufGHw2EWOo2olcU9uPkY+F4Cj2ipoQJScMJgNSQxI5x6Qx
- W+qYJZZr/ShbLIY3hnd9RvpN3cD/pxKYlY8PVUWtuSJCEtL6hhgYhP5V6MIlZ7c7pWfF
- 2QJ0u2BAp+L69FVwIIvSl6WkRc0cQm+VVAyQdiIMA8v8bMeF4JV3fwxKlOROduZ0dKx+
- 8Sooz7lDysWEWxPtaTh2eT6h1f3zRx5edVWul+XBEnV1OC+2RmiJCJaSWraC+9GetanE
- Wlxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711599352; x=1712204152;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=BxW8RoTidESLDKkq5eDz3cLjlu91W/7FWMuBF0zDoaM=;
- b=Yk7ntWJUdEAR0p5u3OFtErvvUK1ZxsfqlGW7Q7zUFCC1XOSxsQy3kfoBehtyiARDZ8
- 2elyHlABxTnoSZzkwL+H1rb75vHLmUdNNm6aexNNL2bgpT/721cEQgfeQk+g3r+Koe9N
- K2XITE3mH/qtUKqNMHMx9liY0xlcRm7Vp/a4wWB2FhG1Wv/IGFjkGDIALDUpPjjLFfuN
- JQFnxfK0LQ1YkCkpkUXlvrv1Xqc+yoA1lZUL9vjZ2H9R63jRItdX+SyMFdvbvL6UJuye
- h0LRIUIVZ+pLvd48jZU3Zpa0c++ZJKObvg9pU4p+l7egRuyMhcNJb7bBl436FNP9NGPt
- EEVw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXk9E96el7KNzTTzSLOCvEY1v3rEcj5btZLYCjYwNe/dT+Swgv+sPIGyKx/ekfJ/SjgTRupnQaXzl1OHL9OdWvuuqur
-X-Gm-Message-State: AOJu0Yyn7vc28eCnPNdCcJRZuL2fEVRRE2nhYgid+20XZmW5GAORNq7U
- ZYaU8jFXd8e+/mE1c0sdle4xtwvvyH9SvvWwjnutJ45cxChijP5YaqxG9K1OmmY=
-X-Google-Smtp-Source: AGHT+IHe4TtQpipRtv65fEN4a7zsREs+DSpd1jTBvkRfhph65b7dDf02PaThiH5W7859NrBiLn7r/g==
-X-Received: by 2002:a17:903:238e:b0:1e0:10c1:6288 with SMTP id
- v14-20020a170903238e00b001e010c16288mr1763879plh.51.1711599351870; 
- Wed, 27 Mar 2024 21:15:51 -0700 (PDT)
-Received: from wheely.local0.net ([118.210.97.62])
- by smtp.gmail.com with ESMTPSA id
- w22-20020a1709026f1600b001e0b5f9fb02sm395416plk.26.2024.03.27.21.15.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Mar 2024 21:15:51 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, Cleber Rosa <crosa@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, qemu-ppc@nongnu.org,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH 4/4] tests/avocado: Mark ppc_hv_tests.py as non-flaky after
- fixed console interaction
-Date: Thu, 28 Mar 2024 14:15:27 +1000
-Message-ID: <20240328041527.2602823-5-npiggin@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240328041527.2602823-1-npiggin@gmail.com>
-References: <20240328041527.2602823-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rpgzX-0003Av-Fw
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 00:03:51 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rpgzU-0000hR-Vv
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 00:03:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1711598629; x=1743134629;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=0v6nPHMDMrkmOsgKVKENNkuw4fonKrQ3eZcjxnHUn3k=;
+ b=UaCHh5etfqijz8EtaHH5Qie35jHKrp+euWc5epsvL4Hg4Bwm3n489PUK
+ WlR4hh1uJ359ZYsL8BP/LhS9NFES3s0RLQ3AsoVzWUAz0pRx8SOZoQ+w/
+ Z/CFGQC94V9uTamJjeFINAJiSmPcx+dUvo1xzSshBzs6dzqwDxGoifaK9
+ LQqCjbjKnrz8X3fHxO684qNVH9ETbPiv1qNToFoyOQ/uY2YBzgQ7C0ZJU
+ AH8vMOdm+IOXNx+lYRUQClt7jM/+pp1FEeKLpwQqbkr30dQ3ESHjDzjFj
+ zdMfahRPNbOd2kyRBdD40KMFMnNQBC6Khh7UTRmmSk+cudeL6DHjSQaiD A==;
+X-CSE-ConnectionGUID: x2f5Kvv7Qxqt+VQBwaGZpA==
+X-CSE-MsgGUID: gxEuQl92RNSW1RINWm4X7A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6925993"
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; 
+   d="scan'208";a="6925993"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 21:03:45 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; d="scan'208";a="16588070"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa008.fm.intel.com with ESMTP; 27 Mar 2024 21:03:43 -0700
+Date: Thu, 28 Mar 2024 12:17:38 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH-for-9.1 v2 05/21] hw/acpi/ich9: Remove
+ 'memory-hotplug-support' property
+Message-ID: <ZgTvYhOyM5VSB4e7@intel.com>
+References: <20240327095124.73639-1-philmd@linaro.org>
+ <20240327095124.73639-6-philmd@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x62e.google.com
+In-Reply-To: <20240327095124.73639-6-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -96,28 +86,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that exec_command doesn't incorrectly consume console output,
-and guest time is set correctly, ppc_hv_tests.py is working more
-reliably. Try marking it non-flaky.
+On Wed, Mar 27, 2024 at 10:51:07AM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Wed, 27 Mar 2024 10:51:07 +0100
+> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Subject: [PATCH-for-9.1 v2 05/21] hw/acpi/ich9: Remove
+>  'memory-hotplug-support' property
+> X-Mailer: git-send-email 2.41.0
+> 
+> No external code sets the 'memory-hotplug-support'
+> property, remove it.
+> 
+> Suggested-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  hw/acpi/ich9.c | 18 ------------------
+>  1 file changed, 18 deletions(-)
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/avocado/ppc_hv_tests.py | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
-index bf8822bb97..0e83bbac71 100644
---- a/tests/avocado/ppc_hv_tests.py
-+++ b/tests/avocado/ppc_hv_tests.py
-@@ -45,7 +45,6 @@ def missing_deps():
- # QEMU already installed and use that.
- # XXX: The order of these tests seems to matter, see git blame.
- @skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
--@skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck due to console handling problem')
- @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
- @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
- class HypervisorTest(QemuSystemTest):
--- 
-2.42.0
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
