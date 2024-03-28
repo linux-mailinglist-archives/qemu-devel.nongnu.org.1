@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5608904BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:16:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F28F890510
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 17:23:58 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpsPG-0004ku-3Q; Thu, 28 Mar 2024 12:15:12 -0400
+	id 1rpsWl-00075n-0h; Thu, 28 Mar 2024 12:22:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rpsPD-0004it-4n
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 12:15:07 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rpsPB-0006g2-9i
- for qemu-devel@nongnu.org; Thu, 28 Mar 2024 12:15:06 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-56899d9bf52so1545835a12.2
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 09:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711642503; x=1712247303; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=fjVpOpA5Iq00oSecG01Q6+gTpD1AUnFdn7uVkFV+S7E=;
- b=qPGM8hbXMNgwurXo3u0Bshl1ZFVnYhtZYuXXIUk9Jrseh58ytYWSJi+jGMKePkOW5j
- S5NY871P56HWh42RkyvURpZ5DgtZKF+3lRqnY+7sWLJQo/5WUojbrfamCH3N9a+7ZdDz
- 4dNpujoHLlP2KA8qcKn6+W6PjCONVKTNJfKX0BfT2R/tWUc+DqDcGx22FjU/XjyDxHoO
- EWpSiJzFaIMjilFYSIrbwz/+M7F5SfnjY+5aMvGX252WVZ8Ik7BXjJIUkA4MsZnqinK/
- JK+ipaGeFW6zdynt1B/Bn7Yx+uxPazY5eO4WxV9GmsOmI+vi3DCtnpMrHsP9b7xXmT+h
- grlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711642503; x=1712247303;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=fjVpOpA5Iq00oSecG01Q6+gTpD1AUnFdn7uVkFV+S7E=;
- b=hv9IpLwk66Cycr0OD0bU/RIw3/9QDVZsQytZ56E0qqzTVA+lv22rt+7kB1kCGoihvO
- FS5Zx0NzW9Yf+7HK9+WogIG2VEqkn12wm1WRQ4sk6D/RaGc28QnQw7XxM70G4Stmhl+N
- C1/xCYa/CoDOb2BmQTv580Dl4J/g9jagrQR41spUYawZiN2pox/zzfUIbKTi0EvKrfI7
- OSG40qI09RSPjFe0GpGSzkB643TB4s1ICL7t5yMSwkZku7SG5lse8OpvdwLSMmefaKFT
- ZutMawGf7fQUCCu5eVKTaVmrTKtV7krjj5vaK/e4fUdkhWnt2Y4+704he0nfNBcCVNry
- nJ7Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUTmvQc7x2qs0/00TB3rXWdAjN2CWQwVWLQ/GAoC0L5qtIbvpB+6XUQRM/7pTIcVPBY5rtzaXgrEzerXH++J9TvxG81uio=
-X-Gm-Message-State: AOJu0YzDpss+KUW0gkHGNU9YKvvwaoTCobojwCj+/zh7C7lVQZ4nEVGU
- 5ep2SHP2qfg2vRuXsEycghVN6sP+6Elcw4ko9ZbGHg0Ohbri6PoeRxWJKOMxHK5ON9G+dgvR82Z
- 5qfhXq/LOmUvED5Q88s88cyQNV014w9Ea9FyYV5jeP24ekir6
-X-Google-Smtp-Source: AGHT+IHEDxbaCck+EXlRRexpvg9IFpKVSfPgWlbXRi1A8uhWh1Xa5aVtrIY/JRk++ElQqCm8nvhimd/Xjs3gtP+6QbA=
-X-Received: by 2002:a05:6402:2552:b0:56c:5a72:176a with SMTP id
- l18-20020a056402255200b0056c5a72176amr348883edb.3.1711642503467; Thu, 28 Mar
- 2024 09:15:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rpsWX-00071F-I1; Thu, 28 Mar 2024 12:22:41 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rpsWT-000873-F3; Thu, 28 Mar 2024 12:22:41 -0400
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 42SFOwcE009866; Thu, 28 Mar 2024 16:22:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=PgEtuWKMOUAvpM9xrdSt8xuzu3LnYbEms/QbyUK+T28=;
+ b=MK1EBmFGjrV62z1+838I4sD49qc0WCvrjH2OCguvtVAFMvJuE3JrCkx/6UPyGBg7/rwi
+ XdXBBpUAjEBENtdd/cJnUVzHw3DeIXjBO7BfdMqEY8TQuFRHLSkGSSCP2Bn4cVYhRnXa
+ bxklnRICgg7Bugg8ocWpMxUA8m3b17hBlSM/a6sV+zL+U7E6JOVfuKUZHNNkj5NL601v
+ xpC8R6ld4TjyYYnciFlmUQT+CwCrlv1alRctSwOelWAZxAakwXrOuZ94bBcDFYMVNptm
+ 0idhd8CySiF/LRkPMobVrTXIvejHXh+4x4LyZq/zBbgUAawiLAib2kxFrVUwWiQyxY4Y Sw== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3x2f6h8w73-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 28 Mar 2024 16:22:07 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 42SGJgS4015057; Thu, 28 Mar 2024 16:22:06 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3x1nhgfgej-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 28 Mar 2024 16:22:06 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42SGM5Zt010492;
+ Thu, 28 Mar 2024 16:22:05 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-220-183.vpn.oracle.com
+ [10.39.220.183])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
+ 3x1nhgfgcy-1; Thu, 28 Mar 2024 16:22:05 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [RFC v2 0/5] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Thu, 28 Mar 2024 12:21:58 -0400
+Message-Id: <20240328162203.3775114-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240324165545.201908-1-arnaud.minier@telecom-paris.fr>
- <20240324165545.201908-7-arnaud.minier@telecom-paris.fr>
- <9e6142e9-83b1-465d-b29a-01f60f9cbc49@redhat.com>
-In-Reply-To: <9e6142e9-83b1-465d-b29a-01f60f9cbc49@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 28 Mar 2024 16:14:52 +0000
-Message-ID: <CAFEAcA8ERinbcx9+2mtRMvJqDRxFhMZxzTiHXD_aLRA0zrsSfg@mail.gmail.com>
-Subject: Re: [PATCH v2 6/6] tests/qtest: Add tests for the STM32L4x5 USART
-To: Thomas Huth <thuth@redhat.com>
-Cc: Arnaud Minier <arnaud.minier@telecom-paris.fr>, qemu-devel@nongnu.org, 
- Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
- qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
- Alistair Francis <alistair@alistair23.me>,
- =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
- Samuel Tardieu <samuel.tardieu@telecom-paris.fr>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-28_15,2024-03-28_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ phishscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 spamscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2403210000
+ definitions=main-2403280111
+X-Proofpoint-GUID: oucljQ9tiMwiadp9WyAlYB9IjQY3RhJR
+X-Proofpoint-ORIG-GUID: oucljQ9tiMwiadp9WyAlYB9IjQY3RhJR
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,34 +99,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Mar 2024 at 06:19, Thomas Huth <thuth@redhat.com> wrote:
-> We are now using timeouts from the meson test harneess in meson.build, too,
-> see the slow_qtests[] at the beginning of that file.
-> You seem to be using a 10 minutes timeout in your test below
-> (usart_wait_for_flag() function), but you didn't adjust the meson timeout
-> setting in meson.build, so this does not quite match...
-> How long does your test take on a very loaded machine (with --enable-debug
-> used)? If it could take more than 30 seconds, you need to adjust the timeout
-> in meson.build, too. If it is running very fast, you should likely adjust
-> the 10 minutes timeout in usart_wait_for_flag() to < 30 seconds instead to
-> match the meson timeout setting.
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-I'd forgotten about the meson harness timeout.
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-tests/qtest/microbit-test.c also has a 10 minute timeout but
-isn't listed as a "slow qtest" (that's the pattern I suggested
-Arnaud follow for this test).
+The core feature behind this solution is a buffer mechanism in the form
+of a VirtQueue's used_elems VirtQueueElement array. This allows devices
+who always use buffers in-order by default to have a minimal overhead
+impact. Devices that may not always use buffers in-order likely will
+experience a performance hit. How large that performance hit is will
+depend on how frequent elements are completed out-of-order.
 
-If the meson test harness now handles timeouts, should we write
-this kind of test to not have a timeout at all, so it simply
-waits indefinitely for the UART to become ready after writing
-data to the socket connected to the chardev? Or are there
-scenarios where the test gets run but not via the meson harness
-and where we would want to still have a timeout?
-(For running the test executable by hand for debugging I think
-hanging indefinitely is fine and arguably more helpful than
-timing out and stopping.)
+A VirtQueue whose device who uses this feature will use its used_elems
+VirtQueueElement array to hold used VirtQueueElements. The index that
+used elements are placed in used_elems is the same index on the
+used/descriptor ring that would satisfy the in-order requirement. In
+other words, used elements are placed in their in-order locations on
+used_elems and are only written to the used/descriptor ring once the
+elements on used_elems are able to continue their expected order.
 
-thanks
--- PMM
+To differentiate between a "used" and "unused" element on the used_elems
+array (a "used" element being an element that was already written to the
+used/descriptor ring and an "unused" element being an element that
+wasn't), we use an element's in_num and out_num values. If the sum of
+these two values is greater than 0, the element is considered unused. If
+the sum is 0, then the element is considered used and invalid. When we
+find an order and write the element to the used/descriptor ring, we set
+these two values to 0 to indicate that it's been used.
+
+---
+v2: Use a VirtQueue's used_elems array as a buffer mechanism
+
+v1: Implement custom GLib GHashTable as a buffer mechanism
+
+Jonah Palmer (5):
+  virtio: Initialize sequence variables
+  virtio: In-order support for split VQs
+  virtio: In-order support for packed VQs
+  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c    |   1 +
+ hw/net/vhost_net.c           |   2 +
+ hw/scsi/vhost-scsi.c         |   1 +
+ hw/scsi/vhost-user-scsi.c    |   1 +
+ hw/virtio/vhost-user-fs.c    |   1 +
+ hw/virtio/vhost-user-vsock.c |   1 +
+ hw/virtio/virtio.c           | 118 +++++++++++++++++++++++++++++++----
+ include/hw/virtio/virtio.h   |   5 +-
+ net/vhost-vdpa.c             |   1 +
+ 9 files changed, 119 insertions(+), 12 deletions(-)
+
+-- 
+2.39.3
+
 
