@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB58988F5F2
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 04:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D4488F60D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 04:49:29 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpgU8-0004V9-Jg; Wed, 27 Mar 2024 23:31:24 -0400
+	id 1rpgkH-0007Wm-SC; Wed, 27 Mar 2024 23:48:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpgU0-0004Uo-RS
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 23:31:18 -0400
-Received: from mgamail.intel.com ([198.175.65.16])
+ id 1rpgkD-0007Wa-Vc
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 23:48:01 -0400
+Received: from mgamail.intel.com ([192.198.163.17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rpgTx-0002z4-TP
- for qemu-devel@nongnu.org; Wed, 27 Mar 2024 23:31:16 -0400
+ id 1rpgkB-00062A-8A
+ for qemu-devel@nongnu.org; Wed, 27 Mar 2024 23:48:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711596674; x=1743132674;
+ t=1711597679; x=1743133679;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=hZKzJUOFvKytethmGxnRTIKtgjsKhTWDHk/UyV3U9Uw=;
- b=OvPvBS+wtCZ2GW6uvJvO1vhfUhSf5C+SfDJgD8Z5caUCZoY0bJAhw9gI
- ATv0STPfYFMpDoqJx1+tb0MLOfSUtUl40HUMD8+4Tc/Hj0wQq7QKa4kpc
- dGx3i8/1uPOKGm5iHCq5kgiRGUzaYZjXOJHyiw4liTWZjvdjGmmEeQNvv
- Re5A4MKHFekrOs7BcaDUmidTI5Cg/zbXDp+byutXn49R9ji9lmdzz1ISy
- /LH8QtmnpLmyl1osg3uvaE9l6nGV8SKgyocnBM9xmd8reOj3a5AuSTfaM
- eyJCvhit2961Qi0K9rgmkuXMqO6AyaYvsdYCnGzsiD0zY8+AmlN0Zk2g+ w==;
-X-CSE-ConnectionGUID: fajsBLcFQAewKcis+TC7kQ==
-X-CSE-MsgGUID: 7c7AtwG5QcyPaTGwtP5GEg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6846659"
+ bh=CZmyMDYmLGJt1aVeM7GMIos7pinDxlgS7ivSaGO4u00=;
+ b=V0ea/Kl9AVT+FmDuwoH9YqMHru1c2XBUQXirjKqwyMjPDdYDYy6PIlXg
+ UCkx5LmJ1SvQxHK6n+1Dm9OFejSvxctaNpSK6juKfcM6yj5NmXzjg7gJ2
+ baGy9WarrX/3E4wzsTiYWiKlFhCNEcjhM+LrdLTl98cIhEj9yT5D/c3jc
+ P2lCKE/yWt/DDitj1L8P9n3X6RuDbT/wt0CCVgw9n1rU/con/PtuXfgdW
+ tTEJoi97U3aiQV69VUH6hanmez9luQGhG0xp+Xmbhy84rsZxh405IlBAk
+ 8sSviQaNO/BBczBmUgO1TaPzk2cfkzNQ5u5lzgGrdFIJf+oZdfuBkEIzY Q==;
+X-CSE-ConnectionGUID: JxaRD7XQQeik92LDGx3HGQ==
+X-CSE-MsgGUID: SfzVBNPbQLqSTKcyziTn0Q==
+X-IronPort-AV: E=McAfee;i="6600,9927,11026"; a="6597091"
 X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; 
-   d="scan'208";a="6846659"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Mar 2024 20:31:07 -0700
+   d="scan'208";a="6597091"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Mar 2024 20:47:57 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; d="scan'208";a="21228739"
+X-IronPort-AV: E=Sophos;i="6.07,160,1708416000"; d="scan'208";a="16538537"
 Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
  ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 27 Mar 2024 20:31:04 -0700
-Date: Thu, 28 Mar 2024 11:44:59 +0800
+ by fmviesa009.fm.intel.com with ESMTP; 27 Mar 2024 20:47:54 -0700
+Date: Thu, 28 Mar 2024 12:01:49 +0800
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
@@ -51,20 +51,18 @@ Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
  Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH-for-9.1 v2 19/21] hw/i386/pc: Remove 2.3 and deprecate
- 2.4 to 2.7 pc-i440fx machines
-Message-ID: <ZgTnu5RlRYiSd++R@intel.com>
+ Marcelo Tosatti <mtosatti@redhat.com>, kvm@vger.kernel.org
+Subject: Re: [PATCH-for-9.1 v2 20/21] target/i386: Remove
+ X86CPU::kvm_no_smi_migration field
+Message-ID: <ZgTrrZVam/hEdcU0@intel.com>
 References: <20240327095124.73639-1-philmd@linaro.org>
- <20240327095124.73639-20-philmd@linaro.org>
+ <20240327095124.73639-21-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240327095124.73639-20-philmd@linaro.org>
-Received-SPF: pass client-ip=198.175.65.16; envelope-from=zhao1.liu@intel.com;
+In-Reply-To: <20240327095124.73639-21-philmd@linaro.org>
+Received-SPF: pass client-ip=192.198.163.17; envelope-from=zhao1.liu@intel.com;
  helo=mgamail.intel.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -88,43 +86,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
-
-On Wed, Mar 27, 2024 at 10:51:21AM +0100, Philippe Mathieu-Daudé wrote:
-> Date: Wed, 27 Mar 2024 10:51:21 +0100
+On Wed, Mar 27, 2024 at 10:51:22AM +0100, Philippe Mathieu-Daudé wrote:
+> Date: Wed, 27 Mar 2024 10:51:22 +0100
 > From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: [PATCH-for-9.1 v2 19/21] hw/i386/pc: Remove 2.3 and deprecate 2.4
->  to 2.7 pc-i440fx machines
+> Subject: [PATCH-for-9.1 v2 20/21] target/i386: Remove
+>  X86CPU::kvm_no_smi_migration field
 > X-Mailer: git-send-email 2.41.0
 > 
-> The pc-i440fx-2.3 machine was deprecated for the 8.2
-> release (see commit c7437f0ddb "docs/about: Mark the
-> old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
-> time to remove it. Similarly to the cited commit,
-> deprecate the 2.4 to 2.7 machines.
+> X86CPU::kvm_no_smi_migration was only used by the
+> pc-i440fx-2.3 machine, which got removed. Remove it
+> and simplify kvm_put_vcpu_events().
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>  target/i386/cpu.h     | 3 ---
+>  target/i386/cpu.c     | 2 --
+>  target/i386/kvm/kvm.c | 7 +------
+>  3 files changed, 1 insertion(+), 11 deletions(-)
 
-I suggest split the deprecation of 2.4-2.7 in another patch.
-
-And when a old machine is marked as deprecated, is it necessary to
-set "deprecation_reason" as commit c7437f0ddb?
-
-I tend to set that field since boards.h said:
-
-/**
- * MachineClass:
- * @deprecation_reason: If set, the machine is marked as deprecated. The
- *    string should provide some clear information about what to use instead.
- *...
- */
-
-And that field would be printed when user boots the machine.
-
-Additionally, could we define rules for deprecating old machines?
-For example, if it's more than 8 years old (as commit c7437f0ddb) or
-after how many releases, the old machine can be considered for
-deprecation.
-
-Thanks,
-Zhao
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 
