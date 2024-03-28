@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F2C88FD39
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 11:38:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB5D88FD3B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Mar 2024 11:40:04 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rpn90-0002sB-51; Thu, 28 Mar 2024 06:38:02 -0400
+	id 1rpnAX-0003h1-UM; Thu, 28 Mar 2024 06:39:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rpn8x-0002ry-Jw; Thu, 28 Mar 2024 06:38:00 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rpn8v-00029O-43; Thu, 28 Mar 2024 06:37:58 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e0ae065d24so7165705ad.1; 
- Thu, 28 Mar 2024 03:37:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711622275; x=1712227075; darn=nongnu.org;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=sjtZ79gSoctoBt2DkkO45/cX6CE2CYNEeZPbmGuzzXk=;
- b=nQfS6KUYV6FsCDRHps/+lqP/HVmPzrQGTXdtUXJeM3uSvJs87hYyniuSBIljv0/GSB
- R6rodLcuBnXqNel9sqMhfNcMY0WeBTGwz+7cXuIRfUm7EeEOc8o5W8nGgNH+NDAURt9d
- JTgJ11lgpqtZaOYZqGsKoF/O+uH61diewrMt1F2V/bfPftmzF0eG3GhWKtaX6ubIU0hg
- ko1CduI7x5G6xe4ceI6yr48gbq8GqzBKx+9rlfJVedi4IwX1CPn8ix8aSDKBSVI/Jrdu
- GE1dbMlOtftuCyIRrAKtolPzqmHa3vhnxQPJ7CCugMfarQZRL5/L1jvQ76f6TkaRHIrI
- 76Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711622275; x=1712227075;
- h=in-reply-to:references:to:from:subject:cc:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=sjtZ79gSoctoBt2DkkO45/cX6CE2CYNEeZPbmGuzzXk=;
- b=hj1tQo1BU5lGHbmAlKGoZTSBkTWxCCMeataCO9PRwaa/i5QX80N0muBXBnBAHO68aQ
- vR55fSo5I73iI8RZR2eMChCdVr3abg+/HNGFmD5kFPTsP+DKE/GvLWRActy6tfdGnppK
- bIX/tZnf1N2lc7w+/8Z8n+NU17aaR6BUarTL23MdMawkIFpBEb1CS0X2UyEmNiQxuuzl
- Un2SjOPWBjMxYicUEYYTcfIesCW99XDFsiyws+Jgnwfm61ILgsNegkzEx9O+LVEbsLi+
- 3VYJAXjeODt15t6ytxSLEJHt4B+s88awLUxR6M8txn2/3e3ubbk5xByxKiTwDzZfyko5
- 6zlg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWta0V0pv+j94CROtUV62LI3Yh05FCHkieT0eJk9IG+u3cg8FFwRphdMrD5AH+jKneCHzlwRO1nwA17PITjufvndVWT3EPutO2Mcge/AiNaHjbNp3tgvzr/8hA=
-X-Gm-Message-State: AOJu0YzanKYq8yR136FhGrW/bQg4ygI0Qtsk4PWcCs73gvjmToormFlt
- lqYXsC4J+LZI5U/cTX0yha56aRKkLQLLxurxnPK6HCOoVk3yreiP
-X-Google-Smtp-Source: AGHT+IH7+apmRZ9kZmvyikampRJbrl2bulGBufhZOrMK9EqHCPJmydYtzuc8LFbimuXJfksh2pJulg==
-X-Received: by 2002:a17:90a:b293:b0:29d:d7a5:91f9 with SMTP id
- c19-20020a17090ab29300b0029dd7a591f9mr1993222pjr.48.1711622275195; 
- Thu, 28 Mar 2024 03:37:55 -0700 (PDT)
-Received: from localhost ([118.210.97.62]) by smtp.gmail.com with ESMTPSA id
- q12-20020a17090a178c00b002a017e2c24fsm3454034pja.37.2024.03.28.03.37.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Mar 2024 03:37:54 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 28 Mar 2024 20:37:50 +1000
-Message-Id: <D05BGFTTYF1C.1PG514RTVTZTD@wheely>
-Cc: "Richard Henderson" <richard.henderson@linaro.org>, "Paolo Bonzini"
- <pbonzini@redhat.com>, <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 0/3] target/ppc: fix tlb flushing race
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Nicholas Piggin" <npiggin@gmail.com>, <qemu-ppc@nongnu.org>
-X-Mailer: aerc 0.15.2
-References: <20240328053131.2604454-1-npiggin@gmail.com>
- <D058D0G7Z2DX.L8OBHHBGWGU4@wheely> <D05AZMB7725S.27E3ZJNW7GJAF@wheely>
-In-Reply-To: <D05AZMB7725S.27E3ZJNW7GJAF@wheely>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=npiggin@gmail.com; helo=mail-pl1-x631.google.com
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rpnAV-0003gh-09
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:39:35 -0400
+Received: from mail-mw2nam10on20600.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::600]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
+ id 1rpnAR-0002Jp-An
+ for qemu-devel@nongnu.org; Thu, 28 Mar 2024 06:39:34 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bfZT47MZF36no/+4SIhq5ZWL6a6MhWpdAB28HQXh49eRYroFuuc4TRJ1dZKjfW7yXj/xEnFeIb3b/IOW6VfuXSOQFvRJgeJ4ZGPqBLQkwe7w64BlffQ5ta68iQSnQ9MAaCirNJY+h0x+nUxJMTcB2GAgllDXLCHTcCOf+zZPDGayPL8gcqtkQxSDrus9Myb0baWq7xUHIAzTRzmeCSeBkK+z2nt+kN239P1UJGB8+PO56Hb+bfbZOeHRgKoLrHayWgsqvlrUuJXhz++/3WmOZvq5xsPrLmQGoYtwZ1XH8yDfqgHBTEwFx8jJPmZeNsv+l5jnCdguMQsBsxDIbragzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kmuSAizVYNdggukM7ja8W6gHWknAcVkj8+PW8j6Dk80=;
+ b=PGNN+6WVUAHT8JqGgJVDfiQNpyHNCwQiJRsqn/nPfXBIwi51E+XxDrbRwW4iHIjdlFaFI88kTPva2dkaFdIGwsKOw25n7oUxuvMKgYaK/rHWncGzfjHr1i6InVBMns3ZhTvLLoW7ZjtDjXOLUgSGb5h0HeCOwcgIPHp3uBAfeN7UzUGtKGKQpnucjendmE6/wclUl9tXVnOfy3u5P3Xw+lnr65WmkO3wWIl4Dj71/MAl9LPiwxM1E7dTCAcgg3n199I0GYEmUcM+TyupshnUR1lak0MA8oI0vnuEIQTa48RdcK4wJP08N3Dy79gjHCJ4QfqwmsF9x3tIsrWSVGv9DQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kmuSAizVYNdggukM7ja8W6gHWknAcVkj8+PW8j6Dk80=;
+ b=sRdqa2ihC7ALreqtih1RUKwvsoPGp3lIQB03fNvtc+VK87Rv1l73XPiXnxpgXd4tCoag6MNj17i6BGId1/aeZhfsU8e9CEBOnqEqUuBYLgTX5ob+4BcsGb8gZZemxeQ5XNgxVRB2zfc15A/MzmbVMCk6azQ9uEjwWP3VaMfyQR0=
+Received: from PH7PR17CA0003.namprd17.prod.outlook.com (2603:10b6:510:324::23)
+ by MW4PR12MB7168.namprd12.prod.outlook.com (2603:10b6:303:22d::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.32; Thu, 28 Mar
+ 2024 10:39:24 +0000
+Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
+ (2603:10b6:510:324:cafe::2d) by PH7PR17CA0003.outlook.office365.com
+ (2603:10b6:510:324::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.38 via Frontend
+ Transport; Thu, 28 Mar 2024 10:39:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.79) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7409.10 via Frontend Transport; Thu, 28 Mar 2024 10:39:23 +0000
+Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 28 Mar
+ 2024 05:39:21 -0500
+From: Jiqian Chen <Jiqian.Chen@amd.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, <qemu-devel@nongnu.org>
+CC: Huang Rui <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
+Subject: [RFC QEMU PATCH v8 0/1] S3 support
+Date: Thu, 28 Mar 2024 18:39:01 +0800
+Message-ID: <20240328103903.408290-1-Jiqian.Chen@amd.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|MW4PR12MB7168:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe34401a-1656-4df1-788e-08dc4f135580
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ZJYKTi6B6ia1H8ksKcCZbQX0Jkxk92KF9LdAJssPNqp2tsSiRnyvyy9i7hsSXOEY3P7fv+Zh0YPHqWojEoeywxiB96wod+f82J3wdOPeisEPj45IwIR6/Fk5qWVKh9j5IGVQXrRGdTNXJHtBHF8wXa/F4gH2+WrNoYo5jG8nEKeioNgQ0pTU1vN/QGz3apjwDsk2nQsjsNdh9RCGIEZUfkKSxuLvO79XR0aYXePCCXJAws5g2ZKel091E3kjYf4TCZy4gqXI1wGHbQgWn+m1yOO58rFsnGduK3zySZpOn8powJ47FAtnaffDc5LgfsNnnJjhWEuoCwXn+b9FFdTKtkser3ACcZfEnonlVljr2hKpLvTZpevQP7vr2siuM5z3mRknVcufFJYt7vtko9/c3pnfdsQKucw5KM25WEp/FuppgoFKMdYFihoBBP3sHG7LTIHuaJuvA7rz3k7EsaFVjIdoiFTiWFR9cXlZ7OHANmxEwF9h2XME11Aei8JBmzDZ7IYIhnZ1kgbXodWGCFVxPGhUNRj94dTBzCgyWSsr77KJu43NuZ62iI25eucYlKGWxUvTc0LqE8J8ED5q3f7IXWgdKnToMaTA71Z614j1hdJFflzrKU47LhmqhIfyqQVuKoutbkSIWv/dqXCXAL+pSG6D7IlSFdPdeGeqfovDi4PzL5DfllKpfkhhcXcmDCZELVqn0MCmcbcSkQ6zepMdKQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(1800799015)(82310400014)(376005)(36860700004); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2024 10:39:23.6286 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe34401a-1656-4df1-788e-08dc4f135580
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9DA.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7168
+Received-SPF: permerror client-ip=2a01:111:f403:2412::600;
+ envelope-from=Jiqian.Chen@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,40 +118,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu Mar 28, 2024 at 8:15 PM AEST, Nicholas Piggin wrote:
-> On Thu Mar 28, 2024 at 6:12 PM AEST, Nicholas Piggin wrote:
-> > On Thu Mar 28, 2024 at 3:31 PM AEST, Nicholas Piggin wrote:
-> > > ppc broadcast tlb flushes should be synchronised with other vCPUs,
-> > > like all other architectures that support such operations seem to
-> > > be doing.
-> > >
-> > > Fixing ppc removes the last caller of the non-synced TLB flush
-> > > variants, we can remove some dead code. I'd like to merge patch 1
-> > > for 9.0, and hold patches 2 and 3 until 9.1 to avoid churn (unless
-> > > someone prefers to remove the dead code asap).
-> >
-> > Hmm, turns out to not be so simple, this in parts reverts
-> > the fix in commit 4ddc104689b. Do other architectures
-> > that use the _synced TLB flush variants have that same problem
-> > with the TLB flush not actually flushing until the TB ends,
-> > I wonder?
->
-> Huh, I can reproduce that original problem with a little test
-> case (which I will upstream into kvm-unit-tests).
->
-> async_run_on_cpu(this_cpu) seems to flush before the next TB, but
-> async_safe_run_on_cpu(this_cpu) does not? How does it execute it
-> without exiting from the TB?
+Hi all,
+This is the v8 patch to support S3.
+v8 makes below changes:
+* Add a new patch#1 to fix a problem import by 27ce0f3afc9dd25d21b43bbce505157afd93d111,
+  the right action is that only the state of PM_CTRL can be clear when resetting.
+* patch#2 is the original patch to implement No_Soft_Reset bit, and in this version, I
+  rename function and change some condition sequence.
 
-Duh, it's because the non-_synced tlb flush variants don't use
-that for running on this CPU, they just call it directly.
+Best regards,
+Jiqian Chen
 
-Okay that all makes sense now. I think this series plus the
-below are good then. Also it's possible some other archs that
-use _all_cpus_synced() (arm, riscv, s390x) _may_ be racy. I
-had a quick look at sfence.vma and ipte, and AFAIKS they're
-supposed to take immediate effect after they execute.
 
-Thanks,
-Nick
+v7 makes below changes:
+* Tested this patch with Qemu on Xen hypervisor. Depending on kernel
+  patch (virtio: Add support for no-reset virtio PCI PM:
+  https://lore.kernel.org/lkml/20231208070754.3132339-1-stevensd@chromium.org/)
+* Changed the default value of flag VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT to false
+* Fixed coding style violation
+* Modified the content of the comments.
+* Removed useless flag PCI_PM_CTRL_DATA_SCALE_MASK.
+
+
+V6:
+In current code, when guest does S3, virtio devices are reset during that process, that
+causes the display resources of virtio-gpu are destroyed, then the display can't come
+back after resuming.
+This v6 patch implement the No_Soft_Reset bit of PCI_PM_CTRL register, when this bit is
+set, the resetting will not be done, so that the display can work after resuming.
+This version abandons all previous version implementations and is a new different
+solution according to the outcome of the discussion and suggestions in the mailing
+thread of virtio-spec.
+(https://lists.oasis-open.org/archives/virtio-comment/202401/msg00077.html)
+
+
+V5:
+v5 makes below changes:
+* Since this series patches add a new mechanism that let virtgpu and Qemu can negotiate
+  their reset behavior, and other guys hope me can improve this mechanism to virtio pci
+  level, so that other virtio devices can also benefit from it. So instead of adding
+  new feature flag VIRTIO_GPU_F_FREEZE_S3 only serves for virtgpu, v5 add a new parameter
+  named freeze_mode to struct VirtIODevice, when guest begin suspending, set freeze_mode
+  to VIRTIO_PCI_FREEZE_MODE_FREEZE_S3, and then all virtio devices can get this status,
+  and notice that guest is suspending, then they can change their reset behavior . See
+  the new commit "virtio-pci: Add freeze_mode case for virtio pci"
+* The second commit is just for virtgpu, when freeze_mode is VIRTIO_PCI_FREEZE_MODE_FREEZE_S3,
+  prevent Qemu destroying render resources, so that the display can come back after resuming.
+V5 of kernel patch:
+https://lore.kernel.org/lkml/20230919104607.2282248-1-Jiqian.Chen@amd.com/T/#t
+The link to trace this issue:
+https://gitlab.com/qemu-project/qemu/-/issues/1860
+
+
+v4:
+Thanks for Gerd Hoffmann's advice. V4 makes below changes:
+* Use enum for freeze mode, so this can be extended with more
+  modes in the future.
+* Rename functions and paratemers with "_S3" postfix.
+And no functional changes.
+Link:
+https://lore.kernel.org/qemu-devel/20230720120816.8751-1-Jiqian.Chen@amd.com/
+No v4 patch on kernel side.
+
+
+v3:
+Thanks for Michael S. Tsirkin's advice. V3 makes below changes:
+* Remove changes in file include/standard-headers/linux/virtio_gpu.h
+  I am not supposed to edit this file and it will be imported after
+  the patches of linux kernel was merged.
+Link:
+https://lore.kernel.org/qemu-devel/20230719074726.1613088-1-Jiqian.Chen@amd.com/T/#t
+V3 of kernel patch:
+https://lore.kernel.org/lkml/20230720115805.8206-1-Jiqian.Chen@amd.com/T/#t
+
+
+v2:
+makes below changes:
+* Change VIRTIO_CPU_CMD_STATUS_FREEZING to 0x0400 (<0x1000)
+* Add virtio_gpu_device_unrealize to destroy resources to solve
+  potential memory leak problem. This also needs hot-plug support.
+* Add a new feature flag VIRTIO_GPU_F_FREEZING, so that guest and
+  host can negotiate whenever freezing is supported or not.
+Link:
+https://lore.kernel.org/qemu-devel/20230630070016.841459-1-Jiqian.Chen@amd.com/T/#t
+V2 of kernel patch:
+https://lore.kernel.org/lkml/20230630073448.842767-1-Jiqian.Chen@amd.com/T/#t
+
+
+v1:
+Hi all,
+I am working to implement virtgpu S3 function on Xen.
+
+Currently on Xen, if we start a guest who enables virtgpu, and then run
+"echo mem > /sys/power/state" to suspend guest. And run "sudo xl trigger <guest id> s3resume"
+to resume guest. We can find that the guest kernel comes back, but the display doesn't.
+It just shown a black screen.
+
+Through reading codes, I founded that when guest was during suspending, it called into Qemu
+to call virtio_gpu_gl_reset. In virtio_gpu_gl_reset, it destroyed all resources and reset
+renderer. This made the display gone after guest resumed.
+
+I think we should keep resources or prevent they being destroyed when guest is suspending.
+So, I add a new status named freezing to virtgpu, and add a new ctrl message
+VIRTIO_GPU_CMD_STATUS_FREEZING to get notification from guest. If freezing is set to true,
+and then Qemu will realize that guest is suspending, it will not destroy resources and will
+not reset renderer. If freezing is set to false, Qemu will do its origin actions, and has no
+other impaction.
+
+And now, display can come back and applications can continue their status after guest resumes.
+Link:
+https://lore.kernel.org/qemu-devel/20230608025655.1674357-1-Jiqian.Chen@amd.com/
+V1 of kernel patch:
+https://lore.kernel.org/lkml/20230608063857.1677973-1-Jiqian.Chen@amd.com/
+
+
+Jiqian Chen (2):
+  virtio-pci: only reset pm state during resetting
+  virtio-pci: implement No_Soft_Reset bit
+
+ hw/virtio/virtio-pci.c         | 37 +++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio-pci.h |  5 +++++
+ 2 files changed, 41 insertions(+), 1 deletion(-)
+
+-- 
+2.34.1
+
 
