@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ADBD891407
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 08:12:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC6E891405
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 08:12:33 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq6Oa-0007DF-Ui; Fri, 29 Mar 2024 03:11:24 -0400
+	id 1rq6Oi-0007GR-0f; Fri, 29 Mar 2024 03:11:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rq6OX-0007C0-VP
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rq6Oc-0007FU-13
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rq6OV-0001A7-To
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:21 -0400
+ id 1rq6OY-0001AK-VF
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711696279;
+ s=mimecast20190719; t=1711696281;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fdGxAGmowhQSBuyeDBHIEceatJNwqQUFNtHDcNjSPU8=;
- b=hvwDsmtwiQd1ON1GE+HzofpXuLyK49leb7caypt/Fs3vI/8mPgjgariZAfHZzXs7M8Ca5j
- QKo2CrCL6T54OzoJRgYh6oJPJqrabWFfFuXss1kJY8+5KwO/tdHM3sXQPPLxoxcl6reP/G
- AXYXRZV5krGp3irQkUh7hC41KyiTtgI=
+ bh=1WyJLX8ea9OjJ6HHxYKsQuwbKPPt4phmo4Lf1pOTsRA=;
+ b=O7qE6tcfEcd8Tn/GuAsSn0xo4IZ2jvk3R75mnnhQJAeFwnZLxgB3xaP2ca17/v3i854VtY
+ 70HZyLVUaak89zWuaT2HI4/nkTqtdQVMcIgMdAjfakmIOUFxruSdktG/yoFBAcSRE0Kjsn
+ mwT7nTszBf4YgJ63mW0jzeY6zNp4xN4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-D2_JzKhxPvihyThN06-0lA-1; Fri, 29 Mar 2024 03:11:14 -0400
-X-MC-Unique: D2_JzKhxPvihyThN06-0lA-1
+ us-mta-601-OAP52hVTMg2hd6dpAgVeFQ-1; Fri, 29 Mar 2024 03:11:17 -0400
+X-MC-Unique: OAP52hVTMg2hd6dpAgVeFQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0BEEB101A526;
- Fri, 29 Mar 2024 07:11:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DD4DB8007A1;
+ Fri, 29 Mar 2024 07:11:16 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0B8B1C423E0;
- Fri, 29 Mar 2024 07:11:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A21ABC423E0;
+ Fri, 29 Mar 2024 07:11:14 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 1/5] virtio-net: Fix vhost virtqueue notifiers for RSS
-Date: Fri, 29 Mar 2024 15:10:56 +0800
-Message-ID: <20240329071100.31376-2-jasowang@redhat.com>
+ Andrew Melnychenko <andrew@daynix.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 2/5] ebpf: Fix indirections table setting
+Date: Fri, 29 Mar 2024 15:10:57 +0800
+Message-ID: <20240329071100.31376-3-jasowang@redhat.com>
 In-Reply-To: <20240329071100.31376-1-jasowang@redhat.com>
 References: <20240329071100.31376-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,41 +82,44 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-virtio_net_guest_notifier_pending() and virtio_net_guest_notifier_mask()
-checked VIRTIO_NET_F_MQ to know there are multiple queues, but
-VIRTIO_NET_F_RSS also enables multiple queues. Refer to n->multiqueue,
-which is set to true either of VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS is
-enabled.
+The kernel documentation says:
+> The value stored can be of any size, however, all array elements are
+> aligned to 8 bytes.
+https://www.kernel.org/doc/html/v6.8/bpf/map_array.html
 
-Fixes: 68b0a6395f36 ("virtio-net: align ctrl_vq index for non-mq guest for vhost_vdpa")
+Fixes: 333b3e5fab75 ("ebpf: Added eBPF map update through mmap.")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Andrew Melnychenko <andrew@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- hw/net/virtio-net.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ ebpf/ebpf_rss.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 9959f1932b..a6ff000cd9 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3426,7 +3426,7 @@ static bool virtio_net_guest_notifier_pending(VirtIODevice *vdev, int idx)
-     VirtIONet *n = VIRTIO_NET(vdev);
-     NetClientState *nc;
-     assert(n->vhost_started);
--    if (!virtio_vdev_has_feature(vdev, VIRTIO_NET_F_MQ) && idx == 2) {
-+    if (!n->multiqueue && idx == 2) {
-         /* Must guard against invalid features and bogus queue index
-          * from being set by malicious guest, or penetrated through
-          * buggy migration stream.
-@@ -3458,7 +3458,7 @@ static void virtio_net_guest_notifier_mask(VirtIODevice *vdev, int idx,
-     VirtIONet *n = VIRTIO_NET(vdev);
-     NetClientState *nc;
-     assert(n->vhost_started);
--    if (!virtio_vdev_has_feature(vdev, VIRTIO_NET_F_MQ) && idx == 2) {
-+    if (!n->multiqueue && idx == 2) {
-         /* Must guard against invalid features and bogus queue index
-          * from being set by malicious guest, or penetrated through
-          * buggy migration stream.
+diff --git a/ebpf/ebpf_rss.c b/ebpf/ebpf_rss.c
+index 2e506f9743..d102f3dd09 100644
+--- a/ebpf/ebpf_rss.c
++++ b/ebpf/ebpf_rss.c
+@@ -185,13 +185,18 @@ static bool ebpf_rss_set_indirections_table(struct EBPFRSSContext *ctx,
+                                             uint16_t *indirections_table,
+                                             size_t len)
+ {
++    char *cursor = ctx->mmap_indirections_table;
++
+     if (!ebpf_rss_is_loaded(ctx) || indirections_table == NULL ||
+        len > VIRTIO_NET_RSS_MAX_TABLE_LEN) {
+         return false;
+     }
+ 
+-    memcpy(ctx->mmap_indirections_table, indirections_table,
+-            sizeof(*indirections_table) * len);
++    for (size_t i = 0; i < len; i++) {
++        *(uint16_t *)cursor = indirections_table[i];
++        cursor += 8;
++    }
++
+     return true;
+ }
+ 
 -- 
 2.42.0
 
