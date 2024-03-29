@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77538926B4
+	by mail.lfdr.de (Postfix) with ESMTPS id CD8BD8926B5
 	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKah-00056k-5a; Fri, 29 Mar 2024 18:20:51 -0400
+	id 1rqKak-00057e-Iy; Fri, 29 Mar 2024 18:20:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKaf-00056J-IG
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:49 -0400
-Received: from mail-oa1-x30.google.com ([2001:4860:4864:20::30])
+ id 1rqKah-000578-6B
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:51 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKae-0001pR-0Y
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:49 -0400
-Received: by mail-oa1-x30.google.com with SMTP id
- 586e51a60fabf-229b7ada9e8so980647fac.0
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:47 -0700 (PDT)
+ id 1rqKaf-0001pg-BU
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:50 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e6b3dc3564so1993113b3a.2
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711750846; x=1712355646; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711750848; x=1712355648; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mqnAymu0Pceh1YCimgMze24poYMrVWuaKl+QjHlACqk=;
- b=c7dTs2JwE0gy2Q8yHxazYc7sPPaBgrCh2EDRtBJdHAwRz3zTnOi0N6yUzE3g8N4bm7
- TBJE6tryTOBnknZyYihdFhq5k454FUefOst9YxtBQ991Q1yQaTT/x5vCr6j2esiFswo1
- DAysLqzti4QsxFgewjO7m1lhGXubFHBU6+z/r0FOHV6y+CNNQyaEeWF+PCEBhVqRSjQ7
- UJf6bnC2NArSZUJt+k5RBZZal6D0rY2s2zNdi9gViBc2xgGOX/0c7OydCfOFw3ZQDFSc
- Uw7cKspc6L/A3XWEsVukN6EkVNLXrjIcZxnLxAhwgZK2y4aqXGvf83M1lgWKyXwkDrtj
- yfxg==
+ bh=3dondGlVn7Nspk+b15ZO4C68ipaZNt0/1iWHRvOdtfQ=;
+ b=OI4rJQbdxIVAbSx4eeo2MEJTvpoQR3eUpSVzIO3au2bpnntTqCb9ra1X0iyT3ossu1
+ IFSQF+jXkUTUV0JdlwDLVaY6Dod/hnYZZBFJOehUccd+rbE1wDc2uc3tkcXDWBWS8Vo9
+ Y76TVb/cvWsX3tCpVt2GSgG7DPdp2Y+V1ofT+9r824CU/85oAu292AW5u01O5HIrCOKQ
+ zxH7Jn5e1g+OsOR2JX7OMLv8MPeeHOksHt2EENdD3u0XhtLgyRAt7BMwcvccP7xtvLTc
+ eyNq4p+kDUxmWTm9YITQugMmslJRWOJXd677kH7HN6QMbig8pqn0w1v5UJ56Qf6GTosY
+ YN9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711750846; x=1712355646;
+ d=1e100.net; s=20230601; t=1711750848; x=1712355648;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mqnAymu0Pceh1YCimgMze24poYMrVWuaKl+QjHlACqk=;
- b=Is5hau9MXInH+WK40584xk9QpbV6y3/E5cGEsZv8g1NjJXGGVMUkJlH0+8d9T/Gudl
- fDzw81Xh2flTCprDVAFcAGdQG5ETYUQst/qrFLGoEEFdHkSNTv5vjVWrRfU0RTVbTMoK
- BwW6H2TsmJp8ylDwXD1AAVkfHr0XmRYFFVs8nCydcTjiCfIJlQ3Z0raCo8rCxcNhGokO
- 2LLrwQ4kqTGWyKhhhpDYUxCXT4t6/xLz4ddBBz4ia/MmJ3dt4BTKTDOggrTrVcewqB+s
- wbZ1XnZo/9/xUVxgt+uRPDF4m3NsH97j3xsS9RGBHT+OLbJ9ptQaGkn8aniGkElCDqBz
- Xkeg==
-X-Gm-Message-State: AOJu0YzV/+i2nck+OS1Q+FmIDHMfH/jaStrCirfCHFuGqbac4wCGs8UZ
- sl9lwBHPfKdN5dK71edNTC5RV8ljwoXo8l2D9PPXIJiZqpQuyl4fWoZTBtRkLLJXFAabl0bQSSV
- G
-X-Google-Smtp-Source: AGHT+IFlXXXhM1VOpGgvpAkX18QsqI+8kcCxlj6jIUPjXxQJqrVMqthFhTV6DCMkhjgSuHjRcBdsOQ==
-X-Received: by 2002:a05:6871:340c:b0:22a:551c:3170 with SMTP id
- nh12-20020a056871340c00b0022a551c3170mr3672097oac.23.1711750846598; 
- Fri, 29 Mar 2024 15:20:46 -0700 (PDT)
+ bh=3dondGlVn7Nspk+b15ZO4C68ipaZNt0/1iWHRvOdtfQ=;
+ b=csePmz6DPygQPAUHSB2NM5EFc44f6sEN8rRARGZ1iNciry6lAIHKBjdE8OKOsQ8CkM
+ nU9YfZvScmXFnemQBpb4oCKAP+DFWZm2yrp4KaoVw77x41NgGZQvpP9951UqxybywAqw
+ 5Gcc5aV6nNLym1uSGA9ymY5JUUCuawWF/ixSw+fu6wlo145mX0ZrUwG+VoebscQimk6T
+ H+JtxSZ2T50iwexAb3EdWR4Qm7KqoA3Pxn/iPsjuu5pwFZ+p9FITvyUmkW/eDJ7r73GC
+ LNBg/HFJl9l9DorGdTLX7dHngGgqLNTUV+TkaO+KgLSTaCJyvWu3jRGQV4T/pmzMzeyU
+ wzXg==
+X-Gm-Message-State: AOJu0YyXWW8QDkW81xIwS3++rnf1M5V7NDYwQdlJfu8uxyg0B+KPSAuj
+ pFcn09/z4v3cp11hUx8M/Jcmvc88SXCwR4UszIy4dhSM2EB5qB2gaYdrysfl4KqBVMeVWUcTJNw
+ Y
+X-Google-Smtp-Source: AGHT+IGeX5GRebwui29cyYkcdUNHVjR1I4j0jmsgX5pZdTMA6305JtVxbijAhRVWLgdURj9ED3v/Qg==
+X-Received: by 2002:a05:6a00:4fc6:b0:6ea:ab48:5dd9 with SMTP id
+ le6-20020a056a004fc600b006eaab485dd9mr3564600pfb.6.1711750847953; 
+ Fri, 29 Mar 2024 15:20:47 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.45
+ lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:20:46 -0700 (PDT)
+ Fri, 29 Mar 2024 15:20:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 4/7] tests/tcg: Test shmat(NULL)
-Date: Fri, 29 Mar 2024 12:20:34 -1000
-Message-Id: <20240329222037.1735350-5-richard.henderson@linaro.org>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 5/7] tcg/optimize: Fix sign_mask for logical right-shift
+Date: Fri, 29 Mar 2024 12:20:35 -1000
+Message-Id: <20240329222037.1735350-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329222037.1735350-1-richard.henderson@linaro.org>
 References: <20240329222037.1735350-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:4860:4864:20::30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,63 +94,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+The 'sign' computation is attempting to locate the sign bit that has
+been repeated, so that we can test if that bit is known zero.  That
+computation can be zero if there are no known sign repetitions.
 
-Add a small test to prevent regressions.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240325192436.561154-5-iii@linux.ibm.com>
+Cc: qemu-stable@nongnu.org
+Fixes: 93a967fbb57 ("tcg/optimize: Propagate sign info for shifting")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2248
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/tcg/multiarch/linux/linux-shmat-null.c | 38 ++++++++++++++++++++
- 1 file changed, 38 insertions(+)
- create mode 100644 tests/tcg/multiarch/linux/linux-shmat-null.c
+ tcg/optimize.c                    |  2 +-
+ tests/tcg/aarch64/test-2248.c     | 28 ++++++++++++++++++++++++++++
+ tests/tcg/aarch64/Makefile.target |  1 +
+ 3 files changed, 30 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/aarch64/test-2248.c
 
-diff --git a/tests/tcg/multiarch/linux/linux-shmat-null.c b/tests/tcg/multiarch/linux/linux-shmat-null.c
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 752cc5c56b..275db77b42 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -2376,7 +2376,7 @@ static bool fold_shift(OptContext *ctx, TCGOp *op)
+          * will not reduced the number of input sign repetitions.
+          */
+         sign = (s_mask & -s_mask) >> 1;
+-        if (!(z_mask & sign)) {
++        if (sign && !(z_mask & sign)) {
+             ctx->s_mask = s_mask;
+         }
+         break;
+diff --git a/tests/tcg/aarch64/test-2248.c b/tests/tcg/aarch64/test-2248.c
 new file mode 100644
-index 0000000000..94eaaec371
+index 0000000000..aac2e17836
 --- /dev/null
-+++ b/tests/tcg/multiarch/linux/linux-shmat-null.c
-@@ -0,0 +1,38 @@
-+/*
-+ * Test shmat(NULL).
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
++++ b/tests/tcg/aarch64/test-2248.c
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* See https://gitlab.com/qemu-project/qemu/-/issues/2248 */
++
 +#include <assert.h>
-+#include <stdlib.h>
-+#include <sys/ipc.h>
-+#include <sys/shm.h>
 +
-+int main(void)
++__attribute__((noinline))
++long test(long x, long y, long sh)
 +{
-+    int shmid;
-+    char *p;
-+    int err;
-+
-+    /* Create, attach and intialize shared memory. */
-+    shmid = shmget(IPC_PRIVATE, 1, IPC_CREAT | 0600);
-+    assert(shmid != -1);
-+    p = shmat(shmid, NULL, 0);
-+    assert(p != (void *)-1);
-+    *p = 42;
-+
-+    /* Reattach, check that the value is still there. */
-+    err = shmdt(p);
-+    assert(err == 0);
-+    p = shmat(shmid, NULL, 0);
-+    assert(p != (void *)-1);
-+    assert(*p == 42);
-+
-+    /* Detach. */
-+    err = shmdt(p);
-+    assert(err == 0);
-+    err = shmctl(shmid, IPC_RMID, NULL);
-+    assert(err == 0);
-+
-+    return EXIT_SUCCESS;
++    long r;
++    asm("cmp   %1, %2\n\t"
++        "cset  x12, lt\n\t"
++        "and   w11, w12, #0xff\n\t"
++        "cmp   w11, #0\n\t"
++        "csetm x14, ne\n\t"
++        "lsr   x13, x14, %3\n\t"
++        "sxtb  %0, w13"
++        : "=r"(r)
++        : "r"(x), "r"(y), "r"(sh)
++        : "x11", "x12", "x13", "x14");
++    return r;
 +}
++
++int main()
++{
++    long r = test(0, 1, 2);
++    assert(r == -1);
++    return 0;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index ea3e232e65..0efd565f05 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -10,6 +10,7 @@ VPATH 		+= $(AARCH64_SRC)
+ 
+ # Base architecture tests
+ AARCH64_TESTS=fcvt pcalign-a64 lse2-fault
++AARCH64_TESTS += test-2248
+ 
+ fcvt: LDFLAGS+=-lm
+ 
 -- 
 2.34.1
 
