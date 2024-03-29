@@ -2,55 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599C9891A8A
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 14:04:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2BA2891AF0
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 14:14:16 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqBt7-0006Ep-4d; Fri, 29 Mar 2024 09:03:17 -0400
+	id 1rqC2Q-0000hy-7H; Fri, 29 Mar 2024 09:12:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhuyangyang14@huawei.com>)
- id 1rqBt4-0006EE-ME; Fri, 29 Mar 2024 09:03:14 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhuyangyang14@huawei.com>)
- id 1rqBt1-0004ad-VB; Fri, 29 Mar 2024 09:03:14 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4V5gVc07Q3z1R91F;
- Fri, 29 Mar 2024 21:00:08 +0800 (CST)
-Received: from dggpeml500011.china.huawei.com (unknown [7.185.36.84])
- by mail.maildlp.com (Postfix) with ESMTPS id B9B14140120;
- Fri, 29 Mar 2024 21:02:49 +0800 (CST)
-Received: from huawei.com (10.91.158.201) by dggpeml500011.china.huawei.com
- (7.185.36.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 29 Mar
- 2024 21:02:49 +0800
-To: <eblake@redhat.com>
-CC: <chenxiaoyu48@huawei.com>, <fam@euphon.net>, <luolongmin@huawei.com>,
- <qemu-block@nongnu.org>, <qemu-devel@nongnu.org>, <qemu-stable@nongnu.org>,
- <stefanha@redhat.com>, <suxiaodong1@huawei.com>, <wangyan122@huawei.com>,
- <yebiaoxiang@huawei.com>, <zhuyangyang14@huawei.com>
-Subject: Re: [PATCH v1] coroutine: avoid inserting duplicate coroutine to
- co_queue_wakeup
-Date: Fri, 29 Mar 2024 21:09:45 +0800
-Message-ID: <20240329130946.4169083-1-zhuyangyang14@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <dv63ec4btdz32schwrwjebce4m7xbu5tt6fncebi5hzxnmctdy@xflzv6tolvrm>
-References: <dv63ec4btdz32schwrwjebce4m7xbu5tt6fncebi5hzxnmctdy@xflzv6tolvrm>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rqC2L-0000hj-1X
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 09:12:49 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rqC2J-0006aE-9Q
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 09:12:48 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a46cd9e7fcaso253608766b.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 06:12:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711717965; x=1712322765; darn=nongnu.org;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=K+/cYcyu/hx+LGwqRWJIb7grlJjyQbbHhC+97IBoxhQ=;
+ b=ifF6Z/wTg/tZSbt3E7uyDdBV+XslBshsA5VaW9Aw1ZysqhpqhCvAUhxArQc+xqOWvn
+ T5jGp388e4RqgN9abYuHPOLEtymZWwO+jIWAfdmo7YvuaSUiufBeNx/4vWhKV9q8kFgt
+ xsinG9tu2yJB1wfnXQqk3fPs0EUdWJZFItvYfeb8d/g+6USh18WwZhFZb5V1PBdGOpbZ
+ uhiAfoXdaU4Vbv4Lx5TmUT/+dfgvKtkWKoRT0ppicWrjG/fULUG8w1ooqNhlQYtQWea/
+ pcYnsKbCu6hqslWhN/qGJ1Dy7Hj4LElOyvuSweHAmEoizxZ9FXtGvNMP9B3wv3X4qc2u
+ q3MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711717965; x=1712322765;
+ h=content-transfer-encoding:subject:from:cc:to:content-language
+ :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=K+/cYcyu/hx+LGwqRWJIb7grlJjyQbbHhC+97IBoxhQ=;
+ b=T2Ux6k6OhKM7ocI0Yn9c0JfqJYS4XobAGuzWICHRew0clsXHgwMffdjk/VVhLxAog5
+ Qess0XSkOhb1u5ycquBTUo1gGmY4AqG/CPTA6pLIxcQIRnj1kqli9mdrAcwUJKPguVrO
+ D2szG52nq4uaUWR4kBFPECY8FofVQ+Sx5sFPFaH+SwuKSRM3U6O5rGXK48aWytpstwGi
+ Rj0opfmkQ4Kf7f1kgg7iZC5qyPiixHDZLvSyJ/2SOC0N6qLLeODFztAMiDWFsoAEm+wG
+ ItIRpa9eXCWHwAgi2KF+VXLKSHMdCy5HvmDPTCOi7++O7EbFJu+A8k1MjMzIkMHnXhs8
+ PCyg==
+X-Gm-Message-State: AOJu0YxJuZ+mY77/TjTNGyknpGEpJKCP7H9xv5c426kV3m2eS5aJRmMq
+ KkDL0srjtPyLzPNrUkdLC31g44zHbCF7X7mJCJAzX3UnJ5xuvxGPekIbSMn1t3jAICgPDchg5v9
+ 0
+X-Google-Smtp-Source: AGHT+IFCeBrZ+4IfOfFy5PtSIqYXySfGGddBxJXidcnamnRDT6tWxDddmITGYLVwyB8QBSe6s0j8Aw==
+X-Received: by 2002:a17:906:a88a:b0:a4e:1ff7:5c79 with SMTP id
+ ha10-20020a170906a88a00b00a4e1ff75c79mr1820863ejb.14.1711717965204; 
+ Fri, 29 Mar 2024 06:12:45 -0700 (PDT)
+Received: from [192.168.69.100] (uni14-h01-176-184-39-242.dsl.sta.abo.bbox.fr.
+ [176.184.39.242]) by smtp.gmail.com with ESMTPSA id
+ s12-20020a170906a18c00b00a4672fb2a03sm1939136ejy.10.2024.03.29.06.12.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Mar 2024 06:12:44 -0700 (PDT)
+Message-ID: <a31e52d3-f65c-4283-b448-1dfabb11b776@linaro.org>
+Date: Fri, 29 Mar 2024 14:12:39 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, afaerber@suse.de,
+ ale@rev.ng, alistair.francis@wdc.com, Anton Johansson <anjo@rev.ng>,
+ armbru@redhat.com, bbauman@redhat.com, bcain@quicinc.com,
+ berrange@redhat.com, Chao Peng <chao.p.peng@linux.intel.com>,
+ cjia@nvidia.com, clg@kaod.org, cw@f00f.org,
+ Damien Hedde <dhedde@kalrayinc.com>, eblake@redhat.com,
+ edgar.iglesias@gmail.com, eduardo@habkost.net,
+ Elena Ufimtseva <elena.ufimtseva@oracle.com>, eric.auger@redhat.com,
+ felipe@nutanix.com, iggy@theiggy.com, imp@bsdimp.com, jan.kiszka@web.de,
+ jgg@nvidia.com, jidong.xiao@gmail.com, jim.shu@sifive.com,
+ jjherne@linux.vnet.ibm.com, Joao Martins <joao.m.martins@oracle.com>,
+ konrad.wilk@oracle.com, Luc Michel <luc@lmichel.fr>,
+ mburton@qti.qualcomm.com, mdean@redhat.com, mimu@linux.vnet.ibm.com,
+ paul.walmsley@sifive.com, pbonzini@redhat.com,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Shameerali Kolothum Thodi <shameerali.kolothum.thodi@huawei.com>,
+ shentey@gmail.com, stefanha@gmail.com, wei.w.wang@intel.com, z.huo@139.com,
+ LIU Zhiwei <zhiwei_liu@linux.alibaba.com>, zwu.kernel@gmail.com,
+ eblot@rivosinc.com, max.chou@sifive.com
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: QEMU Community Call Agenda Items (April 2nd, 2024)
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.91.158.201]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500011.china.huawei.com (7.185.36.84)
-Received-SPF: pass client-ip=45.249.212.35;
- envelope-from=zhuyangyang14@huawei.com; helo=szxga07-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,215 +106,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Zhu Yangyang <zhuyangyang14@huawei.com>
-From:  Zhu Yangyang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Mar 2024 07:40:14 -0500, Eric Blake wrote:
-> On Mon, Mar 25, 2024 at 05:18:50PM +0800, zhuyangyang via wrote:
-> > If g_main_loop_run()/aio_poll() is called in the coroutine context,
-> > the pending coroutine may be woken up repeatedly, and the co_queue_wakeup
-> > may be disordered.
-> > 
-> > When the poll() syscall exited in g_main_loop_run()/aio_poll(), it means
-> > some listened events is completed. Therefore, the completion callback
-> > function is dispatched.
-> > 
-> > If this callback function needs to invoke aio_co_enter(), it will only
-> > wake up the coroutine (because we are already in coroutine context),
-> > which may cause that the data on this listening event_fd/socket_fd
-> > is not read/cleared. When the next poll () exits, it will be woken up again
-> > and inserted into the wakeup queue again.
-> > 
-> > For example, if TLS is enabled in NBD, the server will call g_main_loop_run()
-> > in the coroutine, and repeatedly wake up the io_read event on a socket.
-> > The call stack is as follows:
-> > 
-> > aio_co_enter()
-> > aio_co_wake()
-> > qio_channel_restart_read()
-> > aio_dispatch_handler()
-> > aio_dispatch_handlers()
-> > aio_dispatch()
-> > aio_ctx_dispatch()
-> > g_main_context_dispatch()
-> > g_main_loop_run()
-> > nbd_negotiate_handle_starttls()
-> > nbd_negotiate_options()
-> > nbd_negotiate()
-> > nbd_co_client_start()
-> > coroutine_trampoline()
-> 
-> zhuyangyang, do you have a reliable reproduction setup for how you
-> were able to trigger this?  Obviously, it only happens when TLS is
-> enabled (we aren't creating a g_main_loop_run for any other NBD
-> command), and only when the server is first starting to serve a
-> client; is this a case where you were hammering a long-running qemu
-> process running an NBD server with multiple clients trying to
-> reconnect to the server all near the same time?
+Hi,
 
-I'm sorry I didn't make the background of the problem clear before,
-this problem is not on the NBD command, but on the VM live migration
-with qemu TLS.
+The KVM/QEMU community call is at:
 
-Next, I'll detail how to reproduce the issue.
+   https://meet.jit.si/kvmcallmeeting
+   @
+   2/4/2024 14:00 UTC
 
-1. Make the problem more obvious.
+Are there any agenda items for the sync-up?
 
-When TLS is enabled during live migration, the migration progress
-may be suspended because some I/O are not returned during the mirror job
-on target host.
+Alex maintains the invite on our Linaro project calendar here:
 
-Now we know that the reason is that some coroutines are lost.
-The entry function of these lost coroutines are nbd_trip().
+ 
+https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=MWd2dWI5NDM1bzdocnJlbTBhMHJhbG5sNWlfMjAyNDAyMjBUMTQwMDAwWiBjX2s1cDJscGd2YnB0ZGlya3U1c2kwMWJsbW5rQGc&tmsrc=c_k5p2lpgvbptdirku5si01blmnk%40group.calendar.google.com&scp=ALL
 
-Add an assertion on the target host side to make the problem
-show up quickly.
+If you want to be added to the invite list let him know and you can get
+spammed by your calendar app as well 😉
 
-$ git diff util/async.c
-diff --git a/util/async.c b/util/async.c
-index 0467890052..4e3547c3ea 100644
---- a/util/async.c
-+++ b/util/async.c
-@@ -705,6 +705,7 @@ void aio_co_enter(AioContext *ctx, Coroutine *co)
-     if (qemu_in_coroutine()) {
-         Coroutine *self = qemu_coroutine_self();
-         assert(self != co);
-+        assert(!co->co_queue_next.sqe_next);
-         QSIMPLEQ_INSERT_TAIL(&self->co_queue_wakeup, co, co_queue_next);
-     } else {
-         qemu_aio_coroutine_enter(ctx, co);
+Regards,
 
-2. Reproduce the issue
-
-1) start vm on the origin host
-
-Note: Configuring multiple disks for a VM 
-(It is recommended to configure more than 6 disks)
-
-These disk tasks(nbd_trip) will be performed simultaneously 
-with nbd_negotiate_handle_starttls() on the main thread during migrate.
-
-<domain type='kvm' id='1'>
-  <name>centos7.3_64_server</name>
-  <memory unit='KiB'>4194304</memory>
-  <currentMemory unit='KiB'>4194304</currentMemory>
-  <vcpu placement='static'>4</vcpu>
-  <resource>
-    <partition>/machine</partition>
-  </resource>
-  <os>
-    <type arch='x86_64' machine='pc-i440fx-9.0'>hvm</type>
-    <boot dev='hd'/>
-  </os>
-  <features>
-    <acpi/>
-    <apic eoi='on'/>
-    <pae/>
-  </features>
-  <cpu mode='host-passthrough' check='none' migratable='on'/>
-  <clock offset='utc'>
-    <timer name='hpet' present='no'/>
-    <timer name='rtc' tickpolicy='catchup' track='guest'/>
-    <timer name='pit' tickpolicy='delay'/>
-  </clock>
-  <on_poweroff>destroy</on_poweroff>
-  <on_reboot>restart</on_reboot>
-  <on_crash>restart</on_crash>
-  <devices>
-    <emulator>/usr/bin/qemu-kvm</emulator>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/centos7.3_64_server' index='6'/>
-      <backingStore/>
-      <target dev='vda' bus='virtio'/>
-      <alias name='virtio-disk0'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/kvm-disk-001' index='5'/>
-      <backingStore/>
-      <target dev='vdb' bus='virtio'/>
-      <alias name='virtio-disk1'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/kvm-disk-002' index='4'/>
-      <backingStore/>
-      <target dev='vdc' bus='virtio'/>
-      <alias name='virtio-disk2'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/kvm-disk-003' index='3'/>
-      <backingStore/>
-      <target dev='vdd' bus='virtio'/>
-      <alias name='virtio-disk3'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/kvm-disk-004' index='2'/>
-      <backingStore/>
-      <target dev='vde' bus='virtio'/>
-      <alias name='virtio-disk4'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native'/>
-      <source file='/Images/TestImg/kvm-disk-005' index='1'/>
-      <backingStore/>
-      <target dev='vdf' bus='virtio'/>
-      <alias name='virtio-disk5'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
-    </disk>
-    <controller type='pci' index='0' model='pci-root'>
-      <alias name='pci.0'/>
-    </controller>
-  </devices>
-</domain>
-
-$ virsh create vm_x86.xml
-Domain 'centos7.3_64_server' created from /home/vm_x86.xml
-
-2) migrate the vm to target host
-virsh migrate --live --p2p \
-   --migrateuri tcp:10.91.xxx.xxx centos7.3_64_server qemu+tcp://10.91.xxx.xxx/system \
-   --copy-storage-all \
-   --tls
-
-Than, An error is reported on the peer host
-qemu-kvm: ../util/async.c:705: aio_co_enter: Assertion `!co->co_queue_next.sqe_next' failed.
-
-> 
-> If we can come up with a reliable formula for reproducing the
-> corrupted coroutine list, it would make a great iotest addition
-> alongside the existing qemu-iotests 233 for ensuring that NBD TLS
-> traffic is handled correctly in both server and client.
-
-I'm not sure if this can be used for testing of qemu-nbd
-
-> 
-> > 
-> > Signed-off-by: zhuyangyang <zhuyangyang14@huawei.com>
-> 
-> Side note: this appears to be your first qemu contribution (based on
-> 'git shortlog --author zhuyangyang').  While I am not in a position to
-> presume how you would like your name Anglicized, I will point out that
-> the prevailing style is to separate given name from family name (just
-> because your username at work has no spaces does not mean that your
-> S-o-b has to follow suit).  It is also permissible to list your name
-> in native characters alongside or in place of the Anglicized version;
-> for example, 'git log --author="Stefano Dong"' shows this technique.
-
-Yes, I will update my name in the next submission, thank you very much for your help
-
--- 
-Best Regards,
-Zhu Yangyang
-
+Phil.
 
