@@ -2,88 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A83B891A2D
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 13:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8537891A8B
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 14:04:52 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqBkw-0004J5-Ba; Fri, 29 Mar 2024 08:54:50 -0400
+	id 1rqBtl-0006Tz-Er; Fri, 29 Mar 2024 09:03:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rqBkt-0004Is-ME
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 08:54:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rqBkr-0002rT-NY
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 08:54:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711716884;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tAj8S0vIOpczCGkf+n7t1iyF0rGdEiB23zLTJV99kJk=;
- b=ddlKv2WekCnIZXSKnpoJonNfZaZaEs1oAv9hE4GPc2Q268mRnsMJ6lwQWUUG9BgFHxP5qb
- pX1O3SABOrC7p5IeQ7xVmNOn/Y4ZkIxsnBNwqks2dZ++U5PXkEFt3zGDRhAT7heY3zGHl1
- MiZ5pEvl7x3DZ3x7nxrSyfKMe0Sg9/U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584--BbRK-y-N5aKd352PuleWw-1; Fri, 29 Mar 2024 08:54:43 -0400
-X-MC-Unique: -BbRK-y-N5aKd352PuleWw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4147e733d20so9545425e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 05:54:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rqBti-0006SR-WF
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 09:03:55 -0400
+Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rqBth-0004gT-0x
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 09:03:54 -0400
+Received: by mail-ed1-x52d.google.com with SMTP id
+ 4fb4d7f45d1cf-56b0af675deso2276245a12.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 06:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711717431; x=1712322231; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=fF0AEMcN53T8zLpULJXCYH56leqwh2GeC0VdcdisnsI=;
+ b=pb9DKbq4lUeVCptzYpIly5E5LB0jA7ygK+hB1HNIkleyS3POwCcuSXm5WPN4aMSfZ3
+ 2rQuBGvRLF/BKAmRXLxQ7oLoWs9ji7KM9BQV6Xxgk8TbWOe7q9P4PuK4pli4lwvfaMr/
+ cemepGeMd/jn4QU4eQYKMsbS9vEYAVqLQSPiWoYkf9K2Hosa4akGOwKQaLJFZZFiF0mj
+ z+e7TWVqU7n0PGNwGOTBDffWMVnJU0SnLOPXlz0PAFs3D+/GTbQmvKwFPJVHUvP4oPSP
+ bsdwVFXY4KoBsWy8RON4LHEx8TKv2dguWQT7MIKLAyjXUIz9AsPntCIIieJ/bJ8a17XZ
+ q0Uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711716882; x=1712321682;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=tAj8S0vIOpczCGkf+n7t1iyF0rGdEiB23zLTJV99kJk=;
- b=tIPZDheW23+fi1jZ+HcQJm/2iTcnb89cUcJbyP8yiNJiCtV8qhOEJo9arzflk5T4sd
- PuNblCPQ5NqGcHr29fXKUqCwscMTKaqHFVXI1nAqhmIVMMDh3aYFZkbuaoYRpHqHIRGN
- FyzVKRwwGpBwgjsVm/twYzNM4SQQmA/jf2Tivqc8tkmO51THix8RLp/Uj/NVaqK987tJ
- dU3jjkfKOTIYrHQHE/iBMbHoArnoQvCNyj+qT8zkOrn3B3ARvkDZo8Zi4k8dojitsFN8
- smjPgeJbufRts97wRgOh9nEo7bwJbC+wrhJa0pqlp52q/PN8XaykwkPNc0f7rLhnWzl0
- VpZw==
-X-Gm-Message-State: AOJu0Yx2QYgr47sBKfmPH4AkuJ9oH6aVXaBZSbcJc0FIf/9rlrC4PFTh
- uspkdiAmX97KSjwOqYsQId6eyxGzmyqqj9GDr3Rm+J3opmDFpO0gaoO/Gc8mDFAbYcGn5CJdF2v
- GtvNiItnk397iFdb0HHN31cgnQBstidw4a5k2vPYp3MA9JNV99uw1NynkEfW/lXj+6hdBvRA850
- gDutmtkLf3/lYn0BcxFXZy6Vl6ZXI=
-X-Received: by 2002:a05:600c:3b16:b0:414:95e0:388c with SMTP id
- m22-20020a05600c3b1600b0041495e0388cmr2167715wms.8.1711716881911; 
- Fri, 29 Mar 2024 05:54:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGUygcvP2xNNok5BsdyJ0eVCreO1IulP08abHlrzced0lck40fiSq62hjGunJrEUqUC0P4Naqe1zyAnrgAAZg8=
-X-Received: by 2002:a05:600c:3b16:b0:414:95e0:388c with SMTP id
- m22-20020a05600c3b1600b0041495e0388cmr2167697wms.8.1711716881511; Fri, 29 Mar
- 2024 05:54:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711717431; x=1712322231;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fF0AEMcN53T8zLpULJXCYH56leqwh2GeC0VdcdisnsI=;
+ b=b1E1wvXzdq6fm7t3/n+X5rxfPQ9QE3COKS1deyfD1VyF79nBpuio36lZMYSBJIfk5L
+ Q7gNQaCchXzwT6PQYTpfX3pGGVS27rCCM+urX9eMLkJu6js+278tSwwEUJuh3ki65H14
+ 1RK+rB9NwCvgEBUdgIb/nLoZR2DdQ6uEqG+CjWNFw997QNpOBfVhVS6ZSHyozVO/cQt8
+ Swm2fGkubw3tL/v5+kcSIgaijNZ1mm5zjsPsf5J9RnHp2NwHVuZyBZdnR0K5rf01HkRK
+ SZYUyp+Ljb71kyAi9qBh+dh79H2cso4feWYxsPOVP0JvmLsSsvpu+LDE8nhIGqAJJUSP
+ Yr8w==
+X-Gm-Message-State: AOJu0Ywl3LlAwjt7ZRfJ5KWwQSHWSrEKy3c4/UDTrB4FmBbh3BYWqSRj
+ Zxt3z2wX8bv4Mx0ZUDWw1gu3ULoXVO9cL6EjN6F9Mv5u2AKkUY9B89NlFmMyVI0=
+X-Google-Smtp-Source: AGHT+IGusDVQ3jg0+CI+1zek0hD2iAfaouUn42nWLXeYMVkdB3NDh3jjiz+sA4UW771dJxUwH2T1wg==
+X-Received: by 2002:a17:906:3605:b0:a46:fb17:8871 with SMTP id
+ q5-20020a170906360500b00a46fb178871mr1634695ejb.76.1711717431337; 
+ Fri, 29 Mar 2024 06:03:51 -0700 (PDT)
+Received: from [192.168.69.100] (uni14-h01-176-184-39-242.dsl.sta.abo.bbox.fr.
+ [176.184.39.242]) by smtp.gmail.com with ESMTPSA id
+ o1-20020a1709064f8100b00a46baba1a0asm1914163eju.100.2024.03.29.06.03.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Mar 2024 06:03:50 -0700 (PDT)
+Message-ID: <96bcb673-18dd-49bc-8bcb-281c7409b410@linaro.org>
+Date: Fri, 29 Mar 2024 14:03:48 +0100
 MIME-Version: 1.0
-References: <20240325141422.1380087-1-pbonzini@redhat.com>
- <20240325141422.1380087-2-pbonzini@redhat.com>
- <ZgVEpt7pOzNK2wrM@intel.com>
-In-Reply-To: <ZgVEpt7pOzNK2wrM@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 29 Mar 2024 13:54:28 +0100
-Message-ID: <CABgObfZrwTWMf3ag7TxDS6_6NO2rAGta_V93jnmEf11QAEURLQ@mail.gmail.com>
-Subject: Re: [PATCH for-9.1 v5 1/3] hw: Add compat machines for 9.1
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
- Xiaoyao Li <xiaoyao.li@intel.com>, Cornelia Huck <cohuck@redhat.com>,
- Thomas Huth <thuth@redhat.com>, 
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Gavin Shan <gshan@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-9.1 14/21] system: Introduce QMP
+ generic_query_cpu_definitions()
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ Anton Johansson <anjo@rev.ng>, qemu-s390x@nongnu.org, qemu-ppc@nongnu.org,
+ =?UTF-8?Q?Daniel_P=2EBerrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Claudio Fontana <cfontana@suse.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>, Michael Roth <michael.roth@amd.com>
+References: <20240315130910.15750-1-philmd@linaro.org>
+ <20240315130910.15750-15-philmd@linaro.org> <87v859m89y.fsf@pond.sub.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <87v859m89y.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,61 +103,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Mar 28, 2024 at 11:07=E2=80=AFAM Zhao Liu <zhao1.liu@intel.com> wro=
-te:
->
-> Hi Paolo,
->
-> Just meet typos when compiling ;-)
+Hi Markus,
 
-Thank you very much! Fixed both.
+On 26/3/24 14:28, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> Each target use a common template for qmp_query_cpu_definitions().
+>>
+>> Extract it as generic_query_cpu_definitions(), keeping the
+>> target-specific implementations as the following SysemuCPUOps
+>> handlers:
+>>   - cpu_list_compare()
+>>   - add_definition()
+>>   - add_alias_definitions()
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   MAINTAINERS                           |  2 +
+>>   include/hw/core/sysemu-cpu-ops.h      | 14 ++++++
+>>   include/qapi/commands-target-compat.h | 14 ++++++
+>>   system/cpu-qmp-cmds.c                 | 71 +++++++++++++++++++++++++++
+>>   system/meson.build                    |  1 +
+>>   5 files changed, 102 insertions(+)
+>>   create mode 100644 include/qapi/commands-target-compat.h
+>>   create mode 100644 system/cpu-qmp-cmds.c
 
-Paolo
 
-> On Mon, Mar 25, 2024 at 03:14:20PM +0100, Paolo Bonzini wrote:
-> > Date: Mon, 25 Mar 2024 15:14:20 +0100
-> > From: Paolo Bonzini <pbonzini@redhat.com>
-> > Subject: [PATCH for-9.1 v5 1/3] hw: Add compat machines for 9.1
-> > X-Mailer: git-send-email 2.44.0
->
-> [snip]
->
-> > diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-> > index b1dcb3857f0..67e8b0b05e8 100644
-> > --- a/hw/s390x/s390-virtio-ccw.c
-> > +++ b/hw/s390x/s390-virtio-ccw.c
-> > @@ -859,14 +859,26 @@ bool css_migration_enabled(void)
-> >      }                                                                 =
-        \
-> >      type_init(ccw_machine_register_##suffix)
-> >
-> > +static void ccw_machine_9_1_instance_options(MachineState *machine)
-> > +{
-> > +}
-> > +
-> > +static void ccw_machine_9_1_class_options(MachineClass *mc)
-> > +{
-> > +}
-> > +DEFINE_CCW_MACHINE(9_0, "9.1", true);
->
-> Should be:
->
-> DEFINE_CCW_MACHINE(9_1, "9.1", true);
->
-> > +
-> >  static void ccw_machine_9_0_instance_options(MachineState *machine)
-> >  {
-> > +    ccw_machine_9_1_instance_options(machine);
-> >  }
-> >
-> >  static void ccw_machine_9_0_class_options(MachineClass *mc)
-> >  {
-> > +    ccw_machine_9_1_class_options(machine);
->
-> s/machine/mc/
->
-> Regards,
-> Zhao
->
+>> diff --git a/system/cpu-qmp-cmds.c b/system/cpu-qmp-cmds.c
+>> new file mode 100644
+>> index 0000000000..daeb131159
+>> --- /dev/null
+>> +++ b/system/cpu-qmp-cmds.c
+>> @@ -0,0 +1,71 @@
+>> +/*
+>> + * QAPI helpers for target specific QMP commands
+>> + *
+>> + * SPDX-FileCopyrightText: 2024 Linaro Ltd.
+>> + * SPDX-License-Identifier: GPL-2.0-or-later
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qom/object.h"
+>> +#include "qapi/commands-target-compat.h"
+>> +#include "sysemu/arch_init.h"
+>> +#include "hw/core/cpu.h"
+>> +#include "hw/core/sysemu-cpu-ops.h"
+>> +
+>> +static void cpu_common_add_definition(gpointer data, gpointer user_data)
+>> +{
+>> +    ObjectClass *oc = data;
+>> +    CpuDefinitionInfoList **cpu_list = user_data;
+>> +    CpuDefinitionInfo *info;
+>> +    const char *typename;
+>> +
+>> +    typename = object_class_get_name(oc);
+>> +    info = g_malloc0(sizeof(*info));
+>> +    info->name = cpu_model_from_type(typename);
+>> +    info->q_typename = g_strdup(typename);
+>> +
+>> +    QAPI_LIST_PREPEND(*cpu_list, info);
+>> +}
+>> +
+>> +static void arch_add_cpu_definitions(CpuDefinitionInfoList **cpu_list,
+>> +                                     const char *cpu_typename)
+>> +{
+>> +    ObjectClass *oc;
+>> +    GSList *list;
+>> +    const struct SysemuCPUOps *ops;
+>> +
+>> +    oc = object_class_by_name(cpu_typename);
+>> +    if (!oc) {
+>> +        return;
+>> +    }
+>> +    ops = CPU_CLASS(oc)->sysemu_ops;
+>> +
+>> +    list = object_class_get_list(cpu_typename, false);
+>> +    if (ops->cpu_list_compare) {
+>> +        list = g_slist_sort(list, ops->cpu_list_compare);
+>> +    }
+>> +    g_slist_foreach(list, ops->add_definition ? : cpu_common_add_definition,
+>> +                    cpu_list);
+>> +    g_slist_free(list);
+>> +
+>> +    if (ops->add_alias_definitions) {
+>> +        ops->add_alias_definitions(cpu_list);
+>> +    }
+>> +}
+>> +
+>> +CpuDefinitionInfoList *generic_query_cpu_definitions(Error **errp)
+>> +{
+>> +    CpuDefinitionInfoList *cpu_list = NULL;
+>> +
+>> +    for (unsigned i = 0; i <= QEMU_ARCH_BIT_LAST; i++) {
+>> +        const char *cpu_typename;
+>> +
+>> +        cpu_typename = cpu_typename_by_arch_bit(i);
+>> +        if (!cpu_typename) {
+>> +            continue;
+>> +        }
+>> +        arch_add_cpu_definitions(&cpu_list, cpu_typename);
+>> +    }
+>> +
+>> +    return cpu_list;
+>> +}
+> 
+> The target-specific qmp_query_cpu_definitions() this is going to replace
+> each execute the equivalent of *one* loop iteration: the one
+> corresponding to their own arch bit.
+> 
+> For the replacement to be faithful, as cpu_typename_by_arch_bit() must
+> return non-null exactly once.
+> 
+> This is the case for the qemu-system-TARGET.  The solution feels
+> overengineered there.
+> 
+> I figure cpu_typename_by_arch_bit() will return non-null multiple times
+> in a future single binary supporting heterogeneous machines.
+> 
+> Such a single binary then can't serve as drop-in replacement for the
+> qemu-system-TARGET, because query-cpu-definitions returns more.
+> 
+> To get a drop-in replacement, we'll need additional logic to restrict
+> the query for the homogeneous use case.
 
+Can we ask the management layer to provide the current homogeneous
+target via argument? Otherwise we can add a new query-cpu-definitions-v2
+command requiring an explicit target argument, allowing 'all', and
+deprecate the current query-cpu-definitions.
+
+> I think this needs to be discussed in the commit message.
+> 
+> Possibly easier: don't loop over the bits, relying on
+> cpu_typename_by_arch_bit() to select the right one.  Instead get the
+> right bit from somewhere.
+> 
+> We can switch to a loop when we need it for the heterogeneous case.
+
+Alex suggested to consider heterogeneous emulation the new default,
+and the current homogeneous use as a particular case. I'd rather not
+plan on a "heterogeneous switch day" and get things integrated in
+the way, otherwise we'll never get there...
+
+Regards,
+
+Phil.
 
