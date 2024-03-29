@@ -2,71 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA7A891683
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 11:07:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A288916B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 11:24:48 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq98B-00029V-6g; Fri, 29 Mar 2024 06:06:39 -0400
+	id 1rq9OO-0003Bi-HB; Fri, 29 Mar 2024 06:23:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rq982-00028e-JA
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 06:06:32 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rq97z-00017E-Qp
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 06:06:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1711706788; x=1743242788;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=EAlsIr9gV/OWidz8nIWqoCkuvpdnZz9VytfSWf5d/ic=;
- b=Dpotuzxdo6Vyu2HEjqBd3RpQCqHBZRSarfiC/GRaHdyHPBtPvAGT5/Jl
- ML7JRaWnQffkjOEjJBASMeUBMFd5bANeTSkN1j0QAndLZmtWcHU96toC1
- OtZV5y2Gic6wX/4pcXl4ODh3N790B74t2jNSZ+Mu75gXVxQspmaY2PNYE
- to6KiEuX1RdXaLmYoHUmobzGUQtG/mKjNgugrwZxvBdGls1wB7Q1br6BP
- 2lNgJX3F8DCHwj0fHnEV0J4G1k0KL9uq23BjagzhFYBoxDqMJDZEtbo74
- 6SHEnE/KOt4cmTSRD/LNlrdoGZTs7+Bpx+zX909LiroUBEgQ100hhPN6x Q==;
-X-CSE-ConnectionGUID: 9put4kvVTDSLMrXDPPBjqw==
-X-CSE-MsgGUID: y01UVaM6TgWc0uP3Y2p0Ew==
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="17519246"
-X-IronPort-AV: E=Sophos;i="6.07,164,1708416000"; d="scan'208";a="17519246"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Mar 2024 03:06:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,164,1708416000"; d="scan'208";a="21441989"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 29 Mar 2024 03:06:24 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tim Wiederhake <twiederh@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH for-9.1 7/7] target/i386/kvm: Update comment in
- kvm_cpu_realizefn()
-Date: Fri, 29 Mar 2024 18:19:54 +0800
-Message-Id: <20240329101954.3954987-8-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
-References: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rq9OM-00039W-EU
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 06:23:22 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rq9OK-0005DS-P6
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 06:23:22 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a4734ae95b3so243771466b.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 03:23:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1711707799; x=1712312599; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=QvRGWxIoYWPA4KC1nOtZccSOj22WfXQKUeWCwr9CcAM=;
+ b=O2cybOdPdsYvXXHu4TyW157P12GzV5eFFKt4eeBAWOs8Em17UTra21hDNRErJByyMr
+ ZL1Bp7ByWBVgKsKPHaWzwTaczWbQuKCrDEE7stovplgqY9bVJtZKwrvDSZdkkJIJ9GYg
+ Yi1P0ZqVcIeuKqtCPK10gxM0NDbo/RisudSXb3dgHvJmEYW0CbBrRXZzVC9HiuC9y4zm
+ h9icrM+JCtv/RNedjXh96hQQHRQ4FuQpPY6Zk5JNEyjRt6SeOBHKls/UQY3KFQhPyubv
+ /IvEGMGME7Gqg/KRxO68/chwsR8DPOloAD6sIdbjDSgFyeZGovhMLTtAXfAD+Lp5a3xV
+ EjUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711707799; x=1712312599;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QvRGWxIoYWPA4KC1nOtZccSOj22WfXQKUeWCwr9CcAM=;
+ b=i+0qpFINvY3Q3aCUkdZYyz0xhX5QagnsL828dh30/HIkRN7sRClc5N7htQ49bMv3Nl
+ MVDWsZtppi4rjMkH4Te0+27GiG8ZKrqYa2nJz+BXTWSKI7ix8k8TxGDiYgLERQd5Zpc7
+ Ul0DKSU2TAXwRAWQoxbFeExpzKlqrcDTJBvavLcdfLDxCayhyVj30T2n2HM+6rRqiDkS
+ ip2pqrEZaU69JH8NqKtKzBTIm92BwC5fMiladW8sXmYBhKXLMMvxPxeiqOWsDrCwYB12
+ wKkIHnMxuxOUo1lJhu0MrYao8vl7sVGdYk1CnIkx5ZDQllOCBtfXJd8YpXE0KWVjOt98
+ NVOw==
+X-Gm-Message-State: AOJu0YxBOsKcOlRaow5Q6/EQROi7m+I+QKDaisDZKGa1rJfzAxn/wUki
+ r1HW8jb8SDJqnGODDByVlyPcEZWDaheyx5L4QDvVRQBQSAsjFekRCFdqPtdnA4Q=
+X-Google-Smtp-Source: AGHT+IEKykYMFB4yOfD5Bb+oTfKqzLhkwLQOT38cufTeCOj/ARkv/rLphGMkH+ejBZNcAvqU5uV/CA==
+X-Received: by 2002:a17:906:6981:b0:a4e:2570:ff56 with SMTP id
+ i1-20020a170906698100b00a4e2570ff56mr1237049ejr.0.1711707798986; 
+ Fri, 29 Mar 2024 03:23:18 -0700 (PDT)
+Received: from [192.168.69.100] (uni14-h01-176-184-39-242.dsl.sta.abo.bbox.fr.
+ [176.184.39.242]) by smtp.gmail.com with ESMTPSA id
+ eb16-20020a170907281000b00a4e0df9e793sm1755345ejc.136.2024.03.29.03.23.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Mar 2024 03:23:18 -0700 (PDT)
+Message-ID: <ba3a0226-4aae-4cbb-bf88-c45a5dbdbff7@linaro.org>
+Date: Fri, 29 Mar 2024 11:23:15 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH-for-9.1 09/29] hw/i386/pc: Pass PCMachineState
+ argument to acpi_setup()
+To: BALATON Zoltan <balaton@eik.bme.hu>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefano Stabellini <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
+ Bernhard Beschow <shentey@gmail.com>, Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Ani Sinha <anisinha@redhat.com>
+References: <20240328155439.58719-1-philmd@linaro.org>
+ <20240328155439.58719-10-philmd@linaro.org>
+ <04b9fcde-31f1-dfa8-8c4e-a666d0d873d8@eik.bme.hu>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <04b9fcde-31f1-dfa8-8c4e-a666d0d873d8@eik.bme.hu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=192.198.163.11;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.08,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,33 +101,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+On 28/3/24 19:45, BALATON Zoltan wrote:
+> On Thu, 28 Mar 2024, Philippe Mathieu-Daudé wrote:
+>> acpi_setup() caller knows about the machine state, so pass
+>> it as argument to avoid a qdev_get_machine() call.
+>>
+>> We already resolved X86_MACHINE(pcms) as 'x86ms' so use the
+>> latter.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> hw/i386/acpi-build.h | 3 ++-
+>> hw/i386/acpi-build.c | 5 ++---
+>> hw/i386/pc.c         | 2 +-
+>> 3 files changed, 5 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/hw/i386/acpi-build.h b/hw/i386/acpi-build.h
+>> index 0dce155c8c..31de5bddbd 100644
+>> --- a/hw/i386/acpi-build.h
+>> +++ b/hw/i386/acpi-build.h
+>> @@ -2,6 +2,7 @@
+>> #ifndef HW_I386_ACPI_BUILD_H
+>> #define HW_I386_ACPI_BUILD_H
+>> #include "hw/acpi/acpi-defs.h"
+>> +#include "hw/i386/pc.h"
+>>
+>> extern const struct AcpiGenericAddress x86_nvdimm_acpi_dsmio;
+>>
+>> @@ -9,7 +10,7 @@ extern const struct AcpiGenericAddress 
+>> x86_nvdimm_acpi_dsmio;
+>> #define ACPI_PCIHP_SEJ_BASE 0x8
+>> #define ACPI_PCIHP_BNMR_BASE 0x10
+>>
+>> -void acpi_setup(void);
+>> +void acpi_setup(PCMachineState *pcms);
+> 
+> This is changed to PcPciMachineState * in a following patch so can't you 
+> already introduce it here to avoid some churn?
 
-With the guest_phys_bits and legacy_kvmclock change, update the comment
-about function call flow.
+Unfortunately not, because we'd need to use:
 
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
- target/i386/kvm/kvm-cpu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+   PcPciMachineState *ppms = PC_PCI_MACHINE(pcms);
 
-diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
-index 753f90c18bd6..5b48b023c33b 100644
---- a/target/i386/kvm/kvm-cpu.c
-+++ b/target/i386/kvm/kvm-cpu.c
-@@ -60,7 +60,10 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
-      *  -> x86_cpu_expand_features()
-      *  -> cpu_exec_realizefn():
-      *            -> accel_cpu_common_realize()
--     *               kvm_cpu_realizefn() -> host_cpu_realizefn()
-+     *               kvm_cpu_realizefn()
-+     *                       -> update cpu_pm, ucode_rev, kvmclock
-+     *                          host_cpu_realizefn()
-+     *                          update guest_phys_bits on Host support
-      *  -> cpu_common_realizefn()
-      *  -> check/update ucode_rev, phys_bits, mwait
-      */
--- 
-2.34.1
+which would trigger an assertion at this point.
+
+> 
+> Regards,
+> BALATON Zoltan
 
 
