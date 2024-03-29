@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6F38926B7
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5894F8926B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:21:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKad-00055E-Fm; Fri, 29 Mar 2024 18:20:47 -0400
+	id 1rqKae-00055T-7G; Fri, 29 Mar 2024 18:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKaa-00054k-JB
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:44 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rqKab-00054x-Qh
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:45 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKaY-0001oq-PP
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:44 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6e6fb9a494aso2025075b3a.0
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:42 -0700 (PDT)
+ id 1rqKaa-0001ou-7L
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:45 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6e6ee9e3cffso1660052b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711750841; x=1712355641; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=qr/N/lqi8D0MtNgzf7ekyOoEdRFxQBJmydgqZvhBPbg=;
- b=tGZ2W9vBTRhEX5XSNMz2i66FW9Sk98wYicXh/c9btOdOwINvg72kgKpMtVlcU3n2m1
- 2w2/OrrVjFyeRcJph4g5xWKe/DX7ER36T7fUCAUj5cwHI3OBn1DTVL8pXkLrwxX4rNzN
- S2QXkksKXNbRmH/uVAHg4faVPgPRi8yakmZ6seyfh6kvJ3tZ0oYrupPg/5iVSoXU/iF5
- Thzw5b3VXWl5iTNhIArXkKblu1UrtYCkXJxTjTTA6FDHrigLXtMvugFJv2w5tdh7ie4a
- 60LbtHKMn2XxpKCZY7CAFjFadgTgyxTTiCjNvTlxiGJnNMETAnIvgsSQ/17kPKqsS0sw
- gXaA==
+ d=linaro.org; s=google; t=1711750842; x=1712355642; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qF+Rh4Z//XloQGlanOoCz61ZgUvkOnM9tqWX1k+rwd4=;
+ b=Xz7eHbhUkCd9TyXkGaZ+qKhgXg9FwIw29oA9BIPtTuV+Q9oIZ5/wsCdwt0DEN2avJS
+ v4F3xqvcKqJs8oISaYN9lUfHFyQlIwIh2lBCF6fa0TTLDxrMmQfivQyG++cLbdPJPyyY
+ 5xuUkRk1jKTUjdrdAHmcFiwX3/DZUY1jKP5dPvzpwjqkWVgoWEFp3Xkqdd24ffFQgX9j
+ XOY6O/OTAvh8AKZ0CAsdLiX9rxNI43gffYEpbmPvfyXFvQU3RYfisNSR4YpsyfdyWvuq
+ zI5qFYIMtrn0+Yi6YaiKXYY6iE0Q0sIs9hqXqbAlli7TS/TWI8gOf9nwO++0OGlsp2AE
+ DYZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711750841; x=1712355641;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qr/N/lqi8D0MtNgzf7ekyOoEdRFxQBJmydgqZvhBPbg=;
- b=MNjobMgjLZz0NAT9/PHu+f/9AC5VRvPbtqTu66Eu92Pk+kdzSmaKIIUOuxyDTJ2xnl
- ipDbgV+HnhIrhIP9OpNo71zIc2GEorJ6eu2NMcIslmZHB1I5XEEFHiHm4Oua/mY8y1gv
- nBFdWW+I5cc9cH0vtGzktSfYRK3Lq1UgzEVpV8pthBaDBnLdHx2z1Z8OjyfoiZZzWDCf
- K/vDWM2Ia6eo8sDV3xLtFnVn+YeoYEcIEk1oSvo3PYnYLuoMlx1KJ4Ael5JOf9Z/jFMY
- CMJXYin045HMkABkERZcxz/Z4ZHS3BKM2E6IY+J0Pl9fS9LEYgFwJ9cM9qoRCpp1osHe
- 8f3Q==
-X-Gm-Message-State: AOJu0YzJKX9tBx2ZHRdbqkPB4c/j2PhjH9FOxg9ovq4wD5vgJ+cEtvSv
- uGMPfIIvPI/a6+zHx/su3ATU5WaN0QBVc+ajU8herRcGcTwyCPNez/XbZfXqwK7Fwsq4pyCwllw
- 4
-X-Google-Smtp-Source: AGHT+IGFk8+vlggyJxWOX3H11ujAmoRwTrE9tZcmKUgu428eyLItnMFwAqKbC+1wOLXPkvzZgiiMMw==
-X-Received: by 2002:a05:6a00:3ccb:b0:6ea:ab45:6532 with SMTP id
- ln11-20020a056a003ccb00b006eaab456532mr3804293pfb.1.1711750840901; 
- Fri, 29 Mar 2024 15:20:40 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711750842; x=1712355642;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qF+Rh4Z//XloQGlanOoCz61ZgUvkOnM9tqWX1k+rwd4=;
+ b=OwT1nGCzT25Bs1bxPZ0MCPylINSPaxiLJlB8A5W1Sjw836b1jkh/CDVdztQ3dcjFi5
+ i/fdilNGSw7aBRIjV5NHey8NzBkxNjFqP9PsMSiZOo/YTjl64rSEWDnDIZnTVlcGPAlO
+ u1BWxMSdYgHtevAMXmJXv/p30u4Js2kgdeRcPZigI3UNi6fK90dsD47gYO/1lMGhUgg7
+ PwET+dpaCYaGRR0vKWr7PQjB/pBdExujDiil+vxlSHhHkNR92/46ec4ThvU9X9Tjr51F
+ esz7sEOcRsqKYDFys9COsdHq+pl6jlmKEXM2RelG5KevRmdb2LcPEbS8Nmsz8MibKet/
+ JaYA==
+X-Gm-Message-State: AOJu0YxFcSAY05H6fUGCea9fZ7tjuGvEqzEmJokIhn2uWSKdzH/r4Idu
+ JR/Ji2Qm/bMAmts7uib6FX89QoKkJWaubc20KZl+lBmgtgEgi95eblctehdLvzAjqEOzAQ3Jhk8
+ N
+X-Google-Smtp-Source: AGHT+IG0RhdooewXZV5S7wSZqjvQgtG2LAV/IdTuEFq5PWQN37a1i8WimxMt8cqQSbl0cZAwIMtKAA==
+X-Received: by 2002:a05:6a00:2e22:b0:6e6:fb9a:fb45 with SMTP id
+ fc34-20020a056a002e2200b006e6fb9afb45mr5145614pfb.1.1711750842349; 
+ Fri, 29 Mar 2024 15:20:42 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.39
- for <qemu-devel@nongnu.org>
+ lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:20:40 -0700 (PDT)
+ Fri, 29 Mar 2024 15:20:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/7] tcg + linux-user patch queue
-Date: Fri, 29 Mar 2024 12:20:30 -1000
-Message-Id: <20240329222037.1735350-1-richard.henderson@linaro.org>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PULL 1/7] linux-user: Fix semctl() strace
+Date: Fri, 29 Mar 2024 12:20:31 -1000
+Message-Id: <20240329222037.1735350-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240329222037.1735350-1-richard.henderson@linaro.org>
+References: <20240329222037.1735350-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,46 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 5012e522aca161be5c141596c66e5cc6082538a9:
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-  Update version for v9.0.0-rc1 release (2024-03-26 19:46:55 +0000)
+The indices of arguments used with semctl() are all off-by-1, because
+arg1 is the ipc() command. Fix them. While at it, reuse print_semctl().
 
-are available in the Git repository at:
+New output (for a small test program):
 
-  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240329
+    3540333 semctl(999,888,SEM_INFO,0x00007fe5051ee9a0) = -1 errno=14 (Bad address)
 
-for you to fetch changes up to dafa0ecc97850c325fe85cd87dc0b536858d171a:
+Fixes: 7ccfb2eb5f9d ("Fix warnings that would be caused by gcc flag -Wwrite-strings")
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Message-Id: <20240325192436.561154-2-iii@linux.ibm.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/strace.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-  accel/tcg: Use CPUState.get_pc in cpu_io_recompile (2024-03-29 12:16:00 -1000)
+diff --git a/linux-user/strace.c b/linux-user/strace.c
+index 8d13e55a5b..51a5bdd95f 100644
+--- a/linux-user/strace.c
++++ b/linux-user/strace.c
+@@ -657,7 +657,6 @@ print_newselect(CPUArchState *cpu_env, const struct syscallname *name,
+ }
+ #endif
+ 
+-#ifdef TARGET_NR_semctl
+ static void
+ print_semctl(CPUArchState *cpu_env, const struct syscallname *name,
+              abi_long arg1, abi_long arg2, abi_long arg3,
+@@ -668,7 +667,6 @@ print_semctl(CPUArchState *cpu_env, const struct syscallname *name,
+     print_ipc_cmd(arg3);
+     qemu_log(",0x" TARGET_ABI_FMT_lx ")", arg4);
+ }
+-#endif
+ 
+ static void
+ print_shmat(CPUArchState *cpu_env, const struct syscallname *name,
+@@ -698,10 +696,8 @@ print_ipc(CPUArchState *cpu_env, const struct syscallname *name,
+ {
+     switch(arg1) {
+     case IPCOP_semctl:
+-        qemu_log("semctl(" TARGET_ABI_FMT_ld "," TARGET_ABI_FMT_ld ",",
+-                 arg1, arg2);
+-        print_ipc_cmd(arg3);
+-        qemu_log(",0x" TARGET_ABI_FMT_lx ")", arg4);
++        print_semctl(cpu_env, &(const struct syscallname){ .name = "semctl" },
++                     arg2, arg3, arg4, arg5, 0, 0);
+         break;
+     case IPCOP_shmat:
+         print_shmat(cpu_env, &(const struct syscallname){ .name = "shmat" },
+-- 
+2.34.1
 
-----------------------------------------------------------------
-linux-user: Fix shmat(NULL) for host != guest page size
-tcg/optimize: Fix sign_mask for logical right-shift
-accel/tcg: Use CPUState.get_pc in cpu_io_recompile
-disas: Show opcodes for target_disas and monitor_disas
-
-----------------------------------------------------------------
-Ilya Leoshkevich (4):
-      linux-user: Fix semctl() strace
-      linux-user: Fix shmat() strace
-      linux-user: Fix shmat(NULL) for h != g
-      tests/tcg: Test shmat(NULL)
-
-Richard Henderson (3):
-      tcg/optimize: Fix sign_mask for logical right-shift
-      disas: Show opcodes for target_disas and monitor_disas
-      accel/tcg: Use CPUState.get_pc in cpu_io_recompile
-
- accel/tcg/translate-all.c                    |  2 +-
- disas/disas-mon.c                            |  1 +
- disas/disas.c                                |  1 +
- linux-user/mmap.c                            |  2 +-
- linux-user/strace.c                          | 10 +++-----
- tcg/optimize.c                               |  2 +-
- tests/tcg/aarch64/test-2248.c                | 28 ++++++++++++++++++++
- tests/tcg/multiarch/linux/linux-shmat-null.c | 38 ++++++++++++++++++++++++++++
- tests/tcg/aarch64/Makefile.target            |  1 +
- 9 files changed, 75 insertions(+), 10 deletions(-)
- create mode 100644 tests/tcg/aarch64/test-2248.c
- create mode 100644 tests/tcg/multiarch/linux/linux-shmat-null.c
 
