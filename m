@@ -2,83 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E41089126B
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 05:42:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9E1891345
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 06:35:22 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq42q-0006qk-5g; Fri, 29 Mar 2024 00:40:48 -0400
+	id 1rq4sW-00064m-RN; Fri, 29 Mar 2024 01:34:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rq42o-0006qK-7e
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 00:40:46 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rq4sS-00064O-6v
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 01:34:09 -0400
+Received: from mail-qt1-x835.google.com ([2607:f8b0:4864:20::835])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rq42m-00089w-7R
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 00:40:45 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-5e4f79007ffso1084610a12.2
- for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 21:40:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rq4sO-0000Kh-9u
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 01:34:07 -0400
+Received: by mail-qt1-x835.google.com with SMTP id
+ d75a77b69052e-430a0d6c876so10415351cf.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Mar 2024 22:34:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1711687242; x=1712292042;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XsaGwaV7nF+8RbnWlokdh+Q1cPay/RhZrHquJUNVc3U=;
- b=FssTz3el8mgaD1mrOWgl0fSyJeGEqT+uDaDQAxsltMrTd5VSqeuKNV4jNo2S87lDfn
- JZCve3mLBtMCPjB0NsNut1S3jDOSELiGdyW5IJDVsiMSAJ1fCrH8FIBnhAIREiKr7qoP
- CPxqPhhphXWbIGkEh4lLiPT4wQcrkrpT/nXYBHTGsLNlD5ezGe30xT7EDROy+QY5Edqx
- tMSRmsEXt3oRLhqM/q7EO6q1IEITfRPF1tgBMZS4ymdOJhjlg3MbiYVb35de2TjScUzh
- nXAMzSfWrkZS4wYpNj3zH7AbfDEib8HAwCNH1Ovrimo8Qu7DpP+qreTTir3Oaxn1iDrV
- 1LIA==
+ d=bytedance.com; s=google; t=1711690440; x=1712295240; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=kzD9bp4lfPKjq881EZTr8X35H33UpZ0U2oJTGnZVwgs=;
+ b=NQ9Mx9bYSAxCHOxIeuAvaEigD30jKGSrG3f1zvuRTYKnfRgKzZoVhoeQd0Z5mDeuk7
+ r6zkhrcV408CFGpeOwd1mw+WM0sZsotlKVVbxk+2w34nwaX1oY285y0KakujivE4AKtI
+ qYecML3fHZZQt1/2LUFHU2oShX8RyOMHNyoBduP3wT8eAXcgKMqCGX3xotSINSOoBAE+
+ N4N3YxO2BMHtuiFzTn+QPu6zIwPQFjkWfi4Lbeg4Xx0dc3wfPfXbPuzmOA7xG5n+wjhw
+ 252+TaYt3CI8tMUo3kfMXS2NAQlR1dUbv/DN826qQxmy7Vjwq7fGj6hUYdDMjOGLCMCA
+ oAjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711687242; x=1712292042;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XsaGwaV7nF+8RbnWlokdh+Q1cPay/RhZrHquJUNVc3U=;
- b=ePWwYZVx6M/wKk+1VsriH6Ld0Mzo0cquRzVPdGtahkeVGAwOh7fKUoeI39Vk//cDGf
- 2DxbmJgGDaEBJESID7WACNSvxNNDiEOXbgxId0k2EmLgqUUY+Y9RY79mvysgvEeuOgkj
- 5RuP9m74YED3ngYJjWu5BXK6aXXtptMGEQArBFPiiNh+zYF1RS59L9Hi9XUEGElduuZz
- N2M/prdQg/Ar4yyewSpEtiHQnuFUU9IhuD9TF7pHv/9c3v6lVRgLWknvjAeGRR6BI3V3
- bepvoabZMfaijWJBp1UQCjtYxpko44LnSvGVGvjvkLamJ/3nRhIM3xwy/Gb1ggdb4f57
- X8dA==
-X-Gm-Message-State: AOJu0YzHXV7Yf9TMWzHcHdBbIEFsQS3/u+Ba6bc1Gxlc6LPwRpGDPbuc
- KyvoWtR6q2P9qZim2JeXnh3mXcaTzZgpY45XZcCDYXm93+a08OCHojfejFCihMk=
-X-Google-Smtp-Source: AGHT+IGgSNHHomnT0i9H8u0qW1lFBPzib/0ZiEI+dXQgGh+YUJuxAs1E7UWB6Pw/j4ak/ZtmXJQEYw==
-X-Received: by 2002:a05:6a20:7347:b0:1a4:aecb:317b with SMTP id
- v7-20020a056a20734700b001a4aecb317bmr1325011pzc.33.1711687242036; 
- Thu, 28 Mar 2024 21:40:42 -0700 (PDT)
-Received: from [157.82.202.230] ([157.82.202.230])
+ d=1e100.net; s=20230601; t=1711690440; x=1712295240;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=kzD9bp4lfPKjq881EZTr8X35H33UpZ0U2oJTGnZVwgs=;
+ b=RsIrjxXQSt8WhqOM5yMC5E2o/Lklt7QlI2UXHOEu4q2k3Ue+KoNnJLyAUCxfl4+WWv
+ Mm8aI4EZ0Abl3kqDQ+Yow/SEk+nouX0Is6w4pPFkmcDHdXCLL7JtGPZiCtUFt1DRb6ot
+ ftNksg+aGcIpy+KUOXSq4J/nR2BtX7PEHOse6rbHGfrL++vbtUvPdo+g4C7eOB1LuQUI
+ KVDNi2Y8l4UjreiHDKtbfo1wA6fZ5npD2Jb2FUr8TttdlhGO9FnOKVA9/W1hfB8AVRR1
+ +46MCt+oxfMmCxTd863ODRaRlNUYwzRDGeEGUFi9RvBqjMlm2rE5Q+ytQqRl1LDfqhQc
+ GBLA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWLl1+rn1PzNAhe/2N6ZqR6ol4zZmmOuBk+J09Ueswm2DZBlPW0Z7IyDtxNgjwJArwLmarL/FDQZ5KURYasfoClg4wHlk4=
+X-Gm-Message-State: AOJu0Yz+mw+vIFlpLprOM17Oqkkc3dTrqSu6zCqQjLxMKnCYvmCUJdjh
+ QADEvi2ozhpWMQzm01arSdCEJdpRM113R7jL5c9I0ePwTbE5FGb6KwJdVBogoxs=
+X-Google-Smtp-Source: AGHT+IEPCB5hxd4bBd3zlijyd5nzuuMHJJeNzrT0TX98AmIg0/OG0kaxC+8voIkqbdWtPzxYHjpC/A==
+X-Received: by 2002:a05:622a:40e:b0:432:c50a:3d65 with SMTP id
+ n14-20020a05622a040e00b00432c50a3d65mr152679qtx.36.1711690440563; 
+ Thu, 28 Mar 2024 22:34:00 -0700 (PDT)
+Received: from n231-228-171.byted.org ([147.160.184.85])
  by smtp.gmail.com with ESMTPSA id
- m8-20020a170902db0800b001dc01efaec2sm2516058plx.168.2024.03.28.21.40.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Mar 2024 21:40:41 -0700 (PDT)
-Message-ID: <099bd787-53fb-478f-9d0d-2de419583786@daynix.com>
-Date: Fri, 29 Mar 2024 13:40:38 +0900
+ jd25-20020a05622a719900b00430bf59ebccsm1293700qtb.11.2024.03.28.22.33.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Mar 2024 22:34:00 -0700 (PDT)
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Huang, Ying" <ying.huang@intel.com>,
+ "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
+ "Eishan Mirakhur" <emirakhur@micron.com>,
+ "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
+ "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH v9 0/2] Improved Memory Tier Creation for CPUless NUMA Nodes
+Date: Fri, 29 Mar 2024 05:33:51 +0000
+Message-Id: <20240329053353.309557-1-horenchuang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Qemu Display Coacoa Patch Serie Qemu 9.0 RC1
-To: BALATON Zoltan <balaton@eik.bme.hu>, Rene Engel <ReneEngel80@emailn.de>
-Cc: qemu-devel@nongnu.org, marcandre.lureau@redhat.com, kraxel@redhat.com
-References: <26c7f97e9ce7fc10de24da84aa10638a@mail.emailn.de>
- <2b4fcc6d-6e23-2ac9-7f55-6b488e327cd3@eik.bme.hu>
-Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <2b4fcc6d-6e23-2ac9-7f55-6b488e327cd3@eik.bme.hu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::531;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x531.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2607:f8b0:4864:20::835;
+ envelope-from=horenchuang@bytedance.com; helo=mail-qt1-x835.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,67 +103,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/03/29 6:44, BALATON Zoltan wrote:
-> On Thu, 28 Mar 2024, Rene Engel wrote:
->> I wanted to discuss this topic with you again, there was already a 
->> patch series that worked well under Qemu with
->> Pegasos2/AmigaOneXe/Same460 and AmigaOs4.1. The option zoom-to-fit=on 
->> should be used to adjust all resolutions provided by the guest
->> system to the aspect ratio if there are no Virtio GPU drivers 
->> available that allow this.
->>
->> In my opinion exactly this option zoom-to-fit=on makes this possible. 
->> If you don't want to use this option you still have the possibility
->> to deactivate it. In Qemu 9.0 RC1 not all resolutions are stretched 
->> like in previous patches e.g. 640x480/800x600/1024x720 etc. but this
->> is exactly what we need for the Pegasos2/AmigaOneXe/Same460 machine 
->> with AmigaOs4.1.
-> 
-> There seems to be a bit of confusion about how this zoom-to-fit option 
-> is implemented by different -display backends and I'm not sure what is 
-> the intended behaviour or how other -display backends handle it. Maybe a 
-> single option is not even enough to describe all possible preferences so 
-> another one i.e. keep-aspect=true|false may also be needed to cover all 
-> possible settings (don't zoom, zoom with aspect ratio kept, zoom to fit 
-> window even if that stretches the picture out of aspect ratio). For 9.0 
-> ptobsbly we should go for consistency with other backends now as adding 
-> new options is not possible during freeze and then resolve this afterwards.
+When a memory device, such as CXL1.1 type3 memory, is emulated as
+normal memory (E820_TYPE_RAM), the memory device is indistinguishable
+from normal DRAM in terms of memory tiering with the current implementation.
+The current memory tiering assigns all detected normal memory nodes
+to the same DRAM tier. This results in normal memory devices with
+different attributions being unable to be assigned to the correct memory tier,
+leading to the inability to migrate pages between different types of memory.
+https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
 
-It is indeed something that requires a new flag like zoom-interpolation.
+This patchset automatically resolves the issues. It delays the initialization
+of memory tiers for CPUless NUMA nodes until they obtain HMAT information
+and after all devices are initialized at boot time, eliminating the need
+for user intervention. If no HMAT is specified, it falls back to
+using `default_dram_type`.
 
-> 
->> There are also problems within the resolutions with the mouse pointer 
->> where the screen output flickers it currently affects all patch 
->> series. I would be happy if we could find a solution for all this.
-> 
-> The flicker may be due to the resize algorithm used by macOS not giving 
-> the same result always. To resolve it maybe yet another option may be 
-> needed to not zoom to full available window but try to keep the zoom 
-> factor some integer value to avoid fractional scaling but I'm not sure 
-> that's the best way to solve it.
+Example usecase:
+We have CXL memory on the host, and we create VMs with a new system memory
+device backed by host CXL memory. We inject CXL memory performance attributes
+through QEMU, and the guest now sees memory nodes with performance attributes
+in HMAT. With this change, we enable the guest kernel to construct
+the correct memory tiering for the memory nodes.
 
-Flickering sounds more like a bug. I appreciate if you can share some 
-recording.
+-v9:
+ * Address corner cases in `memory_tier_late_init`. Thank Ying's comments.
+-v8:
+ * Fix email format
+ * https://lore.kernel.org/lkml/20240329004815.195476-1-horenchuang@bytedance.com/T/#u
+-v7:
+ * Add Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+-v6:
+ Thanks to Ying's comments,
+ * Move `default_dram_perf_lock` to the function's beginning for clarity
+ * Fix double unlocking at v5
+ * https://lore.kernel.org/lkml/20240327072729.3381685-1-horenchuang@bytedance.com/T/#u
+-v5:
+ Thanks to Ying's comments,
+ * Add comments about what is protected by `default_dram_perf_lock`
+ * Fix an uninitialized pointer mtype
+ * Slightly shorten the time holding `default_dram_perf_lock`
+ * Fix a deadlock bug in `mt_perf_to_adistance`
+ * https://lore.kernel.org/lkml/20240327041646.3258110-1-horenchuang@bytedance.com/T/#u
+-v4:
+ Thanks to Ying's comments,
+ * Remove redundant code
+ * Reorganize patches accordingly
+ * https://lore.kernel.org/lkml/20240322070356.315922-1-horenchuang@bytedance.com/T/#u
+-v3:
+ Thanks to Ying's comments,
+ * Make the newly added code independent of HMAT
+ * Upgrade set_node_memory_tier to support more cases
+ * Put all non-driver-initialized memory types into default_memory_types
+   instead of using hmat_memory_types
+ * find_alloc_memory_type -> mt_find_alloc_memory_type
+ * https://lore.kernel.org/lkml/20240320061041.3246828-1-horenchuang@bytedance.com/T/#u
+-v2:
+ Thanks to Ying's comments,
+ * Rewrite cover letter & patch description
+ * Rename functions, don't use _hmat
+ * Abstract common functions into find_alloc_memory_type()
+ * Use the expected way to use set_node_memory_tier instead of modifying it
+ * https://lore.kernel.org/lkml/20240312061729.1997111-1-horenchuang@bytedance.com/T/#u
+-v1:
+ * https://lore.kernel.org/lkml/20240301082248.3456086-1-horenchuang@bytedance.com/T/#u
 
-Regards,
-Akihiko Odaki
+Ho-Ren (Jack) Chuang (2):
+  memory tier: dax/kmem: introduce an abstract layer for finding,
+    allocating, and putting memory types
+  memory tier: create CPUless memory tiers after obtaining HMAT info
 
-> 
-> Regards,
-> BALATON Zoltan
-> 
->> I'll leave you 2 videos so you can decide for yourself what would make 
->> the most sense. It shows once for me the working zoom behavior
->> which works very well and the behavior with Qemu 9.0Rc1 including new 
->> Cocoa patches.
->>
->> Qemu zoom-to fit=on for all Screenmodes 
->> working: https://www.youtube.com/watch?v=dnJ3W8egAFY
->>
->> Qemu 9.0. RC1 zoom-to fit=on not working for all 
->> Screenmodes: https://www.youtube.com/watch?v=Ddq68ViudrA
->>
->>
->>
->>
+ drivers/dax/kmem.c           |  20 +-----
+ include/linux/memory-tiers.h |  13 ++++
+ mm/memory-tiers.c            | 125 ++++++++++++++++++++++++++++++-----
+ 3 files changed, 124 insertions(+), 34 deletions(-)
+
+-- 
+Ho-Ren (Jack) Chuang
+
 
