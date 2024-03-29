@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D730A8913D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 07:37:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 615428913D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 07:36:55 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq5qq-0004XK-Bn; Fri, 29 Mar 2024 02:36:32 -0400
+	id 1rq5qs-0004Yf-10; Fri, 29 Mar 2024 02:36:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rq5qj-0004VI-F8
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 02:36:25 -0400
-Received: from esa11.hc1455-7.c3s2.iphmx.com ([207.54.90.137])
+ id 1rq5qk-0004Va-Qp
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 02:36:26 -0400
+Received: from esa2.hc1455-7.c3s2.iphmx.com ([207.54.90.48])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rq5qh-0002VK-IR
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 02:36:25 -0400
+ id 1rq5qh-0002VX-TK
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 02:36:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1711694184; x=1743230184;
+ t=1711694183; x=1743230183;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Om0rTA9WbsSAo7t6tlUEm6jtC04fsfKD+Idi78A3PwY=;
- b=qVkeJmGDqC4AGU51faOF30bODFPUqTCERvkm3Rh/n6r7MkROd8rmQq9M
- OCzz50EfejF0D0rpYKCXt3JEUStbmaW2zyUbmar8DVcrYEgRuP69AkMFN
- Z7p753tIEusvtkKPMWNeYnZbMHKDTYxUYyora/1qD2nzXn0419R0xyCKx
- WI1zVg5vY8bkfLWrNKIejegig9FTvnFI303YEGQYVOGYQB790r6IrsVBS
- ALYMQisbA2+pSsSrzXFXkkB/NFWuTHm2lkxzXxGlK7Q8LwRUKSZS5pgHS
- 44KLnTMVdmlDFxD0VznYREs5W4WyCN5yAgMcwAqS9WQpwC2sulGQpD0JR g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="133107776"
-X-IronPort-AV: E=Sophos;i="6.07,164,1708354800"; d="scan'208";a="133107776"
-Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
- by esa11.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ bh=bCrcdq4lNI8kIJNZkx/SfFaA95id3/KBVLHFuh8UmNU=;
+ b=NaZD9niW6exL69BYWNvbL2hUoZ9qHvx2HT1SpXlz8kXicJY6lEMS0XcR
+ oELsM4iSicnADNzGZvyPKbUgXdzWh/PF2/0g+ZhNbRre7Ma1hE5XK9A5g
+ LTPkBN90MyJvU1fmYlRzPWD8sGOGFRNeWMRPgtQo+LVmJHV3rZgFrhyD0
+ TDw5bzy1G81ehjHcPVoszxvdR7DUpjDXBvWMIOps6EKXB8BguUlKqT/v0
+ p7rM7dGt3xBSfMuut/UbLbwVOI1+koxhF9un1r/NpVwgr3mMpgrHH2aAM
+ aUqSJYku0j7MFVcFsREHrv7x3qaT74pnwKYiLQGv5Sxt4EQJcwXNSCsO9 A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11027"; a="153769248"
+X-IronPort-AV: E=Sophos;i="6.07,164,1708354800"; d="scan'208";a="153769248"
+Received: from unknown (HELO yto-r2.gw.nic.fujitsu.com) ([218.44.52.218])
+ by esa2.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  29 Mar 2024 15:36:20 +0900
-Received: from oym-m3.gw.nic.fujitsu.com (oym-nat-oym-m3.gw.nic.fujitsu.com
- [192.168.87.60])
- by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id B8D6FDCC08
+Received: from yto-m3.gw.nic.fujitsu.com (yto-nat-yto-m3.gw.nic.fujitsu.com
+ [192.168.83.66])
+ by yto-r2.gw.nic.fujitsu.com (Postfix) with ESMTP id 23A1EC680C
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:36:18 +0900 (JST)
+Received: from kws-ab4.gw.nic.fujitsu.com (kws-ab4.gw.nic.fujitsu.com
+ [192.51.206.22])
+ by yto-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id 5DD50C7261
  for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:36:17 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by oym-m3.gw.nic.fujitsu.com (Postfix) with ESMTP id E30E715620
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:36:16 +0900 (JST)
 Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 7EC08200A7F0B
+ by kws-ab4.gw.nic.fujitsu.com (Postfix) with ESMTP id E64C6224612
  for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:36:16 +0900 (JST)
 Received: from irides.g08.fujitsu.local (unknown [10.167.226.114])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 24B0C1A006D;
+ by edo.cn.fujitsu.com (Postfix) with ESMTP id 783B21A006A;
  Fri, 29 Mar 2024 14:36:16 +0800 (CST)
 To: qemu-devel@nongnu.org,
 	linux-cxl@vger.kernel.org
 Cc: Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, dave@stgolabs.net,
  ira.weiny@intel.com
-Subject: [RFC PATCH v2 4/6] cxl/core: report poison when injecting from debugfs
-Date: Fri, 29 Mar 2024 14:36:12 +0800
-Message-Id: <20240329063614.362763-5-ruansy.fnst@fujitsu.com>
+Subject: [RFC PATCH v2 5/6] cxl: add definition for transaction types
+Date: Fri, 29 Mar 2024 14:36:13 +0800
+Message-Id: <20240329063614.362763-6-ruansy.fnst@fujitsu.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
 References: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
@@ -65,14 +65,15 @@ X-TM-AS-GCONF: 00
 X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28282.003
 X-TM-AS-User-Approved-Sender: Yes
 X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28282.003
-X-TMASE-Result: 10--1.096700-10.000000
-X-TMASE-MatchedRID: It5tpevY7hTR6RKL7TRTbhF4zyLyne+ATJDl9FKHbrnLBiiIoKf6r6PF
- jJEFr+olKE0Je8DR/D4NXwNUB3oA790H8LFZNFG76sBnwpOylLOGGOXsAst2EY71S6fa2jIEbbi
- ume7ndEjAl7InEAdrZfsQLJr4C1gANHYsYoI80lgKm9Bb+04k3Mw0hF8jARVgyLf0xPiHr9ghya
- dlGFXHKsTgfCdKUS4cicSkmYsAV+kLUU1zqiphVX7cGd19dSFd
+X-TMASE-Result: 10--4.520000-10.000000
+X-TMASE-MatchedRID: NuUGwdOZh4ZkQckJEC3Q2tyBRU/cKn69F4r8H5YrEqxOeMm3G6m0Tb8F
+ Hrw7frluf146W0iUu2tR9er5wo4xLchblrt58TvtqdwbW9Wx9tAv5vY1YvMqbuUlKuNFfcJqo8W
+ MkQWv6iV3LAytsQR4e42j49Ftap9ExlblqLlYqXJt4l4q/wnikovCfpj71RK4UrGm7aSNDOJYJI
+ xPFhImJcZoZKsx29ZV9DCWgDRvWseCgKQPezcuADwdpcMIVCZT+OYGlmIZze4RZbRsQk5MBUB1Q
+ Pq9bxnWZkAxAwjIrrMHz/H0kiLyEqGAtHMDjkk9
 X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=207.54.90.137;
- envelope-from=ruansy.fnst@fujitsu.com; helo=esa11.hc1455-7.c3s2.iphmx.com
+Received-SPF: pass client-ip=207.54.90.48;
+ envelope-from=ruansy.fnst@fujitsu.com; helo=esa2.hc1455-7.c3s2.iphmx.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -97,26 +98,57 @@ From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Poison injection from debugfs is silent too.  Add calling
-cxl_mem_report_poison() to make it able to do memory_failure().
+The transaction types are defined in General Media Event Record/DRAM Event
+per CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43 and
+Section 8.2.9.2.1.2; Table 8-44.  Add them for Event Record handler use.
 
 Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 ---
- drivers/cxl/core/memdev.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/cxl-event.h | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-index e976141ca4a9..b0dcbe6f1004 100644
---- a/drivers/cxl/core/memdev.c
-+++ b/drivers/cxl/core/memdev.c
-@@ -366,6 +366,7 @@ int cxl_inject_poison(struct cxl_memdev *cxlmd, u64 dpa)
- 		.length = cpu_to_le32(1),
- 	};
- 	trace_cxl_poison(cxlmd, cxlr, &record, 0, 0, CXL_POISON_TRACE_INJECT);
-+	cxl_mem_report_poison(cxlmd, cxlr, &record);
- out:
- 	up_read(&cxl_dpa_rwsem);
- 	up_read(&cxl_region_rwsem);
+diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
+index 03fa6d50d46f..0a50754fc330 100644
+--- a/include/linux/cxl-event.h
++++ b/include/linux/cxl-event.h
+@@ -23,6 +23,19 @@ struct cxl_event_generic {
+ 	u8 data[CXL_EVENT_RECORD_DATA_LENGTH];
+ } __packed;
+ 
++/*
++ * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
++ */
++enum cxl_event_transaction_type {
++	CXL_EVENT_TRANSACTION_UNKNOWN = 0X00,
++	CXL_EVENT_TRANSACTION_READ,
++	CXL_EVENT_TRANSACTION_WRITE,
++	CXL_EVENT_TRANSACTION_SCAN_MEDIA,
++	CXL_EVENT_TRANSACTION_INJECT_POISON,
++	CXL_EVENT_TRANSACTION_MEDIA_SCRUB,
++	CXL_EVENT_TRANSACTION_MEDIA_MANAGEMENT,
++};
++
+ /*
+  * General Media Event Record
+  * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
+@@ -33,7 +46,7 @@ struct cxl_event_gen_media {
+ 	__le64 phys_addr;
+ 	u8 descriptor;
+ 	u8 type;
+-	u8 transaction_type;
++	u8 transaction_type;	/* enum cxl_event_transaction_type */
+ 	u8 validity_flags[2];
+ 	u8 channel;
+ 	u8 rank;
+@@ -52,7 +65,7 @@ struct cxl_event_dram {
+ 	__le64 phys_addr;
+ 	u8 descriptor;
+ 	u8 type;
+-	u8 transaction_type;
++	u8 transaction_type;	/* enum cxl_event_transaction_type */
+ 	u8 validity_flags[2];
+ 	u8 channel;
+ 	u8 rank;
 -- 
 2.34.1
 
