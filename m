@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9EF891402
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 08:12:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10690891404
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 08:12:30 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq6Oi-0007HJ-J3; Fri, 29 Mar 2024 03:11:32 -0400
+	id 1rq6Ok-0007I4-Tq; Fri, 29 Mar 2024 03:11:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rq6Od-0007G0-DG
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rq6Of-0007Gg-UH
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1rq6Ob-0001Ah-NH
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:27 -0400
+ id 1rq6Od-0001BR-Nq
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 03:11:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711696284;
+ s=mimecast20190719; t=1711696286;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LZQ9+jiRyU6U7jrvemCH0jWxbZPxQAANcYjVF7tsoZs=;
- b=XG6adyaFUmATChc1FizgLVT9kj8MFrkaIYiBzGOq3Rqf3iwzjosGA9UtGv5kWzjtxLsjqj
- J+Q18mP1KlpiKjQaXonvtLgEery35OjE4CI7cy9/YgadDtmPdcWuQ7t5NAg2wtQgyZQRVc
- k/rYLVkfZ0mycF1TPlNIQlKlyJ8L/18=
+ bh=P56QHNzwrxOcRr68lM03Rk+oU19INbJ4X5uupxFJH4g=;
+ b=it/+OS5ykUEhg8STTxL12B8w2aoD006rHr+ftPc6Bd0PfdGuECDNfTzFFDRBm+sbLrZzcC
+ rJuj6/PXhC/YxUNXgmHe9y4AUzOEVosEVtOJTa5A6Ny9nrhLugduejVnN5lXhdipBlxJQG
+ Abd0us1CkEKGAtVl/PSlqXfbI8haYC0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-TIzE-rz9MiGPjq8Wj6gbnw-1; Fri, 29 Mar 2024 03:11:22 -0400
-X-MC-Unique: TIzE-rz9MiGPjq8Wj6gbnw-1
+ us-mta-367-qaqyV4L9OgizZuWLimZDDA-1; Fri, 29 Mar 2024 03:11:24 -0400
+X-MC-Unique: qaqyV4L9OgizZuWLimZDDA-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E439B80F7E4;
- Fri, 29 Mar 2024 07:11:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F9D28007A1;
+ Fri, 29 Mar 2024 07:11:24 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.72.112.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0746CC423E0;
- Fri, 29 Mar 2024 07:11:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 86107C423E0;
+ Fri, 29 Mar 2024 07:11:22 +0000 (UTC)
 From: Jason Wang <jasowang@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL 4/5] tap-win32: Remove unnecessary stubs
-Date: Fri, 29 Mar 2024 15:10:59 +0800
-Message-ID: <20240329071100.31376-5-jasowang@redhat.com>
+Subject: [PULL 5/5] Revert "tap: setting error appropriately when calling
+ net_init_tap_one()"
+Date: Fri, 29 Mar 2024 15:11:00 +0800
+Message-ID: <20240329071100.31376-6-jasowang@redhat.com>
 In-Reply-To: <20240329071100.31376-1-jasowang@redhat.com>
 References: <20240329071100.31376-1-jasowang@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jasowang@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -21
 X-Spam_score: -2.2
@@ -82,91 +83,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-Some of them are only necessary for POSIX systems. The others are
-assigned to function pointers in NetClientInfo that can actually be
-NULL.
+This reverts commit 46d4d36d0bf2b24b205f2f604f0905db80264eef.
+
+The reverted commit changed to emit warnings instead of errors when
+vhost is requested but vhost initialization fails if vhostforce option
+is not set.
+
+However, vhostforce is not meant to ignore vhost errors. It was once
+introduced as an option to commit 5430a28fe4 ("vhost: force vhost off
+for non-MSI guests") to force enabling vhost for non-MSI guests, which
+will have worse performance with vhost. The option was deprecated with
+commit 1e7398a140 ("vhost: enable vhost without without MSI-X") and
+changed to behave identical with the vhost option for compatibility.
+
+Worse, commit bf769f742c ("virtio: del net client if net_init_tap_one
+failed") changed to delete the client when vhost fails even when the
+failure only results in a warning. The leads to an assertion failure
+for the -netdev command line option.
+
+The reverted commit was intended to avoid that the vhost initialization
+failure won't result in a corrupted netdev. This problem should have
+been fixed by deleting netdev when the initialization fails instead of
+ignoring the failure with an arbitrary option. Fortunately, commit
+bf769f742c ("virtio: del net client if net_init_tap_one failed"),
+mentioned earlier, implements this behavior.
+
+Restore the correct semantics and fix the assertion failure for the
+-netdev command line option by reverting the problematic commit.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
 ---
- net/tap-win32.c | 54 -------------------------------------------------
- 1 file changed, 54 deletions(-)
+ include/net/vhost_net.h |  3 ---
+ net/tap.c               | 22 +++++-----------------
+ 2 files changed, 5 insertions(+), 20 deletions(-)
 
-diff --git a/net/tap-win32.c b/net/tap-win32.c
-index 7b8b4be02c..7edbd71633 100644
---- a/net/tap-win32.c
-+++ b/net/tap-win32.c
-@@ -707,70 +707,16 @@ static void tap_win32_send(void *opaque)
-     }
- }
+diff --git a/include/net/vhost_net.h b/include/net/vhost_net.h
+index c37aba35e6..c6a5361a2a 100644
+--- a/include/net/vhost_net.h
++++ b/include/net/vhost_net.h
+@@ -4,9 +4,6 @@
+ #include "net/net.h"
+ #include "hw/virtio/vhost-backend.h"
  
--static bool tap_has_ufo(NetClientState *nc)
--{
--    return false;
--}
+-#define VHOST_NET_INIT_FAILED \
+-    "vhost-net requested but could not be initialized"
 -
--static bool tap_has_vnet_hdr(NetClientState *nc)
--{
--    return false;
--}
--
--int tap_probe_vnet_hdr_len(int fd, int len)
--{
--    return 0;
--}
--
--void tap_fd_set_vnet_hdr_len(int fd, int len)
--{
--}
--
--int tap_fd_set_vnet_le(int fd, int is_le)
--{
--    return -EINVAL;
--}
--
--int tap_fd_set_vnet_be(int fd, int is_be)
--{
--    return -EINVAL;
--}
--
--static void tap_using_vnet_hdr(NetClientState *nc, bool using_vnet_hdr)
--{
--}
--
--static void tap_set_offload(NetClientState *nc, int csum, int tso4,
--                     int tso6, int ecn, int ufo, int uso4, int uso6)
--{
--}
--
- struct vhost_net *tap_get_vhost_net(NetClientState *nc)
- {
-     return NULL;
- }
+ struct vhost_net;
+ typedef struct vhost_net VHostNetState;
  
--static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
--{
--    return false;
--}
--
--static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
--{
--    abort();
--}
--
- static NetClientInfo net_tap_win32_info = {
-     .type = NET_CLIENT_DRIVER_TAP,
-     .size = sizeof(TAPState),
-     .receive = tap_receive,
-     .cleanup = tap_cleanup,
--    .has_ufo = tap_has_ufo,
--    .has_vnet_hdr = tap_has_vnet_hdr,
--    .has_vnet_hdr_len = tap_has_vnet_hdr_len,
--    .using_vnet_hdr = tap_using_vnet_hdr,
--    .set_offload = tap_set_offload,
--    .set_vnet_hdr_len = tap_set_vnet_hdr_len,
- };
+diff --git a/net/tap.c b/net/tap.c
+index c698b70475..baaa2f7a9a 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -743,11 +743,7 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+         if (vhostfdname) {
+             vhostfd = monitor_fd_param(monitor_cur(), vhostfdname, &err);
+             if (vhostfd == -1) {
+-                if (tap->has_vhostforce && tap->vhostforce) {
+-                    error_propagate(errp, err);
+-                } else {
+-                    warn_report_err(err);
+-                }
++                error_propagate(errp, err);
+                 goto failed;
+             }
+             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
+@@ -758,13 +754,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
+         } else {
+             vhostfd = open("/dev/vhost-net", O_RDWR);
+             if (vhostfd < 0) {
+-                if (tap->has_vhostforce && tap->vhostforce) {
+-                    error_setg_errno(errp, errno,
+-                                     "tap: open vhost char device failed");
+-                } else {
+-                    warn_report("tap: open vhost char device failed: %s",
+-                                strerror(errno));
+-                }
++                error_setg_errno(errp, errno,
++                                 "tap: open vhost char device failed");
+                 goto failed;
+             }
+             if (!g_unix_set_fd_nonblocking(vhostfd, true, NULL)) {
+@@ -777,11 +768,8 @@ static void net_init_tap_one(const NetdevTapOptions *tap, NetClientState *peer,
  
- static int tap_win32_init(NetClientState *peer, const char *model,
+         s->vhost_net = vhost_net_init(&options);
+         if (!s->vhost_net) {
+-            if (tap->has_vhostforce && tap->vhostforce) {
+-                error_setg(errp, VHOST_NET_INIT_FAILED);
+-            } else {
+-                warn_report(VHOST_NET_INIT_FAILED);
+-            }
++            error_setg(errp,
++                       "vhost-net requested but could not be initialized");
+             goto failed;
+         }
+     } else if (vhostfdname) {
 -- 
 2.42.0
 
