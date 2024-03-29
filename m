@@ -2,83 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB9048926CF
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:33:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E6A8926D5
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:33:47 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKlP-0002dr-Dz; Fri, 29 Mar 2024 18:31:55 -0400
+	id 1rqKmy-00084B-7w; Fri, 29 Mar 2024 18:33:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKlD-0002bD-UA
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:44 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1rqKmv-0007mp-N9; Fri, 29 Mar 2024 18:33:29 -0400
+Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKlC-0003Yg-GT
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:43 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e228c12468so9083815ad.1
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:31:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
+ id 1rqKmt-0003kw-SB; Fri, 29 Mar 2024 18:33:29 -0400
+Received: by mail-pg1-x52d.google.com with SMTP id
+ 41be03b00d2f7-5dca1efad59so1688195a12.2; 
+ Fri, 29 Mar 2024 15:33:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711751500; x=1712356300; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bWcnWOhOhEXp9gbRHbTUlAnAR9/XUgSdF/ra6Xk+uTg=;
- b=BKHhxuytUIpPe8ynZAQkkGqsYzHH9h6DFZoXzWM74l/s6WudT625GAWZVD5CXLpzRq
- wu9WB3YUL9dezqrsmvWG2kP3EkkTrkgRzqU8X+xHfrarNtTuhi7C6+jEpEICa5vx+8cN
- lCv96S1t9lRKSYGlViCLYObPoQhPyyWEh0k/YAmpuXi/1EgkmvBUF7bEOKfOZv8qxID6
- QxtRfbdhDoNAgxrV109/eIy4JnWuCZjMbuDR1ZQzVoyUVxckCWmXGLXNhfIO3QynwlMG
- 1RkHK2CVrqOSBbWl1usLqZ7mREbzXCBQi8SJk840eA5rNbQ69uXxc+oLDjL3bDL78q+w
- RzYg==
+ d=gmail.com; s=20230601; t=1711751605; x=1712356405; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UiT87QcdTydktqQoQiYKrqblOP7f9I+ZW7v1tQ7uTyQ=;
+ b=c7a9YGdcHxNB4trFkMDWuavaUpPBjkX4NzTSZrfyr4g6VzraVOrIqn5roc9P/31dP4
+ 6e8d9WW7KG0PqVi6UzuFUcOXDoIt+PZ09bHN/KO6WEesJurCojVsZnrWUxBW6kIULV1b
+ PJ0t0Em1HLPoX7Rhq3rIEMjSik6Ibs6HYHI4fzWayC3v+oVYDQ2u5D0HdCMyoQFwchRG
+ 8M1A1otEJpRp6BZATs2pgUWdTthdoA/TpdjOvIoWIZcm5cer9jFBCzXc88xqi4Qyl+oh
+ m7ulmK/kOqxjjWsdinOzbRwRI8BD5UbiSZ4uowUo+DMiRXFU9chrJ24qPDi0quM0viFi
+ Q0qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711751500; x=1712356300;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bWcnWOhOhEXp9gbRHbTUlAnAR9/XUgSdF/ra6Xk+uTg=;
- b=D68Rgr8bOGk+wBC+MomqDE4CxXNnT5GyLPW/fhi5hDqgLrWCKk3U1fHRru7w5QJy8G
- FgWVTKo3y2vIH7GE5VRCWKPGgepFRey5hAj1Vb1cNWCma5tEdEwcvu4QYy0m+mZmPVfD
- gWO4AG3tFar5Ihfvv02lCLjDA4UoDeNXRHzSpPCvQbJeJEfv+4ajeuOhBecwGI/Y+fNm
- hc0mxNkqxbLJZzaXGRph4LuZzmY1ZFm9wYn9/I1FOtrborwDgKM2sKZg86NQDMOZlZT7
- BASXAx0OWZjvp6ceQlqelGjl8raG3W3D96Qi0Ef4BTVgs0yFPnexTTkqs+Yvpd+k7gkN
- 0TJQ==
-X-Gm-Message-State: AOJu0YzMv+6kgiNDj56t8Ya/KxXii9EaXs3KbW3GJ0qIjTwnHU9quBvc
- VG8qy3jy0hn+3cERyYlL8QFpKWJBmS21AvXtOaAIRlMKCF5jtVZcPjcO11lGVCPo0jSnnSxfWYA
- r
-X-Google-Smtp-Source: AGHT+IHWkzXUZxZ0SCQV2CpsttSh1cNNzz+fBWDbapY6DjBw6rgLM+c6RpvtkKGZ9PCpH9V9JBFatw==
-X-Received: by 2002:a17:903:11cc:b0:1e1:a75:a095 with SMTP id
- q12-20020a17090311cc00b001e10a75a095mr5352636plh.25.1711751500662; 
- Fri, 29 Mar 2024 15:31:40 -0700 (PDT)
-Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ d=1e100.net; s=20230601; t=1711751605; x=1712356405;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UiT87QcdTydktqQoQiYKrqblOP7f9I+ZW7v1tQ7uTyQ=;
+ b=Sm1dBkXszdXCHlenN4dVvehswM972dTQr5hwZHHzIqOj8uoeNQk1JSIMv+SNWB6WUG
+ tKQ8EzwV7qWGtZxAfXA/mpQb7QLOV/+/uJnaJO9vC9VyPncxwi74qFzMjLJTlFSBw1Es
+ 12tVKbofZSKQUcGQqM4y0RxA4sJNUrupRWIra34E5+P3OecWQdmoiUadsMFEUM6TRWQ1
+ oLhD4cufk4umWZ8Pfrh15R5OqUxW4QVdM26sxUVdrBUFASHF/A6KbFJCLQ74Nmsd6EXl
+ xBaz0XopvbCNCaUue4eVf80HT1FnW3hNRdbz+rBRQ4yMTFYktf/wQO70lBv+vpfJJ9dG
+ ep1A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUm9+RckRtxh8bfSjPJouf5EohOp9W+zP5WOa0kNDs25f+Oakf7p/9WJKxhBFfs8FmD57AzOfhHntnMY+yGVT5q31sqsPlk
+X-Gm-Message-State: AOJu0Yyp6di7fjgPOullBdCRhiinhn4Yj6IhfuI9ea1qhkaaKzzy6FMS
+ nRNRZT7XKyhqj/DT1Tm8audSxBtk2lsuVY3uIBKMM6nSjxtzl1InB0jy8njr
+X-Google-Smtp-Source: AGHT+IHiY+gHwn2CuqIFjfAOshpwFWaMRRhDCnnfDEs1DmoTOLgPzfeOU05mA02w9G+KHWbdl2/pgQ==
+X-Received: by 2002:a05:6a20:9184:b0:1a3:8904:1fc9 with SMTP id
+ v4-20020a056a20918400b001a389041fc9mr3425460pzd.41.1711751605269; 
+ Fri, 29 Mar 2024 15:33:25 -0700 (PDT)
+Received: from octofox.hsd1.ca.comcast.net
+ ([2601:646:a200:bbd0:2399:5e4a:95e8:172f])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a170902684800b001e09b636cafsm4000955pln.287.2024.03.29.15.31.39
+ u25-20020aa78499000000b006e6c856c0f3sm3479490pfn.188.2024.03.29.15.33.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:31:40 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ Fri, 29 Mar 2024 15:33:24 -0700 (PDT)
+From: Max Filippov <jcmvbkbc@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 18/18] target/hppa: Clear psw_n for BE on use_nullify_skip path
-Date: Fri, 29 Mar 2024 12:31:11 -1000
-Message-Id: <20240329223111.1735826-19-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240329223111.1735826-1-richard.henderson@linaro.org>
-References: <20240329223111.1735826-1-richard.henderson@linaro.org>
+Cc: Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Max Filippov <jcmvbkbc@gmail.com>, qemu-stable@nongnu.org
+Subject: [PATCH v2] linux-user/syscall: xtensa: fix ipc_perm conversion
+Date: Fri, 29 Mar 2024 15:33:18 -0700
+Message-Id: <20240329223318.155572-1-jcmvbkbc@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pg1-x52d.google.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ FROM_LOCAL_NOVOWEL=0.5, HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,31 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Along this path we have already skipped the insn to be
-nullified, so the subsequent insn should be executed.
+target_ipc_perm::mode and target_ipc_perm::__seq fields are 32-bit wide
+on xtensa and thus need to use tswap32.
+The issue is spotted by the libc-test http://nsz.repo.hu/git/?p=libc-test
+on big-endian xtensa core.
 
 Cc: qemu-stable@nongnu.org
-Reported-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Fixes: a3da8be5126b ("target/xtensa: linux-user: fix sysv IPC structures")
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
- target/hppa/translate.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes v1->v2:
+- split into a separate patch
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 143818c2d9..8a1a8bc3aa 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3948,6 +3948,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
-         copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
-         tcg_gen_mov_i64(cpu_iasq_f, new_spc);
-         tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
-+        nullify_set(ctx, 0);
-     } else {
-         copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-         if (ctx->iaoq_b == -1) {
+ linux-user/syscall.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index e384e1424890..d9bfd31c1cad 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -3758,12 +3758,13 @@ static inline abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,
+     host_ip->gid = tswap32(target_ip->gid);
+     host_ip->cuid = tswap32(target_ip->cuid);
+     host_ip->cgid = tswap32(target_ip->cgid);
+-#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC)
++#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC) || \
++    defined(TARGET_XTENSA)
+     host_ip->mode = tswap32(target_ip->mode);
+ #else
+     host_ip->mode = tswap16(target_ip->mode);
+ #endif
+-#if defined(TARGET_PPC)
++#if defined(TARGET_PPC) || defined(TARGET_XTENSA)
+     host_ip->__seq = tswap32(target_ip->__seq);
+ #else
+     host_ip->__seq = tswap16(target_ip->__seq);
+@@ -3786,12 +3787,13 @@ static inline abi_long host_to_target_ipc_perm(abi_ulong target_addr,
+     target_ip->gid = tswap32(host_ip->gid);
+     target_ip->cuid = tswap32(host_ip->cuid);
+     target_ip->cgid = tswap32(host_ip->cgid);
+-#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC)
++#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC) || \
++    defined(TARGET_XTENSA)
+     target_ip->mode = tswap32(host_ip->mode);
+ #else
+     target_ip->mode = tswap16(host_ip->mode);
+ #endif
+-#if defined(TARGET_PPC)
++#if defined(TARGET_PPC) || defined(TARGET_XTENSA)
+     target_ip->__seq = tswap32(host_ip->__seq);
+ #else
+     target_ip->__seq = tswap16(host_ip->__seq);
 -- 
-2.34.1
+2.39.2
 
 
