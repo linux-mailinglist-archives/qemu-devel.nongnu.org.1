@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4657D8926C8
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AD528926C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:32:50 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKlB-0002Zv-7i; Fri, 29 Mar 2024 18:31:43 -0400
+	id 1rqKlG-0002b4-Mh; Fri, 29 Mar 2024 18:31:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKkx-0002XK-Kg
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:28 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1rqKky-0002Xd-Vf
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:29 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKkv-0003Vr-L8
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:27 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1e0bfc42783so20766435ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:31:25 -0700 (PDT)
+ id 1rqKkx-0003WG-Ek
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:28 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-5d3912c9a83so1389060a12.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711751484; x=1712356284; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711751486; x=1712356286; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+aKcsx9JEOh52ndAdHyeqzgetKk3eTEnbQJ4vqbujCg=;
- b=wMA0iGpu2cLOuysjP68A9Al3LryRGIua/rbMTOTHgdtw+vwMd1SdFbIywEUAV1PfJ0
- qoPFd0HPb+2FOrwliPKv3g+tM6bxWh9jrfamh2Y/GjXtfFaCRso6bATzaSxhwdzG71TQ
- A8dGHn44WaOAm9g1PV5I/wwsFvbLsZ8b+cZ3vwnAa+fmMxiHobYhgsKsFIkKNGpCTqHq
- SWO+A4ZiyNJRW6kCecgI5Rw0kEoVlgHeoB9qP+d0EKCLlQ9+Bd/AWcbImespMJMe1Q6a
- u5p6rP88pxKczzvh36leQ5FlLk6/b27rrb7ge3HO7QveUwAxzqo5pk/RQgJ+3c3uxiNl
- qqNQ==
+ bh=ejHwqcq7dcii+cbZ+/7NcB0t83Y0TWbs/BL3Pfvrwv8=;
+ b=NY67hsNfLI40yG49X5YV8qvr0STHr/wUqWQTwGCwpEv58Pwm/Xu3K/aYofgq9vjhAt
+ PsEjSr96vQCVM2CYQHkEs0X1HtzEQHUnxwtkh+pkGzVSt/KfZ1CZCteks74MLCn4Pj85
+ wxJnWVgzqR68mwCT/YrKU+6j1riOfQxnYIsAHAJ3fyxOCW0L8Kl/Ncou2bC5JUzI9SAn
+ AcvziNVG1ieHyetJY/ZmERBFUjjIRFmlV96JeBiU7tVw3U0j1RWpM/7FiJG0hhDvWDev
+ jAzIVq4nDqUBCLvueHDLeo0pOOdtSoVUzf5ts8VfPI4o4Tw0ScJY50qxxj+Dt5NdnzcK
+ Opyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711751484; x=1712356284;
+ d=1e100.net; s=20230601; t=1711751486; x=1712356286;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+aKcsx9JEOh52ndAdHyeqzgetKk3eTEnbQJ4vqbujCg=;
- b=p4yJ8/XXIi8OeFrNbFpJaZ9hRiPaunHQpll2UTDmwD2F55JIU0Pi69CFfnIG7HGhF6
- rNXOFdShs1EeWXRHLBgTKirKiIPfz2msqK0w3MT0Nc1ch7KT/MIE/3uaHQ9vZpgjCFSS
- eG4BXwVWZyLyjlF214qrfqntMqi/cQVnOefm2IePTE++wRW/1pETBlS34NcUXIMMXR//
- p4gDs/R8BBOztzgzgWvlJ0HVVn72DA7Zq3gU3xTTzC9NdOvMPHOxDhhIGtLYTeixsYAu
- DQtxbRsniFVvPAEZ5hNMsNCbfeymWtn0zVuzkbl3l2Gn55qsBAMa5MkVlmn+7qofYLlf
- bAWg==
-X-Gm-Message-State: AOJu0Yyi4fALZReB+YBkzVze6jCARQfzT3bFDoXzy38O70PXIlMArGAn
- 8vIIdFro83ppprwqyFIq1Yg6MyKjQsVd1geJRDGMjgJzcvHEpu0SlagV6o5Ek+JipExRQvPmfRx
- j
-X-Google-Smtp-Source: AGHT+IFXcT/cv617vs94V0olUk1qtvB+asP3RutnVEut1XBYxIxnfg2HWbuT+MfbO611UJ0kqXe2YQ==
-X-Received: by 2002:a17:902:d2cf:b0:1dd:5f85:1191 with SMTP id
- n15-20020a170902d2cf00b001dd5f851191mr4433009plc.53.1711751484466; 
- Fri, 29 Mar 2024 15:31:24 -0700 (PDT)
+ bh=ejHwqcq7dcii+cbZ+/7NcB0t83Y0TWbs/BL3Pfvrwv8=;
+ b=FQSPDTbv14wm1TYcVf39Z9LkQtXe3fPrmsx4efYX3LhKmHykMf2m5AA2ewdTQ9IdTT
+ MLHGyqkKnVueFSvtOhm+tuNxP0m+Ks08NZ3CVbg6EB3D1BYdyNBjg9h3w8YQ8IF4wzlI
+ Ci21KjaJ9WlcIg9fYOM47m3+ctZJoK2XmhnQZN77WbYUkmloyfiBETAOlTotl2Cwj68C
+ y5znbkKVymaSJGb6dsHwNrP5upEfuK4VRsd/zZ62qZqYBQXWCVrivYRAuIlQce0V/Boj
+ UPVseuczpst8iHwuF+vq7qgRr2XCWziwxbtpFCpOFN377IAuxDRGoCTWgja2XFEHECQg
+ 4I8g==
+X-Gm-Message-State: AOJu0YzrdO7hhxPsWSvu2J38t511sxeQjbUjAWO/wnwCwCZ+OekdksiM
+ VtUpT0/ZEeSeKpmM1MMzpHTmg/ieGNM8eqqhc6mVn6VjHakXNjZdQQriLHCZWZfbqgBJ/WdpDaI
+ T
+X-Google-Smtp-Source: AGHT+IHhwo9S/Drdqgzvf4LqVDOO+EpW7ilYiNT2s9f6yhdZk2QnrInJRnNzjES5b+NUvRdAa100KQ==
+X-Received: by 2002:a17:902:e789:b0:1e2:408c:776f with SMTP id
+ cp9-20020a170902e78900b001e2408c776fmr935276plb.0.1711751485860; 
+ Fri, 29 Mar 2024 15:31:25 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a170902684800b001e09b636cafsm4000955pln.287.2024.03.29.15.31.23
+ f8-20020a170902684800b001e09b636cafsm4000955pln.287.2024.03.29.15.31.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:31:24 -0700 (PDT)
+ Fri, 29 Mar 2024 15:31:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Helge Deller <deller@gmx.de>
-Subject: [PULL 07/18] target/hppa: Fix EIRR, EIEM versus icount
-Date: Fri, 29 Mar 2024 12:31:00 -1000
-Message-Id: <20240329223111.1735826-8-richard.henderson@linaro.org>
+Cc: Sven Schnelle <svens@stackframe.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PULL 08/18] target/hppa: Use gva_offset_mask() everywhere
+Date: Fri, 29 Mar 2024 12:31:01 -1000
+Message-Id: <20240329223111.1735826-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329223111.1735826-1-richard.henderson@linaro.org>
 References: <20240329223111.1735826-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,99 +93,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Call translator_io_start before write to EIRR.
-Move evaluation of EIRR vs EIEM to hppa_cpu_exec_interrupt.
-Exit TB after write to EIEM, but otherwise use a straight store.
+From: Sven Schnelle <svens@stackframe.org>
 
+Move it to cpu.h, so it can also be used in hppa_form_gva_psw().
+
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
 Reviewed-by: Helge Deller <deller@gmx.de>
-Tested-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20240324080945.991100-2-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/helper.h     |  1 -
- target/hppa/int_helper.c | 14 ++++----------
- target/hppa/translate.c  | 10 +++++++---
- 3 files changed, 11 insertions(+), 14 deletions(-)
+ target/hppa/cpu.h       | 10 ++++++++--
+ target/hppa/translate.c | 12 +++---------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/target/hppa/helper.h b/target/hppa/helper.h
-index 1bdbcd8f98..8fd7ba65d8 100644
---- a/target/hppa/helper.h
-+++ b/target/hppa/helper.h
-@@ -91,7 +91,6 @@ DEF_HELPER_1(rfi, void, env)
- DEF_HELPER_1(rfi_r, void, env)
- DEF_HELPER_FLAGS_2(write_interval_timer, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_2(write_eirr, TCG_CALL_NO_RWG, void, env, tl)
--DEF_HELPER_FLAGS_2(write_eiem, TCG_CALL_NO_RWG, void, env, tl)
- DEF_HELPER_FLAGS_2(swap_system_mask, TCG_CALL_NO_RWG, tl, env, tl)
- DEF_HELPER_FLAGS_3(itlba_pa11, TCG_CALL_NO_RWG, void, env, tl, tl)
- DEF_HELPER_FLAGS_3(itlbp_pa11, TCG_CALL_NO_RWG, void, env, tl, tl)
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index efe638b36e..90437a92cd 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -28,7 +28,7 @@
- static void eval_interrupt(HPPACPU *cpu)
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index a92dc352cb..a072d0bb63 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -285,14 +285,20 @@ void hppa_translate_init(void);
+ 
+ #define CPU_RESOLVING_TYPE TYPE_HPPA_CPU
+ 
++static inline uint64_t gva_offset_mask(target_ulong psw)
++{
++    return (psw & PSW_W
++            ? MAKE_64BIT_MASK(0, 62)
++            : MAKE_64BIT_MASK(0, 32));
++}
++
+ static inline target_ulong hppa_form_gva_psw(target_ulong psw, uint64_t spc,
+                                              target_ulong off)
  {
-     CPUState *cs = CPU(cpu);
--    if (cpu->env.cr[CR_EIRR] & cpu->env.cr[CR_EIEM]) {
-+    if (cpu->env.cr[CR_EIRR]) {
-         cpu_interrupt(cs, CPU_INTERRUPT_HARD);
-     } else {
-         cpu_reset_interrupt(cs, CPU_INTERRUPT_HARD);
-@@ -89,14 +89,6 @@ void HELPER(write_eirr)(CPUHPPAState *env, target_ulong val)
-     bql_unlock();
+ #ifdef CONFIG_USER_ONLY
+     return off;
+ #else
+-    off &= psw & PSW_W ? MAKE_64BIT_MASK(0, 62) : MAKE_64BIT_MASK(0, 32);
+-    return spc | off;
++    return spc | (off & gva_offset_mask(psw));
+ #endif
  }
  
--void HELPER(write_eiem)(CPUHPPAState *env, target_ulong val)
--{
--    env->cr[CR_EIEM] = val;
--    bql_lock();
--    eval_interrupt(env_archcpu(env));
--    bql_unlock();
--}
--
- void hppa_cpu_do_interrupt(CPUState *cs)
- {
-     HPPACPU *cpu = HPPA_CPU(cs);
-@@ -280,7 +272,9 @@ bool hppa_cpu_exec_interrupt(CPUState *cs, int interrupt_request)
-     }
- 
-     /* If interrupts are requested and enabled, raise them.  */
--    if ((env->psw & PSW_I) && (interrupt_request & CPU_INTERRUPT_HARD)) {
-+    if ((interrupt_request & CPU_INTERRUPT_HARD)
-+        && (env->psw & PSW_I)
-+        && (env->cr[CR_EIRR] & env->cr[CR_EIEM])) {
-         cs->exception_index = EXCP_EXT_INTERRUPT;
-         hppa_cpu_do_interrupt(cs);
-         return true;
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 5b8c1b06c3..46b2d6508d 100644
+index 46b2d6508d..e041310207 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2166,10 +2166,10 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
-         gen_helper_write_interval_timer(tcg_env, reg);
-         break;
-     case CR_EIRR:
-+        /* Helper modifies interrupt lines and is therefore IO. */
-+        translator_io_start(&ctx->base);
-         gen_helper_write_eirr(tcg_env, reg);
--        break;
--    case CR_EIEM:
--        gen_helper_write_eiem(tcg_env, reg);
-+        /* Exit to re-evaluate interrupts in the main loop. */
-         ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
-         break;
+@@ -586,17 +586,10 @@ static bool nullify_end(DisasContext *ctx)
+     return true;
+ }
  
-@@ -2195,6 +2195,10 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
- #endif
-         break;
+-static uint64_t gva_offset_mask(DisasContext *ctx)
+-{
+-    return (ctx->tb_flags & PSW_W
+-            ? MAKE_64BIT_MASK(0, 62)
+-            : MAKE_64BIT_MASK(0, 32));
+-}
+-
+ static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
+                             uint64_t ival, TCGv_i64 vval)
+ {
+-    uint64_t mask = gva_offset_mask(ctx);
++    uint64_t mask = gva_offset_mask(ctx->tb_flags);
  
-+    case CR_EIEM:
-+        /* Exit to re-evaluate interrupts in the main loop. */
-+        ctx->base.is_jmp = DISAS_IAQ_N_STALE_EXIT;
-+        /* FALLTHRU */
-     default:
-         tcg_gen_st_i64(reg, tcg_env, offsetof(CPUHPPAState, cr[ctl]));
-         break;
+     if (ival != -1) {
+         tcg_gen_movi_i64(dest, ival & mask);
+@@ -1430,7 +1423,8 @@ static void form_gva(DisasContext *ctx, TCGv_i64 *pgva, TCGv_i64 *pofs,
+ 
+     *pofs = ofs;
+     *pgva = addr = tcg_temp_new_i64();
+-    tcg_gen_andi_i64(addr, modify <= 0 ? ofs : base, gva_offset_mask(ctx));
++    tcg_gen_andi_i64(addr, modify <= 0 ? ofs : base,
++                     gva_offset_mask(ctx->tb_flags));
+ #ifndef CONFIG_USER_ONLY
+     if (!is_phys) {
+         tcg_gen_or_i64(addr, addr, space_select(ctx, sp, base));
 -- 
 2.34.1
 
