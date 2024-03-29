@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4BC8926B6
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EBB8926B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:22:17 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKae-00055e-Tr; Fri, 29 Mar 2024 18:20:48 -0400
+	id 1rqKaf-00055n-Es; Fri, 29 Mar 2024 18:20:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKac-000555-Hl
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:46 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rqKad-00055U-PG
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:47 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKab-0001oz-41
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:46 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6eaf1005fcaso340711b3a.3
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:44 -0700 (PDT)
+ id 1rqKac-0001p9-9T
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:20:47 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6e74bd85f26so2032981b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711750844; x=1712355644; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711750845; x=1712355645; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vLgHs0lHF4uZkMVrK5zDEoSHxG5H5AOQOiZmQyJc1i4=;
- b=L3rbRcnRU37YopaavvC0LPVDLo74+HkRRKxSgjIyIzxLkJETfQJeqDukH+Xu+cTf2F
- p5HtKh3bCO7qRyMkJMHzbUmMdD8gBYMGfB6UkU4OWYgdKnuzCty4Fd7IsB6PQOVB8aYt
- CgDNQ2aOg1jfl0CsQUkhBA+Uh4nmOL2vN2Z4JGO75V8cc8WGfC3Baaw/eyDfJ0YxksgE
- +Fskm1H6/tqSj6mamxDqDZ6LuvxNgreNbNMyhmW9wGVMWfFvgGGZwp5Hd6vpcB8ctI8V
- qqY4aMN511OPDw2wjJKMdPvw74dV4ztuW0cWm6bXtsAlYCodR6GwCiIyHdOZWStCJQN+
- 0a5Q==
+ bh=HtUHg09UOjxxYBJJEpdXT1anxY6jjxQxzEq5yXQbAXE=;
+ b=yBJGaOdrjxNQNBorSTQqmPpBX4T4sd3LXvM2cI1rJX+8fCHqOMYiRWupAHDFL1+lJB
+ vYukkFzzMz/qP2Ht9Rn6HF0LD1zg29tyoNxlVmyk27bQgAbV7w116SyLpiCs4qICIkru
+ a//h8CKsi+/oZRk/6JKFTw7LSrqnN2PvvFXRBGSG+ibN6YVr5yyqVpDDQ3Z9Km6i0Esr
+ zsnvevkFBoRegLZV2qOFw16vgIsTBHhKajHR7AjrT4J9SWXhPitXDU6bmxc9fJ8pfxIF
+ 2Ph2e/9RCeSBSaWIr9drZo06fv15xcXn6/F9N0pg8bTGXRxnp6lOvSQX22+QwtHWPWPF
+ feyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711750844; x=1712355644;
+ d=1e100.net; s=20230601; t=1711750845; x=1712355645;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vLgHs0lHF4uZkMVrK5zDEoSHxG5H5AOQOiZmQyJc1i4=;
- b=f8zDPMg8WVYdh1waAvDRZU5fF8Bq09hyIjFGXmrNui5JcTQ0FyEJrnx9eI/OaJhc4N
- Z0lEOYIOPURUDa8IdMrra9TfHIzwh7Lxon9vrI1kJ0BaZ/COkFfhR4G3kHRb+u3OPBZz
- nyeBAelAXtelyRd4h7rY9PHegsiqtMEMPjw2tzPuWSJFQblS95uomChB6zYFTB2qaAEo
- ePIqPmcyXIX/o6EzHnYCnIoIcTmaGv/gHZSzwxcS7hFfM751BW2VEiOTcUZcgzGh7TAv
- 6/ra5uPJLn2fsUOa0Y9DmK/O9J7gAJ/aQ3GSZCdaghpdwxu+P+wvVE6wGL+z1eMrUMCb
- tQlA==
-X-Gm-Message-State: AOJu0YwNZJgQ5A14VLE3fGP+ytzyfnJe5oxB/7qC+xnE2snIn0UAksnd
- mNXKxmwuG9zzRIE+Q0FPFJJ6p36zmVmI3sPgUasR9oWeoy4LECdicbsTyU15uCA1ydPlWu9K/0k
- f
-X-Google-Smtp-Source: AGHT+IHN59+by1kIong4yHUfgIuSfRFMHf1n2EmLUVLGCxvDf6ks61L3QSP90pJnYZnvhPb35MNbSw==
-X-Received: by 2002:a05:6a20:ae86:b0:1a3:dc19:e5a0 with SMTP id
- do6-20020a056a20ae8600b001a3dc19e5a0mr2851946pzb.41.1711750843638; 
- Fri, 29 Mar 2024 15:20:43 -0700 (PDT)
+ bh=HtUHg09UOjxxYBJJEpdXT1anxY6jjxQxzEq5yXQbAXE=;
+ b=uy+aVsv8+5hMTe6B3KLjT5T1xAp7D4W8XNxY2E3sCf57xjTngGI9QUroVDv/lLIo3P
+ smL7uxHtYh+ucJb1Qb9npY8vaWOp8ops/ImqaYz2THsdX+bGdMo1XNzHiPXspWGwhT+Q
+ vmDiZ0G1uy0ecRx5IGTxzUQfBZy5TURWSHd+l5iQlRoqnxxfQn9azIuPNnuJSkHvjC6c
+ TJ1/ZXgXEzcazpPENqL4/PBiGPKAbHpLlxnfuGznJ5+HCO+CbqkbLXqzyTQr88HBaYqb
+ 5GnSPHcmfjlhIvdVPjelu4zZ7MT4hnB6YP3BdLMNGHCKzMOMktDAWfVblthkIWX9o9oB
+ XLMA==
+X-Gm-Message-State: AOJu0YxAI7oilD/G6bru9aP7lD3sfvM0LdL3dClBVRBKr6lfVM7Amd5v
+ PmTDnwRj7I0Bz/i3V+EbA+2uIqEtOMpM9qnJLp5TWOMXTnRTDnr8dYUOhRBvwoL2RHvEuIXI4co
+ o
+X-Google-Smtp-Source: AGHT+IEjgiztimZl+umzBvIB4PXvgwmlAsCEtEh0MwE+tdRYfYwCpG08/cOs52K0LU9o9F18Mh8m3Q==
+X-Received: by 2002:a05:6a00:1910:b0:6ea:ca90:3459 with SMTP id
+ y16-20020a056a00191000b006eaca903459mr3588812pfi.32.1711750844955; 
+ Fri, 29 Mar 2024 15:20:44 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.42
+ lc24-20020a056a004f5800b006eaacc63435sm3579811pfb.173.2024.03.29.15.20.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:20:43 -0700 (PDT)
+ Fri, 29 Mar 2024 15:20:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PULL 2/7] linux-user: Fix shmat() strace
-Date: Fri, 29 Mar 2024 12:20:32 -1000
-Message-Id: <20240329222037.1735350-3-richard.henderson@linaro.org>
+Subject: [PULL 3/7] linux-user: Fix shmat(NULL) for h != g
+Date: Fri, 29 Mar 2024 12:20:33 -1000
+Message-Id: <20240329222037.1735350-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329222037.1735350-1-richard.henderson@linaro.org>
 References: <20240329222037.1735350-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +94,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-The indices of arguments passed to print_shmat() are all off-by-1,
-because arg1 is the ipc() command. Fix them.
+In the h != g && shmaddr == NULL && !reserved_va case, target_shmat()
+incorrectly mmap()s the initial anonymous range with
+MAP_FIXED_NOREPLACE, even though the earlier mmap_find_vma() has
+already reserved the respective address range.
 
-New output for linux-shmat-maps test:
+Fix by using MAP_FIXED when "mapped", which is set after
+mmap_find_vma(), is true.
 
-    3501769 shmat(4784214,0x0000000000800000,SHM_RND) = 0
-
-Fixes: 9f7c97324c27 ("linux-user: Add strace for shmat")
+Fixes: 78bc8ed9a8f0 ("linux-user: Rewrite target_shmat")
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Message-Id: <20240325192436.561154-3-iii@linux.ibm.com>
+Message-Id: <20240325192436.561154-4-iii@linux.ibm.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/strace.c | 2 +-
+ linux-user/mmap.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/linux-user/strace.c b/linux-user/strace.c
-index 51a5bdd95f..b4d1098170 100644
---- a/linux-user/strace.c
-+++ b/linux-user/strace.c
-@@ -701,7 +701,7 @@ print_ipc(CPUArchState *cpu_env, const struct syscallname *name,
-         break;
-     case IPCOP_shmat:
-         print_shmat(cpu_env, &(const struct syscallname){ .name = "shmat" },
--                    arg1, arg4, arg2, 0, 0, 0);
-+                    arg2, arg5, arg3, 0, 0, 0);
-         break;
-     default:
-         qemu_log(("%s("
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 4505fd7376..be3b9a68eb 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -1354,7 +1354,7 @@ abi_ulong target_shmat(CPUArchState *cpu_env, int shmid,
+         if (h_len != t_len) {
+             int mmap_p = PROT_READ | (shmflg & SHM_RDONLY ? 0 : PROT_WRITE);
+             int mmap_f = MAP_PRIVATE | MAP_ANONYMOUS
+-                       | (reserved_va || (shmflg & SHM_REMAP)
++                       | (reserved_va || mapped || (shmflg & SHM_REMAP)
+                           ? MAP_FIXED : MAP_FIXED_NOREPLACE);
+ 
+             test = mmap(want, m_len, mmap_p, mmap_f, -1, 0);
 -- 
 2.34.1
 
