@@ -2,70 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AF9891613
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 10:34:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D0C289168E
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 11:11:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rq8bX-0001gn-J4; Fri, 29 Mar 2024 05:32:55 -0400
+	id 1rq9C8-0007Ig-Vu; Fri, 29 Mar 2024 06:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rq8bU-0001fR-57; Fri, 29 Mar 2024 05:32:52 -0400
+ id 1rq9C4-0007Fm-2P; Fri, 29 Mar 2024 06:10:40 -0400
 Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rq8bQ-0001Af-Gu; Fri, 29 Mar 2024 05:32:51 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:5428:0:640:7351:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id A37D760C61;
- Fri, 29 Mar 2024 12:32:41 +0300 (MSK)
+ id 1rq9C0-0001yH-2Z; Fri, 29 Mar 2024 06:10:39 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:400c:0:640:9907:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 0071760A32;
+ Fri, 29 Mar 2024 13:10:32 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:6509::1:4] (unknown
  [2a02:6b8:b081:6509::1:4])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id cWKUJ24Ifa60-jcavf3yU; Fri, 29 Mar 2024 12:32:41 +0300
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id UALeud26VuQ0-jDUgKtf5; Fri, 29 Mar 2024 13:10:31 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1711704761;
- bh=TN9HzSIkkQz7APZOHcikhI5RzYc+R2szHrbpkRHkeGs=;
+ s=default; t=1711707031;
+ bh=4evnooogcCZE5AfBi9RVTFX6KZtd3/EFZAv9M3dMHhg=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=aZqjarI2IkxQhPyVFfpHWOoarymfyQDZcA5Yi19q57p+gCUrNLqabIJTbfzS8DAYP
- DEXCw4KNuSCh+cPAXZ3MgHMlnDM6V1m+MNUL75AlD8GHoLXTDK7mf1kHbibHMPlJ44
- kPKXPk+Z9IFZTXJweVSLrz2lv3lrLW2jIW7iW3qg=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ b=1lGIc1ZCsYYGmQz/f7LfHqcmhIc2ZJGuvgZjuRnOxHTjYfiiNKkAgGC5WOITXIhu6
+ jD70hD/oavLkx/7qeMf5LL8zbIDbM2Tp7xYcni3GQArXjo5/S8hZ+pPOv+F32lP2Nc
+ JVWe6a0VC/s9RtFuvLsMoMA0tC50Fj54JJfnP0V4=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <9bae5618-2ebc-453a-8b10-32474422c66f@yandex-team.ru>
-Date: Fri, 29 Mar 2024 12:32:38 +0300
+Message-ID: <ae1adcea-3540-42c1-9815-deab52e83e77@yandex-team.ru>
+Date: Fri, 29 Mar 2024 13:10:30 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1 v5 07/14] migration: Add Error** argument to
- .save_setup() handler
+Subject: Re: [PATCH 1/2] copy-before-write: allow specifying minimum cluster
+ size
 Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>,
- qemu-devel@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Halil Pasic
- <pasic@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Alex Williamson <alex.williamson@redhat.com>, Peter Xu <peterx@redhat.com>,
- Fabiano Rosas <farosas@suse.de>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, Eric Blake <eblake@redhat.com>,
- John Snow <jsnow@redhat.com>
-Cc: Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Markus Armbruster <armbru@redhat.com>, Prasad Pandit
- <pjp@fedoraproject.org>, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
- qemu-block@nongnu.org
-References: <20240320064911.545001-1-clg@redhat.com>
- <20240320064911.545001-8-clg@redhat.com>
+To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
+ hreitz@redhat.com, kwolf@redhat.com, jsnow@redhat.com
+References: <20240308155158.830258-1-f.ebner@proxmox.com>
+ <20240308155158.830258-2-f.ebner@proxmox.com>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20240320064911.545001-8-clg@redhat.com>
+In-Reply-To: <20240308155158.830258-2-f.ebner@proxmox.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=178.154.239.200;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
@@ -90,45 +75,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 20.03.24 09:49, Cédric Le Goater wrote:
-> diff --git a/migration/block-dirty-bitmap.c b/migration/block-dirty-bitmap.c
-> index 2708abf3d762de774ed294d3fdb8e56690d2974c..542a8c297b329abc30d1b3a205d29340fa59a961 100644
-> --- a/migration/block-dirty-bitmap.c
-> +++ b/migration/block-dirty-bitmap.c
-> @@ -1213,12 +1213,14 @@ fail:
->       return ret;
+On 08.03.24 18:51, Fiona Ebner wrote:
+> Useful to make discard-source work in the context of backup fleecing
+> when the fleecing image has a larger granularity than the backup
+> target.
+> 
+> Copy-before-write operations will use at least this granularity and in
+> particular, discard requests to the source node will too. If the
+> granularity is too small, they will just be aligned down in
+> cbw_co_pdiscard_snapshot() and thus effectively ignored.
+> 
+> The QAPI uses uint32 so the value will be non-negative, but still fit
+> into a uint64_t.
+> 
+> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+> ---
+>   block/block-copy.c         | 17 +++++++++++++----
+>   block/copy-before-write.c  |  3 ++-
+>   include/block/block-copy.h |  1 +
+>   qapi/block-core.json       |  8 +++++++-
+>   4 files changed, 23 insertions(+), 6 deletions(-)
+> 
+> diff --git a/block/block-copy.c b/block/block-copy.c
+> index 7e3b378528..adb1cbb440 100644
+> --- a/block/block-copy.c
+> +++ b/block/block-copy.c
+> @@ -310,6 +310,7 @@ void block_copy_set_copy_opts(BlockCopyState *s, bool use_copy_range,
 >   }
 >   
-> -static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque)
-> +static int dirty_bitmap_save_setup(QEMUFile *f, void *opaque, Error **errp)
+>   static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+> +                                                 int64_t min_cluster_size,
+
+Maybe better use uint32_t here as well.
+
+>                                                    Error **errp)
 >   {
->       DBMSaveState *s = &((DBMState *)opaque)->save;
->       SaveBitmapState *dbms = NULL;
->   
->       if (init_dirty_bitmap_migration(s) < 0) {
-> +        error_setg(errp,
-> +                   "Failed to initialize dirty tracking bitmap for blocks");
-
-No, that's not about initializing a bitmap. This all is about migration of block-dirty-bitmaps themselves.
-
-So correct would be say "Failed to initialize migration of block dirty bitmaps".
-
-with this, for block dirty bitmap migration:
-Acked-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-
-Still, a lot better is add errp to init_dirty_bitmap_migration() and to add_bitmaps_to_list() too: look,
-
-init_dirty_bitmap_migration() fails only if add_bitmaps_to_list() fails
-
-in turn,
-
-add_bitmaps_to_list() have several clear failure points, where it always does error_report (or error_report_err), which would be better to pass-through to the user.
-
->           return -1;
+>       int ret;
+> @@ -335,7 +336,7 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+>                       "used. If the actual block size of the target exceeds "
+>                       "this default, the backup may be unusable",
+>                       BLOCK_COPY_CLUSTER_SIZE_DEFAULT);
+> -        return BLOCK_COPY_CLUSTER_SIZE_DEFAULT;
+> +        return MAX(min_cluster_size, BLOCK_COPY_CLUSTER_SIZE_DEFAULT);
+>       } else if (ret < 0 && !target_does_cow) {
+>           error_setg_errno(errp, -ret,
+>               "Couldn't determine the cluster size of the target image, "
+> @@ -345,16 +346,18 @@ static int64_t block_copy_calculate_cluster_size(BlockDriverState *target,
+>           return ret;
+>       } else if (ret < 0 && target_does_cow) {
+>           /* Not fatal; just trudge on ahead. */
+> -        return BLOCK_COPY_CLUSTER_SIZE_DEFAULT;
+> +        return MAX(min_cluster_size, BLOCK_COPY_CLUSTER_SIZE_DEFAULT);
 >       }
 >   
-> diff --git a/migrat
+> -    return MAX(BLOCK_COPY_CLUSTER_SIZE_DEFAULT, bdi.cluster_size);
+> +    return MAX(min_cluster_size,
+> +               MAX(BLOCK_COPY_CLUSTER_SIZE_DEFAULT, bdi.cluster_size));
+>   }
+>   
+>   BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+>                                        BlockDriverState *copy_bitmap_bs,
+>                                        const BdrvDirtyBitmap *bitmap,
+>                                        bool discard_source,
+> +                                     int64_t min_cluster_size,
+
+and here why not uint32_t
+
+>                                        Error **errp)
+>   {
+>       ERRP_GUARD();
+> @@ -365,7 +368,13 @@ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+>   
+>       GLOBAL_STATE_CODE();
+>   
+> -    cluster_size = block_copy_calculate_cluster_size(target->bs, errp);
+> +    if (min_cluster_size && !is_power_of_2(min_cluster_size)) {
+> +        error_setg(errp, "min-cluster-size needs to be a power of 2");
+> +        return NULL;
+> +    }
+> +
+> +    cluster_size = block_copy_calculate_cluster_size(target->bs,
+> +                                                     min_cluster_size, errp);
+>       if (cluster_size < 0) {
+>           return NULL;
+>       }
+> diff --git a/block/copy-before-write.c b/block/copy-before-write.c
+> index dac57481c5..f9896c6c1e 100644
+> --- a/block/copy-before-write.c
+> +++ b/block/copy-before-write.c
+> @@ -476,7 +476,8 @@ static int cbw_open(BlockDriverState *bs, QDict *options, int flags,
+>   
+>       s->discard_source = flags & BDRV_O_CBW_DISCARD_SOURCE;
+>       s->bcs = block_copy_state_new(bs->file, s->target, bs, bitmap,
+> -                                  flags & BDRV_O_CBW_DISCARD_SOURCE, errp);
+> +                                  flags & BDRV_O_CBW_DISCARD_SOURCE,
+> +                                  opts->min_cluster_size, errp);
+
+I assume it is guaranteed to be 0 when not specified by user.
+
+>       if (!s->bcs) {
+>           error_prepend(errp, "Cannot create block-copy-state: ");
+>           return -EINVAL;
+> diff --git a/include/block/block-copy.h b/include/block/block-copy.h
+> index bdc703bacd..77857c6c68 100644
+> --- a/include/block/block-copy.h
+> +++ b/include/block/block-copy.h
+> @@ -28,6 +28,7 @@ BlockCopyState *block_copy_state_new(BdrvChild *source, BdrvChild *target,
+>                                        BlockDriverState *copy_bitmap_bs,
+>                                        const BdrvDirtyBitmap *bitmap,
+>                                        bool discard_source,
+> +                                     int64_t min_cluster_size,
+>                                        Error **errp);
+>   
+>   /* Function should be called prior any actual copy request */
+> diff --git a/qapi/block-core.json b/qapi/block-core.json
+> index 0a72c590a8..85c8f88f6e 100644
+> --- a/qapi/block-core.json
+> +++ b/qapi/block-core.json
+> @@ -4625,12 +4625,18 @@
+>   #     @on-cbw-error parameter will decide how this failure is handled.
+>   #     Default 0. (Since 7.1)
+>   #
+> +# @min-cluster-size: Minimum size of blocks used by copy-before-write
+> +#     operations.  Has to be a power of 2.  No effect if smaller than
+> +#     the maximum of the target's cluster size and 64 KiB.  Default 0.
+> +#     (Since 9.0)
+
+will have to update to 9.1
+
+> +#
+>   # Since: 6.2
+>   ##
+>   { 'struct': 'BlockdevOptionsCbw',
+>     'base': 'BlockdevOptionsGenericFormat',
+>     'data': { 'target': 'BlockdevRef', '*bitmap': 'BlockDirtyBitmap',
+> -            '*on-cbw-error': 'OnCbwError', '*cbw-timeout': 'uint32' } }
+> +            '*on-cbw-error': 'OnCbwError', '*cbw-timeout': 'uint32',
+> +            '*min-cluster-size': 'uint32' } }
+>   
+>   ##
+>   # @BlockdevOptions:
+
+
+Otherwise, looks good to me.
 
 -- 
 Best regards,
