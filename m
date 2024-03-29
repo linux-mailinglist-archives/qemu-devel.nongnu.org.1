@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9E6A8926D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:33:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 262578926DC
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:37:35 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKmy-00084B-7w; Fri, 29 Mar 2024 18:33:32 -0400
+	id 1rqKqS-0006LS-HF; Fri, 29 Mar 2024 18:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rqKmv-0007mp-N9; Fri, 29 Mar 2024 18:33:29 -0400
-Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
+ id 1rqKqP-0006Kz-Ra; Fri, 29 Mar 2024 18:37:06 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jcmvbkbc@gmail.com>)
- id 1rqKmt-0003kw-SB; Fri, 29 Mar 2024 18:33:29 -0400
-Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5dca1efad59so1688195a12.2; 
- Fri, 29 Mar 2024 15:33:27 -0700 (PDT)
+ id 1rqKqN-0004Oh-E5; Fri, 29 Mar 2024 18:37:05 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2a02c4dffd2so1969780a91.0; 
+ Fri, 29 Mar 2024 15:37:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711751605; x=1712356405; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711751821; x=1712356621; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UiT87QcdTydktqQoQiYKrqblOP7f9I+ZW7v1tQ7uTyQ=;
- b=c7a9YGdcHxNB4trFkMDWuavaUpPBjkX4NzTSZrfyr4g6VzraVOrIqn5roc9P/31dP4
- 6e8d9WW7KG0PqVi6UzuFUcOXDoIt+PZ09bHN/KO6WEesJurCojVsZnrWUxBW6kIULV1b
- PJ0t0Em1HLPoX7Rhq3rIEMjSik6Ibs6HYHI4fzWayC3v+oVYDQ2u5D0HdCMyoQFwchRG
- 8M1A1otEJpRp6BZATs2pgUWdTthdoA/TpdjOvIoWIZcm5cer9jFBCzXc88xqi4Qyl+oh
- m7ulmK/kOqxjjWsdinOzbRwRI8BD5UbiSZ4uowUo+DMiRXFU9chrJ24qPDi0quM0viFi
- Q0qw==
+ bh=mj9v31gRDGM+nfN2TBCBiuzOlHFMKfoWTFJDJrU9N+w=;
+ b=dGvJZogD2+H4rmBhUkTrye75zjFuTiNuqxzS0pvkEkTGAWoQU3bKXp728ojfrP/Ty5
+ XtsISUGs1ahuuRdfvjf1OJjuDS850LJsOYwy7+UGS1cnLWJRCz2CEO8n+Jdd9dQxPVLD
+ kWPUNfbVLV8OZTeeNNcGL28gZg41CW03iezvUcqkQIqm+cP44aPtQ6QxymCgHabTtOwF
+ enV+UbqwpSWW7pT4rPEvbGpKiL3y53bXBtujukTNiOC9MeZJnv3CiQ0GKxx+lbJ8G0/I
+ xl7C1fULZ4RwUoKaDjsU+lhEuJYYp5o52QeY/NZyooUhxKH4YLgEFhAU5Yc2S36Htpat
+ 9TRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711751605; x=1712356405;
+ d=1e100.net; s=20230601; t=1711751821; x=1712356621;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=UiT87QcdTydktqQoQiYKrqblOP7f9I+ZW7v1tQ7uTyQ=;
- b=Sm1dBkXszdXCHlenN4dVvehswM972dTQr5hwZHHzIqOj8uoeNQk1JSIMv+SNWB6WUG
- tKQ8EzwV7qWGtZxAfXA/mpQb7QLOV/+/uJnaJO9vC9VyPncxwi74qFzMjLJTlFSBw1Es
- 12tVKbofZSKQUcGQqM4y0RxA4sJNUrupRWIra34E5+P3OecWQdmoiUadsMFEUM6TRWQ1
- oLhD4cufk4umWZ8Pfrh15R5OqUxW4QVdM26sxUVdrBUFASHF/A6KbFJCLQ74Nmsd6EXl
- xBaz0XopvbCNCaUue4eVf80HT1FnW3hNRdbz+rBRQ4yMTFYktf/wQO70lBv+vpfJJ9dG
- ep1A==
+ bh=mj9v31gRDGM+nfN2TBCBiuzOlHFMKfoWTFJDJrU9N+w=;
+ b=sggKJsNKz2UptRGvZw4RT7uS6/v+rdJ6jVp3/lM50SqhO6upd3Fr/1YGE+4jTOXg/m
+ FqdIfmLB1p+MzdlLF9rnC5EtNC7hLp1cLcQcyAcALBr9aiXi1GOCib5LQFeDzQJq+xSs
+ zFAg6Aoo9VKPhHcXehTIpXgtONSZUTRqShWvMTnPoMNguQLpO8qpspgtVyKP/PAxEcBZ
+ EwVKJbqvY7Qbs+JczE89s7YkEvN/rBl60ReDYkXFBJEWcfdNymDs2eXmPEhBoxJIFnKE
+ YdtZ0jzfl7KFyQIBk4IUk1Po/0BnxaG6EqgWIZv7+TJVgGNcTsawNRzJTRgQVj2e6VjX
+ a7KQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUm9+RckRtxh8bfSjPJouf5EohOp9W+zP5WOa0kNDs25f+Oakf7p/9WJKxhBFfs8FmD57AzOfhHntnMY+yGVT5q31sqsPlk
-X-Gm-Message-State: AOJu0Yyp6di7fjgPOullBdCRhiinhn4Yj6IhfuI9ea1qhkaaKzzy6FMS
- nRNRZT7XKyhqj/DT1Tm8audSxBtk2lsuVY3uIBKMM6nSjxtzl1InB0jy8njr
-X-Google-Smtp-Source: AGHT+IHiY+gHwn2CuqIFjfAOshpwFWaMRRhDCnnfDEs1DmoTOLgPzfeOU05mA02w9G+KHWbdl2/pgQ==
-X-Received: by 2002:a05:6a20:9184:b0:1a3:8904:1fc9 with SMTP id
- v4-20020a056a20918400b001a389041fc9mr3425460pzd.41.1711751605269; 
- Fri, 29 Mar 2024 15:33:25 -0700 (PDT)
+ AJvYcCUrhybCn0/ZzDcL6q5yiWmxC3oTnjsMBCnFYfVCCtX3deSBziaEblvo+AvrtsMaOT9mEDy0bJabvA+w1Y4Q5KFX+9hpPxn+
+X-Gm-Message-State: AOJu0YwC7Z4gu2EiyDY2YLZy1ZY7znrSSaRsx0ArUcMFbbQg6IEzc6Eu
+ JoW/4F1pdE4FwO+imhhuZEkubTnrnbTSG2dR3h8XwrAlQhYZ/RV/jVKa9f8o
+X-Google-Smtp-Source: AGHT+IFqPbf8j/I3DaldjiYDBFIhSv1bQ/SPb+Uo65E7vfEyh3NkCpO6GroNr/r7zEFCnk1i5l9uag==
+X-Received: by 2002:a17:90b:3842:b0:2a2:c16:d673 with SMTP id
+ nl2-20020a17090b384200b002a20c16d673mr3483934pjb.36.1711751821095; 
+ Fri, 29 Mar 2024 15:37:01 -0700 (PDT)
 Received: from octofox.hsd1.ca.comcast.net
  ([2601:646:a200:bbd0:2399:5e4a:95e8:172f])
  by smtp.gmail.com with ESMTPSA id
- u25-20020aa78499000000b006e6c856c0f3sm3479490pfn.188.2024.03.29.15.33.24
+ c1-20020a17090a490100b002a04eef22c5sm3719439pjh.44.2024.03.29.15.37.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:33:24 -0700 (PDT)
+ Fri, 29 Mar 2024 15:37:00 -0700 (PDT)
 From: Max Filippov <jcmvbkbc@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Max Filippov <jcmvbkbc@gmail.com>, qemu-stable@nongnu.org
-Subject: [PATCH v2] linux-user/syscall: xtensa: fix ipc_perm conversion
-Date: Fri, 29 Mar 2024 15:33:18 -0700
-Message-Id: <20240329223318.155572-1-jcmvbkbc@gmail.com>
+Subject: [PATCH v2] linux-user/syscall: fix target_msqid_ds time fields order
+Date: Fri, 29 Mar 2024 15:36:53 -0700
+Message-Id: <20240329223653.155786-1-jcmvbkbc@gmail.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52d;
- envelope-from=jcmvbkbc@gmail.com; helo=mail-pg1-x52d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=jcmvbkbc@gmail.com; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -5
 X-Spam_score: -0.6
 X-Spam_bar: /
@@ -92,57 +92,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-target_ipc_perm::mode and target_ipc_perm::__seq fields are 32-bit wide
-on xtensa and thus need to use tswap32.
+target_msqid_ds::msg_*time field pairs are reversed on 32-bit TARGET_PPC
+and TARGET_SPARC and on big-endian TARGET_MIPS and TARGET_XTENSA.
+Fix the order to match the kernel definitions.
 The issue is spotted by the libc-test http://nsz.repo.hu/git/?p=libc-test
 on big-endian xtensa core.
 
 Cc: qemu-stable@nongnu.org
-Fixes: a3da8be5126b ("target/xtensa: linux-user: fix sysv IPC structures")
 Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
 Changes v1->v2:
 - split into a separate patch
+- add PPC, SPARC and big-endian MIPS
 
- linux-user/syscall.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ linux-user/syscall.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e384e1424890..d9bfd31c1cad 100644
+index d9bfd31c1cad..781ed14bc613 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -3758,12 +3758,13 @@ static inline abi_long target_to_host_ipc_perm(struct ipc_perm *host_ip,
-     host_ip->gid = tswap32(target_ip->gid);
-     host_ip->cuid = tswap32(target_ip->cuid);
-     host_ip->cgid = tswap32(target_ip->cgid);
--#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC)
-+#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC) || \
-+    defined(TARGET_XTENSA)
-     host_ip->mode = tswap32(target_ip->mode);
- #else
-     host_ip->mode = tswap16(target_ip->mode);
+@@ -4113,17 +4113,27 @@ static inline abi_long do_semtimedop(int semid,
+ struct target_msqid_ds
+ {
+     struct target_ipc_perm msg_perm;
+-    abi_ulong msg_stime;
+ #if TARGET_ABI_BITS == 32
++#if defined(TARGET_PPC) || defined(TARGET_SPARC) || \
++    (TARGET_BIG_ENDIAN && (defined(TARGET_MIPS) || defined(TARGET_XTENSA)))
++    abi_ulong __unused1;
++    abi_ulong msg_stime;
++    abi_ulong __unused2;
++    abi_ulong msg_rtime;
++    abi_ulong __unused3;
++    abi_ulong msg_ctime;
++#else
++    abi_ulong msg_stime;
+     abi_ulong __unused1;
+-#endif
+     abi_ulong msg_rtime;
+-#if TARGET_ABI_BITS == 32
+     abi_ulong __unused2;
+-#endif
+     abi_ulong msg_ctime;
+-#if TARGET_ABI_BITS == 32
+     abi_ulong __unused3;
++#endif
++#else
++    abi_ulong msg_stime;
++    abi_ulong msg_rtime;
++    abi_ulong msg_ctime;
  #endif
--#if defined(TARGET_PPC)
-+#if defined(TARGET_PPC) || defined(TARGET_XTENSA)
-     host_ip->__seq = tswap32(target_ip->__seq);
- #else
-     host_ip->__seq = tswap16(target_ip->__seq);
-@@ -3786,12 +3787,13 @@ static inline abi_long host_to_target_ipc_perm(abi_ulong target_addr,
-     target_ip->gid = tswap32(host_ip->gid);
-     target_ip->cuid = tswap32(host_ip->cuid);
-     target_ip->cgid = tswap32(host_ip->cgid);
--#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC)
-+#if defined(TARGET_ALPHA) || defined(TARGET_MIPS) || defined(TARGET_PPC) || \
-+    defined(TARGET_XTENSA)
-     target_ip->mode = tswap32(host_ip->mode);
- #else
-     target_ip->mode = tswap16(host_ip->mode);
- #endif
--#if defined(TARGET_PPC)
-+#if defined(TARGET_PPC) || defined(TARGET_XTENSA)
-     target_ip->__seq = tswap32(host_ip->__seq);
- #else
-     target_ip->__seq = tswap16(host_ip->__seq);
+     abi_ulong __msg_cbytes;
+     abi_ulong msg_qnum;
 -- 
 2.39.2
 
