@@ -2,65 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928A4891F61
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 16:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E80892199
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 17:26:13 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqDkH-0008Rq-D0; Fri, 29 Mar 2024 11:02:17 -0400
+	id 1rqF2O-0001wb-1E; Fri, 29 Mar 2024 12:25:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rqDkD-0008QX-SI
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:02:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rqDk9-0002f6-RP
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:02:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711724527;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=3JWsUApzBe/yU9PQWWAVMof614cOiCLUxZ5SkbW/Fy4=;
- b=MOc4H7uBw9+XuHM0wDlI0WRUzWpj/S0Z7dYnF7lcgS7PAS9aMDGCOG4SeKezrBQYRBzXZK
- Eu1TPRpOTSCD/3xu5RvKvX1HuTD9rqh9KhSP6BkLKiQzt8hg1ZSeoI/NrE7muAGFoSdNxA
- JkBJw8sbDDYeBW7vH/E8eUFul2Ne+bU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-665-h0vDhlnVOeqYbcAwUyoXyg-1; Fri, 29 Mar 2024 11:02:02 -0400
-X-MC-Unique: h0vDhlnVOeqYbcAwUyoXyg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC2F3101CC67;
- Fri, 29 Mar 2024 15:02:01 +0000 (UTC)
-Received: from corto.redhat.com (unknown [10.39.192.78])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 92A732166B31;
- Fri, 29 Mar 2024 15:02:00 +0000 (UTC)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- qemu-arm@nongnu.org, qemu-devel@nongnu.org
-Subject: [PATCH] raspi4b: Reduce RAM to 1Gb on 32-bit hosts
-Date: Fri, 29 Mar 2024 16:01:54 +0100
-Message-ID: <20240329150155.357043-1-clg@redhat.com>
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1rqDn2-0001kA-5P
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:05:08 -0400
+Received: from mail-qv1-xf29.google.com ([2607:f8b0:4864:20::f29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1rqDmy-00035q-3x
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:05:07 -0400
+Received: by mail-qv1-xf29.google.com with SMTP id
+ 6a1803df08f44-696719f8dfcso11886936d6.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 08:05:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cs.unc.edu; s=google; t=1711724701; x=1712329501; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=XPEZYgQqoG4kHoPBVrEhwNCRwDMPHIt67XAaAsYYg5s=;
+ b=WYvnQTpfvfBP4OUWGXUM9vqFla0t3E1sfc/qA7pOOs1bEJmO5npOyspYUOd7e/okMc
+ uxiTP6dntrSUqRWNhGoDO4MgqDo8+1b9DXhshGu50qPJJBWErQQIwdtLMqoaLKrRyv4z
+ j1YlTsI6hUSMSd9wViQs7nLMIKCkcSCsKkHNlX4FDSz0B9v3mEBcLAZfLcSmTJeKxEzf
+ z+AMpPxpnarPmWBxPt1I0ae7UcuJ2Q9YqT3KHu1iklKLapLzPjykBVbsfhWWFGFzcreS
+ 5d3R6eQngyyvtEHkS8/M2p8Vg2n/5frewpIp6fA54sOTwzp20M9YGmj7LtSj56+G2nA+
+ VXqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711724701; x=1712329501;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=XPEZYgQqoG4kHoPBVrEhwNCRwDMPHIt67XAaAsYYg5s=;
+ b=dunaD4X3M/kSvD6/1LvMwAICLh1znCaneU46YbuCImoXKacVrVAaKtrqhbFLCse4g+
+ KW4SrXiBG8etiFxiWwK5q4yf+vB6v4bypTgo0eGoJg7FQp+eRp9b1RICT+ZRW1kbecKA
+ 1FzALq4QrkqkHh2f94onnwyP9/GWDGckUpXtcqagA7DKo5pB1KHh0BsRUbUs5Ab6FcGl
+ WgeTu2scHVW44yBjMMflNYMAoHtcPBr219gTCvu1DLGDgZ3G3qVXFoxiQRk9r6ox6xnE
+ Z9wSry5hEOSihsVKkfeuVsSxh0dshyllFOMGX7DN9J617R4egPVsoTkbnSm7RgON2jaI
+ kkZg==
+X-Gm-Message-State: AOJu0Yz1QQIx8EaC2oNNrrYDQCjAg2mDoVBcRuJJQ76955xBQKGLUiX2
+ XzojMulcUyGQ0R6/Stovkal59HdI2GUNQtJy0DAIcsNTE7dDTtQBbEUzgShMAfFYDVnRjQi+BDk
+ kDYM5H6i8jipoyrd71lIYsLqgy12nPpIW1IYevTRSZ9dv43QfGPGvB2HjJihcVWII5rfb0t1x7q
+ WBUH6gQ+L2EGqlYHMOmM9lglsA0HGx
+X-Google-Smtp-Source: AGHT+IE4xs+t8z5hXo9DIub6HCk3oQOIG0qCv5GlGmzcSBhTPNkqBJrJb/R7GdRieYbFi9GV+gjJVA==
+X-Received: by 2002:ad4:4e63:0:b0:698:f227:c5cf with SMTP id
+ ec3-20020ad44e63000000b00698f227c5cfmr1698997qvb.8.1711724701516; 
+ Fri, 29 Mar 2024 08:05:01 -0700 (PDT)
+Received: from kermit.cs.unc.edu (kermit.cs.unc.edu. [152.2.133.133])
+ by smtp.gmail.com with ESMTPSA id
+ t5-20020a0562140c6500b006986c65f3d2sm1704418qvj.137.2024.03.29.08.05.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Mar 2024 08:05:01 -0700 (PDT)
+From: Don Porter <porter@cs.unc.edu>
+To: qemu-devel@nongnu.org
+Cc: Don Porter <porter@cs.unc.edu>
+Subject: [PATCH 0/1] Upstreaming Course Debugging Changes
+Date: Fri, 29 Mar 2024 11:04:49 -0400
+Message-Id: <20240329150450.2843758-1-porter@cs.unc.edu>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
+Received-SPF: pass client-ip=2607:f8b0:4864:20::f29;
+ envelope-from=porter@cs.unc.edu; helo=mail-qv1-xf29.google.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 29 Mar 2024 12:25:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,32 +88,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Change the board revision number and RAM size to 1Gb on 32-bit hosts.
-On these systems, RAM has a 2047 MB limit and this breaks the tests.
+Hi all,
 
-Fixes: 7785e8ea2204 ("hw/arm: Introduce Raspberry PI 4 machine")
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
----
- hw/arm/raspi4b.c | 4 ++++
- 1 file changed, 4 insertions(+)
+I am a CS professor (and first time contributor) and have been using
+qemu in my courses for over a decade, especially a course that asks
+students to write major pieces of an OS kernel from starter code.
 
-diff --git a/hw/arm/raspi4b.c b/hw/arm/raspi4b.c
-index cb1b1f2f147e8685a1dba6f137335ea0bc89bca5..85877880fc706d216de04ff1e081d66e6080ebac 100644
---- a/hw/arm/raspi4b.c
-+++ b/hw/arm/raspi4b.c
-@@ -112,7 +112,11 @@ static void raspi4b_machine_class_init(ObjectClass *oc, void *data)
-     MachineClass *mc = MACHINE_CLASS(oc);
-     RaspiBaseMachineClass *rmc = RASPI_BASE_MACHINE_CLASS(oc);
- 
-+#if HOST_LONG_BITS == 32
-+    rmc->board_rev = 0xa03111; /* Revision 1.1, 1 Gb RAM */
-+#else
-     rmc->board_rev = 0xb03115; /* Revision 1.5, 2 Gb RAM */
-+#endif
-     raspi_machine_class_common_init(mc, rmc->board_rev);
-     mc->init = raspi4b_machine_init;
- }
--- 
-2.44.0
+I have some patches, originally from Austin Clements at MIT, that I
+have found useful over the years and that may be useful to others.  It
+would also be nice not to have to build a custom qemu each semester.  I
+have cleared upstreaming these with Austin, the original author.
 
+In order to learn the process and community, I thought I would start
+with one patch.  As the description says, it enables e1000 debugging
+without recompilation.  One project in the course is to write an e1000
+driver, and these logs are quite helpful to students.
+
+Thank you in advance for your time,
+Don Porter
+
+Austin Clements (1):
+  e1000: Get debug flags from an environment variable
+
+ hw/net/e1000.c | 65 +++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 59 insertions(+), 6 deletions(-)
+
+--
+2.25.1
 
