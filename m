@@ -2,82 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4779892198
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 17:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F3C1892079
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 16:31:49 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqF2T-0001x7-P9; Fri, 29 Mar 2024 12:25:09 -0400
+	id 1rqEBV-0006ns-A4; Fri, 29 Mar 2024 11:30:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1rqDn2-0001kP-DY
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:05:08 -0400
-Received: from mail-qv1-xf35.google.com ([2607:f8b0:4864:20::f35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <porter@cs.unc.edu>) id 1rqDn0-0003Gq-BO
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:05:08 -0400
-Received: by mail-qv1-xf35.google.com with SMTP id
- 6a1803df08f44-690cf6ecd3cso10636746d6.2
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 08:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cs.unc.edu; s=google; t=1711724704; x=1712329504; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yzaR2tfkkvfJNYn7QAkCGmS8gAFONRxGzcSvNxNyFFc=;
- b=juX9a6QbBXXlGf4/6TJrfK9yuFLJjvlQuvC1Wwms2xtoE+crjh9qrR7tZkrqyao3rf
- +jSKsXJUmSLtGnai9/+WyqRfcgQn98a6S5/yP0zQrV32j1B/9f0Q4UcOcWqqS7gY80Mn
- VxEZRvAuTtSJBlQtkkXQ5aZEvntNPv2cxT7mCRTK5xOVjvq/3sMQkE5foISxz2i+VdMa
- sAxaGxNWqF8reAHSi68earoVS32v9TbkF3EfKkaAmInWESckNGfE2W0zJH39RdhZiEdl
- +iHIwXSQu4tdDLU7Pgiv0AuFmG7T5ZZyM3sjMIH39Z+b4Ts/nYCsidT0BGD/ZS/tZAp4
- t/xQ==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rqEBT-0006nP-In
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:30:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rqEBR-0000HZ-Ed
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 11:30:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711726219;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AEqtB7OyRnnmmt6WC8PW1TkLuxa+qyb0HhiAv+WKWh4=;
+ b=bygZ2FDarhRyD6Z1Hv8z8MAG8T6gfxk5CpYnKjsXnTDqCuGOf22eHHeyUxrodPfAqzgXya
+ n74r5xp+IEGAjpP5p+zYSXbGTaY40DNbGPaRnWPwBpQQCCsDxD1KeFdJcojop5skchwMpq
+ 0FqU9ZFK4ugalEiImnw/T9ho/FuXpXc=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-320-Qgrr4w0IMvCt4rap1AiQzw-1; Fri, 29 Mar 2024 11:30:17 -0400
+X-MC-Unique: Qgrr4w0IMvCt4rap1AiQzw-1
+Received: by mail-lj1-f197.google.com with SMTP id
+ 38308e7fff4ca-2d6c145dfd4so15061371fa.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 08:30:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711724704; x=1712329504;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yzaR2tfkkvfJNYn7QAkCGmS8gAFONRxGzcSvNxNyFFc=;
- b=cRN5CsTyT0flq4x9c8hju7lB+JgfrxehkQ5QFfPWfSEU0sKCNo/aBnbqAQON/cRrBo
- 3H4xpndZ5TNYT5/4ajgKsKn8U9E276XCWROWPdl/NL1kWAOWQ2dC7In8PYnMEg3MpGiX
- hsnHf5MRGK0JGaz9pXQR5x4h4CVM0XV0+gurmkB9yBYgCLkWBcKVWwWoquKQhiCa115g
- PbaUSa8mdYBM/hAFvyDAkacQTIOZmKnd/CdWSlgMcsGIre17A7NzIdBdKTfgLh0+CUcj
- iAqGlmFG2GKtYFGWmDM9hOzZMIUAre64X7AvacTCTg9FXAzuWZzeWKus0NCOrMuQEwFP
- hbwA==
-X-Gm-Message-State: AOJu0Ywt7YE9/1RSAzGTPDr8DHyicksiqOC3DH6clyrIYRClfJNy6GkH
- wGZgSYVbztoJwkjUJX7U++D5kEyj4y7DLezwu12b83NvAygmBYGxj83XbA2Act8S93XPWPK24NE
- 5JnpHRumJFyDLWQlzEYx0gtGxova+07q+9mObRI4Z2SLYN9OOVCtOSEnruF1xBiC/s/LTTcOIZ8
- /zChUDGfnSYVfNodGJxRBGuzJlLBBh
-X-Google-Smtp-Source: AGHT+IGD/ZMKtmWZNdTN9necnoN6PK4lMJEQtaBCs+gmngiizWN3p6Fe48dIjZTqUyojZT3ahOuQww==
-X-Received: by 2002:a05:6214:5809:b0:696:9224:140e with SMTP id
- mk9-20020a056214580900b006969224140emr2749028qvb.39.1711724704303; 
- Fri, 29 Mar 2024 08:05:04 -0700 (PDT)
-Received: from kermit.cs.unc.edu (kermit.cs.unc.edu. [152.2.133.133])
+ d=1e100.net; s=20230601; t=1711726216; x=1712331016;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AEqtB7OyRnnmmt6WC8PW1TkLuxa+qyb0HhiAv+WKWh4=;
+ b=PkwmtU7zTiDRUJChNIO1QI8fp3bX3NCuDQp+U6XXvYdDCAS2x6UEIo90VVGk7BVenG
+ 7b5KpK9b8MXaaBd/rpJdorNgsMdFaNAmWJFTcGjLPRj99khEgLzpCevm0f+LsF1hHVem
+ dyJtnkcch2c8A36W1WdcVXrv9/QJuZFgVu/AVrgWvgvJk8TnjTVw0agPYpIruSY90Kwr
+ LzbHVShUuhhFSo5/dbv3F1NEW53oucrOvJ2G5bL+57TzawFRj5hLz8bLhZw1e+1rtJZ7
+ 4sbTe45MTBfXQ3CYzR+eqafQGixvRVT3Upglk3FON7d3XG0Z8ds0e9zBEI0GDE/8CGlW
+ emJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU5ehR9j8NiaoQeV3cMgdh+FKtovD8U4erldUc/eBozGOKAj7qX+678G1M6e1MKZf+Mov5WALbT32UUAE2IeO/lNKdVGlo=
+X-Gm-Message-State: AOJu0YxXS2CO7wD8zU4afs0l7jeZfOXOJunrwVJk2OAVsLLCbZ0RmhLq
+ kgt0Xnfcg6c0sidjaL2AItxK0YLl+hEBDFoBFPOY0UgKTTTTjABy2sWDXQcHVCL8FkAhDI40v+b
+ hFlG7+SnYCt+neUk2ZlzqySghh92g5PMfwefhq4r5Z6d3CXx9SpMM
+X-Received: by 2002:a05:651c:1a28:b0:2d7:18b0:4d5 with SMTP id
+ by40-20020a05651c1a2800b002d718b004d5mr1432167ljb.8.1711726215914; 
+ Fri, 29 Mar 2024 08:30:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEzpmuAS8jC1lxTzKloesh1TVAnsDzlVtL2tcAT2t0F4k0zNfncevtpVTI9ASzA02klX7lo2w==
+X-Received: by 2002:a05:651c:1a28:b0:2d7:18b0:4d5 with SMTP id
+ by40-20020a05651c1a2800b002d718b004d5mr1432149ljb.8.1711726215495; 
+ Fri, 29 Mar 2024 08:30:15 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- t5-20020a0562140c6500b006986c65f3d2sm1704418qvj.137.2024.03.29.08.05.03
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 08:05:03 -0700 (PDT)
-From: Don Porter <porter@cs.unc.edu>
-To: qemu-devel@nongnu.org
-Cc: Austin Clements <aclements@csail.mit.edu>,
- Geoffrey Thomas <geofft@ldpreload.com>, Don Porter <porter@cs.unc.edu>
-Subject: [PATCH 1/1] e1000: Get debug flags from an environment variable
-Date: Fri, 29 Mar 2024 11:04:50 -0400
-Message-Id: <20240329150450.2843758-2-porter@cs.unc.edu>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240329150450.2843758-1-porter@cs.unc.edu>
-References: <20240329150450.2843758-1-porter@cs.unc.edu>
+ bg3-20020a05600c3c8300b0041481207b23sm5822748wmb.8.2024.03.29.08.30.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 29 Mar 2024 08:30:14 -0700 (PDT)
+Message-ID: <f23012d9-5b63-43c2-9530-31cddf484fcb@redhat.com>
+Date: Fri, 29 Mar 2024 16:30:13 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
+ HostIOMMUDevice
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
+References: <20240228035900.1085727-1-zhenzhong.duan@intel.com>
+ <20240228035900.1085727-2-zhenzhong.duan@intel.com>
+ <e6af68f4-f38d-413f-a63c-d1ae7254d802@redhat.com>
+ <SJ0PR11MB674439E1DDE3DDE285571AEE922C2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <41d50645-9f81-40b1-9ca5-7bb2e73d90de@redhat.com>
+ <SJ0PR11MB6744F798CF55CC8FF230CE7B923B2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB6744F798CF55CC8FF230CE7B923B2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::f35;
- envelope-from=porter@cs.unc.edu; helo=mail-qv1-xf35.google.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -21
+X-Spam_score: -2.2
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.099,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 29 Mar 2024 12:25:08 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,126 +116,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Austin Clements <aclements@csail.mit.edu>
+Hello Zhenzhong,
 
-The E1000 debug messages are very useful for developing drivers, so
-this introduces an E1000_DEBUG environment variable that lets the
-debug flags be set without recompiling QEMU.
+On 3/28/24 04:06, Duan, Zhenzhong wrote:
+> Hi Cédric,
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
+>> HostIOMMUDevice
+>>
+>> Hello Zhenzhong,
+>>
+>> On 3/19/24 12:58, Duan, Zhenzhong wrote:
+>>> Hi Cédric,
+>>>
+>>>> -----Original Message-----
+>>>> From: Cédric Le Goater <clg@redhat.com>
+>>>> Sent: Tuesday, March 19, 2024 4:17 PM
+>>>> To: Duan, Zhenzhong <zhenzhong.duan@intel.com>; qemu-
+>>>> devel@nongnu.org
+>>>> Cc: alex.williamson@redhat.com; eric.auger@redhat.com;
+>>>> peterx@redhat.com; jasowang@redhat.com; mst@redhat.com;
+>>>> jgg@nvidia.com; nicolinc@nvidia.com; joao.m.martins@oracle.com; Tian,
+>>>> Kevin <kevin.tian@intel.com>; Liu, Yi L <yi.l.liu@intel.com>; Sun, Yi Y
+>>>> <yi.y.sun@intel.com>; Peng, Chao P <chao.p.peng@intel.com>
+>>>> Subject: Re: [PATCH v1 01/11] Introduce a common abstract struct
+>>>> HostIOMMUDevice
+>>>>
+>>>> Hello Zhenzhong,
+>>>>
+>>>> On 2/28/24 04:58, Zhenzhong Duan wrote:
+>>>>> HostIOMMUDevice will be inherited by two sub classes,
+>>>>> legacy and iommufd currently.
+>>>>>
+>>>>> Introduce a helper function host_iommu_base_device_init to initialize it.
+>>>>>
+>>>>> Suggested-by: Eric Auger <eric.auger@redhat.com>
+>>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>>>> ---
+>>>>>     include/sysemu/host_iommu_device.h | 22
+>> ++++++++++++++++++++++
+>>>>>     1 file changed, 22 insertions(+)
+>>>>>     create mode 100644 include/sysemu/host_iommu_device.h
+>>>>>
+>>>>> diff --git a/include/sysemu/host_iommu_device.h
+>>>> b/include/sysemu/host_iommu_device.h
+>>>>> new file mode 100644
+>>>>> index 0000000000..fe80ab25fb
+>>>>> --- /dev/null
+>>>>> +++ b/include/sysemu/host_iommu_device.h
+>>>>> @@ -0,0 +1,22 @@
+>>>>> +#ifndef HOST_IOMMU_DEVICE_H
+>>>>> +#define HOST_IOMMU_DEVICE_H
+>>>>> +
+>>>>> +typedef enum HostIOMMUDevice_Type {
+>>>>> +    HID_LEGACY,
+>>>>> +    HID_IOMMUFD,
+>>>>> +    HID_MAX,
+>>>>> +} HostIOMMUDevice_Type;
+>>>>> +
+>>>>> +typedef struct HostIOMMUDevice {
+>>>>> +    HostIOMMUDevice_Type type;
+>>>>
+>>>> A type field is not a good sign and that's where QOM is useful.
+>>>
+>>> Yes, agree.
+>>> I didn't choose QOM because in iommufd-cdev series, VFIOContainer
+>> chooses not using QOM model.
+>>> See the discussion:
+>> https://lore.kernel.org/all/YmuFv2s5TPuw7K%2Fu@yekko/
+>>> I thought HostIOMMUDevice need to follow same rule.
+>>>
+>>> But after further digging into this, I think it may be ok to use QOM model
+>> as long as we don't expose
+>>> HostIOMMUDevice in qapi/qom.json and not use USER_CREATABLE
+>> interface. Your thoughts?
+>>
+>> yes. Can we change a bit this series to use QOM ? something like :
+>>
+>>      typedef struct HostIOMMUDevice {
+>>          Object parent;
+>>      } HostIOMMUDevice;
+>>
+>>      #define TYPE_HOST_IOMMU "host.iommu"
+>>      OBJECT_DECLARE_TYPE(HostIOMMUDevice, HostIOMMUClass,
+>> HOST_IOMMU)
+>>
+>>      struct HostIOMMUClass {
+>>          ObjectClass parent_class;
+>>
+>>          int (*get_type)(HostIOMMUDevice *hiod, uint64_t *type, Error **errp);
+>>          int (*get_cap)(HostIOMMUDevice *hiod, uint64_t *cap, Error **errp);
+>>      };
+>>
+>> Inherited objects would be TYPE_HOST_IOMMU_IOMMUFD and
+>> TYPE_HOST_IOMMU_LEGACY.
+>> Each class implementing the handlers or not (legacy mode).
+> 
+> Understood, thanks for your guide.
+> 
+>>
+>> The class handlers are introduced for the intel-iommu helper
+>> vtd_check_hdev()
+>> in order to avoid using iommufd routines directly. HostIOMMUDevice is
+>> supposed
+>> to abstract the Host IOMMU device, so we need to abstract also all the
+>> interfaces to this object.
+> 
+> I'd like to have a minimal adjustment to class handers. Just let me know if you have strong
+> preference.
+> 
+> Cap/ecap is intel_iommu specific, I'd like to make it a bit generic also for arm smmu usage,
+> and merge get_type and get_cap into one function as they both calls ioctl(IOMMU_GET_HW_INFO),
+> something like:
+> get_info(HostIOMMUDevice *hiod, enum iommu_hw_info_type *type, void **data, void **len,  Error **errp);
 
-Signed-off-by: Austin Clements <aclements@csail.mit.edu>
-[geofft@ldpreload.com: Rebased on top of 2.9.0]
-Signed-off-by: Geoffrey Thomas <geofft@ldpreload.com>
-Signed-off-by: Don Porter <porter@cs.unc.edu>
----
- hw/net/e1000.c | 65 +++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 59 insertions(+), 6 deletions(-)
+OK. Let's see how it goes. Having more users of this new object Host
+IOMMU device is important to get a better feeling of the interface.
+As of today, it doesn't have not much value. The iommufd object could
+be QOM linked to the vIOMMU when available and we could get the bind
+devid in some other ways I suppose. Anyhow, please keep it simple and
+let's explore.
 
-diff --git a/hw/net/e1000.c b/hw/net/e1000.c
-index 43f3a4a701..8d46225944 100644
---- a/hw/net/e1000.c
-+++ b/hw/net/e1000.c
-@@ -30,11 +30,14 @@
- #include "hw/pci/pci_device.h"
- #include "hw/qdev-properties.h"
- #include "migration/vmstate.h"
-+#include "monitor/monitor.h"
- #include "net/eth.h"
- #include "net/net.h"
- #include "net/checksum.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/dma.h"
-+#include "qapi/qmp/qerror.h"
-+#include "qemu/error-report.h"
- #include "qemu/iov.h"
- #include "qemu/module.h"
- #include "qemu/range.h"
-@@ -44,15 +47,19 @@
- #include "trace.h"
- #include "qom/object.h"
- 
--/* #define E1000_DEBUG */
--
--#ifdef E1000_DEBUG
- enum {
-     DEBUG_GENERAL,      DEBUG_IO,       DEBUG_MMIO,     DEBUG_INTERRUPT,
-     DEBUG_RX,           DEBUG_TX,       DEBUG_MDIC,     DEBUG_EEPROM,
-     DEBUG_UNKNOWN,      DEBUG_TXSUM,    DEBUG_TXERR,    DEBUG_RXERR,
-     DEBUG_RXFILTER,     DEBUG_PHY,      DEBUG_NOTYET,
- };
-+
-+static const char *debugnames[] = {
-+    "GENERAL",      "IO",       "MMIO",     "INTERRUPT",
-+    "RX",           "TX",       "MDIC",     "EEPROM",
-+    "UNKNOWN",      "TXSUM",    "TXERR",    "RXERR",
-+    "RXFILTER",     "PHY",      "NOTYET",   NULL
-+};
- #define DBGBIT(x)    (1<<DEBUG_##x)
- static int debugflags = DBGBIT(TXERR) | DBGBIT(GENERAL);
- 
-@@ -60,9 +67,6 @@ static int debugflags = DBGBIT(TXERR) | DBGBIT(GENERAL);
-     if (debugflags & DBGBIT(what)) \
-         fprintf(stderr, "e1000: " fmt, ## __VA_ARGS__); \
-     } while (0)
--#else
--#define DBGOUT(what, fmt, ...) do {} while (0)
--#endif
- 
- #define IOPORT_SIZE       0x40
- #define PNPMMIO_SIZE      0x20000
-@@ -1779,3 +1783,52 @@ static void e1000_register_types(void)
- }
- 
- type_init(e1000_register_types)
-+
-+static void e1000_init_debug(void)
-+{
-+    const char *e1000_debug;
-+    const char *p, *p1;
-+    const char **debugname;
-+    int i;
-+
-+    e1000_debug = getenv("E1000_DEBUG");
-+    if (!e1000_debug || !*e1000_debug) {
-+        return;
-+    }
-+
-+    if (strcmp(e1000_debug, "?") == 0) {
-+        error_printf("E1000_DEBUG flags:\n");
-+        for (debugname = debugnames; *debugname; debugname++) {
-+            error_printf("%s\n", *debugname);
-+        }
-+        exit(0);
-+    }
-+
-+    p = e1000_debug;
-+    debugflags = 0;
-+    for (p = e1000_debug; ; p = p1 + 1) {
-+        p1 = strchr(p, ',');
-+        if (!p1) {
-+            p1 = p + strlen(p);
-+        }
-+        for (i = 0, debugname = debugnames; *debugname; i++, debugname++) {
-+            if (strlen(*debugname) == p1 - p &&
-+                strncasecmp(p, *debugname, p1 - p) == 0) {
-+                debugflags |= 1 << i;
-+                break;
-+            }
-+        }
-+        if (!*debugname) {
-+            error_report(QERR_INVALID_PARAMETER_VALUE, "E1000_DEBUG",
-+                         "a comma-separated list of E1000 debug flags");
-+            error_printf_unless_qmp(
-+                "Try with argument '?' for a list.\n");
-+            exit(1);
-+        }
-+        if (*p1 != ',') {
-+            break;
-+        }
-+    }
-+}
-+
-+type_init(e1000_init_debug)
--- 
-2.25.1
+Thanks,
+
+C.
+
+
+
+> 
+> and let iommu emulater to extract content of *data. For intel_iommu, it's:
+> 
+> struct iommu_hw_info_vtd {
+>          __u32 flags;
+>          __u32 __reserved;
+>          __aligned_u64 cap_reg;
+>          __aligned_u64 ecap_reg;
+> };
+> 
+>>
+>> The .host_iommu_device_create() handler could be merged
+>> in .attach_device()
+>> possibly. Anyhow, please use now object_new() and object_unref() instead.
+>> host_iommu_base_device_init() is useless IMHO.
+> 
+> Good idea, will do.
+> 
+>>
+>>>
+>>>>
+>>>> Is vtd_check_hdev() the only use of this field ?
+>>>
+>>> Currently yes. virtio-iommu may have similar usage.
+>>>
+>>>> If so, can we simplify with a QOM interface in any way ?
+>>>
+>>> QOM interface is a set of callbacks, guess you mean QOM class,
+>>> saying HostIOMMUDevice class, IOMMULegacyDevice class and
+>> IOMMUFDDevice class?
+>>
+>> See above proposal. it should work fine.
+>>
+>> Also, I think it is better to use a IOMMUFDBackend* parameter for
+>> iommufd_device_get_info() to be consistent with the other routines.
+> 
+> Sure, then I'd like to also rename it to iommufd_backend_get_device_info().
+> 
+> Thanks
+> Zhenzhong
+> 
+>>
+>> Then It would interesting to see how this applies to Eric's series.
+>>
+>> Thanks,
+>>
+>> C.
+>>
+>>
+> 
 
 
