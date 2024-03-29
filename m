@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD528926C9
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:32:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B2D8926D1
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Mar 2024 23:33:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqKlG-0002b4-Mh; Fri, 29 Mar 2024 18:31:50 -0400
+	id 1rqKlL-0002c0-V5; Fri, 29 Mar 2024 18:31:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKky-0002Xd-Vf
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:29 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1rqKkz-0002Xl-RP
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:34 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqKkx-0003WG-Ek
- for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:28 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-5d3912c9a83so1389060a12.3
- for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:31:26 -0700 (PDT)
+ id 1rqKky-0003WW-BL
+ for qemu-devel@nongnu.org; Fri, 29 Mar 2024 18:31:29 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1e243ccbffbso283835ad.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Mar 2024 15:31:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711751486; x=1712356286; darn=nongnu.org;
+ d=linaro.org; s=google; t=1711751487; x=1712356287; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ejHwqcq7dcii+cbZ+/7NcB0t83Y0TWbs/BL3Pfvrwv8=;
- b=NY67hsNfLI40yG49X5YV8qvr0STHr/wUqWQTwGCwpEv58Pwm/Xu3K/aYofgq9vjhAt
- PsEjSr96vQCVM2CYQHkEs0X1HtzEQHUnxwtkh+pkGzVSt/KfZ1CZCteks74MLCn4Pj85
- wxJnWVgzqR68mwCT/YrKU+6j1riOfQxnYIsAHAJ3fyxOCW0L8Kl/Ncou2bC5JUzI9SAn
- AcvziNVG1ieHyetJY/ZmERBFUjjIRFmlV96JeBiU7tVw3U0j1RWpM/7FiJG0hhDvWDev
- jAzIVq4nDqUBCLvueHDLeo0pOOdtSoVUzf5ts8VfPI4o4Tw0ScJY50qxxj+Dt5NdnzcK
- Opyw==
+ bh=dPcM7F+bIMm+kpOtGS43p2VNPDZH3BZ56mw6e1fyEkk=;
+ b=txzeo8Il11JmWps6LjORNB7JrGAPN8jnYbCWQ4yx46bh8g+j2PrZs3B07MPs6U5ak9
+ ASpbWKcmMa/9PDP1PbskxLrPLyKQzLJ7WpzAwfE9fojcpbD8fKkLyO83alpy0EPOELgP
+ F6xEL2Kh1+5sN+OrbHsW/dAhFK6aSyPW07v18FC6yDPMpps+Hps72va0KiRb+E5MtgwO
+ Y2pSDdH1c1fZe3MfnRbUbznI6lxQcO9nH3qGwVf4lODZV+6iItTFM92Zo5RyB35zSzlb
+ 3IG+mEUCJ8+IDJ8OqUDHZwJTb8v9LCAWz+dPFhWWkEU9F8XpLAlVlaOp7xzONAPL2MAx
+ oFpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711751486; x=1712356286;
+ d=1e100.net; s=20230601; t=1711751487; x=1712356287;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ejHwqcq7dcii+cbZ+/7NcB0t83Y0TWbs/BL3Pfvrwv8=;
- b=FQSPDTbv14wm1TYcVf39Z9LkQtXe3fPrmsx4efYX3LhKmHykMf2m5AA2ewdTQ9IdTT
- MLHGyqkKnVueFSvtOhm+tuNxP0m+Ks08NZ3CVbg6EB3D1BYdyNBjg9h3w8YQ8IF4wzlI
- Ci21KjaJ9WlcIg9fYOM47m3+ctZJoK2XmhnQZN77WbYUkmloyfiBETAOlTotl2Cwj68C
- y5znbkKVymaSJGb6dsHwNrP5upEfuK4VRsd/zZ62qZqYBQXWCVrivYRAuIlQce0V/Boj
- UPVseuczpst8iHwuF+vq7qgRr2XCWziwxbtpFCpOFN377IAuxDRGoCTWgja2XFEHECQg
- 4I8g==
-X-Gm-Message-State: AOJu0YzrdO7hhxPsWSvu2J38t511sxeQjbUjAWO/wnwCwCZ+OekdksiM
- VtUpT0/ZEeSeKpmM1MMzpHTmg/ieGNM8eqqhc6mVn6VjHakXNjZdQQriLHCZWZfbqgBJ/WdpDaI
- T
-X-Google-Smtp-Source: AGHT+IHhwo9S/Drdqgzvf4LqVDOO+EpW7ilYiNT2s9f6yhdZk2QnrInJRnNzjES5b+NUvRdAa100KQ==
-X-Received: by 2002:a17:902:e789:b0:1e2:408c:776f with SMTP id
- cp9-20020a170902e78900b001e2408c776fmr935276plb.0.1711751485860; 
- Fri, 29 Mar 2024 15:31:25 -0700 (PDT)
+ bh=dPcM7F+bIMm+kpOtGS43p2VNPDZH3BZ56mw6e1fyEkk=;
+ b=X6ef3rG855Z4Znbx1Sio1F2V8PcSrqaxwEGCkJGmslbAIChRiJzramfWilYqinpqjg
+ LbKNFeuIvxC0Ja2APcz/AxiA9AgAjQCN63fk2T720xNdMEO4CpzAkNcCmJetKwQ8VBit
+ xgMwyYKQV8TcKvmu1PNttIuyTlnO0rFKhNP59zNQeliIAW6SDmLhqhTThf8gRuZ0Ks9h
+ ERJry/vTBj/Qm8X+7mKEmrPxJIRq1wasTI+ZgLoXK8zTZYw07DWBLdATGUibwO9qX8Lo
+ /EbVnxCm1ph+vt+96E36IBSmjqtsZdEO17g4kqE+YAsDuZKCY5ywdDGxU7t+cjqUN0wL
+ 5vZw==
+X-Gm-Message-State: AOJu0YyFFPdk1oNWt83F0vR1Hj77F+j8ytsPmW7OkNAX6IGt0J6XDBND
+ 68x7OFr7/OedUxbb33zX6zKeocALPHXSbI+8VtCtRbzfO7/MMurjyhnXdUNbSapeM6x4u4Koaa3
+ d
+X-Google-Smtp-Source: AGHT+IGfaSCSHzixvDrzuy4wFSPTQ7LegI5x/qe5cHjPlkIiUB8NjCpNSR8z9MMM9GPQXISyxKgdGQ==
+X-Received: by 2002:a17:902:e495:b0:1e0:afa0:d515 with SMTP id
+ i21-20020a170902e49500b001e0afa0d515mr2767567ple.29.1711751487100; 
+ Fri, 29 Mar 2024 15:31:27 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a170902684800b001e09b636cafsm4000955pln.287.2024.03.29.15.31.24
+ f8-20020a170902684800b001e09b636cafsm4000955pln.287.2024.03.29.15.31.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Mar 2024 15:31:25 -0700 (PDT)
+ Fri, 29 Mar 2024 15:31:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PULL 08/18] target/hppa: Use gva_offset_mask() everywhere
-Date: Fri, 29 Mar 2024 12:31:01 -1000
-Message-Id: <20240329223111.1735826-9-richard.henderson@linaro.org>
+Cc: Helge Deller <deller@gmx.de>
+Subject: [PULL 09/18] target/hppa: Fix DCOR reconstruction of carry bits
+Date: Fri, 29 Mar 2024 12:31:02 -1000
+Message-Id: <20240329223111.1735826-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240329223111.1735826-1-richard.henderson@linaro.org>
 References: <20240329223111.1735826-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,80 +92,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Sven Schnelle <svens@stackframe.org>
+The carry bits for each nibble N are located in bit (N+1)*4,
+so the shift by 3 was off by one.  Furthermore, the carry bit
+for the most significant carry bit is indeed located in bit 64,
+which is located in a different storage word.
 
-Move it to cpu.h, so it can also be used in hppa_form_gva_psw().
+Use a double-word shift-right to reassemble into a single word
+and place them all at bit 0 of their respective nibbles.
 
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Tested-by: Helge Deller <deller@gmx.de>
 Reviewed-by: Helge Deller <deller@gmx.de>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240324080945.991100-2-svens@stackframe.org>
+Fixes: b2167459ae4 ("target-hppa: Implement basic arithmetic")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h       | 10 ++++++++--
- target/hppa/translate.c | 12 +++---------
- 2 files changed, 11 insertions(+), 11 deletions(-)
+ target/hppa/translate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index a92dc352cb..a072d0bb63 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -285,14 +285,20 @@ void hppa_translate_init(void);
- 
- #define CPU_RESOLVING_TYPE TYPE_HPPA_CPU
- 
-+static inline uint64_t gva_offset_mask(target_ulong psw)
-+{
-+    return (psw & PSW_W
-+            ? MAKE_64BIT_MASK(0, 62)
-+            : MAKE_64BIT_MASK(0, 32));
-+}
-+
- static inline target_ulong hppa_form_gva_psw(target_ulong psw, uint64_t spc,
-                                              target_ulong off)
- {
- #ifdef CONFIG_USER_ONLY
-     return off;
- #else
--    off &= psw & PSW_W ? MAKE_64BIT_MASK(0, 62) : MAKE_64BIT_MASK(0, 32);
--    return spc | off;
-+    return spc | (off & gva_offset_mask(psw));
- #endif
- }
- 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 46b2d6508d..e041310207 100644
+index e041310207..a3f425d861 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -586,17 +586,10 @@ static bool nullify_end(DisasContext *ctx)
-     return true;
- }
+@@ -2791,7 +2791,7 @@ static bool do_dcor(DisasContext *ctx, arg_rr_cf_d *a, bool is_i)
+     nullify_over(ctx);
  
--static uint64_t gva_offset_mask(DisasContext *ctx)
--{
--    return (ctx->tb_flags & PSW_W
--            ? MAKE_64BIT_MASK(0, 62)
--            : MAKE_64BIT_MASK(0, 32));
--}
--
- static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
-                             uint64_t ival, TCGv_i64 vval)
- {
--    uint64_t mask = gva_offset_mask(ctx);
-+    uint64_t mask = gva_offset_mask(ctx->tb_flags);
- 
-     if (ival != -1) {
-         tcg_gen_movi_i64(dest, ival & mask);
-@@ -1430,7 +1423,8 @@ static void form_gva(DisasContext *ctx, TCGv_i64 *pgva, TCGv_i64 *pofs,
- 
-     *pofs = ofs;
-     *pgva = addr = tcg_temp_new_i64();
--    tcg_gen_andi_i64(addr, modify <= 0 ? ofs : base, gva_offset_mask(ctx));
-+    tcg_gen_andi_i64(addr, modify <= 0 ? ofs : base,
-+                     gva_offset_mask(ctx->tb_flags));
- #ifndef CONFIG_USER_ONLY
-     if (!is_phys) {
-         tcg_gen_or_i64(addr, addr, space_select(ctx, sp, base));
+     tmp = tcg_temp_new_i64();
+-    tcg_gen_shri_i64(tmp, cpu_psw_cb, 3);
++    tcg_gen_extract2_i64(tmp, cpu_psw_cb, cpu_psw_cb_msb, 4);
+     if (!is_i) {
+         tcg_gen_not_i64(tmp, tmp);
+     }
 -- 
 2.34.1
 
