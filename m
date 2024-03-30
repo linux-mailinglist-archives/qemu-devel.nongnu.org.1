@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A79AB892B86
+	by mail.lfdr.de (Postfix) with ESMTPS id B590A892B87
 	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 15:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqZOK-0001pf-Kc; Sat, 30 Mar 2024 10:09:04 -0400
+	id 1rqZOP-0001qc-9B; Sat, 30 Mar 2024 10:09:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <dcae75fba1084823d0fc87caa13f0ba6f32155f3@kylie.crudebyte.com>)
- id 1rqZOI-0001pW-Qw
- for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:02 -0400
+ id 1rqZON-0001qQ-SR
+ for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:07 -0400
 Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <dcae75fba1084823d0fc87caa13f0ba6f32155f3@kylie.crudebyte.com>)
- id 1rqZOH-0000I8-25
- for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:02 -0400
+ id 1rqZOM-0000Ld-Af
+ for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
- Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
- Content-Description; bh=CKxpSnGumg2HQUjOvfXHdXAFz/Bc3upBTPoFzaGQN2o=; b=UzMjv
- 282AtLVtYGXwZ8hLrbuFEGN/Y2qooLBORSPfDO+7OvPI1pkK5yrioJrL52UWWB9IXBcuksCdGu66B
- ye9OLMF3dYwZO2ErrBCSJG05qWmjiBcsYBSdTErpc7C8nblMkML5i4qTbhUspTsZVbs6CAsfFtAlA
- JnEU1O8PZvsOOMf1Oy9shoLN8sktKASwzvBmTtKW6sDJB/ur94RpFmEyLU3Liq70hVeU2iIWBJ2Tp
- Qo+FPN/DUI1TMZ9B4OAGn0hbsJMTNjIWT8umY/9TX/d658Y5QRMlmLfzLUjcTgX+8hwRsrBawCn4r
- /FZCNWz2SxidxdMZHDfvZpsRh2NsBLNHLPR68IB7dyXQfFLjMB+Q5kvV+6ZyUX90ZT7iBYQFCG0aK
- DIEU+mYrr3MxfCuE0IRl+7cj3Tc2oX5AiadCk4YpQ3sBJV5ORl5DEObAJa1iXzO0832LClLQGhKyL
- zdpQUrhnWKhs2jEFpAAPDP9aegG49f3KynoUXbdTP3q51/Gq4fmwSQcB18/IB/WRBHPHCuuRGGa5w
- DDIpajuq+kRplGRm9MTpx1gVQ1qAIk467P/InmPp89nuP9K7xSP7QKLb0yQdlGJnFW+NqJ7FYsI7m
- VrU0iyR/vAtCKnRxAi4dY8UHlZ0a54wHR6r0Grx+ou31a+FnuLgYtPlc4OwiV0=;
-Message-Id: <dcae75fba1084823d0fc87caa13f0ba6f32155f3.1711702001.git.qemu_oss@crudebyte.com>
-In-Reply-To: <cover.1711702001.git.qemu_oss@crudebyte.com>
-References: <cover.1711702001.git.qemu_oss@crudebyte.com>
+ d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:Message-Id:Content-Type:
+ Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Content-ID:
+ Content-Description; bh=WGt1ZNrBrusq3t16iYFw0Y+qYctBiIeHDqDGAlae6KM=; b=fwUlS
+ q65VDWXuQKfJJ6HNso2gzapctiV4W0+V1U86dVKnN6a6xSdeIlNfqMEsDMoCYVsX+X4l6eY4xr/ne
+ jZyhoeWW8fiAdlHq9SGBhB61pnHfpolzrJXYre181t7lMyrfecus93AzKp3XCyTAqf4AE+3w8Dwmu
+ cSuc023oWVz3dx7ZTIXM3aah07PKiEuZ3y+l0Anhj2Zr7dGONVix6DV4dKSS8+iw7N+sqKpZXjKiB
+ 1q6OlKj/czWOBRhVzEGE3cB64OPh6T/AimvH6+2Nv76CK/ilI4MENpazyaSpZFhNGUBUvWO5nThW+
+ Jx2uPJK9eEW6yLP3hMwozT1a/1BWp3B5UYqa+Y2CTo907SLeNEUQR+2ibPXGpl16cNoAzZEOleCUU
+ JFp6mhmKYtOLfcdhfxF/kcwT4RbTwoHmCaN5aFNy+GHgmTD0iFhYfi4PecRoAIMX7G92mqz5MrxYR
+ B4pBI91gARjYp0S9FGEnNn1fGAR8Em7BW0eXKjpGMDZam99ryGFEWnzNTQQg21ToOUujo+ks7mnDr
+ pKK9sBxx2l3g+cmjz4nFcroDB9dQ0JxR75YLI0CBxc58s9Y+QyS6aUgxt5zEZmVoJUJHzzSDnIQWN
+ j37HStMpRvCU5nKw/h3nmYn/yPX5lfcYl0s5X4pmti+DMVM+gnfw7bhjv1GgTM=;
+Message-Id: <cover.1711702001.git.qemu_oss@crudebyte.com>
 From: Christian Schoenebeck <qemu_oss@crudebyte.com>
 Date: Sat, 30 Mar 2024 14:33:03 +0100
-Subject: [PULL for-9.0 2/2] qtest/virtio-9p-test.c: remove g_test_slow() gate
+Subject: [PULL for-9.0 0/2] 9p queue 2024-03-29
 To: qemu-devel@nongnu.org,
     Peter Maydell <peter.maydell@linaro.org>
 Cc: Greg Kurz <groug@kaod.org>,
@@ -68,57 +66,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+The following changes since commit 5012e522aca161be5c141596c66e5cc6082538a9:
 
-Commit 558f5c42ef gated the local tests with g_test_slow() to skip them
-in 'make check'. The reported issue back then was this following CI
-problem:
+  Update version for v9.0.0-rc1 release (2024-03-26 19:46:55 +0000)
 
-https://lists.nongnu.org/archive/html/qemu-devel/2020-11/msg05510.html
+are available in the Git repository at:
 
-This problem ended up being fixed after it was detected with the
-recently added risc-v machine nodes [1]. virtio-9p-test.c is now
-creating and removing temporary dirs for each test run, instead of
-creating a single dir for the entire qos-test scope.
+  https://github.com/cschoenebeck/qemu.git tags/pull-9p-20240329
 
-We're now able to run these tests with 'make check' in the CI, so let's
-go ahead and re-enable them.
+for you to fetch changes up to dcae75fba1084823d0fc87caa13f0ba6f32155f3:
 
-This reverts commit 558f5c42efded3e0d0b20a90bce2a9a14580d824.
+  qtest/virtio-9p-test.c: remove g_test_slow() gate (2024-03-28 09:54:47 +0100)
 
-[1] https://mail.gnu.org/archive/html/qemu-devel/2024-03/msg05807.html
+----------------------------------------------------------------
+Changes for 9p tests only:
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Message-Id: <20240327142011.805728-3-dbarboza@ventanamicro.com>
-Reviewed-by: Greg Kurz <groug@kaod.org>
-Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
----
- tests/qtest/virtio-9p-test.c | 9 ---------
- 1 file changed, 9 deletions(-)
+* Fix 9p tests for riscv.
 
-diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
-index 0179b3a394..3c8cd235cf 100644
---- a/tests/qtest/virtio-9p-test.c
-+++ b/tests/qtest/virtio-9p-test.c
-@@ -746,15 +746,6 @@ static void register_virtio_9p_test(void)
- 
- 
-     /* 9pfs test cases using the 'local' filesystem driver */
--
--    /*
--     * XXX: Until we are sure that these tests can run everywhere,
--     * keep them as "slow" so that they aren't run with "make check".
--     */
--    if (!g_test_slow()) {
--        return;
--    }
--
-     opts.before = assign_9p_local_driver;
-     qos_add_test("local/config", "virtio-9p", pci_config,  &opts);
-     qos_add_test("local/create_dir", "virtio-9p", fs_create_dir, &opts);
--- 
-2.30.2
+* Re-enable 9p 'local' tests for running in CI pipelines.
 
+----------------------------------------------------------------
+Daniel Henrique Barboza (2):
+      qtest/virtio-9p-test.c: create/remove temp dirs after each test
+      qtest/virtio-9p-test.c: remove g_test_slow() gate
+
+ tests/qtest/virtio-9p-test.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
