@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67074892A82
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 11:35:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 802F3892A75
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 11:34:27 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqW1n-0000X3-Cp; Sat, 30 Mar 2024 06:33:35 -0400
+	id 1rqW1p-0000cP-1U; Sat, 30 Mar 2024 06:33:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1R-0000Om-99; Sat, 30 Mar 2024 06:33:14 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
+ id 1rqW1U-0000PY-B7; Sat, 30 Mar 2024 06:33:18 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1O-0000rz-5A; Sat, 30 Mar 2024 06:33:11 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V6D9X75BPz1wp4n;
- Sat, 30 Mar 2024 18:32:16 +0800 (CST)
+ id 1rqW1R-0000sW-CA; Sat, 30 Mar 2024 06:33:16 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4V6D7g29LxztQxW;
+ Sat, 30 Mar 2024 18:30:39 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 989691A016C;
- Sat, 30 Mar 2024 18:33:07 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 6D24914037D;
+ Sat, 30 Mar 2024 18:33:08 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 30 Mar
- 2024 18:33:06 +0800
+ 2024 18:33:07 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v11 21/23] hw/intc/arm_gicv3: Report the VINMI interrupt
-Date: Sat, 30 Mar 2024 10:31:26 +0000
-Message-ID: <20240330103128.3185962-22-ruanjinjie@huawei.com>
+Subject: [PATCH v11 22/23] target/arm: Add FEAT_NMI to max
+Date: Sat, 30 Mar 2024 10:31:27 +0000
+Message-ID: <20240330103128.3185962-23-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240330103128.3185962-1-ruanjinjie@huawei.com>
 References: <20240330103128.3185962-1-ruanjinjie@huawei.com>
@@ -43,14 +43,13 @@ Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
- helo=szxga06-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -68,62 +67,43 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In vCPU Interface, if the vIRQ has the non-maskable property, report
-vINMI to the corresponding vPE.
+Enable FEAT_NMI on the 'max' CPU.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-v10:
-- Update the commit message, superpriority -> non-maskable.
-v9:
-- Update the commit subject and message, vNMI -> vINMI.
-v6:
+v3:
 - Add Reviewed-by.
+- Sorted to last.
 ---
- hw/intc/arm_gicv3_cpuif.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ docs/system/arm/emulation.rst | 1 +
+ target/arm/tcg/cpu64.c        | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
-index 6a2491b2a6..fb811b856d 100644
---- a/hw/intc/arm_gicv3_cpuif.c
-+++ b/hw/intc/arm_gicv3_cpuif.c
-@@ -485,6 +485,7 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
-     int idx;
-     int irqlevel = 0;
-     int fiqlevel = 0;
-+    int nmilevel = 0;
+diff --git a/docs/system/arm/emulation.rst b/docs/system/arm/emulation.rst
+index 2a7bbb82dc..a9ae7ede9f 100644
+--- a/docs/system/arm/emulation.rst
++++ b/docs/system/arm/emulation.rst
+@@ -64,6 +64,7 @@ the following architecture extensions:
+ - FEAT_MTE (Memory Tagging Extension)
+ - FEAT_MTE2 (Memory Tagging Extension)
+ - FEAT_MTE3 (MTE Asymmetric Fault Handling)
++- FEAT_NMI (Non-maskable Interrupt)
+ - FEAT_NV (Nested Virtualization)
+ - FEAT_NV2 (Enhanced nested virtualization support)
+ - FEAT_PACIMP (Pointer authentication - IMPLEMENTATION DEFINED algorithm)
+diff --git a/target/arm/tcg/cpu64.c b/target/arm/tcg/cpu64.c
+index 9f7a9f3d2c..62c4663512 100644
+--- a/target/arm/tcg/cpu64.c
++++ b/target/arm/tcg/cpu64.c
+@@ -1175,6 +1175,7 @@ void aarch64_max_tcg_initfn(Object *obj)
+     t = FIELD_DP64(t, ID_AA64PFR1, RAS_FRAC, 0);  /* FEAT_RASv1p1 + FEAT_DoubleFault */
+     t = FIELD_DP64(t, ID_AA64PFR1, SME, 1);       /* FEAT_SME */
+     t = FIELD_DP64(t, ID_AA64PFR1, CSV2_FRAC, 0); /* FEAT_CSV2_2 */
++    t = FIELD_DP64(t, ID_AA64PFR1, NMI, 1);       /* FEAT_NMI */
+     cpu->isar.id_aa64pfr1 = t;
  
-     idx = hppvi_index(cs);
-     trace_gicv3_cpuif_virt_update(gicv3_redist_affid(cs), idx,
-@@ -502,9 +503,17 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
-         uint64_t lr = cs->ich_lr_el2[idx];
- 
-         if (icv_hppi_can_preempt(cs, lr)) {
--            /* Virtual interrupts are simple: G0 are always FIQ, and G1 IRQ */
-+            /*
-+             * Virtual interrupts are simple: G0 are always FIQ, and G1 are
-+             * IRQ or NMI which depends on the ICH_LR<n>_EL2.NMI to have
-+             * non-maskable property.
-+             */
-             if (lr & ICH_LR_EL2_GROUP) {
--                irqlevel = 1;
-+                if (cs->gic->nmi_support && (lr & ICH_LR_EL2_NMI)) {
-+                    nmilevel = 1;
-+                } else {
-+                    irqlevel = 1;
-+                }
-             } else {
-                 fiqlevel = 1;
-             }
-@@ -514,6 +523,7 @@ void gicv3_cpuif_virt_irq_fiq_update(GICv3CPUState *cs)
-     trace_gicv3_cpuif_virt_set_irqs(gicv3_redist_affid(cs), fiqlevel, irqlevel);
-     qemu_set_irq(cs->parent_vfiq, fiqlevel);
-     qemu_set_irq(cs->parent_virq, irqlevel);
-+    qemu_set_irq(cs->parent_vnmi, nmilevel);
- }
- 
- static void gicv3_cpuif_virt_update(GICv3CPUState *cs)
+     t = cpu->isar.id_aa64mmfr0;
 -- 
 2.34.1
 
