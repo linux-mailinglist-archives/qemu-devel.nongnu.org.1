@@ -2,56 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E740892A71
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 11:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA09A892B88
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 15:10:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqW1i-0000UW-GE; Sat, 30 Mar 2024 06:33:30 -0400
+	id 1rqZOM-0001qA-Qx; Sat, 30 Mar 2024 10:09:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1U-0000PZ-BA; Sat, 30 Mar 2024 06:33:18 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
+ (Exim 4.90_1)
+ (envelope-from <981eb1060336ee0e371369088c55f81f5a577ce8@kylie.crudebyte.com>)
+ id 1rqZOL-0001pw-9D
+ for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:05 -0400
+Received: from kylie.crudebyte.com ([5.189.157.229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1R-0000t4-C8; Sat, 30 Mar 2024 06:33:16 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.214])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V6D9Z4K84z1wp4q;
- Sat, 30 Mar 2024 18:32:18 +0800 (CST)
-Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 391621A016C;
- Sat, 30 Mar 2024 18:33:09 +0800 (CST)
-Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
- (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 30 Mar
- 2024 18:33:08 +0800
-To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
- <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
- <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
- <qemu-arm@nongnu.org>
-CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v11 23/23] hw/arm/virt: Add FEAT_GICv3_NMI feature support in
- virt GIC
-Date: Sat, 30 Mar 2024 10:31:28 +0000
-Message-ID: <20240330103128.3185962-24-ruanjinjie@huawei.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240330103128.3185962-1-ruanjinjie@huawei.com>
-References: <20240330103128.3185962-1-ruanjinjie@huawei.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.55]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
- helo=szxga06-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1)
+ (envelope-from <981eb1060336ee0e371369088c55f81f5a577ce8@kylie.crudebyte.com>)
+ id 1rqZOJ-0000KS-OZ
+ for qemu-devel@nongnu.org; Sat, 30 Mar 2024 10:09:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=crudebyte.com; s=kylie; h=Cc:To:Subject:Date:From:References:In-Reply-To:
+ Message-Id:Content-Type:Content-Transfer-Encoding:MIME-Version:Content-ID:
+ Content-Description; bh=p4yWR2jE1drMam6OIg84j1pNMI843XpHqUbHzG+tZj4=; b=VnOry
+ nrYHe8uS9xo4QczFv29vZTdhlhgxOnTtQdcJQTlc0Ck9MGf3g16O0pi9G+v3hYM4C0LOzhXqukK7l
+ aKS7XJ89rTGb0P4cuglh00izgpjFLENmWLlZNYJr3uwB+kZe0NVr93fJp5Tvx9JN3Ey1S4+9mTw9p
+ I+RTXuHypkFd0CA6Vgxr+mNLS9sup5g98w+JccfP4p0nM+NLTn6JTUU9yUmhsvLT40E4DppyCeqT/
+ Qw4ts6KOOHtBqlkGeA8WgsmqftUtA0v/AEyh8fPxQh+/4/dwy4sSWiM9qJcTLn5p0pTPgc8OGQ86c
+ ppGAj6XgHuopqJNUnigmpb0mtHAIy1oGChx69F9LablJ09hjRxKAbYU7Rh0kMKmeJQb04qbYKE8i9
+ Gs0Lr3LMm/JRfWJlhKLo48zF3yq5EKy5cfOWv4GG+LxmuseHWc2Ug/dyxNsI5Y1nRC4sV6akwcJKY
+ s2GMUuImmtBdMtdxQ+F/4PxXGDE9rb+59B2wwXaAkAcPWuVnRs25I971tYJ8cRhiTotkis0clCl0G
+ 2Bz39nVNRj+Qz7TL8TLn5Rr0K7VLE9TkKr0HMh7NZ0lZGPhw7U3qehRBoOFzSKT42Y6V+K6AHvAtF
+ 9viH+V2sMTov6xX4HK2C4j0BoyMtU8VrtXdSCCOmIt+mAdM3pvnM2jnAr5S4pY=;
+Message-Id: <981eb1060336ee0e371369088c55f81f5a577ce8.1711702001.git.qemu_oss@crudebyte.com>
+In-Reply-To: <cover.1711702001.git.qemu_oss@crudebyte.com>
+References: <cover.1711702001.git.qemu_oss@crudebyte.com>
+From: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Date: Sat, 30 Mar 2024 14:33:03 +0100
+Subject: [PULL for-9.0 1/2] qtest/virtio-9p-test.c: create/remove temp dirs
+ after each test
+To: qemu-devel@nongnu.org,
+    Peter Maydell <peter.maydell@linaro.org>
+Cc: Greg Kurz <groug@kaod.org>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Thomas Huth <thuth@redhat.com>
+Received-SPF: none client-ip=5.189.157.229;
+ envelope-from=981eb1060336ee0e371369088c55f81f5a577ce8@kylie.crudebyte.com;
+ helo=kylie.crudebyte.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,67 +66,101 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
-From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-FEAT_GICv3_NMI
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-So included support FEAT_GICv3_NMI feature as part of virt platform
-GIC initialization if FEAT_NMI and FEAT_GICv3 supported.
+The local 9p driver in virtio-9p-test.c its temporary dir right at the
+start of qos-test (via virtio_9p_create_local_test_dir()) and only
+deletes it after qos-test is finished (via
+virtio_9p_remove_local_test_dir()).
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+This means that any qos-test machine that ends up running virtio-9p-test
+local tests more than once will end up re-using the same temp dir. This
+is what's happening in [1] after we introduced the riscv machine nodes:
+if we enable slow tests with the '-m slow' flag using
+qemu-system-riscv64, this is what happens:
+
+- a temp dir is created;
+
+- virtio-9p-device tests will run virtio-9p-test successfully;
+
+- virtio-9p-pci tests will run virtio-9p-test, and fail right at the
+  first slow test at fs_create_dir() because the "01" file was already
+created by fs_create_dir() test when running with the virtio-9p-device.
+
+The root cause is that we're creating a single temporary dir, via the
+construct/destruct callbacks, and this temp dir is kept for the entire
+qos-test run.
+
+We can change each test to clean after themselves. This approach would
+make the 'create' tests obsolete since we would need to create and
+delete dirs/files/symlinks for the cleanup, turning them into the
+'unlinkat' tests that comes right after.
+
+We chose a different approach that handles the root cause: do not use
+constructor/destructor to create the temp dir. Create one temp dir for
+each test, and remove it after the test is complete. This is the
+approach taken for other qtests like vhost-user-test.c where each test
+requires a setup() and a subsequent cleanup(), all of those instantiated
+in the .before callback.
+
+[1] https://mail.gnu.org/archive/html/qemu-devel/2024-03/msg05807.html
+
+Reported-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Message-Id: <20240327142011.805728-2-dbarboza@ventanamicro.com>
+Reviewed-by: Greg Kurz <groug@kaod.org>
+Reviewed-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Christian Schoenebeck <qemu_oss@crudebyte.com>
 ---
-v4:
-- Add Reviewed-by.
-v3:
-- Adjust to be the last after add FEAT_NMI to max.
-- Check whether support FEAT_NMI and FEAT_GICv3 for FEAT_GICv3_NMI.
----
- hw/arm/virt.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/qtest/virtio-9p-test.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index ef2e6c2c4d..63d9f5b553 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -729,6 +729,19 @@ static void create_v2m(VirtMachineState *vms)
-     vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
+diff --git a/tests/qtest/virtio-9p-test.c b/tests/qtest/virtio-9p-test.c
+index 65e69491e5..0179b3a394 100644
+--- a/tests/qtest/virtio-9p-test.c
++++ b/tests/qtest/virtio-9p-test.c
+@@ -693,9 +693,20 @@ static void fs_unlinkat_hardlink(void *obj, void *data,
+     g_assert(stat(real_file, &st_real) == 0);
  }
  
-+/*
-+ * A PE that implements FEAT_NMI and FEAT_GICv3 also implements
-+ * FEAT_GICv3_NMI. A PE that does not implement FEAT_NMI, does not implement
-+ * FEAT_GICv3_NMI.
-+ */
-+static bool gicv3_nmi_present(VirtMachineState *vms)
++static void cleanup_9p_local_driver(void *data)
 +{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+
-+    return cpu_isar_feature(aa64_nmi, cpu) &&
-+           (vms->gic_version != VIRT_GIC_VERSION_2);
++    /* remove previously created test dir when test is completed */
++    virtio_9p_remove_local_test_dir();
 +}
 +
- static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+ static void *assign_9p_local_driver(GString *cmd_line, void *arg)
  {
-     MachineState *ms = MACHINE(vms);
-@@ -802,6 +815,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
-                               vms->virt);
-         }
-     }
++    /* make sure test dir for the 'local' tests exists */
++    virtio_9p_create_local_test_dir();
 +
-+    if (gicv3_nmi_present(vms)) {
-+        qdev_prop_set_bit(vms->gic, "has-nmi", true);
-+    }
+     virtio_9p_assign_local_driver(cmd_line, "security_model=mapped-xattr");
 +
-     gicbusdev = SYS_BUS_DEVICE(vms->gic);
-     sysbus_realize_and_unref(gicbusdev, &error_fatal);
-     sysbus_mmio_map(gicbusdev, 0, vms->memmap[VIRT_GIC_DIST].base);
++    g_test_queue_destroy(cleanup_9p_local_driver, NULL);
+     return arg;
+ }
+ 
+@@ -759,15 +770,3 @@ static void register_virtio_9p_test(void)
+ }
+ 
+ libqos_init(register_virtio_9p_test);
+-
+-static void __attribute__((constructor)) construct_9p_test(void)
+-{
+-    /* make sure test dir for the 'local' tests exists */
+-    virtio_9p_create_local_test_dir();
+-}
+-
+-static void __attribute__((destructor)) destruct_9p_test(void)
+-{
+-    /* remove previously created test dir when test suite completed */
+-    virtio_9p_remove_local_test_dir();
+-}
 -- 
-2.34.1
+2.30.2
 
 
