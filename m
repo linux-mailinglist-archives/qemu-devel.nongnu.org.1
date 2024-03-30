@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C7F892A7B
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 11:35:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E898892A6F
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Mar 2024 11:34:12 +0100 (CET)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqW1M-0000Jm-9y; Sat, 30 Mar 2024 06:33:08 -0400
+	id 1rqW1N-0000L0-0O; Sat, 30 Mar 2024 06:33:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1I-0000HA-Np; Sat, 30 Mar 2024 06:33:04 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
+ id 1rqW1K-0000I8-1Q; Sat, 30 Mar 2024 06:33:06 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rqW1H-0000mT-07; Sat, 30 Mar 2024 06:33:04 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.17])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V6D9N4S3wz1wnvX;
- Sat, 30 Mar 2024 18:32:08 +0800 (CST)
+ id 1rqW1I-0000oo-He; Sat, 30 Mar 2024 06:33:05 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+ by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4V6D7H2pD7z1R96M;
+ Sat, 30 Mar 2024 18:30:19 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id 3C0F61A0172;
- Sat, 30 Mar 2024 18:32:59 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 1D1551400D3;
+ Sat, 30 Mar 2024 18:33:00 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 30 Mar
- 2024 18:32:58 +0800
+ 2024 18:32:59 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v11 11/23] hw/intc/arm_gicv3: Add external IRQ lines for NMI
-Date: Sat, 30 Mar 2024 10:31:16 +0000
-Message-ID: <20240330103128.3185962-12-ruanjinjie@huawei.com>
+Subject: [PATCH v11 12/23] target/arm: Handle NMI in
+ arm_cpu_do_interrupt_aarch64()
+Date: Sat, 30 Mar 2024 10:31:17 +0000
+Message-ID: <20240330103128.3185962-13-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240330103128.3185962-1-ruanjinjie@huawei.com>
 References: <20240330103128.3185962-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.67.174.55]
 X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemi500008.china.huawei.com (7.221.188.139)
-Received-SPF: pass client-ip=45.249.212.32; envelope-from=ruanjinjie@huawei.com;
- helo=szxga06-in.huawei.com
+Received-SPF: pass client-ip=45.249.212.35; envelope-from=ruanjinjie@huawei.com;
+ helo=szxga07-in.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -68,68 +69,48 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Augment the GICv3's QOM device interface by adding one
-new set of sysbus IRQ line, to signal NMI to each CPU.
+According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
+with superpriority is always IRQ, never FIQ, so the NMI exception trap entry
+behave like IRQ. And VINMI(vIRQ with Superpriority) can be raised from the
+GIC or come from the hcrx_el2.HCRX_VINMI bit, VFNMI(vFIQ with Superpriority)
+come from the hcrx_el2.HCRX_VFNMI bit.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
-v11：
-- Add new Reviewed-by.
-v4:
+v9:
+- Update the commit message.
+- Handle VINMI and VFNMI.
+v7:
 - Add Reviewed-by.
+v6:
+- Not combine VFNMI with CPU_INTERRUPT_VNMI.
+v4:
+- Also handle VNMI in arm_cpu_do_interrupt_aarch64().
 v3:
-- Add support for VNMI.
+- Remove the FIQ NMI handle.
 ---
- hw/intc/arm_gicv3_common.c         | 6 ++++++
- include/hw/intc/arm_gic_common.h   | 2 ++
- include/hw/intc/arm_gicv3_common.h | 2 ++
- 3 files changed, 10 insertions(+)
+ target/arm/helper.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index cb55c72681..c52f060026 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -299,6 +299,12 @@ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
-     for (i = 0; i < s->num_cpu; i++) {
-         sysbus_init_irq(sbd, &s->cpu[i].parent_vfiq);
-     }
-+    for (i = 0; i < s->num_cpu; i++) {
-+        sysbus_init_irq(sbd, &s->cpu[i].parent_nmi);
-+    }
-+    for (i = 0; i < s->num_cpu; i++) {
-+        sysbus_init_irq(sbd, &s->cpu[i].parent_vnmi);
-+    }
- 
-     memory_region_init_io(&s->iomem_dist, OBJECT(s), ops, s,
-                           "gicv3_dist", 0x10000);
-diff --git a/include/hw/intc/arm_gic_common.h b/include/hw/intc/arm_gic_common.h
-index 7080375008..97fea4102d 100644
---- a/include/hw/intc/arm_gic_common.h
-+++ b/include/hw/intc/arm_gic_common.h
-@@ -71,6 +71,8 @@ struct GICState {
-     qemu_irq parent_fiq[GIC_NCPU];
-     qemu_irq parent_virq[GIC_NCPU];
-     qemu_irq parent_vfiq[GIC_NCPU];
-+    qemu_irq parent_nmi[GIC_NCPU];
-+    qemu_irq parent_vnmi[GIC_NCPU];
-     qemu_irq maintenance_irq[GIC_NCPU];
- 
-     /* GICD_CTLR; for a GIC with the security extensions the NS banked version
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 4e2fb518e7..7324c7d983 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -155,6 +155,8 @@ struct GICv3CPUState {
-     qemu_irq parent_fiq;
-     qemu_irq parent_virq;
-     qemu_irq parent_vfiq;
-+    qemu_irq parent_nmi;
-+    qemu_irq parent_vnmi;
- 
-     /* Redistributor */
-     uint32_t level;                  /* Current IRQ level */
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 967e833ee8..eef37b801d 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -11650,10 +11650,13 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
+         break;
+     case EXCP_IRQ:
+     case EXCP_VIRQ:
++    case EXCP_NMI:
++    case EXCP_VINMI:
+         addr += 0x80;
+         break;
+     case EXCP_FIQ:
+     case EXCP_VFIQ:
++    case EXCP_VFNMI:
+         addr += 0x100;
+         break;
+     case EXCP_VSERR:
 -- 
 2.34.1
 
