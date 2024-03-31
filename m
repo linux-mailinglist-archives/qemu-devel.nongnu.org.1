@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CEED893217
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 17:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 427D0893223
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 17:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqxKZ-0000MJ-UF; Sun, 31 Mar 2024 11:42:47 -0400
+	id 1rqxYR-0005k4-Gk; Sun, 31 Mar 2024 11:57:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rqxKY-0000M9-JX
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:42:46 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ id 1rqxYP-0005jv-Ky
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:57:05 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rqxKW-0003Cn-Ux
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:42:46 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2d687da75c4so32913021fa.0
- for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 08:42:44 -0700 (PDT)
+ id 1rqxYM-0005hd-Bw
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:57:04 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a466a1f9ea0so193701566b.1
+ for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 08:57:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711899763; x=1712504563; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=c3SKwGw8bm5NQ9HgW/VEEFH7yGmpfqFYtDxinxGMWqQ=;
- b=WwCi1lsvJW5RfPyJiCFRGWKTBcbakSP5tiBGdfl/GmcQEEQEtMo5qe2qNX96uWhj5m
- HfSlzyFipdJx/ZIUC5/xrsBAhQIVm03UpD4Kz/ksM57tx7+Y5+BzjgQg6dTRG7lKsrz1
- E60G+CDo0LPtm2z+Kx2fBz67RxpcxRVfQWaJfdDLl/9kgWY4c7pc9w+OW56AVy8w6QQa
- ZCyqgpIxCnFRo8GlOB+XHUifkQtfeFPXREPYK7SMht0zcLxqX8XW3Bjz3YXBVEMlxMHu
- /G54pxUma9PjAX939d5UPN39MD7hWnY9GdgmzVNsemVZcdSHFWL6OBTrQHp7B5ZJ/XIH
- fRYw==
+ d=linaro.org; s=google; t=1711900620; x=1712505420; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=Zof4UHYcJPPCzMCxseWYLpRg4dcWsvJk8SW3JmWhycg=;
+ b=KeaDRKnSGBLQvWE0NPVYj2t+9eMk2tQeBYF1/FqFlyDURIVtnDOnsE9+EugCzUCFPO
+ 8rwWbj18ebYdV/A4GfuCz43spzmatXdtIiTonWC6aYa5ZMi9U1byO/ocdLw6KkKKbaMM
+ Uiwe8HPudBCXmSLDKOJaa3JcQcz0aVeHig6q5peOnoa6prR4hho9gMC3i6L9EqvCvEYI
+ wc0IY+XE7XNS7ZL/92xo4u3BzlE/nciYkD7MeTkkuxIIgCyDpwyOYv3ivPh6Pyq6V173
+ NlnsyZ7wctnIpsV649L5L1mISl7Pb2We0NDVhnO0sfi4/kB4CCkEKzx/5+UTzIeXWfCS
+ 7YRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711899763; x=1712504563;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c3SKwGw8bm5NQ9HgW/VEEFH7yGmpfqFYtDxinxGMWqQ=;
- b=ZxNDPeb/Mne7wE3JevS5arnAplji5MxYSr+6rsfbzjGaTzeXnw5gZe/aLZzcAyDWdB
- vDTCGghx5mLqG91+WaiezLCH8G8GuwyM8at1BFsJrHQkhK+SDp8DLj+5XfRwfA5WVf9C
- yAiXoDKnANJXsE+YMTewpi6z/2aV+VJ0TnX29UAJHemnX+mgquRHQC/QxFYi9qi1r8mK
- F4VcN8x9yyksLRVQW4C3b4OqV/6SufrcQVxiJC3COFJ+nb4hxm2X1MGdqbTDodmzy5yu
- EmzGRcW/BNMlx2gnRCPzlt46Wto3lfqHU929rxhzaU44vdQA3IpUcC22h6c96UJ4+qQO
- zW8w==
-X-Gm-Message-State: AOJu0YzyV8/s/4wmRG7tSebTJd/mRGtG5XXJ1Dz10zsHsoEkzsh5YpcS
- QurtFOzA+98JERFLjna9G2KhOmIz5KwCfBPRc1GGykJqNV97yTXbV/g8ifhZOFJxKmSL9n0so2Z
- phMtgOehMSwYc/65NfchuAoI+xLE9rv5rDm+zfQ==
-X-Google-Smtp-Source: AGHT+IGL2FqiJZHcmCZ4xY5poxX426cUhz0/hlYFDZVD4+GkfAXK5QOfR8AhRyPJ3Xqx1NFcE7sF6SR+y5hKi37/JqA=
-X-Received: by 2002:a2e:a60c:0:b0:2d4:b061:da01 with SMTP id
- v12-20020a2ea60c000000b002d4b061da01mr3549026ljp.19.1711899763017; Sun, 31
- Mar 2024 08:42:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1711900620; x=1712505420;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Zof4UHYcJPPCzMCxseWYLpRg4dcWsvJk8SW3JmWhycg=;
+ b=gdBEeXzxlq/G/VY/gZaifQsZq7MscbmqPNMwPhbbVJ6iYo2mCMHmit73paFOBGK+CO
+ Q1umFB+mYbpTJq8JlTcXM6BDtbFbLqBMugBfrFNR505n2MTlq6YXiblN5ERQrT2fAlAe
+ +85SemXI4k7kMSDyMmrW4/Kz6iVAeh4qLMRBYrpS6ds+HYYyPjDl8/p/Jy+gOQiVb3mB
+ FQVXb998K08xK9pzgCL2pPNQLuB6qOPdLjZjK9Dw3BYmJNGHM3GOf58du092kKA58FTH
+ TIsEV70Zc8IKMCavbKYAiRy6HeFK11XA8r3Wh6XdxakwZDaOq9H0Kq3So4ssCSrqAONJ
+ ZqZQ==
+X-Gm-Message-State: AOJu0Yz6XuzfjR472VVWuzl0BwZfrYabWiTy7wU+fUmSg95sIv9QzW+9
+ 48Ly8SF0qg5EmGgGASWZ2ndKyvkAtowK6zBiLVQt8o5Kc7nIoVKhIIRwwdjgHTVFPEAaB0ufnYo
+ Vp2y2G6lPPzAaHetmKEmFpS5dtq1s5bMK3+zPa1HzV1TPnkB2wns=
+X-Google-Smtp-Source: AGHT+IEPltyvKxXXBu0BSB4DlfMRcOjaElr8++UTpqAvbAvJ+ALLLP+GSQ0IKvFIVjnSMV53taUrHTT75DEKl3yUIRg=
+X-Received: by 2002:a50:a448:0:b0:56c:1735:57a2 with SMTP id
+ v8-20020a50a448000000b0056c173557a2mr5945996edb.31.1711900620676; Sun, 31 Mar
+ 2024 08:57:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240329071100.31376-1-jasowang@redhat.com>
-In-Reply-To: <20240329071100.31376-1-jasowang@redhat.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Sun, 31 Mar 2024 16:42:32 +0100
-Message-ID: <CAFEAcA_6bEAiGNO_txqNe6uR9NGdFQ8dsPd6g0U2PEiTkYHmVw@mail.gmail.com>
-Subject: Re: [PULL 0/5] Net patches
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org
+Date: Sun, 31 Mar 2024 16:56:50 +0100
+Message-ID: <CAFEAcA_+196BzNONPjpfF5O5EOfw4FA7TkMWFNdby4XtsK+Jrg@mail.gmail.com>
+Subject: QEMU cirrus CI jobs failing to start
+To: QEMU Developers <qemu-devel@nongnu.org>
+Cc: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Phil_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,25 +86,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 29 Mar 2024 at 07:11, Jason Wang <jasowang@redhat.com> wrote:
->
-> The following changes since commit 5012e522aca161be5c141596c66e5cc6082538a9:
->
->   Update version for v9.0.0-rc1 release (2024-03-26 19:46:55 +0000)
->
-> are available in the Git repository at:
->
->   https://github.com/jasowang/qemu.git tags/net-pull-request
->
-> for you to fetch changes up to d9b33018a0da51eddceb48c42345cfb351065f3e:
->
->   Revert "tap: setting error appropriately when calling net_init_tap_one()" (2024-03-29 14:59:07 +0800)
->
+https://gitlab.com/qemu-project/qemu/-/issues/2256
 
-Applied, thanks.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
+The Cirrus CI jobs for macos and freebsd are failing to start:
 
+Unschedulable: "0/2 nodes are available: 1 node(s) didn't match Pod's
+node affinity/selector, 1 node(s) had untolerated taint
+{virtual-kubelet.io/provider: azure}. preemption: 0/2 nodes are
+available: 2 Preemption is not helpful for scheduling."
+Waiting for pod
+gitlab-runner/runner--bkh5w23-project-11167699-concurrent-1qldjp to be
+running, status is Pending
+ContainersNotInitialized: "containers with incomplete status:
+[init-permissions]"
+ContainersNotReady: "containers with unready status: [build helper]"
+ContainersNotReady: "containers with unready status: [build helper]"
+Waiting for pod
+gitlab-runner/runner--bkh5w23-project-11167699-concurrent-1qldjp to be
+running, status is Pending
+ContainersNotReady: "containers with unready status: [build helper]"
+ContainersNotReady: "containers with unready status: [build helper]"
+WARNING: Failed to pull image with policy "": image pull failed:
+Back-off pulling image
+"registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master"
+ERROR: Job failed: prepare environment: waiting for pod running:
+pulling image "registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master":
+image pull failed: Back-off pulling image
+"registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master". Check
+https://docs.gitlab.com/runner/shells/index.html#shell-profile-loading
+for more information
+
+
+Anybody know what's going on here?
+
+thanks
 -- PMM
 
