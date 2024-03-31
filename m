@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F61892EDA
+	by mail.lfdr.de (Postfix) with ESMTPS id A65E0892EDB
 	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqphm-0002g0-Im; Sun, 31 Mar 2024 03:34:14 -0400
+	id 1rqphp-0002qP-Q3; Sun, 31 Mar 2024 03:34:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphl-0002c6-0t; Sun, 31 Mar 2024 03:34:13 -0400
-Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ id 1rqphn-0002o2-OI; Sun, 31 Mar 2024 03:34:15 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphj-00026N-FN; Sun, 31 Mar 2024 03:34:12 -0400
-Received: by mail-oi1-x231.google.com with SMTP id
- 5614622812f47-3bbbc6b4ed1so2168180b6e.2; 
- Sun, 31 Mar 2024 00:34:10 -0700 (PDT)
+ id 1rqphm-00026v-8H; Sun, 31 Mar 2024 03:34:15 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6e74aa08d15so2535956b3a.1; 
+ Sun, 31 Mar 2024 00:34:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870449; x=1712475249; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711870452; x=1712475252; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=I6z5Y0v6eGC54OE+cts/dJAT+Yj1Pwc4rTiSVsRg9/I=;
- b=QLKDn2gonyZWB0ydXmbk1c/Sks3aQj4QBsOkjOmkGwrg4sgbJ8J/9MzxHFLgcZ+RI/
- AnXAvBLCN/ehUkjW5DmEQAfwcn+LojgrEVR2bAczcxFJpk1L+DECS9vyPOu9+DTpQJ4Z
- 4lsCUIEzYkE6S3Pfj7fYpEllpuPon1IEKXWrEOcUk93Gz45QPdKzuIt1znCOuY+me86K
- zO1BcXy1k0NijAKaFqJvdJ2jFjOFJAyoXJ+3hx+KxUSzXTl7Cr1gCXYjAcvJxEUcF8kK
- 16gBTsYFrUbTnD1/jg9uG+3u5C1LYJ0cWJu5JFsPP4n5MoqAS2zVREnjVEgGqKGUz3z3
- u0cg==
+ bh=xF5OBXNYP6ZI81AmsCFRz0Xuc8TKtQnpsKPSIbYJa3o=;
+ b=Ao5r3aEuc4c3pgVdMww6B6LEzLVBuNlWIafyzQdnzKZj1P6exgpy9a0CJoApROUfTt
+ GiUoDMfR73M+SeXuu06R4jYBYDp3eMbYldWDaRi2fkDZnlw3xWYm5IMIsLf/XvsOguf7
+ ObBmLn3er7UA+aV5uZy3aWMT4IJjCQRsLv3Us4vMC1lkUi3wi4I5BCWmu6l5iinST/ro
+ nUA0MXGwq1QDkFw1J8bf/npUByM8HTLGwYd+UhoaCrSFF1r3Ok5d4KVDdLe0zWv/JBL1
+ wY6zUYhqDC2zTD8d+y0XP4blt57bPz9xAVX8qImGKELvFwKUpXtl7Xlv+RN5jWUIApzK
+ 98SQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870449; x=1712475249;
+ d=1e100.net; s=20230601; t=1711870452; x=1712475252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=I6z5Y0v6eGC54OE+cts/dJAT+Yj1Pwc4rTiSVsRg9/I=;
- b=AaKjJ4LXMeEgl1RVwr+jQrBAvfniZFgRKzBepmO5bxy2c3eLoHXLzBtnrpPOgx+MGb
- 0VGRqzy1kggkRiL54tKGqpl0qRRHZp7NpEm9pzW6eMZlEepz8BzqJC/tP2kQulpq+2nm
- UAJYkSJeLpjw3GxGGzSn2PRDIeefsvxfOG8srzGMSc0hBNRAvP9ey+3hRvWNw+ti6Qln
- rJlaYidc0FPF3p705qK6HNKY+MTvh9jE0k3WN9hNWCtb1IS+mcSvVmb/5k+Yad/gHuJY
- 59b/5XvteQODfhN2zHqpuhJ94VZ7DqR1ITzZDw4cLkn5RgUYrRq2ExfGPVDaVJAi9b7k
- qvbA==
+ bh=xF5OBXNYP6ZI81AmsCFRz0Xuc8TKtQnpsKPSIbYJa3o=;
+ b=O5DsBTM/4q8Xmo8uI2rOs+UKHZAa/o/chmQAu3uwFzIuTehJa4FtcsEEMivn3oH7ak
+ pUq0Vs2+sdZ52R6UM3B/Tp7Xb33/oZJ15PIVwIrJx+uWLOFjF2RVfZPsnM+KHfkk50rM
+ 0c2Ij0+WOqXK+cI7Zxw86skGfba5sgmd7GK3YZ+e4vIGZL3rta4W6fE3TtJYjbI95NJp
+ 8K16/8+fCTNiPqaNOUaBLpmVMq0h5aCxxYrBpY8KHEZXS0c6zXjapB4Hw0VSb0wI8ksU
+ pD0ryNUctJ+4kq7tW+HCXW4Ed9qeXeayR8itxomkeMXQy8bHv11QypW9P7ZpiX4QDeHO
+ TT2A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX2JpIpfyovjiTj0fALQZv3NQrjItIbLXQF3q3bdWYNuB5EgGmSZdCnPmhCW1+3mfqFh5qE2xYxhk0N19rWTXfvtk3o
-X-Gm-Message-State: AOJu0Yw0XNCcr6ucEQj5239Ur83f4MHiejiZd8NQmQgzE3zwhP6blne6
- ZaCofXRtnlLoZVMV6K2kMgMn1l6CITc9t5vJmQU64wwtWSbY+3MZNjxTIM2Ghr0=
-X-Google-Smtp-Source: AGHT+IHq9O/DJ0jpTKHGMUBv9wQEiR4ErXQmOFwgBgEUHUkhFEmlFtwxvOlq2ZkgqOTT3hIolomU8w==
-X-Received: by 2002:a05:6808:2198:b0:3c3:c9cd:8c42 with SMTP id
- be24-20020a056808219800b003c3c9cd8c42mr8386400oib.36.1711870449354; 
- Sun, 31 Mar 2024 00:34:09 -0700 (PDT)
+ AJvYcCUi/300MKPTqUM3U0yesNk5IUvzBhQ1lSWE9mlSKO1VJqxEzALhOdBskpIT7SeTZpAHqDmuczeLZsb99KPjs28PhYSI
+X-Gm-Message-State: AOJu0Yw/wxe0+jPL1E6eH69/ZUe0QAESmromL9S/7U0LsRXqn0G0Y5xW
+ dLAwwkZlIQxitjaDhU9mqWT9sybojtOOGHiJ+CgW3fllOIXNTWb9B3gv0Ldny3k=
+X-Google-Smtp-Source: AGHT+IETTOw2Vn+VyN+Rls/DoBmIk8j2yt9iBvJ3c/qB/ud1ToNEatvTOz5tmvmpoU2miRCkh3J+Bw==
+X-Received: by 2002:a05:6a00:1992:b0:6ea:e2ec:9622 with SMTP id
+ d18-20020a056a00199200b006eae2ec9622mr8610538pfl.20.1711870452321; 
+ Sun, 31 Mar 2024 00:34:12 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.97.62])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.06
+ k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:09 -0700 (PDT)
+ Sun, 31 Mar 2024 00:34:12 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/8] spapr: nested: use bitwise NOT operator for flags check
-Date: Sun, 31 Mar 2024 17:33:38 +1000
-Message-ID: <20240331073349.88324-2-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>
+Subject: [PULL 2/8] hw/ppc/spapr: Include missing 'sysemu/tcg.h' header
+Date: Sun, 31 Mar 2024 17:33:39 +1000
+Message-ID: <20240331073349.88324-3-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
 References: <20240331073349.88324-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
- envelope-from=npiggin@gmail.com; helo=mail-oi1-x231.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,34 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Check for flag bit in H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE need to use
-bitwise NOT operator to ensure no other flag bits are set.
+"sysemu/tcg.h" declares tcg_enabled(), and is implicitly included.
+Include it explicitly to avoid the following error when refactoring
+headers:
 
-Resolves: Coverity CID 1540008
-Resolves: Coverity CID 1540009
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+  hw/ppc/spapr.c:2612:9: error: call to undeclared function 'tcg_enabled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    if (tcg_enabled()) {
+        ^
+
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr_nested.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/ppc/spapr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
-index 936659b4c0..c02785756c 100644
---- a/hw/ppc/spapr_nested.c
-+++ b/hw/ppc/spapr_nested.c
-@@ -1511,7 +1511,7 @@ static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
-     if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
-         gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
-     }
--    if (flags & !H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
-+    if (flags & ~H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
-         return H_PARAMETER; /* flag not supported yet */
-     }
- 
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index c417f9dd52..e9bc97fee0 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -35,6 +35,7 @@
+ #include "sysemu/sysemu.h"
+ #include "sysemu/hostmem.h"
+ #include "sysemu/numa.h"
++#include "sysemu/tcg.h"
+ #include "sysemu/qtest.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/runstate.h"
 -- 
 2.43.0
 
