@@ -2,93 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F58893571
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 20:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213DF893594
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 21:23:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqzzP-0007XQ-F5; Sun, 31 Mar 2024 14:33:07 -0400
+	id 1rr0kI-0007Ih-EZ; Sun, 31 Mar 2024 15:21:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rqzzK-0007WT-Pt
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:33:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rr0kG-0007IS-Bb; Sun, 31 Mar 2024 15:21:32 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rqzzI-0007Lq-5A
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:33:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711909978;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QMxZuOXNWNRsfkWmLxWprCnxf7aQfHm6dGry164yY7o=;
- b=c00dDeDzKIi6JSChzI3tuGaVad/6VpjAV7Z3su/FrrSeKzPWw2ZGxmrLa6NXYW22T1qjR9
- n2HEsoSF+oyP1QpipX5yeBlvgfqff8KuqQO0GBhrXGx012lJCEoeeibGcNbdCC1gCz32GO
- eNkmAUGSMOSlgEOt2Awn8YzxvJlP8gA=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-102-BWBZYRmuMvyqozmK5nv1Mw-1; Sun, 31 Mar 2024 14:32:56 -0400
-X-MC-Unique: BWBZYRmuMvyqozmK5nv1Mw-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-47858503cacso142681137.1
- for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 11:32:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711909976; x=1712514776;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=QMxZuOXNWNRsfkWmLxWprCnxf7aQfHm6dGry164yY7o=;
- b=GZ5k9kfkdfqRE/Jy4caix8rhNYDxjEjhO7vBk+fwO94ZjQpuzyAzpkuk6kpuOZr7tS
- U9Cm8oKu3DWGf3PfjeV1WkQ8SeLYlzqAX6tn2oudwgzB8+eqMnnh8eON/KoXVwJSM9iR
- 9ZBH0o7CJMiiqhfM0XmAlzY8tntWW0psoFlYD4/LSjTRxB+PRC5kvwqFT64dElIkrJ7h
- vb2AV67vRxpmcbl47B9zZdDw7+RPFf1xHM1zvMghVHBXoWIJ5ARwv2P+799AefDJxO0o
- xxQ7XD6e5URAq+oX/ZvMXJLLqPTObNzCU1nWBbAoWCi/UUeLftzBMIy+1V6J5oKiFF1S
- H3Rg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUnWIvrNtD26z9dKEXx4Yho8GBss4otmtaWBimJpl/6zr9c9EMH1pVmBl/MwgSqEI6IMwKCmodAe8APrq37Kqt8fwvqQm4=
-X-Gm-Message-State: AOJu0YxOqhmaWAbofAbeUiJEG/rrIgYBBBMfpbqeObZ/3vK0A1xk9tas
- fI6btynRDy/DNFOQRJsHm1VZ6bdbs4hbrN/zUXpKWgosWNLa2moEHnguSOIOZwIC2aF7/xqhHTj
- nBJc2fwbg1sJSh99fgk584XA+cIUBvIj970uURrM3Ow+ppYJNaAZp
-X-Received: by 2002:a05:6102:5127:b0:478:766d:e83 with SMTP id
- bm39-20020a056102512700b00478766d0e83mr612788vsb.2.1711909976200; 
- Sun, 31 Mar 2024 11:32:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEttP5CaamZNcni/bRcGIk6uRyaGQjtAYlP7shK4ZjX9m3h4+n3s4qMRzilkifN8Zj88gQgpw==
-X-Received: by 2002:a05:6102:5127:b0:478:766d:e83 with SMTP id
- bm39-20020a056102512700b00478766d0e83mr612777vsb.2.1711909975677; 
- Sun, 31 Mar 2024 11:32:55 -0700 (PDT)
-Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- u10-20020ad45aaa000000b00696a47179a1sm3748823qvg.14.2024.03.31.11.32.54
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 11:32:55 -0700 (PDT)
-From: peterx@redhat.com
-To: Peter Maydell <peter.maydell@linaro.org>,
-	qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Prasad Pandit <ppandit@redhat.com>, peterx@redhat.com,
- Fabiano Rosas <farosas@suse.de>, Avihai Horon <avihaih@nvidia.com>,
- qemu-stable <qemu-stable@nongnu.org>
-Subject: [PULL 2/2] migration/postcopy: Ensure postcopy_start() sets errp if
- it fails
-Date: Sun, 31 Mar 2024 14:32:51 -0400
-Message-ID: <20240331183251.1045817-3-peterx@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240331183251.1045817-1-peterx@redhat.com>
-References: <20240331183251.1045817-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rr0kE-0008GO-Pc; Sun, 31 Mar 2024 15:21:32 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id DA9E95A8D4;
+ Sun, 31 Mar 2024 22:23:04 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D1AB1A7DA8;
+ Sun, 31 Mar 2024 22:21:24 +0300 (MSK)
+Message-ID: <cf941815-b1e1-4a1b-8a36-ddbc04f43990@tls.msk.ru>
+Date: Sun, 31 Mar 2024 22:21:24 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 0/5] Net patches
+To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+ qemu-stable <qemu-stable@nongnu.org>
+References: <20240329071100.31376-1-jasowang@redhat.com>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240329071100.31376-1-jasowang@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,70 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+29.03.2024 10:10, Jason Wang:
 
-There are several places where postcopy_start() fails without setting
-errp. This can cause a null pointer de-reference, as in case of error,
-the caller of postcopy_start() copies/prints the error set in errp.
+> Akihiko Odaki (5):
+>        virtio-net: Fix vhost virtqueue notifiers for RSS
+>        ebpf: Fix indirections table setting
+>        hw/net/net_tx_pkt: Fix virtio header without checksum offloading
+>        tap-win32: Remove unnecessary stubs
+>        Revert "tap: setting error appropriately when calling net_init_tap_one()"
 
-Fix it by setting errp in all of postcopy_start() error paths.
+ From the above, I'm picking up
 
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Fixes: 908927db28ea ("migration: Update error description whenever migration fails")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240328140252.16756-3-avihaih@nvidia.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/migration.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+   virtio-net: Fix vhost virtqueue notifiers for RSS
+   hw/net/net_tx_pkt: Fix virtio header without checksum offloading
 
-diff --git a/migration/migration.c b/migration/migration.c
-index b73ae3a72c..86bf76e925 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2510,6 +2510,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-         migration_wait_main_channel(ms);
-         if (postcopy_preempt_establish_channel(ms)) {
-             migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
-+            error_setg(errp, "%s: Failed to establish preempt channel",
-+                       __func__);
-             return -1;
-         }
-     }
-@@ -2525,17 +2527,22 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     ret = migration_stop_vm(ms, RUN_STATE_FINISH_MIGRATE);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed to stop the VM", __func__);
-         goto fail;
-     }
- 
-     ret = migration_maybe_pause(ms, &cur_state,
-                                 MIGRATION_STATUS_POSTCOPY_ACTIVE);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed in migration_maybe_pause()",
-+                         __func__);
-         goto fail;
-     }
- 
-     ret = bdrv_inactivate_all();
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed in bdrv_inactivate_all()",
-+                         __func__);
-         goto fail;
-     }
-     restart_block = true;
-@@ -2612,6 +2619,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     /* Now send that blob */
-     if (qemu_savevm_send_packaged(ms->to_dst_file, bioc->data, bioc->usage)) {
-+        error_setg(errp, "%s: Failed to send packaged data", __func__);
-         goto fail_closefb;
-     }
-     qemu_fclose(fb);
--- 
-2.44.0
+for stable.  Not yet sure about
 
+   Revert "tap: setting error appropriately when calling net_init_tap_one()"
+
+as it's been with us for a long time.
+
+Please Cc: qemu-stable@ for changes which should be picked for stable
+series.
+
+Thanks,
+
+/mjt
 
