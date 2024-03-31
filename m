@@ -2,67 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CC78931B1
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 15:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B1B893218
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 17:43:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqv9a-00049e-BE; Sun, 31 Mar 2024 09:23:18 -0400
+	id 1rqxKN-0000GY-Jv; Sun, 31 Mar 2024 11:42:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hengqi@linux.alibaba.com>)
- id 1rqv9X-00049V-Hl
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 09:23:15 -0400
-Received: from out30-101.freemail.mail.aliyun.com ([115.124.30.101])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hengqi@linux.alibaba.com>)
- id 1rqv9V-00039b-0n
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 09:23:15 -0400
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rqxKK-0000Dt-7c
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:42:32 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rqxKI-0003AF-52
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 11:42:31 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-56c197d042fso4012796a12.0
+ for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 08:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linux.alibaba.com; s=default;
- t=1711891380; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
- bh=DNVFJe7fzXJ46hFedS/yET7Jx+L9l6utZ/e9Xt9A6X8=;
- b=ijLUeOmXJWtafdBDs4EqyF0IbtFOL0mn0TJnatcvO+KAVopVl2aRzloEFOTyNpU80GBU3eLiNYP/VnQnjxKOnkFIwq0ZMs7F9HN6rHFFBfY0SFgZHVQK2WwmjBmqmB5r9VyqoNZN2wbFei3IOcJ67SrGL/kXGmKpMFtQuS8/NWU=
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R101e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045192;
- MF=hengqi@linux.alibaba.com; NM=1; PH=DS; RN=16; SR=0;
- TI=SMTPD_---0W3bgCBV_1711891376; 
-Received: from 30.121.31.164(mailfrom:hengqi@linux.alibaba.com
- fp:SMTPD_---0W3bgCBV_1711891376) by smtp.aliyun-inc.com;
- Sun, 31 Mar 2024 21:22:57 +0800
-Message-ID: <8b6f03a9-1afb-42ef-82aa-7eaf7517133c@linux.alibaba.com>
-Date: Sun, 31 Mar 2024 21:22:55 +0800
+ d=linaro.org; s=google; t=1711899748; x=1712504548; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=jBSfoJgjUf1Vv0Pqinnb7SKY134AmnCk/qfPcavaNNM=;
+ b=RSe1oUyQf2Op9mM4nmge/Zmy3bqM6COfIUFTl6RNPU9tR6oIe5ooYEpsSU3Psy5g0i
+ X8F8Sp92v0WR1mOOncuR7jpLn10X6Wp3dj1RmecjnfHVxZdX8TM+XcA2N6bTqWm0fFe4
+ BGgQ/mbMkhLt9hDWmtfY5TeskH6cCS9VtKRzxCVqTxMfw1uLyC7LxI99EspPonjH7ZGT
+ 3x+z1u/5ka6MrynrG4REXFgxw/5VE/MoK6u6lroYli8luzWe3Ciz9+7jYrI4IzXchuU9
+ 2m2tD1X88zHrFc8rkZesiBVi9AAzrhi6a68saiRlCWIFlRVq0q2VOFF2V+XDnh4d+HHU
+ l3TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711899748; x=1712504548;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jBSfoJgjUf1Vv0Pqinnb7SKY134AmnCk/qfPcavaNNM=;
+ b=XbHEBMFFdqnx29RtIzjAOcAj85TZbc91zyhfmn2Qs76+TWc4+lud5uVqr7JT+bKPyo
+ regxfx+N7KDqbtJXS5u4sNJrNMj/C9Uc/qV7sRq6c6AsIiaSWLd760Pux5vlYkUvgk2N
+ +OAKCemwke69tuKpbx1BvRHAIRB4M4Iw42x2rQXkJswG6eWIL7x2A5MLYGY/4F+pWcJ2
+ xRPNK93eaEBoHZQC14pWDZIZ950GNkvLlfrjVuwNHLLGThFkBVvQ88n60mJI1ODvzhYx
+ bpajQWhCleCpT5ssQ/TTiKyOpXYOwPsEfLoVmO2WcKNIAxn+Y6oQ437pvRQEpQS+w2uq
+ e7wQ==
+X-Gm-Message-State: AOJu0Ywpw5+HFqwC3xoxDbrzbWGRekW+9rxhYiR+2JV2GHeC+fqTzqZu
+ rtRL4K+k7HMpMHmjg5rUm+jzXf9/wSy04lunwTNa0apsEWtD773g4Y/Y3qBY1qxfgNzgZ7BMCPi
+ 9635MbrY6nfTzBUd1pXtd5dj2JcWPyN5iOiEfHQ==
+X-Google-Smtp-Source: AGHT+IHqRRePpKqC4+QByc/o7dQDH8KATEmyMSDvVK2Z1sSd3XhTdhH4SWkTNvHLybPKhvGWas7hB25MQyj350Z6wtU=
+X-Received: by 2002:a05:6402:2695:b0:56c:5a49:736 with SMTP id
+ w21-20020a056402269500b0056c5a490736mr6095526edd.9.1711899747794; Sun, 31 Mar
+ 2024 08:42:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] virtio_net: Do not send RSS key if it is not
- supported
-To: Breno Leitao <leitao@debian.org>
-Cc: rbc@meta.com, riel@surriel.com, stable@vger.kernel.org,
- qemu-devel@nongnu.org,
- "open list:VIRTIO CORE AND NET DRIVERS" <virtualization@lists.linux.dev>,
- "open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Melnychenko <andrew@daynix.com>
-References: <20240329171641.366520-1-leitao@debian.org>
-From: Heng Qi <hengqi@linux.alibaba.com>
-In-Reply-To: <20240329171641.366520-1-leitao@debian.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=115.124.30.101;
- envelope-from=hengqi@linux.alibaba.com;
- helo=out30-101.freemail.mail.aliyun.com
-X-Spam_score_int: -174
-X-Spam_score: -17.5
-X-Spam_bar: -----------------
-X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+References: <20240329222037.1735350-1-richard.henderson@linaro.org>
+In-Reply-To: <20240329222037.1735350-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sun, 31 Mar 2024 16:42:16 +0100
+Message-ID: <CAFEAcA8Z=_BfKgdvvk2xoicSt8jGBTp+hParNyqaa4UGbM1zfg@mail.gmail.com>
+Subject: Re: [PULL 0/7] tcg + linux-user patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,140 +85,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 29 Mar 2024 at 22:21, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> The following changes since commit 5012e522aca161be5c141596c66e5cc6082538a9:
+>
+>   Update version for v9.0.0-rc1 release (2024-03-26 19:46:55 +0000)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240329
+>
+> for you to fetch changes up to dafa0ecc97850c325fe85cd87dc0b536858d171a:
+>
+>   accel/tcg: Use CPUState.get_pc in cpu_io_recompile (2024-03-29 12:16:00 -1000)
+>
+> ----------------------------------------------------------------
+> linux-user: Fix shmat(NULL) for host != guest page size
+> tcg/optimize: Fix sign_mask for logical right-shift
+> accel/tcg: Use CPUState.get_pc in cpu_io_recompile
+> disas: Show opcodes for target_disas and monitor_disas
+>
 
 
-在 2024/3/30 上午1:16, Breno Leitao 写道:
-> There is a bug when setting the RSS options in virtio_net that can break
-> the whole machine, getting the kernel into an infinite loop.
->
-> Running the following command in any QEMU virtual machine with virtionet
-> will reproduce this problem:
->
->      # ethtool -X eth0  hfunc toeplitz
->
-> This is how the problem happens:
->
-> 1) ethtool_set_rxfh() calls virtnet_set_rxfh()
->
-> 2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
->
-> 3) virtnet_commit_rss_command() populates 4 entries for the rss
-> scatter-gather
->
-> 4) Since the command above does not have a key, then the last
-> scatter-gatter entry will be zeroed, since rss_key_size == 0.
-> sg_buf_size = vi->rss_key_size;
->
-> 5) This buffer is passed to qemu, but qemu is not happy with a buffer
-> with zero length, and do the following in virtqueue_map_desc() (QEMU
-> function):
->
->    if (!sz) {
->        virtio_error(vdev, "virtio: zero sized buffers are not allowed");
->
-> 6) virtio_error() (also QEMU function) set the device as broken
->
->      vdev->broken = true;
->
-> 7) Qemu bails out, and do not repond this crazy kernel.
->
-> 8) The kernel is waiting for the response to come back (function
-> virtnet_send_command())
->
-> 9) The kernel is waiting doing the following :
->
->        while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-> 	     !virtqueue_is_broken(vi->cvq))
-> 	      cpu_relax();
->
-> 10) None of the following functions above is true, thus, the kernel
-> loops here forever. Keeping in mind that virtqueue_is_broken() does
-> not look at the qemu `vdev->broken`, so, it never realizes that the
-> vitio is broken at QEMU side.
->
-> Fix it by not sending RSS commands if the feature is not available in
-> the device.
->
-> Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-> Cc: stable@vger.kernel.org
-> Cc: qemu-devel@nongnu.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> Changelog:
->
-> V2:
->    * Moved from creating a valid packet, by rejecting the request
->      completely
-> V3:
->    * Got some good feedback from and Xuan Zhuo and Heng Qi, and reworked
->      the rejection path.
->
-> ---
->   drivers/net/virtio_net.c | 22 ++++++++++++++++++----
->   1 file changed, 18 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index c22d1118a133..c4a21ec51adf 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -3807,6 +3807,7 @@ static int virtnet_set_rxfh(struct net_device *dev,
->   			    struct netlink_ext_ack *extack)
->   {
->   	struct virtnet_info *vi = netdev_priv(dev);
-> +	bool update = false;
->   	int i;
->   
->   	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
-> @@ -3814,13 +3815,24 @@ static int virtnet_set_rxfh(struct net_device *dev,
->   		return -EOPNOTSUPP;
->   
->   	if (rxfh->indir) {
-> +		if (!vi->has_rss)
-> +			return -EOPNOTSUPP;
-> +
->   		for (i = 0; i < vi->rss_indir_table_size; ++i)
->   			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
-> +		update = true;
->   	}
-> -	if (rxfh->key)
-> +
-> +	if (rxfh->key) {
-> +		if (!vi->has_rss && !vi->has_rss_hash_report)
-> +			return -EOPNOTSUPP;
-> +
->   		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
-> +		update = true;
-> +	}
->   
-> -	virtnet_commit_rss_command(vi);
-> +	if (update)
-> +		virtnet_commit_rss_command(vi);
->   
->   	return 0;
->   }
-> @@ -4729,13 +4741,15 @@ static int virtnet_probe(struct virtio_device *vdev)
->   	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
->   		vi->has_rss_hash_report = true;
->   
-> -	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-> +	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
->   		vi->has_rss = true;
->   
-> -	if (vi->has_rss || vi->has_rss_hash_report) {
->   		vi->rss_indir_table_size =
->   			virtio_cread16(vdev, offsetof(struct virtio_net_config,
->   				rss_max_indirection_table_length));
-> +	}
-> +
-> +	if (vi->has_rss || vi->has_rss_hash_report) {
->   		vi->rss_key_size =
->   			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
->   
+Applied, thanks.
 
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-Thanks.
-
-
-
+-- PMM
 
