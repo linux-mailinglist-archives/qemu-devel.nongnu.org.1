@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4143F892ED9
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C40892EDC
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqpi0-0002yM-Le; Sun, 31 Mar 2024 03:34:28 -0400
+	id 1rqpi2-0002zW-HE; Sun, 31 Mar 2024 03:34:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphy-0002x0-Pq; Sun, 31 Mar 2024 03:34:26 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1rqpi1-0002z7-07; Sun, 31 Mar 2024 03:34:29 -0400
+Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphx-0002FK-0u; Sun, 31 Mar 2024 03:34:26 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-6e6b6f86975so2090779b3a.1; 
- Sun, 31 Mar 2024 00:34:24 -0700 (PDT)
+ id 1rqphz-0002GP-Ey; Sun, 31 Mar 2024 03:34:28 -0400
+Received: by mail-ot1-x32b.google.com with SMTP id
+ 46e09a7af769-6e8918d29deso361401a34.1; 
+ Sun, 31 Mar 2024 00:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870463; x=1712475263; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711870465; x=1712475265; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mYXhV2tdfrK37fGeW/EVruixzcxS6jD0MeBRq3dZyY0=;
- b=V0yGoDh/L4RDA5hKBxpTZb/4Rwpb8nQZkP/2uOPjHJ8a0LkfPgk4eg7N38dX9j1rz8
- LMPGi78tX+V/Si5OhsD4JHXtNYJ/YDD3vj5eV0J+/rAWCmbxzLu6+coHzLmvqDj2/rcs
- Byu8WDoSaQdlERNfbqkARJ/O9xnLta3uKp2ObTmBiZEK02+sscH5iDoh4r5HyFl/TuA/
- 9MT7FxhoMPgVkAwT+KlhW11jxehyed1rO3NzkBfsZdqbl/xglPmbuRRbhFQBnGooFe4J
- KyqkWEe1HpEq0TMsAfRyQSgnuW/LmwuqDa/OKtBaRFjuHn9mZ3LEZut1kZi/ZLAdGWIp
- P2tg==
+ bh=dZL1L08WWNCihv0YHYd8rN2H0Y3QSivHfttFd+0jXus=;
+ b=O2oGMQCjyVjOmywvLKhprfpxfVzYyjUuKHOjw8RAwtT5a7CAYTgsqmAZdDfMpB9sKk
+ 0UscWs5PeOKfnSoZfoFl1yXLaEnToFoWHD9G8c3/Ry0dpDGGVRSGWqb9gxlr67Ys1WMn
+ XDdT7xzQltPqEgSS+plvtNSGfkgitVR+AkwwmEDI3CJB/ZZjq+SGM4AYw5nNK7qJVXUD
+ UB4e1Guhhatc7bES6GqX12tkkSHGlWFuJ1713RjaVu4uSOoPbPBim/axu3sO5pU01HTI
+ IGZjZDxQnxHBhmfEDaweG5rWUaBTIxu36R+1KqZcAD6117jlyFOibz12a62IJKYSymUb
+ xYmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870463; x=1712475263;
+ d=1e100.net; s=20230601; t=1711870465; x=1712475265;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mYXhV2tdfrK37fGeW/EVruixzcxS6jD0MeBRq3dZyY0=;
- b=BM8E7Ptg7diyy8K7EIgyQZsTzX+bRiqs1zNsxrg4v5F7Qxg30CK8DeeAFlGsD+ijN8
- HkKg3yi3M4neAo7ACrAgyxneZUaRlaDMXt1buQ5NWOa6Kvw87pyGc594aeCLQiloXmIQ
- wBbkSZ7HGc/ES/dQ1x83hZ8IBip8LcUXeg2qMLTYPRGSWyZsQuw0eZ3Febfkgk1Bk29t
- BO2MP29ONkwTPHc4881sBbZajy0gO/LifDVs6+obJjKCjiK0NcaeRLcAjaDc6hwwtWx0
- m07/qTZVOvkh1/gvazVi8VcD7VnDsaBiWYw1wXifqpTz+xoUa3gZADgPKPjpmR3qby3R
- UfRg==
+ bh=dZL1L08WWNCihv0YHYd8rN2H0Y3QSivHfttFd+0jXus=;
+ b=jse2mZNvJPrm+DD+aosZCMYSbW9SxILE3MVO2CNX+010fcKENRIaVY05gkZdM+1z7X
+ D3gczjGcOUR+qIOIknC4PMl0FtgbwI3tr221MekpNb7Ft7AMLdNX/4OEQV0aDm0cK4WM
+ AZbbPkUG7ZKpQlLVuMGPKA2SULYkiV1MqdCK2D982cVx0wxMwrk+A+sq8Xu49eZ+wD1/
+ 3rlL+9FIjTq/51OGl3t9MTXrBLU5HN3yCofAGBvexVf7YwEAlbu8SagJ/ThQsXRQ3qsH
+ neMUwl+R/tVCzYbdCEsdsKyFOHYTiJ0PgNQJLL6y9A+iP27qp2zJ+iI3B2sbTPC1s3AG
+ tGhQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWGnzIm5EXpa3go7gbaqtUPXKna9B2Y+h8zturvWsQDFjuDc/NVeuCmuigEPmWK0+DwFDc4oNpgpdlQr4opiIqFgT7X
-X-Gm-Message-State: AOJu0YwXV5tRCWtMmVfJRaZjzzidxXG/OyeE5F/6evHMXUnNQ8beS6Uw
- fgx2lVnAyIaFOdU98zuHIBs4L8rH55flU/IkaGYbFPlTYwcHnJI2cbeGj7OA2tY=
-X-Google-Smtp-Source: AGHT+IGYCaa9jKETcIxs3FJpEFekUjX8IY1krLhvPXCEDvoTnXYxHb48Pw31nGlsAY6BNQiwHvNWOw==
-X-Received: by 2002:a05:6a00:234b:b0:6ea:f369:f20f with SMTP id
- j11-20020a056a00234b00b006eaf369f20fmr5096673pfj.1.1711870462993; 
- Sun, 31 Mar 2024 00:34:22 -0700 (PDT)
+ AJvYcCVhdpsIEvqk23bUQhuBXPDmvJJUWzXjIhhS5/AH2gRrwqeRzdziBSvamyjGO7yB4T53gOByNIOYDgaR5WP9v+LK/5KV
+X-Gm-Message-State: AOJu0YxDrcmKuYIbG6W6Bqpq+KRvX973cBGNA+oRD8/Ooykh0sg3KYkE
+ wR9B+4iMKHKJkAdvMCrhZeLF5nF+1lwXr54Lycy8Fs9cqb4ly38DICRq3ZXK4o4=
+X-Google-Smtp-Source: AGHT+IGzoaWFh2ho0wfRfk3HYKSBF0hywllvqkOhnNHdoufUN2O4R1MUuKPYdcZVaUJwZkIcQOz68A==
+X-Received: by 2002:a05:6870:8093:b0:222:63e2:aba3 with SMTP id
+ q19-20020a056870809300b0022263e2aba3mr7125090oab.8.1711870465336; 
+ Sun, 31 Mar 2024 00:34:25 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.97.62])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.20
+ k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:22 -0700 (PDT)
+ Sun, 31 Mar 2024 00:34:25 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 6/8] target/ppc: Do not clear MSR[ME] on MCE interrupts to
- supervisor
-Date: Sun, 31 Mar 2024 17:33:43 +1000
-Message-ID: <20240331073349.88324-7-npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	qemu-ppc@nongnu.org
+Subject: [PULL 7/8] tests/avocado: Fix ppc_hv_tests.py xorriso dependency guard
+Date: Sun, 31 Mar 2024 17:33:44 +1000
+Message-ID: <20240331073349.88324-8-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
 References: <20240331073349.88324-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
+ envelope-from=npiggin@gmail.com; helo=mail-ot1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,47 +92,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hardware clears the MSR[ME] bit when delivering a machine check
-interrupt, so that is what QEMU does.
+For some reason the skipIf missing_deps() check fails to skip the test
+if it comes after the skipUnless lines, causing an error running on
+systems without xorriso.
 
-The spapr environment runs in supervisor mode though, and receives
-machine check interrupts after they are processed by the hypervisor,
-and MSR[ME] must always be enabled in supervisor mode (otherwise it
-could checkstop the system). So MSR[ME] must not be cleared when
-delivering machine checks to the supervisor.
+Avocado implements skipUnless is just an inverted skipIf, so it's not
+clear what the bug is or why this fixes it. For now it's enough to
+get things working.
 
-The fix to prevent supervisor mode from modifying MSR[ME] also
-prevented it from re-enabling the incorrectly cleared MSR[ME] bit
-when returning from handling the interrupt. Before that fix, the
-problem was not very noticable with well-behaved code. So the
-Fixes tag is not strictly correct, but practically they go together.
-
-Found by kvm-unit-tests machine check tests (not yet upstream).
-
-Fixes: 678b6f1af75ef ("target/ppc: Prevent supervisor from modifying MSR[ME]")
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2246
+Fixes: c9cb496710758 ("tests/avocado: ppc add hypervisor tests")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/excp_helper.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/avocado/ppc_hv_tests.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index 80f584f933..674c05a2ce 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -1345,9 +1345,10 @@ static void powerpc_excp_books(PowerPCCPU *cpu, int excp)
-              * clear (e.g., see FWNMI in PAPR).
-              */
-             new_msr |= (target_ulong)MSR_HVB;
-+
-+            /* HV machine check exceptions don't have ME set */
-+            new_msr &= ~((target_ulong)1 << MSR_ME);
-         }
--        /* machine check exceptions don't have ME set */
--        new_msr &= ~((target_ulong)1 << MSR_ME);
+diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
+index 5080358e25..2c8ddd9257 100644
+--- a/tests/avocado/ppc_hv_tests.py
++++ b/tests/avocado/ppc_hv_tests.py
+@@ -42,10 +42,11 @@ def missing_deps():
+ # QEMU packages are downloaded and installed on each test. That's not a
+ # large download, but it may be more polite to create qcow2 image with
+ # QEMU already installed and use that.
++# XXX: The order of these tests seems to matter, see git blame.
++@skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
+ @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck due to console handling problem')
+ @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
+ @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
+-@skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
+ class HypervisorTest(QemuSystemTest):
  
-         msr |= env->error_code;
-         break;
+     timeout = 1000
 -- 
 2.43.0
 
