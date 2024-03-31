@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF2B892ED8
+	by mail.lfdr.de (Postfix) with ESMTPS id 296E7892ED7
 	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqpht-0002s9-Bw; Sun, 31 Mar 2024 03:34:21 -0400
+	id 1rqphu-0002si-Uj; Sun, 31 Mar 2024 03:34:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphq-0002qm-S0; Sun, 31 Mar 2024 03:34:18 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1rqpht-0002sD-8Z; Sun, 31 Mar 2024 03:34:21 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphp-00027g-FK; Sun, 31 Mar 2024 03:34:18 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-29df3333d30so2288529a91.1; 
- Sun, 31 Mar 2024 00:34:16 -0700 (PDT)
+ id 1rqphr-0002Ak-Q2; Sun, 31 Mar 2024 03:34:21 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6e88e4c8500so2493971b3a.2; 
+ Sun, 31 Mar 2024 00:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870455; x=1712475255; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711870458; x=1712475258; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=sw/t58NlNMsiEYbm8tj58VRibhqWk2l7GIj5tEOLJ6o=;
- b=nbUSEDztFat5z78KChmuvB8bz3JwhM6fpZUAXAsWex7k1Ho7vkvEdt2sxWYvROfTaG
- 6YFVevXrpBd8AFvJjJzZPwy8VV+VjditGqySV1/ylEmU5CTUn3q+A8D9BqUYcOOmpGOy
- U4/J3ADpd5ua8NkrngmW+jHiUwwFhZ7NPIF40KRKJy3BClxPHtKasKErlF77tZZ7xE7t
- DjKLeRk9zPkjvtl3R174HgRdaE/Vis8YBljwbVsuE03wrdkqD+CUdiXRLpeUS/JwfB2f
- ASv910hBoDYCKGy6zFgEadqT0stOt/a/L27ghr1WMJCSkpknhuYZUEwfOBHjG6pTanB+
- EusQ==
+ bh=99NXL3dTZGdgRT6sIcLJ+0pMc+4T2LlgrASZ20/p80E=;
+ b=SzidvXBqQALpRvt0chUbGDe6rq+vOCUvzn7GRW5O+PV+d8mifdSvtQzkb+AOa+9WW0
+ mpskyK6wJh+izn3T/H8XhqVke/6DwJiFqunAFaQOtPjh5R8LX62zh+M3Bz8rIOqvrlVy
+ z8k04dVCZvjrl+Qb0sYSnLbx0vmIiL64lyljbM1UPkHYDBEKrevbTF3rwnLeUjJbCyio
+ KBplMpQxe3o2pHiBZj9E54VveL5TTpqU9XBW7Dq8mzdT1CgLRtMYjj9WNglabseetjp4
+ aoFUczTUXOWhIZu9NmGoiuSXA4XWcoxRa6FqaJoVLtJ3N2dBri50sXNFm8HLA9+mv9Oi
+ LKBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870455; x=1712475255;
+ d=1e100.net; s=20230601; t=1711870458; x=1712475258;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sw/t58NlNMsiEYbm8tj58VRibhqWk2l7GIj5tEOLJ6o=;
- b=S9dnux55j79xTO+KGmhG+y28O//FRHZqttkKUiBGJ/YO+F7z3vmvURP/IHFtal1g5H
- 2C14xWd2cmzDIQiwkhhOjE+B2ND000Vd4RasneHq9wJkQHO/VxkR0E8REkdRIHwLj5Qt
- 1a7mLsMF7XfxbQuu5OOQ7ySuXJpbj65c3stTYuvIT/IIynH/SlgZJ0Ebw68ES+musXln
- 6o49Ivy19gRKNJAOugGteQgjk/CM7H13xt46buz8CYPxF7oo9rQKgHBYqrPg1KX8FM0R
- r9e/k92KW/5duuWrTasbU1Cyvzms3i3t3mjkJ5T7z3Xac7agdZmv7L0u4KAfALmimZZr
- 1AFA==
+ bh=99NXL3dTZGdgRT6sIcLJ+0pMc+4T2LlgrASZ20/p80E=;
+ b=A45m+vTVCQsr5lnfBKI8JfObQocM2HGWwdQ+3F7/ntRIlNSDcP7DdsX1lKwQwAEuqd
+ rq4DB0eMC38jokLtoZxf1qOrt9DObuWgsW1vAdVMeB89NR6vJ+hySxyLWLsZpQq6RfvG
+ 8d5DTaFee3GohsSchRZYuvbxOdXcp3zpkQES/hMUlz15PnSWkDW1uti2qauXy8tGAKsG
+ gUX3kyTn1R9kkAwFsg/7YwNJ1IgLHzmo8NHfUrW9i8rFdluT5A8cmetT6SknHbuxcxmz
+ 8D9edTRVW83jVuvu9GgzFlNcUk+OhpuBby8Z+kzQVA7XvB7oZNE4dc3vyuYdx/qh4aLD
+ SU9Q==
 X-Forwarded-Encrypted: i=1;
- AJvYcCULoUfucdRJ4y8jijJ94Lpbtg5Kgcrr3bshZkPpXMJQ278uF9X12UUZpCcsZlE0s3hAOZM1fJNqBtZylbOW5oTx+8Ru
-X-Gm-Message-State: AOJu0YyG19Q+fX6HHDhD967crxakyrzcHZV0ToMSJ8vvqxLkHvD2LC//
- wFzT1cSAMMXZygBcHpVJdTUY64mtT3VZpeQ0nwgM7Naxq3TauxSEITy7vVBOnMY=
-X-Google-Smtp-Source: AGHT+IEVgDm9mZUTEpcLKMZ2d99YeKbCAA+ReIoPEOr6RDmphF39S2X/24uwv/15OPloSsyFU9HNqg==
-X-Received: by 2002:a05:6a00:2196:b0:6ea:f7e2:49b8 with SMTP id
- h22-20020a056a00219600b006eaf7e249b8mr2978098pfi.3.1711870454960; 
- Sun, 31 Mar 2024 00:34:14 -0700 (PDT)
+ AJvYcCWWtKUCr35eR6HGDDV1+XeSu29FU9xgIM74wb+gSRrbM9U/fL2bKRQuGAq0sFVwkdCty+9TxDlhvvowtBDxDVypP7XO
+X-Gm-Message-State: AOJu0YxfHUrNohFZ8CcYxHd7BPLmFu6InSSFQUHiw4SxEzosQhLQCOzR
+ wPYVYAi2IzTQeftYvSeMrqTKsmyyEHlT0D2FB4Z+u/MrUpxjDTCIP2DTkhpHelY=
+X-Google-Smtp-Source: AGHT+IHecu38bkXj3ZPpQ1hXMU9MmuN2FuavIqbLNa7kNPrBpwUYI33Nn8b5jKp/FwNeA5fep/Qa7Q==
+X-Received: by 2002:a05:6a00:3cc4:b0:6ea:acbe:5188 with SMTP id
+ ln4-20020a056a003cc400b006eaacbe5188mr6891189pfb.32.1711870457625; 
+ Sun, 31 Mar 2024 00:34:17 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.97.62])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.12
+ k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:14 -0700 (PDT)
+ Sun, 31 Mar 2024 00:34:17 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 3/8] target/ppc/mmu-radix64: Use correct string format in
- walk_tree()
-Date: Sun, 31 Mar 2024 17:33:40 +1000
-Message-ID: <20240331073349.88324-4-npiggin@gmail.com>
+ Benjamin Gray <bgray@linux.ibm.com>
+Subject: [PULL 4/8] target/ppc: Restore [H]DEXCR to 64-bits
+Date: Sun, 31 Mar 2024 17:33:41 +1000
+Message-ID: <20240331073349.88324-5-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
 References: <20240331073349.88324-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=npiggin@gmail.com; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,44 +92,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-'mask', 'nlb' and 'base_addr' are all uin64_t types.
-Use the corresponding PRIx64 format.
+The DEXCR emulation was recently changed to a 32-bit register, possibly
+because it does have a 32-bit read-only view. It is a full 64-bit
+SPR though, so use the corresponding 64-bit write functions.
 
-Fixes: d2066bc50d ("target/ppc: Check page dir/table base alignment")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Fixes: fbda88f7abdee ("target/ppc: Fix width of some 32-bit SPRs")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- target/ppc/mmu-radix64.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/ppc/cpu_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
-index 5823e039e6..690dff7a49 100644
---- a/target/ppc/mmu-radix64.c
-+++ b/target/ppc/mmu-radix64.c
-@@ -300,8 +300,8 @@ static int ppc_radix64_next_level(AddressSpace *as, vaddr eaddr,
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 7e65f08147..22fdea093b 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -5820,7 +5820,7 @@ static void register_power10_dexcr_sprs(CPUPPCState *env)
+ {
+     spr_register(env, SPR_DEXCR, "DEXCR",
+             SPR_NOACCESS, SPR_NOACCESS,
+-            &spr_read_generic, &spr_write_generic32,
++            &spr_read_generic, &spr_write_generic,
+             0);
  
-         if (nlb & mask) {
-             qemu_log_mask(LOG_GUEST_ERROR,
--                "%s: misaligned page dir/table base: 0x"TARGET_FMT_lx
--                " page dir size: 0x"TARGET_FMT_lx"\n",
-+                "%s: misaligned page dir/table base: 0x%" PRIx64
-+                " page dir size: 0x%" PRIx64 "\n",
-                 __func__, nlb, mask + 1);
-             nlb &= ~mask;
-         }
-@@ -324,8 +324,8 @@ static int ppc_radix64_walk_tree(AddressSpace *as, vaddr eaddr,
+     spr_register(env, SPR_UDEXCR, "UDEXCR",
+@@ -5831,7 +5831,7 @@ static void register_power10_dexcr_sprs(CPUPPCState *env)
+     spr_register_hv(env, SPR_HDEXCR, "HDEXCR",
+             SPR_NOACCESS, SPR_NOACCESS,
+             SPR_NOACCESS, SPR_NOACCESS,
+-            &spr_read_generic, &spr_write_generic32,
++            &spr_read_generic, &spr_write_generic,
+             0);
  
-     if (base_addr & mask) {
-         qemu_log_mask(LOG_GUEST_ERROR,
--            "%s: misaligned page dir base: 0x"TARGET_FMT_lx
--            " page dir size: 0x"TARGET_FMT_lx"\n",
-+            "%s: misaligned page dir base: 0x%" PRIx64
-+            " page dir size: 0x%" PRIx64 "\n",
-             __func__, base_addr, mask + 1);
-         base_addr &= ~mask;
-     }
+     spr_register(env, SPR_UHDEXCR, "UHDEXCR",
 -- 
 2.43.0
 
