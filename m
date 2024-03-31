@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DEE2893549
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 19:54:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AFB893557
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 20:18:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqzN7-0000vS-5r; Sun, 31 Mar 2024 13:53:33 -0400
+	id 1rqzka-0004BG-4G; Sun, 31 Mar 2024 14:17:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqzN2-0000vG-9d
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 13:53:28 -0400
-Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rqzN0-0000tn-LH
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 13:53:27 -0400
-Received: by mail-oo1-xc34.google.com with SMTP id
- 006d021491bc7-5a4817189c8so2311505eaf.1
- for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 10:53:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1711907604; x=1712512404; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8vOJ5ZUCfx+GpTRAAjB8Up7qBhtHwL4LVJZ7yE0rZYQ=;
- b=ce+YFubhgge/xmESsmo9cBlHcc2BZGlqJvjK8ub96wkZJ9ybWlyMc7k8N7e5GOPwVt
- ZssNQquuy4N02jMAPrjAK+kXKgXbdfDmP5oG1DT8cCAx6AIN972IW2MYAANfcXOJefgz
- WBt0oRtn4Rk5uVszqu1D3JuSY3sAeP67rFMpPhI1wRe4l7ByEeMPha9rE2Q+m0FtpjsW
- cLeVCAxDYOyYBysSE7x6LsxQ/lVEfVGXVmwaLuostv0FjbJNIsFCTlIjR1dh5CFtN/wK
- w3HwLTbXGYztxdt7yGrc4PfN6Yokr8TYg/EE6DruTNNd7V8ntPIAmh9rSBjvYKcyGoSM
- 6a+g==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rqzkT-0004Ar-Qi
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:17:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rqzkS-0004gF-Ab
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:17:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1711909059;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=jLpAUqBQzceTRAYU+8U7+iDE5tmAFXUptroQALqFoI0=;
+ b=E1Pl9azK3kWPzOfIpeev/WRhFzqnZX6bp/Wm2wiy+x3qZSwK+gdYlBLXgZT7iribkLmtR1
+ LtDnls8ayfOL6hZU3g0YV8Nbh/tKta6iJygbxebkN85Rz0spvn///5zPUXAi15ejHgaHCQ
+ qm6FWVTxmoXNQQ67NjwC1zwLNqIHjZQ=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-187-p1iv4RsWNBaazD2H_E8_bg-1; Sun, 31 Mar 2024 14:17:36 -0400
+X-MC-Unique: p1iv4RsWNBaazD2H_E8_bg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a46cc88be5fso257075466b.2
+ for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 11:17:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711907604; x=1712512404;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8vOJ5ZUCfx+GpTRAAjB8Up7qBhtHwL4LVJZ7yE0rZYQ=;
- b=AOaa4n1Kj3qml/W+Y3IVZYspuz/3IIzA/lDKy+hI3KPi1xd3RoviDHWVVs7xdkIV/U
- xjZ69sfD+xbgftALyIaMt9b4TNfafKr+3MJlHo4c5NyAeElcT+oJYCU7Q+vjJau1pqY8
- UIcE+z/RizAzB/iHYltJn/cXLYWgsv+JhKCxwh/4ZlU6MVeP8BM/G5tiWCXaj4Gm3Iyg
- ZLvGSXAQc/F46GGyhosyGTcN9tN+KE/JkzAu8izs3hOi7eWsVBlNZR6+MFc6ge1wRHST
- G1nrpUF2T6tFWPREcPVz4UsQkO84uuFGW1Tw1dIO7lekYY8zuDXLVow0mzN9EBT/7fym
- o3wg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUlt4nKVHxjQjJgitOKkH9hzJrT77IzgAx7ZhrIf0L20pxghRMdkjWzzBhURf5cqgD1WZliZRUOvalnuXNoFbXKJYh+Dcg=
-X-Gm-Message-State: AOJu0Yz9UudDy/EbKYy9ZrGRsRqWw5sG7YAQKNIn1mF31DgBoh/sEdEX
- kImHegXSLbszt3h91jlovYPvnJPh+gUwzRWb7p1zx5OY3PLreMRKd9PZeESPoTBSQGQ1dmxCGsd
- 1
-X-Google-Smtp-Source: AGHT+IFHkkxyv54yQedC63qE+FuYs2DjNfTc3ISmnxqQ8ROpcp50DR/U94HlsNrdriHJ45wA7dT0TQ==
-X-Received: by 2002:a05:6358:2905:b0:183:3f8f:5eb5 with SMTP id
- y5-20020a056358290500b001833f8f5eb5mr9740157rwb.4.1711907603882; 
- Sun, 31 Mar 2024 10:53:23 -0700 (PDT)
-Received: from [172.20.1.19] (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ d=1e100.net; s=20230601; t=1711909053; x=1712513853;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=jLpAUqBQzceTRAYU+8U7+iDE5tmAFXUptroQALqFoI0=;
+ b=fqrqc6u8smMwXhfzZopEuOUmXC9MAA5WoxkD82am/Y6eMsG2I9WfM1LEL0h/KK3L9b
+ xkQ7ZkfL2VX4xeGmzt3j3DogGt/ySogikTUqSBT18eDbjelPcbmcxyAG4f+nthq6jsSt
+ kC9Jv2pc847SCO92roYW6p4Y/qvT9WsJ+WXjFDx+mZKMbrS1yhMcFVFjwMot9T/uWiMz
+ IRTtOL/FX5dv56nHN7GfyMbZGl8T8LikA6nspAkS8+CUnil7I+IIObmy/cAFe9wntY0m
+ sV/jYX/tYG99coVTn33YvU9VISsr1noeNtIMX3LpUN12ipM5W0lfnuYsmvZBDAqgHyPn
+ XXRw==
+X-Gm-Message-State: AOJu0YwEOvX4DC/4Xnm7XLRS6tycwzpJ7grXckmSm/aIVWq8M5aCJCp7
+ OAH/Zu+dlkYx/4iRNz6OMA2g4RfVw+QY6IK/gk05mnwQpwSnwWGGvjplhfPoH1D3bm2UHD1dSKW
+ xVUO9iUJp27IhUmDpsVIEw3fqw5RgqSPMxM+ElxSU8H/KOc3aFjZy949zt6lV7N2jbZLIjd3PnZ
+ M/h0mTlEXZjQ5M5u8ixR3qjAOrdj3SMv5tv2Qg
+X-Received: by 2002:a17:906:3644:b0:a4e:d5d:8fd6 with SMTP id
+ r4-20020a170906364400b00a4e0d5d8fd6mr4472357ejb.60.1711909053454; 
+ Sun, 31 Mar 2024 11:17:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSmdcmNZrnpAjHSPvT2GxerIusqPJdGGfeG6lBC0iONtOIm0wdvICKyfWkWayre/8CtDBMkA==
+X-Received: by 2002:a17:906:3644:b0:a4e:d5d:8fd6 with SMTP id
+ r4-20020a170906364400b00a4e0d5d8fd6mr4472348ejb.60.1711909053075; 
+ Sun, 31 Mar 2024 11:17:33 -0700 (PDT)
+Received: from avogadro.local ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- ot6-20020a17090b3b4600b002a23209024fsm1552850pjb.3.2024.03.31.10.53.18
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 31 Mar 2024 10:53:23 -0700 (PDT)
-Message-ID: <467864a1-e3fe-4f92-aa80-c4da3a5484fd@linaro.org>
-Date: Sun, 31 Mar 2024 07:53:11 -1000
+ he18-20020a1709073d9200b00a4729f093ecsm4378532ejc.53.2024.03.31.11.17.31
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 31 Mar 2024 11:17:31 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH] lsi53c895a: avoid out of bounds access to s->msg[]
+Date: Sun, 31 Mar 2024 20:17:29 +0200
+Message-ID: <20240331181730.150860-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user/syscall.c: fix setsockopt(SOL_ALG, ALG_SET_KEY)
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: YunQiang Su <ysu@wavecomp.com>, Laurent Vivier <laurent@vivier.eu>
-References: <20240331084825.2716833-1-mjt@tls.msk.ru>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240331084825.2716833-1-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc34.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,16 +97,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/30/24 22:48, Michael Tokarev wrote:
-> This setsockopt accepts zero-lengh optlen (current qemu implementation
-> does not allow this).  Also, there's no need to make a copy of the key,
-> it is enough to use lock_user() (which accepts zero-length length already).
-> 
-> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/2197
-> Fixes: f31dddd2fc "linux-user: Add support for setsockopt() option SOL_ALG"
-> Signed-off-by: Michael Tokarev<mjt@tls.msk.ru>
+If no bytes are there to process in the message in phase,
+the input data latch (s->sidl) is set to s->msg[-1].  Just
+do nothing since no DMA is performed.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reported-by: Chuhong Yuan <hslester96@gmail.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/scsi/lsi53c895a.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-r~
+diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
+index 71f759a59dd..eb9828dd5ef 100644
+--- a/hw/scsi/lsi53c895a.c
++++ b/hw/scsi/lsi53c895a.c
+@@ -927,13 +927,18 @@ static void lsi_do_msgin(LSIState *s)
+     assert(len > 0 && len <= LSI_MAX_MSGIN_LEN);
+     if (len > s->dbc)
+         len = s->dbc;
+-    pci_dma_write(PCI_DEVICE(s), s->dnad, s->msg, len);
+-    /* Linux drivers rely on the last byte being in the SIDL.  */
+-    s->sidl = s->msg[len - 1];
+-    s->msg_len -= len;
+-    if (s->msg_len) {
+-        memmove(s->msg, s->msg + len, s->msg_len);
+-    } else {
++
++    if (len) {
++        pci_dma_write(PCI_DEVICE(s), s->dnad, s->msg, len);
++        /* Linux drivers rely on the last byte being in the SIDL.  */
++        s->sidl = s->msg[len - 1];
++        s->msg_len -= len;
++        if (s->msg_len) {
++            memmove(s->msg, s->msg + len, s->msg_len);
++        }
++    }
++
++    if (!s->msg_len) {
+         /* ??? Check if ATN (not yet implemented) is asserted and maybe
+            switch to PHASE_MO.  */
+         switch (s->msg_action) {
+-- 
+2.44.0
+
 
