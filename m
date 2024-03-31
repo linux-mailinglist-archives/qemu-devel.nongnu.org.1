@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65E0892EDB
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF2B892ED8
 	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqphp-0002qP-Q3; Sun, 31 Mar 2024 03:34:17 -0400
+	id 1rqpht-0002s9-Bw; Sun, 31 Mar 2024 03:34:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphn-0002o2-OI; Sun, 31 Mar 2024 03:34:15 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1rqphq-0002qm-S0; Sun, 31 Mar 2024 03:34:18 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphm-00026v-8H; Sun, 31 Mar 2024 03:34:15 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6e74aa08d15so2535956b3a.1; 
- Sun, 31 Mar 2024 00:34:13 -0700 (PDT)
+ id 1rqphp-00027g-FK; Sun, 31 Mar 2024 03:34:18 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-29df3333d30so2288529a91.1; 
+ Sun, 31 Mar 2024 00:34:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870452; x=1712475252; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711870455; x=1712475255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xF5OBXNYP6ZI81AmsCFRz0Xuc8TKtQnpsKPSIbYJa3o=;
- b=Ao5r3aEuc4c3pgVdMww6B6LEzLVBuNlWIafyzQdnzKZj1P6exgpy9a0CJoApROUfTt
- GiUoDMfR73M+SeXuu06R4jYBYDp3eMbYldWDaRi2fkDZnlw3xWYm5IMIsLf/XvsOguf7
- ObBmLn3er7UA+aV5uZy3aWMT4IJjCQRsLv3Us4vMC1lkUi3wi4I5BCWmu6l5iinST/ro
- nUA0MXGwq1QDkFw1J8bf/npUByM8HTLGwYd+UhoaCrSFF1r3Ok5d4KVDdLe0zWv/JBL1
- wY6zUYhqDC2zTD8d+y0XP4blt57bPz9xAVX8qImGKELvFwKUpXtl7Xlv+RN5jWUIApzK
- 98SQ==
+ bh=sw/t58NlNMsiEYbm8tj58VRibhqWk2l7GIj5tEOLJ6o=;
+ b=nbUSEDztFat5z78KChmuvB8bz3JwhM6fpZUAXAsWex7k1Ho7vkvEdt2sxWYvROfTaG
+ 6YFVevXrpBd8AFvJjJzZPwy8VV+VjditGqySV1/ylEmU5CTUn3q+A8D9BqUYcOOmpGOy
+ U4/J3ADpd5ua8NkrngmW+jHiUwwFhZ7NPIF40KRKJy3BClxPHtKasKErlF77tZZ7xE7t
+ DjKLeRk9zPkjvtl3R174HgRdaE/Vis8YBljwbVsuE03wrdkqD+CUdiXRLpeUS/JwfB2f
+ ASv910hBoDYCKGy6zFgEadqT0stOt/a/L27ghr1WMJCSkpknhuYZUEwfOBHjG6pTanB+
+ EusQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870452; x=1712475252;
+ d=1e100.net; s=20230601; t=1711870455; x=1712475255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xF5OBXNYP6ZI81AmsCFRz0Xuc8TKtQnpsKPSIbYJa3o=;
- b=O5DsBTM/4q8Xmo8uI2rOs+UKHZAa/o/chmQAu3uwFzIuTehJa4FtcsEEMivn3oH7ak
- pUq0Vs2+sdZ52R6UM3B/Tp7Xb33/oZJ15PIVwIrJx+uWLOFjF2RVfZPsnM+KHfkk50rM
- 0c2Ij0+WOqXK+cI7Zxw86skGfba5sgmd7GK3YZ+e4vIGZL3rta4W6fE3TtJYjbI95NJp
- 8K16/8+fCTNiPqaNOUaBLpmVMq0h5aCxxYrBpY8KHEZXS0c6zXjapB4Hw0VSb0wI8ksU
- pD0ryNUctJ+4kq7tW+HCXW4Ed9qeXeayR8itxomkeMXQy8bHv11QypW9P7ZpiX4QDeHO
- TT2A==
+ bh=sw/t58NlNMsiEYbm8tj58VRibhqWk2l7GIj5tEOLJ6o=;
+ b=S9dnux55j79xTO+KGmhG+y28O//FRHZqttkKUiBGJ/YO+F7z3vmvURP/IHFtal1g5H
+ 2C14xWd2cmzDIQiwkhhOjE+B2ND000Vd4RasneHq9wJkQHO/VxkR0E8REkdRIHwLj5Qt
+ 1a7mLsMF7XfxbQuu5OOQ7ySuXJpbj65c3stTYuvIT/IIynH/SlgZJ0Ebw68ES+musXln
+ 6o49Ivy19gRKNJAOugGteQgjk/CM7H13xt46buz8CYPxF7oo9rQKgHBYqrPg1KX8FM0R
+ r9e/k92KW/5duuWrTasbU1Cyvzms3i3t3mjkJ5T7z3Xac7agdZmv7L0u4KAfALmimZZr
+ 1AFA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUi/300MKPTqUM3U0yesNk5IUvzBhQ1lSWE9mlSKO1VJqxEzALhOdBskpIT7SeTZpAHqDmuczeLZsb99KPjs28PhYSI
-X-Gm-Message-State: AOJu0Yw/wxe0+jPL1E6eH69/ZUe0QAESmromL9S/7U0LsRXqn0G0Y5xW
- dLAwwkZlIQxitjaDhU9mqWT9sybojtOOGHiJ+CgW3fllOIXNTWb9B3gv0Ldny3k=
-X-Google-Smtp-Source: AGHT+IETTOw2Vn+VyN+Rls/DoBmIk8j2yt9iBvJ3c/qB/ud1ToNEatvTOz5tmvmpoU2miRCkh3J+Bw==
-X-Received: by 2002:a05:6a00:1992:b0:6ea:e2ec:9622 with SMTP id
- d18-20020a056a00199200b006eae2ec9622mr8610538pfl.20.1711870452321; 
- Sun, 31 Mar 2024 00:34:12 -0700 (PDT)
+ AJvYcCULoUfucdRJ4y8jijJ94Lpbtg5Kgcrr3bshZkPpXMJQ278uF9X12UUZpCcsZlE0s3hAOZM1fJNqBtZylbOW5oTx+8Ru
+X-Gm-Message-State: AOJu0YyG19Q+fX6HHDhD967crxakyrzcHZV0ToMSJ8vvqxLkHvD2LC//
+ wFzT1cSAMMXZygBcHpVJdTUY64mtT3VZpeQ0nwgM7Naxq3TauxSEITy7vVBOnMY=
+X-Google-Smtp-Source: AGHT+IEVgDm9mZUTEpcLKMZ2d99YeKbCAA+ReIoPEOr6RDmphF39S2X/24uwv/15OPloSsyFU9HNqg==
+X-Received: by 2002:a05:6a00:2196:b0:6ea:f7e2:49b8 with SMTP id
+ h22-20020a056a00219600b006eaf7e249b8mr2978098pfi.3.1711870454960; 
+ Sun, 31 Mar 2024 00:34:14 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.97.62])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.09
+ k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:12 -0700 (PDT)
+ Sun, 31 Mar 2024 00:34:14 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>
-Subject: [PULL 2/8] hw/ppc/spapr: Include missing 'sysemu/tcg.h' header
-Date: Sun, 31 Mar 2024 17:33:39 +1000
-Message-ID: <20240331073349.88324-3-npiggin@gmail.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 3/8] target/ppc/mmu-radix64: Use correct string format in
+ walk_tree()
+Date: Sun, 31 Mar 2024 17:33:40 +1000
+Message-ID: <20240331073349.88324-4-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
 References: <20240331073349.88324-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=npiggin@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,33 +96,42 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-"sysemu/tcg.h" declares tcg_enabled(), and is implicitly included.
-Include it explicitly to avoid the following error when refactoring
-headers:
+'mask', 'nlb' and 'base_addr' are all uin64_t types.
+Use the corresponding PRIx64 format.
 
-  hw/ppc/spapr.c:2612:9: error: call to undeclared function 'tcg_enabled'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    if (tcg_enabled()) {
-        ^
-
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Fixes: d2066bc50d ("target/ppc: Check page dir/table base alignment")
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- hw/ppc/spapr.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/ppc/mmu-radix64.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index c417f9dd52..e9bc97fee0 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -35,6 +35,7 @@
- #include "sysemu/sysemu.h"
- #include "sysemu/hostmem.h"
- #include "sysemu/numa.h"
-+#include "sysemu/tcg.h"
- #include "sysemu/qtest.h"
- #include "sysemu/reset.h"
- #include "sysemu/runstate.h"
+diff --git a/target/ppc/mmu-radix64.c b/target/ppc/mmu-radix64.c
+index 5823e039e6..690dff7a49 100644
+--- a/target/ppc/mmu-radix64.c
++++ b/target/ppc/mmu-radix64.c
+@@ -300,8 +300,8 @@ static int ppc_radix64_next_level(AddressSpace *as, vaddr eaddr,
+ 
+         if (nlb & mask) {
+             qemu_log_mask(LOG_GUEST_ERROR,
+-                "%s: misaligned page dir/table base: 0x"TARGET_FMT_lx
+-                " page dir size: 0x"TARGET_FMT_lx"\n",
++                "%s: misaligned page dir/table base: 0x%" PRIx64
++                " page dir size: 0x%" PRIx64 "\n",
+                 __func__, nlb, mask + 1);
+             nlb &= ~mask;
+         }
+@@ -324,8 +324,8 @@ static int ppc_radix64_walk_tree(AddressSpace *as, vaddr eaddr,
+ 
+     if (base_addr & mask) {
+         qemu_log_mask(LOG_GUEST_ERROR,
+-            "%s: misaligned page dir base: 0x"TARGET_FMT_lx
+-            " page dir size: 0x"TARGET_FMT_lx"\n",
++            "%s: misaligned page dir base: 0x%" PRIx64
++            " page dir size: 0x%" PRIx64 "\n",
+             __func__, base_addr, mask + 1);
+         base_addr &= ~mask;
+     }
 -- 
 2.43.0
 
