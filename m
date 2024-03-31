@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C40892EDC
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D5D7892ED6
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqpi2-0002zW-HE; Sun, 31 Mar 2024 03:34:30 -0400
+	id 1rqpi5-00032N-Qh; Sun, 31 Mar 2024 03:34:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqpi1-0002z7-07; Sun, 31 Mar 2024 03:34:29 -0400
-Received: from mail-ot1-x32b.google.com ([2607:f8b0:4864:20::32b])
+ id 1rqpi3-000301-2S; Sun, 31 Mar 2024 03:34:31 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqphz-0002GP-Ey; Sun, 31 Mar 2024 03:34:28 -0400
-Received: by mail-ot1-x32b.google.com with SMTP id
- 46e09a7af769-6e8918d29deso361401a34.1; 
- Sun, 31 Mar 2024 00:34:26 -0700 (PDT)
+ id 1rqpi1-0002Jb-Ku; Sun, 31 Mar 2024 03:34:30 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-6ea9a605ca7so2212987b3a.0; 
+ Sun, 31 Mar 2024 00:34:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870465; x=1712475265; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711870468; x=1712475268; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dZL1L08WWNCihv0YHYd8rN2H0Y3QSivHfttFd+0jXus=;
- b=O2oGMQCjyVjOmywvLKhprfpxfVzYyjUuKHOjw8RAwtT5a7CAYTgsqmAZdDfMpB9sKk
- 0UscWs5PeOKfnSoZfoFl1yXLaEnToFoWHD9G8c3/Ry0dpDGGVRSGWqb9gxlr67Ys1WMn
- XDdT7xzQltPqEgSS+plvtNSGfkgitVR+AkwwmEDI3CJB/ZZjq+SGM4AYw5nNK7qJVXUD
- UB4e1Guhhatc7bES6GqX12tkkSHGlWFuJ1713RjaVu4uSOoPbPBim/axu3sO5pU01HTI
- IGZjZDxQnxHBhmfEDaweG5rWUaBTIxu36R+1KqZcAD6117jlyFOibz12a62IJKYSymUb
- xYmg==
+ bh=XNe5dOzqOeierXs9KtggpyMYBczM9maytA5+1Uk3r58=;
+ b=XnhLq2BnHSSj0vxToZR+C/RXURCpzL3s2LeHQ29uZhLjuxWJGqj9sBio9cQ8qEbCsT
+ ofAByzNBzoqKRSjbjRGh9PNPMqV2UXaio97kugLBhsGp+gz9hbkoJ4CI9aFh2gpWd7OG
+ 9ZxkVWgAV5cTPmiX0sPaH3ebfSV7r20NUm5sSUq6LnTMLiPOnUVRJ4z+klxFy1Q8ZJIL
+ fD8y8EbmiAZeBmDFlmqUc6Pnnh5QybVKNkEIL8dgBs+Gy86N1Q6VBoT9RuNWjkqgW8Zd
+ MBom5Y0BvfzHOQ8p+CT9bmzdyvYEr6A8qEYjLQWwzdahOxggI101GEtDEsEq7VrA+QqC
+ 2eHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870465; x=1712475265;
+ d=1e100.net; s=20230601; t=1711870468; x=1712475268;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dZL1L08WWNCihv0YHYd8rN2H0Y3QSivHfttFd+0jXus=;
- b=jse2mZNvJPrm+DD+aosZCMYSbW9SxILE3MVO2CNX+010fcKENRIaVY05gkZdM+1z7X
- D3gczjGcOUR+qIOIknC4PMl0FtgbwI3tr221MekpNb7Ft7AMLdNX/4OEQV0aDm0cK4WM
- AZbbPkUG7ZKpQlLVuMGPKA2SULYkiV1MqdCK2D982cVx0wxMwrk+A+sq8Xu49eZ+wD1/
- 3rlL+9FIjTq/51OGl3t9MTXrBLU5HN3yCofAGBvexVf7YwEAlbu8SagJ/ThQsXRQ3qsH
- neMUwl+R/tVCzYbdCEsdsKyFOHYTiJ0PgNQJLL6y9A+iP27qp2zJ+iI3B2sbTPC1s3AG
- tGhQ==
+ bh=XNe5dOzqOeierXs9KtggpyMYBczM9maytA5+1Uk3r58=;
+ b=nXfyGNC9Cb2DN35jahUnToeaemsQ1NbExhfkdSWawOs7t6Ic6bLVjtqI1I/RlO7UJr
+ r8u9agTH6yIc12G1ur/63vQC/1jUQqamF5k5GAX7w/sfBuPht6fvr6cAGqaxrMcC7v7J
+ 0IgQjvG8G07nCN4sYaqTf8mj0qC6y/ab73sVAIv5Y/OTaaEjcgZXIJaK3g+q5bcLUcBk
+ sOdNLZDyDUKw+hVFR5M7WN6ebErpnhb3w0Oe9XExgTfqP32vlphBdXNT/pSRD8lmekoG
+ xGB/8pleoiWyPX3UxCHFsD2q7czgRBNJ+f8RMvFiy7ZYjKdtRtICpZfRoxRwe82b54bX
+ 7fhA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVhdpsIEvqk23bUQhuBXPDmvJJUWzXjIhhS5/AH2gRrwqeRzdziBSvamyjGO7yB4T53gOByNIOYDgaR5WP9v+LK/5KV
-X-Gm-Message-State: AOJu0YxDrcmKuYIbG6W6Bqpq+KRvX973cBGNA+oRD8/Ooykh0sg3KYkE
- wR9B+4iMKHKJkAdvMCrhZeLF5nF+1lwXr54Lycy8Fs9cqb4ly38DICRq3ZXK4o4=
-X-Google-Smtp-Source: AGHT+IGzoaWFh2ho0wfRfk3HYKSBF0hywllvqkOhnNHdoufUN2O4R1MUuKPYdcZVaUJwZkIcQOz68A==
-X-Received: by 2002:a05:6870:8093:b0:222:63e2:aba3 with SMTP id
- q19-20020a056870809300b0022263e2aba3mr7125090oab.8.1711870465336; 
- Sun, 31 Mar 2024 00:34:25 -0700 (PDT)
+ AJvYcCVOHyHdqxM8BaDTPKsaucBVkyZYEbHVwq7IR+/Qqc6owQJ23Vrsj0/cPCIhsJ86gWdQf0aDdouCvgSrslCv7gC/5jD2
+X-Gm-Message-State: AOJu0Ywm7q+Xq9LeCR2tVLsUgDY471ndqbvvwIPyWgQos90D/eTuLW1s
+ 8LXLXNHsqL0L7+IPNPZ5k6LHmjr1cKQyHFRHrHOhgE7+JIsQDgEZL4oieeC4a5Q=
+X-Google-Smtp-Source: AGHT+IGOSzte/modj7JZksb7ZDiiiXJEXTZBZionLWBAORlBDO8GB9MrtlKvxNxO+cpLuzT9XMINIw==
+X-Received: by 2002:a05:6a00:181b:b0:6e7:6bc4:ef8c with SMTP id
+ y27-20020a056a00181b00b006e76bc4ef8cmr13846300pfa.3.1711870467662; 
+ Sun, 31 Mar 2024 00:34:27 -0700 (PDT)
 Received: from wheely.local0.net ([118.210.97.62])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.23
+ k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:25 -0700 (PDT)
+ Sun, 31 Mar 2024 00:34:27 -0700 (PDT)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
 	qemu-ppc@nongnu.org
-Subject: [PULL 7/8] tests/avocado: Fix ppc_hv_tests.py xorriso dependency guard
-Date: Sun, 31 Mar 2024 17:33:44 +1000
-Message-ID: <20240331073349.88324-8-npiggin@gmail.com>
+Subject: [PULL 8/8] tests/avocado: ppc_hv_tests.py set alpine time before
+ setup-alpine
+Date: Sun, 31 Mar 2024 17:33:45 +1000
+Message-ID: <20240331073349.88324-9-npiggin@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
 References: <20240331073349.88324-1-npiggin@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32b;
- envelope-from=npiggin@gmail.com; helo=mail-ot1-x32b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,38 +93,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For some reason the skipIf missing_deps() check fails to skip the test
-if it comes after the skipUnless lines, causing an error running on
-systems without xorriso.
+If the time is wrong, setup-alpine SSL certificate checks can fail.
+setup-alpine is used to bring up the network, but it doesn't seem
+to to set NTP time before the failing SSL checks. This test has
+recently started failing presumably because the default time has
+now fallen too far behind.
 
-Avocado implements skipUnless is just an inverted skipIf, so it's not
-clear what the bug is or why this fixes it. For now it's enough to
-get things working.
+Fix this by setting time from the host time before running setup-alpine.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2246
 Fixes: c9cb496710758 ("tests/avocado: ppc add hypervisor tests")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
 ---
- tests/avocado/ppc_hv_tests.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/avocado/ppc_hv_tests.py | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
-index 5080358e25..2c8ddd9257 100644
+index 2c8ddd9257..bf8822bb97 100644
 --- a/tests/avocado/ppc_hv_tests.py
 +++ b/tests/avocado/ppc_hv_tests.py
-@@ -42,10 +42,11 @@ def missing_deps():
- # QEMU packages are downloaded and installed on each test. That's not a
- # large download, but it may be more polite to create qcow2 image with
- # QEMU already installed and use that.
-+# XXX: The order of these tests seems to matter, see git blame.
-+@skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
- @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test sometimes gets stuck due to console handling problem')
- @skipUnless(os.getenv('AVOCADO_ALLOW_LARGE_STORAGE'), 'storage limited')
- @skipUnless(os.getenv('SPEED') == 'slow', 'runtime limited')
--@skipIf(missing_deps(), 'dependencies (%s) not installed' % ','.join(deps))
- class HypervisorTest(QemuSystemTest):
+@@ -14,6 +14,7 @@
+ import os
+ import time
+ import subprocess
++from datetime import datetime
  
-     timeout = 1000
+ deps = ["xorriso"] # dependent tools needed in the test setup/box.
+ 
+@@ -107,6 +108,8 @@ def do_start_alpine(self):
+         exec_command(self, 'root')
+         wait_for_console_pattern(self, 'localhost login:')
+         wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
++        # If the time is wrong, SSL certificates can fail.
++        exec_command(self, 'date -s "' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S' + '"'))
+         exec_command(self, 'setup-alpine -qe')
+         wait_for_console_pattern(self, 'Updating repository indexes... done.')
+ 
 -- 
 2.43.0
 
