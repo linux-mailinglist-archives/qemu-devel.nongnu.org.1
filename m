@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBA4892FE4
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 10:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F157893129
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 12:09:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqqrk-0003eg-9m; Sun, 31 Mar 2024 04:48:36 -0400
+	id 1rqs6a-0005Cs-F6; Sun, 31 Mar 2024 06:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqqrh-0003eO-1w
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 04:48:33 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqs6M-0005CN-OQ
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 06:07:47 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqqrf-0007kB-00
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 04:48:32 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqs6K-0000yA-VL
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 06:07:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D93A65A7F3;
- Sun, 31 Mar 2024 11:50:05 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 6216B5A82F;
+ Sun, 31 Mar 2024 13:09:19 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C3DD3A7ABD;
- Sun, 31 Mar 2024 11:48:26 +0300 (MSK)
-Received: (nullmailer pid 2716847 invoked by uid 1000);
- Sun, 31 Mar 2024 08:48:26 -0000
+ by tsrv.corpit.ru (Postfix) with SMTP id 277B1A7B14;
+ Sun, 31 Mar 2024 13:07:40 +0300 (MSK)
+Received: (nullmailer pid 2724208 invoked by uid 1000);
+ Sun, 31 Mar 2024 10:07:40 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: YunQiang Su <ysu@wavecomp.com>, Laurent Vivier <laurent@vivier.eu>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PATCH] linux-user/syscall.c: fix setsockopt(SOL_ALG, ALG_SET_KEY)
-Date: Sun, 31 Mar 2024 11:48:25 +0300
-Message-Id: <20240331084825.2716833-1-mjt@tls.msk.ru>
+Cc: Laurent Vivier <laurent@vivier.eu>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PATCH 0/4] small linux-user/syscall:do_setsockopt() cleanups and
+ fixes
+Date: Sun, 31 Mar 2024 13:07:33 +0300
+Message-Id: <20240331100737.2724186-1-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -56,39 +56,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This setsockopt accepts zero-lengh optlen (current qemu implementation
-does not allow this).  Also, there's no need to make a copy of the key,
-it is enough to use lock_user() (which accepts zero-length length already).
+A few cleanups and fixes for linux-user/syscall:do_setsockopt().
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2197
-Fixes: f31dddd2fc "linux-user: Add support for setsockopt() option SOL_ALG"
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Michael Tokarev (4):
+  linux-user/syscall: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
+  linux-user/syscall: do_setsockopt(): make ip_mreq local to the place
+    it is used and inline target_to_host_ip_mreq()
+  linux-user/syscall: do_setsockopt(): make ip_mreq_source local to the
+    place where it is used
+  linux-user/syscall: do_setsockopt(): eliminate goto in switch for SO_SNDTIMEO
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e12d969c2e..5c7728cfd4 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -2277,18 +2277,13 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
-         switch (optname) {
-         case ALG_SET_KEY:
-         {
--            char *alg_key = g_malloc(optlen);
--
-+            char *alg_key = lock_user(VERIFY_READ, optval_addr, optlen, 1);
-             if (!alg_key) {
--                return -TARGET_ENOMEM;
--            }
--            if (copy_from_user(alg_key, optval_addr, optlen)) {
--                g_free(alg_key);
-                 return -TARGET_EFAULT;
-             }
-             ret = get_errno(setsockopt(sockfd, level, optname,
-                                        alg_key, optlen));
--            g_free(alg_key);
-+            unlock_user(alg_key, optval_addr, optlen);
-             break;
-         }
-         case ALG_SET_AEAD_AUTHSIZE:
+ linux-user/syscall.c | 64 +++++++++++++++++---------------------------
+ 1 file changed, 25 insertions(+), 39 deletions(-)
+
 -- 
 2.39.2
 
