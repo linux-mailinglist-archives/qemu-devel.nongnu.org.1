@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0CC893556
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 20:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AD2893570
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 20:34:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqzkd-0004Bn-Ln; Sun, 31 Mar 2024 14:17:51 -0400
+	id 1rqzzN-0007XB-Kf; Sun, 31 Mar 2024 14:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rqzkY-0004B9-4l
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:17:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rqzzJ-0007W6-E4
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:33:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rqzkV-0004hs-M6
- for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:17:45 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rqzzH-0007Lm-RK
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 14:33:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1711909061;
+ s=mimecast20190719; t=1711909978;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=+vqxdTO2VKLgQ7KsbDKTOHrw/FHBZ8UlPh38mHZ3HDs=;
- b=P7i5e7I8xylAVdNq5rQcjxtFQVJ9Z6KZNhzUlwq8x/uCXaJYRe9h1+h1TCIoO4d4Lr7b6E
- QWmQwQoOXZeHUkWtbwtZIvoPldbCat4iKAjXG59WvQ+EYd/0M/8HdJ6bDKKBx0Y9fas90e
- ACp7Lk0INXzbnrKXUBeHCCVcpO5P3hU=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=f92/+N7+04yRcvyYKwlCJ4LGX5yCmgUgyE5M0om2fis=;
+ b=T9UT2q1VBzImavU2JveyAgRFS1UvhtZ9F7eS8ClCF7wDeuVDp5EyIk5RvlycA70UIAXRBa
+ aiYQ6EzB+EmQ54tmALjRmanqRONTkEy+qqwgXEo3wFwU+jAX234YwjWJa8Keojf1SZ8o2H
+ OUhuRa7uq4d3bFqylDuWbJxZhuiZzoM=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-538-2JyiWm2LMqmRahGim5RZ-A-1; Sun, 31 Mar 2024 14:17:39 -0400
-X-MC-Unique: 2JyiWm2LMqmRahGim5RZ-A-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-515adcf2004so2850393e87.2
- for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 11:17:39 -0700 (PDT)
+ us-mta-479-PZInxWa8OcO3yx1ZxsbMsA-1; Sun, 31 Mar 2024 14:32:54 -0400
+X-MC-Unique: PZInxWa8OcO3yx1ZxsbMsA-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-7830635331bso87246985a.1
+ for <qemu-devel@nongnu.org>; Sun, 31 Mar 2024 11:32:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711909057; x=1712513857;
+ d=1e100.net; s=20230601; t=1711909974; x=1712514774;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+vqxdTO2VKLgQ7KsbDKTOHrw/FHBZ8UlPh38mHZ3HDs=;
- b=cRxzdUSMy4jH5WHLXI0f7wyexp9nM2DywEG6ODMNqe6X3y2pw45E0ZMzbGvvzQoagD
- bua4wKslakYcHtUljN8+LCIU9QuoICRAVFnjjpvkbZkiLz/zrZ9sf3ffJnCiLif2gXoV
- jBkq41SY+ZrvQ/MCZiDHYPIvk0Wr3JMY9BRvQ7ebmwyuZh/oI9y4Q94m95SBC3AB33pJ
- 4Wo+gpzV/+97gY40FISlDl2aMJUY4FkcBmxqLGlSKlBcnGWfW00BXSf7fJu3+iRrjTPO
- Dx/TT/VdqGnK+p6GLFcXYMyHOEu8MEBQ7EKVP2jl5cIP3rabDXTTklk6KcAushjFbOVY
- TO8w==
-X-Gm-Message-State: AOJu0Yy6vLCfWPt8NgHYXc1HRw4YoXZiLJprWdcYs7CjINqwABbxRSZe
- +XNopM7lSYCUwZH0XBRorpahvysFvrRC/NiWl2wUzV+E9L1RgTRA2Vb9VGAL90GM+huCtxibBbK
- NbNuxQUtaxksT1U1NHrckiXgqZZfSR3Gis2ElT/TOGkpnIsJjwJZN5CtqVSLMIiq1mvZlOepy/E
- OgJ/uRUiJ0MeZ8vTVYXBMNbLJ2gztP3seXp27x
-X-Received: by 2002:ac2:5d70:0:b0:515:c7c9:b150 with SMTP id
- h16-20020ac25d70000000b00515c7c9b150mr5833018lft.0.1711909056866; 
- Sun, 31 Mar 2024 11:17:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGow2RWMLprZVVEV/0e5lBOOboRdfoRgvXrfWKdkBG7DiLIV+gAQNz1Wpyy41kcGnRdG/Ludg==
-X-Received: by 2002:ac2:5d70:0:b0:515:c7c9:b150 with SMTP id
- h16-20020ac25d70000000b00515c7c9b150mr5833010lft.0.1711909056433; 
- Sun, 31 Mar 2024 11:17:36 -0700 (PDT)
-Received: from avogadro.local ([151.95.49.219])
- by smtp.gmail.com with ESMTPSA id
- j15-20020a170906254f00b00a473362062fsm4404917ejb.220.2024.03.31.11.17.33
+ bh=f92/+N7+04yRcvyYKwlCJ4LGX5yCmgUgyE5M0om2fis=;
+ b=JTObKzceOKvDVTkVc62TdctRq/zL3CVuz8OnMVfNUUFHGfRYAwnwtodcDS/Y+6MzDk
+ I2Q6LkGknGg7/lsZ2kkXRZMEYP/vIjWoY/C1ZHeJ+tcNbkt9sRbCNR4zG+IMEEOVoTNX
+ FBpL6S0Zn6nNkaq6PKTSsQcm0fHDYFFQ2j7bGvqScAZ8xmGDY8rJW9Y+hozdBNlzp03b
+ KyT/OFeJEm71BigRh8r1cOJXbWZPjCkflNp9m3cjfbeebeJCOMtCt2HyvUkmK4Y3qpfN
+ j9yKhGqcV4kxobxDd93KW2P++11MBxSgpNaxAaVyitI/UzjWK0cF9iZEZT01BTwf2Sm8
+ P8pg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVGpCWfZBsTT54Cx/DKUX4kcee8H9ji9hChtYKe1HJ41bAootpmWYt0kbuNk8aV/r9L80jVyn7ZhNpwmETRniHxS1FP5Lg=
+X-Gm-Message-State: AOJu0YzOptRPh7LSsgYL9eYzasplCrAy4mK3KUNFot6qNZCeosE7cHBq
+ gcAdc6GmzfD0Q7BIrwd+O7IWgAzeCqRUkSrHYp21m9D9ESj36boS/1ZvdQZkteqZcgHJWgP6jQ4
+ Zk5pyzOdjWrQraoNoocVwsadCD6j2H6C78d2snAEdumwdTv9K+vtk
+X-Received: by 2002:a05:6214:a4c:b0:699:285:3ee4 with SMTP id
+ ee12-20020a0562140a4c00b0069902853ee4mr2266538qvb.5.1711909974252; 
+ Sun, 31 Mar 2024 11:32:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGhQVYRnIfCK4PJyGnVdk0nQ5poCw2LO7vCXIm3tPh1X5pC+HdKbTos1lHad/Zp3041U+zMTA==
+X-Received: by 2002:a05:6214:a4c:b0:699:285:3ee4 with SMTP id
+ ee12-20020a0562140a4c00b0069902853ee4mr2266511qvb.5.1711909973573; 
+ Sun, 31 Mar 2024 11:32:53 -0700 (PDT)
+Received: from x1n.. ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ u10-20020ad45aaa000000b00696a47179a1sm3748823qvg.14.2024.03.31.11.32.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 11:17:33 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Chuhong Yuan <hslester96@gmail.com>
-Subject: [PATCH] lsi53c895a: detect invalid Block Move instruction
-Date: Sun, 31 Mar 2024 20:17:30 +0200
-Message-ID: <20240331181730.150860-2-pbonzini@redhat.com>
+ Sun, 31 Mar 2024 11:32:53 -0700 (PDT)
+From: peterx@redhat.com
+To: Peter Maydell <peter.maydell@linaro.org>,
+	qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Prasad Pandit <ppandit@redhat.com>, peterx@redhat.com,
+ Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 0/2] Migration 20240331 patches
+Date: Sun, 31 Mar 2024 14:32:49 -0400
+Message-ID: <20240331183251.1045817-1-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,40 +98,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The spec for the lsi53c895a says: "If the instruction is a Block Move
-and a value of 0x000000 is loaded into the DBC register, an illegal
-instruction interrupt occurs if the LSI53C895A is not in target mode,
-Command phase".
+From: Peter Xu <peterx@redhat.com>
 
-Because QEMU only operates in initiator mode, generate the interrupt
-unconditionally if the low 24 bits are 0x000000.
+The following changes since commit b9dbf6f9bf533564f6a4277d03906fcd32bb0245:
 
-Reported-by: Chuhong Yuan <hslester96@gmail.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- hw/scsi/lsi53c895a.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+  Merge tag 'pull-tcg-20240329' of https://gitlab.com/rth7680/qemu into staging (2024-03-30 14:54:57 +0000)
 
-diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index eb9828dd5ef..1e18d88983b 100644
---- a/hw/scsi/lsi53c895a.c
-+++ b/hw/scsi/lsi53c895a.c
-@@ -1205,6 +1205,15 @@ again:
-             break;
-         }
-         s->dbc = insn & 0xffffff;
-+        if (!s->dbc) {
-+            /*
-+             * If the instruction is a Block Move and a value of 0x000000 is
-+             * loaded into the DBC register, an illegal instruction interrupt
-+             * occurs if the LSI53C895A is not in target mode, Command phase.
-+             */
-+            lsi_script_dma_interrupt(s, LSI_DSTAT_IID);
-+            break;
-+        }
-         s->rbc = s->dbc;
-         /* ??? Set ESA.  */
-         s->ia = s->dsp - 8;
+are available in the Git repository at:
+
+  https://gitlab.com/peterx/qemu.git tags/migration-20240331-pull-request
+
+for you to fetch changes up to d0ad271a7613459bd0a3397c8071a4ad06f3f7eb:
+
+  migration/postcopy: Ensure postcopy_start() sets errp if it fails (2024-03-31 14:30:03 -0400)
+
+----------------------------------------------------------------
+Migration pull for 9.0-rc2
+
+- Avihai's two fixes on error paths
+
+----------------------------------------------------------------
+
+Avihai Horon (2):
+  migration: Set migration error in migration_completion()
+  migration/postcopy: Ensure postcopy_start() sets errp if it fails
+
+ migration/migration.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
 -- 
 2.44.0
 
