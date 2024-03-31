@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F4989359D
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B0689359B
 	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 21:32:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rr0tN-0000KT-3B; Sun, 31 Mar 2024 15:30:57 -0400
+	id 1rr0tQ-0000LL-9m; Sun, 31 Mar 2024 15:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1rr0tL-0000Jc-6D; Sun, 31 Mar 2024 15:30:55 -0400
-Received: from mail-il1-x12f.google.com ([2607:f8b0:4864:20::12f])
+ id 1rr0tO-0000Ky-Ia; Sun, 31 Mar 2024 15:30:58 -0400
+Received: from mail-oa1-x2c.google.com ([2001:4860:4864:20::2c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
- id 1rr0tJ-0001QY-Io; Sun, 31 Mar 2024 15:30:54 -0400
-Received: by mail-il1-x12f.google.com with SMTP id
- e9e14a558f8ab-368cd5ddb65so9149975ab.0; 
- Sun, 31 Mar 2024 12:30:52 -0700 (PDT)
+ id 1rr0tM-0001R0-Vt; Sun, 31 Mar 2024 15:30:58 -0400
+Received: by mail-oa1-x2c.google.com with SMTP id
+ 586e51a60fabf-22a8df1df8fso2198229fac.2; 
+ Sun, 31 Mar 2024 12:30:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711913452; x=1712518252; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1711913455; x=1712518255; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=wq1YmLBqyP4iUMA93VUo8jDUZAGxmCsbTe8wz4eZ4Wg=;
- b=DLZd3sm2yQRwYrJiHMzunx1lNLYS9QGAaPVA5kafOKxpbNs+Cak5743EZcvk0P3cuC
- CpzEGuI4j5xsfKojCkjXbURR5K3K6r0C25ZUQ/QcYVLUPxQ0x4O+Y9eOFX90MT/58K4M
- O3us3fNoxKwbaOoRrDYu6uPax5S2KpeLSzTrfHW6zSBGeuuPeUycCKrmrsPXPSlB5MM3
- Gptux26L4ZNV9MhOXQwE1y2bmAlisH2eRnT9cHTsoqYbeak75xhWZ5O2SR0xgh9E80nu
- JBSkyJpZ69CJ7VSCyzAGscToV5h5dpRStlendk24GJa1rS8Gfy5AtknKdMXrxMdNut/y
- kSkw==
+ bh=wSDYsWlELwKSPvJjZM7xr4TTz+NGl+wsAw++yWtE5cM=;
+ b=lfoi8HWfWLwpVZCjf+VtwFyvgKWiB99MZBDAGtdKskPioE51KBhwUMxGZLiuuzj5q7
+ GbXI0WHScjTZJ2jFsDf/qv3Whiq2bPqRImUOzAHsTOz3yPuUWDXVscUbCNbtOKQFt+UX
+ Ok3Zvlzsc9Urvx+DcbJ/SAzTP4nvD8y2xbRgeckAsdto0d2ssVOhKtrTEVy3nVKRFgQM
+ LR/x7fu9aI57MkQntd9lbKnLnYXr8SHqnAZun6y8Ad947DhHfMm1zxsIvSDKvx4kTS/w
+ ai78hEYf3NsOcerXvSr0yZmokVO7zJPaDAMYqjKJZlaRWwzEY4meon+YirXa2jlV4Lfs
+ Fqrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711913452; x=1712518252;
+ d=1e100.net; s=20230601; t=1711913455; x=1712518255;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=wq1YmLBqyP4iUMA93VUo8jDUZAGxmCsbTe8wz4eZ4Wg=;
- b=vHORQQd9a+q/gMtQI4zpWBK2YAqrNpDfPZEgNkMxbl5jFuHieKghlY0IqnA0nHaOOb
- KOcFpaq4X8+E7k8pUUN6dz08FNLaN813Dh6DHPjDM6OQ6G+bX5IJ3jzk5YcUDw+smH1l
- isyQSnS63WfL1Bibn9Si34OiIcQecbd7fWcPzrj9mZ7I0G6dQJktndD67CkRtRQzVViH
- HE0FI5Tt0/QWrlqHy0GmehYKqFo1f/HiLi1U36tIIDjb4+Xi4UtVMqMYzkuwEtLm1msD
- peNTBznHldmUpj0Zt+ZzHg54y4csglUesWp7DDHA5uYTrlcfqhAN6tf0QdrwljXV7KtQ
- jmlA==
+ bh=wSDYsWlELwKSPvJjZM7xr4TTz+NGl+wsAw++yWtE5cM=;
+ b=rUAwfZPcE1V0AhIf3jzZo9yNuSR9NV36WU3ssWkiC6UPHtt/2J7bfo/huk1KhlkdsU
+ u1ZevSJods7OU5rv8bP1sMzAumG+6EIay4BE9WXtcpcgBLYMLuOq9em5btZWoOnMuzBA
+ Z+mkzbNBjdp4W52W1Ppe5/3/Eno9w8BUs8PzPB2uWdReQ4vqIw0ZrGRQx4kBtCUyuT9/
+ lFFKk8fCulR3GVo/AnHrIOkVjrmYFcyiRB4ahEQg8v2icKGZWKnH5dVLPbrXYtCx3PbD
+ oLZJgwNm5jcFmVpyvawFqQRrtEym1EmWFWVrQbLru6Y0txYHwdXdYRBdAn6xz3zOp63+
+ /OPg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVSi0PsIvr8cdH+S560Tz+3Mt1RtO5wnoOmyKXd7SqXxUf0cyPkjJCLp1DsDmKowPxmDK/G4ZXooiTVztPXuFyNtg8oKPY=
-X-Gm-Message-State: AOJu0YxYsTINuMGRrsQsv1+ODOZhjy4POT0XnpJYmC3zt73MG5ktWmqJ
- btwBcLKUKZ8OgLri0bcLbXURDiZVNmZVg4hwfhcSF0Colw2eDA20
-X-Google-Smtp-Source: AGHT+IHH5M22Oi7Hzooz+5f2zp/yM3nTBUnNRnJIIMCL/sitO5lSHE9HOzYkw6VRXMbJtaUr53DcCA==
-X-Received: by 2002:a05:6e02:1383:b0:369:9421:89bd with SMTP id
- d3-20020a056e02138300b00369942189bdmr5790416ilo.29.1711913452082; 
- Sun, 31 Mar 2024 12:30:52 -0700 (PDT)
+ AJvYcCWEcCiWtmyTuL571xpDde7gVbyVKFVXSu1X9hXm7JqTan8JnLMn0cfNJO4fYuDxoF9h3I3yMzZzrQ08dsMvPc5xMODA8H4=
+X-Gm-Message-State: AOJu0YzCN5W5kiEx2V/gaFQynDOyPOZZ+YLcTBxwZTvAd1crNOQBJJg9
+ xqzL0cADDHJOovwdBYs6QDyb5+1zrrl7uIVjjR+KQHTCVy+x1Mkw
+X-Google-Smtp-Source: AGHT+IFCIZUy1J7FasRzcv53Mh006SqS7TTWVq1M8gG6jSnZI9IRE2oGlQoyXzPGD6sklAQcCM4w4A==
+X-Received: by 2002:a05:6870:a548:b0:22a:55bd:a048 with SMTP id
+ p8-20020a056870a54800b0022a55bda048mr8794638oal.5.1711913454994; 
+ Sun, 31 Mar 2024 12:30:54 -0700 (PDT)
 Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
- d9-20020a170902b70900b001db37fd26bcsm7235043pls.116.2024.03.31.12.30.51
+ j5-20020aa783c5000000b006eac81fa1fbsm6452490pfn.66.2024.03.31.12.30.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 12:30:51 -0700 (PDT)
+ Sun, 31 Mar 2024 12:30:54 -0700 (PDT)
 From: Minwoo Im <minwoo.im.dev@gmail.com>
 To: Klaus Jensen <its@irrelevant.dk>,
 	Keith Busch <kbusch@kernel.org>
 Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
  Minwoo Im <minwoo.im@samsung.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: [PATCH v2 3/4] hw/nvme: Support SR-IOV VFs more than 127
-Date: Mon,  1 Apr 2024 04:30:31 +0900
-Message-Id: <20240331193032.5186-4-minwoo.im.dev@gmail.com>
+Subject: [PATCH v2 4/4] hw/nvme: Expand VI/VQ resource to uint32
+Date: Mon,  1 Apr 2024 04:30:32 +0900
+Message-Id: <20240331193032.5186-5-minwoo.im.dev@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240331193032.5186-1-minwoo.im.dev@gmail.com>
 References: <20240331193032.5186-1-minwoo.im.dev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::12f;
- envelope-from=minwoo.im.dev@gmail.com; helo=mail-il1-x12f.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2c;
+ envelope-from=minwoo.im.dev@gmail.com; helo=mail-oa1-x2c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,53 +94,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Minwoo Im <minwoo.im@samsung.com>
 
-The number of virtual functions(VFs) supported in SR-IOV is 64k as per
-spec.  To test a large number of MSI-X vectors mapping to CPU matrix in
-the QEMU system, we need much more than 127 VFs.  This patch made
-support for 256 VFs per a physical function(PF).
+VI and VQ resources cover queue resources in each VFs in SR-IOV.
+Current maximum I/O queue pair size is 0xffff, we can expand them to
+cover the full number of I/O queue pairs.
+
+This patch also fixed Identify Secondary Controller List overflow due to
+expand of number of secondary controllers.
 
 Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
 Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 ---
- hw/nvme/ctrl.c | 2 +-
+ hw/nvme/ctrl.c | 8 ++++----
  hw/nvme/nvme.h | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 7e60bc9f2075..893d4e96656b 100644
+index 893d4e96656b..893afae29336 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8424,7 +8424,7 @@ static Property nvme_props[] = {
-     DEFINE_PROP_UINT8("zoned.zasl", NvmeCtrl, params.zasl, 0),
-     DEFINE_PROP_BOOL("zoned.auto_transition", NvmeCtrl,
-                      params.auto_transition_zones, true),
--    DEFINE_PROP_UINT8("sriov_max_vfs", NvmeCtrl, params.sriov_max_vfs, 0),
-+    DEFINE_PROP_UINT16("sriov_max_vfs", NvmeCtrl, params.sriov_max_vfs, 0),
-     DEFINE_PROP_UINT16("sriov_vq_flexible", NvmeCtrl,
+@@ -8429,10 +8429,10 @@ static Property nvme_props[] = {
                         params.sriov_vq_flexible, 0),
      DEFINE_PROP_UINT16("sriov_vi_flexible", NvmeCtrl,
+                        params.sriov_vi_flexible, 0),
+-    DEFINE_PROP_UINT8("sriov_max_vi_per_vf", NvmeCtrl,
+-                      params.sriov_max_vi_per_vf, 0),
+-    DEFINE_PROP_UINT8("sriov_max_vq_per_vf", NvmeCtrl,
+-                      params.sriov_max_vq_per_vf, 0),
++    DEFINE_PROP_UINT32("sriov_max_vi_per_vf", NvmeCtrl,
++                       params.sriov_max_vi_per_vf, 0),
++    DEFINE_PROP_UINT32("sriov_max_vq_per_vf", NvmeCtrl,
++                       params.sriov_max_vq_per_vf, 0),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
 diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index 02c11d909cd1..ad928c28f2c5 100644
+index ad928c28f2c5..492617f19515 100644
 --- a/hw/nvme/nvme.h
 +++ b/hw/nvme/nvme.h
-@@ -26,7 +26,7 @@
- 
- #define NVME_MAX_CONTROLLERS 256
- #define NVME_MAX_NAMESPACES  256
--#define NVME_MAX_VFS 127
-+#define NVME_MAX_VFS 256
- #define NVME_EUI64_DEFAULT ((uint64_t)0x5254000000000000)
- #define NVME_FDP_MAX_EVENTS 63
- #define NVME_FDP_MAXPIDS 128
-@@ -518,7 +518,7 @@ typedef struct NvmeParams {
-     bool     auto_transition_zones;
-     bool     legacy_cmb;
-     bool     ioeventfd;
--    uint8_t  sriov_max_vfs;
-+    uint16_t  sriov_max_vfs;
+@@ -521,8 +521,8 @@ typedef struct NvmeParams {
+     uint16_t  sriov_max_vfs;
      uint16_t sriov_vq_flexible;
      uint16_t sriov_vi_flexible;
-     uint8_t  sriov_max_vq_per_vf;
+-    uint8_t  sriov_max_vq_per_vf;
+-    uint8_t  sriov_max_vi_per_vf;
++    uint32_t  sriov_max_vq_per_vf;
++    uint32_t  sriov_max_vi_per_vf;
+ } NvmeParams;
+ 
+ typedef struct NvmeCtrl {
 -- 
 2.34.1
 
