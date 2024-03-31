@@ -2,71 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213DF893594
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 21:23:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74ECB89359A
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 21:32:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rr0kI-0007Ih-EZ; Sun, 31 Mar 2024 15:21:34 -0400
+	id 1rr0tG-0000Hm-7q; Sun, 31 Mar 2024 15:30:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rr0kG-0007IS-Bb; Sun, 31 Mar 2024 15:21:32 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rr0kE-0008GO-Pc; Sun, 31 Mar 2024 15:21:32 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DA9E95A8D4;
- Sun, 31 Mar 2024 22:23:04 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id D1AB1A7DA8;
- Sun, 31 Mar 2024 22:21:24 +0300 (MSK)
-Message-ID: <cf941815-b1e1-4a1b-8a36-ddbc04f43990@tls.msk.ru>
-Date: Sun, 31 Mar 2024 22:21:24 +0300
+ (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
+ id 1rr0tD-0000HD-Cm; Sun, 31 Mar 2024 15:30:47 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <minwoo.im.dev@gmail.com>)
+ id 1rr0tB-0001Pm-Uh; Sun, 31 Mar 2024 15:30:47 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6eaf7c97738so891601b3a.2; 
+ Sun, 31 Mar 2024 12:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1711913443; x=1712518243; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TQmslNM5GGtrjWB8pIsj9VTguLDdJeZ7U/2WF+E8W10=;
+ b=DaTfA8b/O7tAhTIOg07x5p/Y9/LbkCcze1zAbtudzjIUXMS5x/tnAIHUHNRyDH3LsO
+ Pf/ici8dIgR9lQHty/Sv6QiktbmOsYOaOiT56vhuwR9Qx76QX60AynFYoXw8ZVhWg0D9
+ XWiwcoK13xA+xfF8mbDThawK9kZAEEQWbR9SnTNRLGyXTj4EAkhTWZ0V2hoB1K7UGfiV
+ iJWcA8Mg+5gdZazisT2olcUIqnaXPFSRPwvOOsvBmbh0HU2Mh9V5pm0/VdQrVv7NfnT7
+ oBwCHtuTHBS7g8WBNEu7WM0gnOA+vB3NEcCA12m4VEvm753OGVuZQmGP5pyzjoRhneOd
+ 0ORw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1711913443; x=1712518243;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TQmslNM5GGtrjWB8pIsj9VTguLDdJeZ7U/2WF+E8W10=;
+ b=J34SFVOS9CP39sF4+9NcpnSO8Edc9GCpc8ACIGj0kD3liJ4ughA85Gcq8dRtgzoAh4
+ qLjdxhcUYSdC5HtdNyrC3/R9gqGaBdKLSLwxkHKdloT/pYcG7c0HA23xn9ODQO2rVWkr
+ Wq6E4jESBlIbRnH78Uo+NOjekoPI7U8wd9OZi8d3Q5WJWUPOOXXfUGzyKlSKqNqHN1tE
+ jUV19Xxp+XiGXmy84Oekx3MWrJyEDBJ/uwW3rAHpKpds0ElZSSGDKNUS1nwBBywh0UMS
+ VTmgcw2SRCbRlG8D5uXCnBAo5NAcWv0n+DuGFiQNr8vJ6eyZrNn8jnLndXmNYNIEs8FT
+ pNpA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWSeQ5DVy1ojuRiDJYx7cVCwh6OqdSAyd/e9v7H7COoKdF70/dl0F2RVDOTjJe+ob2j+P9/io63jDmp5lo4d1rVFDLmiOU=
+X-Gm-Message-State: AOJu0YwsnlnYZrPlJ7tfcQPSVFuAuI8Ff7ppcLbp9fOSLT3erJPd1yUm
+ rW6RyCqH8FlBgKXxeXLOPLB0k/HmXnTREvCkCqXrisO/wslTBTYwY1L2Rddio6I=
+X-Google-Smtp-Source: AGHT+IGfkDBGEpTUuOx2CaMOKIU/zGLnpycwK9NJHrvDhKMb9fTuFInXIUfZdSd9FE462RvEOQ7C+w==
+X-Received: by 2002:a05:6a21:1693:b0:1a3:c3a9:53b7 with SMTP id
+ np19-20020a056a21169300b001a3c3a953b7mr6508064pzb.55.1711913443462; 
+ Sun, 31 Mar 2024 12:30:43 -0700 (PDT)
+Received: from localhost ([116.121.76.56]) by smtp.gmail.com with ESMTPSA id
+ j9-20020a170903024900b001e22e8a859asm5245525plh.108.2024.03.31.12.30.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 31 Mar 2024 12:30:43 -0700 (PDT)
+From: Minwoo Im <minwoo.im.dev@gmail.com>
+To: Klaus Jensen <its@irrelevant.dk>,
+	Keith Busch <kbusch@kernel.org>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
+ Minwoo Im <minwoo.im@samsung.com>, Minwoo Im <minwoo.im.dev@gmail.com>
+Subject: [PATCH v2 0/4] hw/nvme: FDP and SR-IOV enhancements
+Date: Mon,  1 Apr 2024 04:30:28 +0900
+Message-Id: <20240331193032.5186-1-minwoo.im.dev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 0/5] Net patches
-To: Jason Wang <jasowang@redhat.com>, qemu-devel@nongnu.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
- qemu-stable <qemu-stable@nongnu.org>
-References: <20240329071100.31376-1-jasowang@redhat.com>
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <20240329071100.31376-1-jasowang@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=minwoo.im.dev@gmail.com; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,30 +89,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.03.2024 10:10, Jason Wang:
+Hello,
 
-> Akihiko Odaki (5):
->        virtio-net: Fix vhost virtqueue notifiers for RSS
->        ebpf: Fix indirections table setting
->        hw/net/net_tx_pkt: Fix virtio header without checksum offloading
->        tap-win32: Remove unnecessary stubs
->        Revert "tap: setting error appropriately when calling net_init_tap_one()"
-
- From the above, I'm picking up
-
-   virtio-net: Fix vhost virtqueue notifiers for RSS
-   hw/net/net_tx_pkt: Fix virtio header without checksum offloading
-
-for stable.  Not yet sure about
-
-   Revert "tap: setting error appropriately when calling net_init_tap_one()"
-
-as it's been with us for a long time.
-
-Please Cc: qemu-stable@ for changes which should be picked for stable
-series.
+This patch set added support for Identify Endurance Group List only just
+for 'endgrpid=1' for FDP.  Along with this, the following three patches
+are to support more than 127 secondary controllers for SR-IOV with VI/VQ
+resources.  [2/4] separated Identify controller data structure for
+secondary controller list from the actual secondary controller list
+managed by the pf to support proper identify data based on the given
+cntlid which is a minimum controller id to retrieve.  [3/4] and [4/4]
+are actual patches increasing the number of resources of SR-IOV.
 
 Thanks,
 
-/mjt
+v2:
+ - Added [2/4] commit to fix crash due to entry overflow
+
+Minwoo Im (4):
+  hw/nvme: add Identify Endurance Group List
+  hw/nvme: separate identify data for sec. ctrl list
+  hw/nvme: Support SR-IOV VFs more than 127
+  hw/nvme: Expand VI/VQ resource to uint32
+
+ hw/nvme/ctrl.c       | 53 +++++++++++++++++++++++++++++++-------------
+ hw/nvme/nvme.h       | 20 +++++++++--------
+ hw/nvme/subsys.c     |  8 +++----
+ include/block/nvme.h |  1 +
+ 4 files changed, 53 insertions(+), 29 deletions(-)
+
+-- 
+2.34.1
+
 
