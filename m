@@ -2,82 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5D7892ED6
-	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 09:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B615892EE5
+	for <lists+qemu-devel@lfdr.de>; Sun, 31 Mar 2024 10:09:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rqpi5-00032N-Qh; Sun, 31 Mar 2024 03:34:33 -0400
+	id 1rqqEa-0003R5-IZ; Sun, 31 Mar 2024 04:08:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqpi3-000301-2S; Sun, 31 Mar 2024 03:34:31 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>)
- id 1rqpi1-0002Jb-Ku; Sun, 31 Mar 2024 03:34:30 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6ea9a605ca7so2212987b3a.0; 
- Sun, 31 Mar 2024 00:34:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1711870468; x=1712475268; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XNe5dOzqOeierXs9KtggpyMYBczM9maytA5+1Uk3r58=;
- b=XnhLq2BnHSSj0vxToZR+C/RXURCpzL3s2LeHQ29uZhLjuxWJGqj9sBio9cQ8qEbCsT
- ofAByzNBzoqKRSjbjRGh9PNPMqV2UXaio97kugLBhsGp+gz9hbkoJ4CI9aFh2gpWd7OG
- 9ZxkVWgAV5cTPmiX0sPaH3ebfSV7r20NUm5sSUq6LnTMLiPOnUVRJ4z+klxFy1Q8ZJIL
- fD8y8EbmiAZeBmDFlmqUc6Pnnh5QybVKNkEIL8dgBs+Gy86N1Q6VBoT9RuNWjkqgW8Zd
- MBom5Y0BvfzHOQ8p+CT9bmzdyvYEr6A8qEYjLQWwzdahOxggI101GEtDEsEq7VrA+QqC
- 2eHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1711870468; x=1712475268;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XNe5dOzqOeierXs9KtggpyMYBczM9maytA5+1Uk3r58=;
- b=nXfyGNC9Cb2DN35jahUnToeaemsQ1NbExhfkdSWawOs7t6Ic6bLVjtqI1I/RlO7UJr
- r8u9agTH6yIc12G1ur/63vQC/1jUQqamF5k5GAX7w/sfBuPht6fvr6cAGqaxrMcC7v7J
- 0IgQjvG8G07nCN4sYaqTf8mj0qC6y/ab73sVAIv5Y/OTaaEjcgZXIJaK3g+q5bcLUcBk
- sOdNLZDyDUKw+hVFR5M7WN6ebErpnhb3w0Oe9XExgTfqP32vlphBdXNT/pSRD8lmekoG
- xGB/8pleoiWyPX3UxCHFsD2q7czgRBNJ+f8RMvFiy7ZYjKdtRtICpZfRoxRwe82b54bX
- 7fhA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVOHyHdqxM8BaDTPKsaucBVkyZYEbHVwq7IR+/Qqc6owQJ23Vrsj0/cPCIhsJ86gWdQf0aDdouCvgSrslCv7gC/5jD2
-X-Gm-Message-State: AOJu0Ywm7q+Xq9LeCR2tVLsUgDY471ndqbvvwIPyWgQos90D/eTuLW1s
- 8LXLXNHsqL0L7+IPNPZ5k6LHmjr1cKQyHFRHrHOhgE7+JIsQDgEZL4oieeC4a5Q=
-X-Google-Smtp-Source: AGHT+IGOSzte/modj7JZksb7ZDiiiXJEXTZBZionLWBAORlBDO8GB9MrtlKvxNxO+cpLuzT9XMINIw==
-X-Received: by 2002:a05:6a00:181b:b0:6e7:6bc4:ef8c with SMTP id
- y27-20020a056a00181b00b006e76bc4ef8cmr13846300pfa.3.1711870467662; 
- Sun, 31 Mar 2024 00:34:27 -0700 (PDT)
-Received: from wheely.local0.net ([118.210.97.62])
- by smtp.gmail.com with ESMTPSA id
- k9-20020aa78209000000b006eabe72ce84sm5822411pfi.16.2024.03.31.00.34.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 31 Mar 2024 00:34:27 -0700 (PDT)
-From: Nicholas Piggin <npiggin@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
-	qemu-ppc@nongnu.org
-Subject: [PULL 8/8] tests/avocado: ppc_hv_tests.py set alpine time before
- setup-alpine
-Date: Sun, 31 Mar 2024 17:33:45 +1000
-Message-ID: <20240331073349.88324-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240331073349.88324-1-npiggin@gmail.com>
-References: <20240331073349.88324-1-npiggin@gmail.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqqEW-0003Qc-Ay
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 04:08:04 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1rqqEU-0007vD-Ad
+ for qemu-devel@nongnu.org; Sun, 31 Mar 2024 04:08:04 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 88D9E5A7EB;
+ Sun, 31 Mar 2024 11:09:28 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 7961AA7A94;
+ Sun, 31 Mar 2024 11:07:49 +0300 (MSK)
+Message-ID: <fddfea9e-cea0-4ff1-b4d5-a6f672a317bb@tls.msk.ru>
+Date: Sun, 31 Mar 2024 11:07:49 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: Backdoor in xz, should we switch compression format for tarballs?
+To: Stefan Hajnoczi <stefanha@gmail.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Michael Roth <michael.roth@amd.com>,
+ "Maydell, Peter" <peter.maydell@linaro.org>,
+ "P. Berrange, Daniel" <berrange@redhat.com>
+References: <CABgObfbBSer0p3OnS7LKt53oWbWw-i=UponFGq5hQnb2rBE71w@mail.gmail.com>
+ <CAJSP0QVRjSkX-edmHKDxcpc8O0Jh2BifuahE1FAz9ODOv4=AJQ@mail.gmail.com>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <CAJSP0QVRjSkX-edmHKDxcpc8O0Jh2BifuahE1FAz9ODOv4=AJQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,42 +84,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If the time is wrong, setup-alpine SSL certificate checks can fail.
-setup-alpine is used to bring up the network, but it doesn't seem
-to to set NTP time before the failing SSL checks. This test has
-recently started failing presumably because the default time has
-now fallen too far behind.
+30.03.2024 13:03, Stefan Hajnoczi :
+> On Fri, 29 Mar 2024 at 14:00, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>>
+>> For more info, see https://lwn.net/ml/oss-security/20240329155126.kjjfduxw2yrlxgzm@awork3.anarazel.de/ but, essentially, xz was backdoored and it seems like upstream was directly responsible for this.
+>>
+>> Based on this, should we switch our distribution from bz2+xz to bz2+zstd or bz2+lzip?
+> 
+> I think it's reasonable to drop xz as a precaution due to the
+> long-term control the attacker may have had over the code base. I
+> haven't researched the alternatives though.
 
-Fix this by setting time from the host time before running setup-alpine.
+I agree with Daniel here, - lets' not rush into conclusions so far.
 
-Fixes: c9cb496710758 ("tests/avocado: ppc add hypervisor tests")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
- tests/avocado/ppc_hv_tests.py | 3 +++
- 1 file changed, 3 insertions(+)
+Even with this long-term control, so far it does not look like .xz
+format itself is somehow bad (but it can be improved for sure), or
+it poses a treat.
 
-diff --git a/tests/avocado/ppc_hv_tests.py b/tests/avocado/ppc_hv_tests.py
-index 2c8ddd9257..bf8822bb97 100644
---- a/tests/avocado/ppc_hv_tests.py
-+++ b/tests/avocado/ppc_hv_tests.py
-@@ -14,6 +14,7 @@
- import os
- import time
- import subprocess
-+from datetime import datetime
- 
- deps = ["xorriso"] # dependent tools needed in the test setup/box.
- 
-@@ -107,6 +108,8 @@ def do_start_alpine(self):
-         exec_command(self, 'root')
-         wait_for_console_pattern(self, 'localhost login:')
-         wait_for_console_pattern(self, 'You may change this message by editing /etc/motd.')
-+        # If the time is wrong, SSL certificates can fail.
-+        exec_command(self, 'date -s "' + datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S' + '"'))
-         exec_command(self, 'setup-alpine -qe')
-         wait_for_console_pattern(self, 'Updating repository indexes... done.')
- 
--- 
-2.43.0
+> I CCed Michael Tokarev because he looked at compression formats for
+> distributing QEMU recently and may have thoughts on which alternative
+> is suitable.
 
+The only my intention at the time was to avoid keeping things in *two*
+forms, - as it looked like there's no reason for that.   My reasons was
+that .xz is used for quite some time as default download link on qemu.org
+website so it should be safe to assume everyone has .xz support by now
+and there's no need to keep .bz2.  Now with this incident in mind, maybe
+that wasn't a good idea and some other format should be kept still.
+
+But once again, - I think it's a bit preliminary to make decisions while
+the dust still not settled.
+
+/mjt
 
