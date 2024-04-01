@@ -2,91 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0010893950
-	for <lists+qemu-devel@lfdr.de>; Mon,  1 Apr 2024 11:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9BE893B10
+	for <lists+qemu-devel@lfdr.de>; Mon,  1 Apr 2024 14:45:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrDl1-00063H-RR; Mon, 01 Apr 2024 05:15:11 -0400
+	id 1rrH0s-0004IM-F5; Mon, 01 Apr 2024 08:43:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rrDku-00062q-1Q
- for qemu-devel@nongnu.org; Mon, 01 Apr 2024 05:15:07 -0400
-Received: from esa8.hc1455-7.c3s2.iphmx.com ([139.138.61.253])
+ (Exim 4.90_1) (envelope-from <yangcheng.work@foxmail.com>)
+ id 1rrDFe-0002JV-Rw; Mon, 01 Apr 2024 04:42:46 -0400
+Received: from ec2-54-164-151-162.compute-1.amazonaws.com ([54.164.151.162]
+ helo=qq.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rrDks-0001GM-33
- for qemu-devel@nongnu.org; Mon, 01 Apr 2024 05:15:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1711962902; x=1743498902;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=7BbthviDQ0Ra47LSGIAYHzV26/8roeWxwzBYVgJLFiM=;
- b=lV0f64YJatDUHagfn3EmVCOuxDhuN4uwc8Evx1Y8X5mSYOeyOe3abTdE
- 566FGBjIS7myMXFJBRY1AK5f61Jgl/MxkUn/CyhjsQHrpPwMN/3SujbSg
- t1LXfmrf8KdzWtFp2gPzV1G1Wcx4his7qnEHEgeTMBVugsubkogvlSiRZ
- A167CZVd/cwFRJhWmP47koc+oFdsCQOkX4qZAiNHtN2OEVryRgDWKdYB9
- ZnPYkkv9D/geNfAtx3PeRM9RyZk7v+qnIyfuz8BRDabFViBs5iUBqb9gD
- ZladbW+35iS+5m8Pf4JH8Tbw4Jktf9vruZha3pO8m34DMBFRzoX5BsRBE g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11030"; a="142226933"
-X-IronPort-AV: E=Sophos;i="6.07,171,1708354800"; d="scan'208";a="142226933"
-Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
- by esa8.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Apr 2024 18:14:56 +0900
-Received: from yto-m4.gw.nic.fujitsu.com (yto-nat-yto-m4.gw.nic.fujitsu.com
- [192.168.83.67])
- by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 94F2BD9F09
- for <qemu-devel@nongnu.org>; Mon,  1 Apr 2024 18:14:54 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by yto-m4.gw.nic.fujitsu.com (Postfix) with ESMTP id D543ED7B6B
- for <qemu-devel@nongnu.org>; Mon,  1 Apr 2024 18:14:53 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 645582007472F
- for <qemu-devel@nongnu.org>; Mon,  1 Apr 2024 18:14:53 +0900 (JST)
-Received: from [192.168.50.5] (unknown [10.167.226.114])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 8C1E41A000A;
- Mon,  1 Apr 2024 17:14:52 +0800 (CST)
-Message-ID: <545f7629-2937-42ff-809e-02fdff5f4571@fujitsu.com>
-Date: Mon, 1 Apr 2024 17:14:52 +0800
+ (Exim 4.90_1) (envelope-from <yangcheng.work@foxmail.com>)
+ id 1rrDFc-0003Gg-1z; Mon, 01 Apr 2024 04:42:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+ s=s201512; t=1711960952;
+ bh=zxltDTD3xd6OWrA5aJVV2SK0MBNTV1w8I4bp6Ra9o1c=;
+ h=From:To:Cc:Subject:Date;
+ b=cnAWKQFSUwzRp049W7WwpBAYWBRcGAh+qOTG4HQdlG521ZO6FqfT0MkRYGhzD/3Cj
+ 5JumSXFjw3lKXw7X2/RbFkN6h3VEi3vcY8RCCqHfrP6z2ly9E1q+BPtpZ3PiXWFNyf
+ eVDc78ipgoP83MhdjUaPsjx0lU5zPvGuqItP2Z3g=
+Received: from yc-home.taila82bd.ts.net
+ ([2409:8a62:e78:44c0:8392:94b9:dc09:930])
+ by newxmesmtplogicsvrsza1-0.qq.com (NewEsmtp) with SMTP
+ id CF81B6E0; Mon, 01 Apr 2024 15:51:56 +0800
+X-QQ-mid: xmsmtpt1711957916tumjy7rhs
+Message-ID: <tencent_A4482251DD0890F312758FA6B33F60815609@qq.com>
+X-QQ-XMAILINFO: MKpxBSZQ33DDyFfeiiHm0vTGG9fNqyxcJZjtZVxOZJV86DeM/BXqp0YDKZL7p2
+ tgjWyf3Ypr1hrX9TT6LUr3TeD95aB+Ls846PQUShxuqLLKvVOA+yB5dUU0wlcMisJHZaHe+fuKbp
+ uSdFJmY6+s1Pz5PpAXedeJxwhIi+ebwNQ4m6zAYjBamueqjoS9iXmb+P9CZh40rmsDWONKgOq+HU
+ LngnD9+7JGkuTZVBjySulzaamYmz18A+Ap1tEe+W6YBKigomoxvluS7ofLRRIbqudn9gl8dQGXfH
+ uqjRRYhwyAflA2Jtyp3xWALjM6cv2Z8souwZzF3ddQIp2y1Tg2y7jq7b+hgnA7/yO39z2Oj6XsuX
+ etHLjWkQ8+87VN9Nuvit5N5If8LDMDDC0zI3QQSlf6TFQfSmBEqrjA3y1tMTqGWwgMxGeMlfckKw
+ wVRzdrxo+FiWU14XUtmHtgCd7Sm14buGF278CJsepPRPZ5eYeyIsvdrkm6U1KRPqAalTUTAayFZw
+ CbC3LHbwunAA9fDI0CQgpODHn5dFU+dPf9HxWHG3/eOl4sCZZ+hDbCCX2ZZn258pZuoFGObNBlxg
+ JLUZ4A24zcLCH/1Bl5ZG7k9VCNye55VRgb6wpZG3tBBYpknV2OJf4wiLRhaUyfMNgW1Me1s77dpF
+ 2xQzfCRRqtwqnTqjE6DRVMozZdrJiqyGTVlMC/fugQawG7gAZHw90ssZMFEFjC3sQiH/J3X6SVtb
+ wFnYWfVmSLiO6NDqiH7z7sIjqyQVEeYPeW/Sj8I+MYVVIwT///tFgDj0sTU7elmLqdvs/8rFYUG9
+ XIQHMyB4vK5iV7Vg2EeQt6JDqImJi0H0m5TraFAMO9v+hsFAlf67N40g/kefR/kTZMZUFqPY69tg
+ NaY5xODhu9PSXlGmeJX9CHwGhmQuflUpKUm0LWAaSMxzqdYSvqOG+sBPJBrYBQ5YIlhd4Tqshf29
+ TlKG72zxk5Dn76RAWcdVgCqg9zQFtrRx+6M4GU912NQZuh/fMQIm1sNYr2sQi8Xfp0I0V5QRbN96
+ ymbNeSf0eB7VaYCv1LUoWvaTrps0+Fjml84iDyf9p4ozK+w6Fr
+X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
+From: Cheng Yang <yangcheng.work@foxmail.com>
+To: qemu-riscv@nongnu.org
+Cc: Cheng Yang <yangcheng.work@foxmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: [PATCH v1 1/1] hw/riscv/boot.c: Support 64-bit address for initrd
+Date: Mon,  1 Apr 2024 15:51:22 +0800
+X-OQ-MSGID: <20240401075121.3460231-1-yangcheng.work@foxmail.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 1/6] cxl/core: correct length of DPA field masks
-To: Dan Williams <dan.j.williams@intel.com>, qemu-devel@nongnu.org,
- linux-cxl@vger.kernel.org
-Cc: Jonathan.Cameron@huawei.com, dave@stgolabs.net, ira.weiny@intel.com,
- stable@vger.kernel.org
-References: <20240329063614.362763-1-ruansy.fnst@fujitsu.com>
- <20240329063614.362763-2-ruansy.fnst@fujitsu.com>
- <66076ce2ddec7_19e02946d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-In-Reply-To: <66076ce2ddec7_19e02946d@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28290.006
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28290.006
-X-TMASE-Result: 10--5.278600-10.000000
-X-TMASE-MatchedRID: U43YD7H1LvyPvrMjLFD6eCkMR2LAnMRp2q80vLACqaeqvcIF1TcLYLBk
- jjdoOP1baz4aoYHfj+mh3bqxZ6gk+QqU4tmmg3HIi3TrOhAURKEbbhhV65kaY2O0yVK/5Lmc5GA
- Qy8LG5mci+t+0AiFaYvL3NxFKQpq17ZpdgJkP1WLcgUVP3Cp+vXFd5+Cf9M1DCK16zrE94nmkQu
- 0/M/TLDg9Mn3iItNtKhgDksK+IVyzHO8eAxCOj9o61Z+HJnvsOfS0Ip2eEHnzUHQeTVDUrIg6wQ
- I72z4YedB0ntd9Tzp7GVuWouVipcobZcWeGK7nSbWo/bGcDJ4NC0x/dJHqjC/pbmb3XVEvJZDeF
- sBl1p6QJJfBDBk+SFcEYB+iaMCoc579tse/QOaV+erPL3QFt0vMMpBf3ZLno9xc4blKmPsG++4/
- U0fKJimxVnQcP2HDau2+pJwc75bs=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.61.253;
- envelope-from=ruansy.fnst@fujitsu.com; helo=esa8.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=54.164.151.162;
+ envelope-from=yangcheng.work@foxmail.com; helo=qq.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RDNS_DYNAMIC=0.982, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 01 Apr 2024 08:43:42 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -98,65 +83,33 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shiyang Ruan <ruansy.fnst@fujitsu.com>
-From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Use qemu_fdt_setprop_u64() instead of qemu_fdt_setprop_cell()
+to set the address of initrd in FDT to support 64-bit address.
 
+Signed-off-by: Cheng Yang <yangcheng.work@foxmail.com>
+---
+ hw/riscv/boot.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-在 2024/3/30 9:37, Dan Williams 写道:
-> Shiyang Ruan wrote:
->> The length of Physical Address in General Media Event Record/DRAM Event
->> Record is 64-bit, so the field mask should be defined as such length.
->> Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
->> mask off the upper-32-bits of DPA addresses. The cxl_poison event is
->> unaffected.
->>
->> If userspace was doing its own DPA-to-HPA translation this could lead to
->> incorrect page retirement decisions, but there is no known consumer
->> (like rasdaemon) of this event today.
->>
->> Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
->> Cc: <stable@vger.kernel.org>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Davidlohr Bueso <dave@stgolabs.net>
->> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Cc: Ira Weiny <ira.weiny@intel.com>
->> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
->> ---
->>   drivers/cxl/core/trace.h | 6 +++---
->>   1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
->> index e5f13260fc52..e2d1f296df97 100644
->> --- a/drivers/cxl/core/trace.h
->> +++ b/drivers/cxl/core/trace.h
->> @@ -253,11 +253,11 @@ TRACE_EVENT(cxl_generic_event,
->>    * DRAM Event Record
->>    * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
->>    */
->> -#define CXL_DPA_FLAGS_MASK			0x3F
->> +#define CXL_DPA_FLAGS_MASK			0x3FULL
-> 
-> This change makes sense...
-> 
->>   #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
->>   
->> -#define CXL_DPA_VOLATILE			BIT(0)
->> -#define CXL_DPA_NOT_REPAIRABLE			BIT(1)
->> +#define CXL_DPA_VOLATILE			BIT_ULL(0)
->> +#define CXL_DPA_NOT_REPAIRABLE			BIT_ULL(1)
-> 
-> ...these do not. The argument to __print_flags() is an unsigned long, so
-> they will be cast down to (unsigned long), and they are never used as a
-> mask so the generated code should not change.
+diff --git a/hw/riscv/boot.c b/hw/riscv/boot.c
+index 09878e722c..47281ca853 100644
+--- a/hw/riscv/boot.c
++++ b/hw/riscv/boot.c
+@@ -209,8 +209,8 @@ static void riscv_load_initrd(MachineState *machine, uint64_t kernel_entry)
+     /* Some RISC-V machines (e.g. opentitan) don't have a fdt. */
+     if (fdt) {
+         end = start + size;
+-        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-start", start);
+-        qemu_fdt_setprop_cell(fdt, "/chosen", "linux,initrd-end", end);
++        qemu_fdt_setprop_u64(fdt, "/chosen", "linux,initrd-start", start);
++        qemu_fdt_setprop_u64(fdt, "/chosen", "linux,initrd-end", end);
+     }
+ }
+ 
+-- 
+2.34.1
 
-They will only used to check if such flag is set, not used as mask.  So, 
-yes, I'll remove these changes.
-
-
---
-Thanks,
-Ruan.
 
