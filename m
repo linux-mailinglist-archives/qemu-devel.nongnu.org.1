@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D784889569E
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D11378956A9
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:30:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf54-0001eT-J0; Tue, 02 Apr 2024 10:25:42 -0400
+	id 1rrf5r-0002Hq-3G; Tue, 02 Apr 2024 10:26:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf51-0001Zl-Jj
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:39 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf57-0001ny-Ns
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:46 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4y-0008OJ-TX
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:39 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4156684ee9cso14166545e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf55-00006f-AF
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:45 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-33ff53528ceso3778739f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067934; x=1712672734; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067941; x=1712672741; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=kQNXAA1wuI9r1xEVFBSvxjPye1eCu2fvaop4AIt2tLo=;
- b=Yt9ERwCRY5n/jJ7PAk7SKe2GNicxXTUNdVu62EJbua+QF+NjOzSHslPVKm+rldTdJp
- 8xIhRr8/Vj3JJOeC+dgCHhMhUcuoMyQzrKUjz9GVl83Vm/O2HQPV0eZoDMrHc4PECsOL
- pZxY6UNRA9A30TPz+9EJfhRvCZYaWFBCcAg2h4FTGwqtFC66z+5kGk7A+JHCbUdqjaQq
- qMrroyjV9UqqfxErd6+otvCPDGke79DgJdJFEQWyT7wCIluqRzzD9pekMOkSGuoN9gl7
- TasMGYVH5Tu2OjZnJ3aKDMHxoSAyJQAwxcIh3qDH3cgbS0pgBdiulyGCvz7lUGQLueKF
- T/Tw==
+ bh=7qcHH+OAhHv5oWHUpWK7YMWCpNLvO0BPFhkfbb/3C2c=;
+ b=hskFWnFBvkFPy8nFb1IeN2z+snIZBvs3k3PXE7OJ4wIUl+Cnl6LUze7nB3D9SRIFIm
+ TvDcv0Tk64fLxcqiDjo6DZzaB3eE+XLqVayJdJBwdJWlEZXxm01tQQLXNL6P/57cw2Pv
+ eaYwOpzuw4NgqHLbgKbUrCGMZ6y0Nj+XcxAY1oUhyA0k9moSoscOlATq9SjFrjGfKOuS
+ MZpPFwGEI4lW+Vhsd680XjrAnWX5zj/mUD7N1U8bwTuIeR8OzBJPvjBRZiWWnZ0uj3NM
+ fs1SNIjjgJ6XqhGQ9KqJ3gpRjMgOnxH3ZwB2ZEVsIgKi0Vc45AMkijSuWjZ9RmszWkUP
+ rF8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067934; x=1712672734;
+ d=1e100.net; s=20230601; t=1712067941; x=1712672741;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kQNXAA1wuI9r1xEVFBSvxjPye1eCu2fvaop4AIt2tLo=;
- b=v1n/q8D6VrimtpD2p8NjbbKpKK81VwTe5j7O1RSusIldozJHvlxchtJib3tQMCRUFr
- +ExX4j4IgRneP9R0v3U2Vc6kAfmFDK724y0r/L7aXnApCMu7SuNWNXX31MOMKe4Gz693
- 39W2g3C6AgtXRdxqXkPP/o+E0Iz6PsPUkWpJ/izW1zfp/UZpkpZQ/+bhovzBQKXbflWy
- ZoWX5ZROq9mJv1gd2pXsGW3c+pGENv7FM9m+1HV9rmUZkP59I3Rzeg5quFtf+zlSIruc
- OPgE80drugymHvsODlxfOFVpdPJjEPIknemlDZoNrmRnroNgQ83SL59CU+TmhSLLG8ss
- RA6g==
-X-Gm-Message-State: AOJu0YwpjRHLD8L25YAAMnhKNlrC9id2+YXbAlWJ6IzHHZzjoDo4+JSC
- eTS6ig3kmUuFT5n53ez1iidnn9FGinHzdgKcLSUS2VMpOAvZImmeZ/YBEpy0TUiieCNkqnzkvxh
- dLec=
-X-Google-Smtp-Source: AGHT+IEbsSiMV7jilXYs2wV9OBg95AuR2LRSHkUc1BiINN5nAdttK0+iS4lqUtws+mmM3EGdu+r3Vw==
-X-Received: by 2002:a1c:4b04:0:b0:415:f755:5a1f with SMTP id
- y4-20020a1c4b04000000b00415f7555a1fmr1630323wma.29.1712067934343; 
- Tue, 02 Apr 2024 07:25:34 -0700 (PDT)
+ bh=7qcHH+OAhHv5oWHUpWK7YMWCpNLvO0BPFhkfbb/3C2c=;
+ b=Zo67w44yqG4aE07gg58tz0743VdYLvzQAir+aZhq00oIY1gmBUAsfnwAfDwuxlBGM2
+ xGb2jBieF9zSC5cBIsatHpNPkgTQDn++LxNV2YtS0lqTPdg8ky6Y67KaLc0/l7PU1K+n
+ ocOT34m3WXuyUjQEL8SDPvTZwu5PbOXdvVcK2V8oC4fSHBlvZKWDBCxdTjcBrBctJcI+
+ AohdMd6Cv9d/gY1ASQr/g/Y4txxhT1ceyS2esvv80SlzVhH8Okipp07Cb+fA8qtlgNqp
+ ChMWUo3Oxx3NPIRJM8VlZoSS+KVtQ/Ic92f+VBzb+nCFwXw5ML8AmADzUYcK2uGa8Wtr
+ SB+A==
+X-Gm-Message-State: AOJu0YwXNElIB9qe50ypg4vlHvU1w9zGJQyNQVXmyAPNEo/dKJG/P8c6
+ 6Xb3u/jnooCvpfM3IEL/a1MUpHrIjtUFqQqOnKYeaHH/I5Xz/P2tw8vSARpcR35f9lIMUTKtts5
+ gqB0=
+X-Google-Smtp-Source: AGHT+IEXIE7qmPsir59JZH4f0PPcQyJ4KagaBvkKMFNWGMsHJ3uFs9sfwByBvLsTeGCD+W46V6Wgcw==
+X-Received: by 2002:adf:ca8b:0:b0:33e:7719:325d with SMTP id
+ r11-20020adfca8b000000b0033e7719325dmr7135610wrh.2.1712067941079; 
+ Tue, 02 Apr 2024 07:25:41 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c468c00b00413eb5aa694sm18186167wmo.38.2024.04.02.07.25.32
+ az15-20020adfe18f000000b0034335f13570sm12328862wrb.116.2024.04.02.07.25.39
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:25:33 -0700 (PDT)
+ Tue, 02 Apr 2024 07:25:40 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 09/15] hw/i386/pc: Restrict CXL to PCI-based machines
-Date: Tue,  2 Apr 2024 16:24:24 +0200
-Message-ID: <20240402142431.70700-10-philmd@linaro.org>
+ Fiona Ebner <f.ebner@proxmox.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Hanna Reitz <hreitz@redhat.com>
+Subject: [PULL 10/15] block: Remove unnecessary NULL check in
+ bdrv_pad_request()
+Date: Tue,  2 Apr 2024 16:24:25 +0200
+Message-ID: <20240402142431.70700-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,31 +96,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CXL is based on PCIe. In is pointless to initialize
-its context on non-PCI machines.
+From: Kevin Wolf <kwolf@redhat.com>
 
+Coverity complains that the check introduced in commit 3f934817 suggests
+that qiov could be NULL and we dereference it before reaching the check.
+In fact, all of the callers pass a non-NULL pointer, so just remove the
+misleading check.
+
+Resolves: Coverity CID 1542668
+Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
+Message-ID: <20240327192750.204197-1-kwolf@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-ID: <20240327161642.33574-1-philmd@linaro.org>
 ---
- hw/i386/pc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index e80f02bef4..5c21b0c4db 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1738,7 +1738,9 @@ static void pc_machine_initfn(Object *obj)
-     pcms->pcspk = isa_new(TYPE_PC_SPEAKER);
-     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
-                               OBJECT(pcms->pcspk), "audiodev");
--    cxl_machine_init(obj, &pcms->cxl_devices_state);
-+    if (pcmc->pci_enabled) {
-+        cxl_machine_init(obj, &pcms->cxl_devices_state);
-+    }
- 
-     pcms->machine_done.notify = pc_machine_done;
-     qemu_add_machine_init_done_notifier(&pcms->machine_done);
+diff --git a/block/io.c b/block/io.c
+index 395bea3bac..7217cf811b 100644
+--- a/block/io.c
++++ b/block/io.c
+@@ -1730,7 +1730,7 @@ static int bdrv_pad_request(BlockDriverState *bs,
+      * For prefetching in stream_populate(), no qiov is passed along, because
+      * only copy-on-read matters.
+      */
+-    if (qiov && *qiov) {
++    if (*qiov) {
+         sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
+                                       &sliced_head, &sliced_tail,
+                                       &sliced_niov);
 -- 
 2.41.0
 
