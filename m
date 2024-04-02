@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B7A8951E2
+	by mail.lfdr.de (Postfix) with ESMTPS id 280D08951E3
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:32:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcMC-0004Nj-W2; Tue, 02 Apr 2024 07:31:13 -0400
+	id 1rrcMe-0004SQ-SX; Tue, 02 Apr 2024 07:31:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcMB-0004NX-68
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:31:11 -0400
-Received: from mail-wr1-f41.google.com ([209.85.221.41])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcME-0004Ns-L8
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:31:21 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcLU-0002Qk-8x
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:31:09 -0400
-Received: by mail-wr1-f41.google.com with SMTP id
- ffacd0b85a97d-341b01dbebbso4509663f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:30:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcLV-0002U6-S6
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:31:12 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-33ff53528ceso3636519f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:30:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712057420; x=1712662220; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=VWutY8z9bkN7X3i9ljyrwrRwmS6njDciQ2k14IDKqCs=;
- b=rWbibbC83i0UNS+P1PzdY2AZ9QGuGQ6UkShjVYrquuiSuT+9clngniZYWUf4jiXxo1
- xUZ9/EerrfTlURMoAV2t0Bj7KRHFqMENX2UK1InR/pHyh0DkMBtrIQNZsDWEvXg+hMcE
- dCpQRsbaMr1i6pOhImz+NKg2m/u7BiGLDGKArzPTv+BH5rOLcFbYn/6OhRxFrJzCVJmL
- 4yGKkEv+EnvstjO/LaZLT2pQlgPd5MUymwyjslkZO7m8SPNLPYEiLqVLM7GzuRu2dwAS
- crx80+S6/cULqDJd/zBAhgmcWkGZb6oLpHSIhZq29Vej15PTef8CeHkszU8GdTh6N7c3
- svAw==
+ d=linaro.org; s=google; t=1712057426; x=1712662226; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=VQYebzAm0/Zs/gN1IFmg+B2akTqJN/e5dKp9cuddpsI=;
+ b=S3MPFu2tKIe59vxT54ufgjNuEIsviX+HkgRQTvLM/Mw1vwNXfY3/+aU4/ug3/PylUl
+ MVd1HDeb2bb38jAomRKDVE2YgUNRy8MSSUPl6wkrv5HzRo71R3alv09NPDPruBvwqsiR
+ RSmvg2ScSXLoxwLa27nTLzfSbfFj8gAZaWUbDJU/jJaPjG28N2sAgIZTnYr5IeAkb7rY
+ xzuxJ94eVs1dNjbn/9CSEjH6t/mzDw0WyBomrJ+Q+4Ufu7SCPfDKWvdMp9NbGyJNXoT/
+ 7o+VFR+NlTP6B8Pm4FeCUrj4Az7Em0r7kAIK4BIKalxdiKWj8x+1hrEYtjPd6sJc9u/o
+ oORw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712057420; x=1712662220;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=VWutY8z9bkN7X3i9ljyrwrRwmS6njDciQ2k14IDKqCs=;
- b=IGL/T3HCPiephma95xbdkkUQOVPd7IPIWOBK/oKKvU/1vEAEVTAUGMOt7VKJPjVjeA
- SGxyOrEHf/NNBVAupqeS5He1bTRifRCyjKOktq6Ji7w49G5fDoZGVoMqzfIFGBX54+Y1
- cLgctd9HuzdbZqGrgTINEYnBaqx44NxHhcNqs3Cruwk0BOeQrBZaq+m5JmXhVkB1J8AU
- JjM9+8Ecb57d7ekpRTOzjFr92EeQ4xjyftDiCKy39/CuDvT9kbslbmzcFjH0FF6s87Na
- 9+dRFQ32IhKdmxP+11Vgmn1DJEmqxY+9v8LgC+zUq9H5X3Uf/KiuIa51nuxVENosS4Po
- WBag==
-X-Gm-Message-State: AOJu0YwDYGqQo55OIFmPaE5++Ab/DkEKJ5n/vMmWjUCIF+a+UJ69vqWT
- nLgd+mwaJwJJgknJETIYpFp/0z5rSr2t11sgUOqKwOdAFOQsM/imxtK3gVqlkOfbhx6X9UV9Ovb
- jijU=
-X-Google-Smtp-Source: AGHT+IEQsg21cB6W9vrfwrwLITswJ7VcBzCSo3sy77cqGUdeuomccEaiW/O+xtz1TxqFimULyCkwuw==
-X-Received: by 2002:a5d:4c44:0:b0:341:906b:3351 with SMTP id
- n4-20020a5d4c44000000b00341906b3351mr1302992wrt.0.1712057419779; 
- Tue, 02 Apr 2024 04:30:19 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712057426; x=1712662226;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=VQYebzAm0/Zs/gN1IFmg+B2akTqJN/e5dKp9cuddpsI=;
+ b=QiCj5/7cZllR4bmGmpNA1yU0qQA9+6Y7jyPimdV0gGurGqVa+SVkHh7S+Tw2k5N2CL
+ 4LBHPUfhB0WrcVV6jIf9///mDFa9H/KbldP+J1TdTG/emR9PAzdW1un7fxS4jOXr0CaT
+ qSy+3KBqID6c+A5yH4aKjro2U8KM84b1HMHRmZVbpSVG6iyGF0cImeA3ogAomNWCB6BY
+ VBUqDemfS4Vjbe/xMb0bI3K4b9XoD4mS0wBgeWJFAhWl7P24QalxHZ6mOdn5Jeg8jc+i
+ WIVmHsVrAm9W++WA7VH4WgogFvL/yfbRHBiOgPpkDe1HNtteYKDggOTQav/Jqkcj+gxD
+ yt5Q==
+X-Gm-Message-State: AOJu0Yz3z9wf3gBSFAGnRso1Rbcy900oX+37ZQqa0YnyboUtRuZxG95d
+ mGqNFGSLxKH1/nTI2Vs8nFswWTbn5ryx8zUBbDX7OQc2Z/kELXlNUQcrgp65WZMr94mbHytsQBu
+ J/YY=
+X-Google-Smtp-Source: AGHT+IEzmReR+ra1bXu6snaYDjNDTjHAARdLL+IEnPSTkmiKm2/mPmn/Pc0xbl6wGTUxltO5emP0JQ==
+X-Received: by 2002:adf:e50a:0:b0:33e:7f51:c2f8 with SMTP id
+ j10-20020adfe50a000000b0033e7f51c2f8mr6864591wrm.36.1712057425827; 
+ Tue, 02 Apr 2024 04:30:25 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- bo15-20020a056000068f00b003434c6d9916sm5496356wrb.110.2024.04.02.04.30.17
+ y17-20020a056000109100b00341de3abb0esm13909947wrw.20.2024.04.02.04.30.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 04:30:19 -0700 (PDT)
+ Tue, 02 Apr 2024 04:30:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>,
  Stefan Weil <sw@weilnetz.de>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>, qemu-trivial@nongnu.org
-Subject: [PATCH 0/2] scripts/checkpatch: Do not use mailmap and check
- qemu-trivial@ author
-Date: Tue,  2 Apr 2024 13:30:12 +0200
-Message-ID: <20240402113015.66280-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 1/2] scripts/checkpatch: Avoid author email mangled by
+ qemu-trivial@
+Date: Tue,  2 Apr 2024 13:30:13 +0200
+Message-ID: <20240402113015.66280-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240402113015.66280-1-philmd@linaro.org>
+References: <20240402113015.66280-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.221.41; envelope-from=philmd@linaro.org;
- helo=mail-wr1-f41.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,18 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-- qemu-trivial@ is not checked
-- mailmap hides the mistakes we want to catch
+Commit f5177798d8 ("scripts: report on author emails
+that are mangled by the mailing list") added a check
+for qemu-devel@ list, complete with qemu-trivial@.
 
-See https://lore.kernel.org/qemu-devel/60faa39d-52e8-46f1-8bd9-9d9661794880@tls.msk.ru/
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ scripts/checkpatch.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (2):
-  scripts/checkpatch: Avoid author email mangled by qemu-trivial@
-  scripts/checkpatch: Do not use mailmap
-
- scripts/checkpatch.pl | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 7026895074..4fe4cfd631 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -1573,7 +1573,7 @@ sub process {
+ 			$is_patch = 1;
+ 		}
+ 
+-		if ($line =~ /^(Author|From): .* via .*<qemu-devel\@nongnu.org>/) {
++		if ($line =~ /^(Author|From): .* via .*<qemu-(devel|trivial)\@nongnu\.org>/) {
+ 		    ERROR("Author email address is mangled by the mailing list\n" . $herecurr);
+ 		}
+ 
 -- 
 2.41.0
 
