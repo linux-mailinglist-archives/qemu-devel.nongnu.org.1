@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A178951F3
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F2A8951FB
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:36:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcPw-0007qD-Ai; Tue, 02 Apr 2024 07:35:04 -0400
+	id 1rrcRQ-0003sO-Sz; Tue, 02 Apr 2024 07:36:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcPt-0007mW-KW
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:35:01 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcRM-0003r6-1a
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:36:32 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcPr-0006yL-K2
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:35:01 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2d4360ab3daso65371511fa.3
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:34:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcRE-0008Ne-K6
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:36:31 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-343620589easo250457f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:36:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712057697; x=1712662497; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712057783; x=1712662583; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=dRDMHjHHTdjzgClWbihqpXhkVvoi9wkovv+XHUglS84=;
- b=vORGRsHnNYiAkpZo4LFIVho/KbbMw2OWhvoMKSAou0p5o2fy7fQPDGA86WV8lDzKTx
- YIGgEISnFpPNRkzHbPRGCjsq+e+iTsWt1B4A9KQcCpq7U7tktqIc+3W0wvECvGf69Qbn
- sKRHQmdcAh0xCiah0eZiu15wESoPGlIxSrNl2TSYLVKCaV6pOYdn7dbeNDR9PaVuAX08
- mjdm+mYQs7c5bVVG6Cmhai/X3vkSKVHeC+FCbGdCodrtvlLv6sNv02yT8G5qNM0snaBZ
- 8I7z/7nSTO06nqa4wrld6sLT9OVLP+0bdlIZI4JRfltnNLPUI3LoCKVHLtpEJCD+rVSp
- 8z+A==
+ bh=2eVMWygq8MoRCj1O4bukg5xnFNlPxmKB8kUJ1kXy9as=;
+ b=d4fvToAerVOTjKjIRbvP0Dqrg2IQVwzo6f9V0OeYDuJHslPqIAd07GbtUO6M4yRPUm
+ rXmIxtJ1V2X5CN4JUbc5qn8KZLqgBzh3BrPPPW3bYIiQKED3L0t55B885sBd3I7RSW5G
+ mEtFP2eEoyn04fou6XLhMwgJtgXhiTTRXFD6F0POYV6yGiVVj6stBS+vEwBMl4JKHqq0
+ YazqTt0dL1x7CY5bwaSeoZ/nnWs74An83MmNxtZt6xPVu9GDTBvmGuz6I2TZi/XDQCx1
+ cvw3vTiBbwSsxK7yEjwftGnv+iqclSSImf9gFPPZ7TSzzenENsYtXtmYPVCbD7PhqWiG
+ MmEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712057697; x=1712662497;
+ d=1e100.net; s=20230601; t=1712057783; x=1712662583;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dRDMHjHHTdjzgClWbihqpXhkVvoi9wkovv+XHUglS84=;
- b=Heehj0IoO5zHUhfUwB5dB47pc/WwRcAr/yUju3IN871sp67gVi8M4kw5zfrh7RIwrN
- kKuUpFmk9vQvMg61/vntWcz1Vp4JK3daL5+l4R7XpP7Qv3CdjIqZWDsU7zWNlWiiKeVY
- lYkhG3z5G8JJCxS2yIci+Gc7uwIGOeDKYqaXmxt7owrmIuWPx4LStoW1exwdDe0yolNp
- uSfpUo705Uamw6YW384J/AVdxqj7Y/3LS9RSwn86uNR7rUqfdvoOYNJH8B1mYsQciCyg
- 5Tpe0FQMiAO++cb+4iR8vK9/wf0kocTJjtIC+mZung2Tqrq5Z/6JDujmnCvoj79KHlje
- P1zg==
+ bh=2eVMWygq8MoRCj1O4bukg5xnFNlPxmKB8kUJ1kXy9as=;
+ b=Clcq5cD+7tiSpu/1piugpl3kmacAlAQQ2vutDniGWZODEhwGTUrSIZfx0YoO7RrIOq
+ b1tfxJ6bmwiqfGkuKV93cdLwH6S+0KMW+UumXOHgNLfaV5AB6l1Fe5fhgCZsnShcIwTw
+ Qps4tTPkww9M7AlQ4N5LVzHwDBysO7YazTDOF9bzkrRWASv9y/uUF6ptIecercobD20N
+ gRAuhRwn9dxOpxIwkwou9v1jd5391ZwUc5nKc7eU9Iadg9t/ALaY7sdwpLoUGUNinloL
+ TxfReOr/BfovKrbCKzMTC/v637ouSf0n4/RZsaGifmizghYYOKojwLwKNYjxG3wUV1tF
+ HoFQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV3ModWODqEP6/FgZKazZIco/6RV6l3AKVNIztkOXRJXFa6cFm5s3laAxiSrDRC3AIJ4+VG7aEKTm6gEn6PMV6/ai1BpUs=
-X-Gm-Message-State: AOJu0YzTI48GpWy6A9S9He9tWyS6oG6DGeEvuocVXrAtex2dXo+yHu6Z
- eFTLuDN0KBKOW7C/FkBW1eBu+54gTNQQJBm3PiDn2EJt+KJ1wsCCi+aJRVXNTPPqNUv5U6esnLD
- ZFmM=
-X-Google-Smtp-Source: AGHT+IE1qVDdxsan8u0z9OTj+Gz08QAGTT4DAw3CLfCIlWPrb1PhkiA0Dl5L96Kzrkvyj4YtADJwyA==
-X-Received: by 2002:a2e:2a03:0:b0:2d8:2710:f7dc with SMTP id
- q3-20020a2e2a03000000b002d82710f7dcmr1812948ljq.17.1712057696992; 
- Tue, 02 Apr 2024 04:34:56 -0700 (PDT)
+ AJvYcCWsmooi2qjAWozujBHi3rpGCFLlc65Vi0g/HGbav+P202V/pfWQMSh7FfwZqQbMdIkrHe76vo0G0iCulAXJHPKxP8gjBrI=
+X-Gm-Message-State: AOJu0YwJA9l+91phJQjHXqcDklhisD5OuciMnX0N5P3L8jivxMpO/lJ3
+ p0pRXOjsttnAFzH26CMgTj7X0iVOFgsQdZ6O+J5rpBb1vbJjzKDUOZMJ1LzNxNZB5dQl8sHsxac
+ KGgI=
+X-Google-Smtp-Source: AGHT+IEySA8xedcc3Rf/ISM3sWx5kIQuwjLf/MfQq+2fGmg/4JldiWlKDgiKBzD7OiLaDSq8UGjzsA==
+X-Received: by 2002:adf:fb06:0:b0:33e:d71b:cef0 with SMTP id
+ c6-20020adffb06000000b0033ed71bcef0mr6881579wrr.17.1712057782966; 
+ Tue, 02 Apr 2024 04:36:22 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- n38-20020a05600c3ba600b00415509b11c3sm13826049wms.22.2024.04.02.04.34.55
+ o18-20020adfca12000000b0033ec81ec4aesm14030978wrh.78.2024.04.02.04.36.21
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Apr 2024 04:34:56 -0700 (PDT)
-Message-ID: <df7525fc-1e0b-4e0a-86f0-c5cf8e2639b6@linaro.org>
-Date: Tue, 2 Apr 2024 13:34:54 +0200
+ Tue, 02 Apr 2024 04:36:22 -0700 (PDT)
+Message-ID: <2153d65c-9a33-4793-9c7c-0d8750f39040@linaro.org>
+Date: Tue, 2 Apr 2024 13:36:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/17] esp.c: don't assert() if FIFO empty when
- executing non-DMA SELATNS
+Subject: Re: [PATCH v3 12/17] esp.c: prevent cmdfifo overflow in
+ esp_cdb_ready()
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
  fam@euphon.net, laurent@vivier.eu, qemu-devel@nongnu.org
 References: <20240324191707.623175-1-mark.cave-ayland@ilande.co.uk>
- <20240324191707.623175-11-mark.cave-ayland@ilande.co.uk>
- <5f8511b6-225d-4197-8785-7fb69a1b1c13@linaro.org>
- <9f6064d0-cb77-47eb-a4c0-25eaf0d184f5@ilande.co.uk>
+ <20240324191707.623175-13-mark.cave-ayland@ilande.co.uk>
+ <aaaad221-9a88-4298-ac87-49d8a827ce9f@linaro.org>
+ <2fe371b5-07a3-4322-8543-76b15244dbe1@ilande.co.uk>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <9f6064d0-cb77-47eb-a4c0-25eaf0d184f5@ilande.co.uk>
+In-Reply-To: <2fe371b5-07a3-4322-8543-76b15244dbe1@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,59 +98,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/3/24 13:57, Mark Cave-Ayland wrote:
-> On 25/03/2024 10:49, Philippe Mathieu-Daudé wrote:
+On 25/3/24 13:41, Mark Cave-Ayland wrote:
+> On 25/03/2024 10:26, Philippe Mathieu-Daudé wrote:
 > 
->> On 24/3/24 20:16, Mark Cave-Ayland wrote:
->>> The current logic assumes that at least 1 byte is present in the FIFO 
->>> when
->>> executing a non-DMA SELATNS command, but this may not be the case if the
->>> guest executes an invalid ESP command sequence.
->>
->> What is real hardware behavior here?
-> 
-> I don't know for sure, but my guess is that if you ask to transfer a 
-> single byte from the FIFO to the SCSI bus and the FIFO is empty, you'll 
-> either end up with all zeros or a NOOP.
-> 
+>> On 24/3/24 20:17, Mark Cave-Ayland wrote:
+>>> During normal use the cmdfifo will never wrap internally and 
+>>> cmdfifo_cdb_offset
+>>> will always indicate the start of the SCSI CDB. However it is 
+>>> possible that a
+>>> malicious guest could issue an invalid ESP command sequence such that 
+>>> cmdfifo
+>>> wraps internally and cmdfifo_cdb_offset could point beyond the end of 
+>>> the FIFO
+>>> data buffer.
+>>>
+>>> Add an extra check to fifo8_peek_buf() to ensure that if the cmdfifo 
+>>> has wrapped
+>>> internally then esp_cdb_ready() will exit rather than allow 
+>>> scsi_cdb_length() to
+>>> access data outside the cmdfifo data buffer.
+>>>
 >>> Reported-by: Chuhong Yuan <hslester96@gmail.com>
 >>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 >>> ---
->>>   hw/scsi/esp.c | 3 ++-
->>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>>   hw/scsi/esp.c | 12 +++++++++++-
+>>>   1 file changed, 11 insertions(+), 1 deletion(-)
 >>>
 >>> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
->>> index 1aac8f5564..f3aa5364cf 100644
+>>> index f47abc36d6..d8db33b921 100644
 >>> --- a/hw/scsi/esp.c
 >>> +++ b/hw/scsi/esp.c
->>> @@ -762,7 +762,8 @@ static void esp_do_nodma(ESPState *s)
->>>           case CMD_SELATNS:
+>>> @@ -429,13 +429,23 @@ static bool esp_cdb_ready(ESPState *s)
+>>>   {
+>>>       int len = fifo8_num_used(&s->cmdfifo) - s->cmdfifo_cdb_offset;
+>>>       const uint8_t *pbuf;
+>>> +    uint32_t n;
+>>>       int cdblen;
+>>>       if (len <= 0) {
+>>>           return false;
+>>>       }
+>>> -    pbuf = fifo8_peek_buf(&s->cmdfifo, len, NULL);
+>>> +    pbuf = fifo8_peek_buf(&s->cmdfifo, len, &n);
+>>> +    if (n < len) {
+>>> +        /*
+>>> +         * In normal use the cmdfifo should never wrap, but include 
+>>> this check
+>>> +         * to prevent a malicious guest from reading past the end of 
+>>> the
+>>> +         * cmdfifo data buffer below
+>>> +         */
 >>
->> Alternatively logging the guest abuse:
->>
->>                len = fifo8_num_used(&s->fifo);
->>                if (len < 1) {
->>                    qemu_log_mask(LOG_GUEST_ERROR, ...
->>                    break;
->>                }
->>
->>>               /* Copy one byte from FIFO into cmdfifo */
->>> -            len = esp_fifo_pop_buf(s, buf, 1);
->>> +            len = esp_fifo_pop_buf(s, buf,
->>> +                                   MIN(fifo8_num_used(&s->fifo), 1));
+>> Can we qemu_log_mask(LOG_GUEST_ERROR) something here?
 > 
-> This is similar to your previous comment in that it's an artifact of the 
-> implementation: when popping data using esp_fifo_pop_buf() I've always 
-> allowed the internal Fifo8 assert() if too much data is requested. This 
-> was a deliberate design choice that allowed me to catch several memory 
-> issues when working on the ESP emulation: it just so happened I missed a 
-> case in the last big ESP rework that was found by fuzzing.
-> 
-> It's also worth noting that it's a Fifo8 internal protective assert() 
-> that fires here which is different from the previous case whereby an 
-> overflow of the internal Fifo8 data buffer actually did occur.
+> I'm not sure that this makes sense here? The cmdfifo wrapping is 
+> internal artifact of the Fifo8 implementation rather than being directly 
+> affected by writes to the ESP hardware FIFO (i.e. this is not the same 
+> as the ESP hardware FIFO overflow).
 
-Fine then.
+Still this check "prevent[s from] a malicious guest", but I don't
+mind, better be safe here.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
