@@ -2,35 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B24894EC0
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 11:33:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9B8894EC2
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 11:34:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rraVI-0005pW-Pj; Tue, 02 Apr 2024 05:32:28 -0400
+	id 1rraVE-0005ms-Ue; Tue, 02 Apr 2024 05:32:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rraVF-0005nv-C7; Tue, 02 Apr 2024 05:32:25 -0400
+ id 1rraV9-0005lq-IE; Tue, 02 Apr 2024 05:32:19 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rraVC-0003sX-5b; Tue, 02 Apr 2024 05:32:24 -0400
+ id 1rraV3-0003sh-OI; Tue, 02 Apr 2024 05:32:17 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BF6505B089;
+ by isrv.corpit.ru (Postfix) with ESMTP id C62245B08A;
  Tue,  2 Apr 2024 12:33:40 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B4282A9345;
+ by tsrv.corpit.ru (Postfix) with SMTP id C17A4A9346;
  Tue,  2 Apr 2024 12:31:57 +0300 (MSK)
-Received: (nullmailer pid 2931139 invoked by uid 1000);
+Received: (nullmailer pid 2931143 invoked by uid 1000);
  Tue, 02 Apr 2024 09:31:57 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-trivial@nongnu.org
-Subject: [PULL 0/4] Trivial patches for 2024-04-02
-Date: Tue,  2 Apr 2024 12:31:53 +0300
-Message-Id: <20240402093157.2931117-1-mjt@tls.msk.ru>
+Cc: Joonas Kankaala <joonas.a.kankaala@gmail.com>, qemu-trivial@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 1/4] usb-audio: Fix invalid values in AudioControl descriptors
+Date: Tue,  2 Apr 2024 12:31:54 +0300
+Message-Id: <20240402093157.2931117-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240402093157.2931117-1-mjt@tls.msk.ru>
+References: <20240402093157.2931117-1-mjt@tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,43 +59,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 6af9d12c88b9720f209912f6e4b01fefe5906d59:
+From: Joonas Kankaala <joonas.a.kankaala@gmail.com>
 
-  Merge tag 'migration-20240331-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-04-01 13:12:40 +0100)
+This fixes the invalid bInterfaceProtocol value 0x04 in the USB audio
+AudioControl descriptors. It should be zero. While Linux and Windows
+forgive this error, macOS 14 Sonoma does not. The usb-audio device does
+not appear in macOS sound settings even though the device is recognized
+and shows up in USB system information. According to the USB audio class
+specs 1.0-4.0, valid values are 0x00, 0x20, 0x30 and 0x40. (Note also
+that Linux prints the warning "unknown interface protocol 0x4, assuming
+v1", but then proceeds as if the value was zero.)
 
-are available in the Git repository at:
+This also fixes the invalid wTotalLength value in the multi-channel
+setup AudioControl interface header descriptor (used when multi=on
+and out.mixing-engine off). The combined length of all the descriptors
+there add up to 0x37, not 0x38. In Linux, "lsusb -D ..." displays
+incomplete descriptor information when this length is incorrect.
 
-  https://gitlab.com/mjt0k/qemu.git tags/pull-trivial-patches
+Signed-off-by: Joonas Kankaala <joonas.a.kankaala@gmail.com>
+Reviewed-by: Volker Rümelin <vr_qemu@t-online.de>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+---
+ hw/usb/dev-audio.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-for you to fetch changes up to dd5b28de4ed04e0c750022f31b529e4fea7ab478:
+diff --git a/hw/usb/dev-audio.c b/hw/usb/dev-audio.c
+index d5ac1f8962..1897fff9e6 100644
+--- a/hw/usb/dev-audio.c
++++ b/hw/usb/dev-audio.c
+@@ -124,7 +124,6 @@ static const USBDescIface desc_iface[] = {
+         .bNumEndpoints                 = 0,
+         .bInterfaceClass               = USB_CLASS_AUDIO,
+         .bInterfaceSubClass            = USB_SUBCLASS_AUDIO_CONTROL,
+-        .bInterfaceProtocol            = 0x04,
+         .iInterface                    = STRING_USBAUDIO_CONTROL,
+         .ndesc                         = 4,
+         .descs = (USBDescOther[]) {
+@@ -282,7 +281,6 @@ static const USBDescIface desc_iface_multi[] = {
+         .bNumEndpoints                 = 0,
+         .bInterfaceClass               = USB_CLASS_AUDIO,
+         .bInterfaceSubClass            = USB_SUBCLASS_AUDIO_CONTROL,
+-        .bInterfaceProtocol            = 0x04,
+         .iInterface                    = STRING_USBAUDIO_CONTROL,
+         .ndesc                         = 4,
+         .descs = (USBDescOther[]) {
+@@ -293,7 +291,7 @@ static const USBDescIface desc_iface_multi[] = {
+                     USB_DT_CS_INTERFACE,        /*  u8  bDescriptorType */
+                     DST_AC_HEADER,              /*  u8  bDescriptorSubtype */
+                     U16(0x0100),                /* u16  bcdADC */
+-                    U16(0x38),                  /* u16  wTotalLength */
++                    U16(0x37),                  /* u16  wTotalLength */
+                     0x01,                       /*  u8  bInCollection */
+                     0x01,                       /*  u8  baInterfaceNr */
+                 }
+-- 
+2.39.2
 
-  hmp: Add help information for watchdog action: inject-nmi (2024-04-01 19:52:14 +0300)
-
-----------------------------------------------------------------
-trivial patches for 2024-04-02
-
-spelling fixes for the release, minor doc fixes and usb-audio fix.
-
-----------------------------------------------------------------
-Dayu Liu (1):
-      hmp: Add help information for watchdog action: inject-nmi
-
-Joonas Kankaala (1):
-      usb-audio: Fix invalid values in AudioControl descriptors
-
-Philippe Mathieu-Daudé (1):
-      fpu/softfloat: Remove mention of TILE-Gx target
-
-Stefan Weil (1):
-      Fix some typos in documentation (found by codespell)
-
- docs/devel/atomics.rst         | 2 +-
- docs/devel/ci-jobs.rst.inc     | 2 +-
- docs/devel/clocks.rst          | 2 +-
- docs/system/i386/sgx.rst       | 2 +-
- fpu/softfloat-specialize.c.inc | 2 +-
- hmp-commands.hx                | 2 +-
- hw/usb/dev-audio.c             | 4 +---
- qapi/qom.json                  | 2 +-
- 8 files changed, 8 insertions(+), 10 deletions(-)
 
