@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8135689597D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 18:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC61B895983
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 18:19:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrgq3-0005JT-0S; Tue, 02 Apr 2024 12:18:19 -0400
+	id 1rrgr8-0007WE-Vm; Tue, 02 Apr 2024 12:19:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrgpk-0005AZ-Gu
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 12:18:00 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <justinien.bouron@gmail.com>)
+ id 1rrgr7-0007Vu-55
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 12:19:25 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrgpg-00019V-6J
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 12:18:00 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-516b80252c6so733358e87.0
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 09:17:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <justinien.bouron@gmail.com>)
+ id 1rrgr4-0001GG-N0
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 12:19:24 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6ead4093f85so5028392b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 09:19:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712074674; x=1712679474; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=OBENLPQZl3y0UeDh+S51CxIOH52m3JOW+ZQe8gjUV7I=;
- b=CcXB8Et5BB5BweGbdCBGrUeJM413rlvbQzy+SkC3DM7biAHv4FejjOfNEhkMERiu1e
- 0NjL7XAmOcmWFmTPP37kIdEzjY7K1ilzTuHXf/w6eo2IEw9DI2ml20bFHvNWMOvB9aTn
- L9eozk6VtgqZ6R13c8smW2u0w7fvb9pwXNqtL6jkG1roQU7aBWWGXqtZeUrH1SmMpJrX
- f0vbQS+Cmi5aGWReqOnyyZpTnaEBkBZBTkkiZgcZshekqGzKnm0QVWQCW55znUeFgVG7
- kKAFXSobJ6U5VX18kU5YmjH1v4zsYO1tcwwQuKvLnDUKlS0UW/JLw5Bra7Kikg2f207T
- EJJA==
+ d=gmail.com; s=20230601; t=1712074760; x=1712679560; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=InYo9PAAOd0Pj20IAYdsmIvs0/QKgDoxDhVffjGcwT8=;
+ b=h7SogejsKmDJ3CQHPAg4rvHqVsTdXnl+0E16IBZiq2cNIgVsXnYLylSkWmQezqp2Ud
+ fNI7ZPZ25dJ+rpwREEicxyjrgyyS/vAcwnnlEvzWaF0nAdXUtaUtLpYWRrfeGah9N1l3
+ 1Wn/0ojYgwnYvDbjwhHJ6fAqJBjVQs0f6AsO4cJzOJyYpof89Gu2M7/VWI//+QKOxaLt
+ WvH3P4CWOJobdwX9IIeeB16OR89VYZeufUiIJ2CCgmRz94z6Q8jWbjlkxb08dC6HS3XB
+ jMLVxn0yuOpz1dEBc9let8O/sy85Hzu/ix3fxRHV7zJHfU3Q9cxVutvYA3OWmEtQeyII
+ V0Kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712074674; x=1712679474;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OBENLPQZl3y0UeDh+S51CxIOH52m3JOW+ZQe8gjUV7I=;
- b=T0zIrfC8F7gaWV/3aO3T+LitxfvKs3I0JkEe85ZaKjMburc3UHpIKMd55h+vTSpQTJ
- pKRTKXyT6ycey90MsnVLCn0AkFIUbmtGgpt6459v4QChkNETyBwQdwoyUDIJ+pn8GwnM
- 5YQDzX0iyDOEryspvUnDb4UAV4e9yNm7Fe4HEmWk3WBUHBFi0wS+isrbTkQmaxJudO2l
- /oAdBdUqkb2cQp4ZoR5aYvY/OaounJ7w2ub+gNdwvLtCVk+f3EXjE34eJBWX83tzczlt
- wmxXngF5MSWV0qZhAOQkfS1F2VVK0yWL4l1bM7ewGSFH+2I0dX3W7yVpBEXxS8EpcuWj
- zC4Q==
+ d=1e100.net; s=20230601; t=1712074760; x=1712679560;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=InYo9PAAOd0Pj20IAYdsmIvs0/QKgDoxDhVffjGcwT8=;
+ b=WNiBcX93KcmWN2F8Heze97LIHojsHDLPkvSKQpkmp27qJR7iT4P0O2ANLm8PKhiHH+
+ 4cqXZebnh+ba7CmNayNkkFN9o+8h6NX1qp/SWd9zHXanN1iATiyfaExLI6cfNpDkUePi
+ dnVwJsf5rtTn2hKcXSptENkfYCx0n75eTZGqQkK/zj/cm6G4RJKONuG53BUfOhGE1glQ
+ tZrM+MNQ79ADCeAIYXJOHgi5bZ3L1iJfzg4fCt0ejsqFPfEXORePFm763BjmgreruVBG
+ 0bjcgu/6UYOjbV73b42XE2FoiurkbYTI59rNG5n00EgCrvMqqenlQpfk/UU7zFgTyItt
+ B+Kw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWuv20rC7QpgU7bC4UEwIjpehiozukJ6MO+EW4lp4jPFv/J9m5PydpTUD/96Xk0E8AitH9pmcPSPYGMcqBsjVy4A0VlsZ4=
-X-Gm-Message-State: AOJu0YyuIyiuWeW+fe8DMDr0HIYz+NpUui8aOLFizHPsjtdg3EAfbVBg
- jtm+1T3S556ZISHeOW9/piwcvOetOFVK20Edhcmj7uayI6Xo9/ZrLeQ8Bn+jLxM7vI8DJZ2/b7m
- 7Pl0xC0nFOvxAkUoUuGbybebav7Zn9ibAbI+mZg==
-X-Google-Smtp-Source: AGHT+IFgWtZskWTtFq3oO4fQH13tg2MeTcnAg1hV0QD3qRgdS+tOuU6pFS08Z1VoyBqeifFFc9q1N7EmIGezzSuzXsM=
-X-Received: by 2002:ac2:5445:0:b0:515:9479:a997 with SMTP id
- d5-20020ac25445000000b005159479a997mr50711lfn.10.1712074673862; Tue, 02 Apr
- 2024 09:17:53 -0700 (PDT)
+ AJvYcCVZIDTcLhRQ/zIMBlY7kKJOmUEGIJIjAR6ulb5faqTGLDZo7e+qWxbA4ndneRU25/Bc5mN6Nz3W/PrN9mu58I38MxIaZvY=
+X-Gm-Message-State: AOJu0Yxwb/VXz0DidIWYS2Nv1R7BTHpCFJPJKeZRmBgmNQPzsIsxUiai
+ eSp1OzzH3y80XljA8UboZAO3sLWlV+RTBLnSdXW0PisG4lNTVZHb
+X-Google-Smtp-Source: AGHT+IFlTZ4xaO+E3F1pLG+lWtNEwdKLdDwSqXvt1WQOUv2HWb4MaDchwFYYO9BuORcF/SHNTkIOOw==
+X-Received: by 2002:a05:6a00:3d12:b0:6ea:ed70:46b4 with SMTP id
+ lo18-20020a056a003d1200b006eaed7046b4mr13930216pfb.29.1712074760175; 
+ Tue, 02 Apr 2024 09:19:20 -0700 (PDT)
+Received: from localhost.localdomain (c-24-7-119-110.hsd1.ca.comcast.net.
+ [24.7.119.110]) by smtp.gmail.com with ESMTPSA id
+ q23-20020a62ae17000000b006e623639a80sm10337795pff.19.2024.04.02.09.19.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Apr 2024 09:19:19 -0700 (PDT)
+From: Justinien Bouron <justinien.bouron@gmail.com>
+To: justinien.bouron@gmail.com
+Cc: armbru@redhat.com, berrange@redhat.com, eblake@redhat.com,
+ eduardo@habkost.net, kraxel@redhat.com, marcandre.lureau@redhat.com,
+ pbonzini@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] input-linux: Add option to not grab a device upon
+ guest startup
+Date: Tue,  2 Apr 2024 09:18:04 -0700
+Message-ID: <20240402161804.547255-1-justinien.bouron@gmail.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240322034311.2980970-1-justinien.bouron@gmail.com>
+References: <20240322034311.2980970-1-justinien.bouron@gmail.com>
 MIME-Version: 1.0
-References: <20240330103128.3185962-1-ruanjinjie@huawei.com>
- <20240330103128.3185962-22-ruanjinjie@huawei.com>
-In-Reply-To: <20240330103128.3185962-22-ruanjinjie@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 2 Apr 2024 17:17:43 +0100
-Message-ID: <CAFEAcA9fSMZ+PHgnfHb95_bcUtsYxesfDOixbpmunsYZ7iqFpw@mail.gmail.com>
-Subject: Re: [PATCH v11 21/23] hw/intc/arm_gicv3: Report the VINMI interrupt
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
- wangyanan55@huawei.com, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x135.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=justinien.bouron@gmail.com; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -90,17 +96,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 30 Mar 2024 at 10:33, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->
-> In vCPU Interface, if the vIRQ has the non-maskable property, report
-> vINMI to the corresponding vPE.
->
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+Just a ping to make sure this patch hasn't been lost in the noise.
+The relevant patchew page is
+https://patchew.org/QEMU/20240322034311.2980970-1-justinien.bouron@gmail.com/.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Any chance to get this merged before the next release?
 
-thanks
--- PMM
+Regards,
+Justinien
 
