@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F6789569C
+	by mail.lfdr.de (Postfix) with ESMTPS id DCB7889569D
 	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:28:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf6n-0005Sp-89; Tue, 02 Apr 2024 10:27:29 -0400
+	id 1rrf6T-0003nk-IH; Tue, 02 Apr 2024 10:27:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf60-0003KL-2u
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:26:44 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf5q-0002ZS-Cb
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:26:30 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf5q-0000Sa-ML
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:26:33 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4156c4fe401so10376645e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:26:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf5j-0000Xo-PM
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:26:26 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-415446af364so26340145e9.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:26:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067968; x=1712672768; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067976; x=1712672776; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LJR+J0sIff2Vu4D6kvT0n6WHFLydqkfqEpFRyA0c+dE=;
- b=pTjwvD7joMHBtcGP5BstWpq5hNCUhEJAu7/qNNsKlOAshUYM0cEPMpxbEM6RAcovCa
- TRg6E/xG6dpY1uNg1bdvgEWLZhcFvxBa+5NZ9AcilXqccbkIhH6fpo2lVJC111aD/PTT
- RXQiVuoXALFg7iGbUwT3CHmtVkUsPky8zrX3RvNNQi83my6LrgKK5LfIzVET5VdHAP/v
- n0vtG5Uso6Zw2/EqxUlmhNk79C9tR0Q/2eKxEOo+55dZYDJDW75X/YwzGJZaIi/vt8Mg
- rs+pS067Lq9FUulYRekOBOG5hCAVjfb3AwaizL1mLi90wTortpeTTkEiCzu5r1SYKd3N
- ntDQ==
+ bh=LiQNL8qlUJUwVLo8ka7ZFh5OPYv1xBVi+fy9VmqgzRE=;
+ b=lYzBQOB5xsn43gK0Cwk6kH7vdBEUOyARdDJv+GMWThn/j/uprIrJ+5xDju6+k2h9Yd
+ OZzvBai9M9LUsBu+p/qQTBAYIwmrK0xAr1RqlFheoZB9IAOklLpbacaXK6nbDNoseX2d
+ 8ChOnaUEEj7LnIeh40pHlzak5qUE2/HW9x46VYr2c2FhVammZ69x2nGyBo94aGh/lqA1
+ W6GYkYedEHSch55Gk/CFSiD99h6Xd3I1fP9CPcoJdltKqbfMvqw5MtIwzgNL44VDZ0ji
+ eFM7mZ6Y8+uEIlrAEI0xPQsi6Yt1cAwXxj4XP65JW71FPoBsBeAjIh/9l9zTRf9vn/2m
+ Nepg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067968; x=1712672768;
+ d=1e100.net; s=20230601; t=1712067976; x=1712672776;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LJR+J0sIff2Vu4D6kvT0n6WHFLydqkfqEpFRyA0c+dE=;
- b=o8ngBz3deOyu/gm58OkHLgU4haLqTwclD14b9BnLZcposBRaZP0CFPYhBv27gxdUCf
- GRtptBIottt4mT12k9hbENOBqKfTabBYVkoG5KeHDMYLd3YPbrAFQtXPwphxGeJAGqhh
- +MV87nPHjj73lj/3cFza3YRWRwPqKBZtKp1xD4LNcSjyU4//LXxAFsbzVefUTCfr3wnU
- nD6ZovscXl+9iOoUyIj03mwtslV5KF1nRbldDOVafTfIygpjKcz1J4xTqmHW5NJjdxyW
- TPD/xGIcGwERCuX+XatyJQejE8QcVxYz3d1a6dW0Kl5lkuwUYi/QODIW4i01a+5zLJyU
- TpcQ==
-X-Gm-Message-State: AOJu0YwQ+3DSMRp56COqhsE3Th2FRbwBw5rFVzd6ha4EB0AOYKOzQSok
- Wu/cIVdOHYDJc5CXIuE6HO3gdHfOaXWzr0jBRY0OYm+gceYHci8Q3nW0SlM6cK8P/thPzbbbfx7
- ppWg=
-X-Google-Smtp-Source: AGHT+IG4zA6UOegYcEWoMux0JI6FAPHoRZzc1piBq7h3ig/Eh1YzJIg8mY+dO6cQ2T2ozzVJidRvZg==
-X-Received: by 2002:a05:600c:19c6:b0:414:132e:b485 with SMTP id
- u6-20020a05600c19c600b00414132eb485mr10180645wmq.27.1712067968445; 
- Tue, 02 Apr 2024 07:26:08 -0700 (PDT)
+ bh=LiQNL8qlUJUwVLo8ka7ZFh5OPYv1xBVi+fy9VmqgzRE=;
+ b=mFmjew4SO5/N7ZvdaVZEWHzD9FhZkL0LtQA0EmPaqkyL00I+g1nmRJLhUZ1E1I3SFE
+ cGOPCs1mlBVFfeG0VbOi/B6lmMzXqAz1+0CaY703P2ztzOFau/Yenh6MvvrNnEopLc0U
+ tzN6zAMYpv6wBMnwQ4RlNk8S8xDXAZSREvp4PBMbiHWrJZjauPUNsOl9rmOK3P3XemvI
+ m1Em8W3LJ2KQOnCcMLBqgBmT4UAm2CxgCGXAkQwQcX/sRFkkG7pQbMcClJR7WWHwcz9g
+ 2z/Db4bkr9RPMr5O1zoAQF4nB65PNv96AZG28i0lUDmS2zxVG+bfkUUMy9OE3S4AAnMg
+ YP2w==
+X-Gm-Message-State: AOJu0YxpQ8a6kus4E9VEzKpvzrt2pQxLLYcwTjDJVwacn0hpeI6hjqwy
+ xBExYTxcB00G4nTB92XHiZDWdiMEy+0xpPwuIljNm0LFQkCuyuzrlnFPtFMoG8eMT2NJT9WqI0N
+ dWbg=
+X-Google-Smtp-Source: AGHT+IE6saWf+oB/j8EBTqEFwDKJJ227HWQfzru1atRapCKVrnKsUxhdQi/s7wh3tKOXEde21OYylQ==
+X-Received: by 2002:adf:f108:0:b0:33e:c68d:d536 with SMTP id
+ r8-20020adff108000000b0033ec68dd536mr10768328wro.15.1712067975793; 
+ Tue, 02 Apr 2024 07:26:15 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- p12-20020a05600c358c00b0041486a6f9fcsm21378049wmq.37.2024.04.02.07.26.06
+ dn13-20020a0560000c0d00b00341b7d5054bsm14389989wrb.72.2024.04.02.07.26.14
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:26:08 -0700 (PDT)
+ Tue, 02 Apr 2024 07:26:15 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Artem Chernyshev <artem.chernyshev@red-soft.ru>,
- Oleg Sviridov <oleg.sviridov@red-soft.ru>,
+ Yajun Wu <yajunw@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 14/15] hw/xen_evtchn: Initialize flush_kvm_routes
-Date: Tue,  2 Apr 2024 16:24:29 +0200
-Message-ID: <20240402142431.70700-15-philmd@linaro.org>
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 15/15] hw/net/virtio-net: fix qemu set used ring flag even
+ vhost started
+Date: Tue,  2 Apr 2024 16:24:30 +0200
+Message-ID: <20240402142431.70700-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,35 +96,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Yajun Wu <yajunw@nvidia.com>
 
-In xen_evtchn_soft_reset() variable flush_kvm_routes can
-be used before being initialized.
+When vhost-user or vhost-kernel is handling virtio net datapath,
+QEMU should not touch used ring.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+But with vhost-user socket reconnect scenario, in a very rare case
+(has pending kick event). VRING_USED_F_NO_NOTIFY is set by QEMU in
+following code path:
 
-Signed-off-by: Oleg Sviridov <oleg.sviridov@red-soft.ru>
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240329113939.257033-1-artem.chernyshev@red-soft.ru>
+	#0  virtio_queue_split_set_notification (vq=0x7ff5f4c920a8, enable=0) at ../hw/virtio/virtio.c:511
+	#1  0x0000559d6dbf033b in virtio_queue_set_notification (vq=0x7ff5f4c920a8, enable=0) at ../hw/virtio/virtio.c:576
+	#2  0x0000559d6dbbbdbc in virtio_net_handle_tx_bh (vdev=0x559d703a6aa0, vq=0x7ff5f4c920a8) at ../hw/net/virtio-net.c:2801
+	#3  0x0000559d6dbf4791 in virtio_queue_notify_vq (vq=0x7ff5f4c920a8) at ../hw/virtio/virtio.c:2248
+	#4  0x0000559d6dbf79da in virtio_queue_host_notifier_read (n=0x7ff5f4c9211c) at ../hw/virtio/virtio.c:3525
+	#5  0x0000559d6d9a5814 in virtio_bus_cleanup_host_notifier (bus=0x559d703a6a20, n=1) at ../hw/virtio/virtio-bus.c:321
+	#6  0x0000559d6dbf83c9 in virtio_device_stop_ioeventfd_impl (vdev=0x559d703a6aa0) at ../hw/virtio/virtio.c:3774
+	#7  0x0000559d6d9a55c8 in virtio_bus_stop_ioeventfd (bus=0x559d703a6a20) at ../hw/virtio/virtio-bus.c:259
+	#8  0x0000559d6d9a53e8 in virtio_bus_grab_ioeventfd (bus=0x559d703a6a20) at ../hw/virtio/virtio-bus.c:199
+	#9  0x0000559d6dbf841c in virtio_device_grab_ioeventfd (vdev=0x559d703a6aa0) at ../hw/virtio/virtio.c:3783
+	#10 0x0000559d6d9bde18 in vhost_dev_enable_notifiers (hdev=0x559d707edd70, vdev=0x559d703a6aa0) at ../hw/virtio/vhost.c:1592
+	#11 0x0000559d6d89a0b8 in vhost_net_start_one (net=0x559d707edd70, dev=0x559d703a6aa0) at ../hw/net/vhost_net.c:266
+	#12 0x0000559d6d89a6df in vhost_net_start (dev=0x559d703a6aa0, ncs=0x559d7048d890, data_queue_pairs=31, cvq=0) at ../hw/net/vhost_net.c:412
+	#13 0x0000559d6dbb5b89 in virtio_net_vhost_status (n=0x559d703a6aa0, status=15 '\017') at ../hw/net/virtio-net.c:311
+	#14 0x0000559d6dbb5e34 in virtio_net_set_status (vdev=0x559d703a6aa0, status=15 '\017') at ../hw/net/virtio-net.c:392
+	#15 0x0000559d6dbb60d8 in virtio_net_set_link_status (nc=0x559d7048d890) at ../hw/net/virtio-net.c:455
+	#16 0x0000559d6da64863 in qmp_set_link (name=0x559d6f0b83d0 "hostnet1", up=true, errp=0x7ffdd76569f0) at ../net/net.c:1459
+	#17 0x0000559d6da7226e in net_vhost_user_event (opaque=0x559d6f0b83d0, event=CHR_EVENT_OPENED) at ../net/vhost-user.c:301
+	#18 0x0000559d6ddc7f63 in chr_be_event (s=0x559d6f2ffea0, event=CHR_EVENT_OPENED) at ../chardev/char.c:62
+	#19 0x0000559d6ddc7fdc in qemu_chr_be_event (s=0x559d6f2ffea0, event=CHR_EVENT_OPENED) at ../chardev/char.c:82
+
+This issue causes guest kernel stop kicking device and traffic stop.
+
+Add vhost_started check in virtio_net_handle_tx_bh to fix this wrong
+VRING_USED_F_NO_NOTIFY set.
+
+Signed-off-by: Yajun Wu <yajunw@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Message-ID: <20240402045109.97729-1-yajunw@nvidia.com>
+[PMD: Use unlikely()]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/kvm/xen_evtchn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/net/virtio-net.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/hw/i386/kvm/xen_evtchn.c b/hw/i386/kvm/xen_evtchn.c
-index a5052c0ea3..07bd0c9ab8 100644
---- a/hw/i386/kvm/xen_evtchn.c
-+++ b/hw/i386/kvm/xen_evtchn.c
-@@ -1097,7 +1097,7 @@ static int close_port(XenEvtchnState *s, evtchn_port_t port,
- int xen_evtchn_soft_reset(void)
- {
-     XenEvtchnState *s = xen_evtchn_singleton;
--    bool flush_kvm_routes;
-+    bool flush_kvm_routes = false;
-     int i;
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index a6ff000cd9..58014a92ad 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -2865,6 +2865,10 @@ static void virtio_net_handle_tx_bh(VirtIODevice *vdev, VirtQueue *vq)
+     VirtIONet *n = VIRTIO_NET(vdev);
+     VirtIONetQueue *q = &n->vqs[vq2q(virtio_get_queue_index(vq))];
  
-     if (!s) {
++    if (unlikely(n->vhost_started)) {
++        return;
++    }
++
+     if (unlikely((n->status & VIRTIO_NET_S_LINK_UP) == 0)) {
+         virtio_net_drop_tx_queue_data(vdev, vq);
+         return;
 -- 
 2.41.0
 
