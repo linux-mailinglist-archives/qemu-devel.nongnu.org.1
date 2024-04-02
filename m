@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0425D895519
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 15:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C30A089551C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 15:19:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rre16-0006so-Kc; Tue, 02 Apr 2024 09:17:32 -0400
+	id 1rre1e-0007Ib-BY; Tue, 02 Apr 2024 09:18:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rre0s-00061N-9r
+ id 1rre0s-00061Z-9U
  for qemu-devel@nongnu.org; Tue, 02 Apr 2024 09:17:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rre0a-0006RA-Gk
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 09:17:05 -0400
+ id 1rre0h-0006Uu-IF
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 09:17:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712063818;
+ s=mimecast20190719; t=1712063824;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=roYxGpFR04h/jwKow/xP9fciI3L1ZyNKVolEJHZVFKA=;
- b=KK9MQpBzcxEKMxapH2ElcAub+QeKD/mUorMz3qXYWZIFgY/PXwZwTKWqKwCYvJ1lWLea+q
- BO+0bNummVp02dMynx1y5cVLgR0E1o76s/NvrkG+Q68aReLJbgXRq7WvsCnsn9d1rKN44s
- yeuOd152GVjqyJ77AZ+0TZm9F0Hy6rE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kdytqU6zaqhwaFowWcTOUPdoULLFbHrB8YBUdpdDPOI=;
+ b=OROfQ2dX3O9YLjW1tYmthHN2kiDFqZHaMZTc3zO9WhEa/IU2U/drFvxKxhL3ml16XNoNiO
+ 5HekLr1MlTV6F9h7ktGcBFW5J1DIJhWG3zRkwFiD9NM2qakKQt5RL4B+8L9PFbIRqnnwyY
+ Eu/gcxIidJi0bxhIdF6d2kLbV6HvrMA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-c0OmjeMrNOSAII1RQ8UKjQ-1; Tue, 02 Apr 2024 09:16:57 -0400
-X-MC-Unique: c0OmjeMrNOSAII1RQ8UKjQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-343400a3afcso2381508f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 06:16:57 -0700 (PDT)
+ us-mta-41-ESNTsR6GMjKNJG8AUFyBPQ-1; Tue, 02 Apr 2024 09:17:01 -0400
+X-MC-Unique: ESNTsR6GMjKNJG8AUFyBPQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-41493ba3fcbso22887095e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 06:17:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712063815; x=1712668615;
+ d=1e100.net; s=20230601; t=1712063818; x=1712668618;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=roYxGpFR04h/jwKow/xP9fciI3L1ZyNKVolEJHZVFKA=;
- b=SsXErJGNN3rwbcMaYKaY4XXgOtqeLS0M5mLqxQLNQhuc7U1v4ByM1rA5MogyivuCjG
- GikaLTttc85jFvYrFiJTztpFeRAw7pF9XZqGz6Ex/TiCHIquIPaQrn/gJWpQrhK9ZB13
- WqVgZmWS5mB4gmrsOzFocUFMc7EAPSQ+s3bACozTZw+k+QfcJ5iNtx+4eJaAA84LyXCs
- Ps3xXRFaL1vOhVglnXefHkARAx+b9MntysVBiG5GiF4S3FaaqWalnTgUiOg3tWoxeKXG
- VwMDoX5Ynlj5C2j0C24MdVqIT3w/BIAFrpvdvUT4+He4n7xmeE93Edi4UGibdPC7f9ON
- wT4g==
-X-Gm-Message-State: AOJu0YynRIlL0rrgy4NfOGX8a+cKrz73W0s9L0uUxJLIq3kmvAjB65AH
- usApb28IYilERaT/99h4og+MomekkD+BMaAekoOVWiFDQYWxofg1B+hv4Zt1J1gkr17Qo43nAxG
- ZfSSTpbQ02FFa0W8vKJwCFmzLvielMSNxyqV+QRMN7m0aWX/LHxidFE9dbijD1fw4QFyW2e1I3N
- +y1UGrlarQV/tNwA4eaqauioaeCKSrfO7wy4Ml
-X-Received: by 2002:a5d:6c63:0:b0:343:3e5b:e8af with SMTP id
- r3-20020a5d6c63000000b003433e5be8afmr8299692wrz.52.1712063814950; 
- Tue, 02 Apr 2024 06:16:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGv9rfS994LOeFSg9rWMBVOh/d4CewI5kVkEQRRqiaNbuyjgTWsRss50ukeMi/VFu+3mLoecw==
-X-Received: by 2002:a5d:6c63:0:b0:343:3e5b:e8af with SMTP id
- r3-20020a5d6c63000000b003433e5be8afmr8299679wrz.52.1712063814639; 
- Tue, 02 Apr 2024 06:16:54 -0700 (PDT)
+ bh=kdytqU6zaqhwaFowWcTOUPdoULLFbHrB8YBUdpdDPOI=;
+ b=ka3W8eiDFVny9mZWxiVx9IrligJGI++b7vEIL1b4XbbEwVpiJnXPiM5cMgMsknJMhq
+ ePOONb8VWU7im/8ixEreBGf3bjCaOgBis+YVkGProxRJXJ6C7TSXxouwLdrUKngxp3/U
+ R9+B8d3+/WVOtKdQe6JCKiEzPEBdQHLy+3Kdp52qfrbsz2dNdV2DAWwxdfPhKjzsa+Q6
+ dBP7/HEyvpzQzGluoqIneXqqG+638KRhnhU+ZtpE32ixbRiBnjXNQNYrz3CelI1ioq51
+ rFvn1FZV2EdB96FejROfMCrHFynGMIBmtGeCFx7tTl0D3kw+U6Brtq1U3RvPRs3YoPBr
+ 2IjQ==
+X-Gm-Message-State: AOJu0YxEPfM1sOsBQN8xUzF5RF+UjY1Q7ub6DMBYzqoQXKCduj+tjy+n
+ uoy4H09J7UymY8SMHWw8JA2R0QABHP+5KbqZzqvWaqkq+0TfjaYMKBrI87Dnx6Aa05abGOmd/B1
+ BXsM5H59tGp7I733reqhV6FXkc80DwFUhEo9lmQHIJYB6FCYhwp+abJmrlAimv+RZm/g5hC4bfZ
+ M8r19Dvld0gDg48hkKquL084X6f0js4eY1wS53
+X-Received: by 2002:a05:600c:4f93:b0:414:3713:e9a2 with SMTP id
+ n19-20020a05600c4f9300b004143713e9a2mr10130139wmq.3.1712063818469; 
+ Tue, 02 Apr 2024 06:16:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEP572aIIdXD+0gq6K3dUh/Gk6SAXQqkws9txkkJjcN7Zuh6nymBQOlI/M3+ikOoXy6EPt1kA==
+X-Received: by 2002:a05:600c:4f93:b0:414:3713:e9a2 with SMTP id
+ n19-20020a05600c4f9300b004143713e9a2mr10130123wmq.3.1712063818135; 
+ Tue, 02 Apr 2024 06:16:58 -0700 (PDT)
 Received: from avogadro.local ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- m19-20020a056000025300b0033e7de97214sm14073414wrz.40.2024.04.02.06.16.54
+ z2-20020a05600c0a0200b00415515263b4sm13855462wmp.7.2024.04.02.06.16.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Apr 2024 06:16:54 -0700 (PDT)
+ Tue, 02 Apr 2024 06:16:56 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 1/7] vga: merge conditionals on shift control register
-Date: Tue,  2 Apr 2024 15:16:43 +0200
-Message-ID: <20240402131649.23225-2-pbonzini@redhat.com>
+Subject: [PULL 2/7] vga: move computation of dirty memory region later
+Date: Tue,  2 Apr 2024 15:16:44 +0200
+Message-ID: <20240402131649.23225-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240402131649.23225-1-pbonzini@redhat.com>
 References: <20240402131649.23225-1-pbonzini@redhat.com>
@@ -77,7 +77,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -101,131 +101,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There are two sets of conditionals using the shift control bits: one to
-verify the palette and adjust disp_width, one to compute the "v" and
-"bits" variables.  Merge them into one, with the extra benefit that
-we now have the "bits" value available early and can use it to
-compute region_end.
+Move the computation of region_start and region_end after the value of
+"bits" is known.  This makes it possible to distinguish modes that
+support horizontal pel panning from modes that do not.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/display/vga.c | 89 +++++++++++++++++++++++-------------------------
- 1 file changed, 42 insertions(+), 47 deletions(-)
+ hw/display/vga.c | 50 ++++++++++++++++++++++++------------------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
 diff --git a/hw/display/vga.c b/hw/display/vga.c
-index bc5b83421bf..4795a0012e2 100644
+index 4795a0012e2..b4ceff70eb8 100644
 --- a/hw/display/vga.c
 +++ b/hw/display/vga.c
-@@ -1546,12 +1546,54 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
-     }
+@@ -1501,31 +1501,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+     disp_width = width;
+     depth = s->get_bpp(s);
  
-     if (shift_control == 0) {
-+        full_update |= update_palette16(s);
-         if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
-             disp_width <<= 1;
-+            v = VGA_DRAW_LINE4D2;
-+        } else {
-+            v = VGA_DRAW_LINE4;
-         }
-+        bits = 4;
-+
-     } else if (shift_control == 1) {
-+        full_update |= update_palette16(s);
-         if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
-             disp_width <<= 1;
-+            v = VGA_DRAW_LINE2D2;
-+        } else {
-+            v = VGA_DRAW_LINE2;
-+        }
-+        bits = 4;
-+
-+    } else {
-+        switch (depth) {
-+        default:
-+        case 0:
-+            full_update |= update_palette256(s);
-+            v = VGA_DRAW_LINE8D2;
-+            bits = 4;
-+            break;
-+        case 8:
-+            full_update |= update_palette256(s);
-+            v = VGA_DRAW_LINE8;
-+            bits = 8;
-+            break;
-+        case 15:
-+            v = s->big_endian_fb ? VGA_DRAW_LINE15_BE : VGA_DRAW_LINE15_LE;
-+            bits = 16;
-+            break;
-+        case 16:
-+            v = s->big_endian_fb ? VGA_DRAW_LINE16_BE : VGA_DRAW_LINE16_LE;
-+            bits = 16;
-+            break;
-+        case 24:
-+            v = s->big_endian_fb ? VGA_DRAW_LINE24_BE : VGA_DRAW_LINE24_LE;
-+            bits = 24;
-+            break;
-+        case 32:
-+            v = s->big_endian_fb ? VGA_DRAW_LINE32_BE : VGA_DRAW_LINE32_LE;
-+            bits = 32;
-+            break;
-         }
-     }
- 
-@@ -1607,53 +1649,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
-         }
-     }
- 
--    if (shift_control == 0) {
--        full_update |= update_palette16(s);
--        if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
--            v = VGA_DRAW_LINE4D2;
--        } else {
--            v = VGA_DRAW_LINE4;
--        }
--        bits = 4;
--    } else if (shift_control == 1) {
--        full_update |= update_palette16(s);
--        if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
--            v = VGA_DRAW_LINE2D2;
--        } else {
--            v = VGA_DRAW_LINE2;
--        }
--        bits = 4;
--    } else {
--        switch(s->get_bpp(s)) {
--        default:
--        case 0:
--            full_update |= update_palette256(s);
--            v = VGA_DRAW_LINE8D2;
--            bits = 4;
--            break;
--        case 8:
--            full_update |= update_palette256(s);
--            v = VGA_DRAW_LINE8;
--            bits = 8;
--            break;
--        case 15:
--            v = s->big_endian_fb ? VGA_DRAW_LINE15_BE : VGA_DRAW_LINE15_LE;
--            bits = 16;
--            break;
--        case 16:
--            v = s->big_endian_fb ? VGA_DRAW_LINE16_BE : VGA_DRAW_LINE16_LE;
--            bits = 16;
--            break;
--        case 24:
--            v = s->big_endian_fb ? VGA_DRAW_LINE24_BE : VGA_DRAW_LINE24_LE;
--            bits = 24;
--            break;
--        case 32:
--            v = s->big_endian_fb ? VGA_DRAW_LINE32_BE : VGA_DRAW_LINE32_LE;
--            bits = 32;
--            break;
--        }
+-    region_start = (s->params.start_addr * 4);
+-    region_end = region_start + (ram_addr_t)s->params.line_offset * height;
+-    region_end += width * depth / 8; /* scanline length */
+-    region_end -= s->params.line_offset;
+-    if (region_end > s->vbe_size || depth == 0 || depth == 15) {
+-        /*
+-         * We land here on:
+-         *  - wraps around (can happen with cirrus vbe modes)
+-         *  - depth == 0 (256 color palette video mode)
+-         *  - depth == 15
+-         *
+-         * Take the safe and slow route:
+-         *   - create a dirty bitmap snapshot for all vga memory.
+-         *   - force shadowing (so all vga memory access goes
+-         *     through vga_read_*() helpers).
+-         *
+-         * Given this affects only vga features which are pretty much
+-         * unused by modern guests there should be no performance
+-         * impact.
+-         */
+-        region_start = 0;
+-        region_end = s->vbe_size;
+-        force_shadow = true;
 -    }
-     vga_draw_line = vga_draw_line_table[v];
+-
+     /* bits 5-6: 0 = 16-color mode, 1 = 4-color mode, 2 = 256-color mode.  */
+     shift_control = (s->gr[VGA_GFX_MODE] >> 5) & 3;
+     double_scan = (s->cr[VGA_CRTC_MAX_SCAN] >> 7);
+@@ -1597,6 +1572,31 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+         }
+     }
  
-     if (!is_buffer_shared(surface) && s->cursor_invalidate) {
++    region_start = (s->params.start_addr * 4);
++    region_end = region_start + (ram_addr_t)s->params.line_offset * height;
++    region_end += width * depth / 8; /* scanline length */
++    region_end -= s->params.line_offset;
++    if (region_end > s->vbe_size || depth == 0 || depth == 15) {
++        /*
++         * We land here on:
++         *  - wraps around (can happen with cirrus vbe modes)
++         *  - depth == 0 (256 color palette video mode)
++         *  - depth == 15
++         *
++         * Take the safe and slow route:
++         *   - create a dirty bitmap snapshot for all vga memory.
++         *   - force shadowing (so all vga memory access goes
++         *     through vga_read_*() helpers).
++         *
++         * Given this affects only vga features which are pretty much
++         * unused by modern guests there should be no performance
++         * impact.
++         */
++        region_start = 0;
++        region_end = s->vbe_size;
++        force_shadow = true;
++    }
++
+     /*
+      * Check whether we can share the surface with the backend
+      * or whether we need a shadow surface. We share native
 -- 
 2.44.0
 
