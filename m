@@ -2,54 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3FC894DE8
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 10:49:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2F9894E59
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 11:09:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrZoT-000864-Hg; Tue, 02 Apr 2024 04:48:13 -0400
+	id 1rra7B-000105-Cw; Tue, 02 Apr 2024 05:07:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhuyangyang14@huawei.com>)
- id 1rrZoA-0007vQ-Dm; Tue, 02 Apr 2024 04:47:56 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhuyangyang14@huawei.com>)
- id 1rrZny-0008WD-Bu; Tue, 02 Apr 2024 04:47:51 -0400
-Received: from mail.maildlp.com (unknown [172.19.88.163])
- by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4V81gg3Wypz1wpsN;
- Tue,  2 Apr 2024 16:46:07 +0800 (CST)
-Received: from dggpeml500011.china.huawei.com (unknown [7.185.36.84])
- by mail.maildlp.com (Postfix) with ESMTPS id 61A3518002D;
- Tue,  2 Apr 2024 16:46:59 +0800 (CST)
-Received: from huawei.com (10.91.158.201) by dggpeml500011.china.huawei.com
- (7.185.36.84) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 2 Apr
- 2024 16:46:58 +0800
-To: <eblake@redhat.com>
-CC: <chenxiaoyu48@huawei.com>, <kwolf@redhat.com>, <luolongmin@huawei.com>,
- <qemu-block@nongnu.org>, <qemu-devel@nongnu.org>, <stefanha@redhat.com>,
- <suxiaodong1@huawei.com>, <vsementsov@yandex-team.ru>,
- <wangyan122@huawei.com>, <yebiaoxiang@huawei.com>, <zhuyangyang14@huawei.com>
-Subject: Re: [PATCH v2 1/1] nbd/server: do not poll within a coroutine context
-Date: Tue, 2 Apr 2024 16:53:51 +0800
-Message-ID: <20240402085351.3108954-1-zhuyangyang14@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <zyi42idsyxyhygty3tlyxliltq5g4mov6yyruqetwu6t5chqop@zwvvnedv32zd>
-References: <zyi42idsyxyhygty3tlyxliltq5g4mov6yyruqetwu6t5chqop@zwvvnedv32zd>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rra6A-0000mT-W2
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 05:06:37 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rra63-0002mU-4k
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 05:06:30 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-56899d9bf52so6222197a12.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 02:06:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712048780; x=1712653580; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Pa1Rw55yfAgpHoj1ZpIG7X1DGaasc1tvcW9Euw01upw=;
+ b=N8tp44khPyuGmhNgyL7VKOOiDHudgWaD/gh46joo+9/unPaPGAU4gwVjDY0UMum4Pb
+ l0zIbBEc47017oewYh/hCE43H2sONavS78mZtSSQUfAAEeHeM1/C1ykp9p5YIwtEjJSd
+ ZAfwnI0KU+OEirMxUJ6BQmrhd0QJ3il4R2h9V8VnizgI2yvRfxOejmniNrKvd0mrfRso
+ bp/CrCdH3cJU2NH1F43MOEozAOEl5ZJZbaWJ6aLd5dXYI16GT/lDGpmb37ReHsQCtsun
+ 9M5ePp8DNpYUyh9GwoqJPBs87zHgI7l5pqY4SUUpvPumIFfbW3sB8B7eUcmh97yrn4Qg
+ JOsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712048780; x=1712653580;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Pa1Rw55yfAgpHoj1ZpIG7X1DGaasc1tvcW9Euw01upw=;
+ b=OBo68B5EiyZvPXs2QyhRFCza0lLFT+Yq8v8yw5Tgdr6killIVY2buSdeu8aX9KGoFX
+ baq2vL4xOezzmDjkK9YXla+AjjIlvX4irk6u2E96Bnz2BUXgcqNAilO89aRSMCwDBXd4
+ Z5ylsfREpy1Xa4/Jgp0qVg7m3hAZp6lHxB6LvcYyvbfAzZs87u8zzeeb/5psN7r1N/dA
+ wxPs9Q5tpXzThXZR8zISbY7paXY6fOWnYHq/9JQL+/53nPd0LmldUpFM2KKW81KkYg1i
+ 8b/mjS5ATVUheHoMlETTFcmlmxzG03kDNk7CtN0MjIgjFBiaxvg0gnxhdXM+CkvH964P
+ RMMA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWXSYJLxr+7AZU7wnzcEnSqWmI8HwLCyNVWVuwfA7J3LOufEfaQxxc8/kxPXt1fE5V1b1TLpWqkK59EOJSasEfREk8wIro=
+X-Gm-Message-State: AOJu0Yxb3nXnlOFzxMpmG3hIwZ+qAvYczzTmPnGY3Z/GEJ5+J6Xl3NvQ
+ 1dkOiDV0U+6M7OR8Jbfzroz1FF2JGj4Vlk+9HBzi08PCnjC8nSWr6ywzVazoVYMbW7QwR7ANzXV
+ m+7ZTqi2bZD29YaiG8+mKEzBd1tYSqk7HOFFZ7w==
+X-Google-Smtp-Source: AGHT+IG2aJcVbe7BlY2SBPL4A/ygoAaXeguVaD8JZhkRLY4ROp6ruH/GRmY3aQSlTnlICG4e9QePjSJMo9sfXAz4JbY=
+X-Received: by 2002:a05:6402:5112:b0:568:1882:651f with SMTP id
+ m18-20020a056402511200b005681882651fmr10271085edd.25.1712048779941; Tue, 02
+ Apr 2024 02:06:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.91.158.201]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpeml500011.china.huawei.com (7.185.36.84)
-Received-SPF: pass client-ip=45.249.212.32;
- envelope-from=zhuyangyang14@huawei.com; helo=szxga06-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20240329092747.298259-1-clg@redhat.com>
+In-Reply-To: <20240329092747.298259-1-clg@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 2 Apr 2024 10:06:08 +0100
+Message-ID: <CAFEAcA-_gaN_3fLYuDpo1ZDBV5vw8FroaHuTuuxrK=o6p74tig@mail.gmail.com>
+Subject: Re: [PATCH for-9.0] tests/qtest: Fix STM32L4x5 GPIO test on 32-bit
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>, 
+ =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,218 +90,37 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Zhu Yangyang <zhuyangyang14@huawei.com>
-From:  Zhu Yangyang via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 1 Apr 2024 11:33:09AM -0500, Eric Blake wrote:
-> On Mon, Apr 01, 2024 at 08:41:20PM +0800, Zhu Yangyang wrote:
-> > Coroutines are not supposed to block. Instead, they should yield.
-> > 
-> > Fixes: f95910f ("nbd: implement TLS support in the protocol negotiation")
-> > Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
-> > ---
-> >  nbd/client.c       |  7 ++++---
-> >  nbd/common.c       | 19 ++++++++++++++++---
-> >  nbd/nbd-internal.h |  6 +++---
-> >  nbd/server.c       | 10 +++++-----
-> >  4 files changed, 28 insertions(+), 14 deletions(-)
-> > 
-> > diff --git a/nbd/client.c b/nbd/client.c
-> > index 29ffc609a4..1ab91ed205 100644
-> > --- a/nbd/client.c
-> > +++ b/nbd/client.c
-> > @@ -619,18 +619,19 @@ static QIOChannel *nbd_receive_starttls(QIOChannel *ioc,
-> >          return NULL;
-> >      }
-> >      qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-client-tls");
-> > -    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
-> >      trace_nbd_receive_starttls_tls_handshake();
-> >      qio_channel_tls_handshake(tioc,
-> > -                              nbd_tls_handshake,
-> > +                              nbd_client_tls_handshake,
-> >                                &data,
-> >                                NULL,
-> >                                NULL);
-> >  
-> >      if (!data.complete) {
-> > +        data.loop = g_main_loop_new(g_main_context_default(), FALSE);
-> >          g_main_loop_run(data.loop);
-> > +        g_main_loop_unref(data.loop);
-> >      }
-> > -    g_main_loop_unref(data.loop);
-> > +
-> 
-> Aha - you figured out an elegant way around the client code not being
-> in coroutine context that had been stumping me, at least for the sake
-> of a minimal patch.
-> 
-> >      if (data.error) {
-> >          error_propagate(errp, data.error);
-> >          object_unref(OBJECT(tioc));
-> > diff --git a/nbd/common.c b/nbd/common.c
-> > index 3247c1d618..01ca30a5c4 100644
-> > --- a/nbd/common.c
-> > +++ b/nbd/common.c
-> > @@ -47,14 +47,27 @@ int nbd_drop(QIOChannel *ioc, size_t size, Error **errp)
-> >  }
-> >  
-> >  
-> > -void nbd_tls_handshake(QIOTask *task,
-> > -                       void *opaque)
-> > +void nbd_client_tls_handshake(QIOTask *task, void *opaque)
-> >  {
-> >      struct NBDTLSHandshakeData *data = opaque;
-> >  
-> >      qio_task_propagate_error(task, &data->error);
-> >      data->complete = true;
-> > -    g_main_loop_quit(data->loop);
-> > +    if (data->loop) {
-> > +        g_main_loop_quit(data->loop);
-> > +    }
-> > +}
-> > +
-> > +
-> > +void nbd_server_tls_handshake(QIOTask *task, void *opaque)
-> > +{
-> > +    struct NBDTLSHandshakeData *data = opaque;
-> > +
-> > +    qio_task_propagate_error(task, &data->error);
-> > +    data->complete = true;
-> > +    if (!qemu_coroutine_entered(data->co)) {
-> > +        aio_co_wake(data->co);
-> > +    }
-> >  }
-> 
-> This matches up with what I was experimenting with last week, in that
-> server is in coroutine context while client is not.  However, it means
-> we no longer have a common implementation between the two, so keeping
-> the code isolated in nbd/common.c makes less sense than just placing
-> the two specific callbacks in the two specific files right where their
-> only use case exists (and even making them static at that point).
+On Fri, 29 Mar 2024 at 09:28, C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+>
+> The test mangles the GPIO address and the pin number in the
+> qtest_add_data_func data parameter. Doing so, it assumes that the host
+> pointer size is always 64-bit, which breaks on 32-bit :
+>
+> ../tests/qtest/stm32l4x5_gpio-test.c: In function =E2=80=98test_gpio_outp=
+ut_mode=E2=80=99:
+> ../tests/qtest/stm32l4x5_gpio-test.c:272:25: error: cast from pointer to =
+integer of different size [-Werror=3Dpointer-to-int-cast]
+>   272 |     unsigned int pin =3D ((uint64_t)data) & 0xF;
+>       |                         ^
+> ../tests/qtest/stm32l4x5_gpio-test.c:273:22: error: cast from pointer to =
+integer of different size [-Werror=3Dpointer-to-int-cast]
+>   273 |     uint32_t gpio =3D ((uint64_t)data) >> 32;
+>       |                      ^
+>
+> To fix, improve the mangling of the GPIO address and pin number fields
+> by using GPIO_SIZE so that the resulting value fits in a 32-bit pointer.
+> While at it, include some helpers to hide the details.
+>
+> Cc: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+> Cc: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+> Signed-off-by: C=C3=A9dric Le Goater <clg@redhat.com>
 
-Yes, we can implement nbd_tls_handshake() on both client and server side.
-It looks a lot clearer.
 
-We can even extract the common code to an nbd_tls_handshake_complete().
 
-nbd/common.c
-void nbd_tls_handshake_complete(QIOTask *task, void *opaque) {
-    struct NBDTLSHandshakeData *data = opaque;
+Applied to target-arm.next, thanks.
 
-    qio_task_propagate_error(task, &data->error);
-    data->complete = true;
-}
-
-server.c / client.c
-static void nbd_tls_handshake(QIOTask *task, void *opaque)
-{
-    struct NBDTLSHandshakeData *data = opaque;
-
-    nbd_tls_handshake_complete(task, opaque);
-    ...
-}
-
-> 
-> Or, can we still merge it into one helper?  It looks like we now have
-> 3 viable possibilities:
-> 
-> data->loop data->co
-> non-NULL   non-NULL    impossible
-> NULL       NULL        client, qio_task completed right away
-> non-NULL   NULL        client, qio_task did not complete right away
-> NULL       non-NULL    server, waking the coroutine depends on if we are in one
-
-This seems a little complicated.
-
-> 
-> With that, we can still get by with one function, but need good
-> documentation.  I'll post a v3 along those lines, to see what you
-> think.
-> 
-> >  
-> >  
-> > diff --git a/nbd/nbd-internal.h b/nbd/nbd-internal.h
-> > index dfa02f77ee..99cca9382c 100644
-> > --- a/nbd/nbd-internal.h
-> > +++ b/nbd/nbd-internal.h
-> > @@ -74,13 +74,13 @@ static inline int nbd_write(QIOChannel *ioc, const void *buffer, size_t size,
-> >  
-> >  struct NBDTLSHandshakeData {
-> >      GMainLoop *loop;
-> > +    Coroutine *co;
-> >      bool complete;
-> >      Error *error;
-> >  };
-> 
-> I had tried to get rid of the GMainLoop *loop member altogether, but
-> your change has the benefit of a smaller diff than what I was facing
-> (I got lost in the weeds trying to see if I could convert all of the
-> client into running in coroutine context).
-
-I saw your reply and also tried to put the client in the coroutine context,
-And then I found that the event listener is registered to the default main_context,
-This means that we can't use aio_poll(ctx) and AIO_WAIT_WHILE() to wait for
-the coroutine to complete.
-
-GMainLoop *loop may not be circumvented.
-
-g_source_attach(source, NULL)
-qio_channel_add_watch_full()
-qio_channel_tls_handshake_task()
-qio_channel_tls_handshake()
-nbd_receive_starttls()
-nbd_start_negotiate()
-
-> >  
-> > -
-> > -void nbd_tls_handshake(QIOTask *task,
-> > -                       void *opaque);
-> > +void nbd_server_tls_handshake(QIOTask *task, void *opaque);
-> > +void nbd_client_tls_handshake(QIOTask *task, void *opaque);
-> >  
-> >  int nbd_drop(QIOChannel *ioc, size_t size, Error **errp);
-> >  
-> > diff --git a/nbd/server.c b/nbd/server.c
-> > index c3484cc1eb..b218512ced 100644
-> > --- a/nbd/server.c
-> > +++ b/nbd/server.c
-> > @@ -777,17 +777,17 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
-> >  
-> >      qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-server-tls");
-> >      trace_nbd_negotiate_handle_starttls_handshake();
-> > -    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
-> > +    data.co = qemu_coroutine_self();
-> >      qio_channel_tls_handshake(tioc,
-> > -                              nbd_tls_handshake,
-> > +                              nbd_server_tls_handshake,
-> >                                &data,
-> >                                NULL,
-> >                                NULL);
-> >  
-> > -    if (!data.complete) {
-> > -        g_main_loop_run(data.loop);
-> > +    while (!data.complete) {
-> > +        qemu_coroutine_yield();
-> >      }
-> > -    g_main_loop_unref(data.loop);
-> > +
-> >      if (data.error) {
-> >          object_unref(OBJECT(tioc));
-> >          error_propagate(errp, data.error);
-> > -- 
-> > 2.33.0
-> >
-> 
-> Thanks for the updated patch - it looks like we are heading in a good direction.
-> 
-> -- 
-> Eric Blake, Principal Software Engineer
-> Red Hat, Inc.
-> Virtualization:  qemu.org | libguestfs.o
-
---
-Best Regards,
-Zhu Yangyang
+-- PMM
 
