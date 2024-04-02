@@ -2,107 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDB1895EE2
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 23:45:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D81895ED8
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 23:40:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrlvo-00057I-7q; Tue, 02 Apr 2024 17:44:36 -0400
+	id 1rrlqy-00010s-0A; Tue, 02 Apr 2024 17:39:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rrlvj-00056K-HD
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 17:44:32 -0400
-Received: from mail-co1nam11on2087.outbound.protection.outlook.com
- ([40.107.220.87] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rrlqv-00010a-Df
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 17:39:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
- id 1rrlvg-0005b3-7w
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 17:44:31 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Bfcxn//rMZ6ZxE06nApGbWntwaYoSMGb8yOWmXh9Bit3X2qAJLcInoGNOZoK9bLyR3jbK8i2h0VadSobibAr4qNVVIsQsxKLMyMVey3i8ZdFDEo2OOcJwQM9OH3BfcJWJ8tO6JLsGWHkvSUSXpFBEZN0O+VHZqvrnozWRQbIbuoI8gvUh3uKVpkfcLCX3uiJFRyivx1RZo06eOjeaFsm5Jt9JIIHv6IxoO942i2L4s4HdtMbvddAvEdmCEWPK5NJYwCugvLiQSLpwj1ANfShdevtgoLnJWMoOTBAvbydQ4YzHSVXjKn+edkSVaJxUCngfXVmezuxefi1RC1Eyd7UOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/1qTOcz3CnzFlpC2VbOwpb36YyFcV2VZ3CFWkHbNUZc=;
- b=V4L9wyMDRB6GTas7QiBMHmWlzVzYmXFroKVUCQHPz/coz2rsz3JDhySpPNrMA0P7JZoqZECO181dhF2W5tN/BEuAFQ+1yRhmDvtdwCDvSNrXJ75bdOgbQp0qlFpp/ECqxmI3n9EA2Gj5k44Vd1fhkqqVXwgH9CUEuBSoZ2YRcaOzt/AyTqxj3iZQVn57S7pAnUqC3Y3f17szq0Q8Y4Crmwy1NyA7Wpfb8jTRNnizvT88hzlo718hi6Zbl+p3/JmD89HpfEAmj300XSSMiY1AvjOSXyeNVje7kX6m5vmsLAfjjq6pGPfBkhQm8HAmnCNMI4nGa9z7buweFclU7q+84Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/1qTOcz3CnzFlpC2VbOwpb36YyFcV2VZ3CFWkHbNUZc=;
- b=Imr7ZFYU4RpR5gTV0qufUwHcAX7cTsxbF6+9p1579XpVFJfmYvOrMWK++MdPLoUkSKXAWMSweRk5wA86x9PGq0lqm2Xm0wtxg3um6BbZmG1/ZEQekzLE/QUqPGoISC4yNcLsaFHjNR6KVZEiDNKNWGsbJ/OzgIR60+Nf+p+F0Xw=
-Received: from DM6PR03CA0026.namprd03.prod.outlook.com (2603:10b6:5:40::39) by
- IA1PR12MB6412.namprd12.prod.outlook.com (2603:10b6:208:3af::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
- 2024 21:39:14 +0000
-Received: from DS1PEPF00017091.namprd03.prod.outlook.com
- (2603:10b6:5:40:cafe::e2) by DM6PR03CA0026.outlook.office365.com
- (2603:10b6:5:40::39) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46 via Frontend
- Transport; Tue, 2 Apr 2024 21:39:14 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS1PEPF00017091.mail.protection.outlook.com (10.167.17.133) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Tue, 2 Apr 2024 21:39:13 +0000
-Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 2 Apr
- 2024 16:39:11 -0500
-Content-Type: text/plain; charset="utf-8"
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rrlqs-0003oE-5E
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 17:39:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712093969;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=zf68qQqVlnYoa/uiN9R4kFVVV+0NZFqHB0Zlz5TcqX0=;
+ b=GJjrYjzhSc+mf/1XA5PBGB8zfxL1fl4ErgwAVUr/PnwWcXBaQ5FGYeRxcOn1abfhTnZ3vO
+ 76xRc0A1WtGIkqXZpA5TsoVAAh1w7oNqz8LuTmrF3d9v3m3lJzgxvROaptaVu0X7p24Mjx
+ K9+XCSIsqqaHk99kSfWLd+GdEidetrk=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-253-ux5w3mgbPUGc0fVsEsf7bg-1; Tue, 02 Apr 2024 17:39:28 -0400
+X-MC-Unique: ux5w3mgbPUGc0fVsEsf7bg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-699133268a7so2194696d6.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 14:39:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712093967; x=1712698767;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zf68qQqVlnYoa/uiN9R4kFVVV+0NZFqHB0Zlz5TcqX0=;
+ b=T/nNVs5Ne+UvW8KfoJsIZmHbS05LM/b6aLx9s4rfCi5x89owfSyMgj7A+r5mPOd7f8
+ C2L78JtqC6dV7QfSpmmVOg+uFQfi6EjnlX0ZEw/aeijz0LHqTGuW/mxdy9zg6CrC39BT
+ qsF3BI1aZB9hFnt+z9q7MOErPJqMpMmHE9AjoR2MWRgK5fK2p/f1VkmctAnYwHkc7Neb
+ R8ICp45mTQHE9EZrqv5KfgKdq2xp7wvzTgmSO2az+M6X3Yfh14cdo68wfpd/3sabfZdX
+ hXyJsKwJok2jrhSmukceRDhafTtchE+nztrbA3aeWq7R19YUVnmlXwatyoTN1WpF8tLE
+ dMFg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVvOyvsWp6PZ1unWrapj/iPp5/RVh3NjUJ29jDKYh+Ahd8eknrjcwtS9nMku+W3552xKJFqW6RQedzElAGjD+pviEFBDIE=
+X-Gm-Message-State: AOJu0YwTIO5R0A+zEQXHJeoMxrLG2I9rbgJvXM5/kFK9SZd+LCBdO6U1
+ YRBvP2Wqbk7h7UF/WT++KHUkvHqDhCj0CJQLqJ/PKVsU74dQw8GsWI0rSQhbwrqSAnAn0AjKude
+ 11ToXZNYD1X8nHeyLMtXuNa8OYjES6+i5RPxpV0gZAwC50NThEuyv
+X-Received: by 2002:ad4:404b:0:b0:699:1907:7676 with SMTP id
+ r11-20020ad4404b000000b0069919077676mr2889929qvp.5.1712093967231; 
+ Tue, 02 Apr 2024 14:39:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7I3ypovAPYGA1RHX+B735EKDLMyV4x+0PAi1nWCYV0EbyqyUSvLStF4J2niciUamaQDZ7pQ==
+X-Received: by 2002:ad4:404b:0:b0:699:1907:7676 with SMTP id
+ r11-20020ad4404b000000b0069919077676mr2889904qvp.5.1712093966563; 
+ Tue, 02 Apr 2024 14:39:26 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ 11-20020a05621420cb00b006986c3f3d21sm5889971qve.116.2024.04.02.14.39.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Apr 2024 14:39:26 -0700 (PDT)
+Date: Tue, 2 Apr 2024 17:39:24 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Wang, Lei" <lei4.wang@intel.com>
+Cc: "Wang, Wei W" <wei.w.wang@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "farosas@suse.de" <farosas@suse.de>
+Subject: Re: [PATCH] migration: Yield coroutine when receiving
+ MIG_CMD_POSTCOPY_LISTEN
+Message-ID: <Zgx7DI4LXYrR_dk-@x1n>
+References: <20240329033205.26087-1-lei4.wang@intel.com>
+ <DS0PR11MB6373254218DDBF279B13FD79DC3A2@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <ZgrdIDGe3aNcRu7o@x1n>
+ <ce89cb04-65d0-4f43-ad87-ead6e69c1e09@intel.com>
+ <DS0PR11MB6373AE29375A2910057CC313DC3E2@DS0PR11MB6373.namprd11.prod.outlook.com>
+ <9aa5d1be-7801-40dd-83fd-f7e041ced249@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: [ANNOUNCE] QEMU 9.0.0-rc2 is now available
-From: Michael Roth <michael.roth@amd.com>
-To: <qemu-devel@nongnu.org>
-CC: <peter.maydell@linaro.org>
-Date: Tue, 2 Apr 2024 16:38:53 -0500
-Message-ID: <171209393394.615176.17758186871788881381@amd.com>
-User-Agent: alot/0.9
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017091:EE_|IA1PR12MB6412:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb204d2a-aa90-4f5e-14f1-08dc535d5732
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5fUXzLzIAa/Z2Lp3wOnGGIPONes49ZTMGIprO7u+w0lr2zMom/wFfVZPTMllTvvgtLrLGpSKpxSiMA6liXwImN9+8MdZoIzamtVgCGEdV4TttAyb9tJspDlfPjT4OK3zMBMJCuy+bMDGQw+2Ox25Ql6xVmMcl1GdMYZ5CoStXNnLIw+7djmL4w9DVcRGsjXfGvMFZwH4J8744rX6i4ruyLzBw0wMb/wc01RYHIuBuP54plBc95/H0dhzUHupHm/mcSQtz3z3wCf4oR4w6qqgCg7xiqNqj+h0nFfYKAZgZVUFRrkITTfWglTNF2RsKuZvmTg2UrTCbY49vC46ykLYLiqlEPVqaTyQTOZk7NDCgf722nSE4bwNt8wwlgDGsebe6CKE9h1bgENiqwD7T3ubWwvCwN5y8ERsOJJ2spv4IRAublQF55FUh56l4MOCbHRugVW26I042LmcAx057+UxfO4QZOx+RHXL1yOI/LgQxby7M9Js2FWuf6Q/a0VHSs0eR3HBy2BUXYzY1xxB49deCPL5cJG4zraml4Grj+vG1qasBSoa1J+wLYRr/oKdKjlTSwZdD2egvNEl3R89XSIgkQrQTna+Zfk7BheNOwoz4J31B72ZQYBqSm9hAWx2RhMA8AhRM5KYSBb7qbwdoGMIqV3LS8mWv74Nj1TxPWZDiIyoVGj4leeUGbrqJ3cJVLdf5b8LKAAO9qexdPl82fjScw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(82310400014)(376005)(36860700004)(1800799015); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 21:39:13.8950 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb204d2a-aa90-4f5e-14f1-08dc535d5732
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017091.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6412
-Received-SPF: permerror client-ip=40.107.220.87;
- envelope-from=Michael.Roth@amd.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9aa5d1be-7801-40dd-83fd-f7e041ced249@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,149 +105,266 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello,
+On Tue, Apr 02, 2024 at 05:28:36PM +0800, Wang, Lei wrote:
+> On 4/2/2024 15:25, Wang, Wei W wrote:> On Tuesday, April 2, 2024 2:56 PM, Wang,
+> Lei4 wrote:
+> >> On 4/2/2024 0:13, Peter Xu wrote:> On Fri, Mar 29, 2024 at 08:54:07AM +0000,
+> >> Wang, Wei W wrote:
+> >>>> On Friday, March 29, 2024 11:32 AM, Wang, Lei4 wrote:
+> >>>>> When using the post-copy preemption feature to perform post-copy
+> >>>>> live migration, the below scenario could lead to a deadlock and the
+> >>>>> migration will never finish:
+> >>>>>
+> >>>>>  - Source connect() the preemption channel in postcopy_start().
+> >>>>>  - Source and the destination side TCP stack finished the 3-way handshake
+> >>>>>    thus the connection is successful.
+> >>>>>  - The destination side main thread is handling the loading of the bulk
+> >> RAM
+> >>>>>    pages thus it doesn't start to handle the pending connection event in the
+> >>>>>    event loop. and doesn't post the semaphore
+> >> postcopy_qemufile_dst_done for
+> >>>>>    the preemption thread.
+> >>>>>  - The source side sends non-iterative device states, such as the virtio
+> >>>>>    states.
+> >>>>>  - The destination main thread starts to receive the virtio states, this
+> >>>>>    process may lead to a page fault (e.g., virtio_load()->vring_avail_idx()
+> >>>>>    may trigger a page fault since the avail ring page may not be received
+> >>>>>    yet).
+> >>>
+> >>> Ouch.  Yeah I think this part got overlooked when working on the
+> >>> preempt channel.
+> >>>
+> >>>>>  - The page request is sent back to the source side. Source sends the page
+> >>>>>    content to the destination side preemption thread.
+> >>>>>  - Since the event is not arrived and the semaphore
+> >>>>>    postcopy_qemufile_dst_done is not posted, the preemption thread in
+> >>>>>    destination side is blocked, and cannot handle receiving the page.
+> >>>>>  - The QEMU main load thread on the destination side is stuck at the page
+> >>>>>    fault, and cannot yield and handle the connect() event for the
+> >>>>>    preemption channel to unblock the preemption thread.
+> >>>>>  - The postcopy will stuck there forever since this is a deadlock.
+> >>>>>
+> >>>>> The key point to reproduce this bug is that the source side is
+> >>>>> sending pages at a rate faster than the destination handling,
+> >>>>> otherwise, the qemu_get_be64() in
+> >>>>> ram_load_precopy() will have a chance to yield since at that time
+> >>>>> there are no pending data in the buffer to get. This will make this
+> >>>>> bug harder to be reproduced.
+> >>>
+> >>> How hard would this reproduce?
+> >>
+> >> We can manually make this easier to reproduce by adding the following code
+> >> to make the destination busier to load the pages:
+> >>
+> >> diff --git a/migration/ram.c b/migration/ram.c index 0ad9fbba48..0b42877e1f
+> >> 100644
+> >> --- a/migration/ram.c
+> >> +++ b/migration/ram.c
+> >> @@ -4232,6 +4232,7 @@ static int ram_load_precopy(QEMUFile *f)  {
+> >>      MigrationIncomingState *mis = migration_incoming_get_current();
+> >>      int flags = 0, ret = 0, invalid_flags = 0, len = 0, i = 0;
+> >> +    volatile unsigned long long a;
+> >>
+> >>      if (!migrate_compress()) {
+> >>          invalid_flags |= RAM_SAVE_FLAG_COMPRESS_PAGE; @@ -4347,6
+> >> +4348,7 @@ static int ram_load_precopy(QEMUFile *f)
+> >>              break;
+> >>
+> >>          case RAM_SAVE_FLAG_PAGE:
+> >> +            for (a = 0; a < 100000000; a++);
+> >>              qemu_get_buffer(f, host, TARGET_PAGE_SIZE);
+> >>              break;
+> >>
+> > 
+> > Which version of QEMU are you using?
+> > I tried with the latest upstream QEMU (e.g. v8.2.0 release, 1600b9f46b1bd), it's
+> > always reproducible without any changes (with local migration tests).
+> 
+> I'm using the latest tip:
+> 
+> 	6af9d12c88b9720f209912f6e4b01fefe5906d59
+> 
+> and it cannot be reproduced without the modification.
 
-On behalf of the QEMU Team, I'd like to announce the availability of the
-third release candidate for the QEMU 9.0 release. This release is meant
-for testing purposes and should not be used in a production environment.
+It does look like there's some mistery in reproducability.  I can't
+reproduce it locally with v8.2.0 tag, neither can I reproduce it with the
+code above.
 
-  http://download.qemu.org/qemu-9.0.0-rc2.tar.xz
-  http://download.qemu.org/qemu-9.0.0-rc2.tar.xz.sig
+I've requested our QE team to involve, but before that I may need help on
+any verifications.
 
-  http://download.qemu.org/qemu-9.0.0-rc2.tar.bz2
-  http://download.qemu.org/qemu-9.0.0-rc2.tar.bz2.sig
+> 
+> > 
+> > 
+> >>>
+> >>> I'm thinking whether this should be 9.0 material or 9.1.  It's pretty
+> >>> late for 9.0 though, but we can still discuss.
+> >>>
+> >>>>>
+> >>>>> Fix this by yielding the load coroutine when receiving
+> >>>>> MIG_CMD_POSTCOPY_LISTEN so the main event loop can handle the
+> >>>>> connection event before loading the non-iterative devices state to
+> >>>>> avoid the deadlock condition.
+> >>>>>
+> >>>>> Signed-off-by: Lei Wang <lei4.wang@intel.com>
+> >>>>
+> >>>> This seems to be a regression issue caused by this commit:
+> >>>> 737840e2c6ea (migration: Use the number of transferred bytes
+> >>>> directly)
+> >>>>
+> >>>> Adding qemu_fflush back to migration_rate_exceeded() or
+> >>>> ram_save_iterate seems to work (might not be a good fix though).
+> >>>>
+> >>>>> ---
+> >>>>>  migration/savevm.c | 5 +++++
+> >>>>>  1 file changed, 5 insertions(+)
+> >>>>>
+> >>>>> diff --git a/migration/savevm.c b/migration/savevm.c index
+> >>>>> e386c5267f..8fd4dc92f2 100644
+> >>>>> --- a/migration/savevm.c
+> >>>>> +++ b/migration/savevm.c
+> >>>>> @@ -2445,6 +2445,11 @@ static int
+> >> loadvm_process_command(QEMUFile *f)
+> >>>>>          return loadvm_postcopy_handle_advise(mis, len);
+> >>>>>
+> >>>>>      case MIG_CMD_POSTCOPY_LISTEN:
+> >>>>> +        if (migrate_postcopy_preempt() && qemu_in_coroutine()) {
+> >>>>> +            aio_co_schedule(qemu_get_current_aio_context(),
+> >>>>> +                            qemu_coroutine_self());
+> >>>>> +            qemu_coroutine_yield();
+> >>>>> +        }
+> >>>>
+> >>>> The above could be moved to loadvm_postcopy_handle_listen().
+> >>>
+> >>> I'm not 100% sure such thing (no matter here or moved into it, which
+> >>> does look cleaner) would work for us.
+> >>>
+> >>> The problem is I still don't yet see an ordering restricted on top of
+> >>> (1)
+> >>> accept() happens, and (2) receive LISTEN cmd here.  What happens if
+> >>> the
+> >>> accept() request is not yet received when reaching LISTEN?  Or is it
+> >>> always guaranteed the accept(fd) will always be polled here?
+> >>>
+> >>> For example, the source QEMU (no matter pre-7.2 or later) will always
+> >>> setup the preempt channel asynchrounously, then IIUC it can connect()
+> >>> after sending the whole chunk of packed data which should include this
+> >>> LISTEN.  I think it means it's not guaranteed this will 100% work, but
+> >>> maybe further reduce the possibility of the race.
+> >>
+> >> I think the following code:
+> >>
+> >> postcopy_start() ->
+> >> 	postcopy_preempt_establish_channel() ->
+> >> 		qemu_sem_wait(&s->postcopy_qemufile_src_sem);
+> >>
+> >> can guarantee that the connect() syscall is successful so the destination side
+> >> receives the connect() request before it loads the LISTEN command, otherwise
+> >> it won't post the sem:
+> >>
+> >> postcopy_preempt_send_channel_new() ->
+> >> 	postcopy_preempt_send_channel_done() ->
+> >>     		qemu_sem_post(&s->postcopy_qemufile_src_sem);
+> >>
+> > 
+> > Yes. But as mentioned in another thread, connect() and accept() are async.
+> > So in theory accept() could still come later after the LISTEN command.
+> 
+> IIUC accept() is the callback and will be triggered by the connect() event.
+> 
+> The reason accept() is not called in the destination is the main loop doesn't
+> get a chance to handle other events (connect()), so if we can guarantee
+> connect() is before LISTEN, then when handling the LISTEN cmd, we yield to the
+> main loop and the connect() event is there, then we can handle it by calling the
+> accept():
+> 
+> qio_net_listener_channel_func
+> 	qio_channel_socket_accept
+> 		qemu_accept
+> 			accept
+> 
+> so it seems the case accept() comes alter after LISTEN is in our expectation?
 
-You can help improve the quality of the QEMU 9.0 release by testing this
-release and reporting bugs using our GitLab issue tracker:
+The major thing uncertain to me is "accept() will return with a valid fd"
+on dest host is not guaranteed to order against anything.
 
-  https://gitlab.com/qemu-project/qemu/-/milestones/11
+For example, I won't be surprised if a kernel implementation provides an
+async model of "accept()" syscall, so that even if the other side returned
+with "connect()", the "accept()" can still fetch nothing if the async model
+will need a delay for the new channel to be finally delivered to the
+"accept()" thread context.  It just sounds like tricky to rely on such
+thing.
 
-The release plan, as well a documented known issues for release
-candidates, are available at:
+What I proposed below shouldn't rely on any kernel details on how accept()
+could be implemented, it simply waits for the fd to be created before doing
+anything else (including creating the preempt thread and process packed
+data).
 
-  http://wiki.qemu.org/Planning/9.0
+> 
+> > 
+> >>>
+> >>> One right fix that I can think of is moving the sem_wait(&done) into
+> >>> the main thread too, so we wait for the sem _before_ reading the
+> >>> packed data, so there's no chance of fault.  However I don't think
+> >>> sem_wait() will be smart enough to yield when in a coroutine..  In the
+> >>> long term run I think we should really make migration loadvm to do
+> >>> work in the thread rather than the main thread.  I think it means we
+> >>> have one more example to be listed in this todo so that's preferred..
+> >>>
+> >>> https://wiki.qemu.org/ToDo/LiveMigration#Create_a_thread_for_migration
+> >>> _destination
+> >>>
+> >>> I attached such draft patch below, but I'm not sure it'll work.  Let
+> >>> me know how both of you think about it.
+> >>
+> >> Sadly it doesn't work, there is an unknown segfault.
 
-Please add entries to the ChangeLog for the 9.0 release below:
+Could you paste the stack of the segfault ("(gdb) thread apply all bt")?
+Or help to figure out what is wrong?
 
-  http://wiki.qemu.org/ChangeLog/9.0
+Since I cannot reproduce myself, I may need your help debugging this.  If
+you agree with what I said above and agree on such fix, please also feel
+free to go ahead and fix the segfault.
 
-Thank you to everyone involved!
+> >>
+> >>>
+> >>>>
+> >>>> Another option is to follow the old way (i.e. pre_7_2) to do
+> >>>> postcopy_preempt_setup in migrate_fd_connect. This can save the above
+> >>>> overhead of switching to the main thread during the downtime. Seems
+> >>>> Peter's previous patch already solved the channel disordering issue. Let's
+> >> see Peter and others' opinions.
+> >>>
+> >>> IIUC we still need that pre_7_2 stuff and keep the postponed connect()
+> >>> to make sure the ordering is done properly.  Wei, could you elaborate
+> >>> the patch you mentioned?  Maybe I missed some spots.
+> >>>
+> >>> You raised a good point that this may introduce higher downtime.  Did
+> >>> you or Lei tried to measure how large it is?  If that is too high, we
+> >>> may need to think another solution, e.g., wait the channel connection
+> >>> before vm stop happens.
+> >>
+> >> Per my very simple test, using post-copy preemption to live migrate an 8G VM:
+> >>
+> >>     w/o this patch: 121ms in avg in 5 tries
+> >>     w/ this patch: 115ms in avg in 5 tries
+> >>
+> >> So it seems the overhead introduced is not too high (maybe ignorable?).
+> > 
+> > You could just measure the time for the added qemu_coroutine_yield() part.
+> > The time will depend on how many events happen to be there waiting for a dispatch.
+> 
+> Still less than 1ms (0.05ms).
+> 
+> Indeed, that may depends on how many events needs to be handled.
 
-Changes since rc1:
+That sounds fine as of now.  I think it means if we can come up with a
+solid plan this week (without intrusive changes), we still have chance to
+land it in 9.0.
 
-e5c6528dce: Update version for v9.0.0-rc2 release (Peter Maydell)
-4c54f5bc8e: hw/net/virtio-net: fix qemu set used ring flag even vhost start=
-ed (Yajun Wu)
-95a3645527: hw/xen_evtchn: Initialize flush_kvm_routes (Artem Chernyshev)
-0fa5eefa16: gpio/pca955x: Update maintainer email address (Glenn Miles)
-8cdb368d19: hw/nvme: fix -Werror=3Dmaybe-uninitialized (Marc-Andr=C3=A9 Lur=
-eau)
-c65288de4d: plugins: fix -Werror=3Dmaybe-uninitialized false-positive (Marc=
--Andr=C3=A9 Lureau)
-e193d4bdb8: block: Remove unnecessary NULL check in bdrv_pad_request() (Kev=
-in Wolf)
-aab1b3eeb4: hw/i386/pc: Restrict CXL to PCI-based machines (Philippe Mathie=
-u-Daud=C3=A9)
-3325af5355: MAINTAINERS: Fix error-report.c entry (Zhao Liu)
-4fbb7687cf: qtest/libqos: Reduce size_to_prdtl() declaration scope (Philipp=
-e Mathieu-Daud=C3=A9)
-d6fd5d8346: accel/hvf: Un-inline hvf_arch_supports_guest_debug() (Philippe =
-Mathieu-Daud=C3=A9)
-0b796f3810: hw/arm/smmu: Avoid using inlined functions with external linkag=
-e again (Philippe Mathieu-Daud=C3=A9)
-870120b467: target/ppc: Rename init_excp_4xx_softmmu() -> init_excp_4xx() (=
-Philippe Mathieu-Daud=C3=A9)
-0eaf7fb9a8: gdbstub/system: Rename 'user_ctx' argument as 'ctx' (Philippe M=
-athieu-Daud=C3=A9)
-25f34eb708: gdbstub: Correct invalid mentions of 'softmmu' by 'system' (Phi=
-lippe Mathieu-Daud=C3=A9)
-93019696aa: accel/tcg/plugin: Remove CONFIG_SOFTMMU_GATE definition (Philip=
-pe Mathieu-Daud=C3=A9)
-7805132bc3: hmp: Add help information for watchdog action: inject-nmi (Dayu=
- Liu)
-f6822fee96: Fix some typos in documentation (found by codespell) (Stefan We=
-il)
-393770d7a0: raspi4b: Reduce RAM to 1Gb on 32-bit hosts (C=C3=A9dric Le Goat=
-er)
-27c335a464: tests/qtest: Fix STM32L4x5 GPIO test on 32-bit (C=C3=A9dric Le =
-Goater)
-44e25fbc19: hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS if int group is d=
-isabled (Peter Maydell)
-aaaae12055: docs: sbsa: update specs, add dt note (Marcin Juszkiewicz)
-fbe5ac5671: target/arm: take HSTR traps of cp15 accesses to EL2, not EL1 (P=
-eter Maydell)
-9988c7b50e: fpu/softfloat: Remove mention of TILE-Gx target (Philippe Mathi=
-eu-Daud=C3=A9)
-8e0cd23f71: usb-audio: Fix invalid values in AudioControl descriptors (Joon=
-as Kankaala)
-1d2f2b35bc: gitlab-ci/cirrus: switch from 'master' to 'latest' (Michael Tok=
-arev)
-d0ad271a76: migration/postcopy: Ensure postcopy_start() sets errp if it fai=
-ls (Avihai Horon)
-30158d8850: migration: Set migration error in migration_completion() (Aviha=
-i Horon)
-b07a5bb736: tests/avocado: ppc_hv_tests.py set alpine time before setup-alp=
-ine (Nicholas Piggin)
-74eb04af18: tests/avocado: Fix ppc_hv_tests.py xorriso dependency guard (Ni=
-cholas Piggin)
-434531619f: target/ppc: Do not clear MSR[ME] on MCE interrupts to superviso=
-r (Nicholas Piggin)
-ed399ade3c: target/ppc: Fix GDB register indexing on secondary CPUs (Benjam=
-in Gray)
-978897a572: target/ppc: Restore [H]DEXCR to 64-bits (Benjamin Gray)
-d7d9c6071e: target/ppc/mmu-radix64: Use correct string format in walk_tree(=
-) (Philippe Mathieu-Daud=C3=A9)
-beb0b62c3e: hw/ppc/spapr: Include missing 'sysemu/tcg.h' header (Philippe M=
-athieu-Daud=C3=A9)
-58cb91b34d: spapr: nested: use bitwise NOT operator for flags check (Harsh =
-Prateek Bora)
-dafa0ecc97: accel/tcg: Use CPUState.get_pc in cpu_io_recompile (Richard Hen=
-derson)
-13af3af196: disas: Show opcodes for target_disas and monitor_disas (Richard=
- Henderson)
-2911e9b95f: tcg/optimize: Fix sign_mask for logical right-shift (Richard He=
-nderson)
-4a3aa11e1f: target/hppa: Clear psw_n for BE on use_nullify_skip path (Richa=
-rd Henderson)
-3bdf20819e: target/hppa: Add diag instructions to set/restore shadow regist=
-ers (Helge Deller)
-381931275a: target/hppa: Move diag argument handling to decodetree (Richard=
- Henderson)
-558c09bef8: target/hppa: Generate getshadowregs inline (Richard Henderson)
-d9b33018a0: Revert "tap: setting error appropriately when calling net_init_=
-tap_one()" (Akihiko Odaki)
-decfde6b0e: tap-win32: Remove unnecessary stubs (Akihiko Odaki)
-89a8de364b: hw/net/net_tx_pkt: Fix virtio header without checksum offloadin=
-g (Akihiko Odaki)
-ba6bb2ec95: ebpf: Fix indirections table setting (Akihiko Odaki)
-1c188fc8cb: virtio-net: Fix vhost virtqueue notifiers for RSS (Akihiko Odak=
-i)
-dcae75fba1: qtest/virtio-9p-test.c: remove g_test_slow() gate (Daniel Henri=
-que Barboza)
-981eb10603: qtest/virtio-9p-test.c: create/remove temp dirs after each test=
- (Daniel Henrique Barboza)
-f8f5986edc: target/hppa: Fix overflow computation for shladd (Richard Hende=
-rson)
-fe2d066a9e: target/hppa: Replace c with uv in do_cond (Richard Henderson)
-82d0c831ce: target/hppa: Squash d for pa1.x during decode (Richard Henderso=
-n)
-46bb3d467c: target/hppa: Fix unit carry conditions (Richard Henderson)
-ababac165b: target/hppa: Optimize UADDCM with no condition (Richard Henders=
-on)
-d0ae87a27c: target/hppa: Fix DCOR reconstruction of carry bits (Richard Hen=
-derson)
-7d50b69660: target/hppa: Use gva_offset_mask() everywhere (Sven Schnelle)
-6ebebea758: target/hppa: Fix EIRR, EIEM versus icount (Richard Henderson)
-0c58c1bc1c: target/hppa: Tidy read of interval timer (Richard Henderson)
-104281c10e: target/hppa: Mark interval timer write as io (Richard Henderson)
-bd1ad92ccf: target/hppa: Fix ADD/SUB trap on overflow for narrow mode (Sven=
- Schnelle)
-578b8132b2: target/hppa: Handle unit conditions for wide mode (Sven Schnell=
-e)
-2f48ba7b94: target/hppa: Fix B,GATE for wide mode (Richard Henderson)
-7fb7c9da34: target/hppa: Fix BE,L set of sr0 (Richard Henderson)
-889cd5a8e2: tests/tcg: Test shmat(NULL) (Ilya Leoshkevich)
-fa527b44c2: linux-user: Fix shmat(NULL) for h !=3D g (Ilya Leoshkevich)
-e6763d7dfc: linux-user: Fix shmat() strace (Ilya Leoshkevich)
-b9f38374ac: linux-user: Fix semctl() strace (Ilya Leoshkevich)
+Thanks,
+
+-- 
+Peter Xu
+
 
