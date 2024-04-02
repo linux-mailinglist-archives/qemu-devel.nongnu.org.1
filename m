@@ -2,77 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5A6895205
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9CB895216
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:42:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcTU-0004yc-UU; Tue, 02 Apr 2024 07:38:44 -0400
+	id 1rrcVz-0006cZ-0f; Tue, 02 Apr 2024 07:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcTM-0004xt-Ha
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:38:37 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcVo-0006Z1-SH
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:41:10 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcTK-0001SE-Ch
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:38:35 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-415a84ea9bbso7919555e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:38:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcVl-0003aI-66
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:41:07 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-41551639550so22314275e9.2
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:41:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712057912; x=1712662712; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712058063; x=1712662863; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=+JOYj5N0y+6MDCuDdsB4i71ZiZ93XNZ466bYYcOGELQ=;
- b=x6hfV2ldfYDVWxvk/t5GzXG5Z91pKyOpIijOBAI6JIBOCVlxm7ZoD7mG5AVWRt/ICd
- mDgFwAt3M2VOCPKRCSuIOFVJYTRaERmZR99w6+XknBmujc0sZbmhddeOUpyWqCeLTMbv
- lk4KYi6VzZ19UmrvG16kafTISqOVV31MgUxPgySrGbaqzO3MMB/90xTeQyXVqhKGTbmU
- 1/5o3t/LNCCgLy2m+G6fu6RsB4dXfuG2f94GfRAZqrwsX6SCZoNqt7AHfuO8PlvZr5Ow
- WxU4QlYTClrkUcrkogesJFz3kr7raz7QBeby4b87Ec7jqCO623HIbYx6vbtoaHn7XD9F
- ZNow==
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JVvFcxLkj8uqsss8uUOAepWIduuXZZ17RoMd7ZYlL10=;
+ b=AxCrgHeTCy7uemZ4fTw3Zw3hE9xK24J857gdN69Legl71tH/sIf5yiZSfFx9Vgfn//
+ akbGEwxtxFK8bwlVLgu1cQCpdvy2yOOrraz4PQA9PBpe6VTll0k0J8wbzvJra0gJk2wm
+ tJpH6B+8VGRZvwBwpF3S/vUQM76L3QlwZrCnFBZJxJ51TlMQTu5Z+F8FJ3LR5Gtq36O8
+ 8iKTHF0SPLglxIBCuwiqFIKPPy8t8jGfDdjYQmqFOMbxDjVG2rU8cydcRnJRNY3hB7oe
+ Bij+4jnif01mtSfcRoSu1IwnEgh9hA+3h7LuSZI1mcDzzbf7AYUp0UdCLI3r8E+sDIAq
+ 1SRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712057912; x=1712662712;
+ d=1e100.net; s=20230601; t=1712058063; x=1712662863;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+JOYj5N0y+6MDCuDdsB4i71ZiZ93XNZ466bYYcOGELQ=;
- b=HtfZy2Oh5Ucwhu41GkpqGqhGqq26Bt7tj27UNI9ZpjCe5m1OpiWXh+JAj1cJ2WSbqP
- fHRXpoUNdmfR+yZJksvPyjOwXmXAcX7t9J7PTR522NXuJWjSABfpwlSOyUw4QWbjB7Y0
- sHs2cMjS8gHPlLbEvdViCUaEKwVo5/32+ExwvwU01L8U3J6jd0yHRueB41h0TOttFfEz
- QY0GvHt6ldAmTvwImqKjpcwHWiu7hGtLMUkPTtDkpNtm9+AvQxoCrDRLssfqul1dETeB
- QB2f3GzZO0j7RLi0Lag5bvRqwAXjoMW9MKxbxsBfaehvw5KKlcax7yVJ9VnhoV/TWYvx
- qVyQ==
+ bh=JVvFcxLkj8uqsss8uUOAepWIduuXZZ17RoMd7ZYlL10=;
+ b=r3d84WvNJRBZktMdk59CyDDxCOLEximigG2EH0aVhaR5aUU0dkJzZk5XWNJIEkUk2V
+ UV2gs9deQvuOW9M1qbZDGOawBZ9CnL/CQVYyrxBfmjGV+ZxugrPwd7Z93xVG3fbJSI1T
+ A1Foze4TjlHVKvvHtm5/xum43WmHvul04ePLOnvzNUqZdS74GMW0njmQD7nRZD906GTn
+ xhJFrpAVMDz9xN8BUfe5Hxj2khMaVO3H2RCr2MhSRTHQXwAGR9lnTmq9N9U4wsAl/onB
+ 3g3OO/mWhNCz8wotJWbDajTaYSevbfYUL1IRQiqn5+3SmuO/FN8AYyXLl4gXFTz0j2G0
+ Gmhg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUJuBPDS8nUP90HPfFKnH/y9hTZk3C7DPdNN2lhHJlgdrCi7Kne0EVqfhSR6ilypuvYIz0R+9wparHwKoKui9Gb1vNUZMo=
-X-Gm-Message-State: AOJu0YzmtS8wk0Aak5qwgTAC0FhmSKjrtdQCgMkERu4VPRXG96bSWSpN
- wBYFu0FXgV0VE/jXnipsbE8R6vLUkzJb77m48ySDUTzr2V1XSR9Ym5XA5iCYtsQ=
-X-Google-Smtp-Source: AGHT+IGx1RsrdCvaTs9T4kxebKnPuiOvxUTQQdtmmFw6mKrXpXkI6f3ev3Ekkh1k1vIH6XQf8iXUlQ==
-X-Received: by 2002:a05:600c:4f47:b0:415:6cf3:ef17 with SMTP id
- m7-20020a05600c4f4700b004156cf3ef17mr1228042wmq.39.1712057912314; 
- Tue, 02 Apr 2024 04:38:32 -0700 (PDT)
+ AJvYcCUFMm+AFWH85F62qBTdtORuVGyJI5b1ByOS+xRe1ciNz6IPfOp/aUyw3/xWO5Ln8A0aOpPMlp8/HObbViWgHVhjMxb2wtY=
+X-Gm-Message-State: AOJu0Yw8Bksvr2swx5n62TXh77F+Heo9FFrIX3TxpgyC7EODwz08ChlZ
+ rr2SyUf68gJKvajQibOF1DF7ug+4yXCRN1VKM8wBSf2fpDccqUBcXclLa49gUYjAImkQABUD45H
+ 4DJM=
+X-Google-Smtp-Source: AGHT+IHlGMkh3C2xSO0DgVFjLHtnhCp8QC0U2r8GWFO6HR9we67d8twnizu1ERlx2pyd114NtvmSsA==
+X-Received: by 2002:adf:e008:0:b0:341:cfd6:42af with SMTP id
+ s8-20020adfe008000000b00341cfd642afmr9398865wrh.31.1712058062837; 
+ Tue, 02 Apr 2024 04:41:02 -0700 (PDT)
 Received: from [192.168.69.100] ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- t12-20020a05600c450c00b004154853f778sm16544212wmo.48.2024.04.02.04.38.31
+ bl37-20020adfe265000000b0033b87c2725csm13941613wrb.104.2024.04.02.04.41.00
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Apr 2024 04:38:31 -0700 (PDT)
-Message-ID: <99ea70f4-470d-443b-abec-57436efa63da@linaro.org>
-Date: Tue, 2 Apr 2024 13:38:30 +0200
+ Tue, 02 Apr 2024 04:41:01 -0700 (PDT)
+Message-ID: <51e5bed1-8c65-4145-a2fd-d69255c8e962@linaro.org>
+Date: Tue, 2 Apr 2024 13:40:59 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/17] esp.c: rework esp_cdb_length() into
- esp_cdb_ready()
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
- fam@euphon.net, laurent@vivier.eu, qemu-devel@nongnu.org
-References: <20240324191707.623175-1-mark.cave-ayland@ilande.co.uk>
- <20240324191707.623175-12-mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH for-9.0 1/4] vga: merge conditionals on shift control
+ register
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Helge Konetzka <hk@zapateado.de>
+References: <20240402113408.18048-1-pbonzini@redhat.com>
+ <20240402113408.18048-2-pbonzini@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240324191707.623175-12-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20240402113408.18048-2-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,17 +96,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 24/3/24 20:17, Mark Cave-Ayland wrote:
-> The esp_cdb_length() function is only used as part of a calculation to determine
-> whether the cmdfifo contains an entire SCSI CDB. Rework esp_cdb_length() into a
-> new esp_cdb_ready() function which both enables us to handle the case where
-> scsi_cdb_length() returns -1, plus simplify the logic for its callers.
+On 2/4/24 13:34, Paolo Bonzini wrote:
+> There are two sets of conditionals using the shift control bits: one to
+> verify the palette and adjust disp_width, one to compute the "v" and
+> "bits" variables.  Merge them into one, with the extra benefit that
+> we now have the "bits" value available early and can use it to
+> compute region_end.
 > 
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   hw/scsi/esp.c | 30 ++++++++++++++----------------
->   1 file changed, 14 insertions(+), 16 deletions(-)
+>   hw/display/vga.c | 89 +++++++++++++++++++++++-------------------------
+>   1 file changed, 42 insertions(+), 47 deletions(-)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
