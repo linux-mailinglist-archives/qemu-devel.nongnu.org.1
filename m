@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665FA895690
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0309389569A
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:28:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf4S-0000qE-NI; Tue, 02 Apr 2024 10:25:04 -0400
+	id 1rrf4Z-0000tF-6p; Tue, 02 Apr 2024 10:25:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4P-0000oC-PL
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:01 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4W-0000ru-FB
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:08 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4M-0007ey-Ck
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:01 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-41569f1896dso11754595e9.2
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:24:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4T-0007kJ-3i
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:08 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4148c6132b4so34604685e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067896; x=1712672696; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067903; x=1712672703; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AnqQaUG1ZoPVgZF2Ex29MI5m2mNV0++IO/ZIMEDgcJ8=;
- b=KaaWZEWuBTXcgD+t8c+UuZgyzchRVRKAKfidaFXEGMXyahqM7coIWX70CvU/Lp+BPP
- QwsmuXrLgXZArjO7JkNZJGyL1MujOdIYcoH6HpuCZL4Kq6rEYd/H20Wdmr6JF6AAZ6V3
- 1oxsqpkKDjRpqmuu3IdqsoVzParI2lV+CspYzKdH9uUM8u7RDO9mrdHbZq4VbJD6yEx8
- 6lQ8AIoqVQ0Dr+tVmoDlPfIM52fH4/vl3Roie0gKNvtafrOoi8KRqYHPi5HB/yq99lux
- 8tlvnNKFRNYuQYlnkfhrGdk8XTeMqupXdIwoVtrZgqMEjeYmoy875MLmQdVAXwCPxNie
- UPeQ==
+ bh=GBDHfu1WWwUZX0nO+1GdOpxUbxXBz6m2k2jhIHnZ7lw=;
+ b=FC32CwpQHzC0Nynp1HeXvJGICZ0KibfLDnEKf4H09QTjps8uDomnjvVW/e1GCK+/Ht
+ agBr3RxNQAarPv0wys3yAjf8AJ9oCXESQ57lwQxE9thWuvJjPpl1GI1LVwWHgNEt3gpl
+ 649ex7LqjWzafD2G42Nn3NOjJgxaLzsS6EEwnGdpylET7ZYg9BvAMQQ25S+47WXsi47/
+ 3BtSpC8y6G0gRAZIt1eaazUi0U+CHjkmvcSHa+9PC5hbdwFh9VjI4u+OILC17LOXEKMH
+ Y8Zzh05gO3Sm1gB3xGKcZK1gL257VYhhGLlnKMNo2nkspWJL/a9DNixq6W+JUtl14pp9
+ JyOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067896; x=1712672696;
+ d=1e100.net; s=20230601; t=1712067903; x=1712672703;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AnqQaUG1ZoPVgZF2Ex29MI5m2mNV0++IO/ZIMEDgcJ8=;
- b=jFoOox/Zh/vWGLV6FKeasLyDiDgerkARfaJ7LCUd3KY8/HwG2E53mUB+kuvksKOQqb
- 5fxs5Hyncd16oMQTcwffhDhOuvs7wkYqTqPzSl3ZkPkEN5jTm29Ka/aEa2aacC8Ojvwj
- s2GWYEfTc0dDeKo69wQoslmbFn2XXbXivU52coXRmdoGiAlRUdwjNtst5oMJ0au+yXLB
- 68FCZdfxtnh4grPk7QUYApBQz0YYWUo29kUbbArABxM7GADSwWdYNf1UAu5HfrpIO/ko
- hKwtB1+wpnkBJ7u7cjld9z/xAzFSvBo+M7vl2BYbz9ufXxLy9UtzBHaGTtXysRD8W/G3
- WUgw==
-X-Gm-Message-State: AOJu0Yy+5tAdTHHybUHBj6jy5Tglcfc2oyWzqlescH2gaITt/jiCH2d0
- TrbWe65VpWoblrndZE8SkDAiYw9mwvxyIg3auW+cPpTu9ZvLptRqWl5T3by8qI1FmgqlyJl/Xvz
- jjgc=
-X-Google-Smtp-Source: AGHT+IFjRWWqwBYV0XJAWcClqbaYZG/hgJysFiD/espoX/7BuA6K9XVvWp7g04khszacdMl9w6MpwA==
-X-Received: by 2002:a05:600c:3554:b0:414:6ee:a392 with SMTP id
- i20-20020a05600c355400b0041406eea392mr9854928wmq.8.1712067895857; 
- Tue, 02 Apr 2024 07:24:55 -0700 (PDT)
+ bh=GBDHfu1WWwUZX0nO+1GdOpxUbxXBz6m2k2jhIHnZ7lw=;
+ b=UrKs4hpWi2yMS41LWJKI5sfJDM1tRrxjvsvA8QBiDBtY+hmoG8C+QH/rh9HlaZ8EED
+ QhHZMOUoio9qaj7hwPQaymlf0NErSQZ7jk9xMis9W5FsJSZSjDlYbBsToNw0ilyaLFXt
+ FW4C4h3k9FLix+MPxLgYbjIArdwfXMxcy+3YqsTZByEqpy0y4sy4NMJwVbRZe8Gb3EXo
+ 0GQQAO0gtWPbM/uaeu4HwOY2l6OzPxRXjqfpYZ3CQhoJ2rPhaYWFtcNa1EmdNYEtHZ0z
+ xt4vlGh6g67xlHcSOHoaVhIeldwYBsTofkkCigyn/tWnoUfzh5U2sd/JBOG3zxdWbvLJ
+ J1tw==
+X-Gm-Message-State: AOJu0YzrzfsBvzLjMcJmUa7ZL9s6aNOM+a+dfRoI7gTdeNWj1i0icYOl
+ oStwJPAdB8x4EQQGIiuZlN+jUkCr6qFw4FzqgCu2Clja7c3WffBM4Y8C8/qZBGaAHLkqpOG3+UJ
+ 3Aj4=
+X-Google-Smtp-Source: AGHT+IFpk8y897vy3GKRfLVLbASH/dGJmNFBcUt+XZFp/SrU6uy80VtaD+l+UcRvZXxo8gJhJBoamg==
+X-Received: by 2002:a05:600c:3b29:b0:413:4299:ec9f with SMTP id
+ m41-20020a05600c3b2900b004134299ec9fmr11034767wms.5.1712067902875; 
+ Tue, 02 Apr 2024 07:25:02 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- ay15-20020a5d6f0f000000b003434c764f01sm5886406wrb.107.2024.04.02.07.24.54
+ fs11-20020a05600c3f8b00b004146dd6bfe2sm18023274wmb.47.2024.04.02.07.25.00
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:24:55 -0700 (PDT)
+ Tue, 02 Apr 2024 07:25:02 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 03/15] gdbstub/system: Rename 'user_ctx' argument as 'ctx'
-Date: Tue,  2 Apr 2024 16:24:18 +0200
-Message-ID: <20240402142431.70700-4-philmd@linaro.org>
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>
+Subject: [PULL 04/15] target/ppc: Rename init_excp_4xx_softmmu() ->
+ init_excp_4xx()
+Date: Tue,  2 Apr 2024 16:24:19 +0200
+Message-ID: <20240402142431.70700-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,80 +95,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240313213339.82071-4-philmd@linaro.org>
----
- gdbstub/internals.h | 8 ++++----
- gdbstub/system.c    | 8 ++++----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+Unify with other init_excp_FOO() in the same file.
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index 66c939c67f..32f9f63297 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -187,7 +187,7 @@ typedef union GdbCmdVariant {
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Nicholas Piggin <npiggin@gmail.com>
+Message-Id: <20240313213339.82071-5-philmd@linaro.org>
+---
+ target/ppc/cpu_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/target/ppc/cpu_init.c b/target/ppc/cpu_init.c
+index 22fdea093b..6241de62ce 100644
+--- a/target/ppc/cpu_init.c
++++ b/target/ppc/cpu_init.c
+@@ -1642,7 +1642,7 @@ static void register_8xx_sprs(CPUPPCState *env)
  
- #define get_param(p, i)    (&g_array_index(p, GdbCmdVariant, i))
- 
--void gdb_handle_query_rcmd(GArray *params, void *user_ctx); /* system */
-+void gdb_handle_query_rcmd(GArray *params, void *ctx); /* system */
- void gdb_handle_query_offsets(GArray *params, void *user_ctx); /* user */
- void gdb_handle_query_xfer_auxv(GArray *params, void *user_ctx); /*user */
- void gdb_handle_query_xfer_siginfo(GArray *params, void *user_ctx); /*user */
-@@ -201,11 +201,11 @@ void gdb_handle_query_supported_user(const char *gdb_supported); /* user */
- bool gdb_handle_set_thread_user(uint32_t pid, uint32_t tid); /* user */
- bool gdb_handle_detach_user(uint32_t pid); /* user */
- 
--void gdb_handle_query_attached(GArray *params, void *user_ctx); /* both */
-+void gdb_handle_query_attached(GArray *params, void *ctx); /* both */
- 
- /* system only */
--void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *user_ctx);
--void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx);
-+void gdb_handle_query_qemu_phy_mem_mode(GArray *params, void *ctx);
-+void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *ctx);
- 
- /* sycall handling */
- void gdb_handle_file_io(GArray *params, void *user_ctx);
-diff --git a/gdbstub/system.c b/gdbstub/system.c
-index a3ce384cd1..d235403855 100644
---- a/gdbstub/system.c
-+++ b/gdbstub/system.c
-@@ -488,13 +488,13 @@ bool gdb_can_reverse(void)
-  */
- 
- void gdb_handle_query_qemu_phy_mem_mode(GArray *params,
--                                        void *user_ctx)
-+                                        void *ctx)
+ /*****************************************************************************/
+ /* Exception vectors models                                                  */
+-static void init_excp_4xx_softmmu(CPUPPCState *env)
++static void init_excp_4xx(CPUPPCState *env)
  {
-     g_string_printf(gdbserver_state.str_buf, "%d", phy_memory_mode);
-     gdb_put_strbuf();
- }
- 
--void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx)
-+void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *ctx)
- {
-     if (!params->len) {
-         gdb_put_packet("E22");
-@@ -509,7 +509,7 @@ void gdb_handle_set_qemu_phy_mem_mode(GArray *params, void *user_ctx)
-     gdb_put_packet("OK");
- }
- 
--void gdb_handle_query_rcmd(GArray *params, void *user_ctx)
-+void gdb_handle_query_rcmd(GArray *params, void *ctx)
- {
-     const guint8 zero = 0;
-     int len;
-@@ -539,7 +539,7 @@ void gdb_handle_query_rcmd(GArray *params, void *user_ctx)
-  * Execution state helpers
-  */
- 
--void gdb_handle_query_attached(GArray *params, void *user_ctx)
-+void gdb_handle_query_attached(GArray *params, void *ctx)
- {
-     gdb_put_packet("1");
- }
+ #if !defined(CONFIG_USER_ONLY)
+     env->excp_vectors[POWERPC_EXCP_CRITICAL] = 0x00000100;
+@@ -2120,7 +2120,7 @@ static void init_proc_405(CPUPPCState *env)
+     env->id_tlbs = 0;
+     env->tlb_type = TLB_EMB;
+ #endif
+-    init_excp_4xx_softmmu(env);
++    init_excp_4xx(env);
+     env->dcache_line_size = 32;
+     env->icache_line_size = 32;
+     /* Allocate hardware IRQ controller */
 -- 
 2.41.0
 
