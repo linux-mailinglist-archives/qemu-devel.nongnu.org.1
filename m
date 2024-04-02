@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D11378956A9
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C798956A7
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:30:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf5r-0002Hq-3G; Tue, 02 Apr 2024 10:26:31 -0400
+	id 1rrf5s-0002cT-4K; Tue, 02 Apr 2024 10:26:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf57-0001ny-Ns
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:46 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf5G-000229-6y
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:26:00 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf55-00006f-AF
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:45 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-33ff53528ceso3778739f8f.0
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf5C-0000Et-BN
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:52 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-341c7c8adf3so3638553f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067941; x=1712672741; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067948; x=1712672748; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7qcHH+OAhHv5oWHUpWK7YMWCpNLvO0BPFhkfbb/3C2c=;
- b=hskFWnFBvkFPy8nFb1IeN2z+snIZBvs3k3PXE7OJ4wIUl+Cnl6LUze7nB3D9SRIFIm
- TvDcv0Tk64fLxcqiDjo6DZzaB3eE+XLqVayJdJBwdJWlEZXxm01tQQLXNL6P/57cw2Pv
- eaYwOpzuw4NgqHLbgKbUrCGMZ6y0Nj+XcxAY1oUhyA0k9moSoscOlATq9SjFrjGfKOuS
- MZpPFwGEI4lW+Vhsd680XjrAnWX5zj/mUD7N1U8bwTuIeR8OzBJPvjBRZiWWnZ0uj3NM
- fs1SNIjjgJ6XqhGQ9KqJ3gpRjMgOnxH3ZwB2ZEVsIgKi0Vc45AMkijSuWjZ9RmszWkUP
- rF8g==
+ bh=OjdzjLmAnFvDVsex65dJCtrM54ZeLuGIMveMRxi+eG4=;
+ b=BVKZ2FGUPPvYTq2jCPV4KLtvC605Lsc2lPhk3LPf123LT0yE2xwSAOdFkdH1yUAYDA
+ 7vXtkfuh/XEaqcenP/b1hDcPikJ8ACgxRc7zSrGrf+672J08MqmK+jMeJRF+WLfzdVRM
+ qBXxSBResep8M9lQyQIPjAWKCgOSt3E411XDZH/PdHwq//CjWYX8/JCi2/EGmgYlGkfM
+ z5rZUcaXTx2K61uePDhHLysCDhxNaQt9yF690jxGci3JKE7qH5kFzERYZ+Dcf0wfYymn
+ nSz24LpWO2//jXNITt3jobVGF5pZEY58nn8sSE0qnWrvOH3fQya4mTjTYE0ejSUSxwUT
+ vOEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067941; x=1712672741;
+ d=1e100.net; s=20230601; t=1712067948; x=1712672748;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7qcHH+OAhHv5oWHUpWK7YMWCpNLvO0BPFhkfbb/3C2c=;
- b=Zo67w44yqG4aE07gg58tz0743VdYLvzQAir+aZhq00oIY1gmBUAsfnwAfDwuxlBGM2
- xGb2jBieF9zSC5cBIsatHpNPkgTQDn++LxNV2YtS0lqTPdg8ky6Y67KaLc0/l7PU1K+n
- ocOT34m3WXuyUjQEL8SDPvTZwu5PbOXdvVcK2V8oC4fSHBlvZKWDBCxdTjcBrBctJcI+
- AohdMd6Cv9d/gY1ASQr/g/Y4txxhT1ceyS2esvv80SlzVhH8Okipp07Cb+fA8qtlgNqp
- ChMWUo3Oxx3NPIRJM8VlZoSS+KVtQ/Ic92f+VBzb+nCFwXw5ML8AmADzUYcK2uGa8Wtr
- SB+A==
-X-Gm-Message-State: AOJu0YwXNElIB9qe50ypg4vlHvU1w9zGJQyNQVXmyAPNEo/dKJG/P8c6
- 6Xb3u/jnooCvpfM3IEL/a1MUpHrIjtUFqQqOnKYeaHH/I5Xz/P2tw8vSARpcR35f9lIMUTKtts5
- gqB0=
-X-Google-Smtp-Source: AGHT+IEXIE7qmPsir59JZH4f0PPcQyJ4KagaBvkKMFNWGMsHJ3uFs9sfwByBvLsTeGCD+W46V6Wgcw==
-X-Received: by 2002:adf:ca8b:0:b0:33e:7719:325d with SMTP id
- r11-20020adfca8b000000b0033e7719325dmr7135610wrh.2.1712067941079; 
- Tue, 02 Apr 2024 07:25:41 -0700 (PDT)
+ bh=OjdzjLmAnFvDVsex65dJCtrM54ZeLuGIMveMRxi+eG4=;
+ b=X34kkgp592fC2tLoTfGA538QhzFErdNHkAEWv0SV09RrspLzjENlT71yIa8XFH/pXE
+ p5WVN9ouJw0KOQdnacxpNj1Cxmb/Q5wGI9I6YIrmFDh1NTN3Bv6SA8KhHZaqxVmcXhn7
+ yuyF+TUitaRkWqiyY8e1sjs3C5zxeeQnS6vRA5lTNNuwhWItvNIC3mCjvb6yLiQXyYBf
+ XIQcKu7sxzJNyRgDEfroQakvKVpip4lKNlTNgWjtFBVhm6bPdAIgmDVYNxNbOddZSV7n
+ QUHa4YuTBRL9j0gas6MJflXB97oaFrxd7Sj1KNLBWuCCe5UKEvDW/cBesnpIpSRkMVtR
+ 0HnA==
+X-Gm-Message-State: AOJu0YyCIdBcj1MNrG8InyiARH3yvDxQ0xfnakGajcDJvocUfkFR6D7z
+ UyZDl4yoNNOUzUxeoVC4EKVuMB9cTcW94TVWdb8CsY4xCrdgVSkIHV6+4z5zJExU6FS5ZoBPWA8
+ 6zXs=
+X-Google-Smtp-Source: AGHT+IGYcAMyT0ce3AxxAxntLH9Goeq/9HJoQOd5CAofmb0FvpxhwPE554XSFu0VKUJa09jGvh1mDQ==
+X-Received: by 2002:a05:6000:1a8a:b0:343:39a6:45a1 with SMTP id
+ f10-20020a0560001a8a00b0034339a645a1mr9792770wry.59.1712067948073; 
+ Tue, 02 Apr 2024 07:25:48 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- az15-20020adfe18f000000b0034335f13570sm12328862wrb.116.2024.04.02.07.25.39
+ h18-20020adff192000000b003433a379a51sm520722wro.101.2024.04.02.07.25.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:25:40 -0700 (PDT)
+ Tue, 02 Apr 2024 07:25:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Kevin Wolf <kwolf@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Fiona Ebner <f.ebner@proxmox.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- Fam Zheng <fam@euphon.net>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PULL 10/15] block: Remove unnecessary NULL check in
- bdrv_pad_request()
-Date: Tue,  2 Apr 2024 16:24:25 +0200
-Message-ID: <20240402142431.70700-11-philmd@linaro.org>
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Alexandre Iooss <erdnaxe@crans.org>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>
+Subject: [PULL 11/15] plugins: fix -Werror=maybe-uninitialized false-positive
+Date: Tue,  2 Apr 2024 16:24:26 +0200
+Message-ID: <20240402142431.70700-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,36 +97,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Coverity complains that the check introduced in commit 3f934817 suggests
-that qiov could be NULL and we dereference it before reaching the check.
-In fact, all of the callers pass a non-NULL pointer, so just remove the
-misleading check.
+../plugins/loader.c:405:15: error: ‘ctx’ may be used uninitialized [-Werror=maybe-uninitialized]
 
-Resolves: Coverity CID 1542668
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20240327192750.204197-1-kwolf@redhat.com>
+Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Message-ID: <20240328102052.3499331-15-marcandre.lureau@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- block/io.c | 2 +-
+ plugins/loader.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/io.c b/block/io.c
-index 395bea3bac..7217cf811b 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -1730,7 +1730,7 @@ static int bdrv_pad_request(BlockDriverState *bs,
-      * For prefetching in stream_populate(), no qiov is passed along, because
-      * only copy-on-read matters.
-      */
--    if (qiov && *qiov) {
-+    if (*qiov) {
-         sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
-                                       &sliced_head, &sliced_tail,
-                                       &sliced_niov);
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 9768b78eb6..513a429c57 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -390,7 +390,7 @@ void plugin_reset_uninstall(qemu_plugin_id_t id,
+                             bool reset)
+ {
+     struct qemu_plugin_reset_data *data;
+-    struct qemu_plugin_ctx *ctx;
++    struct qemu_plugin_ctx *ctx = NULL;
+ 
+     WITH_QEMU_LOCK_GUARD(&plugin.lock) {
+         ctx = plugin_id_to_ctx_locked(id);
 -- 
 2.41.0
 
