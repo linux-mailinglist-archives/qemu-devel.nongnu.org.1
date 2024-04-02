@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60003894F2A
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 11:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB75D894F67
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:01:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rranb-0001Yu-K2; Tue, 02 Apr 2024 05:51:23 -0400
+	id 1rravc-0004gj-Ie; Tue, 02 Apr 2024 05:59:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rranG-0001WG-CU
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 05:51:05 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rranA-0007MI-FQ
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 05:51:01 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-34339f01cd2so2936824f8f.2
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 02:50:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712051454; x=1712656254; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=bcvOj38qscvdE13E2r65sAnB0s0YG0iJ6Y0PeuaNSUU=;
- b=FFG6pB4iMx/GVGqqGtAMcCY2sUDx4rO+DDP03erHRI3jyS0hza3fiSQGHd9yuuMX8J
- ZYrFojMY1zNatw1LYC+O1whvzBxj8p+jyCv+UQPzc/SbC0I18toOJa36JXNFob/E1467
- vNRM2GkbtGsjC7Jf7DiX3BMZ93U74wBuh6hFaISLt8FSGrMNtXPzK2zDzY1iAN21fNRq
- gZ75W5wW70PKhf9EMvUQ2q8YCOOCXSUBwfyc6EWv/g460TLeizZ/5tZEHJPxpZkQrEEI
- rZrhmSyu3ynCBzgKpAoRQCwhZvjJj2xRlDXu8Bj4w3iZ7kAJSLs8HvVR8rH8qZ51SIAm
- yY0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712051454; x=1712656254;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bcvOj38qscvdE13E2r65sAnB0s0YG0iJ6Y0PeuaNSUU=;
- b=ucWQ9MdfatS+uh2CuE5OScn/PVM10Ta0daUjcVeLwNFw2kWCgmGapBdIvni2Te5XsY
- wrfoKzKuvAzWnjaDFikVPdViWeY0AiIEstDLuZPkiAHb4xS5ub5VuNf+iDOu6N1c/0Ba
- CkZ2G9UUlz+DG8hiza5OtUgku9cm7raV5rpYh7rmBEcjQkTjOZCLfxwt24AHRYClqXsS
- U5J0yxyEOeod1l/SDnhVgEYdoMOGOx1cZ1xF9/bSb3/I2jVmv+qqKaSh6lYsuKIudBna
- Fp4Xl4ZxsEwEEbYVKwUV/841McHpNinwKTuzgrWdJbUhHiTfLtvjTS8/X3F0ToMOeULx
- j0PQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWgFNJxbduJMDQnL/TsuD5FYsXm0giH2qcqXzHUsqh+/Q8vbJ5s/zyByZl0u5N/sFVZqF05eJsPce5/C343DJKYdYXtuwk=
-X-Gm-Message-State: AOJu0Yzk7r2kz4NR+myY2acLkqvkPl2PtX3W9Y3z1wBBofTinS3QR9c9
- O59bxX6n0TM/sL/wMn/Rk0vYST78aLYiT6euGaOS9KiWPg7DH3+a5I1MQ3AHGcA=
-X-Google-Smtp-Source: AGHT+IHQ9bA3Kv4ofi8GPbYkWN6t7n5FtlO/T35QMJhd3WqrelEQOvj4c56CMf0MU9ebi/rvVy5rXA==
-X-Received: by 2002:a5d:6d49:0:b0:341:e4f4:4399 with SMTP id
- k9-20020a5d6d49000000b00341e4f44399mr7196055wri.68.1712051454448; 
- Tue, 02 Apr 2024 02:50:54 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.202.91])
- by smtp.gmail.com with ESMTPSA id
- n3-20020a5d67c3000000b00341ddb65b07sm13729198wrw.63.2024.04.02.02.50.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Apr 2024 02:50:53 -0700 (PDT)
-Message-ID: <d960f4d5-1570-4b07-a1fd-2bd1267d661b@linaro.org>
-Date: Tue, 2 Apr 2024 11:50:51 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rrav1-0004YB-5P; Tue, 02 Apr 2024 05:59:04 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rrauv-000722-FA; Tue, 02 Apr 2024 05:59:02 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:486:0:640:cf34:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 5121D60DD0;
+ Tue,  2 Apr 2024 12:58:47 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b507::1:2e] (unknown
+ [2a02:6b8:b081:b507::1:2e])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id hwO5wlCOdGk0-zaozjiZ4; Tue, 02 Apr 2024 12:58:46 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1712051926;
+ bh=Tadl6nHpLXTtcmMhglCPBLLQSFYs/OqI+6+n6Lcdz0U=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=E+oDMlpNc3eNZ5VyAzcznvMSKiiUvyVLYYya1O1BbC+H4lizz2PH+U1qgLmZaXdcD
+ BnZR6SIITSZUfSH6YstHtJffbJyRg3pfts5u/Lmg7XxuIv6tSBMoImBLh+5EX9gBDD
+ Pg9ZIGKA3r4eXDy4ZmXlkf3z7lPJOX9GT/4hDpzs=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <0d7344c2-b146-44cf-a911-21fa5e556665@yandex-team.ru>
+Date: Tue, 2 Apr 2024 12:58:43 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch for qemu-project/qemu#2247 issue
-To: Michael Tokarev <mjt@tls.msk.ru>, liu.dayu@zte.com.cn,
- qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, jiang.xuexin@zte.com.cn
-References: <20240401174355899iU6IFrpOQSiGe36G4PToz@zte.com.cn>
- <298819da-145e-4478-901f-66241a23f03f@tls.msk.ru>
+Subject: Re: [PATCH 06/19] block/stream: fix -Werror=maybe-uninitialized
+ false-positives
+To: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, Hyman Huang <yong.huang@smartx.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Fabiano Rosas <farosas@suse.de>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ John Snow <jsnow@redhat.com>, Klaus Jensen <its@irrelevant.dk>,
+ Fam Zheng <fam@euphon.net>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Bin Meng <bin.meng@windriver.com>,
+ Hanna Reitz <hreitz@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Stefan Hajnoczi
+ <stefanha@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Yuval Shaia <yuval.shaia.ml@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Jesper Devantier <foss@defmacro.it>,
+ Pierrick Bouvier <pierrick.bouvier@linaro.org>,
+ Keith Busch <kbusch@kernel.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Peter Xu <peterx@redhat.com>
+References: <20240328102052.3499331-1-marcandre.lureau@redhat.com>
+ <20240328102052.3499331-7-marcandre.lureau@redhat.com>
+ <65d791e4-6c68-4b6d-b181-bc3886745ce3@yandex-team.ru>
+ <CAJ+F1CLbjZG24rMKwA20NFM=6sTE4CRAaGt4Vha+bP8i=+on-A@mail.gmail.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <298819da-145e-4478-901f-66241a23f03f@tls.msk.ru>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAJ+F1CLbjZG24rMKwA20NFM=6sTE4CRAaGt4Vha+bP8i=+on-A@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,38 +92,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 1/4/24 18:52, Michael Tokarev wrote:
-> 01.04.2024 12:43, liu.dayu@zte.com.cn wrote:
->> hmp: Add help information for watchdog action: inject-nmi
+On 02.04.24 12:12, Marc-André Lureau wrote:
+> Hi
+> 
+> On Fri, Mar 29, 2024 at 12:35 PM Vladimir Sementsov-Ogievskiy
+> <vsementsov@yandex-team.ru> wrote:
 >>
->> virsh qemu-monitor-command --hmp help information of watchdog_action 
->> missing inject-nmi which already supported in Commit 795dc6e4
+>> On 28.03.24 13:20, marcandre.lureau@redhat.com wrote:
+>>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>>
+>>> ../block/stream.c:193:19: error: ‘unfiltered_bs’ may be used uninitialized [-Werror=maybe-uninitialized]
+>>> ../block/stream.c:176:5: error: ‘len’ may be used uninitialized [-Werror=maybe-uninitialized]
+>>> trace/trace-block.h:906:9: error: ‘ret’ may be used uninitialized [-Werror=maybe-uninitialized]
+>>>
+>>> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 >>
->> Signed-off-by: Dayu Liu <liu.dayu@zte.com.cn>
+>> Again, same false-positives, because of WITH_GRAPH_RDLOCK_GUARD()..
+>>
+>> Didn't you try to change WITH_ macros somehow, so that compiler believe in our good intentions?
+>>
 > 
-> Applied to trivial-patches tree, in the following form:
 > 
-> Author: Dayu Liu <liu.dayu@zte.com.cn>
-> Date:   Mon Apr 1 17:43:55 2024 +0800
+> #define WITH_QEMU_LOCK_GUARD_(x, var) \
+>      for (g_autoptr(QemuLockable) var = \
+>                  qemu_lockable_auto_lock(QEMU_MAKE_LOCKABLE_NONNULL((x))); \
+>           var; \
+>           qemu_lockable_auto_unlock(var), var = NULL)
 > 
->      hmp: Add help information for watchdog action: inject-nmi
+> I can't think of a clever way to rewrite this. The compiler probably
+> thinks the loop may not run, due to the "var" condition. But how to
+> convince it otherwise? it's hard to introduce another variable too..
+
+
+hmm. maybe like this?
+
+#define WITH_QEMU_LOCK_GUARD_(x, var) \
+     for (g_autoptr(QemuLockable) var = \
+                 qemu_lockable_auto_lock(QEMU_MAKE_LOCKABLE_NONNULL((x))), \
+          var2 = (void *)(true); \
+          var2; \
+          qemu_lockable_auto_unlock(var), var2 = NULL)
+
+
+probably, it would be simpler for compiler to understand the logic this way. Could you check?
+
+
+(actually, will also need to construct var2 name same way as for var)
+
 > 
->      virsh qemu-monitor-command --hmp help information of
->      watchdog_action missing inject-nmi which already supported
->      in Commit 795dc6e4
+>> Actually, "unused variable initialization" is bad thing too.
+>>
+>> Anyway, if no better solution for now:
+>> Acked-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>>
+>>> ---
+>>>    block/stream.c | 6 +++---
+>>>    1 file changed, 3 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/block/stream.c b/block/stream.c
+>>> index 7031eef12b..9076203193 100644
+>>> --- a/block/stream.c
+>>> +++ b/block/stream.c
+>>> @@ -155,8 +155,8 @@ static void stream_clean(Job *job)
+>>>    static int coroutine_fn stream_run(Job *job, Error **errp)
+>>>    {
+>>>        StreamBlockJob *s = container_of(job, StreamBlockJob, common.job);
+>>> -    BlockDriverState *unfiltered_bs;
+>>> -    int64_t len;
+>>> +    BlockDriverState *unfiltered_bs = NULL;
+>>> +    int64_t len = -1;
+>>>        int64_t offset = 0;
+>>>        int error = 0;
+>>>        int64_t n = 0; /* bytes */
+>>> @@ -177,7 +177,7 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+>>>
+>>>        for ( ; offset < len; offset += n) {
+>>>            bool copy;
+>>> -        int ret;
+>>> +        int ret = -1;
+>>>
+>>>            /* Note that even when no rate limit is applied we need to yield
+>>>             * with no pending I/O here so that bdrv_drain_all() returns.
+>>
+>> --
+>> Best regards,
+>> Vladimir
+>>
+>>
+> 
 > 
 
-Fixes: 795dc6e46d ("watchdog: Add new Virtual Watchdog action INJECT-NMI")
-
->      Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2247
->      Signed-off-by: Dayu Liu <liu.dayu@zte.com.cn>
->      Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
->      Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
->      [Mjt: decode and word-wrap commit message and add Resolves: tag]
-> 
-> Thanks,
-> 
-> /mjt
-> 
+-- 
+Best regards,
+Vladimir
 
 
