@@ -2,75 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0223A8956A1
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D784889569E
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:28:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf4y-0001NU-7k; Tue, 02 Apr 2024 10:25:36 -0400
+	id 1rrf54-0001eT-J0; Tue, 02 Apr 2024 10:25:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4w-0001KO-HE
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:34 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf51-0001Zl-Jj
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:39 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4t-0008HN-CX
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:34 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4156e5c1c7eso7198995e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4y-0008OJ-TX
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:39 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4156684ee9cso14166545e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067927; x=1712672727; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067934; x=1712672734; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xfL4IVrnZ8RPkVaq+CH9l8CB4XL0LMP837JbxMa4yMw=;
- b=tt5YIe7O5QhcEoB0HhnIUL3Zbj90ghdC3I278gCLtvlQMEUGovQBI+prKUBE7KVbrS
- uDe2SC3WWvvhLANdXP0qyVSfKssI2HXFi5YJa6xPFc4MgAOJDq1hR1+n+PU8GoCDrQAb
- 13C7HqlJ1ydtjRlux+g1h7QyR2OWsQZVOlNeUEa3i74TMLwYmGkFDgSok9UxqAuWoTcl
- zylSZELVxNeNEHKdclGLGk7V12hWppc2mPGMcrCHDpvG6gQzFa83sGUsu/C/iU2081Tf
- pZwqB+3wEcCll+qSgCdLNn1RurR5bg+0cWC3Hpo6tDMZ4h4GNXrVbsZMkLo4NldscqCS
- REyw==
+ bh=kQNXAA1wuI9r1xEVFBSvxjPye1eCu2fvaop4AIt2tLo=;
+ b=Yt9ERwCRY5n/jJ7PAk7SKe2GNicxXTUNdVu62EJbua+QF+NjOzSHslPVKm+rldTdJp
+ 8xIhRr8/Vj3JJOeC+dgCHhMhUcuoMyQzrKUjz9GVl83Vm/O2HQPV0eZoDMrHc4PECsOL
+ pZxY6UNRA9A30TPz+9EJfhRvCZYaWFBCcAg2h4FTGwqtFC66z+5kGk7A+JHCbUdqjaQq
+ qMrroyjV9UqqfxErd6+otvCPDGke79DgJdJFEQWyT7wCIluqRzzD9pekMOkSGuoN9gl7
+ TasMGYVH5Tu2OjZnJ3aKDMHxoSAyJQAwxcIh3qDH3cgbS0pgBdiulyGCvz7lUGQLueKF
+ T/Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067927; x=1712672727;
+ d=1e100.net; s=20230601; t=1712067934; x=1712672734;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xfL4IVrnZ8RPkVaq+CH9l8CB4XL0LMP837JbxMa4yMw=;
- b=FjrT/9l3VAGStWFd1fnYOREVidR7YWCPJ6vtPDeOahcuio8QbF/Ax4ZlP9ubD5XM1d
- h904Je4FEOkUH6Wg4s2FulzZmzkfM8CLBUp0rMGoIScvOG26c9F5aa3wCMeVBNPM/Seg
- OE1N0xf8SfDJpk2+tS8HwbFXui0uVzHTCy7oqvIPzsKhYR+5Uh2iNze0mYEmJssfFLRB
- pnHMVDRyexSaXU3VoSbfKvqZ2lbJ5dcsyoSsMgAxucOpbojjig0V6CDStmPgHU8uRTZf
- bEF0GOccfldjk2XY87kn6CAU3mik7K+AT6jMyKDkSZ6gIDyX7qG5JRNfg8BWlAWag/GT
- v1ow==
-X-Gm-Message-State: AOJu0YxDD79WH31Ux1yANIY4Imco9hAYP1iGMwiJ2nrzwtCSLtfQYtBY
- 1mpsKnDrKNb0FgUAriZ3aCMEJCyX9YGR9FJUw+CRQeeQReZI0xBveLz1yhNZKWsFHq0PVXXDOM7
- 2uXY=
-X-Google-Smtp-Source: AGHT+IGkFlLjYk2qN+++uoZbdByHhMiVj5ebWT6xzhb8ow571hGQV8IJrcnq7rZ6SZnY0q4i954BRw==
-X-Received: by 2002:a05:600c:4592:b0:415:611c:aa05 with SMTP id
- r18-20020a05600c459200b00415611caa05mr5674235wmo.18.1712067927761; 
- Tue, 02 Apr 2024 07:25:27 -0700 (PDT)
+ bh=kQNXAA1wuI9r1xEVFBSvxjPye1eCu2fvaop4AIt2tLo=;
+ b=v1n/q8D6VrimtpD2p8NjbbKpKK81VwTe5j7O1RSusIldozJHvlxchtJib3tQMCRUFr
+ +ExX4j4IgRneP9R0v3U2Vc6kAfmFDK724y0r/L7aXnApCMu7SuNWNXX31MOMKe4Gz693
+ 39W2g3C6AgtXRdxqXkPP/o+E0Iz6PsPUkWpJ/izW1zfp/UZpkpZQ/+bhovzBQKXbflWy
+ ZoWX5ZROq9mJv1gd2pXsGW3c+pGENv7FM9m+1HV9rmUZkP59I3Rzeg5quFtf+zlSIruc
+ OPgE80drugymHvsODlxfOFVpdPJjEPIknemlDZoNrmRnroNgQ83SL59CU+TmhSLLG8ss
+ RA6g==
+X-Gm-Message-State: AOJu0YwpjRHLD8L25YAAMnhKNlrC9id2+YXbAlWJ6IzHHZzjoDo4+JSC
+ eTS6ig3kmUuFT5n53ez1iidnn9FGinHzdgKcLSUS2VMpOAvZImmeZ/YBEpy0TUiieCNkqnzkvxh
+ dLec=
+X-Google-Smtp-Source: AGHT+IEbsSiMV7jilXYs2wV9OBg95AuR2LRSHkUc1BiINN5nAdttK0+iS4lqUtws+mmM3EGdu+r3Vw==
+X-Received: by 2002:a1c:4b04:0:b0:415:f755:5a1f with SMTP id
+ y4-20020a1c4b04000000b00415f7555a1fmr1630323wma.29.1712067934343; 
+ Tue, 02 Apr 2024 07:25:34 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- b3-20020a05600c4e0300b004156da408b1sm3916554wmq.22.2024.04.02.07.25.26
+ p12-20020a05600c468c00b00413eb5aa694sm18186167wmo.38.2024.04.02.07.25.32
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:25:27 -0700 (PDT)
+ Tue, 02 Apr 2024 07:25:33 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 08/15] MAINTAINERS: Fix error-report.c entry
-Date: Tue,  2 Apr 2024 16:24:23 +0200
-Message-ID: <20240402142431.70700-9-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 09/15] hw/i386/pc: Restrict CXL to PCI-based machines
+Date: Tue,  2 Apr 2024 16:24:24 +0200
+Message-ID: <20240402142431.70700-10-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,36 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+CXL is based on PCIe. In is pointless to initialize
+its context on non-PCI machines.
 
-The commit 15002f60f792 ("util: rename qemu-error.c to match its header
-name") renamed util/qemu-error.c to util/error-report.c but missed to
-change the corresponding entry.
-
-To avoid get_maintainer.pl failing, update the error-report.c entry.
-
-Fixes: 15002f60f7 ("util: rename qemu-error.c to match its header name")
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240327115539.3860270-1-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-ID: <20240327161642.33574-1-philmd@linaro.org>
 ---
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/i386/pc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a07af6b9d4..197a06b42f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3013,7 +3013,7 @@ F: include/qapi/error.h
- F: include/qemu/error-report.h
- F: qapi/error.json
- F: util/error.c
--F: util/qemu-error.c
-+F: util/error-report.c
- F: scripts/coccinelle/err-bad-newline.cocci
- F: scripts/coccinelle/error-use-after-free.cocci
- F: scripts/coccinelle/error_propagate_null.cocci
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index e80f02bef4..5c21b0c4db 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1738,7 +1738,9 @@ static void pc_machine_initfn(Object *obj)
+     pcms->pcspk = isa_new(TYPE_PC_SPEAKER);
+     object_property_add_alias(OBJECT(pcms), "pcspk-audiodev",
+                               OBJECT(pcms->pcspk), "audiodev");
+-    cxl_machine_init(obj, &pcms->cxl_devices_state);
++    if (pcmc->pci_enabled) {
++        cxl_machine_init(obj, &pcms->cxl_devices_state);
++    }
+ 
+     pcms->machine_done.notify = pc_machine_done;
+     qemu_add_machine_init_done_notifier(&pcms->machine_done);
 -- 
 2.41.0
 
