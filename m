@@ -2,72 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F0A894F66
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF18B894F80
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rravw-0004ob-BP; Tue, 02 Apr 2024 06:00:00 -0400
+	id 1rrazj-0007Ar-Iw; Tue, 02 Apr 2024 06:03:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rravm-0004mM-QQ; Tue, 02 Apr 2024 05:59:52 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rrayw-0006ex-2U
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:03:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rravk-0007cu-1N; Tue, 02 Apr 2024 05:59:50 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5C8C15B0B7;
- Tue,  2 Apr 2024 13:00:56 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 38DF0A937D;
- Tue,  2 Apr 2024 12:59:13 +0300 (MSK)
-Message-ID: <291032f7-de3f-4b21-9b2e-872274203e37@tls.msk.ru>
-Date: Tue, 2 Apr 2024 12:59:13 +0300
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rrays-0002IE-6d
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:03:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712052179;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=+jt2f6hEUXWAc0F21N/nI3NazjW/SSDHRA3MxvTFR/4=;
+ b=TTlUWe/CaV82MuOu9ZjXdX+W+0d/E91j1oSFJb2IX70P/ODHTwdcSF7hApo1ZfrAK2RCKs
+ Ve8xdkTCQWjzBVGR58/fE2aG1XXaktCKn/sZIHr75A1cAqWxOeCJBTujin6sQZzVp9qSU1
+ FBk5TdidumYX3711OYDifgxgwq6kqUE=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-447-NMU7G0TwOF-8QaLXNvwTxw-1; Tue, 02 Apr 2024 06:02:58 -0400
+X-MC-Unique: NMU7G0TwOF-8QaLXNvwTxw-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d45c064742so50757531fa.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 03:02:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712052176; x=1712656976;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+jt2f6hEUXWAc0F21N/nI3NazjW/SSDHRA3MxvTFR/4=;
+ b=BzkPQGdE0f7riHz5TJtd5c3dXeDBqDB51BVaKtRyWwk9tGJmUWku6cp3+6cyl2xszP
+ PKUDR1aDX2TEcbrMY8QGJg5xRXsbykhosRgBJDceC9MG4qDivr1DxZirL9vvnoEYNeGt
+ CIJIQgN5hkS1An12IXuSU8KAisxnOp2yzUIazlCnwlGs7BOBgwBYBhKI2xPaQDNnNzGy
+ oGoSZcfBV7rjR/sgOXdV8R5WBZ5yua6rpRGgD4LwWqzUafXa3bAgpmXV7l4kdl70Lwx4
+ JC05MG6q0c1fcN7+1bqMbTpU5o3nAx7gv8U0mwzRah1GiQ2uG6f7JZ6NjODQvOXWH5PI
+ CG/A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWDpsrHjaePk88Ifh6/AgLQkWsaWjyB7Km0uycvOtac760+mtwPoLVcOsjPdLhiLHwZN6VtZwY5MO1+9DeCHw/VZ1yHwcw=
+X-Gm-Message-State: AOJu0Yxnjg6J/aJbCxt4grzm13H/cW+drHIBfdsNK+vmskRheJ+7I4Nb
+ 5mFxT8YxRPqpjp70LYjCpZNow5YH2Y08kSJazumJ//Ij5c4Oey4vsWeUKrCRQhP45EX3OIjDuFj
+ cDwzsaQMhr7Yq0S68+JPNzcnscFRPEcvk75FRJyEO5OMgqPgEPc7I8GFVZpn9kRM=
+X-Received: by 2002:a2e:9c82:0:b0:2d2:b840:1c78 with SMTP id
+ x2-20020a2e9c82000000b002d2b8401c78mr7450960lji.48.1712052176018; 
+ Tue, 02 Apr 2024 03:02:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvB0FoBIR31Y+Fb3awN2DD+lf/4knp9Fx+bfE38ziLOfnH9lcu+Bq8TXXCpB5zpf5qc+uMcg==
+X-Received: by 2002:a2e:9c82:0:b0:2d2:b840:1c78 with SMTP id
+ x2-20020a2e9c82000000b002d2b8401c78mr7450941lji.48.1712052175422; 
+ Tue, 02 Apr 2024 03:02:55 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f4:2fbc:c1b6:60e7:b08c:a69d])
+ by smtp.gmail.com with ESMTPSA id
+ r15-20020a05600c35cf00b004156c501e24sm3753051wmq.12.2024.04.02.03.02.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Apr 2024 03:02:55 -0700 (PDT)
+Date: Tue, 2 Apr 2024 06:02:51 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
+ isaku.yamahata@intel.com
+Subject: Re: [PATCH] hw/i386/acpi: Set PCAT_COMPAT bit only when pic is not
+ disabled
+Message-ID: <20240402060109-mutt-send-email-mst@kernel.org>
+References: <20240402082516.2921143-1-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch for qemu-project/qemu#2247 issue
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- liu.dayu@zte.com.cn, qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, jiang.xuexin@zte.com.cn
-References: <20240401174355899iU6IFrpOQSiGe36G4PToz@zte.com.cn>
- <298819da-145e-4478-901f-66241a23f03f@tls.msk.ru>
- <d960f4d5-1570-4b07-a1fd-2bd1267d661b@linaro.org>
-Content-Language: en-US
-From: Michael Tokarev <mjt@tls.msk.ru>
-Autocrypt: addr=mjt@tls.msk.ru; keydata=
- xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
- bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
- WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
- 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
- WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
- zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
- FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
- CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
- Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
- LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
- UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
- SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
- 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
- K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
- pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
- GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
- fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
- AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
- cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
- HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
- 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
- rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
- Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
-In-Reply-To: <d960f4d5-1570-4b07-a1fd-2bd1267d661b@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240402082516.2921143-1-xiaoyao.li@intel.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,34 +102,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.04.2024 12:50, Philippe Mathieu-Daudé пишет:
-> On 1/4/24 18:52, Michael Tokarev wrote:
->> 01.04.2024 12:43, liu.dayu@zte.com.cn wrote:
->>> hmp: Add help information for watchdog action: inject-nmi
->>>
->>> virsh qemu-monitor-command --hmp help information of watchdog_action missing inject-nmi which already supported in Commit 795dc6e4
->>>
->>> Signed-off-by: Dayu Liu <liu.dayu@zte.com.cn>
->>
->> Applied to trivial-patches tree, in the following form:
->>
->> Author: Dayu Liu <liu.dayu@zte.com.cn>
->> Date:   Mon Apr 1 17:43:55 2024 +0800
->>
->>      hmp: Add help information for watchdog action: inject-nmi
->>
->>      virsh qemu-monitor-command --hmp help information of
->>      watchdog_action missing inject-nmi which already supported
->>      in Commit 795dc6e4
->>
+On Tue, Apr 02, 2024 at 04:25:16AM -0400, Xiaoyao Li wrote:
+> Set MADT.FLAGS[bit 0].PCAT_COMPAT based on x86ms->pic.
 > 
-> Fixes: 795dc6e46d ("watchdog: Add new Virtual Watchdog action INJECT-NMI")
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-I don't think that commit is broken and needs Fixing.
-I see your point though - to have more formal way to
-mark "related" commits, it isn't always fixing something.
+Please include more info in the commit log:
+what is the behaviour you observe, why it is wrong,
+how does the patch fix it, what is guest behaviour
+before and after.
 
-I sent a pullreq for this a couple hours ago anyway.
+The commit log and the subject should not repeat
+what the diff already states.
 
-/mjt
+> ---
+>  hw/i386/acpi-common.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
+> index 20f19269da40..0cc2919bb851 100644
+> --- a/hw/i386/acpi-common.c
+> +++ b/hw/i386/acpi-common.c
+> @@ -107,7 +107,9 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+>      acpi_table_begin(&table, table_data);
+>      /* Local APIC Address */
+>      build_append_int_noprefix(table_data, APIC_DEFAULT_ADDRESS, 4);
+> -    build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
+> +    /* Flags. bit 0: PCAT_COMPAT */
+> +    build_append_int_noprefix(table_data,
+> +                              x86ms->pic != ON_OFF_AUTO_OFF ? 1 : 0 , 4);
+>  
+>      for (i = 0; i < apic_ids->len; i++) {
+>          pc_madt_cpu_entry(i, apic_ids, table_data, false);
+> -- 
+> 2.34.1
+
 
