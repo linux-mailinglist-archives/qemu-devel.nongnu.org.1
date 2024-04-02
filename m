@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB15F8956A0
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0223A8956A1
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 16:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrf4x-0001K6-3A; Tue, 02 Apr 2024 10:25:35 -0400
+	id 1rrf4y-0001NU-7k; Tue, 02 Apr 2024 10:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4t-0001D9-TN
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:32 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4w-0001KO-HE
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:34 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4n-0008Ao-DC
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:30 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-3436b096690so511581f8f.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrf4t-0008HN-CX
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 10:25:34 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4156e5c1c7eso7198995e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 07:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712067922; x=1712672722; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712067927; x=1712672727; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xwZDj6i22zNsshQLGOawEr+LQWS78suiJsL8DAY6t9k=;
- b=yQmoSM6HZNtRTueqG4mllekcPyqjFnjLlGmJXY4ArLegJVNFO5rpEpfYQ9jMKlgnnZ
- AQm50fvAYZngiolXvSUKHYrOEmVlP9fPejU0oAaWLRibFYw+GJ34y7waCymZ4NOoO5no
- XFNhZkxEql+3CsfFqYY1UfEHLdmZFilbJjMPy5xWcZlVkuLXBDnmGnTtj7RZLsTGUGqu
- oiju77rYgzVvB2eWQd2IBRhhXgVDzmdJ95hKjwF8MnQv95UcWhAoLS34zETbTHUV78fY
- AMy3xqUKomla9NsfmNZMdXaBWYVjxdkbO/gZnkWcaDA1HJRP+pZOOe3Z54nnEwoaTEyh
- v9lg==
+ bh=xfL4IVrnZ8RPkVaq+CH9l8CB4XL0LMP837JbxMa4yMw=;
+ b=tt5YIe7O5QhcEoB0HhnIUL3Zbj90ghdC3I278gCLtvlQMEUGovQBI+prKUBE7KVbrS
+ uDe2SC3WWvvhLANdXP0qyVSfKssI2HXFi5YJa6xPFc4MgAOJDq1hR1+n+PU8GoCDrQAb
+ 13C7HqlJ1ydtjRlux+g1h7QyR2OWsQZVOlNeUEa3i74TMLwYmGkFDgSok9UxqAuWoTcl
+ zylSZELVxNeNEHKdclGLGk7V12hWppc2mPGMcrCHDpvG6gQzFa83sGUsu/C/iU2081Tf
+ pZwqB+3wEcCll+qSgCdLNn1RurR5bg+0cWC3Hpo6tDMZ4h4GNXrVbsZMkLo4NldscqCS
+ REyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712067922; x=1712672722;
+ d=1e100.net; s=20230601; t=1712067927; x=1712672727;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xwZDj6i22zNsshQLGOawEr+LQWS78suiJsL8DAY6t9k=;
- b=NG4VELrg3MGh5F8TVEr0NsA9ngqocKYDjwXdvsV5uz9W//YZjl8rinsBXUr1lehtHz
- Et8eFhgbwdwUfqAMO9jBd0mK/ovBXPY/fVTbu9shj6zuh9KpPm+3DSIl52W9JWVjwOIQ
- sLNtYWJJNkf5OOkXk8J7r6LoD7DxGxC9gnf3W71qCrONymF1324l6V6RXJekMD9Qw5l7
- YY7kr0OVOkIdijVrhf7+iOO1nN2NwO10MmbNTaHfLIViMaNz8W/I6k3Td6NKIGsEIrZE
- A98bnhBd/KSspWtRCdx6qXNQ8vslh7dfWmetXPLBwYNkcFdN88mzKLuXehHBFftKhD82
- sBtw==
-X-Gm-Message-State: AOJu0YxqThycOfHzhpSBtdZi3wjmqviNuknFx9f5RfJp1609z66e9ic6
- z7FXjvewH/iwpngKq2ikSyYQmQBruRyqtxbcbFD48n5hoWJy5ZXpFsg79ese9vKsT227NNJ4hKr
- KZDY=
-X-Google-Smtp-Source: AGHT+IHnyfHvzjH/4paP1GBT5Y0OidsdosNhQOHsj4YQC+yCQDDfFWmDG/Dg9bhk1SNG0/StWTvY6A==
-X-Received: by 2002:a5d:4ccc:0:b0:33e:c0fc:5e4b with SMTP id
- c12-20020a5d4ccc000000b0033ec0fc5e4bmr12886979wrt.2.1712067921877; 
- Tue, 02 Apr 2024 07:25:21 -0700 (PDT)
+ bh=xfL4IVrnZ8RPkVaq+CH9l8CB4XL0LMP837JbxMa4yMw=;
+ b=FjrT/9l3VAGStWFd1fnYOREVidR7YWCPJ6vtPDeOahcuio8QbF/Ax4ZlP9ubD5XM1d
+ h904Je4FEOkUH6Wg4s2FulzZmzkfM8CLBUp0rMGoIScvOG26c9F5aa3wCMeVBNPM/Seg
+ OE1N0xf8SfDJpk2+tS8HwbFXui0uVzHTCy7oqvIPzsKhYR+5Uh2iNze0mYEmJssfFLRB
+ pnHMVDRyexSaXU3VoSbfKvqZ2lbJ5dcsyoSsMgAxucOpbojjig0V6CDStmPgHU8uRTZf
+ bEF0GOccfldjk2XY87kn6CAU3mik7K+AT6jMyKDkSZ6gIDyX7qG5JRNfg8BWlAWag/GT
+ v1ow==
+X-Gm-Message-State: AOJu0YxDD79WH31Ux1yANIY4Imco9hAYP1iGMwiJ2nrzwtCSLtfQYtBY
+ 1mpsKnDrKNb0FgUAriZ3aCMEJCyX9YGR9FJUw+CRQeeQReZI0xBveLz1yhNZKWsFHq0PVXXDOM7
+ 2uXY=
+X-Google-Smtp-Source: AGHT+IGkFlLjYk2qN+++uoZbdByHhMiVj5ebWT6xzhb8ow571hGQV8IJrcnq7rZ6SZnY0q4i954BRw==
+X-Received: by 2002:a05:600c:4592:b0:415:611c:aa05 with SMTP id
+ r18-20020a05600c459200b00415611caa05mr5674235wmo.18.1712067927761; 
+ Tue, 02 Apr 2024 07:25:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.202.91])
  by smtp.gmail.com with ESMTPSA id
- fa14-20020a05600c518e00b004159df274d5sm2909420wmb.6.2024.04.02.07.25.20
+ b3-20020a05600c4e0300b004156da408b1sm3916554wmq.22.2024.04.02.07.25.26
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 02 Apr 2024 07:25:21 -0700 (PDT)
+ Tue, 02 Apr 2024 07:25:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-block@nongnu.org, qemu-arm@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- John Snow <jsnow@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 07/15] qtest/libqos: Reduce size_to_prdtl() declaration scope
-Date: Tue,  2 Apr 2024 16:24:22 +0200
-Message-ID: <20240402142431.70700-8-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 08/15] MAINTAINERS: Fix error-report.c entry
+Date: Tue,  2 Apr 2024 16:24:23 +0200
+Message-ID: <20240402142431.70700-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240402142431.70700-1-philmd@linaro.org>
 References: <20240402142431.70700-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,46 +93,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since size_to_prdtl() is only used within ahci.c,
-declare it statically. This removes the last use
-of "inlined function with external linkage". See
-previous commit and commit 9de9fa5cf2 for rationale.
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+The commit 15002f60f792 ("util: rename qemu-error.c to match its header
+name") renamed util/qemu-error.c to util/error-report.c but missed to
+change the corresponding entry.
+
+To avoid get_maintainer.pl failing, update the error-report.c entry.
+
+Fixes: 15002f60f7 ("util: rename qemu-error.c to match its header name")
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20240327115539.3860270-1-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240326171009.26696-4-philmd@linaro.org>
 ---
- tests/qtest/libqos/ahci.h | 1 -
- tests/qtest/libqos/ahci.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/qtest/libqos/ahci.h b/tests/qtest/libqos/ahci.h
-index 48017864bf..a0487a1557 100644
---- a/tests/qtest/libqos/ahci.h
-+++ b/tests/qtest/libqos/ahci.h
-@@ -599,7 +599,6 @@ void ahci_port_check_cmd_sanity(AHCIQState *ahci, AHCICommand *cmd);
- 
- /* Misc */
- bool is_atapi(AHCIQState *ahci, uint8_t port);
--unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd);
- 
- /* Command: Macro level execution */
- void ahci_guest_io(AHCIQState *ahci, uint8_t port, uint8_t ide_cmd,
-diff --git a/tests/qtest/libqos/ahci.c b/tests/qtest/libqos/ahci.c
-index a2c94c6e06..6d59c7551a 100644
---- a/tests/qtest/libqos/ahci.c
-+++ b/tests/qtest/libqos/ahci.c
-@@ -662,7 +662,7 @@ unsigned ahci_pick_cmd(AHCIQState *ahci, uint8_t port)
-     g_assert_not_reached();
- }
- 
--inline unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
-+static unsigned size_to_prdtl(unsigned bytes, unsigned bytes_per_prd)
- {
-     /* Each PRD can describe up to 4MiB */
-     g_assert_cmphex(bytes_per_prd, <=, 4096 * 1024);
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a07af6b9d4..197a06b42f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3013,7 +3013,7 @@ F: include/qapi/error.h
+ F: include/qemu/error-report.h
+ F: qapi/error.json
+ F: util/error.c
+-F: util/qemu-error.c
++F: util/error-report.c
+ F: scripts/coccinelle/err-bad-newline.cocci
+ F: scripts/coccinelle/error-use-after-free.cocci
+ F: scripts/coccinelle/error_propagate_null.cocci
 -- 
 2.41.0
 
