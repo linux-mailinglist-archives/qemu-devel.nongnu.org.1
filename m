@@ -2,53 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E69C8951E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5DC28951F1
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:35:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcNo-0005cP-6W; Tue, 02 Apr 2024 07:32:52 -0400
+	id 1rrcPP-0007P1-80; Tue, 02 Apr 2024 07:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rrcNl-0005Un-0T; Tue, 02 Apr 2024 07:32:49 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rrcPN-0007OI-5e
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:34:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rrcNB-0003zf-LA; Tue, 02 Apr 2024 07:32:48 -0400
-Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 4A72C4E6043;
- Tue,  2 Apr 2024 13:32:05 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at eik.bme.hu
-Received: from zero.eik.bme.hu ([127.0.0.1])
- by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id onQHBpdBT4lX; Tue,  2 Apr 2024 13:32:03 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 09A494E6039; Tue,  2 Apr 2024 13:32:03 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 06656745708;
- Tue,  2 Apr 2024 13:32:03 +0200 (CEST)
-Date: Tue, 2 Apr 2024 13:32:02 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rrcPH-0006JI-6f
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:34:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712057654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=CqXTgQBUdIvyYMJTBfhxcVv7+yEIfw3bh7QHrbI9K74=;
+ b=bSaR+0iElB11ZcthX5x9UaaokATN7IxzfDS88c0Xqo+5AZmnqzBFKJh+7Yp2OLXYSB5kD0
+ 8hmrreOtwCvlUBFmk270ZatkIAxWgiucSoz3h7xZY/ozb/oHjfZYYN1lxdCcjPspR/7nY4
+ BZftI4MCHxEzZVZP5ogf4lg4Tb9QMS0=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-549-0Glsm8b_NWSWLzoKh7ifKg-1; Tue, 02 Apr 2024 07:34:13 -0400
+X-MC-Unique: 0Glsm8b_NWSWLzoKh7ifKg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-414aa7bd274so24733455e9.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:34:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712057651; x=1712662451;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CqXTgQBUdIvyYMJTBfhxcVv7+yEIfw3bh7QHrbI9K74=;
+ b=R7GiofV/bLFrqMUm5dga/EBkotdBBwiQx1DsGWS9b6gfz7oep5/O75iFoKJ5Fay8W/
+ +/gYHQHxrUD1AUUsxUZov0NucAIJvyc3aoD048EBXewv0TTVvUHYccK9g01iXS9KQjjj
+ W/K8KiDkN1IxV5fzuLyTvzwjpY9cOz1YhWGurVLS2PyFbMUBcRXNaJ4/tcTMMjSwmg9u
+ E+i+Q6ZLfaTQkakqe+ej0eH8wfpdmTqrqoChHrOR6Q0dj1l/tvizbeg8/je1jzZhlYw4
+ tdNsH6HDifrLp0B7F9yfuXgvycDcF21MV2jXelNeMUvBM+oBPVXtdvyzG+M44Pfb5z/4
+ Vx1Q==
+X-Gm-Message-State: AOJu0YyNjUBiFlIEcUq48ZaNWxDvMZw7g8qMdpnQdMEGW7YAhEnHxPGG
+ Yf2EZiy3+r4WQT18siCC3HxgYXZC+5sA+W8Rle98JNULLKwdCmrqXNW7zckldVL/7HaZGtCT9/S
+ NYbS0/VIrkw80UQltPMvMReFCq2ZPGzxwKnkDz7+FY18OIjZy4HW5Uh9yjc97eMSlm66EirGGBF
+ ZVBwchkLKl43w4amcTywW6wLBbsd8HJvYUig8u
+X-Received: by 2002:a05:600c:a4c:b0:413:3941:d9ae with SMTP id
+ c12-20020a05600c0a4c00b004133941d9aemr8721992wmq.31.1712057651583; 
+ Tue, 02 Apr 2024 04:34:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFg4KTJ2Cl5ZEhr8e3VHfqQOXwHn4SnYRgo3OOUKsuZMGzpo5wCIYnCOthPNe9b1fGTQ3icdg==
+X-Received: by 2002:a05:600c:a4c:b0:413:3941:d9ae with SMTP id
+ c12-20020a05600c0a4c00b004133941d9aemr8721973wmq.31.1712057651141; 
+ Tue, 02 Apr 2024 04:34:11 -0700 (PDT)
+Received: from avogadro.local ([151.95.49.219])
+ by smtp.gmail.com with ESMTPSA id
+ b3-20020a05600c4e0300b004156da408b1sm3433873wmq.22.2024.04.02.04.34.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 02 Apr 2024 04:34:09 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-cc: qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
- Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: TCG change broke MorphOS boot on sam460ex
-In-Reply-To: <2a286d38-1fd7-d53a-d7db-e953e6aefbf2@eik.bme.hu>
-Message-ID: <3386e6ec-9b87-fa01-9bf0-967a362bf90a@eik.bme.hu>
-References: <fe59ceb1-e8cd-f488-d6f0-6372923a8a33@eik.bme.hu>
- <48e5e0b8-9b0a-4c9f-9f3e-c30e2fddc502@linaro.org>
- <2a286d38-1fd7-d53a-d7db-e953e6aefbf2@eik.bme.hu>
+Cc: Helge Konetzka <hk@zapateado.de>
+Subject: [PATCH for-9.0 0/4] vga: fix assertion failure with 4- and 16-color
+ modes
+Date: Tue,  2 Apr 2024 13:34:02 +0200
+Message-ID: <20240402113408.18048-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-2066289844-1712057523=:5716"
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -64,179 +98,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+These patches (the first three especially) fix an assertion failure
+introduced by horizontal pel panning support in VGA.  The assertion
+triggers with legacy 4- and 16-color modes, due to a mismatch between
+the addresses visited by vga_draw_graphic() and the region that is
+passed to memory_region_snapshot_and_clear_dirty().
 
---3866299591-2066289844-1712057523=:5716
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Patches 1 and 2 reorganize the code so that the "bits" value
+(used in turn to check if horizontal pel panning is taken into
+account) is available where the dirty memory region is computed.
 
-On Thu, 21 Mar 2024, BALATON Zoltan wrote:
-> On 27/2/24 17:47, BALATON Zoltan wrote:
->> Hello,
->> 
->> Commit 18a536f1f8 (accel/tcg: Always require can_do_io) broke booting 
->> MorphOS on sam460ex (this was before 8.2.0 and I thought I've verified it 
->> before that release but apparently missed it back then). It can be 
->> reproduced with https://www.morphos-team.net/morphos-3.18.iso and following 
->> command:
->> 
->> qemu-system-ppc -M sam460ex -serial stdio -d unimp,guest_errors \
->>    -drive if=none,id=cd,format=raw,file=morphos-3.18.iso \
->>    -device ide-cd,drive=cd,bus=ide.1
+Patch 3 is the actual bug fix.
 
-Any idea on this one? While MorphOS boots on other machines and other OSes 
-seem to boot on this machine it may still suggest there's some problem 
-somewhere as this worked before. So it may worth investigating it to make 
-sure there's no bug that could affect other OSes too even if they boot. I 
-don't know how to debug this so some help would be needed.
+Patch 4 is a small optimization that would also hide the bug, by
+treating pel panning as disabled in the common case where the
+register is set to 8 (bit 3 is ignored in graphics mode).
+This one could be suitable for QEMU 9.0 but is not necessary.
 
-Regards,
-BALATON Zoltan
+Patches 5 and 6 are larger cleanups and optimizations in how the dirty
+memory region is computed.  This is enabled by the availability of "bits"
+where the dirty memory region is computed; it is now possible for 8-
+and 15-bit modes to skip the slow path and only read dirty bits for a
+small part of VRAM.
 
-> Although it breaks at the TCG change it may also be related to tlbwe changes 
-> somehow but I don't really understand it. I've tried to get some more debug 
-> info in case somebody can tell what's happening. With 18a536f1f8^ (the commit 
-> before the one it broke at and still works) I get:
->
-> ----------------
-> IN:
-> ppcemb_tlb_check: TLB 0 address 00c01000 PID 0 <=> f0000000 f0000000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 1 address 00c01000 PID 0 <=> d0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 2 address 00c01000 PID 0 <=> 80000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 3 address 00c01000 PID 0 <=> 90000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 4 address 00c01000 PID 0 <=> a0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 5 address 00c01000 PID 0 <=> b0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 6 address 00c01000 PID 0 <=> c0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 7 address 00c01000 PID 0 <=> e0000000 ff000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 8 address 00c01000 PID 0 <=> e1000000 ff000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 9 address 00c01000 PID 0 <=> e3000000 fffffc00 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 10 address 00c01000 PID 0 <=> e3001000 fffffc00 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 11 address 00c01000 PID 0 <=> e4000000 ffffc000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 12 address 00c01000 PID 0 <=> e5000000 fff00000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 13 address 00c01000 PID 0 <=> ef000000 ff000000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 14 address 00c01000 PID 0 <=> e2000000 fff00000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 15 address 00c01000 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 00c01000 => 0000000000c01000 7 
-> 0
-> 0x00c01354:  38c00040  li       r6, 0x40
-> 0x00c01358:  38e10204  addi     r7, r1, 0x204
-> 0x00c0135c:  39010104  addi     r8, r1, 0x104
-> 0x00c01360:  39410004  addi     r10, r1, 4
-> 0x00c01364:  39200000  li       r9, 0
-> 0x00c01368:  7cc903a6  mtctr    r6
-> 0x00c0136c:  84c70004  lwzu     r6, 4(r7)
-> 0x00c01370:  7cc907a4  tlbwehi  r6, r9
-> 0x00c01374:  84c80004  lwzu     r6, 4(r8)
-> 0x00c01378:  7cc90fa4  tlbwelo  r6, r9
-> 0x00c0137c:  84ca0004  lwzu     r6, 4(r10)
-> 0x00c01380:  7cc917a4  tlbwehi  r6, r9
-> 0x00c01384:  39290001  addi     r9, r9, 1
-> 0x00c01388:  4200ffe4  bdnz     0xc0136c
->
-> helper_440_tlbwe word 0 entry 0 value 00000290
-> ppcemb_tlb_check: TLB 0 address 0df6bfb0 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 0df6bfb0 => 00000004fdf6bfb0 7 
-> 0
-> Invalid read at addr 0x4FDF6BFB0, size 4, region '(null)', reason: rejected
-> helper_440_tlbwe word 1 entry 0 value 00000000
-> ppcemb_tlb_check: TLB 0 address 0df6beb0 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 0df6beb0 => 000000000df6beb0 7 
-> 0
-> helper_440_tlbwe word 2 entry 0 value 0000003f
-> ppcemb_tlb_check: TLB 0 address 00c0136c PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 00c0136c => 0000000000c0136c 7 
-> 0
-> ----------------
->
-> and with commit 18a536f1f8 this changes to
->
-> ----------------
-> IN:
-> ppcemb_tlb_check: TLB 0 address 00c01000 PID 0 <=> f0000000 f0000000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 1 address 00c01000 PID 0 <=> d0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 2 address 00c01000 PID 0 <=> 80000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 3 address 00c01000 PID 0 <=> 90000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 4 address 00c01000 PID 0 <=> a0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 5 address 00c01000 PID 0 <=> b0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 6 address 00c01000 PID 0 <=> c0000000 f0000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 7 address 00c01000 PID 0 <=> e0000000 ff000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 8 address 00c01000 PID 0 <=> e1000000 ff000000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 9 address 00c01000 PID 0 <=> e3000000 fffffc00 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 10 address 00c01000 PID 0 <=> e3001000 fffffc00 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 11 address 00c01000 PID 0 <=> e4000000 ffffc000 0 3b
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 12 address 00c01000 PID 0 <=> e5000000 fff00000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 13 address 00c01000 PID 0 <=> ef000000 ff000000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 14 address 00c01000 PID 0 <=> e2000000 fff00000 0 7f
-> mmubooke_check_tlb: TLB entry not found
-> ppcemb_tlb_check: TLB 15 address 00c01000 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 00c01000 => 0000000000c01000 7 
-> 0
-> 0x00c01354:  38c00040  li       r6, 0x40
-> 0x00c01358:  38e10204  addi     r7, r1, 0x204
-> 0x00c0135c:  39010104  addi     r8, r1, 0x104
-> 0x00c01360:  39410004  addi     r10, r1, 4
-> 0x00c01364:  39200000  li       r9, 0
-> 0x00c01368:  7cc903a6  mtctr    r6
-> 0x00c0136c:  84c70004  lwzu     r6, 4(r7)
-> 0x00c01370:  7cc907a4  tlbwehi  r6, r9
-> 0x00c01374:  84c80004  lwzu     r6, 4(r8)
-> 0x00c01378:  7cc90fa4  tlbwelo  r6, r9
-> 0x00c0137c:  84ca0004  lwzu     r6, 4(r10)
-> 0x00c01380:  7cc917a4  tlbwehi  r6, r9
-> 0x00c01384:  39290001  addi     r9, r9, 1
-> 0x00c01388:  4200ffe4  bdnz     0xc0136c
->
-> helper_440_tlbwe word 0 entry 0 value 00000290
-> ppcemb_tlb_check: TLB 0 address 0df6bfb0 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 0df6bfb0 => 00000004fdf6bfb0 7 
-> 0
-> ppcemb_tlb_check: TLB 0 address 00c01374 PID 0 <=> 00000000 f0000000 0 7f
-> mmubooke_check_tlb: good TLB!
-> mmubooke_get_physical_address: access granted 00c01374 => 00000004f0c01374 7 
-> 0
-> Invalid read at addr 0x4F0C01374, size 4, region '(null)', reason: rejected
-> invalid/unsupported opcode: 00 - 00 - 00 - 00 (00000000) 00c01374
-> ----------------
->
-> Any idea?
->
-> Regards,
-> BALATON Zoltan
---3866299591-2066289844-1712057523=:5716--
+Paolo Bonzini (6):
+  vga: merge conditionals on shift control register
+  vga: move computation of dirty memory region later
+  vga: adjust dirty memory region if pel panning is active
+  vga: do not treat horiz pel panning value of 8 as "enabled"
+  vga: optimize computation of dirty memory region
+  vga: move dirty memory region code together
+
+ hw/display/vga.c     | 152 ++++++++++++++++++++-----------------------
+ 1 file changed, 71 insertions(+), 81 deletions(-)
+
+-- 
+2.44.0
+
 
