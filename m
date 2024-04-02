@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A440895019
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B3789501D
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrbP8-0008NY-Nn; Tue, 02 Apr 2024 06:30:10 -0400
+	id 1rrbP7-0008NE-WA; Tue, 02 Apr 2024 06:30:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrbP2-0008KA-He
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:04 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1rrbP3-0008Kw-Lt
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:05 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrbOy-0003e7-CN
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:03 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-4161eb1a9fcso41475e9.3
+ id 1rrbOy-0003eR-Im
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:05 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-41569865b2fso11091535e9.3
  for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 03:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1712053794; x=1712658594; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=kF8DIXj6upaIDgYItyrCELeFAUmDbN8yJ98Yufsh5Fc=;
- b=flYTtX7Nt/Y7dAXF4qiSRbdWkB3CALX3wLR8eRsetcmx24jgE6KUGdk3caOnM0sgTG
- y6GlWapFRnsCYl0vyxZM4cj4Y4SZ4YNVolUVe+FvoHBcAgdkmRt0XETpGxUJqxk49OmH
- SD4afO4UmUYqOg5PZ4eNeec7jzMK5LgFhGSZZ/NeX2DZkAjmQdyxosW88lUp/8snYSLp
- XaDiARJqzVTrfGEpMudaTt9OVuKXHbWGmdnE4FrXFOa1MtMFDHS7SqvcKIEvDxXGKFUj
- rwgi3cfThG51m+LXaHCpR58Jg2qTFVJTKuXE2C4fxpS522Ys9mi/oREbJibnW8L5Nkwb
- fHhg==
+ :reply-to; bh=QuZfSUVScjt9n5vrw27PPdIk4irfQ7o3hh1IbZPVDZ4=;
+ b=eUKuQhJyhlzuHQHnOz9ENoU8qCx2fi/cgIZ/9uTvRs6G4lauSJgT8Hp+uJV7+0BnXU
+ FAzhfHaZ5YHIERwHns/7TuqcOpMrvb3lo6oRXgALPt4bymGxmBoa0h8SDrhDS5f9x7lU
+ Nm/fFse7uO5iaah6uzEZAEg79lNUpTTy2/fVnzrpoSwjOlIn/O++LeykA5TjGL29Fv2h
+ 6GyGNgubo4EA5WRb23Ktuapv/y6FFmO5QvYll8jDIHTxwRmNaE0JtW6qiuI/c1SjQChr
+ 4X4vpNcZUqVZOgEus19GGbmb8xg2WHVhuSW5tlaZSOIdhQWz+SDWANeOq5o8z0lghtJf
+ F3Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1712053794; x=1712658594;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kF8DIXj6upaIDgYItyrCELeFAUmDbN8yJ98Yufsh5Fc=;
- b=i734Q81r3fVOD57OtojeWJZRormjylJZ5R9tU3N4hUWKlyQCstVSNHJT7h3+Gb8bPi
- t3ZRQEXVfnkd8Okp+HHYZWsevtmFcQyoIkjwD/tKoLC0EIYzTdr5fAIigyWx0eaj3zdG
- V/QDIIB3985015i6G0Zjj+Vy1w1dG/QUKlx294fJ2dsCG/UkzmnyUVKeYfC9R4WAbI3G
- FHAG0UbTfsTTa5zXhe/jOdkbR5AvosljgbVOKoL9ACH/FDi6ruShP90kauL6jRSuwf+O
- +zYpqmBXVeaeMSAutX41/rHn5VbbxS5OiAEw9dAaHLBSeuRBnZZgHkgTqqWtuJTG/CAA
- mo1A==
-X-Gm-Message-State: AOJu0Yym3NdqWVeh2YYMS83M+D+sjaNinaRyd2xErkTrJ/x+Vy+Kyfhx
- PHBAibcyWKsIFefkUf5m6GKwAipQx0XxdXNIIMS8uhuMkr5JyA68EhT2JnO++o9JUn8GqUYSWtM
- O
-X-Google-Smtp-Source: AGHT+IHYHlLqPCEATaXSkGcg8fXvF2071t3vB8QI5daX1CfAmXI295nfjMS/AE6mLULjKIpTmI9lsw==
-X-Received: by 2002:a05:600c:1c12:b0:415:66ac:614d with SMTP id
- j18-20020a05600c1c1200b0041566ac614dmr3631159wms.13.1712053793933; 
- Tue, 02 Apr 2024 03:29:53 -0700 (PDT)
+ bh=QuZfSUVScjt9n5vrw27PPdIk4irfQ7o3hh1IbZPVDZ4=;
+ b=ie/5bHyKdovHHtPa6BIwwqk/N1TqS5L0aGTfjTcYoUQS8gLYgo7wDOAFSmg67U6YXz
+ tC3VdrNZTnCk5R1Lqs425DPAtYtpd8z4dPJ7AFe+D5hN00QeSkXLFTNlClfF8RvNKVol
+ jneE10kkF6mwH+bM6bNxuEgobcH9cPkxh4RQy4rktLY7GCoV6+45f6+/uslBrPs2mBAX
+ z7BoFkY5N5mw9JUglwzjQWLFAt8XHJO9o7aZz+6s1g5ZUBN0gJ1p7Kq1Rh4jTMCXPRgu
+ AabaWeK9dwVf46Lvdj1+IanyyUTVqxHPfvMIW/8qX3X44qVYHmn8qsSoB4/zKiPh7OCo
+ 99HA==
+X-Gm-Message-State: AOJu0Yw9M7PspV6Jm1cWCOkwxiQhgZyeen6PXcKGCZ5xNW5w7REnC1pE
+ NfwDwFDY3Me05UHb302OBcrEhSpCmEyE9S06UQA7diUEKs47914Pwx3wx5LiEZa7yKFXvt1M9pu
+ t
+X-Google-Smtp-Source: AGHT+IF1WVMJqBX8wKcJrjD1tw6r0+MIztUnpOj0+YUY0EPDy6FWPV0smRK0y/FwEhhuv1V0fpIkQQ==
+X-Received: by 2002:a05:600c:a4b:b0:414:887f:617a with SMTP id
+ c11-20020a05600c0a4b00b00414887f617amr9308484wmq.38.1712053794410; 
+ Tue, 02 Apr 2024 03:29:54 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- o15-20020a05600c4fcf00b0041488895a37sm20586175wmq.33.2024.04.02.03.29.53
+ o15-20020a05600c4fcf00b0041488895a37sm20586175wmq.33.2024.04.02.03.29.54
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Apr 2024 03:29:53 -0700 (PDT)
+ Tue, 02 Apr 2024 03:29:54 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 1/5] target/arm: take HSTR traps of cp15 accesses to EL2,
- not EL1
-Date: Tue,  2 Apr 2024 11:29:47 +0100
-Message-Id: <20240402102951.3099078-2-peter.maydell@linaro.org>
+Subject: [PULL 2/5] docs: sbsa: update specs, add dt note
+Date: Tue,  2 Apr 2024 11:29:48 +0100
+Message-Id: <20240402102951.3099078-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240402102951.3099078-1-peter.maydell@linaro.org>
 References: <20240402102951.3099078-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,37 +91,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The HSTR_EL2 register allows the hypervisor to trap AArch32 EL1 and
-EL0 accesses to cp15 registers.  We incorrectly implemented this so
-they trap to EL1 when we detect the need for a HSTR trap at code
-generation time.  (The check in access_check_cp_reg() which we do at
-runtime to catch traps from EL0 is correctly routing them to EL2.)
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-Use the correct target EL when generating the code to take the trap.
+Hardware of sbsa-ref board is nowadays defined by both BSA and SBSA
+specifications. Then BBR defines firmware interface.
 
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2226
-Fixes: 049edada5e93df ("target/arm: Make HSTR_EL2 traps take priority over UNDEF-at-EL1")
+Added note about DeviceTree data passed from QEMU to firmware. It is
+very minimal and provides only data we use in firmware.
+
+Added NUMA information to list of things reported by DeviceTree.
+
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-id: 20240328163851.1386176-1-marcin.juszkiewicz@linaro.org
+Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240325133116.2075362-1-peter.maydell@linaro.org
 ---
- target/arm/tcg/translate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ docs/system/arm/sbsa.rst | 35 ++++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index c8a24706750..69585e6003d 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -4585,7 +4585,7 @@ static void do_coproc_insn(DisasContext *s, int cpnum, int is64,
-             tcg_gen_andi_i32(t, t, 1u << maskbit);
-             tcg_gen_brcondi_i32(TCG_COND_EQ, t, 0, over.label);
+diff --git a/docs/system/arm/sbsa.rst b/docs/system/arm/sbsa.rst
+index bca61608ff8..2bf22a1d0b0 100644
+--- a/docs/system/arm/sbsa.rst
++++ b/docs/system/arm/sbsa.rst
+@@ -1,12 +1,16 @@
+ Arm Server Base System Architecture Reference board (``sbsa-ref``)
+ ==================================================================
  
--            gen_exception_insn(s, 0, EXCP_UDEF, syndrome);
-+            gen_exception_insn_el(s, 0, EXCP_UDEF, syndrome, 2);
-             /*
-              * gen_exception_insn() will set is_jmp to DISAS_NORETURN,
-              * but since we're conditionally branching over it, we want
+-While the ``virt`` board is a generic board platform that doesn't match
+-any real hardware the ``sbsa-ref`` board intends to look like real
+-hardware. The `Server Base System Architecture
+-<https://developer.arm.com/documentation/den0029/latest>`_ defines a
+-minimum base line of hardware support and importantly how the firmware
+-reports that to any operating system.
++The ``sbsa-ref`` board intends to look like real hardware (while the ``virt``
++board is a generic board platform that doesn't match any real hardware).
++
++The hardware part is defined by two specifications:
++
++  - `Base System Architecture <https://developer.arm.com/documentation/den0094/>`__ (BSA)
++  - `Server Base System Architecture <https://developer.arm.com/documentation/den0029/>`__ (SBSA)
++
++The `Arm Base Boot Requirements <https://developer.arm.com/documentation/den0044/>`__ (BBR)
++specification defines how the firmware reports that to any operating system.
+ 
+ It is intended to be a machine for developing firmware and testing
+ standards compliance with operating systems.
+@@ -35,16 +39,29 @@ includes both internal hardware and parts affected by the qemu command line
+ (i.e. CPUs and memory). As a result it must have a firmware specifically built
+ to expect a certain hardware layout (as you would in a real machine).
+ 
++Note
++''''
++
++QEMU provides the guest EL3 firmware with minimal information about hardware
++platform using minimalistic devicetree. This is not a Linux devicetree. It is
++not even a firmware devicetree.
++
++It is information passed from QEMU to describe the information a hardware
++platform would have other mechanisms to discover at runtime, that are affected
++by the QEMU command line.
++
++Ultimately this devicetree may be replaced by IPC calls to an emulated SCP.
++
+ DeviceTree information
+ ''''''''''''''''''''''
+ 
+-The devicetree provided by the board model to the firmware is not intended
+-to be a complete compliant DT. It currently reports:
++The devicetree reports:
+ 
+    - CPUs
+    - memory
+    - platform version
+    - GIC addresses
++   - NUMA node id for CPUs and memory
+ 
+ Platform version
+ ''''''''''''''''
+@@ -70,4 +87,4 @@ Platform version changes:
+   GIC ITS information is present in devicetree.
+ 
+ 0.3
+-  The USB controller is an XHCI device, not EHCI
++  The USB controller is an XHCI device, not EHCI.
 -- 
 2.34.1
 
