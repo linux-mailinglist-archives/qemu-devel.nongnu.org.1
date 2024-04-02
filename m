@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6361D895264
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 14:03:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C59389523C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:57:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcq7-0008AH-FR; Tue, 02 Apr 2024 08:02:07 -0400
+	id 1rrcjA-00055x-0E; Tue, 02 Apr 2024 07:54:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrcpA-0007UY-PF
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 08:01:12 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrciB-0004bW-HA
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:53:55 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rrcoG-0003Jx-Bp
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 08:01:06 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-565c6cf4819so9711565a12.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 05:00:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrche-00065b-BD
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:53:54 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4161d73d876so2138975e9.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712059209; x=1712664009; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bgXm2nlfXFrP6jSWEzK73t/J4axegXUGk98VGIOpPgY=;
- b=EqZpSeg9M2WjxF9uC9sAUAV5OP3/aC5dttT345EIhcKPsElXX88XZeyhp9/PLjPy9Y
- UaoNU319TZf/DRcLQxz0RFoHIJSqxOg6kFKFZaef+L8boKTT66YCBbDvQsPY7XHI3ftN
- ipISVVpH1Mhv+yLgc0VRzftcyaoHIl6e8fyDejfqSerc6rr5rr8w8hYuPqaeqXuPfOp6
- nMNwLnZ5T4va+uzsX5Uf+8YufvNfdK5J9z9JkV7URbjj/kOyYMJb4YFtXNynQ11bGgIj
- zvER5jie8IyQfZ+oB3yJB0gomHf4409ix2s1R+MrTNUjpcCBvUz+CXO5eKMzPBnZN6aK
- IG0w==
+ d=linaro.org; s=google; t=1712058800; x=1712663600; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=s26WwhVTEazCwToak+Pg/fznLaGeZTPUdLmVmhcPpcE=;
+ b=xl7hALzttF6maGxU43Fvgj4drzi3UF2+fLlm7Msie4M264rotpgoJgW1t2mKlfY+al
+ bYl3gn8kBk9GmNMZb3FZTKZRvG+Cjbpjdq3QlvucBR8Jsi4ozqdKfJ/VetsvQF/QE11F
+ xALh/YIRsjFtR0DsWn0ierNA8PNpg4X5fCx8sYvuF5B9SxHkCEpAMYl1nF/TnU6GBHWq
+ cQfvy4rJriN4Jz9wBSnRCCjHRHFgc9gHQf7KC/WAgma1CEujGFC+x7Ei4bOFOjD2JPSh
+ CdztTOBtHntI9ns0ZNNdbt5zYXPow43klGyDzZCGUZTqn/Bj3qWj4NTzdlyLtihGCbor
+ 2S5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712059209; x=1712664009;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bgXm2nlfXFrP6jSWEzK73t/J4axegXUGk98VGIOpPgY=;
- b=LwfXE3N0ANEY3zzrrNoQs/Ai6QOmG8aeCZ59haEZQ58MntuawtWY5pCplNOuk6aNAk
- 1dxrv9k1dIgTs/mYPezAriKbkZl0AZ4LLhdvTNwSKnbQhq9Q8K4z2DY42foVKrmkAJuf
- P1Xvtk7BKQvPnQpyO6OKZlY0nOv9uNJtlYZJOQZY/kJ63LN7OGn/mpGhIyx5C/SGtp5s
- +IR56xxJA6CVkxWJzTSIjwQ2lgGpfFNuXddCNYpjLzCKv/y8ATEaztvT7ZyiWb3JRcV4
- Z9FSN3A4P/6OBstTOQZrQlCoJO4/R7huDblxmqqsZfoNfbSDX7LgwocGjtIrSGWQISpd
- s26A==
-X-Gm-Message-State: AOJu0Yw7+xF/G6otRIF0cc7CJirE51jFO8HHbOwpPcVbjabWI2u3tTmk
- iAQWkqpQAU65deTLQvUmTfeeumbzT/XgfwqRVdkfwIBcX5/ayCjRsMJWzG2t8/6ix/KYWpc5VV2
- a9AdHZuDFLCMfxcB1ZMpMALWgxA67J87dl5soue1qiap91c50
-X-Google-Smtp-Source: AGHT+IFQBknMkfhTSx90+r8jOPkCnuujbvEiZc4TPHWmqXlPenQP5n2pMInjrcrZm1c8NXSw6TwjxU+NqpGO1RFn9hg=
-X-Received: by 2002:a50:d6cb:0:b0:56d:c711:1538 with SMTP id
- l11-20020a50d6cb000000b0056dc7111538mr6863757edj.18.1712058756459; Tue, 02
- Apr 2024 04:52:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712058800; x=1712663600;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=s26WwhVTEazCwToak+Pg/fznLaGeZTPUdLmVmhcPpcE=;
+ b=iDahxR8XAuxGwrwrVUn6bq49GzEsbvSDYcJIs9NHLEGtfHOn8rHu6k05j4+JcZobSl
+ hxTfaOMpc9Gjt6c68M4oF8fS8B0A5V5kBaHlEPgIR1b6CLfzTLnyjVh0ZThx5mRFFAQU
+ ftdjEYabjskQZanqTbNCMjRXternmYIx0vKOAi+ewOB6Szffk6BcCpv8zEplPibrtUvl
+ /kb4g69wnVcPJlzXs1GqKXPOR18yK+C0e2aqi+cF4tJjx3/uYjehHonbJDcs6f1MNe0T
+ HwE5VUeTf26v9rTQA4B3w7dKAznsxWsbtgRisZcbhqZE+yv9e3ldGQ2GhBp7m/BigclL
+ iCLg==
+X-Gm-Message-State: AOJu0YyecS1s9vrVtP/B9zQtPpG70TyMWvc10SEjGR0xCVIXOm09CEIt
+ orKy6aEh8zbvE0OltMUbODuYfVC8D1mfMzP3PBYsNc/+gY/dpgq3uKeqR39oXtI=
+X-Google-Smtp-Source: AGHT+IFAI2A/B0UdkUuRekQUj8df6RHWZIr2DaAAkidmBlT4n8DdYO7V8MycZuLWAVcagbyJ8bJvRA==
+X-Received: by 2002:a05:600c:3b29:b0:414:9141:1461 with SMTP id
+ m41-20020a05600c3b2900b0041491411461mr8151323wms.29.1712058799860; 
+ Tue, 02 Apr 2024 04:53:19 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.202.91])
+ by smtp.gmail.com with ESMTPSA id
+ o15-20020a05600c4fcf00b0041488895a37sm20811487wmq.33.2024.04.02.04.53.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 02 Apr 2024 04:53:19 -0700 (PDT)
+Message-ID: <8dd44a53-f16d-4fc1-bc08-fcd1af5e57a4@linaro.org>
+Date: Tue, 2 Apr 2024 13:53:17 +0200
 MIME-Version: 1.0
-References: <20240402113015.66280-1-philmd@linaro.org>
- <20240402113015.66280-2-philmd@linaro.org>
-In-Reply-To: <20240402113015.66280-2-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 2 Apr 2024 12:52:25 +0100
-Message-ID: <CAFEAcA8iCdNOdnrqY+7yupUvxQQfCLh17WRHZ6zFhVQrB4CXgg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] scripts/checkpatch: Avoid author email mangled by
  qemu-trivial@
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Michael Tokarev <mjt@tls.msk.ru>, Stefan Weil <sw@weilnetz.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>,
+ Stefan Weil <sw@weilnetz.de>
+References: <20240402113015.66280-1-philmd@linaro.org>
+ <20240402113015.66280-2-philmd@linaro.org>
+ <CAFEAcA8iCdNOdnrqY+7yupUvxQQfCLh17WRHZ6zFhVQrB4CXgg@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA8iCdNOdnrqY+7yupUvxQQfCLh17WRHZ6zFhVQrB4CXgg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,36 +96,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2 Apr 2024 at 12:30, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
-> wrote:
->
-> Commit f5177798d8 ("scripts: report on author emails
-> that are mangled by the mailing list") added a check
-> for qemu-devel@ list, complete with qemu-trivial@.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  scripts/checkpatch.pl | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> index 7026895074..4fe4cfd631 100755
-> --- a/scripts/checkpatch.pl
-> +++ b/scripts/checkpatch.pl
-> @@ -1573,7 +1573,7 @@ sub process {
->                         $is_patch =3D 1;
->                 }
->
-> -               if ($line =3D~ /^(Author|From): .* via .*<qemu-devel\@non=
-gnu.org>/) {
-> +               if ($line =3D~ /^(Author|From): .* via .*<qemu-(devel|tri=
-vial)\@nongnu\.org>/) {
+On 2/4/24 13:52, Peter Maydell wrote:
+> On Tue, 2 Apr 2024 at 12:30, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Commit f5177798d8 ("scripts: report on author emails
+>> that are mangled by the mailing list") added a check
+>> for qemu-devel@ list, complete with qemu-trivial@.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   scripts/checkpatch.pl | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+>> index 7026895074..4fe4cfd631 100755
+>> --- a/scripts/checkpatch.pl
+>> +++ b/scripts/checkpatch.pl
+>> @@ -1573,7 +1573,7 @@ sub process {
+>>                          $is_patch = 1;
+>>                  }
+>>
+>> -               if ($line =~ /^(Author|From): .* via .*<qemu-devel\@nongnu.org>/) {
+>> +               if ($line =~ /^(Author|From): .* via .*<qemu-(devel|trivial)\@nongnu\.org>/) {
+> 
+> I recommend checking against qemu-.* rather than trying
+> to capture explicitly all the suffixes we have. (For instance
+> there's a line in mailmap for a commit that was attributed
+> to qemu-block@, which this change still wouldn't catch.)
 
-I recommend checking against qemu-.* rather than trying
-to capture explicitly all the suffixes we have. (For instance
-there's a line in mailmap for a commit that was attributed
-to qemu-block@, which this change still wouldn't catch.)
+Oh, good point.
 
-thanks
--- PMM
 
