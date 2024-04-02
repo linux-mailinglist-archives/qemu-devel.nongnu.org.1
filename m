@@ -2,77 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0B789522D
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:45:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6361D895264
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 14:03:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcZ2-0000k8-Qw; Tue, 02 Apr 2024 07:44:28 -0400
+	id 1rrcq7-0008AH-FR; Tue, 02 Apr 2024 08:02:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcYc-0000av-8N
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:44:05 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrcpA-0007UY-PF
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 08:01:12 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rrcYZ-0005y5-Hf
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:44:01 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-415515178ceso24522995e9.0
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:43:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrcoG-0003Jx-Bp
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 08:01:06 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-565c6cf4819so9711565a12.1
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 05:00:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712058218; x=1712663018; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=D3sp7fW4wohPX0c2eRi7YBAVfGPS8rtp+XNRh/h3JFw=;
- b=nt3d04anSyIgWVl6LVGzVWSTz34vbKp+0Q9G4cmRCDeKdOirC5+OUDoa7vW7SP2Lhx
- 4lTOQSdaqlYhS42Yn87b7Lb7JYjIIt8QBhwbAuFlOvrmJIhVhlI75OqK4Lf0uMYy8F1+
- JVnVv0NbDum96ME6VIJ0TJf5e3ehKyUwX5/P83ezCDNRFVtd3aOp8jEMW9JmLcOuSrXp
- xc1Q8Rz2GHvUz+lNvCV9DYhD5Ibk3V7OXFDMsIMPXFb+OlVCN9gUVQ/8ssrEk4LgvRL1
- 1xlcblm1wduI2H+IWf4rYiWSrw2JCTdMwdiFxwutGwMiznN2meF4QdJAQA5IgXEz98JL
- 6GHg==
+ d=linaro.org; s=google; t=1712059209; x=1712664009; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bgXm2nlfXFrP6jSWEzK73t/J4axegXUGk98VGIOpPgY=;
+ b=EqZpSeg9M2WjxF9uC9sAUAV5OP3/aC5dttT345EIhcKPsElXX88XZeyhp9/PLjPy9Y
+ UaoNU319TZf/DRcLQxz0RFoHIJSqxOg6kFKFZaef+L8boKTT66YCBbDvQsPY7XHI3ftN
+ ipISVVpH1Mhv+yLgc0VRzftcyaoHIl6e8fyDejfqSerc6rr5rr8w8hYuPqaeqXuPfOp6
+ nMNwLnZ5T4va+uzsX5Uf+8YufvNfdK5J9z9JkV7URbjj/kOyYMJb4YFtXNynQ11bGgIj
+ zvER5jie8IyQfZ+oB3yJB0gomHf4409ix2s1R+MrTNUjpcCBvUz+CXO5eKMzPBnZN6aK
+ IG0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712058218; x=1712663018;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=D3sp7fW4wohPX0c2eRi7YBAVfGPS8rtp+XNRh/h3JFw=;
- b=NEPbjBh8asBF1z4oiUtcNYrFLMDEauN5oVwgRS6n7ZbfwJslU5jxg/Aslc4L7pV+4C
- lIxn5p+OxqEvsSJwGrzZSMy4G6AebsOXS5QOEh9e8/3fjqB19uR1VmT7yrZlPR3qz5YE
- ULoRtmPdQIEXgswODQ2SGj67bG1Mmv9CHveopHptyEr/Id0sppOW6VrUNqz7p7ERzXpU
- nyUK8Bun4K7p6/hdIIYoNP4jhd2Wxu6UZwSBJUadcPDOZ9ZztevwzysZoqjubNmXyepw
- LZWhpDgJXkJam6GYApiALlvonyeTnyI74xHA20lzs9Y03PwXQ/BUYM3jiDZTe72rHVlU
- UEtw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUIpCyAC1dylUxEVGOs/aHAwztBH1ZXl5GCQ3nPVkhix9j1QvVZTFZVODkgYaL8O0A4Fsp69/WjPRpbYtKvdug8DjmvR5g=
-X-Gm-Message-State: AOJu0YywveTO9Wn2T6jJQLD/0T2Yjn+7ToZQHTnN7S6nY24vvyKKJGkX
- 7p+8ADrhwfZezNCnk8IgU9yBigbRfR3LKzaH7aFXqz7EX45MRDF0NBMhkzQ6INE=
-X-Google-Smtp-Source: AGHT+IEW0WRoHUFK/7G2oIoi8ZCzXbxH7wIUMcjzYG4mmhPvbwCwH30Dpc30e08EjlgdeM/sduLtkQ==
-X-Received: by 2002:a05:600c:570b:b0:415:5413:cecc with SMTP id
- jv11-20020a05600c570b00b004155413ceccmr7875934wmb.18.1712058218015; 
- Tue, 02 Apr 2024 04:43:38 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.202.91])
- by smtp.gmail.com with ESMTPSA id
- p2-20020a05600c1d8200b004156daeee90sm3435183wms.4.2024.04.02.04.43.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 02 Apr 2024 04:43:37 -0700 (PDT)
-Message-ID: <9d64b14b-3c4e-41bb-b79d-1ee5d4df3eac@linaro.org>
-Date: Tue, 2 Apr 2024 13:43:36 +0200
+ d=1e100.net; s=20230601; t=1712059209; x=1712664009;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=bgXm2nlfXFrP6jSWEzK73t/J4axegXUGk98VGIOpPgY=;
+ b=LwfXE3N0ANEY3zzrrNoQs/Ai6QOmG8aeCZ59haEZQ58MntuawtWY5pCplNOuk6aNAk
+ 1dxrv9k1dIgTs/mYPezAriKbkZl0AZ4LLhdvTNwSKnbQhq9Q8K4z2DY42foVKrmkAJuf
+ P1Xvtk7BKQvPnQpyO6OKZlY0nOv9uNJtlYZJOQZY/kJ63LN7OGn/mpGhIyx5C/SGtp5s
+ +IR56xxJA6CVkxWJzTSIjwQ2lgGpfFNuXddCNYpjLzCKv/y8ATEaztvT7ZyiWb3JRcV4
+ Z9FSN3A4P/6OBstTOQZrQlCoJO4/R7huDblxmqqsZfoNfbSDX7LgwocGjtIrSGWQISpd
+ s26A==
+X-Gm-Message-State: AOJu0Yw7+xF/G6otRIF0cc7CJirE51jFO8HHbOwpPcVbjabWI2u3tTmk
+ iAQWkqpQAU65deTLQvUmTfeeumbzT/XgfwqRVdkfwIBcX5/ayCjRsMJWzG2t8/6ix/KYWpc5VV2
+ a9AdHZuDFLCMfxcB1ZMpMALWgxA67J87dl5soue1qiap91c50
+X-Google-Smtp-Source: AGHT+IFQBknMkfhTSx90+r8jOPkCnuujbvEiZc4TPHWmqXlPenQP5n2pMInjrcrZm1c8NXSw6TwjxU+NqpGO1RFn9hg=
+X-Received: by 2002:a50:d6cb:0:b0:56d:c711:1538 with SMTP id
+ l11-20020a50d6cb000000b0056dc7111538mr6863757edj.18.1712058756459; Tue, 02
+ Apr 2024 04:52:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0 3/4] vga: adjust dirty memory region if pel
- panning is active
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Helge Konetzka <hk@zapateado.de>
-References: <20240402113408.18048-1-pbonzini@redhat.com>
- <20240402113408.18048-4-pbonzini@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240402113408.18048-4-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+References: <20240402113015.66280-1-philmd@linaro.org>
+ <20240402113015.66280-2-philmd@linaro.org>
+In-Reply-To: <20240402113015.66280-2-philmd@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 2 Apr 2024 12:52:25 +0100
+Message-ID: <CAFEAcA8iCdNOdnrqY+7yupUvxQQfCLh17WRHZ6zFhVQrB4CXgg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] scripts/checkpatch: Avoid author email mangled by
+ qemu-trivial@
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ Michael Tokarev <mjt@tls.msk.ru>, Stefan Weil <sw@weilnetz.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,20 +91,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/4/24 13:34, Paolo Bonzini wrote:
-> When pel panning is active, one more byte is read from each of the VGA
-> memory planes.  This has to be accounted in the computation of region_end,
-> otherwise vga_draw_graphic() fails an assertion:
-> 
-> qemu-system-i386: ../system/physmem.c:946: cpu_physical_memory_snapshot_get_dirty: Assertion `start + length <= snap->end' failed.
-> 
-> Reported-by: Helge Konetzka <hk@zapateado.de>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2244
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Tue, 2 Apr 2024 at 12:30, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
+>
+> Commit f5177798d8 ("scripts: report on author emails
+> that are mangled by the mailing list") added a check
+> for qemu-devel@ list, complete with qemu-trivial@.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->   hw/display/vga.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>  scripts/checkpatch.pl | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> index 7026895074..4fe4cfd631 100755
+> --- a/scripts/checkpatch.pl
+> +++ b/scripts/checkpatch.pl
+> @@ -1573,7 +1573,7 @@ sub process {
+>                         $is_patch =3D 1;
+>                 }
+>
+> -               if ($line =3D~ /^(Author|From): .* via .*<qemu-devel\@non=
+gnu.org>/) {
+> +               if ($line =3D~ /^(Author|From): .* via .*<qemu-(devel|tri=
+vial)\@nongnu\.org>/) {
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I recommend checking against qemu-.* rather than trying
+to capture explicitly all the suffixes we have. (For instance
+there's a line in mailmap for a commit that was attributed
+to qemu-block@, which this change still wouldn't catch.)
 
+thanks
+-- PMM
 
