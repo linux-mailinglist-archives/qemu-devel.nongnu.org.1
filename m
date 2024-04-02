@@ -2,91 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF18B894F80
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0911189501C
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 12:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrazj-0007Ar-Iw; Tue, 02 Apr 2024 06:03:55 -0400
+	id 1rrbP7-0008Mv-CO; Tue, 02 Apr 2024 06:30:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rrayw-0006ex-2U
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:03:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rrays-0002IE-6d
- for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:03:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712052179;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=+jt2f6hEUXWAc0F21N/nI3NazjW/SSDHRA3MxvTFR/4=;
- b=TTlUWe/CaV82MuOu9ZjXdX+W+0d/E91j1oSFJb2IX70P/ODHTwdcSF7hApo1ZfrAK2RCKs
- Ve8xdkTCQWjzBVGR58/fE2aG1XXaktCKn/sZIHr75A1cAqWxOeCJBTujin6sQZzVp9qSU1
- FBk5TdidumYX3711OYDifgxgwq6kqUE=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-NMU7G0TwOF-8QaLXNvwTxw-1; Tue, 02 Apr 2024 06:02:58 -0400
-X-MC-Unique: NMU7G0TwOF-8QaLXNvwTxw-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2d45c064742so50757531fa.3
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 03:02:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrbP4-0008L7-7A
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:06 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrbOy-0003db-JE
+ for qemu-devel@nongnu.org; Tue, 02 Apr 2024 06:30:05 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-415523d9824so31376695e9.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 03:29:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712053793; x=1712658593; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=QETv8NgoTe3pWtKVlYF/6dzKUZrTdJIlYuMF8rbfbd8=;
+ b=aEr1bemSNf4ms/poRf/CPv7L3EdzZQ2C5371oXt91lL9CZYDHOqdyge9sn1GE2OIcI
+ xpo78ISbFCaYKxfjvjmJR8167X1e5cu0NhYRCu3JbDWjDdi5K6jVOTis/DGuCkOYuciq
+ 5gHjZQ2Rv896GM79TgYaaAh1WPn/8OViU0suqoLjfB5CvYfC7p1/D6XOM1Nsj7ga1tBS
+ qliydzVEKVo+tsnvR+XUyOVWJ+DW+VGkEPAIpT2DnLRqqeopRVJlaGNIhxSFLVmSLXT7
+ VEV6KJDWyNYg+pdQTk85ROsr+cVPTWATUH9dNDlq4QJs+smIiwXkNta9aNWeiTV34p/S
+ znGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712052176; x=1712656976;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+jt2f6hEUXWAc0F21N/nI3NazjW/SSDHRA3MxvTFR/4=;
- b=BzkPQGdE0f7riHz5TJtd5c3dXeDBqDB51BVaKtRyWwk9tGJmUWku6cp3+6cyl2xszP
- PKUDR1aDX2TEcbrMY8QGJg5xRXsbykhosRgBJDceC9MG4qDivr1DxZirL9vvnoEYNeGt
- CIJIQgN5hkS1An12IXuSU8KAisxnOp2yzUIazlCnwlGs7BOBgwBYBhKI2xPaQDNnNzGy
- oGoSZcfBV7rjR/sgOXdV8R5WBZ5yua6rpRGgD4LwWqzUafXa3bAgpmXV7l4kdl70Lwx4
- JC05MG6q0c1fcN7+1bqMbTpU5o3nAx7gv8U0mwzRah1GiQ2uG6f7JZ6NjODQvOXWH5PI
- CG/A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDpsrHjaePk88Ifh6/AgLQkWsaWjyB7Km0uycvOtac760+mtwPoLVcOsjPdLhiLHwZN6VtZwY5MO1+9DeCHw/VZ1yHwcw=
-X-Gm-Message-State: AOJu0Yxnjg6J/aJbCxt4grzm13H/cW+drHIBfdsNK+vmskRheJ+7I4Nb
- 5mFxT8YxRPqpjp70LYjCpZNow5YH2Y08kSJazumJ//Ij5c4Oey4vsWeUKrCRQhP45EX3OIjDuFj
- cDwzsaQMhr7Yq0S68+JPNzcnscFRPEcvk75FRJyEO5OMgqPgEPc7I8GFVZpn9kRM=
-X-Received: by 2002:a2e:9c82:0:b0:2d2:b840:1c78 with SMTP id
- x2-20020a2e9c82000000b002d2b8401c78mr7450960lji.48.1712052176018; 
- Tue, 02 Apr 2024 03:02:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHvB0FoBIR31Y+Fb3awN2DD+lf/4knp9Fx+bfE38ziLOfnH9lcu+Bq8TXXCpB5zpf5qc+uMcg==
-X-Received: by 2002:a2e:9c82:0:b0:2d2:b840:1c78 with SMTP id
- x2-20020a2e9c82000000b002d2b8401c78mr7450941lji.48.1712052175422; 
- Tue, 02 Apr 2024 03:02:55 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f4:2fbc:c1b6:60e7:b08c:a69d])
+ d=1e100.net; s=20230601; t=1712053793; x=1712658593;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=QETv8NgoTe3pWtKVlYF/6dzKUZrTdJIlYuMF8rbfbd8=;
+ b=EBoCUaSewW3IxqMdPFBonmby4k1o0TB1ikNdlJjtQTukDXx1VROcbxMvoPbwoTIbkC
+ BbwwzcNOZodYwBBedTYq2sQ19JmLg4MEbe2Sn4Z/jy8XH3N/C8KCXEuGL6FDl6k8CTzH
+ rZEU4ClWP7YMNH+HcOBdDRfEQC5oLNAFGUAMMHjvHRRN/o+rfUpqvx4w7AjYWzSFs5yf
+ gC9ngC5KFUSLZ2iib/hFysmKcI28sOhleu2guQtjG+a3qOSPw/YIuIiwl6swoIchMBhT
+ j2ewIgxDIgfBzXAc6HrhmB5ywmquyfScA9XewEtouER2ET8vQKj+lR/ESTkCZK9QT5Xe
+ PibA==
+X-Gm-Message-State: AOJu0Yw5tzG1uP+JGgY85x1U2M+RkjHWkaDRxr3FdpXVYgBCLSWZj9Xb
+ VMCLrBbby8l1yYO9LxLycCXtb7oD431zmi6Kkb5LgTQd8kXqprD1BuEfeOnYNqRQBJXrJigY/YJ
+ i
+X-Google-Smtp-Source: AGHT+IGj2aoNONCAnhsq1fcywjPPHVJCign7240gxTjfpwOgf5egXHIeU1GWez9yKub6tYgAoevNtg==
+X-Received: by 2002:a05:600c:4fd0:b0:414:b43b:5 with SMTP id
+ o16-20020a05600c4fd000b00414b43b0005mr1084539wmq.26.1712053793525; 
+ Tue, 02 Apr 2024 03:29:53 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- r15-20020a05600c35cf00b004156c501e24sm3753051wmq.12.2024.04.02.03.02.53
+ o15-20020a05600c4fcf00b0041488895a37sm20586175wmq.33.2024.04.02.03.29.52
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Apr 2024 03:02:55 -0700 (PDT)
-Date: Tue, 2 Apr 2024 06:02:51 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-devel@nongnu.org,
- isaku.yamahata@intel.com
-Subject: Re: [PATCH] hw/i386/acpi: Set PCAT_COMPAT bit only when pic is not
- disabled
-Message-ID: <20240402060109-mutt-send-email-mst@kernel.org>
-References: <20240402082516.2921143-1-xiaoyao.li@intel.com>
+ Tue, 02 Apr 2024 03:29:52 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/5] target-arm queue
+Date: Tue,  2 Apr 2024 11:29:46 +0100
+Message-Id: <20240402102951.3099078-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240402082516.2921143-1-xiaoyao.li@intel.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,39 +89,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 02, 2024 at 04:25:16AM -0400, Xiaoyao Li wrote:
-> Set MADT.FLAGS[bit 0].PCAT_COMPAT based on x86ms->pic.
-> 
-> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Nothing exciting here: two minor bug fixes, some fixes for
+running on a 32-bit host, and a docs tweak.
 
-Please include more info in the commit log:
-what is the behaviour you observe, why it is wrong,
-how does the patch fix it, what is guest behaviour
-before and after.
+thanks
+-- PMM
 
-The commit log and the subject should not repeat
-what the diff already states.
+The following changes since commit 6af9d12c88b9720f209912f6e4b01fefe5906d59:
 
-> ---
->  hw/i386/acpi-common.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
-> index 20f19269da40..0cc2919bb851 100644
-> --- a/hw/i386/acpi-common.c
-> +++ b/hw/i386/acpi-common.c
-> @@ -107,7 +107,9 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
->      acpi_table_begin(&table, table_data);
->      /* Local APIC Address */
->      build_append_int_noprefix(table_data, APIC_DEFAULT_ADDRESS, 4);
-> -    build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
-> +    /* Flags. bit 0: PCAT_COMPAT */
-> +    build_append_int_noprefix(table_data,
-> +                              x86ms->pic != ON_OFF_AUTO_OFF ? 1 : 0 , 4);
->  
->      for (i = 0; i < apic_ids->len; i++) {
->          pc_madt_cpu_entry(i, apic_ids, table_data, false);
-> -- 
-> 2.34.1
+  Merge tag 'migration-20240331-pull-request' of https://gitlab.com/peterx/qemu into staging (2024-04-01 13:12:40 +0100)
 
+are available in the Git repository at:
+
+  https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240402
+
+for you to fetch changes up to 393770d7a02135e7468018f52da610712f151ec0:
+
+  raspi4b: Reduce RAM to 1Gb on 32-bit hosts (2024-04-02 10:13:48 +0100)
+
+----------------------------------------------------------------
+target-arm queue:
+ * take HSTR traps of cp15 accesses to EL2, not EL1
+ * docs: sbsa: update specs, add dt note
+ * hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS if int group is disabled
+ * tests/qtest: Fix STM32L4x5 GPIO test on 32-bit
+ * raspi4b: Reduce RAM to 1Gb on 32-bit hosts
+
+----------------------------------------------------------------
+Cédric Le Goater (2):
+      tests/qtest: Fix STM32L4x5 GPIO test on 32-bit
+      raspi4b: Reduce RAM to 1Gb on 32-bit hosts
+
+Marcin Juszkiewicz (1):
+      docs: sbsa: update specs, add dt note
+
+Peter Maydell (2):
+      target/arm: take HSTR traps of cp15 accesses to EL2, not EL1
+      hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS if int group is disabled
+
+ docs/system/arm/sbsa.rst          | 35 +++++++++++++++++------
+ hw/arm/raspi4b.c                  |  4 +++
+ hw/intc/arm_gicv3_cpuif.c         |  4 +--
+ target/arm/tcg/translate.c        |  2 +-
+ tests/qtest/stm32l4x5_gpio-test.c | 59 +++++++++++++++++++++++----------------
+ 5 files changed, 68 insertions(+), 36 deletions(-)
 
