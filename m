@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DC28951F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A18A68951F8
+	for <lists+qemu-devel@lfdr.de>; Tue,  2 Apr 2024 13:36:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrcPP-0007P1-80; Tue, 02 Apr 2024 07:34:31 -0400
+	id 1rrcPP-0007Pa-Ru; Tue, 02 Apr 2024 07:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rrcPN-0007OI-5e
+ id 1rrcPN-0007OH-65
  for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:34:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rrcPH-0006JI-6f
+ id 1rrcPH-0006Lv-80
  for qemu-devel@nongnu.org; Tue, 02 Apr 2024 07:34:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712057654;
+ s=mimecast20190719; t=1712057657;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=CqXTgQBUdIvyYMJTBfhxcVv7+yEIfw3bh7QHrbI9K74=;
- b=bSaR+0iElB11ZcthX5x9UaaokATN7IxzfDS88c0Xqo+5AZmnqzBFKJh+7Yp2OLXYSB5kD0
- 8hmrreOtwCvlUBFmk270ZatkIAxWgiucSoz3h7xZY/ozb/oHjfZYYN1lxdCcjPspR/7nY4
- BZftI4MCHxEzZVZP5ogf4lg4Tb9QMS0=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=jVfzihO5qwox85ndrhEpPEDkR5EZjIIkF6NFUMuvYM0=;
+ b=A3Wc9R+5HqFn3vjovYInnIConglfpVBgon5IRTsK38oYn3BHeomhcOBiYA+JTL2x+KSxvg
+ 1U8R4fJTRRwvWqASWOPf6aeb3EPRbaUtQoPs5msWaCzt62tG9/NdgRRqMDCvgJ8PIog55S
+ 5SQTAYUQrmGQeqIN6XRxoYItLwv7ghs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-549-0Glsm8b_NWSWLzoKh7ifKg-1; Tue, 02 Apr 2024 07:34:13 -0400
-X-MC-Unique: 0Glsm8b_NWSWLzoKh7ifKg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-414aa7bd274so24733455e9.1
- for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:34:13 -0700 (PDT)
+ us-mta-446-S2DhWb8wO9-ROwiKCirxeQ-1; Tue, 02 Apr 2024 07:34:16 -0400
+X-MC-Unique: S2DhWb8wO9-ROwiKCirxeQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-415591b1500so12337425e9.3
+ for <qemu-devel@nongnu.org>; Tue, 02 Apr 2024 04:34:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712057651; x=1712662451;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CqXTgQBUdIvyYMJTBfhxcVv7+yEIfw3bh7QHrbI9K74=;
- b=R7GiofV/bLFrqMUm5dga/EBkotdBBwiQx1DsGWS9b6gfz7oep5/O75iFoKJ5Fay8W/
- +/gYHQHxrUD1AUUsxUZov0NucAIJvyc3aoD048EBXewv0TTVvUHYccK9g01iXS9KQjjj
- W/K8KiDkN1IxV5fzuLyTvzwjpY9cOz1YhWGurVLS2PyFbMUBcRXNaJ4/tcTMMjSwmg9u
- E+i+Q6ZLfaTQkakqe+ej0eH8wfpdmTqrqoChHrOR6Q0dj1l/tvizbeg8/je1jzZhlYw4
- tdNsH6HDifrLp0B7F9yfuXgvycDcF21MV2jXelNeMUvBM+oBPVXtdvyzG+M44Pfb5z/4
- Vx1Q==
-X-Gm-Message-State: AOJu0YyNjUBiFlIEcUq48ZaNWxDvMZw7g8qMdpnQdMEGW7YAhEnHxPGG
- Yf2EZiy3+r4WQT18siCC3HxgYXZC+5sA+W8Rle98JNULLKwdCmrqXNW7zckldVL/7HaZGtCT9/S
- NYbS0/VIrkw80UQltPMvMReFCq2ZPGzxwKnkDz7+FY18OIjZy4HW5Uh9yjc97eMSlm66EirGGBF
- ZVBwchkLKl43w4amcTywW6wLBbsd8HJvYUig8u
-X-Received: by 2002:a05:600c:a4c:b0:413:3941:d9ae with SMTP id
- c12-20020a05600c0a4c00b004133941d9aemr8721992wmq.31.1712057651583; 
- Tue, 02 Apr 2024 04:34:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFg4KTJ2Cl5ZEhr8e3VHfqQOXwHn4SnYRgo3OOUKsuZMGzpo5wCIYnCOthPNe9b1fGTQ3icdg==
-X-Received: by 2002:a05:600c:a4c:b0:413:3941:d9ae with SMTP id
- c12-20020a05600c0a4c00b004133941d9aemr8721973wmq.31.1712057651141; 
- Tue, 02 Apr 2024 04:34:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712057654; x=1712662454;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=jVfzihO5qwox85ndrhEpPEDkR5EZjIIkF6NFUMuvYM0=;
+ b=L1aRbPXC9LpLIG9XCQUGnlgMxic/8dZAxbbFXXfRKVgjTixYbPoVuKhcBViAkg3BHY
+ CjydySL7oj+z65/7V1Ai/HWKsDHnp1GqB4HIAVyxAi1GTIznBsBv99ROPnG3fNAZQFXX
+ 8M4NYpoWFFaQrD4yFezaf6xjvM3csk4kxS9DjBwJ2FIffrEnF4ombyOxttL2T/B/HlB9
+ hgwBFKkVAJ98kJXJBOw0vlXSKRW17sjrgWr91VXwBKOOpXoIJvgn1bA8PdhEn9k+O/te
+ 6M4SY7p2o7FHei3VxLAb4f4zzmajDsZJHIi7Is0yNSsBvJb2NiAD9cRAjhcvzIXRYiBP
+ Ki0g==
+X-Gm-Message-State: AOJu0Yz4InTll4lckVybGdUW+5cXNRMUyDen2qXOtxOPo5m0WlYkXzBE
+ o/DHqGXS5wSj7sfcl7g0q5isgbo/hr/27kiwuRc5Xuz2iz83Tmj14WdoSDJagM/Hdd50yIh7s3p
+ QGHhnFyylnYSc7Q+aB8kz+12gJa2K3x3LLlZAG8iAoZRFL+BgAEJTya8A29/+AonOmaryimD0N2
+ sP9gfu/8JlBK95x/CIkfedotRXh52oLb3n8wAo
+X-Received: by 2002:a7b:c34d:0:b0:416:1c9f:3a3f with SMTP id
+ l13-20020a7bc34d000000b004161c9f3a3fmr822885wmj.9.1712057654345; 
+ Tue, 02 Apr 2024 04:34:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPo7i3/AN+KKJkuYxtXmCTZweEY6sOXKmxVd6sSDivthDQCYjcueP78YrrZ7yYC3EoaK9B+Q==
+X-Received: by 2002:a7b:c34d:0:b0:416:1c9f:3a3f with SMTP id
+ l13-20020a7bc34d000000b004161c9f3a3fmr822863wmj.9.1712057653859; 
+ Tue, 02 Apr 2024 04:34:13 -0700 (PDT)
 Received: from avogadro.local ([151.95.49.219])
  by smtp.gmail.com with ESMTPSA id
- b3-20020a05600c4e0300b004156da408b1sm3433873wmq.22.2024.04.02.04.34.09
+ f14-20020a05600c154e00b00414674a1a40sm17593545wmg.45.2024.04.02.04.34.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Apr 2024 04:34:09 -0700 (PDT)
+ Tue, 02 Apr 2024 04:34:12 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Helge Konetzka <hk@zapateado.de>
-Subject: [PATCH for-9.0 0/4] vga: fix assertion failure with 4- and 16-color
- modes
-Date: Tue,  2 Apr 2024 13:34:02 +0200
-Message-ID: <20240402113408.18048-1-pbonzini@redhat.com>
+Subject: [PATCH for-9.0 1/4] vga: merge conditionals on shift control register
+Date: Tue,  2 Apr 2024 13:34:03 +0200
+Message-ID: <20240402113408.18048-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240402113408.18048-1-pbonzini@redhat.com>
+References: <20240402113408.18048-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -98,40 +100,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These patches (the first three especially) fix an assertion failure
-introduced by horizontal pel panning support in VGA.  The assertion
-triggers with legacy 4- and 16-color modes, due to a mismatch between
-the addresses visited by vga_draw_graphic() and the region that is
-passed to memory_region_snapshot_and_clear_dirty().
+There are two sets of conditionals using the shift control bits: one to
+verify the palette and adjust disp_width, one to compute the "v" and
+"bits" variables.  Merge them into one, with the extra benefit that
+we now have the "bits" value available early and can use it to
+compute region_end.
 
-Patches 1 and 2 reorganize the code so that the "bits" value
-(used in turn to check if horizontal pel panning is taken into
-account) is available where the dirty memory region is computed.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ hw/display/vga.c | 89 +++++++++++++++++++++++-------------------------
+ 1 file changed, 42 insertions(+), 47 deletions(-)
 
-Patch 3 is the actual bug fix.
-
-Patch 4 is a small optimization that would also hide the bug, by
-treating pel panning as disabled in the common case where the
-register is set to 8 (bit 3 is ignored in graphics mode).
-This one could be suitable for QEMU 9.0 but is not necessary.
-
-Patches 5 and 6 are larger cleanups and optimizations in how the dirty
-memory region is computed.  This is enabled by the availability of "bits"
-where the dirty memory region is computed; it is now possible for 8-
-and 15-bit modes to skip the slow path and only read dirty bits for a
-small part of VRAM.
-
-Paolo Bonzini (6):
-  vga: merge conditionals on shift control register
-  vga: move computation of dirty memory region later
-  vga: adjust dirty memory region if pel panning is active
-  vga: do not treat horiz pel panning value of 8 as "enabled"
-  vga: optimize computation of dirty memory region
-  vga: move dirty memory region code together
-
- hw/display/vga.c     | 152 ++++++++++++++++++++-----------------------
- 1 file changed, 71 insertions(+), 81 deletions(-)
-
+diff --git a/hw/display/vga.c b/hw/display/vga.c
+index bc5b83421bf..4795a0012e2 100644
+--- a/hw/display/vga.c
++++ b/hw/display/vga.c
+@@ -1546,12 +1546,54 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+     }
+ 
+     if (shift_control == 0) {
++        full_update |= update_palette16(s);
+         if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
+             disp_width <<= 1;
++            v = VGA_DRAW_LINE4D2;
++        } else {
++            v = VGA_DRAW_LINE4;
+         }
++        bits = 4;
++
+     } else if (shift_control == 1) {
++        full_update |= update_palette16(s);
+         if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
+             disp_width <<= 1;
++            v = VGA_DRAW_LINE2D2;
++        } else {
++            v = VGA_DRAW_LINE2;
++        }
++        bits = 4;
++
++    } else {
++        switch (depth) {
++        default:
++        case 0:
++            full_update |= update_palette256(s);
++            v = VGA_DRAW_LINE8D2;
++            bits = 4;
++            break;
++        case 8:
++            full_update |= update_palette256(s);
++            v = VGA_DRAW_LINE8;
++            bits = 8;
++            break;
++        case 15:
++            v = s->big_endian_fb ? VGA_DRAW_LINE15_BE : VGA_DRAW_LINE15_LE;
++            bits = 16;
++            break;
++        case 16:
++            v = s->big_endian_fb ? VGA_DRAW_LINE16_BE : VGA_DRAW_LINE16_LE;
++            bits = 16;
++            break;
++        case 24:
++            v = s->big_endian_fb ? VGA_DRAW_LINE24_BE : VGA_DRAW_LINE24_LE;
++            bits = 24;
++            break;
++        case 32:
++            v = s->big_endian_fb ? VGA_DRAW_LINE32_BE : VGA_DRAW_LINE32_LE;
++            bits = 32;
++            break;
+         }
+     }
+ 
+@@ -1607,53 +1649,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+         }
+     }
+ 
+-    if (shift_control == 0) {
+-        full_update |= update_palette16(s);
+-        if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
+-            v = VGA_DRAW_LINE4D2;
+-        } else {
+-            v = VGA_DRAW_LINE4;
+-        }
+-        bits = 4;
+-    } else if (shift_control == 1) {
+-        full_update |= update_palette16(s);
+-        if (sr(s, VGA_SEQ_CLOCK_MODE) & 8) {
+-            v = VGA_DRAW_LINE2D2;
+-        } else {
+-            v = VGA_DRAW_LINE2;
+-        }
+-        bits = 4;
+-    } else {
+-        switch(s->get_bpp(s)) {
+-        default:
+-        case 0:
+-            full_update |= update_palette256(s);
+-            v = VGA_DRAW_LINE8D2;
+-            bits = 4;
+-            break;
+-        case 8:
+-            full_update |= update_palette256(s);
+-            v = VGA_DRAW_LINE8;
+-            bits = 8;
+-            break;
+-        case 15:
+-            v = s->big_endian_fb ? VGA_DRAW_LINE15_BE : VGA_DRAW_LINE15_LE;
+-            bits = 16;
+-            break;
+-        case 16:
+-            v = s->big_endian_fb ? VGA_DRAW_LINE16_BE : VGA_DRAW_LINE16_LE;
+-            bits = 16;
+-            break;
+-        case 24:
+-            v = s->big_endian_fb ? VGA_DRAW_LINE24_BE : VGA_DRAW_LINE24_LE;
+-            bits = 24;
+-            break;
+-        case 32:
+-            v = s->big_endian_fb ? VGA_DRAW_LINE32_BE : VGA_DRAW_LINE32_LE;
+-            bits = 32;
+-            break;
+-        }
+-    }
+     vga_draw_line = vga_draw_line_table[v];
+ 
+     if (!is_buffer_shared(surface) && s->cursor_invalidate) {
 -- 
 2.44.0
 
