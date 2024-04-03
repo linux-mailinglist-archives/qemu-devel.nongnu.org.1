@@ -2,94 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AEA896DEB
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 13:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253A2896E7E
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 13:51:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rryZ5-0003nk-Sm; Wed, 03 Apr 2024 07:13:59 -0400
+	id 1rrz7p-0001no-9A; Wed, 03 Apr 2024 07:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1rryY9-0003Dq-LE
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:13:11 -0400
-Received: from smtp-out1.suse.de ([195.135.223.130])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrz7k-0001me-Ny
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:49:49 -0400
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
- id 1rryXw-0007Vt-4D
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:13:01 -0400
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 7F9B83527A;
- Wed,  3 Apr 2024 11:12:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
- t=1712142753; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kweTaK6DT0aZKsatwKH1KkkP/q5eMCHk2+miZcWg83g=;
- b=r+kXU4KOcCDEDopIAjSNqIesUkb8x1vbLFuSpcxwDhVJM1oEt+swN1zdbvGxwbVRnBw2Y+
- XJS/6yFfvaX6qZ4AYYRcoOO9lNuRBIxgwogf2T5QH8ms1LyrNtUUSziSFenJMI3lxhN/En
- TAFVzOKzqYTw4OUovDxTACWpTLyt/c4=
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 8328813A8B;
- Wed,  3 Apr 2024 11:12:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
- by imap2.dmz-prg2.suse.org with ESMTPSA id oM1WHaA5DWayHQAAn2gu4w
- (envelope-from <roy.hopkins@suse.com>); Wed, 03 Apr 2024 11:12:32 +0000
-From: Roy Hopkins <roy.hopkins@suse.com>
-To: qemu-devel@nongnu.org
-Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tom Lendacky <thomas.lendacky@amd.com>,
- Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
- =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
-Subject: [PATCH v2 10/10] docs/interop/firmware.json: Add igvm to
- FirmwareDevice
-Date: Wed,  3 Apr 2024 12:11:41 +0100
-Message-ID: <adb4afaef50be15b870e6d8f6c3fdb5f2c16da23.1712141833.git.roy.hopkins@suse.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1712141833.git.roy.hopkins@suse.com>
-References: <cover.1712141833.git.roy.hopkins@suse.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rrz7j-0006GO-3o
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:49:48 -0400
+Received: by mail-lf1-x131.google.com with SMTP id
+ 2adb3069b0e04-516c11b6af9so120773e87.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 04:49:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712144984; x=1712749784; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q04MB9sbtDquxr5tfECR0Pc+WkFOv2d45d7auHnPkmA=;
+ b=rTiKymSVsIfF0jepYx6m/kQe83jNR5mGrtY54lYY4QrHbOhr3c9jNhm6pBd1cDsNu2
+ kJTUnEH55fY0RTyjBqcZbEnPJ2Wsz6aEOZVRyJJMQ85SMoHiJG26jnGHq9CsG1hTDI9t
+ jdpypGuPQZKcbzGT8BXrqlfvQuPafI8CaT86f0su1N2sEUVXRfNPT5u5se9lvTtMcGXN
+ T9Igj/aH7Z479P6wwHYk0c7iaJ27zApJPsY0SQIRyc/b96grSXhwAz5rId2qjFRuI7TA
+ Z3hBrLeyJ7E3pyryHvci3dAWz+V0SlT5QHPk5jxaRjAhDlm/ApfLXvEgT0Yngrv4oTni
+ YoxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712144984; x=1712749784;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Q04MB9sbtDquxr5tfECR0Pc+WkFOv2d45d7auHnPkmA=;
+ b=p1o5t6tzL/cCEpnLEl+ublgrgLLjVnvmUzgBg2h2Aq0bGj2qz7zHrHIXnS099UwBzk
+ KCpHlm9fkC1+FDlMtPQHht+GBCjAWtkin0zCrm+2py2YojHsX2aP2j16/oXvZ65piFlz
+ UAJhyaSNrGpVkg6idCsPptqC4dYmiGV5bRIAn49bNXA3n/vc0fAaEorJLxgQRwMuahOu
+ e5eV1ZJ59uxDZoxfXm4V89/StOgDV7ef/8yP5um8GiibYRWPgNZCVE371aTBdefbxEri
+ TlJYfcfMwRgheB6vPCtg8Ndtn3LrKuYZ6MlKLNLcbOWnclVzHoBshLMH7x74yPioEW6D
+ 82AQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXDpQmWczGVDDwgWyTuycyxDfwIThjdBrr/61gFEPa4Fq8/PYsqOBGRSJPKKjjHFRvG2Lr3/WPKaP+hzuY//M9jlfuQWQs=
+X-Gm-Message-State: AOJu0YzAcRCue6n2/RXM2GWnyPNeWtlNvBcx4s416b9bLNbkhC5D/1J5
+ Y/WBgJfers/AzXx4zBib4YsIYakOwTracFTBQyLuj2qwBoCEgKOM3GCXtasmXSur0qD5jP9ooRj
+ AGQSpqLkc0qViRgs/9XAjKKSpPI4YeY1FfYMAUg==
+X-Google-Smtp-Source: AGHT+IHETg+DW7wEI7VIwC7RZgtjWqUJ1WfHhbJqO41hWKlSkU9VDL75XLotl9HvCb3CcX5971nuZYoChWpujPSYYXU=
+X-Received: by 2002:ac2:5f49:0:b0:513:ba98:36a with SMTP id
+ 9-20020ac25f49000000b00513ba98036amr10290422lfz.10.1712144984208; Wed, 03 Apr
+ 2024 04:49:44 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.68 / 50.00]; SUSPICIOUS_RECIPS(1.50)[];
- MID_CONTAINS_FROM(1.00)[]; R_MISSING_CHARSET(0.50)[];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- BAYES_HAM(-0.02)[52.04%]; TO_MATCH_ENVRCPT_ALL(0.00)[];
- FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
- ARC_NA(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
- MIME_TRACE(0.00)[0:+]; TO_DN_SOME(0.00)[];
- RCPT_COUNT_TWELVE(0.00)[19];
- DBL_BLOCKED_OPENRESOLVER(0.00)[imap2.dmz-prg2.suse.org:rdns,imap2.dmz-prg2.suse.org:helo,suse.com:email];
- TAGGED_RCPT(0.00)[]; RCVD_TLS_ALL(0.00)[];
- FUZZY_BLOCKED(0.00)[rspamd.com]; RCVD_COUNT_TWO(0.00)[2];
- FROM_HAS_DN(0.00)[]; DKIM_SIGNED(0.00)[suse.com:s=susede1];
- R_RATELIMIT(0.00)[to_ip_from(RLy64u1trr5nq3nwidnuusmct1)];
- FROM_EQ_ENVFROM(0.00)[]; FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: 2.68
-Received-SPF: pass client-ip=195.135.223.130;
- envelope-from=roy.hopkins@suse.com; helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240330103128.3185962-1-ruanjinjie@huawei.com>
+ <20240330103128.3185962-19-ruanjinjie@huawei.com>
+ <CAFEAcA_WY04voee07n6Ph606xqy=QvTkYdMyqYf5LMHUS5GcDw@mail.gmail.com>
+ <6ff19301-8791-384e-bd40-5f58058f4234@huawei.com>
+In-Reply-To: <6ff19301-8791-384e-bd40-5f58058f4234@huawei.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Wed, 3 Apr 2024 12:49:32 +0100
+Message-ID: <CAFEAcA_Y_0SSaX_mSAr5eZvuU2fxPUWMow-0=4Bb-+2ofY2pEA@mail.gmail.com>
+Subject: Re: [PATCH v11 18/23] hw/intc/arm_gicv3: Handle icv_nmiar1_read() for
+ icc_nmiar1_read()
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
+ wangyanan55@huawei.com, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
+ qemu-arm@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::131;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x131.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,39 +93,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create an enum entry within FirmwareDevice for 'igvm' to describe that
-an IGVM file can be used to map firmware into memory as an alternative
-to pre-existing firmware devices.
+On Wed, 3 Apr 2024 at 04:16, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+> On 2024/4/3 0:12, Peter Maydell wrote:
+> >> @@ -776,7 +811,11 @@ static uint64_t icv_iar_read(CPUARMState *env, const ARMCPRegInfo *ri)
+> >>          if (thisgrp == grp && icv_hppi_can_preempt(cs, lr)) {
+> >>              intid = ich_lr_vintid(lr);
+> >>              if (!gicv3_intid_is_special(intid)) {
+> >> -                icv_activate_irq(cs, idx, grp);
+> >> +                if (!(lr & ICH_LR_EL2_NMI)) {
+> >
+> > This is missing checks on both whether the GIC has NMI support and
+> > on whether the SCTLR NMI bit is set (compare pseudocode
+> > VirtualReadIAR1()). I suggest defining a
+> >
+> >         bool nmi = cs->gic->nmi_support &&
+> >             (env->cp15.sctlr_el[arm_current_el(env)] & SCTLR_NMI) &&
+> >             (lr & ICH_LR_EL2_NMI);
+>
+> The nmi_support check is redundant, as if FEAT_GICv3_NMI is unsupported,
+> the ICH_LR_EL2.NMI is RES0, so if ICH_LR_EL2.NMI is 1, FEAT_GICv3_NMI
+> has been surely realized.
 
-Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
----
- docs/interop/firmware.json | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+As far as I can see you haven't changed ich_lr_write() to enforce
+that, though, so the guest can write 1 to the NMI bit even if the
+GIC doesn't support FEAT_GICv3_NMI. If you want to skip checking
+nmi_support here you need to enforce that the NMI bit in the LR
+is 0 in ich_lr_write().
 
-diff --git a/docs/interop/firmware.json b/docs/interop/firmware.json
-index 54a1fc6c10..9a9178606e 100644
---- a/docs/interop/firmware.json
-+++ b/docs/interop/firmware.json
-@@ -55,10 +55,17 @@
- #
- # @memory: The firmware is to be mapped into memory.
- #
-+# @igvm: The firmware is defined by a file conforming to the IGVM
-+#        specification and mapped into memory according to directives
-+#        defined in the file. This is similar to @memory but may
-+#        include additional processing defined by the IGVM file
-+#        including initial CPU state or population of metadata into
-+#        the guest address space.
-+#
- # Since: 3.0
- ##
- { 'enum' : 'FirmwareDevice',
--  'data' : [ 'flash', 'kernel', 'memory' ] }
-+  'data' : [ 'flash', 'kernel', 'memory', 'igvm' ] }
- 
- ##
- # @FirmwareTarget:
--- 
-2.43.0
-
+thanks
+-- PMM
 
