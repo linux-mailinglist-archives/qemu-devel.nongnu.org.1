@@ -2,87 +2,118 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346648978BD
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 21:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56E9C897812
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 20:21:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rs5ru-0004UJ-TR; Wed, 03 Apr 2024 15:01:56 -0400
+	id 1rs5DJ-0001tR-Hz; Wed, 03 Apr 2024 14:19:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric_devolder@yahoo.com>)
- id 1rs5AQ-0000ci-2x
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:17:03 -0400
-Received: from sonic310-24.consmr.mail.ne1.yahoo.com ([66.163.186.205])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <eric_devolder@yahoo.com>)
- id 1rs5AJ-0005zJ-Vi
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:16:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1712168207; bh=g92yez4sSP8F6s1JfsJCe6SFMqyeuZxXQXgq9wq8Crc=;
- h=Date:From:To:Subject:References:From:Subject:Reply-To;
- b=kdM5rk2htUBlW+yQ4RVw2CsjIQyPpjeoiSoS0df6weQiEvbaiwKzqkncK/mBi0yKQ17NFSbOml/v50FPF3l11zz/9nqo4+V7hYpXQ3oxtZIHO/PLq0RPy4fN9NkunJSarluMajM6KVCP31QzPEyKzS+BOpkFVKKlmSdTUeQ/ogqYyOnRsJ2rn/uPMRS2rvjrBP8mFjKjK7RA8nXocsXcGwzuw49S8GWMYjW6vpbDAUaKEjV/7BCM5AYj+ATKmqnlGYf7P/FBzr+aCjqFX0aKDkq8tQUYDoOmC9bzpARGJAVmbBBCCxFfeATue7wckPs/2z1saOmWtp5kWGCj3K0bFg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048;
- t=1712168207; bh=1NxqxeI/RTivCDkVzEZZ9rHEKsDbgILyDsj3FH68a48=;
- h=X-Sonic-MF:Date:From:To:Subject:From:Subject;
- b=U7o7movnYDh1xuLTMrXxPaOMmECtRrNkLCo7T3rvJnEBSsTCZA20Ywc3Rubdr+x8bDDS/os4HIRvISZbeu7dzpNz3rWJzWTycj9XCqQdBx2CSi7bKo540TupB4PYkTdB3H9GEnA4504uBFVBu5sgkSHXhihsy1GbOzyfj6jDH0ihv7tPgY29jKGGBg0cNJ8aaZJPiY1LNL7Y8RY+eVmDjq1T3ceqM8LvIGN2dGjbzud/ildvi+aYcnloj7nWpi3a+c2VZogMUrQ4PiUQRG/iBc4LNmCmBwCWgGAfr4A5D9jFX5z2oyes6ebmNhukkTLEM/QTGP2WXXT5mRm8ejKUNg==
-X-YMail-OSG: wuwHcykVM1kyB7uipLZ7LdJtOexfOSFa7nX10FXpHyZa6joL2sRokUELVb4EmJI
- qsWZqO2c_dB51Lu5anCvTm37h3oJErpvrLtV3B7JnTK.3zrtdm7aSRiEJvBKxadDdqFWMRrpUH4i
- rB.Zx1u68Yohdy2zL3g9GnfL4L9wBS_2657KRgBefMJpbw9bZJsL61VjWl3HAYSK4o4XHyOPAGc4
- nFkxqNWdYlpYckiESDJmizPwM7FGyH.iQFnJCKL2eiOiXuYU6UMHydTECnTB.9cB2lp5VHb3e792
- EG6v6HoNklxLnuqGmFYnh7pSXZjAeLEvtwcGd3l64yRU3MLqFV9PVgb9Y8vk0Krm3l0u8jAN7GC8
- ODcaTev2BYdsARySpOSW7xEzV6i.17ebaJQlmmT7Qfc..cnJyPMP2T94NjdixHZkx3t4zj6QGYXo
- kMxNw.FZFlGPyBNNcNRPijsYAuJHWP6BLGJis4xE3Yi_HSs0yFF2M.C__5fZ3GkzAkDX7awuMbi1
- zQFh14fXeUha6QAJ8.g7bCg4LLekk16bCXjA7i3eGP519fPt1v6NXQ.oSUTZl1v6cWXBeU2rHCZo
- Dwess9MaomOSlBwS3_oZv70gJl_.jsIItbKsDZcB5hf0HqOfNDGF8XD9aGQIRu5mtHkwkBSWVsBm
- CO70oZQeJVT8ZL8ScfsuvUXsNYKqN26GWc0iGiVlSCW1U7TshnZIo7l2Hk8WCThIlFIBAGx4wJ6g
- BsAwEl5UqSu2SEegbc4d9JqqCIA4vE4dz11oD1e7a9xn0jXqZGJwv1S81YLNHQikpw01QvUyG5iP
- uHLbB5VF2aIMQICMAGYfS.2f50XZbfKkJdgw8h9D9_scDnVXJsX38__rP.9AOOBTA2ZjJgW5VxjE
- oa2rFhy5D3.ITsH23sg2OFHMIF6hAXhXy8eKNax1_KtqE4P.8afZc9A7dRZNFq3xkP99bMCcSESU
- O4Jif9UG37INbyrTPZ4bNKvNVjeAOVOxTIRwi45iMVzLlyosYzzdgTYVS0Jz70czPmr8K12isRCf
- d86zwLMZvLbdg12TNx9KxzuexihaopUCgnr1.139VEs64JydAcqJjdzoM8leC47L05_Onf5T7zo6
- tUFh6mNnm499JPOtMoZBthzFuTmU.yNyw2ELXfH0naQQwREWAZGPspFBxZDesge_zB9RX_vFS7SW
- FnMSZKHUJxC0uZPPJkGTDjaZYbwILGuNRDOlpq3nmQXqWRUdzjQ94TCtA_xpUz9Sf9FOfwRPyEDe
- g491f4gEqCtJckApXQBaX2YJgpfPz_UcMLda58GHcQDcd9aKT1yv9kmcF_NDR0VKgEKvwmZwoxb7
- XOGXTyidm_GK0Sy980ONX_CR0UpDAuDpYbhIsbim9p4BNFW7TK4dWWZwXhZDoKXz1wCdDh7RlyQq
- uULwAQS5OHOqWGY_hOvAEYUGYWT_cKKL_.hurB05RdrzEgrpP7auBUNeDFUUqwqhVVt19VvqlsNt
- aSzlT1_MFw6foms_GbValNc9.BrmDjtyafAawS.cOZBCzXXJmtM9lHmvuYOzOu9OdivIPpGLNJBc
- OR8p2rbVebPLrcV8u0K7BTsIH_3yCpEGmgmyZP0nedvGZCfrHTALMnA.cBS96pO6VSlsO6YZEt_x
- 4EpenZP.bT2RAcZ9Fpi3NnzC2deVnHneh0ZX6HcF6nMGLeYP0oP6fMHSNLA.2VekMrX0dXrLCmLf
- XmMFXO_Xhxj7t1_7d0XvapqdPoY_SAqn1HPBF5lrNUxRVMy2L6PHYlrSW_d.JQCY4a04BU_eCpNo
- fneB9O2VTeQwmqCd9sfpyo5R92Nahg4ctpfxjUBf0rZhzi4k5J5wJC2.41abMojub51VHKYIwDCl
- PHWmrJ2KcLTrM9GW2.bRVhAa6otRixJH4MUqOsh74EO4gMdEa7AEQ7aZ45kO.Rz_f5Wshu78mRQ7
- gCjYw9nTbY9YQjyJ_0yZydD73AXaRDU5Lu5ds6gVqVtuordcca.NDPRQXvbvqKFh_jFg6ESEGHuO
- k9rJ3u0DLB45qdTuLZ4UpHzxyZuA3kWusZH5l28YplQIK2In.2tfbC5I58fMaSX66W6DCJAtTNoP
- JFLk0g1xKKMs8CvfxWNbeGStAOO9ZO58r8QkM066BV2s84pt4YSLEzOdm96CzN2PO85pIfLPUD_a
- Tk4pLYoDth1Ickhe6Vz8dytC5fpjAEpUpEY4lMzOzfh2.aJWgi03z59pqOGkdoJFlQ7YUPWX7g8O
- HDFmSSMtrIA--
-X-Sonic-MF: <eric_devolder@yahoo.com>
-X-Sonic-ID: 4177442b-1257-4afb-9775-989bbb1cebb5
-Received: from sonic.gate.mail.ne1.yahoo.com by
- sonic310.consmr.mail.ne1.yahoo.com with HTTP; Wed, 3 Apr 2024 18:16:47 +0000
-Date: Wed, 3 Apr 2024 18:16:46 +0000 (UTC)
-From: Eric DeVolder <eric_devolder@yahoo.com>
-To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Message-ID: <183897139.5301881.1712168206289@mail.yahoo.com>
-Subject: riscv disassembler error with pmpcfg0
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rs5DH-0001t3-Dc
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:19:55 -0400
+Received: from mout.gmx.net ([212.227.17.20])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rs5DF-0006Z8-3h
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:19:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+ s=s31663417; t=1712168388; x=1712773188; i=deller@gmx.de;
+ bh=sfVTu/leg0XsqnB2t9zKYFS4bpIsDNPcUzHUXNNIuQw=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+ In-Reply-To;
+ b=YR3bQFEYXnAX88jt2cPxdmi2at5In66gDbt8UjANqVTwPcL/kxxbMC4me0Y61Shh
+ vibnCAg46SUnpaBsd4JlWv3IDrxJeq9GJOzi4g+VWgjj4Ey5NIeE+DYgQ/8YLX/NE
+ cW4Gt2D/ABUARblgGTNmAsV6qAsVheFlAPRcEfiVG5l0IqMxrSwuD8W3gVlPUoJ74
+ MqAjB0ohDrBxQvamUY0TsgD48frOla67Y1mcK9QR7ZwvxtZUmUEbh3vrc8P9XE1SF
+ AX5ovTywK8U8i6tGB1OLD/tmC+AqZzOUnH92SHMXKG6QewiOMJG0te4dmw2YnAMl9
+ QLgH+ovsl0jv4Iys+w==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.0.10] ([78.94.87.245]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYvY8-1sMy0p406S-00Uq32; Wed, 03
+ Apr 2024 20:19:48 +0200
+Message-ID: <b2e83db7-7786-47ac-b47a-906bc3eb7e1e@gmx.de>
+Date: Wed, 3 Apr 2024 20:19:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/hppa: Fix IIAOQ, IIASQ for pa2.0
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: Sven Schnelle <svens@stackframe.org>
+References: <20240402012504.177097-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <20240402012504.177097-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-References: <183897139.5301881.1712168206289.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.22205 YMailNorrin
-Received-SPF: pass client-ip=66.163.186.205;
- envelope-from=eric_devolder@yahoo.com;
- helo=sonic310-24.consmr.mail.ne1.yahoo.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Provags-ID: V03:K1:YIbmRe7QHhZq2wfvpp9m+I+nuV9xKgITvNs1fW8MeMRIbxcIuX8
+ 2kET8MRXRs+IrGVRZrNmXLcGwqUG+OS3/oUpSxXnCwTEkLpg8k+9J4QUVfkOIN+lcWcbf9X
+ 4+2qERclW/RcowRDwVgJ5YRRoMjBtKUkdKOsQ8mzGYoow6X+0fY4uwQCk1yA8aYXCYb3/O5
+ KPrCqfVvH8VJdtnNVfx1w==
+UI-OutboundReport: notjunk:1;M01:P0:FR3P6vbDbRQ=;PSsp5pV+1OwSwSChbzuCByg1vj2
+ tv+q5czqQl53p746ReMoUX4ebLXrRXsT2ZnWJf+PMhE6oxSUXXoqJG9zCH8VYETBoi1OfWFDM
+ Xk1O8szRrPyRLQUtNezqzSPyjNCvLQIa5JW5MR/xTaDP//Dk3DDxa1krwBveX1vI5Umj8XRgA
+ H/yyL7rS6uU+Ire50g7NnkzJxlwDpL69qZcdIhL3XF/GcssDsXAQGhjfxMrINA6ul1EMSl2Ia
+ n5k09vS3fIpJY5CwO6jM3zIzqvwSCqtJXo0QN16+O+NNInu8wG9Xz9vyMN8eNfDyjWA9v6I/4
+ aNUosPo9W/n7t/VUsLzIUu3tnl/ELrvo/hSg0IhKwdu4mphVXNDWFpEXa5+zNDg2TDuY2r8eP
+ XV2c09uGUO/MMVPJMpO7mDDaqSJ97GIWmd6ypF0xfcjNDYSJkGaJB+s2Za/Z/Ejq4A2FsVvfs
+ armQ8hQgX58TLLiVVchasa3Z2cH2xHV5yZMNjHUXPcznxm/hLdXTS8pkAhosAFKUKmWe0YLer
+ IjkATYs2xqN9t30gEuBfiy+L/Nw2v46sDu+I31h1HxeSJi1fBHwzeijcDLrOIFPUw2ocD6/WE
+ xsMnUO8y/M8meC3F2GXkqsro2FsMWp4v58p9hPasW0TkHZticFGnB9HI+0ivlhYpZXLZXX+0c
+ XRuit0rbjunPIYEeXj6fLgfta5HyvWMbs1XBvsernRiK9AhwsWdPHot+IEo9GwdpXQunFZdBi
+ Y/GaXl3WiRvH9wrZrzDzIMd27ejyW3TyUvlB2m2IWJdykZiQHfQ0giDVInnsFBNwc8kiIwvVi
+ xzXnBJhn3jF2/6j6GUWgPcPjqj9zjMQXJwoX5UD99AwI8=
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 03 Apr 2024 15:01:41 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,33 +128,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I've been using QEMU8 to collect instruction information on U-Boot + OpenSB=
-I.
+On 4/2/24 03:25, Richard Henderson wrote:
+> The contents of IIAOQ depend on PSW_W.
+> Follow the text in "Interruption Instruction Address Queues",
+> pages 2-13 through 2-15.
+>
+> Reported-by: Sven Schnelle <svens@stackframe.org>
+> Fixes: b10700d826c ("target/hppa: Update IIAOQ, IIASQ for pa2.0")
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-I'm running QEMU in this fashion to collect the information:
+Tested-by: Helge Deller <deller@gmx.de>
 
-# qemu-system-riscv64 -plugin file=3Dqemu/build/contrib/plugins/libexeclog.=
-so -singlestep -d plugin,nochain -D execlog.txt ...
+Helge
 
-When examining the instruction trace in execlog, I've noticed that the disa=
-ssembly for pmpcfg0 is erroneous, for example:
+> ---
+>
+> Sven, I looked again through IIAOQ documentation and it does seem
+> like some of the bits are wrong, both on interrupt delivery and RFI.
+>
+>
+> r~
+>
+> ---
+>   target/hppa/int_helper.c | 20 +++++++++++---------
+>   target/hppa/sys_helper.c | 18 +++++++++---------
+>   2 files changed, 20 insertions(+), 18 deletions(-)
+>
+> diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+> index 90437a92cd..a667ee380d 100644
+> --- a/target/hppa/int_helper.c
+> +++ b/target/hppa/int_helper.c
+> @@ -107,14 +107,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+>
+>       /* step 3 */
+>       /*
+> -     * For pa1.x, IIASQ is simply a copy of IASQ.
+> -     * For pa2.0, IIASQ is the top bits of the virtual address,
+> -     *            or zero if translation is disabled.
+> +     * IIASQ is the top bits of the virtual address, or zero if transla=
+tion
+> +     * is disabled -- with PSW_W =3D=3D 0, this will reduce to the spac=
+e.
+>        */
+> -    if (!hppa_is_pa20(env)) {
+> -        env->cr[CR_IIASQ] =3D env->iasq_f >> 32;
+> -        env->cr_back[0] =3D env->iasq_b >> 32;
+> -    } else if (old_psw & PSW_C) {
+> +    if (old_psw & PSW_C) {
+>           env->cr[CR_IIASQ] =3D
+>               hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32=
+;
+>           env->cr_back[0] =3D
+> @@ -123,8 +119,14 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+>           env->cr[CR_IIASQ] =3D 0;
+>           env->cr_back[0] =3D 0;
+>       }
+> -    env->cr[CR_IIAOQ] =3D env->iaoq_f;
+> -    env->cr_back[1] =3D env->iaoq_b;
+> +    /* IIAOQ is the full offset for wide mode, or 32 bits for narrow mo=
+de. */
+> +    if (old_psw & PSW_W) {
+> +        env->cr[CR_IIAOQ] =3D env->iaoq_f;
+> +        env->cr_back[1] =3D env->iaoq_b;
+> +    } else {
+> +        env->cr[CR_IIAOQ] =3D (uint32_t)env->iaoq_f;
+> +        env->cr_back[1] =3D (uint32_t)env->iaoq_b;
+> +    }
+>
+>       if (old_psw & PSW_Q) {
+>           /* step 5 */
+> diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
+> index 208e51c086..22d6c89964 100644
+> --- a/target/hppa/sys_helper.c
+> +++ b/target/hppa/sys_helper.c
+> @@ -78,21 +78,21 @@ target_ulong HELPER(swap_system_mask)(CPUHPPAState *=
+env, target_ulong nsm)
+>
+>   void HELPER(rfi)(CPUHPPAState *env)
+>   {
+> -    env->iasq_f =3D (uint64_t)env->cr[CR_IIASQ] << 32;
+> -    env->iasq_b =3D (uint64_t)env->cr_back[0] << 32;
+> -    env->iaoq_f =3D env->cr[CR_IIAOQ];
+> -    env->iaoq_b =3D env->cr_back[1];
+> +    uint64_t mask;
+> +
+> +    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
+>
+>       /*
+>        * For pa2.0, IIASQ is the top bits of the virtual address.
+>        * To recreate the space identifier, remove the offset bits.
+> +     * For pa1.x, the mask reduces to no change to space.
+>        */
+> -    if (hppa_is_pa20(env)) {
+> -        env->iasq_f &=3D ~env->iaoq_f;
+> -        env->iasq_b &=3D ~env->iaoq_b;
+> -    }
+> +    mask =3D gva_offset_mask(env->psw);
+>
+> -    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
+> +    env->iaoq_f =3D env->cr[CR_IIAOQ];
+> +    env->iaoq_b =3D env->cr_back[1];
+> +    env->iasq_f =3D (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
+> +    env->iasq_b =3D (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
+>   }
+>
+>   static void getshadowregs(CPUHPPAState *env)
 
-0, 0x5456, 0x3a002573, "csrrs=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 a0,pmpcfg3,=
-zero"
-
-the CSR encoded in the instruction above is 0x3a0, which is pmpcfg0 (which =
-also matches the code I'm examining).
-
-For the Uboot+OpenSBI code I'm examining, pmpcfg0/3 is the only one that ap=
-pears to have a problem.
-
-I also checked QEMU9 and it behaves as described above as well.
-
-I'm willing to provide a fix if I can get some advice/pointers on how this =
-disassembly statement is generated...I did take a quick look but it didn't =
-appear obvious how...
-
-Thanks,
-eric
 
