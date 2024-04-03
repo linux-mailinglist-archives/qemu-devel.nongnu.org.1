@@ -2,116 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E9C897812
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 20:21:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E910F897853
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 20:35:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rs5DJ-0001tR-Hz; Wed, 03 Apr 2024 14:19:57 -0400
+	id 1rs5Qx-00062O-VK; Wed, 03 Apr 2024 14:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rs5DH-0001t3-Dc
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:19:55 -0400
-Received: from mout.gmx.net ([212.227.17.20])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rs5Qv-00062A-Fk
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:34:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <deller@gmx.de>) id 1rs5DF-0006Z8-3h
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:19:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
- s=s31663417; t=1712168388; x=1712773188; i=deller@gmx.de;
- bh=sfVTu/leg0XsqnB2t9zKYFS4bpIsDNPcUzHUXNNIuQw=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
- In-Reply-To;
- b=YR3bQFEYXnAX88jt2cPxdmi2at5In66gDbt8UjANqVTwPcL/kxxbMC4me0Y61Shh
- vibnCAg46SUnpaBsd4JlWv3IDrxJeq9GJOzi4g+VWgjj4Ey5NIeE+DYgQ/8YLX/NE
- cW4Gt2D/ABUARblgGTNmAsV6qAsVheFlAPRcEfiVG5l0IqMxrSwuD8W3gVlPUoJ74
- MqAjB0ohDrBxQvamUY0TsgD48frOla67Y1mcK9QR7ZwvxtZUmUEbh3vrc8P9XE1SF
- AX5ovTywK8U8i6tGB1OLD/tmC+AqZzOUnH92SHMXKG6QewiOMJG0te4dmw2YnAMl9
- QLgH+ovsl0jv4Iys+w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [10.8.0.10] ([78.94.87.245]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MYvY8-1sMy0p406S-00Uq32; Wed, 03
- Apr 2024 20:19:48 +0200
-Message-ID: <b2e83db7-7786-47ac-b47a-906bc3eb7e1e@gmx.de>
-Date: Wed, 3 Apr 2024 20:19:46 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rs5Qt-0007Zz-QN
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 14:34:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712169238;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=BXyZxkpKqpvdZlX3yc1Z18/BEwxszH/y0reLaTPNXOg=;
+ b=IUErR2/L3/m6IwQG9j0Z2ttKu+t6G0m3A0A2VXY37pKsoVs/6NaHA1K2alxXh4o+o+SggT
+ KzT/DOYSGF0ZAMVmjlylNwnRhH4QXPLZMzNGIMP/spJhwiSSGsaRVGOM2cVtH0+k/pHQpT
+ ABGbSkUpXLNN3TXFwOJKj/tHsBAdWtQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-TyEa6Z5VM3WbA0cocdc4Rg-1; Wed, 03 Apr 2024 14:33:56 -0400
+X-MC-Unique: TyEa6Z5VM3WbA0cocdc4Rg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5DEC685A5B9;
+ Wed,  3 Apr 2024 18:33:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.81])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3A5282024517;
+ Wed,  3 Apr 2024 18:33:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 526E421E6811; Wed,  3 Apr 2024 20:33:50 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Justinien Bouron <justinien.bouron@gmail.com>
+Cc: berrange@redhat.com,  eblake@redhat.com,  eduardo@habkost.net,
+ kraxel@redhat.com,  marcandre.lureau@redhat.com,  pbonzini@redhat.com,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v3] input-linux: Add option to not grab a device upon
+ guest startup
+In-Reply-To: <20240403154539.10256-1-justinien.bouron@gmail.com> (Justinien
+ Bouron's message of "Wed, 3 Apr 2024 08:45:39 -0700")
+References: <87edbmk59j.fsf@pond.sub.org>
+ <20240403154539.10256-1-justinien.bouron@gmail.com>
+Date: Wed, 03 Apr 2024 20:33:50 +0200
+Message-ID: <87zfuagusx.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/hppa: Fix IIAOQ, IIASQ for pa2.0
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Sven Schnelle <svens@stackframe.org>
-References: <20240402012504.177097-1-richard.henderson@linaro.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20240402012504.177097-1-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:YIbmRe7QHhZq2wfvpp9m+I+nuV9xKgITvNs1fW8MeMRIbxcIuX8
- 2kET8MRXRs+IrGVRZrNmXLcGwqUG+OS3/oUpSxXnCwTEkLpg8k+9J4QUVfkOIN+lcWcbf9X
- 4+2qERclW/RcowRDwVgJ5YRRoMjBtKUkdKOsQ8mzGYoow6X+0fY4uwQCk1yA8aYXCYb3/O5
- KPrCqfVvH8VJdtnNVfx1w==
-UI-OutboundReport: notjunk:1;M01:P0:FR3P6vbDbRQ=;PSsp5pV+1OwSwSChbzuCByg1vj2
- tv+q5czqQl53p746ReMoUX4ebLXrRXsT2ZnWJf+PMhE6oxSUXXoqJG9zCH8VYETBoi1OfWFDM
- Xk1O8szRrPyRLQUtNezqzSPyjNCvLQIa5JW5MR/xTaDP//Dk3DDxa1krwBveX1vI5Umj8XRgA
- H/yyL7rS6uU+Ire50g7NnkzJxlwDpL69qZcdIhL3XF/GcssDsXAQGhjfxMrINA6ul1EMSl2Ia
- n5k09vS3fIpJY5CwO6jM3zIzqvwSCqtJXo0QN16+O+NNInu8wG9Xz9vyMN8eNfDyjWA9v6I/4
- aNUosPo9W/n7t/VUsLzIUu3tnl/ELrvo/hSg0IhKwdu4mphVXNDWFpEXa5+zNDg2TDuY2r8eP
- XV2c09uGUO/MMVPJMpO7mDDaqSJ97GIWmd6ypF0xfcjNDYSJkGaJB+s2Za/Z/Ejq4A2FsVvfs
- armQ8hQgX58TLLiVVchasa3Z2cH2xHV5yZMNjHUXPcznxm/hLdXTS8pkAhosAFKUKmWe0YLer
- IjkATYs2xqN9t30gEuBfiy+L/Nw2v46sDu+I31h1HxeSJi1fBHwzeijcDLrOIFPUw2ocD6/WE
- xsMnUO8y/M8meC3F2GXkqsro2FsMWp4v58p9hPasW0TkHZticFGnB9HI+0ivlhYpZXLZXX+0c
- XRuit0rbjunPIYEeXj6fLgfta5HyvWMbs1XBvsernRiK9AhwsWdPHot+IEo9GwdpXQunFZdBi
- Y/GaXl3WiRvH9wrZrzDzIMd27ejyW3TyUvlB2m2IWJdykZiQHfQ0giDVInnsFBNwc8kiIwvVi
- xzXnBJhn3jF2/6j6GUWgPcPjqj9zjMQXJwoX5UD99AwI8=
-Received-SPF: pass client-ip=212.227.17.20; envelope-from=deller@gmx.de;
- helo=mout.gmx.net
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -128,110 +83,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/2/24 03:25, Richard Henderson wrote:
-> The contents of IIAOQ depend on PSW_W.
-> Follow the text in "Interruption Instruction Address Queues",
-> pages 2-13 through 2-15.
->
-> Reported-by: Sven Schnelle <svens@stackframe.org>
-> Fixes: b10700d826c ("target/hppa: Update IIAOQ, IIASQ for pa2.0")
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Justinien Bouron <justinien.bouron@gmail.com> writes:
 
-Tested-by: Helge Deller <deller@gmx.de>
+>> Again, QAPI schema
+>
+> Pardon my ignorance, but are you writing this because there is a problem with
+> the QAPI schema changes that I would need to fix and re-submit?
+> Or is it just here to indicate that you've reviewed the change made to the
+> schema?
 
-Helge
+The latter.
 
-> ---
->
-> Sven, I looked again through IIAOQ documentation and it does seem
-> like some of the bits are wrong, both on interrupt delivery and RFI.
->
->
-> r~
->
-> ---
->   target/hppa/int_helper.c | 20 +++++++++++---------
->   target/hppa/sys_helper.c | 18 +++++++++---------
->   2 files changed, 20 insertions(+), 18 deletions(-)
->
-> diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-> index 90437a92cd..a667ee380d 100644
-> --- a/target/hppa/int_helper.c
-> +++ b/target/hppa/int_helper.c
-> @@ -107,14 +107,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
->
->       /* step 3 */
->       /*
-> -     * For pa1.x, IIASQ is simply a copy of IASQ.
-> -     * For pa2.0, IIASQ is the top bits of the virtual address,
-> -     *            or zero if translation is disabled.
-> +     * IIASQ is the top bits of the virtual address, or zero if transla=
-tion
-> +     * is disabled -- with PSW_W =3D=3D 0, this will reduce to the spac=
-e.
->        */
-> -    if (!hppa_is_pa20(env)) {
-> -        env->cr[CR_IIASQ] =3D env->iasq_f >> 32;
-> -        env->cr_back[0] =3D env->iasq_b >> 32;
-> -    } else if (old_psw & PSW_C) {
-> +    if (old_psw & PSW_C) {
->           env->cr[CR_IIASQ] =3D
->               hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32=
-;
->           env->cr_back[0] =3D
-> @@ -123,8 +119,14 @@ void hppa_cpu_do_interrupt(CPUState *cs)
->           env->cr[CR_IIASQ] =3D 0;
->           env->cr_back[0] =3D 0;
->       }
-> -    env->cr[CR_IIAOQ] =3D env->iaoq_f;
-> -    env->cr_back[1] =3D env->iaoq_b;
-> +    /* IIAOQ is the full offset for wide mode, or 32 bits for narrow mo=
-de. */
-> +    if (old_psw & PSW_W) {
-> +        env->cr[CR_IIAOQ] =3D env->iaoq_f;
-> +        env->cr_back[1] =3D env->iaoq_b;
-> +    } else {
-> +        env->cr[CR_IIAOQ] =3D (uint32_t)env->iaoq_f;
-> +        env->cr_back[1] =3D (uint32_t)env->iaoq_b;
-> +    }
->
->       if (old_psw & PSW_Q) {
->           /* step 5 */
-> diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
-> index 208e51c086..22d6c89964 100644
-> --- a/target/hppa/sys_helper.c
-> +++ b/target/hppa/sys_helper.c
-> @@ -78,21 +78,21 @@ target_ulong HELPER(swap_system_mask)(CPUHPPAState *=
-env, target_ulong nsm)
->
->   void HELPER(rfi)(CPUHPPAState *env)
->   {
-> -    env->iasq_f =3D (uint64_t)env->cr[CR_IIASQ] << 32;
-> -    env->iasq_b =3D (uint64_t)env->cr_back[0] << 32;
-> -    env->iaoq_f =3D env->cr[CR_IIAOQ];
-> -    env->iaoq_b =3D env->cr_back[1];
-> +    uint64_t mask;
-> +
-> +    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
->
->       /*
->        * For pa2.0, IIASQ is the top bits of the virtual address.
->        * To recreate the space identifier, remove the offset bits.
-> +     * For pa1.x, the mask reduces to no change to space.
->        */
-> -    if (hppa_is_pa20(env)) {
-> -        env->iasq_f &=3D ~env->iaoq_f;
-> -        env->iasq_b &=3D ~env->iaoq_b;
-> -    }
-> +    mask =3D gva_offset_mask(env->psw);
->
-> -    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
-> +    env->iaoq_f =3D env->cr[CR_IIAOQ];
-> +    env->iaoq_b =3D env->cr_back[1];
-> +    env->iasq_f =3D (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
-> +    env->iasq_b =3D (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
->   }
->
->   static void getshadowregs(CPUHPPAState *env)
+Reviewed-by: means I reviewed the entire patch, and approve it.
+
+Acked-by: is weaker, and its meaning depends on context.  In this case,
+it means I reviewed just the QAPI schema, and approve it.
+
+Details (likely more than you ever wanted to know) at:
+https://www.kernel.org/doc/html/latest/process/submitting-patches.html
 
 
