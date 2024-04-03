@@ -2,87 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7243E896CC8
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 12:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8A5896DC4
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 13:12:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rry1U-0008Pn-4Y; Wed, 03 Apr 2024 06:39:16 -0400
+	id 1rryWJ-0007KD-74; Wed, 03 Apr 2024 07:11:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <smostafa@google.com>)
- id 1rry1R-0008P7-Qt
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:39:13 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rryWF-0007IS-9c
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:11:03 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <smostafa@google.com>)
- id 1rry1P-0008Of-Fl
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:39:13 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-413f8c8192eso75635e9.0
- for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 03:39:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1rryW9-0007DL-Vj
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:11:02 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6ea8a0d1a05so562150b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 04:10:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1712140750; x=1712745550; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=L5uRbfpn8rAyhg4/JlDV2ZnHGFfvZpSBfsFBPdWj1Is=;
- b=OMUVtLaCL8qXE8KNjjww5XbwRz2UW1aibl165bMjXgJgZc4SNqcRMO5SzpCOwpCpr4
- uAjD2XiUF+A4Diw9igXc3oz2D0NWaqHdCNqSXwdV8feF/tPo/8dng38oQP2Qy8qx+U/g
- 8k8YQfA3EU9mY9IJy23Gqn5Biry9aBu4wzHDbGgVVGwoRp5unjgX9Y1dbII89HT8Ee7r
- VnCbv7MW+hEALR45daTrg1+dcUSDM0iRO7H/qDfX5IiTHuucGyoLy79DI5KULefQ0RZ+
- XcowB4vaxjZ6Jt3hOlaItxG6o8DhJQ3kIow+phrK5QZ5s2zGCw4LuP8pQZnHpV7vILsJ
- xKeQ==
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1712142655; x=1712747455;
+ darn=nongnu.org; 
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=FCvUVgUuHR1mK7AvRlQBqNULNlOSGSq8/bxa1idBWGs=;
+ b=e69SZmekKlJq+RCwd8P2+USacuGDcfbCAWZrhVZyFgr8n/XzXq4Wbvzwe1gcx4ECRD
+ 8q5eXXR5d66KJ1JzMjOjEFI8kug7JF/kMKJy/r7ZJm/fY9++SyAHjI92R2Y/LCfztIFt
+ WpCjiYThUayJwrt1ftTNNPMcTAJZHvN/Kw+9YT0LtdN3havO5iQ9IHf/vLA2kk5tLv2A
+ 1lSaOkuG9UU1vUXXdgI+xNBJ4PmD5YUZZrW79PAWbvp4XbPvzEH/E0fM1+vPS1r9Nozg
+ jGJ000ilAZ9WsVv7zesOlDtLdERVEY+KgLu+dW+PoDb/N002oo46dXFIAyf32Rk1fHlO
+ d7TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712140750; x=1712745550;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L5uRbfpn8rAyhg4/JlDV2ZnHGFfvZpSBfsFBPdWj1Is=;
- b=Ag1cAkHITXyYS8am3Vf9soDhuIQW7o2oEPsp75edOWn+WylkeSO1Y36kQXvExAvGnc
- fSI6sMJprcFhb4WJJt8WAchM2hDhKkBoPYQCb4XIj5ZRV5p/GMZAEUgwvQ6s7xsWErk4
- w++s6d2/uMwj6GhIgiAxSUUGlYUKnVRtBIKIhrECuTc7GoFrn/0o87prn7VAmVD6nv+V
- SVzNmZX6bqb9NiLzlM7hJHHo7blGDjBbIMXfoVBP82l/I4Mk3IXZFc3kt3IWHSLEuucw
- OXeHclqTNtiHlNCivpXzmiSbU5cUojozeJmjD35zJ7AGJENghsAlE6b6hf5hjKUJHwye
- t03Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVU/X71jMjMX94d5ap0PGJBzDKLitcUmHWQpElJu1ISMgzv8prjSjmwQ/bUmHfo2wqAy+q29dDv5O86oh/khsBin8RgN/8=
-X-Gm-Message-State: AOJu0YzkH+DzJTuQu8eJxVRHXv8opAZWSNbVWR87ygtlNaiQSSrgz6sI
- tJ0ISIoa/8UxEQLDE4QyWTGeZXf9YSvn3YIcf8VzfR6+ZW9XeGC7IE7Sm4HQVQ==
-X-Google-Smtp-Source: AGHT+IFWa18vylUEOkR9TfcCo5jVlnZR6BcGKxxSu6MazmSehuaRmUlF15MEdcJtsSOT3wVShkwiSA==
-X-Received: by 2002:a05:600c:1c12:b0:415:615c:b98b with SMTP id
- j18-20020a05600c1c1200b00415615cb98bmr118907wms.5.1712140749689; 
- Wed, 03 Apr 2024 03:39:09 -0700 (PDT)
-Received: from google.com (180.232.140.34.bc.googleusercontent.com.
- [34.140.232.180]) by smtp.gmail.com with ESMTPSA id
- v13-20020a5d4b0d000000b0034356c434d0sm1913522wrq.117.2024.04.03.03.39.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 03 Apr 2024 03:39:09 -0700 (PDT)
-Date: Wed, 3 Apr 2024 10:39:05 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org,
- qemu-devel@nongnu.org, jean-philippe@linaro.org,
- alex.bennee@linaro.org, maz@kernel.org, julien@xen.org
-Subject: Re: [RFC PATCH 00/12] SMMUv3 nested translation support
-Message-ID: <Zg0xyXBXGa8_Kx6k@google.com>
-References: <20240325101442.1306300-1-smostafa@google.com>
- <ZgyGfMz7IktmwtP/@Asurada-Nvidia>
+ d=1e100.net; s=20230601; t=1712142655; x=1712747455;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FCvUVgUuHR1mK7AvRlQBqNULNlOSGSq8/bxa1idBWGs=;
+ b=RagIZvWZVRSYjesqHYn2eJh3j43lArW+G9nxjmwyQ3GvW40Ostzxdxo8wY63xso2TR
+ I2cQAewXGdinrIRkccyCYXayvXXJaNI52EDr31Jqy4Opy7owhM8mqCkNE23W/4EHZ+/R
+ xOp32AePK04eppYl1CkWLOZbmvX3pfZxpgNHpYya4+83jlqHaOlM6xYuUH/7u24oGGQe
+ 36mrkUlLgpRNogWpKXtbEYjDq78OfQlqdZH/rtMGG2zSbgpUORieqDWj6S2mqQYEzcsu
+ UFixNI39wMdTpHaHXrUnjkCPrpBTdb3Tl9pJiBVaKRp47M3urMreCTE5biqn49uAdEzC
+ k+oQ==
+X-Gm-Message-State: AOJu0YyhT/CKi8oZwhnX8Mu3cdywQu0SWtEETKAHF4uzin2fWORzh69v
+ bI+ENprfATECDUKBVVTAqRbyuO6t6UZYrNHr9/MmqoQe9PAqjUeJNxR9EwBjEFE=
+X-Google-Smtp-Source: AGHT+IFzExphSGv6Qmb1/0h9OVc8onD7NrVI09xIkkowP88S76XTJ8ZjikB+v7q4TDRcj6z5GLoPbA==
+X-Received: by 2002:a05:6a20:a126:b0:1a5:6d7f:f1e9 with SMTP id
+ q38-20020a056a20a12600b001a56d7ff1e9mr2916153pzk.27.1712142654749; 
+ Wed, 03 Apr 2024 04:10:54 -0700 (PDT)
+Received: from localhost ([157.82.200.213])
+ by smtp.gmail.com with UTF8SMTPSA id
+ w11-20020a056a0014cb00b006e72c8ece23sm11471586pfu.191.2024.04.03.04.10.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 03 Apr 2024 04:10:54 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v9 00/20] virtio-net RSS/hash report fixes and improvements
+Date: Wed, 03 Apr 2024 20:10:48 +0900
+Message-Id: <20240403-rss-v9-0-c6d87e69d38b@daynix.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZgyGfMz7IktmwtP/@Asurada-Nvidia>
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=smostafa@google.com; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADg5DWYC/1WMQQ7CIBBFr9LMWgwMEsCV9zBdNDDaWUgNGNKm4
+ e5idy7fz39vh0KZqcB12CFT5cJL6uBPA4R5Sk8SHDsDStQKlRS5FEE2eEcWEY2G/nxnevB6VO5
+ j55nLZ8nbEa3ut/771QkpvDGayKpL1O4Wpy3xeg7LC8bW2hegN1VGlwAAAA==
+To: Jason Wang <jasowang@redhat.com>, 
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>, 
+ Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
+ Vincenzo Maffione <v.maffione@gmail.com>, 
+ Andrew Melnychenko <andrew@daynix.com>, 
+ Yuri Benditovich <yuri.benditovich@daynix.com>
+Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ "Zhang, Chen" <chen.zhang@intel.com>, Michael Tokarev <mjt@tls.msk.ru>
+X-Mailer: b4 0.14-dev
+Received-SPF: none client-ip=2607:f8b0:4864:20::435;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,203 +100,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Nicolin,
+This series contains fixes and improvements for virtio-net RSS and hash
+reporting feature.
 
-On Tue, Apr 02, 2024 at 03:28:12PM -0700, Nicolin Chen wrote:
-> Hi Mostafa,
-> 
-> On Mon, Mar 25, 2024 at 10:13:56AM +0000, Mostafa Saleh wrote:
-> > 
-> > Currently, QEMU supports emulating either stage-1 or stage-2 SMMUs
-> > but not nested instances.
-> > This patch series adds support for nested translation in SMMUv3,
-> > this is controlled by property “arm-smmuv3.stage=nested”, and
-> > advertised to guests as (IDR0.S1P == 1 && IDR0.S2P == 2)
-> 
-> IIUIC, with this series, vSMMU will support a virtualized 2-stage
-> translation in a guest VM, right? I wonder how it would interact
+V7 -> V8:
+  Reset author email addresses.
+  Rebased.
 
-I always get confused with terminologies when dealing with QEMU;
-as the host can mean the actual host (which is x86_64 in my case)
-and the guest would aarch64 Linux fully emulated by QEMU, and the
-emulated guest can be considered a host and launch it’s guests wit
-KVM for example. This also will be more fun with guests supporting
-nested virtualization :)
+V6 -> V7:
+  Dropped patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
+  Dropped the changes to remove packet flags.
+  Re-introduced tap_receive() and changed it to call tap_receive_iov().
+  Removed tap_get_vnet_hdr_len().
+  Fixed tap initialization not to call tap_fd_set_vnet_hdr_len() for tap
+  without virtio-net header.
+  Changed to call error_report() instead of warn_report() for
+  programming errors.
 
-For simplicity, I will consider:
-- HOST: the fully emulated QEMU guest (aarch64) running on my machine.
-- GUEST: Any guest launched by the HOST (through KVM for example)
-- QEMU: Is the instance of QEMU emulating the HOST (built for x86)
-- QEMU-VMM: Is the instance of QEMU running on the HOST (built for
-  aarch64) which launches VMs(GUESTs).
+V5 -> V6:
+  Corrected the message for patch "virtio-net: Return an error when vhost
+  cannot enable RSS".
+  Removed changes to introduce asserts from "virtio-net: Return an error
+  when vhost cannot enable RSS".
+  Reorganized patches "virtio-net: Return an error when vhost cannot
+  enable RSS" and "virtio-net: Do not clear VIRTIO_NET_F_RSS". This
+  version now contains patches "virtio-net: Return an error when vhost
+  cannot enable RSS" and "virtio-net: Enable software RSS".
+  Rebased.
 
-With that, AFAIU, vSMMU is the SMMUv3 emulation used for GUESTs with
-QEMU-VMM, where it has hooks in CMDQ and then the QEMU-VMM will issue
-IOCTLs to the HOST to do the actual SMMU work (through iommufd or IIRC
-there was previous patches from Eric that does that also), also the
-vSMMU is out of tree AFAICT.
+V4 -> V5:
+  Added patch "virtio-net: Do not write hashes to peer buffer".
 
-In that case, this work is orthogonal to that, the nested SMMUv3
-emulation in this series mainly targets QEMU which is advertised
-to the HOST, which then allows it to use iommufd with GUESts.
+V3 -> V4:
+  Extract patches "tap: Remove tap_receive()" and  "net: Remove flag
+  propagation" from "net: Remove receive_raw()".
+  Added patch "virtio-net: Always set populate_hash".
+  Added patch "virtio-net: Do not clear VIRTIO_NET_F_HASH_REPORT".
+  Added patch "ebpf: Use standard section name".
+  Added patch "ebpf: Simplify error handling".
+  Added patch "ebpf: Return 0 when configuration fails".
+  Added patch "ebpf: Refactor tun_rss_steering_prog()".
+  Added patch "ebpf: Add a separate target for skeleton".
 
-In theory, that work can be extended to QEMU-VMM with vSMMU, but
-I guess that would be a lot of work as the VMM needs to collapse
-both stages as the kernel provides only one address space for the VMM.
+V2 -> V3:
+  Added patch "tap: Remove tap_probe_vnet_hdr_len()".
+  Added patch "tap: Remove qemu_using_vnet_hdr()".
+  Added patch "net: Move virtio-net header length assertion".
+  Added patch "net: Remove receive_raw()".
+  Added patch "tap: Shrink zeroed virtio-net header".
+  Dropped patch "tap: Fix virtio-net header buffer size".
 
-Mainly, I use this patches to test nesting patches I am hacking for
-KVM, also they can be used with your patches to test iommufd with
-needing hardware. (See testing section in the cover letter)
+V1 -> V2:
+  Added patch "ebpf: Fix RSS error handling".
 
-> with the ongoing 2-stage nesting support with host and guest. Or
-> is it supposed to be just a total orthogonal feature without any
-> interaction with the host system?
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v9:
+- Added patch "virtio-net: Do not propagate ebpf-rss-fds errors".
+- Added patch "virtio-net: Shrink header byte swapping buffer".
+- Rebased.
+- Link to v8: https://lore.kernel.org/r/20231210-rss-v8-0-9553ee714d38@daynix.com
 
-Are you referring to the iommufd work on Linux to support nesting?
+---
+Akihiko Odaki (20):
+      tap: Remove tap_probe_vnet_hdr_len()
+      tap: Remove qemu_using_vnet_hdr()
+      net: Move virtio-net header length assertion
+      net: Remove receive_raw()
+      tap: Call tap_receive_iov() from tap_receive()
+      tap: Shrink zeroed virtio-net header
+      virtio-net: Do not propagate ebpf-rss-fds errors
+      virtio-net: Add only one queue pair when realizing
+      virtio-net: Copy header only when necessary
+      virtio-net: Shrink header byte swapping buffer
+      virtio-net: Disable RSS on reset
+      virtio-net: Unify the logic to update NIC state for RSS
+      virtio-net: Return an error when vhost cannot enable RSS
+      virtio-net: Report RSS warning at device realization
+      virtio-net: Always set populate_hash
+      virtio-net: Do not write hashes to peer buffer
+      ebpf: Fix RSS error handling
+      ebpf: Return 0 when configuration fails
+      ebpf: Refactor tun_rss_steering_prog()
+      ebpf: Add a separate target for skeleton
 
+ ebpf/rss.bpf.skeleton.h  | 1558 +++++++++++++++++++++++-----------------------
+ include/net/net.h        |    8 -
+ net/tap_int.h            |    1 -
+ hw/net/e1000e.c          |    1 -
+ hw/net/igb.c             |    1 -
+ hw/net/net_tx_pkt.c      |    4 +-
+ hw/net/virtio-net.c      |  344 +++++-----
+ hw/net/vmxnet3.c         |    2 -
+ net/dump.c               |    4 +-
+ net/net.c                |   47 +-
+ net/netmap.c             |    5 -
+ net/tap-bsd.c            |    5 -
+ net/tap-linux.c          |   20 -
+ net/tap-solaris.c        |    5 -
+ net/tap-stub.c           |    5 -
+ net/tap.c                |   77 +--
+ tools/ebpf/rss.bpf.c     |   44 +-
+ tools/ebpf/Makefile.ebpf |   15 +-
+ 18 files changed, 988 insertions(+), 1158 deletions(-)
+---
+base-commit: e5c6528dce86d7a9ada7ecf02fcb7b8560955131
+change-id: 20231210-rss-e7c98e722253
 
-Thanks,
-Mostafa
-> Thanks
-> Nicolin
-> 
-> > Main changes(architecture):
-> > ============================
-> > 1) CDs are considered IPA and translated with stage-2.
-> > 2) TTBx and tables for stage-1 are considered IPA and translated
-> >    with stage-2.
-> > 3) Translate the IPA address with stage-2.
-> > 
-> > TLBs:
-> > ======
-> > TLBs are the most tricky part.
-> > 
-> > 1) General design
-> >    Unified(Combined) design is used, where a new tag is added "stage"
-> >    which has 2 valid values:
-> >    - STAGE_1: Meaning this entry translates VA to PADDR, it can be
-> >      cached from fully nested configuration or from stage-1 only.
-> >      It doesn't support separate cached entries (VA to IPA).
-> > 
-> >    - STAGE_2: Meaning this translates IPA to PADDR, cached from
-> >      stage-2  only configuration.
-> > 
-> >    TLBs are also modified to cache 2 permissions, a new permission added
-> >    "parent_perm."
-> > 
-> >    For non-nested configuration, perm == parent_perm and nothing
-> >    changes. This is used to know which stage to use in case there is
-> >    a permission fault from a TLB entry.
-> > 
-> > 2) Caching in TLB
-> >    Stage-1 and stage-2 are inserted in the TLB as is.
-> >    For nested translation, both entries are combined into one TLB
-> >    entry. Everything is used from stage-1, except:
-> >    - transatled_addr from stage-2.
-> >    - parent_perm is from stage-2.
-> >    - addr_mask: is the minimum of both.
-> > 
-> > 3) TLB Lookup
-> >    For stage-1 and nested translations, it look for STAGE_1 entries.
-> >    For stage-2 it look for STAGE_2 TLB entries.
-> > 
-> > 4) TLB invalidation
-> >    - Stage-1 commands (CMD_TLBI_NH_VAA, SMMU_CMD_TLBI_NH_VA,
-> >      SMMU_CMD_TLBI_NH_ALL): Invalidate TLBs tagged with SMMU_STAGE_1.
-> >    - Stage-2 commands (CMD_TLBI_S2_IPA): Invalidate TLBs tagged with
-> >      SMMU_STAGE_2.
-> >    - All (SMMU_CMD_TLBI_S12_VMALL): Will invalidate both, this is
-> >      communicated to the TLB as SMMU_NESTED which is (SMMU_STAGE_1 |
-> >      SMMU_STAGE_2) which uses it as a mask.
-> > 
-> >    As far as I understand, this is compliant with the ARM
-> >    architecture, based on:
-> >    - ARM ARM DDI 0487J.a: RLGSCG, RTVTYQ, RGNJPZ
-> >    - ARM IHI 0070F.b: 16.2 Caching
-> > 
-> >    An alternative approach would be to instantiate 2 TLBs, one per
-> >    each stage. I haven’t investigated that.
-> > 
-> > Others
-> > =======
-> > - Advertise SMMUv3.2-S2FWB, it is NOP for QEMU as it doesn’t support
-> >   attributes.
-> > 
-> > - OAS: A typical setup with nesting is to share CPU stage-2 with the
-> >   SMMU, and according to the user manual, SMMU OAS must match the
-> >   system physical address.
-> > 
-> >   This was discussed before in
-> >   https://lore.kernel.org/all/20230226220650.1480786-11-smostafa@google.com/
-> >   The implementation here, follows the discussion, where migration is
-> >   added and oas is set up from the board (virt). However, the OAS is
-> >   chosen based on the CPU PARANGE as there is no fixed one.
-> > 
-> > - For nested configuration, IOVA notifier only notifies for stage-1
-> >   invalidations (as far as I understand this is the intended
-> >   behaviour as it notifies for IOVA)
-> > 
-> > - Stop ignoring VMID for stage-1 if stage-2 is also supported.
-> > 
-> > 
-> > Future improvements:
-> > =====================
-> > 1) One small improvement, that I don’t think it’s worth the extra
-> >    complexity, is in case of Stage-1 TLB miss for nested translation,
-> >    we can do stage-1 walk and lookup for stage-2 TLBs, instead of
-> >    doing the full walk.
-> > 
-> > 2) Patch 0006 (hw/arm/smmuv3: Translate CD and TT using stage-2 table)
-> >    introduces a macro to use functions that rely on cfg for stage-2,
-> >    I don’t like it. However, I didn’t find a simple way around it,
-> >    either we change many functions to have a separate stage argument,
-> >    or add another arg in config, which is probably more code.
-> > 
-> > Testing
-> > ========
-> > 1) IOMMUFD + VFIO
-> >    Kernel: https://lore.kernel.org/all/cover.1683688960.git.nicolinc@nvidia.com/
-> >    VMM: https://qemu-devel.nongnu.narkive.com/o815DqpI/rfc-v5-0-8-arm-smmuv3-emulation-support
-> > 
-> >    By assigning “virtio-net-pci,netdev=net0,disable-legacy=on,iommu_platform=on,ats=on”,
-> >    to a guest VM (on top of QEMU guest) with VIFO and IOMMUFD.
-> > 
-> > 2) Work in progress prototype I am hacking on for nesting on KVM
-> >    (this is nowhere near complete, and misses many stuff but it
-> >    doesn't require VMs/VFIO) also with virtio-net-pci and git
-> >    cloning a bunch of stuff and also observing traces.
-> >    https://android-kvm.googlesource.com/linux/+log/refs/heads/smostafa/android15-6.6-smmu-nesting-wip
-> > 
-> > hw/arm/smmuv3: Split smmuv3_translate() better viewed with --color-moved
-> > 
-> > 
-> > Mostafa Saleh (12):
-> >   hw/arm/smmu: Use enum for SMMU stage
-> >   hw/arm/smmu: Split smmuv3_translate()
-> >   hw/arm/smmu: Add stage to TLB
-> >   hw/arm/smmu: Support nesting in commands
-> >   hw/arm/smmuv3: Support nested SMMUs in smmuv3_notify_iova()
-> >   hw/arm/smmuv3: Translate CD and TT using stage-2 table
-> >   hw/arm/smmu-common: Support nested translation
-> >   hw/arm/smmuv3: Support and advertise nesting
-> >   hw/arm/smmuv3: Advertise S2FWB
-> >   hw/arm/smmu: Refactor SMMU OAS
-> >   hw/arm/smmuv3: Add property for OAS
-> >   hw/arm/virt: Set SMMU OAS based on CPU PARANGE
-> > 
-> >  hw/arm/smmu-common.c         | 256 ++++++++++++++++++----
-> >  hw/arm/smmu-internal.h       |   2 +
-> >  hw/arm/smmuv3-internal.h     |  17 +-
-> >  hw/arm/smmuv3.c              | 405 ++++++++++++++++++++++-------------
-> >  hw/arm/trace-events          |  14 +-
-> >  hw/arm/virt.c                |  14 +-
-> >  include/hw/arm/smmu-common.h |  46 +++-
-> >  include/hw/arm/smmuv3.h      |   1 +
-> >  target/arm/cpu.h             |   2 +
-> >  target/arm/cpu64.c           |   5 +
-> >  10 files changed, 533 insertions(+), 229 deletions(-)
-> > 
-> > --
-> > 2.44.0.396.g6e790dbe36-goog
-> > 
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
