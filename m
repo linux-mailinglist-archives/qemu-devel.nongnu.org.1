@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D18896BEE
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 12:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A35B896BF5
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 12:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrxhB-0000yV-3N; Wed, 03 Apr 2024 06:18:19 -0400
+	id 1rrxh0-0000vF-Ul; Wed, 03 Apr 2024 06:18:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rrxgt-0000qE-Eg; Wed, 03 Apr 2024 06:17:59 -0400
+ id 1rrxgs-0000op-PO; Wed, 03 Apr 2024 06:17:58 -0400
 Received: from szxga05-in.huawei.com ([45.249.212.191])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rrxgn-0006dm-C2; Wed, 03 Apr 2024 06:17:58 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.44])
- by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V8gfJ24HKz1GFkS;
- Wed,  3 Apr 2024 18:17:12 +0800 (CST)
+ id 1rrxgo-0006e4-3H; Wed, 03 Apr 2024 06:17:58 -0400
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+ by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4V8gbt0K8Jz1h5Vr;
+ Wed,  3 Apr 2024 18:15:06 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id B73ED1400D3;
- Wed,  3 Apr 2024 18:17:50 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id 8E4651A016C;
+ Wed,  3 Apr 2024 18:17:51 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 3 Apr
@@ -31,10 +31,9 @@ To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v12 13/23] hw/intc/arm_gicv3: Add has-nmi property to GICv3
- device
-Date: Wed, 3 Apr 2024 10:16:01 +0000
-Message-ID: <20240403101611.3204086-14-ruanjinjie@huawei.com>
+Subject: [PATCH v12 14/23] hw/intc/arm_gicv3: Add irq non-maskable property
+Date: Wed, 3 Apr 2024 10:16:02 +0000
+Message-ID: <20240403101611.3204086-15-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240403101611.3204086-1-ruanjinjie@huawei.com>
 References: <20240403101611.3204086-1-ruanjinjie@huawei.com>
@@ -69,86 +68,140 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a property has-nmi to the GICv3 device, and use this to set
-the NMI bit in the GICD_TYPER register. This isn't visible to
-guests yet because the property defaults to false and we won't
-set it in the board code until we've landed all of the changes
-needed to implement FEAT_GICV3_NMI.
+A SPI, PPI or SGI interrupt can have non-maskable property. So maintain
+non-maskable property in PendingIrq and GICR/GICD. Since add new device
+state, it also needs to be migrated, so also save NMI info in
+vmstate_gicv3_cpu and vmstate_gicv3.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
 v12:
-- Update the subject and commit message.
+- nmi_needed -> gicv3_cpu_nmi_needed.
+- needed_nmi -> gicv3_nmi_needed.
 - Add Reviewed-by.
+v11:
+- Put vmstate_gicv3_cpu_nmi and vmstate_gicv3_gicd_nmi into existing list.
+- Remove the excess != 0.
 v10:
-- Adjust to before add irq non-maskable property.
-v4:
-- Add Reviewed-by.
+- superprio -> nmi, gicr_isuperprio -> gicr_inmir0.
+- Save NMI state in vmstate_gicv3_cpu and vmstate_gicv3.
+- Update the commit message.
+v3:
+- Place this ahead of implement GICR_INMIR.
+- Add Acked-by.
 ---
- hw/intc/arm_gicv3_common.c         | 1 +
- hw/intc/arm_gicv3_dist.c           | 2 ++
- hw/intc/gicv3_internal.h           | 1 +
- include/hw/intc/arm_gicv3_common.h | 1 +
- 4 files changed, 5 insertions(+)
+ hw/intc/arm_gicv3_common.c         | 38 ++++++++++++++++++++++++++++++
+ include/hw/intc/arm_gicv3_common.h |  4 ++++
+ 2 files changed, 42 insertions(+)
 
 diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index c52f060026..2d2cea6858 100644
+index 2d2cea6858..9810558b07 100644
 --- a/hw/intc/arm_gicv3_common.c
 +++ b/hw/intc/arm_gicv3_common.c
-@@ -569,6 +569,7 @@ static Property arm_gicv3_common_properties[] = {
-     DEFINE_PROP_UINT32("num-irq", GICv3State, num_irq, 32),
-     DEFINE_PROP_UINT32("revision", GICv3State, revision, 3),
-     DEFINE_PROP_BOOL("has-lpi", GICv3State, lpi_enable, 0),
-+    DEFINE_PROP_BOOL("has-nmi", GICv3State, nmi_support, 0),
-     DEFINE_PROP_BOOL("has-security-extensions", GICv3State, security_extn, 0),
-     /*
-      * Compatibility property: force 8 bits of physical priority, even
-diff --git a/hw/intc/arm_gicv3_dist.c b/hw/intc/arm_gicv3_dist.c
-index 35e850685c..22ddc0d666 100644
---- a/hw/intc/arm_gicv3_dist.c
-+++ b/hw/intc/arm_gicv3_dist.c
-@@ -389,6 +389,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-          *                      by GICD_TYPER.IDbits)
-          * MBIS == 0 (message-based SPIs not supported)
-          * SecurityExtn == 1 if security extns supported
-+         * NMI = 1 if Non-maskable interrupt property is supported
-          * CPUNumber == 0 since for us ARE is always 1
-          * ITLinesNumber == (((max SPI IntID + 1) / 32) - 1)
-          */
-@@ -402,6 +403,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-         bool dvis = s->revision >= 4;
+@@ -164,6 +164,24 @@ const VMStateDescription vmstate_gicv3_gicv4 = {
+     }
+ };
  
-         *data = (1 << 25) | (1 << 24) | (dvis << 18) | (sec_extn << 10) |
-+            (s->nmi_support << GICD_TYPER_NMI_SHIFT) |
-             (s->lpi_enable << GICD_TYPER_LPIS_SHIFT) |
-             (0xf << 19) | itlinesnumber;
-         return true;
-diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
-index 29d5cdc1b6..8f4ebed2f4 100644
---- a/hw/intc/gicv3_internal.h
-+++ b/hw/intc/gicv3_internal.h
-@@ -68,6 +68,7 @@
- #define GICD_CTLR_E1NWF             (1U << 7)
- #define GICD_CTLR_RWP               (1U << 31)
++static bool gicv3_cpu_nmi_needed(void *opaque)
++{
++    GICv3CPUState *cs = opaque;
++
++    return cs->gic->nmi_support;
++}
++
++static const VMStateDescription vmstate_gicv3_cpu_nmi = {
++    .name = "arm_gicv3_cpu/nmi",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = gicv3_cpu_nmi_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32(gicr_inmir0, GICv3CPUState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_gicv3_cpu = {
+     .name = "arm_gicv3_cpu",
+     .version_id = 1,
+@@ -196,6 +214,7 @@ static const VMStateDescription vmstate_gicv3_cpu = {
+         &vmstate_gicv3_cpu_virt,
+         &vmstate_gicv3_cpu_sre_el1,
+         &vmstate_gicv3_gicv4,
++        &vmstate_gicv3_cpu_nmi,
+         NULL
+     }
+ };
+@@ -238,6 +257,24 @@ const VMStateDescription vmstate_gicv3_gicd_no_migration_shift_bug = {
+     }
+ };
  
-+#define GICD_TYPER_NMI_SHIFT           9
- #define GICD_TYPER_LPIS_SHIFT          17
- 
- /* 16 bits EventId */
++static bool gicv3_nmi_needed(void *opaque)
++{
++    GICv3State *cs = opaque;
++
++    return cs->nmi_support;
++}
++
++const VMStateDescription vmstate_gicv3_gicd_nmi = {
++    .name = "arm_gicv3/gicd_nmi",
++    .version_id = 1,
++    .minimum_version_id = 1,
++    .needed = gicv3_nmi_needed,
++    .fields = (const VMStateField[]) {
++        VMSTATE_UINT32_ARRAY(nmi, GICv3State, GICV3_BMP_SIZE),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
+ static const VMStateDescription vmstate_gicv3 = {
+     .name = "arm_gicv3",
+     .version_id = 1,
+@@ -266,6 +303,7 @@ static const VMStateDescription vmstate_gicv3 = {
+     },
+     .subsections = (const VMStateDescription * const []) {
+         &vmstate_gicv3_gicd_no_migration_shift_bug,
++        &vmstate_gicv3_gicd_nmi,
+         NULL
+     }
+ };
 diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 7324c7d983..4358c5319c 100644
+index 4358c5319c..88533749eb 100644
 --- a/include/hw/intc/arm_gicv3_common.h
 +++ b/include/hw/intc/arm_gicv3_common.h
-@@ -249,6 +249,7 @@ struct GICv3State {
-     uint32_t num_irq;
-     uint32_t revision;
-     bool lpi_enable;
-+    bool nmi_support;
-     bool security_extn;
-     bool force_8bit_prio;
-     bool irq_reset_nonsecure;
+@@ -146,6 +146,7 @@ typedef struct {
+     int irq;
+     uint8_t prio;
+     int grp;
++    bool nmi;
+ } PendingIrq;
+ 
+ struct GICv3CPUState {
+@@ -172,6 +173,7 @@ struct GICv3CPUState {
+     uint32_t gicr_ienabler0;
+     uint32_t gicr_ipendr0;
+     uint32_t gicr_iactiver0;
++    uint32_t gicr_inmir0;
+     uint32_t edge_trigger; /* ICFGR0 and ICFGR1 even bits */
+     uint32_t gicr_igrpmodr0;
+     uint32_t gicr_nsacr;
+@@ -275,6 +277,7 @@ struct GICv3State {
+     GIC_DECLARE_BITMAP(active);       /* GICD_ISACTIVER */
+     GIC_DECLARE_BITMAP(level);        /* Current level */
+     GIC_DECLARE_BITMAP(edge_trigger); /* GICD_ICFGR even bits */
++    GIC_DECLARE_BITMAP(nmi);          /* GICD_INMIR */
+     uint8_t gicd_ipriority[GICV3_MAXIRQ];
+     uint64_t gicd_irouter[GICV3_MAXIRQ];
+     /* Cached information: pointer to the cpu i/f for the CPUs specified
+@@ -314,6 +317,7 @@ GICV3_BITMAP_ACCESSORS(pending)
+ GICV3_BITMAP_ACCESSORS(active)
+ GICV3_BITMAP_ACCESSORS(level)
+ GICV3_BITMAP_ACCESSORS(edge_trigger)
++GICV3_BITMAP_ACCESSORS(nmi)
+ 
+ #define TYPE_ARM_GICV3_COMMON "arm-gicv3-common"
+ typedef struct ARMGICv3CommonClass ARMGICv3CommonClass;
 -- 
 2.34.1
 
