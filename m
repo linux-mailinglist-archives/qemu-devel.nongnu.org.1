@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 308F2896C0D
-	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 12:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF29896C21
+	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 12:23:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rrxif-0005Dz-NC; Wed, 03 Apr 2024 06:19:49 -0400
+	id 1rrxkZ-0003Y3-El; Wed, 03 Apr 2024 06:21:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rrxiS-00059R-70
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:19:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rrxiQ-00070m-88
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:19:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712139573;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=iMLbgUGtw/LVyRlI2BcEZJWtW3QAwcebOn57SCM4cv8=;
- b=A8KeVvrMgRiyAP754WSEDl7zhvk4/5kp6gSxi/bHSCRP6uCvvO/be56sPgmyKc+wSHbeVC
- HqYGytEKtp979eq6UgFdRq4PErugPWh51mZq9qNmS27A8uztr8Kv93qENA8sMsqRj9SHe+
- sP7d/D4UyWMjC4j6jp/ec1NmatOhhu8=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-394-wNSOfmFmM0GbzNNpn3txHQ-1; Wed, 03 Apr 2024 06:19:31 -0400
-X-MC-Unique: wNSOfmFmM0GbzNNpn3txHQ-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-ddaf2f115f2so8385378276.3
- for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 03:19:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rrxkI-0002SG-PC
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:21:33 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1rrxkG-0000tM-8a
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 06:21:30 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5e8470c1cb7so3958817a12.2
+ for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 03:21:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1712139682; x=1712744482;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RAKn+HK/aO2kUntmx7L4AWae45qjf7S1vOzU9qUnU98=;
+ b=lVZF1pIPag7vEVspYgber63I0V9R+0If/VFlPQ21R20RgJupunXIn2Q85BRx4p0EK6
+ 5eNtxHddxF34bTki8xK5UJkZGv8Sqp3FoJ5/dzFpHEVEnEjWr4FA4zpnHb+cF6cLUpSF
+ YVzImjIIixjkoUZ7BVoWkWWuSzJQp4D4HacWNzdKvRctTzsYN6Z8yMwuuqGaZReo6nyE
+ yOLeuMUz8+fiGXY1nJV3WJQOKFKSb3EEwXmBhLOgF14do8i7YXfS7IzNGvX6MZfPpxWy
+ k2XemlbkQhe37f69VMN+TSOb1qY3ElCb6GX8jE9cuB5v6CDvJ2/bRoeuuZ/PD58/GE0+
+ oyCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712139571; x=1712744371;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=iMLbgUGtw/LVyRlI2BcEZJWtW3QAwcebOn57SCM4cv8=;
- b=MiKyzc8jkQFpVXCqoF9Hq5E3HRehn8YcmObSYVxWDiUX+OjPGj0gAb16cZqwoxTK+F
- t3qusa9RosmeLA9zO5el4HD7cQEp5JZK4jyeV5D5/CMV3QrD7CaMvvXOmjqPe+MaZrqv
- UGRtUuxCnn5YTXE3TdatSJPvtT3Ck1vuwRxycU18w3sBFPQSwp7MUSPCsBlOc5WANCZ5
- wJI3FzFSZ1uJTutRCdqskZTyR9WNjpyXA0ggeEu/eOktcEQJkSlWFEHn1jGurjcJBAx9
- TuRWz4DryusHCmGzz1nkzOKI3C7X4otJlmuKyumw4R6J5MV3EDWnSpaFAylGMvYt5bL0
- g4TA==
-X-Gm-Message-State: AOJu0YwyVpFdtzL9RdpXYO5V1i6+CJe0ksUmXEoC1XqeL2Ra7/N75Jqb
- DoRYLGDNzlY9KCScUQnijK2FdkW2eyY7v6ihB767dQPRc0l7jBVQnJMLRMrAwcyV1ysyw4wzRt1
- jR0ukG1cVcvfXl+kUAwYZtleae7PGoLxlC42lmRwT4EP0yRmQOetAICWGROpsKGDsLTb4xwtxgp
- ZaE4be8Ml2KcwImnmCdp18pC+DEbQ=
-X-Received: by 2002:a25:bcca:0:b0:dcc:3020:e68 with SMTP id
- l10-20020a25bcca000000b00dcc30200e68mr11442884ybm.64.1712139570897; 
- Wed, 03 Apr 2024 03:19:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE1pbpDKhYXQOe3zZv/yIiBMp0aLzykqZY7QDBxwg2EqhK34VOkEOCvEtBzx2zePFFuXoiqJpiXO677UQJcE+A=
-X-Received: by 2002:a25:bcca:0:b0:dcc:3020:e68 with SMTP id
- l10-20020a25bcca000000b00dcc30200e68mr11442870ybm.64.1712139570604; Wed, 03
- Apr 2024 03:19:30 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712139682; x=1712744482;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RAKn+HK/aO2kUntmx7L4AWae45qjf7S1vOzU9qUnU98=;
+ b=ew7HL+nT+sKsBxeSZuoKzIcLXNIztA377uVRWXrpDdwXRWifXzd86Q7+5hEYbCXeGb
+ fEhhQDyiS/uykZ9GSX8lkeVDpWKphOfGM+HsLBNmClFfyXBGRwz9+DxsCA3EVZR5XLnY
+ QRRdze2+RoSCNTSkPaiSCfUhus9ivauYDubulrLHSt1p4pTLwXbUsFTr2GNu9ZPqcz6X
+ MYFDf57Gfidz3giFD54h8FDkK7hQTyeVWq5N9vNJn6RN9jxJ6DHRtj0pu+pITfz33wox
+ IZHeGb8Wkb2Os+FNc/trFALWCB+HqrLrhFG2nc/48G5TO4diB2BbNcKgH6TCA/yvvd6N
+ 96yQ==
+X-Gm-Message-State: AOJu0YzGT3LBXh28KvB39FBktxGlqv26XPamPhFCVEo8j0vwIw3gSS9n
+ yPtxBJ7dKR5mRFNaHEj6Nakdw88o+HukLqmUNVTvoGng0cSd4bsMlWM5OhWz+32kDa6M8zgddNg
+ nTiwHoG6V
+X-Google-Smtp-Source: AGHT+IGKo/6U0Q21WXxcUP/9oyTrxEzM8ctimogvqGSRbflwklzaSWRDQYGyjHmMF2bEl6vR0AmHcQ==
+X-Received: by 2002:a05:6a20:ce4d:b0:1a3:68bb:89d3 with SMTP id
+ id13-20020a056a20ce4d00b001a368bb89d3mr15164646pzb.17.1712139681523; 
+ Wed, 03 Apr 2024 03:21:21 -0700 (PDT)
+Received: from anolis-dev.zelin.local ([221.122.98.162])
+ by smtp.gmail.com with ESMTPSA id
+ x8-20020aa79188000000b006e795082439sm11382261pfa.25.2024.04.03.03.21.19
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 03 Apr 2024 03:21:21 -0700 (PDT)
+From: Hyman Huang <yong.huang@smartx.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ yong.huang@smartx.com
+Subject: [PATCH 1/2] scsi-disk: Introduce the migrate_emulate_scsi_request
+ field
+Date: Wed,  3 Apr 2024 18:21:15 +0800
+Message-Id: <4ed86afd109e3084f68c51e036884192ef535107.1712139560.git.yong.huang@smartx.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-References: <20240328162203.3775114-1-jonah.palmer@oracle.com>
- <20240328162203.3775114-2-jonah.palmer@oracle.com>
-In-Reply-To: <20240328162203.3775114-2-jonah.palmer@oracle.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 3 Apr 2024 12:18:54 +0200
-Message-ID: <CAJaqyWdyZdu48+cZ2umafLRi9NTz3YHxSxmyq6SD9d4noTR2jQ@mail.gmail.com>
-Subject: Re: [RFC v2 1/5] virtio: Initialize sequence variables
-To: Jonah Palmer <jonah.palmer@oracle.com>
-Cc: qemu-devel@nongnu.org, mst@redhat.com, raphael@enfabrica.net, 
- kwolf@redhat.com, hreitz@redhat.com, jasowang@redhat.com, pbonzini@redhat.com, 
- fam@euphon.net, stefanha@redhat.com, qemu-block@nongnu.org, 
- schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev, 
- si-wei.liu@oracle.com, boris.ostrovsky@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::532;
+ envelope-from=yong.huang@smartx.com; helo=mail-pg1-x532.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,118 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Mar 28, 2024 at 5:22=E2=80=AFPM Jonah Palmer <jonah.palmer@oracle.c=
-om> wrote:
->
-> Initialize sequence variables for VirtQueue and VirtQueueElement
-> structures. A VirtQueue's sequence variables are initialized when a
-> VirtQueue is being created or reset. A VirtQueueElement's sequence
-> variable is initialized when a VirtQueueElement is being initialized.
-> These variables will be used to support the VIRTIO_F_IN_ORDER feature.
->
-> A VirtQueue's used_seq_idx represents the next expected index in a
-> sequence of VirtQueueElements to be processed (put on the used ring).
-> The next VirtQueueElement added to the used ring must match this
-> sequence number before additional elements can be safely added to the
-> used ring. It's also particularly useful for helping find the number of
-> new elements added to the used ring.
->
-> A VirtQueue's current_seq_idx represents the current sequence index.
-> This value is essentially a counter where the value is assigned to a new
-> VirtQueueElement and then incremented. Given its uint16_t type, this
-> sequence number can be between 0 and 65,535.
->
-> A VirtQueueElement's seq_idx represents the sequence number assigned to
-> the VirtQueueElement when it was created. This value must match with the
-> VirtQueue's used_seq_idx before the element can be put on the used ring
-> by the device.
->
-> Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-> ---
->  hw/virtio/virtio.c         | 18 ++++++++++++++++++
->  include/hw/virtio/virtio.h |  1 +
->  2 files changed, 19 insertions(+)
->
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index fb6b4ccd83..069d96df99 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -132,6 +132,10 @@ struct VirtQueue
->      uint16_t used_idx;
->      bool used_wrap_counter;
->
-> +    /* In-Order sequence indices */
-> +    uint16_t used_seq_idx;
-> +    uint16_t current_seq_idx;
-> +
+To indicate to the destination whether or not emulational SCSI
+requests are sent, introduce the migrate_emulate_scsi_request
+in struct SCSIDiskState. It seeks to achieve migration backend
+compatibility.
 
-I'm having a hard time understanding the difference between these and
-last_avail_idx and used_idx. It seems to me if we replace them
-everything will work? What am I missing?
+This commit sets the stage for the next one, which addresses
+the crash of a VM configured with a CDROM during live migration.
 
->      /* Last used index value we have signalled on */
->      uint16_t signalled_used;
->
-> @@ -1621,6 +1625,11 @@ static void *virtqueue_split_pop(VirtQueue *vq, si=
-ze_t sz)
->          elem->in_sg[i] =3D iov[out_num + i];
->      }
->
-> +    /* Assign sequence index for in-order processing */
-> +    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-> +        elem->seq_idx =3D vq->current_seq_idx++;
-> +    }
-> +
->      vq->inuse++;
->
->      trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
-> @@ -1760,6 +1769,11 @@ static void *virtqueue_packed_pop(VirtQueue *vq, s=
-ize_t sz)
->      vq->shadow_avail_idx =3D vq->last_avail_idx;
->      vq->shadow_avail_wrap_counter =3D vq->last_avail_wrap_counter;
->
-> +    /* Assign sequence index for in-order processing */
-> +    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-> +        elem->seq_idx =3D vq->current_seq_idx++;
-> +    }
-> +
->      trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
->  done:
->      address_space_cache_destroy(&indirect_desc_cache);
-> @@ -2087,6 +2101,8 @@ static void __virtio_queue_reset(VirtIODevice *vdev=
-, uint32_t i)
->      vdev->vq[i].notification =3D true;
->      vdev->vq[i].vring.num =3D vdev->vq[i].vring.num_default;
->      vdev->vq[i].inuse =3D 0;
-> +    vdev->vq[i].used_seq_idx =3D 0;
-> +    vdev->vq[i].current_seq_idx =3D 0;
->      virtio_virtqueue_reset_region_cache(&vdev->vq[i]);
->  }
->
-> @@ -2334,6 +2350,8 @@ VirtQueue *virtio_add_queue(VirtIODevice *vdev, int=
- queue_size,
->      vdev->vq[i].vring.align =3D VIRTIO_PCI_VRING_ALIGN;
->      vdev->vq[i].handle_output =3D handle_output;
->      vdev->vq[i].used_elems =3D g_new0(VirtQueueElement, queue_size);
-> +    vdev->vq[i].used_seq_idx =3D 0;
-> +    vdev->vq[i].current_seq_idx =3D 0;
->
->      return &vdev->vq[i];
->  }
-> diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-> index b3c74a1bca..910b2a3427 100644
-> --- a/include/hw/virtio/virtio.h
-> +++ b/include/hw/virtio/virtio.h
-> @@ -75,6 +75,7 @@ typedef struct VirtQueueElement
->      hwaddr *out_addr;
->      struct iovec *in_sg;
->      struct iovec *out_sg;
-> +    uint16_t seq_idx;
->  } VirtQueueElement;
->
->  #define VIRTIO_QUEUE_MAX 1024
-> --
-> 2.39.3
->
+Signed-off-by: Hyman Huang <yong.huang@smartx.com>
+---
+ hw/scsi/scsi-disk.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+index 4bd7af9d0c..0985676f73 100644
+--- a/hw/scsi/scsi-disk.c
++++ b/hw/scsi/scsi-disk.c
+@@ -111,6 +111,7 @@ struct SCSIDiskState {
+      * 0xffff        - reserved
+      */
+     uint16_t rotation_rate;
++    bool migrate_emulate_scsi_request;
+ };
+ 
+ static void scsi_free_request(SCSIRequest *req)
+@@ -3133,11 +3134,21 @@ static Property scsi_hd_properties[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
++static int scsi_disk_pre_save(void *opaque)
++{
++    SCSIDiskState *dev = opaque;
++    dev->migrate_emulate_scsi_request = false;
++
++    return 0;
++}
++
+ static const VMStateDescription vmstate_scsi_disk_state = {
+     .name = "scsi-disk",
+-    .version_id = 1,
++    .version_id = 2,
+     .minimum_version_id = 1,
++    .pre_save = scsi_disk_pre_save,
+     .fields = (const VMStateField[]) {
++        VMSTATE_BOOL_V(migrate_emulate_scsi_request, SCSIDiskState, 2),
+         VMSTATE_SCSI_DEVICE(qdev, SCSIDiskState),
+         VMSTATE_BOOL(media_changed, SCSIDiskState),
+         VMSTATE_BOOL(media_event, SCSIDiskState),
+-- 
+2.39.3
 
 
