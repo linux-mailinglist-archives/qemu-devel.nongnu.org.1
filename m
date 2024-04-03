@@ -2,87 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629FB896DF1
+	by mail.lfdr.de (Postfix) with ESMTPS id CB74C896DF2
 	for <lists+qemu-devel@lfdr.de>; Wed,  3 Apr 2024 13:19:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rryXj-0000yD-NS; Wed, 03 Apr 2024 07:12:35 -0400
+	id 1rryY4-0002Vt-AY; Wed, 03 Apr 2024 07:12:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rryXV-0000Bs-KW
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:12:21 -0400
-Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
+ (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
+ id 1rryXz-0002As-BU
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:12:51 -0400
+Received: from smtp-out2.suse.de ([2a07:de40:b251:101:10:150:64:2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rryXU-0007Qi-42
- for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:12:21 -0400
-Received: by mail-pg1-x532.google.com with SMTP id
- 41be03b00d2f7-5d8b887bb0cso4988472a12.2
- for <qemu-devel@nongnu.org>; Wed, 03 Apr 2024 04:12:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1712142739; x=1712747539;
- darn=nongnu.org; 
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aSwN7T4THBSw8DVoEdw6sbR9jhN10SDsiob3Jp9LpFY=;
- b=sLSOZb8Rk2/dsGDC6CxzC/J282TWhsvYM2gZ+aBMrd6Bx4xFYY3An3djVf95zLKvGF
- ex8fcypW8fqflEcZeKQE6eOujbURLpQOpZoiwDBAPJZrEpwBrizl4t+t5HYqqMysC6dZ
- pPRblRY1ktMlZt1Gs3fIHZlguXSUlHYVWSlRd+5OFMP/S5EvROvT8bFaDtfo+OZuW/AV
- N9XJ0PkMnGpUKI6rK+QTIng9v/6OkXgK370GsVU2isEAq7lkLmNjc4YTlmZfrcg+fVga
- 9QUV3E89Q5uO56ccAct9sF3hWbcgAIycLVYI3397j4qDimfuDNKNyfvwBJO+Ci8js4Z5
- v1Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712142739; x=1712747539;
- h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
- :mime-version:subject:date:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aSwN7T4THBSw8DVoEdw6sbR9jhN10SDsiob3Jp9LpFY=;
- b=uw1PFWRYcZaZH8YZ0jyJJejMYtTM99S3ufDu3UqnMFPPWBlY+LNyqa8Nl1+xc7BWgV
- x6PEL6XP+CsjcH1S+nx0nx81H4dO72oc9I4z+EgEXUyxnU0BZf8tczrPfX1AyCWmd5e3
- hgpQFvdNUlVF8Y5o97LUc4b2ubnIX8rHh8NY9b9J8lnJgtku4fwaYEEV/N0048d3klPf
- bSurraBeQnSSOyHYVPA7+mXBvNJMT86jk82koDj74sQ57Gg4ZvC53+MEBrWQmLuzcc5v
- CRUey/e+v0WY1aZTNhNtLk3sfQ0/A8yDrCPHVoTeD5n2OT/fe/F7pJDs7xjDH1XaHSEy
- YFbA==
-X-Gm-Message-State: AOJu0YwS+y7gSyr0gC80I2gETT2b6ZxSrnsyLinRXmyuq+Yy2VblgtSC
- WN4blPji2k+V1LdfLYibKV/nB3IWtD2E5rbfa42RGkprMxvPuHw0k6Et7ECV3JQ=
-X-Google-Smtp-Source: AGHT+IHNwZK6NqT9RyUnNXsKCr8xJKuGN7PIAXmN8oTsUTew1xtf/8wdCF2sZ2D4GAdfapSja9IeLw==
-X-Received: by 2002:a17:90a:e7cd:b0:2a2:39ac:abf1 with SMTP id
- kb13-20020a17090ae7cd00b002a239acabf1mr7680093pjb.49.1712142738847; 
- Wed, 03 Apr 2024 04:12:18 -0700 (PDT)
-Received: from localhost ([157.82.200.213])
- by smtp.gmail.com with UTF8SMTPSA id
- d6-20020a63ed06000000b005f3c84e12c9sm3913291pgi.48.2024.04.03.04.12.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 03 Apr 2024 04:12:18 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Wed, 03 Apr 2024 20:11:08 +0900
-Subject: [PATCH v9 20/20] ebpf: Add a separate target for skeleton
+ (Exim 4.90_1) (envelope-from <roy.hopkins@suse.com>)
+ id 1rryXd-0007R7-Sh
+ for qemu-devel@nongnu.org; Wed, 03 Apr 2024 07:12:51 -0400
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C2C435CB82;
+ Wed,  3 Apr 2024 11:12:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+ t=1712142742; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=cVX+RztzCCxLOlQEqL+0mU3DLmOj6ka5S+6p6DO9tew=;
+ b=H5QIQQEVQhXfQTSh29bNltV4dXPrcUaFtoYV/2nk3VdNmNMrCRkVMFSXTFsSJfDpYCvZt5
+ 93rNz41PpilO0eIW5db1t3Fn91msAOIQVX+I2uw8PhIEal6/ZntGogcnRF21TU5jFyW3ak
+ VzKNfqn1UIY+qtHpqb6AZstpUUqneJw=
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C722713357;
+ Wed,  3 Apr 2024 11:12:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+ by imap2.dmz-prg2.suse.org with ESMTPSA id Y4bdLZU5DWayHQAAn2gu4w
+ (envelope-from <roy.hopkins@suse.com>); Wed, 03 Apr 2024 11:12:21 +0000
+From: Roy Hopkins <roy.hopkins@suse.com>
+To: qemu-devel@nongnu.org
+Cc: Roy Hopkins <roy.hopkins@suse.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez <slp@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
+ =?UTF-8?q?J=C3=B6rg=20Roedel?= <jroedel@suse.com>
+Subject: [PATCH v2 00/10] Introduce support for IGVM files
+Date: Wed,  3 Apr 2024 12:11:31 +0100
+Message-ID: <cover.1712138654.git.roy.hopkins@suse.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240403-rss-v9-20-c6d87e69d38b@daynix.com>
-References: <20240403-rss-v9-0-c6d87e69d38b@daynix.com>
-In-Reply-To: <20240403-rss-v9-0-c6d87e69d38b@daynix.com>
-To: Jason Wang <jasowang@redhat.com>, 
- Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
- Sriram Yagnaraman <sriram.yagnaraman@est.tech>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>, 
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>, 
- Vincenzo Maffione <v.maffione@gmail.com>, 
- Andrew Melnychenko <andrew@daynix.com>, 
- Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: qemu-devel@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev
-Received-SPF: none client-ip=2607:f8b0:4864:20::532;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pg1-x532.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: 2.20
+X-Spamd-Result: default: False [2.20 / 50.00]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ TO_DN_SOME(0.00)[]; R_MISSING_CHARSET(2.50)[];
+ BROKEN_CONTENT_TYPE(1.50)[]; RCVD_COUNT_THREE(0.00)[3];
+ NEURAL_HAM_SHORT(-0.20)[-0.989]; FROM_EQ_ENVFROM(0.00)[];
+ MIME_TRACE(0.00)[0:+]; BAYES_HAM(-3.00)[100.00%];
+ ARC_NA(0.00)[]; FROM_HAS_DN(0.00)[];
+ FREEMAIL_ENVRCPT(0.00)[gmail.com];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; TAGGED_RCPT(0.00)[];
+ MIME_GOOD(-0.10)[text/plain]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ DKIM_SIGNED(0.00)[suse.com:s=susede1];
+ RCPT_COUNT_TWELVE(0.00)[19]; MID_CONTAINS_FROM(1.00)[];
+ FUZZY_BLOCKED(0.00)[rspamd.com];
+ FREEMAIL_CC(0.00)[suse.com,redhat.com,gmail.com,habkost.net,alistair23.me,amd.com];
+ RCVD_TLS_ALL(0.00)[]; SUSPICIOUS_RECIPS(1.50)[]
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:2;
+ envelope-from=roy.hopkins@suse.com; helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,52 +101,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This generalizes the rule to generate the skeleton and allows to add
-another.
+Here is v2 of the set of patches to add support for IGVM files to QEMU. These
+address all of the comments on v1 [1]. These patches are also available
+to view on github: [2].
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- tools/ebpf/Makefile.ebpf | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Changes in v2:
 
-diff --git a/tools/ebpf/Makefile.ebpf b/tools/ebpf/Makefile.ebpf
-index 3391e7ce0898..572ca5987ae6 100755
---- a/tools/ebpf/Makefile.ebpf
-+++ b/tools/ebpf/Makefile.ebpf
-@@ -1,23 +1,24 @@
--OBJS = rss.bpf.o
-+SKELETONS = rss.bpf.skeleton.h
- 
- LLVM_STRIP ?= llvm-strip
- CLANG ?= clang
- INC_FLAGS = `$(CLANG) -print-file-name=include`
- EXTRA_CFLAGS ?= -O2 -g -target bpf
- 
--all: $(OBJS)
-+all: $(SKELETONS)
- 
- .PHONY: clean
- 
- clean:
--	rm -f $(OBJS)
--	rm -f rss.bpf.skeleton.h
-+	rm -f $(SKELETONS) $(SKELETONS:%.skeleton.h=%.o)
- 
--$(OBJS):  %.o:%.c
-+%.o: %.c
- 	$(CLANG) $(INC_FLAGS) \
-                 -D__KERNEL__ -D__ASM_SYSREG_H \
-                 -I../include $(LINUXINCLUDE) \
-                 $(EXTRA_CFLAGS) -c $< -o $@
- 	$(LLVM_STRIP) -g $@
--	bpftool gen skeleton rss.bpf.o > rss.bpf.skeleton.h
--	cp rss.bpf.skeleton.h ../../ebpf/
-+
-+%.skeleton.h: %.o
-+	bpftool gen skeleton $< > $@
-+	cp $@ ../../ebpf/
+  * Fixed various spelling and documentation errors from Stefano.
+  * Addressed readability and other suggested code changes from Daniel.
+  * igvm.c: Fix issue in prepare_memory() which resulted in the wrong start index
+     being used at the start of a page range if the next or last directive did
+     not follow the previous one.
+  * igvmc: Fix usage of IGVM compatibility mask.
+  * igvm.c: Fix issue in page_attrs_equal() which treated zero and normal pages
+    as equal. This could affect the SEV measurement.
+  * Improve and clarify handling of IGVM to VMSA to KVM CPU state conversion.
+    The specific registers that are synchronized are now documented and a check
+    is performed during IGVM file parsing to determine if any registers outside
+    the supported set are non-zero making it easier to determine the cause of
+    any mismatch of launch measurement.
+  * Significant rework of error handling in ConfidentialGuestSupport and the
+    IGVM parser.
+  * confidential-guest-support: Remove TDX and other non-currently-supported
+    platforms.
+  * Exit with error if any unknown IGVM directives are encountered.
+  * Rework handling of firmware so if an IGVM file is provided in addition to
+    a firmware file then an error is generated.
+  * Update firmware.json to add an 'igvm' firmware device.
 
--- 
-2.44.0
+Thanks to Daniel, Stefano, Ani and everyone else that has taken time to review
+this so far.
+
+[1] Link to v1:
+https://lore.kernel.org/qemu-devel/cover.1709044754.git.roy.hopkins@suse.com/
+
+[2] v2 patches also available here:
+https://github.com/roy-hopkins/qemu/tree/igvm_master_v2
+
+Roy Hopkins (10):
+  meson: Add optional dependency on IGVM library
+  backends/confidential-guest-support: Add IGVM file parameter
+  backends/confidential-guest-support: Add functions to support IGVM
+  backends/igvm: Implement parsing and processing of IGVM files
+  i386/pc: Process IGVM file during PC initialization if present
+  i386/pc_sysfw: Ensure sysfw flash configuration does not conflict with
+    IGVM
+  i386/sev: Refactor setting of reset vector and initial CPU state
+  i386/sev: Implement ConfidentialGuestSupport functions for SEV
+  docs/system: Add documentation on support for IGVM
+  docs/interop/firmware.json: Add igvm to FirmwareDevice
+
+ backends/confidential-guest-support.c      |  75 +++
+ backends/igvm.c                            | 744 +++++++++++++++++++++
+ backends/meson.build                       |   4 +
+ docs/interop/firmware.json                 |   9 +-
+ docs/system/i386/amd-memory-encryption.rst |   2 +
+ docs/system/igvm.rst                       | 129 ++++
+ docs/system/index.rst                      |   1 +
+ hw/i386/pc_piix.c                          |   4 +
+ hw/i386/pc_q35.c                           |   4 +
+ hw/i386/pc_sysfw.c                         |  22 +-
+ include/exec/confidential-guest-support.h  | 105 +++
+ include/exec/igvm.h                        |  36 +
+ meson.build                                |   8 +
+ meson_options.txt                          |   2 +
+ qapi/qom.json                              |  13 +
+ qemu-options.hx                            |   8 +-
+ scripts/meson-buildoptions.sh              |   3 +
+ target/i386/sev.c                          | 425 +++++++++++-
+ target/i386/sev.h                          | 110 +++
+ 19 files changed, 1671 insertions(+), 33 deletions(-)
+ create mode 100644 backends/igvm.c
+ create mode 100644 docs/system/igvm.rst
+ create mode 100644 include/exec/igvm.h
+
+--
+2.43.0
 
 
