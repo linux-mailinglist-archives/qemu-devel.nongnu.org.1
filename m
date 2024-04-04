@@ -2,82 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0CA898D69
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 19:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E7EA898C5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 18:41:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsR4v-0003li-PN; Thu, 04 Apr 2024 13:40:45 -0400
+	id 1rsQ86-0007cW-2l; Thu, 04 Apr 2024 12:39:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ptosi@google.com>) id 1rsQ4m-0006ut-Bh
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 12:36:32 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rsQ83-0007b9-Sb
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 12:39:55 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ptosi@google.com>) id 1rsQ4k-0000SI-Ll
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 12:36:32 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-56c404da0ebso1903474a12.0
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 09:36:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rsQ81-0000ni-RQ
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 12:39:55 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-56e22574eb3so1124112a12.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 09:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1712248588; x=1712853388; darn=nongnu.org;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=rl46i3DrBjDfPSGCGKqwQP2SynTZKyWMkmvHAmen0b4=;
- b=DnyI+FMf+xKGDr+/20DIyLDiytDCsBx4xP88oA+Ke0jWAo/xv2QmxipTzKa+dMXFN5
- //FKqNjYBEnepMhsLW64MNDvLDKrfvAL4Y38wff0ZVO3MhipdhoIrem7rpYZCbV3wb4w
- K3geyMi/qF87ghDR+uH6gJSb5p1YoWJeBabzzQhBi1OVuTMqXuqL5CHLm14dVJTh+lWi
- YjJ+0AAASPZwNTRVA2RnfF1nAQePPampsTzasAwnv2gl/EqnYoziWY4s0qrql8cBKCkE
- CdYO2Cs0FVCnxt58dtD3Pz9hMOBuOAjwUMWCmq5Nt3cCaY6JbMJzZ0P3j4twcvuTqGGM
- 2GHQ==
+ d=linaro.org; s=google; t=1712248792; x=1712853592; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=rpSNZ3/72N8WGXgt60s/omtMEtRgwTlNcwcpc56ND78=;
+ b=QL7FvpGYLyr0pYfm1AT+mGFlhWYAFXrdEq84G3e1FyETUfN5abn+uBY26IeuKvCiRs
+ Lu69Xz2dYDIcUH2FKNva93oHKXXllClwCeflHacPUvevdNqEijpsTApW83dOO/kT/77o
+ 6pOCp0abEURwMterwsNCPGFwsQnnBxPXg0LttlvjFT+ulCBZq89YwQFc0ivbSkP9V2bv
+ itMtsEWFXJqX3AcIRVgfScT1azuQMyV5ij3nFV4hvONlzJiBVWdbJSl1W96D+dC6Zpps
+ 7Bw3qmVBRh6DTVOOd5NNTMPxx/NdoR/Upu4Mx+c27igz+w+O7/AKVe+q1gbH/l3H2+AL
+ Qt9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712248588; x=1712853388;
- h=content-transfer-encoding:content-disposition:mime-version
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=rl46i3DrBjDfPSGCGKqwQP2SynTZKyWMkmvHAmen0b4=;
- b=g46yrL43/fnwMXQtqqHYnaFXGFayJMSqrHj8qd6jK9oWMRKY/pRGgMXAgCimcYyv2k
- Zkjo2CErS8JsR0A3FvUh+IaCdSKDfR3MGPn1/ZpN3Sp91Bz906zb42h6hmdzO0Uk0ISX
- hIBw/Vjf0hdYnWO8MqtVRYE2wQh29n1D+pB3gj6+QbeGqh/5IuAbor7jpy2mvOuREoQo
- PsDIlGJ3lALeMvrbY100O6wOqli8hgQ8nLeg5BMCGLyTjrhPucXRSef6HwowTFEPolXA
- S9EheogetjMofboN4PDE0TQnfPynh+He3S9OknMEXvo9cBr2npMkOytKYuB65yKFEmmb
- qH6g==
-X-Gm-Message-State: AOJu0YzJ0c2Rm4Gj1AwuR9/D+V+2acuuiNt5RT/zuLrbxFv8Q3TcppfO
- R0Hl9nUVwrI6FXyezYkljz7pS7sBY71l5pRcDWmg/wgJiX+pWRUULzsPlFErV8KyUax+azKWZ3l
- FOg==
-X-Google-Smtp-Source: AGHT+IGCLKb6gggeqWMBrnG+rVO+GH0ns7Rxad+hVIH/ocwQiEeLI19LDhqII0DQB+O+qulEbQh8cA==
-X-Received: by 2002:a17:907:60cf:b0:a4e:7d39:dff1 with SMTP id
- hv15-20020a17090760cf00b00a4e7d39dff1mr2450728ejc.8.1712248587917; 
- Thu, 04 Apr 2024 09:36:27 -0700 (PDT)
-Received: from google.com (118.240.90.34.bc.googleusercontent.com.
- [34.90.240.118]) by smtp.gmail.com with ESMTPSA id
- qf31-20020a1709077f1f00b00a4df4243473sm9188609ejc.4.2024.04.04.09.36.27
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 09:36:27 -0700 (PDT)
-Date: Thu, 4 Apr 2024 17:36:23 +0100
-From: =?utf-8?Q?Pierre-Cl=C3=A9ment?= Tosi <ptosi@google.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, 
- Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org
-Subject: [PATCH] target/arm: Fix CNTPOFF_EL2 trap to missing EL3
-Message-ID: <m3al6amhdkmsiy2f62w72ufth6dzn45xg5cz6xljceyibphnf4@ezmmpwk4tnhl>
+ d=1e100.net; s=20230601; t=1712248792; x=1712853592;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=rpSNZ3/72N8WGXgt60s/omtMEtRgwTlNcwcpc56ND78=;
+ b=UwFZ0KZsNhi8rG0gHhQAiLyKLYFh2mKDdp9MeSynAinFKhVXxMGg7DVKMHzlwBt7Op
+ 83WBYBNzadwIfLTiRf86PmR1+mFZYXDgMdgH3V+vfwrbONxmyt3qoakECL7O7Ho+e9Gd
+ +PXMICQZk8+FfcO41y7Aa3DFEz0PN1avmz2vcVBPe4sgxO/IvnFSwX0AkXRjmjjx2yn5
+ olUcFYoDA8TqcnnMcqkNNflkg605yDTo/acEVVrfUlBu8USLQKVx7n3RZYK4TVvPTonw
+ xBN1RB4a/2ZV0QU2jTtyELEjCyT1Uf81Mswmw6xK0sTmiSg1eOEOxBKj1S2MpI470U7j
+ Nb+Q==
+X-Gm-Message-State: AOJu0YxY6ohz+u6+9yaHudJr0MXNPZk+joaCzvWQWdFHcwfKwL1yOr7F
+ LOr9qdILZlN4NfALuC3SV5gxkSrEojDCm6d0EhkRfQJC8wJnBm7gDFLQDPhs+FmpWZFr+lRlwEZ
+ I7A2NnzWNk4F3EgZSDsz74NbIXNHVxujmVrC5XZcFI4/9Tm+R
+X-Google-Smtp-Source: AGHT+IFkShKXyzeeqLlF2uJVrFA+/9t6qlSNOXNpm8SY0R59Fv8yq4t/dNSF5MiYpVi93sIsZ3ioTALj0FvJbphF6V0=
+X-Received: by 2002:a50:d5d3:0:b0:56e:246b:2896 with SMTP id
+ g19-20020a50d5d3000000b0056e246b2896mr660704edj.3.1712248791994; Thu, 04 Apr
+ 2024 09:39:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=ptosi@google.com; helo=mail-ed1-x52f.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+References: <CAFEAcA-VQ0yZMoFEuYWD2twe129OZHaer+-_49inW1exANKV2w@mail.gmail.com>
+ <20240404162641.27528-2-zack@buhman.org>
+In-Reply-To: <20240404162641.27528-2-zack@buhman.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 4 Apr 2024 17:39:40 +0100
+Message-ID: <CAFEAcA_duQyCLGyu4f4KwOCEhnEeELDHGqCM9cQtC4d6rF4piQ@mail.gmail.com>
+Subject: Re: [PATCH v2] sh4: mac.l: implement saturation arithmetic logic
+To: Zack Buhman <zack@buhman.org>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 04 Apr 2024 13:40:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,52 +86,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-EL2 accesses to CNTPOFF_EL2 should only ever trap to EL3 if EL3 is
-present, as described by the reference manual (for MRS):
+On Thu, 4 Apr 2024 at 17:26, Zack Buhman <zack@buhman.org> wrote:
+>
+> The saturation arithmetic logic in helper_macl is not correct.
+>
+> I tested and verified this behavior on a SH7091, the general pattern
+> is a code sequence such as:
+>
+>         sets
+>
+>         mov.l _mach,r2
+>         lds r2,mach
+>         mov.l _macl,r2
+>         lds r2,macl
+>
+>         mova _n,r0
+>         mov r0,r1
+>         mova _m,r0
+>         mac.l @r0+,@r1+
+>
+>     _mach: .long 0x00007fff
+>     _macl: .long 0x12345678
+>     _m:    .long 0x7fffffff
+>     _n:    .long 0x7fffffff
+>
+> Test case 0: (no int64_t overflow)
+>   given; prior to saturation mac.l:
+>     mach = 0x00007fff macl = 0x12345678
+>     @r0  = 0x7fffffff @r1  = 0x7fffffff
+>
+>   expected saturation mac.l result:
+>     mach = 0x00007fff macl = 0xffffffff
+>
+>   qemu saturation mac.l result (prior to this commit):
+>     mach = 0x00007ffe macl = 0x12345678
+>
+> Test case 1: (no int64_t overflow)
+>   given; prior to saturation mac.l:
+>     mach = 0xffff8000 macl = 0x00000000
+>     @r0  = 0xffffffff @r1  = 0x00000001
+>
+>   expected saturation mac.l result:
+>     mach = 0xffff8000 macl = 0x00000000
+>
+>   qemu saturation mac.l result (prior to this commit):
+>     mach = 0xffff7fff macl = 0xffffffff
+>
+> Test case 2: (int64_t addition overflow)
+>   given; prior to saturation mac.l:
+>     mach = 0x80000000 macl = 0x00000000
+>     @r0  = 0xffffffff @r1  = 0x00000001
+>
+>   expected saturation mac.l result:
+>     mach = 0xffff8000 macl = 0x00000000
+>
+>   qemu saturation mac.l result (prior to this commit):
+>     mach = 0xffff7fff macl = 0xffffffff
+>
+> Test case 3: (int64_t addition overflow)
+>   given; prior to saturation mac.l:
+>     mach = 0x7fffffff macl = 0x00000000
+>     @r0 = 0x7fffffff @r1 = 0x7fffffff
+>
+>   expected saturation mac.l result:
+>     mach = 0x00007fff macl = 0xffffffff
+>
+>   qemu saturation mac.l result (prior to this commit):
+>     mach = 0xfffffffe macl = 0x00000001
+>
+> All of the above also matches the description of MAC.L as documented
+> in cd00147165-sh-4-32-bit-cpu-core-architecture-stmicroelectronics.pdf
 
-  /* ... */
-  elsif PSTATE.EL == EL2 then
-      if Halted() && HaveEL(EL3) && /*...*/ then
-          UNDEFINED;
-      elsif HaveEL(EL3) && SCR_EL3.ECVEn == '0' then
-          /* ... */
-      else
-          X[t, 64] = CNTPOFF_EL2;
+Hi. I just noticed that you didn't include a signed-off-by line
+in your commit message. We need these as they're how you say
+that you're legally OK to contribute this code to QEMU and
+you're happy for it to go into the project:
 
-However, the existing implementation of gt_cntpoff_access() always
-returns CP_ACCESS_TRAP_EL3 for EL2 accesses with SCR_EL3.ECVEn unset. In
-pseudo-code terminology, this corresponds to assuming that HaveEL(EL3)
-is always true, which is wrong. As a result, QEMU panics in
-access_check_cp_reg() when started without EL3 and running EL2 code
-accessing the register (e.g. any recent KVM booting a guest).
+https://www.qemu.org/docs/master/devel/submitting-a-patch.html#patch-emails-must-include-a-signed-off-by-line
+has links to what exactly this means, but basically the
+requirement is that the last line of your commit message should be
+"Signed-off-by: Your Name <your@email>"
 
-Therefore, add the HaveEL(EL3) check to gt_cntpoff_access().
+In this case, if you just reply to this email with that, we
+can pick it up and fix up the commit message when we apply the
+patch.
 
-Cc: qemu-stable@nongnu.org
-Fixes: 2808d3b38a52 ("target/arm: Implement FEAT_ECV CNTPOFF_EL2 handling")
-Signed-off-by: Pierre-Clément Tosi <ptosi@google.com>
----
- target/arm/helper.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> ---
+>  target/sh4/op_helper.c | 31 +++++++++++++++++++++----------
+>  1 file changed, 21 insertions(+), 10 deletions(-)
+>
+> diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
+> index 4559d0d376..ee16524083 100644
+> --- a/target/sh4/op_helper.c
+> +++ b/target/sh4/op_helper.c
+> @@ -160,18 +160,29 @@ void helper_ocbi(CPUSH4State *env, uint32_t address)
+>
+>  void helper_macl(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
+>  {
+> -    int64_t res;
+> -
+> -    res = ((uint64_t) env->mach << 32) | env->macl;
+> -    res += (int64_t) (int32_t) arg0 *(int64_t) (int32_t) arg1;
+> -    env->mach = (res >> 32) & 0xffffffff;
+> -    env->macl = res & 0xffffffff;
+> +    int32_t value0 = (int32_t)arg0;
+> +    int32_t value1 = (int32_t)arg1;
+> +    int64_t mul = ((int64_t)value0) * ((int64_t)value1);
+> +    int64_t mac = (((uint64_t)env->mach) << 32) | env->macl;
+> +    int64_t result;
+> +    bool overflow = sadd64_overflow(mac, mul, &result);
+> +    /* Perform 48-bit saturation arithmetic if the S flag is set */
+>      if (env->sr & (1u << SR_S)) {
+> -        if (res < 0)
+> -            env->mach |= 0xffff0000;
+> -        else
+> -            env->mach &= 0x00007fff;
+> +        /*
+> +         * The sign bit of `mac + mul` may overflow. The MAC unit on
+> +         * real SH-4 hardware has equivalent carry/saturation logic:
+> +         */
+> +        const int64_t upper_bound =  ((1ull << 47) - 1);
+> +        const int64_t lower_bound = -((1ull << 47) - 0);
+> +
+> +        if (overflow) {
+> +            result = (mac < 0) ? lower_bound : upper_bound;
+> +        } else {
+> +            result = MIN(MAX(result, lower_bound), upper_bound);
+> +        }
+>      }
+> +    env->macl = result;
+> +    env->mach = result >> 32;
+>  }
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 3f3a5b55d4..13ad90cac1 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3452,7 +3452,8 @@ static CPAccessResult gt_cntpoff_access(CPUARMState *env,
-                                         const ARMCPRegInfo *ri,
-                                         bool isread)
- {
--    if (arm_current_el(env) == 2 && !(env->cp15.scr_el3 & SCR_ECVEN)) {
-+    if (arm_current_el(env) == 2 && arm_feature(env, ARM_FEATURE_EL3) &&
-+        !(env->cp15.scr_el3 & SCR_ECVEN)) {
-         return CP_ACCESS_TRAP_EL3;
-     }
-     return CP_ACCESS_OK;
--- 
-2.44.0.478.gd926399ef9-goog
+I haven't checked the sh4 docs but the change looks right, so
 
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
--- 
-Pierre
+thanks
+-- PMM
 
