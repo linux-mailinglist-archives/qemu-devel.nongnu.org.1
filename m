@@ -2,82 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40098986BB
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A51689884D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:53:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsLmk-0004ow-A6; Thu, 04 Apr 2024 08:01:38 -0400
+	id 1rsMa0-0008HO-6K; Thu, 04 Apr 2024 08:52:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1rsLmd-0004kn-KF; Thu, 04 Apr 2024 08:01:32 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <zheyuma97@gmail.com>)
- id 1rsLmb-00063z-J3; Thu, 04 Apr 2024 08:01:31 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56dc9955091so966743a12.1; 
- Thu, 04 Apr 2024 05:01:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <prvs=817f4dfc0=jhnberg@amazon.co.uk>)
+ id 1rsLpv-0006Mp-SI; Thu, 04 Apr 2024 08:04:55 -0400
+Received: from smtp-fw-9105.amazon.com ([207.171.188.204])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <prvs=817f4dfc0=jhnberg@amazon.co.uk>)
+ id 1rsLpq-0006rh-KN; Thu, 04 Apr 2024 08:04:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1712232084; x=1712836884; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=GO0ls1hQiObcHd1DBdp8MP2QOtBJ7Bpa+kAIWvDYvC4=;
- b=H/ngHO41KQmCVhGvGkzoFk7L4lk+f9SNxwZ26AecKYflRs1kCoXqLLG2CGogza1HCP
- 4h9pcmbg1M9XLALiEsNTKf7NKTiuG+LT/9LhrLnjaUfrsd1ghir0Qhs4fBLGjBangvaa
- jBMzebubTI2TSZ1G5A1ulOfdvfiXOX1aXD6j1mQuPCHA1Tj5SXLLGZ6V+XZ0OgBZ14+i
- +gDbtyeeFj3isKz0u0bbEp21muX5B93NzXAh+4DP5xOt/VSI/fsgIzv0HrC/AIMRUSmr
- oQBNy/KBLzbYLnz5MR0tJ7EjkvL+9gd15QxwS3m8pzBnRzj+q7RIUBmjqHy2/oDkBK72
- bURQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712232084; x=1712836884;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=GO0ls1hQiObcHd1DBdp8MP2QOtBJ7Bpa+kAIWvDYvC4=;
- b=F7n3hI0yBfEOzYU1cZl3I796GVgOlrnkpmjxMC3wxHq/b9TmYDn6WPdus+gcSOCe0A
- SdIm6FV+N9f1qisVXvnKKMtwduITuC0YYVGFHNf7yS6U3KQWh9eFbXUeJIUjGhpfbTRq
- w7AtldRNGcI6LtCmAe+1wDWHpfssQIJhdmJM+g7OBO1v8miGwhYPwhmAlncOtR0yHIrw
- rzcZN/OLClrlG3NR3ovO4LxqPVOXpxQXPvFBPRxt+jAgpKobXjvDP19jLCOleTZMEpUT
- Ag3gT7VmHo9NnQxqdfPrrzi0d2P1/2EMYspzpg0hWpd7WY03Qa9EXum3EQxNzbDvr2r/
- W5UA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXbKbmSdBwbNM8P08f7xG8Rr9jDEMaHxil7p1ZGfCQSOf7wsD4JPqu4JcazAxaKTsnYxAe2GSEMlWqH1cgscSdrIQR8vdwfZRscrMULR9OBV74tpO297YwREFxN7Q==
-X-Gm-Message-State: AOJu0YzSOdv/DFwP7/U7qYIey4VXRCf10zuQRbEB/vlj8AycP2Em1Rkm
- UTi40sa0/Y6q+A+227skKrN566VjH3oh2eiFgDf/GkE7cKhgj4I=
-X-Google-Smtp-Source: AGHT+IH9qSK6veOtOWJPKIpSLCR7CLJytg6ApvMHK1xEf0NisgiLxIiqxyJHzZrA9bvXHHCd+UN7Fw==
-X-Received: by 2002:a50:a6d4:0:b0:567:45e2:c4db with SMTP id
- f20-20020a50a6d4000000b0056745e2c4dbmr1761556edc.39.1712232083691; 
- Thu, 04 Apr 2024 05:01:23 -0700 (PDT)
-Received: from wing.epfl.ch (dhcp-122-dist-b-021.epfl.ch. [128.178.122.21])
- by smtp.gmail.com with ESMTPSA id
- cf2-20020a0564020b8200b0056b0af78d80sm9268325edb.34.2024.04.04.05.01.23
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 05:01:23 -0700 (PDT)
-From: Zheyu Ma <zheyuma97@gmail.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Cc: Zheyu Ma <zheyuma97@gmail.com>, qemu-block@nongnu.org,
- qemu-devel@nongnu.org
-Subject: [PATCH] block/virtio-blk: Fix memory leak from virtio_blk_zone_report
-Date: Thu,  4 Apr 2024 14:00:40 +0200
-Message-Id: <20240404120040.1951466-1-zheyuma97@gmail.com>
+ d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+ s=amazon201209; t=1712232291; x=1743768291;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=sVywjRiZ1vFgVRZg9B7Oj01vGsLIDcLjACuW81lksaM=;
+ b=KvT5ARbZ53uim7LDO/AOWyUw0i2AxWS3M1fihmK6wkfzv4xo42kwMQvq
+ KOPfZeTWTWchhiiPtdCzfXxiXE5lHEpDgh536+7sv/zspOCIatMGQYzkS
+ 5iTgmVrLlubhdkpphCtaBZc/K0m4gpzgeA8aEk85Dimg9lHF9/C0cukxV A=;
+X-IronPort-AV: E=Sophos;i="6.07,179,1708387200"; d="scan'208";a="716688577"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO
+ smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+ by smtp-border-fw-9105.sea19.amazon.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 12:04:27 +0000
+Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:34272]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.5.247:2525]
+ with esmtp (Farcaster)
+ id 6b2bd791-1243-44c6-ad62-633fa15ad325; Thu, 4 Apr 2024 12:04:25 +0000 (UTC)
+X-Farcaster-Flow-ID: 6b2bd791-1243-44c6-ad62-633fa15ad325
+Received: from EX19D047EUA002.ant.amazon.com (10.252.50.60) by
+ EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 4 Apr 2024 12:04:25 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ EX19D047EUA002.ant.amazon.com (10.252.50.60) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Thu, 4 Apr 2024 12:04:25 +0000
+Received: from ubfa7eda7e45052.ant.amazon.com (10.106.83.9) by
+ mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28 via Frontend Transport; Thu, 4 Apr 2024 12:04:23 +0000
+From: John Berg <jhnberg@amazon.co.uk>
+To: <qemu-devel@nongnu.org>
+CC: <kbusch@kernel.org>, <its@irrelevant.dk>, <foss@defmacro.it>,
+ <qemu-block@nongnu.org>, John Berg <jhnberg@amazon.com>, John Berg
+ <jhnberg@amazon.co.uk>
+Subject: [PATCH] hw/nvme: Add support for setting the MQES for the NVMe
+ emulation
+Date: Thu, 4 Apr 2024 13:04:18 +0100
+Message-ID: <20240404120418.1611513-1-jhnberg@amazon.co.uk>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=zheyuma97@gmail.com; helo=mail-ed1-x535.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=207.171.188.204;
+ envelope-from=prvs=817f4dfc0=jhnberg@amazon.co.uk;
+ helo=smtp-fw-9105.amazon.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
+ UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 04 Apr 2024 08:52:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,42 +87,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This modification ensures that in scenarios where the buffer size is
-insufficient for a zone report, the function will now properly set an
-error status and proceed to a cleanup label, instead of merely
-returning.
+From: John Berg <jhnberg@amazon.com>
 
-The following ASAN log reveals it:
+The MQES field in the CAP register describes the Maximum Queue Entries
+Supported for the IO queues of an NVMe controller. Adding a +1 to the
+value in this field results in the total queue size. A full queue is
+when a queue of size N contains N - 1 entries, and the minimum queue
+size is 2. Thus the lowest MQES value is 1.
 
-==1767400==ERROR: LeakSanitizer: detected memory leaks
-Direct leak of 312 byte(s) in 1 object(s) allocated from:
-    #0 0x64ac7b3280cd in malloc llvm/compiler-rt/lib/asan/asan_malloc_linux.cpp:129:3
-    #1 0x735b02fb9738 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x5e738)
-    #2 0x64ac7d23be96 in virtqueue_split_pop hw/virtio/virtio.c:1612:12
-    #3 0x64ac7d23728a in virtqueue_pop hw/virtio/virtio.c:1783:16
-    #4 0x64ac7cfcaacd in virtio_blk_get_request hw/block/virtio-blk.c:228:27
-    #5 0x64ac7cfca7c7 in virtio_blk_handle_vq hw/block/virtio-blk.c:1123:23
-    #6 0x64ac7cfecb95 in virtio_blk_handle_output hw/block/virtio-blk.c:1157:5
+This patch adds the new mqes property to the NVMe emulation which allows
+a user to specify the maximum queue size by setting this property. This
+is useful as it enables testing of NVMe controller where the MQES is
+relatively small. The smallest NVMe queue size supported in NVMe is 2
+submission and completion entries, which means that the smallest legal
+mqes value is 1.
 
-Signed-off-by: Zheyu Ma <zheyuma97@gmail.com>
+The following example shows how the mqes can be set for a the NVMe
+emulation:
+
+-drive id=nvme0,if=none,file=nvme.img,format=raw
+-device nvme,drive=nvme0,serial=foo,mqes=1
+
+If the mqes property is not provided then the default mqes will still be
+0x7ff (the queue size is 2048 entries).
+
+Signed-off-by: John Berg <jhnberg@amazon.co.uk>
 ---
- hw/block/virtio-blk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/nvme/ctrl.c | 9 ++++++++-
+ hw/nvme/nvme.h | 1 +
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-index 92de315f17..bb86e65f65 100644
---- a/hw/block/virtio-blk.c
-+++ b/hw/block/virtio-blk.c
-@@ -768,7 +768,8 @@ static void virtio_blk_handle_zone_report(VirtIOBlockReq *req,
-             sizeof(struct virtio_blk_zone_report) +
-             sizeof(struct virtio_blk_zone_descriptor)) {
-         virtio_error(vdev, "in buffer too small for zone report");
--        return;
-+        err_status = VIRTIO_BLK_S_ZONE_INVALID_CMD;
-+        goto out;
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 127c3d2383..86cda9bc73 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -7805,6 +7805,12 @@ static bool nvme_check_params(NvmeCtrl *n, Error **errp)
+         return false;
      }
  
-     /* start byte offset of the zone report */
++    if (params->mqes < 1)
++    {
++        error_setg(errp, "mqes property cannot be less than 1");
++        return false;
++    }
++
+     if (n->pmr.dev) {
+         if (params->msix_exclusive_bar) {
+             error_setg(errp, "not enough BARs available to enable PMR");
+@@ -8281,7 +8287,7 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
+ 
+     id->ctratt = cpu_to_le32(ctratt);
+ 
+-    NVME_CAP_SET_MQES(cap, 0x7ff);
++    NVME_CAP_SET_MQES(cap, n->params.mqes);
+     NVME_CAP_SET_CQR(cap, 1);
+     NVME_CAP_SET_TO(cap, 0xf);
+     NVME_CAP_SET_CSS(cap, NVME_CAP_CSS_NVM);
+@@ -8451,6 +8457,7 @@ static Property nvme_props[] = {
+                       params.sriov_max_vq_per_vf, 0),
+     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
+                      false),
++    DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
+index bed8191bd5..2e7d31c0ae 100644
+--- a/hw/nvme/nvme.h
++++ b/hw/nvme/nvme.h
+@@ -521,6 +521,7 @@ typedef struct NvmeParams {
+     uint32_t num_queues; /* deprecated since 5.1 */
+     uint32_t max_ioqpairs;
+     uint16_t msix_qsize;
++    uint16_t mqes;
+     uint32_t cmb_size_mb;
+     uint8_t  aerl;
+     uint32_t aer_max_queued;
 -- 
 2.34.1
 
