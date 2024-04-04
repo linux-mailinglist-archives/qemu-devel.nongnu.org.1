@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE7789875A
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE31B898756
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:25:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsM8f-0000pm-Py; Thu, 04 Apr 2024 08:24:17 -0400
+	id 1rsM8z-0001CH-9T; Thu, 04 Apr 2024 08:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rsM8b-0000pB-Nc
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:13 -0400
+ id 1rsM8u-00014u-7V
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rsM8Z-00011r-J3
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:12 -0400
+ id 1rsM8e-00012H-Mk
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712233450;
+ s=mimecast20190719; t=1712233455;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kzYc+J54vOGcpzVPbA08PRAO84CKwMnNUHeaTVFrt3k=;
- b=UvJyu64mjfqqnJ8CAraTqm0LC+QrsoyAA5b2cF/aU6H7XGvJRGlaEspEYk1ZauFzluBJnI
- 6wZN9MhwEdBGbcg4Qzd/DhemE5HL9HA4HfLj3MXl0iLj98n3ubvuK7/L6zoGMnSTi1Yhvu
- X5EVE4zDJP4UTxlbgP4HJxlZ9IaXEno=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7su9FVCHZgY5W4CseWaTDVux0tjQnk92YCDB/2U9JF8=;
+ b=I5NYa+TIor2S59R0RoXA5frmlSzn3Y7kYnHw3pBviA+jby3X91BYULss68TNp8xIMUdS9i
+ hNH1XJ9VUXSWfZAj8v982JOyZx54mRt2UkC5smovZcTThiQAch1SPMCNzYtw9vWNG+xA23
+ iN99YJGO7b8ZtbZYoWv3L9zzYSc2Aj0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-TCQ1EZpnO_indoT5oAYsJg-1; Thu, 04 Apr 2024 08:24:09 -0400
-X-MC-Unique: TCQ1EZpnO_indoT5oAYsJg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a46852c2239so60998966b.1
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 05:24:08 -0700 (PDT)
+ us-mta-498-Qg9tHhcZMcGdIYj5uPOJsg-1; Thu, 04 Apr 2024 08:24:14 -0400
+X-MC-Unique: Qg9tHhcZMcGdIYj5uPOJsg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a4943e972d1so208270566b.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 05:24:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712233447; x=1712838247;
+ d=1e100.net; s=20230601; t=1712233452; x=1712838252;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=kzYc+J54vOGcpzVPbA08PRAO84CKwMnNUHeaTVFrt3k=;
- b=M/MxXjryxY3p5c74CpOGw4QYYQ3ZSCh/24FWp8BCUeBgnkpL7FR3Kyxc4JDYifenYv
- wmpcJjRAssyZXktWUe0wp9AUdQ846vYFen8p8UJErKA/ujj9Kt9p7yc6PoLG2pDjnsz+
- I/CruF/84KyQCdTswjr2dwHcBONNeqyuWjc1YLl0+yCV4knq6acK7K3zoDiFJfNrgwKF
- ZsqbE9IKrgEo1CFYBVVFcCnLo5QGcys6cQkanf3fVsg3d0JN9LIsso2d2bA3cGCkJxcw
- APltttj5c/jV/vA66HZnRyf+sgg5og8tJhC6HvlbwPoFjowX+ti1cwFNaT8onzhOnnbO
- S+3Q==
-X-Gm-Message-State: AOJu0YwqoxNP74lVBT0w6a0AoKaDR+BprksD9ySYqdS0uNYGpAdXCoLj
- LEN++mAQtJoIyoJgK1Pu4ZeVpKRU/DTY17xPxV29NE11QqhTKQorOBj3LQGlxgmtHo8PI9BJPan
- O6DvUwRkoq6OP+Z967lCEjeoBzQm0gZtIyz/FxqzB8RHnpDxhVVRwZTi+m5uOmgIDvFJRXFPbGu
- yUP1tIPpcVlbu1XQOMSiK3XL5U6US7d+coprNB
-X-Received: by 2002:a17:906:94e:b0:a4e:4e8c:bedc with SMTP id
- j14-20020a170906094e00b00a4e4e8cbedcmr1437237ejd.53.1712233447566; 
- Thu, 04 Apr 2024 05:24:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFA0DRjWjymIeLJkewZMdnq50nfbl8le8bp+v6WOjYoCk+nvvjtEE8qK6+sYbGLj04IY8W+AA==
-X-Received: by 2002:a17:906:94e:b0:a4e:4e8c:bedc with SMTP id
- j14-20020a170906094e00b00a4e4e8cbedcmr1437206ejd.53.1712233447297; 
- Thu, 04 Apr 2024 05:24:07 -0700 (PDT)
+ bh=7su9FVCHZgY5W4CseWaTDVux0tjQnk92YCDB/2U9JF8=;
+ b=JAokMf+q30OD7egYVTpyp7AOXChhF+djVu/GV68kv29DLXqETub0z1UI171pOEz9VK
+ miDVxb4kzUfUIeE41OyG4QTmluu8k6F2Oyh76H9rBobUnv9GeENV241xFpHUfacQFQli
+ qguHepkSsH7LQipM+KA/dwAYqCat1gYNuF0nhS5jdrTdRBUJAbrRO65s/XuoilO5xdGw
+ tyVgkqLWnuH8YCkQqfYXuVXH/8YHONcSDouqIS5I7jpWY3QWFbYDlOmY5jlSwXnJXe2h
+ HMzCIF+NDxDiErVKTZd8EsGrJRSvkvTroiunEPtMVBBw8a7sEbC1740h/jwTK3O6LK4t
+ MJZw==
+X-Gm-Message-State: AOJu0YwcD1CGT/IMSFniSJ8Yx6zfKdS/jvMN+nyyu2ez5tzfA9+qZATg
+ jScaHHqAIcnFEpHLkNkMt4lZI1lkXMdKUBGN9F/B6I46WFFlnN4JAdVzYL9ZWDwf1b7JXKIve7M
+ +XhI2VK/XALZZrOoqCGen5AOoeZiQz2RAkP2j6v8A9f9GDdybzoaCGn+w/s8qLRBy25xYdJZOVm
+ ut2K6c/Mmp3XFBFLu3EZNAcHIWxhklrXe9cWp0
+X-Received: by 2002:a17:906:fa0f:b0:a51:8fd0:b1db with SMTP id
+ lo15-20020a170906fa0f00b00a518fd0b1dbmr929372ejb.20.1712233452501; 
+ Thu, 04 Apr 2024 05:24:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEgeevPlWwYI/B4IQOsKCoWqeHZ7WSl59OfcMLqKKYcoDwzXismtyQqnjB7MvNqxHsyArhORQ==
+X-Received: by 2002:a17:906:fa0f:b0:a51:8fd0:b1db with SMTP id
+ lo15-20020a170906fa0f00b00a518fd0b1dbmr929335ejb.20.1712233452191; 
+ Thu, 04 Apr 2024 05:24:12 -0700 (PDT)
 Received: from localhost.localdomain
  (host-87-12-25-33.business.telecomitalia.it. [87.12.25.33])
  by smtp.gmail.com with ESMTPSA id
- r17-20020a170906705100b00a42f6d17123sm8943953ejj.46.2024.04.04.05.24.05
+ ce8-20020a170906b24800b00a466c66804bsm8942382ejb.49.2024.04.04.05.24.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 05:24:06 -0700 (PDT)
+ Thu, 04 Apr 2024 05:24:11 -0700 (PDT)
 From: Stefano Garzarella <sgarzare@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -81,10 +81,9 @@ Cc: Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Laurent Vivier <lvivier@redhat.com>, David Hildenbrand <david@redhat.com>,
  Markus Armbruster <armbru@redhat.com>, gmaglione@redhat.com,
  Jason Wang <jasowang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH for-9.1 v3 06/11] vhost-user: enable frontends on any POSIX
- system
-Date: Thu,  4 Apr 2024 14:23:25 +0200
-Message-ID: <20240404122330.92710-7-sgarzare@redhat.com>
+Subject: [PATCH for-9.1 v3 07/11] libvhost-user: enable it on any POSIX system
+Date: Thu,  4 Apr 2024 14:23:26 +0200
+Message-ID: <20240404122330.92710-8-sgarzare@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240404122330.92710-1-sgarzare@redhat.com>
 References: <20240404122330.92710-1-sgarzare@redhat.com>
@@ -96,10 +95,9 @@ Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -116,61 +114,142 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 The vhost-user protocol is not really Linux-specific so let's enable
-vhost-user frontends for any POSIX system.
+libvhost-user for any POSIX system.
 
-In vhost_net.c we use VHOST_FILE_UNBIND which is defined in a Linux
-specific header, let's define it for other systems as well.
+Compiling it on macOS and FreeBSD some problems came up:
+- avoid to include linux/vhost.h which is avaibale only on Linux
+  (vhost_types.h contains many of the things we need)
+- macOS doesn't provide sys/endian.h, so let's define them
+  (note: libvhost-user doesn't include qemu's headers, so we can't use
+   use "qemu/bswap.h")
+- define eventfd_[write|read] as write/read wrapper when system doesn't
+  provide those (e.g. macOS)
+- copy SEAL defines from include/qemu/memfd.h to make the code works
+  on FreeBSD where MFD_ALLOW_SEALING is defined
+- define MAP_NORESERVE if it's not defined (e.g. on FreeBSD)
 
 Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
- meson.build        | 1 -
- hw/net/vhost_net.c | 5 +++++
- hw/block/Kconfig   | 2 +-
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ meson.build                               |  2 +-
+ subprojects/libvhost-user/libvhost-user.h |  2 +-
+ subprojects/libvhost-user/libvhost-user.c | 60 +++++++++++++++++++++--
+ 3 files changed, 59 insertions(+), 5 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index c9c3217ba4..c19d51501a 100644
+index c19d51501a..3197a2f62e 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -151,7 +151,6 @@ have_tpm = get_option('tpm') \
+@@ -3194,7 +3194,7 @@ endif
+ config_host_data.set('CONFIG_FDT', fdt.found())
  
- # vhost
- have_vhost_user = get_option('vhost_user') \
--  .disable_auto_if(host_os != 'linux') \
-   .require(host_os != 'windows',
-            error_message: 'vhost-user is not available on Windows').allowed()
- have_vhost_vdpa = get_option('vhost_vdpa') \
-diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-index fd1a93701a..fced429813 100644
---- a/hw/net/vhost_net.c
-+++ b/hw/net/vhost_net.c
-@@ -34,8 +34,13 @@
+ vhost_user = not_found
+-if host_os == 'linux' and have_vhost_user
++if have_vhost_user
+   libvhost_user = subproject('libvhost-user')
+   vhost_user = libvhost_user.get_variable('vhost_user_dep')
+ endif
+diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
+index deb40e77b3..e13e1d3931 100644
+--- a/subprojects/libvhost-user/libvhost-user.h
++++ b/subprojects/libvhost-user/libvhost-user.h
+@@ -18,9 +18,9 @@
+ #include <stdbool.h>
+ #include <stddef.h>
+ #include <poll.h>
+-#include <linux/vhost.h>
+ #include <pthread.h>
  #include "standard-headers/linux/virtio_ring.h"
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/virtio-bus.h"
-+#if defined(__linux__)
- #include "linux-headers/linux/vhost.h"
++#include "standard-headers/linux/vhost_types.h"
+ 
+ /* Based on qemu/hw/virtio/vhost-user.c */
+ #define VHOST_USER_F_PROTOCOL_FEATURES 30
+diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
+index 1c361ffd51..03edb4bf64 100644
+--- a/subprojects/libvhost-user/libvhost-user.c
++++ b/subprojects/libvhost-user/libvhost-user.c
+@@ -28,9 +28,7 @@
+ #include <inttypes.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+-#include <sys/eventfd.h>
+ #include <sys/mman.h>
+-#include <endian.h>
+ 
+ /* Necessary to provide VIRTIO_F_VERSION_1 on system
+  * with older linux headers. Must appear before
+@@ -39,8 +37,8 @@
+ #include "standard-headers/linux/virtio_config.h"
+ 
+ #if defined(__linux__)
++#include <endian.h>
+ #include <sys/syscall.h>
+-#include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <linux/vhost.h>
+ #include <sys/vfs.h>
+@@ -52,6 +50,62 @@
+ 
+ #endif
+ 
++#if defined(__APPLE__) && (__MACH__)
++#include <libkern/OSByteOrder.h>
++#define htobe16(x) OSSwapHostToBigInt16(x)
++#define htole16(x) OSSwapHostToLittleInt16(x)
++#define be16toh(x) OSSwapBigToHostInt16(x)
++#define le16toh(x) OSSwapLittleToHostInt16(x)
++
++#define htobe32(x) OSSwapHostToBigInt32(x)
++#define htole32(x) OSSwapHostToLittleInt32(x)
++#define be32toh(x) OSSwapBigToHostInt32(x)
++#define le32toh(x) OSSwapLittleToHostInt32(x)
++
++#define htobe64(x) OSSwapHostToBigInt64(x)
++#define htole64(x) OSSwapHostToLittleInt64(x)
++#define be64toh(x) OSSwapBigToHostInt64(x)
++#define le64toh(x) OSSwapLittleToHostInt64(x)
 +#endif
- 
-+#ifndef VHOST_FILE_UNBIND
-+#define VHOST_FILE_UNBIND -1
++
++#ifdef CONFIG_EVENTFD
++#include <sys/eventfd.h>
++#else
++#define eventfd_t uint64_t
++
++int eventfd_write(int fd, eventfd_t value)
++{
++    return (write(fd, &value, sizeof(value)) == sizeof(value)) ? 0 : -1;
++}
++
++int eventfd_read(int fd, eventfd_t *value)
++{
++    return (read(fd, value, sizeof(*value)) == sizeof(*value)) ? 0 : -1;
++}
 +#endif
++
++#ifdef MFD_ALLOW_SEALING
++#include <fcntl.h>
++
++#ifndef F_LINUX_SPECIFIC_BASE
++#define F_LINUX_SPECIFIC_BASE 1024
++#endif
++
++#ifndef F_ADD_SEALS
++#define F_ADD_SEALS (F_LINUX_SPECIFIC_BASE + 9)
++#define F_GET_SEALS (F_LINUX_SPECIFIC_BASE + 10)
++
++#define F_SEAL_SEAL     0x0001  /* prevent further seals from being set */
++#define F_SEAL_SHRINK   0x0002  /* prevent file from shrinking */
++#define F_SEAL_GROW     0x0004  /* prevent file from growing */
++#define F_SEAL_WRITE    0x0008  /* prevent writes */
++#endif
++#endif
++
++#ifndef MAP_NORESERVE
++#define MAP_NORESERVE 0
++#endif
++
+ #include "include/atomic.h"
  
- /* Features supported by host kernel. */
- static const int kernel_feature_bits[] = {
-diff --git a/hw/block/Kconfig b/hw/block/Kconfig
-index 9e8f28f982..29ee09e434 100644
---- a/hw/block/Kconfig
-+++ b/hw/block/Kconfig
-@@ -40,7 +40,7 @@ config VHOST_USER_BLK
-     bool
-     # Only PCI devices are provided for now
-     default y if VIRTIO_PCI
--    depends on VIRTIO && VHOST_USER && LINUX
-+    depends on VIRTIO && VHOST_USER
- 
- config SWIM
-     bool
+ #include "libvhost-user.h"
 -- 
 2.44.0
 
