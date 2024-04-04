@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE3D98991E2
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 01:09:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 122E38991D6
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 01:08:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsWAV-00028F-VX; Thu, 04 Apr 2024 19:06:52 -0400
+	id 1rsWAX-00028a-2q; Thu, 04 Apr 2024 19:06:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAR-000272-Au
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:47 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1rsWAS-00027b-2z
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:48 -0400
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAL-0007ox-Qp
+ id 1rsWAN-0007pC-6h
  for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:44 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-5e152c757a5so1126937a12.2
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2a2c9903ef0so1149382a91.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 16:06:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712272000; x=1712876800; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712272002; x=1712876802; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nSa2977I3Rq8Xc+67Y2/yCKgEWXvHU4DRnUfHiUzUVE=;
- b=xO+zmGXVMPg0Us5fPhv6Fjv83GcbyrgECUj6JbXfisfn6lSNzsINhsxVORngNwg2li
- OWNS+grktLrMraxpmpKBRkGRQPXH+6z2SYUnxXfSsNg6onQry1/5asWYgboDiiYsgaAo
- wihH8Exv/zrojpfgwNZyVAlYEQKF4YIkah09bkoYWZbrYRCUZ9Fn9DENOBPg+UAV1qdb
- a8RVvFaARbh07hB58awocumjSZGHhM8zVPKwAsw7ZvCo1zsSt0U31iVFDksFgnfxOrps
- VfwQ5ia/MUpbnf+qwjDVjjnu9LZmEiHn6lw/+0XDa2tlRbhrz0FBdltOFKlWTL1KVAxw
- Njug==
+ bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
+ b=fiaYcA4whMgC7FL8KEWtoPUAF4N34MaHkmu4FYmMjaSKwnJL6s6MgwbLZbTL4AYHb5
+ MwLzbSwVSOxPGJmbIXDXo3uIqJD5CAA8fYF6z38O87MmTYey3J6fOeLw3rJRNKVsprlV
+ 16tUCJHjpRzEGGL9b3XyhxVNv8JCrsBIlg6MmdkTuPfyElGAH1kTnKSEyCBuv3zOCGh/
+ E/Za0fCe6ZP8yu4MuYxRlpyVzeuaTwQ4hh6hqFiPrDcIbuylWNV7RrDdXXW0n6wLV1UV
+ 2/t8fNWXjv3z3RHSB0RMdL5VWK2fsXYrY1tetTqfvmcamUUpTsM0rCvExd5KOWuY+Ma1
+ sdkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712272000; x=1712876800;
+ d=1e100.net; s=20230601; t=1712272002; x=1712876802;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nSa2977I3Rq8Xc+67Y2/yCKgEWXvHU4DRnUfHiUzUVE=;
- b=Mwr/m/VPYXrFljkw+9od6hOE272xo1qj8wXVZBH4vz3RFDQfrn0aJJgJl1GKEHKBDc
- vvqadngD1JZGhW0PAwx8fgx92RQeme8DQa+xjxGs343L8iPSjPOPUvRT/qxBXIjnb6Lh
- 2dFT3g+TtBcN0NOTZQyzaWoy7MetXfDKnWQVe3Er9JXbwwl9yhcWeNi775or7kZcG6zC
- V8nF8jVHNAX8XYKYuv4OMJWBF0jwpid8HPLUQuN5eP8VPFagBWyohYNzeAls1FkefP2M
- JOnv95dECJrZ3mYskxFyBpi5lB25VRFJyHN+lIM2jAcKGrnZy1jp1Uym/1VWl4dKTVeA
- wx6Q==
-X-Gm-Message-State: AOJu0Yyph2FBuXVCo55MIdNfoVFny4uHPr2IKN4V6GnM0lVBCx3awuKF
- 1yRZuOybvN5Gx7iT6KMH53vP7TbrPJXekLf4KvxQh+pAKPoDxgZDw2b4cqyjpx5sQmZfnec2Kmr
- f
-X-Google-Smtp-Source: AGHT+IFJYcHzYY0rDK188uYBIlwpFDfEgZawsHuD2PpJm28X56udPNkyYFfqbeem8ot8bCMcQyVK8Q==
-X-Received: by 2002:a17:90b:3e82:b0:2a1:fcc2:bf36 with SMTP id
- rj2-20020a17090b3e8200b002a1fcc2bf36mr3594875pjb.22.1712272000656; 
- Thu, 04 Apr 2024 16:06:40 -0700 (PDT)
+ bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
+ b=s/DvDjbLJvav5CL8ozqoI4jOC093cGSP24kJIDWPp5vF61drNJFymuisiLNjoXOdi2
+ MjVCw7hVT8pF3GK1Utsitly36xWSCN0KuZ1agS/k/bYd1eDbez/yFFqL+yWeIjx9XoK8
+ XuzOd/Sam0otDhb/J2C3nQYIH8ZVJF426ogbF8xq2iEQetoqSm1YaAZHfm2y/4JX9zER
+ 6b8/ccspU4LluTWjV62Z3Jt1Lo/UjqXoLC5KWEs+5NPieDlYMIUFj5uQMf8uWi7JT6sq
+ 1M7Qe0wpeDV9IQ5mA3j+EQUHpKXph6Pqf77Ed98kyyQ2Z0/HKznF84yunl0FLSuphG6E
+ WezQ==
+X-Gm-Message-State: AOJu0YymVrk7phiiGSpC9VJjWJf3ntFQsy2HUOAXXFDnWoA5rR15+KHA
+ XCY5V1gStD22WVRPFacaKi0J3eb8gzXB7cCsHV+14q3UfYpFZhK2p5C9bcDcK6PxsoA6Av0Hzas
+ t
+X-Google-Smtp-Source: AGHT+IHWiGp8/WcrXazbl7SYxrPNHSC8bzy537ihdQi24cUNQyJDGG8smImIQ3fgcUY397KuOD30eA==
+X-Received: by 2002:a17:90b:4ac1:b0:29b:22d2:9dd5 with SMTP id
+ mh1-20020a17090b4ac100b0029b22d29dd5mr1145312pjb.38.1712272001890; 
+ Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- q36-20020a17090a17a700b002a2f3cfc92asm1052592pja.16.2024.04.04.16.06.39
+ q36-20020a17090a17a700b002a2f3cfc92asm1052592pja.16.2024.04.04.16.06.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 16:06:40 -0700 (PDT)
+ Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v2 20/21] plugins: Inline plugin_gen_empty_callback
-Date: Thu,  4 Apr 2024 13:06:10 -1000
-Message-Id: <20240404230611.21231-21-richard.henderson@linaro.org>
+Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Subject: [PATCH v2 21/21] plugins: Update the documentation block for
+ plugin-gen.c
+Date: Thu,  4 Apr 2024 13:06:11 -1000
+Message-Id: <20240404230611.21231-22-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240404230611.21231-1-richard.henderson@linaro.org>
 References: <20240404230611.21231-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,62 +93,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Each caller can use tcg_gen_plugin_cb directly.
-
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/plugin-gen.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ accel/tcg/plugin-gen.c | 31 ++++---------------------------
+ 1 file changed, 4 insertions(+), 27 deletions(-)
 
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index c0cbc26984..d914d64de0 100644
+index d914d64de0..3db74ae9bf 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -60,19 +60,6 @@ enum plugin_gen_from {
-     PLUGIN_GEN_AFTER_TB,
- };
- 
--static void plugin_gen_empty_callback(enum plugin_gen_from from)
--{
--    switch (from) {
--    case PLUGIN_GEN_AFTER_INSN:
--    case PLUGIN_GEN_FROM_TB:
--    case PLUGIN_GEN_FROM_INSN:
--        tcg_gen_plugin_cb(from);
--        break;
--    default:
--        g_assert_not_reached();
--    }
--}
--
- /* called before finishing a TB with exit_tb, goto_tb or goto_ptr */
- void plugin_gen_disable_mem_helpers(void)
- {
-@@ -362,7 +349,7 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
-         ptb->mem_only = mem_only;
-         ptb->mem_helper = false;
- 
--        plugin_gen_empty_callback(PLUGIN_GEN_FROM_TB);
-+        tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
-     }
- 
-     tcg_ctx->plugin_insn = NULL;
-@@ -419,12 +406,12 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
-         insn->haddr = ptb->haddr2 + pc - ptb->vaddr2;
-     }
- 
--    plugin_gen_empty_callback(PLUGIN_GEN_FROM_INSN);
-+    tcg_gen_plugin_cb(PLUGIN_GEN_FROM_INSN);
- }
- 
- void plugin_gen_insn_end(void)
- {
--    plugin_gen_empty_callback(PLUGIN_GEN_AFTER_INSN);
-+    tcg_gen_plugin_cb(PLUGIN_GEN_AFTER_INSN);
- }
- 
- /*
+@@ -14,33 +14,10 @@
+  * Injecting the desired instrumentation could be done with a second
+  * translation pass that combined the instrumentation requests, but that
+  * would be ugly and inefficient since we would decode the guest code twice.
+- * Instead, during TB translation we add "empty" instrumentation calls for all
+- * possible instrumentation events, and then once we collect the instrumentation
+- * requests from plugins, we either "fill in" those empty events or remove them
+- * if they have no requests.
+- *
+- * When "filling in" an event we first copy the empty callback's TCG ops. This
+- * might seem unnecessary, but it is done to support an arbitrary number
+- * of callbacks per event. Take for example a regular instruction callback.
+- * We first generate a callback to an empty helper function. Then, if two
+- * plugins register one callback each for this instruction, we make two copies
+- * of the TCG ops generated for the empty callback, substituting the function
+- * pointer that points to the empty helper function with the plugins' desired
+- * callback functions. After that we remove the empty callback's ops.
+- *
+- * Note that the location in TCGOp.args[] of the pointer to a helper function
+- * varies across different guest and host architectures. Instead of duplicating
+- * the logic that figures this out, we rely on the fact that the empty
+- * callbacks point to empty functions that are unique pointers in the program.
+- * Thus, to find the right location we just have to look for a match in
+- * TCGOp.args[]. This is the main reason why we first copy an empty callback's
+- * TCG ops and then fill them in; regardless of whether we have one or many
+- * callbacks for that event, the logic to add all of them is the same.
+- *
+- * When generating more than one callback per event, we make a small
+- * optimization to avoid generating redundant operations. For instance, for the
+- * second and all subsequent callbacks of an event, we do not need to reload the
+- * CPU's index into a TCG temp, since the first callback did it already.
++ * Instead, during TB translation we add "plugin_cb" marker opcodes
++ * for all possible instrumentation events, and then once we collect the
++ * instrumentation requests from plugins, we generate code for those markers
++ * or remove them if they have no requests.
+  */
+ #include "qemu/osdep.h"
+ #include "qemu/plugin.h"
 -- 
 2.34.1
 
