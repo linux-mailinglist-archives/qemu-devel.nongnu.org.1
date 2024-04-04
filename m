@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB928898A17
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2960F898A1F
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:28:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsO3c-0005GE-Dr; Thu, 04 Apr 2024 10:27:12 -0400
+	id 1rsO3d-0005LG-Jk; Thu, 04 Apr 2024 10:27:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO3L-0005Af-TX
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:56 -0400
+ id 1rsO3Q-0005El-Sm
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:27:04 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO3K-00069J-CT
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:55 -0400
+ id 1rsO3P-00069c-0h
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:27:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=coXnANMghsafE8uP1sD5CawllyACVo682BarUP9QGNc=; b=AS8mxmegJgC88LLv6ipHIAclQd
- Bt8iYJGox0U0zzx8fakv1NsM8v9DzFzUDtR0NK34ny3MwzjgGTAfzeXOFFRH6wPfsLE8nmedm5Nxf
- gHJzka/uRJ/UCvgjIFVvdemhnykbQLkmWQiZ0GSFVVmQ7dMOTYZ9ngGMrkdw/Q3iZutP07olNGokh
- Ew/UZ/TxtTlgLpf/7wa59ifQ4CWdBM1CQXY8h7SATXYmR/sijNd47MLMugNSQ3aT6gcrmFdM1/g02
- ktQxSjEZMoEAfz5BI3ERP4/xPiKJ2cl2JR+eZR4DZqKyUXFcxpeYRyT0vrEU3TGzHctJx0lUDDq2Q
- Y9ziX61pUYnnEEyVweHCydsRUsHVn9mCDDWkqmBYJTasECchLgbieqBZttBhrje5UvWUxYL7n3oNI
- 1FwLGhFPTdKooh3mmzZZA7iFIh9QjbOwgKPpaFwIFbRgPtiR/eNAdDuy8vQSUXM3p73PEoVMG1YeA
- Ec5OcpbFqthGUICC5anuSNndTZu8ecSz1ueuU1WAZ3ldjLDBRqNJ4kZAXxHXCUxrranKoylZsDUCp
- 2yFj4kWI1LsnbI4T6TC36oGVpOXrBvMZ3Z1A9Ze9zEhgwrkEpXAvcpNBMCtkwQcNfiTFT3wZVxEFo
- 7cVurCZLJTNsOLcteG1xQ/ByxmidMihK3TOry1s8s=;
+ bh=q2mBq0lw1TxpTrwqJqbG8cvHvyVyuZsc/q44zAk+RD4=; b=Y92NwxWtJAHiVRlab2oeQ8iqcI
+ tJg/IBBsv4KVpCgtmhfLlhDvDNTVXpM8u04o4fPGHPCEg5vxssrzZBC/Q90qP6/fEJzpQSIKXi9Kz
+ Li4rKbVI5KByEW35E2KUXxRp/EvOJFfb8Rqi/WZezIaDfDkuUI78Eq/S82Y7gz4tWrMau0dQviYfV
+ 3SR1qcb+xLlmtbIwyeLlC4Mw2VK0LKPOIRU9vwzsJ4bA+88ToEFkDWQv8+uOKrqVQKGwVqhCKtjwf
+ v0PiD6OvSy76IaAAlZywUW165OXZRo0UZb5OKloeOKMwOMt0LeVhPGQL4aQn3JH89MDW4ywrKbXT0
+ TKdRCKq1DxJEqpqh+IjiiwM1laFPEDSry2v2Ey2oNdbSGmmV1Z7R5CQukIDid49geZGhgHU0nmQpx
+ 4vBUZVYm9rz1If35+RKrfe78VEBcX4nkcV5PKAZ1hj2j2GE613n7gjYsEy5LuTzvIvKRz6JWP9rbA
+ QA1NQaJwwLtEb+dQukgJxAQbEWyUn6qfiobW82abK61Jnn9H6WgweLbbnWiNXXZU6IUZ3mGsrOLx7
+ OTrRgyHLMcYjmjcPQmEmH3PxX9XKP9A4AX9yySkE39mAhOlc2ehuH2U+oYviPHHfa9sBdZnDq11Q/
+ y3rVHRNv5p6BJZvfFxHQHHLV5R3LAme6GdPTcf0JI=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2B-000Bmt-UR; Thu, 04 Apr 2024 15:25:47 +0100
+ id 1rsO2G-000Bmt-4h; Thu, 04 Apr 2024 15:25:52 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Thu,  4 Apr 2024 15:25:36 +0100
-Message-Id: <20240404142539.711134-15-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  4 Apr 2024 15:25:37 +0100
+Message-Id: <20240404142539.711134-16-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
 References: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 14/17] esp.c: introduce esp_update_drq() and update
- esp_fifo_{push, pop}_buf() to use it
+Subject: [PULL 15/17] esp.c: update esp_fifo_{push,
+ pop}() to call esp_update_drq()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,93 +79,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This new function sets the DRQ line correctly according to the current transfer
-mode, direction and FIFO contents. Update esp_fifo_push_buf() and esp_fifo_pop_buf()
-to use it so that DRQ is always set correctly when reading/writing multiple bytes
-to/from the FIFO.
+This ensures that the DRQ line is always set correctly when reading/writing
+single bytes to/from the FIFO.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-Id: <20240324191707.623175-15-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240324191707.623175-16-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 48 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 47 insertions(+), 1 deletion(-)
+ hw/scsi/esp.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 9e35c00927..6fd1a12f23 100644
+index 6fd1a12f23..4895181ec1 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -124,6 +124,48 @@ void esp_request_cancelled(SCSIRequest *req)
-     }
- }
- 
-+static void esp_update_drq(ESPState *s)
-+{
-+    bool to_device;
-+
-+    switch (esp_get_phase(s)) {
-+    case STAT_MO:
-+    case STAT_CD:
-+    case STAT_DO:
-+        to_device = true;
-+        break;
-+
-+    case STAT_DI:
-+    case STAT_ST:
-+    case STAT_MI:
-+        to_device = false;
-+        break;
-+
-+    default:
-+        return;
-+    }
-+
-+    if (s->dma) {
-+        /* DMA request so update DRQ according to transfer direction */
-+        if (to_device) {
-+            if (fifo8_num_free(&s->fifo) < 2) {
-+                esp_lower_drq(s);
-+            } else {
-+                esp_raise_drq(s);
-+            }
-+        } else {
-+            if (fifo8_num_used(&s->fifo) < 2) {
-+                esp_lower_drq(s);
-+            } else {
-+                esp_raise_drq(s);
-+            }
-+        }
-+    } else {
-+        /* Not a DMA request */
-+        esp_lower_drq(s);
-+    }
-+}
-+
- static void esp_fifo_push(ESPState *s, uint8_t val)
+@@ -170,10 +170,11 @@ static void esp_fifo_push(ESPState *s, uint8_t val)
  {
      if (fifo8_num_used(&s->fifo) == s->fifo.capacity) {
-@@ -137,6 +179,7 @@ static void esp_fifo_push(ESPState *s, uint8_t val)
- static void esp_fifo_push_buf(ESPState *s, uint8_t *buf, int len)
- {
-     fifo8_push_all(&s->fifo, buf, len);
+         trace_esp_error_fifo_overrun();
+-        return;
++    } else {
++        fifo8_push(&s->fifo, val);
+     }
+ 
+-    fifo8_push(&s->fifo, val);
 +    esp_update_drq(s);
  }
+ 
+ static void esp_fifo_push_buf(ESPState *s, uint8_t *buf, int len)
+@@ -184,11 +185,16 @@ static void esp_fifo_push_buf(ESPState *s, uint8_t *buf, int len)
  
  static uint8_t esp_fifo_pop(ESPState *s)
-@@ -180,7 +223,10 @@ static uint32_t esp_fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
- 
- static uint32_t esp_fifo_pop_buf(ESPState *s, uint8_t *dest, int maxlen)
  {
--    return esp_fifo8_pop_buf(&s->fifo, dest, maxlen);
-+    uint32_t len = esp_fifo8_pop_buf(&s->fifo, dest, maxlen);
++    uint8_t val;
 +
+     if (fifo8_is_empty(&s->fifo)) {
+-        return 0;
++        val = 0;
++    } else {
++        val = fifo8_pop(&s->fifo);
+     }
+ 
+-    return fifo8_pop(&s->fifo);
 +    esp_update_drq(s);
-+    return len;
++    return val;
  }
  
- static uint32_t esp_get_tc(ESPState *s)
+ static uint32_t esp_fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
 -- 
 2.39.2
 
