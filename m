@@ -2,121 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A04898CE7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 19:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F684898D2B
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 19:27:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsQUG-0004KF-Mz; Thu, 04 Apr 2024 13:02:52 -0400
+	id 1rsQr0-0008LT-W6; Thu, 04 Apr 2024 13:26:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wafer@jaguarmicro.com>)
- id 1rsQUC-0004JY-Su
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 13:02:49 -0400
-Received: from mail-tyzapc01on2117.outbound.protection.outlook.com
- ([40.107.117.117] helo=APC01-TYZ-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wafer@jaguarmicro.com>)
- id 1rsQU6-0000eN-8U
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 13:02:47 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SNKoniCAVus1jTG/qsw1fAGQfv3BX0VvntJc65IgFi1y4Nm7lGeMbY4KxH/Gwe/+yfDqeaWBLjry2UfQWzjtr3c48FWgsokFkaTqcC9CNz5rbBf0MQdBEZAiDARsjJq1Sq/EBcky1GzeePT3rShHP9ZuZuuairx9T6iXrG0hQye2XYxM0enROSYVqoUVNaujhe5wHzvG+nLyf2MIqC09sf+EMziCr6G036TjYFszpaSV6lh21dRZCu+FIkcZCjJj32v0ITxARry/s+eJ8Xczo6kKpVj/fbD1Ea6NEUT0xdEjHEt4ug1knozhIhW7/0Wkg94SlfdUTo+l4NmGPGjRuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YwDzHiCDBH2brPtN142TsURvVfW3NodchY7UKIQDcD0=;
- b=fxQck9xCNJ7xnbn/wCkLc9sxjOI9rMEbgM+B6dY2XMucBxtFm8Wn9gsYJ57XaRkDGc0BF0aj3Qe81jlcAjWKO3YOIMOhP//r9bNL+ss1qOGVY/Xm51h+r5+DcM349EydC9w4dY89kDRolPGvDYLrD0m1oVW1FIow1cniUMoiZLbofdA6v3vRoQVB9bTBiCgjcSylU/kDLZb4clbViqm3zE4UnUP2T5NAzLpsm8hsBtaS5+xgTQZvp2Xi6AP2HE7++UGVxzEfQLPFcL24+MQBjuQEgR6s1sHaqEyNb5dHHPqsMxIyH0fnz8FeGHrYZ0L7N1P1ziGgj4eVtxdbU1v9oQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
- header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YwDzHiCDBH2brPtN142TsURvVfW3NodchY7UKIQDcD0=;
- b=clWh3XsFXN2nt1KzvZkVZxiOGAmbr79cTy6cB99kf2zJa7ZnvSwS7K9R215jzhmS6STZpgP6FOOK7/SQhY+fXGX4uHkvbHlj5Sm5HJ5WygzDNGOGVugUSoEbCUdNwtpTrYagq0mzrmWbo5YMGJJvYjEHnhmLm9Vf/wlKGpx7iCNYN6FqNmBo3a7kwSK31pC+3AWNQcQsQo1FD5IzsxtQKIiiitBV3vuD0tytdks7YeYFPX9Ov5ch59I6sogUhonQLiUG9CftyRgGkCfLytwNKNgDe4qyIUXPw/6I+KiDOECdfeNpbw85XnBst9MOkC4CSKj79gZRynGATszlCP+oCg==
-Received: from PUZPR06MB4713.apcprd06.prod.outlook.com (2603:1096:301:b4::10)
- by TYZPR06MB6325.apcprd06.prod.outlook.com (2603:1096:400:419::6)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 4 Apr
- 2024 16:57:31 +0000
-Received: from PUZPR06MB4713.apcprd06.prod.outlook.com
- ([fe80::807:eccb:cfd5:e6b5]) by PUZPR06MB4713.apcprd06.prod.outlook.com
- ([fe80::807:eccb:cfd5:e6b5%3]) with mapi id 15.20.7409.042; Thu, 4 Apr 2024
- 16:57:30 +0000
-From: Wafer <wafer@jaguarmicro.com>
-To: mst@redhat.com,
-	jasowang@redhat.com
-Cc: qemu-devel@nongnu.org, angus.chen@jaguarmicro.com,
- Wafer <wafer@jaguarmicro.com>
-Subject: [PATCH v2] hw/virtio: Fix packed virtqueue flush used_idx
-Date: Fri,  5 Apr 2024 00:57:06 +0800
-Message-Id: <20240404165706.23338-2-wafer@jaguarmicro.com>
-X-Mailer: git-send-email 2.27.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0025.apcprd02.prod.outlook.com
- (2603:1096:4:195::21) To PUZPR06MB4713.apcprd06.prod.outlook.com
- (2603:1096:301:b4::10)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsQqs-0008L6-2w
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 13:26:14 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsQqp-0005Nq-Ur
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 13:26:13 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-4162c11acf7so5815615e9.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 10:26:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712251570; x=1712856370; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=GhoJjn1+S0shgeZiJQ+ETSp/HUQvC+RRpX5HsasrRVA=;
+ b=eGngwUlzbGH7v9d1Mn/vhy6HNKd1JNSqfwvL8WDv730/TgXTM2GCydPE7qzobEk9sp
+ 6IVuj2sYVEzYcVZc1JHt+z6l03FClzSnshlTt5sOI7uCbrwBuMuVUzDTA1VhdKA1F0wC
+ BrF2xjo5Fnfm+nuosc0XPS+BzoVEGIfY7pqFc5hlw6GXOD2/uA0fMPwytZvAFSfYGMDj
+ UaA+LJsEMvRk/OgjUTU/1bd8F3vtftIcQ4aA5O+rtwSMjUbKq9nFu5PrKXwP9+3gPBM2
+ FucGpgTWr/2/kiuMy29twbUglsLCL0BERGIGafMw+ACD/Qpo0cokxGZeUUjJ+O6QEiGk
+ mZ7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712251570; x=1712856370;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=GhoJjn1+S0shgeZiJQ+ETSp/HUQvC+RRpX5HsasrRVA=;
+ b=aIkh3AL/UEmAsKyfBjChLuKUDK7DEJgAP6TAIhaPCfmP5Ka/G5HkBQC8z7pvF931+F
+ WPvUUShO0Bi37P8P3wyHvFadj9zhIEQLyI11aLC2qb0r4C3up7s4yPfXrdmdXwbw9lK1
+ YoBqwPRpz9yQDsFxij7Q9fmZ+GKfX5kt5MpICrLPd8GNhI0SdOfIyLw6GydqZ/Glu7Cl
+ 0bX/3ZIKMRm2FA0YLv4jnx+rRSnFJGcgWu49uHpCOUSRvoLVwRQculTHkIjiMD+3OHMO
+ MWGEH4yr5SMyJd0zrI6G7F5ZvTu4A+o4XMONSxRv5VUloo7ih8qM4WLSbWpK9ZvJMb9s
+ zR7A==
+X-Gm-Message-State: AOJu0YzjlSiVlFPycOWzweEZRbH82ipdZKH5DNN7J+qclhEoMzZ7yG23
+ /pW+o0hKYwe7QyTS6M0kewP3m9xh7R8ell8QfuBN3h0fraZfddBrtn0xyZHQXtE=
+X-Google-Smtp-Source: AGHT+IHuNpkd0CFVnyB7slXWpsCog7FsL0/Z/dFCHFXnhCttfVLiyVMrOjqAjQkEP6dqe0lH1P35pA==
+X-Received: by 2002:adf:cb8a:0:b0:33d:dcd4:9d8f with SMTP id
+ q10-20020adfcb8a000000b0033ddcd49d8fmr2423242wrh.65.1712251570137; 
+ Thu, 04 Apr 2024 10:26:10 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.216.111])
+ by smtp.gmail.com with ESMTPSA id
+ dw11-20020a0560000dcb00b00341c7129e28sm20653058wrb.91.2024.04.04.10.26.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 04 Apr 2024 10:26:09 -0700 (PDT)
+Message-ID: <dc5a8b5f-9251-477f-893e-53cd4a320a07@linaro.org>
+Date: Thu, 4 Apr 2024 19:26:08 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PUZPR06MB4713:EE_|TYZPR06MB6325:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: NMyfZUqvqz+hCkz0f6Fd9HRz9XFnNN34OKOZ9rEIerDenOeAjp6F0YILVdUwAGqV5SIrpg8pP8wpfVujkKMKbTig5U+MSKOwcvsFyRyKFJw0uXiBQgXJoWODpF+u9EJZxJ3IHM0Hyk4bkYcdGIxOyQZXT6y6MmrrHpycAFd6sb46U2kQu19QQxp/xV0x2vr1IH4LSDDa1jdLI4QCpSQEAlA2JA823huEY3syfiqd8WCWwvOcGZDUYuTVwCEY1ECn3zEQwF15zvWI2O13DTgy0xlvH+cZsktxaEPuy2orq8lUqY4NAGc1fNaE02aDqsaa1CAXVGSh74oKH5MZo9NhyLnuh3Y6Wsk+ZfSluMor4Fgz/36mjPIcoupFKFX9TfBVtzV/3ck8CEdFyLSt7RmgIuPgMQWeACLCShygxrIJGiCwyY2POik9M7Fkd3BO3nvLSXgXkIFigCsQ6/A023Edj3LRKa9g3Uf6kVKYFY50YWrLoyttS05nAdiHgnd1PdAR5rnaFtzM++X6DzSfb7sACxgUySSZaXNMBG+gVf2RnRkneu3rTJ2quAC9GPt+El3+2FL//m+c1F88w8rIOAr6ZZm1AY90jzdL/IVUHjT0twNI9qfeA5GmyFXx6NIjCXXKqhC26fVeJnquD2AOnEYQJNa+GizkvbJ9rMCuoOXff3cFI/nvW2Vk+dRImXy6H2HeRenT7308w6I69fKh7SLgSmYvG8dsgzlJYSV63nraSf4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PUZPR06MB4713.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(52116005)(366007)(376005)(38350700005); DIR:OUT;
- SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?uCEpaxEDKTz0739v/mciqejdS42OAp/Z0jmEqmVRmDA3kRcZsfYlkqBq2or3?=
- =?us-ascii?Q?UuIuP2Ahum1vc/UikVFZMek1GAw2IJGqorIo3/yqckcXfPeOcBZMhfa6Sj0r?=
- =?us-ascii?Q?DH41qnBRAsf2TFdq2QF8ynvPqxfxv+FkDAC37jcptE5qr96I3iEmhgwY1aPK?=
- =?us-ascii?Q?czmXORVS1uD3oTklioa3IbJG9m8VD3s/4yUCNAJ0d6BZm4QG7VWRqHmvvq15?=
- =?us-ascii?Q?i7FrCAnnSrjL1bCOMKTPdARxy75juJ0cOGZ7NOwnaRlrNGDwTJAe2UXNgvMp?=
- =?us-ascii?Q?VFXry+Lw7Whc+d72L6QivJocN1IHv8yL70XwbxRFIzH/J7IORwJVyvZlDW4T?=
- =?us-ascii?Q?q3KwMxXB7qPJC2jvSJACW7lQjRLMsgZa1dAP4jNlGNWa+tGND6F5SUfqlRaw?=
- =?us-ascii?Q?MdunrdvbGP6wzMvugQ4uqkLcrlPmkhRxMgOKAiuTwtr3QL1FbnwbqaBOVUmq?=
- =?us-ascii?Q?c8ck5MsX4tLS+yAKPQCAAyd6x4/+HIsyu3XriO0qtjDAi6J6hQh2FwakQXX+?=
- =?us-ascii?Q?NPJE4ye64717DGs8TnL78l/rRonOckrqTkeSKckfnEcZkYwvPC+6agZ8USC1?=
- =?us-ascii?Q?kgMw3cGGOyBZKgfjvqtJ0ifZaPJEklVpm/8BJI+5i2pm3I0SzfeX4C4RicYQ?=
- =?us-ascii?Q?03hqmyA0PQH5h24egkOmjWSTEx9k7DNvp0WRc7TtX8IPydE3pc+1wE4n/W5R?=
- =?us-ascii?Q?b3WZCyOSd4JvkDRIQL5LZQEjCgN7sVhcOAS06RXdLBTbt887I6eGq3aR3Jb1?=
- =?us-ascii?Q?/QnD7CN1GbVxBpMHqv5YLHNqR+PmIE5Sbv6BgpUL8tloWZWK7ZX+9SLPEMeb?=
- =?us-ascii?Q?uMahPjuX661b/ndpvFLK8k8Ot0I8vznLmfQ0vU5fW8EJRNJxrmzSKrJL/29h?=
- =?us-ascii?Q?9BvStNyLBxXLgyZd5awqyZnYqN6hfCMLFEsX5tCnLrnGUfzndG9U7yB8wIiD?=
- =?us-ascii?Q?XYDPhx42nj7Gd64FHtqexP5Fb+0eBU9lpk2bILB6Zw41Sczn2qc4To/XxaCZ?=
- =?us-ascii?Q?659B2mjlYZ4Z1dqKxlSvItDBzWiooFoWFBBXvEP3b+U3jlxCZ5rj5x3ktbk3?=
- =?us-ascii?Q?OwMeDWh2rE4KwEkBkbwM5I7R4fuV1Vi+n2xI1lkll1u0/GBIEmWEBUli5s19?=
- =?us-ascii?Q?xpOn38YXMy5gQ1h0f4lWVu3/KBoBBia5injpvCLpVIhlJJzUmbvVoOh0RNBg?=
- =?us-ascii?Q?3v5BdgpNhMe4R9WyvnZCip8bI08v9zSwqighTk5MImR+q6Vc/aUWOAR/X3xI?=
- =?us-ascii?Q?xGak1LK03f/0Z8G+7tQQXzVeKPw2lEO3PgLwxea3542nGgV5HY6l1hUPG+GW?=
- =?us-ascii?Q?uQjZFluB24BXZEoycsbWCf+uRBg0D6spLrD00VB6xMUF84VwnXxTNYF/aRri?=
- =?us-ascii?Q?r+JrDAYMK6u0HQ07H4N0F3hdQl6KgxKCsCljpcMvci5zKaQ74NiRdspE4qXK?=
- =?us-ascii?Q?VnXFMPaFbLuTNoTqEq+AFw72ly088FaP3Z9g2a5PTW0iD4IlxGpx3FO3X4w2?=
- =?us-ascii?Q?ceAN5+FPMm+Uk/yo72uaxC4rffOtHPqjtykUkn/mKqO+doMHl+J7Bacy4Cd5?=
- =?us-ascii?Q?SDLp1PkqoztK0w1YO3Lt+VLTgULcdl/1l6mvHggvdX5229A1J7DwsgV/CMC2?=
- =?us-ascii?Q?nA=3D=3D?=
-X-OriginatorOrg: jaguarmicro.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6db98aa-b195-49da-e894-08dc54c850e3
-X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB4713.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Apr 2024 16:57:30.8717 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cdowz/GDuag9dd9FswODtH5iwj72gaTihDWlQ86pUvH2aDfL2iV12DTRINQO/7s/UlJglmZcMjHMvSTTJ87eMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB6325
-Received-SPF: pass client-ip=40.107.117.117;
- envelope-from=wafer@jaguarmicro.com;
- helo=APC01-TYZ-obe.outbound.protection.outlook.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] sh4: mac.l: implement saturation arithmetic logic
+To: Peter Maydell <peter.maydell@linaro.org>, Zack Buhman <zack@buhman.org>
+Cc: qemu-devel@nongnu.org, Yoshinori Sato <ysato@users.sourceforge.jp>
+References: <CAFEAcA-VQ0yZMoFEuYWD2twe129OZHaer+-_49inW1exANKV2w@mail.gmail.com>
+ <20240404162641.27528-2-zack@buhman.org>
+ <CAFEAcA_duQyCLGyu4f4KwOCEhnEeELDHGqCM9cQtC4d6rF4piQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CAFEAcA_duQyCLGyu4f4KwOCEhnEeELDHGqCM9cQtC4d6rF4piQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -132,52 +93,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
-but not the VIRTIO_RING_F_INDIRECT_DESC feature,
-'VirtIONetQueue->rx_vq' will use the merge feature
-to store data in multiple 'elems'.
-The 'num_buffers' in the virtio header indicates how many elements are merged.
-If the value of 'num_buffers' is greater than 1,
-all the merged elements will be filled into the descriptor ring.
-The 'idx' of the elements should be the value of 'vq->used_idx' plus 'ndescs'.
+Hi Zack,
 
-Signed-off-by: Wafer <wafer@jaguarmicro.com>
+Cc'ing the maintainer of this file, Yoshinori:
 
----
-Changes in v2:
-  - Clarify more in commit message;
----
- hw/virtio/virtio.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+$ ./scripts/get_maintainer.pl -f target/sh4/op_helper.c
+Yoshinori Sato <ysato@users.sourceforge.jp> (reviewer:SH4 TCG CPUs)
+(https://www.qemu.org/docs/master/devel/submitting-a-patch.html#cc-the-relevant-maintainer)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index fb6b4ccd83..cab5832cac 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -957,12 +957,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
-         return;
-     }
- 
-+    /*
-+     * For indirect element's 'ndescs' is 1.
-+     * For all other elemment's 'ndescs' is the
-+     * number of descriptors chained by NEXT (as set in virtqueue_packed_pop).
-+     * So When the 'elem' be filled into the descriptor ring,
-+     * The 'idx' of this 'elem' shall be
-+     * the value of 'vq->used_idx' plus the 'ndescs'.
-+     */
-+    ndescs += vq->used_elems[0].ndescs;
-     for (i = 1; i < count; i++) {
--        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
-+        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
-         ndescs += vq->used_elems[i].ndescs;
-     }
-     virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
--    ndescs += vq->used_elems[0].ndescs;
- 
-     vq->inuse -= ndescs;
-     vq->used_idx += ndescs;
--- 
-2.27.0
+On 4/4/24 18:39, Peter Maydell wrote:
+> On Thu, 4 Apr 2024 at 17:26, Zack Buhman <zack@buhman.org> wrote:
+>>
+>> The saturation arithmetic logic in helper_macl is not correct.
+>>
+>> I tested and verified this behavior on a SH7091, the general pattern
+>> is a code sequence such as:
+>>
+>>          sets
+>>
+>>          mov.l _mach,r2
+>>          lds r2,mach
+>>          mov.l _macl,r2
+>>          lds r2,macl
+>>
+>>          mova _n,r0
+>>          mov r0,r1
+>>          mova _m,r0
+>>          mac.l @r0+,@r1+
+>>
+>>      _mach: .long 0x00007fff
+>>      _macl: .long 0x12345678
+>>      _m:    .long 0x7fffffff
+>>      _n:    .long 0x7fffffff
+>>
+>> Test case 0: (no int64_t overflow)
+>>    given; prior to saturation mac.l:
+>>      mach = 0x00007fff macl = 0x12345678
+>>      @r0  = 0x7fffffff @r1  = 0x7fffffff
+>>
+>>    expected saturation mac.l result:
+>>      mach = 0x00007fff macl = 0xffffffff
+>>
+>>    qemu saturation mac.l result (prior to this commit):
+>>      mach = 0x00007ffe macl = 0x12345678
+>>
+>> Test case 1: (no int64_t overflow)
+>>    given; prior to saturation mac.l:
+>>      mach = 0xffff8000 macl = 0x00000000
+>>      @r0  = 0xffffffff @r1  = 0x00000001
+>>
+>>    expected saturation mac.l result:
+>>      mach = 0xffff8000 macl = 0x00000000
+>>
+>>    qemu saturation mac.l result (prior to this commit):
+>>      mach = 0xffff7fff macl = 0xffffffff
+>>
+>> Test case 2: (int64_t addition overflow)
+>>    given; prior to saturation mac.l:
+>>      mach = 0x80000000 macl = 0x00000000
+>>      @r0  = 0xffffffff @r1  = 0x00000001
+>>
+>>    expected saturation mac.l result:
+>>      mach = 0xffff8000 macl = 0x00000000
+>>
+>>    qemu saturation mac.l result (prior to this commit):
+>>      mach = 0xffff7fff macl = 0xffffffff
+>>
+>> Test case 3: (int64_t addition overflow)
+>>    given; prior to saturation mac.l:
+>>      mach = 0x7fffffff macl = 0x00000000
+>>      @r0 = 0x7fffffff @r1 = 0x7fffffff
+>>
+>>    expected saturation mac.l result:
+>>      mach = 0x00007fff macl = 0xffffffff
+>>
+>>    qemu saturation mac.l result (prior to this commit):
+>>      mach = 0xfffffffe macl = 0x00000001
+>>
+>> All of the above also matches the description of MAC.L as documented
+>> in cd00147165-sh-4-32-bit-cpu-core-architecture-stmicroelectronics.pdf
+> 
+> Hi. I just noticed that you didn't include a signed-off-by line
+> in your commit message. We need these as they're how you say
+> that you're legally OK to contribute this code to QEMU and
+> you're happy for it to go into the project:
+> 
+> https://www.qemu.org/docs/master/devel/submitting-a-patch.html#patch-emails-must-include-a-signed-off-by-line
+> has links to what exactly this means, but basically the
+> requirement is that the last line of your commit message should be
+> "Signed-off-by: Your Name <your@email>"
+> 
+> In this case, if you just reply to this email with that, we
+> can pick it up and fix up the commit message when we apply the
+> patch.
+> 
+>> ---
+>>   target/sh4/op_helper.c | 31 +++++++++++++++++++++----------
+>>   1 file changed, 21 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
+>> index 4559d0d376..ee16524083 100644
+>> --- a/target/sh4/op_helper.c
+>> +++ b/target/sh4/op_helper.c
+>> @@ -160,18 +160,29 @@ void helper_ocbi(CPUSH4State *env, uint32_t address)
+>>
+>>   void helper_macl(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
+>>   {
+>> -    int64_t res;
+>> -
+>> -    res = ((uint64_t) env->mach << 32) | env->macl;
+>> -    res += (int64_t) (int32_t) arg0 *(int64_t) (int32_t) arg1;
+>> -    env->mach = (res >> 32) & 0xffffffff;
+>> -    env->macl = res & 0xffffffff;
+>> +    int32_t value0 = (int32_t)arg0;
+>> +    int32_t value1 = (int32_t)arg1;
+>> +    int64_t mul = ((int64_t)value0) * ((int64_t)value1);
+>> +    int64_t mac = (((uint64_t)env->mach) << 32) | env->macl;
+>> +    int64_t result;
+>> +    bool overflow = sadd64_overflow(mac, mul, &result);
+>> +    /* Perform 48-bit saturation arithmetic if the S flag is set */
+>>       if (env->sr & (1u << SR_S)) {
+>> -        if (res < 0)
+>> -            env->mach |= 0xffff0000;
+>> -        else
+>> -            env->mach &= 0x00007fff;
+>> +        /*
+>> +         * The sign bit of `mac + mul` may overflow. The MAC unit on
+>> +         * real SH-4 hardware has equivalent carry/saturation logic:
+>> +         */
+>> +        const int64_t upper_bound =  ((1ull << 47) - 1);
+>> +        const int64_t lower_bound = -((1ull << 47) - 0);
+>> +
+>> +        if (overflow) {
+>> +            result = (mac < 0) ? lower_bound : upper_bound;
+>> +        } else {
+>> +            result = MIN(MAX(result, lower_bound), upper_bound);
+>> +        }
+>>       }
+>> +    env->macl = result;
+>> +    env->mach = result >> 32;
+>>   }
+> 
+> I haven't checked the sh4 docs but the change looks right, so
+> 
+> Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+> 
+> thanks
+> -- PMM
+> 
 
 
