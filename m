@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBF2898A15
+	by mail.lfdr.de (Postfix) with ESMTPS id 8989C898A14
 	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsO35-0004YA-4h; Thu, 04 Apr 2024 10:26:39 -0400
+	id 1rsO34-0004X8-RN; Thu, 04 Apr 2024 10:26:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO32-0004W7-KS
+ id 1rsO32-0004WJ-K9
  for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:36 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2v-00067g-KK
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:33 -0400
+ id 1rsO2z-00067w-6y
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=TfdE4Mobss00wYl99ihXiVhrb1ht35On3qfAUQvS6h0=; b=M4nQ66gSRyNVYW9GDUQmEy4A+R
- 6ozd7NMm1MU0R3w8bD609pcHYWFesuI5HmE9RdoReaj8fZ23xrVoKxJfXRQtuxtgVc2w5aGhzv9Uj
- BFmBG4bqpZyXPfDAo8C9K69caMR37pe1uVm6hJ8Rt0gpxF5hKuhi7gjSrr2uDmZU0fE5v2rWpnndf
- 19EocN5u9uSZ//4YXL8gCjWlaMp2GZOaqUTt39QYtz0T0uDBdGHVB3CGqZTGOCYDh+kwUxvghze/R
- jmN5Is6HxbcwxsX9xeaA4T8z1ysIzgXUE+ocOex6YjDWdPs+XdcDsX6B/g8RhGWtpMQo6cgHfwRHJ
- iguHhzKiCrT2bUJ5JUagyGeEdfIUOnjhUCA2B7X5728LYEKo3IsaS6J0HPdBNHbopX3KactDfVVwb
- joQND9auvY9cX2FqILVWReXIciEMvceyHlvlJ+5aXYv7/8yO0ZTfgeaKslNZmSe3C5Redvhuz4gkK
- 6KVVQkX1/48VCRAytbwqkNIOF4U9dbMVn1s2Ha4m9ycbXh2xs0KAzoWnBK3/8Yh+BBedUahgyP/zH
- 9Npt9BZ7XFc8v+aF9xuG0FnCA5P5NY9R300kbjHL0zVBW7ftdIKKl5gXAsGZ3tS7zbUnJ+JEWZnAo
- YvuuRQbBsIly8Z9tBN+zVUQf143OxgusoQ2aZzLFs=;
+ bh=oKWH6eQrfAJaf+JSRJJa+vY+/duho+xeGgHU0OeZdrw=; b=PDewGj71JNTQngcNpcuz6/1ddY
+ MsnLEKbzAJOafCoaXVVkvYJJ+LBTMXYLcMa8I5rG8fECyWq+VYGtSexnzDdQoT024w2y4/U7XGp2U
+ YUPZM6vVnbqgOjQ9tLsnLbmvrEyFSQkX+25SatZqWjNFWaurU2Xf3Otx1sDGlfYTlECDKl8piUpk0
+ JwbM46JVUqHY7MVpPzI4bUmWcIHQ13k46GVAVJTPmo4Lw0DdJp0vyVtbXeNP/KWT192blub8TNqs7
+ T6cwlZ+lMCGfdmyBQFSJfwAMoU7jEBO6YUBN9dVLxNfJ/y386dSM3XwnkibdY4aUIXA08AO2EIXKw
+ 3fYANkBgt06x6qPypMzbFXyPI3WibDfTtJdJ1kYBnwCFp0gTfrk2i6XanUtNz95QUtf93Mw48i4gr
+ rLivWCtIl+lS6hdGyQicmor+zAfWbfKsoLUyTY7iyB6EH7m9jphNOb1pUUED+GjvUdkBpszM+5F5O
+ JUZAnfDUzkzyxpjBhZt0dFYvSC62gfKTugDbF5Pcx3AYnSknLLXcmtn9SkaB7AkLB3uEyhCTAi/HB
+ ccAwOboABkHnGma+wVyMeHbebcmLbH2fWoOhEjRyAeZRrFgjxhsU9D+enNze7S+THvRCkz5nMoLbq
+ XZ5Aqct7bXjbmEQCgm8B7X0P9jLiRr7Pc0rl+RoMs=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO1w-000Bmt-Nd; Thu, 04 Apr 2024 15:25:32 +0100
+ id 1rsO20-000Bmt-Qx; Thu, 04 Apr 2024 15:25:36 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Thu,  4 Apr 2024 15:25:31 +0100
-Message-Id: <20240404142539.711134-10-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  4 Apr 2024 15:25:32 +0100
+Message-Id: <20240404142539.711134-11-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
 References: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 09/17] esp.c: introduce esp_fifo_push_buf() function for
- pushing to the FIFO
+Subject: [PULL 10/17] esp.c: don't assert() if FIFO empty when executing
+ non-DMA SELATNS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,61 +79,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of pushing data into the FIFO directly with fifo8_push_all(), add a new
-esp_fifo_push_buf() function and use it accordingly.
+The current logic assumes that at least 1 byte is present in the FIFO when
+executing a non-DMA SELATNS command, but this may not be the case if the
+guest executes an invalid ESP command sequence.
 
+Reported-by: Chuhong Yuan <hslester96@gmail.com>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-Id: <20240324191707.623175-10-mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240324191707.623175-11-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ hw/scsi/esp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 83b621ee0f..1aac8f5564 100644
+index 1aac8f5564..f3aa5364cf 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -116,6 +116,11 @@ static void esp_fifo_push(ESPState *s, uint8_t val)
-     fifo8_push(&s->fifo, val);
- }
+@@ -762,7 +762,8 @@ static void esp_do_nodma(ESPState *s)
  
-+static void esp_fifo_push_buf(ESPState *s, uint8_t *buf, int len)
-+{
-+    fifo8_push_all(&s->fifo, buf, len);
-+}
-+
- static uint8_t esp_fifo_pop(ESPState *s)
- {
-     if (fifo8_is_empty(&s->fifo)) {
-@@ -601,7 +606,7 @@ static void esp_do_dma(ESPState *s)
-             } else {
-                 /* Copy device data to FIFO */
-                 len = MIN(len, fifo8_num_free(&s->fifo));
--                fifo8_push_all(&s->fifo, s->async_buf, len);
-+                esp_fifo_push_buf(s, s->async_buf, len);
-                 esp_raise_drq(s);
-             }
+         case CMD_SELATNS:
+             /* Copy one byte from FIFO into cmdfifo */
+-            len = esp_fifo_pop_buf(s, buf, 1);
++            len = esp_fifo_pop_buf(s, buf,
++                                   MIN(fifo8_num_used(&s->fifo), 1));
+             len = MIN(fifo8_num_free(&s->cmdfifo), len);
+             fifo8_push_all(&s->cmdfifo, buf, len);
  
-@@ -650,7 +655,7 @@ static void esp_do_dma(ESPState *s)
-                 if (s->dma_memory_write) {
-                     s->dma_memory_write(s->dma_opaque, buf, len);
-                 } else {
--                    fifo8_push_all(&s->fifo, buf, len);
-+                    esp_fifo_push_buf(s, buf, len);
-                 }
- 
-                 esp_set_tc(s, esp_get_tc(s) - len);
-@@ -685,7 +690,7 @@ static void esp_do_dma(ESPState *s)
-                 if (s->dma_memory_write) {
-                     s->dma_memory_write(s->dma_opaque, buf, len);
-                 } else {
--                    fifo8_push_all(&s->fifo, buf, len);
-+                    esp_fifo_push_buf(s, buf, len);
-                 }
- 
-                 esp_set_tc(s, esp_get_tc(s) - len);
 -- 
 2.39.2
 
