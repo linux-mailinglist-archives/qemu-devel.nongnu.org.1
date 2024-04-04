@@ -2,73 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB65E898A0C
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8DB898A0F
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsO1p-0003Z3-Mp; Thu, 04 Apr 2024 10:25:21 -0400
+	id 1rsO2g-00049Q-1M; Thu, 04 Apr 2024 10:26:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rsO1l-0003X0-1K
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:25:18 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rsO1f-0005xY-0Q
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:25:16 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-56e0a8733d8so1207301a12.2
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 07:25:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712240709; x=1712845509; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=c8ExWDHR6fUpIq8ES+mS5HgEhWRKo0jFGf4s3D+PgJI=;
- b=tCl7tGzqd54fRY+H8denh7i6qrnK4fusDtNn2nSoRP2TA3Ay8pQRPqPlATJKcgBg/r
- XXkyMnZQBH0J5vk/F3SJz/lyxX+61Sv2qMnt81BowzwLkLrifYyLt9CGdogh2d7KK/o8
- pWJs+0q6K3/S+hMkfYHdFWuxvkdFkJSc382rzk41MzMq8dXXArTjhbQFUYN7jq+vJlxQ
- oSbLUrYlIO3pEw6OmbuQh1boMenTCUbUuMGmQyZaKAkbYBpSs5uWBx1/SdyTs2LBIJo1
- g4ZfbPjNpEzL3TNcyyREmMRZUDzcK0W1dhNr+F3GKucEGj7YENs8l3/sUvxAuMFnjDUn
- vLxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712240709; x=1712845509;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=c8ExWDHR6fUpIq8ES+mS5HgEhWRKo0jFGf4s3D+PgJI=;
- b=Wi6h2K7W7dL8+/gvSnE2da9JXGCJBfXdpguntI3PFNFPPHplkaNsEXtjwnzVXEydvy
- zlR9WUSzinOxhNoC3bJtkj9pWN3IEOM86aMTWdca3XzzrJYLHJPeVBBPBoLB8xx59uKz
- 4CZarq+VFWFjrqBdS+gz8F7Vw0lMSN3tJf6iOx+pWHdZIEmFfKuQpAKe8yoG9g3+2WXx
- ODUmdU0DIIpK9uV/R9iKWlSWtqDn14f1yP4rKOh8JPbSSt+CkLC1zz3RsvbNJe7H6QOK
- hf9jCwx387+x7pt+ASekCGl9U7XYwIqJmf9YHM06OmPfc0qP9QfxO980tgFNMoKcFHYC
- hxtA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVZeD0TrnZDMoacTjMDP5wG5etJoM2i2W4vqsYLKtXbyJdkMvEkcQ77dC7ukMhBDsTR2WZ4SsBNIHwLop5YhLTfAzy7q+Y=
-X-Gm-Message-State: AOJu0YyUJIdle9zJ0Tgb7k7wEStLY469QzrfbAqDF0xqWyGw2fhxxGU2
- 7NLuSHH0HrpuPqJc++egCRc+/dCPCD8OPdV0CsBi/GsELsjWa7WPii5HYwghxqX67cTeFhbGE9s
- +zOTElSA0IyDJU1wsFluxBf7aXJ5W8DEzMnpbvA==
-X-Google-Smtp-Source: AGHT+IGf49Ow575yV5dltlM7JucTrroUSaQWivf9EL9kCWy8puqRJBXupm97peIoKn1l8HPfrc3E/htxkWemt/S1iVQ=
-X-Received: by 2002:a50:cc82:0:b0:567:ff26:4bcb with SMTP id
- q2-20020a50cc82000000b00567ff264bcbmr1607896edi.30.1712240708718; Thu, 04 Apr
- 2024 07:25:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rsO2Y-00044Z-OR
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:06 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rsO2W-00062H-Sq
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=JNeiRXq5NIFyMROVxk11TKFtGiVB3pXkfi7BWGi1dvo=; b=Wq4jR53GmsHQaOTyJXhF3LXL3k
+ n6bl0b/hxORmMB33meQUsSJpAOaAlJPY/45xtfpDVJGbAlRdkHGPBJe08SOx9qHD5gotQL2F0BWKa
+ 918aR5/YE6nC2pqFZ/HG2i+ei2TP7p5Ufqp92YKUcGctynqCwUMGXjyq4W/H8xUbIcQ4SwYtlVGjd
+ RND2yGv+c57jJMkQMpB28usAQpTVpc7VVNKNP1bKpfmV+RO9jbiUULaa6sYkBkppRMuBqBLR/hW0s
+ lCWUVXVXyH2Hawu6U5IGXh8iC0EH9jFVDsfwZ8AKaLhz2FzfyzHUklNb/XcGcQ3XE03bZYq5mnQnn
+ /Wlpogk4vee3By6cNYA/FR5IBocFPWJGHjUz+KAmY7Khx9eT0VSHXVle/fGkThM0N0pXq91vMh5EW
+ JeGgMQO7HMRcGObWvnNMr2UYBGpLGSa8OQcwBtCfAEm2mX2Wd+SrLftlxv+B7iNI9LLvVnX3UB6FG
+ dtCt213ezp+1C27wSl3N88eJPt1Qm7rNAhPmsdgnuhlrfob/zBbsVw9/RyLlefFxizbKXH4x9ifD0
+ /4Mgykg510b0Fk/ZO2mp1Aj0pW4RhkiSlqthDqiOw+9h2NGF7pgi7fV7zQb3ZJilRrSY7KrS/Bx31
+ 7KVTV2vacmuYULHtREQESqHlczhDMUslGugVGfg9s=;
+Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
+ (helo=cheesecake.fritz.box)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rsO1Q-000Bmt-0i; Thu, 04 Apr 2024 15:24:59 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: peter.maydell@linaro.org,
+	qemu-devel@nongnu.org
+Date: Thu,  4 Apr 2024 15:25:22 +0100
+Message-Id: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20240403101611.3204086-1-ruanjinjie@huawei.com>
- <20240403101611.3204086-18-ruanjinjie@huawei.com>
-In-Reply-To: <20240403101611.3204086-18-ruanjinjie@huawei.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Apr 2024 15:24:57 +0100
-Message-ID: <CAFEAcA_2b3R4KMyiO_Pe1zH9xBsUFjUW64vL3xEwi6OZQ=Z3eA@mail.gmail.com>
-Subject: Re: [PATCH v12 17/23] hw/intc/arm_gicv3: Add NMI handling CPU
- interface registers
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
- wangyanan55@huawei.com, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
- qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PULL 00/17] qemu-sparc queue 20240404
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,25 +76,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 3 Apr 2024 at 11:17, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->
-> Add the NMIAR CPU interface registers which deal with acknowledging NMI.
->
-> When introduce NMI interrupt, there are some updates to the semantics for the
-> register ICC_IAR1_EL1 and ICC_HPPIR1_EL1. For ICC_IAR1_EL1 register, it
-> should return 1022 if the intid has non-maskable property. And for
-> ICC_NMIAR1_EL1 register, it should return 1023 if the intid do not have
-> non-maskable property. Howerever, these are not necessary for ICC_HPPIR1_EL1
-> register.
->
-> And the APR and RPR has NMI bits which should be handled correctly.
->
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
+The following changes since commit 786fd793b81410fb2a28914315e2f05d2ff6733b:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-04-03 12:52:03 +0100)
 
-thanks
--- PMM
+are available in the Git repository at:
+
+  https://github.com/mcayland/qemu.git tags/qemu-sparc-20240404
+
+for you to fetch changes up to d7fe931818d5e9aa70d08056c43b496ce789ba64:
+
+  esp.c: remove explicit setting of DRQ within ESP state machine (2024-04-04 15:17:53 +0100)
+
+----------------------------------------------------------------
+qemu-sparc queue
+- This contains fixes for the ESP emulation discovered by fuzzing (with thanks to
+  Chuhong Yuan <hslester96@gmail.com>)
+
+----------------------------------------------------------------
+Mark Cave-Ayland (17):
+      esp.c: move esp_fifo_pop_buf() internals to new esp_fifo8_pop_buf() function
+      esp.c: replace esp_fifo_pop_buf() with esp_fifo8_pop_buf() in do_command_phase()
+      esp.c: replace esp_fifo_pop_buf() with esp_fifo8_pop_buf() in do_message_phase()
+      esp.c: replace cmdfifo use of esp_fifo_pop() in do_message_phase()
+      esp.c: change esp_fifo_push() to take ESPState
+      esp.c: change esp_fifo_pop() to take ESPState
+      esp.c: use esp_fifo_push() instead of fifo8_push()
+      esp.c: change esp_fifo_pop_buf() to take ESPState
+      esp.c: introduce esp_fifo_push_buf() function for pushing to the FIFO
+      esp.c: don't assert() if FIFO empty when executing non-DMA SELATNS
+      esp.c: rework esp_cdb_length() into esp_cdb_ready()
+      esp.c: prevent cmdfifo overflow in esp_cdb_ready()
+      esp.c: move esp_set_phase() and esp_get_phase() towards the beginning of the file
+      esp.c: introduce esp_update_drq() and update esp_fifo_{push, pop}_buf() to use it
+      esp.c: update esp_fifo_{push, pop}() to call esp_update_drq()
+      esp.c: ensure esp_pdma_write() always calls esp_fifo_push()
+      esp.c: remove explicit setting of DRQ within ESP state machine
+
+ hw/scsi/esp.c | 223 +++++++++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 142 insertions(+), 81 deletions(-)
 
