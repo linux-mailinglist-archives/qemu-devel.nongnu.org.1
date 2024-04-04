@@ -2,96 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D49898762
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DAA8987F6
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:38:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsM90-0001Gf-Dp; Thu, 04 Apr 2024 08:24:38 -0400
+	id 1rsML6-0003PK-OV; Thu, 04 Apr 2024 08:37:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rsM8y-0001Fg-3y
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:36 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rsMKy-0003Om-9N
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:37:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
- id 1rsM8w-00015w-F2
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:24:35 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1rsMKw-0001H3-IY
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:37:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712233473;
+ s=mimecast20190719; t=1712234217;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R1WyM23yZC7OHPkKjODH8U9UyVky6gI6o4OQy8pzYy0=;
- b=iREpW8L0GFxSEQdJRF3Lisww0lntf/SvLhNwk2f2KefbAOm6LdONkKjaNVhYcyBgY+iQN0
- OE4alz9ruHfsbT5Q2bMYMgnrEug+bF9pNS65WMmxq70iR+VB/zHSuKFqG1xEWXx0sRTGfH
- UMWyzdXqox2YJOU6PPirN0qlzgOj95g=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rj5NqBUC1iJimyzLIyV/0wK0XSb28iSIVwIZ5bLqPlI=;
+ b=GmZ5vOxrenyogm8C9A2TMrmoPoyPdfWtz/ckm++CHrF+24C1XkMYjWWPFLLkFvaQdxPOed
+ bz1dMbGIAhmr5ZDh15y2lLdipO9ugN1R9tt+SjTG2BUmj7CV7izrFaBfu7d8hX9jK6RQdV
+ bM98XZhKPHo85QL964x6R/6EzOwzock=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-_qWBfNcHNg-TsLXoT53JpA-1; Thu, 04 Apr 2024 08:24:32 -0400
-X-MC-Unique: _qWBfNcHNg-TsLXoT53JpA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a474ac232e9so58362566b.2
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 05:24:32 -0700 (PDT)
+ us-mta-568-t4N5UbClPOCEVwdM43U8WA-1; Thu, 04 Apr 2024 08:36:55 -0400
+X-MC-Unique: t4N5UbClPOCEVwdM43U8WA-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1e27e4f7ccbso8433585ad.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 05:36:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712233471; x=1712838271;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1712234215; x=1712839015;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=R1WyM23yZC7OHPkKjODH8U9UyVky6gI6o4OQy8pzYy0=;
- b=klwaBXHM4pgmA8vuJ4+6Sqcc/RhJCUP8VQqswS9/OJZzLDFMzQg0FS9SNWZS6ejGMv
- Fkuqz2YyPtlfm/pPWB4nKek5fagGg2/hD4Fxfyu9tAC5L7Hz2flqycxJyyWzINnUrMKY
- k94X2WxpQF0zGarhpBPIKPvRbU/ul3//8ZANW/IbplZBGSoe3zb6VLhiJ//7GJKtsb4Y
- 0LUcVUvBvISj5cURrllxFajlGMs4iziSlTFEPz/oCsNAznuCh6IEBVufvmz9oHgAfO+s
- G+eQ7rCX28x6msFY3LW58CFgIy5nNB7jaxW59ZeOV7IatBnFHf3McFEBQe1D7kjjrBM5
- Py8w==
-X-Gm-Message-State: AOJu0YyI1C/7Up1XspBlKhkVLXioTblj5/sCdLbhcwycAmYPD7XcmNwK
- oJxmj8lzbNdgtmT0G8yPWJLHv1HoQqfHnv0lQeIolFjtskFQkxE6KgzKfEP5sjEH2YNT30QPP3E
- RcR+V8QfMXHTukuDPi8ZD4luP80QC4qP/4wPOb+3JrkE3Cdb0fq8EzILQ8epIqwE3X/xpnCSWYp
- x6mLOpcrFaVW3byJ0bnksmEKtCiBAvlxLwCRto
-X-Received: by 2002:a17:907:9850:b0:a4e:42f3:3c87 with SMTP id
- jj16-20020a170907985000b00a4e42f33c87mr1681997ejc.60.1712233471121; 
- Thu, 04 Apr 2024 05:24:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa8HqwHIVn74d+5TwQ5e6856Cb33d8mpM5HS9fZrWrlSJxx+U719JVBIlsdtx7HxGm0w+qMg==
-X-Received: by 2002:a17:907:9850:b0:a4e:42f3:3c87 with SMTP id
- jj16-20020a170907985000b00a4e42f33c87mr1681966ejc.60.1712233470790; 
- Thu, 04 Apr 2024 05:24:30 -0700 (PDT)
-Received: from localhost.localdomain
- (host-87-12-25-33.business.telecomitalia.it. [87.12.25.33])
+ bh=rj5NqBUC1iJimyzLIyV/0wK0XSb28iSIVwIZ5bLqPlI=;
+ b=XpPtOncmj6oTbWe6pxsknKAIr356DD/C0mInqNBAhYGilI6hUC3c4fFE/TbXI+oOVO
+ 5iwuNLSKSL2im35DxmFw4eQki+wc+ugeUcqf8+GCdB8ZsZB87gQXWl3D8E/AnRqjTFHF
+ HYZbQqhqCVCfgDgWwOB0vc8HWA4RNLsK0LkcfIXG3XpdEjMmkDHjQ8l3e/DIz1NQeMbC
+ w9OVQyQQ35iQPHk2EVCXHHhLbKEBS8yzxEfUJw+nLRUsoScb7CblkKrsH+zp4r7vcKxG
+ pci5cq/IWKI6CgekqR5vOOAKQcQ1M6jsq6hK1XnvKA1dg7Av49kXv6j7MIEpGWK/B9Qk
+ L7Gg==
+X-Gm-Message-State: AOJu0YzeNfF/NecsW7X0Va0iMUU2bm+3mSz37lq1h1Hq7i9uxykPmyZZ
+ gF0d1//O0ajJUpLsKeq5VsApgGSaY9eeL1iYcQ2JCWOJ1Yd0L5oEmoq6//4NukWo/Ss9nGx0uCj
+ aKbsVJGd3vsdULbOKG7zH7wydXl6PGWkpcfnjrwu1F01uxJAyq6ht
+X-Received: by 2002:a17:902:650d:b0:1e2:adce:9139 with SMTP id
+ b13-20020a170902650d00b001e2adce9139mr1347408plk.44.1712234214848; 
+ Thu, 04 Apr 2024 05:36:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbjLnc96anfsXsW0hKRv9LJ5PpRS2CLP1bnDCzIoY9mGzAfnO/ieYMBeaqk36wf0BY7QFP3A==
+X-Received: by 2002:a17:902:650d:b0:1e2:adce:9139 with SMTP id
+ b13-20020a170902650d00b001e2adce9139mr1347385plk.44.1712234214444; 
+ Thu, 04 Apr 2024 05:36:54 -0700 (PDT)
+Received: from smtpclient.apple ([115.110.236.142])
  by smtp.gmail.com with ESMTPSA id
- 17-20020a170906309100b00a4710e7817esm8940046ejv.135.2024.04.04.05.24.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 05:24:30 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-block@nongnu.org,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Brad Smith <brad@comstyle.com>, stefanha@redhat.com,
- Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, David Hildenbrand <david@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, gmaglione@redhat.com,
- Jason Wang <jasowang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
-Subject: [PATCH for-9.1 v3 11/11] tests/qtest/vhost-user-test: add a test case
- for memory-backend-shm
-Date: Thu,  4 Apr 2024 14:23:30 +0200
-Message-ID: <20240404122330.92710-12-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240404122330.92710-1-sgarzare@redhat.com>
-References: <20240404122330.92710-1-sgarzare@redhat.com>
-MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ 12-20020a170902e9cc00b001e2bbc0a66fsm612879plk.234.2024.04.04.05.36.49
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Thu, 04 Apr 2024 05:36:53 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
+Subject: Re: [PATCH v2 06/10] i386/pc_sysfw: Ensure sysfw flash configuration
+ does not conflict with IGVM
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <613c3dc97a29fa9b8baa8acf45cefe4fac24ea87.1712141833.git.roy.hopkins@suse.com>
+Date: Thu, 4 Apr 2024 18:06:37 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel Berrange <berrange@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Michael Tsirkin <mst@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Sergio Lopez Pascual <slp@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair@alistair23.me>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tom Lendacky <thomas.lendacky@amd.com>,
+ Michael Roth <michael.roth@amd.com>,
+ =?utf-8?Q?J=C3=B6rg_Roedel?= <jroedel@suse.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <54875E49-0710-4DD9-A6A6-79BEA4F09EFF@redhat.com>
+References: <cover.1712141833.git.roy.hopkins@suse.com>
+ <613c3dc97a29fa9b8baa8acf45cefe4fac24ea87.1712141833.git.roy.hopkins@suse.com>
+To: Roy Hopkins <roy.hopkins@suse.com>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -115,77 +114,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-`memory-backend-shm` can be used with vhost-user devices, so let's
-add a new test case for it.
 
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- tests/qtest/vhost-user-test.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..8c1d903b2a 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -44,6 +44,8 @@
-                         "mem-path=%s,share=on -numa node,memdev=mem"
- #define QEMU_CMD_MEMFD  " -m %d -object memory-backend-memfd,id=mem,size=%dM," \
-                         " -numa node,memdev=mem"
-+#define QEMU_CMD_SHM    " -m %d -object memory-backend-shm,id=mem,size=%dM," \
-+                        " -numa node,memdev=mem"
- #define QEMU_CMD_CHR    " -chardev socket,id=%s,path=%s%s"
- #define QEMU_CMD_NETDEV " -netdev vhost-user,id=hs0,chardev=%s,vhostforce=on"
- 
-@@ -195,6 +197,7 @@ enum test_memfd {
-     TEST_MEMFD_AUTO,
-     TEST_MEMFD_YES,
-     TEST_MEMFD_NO,
-+    TEST_MEMFD_SHM,
- };
- 
- static void append_vhost_net_opts(TestServer *s, GString *cmd_line,
-@@ -228,6 +231,8 @@ static void append_mem_opts(TestServer *server, GString *cmd_line,
- 
-     if (memfd == TEST_MEMFD_YES) {
-         g_string_append_printf(cmd_line, QEMU_CMD_MEMFD, size, size);
-+    } else if (memfd == TEST_MEMFD_SHM) {
-+        g_string_append_printf(cmd_line, QEMU_CMD_SHM, size, size);
-     } else {
-         const char *root = init_hugepagefs() ? : server->tmpfs;
- 
-@@ -788,6 +793,19 @@ static void *vhost_user_test_setup_memfd(GString *cmd_line, void *arg)
-     return server;
- }
- 
-+static void *vhost_user_test_setup_shm(GString *cmd_line, void *arg)
-+{
-+    TestServer *server = test_server_new("vhost-user-test", arg);
-+    test_server_listen(server);
-+
-+    append_mem_opts(server, cmd_line, 256, TEST_MEMFD_SHM);
-+    server->vu_ops->append_opts(server, cmd_line, "");
-+
-+    g_test_queue_destroy(vhost_user_test_cleanup, server);
-+
-+    return server;
-+}
-+
- static void test_read_guest_mem(void *obj, void *arg, QGuestAllocator *alloc)
- {
-     TestServer *server = arg;
-@@ -1081,6 +1099,11 @@ static void register_vhost_user_test(void)
-                  "virtio-net",
-                  test_read_guest_mem, &opts);
- 
-+    opts.before = vhost_user_test_setup_shm;
-+    qos_add_test("vhost-user/read-guest-mem/shm",
-+                 "virtio-net",
-+                 test_read_guest_mem, &opts);
-+
-     if (qemu_memfd_check(MFD_ALLOW_SEALING)) {
-         opts.before = vhost_user_test_setup_memfd;
-         qos_add_test("vhost-user/read-guest-mem/memfd",
--- 
-2.44.0
+> On 3 Apr 2024, at 16:41, Roy Hopkins <roy.hopkins@suse.com> wrote:
+>=20
+> When using an IGVM file the configuration of the system firmware is
+> defined by IGVM directives contained in the file. In this case the =
+user
+> should not configure any pflash devices.
+>=20
+> This commit skips initialization of the ROM mode when pflash0 is not =
+set
+> then checks to ensure no pflash devices have been configured when =
+using
+> IGVM, exiting with an error message if this is not the case.
+>=20
+> Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
+> ---
+> hw/i386/pc_sysfw.c | 23 +++++++++++++++++++++--
+> 1 file changed, 21 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+> index 3efabbbab2..2412f26225 100644
+> --- a/hw/i386/pc_sysfw.c
+> +++ b/hw/i386/pc_sysfw.c
+> @@ -226,8 +226,13 @@ void pc_system_firmware_init(PCMachineState =
+*pcms,
+>     }
+>=20
+>     if (!pflash_blk[0]) {
+> -        /* Machine property pflash0 not set, use ROM mode */
+> -        x86_bios_rom_init(MACHINE(pcms), "bios.bin", rom_memory, =
+false);
+> +        /*
+> +         * Machine property pflash0 not set, use ROM mode unless =
+using IGVM,
+> +         * in which case the firmware must be provided by the IGVM =
+file.
+
+What if the igvm file does not contain a firmware? Can we have a check =
+for that case somewhere and assert if firmware is absent?
+
+> +         */
+> +        if (!cgs_is_igvm(MACHINE(pcms)->cgs)) {
+> +            x86_bios_rom_init(MACHINE(pcms), "bios.bin", rom_memory, =
+false);
+> +        }
+>     } else {
+>         if (kvm_enabled() && !kvm_readonly_mem_enabled()) {
+>             /*
+> @@ -243,6 +248,20 @@ void pc_system_firmware_init(PCMachineState =
+*pcms,
+>     }
+>=20
+>     pc_system_flash_cleanup_unused(pcms);
+> +
+> +    /*
+> +     * The user should not have specified any pflash devices when =
+using IGVM
+> +     * to configure the guest.
+> +     */
+> +    if (cgs_is_igvm(MACHINE(pcms)->cgs)) {
+> +        for (i =3D 0; i < ARRAY_SIZE(pcms->flash); i++) {
+> +            if (pcms->flash[i]) {
+> +                error_report("pflash devices cannot be configured =
+when "
+> +                             "using IGVM");
+> +                exit(1);
+> +            }
+> +        }
+> +    }
+
+I have not tested this change but looking at pc_system_flash_create() =
+creates flash[0] and flash[1] for all cases (well except for isapc =
+machines). So for igvm case, would this not cause an exit all the time?
+
+> }
+>=20
+> void x86_firmware_configure(void *ptr, int size)
+> --=20
+> 2.43.0
+>=20
 
 
