@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9878989AB
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00BF8989AE
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:15:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsNqz-0003If-2Y; Thu, 04 Apr 2024 10:14:09 -0400
+	id 1rsNrH-0003Rd-Rk; Thu, 04 Apr 2024 10:14:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rsNqt-0003HD-3n
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:14:05 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1rsNrF-0003RF-8d
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:14:25 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rsNqr-0007qU-Kv
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:14:02 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-56e2119cffeso695278a12.3
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 07:14:00 -0700 (PDT)
+ id 1rsNrD-0007ru-Mx
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:14:25 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-56bf6591865so1573913a12.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 07:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712240039; x=1712844839; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712240062; x=1712844862; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Kw8qSm+jj7rowiqyw2J7UwXOS57ueFbUIQr2KQjl2JA=;
- b=e3onnncSO41qGZ4cAHHM1nK0qYxJOtlKYOBnzLcj8FBKzIMREBEwpRdDX858NG+i1l
- q2AYSNPoj9YxzEGTyjEZ39wPMn3qYPaVW1RQ/07K4qB+Jnlm0xM9HJ1vT7PP63EXwxdu
- PZE53oSsnpB8CxPrM0oJS0IMQcm2fEUvKvzuDO14nincpzyGf8uET663SqnYtjtjmFi9
- mLg7CpkFCiTJI4IwkBbDGLX0o/5+v7EcZI/RA5atpS88oV5AxVbHpSrNLjrI8R2Uis5e
- 97HBhKoOQqAX9k53+2kb6mjvkkYKoQell5HWajKIF/rXMADf2mHnE/e8qxfVz/icQNgS
- kPmw==
+ bh=0z4FnaPcsOBQ+YX4GKSd1KH+I7KTyoZry6IxOeoJ6Wo=;
+ b=aHAbDuwmjm/1rCXnbR+SQTCG8nAlNGEUy7+9MRmDCRn9NzdMOSEZ8m1bAksnGSDQwK
+ M58qa1v3s3yfh9FXg61AU0iBAi60ORDcEj2Gc6s/NqpOmaFg4N+Jm41dAtz0aXa33yzs
+ ANKhfVrlWqgK9I5CUseBYfVElkG60poVdxCdebdx5SjtXf7gBJyM374kRaPTzP1hyIsE
+ MWQaeNf617rFTHR8ycNTfYz4rfxUJikB7E2A5H2jV6ht9596Bm2/98RmA2YW6FcdzK9d
+ rWiBuy8Bfk263H2uOS3/XFOnysdGroEYS60yevwuuyXTnOUnTOTXcT7AbfnbP5PyNnwu
+ Le6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712240039; x=1712844839;
+ d=1e100.net; s=20230601; t=1712240062; x=1712844862;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Kw8qSm+jj7rowiqyw2J7UwXOS57ueFbUIQr2KQjl2JA=;
- b=AIlmOqrftvmm6Cka9Ph1SgNTtNe0K00MrVuuXVirf5A1/a56RY8kTOhoooCS+qoKm+
- HGYc7QrAd3N/cgtATY9gliEw+0iALeqeYtTusmlKeR4yl3vgN7L21VVzGV0PscZD3dLw
- QxHjJmDv11UO98ocgjLI8Qc6o4Xb7SDF5T66eg4RXYqHOCuZ1hBn1uRjVS9LAkdsOnnB
- JIgKf24pTX+a5Rsprgb3GGCX4+lbvMfW3CXxj3k4i/cL1Z1LwYvkncqXEkYFpVnbL4Do
- fNlaGdMss7GrtaidIMeMjJOIlFH/FjxtNZ0m6c6t7sHbSkEWKfUeFV9hF8dwNsib6Kxt
- pL1g==
+ bh=0z4FnaPcsOBQ+YX4GKSd1KH+I7KTyoZry6IxOeoJ6Wo=;
+ b=ZSdbBd2MhqBSdRJ58nK+T7f9kI6CMcM7TgK/3qgosaBL86jd3rw5oPZfo+bExogcus
+ w8pqEBgN6w1GNeSqtSUXltkhQkROUW7qDbFbZKUh+A2iXkECidx0YVz7WUkBuZtzSCc2
+ ebu+1xnHdc4c/z5qWCvCJ1j1a8xIY7A0VjhSf7kYqe0sdOmDSM5ygdmCb87LcoimQ0mm
+ BiJmlBcD/15J+T0ng7mdPTB1vaYc1qN4plB8h4y5fIrgbDSY5UNsrQ0AlBvW/UJMFBY7
+ eOjNKLSM3JK4emA3UBu8vhG3lU3NlAEdsxHojII7s3zgPADZLMoISx84zaxZgxQwUsVj
+ mtTg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWtkamwdKTNft3Q3qr/8VRJikvna46WABGEnG3/lwJNSvZMvpDR8rFnDMvY7xwsDzIDg1UvLKNYdv5mnirtp9DdUKSVoPQ=
-X-Gm-Message-State: AOJu0YwtAEKykJ6exZY0kAR6mzYJRkceYsoDPljqYlHnq09efc6TKNfL
- FNaRj44wwnZHD92hEklEl0rXgTSAjLNx2Bid0kPyJKWZk9yPVtIFXBdg0nDocUuAdItgIR1J5vD
- Ol+vPenibYlvPWVPD7pjzC9rRU/RhIG1ZXeDDXw==
-X-Google-Smtp-Source: AGHT+IFmhHr4Y5XRa1UscMZ0Zq1+I2ep0MIXFILRgSnHrfl3uVhQn7p1TK4AqhIPQDrvexCR3e3bHvuVfa8WRxZGK8A=
-X-Received: by 2002:a50:d4d4:0:b0:56b:defb:3b59 with SMTP id
- e20-20020a50d4d4000000b0056bdefb3b59mr1598780edj.19.1712240039130; Thu, 04
- Apr 2024 07:13:59 -0700 (PDT)
+ AJvYcCXIyjXVAy8Tr2EwLgqarjtXjfeQq/cmfNI7EXK40wOBHMxfTNNDonIL+aqtTUDZ51e523t5K8VBOxRH3xNkejXA2inBTTU=
+X-Gm-Message-State: AOJu0Yxg6mOA0P4g78mWldeEB1fHSoWxu9ij7IdLqqpmPDdwQsHjwa2P
+ dAiR8sTM4M60YGHhDxJA9RwQc5IWUofhbMaEprBNOdoYUAEUIjwDrrTqoq2BZBuxYTrdTs+9LHn
+ PUT1AQoNk7rhkipE4EvjewQ3c8zjjtXvXThtzHg==
+X-Google-Smtp-Source: AGHT+IFmjhALIvdyCK1u0z7HPBNDiNQbc8DaG7rBbGGqLVxHToUPq6+kt95d4pMm9K5j14lONaTG13Ffx+nBgNiAmkI=
+X-Received: by 2002:a50:cc95:0:b0:568:b3bf:409c with SMTP id
+ q21-20020a50cc95000000b00568b3bf409cmr1817688edi.16.1712240062280; Thu, 04
+ Apr 2024 07:14:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240403101611.3204086-1-ruanjinjie@huawei.com>
- <20240403101611.3204086-6-ruanjinjie@huawei.com>
-In-Reply-To: <20240403101611.3204086-6-ruanjinjie@huawei.com>
+ <20240403101611.3204086-7-ruanjinjie@huawei.com>
+In-Reply-To: <20240403101611.3204086-7-ruanjinjie@huawei.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 4 Apr 2024 15:13:48 +0100
-Message-ID: <CAFEAcA__1g2zD-d3HWP=N5i4Ln2bmskx3QHp3tVOga5-MteCvg@mail.gmail.com>
-Subject: Re: [PATCH v12 05/23] target/arm: Support MSR access to ALLINT
+Date: Thu, 4 Apr 2024 15:14:11 +0100
+Message-ID: <CAFEAcA8GJE9WGT=zzrK6y3DRz9zXPxoPELtbqA0djPSYQD3jig@mail.gmail.com>
+Subject: Re: [PATCH v12 06/23] target/arm: Add support for Non-maskable
+ Interrupt
 To: Jinjie Ruan <ruanjinjie@huawei.com>
 Cc: eduardo@habkost.net, marcel.apfelbaum@gmail.com, philmd@linaro.org, 
  wangyanan55@huawei.com, richard.henderson@linaro.org, qemu-devel@nongnu.org, 
  qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,13 +93,10 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On Wed, 3 Apr 2024 at 11:17, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 >
-> Support ALLINT msr access as follow:
->         mrs <xt>, ALLINT        // read allint
->         msr ALLINT, <xt>        // write allint with imm
+> This only implements the external delivery method via the GICv3.
 >
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
