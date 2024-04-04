@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90218898F37
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9740B898F38
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsT4U-0006YB-Mp; Thu, 04 Apr 2024 15:48:26 -0400
+	id 1rsT4Z-0006Z0-Gy; Thu, 04 Apr 2024 15:48:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4R-0006Xp-QG
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:24 -0400
-Received: from mail-lj1-x236.google.com ([2a00:1450:4864:20::236])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4W-0006Yd-WA
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:29 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4O-0000K9-PQ
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:22 -0400
-Received: by mail-lj1-x236.google.com with SMTP id
- 38308e7fff4ca-2d094bc2244so14731261fa.1
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:48:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4U-0000LB-EI
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:28 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-4162c210c33so4760425e9.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:48:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712260098; x=1712864898; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712260104; x=1712864904; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KWGr/pVGop5k8ihIK6m+XFrYPybC/J9z+nBHWQ3TWxc=;
- b=dyrASMkKpaNbnYIPK66FFfz4w0qE8KFVd4afCNaF5lxfPeHcsMJHIUodLXA8d147fD
- w1e8Dlio/9oq+pfaR05NgSu0CuX4lPlcRKrjlgnVWDS7HevGUD+6sC3XGB0K/R9cTH2X
- ewC4j5Rgebcsjs9YxTRLIBNxvxsyC1HT9TH+4OfS4F0xFeFcHKcOrQMcrrqlaQ4mfvqP
- vwDBEWhTzZdYdMiyaMdfUo1Da1z71xrkcBGVM2KwIMGsacMmwkAPWyPm4dHgLOQRas6z
- meb7qSzarjut9WKAixVeTtllW/+5olXUQnPxSgBtCEXjQeBBWSxVXiKJM7wbwGmbLIqu
- VBLQ==
+ bh=aoLqAKUnWG07Qqq94XYH6NjRAB/Z33lL8UXEZ52j+Q0=;
+ b=d9j6nG9keKA1GjJfv589GEHtJ57ylR00ITtGUnEOTahERCmGaOBK20MEru84olqkd9
+ mBSX2GFBFV7hMyQ5+eCyC8UVqMoHXyRLRWGNPz2daTPbZYETY+chwFwvipGhw04r586l
+ q5z772nDlOrWCV3NPGB0Cf6VaiaETUKbLcn4/Bp8NtEBhkUM9Txi13xSKX7L+1Mfy5d5
+ aV4QnBuqjjO0ZN3c9+gliIta+iOSQJBWJ4t1nuVHsMTEUvq2Zcdt5DX8bAXH6XgJNnPf
+ 4kcggEDjrdjSnZA660Rp2cTPUvkzhO0yRI34SoeuGVVm9Ou6KMD4zZr70U6NwACUhJMO
+ w8KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712260098; x=1712864898;
+ d=1e100.net; s=20230601; t=1712260104; x=1712864904;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KWGr/pVGop5k8ihIK6m+XFrYPybC/J9z+nBHWQ3TWxc=;
- b=pwOyCjgvoN3bqNvcbQXns+iB3p07rmVTqgMqhg0Z7RYyoul5gfsrUrouaLPwR5Gc0D
- sMG2NuPLediuHMzZUS/GP/u2DQsRKBoHxOFoy55NqZPK0LMpKcwt3YtZBdOi88RExk/U
- XUsiikDhgJqUSO2EVOe0m9jIl405xeY+wNoyqiHj5a+s5HugFHGXCB8SuabU17iOn6ZU
- SP2YDgjVTilWTLvPwTQnVg0ThViClDmVGsbF97m9gFr/9KqFLlhDO3dUZtn+yeQTNQFJ
- d6W/prWOpcbJJF3vuW/xjfj3/eKBpO02PfZBA7v+qGQcvXfREamOgRVhG/rWcgr1H+j+
- lQUg==
+ bh=aoLqAKUnWG07Qqq94XYH6NjRAB/Z33lL8UXEZ52j+Q0=;
+ b=h36TruTWKsyc/uN+qY1sKzCjte5WgPslb1BgX2jClx6cM/DCbfS1DiRfTBvet/12IP
+ Z31Dl4xNZIXBTsQ6c7xIXSgNJSTIEL/bj9BVriig0T1nbUiec6h2DlRsoLUC3RLshjYs
+ ce0sSRwkuxuzi1aihI1mfaWTE23T0fn0nUoCEa2wFdCVfd127tz5V0iNxVo2LWPUXXzd
+ lZ6O2LXaEv/sPffXS1imDsWjgGifZTPj4LOIFh7zpZw48Wv5izsyzZcOEW7+Stch8gea
+ z4XQo0HIjdjLgVqKKlnLAFUij71SnLQrM1IZA9KI0mUKpDWV3Ut/U6gm6VjHF5jc9pdt
+ qMlA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW2nGpK/+Vbs2W0RSXOuoz6jD1TWJGvwGy9KM8plI0ZjR+70tWf+DuP2kzxLFdQ160PivJyXr96432OCErD9a9jitzBt+w=
-X-Gm-Message-State: AOJu0Yw1JlnN2nfMOtO/NZi2xX+Nh9uj2RbkZiPXiMrtUMThbKgCH83J
- /biOBGmIOx4cSSF6e8p5Ra+6YKZueupZjhO1DwyLqGSvVFR1JIFX6XRqL+TJv6E=
-X-Google-Smtp-Source: AGHT+IHzMWMi1KznhGLPn6i21HeMbwPw3oZBDTNnM4bNZfJjp9kAgM+B0XU4NgGgLB2oPt5Vrnxzxg==
-X-Received: by 2002:a2e:9f44:0:b0:2d8:34ec:54e6 with SMTP id
- v4-20020a2e9f44000000b002d834ec54e6mr218442ljk.33.1712260098101; 
- Thu, 04 Apr 2024 12:48:18 -0700 (PDT)
+ AJvYcCVJXlf0XMjI/jnAoES4BcHOoxBCJeAw1kdLrjJliJn2MWX8r0AnQboO6EVpdByC7VeNol3eyghzKMeUR0cd0Fn76lk+Clk=
+X-Gm-Message-State: AOJu0Yz31HRvp8VMSrA5PuA71TGck5YL4BPe6pBVHtFWMFzkjl1OG1Us
+ mDBTy7MvI1nxisgetPU71KaMQ0gZHTv1qvPMpoqir533OvMLNK9wGL0uvhTXpdw=
+X-Google-Smtp-Source: AGHT+IGFWyg03HMLbT0CsVHbhdgxGmJjKJEkdTqU4XgrYpOV6/5HmyG7fsDxCX75q/UyVHyGBZOuJA==
+X-Received: by 2002:a05:600c:4a05:b0:416:2b19:beef with SMTP id
+ c5-20020a05600c4a0500b004162b19beefmr1771569wmp.11.1712260103837; 
+ Thu, 04 Apr 2024 12:48:23 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.216.111])
  by smtp.gmail.com with ESMTPSA id
- fs20-20020a05600c3f9400b0041628f694dfsm240457wmb.23.2024.04.04.12.48.17
+ fc9-20020a05600c524900b004162d0676cdsm228087wmb.29.2024.04.04.12.48.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Apr 2024 12:48:17 -0700 (PDT)
+ Thu, 04 Apr 2024 12:48:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
  qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Thomas Huth <thuth@redhat.com>
-Subject: [PATCH-for-9.1 3/7] monitor: Rework stubs to simplify user emulation
- linking
-Date: Thu,  4 Apr 2024 21:47:53 +0200
-Message-ID: <20240404194757.9343-4-philmd@linaro.org>
+Subject: [PATCH-for-9.1 4/7] util/qemu-config: Extract QMP commands to
+ qemu-config-qmp.c
+Date: Thu,  4 Apr 2024 21:47:54 +0200
+Message-ID: <20240404194757.9343-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240404194757.9343-1-philmd@linaro.org>
 References: <20240404194757.9343-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::236;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x236.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,136 +96,486 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently monitor stubs are scattered in 3 files.
-
-Merge these stubs in 2 files, a generic one (monitor-core)
-included in all builds (in particular user emulation), and
-a less generic one to be included by tools and system emulation.
+QMP is irrelevant for user emulation. Extract the code
+related to QMP in a different source file, which won't
+be build for user emulation binaries. This avoid pulling
+pointless code.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- stubs/fdset.c        | 17 -----------------
- stubs/monitor-core.c | 20 +++++++++++++++-----
- stubs/monitor.c      |  8 ++++++--
- stubs/meson.build    |  5 +++--
- 4 files changed, 24 insertions(+), 26 deletions(-)
- delete mode 100644 stubs/fdset.c
+ include/qemu/config-file.h |   3 +
+ util/qemu-config-qmp.c     | 206 +++++++++++++++++++++++++++++++++++++
+ util/qemu-config.c         | 204 +-----------------------------------
+ util/meson.build           |   1 +
+ 4 files changed, 212 insertions(+), 202 deletions(-)
+ create mode 100644 util/qemu-config-qmp.c
 
-diff --git a/stubs/fdset.c b/stubs/fdset.c
-deleted file mode 100644
-index 56b3663d58..0000000000
---- a/stubs/fdset.c
-+++ /dev/null
-@@ -1,17 +0,0 @@
--#include "qemu/osdep.h"
--#include "monitor/monitor.h"
--
--int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
--{
--    errno = ENOSYS;
--    return -1;
--}
--
--int64_t monitor_fdset_dup_fd_find(int dup_fd)
--{
--    return -1;
--}
--
--void monitor_fdset_dup_fd_remove(int dupfd)
--{
--}
-diff --git a/stubs/monitor-core.c b/stubs/monitor-core.c
-index afa477aae6..72e40bcc15 100644
---- a/stubs/monitor-core.c
-+++ b/stubs/monitor-core.c
-@@ -1,6 +1,7 @@
-+/* Monitor stub required for user emulation */
- #include "qemu/osdep.h"
- #include "monitor/monitor.h"
--#include "qapi/qapi-emit-events.h"
-+#include "../monitor/monitor-internal.h"
+diff --git a/include/qemu/config-file.h b/include/qemu/config-file.h
+index b82a778123..8b9d6df173 100644
+--- a/include/qemu/config-file.h
++++ b/include/qemu/config-file.h
+@@ -8,6 +8,9 @@ QemuOptsList *qemu_find_opts(const char *group);
+ QemuOptsList *qemu_find_opts_err(const char *group, Error **errp);
+ QemuOpts *qemu_find_opts_singleton(const char *group);
  
- Monitor *monitor_cur(void)
- {
-@@ -12,11 +13,22 @@ Monitor *monitor_set_cur(Coroutine *co, Monitor *mon)
-     return NULL;
- }
- 
--void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
-+int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
++extern QemuOptsList *vm_config_groups[48];
++extern QemuOptsList *drive_config_groups[5];
++
+ void qemu_add_opts(QemuOptsList *list);
+ void qemu_add_drive_opts(QemuOptsList *list);
+ int qemu_global_option(const char *str);
+diff --git a/util/qemu-config-qmp.c b/util/qemu-config-qmp.c
+new file mode 100644
+index 0000000000..24477a0e44
+--- /dev/null
++++ b/util/qemu-config-qmp.c
+@@ -0,0 +1,206 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++#include "qemu/osdep.h"
++#include "qapi/error.h"
++#include "qapi/qapi-commands-misc.h"
++#include "qapi/qmp/qlist.h"
++#include "qemu/option.h"
++#include "qemu/config-file.h"
++#include "hw/boards.h"
++
++static CommandLineParameterInfoList *query_option_descs(const QemuOptDesc *desc)
 +{
-+    errno = ENOSYS;
-+    return -1;
++    CommandLineParameterInfoList *param_list = NULL;
++    CommandLineParameterInfo *info;
++    int i;
++
++    for (i = 0; desc[i].name != NULL; i++) {
++        info = g_malloc0(sizeof(*info));
++        info->name = g_strdup(desc[i].name);
++
++        switch (desc[i].type) {
++        case QEMU_OPT_STRING:
++            info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
++            break;
++        case QEMU_OPT_BOOL:
++            info->type = COMMAND_LINE_PARAMETER_TYPE_BOOLEAN;
++            break;
++        case QEMU_OPT_NUMBER:
++            info->type = COMMAND_LINE_PARAMETER_TYPE_NUMBER;
++            break;
++        case QEMU_OPT_SIZE:
++            info->type = COMMAND_LINE_PARAMETER_TYPE_SIZE;
++            break;
++        }
++
++        info->help = g_strdup(desc[i].help);
++        info->q_default = g_strdup(desc[i].def_value_str);
++
++        QAPI_LIST_PREPEND(param_list, info);
++    }
++
++    return param_list;
 +}
 +
-+int64_t monitor_fdset_dup_fd_find(int dup_fd)
++/* remove repeated entry from the info list */
++static void cleanup_infolist(CommandLineParameterInfoList *head)
 +{
-+    return -1;
++    CommandLineParameterInfoList *pre_entry, *cur, *del_entry;
++
++    cur = head;
++    while (cur->next) {
++        pre_entry = head;
++        while (pre_entry != cur->next) {
++            if (!strcmp(pre_entry->value->name, cur->next->value->name)) {
++                del_entry = cur->next;
++                cur->next = cur->next->next;
++                del_entry->next = NULL;
++                qapi_free_CommandLineParameterInfoList(del_entry);
++                break;
++            }
++            pre_entry = pre_entry->next;
++        }
++        cur = cur->next;
++    }
 +}
 +
-+void monitor_fdset_dup_fd_remove(int dupfd)
- {
- }
- 
--void qapi_event_emit(QAPIEvent event, QDict *qdict)
-+void monitor_fdsets_cleanup(void)
- {
- }
- 
-@@ -24,5 +36,3 @@ int monitor_vprintf(Monitor *mon, const char *fmt, va_list ap)
- {
-     abort();
- }
--
--
-diff --git a/stubs/monitor.c b/stubs/monitor.c
-index 20786ac4ff..2fc4dc1493 100644
---- a/stubs/monitor.c
-+++ b/stubs/monitor.c
-@@ -1,7 +1,7 @@
++/* merge the description items of two parameter infolists */
++static void connect_infolist(CommandLineParameterInfoList *head,
++                             CommandLineParameterInfoList *new)
++{
++    CommandLineParameterInfoList *cur;
++
++    cur = head;
++    while (cur->next) {
++        cur = cur->next;
++    }
++    cur->next = new;
++}
++
++/* access all the local QemuOptsLists for drive option */
++static CommandLineParameterInfoList *get_drive_infolist(void)
++{
++    CommandLineParameterInfoList *head = NULL, *cur;
++    int i;
++
++    for (i = 0; drive_config_groups[i] != NULL; i++) {
++        if (!head) {
++            head = query_option_descs(drive_config_groups[i]->desc);
++        } else {
++            cur = query_option_descs(drive_config_groups[i]->desc);
++            connect_infolist(head, cur);
++        }
++    }
++    cleanup_infolist(head);
++
++    return head;
++}
++
++static CommandLineParameterInfo *objprop_to_cmdline_prop(ObjectProperty *prop)
++{
++    CommandLineParameterInfo *info;
++
++    info = g_malloc0(sizeof(*info));
++    info->name = g_strdup(prop->name);
++
++    if (g_str_equal(prop->type, "bool") || g_str_equal(prop->type, "OnOffAuto")) {
++        info->type = COMMAND_LINE_PARAMETER_TYPE_BOOLEAN;
++    } else if (g_str_equal(prop->type, "int")) {
++        info->type = COMMAND_LINE_PARAMETER_TYPE_NUMBER;
++    } else if (g_str_equal(prop->type, "size")) {
++        info->type = COMMAND_LINE_PARAMETER_TYPE_SIZE;
++    } else {
++        info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
++    }
++
++    if (prop->description) {
++        info->help = g_strdup(prop->description);
++    }
++
++    return info;
++}
++
++static CommandLineParameterInfoList *query_all_machine_properties(void)
++{
++    CommandLineParameterInfoList *params = NULL, *clpiter;
++    CommandLineParameterInfo *info;
++    GSList *machines, *curr_mach;
++    ObjectPropertyIterator op_iter;
++    ObjectProperty *prop;
++    bool is_new;
++
++    machines = object_class_get_list(TYPE_MACHINE, false);
++    assert(machines);
++
++    /* Loop over all machine classes */
++    for (curr_mach = machines; curr_mach; curr_mach = curr_mach->next) {
++        object_class_property_iter_init(&op_iter, curr_mach->data);
++        /* ... and over the properties of each machine: */
++        while ((prop = object_property_iter_next(&op_iter))) {
++            if (!prop->set) {
++                continue;
++            }
++            /*
++             * Check whether the property has already been put into the list
++             * (via another machine class)
++             */
++            is_new = true;
++            for (clpiter = params; clpiter != NULL; clpiter = clpiter->next) {
++                if (g_str_equal(clpiter->value->name, prop->name)) {
++                    is_new = false;
++                    break;
++                }
++            }
++            /* If it hasn't been added before, add it now to the list */
++            if (is_new) {
++                info = objprop_to_cmdline_prop(prop);
++                QAPI_LIST_PREPEND(params, info);
++            }
++        }
++    }
++
++    g_slist_free(machines);
++
++    /* Add entry for the "type" parameter */
++    info = g_malloc0(sizeof(*info));
++    info->name = g_strdup("type");
++    info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
++    info->help = g_strdup("machine type");
++    QAPI_LIST_PREPEND(params, info);
++
++    return params;
++}
++
++CommandLineOptionInfoList *qmp_query_command_line_options(const char *option,
++                                                          Error **errp)
++{
++    CommandLineOptionInfoList *conf_list = NULL;
++    CommandLineOptionInfo *info;
++    int i;
++
++    for (i = 0; vm_config_groups[i] != NULL; i++) {
++        if (!option || !strcmp(option, vm_config_groups[i]->name)) {
++            info = g_malloc0(sizeof(*info));
++            info->option = g_strdup(vm_config_groups[i]->name);
++            if (!strcmp("drive", vm_config_groups[i]->name)) {
++                info->parameters = get_drive_infolist();
++            } else {
++                info->parameters =
++                    query_option_descs(vm_config_groups[i]->desc);
++            }
++            QAPI_LIST_PREPEND(conf_list, info);
++        }
++    }
++
++    if (!option || !strcmp(option, "machine")) {
++        info = g_malloc0(sizeof(*info));
++        info->option = g_strdup("machine");
++        info->parameters = query_all_machine_properties();
++        QAPI_LIST_PREPEND(conf_list, info);
++    }
++
++    if (conf_list == NULL) {
++        error_setg(errp, "invalid option name: %s", option);
++    }
++
++    return conf_list;
++}
+diff --git a/util/qemu-config.c b/util/qemu-config.c
+index 42076efe1e..a90c18dad2 100644
+--- a/util/qemu-config.c
++++ b/util/qemu-config.c
+@@ -1,16 +1,14 @@
  #include "qemu/osdep.h"
+ #include "block/qdict.h" /* for qdict_extract_subqdict() */
  #include "qapi/error.h"
-+#include "qapi/qapi-emit-events.h"
- #include "monitor/monitor.h"
--#include "../monitor/monitor-internal.h"
+-#include "qapi/qapi-commands-misc.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+ #include "qemu/config-file.h"
+-#include "hw/boards.h"
  
- int monitor_get_fd(Monitor *mon, const char *name, Error **errp)
- {
-@@ -13,6 +13,10 @@ void monitor_init_hmp(Chardev *chr, bool use_readline, Error **errp)
- {
+-static QemuOptsList *vm_config_groups[48];
+-static QemuOptsList *drive_config_groups[5];
++QemuOptsList *vm_config_groups[48];
++QemuOptsList *drive_config_groups[5];
+ 
+ static QemuOptsList *find_list(QemuOptsList **lists, const char *group,
+                                Error **errp)
+@@ -55,204 +53,6 @@ QemuOpts *qemu_find_opts_singleton(const char *group)
+     return opts;
  }
  
--void monitor_fdsets_cleanup(void)
-+void monitor_init_qmp(Chardev *chr, bool pretty, Error **errp)
-+{
-+}
-+
-+void qapi_event_emit(QAPIEvent event, QDict *qdict)
+-static CommandLineParameterInfoList *query_option_descs(const QemuOptDesc *desc)
+-{
+-    CommandLineParameterInfoList *param_list = NULL;
+-    CommandLineParameterInfo *info;
+-    int i;
+-
+-    for (i = 0; desc[i].name != NULL; i++) {
+-        info = g_malloc0(sizeof(*info));
+-        info->name = g_strdup(desc[i].name);
+-
+-        switch (desc[i].type) {
+-        case QEMU_OPT_STRING:
+-            info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
+-            break;
+-        case QEMU_OPT_BOOL:
+-            info->type = COMMAND_LINE_PARAMETER_TYPE_BOOLEAN;
+-            break;
+-        case QEMU_OPT_NUMBER:
+-            info->type = COMMAND_LINE_PARAMETER_TYPE_NUMBER;
+-            break;
+-        case QEMU_OPT_SIZE:
+-            info->type = COMMAND_LINE_PARAMETER_TYPE_SIZE;
+-            break;
+-        }
+-
+-        info->help = g_strdup(desc[i].help);
+-        info->q_default = g_strdup(desc[i].def_value_str);
+-
+-        QAPI_LIST_PREPEND(param_list, info);
+-    }
+-
+-    return param_list;
+-}
+-
+-/* remove repeated entry from the info list */
+-static void cleanup_infolist(CommandLineParameterInfoList *head)
+-{
+-    CommandLineParameterInfoList *pre_entry, *cur, *del_entry;
+-
+-    cur = head;
+-    while (cur->next) {
+-        pre_entry = head;
+-        while (pre_entry != cur->next) {
+-            if (!strcmp(pre_entry->value->name, cur->next->value->name)) {
+-                del_entry = cur->next;
+-                cur->next = cur->next->next;
+-                del_entry->next = NULL;
+-                qapi_free_CommandLineParameterInfoList(del_entry);
+-                break;
+-            }
+-            pre_entry = pre_entry->next;
+-        }
+-        cur = cur->next;
+-    }
+-}
+-
+-/* merge the description items of two parameter infolists */
+-static void connect_infolist(CommandLineParameterInfoList *head,
+-                             CommandLineParameterInfoList *new)
+-{
+-    CommandLineParameterInfoList *cur;
+-
+-    cur = head;
+-    while (cur->next) {
+-        cur = cur->next;
+-    }
+-    cur->next = new;
+-}
+-
+-/* access all the local QemuOptsLists for drive option */
+-static CommandLineParameterInfoList *get_drive_infolist(void)
+-{
+-    CommandLineParameterInfoList *head = NULL, *cur;
+-    int i;
+-
+-    for (i = 0; drive_config_groups[i] != NULL; i++) {
+-        if (!head) {
+-            head = query_option_descs(drive_config_groups[i]->desc);
+-        } else {
+-            cur = query_option_descs(drive_config_groups[i]->desc);
+-            connect_infolist(head, cur);
+-        }
+-    }
+-    cleanup_infolist(head);
+-
+-    return head;
+-}
+-
+-static CommandLineParameterInfo *objprop_to_cmdline_prop(ObjectProperty *prop)
+-{
+-    CommandLineParameterInfo *info;
+-
+-    info = g_malloc0(sizeof(*info));
+-    info->name = g_strdup(prop->name);
+-
+-    if (g_str_equal(prop->type, "bool") || g_str_equal(prop->type, "OnOffAuto")) {
+-        info->type = COMMAND_LINE_PARAMETER_TYPE_BOOLEAN;
+-    } else if (g_str_equal(prop->type, "int")) {
+-        info->type = COMMAND_LINE_PARAMETER_TYPE_NUMBER;
+-    } else if (g_str_equal(prop->type, "size")) {
+-        info->type = COMMAND_LINE_PARAMETER_TYPE_SIZE;
+-    } else {
+-        info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
+-    }
+-
+-    if (prop->description) {
+-        info->help = g_strdup(prop->description);
+-    }
+-
+-    return info;
+-}
+-
+-static CommandLineParameterInfoList *query_all_machine_properties(void)
+-{
+-    CommandLineParameterInfoList *params = NULL, *clpiter;
+-    CommandLineParameterInfo *info;
+-    GSList *machines, *curr_mach;
+-    ObjectPropertyIterator op_iter;
+-    ObjectProperty *prop;
+-    bool is_new;
+-
+-    machines = object_class_get_list(TYPE_MACHINE, false);
+-    assert(machines);
+-
+-    /* Loop over all machine classes */
+-    for (curr_mach = machines; curr_mach; curr_mach = curr_mach->next) {
+-        object_class_property_iter_init(&op_iter, curr_mach->data);
+-        /* ... and over the properties of each machine: */
+-        while ((prop = object_property_iter_next(&op_iter))) {
+-            if (!prop->set) {
+-                continue;
+-            }
+-            /*
+-             * Check whether the property has already been put into the list
+-             * (via another machine class)
+-             */
+-            is_new = true;
+-            for (clpiter = params; clpiter != NULL; clpiter = clpiter->next) {
+-                if (g_str_equal(clpiter->value->name, prop->name)) {
+-                    is_new = false;
+-                    break;
+-                }
+-            }
+-            /* If it hasn't been added before, add it now to the list */
+-            if (is_new) {
+-                info = objprop_to_cmdline_prop(prop);
+-                QAPI_LIST_PREPEND(params, info);
+-            }
+-        }
+-    }
+-
+-    g_slist_free(machines);
+-
+-    /* Add entry for the "type" parameter */
+-    info = g_malloc0(sizeof(*info));
+-    info->name = g_strdup("type");
+-    info->type = COMMAND_LINE_PARAMETER_TYPE_STRING;
+-    info->help = g_strdup("machine type");
+-    QAPI_LIST_PREPEND(params, info);
+-
+-    return params;
+-}
+-
+-CommandLineOptionInfoList *qmp_query_command_line_options(const char *option,
+-                                                          Error **errp)
+-{
+-    CommandLineOptionInfoList *conf_list = NULL;
+-    CommandLineOptionInfo *info;
+-    int i;
+-
+-    for (i = 0; vm_config_groups[i] != NULL; i++) {
+-        if (!option || !strcmp(option, vm_config_groups[i]->name)) {
+-            info = g_malloc0(sizeof(*info));
+-            info->option = g_strdup(vm_config_groups[i]->name);
+-            if (!strcmp("drive", vm_config_groups[i]->name)) {
+-                info->parameters = get_drive_infolist();
+-            } else {
+-                info->parameters =
+-                    query_option_descs(vm_config_groups[i]->desc);
+-            }
+-            QAPI_LIST_PREPEND(conf_list, info);
+-        }
+-    }
+-
+-    if (!option || !strcmp(option, "machine")) {
+-        info = g_malloc0(sizeof(*info));
+-        info->option = g_strdup("machine");
+-        info->parameters = query_all_machine_properties();
+-        QAPI_LIST_PREPEND(conf_list, info);
+-    }
+-
+-    if (conf_list == NULL) {
+-        error_setg(errp, "invalid option name: %s", option);
+-    }
+-
+-    return conf_list;
+-}
+-
+ QemuOptsList *qemu_find_opts_err(const char *group, Error **errp)
  {
- }
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 0bf25e6ca5..ca1bc07d30 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -10,7 +10,6 @@ stub_ss.add(files('qemu-timer-notify-cb.c'))
- stub_ss.add(files('icount.c'))
- stub_ss.add(files('dump.c'))
- stub_ss.add(files('error-printf.c'))
--stub_ss.add(files('fdset.c'))
- stub_ss.add(files('gdbstub.c'))
- stub_ss.add(files('get-vm-name.c'))
- stub_ss.add(files('graph-lock.c'))
-@@ -28,7 +27,9 @@ if libaio.found()
+     return find_list(vm_config_groups, group, errp);
+diff --git a/util/meson.build b/util/meson.build
+index 247f55a80d..636b17a414 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -75,6 +75,7 @@ if have_system
+   if host_os == 'linux'
+     util_ss.add(files('userfaultfd.c'))
+   endif
++  util_ss.add(files('qemu-config-qmp.c'))
+   util_ss.add(files('yank.c'))
  endif
- stub_ss.add(files('migr-blocker.c'))
- stub_ss.add(files('module-opts.c'))
--stub_ss.add(files('monitor.c'))
-+if have_system or have_tools
-+  stub_ss.add(files('monitor.c'))
-+endif
- stub_ss.add(files('monitor-core.c'))
- stub_ss.add(files('physmem.c'))
- stub_ss.add(files('qemu-timer-notify-cb.c'))
+ 
 -- 
 2.41.0
 
