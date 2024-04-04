@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59773898A0D
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5802898A0E
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsO2h-0004ER-FN; Thu, 04 Apr 2024 10:26:15 -0400
+	id 1rsO2i-0004HQ-N6; Thu, 04 Apr 2024 10:26:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2Z-00045Y-7D
+ id 1rsO2Z-000470-TP
  for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:07 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2W-00062N-FP
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:06 -0400
+ id 1rsO2W-00062R-Vp
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
  Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
  Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=OUFNvM+qAzbqKKg2MdX8r2zHUUV7uxQBgRO0uH1Fn6A=; b=ZeisTYuX1d7CkjXTwatdp4Dwu+
- fl7bzpEBNRWQDfmnDlbWvtn+iez9JBzC6pR2CLB4Iw65CqUhPD6MY0gLvsLxKGl4GhFurlXY9q6MO
- JoSKCyJw3JI3Jqt0I5AyJg3FCSVzW/4ZZJlO6jl3E/deYbZeeQlqpQ5gIHvFCPZNpPb/aYgdoVlOz
- OwRb3SNYj9gOtK1ig3/UrW7hLAKgpTXe/uWMLI63R+TGDf6mVS161D7uLHsKce4JDZJaL6Oo2PZ+p
- /rb+cENGMXFKpi4xzS2/abIoBnPVKU1S1IZSBP1O+muFUZ1/WQMxexv7VcvCMjR5u5cEaWzjaLD22
- rEZOYwGNE1B20XzK7lAhO6+QJ2O8mK/+7p838NAxssqSpVNXXzgKT1DiCo5aVn0vWjHOS2i0iK761
- YblrMa1NDlYVYtCwWUFNUuhr4p4GDVWhIqQbsYi7tk+FJO0KkA5kV6NINYt3+r5rHrO5CcwT6U0WJ
- m3yIYFOb+kugHcwLfKxql6jb5HgDBAXBcEfHDaOENMN8lF/6dP+xyARHH8P/wUzmK3os3ioChnbc0
- FqiZqdx5VFBQcOHjudE2Pa+7lE9NatA6gyW09SZZleXwrSXCcojSK4GUQNU062mEHx+Hi/GrVF6N5
- jWVAeaV0Z1s7Wkz0PmfqYe9gVoLy8bcyUrJOp918s=;
+ bh=+5DgO72j5BAg/+WtP66YIkITLZ7sZJ5H9FlTVjGxClY=; b=FSowh78PbrIp/tho8je6so0fox
+ jJQe6YCnyptJIyOMk1RT6Z7MP7d1iE5kmvlxy8/QcU31I0U1Yd3p7BXwPLrVxyVb0EJNcU2/pqktq
+ PEpIx4NGl+sqppYsT2I7odPy4Cw+JPH/fSzGoh2mIB2LyE8R9VxZqlqt1HEEW+RSaM1JELkqttaqS
+ b4+xPSgUQO20l+8U2NqYrqBPjpNrf9gXfJhAdnmrnbf1Is22MTwhD4OPccn1vc6rMJX6kTxfbttBw
+ PX1Ci+LIq8+cHKY4hkKbJNSD32LXPg8fvCl1WwCnYczFFt7ys+tdZDQhuVHs/Xj2TZaw6TCJkNl12
+ lIFrgJSHriLRU37K9xDu7/Iv56sd+gOSWT+bGpViAqY/KSYuAVtDKSzW67IVDmno9ac2wA+ysQHOL
+ LkG20cDnJaGjXn6E1rUTHZsx7JrBxbAnHvKZXF1vaA2CxumCXdqgEKugXIb2fdY8KzTBQbFmIou/W
+ K8107A5CMUdc40fYWy6QqNx/Am2EbEb/iwtA2Vb7TKcVSYbRMVKei/2fKcFZrpeMYhJNgW4+oHJMt
+ 0Y0bvKlTg59MTrq3UqHNq2l3VO2CgTKqndU4VKLASC01ZSWwub2GbQONr7u1yQwH+Qy2tVdPmcM+V
+ GDo2wq6HeheOmu8Jsf3vUxpquFjXLH3jglg0EJujw=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO1U-000Bmt-3i; Thu, 04 Apr 2024 15:25:04 +0100
+ id 1rsO1Y-000Bmt-A7; Thu, 04 Apr 2024 15:25:08 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Thu,  4 Apr 2024 15:25:23 +0100
-Message-Id: <20240404142539.711134-2-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  4 Apr 2024 15:25:24 +0100
+Message-Id: <20240404142539.711134-3-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
 References: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
@@ -52,8 +52,8 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 01/17] esp.c: move esp_fifo_pop_buf() internals to new
- esp_fifo8_pop_buf() function
+Subject: [PULL 02/17] esp.c: replace esp_fifo_pop_buf() with
+ esp_fifo8_pop_buf() in do_command_phase()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,43 +79,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Update esp_fifo_pop_buf() to be a simple wrapper onto the new esp_fifo8_pop_buf()
-function.
+The aim is to restrict the esp_fifo_*() functions so that they only operate on
+the hardware FIFO. When reading from cmdfifo in do_command_phase() use the
+underlying esp_fifo8_pop_buf() function directly.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240324191707.623175-2-mark.cave-ayland@ilande.co.uk>
+Message-Id: <20240324191707.623175-3-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 ---
- hw/scsi/esp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ hw/scsi/esp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-index 590ff99744..1b7b118a0b 100644
+index 1b7b118a0b..ff51145da7 100644
 --- a/hw/scsi/esp.c
 +++ b/hw/scsi/esp.c
-@@ -125,7 +125,7 @@ static uint8_t esp_fifo_pop(Fifo8 *fifo)
-     return fifo8_pop(fifo);
- }
+@@ -280,7 +280,7 @@ static void do_command_phase(ESPState *s)
+     if (!cmdlen || !s->current_dev) {
+         return;
+     }
+-    esp_fifo_pop_buf(&s->cmdfifo, buf, cmdlen);
++    esp_fifo8_pop_buf(&s->cmdfifo, buf, cmdlen);
  
--static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
-+static uint32_t esp_fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
- {
-     const uint8_t *buf;
-     uint32_t n, n2;
-@@ -155,6 +155,11 @@ static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
-     return n;
- }
- 
-+static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
-+{
-+    return esp_fifo8_pop_buf(fifo, dest, maxlen);
-+}
-+
- static uint32_t esp_get_tc(ESPState *s)
- {
-     uint32_t dmalen;
+     current_lun = scsi_device_find(&s->bus, 0, s->current_dev->id, s->lun);
+     if (!current_lun) {
 -- 
 2.39.2
 
