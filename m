@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689BC898867
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 15:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 399EF898875
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 15:02:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsMgl-0003QB-IE; Thu, 04 Apr 2024 08:59:31 -0400
+	id 1rsMjO-0004hX-0C; Thu, 04 Apr 2024 09:02:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rsMgU-0003KV-40; Thu, 04 Apr 2024 08:59:14 -0400
+ id 1rsMif-0004Rv-M2; Thu, 04 Apr 2024 09:01:40 -0400
 Received: from wfout7-smtp.messagingengine.com ([64.147.123.150])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
- id 1rsMgS-00072S-5M; Thu, 04 Apr 2024 08:59:13 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailfout.west.internal (Postfix) with ESMTP id A03971C000A8;
- Thu,  4 Apr 2024 08:59:07 -0400 (EDT)
+ id 1rsMiX-0008UG-9y; Thu, 04 Apr 2024 09:01:27 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+ by mailfout.west.internal (Postfix) with ESMTP id AADE01C0009D;
+ Thu,  4 Apr 2024 09:01:18 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Thu, 04 Apr 2024 08:59:08 -0400
+ by compute6.internal (MEProxy); Thu, 04 Apr 2024 09:01:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
  h=cc:cc:content-type:content-type:date:date:from:from
  :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm1; t=1712235547; x=
- 1712321947; bh=guoisUAPuCy5hMqnhsJmvLqBquBENjAxj/rNNCRRwco=; b=u
- r9As0bQaf7k6GDtTlylbWTN8PDp/U/HbdQLQR+9S9wUxaPwI3pV/3aSPTY9otWp4
- 6h06gy8O6BcRGi4xYNYSTTrT0nf1kpTK1RpSVRXrChHh44emdD1v8fpsO/pZamaf
- uynrlFDBXsmrCcELCXDJ8qEJbnLppgDsyevxVTjhzSN28PUBw/yX593M/uOxzCPb
- cOlotmoaBOqlEgvWNnNc0yY4EPSF+eyGmz3f2beXUlAGSjx0qufF+EiBFNMXfngC
- BVATPwym9CPqqiaHWb2W5Cm24beqA1JnhZrSFrKtjoFj0fAfuyyrNYiF9toEh+y0
- IA1z28LWFpti4rLKIKXCQ==
+ :reply-to:subject:subject:to:to; s=fm1; t=1712235678; x=
+ 1712322078; bh=PTSoAqhg9DRQadSdrSdba4Men32J4rAqiYRSBg13j28=; b=T
+ 5g8YlPx/2qPK/W5+lzGp4bH2vGx8DIQKMO6Z/LpaQup5VQ7cmiEVZ0TC9WcB/CRF
+ DUoEmPY9gQCDQTZorJh9F+xVixn020X8/gW43qdpL/m9mMaMaudt0SoXPfarWwZz
+ 3eOwg0VBTAa7Bar1uS7GPEW+c7kx0HyjEF0WNrB+8b5tCX9Pzqv3cwqN7uJmk/sZ
+ nTqTRpvk/wJ4W6unZlC+bHHf/qZCBF1JIsPSz1vhSeW2SB2EsiTpHNcHIakVoFxU
+ 8tEx0C6LY/gjLlFHj9jj/XsTATqNB7Kp5TUelS4mxsH2PDczL9Zci7okAjGUhuJ9
+ KI7k5Mql47P1Y0SK5dBlw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
  messagingengine.com; h=cc:cc:content-type:content-type:date:date
  :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
  :message-id:mime-version:references:reply-to:subject:subject:to
  :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; t=1712235547; x=1712321947; bh=guoisUAPuCy5hMqnhsJmvLqBquBE
- NjAxj/rNNCRRwco=; b=P31z9SDNvB1FLem+cA3/vdFZ6HRo+Ug0ZiNJmx0QE/7E
- xbuugRnGGDMHcvVtbOKqk4sE40QSYMOHx/2vP+4bE8cLil5UDZpYXRSaSRFUveWw
- jlO8CTqlz/Bo3eYXfpzAp4RYjDDDk4zrmGU9DU8lLyrbz4dK9l3AU2sz9D3yHcDu
- cxrQJigCUxt3YPT2PPxeOJEkIJCq/4xdw3iiIPZc4uMpITp72pe3P4XYoXCsfcau
- ngYGpUnC97VK4ur5+6FTCV1bGpb75hBWf8VjI6OAlaBhbahz7Dgtuy5+Cxx8rlnA
- 229GdV+Hd1fSFhVM95i2/NUqNrFx1Xl5r6YlkjU+KA==
-X-ME-Sender: <xms:GqQOZhRbTRR0dniHue7afsAE_qjmDEWwn4jZ3XAWksSTV3ntSoOM3w>
- <xme:GqQOZqzbKbuKCgcAbM-cJT0wDk7jd5Bx2fUDDRAO4hncuru4ogUr6PSCJ-cLL5p3m
- BdoXt3YqJrHKYQ_UwE>
-X-ME-Received: <xmr:GqQOZm1oH-6-4RrwxnTJp377FzycTYDv94eoBdkHyVpwOijPeFntvuK2iQ>
+ fm2; t=1712235678; x=1712322078; bh=PTSoAqhg9DRQadSdrSdba4Men32J
+ 4rAqiYRSBg13j28=; b=HZ42P2ypYr9ujOE6f+CD8qeI84gdoU+cEHKtwCcdRbK8
+ yuBl79wG05OrubDwQBRG7pgjZOHDcDeY3999VrZ9qO+HWiNXAR27VMre6ibV8z5l
+ JZl8vJ2QdzLpmGFfPxlZ36HiOHrWHpjIUFfjs9Xoz2/awjyWiVM5cLdKSk2gnVUm
+ xg/AmUjtS0Ctl+VYfM8JG7sK5jPW6qgCIN6Vt+OL3oiQyc99mSbuxc2Tv4n53jNv
+ MPCnVsrt+WBop1rfZGhfKj23+PR6fgIotHfVbpa4LAMbPeNPU2qpnl69gZRLQ0i9
+ IqW1H6tjcY5rD8TyidPC/KXzN/Pj9yM2bXCxwuIFYg==
+X-ME-Sender: <xms:naQOZrd8XrAYIgcliNQO35ltVdM_igbrBqk0HFCq0RufTuIvM95LYQ>
+ <xme:naQOZhOg8e7FBIKoF4lvE_S2XQejD8TMD6rvWRS2K0R0hphOFnMuMjXBVlZ61cz3I
+ W9d5Ecd8t77uOKVm8k>
+X-ME-Received: <xmr:naQOZkiSltVa1oijO3xU7xCWmMKRiwzrkqw-jnUHNRaYZseDBr2i8_87vw>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefkedgheelucetufdoteggodetrfdotf
  fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
  uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
@@ -56,26 +56,26 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudefkedgheelucetufdoteggod
  htvghrnhepjefgjeefffdvuefhieefhffggfeuleehudekveejvedtuddugeeigeetffff
  jeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepih
  htshesihhrrhgvlhgvvhgrnhhtrdgukh
-X-ME-Proxy: <xmx:GqQOZpDQkKpRvVTxWTdsaD4z5cDXY3yAKpqzFVfd2u7AOkKuvhOmWg>
- <xmx:GqQOZqjxDRyBp92vTKLpKfPksqnfH6_xgDS8yb7yFRbuAiLwQIJuww>
- <xmx:GqQOZtpw03BGC5ghfIM9fPCga2c2q11XpoMw7JGMcDHTLZ0dcU2oJQ>
- <xmx:GqQOZlh6AImhE8DdSnnes-dnyBTuevFm5zOpUibKl9bCAIeiuFMhFQ>
- <xmx:G6QOZjVG3R3-jUo2f0D6BZzuJ6XJpuHkeRIiNHj90ndhvSIScrS-F36t>
+X-ME-Proxy: <xmx:naQOZs9kzMey64iWyOvfDLrSohwLWHQ07Z-wOQPdP5zUCABoexnevg>
+ <xmx:naQOZnuqsGEJ0y55wGaRi4UCOQW3mR3-kIzl0Ol4LcnUPMZTlCmQkQ>
+ <xmx:naQOZrG0raUCqztkIngL4zkRjfvb4SPIQlIXyMVZamiIngqIHRCYUg>
+ <xmx:naQOZuOGFh94_XjRGrzkjJQAmdtpMLp1uw4c04G2D7-IzigoMrofmQ>
+ <xmx:nqQOZtCcrugCmVBhTM1PLB7txhEl_1FGjvM6dm6H8cS5izSifYWiwQQd>
 Feedback-ID: idc91472f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Apr 2024 08:59:05 -0400 (EDT)
-Date: Thu, 4 Apr 2024 14:58:59 +0200
+ 4 Apr 2024 09:01:16 -0400 (EDT)
+Date: Thu, 4 Apr 2024 15:01:12 +0200
 From: Klaus Jensen <its@irrelevant.dk>
 To: John Berg <jhnberg@amazon.co.uk>
 Cc: qemu-devel@nongnu.org, kbusch@kernel.org, foss@defmacro.it,
  qemu-block@nongnu.org, John Berg <jhnberg@amazon.com>
 Subject: Re: [PATCH] hw/nvme: Add support for setting the MQES for the NVMe
  emulation
-Message-ID: <Zg6kE0Hvt7KK99wc@cormorant.local>
+Message-ID: <Zg6kmPGVZOVhfDbo@cormorant.local>
 References: <20240404120418.1611513-1-jhnberg@amazon.co.uk>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="Ps1feoi6pJQAgncx"
+ protocol="application/pgp-signature"; boundary="QXi+KMsfXN46qA57"
 Content-Disposition: inline
 In-Reply-To: <20240404120418.1611513-1-jhnberg@amazon.co.uk>
 Received-SPF: pass client-ip=64.147.123.150; envelope-from=its@irrelevant.dk;
@@ -103,7 +103,7 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---Ps1feoi6pJQAgncx
+--QXi+KMsfXN46qA57
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -134,25 +134,44 @@ On Apr  4 13:04, John Berg wrote:
 > 0x7ff (the queue size is 2048 entries).
 >=20
 > Signed-off-by: John Berg <jhnberg@amazon.co.uk>
+> ---
+>  hw/nvme/ctrl.c | 9 ++++++++-
+>  hw/nvme/nvme.h | 1 +
+>  2 files changed, 9 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+> index 127c3d2383..86cda9bc73 100644
+> --- a/hw/nvme/ctrl.c
+> +++ b/hw/nvme/ctrl.c
+> @@ -7805,6 +7805,12 @@ static bool nvme_check_params(NvmeCtrl *n, Error *=
+*errp)
+>          return false;
+>      }
+> =20
+> +    if (params->mqes < 1)
+> +    {
 
-LGTM,
+Please keep the `{` on the same line as the `if`. I think checkpatch.pl
+should catch this.
 
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+No need to send a v2, I'll fix it up when I apply it to nvme-next :)
 
---Ps1feoi6pJQAgncx
+Thanks!
+
+--QXi+KMsfXN46qA57
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmYOpBIACgkQTeGvMW1P
-DemZ3wgAofo5f9sBczlchnUb+g9Z1f/fh1umLgP8XQO6dI6n/M4GxTgdwaByqMwK
-vfMvFDecdI9vEWztBvNW5ZwfrMcNHYYleCQa3ZLjroCbMnDdqbbQBqDF4u/jgakf
-eVp7oENp6LzTztMwO2S5YgjwNZdUoFQ5FAts0LcAmuqF56S1m063ZBJchDcFbxvY
-dff1iDoi6F4SMj+QRno2Gbk7hY3+wxGCtYoOTqLppbGhC8Tq9cBusXrd7HXbZei2
-yJ31wBpqI6X3sqVSihbplNgBMYwCDmhlzFSXH29FW6ugxO+WtP4WKamqkkW7x5rP
-1K/GyjnwhEh5Lb88KbIDLbS7r8Ow6g==
-=0/tb
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmYOpJcACgkQTeGvMW1P
+DelqbQf/eYJP+zY4ALsofWCh9Uah62cI50J80cKwHxxUmoNxE1HwoCK4yEnfSlbJ
+1IgaVWQPslXIwLWNbH021GY6RUiu5KO3/mXq6Pc3Y/zZWLj5bA6aiGvMxxpiXFy3
+kz8/B+7e67YOVU+qGHvVyu9HSSQ9Kq7Q5D9UleCGGeFbSGrSMS/bT4iwwNceIMW/
+VtYqc1Knmn0ypyh9EKTFJFt+oRcBWqJ28WBEVjLxo7aKVwY/bQUUNLyhi1xrFWRn
+1/aazB8PPO7iVAH5ulyfNpiHD6ubST45FiUEBdqABW48WXwYYa8m1LF+/Hf5uDcY
+wLSnOccbeuo3PPAGcb4H1OJjq5w2/Q==
+=QYvO
 -----END PGP SIGNATURE-----
 
---Ps1feoi6pJQAgncx--
+--QXi+KMsfXN46qA57--
 
