@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A66B898F36
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:49:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F81898F49
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsT4n-0006ar-52; Thu, 04 Apr 2024 15:48:45 -0400
+	id 1rsTBg-0003aH-7o; Thu, 04 Apr 2024 15:55:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4l-0006aR-3n
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:43 -0400
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsTBe-0003a8-9v
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:55:50 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsT4j-0000Of-IY
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:48:42 -0400
-Received: by mail-lj1-x233.google.com with SMTP id
- 38308e7fff4ca-2d47a92cfefso18142701fa.1
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:48:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsTBc-00029A-L5
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:55:50 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-41627acfd03so9094605e9.3
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712260120; x=1712864920; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=airsYYnzzrC3CGj9Ils0htz0QXpak8uFciduBNRfDcQ=;
- b=g8xnQQEJ43B5wdoV4A8yGr7GUkdwB97eeFnZvwbW72a707uFYwof31cwNT0c1ygneG
- 0OL7/Bs4HXP1v4MIi7AUWscQAVwmaWxqjhxhY1Twj6+qa79dc5YukYcld2tdBQVgkAIL
- hG7wH9GG+WWIQEUrVDiHy4FuD3+kP5KwZnLZQULiwb0QrLJHyZBejIrjilDiGxWshiGF
- DeniYN1u/PQvpzhMoZV6jBftbPehvBdN4U/73gqV6obcDoIJ1Eqfk/P6Fg+ZKDz0ZM8d
- Cni09y6U2kuebGINGBguHcseVm/Ery14aOFj4TcAnj3RC2vrbPcGIqyILsz7UlZGQLXp
- 60QQ==
+ d=linaro.org; s=google; t=1712260546; x=1712865346; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=s5hIihND0dsf9z9poWK5+DgIi8r9oQc5ysXPqjISFuw=;
+ b=bllm8hjTUnqAECg6B8fjEGYv0DL9OEFOn/HlBSTYf4KUZXC21uvWrzh1Q7xg5uOnHA
+ xINORvZo/6zUFTOR7LPxp+GD1alBCS8/l5gGConHQQiIyrcT2hvoPsqdAxcwSyCtfz9U
+ ajl0iLCci5+rpgGbguApq410qjIfKt9eqJbkc5pVOkDb6Q/VJuHGAR1FXT2RiaWG+XjZ
+ cBj9QJschFwImX8fAlzgQgkuMVO4cnK1d+7seQ6hAwZXF4gQiEGWUYTxnFo4xZ4TuymL
+ DO0VPd0zkiQNdtvif3TAmlQJ/PISt4f202Vx20khXsudW1roZKcKsJ4tA8GVsCiOFd90
+ ab7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712260120; x=1712864920;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=airsYYnzzrC3CGj9Ils0htz0QXpak8uFciduBNRfDcQ=;
- b=AqB8SqALV+PqqqwuT4vcjkOdZ5zAscYUC/DkWiGE9NqoE9JIjzmDGBaa4n2Qc/OyPN
- QDvohanLneWpAXn5GZoNBSpovHuheywdx3+cMMAzU0EBmMLMShlkbJCdcYsl+3GhshFO
- tkSsILa6oVqLcjR3Dr9bjbrlwCyRem7Qf5cCNCvcfNJvfimTHVzXOu7EoWf2lDgz2xuK
- W3RJ/MA7wirEPhm2f4tqjrNEURtk5F4d8dEZ1UgJFManptjo8R7yt3fXWsprMyRhtJT5
- Nfui39UZGMamf8YnfLDal21MevUgAr0pF3bKdCC+6d4UsMWGV1DiiHa4VQpB5o11uKLr
- 8sng==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW1/8XSFVFywxKnLnsfS61ilLws5/XUg66desnl/UwF0jZ4I2RrlkiE2pCTlLisYdGDl6SckYKuawzUouK/dUAviO1q9Do=
-X-Gm-Message-State: AOJu0YwaJ4xp0sxu1WpWBKrnV3RAarAACdtqZPIcM6rApW/5ZTL4RAuo
- JPGR13vyw6iw6GkDzdBA/WcZpTJzmjaNC03eXxUwxZbvq5dDmQyeLbiEvEnyXJ4=
-X-Google-Smtp-Source: AGHT+IFh/n0g504mw7ncmbeJtMNi3J7fr8Lo+7xgpTuRxUFuIhe0R4hL2T8oeSQgGxubmfS52io2DA==
-X-Received: by 2002:a2e:9495:0:b0:2d8:97f:451e with SMTP id
- c21-20020a2e9495000000b002d8097f451emr2517158ljh.37.1712260119852; 
- Thu, 04 Apr 2024 12:48:39 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712260546; x=1712865346;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=s5hIihND0dsf9z9poWK5+DgIi8r9oQc5ysXPqjISFuw=;
+ b=VTuxa9jmWttjtW+KzmPxI/Z3aljjVfX+6D2Jbq+5UCLFReE8slVHgM9M67iUsJFBh+
+ DH1pSw/Gw5+LjWWYNvgNRfZ8DxzPptFdQq3wVDrXZuJdg876oerM4ENEyvT0YE+SKD2j
+ 6BJ0RagA/ctKwipkGFd/tHebwMzyO7TrKrJSFf6IwKFJeY6ts8k9WHtg2homDWE4bzEa
+ AZf5nangYMSO2PTbks41xAQPX02Nn0V2LIj1GtzY7DhabgMo20H50j7UGTPq/rn3Jn0F
+ 8oHD5V29wrVNTslD6W1j4uevh/7azDPn2a4kIFmCVmpD8bhYsuhNvCywdQLlpDJlQVSe
+ Ws6g==
+X-Gm-Message-State: AOJu0YykS1q9hsB7E9mMxm3Re+oVN2IqVbpOaKewcvhJeSsHt7YLJjXc
+ 8Sw82sQpEA4nlV4Uxe9vt2tyd4adIrXNgHRxB0mc6yk2kHRrOJhnDqJdDgFVnc/f1PdGPo3pbp4
+ 6
+X-Google-Smtp-Source: AGHT+IF/RmKNiYeV0DduMQPGbEHu3fvbRDreTJ24TbRRJCvir0Jy/Hg627XRVK9TdFZQIE5D2U0+BQ==
+X-Received: by 2002:a05:600c:5812:b0:416:2c78:5ecc with SMTP id
+ jz18-20020a05600c581200b004162c785eccmr1013557wmb.36.1712260546249; 
+ Thu, 04 Apr 2024 12:55:46 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.216.111])
  by smtp.gmail.com with ESMTPSA id
- t12-20020a05600c450c00b004161bffa48csm223823wmo.40.2024.04.04.12.48.38
+ r10-20020a05600c35ca00b0041622c88852sm3794115wmq.16.2024.04.04.12.55.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 04 Apr 2024 12:48:39 -0700 (PDT)
+ Thu, 04 Apr 2024 12:55:45 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH-for-9.1 7/7] hw: Include minimal source set in user emulation
- build
-Date: Thu,  4 Apr 2024 21:47:57 +0200
-Message-ID: <20240404194757.9343-8-philmd@linaro.org>
+To: qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Laurent Vivier <laurent@vivier.eu>
+Cc: Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [RFC PATCH-for-9.1] qapi: Do not generate commands/events/introspect
+ code for user emulation
+Date: Thu,  4 Apr 2024 21:55:43 +0200
+Message-ID: <20240404195543.9804-1-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240404194757.9343-1-philmd@linaro.org>
-References: <20240404194757.9343-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::233;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,37 +91,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Only the files in hwcore_ss[] are required to link
-a user emulation binary.
+User emulation requires the QAPI types. Due to the command
+line processing, some visitor code is also used. The rest
+is irrelevant (no QMP socket).
 
-Have meson process the hw/ sub-directories if system
-emulation is selected, otherwise directly process
-hw/core/ to get hwcore_ss[], which is the only set
-required by user emulation.
+Add an option to the qapi-gen script to allow generating
+the minimum when only user emulation is being built.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- meson.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+RFC: Quick PoC for Markus. It is useful for user-only builds.
+---
+ qapi/meson.build     |  6 +++++-
+ scripts/qapi/main.py | 16 +++++++++++-----
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index c9c3217ba4..68eecd1937 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3447,8 +3447,12 @@ subdir('qom')
- subdir('authz')
- subdir('crypto')
- subdir('ui')
--subdir('hw')
- subdir('gdbstub')
-+if have_system
-+  subdir('hw')
-+else
-+  subdir('hw/core')
-+endif
+diff --git a/qapi/meson.build b/qapi/meson.build
+index 375d564277..5e02621145 100644
+--- a/qapi/meson.build
++++ b/qapi/meson.build
+@@ -115,10 +115,14 @@ foreach module : qapi_all_modules
+   endif
+ endforeach
  
- if enable_modules
-   libmodulecommon = static_library('module-common', files('module-common.c') + genh, pic: true, c_args: '-DBUILD_DSO')
++qapi_gen_cmd = [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ]
++if not (have_system or have_tools)
++  qapi_gen_cmd += [ '--types-only' ]
++endif
+ qapi_files = custom_target('shared QAPI source files',
+   output: qapi_util_outputs + qapi_specific_outputs + qapi_nonmodule_outputs,
+   input: [ files('qapi-schema.json') ],
+-  command: [ qapi_gen, '-o', 'qapi', '-b', '@INPUT0@' ],
++  command: qapi_gen_cmd,
+   depend_files: [ qapi_inputs, qapi_gen_depends ])
+ 
+ # Now go through all the outputs and add them to the right sourceset.
+diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+index 316736b6a2..925af5841b 100644
+--- a/scripts/qapi/main.py
++++ b/scripts/qapi/main.py
+@@ -33,7 +33,8 @@ def generate(schema_file: str,
+              prefix: str,
+              unmask: bool = False,
+              builtins: bool = False,
+-             gen_tracing: bool = False) -> None:
++             gen_tracing: bool = False,
++             gen_types_only: bool = False) -> None:
+     """
+     Generate C code for the given schema into the target directory.
+ 
+@@ -50,9 +51,10 @@ def generate(schema_file: str,
+     schema = QAPISchema(schema_file)
+     gen_types(schema, output_dir, prefix, builtins)
+     gen_visit(schema, output_dir, prefix, builtins)
+-    gen_commands(schema, output_dir, prefix, gen_tracing)
+-    gen_events(schema, output_dir, prefix)
+-    gen_introspect(schema, output_dir, prefix, unmask)
++    if not gen_types_only:
++        gen_commands(schema, output_dir, prefix, gen_tracing)
++        gen_events(schema, output_dir, prefix)
++        gen_introspect(schema, output_dir, prefix, unmask)
+ 
+ 
+ def main() -> int:
+@@ -75,6 +77,9 @@ def main() -> int:
+     parser.add_argument('-u', '--unmask-non-abi-names', action='store_true',
+                         dest='unmask',
+                         help="expose non-ABI names in introspection")
++    parser.add_argument('-t', '--types-only', action='store_true',
++                        dest='gen_types_only',
++                        help="Only generate QAPI types")
+ 
+     # Option --suppress-tracing exists so we can avoid solving build system
+     # problems.  TODO Drop it when we no longer need it.
+@@ -96,7 +101,8 @@ def main() -> int:
+                  prefix=args.prefix,
+                  unmask=args.unmask,
+                  builtins=args.builtins,
+-                 gen_tracing=not args.suppress_tracing)
++                 gen_tracing=not args.suppress_tracing,
++                 gen_types_only=args.gen_types_only)
+     except QAPIError as err:
+         print(err, file=sys.stderr)
+         return 1
 -- 
 2.41.0
 
