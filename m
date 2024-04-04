@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFBA38991E1
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 01:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3D98991E2
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 01:09:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsWAV-000289-49; Thu, 04 Apr 2024 19:06:51 -0400
+	id 1rsWAV-00028F-VX; Thu, 04 Apr 2024 19:06:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAN-00025G-E2
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:45 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+ id 1rsWAR-000272-Au
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:47 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAL-0007og-1t
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:42 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-29c14800a7fso1138935a91.2
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 16:06:40 -0700 (PDT)
+ id 1rsWAL-0007ox-Qp
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:44 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5e152c757a5so1126937a12.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1712272000; x=1712876800; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=G3LtGKJ/E6t3oKQLojhaCAB+/niRzlzRz3BS8xhiLDs=;
- b=RF8CibcCm7oCgYVFwjVrmPEFTwrMIGkjLAlxDXV0Www5JwbryWqJ9i5oCBOhmuVEuH
- R9RqWoKUQtZ06omCKRhFzHs9rQQghb6u3zk9BuqlBSObx5FFdz4nttSMDiVhV+UsH4Gv
- nmp+BADiTR5Kv7eRvXY8vlA9guBXZXlMuSkWZRFThQmW5WgW67wlHppDFKq6ZjudqRD/
- e1GYF2xFBKqwJlsxs90AixR7I0+1iVZvEyABDuFdznFxhsrUU08NEvpFSR4CJaEjdkmb
- 6Szqek0dm36HZQKdvYG7MPqyQk+LbCUYbsBHMPRWmeGC7qmzFD6s3UE+FAWYk1BHeARF
- q7fA==
+ bh=nSa2977I3Rq8Xc+67Y2/yCKgEWXvHU4DRnUfHiUzUVE=;
+ b=xO+zmGXVMPg0Us5fPhv6Fjv83GcbyrgECUj6JbXfisfn6lSNzsINhsxVORngNwg2li
+ OWNS+grktLrMraxpmpKBRkGRQPXH+6z2SYUnxXfSsNg6onQry1/5asWYgboDiiYsgaAo
+ wihH8Exv/zrojpfgwNZyVAlYEQKF4YIkah09bkoYWZbrYRCUZ9Fn9DENOBPg+UAV1qdb
+ a8RVvFaARbh07hB58awocumjSZGHhM8zVPKwAsw7ZvCo1zsSt0U31iVFDksFgnfxOrps
+ VfwQ5ia/MUpbnf+qwjDVjjnu9LZmEiHn6lw/+0XDa2tlRbhrz0FBdltOFKlWTL1KVAxw
+ Njug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1712272000; x=1712876800;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=G3LtGKJ/E6t3oKQLojhaCAB+/niRzlzRz3BS8xhiLDs=;
- b=RpyNVueutDBapm9ZMWwvdzvy+2iYrruPDbEfwmoxLTy3Az1dja3U4nYFnPxap79T0o
- 9bH/J5WX27oaUTAVhiRm2EYFULCW617cbPPXbsBsX5o2CyGh0Yf+nRpLtM5IpgTI4RH4
- Kh/ePI+zX7Xz0JElBSSCjco9Ho59I+df0NxOGPOxddpCXwQbw40MNWy+heFoWCFmadCa
- YbHa9ypAJOosY4z1TVb4rGYRrYXgKUch6hhwNHQkKUOVBC1KcdOc01WNB6kMdG09bZXn
- xZorYDviyhQjSCF4XIDT6uMQnbr1P8k1Kz6i96jmufy3MKty8p92NbtBOh8PnVA3pw1z
- EMdA==
-X-Gm-Message-State: AOJu0YyRYmyu/QFtGPmuWsEt4BMR295ztq+BGXNt5stqhazEUh/QSTL9
- HhLJYjdiriMTEsy8q3n9GOlWMJoFJcLVQRvXEquLefQXCptGHnUSBD1qyyk0UZDGRhndOLAd3iN
- 2
-X-Google-Smtp-Source: AGHT+IFCUhw6VmH8E+Zlj8Gr/LuzyOzN/3RMygI07P08HUZe1Uc5YY4ZiCUW1C3rEy/h90xipWL8Yw==
-X-Received: by 2002:a17:90a:c385:b0:2a2:3223:1930 with SMTP id
- h5-20020a17090ac38500b002a232231930mr1132777pjt.8.1712271999364; 
- Thu, 04 Apr 2024 16:06:39 -0700 (PDT)
+ bh=nSa2977I3Rq8Xc+67Y2/yCKgEWXvHU4DRnUfHiUzUVE=;
+ b=Mwr/m/VPYXrFljkw+9od6hOE272xo1qj8wXVZBH4vz3RFDQfrn0aJJgJl1GKEHKBDc
+ vvqadngD1JZGhW0PAwx8fgx92RQeme8DQa+xjxGs343L8iPSjPOPUvRT/qxBXIjnb6Lh
+ 2dFT3g+TtBcN0NOTZQyzaWoy7MetXfDKnWQVe3Er9JXbwwl9yhcWeNi775or7kZcG6zC
+ V8nF8jVHNAX8XYKYuv4OMJWBF0jwpid8HPLUQuN5eP8VPFagBWyohYNzeAls1FkefP2M
+ JOnv95dECJrZ3mYskxFyBpi5lB25VRFJyHN+lIM2jAcKGrnZy1jp1Uym/1VWl4dKTVeA
+ wx6Q==
+X-Gm-Message-State: AOJu0Yyph2FBuXVCo55MIdNfoVFny4uHPr2IKN4V6GnM0lVBCx3awuKF
+ 1yRZuOybvN5Gx7iT6KMH53vP7TbrPJXekLf4KvxQh+pAKPoDxgZDw2b4cqyjpx5sQmZfnec2Kmr
+ f
+X-Google-Smtp-Source: AGHT+IFJYcHzYY0rDK188uYBIlwpFDfEgZawsHuD2PpJm28X56udPNkyYFfqbeem8ot8bCMcQyVK8Q==
+X-Received: by 2002:a17:90b:3e82:b0:2a1:fcc2:bf36 with SMTP id
+ rj2-20020a17090b3e8200b002a1fcc2bf36mr3594875pjb.22.1712272000656; 
+ Thu, 04 Apr 2024 16:06:40 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- q36-20020a17090a17a700b002a2f3cfc92asm1052592pja.16.2024.04.04.16.06.38
+ q36-20020a17090a17a700b002a2f3cfc92asm1052592pja.16.2024.04.04.16.06.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 16:06:39 -0700 (PDT)
+ Thu, 04 Apr 2024 16:06:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 19/21] plugins: Merge qemu_plugin_tb_insn_get to
- plugin-gen.c
-Date: Thu,  4 Apr 2024 13:06:09 -1000
-Message-Id: <20240404230611.21231-20-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v2 20/21] plugins: Inline plugin_gen_empty_callback
+Date: Thu,  4 Apr 2024 13:06:10 -1000
+Message-Id: <20240404230611.21231-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240404230611.21231-1-richard.henderson@linaro.org>
 References: <20240404230611.21231-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,138 +93,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Merge qemu_plugin_insn_alloc and qemu_plugin_tb_insn_get into
-plugin_gen_insn_start, since it is used nowhere else.
+Each caller can use tcg_gen_plugin_cb directly.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/plugin.h  | 39 ---------------------------------------
- accel/tcg/plugin-gen.c | 39 ++++++++++++++++++++++++++++++++-------
- 2 files changed, 32 insertions(+), 46 deletions(-)
+ accel/tcg/plugin-gen.c | 19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 34498da717..07b1755990 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -128,14 +128,6 @@ static inline void qemu_plugin_insn_cleanup_fn(gpointer data)
-     g_byte_array_free(insn->data, true);
- }
- 
--static inline struct qemu_plugin_insn *qemu_plugin_insn_alloc(void)
--{
--    struct qemu_plugin_insn *insn = g_new0(struct qemu_plugin_insn, 1);
--
--    insn->data = g_byte_array_sized_new(4);
--    return insn;
--}
--
- /* Internal context for this TranslationBlock */
- struct qemu_plugin_tb {
-     GPtrArray *insns;
-@@ -152,37 +144,6 @@ struct qemu_plugin_tb {
-     GArray *cbs;
- };
- 
--/**
-- * qemu_plugin_tb_insn_get(): get next plugin record for translation.
-- * @tb: the internal tb context
-- * @pc: address of instruction
-- */
--static inline
--struct qemu_plugin_insn *qemu_plugin_tb_insn_get(struct qemu_plugin_tb *tb,
--                                                 uint64_t pc)
--{
--    struct qemu_plugin_insn *insn;
--
--    if (unlikely(tb->n == tb->insns->len)) {
--        struct qemu_plugin_insn *new_insn = qemu_plugin_insn_alloc();
--        g_ptr_array_add(tb->insns, new_insn);
--    }
--
--    insn = g_ptr_array_index(tb->insns, tb->n++);
--    g_byte_array_set_size(insn->data, 0);
--    insn->calls_helpers = false;
--    insn->mem_helper = false;
--    insn->vaddr = pc;
--    if (insn->insn_cbs) {
--        g_array_set_size(insn->insn_cbs, 0);
--    }
--    if (insn->mem_cbs) {
--        g_array_set_size(insn->mem_cbs, 0);
--    }
--
--    return insn;
--}
--
- /**
-  * struct CPUPluginState - per-CPU state for plugins
-  * @event_mask: plugin event bitmap. Modified only via async work.
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 5b63b93114..c0cbc26984 100644
+index c0cbc26984..d914d64de0 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -373,11 +373,34 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
- void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
+@@ -60,19 +60,6 @@ enum plugin_gen_from {
+     PLUGIN_GEN_AFTER_TB,
+ };
+ 
+-static void plugin_gen_empty_callback(enum plugin_gen_from from)
+-{
+-    switch (from) {
+-    case PLUGIN_GEN_AFTER_INSN:
+-    case PLUGIN_GEN_FROM_TB:
+-    case PLUGIN_GEN_FROM_INSN:
+-        tcg_gen_plugin_cb(from);
+-        break;
+-    default:
+-        g_assert_not_reached();
+-    }
+-}
+-
+ /* called before finishing a TB with exit_tb, goto_tb or goto_ptr */
+ void plugin_gen_disable_mem_helpers(void)
  {
-     struct qemu_plugin_tb *ptb = tcg_ctx->plugin_tb;
--    struct qemu_plugin_insn *pinsn;
-+    struct qemu_plugin_insn *insn;
-+    size_t n = db->num_insns;
-+    vaddr pc;
+@@ -362,7 +349,7 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
+         ptb->mem_only = mem_only;
+         ptb->mem_helper = false;
  
--    pinsn = qemu_plugin_tb_insn_get(ptb, db->pc_next);
--    tcg_ctx->plugin_insn = pinsn;
--    plugin_gen_empty_callback(PLUGIN_GEN_FROM_INSN);
-+    assert(n >= 1);
-+    ptb->n = n;
-+    if (n <= ptb->insns->len) {
-+        insn = g_ptr_array_index(ptb->insns, n - 1);
-+        g_byte_array_set_size(insn->data, 0);
-+    } else {
-+        assert(n - 1 == ptb->insns->len);
-+        insn = g_new0(struct qemu_plugin_insn, 1);
-+        insn->data = g_byte_array_sized_new(4);
-+        g_ptr_array_add(ptb->insns, insn);
-+    }
-+
-+    tcg_ctx->plugin_insn = insn;
-+    insn->calls_helpers = false;
-+    insn->mem_helper = false;
-+    if (insn->insn_cbs) {
-+        g_array_set_size(insn->insn_cbs, 0);
-+    }
-+    if (insn->mem_cbs) {
-+        g_array_set_size(insn->mem_cbs, 0);
-+    }
-+
-+    pc = db->pc_next;
-+    insn->vaddr = pc;
- 
-     /*
-      * Detect page crossing to get the new host address.
-@@ -385,16 +408,18 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
-      * fetching instructions from a region not backed by RAM.
-      */
-     if (ptb->haddr1 == NULL) {
--        pinsn->haddr = NULL;
-+        insn->haddr = NULL;
-     } else if (is_same_page(db, db->pc_next)) {
--        pinsn->haddr = ptb->haddr1 + pinsn->vaddr - ptb->vaddr;
-+        insn->haddr = ptb->haddr1 + pc - ptb->vaddr;
-     } else {
-         if (ptb->vaddr2 == -1) {
-             ptb->vaddr2 = TARGET_PAGE_ALIGN(db->pc_first);
-             get_page_addr_code_hostp(cpu_env(cpu), ptb->vaddr2, &ptb->haddr2);
-         }
--        pinsn->haddr = ptb->haddr2 + pinsn->vaddr - ptb->vaddr2;
-+        insn->haddr = ptb->haddr2 + pc - ptb->vaddr2;
+-        plugin_gen_empty_callback(PLUGIN_GEN_FROM_TB);
++        tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
      }
-+
-+    plugin_gen_empty_callback(PLUGIN_GEN_FROM_INSN);
+ 
+     tcg_ctx->plugin_insn = NULL;
+@@ -419,12 +406,12 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
+         insn->haddr = ptb->haddr2 + pc - ptb->vaddr2;
+     }
+ 
+-    plugin_gen_empty_callback(PLUGIN_GEN_FROM_INSN);
++    tcg_gen_plugin_cb(PLUGIN_GEN_FROM_INSN);
  }
  
  void plugin_gen_insn_end(void)
+ {
+-    plugin_gen_empty_callback(PLUGIN_GEN_AFTER_INSN);
++    tcg_gen_plugin_cb(PLUGIN_GEN_AFTER_INSN);
+ }
+ 
+ /*
 -- 
 2.34.1
 
