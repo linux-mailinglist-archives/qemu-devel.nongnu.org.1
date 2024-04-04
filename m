@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3530898EA7
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4362D898EC2
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 21:15:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsSPc-0004YR-9f; Thu, 04 Apr 2024 15:06:12 -0400
+	id 1rsSX8-00061C-DW; Thu, 04 Apr 2024 15:13:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1rsSPa-0004Y9-DH
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:06:10 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsSX2-00060w-E6
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:13:52 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <icegambit91@gmail.com>)
- id 1rsSPY-0007pT-GN
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:06:10 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1e0d8403257so12174725ad.1
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:06:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rsSWv-0005Uh-4h
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 15:13:51 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-565c6cf4819so4417040a12.1
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 12:13:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1712257567; x=1712862367; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CtJTFkU/fjdan9jrn8c75UoJOHghXh5adrn1veWmRac=;
- b=Y/mAnCTGdjx5wriYv2bV6aD/NP5BfaCOQM/0MHjhJdkwdJJg62YVKb+aGFuJjp3VwQ
- aSKVNUOh0qAT7DPuOawVLdvKEviuj4YS6NHnjEreTh3/A7ZToBgUBJ/AGrmAUg5MBs+p
- vwcHrILY21M0Fl/j0LyIXkZJ1q3+CCXDMqzdHYr6pAg5JW0SbYGCn+XxAhFmaHlGd2P+
- 7jsavNpsbn8FFIC50i88nqdbOUSSujySs3aJXKT2YzphYOU850djag0tuYuL/LHl7oRL
- 2XM3sAYdAXC4V2DJezqE5fZrpJsxvV8oMTejOZFRyWcyyYQx7QYof8apPSZ1x5RD7p8f
- ytuQ==
+ d=linaro.org; s=google; t=1712258022; x=1712862822; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=8WchDuPu1BDvGE3LRF7qlJXcb6p6bszd96Mxn2SBD+U=;
+ b=YmdncP4tiGr7nd6EZ/xksBZ2+Cy7vMexpNnH+CQuDkT9s/mQKlaaisgI1xhYBUT3tH
+ rQpoY3m5OUB9evom0U8vcjHJLVRK7Gz8iz2T5upQxboO5OttYRB6OW97NYqnSA5KB2KM
+ lYDKjhdEHnTK/nydq6optPk3PaXjOEPyzSqRrSP8Hno573A0nEoYjQEbOXJbCX/Qzzl7
+ eolmCFe21f9ZbSa6t/A8XDe9Q4br8e9au6Xem4j+MzyLf2dJVhhSSeLe9Tu2nxCAaHHD
+ 8SvcJp+3dhy4lfVOw/+34a39a+nQjSKxrKGJfeuW5sxVguhs4Qezg9EPraJ8LokFb6jo
+ W85Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712257567; x=1712862367;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CtJTFkU/fjdan9jrn8c75UoJOHghXh5adrn1veWmRac=;
- b=wiPREOjqmKmaph2FNXrIdgSariBTgNg5KjFa7kLplQQvtP/qZygMT7DjtuRpI2ErQ4
- tAg06gCB2e1li+c8U4q6yF92/z5/JFeN62sdemHKnPxoBUnzPBgEvOd0WK3bwxsIaJhO
- T1Gy2XadEukew6GlxSH73uknAxgNI/X3PGbKbxvOu8Qo/nN4DUA21VCqMmPTqzB5YgCq
- HyxHisSE7HXFoAzjmgYR6c/2ZmoJKlGXNcUjp6+fRwVKWWUPVsagqxyPY6umf6665gtr
- lZq/R2ueZz8XC97hLd7cHC76QuTMc/kdLPG3QUEJ1tohO0BeXIyoG4MW4EwqYvlI1Iie
- HACA==
-X-Gm-Message-State: AOJu0YwC3C47DclPRHM49KNuGATcWpOQ41PCCSQSNMMb7OXNHIpkGonE
- zeQl2gQ4XbPVt2J0WgOce5ifwLNPbOo2MyGcz1olGgfqeM6t69Hb
-X-Google-Smtp-Source: AGHT+IHzjoEHkkhYMfSTeeJJhUDW9IcBUyMC0UziWSgcb6cYhwBoCIxFC3FF/SSbTp/mVQIixf+xhw==
-X-Received: by 2002:a17:903:cd:b0:1e2:7fb2:b0b with SMTP id
- x13-20020a17090300cd00b001e27fb20b0bmr279546plc.68.1712257566500; 
- Thu, 04 Apr 2024 12:06:06 -0700 (PDT)
-Received: from valdaarhun.localnet ([223.233.80.57])
+ d=1e100.net; s=20230601; t=1712258022; x=1712862822;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8WchDuPu1BDvGE3LRF7qlJXcb6p6bszd96Mxn2SBD+U=;
+ b=tVQNToj35srGbtbZRvcfaV48jHUcCFmkP9T7FJW5s1w58iyQe5k8+beVb/Z3dELPci
+ CvU2JRLuO4Jjhc2XGowu6FjtkjdXcTy/AjLijMgotW8/9YP6UH/xS5wKiDS0iBvR0L1B
+ W17x5qfv0FnK5uWRuh/4JL6HnJ4ABYeqIzPzF3gabCy+IEq8EizYhBLkQaH/ng9+tB3X
+ +qZaAuQ95HNyh+/kus9KCw5paF/g6SAE0dU84xQ6hFWuuBs4TjYOI9LuX/gAtU1VUHZm
+ 4oPMHcWnC4O4VRWahQQ3BdZGrPVw4T47EaECaWJF4/kRfJc7uXnCCVuC4NP5pmAxUn6k
+ 5cxQ==
+X-Gm-Message-State: AOJu0YwLvsa2LXi5wYvMszuWIfsMUKAZQrJ7GVS9tBZlj5urWAM15Ard
+ tdUsoRN2U4hi6/dK8xCP8FeVVaV42qrJv4AuYBPW9Tzzm3chxlJ+0KauiAq1tCHY+H+gHc0Qq+d
+ g
+X-Google-Smtp-Source: AGHT+IFJBMSRNHzMkIyuivVnlKIBQPulV92yzQnl0XnYzTZCGppzgIy4FZfhTr0JXq1tdZQQLdKmig==
+X-Received: by 2002:a17:906:fccc:b0:a4d:f8d7:8546 with SMTP id
+ qx12-20020a170906fccc00b00a4df8d78546mr317940ejb.7.1712258022459; 
+ Thu, 04 Apr 2024 12:13:42 -0700 (PDT)
+Received: from m1x-phil.lan ([176.187.216.111])
  by smtp.gmail.com with ESMTPSA id
- e14-20020a170902784e00b001e010c1628fsm16082424pln.124.2024.04.04.12.06.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 12:06:05 -0700 (PDT)
-From: Sahil <icegambit91@gmail.com>
-To: Eugenio Perez Martin <eperezma@redhat.com>
-Cc: qemu-level <qemu-devel@nongnu.org>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: Intention to work on GSoC project
-Date: Fri, 05 Apr 2024 00:36:02 +0530
-Message-ID: <3316716.aeNJFYEL58@valdaarhun>
-In-Reply-To: <CAJaqyWc+8OJZ33TtqeBy+Vy9HdW8zzbMKqg2mNWVaFda=g0XBA@mail.gmail.com>
-References: <13625712.uLZWGnKmhe@valdaarhun> <1934013.taCxCBeP46@valdaarhun>
- <CAJaqyWc+8OJZ33TtqeBy+Vy9HdW8zzbMKqg2mNWVaFda=g0XBA@mail.gmail.com>
+ x11-20020a170906710b00b00a51973509afsm463533ejj.91.2024.04.04.12.13.40
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 04 Apr 2024 12:13:41 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Amit Shah <amit@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0 0/4] hw/virtio: Protect from more DMA re-entrancy bugs
+Date: Thu,  4 Apr 2024 21:13:35 +0200
+Message-ID: <20240404191339.5688-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=icegambit91@gmail.com; helo=mail-pl1-x629.google.com
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25,
- FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,118 +94,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Gerd suggested to use the transport guard to protect the
+device from DMA re-entrancy abuses.
 
-On Thursday, April 4, 2024 12:07:49 AM IST Eugenio Perez Martin wrote:
-> On Wed, Apr 3, 2024 at 4:36=E2=80=AFPM Sahil <icegambit91@gmail.com> wrot=
-e:
-> [...]
-> > I would like to clarify one thing in the figure "Full two-entries
-> > descriptor table". The driver can only overwrite a used descriptor in t=
-he
-> > descriptor ring, right?
->=20
-> Except for the first round, the driver can only write to used entries
-> in the descriptor table. In other words, their avail and used flags
-> must be equal.
->=20
-> > And likewise for the device?
->=20
-> Yes, but with avail descs. I think you got this already, but I want to
-> be as complete as possible here.
->=20
-> > So in the figure, the driver will have to wait until descriptor[1] is
-> > used before it can overwrite it?
->=20
-> Yes, but I think it is easier to think that both descriptor id 0 and 1
-> are available already. The descriptor id must be less than virtqueue
-> size.
->=20
-> An entry with a valid buffer and length must be invalid because of the
-> descriptor id in that situation, either because it is a number > vq
-> length or because it is a descriptor already available.
+Philippe Mathieu-Daudé (4):
+  hw/virtio: Introduce virtio_bh_new_guarded() helper
+  hw/display/virtio-gpu: Protect from DMA re-entrancy bugs
+  hw/char/virtio-serial-bus: Protect from DMA re-entrancy bugs
+  hw/virtio/virtio-crypto: Protect from DMA re-entrancy bugs
 
-I didn't think of it in that way. This makes sense now.
+ include/hw/virtio/virtio.h  |  7 +++++++
+ hw/char/virtio-serial-bus.c |  3 +--
+ hw/display/virtio-gpu.c     |  6 ++----
+ hw/virtio/virtio-crypto.c   |  4 ++--
+ hw/virtio/virtio.c          | 10 ++++++++++
+ 5 files changed, 22 insertions(+), 8 deletions(-)
 
-> > Suppose the device marks descriptor[0] as used. I think the driver will
-> > not be able to overwrite that descriptor entry because it has to go in
-> > order and is at descriptor[1]. Is that correct?
->=20
-> The device must write one descriptor as used, either 0 or 1, at
-> descriptors[0] as all the descriptors are available.
->=20
-> Now, it does not matter if the device marks as used one or the two
-> descriptors: the driver must write its next available descriptor at
-> descriptor[1]. This is not because descriptor[1] contains a special
-> field or data, but because the driver must write the avail descriptors
-> sequentially, so the device knows the address to poll or check after a
-> notification.
->=20
-> In other words, descriptor[1] is just a buffer space from the driver
-> to communicate an available descriptor to the device. It does not
-> matter what it contained before the writing, as the driver must
-> process that information before writing the new available descriptor.
->=20
-> > Is it possible for the driver
-> > to go "backwards" in the descriptor ring?
->=20
-> Nope, under any circumstance.
-
-Understood. Thank you for the clarification.
-
-> [...]
-> > Q1.
-> > In the paragraph just above Figure 6, there is the following line:
-> > > the vhost kernel thread and QEMU may run in different CPU threads,
-> > > so these writes must be synchronized with QEMU cleaning of the dirty
-> > > bitmap, and this write must be seen strictly after the modifications =
-of
-> > > the guest memory by the QEMU thread.
-> >=20
-> > I am not clear on the last part of the statement. The modification of
-> > guest memory is being done by the vhost device and not by the QEMU
-> > thread, right?
->=20
-> QEMU also writes to the bitmap cleaning it, so it knows the memory
-> does not need to be resent.
-
-Oh, I thought, from figure 6, the bitmap is a part of QEMU's memory but is
-separate from the guest's memory.
-
-> Feel free to ask questions about this, but you don't need to interact
-> with the dirty bitmap in the project.
-
-Understood, I won't go off on a tangent in that case.
-
-> [...]
-> > Regarding the implementation of this project, can the project be broken
-> > down into two parts:
-> > 1. implementing packed virtqueues in QEMU, and
->=20
-> Right, but let me expand on this: QEMU already supports packed
-> virtqueue in an emulated device (hw/virtio/virtio.c). The missing part
-> is the "driver" one, to be able to communicate with a vDPA device, at
-> hw/virtio/vhost-shadow-virtqueue.c.
-
-Got it. I'll take a look at "hw/virtio/virtio.c".
-
-> [...]
-> > My plan is to also understand how split virtqueue has been implemented
-> > in QEMU. I think that'll be helpful when moving the kernel's implementa=
-tion
-> > to QEMU.
->=20
-> Sure, the split virtqueue is implemented in the same file
-> vhost_shadow_virtqueue.c. If you deploy vhost_vdpa +vdpa_sim or
-> vp_vdpa [1][2], you can:
-> * Run QEMU with -netdev type=3Dvhost-vdpa,x-svq=3Don
-> * Set GDB breakpoint in interesting functions like
-> vhost_handle_guest_kick and vhost_svq_flush.
-
-I'll set up this environment as well.
-
-Thanks,
-Sahil
-
+-- 
+2.41.0
 
 
