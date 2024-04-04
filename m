@@ -2,55 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8DB898A0F
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59773898A0D
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 16:26:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsO2g-00049Q-1M; Thu, 04 Apr 2024 10:26:14 -0400
+	id 1rsO2h-0004ER-FN; Thu, 04 Apr 2024 10:26:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2Y-00044Z-OR
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:06 -0400
+ id 1rsO2Z-00045Y-7D
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:07 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO2W-00062H-Sq
+ id 1rsO2W-00062N-FP
  for qemu-devel@nongnu.org; Thu, 04 Apr 2024 10:26:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=JNeiRXq5NIFyMROVxk11TKFtGiVB3pXkfi7BWGi1dvo=; b=Wq4jR53GmsHQaOTyJXhF3LXL3k
- n6bl0b/hxORmMB33meQUsSJpAOaAlJPY/45xtfpDVJGbAlRdkHGPBJe08SOx9qHD5gotQL2F0BWKa
- 918aR5/YE6nC2pqFZ/HG2i+ei2TP7p5Ufqp92YKUcGctynqCwUMGXjyq4W/H8xUbIcQ4SwYtlVGjd
- RND2yGv+c57jJMkQMpB28usAQpTVpc7VVNKNP1bKpfmV+RO9jbiUULaa6sYkBkppRMuBqBLR/hW0s
- lCWUVXVXyH2Hawu6U5IGXh8iC0EH9jFVDsfwZ8AKaLhz2FzfyzHUklNb/XcGcQ3XE03bZYq5mnQnn
- /Wlpogk4vee3By6cNYA/FR5IBocFPWJGHjUz+KAmY7Khx9eT0VSHXVle/fGkThM0N0pXq91vMh5EW
- JeGgMQO7HMRcGObWvnNMr2UYBGpLGSa8OQcwBtCfAEm2mX2Wd+SrLftlxv+B7iNI9LLvVnX3UB6FG
- dtCt213ezp+1C27wSl3N88eJPt1Qm7rNAhPmsdgnuhlrfob/zBbsVw9/RyLlefFxizbKXH4x9ifD0
- /4Mgykg510b0Fk/ZO2mp1Aj0pW4RhkiSlqthDqiOw+9h2NGF7pgi7fV7zQb3ZJilRrSY7KrS/Bx31
- 7KVTV2vacmuYULHtREQESqHlczhDMUslGugVGfg9s=;
+ bh=OUFNvM+qAzbqKKg2MdX8r2zHUUV7uxQBgRO0uH1Fn6A=; b=ZeisTYuX1d7CkjXTwatdp4Dwu+
+ fl7bzpEBNRWQDfmnDlbWvtn+iez9JBzC6pR2CLB4Iw65CqUhPD6MY0gLvsLxKGl4GhFurlXY9q6MO
+ JoSKCyJw3JI3Jqt0I5AyJg3FCSVzW/4ZZJlO6jl3E/deYbZeeQlqpQ5gIHvFCPZNpPb/aYgdoVlOz
+ OwRb3SNYj9gOtK1ig3/UrW7hLAKgpTXe/uWMLI63R+TGDf6mVS161D7uLHsKce4JDZJaL6Oo2PZ+p
+ /rb+cENGMXFKpi4xzS2/abIoBnPVKU1S1IZSBP1O+muFUZ1/WQMxexv7VcvCMjR5u5cEaWzjaLD22
+ rEZOYwGNE1B20XzK7lAhO6+QJ2O8mK/+7p838NAxssqSpVNXXzgKT1DiCo5aVn0vWjHOS2i0iK761
+ YblrMa1NDlYVYtCwWUFNUuhr4p4GDVWhIqQbsYi7tk+FJO0KkA5kV6NINYt3+r5rHrO5CcwT6U0WJ
+ m3yIYFOb+kugHcwLfKxql6jb5HgDBAXBcEfHDaOENMN8lF/6dP+xyARHH8P/wUzmK3os3ioChnbc0
+ FqiZqdx5VFBQcOHjudE2Pa+7lE9NatA6gyW09SZZleXwrSXCcojSK4GUQNU062mEHx+Hi/GrVF6N5
+ jWVAeaV0Z1s7Wkz0PmfqYe9gVoLy8bcyUrJOp918s=;
 Received: from [2a02:8012:c93d:0:260e:bf57:a4e9:8142]
  (helo=cheesecake.fritz.box)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rsO1Q-000Bmt-0i; Thu, 04 Apr 2024 15:24:59 +0100
+ id 1rsO1U-000Bmt-3i; Thu, 04 Apr 2024 15:25:04 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: peter.maydell@linaro.org,
 	qemu-devel@nongnu.org
-Date: Thu,  4 Apr 2024 15:25:22 +0100
-Message-Id: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
+Date: Thu,  4 Apr 2024 15:25:23 +0100
+Message-Id: <20240404142539.711134-2-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
+References: <20240404142539.711134-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a02:8012:c93d:0:260e:bf57:a4e9:8142
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PULL 00/17] qemu-sparc queue 20240404
+Subject: [PULL 01/17] esp.c: move esp_fifo_pop_buf() internals to new
+ esp_fifo8_pop_buf() function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -76,43 +79,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 786fd793b81410fb2a28914315e2f05d2ff6733b:
+Update esp_fifo_pop_buf() to be a simple wrapper onto the new esp_fifo8_pop_buf()
+function.
 
-  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-04-03 12:52:03 +0100)
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Reviewed-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240324191707.623175-2-mark.cave-ayland@ilande.co.uk>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+---
+ hw/scsi/esp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
+index 590ff99744..1b7b118a0b 100644
+--- a/hw/scsi/esp.c
++++ b/hw/scsi/esp.c
+@@ -125,7 +125,7 @@ static uint8_t esp_fifo_pop(Fifo8 *fifo)
+     return fifo8_pop(fifo);
+ }
+ 
+-static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
++static uint32_t esp_fifo8_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
+ {
+     const uint8_t *buf;
+     uint32_t n, n2;
+@@ -155,6 +155,11 @@ static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
+     return n;
+ }
+ 
++static uint32_t esp_fifo_pop_buf(Fifo8 *fifo, uint8_t *dest, int maxlen)
++{
++    return esp_fifo8_pop_buf(fifo, dest, maxlen);
++}
++
+ static uint32_t esp_get_tc(ESPState *s)
+ {
+     uint32_t dmalen;
+-- 
+2.39.2
 
-  https://github.com/mcayland/qemu.git tags/qemu-sparc-20240404
-
-for you to fetch changes up to d7fe931818d5e9aa70d08056c43b496ce789ba64:
-
-  esp.c: remove explicit setting of DRQ within ESP state machine (2024-04-04 15:17:53 +0100)
-
-----------------------------------------------------------------
-qemu-sparc queue
-- This contains fixes for the ESP emulation discovered by fuzzing (with thanks to
-  Chuhong Yuan <hslester96@gmail.com>)
-
-----------------------------------------------------------------
-Mark Cave-Ayland (17):
-      esp.c: move esp_fifo_pop_buf() internals to new esp_fifo8_pop_buf() function
-      esp.c: replace esp_fifo_pop_buf() with esp_fifo8_pop_buf() in do_command_phase()
-      esp.c: replace esp_fifo_pop_buf() with esp_fifo8_pop_buf() in do_message_phase()
-      esp.c: replace cmdfifo use of esp_fifo_pop() in do_message_phase()
-      esp.c: change esp_fifo_push() to take ESPState
-      esp.c: change esp_fifo_pop() to take ESPState
-      esp.c: use esp_fifo_push() instead of fifo8_push()
-      esp.c: change esp_fifo_pop_buf() to take ESPState
-      esp.c: introduce esp_fifo_push_buf() function for pushing to the FIFO
-      esp.c: don't assert() if FIFO empty when executing non-DMA SELATNS
-      esp.c: rework esp_cdb_length() into esp_cdb_ready()
-      esp.c: prevent cmdfifo overflow in esp_cdb_ready()
-      esp.c: move esp_set_phase() and esp_get_phase() towards the beginning of the file
-      esp.c: introduce esp_update_drq() and update esp_fifo_{push, pop}_buf() to use it
-      esp.c: update esp_fifo_{push, pop}() to call esp_update_drq()
-      esp.c: ensure esp_pdma_write() always calls esp_fifo_push()
-      esp.c: remove explicit setting of DRQ within ESP state machine
-
- hw/scsi/esp.c | 223 +++++++++++++++++++++++++++++++++++++---------------------
- 1 file changed, 142 insertions(+), 81 deletions(-)
 
