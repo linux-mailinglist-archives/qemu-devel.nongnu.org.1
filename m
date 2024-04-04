@@ -2,77 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A51689884D
-	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D872189874B
+	for <lists+qemu-devel@lfdr.de>; Thu,  4 Apr 2024 14:25:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsMa0-0008HO-6K; Thu, 04 Apr 2024 08:52:32 -0400
+	id 1rsM8A-0000Rv-EH; Thu, 04 Apr 2024 08:23:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=817f4dfc0=jhnberg@amazon.co.uk>)
- id 1rsLpv-0006Mp-SI; Thu, 04 Apr 2024 08:04:55 -0400
-Received: from smtp-fw-9105.amazon.com ([207.171.188.204])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rsM88-0000RD-Iv
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:23:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <prvs=817f4dfc0=jhnberg@amazon.co.uk>)
- id 1rsLpq-0006rh-KN; Thu, 04 Apr 2024 08:04:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
- s=amazon201209; t=1712232291; x=1743768291;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=sVywjRiZ1vFgVRZg9B7Oj01vGsLIDcLjACuW81lksaM=;
- b=KvT5ARbZ53uim7LDO/AOWyUw0i2AxWS3M1fihmK6wkfzv4xo42kwMQvq
- KOPfZeTWTWchhiiPtdCzfXxiXE5lHEpDgh536+7sv/zspOCIatMGQYzkS
- 5iTgmVrLlubhdkpphCtaBZc/K0m4gpzgeA8aEk85Dimg9lHF9/C0cukxV A=;
-X-IronPort-AV: E=Sophos;i="6.07,179,1708387200"; d="scan'208";a="716688577"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO
- smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
- by smtp-border-fw-9105.sea19.amazon.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 12:04:27 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:34272]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.5.247:2525]
- with esmtp (Farcaster)
- id 6b2bd791-1243-44c6-ad62-633fa15ad325; Thu, 4 Apr 2024 12:04:25 +0000 (UTC)
-X-Farcaster-Flow-ID: 6b2bd791-1243-44c6-ad62-633fa15ad325
-Received: from EX19D047EUA002.ant.amazon.com (10.252.50.60) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 4 Apr 2024 12:04:25 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
- EX19D047EUA002.ant.amazon.com (10.252.50.60) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Thu, 4 Apr 2024 12:04:25 +0000
-Received: from ubfa7eda7e45052.ant.amazon.com (10.106.83.9) by
- mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28 via Frontend Transport; Thu, 4 Apr 2024 12:04:23 +0000
-From: John Berg <jhnberg@amazon.co.uk>
-To: <qemu-devel@nongnu.org>
-CC: <kbusch@kernel.org>, <its@irrelevant.dk>, <foss@defmacro.it>,
- <qemu-block@nongnu.org>, John Berg <jhnberg@amazon.com>, John Berg
- <jhnberg@amazon.co.uk>
-Subject: [PATCH] hw/nvme: Add support for setting the MQES for the NVMe
- emulation
-Date: Thu, 4 Apr 2024 13:04:18 +0100
-Message-ID: <20240404120418.1611513-1-jhnberg@amazon.co.uk>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rsM86-0000wp-LS
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 08:23:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712233421;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LNV1PCTN5GCJl2MvUD8nUfDJ3d0IVmd15bYC7q0NeUA=;
+ b=PcV1rmTuwfhvyd7P+LilxkgAV6KKNyQO71u2+io+GOj40TB8ON9OKLVYIlb41CrtKIArFk
+ V09U2DrFo8pSviJeQMoAidcX6qU32LihB8S8qdxhvWqxs/l2t4yd8QZ7Vom0yxjCMc0jR6
+ RI80zNi24dx/Pp5rM7NoqJq/SyE1PhY=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-508-0y-eHu-8MZGWw8FsWqopIg-1; Thu, 04 Apr 2024 08:23:40 -0400
+X-MC-Unique: 0y-eHu-8MZGWw8FsWqopIg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-56e214bc952so288336a12.2
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 05:23:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712233418; x=1712838218;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LNV1PCTN5GCJl2MvUD8nUfDJ3d0IVmd15bYC7q0NeUA=;
+ b=H/u825GxdaxebDGU+PvXyjawbaFcG9GkXoxrfU+NrT6Qhtugw3hTFmfKyr1XNrzBhY
+ 9Ip+qZ9VjvbM4Ef+T9F8OvWrHzHTnbjEvi1uBQsiPgSPBJI2P9nq4bQ4lcnFm1HaZu6d
+ Qkrvwqa5fRU2GJeWhDzYKCumce/JylHRNKFqeO6TGkFE6Sl28qVvbFBOxS9+jyZ8GPq9
+ sVIOD8TenQ4/XOXheghH3OrAn30BdaUbtscdEL0s5TYTZTnj+EaUuLBvkm2J+HzoXvIA
+ 8+VjoX/BqbvxUCu8gW4alWcIACdk2sdQz38kcXFTXEi0Hu9wSdSqMUhcn4CR8MwIF4zX
+ aVjw==
+X-Gm-Message-State: AOJu0YwH0aMk62g3m2qKfUpQuXp7OmKetRJ3ry/bJs7czEVevn4R2bmP
+ IGKGdiWHsXfAV8LqEsy5ghXKBv5FhPLzNOIJ1cu2s8vVLLiuMCBPA4XjPia1SYG3DHUnnjz7dpr
+ 0x4YwCuFtDabZfaLcs035NwB+4w6owbVpMVt5q2NpAIFZLrqVJuvrtl2YsitjUohTblyZcWCTES
+ SsSHGjY24l8IuAnbzDbHVlvNSOB3zKgUXCQ84c
+X-Received: by 2002:a50:d7d8:0:b0:568:9cfe:1974 with SMTP id
+ m24-20020a50d7d8000000b005689cfe1974mr1529195edj.18.1712233418431; 
+ Thu, 04 Apr 2024 05:23:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+GPLxmU+alhrLlFhX1gX5RXUqwdWb1opMoFA88WNi1P64TUC7HvUhHqIavfDOzOZ3s8sbcg==
+X-Received: by 2002:a50:d7d8:0:b0:568:9cfe:1974 with SMTP id
+ m24-20020a50d7d8000000b005689cfe1974mr1529152edj.18.1712233417869; 
+ Thu, 04 Apr 2024 05:23:37 -0700 (PDT)
+Received: from localhost.localdomain
+ (host-87-12-25-33.business.telecomitalia.it. [87.12.25.33])
+ by smtp.gmail.com with ESMTPSA id
+ k7-20020aa7c047000000b0056c443ce781sm9163199edo.85.2024.04.04.05.23.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 04 Apr 2024 05:23:36 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Coiby Xu <Coiby.Xu@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ slp@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Brad Smith <brad@comstyle.com>, stefanha@redhat.com,
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, gmaglione@redhat.com,
+ Jason Wang <jasowang@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH for-9.1 v3 00/11] vhost-user: support any POSIX system (tested
+ on macOS, FreeBSD, OpenBSD)
+Date: Thu,  4 Apr 2024 14:23:19 +0200
+Message-ID: <20240404122330.92710-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: pass client-ip=207.171.188.204;
- envelope-from=prvs=817f4dfc0=jhnberg@amazon.co.uk;
- helo=smtp-fw-9105.amazon.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01,
- UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 04 Apr 2024 08:52:30 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,83 +112,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: John Berg <jhnberg@amazon.com>
+v1: https://patchew.org/QEMU/20240228114759.44758-1-sgarzare@redhat.com/
+v2: https://patchew.org/QEMU/20240326133936.125332-1-sgarzare@redhat.com/
+v3:
+  - rebased on v9.0.0-rc2
+  - patch 4: avoiding setting fd non-blocking for messages where we
+    have memory fd (Eric)
+  - patch 9: enriched commit message and documentation to highlight that we
+    want to mimic memfd (David)
 
-The MQES field in the CAP register describes the Maximum Queue Entries
-Supported for the IO queues of an NVMe controller. Adding a +1 to the
-value in this field results in the total queue size. A full queue is
-when a queue of size N contains N - 1 entries, and the minimum queue
-size is 2. Thus the lowest MQES value is 1.
+The vhost-user protocol is not really Linux-specific, so let's try support
+QEMU's frontends and backends (including libvhost-user) in any POSIX system
+with this series. The main use case is to be able to use virtio devices that
+we don't have built-in in QEMU (e.g. virtiofsd, vhost-user-vsock, etc.) even
+in non-Linux systems.
 
-This patch adds the new mqes property to the NVMe emulation which allows
-a user to specify the maximum queue size by setting this property. This
-is useful as it enables testing of NVMe controller where the MQES is
-relatively small. The smallest NVMe queue size supported in NVMe is 2
-submission and completion entries, which means that the smallest legal
-mqes value is 1.
+The first 5 patches are more like fixes discovered at runtime on macOS or
+FreeBSD that could go even independently of this series.
 
-The following example shows how the mqes can be set for a the NVMe
-emulation:
+Patches 6, 7, and 8 enable building of frontends and backends (including
+libvhost-user) with associated code changes to succeed in compilation.
 
--drive id=nvme0,if=none,file=nvme.img,format=raw
--device nvme,drive=nvme0,serial=foo,mqes=1
+Patch 9 adds `memory-backend-shm` that uses the POSIX shm_open() API to
+create shared memory which is identified by an fd that can be shared with
+vhost-user backends. This is useful on those systems (like macOS) where
+we don't have memfd_create() or special filesystems like "/dev/shm".
 
-If the mqes property is not provided then the default mqes will still be
-0x7ff (the queue size is 2048 entries).
+Patches 10 and 11 use `memory-backend-shm` in some vhost-user tests.
 
-Signed-off-by: John Berg <jhnberg@amazon.co.uk>
----
- hw/nvme/ctrl.c | 9 ++++++++-
- hw/nvme/nvme.h | 1 +
- 2 files changed, 9 insertions(+), 1 deletion(-)
+Maybe the first 5 patches can go separately, but I only discovered those
+problems after testing patches 6 - 9, so I have included them in this series
+for now. Please let me know if you prefer that I send them separately.
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 127c3d2383..86cda9bc73 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -7805,6 +7805,12 @@ static bool nvme_check_params(NvmeCtrl *n, Error **errp)
-         return false;
-     }
- 
-+    if (params->mqes < 1)
-+    {
-+        error_setg(errp, "mqes property cannot be less than 1");
-+        return false;
-+    }
-+
-     if (n->pmr.dev) {
-         if (params->msix_exclusive_bar) {
-             error_setg(errp, "not enough BARs available to enable PMR");
-@@ -8281,7 +8287,7 @@ static void nvme_init_ctrl(NvmeCtrl *n, PCIDevice *pci_dev)
- 
-     id->ctratt = cpu_to_le32(ctratt);
- 
--    NVME_CAP_SET_MQES(cap, 0x7ff);
-+    NVME_CAP_SET_MQES(cap, n->params.mqes);
-     NVME_CAP_SET_CQR(cap, 1);
-     NVME_CAP_SET_TO(cap, 0xf);
-     NVME_CAP_SET_CSS(cap, NVME_CAP_CSS_NVM);
-@@ -8451,6 +8457,7 @@ static Property nvme_props[] = {
-                       params.sriov_max_vq_per_vf, 0),
-     DEFINE_PROP_BOOL("msix-exclusive-bar", NvmeCtrl, params.msix_exclusive_bar,
-                      false),
-+    DEFINE_PROP_UINT16("mqes", NvmeCtrl, params.mqes, 0x7ff),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/hw/nvme/nvme.h b/hw/nvme/nvme.h
-index bed8191bd5..2e7d31c0ae 100644
---- a/hw/nvme/nvme.h
-+++ b/hw/nvme/nvme.h
-@@ -521,6 +521,7 @@ typedef struct NvmeParams {
-     uint32_t num_queues; /* deprecated since 5.1 */
-     uint32_t max_ioqpairs;
-     uint16_t msix_qsize;
-+    uint16_t mqes;
-     uint32_t cmb_size_mb;
-     uint8_t  aerl;
-     uint32_t aer_max_queued;
+I tested this series using vhost-user-blk and QSD on macOS Sonoma 14.4
+(aarch64), FreeBSD 14 (x86_64), OpenBSD 7.4 (x86_64), and Fedora 39 (x86_64)
+in this way:
+
+- Start vhost-user-blk or QSD (same commands for all systems)
+
+  vhost-user-blk -s /tmp/vhost.socket \
+    -b Fedora-Cloud-Base-39-1.5.x86_64.raw
+
+  qemu-storage-daemon \
+    --blockdev file,filename=Fedora-Cloud-Base-39-1.5.x86_64.qcow2,node-name=file \
+    --blockdev qcow2,file=file,node-name=qcow2 \
+    --export vhost-user-blk,addr.type=unix,addr.path=/tmp/vhost.socket,id=vub,num-queues=1,node-name=qcow2,writable=on
+
+- macOS (aarch64): start QEMU (using hvf accelerator)
+
+  qemu-system-aarch64 -smp 2 -cpu host -M virt,accel=hvf,memory-backend=mem \
+    -drive file=./build/pc-bios/edk2-aarch64-code.fd,if=pflash,format=raw,readonly=on \
+    -device virtio-net-device,netdev=net0 -netdev user,id=net0 \
+    -device ramfb -device usb-ehci -device usb-kbd \
+    -object memory-backend-shm,id=mem,size=512M \
+    -device vhost-user-blk-pci,num-queues=1,disable-legacy=on,chardev=char0 \
+    -chardev socket,id=char0,path=/tmp/vhost.socket
+
+- FreeBSD/OpenBSD (x86_64): start QEMU (no accelerators available)
+
+  qemu-system-x86_64 -smp 2 -M q35,memory-backend=mem \
+    -object memory-backend-shm,id=mem,size="512M" \
+    -device vhost-user-blk-pci,num-queues=1,chardev=char0 \
+    -chardev socket,id=char0,path=/tmp/vhost.socket
+
+- Fedora (x86_64): start QEMU (using kvm accelerator)
+
+  qemu-system-x86_64 -smp 2 -M q35,accel=kvm,memory-backend=mem \
+    -object memory-backend-shm,size="512M" \
+    -device vhost-user-blk-pci,num-queues=1,chardev=char0 \
+    -chardev socket,id=char0,path=/tmp/vhost.socket
+
+Branch pushed (and CI started) at https://gitlab.com/sgarzarella/qemu/-/tree/macos-vhost-user?ref_type=heads
+
+Thanks,
+Stefano
+
+Stefano Garzarella (11):
+  libvhost-user: set msg.msg_control to NULL when it is empty
+  libvhost-user: fail vu_message_write() if sendmsg() is failing
+  libvhost-user: mask F_INFLIGHT_SHMFD if memfd is not supported
+  vhost-user-server: do not set memory fd non-blocking
+  contrib/vhost-user-blk: fix bind() using the right size of the address
+  vhost-user: enable frontends on any POSIX system
+  libvhost-user: enable it on any POSIX system
+  contrib/vhost-user-blk: enable it on any POSIX system
+  hostmem: add a new memory backend based on POSIX shm_open()
+  tests/qtest/vhost-user-blk-test: use memory-backend-shm
+  tests/qtest/vhost-user-test: add a test case for memory-backend-shm
+
+ docs/system/devices/vhost-user.rst        |   5 +-
+ meson.build                               |   5 +-
+ qapi/qom.json                             |  17 ++++
+ subprojects/libvhost-user/libvhost-user.h |   2 +-
+ backends/hostmem-shm.c                    | 118 ++++++++++++++++++++++
+ contrib/vhost-user-blk/vhost-user-blk.c   |  23 ++++-
+ hw/net/vhost_net.c                        |   5 +
+ subprojects/libvhost-user/libvhost-user.c |  76 +++++++++++++-
+ tests/qtest/vhost-user-blk-test.c         |   2 +-
+ tests/qtest/vhost-user-test.c             |  23 +++++
+ util/vhost-user-server.c                  |  12 +++
+ backends/meson.build                      |   1 +
+ hw/block/Kconfig                          |   2 +-
+ qemu-options.hx                           |  11 ++
+ util/meson.build                          |   4 +-
+ 15 files changed, 288 insertions(+), 18 deletions(-)
+ create mode 100644 backends/hostmem-shm.c
+
 -- 
-2.34.1
+2.44.0
 
 
