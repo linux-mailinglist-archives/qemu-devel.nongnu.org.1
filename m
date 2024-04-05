@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A1AA899ACB
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE80899AC8
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:27:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsgl6-0005y3-7v; Fri, 05 Apr 2024 06:25:20 -0400
+	id 1rsglB-000604-SB; Fri, 05 Apr 2024 06:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl2-0005xU-BE
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:16 -0400
-Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
+ id 1rsgl4-0005xj-GD
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:18 -0400
+Received: from mail-oo1-xc2a.google.com ([2607:f8b0:4864:20::c2a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgkx-0004Yq-88
+ id 1rsgkx-0004bK-Ej
  for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:16 -0400
-Received: by mail-pf1-x42f.google.com with SMTP id
- d2e1a72fcca58-6ecf8ebff50so832996b3a.1
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:09 -0700 (PDT)
+Received: by mail-oo1-xc2a.google.com with SMTP id
+ 006d021491bc7-5a4f608432bso1257874eaf.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312708; x=1712917508; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312710; x=1712917510; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=aA46PcSFh0E670CdL7fmcUflkfJ8vHcNPNbv93pOSl8=;
- b=M6F8QNT91bgsjpx8/H9g2aOoXr/88c4MU0myPftqFQaNVu0LyvVxXz2R+59x7GvFbN
- w8PQjY5jlB5t4Yxd8wnoM20PtHFi2p8/lB0IxrFoKEOz2eUJuz4YopBqHpL371eGSUvz
- UPB56xi/AUPTNm0VN9TLlGlag51uPfPbM9hQCdyl80A3Ke8wQJ6SX0E+yT5fWYvAarDq
- 7btqcWLwt7vAU9I/6HerKzTzQu2u3WpZeB9Uk6mOC3ccSzxM7mRO3zyeuTQcupLR6s/6
- YOSLZ4Rm7Op6kd5/U3FeS58WiVnnYspEraGK2UgylcMGmOO615CWuMZAo34aAXmsnnBQ
- b16A==
+ :reply-to; bh=u5+pVSAg9tQ0fLP/+FG5I9U0zGo5SwpUOOXoI7YuppI=;
+ b=CxrjXb8fwVzB6wQyBfRIB1gxiqlN/sPjvFY3QnrmnOpC+aAQd+kMjGR/92K8eFRV5D
+ JmVamEBwlAQGVwi2tYJJz83dV7t2mn9CAm0FWw+HqJZBFURGWDJ3DyasHBQ33fllK1JW
+ KX8tsqSc4tvfTOFcyRd/wzicXL/nRoUIlfvszMAdoul5k6g+OIafpl5SlSIArV2EqkIX
+ xp291+4QtpSU1mvGfSnlhYNy/2Da9/vrz3PcAK7OB11Nb3Syw/0krpktCtvV3OpSMJqc
+ vcgGLNFkmnvsMZm3bH87XpOzQM9cU5ySRSDYfIk5kE+b7mnTfOuSK/VaZijfro5xWdtX
+ jT8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312708; x=1712917508;
+ d=1e100.net; s=20230601; t=1712312710; x=1712917510;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aA46PcSFh0E670CdL7fmcUflkfJ8vHcNPNbv93pOSl8=;
- b=N0pJD3ll2+9qY2oMDip7li7QWFCeu5HSPoFq5jzG+zOmVqEAx2881/Slk+yLgveXlx
- A5nhousTyUmSsqLUsIHR3UneUJryEToWVNNJrk4TD33KqbpmDA31D/JdiRPm1G0ad1gX
- /9hjFO+9/fP5OeqYO6jR7Y21rVesuKwqtLuG9Okt8c4obIJxCDRXAJBzAc80GVp+OK2T
- CZ18tkEGd3hVr+rBEEBELvRpaqbnEPWtgvsoinWv1xkifqx7FSTfOe/DRProeA2SYBxI
- d2CMDuSDu+sIYR4ROGC55JhbTLv9gn3iZRBuzEGD4FnUNv9jdyYNoZ8TC8ViwmDUPwUg
- 6EuA==
-X-Gm-Message-State: AOJu0YxBqA9/l2ZURfLXFiwrdDlPkO8qifaHti/NJJDamcxOeMAhnbMI
- MZv/uRYb1w0ySTj00xdW24ZQ/76lN9/1fCb9dnhPl0KwTlaEoQIGHRfaS7bPLQEtECjxTGrlJRA
- x
-X-Google-Smtp-Source: AGHT+IEqQv/QFPeaWomRW1SEKgy2Mja7GCnrnmezDj3CzABT1+CZfbcVQr4fAU0eGU2qTesK4+gsTw==
-X-Received: by 2002:a05:6a21:99a1:b0:1a7:3b62:4e98 with SMTP id
- ve33-20020a056a2199a100b001a73b624e98mr1767483pzb.12.1712312708580; 
- Fri, 05 Apr 2024 03:25:08 -0700 (PDT)
+ bh=u5+pVSAg9tQ0fLP/+FG5I9U0zGo5SwpUOOXoI7YuppI=;
+ b=mw+dfFXjqw05of2LqXUevwbXi6uifSdKjnJhiOg+nwTBZkkFfiBeNkjALx6ur2mQSH
+ 35jpIWAyjOgzxaS22meoNg/xJlZ2xq9t7NQYfYWVtvPCbYOnGJg/MxY7XeBHoUMxOMEM
+ XW/CX/1f3lck26VtPzN3bNcpQJN1uQn9wMKxpqmTPfwqdRplDuW+04ix4DW0zdJxfGSW
+ CQaauPeUbhpzuP9HYcXXE1TvoZVbBCIVLVmZD6k2xZSg4HUbNb0Hwofzrl+DqTKNpnoO
+ YnzhT7uZMB/6A+irHOSoaVugvMlGkrSM5QcctuODUNUdNTAH8EOIOCEdc7xgegq/HwSJ
+ zo9w==
+X-Gm-Message-State: AOJu0Ywu+EdkQqoWzHwcuD5yU6ArwNA4LRpoxwUIGIQa2WJTJM9QjF90
+ lRFETAHl+62ywSPg2Y+635WhOgfHnu+OlcaDV7LSBEyclW9j3HMNtT1ykNJBNwQT+jvZ9w+dxti
+ K
+X-Google-Smtp-Source: AGHT+IF/NijoWoFXeiahVYcUihmEka2iZJJ707dvUeXpuHoHODBVzya7twY/sqSeayl7QO6/XakquA==
+X-Received: by 2002:a05:6358:c8e:b0:183:cfe0:8da8 with SMTP id
+ o14-20020a0563580c8e00b00183cfe08da8mr1058912rwj.23.1712312709912; 
+ Fri, 05 Apr 2024 03:25:09 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.07
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:08 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 05/32] accel/tcg: Cap the translation block when we encounter
- mmio
-Date: Fri,  5 Apr 2024 00:24:32 -1000
-Message-Id: <20240405102459.462551-6-richard.henderson@linaro.org>
+Subject: [PATCH 06/32] accel/tcg: Record mmio bytes during translation
+Date: Fri,  5 Apr 2024 00:24:33 -1000
+Message-Id: <20240405102459.462551-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,36 +91,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not allow translation to proceed beyond one insn with mmio,
-as we will not be caching the TranslationBlock.
+This will be able to replace plugin_insn_append, and will
+be usable for disassembly.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/translator.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/exec/translator.h | 12 ++++++++++++
+ accel/tcg/translator.c    | 41 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 65d0c6489a..b341dfbf02 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -88,6 +88,18 @@ typedef struct DisasContextBase {
+     int8_t saved_can_do_io;
+     bool plugin_enabled;
+     void *host_addr[2];
++
++    /*
++     * Record insn data that we cannot read directly from host memory.
++     * There are only two reasons we cannot use host memory:
++     * (1) We are executing from I/O,
++     * (2) We are executing a synthetic instruction (s390x EX).
++     * In both cases we need record exactly one instruction,
++     * and thus the maximum amount of data we record is limited.
++     */
++    int record_start;
++    int record_len;
++    uint8_t record[32];
+ } DisasContextBase;
+ 
+ /**
 diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 42beb1c9b7..438b6d4cba 100644
+index 438b6d4cba..401c0ca30c 100644
 --- a/accel/tcg/translator.c
 +++ b/accel/tcg/translator.c
-@@ -236,6 +236,8 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
+@@ -143,6 +143,8 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     db->saved_can_do_io = -1;
+     db->host_addr[0] = host_pc;
+     db->host_addr[1] = NULL;
++    db->record_start = 0;
++    db->record_len = 0;
  
-     /* Use slow path if first page is MMIO. */
-     if (unlikely(tb_page_addr0(tb) == -1)) {
-+        /* We capped translation with first page MMIO in tb_gen_code. */
-+        tcg_debug_assert(db->max_insns == 1);
-         return false;
+     ops->init_disas_context(db, cpu);
+     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+@@ -314,6 +316,39 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
+     return true;
+ }
+ 
++static void record_save(DisasContextBase *db, vaddr pc,
++                        const void *from, int size)
++{
++    int offset;
++
++    /* Do not record probes before the start of TB. */
++    if (pc < db->pc_first) {
++        return;
++    }
++
++    /*
++     * In translator_access, we verified that pc is within 2 pages
++     * of pc_first, thus this will never overflow.
++     */
++    offset = pc - db->pc_first;
++
++    /*
++     * Either the first or second page may be I/O.  If it is the second,
++     * then the first byte we need to record will be at a non-zero offset.
++     * In either case, we should not need to record but a single insn.
++     */
++    if (db->record_len == 0) {
++        db->record_start = offset;
++        db->record_len = size;
++    } else {
++        assert(offset == db->record_start + db->record_len);
++        assert(db->record_len + size <= sizeof(db->record));
++        db->record_len += size;
++    }
++
++    memcpy(db->record + (offset - db->record_start), from, size);
++}
++
+ static void plugin_insn_append(vaddr pc, const void *from, size_t size)
+ {
+ #ifdef CONFIG_PLUGIN
+@@ -341,6 +376,7 @@ uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
+ 
+     if (!translator_ld(env, db, &raw, pc, sizeof(raw))) {
+         raw = cpu_ldub_code(env, pc);
++        record_save(db, pc, &raw, sizeof(raw));
      }
+     plugin_insn_append(pc, &raw, sizeof(raw));
+     return raw;
+@@ -355,6 +391,7 @@ uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
+     } else {
+         tgt = cpu_lduw_code(env, pc);
+         raw = tswap16(tgt);
++        record_save(db, pc, &raw, sizeof(raw));
+     }
+     plugin_insn_append(pc, &raw, sizeof(raw));
+     return tgt;
+@@ -369,6 +406,7 @@ uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+     } else {
+         tgt = cpu_ldl_code(env, pc);
+         raw = tswap32(tgt);
++        record_save(db, pc, &raw, sizeof(raw));
+     }
+     plugin_insn_append(pc, &raw, sizeof(raw));
+     return tgt;
+@@ -383,6 +421,7 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
+     } else {
+         tgt = cpu_ldl_code(env, pc);
+         raw = tswap64(tgt);
++        record_save(db, pc, &raw, sizeof(raw));
+     }
+     plugin_insn_append(pc, &raw, sizeof(raw));
+     return tgt;
+@@ -390,5 +429,7 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
  
-@@ -284,6 +286,8 @@ static bool translator_ld(CPUArchState *env, DisasContextBase *db,
-         if (unlikely(new_page1 == -1)) {
-             tb_unlock_pages(tb);
-             tb_set_page_addr0(tb, -1);
-+            /* Require that this be the final insn. */
-+            db->max_insns = db->num_insns;
-             return false;
-         }
- 
+ void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8)
+ {
++    assert(pc >= db->pc_first);
++    record_save(db, pc, &insn8, sizeof(insn8));
+     plugin_insn_append(pc, &insn8, sizeof(insn8));
+ }
 -- 
 2.34.1
 
