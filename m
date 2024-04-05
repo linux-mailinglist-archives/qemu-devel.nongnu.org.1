@@ -2,75 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122E38991D6
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 01:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6E4899272
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 02:08:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsWAX-00028a-2q; Thu, 04 Apr 2024 19:06:53 -0400
+	id 1rsX78-0006Bp-RT; Thu, 04 Apr 2024 20:07:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAS-00027b-2z
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:48 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rsX76-0006BN-Od
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 20:07:24 -0400
+Received: from mail-qk1-x730.google.com ([2607:f8b0:4864:20::730])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsWAN-0007pC-6h
- for qemu-devel@nongnu.org; Thu, 04 Apr 2024 19:06:44 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2a2c9903ef0so1149382a91.3
- for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 16:06:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
+ id 1rsX6y-00025h-AI
+ for qemu-devel@nongnu.org; Thu, 04 Apr 2024 20:07:18 -0400
+Received: by mail-qk1-x730.google.com with SMTP id
+ af79cd13be357-789f00aba19so104620485a.0
+ for <qemu-devel@nongnu.org>; Thu, 04 Apr 2024 17:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712272002; x=1712876802; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
- b=fiaYcA4whMgC7FL8KEWtoPUAF4N34MaHkmu4FYmMjaSKwnJL6s6MgwbLZbTL4AYHb5
- MwLzbSwVSOxPGJmbIXDXo3uIqJD5CAA8fYF6z38O87MmTYey3J6fOeLw3rJRNKVsprlV
- 16tUCJHjpRzEGGL9b3XyhxVNv8JCrsBIlg6MmdkTuPfyElGAH1kTnKSEyCBuv3zOCGh/
- E/Za0fCe6ZP8yu4MuYxRlpyVzeuaTwQ4hh6hqFiPrDcIbuylWNV7RrDdXXW0n6wLV1UV
- 2/t8fNWXjv3z3RHSB0RMdL5VWK2fsXYrY1tetTqfvmcamUUpTsM0rCvExd5KOWuY+Ma1
- sdkQ==
+ d=bytedance.com; s=google; t=1712275630; x=1712880430; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=borPtC2Lw74++f4OJFhInHLKkc0dmWJsVuLGMvV8fMY=;
+ b=eHYAIkOX340KIKxtFyWJbCIR62QGPPCuRlfdpKtrpGxxr/+yyH2I/6hF66VGjwY3yL
+ Fta+7+fms002M7HAbXz7cqjVV7xRe5vTdPozd1yzgkDet/I5367ips/3qh9WV2evbQJP
+ 302nHAej10X0XahI1pa3ZL2gbD5qtP54p1Pw+BDgU2jjo9IJs08lja8FG0MBOA90jL7q
+ 2Y0rzgxliGsnw1N/opB8fow08PjRLO5Eiy8mJC5iFn6DK4VXzijBmdELCbDKRJqM4J/N
+ kcUDr8N2g/EGYNOcIPmxZbEtWZsv0wM/w8BKMKZ5RpPREaYirCnXe5+arQAzXgSQ9wgY
+ lF4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712272002; x=1712876802;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=cdYcjDwLN/xr8PQzvEnfgv6lYJ6ezf5kr9JF5Mk0QDo=;
- b=s/DvDjbLJvav5CL8ozqoI4jOC093cGSP24kJIDWPp5vF61drNJFymuisiLNjoXOdi2
- MjVCw7hVT8pF3GK1Utsitly36xWSCN0KuZ1agS/k/bYd1eDbez/yFFqL+yWeIjx9XoK8
- XuzOd/Sam0otDhb/J2C3nQYIH8ZVJF426ogbF8xq2iEQetoqSm1YaAZHfm2y/4JX9zER
- 6b8/ccspU4LluTWjV62Z3Jt1Lo/UjqXoLC5KWEs+5NPieDlYMIUFj5uQMf8uWi7JT6sq
- 1M7Qe0wpeDV9IQ5mA3j+EQUHpKXph6Pqf77Ed98kyyQ2Z0/HKznF84yunl0FLSuphG6E
- WezQ==
-X-Gm-Message-State: AOJu0YymVrk7phiiGSpC9VJjWJf3ntFQsy2HUOAXXFDnWoA5rR15+KHA
- XCY5V1gStD22WVRPFacaKi0J3eb8gzXB7cCsHV+14q3UfYpFZhK2p5C9bcDcK6PxsoA6Av0Hzas
- t
-X-Google-Smtp-Source: AGHT+IHWiGp8/WcrXazbl7SYxrPNHSC8bzy537ihdQi24cUNQyJDGG8smImIQ3fgcUY397KuOD30eA==
-X-Received: by 2002:a17:90b:4ac1:b0:29b:22d2:9dd5 with SMTP id
- mh1-20020a17090b4ac100b0029b22d29dd5mr1145312pjb.38.1712272001890; 
- Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
-Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ d=1e100.net; s=20230601; t=1712275630; x=1712880430;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=borPtC2Lw74++f4OJFhInHLKkc0dmWJsVuLGMvV8fMY=;
+ b=CouUSpAOMRQ0qHYJC444IrE0bUFvLE3URhO8gSrr+8/g/Cm8tOxW3gowgDAJbm2lRg
+ rK0WBwLj4TG7esJ4uICMZ6CnJSHhh+XgAWrv1rPts2qoSoOTmuiLcnoQ0vriCoE/0J61
+ BbNVOipX4V8v79UBTaLOSeF1SGZQc2PnAja7KoGPmh//clTdwOjRxPFMD2wn4ZXu2ko/
+ OLgM51f5yIz3eFlb0Qs18Z1N0c0NIaJEIJUoO7LWqi3cOrrTs/vQDNl4KwfgYTjyHO+X
+ HaHhw7ANBLsLg0WOcZkUSts3DDFNsG/blsSD1q5+0J5V+DgcQ+9FSR6ec9hWrvMMTG4K
+ /ajg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVaLb59aBwHrzUWQ4103N6Jytpz+8jdAM5I9Nt4W8zssOEu5Ceb9WaYUcLDSVMiOetZ6GOHR01o/cQqBHIYGpjHJH0mhKs=
+X-Gm-Message-State: AOJu0Yxs1iskqPjk2lz2WRDBlNh+R4vIwhvCutmhTfLEWZY+cYKLfyus
+ vw/wG1JwYGC0ZBRVXd7S5lAPulTLKXP9vnn8eSD7uTGOCq4UvoRLF/GP7y3Vh7s=
+X-Google-Smtp-Source: AGHT+IEZxsVQpcVtfVYtGZzcm88UlnMi4FCOp8lekdMsqoU3bR6MAdrGWYFbzpWmRgOIJsDUml+1Gg==
+X-Received: by 2002:a05:620a:136e:b0:789:e524:933b with SMTP id
+ d14-20020a05620a136e00b00789e524933bmr3831084qkl.31.1712275630015; 
+ Thu, 04 Apr 2024 17:07:10 -0700 (PDT)
+Received: from n231-228-171.byted.org ([130.44.212.118])
  by smtp.gmail.com with ESMTPSA id
- q36-20020a17090a17a700b002a2f3cfc92asm1052592pja.16.2024.04.04.16.06.40
+ d4-20020a37c404000000b0078835bfddb8sm191433qki.84.2024.04.04.17.07.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 04 Apr 2024 16:06:41 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v2 21/21] plugins: Update the documentation block for
- plugin-gen.c
-Date: Thu,  4 Apr 2024 13:06:11 -1000
-Message-Id: <20240404230611.21231-22-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240404230611.21231-1-richard.henderson@linaro.org>
-References: <20240404230611.21231-1-richard.henderson@linaro.org>
+ Thu, 04 Apr 2024 17:07:09 -0700 (PDT)
+From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
+To: "Jonathan Cameron" <Jonathan.Cameron@Huawei.com>,
+ "Huang, Ying" <ying.huang@intel.com>,
+ "Gregory Price" <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
+ mhocko@suse.com, tj@kernel.org, john@jagalactic.com,
+ "Eishan Mirakhur" <emirakhur@micron.com>,
+ "Vinicius Tavares Petrucci" <vtavarespetr@micron.com>,
+ "Ravis OpenSrc" <Ravis.OpenSrc@micron.com>,
+ "Alistair Popple" <apopple@nvidia.com>,
+ "Srinivasulu Thanneeru" <sthanneeru@micron.com>,
+ "SeongJae Park" <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>,
+ Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, nvdimm@lists.linux.dev,
+ linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>,
+ "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org
+Subject: [PATCH v11 0/2] Improved Memory Tier Creation for CPUless NUMA Nodes
+Date: Fri,  5 Apr 2024 00:07:04 +0000
+Message-Id: <20240405000707.2670063-1-horenchuang@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::730;
+ envelope-from=horenchuang@bytedance.com; helo=mail-qk1-x730.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,55 +104,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/plugin-gen.c | 31 ++++---------------------------
- 1 file changed, 4 insertions(+), 27 deletions(-)
+When a memory device, such as CXL1.1 type3 memory, is emulated as
+normal memory (E820_TYPE_RAM), the memory device is indistinguishable from
+normal DRAM in terms of memory tiering with the current implementation.
+The current memory tiering assigns all detected normal memory nodes to
+the same DRAM tier. This results in normal memory devices with different
+attributions being unable to be assigned to the correct memory tier,
+leading to the inability to migrate pages between different
+types of memory.
+https://lore.kernel.org/linux-mm/PH0PR08MB7955E9F08CCB64F23963B5C3A860A@PH0PR08MB7955.namprd08.prod.outlook.com/T/
 
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index d914d64de0..3db74ae9bf 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -14,33 +14,10 @@
-  * Injecting the desired instrumentation could be done with a second
-  * translation pass that combined the instrumentation requests, but that
-  * would be ugly and inefficient since we would decode the guest code twice.
-- * Instead, during TB translation we add "empty" instrumentation calls for all
-- * possible instrumentation events, and then once we collect the instrumentation
-- * requests from plugins, we either "fill in" those empty events or remove them
-- * if they have no requests.
-- *
-- * When "filling in" an event we first copy the empty callback's TCG ops. This
-- * might seem unnecessary, but it is done to support an arbitrary number
-- * of callbacks per event. Take for example a regular instruction callback.
-- * We first generate a callback to an empty helper function. Then, if two
-- * plugins register one callback each for this instruction, we make two copies
-- * of the TCG ops generated for the empty callback, substituting the function
-- * pointer that points to the empty helper function with the plugins' desired
-- * callback functions. After that we remove the empty callback's ops.
-- *
-- * Note that the location in TCGOp.args[] of the pointer to a helper function
-- * varies across different guest and host architectures. Instead of duplicating
-- * the logic that figures this out, we rely on the fact that the empty
-- * callbacks point to empty functions that are unique pointers in the program.
-- * Thus, to find the right location we just have to look for a match in
-- * TCGOp.args[]. This is the main reason why we first copy an empty callback's
-- * TCG ops and then fill them in; regardless of whether we have one or many
-- * callbacks for that event, the logic to add all of them is the same.
-- *
-- * When generating more than one callback per event, we make a small
-- * optimization to avoid generating redundant operations. For instance, for the
-- * second and all subsequent callbacks of an event, we do not need to reload the
-- * CPU's index into a TCG temp, since the first callback did it already.
-+ * Instead, during TB translation we add "plugin_cb" marker opcodes
-+ * for all possible instrumentation events, and then once we collect the
-+ * instrumentation requests from plugins, we generate code for those markers
-+ * or remove them if they have no requests.
-  */
- #include "qemu/osdep.h"
- #include "qemu/plugin.h"
+This patchset automatically resolves the issues. It delays the
+initialization of memory tiers for CPUless NUMA nodes until they obtain
+HMAT information and after all devices are initialized at boot time,
+eliminating the need for user intervention. If no HMAT is specified,
+it falls back to using `default_dram_type`.
+
+Example usecase:
+We have CXL memory on the host, and we create VMs with a new system memory
+device backed by host CXL memory. We inject CXL memory performance
+attributes through QEMU, and the guest now sees memory nodes with
+performance attributes in HMAT. With this change, we enable the
+guest kernel to construct the correct memory tiering for the memory nodes.
+
+- v11:
+ Thanks to comments from Jonathan,
+ * Replace `mutex_lock()` with `guard(mutex)()`
+ * Reorder some modifications within the patchset
+ * Rewrite the code for improved readability and fixing alignment issues
+ * Pass all strict rules in checkpatch.pl
+- v10:
+ Thanks to Andrew's and SeongJae's comments,
+ * Address kunit compilation errors
+ * Resolve the bug of not returning the correct error code in
+   `mt_perf_to_adistance`
+ * https://lore.kernel.org/lkml/20240402001739.2521623-1-horenchuang@bytedance.com/T/#u
+-v9:
+ * Address corner cases in `memory_tier_late_init`. Thank Ying's comments.
+ * https://lore.kernel.org/lkml/20240329053353.309557-1-horenchuang@bytedance.com/T/#u
+-v8:
+ * Fix email format
+ * https://lore.kernel.org/lkml/20240329004815.195476-1-horenchuang@bytedance.com/T/#u
+-v7:
+ * Add Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+-v6:
+ Thanks to Ying's comments,
+ * Move `default_dram_perf_lock` to the function's beginning for clarity
+ * Fix double unlocking at v5
+ * https://lore.kernel.org/lkml/20240327072729.3381685-1-horenchuang@bytedance.com/T/#u
+-v5:
+ Thanks to Ying's comments,
+ * Add comments about what is protected by `default_dram_perf_lock`
+ * Fix an uninitialized pointer mtype
+ * Slightly shorten the time holding `default_dram_perf_lock`
+ * Fix a deadlock bug in `mt_perf_to_adistance`
+ * https://lore.kernel.org/lkml/20240327041646.3258110-1-horenchuang@bytedance.com/T/#u
+-v4:
+ Thanks to Ying's comments,
+ * Remove redundant code
+ * Reorganize patches accordingly
+ * https://lore.kernel.org/lkml/20240322070356.315922-1-horenchuang@bytedance.com/T/#u
+-v3:
+ Thanks to Ying's comments,
+ * Make the newly added code independent of HMAT
+ * Upgrade set_node_memory_tier to support more cases
+ * Put all non-driver-initialized memory types into default_memory_types
+   instead of using hmat_memory_types
+ * find_alloc_memory_type -> mt_find_alloc_memory_type
+ * https://lore.kernel.org/lkml/20240320061041.3246828-1-horenchuang@bytedance.com/T/#u
+-v2:
+ Thanks to Ying's comments,
+ * Rewrite cover letter & patch description
+ * Rename functions, don't use _hmat
+ * Abstract common functions into find_alloc_memory_type()
+ * Use the expected way to use set_node_memory_tier instead of modifying it
+ * https://lore.kernel.org/lkml/20240312061729.1997111-1-horenchuang@bytedance.com/T/#u
+-v1:
+ * https://lore.kernel.org/lkml/20240301082248.3456086-1-horenchuang@bytedance.com/T/#u
+
+Ho-Ren (Jack) Chuang (2):
+  memory tier: dax/kmem: introduce an abstract layer for finding,
+    allocating, and putting memory types
+  memory tier: create CPUless memory tiers after obtaining HMAT info
+
+ drivers/dax/kmem.c           |  30 ++-------
+ include/linux/memory-tiers.h |  13 ++++
+ mm/memory-tiers.c            | 123 ++++++++++++++++++++++++++++-------
+ 3 files changed, 116 insertions(+), 50 deletions(-)
+
 -- 
-2.34.1
+Ho-Ren (Jack) Chuang
 
 
