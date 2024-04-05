@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76912899AC5
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B96899AD4
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:28:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsglc-0006CK-C5; Fri, 05 Apr 2024 06:25:56 -0400
+	id 1rsgmB-0007Fm-3B; Fri, 05 Apr 2024 06:26:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglP-00068s-Lw
+ id 1rsglR-0006Ak-0v
  for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:41 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-oa1-x2f.google.com ([2001:4860:4864:20::2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglO-0004p9-42
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:39 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1e0878b76f3so17015955ad.0
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:37 -0700 (PDT)
+ id 1rsglP-0004pO-CG
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:40 -0400
+Received: by mail-oa1-x2f.google.com with SMTP id
+ 586e51a60fabf-22eccfeee22so366406fac.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312737; x=1712917537; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312738; x=1712917538; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+fs9+k40tx7u0ZrnNCGjYa07BmQdJ80BwtuGhh0yXh4=;
- b=FEnvx95AgCnbF+lWRAS68tf76Bpo9uTrgrUyqP+S83Xm4AQ3lJCgevvZ/WRm8GjUDe
- 4lf4XjxoKYo1HcnI3la+uBBrJ5z4LDYRqiUopLXZ6OJotsgkMjl1H/9hZAGLjD0iDUmv
- McnM+1u2ej00HM7Q/qsbWy1suHgoiAxpgRxdwUcsWXbEvu/QjUHZdC+s5crgBLrRFPCY
- Dv7tfiB02OExGkunS0zVJnuAOadUTBzP+LnqEM+M3h7QvGLYkadXR1cS6yemEJAUho3y
- fbvJZja4j1mrY7/+EKSDvLzGLgq7m7rhkO0fvvwz5snG/hl5revXtMZ0A98/3spZ8R3L
- y6/w==
+ bh=Q4IwNemI6HQ9b33EE9N7v7S1E8PqRebn39PS5dqy4+w=;
+ b=CUN+1If8puxEiRtWUI3UESzwVOu6NvggSPDX0cGRxtN/4pYq+W9C8Bdgpw5fn+O+Vf
+ v2V/GCf7hKJJQ4MRYkVMTrkmpnKNdSCgjDnht3xrF+nRnypG8dyE5Smsw9DnAdxieZ0i
+ 8F+BsaayO56sHN2hM9JwsLZa4OjlZ9k0MbldA7KkIi58PDALD+NnoR3NIN/5xOh/2jBC
+ Obo5stbr8xq13QnAUQLp+kdr+ZEsFZbQVtE+Z3hOUG4KtJNXbXX21Irohj3UjxP52qb/
+ ofFbzUhelEK4c4bkziU5zCl64KQtST+c2d3mb5YMuNG4EzyAdgv50PcupPIYmhM3mcPg
+ YHbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312737; x=1712917537;
+ d=1e100.net; s=20230601; t=1712312738; x=1712917538;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+fs9+k40tx7u0ZrnNCGjYa07BmQdJ80BwtuGhh0yXh4=;
- b=r+0S3hQDeoM01hBWgY334jRV1MlSbU+/nlNgI80i0E1pv+qD6nSVuG/Cj0eZnpJjV1
- dqydB4cm69PvzJGzim/GSq8k6rbzBCU3W0UlhfqHyrCtmA513n85bwvEebJ6cjDHiDGx
- VP/OBWT/SgKZObFBbjbMK7t/1paclUeHwsbFa1gdq2hPlbAmmPN+ppv7ivlKQLNTdBv0
- EscR/xwWxX7YJRSO5NU7aNSeO8gAFORY7HLxziIxbDwUfdfAyfCBLsMKGpP/py38XDLp
- 097ZfufDyj68OmhfLflFZSoHHVw/w9FBkI6e9X38hqaWTkWPvHio4CfRkJN+HewE2N8Y
- t7KA==
-X-Gm-Message-State: AOJu0YzUdLbV+34qYb37HRdT7LaeASKgRIFgxu6eLfjUUqquYEE+m+0c
- vDLOQXS+HNx+2gEJ1PCOt6yibCkN+Y2qjPBuJQUK8NO2NK/eNaz9dF4wAfvx9u3+m/Tkht2F60h
- Y
-X-Google-Smtp-Source: AGHT+IHZI/XmTfUfpvsS0r4q/IS0d86tFk9MiJ635TY3Xb0B3el2+53xO+o2sWTFUrJT5ALCvde+9Q==
-X-Received: by 2002:a17:902:ce90:b0:1e3:c327:35e4 with SMTP id
- f16-20020a170902ce9000b001e3c32735e4mr1696611plg.5.1712312736873; 
- Fri, 05 Apr 2024 03:25:36 -0700 (PDT)
+ bh=Q4IwNemI6HQ9b33EE9N7v7S1E8PqRebn39PS5dqy4+w=;
+ b=rwwpw8Lc9dCcNZcUtCT+kdB4zsw3X9SkOyovEwHkl+pVhr57rWqPStd8VVKxSz88zO
+ /GgXrTdoHyaTobpQgd+EvnojUOq0tpgYDzBDbhm3k8U55uyDCL6Oy0aUKL+kWQH8Oti+
+ fPRsVfuXnLEQ8TX/tBpOIxXuIHWFKvKia42Ndl86VbobXSVyJBuAe58vj/DNzvAcSREN
+ Ivp/wO6pgK9KByrTc0nrQkKADDi60NOWPmpUhdtVZiiIAv6+dKSvn12e0+wLLmyfVr2i
+ nMuGCKDLRhd9yFghrmv7el2P002LDStgGSbsFS2JK9PgdUeFaXVt7Uak8SR6I/wC/x9h
+ 0zvg==
+X-Gm-Message-State: AOJu0YxNGLkGeNhbnmW0YOya5I9Vn6UdBDnZHUtydjqfIbqnr+m//Bph
+ aClQb1TcwGpI8t/FXuVxHTx0AGwiupn+jQFjFdK1vFgk3gsJqujFV6eFsW0siaA+mmp5aJQXHcA
+ E
+X-Google-Smtp-Source: AGHT+IGkWCRz3TtEv0zBQuzJvjRsQGC4J5flFwlV6CepGl19U8VBMBv+Rh4/BDP2j+bGivuiZK4KDQ==
+X-Received: by 2002:a05:6870:9613:b0:22e:cfee:320c with SMTP id
+ d19-20020a056870961300b0022ecfee320cmr1044638oaq.57.1712312738271; 
+ Fri, 05 Apr 2024 03:25:38 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.35
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:36 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:37 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 27/32] target/cris: Use translator_ld* in cris_fetch
-Date: Fri,  5 Apr 2024 00:24:54 -1000
-Message-Id: <20240405102459.462551-28-richard.henderson@linaro.org>
+Subject: [PATCH 28/32] target/cris: Use cris_fetch in translate_v10.c.inc
+Date: Fri,  5 Apr 2024 00:24:55 -1000
+Message-Id: <20240405102459.462551-29-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,70 +92,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
+Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com> 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/cris/translate.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ target/cris/translate.c         |  1 -
+ target/cris/translate_v10.c.inc | 30 +++++++++---------------------
+ 2 files changed, 9 insertions(+), 22 deletions(-)
 
 diff --git a/target/cris/translate.c b/target/cris/translate.c
-index b5410189d4..bb2d6612ba 100644
+index bb2d6612ba..a30c67eb07 100644
 --- a/target/cris/translate.c
 +++ b/target/cris/translate.c
-@@ -222,37 +222,28 @@ static int sign_extend(unsigned int val, unsigned int width)
- }
+@@ -29,7 +29,6 @@
+ #include "tcg/tcg-op.h"
+ #include "exec/helper-proto.h"
+ #include "mmu.h"
+-#include "exec/cpu_ldst.h"
+ #include "exec/translator.h"
+ #include "crisv32-decode.h"
+ #include "qemu/qemu-print.h"
+diff --git a/target/cris/translate_v10.c.inc b/target/cris/translate_v10.c.inc
+index 73fc27c15d..c15ff47505 100644
+--- a/target/cris/translate_v10.c.inc
++++ b/target/cris/translate_v10.c.inc
+@@ -165,20 +165,7 @@ static int dec10_prep_move_m(CPUCRISState *env, DisasContext *dc,
  
- static int cris_fetch(CPUCRISState *env, DisasContext *dc, uint32_t addr,
--              unsigned int size, unsigned int sign)
-+                      unsigned int size, bool sign)
- {
-     int r;
+     /* Load [$rs] onto T1.  */
+     if (is_imm) {
+-        if (memsize != 4) {
+-            if (s_ext) {
+-                if (memsize == 1)
+-                    imm = cpu_ldsb_code(env, dc->pc + 2);
+-                else
+-                    imm = cpu_ldsw_code(env, dc->pc + 2);
+-            } else {
+-                if (memsize == 1)
+-                    imm = cpu_ldub_code(env, dc->pc + 2);
+-                else
+-                    imm = cpu_lduw_code(env, dc->pc + 2);
+-            }
+-        } else
+-            imm = cpu_ldl_code(env, dc->pc + 2);
++        imm = cris_fetch(env, dc, dc->pc + 2, memsize, s_ext);
  
-     switch (size) {
-     case 4:
--    {
--        r = cpu_ldl_code(env, addr);
-+        r = translator_ldl(env, &dc->base, addr);
-         break;
--    }
-     case 2:
--    {
-+        r = translator_lduw(env, &dc->base, addr);
-         if (sign) {
--            r = cpu_ldsw_code(env, addr);
--        } else {
--            r = cpu_lduw_code(env, addr);
-+            r = (int16_t)r;
-         }
-         break;
--    }
-     case 1:
--    {
-+        r = translator_ldub(env, &dc->base, addr);
-         if (sign) {
--            r = cpu_ldsb_code(env, addr);
--        } else {
--            r = cpu_ldub_code(env, addr);
-+            r = (int8_t)r;
-         }
-         break;
--    }
-     default:
--        cpu_abort(CPU(dc->cpu), "Invalid fetch size %d\n", size);
--        break;
-+        g_assert_not_reached();
-     }
-     return r;
- }
-@@ -2868,7 +2859,7 @@ static unsigned int crisv32_decoder(CPUCRISState *env, DisasContext *dc)
-     int i;
+         tcg_gen_movi_tl(dst, imm);
+ 
+@@ -929,10 +916,11 @@ static int dec10_dip(CPUCRISState *env, DisasContext *dc)
+     LOG_DIS("dip pc=%x opcode=%d r%d r%d\n",
+               dc->pc, dc->opcode, dc->src, dc->dst);
+     if (dc->src == 15) {
+-        imm = cpu_ldl_code(env, dc->pc + 2);
++        imm = cris_fetch(env, dc, dc->pc + 2, 4, 0);
+         tcg_gen_movi_tl(cpu_PR[PR_PREFIX], imm);
+-        if (dc->postinc)
++        if (dc->postinc) {
+             insn_len += 4;
++        }
+         tcg_gen_addi_tl(cpu_R[15], cpu_R[15], insn_len - 2);
+     } else {
+         gen_load(dc, cpu_PR[PR_PREFIX], cpu_R[dc->src], 4, 0);
+@@ -1095,10 +1083,10 @@ static unsigned int dec10_ind(CPUCRISState *env, DisasContext *dc)
+             if (dc->src == 15) {
+                 LOG_DIS("jump.%d %d r%d r%d direct\n", size,
+                          dc->opcode, dc->src, dc->dst);
+-                imm = cpu_ldl_code(env, dc->pc + 2);
+-                if (dc->mode == CRISV10_MODE_AUTOINC)
++                imm = cris_fetch(env, dc, dc->pc + 2, size, 0);
++                if (dc->mode == CRISV10_MODE_AUTOINC) {
+                     insn_len += size;
+-
++                }
+                 c = tcg_constant_tl(dc->pc + insn_len);
+                 t_gen_mov_preg_TN(dc, dc->dst, c);
+                 dc->jmp_pc = imm;
+@@ -1164,7 +1152,7 @@ static unsigned int dec10_ind(CPUCRISState *env, DisasContext *dc)
+         case CRISV10_IND_BCC_M:
+ 
+             cris_cc_mask(dc, 0);
+-            simm = cpu_ldsw_code(env, dc->pc + 2);
++            simm = cris_fetch(env, dc, dc->pc + 2, 2, 1);
+             simm += 4;
+ 
+             LOG_DIS("bcc_m: b%s %x\n", cc_name(dc->cond), dc->pc + simm);
+@@ -1185,7 +1173,7 @@ static unsigned int crisv10_decoder(CPUCRISState *env, DisasContext *dc)
+     unsigned int insn_len = 2;
  
      /* Load a halfword onto the instruction register.  */
--        dc->ir = cris_fetch(env, dc, dc->pc, 2, 0);
+-    dc->ir = cpu_lduw_code(env, dc->pc);
 +    dc->ir = cris_fetch(env, dc, dc->pc, 2, 0);
  
      /* Now decode it.  */
-     dc->opcode   = EXTRACT_FIELD(dc->ir, 4, 11);
+     dc->opcode   = EXTRACT_FIELD(dc->ir, 6, 9);
 -- 
 2.34.1
 
