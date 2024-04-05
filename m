@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D58F4899CEA
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 14:31:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C4A899D00
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 14:33:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsihT-0006Gv-Ig; Fri, 05 Apr 2024 08:29:43 -0400
+	id 1rsik2-0000h3-Tk; Fri, 05 Apr 2024 08:32:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rsihH-00068K-8Y
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 08:29:31 -0400
+ id 1rsijy-0000e9-1C
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 08:32:18 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rsihF-0005ps-G7
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 08:29:31 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.231])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V9ySJ2SWhz688yX;
- Fri,  5 Apr 2024 20:28:00 +0800 (CST)
+ id 1rsijv-0006n5-UD
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 08:32:17 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V9yWW65kXz6JBDh;
+ Fri,  5 Apr 2024 20:30:47 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 4F44F14065C;
- Fri,  5 Apr 2024 20:29:25 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id CDB96140C98;
+ Fri,  5 Apr 2024 20:32:12 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 5 Apr
- 2024 13:29:24 +0100
-Date: Fri, 5 Apr 2024 13:29:23 +0100
+ 2024 13:32:11 +0100
+Date: Fri, 5 Apr 2024 13:32:11 +0100
 To: <nifan.cxl@gmail.com>
 CC: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>,
  <gregory.price@memverge.com>, <ira.weiny@intel.com>,
  <dan.j.williams@intel.com>, <a.manzanares@samsung.com>, <dave@stgolabs.net>,
  <nmtadam.samsung@gmail.com>, <jim.harris@samsung.com>,
  <Jorgen.Hansen@wdc.com>, <wj28.lee@gmail.com>, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v6 10/12] hw/mem/cxl_type3: Add dpa range validation for
- accesses to DC regions
-Message-ID: <20240405132923.0000313b@Huawei.com>
-In-Reply-To: <20240325190339.696686-11-nifan.cxl@gmail.com>
+Subject: Re: [PATCH v6 11/12] hw/cxl/cxl-mailbox-utils: Add superset extent
+ release mailbox support
+Message-ID: <20240405133211.000011a5@Huawei.com>
+In-Reply-To: <20240325190339.696686-12-nifan.cxl@gmail.com>
 References: <20240325190339.696686-1-nifan.cxl@gmail.com>
- <20240325190339.696686-11-nifan.cxl@gmail.com>
+ <20240325190339.696686-12-nifan.cxl@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -74,26 +74,18 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Mar 2024 12:02:28 -0700
+On Mon, 25 Mar 2024 12:02:29 -0700
 nifan.cxl@gmail.com wrote:
 
 > From: Fan Ni <fan.ni@samsung.com>
 > 
-> All dpa ranges in the DC regions are invalid to access until an extent
-
-Let's be more consistent for commit logs and use DPA DC HPA etc all
-caps. It's a bit of a mixture in this series at the moment.
-
-> covering the range has been added.
-I'd expand that to 'has been successfully accepted by the host.'
-
-> Add a bitmap for each region to
-> record whether a DC block in the region has been backed by DC extent.
-> For the bitmap, a bit in the bitmap represents a DC block. When a DC
-> extent is added, all the bits of the blocks in the extent will be set,
-> which will be cleared when the extent is released.
+> With the change, we extend the extent release mailbox command processing
+> to allow more flexible release. As long as the DPA range of the extent to
+> release is covered by accepted extent(s) in the device, the release can be
+> performed.
 > 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Signed-off-by: Fan Ni <fan.ni@samsung.com>
-
+Nothing to add from me.
+Nice and simple which is great.
+Jonathan
 
