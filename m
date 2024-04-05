@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857CF899ABA
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:26:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F61899AB2
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:26:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsglE-00060x-9A; Fri, 05 Apr 2024 06:25:28 -0400
+	id 1rsglF-000629-2r; Fri, 05 Apr 2024 06:25:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl6-0005z5-A0
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:20 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ id 1rsgl7-0005zH-4L
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:21 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl4-0004iK-71
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:19 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6e9eccfc4b7so895321a34.0
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:17 -0700 (PDT)
+ id 1rsgl4-0004ig-Si
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:20 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-22edbef3b4eso58244fac.3
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312716; x=1712917516; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312717; x=1712917517; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sXJp68IxXRRxWP6mAKqccZKI80JRQyGpOUIyXQjxXn0=;
- b=SfFOrpX4nIQ8D7xk/5Wny/Te5hyr4MW1yMtxy3wugV4QVLNniO5eFKUTJbFWrPsz1T
- A5pfiAEhRgMHjpN1vGR9SPaO8M8Zw7HhjD+6hC74qd8h+zJ1gaRgjrde/Y1KRaHdbYgC
- 7w95yCNvhnHJskcPu8Uhn67udmh6gn28bU3RNB/t2M5XapNX4UW3io5d1kCFrSotxRU4
- +a+me4y8Upv+SFRpAfOlXrOHNaxlq0kXZPVj+xtQ63gnvwe91ol+ioGIeqDzIl/L3ADP
- VZ/eRylEjfIy/jRjMVyDSyXYpWiufqPqqPOpluT0C3lEkeCZFVHnt29UJwS5i0HNi7VL
- VFYQ==
+ :reply-to; bh=pVczXwSwmGbu0M1qoWfxeDZ+kVcxLdctaqwAQ3Kgz2g=;
+ b=SGddtqgXnHN/lWAyj0B2O8crA2vIl+3kZ/jDjF2LD56oUNUptcgQWNVHQjpEaY/YiK
+ WtAGBd3BpnYm+1C3EH9hW6uum8155UnGKptUknH5tj21W5moelaTh0gXOYVzACQlERLh
+ OIMDbH/c5d5OzhHdf4FBTQzOVw4yz5y36RbQBZ6bTrQJRPYOh/kQTzD9PbHazbJ77muO
+ EcFnnj/3dS+PhmdzoxGWNR3n9tq0zV5CyWAnEEnN2cYRJ7ZuarieMhFXB0E5mVlSAkid
+ AYs+ihxp/ioQshEAfx9n9szLB2pdxmACVMcNi5RAl48Pnfn0usLI56NEYpeB4bNv1mtZ
+ BOHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312716; x=1712917516;
+ d=1e100.net; s=20230601; t=1712312717; x=1712917517;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sXJp68IxXRRxWP6mAKqccZKI80JRQyGpOUIyXQjxXn0=;
- b=bGpgLWXQHnnN89MbAO8WE9FZlubIgnppQ7ZXtbNADAPr+Oh5A7I1mOZRhPLldXruDj
- GfXWaP1yBl3OcGY2ZDvIQwIOSjErwFfb3ExWcAABtVVD12stAYR45DVFamT8IOy6DGIP
- 4hBe+qiDxFo8WnQizB/QR1hZTx+Potr56dhQ5ldxrdIflLQQIdt/vk7PsZibjsvE+tzf
- CVi+SPFhzCnnyhwADMaCn7IjDPV/vlp3r8Awpg/KvFLjbPimAQbF3jetTBseaMX1ryPr
- sCu/2Alb3Pq7P1gzJOEl2Hz4gaqwdpZECvY8dKJaMw1/DeJm+uNAq5/lA7a+dCGO8+C3
- Jkiw==
-X-Gm-Message-State: AOJu0YzlXdnbNC5YnNl++HAQiKSGL56tE55JVQ2Ac12NNs1TA/fWKy0o
- 18XM1Xp2Dmqfy/jXwIyZ9WYeA5p7VqTGWotetCNv5z2YLLbjC3dkEvIQThAx9li4woS53gAl6rL
- j
-X-Google-Smtp-Source: AGHT+IEGTp6zoBWxULTLCPVGpsZxfqsigjeska7CBI8jZPAJnXiIgzZQzC9BSy53QrPzN7C2qc/Wmw==
-X-Received: by 2002:a05:6870:3753:b0:22e:b952:6d2a with SMTP id
- a19-20020a056870375300b0022eb9526d2amr1200806oak.34.1712312715966; 
- Fri, 05 Apr 2024 03:25:15 -0700 (PDT)
+ bh=pVczXwSwmGbu0M1qoWfxeDZ+kVcxLdctaqwAQ3Kgz2g=;
+ b=eewbJp4ysEg3FUlUmodmdnwNbgZRyhJi0El+buKledGVAk1EPPXC57E78O7vdZ6fA9
+ f6UshJt3GkjvSgCiziw0ryikV4Zu/sCKVHM8IAxUfiqSEcUL7hUdpNahNJ9Ef7023tR4
+ 4yjztRszNzckboHmZiym2jRr1PHLdfBIjst2gpuUuG2HjmU72cTxItg9bHfEjQQ1Nhvn
+ 5lII4PR/MK1o29A/yzkAIC/tBER3qE0wtgfoytmkS8Sb8Pbdy+Vi+qcADJ9ajZ7UCT2Z
+ mwT1/0CSIyMxh7PIL3k9KMSZvesasSeNEb3qx7G2n52qgE27Jkacdi5dLZz0UI601Cfc
+ GF2Q==
+X-Gm-Message-State: AOJu0Yx3++804BdWeOb7KsETHs5rlGfQBUoHV4tYxqpHZO3WzMKZMsLk
+ htA7B3Mq4W82vJKL/u8YhCO1nbI2N0IGAQMh0eWkwa8j3cFVOmb8HNNqZ7A1JRHPUGNXaClRzk3
+ 0
+X-Google-Smtp-Source: AGHT+IGWeVwSt9QkbyirEdBEepgc/TTxE+FUBxxUrQ8t0+FnLj+/UFsHML326Dd6Rcj0zT0D8J/ZUg==
+X-Received: by 2002:a05:6870:1a8f:b0:229:7f3f:bb6a with SMTP id
+ ef15-20020a0568701a8f00b002297f3fbb6amr776807oab.32.1712312717203; 
+ Fri, 05 Apr 2024 03:25:17 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.15
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.16
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:15 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:16 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 11/32] plugins: Use translator_st for qemu_plugin_insn_data
-Date: Fri,  5 Apr 2024 00:24:38 -1000
-Message-Id: <20240405102459.462551-12-richard.henderson@linaro.org>
+Subject: [PATCH 12/32] plugins: Read mem_only directly from TB cflags
+Date: Fri,  5 Apr 2024 00:24:39 -1000
+Message-Id: <20240405102459.462551-13-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,207 +91,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the bytes that we record for the entire TB, rather than
-a per-insn GByteArray.  Record the length of the insn in
-plugin_gen_insn_end rather than infering from the length
-of the array.
+Do not pass around a boolean between multiple structures,
+just read it from the TranslationBlock in the TCGContext.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/plugin.h  | 14 +-------------
- accel/tcg/plugin-gen.c |  7 +++++--
- accel/tcg/translator.c | 26 --------------------------
- plugins/api.c          | 12 +++++++-----
- tcg/tcg.c              |  3 +--
- 5 files changed, 14 insertions(+), 48 deletions(-)
+ include/exec/plugin-gen.h |  7 +++----
+ include/qemu/plugin.h     |  3 ---
+ accel/tcg/plugin-gen.c    |  4 +---
+ accel/tcg/translator.c    |  2 +-
+ plugins/api.c             | 14 +++++++++-----
+ 5 files changed, 14 insertions(+), 16 deletions(-)
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 07b1755990..c32bb97667 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -97,11 +97,11 @@ struct qemu_plugin_dyn_cb {
+diff --git a/include/exec/plugin-gen.h b/include/exec/plugin-gen.h
+index f333f33198..cbb2ca2131 100644
+--- a/include/exec/plugin-gen.h
++++ b/include/exec/plugin-gen.h
+@@ -18,8 +18,7 @@ struct DisasContextBase;
  
- /* Internal context for instrumenting an instruction */
- struct qemu_plugin_insn {
--    GByteArray *data;
-     uint64_t vaddr;
-     void *haddr;
-     GArray *insn_cbs;
-     GArray *mem_cbs;
-+    uint8_t len;
-     bool calls_helpers;
+ #ifdef CONFIG_PLUGIN
  
-     /* if set, the instruction calls helpers that might access guest memory */
-@@ -116,18 +116,6 @@ struct qemu_plugin_scoreboard {
-     QLIST_ENTRY(qemu_plugin_scoreboard) entry;
- };
+-bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db,
+-                         bool supress);
++bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db);
+ void plugin_gen_tb_end(CPUState *cpu, size_t num_insns);
+ void plugin_gen_insn_start(CPUState *cpu, const struct DisasContextBase *db);
+ void plugin_gen_insn_end(void);
+@@ -28,8 +27,8 @@ void plugin_gen_disable_mem_helpers(void);
  
--/*
-- * qemu_plugin_insn allocate and cleanup functions. We don't expect to
-- * cleanup many of these structures. They are reused for each fresh
-- * translation.
-- */
--
--static inline void qemu_plugin_insn_cleanup_fn(gpointer data)
--{
--    struct qemu_plugin_insn *insn = (struct qemu_plugin_insn *) data;
--    g_byte_array_free(insn->data, true);
--}
--
- /* Internal context for this TranslationBlock */
- struct qemu_plugin_tb {
-     GPtrArray *insns;
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 94bbad6dc7..be2451be58 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -346,11 +346,9 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
-     ptb->n = n;
-     if (n <= ptb->insns->len) {
-         insn = g_ptr_array_index(ptb->insns, n - 1);
--        g_byte_array_set_size(insn->data, 0);
-     } else {
-         assert(n - 1 == ptb->insns->len);
-         insn = g_new0(struct qemu_plugin_insn, 1);
--        insn->data = g_byte_array_sized_new(4);
-         g_ptr_array_add(ptb->insns, insn);
-     }
+ #else /* !CONFIG_PLUGIN */
  
-@@ -389,6 +387,11 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
- 
- void plugin_gen_insn_end(void)
+-static inline bool
+-plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db, bool sup)
++static inline
++bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db)
  {
-+    const DisasContextBase *db = tcg_ctx->plugin_db;
-+    struct qemu_plugin_insn *pinsn = tcg_ctx->plugin_insn;
-+
-+    pinsn->len = db->fake_insn ? db->record_len : db->pc_next - pinsn->vaddr;
-+
-     tcg_gen_plugin_cb(PLUGIN_GEN_AFTER_INSN);
- }
- 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 3421469a31..0a1d26b2e8 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -405,27 +405,6 @@ bool translator_st(const DisasContextBase *db, void *dest,
      return false;
  }
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index c32bb97667..03081be543 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -106,8 +106,6 @@ struct qemu_plugin_insn {
  
--static void plugin_insn_append(vaddr pc, const void *from, size_t size)
--{
--#ifdef CONFIG_PLUGIN
--    struct qemu_plugin_insn *insn = tcg_ctx->plugin_insn;
--    size_t off;
+     /* if set, the instruction calls helpers that might access guest memory */
+     bool mem_helper;
 -
--    if (insn == NULL) {
--        return;
--    }
--    off = pc - insn->vaddr;
--    if (off < insn->data->len) {
--        g_byte_array_set_size(insn->data, off);
--    } else if (off > insn->data->len) {
--        /* we have an unexpected gap */
--        g_assert_not_reached();
--    }
--
--    insn->data = g_byte_array_append(insn->data, from, size);
--#endif
--}
--
- uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
+-    bool mem_only;
+ };
+ 
+ /* A scoreboard is an array of values, indexed by vcpu_index */
+@@ -124,7 +122,6 @@ struct qemu_plugin_tb {
+     uint64_t vaddr2;
+     void *haddr1;
+     void *haddr2;
+-    bool mem_only;
+ 
+     /* if set, the TB calls helpers that might access guest memory */
+     bool mem_helper;
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index be2451be58..a4656859c6 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -303,8 +303,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+     }
+ }
+ 
+-bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
+-                         bool mem_only)
++bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
  {
-     uint8_t raw;
-@@ -434,7 +413,6 @@ uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
-         raw = cpu_ldub_code(env, pc);
-         record_save(db, pc, &raw, sizeof(raw));
-     }
--    plugin_insn_append(pc, &raw, sizeof(raw));
-     return raw;
- }
+     bool ret = false;
  
-@@ -449,7 +427,6 @@ uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
-         raw = tswap16(tgt);
-         record_save(db, pc, &raw, sizeof(raw));
-     }
--    plugin_insn_append(pc, &raw, sizeof(raw));
-     return tgt;
- }
+@@ -323,7 +322,6 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
+         ptb->vaddr2 = -1;
+         ptb->haddr1 = db->host_addr[0];
+         ptb->haddr2 = NULL;
+-        ptb->mem_only = mem_only;
+         ptb->mem_helper = false;
  
-@@ -464,7 +441,6 @@ uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
-         raw = tswap32(tgt);
-         record_save(db, pc, &raw, sizeof(raw));
-     }
--    plugin_insn_append(pc, &raw, sizeof(raw));
-     return tgt;
- }
+         tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 0a1d26b2e8..46483414d2 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -155,7 +155,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     ops->tb_start(db, cpu);
+     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
  
-@@ -479,7 +455,6 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
-         raw = tswap64(tgt);
-         record_save(db, pc, &raw, sizeof(raw));
-     }
--    plugin_insn_append(pc, &raw, sizeof(raw));
-     return tgt;
- }
+-    plugin_enabled = plugin_gen_tb_start(cpu, db, cflags & CF_MEMI_ONLY);
++    plugin_enabled = plugin_gen_tb_start(cpu, db);
+     db->plugin_enabled = plugin_enabled;
  
-@@ -488,5 +463,4 @@ void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8)
-     assert(pc >= db->pc_first);
-     db->fake_insn = true;
-     record_save(db, pc, &insn8, sizeof(insn8));
--    plugin_insn_append(pc, &insn8, sizeof(insn8));
- }
+     while (true) {
 diff --git a/plugins/api.c b/plugins/api.c
-index 4e9125ea29..7b8b7523b3 100644
+index 7b8b7523b3..39895a1cb1 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -43,6 +43,7 @@
- #include "exec/exec-all.h"
- #include "exec/gdbstub.h"
- #include "exec/ram_addr.h"
-+#include "exec/translator.h"
- #include "disas/disas.h"
- #include "plugin.h"
- #ifndef CONFIG_USER_ONLY
-@@ -219,14 +220,15 @@ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx)
- size_t qemu_plugin_insn_data(const struct qemu_plugin_insn *insn,
-                              void *dest, size_t len)
- {
--    len = MIN(len, insn->data->len);
--    memcpy(dest, insn->data->data, len);
--    return len;
-+    const DisasContextBase *db = tcg_ctx->plugin_db;
+@@ -87,12 +87,17 @@ void qemu_plugin_register_vcpu_exit_cb(qemu_plugin_id_t id,
+     plugin_register_cb(id, QEMU_PLUGIN_EV_VCPU_EXIT, cb);
+ }
+ 
++static bool tb_is_mem_only(void)
++{
++    return tb_cflags(tcg_ctx->gen_tb) & CF_MEMI_ONLY;
++}
 +
-+    len = MIN(len, insn->len);
-+    return translator_st(db, dest, insn->vaddr, len) ? len : 0;
- }
- 
- size_t qemu_plugin_insn_size(const struct qemu_plugin_insn *insn)
+ void qemu_plugin_register_vcpu_tb_exec_cb(struct qemu_plugin_tb *tb,
+                                           qemu_plugin_vcpu_udata_cb_t cb,
+                                           enum qemu_plugin_cb_flags flags,
+                                           void *udata)
  {
--    return insn->data->len;
-+    return insn->len;
+-    if (!tb->mem_only) {
++    if (!tb_is_mem_only()) {
+         plugin_register_dyn_cb__udata(&tb->cbs, cb, flags, udata);
+     }
  }
- 
- uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
-@@ -242,7 +244,7 @@ void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
- char *qemu_plugin_insn_disas(const struct qemu_plugin_insn *insn)
+@@ -103,7 +108,7 @@ void qemu_plugin_register_vcpu_tb_exec_inline_per_vcpu(
+     qemu_plugin_u64 entry,
+     uint64_t imm)
  {
-     CPUState *cpu = current_cpu;
--    return plugin_disas(cpu, insn->vaddr, insn->data->len);
-+    return plugin_disas(cpu, insn->vaddr, insn->len);
+-    if (!tb->mem_only) {
++    if (!tb_is_mem_only()) {
+         plugin_register_inline_op_on_entry(&tb->cbs, 0, op, entry, imm);
+     }
  }
- 
- const char *qemu_plugin_insn_symbol(const struct qemu_plugin_insn *insn)
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index d248c52e96..691b2342a2 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -765,8 +765,7 @@ static void alloc_tcg_plugin_context(TCGContext *s)
+@@ -113,7 +118,7 @@ void qemu_plugin_register_vcpu_insn_exec_cb(struct qemu_plugin_insn *insn,
+                                             enum qemu_plugin_cb_flags flags,
+                                             void *udata)
  {
- #ifdef CONFIG_PLUGIN
-     s->plugin_tb = g_new0(struct qemu_plugin_tb, 1);
--    s->plugin_tb->insns =
--        g_ptr_array_new_with_free_func(qemu_plugin_insn_cleanup_fn);
-+    s->plugin_tb->insns = g_ptr_array_new();
- #endif
+-    if (!insn->mem_only) {
++    if (!tb_is_mem_only()) {
+         plugin_register_dyn_cb__udata(&insn->insn_cbs, cb, flags, udata);
+     }
+ }
+@@ -124,7 +129,7 @@ void qemu_plugin_register_vcpu_insn_exec_inline_per_vcpu(
+     qemu_plugin_u64 entry,
+     uint64_t imm)
+ {
+-    if (!insn->mem_only) {
++    if (!tb_is_mem_only()) {
+         plugin_register_inline_op_on_entry(&insn->insn_cbs, 0, op, entry, imm);
+     }
+ }
+@@ -206,7 +211,6 @@ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx)
+         return NULL;
+     }
+     insn = g_ptr_array_index(tb->insns, idx);
+-    insn->mem_only = tb->mem_only;
+     return insn;
  }
  
 -- 
