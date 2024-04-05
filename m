@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044A0899AD6
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2818899AD5
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:29:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsglR-00068Z-K8; Fri, 05 Apr 2024 06:25:43 -0400
+	id 1rsglP-00068D-CP; Fri, 05 Apr 2024 06:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglL-000669-4Q
+ id 1rsglL-00066c-Hm
  for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:35 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
+Received: from mail-oa1-x36.google.com ([2001:4860:4864:20::36])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglJ-0004ng-Jn
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:34 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3c5d940525fso985381b6e.0
+ id 1rsglJ-0004nr-T6
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:35 -0400
+Received: by mail-oa1-x36.google.com with SMTP id
+ 586e51a60fabf-22edcfcd187so111823fac.2
  for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312732; x=1712917532; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312733; x=1712917533; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mQu8+R8TpKFXj2TBf9M0KEgMGt+uMfxKhhpkx/uTdnQ=;
- b=BOxQRMn7kJDyJLP6p4RTyKXT05Weoc9MAJl7fvAHYAc+DJ8N7d5bLS1O8n5fEwzPJK
- YNGnu1WsMN6a6jVce7KgISYf8avMCg2Jxk9fmSkiO7VpUsmegV9bN4HgjHUsTJntsVTf
- LjhqCnjdWHz4ZElaXruRgak6RNfoWnDIqWraZqGz7DwoWnXcSY2Ixg/7AuwwKwErF/e+
- Yp2neAKtYcAIXkEjl6BwgwSWk9Mz7ttf/qmi91aCW9Yy/y5rvP2o3ZuInW/Yx/w/RAJL
- 3i3K71gMPBvF6ukzIgtS9zW5JJ9daoGlGi+Xt7szb7AARUG9wraqlgT9pFn8gY2ECkBq
- BQng==
+ bh=CAOEMFBYb53UUAJdtrKHFH1TzVh5qJKo1U0lXRimkCs=;
+ b=nwPZctgbI5gBLeeHxhrhAnfHLsQ/BjlPVZqptuCi+ixXmrYy5uN7+eVbrKK55SkISf
+ yKJbMcUTL9vKe3DtY3I7s04cXktQr5ZfPOW0Oq5Q1f8kMh2B8FD8zB6gGrOygr9RumK/
+ rALS3XU/lR0HKKuDjDkjjVyA52tsUlL+gBBaOPX4aKFLoGnrg8Wv0wVZwZLr3Jljfozs
+ X4rFw8RQWInTMvo82xHNPJPVfUrC9d5rwIHWCppkjKYf5Bb92TIF8B844T79gXCio/4l
+ k6/035JGJs/haMhhffhQMEPEljK77o+Qv7vabRgDgdyAytoElPVgCO+uSWGbRWXmI/Cw
+ Eltg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312732; x=1712917532;
+ d=1e100.net; s=20230601; t=1712312733; x=1712917533;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mQu8+R8TpKFXj2TBf9M0KEgMGt+uMfxKhhpkx/uTdnQ=;
- b=sDcLUzdn6+Y5xyPdeY1P8581AjLQf2wzP93Lzt8PQJ0FVl8TmnrkRvR7Pm37nQ17a1
- oqV9U6xg1dgmzxo53SvLypeMLqgv2HLmAgZnvK0Ym7KIrBP3gJ0ZBP0D9QFNP/P5SDYS
- X2kY7JmSw6o1IsBMeF/z1ciqgyVeb2/Yk6r84LRSehn1ro0FE4GR9EprBUlscsxb1RvI
- /aZUVN11naec0y7DzRt8HoNqfk/kY5vcilYqXwxLopHfXhjqW1/AFKdH6o0G+BgIjrBT
- yrq596Ip1hMXnckn7BrawTaMFUWH0yfnCGsFkc6iMpSHeJzQVaze5iUnpq48RpSIfCn8
- 4wbw==
-X-Gm-Message-State: AOJu0YwkxCmQyT8IsAbTCmIdNRUpNIR0eoTRlGfMOuf22abapG7wnqnY
- 7C5/MQQie4nDKrZcFvPnsI3wwlnqyDz8m22DytD1RljDn2oPoiWkA2dQ3OupKKPhVycHlQz9RXw
- y
-X-Google-Smtp-Source: AGHT+IEJEKjqSPiv8ZYWN/3rjpng/FXqKaTIpr0+xGY70pucdEf3UP7eVUrroCv30R6i2joJD7QyOQ==
-X-Received: by 2002:a05:6870:6122:b0:22e:b382:8b87 with SMTP id
- s34-20020a056870612200b0022eb3828b87mr1118423oae.41.1712312731384; 
- Fri, 05 Apr 2024 03:25:31 -0700 (PDT)
+ bh=CAOEMFBYb53UUAJdtrKHFH1TzVh5qJKo1U0lXRimkCs=;
+ b=ZebwwOVX3E/cr9YIaLUCmUaoQRAZ6N9FFsiezROLxYRmsINw6XD9ycKEd8jIS/OBQp
+ CFHq+zncYC/4jIKStUg9er76IHz1Wl3+4sAEBU0kYIqZZJoB2e8mxSaAxZee/9sIejwQ
+ H1ueCZqiCS/MCXf6jw5cBct9o+3WH0k/wwrGD0hYXS8xQpbCl34dG9Me3HmbpgpFWWXJ
+ hNvbaBWgVutP13Me0Jn75iCZTeOsgK6oT3QC5RiOblA4tE24MfI1fCEkL5hTZ2hdeh/L
+ tPHH9W2MmOetU0vGIyUlEhxBTDJ/S889g26UXrCmwdcUacZvNogF3G4LPN+cMLb5hIwG
+ utcQ==
+X-Gm-Message-State: AOJu0YxNU6QLvgTn7zchFzKPYJUdJVlM/5AHTsrGUJiF9j9PDwUUcJUY
+ KOgGXBBecG/bC6NX3hBez4CXROEc5N3zzJmRIXWvW8KdBR/276Ob1b03s3fJuI6vf4cBSnp0eB8
+ N
+X-Google-Smtp-Source: AGHT+IF5VZ5h2kIOPl3KO5AmoQt2TKAYqMZPZCUyO1T+iaYa017fQiyBMwVlLo4xHOL5xyXvMis3XA==
+X-Received: by 2002:a05:6871:288b:b0:221:9157:b587 with SMTP id
+ bq11-20020a056871288b00b002219157b587mr1120627oac.35.1712312732747; 
+ Fri, 05 Apr 2024 03:25:32 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.30
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:31 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Brian Cain <bcain@quicinc.com>
-Subject: [PATCH 23/32] target/hexagon: Use translator_ldl in pkt_crosses_page
-Date: Fri,  5 Apr 2024 00:24:50 -1000
-Message-Id: <20240405102459.462551-24-richard.henderson@linaro.org>
+Cc: "Edgar E . Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH 24/32] target/microblaze: Use translator_ldl
+Date: Fri,  5 Apr 2024 00:24:51 -1000
+Message-Id: <20240405102459.462551-25-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::36;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x36.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,32 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: Brian Cain <bcain@quicinc.com>
+Cc: Edgar E. Iglesias <edgar.iglesias@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hexagon/translate.c | 3 +--
+ target/microblaze/translate.c | 3 +--
  1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 1344a3e4ab..37dec8b5c5 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index be3ff76f78..11d84bc514 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
 @@ -24,7 +24,6 @@
+ #include "tcg/tcg-op.h"
  #include "exec/helper-proto.h"
- #include "exec/translation-block.h"
- #include "exec/log.h"
+ #include "exec/helper-gen.h"
 -#include "exec/cpu_ldst.h"
- #include "internal.h"
- #include "attribs.h"
- #include "insn.h"
-@@ -1085,7 +1084,7 @@ static bool pkt_crosses_page(CPUHexagonState *env, DisasContext *ctx)
-     int nwords;
+ #include "exec/translator.h"
+ #include "qemu/qemu-print.h"
  
-     for (nwords = 0; !found_end && nwords < PACKET_WORDS_MAX; nwords++) {
--        uint32_t word = cpu_ldl_code(env,
-+        uint32_t word = translator_ldl(env, &ctx->base,
-                             ctx->base.pc_next + nwords * sizeof(uint32_t));
-         found_end = is_packet_end(word);
+@@ -1640,7 +1639,7 @@ static void mb_tr_translate_insn(DisasContextBase *dcb, CPUState *cs)
+ 
+     dc->tb_flags_to_set = 0;
+ 
+-    ir = cpu_ldl_code(cpu_env(cs), dc->base.pc_next);
++    ir = translator_ldl(cpu_env(cs), &dc->base, dc->base.pc_next);
+     if (!decode(dc, ir)) {
+         trap_illegal(dc, true);
      }
 -- 
 2.34.1
