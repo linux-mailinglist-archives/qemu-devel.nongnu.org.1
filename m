@@ -2,77 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B154899AE4
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C039899AB1
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:26:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsgl8-0005z8-91; Fri, 05 Apr 2024 06:25:22 -0400
+	id 1rsgl9-0005z6-0G; Fri, 05 Apr 2024 06:25:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl0-0005we-PK
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:14 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ id 1rsgl4-0005xk-NJ
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:18 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgkr-0004Ld-IF
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:13 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-5a4f7a648dbso1023493eaf.3
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:03 -0700 (PDT)
+ id 1rsgkr-0004NN-PQ
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:16 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6eced1dab1fso1462824b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312702; x=1712917502; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=R4ePy5ciUd2E+714ofgTRz5T7ulF/BeZ73QAwIvTH+Q=;
- b=eY/GfjLzNOFCG0IM/3t40szXdRZStNxZjiBZKo//zAIRU/Z1HEAqccC1xKlA6i5Ot8
- e0ppEKrv3TU2IV7p23MYU9ZPgUsMFeDga5I5MmfNCg+F5jMvKoQnUfw4/Gez/XzYPipA
- vtB429AhxyDWnvrxeP0w19+Z3HGBpQu96erRJSoSac4UVnllJPwVAKrpK0uHAR3gxzO1
- mcdVCQ77vj7s7TJMMCPapBGtR8QSNeG26WxT/5vQkxusDwUtWZQEfXLsUQ8l85T8QIW2
- 6Rl8cVFlZUlNYgMVyfYl1fQgBnCLYW+TI+znfmFTS3lrHgel8w8WOmDYgTTeYzRfVbGF
- Smkw==
+ d=linaro.org; s=google; t=1712312703; x=1712917503; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=5/CiOSfkjWjMtqqZEcZpCs+EVmjBtCRTaDzPf8PAx+4=;
+ b=lKCaUAuctf+nHu7378RzPh/1SAlRwvQMXUV0od/H2oSoeNuFgFeTIVW/NIHIO6ZYAw
+ 5oiKhjyldyI1NYePL6HvHIy8CFGcie15TGDZ9XjNeOorMTHtYUr2pKBiV+rTAcT1CLdX
+ YGz27eesv9ZOtk/FreWTkajtUPHgsTCa1lzTUofXOvpmRhsQY+2oql6oaAZlH5eSRMhw
+ LZOVAP2P/JAtsl1MctJ9IH1qaszKVCoLC0L+LoFNLEc/dzHWgaoypwmp6Stf8GAHiUaB
+ CIZAQKSt48yqUkZgHmjBUey5NgXt1xqipGYTvdcOw7eTvhuIog4VUnBEtUIba1WoORSj
+ 3SAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312702; x=1712917502;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R4ePy5ciUd2E+714ofgTRz5T7ulF/BeZ73QAwIvTH+Q=;
- b=Rs+x87Q6VJVHz+LStPHcuEwgYDV/Z2D+/chyjro7pUYs5OtiUc+x7s3fjsH29GNrRl
- A7YjUVJB+p1wUYr/Cg64StkOFHnGGu3CLBV+Y8U9/lQA1jbxoFoyh0sOrSmfhZJxoXEo
- k/t1zKjk4D2V3km5RLsrhVJ/OTCnZ0Eur71UpWy/8g3i/dwlbFziCUYmWoNPZwzVXuxG
- X/JzcJBr8y2qSZGsruSof4sZmvdOFfhjDAXZ9HSLJck68lQ/EHaavO/waG1GFWxuQwVN
- wIkL86qIX2nCB1kBl3zQ7g+cB+dkRST13r8nNLNkVECyGydJT8I9wtOScuT3gbvYYoUp
- TLyQ==
-X-Gm-Message-State: AOJu0YyBsS8PW7n2Ro/bUCcTpwIHCTRTx7MqoOVU3s3ktLS8BaIPlAN8
- FT7M8l3Jij57MrxtCVs1uLMscSyVo20tkVjOy+2Xwl6owqsy5fC7VF7CBx1/h0zn5vgtGAApAaf
- I
-X-Google-Smtp-Source: AGHT+IGRXsDf10QxYq0YNg2T47txhP37YmNWsUvZhlGk9RQF61X980Gf0f6zrtIBkZYrXP+RTHq+0w==
-X-Received: by 2002:a05:6358:6e8f:b0:17e:8b5d:c7af with SMTP id
- q15-20020a0563586e8f00b0017e8b5dc7afmr1234191rwm.30.1712312701987; 
- Fri, 05 Apr 2024 03:25:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712312703; x=1712917503;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5/CiOSfkjWjMtqqZEcZpCs+EVmjBtCRTaDzPf8PAx+4=;
+ b=c2lvMC8jpY5U4DxPpwNIdTzoRM2vJnf8Abq7M67OieDI3Sv87gaF0B/vc9hg7rIRLy
+ R4BjYHMn66So/RuDELJU+W3yJOpZFnMigJMiXrcdEScdiMIVin1SrwFMzouUrcT6SDve
+ 0B5eKtbK53k7qJyS7XHR0VXcQxS1Y3tr+srCee6UMDbB67k/ngFuIjyE1mScDM187aZG
+ PqeIy1H30u795ZQnV1tGkDx6dSIcwSyKtCozocT31HN6Q4g3Q5z7bS6qqgIeTeP/GV7d
+ TP4H/7UT/taDXGMbImQfzCc/95RFK5RDqStsicXz2bwkW5Y4f9TImPjVIszBvGUzWP/k
+ dK9Q==
+X-Gm-Message-State: AOJu0YzvhJlE5XnEj4I3GsR2Tjlxd4LsXVW9uoXkMc0rdcDqZwvOl/iN
+ zD8FOgVlremw7LS+9i5B2ivs7c6WDCjV7qAClsdnGWzQhStrTlc52qWbB/q/9wk69QrP08Bde4R
+ Q
+X-Google-Smtp-Source: AGHT+IEbzEmEer5A/ib8fQqfuBxM+UUv/e4tlRgDXaUrGlLduSYgYrTKXzw/+1jr7BSD0FcdWHZIKw==
+X-Received: by 2002:aa7:88d3:0:b0:6e6:970f:a809 with SMTP id
+ k19-20020aa788d3000000b006e6970fa809mr1149843pff.20.1712312703150; 
+ Fri, 05 Apr 2024 03:25:03 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.00
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:01 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:02 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 00/32] accel/tcg: Improve disassembly for target and plugin
-Date: Fri,  5 Apr 2024 00:24:27 -1000
-Message-Id: <20240405102459.462551-1-richard.henderson@linaro.org>
+Subject: [PATCH 01/32] accel/tcg: Use vaddr in translator_ld*
+Date: Fri,  5 Apr 2024 00:24:28 -1000
+Message-Id: <20240405102459.462551-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
+References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,117 +91,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Based-on: 20240404230611.21231-1-richard.henderson@linaro.org
-("[PATCH v2 00/21] Rewrite plugin code generation")
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/exec/translator.h     | 18 +++++++++---------
+ accel/tcg/translator.c        | 15 ++++++++-------
+ target/hexagon/translate.c    |  1 +
+ target/microblaze/translate.c |  1 +
+ target/nios2/translate.c      |  1 +
+ 5 files changed, 20 insertions(+), 16 deletions(-)
 
-While I was trying to debug something the other week, I noticed
-that hppa_cpu_get_phys_page_debug was not using the same cpu state
-as the translator, which meant that the disassembler read from a
-different page than the translator, producing garbage.
-
-I considered several ways to fix the issue, but I thought the
-most effective would be to re-use the host page resolution that
-the translator has already done.
-
-Second, the same mechanism can be used to clean up plugin access
-to each instruction's bytes and disassembly.
-
-Third, the cache used for plugin access to mmio can be used to
-allow s390x execute to disassemble the insn.
-
-Finally, with the change to how plugins capture insn data, we
-can and should use translator_ld* for everything the target wants
-to read during translation.
-
-
-r~
-
-
-Richard Henderson (32):
-  accel/tcg: Use vaddr in translator_ld*
-  accel/tcg: Hide in_same_page outside of a target-specific context
-  accel/tcg: Pass DisasContextBase to translator_fake_ldb
-  accel/tcg: Reorg translator_ld*
-  accel/tcg: Cap the translation block when we encounter mmio
-  accel/tcg: Record mmio bytes during translation
-  accel/tcg: Record when translator_fake_ldb is used
-  accel/tcg: Record DisasContextBase in tcg_ctx for plugins
-  plugins: Copy memory in qemu_plugin_insn_data
-  accel/tcg: Implement translator_st
-  plugins: Use translator_st for qemu_plugin_insn_data
-  plugins: Read mem_only directly from TB cflags
-  plugins: Use DisasContextBase for qemu_plugin_insn_haddr
-  plugins: Use DisasContextBase for qemu_plugin_tb_vaddr
-  plugins: Merge  alloc_tcg_plugin_context into plugin_gen_tb_start
-  accel/tcg: Provide default implementation of disas_log
-  accel/tcg: Return bool from TranslatorOps.disas_log
-  disas: Split disas.c
-  disas: Use translator_st to get disassembly data
-  accel/tcg: Introduce translator_fake_ld
-  target/s390x: Fix translator_fake_ld length
-  target/s390x: Disassemble EXECUTEd instructions
-  target/hexagon: Use translator_ldl in pkt_crosses_page
-  target/microblaze: Use translator_ldl
-  target/i386: Use translator_ldub for everything
-  target/avr: Use translator_ldl
-  target/cris: Use translator_ld* in cris_fetch
-  target/cris: Use cris_fetch in translate_v10.c.inc
-  target/riscv: Use translator_ld* for everything
-  target/rx: Use translator_ld*
-  target/xtensa: Use translator_ldub in xtensa_insn_len
-  target/s390x: Use translator_lduw in get_next_pc
-
- disas/disas-internal.h           |   4 +
- include/disas/disas.h            |   9 +-
- include/exec/plugin-gen.h        |   7 +-
- include/exec/translator.h        |  70 +++++--
- include/qemu/plugin.h            |  22 +-
- include/qemu/qemu-plugin.h       |  15 +-
- include/qemu/typedefs.h          |   1 +
- include/tcg/tcg.h                |   1 +
- accel/tcg/plugin-gen.c           |  63 +++---
- accel/tcg/translator.c           | 331 +++++++++++++++++++-----------
- contrib/plugins/execlog.c        |   5 +-
- contrib/plugins/howvec.c         |   4 +-
- disas/disas-common.c             | 103 ++++++++++
- disas/disas-host.c               | 129 ++++++++++++
- disas/disas-mon.c                |  15 ++
- disas/disas-target.c             |  99 +++++++++
- disas/disas.c                    | 337 -------------------------------
- disas/objdump.c                  |  37 ++++
- plugins/api.c                    |  57 ++++--
- target/alpha/translate.c         |   9 -
- target/arm/tcg/translate-a64.c   |  11 -
- target/arm/tcg/translate.c       |  12 --
- target/avr/translate.c           |  11 +-
- target/cris/translate.c          |  37 +---
- target/hexagon/translate.c       |  11 +-
- target/hppa/translate.c          |  21 +-
- target/i386/tcg/translate.c      |  19 +-
- target/loongarch/tcg/translate.c |   8 -
- target/m68k/translate.c          |   9 -
- target/microblaze/translate.c    |  11 +-
- target/mips/tcg/translate.c      |   9 -
- target/nios2/translate.c         |  10 +-
- target/openrisc/translate.c      |  11 -
- target/ppc/translate.c           |   9 -
- target/riscv/translate.c         |  24 +--
- target/rx/translate.c            |  35 ++--
- target/s390x/tcg/translate.c     |  26 ++-
- target/sh4/translate.c           |   9 -
- target/sparc/translate.c         |   9 -
- target/tricore/translate.c       |   9 -
- target/xtensa/translate.c        |  12 +-
- tcg/tcg.c                        |  12 --
- target/cris/translate_v10.c.inc  |  30 +--
- disas/meson.build                |   8 +-
- 44 files changed, 819 insertions(+), 862 deletions(-)
- create mode 100644 disas/disas-common.c
- create mode 100644 disas/disas-host.c
- create mode 100644 disas/disas-target.c
- delete mode 100644 disas/disas.c
- create mode 100644 disas/objdump.c
-
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 51624feb10..29804de92e 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -19,7 +19,7 @@
+  */
+ 
+ #include "qemu/bswap.h"
+-#include "exec/cpu_ldst.h"	/* for abi_ptr */
++#include "exec/vaddr.h"
+ 
+ /**
+  * gen_intermediate_code
+@@ -180,14 +180,14 @@ bool translator_io_start(DisasContextBase *db);
+  * the relevant information at translation time.
+  */
+ 
+-uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, abi_ptr pc);
+-uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, abi_ptr pc);
+-uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, abi_ptr pc);
+-uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, abi_ptr pc);
++uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc);
++uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc);
++uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc);
++uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc);
+ 
+ static inline uint16_t
+ translator_lduw_swap(CPUArchState *env, DisasContextBase *db,
+-                     abi_ptr pc, bool do_swap)
++                     vaddr pc, bool do_swap)
+ {
+     uint16_t ret = translator_lduw(env, db, pc);
+     if (do_swap) {
+@@ -198,7 +198,7 @@ translator_lduw_swap(CPUArchState *env, DisasContextBase *db,
+ 
+ static inline uint32_t
+ translator_ldl_swap(CPUArchState *env, DisasContextBase *db,
+-                    abi_ptr pc, bool do_swap)
++                    vaddr pc, bool do_swap)
+ {
+     uint32_t ret = translator_ldl(env, db, pc);
+     if (do_swap) {
+@@ -209,7 +209,7 @@ translator_ldl_swap(CPUArchState *env, DisasContextBase *db,
+ 
+ static inline uint64_t
+ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
+-                    abi_ptr pc, bool do_swap)
++                    vaddr pc, bool do_swap)
+ {
+     uint64_t ret = translator_ldq(env, db, pc);
+     if (do_swap) {
+@@ -228,7 +228,7 @@ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
+  * re-synthesised for s390x "ex"). It ensures we update other areas of
+  * the translator with details of the executed instruction.
+  */
+-void translator_fake_ldb(uint8_t insn8, abi_ptr pc);
++void translator_fake_ldb(uint8_t insn8, vaddr pc);
+ 
+ /*
+  * Return whether addr is on the same page as where disassembly started.
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 38c34009a5..9ac0f52b47 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -13,6 +13,7 @@
+ #include "exec/exec-all.h"
+ #include "exec/translator.h"
+ #include "exec/plugin-gen.h"
++#include "exec/cpu_ldst.h"
+ #include "tcg/tcg-op-common.h"
+ #include "internal-target.h"
+ 
+@@ -290,11 +291,11 @@ static void *translator_access(CPUArchState *env, DisasContextBase *db,
+     return host + (pc - base);
+ }
+ 
+-static void plugin_insn_append(abi_ptr pc, const void *from, size_t size)
++static void plugin_insn_append(vaddr pc, const void *from, size_t size)
+ {
+ #ifdef CONFIG_PLUGIN
+     struct qemu_plugin_insn *insn = tcg_ctx->plugin_insn;
+-    abi_ptr off;
++    size_t off;
+ 
+     if (insn == NULL) {
+         return;
+@@ -311,7 +312,7 @@ static void plugin_insn_append(abi_ptr pc, const void *from, size_t size)
+ #endif
+ }
+ 
+-uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
++uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, vaddr pc)
+ {
+     uint8_t ret;
+     void *p = translator_access(env, db, pc, sizeof(ret));
+@@ -325,7 +326,7 @@ uint8_t translator_ldub(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
+     return ret;
+ }
+ 
+-uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
++uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, vaddr pc)
+ {
+     uint16_t ret, plug;
+     void *p = translator_access(env, db, pc, sizeof(ret));
+@@ -340,7 +341,7 @@ uint16_t translator_lduw(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
+     return ret;
+ }
+ 
+-uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
++uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, vaddr pc)
+ {
+     uint32_t ret, plug;
+     void *p = translator_access(env, db, pc, sizeof(ret));
+@@ -355,7 +356,7 @@ uint32_t translator_ldl(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
+     return ret;
+ }
+ 
+-uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
++uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
+ {
+     uint64_t ret, plug;
+     void *p = translator_access(env, db, pc, sizeof(ret));
+@@ -370,7 +371,7 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, abi_ptr pc)
+     return ret;
+ }
+ 
+-void translator_fake_ldb(uint8_t insn8, abi_ptr pc)
++void translator_fake_ldb(uint8_t insn8, vaddr pc)
+ {
+     plugin_insn_append(pc, &insn8, sizeof(insn8));
+ }
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index f163eefe97..c9bf0e7508 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -24,6 +24,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/translation-block.h"
+ #include "exec/log.h"
++#include "exec/cpu_ldst.h"
+ #include "internal.h"
+ #include "attribs.h"
+ #include "insn.h"
+diff --git a/target/microblaze/translate.c b/target/microblaze/translate.c
+index 4e52ef32db..916afd4dec 100644
+--- a/target/microblaze/translate.c
++++ b/target/microblaze/translate.c
+@@ -25,6 +25,7 @@
+ #include "tcg/tcg-op.h"
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
++#include "exec/cpu_ldst.h"
+ #include "exec/translator.h"
+ #include "qemu/qemu-print.h"
+ 
+diff --git a/target/nios2/translate.c b/target/nios2/translate.c
+index 7ddc6ac1a2..9c3958a0ba 100644
+--- a/target/nios2/translate.c
++++ b/target/nios2/translate.c
+@@ -32,6 +32,7 @@
+ #include "exec/translator.h"
+ #include "qemu/qemu-print.h"
+ #include "semihosting/semihost.h"
++#include "exec/cpu_ldst.h"
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
 -- 
 2.34.1
 
