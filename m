@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82E2899ACD
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F04899AB9
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:26:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsglI-00064b-Lb; Fri, 05 Apr 2024 06:25:32 -0400
+	id 1rsglJ-00064y-MZ; Fri, 05 Apr 2024 06:25:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglF-00062o-Bv
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:29 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1rsglG-00064D-KY
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:30 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsglD-0004mT-FK
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:29 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-6ecf9898408so794574b3a.1
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:27 -0700 (PDT)
+ id 1rsglE-0004mf-U1
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:30 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-5a51c063f99so1082841eaf.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312726; x=1712917526; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312727; x=1712917527; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=BSWmY5g0BLOjDo6Xjv7CB1e+gl5EQ0oR0a5drHt964Q=;
- b=GifGIhqnx9Nx8glcn0CrFMCXiKfr9hTJyJRtRzguVbq2/rtL3lO7WM/dCI3Tv/lMPH
- 3Hw0ehkvqUrTaqDf9lPz7T2IIoXIJaAR+ZtdtQqq02x6aD7H/x1jbHhTCGwOV4KeMzhP
- XfN6xI8vTkQUcZa/8yVN0XJU9vgII05hYB4mUkUjwYljeFATrq4Sww6oyHQhgPWiCYLB
- d026ySu3zLfD8n6CEm02xI5RrG2UPf7Vl+JreUDr5MVN+Myjsy6ZN9Kisp0WuZgmuMdv
- 2YlIcxO9oBO/z6/Mrxi8LnMj6Tb7H+ym4KtwPaAD5a07ViQ2yhwup9NyC8ffn/0t0HUo
- 6Yyg==
+ :reply-to; bh=a6JV8BkI+h/EIgitTojmjopF07wjZarQ8yr8avazSrs=;
+ b=g1+66IjN+oahK8dk/uHyOIRdETq2ZR617o8JxOLo9/rorsJwxEu2V7z6Vrg8q9vCjX
+ Qx73O5YJDq+DTdH3mEYuQDcS6spkeuN/Re9iBOZJrDae2dSa7fBte1Idl2/ZO2EPTbCO
+ rCvb+k6uiHAB9pr7Fsr0PjB3yuCb/mogaMgFXmHpLvMekmoaLtmEFWKEchW6UrQF0sbh
+ Cfy66DnJCCeqD7hvosgD61PpA9Zni2ZIILyNTBDYpd/sDjQcOsiChmqPd0QG11DqtM5j
+ rgE37Aw4d2aznDorzCa7VDY8c/aBv1AdV1cONT9Tc7XH5xufc+o0x1Bnd+te91GS5qca
+ 29Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312726; x=1712917526;
+ d=1e100.net; s=20230601; t=1712312727; x=1712917527;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BSWmY5g0BLOjDo6Xjv7CB1e+gl5EQ0oR0a5drHt964Q=;
- b=s4vUM79Ng9hB6fYMT0ICa6G4+hw7O4aI2GdTKsyaxrNwUzntdb7+UtFXmqClLTCscK
- AweUC6ldoEZr5TEplBgD0IEdIggzoG39Up/VOS7R0luqZspgbIwzefc1tTEAZ8p9Z9hU
- B4aljDUrIr573vnGYuPc9b5VJwZxsjf5XkqYvIngbWQZsfmzGMZl6uALflHPwt2WU43S
- 5Q9MFgk3tj2W1IFGalAVR+K2am1AVoMjTzsPNoafMu0rBIHFQygYQcJzo3HAgftVVd/c
- tu/ast6oLtpEyqMHoboVZZS/lbi48CFCsyxm1aq/Upa8xCk4tIR8NuDeD4DutQ+KiXeQ
- 8+WQ==
-X-Gm-Message-State: AOJu0YywoKu0rt9N2f5MhXMtdlsDrDBgBXdnH34CpF2NnTA+hkxch9y1
- ///u9OVAbz3MtE4rqD1+5mg36JN2NbblJmvhZ/3cmdC3Snd327yUsldeRAOoDkuQm3xWjbNJZNt
- t
-X-Google-Smtp-Source: AGHT+IEH/MUO9xGrbe0Mor764rK0S5anHUAITXxzx1MM4CuVtE/OCrDD1sud+ov/GbLBB7Ohh0lSiQ==
-X-Received: by 2002:a05:6a20:7488:b0:1a5:69db:d92b with SMTP id
- p8-20020a056a20748800b001a569dbd92bmr2980850pzd.14.1712312726136; 
- Fri, 05 Apr 2024 03:25:26 -0700 (PDT)
+ bh=a6JV8BkI+h/EIgitTojmjopF07wjZarQ8yr8avazSrs=;
+ b=Dt8tklpjyvnHE29IrnXNcKhGLBlhfVrd+EGgkwn09Tg+t3Yn1s4eM9eIF+XHm2hksC
+ VUxpWipg4uU0LHdMkf7y1Bof2SwdjvJzfJLjA/0HqFqqTQTdMg1Vj6bZaHw3p2akj2bg
+ RltI/R38WmRETMeUdWTCd+G7KbkBTcr+BV4SyvEwzyYnJOkiLvSGxg7514tKbPzbZKMq
+ uqRr5x93QTtpmJCId1ECQLSqIFnmI63hOJfo3O40Wh9dCku3O7v48YTtmc41eWtfiqv5
+ cqrGyz0KlJB1T1QPV4khwpol6A55gXulSY6t3w3m2W9mbGZgejLdpBUToh281Hj6Ost7
+ PG8g==
+X-Gm-Message-State: AOJu0YxqjVs7B2ihgeeqOTZNrhWe3hkykLsBxbcsjHpKzdS01a8Thp1o
+ SU2aBdpB75Fq0Th9epfRZO97M1/42DBQc1d9nm2w90OMyMpOXx3KkzcpaipOo+NqyMDcIUDc51r
+ 6
+X-Google-Smtp-Source: AGHT+IH43nMJGWKtGL2k/hX9hsrLS57PGrRpLwk6sodRDLyMTntBV41lRdDJPM9q16hRJl6KhndICA==
+X-Received: by 2002:a05:6358:d383:b0:183:66a7:b23e with SMTP id
+ mp3-20020a056358d38300b0018366a7b23emr1142438rwb.28.1712312727628; 
+ Fri, 05 Apr 2024 03:25:27 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.25
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:25 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 19/32] disas: Use translator_st to get disassembly data
-Date: Fri,  5 Apr 2024 00:24:46 -1000
-Message-Id: <20240405102459.462551-20-richard.henderson@linaro.org>
+Subject: [PATCH 20/32] accel/tcg: Introduce translator_fake_ld
+Date: Fri,  5 Apr 2024 00:24:47 -1000
+Message-Id: <20240405102459.462551-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
-X-Spam_score_int: 0
-X-Spam_score: -0.1
-X-Spam_bar: /
-X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- PDS_OTHER_BAD_TLD=1.999, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,226 +91,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Read from already translated pages, or saved mmio data.
+Replace translator_fake_ldb, which required multiple calls,
+with translator_fake_ld, which can take all data at once.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/disas/disas.h     |  5 +++--
- include/exec/translator.h |  4 ++--
- include/qemu/typedefs.h   |  1 +
- accel/tcg/translator.c    |  2 +-
- disas/disas-common.c      | 14 --------------
- disas/disas-mon.c         | 15 +++++++++++++++
- disas/disas-target.c      | 19 +++++++++++++++++--
- plugins/api.c             |  4 ++--
- 8 files changed, 41 insertions(+), 23 deletions(-)
+ include/exec/translator.h    | 8 ++++----
+ accel/tcg/translator.c       | 5 ++---
+ target/s390x/tcg/translate.c | 8 ++++----
+ 3 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/include/disas/disas.h b/include/disas/disas.h
-index 54a5e68443..c702b1effc 100644
---- a/include/disas/disas.h
-+++ b/include/disas/disas.h
-@@ -4,14 +4,15 @@
- /* Disassemble this for me please... (debugging). */
- #ifdef CONFIG_TCG
- void disas(FILE *out, const void *code, size_t size);
--void target_disas(FILE *out, CPUState *cpu, uint64_t code, size_t size);
-+void target_disas(FILE *out, CPUState *cpu, const DisasContextBase *db);
- #endif
- 
- void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
-                    int nb_insn, bool is_physical);
- 
- #ifdef CONFIG_PLUGIN
--char *plugin_disas(CPUState *cpu, uint64_t addr, size_t size);
-+char *plugin_disas(CPUState *cpu, const DisasContextBase *db,
-+                   uint64_t addr, size_t size);
- #endif
- 
- /* Look up symbol for debugging purpose.  Returns "" if unknown. */
 diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 6ebe69d25c..777dee0ce2 100644
+index 777dee0ce2..79c2724e96 100644
 --- a/include/exec/translator.h
 +++ b/include/exec/translator.h
-@@ -78,7 +78,7 @@ typedef enum DisasJumpType {
-  *
-  * Architecture-agnostic disassembly context.
-  */
--typedef struct DisasContextBase {
-+struct DisasContextBase {
-     TranslationBlock *tb;
-     vaddr pc_first;
-     vaddr pc_next;
-@@ -102,7 +102,7 @@ typedef struct DisasContextBase {
-     int record_start;
-     int record_len;
-     uint8_t record[32];
--} DisasContextBase;
-+};
- 
- /**
-  * TranslatorOps:
-diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
-index 50c277cf0b..0b3cf3f3ec 100644
---- a/include/qemu/typedefs.h
-+++ b/include/qemu/typedefs.h
-@@ -50,6 +50,7 @@ typedef struct CPUTLBEntryFull CPUTLBEntryFull;
- typedef struct DeviceListener DeviceListener;
- typedef struct DeviceState DeviceState;
- typedef struct DirtyBitmapSnapshot DirtyBitmapSnapshot;
-+typedef struct DisasContextBase DisasContextBase;
- typedef struct DisplayChangeListener DisplayChangeListener;
- typedef struct DriveInfo DriveInfo;
- typedef struct DumpState DumpState;
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 712e0d5c7e..4c1dc57890 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -227,7 +227,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-             if (!ops->disas_log ||
-                 !ops->disas_log(db, cpu, logfile)) {
-                 fprintf(logfile, "IN: %s\n", lookup_symbol(db->pc_first));
--                target_disas(logfile, cpu, db->pc_first, db->tb->size);
-+                target_disas(logfile, cpu, db);
-             }
-             fprintf(logfile, "\n");
-             qemu_log_unlock(logfile);
-diff --git a/disas/disas-common.c b/disas/disas-common.c
-index e4118a381f..e4118e996b 100644
---- a/disas/disas-common.c
-+++ b/disas/disas-common.c
-@@ -7,25 +7,12 @@
- #include "disas/disas.h"
- #include "disas/capstone.h"
- #include "hw/core/cpu.h"
--#include "exec/memory.h"
- #include "disas-internal.h"
- 
- 
- /* Filled in by elfload.c.  Simplistic, but will do for now. */
- struct syminfo *syminfos = NULL;
- 
--/*
-- * Get LENGTH bytes from info's buffer, at target address memaddr.
-- * Transfer them to myaddr.
-- */
--static int target_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
--                              struct disassemble_info *info)
--{
--    CPUDebug *s = container_of(info, CPUDebug, info);
--    int r = cpu_memory_rw_debug(s->cpu, memaddr, myaddr, length, 0);
--    return r ? EIO : 0;
--}
--
- /*
-  * Print an error message.  We can assume that this is in response to
-  * an error return from {host,target}_read_memory.
-@@ -72,7 +59,6 @@ void disas_initialize_debug_target(CPUDebug *s, CPUState *cpu)
-     disas_initialize_debug(s);
- 
-     s->cpu = cpu;
--    s->info.read_memory_func = target_read_memory;
-     s->info.print_address_func = print_address;
-     if (target_words_bigendian()) {
-         s->info.endian = BFD_ENDIAN_BIG;
-diff --git a/disas/disas-mon.c b/disas/disas-mon.c
-index 5d6d9aa02d..37bf16ac79 100644
---- a/disas/disas-mon.c
-+++ b/disas/disas-mon.c
-@@ -11,6 +11,19 @@
- #include "hw/core/cpu.h"
- #include "monitor/monitor.h"
- 
-+/*
-+ * Get LENGTH bytes from info's buffer, at target address memaddr.
-+ * Transfer them to myaddr.
-+ */
-+static int
-+virtual_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
-+                    struct disassemble_info *info)
-+{
-+    CPUDebug *s = container_of(info, CPUDebug, info);
-+    int r = cpu_memory_rw_debug(s->cpu, memaddr, myaddr, length, 0);
-+    return r ? EIO : 0;
-+}
-+
- static int
- physical_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
-                      struct disassemble_info *info)
-@@ -38,6 +51,8 @@ void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
- 
-     if (is_physical) {
-         s.info.read_memory_func = physical_read_memory;
-+    } else {
-+        s.info.read_memory_func = virtual_read_memory;
-     }
-     s.info.buffer_vma = pc;
- 
-diff --git a/disas/disas-target.c b/disas/disas-target.c
-index 82313b2a67..48f3a365dc 100644
---- a/disas/disas-target.c
-+++ b/disas/disas-target.c
-@@ -6,16 +6,28 @@
- #include "qemu/osdep.h"
- #include "disas/disas.h"
- #include "disas/capstone.h"
-+#include "exec/translator.h"
- #include "disas-internal.h"
- 
- 
--void target_disas(FILE *out, CPUState *cpu, uint64_t code, size_t size)
-+static int translator_read_memory(bfd_vma memaddr, bfd_byte *myaddr,
-+                                  int length, struct disassemble_info *info)
- {
-+    const DisasContextBase *db = info->application_data;
-+    return translator_st(db, myaddr, memaddr, length) ? 0 : EIO;
-+}
-+
-+void target_disas(FILE *out, CPUState *cpu, const struct DisasContextBase *db)
-+{
-+    uint64_t code = db->pc_first;
-+    size_t size = translator_st_len(db);
-     uint64_t pc;
-     int count;
-     CPUDebug s;
- 
-     disas_initialize_debug_target(&s, cpu);
-+    s.info.read_memory_func = translator_read_memory;
-+    s.info.application_data = (void *)db;
-     s.info.fprintf_func = fprintf;
-     s.info.stream = out;
-     s.info.buffer_vma = code;
-@@ -58,12 +70,15 @@ static void plugin_print_address(bfd_vma addr, struct disassemble_info *info)
-  * there is left over it usually indicates the front end has read more
-  * bytes than it needed.
-  */
--char *plugin_disas(CPUState *cpu, uint64_t addr, size_t size)
-+char *plugin_disas(CPUState *cpu, const DisasContextBase *db,
-+                   uint64_t addr, size_t size)
- {
-     CPUDebug s;
-     GString *ds = g_string_new(NULL);
- 
-     disas_initialize_debug_target(&s, cpu);
-+    s.info.read_memory_func = translator_read_memory;
-+    s.info.application_data = (void *)db;
-     s.info.fprintf_func = disas_gstring_printf;
-     s.info.stream = (FILE *)ds;  /* abuse this slot */
-     s.info.buffer_vma = addr;
-diff --git a/plugins/api.c b/plugins/api.c
-index 36ab47cdae..c084f335dd 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -271,8 +271,8 @@ void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
- 
- char *qemu_plugin_insn_disas(const struct qemu_plugin_insn *insn)
- {
--    CPUState *cpu = current_cpu;
--    return plugin_disas(cpu, insn->vaddr, insn->len);
-+    return plugin_disas(tcg_ctx->cpu, tcg_ctx->plugin_db,
-+                        insn->vaddr, insn->len);
+@@ -233,17 +233,17 @@ translator_ldq_swap(CPUArchState *env, DisasContextBase *db,
  }
  
- const char *qemu_plugin_insn_symbol(const struct qemu_plugin_insn *insn)
+ /**
+- * translator_fake_ldb - fake instruction load
++ * translator_fake_ld - fake instruction load
+  * @db: Disassembly context
+- * @pc: program counter of instruction
+- * @insn8: byte of instruction
++ * @data: bytes of instruction
++ * @len: number of bytes
+  *
+  * This is a special case helper used where the instruction we are
+  * about to translate comes from somewhere else (e.g. being
+  * re-synthesised for s390x "ex"). It ensures we update other areas of
+  * the translator with details of the executed instruction.
+  */
+-void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8);
++void translator_fake_ld(DisasContextBase *db, const void *data, size_t len);
+ 
+ /**
+  * translator_st
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 4c1dc57890..e84d41b770 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -464,9 +464,8 @@ uint64_t translator_ldq(CPUArchState *env, DisasContextBase *db, vaddr pc)
+     return tgt;
+ }
+ 
+-void translator_fake_ldb(DisasContextBase *db, vaddr pc, uint8_t insn8)
++void translator_fake_ld(DisasContextBase *db, const void *data, size_t len)
+ {
+-    assert(pc >= db->pc_first);
+     db->fake_insn = true;
+-    record_save(db, pc, &insn8, sizeof(insn8));
++    record_save(db, db->pc_first, data, len);
+ }
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index d8c1ad042d..4d308860f3 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -6192,6 +6192,8 @@ static const DisasInsn *extract_insn(CPUS390XState *env, DisasContext *s)
+     const DisasInsn *info;
+ 
+     if (unlikely(s->ex_value)) {
++        uint64_t be_insn;
++
+         /* Drop the EX data now, so that it's clear on exception paths.  */
+         tcg_gen_st_i64(tcg_constant_i64(0), tcg_env,
+                        offsetof(CPUS390XState, ex_value));
+@@ -6201,10 +6203,8 @@ static const DisasInsn *extract_insn(CPUS390XState *env, DisasContext *s)
+         ilen = s->ex_value & 0xf;
+ 
+         /* Register insn bytes with translator so plugins work. */
+-        for (int i = 0; i < ilen; i++) {
+-            uint8_t byte = extract64(insn, 56 - (i * 8), 8);
+-            translator_fake_ldb(&s->base, pc + i, byte);
+-        }
++        be_insn = cpu_to_be64(insn);
++        translator_fake_ld(&s->base, &be_insn, ilen);
+         op = insn >> 56;
+     } else {
+         insn = ld_code2(env, s, pc);
 -- 
 2.34.1
 
