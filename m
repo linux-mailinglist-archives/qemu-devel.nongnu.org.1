@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CABB899AB3
-	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0E5899AD8
+	for <lists+qemu-devel@lfdr.de>; Fri,  5 Apr 2024 12:29:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsglB-000602-S6; Fri, 05 Apr 2024 06:25:25 -0400
+	id 1rsglC-000608-De; Fri, 05 Apr 2024 06:25:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl8-0005zQ-9U
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:22 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1rsgl9-0005zc-B9
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:23 -0400
+Received: from mail-oa1-x2d.google.com ([2001:4860:4864:20::2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsgl6-0004jW-67
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:21 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6ecf3943040so1009219b3a.0
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:19 -0700 (PDT)
+ id 1rsgl7-0004k8-4r
+ for qemu-devel@nongnu.org; Fri, 05 Apr 2024 06:25:22 -0400
+Received: by mail-oa1-x2d.google.com with SMTP id
+ 586e51a60fabf-22edec341c2so90064fac.0
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 03:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712312718; x=1712917518; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712312720; x=1712917520; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Wv67pMXMsVcEOwYDni8f26C2u4kTVwgef8xc6CDT8l8=;
- b=Czz6dgmM+hIGNAkIotrzPIGZjSxxFrN/Krfv7i9ZMt/AmTHDbdgxu4VvArvYFDYe7r
- 6zUXxwsZ34yeAyiakUyKne8BBmRytGMYEeJKdrCYZLIuwwIqmwwX/Rr/f8rIF857IBfC
- k3jScSZBO5TkixQDwWvxKTelcFZtoaUFYisOhyiKtrOKW5KUjEfrVIzypYPYn9iNXHh+
- vdeTJmocWHpKvJmw0PofUvhLxV9G/dnQSv8qhEVlMwHupaufhEts2dzctmpyPyZHJqeo
- noVxisOWhxDVMzVOI+Mh60KIQ0yVMfULk1Obyr/gdyeY4rhYQZ4yNoYrYFVr6LpEPHdC
- 658g==
+ :reply-to; bh=bO7B6oUNG3jW/PSuoPnzK0oY+ojFYCsg6W4mPRZ3c4k=;
+ b=Q7V1F0+JGJD+pR/8/qfqzKpVF1C9sZmbWp6eMtJ+Y9buIo7/vL3XbNvWSm9Jb3Ic2w
+ O2mteVmNKfLfb5FYDUj8H8kuy4zCRiTzgDy6dViYeRYgdz6ZC4jjlVm3OBPNobJOIhWN
+ d85yyVazuIcvqCwDDbGW3xTILhiuhrUS5HP3C9tKN0IhOiLussUdqMCf5hqj42IEFRS+
+ XGPPf1lpN6L3l/hLmP+5lpZ/JXHHp/FmXlPvAqZ4zPq5Nh4f6sWlRhTvnqulZgsQICx/
+ t7Q+pEStV5TlFt7HQ9H5ji/UUu4+rYQKTTg/elz8ey5wsI7DGz/O472b327mj/Ipo8a3
+ 4x7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712312718; x=1712917518;
+ d=1e100.net; s=20230601; t=1712312720; x=1712917520;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Wv67pMXMsVcEOwYDni8f26C2u4kTVwgef8xc6CDT8l8=;
- b=FlTXmzdEc1ocPa24fFDRlC9VLuJk5bDHerC8SBB9q3zjCcN3u10QOE5Op5By7uOAz6
- OAR9gzUZfViPIprZ30E87KlmVk5ZnV8Ljws0cAieRjhfxnhelc2Eob062cHFyChLGCq3
- HoU051nniopj5VIjGHW6HIt6t0AgFrt9LxxWhYKGxXMqCtbsC9vzjxdLo4VP35OE53Q5
- jd+59yIcVa2AkbTDCHoK8hi2iJ+LL466mMOi4xxQ9d6GqDQzj4EjOPUezoKQfN/p36uS
- epm37d84tBcv69/Up/tEy7rfdY0XHdsBvtdkSaW6i+qBNSlkiBpFr6Vcet6PY9E1KJQp
- BH6w==
-X-Gm-Message-State: AOJu0YwGTERjYFB8qjTtWRboWD5KtKmfh5qXYPf67qE63hj9lDk9eh0N
- RhyR6A7rA+Dt2YrBfdOzy09pH7bHrCLEmNx6An2NgAl/asoa3a8oi7TVnYdmT6rBrd2KRlLPqlh
- J
-X-Google-Smtp-Source: AGHT+IECFs1qsqTmYw4HW2un6pD87pgWdBGlL9ZJlhjZaEcFlMGgV+Nagv71QWgRh9IzBokunqaUnQ==
-X-Received: by 2002:a05:6a00:928e:b0:6ea:b7b1:ef26 with SMTP id
- jw14-20020a056a00928e00b006eab7b1ef26mr1131842pfb.26.1712312718530; 
- Fri, 05 Apr 2024 03:25:18 -0700 (PDT)
+ bh=bO7B6oUNG3jW/PSuoPnzK0oY+ojFYCsg6W4mPRZ3c4k=;
+ b=FJs7VYQ67PHA3hF4eg9BLThoDkjbZeVMVFTRkGF8ZNCWkZeXXdXXq4Zl7Emh/VjLtl
+ st+NYOWCo1VKSoz71AiZunjQF2+GfT4SueHHilBtsC7XTJcQqQ5WbojZ5SbnS+dFKuji
+ dl7zmN9Yep28o8O1V+txyqu407XJq/7oI9tH0J9kajvwjfG+I3h1dR/uhSZUpyeHkI6x
+ XYUCTZnA8d4NXA61+B0aeOUTQYwHZZu8OoshOkPIOPe1d2sOYA/El8x/YcdtnbI55jhl
+ liMDzEkNAWJikAB3TFQ3g7wJExS6F2Dz/hmLJrH4ZtyM2Cnr2USqNQfUIzP7gDP4/X08
+ vJTg==
+X-Gm-Message-State: AOJu0Yzy3Wt5WFp3m/Ewe5ZTN0ZZzsSx6ATS9vkyZ2IIZ3EzYAjvA/98
+ 9ZiWa13kgOqMWqNsptoy2TlUZ7XEqd6qpJnEWny5K+iF8bzP0VSXF3TifhC+KvM6ZYJBbij1swN
+ u
+X-Google-Smtp-Source: AGHT+IEP+Z0idPpxfQT3hc8s2bSAJl1tpeflvOvaNx/uzIXEhZElPIfcMpgT3EJndCsA+daipxETlg==
+X-Received: by 2002:a05:6870:4d0a:b0:22e:a0f7:8c36 with SMTP id
+ pn10-20020a0568704d0a00b0022ea0f78c36mr976278oab.16.1712312719818; 
+ Fri, 05 Apr 2024 03:25:19 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.17
+ h10-20020a63f90a000000b005e438fe702dsm1104304pgi.65.2024.04.05.03.25.18
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 03:25:18 -0700 (PDT)
+ Fri, 05 Apr 2024 03:25:19 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 13/32] plugins: Use DisasContextBase for qemu_plugin_insn_haddr
-Date: Fri,  5 Apr 2024 00:24:40 -1000
-Message-Id: <20240405102459.462551-14-richard.henderson@linaro.org>
+Subject: [PATCH 14/32] plugins: Use DisasContextBase for qemu_plugin_tb_vaddr
+Date: Fri,  5 Apr 2024 00:24:41 -1000
+Message-Id: <20240405102459.462551-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240405102459.462551-1-richard.henderson@linaro.org>
 References: <20240405102459.462551-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+Received-SPF: pass client-ip=2001:4860:4864:20::2d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,112 +91,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We can delay the computation of haddr until the plugin
-actually requests it.
+We do not need to separately record the start of the TB.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/plugin.h  |  4 ----
- accel/tcg/plugin-gen.c | 20 --------------------
- plugins/api.c          | 25 ++++++++++++++++++++++++-
- 3 files changed, 24 insertions(+), 25 deletions(-)
+ include/qemu/plugin.h  | 1 -
+ accel/tcg/plugin-gen.c | 3 +--
+ plugins/api.c          | 3 ++-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 03081be543..3db0e75d16 100644
+index 3db0e75d16..340e10ef12 100644
 --- a/include/qemu/plugin.h
 +++ b/include/qemu/plugin.h
-@@ -98,7 +98,6 @@ struct qemu_plugin_dyn_cb {
- /* Internal context for instrumenting an instruction */
- struct qemu_plugin_insn {
-     uint64_t vaddr;
--    void *haddr;
-     GArray *insn_cbs;
-     GArray *mem_cbs;
-     uint8_t len;
-@@ -119,9 +118,6 @@ struct qemu_plugin_tb {
+@@ -117,7 +117,6 @@ struct qemu_plugin_scoreboard {
+ struct qemu_plugin_tb {
      GPtrArray *insns;
      size_t n;
-     uint64_t vaddr;
--    uint64_t vaddr2;
--    void *haddr1;
--    void *haddr2;
+-    uint64_t vaddr;
  
      /* if set, the TB calls helpers that might access guest memory */
      bool mem_helper;
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index a4656859c6..b036773d3c 100644
+index b036773d3c..2c52306f80 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -319,9 +319,6 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
+@@ -188,7 +188,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
+     int insn_idx = -1;
+ 
+     if (unlikely(qemu_loglevel_mask(LOG_TB_OP_PLUGIN)
+-                 && qemu_log_in_addr_range(plugin_tb->vaddr))) {
++                 && qemu_log_in_addr_range(tcg_ctx->plugin_db->pc_first))) {
+         FILE *logfile = qemu_log_trylock();
+         if (logfile) {
+             fprintf(logfile, "OP before plugin injection:\n");
+@@ -318,7 +318,6 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
+ 
          ret = true;
  
-         ptb->vaddr = db->pc_first;
--        ptb->vaddr2 = -1;
--        ptb->haddr1 = db->host_addr[0];
--        ptb->haddr2 = NULL;
+-        ptb->vaddr = db->pc_first;
          ptb->mem_helper = false;
  
          tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
-@@ -363,23 +360,6 @@ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
-     pc = db->pc_next;
-     insn->vaddr = pc;
- 
--    /*
--     * Detect page crossing to get the new host address.
--     * Note that we skip this when haddr1 == NULL, e.g. when we're
--     * fetching instructions from a region not backed by RAM.
--     */
--    if (ptb->haddr1 == NULL) {
--        insn->haddr = NULL;
--    } else if (is_same_page(db, db->pc_next)) {
--        insn->haddr = ptb->haddr1 + pc - ptb->vaddr;
--    } else {
--        if (ptb->vaddr2 == -1) {
--            ptb->vaddr2 = TARGET_PAGE_ALIGN(db->pc_first);
--            get_page_addr_code_hostp(cpu_env(cpu), ptb->vaddr2, &ptb->haddr2);
--        }
--        insn->haddr = ptb->haddr2 + pc - ptb->vaddr2;
--    }
--
-     tcg_gen_plugin_cb(PLUGIN_GEN_FROM_INSN);
- }
- 
 diff --git a/plugins/api.c b/plugins/api.c
-index 39895a1cb1..4b6690c7d6 100644
+index 4b6690c7d6..36ab47cdae 100644
 --- a/plugins/api.c
 +++ b/plugins/api.c
-@@ -242,7 +242,30 @@ uint64_t qemu_plugin_insn_vaddr(const struct qemu_plugin_insn *insn)
+@@ -200,7 +200,8 @@ size_t qemu_plugin_tb_n_insns(const struct qemu_plugin_tb *tb)
  
- void *qemu_plugin_insn_haddr(const struct qemu_plugin_insn *insn)
+ uint64_t qemu_plugin_tb_vaddr(const struct qemu_plugin_tb *tb)
  {
--    return insn->haddr;
+-    return tb->vaddr;
 +    const DisasContextBase *db = tcg_ctx->plugin_db;
-+    vaddr page0_last = db->pc_first | ~TARGET_PAGE_MASK;
-+
-+    if (db->fake_insn) {
-+        return NULL;
-+    }
-+
-+    /*
-+     * ??? The return value is not intended for use of host memory,
-+     * but as a proxy for address space and physical address.
-+     * Thus we are only interested in the first byte and do not
-+     * care about spanning pages.
-+     */
-+    if (insn->vaddr <= page0_last) {
-+        if (db->host_addr[0] == NULL) {
-+            return NULL;
-+        }
-+        return db->host_addr[0] + insn->vaddr - db->pc_first;
-+    } else {
-+        if (db->host_addr[1] == NULL) {
-+            return NULL;
-+        }
-+        return db->host_addr[1] + insn->vaddr - (page0_last + 1);
-+    }
++    return db->pc_first;
  }
  
- char *qemu_plugin_insn_disas(const struct qemu_plugin_insn *insn)
+ struct qemu_plugin_insn *
 -- 
 2.34.1
 
