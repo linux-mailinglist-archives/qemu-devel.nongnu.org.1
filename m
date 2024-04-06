@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B33789ACBF
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 21:32:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CAB789AD8D
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 00:34:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtBkz-00085d-Nq; Sat, 06 Apr 2024 15:31:17 -0400
+	id 1rtEao-0003LZ-BE; Sat, 06 Apr 2024 18:32:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtBkx-00085E-RC
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 15:31:15 -0400
+ id 1rtEam-0003LI-69
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:56 -0400
 Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtBkw-0003w9-55
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 15:31:15 -0400
+ id 1rtEak-0006fD-As
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:55 -0400
 Received: by mail-pj1-x1035.google.com with SMTP id
- 98e67ed59e1d1-29ddfada0d0so2336135a91.3
- for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 12:31:13 -0700 (PDT)
+ 98e67ed59e1d1-2a2d248a2e1so2081586a91.0
+ for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 15:32:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712431872; x=1713036672; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=O25aDOiQ5nxrYfnbZUatCdwGpH0PxjWzG6UWLimr87A=;
- b=PcHIuZ7GMFkQnGjv3/R2XlLHzsoNyaVZVDsZq5TiQEO6azxtPPnzs/iw6K3tF4AFyy
- tSJVbQ8PYWRkAOJ13abQBamSKXldLTX57Cb5xoiqORcPUjMF0+KCG6R9pA+51APwALsl
- 0kXTLX/z+mL1DIQzILU9FDfnxvFt+7ItrKO/wph/xS9BMDDCwVeMef8OI80h3LQFaSmR
- l+1lwlv/XUTM6hzuolT4+a0sBrbUSUxy0Go1F1pSXnrx12B2N+tGqkDqlXE8riV1CqOJ
- vHZJfCfDwqOL1FbV3SrFqqhOBxecoeUlo5erJ0yW7NJiDj1jJ8nTogaHXTe0zVaJPOlB
- Ew7A==
+ d=linaro.org; s=google; t=1712442772; x=1713047572; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=36ZaUeVzVuWegwno9pEm8v7DMzHgHRm99UuSw/pVQC0=;
+ b=bxK+kRaphMMIQW1t+pMtKJjKDW4F4Q8c7Kq2YN4nHv35SQZQ+4vpamRmLaoC9BPjXq
+ CLzi4/h0/KI8diaWyHqzSLIaZs8EvXNAjM7uSeiMPurlGw5cJCAbv7SujfYMZiLbSX/S
+ avDscMOuGvbL6TUcDDwXqdho1ZFrnF3SNSGL6BGXrrvFOGiY9dIuRoYdsf/1bRY1Ug+j
+ MvcJO/ojESHcZKIZPLJ2yygXfx1dThYOCEqW9AUxgNJ0QTb36tx08dAMHSY7pujy6+dl
+ xqwCPAjJMOsyKgDMnhLAH8ozp+lYqd5L4s96EWBaJqv338BvPDxxA2Hjs20+7Z4IIwBh
+ 9PkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712431872; x=1713036672;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=O25aDOiQ5nxrYfnbZUatCdwGpH0PxjWzG6UWLimr87A=;
- b=ZnSSNB4U8MOLMzAD+W5sMmiXJiZ7CRqr4Fl1WJYxUEmeld78TfkgizskxxHsxu7SHq
- VdIfyzOCMszMg2nEItSIo4P1lZ/v0SXQgc9mecwAYs+Q5l0233iBXH54Ek8s3Kq6eLLq
- KaSCIBWSxlQrh5URJjCQ11yqMRbgBZFNB4f//O8cZNtQ88XfqJ5MUGM63Gw0tlvkl7Z6
- 2I+LTjE4owBgET4T48nhzxBdn71wel6UuWDZmfZ5J8KwcrkOThEkT4Mg70hW5qeatjUG
- MncsyT260t3BhhfO8Jvuhj7X3NWKKDe/nsYHLmDZ2F/SV0mobR6T6QZD7HFdhibDhopS
- sbRQ==
-X-Gm-Message-State: AOJu0YytnkpuqLdAJR0vEPs1uibN4K6XUDmB5wYqTeTG5XMhPyoffL+m
- q90LEC8r66kkM6ugn4TOMXAidGkpW67muSfdvEHN64KfxJpFIILDT3SU3+Pgln0=
-X-Google-Smtp-Source: AGHT+IFAX3hU8Vpqs+6Oh3yAUNNkyv5pM0wXjcqrvCaPYt1tqFl5QlZcQDn+k/bZ+ZxnLD8Z2t9UVQ==
-X-Received: by 2002:a17:903:22c1:b0:1e3:e4ff:7054 with SMTP id
- y1-20020a17090322c100b001e3e4ff7054mr1290302plg.38.1712431872090; 
- Sat, 06 Apr 2024 12:31:12 -0700 (PDT)
-Received: from [172.20.1.19] (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ d=1e100.net; s=20230601; t=1712442772; x=1713047572;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=36ZaUeVzVuWegwno9pEm8v7DMzHgHRm99UuSw/pVQC0=;
+ b=hSluVJIaZVHAUBXauGQsWQKO0tJYAxrTOtnZUjGFo6idVwNHuJo9u3E38WQjYtZRMO
+ PZZLH6INp3jwazfSFFEk+u3bLZ4VZODohGiV+UXbmceIiEz1Urh8Llch3Zte/M6vssLR
+ vj12QsNas8hZJq6wovdm008ijM9o3HjlZZrMTeCmQfc2/2DgSFTJcTURozOHAKaN6tpU
+ HpN30mIwd0ICmYyBO7zfwr4SrDpJn8hQ5WKS3hSfFU+PczljGo5B0N3v3FhBAIm7tQM1
+ Q2xJPP2dGEVxtg4kmr3LI8/Y9oTDriXdM2EzlC0UZMzGRMv8g/BnsNaYjRxFsq6BFRNL
+ FwZQ==
+X-Gm-Message-State: AOJu0Yzs1HJyzCnQAPvBkzxdf+it/aywYuK9Fbuj9sa+n0bmqi3ZyETW
+ NQi70evNFG3sdLpTsK9GGl8YA2NB80hJlvQIU1FF6v9aK9Fz8pfq4EGE23jMXCJvs8fmT/gh+Vw
+ F
+X-Google-Smtp-Source: AGHT+IHSLaVBjHa45krFIMqCaQ2KOlRgRmkEJyMSJTwP7R/UFHHN+VgqD0DlRzE5sDPE6Hy6GHWEtw==
+X-Received: by 2002:a17:90b:1b04:b0:2a0:4a82:5b05 with SMTP id
+ nu4-20020a17090b1b0400b002a04a825b05mr8585132pjb.19.1712442772255; 
+ Sat, 06 Apr 2024 15:32:52 -0700 (PDT)
+Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- y4-20020a170902e18400b001e0287592c4sm3746012pla.267.2024.04.06.12.31.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 06 Apr 2024 12:31:11 -0700 (PDT)
-Message-ID: <d7fdb4d2-afab-4379-947c-d8db7c1b2830@linaro.org>
-Date: Sat, 6 Apr 2024 09:31:07 -1000
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] linux-user: replace calloc() with g_new0()
-To: Nguyen Dinh Phi <phind.uet@gmail.com>, Laurent Vivier <laurent@vivier.eu>
-Cc: qemu-devel@nongnu.org
-References: <20240317171747.1642207-1-phind.uet@gmail.com>
-Content-Language: en-US
+ f23-20020a17090ace1700b002a20c0dcebbsm3643279pju.31.2024.04.06.15.32.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 06 Apr 2024 15:32:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240317171747.1642207-1-phind.uet@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+To: qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org, Jorgen.Hansen@wdc.com,
+ Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org
+Subject: [PATCH for-9.0? 0/9] accel/tcg: Fix can_do_io vs 2nd page mmio
+Date: Sat,  6 Apr 2024 12:32:39 -1000
+Message-Id: <20240406223248.502699-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
  envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
@@ -93,34 +91,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/17/24 07:17, Nguyen Dinh Phi wrote:
-> Use glib allocation as recommended by the coding convention
-> 
-> Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-> ---
->   linux-user/main.c | 6 +-----
->   1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/linux-user/main.c b/linux-user/main.c
-> index 9277df2e9d..149e35432e 100644
-> --- a/linux-user/main.c
-> +++ b/linux-user/main.c
-> @@ -928,11 +928,7 @@ int main(int argc, char **argv, char **envp)
->        * Prepare copy of argv vector for target.
->        */
->       target_argc = argc - optind;
-> -    target_argv = calloc(target_argc + 1, sizeof (char *));
-> -    if (target_argv == NULL) {
-> -        (void) fprintf(stderr, "Unable to allocate memory for target_argv\n");
-> -        exit(EXIT_FAILURE);
-> -    }
-> +    target_argv = g_new0(char *, target_argc + 1);
->   
->       /*
->        * If argv0 is specified (using '-0' switch) we replace
+Bug report is
+https://lore.kernel.org/qemu-devel/33748BB7-E617-4661-BDE3-5D29780FC9FF@wdc.com
 
-Queued, thanks.
+Jørgen properly identified the problem, though calling set_can_do_io
+in the middle of translator_access is incorrect.
+
+It forced me to do something that's been in the back of my mind for
+a while and track the insns being emitted so that we can go back and
+insert the proper store to can_do_io after code for the final insn
+has been emitted.
+
+If we decide to take this for 9.0, most of the target changes could
+technically be left for 9.1.  With the exception of i386 and its funky
+case of "pretend we never started translating the current insn".
+But I think the target changes are minor enough to take them anyway.
 
 
 r~
+
+
+Richard Henderson (9):
+  tcg: Add TCGContext.emit_before_op
+  accel/tcg: Add insn_start to DisasContextBase
+  target/arm: Use insn_start from DisasContextBase
+  target/hppa: Use insn_start from DisasContextBase
+  target/i386: Preserve DisasContextBase.insn_start across rewind
+  target/microblaze: Use insn_start from DisasContextBase
+  target/riscv: Use insn_start from DisasContextBase
+  target/s390x: Use insn_start from DisasContextBase
+  accel/tcg: Improve can_do_io management
+
+ include/exec/translator.h      |  4 ++-
+ include/tcg/tcg.h              |  6 +++++
+ target/arm/tcg/translate.h     | 12 ++++-----
+ accel/tcg/translator.c         | 47 ++++++++++++++++++----------------
+ target/arm/tcg/translate-a64.c |  2 +-
+ target/arm/tcg/translate.c     |  2 +-
+ target/hppa/translate.c        | 10 ++++----
+ target/i386/tcg/translate.c    |  3 +++
+ target/microblaze/translate.c  |  8 ++----
+ target/riscv/translate.c       | 11 ++++----
+ target/s390x/tcg/translate.c   |  4 +--
+ tcg/tcg.c                      | 14 ++++++++--
+ 12 files changed, 70 insertions(+), 53 deletions(-)
+
+-- 
+2.34.1
+
 
