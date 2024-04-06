@@ -2,88 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D3789A79A
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 01:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB4389A932
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 07:38:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rst99-0000O0-HW; Fri, 05 Apr 2024 19:38:59 -0400
+	id 1rsykH-0002pg-NK; Sat, 06 Apr 2024 01:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zack@buhman.org>) id 1rst97-0000Nm-QA
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 19:38:57 -0400
-Received: from fout5-smtp.messagingengine.com ([103.168.172.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zack@buhman.org>) id 1rst95-00056A-KS
- for qemu-devel@nongnu.org; Fri, 05 Apr 2024 19:38:57 -0400
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
- by mailfout.nyi.internal (Postfix) with ESMTP id 21FBE1380522;
- Fri,  5 Apr 2024 19:38:54 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute7.internal (MEProxy); Fri, 05 Apr 2024 19:38:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=buhman.org; h=cc
- :cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to; s=fm2; t=1712360334; x=
- 1712446734; bh=JyJaA02OJsx/nB58pukq3CZO30p1iPwHkLUv67ne780=; b=V
- lweo7W3mxweyjbRE82hCo+jbvzVjnPtcasmKd7305UNAKWLt/lfcunExT0Rgiith
- N7UbrfeX1xmfnD+GTVfVNKXr5jn8/3AX6vezpdpIs/2yN3RDn/BeHFn4Fd2oWbyl
- HFd4MMNOLWS48oiU6AqJm6Cd8Mt+xGzHejefxuAXpmar3wzrFCx4w+Cc8VQLCpkQ
- /+g4S4ALhJAw5tef/ssUjg1ufHjFuX514T02TEw4U4pNEoTfqfd5XJvzrKYNxg9p
- Z5CDAY+iC0G5iKvrTXjc5TGMhfHeMpRsGyHhaF6vFTEKTf3pMOevpIDy7bUhp5F7
- gPoLnTt8duQDz+hPa+0Gw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:in-reply-to:message-id:mime-version:references
- :reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
- :x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1712360334; x=
- 1712446734; bh=JyJaA02OJsx/nB58pukq3CZO30p1iPwHkLUv67ne780=; b=u
- otH/Z+2cP9n0JPcVjcPhbn+I8jDXinm0MpwYbEAl1zpKiS8LT/GOJgkjkPDaIlKH
- hUE7v/6Og0sAD1IamIDv8MPKB8BksioprzUUV9xcnpZ+nvsuxn8C5oE3fBHMjxyT
- iTRYmA75Z/aULN7XDcWFHsACBvpJq4fdMJPOfQNy/b3FzlPOHahDqs+9cQex/8Ag
- 6LMvzQE/xLvGt5qKaU3RKnnf2rfhvfnSdRRCcHfja9ArKzuMsE2yzncQq4FCGuit
- gVMF+NybO98WpWMPrqaKBv55rlnN4+gCnYvcTwjRZRS2aq0MfncIFfzYJAnP26f6
- 7cYPYHOk6MYzsHADWtSqA==
-X-ME-Sender: <xms:jYsQZuJUPsA0-vSu1b-pB3OJqKpXr1XvB0Yv07aknJIBgraFSL8Icg>
- <xme:jYsQZmJMG19M0uNpfavDeWfsB2DB8eBNNQ5tFbq1PbJNqtly2lB0gb7NPQT6LvxH2
- XZT0O1cuHefnZ41qu0>
-X-ME-Received: <xmr:jYsQZuvp92JOmx3lp079ZDrqQYSc7AHOvkP_cHWwdvLQYn9XjoserqvIYUpm314-vb61e3ILbDpz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeguddgvdegucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
- ertdertddtnecuhfhrohhmpegkrggtkhcuuehuhhhmrghnuceoiigrtghksegsuhhhmhgr
- nhdrohhrgheqnecuggftrfgrthhtvghrnhepvefhhedtveefvefgieehledtkeegvdefvd
- eftdffteehfeejhfejteeitdfgtdejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
- rghmpehmrghilhhfrhhomhepiigrtghksegsuhhhmhgrnhdrohhrgh
-X-ME-Proxy: <xmx:jYsQZjYnP5PU_z8zKoz2h0KgtwbU4knXjDBTYXLZQqJyNdIfOUZihQ>
- <xmx:jYsQZlb6KaXEm7Y8cJktiCH76ne3Md2t6k936xBlOWSOl7y7dSfyHA>
- <xmx:jYsQZvB29-VCYZjIp6E6TugN5Gw9sMEMSCxPrN-XPzRiGPEhsOHRoA>
- <xmx:jYsQZrbVFnetOEo-nYz6wCaq8NDv5WQmcQ7EV_KwJbk_IJM9gZi8YQ>
- <xmx:josQZozSWdxAus1ZJ04zZgB4HeTdIQJ5psQS05Es0YaLbOUfRRL1Oea8>
-Feedback-ID: i1541475f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 5 Apr 2024 19:38:50 -0400 (EDT)
-From: Zack Buhman <zack@buhman.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rsykF-0002pL-ON
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:39 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rsykD-0006Hz-T6
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:39 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e2a2d5f0b7so21283965ad.1
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 22:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712381856; x=1712986656; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=AfC+CrtVv6s+6WL4tMlOGaII2HG0midNw6Tg7rrdhf8=;
+ b=FKEws2BDh5UWAErZjMbSF7QNs8VuN7W16412Iyxxt0z07YJDJodfQxPRBo8sFH/ecD
+ JPKKcti4dWE/rorOxtpY33JKmd4BhjqbFwPE99SalsEaXADyx8K/0a48msN3VJQ0yqQF
+ /5KCR8ZIZgz0PcUZxhr6iKX4/vaffkuhJoRZ+Vs6OFlfVJEIhmoMWmVIFuOGvkXTFBDu
+ fYYQ3v2LiKVcJaZ4eoiJ1+IVRirB31gX2at3OVoD7U1kwGXYde2INn9gsLI5/RyiNEjm
+ BtpdyhyxH7NS4fgSa1lohk0rqHdYygKopsy2PuC3uwfiyb+QL77+CsHE/jDDkDfjK859
+ JxRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712381856; x=1712986656;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AfC+CrtVv6s+6WL4tMlOGaII2HG0midNw6Tg7rrdhf8=;
+ b=JDiICpKOwf9vInD1QGT2lh5GghVpI2oXHOhY7egdA9BpGsgZ3nrTOrtRt54+UIJpzm
+ GS2stig8DawdR+faKs48+ZMrE5IaHxzFo54U63+6CqKA08oy+zO6S3BsvqEUYQWn/3GT
+ N2YaKcYhB5Pprok/XRe2PIFxNPbO65oQWsxJXusN1XOewbLAnC7zlQDmCdJVe8Vo3alE
+ WyYQP2ac/n9Oe+4K9o6fyjhUWXRZ2AXgNs6ngtwn0cEQL2EpHfX1XqTQ7pgx9jfDWyYP
+ MjI8jDEphsWnV9WsH8RetKnOB4/GE+6bCbDkkyDwVL8X/NmxHN9TQF/qWMRLgAoQNLmj
+ EUUw==
+X-Gm-Message-State: AOJu0YxXp1QA99IScKtAw2ZHddHg80/+kCDKB0CoLzNcyEMx0/yOz+MH
+ r5RMppSuX2iA+9YD5ytXr2aVxGCwkNKtAix5FqZS5dDQhg25a1saaabZYxaUhsYQJyKmSO6YU6y
+ B
+X-Google-Smtp-Source: AGHT+IGHuPH08950rQC5/rrgaxcMqqCPEVbmgrxI3VK+ninRs1JCYvvts9boY7W3/6SZTURWkJ+FGw==
+X-Received: by 2002:a17:902:c40d:b0:1e2:307f:d283 with SMTP id
+ k13-20020a170902c40d00b001e2307fd283mr3558644plk.1.1712381855820; 
+ Fri, 05 Apr 2024 22:37:35 -0700 (PDT)
+Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ by smtp.gmail.com with ESMTPSA id
+ u12-20020a170903124c00b001dc05535632sm2589378plh.170.2024.04.05.22.37.34
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 05 Apr 2024 22:37:35 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org, ysato@users.sourceforge.jp,
- Zack Buhman <zack@buhman.org>
-Subject: [PATCH v2] sh4: mac.w: implement saturation arithmetic logic
-Date: Sat,  6 Apr 2024 07:38:04 +0800
-Message-ID: <20240405233802.29128-3-zack@buhman.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <CAFEAcA93s+=sHFNU0duK8--3GhUg1tZ+n+UhiGeFErJoY5_+jQ@mail.gmail.com>
-References: <CAFEAcA93s+=sHFNU0duK8--3GhUg1tZ+n+UhiGeFErJoY5_+jQ@mail.gmail.com>
+Cc: zack@buhman.org,
+	peter.maydell@linaro.org,
+	ysato@users.sourceforge.jp
+Subject: [PATCH for-9.0 v3 0/4] target/sh4: Fix mac.[lw]
+Date: Fri,  5 Apr 2024 19:37:28 -1000
+Message-Id: <20240406053732.191398-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=103.168.172.148; envelope-from=zack@buhman.org;
- helo=fout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,183 +92,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The saturation arithmetic logic in helper_macw is not correct.
+Zack's recent patches, tidied a little bit, and with
+test cases added.
 
-I tested and verified this behavior on a SH7091, the general pattern
-is a code sequence such as:
+r~
 
-	sets
 
-	mov.l _mach,r2
-	lds r2,mach
-	mov.l _macl,r2
-	lds r2,macl
+Richard Henderson (1):
+  target/sh4: Merge mach and macl into a union
 
-	mova _n,r0
-	mov r0,r1
-	mova _m,r0
-	mac.w @r0+,@r1+
+Zack Buhman (3):
+  target/sh4: mac.w: memory accesses are 16-bit words
+  target/sh4: Fix mac.l with saturation enabled
+  target/sh4: Fix mac.w with saturation enabled
 
- _mach: .long 0xffffffff
- _macl: .long 0xfffffffe
- _m:    .word 0x0002
-        .word 0
- _n:    .word 0x0003
-        .word 0
+ target/sh4/cpu.h              | 14 ++++++--
+ target/sh4/helper.h           |  4 +--
+ target/sh4/op_helper.c        | 51 +++++++++++++++-----------
+ target/sh4/translate.c        |  4 +--
+ tests/tcg/sh4/test-macl.c     | 67 +++++++++++++++++++++++++++++++++++
+ tests/tcg/sh4/test-macw.c     | 61 +++++++++++++++++++++++++++++++
+ tests/tcg/sh4/Makefile.target |  8 +++++
+ 7 files changed, 182 insertions(+), 27 deletions(-)
+ create mode 100644 tests/tcg/sh4/test-macl.c
+ create mode 100644 tests/tcg/sh4/test-macw.c
 
-test 0:
-  (mach should not be modified if an overflow did not occur)
-
-  given, prior to saturation mac.l:
-    mach = 0xffffffff ; macl = 0xfffffffe
-    @r0  = 0x0002     ; @r1  = 0x0003
-
-  expected saturation mac.w result:
-    mach = 0xffffffff (unchanged)
-    macl = 0x00000004
-
-  qemu saturation mac.w result (before this commit):
-    mach = 0x00000001
-    macl = 0x80000000
-
-  In the context of the helper_macw implementation prior to this
-  commit, initially this appears to be a surprising result. This is
-  because (prior to unary negation) the C literal `0x80000000` (due to
-  being outside the range of a `signed int`) is evaluated as an
-  `unsigned int` whereas the literal `1` (due to being inside the
-  range of `signed int`) is evaluated as `signed int`, as in:
-
-    static_assert(1 < -0x80000000 == 1);
-    static_assert(1 < -1 == 0);
-
-  This is because the unary negation of an unsigned int is an
-  unsigned int.
-
-  In other words, if the `res < -0x80000000` comparison used
-  infinite-precision literals, the saturation mac.w result would have
-  been:
-
-    mach = 0x00000000
-    macl = 0x00000004
-
-  Due to this (forgivable) misunderstanding of C literals, the
-  following behavior also occurs:
-
-test 1:
-  (`2 * 3 + 0` is not an overflow)
-
-  given, prior to saturation mac.l:
-    mach = 0x00000000 ; macl = 0x00000000
-    @r0  = 0x0002     ; @r1  = 0x0003
-
-  expected saturation mac.w result:
-    mach = 0x00000000 (unchanged)
-    macl = 0x00000006
-
-  qemu saturation mac.w result (before this commit):
-    mach = 0x00000001
-    macl = 0x80000000
-
-test 2:
-  (mach should not be accumulated in saturation mode)
-  (16-bit operands are sign-extended)
-
-  given, prior to saturation mac.l:
-    mach = 0x12345678 ; macl = 0x7ffffffe
-    @r0  = 0x0002     ; @r1  = 0xfffd
-
-  expected saturation mac.w result:
-    mach = 0x12345678 (unchanged)
-    macl = 0x7ffffff8
-
-  qemu saturation mac.w result (before this commit):
-    mach = 0x00000001
-    macl = 0x7fffffff
-
-test 3:
-  (macl should have the correct saturation value)
-
-  given, prior to saturation mac.l:
-    mach = 0xabcdef12 ; macl = 0x7ffffffa
-    @r0  = 0x0002     ; @r1  = 0x0003
-
-  expected saturation mac.w result:
-    mach = 0x00000001 (overwritten)
-    macl = 0x7fffffff
-
-  qemu saturation mac.w result (before this commit):
-    mach = 0x00000001
-    macl = 0x80000000
-
-All of the above also matches the description of MAC.W as documented
-in cd00147165-sh-4-32-bit-cpu-core-architecture-stmicroelectronics.pdf
-
-Signed-off-by: Zack Buhman <zack@buhman.org>
----
- target/sh4/op_helper.c | 45 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 35 insertions(+), 10 deletions(-)
-
-diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
-index ee16524083..07ff2cf53d 100644
---- a/target/sh4/op_helper.c
-+++ b/target/sh4/op_helper.c
-@@ -187,20 +187,45 @@ void helper_macl(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
- 
- void helper_macw(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
- {
--    int64_t res;
-+    int16_t value0 = (int16_t)arg0;
-+    int16_t value1 = (int16_t)arg1;
-+    int32_t mul = ((int32_t)value0) * ((int32_t)value1);
- 
--    res = ((uint64_t) env->mach << 32) | env->macl;
--    res += (int64_t) (int16_t) arg0 *(int64_t) (int16_t) arg1;
--    env->mach = (res >> 32) & 0xffffffff;
--    env->macl = res & 0xffffffff;
-+    /* Perform 32-bit saturation arithmetic if the S flag is set */
-     if (env->sr & (1u << SR_S)) {
--        if (res < -0x80000000) {
--            env->mach = 1;
--            env->macl = 0x80000000;
--        } else if (res > 0x000000007fffffff) {
-+        const int32_t upper_bound =  ((1u << 31) - 1);
-+        const int32_t lower_bound = -((1u << 31) - 0);
-+
-+        /*
-+         * In saturation arithmetic mode, the accumulator is 32-bit
-+         * with carry. MACH is not considered during the addition
-+         * operation nor the 32-bit saturation logic.
-+         */
-+        int32_t mac = env->macl;
-+        int32_t result;
-+        bool overflow = sadd32_overflow(mac, mul, &result);
-+        if (overflow) {
-+            result = (mac < 0) ? lower_bound : upper_bound;
-+            /* MACH is set to 1 to denote overflow */
-+            env->macl = result;
-             env->mach = 1;
--            env->macl = 0x7fffffff;
-+        } else {
-+            /*
-+             * If there is no overflow, the result is already inside
-+             * the saturation bounds.
-+             *
-+             * If there was no overflow, MACH is unchanged.
-+             */
-+            env->macl = result;
-         }
-+    } else {
-+        /* In non-saturation arithmetic mode, the accumulator is 64-bit */
-+        int64_t mac = (((uint64_t)env->mach) << 32) | env->macl;
-+
-+        /* The carry bit of the 64-bit addition is discarded */
-+        int64_t result = mac + (int64_t)mul;
-+        env->macl = result;
-+        env->mach = result >> 32;
-     }
- }
- 
 -- 
-2.41.0
+2.34.1
 
 
