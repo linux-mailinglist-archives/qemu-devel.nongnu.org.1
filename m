@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D388089A934
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 07:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6933E89AA5C
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 12:37:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsykN-0002ra-H6; Sat, 06 Apr 2024 01:37:47 -0400
+	id 1rt3Ow-0003D3-JR; Sat, 06 Apr 2024 06:35:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsykK-0002qu-Vg
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:44 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rt3Os-0003Ck-6k
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 06:35:54 -0400
+Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsykJ-0006Ij-6y
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:44 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e252f2bf23so25175915ad.2
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 22:37:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rt3Oq-0004uk-KD
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 06:35:53 -0400
+Received: by mail-ej1-x635.google.com with SMTP id
+ a640c23a62f3a-a46a7208eedso422706766b.0
+ for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 03:35:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712381862; x=1712986662; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1712399751; x=1713004551; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BjltTyIUkG4oE0AcOsKz1SbiNuo1Csm0+1nsuSZO9Hk=;
- b=NaAr0+NwTByfYhqBOyloW5DMn5UhJc3ScKGtDmmxIBVQ1i340BsT26oD4NU2pYyUlx
- a5xaVm/ZYPWmza7MkjVTheD/CBsOxWewUK+zixpDGgif3LcUjn4i904Ssk0+GHSuJ0rf
- MXPT6+lFvFfh0jGzjgL16U2/0qzZNiHwFYsytxQwH+z8Ouv7rUMZ4CT1wmjNpmWLyGxw
- HjYJJKiLo5B6fVk6gQCOW2+UcDFQsUhuJT4OkRH/VCF6oT4bnfl1Rp6FaQ7gGs0068ev
- 0aMNF4SrxgIl34NqV6GvZlIyK5u2s99o+TfoDh6oxKHJJ0s9jlWxmcvZu60zIhVXMMgK
- 7Www==
+ bh=UTzEXs39efSP0D1vIf8LgwE3n50e92VC9ryCdX6S+WA=;
+ b=VZHFpj5M+2hg+xuOiJvu0WKInLWxmaHuRRFSCkaXh696LbXyu2bt4E3u0cGIjUn2X5
+ vJrr8t4QNf/tL9Qy2TnbnZeyLy0IRMwjuVlUJCj2N6QFzQ6jjJw7QnJt/2rteKfMalvM
+ zpNcHaaiRVSEXFSHSL4W/W967HT7Asro9emo7CG9pcwo36/LUQnUNjvw8hn5KqKzDy9D
+ 74gOWEE73zaErX5gZbFTkaKyoo2KtA9gWb30Gkvc6pxhG35W2yIIniN4gtIiapW0s6qm
+ M3XRXtO+vHY1F9qZNqHbA9JL/hToHZbh5usQ1BJZ69HL8zzOM2qMDNa270zcTehKakjs
+ B7bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712381862; x=1712986662;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1712399751; x=1713004551;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BjltTyIUkG4oE0AcOsKz1SbiNuo1Csm0+1nsuSZO9Hk=;
- b=ZGW4ZHkNA1TiSq+bLlvPezVFwIxK2CPRG+byfNdUOEtF0LR4bdQxCaLzMbZhvLxfbS
- wxCr4+Hh4G4Byr1DZRcMAzM/uTkKbqx88zF95Ri3oHvp6Pgd90FkFwbKVYTumiJqdLu/
- kQW6bu8gItRoB1Z9JJKKhM9BKoZQ7qFE2l8G1ZRua6849hbD06HhtGSyjRYBx0aFgwUJ
- aAW3smQFair08NVPNMPUDiAO8nsPfdMOlzDhoyFks6G3vF3qT4rJCRPOrwWV0EA18zgZ
- OXDlbs5y2PBFVxr9qk8r9UTkjzYg77e2MJdRmAuuM7EeyQ35wP+mH93PkaHtD9/6Lk3d
- mA/A==
-X-Gm-Message-State: AOJu0YyPnHkAu3CWKjWhiDQ/J3urfVSEegPb9KMpuMt4W4+4iXYH9g+u
- iO9V9mRrSh/AkbMCvWIRitCgPHILBSQccEuiejn91EIU9nzFMdSMt9Qdxratz7kcTOoUMQVBJA+
- V
-X-Google-Smtp-Source: AGHT+IGk218OB+DX0aFez9eZ86FSRtWmOirsEfj4leLTjJD/W36pNmmm1BBxLBWsfS2TlZAhj0YCXg==
-X-Received: by 2002:a17:902:e542:b0:1e0:cdbf:24c2 with SMTP id
- n2-20020a170902e54200b001e0cdbf24c2mr3895820plf.29.1712381861942; 
- Fri, 05 Apr 2024 22:37:41 -0700 (PDT)
-Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
- by smtp.gmail.com with ESMTPSA id
- u12-20020a170903124c00b001dc05535632sm2589378plh.170.2024.04.05.22.37.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 22:37:41 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: zack@buhman.org,
-	peter.maydell@linaro.org,
-	ysato@users.sourceforge.jp
-Subject: [PATCH v3 4/4] target/sh4: Fix mac.w with saturation enabled
-Date: Fri,  5 Apr 2024 19:37:32 -1000
-Message-Id: <20240406053732.191398-5-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240406053732.191398-1-richard.henderson@linaro.org>
-References: <20240406053732.191398-1-richard.henderson@linaro.org>
+ bh=UTzEXs39efSP0D1vIf8LgwE3n50e92VC9ryCdX6S+WA=;
+ b=Oy/qJdXiZ+ixPAbG71YdbUgWwLNCIPVhF1uV1cX82yCcEL0M5XPbsu+RrCatNxs0bC
+ LOsiBce+LwaCUC2k5tbZa4UHHX5DknBuO0HhFT+1opC4gT1ECFVT3tAP+fXDF6QLyici
+ XnYnSjFL+F3TZ85nkxcdvbUDy5NHJokEE2+vjGWioDIWOqoTQpk3tXth5CXKilP3Ha9L
+ 3Ie+w6erDZbBrrUxILG3IPuIfAz9tIAl/fR3P8g34FvYvHDkyOsgyJzgqJyA9fD49zfL
+ Gpkesxw/+moXP2v42xv3nLrP8wl45Rw4EhVBe7ZmT0cW0ixLHsxtOx3t7Iv5sxoRJ4PA
+ jl9w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVkoZmEIQzRhptgLRX3QBaAkMvOqUS73Mpkjo3gN1wnZYBJdzmp6NhURp8t7P/eK1GGr59gVvQ+42iHkjbs/733uzIfVZo=
+X-Gm-Message-State: AOJu0Yy+KhuPgTDXN/ecd2BZ7XfA5HDmBk7qGelg4rVkKHgFPz1XVS5i
+ fSwR8oxPr5wh9JEug4f1Z5bNOx3KMC3vY+ikqU4EbdbIWrBUHMsK
+X-Google-Smtp-Source: AGHT+IGbcRVdg5kMQaFwVbyuLd1okzwpm7IOgExQ3yqwmajrZzwx+/t0cPkPqlZ5tPPZxtOgSNqS/A==
+X-Received: by 2002:a17:906:2488:b0:a46:8daa:436f with SMTP id
+ e8-20020a170906248800b00a468daa436fmr2432052ejb.69.1712399750635; 
+ Sat, 06 Apr 2024 03:35:50 -0700 (PDT)
+Received: from [127.0.0.1] (dynamic-077-013-220-023.77.13.pool.telefonica.de.
+ [77.13.220.23]) by smtp.gmail.com with ESMTPSA id
+ og42-20020a1709071dea00b00a4e657a5f1asm1860284ejc.112.2024.04.06.03.35.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 06 Apr 2024 03:35:50 -0700 (PDT)
+Date: Sat, 06 Apr 2024 10:35:45 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Stefano Stabellini <sstabellini@kernel.org>, xen-devel@lists.xenproject.org,
+ Thomas Huth <thuth@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Anthony Perard <anthony.perard@citrix.com>, Ani Sinha <anisinha@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BRFC_PATCH-for-9=2E1_13/29=5D_hw/i386/pc=3A_Remo?=
+ =?US-ASCII?Q?ve_non-PCI_code_from_pc=5Fsystem=5Ffirmware=5Finit=28=29?=
+In-Reply-To: <20240328155439.58719-14-philmd@linaro.org>
+References: <20240328155439.58719-1-philmd@linaro.org>
+ <20240328155439.58719-14-philmd@linaro.org>
+Message-ID: <857F87E8-3876-4083-A1D0-F867649582A9@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::635;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,159 +102,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zack Buhman <zack@buhman.org>
 
-The saturation arithmetic logic in helper_macw is not correct.
-I tested and verified this behavior on a SH7091.
 
-Signed-off-by: Zack Buhman <zack@buhman.org>
-Message-Id: <20240405233802.29128-3-zack@buhman.org>
-[rth: Reformat helper_macw, add a test case.]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/sh4/helper.h           |  2 +-
- target/sh4/op_helper.c        | 28 +++++++++-------
- tests/tcg/sh4/test-macw.c     | 61 +++++++++++++++++++++++++++++++++++
- tests/tcg/sh4/Makefile.target |  3 ++
- 4 files changed, 82 insertions(+), 12 deletions(-)
- create mode 100644 tests/tcg/sh4/test-macw.c
+Am 28=2E M=C3=A4rz 2024 15:54:21 UTC schrieb "Philippe Mathieu-Daud=C3=A9"=
+ <philmd@linaro=2Eorg>:
+>x86_bios_rom_init() is the single non-PCI-machine call
+>from pc_system_firmware_init()=2E Extract it to the caller=2E
+>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>---
+> hw/i386/pc=2Ec       | 6 +++++-
+> hw/i386/pc_sysfw=2Ec | 5 +----
+> 2 files changed, 6 insertions(+), 5 deletions(-)
+>
+>diff --git a/hw/i386/pc=2Ec b/hw/i386/pc=2Ec
+>index f184808e3e=2E=2E5b96daa414 100644
+>--- a/hw/i386/pc=2Ec
+>+++ b/hw/i386/pc=2Ec
+>@@ -956,7 +956,11 @@ void pc_memory_init(PCMachineState *pcms,
+>     }
+>=20
+>     /* Initialize PC system firmware */
+>-    pc_system_firmware_init(pcms, rom_memory);
+>+    if (pci_enabled) {
+>+        pc_system_firmware_init(pcms, rom_memory);
+>+    } else {
+>+        x86_bios_rom_init(machine, "bios=2Ebin", rom_memory, true);
+>+    }
+>=20
+>     option_rom_mr =3D g_malloc(sizeof(*option_rom_mr));
+>     memory_region_init_ram(option_rom_mr, NULL, "pc=2Erom", PC_ROM_SIZE,
+>diff --git a/hw/i386/pc_sysfw=2Ec b/hw/i386/pc_sysfw=2Ec
+>index 862a082b0a=2E=2E541dcaef71 100644
+>--- a/hw/i386/pc_sysfw=2Ec
+>+++ b/hw/i386/pc_sysfw=2Ec
+>@@ -202,10 +202,7 @@ void pc_system_firmware_init(PCMachineState *pcms,
+>     int i;
+>     BlockBackend *pflash_blk[ARRAY_SIZE(pcms->flash)];
+>=20
+>-    if (!pc_machine_is_pci_enabled(pcms)) {
+>-        x86_bios_rom_init(MACHINE(pcms), "bios=2Ebin", rom_memory, true)=
+;
+>-        return;
+>-    }
+>+    assert(pc_machine_is_pci_enabled(pcms));
 
-diff --git a/target/sh4/helper.h b/target/sh4/helper.h
-index 64056e4a39..29011d3dbb 100644
---- a/target/sh4/helper.h
-+++ b/target/sh4/helper.h
-@@ -12,7 +12,7 @@ DEF_HELPER_1(discard_movcal_backup, void, env)
- DEF_HELPER_2(ocbi, void, env, i32)
- 
- DEF_HELPER_3(macl, void, env, s32, s32)
--DEF_HELPER_3(macw, void, env, i32, i32)
-+DEF_HELPER_3(macw, void, env, s32, s32)
- 
- DEF_HELPER_2(ld_fpscr, void, env, i32)
- 
-diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
-index d0bae0cc00..99394b714c 100644
---- a/target/sh4/op_helper.c
-+++ b/target/sh4/op_helper.c
-@@ -177,22 +177,28 @@ void helper_macl(CPUSH4State *env, int32_t arg0, int32_t arg1)
-     env->mac = res;
- }
- 
--void helper_macw(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
-+void helper_macw(CPUSH4State *env, int32_t arg0, int32_t arg1)
- {
--    int64_t res;
-+    /* Inputs are already sign-extended from 16 bits. */
-+    int32_t mul = arg0 * arg1;
- 
--    res = ((uint64_t) env->mach << 32) | env->macl;
--    res += (int64_t) (int16_t) arg0 *(int64_t) (int16_t) arg1;
--    env->mach = (res >> 32) & 0xffffffff;
--    env->macl = res & 0xffffffff;
-     if (env->sr & (1u << SR_S)) {
--        if (res < -0x80000000) {
-+        /*
-+         * In saturation arithmetic mode, the accumulator is 32-bit
-+         * with carry. MACH is not considered during the addition
-+         * operation nor the 32-bit saturation logic.
-+         */
-+        int32_t res, macl = env->macl;
-+
-+        if (sadd32_overflow(macl, mul, &res)) {
-+            res = macl < 0 ? INT32_MIN : INT32_MAX;
-+            /* If overflow occurs, the MACH register is set to 1. */
-             env->mach = 1;
--            env->macl = 0x80000000;
--        } else if (res > 0x000000007fffffff) {
--            env->mach = 1;
--            env->macl = 0x7fffffff;
-         }
-+        env->macl = res;
-+    } else {
-+        /* In non-saturation arithmetic mode, the accumulator is 64-bit */
-+        env->mac += mul;
-     }
- }
- 
-diff --git a/tests/tcg/sh4/test-macw.c b/tests/tcg/sh4/test-macw.c
-new file mode 100644
-index 0000000000..4eceec8634
---- /dev/null
-+++ b/tests/tcg/sh4/test-macw.c
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#include <stdint.h>
-+#include <stdlib.h>
-+#include <stdio.h>
-+
-+int64_t mac_w(int64_t mac, const int16_t *a, const int16_t *b)
-+{
-+    register uint32_t macl __asm__("macl") = mac;
-+    register uint32_t mach __asm__("mach") = mac >> 32;
-+
-+    asm volatile("mac.w @%0+,@%1+"
-+                 : "+r"(a), "+r"(b), "+x"(macl), "+x"(mach));
-+
-+    return ((uint64_t)mach << 32) | macl;
-+}
-+
-+typedef struct {
-+    int64_t mac;
-+    int16_t a, b;
-+    int64_t res[2];
-+} Test;
-+
-+__attribute__((noinline))
-+void test(const Test *t, int sat)
-+{
-+    int64_t res;
-+
-+    if (sat) {
-+        asm volatile("sets");
-+    } else {
-+        asm volatile("clrs");
-+    }
-+    res = mac_w(t->mac, &t->a, &t->b);
-+
-+    if (res != t->res[sat]) {
-+        fprintf(stderr, "%#llx + (%#x * %#x) = %#llx -- got %#llx\n",
-+                t->mac, t->a, t->b, t->res[sat], res);
-+        abort();
-+    }
-+}
-+
-+int main()
-+{
-+    static const Test tests[] = {
-+        { 0, 2, 3, { 6, 6 } },
-+        { 0x123456787ffffffell, 2, -3,
-+          { 0x123456787ffffff8ll, 0x123456787ffffff8ll } },
-+        { 0xabcdef127ffffffall, 2, 3,
-+          { 0xabcdef1280000000ll, 0x000000017fffffffll } },
-+        { 0xfffffffffll, INT16_MAX, INT16_MAX,
-+          { 0x103fff0000ll, 0xf3fff0000ll } },
-+    };
-+
-+    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); ++i) {
-+        for (int j = 0; j < 2; ++j) {
-+            test(&tests[i], j);
-+        }
-+    }
-+    return 0;
-+}
-diff --git a/tests/tcg/sh4/Makefile.target b/tests/tcg/sh4/Makefile.target
-index 9a11c10924..4d09291c0c 100644
---- a/tests/tcg/sh4/Makefile.target
-+++ b/tests/tcg/sh4/Makefile.target
-@@ -14,3 +14,6 @@ VPATH += $(SRC_PATH)/tests/tcg/sh4
- 
- test-macl: CFLAGS += -O -g
- TESTS += test-macl
-+
-+test-macw: CFLAGS += -O -g
-+TESTS += test-macw
--- 
-2.34.1
+AFAICS nothing refers to pci in the whole file any longer=2E The only reas=
+on for checking pci_enabled before seems for filtering out the x86_bios_rom=
+_init() case=2E This has been moved to the caller=2E Can we thus drop the a=
+ssert? This allows for further removal of code in this patch and avoids sup=
+erficial barriers for reusing this code=2E Or do I miss something?
 
+Anyway, this patch looks like good material on its own and could be tagged=
+ independently=2E
+
+With dropping the assert considered:
+Reviewed-by: Bernhard Beschow <shentey@gmail=2Ecom>
+
+>=20
+>     /* Map legacy -drive if=3Dpflash to machine properties */
+>     for (i =3D 0; i < ARRAY_SIZE(pcms->flash); i++) {
 
