@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B69E89AD8C
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 00:34:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A4189AD92
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 00:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtEat-0003N9-0Z; Sat, 06 Apr 2024 18:33:03 -0400
+	id 1rtEav-0003Ns-NP; Sat, 06 Apr 2024 18:33:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtEar-0003Mk-Ld
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:33:01 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ id 1rtEat-0003NQ-Cm
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:33:03 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtEaq-0006gY-1o
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:33:01 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1e2178b2cf2so30600875ad.0
- for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 15:32:59 -0700 (PDT)
+ id 1rtEar-0006hI-Qi
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:33:03 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5d3907ff128so2806936a12.3
+ for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 15:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712442778; x=1713047578; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712442780; x=1713047580; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+n5c7Yxg8Vn5seTMJXxw9ptGbTW4ezPBKl3xezctxZM=;
- b=s/cUR2YeZate0zQhDZYSpxe9C8JimrO0ZJzCgJysH3RG2Dc2fv8TeTwzkVa4fwQsXL
- S+kYg3LSA7onYadCxEOiJOITKVU6Y5k/XwQ676F8eVSLezR+gHTUJ0/0zjxxKmUpLOd1
- AKTlwW7VbNNuWl23l4XSQkdEYKqT7AJTO5J+OcPOD40QBrEcJnEkBpXGv5QedyX+pxOK
- yk+FOY1KYrRYiwfNhlifrsVVSBBQb90HjljF61hCJ5Wv22kNCsJ08j8j0awTdlCTLDjQ
- 7vBDTt/rl0QOLzzQfKmSQ2NEH37855mzsGW+oQgZroWTQetc2++h1XcOvje1Fcxsg9UE
- JD2A==
+ bh=huPDBBhYc/g4B/wyxsCiRcrglSPPFxdW6/Rpm03HcSo=;
+ b=kONFEQ4y5iwAb3rt2Q6Wlc18pqdSqTPWD/QcIz6ichYzohOijEdcwPfOoOWqSqSQMl
+ RlsW6H5yST21p9U8/+6+JMqJEbQMx4ZLUXqGDNlElpqym1ic4OFGBn8tjPk7VVlPouL1
+ AOdcT0yynzL2x3EKH8IfibXSPkeRKbhUuVneCkn+bOXro9zDHnDjq8SotaCgKIPjmCQH
+ LDk/dBbl0HSqN1Zi86qRKXVptsRLRMLROenqrgdhrOH1+/Hca78nwIJfC4v5X8Xse2Wn
+ GQpbYHHzYuWngzv1NaoyysbLHgl8UYPLJyRw2fqKZGKbi2gq276fo6SuOeRrD6YZTrOp
+ 9LrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712442778; x=1713047578;
+ d=1e100.net; s=20230601; t=1712442780; x=1713047580;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+n5c7Yxg8Vn5seTMJXxw9ptGbTW4ezPBKl3xezctxZM=;
- b=sgZJTabVoE1aZ9UiSpimaUB5COrl1hQpYIoEeckSSW5sDOya265lG3bjlV3bPhYGWH
- G8C/SICVIyITGE22+dt0abDP0zuUfquEj7zealcB9G0QvidKKhP4cnTNk+PA9XqG8Rog
- dYix10DzHjNzYjS2Pdp3bnDcLzNzkD7mXkm5wxvWot7LfGu5EAbaiPaWoawOClIi+yPq
- 9fPoVFB6EiiEEhOkhhf3wuno8c5MHorev9FY+gFjSgH+kiWouPEY3/Am59ASvoKnN77s
- X3jwnS1orutujUjd4lX0arcy49bCkCnu92JjxVRAvEL5Bj9kGVVLHXrVmFjmDQiJbfml
- AEPA==
-X-Gm-Message-State: AOJu0YyTbzB6vw6g//BZNcDG5omf87zUIpr1hq9IRvUDox/Nz5/LB49b
- laVoCWdHBeYsXTSDlFFd6pC1l2AEFXzUmFQMKUQcOtjhpYtS9BbQLXF8qbgt9CG6gKEYjNhZZT/
- 7
-X-Google-Smtp-Source: AGHT+IECsFtB+N+jqMU1g/THG5NcNWkWpYs1ZikTHMVxfD9Jpit6UqTKaKaRMDwwebgxM6ymSwRFeQ==
-X-Received: by 2002:a17:902:efce:b0:1e0:983c:d686 with SMTP id
- ja14-20020a170902efce00b001e0983cd686mr4702554plb.20.1712442778661; 
- Sat, 06 Apr 2024 15:32:58 -0700 (PDT)
+ bh=huPDBBhYc/g4B/wyxsCiRcrglSPPFxdW6/Rpm03HcSo=;
+ b=a0uP4XkJtG7kYbK9cutxDLtN9cl37FOqCb9lZAakZUH3ms2BpsnS4Jo87W2Svkud6M
+ MDzqp8l9RjQ+BPzle4QlABGPxkYQdaN43rIIFmH81DDpInoFF+h8vvSSQHgfv5NmxDi+
+ l2UdQjum6r/BcqQc+vNePI8g1twl7wiJfYQW+zHu/8076KIs0NTf18Iy5SfA22YGlRtD
+ JQo8tA32FZ/hplsF0EvcmB+EJKQ6uNp60H5ZPQVnQ4MpL+YJHY3ttsYrNqgtlAd8rl+y
+ mCknvlGD+jTom+nEScn+UN9UUFEhW7jMKeCPfCri4ww2Z6DX2tgCSso7WTerJQ2PQUEf
+ FPHA==
+X-Gm-Message-State: AOJu0YxQmlCDeY0BG0rVcCZ85OxFemj0y7Ns5XjhjP/zk3fAQyt3Yq0W
+ z8OPLnr8KIkvqGECVL7+uWjCNJCp8OjEHZECqZjZjS63KtOWkwzgWpp+3+l09sqsbB8NMP+OGYa
+ L
+X-Google-Smtp-Source: AGHT+IGEa0Av52jCbBtMbWWy9iMQU8BOTXVPB447WkmKSEkAq9y1mG0gRgVU8ut5HYzGH/9FPhpsNw==
+X-Received: by 2002:a05:6a20:5518:b0:1a7:5b43:326d with SMTP id
+ ko24-20020a056a20551800b001a75b43326dmr426867pzb.22.1712442780564; 
+ Sat, 06 Apr 2024 15:33:00 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- f23-20020a17090ace1700b002a20c0dcebbsm3643279pju.31.2024.04.06.15.32.57
+ f23-20020a17090ace1700b002a20c0dcebbsm3643279pju.31.2024.04.06.15.32.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Apr 2024 15:32:58 -0700 (PDT)
+ Sat, 06 Apr 2024 15:33:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Jorgen.Hansen@wdc.com,
  Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org
-Subject: [PATCH 4/9] target/hppa: Use insn_start from DisasContextBase
-Date: Sat,  6 Apr 2024 12:32:43 -1000
-Message-Id: <20240406223248.502699-5-richard.henderson@linaro.org>
+Subject: [PATCH 5/9] target/i386: Preserve DisasContextBase.insn_start across
+ rewind
+Date: Sat,  6 Apr 2024 12:32:44 -1000
+Message-Id: <20240406223248.502699-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240406223248.502699-1-richard.henderson@linaro.org>
 References: <20240406223248.502699-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,56 +94,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To keep the multiple update check, replace insn_start
-with insn_start_updated.
+When aborting translation of the current insn, restore the
+previous value of insn_start.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/i386/tcg/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8a1a8bc3aa..42fa480950 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -44,7 +44,6 @@ typedef struct DisasCond {
- typedef struct DisasContext {
-     DisasContextBase base;
-     CPUState *cs;
--    TCGOp *insn_start;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 07f642dc9e..76a42c679c 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -139,6 +139,7 @@ typedef struct DisasContext {
+     TCGv_i64 tmp1_i64;
  
-     uint64_t iaoq_f;
-     uint64_t iaoq_b;
-@@ -62,6 +61,7 @@ typedef struct DisasContext {
-     int privilege;
-     bool psw_n_nonzero;
-     bool is_pa20;
-+    bool insn_start_updated;
+     sigjmp_buf jmpbuf;
++    TCGOp *prev_insn_start;
+     TCGOp *prev_insn_end;
+ } DisasContext;
  
- #ifdef CONFIG_USER_ONLY
-     MemOp unalign;
-@@ -300,9 +300,9 @@ void hppa_translate_init(void)
+@@ -3123,6 +3124,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         /* END TODO */
+         s->base.num_insns--;
+         tcg_remove_ops_after(s->prev_insn_end);
++        s->base.insn_start = s->prev_insn_start;
+         s->base.is_jmp = DISAS_TOO_MANY;
+         return false;
+     default:
+@@ -6995,6 +6997,7 @@ static void i386_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     target_ulong pc_arg = dc->base.pc_next;
  
- static void set_insn_breg(DisasContext *ctx, int breg)
- {
--    assert(ctx->insn_start != NULL);
--    tcg_set_insn_start_param(ctx->insn_start, 2, breg);
--    ctx->insn_start = NULL;
-+    assert(!ctx->insn_start_updated);
-+    ctx->insn_start_updated = true;
-+    tcg_set_insn_start_param(ctx->base.insn_start, 2, breg);
- }
- 
- static DisasCond cond_make_f(void)
-@@ -4694,7 +4694,7 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
-     tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b, 0);
--    ctx->insn_start = tcg_last_op();
-+    ctx->insn_start_updated = false;
- }
- 
- static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
++    dc->prev_insn_start = dc->base.insn_start;
+     dc->prev_insn_end = tcg_last_op();
+     if (tb_cflags(dcbase->tb) & CF_PCREL) {
+         pc_arg &= ~TARGET_PAGE_MASK;
 -- 
 2.34.1
 
