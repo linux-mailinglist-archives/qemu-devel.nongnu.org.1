@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BA289AD93
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 00:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DFA289AD91
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 00:34:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtEap-0003M2-Ur; Sat, 06 Apr 2024 18:33:00 -0400
+	id 1rtEaq-0003M6-Io; Sat, 06 Apr 2024 18:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtEan-0003LQ-1U
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:57 -0400
-Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
+ id 1rtEao-0003Lo-EE
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:58 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtEal-0006fI-Ft
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:56 -0400
-Received: by mail-pf1-x433.google.com with SMTP id
- d2e1a72fcca58-6ed2170d89fso88444b3a.1
- for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 15:32:55 -0700 (PDT)
+ id 1rtEam-0006fN-Uv
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 18:32:58 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2a2f6da024eso1848124a91.3
+ for <qemu-devel@nongnu.org>; Sat, 06 Apr 2024 15:32:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712442774; x=1713047574; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712442775; x=1713047575; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uK1v+EiguMoYRGbIEG8BvH+kU+PSbAC8gTglH1oJQN4=;
- b=C4JMonpkumYVHLLy8PcAPHvlDkFbTuu4KReUjuHM2x06qsvQLQReyP2pHiBICV6V/w
- RSx2WE+ys6JuTFmPSmtlSKkRD163f/lSRLXSlB4XiinVyc0Tmeea3VZhbeGNL8DYNty0
- E+dOIQAq1Qx+w3mEa/i1MDPc//ebfMlDCKYrb7MDXmEwzpVYrJCVgozaPWHSKfocRqm0
- l98y7VQeTkfsHq9s1h2UeWkho5QfRUl/wL8nrWzqo9om0YyNUuNSA6btyK2jSs2q2V28
- EhTkyPcflkatkt6mElHp6rfTxj/6ql4THy3qKJ+rEHkyO6BUkPPZqyZyGvV1mqvFZ49I
- A1OQ==
+ bh=2L2/prB0ux2ctNxoqiiUKt6ospzwwfXyvGcwqxEj/VU=;
+ b=TnslF/4kyHI0TtRj0726QWUwk3l01jJsj8h34GOmnf5CnnKzS2CMGc2MHA2FxhVDu6
+ ZqVR3TQgpCv3S0yNXlcpm5QeBQRQGYLC484TVjkZ+ONuGdjPZUJP2AiWUYX1ZcPrvaFG
+ D63qawqB+lxsUn/cXhqjqzwMjNRid1YOgCtu8RWvFInWAMA+UR0zlurzUvpvVv6N6B7W
+ LmDgXQxlrkzynOin5kllDW+8bKqZ/kI7nTp9/NHyIRltHzbKw5ZaJJGcw8hJips3lPne
+ GLYtUm+jv806kak7KML9a38iyVS2kQb5Z4IKOEOyGHiKgNfpiEPQnzxnunznouuC0ojH
+ Q6jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712442774; x=1713047574;
+ d=1e100.net; s=20230601; t=1712442775; x=1713047575;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uK1v+EiguMoYRGbIEG8BvH+kU+PSbAC8gTglH1oJQN4=;
- b=KLMZu4XQkqXqWTyyIG3h6AChobt9GqVq35g/ovZNMwl4HU4FRDnz35PtWfQ4w7snGv
- ZCbUPTf7w6Qk+TU0c+vkSKRF6ZKbNjPDj2irYJcHPTCoqOGI0wiIgGCj7xBmqn84YY4f
- dfFPjKy5ouZUmyv5h3I+QpvnlDJjHzXyRKAwMyaegXQ5I58J7N5GcRUnhXVXMybc6TkQ
- 7h0YkG7Y2hinDfqS17CiIXvrf518jYjrsUj9xLuXASJXEHyCm7JL1pRTyfOQbGjOE+kW
- 0kYBO5Jz5n3OowMCk1iXyoi6lodo/x+hpPzVNuWWr5can6JMxUm6KsfJq/TZaJ603ccd
- k10w==
-X-Gm-Message-State: AOJu0Yy7uAKwb8dsO9U8QMKSc25g55Q7msu0fG1nYQkXfmNxSkDodwPY
- evobkhVFW75t6I+Wnh6MLTQOxjODaYaEriwZhZwsS8qPxFbbSaNKouAz+rV4RToN8UCrEofkK9O
- 5
-X-Google-Smtp-Source: AGHT+IH4KHGnntIWZ+1epoLd26bxOo7aYk4QCzq7PsjdzeFlPnpZnPzhBgELI5mCBj3KEO86RynA+g==
-X-Received: by 2002:a17:90a:f683:b0:2a4:b04b:d204 with SMTP id
- cl3-20020a17090af68300b002a4b04bd204mr2799489pjb.7.1712442773854; 
- Sat, 06 Apr 2024 15:32:53 -0700 (PDT)
+ bh=2L2/prB0ux2ctNxoqiiUKt6ospzwwfXyvGcwqxEj/VU=;
+ b=DCyuKlhxaKcC/yAL5VrLbKP0Rq0150R2uMR/dIC/eNFIIISw2cSrJgRCuFmFpUtkeb
+ Lh8Kc7RDayNf5zzv4U5bU8OOskl79fF3gAgaYXjMknPw77eZf50KLon6UoKZZcnzhfcb
+ 0Cz9WrAVAv2y2SC86qKu0rON8LpDtD4TrVVupE109Za0V45utsty/tpLR97ANBTuP/6K
+ IFBB32XOflK6cEhq/jwTooQHwjt5u/3dye65f2MeqwwWQUR1Bsg/Pt3htecYAXLYtBAv
+ e8SVk6MgHwUlXs93u4+msChvKSM7hzjHFpITUs2sBajUPuixSK5cakeZR1Apr6JAlUsf
+ 2ldA==
+X-Gm-Message-State: AOJu0Yy0XC8aItKtlwdcdNKp6KAd4PERYGooj4cpr8ugzh2gYE7xbo50
+ HGYHVFBiHtbhnhUMOHWveRc8r47MciTRHAkTEURIwI0cZZHmxw4dssTs3AriMJlYZyHMm7Gea0Y
+ f
+X-Google-Smtp-Source: AGHT+IGDChcSyXOe/krl7Jt6OrrMbxdy1DnpqVL6nLsJh1dU/15hj84F26u8LD5cGAiYd07pEisvFA==
+X-Received: by 2002:a17:90a:df10:b0:2a2:9b12:da04 with SMTP id
+ gp16-20020a17090adf1000b002a29b12da04mr3882477pjb.3.1712442775469; 
+ Sat, 06 Apr 2024 15:32:55 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- f23-20020a17090ace1700b002a20c0dcebbsm3643279pju.31.2024.04.06.15.32.52
+ f23-20020a17090ace1700b002a20c0dcebbsm3643279pju.31.2024.04.06.15.32.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 06 Apr 2024 15:32:53 -0700 (PDT)
+ Sat, 06 Apr 2024 15:32:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: peter.maydell@linaro.org, Jorgen.Hansen@wdc.com,
- Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org,
- Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH 1/9] tcg: Add TCGContext.emit_before_op
-Date: Sat,  6 Apr 2024 12:32:40 -1000
-Message-Id: <20240406223248.502699-2-richard.henderson@linaro.org>
+ Jonathan.Cameron@huawei.com, linux-cxl@vger.kernel.org
+Subject: [PATCH 2/9] accel/tcg: Add insn_start to DisasContextBase
+Date: Sat,  6 Apr 2024 12:32:41 -1000
+Message-Id: <20240406223248.502699-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240406223248.502699-1-richard.henderson@linaro.org>
 References: <20240406223248.502699-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,72 +93,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow operations to be emitted via normal expanders
-into the middle of the opcode stream.
+This is currently target-specific for many; begin making it
+target independent.
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |  6 ++++++
- tcg/tcg.c         | 14 ++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ include/exec/translator.h | 3 +++
+ accel/tcg/translator.c    | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 451f3fec41..05a1912f8a 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -553,6 +553,12 @@ struct TCGContext {
-     QTAILQ_HEAD(, TCGOp) ops, free_ops;
-     QSIMPLEQ_HEAD(, TCGLabel) labels;
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 51624feb10..ceaeca8c91 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -74,6 +74,8 @@ typedef enum DisasJumpType {
+  * @singlestep_enabled: "Hardware" single stepping enabled.
+  * @saved_can_do_io: Known value of cpu->neg.can_do_io, or -1 for unknown.
+  * @plugin_enabled: TCG plugin enabled in this TB.
++ * @insn_start: The last op emitted by the insn_start hook,
++ *              which is expected to be INDEX_op_insn_start.
+  *
+  * Architecture-agnostic disassembly context.
+  */
+@@ -87,6 +89,7 @@ typedef struct DisasContextBase {
+     bool singlestep_enabled;
+     int8_t saved_can_do_io;
+     bool plugin_enabled;
++    struct TCGOp *insn_start;
+     void *host_addr[2];
+ } DisasContextBase;
  
-+    /*
-+     * When clear, new ops are added to the tail of @ops.
-+     * When set, new ops are added in front of @emit_before_op.
-+     */
-+    TCGOp *emit_before_op;
-+
-     /* Tells which temporary holds a given register.
-        It does not take into account fixed registers */
-     TCGTemp *reg_to_temp[TCG_TARGET_NB_REGS];
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index d6670237fb..0c0bb9d169 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1521,6 +1521,7 @@ void tcg_func_start(TCGContext *s)
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 38c34009a5..ae61c154c2 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -140,6 +140,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     db->max_insns = *max_insns;
+     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
+     db->saved_can_do_io = -1;
++    db->insn_start = NULL;
+     db->host_addr[0] = host_pc;
+     db->host_addr[1] = NULL;
  
-     QTAILQ_INIT(&s->ops);
-     QTAILQ_INIT(&s->free_ops);
-+    s->emit_before_op = NULL;
-     QSIMPLEQ_INIT(&s->labels);
+@@ -157,6 +158,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     while (true) {
+         *max_insns = ++db->num_insns;
+         ops->insn_start(db, cpu);
++        db->insn_start = tcg_last_op();
+         tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
  
-     tcg_debug_assert(s->addr_type == TCG_TYPE_I32 ||
-@@ -2332,7 +2333,11 @@ static void tcg_gen_callN(TCGHelperInfo *info, TCGTemp *ret, TCGTemp **args)
-     op->args[pi++] = (uintptr_t)info;
-     tcg_debug_assert(pi == total_args);
- 
--    QTAILQ_INSERT_TAIL(&tcg_ctx->ops, op, link);
-+    if (tcg_ctx->emit_before_op) {
-+        QTAILQ_INSERT_BEFORE(tcg_ctx->emit_before_op, op, link);
-+    } else {
-+        QTAILQ_INSERT_TAIL(&tcg_ctx->ops, op, link);
-+    }
- 
-     tcg_debug_assert(n_extend < ARRAY_SIZE(extend_free));
-     for (i = 0; i < n_extend; ++i) {
-@@ -3215,7 +3220,12 @@ static TCGOp *tcg_op_alloc(TCGOpcode opc, unsigned nargs)
- TCGOp *tcg_emit_op(TCGOpcode opc, unsigned nargs)
- {
-     TCGOp *op = tcg_op_alloc(opc, nargs);
--    QTAILQ_INSERT_TAIL(&tcg_ctx->ops, op, link);
-+
-+    if (tcg_ctx->emit_before_op) {
-+        QTAILQ_INSERT_BEFORE(tcg_ctx->emit_before_op, op, link);
-+    } else {
-+        QTAILQ_INSERT_TAIL(&tcg_ctx->ops, op, link);
-+    }
-     return op;
- }
- 
+         if (plugin_enabled) {
 -- 
 2.34.1
 
