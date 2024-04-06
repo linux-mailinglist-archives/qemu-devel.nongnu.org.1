@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADE489A933
-	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 07:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D388089A934
+	for <lists+qemu-devel@lfdr.de>; Sat,  6 Apr 2024 07:39:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rsykL-0002qt-0I; Sat, 06 Apr 2024 01:37:45 -0400
+	id 1rsykN-0002ra-H6; Sat, 06 Apr 2024 01:37:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsykJ-0002qf-Jn
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:43 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1rsykK-0002qu-Vg
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:44 -0400
+Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rsykH-0006IY-Rj
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:43 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1e2b1cd446fso19519865ad.3
- for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 22:37:41 -0700 (PDT)
+ id 1rsykJ-0006Ij-6y
+ for qemu-devel@nongnu.org; Sat, 06 Apr 2024 01:37:44 -0400
+Received: by mail-pl1-x631.google.com with SMTP id
+ d9443c01a7336-1e252f2bf23so25175915ad.2
+ for <qemu-devel@nongnu.org>; Fri, 05 Apr 2024 22:37:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712381860; x=1712986660; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712381862; x=1712986662; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=eNDwqVcutDiIERmHFyRHN/ZgN4CmsTKIxQUGe7pIcjw=;
- b=yRlIYthNpN79MdYRCo2XKjSOzYr/8QIVeMD0zQuOWjiA0HKdcnzxcdej6vPA+q7idh
- W/ple7ODrlrKxNFI5HCjU91A+s17s8XAQC+27AldXFSFuEQdeA4RZe1lfUGZQmB7JoQ1
- s2AjoyPpkbZzUXPYGxxLd+LdhbHjE0RjmFAsMKHU494Aic0iw1nkwcmULvh+yK/i+aBh
- MkbTm2anYyvolVOAp20Pg/XoYT9VUuBgTulXUpR5to4KFOmFKM6D+TRbwmB3QIlkjroW
- Ee8YJEOZAOFwmMbk6GOKbBgt7fuRlXnz8Ot91r57oFuuID/nYxp/LMQ/+NpBP4qYJO/p
- kCMg==
+ bh=BjltTyIUkG4oE0AcOsKz1SbiNuo1Csm0+1nsuSZO9Hk=;
+ b=NaAr0+NwTByfYhqBOyloW5DMn5UhJc3ScKGtDmmxIBVQ1i340BsT26oD4NU2pYyUlx
+ a5xaVm/ZYPWmza7MkjVTheD/CBsOxWewUK+zixpDGgif3LcUjn4i904Ssk0+GHSuJ0rf
+ MXPT6+lFvFfh0jGzjgL16U2/0qzZNiHwFYsytxQwH+z8Ouv7rUMZ4CT1wmjNpmWLyGxw
+ HjYJJKiLo5B6fVk6gQCOW2+UcDFQsUhuJT4OkRH/VCF6oT4bnfl1Rp6FaQ7gGs0068ev
+ 0aMNF4SrxgIl34NqV6GvZlIyK5u2s99o+TfoDh6oxKHJJ0s9jlWxmcvZu60zIhVXMMgK
+ 7Www==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712381860; x=1712986660;
+ d=1e100.net; s=20230601; t=1712381862; x=1712986662;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=eNDwqVcutDiIERmHFyRHN/ZgN4CmsTKIxQUGe7pIcjw=;
- b=YRjf8LInQxAlA/Kdc28Wb8tblrJtgc8hFcNdHKTcOJoERhoC06bHEP4NzM4iLVPkxf
- xV0MFbs0PMZMTdkY8bp5ps49l9I8pOAOpZmlIrCTMDsk5BIpHfigQO1q4+X+HMHd8wUZ
- iUFXP6UD2pQENon7OEvVdS4kXULHnY90kW+9CntVJ8DGLEn9q7cCqiQENu+bGfeML68z
- 4UEM5EQC5IaT+YNV0lEuwanbRjnSI03+8Sb+0N30kH3I+XOS0CP888R4YL/GazKw7Ifr
- rDOKUg0Qib/HSLBdF8p2B8exDMOq83nLNMRtJYfxaOchO1+M912+AiJqm1ameGCjayyG
- Miuw==
-X-Gm-Message-State: AOJu0YwjRGkiXZ+TkSBit9pu3OFCUIWdcJfo+u9a1Ao1k3Ur8hv15gEo
- hZSFR/3UkLt7r05QkWfUJ5T/oqxtXHDLftwj9l7zgF39PezN7lxEkmUrOHW/D+Lv6Qg9Gr6koBd
- I
-X-Google-Smtp-Source: AGHT+IHnqjAFKupO/j+BXCydilO81rLvgIr5jftNW/sTUjjZ3H4JtseEja7Ji0dBrT9cYnuJ7MS1tQ==
-X-Received: by 2002:a17:902:a387:b0:1e0:d631:5563 with SMTP id
- x7-20020a170902a38700b001e0d6315563mr3201583pla.66.1712381860408; 
- Fri, 05 Apr 2024 22:37:40 -0700 (PDT)
+ bh=BjltTyIUkG4oE0AcOsKz1SbiNuo1Csm0+1nsuSZO9Hk=;
+ b=ZGW4ZHkNA1TiSq+bLlvPezVFwIxK2CPRG+byfNdUOEtF0LR4bdQxCaLzMbZhvLxfbS
+ wxCr4+Hh4G4Byr1DZRcMAzM/uTkKbqx88zF95Ri3oHvp6Pgd90FkFwbKVYTumiJqdLu/
+ kQW6bu8gItRoB1Z9JJKKhM9BKoZQ7qFE2l8G1ZRua6849hbD06HhtGSyjRYBx0aFgwUJ
+ aAW3smQFair08NVPNMPUDiAO8nsPfdMOlzDhoyFks6G3vF3qT4rJCRPOrwWV0EA18zgZ
+ OXDlbs5y2PBFVxr9qk8r9UTkjzYg77e2MJdRmAuuM7EeyQ35wP+mH93PkaHtD9/6Lk3d
+ mA/A==
+X-Gm-Message-State: AOJu0YyPnHkAu3CWKjWhiDQ/J3urfVSEegPb9KMpuMt4W4+4iXYH9g+u
+ iO9V9mRrSh/AkbMCvWIRitCgPHILBSQccEuiejn91EIU9nzFMdSMt9Qdxratz7kcTOoUMQVBJA+
+ V
+X-Google-Smtp-Source: AGHT+IGk218OB+DX0aFez9eZ86FSRtWmOirsEfj4leLTjJD/W36pNmmm1BBxLBWsfS2TlZAhj0YCXg==
+X-Received: by 2002:a17:902:e542:b0:1e0:cdbf:24c2 with SMTP id
+ n2-20020a170902e54200b001e0cdbf24c2mr3895820plf.29.1712381861942; 
+ Fri, 05 Apr 2024 22:37:41 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- u12-20020a170903124c00b001dc05535632sm2589378plh.170.2024.04.05.22.37.39
+ u12-20020a170903124c00b001dc05535632sm2589378plh.170.2024.04.05.22.37.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 05 Apr 2024 22:37:39 -0700 (PDT)
+ Fri, 05 Apr 2024 22:37:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: zack@buhman.org,
 	peter.maydell@linaro.org,
 	ysato@users.sourceforge.jp
-Subject: [PATCH v3 3/4] target/sh4: Fix mac.l with saturation enabled
-Date: Fri,  5 Apr 2024 19:37:31 -1000
-Message-Id: <20240406053732.191398-4-richard.henderson@linaro.org>
+Subject: [PATCH v3 4/4] target/sh4: Fix mac.w with saturation enabled
+Date: Fri,  5 Apr 2024 19:37:32 -1000
+Message-Id: <20240406053732.191398-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240406053732.191398-1-richard.henderson@linaro.org>
 References: <20240406053732.191398-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,93 +96,96 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zack Buhman <zack@buhman.org>
 
-The saturation arithmetic logic in helper_macl is not correct.
+The saturation arithmetic logic in helper_macw is not correct.
 I tested and verified this behavior on a SH7091.
 
 Signed-off-by: Zack Buhman <zack@buhman.org>
-Message-Id: <20240404162641.27528-2-zack@buhman.org>
-[rth: Reformat helper_macl, add a test case.]
+Message-Id: <20240405233802.29128-3-zack@buhman.org>
+[rth: Reformat helper_macw, add a test case.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
  target/sh4/helper.h           |  2 +-
- target/sh4/op_helper.c        | 23 ++++++------
- tests/tcg/sh4/test-macl.c     | 67 +++++++++++++++++++++++++++++++++++
- tests/tcg/sh4/Makefile.target |  5 +++
- 4 files changed, 86 insertions(+), 11 deletions(-)
- create mode 100644 tests/tcg/sh4/test-macl.c
+ target/sh4/op_helper.c        | 28 +++++++++-------
+ tests/tcg/sh4/test-macw.c     | 61 +++++++++++++++++++++++++++++++++++
+ tests/tcg/sh4/Makefile.target |  3 ++
+ 4 files changed, 82 insertions(+), 12 deletions(-)
+ create mode 100644 tests/tcg/sh4/test-macw.c
 
 diff --git a/target/sh4/helper.h b/target/sh4/helper.h
-index 8d792f6b55..64056e4a39 100644
+index 64056e4a39..29011d3dbb 100644
 --- a/target/sh4/helper.h
 +++ b/target/sh4/helper.h
-@@ -11,7 +11,7 @@ DEF_HELPER_3(movcal, void, env, i32, i32)
- DEF_HELPER_1(discard_movcal_backup, void, env)
+@@ -12,7 +12,7 @@ DEF_HELPER_1(discard_movcal_backup, void, env)
  DEF_HELPER_2(ocbi, void, env, i32)
  
--DEF_HELPER_3(macl, void, env, i32, i32)
-+DEF_HELPER_3(macl, void, env, s32, s32)
- DEF_HELPER_3(macw, void, env, i32, i32)
+ DEF_HELPER_3(macl, void, env, s32, s32)
+-DEF_HELPER_3(macw, void, env, i32, i32)
++DEF_HELPER_3(macw, void, env, s32, s32)
  
  DEF_HELPER_2(ld_fpscr, void, env, i32)
+ 
 diff --git a/target/sh4/op_helper.c b/target/sh4/op_helper.c
-index 4559d0d376..d0bae0cc00 100644
+index d0bae0cc00..99394b714c 100644
 --- a/target/sh4/op_helper.c
 +++ b/target/sh4/op_helper.c
-@@ -158,20 +158,23 @@ void helper_ocbi(CPUSH4State *env, uint32_t address)
-     }
+@@ -177,22 +177,28 @@ void helper_macl(CPUSH4State *env, int32_t arg0, int32_t arg1)
+     env->mac = res;
  }
  
--void helper_macl(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
-+void helper_macl(CPUSH4State *env, int32_t arg0, int32_t arg1)
+-void helper_macw(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
++void helper_macw(CPUSH4State *env, int32_t arg0, int32_t arg1)
  {
-+    const int64_t min = -(1ll << 47);
-+    const int64_t max = (1ll << 47) - 1;
-+    int64_t mul = (int64_t)arg0 * arg1;
-+    int64_t mac = env->mac;
-     int64_t res;
+-    int64_t res;
++    /* Inputs are already sign-extended from 16 bits. */
++    int32_t mul = arg0 * arg1;
  
 -    res = ((uint64_t) env->mach << 32) | env->macl;
--    res += (int64_t) (int32_t) arg0 *(int64_t) (int32_t) arg1;
+-    res += (int64_t) (int16_t) arg0 *(int64_t) (int16_t) arg1;
 -    env->mach = (res >> 32) & 0xffffffff;
 -    env->macl = res & 0xffffffff;
--    if (env->sr & (1u << SR_S)) {
--        if (res < 0)
--            env->mach |= 0xffff0000;
--        else
--            env->mach &= 0x00007fff;
-+    if (!(env->sr & (1u << SR_S))) {
-+        res = mac + mul;
-+    } else if (sadd64_overflow(mac, mul, &res)) {
-+        res = mac < 0 ? min : max;
-+    } else {
-+        res = MIN(MAX(res, min), max);
-     }
+     if (env->sr & (1u << SR_S)) {
+-        if (res < -0x80000000) {
++        /*
++         * In saturation arithmetic mode, the accumulator is 32-bit
++         * with carry. MACH is not considered during the addition
++         * operation nor the 32-bit saturation logic.
++         */
++        int32_t res, macl = env->macl;
 +
-+    env->mac = res;
++        if (sadd32_overflow(macl, mul, &res)) {
++            res = macl < 0 ? INT32_MIN : INT32_MAX;
++            /* If overflow occurs, the MACH register is set to 1. */
+             env->mach = 1;
+-            env->macl = 0x80000000;
+-        } else if (res > 0x000000007fffffff) {
+-            env->mach = 1;
+-            env->macl = 0x7fffffff;
+         }
++        env->macl = res;
++    } else {
++        /* In non-saturation arithmetic mode, the accumulator is 64-bit */
++        env->mac += mul;
+     }
  }
  
- void helper_macw(CPUSH4State *env, uint32_t arg0, uint32_t arg1)
-diff --git a/tests/tcg/sh4/test-macl.c b/tests/tcg/sh4/test-macl.c
+diff --git a/tests/tcg/sh4/test-macw.c b/tests/tcg/sh4/test-macw.c
 new file mode 100644
-index 0000000000..b66c854365
+index 0000000000..4eceec8634
 --- /dev/null
-+++ b/tests/tcg/sh4/test-macl.c
-@@ -0,0 +1,67 @@
++++ b/tests/tcg/sh4/test-macw.c
+@@ -0,0 +1,61 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
 +#include <stdint.h>
 +#include <stdlib.h>
 +#include <stdio.h>
 +
-+#define MACL_S_MIN  (-(1ll << 47))
-+#define MACL_S_MAX  ((1ll << 47) - 1)
-+
-+int64_t mac_l(int64_t mac, const int32_t *a, const int32_t *b)
++int64_t mac_w(int64_t mac, const int16_t *a, const int16_t *b)
 +{
 +    register uint32_t macl __asm__("macl") = mac;
 +    register uint32_t mach __asm__("mach") = mac >> 32;
 +
-+    asm volatile("mac.l @%0+,@%1+"
++    asm volatile("mac.w @%0+,@%1+"
 +                 : "+r"(a), "+r"(b), "+x"(macl), "+x"(mach));
 +
 +    return ((uint64_t)mach << 32) | macl;
@@ -190,7 +193,7 @@ index 0000000000..b66c854365
 +
 +typedef struct {
 +    int64_t mac;
-+    int32_t a, b;
++    int16_t a, b;
 +    int64_t res[2];
 +} Test;
 +
@@ -204,7 +207,7 @@ index 0000000000..b66c854365
 +    } else {
 +        asm volatile("clrs");
 +    }
-+    res = mac_l(t->mac, &t->a, &t->b);
++    res = mac_w(t->mac, &t->a, &t->b);
 +
 +    if (res != t->res[sat]) {
 +        fprintf(stderr, "%#llx + (%#x * %#x) = %#llx -- got %#llx\n",
@@ -216,16 +219,13 @@ index 0000000000..b66c854365
 +int main()
 +{
 +    static const Test tests[] = {
-+        { 0x00007fff12345678ll, INT32_MAX, INT32_MAX,
-+          { 0x40007ffe12345679ll, MACL_S_MAX } },
-+        { MACL_S_MIN, -1, 1,
-+          { 0xffff7fffffffffffll, MACL_S_MIN } },
-+        { INT64_MIN, -1, 1,
-+          { INT64_MAX, MACL_S_MIN } },
-+        { 0x00007fff00000000ll, INT32_MAX, INT32_MAX,
-+          { 0x40007ffe00000001ll, MACL_S_MAX } },
-+        { 4, 1, 2, { 6, 6 } },
-+        { -4, -1, -2, { -2, -2 } },
++        { 0, 2, 3, { 6, 6 } },
++        { 0x123456787ffffffell, 2, -3,
++          { 0x123456787ffffff8ll, 0x123456787ffffff8ll } },
++        { 0xabcdef127ffffffall, 2, 3,
++          { 0xabcdef1280000000ll, 0x000000017fffffffll } },
++        { 0xfffffffffll, INT16_MAX, INT16_MAX,
++          { 0x103fff0000ll, 0xf3fff0000ll } },
 +    };
 +
 +    for (int i = 0; i < sizeof(tests) / sizeof(tests[0]); ++i) {
@@ -236,18 +236,16 @@ index 0000000000..b66c854365
 +    return 0;
 +}
 diff --git a/tests/tcg/sh4/Makefile.target b/tests/tcg/sh4/Makefile.target
-index 16eaa850a8..9a11c10924 100644
+index 9a11c10924..4d09291c0c 100644
 --- a/tests/tcg/sh4/Makefile.target
 +++ b/tests/tcg/sh4/Makefile.target
-@@ -9,3 +9,8 @@ run-signals: signals
- 	$(call skip-test, $<, "BROKEN")
- run-plugin-signals-with-%:
- 	$(call skip-test, $<, "BROKEN")
+@@ -14,3 +14,6 @@ VPATH += $(SRC_PATH)/tests/tcg/sh4
+ 
+ test-macl: CFLAGS += -O -g
+ TESTS += test-macl
 +
-+VPATH += $(SRC_PATH)/tests/tcg/sh4
-+
-+test-macl: CFLAGS += -O -g
-+TESTS += test-macl
++test-macw: CFLAGS += -O -g
++TESTS += test-macw
 -- 
 2.34.1
 
