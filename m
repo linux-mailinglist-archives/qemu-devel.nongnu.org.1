@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E39089B29F
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 17:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6C1E89B382
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 20:21:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtU6z-0004ZG-4U; Sun, 07 Apr 2024 11:07:13 -0400
+	id 1rtX8K-0004Rr-89; Sun, 07 Apr 2024 14:20:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zack@buhman.org>) id 1rtU6t-0004Z1-Un
- for qemu-devel@nongnu.org; Sun, 07 Apr 2024 11:07:08 -0400
-Received: from wfout5-smtp.messagingengine.com ([64.147.123.148])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rtX8I-0004RQ-9B
+ for qemu-devel@nongnu.org; Sun, 07 Apr 2024 14:20:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zack@buhman.org>) id 1rtU6r-0008J2-Fb
- for qemu-devel@nongnu.org; Sun, 07 Apr 2024 11:07:07 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailfout.west.internal (Postfix) with ESMTP id E2AC71C0005B;
- Sun,  7 Apr 2024 11:06:59 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute6.internal (MEProxy); Sun, 07 Apr 2024 11:07:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=buhman.org; h=cc
- :cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
- :to; s=fm2; t=1712502419; x=1712588819; bh=8CNDeXK0ztr9iRDTlFVH2
- zaWo90cTw52EAQSayqfQRg=; b=GB96m/CiQ2yr8aMS0+yEVhIXCi5GSnIIbQgol
- unz8yAZMf052+nsrbU3g+nitu6ODqm/9K2fRZM7hAO5doT+aWNa+5zZ4FzZDBl4U
- cREjy9RAbXJKHHH+5QSaoungZVoq9E6iIM0x1gEZOH8IuULNVNQbUWfQoKNCXeUP
- HlGt0XDqhBBGCXsMIS4X9EEh+DVBcxlvAjDvLrDHcuX3SOMFRO/SAjVdRJZT8xJr
- jhDM+Zwtv9NS5kxuzToFzt4RoD32+Wa0HIk3o5FH5+/YIgTni2C1mnjN3kHDN1mz
- FnreaDBzDxMNEewI7WMPavt2jgWYYVS9olRseWqB1Ycq7UK8Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm2; t=1712502419; x=1712588819; bh=8CNDeXK0ztr9iRDTlFVH2zaWo90c
- Tw52EAQSayqfQRg=; b=GwJMTwenuq01Qjsi8LVALyk2e40ggQ4rJNi0Y/iBsP2s
- P3EDXNkdfUSz3PAtcvKTPdBjmaEhx0V+05DZs/ChYgvzXHShTWbicQcnpSH4qv5l
- OU6n75Rae/Wg2RCWXIDEmGALUjVBB5gRH3/qxhQulfImy1uOhUpcKXN0QsuAtWLr
- wxHJ3k5IeV0kCCUOxRkeRLa4z/n0ByMWZ4GeA3Dpboj0H0BeDZX0/FeBrJRtp6MN
- 2fd23HUhqfGfMqQLtU/aKOGcbyKmDq8dtpcucdL1nAJa10baTaq/+42JAupOmV4T
- lg1WFueTSzIb4ku6bFGfRT3iXkQlIIWnZzphEe79ew==
-X-ME-Sender: <xms:krYSZn1vwwNSpgdUC_q3GKXJ4KIMqG6J5NyCRimjRfYgP9_91v99eQ>
- <xme:krYSZmHikqUNBHc6K0k2LNF4Jariuizz_F6bzaQh9oZC95iJLBgC0QHYxXSaDra0x
- w4P--HQYwvcB_0yKBo>
-X-ME-Received: <xmr:krYSZn7huT1OaoHCHqd-_Msj11-iylLKSfKzpeqwtpZZ1Pp1kxa0Wxa_cv5lIOG8SVPzC8Lz2ClS>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeggedgkeegucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
- ertddtnecuhfhrohhmpegkrggtkhcuuehuhhhmrghnuceoiigrtghksegsuhhhmhgrnhdr
- ohhrgheqnecuggftrfgrthhtvghrnhepudetueelleefudffjeellefgffeihfeuheeutd
- efieefueeghfeltddvheduieeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghm
- pehmrghilhhfrhhomhepiigrtghksegsuhhhmhgrnhdrohhrgh
-X-ME-Proxy: <xmx:krYSZs2ix7HieIwQI_nyIY6AXBB7AjXFoWjxh5EN808opr9vABk8-w>
- <xmx:krYSZqFDhCVkvarU4Yln73_h0Y-SLgAa7apS9jirCqkBSLNURJnifg>
- <xmx:krYSZt8NZkV-RE9SaiOQ4rmq8sTglnrvQm1QjckpaXRrTZpFSg_C1Q>
- <xmx:krYSZnnTG9s583kqHIKc1i7HHQNK-GvGMLgZrU3zjxrP2oQd4lRkxQ>
- <xmx:k7YSZmj4XJOPdwrXbenBqOqwFp0UG-Cvb59ccziT8T8cb8Rg-lREbigv>
-Feedback-ID: i1541475f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 7 Apr 2024 11:06:55 -0400 (EDT)
-From: Zack Buhman <zack@buhman.org>
-To: qemu-devel@nongnu.org
-Cc: ysato@users.sourceforge.jp,
-	Zack Buhman <zack@buhman.org>
-Subject: [PATCH] target/sh4: add missing CHECK_NOT_DELAY_SLOT
-Date: Sun,  7 Apr 2024 23:07:05 +0800
-Message-ID: <20240407150705.5965-1-zack@buhman.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rtX8G-0008BE-6U
+ for qemu-devel@nongnu.org; Sun, 07 Apr 2024 14:20:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712514041;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=74Rd0RQi0LkvP0zzNbkgBryjNDJuvz2ie9w7BpOS7tI=;
+ b=FG9lJjok8KG8mdUKn1BCVMXB9CM+OpIkkmRlqeFS679/nCvm3vh4vJD+f2YP4FeO0a6A5D
+ 2KTAigyhA6OgS46pBWS4d8BCX6MkgjUWcdaDexGY7rlBahSYOQovkGwuwTZTxUP6Jsq7Zu
+ j2tIx2aspmbA9SnQWN+zcjYDZ4cO1kc=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-77-QAtB1MmiM9OkcWTMfDrY8Q-1; Sun, 07 Apr 2024 14:20:37 -0400
+X-MC-Unique: QAtB1MmiM9OkcWTMfDrY8Q-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-43470772549so6248691cf.0
+ for <qemu-devel@nongnu.org>; Sun, 07 Apr 2024 11:20:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712514037; x=1713118837;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=74Rd0RQi0LkvP0zzNbkgBryjNDJuvz2ie9w7BpOS7tI=;
+ b=m9axVMctZPKbTaOUhtPtZIWMgewfzvr9Z25z+S6Yq8ZwCRpEgAQyrTgjYPC9Vfddx6
+ vBfHaXYn2aBDqhT8L/9CxdrgtXgCHAlL9lUE9be9JKwc6e/2RSkfa7XjIvFdqXkHZBIp
+ 9PLJp6ZRY8Avte55O6fmt40AtroqVe9JDeE074ubES3OJmNLwvJvfKLH3hkMFMz/MeyQ
+ 40lFmGPZhrsoIuV0SHIGtI+39JFHBsTMygPjt44+8GD8aKIT7uddwcn5X4eeMp9Fcl3Q
+ /+hhv0Kzow1nC2jPij5uMCAtRAp7rqqBlhzD9DNx1XHYAOvNNp4rWhTBS8AjOisEwc/M
+ dNLQ==
+X-Gm-Message-State: AOJu0YyRttCzsqOTl2qP25eTeHo2677Xhv5okA7QIl4dzervyDjY/+oA
+ B3MocrV4vxKJoXwRBo5LQgZXUlrctJL2v2PBl6etZ9YCaZ2v5BHHBp81+CKY12nW9myRVenBHo6
+ jWHCyqrBxlVlSwX6rYRuS+pFlcWgy0wITq2jdwiQMiELSs5MifBKB
+X-Received: by 2002:a05:620a:450e:b0:78b:ea64:e0fa with SMTP id
+ t14-20020a05620a450e00b0078bea64e0famr8041494qkp.4.1712514036834; 
+ Sun, 07 Apr 2024 11:20:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEmVSqr3/uLdmND2mkzSrkB1l+OpYQamCzQi85LnnEwiF/4UKHse8oWxAYxcIKQMQStZp0e3Q==
+X-Received: by 2002:a05:620a:450e:b0:78b:ea64:e0fa with SMTP id
+ t14-20020a05620a450e00b0078bea64e0famr8041478qkp.4.1712514036136; 
+ Sun, 07 Apr 2024 11:20:36 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ z13-20020a05620a100d00b0078812b73ea1sm2440227qkj.28.2024.04.07.11.20.35
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 07 Apr 2024 11:20:35 -0700 (PDT)
+Date: Sun, 7 Apr 2024 14:20:34 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Avihai Horon <avihaih@nvidia.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Hyman Huang <yong.huang@smartx.com>
+Subject: Re: [PATCH for-9.0] MAINTAINERS: Adjust migration documentation files
+Message-ID: <ZhLj8veRDQ5Zbkaz@x1n>
+References: <20240407081125.13951-1-avihaih@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=64.147.123.148; envelope-from=zack@buhman.org;
- helo=wfout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240407081125.13951-1-avihaih@nvidia.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.355,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,48 +97,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CHECK_NOT_DELAY_SLOT is correctly applied to the branch-related
-instructions, but not to the PC-relative mov* instructions.
+On Sun, Apr 07, 2024 at 11:11:25AM +0300, Avihai Horon wrote:
+> Commit 8cb2f8b172e7 ("docs/migration: Create migration/ directory")
+> changed migration documentation file structure but forgot to update the
+> entries in the MAINTAINERS file.
+> 
+> Commit 4c6f8a79ae53 ("docs/migration: Split 'dirty limit'") extracted
+> dirty limit documentation to a new file without updating dirty limit
+> section in MAINTAINERS file.
+> 
+> Fix the above.
+> 
+> Fixes: 8cb2f8b172e7 ("docs/migration: Create migration/ directory")
+> Fixes: 4c6f8a79ae53 ("docs/migration: Split 'dirty limit'")
+> Signed-off-by: Avihai Horon <avihaih@nvidia.com>
 
-I verified the existence of an illegal slot exception on a SH7091 when
-any of these instructions are attempted inside a delay slot.
+queued for rc3, thanks.
 
-This also matches the behavior described in the SH-4 ISA manual.
-
-Signed-off-by: Zack Buhman <zack@buhman.org>
----
- target/sh4/translate.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 6643c14dde..ebb6c901bf 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -523,6 +523,7 @@ static void _decode_opc(DisasContext * ctx)
-         tcg_gen_movi_i32(REG(B11_8), B7_0s);
-         return;
-     case 0x9000: /* mov.w @(disp,PC),Rn */
-+        CHECK_NOT_DELAY_SLOT
-         {
-             TCGv addr = tcg_constant_i32(ctx->base.pc_next + 4 + B7_0 * 2);
-             tcg_gen_qemu_ld_i32(REG(B11_8), addr, ctx->memidx,
-@@ -530,6 +531,7 @@ static void _decode_opc(DisasContext * ctx)
-         }
-         return;
-     case 0xd000: /* mov.l @(disp,PC),Rn */
-+        CHECK_NOT_DELAY_SLOT
-         {
-             TCGv addr = tcg_constant_i32((ctx->base.pc_next + 4 + B7_0 * 4) & ~3);
-             tcg_gen_qemu_ld_i32(REG(B11_8), addr, ctx->memidx,
-@@ -1236,6 +1238,7 @@ static void _decode_opc(DisasContext * ctx)
-         }
-         return;
-     case 0xc700: /* mova @(disp,PC),R0 */
-+        CHECK_NOT_DELAY_SLOT
-         tcg_gen_movi_i32(REG(0), ((ctx->base.pc_next & 0xfffffffc) +
-                                   4 + B7_0 * 4) & ~3);
-         return;
 -- 
-2.41.0
+Peter Xu
 
 
