@@ -2,72 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C196989ADF4
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 04:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644B689AE1E
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 04:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtHpJ-0008Ip-Da; Sat, 06 Apr 2024 22:00:09 -0400
+	id 1rtIY7-0005ex-Dv; Sat, 06 Apr 2024 22:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1rtHpF-0008If-7U
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 22:00:05 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rtIY5-0005eD-68; Sat, 06 Apr 2024 22:46:25 -0400
+Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lei4.wang@intel.com>)
- id 1rtHpC-0001M3-M7
- for qemu-devel@nongnu.org; Sat, 06 Apr 2024 22:00:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712455202; x=1743991202;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=5tFvidBWshxgMbIFD482Svk/7uM67hmlcNE3n2fagaE=;
- b=ThBrPkG0rYL/G+seK0RGNO1IgZt23UVcyn3LY6/rdzwebv2zLd4o8a87
- cU0+4eWFtIr+KNYeobTQ5YsHI/HfuSSnxJmPjkRRDDAOCLm32lxe7BVxV
- QIdp9PohHSUBhXJmZcsRPzP74AwMCIv8gjU/2QFnoSKQznCfz8gy7oerm
- WUZNtQuo1bKuLr4JCvEDT/I+x72O9ZJGnQY4Uz4yWhGfxmDG4aGyp2N3g
- ArCEFtXV9fAE5orBPGVTFECjcWCA4hnI4HGp85WtkMoS1rISsJZD4bHku
- hHRqF5Tm3DR6y2uU9eJDbpLEpdC1ouukSa+uBczApGhZ30pXYAuA/rl8/ Q==;
-X-CSE-ConnectionGUID: FBIy0of0TLGO/w3L7J4i4w==
-X-CSE-MsgGUID: UHI60BsBRDK1MVppGmzp5g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11036"; a="10724519"
-X-IronPort-AV: E=Sophos;i="6.07,184,1708416000"; d="scan'208";a="10724519"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2024 18:59:58 -0700
-X-CSE-ConnectionGUID: 69zAzSovQB2O61I+eDTthg==
-X-CSE-MsgGUID: cTq/faqTTiij70uxJR7USA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,184,1708416000"; d="scan'208";a="24259170"
-Received: from leiwang7-mobl.ccr.corp.intel.com (HELO [10.125.241.27])
- ([10.125.241.27])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Apr 2024 18:59:56 -0700
-Message-ID: <39fb6acc-a285-49c8-a7bb-c17abf383f45@intel.com>
-Date: Sun, 7 Apr 2024 09:59:54 +0800
+ (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
+ id 1rtIY2-0002Hl-Io; Sat, 06 Apr 2024 22:46:24 -0400
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4VBxNd2143zwRNQ;
+ Sun,  7 Apr 2024 10:43:13 +0800 (CST)
+Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
+ by mail.maildlp.com (Postfix) with ESMTPS id 21CF314037B;
+ Sun,  7 Apr 2024 10:46:05 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemi500008.china.huawei.com (7.221.188.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sun, 7 Apr 2024 10:46:04 +0800
+Message-ID: <028f285f-2bf7-c8cb-820c-ba1fd7ee7c9d@huawei.com>
+Date: Sun, 7 Apr 2024 10:46:03 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] migration/postcopy: ensure preempt channel is ready
- before loading states
-To: Peter Xu <peterx@redhat.com>, Wei Wang <wei.w.wang@intel.com>
-Cc: farosas@suse.de, qemu-devel@nongnu.org
-References: <20240405034056.23933-1-wei.w.wang@intel.com>
- <ZhByy4YvYl9xLmRP@x1n>
-From: "Wang, Lei" <lei4.wang@intel.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH v12 10/23] hw/arm/virt: Wire NMI and VINMI irq lines from
+ GIC to CPU
 Content-Language: en-US
-In-Reply-To: <ZhByy4YvYl9xLmRP@x1n>
-Content-Type: text/plain; charset=UTF-8
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: <eduardo@habkost.net>, <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, 
+ <wangyanan55@huawei.com>, <richard.henderson@linaro.org>,
+ <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+References: <20240403101611.3204086-1-ruanjinjie@huawei.com>
+ <20240403101611.3204086-11-ruanjinjie@huawei.com>
+ <CAFEAcA8ESSRQtemj7xefeb8Fp0__EEiJh2FamGy7w7_iTpyf4A@mail.gmail.com>
+In-Reply-To: <CAFEAcA8ESSRQtemj7xefeb8Fp0__EEiJh2FamGy7w7_iTpyf4A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=lei4.wang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+X-Originating-IP: [10.67.109.254]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemi500008.china.huawei.com (7.221.188.139)
+Received-SPF: pass client-ip=45.249.212.187;
+ envelope-from=ruanjinjie@huawei.com; helo=szxga01-in.huawei.com
+X-Spam_score_int: -76
+X-Spam_score: -7.7
+X-Spam_bar: -------
+X-Spam_report: (-7.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.458,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,76 +67,78 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jinjie Ruan <ruanjinjie@huawei.com>
+From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/6/2024 5:53, Peter Xu wrote:> On Fri, Apr 05, 2024 at 11:40:56AM +0800, Wei
-Wang wrote:
->> Before loading the guest states, ensure that the preempt channel has been
->> ready to use, as some of the states (e.g. via virtio_load) might trigger
->> page faults that will be handled through the preempt channel. So yield to
->> the main thread in the case that the channel create event hasn't been
->> dispatched.
+
+
+On 2024/4/4 22:47, Peter Maydell wrote:
+> On Wed, 3 Apr 2024 at 11:18, Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 >>
->> Originally-by: Lei Wang <lei4.wang@intel.com>
->> Link: https://lore.kernel.org/all/9aa5d1be-7801-40dd-83fd-f7e041ced249@intel.com/T/
->> Suggested-by: Peter Xu <peterx@redhat.com>
-> 
-> The current version doesn't have any of my credits. :) Thanks, but I'll
-> just drop it to reflect reality, so we keep the credit to the right ones.
-> 
->> Signed-off-by: Lei Wang <lei4.wang@intel.com>
->> Signed-off-by: Wei Wang <wei.w.wang@intel.com>
+>> Wire the new NMI and VINMI interrupt line from the GIC to each CPU.
+>>
+>> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+>> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 >> ---
->>  migration/savevm.c | 17 +++++++++++++++++
->>  1 file changed, 17 insertions(+)
+>> v9:
+>> - Rename ARM_CPU_VNMI to ARM_CPU_VINMI.
+>> - Update the commit message.
+>> v4:
+>> - Add Reviewed-by.
+>> v3:
+>> - Also add VNMI wire.
+>> ---
+>>  hw/arm/virt.c | 7 ++++++-
+>>  1 file changed, 6 insertions(+), 1 deletion(-)
 >>
->> diff --git a/migration/savevm.c b/migration/savevm.c
->> index 388d7af7cd..63f9991a8a 100644
->> --- a/migration/savevm.c
->> +++ b/migration/savevm.c
->> @@ -2342,6 +2342,23 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
->>  
->>      QEMUFile *packf = qemu_file_new_input(QIO_CHANNEL(bioc));
->>  
->> +    /*
->> +     * Before loading the guest states, ensure that the preempt channel has
->> +     * been ready to use, as some of the states (e.g. via virtio_load) might
->> +     * trigger page faults that will be handled through the preempt channel.
->> +     * So yield to the main thread in the case that the channel create event
->> +     * hasn't been dispatched.
-> 
-> I'll squash below into it.  If any of you disagree please shoot: valid
-> until this Sunday.
-
-I'm OK with it.
-
-> 
-> +     * TODO: if we can move migration loadvm out of main thread, then we
-> +     * won't block main thread from polling the accept() fds.  We can drop
-> +     * this as a whole when that is done.
-> 
-> Huge thanks to both!
-
-Thank you Peter :)
-
-> 
->> +     */
->> +    do {
->> +        if (!migrate_postcopy_preempt() || !qemu_in_coroutine() ||
->> +            mis->postcopy_qemufile_dst) {
->> +            break;
->> +        }
->> +
->> +        aio_co_schedule(qemu_get_current_aio_context(), qemu_coroutine_self());
->> +        qemu_coroutine_yield();
->> +    } while (1);
->> +
->>      ret = qemu_loadvm_state_main(packf, mis);
->>      trace_loadvm_handle_cmd_packaged_main(ret);
->>      qemu_fclose(packf);
->> -- 
->> 2.27.0
+>> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+>> index a9a913aead..ef2e6c2c4d 100644
+>> --- a/hw/arm/virt.c
+>> +++ b/hw/arm/virt.c
+>> @@ -821,7 +821,8 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
 >>
+>>      /* Wire the outputs from each CPU's generic timer and the GICv3
+>>       * maintenance interrupt signal to the appropriate GIC PPI inputs,
+>> -     * and the GIC's IRQ/FIQ/VIRQ/VFIQ interrupt outputs to the CPU's inputs.
+>> +     * and the GIC's IRQ/FIQ/VIRQ/VFIQ/NMI/VINMI interrupt outputs to the
+>> +     * CPU's inputs.
+>>       */
+>>      for (i = 0; i < smp_cpus; i++) {
+>>          DeviceState *cpudev = DEVICE(qemu_get_cpu(i));
+>> @@ -865,6 +866,10 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>>                             qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
+>>          sysbus_connect_irq(gicbusdev, i + 3 * smp_cpus,
+>>                             qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
+>> +        sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus,
+>> +                           qdev_get_gpio_in(cpudev, ARM_CPU_NMI));
+>> +        sysbus_connect_irq(gicbusdev, i + 5 * smp_cpus,
+>> +                           qdev_get_gpio_in(cpudev, ARM_CPU_VINMI));
+>>      }
 > 
+> This patch needs to go after patch 11. Otherwise at this point
+> in the patchseries we are trying to wire up GPIOs on the GIC
+> which don't exist, and QEMU will assert:
+> 
+> $ ./build/x86/qemu-system-aarch64 -M virt,gic-version=3
+> Unexpected error in object_property_find_err() at ../../qom/object.c:1366:
+> qemu-system-aarch64: Property 'arm-gicv3.sysbus-irq[4]' not found
+> Aborted (core dumped)
+> 
+> We also need to only connect these up if vms->gic_version
+> is not VIRT_GIC_VERSION_2. This is because these GPIOs don't
+> exist on the GICv2, and otherwise we again assert if you
+> try to wire them up but you're using GICv2:
+> 
+> $ ./build/x86/qemu-system-aarch64 -M virt,gic-version=2
+> Unexpected error in object_property_find_err() at ../../qom/object.c:1366:
+> qemu-system-aarch64: Property 'arm_gic.sysbus-irq[4]' not found
+> Aborted (core dumped)
+
+Thank you! I'll fix them.
+
+> 
+> thanks
+> -- PMM
 
