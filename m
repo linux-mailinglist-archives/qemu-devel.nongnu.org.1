@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B727689AF9C
-	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 10:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B64D89AF8E
+	for <lists+qemu-devel@lfdr.de>; Sun,  7 Apr 2024 10:20:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtNkt-0004Cr-0O; Sun, 07 Apr 2024 04:19:59 -0400
+	id 1rtNkt-0004DN-W4; Sun, 07 Apr 2024 04:20:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rtNko-0004AZ-Ax; Sun, 07 Apr 2024 04:19:54 -0400
+ id 1rtNkq-0004Bc-Tc; Sun, 07 Apr 2024 04:19:56 -0400
 Received: from szxga03-in.huawei.com ([45.249.212.189])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <ruanjinjie@huawei.com>)
- id 1rtNkk-0001zi-Ir; Sun, 07 Apr 2024 04:19:54 -0400
-Received: from mail.maildlp.com (unknown [172.19.163.48])
- by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4VC4pQ1m6xzNn61;
- Sun,  7 Apr 2024 16:17:34 +0800 (CST)
+ id 1rtNkl-0001zk-JZ; Sun, 07 Apr 2024 04:19:54 -0400
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+ by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4VC4pR16P4zNn65;
+ Sun,  7 Apr 2024 16:17:35 +0800 (CST)
 Received: from kwepemi500008.china.huawei.com (unknown [7.221.188.139])
- by mail.maildlp.com (Postfix) with ESMTPS id F0211180073;
- Sun,  7 Apr 2024 16:19:46 +0800 (CST)
+ by mail.maildlp.com (Postfix) with ESMTPS id DCBB9140154;
+ Sun,  7 Apr 2024 16:19:47 +0800 (CST)
 Received: from huawei.com (10.67.174.55) by kwepemi500008.china.huawei.com
  (7.221.188.139) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sun, 7 Apr
- 2024 16:19:46 +0800
+ 2024 16:19:47 +0800
 To: <peter.maydell@linaro.org>, <eduardo@habkost.net>,
  <marcel.apfelbaum@gmail.com>, <philmd@linaro.org>, <wangyanan55@huawei.com>,
  <richard.henderson@linaro.org>, <qemu-devel@nongnu.org>,
  <qemu-arm@nongnu.org>
 CC: <ruanjinjie@huawei.com>
-Subject: [PATCH v13 02/24] target/arm: Add PSTATE.ALLINT
-Date: Sun, 7 Apr 2024 08:17:11 +0000
-Message-ID: <20240407081733.3231820-3-ruanjinjie@huawei.com>
+Subject: [PATCH v13 03/24] target/arm: Add support for FEAT_NMI,
+ Non-maskable Interrupt
+Date: Sun, 7 Apr 2024 08:17:12 +0000
+Message-ID: <20240407081733.3231820-4-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240407081733.3231820-1-ruanjinjie@huawei.com>
 References: <20240407081733.3231820-1-ruanjinjie@huawei.com>
@@ -67,67 +68,36 @@ From:  Jinjie Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When PSTATE.ALLINT is set, an IRQ or FIQ interrupt that is targeted to
-ELx, with or without superpriority is masked. As Richard suggested, place
-ALLINT bit in PSTATE in env->pstate.
-
-In the pseudocode, AArch64.ExceptionReturn() calls SetPSTATEFromPSR(), which
-treats PSTATE.ALLINT as one of the bits which are reinstated from SPSR to
-PSTATE regardless of whether this is an illegal exception return or not. So
-handle PSTATE.ALLINT the same way as PSTATE.DAIF in the illegal_return exit
-path of the exception_return helper. With the change, exception entry and
-return are automatically handled.
+Add support for FEAT_NMI. NMI (FEAT_NMI) is an mandatory feature in
+ARMv8.8-A and ARM v9.3-A.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 ---
 v13:
-- Handle PSTATE.ALLINT the same way as PSTATE.DAIF in the illegal_return
-  exit path.
-- Update the commit message.
 - Add Reviewed-by.
-v5:
-- Remove the ALLINT comment, as it is covered by "all other bits".
-- Add Reviewed-by.
-v4:
-- Keep PSTATE.ALLINT in env->pstate but not env->allint.
-- Update the commit message.
 v3:
-- Remove ALLINT dump in aarch64_cpu_dump_state().
-- Update the commit message.
+- Add Reviewed-by.
+- Adjust to before the MSR patches.
 ---
- target/arm/cpu.h            | 1 +
- target/arm/tcg/helper-a64.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ target/arm/internals.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index bc0c84873f..de740d223f 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1430,6 +1430,7 @@ void pmu_init(ARMCPU *cpu);
- #define PSTATE_D (1U << 9)
- #define PSTATE_BTYPE (3U << 10)
- #define PSTATE_SSBS (1U << 12)
-+#define PSTATE_ALLINT (1U << 13)
- #define PSTATE_IL (1U << 20)
- #define PSTATE_SS (1U << 21)
- #define PSTATE_PAN (1U << 22)
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index ebaa7f00df..29f3ef274a 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -892,8 +892,8 @@ illegal_return:
-      */
-     env->pstate |= PSTATE_IL;
-     env->pc = new_pc;
--    spsr &= PSTATE_NZCV | PSTATE_DAIF;
--    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF);
-+    spsr &= PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT;
-+    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT);
-     pstate_write(env, spsr);
-     if (!arm_singlestep_active(env)) {
-         env->pstate &= ~PSTATE_SS;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index dd3da211a3..516e0584bf 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1229,6 +1229,9 @@ static inline uint32_t aarch64_pstate_valid_mask(const ARMISARegisters *id)
+     if (isar_feature_aa64_mte(id)) {
+         valid |= PSTATE_TCO;
+     }
++    if (isar_feature_aa64_nmi(id)) {
++        valid |= PSTATE_ALLINT;
++    }
+ 
+     return valid;
+ }
 -- 
 2.34.1
 
