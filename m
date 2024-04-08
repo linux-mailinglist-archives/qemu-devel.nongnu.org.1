@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E317389C873
+	by mail.lfdr.de (Postfix) with ESMTPS id AC5B289C872
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:36:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtr1B-0008Ds-DS; Mon, 08 Apr 2024 11:34:45 -0400
+	id 1rtr18-0008Cg-0L; Mon, 08 Apr 2024 11:34:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rtr18-0008DL-MT; Mon, 08 Apr 2024 11:34:42 -0400
+ id 1rtr10-0008BC-V8; Mon, 08 Apr 2024 11:34:35 -0400
 Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1rtr17-0006sQ-1h; Mon, 08 Apr 2024 11:34:42 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ id 1rtr0x-0006rg-NB; Mon, 08 Apr 2024 11:34:34 -0400
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 438ENqxa028719; Mon, 8 Apr 2024 15:34:18 GMT
+ 438ENwOe027269; Mon, 8 Apr 2024 15:34:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-11-20;
- bh=XYRkQ3kyoUOhCM8Tp/MmT2rsc5+r6mX0RGkbovirnJM=;
- b=Ipj/PZ3wmwJrWQjAfKtM/f2TdtspacLdWGg/Uog1Lw6CTv8gHLLvS6pd9rwXc0LCKKy4
- O6Z6ON2CP45QDW7RurK6RBKNpUa18zArDSr+VPo8iQlOMgEXR+Fv/jTDAeYsaiU91xVw
- E/yFDzsqcKAhYD28b1rvrsRS3oe8PavcU7MYrwwiAfuAMUEiYvwnWhTs7WDRB6gNU8Jm
- EPfectdpVvF+uLzx5QGJC5QOs3pFWwfEWVaacfngu5r41iWQ3Rhe+jpS4byeQZjc9VYb
- 4QzVB33Bi7ndR73JNsA2E7TbiuqoeL8ABsEejxYcR8Q/QRuHEkEheCul37+vR5PV65bD Cg== 
+ bh=hqZDBT6khwb4SZoBPhPhcAKg3Samj7WhUu/ZWIeOnuc=;
+ b=G0JVYDBXVFji6IiXFxAFJItTmQLDGP6NV8m63DZbyGtZSU9P6BRivYuc6aAgBz139sqm
+ S9chMnq5gs9Um7Lx/vMUQBVc6VnVvsEtABaHhBn2S0xdLOLngpp1W8EuMx1dO+/gAhG2
+ ocuNTpRtCG/+JRJ6fpqi4XHy8/rRjDIQgdQa9qdRubkozaVmDLN4lfOsbQbz4CgU+AWx
+ a6XPko7jkJqpi18j/gR6wc0k37zSOnKUvCDgyAKzuRIPI/ngbFhjfdIZGXMLxGp+nucG
+ THp9t1XHMCniHf6SMgYk2xPyq3z3lJo3KP1gw5Ud5JS6JmHXiV38JGTKPvSrDqul0yi9 2A== 
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaxedk1rm-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaw6431hx-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Apr 2024 15:34:17 +0000
+ Mon, 08 Apr 2024 15:34:20 +0000
 Received: from pps.filterd
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 438FJ1Z0032329; Mon, 8 Apr 2024 15:34:16 GMT
+ with ESMTP id 438FCQHX032536; Mon, 8 Apr 2024 15:34:19 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3xavu60dc9-1
+ 3xavu60ddu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 08 Apr 2024 15:34:16 +0000
+ Mon, 08 Apr 2024 15:34:18 +0000
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
  (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 438FUlUw008521;
- Mon, 8 Apr 2024 15:34:16 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 438FUlV0008521;
+ Mon, 8 Apr 2024 15:34:18 GMT
 Received: from jonah-ol8.us.oracle.com (dhcp-10-39-195-157.vpn.oracle.com
  [10.39.195.157])
  by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3xavu60d7m-3; Mon, 08 Apr 2024 15:34:16 +0000
+ 3xavu60d7m-4; Mon, 08 Apr 2024 15:34:18 +0000
 From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
@@ -58,9 +58,10 @@ Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
  eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
  schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
  si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
-Subject: [RFC v3 2/6] virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
-Date: Mon,  8 Apr 2024 11:34:04 -0400
-Message-Id: <20240408153408.3527586-3-jonah.palmer@oracle.com>
+Subject: [RFC v3 3/6] virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER
+ support
+Date: Mon,  8 Apr 2024 11:34:05 -0400
+Message-Id: <20240408153408.3527586-4-jonah.palmer@oracle.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240408153408.3527586-1-jonah.palmer@oracle.com>
 References: <20240408153408.3527586-1-jonah.palmer@oracle.com>
@@ -74,8 +75,8 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
  bulkscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0
  spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2404010000 definitions=main-2404080120
-X-Proofpoint-GUID: hlv1tKxKCk15TNEl6kaAm9pZasse5Mfr
-X-Proofpoint-ORIG-GUID: hlv1tKxKCk15TNEl6kaAm9pZasse5Mfr
+X-Proofpoint-GUID: hIllOrDlZrhLoe_0OiMojFJuidtOFML1
+X-Proofpoint-ORIG-GUID: hIllOrDlZrhLoe_0OiMojFJuidtOFML1
 Received-SPF: pass client-ip=205.220.177.32;
  envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -100,71 +101,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add VIRTIO_F_IN_ORDER feature support in virtqueue_split_pop and
-virtqueue_packed_pop.
+Add VIRTIO_F_IN_ORDER feature support for virtqueue_fill operations.
 
-VirtQueueElements popped from the available/descritpor ring are added to
-the VirtQueue's used_elems array in-order and in the same fashion as
-they would be added the used and descriptor rings, respectively.
+The goal of the virtqueue_fill operation when the VIRTIO_F_IN_ORDER
+feature has been negotiated is to search for this now-used element,
+set its length, and mark the element as filled in the VirtQueue's
+used_elems array.
 
-This will allow us to keep track of the current order, what elements
-have been written, as well as an element's essential data after being
-processed.
+By marking the element as filled, it will indicate that this element is
+ready to be flushed, so long as the element is in-order.
 
 Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
 ---
- hw/virtio/virtio.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ hw/virtio/virtio.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index fb6b4ccd83..3ad58100b2 100644
+index 3ad58100b2..0730f26f74 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -1497,7 +1497,7 @@ static void *virtqueue_alloc_element(size_t sz, unsigned out_num, unsigned in_nu
+@@ -872,6 +872,28 @@ static void virtqueue_packed_fill(VirtQueue *vq, const VirtQueueElement *elem,
+     vq->used_elems[idx].ndescs = elem->ndescs;
+ }
  
- static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
- {
--    unsigned int i, head, max;
-+    unsigned int i, j, head, max;
-     VRingMemoryRegionCaches *caches;
-     MemoryRegionCache indirect_desc_cache;
-     MemoryRegionCache *desc_cache;
-@@ -1530,6 +1530,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-         goto done;
-     }
- 
-+    j = vq->last_avail_idx;
++static void virtqueue_ordered_fill(VirtQueue *vq, const VirtQueueElement *elem,
++                                   unsigned int len)
++{
++    unsigned int i = vq->used_idx;
 +
-     if (!virtqueue_get_head(vq, vq->last_avail_idx++, &head)) {
-         goto done;
-     }
-@@ -1621,6 +1623,12 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-         elem->in_sg[i] = iov[out_num + i];
-     }
- 
-+    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-+        vq->used_elems[j].index = elem->index;
-+        vq->used_elems[j].len = elem->len;
-+        vq->used_elems[j].ndescs = elem->ndescs;
++    /* Search for element in vq->used_elems */
++    while (i != vq->last_avail_idx) {
++        /* Found element, set length and mark as filled */
++        if (vq->used_elems[i].index == elem->index) {
++            vq->used_elems[i].len = len;
++            vq->used_elems[i].filled = true;
++            break;
++        }
++
++        i += vq->used_elems[i].ndescs;
++
++        if (i >= vq->vring.num) {
++            i -= vq->vring.num;
++        }
 +    }
++}
 +
-     vq->inuse++;
+ static void virtqueue_packed_fill_desc(VirtQueue *vq,
+                                        const VirtQueueElement *elem,
+                                        unsigned int idx,
+@@ -922,7 +944,9 @@ void virtqueue_fill(VirtQueue *vq, const VirtQueueElement *elem,
+         return;
+     }
  
-     trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
-@@ -1749,6 +1757,13 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
- 
-     elem->index = id;
-     elem->ndescs = (desc_cache == &indirect_desc_cache) ? 1 : elem_entries;
-+
-+    if (virtio_vdev_has_feature(vdev, VIRTIO_F_IN_ORDER)) {
-+        vq->used_elems[vq->last_avail_idx].index = elem->index;
-+        vq->used_elems[vq->last_avail_idx].len = elem->len;
-+        vq->used_elems[vq->last_avail_idx].ndescs = elem->ndescs;
-+    }
-+
-     vq->last_avail_idx += elem->ndescs;
-     vq->inuse += elem->ndescs;
- 
+-    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
++    if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_IN_ORDER)) {
++        virtqueue_ordered_fill(vq, elem, len);
++    } else if (virtio_vdev_has_feature(vq->vdev, VIRTIO_F_RING_PACKED)) {
+         virtqueue_packed_fill(vq, elem, len, idx);
+     } else {
+         virtqueue_split_fill(vq, elem, len, idx);
 -- 
 2.39.3
 
