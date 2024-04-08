@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB87A89CB31
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:53:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B860289CB1F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:51:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt81-00021G-5v; Mon, 08 Apr 2024 13:49:57 -0400
+	id 1rtt82-00021j-Uj; Mon, 08 Apr 2024 13:49:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7z-000211-DO
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:55 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+ id 1rtt81-00021J-1a
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:57 -0400
+Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7x-0003eO-Nw
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:55 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-5dbcfa0eb5dso3423624a12.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:53 -0700 (PDT)
+ id 1rtt7y-0003eZ-Vx
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:56 -0400
+Received: by mail-pj1-x1035.google.com with SMTP id
+ 98e67ed59e1d1-2a559928f46so356889a91.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598592; x=1713203392; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598594; x=1713203394; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dcOly76/DhggOn/gIOyjbUFt0Yi/pTy/JSDCl4K3h8A=;
- b=fe7aSgb4tOoRph5PuEeOTEVxldxZW8mMFcw3oObh7JhdNTA/tL1QquXF3rCmdVjd+D
- yHutsxrT2CxlPbwtXF4buIk1xQ5zjJs0hSI3Me3gOxkAFJh0VZ/pn5dbpanTbnt8r+o8
- AcrNVhmjDWTBF7qWn1tUDgUPpUhlIISqbselKydfIgCU4LFMpqvyhApxW/HwpP6U/rUO
- RTiqCLLP2s2Op+8/gmngKpecJj+DTCk6u+Xjx+Vy/kGkfkoyrh8NRiaaOebF4qcd8G4Q
- MobCYRCwHKp8FIp6PYG0uhsCfuJ16+ANk1wI6DQqCxlSe51W4KfYsfRXm5AWH44HwJkS
- yxhQ==
+ bh=cRQqZ9oBK6iehJFrs+uDcTw60o+LKkDegjDNYSUR+vc=;
+ b=HGCQM44MjAuwF3wUiEPfynqh9i3FG6wxDFLiimmfFGg3Sshza/iP/FolAFTKbRtmAG
+ GDRSb/kr4CXjZOChbGkgSSs4MLEUPBcJwfwCmuO4CJC4HsQQjFLMOG0g2u6BJb0sxVbn
+ 7Vxafz1pr+uCl7FdvVPO5FWnT6s+0UW1DjdpMd5SBwwaDe90Cq8hbcGRkBpyJ11n13x1
+ ZGoS+wLtAxlLvUntCQfpu0/NaXlyuMTbO+4iPLb6CWKjYw3G23H6cTgbW11z29tBldTy
+ LfpMW0dcvuU7EBi4a7X2Em/PeqkoX7udUDxLBOXrbXa0aw/2Rz5KpWE6s+vY/dgIni7N
+ Ugqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598592; x=1713203392;
+ d=1e100.net; s=20230601; t=1712598594; x=1713203394;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dcOly76/DhggOn/gIOyjbUFt0Yi/pTy/JSDCl4K3h8A=;
- b=r/k5FpphgkGC2Ayr+PYaKoyzK4vUZA59r/POT5XPOgktTvGUwK4f7gLTDmGcVzTaLo
- AL2R0mrCur8gbJRfq7t/daarYViXsw+ZP1NnpOccrGWmSw8AhANHgwP9/CLKA6PUcuCv
- LJ03cHmSIRthXOIq5FzX/4KPAfsdFVjd9D2Lw6/dpplo01fnzGkrOPyYtxHG0/ehkssy
- Cm1zXqCji/VOYDjxjUvXsk/NvgoEIgNma2hnDntApLRylMoCOGI4WPaq63B3+YP/iIH/
- j6f4VDls+vtoIZaAAOC8nY6uavY+D/SEO7uS9s4AfmpJCCqRH2Ba/ththKfNYVFBDQjD
- ejlw==
-X-Gm-Message-State: AOJu0YxtIybQyYmD38ZdBwxNlzsob4t2iP23PaU5K8hseBUE8ECIFwfX
- vM3/aZCPvStDU5sPdpn6R2nsANsxbWTbg0Jhs1M76ogEkplfImZ4MTW249r6L+QoLp4MmafCkQV
- i
-X-Google-Smtp-Source: AGHT+IFiZwCw7WInyBhBXyvOvlay8fXeihUZXA0Y5DtaKagZLzKhRnvNZQDkGDWgWSnhQm/l6qlqUA==
-X-Received: by 2002:a17:90a:1b8a:b0:2a2:5ef8:ae81 with SMTP id
- w10-20020a17090a1b8a00b002a25ef8ae81mr6960836pjc.3.1712598592323; 
- Mon, 08 Apr 2024 10:49:52 -0700 (PDT)
+ bh=cRQqZ9oBK6iehJFrs+uDcTw60o+LKkDegjDNYSUR+vc=;
+ b=wkpcKaYZMj/n+ZQ7sHT+2x+q2lVkceCaLVLfltHe97t2HG/myTeVwyVEU4qMHeFrnm
+ bQ0jDdy9C28ymwyrOmW5wLrJ+nWNV4PYHvmOPKZQ2rSygWSJFatY8h1ZxyKrVIMw789i
+ ydghdu2C74hYfjAjQp/uZtCOAHLqkF/vHR9aBaVduDL4Bye5enRuI/oQkHW59eeFQfEu
+ JnI392Jp1CTxk7DeC4PpLiTYs/ZuAbN6Ft7a6va4wKkMW2+2jT68V8JsZ7+QGwtwlrrT
+ 82wqq9QHH5Kh5sEuygrGF8KpTTwC2U8ap6tOMUDt+5qTpKNYuSqXRy3wuDqyRm3NCzpf
+ q70w==
+X-Gm-Message-State: AOJu0Yzl1tzvEaA/AmaPPW74gH+SacE+V/l9DODXxdx1oRfcPRt3EKFr
+ zH1pjC/GzHSjcUtBm3G96xxLYvx4/6GtzEM1tAX/I9S3+2JSt0RuS7pmyyQXhPXqD1TRZwQ3jcH
+ K
+X-Google-Smtp-Source: AGHT+IHY/uyeF+5qClnPaueU6w0Sqq2uwjffvq2z772WNcRJTTx0YDS6sUwUuqaSgAi5BRXu4INeMw==
+X-Received: by 2002:a17:90b:4a09:b0:2a5:1e47:a927 with SMTP id
+ kk9-20020a17090b4a0900b002a51e47a927mr3067743pjb.5.1712598593724; 
+ Mon, 08 Apr 2024 10:49:53 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.51
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:51 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zack Buhman <zack@buhman.org>, Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PULL 14/35] target/sh4: add missing CHECK_NOT_DELAY_SLOT
-Date: Mon,  8 Apr 2024 07:49:08 -1000
-Message-Id: <20240408174929.862917-15-richard.henderson@linaro.org>
+Cc: Keith Packard <keithp@keithp.com>
+Subject: [PULL 15/35] target/m68k: Map FPU exceptions to FPSR register
+Date: Mon,  8 Apr 2024 07:49:09 -1000
+Message-Id: <20240408174929.862917-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1035;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1035.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,53 +92,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zack Buhman <zack@buhman.org>
+From: Keith Packard <keithp@keithp.com>
 
-CHECK_NOT_DELAY_SLOT is correctly applied to the branch-related
-instructions, but not to the PC-relative mov* instructions.
+Add helpers for reading/writing the 68881 FPSR register so that
+changes in floating point exception state can be seen by the
+application.
 
-I verified the existence of an illegal slot exception on a SH7091 when
-any of these instructions are attempted inside a delay slot.
+Call these helpers in pre_load/post_load hooks to synchronize
+exception state.
 
-This also matches the behavior described in the SH-4 ISA manual.
-
-Signed-off-by: Zack Buhman <zack@buhman.org>
+Signed-off-by: Keith Packard <keithp@keithp.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240407150705.5965-1-zack@buhman.org>
+Message-Id: <20230803035231.429697-1-keithp@keithp.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewd-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
- target/sh4/translate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ target/m68k/cpu.h        |  3 +-
+ target/m68k/helper.h     |  2 ++
+ target/m68k/cpu.c        | 12 +++++--
+ target/m68k/fpu_helper.c | 72 ++++++++++++++++++++++++++++++++++++++++
+ target/m68k/helper.c     |  4 +--
+ target/m68k/translate.c  |  4 +--
+ 6 files changed, 90 insertions(+), 7 deletions(-)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index 6643c14dde..ebb6c901bf 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -523,6 +523,7 @@ static void _decode_opc(DisasContext * ctx)
-         tcg_gen_movi_i32(REG(B11_8), B7_0s);
-         return;
-     case 0x9000: /* mov.w @(disp,PC),Rn */
-+        CHECK_NOT_DELAY_SLOT
-         {
-             TCGv addr = tcg_constant_i32(ctx->base.pc_next + 4 + B7_0 * 2);
-             tcg_gen_qemu_ld_i32(REG(B11_8), addr, ctx->memidx,
-@@ -530,6 +531,7 @@ static void _decode_opc(DisasContext * ctx)
-         }
-         return;
-     case 0xd000: /* mov.l @(disp,PC),Rn */
-+        CHECK_NOT_DELAY_SLOT
-         {
-             TCGv addr = tcg_constant_i32((ctx->base.pc_next + 4 + B7_0 * 4) & ~3);
-             tcg_gen_qemu_ld_i32(REG(B11_8), addr, ctx->memidx,
-@@ -1236,6 +1238,7 @@ static void _decode_opc(DisasContext * ctx)
-         }
-         return;
-     case 0xc700: /* mova @(disp,PC),R0 */
-+        CHECK_NOT_DELAY_SLOT
-         tcg_gen_movi_i32(REG(0), ((ctx->base.pc_next & 0xfffffffc) +
-                                   4 + B7_0 * 4) & ~3);
-         return;
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index 346427e144..e184239a81 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -199,7 +199,8 @@ void cpu_m68k_set_ccr(CPUM68KState *env, uint32_t);
+ void cpu_m68k_set_sr(CPUM68KState *env, uint32_t);
+ void cpu_m68k_restore_fp_status(CPUM68KState *env);
+ void cpu_m68k_set_fpcr(CPUM68KState *env, uint32_t val);
+-
++uint32_t cpu_m68k_get_fpsr(CPUM68KState *env);
++void cpu_m68k_set_fpsr(CPUM68KState *env, uint32_t val);
+ 
+ /*
+  * Instead of computing the condition codes after each m68k instruction,
+diff --git a/target/m68k/helper.h b/target/m68k/helper.h
+index 2bbe0dc032..95aa5e53bb 100644
+--- a/target/m68k/helper.h
++++ b/target/m68k/helper.h
+@@ -54,6 +54,8 @@ DEF_HELPER_4(fsdiv, void, env, fp, fp, fp)
+ DEF_HELPER_4(fddiv, void, env, fp, fp, fp)
+ DEF_HELPER_4(fsgldiv, void, env, fp, fp, fp)
+ DEF_HELPER_FLAGS_3(fcmp, TCG_CALL_NO_RWG, void, env, fp, fp)
++DEF_HELPER_2(set_fpsr, void, env, i32)
++DEF_HELPER_1(get_fpsr, i32, env)
+ DEF_HELPER_FLAGS_2(set_fpcr, TCG_CALL_NO_RWG, void, env, i32)
+ DEF_HELPER_FLAGS_2(ftst, TCG_CALL_NO_RWG, void, env, fp)
+ DEF_HELPER_3(fconst, void, env, fp, i32)
+diff --git a/target/m68k/cpu.c b/target/m68k/cpu.c
+index 7c8efbb42c..df49ff1880 100644
+--- a/target/m68k/cpu.c
++++ b/target/m68k/cpu.c
+@@ -390,12 +390,19 @@ static const VMStateDescription vmstate_freg = {
+     }
+ };
+ 
++static int fpu_pre_save(void *opaque)
++{
++    M68kCPU *s = opaque;
++
++    s->env.fpsr = cpu_m68k_get_fpsr(&s->env);
++    return 0;
++}
++
+ static int fpu_post_load(void *opaque, int version)
+ {
+     M68kCPU *s = opaque;
+ 
+-    cpu_m68k_restore_fp_status(&s->env);
+-
++    cpu_m68k_set_fpsr(&s->env, s->env.fpsr);
+     return 0;
+ }
+ 
+@@ -404,6 +411,7 @@ const VMStateDescription vmmstate_fpu = {
+     .version_id = 1,
+     .minimum_version_id = 1,
+     .needed = fpu_needed,
++    .pre_save = fpu_pre_save,
+     .post_load = fpu_post_load,
+     .fields = (const VMStateField[]) {
+         VMSTATE_UINT32(env.fpcr, M68kCPU),
+diff --git a/target/m68k/fpu_helper.c b/target/m68k/fpu_helper.c
+index ab120b5f59..8314791f50 100644
+--- a/target/m68k/fpu_helper.c
++++ b/target/m68k/fpu_helper.c
+@@ -164,6 +164,78 @@ void HELPER(set_fpcr)(CPUM68KState *env, uint32_t val)
+     cpu_m68k_set_fpcr(env, val);
+ }
+ 
++/* Convert host exception flags to cpu_m68k form.  */
++static int cpu_m68k_exceptbits_from_host(int host_bits)
++{
++    int target_bits = 0;
++
++    if (host_bits & float_flag_invalid) {
++        target_bits |= 0x80;
++    }
++    if (host_bits & float_flag_overflow) {
++        target_bits |= 0x40;
++    }
++    if (host_bits & (float_flag_underflow | float_flag_output_denormal)) {
++        target_bits |= 0x20;
++    }
++    if (host_bits & float_flag_divbyzero) {
++        target_bits |= 0x10;
++    }
++    if (host_bits & float_flag_inexact) {
++        target_bits |= 0x08;
++    }
++    return target_bits;
++}
++
++/* Convert cpu_m68k exception flags to target form.  */
++static int cpu_m68k_exceptbits_to_host(int target_bits)
++{
++    int host_bits = 0;
++
++    if (target_bits & 0x80) {
++        host_bits |= float_flag_invalid;
++    }
++    if (target_bits & 0x40) {
++        host_bits |= float_flag_overflow;
++    }
++    if (target_bits & 0x20) {
++        host_bits |= float_flag_underflow;
++    }
++    if (target_bits & 0x10) {
++        host_bits |= float_flag_divbyzero;
++    }
++    if (target_bits & 0x08) {
++        host_bits |= float_flag_inexact;
++    }
++    return host_bits;
++}
++
++uint32_t cpu_m68k_get_fpsr(CPUM68KState *env)
++{
++    int host_flags = get_float_exception_flags(&env->fp_status);
++    int target_flags = cpu_m68k_exceptbits_from_host(host_flags);
++    int except = (env->fpsr & ~(0xf8)) | target_flags;
++    return except;
++}
++
++uint32_t HELPER(get_fpsr)(CPUM68KState *env)
++{
++    return cpu_m68k_get_fpsr(env);
++}
++
++void cpu_m68k_set_fpsr(CPUM68KState *env, uint32_t val)
++{
++    env->fpsr = val;
++
++    int host_flags = cpu_m68k_exceptbits_to_host((int) env->fpsr);
++    set_float_exception_flags(host_flags, &env->fp_status);
++}
++
++void HELPER(set_fpsr)(CPUM68KState *env, uint32_t val)
++{
++    cpu_m68k_set_fpsr(env, val);
++}
++
+ #define PREC_BEGIN(prec)                                        \
+     do {                                                        \
+         FloatX80RoundPrec old =                                 \
+diff --git a/target/m68k/helper.c b/target/m68k/helper.c
+index 1a475f082a..7a91f33b17 100644
+--- a/target/m68k/helper.c
++++ b/target/m68k/helper.c
+@@ -87,7 +87,7 @@ static int m68k_fpu_gdb_get_reg(CPUState *cs, GByteArray *mem_buf, int n)
+     case 8: /* fpcontrol */
+         return gdb_get_reg32(mem_buf, env->fpcr);
+     case 9: /* fpstatus */
+-        return gdb_get_reg32(mem_buf, env->fpsr);
++        return gdb_get_reg32(mem_buf, cpu_m68k_get_fpsr(env));
+     case 10: /* fpiar, not implemented */
+         return gdb_get_reg32(mem_buf, 0);
+     }
+@@ -109,7 +109,7 @@ static int m68k_fpu_gdb_set_reg(CPUState *cs, uint8_t *mem_buf, int n)
+         cpu_m68k_set_fpcr(env, ldl_p(mem_buf));
+         return 4;
+     case 9: /* fpstatus */
+-        env->fpsr = ldl_p(mem_buf);
++        cpu_m68k_set_fpsr(env, ldl_p(mem_buf));
+         return 4;
+     case 10: /* fpiar, not implemented */
+         return 4;
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 6ae3df43bc..8a194f2f21 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -4686,7 +4686,7 @@ static void gen_load_fcr(DisasContext *s, TCGv res, int reg)
+         tcg_gen_movi_i32(res, 0);
+         break;
+     case M68K_FPSR:
+-        tcg_gen_ld_i32(res, tcg_env, offsetof(CPUM68KState, fpsr));
++        gen_helper_get_fpsr(res, tcg_env);
+         break;
+     case M68K_FPCR:
+         tcg_gen_ld_i32(res, tcg_env, offsetof(CPUM68KState, fpcr));
+@@ -4700,7 +4700,7 @@ static void gen_store_fcr(DisasContext *s, TCGv val, int reg)
+     case M68K_FPIAR:
+         break;
+     case M68K_FPSR:
+-        tcg_gen_st_i32(val, tcg_env, offsetof(CPUM68KState, fpsr));
++        gen_helper_set_fpsr(tcg_env, val);
+         break;
+     case M68K_FPCR:
+         gen_helper_set_fpcr(tcg_env, val);
 -- 
 2.34.1
 
