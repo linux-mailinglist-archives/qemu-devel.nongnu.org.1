@@ -2,97 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFE589B9DB
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DB689B9F7
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:15:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtk6E-0001gj-16; Mon, 08 Apr 2024 04:11:30 -0400
+	id 1rtk9n-0002kD-3N; Mon, 08 Apr 2024 04:15:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rtk6B-0001gA-8q
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:11:27 -0400
-Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1rtk69-0007dF-J0
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:11:26 -0400
-Received: by mail-ot1-x32a.google.com with SMTP id
- 46e09a7af769-6ea1ef7d234so83010a34.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 01:11:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1712563883; x=1713168683;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=abxadZhVJiYA+6AGhau2X9pVDfQcCNTlNle+5WdTacE=;
- b=SFUD+AHupIQevrYJvRH1bGaqEqrsksF/x9qzCxfM2phzUda7TCyyQVpaimihPdAwhh
- 7dlvsmJT4efCbvOt3m/pNI9of6wH8n3egpi2hUOM7nHk6G+E7oUbUt5awyaPy7PPSF/I
- KibBfLdCsUAMsMxjgF9vd8Ec4izndExVcsCauhUXotK6qU5+LJ5nHqYchux2NkmgzrYw
- AIWIY9k6RLGRDx9E5QID8q3yb/gnFC73ZrrMN+g/Mu2yZ9tjl9LOL5bCUkYJmfrhvt01
- 8Z+y8PlKOZ/0ZZ2mRs+5QDC6oY0pm3OBinbCm3Dm7yMZCtrLBxaT+2uVzFaV81/t4zKJ
- aTfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712563883; x=1713168683;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=abxadZhVJiYA+6AGhau2X9pVDfQcCNTlNle+5WdTacE=;
- b=aPIAvozfcaPA9v8DtRf5F7UA4xau1sP4rjxbm44SISaev9DZC5ywswCG9obgsCyAL7
- SOuzMEPX9CGUYBFSLGovk7q93fDfPHKvuiSnJK+b5zFkwSgtx2JSJsmBZpeEBQ0Vt2Xh
- OMd+0d8f62ter0DVux02pi3yxRbZWelG3Q/hy22tKNiICTheE1xYBGAJr8dNsYjqlMhy
- WPAHy4GXmT2vP4GJGt/ZBuEPmwvyrD+C/ZMg4hw9xCrFYki1favRyoeOojd6f7yXdmyI
- IcQa3GsbtwJj0E8WWmTkJxXWwEhoS/QfHB/qd/QIQnnSjAmx6V2lp7tvHEb0QIb/8GP5
- JzpA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWZ6U5hTXyNAZWAXLZ9oWS+1/+AUIR2wYZcAwzQUXlU+AWebQgI35lc8JKuNXdNgPsyIM2QKH7Clgxd+2cxkUYeORIN4wg=
-X-Gm-Message-State: AOJu0YwpcVbaqZIjjFyF/fyIpGdWa8r5hR6OdbFZu6RraGEJui7WswJF
- nQqzEIVNrtbII1zyHmrcnQXEdurwMsOMvAhJxGEySuw1nCHZTG7v5IlbdWBWUa8=
-X-Google-Smtp-Source: AGHT+IGVwDf6hLRsoylqtJsg1QpXLkCeyGGmsWCKVE5hsroL2jxyKNw+NVz3/ZCLZcbUIjr7Iy+MDw==
-X-Received: by 2002:a05:6808:1788:b0:3c5:f4f2:3eb6 with SMTP id
- bg8-20020a056808178800b003c5f4f23eb6mr2544623oib.32.1712563883675; 
- Mon, 08 Apr 2024 01:11:23 -0700 (PDT)
-Received: from [157.82.200.213] ([157.82.200.213])
- by smtp.gmail.com with ESMTPSA id
- k30-20020aa7999e000000b006eb3c2bde43sm5892294pfh.205.2024.04.08.01.11.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Apr 2024 01:11:23 -0700 (PDT)
-Message-ID: <b10e8b4d-b73c-4464-a5e1-883812b40899@daynix.com>
-Date: Mon, 8 Apr 2024 17:11:20 +0900
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rtk9l-0002jz-58
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:15:09 -0400
+Received: from mgamail.intel.com ([192.198.163.10])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rtk9i-00081z-Tf
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:15:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1712564107; x=1744100107;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=rC7Xx4PH74uMcqcgF1eP97UItKcRmNkaeHrgUmBaGyg=;
+ b=carhP693p9MShw1ITjWV41t9NzYwsKmIf9+rf0kdnuc01/xQVc4AB9Y/
+ hJsjcKurxmGiJm688w9KTfTCAuk7P+6GB9eRoAFaUNdCIAar0P89wg1UY
+ 7l7tQOcMzY57nFtRY8gZndvH3+CLI3BSnYfNvT3lyMmskVyJd6j3oy4BJ
+ pRYDBMOqpmGuz9k504cW8NN/7KoHsT/PJYuEfrTmxvcsFy781LI7wZopL
+ DY4jTLziJ+KJm0AiC5fMFMYwc6p4ILMeUovk+qkJ0uMdn5q2LNdfzXQef
+ bdSvpkAGOwhRX2GFsxqyjdvN2JB5qdKkVnJEvS+uqsSHqSOo2BdnpGF0+ Q==;
+X-CSE-ConnectionGUID: QoU1Ct8UTQKxXTH1ec/QmA==
+X-CSE-MsgGUID: IvJ6+jePSbCpvCt8rxa4Xg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="19199654"
+X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="19199654"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Apr 2024 01:15:03 -0700
+X-CSE-ConnectionGUID: 9a3bYI6oRUmyw4J56TjqXQ==
+X-CSE-MsgGUID: +TBlYr4pT4+qDZCpKfYLyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="19845163"
+Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Apr 2024 01:15:00 -0700
+From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+To: qemu-devel@nongnu.org
+Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
+ peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, chao.p.peng@intel.com,
+ Zhenzhong Duan <zhenzhong.duan@intel.com>
+Subject: [PATCH v2 00/10] Add a host IOMMU device abstraction
+Date: Mon,  8 Apr 2024 16:12:20 +0800
+Message-Id: <20240408081230.1030078-1-zhenzhong.duan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 16/20] virtio-net: Do not write hashes to peer buffer
-Content-Language: en-US
-To: Yuri Benditovich <yuri.benditovich@daynix.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Dmitry Fleytman <dmitry.fleytman@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Luigi Rizzo <rizzo@iet.unipi.it>,
- Giuseppe Lettieri <g.lettieri@iet.unipi.it>,
- Vincenzo Maffione <v.maffione@gmail.com>,
- Andrew Melnychenko <andrew@daynix.com>, qemu-devel@nongnu.org
-References: <20240403-rss-v9-0-c6d87e69d38b@daynix.com>
- <20240403-rss-v9-16-c6d87e69d38b@daynix.com>
- <CAOEp5Od=KUTHnikVBA7iWfdFPJ=T7hbJrSu4zwCiB_Q1P-Sz+Q@mail.gmail.com>
- <8010b335-4b46-456e-bf6e-c191cdc34964@daynix.com>
- <CAOEp5OeHJR=EeZ=yLovSD9vUPt-zRNKLo2k_fNZPP3W-eX4Fiw@mail.gmail.com>
- <d2213191-9b16-4716-a311-97751ba670ad@daynix.com>
- <CAOEp5OcNkBr4aRzjFQhgsOTmMmO3aPQH2tQLvGcs__=jUVa5sA@mail.gmail.com>
- <ad692cbf-1963-4051-9b24-50c3599c3f7f@daynix.com>
- <CAOEp5OeNHRdvJ7U2TFs4ZQaNFZHzDg5+_84AfLfb2kDFrfYPGg@mail.gmail.com>
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <CAOEp5OeNHRdvJ7U2TFs4ZQaNFZHzDg5+_84AfLfb2kDFrfYPGg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::32a;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-ot1-x32a.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=192.198.163.10;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.355,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,57 +82,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2024/04/08 17:06, Yuri Benditovich wrote:
-> On Mon, Apr 8, 2024 at 10:57 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>
->> On 2024/04/08 16:54, Yuri Benditovich wrote:
->>> On Mon, Apr 8, 2024 at 10:42 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>
->>>> On 2024/04/08 16:40, Yuri Benditovich wrote:
->>>>> On Mon, Apr 8, 2024 at 4:30 AM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>
->>>>>> On 2024/04/08 7:09, Yuri Benditovich wrote:
->>>>>>> On Wed, Apr 3, 2024 at 2:12 PM Akihiko Odaki <akihiko.odaki@daynix.com> wrote:
->>>>>>>>
->>>>>>>> The peer buffer is qualified with const and not meant to be modified.
->>>>>>>
->>>>>>> IMHO, this buffer is not so 'const' (although the prototype states so),
->>>>>>> it is allocated in net.c
->>>>>>> btw, another procedure in this file also modifies the buffer
->>>>>>> (work_around_broken_dhclient)
->>>>>>
->>>>>> Right but it has a FIXME comment.
->>>>>>
->>>>>>>
->>>>>>>> It also prevents enabling VIRTIO_NET_F_HASH_REPORT for peers without
->>>>>>>> virtio-net header support.
->>>>>>>
->>>>>>> Does it mean _this commit_ prevents enabling VIRTIO_NET_F_HASH_REPORT
->>>>>>> for peers without
->>>>>>> virtio-net header support? Where?
->>>>>>
->>>>>> No, but I meant that this patch fixes such a problem.
->>>>>
->>>>> No, it does not. Such a problem does not exist in the master, the
->>>>> hash_report feature
->>>>> is silently dropped in such case:
->>>>> https://github.com/qemu/qemu/blob/master/hw/net/virtio-net.c#L816
->>>>
->>>> Well, silently dropping VIRTIO_NET_F_HASH_REPORT is not different from
->>>> preventing enabling VIRTIO_NET_F_HASH_REPORT, is it?
->>>>
->>> But how is your patch involved in it? Should this line be removed from
->>> the commit message?
->>
->> In the master, VIRTIO_NET_F_HASH_REPORT is silently dropped, but this
->> patch will change to work without dropping it, which is worth to mention.
-> After applying this series of patches the VIRTIO_NET_F_HASH_REPORT is
-> dropped _the same way_ as in the master
+Based on Joao's suggestion, the iommufd nesting prerequisite series [1]
+is further splitted to host IOMMU device abstract part and vIOMMU
+check part. This series implements the 1st part.
 
-You are right. I forgot that I dropped patch "virtio-net: Do not clear 
-VIRTIO_NET_F_HASH_REPORT" with v7. I'll drop the line in the next 
-version accordingly. Thanks for pointing out that.
+This split also faciliates the dirty tracking series [2] and virtio-iommu
+series [3] to depend on 1st part.
 
-Regards,
-Akihiko Odaki
+The major change in this version is to use QOM, the class tree is as below:
+
+                        HostIOMMUDevice
+                               | .get_host_iommu_info()
+                               |
+                               |
+            .------------------------------------.
+            |                  |                 |
+      HIODLegacyVFIO    [HIODLegacyVDPA]    HIODIOMMUFD
+            | .vdev            | [.vdev]         | .iommufd
+                                                 | .devid
+                                                 | [.ioas_id]
+                                                 | [.attach_hwpt()]
+                                                 | [.detach_hwpt()]
+                                                 |
+                                    .----------------------.
+                                    |                      |
+                           HIODIOMMUFDVFIO         [HIODIOMMUFDVDPA]
+                                    | .vdev                | [.vdev]
+
+* The classes in [] will be implemented in future.
+* .ioas_id, .attach/detach_hwpt() will be implemented in nesting series.
+* .vdev in different class points to different agent device,
+* i.e., for VFIO it points to VFIODevice.
+
+PATCH1-4: Introduce HostIOMMUDevice and its sub classes
+PATCH5-7: Implement get_host_iommu_info() callback
+PATCH8-10: Create HostIOMMUDevice instance and pass to vIOMMU
+
+Qemu code can be found at:
+https://github.com/yiliu1765/qemu/tree/zhenzhong/iommufd_nesting_preq_part1_v2
+
+[1] https://lore.kernel.org/qemu-devel/20240201072818.327930-1-zhenzhong.duan@intel.com/
+[2] https://lore.kernel.org/qemu-devel/20240212135643.5858-1-joao.m.martins@oracle.com/
+[3] https://lore.kernel.org/qemu-devel/20240117080414.316890-1-eric.auger@redhat.com/
+
+Thanks
+Zhenzhong
+
+Changelog:
+v2:
+- use QOM to abstract host IOMMU device and its sub-classes (Cédric)
+- move host IOMMU device creation in attach_device() (Cédric)
+- refine pci_device_set/unset_iommu_device doc futher (Eric)
+- define host IOMMU info format of different backend
+- implement get_host_iommu_info() for different backend (Cédric)
+
+v1:
+- use HostIOMMUDevice handle instead of union in VFIODevice (Eric)
+- change host_iommu_device_init to host_iommu_device_create
+- allocate HostIOMMUDevice in host_iommu_device_create callback
+  and set the VFIODevice base_hdev handle (Eric)
+- refine pci_device_set/unset_iommu_device doc (Eric)
+- use HostIOMMUDevice handle instead of union in VTDHostIOMMUDevice (Eric)
+
+rfcv2:
+- introduce common abstract HostIOMMUDevice and sub struct for different BEs (Eric, Cédric)
+- remove iommufd_device.[ch] (Cédric)
+- remove duplicate iommufd/devid define from VFIODevice (Eric)
+- drop the p in aliased_pbus and aliased_pdevfn (Eric)
+- assert devfn and iommu_bus in pci_device_get_iommu_bus_devfn (Cédric, Eric)
+- use errp in iommufd_device_get_info (Eric)
+- split and simplify cap/ecap check/sync code in intel_iommu.c (Cédric)
+- move VTDHostIOMMUDevice declaration to intel_iommu_internal.h (Cédric)
+- make '(vtd->cap_reg >> 16) & 0x3fULL' a MACRO and add missed '+1' (Cédric)
+- block migration if vIOMMU cap/ecap updated based on host IOMMU cap/ecap
+- add R-B
+
+
+Yi Liu (1):
+  hw/pci: Introduce pci_device_set/unset_iommu_device()
+
+Zhenzhong Duan (9):
+  backends: Introduce abstract HostIOMMUDevice
+  vfio: Introduce HIODLegacyVFIO device
+  backends/iommufd: Introduce abstract HIODIOMMUFD device
+  vfio/iommufd: Introduce HIODIOMMUFDVFIO device
+  vfio: Implement get_host_iommu_info() callback
+  backends/iommufd: Introduce helper function
+    iommufd_backend_get_device_info()
+  backends/iommufd: Implement get_host_iommu_info() callback
+  vfio: Create host IOMMU device instance
+  vfio: Pass HostIOMMUDevice to vIOMMU
+
+ MAINTAINERS                        |  2 +
+ include/hw/pci/pci.h               | 40 +++++++++++++-
+ include/hw/vfio/vfio-common.h      | 23 ++++++++
+ include/sysemu/host_iommu_device.h | 29 ++++++++++
+ include/sysemu/iommufd.h           | 33 ++++++++++++
+ backends/host_iommu_device.c       | 19 +++++++
+ backends/iommufd.c                 | 85 ++++++++++++++++++++++++------
+ hw/pci/pci.c                       | 75 ++++++++++++++++++++++++--
+ hw/vfio/container.c                | 40 +++++++++++++-
+ hw/vfio/iommufd.c                  | 19 ++++++-
+ hw/vfio/pci.c                      | 20 +++++--
+ backends/Kconfig                   |  5 ++
+ backends/meson.build               |  1 +
+ 13 files changed, 364 insertions(+), 27 deletions(-)
+ create mode 100644 include/sysemu/host_iommu_device.h
+ create mode 100644 backends/host_iommu_device.c
+
+-- 
+2.34.1
+
 
