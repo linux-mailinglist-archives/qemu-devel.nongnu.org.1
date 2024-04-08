@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E953E89CB40
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3489CB41
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7y-000201-J9; Mon, 08 Apr 2024 13:49:54 -0400
+	id 1rtt7z-00020W-AO; Mon, 08 Apr 2024 13:49:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7u-0001yR-IJ
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:50 -0400
-Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
+ id 1rtt7v-0001yc-2U
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:51 -0400
+Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7s-0003dG-2s
+ id 1rtt7t-0003dW-DX
  for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:50 -0400
-Received: by mail-pj1-x1034.google.com with SMTP id
- 98e67ed59e1d1-2a484f772e2so1960967a91.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:47 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id
+ d2e1a72fcca58-6ecee5c08e6so4365296b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598586; x=1713203386; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598588; x=1713203388; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RcrZGxEnfZgrLqlhciK4hABUGUNHIg16hIoNjeHOda0=;
- b=BQRaTG9An/Xtzn/H8YzpEfiGRFcqRQeMI8oWvYWFQsjIrgsCCpXvm8OyOEepZM8xCf
- lfTwq5/R5zbIA0ju5yZ5HCIqEpkBwpV0QsVYCF3baPE8jVzP+iGeRceooSKL/YF0ET2O
- 6yDu9BCXKpXKB2DcFuMQmlmdShuBxJa8ZQQvAiUieLb7O3jT0Hj4MIeUWZ3pjrMmXYMy
- 1WwCh6H9ca/pYOGjo8UjdcOpfEQKIaWQXKo+CcPF3Ndkf7Hd2uwbGmEv7unDwJuM3VlU
- m35+MOupQWeuhNXMLkjwGNLj6G/oxmpRye5pNxtgI70zZ41NpCXq2hLdW2wZGaLrdpOX
- yc+g==
+ bh=RlIBc4Oj7n9g5uv4QxhhxdXhuzA6b3JMjencPErHv6I=;
+ b=E47VQeJXl4sKrC7f9Q4uB7mp8pi7Bsu6E7d5KVPy1einLWsbkB5tJVSW9IYtnHYKJV
+ wvlVcwd6iKHofNeXZGZ7r5Nq+nN/fOBU+PYHovit2ubt2iDnu52KKjxo62kkcPJ7Fs4z
+ PzA3os+WXdQoboHnlBI+w1cOlMVNagU0QdQHOizyqcMAoxUqL98nib5ra5BriPpPfOwp
+ jUy/+RTwkXC8Y9DbRvZGQ/G9hCdMJiJcQKw9YoxzwN7nlTPHq8m4vyps0vPePzxW7XgD
+ ZTkFDthPYpN6vEzfzf2yy4GUjkNWddX9uq1r+0VNzr5lcSANscJ4EMXkThQF04w045kX
+ hyFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598586; x=1713203386;
+ d=1e100.net; s=20230601; t=1712598588; x=1713203388;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RcrZGxEnfZgrLqlhciK4hABUGUNHIg16hIoNjeHOda0=;
- b=ijPYaoC/qVYlxjwFFhIdp0bale6xYbYBwnKp1wKc6JQ1MuNfnJBQtMKIpX/nujmED4
- BSlxKJ1PxqOrBGaaTIZFx3eZfQAmmcK+MxzUx+P1PD6w1hdfFCNWs4mWZ3Leb9UBO9jx
- +hveoJDIhkrzT/+whi+DlASUz9alWYpjkXQWFl3hF0LKzehwmGPPS6Q0mhgJE+/xnHgn
- ChMPLuKeD6bYCjWw26SSftj/X+cvSFZeoLNVmplSxmfEmVaZK8ZtcdJ09MAm+yw07AM/
- DszjRjSjkYW1T64RMZAV8HE7YEoPFBK8C2VELV+fOE43+QgAGIZ7DpLbfNVmgiMfaaXf
- k91Q==
-X-Gm-Message-State: AOJu0YyquHiu6N4Ex5z0wwiEmYfS2l1AdQKKAnuXhIQUNsE8gGuAEkzy
- jC+9ZY4LoAhW9VF0OtkULJLjORanPYTz4S5Ex4djfWcQt33AduSRyHxC7ndiLjHXEKe8MT/aF99
- N
-X-Google-Smtp-Source: AGHT+IHHMAKZhCZWVrABnWzz2ncsXhiolw8U1Q0qx5riK6QRc55ryS5wzY8nBgyntxp93aY6gmLegA==
-X-Received: by 2002:a17:90b:380e:b0:2a2:d10d:d30d with SMTP id
- mq14-20020a17090b380e00b002a2d10dd30dmr9806268pjb.26.1712598586570; 
- Mon, 08 Apr 2024 10:49:46 -0700 (PDT)
+ bh=RlIBc4Oj7n9g5uv4QxhhxdXhuzA6b3JMjencPErHv6I=;
+ b=e8b89/gL0RngVBrK6vc7lrRicZvzc+I+QdxXuLn8/vHvNz+f8VTBIfTAVQMD4Reenr
+ MtPChRoxB4b+O50CES+sLDZ8Q9kzDnUJ24wG75C0KfvBW1/LPT8nAVbEL/NLocxFHBBy
+ 2lGqP3KpGDaa7lcBGiIXDcg/yXpFDsOXQbXPTCLit4YQvh8d+tIeKvboXfdDeN22VotV
+ en6eUVjJU93y+xIijlYh9sGsIpGuZSDsPFV5JU5f0iagjz8zQWuxpKXZnqSpfn74XUFN
+ iF1q4uxuxlvqnyDLtJ1PnMOSlDI+Ufq2cmmu6Wao1J06MNVxjvEWg9E+JQ3D4864nPFe
+ fLhQ==
+X-Gm-Message-State: AOJu0Yw5ezQhqI6B1+2D/Z8gzJhJeptaeyUBD1rrlHCo0AuWurkuU/Hd
+ rwnH8GwSLvo2pudBjD71jiW0rEoAyvoDjrCdruTB2sJKZhGQCbjAni/nrPVzI3DSA8THJ/4zCIn
+ C
+X-Google-Smtp-Source: AGHT+IF81M8ycils9Js378ZIl1yOXofWx8f2e+ggyjSFB+43Ih1fShZmf1Nkj/1Nu0fe1Lu6UjSYyA==
+X-Received: by 2002:a05:6a21:2d88:b0:1a7:7358:f10d with SMTP id
+ ty8-20020a056a212d8800b001a77358f10dmr3677972pzb.16.1712598587836; 
+ Mon, 08 Apr 2024 10:49:47 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.45
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:46 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Zack Buhman <zack@buhman.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/35] target/sh4: mac.w: memory accesses are 16-bit words
-Date: Mon,  8 Apr 2024 07:49:04 -1000
-Message-Id: <20240408174929.862917-11-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 11/35] target/sh4: Merge mach and macl into a union
+Date: Mon,  8 Apr 2024 07:49:05 -1000
+Message-Id: <20240408174929.862917-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1034;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1034.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,69 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zack Buhman <zack@buhman.org>
+Allow host access to the entire 64-bit accumulator.
 
-Before this change, executing a code sequence such as:
-
-           mova   tblm,r0
-           mov    r0,r1
-           mova   tbln,r0
-           clrs
-           clrmac
-           mac.w  @r0+,@r1+
-           mac.w  @r0+,@r1+
-
-           .align 4
-  tblm:    .word  0x1234
-           .word  0x5678
-  tbln:    .word  0x9abc
-           .word  0xdefg
-
-Does not result in correct behavior:
-
-Expected behavior:
-  first macw : macl = 0x1234 * 0x9abc + 0x0
-               mach = 0x0
-
-  second macw: macl = 0x5678 * 0xdefg + 0xb00a630
-               mach = 0x0
-
-Observed behavior (qemu-sh4eb, prior to this commit):
-
-  first macw : macl = 0x5678 * 0xdefg + 0x0
-               mach = 0x0
-
-  second macw: (unaligned longword memory access, SIGBUS)
-
-Various SH-4 ISA manuals also confirm that `mac.w` is a 16-bit word memory
-access, not a 32-bit longword memory access.
-
-Signed-off-by: Zack Buhman <zack@buhman.org>
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240402093756.27466-1-zack@buhman.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/sh4/translate.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/sh4/cpu.h | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index a9b1bc7524..6643c14dde 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -816,10 +816,10 @@ static void _decode_opc(DisasContext * ctx)
-             TCGv arg0, arg1;
-             arg0 = tcg_temp_new();
-             tcg_gen_qemu_ld_i32(arg0, REG(B7_4), ctx->memidx,
--                                MO_TESL | MO_ALIGN);
-+                                MO_TESW | MO_ALIGN);
-             arg1 = tcg_temp_new();
-             tcg_gen_qemu_ld_i32(arg1, REG(B11_8), ctx->memidx,
--                                MO_TESL | MO_ALIGN);
-+                                MO_TESW | MO_ALIGN);
-             gen_helper_macw(tcg_env, arg0, arg1);
-             tcg_gen_addi_i32(REG(B11_8), REG(B11_8), 2);
-             tcg_gen_addi_i32(REG(B7_4), REG(B7_4), 2);
+diff --git a/target/sh4/cpu.h b/target/sh4/cpu.h
+index 9211da6bde..d928bcf006 100644
+--- a/target/sh4/cpu.h
++++ b/target/sh4/cpu.h
+@@ -155,12 +155,22 @@ typedef struct CPUArchState {
+     uint32_t pc;                /* program counter */
+     uint32_t delayed_pc;        /* target of delayed branch */
+     uint32_t delayed_cond;      /* condition of delayed branch */
+-    uint32_t mach;              /* multiply and accumulate high */
+-    uint32_t macl;              /* multiply and accumulate low */
+     uint32_t pr;                /* procedure register */
+     uint32_t fpscr;             /* floating point status/control register */
+     uint32_t fpul;              /* floating point communication register */
+ 
++    /* multiply and accumulate: high, low and combined. */
++    union {
++        uint64_t mac;
++        struct {
++#if HOST_BIG_ENDIAN
++            uint32_t mach, macl;
++#else
++            uint32_t macl, mach;
++#endif
++        };
++    };
++
+     /* float point status register */
+     float_status fp_status;
+ 
 -- 
 2.34.1
 
