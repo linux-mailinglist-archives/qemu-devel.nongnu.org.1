@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786B189C90E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B8489C913
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:56:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtrKl-0002MO-Da; Mon, 08 Apr 2024 11:54:59 -0400
+	id 1rtrLG-0004QF-UU; Mon, 08 Apr 2024 11:55:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtrKj-0002L3-HL
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:57 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtrL7-0004DX-Lc
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:55:21 -0400
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtrKg-0001u1-Uz
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:57 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a51a80b190bso222074666b.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:54:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtrL5-00026N-5U
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:55:20 -0400
+Received: by mail-lj1-x229.google.com with SMTP id
+ 38308e7fff4ca-2d4360ab3daso53817061fa.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:55:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712591692; x=1713196492; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712591717; x=1713196517; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=MozwskhIRuvTdoliWvz2Vl3+dmvsyC6Bfz7av78LLPg=;
- b=HPUrCKJGrX2p0no9lmBSQN6mwfyaah+QHHwOFBpmoUyU0o6fml7flg7ItMh4HM0C9I
- sgplOXsw87njerNwV9ZwUDqkD3wAzU42K+NN9ayRLwoo6EmWYw/6rxXm5wumV2/DB6Sg
- jEBjo0+mKSbylvCbkzQ1txKoZsGcTttb/buJl/FnytFVd6JXPUmnuUnOVVkm7pKDgNI5
- bThoDCGASbjEJ1cyshV+ssBPbPUkQ5h9ypYjASD3o+yBJKu/TFEKcgMy/cVrU8/SpbGx
- 7wYYHX+DSscT0+6nzsHX583Rt17PhKEJY9B+luKFOC2LW6sLPWoEJhJHccf7GozV+Z7x
- GwfQ==
+ bh=sOxiTqJ7VdfGcmdxVDAvJWC19Po+WGBi2iDkcGilA9A=;
+ b=mGonVaSq1VZSghoYKxwlao5LC6CnWHC6QQLzLtwGvEjdX9jBMNU0EElGJHX28HkVpF
+ jx2nVwqvNx0XRev0Q/mXGKzNTm42ck5ImO0fXhLf2aXWlNKZNjf9JQ3MQgaXTMSWYQFd
+ x5iWGZlec06s1xYCfXyF3SkTl8icmMu7ZuG3AQCwLib2VufdpB9ft1MGc3lv0xhv3m7R
+ fDkdqZ8/3tzA8w4ksH6oc6YnAhvRbtOstGBwxs7CXCVTdf7gtaZdP7r17+4HbxsYNzJL
+ Bslg/l9fEv++0voPu3aEnMdXKc4XcaX3KNiJbhO8u3/x3QBFLX0UrL9UaX0Qj5hooaXr
+ YSGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712591692; x=1713196492;
+ d=1e100.net; s=20230601; t=1712591717; x=1713196517;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MozwskhIRuvTdoliWvz2Vl3+dmvsyC6Bfz7av78LLPg=;
- b=cup94YYHEVpUD6W2n6+Kk3oN1GnCUroxZ9reNVKF07gCLmF4i9BA5oafwJI1cCspFm
- 6/RpXOrNbeNqGORA3/kumr0d2qOk1yMJEgZ6JRkb5UnT6yFyvRI6EtQ7CpJuv7kQnvAW
- q4uVaqxACOnwVI+hEXoOiSOhF9lGOOS5OY280rstJqyFONiyKfpFA4IZ3aYKJc26rMeh
- rQYaKtkfiDHe2Te+PIZI+HZrtEk2B1dwGuW1MHEy1NjiQcod+0V749Drqyd8Zr3nOV1M
- yZn74Cldtawgj72h1Kv3acPqU+aYgkbdMRTOfydGJRLojDcSHh8UfnBS3mXrEV2VHlAD
- Nt5A==
+ bh=sOxiTqJ7VdfGcmdxVDAvJWC19Po+WGBi2iDkcGilA9A=;
+ b=H7UzT9zkz88H0qxRfOYPu7zSBjPQk0bHJ42l0VCxLJHNc/ef9ylDIlJzuYbK6T6Hoe
+ uwzD0SNceTsQofOowU4nzoA7Oneb9aVUAiUlWX3MpjxrnysxjjYEIZSKaOZBgOryktKZ
+ sytNxdnm5K09xc2auseZ9qgQlwBseJ75BaC/W0RV75r+dZpZiq6jW3Ym7cZ+WeWVRZoA
+ gCkRuF4uCFWCuQzRGeM4J0yiLW5kaPINgqU95KDWSsVEVx6LS5J/UDFjs0YG6pt4L5DL
+ fE+bool4ee3k8FLR7GrfkNlSI6um7H9Kt9pkL3s2qRgydaMbKYW7REI96oTjNsItC6/n
+ INYg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCX1l2G+Lp2CNJEn7y0buV3I+I/g029usD0xzOedPY40U0ZMA/3gKolzORvIlt+gj1X1MBf0lHVAhsr+JuwduroIf6rINwc=
-X-Gm-Message-State: AOJu0YxzPF4HQIMZ1AduTWA+b0nEH2GokxXEd/RDb+0A80vYbm3/5J28
- IeAf3daCM7+Y7LaHspB8gfhNDk3jpnysr6t7uHm6tY1kcHRg6S/9vogkWZEpLSl22HLxhg6azxz
- 7
-X-Google-Smtp-Source: AGHT+IFRMHpchFluY03ZTJhNvUlkxn9E4odT7gny37sTu+wGzZUAF5U9bJzFU1hp7uWRPRXSlBB8cw==
-X-Received: by 2002:a50:8709:0:b0:56e:2a05:a0e3 with SMTP id
- i9-20020a508709000000b0056e2a05a0e3mr7718475edb.21.1712591692214; 
- Mon, 08 Apr 2024 08:54:52 -0700 (PDT)
+ AJvYcCVVv7WMZowtk+VMzCrvhGZnyXoCEfA4uz1QaedEzOzvMilUwGHDTWDqzvUsb7NQpYtfCcxYzpGoQGpf7u4ZdKge1IZhrIs=
+X-Gm-Message-State: AOJu0Yzy+pUtImWo9hIVyo9AjeAE2D5qyMzE6CDX09made8CAMfKIBMh
+ M6EnUDetneIhRoc6cAi/AUbfql4AaumXOjcd2gIf0V48B5s2Y3BvYj9LkVx8/1nxR8kMM0eIo4t
+ n
+X-Google-Smtp-Source: AGHT+IHIy1E36zOCBLlxRnzK87XRzfRLHHC4SL4u1TMzCMQUWWxZmIrkMleTx3QlINTLNzqF9YSPYg==
+X-Received: by 2002:a2e:9887:0:b0:2d8:180d:a62a with SMTP id
+ b7-20020a2e9887000000b002d8180da62amr5703439ljj.25.1712591717265; 
+ Mon, 08 Apr 2024 08:55:17 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.144.67])
  by smtp.gmail.com with ESMTPSA id
- cn10-20020a0564020caa00b0056e68b14986sm672935edb.29.2024.04.08.08.54.51
+ o13-20020aa7d3cd000000b0056e67aa7118sm775748edr.52.2024.04.08.08.55.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 08 Apr 2024 08:54:51 -0700 (PDT)
-Message-ID: <27454ed8-e32d-4717-bda8-e0576b307494@linaro.org>
-Date: Mon, 8 Apr 2024 17:54:50 +0200
+ Mon, 08 Apr 2024 08:55:16 -0700 (PDT)
+Message-ID: <4f2cc775-3738-4506-953f-dfd1e3a68326@linaro.org>
+Date: Mon, 8 Apr 2024 17:55:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/18] tests: only build plugins if TCG is enabled
+Subject: Re: [PATCH v2 05/18] yank: only build if needed
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20240408155330.522792-1-pbonzini@redhat.com>
- <20240408155330.522792-3-pbonzini@redhat.com>
+ <20240408155330.522792-6-pbonzini@redhat.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240408155330.522792-3-pbonzini@redhat.com>
+In-Reply-To: <20240408155330.522792-6-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::229;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,15 +95,36 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 8/4/24 17:53, Paolo Bonzini wrote:
-> There is no way to use them for testing, if all the available
-> accelerators use hardware virtualization.
+> The yank feature is not used in user emulation.
 > 
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   tests/meson.build | 2 +-
+>   util/meson.build | 2 +-
 >   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/util/meson.build b/util/meson.build
+> index 0ef9886be04..2ad57b10ba2 100644
+> --- a/util/meson.build
+> +++ b/util/meson.build
+> @@ -60,7 +60,6 @@ util_ss.add(files('stats64.c'))
+>   util_ss.add(files('systemd.c'))
+>   util_ss.add(files('transactions.c'))
+>   util_ss.add(files('guest-random.c'))
+> -util_ss.add(files('yank.c'))
+>   util_ss.add(files('int128.c'))
+>   util_ss.add(files('memalign.c'))
+>   util_ss.add(files('interval-tree.c'))
+> @@ -117,6 +116,7 @@ if have_block
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+>       util_ss.add(files('vfio-helpers.c'))
+>       util_ss.add(files('chardev_open.c'))
+>     endif
+> +  util_ss.add(files('yank.c'))
+>   endif
+>   
+>   if cpu == 'aarch64'
 
 
