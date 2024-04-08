@@ -2,73 +2,102 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A20089BA00
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D5589B9F5
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:15:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtkBC-0004E4-8C; Mon, 08 Apr 2024 04:16:40 -0400
+	id 1rtk9D-0002RQ-1D; Mon, 08 Apr 2024 04:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rtkAK-0003UB-GV
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:15:57 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rtk9A-0002R5-OR
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:14:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1rtkAI-00089q-9b
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:15:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712564142; x=1744100142;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=brdfmfoa2727Rep2O7aimUC9ZxCZnVThwz+OaTXE4tU=;
- b=AS4GVMAii4zrtKfKNxW680ydF2A5wAapkGeAlyS5dakgLveKhqQ+eVAj
- 3AwCLDEWYkuftGWWIevbdjeLxUQte/rCo7IiyLegE72PHRi5mjNa7mg+b
- uzfJtM2HUc8Gdd7/aN5YNQgkQoQhD8YYYBsIhY4LGwMUdRZIn2RoJN2Oy
- xUpGaCo/2CbbYpUB/WIQpNVuaM8PQVu9gAwq7fSo2S43eB6NccO+zLD7r
- +W5oN7tQpiXElHN8q05AHSEdRG1RiudmbapYR3ozzkCW2XYUiU5bJapRW
- W8k0RB6WKiUn1l0naLdb0HyOv853FihwilqfiMSd2aMOal+kgGqytb85Y Q==;
-X-CSE-ConnectionGUID: MGDtHaW3TAauZV5e3M2WUw==
-X-CSE-MsgGUID: BYzlxdZFSxqkR1gQiD0pZw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11037"; a="19199771"
-X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="19199771"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2024 01:15:41 -0700
-X-CSE-ConnectionGUID: NsZ77xSCTZupDm0SFEWB4w==
-X-CSE-MsgGUID: 9+J4+smwSGO54IRKr9Cg9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,186,1708416000"; d="scan'208";a="19845225"
-Received: from spr-s2600bt.bj.intel.com ([10.240.192.124])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Apr 2024 01:15:37 -0700
-From: Zhenzhong Duan <zhenzhong.duan@intel.com>
-To: qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, eric.auger@redhat.com,
- peterx@redhat.com, jasowang@redhat.com, mst@redhat.com, jgg@nvidia.com,
- nicolinc@nvidia.com, joao.m.martins@oracle.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Yi Sun <yi.y.sun@linux.intel.com>
-Subject: [PATCH v2 10/10] vfio: Pass HostIOMMUDevice to vIOMMU
-Date: Mon,  8 Apr 2024 16:12:30 +0800
-Message-Id: <20240408081230.1030078-11-zhenzhong.duan@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240408081230.1030078-1-zhenzhong.duan@intel.com>
-References: <20240408081230.1030078-1-zhenzhong.duan@intel.com>
+ (Exim 4.90_1) (envelope-from <sgarzare@redhat.com>)
+ id 1rtk8z-0007uP-5u
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:14:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712564060;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=sBweMdwas2OWMGIoSGIoMabBj9B9MFbzdi8JfWZyJjE=;
+ b=AD3TLakU8Ctd2Bj/v5RR8aUF4ftr7pcxmTiISFQPW1SeDRCCxu+xG3BZIO9X6e2OLzFgnw
+ ekt4EyJec1zBlDk9STV2+SuS6i3+wnOByoJA1UBRrx2wcccme98ZIFD5OS6S1Tcx6U+tfe
+ 6OOdEPRicP+Qfa/Vn7P1sLkLqDPbhzE=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-550-Da82FaFXM_KFy-ZOrfiRmg-1; Mon, 08 Apr 2024 04:14:18 -0400
+X-MC-Unique: Da82FaFXM_KFy-ZOrfiRmg-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-6993bd297ebso43106026d6.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 01:14:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712564058; x=1713168858;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=sBweMdwas2OWMGIoSGIoMabBj9B9MFbzdi8JfWZyJjE=;
+ b=o7RFdC0xaV6Gjk0g9J7jF6VTFZhFoe1yiJN9Qa4JT6Ch8sDF5kftNUShqp3PKNAaFx
+ NHU3Ahm8SPGw32S8i/SoI8tGTeuE00eQ2Mz/5djML3u0y1PiVWVmYD+ZtU5NUefMhMFG
+ bIWSlY+yuqsY/+OXwKJ4v6+vSXFwSwLDX9IGp8hbxuXaSJsImn29tmddd3Of5ZwMB4zV
+ qhCSTIfKfgD8n+oHXLuf7Hxw6mzCXcQlbrI7gEz89kSK+MN+bv5nN3eOSiBoa9Muor+Z
+ s2hwIYa47re5Owl8Ce0jlW4fd2yXYdTko7W73EjtHVaJ8IzbkIYDZz1vFVo9RcyArQ82
+ Mp6g==
+X-Gm-Message-State: AOJu0YzeBOIf8w1hYaNNzsBObqk2KOOEahl0R8UHpAqi8nRUnh5ozcmu
+ +yEROQYmnfCoCxohOZjvm/WxSGgdxOBSCugu+kAmAE2zYjTAlyzr+oRUkGprfhdUqkUTiH2OShj
+ d5+apENvoOqep4AnwO5eKWAtsKeMXki/DhQrXyFWWGTKeVrDSKmUL
+X-Received: by 2002:ad4:5dca:0:b0:69b:2416:c215 with SMTP id
+ m10-20020ad45dca000000b0069b2416c215mr50914qvh.23.1712564058187; 
+ Mon, 08 Apr 2024 01:14:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDAt/VJb+UJqgfNu5hOtuU7P6IbLU3N2uZQA9Ns6xtcHjuIVQaPo6sEbQNbBVkpW96UC2SeA==
+X-Received: by 2002:ad4:5dca:0:b0:69b:2416:c215 with SMTP id
+ m10-20020ad45dca000000b0069b2416c215mr50885qvh.23.1712564057900; 
+ Mon, 08 Apr 2024 01:14:17 -0700 (PDT)
+Received: from sgarzare-redhat ([193.207.183.116])
+ by smtp.gmail.com with ESMTPSA id
+ x13-20020a0ce0cd000000b006960f65e08esm2989214qvk.132.2024.04.08.01.14.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Apr 2024 01:14:17 -0700 (PDT)
+Date: Mon, 8 Apr 2024 10:14:06 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: qemu-devel@nongnu.org, Coiby Xu <Coiby.Xu@gmail.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org, 
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, slp@redhat.com,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
+ Igor Mammedov <imammedo@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, 
+ Thomas Huth <thuth@redhat.com>, Raphael Norwitz <raphael@enfabrica.net>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Brad Smith <brad@comstyle.com>, stefanha@redhat.com, 
+ Eric Blake <eblake@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ gmaglione@redhat.com, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH for-9.1 v3 09/11] hostmem: add a new memory backend based
+ on POSIX shm_open()
+Message-ID: <thm363fnutlvwazqjtuv572uze2gwjfga4plhzrengb5rczj7v@f6idoxsesjge>
+References: <20240404122330.92710-1-sgarzare@redhat.com>
+ <20240404122330.92710-10-sgarzare@redhat.com>
+ <c5c89a6e-adf7-4f25-b9b5-2979e4367dfd@redhat.com>
+ <gs6o25gxe22j3uptywtadcujnwqexfgc3drthrgzn44m44pder@zugei2amphni>
+ <b2cde66b-4733-4c1c-ad9b-361346a80deb@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.10;
- envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.355,
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <b2cde66b-4733-4c1c-ad9b-361346a80deb@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=sgarzare@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.355,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,93 +113,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-With HostIOMMUDevice passed, vIOMMU can check compatibility with host
-IOMMU, call into IOMMUFD specific methods, etc.
+On Mon, Apr 08, 2024 at 10:03:15AM +0200, David Hildenbrand wrote:
+>On 08.04.24 09:58, Stefano Garzarella wrote:
+>>On Thu, Apr 04, 2024 at 04:09:34PM +0200, David Hildenbrand wrote:
+>>>On 04.04.24 14:23, Stefano Garzarella wrote:
+>>>>shm_open() creates and opens a new POSIX shared memory object.
+>>>>A POSIX shared memory object allows creating memory backend with an
+>>>>associated file descriptor that can be shared with external processes
+>>>>(e.g. vhost-user).
+>>>>
+>>>>The new `memory-backend-shm` can be used as an alternative when
+>>>>`memory-backend-memfd` is not available (Linux only), since shm_open()
+>>>>should be provided by any POSIX-compliant operating system.
+>>>>
+>>>>This backend mimics memfd, allocating memory that is practically
+>>>>anonymous. In theory shm_open() requires a name, but this is allocated
+>>>>for a short time interval and shm_unlink() is called right after
+>>>>shm_open(). After that, only fd is shared with external processes
+>>>>(e.g., vhost-user) as if it were associated with anonymous memory.
+>>>>
+>>>>In the future we may also allow the user to specify the name to be
+>>>>passed to shm_open(), but for now we keep the backend simple, mimicking
+>>>>anonymous memory such as memfd.
+>>>>
+>>>>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>>>>---
+>>>>v3
+>>>>- enriched commit message and documentation to highlight that we
+>>>>   want to mimic memfd (David)
+>>>>---
+>>>>  docs/system/devices/vhost-user.rst |   5 +-
+>>>>  qapi/qom.json                      |  17 +++++
+>>>>  backends/hostmem-shm.c             | 118 +++++++++++++++++++++++++++++
+>>>>  backends/meson.build               |   1 +
+>>>>  qemu-options.hx                    |  11 +++
+>>>>  5 files changed, 150 insertions(+), 2 deletions(-)
+>>>>  create mode 100644 backends/hostmem-shm.c
+>>>>
+>>>>diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
+>>>>index 9b2da106ce..35259d8ec7 100644
+>>>>--- a/docs/system/devices/vhost-user.rst
+>>>>+++ b/docs/system/devices/vhost-user.rst
+>>>>@@ -98,8 +98,9 @@ Shared memory object
+>>>>  In order for the daemon to access the VirtIO queues to process the
+>>>>  requests it needs access to the guest's address space. This is
+>>>>-achieved via the ``memory-backend-file`` or ``memory-backend-memfd``
+>>>>-objects. A reference to a file-descriptor which can access this object
+>>>>+achieved via the ``memory-backend-file``, ``memory-backend-memfd``, or
+>>>>+``memory-backend-shm`` objects.
+>>>>+A reference to a file-descriptor which can access this object
+>>>>  will be passed via the socket as part of the protocol negotiation.
+>>>>  Currently the shared memory object needs to match the size of the main
+>>>>diff --git a/qapi/qom.json b/qapi/qom.json
+>>>>index 85e6b4f84a..5252ec69e3 100644
+>>>>--- a/qapi/qom.json
+>>>>+++ b/qapi/qom.json
+>>>>@@ -721,6 +721,19 @@
+>>>>              '*hugetlbsize': 'size',
+>>>>              '*seal': 'bool' } }
+>>>>+##
+>>>>+# @MemoryBackendShmProperties:
+>>>>+#
+>>>>+# Properties for memory-backend-shm objects.
+>>>>+#
+>>>>+# The @share boolean option is true by default with shm.
+>>>>+#
+>>>>+# Since: 9.1
+>>>>+##
+>>>>+{ 'struct': 'MemoryBackendShmProperties',
+>>>>+  'base': 'MemoryBackendProperties',
+>>>>+  'data': { } }
+>>>>+
+>>>
+>>>Acked-by: David Hildenbrand <david@redhat.com>
+>>>
+>>>One comment: we should maybe just forbid setting share=off. it doesn't
+>>>make any sense and it can even result in an unexpected double memory
+>>>consumption. We missed doing that for memfd, unfortunately.
+>>
+>>Good point!
+>>
+>>IIUC the `share` property is defined by the parent `hostmem`, so I
+>>should find a way to override the property here and disable the setter,
+>>or add an option to `hostmem` to make the property non-writable.
+>
+>Right, or simply fail later when you would find "share=off" in 
+>shm_backend_memory_alloc().
 
-Originally-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
-Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
----
- hw/vfio/pci.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+This seems like the simplest and cleanest approach, I'll go in this 
+direction!
 
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 64780d1b79..224501a86e 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -3111,11 +3111,17 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
- 
-     vfio_bars_register(vdev);
- 
--    ret = vfio_add_capabilities(vdev, errp);
-+    ret = pci_device_set_iommu_device(pdev, vbasedev->hiod, errp);
-     if (ret) {
-+        error_prepend(errp, "Failed to set iommu_device: ");
-         goto out_teardown;
-     }
- 
-+    ret = vfio_add_capabilities(vdev, errp);
-+    if (ret) {
-+        goto out_unset_idev;
-+    }
-+
-     if (vdev->vga) {
-         vfio_vga_quirk_setup(vdev);
-     }
-@@ -3132,7 +3138,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-             error_setg(errp,
-                        "cannot support IGD OpRegion feature on hotplugged "
-                        "device");
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
- 
-         ret = vfio_get_dev_region_info(vbasedev,
-@@ -3141,13 +3147,13 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         if (ret) {
-             error_setg_errno(errp, -ret,
-                              "does not support requested IGD OpRegion feature");
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
- 
-         ret = vfio_pci_igd_opregion_init(vdev, opregion, errp);
-         g_free(opregion);
-         if (ret) {
--            goto out_teardown;
-+            goto out_unset_idev;
-         }
-     }
- 
-@@ -3233,6 +3239,8 @@ out_deregister:
-     if (vdev->intx.mmap_timer) {
-         timer_free(vdev->intx.mmap_timer);
-     }
-+out_unset_idev:
-+    pci_device_unset_iommu_device(pdev);
- out_teardown:
-     vfio_teardown_msi(vdev);
-     vfio_bars_exit(vdev);
-@@ -3261,6 +3269,7 @@ static void vfio_instance_finalize(Object *obj)
- static void vfio_exitfn(PCIDevice *pdev)
- {
-     VFIOPCIDevice *vdev = VFIO_PCI(pdev);
-+    VFIODevice *vbasedev = &vdev->vbasedev;
- 
-     vfio_unregister_req_notifier(vdev);
-     vfio_unregister_err_notifier(vdev);
-@@ -3275,7 +3284,8 @@ static void vfio_exitfn(PCIDevice *pdev)
-     vfio_teardown_msi(vdev);
-     vfio_pci_disable_rp_atomics(vdev);
-     vfio_bars_exit(vdev);
--    vfio_migration_exit(&vdev->vbasedev);
-+    vfio_migration_exit(vbasedev);
-+    pci_device_unset_iommu_device(pdev);
- }
- 
- static void vfio_pci_reset(DeviceState *dev)
--- 
-2.34.1
+>
+>When ever supporting named shmem_open(), it could make sense for VM 
+>snapshotting. Right now it doesn't really make any sense.
+
+Yeah, I see.
+
+Thanks,
+Stefano
 
 
