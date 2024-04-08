@@ -2,82 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609F289BD97
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 12:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 500DA89BDA3
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 13:00:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtmbj-0002sU-AO; Mon, 08 Apr 2024 06:52:11 -0400
+	id 1rtmjI-0005Y1-AK; Mon, 08 Apr 2024 07:00:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtmbg-0002s8-Bm
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 06:52:08 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtmjG-0005Xr-5m
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 06:59:58 -0400
+Received: from mail-ej1-x634.google.com ([2a00:1450:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtmbd-0007rW-Jt
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 06:52:08 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4166d58a71eso5353745e9.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 03:52:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtmjA-0000dh-75
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 06:59:57 -0400
+Received: by mail-ej1-x634.google.com with SMTP id
+ a640c23a62f3a-a4702457ccbso560281766b.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 03:59:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712573523; x=1713178323; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TGK9qftknixU9heZO350MkV2K3QN1Ehw0AuOxkZ5V7g=;
- b=Ss3eciLoqlmCl7g5mhOwqMCpsTC9n52vVcU83tD27d1YYCuNpVJ2RDViszBd9qztNF
- uKwy/8k85uw4/oXbMb/R8KiTvJRRGY5fT7mKucRNkuNPn3gfURU13sRrglkjgl7Okt4K
- jYNgeDDivuybgvmC1+IqfZ4X0WeRyrwly4/nkELSavi9Gyrg0d7ff+SmGIdoNF2Lo4mF
- 5bh7xJ6WFfJ5Jg1I4tqMZ18sm7p5OMYFvRQdr2PPKhAXekDIHGGt/Y7stPMuCzz7xEN+
- nhvmjXu9E8qlHhGG2X8UgOjRSVt4LdGjc1C9L++P/nESkQuMRT6ARSqMEF4AfoPT3nFZ
- pEEA==
+ d=linaro.org; s=google; t=1712573984; x=1713178784; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=eYetE4dGHCVsqV8x/WENRuYU4fuza/J1/4l0nUH+OqI=;
+ b=UEbkId6nOfOEIKw0ZIbsV3praYpBoqsGjwV5QX5WEWkOzCifW7gplKkpSGuHTG9Qys
+ Tcwlu1W8eH62l52o5lKOH5MVqBDKykVy+A0DiMqhS0l8H2T0LwwzpTEiucVNNSt7iFmN
+ D40Oz6w9FOcZ1M6vlyD/1z3aVkEccF4JQ9b7E2QetE/od8sn10W3+jlPeX14hvbzYpWi
+ TIRexDFDBFrVTSV2SfhvI/F/lA7Al7XIVRVkAVS9V9AHBG3jXL7XNnJCNaMmS4iksssP
+ kOx6lx2c2cD6MbmArF8uJl6yWuQZb/ef+ovOx3f1za/w8tzQ7u2YWFncDNWVtQpYUEFe
+ AhjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712573523; x=1713178323;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TGK9qftknixU9heZO350MkV2K3QN1Ehw0AuOxkZ5V7g=;
- b=cVgJAOMuzSgHSZ/aOOH3WyivQ4c32liBSt4ynaICFwNk5fRcYPNCLuqRWCAChtK+MD
- fJ6hQPge38Y+H2C1amX0IlKWoJaDXpRAHHJZiiSOjs6cZRNMDeL/DIVWZe1i9x5IA6EK
- jBKpGux2Vhu3kogxQ78Int8ty4aBIo4d9OOEc152eubpP/ocGciQZZdwITYps2yZ/iV5
- GO8SdIsyEnCW3e4i+SfC7gC3KYc5TPKxeCHxOujG8WJwpVjweaFV6Vb3dLM10ABZZ1uM
- 5FgGx1No6XPcf9ddlspKlodnKcYpg/fUQEZBBbVotloSaJRzB1Cflyfq//jd10zUTL5h
- ATBg==
-X-Gm-Message-State: AOJu0Yy+8XaiGPAy/aPFZNYP1HMWS5iHjHYe3fYfgWMyCp96RuVUfIi2
- VEal7YgPGDW0ZYtdz9gKg+NeXGqcN0316+6kvSWACo9I6PdTnwCJGkFaupzAhrJlQvlRY+H8S20
- I
-X-Google-Smtp-Source: AGHT+IFuZoZ+F6kG2sFmWwiYLxzsZUXEgTHnKzb8lMuAa2XboqvpUJqex529qYbJlC5E2BpKaQJhsg==
-X-Received: by 2002:a05:600c:4f83:b0:416:5a88:4b49 with SMTP id
- n3-20020a05600c4f8300b004165a884b49mr2855420wmq.15.1712573523640; 
- Mon, 08 Apr 2024 03:52:03 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.144.67])
+ d=1e100.net; s=20230601; t=1712573984; x=1713178784;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=eYetE4dGHCVsqV8x/WENRuYU4fuza/J1/4l0nUH+OqI=;
+ b=Rf1Q4GFTperYsy+QIiTHNuwIkoHG6dCWIA8GDj0KtGNcFEfOLalVwWJQPu/fk5+g6A
+ eCZCpIP1VL2XtqAVVsPY1SBg60lkzsw40cOpKcQPiivQmTrPvdAzua6m5tiCMhVEyPCu
+ x8Gl24EZMfWNaS3KlDoEEy1wTu8WAp9LpWn62SWhHPIKvuNIkvrCkrnkHumaIdOiebuX
+ jEIqeAFG4kbrf20eWaKq029wncJRSyI9vOPBvQ65W6QJWK1yEA1PsUXQGOkg9xgNPZeC
+ uTSYhptxLg85OXH3evPPRvMVSD8SbdtUQ1nlQ6OVecBEEwG0mkIqIjZGEYlwOQfLYBsS
+ Mvuw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUaQXYP7m4ZZ+Bv9UqkxuDTA6jAxGW0jxJ/+01XMhKtBDTlIC3NMCHvpPMihMjwXZs3JxscNNii5XP+Z8QqBA1Q4uHwRSo=
+X-Gm-Message-State: AOJu0YyfmPpM2vI9VylTqfZ7r5Xp9h9CYUUb1ZpXj/8aGzYQUCGS4d75
+ cZTdLEp+GYtUHYC2CqwdRf8M3n73MEv61SVIFXoF6Ap4yoCtZPr/QUWtkPKoUok=
+X-Google-Smtp-Source: AGHT+IENXS8kacStS/rsMli+4q4c3LF9Zx17Ma3Z5V+XjW4D5YEhC8ul+bwc9uNFG8XdAQHR6Ter4w==
+X-Received: by 2002:a17:907:94c7:b0:a51:d54b:378f with SMTP id
+ dn7-20020a17090794c700b00a51d54b378fmr1649686ejc.33.1712573984160; 
+ Mon, 08 Apr 2024 03:59:44 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.144.67])
  by smtp.gmail.com with ESMTPSA id
- t8-20020a05600c450800b004147db8a91asm16599890wmo.40.2024.04.08.03.52.02
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 08 Apr 2024 03:52:03 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Jason Wang <jasowang@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
- qemu-arm@nongnu.org, Chuhong Yuan <hslester96@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0? 2/2] hw/net/lan9118: Fix overflow in TX FIFO
-Date: Mon,  8 Apr 2024 12:51:49 +0200
-Message-ID: <20240408105149.59258-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240408105149.59258-1-philmd@linaro.org>
-References: <20240408105149.59258-1-philmd@linaro.org>
+ qt28-20020a170906ecfc00b00a4e8991cfbfsm4256417ejb.127.2024.04.08.03.59.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 08 Apr 2024 03:59:43 -0700 (PDT)
+Message-ID: <521b4a1c-2762-4dc7-b9fa-ffa6a8250a13@linaro.org>
+Date: Mon, 8 Apr 2024 12:59:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.1 3/7] monitor: Rework stubs to simplify user
+ emulation linking
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Michael Tokarev <mjt@tls.msk.ru>, Laurent Vivier <laurent@vivier.eu>,
+ qemu-devel@nongnu.org, Thomas Huth <thuth@redhat.com>
+References: <20240404194757.9343-1-philmd@linaro.org>
+ <20240404194757.9343-4-philmd@linaro.org>
+ <CABgObfb=Yfd55YiYgrN0YBN+bpZxJs4XHpac4t=kupHKm6oS0w@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CABgObfb=Yfd55YiYgrN0YBN+bpZxJs4XHpac4t=kupHKm6oS0w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::634;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,57 +97,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the TX FIFO is full, raise the TX Status FIFO Overflow (TXSO)
-flag, "Generated when the TX Status FIFO overflows" [*].
+On 8/4/24 11:50, Paolo Bonzini wrote:
+> On Thu, Apr 4, 2024 at 9:48 PM Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Currently monitor stubs are scattered in 3 files.
+>>
+>> Merge these stubs in 2 files, a generic one (monitor-core)
+>> included in all builds (in particular user emulation), and
+>> a less generic one to be included by tools and system emulation.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>>   stubs/fdset.c        | 17 -----------------
+> 
+> Oops, merging fdset.c breaks storage-daemon linking.
 
-Broken since model introduction in commit 2a42499017
-("LAN9118 emulation").
+Odd. My 'tools_only' build directory is configured with:
 
-When using the reproducer from
-https://gitlab.com/qemu-project/qemu/-/issues/2267 we get:
+'--enable-tools' '--disable-docs' '--disable-system' '--disable-user'
 
-  hw/net/lan9118.c:798:17: runtime error:
-  index 2048 out of bounds for type 'uint8_t[2048]' (aka 'unsigned char[2048]')
-    #0 0x563ec9a057b1 in tx_fifo_push hw/net/lan9118.c:798:43
-    #1 0x563ec99fbb28 in lan9118_writel hw/net/lan9118.c:1042:9
-    #2 0x563ec99f2de2 in lan9118_16bit_mode_write hw/net/lan9118.c:1205:9
-    #3 0x563ecbf78013 in memory_region_write_accessor system/memory.c:497:5
-    #4 0x563ecbf776f5 in access_with_adjusted_size system/memory.c:573:18
-    #5 0x563ecbf75643 in memory_region_dispatch_write system/memory.c:1521:16
-    #6 0x563ecc01bade in flatview_write_continue_step system/physmem.c:2713:18
-    #7 0x563ecc01b374 in flatview_write_continue system/physmem.c:2743:19
-    #8 0x563ecbff1c9b in flatview_write system/physmem.c:2774:12
-    #9 0x563ecbff1768 in address_space_write system/physmem.c:2894:18
-    ...
+I was building qemu-img & co. I just checked it isn't anymore,
+the directory only contains libqemuutil.a, libqom.fa,
+libevent-loop-base.fa and tests/unit (I'm on macOS host).
 
-[*] LAN9118 DS00002266B.pdf, Table 5.3.3 "INTERRUPT STATUS REGISTER"
+This explained why I missed the link failure. I'll dig to
+see when these tools disappeared on macOS.
 
-Reported-by: Will Lester
-Reported-by: Chuhong Yuan <hslester96@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2267
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/net/lan9118.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Regards,
 
-diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 7be0430ac5..7a1367b0bb 100644
---- a/hw/net/lan9118.c
-+++ b/hw/net/lan9118.c
-@@ -795,8 +795,11 @@ static void tx_fifo_push(lan9118_state *s, uint32_t val)
-             /* Documentation is somewhat unclear on the ordering of bytes
-                in FIFO words.  Empirical results show it to be little-endian.
-                */
--            /* TODO: FIFO overflow checking.  */
-             while (n--) {
-+                if (s->txp->len == PKT_SIZE) {
-+                    s->int_sts |= TXSO_INT;
-+                    break;
-+                }
-                 s->txp->data[s->txp->len] = val & 0xff;
-                 s->txp->len++;
-                 val >>= 8;
--- 
-2.41.0
-
+Phil.
 
