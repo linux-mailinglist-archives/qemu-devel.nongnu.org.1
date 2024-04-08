@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1074089BA70
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:37:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7803989BA73
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 10:37:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtkUJ-0005ks-4F; Mon, 08 Apr 2024 04:36:23 -0400
+	id 1rtkUL-0005m0-V4; Mon, 08 Apr 2024 04:36:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtkUG-0005kV-4q
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:36:20 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtkUJ-0005lg-UZ
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:36:23 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtkUC-0002kX-D6
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:36:17 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-a51c6e91793so189029766b.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 01:36:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtkUH-0002lB-Tb
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 04:36:23 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-56e48d0a632so2309919a12.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 01:36:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712565374; x=1713170174; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712565380; x=1713170180; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=m6BQV7fTkLyG6qLOnaR99Tjx9wX3tBZOaYxcFxZPlB4=;
- b=kMKPzEyUD/F0sbYq/nQ82zPTsTn7vQ81d+XVIqLKRNOVuEG6Q6cCJcGasr/rARUQcs
- VDySXTWgEtPxeBAHb2Sci16CH/x2yjEcK1kCUBeJhMwZY3cL2JVdrZMutsu+D1s3aoth
- Igi49chemjMhA2glyL52lho4KhvrfjdDnDHOLs+HLaDyt1XSnOz5NU7rUNNe9k9Rh8iH
- 1xYL2BAO8v1Xz8y0+Fu2NVaR6MNMfFg0nVRsRvfZG19BmmLevMRlibts2ZeJeBuPWDCW
- enyBcUc//EAaj8IqZxYbajadKFAAa9wxscG9dSI57SPN622NkN0Z+EhSruzjgyXejduH
- qGZw==
+ bh=6lxlzp3IlPActhEyj4Nxu8uqxhWQDk/wL/7CgsYIL7w=;
+ b=PiM4tKI7wJalGJ3b6ykWrrhCOyOHGphuvgyDhM9aDitp9eA5WlZgVE2QCfcTXQIGN7
+ Klc1Zytv9o7LFIpFwgg4tZVbVcfHY4YeJ3dOWGO71t5FAb4yJyc+nDqe0fHdCPU4lUvQ
+ GSlNriDPu3VRveI4+kgjQ9xtg9mBWUj86vxw45ES8lOvNWm/caRi+PpBJuj84vuLKL8o
+ VN/9RPmGGAC7J8IPDnAZfpGmaz/GM3oLdv/rqwprJVLitt8TNlm4AcqPNaXDy+2xA6PG
+ NwyIas0rt9FVaPSTEacXLvUVye0ivQmChDy7kG28dp9LabJ5UDJlSeyRoQcbJQWAmF3C
+ olFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712565374; x=1713170174;
+ d=1e100.net; s=20230601; t=1712565380; x=1713170180;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m6BQV7fTkLyG6qLOnaR99Tjx9wX3tBZOaYxcFxZPlB4=;
- b=gSBTT++mvBNP1a8T63otJ/HpXo7Ad7NvMd6xHtF3eWv/j6KwfKsgv7zBkhfBuYgyVB
- 07QPn7u/VkGLwyPl4HLgofJxsNxjU5zlZf6pLEXqf6RhPbjE56m+3KRXYTtc4Y5oA6Z5
- mdFAeQ0KkWdSnAqtdBjnbCYk+iKNEAheda+hVfqIzlAsJWv8hHCOYmu/bfdiRJHumy9s
- lT2rbb3xogfwPw4J2jO7DH7L/J7W1cBZZXGWLTFdlcjEx4EK2qBvLtCpg6pCg4kNScDS
- d4ArFjoxkSwoS2qDPMFpJrkKVRsS+VlOgmk+J+PgS0I4Hd5j4fZAMK60Z1BsDR0S6gRV
- 9FdQ==
-X-Gm-Message-State: AOJu0YycEkxeF+Fl9l6GKwBTSyLATRMLwqTyiXSVY8V8CyTSSnbm5qBn
- ukJ1Lqw0CUEAeGoSFItobgsMG4UanC11Mll5xSCd/MBmhB2vM6aEKhencLjxYjSuclBmsAYCfF4
- v
-X-Google-Smtp-Source: AGHT+IFZzJWTVKKw/ve7ikXpCJDTHP9hLp5EDKt5VVZPoTGhoKqAbeb5rS/mFN+gmXTTTD2AtZOoYQ==
-X-Received: by 2002:a17:906:bc46:b0:a51:9e23:dc44 with SMTP id
- s6-20020a170906bc4600b00a519e23dc44mr7328386ejv.31.1712565374465; 
- Mon, 08 Apr 2024 01:36:14 -0700 (PDT)
+ bh=6lxlzp3IlPActhEyj4Nxu8uqxhWQDk/wL/7CgsYIL7w=;
+ b=p1WnDbub0sZtXTlyFsydLiupv0Mg0C06nBq5N8HDViTPBqNRxjuANMHf/Gmq6ZzunS
+ SU8Xk1gBefQw3259GxzwGFdFK6+8sZ4gTZ+w3fv6kF1n0OfezQnKXPSiszZTmh8IzZLY
+ NfUsUKuhBMZ6ZyCbZK2+VTml/fKvwBiS0ZZ86tRGedBNG5Q9oxaqqHK+Rt2Ydk8y+zvC
+ nSiDZE4fYjFV+/goUtfStW8mgElXx8FLu4NIooY/y7v2wRqGykHGcgvKEW1Q3S4J3ISz
+ QBvBn1bBOXKBKmFloR3v1Wj8EtO5dyVI+xfNjsd5VwGg/uP9tXi2wY+O/Fl3Gb3d5scY
+ fxkw==
+X-Gm-Message-State: AOJu0YxYO+hUpdpNf10D6q1GtDsUiDbH/sKFDzJj0eHfKcwRyGSDb/yL
+ L0TFDJacj4MVeXBN2EYN49F6wFjYmjnmY+5WIxns0TajaqaAGzysvAed+g46aAgKC3OEdQ9x4ox
+ 0
+X-Google-Smtp-Source: AGHT+IF5SSa4t5CZPDFTEYngdcUo5zdrT63q+f6E2IQ+acTieHYFXmFr4IDhgirj+i2GE2GNV/zVjw==
+X-Received: by 2002:a17:907:94c7:b0:a51:d3da:99a9 with SMTP id
+ dn7-20020a17090794c700b00a51d3da99a9mr2004574ejc.51.1712565380294; 
+ Mon, 08 Apr 2024 01:36:20 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.144.67])
  by smtp.gmail.com with ESMTPSA id
- md16-20020a170906ae9000b00a51e004de4asm256150ejb.11.2024.04.08.01.36.13
+ js23-20020a170906ca9700b00a51c6d98777sm2125981ejb.58.2024.04.08.01.36.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 08 Apr 2024 01:36:14 -0700 (PDT)
+ Mon, 08 Apr 2024 01:36:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Qiang Liu <cyruscyliu@gmail.com>,
@@ -62,18 +62,18 @@ Cc: Qiang Liu <cyruscyliu@gmail.com>,
  Alexander Bulekov <alxndr@bu.edu>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.0? 1/3] hw/block/nand: Factor nand_load_iolen() method
- out
-Date: Mon,  8 Apr 2024 10:36:03 +0200
-Message-ID: <20240408083605.55238-2-philmd@linaro.org>
+Subject: [PATCH-for-9.0? 2/3] hw/block/nand: Have blk_load() return boolean
+ indicating success
+Date: Mon,  8 Apr 2024 10:36:04 +0200
+Message-ID: <20240408083605.55238-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240408083605.55238-1-philmd@linaro.org>
 References: <20240408083605.55238-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,68 +98,49 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/block/nand.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ hw/block/nand.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/hw/block/nand.c b/hw/block/nand.c
-index d1435f2207..6fa9038bb5 100644
+index 6fa9038bb5..3627c799b5 100644
 --- a/hw/block/nand.c
 +++ b/hw/block/nand.c
-@@ -243,9 +243,25 @@ static inline void nand_pushio_byte(NANDFlashState *s, uint8_t value)
+@@ -84,7 +84,11 @@ struct NANDFlashState {
+ 
+     void (*blk_write)(NANDFlashState *s);
+     void (*blk_erase)(NANDFlashState *s);
+-    void (*blk_load)(NANDFlashState *s, uint64_t addr, int offset);
++    /*
++     * Returns %true when block containing (@addr + @offset) is
++     * successfully loaded, otherwise %false.
++     */
++    bool (*blk_load)(NANDFlashState *s, uint64_t addr, int offset);
+ 
+     uint32_t ioaddr_vmstate;
+ };
+@@ -769,11 +773,11 @@ static void glue(nand_blk_erase_, NAND_PAGE_SIZE)(NANDFlashState *s)
      }
  }
  
-+/*
-+ * nand_load_block: Load block containing (s->addr + @offset).
-+ * Returns length of data available at @offset in this block.
-+ */
-+static int nand_load_block(NANDFlashState *s, int offset)
-+{
-+    int iolen;
-+
-+    s->blk_load(s, s->addr, offset);
-+
-+    iolen = (1 << s->page_shift) - offset;
-+    if (s->gnd) {
-+        iolen += 1 << s->oob_shift;
-+    }
-+    return iolen;
-+}
-+
- static void nand_command(NANDFlashState *s)
+-static void glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
++static bool glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
+                 uint64_t addr, int offset)
  {
--    unsigned int offset;
-     switch (s->cmd) {
-     case NAND_CMD_READ0:
-         s->iolen = 0;
-@@ -271,12 +287,7 @@ static void nand_command(NANDFlashState *s)
-     case NAND_CMD_NOSERIALREAD2:
-         if (!(nand_flash_ids[s->chip_id].options & NAND_SAMSUNG_LP))
-             break;
--        offset = s->addr & ((1 << s->addr_shift) - 1);
--        s->blk_load(s, s->addr, offset);
--        if (s->gnd)
--            s->iolen = (1 << s->page_shift) - offset;
--        else
--            s->iolen = (1 << s->page_shift) + (1 << s->oob_shift) - offset;
-+        s->iolen = nand_load_block(s, s->addr & ((1 << s->addr_shift) - 1));
-         break;
- 
-     case NAND_CMD_RESET:
-@@ -597,12 +608,7 @@ uint32_t nand_getio(DeviceState *dev)
-     if (!s->iolen && s->cmd == NAND_CMD_READ0) {
-         offset = (int) (s->addr & ((1 << s->addr_shift) - 1)) + s->offset;
-         s->offset = 0;
--
--        s->blk_load(s, s->addr, offset);
--        if (s->gnd)
--            s->iolen = (1 << s->page_shift) - offset;
--        else
--            s->iolen = (1 << s->page_shift) + (1 << s->oob_shift) - offset;
-+        s->iolen = nand_load_block(s, offset);
+     if (PAGE(addr) >= s->pages) {
+-        return;
++        return false;
      }
  
-     if (s->ce || s->iolen <= 0) {
+     if (s->blk) {
+@@ -801,6 +805,8 @@ static void glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
+                         offset, NAND_PAGE_SIZE + OOB_SIZE - offset);
+         s->ioaddr = s->io;
+     }
++
++    return true;
+ }
+ 
+ static void glue(nand_init_, NAND_PAGE_SIZE)(NANDFlashState *s)
 -- 
 2.41.0
 
