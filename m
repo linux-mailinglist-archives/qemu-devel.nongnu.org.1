@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E75C89C90B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0176289C903
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:55:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtrKO-0001ch-SU; Mon, 08 Apr 2024 11:54:37 -0400
+	id 1rtrKL-0001be-GA; Mon, 08 Apr 2024 11:54:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrKK-0001bv-L9
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:33 -0400
+ id 1rtrKI-0001bG-37
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrKD-0001rb-P6
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:32 -0400
+ id 1rtrKF-0001rg-Vl
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712591665;
+ s=mimecast20190719; t=1712591667;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OeF0i7q0SM9JchJ70Oic3dnROBkXEo3V3rWVabZC2/Q=;
- b=O8bsJqVyzHQhWDB2mSQxWiB/+bCuTGnZeeC04dzvggEiuzCY9tfwG/G/SJgXZ/3sj48PaQ
- QkoT9tI9EP/9DLllz7pW224bif/Ab3Jn63Kp6bObPpc29jvdvGKqwPstBzk7IbLXYkP+E+
- 7KMt3yAeXy6a5leiMN9UKM0up+sUP9c=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kzLCimdhAyi0rVMbm3kXFpGr3NcS9gM1RUctxanXbE8=;
+ b=HHeB7toBz2NbMGkTgVG4cjcWs7ja88273gytvrjEvaF4+1rYVb1n+EvkNlphfqvZiuAqTA
+ eTw4c700QzruqKzBTM5D/H0LYOaARDmtZ2m5g70p676t1BQ18wupAtdJKlFsbJJfckiIVc
+ DFOo7rJpMUJYuX+TLaH2k8aWUXrJ8HI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-155-79GDfeVANC2dvIx1_lPyFg-1; Mon, 08 Apr 2024 11:54:23 -0400
-X-MC-Unique: 79GDfeVANC2dvIx1_lPyFg-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2d8729a1126so22708661fa.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:54:22 -0700 (PDT)
+ us-mta-617-LUCuDad-PeG03Rixa8diLQ-1; Mon, 08 Apr 2024 11:54:26 -0400
+X-MC-Unique: LUCuDad-PeG03Rixa8diLQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-41545bc8962so20502085e9.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:54:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712591661; x=1713196461;
+ d=1e100.net; s=20230601; t=1712591664; x=1713196464;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OeF0i7q0SM9JchJ70Oic3dnROBkXEo3V3rWVabZC2/Q=;
- b=wn8giDCEKrK1wfmJOaC4DYZV4OIkM+ZRDVxc0VpNJZqQALzJbaiJBEwpoPlrCe3hI1
- qLLuus27+ip/3SBFl0TM2CYJH6rUbw7v7veios7c6XZQsP6Leb9GJGLGtqlUNiTF/vVN
- 69JvlBGnK/a2X7V5LZQNtHLa7s/I9LjpWqJgJomtqedto4z9nTnfY0+5Sx+81wzIy17w
- VPxuCuRFlWVAqW8ETBZHmilnNcezzapeH6cCCGAq6diXIVgkmydTxjMal2LHGUZ/d6TM
- se7rRNvFqQdhqFrJ3Gng451iBEhpVkRo8uoHqONA6PObijnP+zHXBgw7SjM5i2K9xlVi
- l1cA==
-X-Gm-Message-State: AOJu0YytflyspZuLOw/4lfXTBhaHO/gU94acqIXTEjk2IHk0WzK3bVx/
- iAUqBSh2BNZ6vhaScaxKdB7xcNB6vvQlshVTEBDcYXG3e0fN+RMVyz8py6acuF24MVKUj6Z+Xog
- MBFMarxi0miwywIrsiWQdwNTE9A4hY1iwyOlVL6wrIsg9Bv4SD7vks787ln5TReVwrPDgThTsE6
- sF74iAy6TmtVFFk08Y3Fsm2Hab3yLvX7zyxeMm
-X-Received: by 2002:a2e:7e12:0:b0:2d8:6787:eb45 with SMTP id
- z18-20020a2e7e12000000b002d86787eb45mr5412161ljc.25.1712591661056; 
- Mon, 08 Apr 2024 08:54:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFIo+Y27WDuwjl3tYOc5fyfTjhuuYo0nwCZpQebjSkF13C0J3K2UClBQsL8uHzwiVF2dUWSpw==
-X-Received: by 2002:a2e:7e12:0:b0:2d8:6787:eb45 with SMTP id
- z18-20020a2e7e12000000b002d86787eb45mr5412147ljc.25.1712591660688; 
- Mon, 08 Apr 2024 08:54:20 -0700 (PDT)
+ bh=kzLCimdhAyi0rVMbm3kXFpGr3NcS9gM1RUctxanXbE8=;
+ b=EgXiDXjBdxKvN/ml8aH6w4UWoBPtUr6Bl3DVM33MYj5e6sEECoezjmRaxt+BKlj2ea
+ KJFkTn1nqngh2In+Alz5ppfWIel8J8CD/DzuFRz4KtjQ77182g++mXqSnio8NBoQB8rp
+ u5LTwBLDxKGJ//nX7XUKUU2Lx86S62lcVRmEfrBTHTJ8mWdw1Zl7P/TQS6nerebLENiv
+ vX8vBEzznB6YK0rRMicp2tU22Tfgzl7bKxr+a/8Eq019r6DIhUWUX1QVPmhWqN3lWLzX
+ jIUwshKcl2qhwZzCg9HbkCCvKmhbMHAUe2y+gVsQm4OzVOofeP5EW8XdQ1GuLhqSWa+1
+ IwMQ==
+X-Gm-Message-State: AOJu0YyML2iM6Sug8GCkQLKEjJKI5V3oW4DGqUl1gRm+iIPiEZj47FTG
+ ILQxLE89+xmsKXUxXCR/8BxTIO77LWMp5CX3vcTql3g83fvK+IVwejcIGmW/SIwGODyY4ZW5ugt
+ FEw6vVwBNJtRA0KLX7/luVIGHJu40qLeWxY29Mi5QorN4MdoGF5/h6hDE2P8cUCLDAUkhZFjsVg
+ 7Tyt1F+2Ewzq/O0nZX+lnr8K74etw6zybDAQao
+X-Received: by 2002:a05:600c:4fcf:b0:415:6456:c530 with SMTP id
+ o15-20020a05600c4fcf00b004156456c530mr6842357wmq.14.1712591664312; 
+ Mon, 08 Apr 2024 08:54:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFkrHzUmRjlW5K21kYzQ2sQ8L4wMJGkCkZA+fN1zJHrc6uSXQXBStJ1qiJ0gyurnRF8F/dT2g==
+X-Received: by 2002:a05:600c:4fcf:b0:415:6456:c530 with SMTP id
+ o15-20020a05600c4fcf00b004156456c530mr6842341wmq.14.1712591663951; 
+ Mon, 08 Apr 2024 08:54:23 -0700 (PDT)
 Received: from avogadro.local ([151.95.152.232])
  by smtp.gmail.com with ESMTPSA id
- l5-20020adfe9c5000000b00344a8f9cf18sm6660956wrn.7.2024.04.08.08.54.20
+ jg1-20020a05600ca00100b00414688af147sm16994248wmb.20.2024.04.08.08.54.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 08:54:20 -0700 (PDT)
+ Mon, 08 Apr 2024 08:54:22 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v2 16/18] stubs: split record/replay stubs further
-Date: Mon,  8 Apr 2024 17:53:28 +0200
-Message-ID: <20240408155330.522792-17-pbonzini@redhat.com>
+Subject: [PATCH v2 17/18] stubs: include stubs only if needed
+Date: Mon,  8 Apr 2024 17:53:29 +0200
+Message-ID: <20240408155330.522792-18-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408155330.522792-1-pbonzini@redhat.com>
 References: <20240408155330.522792-1-pbonzini@redhat.com>
@@ -100,58 +100,161 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-replay.c symbols are only needed by user mode emulation, with the
-exception of replay_mode that is needed by both user mode emulation
-(by way of qemu_guest_getrandom) and block layer tools (by way of
-util/qemu-timer.c).
+Currently it is not documented anywhere why some functions need to
+be stubbed.
 
-Since it is needed by libqemuutil rather than specific files that
-are part of the tools and emulators, split the replay_mode stub
-into its own file.
+Group the files in stubs/meson.build according to who needs them, both
+to reduce the size of the compilation and to clarify the use of stubs.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/replay-mode.c | 4 ++++
- stubs/replay.c      | 2 --
- stubs/meson.build   | 1 +
- 3 files changed, 5 insertions(+), 2 deletions(-)
- create mode 100644 stubs/replay-mode.c
+ stubs/{monitor.c => monitor-internal.c} |   0
+ stubs/meson.build                       | 122 +++++++++++++++---------
+ 2 files changed, 75 insertions(+), 47 deletions(-)
+ rename stubs/{monitor.c => monitor-internal.c} (100%)
 
-diff --git a/stubs/replay-mode.c b/stubs/replay-mode.c
-new file mode 100644
-index 00000000000..264be9d96c9
---- /dev/null
-+++ b/stubs/replay-mode.c
-@@ -0,0 +1,4 @@
-+#include "qemu/osdep.h"
-+#include "sysemu/replay.h"
-+
-+ReplayMode replay_mode;
-diff --git a/stubs/replay.c b/stubs/replay.c
-index 42c92e4acb8..b4dd6a566e8 100644
---- a/stubs/replay.c
-+++ b/stubs/replay.c
-@@ -1,8 +1,6 @@
- #include "qemu/osdep.h"
- #include "exec/replay-core.h"
- 
--ReplayMode replay_mode;
--
- void replay_finish(void)
- {
- }
+diff --git a/stubs/monitor.c b/stubs/monitor-internal.c
+similarity index 100%
+rename from stubs/monitor.c
+rename to stubs/monitor-internal.c
 diff --git a/stubs/meson.build b/stubs/meson.build
-index a252bffad00..4a524f5816b 100644
+index 4a524f5816b..8ff25faaf1c 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -36,6 +36,7 @@ stub_ss.add(files('qmp-quit.c'))
- stub_ss.add(files('qtest.c'))
- stub_ss.add(files('ram-block.c'))
- stub_ss.add(files('replay.c'))
-+stub_ss.add(files('replay-mode.c'))
- stub_ss.add(files('runstate-check.c'))
- stub_ss.add(files('sysbus.c'))
- stub_ss.add(files('target-get-monitor-def.c'))
+@@ -1,58 +1,86 @@
+-stub_ss.add(files('bdrv-next-monitor-owned.c'))
+-stub_ss.add(files('blk-commit-all.c'))
+-stub_ss.add(files('blk-exp-close-all.c'))
+-stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
+-stub_ss.add(files('change-state-handler.c'))
+-stub_ss.add(files('cmos.c'))
++# If possible, add new files to other directories, by using "if_false".
++# If you need them here, try to add them under one of the if statements
++# below, so that it is clear who needs the stubbed functionality.
++
+ stub_ss.add(files('cpu-get-clock.c'))
+-stub_ss.add(files('cpus-get-virtual-clock.c'))
+-stub_ss.add(files('qemu-timer-notify-cb.c'))
+-stub_ss.add(files('icount.c'))
+-stub_ss.add(files('dump.c'))
+-stub_ss.add(files('error-printf.c'))
+ stub_ss.add(files('fdset.c'))
+-stub_ss.add(files('gdbstub.c'))
+-stub_ss.add(files('get-vm-name.c'))
+-stub_ss.add(files('graph-lock.c'))
+-stub_ss.add(files('hotplug-stubs.c'))
+-if linux_io_uring.found()
+-  stub_ss.add(files('io_uring.c'))
+-endif
+ stub_ss.add(files('iothread-lock.c'))
+-if have_block
+-  stub_ss.add(files('iothread-lock-block.c'))
+-endif
+ stub_ss.add(files('is-daemonized.c'))
+-if libaio.found()
+-  stub_ss.add(files('linux-aio.c'))
+-endif
+-stub_ss.add(files('migr-blocker.c'))
+-stub_ss.add(files('monitor.c'))
+ stub_ss.add(files('monitor-core.c'))
+-stub_ss.add(files('physmem.c'))
+-stub_ss.add(files('qemu-timer-notify-cb.c'))
+-stub_ss.add(files('qmp-command-available.c'))
+-stub_ss.add(files('qmp-quit.c'))
+-stub_ss.add(files('qtest.c'))
+-stub_ss.add(files('ram-block.c'))
+-stub_ss.add(files('replay.c'))
+ stub_ss.add(files('replay-mode.c'))
+-stub_ss.add(files('runstate-check.c'))
+-stub_ss.add(files('sysbus.c'))
+-stub_ss.add(files('target-get-monitor-def.c'))
+-stub_ss.add(files('target-monitor-defs.c'))
+ stub_ss.add(files('trace-control.c'))
+-stub_ss.add(files('uuid.c'))
+-stub_ss.add(files('vmstate.c'))
+-stub_ss.add(files('vm-stop.c'))
+-stub_ss.add(files('win32-kbd-hook.c'))
+-stub_ss.add(files('cpu-synchronize-state.c'))
+-if have_block or have_ga
++
++if have_block
++  stub_ss.add(files('bdrv-next-monitor-owned.c'))
++  stub_ss.add(files('blk-commit-all.c'))
++  stub_ss.add(files('blk-exp-close-all.c'))
++  stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
++  stub_ss.add(files('change-state-handler.c'))
++  stub_ss.add(files('get-vm-name.c'))
++  stub_ss.add(files('iothread-lock-block.c'))
++  stub_ss.add(files('migr-blocker.c'))
++  stub_ss.add(files('physmem.c'))
++  stub_ss.add(files('ram-block.c'))
+   stub_ss.add(files('replay-tools.c'))
++  stub_ss.add(files('runstate-check.c'))
++  stub_ss.add(files('uuid.c'))
+ endif
+-if have_system
+-  stub_ss.add(files('fw_cfg.c'))
+-  stub_ss.add(files('xen-hw-stub.c'))
+-else
++
++if have_block or have_ga
++  # stubs for hooks in util/main-loop.c, util/async.c etc.
++  stub_ss.add(files('cpus-get-virtual-clock.c'))
++  stub_ss.add(files('icount.c'))
++  stub_ss.add(files('graph-lock.c'))
++  if linux_io_uring.found()
++    stub_ss.add(files('io_uring.c'))
++  endif
++  if libaio.found()
++    stub_ss.add(files('linux-aio.c'))
++  endif
++  stub_ss.add(files('qemu-timer-notify-cb.c'))
++
++  # stubs for monitor
++  stub_ss.add(files('monitor-internal.c'))
++  stub_ss.add(files('qmp-command-available.c'))
++  stub_ss.add(files('qmp-quit.c'))
++endif
++
++if have_block or have_user
++  stub_ss.add(files('qtest.c'))
++  stub_ss.add(files('vm-stop.c'))
++  stub_ss.add(files('vmstate.c'))
++
++  # more symbols provided by the monitor
++  stub_ss.add(files('error-printf.c'))
++endif
++
++if have_user
++  # Symbols that are used by hw/core.
++  stub_ss.add(files('cpu-synchronize-state.c'))
+   stub_ss.add(files('qdev.c'))
+ endif
++
++if have_system
++  # Symbols that are only needed in some configurations.  Try not
++  # adding more of these.  If the symbol is used in specific_ss,
++  # in particular, consider adding a symbol in configs/targets/
++  # instead.
++  stub_ss.add(files('dump.c'))
++  stub_ss.add(files('cmos.c'))
++  stub_ss.add(files('fw_cfg.c'))
++  stub_ss.add(files('target-get-monitor-def.c'))
++  stub_ss.add(files('target-monitor-defs.c'))
++  stub_ss.add(files('win32-kbd-hook.c'))
++  stub_ss.add(files('xen-hw-stub.c'))
++endif
++
++if have_system or have_user
++  stub_ss.add(files('gdbstub.c'))
++
++  # Also included in have_system for --disable-tcg builds
++  stub_ss.add(files('replay.c'))
++
++  # Also included in have_system for tests/unit/test-qdev-global-props
++  stub_ss.add(files('hotplug-stubs.c'))
++  stub_ss.add(files('sysbus.c'))
++endif
 -- 
 2.44.0
 
