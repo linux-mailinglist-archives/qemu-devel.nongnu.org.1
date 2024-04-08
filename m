@@ -2,77 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE7389CB28
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5D189CB1C
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:50:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7u-0001y5-PQ; Mon, 08 Apr 2024 13:49:50 -0400
+	id 1rtt7x-0001yz-6h; Mon, 08 Apr 2024 13:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7o-0001vF-LP
+ id 1rtt7q-0001vc-KP
  for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7m-0003cX-3N
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:43 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-2a2e5d86254so2843431a91.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
+ id 1rtt7n-0003cd-De
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:45 -0400
+Received: by mail-pj1-x1032.google.com with SMTP id
+ 98e67ed59e1d1-2a519ac18b3so832247a91.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598581; x=1713203381; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598582; x=1713203382; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Qew14nZN1wX0iqwNUmvetvShYAajmyZbQ1f420VzBg=;
- b=iwHzkw4pzzQ7c3GDiaxYPb5tT+v8uc9OVBQ7450iPDqc5vrBueaIdzuFRCV3pz7Mmo
- 9eyAUXretJDJXn425r8/rBpbc6bC2VGpK0awp/C+CgyhYSdZOQXVStdWIX5qk2cxJmEi
- 5QHeWqD83XXWfuLoRYpDVeOp90D6d5PWpXD/lmJzJmnPWzj6XPW5id430+oHAD1stZ/j
- EKewZuYz0tUADq58rcC2qapdZHhjkOkQ9k384r/wtY5P/bIbFWa4Jnpp5LxUL1IB6V6D
- 9xUcV9vgDJ164jaw40lRqG6RbOkIhfzOOAm+1sD4FrBBfUuQloaGYkxmiORqSuXTY6Yy
- VPdg==
+ bh=ClDgWE+squc24jCQx5ASDG99O/TQsFv8OJ3ohhBsa3Y=;
+ b=yLK1y3OEUThstbGG+U0rwnNtyeVJFACwozio/4T9aA2OGMqkdvfdKDEQN5NuT9X8d1
+ rqxwfWY3OeIjnxIp+aw3ut67lCYRvSmNa3XZnQDWf9MDhb9rD2UeFN+wg6VpqXw0rVrb
+ si49M7zv6VebaoN9Qouy/+0WF/ugubV2wr7TQsDe97dENmL5r8E/FMUHqZ1w7QTZoN9z
+ uDZi/Pstr6TKDwp8C6w2eboHx9abTehT46NBchV5faJKj1OFz4m1Zz5qbv83RVBoWsgW
+ Yw69SsIx4AScLDcWJu0cWWNxmU4rd8qQNhm8XGcPT7L5erqPqP2CliHMc6Hzzm70YaFP
+ h4Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598581; x=1713203381;
+ d=1e100.net; s=20230601; t=1712598582; x=1713203382;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Qew14nZN1wX0iqwNUmvetvShYAajmyZbQ1f420VzBg=;
- b=kqLtlnznakzJFhpETOZwSHsTavMhVKAES743hxRa3bjEoLV579o8n+HQUh3vO0nrxd
- PpECH9LyXdsktLe21qcvaZeldCjJrpVsrHmJ6t8UjHMi9kYDFAm1PpEtZ2csHtq45225
- Xs8xemO3lRl89UzRU8rMRSq6OVSrYAJqD1VqH4OeMQwq+0o/z0RVIz+DNAukKh1FCmAo
- IiVAdpWhobyVRgr8xFZEV0djI8hYvjE9rZM7YmU0g/KL+OXa4PxVb6I64WTbpRjE5+88
- 7oLaabyOUxBpuZRCOs6SllZcw44GWs6razDbFM3Sdnp9Ctq29k3UCuKbRdoHYrIhu5/E
- a6eA==
-X-Gm-Message-State: AOJu0YzA0ygR2lyIRRTuSj0cYVbxDLgdGBc/hEBNfG4uVlJi9MvWzNQt
- FOtkSgUlWWr1C0R2QKcZAoLXmurI10DlGoHmCKl8iE0GMsWcibq8KC91b+TTvUFxNxFaWMNQkFo
- 1
-X-Google-Smtp-Source: AGHT+IHmHnMtXl4S03sg3R4v8rU+hx0IboggSdJJ5/PA4KVEurOug3xnOtW7GR8TCnnzr4sLTzti7A==
-X-Received: by 2002:a17:90b:4c12:b0:2a5:242:6761 with SMTP id
- na18-20020a17090b4c1200b002a502426761mr487799pjb.23.1712598580721; 
- Mon, 08 Apr 2024 10:49:40 -0700 (PDT)
+ bh=ClDgWE+squc24jCQx5ASDG99O/TQsFv8OJ3ohhBsa3Y=;
+ b=Q6NnrzcKld/O+6xuQ3k122TDnCYhffLTtkWCqi5wwHWhuY/6x3vyeRwkVZJYNd9ald
+ oqaPSJHn43FR+47GgS/3wNO6C5VctXKzUH4Y0dxfsdvjfoTrhW7a3Z2/lIzvhiXUxi4h
+ Ea4z+T6QnhQvf8XFqeHnZivhpgqi9cTlFPITKUuxpnzk6Pr5tkZhQztSeW5XsUvtMq2a
+ IFU/tcRzjwYm2an3A7ZuD/47IVkX69pcTgzWTs5PZNzwEtRrlgEz43KLT0m8ZTlwB3xX
+ 7AWbiySisIxgnRVt7sSyGpfFuFOoi/qkae78YafGtu//i19rCnwLnJeEns5OKUcQMPax
+ /IhQ==
+X-Gm-Message-State: AOJu0YybvNUZAMPyl57dVh2KPed/iVjkOT2GRun+p0vp0aBZ5UsflKf3
+ pmD6eDtLdnsMM3TW1KSpjOW8/JybX+jPcu2xW/5btw+kvzyQDUu7VTWorx46HcOOlKOz5Zq69uc
+ u
+X-Google-Smtp-Source: AGHT+IEqR7Syjv4KeQ7C+jDud9uVEuYWENBx7KP442H2uM03hh+wQQHei9DrW3gGRJ1/gVUgxpdAwQ==
+X-Received: by 2002:a17:90a:ce18:b0:2a5:24dd:bd34 with SMTP id
+ f24-20020a17090ace1800b002a524ddbd34mr2206044pju.27.1712598581991; 
+ Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.39
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:40 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 06/35] linux-user: do_setsockopt: eliminate goto in switch for
- SO_SNDTIMEO
-Date: Mon,  8 Apr 2024 07:49:00 -1000
-Message-Id: <20240408174929.862917-7-richard.henderson@linaro.org>
+Cc: Michael Vogt <mvogt@redhat.com>
+Subject: [PULL 07/35] linux-user: Add FITRIM ioctl
+Date: Mon,  8 Apr 2024 07:49:01 -1000
+Message-Id: <20240408174929.862917-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,55 +92,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Tokarev <mjt@tls.msk.ru>
+From: Michael Vogt <mvogt@redhat.com>
 
-There's identical code for SO_SNDTIMEO and SO_RCVTIMEO, currently
-implemented using an ugly goto into another switch case.  Eliminate
-that using arithmetic if, making code flow more natural.
+Tiny patch to add the missing FITRIM ioctl.
 
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <20240331100737.2724186-5-mjt@tls.msk.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Michael Vogt <mvogt@redhat.com>
+Message-Id: <20240403092048.16023-2-michael.vogt@gmail.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ linux-user/ioctls.h        | 3 +++
+ linux-user/syscall_defs.h  | 1 +
+ linux-user/syscall_types.h | 5 +++++
+ 3 files changed, 9 insertions(+)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 1fedf16650..41659b63f5 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -2301,12 +2301,10 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
-     case TARGET_SOL_SOCKET:
-         switch (optname) {
-         case TARGET_SO_RCVTIMEO:
-+        case TARGET_SO_SNDTIMEO:
-         {
-                 struct timeval tv;
+diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
+index 1aec9d5836..d508d0c04a 100644
+--- a/linux-user/ioctls.h
++++ b/linux-user/ioctls.h
+@@ -140,6 +140,9 @@
+ #ifdef FITHAW
+      IOCTL(FITHAW, IOC_W | IOC_R, TYPE_INT)
+ #endif
++#ifdef FITRIM
++     IOCTL(FITRIM, IOC_W | IOC_R, MK_PTR(MK_STRUCT(STRUCT_fstrim_range)))
++#endif
  
--                optname = SO_RCVTIMEO;
--
--set_timeout:
-                 if (optlen != sizeof(struct target_timeval)) {
-                     return -TARGET_EINVAL;
-                 }
-@@ -2315,13 +2313,12 @@ set_timeout:
-                     return -TARGET_EFAULT;
-                 }
+      IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
+ #ifdef CONFIG_FIEMAP
+diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
+index 744fda599e..ce0adb706e 100644
+--- a/linux-user/syscall_defs.h
++++ b/linux-user/syscall_defs.h
+@@ -945,6 +945,7 @@ struct target_rtc_pll_info {
  
--                ret = get_errno(setsockopt(sockfd, SOL_SOCKET, optname,
-+                ret = get_errno(setsockopt(sockfd, SOL_SOCKET,
-+                                optname == TARGET_SO_RCVTIMEO ?
-+                                    SO_RCVTIMEO : SO_SNDTIMEO,
-                                 &tv, sizeof(tv)));
-                 return ret;
-         }
--        case TARGET_SO_SNDTIMEO:
--                optname = SO_SNDTIMEO;
--                goto set_timeout;
-         case TARGET_SO_ATTACH_FILTER:
-         {
-                 struct target_sock_fprog *tfprog;
+ #define TARGET_FIFREEZE    TARGET_IOWR('X', 119, abi_int)
+ #define TARGET_FITHAW    TARGET_IOWR('X', 120, abi_int)
++#define TARGET_FITRIM    TARGET_IOWR('X', 121, struct fstrim_range)
+ 
+ /*
+  * Note that the ioctl numbers for FS_IOC_<GET|SET><FLAGS|VERSION>
+diff --git a/linux-user/syscall_types.h b/linux-user/syscall_types.h
+index c3b43f8022..6dd7a80ce5 100644
+--- a/linux-user/syscall_types.h
++++ b/linux-user/syscall_types.h
+@@ -341,6 +341,11 @@ STRUCT(file_clone_range,
+        TYPE_ULONGLONG, /* src_length */
+        TYPE_ULONGLONG) /* dest_offset */
+ 
++STRUCT(fstrim_range,
++       TYPE_ULONGLONG, /* start */
++       TYPE_ULONGLONG, /* len */
++       TYPE_ULONGLONG) /* minlen */
++
+ STRUCT(fiemap_extent,
+        TYPE_ULONGLONG, /* fe_logical */
+        TYPE_ULONGLONG, /* fe_physical */
 -- 
 2.34.1
 
