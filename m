@@ -2,81 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D41C89C92C
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F82289C8F9
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtrK7-0001L2-4W; Mon, 08 Apr 2024 11:54:19 -0400
+	id 1rtrK9-0001LT-OU; Mon, 08 Apr 2024 11:54:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrK5-0001Kr-CV
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:17 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rtrK8-0001LJ-1G
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrK3-0001ql-QF
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:17 -0400
+ id 1rtrK6-0001r4-L6
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:54:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712591655;
+ s=mimecast20190719; t=1712591658;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OUsSvx4rS/JvSGux26uwYxv9XLnSYU17H3EwXSZxQ0w=;
- b=gy79+6suawwLTSIT4PQOIfAWmYYVXRKE2BY6auKr2Qy9NthbePJLuXXyfpzyjHNs0R3dgP
- h+zAG0ur7vG3uaRV6bTanpeD0UAq0HkRA/p5/zkt+qDn5SbtflhRrLuY9wnu+31rgnBfYK
- 816Q8rr2RFA0R+MObHuaJLSFss8ame4=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=HTrT2BEVdcUWgqnmnvX6ad7E9+4n+PuOGXheGFWkRfI=;
+ b=cc15dIc/hWaRCxVVvLSACOLTD90A7rjVC8R/vQIz/CBwJBTpzF2mHSWfnp/3+Vix7us/ub
+ ZG9afpJXydVBsq6WxHu+pd5OoM8PehldnjA+7dAb7vtnlB93cf0AAzZ6ueuWrhMm3h/r14
+ Ao58es6BQmECVwbg1MlB/MNg+0wdg20=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-321--BzWSn6IOeuQMHI4E7u0SQ-1; Mon, 08 Apr 2024 11:54:14 -0400
-X-MC-Unique: -BzWSn6IOeuQMHI4E7u0SQ-1
-Received: by mail-lj1-f199.google.com with SMTP id
- 38308e7fff4ca-2d883dab079so15545861fa.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:54:13 -0700 (PDT)
+ us-mta-590-cmH3mPuGPIS0AQihc0w2EA-1; Mon, 08 Apr 2024 11:54:16 -0400
+X-MC-Unique: cmH3mPuGPIS0AQihc0w2EA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4165339d3a5so7513905e9.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:54:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712591651; x=1713196451;
+ d=1e100.net; s=20230601; t=1712591654; x=1713196454;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OUsSvx4rS/JvSGux26uwYxv9XLnSYU17H3EwXSZxQ0w=;
- b=ciEYuGUzLqfap69a1We4NrAvlRQYADOAj69xjZ0TLsHcbXCsidx98ii5b+tJGa3yrq
- /Mqsqa1KuubVTpmiZoFVBaTDK36DEAFk3s1J+NT9UdkgqoAugEsnTfp5EGBhitQS65Mg
- z3O0MS+/zT0Ki+mfckzp3q8r6tcyTh41ss6X+kcAnMXHtO/iVbWuxF81FINJuONwJ3JW
- hjn9ooPgCVPsjk1z16jsrci1LY/VJQqTIdIcXtRhlkganjLUCUVsC1VzO1qSgo+knMU/
- GiCQmyKag1Kc03YC1No/9aUsaH4ceuGLbW+n7Xv3/j/+WLJnIUPRCioMFSfR1tpQyQx9
- 0PBA==
-X-Gm-Message-State: AOJu0YyLnXYveA+LBhZiVZkCt+Q3RaDI+xePvQlLvIx6Nldfa0q9mqXV
- isY3mSY5433NFbbZxVwW8ujRC4jK8v0YSogxI12SMI11LYkuFB7mgsL6u+ccTwW9KT8VBle2Fji
- s3kL7twKgcXgUhWF9NWkuHXavv7xe9Kzm8JMQNgiB2FscEl2WovKTWdAHt3TZg/ZfGWxz/BOpdl
- lJNM0vO0Xl5PCaamRK6UQl24nGqkqvtIq3JYEz
-X-Received: by 2002:a2e:95d4:0:b0:2d6:e0a9:9981 with SMTP id
- y20-20020a2e95d4000000b002d6e0a99981mr6868185ljh.9.1712591651334; 
- Mon, 08 Apr 2024 08:54:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAlgKqvGt9x55z6ZFndNEXaNbZHVKmVcSb0sgjkM6ZyItdDQGtCMUMtuYoEPo3E8eNRfHvqw==
-X-Received: by 2002:a2e:95d4:0:b0:2d6:e0a9:9981 with SMTP id
- y20-20020a2e95d4000000b002d6e0a99981mr6868172ljh.9.1712591650995; 
- Mon, 08 Apr 2024 08:54:10 -0700 (PDT)
+ bh=HTrT2BEVdcUWgqnmnvX6ad7E9+4n+PuOGXheGFWkRfI=;
+ b=Yku6i0ujnbGKSy4/HfuT0qBGkcuw9Qd0oxQm3UR7e4k3MXz/ih/Ct6Eswaoq/OsT1B
+ sq5CU3YHUNjjwhtZxBHuo1nRzIhm8aEJJNxJg79Z3h6Rqdye90C8S45znasYqc846VFQ
+ Btb7JO6SaT5+qk8biA/cUUTrCGq7AOp2WapExzsKXDEjHBtxPePtrX69BwMBmExywRtt
+ xbsng2IpKLnGfkTTkOPkUbJS8OJ4c4wyraRy7otm19ucJxRjOAiWJIZAGdTlDjsOTbDn
+ HAd1nLOkmo5sli0tQtBk4px8vUQSVWqe8hjBBt9jDcedB0qvD2WRM9xz05U8GqzQ94u4
+ z5eA==
+X-Gm-Message-State: AOJu0YwRvnSzrCra+zGd+g2GCUJ7BM73KiZNSWiPj3JfORutIMOgoqv1
+ KZTTpvb/nAWdqLsly1qoExSnuibTn3+WkV0R4yB2Ov/t8bT2AI8dHFCevBqsg7LP0pmHKJ2tzZF
+ zcw54qQ1HWeLN8XkaA6X0Em6a6DGRq+ThwIAHp4WFcrkK6FYKZIM3fY74HWddKQOggFcpfRQZ0v
+ Huk/VIpFBvQcDPGLL6oEH2BF3oJ4AZbVdtgH59
+X-Received: by 2002:a05:600c:3592:b0:416:8152:8a70 with SMTP id
+ p18-20020a05600c359200b0041681528a70mr1347598wmq.33.1712591654767; 
+ Mon, 08 Apr 2024 08:54:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsAfPLKZcP/L4W12iqKbbF1J8CSVamSQWifNyHScTj3pfsqnHu7p+STcDmCalydrTXyhm1tg==
+X-Received: by 2002:a05:600c:3592:b0:416:8152:8a70 with SMTP id
+ p18-20020a05600c359200b0041681528a70mr1347591wmq.33.1712591654520; 
+ Mon, 08 Apr 2024 08:54:14 -0700 (PDT)
 Received: from avogadro.local ([151.95.152.232])
  by smtp.gmail.com with ESMTPSA id
- j22-20020a05600c1c1600b004165315d885sm6677512wms.11.2024.04.08.08.54.09
+ p15-20020a05600c358f00b004156b689edfsm13918903wmq.33.2024.04.08.08.54.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 08:54:09 -0700 (PDT)
+ Mon, 08 Apr 2024 08:54:13 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v2 13/18] ramfb: move stubs out of stubs/
-Date: Mon,  8 Apr 2024 17:53:25 +0200
-Message-ID: <20240408155330.522792-14-pbonzini@redhat.com>
+Subject: [PATCH v2 14/18] memory-device: move stubs out of stubs/
+Date: Mon,  8 Apr 2024 17:53:26 +0200
+Message-ID: <20240408155330.522792-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408155330.522792-1-pbonzini@redhat.com>
 References: <20240408155330.522792-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -100,46 +100,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the ramfb stubs are needed exactly when the Kconfig symbols are not
-needed, move them to hw/display/ and compile them when ramfb.c is absent.
+Since the memory-device stubs are needed exactly when the Kconfig symbols are not
+needed, move them to hw/mem/.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/ramfb.c => hw/display/ramfb-stubs.c | 0
- hw/display/meson.build                    | 2 +-
- stubs/meson.build                         | 1 -
- 3 files changed, 1 insertion(+), 2 deletions(-)
- rename stubs/ramfb.c => hw/display/ramfb-stubs.c (100%)
+ stubs/memory_device.c => hw/mem/memory-device-stubs.c | 0
+ hw/mem/meson.build                                    | 1 +
+ stubs/meson.build                                     | 1 -
+ 3 files changed, 1 insertion(+), 1 deletion(-)
+ rename stubs/memory_device.c => hw/mem/memory-device-stubs.c (100%)
 
-diff --git a/stubs/ramfb.c b/hw/display/ramfb-stubs.c
+diff --git a/stubs/memory_device.c b/hw/mem/memory-device-stubs.c
 similarity index 100%
-rename from stubs/ramfb.c
-rename to hw/display/ramfb-stubs.c
-diff --git a/hw/display/meson.build b/hw/display/meson.build
-index f93a69f70f4..4751aab3ba9 100644
---- a/hw/display/meson.build
-+++ b/hw/display/meson.build
-@@ -3,7 +3,7 @@ hw_display_modules = {}
- system_ss.add(when: 'CONFIG_DDC', if_true: files('i2c-ddc.c'))
- system_ss.add(when: 'CONFIG_EDID', if_true: files('edid-generate.c', 'edid-region.c'))
+rename from stubs/memory_device.c
+rename to hw/mem/memory-device-stubs.c
+diff --git a/hw/mem/meson.build b/hw/mem/meson.build
+index faee1fe9360..1c1c6da24b5 100644
+--- a/hw/mem/meson.build
++++ b/hw/mem/meson.build
+@@ -6,6 +6,7 @@ mem_ss.add(when: 'CONFIG_NVDIMM', if_true: files('nvdimm.c'))
+ mem_ss.add(when: 'CONFIG_CXL_MEM_DEVICE', if_true: files('cxl_type3.c'))
+ system_ss.add(when: 'CONFIG_CXL_MEM_DEVICE', if_false: files('cxl_type3_stubs.c'))
  
--system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('ramfb.c'))
-+system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('ramfb.c'), if_false: files('ramfb-stubs.c'))
- system_ss.add(when: 'CONFIG_FW_CFG_DMA', if_true: files('ramfb-standalone.c'))
++system_ss.add(when: 'CONFIG_MEM_DEVICE', if_false: files('memory-device-stubs.c'))
+ system_ss.add_all(when: 'CONFIG_MEM_DEVICE', if_true: mem_ss)
  
- system_ss.add(when: 'CONFIG_VGA_CIRRUS', if_true: files('cirrus_vga.c'))
+ system_ss.add(when: 'CONFIG_SPARSE_MEM', if_true: files('sparse-mem.c'))
 diff --git a/stubs/meson.build b/stubs/meson.build
-index 84ecaa4daa1..92887660e41 100644
+index 92887660e41..a4404e765ab 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -36,7 +36,6 @@ stub_ss.add(files('qmp-command-available.c'))
+@@ -31,7 +31,6 @@ stub_ss.add(files('monitor.c'))
+ stub_ss.add(files('monitor-core.c'))
+ stub_ss.add(files('physmem.c'))
+ stub_ss.add(files('qemu-timer-notify-cb.c'))
+-stub_ss.add(files('memory_device.c'))
+ stub_ss.add(files('qmp-command-available.c'))
  stub_ss.add(files('qmp-quit.c'))
  stub_ss.add(files('qtest.c'))
- stub_ss.add(files('ram-block.c'))
--stub_ss.add(files('ramfb.c'))
- stub_ss.add(files('replay.c'))
- stub_ss.add(files('runstate-check.c'))
- stub_ss.add(files('sysbus.c'))
 -- 
 2.44.0
 
