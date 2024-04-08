@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E92C89CB3E
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6DB89CB2F
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:53:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt8M-000279-PQ; Mon, 08 Apr 2024 13:50:18 -0400
+	id 1rtt8N-00027N-It; Mon, 08 Apr 2024 13:50:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8K-00026q-Oo
+ id 1rtt8K-00026s-TE
  for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:16 -0400
-Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8G-0003jY-PH
+ id 1rtt8J-0003jm-1b
  for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:16 -0400
-Received: by mail-pj1-x1033.google.com with SMTP id
- 98e67ed59e1d1-29e0229d6b5so3889745a91.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:11 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-5d4d15ec7c5so3811216a12.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598610; x=1713203410; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598612; x=1713203412; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pLzmDWgl8qUDWCq3D57/PwLyiFcPLxohH0NJBMBSEDg=;
- b=c9OolPn3B22rSeVbPk820E26xTJsb99TplPvozZx8Ca4oohmhh6dBr1HxfdEh99dv5
- 5zdBSYjKHPjy6HyHq5xAmNqJ3fcnW0iRt3XsiVpDVaz4+hDlFhU/i77t/l0STesBOoaK
- gyS+AV+bfcBXjz/jYQofTdDFZjt60/Cvzf2dD8kdlS7fabU6Spnc5QeONliSKsxlFtB/
- xXx80PJ0slpAPV+MHJ1AYqeuR/RptMV0hVfcFsqie6MeYJfdnGjJ0lDEJvfQUlFDAwBX
- N6fCnqk5Yfgs9V2q3UeIquSI6b7Wegy60FCHNd8Qno2jYD4EjuWqI/sR2gkjhnAcN3oV
- sF1g==
+ bh=LWeWfrDPztEwkV9YuE7zu+DtIohBh0oWfxn6udjmQ4s=;
+ b=XgqngNY7YmqvH/feZBb2y0Pp4VesJsceCYF1LyLUleUK9m7MvWu5/qGaUrhvc8zSb4
+ VwsVtMd21dvdUQ8YnfZG/z+Ivi/uqc8DciYHFxygkHide5fdbkRFbm1vDaT04XB9sHz2
+ F53Ac1ckiysBIXonSUcs1YvJ7LwoM7RGpAzoKIOnRaycsajV7PCIb2vnDs39tF7CWK1o
+ IehPl2S+T+OkqPCXdIJBetDD+Z7k/sHOUnbp01JjLhos4hL+p4k2uRJOfmhAeAYed1+m
+ epnDO2z+FI0GlBeAct9HFS9d7Z0UTB+UKDjCG2l7UanuGagdfPjc/Xx8ZBgMyLmYVSfw
+ v6bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598610; x=1713203410;
+ d=1e100.net; s=20230601; t=1712598612; x=1713203412;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pLzmDWgl8qUDWCq3D57/PwLyiFcPLxohH0NJBMBSEDg=;
- b=wg2pq+z2SuNskt35fegnSxQi6FifyAcjTm/8Vi6yupvu/OmfMQU3dpSn/XJUXIJlB9
- u/TLC8HokAxOP38wfBfaRSw2eLI1apOomgsFS5WJXItSSO+wGc1YzwKWIWbkLtCVoZ8T
- OqgXt3f9PSAza0/ep19i9fbu3fgnURC/9lAPTyvXkuNfYE0Y5KBd2a6CUMrzI8jpMrE8
- Jkq32lpEdN1qIBUDny+x20l5xf0po5dcQo9SeNSbdwlPfc2PjgsmHhxAcUEXBc63zxKz
- Xe8F+LdPRbsaC2Q8oZZ5CXhosX5MdXGaSmgLwvOWTRMP9+kC8SUML6smPx08mP8Etr4O
- se4w==
-X-Gm-Message-State: AOJu0YyKyugeJHGzuSwtRV8ky9/0JQ7UvwvUh+i9B5DzVfZCt1d/enS5
- gOLTKXetPFFbnZmJjVlN0pXC2AcvgZuXKGe/pBZKs29iieG55g+kZXMlKDqe8iQp8tUQhDpqY47
- B
-X-Google-Smtp-Source: AGHT+IElBetL066uhjs8ZPDx/ZpOcjL8/KI/mqZiWa6PQ8roRc/dU3J8AiP7xiUx6Yjukj/vyUL9GQ==
-X-Received: by 2002:a17:90b:3ecb:b0:29f:7672:7fee with SMTP id
- rm11-20020a17090b3ecb00b0029f76727feemr8845985pjb.31.1712598610243; 
- Mon, 08 Apr 2024 10:50:10 -0700 (PDT)
+ bh=LWeWfrDPztEwkV9YuE7zu+DtIohBh0oWfxn6udjmQ4s=;
+ b=uCsAOScy6qglBj+b54fqHAoeV90FP+tNEXX5aulCZoJbLRfCA0JCcDwmlFmrF+x4iI
+ 0xaG+Oe3SlQ0Sl6xgXw8tgTBLZqZnmGxOogQSvrrVYkEj9koyaGP/HPpc8zP4F17499i
+ 38jKwbYSH97GcXEmIQ1wQOKIRhLAKg8qIe6QKdNYo4sRRQ7YylG+bUSD8CiS+J9rDKgS
+ hg/bdf0igi8cCTkWwjK6hvsBnaaysVrJb1rgW8cJmPVZsAqWv4Whqoz27mS2QWL/7XI+
+ m7vGe+SLb71X88UMi1dPq48o93XyWKdwh9JmQ9Cv1yzrgdhfTda/Ynq/mh3i6CksR1+U
+ Sw4g==
+X-Gm-Message-State: AOJu0YyC2Vr9Pl7AmVcBgvDJW+G2GZizR68X4rSSAZqER8Nh8fjrfFZV
+ WabMCsmPCbQxZTtwc1Lyr7O2Uf6Ze5u0Y2SM06wj11KFhURzVlyO1myjMS+n/vQcA02dn5hFlAb
+ K
+X-Google-Smtp-Source: AGHT+IGtl5EAeMFBnm3J24SXUxUFppKqtxQAhInllf9x+JDL59fGQxM1swl4FRFsZetLLHt4H3PNgw==
+X-Received: by 2002:a17:90b:24a:b0:2a0:8eed:56ec with SMTP id
+ fz10-20020a17090b024a00b002a08eed56ecmr8432988pjb.39.1712598612163; 
+ Mon, 08 Apr 2024 10:50:12 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.09
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.10
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:50:09 -0700 (PDT)
+ Mon, 08 Apr 2024 10:50:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 26/35] target/s390x: Use insn_start from DisasContextBase
-Date: Mon,  8 Apr 2024 07:49:20 -1000
-Message-Id: <20240408174929.862917-27-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?J=C3=B8rgen=20Hansen?= <Jorgen.Hansen@wdc.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 27/35] accel/tcg: Improve can_do_io management
+Date: Mon,  8 Apr 2024 07:49:21 -1000
+Message-Id: <20240408174929.862917-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,41 +94,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+We already attempted to set and clear can_do_io before the first
+and last insns, but only used the initial value of max_insns and
+the call to translator_io_start to find those insns.
+
+Now that we track insn_start in DisasContextBase, and now that
+we have emit_before_op, we can wait until we have finished
+translation to identify the true first and last insns and emit
+the sets of can_do_io at that time.
+
+This fixes the case of a translation block which crossed a page
+boundary, and for which the second page turned out to be mmio.
+In this case we truncate the block, and the previous logic for
+can_do_io could leave a block with a single insn with can_do_io
+set to false, which would fail an assertion in cpu_io_recompile.
+
+Reported-by: Jørgen Hansen <Jorgen.Hansen@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Jørgen Hansen <Jorgen.Hansen@wdc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/s390x/tcg/translate.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/exec/translator.h |  1 -
+ accel/tcg/translator.c    | 45 ++++++++++++++++++++-------------------
+ 2 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
-index 57b7db1ee9..90a74ee795 100644
---- a/target/s390x/tcg/translate.c
-+++ b/target/s390x/tcg/translate.c
-@@ -141,7 +141,6 @@ struct DisasFields {
- struct DisasContext {
-     DisasContextBase base;
-     const DisasInsn *insn;
--    TCGOp *insn_start;
-     DisasFields fields;
-     uint64_t ex_value;
-     /*
-@@ -6314,7 +6313,7 @@ static DisasJumpType translate_one(CPUS390XState *env, DisasContext *s)
-     insn = extract_insn(env, s);
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index ceaeca8c91..2c4fb818e7 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -87,7 +87,6 @@ typedef struct DisasContextBase {
+     int num_insns;
+     int max_insns;
+     bool singlestep_enabled;
+-    int8_t saved_can_do_io;
+     bool plugin_enabled;
+     struct TCGOp *insn_start;
+     void *host_addr[2];
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index ae61c154c2..9de0bc34c8 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -18,20 +18,14 @@
  
-     /* Update insn_start now that we know the ILEN.  */
--    tcg_set_insn_start_param(s->insn_start, 2, s->ilen);
-+    tcg_set_insn_start_param(s->base.insn_start, 2, s->ilen);
- 
-     /* Not found means unimplemented/illegal opcode.  */
-     if (insn == NULL) {
-@@ -6468,7 +6467,6 @@ static void s390x_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
- 
-     /* Delay the set of ilen until we've read the insn. */
-     tcg_gen_insn_start(dc->base.pc_next, dc->cc_op, 0);
--    dc->insn_start = tcg_last_op();
+ static void set_can_do_io(DisasContextBase *db, bool val)
+ {
+-    if (db->saved_can_do_io != val) {
+-        db->saved_can_do_io = val;
+-
+-        QEMU_BUILD_BUG_ON(sizeof_field(CPUState, neg.can_do_io) != 1);
+-        tcg_gen_st8_i32(tcg_constant_i32(val), tcg_env,
+-                        offsetof(ArchCPU, parent_obj.neg.can_do_io) -
+-                        offsetof(ArchCPU, env));
+-    }
++    QEMU_BUILD_BUG_ON(sizeof_field(CPUState, neg.can_do_io) != 1);
++    tcg_gen_st8_i32(tcg_constant_i32(val), tcg_env,
++                    offsetof(ArchCPU, parent_obj.neg.can_do_io) -
++                    offsetof(ArchCPU, env));
  }
  
- static target_ulong get_next_pc(CPUS390XState *env, DisasContext *s,
+ bool translator_io_start(DisasContextBase *db)
+ {
+-    set_can_do_io(db, true);
+-
+     /*
+      * Ensure that this instruction will be the last in the TB.
+      * The target may override this to something more forceful.
+@@ -84,13 +78,6 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
+                          - offsetof(ArchCPU, env));
+     }
+ 
+-    /*
+-     * cpu->neg.can_do_io is set automatically here at the beginning of
+-     * each translation block.  The cost is minimal, plus it would be
+-     * very easy to forget doing it in the translator.
+-     */
+-    set_can_do_io(db, db->max_insns == 1);
+-
+     return icount_start_insn;
+ }
+ 
+@@ -129,6 +116,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+ {
+     uint32_t cflags = tb_cflags(tb);
+     TCGOp *icount_start_insn;
++    TCGOp *first_insn_start = NULL;
+     bool plugin_enabled;
+ 
+     /* Initialize DisasContext */
+@@ -139,7 +127,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     db->num_insns = 0;
+     db->max_insns = *max_insns;
+     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
+-    db->saved_can_do_io = -1;
+     db->insn_start = NULL;
+     db->host_addr[0] = host_pc;
+     db->host_addr[1] = NULL;
+@@ -159,6 +146,9 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+         *max_insns = ++db->num_insns;
+         ops->insn_start(db, cpu);
+         db->insn_start = tcg_last_op();
++        if (first_insn_start == NULL) {
++            first_insn_start = db->insn_start;
++        }
+         tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+ 
+         if (plugin_enabled) {
+@@ -171,10 +161,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+          * done next -- either exiting this loop or locate the start of
+          * the next instruction.
+          */
+-        if (db->num_insns == db->max_insns) {
+-            /* Accept I/O on the last instruction.  */
+-            set_can_do_io(db, true);
+-        }
+         ops->translate_insn(db, cpu);
+ 
+         /*
+@@ -207,6 +193,21 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     ops->tb_stop(db, cpu);
+     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
+ 
++    /*
++     * Manage can_do_io for the translation block: set to false before
++     * the first insn and set to true before the last insn.
++     */
++    if (db->num_insns == 1) {
++        tcg_debug_assert(first_insn_start == db->insn_start);
++    } else {
++        tcg_debug_assert(first_insn_start != db->insn_start);
++        tcg_ctx->emit_before_op = first_insn_start;
++        set_can_do_io(db, false);
++    }
++    tcg_ctx->emit_before_op = db->insn_start;
++    set_can_do_io(db, true);
++    tcg_ctx->emit_before_op = NULL;
++
+     if (plugin_enabled) {
+         plugin_gen_tb_end(cpu, db->num_insns);
+     }
 -- 
 2.34.1
 
