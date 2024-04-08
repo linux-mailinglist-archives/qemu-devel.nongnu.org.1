@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B1189CB59
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 720CA89CB30
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:53:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7u-0001xe-Ew; Mon, 08 Apr 2024 13:49:50 -0400
+	id 1rtt7t-0001wg-AU; Mon, 08 Apr 2024 13:49:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7f-0001t6-RW
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:37 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rtt7h-0001ul-76
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:40 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7d-0003bj-Sg
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:35 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6ecf3f001c5so3908936b3a.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
+ id 1rtt7f-0003bn-Dx
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:36 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1e220e40998so29321915ad.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598572; x=1713203372; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=9k9ndciImwZ4WkH8Un2QRbqbF4d943OAPd1HXXDTYZA=;
- b=Y2Ha7GgEg7iGj3qWpE0E6k5ivYLRJmm30c0P3opTpVaMwQ352XXFDrL3RXphHKE/jp
- SmF9dScvGg3ec+GsdtGH4AfGr5JMKtUY3lk6qnpOFwCz2+UEi9rnj7ZsS3e/8MHOtGea
- g7pDyFfC8yVDKWKax6Rd0XgN9Z0qq57Ti78RK4UpbvmCSegud5wBAdDwV3nNTH1MOrSw
- 7/Y8AQtwk7msMsU5/e+wWgwF4VqJVt1A/sF2KCRCGuqYuB1b84ah3WcI3AzZupTrdPS4
- J4t0K4+MjbdjioCSTsQ3m0NK+CPKOCH9CFPPJ7VIEwx9DEteRhWh5Z+XugrpizL60vNM
- 1MxQ==
+ d=linaro.org; s=google; t=1712598573; x=1713203373; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=0/ekaTyyBHEzg2gMKpvUq/mv6Nl9iOhi1rhUNF8qDbI=;
+ b=gBEHHWvOjX7A9VAUnmZqB23LvPYbMLCt5OljiU6zTGX+K+S3ASCbcaTPcM61Fp8scO
+ p027DoYEinrv5uji2DMLWuhYQfMPezG9zjzRRiSTXAr3S0t/SzXtuyS248Maicoa7tEZ
+ 1HgTuE5yaGSBVHLHpxQeMuS5xBH62un3MZ/sMm65a3HfFpLwKnXBvCjtrdSlSguAp7pM
+ 7idokF/QRPXQqny3e/W2m+Xhhi04fItMcJhKrryQollo8tJRqW3TkVzC32zd4bip2KKU
+ i7yCWjrWjQ1wDc7GlMMMXRxU+mC+9dTX7MQBFHYz0BopBMnCT4wSZEr6kVPI3tyKM/1a
+ riMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598572; x=1713203372;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9k9ndciImwZ4WkH8Un2QRbqbF4d943OAPd1HXXDTYZA=;
- b=JeBuHBTgkgUTWw6wiAnqBuEGYXzCGzLWLa0BuylD/Ioi7kalDb6FdqKtsSNbwZm0Ly
- 094ny1LIPpygOV3CvV6qpZx6x8zOZPy9FfIc6N5xk96OSxBfZlBnNrRC3FmWzkb52841
- nl9XmBA0MFjFC9AFMyOvtLXRgL//fRiBYv/5qT5AAbDXoEy3W1bdkUCuZXZH2DtX0qoP
- LugnX0v4Y6efHvrAvS4A3GRW0XZFOp6f7GmgB19O5Mc3WSwz6SDRyNHnExU0fGaOiHqH
- 4QH6wzM5OZCJunq+JPA4WRWGqy9uHURQbA0ajyuYJgTF6TXqmgOCinmeOD1bpBJZ2ms/
- Bs+Q==
-X-Gm-Message-State: AOJu0YzBe/mBqpb66G+NC1E9KT0mvVRrlWZ+wVRU6ApPDEGZnUDgDboI
- gHHfQV64VjQ6Om6QOFvK+Jcp+kjoq4nC/4hwSO1c2YAUNr0nkmeUNvBbXBMEu76HNtZgxtVMbhE
- d
-X-Google-Smtp-Source: AGHT+IGqqUNMDSBNhVJ9LDLq7xE1IIcNKKQzJ7C/sGyUoCM702Q7ECzkY6KiNwHgcVY276Om2OOBkg==
-X-Received: by 2002:a05:6a20:5b19:b0:1a7:35b1:1894 with SMTP id
- kl25-20020a056a205b1900b001a735b11894mr7753989pzb.32.1712598572054; 
- Mon, 08 Apr 2024 10:49:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712598573; x=1713203373;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0/ekaTyyBHEzg2gMKpvUq/mv6Nl9iOhi1rhUNF8qDbI=;
+ b=Ivun58P9Io11U7fDFH3HFlXKFFfVIg8zqUCRk3jRvoD9toWYH1j4tthK8UYRY5NTA6
+ 3Nu82aOd0CA7FbQljG4PNqDHivx7NVow3rgrhnPW1b8EARf5PJLHixQqTbHhyv7n3JLj
+ 9kHF8PJPSsRfb0fWXJMCsNCzaTVAwGxX9NCxc/axkvetCn4w2aJ6+gbV3HyMVay9lEyP
+ DivYP8JxCI+IfDVuaCZbkKpHlqyAVd03OdRxCZLFQ6ibYPNIBmEcogCSBpbAdD/8ZlQ8
+ TPrCi4cYwvpv7BvOd7US8TCWsefV1Kzk0hPeLkBJjMaVRoqc+jak7mFBbJyog432upM7
+ npnw==
+X-Gm-Message-State: AOJu0Yzr1P/GuTiNSsWX6rDzcSVCp7O6GH6Q2A6zufInNRypKUoiyf7X
+ 4qyxJthgx50oEuF+8L5t8vwP3KE84HSMFF807CK4dWETe3mteu5N7rP0Bfd3JuVMRCDbyj7R028
+ p
+X-Google-Smtp-Source: AGHT+IEHQA1cc/e09UMY+MskAlVxa1XokC37kYkGqT7ye7GOU2/DMJeoq/Jncj39q2qBxuC23vmw7A==
+X-Received: by 2002:a17:90a:e00b:b0:2a2:d16a:8df3 with SMTP id
+ u11-20020a17090ae00b00b002a2d16a8df3mr7855106pjy.40.1712598573515; 
+ Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.31
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.32
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:31 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 00/35] misc patch queue
-Date: Mon,  8 Apr 2024 07:48:54 -1000
-Message-Id: <20240408174929.862917-1-richard.henderson@linaro.org>
+Subject: [PULL 01/35] tcg/optimize: Do not attempt to constant fold neg_vec
+Date: Mon,  8 Apr 2024 07:48:55 -1000
+Message-Id: <20240408174929.862917-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
+References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,130 +91,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This started out to be tcg and linux-user only, but then added
-a few target bug fixes, and the trolled back through my inbox
-and picked up some other safe patch sets that got lost.
+Split out the tail of fold_neg to fold_neg_no_const so that we
+can avoid attempting to constant fold vector negate.
 
-
-r~
-
-
-The following changes since commit ce64e6224affb8b4e4b019f76d2950270b391af5:
-
-  Merge tag 'qemu-sparc-20240404' of https://github.com/mcayland/qemu into staging (2024-04-04 15:28:06 +0100)
-
-are available in the Git repository at:
-
-  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240408
-
-for you to fetch changes up to 50dbeda88ab71f9d426b7f4b126c79c44860e475:
-
-  util/bufferiszero: Simplify test_buffer_is_zero_next_accel (2024-04-08 06:27:58 -1000)
-
-----------------------------------------------------------------
-util/bufferiszero: Optimizations and cleanups, esp code removal
-target/m68k: Semihosting for non-coldfire cpus
-target/m68k: Fix fp accrued exception reporting
-target/hppa: Fix IIAOQ, IIASQ for pa2.0
-target/sh4: Fixes to mac.l and mac.w saturation
-target/sh4: Fixes to illegal delay slot reporting
-linux-user: Cleanups for do_setsockopt
-linux-user: Add FITRIM ioctl
-linux-user: Fix waitid return of siginfo_t and rusage
-tcg/optimize: Do not attempt to constant fold neg_vec
-accel/tcg: Improve can_do_io management, mmio bug fix
-
-----------------------------------------------------------------
-Alexander Monakov (5):
-      util/bufferiszero: Remove SSE4.1 variant
-      util/bufferiszero: Remove AVX512 variant
-      util/bufferiszero: Reorganize for early test for acceleration
-      util/bufferiszero: Remove useless prefetches
-      util/bufferiszero: Optimize SSE2 and AVX2 variants
-
-Keith Packard (3):
-      target/m68k: Map FPU exceptions to FPSR register
-      target/m68k: Pass semihosting arg to exit
-      target/m68k: Support semihosting on non-ColdFire targets
-
-Michael Tokarev (4):
-      linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
-      linux-user: do_setsockopt: make ip_mreq local to the place it is used and inline target_to_host_ip_mreq()
-      linux-user: do_setsockopt: make ip_mreq_source local to the place where it is used
-      linux-user: do_setsockopt: eliminate goto in switch for SO_SNDTIMEO
-
-Michael Vogt (1):
-      linux-user: Add FITRIM ioctl
-
-Nguyen Dinh Phi (1):
-      linux-user: replace calloc() with g_new0()
-
-Richard Henderson (17):
-      tcg/optimize: Do not attempt to constant fold neg_vec
-      linux-user: Fix waitid return of siginfo_t and rusage
-      target/hppa: Fix IIAOQ, IIASQ for pa2.0
-      target/sh4: Merge mach and macl into a union
-      target/m68k: Perform the semihosting test during translate
-      tcg: Add TCGContext.emit_before_op
-      accel/tcg: Add insn_start to DisasContextBase
-      target/arm: Use insn_start from DisasContextBase
-      target/hppa: Use insn_start from DisasContextBase
-      target/i386: Preserve DisasContextBase.insn_start across rewind
-      target/microblaze: Use insn_start from DisasContextBase
-      target/riscv: Use insn_start from DisasContextBase
-      target/s390x: Use insn_start from DisasContextBase
-      accel/tcg: Improve can_do_io management
-      util/bufferiszero: Improve scalar variant
-      util/bufferiszero: Introduce biz_accel_fn typedef
-      util/bufferiszero: Simplify test_buffer_is_zero_next_accel
-
-Zack Buhman (4):
-      target/sh4: mac.w: memory accesses are 16-bit words
-      target/sh4: Fix mac.l with saturation enabled
-      target/sh4: Fix mac.w with saturation enabled
-      target/sh4: add missing CHECK_NOT_DELAY_SLOT
-
- include/exec/translator.h         |   4 +-
- include/qemu/cutils.h             |  32 +++-
- include/tcg/tcg.h                 |   6 +
- linux-user/ioctls.h               |   3 +
- linux-user/syscall_defs.h         |   1 +
- linux-user/syscall_types.h        |   5 +
- target/arm/tcg/translate.h        |  12 +-
- target/m68k/cpu.h                 |   5 +-
- target/m68k/helper.h              |   2 +
- target/sh4/cpu.h                  |  14 +-
- target/sh4/helper.h               |   4 +-
- accel/tcg/translator.c            |  47 ++---
- linux-user/main.c                 |   6 +-
- linux-user/syscall.c              |  95 +++++-----
- target/arm/tcg/translate-a64.c    |   2 +-
- target/arm/tcg/translate.c        |   2 +-
- target/hppa/int_helper.c          |  20 +-
- target/hppa/sys_helper.c          |  18 +-
- target/hppa/translate.c           |  10 +-
- target/i386/tcg/translate.c       |   3 +
- target/m68k/cpu.c                 |  12 +-
- target/m68k/fpu_helper.c          |  72 ++++++++
- target/m68k/helper.c              |   4 +-
- target/m68k/m68k-semi.c           |   4 +-
- target/m68k/op_helper.c           |  14 +-
- target/m68k/translate.c           |  54 +++++-
- target/microblaze/translate.c     |   8 +-
- target/riscv/translate.c          |  11 +-
- target/s390x/tcg/translate.c      |   4 +-
- target/sh4/op_helper.c            |  51 ++---
- target/sh4/translate.c            |   7 +-
- tcg/optimize.c                    |  17 +-
- tcg/tcg.c                         |  14 +-
- tests/tcg/aarch64/test-2150.c     |  12 ++
- tests/tcg/sh4/test-macl.c         |  67 +++++++
- tests/tcg/sh4/test-macw.c         |  61 ++++++
- util/bufferiszero.c               | 379 +++++++++++++++++---------------------
- tests/tcg/aarch64/Makefile.target |   2 +-
- tests/tcg/sh4/Makefile.target     |   8 +
- 39 files changed, 696 insertions(+), 396 deletions(-)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2150
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ tcg/optimize.c                    | 17 ++++++++---------
+ tests/tcg/aarch64/test-2150.c     | 12 ++++++++++++
+ tests/tcg/aarch64/Makefile.target |  2 +-
+ 3 files changed, 21 insertions(+), 10 deletions(-)
  create mode 100644 tests/tcg/aarch64/test-2150.c
- create mode 100644 tests/tcg/sh4/test-macl.c
- create mode 100644 tests/tcg/sh4/test-macw.c
+
+diff --git a/tcg/optimize.c b/tcg/optimize.c
+index 275db77b42..2e9e5725a9 100644
+--- a/tcg/optimize.c
++++ b/tcg/optimize.c
+@@ -1990,16 +1990,10 @@ static bool fold_nand(OptContext *ctx, TCGOp *op)
+     return false;
+ }
+ 
+-static bool fold_neg(OptContext *ctx, TCGOp *op)
++static bool fold_neg_no_const(OptContext *ctx, TCGOp *op)
+ {
+-    uint64_t z_mask;
+-
+-    if (fold_const1(ctx, op)) {
+-        return true;
+-    }
+-
+     /* Set to 1 all bits to the left of the rightmost.  */
+-    z_mask = arg_info(op->args[1])->z_mask;
++    uint64_t z_mask = arg_info(op->args[1])->z_mask;
+     ctx->z_mask = -(z_mask & -z_mask);
+ 
+     /*
+@@ -2010,6 +2004,11 @@ static bool fold_neg(OptContext *ctx, TCGOp *op)
+     return true;
+ }
+ 
++static bool fold_neg(OptContext *ctx, TCGOp *op)
++{
++    return fold_const1(ctx, op) || fold_neg_no_const(ctx, op);
++}
++
+ static bool fold_nor(OptContext *ctx, TCGOp *op)
+ {
+     if (fold_const2_commutative(ctx, op) ||
+@@ -2418,7 +2417,7 @@ static bool fold_sub_to_neg(OptContext *ctx, TCGOp *op)
+     if (have_neg) {
+         op->opc = neg_op;
+         op->args[1] = op->args[2];
+-        return fold_neg(ctx, op);
++        return fold_neg_no_const(ctx, op);
+     }
+     return false;
+ }
+diff --git a/tests/tcg/aarch64/test-2150.c b/tests/tcg/aarch64/test-2150.c
+new file mode 100644
+index 0000000000..fb86c11958
+--- /dev/null
++++ b/tests/tcg/aarch64/test-2150.c
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* See https://gitlab.com/qemu-project/qemu/-/issues/2150 */
++
++int main()
++{
++    asm volatile(
++        "movi     v6.4s, #1\n"
++        "movi     v7.4s, #0\n"
++        "sub      v6.2d, v7.2d, v6.2d\n"
++        : : : "v6", "v7");
++    return 0;
++}
+diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
+index 0efd565f05..70d728ae9a 100644
+--- a/tests/tcg/aarch64/Makefile.target
++++ b/tests/tcg/aarch64/Makefile.target
+@@ -10,7 +10,7 @@ VPATH 		+= $(AARCH64_SRC)
+ 
+ # Base architecture tests
+ AARCH64_TESTS=fcvt pcalign-a64 lse2-fault
+-AARCH64_TESTS += test-2248
++AARCH64_TESTS += test-2248 test-2150
+ 
+ fcvt: LDFLAGS+=-lm
+ 
+-- 
+2.34.1
+
 
