@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AD089C92A
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7E489C92B
 	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:58:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtrJu-0001EW-Gp; Mon, 08 Apr 2024 11:54:06 -0400
+	id 1rtrJu-0001EE-3n; Mon, 08 Apr 2024 11:54:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrJf-0001By-Du
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:53:52 -0400
+ id 1rtrJk-0001Do-GX
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:53:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rtrJd-0001mo-UM
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:53:51 -0400
+ id 1rtrJi-0001oT-L7
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:53:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712591629;
+ s=mimecast20190719; t=1712591632;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=79a7jGvfDO7Nuy6O+o9VgLKVj6InbBKNyoXameAAwIQ=;
- b=UuKNv8sGHoFd/ByXu7oxAESSYwqkPD2g8jLivlnjcAhqUnn1Gv/6wHexFqdOYDrlu/Iufz
- XCGNseYcWMiF4QwTV3UStMT6fiL7jKLVQf1j4gYObMt6A5dcqcc40/jpAkCywYEsDpjikt
- tJqyGlymPbIpaELNLiWbhXKhLTE9+wg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=IhGSxJKt87Lk51t1FMaldViRBBvgZjPXp/8O2/Jk8T4=;
+ b=aKwYVOQq/dBNW1kqw4aaytIhLs6jLMd401jKmQayeCW3vu/JU8S2Mmpjk7Pqoat2Y86Dod
+ QxNOcciOHv20fs14PfBQ+oxUbKjA53s/h797kQ5GA06pKv3xAeMzFUHV3UQuuiSyrR86m3
+ r3CxiIBe0j5qsvKa7rLrBdKNJv66zM4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-386-a8DdXFh_PGKMXwvvuHUxoQ-1; Mon, 08 Apr 2024 11:53:47 -0400
-X-MC-Unique: a8DdXFh_PGKMXwvvuHUxoQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4147ddecd52so24119485e9.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:53:47 -0700 (PDT)
+ us-mta-220-IVXSdqe2Phu1NUQbnUR_Bw-1; Mon, 08 Apr 2024 11:53:51 -0400
+X-MC-Unique: IVXSdqe2Phu1NUQbnUR_Bw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-416664de900so9016965e9.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:53:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712591626; x=1713196426;
+ d=1e100.net; s=20230601; t=1712591628; x=1713196428;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=79a7jGvfDO7Nuy6O+o9VgLKVj6InbBKNyoXameAAwIQ=;
- b=MvutPsbw6AUcNIn7cPSKNR9ULejxP0QsHzJ0WnCtL/Mdfw3Ko81XDpPHL8aDHtvSu8
- qebpBKlxZVGdzmfBKt8mbH7GbOZ5R5B3mBzPZiFJ/ixV8zc0gsWEr4skQA4YRe+Vpz4v
- TQDWzwYmqWdlQiwT6SRWLzb4Szjj2guaPdQHxDG0Jt4ScjtVwggBZOt/KuyBjcnsCSOC
- 55oiuRn8J8vGXzqy4kE3ERcbjkPITKP3DG4yhGaJUe0F1NGlFE7X9fBGQJGju0xLoyTr
- 25Yi9sjxeMpOTITt0yd4iYn2rfQrEsw8qhOxGT0hDyHMZwRCIQBZj5t7cn5W218rkTh3
- ucnw==
-X-Gm-Message-State: AOJu0Yxl8RtLgOpO0g9USFwZOMrt2luo8+8b3ddk3lQbDwEZL50V+tta
- WM3gw13pC0OLNkPuUzWX3nlJYAATd5i8lfaSSfKWwxe5ipX48CXDeAJkq82nHgHt22uuKxjQBLE
- UQ2BVCqHzcmilv0N0YZmbsSkgg+4bSByK/koPRENJKFDJLLqjPuHOVCPL1jwaA2UJSnEaQ+41IM
- V/ytgIRBsok79leybyNLmPUL2USGCG0X6wk1mF
-X-Received: by 2002:a05:600c:3511:b0:414:8ffb:a6bf with SMTP id
- h17-20020a05600c351100b004148ffba6bfmr55862wmq.18.1712591626168; 
- Mon, 08 Apr 2024 08:53:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9pby5yrYOx+zLbgIjZDWptPtSbnwRifWvzgLBkozQM8FYGpk54t/ZE2kLYFfJ+RlAq+BDPQ==
-X-Received: by 2002:a05:600c:3511:b0:414:8ffb:a6bf with SMTP id
- h17-20020a05600c351100b004148ffba6bfmr55850wmq.18.1712591625914; 
- Mon, 08 Apr 2024 08:53:45 -0700 (PDT)
+ bh=IhGSxJKt87Lk51t1FMaldViRBBvgZjPXp/8O2/Jk8T4=;
+ b=F88DbZTdvWkiCUg5o8DITZE2mTCznf8kOzQNjHC6A4RkV6hTiPEEJHC6AjXKc2caH6
+ 5fHFgc3WC3Ix8Zq94epDc5jVP6JfnFr5YsGhW8l13KxnypZadDFPwHpSPpbi2aTUc8Bh
+ T+In518vsBWfoGo6zgMyQewvCkAd7yzMz5wLVESGwZafwqEv4+g3ULQW7WBe6ZaVSSeB
+ rKf+Xa3DROCsG3ZOXkDrF82q57Hrgq+rL4NJbIyImnyilJBFrVoeQyjc/Mr1sZhHS9+r
+ OCCvAb7attmp+yCl3hPtXjjvnls8ExH4qUGyuU7RtL2hUAEZrnCICAnPn0i3jPEk+dNd
+ 8c4A==
+X-Gm-Message-State: AOJu0YyNXQW6AAWs8n1C/WZV2ZSCGf1SG8Mkl/uzgkJoc6pPhxPbTEQ5
+ MSEESS4ya6k4RlSricOG4GLmE7VIGhWw7N+Lk/6Esj0Nk39nPUfR+hAsY9cC5/63s3I8NsvH2Hz
+ Tu0AZQM4boyYm6If3p+QDDQOU0lcUnMBzIHYt/SOMJrlOSUsmpRYE7uaK1cUtI10tvtkgxaDfQr
+ V8Fov7+PO+8EPqp5EnltevwK3zf9vqH+jgFsaI
+X-Received: by 2002:a05:600c:470b:b0:416:6be9:c477 with SMTP id
+ v11-20020a05600c470b00b004166be9c477mr3030468wmo.10.1712591628728; 
+ Mon, 08 Apr 2024 08:53:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEINZWfJhDokKx3xnRZM1ABWHSaUQpx8PvCCfJtW9YkdTuNYt5at91c8DW6LB0zUmrbG7S3og==
+X-Received: by 2002:a05:600c:470b:b0:416:6be9:c477 with SMTP id
+ v11-20020a05600c470b00b004166be9c477mr3030456wmo.10.1712591628484; 
+ Mon, 08 Apr 2024 08:53:48 -0700 (PDT)
 Received: from avogadro.local ([151.95.152.232])
  by smtp.gmail.com with ESMTPSA id
- p10-20020a05600c468a00b00415f496b9b7sm14718561wmo.39.2024.04.08.08.53.44
+ 5-20020a05600c024500b004161b59e230sm13600253wmj.41.2024.04.08.08.53.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 08:53:44 -0700 (PDT)
+ Mon, 08 Apr 2024 08:53:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org
-Subject: [PATCH v2 04/18] tests/unit: match some unit tests to corresponding
- feature switches
-Date: Mon,  8 Apr 2024 17:53:16 +0200
-Message-ID: <20240408155330.522792-5-pbonzini@redhat.com>
+Subject: [PATCH v2 05/18] yank: only build if needed
+Date: Mon,  8 Apr 2024 17:53:17 +0200
+Message-ID: <20240408155330.522792-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240408155330.522792-1-pbonzini@redhat.com>
 References: <20240408155330.522792-1-pbonzini@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -101,67 +101,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Try not to test code that is not used by user mode emulation, or by the
-block layer, unless they are being compiled; and fix test-timed-average
-which was not compiled with --disable-system --enable-tools.
+The yank feature is not used in user emulation.
 
-This is by no means complete, it only touches the more blatantly
-wrong cases.
-
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/unit/meson.build | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ util/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 228a21d03c2..26c109c968c 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -18,7 +18,6 @@ tests = {
-   'test-forward-visitor': [testqapi],
-   'test-string-input-visitor': [testqapi],
-   'test-string-output-visitor': [testqapi],
--  'test-opts-visitor': [testqapi],
-   'test-visitor-serialization': [testqapi],
-   'test-bitmap': [],
-   'test-resv-mem': [],
-@@ -46,12 +45,8 @@ tests = {
-   'test-qemu-opts': [],
-   'test-keyval': [testqapi],
-   'test-logging': [],
--  'test-uuid': [],
--  'ptimer-test': ['ptimer-test-stubs.c', meson.project_source_root() / 'hw/core/ptimer.c'],
-   'test-qapi-util': [],
-   'test-interval-tree': [],
--  'test-xs-node': [qom],
--  'test-virtio-dmabuf': [meson.project_source_root() / 'hw/display/virtio-dmabuf.c'],
- }
+diff --git a/util/meson.build b/util/meson.build
+index 0ef9886be04..2ad57b10ba2 100644
+--- a/util/meson.build
++++ b/util/meson.build
+@@ -60,7 +60,6 @@ util_ss.add(files('stats64.c'))
+ util_ss.add(files('systemd.c'))
+ util_ss.add(files('transactions.c'))
+ util_ss.add(files('guest-random.c'))
+-util_ss.add(files('yank.c'))
+ util_ss.add(files('int128.c'))
+ util_ss.add(files('memalign.c'))
+ util_ss.add(files('interval-tree.c'))
+@@ -117,6 +116,7 @@ if have_block
+     util_ss.add(files('vfio-helpers.c'))
+     util_ss.add(files('chardev_open.c'))
+   endif
++  util_ss.add(files('yank.c'))
+ endif
  
- if have_system or have_tools
-@@ -97,6 +92,8 @@ if have_block
-     'test-crypto-ivgen': [io],
-     'test-crypto-afsplit': [io],
-     'test-crypto-block': [io],
-+    'test-timed-average': [],
-+    'test-uuid': [],
-   }
-   if gnutls.found() and \
-      tasn1.found() and \
-@@ -131,10 +128,13 @@ endif
- 
- if have_system
-   tests += {
-+    'ptimer-test': ['ptimer-test-stubs.c', meson.project_source_root() / 'hw/core/ptimer.c'],
-     'test-iov': [],
-+    'test-opts-visitor': [testqapi],
-+    'test-xs-node': [qom],
-+    'test-virtio-dmabuf': [meson.project_source_root() / 'hw/display/virtio-dmabuf.c'],
-     'test-qmp-cmds': [testqapi],
-     'test-xbzrle': [migration],
--    'test-timed-average': [],
-     'test-util-sockets': ['socket-helpers.c'],
-     'test-base64': [],
-     'test-bufferiszero': [],
+ if cpu == 'aarch64'
 -- 
 2.44.0
 
