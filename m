@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C349989CB3D
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AF389CB58
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7u-0001xI-3R; Mon, 08 Apr 2024 13:49:50 -0400
+	id 1rtt7v-0001yS-2D; Mon, 08 Apr 2024 13:49:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7k-0001v3-Pk
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:45 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1rtt7k-0001v4-Q0
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
+Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7g-0003bs-6s
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:38 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-53fa455cd94so3615622a12.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:35 -0700 (PDT)
+ id 1rtt7h-0003c1-Po
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:40 -0400
+Received: by mail-pf1-x436.google.com with SMTP id
+ d2e1a72fcca58-6eaf1005fcaso3230123b3a.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598575; x=1713203375; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598576; x=1713203376; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=xtbJ/p7JEFHTppWK8T4w7KJEZi+x0bHxbuO/ApHynWI=;
- b=zZ6zZYb2Er4ofVDVLCqamUJHoZhEB1rOi5Gj/nvgfpMXZlT1rnozsXnQhoBJKr6lqc
- dl2PF/6O4S7TgrqBIXJTyQpXid792IkJkR9n/BjmUcXB54A5h/srCs5VxXkWmyrEo/w/
- r1wcNd7YTNug8fm3aNaPgey9XA9cZO5LFLz5VMAaxWWmCnxrbXfKKpoBnzroz9peYF+l
- etSnzOcbAoXUtX0eD+jLHOz6hRk+iJtK6N0a46+VuK5vav8bYP0GdQrZjXD92P7B2Tkh
- OjU2CMugtj6Y7pW1kXs4VYQjVJHA0htjuiqP6zT+JEF61hBl0T/tA4Rt3ulNEdZCPe82
- WOQw==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=eljbs2yNGMGPnWHJwv7NSq5kkRuO1URzZsDZcIZtS6U=;
+ b=M8XoFFgl0ZUDR9CMxS9z/674CiBP8t3ibG2rq4MDi3WY0KqRMpV3sy9VgQaw2eQoAS
+ rfPc3fzlrR6gM3qQ5Jmr2jBaRX293ZUKGdx2fIB2oJNiTFFHQfRfX7KfXNx9j2cdZg0b
+ ELx3i53+gKplD/nhsfYty49m9FSUMJT4z3CISh1PD+4CYzKwgwDOZvmZvVcQtgoQcsZK
+ c/6yrncgWwp/g3inlZdeIGu86EDW0wbgMUL0cqoMSr93ZL/j+XNPlUbxreKJatH6FjnE
+ f8hFVFe89BpQmKkTe9TmuQA1jRD3neh/cZWHbZHtddZ9zLpp6+NWaa2mK3BQ6slLMEUB
+ QzZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598575; x=1713203375;
+ d=1e100.net; s=20230601; t=1712598576; x=1713203376;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xtbJ/p7JEFHTppWK8T4w7KJEZi+x0bHxbuO/ApHynWI=;
- b=vtm+QEkZgBORIaacvtpYCL6LZ+Vh7vvAEHIehwlq/CGaiCNvIza99R4Kr2jknSGHTx
- NvbuJB6NwPUqtUxf1/nDbMsvLuG4AKdGQU7HDN+MCVxtk18AhGBLIHrggZb2mK80+Km/
- YBGAHMNXX/R3zZf9CHcQjhXFlJFpiE6NBbAc+In5KQyMElpsAiajz/tni4I/YpumpT2l
- Mu86Aa/zrobm2wT7YoS/Hn6C3MubrbxvbL+iLNGwtq38dMaJeH4nIGP8czsmbn1/X5o0
- mhypxpNIe9RO8g2RZNrqGRTpl2Ra+CxI3XepbkUsHtH2dwuSYp2G+ACv2foYiMe965HB
- yjOg==
-X-Gm-Message-State: AOJu0YzeRy7eHnKGxx2i9vzG7ORjd40Eldr+lE8hnO2DnAfBy56Vsbd3
- sgDKegV21SBIu7pMDb82Vr5psDoAkLceREUGIM0p7g7DvOR68d+Lk6I/FtYmBU8WVuQAZLbLks/
- K
-X-Google-Smtp-Source: AGHT+IGHicWknxCBzPhfCPBG8RpqA30tSZsp7vVMT9Dm1ESyfMUt9EdPgxBRVs8UntkxrLurT43XuA==
-X-Received: by 2002:a05:6a20:100d:b0:1a3:c3e0:51bc with SMTP id
- gs13-20020a056a20100d00b001a3c3e051bcmr7070227pzc.56.1712598574779; 
- Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
+ bh=eljbs2yNGMGPnWHJwv7NSq5kkRuO1URzZsDZcIZtS6U=;
+ b=mEaBNA1ac38LTEb8Y66SpDVAuud5eguKeHz+qtN/GNn3fk/eLUTv8Gc0FVtMWmSlwz
+ kUbbT0ncT4cHkspSIxzJ+OOsTvJxalSvw/xpEmZOf8KX1u+aa+SfTb+UmXItCx/50uXN
+ 2/DpFa8bp7LekCeqlLgToNG5TAzXsgYx2zpzK+ffAUytjoavhArAK5niVi2R/8Rv7hd+
+ Hj4XQLJfQCQk8YymS4rzWvIiqgT2GCUH9BaNbc4sN+nJYy3L8RfcxuATK2AYCuu4ZmSH
+ 5vvgF3sa4FZUI6Gj2i0YSvozoxGU/VZ1xzQ2nnVYb79mMkNRVJdpH2WrzxU9xB1+I0V+
+ a9iQ==
+X-Gm-Message-State: AOJu0Yx8eG9BvFf2u4l6Ldh2dJYdaT+JDKkWg/EDXcG7ASQadEvzF32h
+ j5qdrMBoRu6+3JTBRUlVO7dtGAD/2S4zA9IGV6bpEXCQCfUTE3EjQLiUDyufQ2PKJeQTS4PSWmn
+ q
+X-Google-Smtp-Source: AGHT+IH70IZ2zJgbCNcYWxmVj2WAl3fhBxMySO0HQaLa1HYjQAqSZBGcfH1etz9KKgg2myY0lwEteQ==
+X-Received: by 2002:a05:6a21:9206:b0:1a7:56e5:b047 with SMTP id
+ tl6-20020a056a21920600b001a756e5b047mr5168778pzb.28.1712598576378; 
+ Mon, 08 Apr 2024 10:49:36 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.33
- for <qemu-devel@nongnu.org>
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:35 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/35] linux-user: Fix waitid return of siginfo_t and rusage
-Date: Mon,  8 Apr 2024 07:48:56 -1000
-Message-Id: <20240408174929.862917-3-richard.henderson@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>
+Subject: [PULL 03/35] linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
+Date: Mon,  8 Apr 2024 07:48:57 -1000
+Message-Id: <20240408174929.862917-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,51 +92,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The copy back to siginfo_t should be conditional only on arg3,
-not the specific values that might have been written.
-The copy back to rusage was missing entirely.
+From: Michael Tokarev <mjt@tls.msk.ru>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2262
+This setsockopt accepts zero-lengh optlen (current qemu implementation
+does not allow this).  Also, there's no need to make a copy of the key,
+it is enough to use lock_user() (which accepts zero length already).
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2197
+Fixes: f31dddd2fc "linux-user: Add support for setsockopt() option SOL_ALG"
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-Id: <20240331100737.2724186-2-mjt@tls.msk.ru>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ linux-user/syscall.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e12d969c2e..3df2b94d9a 100644
+index 3df2b94d9a..59fb3e911f 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -9272,14 +9272,24 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #ifdef TARGET_NR_waitid
-     case TARGET_NR_waitid:
+@@ -2277,18 +2277,13 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+         switch (optname) {
+         case ALG_SET_KEY:
          {
-+            struct rusage ru;
-             siginfo_t info;
--            info.si_pid = 0;
--            ret = get_errno(safe_waitid(arg1, arg2, &info, arg4, NULL));
--            if (!is_error(ret) && arg3 && info.si_pid != 0) {
--                if (!(p = lock_user(VERIFY_WRITE, arg3, sizeof(target_siginfo_t), 0)))
-+
-+            ret = get_errno(safe_waitid(arg1, arg2, (arg3 ? &info : NULL),
-+                                        arg4, (arg5 ? &ru : NULL)));
-+            if (!is_error(ret)) {
-+                if (arg3) {
-+                    p = lock_user(VERIFY_WRITE, arg3,
-+                                  sizeof(target_siginfo_t), 0);
-+                    if (!p) {
-+                        return -TARGET_EFAULT;
-+                    }
-+                    host_to_target_siginfo(p, &info);
-+                    unlock_user(p, arg3, sizeof(target_siginfo_t));
-+                }
-+                if (arg5 && host_to_target_rusage(arg5, &ru)) {
-                     return -TARGET_EFAULT;
--                host_to_target_siginfo(p, &info);
--                unlock_user(p, arg3, sizeof(target_siginfo_t));
-+                }
+-            char *alg_key = g_malloc(optlen);
+-
++            char *alg_key = lock_user(VERIFY_READ, optval_addr, optlen, 1);
+             if (!alg_key) {
+-                return -TARGET_ENOMEM;
+-            }
+-            if (copy_from_user(alg_key, optval_addr, optlen)) {
+-                g_free(alg_key);
+                 return -TARGET_EFAULT;
              }
+             ret = get_errno(setsockopt(sockfd, level, optname,
+                                        alg_key, optlen));
+-            g_free(alg_key);
++            unlock_user(alg_key, optval_addr, optlen);
+             break;
          }
-         return ret;
+         case ALG_SET_AEAD_AUTHSIZE:
 -- 
 2.34.1
 
