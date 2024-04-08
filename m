@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B156889CC18
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 20:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAECA89CC62
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 21:25:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtuB6-0006NV-5Z; Mon, 08 Apr 2024 14:57:12 -0400
+	id 1rtubG-0002n8-Sv; Mon, 08 Apr 2024 15:24:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhexu@redhat.com>) id 1rtuB3-0006MY-IB
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 14:57:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rtubF-0002mv-Jf
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 15:24:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhexu@redhat.com>) id 1rtuB1-0006hu-E1
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 14:57:09 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rtubD-0002gL-Sr
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 15:24:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712602625;
+ s=mimecast20190719; t=1712604250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=rPbkqLAov835az6hD+Bi8avBSYssnFkrOP7tQUT+aJE=;
- b=P5dQpIHZkh+SoMENsXy1pKtm3BIDoJaTVE0cewGj6psbxnasMkDvGObcoRfgnFKw9oqcH4
- AAyJ+nnNI/JAg+xaxy5fI6+Foy1z0KmZZq0SskyaEh+6lQCTHXooHRHXFLciGa+7Ogv8xR
- BfWEEQxh5ibuLsnNytb9rZjmMHBHJo0=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=AItEfsV8+NEVMOr7/6QYGuQ5+UKInIqZ97RbUf9Y3as=;
+ b=CbmG2+pn/x/0HmUkVGaSgOKrIYf7roDf/CN7Y40/0MGub37/j2JcdRhxnGp0nT+IGFyPV1
+ n5mzdDfOtMW5Dg1TcOoDEb+3HMVTgAtShI3aTD3+2oPBivNXxxRUfTyrtkz5M3mpQTw/Sf
+ ZR5csObTjaYZEnEy/MYmbj+ZZcC7mKk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-6PxzQvggMdqbXxfsSlQMqA-1; Mon, 08 Apr 2024 14:57:02 -0400
-X-MC-Unique: 6PxzQvggMdqbXxfsSlQMqA-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-6152848f192so16244427b3.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 11:57:02 -0700 (PDT)
+ us-mta-132-cLZb0JOMP0yhDeJMGnwPHw-1; Mon, 08 Apr 2024 15:24:07 -0400
+X-MC-Unique: cLZb0JOMP0yhDeJMGnwPHw-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4155db7b58cso24399865e9.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 12:24:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712602622; x=1713207422;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rPbkqLAov835az6hD+Bi8avBSYssnFkrOP7tQUT+aJE=;
- b=nwsmomu3Nabogj0dfJcFJOjjXZyar4cqQYj+LfESU9D2nPHIVfzwcVoL2MTfKIx1bn
- SyQYNZ7lZQWYQ2s/+L6+y8IOVGgsaNKx9S7cVWZUVIvnlca04Mwn6TJipW2j9f9LH1PK
- KUbn49VSnuMuhGtHK/W5ON4ngVeakRhjO50zz0cDW8jmYaB6CyqxSZ4HXb2vvo4qaW1W
- eCaV9nC0Bm3vx//o0QgoiMRRlqwQ6pS8StpEDU63VoiDz/yQ37HZDr32iB0tjR0LQfD8
- 9kAHHWAvsvdgZDFne1H0IPas+4D4jD3oLf5c/TwPf1HNVdqzY9ykYK4J/wnBpFy7wKlg
- 73xg==
-X-Gm-Message-State: AOJu0YwPdXKKqmoVFW4iNd9+pIROGYbC94PChhusX7BCEk9+f2KBZ5yC
- H2cRVSR6XTkVktWCfxEzbY582r916KvrcDaFuou03VuFRTv7cpmr4lvyQgBgmCGYKyM04Rn0roo
- SW0pX7p8CNH0MGj+VB3BT9j+jSvS9w5RkCyNs+FXTAc1ygVk+y805CLKL8LD6JXDSYas7JlTlj0
- v+6BspfORPVjC8Tsi/T7vLJ4zVa7A=
-X-Received: by 2002:a81:af06:0:b0:618:1996:86e8 with SMTP id
- n6-20020a81af06000000b00618199686e8mr1804515ywh.3.1712602620373; 
- Mon, 08 Apr 2024 11:57:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGKPyMLGYkeTIN9BEGxpdiBjjSq8lZ+5KCWT8Scp/veAJ1Ubg/XvjslxyY8hD0ZefYnYSpYVP5io1zAQDBt7Sw=
-X-Received: by 2002:a81:af06:0:b0:618:1996:86e8 with SMTP id
- n6-20020a81af06000000b00618199686e8mr1804497ywh.3.1712602619849; Mon, 08 Apr
- 2024 11:56:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712604246; x=1713209046;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=AItEfsV8+NEVMOr7/6QYGuQ5+UKInIqZ97RbUf9Y3as=;
+ b=nHY4pGvQZRKSCvZb08jPmbc33l5YXgOhoQiByfleRBa0hkK/LP2uPI2/m9jGaTeSL/
+ bxfBjo7TeEIwG7TFNflBBCKUsROwLD8Fosaqfr9b+61DwwPSloYprcpp+nK62V0xGqns
+ e2UqrDFaV1qtrULRYNnEBABy1Ve95J3kxT9Td7yxLXCliBrYU3SMDWu3tjxyw0HKAaf7
+ jbVqMCXsCBxrNjHK4870jT/NvcDHcG6o2BEy+u3FjYPSuQIzwcqnsASLM43J6uBQS8ne
+ aEJ85UbqxjDiDTHs9BhhVabJpROtDNwNnjJptlfvxNgXNIHozAwYPDsqMXRjgi+JMo1w
+ 0LqA==
+X-Gm-Message-State: AOJu0Yx401bKLAJ2HZigB8NIVSn66aolPSWzY+/kLlUcBDj74j8CgGMK
+ GUejfpokYJGkfhGEKfQZ6ZrmDAMB8tcboCktPn2Xo3O2m43F24cNAjyhZIorZ+HpjE6L9haSXdu
+ HeNSKl2EI2vf/cA/SaIeT9Ss2woiYcWNUffVUEe+Mmeeg9IFke1pgbMsnNamrK7FVk2OwbMgDgq
+ qNs+MMIXJazvh8RL6lfd3hO4PTaflp6NB7qf01
+X-Received: by 2002:a05:600c:3108:b0:416:4923:1f2d with SMTP id
+ g8-20020a05600c310800b0041649231f2dmr5065034wmo.30.1712604246420; 
+ Mon, 08 Apr 2024 12:24:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG139vwZZ5BPYeGFivc5EVg8z+Lub9ArkjhdDfnfYbZRv4UaSMaIuqVrCOretq78zBQVGuT+Q==
+X-Received: by 2002:a05:600c:3108:b0:416:4923:1f2d with SMTP id
+ g8-20020a05600c310800b0041649231f2dmr5065023wmo.30.1712604246027; 
+ Mon, 08 Apr 2024 12:24:06 -0700 (PDT)
+Received: from avogadro.local ([151.95.152.232])
+ by smtp.gmail.com with ESMTPSA id
+ n33-20020a05600c3ba100b0041669bfee03sm5326295wms.19.2024.04.08.12.24.05
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Apr 2024 12:24:05 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/3] 9.0 bugfixes for 2024-04-08
+Date: Mon,  8 Apr 2024 21:24:01 +0200
+Message-ID: <20240408192404.542506-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-References: <20240407132125.159528-1-het.gala@nutanix.com>
- <20240407132125.159528-2-het.gala@nutanix.com>
- <ZhQOzMuQBNiqQVsi@x1n> <76fa8f88-02e2-4431-bb28-5c29bbaa8436@nutanix.com>
-In-Reply-To: <76fa8f88-02e2-4431-bb28-5c29bbaa8436@nutanix.com>
-From: Peter Xu <peterx@redhat.com>
-Date: Mon, 8 Apr 2024 14:56:48 -0400
-Message-ID: <CADLectnx5Hc9aXu9ADSf=f9Y6ZiXqjQ3UFxvt0Srifwvu1iudw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] Fix typo to allow migrate_qmp_fail command with
- 'channels' argument
-To: Het Gala <het.gala@nutanix.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>, Thomas Huth <thuth@redhat.com>, 
- Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Fabiano Rosas <farosas@suse.de>, Prerna Saxena <prerna.saxena@nutanix.com>
-Content-Type: multipart/alternative; boundary="000000000000cc415e06159a5ee9"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=zhexu@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,126 +97,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000cc415e06159a5ee9
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The following changes since commit ce64e6224affb8b4e4b019f76d2950270b391af5:
 
-Het,
+  Merge tag 'qemu-sparc-20240404' of https://github.com/mcayland/qemu into staging (2024-04-04 15:28:06 +0100)
 
-It's all fine, no worries! This is good enough.  Let's finish the
-discussion in the next patch before a repost.
+are available in the Git repository at:
 
-Thanks,
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-On Mon, Apr 8, 2024, 2:35=E2=80=AFp.m. Het Gala <het.gala@nutanix.com> wrot=
-e:
+for you to fetch changes up to e34f4d87e8d47b0a65cb663aaf7bef60c2112d36:
 
->
-> On 08/04/24 9:05 pm, Peter Xu wrote:
->
-> !-------------------------------------------------------------------|
->   CAUTION: External Email
->
-> |-------------------------------------------------------------------!
->
-> Hey, Het,
->
-> On Sun, Apr 07, 2024 at 01:21:24PM +0000, Het Gala wrote:
->
-> Fixes: (tests/qtest/migration: Add negative tests to validate migration Q=
-APIs)
->
->
-> I think I get your intention to provide two fixup patches on top of
-> migration-next, which indeed would be preferred so that I can squash them
-> into the patches before the pull.
->
-> However please next time use "git commit --fixup" so that a better subjec=
-t
-> will be generated, and that'll make my life (and Fabiano's I suppose in t=
-he
-> future) easier because git rebase understand those subjects.  Then you
-> don't need Fixes with an empty commit ID.  They'll start with "fixup: XXX=
-"
-> pointing to a commit with subject rather than commit IDs.
->
-> I apologize for any inconvenience caused by not using "git commit --fixup=
-"
-> in my previous submission. Let me resend the patchset with correct messag=
-e
-> convention. Will take care of this in future patches too, thanks for
-> bringing it to my notice. Regards, Het Gala
->
+  kvm: error out of kvm_irqchip_add_msi_route() in case of full route table (2024-04-08 21:22:00 +0200)
 
---000000000000cc415e06159a5ee9
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+----------------------------------------------------------------
+* fall back to non-ioeventfd notification if KVM routing table is full
+* support kitware ninja with jobserver support
+* nanomips: fix warnings with GCC 14
 
-<div dir=3D"auto">Het,=C2=A0<div dir=3D"auto"><br></div><div dir=3D"auto">I=
-t&#39;s all fine, no worries! This is good enough.=C2=A0 Let&#39;s finish t=
-he discussion in the next patch before a repost.=C2=A0</div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto">Thanks,</div></div><br><div class=3D"gmail_q=
-uote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Apr 8, 2024, 2:35=E2=80=
-=AFp.m. Het Gala &lt;<a href=3D"mailto:het.gala@nutanix.com">het.gala@nutan=
-ix.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><u></u>
+----------------------------------------------------------------
+Igor Mammedov (1):
+      kvm: error out of kvm_irqchip_add_msi_route() in case of full route table
 
- =20
-  <div>
-    <p><br>
-    </p>
-    <div>On 08/04/24 9:05 pm, Peter Xu wrote:<br>
-    </div>
-    <blockquote type=3D"cite">
-      <pre>!---------------------------------------------------------------=
-----|
-  CAUTION: External Email
+Martin Hundebøll (1):
+      Makefile: preserve --jobserver-auth argument when calling ninja
 
-|-------------------------------------------------------------------!
+Paolo Bonzini (1):
+      nanomips: fix warnings with GCC 14
 
-Hey, Het,
-
-On Sun, Apr 07, 2024 at 01:21:24PM +0000, Het Gala wrote:
-</pre>
-      <blockquote type=3D"cite">
-        <pre>Fixes: (tests/qtest/migration: Add negative tests to validate =
-migration QAPIs)
-</pre>
-      </blockquote>
-      <pre>
-I think I get your intention to provide two fixup patches on top of
-migration-next, which indeed would be preferred so that I can squash them
-into the patches before the pull.
-
-However please next time use &quot;git commit --fixup&quot; so that a bette=
-r subject
-will be generated, and that&#39;ll make my life (and Fabiano&#39;s I suppos=
-e in the
-future) easier because git rebase understand those subjects.  Then you
-don&#39;t need Fixes with an empty commit ID.  They&#39;ll start with &quot=
-;fixup: XXX&quot;
-pointing to a commit with subject rather than commit IDs.</pre>
-    </blockquote>
-    <font face=3D"monospace"><span style=3D"color:rgb(236,236,236);font-sty=
-le:normal;font-variant-ligatures:normal;font-variant-caps:normal;font-weigh=
-t:400;letter-spacing:normal;text-align:start;text-indent:0px;text-transform=
-:none;word-spacing:0px;white-space:pre-wrap;background-color:rgb(33,33,33);=
-text-decoration-style:initial;text-decoration-color:initial;display:inline!=
-important;float:none">I apologize for any inconvenience caused by not using=
- &quot;git commit --fixup&quot; in my
-previous submission. Let me resend the patchset with correct message conven=
-tion.
-Will take care of this in future patches too, thanks for bringing it to my =
-notice.
-
-
-Regards,
-Het Gala</span></font><span style=3D"white-space:pre-wrap">
-</span>
-  </div>
-
-</blockquote></div>
-
---000000000000cc415e06159a5ee9--
+ Makefile            |   2 +-
+ accel/kvm/kvm-all.c |  15 ++--
+ disas/nanomips.c    | 194 ++++++++++++++++++++++++++--------------------------
+ 3 files changed, 108 insertions(+), 103 deletions(-)
+-- 
+2.44.0
 
 
