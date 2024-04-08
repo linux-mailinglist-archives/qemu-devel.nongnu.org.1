@@ -2,81 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2411A89C830
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:24:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A0989C874
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 17:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtqqs-0004qT-F1; Mon, 08 Apr 2024 11:24:06 -0400
+	id 1rtr17-0008BE-6Y; Mon, 08 Apr 2024 11:34:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rtqqf-0004p0-1S
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:23:53 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rtqqc-0005QQ-7f
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 11:23:52 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-34388753650so1965086f8f.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 08:23:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712589828; x=1713194628; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uw8YHTNyC106MuzA62WIiauW6nzUr+KdLlKVTICYJPA=;
- b=aAD4PAV5z+K5/L+dLwI5czMd4fU6QHZGH4OSqlvwU6pew5YDnvCIjserkcwszbvsvj
- zUO2fZke3yyVVbjeZBXIUZCdZwa0/HjAn7vt2vgTfOVbGMRYq0rZn8Nu3c4bdgiVkB15
- CKKpkqEI3WJKUWC0MZLyC/ZB3TZ2HypkyS5XuaIF7fccdiFNFVLEADH7+Czf1H1Tye0H
- PcYryB/SA5LhetrVH9iTcgX5YhyfE9bEby0J5qEkTLljiOw18xpVWP/lroZLj5Z3ber5
- Enwoc1emOT5a7yH9u2Lfiby4fe28PnfYaxoeZuDfFS/p4+dtFl4snPgvoYnD537LpFqN
- 9MvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712589828; x=1713194628;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=uw8YHTNyC106MuzA62WIiauW6nzUr+KdLlKVTICYJPA=;
- b=eXlQG4a2C7Y83WQ+bx2/D+3XKcnPAXjtVMt9AibFKBeRacwqGo4997ORUZTtN6z/KQ
- /+2C3ImX4MucU45nt/qE5ynwRx0OEnjcT+3VbxoHzoFEc4p7VEMZJ6cQM3j0I52tQjDq
- zT4giYpXGQ1aUSzmVYyEG01CWP9yU1A0hjZVs2Obo4qGYrqpupWcTAwgySdzmR02ggaO
- NwaI6JPmAA1/tlvC4U+yPErxBzjVtoMMDjjPny1e0qgxtxlF6QDrX5DgcyrKXVwieWA6
- 5uBmdq90q/VrB1TCR3is/+Np6uDVYSx5w2V2LYaQ1uX8m1IOJPWRb5+/8VQ4MAw6S4yP
- vcfg==
-X-Gm-Message-State: AOJu0Yz5JlPYZoj9tvlAa+3VcAXtldM2tVxEA1xYuyFzTuTB+N78Y2lY
- TuCKpE0p5t1HaV82NIE5Rg6ujfXol5U5Jx+ub9fO0No5WTtD0mHAHx/vb/SWQfHosaLjnZeEosg
- g
-X-Google-Smtp-Source: AGHT+IFpIijWY+PUc/yHpz4z5tNsUHxYrQfxqLb7FL3jaqDvwFL8qztr3Ux6MLgSbOc3lXv611SUuw==
-X-Received: by 2002:a05:6000:b0f:b0:343:9af4:7a90 with SMTP id
- dj15-20020a0560000b0f00b003439af47a90mr6169536wrb.69.1712589828517; 
- Mon, 08 Apr 2024 08:23:48 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- je6-20020a05600c1f8600b0041496734318sm17298667wmb.24.2024.04.08.08.23.48
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 08:23:48 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rtr0x-000899-9j; Mon, 08 Apr 2024 11:34:31 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1rtr0v-0006rB-Ep; Mon, 08 Apr 2024 11:34:31 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 438ENpK3028684; Mon, 8 Apr 2024 15:34:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=wq+RPiTU34lFqZpRyuCQ8ihuDcRmjdTl1wKWOJ7u78o=;
+ b=Z0GVYM4rCLc8zDpoTRNzyOC8gD6IS+J9gnNt9/y82rjk2rhZVl+Vn8vkZanq9wtxUjgG
+ Q0R9oSdL7wwlaEidYCmv7FX5Ki//Bl2Qg8Q1WCAD8wRwzXuylzG61JcBnCEmPeMdDa1Z
+ UkjzF7euC0Thadyg3Rvn9QPvMFQqlTkQJ6qEO38wCBbg63D+BPSi3K8jL3B289FmRKUF
+ aO3gx83qlyU7jFS62ycgjo8tNbSkGpB8F6u+8wb4EP2kLHUDuXjdR1F9b40LHOgNqNcT
+ jKQSNQXTaTLcnPgZ1ztVq0UmeMdDYsfKkfXHBuB2Z3/rHyaOf6AR2mmKD9kr3B4zjO+r sw== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xaxedk1rg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 08 Apr 2024 15:34:13 +0000
+Received: from pps.filterd
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 438EERVU032367; Mon, 8 Apr 2024 15:34:12 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3xavu60d96-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 08 Apr 2024 15:34:12 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 438FUlUs008521;
+ Mon, 8 Apr 2024 15:34:11 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-39-195-157.vpn.oracle.com
+ [10.39.195.157])
+ by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3xavu60d7m-1; Mon, 08 Apr 2024 15:34:11 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 2/2] target/arm: Use correct SecuritySpace for AArch64 AT ops
- at EL3
-Date: Mon,  8 Apr 2024 16:23:46 +0100
-Message-Id: <20240408152346.3937318-3-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240408152346.3937318-1-peter.maydell@linaro.org>
-References: <20240408152346.3937318-1-peter.maydell@linaro.org>
+Cc: mst@redhat.com, raphael@enfabrica.net, kwolf@redhat.com, hreitz@redhat.com,
+ jasowang@redhat.com, pbonzini@redhat.com, fam@euphon.net,
+ eperezma@redhat.com, stefanha@redhat.com, qemu-block@nongnu.org,
+ schalla@marvell.com, leiyang@redhat.com, virtio-fs@lists.linux.dev,
+ si-wei.liu@oracle.com, boris.ostrovsky@oracle.com, jonah.palmer@oracle.com
+Subject: [RFC v3 0/6] virtio,vhost: Add VIRTIO_F_IN_ORDER support
+Date: Mon,  8 Apr 2024 11:34:02 -0400
+Message-Id: <20240408153408.3527586-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_13,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0
+ suspectscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404080120
+X-Proofpoint-GUID: 4RGuGxbM7OJUdWz0sBufCy3B8jndYM2I
+X-Proofpoint-ORIG-GUID: 4RGuGxbM7OJUdWz0sBufCy3B8jndYM2I
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,70 +99,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When we do an AT address translation operation, the page table walk
-is supposed to be performed in the context of the EL we're doing the
-walk for, so for instance an AT S1E2R walk is done for EL2.  In the
-pseudocode an EL is passed to AArch64.AT(), which calls
-SecurityStateAtEL() to find the security state that we should be
-doing the walk with.
+The goal of these patches is to add support to a variety of virtio and
+vhost devices for the VIRTIO_F_IN_ORDER transport feature. This feature
+indicates that all buffers are used by the device in the same order in
+which they were made available by the driver.
 
-In ats_write64() we get this wrong, instead using the current
-security space always.  This is fine for AT operations performed from
-EL1 and EL2, because there the current security state and the
-security state for the lower EL are the same.  But for AT operations
-performed from EL3, the current security state is always either
-Secure or Root, whereas we want to use the security state defined by
-SCR_EL3.{NS,NSE} for the walk. This affects not just guests using
-FEAT_RME but also ones where EL3 is Secure state and the EL3 code
-is trying to do an AT for a NonSecure EL2 or EL1.
+These patches attempt to implement a generalized, non-device-specific
+solution to support this feature.
 
-Use arm_security_space_below_el3() to get the SecuritySpace to
-pass to do_ats_write() for all AT operations except the
-AT S1E3* operations.
+The core feature behind this solution is a buffer mechanism in the form
+of a VirtQueue's used_elems VirtQueueElement array. This allows devices
+who always use buffers in-order by default to have a minimal overhead
+impact. Devices that may not always use buffers in-order likely will
+experience a performance hit. How large that performance hit is will
+depend on how frequent elements are completed out-of-order.
 
-Cc: qemu-stable@nongnu.org
-Fixes: e1ee56ec2383 ("target/arm: Pass security space rather than flag for AT instructions")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2250
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240405180232.3570066-1-peter.maydell@linaro.org
+A VirtQueue whose device who uses this feature will use its used_elems
+VirtQueueElement array to hold used VirtQueueElements. The index that
+used elements are placed in used_elems is the same index on the
+used/descriptor ring that would satisfy the in-order requirement. In
+other words, used elements are placed in their in-order locations on
+used_elems and are only written to the used/descriptor ring once the
+elements on used_elems are able to continue their expected order.
+
+To differentiate between a "used" and "unused" element on the used_elems
+array (a "used" element being an element that has returned from
+processing and an "unused" element being an element that has not yet
+been processed), we added a boolean 'filled' member to the
+VirtQueueElement struct. This flag is set to true when the element comes
+back from processing (virtqueue_ordered_fill) and then set back to false
+once it's been written to the used/descriptor ring
+(virtqueue_ordered_flush).
+
 ---
- target/arm/helper.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+v3: Add elements to used_elems during virtqueue_split/packed_pop
+    Replace current_seq_idx usage with vq->last_avail_idx
+    Remove used_seq_idx, leverage used_idx and last_avail_idx for
+    searching used_elems
+    Remove seq_idx in VirtQueueElement
+    Add boolean to VirtQueueElement to signal element status
+    Add virtqueue_ordered_fill/flush functions for ordering
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 13ad90cac1e..a620481d7cf 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3879,6 +3879,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-     ARMMMUIdx mmu_idx;
-     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
-+    bool for_el3 = false;
-+    ARMSecuritySpace ss;
- 
-     switch (ri->opc2 & 6) {
-     case 0:
-@@ -3896,6 +3898,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-             break;
-         case 6: /* AT S1E3R, AT S1E3W */
-             mmu_idx = ARMMMUIdx_E3;
-+            for_el3 = true;
-             break;
-         default:
-             g_assert_not_reached();
-@@ -3914,8 +3917,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-         g_assert_not_reached();
-     }
- 
--    env->cp15.par_el[1] = do_ats_write(env, value, access_type,
--                                       mmu_idx, arm_security_space(env));
-+    ss = for_el3 ? arm_security_space(env) : arm_security_space_below_el3(env);
-+    env->cp15.par_el[1] = do_ats_write(env, value, access_type, mmu_idx, ss);
- #else
-     /* Handled by hardware accelerator. */
-     g_assert_not_reached();
+v2: Use a VirtQueue's used_elems array as a buffer mechanism
+
+v1: Implement custom GLib GHashTable as a buffer mechanism
+
+Jonah Palmer (6):
+  virtio: Add bool to VirtQueueElement
+  virtio: virtqueue_pop - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_fill - VIRTIO_F_IN_ORDER support
+  virtio: virtqueue_ordered_flush - VIRTIO_F_IN_ORDER support
+  vhost,vhost-user: Add VIRTIO_F_IN_ORDER to vhost feature bits
+  virtio: Add VIRTIO_F_IN_ORDER property definition
+
+ hw/block/vhost-user-blk.c    |   1 +
+ hw/net/vhost_net.c           |   2 +
+ hw/scsi/vhost-scsi.c         |   1 +
+ hw/scsi/vhost-user-scsi.c    |   1 +
+ hw/virtio/vhost-user-fs.c    |   1 +
+ hw/virtio/vhost-user-vsock.c |   1 +
+ hw/virtio/virtio.c           | 118 ++++++++++++++++++++++++++++++++++-
+ include/hw/virtio/virtio.h   |   5 +-
+ net/vhost-vdpa.c             |   1 +
+ 9 files changed, 127 insertions(+), 4 deletions(-)
+
 -- 
-2.34.1
+2.39.3
 
 
