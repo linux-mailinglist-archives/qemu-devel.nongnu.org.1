@@ -2,69 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B10589BC64
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 11:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E53C889BC63
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 11:53:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtlfm-0004L8-A6; Mon, 08 Apr 2024 05:52:18 -0400
+	id 1rtlft-0004Nh-81; Mon, 08 Apr 2024 05:52:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rtlfh-0004Ir-Cm
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 05:52:13 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtlfr-0004Lv-Jb
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 05:52:23 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rtlff-0006LE-Ay
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 05:52:12 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-56e346224bdso2258701a12.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 02:52:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rtlfp-0006Lv-WE
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 05:52:23 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-56e69a51a33so258600a12.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 02:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712569929; x=1713174729; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=S00HnoPgZTCHav0ogGWnx0fkG14NsNvYkf8qmSwJQHc=;
- b=GHjKurrK5JMkMWcTCvW0YADZCptFXgF1Fp2mDZDlqYsCryS49h4RBkrZGn0jODVYAL
- q4JKm1LlgY/iDbsQrv2pbOIqafb3rezK3j2LfM5AC3aW4mfogJuEywtMpL6s5PWbj74G
- tK3Mq2Koy8FMhdJL/t7eKX9ciesPJtrUjlm3fQIikFSKKNm/gJDuM7+TQgytSMGc+vki
- INO2xFswCVubaxdpEnR/kE8X/MWTTaMje9tceXCuo+IH8OdiwSrgVs+rZRzSlme4w6A4
- QvqdXb4iZxLdkI9gxyNCo30yYGNB23GqHhJmd/miYdDodlfrLs7w5aO468eVcQ3Wz8Vi
- kz9Q==
+ d=linaro.org; s=google; t=1712569940; x=1713174740; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=xHsQHwdWozGmYntZG1DsswfJcaBGZtgyE5FZtk7H5pU=;
+ b=ZGc+9F/ZL3nqiezZ9N8ajsy5j6RMcyGKE1vvwqTVWQEZdYTeaTVyjI4Kve9m5gEUDa
+ og9ByjPxQXj2WHV2H03KZ+YoD2385ttCNygWBtprrHFmskeV+2+4yX5g1o/ftVfe633O
+ C9XOEqGYpAoE3zgRjHKt/n360lMJGJtGiN8To4i2I2UyJLvY+D1weGZ8YDZnpzN9RZNN
+ 2By1ghyHxz8cnOaRpawjPCaOST0BsyBs84614ukZD8A5Y1ha43k3eE0LmnkvB8pZYeGd
+ cnxQjpgDMOGopil6e33DHoB80JEbq5rOh+LZPZ11rWBw7+WbL4010ARTsqtnQBn0dHRi
+ QJ7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712569929; x=1713174729;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ d=1e100.net; s=20230601; t=1712569940; x=1713174740;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=S00HnoPgZTCHav0ogGWnx0fkG14NsNvYkf8qmSwJQHc=;
- b=LSHQFYiTNEVBdwo0LmjOapS0/k7VLAOwrTk99Qu+r9B3Ng5Ih+w5VLknpsMG7w7uf3
- 0z3cezZwH6MMKzAIrgnf7GiJaNNZpOeDc0dv8ZNrq8qJC2u03HNvDFwq/xtfrYqiYaVI
- SjuDY5qJrJ6WgDJIFi01FKX+ZKLDA8CIS9lUuAozpjJYv+v9/4Vt3g20d5tpd4ZXUsbS
- xxu9n202o7lSt1d2v52j0UrOb6/ihbk7G0AyJZf/WzhzItwv9BkfOgZGWK/fjwjrQuQI
- nn+JSIOZFHN7D9m3QYnYSY2bH6amm8soGLfE/Z2StqBI/DeBLCp0HaEugvi8rYOS46dk
- NNaA==
-X-Gm-Message-State: AOJu0YwRvWtljWanNB2C8XJLDitslzhc4WIsmWp4nP+sxMGCOEPtuP7W
- +2Q7b4dPsiXe7Dx/CdanlQuKvZ1XdeoggxZtlLqOWPM1/Gtj6pDHlH525tKMY8UbqZ1Qxbdko+a
- TBOYav8sYtvvIjjxwlSo6lCyoCUyy4Oj49uYlWw==
-X-Google-Smtp-Source: AGHT+IFWjxhF1+HJMyd5/BUGlwg1Zae5/3S0wU8qEaVyejPHVGfVQOop8mtbSQ4T4lmeMN3+GRsCDpnOKu4y4Cf9j2U=
-X-Received: by 2002:a50:8717:0:b0:568:d757:f7d2 with SMTP id
- i23-20020a508717000000b00568d757f7d2mr6288359edb.10.1712569928711; Mon, 08
- Apr 2024 02:52:08 -0700 (PDT)
+ bh=xHsQHwdWozGmYntZG1DsswfJcaBGZtgyE5FZtk7H5pU=;
+ b=mwZ+l3D18+S0YIvMmQj04tlXzPBjDBdqXOgWXbMjoH6V/XSTvzAST2Kphk/MBLU9Vf
+ fYldIHLIgspqS+JB68Xih068Noq/nZczM2AfAoAxpqZ7Nbx2Ac+ElITaHb8xBpYwjvrA
+ Ig+UVwPKUI/ZqbgXRMafnG1YzVbi2zs31izvusLKFADmcPKG+Wadwc7Wf/UPUiieODgQ
+ oaKpL+hKIbl+fi7pTmZvCBRv2jDBzN/bxRApG2Fj3N6JkhP9Hbjrxg+EddmBtadnc4fq
+ Gw+fnnE2s8EjQGhrv8tv6VuGjszXWlXz0Xpk1LSRCByZFW36vk7LNMXP+uebLA11p7VX
+ DqMQ==
+X-Gm-Message-State: AOJu0YwxmIlwsHIx5oyo4W1PM+bG9h2D1BBuwt5S/BuOdXH8G6Bs+wgU
+ GGw3ZWzYiECOYoFXyG44JfFDhPQlBmufQJ52tlhWC5cCSdbGT+PCNAj6bw9iIkNf0AyBwnvGqg3
+ t
+X-Google-Smtp-Source: AGHT+IEzyUYx3Z2hPfoetwIjrRn8Fw5GwLF4BI+LPsiVao8Cnun6MxDL1DxzELYMGZIfHa+zXYYi4Q==
+X-Received: by 2002:a17:906:4704:b0:a4e:2bd3:a060 with SMTP id
+ y4-20020a170906470400b00a4e2bd3a060mr5534297ejq.64.1712569939665; 
+ Mon, 08 Apr 2024 02:52:19 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.144.67])
+ by smtp.gmail.com with ESMTPSA id
+ q14-20020a170906a08e00b00a4e8353be19sm4244235ejy.224.2024.04.08.02.52.18
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 08 Apr 2024 02:52:19 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Alexander Graf <agraf@csgraf.de>, Zheyu Ma <zheyuma97@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0? 0/2] hw/misc/applesmc: Fix memory leak
+Date: Mon,  8 Apr 2024 11:52:14 +0200
+Message-ID: <20240408095217.57239-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <df6b6b465753e754a19459e8cd61416548f89a42.1712569644.git.mst@redhat.com>
-In-Reply-To: <df6b6b465753e754a19459e8cd61416548f89a42.1712569644.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 8 Apr 2024 10:51:57 +0100
-Message-ID: <CAFEAcA9_mLQ=jWNEHBVLJKHST4X=QVdpgPCTh1mRSSiea7ruzw@mail.gmail.com>
-Subject: Re: [PATCH] Revert "hw/virtio: Add support for VDPA network
- simulation devices"
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>, 
- Cornelia Huck <cohuck@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52e.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,20 +89,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 8 Apr 2024 at 10:48, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> This reverts commit cd341fd1ffded978b2aa0b5309b00be7c42e347c.
->
-> The patch adds non-upstream code in
-> include/standard-headers/linux/virtio_pci.h
-> which would make maintainance harder.
->
-> Revert for now.
->
-> Suggested-by: Jason Wang <jasowang@redhat.com>
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fix for https://gitlab.com/qemu-project/qemu/-/issues/2272
 
-Are you intending to target this revert for 9.0 ?
+Philippe Mathieu-Daudé (2):
+  hw/misc/applesmc: Do not call DeviceReset() from DeviceRealize()
+  hw/misc/applesmc: Fix memory leak in reset() handler
 
--- PMM
+ hw/misc/applesmc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.41.0
+
 
