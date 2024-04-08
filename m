@@ -2,74 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5D189CB1C
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BE389CB19
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:50:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7x-0001yz-6h; Mon, 08 Apr 2024 13:49:53 -0400
+	id 1rtt7y-0001zw-4n; Mon, 08 Apr 2024 13:49:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7q-0001vc-KP
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1rtt7r-0001vf-Tn
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:48 -0400
+Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7n-0003cd-De
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:45 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2a519ac18b3so832247a91.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
+ id 1rtt7q-0003cs-AJ
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
+Received: by mail-pg1-x533.google.com with SMTP id
+ 41be03b00d2f7-5d42e7ab8a9so2936997a12.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598582; x=1713203382; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598583; x=1713203383; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ClDgWE+squc24jCQx5ASDG99O/TQsFv8OJ3ohhBsa3Y=;
- b=yLK1y3OEUThstbGG+U0rwnNtyeVJFACwozio/4T9aA2OGMqkdvfdKDEQN5NuT9X8d1
- rqxwfWY3OeIjnxIp+aw3ut67lCYRvSmNa3XZnQDWf9MDhb9rD2UeFN+wg6VpqXw0rVrb
- si49M7zv6VebaoN9Qouy/+0WF/ugubV2wr7TQsDe97dENmL5r8E/FMUHqZ1w7QTZoN9z
- uDZi/Pstr6TKDwp8C6w2eboHx9abTehT46NBchV5faJKj1OFz4m1Zz5qbv83RVBoWsgW
- Yw69SsIx4AScLDcWJu0cWWNxmU4rd8qQNhm8XGcPT7L5erqPqP2CliHMc6Hzzm70YaFP
- h4Nw==
+ bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
+ b=gdha9oDZyg24GrzUH489QHcbJX25R8x2bQ5QY0iiWQZiHaKwq/q3B9IDxhLmpYyyL/
+ itdnvpvDIHIIYn1pJ61Apwe9+7eXzFcz4PUb3HnLm0GnvGS7susk2MieSPVWDHXoj94Y
+ XxYDSd6QviUh0fWV8DUsXjltRVMXSgYZn2OhymzDrdgH05lkfKApohKGuVixevt2O0tB
+ 0+akCmZVM5bkPU4K0bXKcWaack9D+3m6mbgNSiAvPsGgOmk8p/1znBuuWqR/Hk5taRK7
+ wmo2o8SyvowvKwYakrKwaMSTFSe/tr5xmShi0ZHZWrjUwIaqmRLzEWHcqojZ/Rz7eTkZ
+ URPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598582; x=1713203382;
+ d=1e100.net; s=20230601; t=1712598583; x=1713203383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ClDgWE+squc24jCQx5ASDG99O/TQsFv8OJ3ohhBsa3Y=;
- b=Q6NnrzcKld/O+6xuQ3k122TDnCYhffLTtkWCqi5wwHWhuY/6x3vyeRwkVZJYNd9ald
- oqaPSJHn43FR+47GgS/3wNO6C5VctXKzUH4Y0dxfsdvjfoTrhW7a3Z2/lIzvhiXUxi4h
- Ea4z+T6QnhQvf8XFqeHnZivhpgqi9cTlFPITKUuxpnzk6Pr5tkZhQztSeW5XsUvtMq2a
- IFU/tcRzjwYm2an3A7ZuD/47IVkX69pcTgzWTs5PZNzwEtRrlgEz43KLT0m8ZTlwB3xX
- 7AWbiySisIxgnRVt7sSyGpfFuFOoi/qkae78YafGtu//i19rCnwLnJeEns5OKUcQMPax
- /IhQ==
-X-Gm-Message-State: AOJu0YybvNUZAMPyl57dVh2KPed/iVjkOT2GRun+p0vp0aBZ5UsflKf3
- pmD6eDtLdnsMM3TW1KSpjOW8/JybX+jPcu2xW/5btw+kvzyQDUu7VTWorx46HcOOlKOz5Zq69uc
- u
-X-Google-Smtp-Source: AGHT+IEqR7Syjv4KeQ7C+jDud9uVEuYWENBx7KP442H2uM03hh+wQQHei9DrW3gGRJ1/gVUgxpdAwQ==
-X-Received: by 2002:a17:90a:ce18:b0:2a5:24dd:bd34 with SMTP id
- f24-20020a17090ace1800b002a524ddbd34mr2206044pju.27.1712598581991; 
- Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
+ bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
+ b=DSqrQmpmWlR4ZtrhMJoUmfGXfXX0qIK4Qz/7Napp5PgL91iaDWnuasv45aNLO07mev
+ 62xfAp4HE7/TpF4QVm1RsvTyLUMZSkF0nh+RSx0ZlIFbudphZa/+7fVwA8eaCTwsXhLs
+ TOaqJN7hYDTZX7wr7guJQBp6HyixAeKfMu0L5qawNl4uIbnLQaoPXrAQh19vwy4WsF9N
+ ulznOFM1DjjSoAcqKqn9La5a1VWuoi8G7H30pvTvZxx/Yre8s37u+rUewtzfYPYPeBVX
+ R3HZt29s3whkEaUs6gt0/UWib517G8bepYucRYBDNpbzK2l6Ah8bpq7VQ0d6Onc8vMrw
+ yzig==
+X-Gm-Message-State: AOJu0YxA8XHmGwvSauOCiiiWDD47FkmJUizoK96jmKTVUZkw3n/f4kRO
+ sRP1HkauBboHBR7u4yD/vncqe3wch6ZlL3xISb11Iys8sUmmm549oOAvT/ht/JyaPvszxNAR2Zt
+ 4
+X-Google-Smtp-Source: AGHT+IHyDsTVfWyZO8lfi2c0buKrh5URB59p0tIcsq+yaamjo6kXE1+YQEW4PuBKH8vM0lNOE8KZxw==
+X-Received: by 2002:a05:6a20:5521:b0:1a3:600b:444c with SMTP id
+ ko33-20020a056a20552100b001a3600b444cmr8425568pzb.36.1712598583546; 
+ Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.40
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Vogt <mvogt@redhat.com>
-Subject: [PULL 07/35] linux-user: Add FITRIM ioctl
-Date: Mon,  8 Apr 2024 07:49:01 -1000
-Message-Id: <20240408174929.862917-8-richard.henderson@linaro.org>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL 08/35] linux-user: replace calloc() with g_new0()
+Date: Mon,  8 Apr 2024 07:49:02 -1000
+Message-Id: <20240408174929.862917-9-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,61 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Michael Vogt <mvogt@redhat.com>
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-Tiny patch to add the missing FITRIM ioctl.
+Use glib allocation as recommended by the coding convention
 
-Signed-off-by: Michael Vogt <mvogt@redhat.com>
-Message-Id: <20240403092048.16023-2-michael.vogt@gmail.com>
+Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+Message-Id: <20240317171747.1642207-1-phind.uet@gmail.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/ioctls.h        | 3 +++
- linux-user/syscall_defs.h  | 1 +
- linux-user/syscall_types.h | 5 +++++
- 3 files changed, 9 insertions(+)
+ linux-user/main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/linux-user/ioctls.h b/linux-user/ioctls.h
-index 1aec9d5836..d508d0c04a 100644
---- a/linux-user/ioctls.h
-+++ b/linux-user/ioctls.h
-@@ -140,6 +140,9 @@
- #ifdef FITHAW
-      IOCTL(FITHAW, IOC_W | IOC_R, TYPE_INT)
- #endif
-+#ifdef FITRIM
-+     IOCTL(FITRIM, IOC_W | IOC_R, MK_PTR(MK_STRUCT(STRUCT_fstrim_range)))
-+#endif
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 9277df2e9d..149e35432e 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -928,11 +928,7 @@ int main(int argc, char **argv, char **envp)
+      * Prepare copy of argv vector for target.
+      */
+     target_argc = argc - optind;
+-    target_argv = calloc(target_argc + 1, sizeof (char *));
+-    if (target_argv == NULL) {
+-        (void) fprintf(stderr, "Unable to allocate memory for target_argv\n");
+-        exit(EXIT_FAILURE);
+-    }
++    target_argv = g_new0(char *, target_argc + 1);
  
-      IOCTL(FIGETBSZ, IOC_R, MK_PTR(TYPE_LONG))
- #ifdef CONFIG_FIEMAP
-diff --git a/linux-user/syscall_defs.h b/linux-user/syscall_defs.h
-index 744fda599e..ce0adb706e 100644
---- a/linux-user/syscall_defs.h
-+++ b/linux-user/syscall_defs.h
-@@ -945,6 +945,7 @@ struct target_rtc_pll_info {
- 
- #define TARGET_FIFREEZE    TARGET_IOWR('X', 119, abi_int)
- #define TARGET_FITHAW    TARGET_IOWR('X', 120, abi_int)
-+#define TARGET_FITRIM    TARGET_IOWR('X', 121, struct fstrim_range)
- 
- /*
-  * Note that the ioctl numbers for FS_IOC_<GET|SET><FLAGS|VERSION>
-diff --git a/linux-user/syscall_types.h b/linux-user/syscall_types.h
-index c3b43f8022..6dd7a80ce5 100644
---- a/linux-user/syscall_types.h
-+++ b/linux-user/syscall_types.h
-@@ -341,6 +341,11 @@ STRUCT(file_clone_range,
-        TYPE_ULONGLONG, /* src_length */
-        TYPE_ULONGLONG) /* dest_offset */
- 
-+STRUCT(fstrim_range,
-+       TYPE_ULONGLONG, /* start */
-+       TYPE_ULONGLONG, /* len */
-+       TYPE_ULONGLONG) /* minlen */
-+
- STRUCT(fiemap_extent,
-        TYPE_ULONGLONG, /* fe_logical */
-        TYPE_ULONGLONG, /* fe_physical */
+     /*
+      * If argv0 is specified (using '-0' switch) we replace
 -- 
 2.34.1
 
