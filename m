@@ -2,59 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D5789C94D
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 18:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B133289C979
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 18:19:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtrSF-0000ok-VZ; Mon, 08 Apr 2024 12:02:44 -0400
+	id 1rtrhH-0004kB-3g; Mon, 08 Apr 2024 12:18:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rtrS5-0000XA-6d
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 12:02:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rtrhF-0004jt-2r
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 12:18:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rtrS1-0003nQ-60
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 12:02:31 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rtrhC-00061C-OV
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 12:18:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712592148;
+ s=mimecast20190719; t=1712593089;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=sf7wx6icy0L9BBdYzlgJkegTwTL93XNy3h+rJ4sO4I4=;
- b=ItM57OROczEODy++1lzHL1EgQ0nNbnpdXz5YpSLY29H9o1Zb0UCblIBd7lqwrHg5wWheNn
- tK0qjfUwkzjXK12mCgJ+5vqefJatJhGVKsdmojB7voYYN+vS8fVsS5XgeDHRAZk8I7GFtd
- aP7zX4EjMWpfnCGIHoLEKrS5cacr/rY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RVzYy1Ej1qn3vSwHISo7aD8KoMYZn06SwBPbNcrJsCw=;
+ b=FUdXmD9p6JaYuCKQUagLcUg+W0VbQM4srK3aRihrEQ677frlglYk97LNRtxRcB9emj7zlG
+ sORumAxgdtt1kVi16AHLXMj7mpxLjeBjwVT0+oDiWjjxNYwjRGjrLTbnbigEOIHtxRuoQo
+ Jliyb2HVWBhNz9LaSxRYrq0slfp9RhQ=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-VkUQT3KjNeGihF2O6zfZkw-1; Mon, 08 Apr 2024 12:02:24 -0400
-X-MC-Unique: VkUQT3KjNeGihF2O6zfZkw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 882191049B82;
- Mon,  8 Apr 2024 16:02:23 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.77])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 14140492BD4;
- Mon,  8 Apr 2024 16:02:23 +0000 (UTC)
-From: Eric Blake <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Zhu Yangyang <zhuyangyang14@huawei.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PATCH v5 2/2] nbd/server: Mark negotiation functions as coroutine_fn
-Date: Mon,  8 Apr 2024 11:00:44 -0500
-Message-ID: <20240408160214.1200629-6-eblake@redhat.com>
-In-Reply-To: <20240408160214.1200629-4-eblake@redhat.com>
-References: <20240408160214.1200629-4-eblake@redhat.com>
+ us-mta-509-hG0Md-TmMi6-l73izK3pDg-1; Mon, 08 Apr 2024 12:18:08 -0400
+X-MC-Unique: hG0Md-TmMi6-l73izK3pDg-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-4347df2ad8cso611321cf.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 09:18:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712593087; x=1713197887;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=RVzYy1Ej1qn3vSwHISo7aD8KoMYZn06SwBPbNcrJsCw=;
+ b=v9YqYzVcgnL25fo/bYd8PYubd54+ZCE70//SmG3NnDb7E6wGPWXQ5sjWinK+Fhy+XI
+ xRLQD8jEkgu6amwIdkW+y3cM/GY5h0YsXnHb3q+MLAwbEzyAnX86Kd280cyR2hqfbfAY
+ VZL/zVddjzcjp2WldlXeSe7vl4mtDxnAlwli7d9z+MEoBifPMSPXjZRkALC+hKxwhtNe
+ BNVpHKBCEp/oO851PNWSOHi1HHyCT92TMysp3PjQ7UEK3EiF4Z7TC8CTRPtlkKXIlRxK
+ E3zcqtcV2e7PO/QiYqMM/cbnsbU5mi/Lamb7xTus3aRtJ+73U8Ig5CnoWPRVFFQURjpk
+ mtwQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWJ0Bm0i0dxg0K/zhoOq5XBY3I+1T0u/FhcQi0HfTlEm0UXloqNc4WhH8dsm7oQlw235PGc1St8JLWThAZGV3Ku2QDqZbw=
+X-Gm-Message-State: AOJu0YxkKuZWNZTXSEzgSQwHtEbZ83Rm776AWeVsb2UniWxj7Gne1Dbb
+ shMF2gAyOuxURHtuL4jx6qx54+C6aXk86CNCz0GmWbrZD+U5JFJ1BHE/hJbE9ZAm9rPtlMpWqes
+ PxayJ9ys/cElcWvJRpghlTLTbTZ56I4gUW3uw16aY7EkZWNufk0iZ
+X-Received: by 2002:a05:622a:1ba0:b0:434:67b8:ee7b with SMTP id
+ bp32-20020a05622a1ba000b0043467b8ee7bmr9327431qtb.2.1712593086976; 
+ Mon, 08 Apr 2024 09:18:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFj6lGGpWfCg+gZF5+QmGNcC6mHGx7pZwQR2ANie8ptWwNUuhyp5vPUC/+M9uMuvCVtb0hwEg==
+X-Received: by 2002:a05:622a:1ba0:b0:434:67b8:ee7b with SMTP id
+ bp32-20020a05622a1ba000b0043467b8ee7bmr9327391qtb.2.1712593086331; 
+ Mon, 08 Apr 2024 09:18:06 -0700 (PDT)
+Received: from x1n ([99.254.121.117]) by smtp.gmail.com with ESMTPSA id
+ eq15-20020a05622a5e0f00b00432b5c9b9ecsm3802551qtb.14.2024.04.08.09.18.04
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Apr 2024 09:18:06 -0700 (PDT)
+Date: Mon, 8 Apr 2024 12:18:03 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Jinpu Wang <jinpu.wang@ionos.com>
+Cc: Yu Zhang <yu.zhang@ionos.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ Elmar Gerdes <elmar.gerdes@ionos.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Yuval Shaia <yuval.shaia.ml@gmail.com>, Kevin Wolf <kwolf@redhat.com>,
+ Prasanna Kumar Kalever <prasanna.kalever@redhat.com>,
+ Cornelia Huck <cohuck@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Prasanna Kumar Kalever <prasanna4324@gmail.com>,
+ "integration@gluster.org" <integration@gluster.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ "devel@lists.libvirt.org" <devel@lists.libvirt.org>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Song Gao <gaosong@loongson.cn>,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, arei.gonglei@huawei.com,
+ pannengyuan@huawei.com
+Subject: Re: [PATCH-for-9.1 v2 2/3] migration: Remove RDMA protocol handling
+Message-ID: <ZhQYu3ZnsIGv2qUZ@x1n>
+References: <20240328130255.52257-1-philmd@linaro.org>
+ <20240328130255.52257-3-philmd@linaro.org> <87frwatp7n.fsf@suse.de>
+ <ZgWGMmUTq0jqSUvr@x1n>
+ <7a510fbe-1c27-4f67-93b8-0d9cf01c1c74@fujitsu.com>
+ <ef160e75-d4a4-4be0-81f3-77d8b0e76178@linaro.org>
+ <9d082daf-acf0-27c5-1758-5a3f2af7ee0f@fujitsu.com>
+ <CAHEcVy50AtvDyCjwPa9Hu+x1wiUF6xf5McGOTHL+wdt3WN3pgA@mail.gmail.com>
+ <Zgx3brrz8m0V7HS4@x1n>
+ <CAMGffE=i+hVCNaX_31h1D1VW7JGJBqoa9T0qEJe2CDcb9BPiAA@mail.gmail.com>
 MIME-Version: 1.0
-Content-type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+In-Reply-To: <CAMGffE=i+hVCNaX_31h1D1VW7JGJBqoa9T0qEJe2CDcb9BPiAA@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -62,7 +111,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,314 +127,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-nbd_negotiate() is already marked coroutine_fn.  And given the fix in
-the previous patch to have nbd_negotiate_handle_starttls not create
-and wait on a g_main_loop (as that would violate coroutine
-constraints), it is worth marking the rest of the related static
-functions reachable only during option negotiation as also being
-coroutine_fn.
+On Mon, Apr 08, 2024 at 04:07:20PM +0200, Jinpu Wang wrote:
+> Hi Peter,
 
-Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- nbd/server.c | 102 +++++++++++++++++++++++++++++----------------------
- 1 file changed, 59 insertions(+), 43 deletions(-)
+Jinpu,
 
-diff --git a/nbd/server.c b/nbd/server.c
-index 98ae0e16326..1857fba51c1 100644
---- a/nbd/server.c
-+++ b/nbd/server.c
-@@ -195,8 +195,9 @@ static inline void set_be_option_rep(NBDOptionReply *rep, uint32_t option,
+Thanks for joining the discussion.
 
- /* Send a reply header, including length, but no payload.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
--                                      uint32_t len, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
-+                           uint32_t len, Error **errp)
- {
-     NBDOptionReply rep;
+> 
+> On Tue, Apr 2, 2024 at 11:24 PM Peter Xu <peterx@redhat.com> wrote:
+> >
+> > On Mon, Apr 01, 2024 at 11:26:25PM +0200, Yu Zhang wrote:
+> > > Hello Peter und Zhjian,
+> > >
+> > > Thank you so much for letting me know about this. I'm also a bit surprised at
+> > > the plan for deprecating the RDMA migration subsystem.
+> >
+> > It's not too late, since it looks like we do have users not yet notified
+> > from this, we'll redo the deprecation procedure even if it'll be the final
+> > plan, and it'll be 2 releases after this.
+> >
+> > >
+> > > > IMHO it's more important to know whether there are still users and whether
+> > > > they would still like to see it around.
+> > >
+> > > > I admit RDMA migration was lack of testing(unit/CI test), which led to the a few
+> > > > obvious bugs being noticed too late.
+> > >
+> > > Yes, we are a user of this subsystem. I was unaware of the lack of test coverage
+> > > for this part. As soon as 8.2 was released, I saw that many of the
+> > > migration test
+> > > cases failed and came to realize that there might be a bug between 8.1
+> > > and 8.2, but
+> > > was unable to confirm and report it quickly to you.
+> > >
+> > > The maintenance of this part could be too costly or difficult from
+> > > your point of view.
+> >
+> > It may or may not be too costly, it's just that we need real users of RDMA
+> > taking some care of it.  Having it broken easily for >1 releases definitely
+> > is a sign of lack of users.  It is an implication to the community that we
+> > should consider dropping some features so that we can get the best use of
+> > the community resources for the things that may have a broader audience.
+> >
+> > One thing majorly missing is a RDMA tester to guard all the merges to not
+> > break RDMA paths, hopefully in CI.  That should not rely on RDMA hardwares
+> > but just to sanity check the migration+rdma code running all fine.  RDMA
+> > taught us the lesson so we're requesting CI coverage for all other new
+> > features that will be merged at least for migration subsystem, so that we
+> > plan to not merge anything that is not covered by CI unless extremely
+> > necessary in the future.
+> >
+> > For sure CI is not the only missing part, but I'd say we should start with
+> > it, then someone should also take care of the code even if only in
+> > maintenance mode (no new feature to add on top).
+> >
+> > >
+> > > My concern is, this plan will forces a few QEMU users (not sure how
+> > > many) like us
+> > > either to stick to the RDMA migration by using an increasingly older
+> > > version of QEMU,
+> > > or to abandon the currently used RDMA migration.
+> >
+> > RDMA doesn't get new features anyway, if there's specific use case for RDMA
+> > migrations, would it work if such a scenario uses the old binary?  Is it
+> > possible to switch to the TCP protocol with some good NICs?
+> We have used rdma migration with HCA from Nvidia for years, our
+> experience is RDMA migration works better than tcp (over ipoib).
 
-@@ -211,15 +212,15 @@ static int nbd_negotiate_send_rep_len(NBDClient *client, uint32_t type,
+Please bare with me, as I know little on rdma stuff.
 
- /* Send a reply header with default 0 length.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep(NBDClient *client, uint32_t type,
--                                  Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep(NBDClient *client, uint32_t type, Error **errp)
- {
-     return nbd_negotiate_send_rep_len(client, type, 0, errp);
- }
+I'm actually pretty confused (and since a long time ago..) on why we need
+to operation with rdma contexts when ipoib seems to provide all the tcp
+layers.  I meant, can it work with the current "tcp:" protocol with ipoib
+even if there's rdma/ib hardwares underneath?  Is it because of performance
+improvements so that we must use a separate path comparing to generic
+"tcp:" protocol here?
 
- /* Send an error reply.
-  * Return -errno on error, 0 on success. */
--static int G_GNUC_PRINTF(4, 0)
-+static coroutine_fn int G_GNUC_PRINTF(4, 0)
- nbd_negotiate_send_rep_verr(NBDClient *client, uint32_t type,
-                             Error **errp, const char *fmt, va_list va)
- {
-@@ -259,7 +260,7 @@ nbd_sanitize_name(const char *name)
+> 
+> Switching back to TCP will lead us to the old problems which was
+> solved by RDMA migration.
 
- /* Send an error reply.
-  * Return -errno on error, 0 on success. */
--static int G_GNUC_PRINTF(4, 5)
-+static coroutine_fn int G_GNUC_PRINTF(4, 5)
- nbd_negotiate_send_rep_err(NBDClient *client, uint32_t type,
-                            Error **errp, const char *fmt, ...)
- {
-@@ -275,7 +276,7 @@ nbd_negotiate_send_rep_err(NBDClient *client, uint32_t type,
- /* Drop remainder of the current option, and send a reply with the
-  * given error type and message. Return -errno on read or write
-  * failure; or 0 if connection is still live. */
--static int G_GNUC_PRINTF(4, 0)
-+static coroutine_fn int G_GNUC_PRINTF(4, 0)
- nbd_opt_vdrop(NBDClient *client, uint32_t type, Error **errp,
-               const char *fmt, va_list va)
- {
-@@ -288,7 +289,7 @@ nbd_opt_vdrop(NBDClient *client, uint32_t type, Error **errp,
-     return ret;
- }
+Can you elaborate the problems, and why tcp won't work in this case?  They
+may not be directly relevant to the issue we're discussing, but I'm happy
+to learn more.
 
--static int G_GNUC_PRINTF(4, 5)
-+static coroutine_fn int G_GNUC_PRINTF(4, 5)
- nbd_opt_drop(NBDClient *client, uint32_t type, Error **errp,
-              const char *fmt, ...)
- {
-@@ -302,7 +303,7 @@ nbd_opt_drop(NBDClient *client, uint32_t type, Error **errp,
-     return ret;
- }
+What is the NICs you were testing before?  Did the test carry out with
+things like modern ones (50Gbps-200Gbps NICs), or the test was done when
+these hardwares are not common?
 
--static int G_GNUC_PRINTF(3, 4)
-+static coroutine_fn int G_GNUC_PRINTF(3, 4)
- nbd_opt_invalid(NBDClient *client, Error **errp, const char *fmt, ...)
- {
-     int ret;
-@@ -319,8 +320,9 @@ nbd_opt_invalid(NBDClient *client, Error **errp, const char *fmt, ...)
-  * If @check_nul, require that no NUL bytes appear in buffer.
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_opt_read(NBDClient *client, void *buffer, size_t size,
--                        bool check_nul, Error **errp)
-+static coroutine_fn int
-+nbd_opt_read(NBDClient *client, void *buffer, size_t size,
-+             bool check_nul, Error **errp)
- {
-     if (size > client->optlen) {
-         return nbd_opt_invalid(client, errp,
-@@ -343,7 +345,8 @@ static int nbd_opt_read(NBDClient *client, void *buffer, size_t size,
- /* Drop size bytes from the unparsed payload of the current option.
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
-+static coroutine_fn int
-+nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
- {
-     if (size > client->optlen) {
-         return nbd_opt_invalid(client, errp,
-@@ -366,8 +369,9 @@ static int nbd_opt_skip(NBDClient *client, size_t size, Error **errp)
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success.
-  */
--static int nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
--                             Error **errp)
-+static coroutine_fn int
-+nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
-+                  Error **errp)
- {
-     int ret;
-     uint32_t len;
-@@ -402,8 +406,8 @@ static int nbd_opt_read_name(NBDClient *client, char **name, uint32_t *length,
+Per my recent knowledge on the new Intel hardwares, at least the ones that
+support QPL, it's easy to achieve single core 50Gbps+.
 
- /* Send a single NBD_REP_SERVER reply to NBD_OPT_LIST, including payload.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp,
--                                       Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp, Error **errp)
- {
-     ERRP_GUARD();
-     size_t name_len, desc_len;
-@@ -444,7 +448,8 @@ static int nbd_negotiate_send_rep_list(NBDClient *client, NBDExport *exp,
+https://lore.kernel.org/r/PH7PR11MB5941A91AC1E514BCC32896A6A3342@PH7PR11MB5941.namprd11.prod.outlook.com
 
- /* Process the NBD_OPT_LIST command, with a potential series of replies.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_list(NBDClient *client, Error **errp)
- {
-     NBDExport *exp;
-     assert(client->opt == NBD_OPT_LIST);
-@@ -459,7 +464,8 @@ static int nbd_negotiate_handle_list(NBDClient *client, Error **errp)
-     return nbd_negotiate_send_rep(client, NBD_REP_ACK, errp);
- }
+Quote from Yuan:
 
--static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
-+static coroutine_fn void
-+nbd_check_meta_export(NBDClient *client, NBDExport *exp)
- {
-     if (exp != client->contexts.exp) {
-         client->contexts.count = 0;
-@@ -468,8 +474,9 @@ static void nbd_check_meta_export(NBDClient *client, NBDExport *exp)
+  Yes, I use iperf3 to check the bandwidth for one core, the bandwith is 60Gbps.
+  [ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+  [  5]   0.00-1.00   sec  7.00 GBytes  60.1 Gbits/sec    0   2.87 MBytes
+  [  5]   1.00-2.00   sec  7.05 GBytes  60.6 Gbits/sec    0   2.87 Mbytes
 
- /* Send a reply to NBD_OPT_EXPORT_NAME.
-  * Return -errno on error, 0 on success. */
--static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
--                                            Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
-+                                 Error **errp)
- {
-     ERRP_GUARD();
-     g_autofree char *name = NULL;
-@@ -536,9 +543,9 @@ static int nbd_negotiate_handle_export_name(NBDClient *client, bool no_zeroes,
- /* Send a single NBD_REP_INFO, with a buffer @buf of @length bytes.
-  * The buffer does NOT include the info type prefix.
-  * Return -errno on error, 0 if ready to send more. */
--static int nbd_negotiate_send_info(NBDClient *client,
--                                   uint16_t info, uint32_t length, void *buf,
--                                   Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_info(NBDClient *client, uint16_t info, uint32_t length,
-+                        void *buf, Error **errp)
- {
-     int rc;
+  And in the live migration test, a multifd thread's CPU utilization is almost 100%
 
-@@ -565,7 +572,8 @@ static int nbd_negotiate_send_info(NBDClient *client,
-  * -errno  transmission error occurred or @fatal was requested, errp is set
-  * 0       error message successfully sent to client, errp is not set
-  */
--static int nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
-+static coroutine_fn int
-+nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
- {
-     int ret;
+It boils down to what old problems were there with tcp first, though.
 
-@@ -583,7 +591,8 @@ static int nbd_reject_length(NBDClient *client, bool fatal, Error **errp)
- /* Handle NBD_OPT_INFO and NBD_OPT_GO.
-  * Return -errno on error, 0 if ready for next option, and 1 to move
-  * into transmission phase.  */
--static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_handle_info(NBDClient *client, Error **errp)
- {
-     int rc;
-     g_autofree char *name = NULL;
-@@ -755,7 +764,8 @@ struct NBDTLSServerHandshakeData {
-     Coroutine *co;
- };
+> 
+> >
+> > Per our best knowledge, RDMA users are rare, and please let anyone know if
+> > you are aware of such users.  IIUC the major reason why RDMA stopped being
+> > the trend is because the network is not like ten years ago; I don't think I
+> > have good knowledge in RDMA at all nor network, but my understanding is
+> > it's pretty easy to fetch modern NIC to outperform RDMAs, then it may make
+> > little sense to maintain multiple protocols, considering RDMA migration
+> > code is so special so that it has the most custom code comparing to other
+> > protocols.
+> +cc some guys from Huawei.
+> 
+> I'm surprised RDMA users are rare,  I guess maybe many are just
+> working with different code base.
 
--static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
-+static coroutine_fn void
-+nbd_server_tls_handshake(QIOTask *task, void *opaque)
- {
-     struct NBDTLSServerHandshakeData *data = opaque;
+Yes, please cc whoever might be interested (or surprised.. :) to know this,
+and let's be open to all possibilities.
 
-@@ -768,8 +778,8 @@ static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
+I don't think it makes sense if there're a lot of users of a feature then
+we deprecate that without a good reason.  However there's always the
+resource limitation issue we're facing, so it could still have the
+possibility that this gets deprecated if nobody is working on our upstream
+branch. Say, if people use private branches anyway to support rdma without
+collaborating upstream, keeping such feature upstream then may not make
+much sense either, unless there's some way to collaborate.  We'll see.
 
- /* Handle NBD_OPT_STARTTLS. Return NULL to drop connection, or else the
-  * new channel for all further (now-encrypted) communication. */
--static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
--                                                 Error **errp)
-+static coroutine_fn QIOChannel *
-+nbd_negotiate_handle_starttls(NBDClient *client, Error **errp)
- {
-     QIOChannel *ioc;
-     QIOChannelTLS *tioc;
-@@ -821,10 +831,9 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
-  *
-  * For NBD_OPT_LIST_META_CONTEXT @context_id is ignored, 0 is used instead.
-  */
--static int nbd_negotiate_send_meta_context(NBDClient *client,
--                                           const char *context,
--                                           uint32_t context_id,
--                                           Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_send_meta_context(NBDClient *client, const char *context,
-+                                uint32_t context_id, Error **errp)
- {
-     NBDOptionReplyMetaContext opt;
-     struct iovec iov[] = {
-@@ -849,8 +858,9 @@ static int nbd_negotiate_send_meta_context(NBDClient *client,
-  * Return true if @query matches @pattern, or if @query is empty when
-  * the @client is performing _LIST_.
-  */
--static bool nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
--                                      const char *query)
-+static coroutine_fn bool
-+nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
-+                          const char *query)
- {
-     if (!*query) {
-         trace_nbd_negotiate_meta_query_parse("empty");
-@@ -867,7 +877,8 @@ static bool nbd_meta_empty_or_pattern(NBDClient *client, const char *pattern,
- /*
-  * Return true and adjust @str in place if it begins with @prefix.
-  */
--static bool nbd_strshift(const char **str, const char *prefix)
-+static coroutine_fn bool
-+nbd_strshift(const char **str, const char *prefix)
- {
-     size_t len = strlen(prefix);
+It seems there can still be people joining this discussion.  I'll hold off
+a bit on merging this patch to provide enough window for anyone to chim in.
 
-@@ -883,8 +894,9 @@ static bool nbd_strshift(const char **str, const char *prefix)
-  * Handle queries to 'base' namespace. For now, only the base:allocation
-  * context is available.  Return true if @query has been handled.
-  */
--static bool nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
--                                const char *query)
-+static coroutine_fn bool
-+nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
-+                    const char *query)
- {
-     if (!nbd_strshift(&query, "base:")) {
-         return false;
-@@ -903,8 +915,9 @@ static bool nbd_meta_base_query(NBDClient *client, NBDMetaContexts *meta,
-  * and qemu:allocation-depth contexts are available.  Return true if @query
-  * has been handled.
-  */
--static bool nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
--                                const char *query)
-+static coroutine_fn bool
-+nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
-+                    const char *query)
- {
-     size_t i;
+Thanks,
 
-@@ -968,8 +981,9 @@ static bool nbd_meta_qemu_query(NBDClient *client, NBDMetaContexts *meta,
-  *
-  * Return -errno on I/O error, 0 if option was completely handled by
-  * sending a reply about inconsistent lengths, or 1 on success. */
--static int nbd_negotiate_meta_query(NBDClient *client,
--                                    NBDMetaContexts *meta, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_meta_query(NBDClient *client,
-+                         NBDMetaContexts *meta, Error **errp)
- {
-     int ret;
-     g_autofree char *query = NULL;
-@@ -1008,7 +1022,8 @@ static int nbd_negotiate_meta_query(NBDClient *client,
-  * Handle NBD_OPT_LIST_META_CONTEXT and NBD_OPT_SET_META_CONTEXT
-  *
-  * Return -errno on I/O error, or 0 if option was completely handled. */
--static int nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
- {
-     int ret;
-     g_autofree char *export_name = NULL;
-@@ -1136,7 +1151,8 @@ static int nbd_negotiate_meta_queries(NBDClient *client, Error **errp)
-  * 1       if client sent NBD_OPT_ABORT, i.e. on valid disconnect,
-  *         errp is not set
-  */
--static int nbd_negotiate_options(NBDClient *client, Error **errp)
-+static coroutine_fn int
-+nbd_negotiate_options(NBDClient *client, Error **errp)
- {
-     uint32_t flags;
-     bool fixedNewstyle = false;
+> >
+> > Thanks,
+> >
+> > --
+> > Peter Xu
+> 
+> Thx!
+> Jinpu Wang
+> >
+> 
+
 -- 
-2.44.0
+Peter Xu
 
 
