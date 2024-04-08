@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4F389CB55
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE7389CB28
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:52:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7y-000205-QN; Mon, 08 Apr 2024 13:49:54 -0400
+	id 1rtt7u-0001y5-PQ; Mon, 08 Apr 2024 13:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7m-0001v9-Rx
+ id 1rtt7o-0001vF-LP
  for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
-Received: from mail-pj1-x1029.google.com ([2607:f8b0:4864:20::1029])
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7k-0003cK-Iq
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:42 -0400
-Received: by mail-pj1-x1029.google.com with SMTP id
- 98e67ed59e1d1-29f93c4946cso2932168a91.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:40 -0700 (PDT)
+ id 1rtt7m-0003cX-3N
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:43 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-2a2e5d86254so2843431a91.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598579; x=1713203379; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598581; x=1713203381; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JI74xSWz9fuppvIeUIbROGR0F/ne9t6G9LvnZBioEes=;
- b=gMe41AQwr23QosU50ARtALzjdIgT5uWpbqm7HqR7Sdilb/Qrp7vJraozul9j/7iqXV
- Av66F9MbqyCT+9c5UhJJBvHtGzmDw9KHM9fjUOSnp+bKL+WknMEVYLwKmYQR6/HmAu9T
- 4LOB2yUVgh4A1Ts04bRgYxOMD7QJ4QzAhrub83u0APfXxZC6E9dIwYwbGHrUxAdRg68O
- Huk+U1OQVYdSubXajFPHuk9rwzxKbKaST/D44ZAc5YCBKFcy+ha7p6jmVcuVLQDLYcNi
- kTnwFOa0PZesZi994LB5Hlc+tOoYURLRcWO9gjOFF74Gd46mBTHulKMnGItgd6O7zJMa
- pHTg==
+ bh=/Qew14nZN1wX0iqwNUmvetvShYAajmyZbQ1f420VzBg=;
+ b=iwHzkw4pzzQ7c3GDiaxYPb5tT+v8uc9OVBQ7450iPDqc5vrBueaIdzuFRCV3pz7Mmo
+ 9eyAUXretJDJXn425r8/rBpbc6bC2VGpK0awp/C+CgyhYSdZOQXVStdWIX5qk2cxJmEi
+ 5QHeWqD83XXWfuLoRYpDVeOp90D6d5PWpXD/lmJzJmnPWzj6XPW5id430+oHAD1stZ/j
+ EKewZuYz0tUADq58rcC2qapdZHhjkOkQ9k384r/wtY5P/bIbFWa4Jnpp5LxUL1IB6V6D
+ 9xUcV9vgDJ164jaw40lRqG6RbOkIhfzOOAm+1sD4FrBBfUuQloaGYkxmiORqSuXTY6Yy
+ VPdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598579; x=1713203379;
+ d=1e100.net; s=20230601; t=1712598581; x=1713203381;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JI74xSWz9fuppvIeUIbROGR0F/ne9t6G9LvnZBioEes=;
- b=qPDygR/TgwErAW43orun3upcabRSlreYkT/2iwkJBw/wFACwBOJAppVO+br2x67QVT
- E1xFy1L1TbjLVVwXAhgSAgzI0f5Ll2cS6eEBjx33SmV/P6G8Tdtqvg0JjKO4F2kZOJLV
- BhqC0qBPH+MMah61PPHaf1p2XqlL1UTxE0DFBUAFYXxiXaTpE8sgZmoHDpDvxC/BxI7i
- fNYDh+7lgiphQTjcPi4ywOY97YcbXkH7G/DRXIo/RfBNkIqcy86mChAnGndpeMLNEeND
- 5+mEcFzM1rOPbLqiz2kGPYJ6I+MkKKqrE9jNfQfgtBnEgITLidtz91iwUuygBBFQLSEH
- fupQ==
-X-Gm-Message-State: AOJu0YwOgdRYioumX2W/OOqyKJt+ecw+e0Le1czsFxgIZKqpthXcOM6V
- UQ3pJnZwXM6edkjco1iNeJ7AMoR9vid75TZjF8B0blIiMX9xJW1XJZlq7KCJi5t9AXf1cCfB0a8
- c
-X-Google-Smtp-Source: AGHT+IG4YEQvcCRf8ZKpThHT5AmaxBdn/Jxzc3I39PGqg1AQHeti0hR4etnWmqMNHXWrGANvh7Yc1Q==
-X-Received: by 2002:a17:90a:d483:b0:2a2:94c0:38d4 with SMTP id
- s3-20020a17090ad48300b002a294c038d4mr7552188pju.31.1712598579264; 
- Mon, 08 Apr 2024 10:49:39 -0700 (PDT)
+ bh=/Qew14nZN1wX0iqwNUmvetvShYAajmyZbQ1f420VzBg=;
+ b=kqLtlnznakzJFhpETOZwSHsTavMhVKAES743hxRa3bjEoLV579o8n+HQUh3vO0nrxd
+ PpECH9LyXdsktLe21qcvaZeldCjJrpVsrHmJ6t8UjHMi9kYDFAm1PpEtZ2csHtq45225
+ Xs8xemO3lRl89UzRU8rMRSq6OVSrYAJqD1VqH4OeMQwq+0o/z0RVIz+DNAukKh1FCmAo
+ IiVAdpWhobyVRgr8xFZEV0djI8hYvjE9rZM7YmU0g/KL+OXa4PxVb6I64WTbpRjE5+88
+ 7oLaabyOUxBpuZRCOs6SllZcw44GWs6razDbFM3Sdnp9Ctq29k3UCuKbRdoHYrIhu5/E
+ a6eA==
+X-Gm-Message-State: AOJu0YzA0ygR2lyIRRTuSj0cYVbxDLgdGBc/hEBNfG4uVlJi9MvWzNQt
+ FOtkSgUlWWr1C0R2QKcZAoLXmurI10DlGoHmCKl8iE0GMsWcibq8KC91b+TTvUFxNxFaWMNQkFo
+ 1
+X-Google-Smtp-Source: AGHT+IHmHnMtXl4S03sg3R4v8rU+hx0IboggSdJJ5/PA4KVEurOug3xnOtW7GR8TCnnzr4sLTzti7A==
+X-Received: by 2002:a17:90b:4c12:b0:2a5:242:6761 with SMTP id
+ na18-20020a17090b4c1200b002a502426761mr487799pjb.23.1712598580721; 
+ Mon, 08 Apr 2024 10:49:40 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.38
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:38 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 05/35] linux-user: do_setsockopt: make ip_mreq_source local to
- the place where it is used
-Date: Mon,  8 Apr 2024 07:48:59 -1000
-Message-Id: <20240408174929.862917-6-richard.henderson@linaro.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 06/35] linux-user: do_setsockopt: eliminate goto in switch for
+ SO_SNDTIMEO
+Date: Mon,  8 Apr 2024 07:49:00 -1000
+Message-Id: <20240408174929.862917-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1029;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1029.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,44 +97,53 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Tokarev <mjt@tls.msk.ru>
 
+There's identical code for SO_SNDTIMEO and SO_RCVTIMEO, currently
+implemented using an ugly goto into another switch case.  Eliminate
+that using arithmetic if, making code flow more natural.
+
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-Id: <20240331100737.2724186-4-mjt@tls.msk.ru>
+Message-Id: <20240331100737.2724186-5-mjt@tls.msk.ru>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/syscall.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ linux-user/syscall.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index cca9cafe4f..1fedf16650 100644
+index 1fedf16650..41659b63f5 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -2049,7 +2049,6 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
- {
-     abi_long ret;
-     int val;
--    struct ip_mreq_source *ip_mreq_source;
+@@ -2301,12 +2301,10 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
+     case TARGET_SOL_SOCKET:
+         switch (optname) {
+         case TARGET_SO_RCVTIMEO:
++        case TARGET_SO_SNDTIMEO:
+         {
+                 struct timeval tv;
  
-     switch(level) {
-     case SOL_TCP:
-@@ -2123,6 +2122,9 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
-         case IP_UNBLOCK_SOURCE:
-         case IP_ADD_SOURCE_MEMBERSHIP:
-         case IP_DROP_SOURCE_MEMBERSHIP:
-+        {
-+            struct ip_mreq_source *ip_mreq_source;
-+
-             if (optlen != sizeof (struct target_ip_mreq_source))
-                 return -TARGET_EINVAL;
- 
-@@ -2133,7 +2135,7 @@ static abi_long do_setsockopt(int sockfd, int level, int optname,
-             ret = get_errno(setsockopt(sockfd, level, optname, ip_mreq_source, optlen));
-             unlock_user (ip_mreq_source, optval_addr, 0);
-             break;
+-                optname = SO_RCVTIMEO;
 -
-+        }
-         default:
-             goto unimplemented;
+-set_timeout:
+                 if (optlen != sizeof(struct target_timeval)) {
+                     return -TARGET_EINVAL;
+                 }
+@@ -2315,13 +2313,12 @@ set_timeout:
+                     return -TARGET_EFAULT;
+                 }
+ 
+-                ret = get_errno(setsockopt(sockfd, SOL_SOCKET, optname,
++                ret = get_errno(setsockopt(sockfd, SOL_SOCKET,
++                                optname == TARGET_SO_RCVTIMEO ?
++                                    SO_RCVTIMEO : SO_SNDTIMEO,
+                                 &tv, sizeof(tv)));
+                 return ret;
          }
+-        case TARGET_SO_SNDTIMEO:
+-                optname = SO_SNDTIMEO;
+-                goto set_timeout;
+         case TARGET_SO_ATTACH_FILTER:
+         {
+                 struct target_sock_fprog *tfprog;
 -- 
 2.34.1
 
