@@ -2,86 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E454F89CAD6
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B1189CB59
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtsrV-0007N0-0B; Mon, 08 Apr 2024 13:32:53 -0400
+	id 1rtt7u-0001xe-Ew; Mon, 08 Apr 2024 13:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rtsrM-0007MO-NP
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:32:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rtsrJ-0001Lm-7S
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:32:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712597559;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Zl+qZ8vxYDtq1eIM5Wd1GYKDIlOJCcTfnOxXRffMWHE=;
- b=Bgz4Xs3f7Zl2tPD/FeEi6jFmzXq19ymap7ciVvPbWfMlEbk+BrFeBpbbllAwjohvUOcWow
- a+gKsyiLwKDGZMUvNEFnfBNcwbAkXUjQ4ioNB7nLm8Lu4B87GecxusNH0koBbewIkBCi4G
- j4f7MtC31oh9TvFOMGP/Pb875Btlezg=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-692-doaeiZ7ePqiu5LDummSymg-1; Mon, 08 Apr 2024 13:32:37 -0400
-X-MC-Unique: doaeiZ7ePqiu5LDummSymg-1
-Received: by mail-yw1-f199.google.com with SMTP id
- 00721157ae682-6156b93c768so83693467b3.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:32:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rtt7f-0001t6-RW
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:37 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rtt7d-0003bj-Sg
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:35 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-6ecf3f001c5so3908936b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712598572; x=1713203372; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9k9ndciImwZ4WkH8Un2QRbqbF4d943OAPd1HXXDTYZA=;
+ b=Y2Ha7GgEg7iGj3qWpE0E6k5ivYLRJmm30c0P3opTpVaMwQ352XXFDrL3RXphHKE/jp
+ SmF9dScvGg3ec+GsdtGH4AfGr5JMKtUY3lk6qnpOFwCz2+UEi9rnj7ZsS3e/8MHOtGea
+ g7pDyFfC8yVDKWKax6Rd0XgN9Z0qq57Ti78RK4UpbvmCSegud5wBAdDwV3nNTH1MOrSw
+ 7/Y8AQtwk7msMsU5/e+wWgwF4VqJVt1A/sF2KCRCGuqYuB1b84ah3WcI3AzZupTrdPS4
+ J4t0K4+MjbdjioCSTsQ3m0NK+CPKOCH9CFPPJ7VIEwx9DEteRhWh5Z+XugrpizL60vNM
+ 1MxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712597557; x=1713202357;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Zl+qZ8vxYDtq1eIM5Wd1GYKDIlOJCcTfnOxXRffMWHE=;
- b=hhQNkgq+DZtLSIP+zQxuKd4BZ3aM//1twCdCERFuzQBFWihQVSx4juL9HibzN9sUX/
- IGb+CJvdxdZvpYPdVxk0dNJXG816Qh6zGKPXENDk4jwjyKEkIV1cCOT4NVAgVU0S/Cwz
- 9Z9hIHQhgq390rPs5nDpP3QgBHNip3d0ZnLiibo1qb3OTcJMhqZMiitwx8iO1Nonfntx
- r8Naixm2Gn54OjAeA4XMNLyoaKw04MHGve5NbA2rtG+xog9QUZzfrDpwnfX6sdmAHsZx
- ulH2ljJpliGlGasSyJsq077RBwAlChXl1DHy5IN6DR69/etXy7Wdu4Pb77W8Zjio2zZs
- q3sA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXcTS5SJcqSoxeiNCJV8Vf9nQzyKRoGf/87egAq9LG0OHwUmEuWTvqKddJTK9TtjlZSPv8pjn0XCZ6gUDB+HuYpORVsUeA=
-X-Gm-Message-State: AOJu0YzgSncPAEiOdq/wNRl1WzWGd75hIG42v3L5UQbc3a29Bs1nvdzl
- FkprEH9xA+H66W3/EHdk4xFNTpufy+v+mtU7H7de+BcbmFDUcyMtTsjj0gxEY8ecTwQhRPjWc7+
- 04tx+eu45a92NzYpDH+kRpKAPoOWTtdT4aD+tsKqL7RDgwrU7k/9AThyMGvgdoGqRN1tSJRSV1O
- jfnddbjfQyANHwRCZ6u8rQwal3A+k=
-X-Received: by 2002:a05:6902:f88:b0:dc6:52ec:7ff8 with SMTP id
- ft8-20020a0569020f8800b00dc652ec7ff8mr9935871ybb.4.1712597557368; 
- Mon, 08 Apr 2024 10:32:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE++TPPm5Q5E9HXdoD6vQ/crQ4LCcvA62XmIS1nGHMmUePex8e6tW58wuueyD+6tlpXhG+5F6SKyyBAmJzpkic=
-X-Received: by 2002:a05:6902:f88:b0:dc6:52ec:7ff8 with SMTP id
- ft8-20020a0569020f8800b00dc652ec7ff8mr9935856ybb.4.1712597557122; Mon, 08 Apr
- 2024 10:32:37 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712598572; x=1713203372;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9k9ndciImwZ4WkH8Un2QRbqbF4d943OAPd1HXXDTYZA=;
+ b=JeBuHBTgkgUTWw6wiAnqBuEGYXzCGzLWLa0BuylD/Ioi7kalDb6FdqKtsSNbwZm0Ly
+ 094ny1LIPpygOV3CvV6qpZx6x8zOZPy9FfIc6N5xk96OSxBfZlBnNrRC3FmWzkb52841
+ nl9XmBA0MFjFC9AFMyOvtLXRgL//fRiBYv/5qT5AAbDXoEy3W1bdkUCuZXZH2DtX0qoP
+ LugnX0v4Y6efHvrAvS4A3GRW0XZFOp6f7GmgB19O5Mc3WSwz6SDRyNHnExU0fGaOiHqH
+ 4QH6wzM5OZCJunq+JPA4WRWGqy9uHURQbA0ajyuYJgTF6TXqmgOCinmeOD1bpBJZ2ms/
+ Bs+Q==
+X-Gm-Message-State: AOJu0YzBe/mBqpb66G+NC1E9KT0mvVRrlWZ+wVRU6ApPDEGZnUDgDboI
+ gHHfQV64VjQ6Om6QOFvK+Jcp+kjoq4nC/4hwSO1c2YAUNr0nkmeUNvBbXBMEu76HNtZgxtVMbhE
+ d
+X-Google-Smtp-Source: AGHT+IGqqUNMDSBNhVJ9LDLq7xE1IIcNKKQzJ7C/sGyUoCM702Q7ECzkY6KiNwHgcVY276Om2OOBkg==
+X-Received: by 2002:a05:6a20:5b19:b0:1a7:35b1:1894 with SMTP id
+ kl25-20020a056a205b1900b001a735b11894mr7753989pzb.32.1712598572054; 
+ Mon, 08 Apr 2024 10:49:32 -0700 (PDT)
+Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ by smtp.gmail.com with ESMTPSA id
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.31
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Apr 2024 10:49:31 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PULL 00/35] misc patch queue
+Date: Mon,  8 Apr 2024 07:48:54 -1000
+Message-Id: <20240408174929.862917-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20240407015451.5228-2-wafer@jaguarmicro.com>
-In-Reply-To: <20240407015451.5228-2-wafer@jaguarmicro.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 8 Apr 2024 19:32:01 +0200
-Message-ID: <CAJaqyWeMbpp_HFLm+jweCE_y70arcUKa58Jg3VXoRQV04MWA=w@mail.gmail.com>
-Subject: Re: [PATCH v4] hw/virtio: Fix packed virtqueue flush used_idx
-To: Wafer <wafer@jaguarmicro.com>
-Cc: mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org, 
- jonah.palmer@oracle.com, leiyang@redhat.com, angus.chen@jaguarmicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,88 +89,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 7, 2024 at 3:56=E2=80=AFAM Wafer <wafer@jaguarmicro.com> wrote:
->
+This started out to be tcg and linux-user only, but then added
+a few target bug fixes, and the trolled back through my inbox
+and picked up some other safe patch sets that got lost.
 
-Let me suggest a more generic description for the patch:
 
-In the event of writing many chains of descriptors, the device must
-write just the id of the last buffer in the descriptor chain, skip
-forward the number of descriptors in the chain, and then repeat the
-operations for the rest of chains.
+r~
 
-Current QEMU code writes all the buffers id consecutively, and then
-skip all the buffers altogether. This is a bug, and can be reproduced
-with a VirtIONet device with _F_MRG_RXBUB and without
-_F_INDIRECT_DESC...
----
 
-And then your description, particularly for VirtIONet, is totally
-fine. Feel free to make changes to the description or suggest a better
-wording.
+The following changes since commit ce64e6224affb8b4e4b019f76d2950270b391af5:
 
-Thanks!
+  Merge tag 'qemu-sparc-20240404' of https://github.com/mcayland/qemu into staging (2024-04-04 15:28:06 +0100)
 
-> If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
-> but not the VIRTIO_RING_F_INDIRECT_DESC feature,
-> 'VirtIONetQueue->rx_vq' will use the merge feature
-> to store data in multiple 'elems'.
-> The 'num_buffers' in the virtio header indicates how many elements are me=
-rged.
-> If the value of 'num_buffers' is greater than 1,
-> all the merged elements will be filled into the descriptor ring.
-> The 'idx' of the elements should be the value of 'vq->used_idx' plus 'nde=
-scs'.
->
-> Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
-> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-> Signed-off-by: Wafer <wafer@jaguarmicro.com>
->
-> ---
-> Changes in v4:
->   - Add Acked-by.
->
-> Changes in v3:
->   - Add the commit-ID of the introduced problem in commit message.
->
-> Changes in v2:
->   - Clarify more in commit message.
-> ---
->  hw/virtio/virtio.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-> index fb6b4ccd83..cab5832cac 100644
-> --- a/hw/virtio/virtio.c
-> +++ b/hw/virtio/virtio.c
-> @@ -957,12 +957,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, u=
-nsigned int count)
->          return;
->      }
->
-> +    /*
-> +     * For indirect element's 'ndescs' is 1.
-> +     * For all other elemment's 'ndescs' is the
-> +     * number of descriptors chained by NEXT (as set in virtqueue_packed=
-_pop).
-> +     * So When the 'elem' be filled into the descriptor ring,
-> +     * The 'idx' of this 'elem' shall be
-> +     * the value of 'vq->used_idx' plus the 'ndescs'.
-> +     */
-> +    ndescs +=3D vq->used_elems[0].ndescs;
->      for (i =3D 1; i < count; i++) {
-> -        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
-> +        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false=
-);
->          ndescs +=3D vq->used_elems[i].ndescs;
->      }
->      virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
-> -    ndescs +=3D vq->used_elems[0].ndescs;
->
->      vq->inuse -=3D ndescs;
->      vq->used_idx +=3D ndescs;
-> --
-> 2.27.0
->
+are available in the Git repository at:
 
+  https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240408
+
+for you to fetch changes up to 50dbeda88ab71f9d426b7f4b126c79c44860e475:
+
+  util/bufferiszero: Simplify test_buffer_is_zero_next_accel (2024-04-08 06:27:58 -1000)
+
+----------------------------------------------------------------
+util/bufferiszero: Optimizations and cleanups, esp code removal
+target/m68k: Semihosting for non-coldfire cpus
+target/m68k: Fix fp accrued exception reporting
+target/hppa: Fix IIAOQ, IIASQ for pa2.0
+target/sh4: Fixes to mac.l and mac.w saturation
+target/sh4: Fixes to illegal delay slot reporting
+linux-user: Cleanups for do_setsockopt
+linux-user: Add FITRIM ioctl
+linux-user: Fix waitid return of siginfo_t and rusage
+tcg/optimize: Do not attempt to constant fold neg_vec
+accel/tcg: Improve can_do_io management, mmio bug fix
+
+----------------------------------------------------------------
+Alexander Monakov (5):
+      util/bufferiszero: Remove SSE4.1 variant
+      util/bufferiszero: Remove AVX512 variant
+      util/bufferiszero: Reorganize for early test for acceleration
+      util/bufferiszero: Remove useless prefetches
+      util/bufferiszero: Optimize SSE2 and AVX2 variants
+
+Keith Packard (3):
+      target/m68k: Map FPU exceptions to FPSR register
+      target/m68k: Pass semihosting arg to exit
+      target/m68k: Support semihosting on non-ColdFire targets
+
+Michael Tokarev (4):
+      linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
+      linux-user: do_setsockopt: make ip_mreq local to the place it is used and inline target_to_host_ip_mreq()
+      linux-user: do_setsockopt: make ip_mreq_source local to the place where it is used
+      linux-user: do_setsockopt: eliminate goto in switch for SO_SNDTIMEO
+
+Michael Vogt (1):
+      linux-user: Add FITRIM ioctl
+
+Nguyen Dinh Phi (1):
+      linux-user: replace calloc() with g_new0()
+
+Richard Henderson (17):
+      tcg/optimize: Do not attempt to constant fold neg_vec
+      linux-user: Fix waitid return of siginfo_t and rusage
+      target/hppa: Fix IIAOQ, IIASQ for pa2.0
+      target/sh4: Merge mach and macl into a union
+      target/m68k: Perform the semihosting test during translate
+      tcg: Add TCGContext.emit_before_op
+      accel/tcg: Add insn_start to DisasContextBase
+      target/arm: Use insn_start from DisasContextBase
+      target/hppa: Use insn_start from DisasContextBase
+      target/i386: Preserve DisasContextBase.insn_start across rewind
+      target/microblaze: Use insn_start from DisasContextBase
+      target/riscv: Use insn_start from DisasContextBase
+      target/s390x: Use insn_start from DisasContextBase
+      accel/tcg: Improve can_do_io management
+      util/bufferiszero: Improve scalar variant
+      util/bufferiszero: Introduce biz_accel_fn typedef
+      util/bufferiszero: Simplify test_buffer_is_zero_next_accel
+
+Zack Buhman (4):
+      target/sh4: mac.w: memory accesses are 16-bit words
+      target/sh4: Fix mac.l with saturation enabled
+      target/sh4: Fix mac.w with saturation enabled
+      target/sh4: add missing CHECK_NOT_DELAY_SLOT
+
+ include/exec/translator.h         |   4 +-
+ include/qemu/cutils.h             |  32 +++-
+ include/tcg/tcg.h                 |   6 +
+ linux-user/ioctls.h               |   3 +
+ linux-user/syscall_defs.h         |   1 +
+ linux-user/syscall_types.h        |   5 +
+ target/arm/tcg/translate.h        |  12 +-
+ target/m68k/cpu.h                 |   5 +-
+ target/m68k/helper.h              |   2 +
+ target/sh4/cpu.h                  |  14 +-
+ target/sh4/helper.h               |   4 +-
+ accel/tcg/translator.c            |  47 ++---
+ linux-user/main.c                 |   6 +-
+ linux-user/syscall.c              |  95 +++++-----
+ target/arm/tcg/translate-a64.c    |   2 +-
+ target/arm/tcg/translate.c        |   2 +-
+ target/hppa/int_helper.c          |  20 +-
+ target/hppa/sys_helper.c          |  18 +-
+ target/hppa/translate.c           |  10 +-
+ target/i386/tcg/translate.c       |   3 +
+ target/m68k/cpu.c                 |  12 +-
+ target/m68k/fpu_helper.c          |  72 ++++++++
+ target/m68k/helper.c              |   4 +-
+ target/m68k/m68k-semi.c           |   4 +-
+ target/m68k/op_helper.c           |  14 +-
+ target/m68k/translate.c           |  54 +++++-
+ target/microblaze/translate.c     |   8 +-
+ target/riscv/translate.c          |  11 +-
+ target/s390x/tcg/translate.c      |   4 +-
+ target/sh4/op_helper.c            |  51 ++---
+ target/sh4/translate.c            |   7 +-
+ tcg/optimize.c                    |  17 +-
+ tcg/tcg.c                         |  14 +-
+ tests/tcg/aarch64/test-2150.c     |  12 ++
+ tests/tcg/sh4/test-macl.c         |  67 +++++++
+ tests/tcg/sh4/test-macw.c         |  61 ++++++
+ util/bufferiszero.c               | 379 +++++++++++++++++---------------------
+ tests/tcg/aarch64/Makefile.target |   2 +-
+ tests/tcg/sh4/Makefile.target     |   8 +
+ 39 files changed, 696 insertions(+), 396 deletions(-)
+ create mode 100644 tests/tcg/aarch64/test-2150.c
+ create mode 100644 tests/tcg/sh4/test-macl.c
+ create mode 100644 tests/tcg/sh4/test-macw.c
 
