@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22CFF89CB54
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E817289CB21
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:51:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt8v-0002L1-Ns; Mon, 08 Apr 2024 13:50:53 -0400
+	id 1rtt8U-0002Ab-Ag; Mon, 08 Apr 2024 13:50:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8W-0002BA-LH
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:29 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1rtt8S-0002A0-Cg
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:24 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8O-0003n3-VM
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:26 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-6ed20fb620fso1344353b3a.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:20 -0700 (PDT)
+ id 1rtt8Q-0003oJ-Cj
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:23 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2a07b092c4fso3408368a91.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598619; x=1713203419; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598621; x=1713203421; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LJEBA8HhooZ+SwbOdLUPlZU44jMDHr0d5xq5JBRqrDA=;
- b=D5BEFsYhZVoqSwPzk4RQBc74N8t8sfBqK0tlTVxH8gX2zcKDtVivnwz6//aCVOJ17x
- UcDw9NgAO4V2bA6wsTGTZ1v3rPk83+ixLJtcMyJCxXoZ5ZDaI2pputcpYXpqMDBRBLu/
- rXNDAMap0UVhAItn30jrcMAV9+EarD/LrxTwvybjbuaf2biXgknSn40+ZTZUSuwB21Ha
- d1UX13roJX6n4O18REipN5OkL0gh8BJSSnZDVKYTjgeIVDQOWjmX54e6SnZMGkapWTTu
- y4XSSdOpZfhKmTNMbulg/4SQ5ubZvred4S+pwpBlMb5zrvVhoTMfUmP2JFG25t0eq0zT
- 5/Aw==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=m6Ty8XllMR28noTCDsk0N/pyr7ynqbZ4X/2NsrzAk7g=;
+ b=sJflrMlqcP36MdD6XvaIJdiSEir919w8Po7V8VrvYJTya2KgryI/f4cj3euDp0N7Rc
+ uhzTpGdRjptRJFo5gbJi331yPEcOOfmKqBvt0OyDsuPzHk5We7jdjSLuTTTgl/9fgCeH
+ TNi6IMmM1x8wM8rInfKolAYFdqoQrI2Cuhb7aNHYLjORfJ0xhSnabFsnsateq+zxXuCs
+ F3UCzyuHF61hwDZdyLB8bSUEIPD4YF3BOjFWmZse5ET3+njKU7fJli1rinmYCSRvaKwZ
+ rSd1v48mOiFxDWL6i9SHepqm7EeW4ezZukb21ZRRmN9+yJHLasxnfqM702+kSSogZOyy
+ ak5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598619; x=1713203419;
+ d=1e100.net; s=20230601; t=1712598621; x=1713203421;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LJEBA8HhooZ+SwbOdLUPlZU44jMDHr0d5xq5JBRqrDA=;
- b=XutXQu7bxQBCsYmxkTzihjTqw+aacfwm6UczJtr+czZoAkq5Qq8LggmflkV3x/1TGP
- w/ljq/pJJhwz12Tcr2zIRHuqyiTry2mC3w1CCHGdMpJ++L2KRVhueP0TKubr8tFde0uF
- EM1oWBUw4wHelBv/KjeXZEtpnoNi+lWSi7ypBvz/c7TDPpb5nsfPrDsU3Wsvgyah1UVf
- y/3MD5SxKtEl7ZhAT/wK6gUQHCsxxDwjSsW47PghO5UuFP7cKDWDkx34fn0WXco9rd/L
- UvLRQeTUUuozqg3GsHaOXcJJOCWxLwE8xTVd2bjjBsvpvI2k3nShq1uMbGNRmiRl8tnl
- q7Yw==
-X-Gm-Message-State: AOJu0YxjlXW97Fnhr2++mX6HFH5McoIX9UzvP/EyEmwz930bY9FjbJ+W
- 6Tczt4TMk1Hhgo0hnp8nU6I6nNubx78Poe+X2SuvHBH2WLHCrUPx3+Hklhl5QRXXLOiW+s+6/zl
- /
-X-Google-Smtp-Source: AGHT+IHIZCF7bNhOUkoC7AmoaISHmS0IavuFJUM1z2ldg8dnqsSPqoRb3EhqAB2y/ZPpvXrFMBz4EA==
-X-Received: by 2002:a05:6a21:3a48:b0:1a7:377:b86d with SMTP id
- zu8-20020a056a213a4800b001a70377b86dmr8901991pzb.12.1712598619569; 
- Mon, 08 Apr 2024 10:50:19 -0700 (PDT)
+ bh=m6Ty8XllMR28noTCDsk0N/pyr7ynqbZ4X/2NsrzAk7g=;
+ b=BVydChQ2WP/TL7xpKzoO8Th1WUG2q+lZx0CJ5HbooXOEMCLSwxdpmM7CyzvKyPEf2V
+ ewhNDuU4bs9dBIOvQIGStaLBxXn24Ru2uhq5FGq8mKP8kn8Db1VamB9LXXlo96So0fzk
+ iUAW5bcHO+MIaXRFuYzXfaBDmiC5FDqqNFaf4fVyAXtH+qkJ1Pxw7GnhZ5c0krDSaR4r
+ zxYXQXi5whr3sPcpYNFvCTdldbc/dhhO+aeNT68WtqH0l1isp2Puuq/Wxy65prXL7Ior
+ c53ec9J5ltYOtSEUV7cYh59L3U/vDgsd/smIstk/KqT1Nljo/B4oFdZSMYbTYibVT7BI
+ UcRA==
+X-Gm-Message-State: AOJu0Yx73NTBB49QdgzIJuvE9pyFUvr/8/zdnquuVqovrAfFd/hovo6M
+ kzsSokt5gaK4XpeV+i6Y0niKzS8IYjNuFc6CbRs6UobZRa8K31ZUdZa6FW415rPnUrxkLAzDuth
+ v
+X-Google-Smtp-Source: AGHT+IG9XUznbF8zvLvvj5W1wwbnKAVcWLd8X+HHARpdo/A/+QzaupvvAtTmaW73/7bBJaCfNz2oOQ==
+X-Received: by 2002:a17:90b:1bc9:b0:2a2:9b37:367a with SMTP id
+ oa9-20020a17090b1bc900b002a29b37367amr7922512pjb.39.1712598620788; 
+ Mon, 08 Apr 2024 10:50:20 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.18
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.19
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:50:19 -0700 (PDT)
+ Mon, 08 Apr 2024 10:50:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alexander Monakov <amonakov@ispras.ru>,
- Mikhail Romanov <mmromanov@ispras.ru>
-Subject: [PULL 32/35] util/bufferiszero: Optimize SSE2 and AVX2 variants
-Date: Mon,  8 Apr 2024 07:49:26 -1000
-Message-Id: <20240408174929.862917-33-richard.henderson@linaro.org>
+Subject: [PULL 33/35] util/bufferiszero: Improve scalar variant
+Date: Mon,  8 Apr 2024 07:49:27 -1000
+Message-Id: <20240408174929.862917-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,165 +91,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alexander Monakov <amonakov@ispras.ru>
-
-Increase unroll factor in SIMD loops from 4x to 8x in order to move
-their bottlenecks from ALU port contention to load issue rate (two loads
-per cycle on popular x86 implementations).
-
+Split less-than and greater-than 256 cases.
+Use unaligned accesses for head and tail.
 Avoid using out-of-bounds pointers in loop boundary conditions.
 
-Follow SSE2 implementation strategy in the AVX2 variant. Avoid use of
-PTEST, which is not profitable there (like in the removed SSE4 variant).
-
-Signed-off-by: Alexander Monakov <amonakov@ispras.ru>
-Signed-off-by: Mikhail Romanov <mmromanov@ispras.ru>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240206204809.9859-6-amonakov@ispras.ru>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 111 +++++++++++++++++++++++++++++---------------
- 1 file changed, 73 insertions(+), 38 deletions(-)
+ util/bufferiszero.c | 85 +++++++++++++++++++++++++++------------------
+ 1 file changed, 51 insertions(+), 34 deletions(-)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 00118d649e..02df82b4ff 100644
+index 02df82b4ff..c9a7ded016 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -67,62 +67,97 @@ static bool buffer_is_zero_integer(const void *buf, size_t len)
- #if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
- #include <immintrin.h>
+@@ -28,40 +28,57 @@
  
--/* Note that each of these vectorized functions require len >= 64.  */
-+/* Helper for preventing the compiler from reassociating
-+   chains of binary vector operations.  */
-+#define SSE_REASSOC_BARRIER(vec0, vec1) asm("" : "+x"(vec0), "+x"(vec1))
-+
-+/* Note that these vectorized functions may assume len >= 256.  */
+ static bool (*buffer_is_zero_accel)(const void *, size_t);
  
- static bool __attribute__((target("sse2")))
- buffer_zero_sse2(const void *buf, size_t len)
+-static bool buffer_is_zero_integer(const void *buf, size_t len)
++static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
  {
--    __m128i t = _mm_loadu_si128(buf);
--    __m128i *p = (__m128i *)(((uintptr_t)buf + 5 * 16) & -16);
--    __m128i *e = (__m128i *)(((uintptr_t)buf + len) & -16);
--    __m128i zero = _mm_setzero_si128();
-+    /* Unaligned loads at head/tail.  */
-+    __m128i v = *(__m128i_u *)(buf);
-+    __m128i w = *(__m128i_u *)(buf + len - 16);
-+    /* Align head/tail to 16-byte boundaries.  */
-+    const __m128i *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
-+    const __m128i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
-+    __m128i zero = { 0 };
+-    if (unlikely(len < 8)) {
+-        /* For a very small buffer, simply accumulate all the bytes.  */
+-        const unsigned char *p = buf;
+-        const unsigned char *e = buf + len;
+-        unsigned char t = 0;
++    uint64_t t;
++    const uint64_t *p, *e;
  
--    /* Loop over 16-byte aligned blocks of 64.  */
--    while (likely(p <= e)) {
--        t = _mm_cmpeq_epi8(t, zero);
--        if (unlikely(_mm_movemask_epi8(t) != 0xFFFF)) {
-+    /* Collect a partial block at tail end.  */
-+    v |= e[-1]; w |= e[-2];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-3]; w |= e[-4];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-5]; w |= e[-6];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-7]; v |= w;
+-        do {
+-            t |= *p++;
+-        } while (p < e);
+-
+-        return t == 0;
+-    } else {
+-        /* Otherwise, use the unaligned memory access functions to
+-           handle the beginning and end of the buffer, with a couple
+-           of loops handling the middle aligned section.  */
+-        uint64_t t = ldq_he_p(buf);
+-        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
+-        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
+-
+-        for (; p + 8 <= e; p += 8) {
+-            if (t) {
+-                return false;
+-            }
+-            t = p[0] | p[1] | p[2] | p[3] | p[4] | p[5] | p[6] | p[7];
+-        }
+-        while (p < e) {
+-            t |= *p++;
+-        }
+-        t |= ldq_he_p(buf + len - 8);
+-
+-        return t == 0;
++    /*
++     * Use unaligned memory access functions to handle
++     * the beginning and end of the buffer.
++     */
++    if (unlikely(len <= 8)) {
++        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
+     }
++
++    t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++    p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
++    e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
++
++    /* Read 0 to 31 aligned words from the middle. */
++    while (p < e) {
++        t |= *p++;
++    }
++    return t == 0;
++}
++
++static bool buffer_is_zero_int_ge256(const void *buf, size_t len)
++{
++    /*
++     * Use unaligned memory access functions to handle
++     * the beginning and end of the buffer.
++     */
++    uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
++    const uint64_t *p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
++    const uint64_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
++
++    /* Collect a partial block at the tail end. */
++    t |= e[-7] | e[-6] | e[-5] | e[-4] | e[-3] | e[-2] | e[-1];
 +
 +    /*
-+     * Loop over complete 128-byte blocks.
-+     * With the head and tail removed, e - p >= 14, so the loop
-+     * must iterate at least once.
++     * Loop over 64 byte blocks.
++     * With the head and tail removed, e - p >= 30,
++     * so the loop must iterate at least 3 times.
 +     */
 +    do {
-+        v = _mm_cmpeq_epi8(v, zero);
-+        if (unlikely(_mm_movemask_epi8(v) != 0xFFFF)) {
-             return false;
-         }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    }
-+        v = p[0]; w = p[1];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[2]; w |= p[3];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[4]; w |= p[5];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[6]; w |= p[7];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= w;
++        if (t) {
++            return false;
++        }
++        t = p[0] | p[1] | p[2] | p[3] | p[4] | p[5] | p[6] | p[7];
 +        p += 8;
 +    } while (p < e - 7);
- 
--    /* Finish the aligned tail.  */
--    t |= e[-3];
--    t |= e[-2];
--    t |= e[-1];
--
--    /* Finish the unaligned tail.  */
--    t |= _mm_loadu_si128(buf + len - 16);
--
--    return _mm_movemask_epi8(_mm_cmpeq_epi8(t, zero)) == 0xFFFF;
-+    return _mm_movemask_epi8(_mm_cmpeq_epi8(v, zero)) == 0xFFFF;
- }
- 
- #ifdef CONFIG_AVX2_OPT
- static bool __attribute__((target("avx2")))
- buffer_zero_avx2(const void *buf, size_t len)
- {
--    /* Begin with an unaligned head of 32 bytes.  */
--    __m256i t = _mm256_loadu_si256(buf);
--    __m256i *p = (__m256i *)(((uintptr_t)buf + 5 * 32) & -32);
--    __m256i *e = (__m256i *)(((uintptr_t)buf + len) & -32);
-+    /* Unaligned loads at head/tail.  */
-+    __m256i v = *(__m256i_u *)(buf);
-+    __m256i w = *(__m256i_u *)(buf + len - 32);
-+    /* Align head/tail to 32-byte boundaries.  */
-+    const __m256i *p = QEMU_ALIGN_PTR_DOWN(buf + 32, 32);
-+    const __m256i *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 32);
-+    __m256i zero = { 0 };
- 
--    /* Loop over 32-byte aligned blocks of 128.  */
--    while (p <= e) {
--        if (unlikely(!_mm256_testz_si256(t, t))) {
-+    /* Collect a partial block at tail end.  */
-+    v |= e[-1]; w |= e[-2];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-3]; w |= e[-4];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-5]; w |= e[-6];
-+    SSE_REASSOC_BARRIER(v, w);
-+    v |= e[-7]; v |= w;
 +
-+    /* Loop over complete 256-byte blocks.  */
-+    for (; p < e - 7; p += 8) {
-+        /* PTEST is not profitable here.  */
-+        v = _mm256_cmpeq_epi8(v, zero);
-+        if (unlikely(_mm256_movemask_epi8(v) != 0xFFFFFFFF)) {
-             return false;
-         }
--        t = p[-4] | p[-3] | p[-2] | p[-1];
--        p += 4;
--    } ;
-+        v = p[0]; w = p[1];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[2]; w |= p[3];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[4]; w |= p[5];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= p[6]; w |= p[7];
-+        SSE_REASSOC_BARRIER(v, w);
-+        v |= w;
-+    }
- 
--    /* Finish the last block of 128 unaligned.  */
--    t |= _mm256_loadu_si256(buf + len - 4 * 32);
--    t |= _mm256_loadu_si256(buf + len - 3 * 32);
--    t |= _mm256_loadu_si256(buf + len - 2 * 32);
--    t |= _mm256_loadu_si256(buf + len - 1 * 32);
--
--    return _mm256_testz_si256(t, t);
-+    return _mm256_movemask_epi8(_mm256_cmpeq_epi8(v, zero)) == 0xFFFFFFFF;
++    return t == 0;
  }
- #endif /* CONFIG_AVX2_OPT */
  
+ #if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
+@@ -173,7 +190,7 @@ select_accel_cpuinfo(unsigned info)
+         { CPUINFO_AVX2,    buffer_zero_avx2 },
+ #endif
+         { CPUINFO_SSE2,    buffer_zero_sse2 },
+-        { CPUINFO_ALWAYS,  buffer_is_zero_integer },
++        { CPUINFO_ALWAYS,  buffer_is_zero_int_ge256 },
+     };
+ 
+     for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
+@@ -211,7 +228,7 @@ bool test_buffer_is_zero_next_accel(void)
+     return false;
+ }
+ 
+-#define INIT_ACCEL buffer_is_zero_integer
++#define INIT_ACCEL buffer_is_zero_int_ge256
+ #endif
+ 
+ static bool (*buffer_is_zero_accel)(const void *, size_t) = INIT_ACCEL;
+@@ -232,7 +249,7 @@ bool buffer_is_zero_ool(const void *buf, size_t len)
+     if (likely(len >= 256)) {
+         return buffer_is_zero_accel(buf, len);
+     }
+-    return buffer_is_zero_integer(buf, len);
++    return buffer_is_zero_int_lt256(buf, len);
+ }
+ 
+ bool buffer_is_zero_ge256(const void *buf, size_t len)
 -- 
 2.34.1
 
