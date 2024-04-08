@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BE389CB19
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B0AB89CB1E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:51:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7y-0001zw-4n; Mon, 08 Apr 2024 13:49:54 -0400
+	id 1rtt7x-0001zj-Nq; Mon, 08 Apr 2024 13:49:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7r-0001vf-Tn
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:48 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1rtt7t-0001wk-9w
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:49 -0400
+Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7q-0003cs-AJ
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:47 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-5d42e7ab8a9so2936997a12.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:44 -0700 (PDT)
+ id 1rtt7r-0003d2-Lf
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:49 -0400
+Received: by mail-pj1-x102c.google.com with SMTP id
+ 98e67ed59e1d1-2a2da57ab3aso2672014a91.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598583; x=1713203383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598585; x=1713203385; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
- b=gdha9oDZyg24GrzUH489QHcbJX25R8x2bQ5QY0iiWQZiHaKwq/q3B9IDxhLmpYyyL/
- itdnvpvDIHIIYn1pJ61Apwe9+7eXzFcz4PUb3HnLm0GnvGS7susk2MieSPVWDHXoj94Y
- XxYDSd6QviUh0fWV8DUsXjltRVMXSgYZn2OhymzDrdgH05lkfKApohKGuVixevt2O0tB
- 0+akCmZVM5bkPU4K0bXKcWaack9D+3m6mbgNSiAvPsGgOmk8p/1znBuuWqR/Hk5taRK7
- wmo2o8SyvowvKwYakrKwaMSTFSe/tr5xmShi0ZHZWrjUwIaqmRLzEWHcqojZ/Rz7eTkZ
- URPw==
+ bh=+6xA9uOxQL6GHFyuuAVL91EMcYGjdhkuoxzjyRnEesc=;
+ b=ARUX9p6+UIvXtrvSSWi6rfUg1qr7yEk2tkiATpEVy5oAQAEFRY6Vxrm+RCPF41dbYS
+ hh4wQIqrUHCCx6N7aKs99K4DnKABAQ2cxULBXGNM6xXcwjcxPVcfd6wllDuDf87dnmeC
+ vVAi5ZVBIlb2UwPIyDAoXOira/Dj0ekHGFwuVAQfHzdFphprH5DH0rAaNQzvrHHXnjqF
+ HVqeIAtKNMvh3L5O2ezj7L/eZdr1/lDgMjS5Xwb3Kj/5bEEYtTBY+bfwiJbMfftUn6rk
+ 6zao6E9EC9o3Dk4wCWaLD6pEBkFMhE4NvYD8wiL27Dv7PKG68+cVC0ifJOVpzuqJTy3R
+ Z4fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598583; x=1713203383;
+ d=1e100.net; s=20230601; t=1712598585; x=1713203385;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
- b=DSqrQmpmWlR4ZtrhMJoUmfGXfXX0qIK4Qz/7Napp5PgL91iaDWnuasv45aNLO07mev
- 62xfAp4HE7/TpF4QVm1RsvTyLUMZSkF0nh+RSx0ZlIFbudphZa/+7fVwA8eaCTwsXhLs
- TOaqJN7hYDTZX7wr7guJQBp6HyixAeKfMu0L5qawNl4uIbnLQaoPXrAQh19vwy4WsF9N
- ulznOFM1DjjSoAcqKqn9La5a1VWuoi8G7H30pvTvZxx/Yre8s37u+rUewtzfYPYPeBVX
- R3HZt29s3whkEaUs6gt0/UWib517G8bepYucRYBDNpbzK2l6Ah8bpq7VQ0d6Onc8vMrw
- yzig==
-X-Gm-Message-State: AOJu0YxA8XHmGwvSauOCiiiWDD47FkmJUizoK96jmKTVUZkw3n/f4kRO
- sRP1HkauBboHBR7u4yD/vncqe3wch6ZlL3xISb11Iys8sUmmm549oOAvT/ht/JyaPvszxNAR2Zt
- 4
-X-Google-Smtp-Source: AGHT+IHyDsTVfWyZO8lfi2c0buKrh5URB59p0tIcsq+yaamjo6kXE1+YQEW4PuBKH8vM0lNOE8KZxw==
-X-Received: by 2002:a05:6a20:5521:b0:1a3:600b:444c with SMTP id
- ko33-20020a056a20552100b001a3600b444cmr8425568pzb.36.1712598583546; 
- Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
+ bh=+6xA9uOxQL6GHFyuuAVL91EMcYGjdhkuoxzjyRnEesc=;
+ b=mnn6JOh7CV97OtMcmOlBRBdsU0JhVMrtiJpXxWxSzoYzvBGW5Xefcay3iWmw/TfEhZ
+ MVMaJjU/0QkskNoOBc3oDBftWU6HHeEzUVyp4Q1DC89TMYpEB5l8Tihn30SdogDKIUsR
+ 8nHj+YPMAqQemMh0bmIwXW53jayfIEsb8jBT/oDEO5O2w6qwMLnS7tkEqTmc0K2mRrp8
+ 20lAObIueARIkiw3U1j/vwawPQsW5yCl8gRGFyLFfC/99Do+/IPsJioHb5Yx79vwxC4W
+ l7Il/oVrNQfBJyCFoIij3tj1zPEPicC9qW372QLP8MkE6SeO+y714QPnod+RuwaqStnO
+ wm8A==
+X-Gm-Message-State: AOJu0YwEhoG5sDRQ052T2i+aYF402EV0J1XgqNoGjdJk4RV3AXerEqyG
+ rAnizE+tXB9U4q1yjXvKRnBmFZw/5OcgSWLkQxYjptRxonZurqdNPIpR+S9JnAL5kHt5Zuk93Pt
+ z
+X-Google-Smtp-Source: AGHT+IH6f3ZuQwr8n6UcOXlDn7nuNUfSChMox+x4Ni59ik6keXWC2XLMWzGIXqkhS7acZoHyWKjLeA==
+X-Received: by 2002:a17:90a:e992:b0:2a2:437:18ec with SMTP id
+ v18-20020a17090ae99200b002a2043718ecmr6230010pjy.46.1712598585027; 
+ Mon, 08 Apr 2024 10:49:45 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.42
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:43 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:44 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PULL 08/35] linux-user: replace calloc() with g_new0()
-Date: Mon,  8 Apr 2024 07:49:02 -1000
-Message-Id: <20240408174929.862917-9-richard.henderson@linaro.org>
+Cc: Sven Schnelle <svens@stackframe.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PULL 09/35] target/hppa: Fix IIAOQ, IIASQ for pa2.0
+Date: Mon,  8 Apr 2024 07:49:03 -1000
+Message-Id: <20240408174929.862917-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,35 +93,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nguyen Dinh Phi <phind.uet@gmail.com>
+The contents of IIAOQ depend on PSW_W.
+Follow the text in "Interruption Instruction Address Queues",
+pages 2-13 through 2-15.
 
-Use glib allocation as recommended by the coding convention
-
-Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
-Message-Id: <20240317171747.1642207-1-phind.uet@gmail.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Tested-by: Sven Schnelle <svens@stackframe.org>
+Tested-by: Helge Deller <deller@gmx.de>
+Reported-by: Sven Schnelle <svens@stackframe.org>
+Fixes: b10700d826c ("target/hppa: Update IIAOQ, IIASQ for pa2.0")
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/main.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ target/hppa/int_helper.c | 20 +++++++++++---------
+ target/hppa/sys_helper.c | 18 +++++++++---------
+ 2 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 9277df2e9d..149e35432e 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -928,11 +928,7 @@ int main(int argc, char **argv, char **envp)
-      * Prepare copy of argv vector for target.
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index 90437a92cd..a667ee380d 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -107,14 +107,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+ 
+     /* step 3 */
+     /*
+-     * For pa1.x, IIASQ is simply a copy of IASQ.
+-     * For pa2.0, IIASQ is the top bits of the virtual address,
+-     *            or zero if translation is disabled.
++     * IIASQ is the top bits of the virtual address, or zero if translation
++     * is disabled -- with PSW_W == 0, this will reduce to the space.
       */
-     target_argc = argc - optind;
--    target_argv = calloc(target_argc + 1, sizeof (char *));
--    if (target_argv == NULL) {
--        (void) fprintf(stderr, "Unable to allocate memory for target_argv\n");
--        exit(EXIT_FAILURE);
--    }
-+    target_argv = g_new0(char *, target_argc + 1);
+-    if (!hppa_is_pa20(env)) {
+-        env->cr[CR_IIASQ] = env->iasq_f >> 32;
+-        env->cr_back[0] = env->iasq_b >> 32;
+-    } else if (old_psw & PSW_C) {
++    if (old_psw & PSW_C) {
+         env->cr[CR_IIASQ] =
+             hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
+         env->cr_back[0] =
+@@ -123,8 +119,14 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+         env->cr[CR_IIASQ] = 0;
+         env->cr_back[0] = 0;
+     }
+-    env->cr[CR_IIAOQ] = env->iaoq_f;
+-    env->cr_back[1] = env->iaoq_b;
++    /* IIAOQ is the full offset for wide mode, or 32 bits for narrow mode. */
++    if (old_psw & PSW_W) {
++        env->cr[CR_IIAOQ] = env->iaoq_f;
++        env->cr_back[1] = env->iaoq_b;
++    } else {
++        env->cr[CR_IIAOQ] = (uint32_t)env->iaoq_f;
++        env->cr_back[1] = (uint32_t)env->iaoq_b;
++    }
+ 
+     if (old_psw & PSW_Q) {
+         /* step 5 */
+diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
+index 208e51c086..22d6c89964 100644
+--- a/target/hppa/sys_helper.c
++++ b/target/hppa/sys_helper.c
+@@ -78,21 +78,21 @@ target_ulong HELPER(swap_system_mask)(CPUHPPAState *env, target_ulong nsm)
+ 
+ void HELPER(rfi)(CPUHPPAState *env)
+ {
+-    env->iasq_f = (uint64_t)env->cr[CR_IIASQ] << 32;
+-    env->iasq_b = (uint64_t)env->cr_back[0] << 32;
+-    env->iaoq_f = env->cr[CR_IIAOQ];
+-    env->iaoq_b = env->cr_back[1];
++    uint64_t mask;
++
++    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
  
      /*
-      * If argv0 is specified (using '-0' switch) we replace
+      * For pa2.0, IIASQ is the top bits of the virtual address.
+      * To recreate the space identifier, remove the offset bits.
++     * For pa1.x, the mask reduces to no change to space.
+      */
+-    if (hppa_is_pa20(env)) {
+-        env->iasq_f &= ~env->iaoq_f;
+-        env->iasq_b &= ~env->iaoq_b;
+-    }
++    mask = gva_offset_mask(env->psw);
+ 
+-    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
++    env->iaoq_f = env->cr[CR_IIAOQ];
++    env->iaoq_b = env->cr_back[1];
++    env->iasq_f = (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
++    env->iasq_b = (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
+ }
+ 
+ static void getshadowregs(CPUHPPAState *env)
 -- 
 2.34.1
 
