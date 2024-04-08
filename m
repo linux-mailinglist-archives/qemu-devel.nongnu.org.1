@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794D289CB57
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:58:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F09AB89CB4D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:56:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt8T-0002A7-LJ; Mon, 08 Apr 2024 13:50:25 -0400
+	id 1rtt8K-00026n-7C; Mon, 08 Apr 2024 13:50:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8P-00029Z-Q4
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:21 -0400
-Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
+ id 1rtt8H-00025w-Qa
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:14 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt8A-0003iZ-7c
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:21 -0400
-Received: by mail-pj1-x1031.google.com with SMTP id
- 98e67ed59e1d1-29e0229d6b5so3889663a91.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:05 -0700 (PDT)
+ id 1rtt8B-0003ik-PM
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:13 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6ecd957f949so4618682b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:50:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598604; x=1713203404; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598605; x=1713203405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RFanGzrvK8VkKk4csReRv0GVjABsPRaur2/zSeJo0ZU=;
- b=uwIFljoGv92YbwCOlvRKIcXNoBXgui3Skk03YLupbSsyS+ah40scL0kXq6AmbLYJWc
- r3WYfP3QcAO0EOs7nQaqsWwuwg6CR69SALzbCYRQBNT1lsgXK4DYCn3iqlTElF3BWO1E
- n4pDgo0KtRgwvcNFBQYAfsbEXD3n8Q6TlTrzC/IDF6bOnJF4ueInscl8DdQMgaj/O+mj
- v2lo8ZAf9EQ+H7SdLmhbsomk12lKEXjlho/sSB8Jb8AhdtVY2FUneXdhrWMvluFdic7a
- /yUCdbOJGEMyylUnxbaqUD8Vra01ZGnRfV5E10Bet6xTlqX0+/Kf3b3wKMsNOTCu2DEv
- HqYw==
+ bh=fQO0EY4mDLrrFT+vnkTsVcf/DHsLrdpuFvrCYXf00/g=;
+ b=HN0D9VzUmMVQcQOYbHuNjNG/bFxuORjwHnygQjUJ3myFsjkIwszVHyVnD8vg+jckQA
+ VdQMIayJ1bOUrn+X39BSaU3Rm873ulUsynaZsn9TaajJZnjG0fekc0cBt8YH1TynzLjZ
+ tKsxYS1+bUYgUm4qS3BGIU93gU5qj52Dq0ENfvsPtwDoF5zAparRdiPznoP+Rvb+jt7+
+ TM8KvqNaYPee0M9d3HZ9x3o8Cfr/7X5oJ8veK/ZW4TIzomO7WCla1Lb6dpI64kFmi8hQ
+ YLhgebaH6wV+pG/pUnk7TBsSdaEq9cZwouJFLpzNyBPCwB5LyssY1raE7AEQtzqoNMAe
+ B8sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598604; x=1713203404;
+ d=1e100.net; s=20230601; t=1712598605; x=1713203405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RFanGzrvK8VkKk4csReRv0GVjABsPRaur2/zSeJo0ZU=;
- b=PIexFw/0RWefzA6VpHqYBnLmtQO3oAVJL00jofXy7VqTDBQUdeafwJxpBPNqTK8D1Z
- H7XPpN2M5UwZeow+AKYVeM1afmvFIeFx5W/1k15/4CQrCM4ETQbRBvwUPfN2pmF1Znpu
- sWsuPLsRhPbuK+xB8OitUk0IAKHYajHpLwcAM8zKNDxYsVQbw8bLnW18XBm3NWmpofR5
- Hrx8ccd64szw/csz0m6dxOanlMadaKwe52eBRRqf8x2IVSIIwQQ4/nBx0iZUn/qYGJib
- 2s/W4sd8yL7ovUdJ+WIFdyFeOy0ui5Wr+sriYM7in4FxQbb72t18ufdc4EOGLp7776w7
- 92Dg==
-X-Gm-Message-State: AOJu0YyqwPlz1+iWt2NLCp10QMlNu2enUNwJoLTElT+WEa8cBAr3hAbK
- MIo6BYYWKB1kyYmB3XVklPOcTbwjGydtRPZJK48wWhBBn3ifksm5eTBkjmrjTGSiVbT32BVXEgM
- B
-X-Google-Smtp-Source: AGHT+IEVjLISCSOMNT9SjrRAHWJxBYCVsRFpdFzWs3IC/iyoqBaBoeCu25HW/CV86UzfBRDHBoQPjw==
-X-Received: by 2002:a17:90a:ba82:b0:2a4:e9d:9888 with SMTP id
- t2-20020a17090aba8200b002a40e9d9888mr8099681pjr.16.1712598603795; 
- Mon, 08 Apr 2024 10:50:03 -0700 (PDT)
+ bh=fQO0EY4mDLrrFT+vnkTsVcf/DHsLrdpuFvrCYXf00/g=;
+ b=S5+HKCr9cHw+VNRtqRVO40t0RtmBeUuzx6G7a30A2WPzNxkvykU0+Esldc92AdalI/
+ LiW0leXt2xurYTotbEQNMWTEP56Mj78qJ6S8BPh9n9mqgnzGNW5T2YljzpsS7hdMTwIr
+ DVksHcTJJSV4iPYVEQivSlhW/8G0XtxC5h234cOH0TxkxCW8uShtWC3VcJYcvXCaDodz
+ wyke3JJ6waZk/45NiRsCFjksOxXoyNurUVGiUPQom1l2fIOtCY0dnXXnDFlYDdO4unFU
+ /AoK2DjrKJMaMsdVfycLo7scDb0UHoN7t0OYsc6APhrLTlVMAFY7lScmlgTXvt9enjqG
+ aYkA==
+X-Gm-Message-State: AOJu0YyKe6uAya2n5k6COftfPFt4/ImSBgVhoiPIFT7L2liHpSKZi2TP
+ dGBfiHQXARM9dJJXJHUgIH7go4OwLxNZUse/jJSmZRJ3csy0gSP4L9N+cHIvE0lQ8P/13R8pED5
+ e
+X-Google-Smtp-Source: AGHT+IHfsfJg+R60ov7NAi/pS4PQV9laboLIsz5FujWWpC8bOqqq5JzUIaK8Uy2avyKGaT3P+HALCg==
+X-Received: by 2002:a17:90a:c24d:b0:2a2:ba1e:92fd with SMTP id
+ d13-20020a17090ac24d00b002a2ba1e92fdmr7555019pjx.45.1712598605516; 
+ Mon, 08 Apr 2024 10:50:05 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.02
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.50.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:50:03 -0700 (PDT)
+ Mon, 08 Apr 2024 10:50:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 22/35] target/hppa: Use insn_start from DisasContextBase
-Date: Mon,  8 Apr 2024 07:49:16 -1000
-Message-Id: <20240408174929.862917-23-richard.henderson@linaro.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 23/35] target/i386: Preserve DisasContextBase.insn_start across
+ rewind
+Date: Mon,  8 Apr 2024 07:49:17 -1000
+Message-Id: <20240408174929.862917-24-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,57 +93,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-To keep the multiple update check, replace insn_start
-with insn_start_updated.
+When aborting translation of the current insn, restore the
+previous value of insn_start.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ target/i386/tcg/translate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 8a1a8bc3aa..42fa480950 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -44,7 +44,6 @@ typedef struct DisasCond {
- typedef struct DisasContext {
-     DisasContextBase base;
-     CPUState *cs;
--    TCGOp *insn_start;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 07f642dc9e..76a42c679c 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -139,6 +139,7 @@ typedef struct DisasContext {
+     TCGv_i64 tmp1_i64;
  
-     uint64_t iaoq_f;
-     uint64_t iaoq_b;
-@@ -62,6 +61,7 @@ typedef struct DisasContext {
-     int privilege;
-     bool psw_n_nonzero;
-     bool is_pa20;
-+    bool insn_start_updated;
+     sigjmp_buf jmpbuf;
++    TCGOp *prev_insn_start;
+     TCGOp *prev_insn_end;
+ } DisasContext;
  
- #ifdef CONFIG_USER_ONLY
-     MemOp unalign;
-@@ -300,9 +300,9 @@ void hppa_translate_init(void)
+@@ -3123,6 +3124,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+         /* END TODO */
+         s->base.num_insns--;
+         tcg_remove_ops_after(s->prev_insn_end);
++        s->base.insn_start = s->prev_insn_start;
+         s->base.is_jmp = DISAS_TOO_MANY;
+         return false;
+     default:
+@@ -6995,6 +6997,7 @@ static void i386_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+     DisasContext *dc = container_of(dcbase, DisasContext, base);
+     target_ulong pc_arg = dc->base.pc_next;
  
- static void set_insn_breg(DisasContext *ctx, int breg)
- {
--    assert(ctx->insn_start != NULL);
--    tcg_set_insn_start_param(ctx->insn_start, 2, breg);
--    ctx->insn_start = NULL;
-+    assert(!ctx->insn_start_updated);
-+    ctx->insn_start_updated = true;
-+    tcg_set_insn_start_param(ctx->base.insn_start, 2, breg);
- }
- 
- static DisasCond cond_make_f(void)
-@@ -4694,7 +4694,7 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
-     DisasContext *ctx = container_of(dcbase, DisasContext, base);
- 
-     tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b, 0);
--    ctx->insn_start = tcg_last_op();
-+    ctx->insn_start_updated = false;
- }
- 
- static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
++    dc->prev_insn_start = dc->base.insn_start;
+     dc->prev_insn_end = tcg_last_op();
+     if (tb_cflags(dcbase->tb) & CF_PCREL) {
+         pc_arg &= ~TARGET_PAGE_MASK;
 -- 
 2.34.1
 
