@@ -2,84 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB2E89C67F
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 16:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E9789C68E
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 16:13:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtphX-00085H-Up; Mon, 08 Apr 2024 10:10:24 -0400
+	id 1rtpkK-0008Cj-4k; Mon, 08 Apr 2024 10:13:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3mfoTZggKChYE8AEFw1w2AA270.yA8C08G-z0H079A929G.AD2@flex--smostafa.bounces.google.com>)
- id 1rtpgy-0007GF-2N
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 10:09:54 -0400
-Received: from mail-yw1-x114a.google.com ([2607:f8b0:4864:20::114a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3mfoTZggKChYE8AEFw1w2AA270.yA8C08G-z0H079A929G.AD2@flex--smostafa.bounces.google.com>)
- id 1rtpgj-0001PJ-MV
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 10:09:47 -0400
-Received: by mail-yw1-x114a.google.com with SMTP id
- 00721157ae682-610b96c8ca2so73370057b3.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 07:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1712585369; x=1713190169; darn=nongnu.org;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:from:to:cc:subject:date:message-id:reply-to;
- bh=AMd8YNfC7PIDLuxaX4315ka/K6CHfBg/CUvv3sbGflM=;
- b=TRywDM2wK6BTL1rXN20MEg6kfmDOY1dhWq9UZou/nC0tq3F0uIVyM1oqc18xrVJiZU
- twQccS1skSS4KCSpCL7NxubcXW97G6AKOsWOyu8K3m8cKN0dNlUa9ocqKbUT8/HxuUnC
- 2Q7yccapwwKuV1rcY0sE+X6hwoybaHIbYaf0Rcq7QFyDRKLnEy6TN8lBIKGNg+8XaG1p
- q2f3TqgOEJB90i7hNRHLo/fx/6zeUEyCcQWqFrLQpMD25Yysshn+lCmZ73rKENtJz2Ag
- YDaeS5GcZKLUy4IUjO1VyDAn1sQZSX0q2OkQpmDioHgNAmIqXpXgF+sLwpu9RDe5KONE
- BipQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712585369; x=1713190169;
- h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
- :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=AMd8YNfC7PIDLuxaX4315ka/K6CHfBg/CUvv3sbGflM=;
- b=wN2ZEMFAJQrJ3bch4n2O9QG2CCjxKy9usC9kp4y8Kl9W0TnplHjH9x1RbpO8ERYeDR
- xXU/CbUlhoyNKpNrZDtc+pMYHPsFLmBSly1+Rma0SWwH/ek5ecUJykbiLeaSQD6oYjxP
- l606OTOOLGnTMVnXQII2ZuS03zFy47TAUE3ZQ0Yh70krvZ+FKKbVeIFpj93+4yZWu69y
- WeIc3FPt2t3Qzk4Q2dtOvwnVnsBH7Tq+F+4cYrjWQmW3ZVlqqIExgOnFR6o/WGKYvdGU
- E2GssmbERWortVVXSk8FHR1EBZDPI4JwCVsWvNKK0ZY+RRUgXST9KeQb9SkPq6/hjLQ8
- hPXA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUj31/elqVwITACEw+s2A6mtfNZ5HONULPdSEd0FNSSSzOXFRRgZQByYMYxaod1Y0/EWWhHudo0KZJCnSr7ZD7FqW5ZFCg=
-X-Gm-Message-State: AOJu0YzcNIaac+mJ32rKKK2Cv+doHQEStP2+lTMfbdV/yCDy1x1ASoiA
- ZMMdQQC/48YF4YWpZ3XqKm8gyALm/8iiTygYeIsJkLtaRgTwX2/N/TqeKLlzFUR5/JCjQiMUoR7
- DGUZK/EJnHQ==
-X-Google-Smtp-Source: AGHT+IGluNUcEdGNO/MW02ClIEjM8uOtannDp473rPxeJGa/ejn0j6js4csqJlN5iWXZrJXEDWT/oAQWrex+Lw==
-X-Received: from mostafa.c.googlers.com
- ([fda3:e722:ac3:cc00:28:9cb1:c0a8:333c])
- (user=smostafa job=sendgmr) by 2002:a0d:d54a:0:b0:615:165b:8dde with SMTP id
- x71-20020a0dd54a000000b00615165b8ddemr2605640ywd.10.1712585369753; Mon, 08
- Apr 2024 07:09:29 -0700 (PDT)
-Date: Mon,  8 Apr 2024 14:08:18 +0000
-In-Reply-To: <20240408140818.3799590-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20240408140818.3799590-1-smostafa@google.com>
-X-Mailer: git-send-email 2.44.0.478.gd926399ef9-goog
-Message-ID: <20240408140818.3799590-14-smostafa@google.com>
-Subject: [RFC PATCH v2 13/13] hw/arm/virt: Set SMMU OAS based on CPU PARANGE
-From: Mostafa Saleh <smostafa@google.com>
-To: qemu-arm@nongnu.org, eric.auger@redhat.com, peter.maydell@linaro.org, 
- qemu-devel@nongnu.org
-Cc: jean-philippe@linaro.org, alex.bennee@linaro.org, maz@kernel.org, 
- nicolinc@nvidia.com, julien@xen.org, richard.henderson@linaro.org, 
- marcin.juszkiewicz@linaro.org, Mostafa Saleh <smostafa@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::114a;
- envelope-from=3mfoTZggKChYE8AEFw1w2AA270.yA8C08G-z0H079A929G.AD2@flex--smostafa.bounces.google.com;
- helo=mail-yw1-x114a.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rtpkC-0008Bi-Lr
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 10:13:08 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rtpkA-0002Gm-7U
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 10:13:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712585583;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GvTCKk98N55J9VZYlDEKNLD0jDSRmSx/9utSsAeQgVw=;
+ b=HIIQUKhnIUwljXEalr34AuaWIUeJTcVNw5gZOE+SF2fDgXEe1rAfG6e19l1I7I+0j+oSQM
+ zCa5/gpYI0KOXepURdDotM3dcaNtr99kgYGCPRXvGmZr9jqsaNvY7oxLAyTPe7OXeXTKKk
+ kh87GY5W/OxAKCCE2hl8WYeaeLjLkFs=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515--u2rruqWNW64biHPr75q7A-1; Mon,
+ 08 Apr 2024 10:12:59 -0400
+X-MC-Unique: -u2rruqWNW64biHPr75q7A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 640693C1014E;
+ Mon,  8 Apr 2024 14:12:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.77])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4C427200B09C;
+ Mon,  8 Apr 2024 14:12:56 +0000 (UTC)
+Date: Mon, 8 Apr 2024 09:12:51 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, 
+ Zhu Yangyang <zhuyangyang14@huawei.com>
+Subject: Re: [PATCH v4] nbd/server: do not poll within a coroutine context
+Message-ID: <y4qsq4xdhhne6kgwolmelw4cafyb3tj5qyow6batuljzmj5rpi@fvwfysulqvkf>
+References: <20240405174523.844181-2-eblake@redhat.com>
+ <7c0f6e62-2ad5-44f5-a4b2-c1518ae86af2@yandex-team.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7c0f6e62-2ad5-44f5-a4b2-c1518ae86af2@yandex-team.ru>
+User-Agent: NeoMutt/20240201
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,91 +79,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the new SMMU property to make the SMMU OAS match the CPU PARANGE.
-That's according to SMMU manual ARM IHI 0070F.b:
-    6.3.6 SMMU_IDR5, OAS must match the system physical address size.
+On Mon, Apr 08, 2024 at 11:46:39AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 05.04.24 20:44, Eric Blake wrote:
+> > From: Zhu Yangyang <zhuyangyang14@huawei.com>
+> > 
+> > Coroutines are not supposed to block. Instead, they should yield.
+> > 
+> > The client performs TLS upgrade outside of an AIOContext, during
+> > synchronous handshake; this still requires g_main_loop.  But the
+> > server responds to TLS upgrade inside a coroutine, so a nested
+> > g_main_loop is wrong.  Since the two callbacks no longer share more
+> > than the setting of data.complete and data.error, it's just as easy to
+> > use static helpers instead of trying to share a common code path.
+> > 
+> > Fixes: f95910f ("nbd: implement TLS support in the protocol negotiation")
+> > Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
+> > [eblake: move callbacks to their use point]
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> 
+> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
----
- hw/arm/virt.c      | 14 ++++++++++++--
- target/arm/cpu.h   |  2 ++
- target/arm/cpu64.c |  5 +++++
- 3 files changed, 19 insertions(+), 2 deletions(-)
+I'm debating whether it is worth trying to shove this into 9.0; -rc3
+is very late, and the problem is pre-existing, so I'm leaning towards
+no.  At which point, it's better to get this right.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 0af1943697..599c0f752b 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -235,6 +235,13 @@ static bool ns_el2_virt_timer_present(void)
-         arm_feature(env, ARM_FEATURE_EL2) && cpu_isar_feature(aa64_vh, cpu);
- }
- 
-+/* We rely on CPU to define system OAS. */
-+static int32_t get_system_oas(void)
-+{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+    return cpu_arm_get_oas(cpu);
-+}
-+
- static void create_fdt(VirtMachineState *vms)
- {
-     MachineState *ms = MACHINE(vms);
-@@ -1340,7 +1347,7 @@ static void create_pcie_irq_map(const MachineState *ms,
- }
- 
- static void create_smmu(const VirtMachineState *vms,
--                        PCIBus *bus)
-+                        PCIBus *bus, int32_t oas)
- {
-     char *node;
-     const char compat[] = "arm,smmu-v3";
-@@ -1360,6 +1367,9 @@ static void create_smmu(const VirtMachineState *vms,
- 
-     object_property_set_link(OBJECT(dev), "primary-bus", OBJECT(bus),
-                              &error_abort);
-+
-+    qdev_prop_set_uint64(dev, "oas", oas);
-+
-     sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-     sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, base);
-     for (i = 0; i < NUM_SMMU_IRQS; i++) {
-@@ -1534,7 +1544,7 @@ static void create_pcie(VirtMachineState *vms)
- 
-         switch (vms->iommu) {
-         case VIRT_IOMMU_SMMUV3:
--            create_smmu(vms, vms->bus);
-+            create_smmu(vms, vms->bus, get_system_oas());
-             qemu_fdt_setprop_cells(ms->fdt, nodename, "iommu-map",
-                                    0x0, vms->iommu_phandle, 0x0, 0x10000);
-             break;
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index a5b3d8f7da..14ef1a9d37 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -3408,4 +3408,6 @@ static inline target_ulong cpu_untagged_addr(CPUState *cs, target_ulong x)
- }
- #endif
- 
-+int32_t cpu_arm_get_oas(ARMCPU *cpu);
-+
- #endif
-diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-index 985b1efe16..08da83c082 100644
---- a/target/arm/cpu64.c
-+++ b/target/arm/cpu64.c
-@@ -787,6 +787,11 @@ static const gchar *aarch64_gdb_arch_name(CPUState *cs)
-     return "aarch64";
- }
- 
-+int32_t cpu_arm_get_oas(ARMCPU *cpu)
-+{
-+    return FIELD_EX64(cpu->isar.id_aa64mmfr0, ID_AA64MMFR0, PARANGE);
-+}
-+
- static void aarch64_cpu_class_init(ObjectClass *oc, void *data)
- {
-     CPUClass *cc = CPU_CLASS(oc);
+> 
+> still, some notes below
+> 
+> > ---
+> > 
+> > v3: https://lists.gnu.org/archive/html/qemu-devel/2024-04/msg00375.html
+> > 
+> > in v4, factor even the struct to the .c files, avoiding a union [Vladimir]
+> > 
+> >   nbd/nbd-internal.h | 10 ----------
+> >   nbd/client.c       | 27 +++++++++++++++++++++++----
+> >   nbd/common.c       | 11 -----------
+> >   nbd/server.c       | 29 +++++++++++++++++++++++------
+> >   4 files changed, 46 insertions(+), 31 deletions(-)
+> > 
+
+> > +++ b/nbd/client.c
+> > @@ -596,13 +596,31 @@ static int nbd_request_simple_option(QIOChannel *ioc, int opt, bool strict,
+> >       return 1;
+> >   }
+> > 
+> > +/* Callback to learn when QIO TLS upgrade is complete */
+> > +struct NBDTLSClientHandshakeData {
+> > +    bool complete;
+> > +    Error *error;
+> > +    GMainLoop *loop;
+> > +};
+> > +
+> > +static void nbd_client_tls_handshake(QIOTask *task, void *opaque)
+> > +{
+> > +    struct NBDTLSClientHandshakeData *data = opaque;
+> > +
+> > +    qio_task_propagate_error(task, &data->error);
+> > +    data->complete = true;
+> > +    if (data->loop) {
+> > +        g_main_loop_quit(data->loop);
+> > +    }
+> > +}
+> > +
+> >   static QIOChannel *nbd_receive_starttls(QIOChannel *ioc,
+> >                                           QCryptoTLSCreds *tlscreds,
+> >                                           const char *hostname, Error **errp)
+> >   {
+> >       int ret;
+> >       QIOChannelTLS *tioc;
+> > -    struct NBDTLSHandshakeData data = { 0 };
+> > +    struct NBDTLSClientHandshakeData data = { 0 };
+> > 
+> >       ret = nbd_request_simple_option(ioc, NBD_OPT_STARTTLS, true, errp);
+> >       if (ret <= 0) {
+> > @@ -619,18 +637,19 @@ static QIOChannel *nbd_receive_starttls(QIOChannel *ioc,
+> >           return NULL;
+> >       }
+> >       qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-client-tls");
+> > -    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
+> >       trace_nbd_receive_starttls_tls_handshake();
+> >       qio_channel_tls_handshake(tioc,
+> > -                              nbd_tls_handshake,
+> > +                              nbd_client_tls_handshake,
+> >                                 &data,
+> >                                 NULL,
+> >                                 NULL);
+> > 
+> >       if (!data.complete) {
+> > +        data.loop = g_main_loop_new(g_main_context_default(), FALSE);
+> >           g_main_loop_run(data.loop);
+> > +        g_main_loop_unref(data.loop);
+> 
+> probably good to assert(data.complete);
+
+Seems reasonable.
+
+> > +++ b/nbd/server.c
+> > @@ -748,6 +748,23 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
+> >       return rc;
+> >   }
+> > 
+> > +/* Callback to learn when QIO TLS upgrade is complete */
+> > +struct NBDTLSServerHandshakeData {
+> > +    bool complete;
+> > +    Error *error;
+> > +    Coroutine *co;
+> > +};
+> > +
+> > +static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
+> > +{
+> > +    struct NBDTLSServerHandshakeData *data = opaque;
+> > +
+> > +    qio_task_propagate_error(task, &data->error);
+> > +    data->complete = true;
+> > +    if (!qemu_coroutine_entered(data->co)) {
+> > +        aio_co_wake(data->co);
+> > +    }
+> > +}
+> > 
+> >   /* Handle NBD_OPT_STARTTLS. Return NULL to drop connection, or else the
+> >    * new channel for all further (now-encrypted) communication. */
+> > @@ -756,7 +773,7 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
+> >   {
+> >       QIOChannel *ioc;
+> >       QIOChannelTLS *tioc;
+> > -    struct NBDTLSHandshakeData data = { 0 };
+> > +    struct NBDTLSServerHandshakeData data = { 0 };
+> > 
+> >       assert(client->opt == NBD_OPT_STARTTLS);
+> > 
+> > @@ -777,17 +794,17 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
+> 
+> preexisting: lack coroutine_fn, as well as caller nbd_negotiate_options()
+
+Indeed, so now would not hurt to add them now that a callback is no
+longer shared between callers in different context.  But probably as a
+separate patch.
+
+> 
+> > 
+> >       qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-server-tls");
+> >       trace_nbd_negotiate_handle_starttls_handshake();
+> > -    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
+> > +    data.co = qemu_coroutine_self();
+> >       qio_channel_tls_handshake(tioc,
+> > -                              nbd_tls_handshake,
+> > +                              nbd_server_tls_handshake,
+> >                                 &data,
+> >                                 NULL,
+> >                                 NULL);
+> > 
+> > -    if (!data.complete) {
+> > -        g_main_loop_run(data.loop);
+> > +    while (!data.complete) {
+> 
+> not "if", but "while".. Do we expect entering from somewhere except nbd_server_tls_handshake?
+> 
+> if not, probably safer construction would be
+> 
+> if (!data.complete) {
+>    qemu_coroutine_yield();
+>    assert(data.complete);
+> }
+> 
+> - to avoid hiding unexpected coroutine switching bugs
+
+TLS handshake is early enough in the NBD connection that there should
+not be any parallel I/O yet (we can't switch to parallel outstanding
+transactions until after successful NBD_OPT_GO), so I like your idea
+of asserting that the coroutine is entered at most once.
+
+v5 coming up
+
 -- 
-2.44.0.478.gd926399ef9-goog
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
