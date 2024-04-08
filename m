@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100D489CB3B
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CD8089CB1A
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:50:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt84-000228-8S; Mon, 08 Apr 2024 13:50:00 -0400
+	id 1rtt86-00023X-Lk; Mon, 08 Apr 2024 13:50:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt82-00021i-Db
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:58 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1rtt84-00022m-D1
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:00 -0400
+Received: from mail-pg1-x52b.google.com ([2607:f8b0:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt80-0003gI-Kw
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:57 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6ecf3943040so3108979b3a.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:56 -0700 (PDT)
+ id 1rtt82-0003gS-Mb
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:50:00 -0400
+Received: by mail-pg1-x52b.google.com with SMTP id
+ 41be03b00d2f7-5f415fd71f8so153428a12.3
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598595; x=1713203395; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598597; x=1713203397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hIaIEQSm9VCOv6FXtjW2b8GU4ZH5b2a473JIJYHIFaQ=;
- b=PoDgMi94+ir6aMg0BDnnv8r6Y3AvpzQocjyT2dVRhOyWxmnwjucjsFESWSwDMtrG5C
- 5nNGP/H/L9HXBZPt/6xJ9sJ0S7RLFxZQzTC4sHHkCq58bj5Wat2gN8JBDjSq1G+0pDnK
- l/OKut9rkp+0lbol3k9rOWSMpQzA4Fe8BpHS6xBqKft1lmsq1aQm8zLkxfLIGo2KuCn6
- PtZSgbeduYW/oqXVZ2Y6kmX94lj2BzbnVttO1bE1wVelJVuZsSjzIKRNxLE6H8azDDXY
- kd2odTDWEDBlddtE/ijQIVETHtnzfBpiKyzQtnDEycU3n/tZX7RO8gJtvxUIfV6jxHT7
- nhQQ==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ZCdplx5RAU+rQd70pAqgPB6t58CmgDisH5Rp3Z9tsr4=;
+ b=fDxPkqcGoW7EYI+62FkYQmO2yNCK1du+fqg/2x2iqqrsQYhLMa7XltW6ZCrV+O9wJZ
+ Rhb2j1rc9QQym2NTo9cB3styhCJIaXHaZuQBoAHC8+tLiNBgQICf/O6bljD/R/Pdocmo
+ XZzYKNv4k4evoKeSkShHIEDv4ZHs0kEoZY/SLb0Ryk5cu1BXJU6MzDzAh9QrXx1Jfz8b
+ rVSNRRq9t9YW+C5tWNW8mxGXv9uJP2tV/9ttQG/t5UMJa7+FxXa1oNMZIJ1XgEyInimD
+ dICxGl4gYekrHWAenqCVEgLh+fkr32QQv7kwasqPY2ZvvTc7fivFu2F8Mzxdk3maE4oV
+ xE3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598595; x=1713203395;
+ d=1e100.net; s=20230601; t=1712598597; x=1713203397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hIaIEQSm9VCOv6FXtjW2b8GU4ZH5b2a473JIJYHIFaQ=;
- b=V+yoMwIcjN/W1nnF0O/uA0X3u58du6Wq17kyfVYP4RabVc52LwJ9o+Y9cUqxJgz1YU
- +Wfo63gPlGAjWO9YNegpXWTIA4qDBHze3QfHIMidoEe9v3qRQLQ0MyqgxvvsXubFem1g
- LFUrA3JVQUrfQUjMm392w7DhkdYBqDD5avQTB8S3jNtxB78BXD9R7JYuKQ0McTDkJ4pT
- IQv0r9hw3t5Oz2gor1QcWYTxnK4+hytXz1c3e7kjgZsVo8bs6Y18SVKytl0zk8LKqSev
- wi6O82jUOvH/X6zn5b2krGNavYZzS6CRqo7CBvRmU4OW9huM1pnE3F9LkRRL6eD6Ab3M
- Z5ug==
-X-Gm-Message-State: AOJu0YymZwiPCjcoVDjAJ6Pwek346u6IS9dqVFkz5ShaDfBJyhBPneJt
- imE1/gbjhtMSnwAOBJPzdJMNP/BMPDyQ+8RrYoElS3siMp68wfqnW3dZW9NpWJU1RM65MMjF7o1
- C
-X-Google-Smtp-Source: AGHT+IHCUGskXtyKFxv47WbjHdePOITIscAICbnxwQNPgsQ25ExcBIEe9Cg2Pg1ge7p9W8FnX6pdYg==
-X-Received: by 2002:a05:6300:8085:b0:1a7:3365:d8ed with SMTP id
- ap5-20020a056300808500b001a73365d8edmr8584269pzc.29.1712598595366; 
- Mon, 08 Apr 2024 10:49:55 -0700 (PDT)
+ bh=ZCdplx5RAU+rQd70pAqgPB6t58CmgDisH5Rp3Z9tsr4=;
+ b=Nfj3wPuRKn06LNqlcZkORyGbiot+trPTkhxFNbngJE5JVWB5DAHEce5OLWZ/KoGV++
+ xYXWxuKzRMyQ+wC0AJYzKzY+tVfneycdy5DxJ8nY3RgwJtOj2OiOQN2EotpWKVgHDaYX
+ Ihyqzjxj6dFQ8J4MNjHh8uaNcCOstZmkpxL9AzJOMUe3+r7KWv//Gy1y5gQ8ZP/1TUXn
+ QIaprGVpOxFj1RPFnaFUfcX/YsWWJQ3EhZ11PlH9epeeYTLeasQq+EaSaeZEfb9o5jjz
+ gSYoYKDxhjou1dIBYz+/ZfdRTqCSGL0A7o6ed/DeglficgyERAy2OH12OvOZRIIwFdGK
+ tfwQ==
+X-Gm-Message-State: AOJu0Yyn9P67CCUdjrVd61DCuen1Otdyc/0xRFblMO3CiaC9CBJsN5pa
+ 5iISJq+LZ4AUIdr4v0zLNeAz6QbFePujQLm5N1vKyq9zkImkIshLql+ZYjlGdbs8mvjYqUzdhK7
+ s
+X-Google-Smtp-Source: AGHT+IHmrmbVHb3i4cw5ajrp6zEP61C0Ho0d1Lcut2YTJDrEZQC0ck0zNwcTIwFqPujJZYUt6V4aaQ==
+X-Received: by 2002:a17:90b:400b:b0:2a2:d8d6:fc3a with SMTP id
+ ie11-20020a17090b400b00b002a2d8d6fc3amr7393024pjb.37.1712598596971; 
+ Mon, 08 Apr 2024 10:49:56 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.54
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.55
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:54 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:56 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Keith Packard <keithp@keithp.com>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 16/35] target/m68k: Pass semihosting arg to exit
-Date: Mon,  8 Apr 2024 07:49:10 -1000
-Message-Id: <20240408174929.862917-17-richard.henderson@linaro.org>
+Subject: [PULL 17/35] target/m68k: Perform the semihosting test during
+ translate
+Date: Mon,  8 Apr 2024 07:49:11 -1000
+Message-Id: <20240408174929.862917-18-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +92,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Packard <keithp@keithp.com>
+Replace EXCP_HALT_INSN by EXCP_SEMIHOSTING.  Perform the pre-
+and post-insn tests during translate, leaving only the actual
+semihosting operation for the exception.
 
-Instead of using d0 (the semihost function number), use d1 (the
-provide exit status).
-
-Signed-off-by: Keith Packard <keithp@keithp.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20230802161914.395443-2-keithp@keithp.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/m68k/m68k-semi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ target/m68k/cpu.h       |  2 +-
+ target/m68k/op_helper.c | 14 ++-----------
+ target/m68k/translate.c | 45 +++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 44 insertions(+), 17 deletions(-)
 
-diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
-index 546cff2246..6fbbd140f3 100644
---- a/target/m68k/m68k-semi.c
-+++ b/target/m68k/m68k-semi.c
-@@ -132,8 +132,8 @@ void do_m68k_semihosting(CPUM68KState *env, int nr)
-     args = env->dregs[1];
-     switch (nr) {
-     case HOSTED_EXIT:
--        gdb_exit(env->dregs[0]);
--        exit(env->dregs[0]);
-+        gdb_exit(env->dregs[1]);
-+        exit(env->dregs[1]);
+diff --git a/target/m68k/cpu.h b/target/m68k/cpu.h
+index e184239a81..b5bbeedb7a 100644
+--- a/target/m68k/cpu.h
++++ b/target/m68k/cpu.h
+@@ -66,7 +66,7 @@
+ #define EXCP_MMU_ACCESS     58  /* MMU Access Level Violation Error */
  
-     case HOSTED_OPEN:
-         GET_ARG(0);
+ #define EXCP_RTE            0x100
+-#define EXCP_HALT_INSN      0x101
++#define EXCP_SEMIHOSTING    0x101
+ 
+ #define M68K_DTTR0   0
+ #define M68K_DTTR1   1
+diff --git a/target/m68k/op_helper.c b/target/m68k/op_helper.c
+index 125f6c1b08..15bad5dd46 100644
+--- a/target/m68k/op_helper.c
++++ b/target/m68k/op_helper.c
+@@ -202,18 +202,8 @@ static void cf_interrupt_all(CPUM68KState *env, int is_hw)
+             /* Return from an exception.  */
+             cf_rte(env);
+             return;
+-        case EXCP_HALT_INSN:
+-            if (semihosting_enabled((env->sr & SR_S) == 0)
+-                    && (env->pc & 3) == 0
+-                    && cpu_lduw_code(env, env->pc - 4) == 0x4e71
+-                    && cpu_ldl_code(env, env->pc) == 0x4e7bf000) {
+-                env->pc += 4;
+-                do_m68k_semihosting(env, env->dregs[0]);
+-                return;
+-            }
+-            cs->halted = 1;
+-            cs->exception_index = EXCP_HLT;
+-            cpu_loop_exit(cs);
++        case EXCP_SEMIHOSTING:
++            do_m68k_semihosting(env, env->dregs[0]);
+             return;
+         }
+     }
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 8a194f2f21..8f61ff1238 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -26,12 +26,11 @@
+ #include "qemu/log.h"
+ #include "qemu/qemu-print.h"
+ #include "exec/translator.h"
+-
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+-
+ #include "exec/log.h"
+ #include "fpu/softfloat.h"
++#include "semihosting/semihost.h"
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
+@@ -1401,6 +1400,40 @@ static void gen_jmp_tb(DisasContext *s, int n, target_ulong dest,
+     s->base.is_jmp = DISAS_NORETURN;
+ }
+ 
++#ifndef CONFIG_USER_ONLY
++static bool semihosting_test(DisasContext *s)
++{
++    uint32_t test;
++
++    if (!semihosting_enabled(IS_USER(s))) {
++        return false;
++    }
++
++    /*
++     * "The semihosting instruction is immediately preceded by a
++     * nop aligned to a 4-byte boundary..."
++     * The preceding 2-byte (aligned) nop plus the 2-byte halt/bkpt
++     * means that we have advanced 4 bytes from the required nop.
++     */
++    if (s->pc % 4 != 0) {
++        return false;
++    }
++    test = cpu_lduw_code(s->env, s->pc - 4);
++    if (test != 0x4e71) {
++        return false;
++    }
++    /* "... and followed by an invalid sentinel instruction movec %sp,0." */
++    test = translator_ldl(s->env, &s->base, s->pc);
++    if (test != 0x4e7bf000) {
++        return false;
++    }
++
++    /* Consume the sentinel. */
++    s->pc += 4;
++    return true;
++}
++#endif /* !CONFIG_USER_ONLY */
++
+ DISAS_INSN(scc)
+ {
+     DisasCompare c;
+@@ -4465,8 +4498,12 @@ DISAS_INSN(halt)
+         gen_exception(s, s->base.pc_next, EXCP_PRIVILEGE);
+         return;
+     }
+-
+-    gen_exception(s, s->pc, EXCP_HALT_INSN);
++    if (semihosting_test(s)) {
++        gen_exception(s, s->pc, EXCP_SEMIHOSTING);
++        return;
++    }
++    tcg_gen_movi_i32(cpu_halted, 1);
++    gen_exception(s, s->pc, EXCP_HLT);
+ }
+ 
+ DISAS_INSN(stop)
 -- 
 2.34.1
 
