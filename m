@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720CA89CB30
-	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:53:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C349989CB3D
+	for <lists+qemu-devel@lfdr.de>; Mon,  8 Apr 2024 19:55:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rtt7t-0001wg-AU; Mon, 08 Apr 2024 13:49:49 -0400
+	id 1rtt7u-0001xI-3R; Mon, 08 Apr 2024 13:49:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7h-0001ul-76
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:40 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rtt7k-0001v3-Pk
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:45 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rtt7f-0003bn-Dx
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:36 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e220e40998so29321915ad.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
+ id 1rtt7g-0003bs-6s
+ for qemu-devel@nongnu.org; Mon, 08 Apr 2024 13:49:38 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-53fa455cd94so3615622a12.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 10:49:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712598573; x=1713203373; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712598575; x=1713203375; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=0/ekaTyyBHEzg2gMKpvUq/mv6Nl9iOhi1rhUNF8qDbI=;
- b=gBEHHWvOjX7A9VAUnmZqB23LvPYbMLCt5OljiU6zTGX+K+S3ASCbcaTPcM61Fp8scO
- p027DoYEinrv5uji2DMLWuhYQfMPezG9zjzRRiSTXAr3S0t/SzXtuyS248Maicoa7tEZ
- 1HgTuE5yaGSBVHLHpxQeMuS5xBH62un3MZ/sMm65a3HfFpLwKnXBvCjtrdSlSguAp7pM
- 7idokF/QRPXQqny3e/W2m+Xhhi04fItMcJhKrryQollo8tJRqW3TkVzC32zd4bip2KKU
- i7yCWjrWjQ1wDc7GlMMMXRxU+mC+9dTX7MQBFHYz0BopBMnCT4wSZEr6kVPI3tyKM/1a
- riMw==
+ :reply-to; bh=xtbJ/p7JEFHTppWK8T4w7KJEZi+x0bHxbuO/ApHynWI=;
+ b=zZ6zZYb2Er4ofVDVLCqamUJHoZhEB1rOi5Gj/nvgfpMXZlT1rnozsXnQhoBJKr6lqc
+ dl2PF/6O4S7TgrqBIXJTyQpXid792IkJkR9n/BjmUcXB54A5h/srCs5VxXkWmyrEo/w/
+ r1wcNd7YTNug8fm3aNaPgey9XA9cZO5LFLz5VMAaxWWmCnxrbXfKKpoBnzroz9peYF+l
+ etSnzOcbAoXUtX0eD+jLHOz6hRk+iJtK6N0a46+VuK5vav8bYP0GdQrZjXD92P7B2Tkh
+ OjU2CMugtj6Y7pW1kXs4VYQjVJHA0htjuiqP6zT+JEF61hBl0T/tA4Rt3ulNEdZCPe82
+ WOQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712598573; x=1713203373;
+ d=1e100.net; s=20230601; t=1712598575; x=1713203375;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0/ekaTyyBHEzg2gMKpvUq/mv6Nl9iOhi1rhUNF8qDbI=;
- b=Ivun58P9Io11U7fDFH3HFlXKFFfVIg8zqUCRk3jRvoD9toWYH1j4tthK8UYRY5NTA6
- 3Nu82aOd0CA7FbQljG4PNqDHivx7NVow3rgrhnPW1b8EARf5PJLHixQqTbHhyv7n3JLj
- 9kHF8PJPSsRfb0fWXJMCsNCzaTVAwGxX9NCxc/axkvetCn4w2aJ6+gbV3HyMVay9lEyP
- DivYP8JxCI+IfDVuaCZbkKpHlqyAVd03OdRxCZLFQ6ibYPNIBmEcogCSBpbAdD/8ZlQ8
- TPrCi4cYwvpv7BvOd7US8TCWsefV1Kzk0hPeLkBJjMaVRoqc+jak7mFBbJyog432upM7
- npnw==
-X-Gm-Message-State: AOJu0Yzr1P/GuTiNSsWX6rDzcSVCp7O6GH6Q2A6zufInNRypKUoiyf7X
- 4qyxJthgx50oEuF+8L5t8vwP3KE84HSMFF807CK4dWETe3mteu5N7rP0Bfd3JuVMRCDbyj7R028
- p
-X-Google-Smtp-Source: AGHT+IEHQA1cc/e09UMY+MskAlVxa1XokC37kYkGqT7ye7GOU2/DMJeoq/Jncj39q2qBxuC23vmw7A==
-X-Received: by 2002:a17:90a:e00b:b0:2a2:d16a:8df3 with SMTP id
- u11-20020a17090ae00b00b002a2d16a8df3mr7855106pjy.40.1712598573515; 
- Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
+ bh=xtbJ/p7JEFHTppWK8T4w7KJEZi+x0bHxbuO/ApHynWI=;
+ b=vtm+QEkZgBORIaacvtpYCL6LZ+Vh7vvAEHIehwlq/CGaiCNvIza99R4Kr2jknSGHTx
+ NvbuJB6NwPUqtUxf1/nDbMsvLuG4AKdGQU7HDN+MCVxtk18AhGBLIHrggZb2mK80+Km/
+ YBGAHMNXX/R3zZf9CHcQjhXFlJFpiE6NBbAc+In5KQyMElpsAiajz/tni4I/YpumpT2l
+ Mu86Aa/zrobm2wT7YoS/Hn6C3MubrbxvbL+iLNGwtq38dMaJeH4nIGP8czsmbn1/X5o0
+ mhypxpNIe9RO8g2RZNrqGRTpl2Ra+CxI3XepbkUsHtH2dwuSYp2G+ACv2foYiMe965HB
+ yjOg==
+X-Gm-Message-State: AOJu0YzeRy7eHnKGxx2i9vzG7ORjd40Eldr+lE8hnO2DnAfBy56Vsbd3
+ sgDKegV21SBIu7pMDb82Vr5psDoAkLceREUGIM0p7g7DvOR68d+Lk6I/FtYmBU8WVuQAZLbLks/
+ K
+X-Google-Smtp-Source: AGHT+IGHicWknxCBzPhfCPBG8RpqA30tSZsp7vVMT9Dm1ESyfMUt9EdPgxBRVs8UntkxrLurT43XuA==
+X-Received: by 2002:a05:6a20:100d:b0:1a3:c3e0:51bc with SMTP id
+ gs13-20020a056a20100d00b001a3c3e051bcmr7070227pzc.56.1712598574779; 
+ Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.32
+ ga15-20020a17090b038f00b0029c3bac0aa8sm8658432pjb.4.2024.04.08.10.49.33
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 10:49:33 -0700 (PDT)
+ Mon, 08 Apr 2024 10:49:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/35] tcg/optimize: Do not attempt to constant fold neg_vec
-Date: Mon,  8 Apr 2024 07:48:55 -1000
-Message-Id: <20240408174929.862917-2-richard.henderson@linaro.org>
+Subject: [PULL 02/35] linux-user: Fix waitid return of siginfo_t and rusage
+Date: Mon,  8 Apr 2024 07:48:56 -1000
+Message-Id: <20240408174929.862917-3-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 References: <20240408174929.862917-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,93 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split out the tail of fold_neg to fold_neg_no_const so that we
-can avoid attempting to constant fold vector negate.
+The copy back to siginfo_t should be conditional only on arg3,
+not the specific values that might have been written.
+The copy back to rusage was missing entirely.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2150
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2262
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- tcg/optimize.c                    | 17 ++++++++---------
- tests/tcg/aarch64/test-2150.c     | 12 ++++++++++++
- tests/tcg/aarch64/Makefile.target |  2 +-
- 3 files changed, 21 insertions(+), 10 deletions(-)
- create mode 100644 tests/tcg/aarch64/test-2150.c
+ linux-user/syscall.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index 275db77b42..2e9e5725a9 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1990,16 +1990,10 @@ static bool fold_nand(OptContext *ctx, TCGOp *op)
-     return false;
- }
- 
--static bool fold_neg(OptContext *ctx, TCGOp *op)
-+static bool fold_neg_no_const(OptContext *ctx, TCGOp *op)
- {
--    uint64_t z_mask;
--
--    if (fold_const1(ctx, op)) {
--        return true;
--    }
--
-     /* Set to 1 all bits to the left of the rightmost.  */
--    z_mask = arg_info(op->args[1])->z_mask;
-+    uint64_t z_mask = arg_info(op->args[1])->z_mask;
-     ctx->z_mask = -(z_mask & -z_mask);
- 
-     /*
-@@ -2010,6 +2004,11 @@ static bool fold_neg(OptContext *ctx, TCGOp *op)
-     return true;
- }
- 
-+static bool fold_neg(OptContext *ctx, TCGOp *op)
-+{
-+    return fold_const1(ctx, op) || fold_neg_no_const(ctx, op);
-+}
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index e12d969c2e..3df2b94d9a 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -9272,14 +9272,24 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+ #ifdef TARGET_NR_waitid
+     case TARGET_NR_waitid:
+         {
++            struct rusage ru;
+             siginfo_t info;
+-            info.si_pid = 0;
+-            ret = get_errno(safe_waitid(arg1, arg2, &info, arg4, NULL));
+-            if (!is_error(ret) && arg3 && info.si_pid != 0) {
+-                if (!(p = lock_user(VERIFY_WRITE, arg3, sizeof(target_siginfo_t), 0)))
 +
- static bool fold_nor(OptContext *ctx, TCGOp *op)
- {
-     if (fold_const2_commutative(ctx, op) ||
-@@ -2418,7 +2417,7 @@ static bool fold_sub_to_neg(OptContext *ctx, TCGOp *op)
-     if (have_neg) {
-         op->opc = neg_op;
-         op->args[1] = op->args[2];
--        return fold_neg(ctx, op);
-+        return fold_neg_no_const(ctx, op);
-     }
-     return false;
- }
-diff --git a/tests/tcg/aarch64/test-2150.c b/tests/tcg/aarch64/test-2150.c
-new file mode 100644
-index 0000000000..fb86c11958
---- /dev/null
-+++ b/tests/tcg/aarch64/test-2150.c
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* See https://gitlab.com/qemu-project/qemu/-/issues/2150 */
-+
-+int main()
-+{
-+    asm volatile(
-+        "movi     v6.4s, #1\n"
-+        "movi     v7.4s, #0\n"
-+        "sub      v6.2d, v7.2d, v6.2d\n"
-+        : : : "v6", "v7");
-+    return 0;
-+}
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 0efd565f05..70d728ae9a 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -10,7 +10,7 @@ VPATH 		+= $(AARCH64_SRC)
- 
- # Base architecture tests
- AARCH64_TESTS=fcvt pcalign-a64 lse2-fault
--AARCH64_TESTS += test-2248
-+AARCH64_TESTS += test-2248 test-2150
- 
- fcvt: LDFLAGS+=-lm
- 
++            ret = get_errno(safe_waitid(arg1, arg2, (arg3 ? &info : NULL),
++                                        arg4, (arg5 ? &ru : NULL)));
++            if (!is_error(ret)) {
++                if (arg3) {
++                    p = lock_user(VERIFY_WRITE, arg3,
++                                  sizeof(target_siginfo_t), 0);
++                    if (!p) {
++                        return -TARGET_EFAULT;
++                    }
++                    host_to_target_siginfo(p, &info);
++                    unlock_user(p, arg3, sizeof(target_siginfo_t));
++                }
++                if (arg5 && host_to_target_rusage(arg5, &ru)) {
+                     return -TARGET_EFAULT;
+-                host_to_target_siginfo(p, &info);
+-                unlock_user(p, arg3, sizeof(target_siginfo_t));
++                }
+             }
+         }
+         return ret;
 -- 
 2.34.1
 
