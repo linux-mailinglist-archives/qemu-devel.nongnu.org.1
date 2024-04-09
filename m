@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB3D89D1BA
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7AEC89D1C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru3dX-00035N-VP; Tue, 09 Apr 2024 01:03:11 -0400
+	id 1ru3da-000364-0D; Tue, 09 Apr 2024 01:03:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3dV-000352-Jo
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:09 -0400
-Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ id 1ru3dV-00035A-SO
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:10 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3dT-0005C0-HP
+ id 1ru3dU-0005C7-2M
  for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:09 -0400
-Received: by mail-pf1-x42a.google.com with SMTP id
- d2e1a72fcca58-6ed112c64beso1979438b3a.1
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:06 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6eced6fd98aso4607126b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712638985; x=1713243785; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=Q47WV5+w5EHuyJqN5nKeJ49rNv9gzeLMdS2O5z2tA3E=;
- b=elCOqjJ7i28khJw2N/BX+Ocy9Fen46aKesCpdXRFDm1AiBjJmqO20D1HycFvyh43Wl
- EAfIgHU4osOxd5sLsq0UGyL7CPVBpMVsK6fKyvcyupTgz+zQsCK4WQI+XrlEOzm3Wstt
- UNOU3Zfn1UE/E8LsRqrYeyGxX5bZxW9oJvjqGgcPooHCoR55LolybckcZFx4ye+xaLR5
- +5VP7o+i4Ktpqt5HYiONbiFjFlej5Zwf97sc6CC1nRDz0qTzacXk2ltjtJnMjrQuK5W2
- LNWwI9ptU6VmoWh5I09hvVGPFPgieH4wNmIRcdVqcVab8nbYlZi0tAZjJ5XW0odfUciI
- FNlw==
+ d=linaro.org; s=google; t=1712638986; x=1713243786; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=deMS08IZ066zxxT6J5vjnKajDpbmm9n8+soIwY3Yceg=;
+ b=gBRzSrz/DD6bx2iyueT1CxiXKV1jclO3Is+m3/K3Rp1AgDxHj5PuwZmEQMRieDiEVK
+ mdrTC7TfQvarCIWnWOgxHSjZKmCtV+xYF25gusVtxTW4jas6QbiQYoQ+9KjIwIMIXhep
+ yMZieGAIkYrvUC6x36CZJA7P5B+P+dAWjv49KhYVcuE2fmQUv9pT8Uv3PhsVE4XUnfzD
+ Z86r1B6SJ8p/1EZhyijSdDv9ZywQUjIfT6446FZh2TMe216z199wyR0wfLfazCIDa6QA
+ kBZol09OB8KiPkrANjdSrZpV/ZdMasIxOhwF3kaLZav5IrNOxl8gqRR0xOTbp2pj+t/p
+ Wkdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712638985; x=1713243785;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Q47WV5+w5EHuyJqN5nKeJ49rNv9gzeLMdS2O5z2tA3E=;
- b=rlpKcGaSLgN5rvs/J34EDwHjHrJ9EeK/8UwdFKZPsl+3KLCXyYVgiECdzWFX7U106c
- xqs5UOa1mwb19Ht6+Y8psesMvAjH9rVxMg/mY/Dvu9j+zzvEIwFJ06+LrzlrdR30OXfF
- PEF43QiWmEjJ1Z0hFmqAy9lD5M+SJgwM08S8Lg43JMYnOmmZXa3UThKfd2bWNqVcPy1t
- t28oYoaygC4Zi09IXm0ID0V1e0Gc3o/V+wQQdFg8wgla6KLnU3ztugvUen4GKdlo0Gn2
- JIDZ8FVGdF5365phlPV8H8oz2O5clBrmJu4WWkJkeDnCxZW87mrU5B2oiHj0apsU5Z8k
- uQng==
-X-Gm-Message-State: AOJu0YxWUUUbm6uKFIoEkP9gk/if/FPc3/fv8fCB8AeX9IPjjsxRS9wf
- T/XUVamvuOqhyswwRm5bjfgiQXWbtqO2CIA29D096WpQx7PqSzeX7JI4YUCW+Xdih0zZw0qNC2r
- 5
-X-Google-Smtp-Source: AGHT+IFVI2+1+9for0cssfnhIjb80FU40UhJrehKihTHOQA8XKYhvO9Hkz46vJTvUqq6EojdlV9jXQ==
-X-Received: by 2002:a05:6a00:b84:b0:6ea:7981:d40b with SMTP id
- g4-20020a056a000b8400b006ea7981d40bmr9061668pfj.16.1712638985178; 
- Mon, 08 Apr 2024 22:03:05 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712638986; x=1713243786;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=deMS08IZ066zxxT6J5vjnKajDpbmm9n8+soIwY3Yceg=;
+ b=qlJGMXmoBpTMogxt6eBtmRBopcBj9lkmLo5BuS+IEAAt30K9Rp4lrCcUUh3wqAFOku
+ HiqEWpDe4W5j8ooILwMKWEWSgs2BI7RBNMJSucv+dZK3GkgCZxvj86fub+6QEzyZtcwO
+ rGke5ggikoMnD3tRRWbhlyMpKGqSGCZQUSQ9cLmdLRRsi4boXBXgyEqXB7JnXe2CqbqQ
+ D0DCXPeCjhHBCDSX7q/qPUJluYssPZ1sYuFbcOlzPSrbjf8BEE2NCrY8kA5wOa48qAkc
+ ZjpVXmPZ7lOhLSoIlMQID/VPWCHlgAgwAsBOXvBYdn0QARW2bn1cA/yAdoOyteJnHDcE
+ iPYQ==
+X-Gm-Message-State: AOJu0YwkvBu2RFLFf/nxmZIiRWGMoIDaUZuFncbRBrtF5nscaDsJYTEm
+ 7LIPhJFDFBlbIOIb4YkMtdWugMXbCEMBVCO9Mzo6x/A0Qrj9z+BaHPWQuF0932Z8U1/jwKs1TuA
+ v
+X-Google-Smtp-Source: AGHT+IEHpazKrfWYH9MkVgSZI3pQYi3Pvj5fcEsYFP0KcgXcXZF4K5EsHngCbbVN5zzcf1UviCgUqg==
+X-Received: by 2002:a05:6a00:c85:b0:6ea:e009:1ae6 with SMTP id
+ a5-20020a056a000c8500b006eae0091ae6mr14465230pfv.25.1712638986261; 
+ Mon, 08 Apr 2024 22:03:06 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.03
+ z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.05
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 22:03:04 -0700 (PDT)
+ Mon, 08 Apr 2024 22:03:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH for-9.1 v2 00/28] linux-user/i386: Properly align signal frame
-Date: Mon,  8 Apr 2024 19:02:34 -1000
-Message-Id: <20240409050302.1523277-1-richard.henderson@linaro.org>
+Subject: [PATCH v2 01/28] target/i386: Add tcg/access.[ch]
+Date: Mon,  8 Apr 2024 19:02:35 -1000
+Message-Id: <20240409050302.1523277-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240409050302.1523277-1-richard.henderson@linaro.org>
+References: <20240409050302.1523277-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,62 +91,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v1: https://lore.kernel.org/qemu-devel/20230524054647.1093758-1-richard.henderson@linaro.org/
+Provide a method to amortize page lookup across large blocks.
 
-But v1 isn't particularly complet or korrect.
-
-Disconnect fpstate from sigframe, just like the kernel does.
-Return the separate portions of the frame from get_sigframe.
-Alter all of the target fpu routines to access memory that
-has already been translated and sized.
-
-
-r~
-
-
-Richard Henderson (28):
-  target/i386: Add tcg/access.[ch]
-  target/i386: Convert do_fldt, do_fstt to X86Access
-  target/i386: Convert helper_{fbld,fbst}_ST0 to X86Access
-  target/i386: Convert do_fldenv to X86Access
-  target/i386: Convert do_fstenv to X86Access
-  target/i386: Convert do_fsave, do_frstor to X86Access
-  target/i386: Convert do_xsave_{fpu,mxcr,sse} to X86Access
-  target/i386: Convert do_xrstor_{fpu,mxcr,sse} to X86Access
-  tagret/i386: Convert do_fxsave, do_fxrstor to X86Access
-  target/i386: Convert do_xsave_* to X86Access
-  target/i386: Convert do_xrstor_* to X86Access
-  target/i386: Split out do_xsave_chk
-  target/i386: Add rbfm argument to cpu_x86_{xsave,xrstor}
-  target/i386: Add {hw,sw}_reserved to X86LegacyXSaveArea
-  linux-user/i386: Drop xfeatures_size from sigcontext arithmetic
-  linux-user/i386: Remove xfeatures from target_fpstate_fxsave
-  linux-user/i386: Replace target_fpstate_fxsave with X86LegacyXSaveArea
-  linux-user/i386: Split out struct target_fregs_state
-  linux-user/i386: Fix -mregparm=3 for signal delivery
-  linux-user/i386: Return boolean success from restore_sigcontext
-  linux-user/i386: Return boolean success from xrstor_sigcontext
-  linux-user/i386: Fix allocation and alignment of fp state
-  target/i386: Honor xfeatures in xrstor_sigcontext
-  target/i386: Convert do_xsave to X86Access
-  target/i386: Convert do_xrstor to X86Access
-  target/i386: Pass host pointer and size to cpu_x86_{fsave,frstor}
-  target/i386: Pass host pointer and size to cpu_x86_{fxsave,fxrstor}
-  target/i386: Pass host pointer and size to cpu_x86_{xsave,xrstor}
-
- target/i386/cpu.h                |  57 ++-
- target/i386/tcg/access.h         |  40 ++
- linux-user/i386/signal.c         | 669 ++++++++++++++++++-------------
- target/i386/tcg/access.c         | 160 ++++++++
- target/i386/tcg/fpu_helper.c     | 561 ++++++++++++++++----------
- tests/tcg/x86_64/test-1648.c     |  33 ++
- target/i386/tcg/meson.build      |   1 +
- tests/tcg/x86_64/Makefile.target |   1 +
- 8 files changed, 1014 insertions(+), 508 deletions(-)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ target/i386/tcg/access.h    |  40 +++++++++
+ target/i386/tcg/access.c    | 160 ++++++++++++++++++++++++++++++++++++
+ target/i386/tcg/meson.build |   1 +
+ 3 files changed, 201 insertions(+)
  create mode 100644 target/i386/tcg/access.h
  create mode 100644 target/i386/tcg/access.c
- create mode 100644 tests/tcg/x86_64/test-1648.c
 
+diff --git a/target/i386/tcg/access.h b/target/i386/tcg/access.h
+new file mode 100644
+index 0000000000..d70808a3a3
+--- /dev/null
++++ b/target/i386/tcg/access.h
+@@ -0,0 +1,40 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Access guest memory in blocks. */
++
++#ifndef X86_TCG_ACCESS_H
++#define X86_TCG_ACCESS_H
++
++/* An access covers at most sizeof(X86XSaveArea), at most 2 pages. */
++typedef struct X86Access {
++    target_ulong vaddr;
++    void *haddr1;
++    void *haddr2;
++    uint16_t size;
++    uint16_t size1;
++    /*
++     * If we can't access the host page directly, we'll have to do I/O access
++     * via ld/st helpers. These are internal details, so we store the rest
++     * to do the access here instead of passing it around in the helpers.
++     */
++    int mmu_idx;
++    CPUX86State *env;
++    uintptr_t ra;
++} X86Access;
++
++void access_prepare_mmu(X86Access *ret, CPUX86State *env,
++                        vaddr vaddr, unsigned size,
++                        MMUAccessType type, int mmu_idx, uintptr_t ra);
++void access_prepare(X86Access *ret, CPUX86State *env, vaddr vaddr,
++                    unsigned size, MMUAccessType type, uintptr_t ra);
++
++uint8_t  access_ldb(X86Access *ac, vaddr addr);
++uint16_t access_ldw(X86Access *ac, vaddr addr);
++uint32_t access_ldl(X86Access *ac, vaddr addr);
++uint64_t access_ldq(X86Access *ac, vaddr addr);
++
++void access_stb(X86Access *ac, vaddr addr, uint8_t val);
++void access_stw(X86Access *ac, vaddr addr, uint16_t val);
++void access_stl(X86Access *ac, vaddr addr, uint32_t val);
++void access_stq(X86Access *ac, vaddr addr, uint64_t val);
++
++#endif
+diff --git a/target/i386/tcg/access.c b/target/i386/tcg/access.c
+new file mode 100644
+index 0000000000..8b70f3244b
+--- /dev/null
++++ b/target/i386/tcg/access.c
+@@ -0,0 +1,160 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* Access guest memory in blocks. */
++
++#include "qemu/osdep.h"
++#include "cpu.h"
++#include "exec/cpu_ldst.h"
++#include "exec/exec-all.h"
++#include "access.h"
++
++
++void access_prepare_mmu(X86Access *ret, CPUX86State *env,
++                        vaddr vaddr, unsigned size,
++                        MMUAccessType type, int mmu_idx, uintptr_t ra)
++{
++    int size1, size2;
++    void *haddr1, *haddr2;
++
++    assert(size > 0 && size <= TARGET_PAGE_SIZE);
++
++    size1 = MIN(size, -(vaddr | TARGET_PAGE_MASK)),
++    size2 = size - size1;
++
++    memset(ret, 0, sizeof(*ret));
++    ret->vaddr = vaddr;
++    ret->size = size;
++    ret->size1 = size1;
++    ret->mmu_idx = mmu_idx;
++    ret->env = env;
++    ret->ra = ra;
++
++    haddr1 = probe_access(env, vaddr, size1, type, mmu_idx, ra);
++    ret->haddr1 = haddr1;
++
++    if (unlikely(size2)) {
++        haddr2 = probe_access(env, vaddr + size1, size2, type, mmu_idx, ra);
++        if (haddr2 == haddr1 + size1) {
++            ret->size1 = size;
++        } else {
++            ret->haddr2 = haddr2;
++        }
++    }
++}
++
++void access_prepare(X86Access *ret, CPUX86State *env, vaddr vaddr,
++                    unsigned size, MMUAccessType type, uintptr_t ra)
++{
++    int mmu_idx = cpu_mmu_index(env_cpu(env), false);
++    access_prepare_mmu(ret, env, vaddr, size, type, mmu_idx, ra);
++}
++
++static void *access_ptr(X86Access *ac, vaddr addr, unsigned len)
++{
++    vaddr offset = addr - ac->vaddr;
++
++    assert(addr >= ac->vaddr);
++
++#ifdef CONFIG_USER_ONLY
++    assert(offset <= ac->size1 - len);
++    return ac->haddr1 + offset;
++#else
++    if (likely(offset <= ac->size1 - len)) {
++        return ac->haddr1;
++    }
++    assert(offset <= ac->size - len);
++    if (likely(offset >= ac->size1)) {
++        return ac->haddr2;
++    }
++    return NULL;
++#endif
++}
++
++#ifdef CONFIG_USER_ONLY
++# define test_ptr(p)  true
++#else
++# define test_ptr(p)  likely(p)
++#endif
++
++uint8_t access_ldb(X86Access *ac, vaddr addr)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint8_t));
++
++    if (test_ptr(p)) {
++        return ldub_p(p);
++    }
++    return cpu_ldub_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
++}
++
++uint16_t access_ldw(X86Access *ac, vaddr addr)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint16_t));
++
++    if (test_ptr(p)) {
++        return lduw_le_p(p);
++    }
++    return cpu_lduw_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
++}
++
++uint32_t access_ldl(X86Access *ac, vaddr addr)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint32_t));
++
++    if (test_ptr(p)) {
++        return ldl_le_p(p);
++    }
++    return cpu_ldl_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
++}
++
++uint64_t access_ldq(X86Access *ac, vaddr addr)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint64_t));
++
++    if (test_ptr(p)) {
++        return ldq_le_p(p);
++    }
++    return cpu_ldq_le_mmuidx_ra(ac->env, addr, ac->mmu_idx, ac->ra);
++}
++
++void access_stb(X86Access *ac, vaddr addr, uint8_t val)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint8_t));
++
++    if (test_ptr(p)) {
++        stb_p(p, val);
++    } else {
++        cpu_stb_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
++    }
++}
++
++void access_stw(X86Access *ac, vaddr addr, uint16_t val)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint16_t));
++
++    if (test_ptr(p)) {
++        stw_le_p(p, val);
++    } else {
++        cpu_stw_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
++    }
++}
++
++void access_stl(X86Access *ac, vaddr addr, uint32_t val)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint32_t));
++
++    if (test_ptr(p)) {
++        stl_le_p(p, val);
++    } else {
++        cpu_stl_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
++    }
++}
++
++void access_stq(X86Access *ac, vaddr addr, uint64_t val)
++{
++    void *p = access_ptr(ac, addr, sizeof(uint64_t));
++
++    if (test_ptr(p)) {
++        stq_le_p(p, val);
++    } else {
++        cpu_stq_le_mmuidx_ra(ac->env, addr, val, ac->mmu_idx, ac->ra);
++    }
++}
+diff --git a/target/i386/tcg/meson.build b/target/i386/tcg/meson.build
+index f9110e890c..1105b35d92 100644
+--- a/target/i386/tcg/meson.build
++++ b/target/i386/tcg/meson.build
+@@ -1,4 +1,5 @@
+ i386_ss.add(when: 'CONFIG_TCG', if_true: files(
++  'access.c',
+   'bpt_helper.c',
+   'cc_helper.c',
+   'excp_helper.c',
 -- 
 2.34.1
 
