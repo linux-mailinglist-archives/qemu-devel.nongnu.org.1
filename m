@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A65889E3B6
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A92589E3C3
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:38:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruHGi-0000dW-8u; Tue, 09 Apr 2024 15:36:32 -0400
+	id 1ruHGh-0000cc-72; Tue, 09 Apr 2024 15:36:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGg-0000d0-O9
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:30 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1ruHGf-0000c7-GE
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:29 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGe-0004fA-Jl
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:30 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1e3dda73192so21587385ad.3
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:26 -0700 (PDT)
+ id 1ruHGd-0004fM-W4
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:29 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e244c7cbf8so50588075ad.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712691385; x=1713296185; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712691387; x=1713296187; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qu730y1a5bhHx8+lUgk6PRHwUAMG8x1kinVBmiKeHm0=;
- b=nxaagpPBYzpTx3yZRMSBsGGRkBaJHvUGLmVx7to+4cHY8oitsJ6bFJSNmqWji7fWEo
- nadJ80bqriMTJlTl+099JOHnp+4h6ERFWW4qCsnVArI/IRvnpt6isTuqoxzsr3FEDkI4
- F4Vlu7LjWE6M3UuRMIvqNqHN852hHHL6q3VHkO45+0SxILAkJxtGZi9WTFoL4+OfYd0d
- Vn2C7JB/wzeFMte3Gb0nB+k+cjE6nbnjgoDf9KoHpCV2JYxMm5oJukGOjrmT3I5wi8u5
- Eokh/HJ82oPzMuKjOEP5ASJ1Ju/sBm8/obz/TJKpq7P3kk0QVufmblC64FFudGsR8rKn
- mr/w==
+ bh=RFanGzrvK8VkKk4csReRv0GVjABsPRaur2/zSeJo0ZU=;
+ b=aZM1ux2UJCV1OgPgSgP9Fy6HBJQbKnCxBVXqiuXG6s4ChKTxmqisZIkltudV5ApwZQ
+ rVfKw9NBqiUT8ilZ6dFDSdEKk9ZtlGUHY8dSEnXpaIAF4lc1uXMZqbJO6B57PuGtVnYD
+ TpQVYiWa0eO4vj0TnfYWseSQ5X/Sp4SOOJFm9+CAci1UyL4EvonhI0xCGFpYS6ccBnjp
+ n/WI1j0I4/58AA4WZ9Us0SjvA6jN6FjqhkVYw7anoH/yXypITqXotKfU/CZzYDX1P8HB
+ oAIq4vY1odvmu0RaqlO4RSRimkPMXFDIYmpTgdE+OR4Kn1aBORAY9Uoq0s+4xNX8E69Z
+ H6fQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712691385; x=1713296185;
+ d=1e100.net; s=20230601; t=1712691387; x=1713296187;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qu730y1a5bhHx8+lUgk6PRHwUAMG8x1kinVBmiKeHm0=;
- b=KkExLiWQW5QcbHD9sxo7Om4cISxRRE81/6RXO/aTqflJqyrhjzr4dKfW8YHNeiXZBP
- RuzrIQjenjbBdrotBGUlAPd3+X3u0SrMsGor8IV9puE4nFNVAs6OtiJdaJ0IMF1dhGY4
- YpzyMEvYnCzC9pbdowZiEItwaIxIdD5g6Bh1v6TJyDi0JwVBOJNfbFIMkx8cevG5z190
- uxbPaoa2XttHsXKRxA83HKHYMKnZ4FLr1NFsY4n7CVtLe26s+V2x+O2/2Qe7QaLV2HHP
- c9/jPW9J1jyAiMyHRUfjgeuF79AI0UIaWbDm7YGNrp3QZ/EKLO8FS9vgkuhAC2Tkl/zj
- secQ==
-X-Gm-Message-State: AOJu0Yx3aAUy9JiAfjuaueMQiFlnZJzsSBH4ltf2Wo+wgOjT0KA70NGP
- vN0mhm08vW8jHBQnny+q0GM0IedhmbPH46lLryW7mJbcSvRoY4fDZO1D/wLKfGn3VgWCDvUJid2
- k
-X-Google-Smtp-Source: AGHT+IFCA9nugoJKX6ZcRyOTZrDdSJpkV5H9aDyOS7XWhdE8zDCPceL+HkGbXy65nHym6c+CsjxMdg==
-X-Received: by 2002:a17:902:7ec1:b0:1e2:7d3b:353c with SMTP id
- p1-20020a1709027ec100b001e27d3b353cmr615668plb.18.1712691385219; 
- Tue, 09 Apr 2024 12:36:25 -0700 (PDT)
+ bh=RFanGzrvK8VkKk4csReRv0GVjABsPRaur2/zSeJo0ZU=;
+ b=rxZoLQsHfy7zwbSreO67daRWvQcP2FvBlyMHAwNMLXnqfze3MZw2QAPr8yCvcrhumV
+ 0RIiHCIai2H7cBv/TLPhaHnd8zIy/R7doQo7jzZhzXbmatgZm82T38xXLPsi3bIycIJ5
+ GBML2o5O9TMpspTPCNQuFES8BbU8Bax2q6XRQpQQiKVVjDjXMHNNBAD+F9eECUG6EExz
+ mhcvH+DsLwCpBNxrDBkIA/aKvv5jLEL7TTjluNUwrOFrBeIlY/nb/O0wOzZ6u2hmEdyg
+ DyVNm285dCpSajr2EGic1W7fo35wfEYe1oL4zGLgWWUhfetPYMh4XZGQlQ99Yiq9d15J
+ bHVg==
+X-Gm-Message-State: AOJu0YxIS+Asw7RovcWGRwDubRMcQOA/gmS+HKJrj3vRtCDzhJwWq/aG
+ Q2Q7dwObqmq+DQDMVH/iPZenQ0HajBQ3hszQJ8OQfhQsRoBC14eDInOegToR/kNn/Vfwk/hdooR
+ 2
+X-Google-Smtp-Source: AGHT+IEm6hqAUc9vq65tDBptyLAFU0dcujShlCQccSDdv7oUL+/nqDzNNWqluGj3MorH0Azdx2+16A==
+X-Received: by 2002:a17:902:f392:b0:1e2:23b9:eb24 with SMTP id
+ f18-20020a170902f39200b001e223b9eb24mr705753ple.33.1712691386735; 
+ Tue, 09 Apr 2024 12:36:26 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.24
+ c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 12:36:24 -0700 (PDT)
+ Tue, 09 Apr 2024 12:36:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 13/20] target/arm: Use insn_start from DisasContextBase
-Date: Tue,  9 Apr 2024 09:35:56 -1000
-Message-Id: <20240409193603.1703216-14-richard.henderson@linaro.org>
+Subject: [PULL v2 14/20] target/hppa: Use insn_start from DisasContextBase
+Date: Tue,  9 Apr 2024 09:35:57 -1000
+Message-Id: <20240409193603.1703216-15-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
 References: <20240409193603.1703216-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,69 +99,51 @@ with insn_start_updated.
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/arm/tcg/translate.h     | 12 ++++++------
- target/arm/tcg/translate-a64.c |  2 +-
- target/arm/tcg/translate.c     |  2 +-
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ target/hppa/translate.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
-index 93be745cf3..dc66ff2190 100644
---- a/target/arm/tcg/translate.h
-+++ b/target/arm/tcg/translate.h
-@@ -165,10 +165,10 @@ typedef struct DisasContext {
-     uint8_t gm_blocksize;
-     /* True if this page is guarded.  */
-     bool guarded_page;
-+    /* True if the current insn_start has been updated. */
-+    bool insn_start_updated;
-     /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
-     int c15_cpar;
--    /* TCG op of the current insn_start.  */
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 8a1a8bc3aa..42fa480950 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -44,7 +44,6 @@ typedef struct DisasCond {
+ typedef struct DisasContext {
+     DisasContextBase base;
+     CPUState *cs;
 -    TCGOp *insn_start;
-     /* Offset from VNCR_EL2 when FEAT_NV2 redirects this reg to memory */
-     uint32_t nv2_redirect_offset;
- } DisasContext;
-@@ -276,10 +276,10 @@ static inline void disas_set_insn_syndrome(DisasContext *s, uint32_t syn)
-     syn &= ARM_INSN_START_WORD2_MASK;
-     syn >>= ARM_INSN_START_WORD2_SHIFT;
  
--    /* We check and clear insn_start_idx to catch multiple updates.  */
--    assert(s->insn_start != NULL);
--    tcg_set_insn_start_param(s->insn_start, 2, syn);
--    s->insn_start = NULL;
-+    /* Check for multiple updates.  */
-+    assert(!s->insn_start_updated);
-+    s->insn_start_updated = true;
-+    tcg_set_insn_start_param(s->base.insn_start, 2, syn);
+     uint64_t iaoq_f;
+     uint64_t iaoq_b;
+@@ -62,6 +61,7 @@ typedef struct DisasContext {
+     int privilege;
+     bool psw_n_nonzero;
+     bool is_pa20;
++    bool insn_start_updated;
+ 
+ #ifdef CONFIG_USER_ONLY
+     MemOp unalign;
+@@ -300,9 +300,9 @@ void hppa_translate_init(void)
+ 
+ static void set_insn_breg(DisasContext *ctx, int breg)
+ {
+-    assert(ctx->insn_start != NULL);
+-    tcg_set_insn_start_param(ctx->insn_start, 2, breg);
+-    ctx->insn_start = NULL;
++    assert(!ctx->insn_start_updated);
++    ctx->insn_start_updated = true;
++    tcg_set_insn_start_param(ctx->base.insn_start, 2, breg);
  }
  
- static inline int curr_insn_len(DisasContext *s)
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 340265beb0..2666d52711 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -14179,7 +14179,7 @@ static void aarch64_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
-         pc_arg &= ~TARGET_PAGE_MASK;
-     }
-     tcg_gen_insn_start(pc_arg, 0, 0);
--    dc->insn_start = tcg_last_op();
-+    dc->insn_start_updated = false;
+ static DisasCond cond_make_f(void)
+@@ -4694,7 +4694,7 @@ static void hppa_tr_insn_start(DisasContextBase *dcbase, CPUState *cs)
+     DisasContext *ctx = container_of(dcbase, DisasContext, base);
+ 
+     tcg_gen_insn_start(ctx->iaoq_f, ctx->iaoq_b, 0);
+-    ctx->insn_start = tcg_last_op();
++    ctx->insn_start_updated = false;
  }
  
- static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
-index 69585e6003..dc49a8d806 100644
---- a/target/arm/tcg/translate.c
-+++ b/target/arm/tcg/translate.c
-@@ -9273,7 +9273,7 @@ static void arm_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
-         condexec_bits = (dc->condexec_cond << 4) | (dc->condexec_mask >> 1);
-     }
-     tcg_gen_insn_start(pc_arg, condexec_bits, 0);
--    dc->insn_start = tcg_last_op();
-+    dc->insn_start_updated = false;
- }
- 
- static bool arm_check_kernelpage(DisasContext *dc)
+ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
 -- 
 2.34.1
 
