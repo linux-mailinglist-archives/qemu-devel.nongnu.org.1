@@ -2,54 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6120E89DA47
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6994189DA87
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:39:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruBaH-0003qk-Hv; Tue, 09 Apr 2024 09:32:21 -0400
+	id 1ruBft-0005mH-87; Tue, 09 Apr 2024 09:38:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
- id 1ruBaA-0003qG-N6
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:32:15 -0400
-Received: from new-mail.astralinux.ru ([51.250.53.164])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <abelova@astralinux.ru>)
- id 1ruBa8-0007CU-Ok
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:32:14 -0400
-Received: from [10.177.20.58] (unknown [10.177.20.58])
- by new-mail.astralinux.ru (Postfix) with ESMTPA id 4VDRhR2TzGzqSP6;
- Tue,  9 Apr 2024 16:32:07 +0300 (MSK)
-Message-ID: <5263ef36-0b82-48fe-a351-b557ead15b01@astralinux.ru>
-Date: Tue, 9 Apr 2024 16:31:27 +0300
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBfr-0005lw-Bg
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:07 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBfp-0008AA-N6
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:07 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-343bccc0b2cso4086314f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712669884; x=1713274684; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=vC3gmGFS//wOnrZqSqcK6FVhjByf7WW2EZPOHgM5S+0=;
+ b=Ns31C5AE2r0CgJit01MP77FDt3WX9hYin4EO+OrHAVNoUORdE2elo+Ywt7p4XWljQO
+ ImMz9LpekzwcOkydDu0dDFLcxTHTaFZOUbZIwrmq0voZ5lJsjGtTsiinKP1okDPdNS7M
+ icUYO//FeAhphweoCha9RXEc8LHsAHgzThLwjLV9f6NSothG4IyVfPKUeny7wY41EMhf
+ PCcZqlMY63YNJY66qJN5u/JlTihHHFzXAZGP87dUIOqCspwCAR9vTa0FJxI6YGXSe2Eg
+ vwbkYVUSidqx4GJDZd9RMmKwcFCEGNpgEQueaWDyi00uZ2/l/L41Bo8XJ9HKzClnGsRA
+ rf2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712669884; x=1713274684;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vC3gmGFS//wOnrZqSqcK6FVhjByf7WW2EZPOHgM5S+0=;
+ b=uZrtPecDoCns2Bopq6rQ1Na2y0oYiiMlpSpucFqKD+R911cLFzm1RRKzLrR5YaaMaz
+ VY+4wrhzBK6Uoc8f28W5m2rEVB9lbP6RawvnDPBygeJTs5Shlbhy/wKYL+XdEfFrFJIi
+ AVz2gFVH4qtwlkQH8a0J8tzjNzmIYNCv4HTumGNwAEtvQ2rHj0/DUTQrj99QNiqzTKBy
+ XMRJao6pDwoxvF9TuiCOB0gu3CoLaNueCJsPwkL+GpVPxMEXjh9QGMemNhdTGHc4DI5u
+ 0592Ufvm6IF1cZzdfAYsghCPo2SBqio5jfSG5KQsT7VzU8zYCF66pwJa0nVuH0bY+DIL
+ jBBg==
+X-Gm-Message-State: AOJu0YyE6NPzV+CrKM+FZmbWNTRoRQZYcS9LG+5+eky9iDqm1O/7Zdo5
+ bwMP7XVszAxyPsIrrDgZNstEI6ub6lJIQSYi8gkqeHqM6gALsSMVFuUsx7E+l3naTmayzQpodoa
+ Q
+X-Google-Smtp-Source: AGHT+IE72wr3+MUSG77SnSnzdZqYKRAn91G6tdj9I6nGCD+sJyPb0hJa/no64ZpHYERNjEV1l5Bp/g==
+X-Received: by 2002:a05:6000:544:b0:346:311c:32f1 with SMTP id
+ b4-20020a056000054400b00346311c32f1mr1308231wrf.50.1712669883810; 
+ Tue, 09 Apr 2024 06:38:03 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.160.134])
+ by smtp.gmail.com with ESMTPSA id
+ p9-20020adff209000000b003432d61d6b7sm11468603wro.51.2024.04.09.06.38.02
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 09 Apr 2024 06:38:03 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Chuhong Yuan <hslester96@gmail.com>, Jason Wang <jasowang@redhat.com>,
+ Alexander Bulekov <alxndr@bu.edu>, qemu-arm@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH-for-9.0 v2 00/11] hw/net/lan9118: Fix overflow in TX FIFO
+Date: Tue,  9 Apr 2024 15:37:49 +0200
+Message-ID: <20240409133801.23503-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: RuPost Desktop
-Subject: Re: [PATCH] hw/dma: prevent overflow in soc_dma_set_request
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrzej Zaborowski <balrogg@gmail.com>,
- sdl.qemu@linuxtesting.org
-References: <20240409115301.21829-1-abelova@astralinux.ru>
- <CAFEAcA_W4qr6EPhOu-s_+d_V+MfADzddKNwd_gUzBTbajQ+xvg@mail.gmail.com>
-Content-Language: ru
-From: Anastasia Belova <abelova@astralinux.ru>
-In-Reply-To: <CAFEAcA_W4qr6EPhOu-s_+d_V+MfADzddKNwd_gUzBTbajQ+xvg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-DrWeb-SpamScore: -100
-X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthekredttderjeenucfhrhhomheptehnrghsthgrshhirgcuuegvlhhovhgruceorggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruheqnecuggftrfgrthhtvghrnhepvdegleehkeejueehledvhffhuefhieejudevvdejtdeukefghffgveegteeikeeunecukfhppedutddrudejjedrvddtrdehkeenucfrrghrrghmpehhvghloheplgdutddrudejjedrvddtrdehkegnpdhinhgvthepuddtrddujeejrddvtddrheekmeegjeeluddtpdhmrghilhhfrhhomheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepsggrlhhrohhgghesghhmrghilhdrtghomhdprhgtphhtthhopehsughlrdhqvghmuheslhhinhhugihtvghsthhinhhgrdhorhhg
-X-DrWeb-SpamVersion: Vade Retro 01.423.251#02 AS+AV+AP Profile: DRWEB;
- Bailout: 300
-X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128,
- SE: 11.1.12.2210241838, Core engine: 7.00.62.01180, Virus records: 12586520,
- Updated: 2024-Apr-09 11:29:40 UTC]
-Received-SPF: pass client-ip=51.250.53.164; envelope-from=abelova@astralinux.ru;
- helo=new-mail.astralinux.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,23 +90,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix for https://gitlab.com/qemu-project/qemu/-/issues/2267
 
+Since v1:
+- Renamed definition as MIL_TXFIFO_SIZE
+- Addressed Peter review comments in patches 1 & 2
+  (add comment, return TXE INT)
+- Trivial patches while digesting Peter's analysis [*]
 
-09/04/24 15:02, Peter Maydell пишет:
-> On Tue, 9 Apr 2024 at 12:54, Anastasia Belova <abelova@astralinux.ru> wrote:
->> ch->num can reach values up to 31. Add casting to
->> a larger type before performing left shift to
->> prevent integer overflow.
-> If ch->num can only reach up to 31, then 1 << ch->num
-> is fine, because QEMU can assume that integers are 32 bits,
-> and we compile with -fwrapv so there isn't a problem with
-> shifting into the sign bit.
+More work expected during 9.1.
 
-Right, thanks for your comments.
-I didn't know about this flag before. It became more clear for me now.
+[*] https://lore.kernel.org/qemu-devel/CAFEAcA8vvURMn2FaDP9tXtP5eCMs6-XFOCR9ypo=WBH+6g5prw@mail.gmail.com/
 
-Thanks,
-Anastasia Belova
+Philippe Mathieu-Daudé (11):
+  hw/net/lan9118: Replace magic '2048' value by MIL_TXFIFO_SIZE
+    definition
+  hw/net/lan9118: Fix overflow in MIL TX FIFO
+  hw/net/lan9118: Remove duplicated assignment
+  hw/net/lan9118: Replace magic '5' value by TX_FIF_SZ_RESET definition
+  hw/net/lan9118: Add definitions for FIFO allocated sizes
+  hw/net/lan9118: Use TX_DATA_FIFO_BYTES definition
+  hw/net/lan9118: Rename tx_fifo_size -> tx_fifo_bytes
+  hw/net/lan9118: Use RX_STATUS_FIFO_BYTES definition
+  hw/net/lan9118: Rename rx_status_fifo_size -> rx_status_fifo_wordcount
+  hw/net/lan9118: Use RX_DATA_FIFO_BYTES definition
+  hw/net/lan9118: Rename rx_fifo_size -> rx_fifo_wordcount
 
+ hw/net/lan9118.c | 104 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 70 insertions(+), 34 deletions(-)
+
+-- 
+2.41.0
 
 
