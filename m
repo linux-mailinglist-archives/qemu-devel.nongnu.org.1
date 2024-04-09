@@ -2,61 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55EC89E067
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 18:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6B789E07E
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 18:34:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruEMP-0001oX-13; Tue, 09 Apr 2024 12:30:13 -0400
+	id 1ruEQG-0004bj-Mh; Tue, 09 Apr 2024 12:34:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ruEMD-0001mS-DS
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:30:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ruEQE-0004bS-P3
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:34:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ruEMA-0005iG-4h
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:29:59 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1ruEQB-0006Sl-Nt
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:34:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712680197;
+ s=mimecast20190719; t=1712680446;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=nVB2Xy3b3M2XySmg3X05h6P0VJP9tjhRzj4PvS3NiNc=;
- b=bSC48OKVen1r9OUvv4ybdVCxbGwxV4EwE3EA+JC/NOSeieqXG0mmq7cNCNymEKnmVnLx4l
- zzq2TKHMboSINKU4+pjwXWmHg4r+TNVu3GLHLFZdOtlpY3HUKEU2VnW71eqRT2pN84z7Yz
- xPa8vhOiChoplv0Pag1KH3HpkN8Avv8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-218-fr4qDwzGNiyLDyvL0wTH2w-1; Tue, 09 Apr 2024 12:29:54 -0400
-X-MC-Unique: fr4qDwzGNiyLDyvL0wTH2w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=Oot7y9h2sf/VMjHI33NKvv/6e/dWzuQxmrEH3uq11/I=;
+ b=DD+AkHBujpYYlnid4JYT/fE0hXqPYS1vkocwDkPrMvJa2biCjBh4+45Zu0oZU1gSB9dC3z
+ qt0bhhD9/qNL9qA42sQb5yslLjQLirxNp4q+VTXa990GzZnNqHnPgAWYtiTaZ2US6L6BOP
+ qaaqCJGiUo4pWPRDQlRCemOjaWcOxco=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-gHOIdFYSNiOyJnOei86UnQ-1; Tue,
+ 09 Apr 2024 12:34:02 -0400
+X-MC-Unique: gHOIdFYSNiOyJnOei86UnQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 044F980B517;
- Tue,  9 Apr 2024 16:29:54 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A8F7628EC104;
+ Tue,  9 Apr 2024 16:34:00 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.204])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 994271C06666;
- Tue,  9 Apr 2024 16:29:53 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 85F62C0157E;
+ Tue,  9 Apr 2024 16:34:00 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id BB2E01801AA4; Tue,  9 Apr 2024 18:29:42 +0200 (CEST)
+ id 6DA4D18009F4; Tue,  9 Apr 2024 18:33:55 +0200 (CEST)
+Date: Tue, 9 Apr 2024 18:33:55 +0200
 From: Gerd Hoffmann <kraxel@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 3/4] edk2/seabios: use common extra version
-Date: Tue,  9 Apr 2024 18:29:33 +0200
-Message-ID: <20240409162942.454419-4-kraxel@redhat.com>
-In-Reply-To: <20240409162942.454419-1-kraxel@redhat.com>
-References: <20240409162942.454419-1-kraxel@redhat.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] edk2: get version + date from git submodule
+Message-ID: <5r7zfrd6lxztzsdbyqu6zs6spbtt445k6m2ylaiw67bvwgpwb2@syfv3wnabwwe>
+References: <20240325144440.1069662-1-kraxel@redhat.com>
+ <CAFEAcA8eX=-6yXCZ2+X6niJPcgzkzXfHT9F6LpbfqV4b9VRW6w@mail.gmail.com>
+ <sevlzxonvgps5m7r263bkzouabg62tbe6vknvv4rbvjfnnhkqg@jnqkst5xetwn>
+ <CAFEAcA-xEK6_eT-TUP+adMsgoTU6kRQoz+9vfXO2Tz_PBLdmyA@mail.gmail.com>
+ <CAFEAcA8Nty9zAvn9PB-azwvR7mF5tYOfz27AXi-vbuZDoS_ZVw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAFEAcA8Nty9zAvn9PB-azwvR7mF5tYOfz27AXi-vbuZDoS_ZVw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -80,55 +82,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Bring a bit more consistency into the naming.
+On Tue, Apr 09, 2024 at 04:13:34PM +0100, Peter Maydell wrote:
+> On Tue, 9 Apr 2024 at 15:19, Peter Maydell <peter.maydell@linaro.org> wrote:
+> >
+> > On Tue, 9 Apr 2024 at 15:14, Gerd Hoffmann <kraxel@redhat.com> wrote:
+> > >
+> > >   Hi,
+> > >
+> > > > > +               --version-override "$(EDK2_STABLE)-for-qemu" \
+> > > > > +               --release-date "$(EDK2_DATE)" \
+> > > >
+> > > > Hi -- I've just noticed that we never made this change to
+> > > > automate the date/version for EDK2 ROMs, but we also never
+> > > > updated the version by hand. So at the moment we ship an
+> > > > EDK2 blob that wrongly claims to be an older version.
+> > > > See this bug report by a user:
+> > > >
+> > > > https://gitlab.com/qemu-project/qemu/-/issues/2233
+> > > >
+> > > > Is it possible to fix this for 9.0?
+> > >
+> > > I've posted v2 (series) a while back, no feedback so far.
+> > >
+> > > https://lore.kernel.org/qemu-devel/20240327102448.61877-1-kraxel@redhat.com/
+> > >
+> > > If there are no objections I can do a PR for these three patches plus an
+> > > edk2 binary rebuild (which shouldn't change anything but the version
+> > > string).
+> >
+> > I guess that's safe enough, though the very-conservative
+> > choice would be to take just the EDK2 rebuild for 9.0.
+> 
+> Would you be able to get a pullreq in for this before rc3?
+> (I can delay rc3 by a day or so if necessary; I'd rather
+> not have to do an rc4 if we can avoid it...)
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20240327102448.61877-4-kraxel@redhat.com>
----
- roms/Makefile | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+https://lore.kernel.org/qemu-devel/20240409162942.454419-1-kraxel@redhat.com/T/
 
-diff --git a/roms/Makefile b/roms/Makefile
-index 783a5cab4f4c..dfed2b216a1e 100644
---- a/roms/Makefile
-+++ b/roms/Makefile
-@@ -41,8 +41,8 @@ x86_64_cross_prefix := $(call find-cross-prefix,x86_64)
- riscv32_cross_prefix := $(call find-cross-prefix,riscv32)
- riscv64_cross_prefix := $(call find-cross-prefix,riscv64)
- 
--# tag our seabios builds
--SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
-+# tag our firmware builds
-+FIRMWARE_EXTRAVERSION = -prebuilt.qemu.org
- 
- #
- # EfiRom utility is shipped with edk2 / tianocore, in BaseTools/
-@@ -93,12 +93,12 @@ build-seabios-config-%: config.%
- 	mkdir -p seabios/builds/$*
- 	cp $< seabios/builds/$*/.config
- 	$(MAKE) -C seabios \
--		EXTRAVERSION=$(SEABIOS_EXTRAVERSION) \
-+		EXTRAVERSION=$(FIRMWARE_EXTRAVERSION) \
- 		CROSS_PREFIX=$(x86_64_cross_prefix) \
- 		KCONFIG_CONFIG=$(CURDIR)/seabios/builds/$*/.config \
- 		OUT=$(CURDIR)/seabios/builds/$*/ oldnoconfig
- 	$(MAKE) -C seabios \
--		EXTRAVERSION=$(SEABIOS_EXTRAVERSION) \
-+		EXTRAVERSION=$(FIRMWARE_EXTRAVERSION) \
- 		CROSS_PREFIX=$(x86_64_cross_prefix) \
- 		KCONFIG_CONFIG=$(CURDIR)/seabios/builds/$*/.config \
- 		OUT=$(CURDIR)/seabios/builds/$*/ all
-@@ -159,7 +159,7 @@ edk2-version: edk2
- 
- efi: edk2-version
- 	$(PYTHON) edk2-build.py --config edk2-build.config \
--		--version-override "$(EDK2_STABLE)-for-qemu" \
-+		--version-override "$(EDK2_STABLE)$(FIRMWARE_EXTRAVERSION)" \
- 		--release-date "$(EDK2_DATE)" \
- 		--silent --no-logs
- 	rm -f ../pc-bios/edk2-*.fd.bz2
--- 
-2.44.0
+take care,
+  Gerd
 
 
