@@ -2,89 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9980A89E0CB
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 18:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A8089E160
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 19:17:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruEae-00010B-Qk; Tue, 09 Apr 2024 12:44:56 -0400
+	id 1ruF4W-00048q-3D; Tue, 09 Apr 2024 13:15:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ruEaT-0000ko-6k
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:44:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1ruEaB-00088c-3Z
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 12:44:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712681063;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=euG8iZgCt7LNEIZrhHc+yJzDlLn47jvF8xmL5QEXTyg=;
- b=d+3l5ij18Tm1iWAwW2LkATbFySefkhmQ1DqlussxseZxYRUy1h7+a5DMS/QkBElMkx/rft
- rLVNcST0vyR7nQjsUPluhjSEFEc+uA0D8wdX9XeQn1XbN+sXEKPLLafgS7UBMoNydoeXS0
- ZauphlHHbS7GPkdXwblmKsiXnl73thI=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-311-P9MUf3PUNoCrhRNt5CkMhQ-1; Tue, 09 Apr 2024 12:44:21 -0400
-X-MC-Unique: P9MUf3PUNoCrhRNt5CkMhQ-1
-Received: by mail-lj1-f198.google.com with SMTP id
- 38308e7fff4ca-2d87f5937fcso24940991fa.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 09:44:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <adobriyan@gmail.com>)
+ id 1ruF4P-00047x-3p
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 13:15:42 -0400
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <adobriyan@gmail.com>)
+ id 1ruF4I-0005iF-4u
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 13:15:37 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-4169ebcc924so8828085e9.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 10:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1712682930; x=1713287730; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+ bh=uqoAzk/rcyHsRiN93dZu/zo/voGsLmoiCY/kzMq2aC0=;
+ b=A74jfZ4YYIkXFUasYOZe6Auf4N1cp9rzLEX4G8PL65I/lllluZnR1mbWXqTJ3QnRJt
+ oJPxufVPJ1os9DTKbLbHInpMcaVHfl0ZEvovLgnC3C8oukqRJ7qXdDkMF2gtHrEMXwkQ
+ xFInHTg5LBQEWyGJR/AHwX3ATCLrnd6An5DyQN4MdKqENk53+F8Cs0DJJlnjfUMya3up
+ dttkpkwNxrm6UZjOyrSZoxZnbb7Y/h0pVrPcYybQW/UY/ZHZQ6/iQKo1vk7NV5ohH3Sj
+ eQiSa3T2jGxnjehiv7FeIXX+0abh3jQ/Cz99uew1hZbWyKOahfroSXmFIP/ruKMBNzE+
+ ew7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712681060; x=1713285860;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=euG8iZgCt7LNEIZrhHc+yJzDlLn47jvF8xmL5QEXTyg=;
- b=GXuYU5GQqREAmtEXKB4xykQNszx3517FRzNTTcxHfMDmK+D9ycBfeGzSTMnMNHkUWs
- gVC+LHpjUM9MhiPgkzZksp5xeTquoA+5y3ke0PrB5HL0qKdamgXPGiFhgP9198dQiV8d
- Sz8/KZc/AlXtNXxP5U7OU8BOUOCtVJf8pRTSrjSFc1x5WVVLHzFI9J1G6xuiD11FLa5e
- n5Vg95MmbX4HQZODXo1kKHnFs9Wad1JwCOmCKxsZUtyLSIyujorCqeuQl5w0CeST9q4o
- kS+xn/IT6fOze3p3haPaRyltv1oWsbsS1B2JSuR03CIf7qUs16Qs0YF92bA7tYpjhb8X
- BxLQ==
-X-Gm-Message-State: AOJu0YzEqmWOrqtpE2GPBNNbFoiSbCztW/kRc7bUtSCJ6tTNgBEd7BEg
- Vx+1m+eylMEYKIxyVpsdB9SWqdtdDZrQ0hun0ykelT552a+n78Hq95CcLnurklH0TZNdFvuWILL
- sbdzcqsHq6UhoJyr1m5wWiXIvCqFhvktTADT4Jg4x1uto+v8S2494dPZdyxrsOOVwi2/WTG+uEN
- 0a2jHlKkIoQXUuTGVeK1MmQZ73TI79I+y4GyFv
-X-Received: by 2002:a2e:86d4:0:b0:2d8:5ca5:6eb1 with SMTP id
- n20-20020a2e86d4000000b002d85ca56eb1mr261653ljj.37.1712681059843; 
- Tue, 09 Apr 2024 09:44:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFPETi14/UQGIMtH7ORgDt9MjbiUsgCo5gjTveb8lEoOhYSan+fsbpX4Bap9OIBFkJXrdbcMg==
-X-Received: by 2002:a2e:86d4:0:b0:2d8:5ca5:6eb1 with SMTP id
- n20-20020a2e86d4000000b002d85ca56eb1mr261622ljj.37.1712681059085; 
- Tue, 09 Apr 2024 09:44:19 -0700 (PDT)
-Received: from avogadro.local ([151.95.152.232])
- by smtp.gmail.com with ESMTPSA id
- bi8-20020a05600c3d8800b00416b92dceaesm1252645wmb.11.2024.04.09.09.44.18
- for <qemu-devel@nongnu.org>
+ d=1e100.net; s=20230601; t=1712682930; x=1713287730;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=uqoAzk/rcyHsRiN93dZu/zo/voGsLmoiCY/kzMq2aC0=;
+ b=BgABKUBgjC6hZoEUS6XXkddHDkpwuyKd7wkwP6rDE/CF68K9ReJ1wv4De6ZCgLHil7
+ gEFZgPYBHi/+6m6m/5l4b4ItiCHkd/3X5I7Z5ZcTgdS0w6r7mjldwMpbWRU5zhvhSfCk
+ wtdwha3hbGcHwuxNyPJjGe/iIoXG0bBPwX8NDIc77EHncfhpeEHQ/v4oQf9jzT6M4CnW
+ 4KoujnnpXTB5mtpR8axozk7xbZCuRR8g3oJCFbsQ8LYW68FMxfrlRczupG9O4aZO5YlA
+ Kpu1JsWhr23AERZ2zfn6tM2jGXNC61D0qfbEtdbioVMkP9pU+BEtBWzcpFfnC4NU0F0n
+ OwnA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX5AYKDpL+el6ZpvPA84hPNwbTNOat3B5rh0foTi5PO+GAX6rVg6jU2bVY+lNIZmphsIh72cobrnM9wbETnW/AtMSoW7wY=
+X-Gm-Message-State: AOJu0YyU21xDUufplzT5B9D7eutL1Zg3wd0mtsFWRAjVB5qfFNtUvC6w
+ qS6kZ/EynMLOa5FHSXNBRP1h9tU8rVxSoPDzNgw4doSNaUcS8ng=
+X-Google-Smtp-Source: AGHT+IHOi45WSegR+OBmeOUTNMonp/YQsUwhOaZ3gcQBDX5/pDxq1WVVqzlBlhTpzlpTSpus0mPAxA==
+X-Received: by 2002:a05:600c:45ce:b0:414:7b3b:ca7c with SMTP id
+ s14-20020a05600c45ce00b004147b3bca7cmr261374wmo.14.1712682929791; 
+ Tue, 09 Apr 2024 10:15:29 -0700 (PDT)
+Received: from p183 ([46.53.249.134]) by smtp.gmail.com with ESMTPSA id
+ i21-20020a05600c355500b0041665b6e111sm9296596wmq.12.2024.04.09.10.15.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 09:44:18 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Subject: [PATCH for-9.1 19/19] target/i386: remove duplicate prefix decoding
-Date: Tue,  9 Apr 2024 18:43:23 +0200
-Message-ID: <20240409164323.776660-20-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240409164323.776660-1-pbonzini@redhat.com>
-References: <20240409164323.776660-1-pbonzini@redhat.com>
+ Tue, 09 Apr 2024 10:15:29 -0700 (PDT)
+Date: Tue, 9 Apr 2024 20:15:27 +0300
+From: Alexey Dobriyan <adobriyan@gmail.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Alexey Dobriyan <adobriyan@yandex-team.ru>, qemu-devel@nongnu.org,
+ jasowang@redhat.com, vsementsov@yandex-team.ru
+Subject: Re: [PATCH 1/1] virtio-net: fix bug 1451 aka
+ "assert(!virtio_net_get_subqueue(nc)->async_tx.elem);"
+Message-ID: <8e95e5be-dd39-498b-b527-52f34fb0ba43@p183>
+References: <20240405112015.11919-1-adobriyan@yandex-team.ru>
+ <20240409025022-mutt-send-email-mst@kernel.org>
+ <1270933f-ed20-4b59-b450-0ee4103a6eeb@p183>
+ <20240409124038-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240409124038-mutt-send-email-mst@kernel.org>
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=adobriyan@gmail.com; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,433 +96,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that a bulk of opcodes go through the new decoder, it is sensible
-to do some cleanup.  Go immediately through disas_insn_new and only jump
-back after parsing the prefixes.
+On Tue, Apr 09, 2024 at 12:41:39PM -0400, Michael S. Tsirkin wrote:
+> On Tue, Apr 09, 2024 at 07:37:04PM +0300, Alexey Dobriyan wrote:
+> > On Tue, Apr 09, 2024 at 02:51:38AM -0400, Michael S. Tsirkin wrote:
+> > > On Fri, Apr 05, 2024 at 02:20:15PM +0300, Alexey Dobriyan wrote:
+> > > > Don't send zero length packets in virtio_net_flush_tx().
+> > > > 
+> > > > Reproducer from https://gitlab.com/qemu-project/qemu/-/issues/1451
+> > > > creates small packet (1 segment, len = 10 == n->guest_hdr_len),
+> > > > destroys queue.
+> > > > 
+> > > > "if (n->host_hdr_len != n->guest_hdr_len)" is triggered, if body creates
+> > > > zero length/zero segment packet, because there is nothing after guest
+> > > > header.
+> > > > 
+> > > > qemu_sendv_packet_async() tries to send it.
+> > > > 
+> > > > slirp discards it because it is smaller than Ethernet header,
+> > > > but returns 0.
+> > > 
+> > > won't the same issue trigger with a 1 byte packet
+> > > as opposed to a 0 byte packet though?
+> > 
+> > I don't think so. Only "return 0" is problematic from qemu_sendv_packet_async().
+> > ->deliver hooks are supposed to return total length, so 1 should be fine.
+> 
+> 
+> But you said it's smaller than Ethernet is the problem?
 
-disas_insn() now only contains the three sigsetjmp cases, and they
-are more easily managed if they are inlined into i386_tr_translate_insn.
+No, the problem is iov_cnt=0 packet is being generated, which enters
+qemu_sendv_packet_async(), discarded inside slirp driver, but
+net_slirp_receive() returns 0 which is the length of meaningless packet.
+which is propagated upwards.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/translate.c      | 259 +++++++------------------------
- target/i386/tcg/decode-new.c.inc |  60 +++++--
- 2 files changed, 100 insertions(+), 219 deletions(-)
-
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index d3c863c5d1d..93601abf994 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -2453,10 +2453,6 @@ static void gen_sty_env_A0(DisasContext *s, int offset, bool align)
-     tcg_gen_qemu_st_i128(t, s->tmp0, mem_index, mop);
- }
- 
--#include "decode-new.h"
--#include "emit.c.inc"
--#include "decode-new.c.inc"
--
- static void gen_cmpxchg8b(DisasContext *s, CPUX86State *env, int modrm)
- {
-     TCGv_i64 cmp, val, old;
-@@ -3119,183 +3115,6 @@ static bool disas_insn_x87(DisasContext *s, CPUState *cpu, int b)
-     return true;
- }
- 
--static void disas_insn_old(DisasContext *s, CPUState *cpu, int b);
--
--/* convert one instruction. s->base.is_jmp is set if the translation must
--   be stopped. Return the next pc value */
--static bool disas_insn(DisasContext *s, CPUState *cpu)
--{
--    CPUX86State *env = cpu_env(cpu);
--    int b, prefixes;
--    MemOp aflag, dflag;
--    bool orig_cc_op_dirty = s->cc_op_dirty;
--    CCOp orig_cc_op = s->cc_op;
--    target_ulong orig_pc_save = s->pc_save;
--
--    s->pc = s->base.pc_next;
--    s->override = -1;
--    s->popl_esp_hack = 0;
--#ifdef TARGET_X86_64
--    s->rex_r = 0;
--    s->rex_x = 0;
--    s->rex_b = 0;
--#endif
--    s->rip_offset = 0; /* for relative ip address */
--    s->vex_l = 0;
--    s->vex_v = 0;
--    s->vex_w = false;
--    switch (sigsetjmp(s->jmpbuf, 0)) {
--    case 0:
--        break;
--    case 1:
--        gen_exception_gpf(s);
--        return true;
--    case 2:
--        /* Restore state that may affect the next instruction. */
--        s->pc = s->base.pc_next;
--        /*
--         * TODO: These save/restore can be removed after the table-based
--         * decoder is complete; we will be decoding the insn completely
--         * before any code generation that might affect these variables.
--         */
--        s->cc_op_dirty = orig_cc_op_dirty;
--        s->cc_op = orig_cc_op;
--        s->pc_save = orig_pc_save;
--        /* END TODO */
--        s->base.num_insns--;
--        tcg_remove_ops_after(s->prev_insn_end);
--        s->base.insn_start = s->prev_insn_start;
--        s->base.is_jmp = DISAS_TOO_MANY;
--        return false;
--    default:
--        g_assert_not_reached();
--    }
--
--    prefixes = 0;
--
-- next_byte:
--    s->prefix = prefixes;
--    b = x86_ldub_code(env, s);
--    /* Collect prefixes.  */
--    switch (b) {
--    case 0x0f:
--        b = x86_ldub_code(env, s) + 0x100;
--        break;
--    case 0xf3:
--        prefixes |= PREFIX_REPZ;
--        prefixes &= ~PREFIX_REPNZ;
--        goto next_byte;
--    case 0xf2:
--        prefixes |= PREFIX_REPNZ;
--        prefixes &= ~PREFIX_REPZ;
--        goto next_byte;
--    case 0xf0:
--        prefixes |= PREFIX_LOCK;
--        goto next_byte;
--    case 0x2e:
--        s->override = R_CS;
--        goto next_byte;
--    case 0x36:
--        s->override = R_SS;
--        goto next_byte;
--    case 0x3e:
--        s->override = R_DS;
--        goto next_byte;
--    case 0x26:
--        s->override = R_ES;
--        goto next_byte;
--    case 0x64:
--        s->override = R_FS;
--        goto next_byte;
--    case 0x65:
--        s->override = R_GS;
--        goto next_byte;
--    case 0x66:
--        prefixes |= PREFIX_DATA;
--        goto next_byte;
--    case 0x67:
--        prefixes |= PREFIX_ADR;
--        goto next_byte;
--#ifdef TARGET_X86_64
--    case 0x40 ... 0x4f:
--        if (CODE64(s)) {
--            /* REX prefix */
--            prefixes |= PREFIX_REX;
--            s->vex_w = (b >> 3) & 1;
--            s->rex_r = (b & 0x4) << 1;
--            s->rex_x = (b & 0x2) << 2;
--            s->rex_b = (b & 0x1) << 3;
--            goto next_byte;
--        }
--        break;
--#endif
--    case 0xc5: /* 2-byte VEX */
--    case 0xc4: /* 3-byte VEX */
--        if (CODE32(s) && !VM86(s)) {
--            int vex2 = x86_ldub_code(env, s);
--            s->pc--; /* rewind the advance_pc() x86_ldub_code() did */
--
--            if (!CODE64(s) && (vex2 & 0xc0) != 0xc0) {
--                /* 4.1.4.6: In 32-bit mode, bits [7:6] must be 11b,
--                   otherwise the instruction is LES or LDS.  */
--                break;
--            }
--            disas_insn_new(s, cpu, b);
--            return s->pc;
--        }
--        break;
--    }
--
--    /* Post-process prefixes.  */
--    if (CODE64(s)) {
--        /* In 64-bit mode, the default data size is 32-bit.  Select 64-bit
--           data with rex_w, and 16-bit data with 0x66; rex_w takes precedence
--           over 0x66 if both are present.  */
--        dflag = (REX_W(s) ? MO_64 : prefixes & PREFIX_DATA ? MO_16 : MO_32);
--        /* In 64-bit mode, 0x67 selects 32-bit addressing.  */
--        aflag = (prefixes & PREFIX_ADR ? MO_32 : MO_64);
--    } else {
--        /* In 16/32-bit mode, 0x66 selects the opposite data size.  */
--        if (CODE32(s) ^ ((prefixes & PREFIX_DATA) != 0)) {
--            dflag = MO_32;
--        } else {
--            dflag = MO_16;
--        }
--        /* In 16/32-bit mode, 0x67 selects the opposite addressing.  */
--        if (CODE32(s) ^ ((prefixes & PREFIX_ADR) != 0)) {
--            aflag = MO_32;
--        }  else {
--            aflag = MO_16;
--        }
--    }
--
--    s->prefix = prefixes;
--    s->aflag = aflag;
--    s->dflag = dflag;
--
--    switch (b) {
--    case 0     ... 0xd7:
--    case 0xe0  ... 0xff:
--    case 0x10e ... 0x117:
--    case 0x128 ... 0x12f:
--    case 0x138 ... 0x19f:
--    case 0x1a0 ... 0x1a1:
--    case 0x1a8 ... 0x1a9:
--    case 0x1af:
--    case 0x1b2:
--    case 0x1b4 ... 0x1b7:
--    case 0x1be ... 0x1bf:
--    case 0x1c2 ... 0x1c6:
--    case 0x1c8 ... 0x1ff:
--        disas_insn_new(s, cpu, b);
--        break;
--    default:
--        disas_insn_old(s, cpu, b);
--        break;
--    }
--    return true;
--}
--
- static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
- {
-     CPUX86State *env = cpu_env(cpu);
-@@ -3504,14 +3323,6 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         }
-         break;
- 
--        /************************/
--        /* floats */
--    case 0xd8 ... 0xdf:
--        if (!disas_insn_x87(s, cpu, b)) {
--            goto unknown_op;
--        }
--        break;
--
-         /************************/
-         /* bit operations */
-     case 0x1ba: /* bt/bts/btr/btc Gv, im */
-@@ -4759,7 +4570,7 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-         set_cc_op(s, CC_OP_POPCNT);
-         break;
-     default:
--        goto unknown_op;
-+        g_assert_not_reached();
-     }
-     return;
-  illegal_op:
-@@ -4769,6 +4580,10 @@ static void disas_insn_old(DisasContext *s, CPUState *cpu, int b)
-     gen_unknown_opcode(env, s);
- }
- 
-+#include "decode-new.h"
-+#include "emit.c.inc"
-+#include "decode-new.c.inc"
-+
- void tcg_x86_init(void)
- {
-     static const char reg_names[CPU_NB_REGS][4] = {
-@@ -4890,7 +4705,6 @@ static void i386_tr_init_disas_context(DisasContextBase *dcbase, CPUState *cpu)
- 
-     dc->cc_op = CC_OP_DYNAMIC;
-     dc->cc_op_dirty = false;
--    dc->popl_esp_hack = 0;
-     /* select memory access functions */
-     dc->mem_index = cpu_mmu_index(cpu, false);
-     dc->cpuid_features = env->features[FEAT_1_EDX];
-@@ -4942,6 +4756,9 @@ static void i386_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
- static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
- {
-     DisasContext *dc = container_of(dcbase, DisasContext, base);
-+    bool orig_cc_op_dirty = dc->cc_op_dirty;
-+    CCOp orig_cc_op = dc->cc_op;
-+    target_ulong orig_pc_save = dc->pc_save;
- 
- #ifdef TARGET_VSYSCALL_PAGE
-     /*
-@@ -4954,23 +4771,51 @@ static void i386_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     }
- #endif
- 
--    if (disas_insn(dc, cpu)) {
--        target_ulong pc_next = dc->pc;
--        dc->base.pc_next = pc_next;
-+    switch (sigsetjmp(dc->jmpbuf, 0)) {
-+    case 0:
-+        disas_insn(dc, cpu);
-+        break;
-+    case 1:
-+        gen_exception_gpf(dc);
-+        break;
-+    case 2:
-+        /* Restore state that may affect the next instruction. */
-+        dc->pc = dc->base.pc_next;
-+        /*
-+         * TODO: These save/restore can be removed after the table-based
-+         * decoder is complete; we will be decoding the insn completely
-+         * before any code generation that might affect these variables.
-+         */
-+        dc->cc_op_dirty = orig_cc_op_dirty;
-+        dc->cc_op = orig_cc_op;
-+        dc->pc_save = orig_pc_save;
-+        /* END TODO */
-+        dc->base.num_insns--;
-+        tcg_remove_ops_after(dc->prev_insn_end);
-+        dc->base.insn_start = dc->prev_insn_start;
-+        dc->base.is_jmp = DISAS_TOO_MANY;
-+        return;
-+    default:
-+        g_assert_not_reached();
-+    }
- 
--        if (dc->base.is_jmp == DISAS_NEXT) {
--            if (dc->flags & (HF_TF_MASK | HF_INHIBIT_IRQ_MASK)) {
--                /*
--                 * If single step mode, we generate only one instruction and
--                 * generate an exception.
--                 * If irq were inhibited with HF_INHIBIT_IRQ_MASK, we clear
--                 * the flag and abort the translation to give the irqs a
--                 * chance to happen.
--                 */
--                dc->base.is_jmp = DISAS_EOB_NEXT;
--            } else if (!is_same_page(&dc->base, pc_next)) {
--                dc->base.is_jmp = DISAS_TOO_MANY;
--            }
-+    /*
-+     * Instruction decoding completed (possibly with #GP if the
-+     * 15-byte boundary was exceeded).
-+     */
-+    dc->base.pc_next = dc->pc;
-+    if (dc->base.is_jmp == DISAS_NEXT) {
-+        if (dc->flags & (HF_TF_MASK | HF_INHIBIT_IRQ_MASK)) {
-+            /*
-+             * If single step mode, we generate only one instruction and
-+             * generate an exception.
-+             * If irq were inhibited with HF_INHIBIT_IRQ_MASK, we clear
-+             * the flag and abort the translation to give the irqs a
-+             * chance to happen.
-+             */
-+            dc->base.is_jmp = DISAS_EOB_NEXT;
-+        } else if (!is_same_page(&dc->base, dc->base.pc_next)) {
-+            dc->base.is_jmp = DISAS_TOO_MANY;
-         }
-     }
- }
-diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 3fc3f6b7d29..74790724e3c 100644
---- a/target/i386/tcg/decode-new.c.inc
-+++ b/target/i386/tcg/decode-new.c.inc
-@@ -2214,22 +2214,31 @@ illegal:
-  * Convert one instruction. s->base.is_jmp is set if the translation must
-  * be stopped.
-  */
--static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
-+static void disas_insn(DisasContext *s, CPUState *cpu)
- {
-     CPUX86State *env = cpu_env(cpu);
--    bool first = true;
-     X86DecodedInsn decode;
-     X86DecodeFunc decode_func = decode_root;
--    uint8_t cc_live;
-+    uint8_t cc_live, b;
- 
-+    s->pc = s->base.pc_next;
-+    s->override = -1;
-+    s->popl_esp_hack = 0;
-+#ifdef TARGET_X86_64
-+    s->rex_r = 0;
-+    s->rex_x = 0;
-+    s->rex_b = 0;
-+#endif
-+    s->rip_offset = 0; /* for relative ip address */
-+    s->vex_l = 0;
-+    s->vex_v = 0;
-+    s->vex_w = false;
-     s->has_modrm = false;
-+    s->prefix = 0;
- 
-  next_byte:
--    if (first) {
--        first = false;
--    } else {
--        b = x86_ldub_code(env, s);
--    }
-+    b = x86_ldub_code(env, s);
-+
-     /* Collect prefixes.  */
-     switch (b) {
-     case 0xf3:
-@@ -2341,10 +2350,6 @@ static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
-         }
-         break;
-     default:
--        if (b >= 0x100) {
--            b -= 0x100;
--            decode_func = do_decode_0F;
--        }
-         break;
-     }
- 
-@@ -2373,6 +2378,37 @@ static void disas_insn_new(DisasContext *s, CPUState *cpu, int b)
-         }
-     }
- 
-+    /* Go back to old decoder for unconverted opcodes.  */
-+    if (!(s->prefix & PREFIX_VEX)) {
-+        if ((b & ~7) == 0xd8) {
-+            if (!disas_insn_x87(s, cpu, b)) {
-+                goto unknown_op;
-+            }
-+            return;
-+        }
-+
-+        if (b == 0x0f) {
-+            b = x86_ldub_code(env, s);
-+            switch (b) {
-+            case 0x00 ... 0x0d: /* mostly privileged instructions */
-+            case 0x18 ... 0x27: /* prefetch, MPX, mov from/to CR and DR */
-+            case 0x30 ... 0x37: /* more privileged instructions */
-+            case 0xa2 ... 0xa7: /* CPUID, BT, SHLD */
-+            case 0xaa ... 0xae: /* RSM, SHRD, grp15 */
-+            case 0xb0 ... 0xb1: /* cmpxchg */
-+            case 0xb3:          /* btr */
-+            case 0xb8 ... 0xbd: /* integer ops */
-+            case 0xc0 ... 0xc1: /* xadd */
-+            case 0xc7:          /* grp9 */
-+                disas_insn_old(s, cpu, b + 0x100);
-+                return;
-+            default:
-+                decode_func = do_decode_0F;
-+                break;
-+            }
-+        }
-+    }
-+
-     memset(&decode, 0, sizeof(decode));
-     decode.cc_op = -1;
-     decode.b = b;
--- 
-2.44.0
-
+> > > > 0 length is propagated upwards and is interpreted as "packet has been sent"
+> > > > which is terrible because queue is being destroyed, nothing has been sent,
+> > > > nobody is waiting for TX to complete and assert it triggered.
+> > > > 
+> > > > Signed-off-by: Alexey Dobriyan <adobriyan@yandex-team.ru>
+> > > > ---
+> > > >  hw/net/virtio-net.c | 18 ++++++++++++------
+> > > >  1 file changed, 12 insertions(+), 6 deletions(-)
+> > > > 
+> > > > diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+> > > > index 58014a92ad..258633f885 100644
+> > > > --- a/hw/net/virtio-net.c
+> > > > +++ b/hw/net/virtio-net.c
+> > > > @@ -2765,18 +2765,14 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+> > > >          out_sg = elem->out_sg;
+> > > >          if (out_num < 1) {
+> > > >              virtio_error(vdev, "virtio-net header not in first element");
+> > > > -            virtqueue_detach_element(q->tx_vq, elem, 0);
+> > > > -            g_free(elem);
+> > > > -            return -EINVAL;
+> > > > +            goto detach;
+> > > >          }
+> > > >  
+> > > >          if (n->has_vnet_hdr) {
+> > > >              if (iov_to_buf(out_sg, out_num, 0, &vhdr, n->guest_hdr_len) <
+> > > >                  n->guest_hdr_len) {
+> > > >                  virtio_error(vdev, "virtio-net header incorrect");
+> > > > -                virtqueue_detach_element(q->tx_vq, elem, 0);
+> > > > -                g_free(elem);
+> > > > -                return -EINVAL;
+> > > > +                goto detach;
+> > > >              }
+> > > >              if (n->needs_vnet_hdr_swap) {
+> > > >                  virtio_net_hdr_swap(vdev, (void *) &vhdr);
+> > > > @@ -2807,6 +2803,11 @@ static int32_t virtio_net_flush_tx(VirtIONetQueue *q)
+> > > >                               n->guest_hdr_len, -1);
+> > > >              out_num = sg_num;
+> > > >              out_sg = sg;
+> > > > +
+> > > > +            if (iov_size(out_sg, out_num) == 0) {
+> > > > +                virtio_error(vdev, "virtio-net nothing to send");
+> > > > +                goto detach;
+> > > > +            }
+> > > >          }
+> > > >  
+> > > >          ret = qemu_sendv_packet_async(qemu_get_subqueue(n->nic, queue_index),
+> > > > @@ -2827,6 +2828,11 @@ drop:
+> > > >          }
+> > > >      }
+> > > >      return num_packets;
+> > > > +
+> > > > +detach:
+> > > > +    virtqueue_detach_element(q->tx_vq, elem, 0);
+> > > > +    g_free(elem);
+> > > > +    return -EINVAL;
+> > > >  }
+> > > >  
+> > > >  static void virtio_net_tx_timer(void *opaque);
+> > > > -- 
+> > > > 2.34.1
+> > > 
+> 
 
