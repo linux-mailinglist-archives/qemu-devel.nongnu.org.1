@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E65689D3A3
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 09:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B04F189D4DB
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 10:49:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru6Np-0001vL-FS; Tue, 09 Apr 2024 03:59:09 -0400
+	id 1ru78w-0007uv-C6; Tue, 09 Apr 2024 04:47:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1ru6Nj-0001uz-MS
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:59:05 -0400
-Received: from esa4.hc1455-7.c3s2.iphmx.com ([68.232.139.117])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
- id 1ru6Ng-0006K3-DR
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:59:03 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1712649540; x=1744185540;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cr75vmQQ4tjMyuDlPBiVrzxG5Gv0w637W9cL2RfcGas=;
- b=Q8AzN6pXqrwRt8VXHAxiUR6cT3zwO/EhlFPLpOk7kLOKlSTHBtCh0vKf
- 9RhkV5ciJgP1WWOZTTZ1duQuJ/0aQaGT7viIKeA3+2fK+eCccyIAK+8uP
- lc71FtIHCJtIH6K1dcoLvlPsHjUdDH+4LxFnwVSIogfffHzgd3NXXFlri
- cY/0+ZBkwJHEbeWO/PR6HOq3LwszOF5cBsgwKmg/qRoTcO+uYr0NNLgxq
- 4wj4Ba4VMgZnYZ7N2Vp4WvGy7xQ7pmpzSc6KKi4+zVERg5apG/2sNKSkC
- dHvcHQXTE4eR1SOKlKCZZEkj4usqjau3PXpKxHH2LhfCqSTnfd2pvEjyj g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="155309814"
-X-IronPort-AV: E=Sophos;i="6.07,189,1708354800"; d="scan'208";a="155309814"
-Received: from unknown (HELO oym-r4.gw.nic.fujitsu.com) ([210.162.30.92])
- by esa4.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 16:58:54 +0900
-Received: from oym-m1.gw.nic.fujitsu.com (oym-nat-oym-m1.gw.nic.fujitsu.com
- [192.168.87.58])
- by oym-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 68B62DCB72
- for <qemu-devel@nongnu.org>; Tue,  9 Apr 2024 16:58:52 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by oym-m1.gw.nic.fujitsu.com (Postfix) with ESMTP id 92F96FCEF8
- for <qemu-devel@nongnu.org>; Tue,  9 Apr 2024 16:58:51 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 1E46D20097CC7
- for <qemu-devel@nongnu.org>; Tue,  9 Apr 2024 16:58:51 +0900 (JST)
-Received: from localhost.localdomain (unknown [10.167.226.45])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 6293D1A0002;
- Tue,  9 Apr 2024 15:58:50 +0800 (CST)
-To: Jonathan Cameron <jonathan.cameron@huawei.com>,
- Fan Ni <fan.ni@samsung.com>, qemu-devel@nongnu.org
-Cc: linux-cxl@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
- Li Zhijian <lizhijian@fujitsu.com>
-Subject: [PATCH v2] hw/mem/cxl_type3: reset dvsecs in ct3d_reset()
-Date: Tue,  9 Apr 2024 15:58:46 +0800
-Message-Id: <20240409075846.85370-1-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.31.1
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ru78q-0007uf-O5
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:47:45 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ru78n-0006ae-2r
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:47:43 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-56845954ffeso7209240a12.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 01:47:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712652459; x=1713257259; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=+HJJA/aXH9ZH+a8SxaouqSZfKOjFnzxLaaAoUsxw4P4=;
+ b=Yb2gYxnkKKlbKacFBoiUrLOYkAv0/lCKvPHBfEn+aSBVRRXi+RSftgPWgotmZ+ou+t
+ zJE4NbA/UNTZ4Pv9Stp4/34Uuu0Qd/wbj1Z0JjoysRLZcohH/rj9yIaHtZozW01ORiF8
+ SpbJCI3FC3a6NzOkWkYdWPfdC6eGFUB+FuQUgt/v5rxoQd1/GaLgbTF3Csbcj7G2Id/s
+ 0nDxmkKYmOx/2nS/ZcTSYzsPesVsCInXfKQznMIdrlklpLwWC2UM5OFTEXd9TiaXFZ0U
+ rBqdG8p0vLSYiFKHGMhXhI+hTvc23uw8xGLdB2/ODs+HJYZ9ZWDDp+wa6Wns60BVYGsw
+ nlmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712652459; x=1713257259;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+HJJA/aXH9ZH+a8SxaouqSZfKOjFnzxLaaAoUsxw4P4=;
+ b=eH48riOqLQ6s7g1A+2CgHtp+O3Yluodvkk8HppkCq5+WnA3YCvEAs7DsBcTQyv2as8
+ pqGxLngi7pEqW8VPxLwAdpS460CxACDSh0Y7Is7Tzj8pV6SU7Q5MzKFC5mvA9qnTEDwR
+ O3pZ5Mw+KLz6d9KJbba1jj4XqCfY+79qZB6uGkhHzN5JTVKwaZtpOjvItyamWkodGLMh
+ eHavsmIroP7mVM0qnWpnIyLMTwW92GoQUWYzQHIJ3zSDax1vOmiurE1omcopSecqx6Yy
+ W/oTsY+krViIcG89D/qfAGTME+EyWiJ1iNVpNTqfnG1ABXfEzETBwE8ij5xLV6133ZhW
+ uP0Q==
+X-Gm-Message-State: AOJu0Yy6C5xlMmVoo+6aYsGRvN67kXR3rYm8kQo6vKDsRtScW92lBeOh
+ IPE34wrKe+kKa0RI/0o4sSap/kJP5QI81/Z+u8shnfoz8in0nGPRf0zlFYdBBoRXEbqdzic5bcg
+ zOAL8CZFliw1R7JV+rSTigQwO1gWNIlVsibxsIg==
+X-Google-Smtp-Source: AGHT+IH4XgHPO76I3+vN7eu3A2q0nK0d4xEL/6N3V42BCSRRhXmfuxnYGe/VaklxrxHwtf0Np/vK+z0VrLTjdqwgiYE=
+X-Received: by 2002:a50:8ac2:0:b0:56e:64a:2a47 with SMTP id
+ k2-20020a508ac2000000b0056e064a2a47mr6404224edk.42.1712652459273; Tue, 09 Apr
+ 2024 01:47:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28306.006
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28306.006
-X-TMASE-Result: 10--9.351400-10.000000
-X-TMASE-MatchedRID: uWxJDmPsnWHOugYCEJUMNSrLqyE6Ur/j1Ee54j3itDaJXRC/bWSJueLa
- AlZI/DlqEpqGYdoOBVcHw5SpXQUTkBT0CagFsN1kEVuC0eNRYvIXivwflisSrCWLxjlrSy8vuxW
- P7AlD8NO3nQMqHp+dH+affHI8kAmiHY/bzRmIaZGdd2mFBNIr8gV54COoxb6XR6RHdVK85hXuQ7
- Jl58fF92sRrupgWdD3DHgfvPgXVeSel3N+gDvB50VOF9zLtdyMeF+F9LT9kRKbKItl61J/yZ+in
- TK0bC9eKrauXd3MZDVt7biF0Cnq/FsUqcjBanlSra5fkKjdyekD49NFNTBfWdZEUZ4TJWg7
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=68.232.139.117;
- envelope-from=lizhijian@fujitsu.com; helo=esa4.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+References: <20240407184354.1839435-1-peterx@redhat.com>
+In-Reply-To: <20240407184354.1839435-1-peterx@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 9 Apr 2024 09:47:27 +0100
+Message-ID: <CAFEAcA8Sr+2wEznF2QOyp1AeTX4JYS9ARHxm_VG9rYgyCEdNBQ@mail.gmail.com>
+Subject: Re: [PULL 0/2] Migration 20240407 patches
+To: peterx@redhat.com
+Cc: qemu-devel@nongnu.org, Wei Wang <wei.w.wang@intel.com>, 
+ Lei Wang <lei4.wang@intel.com>, Avihai Horon <avihaih@nvidia.com>, 
+ Fabiano Rosas <farosas@suse.de>, Prasad Pandit <ppandit@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::530;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,77 +84,39 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Li Zhijian <lizhijian@fujitsu.com>
-From:  Li Zhijian via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After the kernel commit
-0cab68720598 ("cxl/pci: Fix disabling memory if DVSEC CXL Range does not match a CFMWS window")
-CXL type3 devices cannot be enabled again after the reboot because the
-control register(see 8.1.3.2 in CXL specifiction 2.0 for more details) was
-not reset.
+On Sun, 7 Apr 2024 at 19:43, <peterx@redhat.com> wrote:
+>
+> From: Peter Xu <peterx@redhat.com>
+>
+> The following changes since commit ce64e6224affb8b4e4b019f76d2950270b391af5:
+>
+>   Merge tag 'qemu-sparc-20240404' of https://github.com/mcayland/qemu into staging (2024-04-04 15:28:06 +0100)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/peterx/qemu.git tags/migration-20240407-pull-request
+>
+> for you to fetch changes up to 8e0b21e375f0f6e6dbaeaecc1d52e2220f163e40:
+>
+>   MAINTAINERS: Adjust migration documentation files (2024-04-07 14:40:55 -0400)
+>
+> ----------------------------------------------------------------
+> Migration pull for 9.0-rc3
+>
+> - Wei/Lei's fix on a rare postcopy race that can hang the channel (since 8.0)
+> - Avihai's fix on maintainers file, points to the right doc links
+>
+> ----------------------------------------------------------------
+>
 
-These registers could be changed by the firmware or OS, let them have
-their initial value in reboot so that the OS can read their clean status.
 
-Fixes: e1706ea83da0 ("hw/cxl/device: Add a memory device (8.2.8.5)")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
-root_port, usp and dsp have the same issue, if this patch get approved,
-I will send another patch to fix them later.
+Applied, thanks.
 
-V2:
-   Add fixes tag.
-   Reset all dvsecs registers instead of CTRL only
----
- hw/mem/cxl_type3.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
+for any user-visible changes.
 
-diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
-index b0a7e9f11b64..4f09d0b8fedc 100644
---- a/hw/mem/cxl_type3.c
-+++ b/hw/mem/cxl_type3.c
-@@ -30,6 +30,7 @@
- #include "hw/pci/msix.h"
- 
- #define DWORD_BYTE 4
-+#define CT3D_CAP_SN_OFFSET PCI_CONFIG_SPACE_SIZE
- 
- /* Default CDAT entries for a memory region */
- enum {
-@@ -284,6 +285,10 @@ static void build_dvsecs(CXLType3Dev *ct3d)
-              range2_size_hi = 0, range2_size_lo = 0,
-              range2_base_hi = 0, range2_base_lo = 0;
- 
-+    cxl_cstate->dvsec_offset = CT3D_CAP_SN_OFFSET;
-+    if (ct3d->sn != UI64_NULL) {
-+        cxl_cstate->dvsec_offset += PCI_EXT_CAP_DSN_SIZEOF;
-+    }
-     /*
-      * Volatile memory is mapped as (0x0)
-      * Persistent memory is mapped at (volatile->size)
-@@ -664,10 +669,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
- 
-     pcie_endpoint_cap_init(pci_dev, 0x80);
-     if (ct3d->sn != UI64_NULL) {
--        pcie_dev_ser_num_init(pci_dev, 0x100, ct3d->sn);
--        cxl_cstate->dvsec_offset = 0x100 + 0x0c;
--    } else {
--        cxl_cstate->dvsec_offset = 0x100;
-+        pcie_dev_ser_num_init(pci_dev, CT3D_CAP_SN_OFFSET, ct3d->sn);
-     }
- 
-     ct3d->cxl_cstate.pdev = pci_dev;
-@@ -907,6 +909,7 @@ static void ct3d_reset(DeviceState *dev)
- 
-     cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
-     cxl_device_register_init_t3(ct3d);
-+    build_dvsecs(ct3d);
- 
-     /*
-      * Bring up an endpoint to target with MCTP over VDM.
--- 
-2.29.2
-
+-- PMM
 
