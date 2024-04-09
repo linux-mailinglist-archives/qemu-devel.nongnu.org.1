@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6536B89E3BA
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA5789E3CE
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:40:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruHGP-0000XX-Kv; Tue, 09 Apr 2024 15:36:13 -0400
+	id 1ruHGR-0000Xt-99; Tue, 09 Apr 2024 15:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGN-0000Wn-Sr
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:11 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1ruHGO-0000XQ-Vu
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:13 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGM-0004cn-59
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:11 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e419d203bdso17890705ad.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:09 -0700 (PDT)
+ id 1ruHGN-0004d3-DJ
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:12 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1e2b1cd446fso44162825ad.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712691369; x=1713296169; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712691370; x=1713296170; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=WEK6zSUurL5c5k/x0P2XhXs6AUgqTg+iWS/4jd0p2Dg=;
- b=Z8qCRVXM4cOfMlTJalO+eP7UjsmthD+Uf33jk4cfqo6BX73sA8IY95nlulHTpqqVsT
- W5f8iLmtOomkFt7Or+aDNGZB6gctUX028Bf2Km7py5E9MxPoEZXx+ymcDrtfPCo/Uwmt
- jAK4iUQf0qG7zAJwtpsLkFpNhcTnM+bX5vqSp6y+Ck4Aew47OzWM0lxlTaBGGt14HP1x
- Q2ay9wJFqRJZDqPbNncH49IWYAyTGC6lrrFDnGOjTB8PjBbkd3OwH4WOhJ1IjBAcHwEU
- mZlnrv9hOQsa/35+VyPqrtJREpqeDbecKcd2xHKKrkAbhUlE4s66W/povDyeFK7GCD34
- nsbg==
+ bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
+ b=EvzIyHcgo7LtCmPPB/9RcOJZmakueXCqPF0UgeUDSE9EO+f0Tvf+bfOQH/weCHHtH5
+ SrifWB/GVrkCUFKIQL/Sb88YZxK07KqaajafMqV7ERPM48oXOow8I9+oCZrZI/i3Z6wM
+ wWWw4AEl/80pRXlO8n+EHd4bOcWuU7/JnFhvhGvRjuynY+TTSiZq/CACp7apljeNpoC9
+ KoVYUVkL0Ft8HFa4m3R4sMFYBGzjNBjFqFlq0CJFW222BGI+ETL+NrPmUaiOSLf+4K8j
+ 5EflQ6BiwkdssOlxZJHALfW0rwN4KbKed4TuggWBziQveAk77uVb9vSylXwXE9/9pRNU
+ /ckQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712691369; x=1713296169;
+ d=1e100.net; s=20230601; t=1712691370; x=1713296170;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=WEK6zSUurL5c5k/x0P2XhXs6AUgqTg+iWS/4jd0p2Dg=;
- b=lppAkZSkxXCeg9yWBRv5FLbG1n65NW9wQBAsC+paVoGTwVgmJmeQEBzN+joDtZFTCh
- hqc96KhaHiWSj/x7UEZhgID5yKJqGXcQjQaJUTitOL79AkRqE3+fe084BXx9uAZpdb1b
- HV8yzcNxtyL9aDmbaK5TVIw+PDHNoT9C1MeG6aE6c7vpXrRIxFrvqE8nTAD3OWbSdBnj
- 5NKYWDPj+gicNt7x9/uGpb9YVjvwmrWrZWmTTjOu/CmWyFcbgLJZ2po+ws2Cn43reurz
- kQkKws6VtJE4GCuO7WOS2+mRjyS2clDlhrYgvNBJptiMwz8U8XrEz/Tw4DRKBKFMiL4v
- sIaQ==
-X-Gm-Message-State: AOJu0Yw+80XoCBTBGMaHmI17kLbhYCCUOLUVz9m/8Uc3QJebEAwqmRK8
- kqiVr4Rf87wEg/J6zIp7lR46TdwCg1yAeMupZ3SR1egc5Y5r8gw9RfrYL/DmUsp+6GtkoJ2bmY7
- a
-X-Google-Smtp-Source: AGHT+IFEplnRbGJvD2WUEIIE//yGm2A/93PXhxONYKf3QUdzTJIdc9VSzBDxzgaFrV1MJeKZ9UNYDA==
-X-Received: by 2002:a17:902:c405:b0:1e2:7015:6a1d with SMTP id
- k5-20020a170902c40500b001e270156a1dmr887279plk.60.1712691368681; 
- Tue, 09 Apr 2024 12:36:08 -0700 (PDT)
+ bh=Lw/beNU1QugcC97gSnNNo3jFHiOgyIQNiC5qPkBLROQ=;
+ b=lNMqsrIV5WSBzrMRTGZBbQDF5Q7+uWl7azySwtUt+TTEIY1FOugd1nPeOE0BPQYPkJ
+ 3jknxj5PASd5uVn5MwM2pu43baGjcpzZwHTABtH0OFWWbuG9AYYpjlHcp4QjQs1QsVo4
+ KKCbqn2s34gIZdsa+cX225u6SmWNBPN7Rocez2s57lRi8DmElRo/clw3kQKnMAtwqXT3
+ zKOK+RDwIGtdFF8m8jCNfA2H2Gukz3Z2YNCcIm3S7Pm/M59VImTlW6ed2lHtFuHOZl+Z
+ 93GdUiyPLa+bxa16XiifMiPQpgcfA2SkwARal0HPeFUEGW2I5MOVTrZNg6SQw2++Qu5i
+ 776w==
+X-Gm-Message-State: AOJu0YxiHTJ5hTn71tg7ToyzDPxhFWIbjWLr5lPUfX1Zdh3W6I2kk7k/
+ c0xvFRNmk+XJjIQap8ahJZmBYFYMn4fFGT5D+3tmkz/FoWzlIkCVp5cMNRUeSa1q/voygWjI4eH
+ 3
+X-Google-Smtp-Source: AGHT+IFRAQpvzM/HZ/79BVPPqMJ2fSbXNy+tSCJRmL4k2GnYSv78raKJUd8Z9VBWR9n2222k0W6pQw==
+X-Received: by 2002:a17:902:eb8b:b0:1e0:afbb:7a89 with SMTP id
+ q11-20020a170902eb8b00b001e0afbb7a89mr906459plg.22.1712691370019; 
+ Tue, 09 Apr 2024 12:36:10 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.07
+ c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 12:36:08 -0700 (PDT)
+ Tue, 09 Apr 2024 12:36:09 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Alex Fan <alex.fan.q@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 02/20] linux-user: Fix waitid return of siginfo_t and rusage
-Date: Tue,  9 Apr 2024 09:35:45 -1000
-Message-Id: <20240409193603.1703216-3-richard.henderson@linaro.org>
+Cc: Nguyen Dinh Phi <phind.uet@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PULL v2 03/20] linux-user: replace calloc() with g_new0()
+Date: Tue,  9 Apr 2024 09:35:46 -1000
+Message-Id: <20240409193603.1703216-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
 References: <20240409193603.1703216-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,53 +94,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The copy back to siginfo_t should be conditional only on arg3,
-not the specific values that might have been written.
-The copy back to rusage was missing entirely.
+From: Nguyen Dinh Phi <phind.uet@gmail.com>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2262
+Use glib allocation as recommended by the coding convention
+
+Signed-off-by: Nguyen Dinh Phi <phind.uet@gmail.com>
+Message-Id: <20240317171747.1642207-1-phind.uet@gmail.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Tested-by: Alex Fan <alex.fan.q@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/syscall.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ linux-user/main.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index e12d969c2e..3df2b94d9a 100644
---- a/linux-user/syscall.c
-+++ b/linux-user/syscall.c
-@@ -9272,14 +9272,24 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
- #ifdef TARGET_NR_waitid
-     case TARGET_NR_waitid:
-         {
-+            struct rusage ru;
-             siginfo_t info;
--            info.si_pid = 0;
--            ret = get_errno(safe_waitid(arg1, arg2, &info, arg4, NULL));
--            if (!is_error(ret) && arg3 && info.si_pid != 0) {
--                if (!(p = lock_user(VERIFY_WRITE, arg3, sizeof(target_siginfo_t), 0)))
-+
-+            ret = get_errno(safe_waitid(arg1, arg2, (arg3 ? &info : NULL),
-+                                        arg4, (arg5 ? &ru : NULL)));
-+            if (!is_error(ret)) {
-+                if (arg3) {
-+                    p = lock_user(VERIFY_WRITE, arg3,
-+                                  sizeof(target_siginfo_t), 0);
-+                    if (!p) {
-+                        return -TARGET_EFAULT;
-+                    }
-+                    host_to_target_siginfo(p, &info);
-+                    unlock_user(p, arg3, sizeof(target_siginfo_t));
-+                }
-+                if (arg5 && host_to_target_rusage(arg5, &ru)) {
-                     return -TARGET_EFAULT;
--                host_to_target_siginfo(p, &info);
--                unlock_user(p, arg3, sizeof(target_siginfo_t));
-+                }
-             }
-         }
-         return ret;
+diff --git a/linux-user/main.c b/linux-user/main.c
+index 9277df2e9d..149e35432e 100644
+--- a/linux-user/main.c
++++ b/linux-user/main.c
+@@ -928,11 +928,7 @@ int main(int argc, char **argv, char **envp)
+      * Prepare copy of argv vector for target.
+      */
+     target_argc = argc - optind;
+-    target_argv = calloc(target_argc + 1, sizeof (char *));
+-    if (target_argv == NULL) {
+-        (void) fprintf(stderr, "Unable to allocate memory for target_argv\n");
+-        exit(EXIT_FAILURE);
+-    }
++    target_argv = g_new0(char *, target_argc + 1);
+ 
+     /*
+      * If argv0 is specified (using '-0' switch) we replace
 -- 
 2.34.1
 
