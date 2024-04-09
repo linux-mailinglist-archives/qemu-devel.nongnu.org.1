@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B68DC89E3D1
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E2B89E3B9
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:37:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruHGR-0000YK-Qk; Tue, 09 Apr 2024 15:36:15 -0400
+	id 1ruHGT-0000Yj-K8; Tue, 09 Apr 2024 15:36:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGQ-0000Xr-LE
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:14 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1ruHGR-0000Ya-V2
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:15 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGO-0004dI-Uv
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:14 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6ed054f282aso3541071b3a.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:12 -0700 (PDT)
+ id 1ruHGQ-0004dV-97
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:15 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1e3ca546d40so32787645ad.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712691371; x=1713296171; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712691373; x=1713296173; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+6xA9uOxQL6GHFyuuAVL91EMcYGjdhkuoxzjyRnEesc=;
- b=zzednVjRbN/2iPwxXCBlLXvi3F8W8UpCZ+BKARDqHNddJie0VaEB3ya2fruYfezvSs
- dgp89U5/nikhR7tNzktwpn5YdcwyQKzVTCgxbgVYFcgpquJ/9klSNdgUJIDC8GBj/UFH
- nSmpO09kRyNZ5rmoTg0Ox+gSiD4DOwb2rKNle0ZkxN4JFWPZB4xIQ+epuAgRDHA7EoI9
- Lk4961TIENhFFbdqDX0WQ39KRMfYstFX959zoNAdk4CSQp6mQtmwWdo29lN9+CjHkWs2
- XE7qiuyruzDBBQpzICbF1VRA4lK/qeSr1cEeiri6CGrF8vSgKIBX6Zux7uSHBc7sMkuS
- ChaA==
+ bh=RcrZGxEnfZgrLqlhciK4hABUGUNHIg16hIoNjeHOda0=;
+ b=O0XjgK0BOwClsrHSD5SVhItjS0tXD5REhSWHRaLcsuoHHSTR5ZKYWhk4sn4yr0uvy5
+ GpAhRKyJB52zRXjE11IY0FpYSD1MEYSU5xNypA1OW9HC7UqZhieTLx0e3Ckdm4E09pW7
+ I7nsWq8yJQBGHIO0CBqTIxbWwGFYXqI1RnwKhz9YIKMknIi6Z4S0lkDvvV8AcEIRkil9
+ KpQKIl6ZjZ++GORxWMbMk1PJpzPYo77idXjyJhOJi5BfYhrLOC2hxuVx2kWBRIlY+f7q
+ WHNb5IowYYcPoSqZKRp/Ix3aNTXGFdgUAKzBHQ27oBHqr3Yq0q2rvopDRIJoIjRKVT9q
+ e4HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712691371; x=1713296171;
+ d=1e100.net; s=20230601; t=1712691373; x=1713296173;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+6xA9uOxQL6GHFyuuAVL91EMcYGjdhkuoxzjyRnEesc=;
- b=fNFq8tnzYD2l6q89vzJVtlZIxw12wjN/J9cug1NSGifAf8HITH69sGh56hCBKJQ3AZ
- x39yFADYbNh7Ou/NjG4vMeyohn1aHDKTCkwzicA3Yy6LH8LyE3jemcIRjVWqPxU2LPEl
- ZHZ18gncp6/uFMDgj+wGdbEqVRYlVAfQgB5KhzI9LYmf+Uwn5kpJUtICvHOtWjokoaBo
- eCKaQKJTzmBzQL1Y4S9efVKjMcLZFwMoQCi/z2wBpfojRLBEZrVII4MBIDlH99rWj9bb
- j4+b3M/9nNKIKdEhjok2BYo5ujKQWitfhwLMclbzJycxKym89LxBtQfIj/LqwPZ8TtPG
- QOyg==
-X-Gm-Message-State: AOJu0YzKjTNFudc0kVSZP3i58SaLcOlzFAeZQHjl1plaQCoRNuD6+Eab
- YU/MaQHSpHzaAbXak29aZjikPb+9xIHNTO4e09mUDUddS/UKKL6Ql7s9Yau59m369HlKxOjfxt9
- E
-X-Google-Smtp-Source: AGHT+IGOgAZuJwu3FTkXLdD1y+C8iqb+AxJFN52OkAGuSptSQNbeCfLsSMh6w3Ya0ISyeev/631Q5w==
-X-Received: by 2002:a05:6a20:5618:b0:1a7:5614:a8a0 with SMTP id
- ir24-20020a056a20561800b001a75614a8a0mr714514pzc.44.1712691371343; 
- Tue, 09 Apr 2024 12:36:11 -0700 (PDT)
+ bh=RcrZGxEnfZgrLqlhciK4hABUGUNHIg16hIoNjeHOda0=;
+ b=BPGnub6gilv+W0pYLEsWTlyr8lkxehhroRgBhF0KLt8WU+r7CY5h5dvCHe7xbfQV//
+ 8R6xKTO6Hx/WGf4P6RdpdXJeEgDP0mbkPJj4TSlY3Ym9L/HTZZf3FIRFCvHlU+/tIHeQ
+ i3UKE2RoqCI58zQ/hZNwTzij7SsgrWN1W+Yon0Cz0F8aOi3rAKpxc16ib8bErhpp/7dB
+ 10uiL2LrjvaJjdDHb8t3IrqXjVzK1lqu2O4sqRt4E7r59q2S/DzaCd+CGPUj8LTpBcw0
+ 91fkdbHiIiZ1M7Ar+lOfRPrx00eYH9vMwU9wlbyuQ9pHiI6NYJOz8jMnGFGiHtg1MXsl
+ yCxw==
+X-Gm-Message-State: AOJu0YzymKBEoT0HlmlkEdb22TTl2bVGmIKX+G0Qa2PMZOfhMFz2dIpY
+ Z/3aVwGupvUTYlX4gz0rUmZ78yWBrxwaKQnamL0Xkm5bry/lApayRe+CXhgulvDlAZeELIMxmba
+ A
+X-Google-Smtp-Source: AGHT+IHzLEmVrSQQngDOt3J2FuXdg443OTw76cp7x8wqkU1vabvTdt/3CtGFOUDAHHmdMR2RXKXMPw==
+X-Received: by 2002:a17:902:e541:b0:1e2:a5b3:e4 with SMTP id
+ n1-20020a170902e54100b001e2a5b300e4mr996525plf.0.1712691372878; 
+ Tue, 09 Apr 2024 12:36:12 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.10
+ c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 12:36:11 -0700 (PDT)
+ Tue, 09 Apr 2024 12:36:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PULL v2 04/20] target/hppa: Fix IIAOQ, IIASQ for pa2.0
-Date: Tue,  9 Apr 2024 09:35:47 -1000
-Message-Id: <20240409193603.1703216-5-richard.henderson@linaro.org>
+Cc: Zack Buhman <zack@buhman.org>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 05/20] target/sh4: mac.w: memory accesses are 16-bit words
+Date: Tue,  9 Apr 2024 09:35:48 -1000
+Message-Id: <20240409193603.1703216-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
 References: <20240409193603.1703216-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,94 +94,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The contents of IIAOQ depend on PSW_W.
-Follow the text in "Interruption Instruction Address Queues",
-pages 2-13 through 2-15.
+From: Zack Buhman <zack@buhman.org>
 
-Tested-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Reported-by: Sven Schnelle <svens@stackframe.org>
-Fixes: b10700d826c ("target/hppa: Update IIAOQ, IIASQ for pa2.0")
+Before this change, executing a code sequence such as:
+
+           mova   tblm,r0
+           mov    r0,r1
+           mova   tbln,r0
+           clrs
+           clrmac
+           mac.w  @r0+,@r1+
+           mac.w  @r0+,@r1+
+
+           .align 4
+  tblm:    .word  0x1234
+           .word  0x5678
+  tbln:    .word  0x9abc
+           .word  0xdefg
+
+Does not result in correct behavior:
+
+Expected behavior:
+  first macw : macl = 0x1234 * 0x9abc + 0x0
+               mach = 0x0
+
+  second macw: macl = 0x5678 * 0xdefg + 0xb00a630
+               mach = 0x0
+
+Observed behavior (qemu-sh4eb, prior to this commit):
+
+  first macw : macl = 0x5678 * 0xdefg + 0x0
+               mach = 0x0
+
+  second macw: (unaligned longword memory access, SIGBUS)
+
+Various SH-4 ISA manuals also confirm that `mac.w` is a 16-bit word memory
+access, not a 32-bit longword memory access.
+
+Signed-off-by: Zack Buhman <zack@buhman.org>
+Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240402093756.27466-1-zack@buhman.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/int_helper.c | 20 +++++++++++---------
- target/hppa/sys_helper.c | 18 +++++++++---------
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ target/sh4/translate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
-index 90437a92cd..a667ee380d 100644
---- a/target/hppa/int_helper.c
-+++ b/target/hppa/int_helper.c
-@@ -107,14 +107,10 @@ void hppa_cpu_do_interrupt(CPUState *cs)
- 
-     /* step 3 */
-     /*
--     * For pa1.x, IIASQ is simply a copy of IASQ.
--     * For pa2.0, IIASQ is the top bits of the virtual address,
--     *            or zero if translation is disabled.
-+     * IIASQ is the top bits of the virtual address, or zero if translation
-+     * is disabled -- with PSW_W == 0, this will reduce to the space.
-      */
--    if (!hppa_is_pa20(env)) {
--        env->cr[CR_IIASQ] = env->iasq_f >> 32;
--        env->cr_back[0] = env->iasq_b >> 32;
--    } else if (old_psw & PSW_C) {
-+    if (old_psw & PSW_C) {
-         env->cr[CR_IIASQ] =
-             hppa_form_gva_psw(old_psw, env->iasq_f, env->iaoq_f) >> 32;
-         env->cr_back[0] =
-@@ -123,8 +119,14 @@ void hppa_cpu_do_interrupt(CPUState *cs)
-         env->cr[CR_IIASQ] = 0;
-         env->cr_back[0] = 0;
-     }
--    env->cr[CR_IIAOQ] = env->iaoq_f;
--    env->cr_back[1] = env->iaoq_b;
-+    /* IIAOQ is the full offset for wide mode, or 32 bits for narrow mode. */
-+    if (old_psw & PSW_W) {
-+        env->cr[CR_IIAOQ] = env->iaoq_f;
-+        env->cr_back[1] = env->iaoq_b;
-+    } else {
-+        env->cr[CR_IIAOQ] = (uint32_t)env->iaoq_f;
-+        env->cr_back[1] = (uint32_t)env->iaoq_b;
-+    }
- 
-     if (old_psw & PSW_Q) {
-         /* step 5 */
-diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
-index 208e51c086..22d6c89964 100644
---- a/target/hppa/sys_helper.c
-+++ b/target/hppa/sys_helper.c
-@@ -78,21 +78,21 @@ target_ulong HELPER(swap_system_mask)(CPUHPPAState *env, target_ulong nsm)
- 
- void HELPER(rfi)(CPUHPPAState *env)
- {
--    env->iasq_f = (uint64_t)env->cr[CR_IIASQ] << 32;
--    env->iasq_b = (uint64_t)env->cr_back[0] << 32;
--    env->iaoq_f = env->cr[CR_IIAOQ];
--    env->iaoq_b = env->cr_back[1];
-+    uint64_t mask;
-+
-+    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
- 
-     /*
-      * For pa2.0, IIASQ is the top bits of the virtual address.
-      * To recreate the space identifier, remove the offset bits.
-+     * For pa1.x, the mask reduces to no change to space.
-      */
--    if (hppa_is_pa20(env)) {
--        env->iasq_f &= ~env->iaoq_f;
--        env->iasq_b &= ~env->iaoq_b;
--    }
-+    mask = gva_offset_mask(env->psw);
- 
--    cpu_hppa_put_psw(env, env->cr[CR_IPSW]);
-+    env->iaoq_f = env->cr[CR_IIAOQ];
-+    env->iaoq_b = env->cr_back[1];
-+    env->iasq_f = (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
-+    env->iasq_b = (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
- }
- 
- static void getshadowregs(CPUHPPAState *env)
+diff --git a/target/sh4/translate.c b/target/sh4/translate.c
+index a9b1bc7524..6643c14dde 100644
+--- a/target/sh4/translate.c
++++ b/target/sh4/translate.c
+@@ -816,10 +816,10 @@ static void _decode_opc(DisasContext * ctx)
+             TCGv arg0, arg1;
+             arg0 = tcg_temp_new();
+             tcg_gen_qemu_ld_i32(arg0, REG(B7_4), ctx->memidx,
+-                                MO_TESL | MO_ALIGN);
++                                MO_TESW | MO_ALIGN);
+             arg1 = tcg_temp_new();
+             tcg_gen_qemu_ld_i32(arg1, REG(B11_8), ctx->memidx,
+-                                MO_TESL | MO_ALIGN);
++                                MO_TESW | MO_ALIGN);
+             gen_helper_macw(tcg_env, arg0, arg1);
+             tcg_gen_addi_i32(REG(B11_8), REG(B11_8), 2);
+             tcg_gen_addi_i32(REG(B7_4), REG(B7_4), 2);
 -- 
 2.34.1
 
