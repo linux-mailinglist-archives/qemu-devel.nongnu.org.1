@@ -2,68 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49B2389E3AD
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E109789E3C1
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:38:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruHGq-0000ho-2p; Tue, 09 Apr 2024 15:36:40 -0400
+	id 1ruHGs-0000iN-62; Tue, 09 Apr 2024 15:36:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGn-0000gr-Fe
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:37 -0400
+ id 1ruHGp-0000i5-IS
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:39 -0400
 Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGk-0004gK-Ng
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:36 -0400
+ id 1ruHGl-0004hs-UW
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:38 -0400
 Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e4266673bbso22532875ad.2
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:34 -0700 (PDT)
+ d9443c01a7336-1e4149e7695so19670915ad.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712691393; x=1713296193; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712691395; x=1713296195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LWeWfrDPztEwkV9YuE7zu+DtIohBh0oWfxn6udjmQ4s=;
- b=hfDSbyaBzkl5eQ8A3w3/i15lcs4dlSVlqe/IKxEkMMGDQa1RCwiL9omjh7v2s3eXSO
- E4dNnrpiluSqppj1XZSqFnyzd/sWAHLHIepzbwtVuwrW3hHqyoBxMJ1hUTH3qs+RbOXo
- yaoBXHmpWp+1lMbM+Kmpuo4RcCF9Vrk3Xm/I+zNry6oIdIGVVcLe2WdlojrfyxjUG2NG
- zJL5Y/PUjO7Hi3D4YwTqUr7elSix56gx0EgChlx7ftV5ermovGGWxu1YYmVLGKRGLYRa
- PV/95kLuiq26jtlM65YGO5H5vbREMzEIKYbOmi/3IE9nVDlfSqFhfMXmoASTmJiSSXui
- 4NjQ==
+ bh=xpaONpZX7TzlKuP+L0GxHPWtvRjew/38IVUtIRwPa5c=;
+ b=u32rTkWjDpvUVunMYXf5Bu2wHhCy/Usc1g7CLOneDWr3CvNZDldf77QLkTy7uJAJeF
+ jKjwHAHVoz/J8x7SWlyw+Wg5NlDRFNJU7xlEi41cSeozDniZhExe5GwhufFh9tf+sTZR
+ G22po88Kf69jRlOSzmOlyKjqnuxkJPJoFX+mTvO9FbKO/b5FH1tXTTMQF3/ZUbII/6/+
+ n82dPxddUJ67AFHdtpCmQ+AmqgGcMfhGR7HYsHPjl2W074cdDyGgXWOBhO2GXOWvdHR9
+ 4EospU6vHMXGJA4gf9/lLZ5qE+0fx5zAcY9iE6lvHqc/jh5BgPmvHRS6Hf4iIVAbiBNl
+ oYzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712691393; x=1713296193;
+ d=1e100.net; s=20230601; t=1712691395; x=1713296195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LWeWfrDPztEwkV9YuE7zu+DtIohBh0oWfxn6udjmQ4s=;
- b=eftH58S4avBnucUICkYCcld6c+kk4hRW+uvRoVzYBrgVL4f8+J+hog7xwtXyzS2f53
- o62pyRgMXeL0UaldqnaKtWOJCZzIxBDgWDovWlGZ2PxwAlrxuXnG9XwOBbgHn8uipgx5
- RwGh8g2Gx6HZk7RlAgDSitFlZz+RbujpxXhcFUD2zaeA7xhxKfofC2Y9ImRWowrg9YnJ
- Fvy+3LipKnVkKZzarI9Zt65RYHyVFPO0IDWT4qebxyOQw59U58/qt0nSF+vUek8oFZaf
- Y60N64DldhDVqPHM7bBulHSfU6/gLy5k+KtJqSsUhmKFqyfEEeM7cptSrCPK0DbPWaih
- uKPQ==
-X-Gm-Message-State: AOJu0YxVlc2jX0ovJJ2ShV6W9sjqdZNlFjbCjrtYkp4c3Mv0UfjRdA94
- PqB5+StSAKhpBAWdu1stlXryACHIoei8f7F/RfSESNYesuzn1eJOnSSFF9z9T43Trz0+718taco
- b
-X-Google-Smtp-Source: AGHT+IEzAJnnYLM1IZIBvy/TheKGie2hHjDzTniIG874R+B5uIZIzZxRK2JGUS8Hul+fyG/5P1M46w==
-X-Received: by 2002:a17:903:28c:b0:1e0:4dfd:c121 with SMTP id
- j12-20020a170903028c00b001e04dfdc121mr825476plr.68.1712691393520; 
- Tue, 09 Apr 2024 12:36:33 -0700 (PDT)
+ bh=xpaONpZX7TzlKuP+L0GxHPWtvRjew/38IVUtIRwPa5c=;
+ b=xC5teEQB+BvuuMILMXArzU9KZB0WOVSuJD2txact+Ber2zU2xUbnX9FRrALv7zchCd
+ 0NpNEF3ulfDzcLmmqKWjpXnoY4VrDWi5KX81ueoAaKgxY2tvpp+o7OCwaDzm0zB+gtqQ
+ lm/kQj2UFRAj0ql03bXtGwawQH440fVrv18Jt+uQnyqVYSJZaYUBqlKiblWJAgShkn6A
+ 5wxjJI+RYX4U0FMY3hDv0qaujut9xvG8HVNaLXtuEXbP369VLZ4hSPO9xCq4M9GUk4NA
+ UCkvWD6GrWRrKToIJYnsDawqLbuzKFtR+9k9Xr9Jw+plQGMRclPuDGf9qVPO6X2G0sZg
+ CZQQ==
+X-Gm-Message-State: AOJu0Yw9gIoxtngFHLH5xYLiramuvImzzngUwA3lxNmU1cuu/oCCMZb6
+ 3UH+W/q8SyzQKSBlxDsWMNi9mtUDrH9aLCwYnJHnfKEDmaOwiI/zqfaq0PcjzJDwJVndEiqW9s2
+ /
+X-Google-Smtp-Source: AGHT+IGgXoWFCythR4LhHHwMcwh7J2QSZKAKjS9aEPmSWjlhJR5TK+ocQmiypcZuwC4dj7NAaYQRLQ==
+X-Received: by 2002:a17:902:eb8f:b0:1e0:a7cc:3750 with SMTP id
+ q15-20020a170902eb8f00b001e0a7cc3750mr963465plg.3.1712691394748; 
+ Tue, 09 Apr 2024 12:36:34 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.32
+ c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 12:36:33 -0700 (PDT)
+ Tue, 09 Apr 2024 12:36:34 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?J=C3=B8rgen=20Hansen?= <Jorgen.Hansen@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 19/20] accel/tcg: Improve can_do_io management
-Date: Tue,  9 Apr 2024 09:36:02 -1000
-Message-Id: <20240409193603.1703216-20-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 20/20] linux-user: Preserve unswapped siginfo_t for strace
+Date: Tue,  9 Apr 2024 09:36:03 -1000
+Message-Id: <20240409193603.1703216-21-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
 References: <20240409193603.1703216-1-richard.henderson@linaro.org>
@@ -94,144 +93,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already attempted to set and clear can_do_io before the first
-and last insns, but only used the initial value of max_insns and
-the call to translator_io_start to find those insns.
+Passing the tswapped structure to strace means that
+our internal si_type is also gone, which then aborts
+in print_siginfo.
 
-Now that we track insn_start in DisasContextBase, and now that
-we have emit_before_op, we can wait until we have finished
-translation to identify the true first and last insns and emit
-the sets of can_do_io at that time.
-
-This fixes the case of a translation block which crossed a page
-boundary, and for which the second page turned out to be mmio.
-In this case we truncate the block, and the previous logic for
-can_do_io could leave a block with a single insn with can_do_io
-set to false, which would fail an assertion in cpu_io_recompile.
-
-Reported-by: Jørgen Hansen <Jorgen.Hansen@wdc.com>
+Fixes: 4d6d8a05a0a ("linux-user: Move tswap_siginfo out of target code")
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Jørgen Hansen <Jorgen.Hansen@wdc.com>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h |  1 -
- accel/tcg/translator.c    | 45 ++++++++++++++++++++-------------------
- 2 files changed, 23 insertions(+), 23 deletions(-)
+ linux-user/signal.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index ceaeca8c91..2c4fb818e7 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -87,7 +87,6 @@ typedef struct DisasContextBase {
-     int num_insns;
-     int max_insns;
-     bool singlestep_enabled;
--    int8_t saved_can_do_io;
-     bool plugin_enabled;
-     struct TCGOp *insn_start;
-     void *host_addr[2];
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index ae61c154c2..9de0bc34c8 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -18,20 +18,14 @@
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index a93148a4cb..05dc4afb52 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -1173,6 +1173,7 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
+     CPUState *cpu = env_cpu(cpu_env);
+     abi_ulong handler;
+     sigset_t set;
++    target_siginfo_t unswapped;
+     target_sigset_t target_old_set;
+     struct target_sigaction *sa;
+     TaskState *ts = get_task_state(cpu);
+@@ -1182,9 +1183,14 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
+     k->pending = 0;
  
- static void set_can_do_io(DisasContextBase *db, bool val)
- {
--    if (db->saved_can_do_io != val) {
--        db->saved_can_do_io = val;
--
--        QEMU_BUILD_BUG_ON(sizeof_field(CPUState, neg.can_do_io) != 1);
--        tcg_gen_st8_i32(tcg_constant_i32(val), tcg_env,
--                        offsetof(ArchCPU, parent_obj.neg.can_do_io) -
--                        offsetof(ArchCPU, env));
--    }
-+    QEMU_BUILD_BUG_ON(sizeof_field(CPUState, neg.can_do_io) != 1);
-+    tcg_gen_st8_i32(tcg_constant_i32(val), tcg_env,
-+                    offsetof(ArchCPU, parent_obj.neg.can_do_io) -
-+                    offsetof(ArchCPU, env));
- }
- 
- bool translator_io_start(DisasContextBase *db)
- {
--    set_can_do_io(db, true);
--
      /*
-      * Ensure that this instruction will be the last in the TB.
-      * The target may override this to something more forceful.
-@@ -84,13 +78,6 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
-                          - offsetof(ArchCPU, env));
-     }
- 
--    /*
--     * cpu->neg.can_do_io is set automatically here at the beginning of
--     * each translation block.  The cost is minimal, plus it would be
--     * very easy to forget doing it in the translator.
--     */
--    set_can_do_io(db, db->max_insns == 1);
--
-     return icount_start_insn;
- }
- 
-@@ -129,6 +116,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
- {
-     uint32_t cflags = tb_cflags(tb);
-     TCGOp *icount_start_insn;
-+    TCGOp *first_insn_start = NULL;
-     bool plugin_enabled;
- 
-     /* Initialize DisasContext */
-@@ -139,7 +127,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     db->num_insns = 0;
-     db->max_insns = *max_insns;
-     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
--    db->saved_can_do_io = -1;
-     db->insn_start = NULL;
-     db->host_addr[0] = host_pc;
-     db->host_addr[1] = NULL;
-@@ -159,6 +146,9 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-         *max_insns = ++db->num_insns;
-         ops->insn_start(db, cpu);
-         db->insn_start = tcg_last_op();
-+        if (first_insn_start == NULL) {
-+            first_insn_start = db->insn_start;
-+        }
-         tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
- 
-         if (plugin_enabled) {
-@@ -171,10 +161,6 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-          * done next -- either exiting this loop or locate the start of
-          * the next instruction.
-          */
--        if (db->num_insns == db->max_insns) {
--            /* Accept I/O on the last instruction.  */
--            set_can_do_io(db, true);
--        }
-         ops->translate_insn(db, cpu);
- 
-         /*
-@@ -207,6 +193,21 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     ops->tb_stop(db, cpu);
-     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
- 
-+    /*
-+     * Manage can_do_io for the translation block: set to false before
-+     * the first insn and set to true before the last insn.
-+     */
-+    if (db->num_insns == 1) {
-+        tcg_debug_assert(first_insn_start == db->insn_start);
-+    } else {
-+        tcg_debug_assert(first_insn_start != db->insn_start);
-+        tcg_ctx->emit_before_op = first_insn_start;
-+        set_can_do_io(db, false);
+-     * Writes out siginfo values byteswapped, accordingly to the target. It also
+-     * cleans the si_type from si_code making it correct for the target.
++     * Writes out siginfo values byteswapped, accordingly to the target.
++     * It also cleans the si_type from si_code making it correct for
++     * the target.  We must hold on to the original unswapped copy for
++     * strace below, because si_type is still required there.
+      */
++    if (unlikely(qemu_loglevel_mask(LOG_STRACE))) {
++        unswapped = k->info;
 +    }
-+    tcg_ctx->emit_before_op = db->insn_start;
-+    set_can_do_io(db, true);
-+    tcg_ctx->emit_before_op = NULL;
-+
-     if (plugin_enabled) {
-         plugin_gen_tb_end(cpu, db->num_insns);
+     tswap_siginfo(&k->info, &k->info);
+ 
+     sig = gdb_handlesig(cpu, sig, NULL, &k->info, sizeof(k->info));
+@@ -1197,7 +1203,7 @@ static void handle_pending_signal(CPUArchState *cpu_env, int sig,
      }
+ 
+     if (unlikely(qemu_loglevel_mask(LOG_STRACE))) {
+-        print_taken_signal(sig, &k->info);
++        print_taken_signal(sig, &unswapped);
+     }
+ 
+     if (handler == TARGET_SIG_DFL) {
 -- 
 2.34.1
 
