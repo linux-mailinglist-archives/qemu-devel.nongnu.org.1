@@ -2,80 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCC989D1B3
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDFB89D1E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:28:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru3e7-0003KW-0P; Tue, 09 Apr 2024 01:03:47 -0400
+	id 1ru40K-00068E-NC; Tue, 09 Apr 2024 01:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3e3-0003Gh-2o
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:43 -0400
-Received: from mail-oi1-x230.google.com ([2607:f8b0:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3e1-0005Pm-C3
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:42 -0400
-Received: by mail-oi1-x230.google.com with SMTP id
- 5614622812f47-3c60019eecaso73220b6e.0
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712639020; x=1713243820; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=GoHB33Bfj8uNurFePxqw98pp2Ot/UcwhxjflbY0n1tE=;
- b=rg5UeMKelVb+VYFki35FKnJSejyhrfAiOavh4hV5rzfgqDD8jETMYleaaQyAw3mJVi
- BoIa+4XeVNsVRTWz/rxrZEbxeNFrXiX48wdsJcWURfDo1gTskmX1G/knaP+9om9NWhjd
- iTuhz10YX0BUt/ak9oOybl8Fa2MODjQvRbWVSlF9pZ7ziwaUVq8j8dPVM7LpByiMq/2j
- m890oiqgoXVwM9+nDJnBXruAdObgsFRCNnoJdmlWKWcfy30ASWP62EKgSVARVIB9Ekcq
- okAD3WViSFlVWU4MPl2SEp0tlIdlIgh3pgjW4IA8KOwYTOoKTXeIvumOexCnQyK/4/CG
- vexg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712639020; x=1713243820;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GoHB33Bfj8uNurFePxqw98pp2Ot/UcwhxjflbY0n1tE=;
- b=P/UWIoavd8axhSxePNUuxULnezWfxUg8gwm5ezAXLMyHDzBKEtc1NKdQIYV2CkCtms
- jiJbJFrPQbb456/wGjcfpCa4lz/ioXIY7cPt8Gi9N5TTJBP4zj2UjAIT+MlJKqfqf0fD
- d4RwtVQMUM7/GxKgBYw2Wrm9n2fGvEZeFsgbu9JgIBhPSrZhJNFXEkcGOGS1zWcZHs+M
- 2UdUTz0bHFRqL9Q/hl40yVsm5g0kk1b0SnZ946ZSqQMCBp8UHfVw6yS35TI9tv1ftRUW
- is3r8BJGqGGRZxcues8zaa+haTtzeP8QLcr5PBySPJb5i58uITOwLXaPy+5iBq4Z9t5r
- BeJg==
-X-Gm-Message-State: AOJu0Yz6AaBkMjYuAUJRnDSyHzfJnXJ1t+XdPHF7KMc54rgNRBYZtfdz
- w/WXnRYiPJstGz3s68axfb62eXie/+m+iUpc9GhFHKym9ushi9zkGk2u/HvLg5+ugutcxIioo2i
- v
-X-Google-Smtp-Source: AGHT+IH6TR2dEdiFOf17bUH31ONghCkGbi26ot/IMGO5L7rydNLUbKLe9W4qC4cBtbkTO8pfR1gZDg==
-X-Received: by 2002:a05:6808:f02:b0:3c4:f52c:64d with SMTP id
- m2-20020a0568080f0200b003c4f52c064dmr12254553oiw.59.1712639020266; 
- Mon, 08 Apr 2024 22:03:40 -0700 (PDT)
-Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
- by smtp.gmail.com with ESMTPSA id
- z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.39
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 22:03:39 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH v2 28/28] target/i386: Pass host pointer and size to
- cpu_x86_{xsave, xrstor}
-Date: Mon,  8 Apr 2024 19:03:02 -1000
-Message-Id: <20240409050302.1523277-29-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240409050302.1523277-1-richard.henderson@linaro.org>
-References: <20240409050302.1523277-1-richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <wafer@jaguarmicro.com>)
+ id 1ru40H-00067K-A3
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:26:41 -0400
+Received: from mail-psaapc01on2111.outbound.protection.outlook.com
+ ([40.107.255.111] helo=APC01-PSA-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <wafer@jaguarmicro.com>)
+ id 1ru40E-0001WW-BS
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:26:41 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FJCUTFJQh2VT9G6xDj/Jj20KFHK4Y+1bgJXGPss/GFTqBnILQ5ykDXioWoEFEYuYYqQbfa08HTKPGg18OFTFri4UZCsYalwYSzifMfmQ5ggrPILW44llHQgPs2bttnoOxpVKsNj2CvOU8my/Ps6aqEuNcpL8DPFyuIt7D1MacdKxoPU/n01iBdqbsjHaI2qj4cOYIwfEs2dd3VRRMPSjZsaDfGmZVgbvYEkihcHH+j/zFtQp1kw54O/RCWrl4PrGGNHB6zadiZgDlcM2PD+6CYJq5pNZ61nsMLpee9inXch73A1s3d/2JGjdIe3UXPCQhGcOMjDAsppCgP6qRKjAoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hFFw+XEA5GKZ5RozIYOnlNdYm4PkgWuGJePZXQmC5jo=;
+ b=R4NBSpyMbncDxdI1aCXArA68XIu5NaXF2DQa9l7EzA4OfArHQyZecv/059WmQ88/N3rU5h6ydnM96jnAAn/SpMDVjiXcFCOu7Fz/7ZEpHK0RE1tXyM63xB6o44LAEm0qVPvqYZZHaw+L6zZPVuWyx88bcnG2Gmnx+779UKhRCP/ncZmCpMYgH2CF9cZeWtwu3zslcjzWzXaCiFaPBNSv0XBF/O58Q/RZh1xYOoCm3gQmeX5ExVov4/pmIZ/Q52zpFaIDcb+6nsIst55Q7mEvO46ZC7nfvr+7/4Hi6w+FnP1rW+xMWNuBThSOJQ3b77KCerXlv8JTJpRRgezvZfLlJQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
+ header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hFFw+XEA5GKZ5RozIYOnlNdYm4PkgWuGJePZXQmC5jo=;
+ b=mRm+7rM08LKHYCQ6DQ8w9GtX64Am8BBpaGA7BBIQo8gOFbQhUz4sVxPgiTI8tBF51s6+isn40yhanxBkKdO80pDglGmBfvCN1elNdc85JdasF1ske/GYeMa6Y8TOdqhaqxmt53EWg/b+/wMOtMpYAHHN2aGds1poXOTNqeTUBDo9BLEcckcxSSBA1TQtJa0jUaEFE9r5kQkTFN+h6BqZMJNtnS8ufGIq+3KzAzvVoRiZbZjD9CNoZwcqUZPb8rw39U3sjiItHEuzbtDeJLWvTVF6jRrdH33HL8y81V8zxlSQCqUUqH46zVk+i9478cXxMhAOfVDhHIG1pxoSJNzECw==
+Received: from PUZPR06MB4713.apcprd06.prod.outlook.com (2603:1096:301:b4::10)
+ by TYZPR06MB5999.apcprd06.prod.outlook.com (2603:1096:400:33d::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Tue, 9 Apr
+ 2024 05:21:30 +0000
+Received: from PUZPR06MB4713.apcprd06.prod.outlook.com
+ ([fe80::807:eccb:cfd5:e6b5]) by PUZPR06MB4713.apcprd06.prod.outlook.com
+ ([fe80::807:eccb:cfd5:e6b5%3]) with mapi id 15.20.7409.042; Tue, 9 Apr 2024
+ 05:21:30 +0000
+From: Wafer <wafer@jaguarmicro.com>
+To: Eugenio Perez Martin <eperezma@redhat.com>
+CC: "mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+ <jasowang@redhat.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jonah.palmer@oracle.com" <jonah.palmer@oracle.com>, "leiyang@redhat.com"
+ <leiyang@redhat.com>, Angus Chen <angus.chen@jaguarmicro.com>
+Subject: Re: [PATCH v4] hw/virtio: Fix packed virtqueue flush used_idx
+Thread-Topic: [PATCH v4] hw/virtio: Fix packed virtqueue flush used_idx
+Thread-Index: AdqKPZTgqZB2kbJaQ/Kxd9wYOvHPMg==
+Date: Tue, 9 Apr 2024 05:21:30 +0000
+Message-ID: <PUZPR06MB4713186F5AAF536A02E4AB3BA2072@PUZPR06MB4713.apcprd06.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: zh-CN
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PUZPR06MB4713:EE_|TYZPR06MB5999:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: DXgEoh5jhxEszHlaAzApJGvH7P/BWYlHTf1pEwIwzaIKBXt/DlIH/ikchHw6kzizBA4lhlAxRdrjTdebsE6uwMothH/rV2yKdhDTUsJGnRxMHT4TRQZ87XOPF6L+cKglmzCRwa5nJTb4Bc8WQxL+RRWRIaJAvFJOQ9tMQ6rRwWnS/mF5yrsUfIcxkFplCX1Guy3NWUMJWm22TckKtTCM/1JnUKTYlHs04KA6nMwJXRUmr6xhOjrpWIT3FCg9f+2k8Mrgi+T2tW/1ykEyU6Z5BD3XVbfmSDWoObsZU6oyoxVWjGorcFx5i8WHc7DNRFkgeTR5t12Gz7XRRVs5WLfXPMwaZZhm7dzd3u76LEfBxoX/AM7YmHsRU06YFiXKbUq4qSCZrtuePOXeTYxRcR7Dcbq/H0kpjvLR0k3VL4iY8oAaBnahrDuDmy8uTCCl/gjt/h8BdNuQpjesMIdC1QUpoZdkjaFbNbdNw4FpQDYOUeKzDcwww4bZEyYPtxQI3BzR/KwrvralV09hy1RBTwHWZ7yPNUmU/KAkgnDgGvEtCeWTC73SwzcJ62hkA2tT6hWbO+bBhZxr0b9uaA9eDPyw3PsmNNNXlijR9HH0cKgXp6t/swc4SvdpCJ+7JOtZ0Z98pYipDJ3RqPvxdDOP+xq8TW9EKpVsVEfac9P/EjoKZX4=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:zh-cn; SCL:1;
+ SRV:; IPV:NLI; SFV:NSPM; H:PUZPR06MB4713.apcprd06.prod.outlook.com; PTR:;
+ CAT:NONE; SFS:(13230031)(376005)(1800799015)(366007); DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VnhaQnQ3aHpoN25Fanh3L2gwRWpvMUNFQ1g5ZTdQU09TMGVJVkxtU2JDczlw?=
+ =?utf-8?B?VHczNUVBWXgzVmN1T3g5U3VBQnU3dldtUGZXRTd2N2R6cXJrVzZ0dEN4VHJR?=
+ =?utf-8?B?ODNDeTJXcEx4R0ptbjBuYjlZSjVCNkNHTXdrMHYrWmdZQ2tHVTJFMjIyTGNs?=
+ =?utf-8?B?TzlWc2JnaXlLaWQ1enRPYzB2aUN6OEhBQ3NJTFlSVFJkaXM4SG9uVUxRc0JS?=
+ =?utf-8?B?RHltK0luWW8zRVBkUVROMnVkVmVnMWZSU25UOFIvR2xVdTFsTk1hcFlqb3dS?=
+ =?utf-8?B?elZnK3NLQWFHV2xEU1oxYkhMaGp3ZWk0cTVhTmZhcXZ5QzdxbkY0NDhZaWZT?=
+ =?utf-8?B?ejhVdzk2bGFaZTlpZjRaamh3MU1vTi9JaE5ReENybWF2cDhGcCtqdzBLeW94?=
+ =?utf-8?B?dDdKdlk1VHpQRStlSkd1MElObWVSZlJhdDBublltcWxpemdQajZpUVdCTWFw?=
+ =?utf-8?B?enBXcTRKVE45d2t4aHJueGczSmk2T0VvVkJyVHU2SkVnbmFTOTBTaUdOY1Rr?=
+ =?utf-8?B?bkg3NTk2VDRjRmFjcUdLUXZ6TklZczNCSEhYdTE5WUJJQnZuZ2ZXZlVJalgr?=
+ =?utf-8?B?Nk9pY3ZaZHZFZE8zMXpJQngyYkkyQzFHQWUvaGN1aVc3d2xhblFyY0dsMllZ?=
+ =?utf-8?B?RzJUcFVoVnEyTk0vTTZ3Y1lMVnI4SElaamRVa1RVN1ZUKzFjWlpjZ0VUVStF?=
+ =?utf-8?B?RUpWUzRqSFRtYnpxRFN5UGI4b211OTY2RzBOcFFKZlIvVDBxVmhsZDlKd1A5?=
+ =?utf-8?B?VVpLSHZlbXNYanpzcm5RUncrejJWeDdJd2E4ZmRhbDdsUEowYUZXRnY1ZU5Z?=
+ =?utf-8?B?NzhUa011UkFabVFvYXZuRzJibFRTL0tnZU42RnFndFhabXNxek5pL2x4Rmtr?=
+ =?utf-8?B?T25uTjdscTlWY0hkS0JQU3d0R0ZXajlOOXdyNDgxMTFEQ21pcmQxRUovUXRa?=
+ =?utf-8?B?enZUSmpiMC9pTzVrVGtZQTlmTG9zUGhEcXhrdnhQSUtjREx3dDNxN3ZpMk9H?=
+ =?utf-8?B?VjlpZ012TkRsK0lQdVA4aWZqelJTTlRCRDl4YzBKZHZ1bnZQL29xRXJUbFpw?=
+ =?utf-8?B?RDJGdXJWV1hXY2hXY2VOY0tmMEZhZ2d1VUk5OEtEOWlldVB2Y2NqMHFUalJE?=
+ =?utf-8?B?a2IzeVRmR0ovK2Y2UDI2NUxBTndCSStvdlpXV3NaQW9Ka1BIRGJmRXBzQzNv?=
+ =?utf-8?B?L1laemt2WGd4UzRtUmErWjlMTnpUTXdFUzE4MnlsWkZBdGFUVzh2M3FpRk5q?=
+ =?utf-8?B?SHhlaUU1eUZZaWZXL0sxNE93QzRUTU1LV3hzcHQzT0FMSkpvc3VjdURCSmho?=
+ =?utf-8?B?bnB5UXMzWnNwSTk1RnR3TkV6RjFieEZNc21yVFZ3bVAzOTNyaWJBYW5oc082?=
+ =?utf-8?B?RDJGUWltNDFqUTB5UzNXVnd6SU1UdnpOT3pkRWN1WFVIV0lWUHkvOFdORUQ4?=
+ =?utf-8?B?TFNVZ2tScERwdFJ1NWFNbThuTitMamFxc1U1bXFGY2c4SDFkUlM4aWZ6bmRx?=
+ =?utf-8?B?YXpjaDBLU2IvQUFLdnczSFIxU3dwcHRHNkxCODdnbjZwTXRzQmIyK3BqRXBU?=
+ =?utf-8?B?TkZrQi9yU0M1OXBXaUJqNjFrS08ybzBIdDQxMHAyQzlwbzJta1pqMDQ3aGh2?=
+ =?utf-8?B?bFgrbklLQ3ZrSVBYTDdOcU13bmtVMGJyZE55TmZlb1g4MGUzS1FmUWdoUnI5?=
+ =?utf-8?B?Yi9DTi9wWnd0U3hjSXVYeFBpbTR1RXhjekJJRE1VbC93WEtQbVVuSVAvNmFm?=
+ =?utf-8?B?RytNdG1ucVh1TzZmRGpmSXRWU0c4QkxlbzJvUVRQUUwrNzhxMWx6Ynh5b0pT?=
+ =?utf-8?B?R0hiUERIem5IbDlENFh6Z0pOeWY1bVV3c1JuUVgxcVdrMmJ4UGI4U2xUbFBF?=
+ =?utf-8?B?VUsxN0w5My9ITi9pM3VFaDZySC9pRzhqQVZCNzJEbjF4MTVVUEJZQkRYTDdv?=
+ =?utf-8?B?Y2xDekd1NkZwSk5DN0VzNGM3YzVyc2VEVE9PcWdtT0txSE5La21qSkhNM2I3?=
+ =?utf-8?B?ZFh3NitEeCtSbnBFL2pIL0FhOGdMYXZqeXdzL2FsU0dycUc0OXZqZFdUd3I1?=
+ =?utf-8?B?blhPM1NkRW8vYWRNcVB4V0dRVTB5cC8yUzVOYVNtNXBUL3dpcmNoNFFEMVpi?=
+ =?utf-8?Q?dxg6ejqTOCH/FRi5nyZccKad3?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::230;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x230.google.com
+X-OriginatorOrg: jaguarmicro.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PUZPR06MB4713.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b43c7f8d-44d5-429d-8e4b-08dc5854e9df
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Apr 2024 05:21:30.3776 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NfvobC00OvGyKs7TRIPUdV6YhCAhTZ3rsyaLHFmkJ4iNYR6lZpQT2EbKLwiNq97EZL6y893Ej0iS99iGETLCZA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB5999
+Received-SPF: pass client-ip=40.107.255.111;
+ envelope-from=wafer@jaguarmicro.com;
+ helo=APC01-PSA-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,159 +142,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have already validated the memory region in the course of
-validating the signal frame.  No need to do it again within
-the helper function.
-
-In addition, return failure when the header contains invalid
-xstate_bv.  The kernel handles this via exception handling
-within XSTATE_OP within xrstor_from_user_sigframe.
-
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/i386/cpu.h            |  4 ++--
- linux-user/i386/signal.c     | 20 ++++++++++++--------
- target/i386/tcg/fpu_helper.c | 36 +++++++++++++++++++-----------------
- 3 files changed, 33 insertions(+), 27 deletions(-)
-
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 35a8bf831f..21d905d669 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2236,8 +2236,8 @@ void cpu_x86_fsave(CPUX86State *s, void *host, size_t len);
- void cpu_x86_frstor(CPUX86State *s, void *host, size_t len);
- void cpu_x86_fxsave(CPUX86State *s, void *host, size_t len);
- void cpu_x86_fxrstor(CPUX86State *s, void *host, size_t len);
--void cpu_x86_xsave(CPUX86State *s, target_ulong ptr, uint64_t rbfm);
--void cpu_x86_xrstor(CPUX86State *s, target_ulong ptr, uint64_t rbfm);
-+void cpu_x86_xsave(CPUX86State *s, void *host, size_t len, uint64_t rbfm);
-+bool cpu_x86_xrstor(CPUX86State *s, void *host, size_t len, uint64_t rbfm);
- 
- /* cpu.c */
- void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
-diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index b823dee17f..d8803e7df3 100644
---- a/linux-user/i386/signal.c
-+++ b/linux-user/i386/signal.c
-@@ -325,7 +325,7 @@ static void xsave_sigcontext(CPUX86State *env,
- 
-     /* Zero the header, XSAVE *adds* features to an existing save state.  */
-     memset(fxstate + 1, 0, sizeof(X86XSaveHeader));
--    cpu_x86_xsave(env, xstate_addr, env->xcr0);
-+    cpu_x86_xsave(env, fxstate, fpend_addr - xstate_addr, env->xcr0);
- 
-     __put_user(TARGET_FP_XSTATE_MAGIC1, &sw->magic1);
-     __put_user(extended_size, &sw->extended_size);
-@@ -610,6 +610,8 @@ static bool xrstor_sigcontext(CPUX86State *env, FPStateKind fpkind,
-     uint32_t magic1, magic2;
-     uint32_t extended_size, xstate_size, min_size, max_size;
-     uint64_t xfeatures;
-+    void *xstate;
-+    bool ok;
- 
-     switch (fpkind) {
-     case FPSTATE_XSAVE:
-@@ -640,8 +642,10 @@ static bool xrstor_sigcontext(CPUX86State *env, FPStateKind fpkind,
-             return false;
-         }
- 
--        if (!access_ok(env_cpu(env), VERIFY_READ, fxstate_addr,
--                       xstate_size + TARGET_FP_XSTATE_MAGIC2_SIZE)) {
-+        /* Re-lock the entire xstate area, with the extensions and magic. */
-+        xstate = lock_user(VERIFY_READ, fxstate_addr,
-+                           xstate_size + TARGET_FP_XSTATE_MAGIC2_SIZE, 1);
-+        if (!xstate) {
-             return false;
-         }
- 
-@@ -651,15 +655,15 @@ static bool xrstor_sigcontext(CPUX86State *env, FPStateKind fpkind,
-          * fpstate layout with out copying the extended state information
-          * in the memory layout.
-          */
--        if (get_user_u32(magic2, fxstate_addr + xstate_size)) {
--            return false;
--        }
-+        magic2 = tswap32(*(uint32_t *)(xstate + xstate_size));
-         if (magic2 != FP_XSTATE_MAGIC2) {
-+            unlock_user(xstate, fxstate_addr, 0);
-             break;
-         }
- 
--        cpu_x86_xrstor(env, fxstate_addr, xfeatures);
--        return true;
-+        ok = cpu_x86_xrstor(env, xstate, xstate_size, xfeatures);
-+        unlock_user(xstate, fxstate_addr, 0);
-+        return ok;
- 
-     default:
-         break;
-diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 1c2121c559..4ec0f3786f 100644
---- a/target/i386/tcg/fpu_helper.c
-+++ b/target/i386/tcg/fpu_helper.c
-@@ -3064,42 +3064,44 @@ void cpu_x86_fxrstor(CPUX86State *env, void *host, size_t len)
-     do_fxrstor(&ac, 0);
- }
- 
--void cpu_x86_xsave(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
-+void cpu_x86_xsave(CPUX86State *env, void *host, size_t len, uint64_t rfbm)
- {
--    X86Access ac;
--    unsigned size;
-+    X86Access ac = {
-+        .haddr1 = host,
-+        .env = env,
-+    };
- 
-     /*
-      * Since this is only called from user-level signal handling,
-      * we should have done the job correctly there.
-      */
-     assert((rfbm & ~env->xcr0) == 0);
--    size = xsave_area_size(rfbm, false);
--
--    access_prepare(&ac, env, ptr, size, MMU_DATA_STORE, 0);
--    do_xsave_access(&ac, ptr, rfbm, get_xinuse(env), rfbm);
-+    ac.size = xsave_area_size(rfbm, false);
-+    assert(ac.size <= len);
-+    do_xsave_access(&ac, 0, rfbm, get_xinuse(env), rfbm);
- }
- 
--void cpu_x86_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
-+bool cpu_x86_xrstor(CPUX86State *env, void *host, size_t len, uint64_t rfbm)
- {
--    X86Access ac;
-+    X86Access ac = {
-+        .haddr1 = host,
-+        .env = env,
-+    };
-     uint64_t xstate_bv;
--    unsigned size;
- 
-     /*
-      * Since this is only called from user-level signal handling,
-      * we should have done the job correctly there.
-      */
-     assert((rfbm & ~env->xcr0) == 0);
--    size = xsave_area_size(rfbm, false);
--    access_prepare(&ac, env, ptr, size, MMU_DATA_LOAD, 0);
-+    ac.size = xsave_area_size(rfbm, false);
-+    assert(ac.size <= len);
- 
--    if (!valid_xrstor_header(&ac, &xstate_bv, ptr)) {
--        /* TODO: Report failure to caller. */
--        xstate_bv &= env->xcr0;
-+    if (!valid_xrstor_header(&ac, &xstate_bv, 0)) {
-+        return false;
-     }
--
--    do_xrstor(&ac, ptr, rfbm, xstate_bv);
-+    do_xrstor(&ac, 0, rfbm, xstate_bv);
-+    return true;
- }
- #endif
- 
--- 
-2.34.1
-
+T24gNC85LzI0IDE6MzIgRXVnZW5pbyBQZXJleiBNYXJ0aW4gPGVwZXJlem1hQHJlZGhhdC5jb20+
+IHdyb3RlOg0KPiANCj4gRXh0ZXJuYWwgTWFpbDogVGhpcyBlbWFpbCBvcmlnaW5hdGVkIGZyb20g
+T1VUU0lERSBvZiB0aGUgb3JnYW5pemF0aW9uIQ0KPiBEbyBub3QgY2xpY2sgbGlua3MsIG9wZW4g
+YXR0YWNobWVudHMgb3IgcHJvdmlkZSBBTlkgaW5mb3JtYXRpb24gdW5sZXNzIHlvdQ0KPiByZWNv
+Z25pemUgdGhlIHNlbmRlciBhbmQga25vdyB0aGUgY29udGVudCBpcyBzYWZlLg0KPiANCj4gDQo+
+IE9uIFN1biwgQXByIDcsIDIwMjQgYXQgMzo1NuKAr0FNIFdhZmVyIDx3YWZlckBqYWd1YXJtaWNy
+by5jb20+IHdyb3RlOg0KPiA+DQo+IA0KPiBMZXQgbWUgc3VnZ2VzdCBhIG1vcmUgZ2VuZXJpYyBk
+ZXNjcmlwdGlvbiBmb3IgdGhlIHBhdGNoOg0KPiANCj4gSW4gdGhlIGV2ZW50IG9mIHdyaXRpbmcg
+bWFueSBjaGFpbnMgb2YgZGVzY3JpcHRvcnMsIHRoZSBkZXZpY2UgbXVzdCB3cml0ZSBqdXN0DQo+
+IHRoZSBpZCBvZiB0aGUgbGFzdCBidWZmZXIgaW4gdGhlIGRlc2NyaXB0b3IgY2hhaW4sIHNraXAg
+Zm9yd2FyZCB0aGUgbnVtYmVyIG9mDQo+IGRlc2NyaXB0b3JzIGluIHRoZSBjaGFpbiwgYW5kIHRo
+ZW4gcmVwZWF0IHRoZSBvcGVyYXRpb25zIGZvciB0aGUgcmVzdCBvZiBjaGFpbnMuDQo+IA0KPiBD
+dXJyZW50IFFFTVUgY29kZSB3cml0ZXMgYWxsIHRoZSBidWZmZXJzIGlkIGNvbnNlY3V0aXZlbHks
+IGFuZCB0aGVuIHNraXAgYWxsDQo+IHRoZSBidWZmZXJzIGFsdG9nZXRoZXIuIFRoaXMgaXMgYSBi
+dWcsIGFuZCBjYW4gYmUgcmVwcm9kdWNlZCB3aXRoIGEgVmlydElPTmV0DQo+IGRldmljZSB3aXRo
+IF9GX01SR19SWEJVQiBhbmQgd2l0aG91dCBfRl9JTkRJUkVDVF9ERVNDLi4uDQo+IC0tLQ0KPiAN
+Cj4gQW5kIHRoZW4geW91ciBkZXNjcmlwdGlvbiwgcGFydGljdWxhcmx5IGZvciBWaXJ0SU9OZXQs
+IGlzIHRvdGFsbHkgZmluZS4gRmVlbCBmcmVlDQo+IHRvIG1ha2UgY2hhbmdlcyB0byB0aGUgZGVz
+Y3JpcHRpb24gb3Igc3VnZ2VzdCBhIGJldHRlciB3b3JkaW5nLg0KPiANCj4gVGhhbmtzIQ0KDQpU
+aGFuayB5b3UgZm9yIHlvdXIgc3VnZ2VzdGlvbi4NCg0KSSB3aWxsIGFkZCB5b3VyIGRlc2NyaXB0
+aW9uICBhbmQgU3VnZ2VzdGVkLWJ5IHRvIHRoZSBjb21taXQgbG9nLg0KDQpUaGFua3MhDQoNCj4g
+DQo+ID4gSWYgYSB2aXJ0aW8tbmV0IGRldmljZSBoYXMgdGhlIFZJUlRJT19ORVRfRl9NUkdfUlhC
+VUYgZmVhdHVyZSBidXQgbm90DQo+ID4gdGhlIFZJUlRJT19SSU5HX0ZfSU5ESVJFQ1RfREVTQyBm
+ZWF0dXJlLCAnVmlydElPTmV0UXVldWUtPnJ4X3ZxJyB3aWxsDQo+ID4gdXNlIHRoZSBtZXJnZSBm
+ZWF0dXJlIHRvIHN0b3JlIGRhdGEgaW4gbXVsdGlwbGUgJ2VsZW1zJy4NCj4gPiBUaGUgJ251bV9i
+dWZmZXJzJyBpbiB0aGUgdmlydGlvIGhlYWRlciBpbmRpY2F0ZXMgaG93IG1hbnkgZWxlbWVudHMg
+YXJlDQo+IG1lcmdlZC4NCj4gPiBJZiB0aGUgdmFsdWUgb2YgJ251bV9idWZmZXJzJyBpcyBncmVh
+dGVyIHRoYW4gMSwgYWxsIHRoZSBtZXJnZWQNCj4gPiBlbGVtZW50cyB3aWxsIGJlIGZpbGxlZCBp
+bnRvIHRoZSBkZXNjcmlwdG9yIHJpbmcuDQo+ID4gVGhlICdpZHgnIG9mIHRoZSBlbGVtZW50cyBz
+aG91bGQgYmUgdGhlIHZhbHVlIG9mICd2cS0+dXNlZF9pZHgnIHBsdXMNCj4gJ25kZXNjcycuDQo+
+ID4NCj4gPiBGaXhlczogODYwNDRiMjRlOCAoInZpcnRpbzogYmFzaWMgcGFja2VkIHZpcnRxdWV1
+ZSBzdXBwb3J0IikNCj4gPiBBY2tlZC1ieTogRXVnZW5pbyBQw6lyZXogPGVwZXJlem1hQHJlZGhh
+dC5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogV2FmZXIgPHdhZmVyQGphZ3Vhcm1pY3JvLmNvbT4N
+Cj4gPg0KPiA+IC0tLQ0KPiA+IENoYW5nZXMgaW4gdjQ6DQo+ID4gICAtIEFkZCBBY2tlZC1ieS4N
+Cj4gPg0KPiA+IENoYW5nZXMgaW4gdjM6DQo+ID4gICAtIEFkZCB0aGUgY29tbWl0LUlEIG9mIHRo
+ZSBpbnRyb2R1Y2VkIHByb2JsZW0gaW4gY29tbWl0IG1lc3NhZ2UuDQo+ID4NCj4gPiBDaGFuZ2Vz
+IGluIHYyOg0KPiA+ICAgLSBDbGFyaWZ5IG1vcmUgaW4gY29tbWl0IG1lc3NhZ2UuDQo+ID4gLS0t
+DQo+ID4gIGh3L3ZpcnRpby92aXJ0aW8uYyB8IDEyICsrKysrKysrKystLQ0KPiA+ICAxIGZpbGUg
+Y2hhbmdlZCwgMTAgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlvbnMoLSkNCj4gPg0KPiA+IGRpZmYg
+LS1naXQgYS9ody92aXJ0aW8vdmlydGlvLmMgYi9ody92aXJ0aW8vdmlydGlvLmMgaW5kZXgNCj4g
+PiBmYjZiNGNjZDgzLi5jYWI1ODMyY2FjIDEwMDY0NA0KPiA+IC0tLSBhL2h3L3ZpcnRpby92aXJ0
+aW8uYw0KPiA+ICsrKyBiL2h3L3ZpcnRpby92aXJ0aW8uYw0KPiA+IEBAIC05NTcsMTIgKzk1Nywy
+MCBAQCBzdGF0aWMgdm9pZCB2aXJ0cXVldWVfcGFja2VkX2ZsdXNoKFZpcnRRdWV1ZQ0KPiAqdnEs
+IHVuc2lnbmVkIGludCBjb3VudCkNCj4gPiAgICAgICAgICByZXR1cm47DQo+ID4gICAgICB9DQo+
+ID4NCj4gPiArICAgIC8qDQo+ID4gKyAgICAgKiBGb3IgaW5kaXJlY3QgZWxlbWVudCdzICduZGVz
+Y3MnIGlzIDEuDQo+ID4gKyAgICAgKiBGb3IgYWxsIG90aGVyIGVsZW1tZW50J3MgJ25kZXNjcycg
+aXMgdGhlDQo+ID4gKyAgICAgKiBudW1iZXIgb2YgZGVzY3JpcHRvcnMgY2hhaW5lZCBieSBORVhU
+IChhcyBzZXQgaW4NCj4gdmlydHF1ZXVlX3BhY2tlZF9wb3ApLg0KPiA+ICsgICAgICogU28gV2hl
+biB0aGUgJ2VsZW0nIGJlIGZpbGxlZCBpbnRvIHRoZSBkZXNjcmlwdG9yIHJpbmcsDQo+ID4gKyAg
+ICAgKiBUaGUgJ2lkeCcgb2YgdGhpcyAnZWxlbScgc2hhbGwgYmUNCj4gPiArICAgICAqIHRoZSB2
+YWx1ZSBvZiAndnEtPnVzZWRfaWR4JyBwbHVzIHRoZSAnbmRlc2NzJy4NCj4gPiArICAgICAqLw0K
+PiA+ICsgICAgbmRlc2NzICs9IHZxLT51c2VkX2VsZW1zWzBdLm5kZXNjczsNCj4gPiAgICAgIGZv
+ciAoaSA9IDE7IGkgPCBjb3VudDsgaSsrKSB7DQo+ID4gLSAgICAgICAgdmlydHF1ZXVlX3BhY2tl
+ZF9maWxsX2Rlc2ModnEsICZ2cS0+dXNlZF9lbGVtc1tpXSwgaSwgZmFsc2UpOw0KPiA+ICsgICAg
+ICAgIHZpcnRxdWV1ZV9wYWNrZWRfZmlsbF9kZXNjKHZxLCAmdnEtPnVzZWRfZWxlbXNbaV0sIG5k
+ZXNjcywNCj4gPiArIGZhbHNlKTsNCj4gPiAgICAgICAgICBuZGVzY3MgKz0gdnEtPnVzZWRfZWxl
+bXNbaV0ubmRlc2NzOw0KPiA+ICAgICAgfQ0KPiA+ICAgICAgdmlydHF1ZXVlX3BhY2tlZF9maWxs
+X2Rlc2ModnEsICZ2cS0+dXNlZF9lbGVtc1swXSwgMCwgdHJ1ZSk7DQo+ID4gLSAgICBuZGVzY3Mg
+Kz0gdnEtPnVzZWRfZWxlbXNbMF0ubmRlc2NzOw0KPiA+DQo+ID4gICAgICB2cS0+aW51c2UgLT0g
+bmRlc2NzOw0KPiA+ICAgICAgdnEtPnVzZWRfaWR4ICs9IG5kZXNjczsNCj4gPiAtLQ0KPiA+IDIu
+MjcuMA0KPiA+DQoNCg==
 
