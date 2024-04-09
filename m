@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE7A989D1BC
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B580589D1C2
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru3dc-00037K-AX; Tue, 09 Apr 2024 01:03:16 -0400
+	id 1ru3de-00037r-83; Tue, 09 Apr 2024 01:03:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3da-00036u-Cb
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:14 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1ru3dc-00037M-B5
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:16 -0400
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3dY-0005E4-Ji
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:14 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-5a4f608432bso3887834eaf.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:12 -0700 (PDT)
+ id 1ru3da-0005EP-KG
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:16 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-6ecf3943040so3483635b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712638991; x=1713243791; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712638993; x=1713243793; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hfT+4T/tbtQh8YAz/UBeFKLC0zLop+UH8ip/+XkWEh8=;
- b=R7ftRM1aDw/21xoTbXxfQjwyr6mTTKsvLVI+xU5p8wktv3S0Diu4Bjo6bvIsCGwOgF
- sy/u/rAeYf/qtSFMPquPf8BWQO3mtR5uIJrK/Mq+J9Ih2N4W1Q4Gzil5wSe6b9Ki1ZPR
- Qn0PjkvVuYYUz3WoBXdsakfsW2L64twX9s2JrHZE+R0yQAsO6lytSVkKYGcBPvVhRGN0
- MasdlTSQ8Wcruyw7k7mTzSbnXYagi3zQTEUE2DaJqWcA6QbhWADat0HVkx8sKBEKeHv7
- touAMIktUb8QKozERCqM6/mlsHEFdh6tMzlMSTSOHtBWjoijJMbJ2Jx8aAuFCiPY9TXb
- SMwA==
+ :reply-to; bh=eh7OtO5x8MRpHpQMvxE89QnFoiPmlYi26LFAKoMr5Dg=;
+ b=wzjEoodvMruifXDvp6NWS6chqrAXoBp0rCntuLQtEg2TAcjb2Rsk4j7ALS9yquPucR
+ 53oWQ00OZ4HF3nV7RCd6J+ZXN8hG+2RedrHvOZsqi8Tv2ajvkGLXEKPqAFuov/1kA1ND
+ d2wbwgEOaKaY0wwk0B3JquWWtKpBUSgmy32RfQIOzz8hTYTFj+eFLcjE6k/R2rYCzYKO
+ U0jUVqyqoAPFAGv9n8Jp/KtgHPerqk102fM4/1WhhggnNZiHCnZ2r9y0Mj81unKQN6qQ
+ MwLdGp1E5Y1XS8bX+Z09Nt17N5l/f+tva/TaeYawv22+EOAiyQrTsSfrpXOGr64RX5L8
+ RY6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712638991; x=1713243791;
+ d=1e100.net; s=20230601; t=1712638993; x=1713243793;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hfT+4T/tbtQh8YAz/UBeFKLC0zLop+UH8ip/+XkWEh8=;
- b=OMG3MvQ16jOrD8MTqkK67J4iTTAnzGKy4XvVcpPEYueACUPJk1jh/R4d0TMc734kfA
- HUtDUAkZ52YPjY+U0CXPe2xtNPBWWnKSnjbjRtBOnNMpUwZ8H3eDw3xjlOjNixS+cM4M
- g9AXtzSyw51qhQuS72JDW6MuCmYOIYf34zzciHfFmZug0sj0FV3AbSdDTVPPiXfHAQ81
- P+f6Qrrz1enf0lwbFvIpKALVM8K9M0KRPKMfZGMslS0A7D4V6fC2CYX8/U5FRY068oM/
- qLdPH4QJgHjNgGIZXaxUCR55UPYSGFgGOqmyDGHB8nq+AkG/1WUOHBtFifvGL/g/myKP
- 6G/g==
-X-Gm-Message-State: AOJu0YyYqNXz2TFC4kXtbmz4rdTEm1QWu4aD1s5h+5Xo/ouY/+5ZCvpt
- c/gQqx16Oe66sKqHvATduinSoLysA/BWIv7H/1PDPncDVOQsk64sLGqRyJ6QFaE35yUWzlzIzZY
- R
-X-Google-Smtp-Source: AGHT+IHQShsUyqMwsqZxBNQqrNLDsB0HmQIZp8yQMnhwdn8aV9fIKfGiI5FUaZyb79jFkAtAXH4e7Q==
-X-Received: by 2002:a05:6870:a927:b0:22e:e46f:57e3 with SMTP id
- eq39-20020a056870a92700b0022ee46f57e3mr10882383oab.35.1712638991273; 
- Mon, 08 Apr 2024 22:03:11 -0700 (PDT)
+ bh=eh7OtO5x8MRpHpQMvxE89QnFoiPmlYi26LFAKoMr5Dg=;
+ b=tMNZFjozwGhinS1edV/JySNWBDDNPDdnobIVPlntA0F8q1WJxrOUDo3mCk7ykOtBZN
+ PvFrXP03K1p2ENtSq4u68hWDvVq9Vs4w04Ktn4UcPcnx0RLa22psosprEiiYITu0XJ+0
+ uMNvNyIwUQDFuqY+YyLx4fast9tcNPqgykbpO+mVV+PVsitDnTtj69qovxoxq7elhK5Y
+ /ORvqONkHMci3OH4KbyauztElEFw1r0n6FewDWjSH7MPTedMcXMYXCQsiyIX2f6Bbh88
+ H7bsiEOs8cSHdTcFh7s1SzRSqU32ChmNkFeD7i2r0LFRoWNk19H1kJmtIH1LexAnoKcj
+ YuDQ==
+X-Gm-Message-State: AOJu0YxZA/gT1K193Z0B4DAlIhMb7R/WAd2UzFwLFS/YQtb9O4MZ365r
+ wdp9uhsISGkWAmCEwG+I706zWrL4mTRZCoqcBV9BSw1nM1Xp63guGaOGSj8W1X/BJtA6YERmsLQ
+ P
+X-Google-Smtp-Source: AGHT+IEQ4HFBF6G5Va2IIh1PjIDjrKvS5rFiioM5979FI4udt065g4ehGllonCOpl5sLpslO5Yo/NQ==
+X-Received: by 2002:a05:6a20:431c:b0:1a7:a6f3:1822 with SMTP id
+ h28-20020a056a20431c00b001a7a6f31822mr1107931pzk.12.1712638992770; 
+ Mon, 08 Apr 2024 22:03:12 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.10
+ z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 22:03:10 -0700 (PDT)
+ Mon, 08 Apr 2024 22:03:12 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 05/28] target/i386: Convert do_fstenv to X86Access
-Date: Mon,  8 Apr 2024 19:02:39 -1000
-Message-Id: <20240409050302.1523277-6-richard.henderson@linaro.org>
+Subject: [PATCH v2 06/28] target/i386: Convert do_fsave, do_frstor to X86Access
+Date: Mon,  8 Apr 2024 19:02:40 -1000
+Message-Id: <20240409050302.1523277-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409050302.1523277-1-richard.henderson@linaro.org>
 References: <20240409050302.1523277-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,89 +93,113 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/i386/tcg/fpu_helper.c | 45 +++++++++++++++++++-----------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ target/i386/tcg/fpu_helper.c | 60 ++++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 27 deletions(-)
 
 diff --git a/target/i386/tcg/fpu_helper.c b/target/i386/tcg/fpu_helper.c
-index 28ae8100f6..25074af0ce 100644
+index 25074af0ce..e6fa161aa0 100644
 --- a/target/i386/tcg/fpu_helper.c
 +++ b/target/i386/tcg/fpu_helper.c
-@@ -2372,9 +2372,9 @@ void helper_fxam_ST0(CPUX86State *env)
-     }
+@@ -2468,21 +2468,16 @@ void helper_fldenv(CPUX86State *env, target_ulong ptr, int data32)
+     do_fldenv(&ac, ptr, data32);
  }
  
--static void do_fstenv(CPUX86State *env, target_ulong ptr, int data32,
--                      uintptr_t retaddr)
-+static void do_fstenv(X86Access *ac, target_ulong ptr, int data32)
+-static void do_fsave(CPUX86State *env, target_ulong ptr, int data32,
+-                     uintptr_t retaddr)
++static void do_fsave(X86Access *ac, target_ulong ptr, int data32)
  {
+-    X86Access ac;
+-    floatx80 tmp;
+-    int i, envsize = 14 << data32;
 +    CPUX86State *env = ac->env;
-     int fpus, fptag, exp, i;
-     uint64_t mant;
-     CPU_LDoubleU tmp;
-@@ -2401,28 +2401,31 @@ static void do_fstenv(CPUX86State *env, target_ulong ptr, int data32,
-     }
-     if (data32) {
-         /* 32 bit */
--        cpu_stl_data_ra(env, ptr, env->fpuc, retaddr);
--        cpu_stl_data_ra(env, ptr + 4, fpus, retaddr);
--        cpu_stl_data_ra(env, ptr + 8, fptag, retaddr);
--        cpu_stl_data_ra(env, ptr + 12, env->fpip, retaddr); /* fpip */
--        cpu_stl_data_ra(env, ptr + 16, env->fpcs, retaddr); /* fpcs */
--        cpu_stl_data_ra(env, ptr + 20, env->fpdp, retaddr); /* fpoo */
--        cpu_stl_data_ra(env, ptr + 24, env->fpds, retaddr); /* fpos */
-+        access_stl(ac, ptr, env->fpuc);
-+        access_stl(ac, ptr + 4, fpus);
-+        access_stl(ac, ptr + 8, fptag);
-+        access_stl(ac, ptr + 12, env->fpip); /* fpip */
-+        access_stl(ac, ptr + 16, env->fpcs); /* fpcs */
-+        access_stl(ac, ptr + 20, env->fpdp); /* fpoo */
-+        access_stl(ac, ptr + 24, env->fpds); /* fpos */
-     } else {
-         /* 16 bit */
--        cpu_stw_data_ra(env, ptr, env->fpuc, retaddr);
--        cpu_stw_data_ra(env, ptr + 2, fpus, retaddr);
--        cpu_stw_data_ra(env, ptr + 4, fptag, retaddr);
--        cpu_stw_data_ra(env, ptr + 6, env->fpip, retaddr);
--        cpu_stw_data_ra(env, ptr + 8, env->fpcs, retaddr);
--        cpu_stw_data_ra(env, ptr + 10, env->fpdp, retaddr);
--        cpu_stw_data_ra(env, ptr + 12, env->fpds, retaddr);
-+        access_stw(ac, ptr, env->fpuc);
-+        access_stw(ac, ptr + 2, fpus);
-+        access_stw(ac, ptr + 4, fptag);
-+        access_stw(ac, ptr + 6, env->fpip);
-+        access_stw(ac, ptr + 8, env->fpcs);
-+        access_stw(ac, ptr + 10, env->fpdp);
-+        access_stw(ac, ptr + 12, env->fpds);
-     }
- }
  
- void helper_fstenv(CPUX86State *env, target_ulong ptr, int data32)
+-    access_prepare(&ac, env, ptr, envsize + 80, MMU_DATA_STORE, GETPC());
++    do_fstenv(ac, ptr, data32);
++    ptr += 14 << data32;
+ 
+-    do_fstenv(&ac, ptr, data32);
+-    ptr += envsize;
+-
+-    for (i = 0; i < 8; i++) {
+-        tmp = ST(i);
+-        do_fstt(&ac, ptr, tmp);
++    for (int i = 0; i < 8; i++) {
++        floatx80 tmp = ST(i);
++        do_fstt(ac, ptr, tmp);
+         ptr += 10;
+     }
+ 
+@@ -2491,23 +2486,22 @@ static void do_fsave(CPUX86State *env, target_ulong ptr, int data32,
+ 
+ void helper_fsave(CPUX86State *env, target_ulong ptr, int data32)
  {
--    do_fstenv(env, ptr, data32, GETPC());
+-    do_fsave(env, ptr, data32, GETPC());
++    int size = (14 << data32) + 80;
 +    X86Access ac;
 +
-+    access_prepare(&ac, env, ptr, 14 << data32, MMU_DATA_STORE, GETPC());
-+    do_fstenv(&ac, ptr, data32);
++    access_prepare(&ac, env, ptr, size, MMU_DATA_STORE, GETPC());
++    do_fsave(&ac, ptr, data32);
  }
  
- static void cpu_set_fpus(CPUX86State *env, uint16_t fpus)
-@@ -2470,12 +2473,12 @@ static void do_fsave(CPUX86State *env, target_ulong ptr, int data32,
+-static void do_frstor(CPUX86State *env, target_ulong ptr, int data32,
+-                      uintptr_t retaddr)
++static void do_frstor(X86Access *ac, target_ulong ptr, int data32)
  {
-     X86Access ac;
-     floatx80 tmp;
--    int i;
-+    int i, envsize = 14 << data32;
+-    X86Access ac;
+-    floatx80 tmp;
+-    int i, envsize = 14 << data32;
++    CPUX86State *env = ac->env;
  
--    do_fstenv(env, ptr, data32, retaddr);
-+    access_prepare(&ac, env, ptr, envsize + 80, MMU_DATA_STORE, GETPC());
+-    access_prepare(&ac, env, ptr, envsize + 80, MMU_DATA_LOAD, retaddr);
++    do_fldenv(ac, ptr, data32);
++    ptr += 14 << data32;
  
--    ptr += (target_ulong)14 << data32;
--    access_prepare(&ac, env, ptr, 80, MMU_DATA_STORE, GETPC());
-+    do_fstenv(&ac, ptr, data32);
-+    ptr += envsize;
+-    do_fldenv(&ac, ptr, data32);
+-    ptr += envsize;
+-
+-    for (i = 0; i < 8; i++) {
+-        tmp = do_fldt(&ac, ptr);
++    for (int i = 0; i < 8; i++) {
++        floatx80 tmp = do_fldt(ac, ptr);
+         ST(i) = tmp;
+         ptr += 10;
+     }
+@@ -2515,7 +2509,11 @@ static void do_frstor(CPUX86State *env, target_ulong ptr, int data32,
  
-     for (i = 0; i < 8; i++) {
-         tmp = ST(i);
+ void helper_frstor(CPUX86State *env, target_ulong ptr, int data32)
+ {
+-    do_frstor(env, ptr, data32, GETPC());
++    int size = (14 << data32) + 80;
++    X86Access ac;
++
++    access_prepare(&ac, env, ptr, size, MMU_DATA_LOAD, GETPC());
++    do_frstor(&ac, ptr, data32);
+ }
+ 
+ #define XO(X)  offsetof(X86XSaveArea, X)
+@@ -2971,12 +2969,20 @@ void helper_xrstor(CPUX86State *env, target_ulong ptr, uint64_t rfbm)
+ #if defined(CONFIG_USER_ONLY)
+ void cpu_x86_fsave(CPUX86State *env, target_ulong ptr, int data32)
+ {
+-    do_fsave(env, ptr, data32, 0);
++    int size = (14 << data32) + 80;
++    X86Access ac;
++
++    access_prepare(&ac, env, ptr, size, MMU_DATA_STORE, 0);
++    do_fsave(&ac, ptr, data32);
+ }
+ 
+ void cpu_x86_frstor(CPUX86State *env, target_ulong ptr, int data32)
+ {
+-    do_frstor(env, ptr, data32, 0);
++    int size = (14 << data32) + 80;
++    X86Access ac;
++
++    access_prepare(&ac, env, ptr, size, MMU_DATA_LOAD, 0);
++    do_frstor(&ac, ptr, data32);
+ }
+ 
+ void cpu_x86_fxsave(CPUX86State *env, target_ulong ptr)
 -- 
 2.34.1
 
