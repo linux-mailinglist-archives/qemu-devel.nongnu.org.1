@@ -2,96 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF6F89E5F2
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 01:10:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D2189E681
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 01:57:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruKbR-0000FP-G6; Tue, 09 Apr 2024 19:10:09 -0400
+	id 1ruLJj-0007rY-7o; Tue, 09 Apr 2024 19:55:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1ruKbO-0000Em-UD
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 19:10:06 -0400
-Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <horenchuang@bytedance.com>)
- id 1ruKbM-00067B-HL
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 19:10:06 -0400
-Received: by mail-yb1-xb2d.google.com with SMTP id
- 3f1490d57ef6-dcc6fc978ddso5000256276.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 16:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bytedance.com; s=google; t=1712704203; x=1713309003; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=CBQMpIqEurG8MF/tPT1PXk9SqhO/wjdruY1OsEdLqVc=;
- b=b4FBEeVaazQ/1hw03PJMTI4YPxc66AagVrnJDgK2fJJ2WLf2X9R34rb4UdEt+8VsI+
- HMlJ59ytkUUDIs0zdr4bNefBZtDzQOz/Hr218jjStXSqD52V0OevaGF0CU0QZkw/kz94
- GlRiL/p4RNLOe3M9LF/hJxW3w85vEBVcCSadC0hlVDOLX8YybhYRQYcB9BCFxrISi/Hs
- 8VQ/SzxQ4UX2jXENWOmrMA5u5f3pIOnOoGoZ06/A2ADthMXCWiQNcWQt1Zf7vzq2N5vr
- x4ctIo1Zx8ELuZtrXQ2UWoZKWHqkbjeGermXWENpPdSIkbIjz1JswpoAD6/uuP5sUjCD
- AUaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712704203; x=1713309003;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CBQMpIqEurG8MF/tPT1PXk9SqhO/wjdruY1OsEdLqVc=;
- b=KyiWhDtnT4Ifvq2UwsQX+rt1g+osOinHHbadOn2LFdFOlYeebuRGDkAKm1aiuv8hOW
- u+F9CfWBof73FfKhQuSkHIXkNXqTvdZLpnT/VMZM12oqvv5zWSJiJjEemKplYKh4Ds6l
- DXcJ2G7fD3Cio0iUHXBQeC6h6MQu0RUoGet5d84GeiwNUKtGvfgtVrKMR6fWYiHisnkN
- Z5XWZJiiSRA7L5UXL4IOO4aY1ogZNx6FrigUUxDyrLS8J+QF1bdwy5vdhro48Mxs/lB3
- VPKEFyJSw9yDaW37EjnUIiZCsicdG9yCtO+oW0GhlpguiZzqmGGOD8SlLN5iTUhMCmc+
- w5yA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUcdg8DR0M2vE3Ou0deWaGOqAIzkq1W2geObO+fchmXkwD/hjouZAOIdxtxnv/5oKyhZNYklec0O/f7GStpTovS6lVrJEo=
-X-Gm-Message-State: AOJu0YxOoNyeuDk7mF2u4BK4nvkTR+aTIKFRddMeXmtImX4B1qq1MU7C
- wqONSfRsEMc+ppsu+BBRER9JjYNF1CUD2H4kvOl965bFD/AUfwOg+wKRJZRx8jBWZrWaEczJDNB
- xh8xkLzCP7yu26wMxvYXXPYqM+OGgzXA/KpgFGA==
-X-Google-Smtp-Source: AGHT+IGKj70giI0uSMILbO3VPM9mbHT4HM6rigAIadI6TUaytzdkRQBEfqv4b6oKHX4IAAJuxwSf30E0yhjaCwWCgiY=
-X-Received: by 2002:a25:f306:0:b0:de0:cd0f:e9ac with SMTP id
- c6-20020a25f306000000b00de0cd0fe9acmr2372195ybs.31.1712704202827; Tue, 09 Apr
- 2024 16:10:02 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240405000707.2670063-1-horenchuang@bytedance.com>
- <20240405000707.2670063-2-horenchuang@bytedance.com>
- <20240405145624.00000b31@Huawei.com>
- <CAKPbEqrTvY4bsRjc=wBWpGtJM5_ZfH50-EX4Zq2O_ram9_0WbQ@mail.gmail.com>
- <20240409145018.e2d240f9a742cc15ff7bc11e@linux-foundation.org>
-In-Reply-To: <20240409145018.e2d240f9a742cc15ff7bc11e@linux-foundation.org>
-From: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-Date: Tue, 9 Apr 2024 16:09:52 -0700
-Message-ID: <CAKPbEqqWLrD-bJiyE9Yc0CYLh_8_uMtf+9nD_eenXh3S=Ro=pQ@mail.gmail.com>
-Subject: Re: [External] Re: [PATCH v11 1/2] memory tier: dax/kmem: introduce
- an abstract layer for finding, allocating, and putting memory types
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, "Huang,
- Ying" <ying.huang@intel.com>, 
- Gregory Price <gourry.memverge@gmail.com>, aneesh.kumar@linux.ibm.com,
- mhocko@suse.com, 
- tj@kernel.org, john@jagalactic.com, Eishan Mirakhur <emirakhur@micron.com>, 
- Vinicius Tavares Petrucci <vtavarespetr@micron.com>,
- Ravis OpenSrc <Ravis.OpenSrc@micron.com>, 
- Alistair Popple <apopple@nvidia.com>,
- Srinivasulu Thanneeru <sthanneeru@micron.com>, 
- SeongJae Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>, 
- Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>,
- nvdimm@lists.linux.dev, 
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- "Ho-Ren (Jack) Chuang" <horenc@vt.edu>,
- "Ho-Ren (Jack) Chuang" <horenchuang@gmail.com>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
- envelope-from=horenchuang@bytedance.com; helo=mail-yb1-xb2d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ruLJg-0007qf-By; Tue, 09 Apr 2024 19:55:52 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1ruLJe-00053R-Go; Tue, 09 Apr 2024 19:55:52 -0400
+Received: from zero.eik.bme.hu (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id F3B784E6030;
+ Wed, 10 Apr 2024 01:55:44 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at eik.bme.hu
+Received: from zero.eik.bme.hu ([127.0.0.1])
+ by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
+ with ESMTP id 8VEPxslYPZWw; Wed, 10 Apr 2024 01:55:43 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 0E0C34E601C; Wed, 10 Apr 2024 01:55:43 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH for-9.0] ppc440_pcix: Do not expose a bridge device on PCI bus
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, philmd@linaro.org
+Message-Id: <20240409235543.0E0C34E601C@zero.eik.bme.hu>
+Date: Wed, 10 Apr 2024 01:55:43 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,39 +55,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 9, 2024 at 2:50=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
-.org> wrote:
->
-> On Tue, 9 Apr 2024 12:00:06 -0700 "Ho-Ren (Jack) Chuang" <horenchuang@byt=
-edance.com> wrote:
->
-> > Hi Jonathan,
-> >
-> > On Fri, Apr 5, 2024 at 6:56=E2=80=AFAM Jonathan Cameron
-> > <Jonathan.Cameron@huawei.com> wrote:
-> > >
-> > > On Fri,  5 Apr 2024 00:07:05 +0000
-> > > "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> wrote:
-> > >
-> > > > Since different memory devices require finding, allocating, and put=
-ting
-> > > > memory types, these common steps are abstracted in this patch,
-> > > > enhancing the scalability and conciseness of the code.
-> > > >
-> > > > Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> > > > Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-> > > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawie.com>
-> > >
-> > Thank you for reviewing and for adding your "Reviewed-by"!
-> > I was wondering if I need to send a v12 and manually add
-> > this to the commit description, or if this is sufficient.
->
-> I had added Jonathan's r-b to the mm.git copy of this patch.
+Real 460EX SoC apparently does not expose a bridge device and having
+it appear on PCI bus confuses an AmigaOS file system driver that uses
+this to detect which machine it is running on. Since values written
+here by firmware are never read, just ignore these writes and drop the
+bridge device.
 
-Got it~ Thank you Andrew!
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+This is only used by sam460ex and this fixes an issue with AmigaOS on
+this machine so I'd like this to be merged for 9.0 please.
 
---=20
-Best regards,
-Ho-Ren (Jack) Chuang
-=E8=8E=8A=E8=B3=80=E4=BB=BB
+ hw/pci-host/ppc440_pcix.c | 14 +-------------
+ 1 file changed, 1 insertion(+), 13 deletions(-)
+
+diff --git a/hw/pci-host/ppc440_pcix.c b/hw/pci-host/ppc440_pcix.c
+index 1926ae2a27..ba38172989 100644
+--- a/hw/pci-host/ppc440_pcix.c
++++ b/hw/pci-host/ppc440_pcix.c
+@@ -52,7 +52,6 @@ OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
+ struct PPC440PCIXState {
+     PCIHostState parent_obj;
+ 
+-    PCIDevice *dev;
+     struct PLBOutMap pom[PPC440_PCIX_NR_POMS];
+     struct PLBInMap pim[PPC440_PCIX_NR_PIMS];
+     uint32_t sts;
+@@ -170,10 +169,6 @@ static void ppc440_pcix_reg_write4(void *opaque, hwaddr addr,
+ 
+     trace_ppc440_pcix_reg_write(addr, val, size);
+     switch (addr) {
+-    case PCI_VENDOR_ID ... PCI_MAX_LAT:
+-        stl_le_p(s->dev->config + addr, val);
+-        break;
+-
+     case PCIX0_POM0LAL:
+         s->pom[0].la &= 0xffffffff00000000ULL;
+         s->pom[0].la |= val;
+@@ -301,10 +296,6 @@ static uint64_t ppc440_pcix_reg_read4(void *opaque, hwaddr addr,
+     uint32_t val;
+ 
+     switch (addr) {
+-    case PCI_VENDOR_ID ... PCI_MAX_LAT:
+-        val = ldl_le_p(s->dev->config + addr);
+-        break;
+-
+     case PCIX0_POM0LAL:
+         val = s->pom[0].la;
+         break;
+@@ -498,10 +489,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
+     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
+                          ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
+-                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+-
+-    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
+-                               TYPE_PPC4xx_HOST_BRIDGE);
++                         PCI_DEVFN(1, 0), 1, TYPE_PCI_BUS);
+ 
+     memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
+     memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
+-- 
+2.30.9
+
 
