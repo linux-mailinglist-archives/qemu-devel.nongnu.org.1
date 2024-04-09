@@ -2,87 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FDB89D144
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 05:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB3D89D1BA
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru2OP-00073r-VG; Mon, 08 Apr 2024 23:43:29 -0400
+	id 1ru3dX-00035N-VP; Tue, 09 Apr 2024 01:03:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ru2OO-00073O-5M
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 23:43:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1ru2OL-0000c2-Hd
- for qemu-devel@nongnu.org; Mon, 08 Apr 2024 23:43:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712634204;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yTibT1/LWcjSGgxLSnK7W6f3bwe/q5tcgf2rSYqDkeQ=;
- b=h1O6qu03tuwhwl4K7Xk62TCJhHDpjocn1v8/cUMPcK77SLJaRpiQp7v2Bq6nlh5qJsBSk8
- gJ32Q0gwOUzh/Pl6PhtW1E28Kw5pRgNbCrdPM+wl/MAj6gfsQjJAD8IaRG1+/i7I6MKFNq
- 9HUzHRFsvaabdWV65alaXJAJeW4rtTw=
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
- [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-317-ifJGRw2yPLCI2v-eTUj03w-1; Mon, 08 Apr 2024 23:43:23 -0400
-X-MC-Unique: ifJGRw2yPLCI2v-eTUj03w-1
-Received: by mail-pj1-f69.google.com with SMTP id
- 98e67ed59e1d1-2a2e6197371so4556055a91.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 20:43:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ru3dV-000352-Jo
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:09 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1ru3dT-0005C0-HP
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:09 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6ed112c64beso1979438b3a.1
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712638985; x=1713243785; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q47WV5+w5EHuyJqN5nKeJ49rNv9gzeLMdS2O5z2tA3E=;
+ b=elCOqjJ7i28khJw2N/BX+Ocy9Fen46aKesCpdXRFDm1AiBjJmqO20D1HycFvyh43Wl
+ EAfIgHU4osOxd5sLsq0UGyL7CPVBpMVsK6fKyvcyupTgz+zQsCK4WQI+XrlEOzm3Wstt
+ UNOU3Zfn1UE/E8LsRqrYeyGxX5bZxW9oJvjqGgcPooHCoR55LolybckcZFx4ye+xaLR5
+ +5VP7o+i4Ktpqt5HYiONbiFjFlej5Zwf97sc6CC1nRDz0qTzacXk2ltjtJnMjrQuK5W2
+ LNWwI9ptU6VmoWh5I09hvVGPFPgieH4wNmIRcdVqcVab8nbYlZi0tAZjJ5XW0odfUciI
+ FNlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712634202; x=1713239002;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yTibT1/LWcjSGgxLSnK7W6f3bwe/q5tcgf2rSYqDkeQ=;
- b=MJOZEEXTweyP+LPwzhIiw6fcTNDg7+Ai8GgUdHLDTGM0GB2vnTjz9KXgue+LMIA1xR
- KQzY+KXy94lVL9M1exel4GBKQVpsA1y/bJ7g7+6B4h9Fi6Jh4Xj1H3L9QaKe70dX8UYd
- 0fT+pJ0HncWK1A8i2i/v/flCCx4EhOpadObilC0C9hB3PhhS9sAyeh4dKua+y3PcK4EA
- dfck6rSTwVEdSrzH4Rv+xa0rtNhjxwwjMJJbzkxDG65d6geiq86b+CcCguXErprStFxw
- hEX4kScGXlzw8462mjb6qFoNQxAZqztBgBuUviBSjv9elpv9F1XxCBvt4+csi5Jg+juf
- caQA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVn7dDyT9PZP361XMfSj2HAExQhixMOgQ1jWyc4MEaFn1pLXHXEtH9TAR0TFMl1I7Z8nNft/jqcZzrLDQVu1DFBju3Evno=
-X-Gm-Message-State: AOJu0YxfNlUTdK+N+Nzo/71srBDxR4YfL4O35blvW6+vsnIdu444IHm3
- 3R4tLgJe1omg+ZrAMPEQ/zxqYfA99WcSwf0D8W73yhZ6bQf6fb+rU04U5SF+eAAnM7vOxspja8u
- Yf+bp+meUReKaq6DqWKiV4fW6e9ytu+qmt+rySq6dcnqHMnYIOC+fDikyyP69YqFvIAxYSJiu05
- Ku93qL3g4AENLfen+tiv+b7ttLNuYF7sJEr2Yr+mSC
-X-Received: by 2002:a17:90a:ab97:b0:2a5:3637:1968 with SMTP id
- n23-20020a17090aab9700b002a536371968mr3687244pjq.9.1712634201908; 
- Mon, 08 Apr 2024 20:43:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH0KvPTfonf8R7VOPVgqyDpVSSnbFjV6xwk48qsgOvsOOjT2WYUbtqANMbeYz+UQKr4y5MnV2cr/hHNdcT0b4I=
-X-Received: by 2002:a17:90a:ab97:b0:2a5:3637:1968 with SMTP id
- n23-20020a17090aab9700b002a536371968mr3687234pjq.9.1712634201608; Mon, 08 Apr
- 2024 20:43:21 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712638985; x=1713243785;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Q47WV5+w5EHuyJqN5nKeJ49rNv9gzeLMdS2O5z2tA3E=;
+ b=rlpKcGaSLgN5rvs/J34EDwHjHrJ9EeK/8UwdFKZPsl+3KLCXyYVgiECdzWFX7U106c
+ xqs5UOa1mwb19Ht6+Y8psesMvAjH9rVxMg/mY/Dvu9j+zzvEIwFJ06+LrzlrdR30OXfF
+ PEF43QiWmEjJ1Z0hFmqAy9lD5M+SJgwM08S8Lg43JMYnOmmZXa3UThKfd2bWNqVcPy1t
+ t28oYoaygC4Zi09IXm0ID0V1e0Gc3o/V+wQQdFg8wgla6KLnU3ztugvUen4GKdlo0Gn2
+ JIDZ8FVGdF5365phlPV8H8oz2O5clBrmJu4WWkJkeDnCxZW87mrU5B2oiHj0apsU5Z8k
+ uQng==
+X-Gm-Message-State: AOJu0YxWUUUbm6uKFIoEkP9gk/if/FPc3/fv8fCB8AeX9IPjjsxRS9wf
+ T/XUVamvuOqhyswwRm5bjfgiQXWbtqO2CIA29D096WpQx7PqSzeX7JI4YUCW+Xdih0zZw0qNC2r
+ 5
+X-Google-Smtp-Source: AGHT+IFVI2+1+9for0cssfnhIjb80FU40UhJrehKihTHOQA8XKYhvO9Hkz46vJTvUqq6EojdlV9jXQ==
+X-Received: by 2002:a05:6a00:b84:b0:6ea:7981:d40b with SMTP id
+ g4-20020a056a000b8400b006ea7981d40bmr9061668pfj.16.1712638985178; 
+ Mon, 08 Apr 2024 22:03:05 -0700 (PDT)
+Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
+ by smtp.gmail.com with ESMTPSA id
+ z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.03
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 08 Apr 2024 22:03:04 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH for-9.1 v2 00/28] linux-user/i386: Properly align signal frame
+Date: Mon,  8 Apr 2024 19:02:34 -1000
+Message-Id: <20240409050302.1523277-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CACGkMEsrT4xxW-KzLm=rTqXf0P+u2=0fy03z3EsHZFEqQePjJg@mail.gmail.com>
- <20240408073311.2049-1-yuxue.liu@jaguarmicro.com>
-In-Reply-To: <20240408073311.2049-1-yuxue.liu@jaguarmicro.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Tue, 9 Apr 2024 11:43:10 +0800
-Message-ID: <CACGkMEtZ-3PBETsOHhUe=pm7avpU1tJQbtfQoxc2K7Jm+NsHeQ@mail.gmail.com>
-Subject: Re: [PATCH v2] vhost: don't set vring call if guest notifiers is not
- enabled
-To: lyx634449800 <yuxue.liu@jaguarmicro.com>
-Cc: mst@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,24 +88,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 8, 2024 at 3:33=E2=80=AFPM lyx634449800 <yuxue.liu@jaguarmicro.=
-com> wrote:
->
-> When conducting performance testing using testpmd in the guest os,
-> it was observed that the performance was lower compared to the
-> scenario of direct vfio-pci usage.
->
-> In the commit 96a3d98d2cdbd897ff5ab33427aa4cfb94077665, the author
-> provided a good solution. However, because the guest OS's
-> driver(e.g., virtio-net pmd) may not enable the msix capability, the
-> function k->query_guest_notifiers(qbus->parent) may return false,
-> resulting in the expected effect not being achieved. To address this
-> issue, modify the conditional statement.
->
-> Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+v1: https://lore.kernel.org/qemu-devel/20230524054647.1093758-1-richard.henderson@linaro.org/
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+But v1 isn't particularly complet or korrect.
 
-Thanks
+Disconnect fpstate from sigframe, just like the kernel does.
+Return the separate portions of the frame from get_sigframe.
+Alter all of the target fpu routines to access memory that
+has already been translated and sized.
+
+
+r~
+
+
+Richard Henderson (28):
+  target/i386: Add tcg/access.[ch]
+  target/i386: Convert do_fldt, do_fstt to X86Access
+  target/i386: Convert helper_{fbld,fbst}_ST0 to X86Access
+  target/i386: Convert do_fldenv to X86Access
+  target/i386: Convert do_fstenv to X86Access
+  target/i386: Convert do_fsave, do_frstor to X86Access
+  target/i386: Convert do_xsave_{fpu,mxcr,sse} to X86Access
+  target/i386: Convert do_xrstor_{fpu,mxcr,sse} to X86Access
+  tagret/i386: Convert do_fxsave, do_fxrstor to X86Access
+  target/i386: Convert do_xsave_* to X86Access
+  target/i386: Convert do_xrstor_* to X86Access
+  target/i386: Split out do_xsave_chk
+  target/i386: Add rbfm argument to cpu_x86_{xsave,xrstor}
+  target/i386: Add {hw,sw}_reserved to X86LegacyXSaveArea
+  linux-user/i386: Drop xfeatures_size from sigcontext arithmetic
+  linux-user/i386: Remove xfeatures from target_fpstate_fxsave
+  linux-user/i386: Replace target_fpstate_fxsave with X86LegacyXSaveArea
+  linux-user/i386: Split out struct target_fregs_state
+  linux-user/i386: Fix -mregparm=3 for signal delivery
+  linux-user/i386: Return boolean success from restore_sigcontext
+  linux-user/i386: Return boolean success from xrstor_sigcontext
+  linux-user/i386: Fix allocation and alignment of fp state
+  target/i386: Honor xfeatures in xrstor_sigcontext
+  target/i386: Convert do_xsave to X86Access
+  target/i386: Convert do_xrstor to X86Access
+  target/i386: Pass host pointer and size to cpu_x86_{fsave,frstor}
+  target/i386: Pass host pointer and size to cpu_x86_{fxsave,fxrstor}
+  target/i386: Pass host pointer and size to cpu_x86_{xsave,xrstor}
+
+ target/i386/cpu.h                |  57 ++-
+ target/i386/tcg/access.h         |  40 ++
+ linux-user/i386/signal.c         | 669 ++++++++++++++++++-------------
+ target/i386/tcg/access.c         | 160 ++++++++
+ target/i386/tcg/fpu_helper.c     | 561 ++++++++++++++++----------
+ tests/tcg/x86_64/test-1648.c     |  33 ++
+ target/i386/tcg/meson.build      |   1 +
+ tests/tcg/x86_64/Makefile.target |   1 +
+ 8 files changed, 1014 insertions(+), 508 deletions(-)
+ create mode 100644 target/i386/tcg/access.h
+ create mode 100644 target/i386/tcg/access.c
+ create mode 100644 tests/tcg/x86_64/test-1648.c
+
+-- 
+2.34.1
 
 
