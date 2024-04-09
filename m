@@ -2,73 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4857489D773
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 12:59:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD02189D7F4
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 13:35:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru9CX-0005cR-Lr; Tue, 09 Apr 2024 06:59:41 -0400
+	id 1ru9jv-0000tW-NW; Tue, 09 Apr 2024 07:34:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ru9CQ-0005c5-4V; Tue, 09 Apr 2024 06:59:34 -0400
-Received: from mgamail.intel.com ([198.175.65.12])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru9jt-0000tE-4b
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 07:34:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ru9CN-0003WT-Mp; Tue, 09 Apr 2024 06:59:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712660372; x=1744196372;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=kQ5/iifoDjm2545ej6pWbM0neVWPPDk5fmy69fVHjmI=;
- b=b63K22cQONMDpJNwxyNBqnbnqmEwYV0UYQsYoxRYwSGqH41xyN6PIQOl
- AqZB3nkaC7eKy14pe3W8VFXM0Ak31OmvbmTc5HC/kd2vu6pw0ozx+8W95
- PlVh/JgqgsdJtJUrRN7uGuPaF+ByAi4G7P2j1TNwQ7VCdqeqea43kRDid
- 8NzEqSbyrHB6OgThZGca+ObxUHQeD/yJoIY6UeqIsY2tgh7PiKffD36FY
- NY/gO62oeW5xDWl5NtBW17eNnd/TnWT+4D4DICc9xMkp1v74cpZ2vFJZ7
- BF1rBY1oL8iQLTv1pk3f7hwDQgcRr1v43WBcbJbfHZO8Jlhab4nyB7trf Q==;
-X-CSE-ConnectionGUID: QWF7d1GdTPO5Fdd4hq/1Ng==
-X-CSE-MsgGUID: HYgxL8wlRWG/VpmzP2L9GA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11038"; a="19399208"
-X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; d="scan'208";a="19399208"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Apr 2024 03:59:27 -0700
-X-CSE-ConnectionGUID: sRpFCGYAS7yjRHHuJ9PwiQ==
-X-CSE-MsgGUID: 3Wlo+GXaTyWr/vvWv+BO2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,189,1708416000"; d="scan'208";a="24968563"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa005.jf.intel.com with ESMTP; 09 Apr 2024 03:59:24 -0700
-Date: Tue, 9 Apr 2024 19:13:24 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Michael Tokarev <mjt@tls.msk.ru>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Giuseppe =?iso-8859-1?Q?Ghib=F2?= <ghibo@mageia.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH] target/i386: fix direction of "32-bit MMU" test
-Message-ID: <ZhUi1NpSeUzXUuMu@intel.com>
-References: <20240311075806.668555-1-pbonzini@redhat.com>
- <2f0eefc5-8907-4af7-b717-17e17a9a3019@tls.msk.ru>
- <bfcda496-5781-49b2-a30b-8e28aa373218@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru9jq-00028B-Jr
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 07:34:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712662445;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=1E7X/j1t2MysXmzu6WTPy1/Ear62N1jqrtH8eo1uiPA=;
+ b=YYzN0AMuzhhDTQXZuy111zP9pa0pTMf6ZGeRv0v8Pk2BRGUoDRGAoOxkHBW3zsFKUAt/AT
+ Roh2fYrx9z78axEgwnGBhklHvrLcRbgiFuCP8sDG1MgyEfRPbK2nwl0joVk+OFkfc7GUoe
+ wold7axPMdnjcxwgvGVqSWCXCeHhRuw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-tKcfQpq6PnyqYEc0v4m1Gw-1; Tue, 09 Apr 2024 07:34:03 -0400
+X-MC-Unique: tKcfQpq6PnyqYEc0v4m1Gw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-343d3e1ff1eso3035908f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 04:34:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712662442; x=1713267242;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1E7X/j1t2MysXmzu6WTPy1/Ear62N1jqrtH8eo1uiPA=;
+ b=Qw9vredEm6DfNeG7+fGK1YlWUq2j7HiTirZES1kW5pNnUCYSmfXVSWrqD8hMTwo89H
+ 18Q7ahTLbRMLWhsgfcTUPH6Bj8tseqx3GObUQN1UeMSNMDERXztGXOW5+1smovDrix2l
+ +1B2inRhV0rvBeEm1B0dxIXpQwZ1PrzbZO8MfIi6vJfM7al1T8Y6uvqSKBW4iBvssaz4
+ d2JTEaLRB/TUKFxMtvT28kcUFYhSSQBwaQm3Df3O7EvFy1TMF2OBDMb14kx50RSYZlhk
+ ejczijCJPnMjT9bkd8JKsOIzAJdYH1O8nqp3gMLD0GayoMfw0nneXBCldOV5jTt6oV6/
+ cxlg==
+X-Gm-Message-State: AOJu0Yyt7XxSY/a4j2dp0/vE/pCx/6Pjc8uZ0B4tALWQALb2AAInRDmS
+ Mz+ue4XgcI0X/5TGdGOhOnr83QR4TluzerN/SCHW1xfbPEbZNdYhf88hjGO2Ah2MWxaugqoe++R
+ wMy9f+lLc7bZ5bPm5YO8FkQcajj5+XXLN7x5HDYpJIrj9KAqZn+nt
+X-Received: by 2002:a5d:6946:0:b0:343:8551:8d90 with SMTP id
+ r6-20020a5d6946000000b0034385518d90mr10328878wrw.34.1712662442512; 
+ Tue, 09 Apr 2024 04:34:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzUA1yjCWtw3wJzXaQJPinDJoIEpALsrinwM+Rjnw3WkJUUsck4A7NIIDrytYVoPya7x0Frg==
+X-Received: by 2002:a5d:6946:0:b0:343:8551:8d90 with SMTP id
+ r6-20020a5d6946000000b0034385518d90mr10328854wrw.34.1712662441985; 
+ Tue, 09 Apr 2024 04:34:01 -0700 (PDT)
+Received: from redhat.com ([2.52.134.26]) by smtp.gmail.com with ESMTPSA id
+ jg25-20020a05600ca01900b00416928e239csm4127376wmb.35.2024.04.09.04.34.00
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 09 Apr 2024 04:34:01 -0700 (PDT)
+Date: Tue, 9 Apr 2024 07:33:58 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Amit Shah <amit@kernel.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH-for-9.0 v2 0/4] hw/virtio: Protect from more DMA
+ re-entrancy bugs
+Message-ID: <20240409073320-mutt-send-email-mst@kernel.org>
+References: <20240409105537.18308-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bfcda496-5781-49b2-a30b-8e28aa373218@tls.msk.ru>
-Received-SPF: pass client-ip=198.175.65.12; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -44
-X-Spam_score: -4.5
-X-Spam_bar: ----
-X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
+In-Reply-To: <20240409105537.18308-1-philmd@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,99 +101,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael & Paolo,
-
-On Fri, Apr 05, 2024 at 08:30:43PM +0300, Michael Tokarev wrote:
-> Date: Fri, 5 Apr 2024 20:30:43 +0300
-> From: Michael Tokarev <mjt@tls.msk.ru>
-> Subject: Re: [PATCH] target/i386: fix direction of "32-bit MMU" test
+On Tue, Apr 09, 2024 at 12:55:33PM +0200, Philippe Mathieu-Daudé wrote:
+> Fixes for CVE-2024-3446.
 > 
-> 01.04.2024 09:02, Michael Tokarev:
+> Gerd suggested to use the transport guard to protect the
+> device from DMA re-entrancy abuses.
 > 
-> > Anyone can guess why this rather trivial and obviously correct patch causes segfaults
-> > in a few tests in staging-7.2 - when run in tcg mode, namely:
-> > 
-> >    pxe-test
-> >    migration-test
-> >    boot-serial-test
-> >    bios-tables-test
-> >    vmgenid-test
-> >    cdrom-test
-> > 
-> > When reverting this single commit from staging-7.2, it all works fine again.
+> Since v1:
+> - Take a DeviceState argument, not VirtIODevice, so it
+>   works seamlessly with CCW devices (actually the original
+>   code from Gerd).
+> - Build and test :>
 > 
-> It sigsegvs in probe_access_internal():
+> I'll send a PR with these patches later today.
+
+I reviewed these too now
+
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+
+> Regards,
 > 
->   CPUTLBEntry *entry = tlb_entry(env, mmu_idx, addr); -- this one returns NULL,
+> Phil.
 > 
-> and next there's a call
+> Philippe Mathieu-Daudé (4):
+>   hw/virtio: Introduce virtio_bh_new_guarded() helper
+>   hw/display/virtio-gpu: Protect from DMA re-entrancy bugs
+>   hw/char/virtio-serial-bus: Protect from DMA re-entrancy bugs
+>   hw/virtio/virtio-crypto: Protect from DMA re-entrancy bugs
 > 
->   tlb_addr = tlb_read_ofs(entry, elt_ofs);
+>  include/hw/virtio/virtio.h  |  7 +++++++
+>  hw/char/virtio-serial-bus.c |  3 +--
+>  hw/display/virtio-gpu.c     |  6 ++----
+>  hw/virtio/virtio-crypto.c   |  4 ++--
+>  hw/virtio/virtio.c          | 10 ++++++++++
+>  5 files changed, 22 insertions(+), 8 deletions(-)
 > 
-> which fails.
-> 
-> #0  0x0000555555c5de8a in tlb_read_ofs (ofs=8, entry=0x0) at 7.2/accel/tcg/cputlb.c:1455
-> #1  probe_access_internal
->     (env=0x555556a862a0, addr=4294967280, fault_size=fault_size@entry=1,
-> access_type=access_type@entry=MMU_INST_FETCH, mmu_idx=5,
-> nonfault=nonfault@entry=false, phost=0x7fffea4d32a0, pfull=0x7fffea4d3298,
-> retaddr=0)
->     at 7.2/accel/tcg/cputlb.c:1555
-> #2  0x0000555555c62aba in get_page_addr_code_hostp
->     (env=<optimized out>, addr=addr@entry=4294967280, hostp=hostp@entry=0x0)
->     at 7.2/accel/tcg/cputlb.c:1691
-> #3  0x0000555555c52b54 in get_page_addr_code (addr=4294967280, env=<optimized out>)
->     at 7.2/include/exec/exec-all.h:714
-> #4  tb_htable_lookup
->     (cpu=cpu@entry=0x555556a85530, pc=pc@entry=4294967280,
-> cs_base=cs_base@entry=4294901760, flags=flags@entry=64,
-> cflags=cflags@entry=4278190080) at 7.2/accel/tcg/cpu-exec.c:236
-> #5  0x0000555555c53e8e in tb_lookup
->     (cflags=4278190080, flags=64, cs_base=4294901760, pc=4294967280, cpu=0x555556a85530)
->     at 7.2/accel/tcg/cpu-exec.c:270
-> #6  cpu_exec (cpu=cpu@entry=0x555556a85530) at 7.2/accel/tcg/cpu-exec.c:1001
-> #7  0x0000555555c75d2f in tcg_cpus_exec (cpu=cpu@entry=0x555556a85530)
->     at 7.2/accel/tcg/tcg-accel-ops.c:69
-> #8  0x0000555555c75e80 in mttcg_cpu_thread_fn (arg=arg@entry=0x555556a85530)
->     at 7.2/accel/tcg/tcg-accel-ops-mttcg.c:95
-> #9  0x0000555555ded098 in qemu_thread_start (args=0x555556adac40)
->     at 7.2/util/qemu-thread-posix.c:505
-> #10 0x00007ffff5793134 in start_thread (arg=<optimized out>)
-> #11 0x00007ffff58137dc in clone3 ()
-> 
-
-I debugged it manually, and found the problem occurs in tlb_index() with
-mmu_idx=5.
-
-For v7.2, the maximum mmu index supported by i386 is 4 (since
-NB_MMU_MODES = 5 defined in target/i386/cpu-param.h).
-
-On Michael's 7.2-i386-mmu-idx tree, the commit 9fc3a7828d25 ("target/i386:
-use separate MMU indexes for 32-bit accesses") introduced more indexes
-without relaxing the NB_MMU_MODES for i386.
-
-Before this fix, probe_access_internal() just got the wrong mmu_idx as 4,
-and it's not out of bounds. After this fix, the right mmu_idx=5 is truly
-out of bounds.
-
-On the master branch, there's no such issue since the commits ffd824f3f32d
-("include/exec: Set default NB_MMU_MODES to 16") and 6787318a5d86
-("target/i386: Remove NB_MMU_MODES define") relaxed upper limit of MMU
-index for i386.
-
-So these 2 commits should also be picked (with these 2 commits, tests in
-"make check" passed).
-
-However, the cleanup for NB_MMU_MODES is a big series (total 23 patches,
-from the commit ffd824f3f32d ("include/exec: Set default NB_MMU_MODES to
-16") to 00da6b49a227 ("include/exec: Remove guards around NB_MMU_MODES")),
-maybe changes in other arches should be picked together?
-
-In addition, I think maybe we could add assert() in tlb_index() and
-tlb_entry() to ensure the mmu_idx not exceed the limit of NB_MMU_MODES.
-But I'm a little unsure if this will hurt performance, because these 2
-helpers look like the hotspot functions.
-
--Zhao
+> -- 
+> 2.41.0
 
 
