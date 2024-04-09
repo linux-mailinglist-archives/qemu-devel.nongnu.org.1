@@ -2,80 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157B189D5C8
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 11:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABAC89D5EE
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 11:48:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru81o-0007Km-IE; Tue, 09 Apr 2024 05:44:32 -0400
+	id 1ru85Y-0001E0-FC; Tue, 09 Apr 2024 05:48:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru81l-0007KJ-Rf
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 05:44:29 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru85H-0001Db-3N
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 05:48:08 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru81k-0007Bz-1K
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 05:44:29 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a51fc011e8fso42978366b.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 02:44:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru85F-0007nq-99
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 05:48:06 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-a51e452a1ceso137917766b.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 02:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712655865; x=1713260665; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0ONk2ACysYoOUtOHX8ADC/l99dOcxUlQsrwtm1giLSQ=;
- b=aGvWtyZeOmKsZp+Wg9YkYD4MnXwbl1zYsEjAll/O+QeQATwH66SH/5419eLwIYTNVu
- 0Fks7v6sXYucm++G85EKX5TWmTZ5U3wBkGGNp79ReL7PrzKj7tP2pXyP+DoAzwh7AuaA
- Yl89MmfErgUelwRgmbPJhRFgEEQICqRRJZK/4QQSLr61fQLu0Y2Xz5IA0na/LaiQRjcl
- TzIR2ySOmOCxaF6qiGa31yN8s+f4Ns6LzN7UUGK1I8kpsnKkAGTFwEZo46Yd7Jdfhbcd
- +4QsU1Gs5bgLYrTX1aFOmoOk8fXXEPPge6R+avMd8WPX15xW68bRy4M7o6M7bfXalcCh
- RjvA==
+ d=linaro.org; s=google; t=1712656079; x=1713260879; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=3hDI87sq1FSJETxnPQkKo8rSPEGOq41R9YSzB3DSAZQ=;
+ b=BnLVPmLDHimgc/PQYER4c6PLRbW3pKw6bFFKG6tZqTi3HIYUC4lOfbnjh8DXDUDmrq
+ s2XxZYLakx05EL7Im+asGrddMl3IQFub0FWtvCZ9H50g739ppZXtnlpMvSkjAFP4zY6C
+ XN3R6jtNf6pQsJZmBDuz8KgAot6Pda6rK8PqCPzB7IyXjArxf69c87JW2QRcjy6HhvQc
+ UF7aGv7UfvJtT8w86nqCKS0mG4F9NtPC21Bp6iJ9Q595r68nNJvPxHphR5bZY3nJzWGp
+ RnzRdUOmDxcZFl2VfElcDhLlDivd4r6rwvfRtngr9+uODBvoJW2CMZnYM7Zrl8S1T7MJ
+ waUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712655865; x=1713260665;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0ONk2ACysYoOUtOHX8ADC/l99dOcxUlQsrwtm1giLSQ=;
- b=CT7/Qa3VUT+zd8qj3u0erKVyQW5ioagNuTjsKTeo6SucGPWNQqHGY6Ht++S1yBRirj
- 3TdygMCsKn0xjlxKpTzFexmWD3wQ933kBzEr7yxiMbo+vGlCTmlB0lUQuL934VcJuYLv
- ZvEJkULySkw3jYeAoNaT+Re65rIGzDEfy2aJwSXqG+uj4a10dVcgP67y9Tq5qrUsHLqq
- Erxm21CZc676F5m+i+cdyPsuXLHMC2jS3thze1/yvD3YNbemAFFQeGRpUA3eM05TQ7MI
- 59xBLtyA2HxjyBGl1Zo892nZNn1nOlc24pYa3MFsxC6AxPC1rGDjfS8OHAfW5OiIR7nA
- v2Xw==
-X-Gm-Message-State: AOJu0Yzkbdimm14y6dTjB7RagVEbJe8dc+Fqc1NTUCzEPqbanc0HeVRN
- 0LrOIQtzRd/pZu/hJzFMlhKMnkq23FgVEt+PY5wSS+A+DSPWufGPOWhwBLSteF4=
-X-Google-Smtp-Source: AGHT+IGZfPvlPJRZlagZSOTs/xF7lV9XQAQsy4QE6TI+wQ0gNwVB4rs05cinSYkwKQjn4dD5/4aaKQ==
-X-Received: by 2002:a17:907:970e:b0:a4f:c80c:1b69 with SMTP id
- jg14-20020a170907970e00b00a4fc80c1b69mr9958733ejc.8.1712655865310; 
- Tue, 09 Apr 2024 02:44:25 -0700 (PDT)
-Received: from [192.168.69.100] ([176.176.160.134])
+ d=1e100.net; s=20230601; t=1712656079; x=1713260879;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=3hDI87sq1FSJETxnPQkKo8rSPEGOq41R9YSzB3DSAZQ=;
+ b=cjpcVXNCyabJqmcs9MLVt6lqyEy16w8QtBopmQ18nvY1yFTLRyy8TX916cwltIzaK0
+ Yfr34qstdMNuLfLHlh34RsAwT1OYJsk3B5Vv4gbCrp/BIwGrji9Oi/Tw14M76ZuPBgNm
+ /dj/Gdj9dse/ibEVyX55J7Z7VY0lvHJMbwmQqhechUsup/U5iqr74iaK2xJSWCtEL3/b
+ Np6WItwlnv7xufZDZx+2eJKKQG+QwfppFhsuJh5z3sOgbLxHG/YlrEYjdVJeHV3KkGpJ
+ 9+2O3m/VNLuXGsDzUzWYcuW+ApTtweHRBt7Jua1Bdcy6H+rZOlDx6RfCTL1dtIPyv01Q
+ wCQA==
+X-Gm-Message-State: AOJu0YxERZ1ZV6O5gl/vYafpnGMUNAymyXTGQ+ipK6eFwwg8IvRveQvR
+ x0GzG97Eootq7KbP2gC4wQTt+uDRkWJaV01qZXKIN6/AZuCWfMqqPM6W8wCUcbt7eHkeqLyivLu
+ o
+X-Google-Smtp-Source: AGHT+IHRESIchrPnaDc1qZuWsH073VMRNWhDKbkNLomtnvh2XrT8yw+OQUDXqbml/xXWFxwlMUXG8w==
+X-Received: by 2002:a17:907:728e:b0:a51:d136:affb with SMTP id
+ dt14-20020a170907728e00b00a51d136affbmr5357117ejc.40.1712656079596; 
+ Tue, 09 Apr 2024 02:47:59 -0700 (PDT)
+Received: from m1x-phil.lan ([176.176.160.134])
  by smtp.gmail.com with ESMTPSA id
- i3-20020a1709063c4300b00a51fa9f6d92sm465380ejg.38.2024.04.09.02.44.24
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Apr 2024 02:44:24 -0700 (PDT)
-Message-ID: <384195db-6aab-4da0-80ea-d1c925904d14@linaro.org>
-Date: Tue, 9 Apr 2024 11:44:22 +0200
+ g3-20020a170906394300b00a4e40e48f8dsm5443003eje.185.2024.04.09.02.47.58
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 09 Apr 2024 02:47:59 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Zhenwei Pi <pizhenwei@bytedance.com>,
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Alexander Bulekov <alxndr@bu.edu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zheyu Ma <zheyuma97@gmail.com>
+Subject: [PATCH-for-9.0? v2] backends/cryptodev: Do not abort for invalid
+ session ID
+Date: Tue,  9 Apr 2024 11:47:56 +0200
+Message-ID: <20240409094757.9127-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH-for-9.1 3/4] hw/i2c: Convert to spec v7 terminology
- (automatically)
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Corey Minyard <cminyard@mvista.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-References: <20240408213339.83149-1-philmd@linaro.org>
- <20240408213339.83149-4-philmd@linaro.org>
- <CABgObfaRtv3WwhYzUKSCpee3UQFuwAzUEstX0uFGdRFOV6j4_Q@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfaRtv3WwhYzUKSCpee3UQFuwAzUEstX0uFGdRFOV6j4_Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,103 +93,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/4/24 10:58, Paolo Bonzini wrote:
-> 
-> 
-> Il lun 8 apr 2024, 23:34 Philippe Mathieu-Daudé <philmd@linaro.org 
-> <mailto:philmd@linaro.org>> ha scritto:
-> 
->     Note, the QOM type definition is not modified, TYPE_I2C_TARGET
->     remains defined as "i2c-slave".
-> 
-> 
-> Is this actually necessary? The only thing that could break is -global 
-> but I don't think it matters really.
+Instead of aborting when a session ID is invalid,
+return VIRTIO_CRYPTO_INVSESS ("Invalid session id").
 
-I remembered some discussion with Gerd where he mentioned we can not
-rename a QOM type because it is a stable interface (-device TYPE),
-but here I missed the type is abstract, so not user-creatable, thus
-it is safe to rename.
+Reproduced using:
 
-Consider the following hunk squashed:
+  $ cat << EOF | qemu-system-i386 -display none \
+     -machine q35,accel=qtest -m 512M -nodefaults \
+     -object cryptodev-backend-builtin,id=cryptodev0 \
+     -device virtio-crypto-pci,id=crypto0,cryptodev=cryptodev0 \
+     -qtest stdio
+  outl 0xcf8 0x80000804
+  outw 0xcfc 0x06
+  outl 0xcf8 0x80000820
+  outl 0xcfc 0xe0008000
+  write 0x10800e 0x1 0x01
+  write 0xe0008016 0x1 0x01
+  write 0xe0008020 0x4 0x00801000
+  write 0xe0008028 0x4 0x00c01000
+  write 0xe000801c 0x1 0x01
+  write 0x110000 0x1 0x05
+  write 0x110001 0x1 0x04
+  write 0x108002 0x1 0x11
+  write 0x108008 0x1 0x48
+  write 0x10800c 0x1 0x01
+  write 0x108018 0x1 0x10
+  write 0x10801c 0x1 0x02
+  write 0x10c002 0x1 0x01
+  write 0xe000b005 0x1 0x00
+  EOF
+  Assertion failed: (session_id < MAX_NUM_SESSIONS && builtin->sessions[session_id]),
+  function cryptodev_builtin_close_session, file cryptodev-builtin.c, line 430.
 
--- >8 --
-diff --git a/include/hw/i2c/i2c.h b/include/hw/i2c/i2c.h
-index abefee78fd..8908267c17 100644
---- a/include/hw/i2c/i2c.h
-+++ b/include/hw/i2c/i2c.h
-@@ -24 +24 @@ typedef struct I2CNodeList I2CNodeList;
--#define TYPE_I2C_TARGET "i2c-slave"
-+#define TYPE_I2C_TARGET "i2c-target"
+Reported-by: Zheyu Ma <zheyuma97@gmail.com>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2274
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
+v2: Removed error_report()
+---
+ backends/cryptodev-builtin.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-> 
-> Paolo
-> 
-> 
->     [*]
->     https://github.com/conscious-lang/conscious-lang-docs/blob/main/faq.md <https://github.com/conscious-lang/conscious-lang-docs/blob/main/faq.md>
-> 
->     Inspired-by: Wolfram Sang <wsa+renesas@sang-engineering.com
->     <mailto:wsa%2Brenesas@sang-engineering.com>>
->     Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org
->     <mailto:philmd@linaro.org>>
->     ---
->       include/hw/display/i2c-ddc.h     |   2 +-
->       include/hw/gpio/pca9552.h        |   2 +-
->       include/hw/gpio/pca9554.h        |   2 +-
->       include/hw/i2c/aspeed_i2c.h      |   4 +-
->       include/hw/i2c/i2c.h             |  66 ++++-----
->       include/hw/i2c/i2c_mux_pca954x.h |   2 +-
->       include/hw/i2c/smbus_slave.h     |   4 +-
->       include/hw/nvram/eeprom_at24c.h  |   4 +-
->       include/hw/sensor/tmp105.h       |   2 +-
->       hw/arm/aspeed.c                  | 232 +++++++++++++++----------------
->       hw/arm/bananapi_m2u.c            |   2 +-
->       hw/arm/cubieboard.c              |   2 +-
->       hw/arm/musicpal.c                |   6 +-
->       hw/arm/npcm7xx_boards.c          |  44 +++---
->       hw/arm/nseries.c                 |   6 +-
->       hw/arm/pxa2xx.c                  |  36 ++---
->       hw/arm/realview.c                |   2 +-
->       hw/arm/spitz.c                   |  12 +-
->       hw/arm/stellaris.c               |   2 +-
->       hw/arm/tosa.c                    |  14 +-
->       hw/arm/versatilepb.c             |   2 +-
->       hw/arm/vexpress.c                |   2 +-
->       hw/arm/z2.c                      |  20 +--
->       hw/audio/wm8750.c                |  18 +--
->       hw/display/ati.c                 |   4 +-
->       hw/display/i2c-ddc.c             |  10 +-
->       hw/display/sii9022.c             |  16 +--
->       hw/display/sm501.c               |   2 +-
->       hw/display/ssd0303.c             |  14 +-
->       hw/display/xlnx_dp.c             |   2 +-
->       hw/gpio/max7310.c                |  14 +-
->       hw/gpio/pca9552.c                |  14 +-
->       hw/gpio/pca9554.c                |  14 +-
->       hw/gpio/pcf8574.c                |  12 +-
->       hw/i2c/aspeed_i2c.c              |  16 +--
->       hw/i2c/core.c                    |  88 ++++++------
->       hw/i2c/i2c_mux_pca954x.c         |   6 +-
->       hw/i2c/imx_i2c.c                 |   2 +-
->       hw/i2c/smbus_slave.c             |  12 +-
->       hw/input/lm832x.c                |  14 +-
->       hw/misc/axp2xx.c                 |  14 +-
->       hw/misc/i2c-echo.c               |  14 +-
->       hw/nvram/eeprom_at24c.c          |  22 +--
->       hw/ppc/e500.c                    |   2 +-
->       hw/ppc/pnv.c                     |   4 +-
->       hw/ppc/sam460ex.c                |   2 +-
->       hw/rtc/ds1338.c                  |  14 +-
->       hw/rtc/m41t80.c                  |  12 +-
->       hw/rtc/twl92230.c                |  16 +--
->       hw/sensor/dps310.c               |  14 +-
->       hw/sensor/emc141x.c              |  16 +--
->       hw/sensor/lsm303dlhc_mag.c       |  16 +--
->       hw/sensor/tmp105.c               |  16 +--
->       hw/sensor/tmp421.c               |  20 +--
->       hw/tpm/tpm_tis_i2c.c             |  12 +-
->       55 files changed, 461 insertions(+), 461 deletions(-)
+diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
+index 39d0455280..a514bbb310 100644
+--- a/backends/cryptodev-builtin.c
++++ b/backends/cryptodev-builtin.c
+@@ -427,7 +427,9 @@ static int cryptodev_builtin_close_session(
+                       CRYPTODEV_BACKEND_BUILTIN(backend);
+     CryptoDevBackendBuiltinSession *session;
+ 
+-    assert(session_id < MAX_NUM_SESSIONS && builtin->sessions[session_id]);
++    if (session_id >= MAX_NUM_SESSIONS || !builtin->sessions[session_id]) {
++        return -VIRTIO_CRYPTO_INVSESS;
++    }
+ 
+     session = builtin->sessions[session_id];
+     if (session->cipher) {
+-- 
+2.41.0
 
 
