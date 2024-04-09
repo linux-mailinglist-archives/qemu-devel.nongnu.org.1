@@ -2,82 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B8A89DD5E
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 16:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E195189DD72
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 17:00:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruCt3-0007Rp-7V; Tue, 09 Apr 2024 10:55:49 -0400
+	id 1ruCwd-0001hI-2l; Tue, 09 Apr 2024 10:59:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruCsz-0007Md-6F
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:55:45 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1ruCwa-0001eZ-MX; Tue, 09 Apr 2024 10:59:28 -0400
+Received: from smtp-out1.suse.de ([195.135.223.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruCsl-0005Qc-5R
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:55:44 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-56e69888a36so2682651a12.3
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 07:55:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712674527; x=1713279327; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=4hk44b0CTtK39ComG0H6DHcrT6hIyE7whcTtxk6ce7I=;
- b=PInQX4QjACzKbLUsh7FXT+zCsGj7SMG+4vaFcHp1oXloYiTZDT02iJkRrHJdp8wQhP
- 0u6ZLx+DwhuNj7qc8/+PXIuottNBtTCvS5siKwwpqtIL5gbCtcgIWcLqss7aPJM5vYCJ
- s0N33aA7nLg3ExhgG9LmFi9Vx5XoELf2lZtb5RzfGDVPMSt1ucZxNZxkWIs9samyRqJW
- 5HEaO/sHZuZGSY7aFQNDYEiku76NHOrIs2Um1npcWuuXZHc59TJgsrsa56/QOlNUITrB
- v1XG39M8z2X/BrzKb1DiSSzB5rwhnufSJXoCr3gl/omNaEKU3Ipe34N3H+Sbl7Bf0XM8
- ZGVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712674527; x=1713279327;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=4hk44b0CTtK39ComG0H6DHcrT6hIyE7whcTtxk6ce7I=;
- b=jO+N5mBL2dN1MoXsnnEividPEXun7elPXhN2ykpeZ+GBb0KX/++Pud3K0aZU0gG6TT
- 73YAOzCWFpe7ZDdkKMrn4FssCRABEw201hWYPuOY3hlaZ8lrYl+rb9n2nJ+9mRCVV12o
- h6R/fCepj6iG3optTNo7fFnjQUx6KxAsS2zLcQsvr8H5KAYiRHb9jhFOG3g2rLiJOKKj
- xPA+jQnLoO5rabfkjQYHXLH8dIZtxQ+w7aaHQc+vv9kegiFwApszufkANP0MOr8AHNR6
- NQ6gO3inE3GJo2kH0CznTUvj2ya2c6iiTnam/DyA9a5V/1D0wTSU78/c4SJ8S+/NyHV4
- X8Bg==
-X-Gm-Message-State: AOJu0YxUsW1JmfBDpCqRTD0sjJ2RpBG8kYcV5TpnwGMxgCRstbQ5HgL1
- ppMQ8yJNSFD68z8lkolT+cM4qmemkoX9nosvrFQhLQxI1GBwXfYEJ69zAmXRb4neJ/sRIFoYUeu
- X
-X-Google-Smtp-Source: AGHT+IE/l2kTBvA10X0r3qP3E7aKGNfXQojS4/afUdoSqkJhS3J5arfIQ6VnESQ4lYnZF592NVNMiQ==
-X-Received: by 2002:a50:9e84:0:b0:56c:24e6:ca7e with SMTP id
- a4-20020a509e84000000b0056c24e6ca7emr7674875edf.2.1712674527594; 
- Tue, 09 Apr 2024 07:55:27 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.160.134])
- by smtp.gmail.com with ESMTPSA id
- er18-20020a056402449200b0056bfc48406csm5272968edb.7.2024.04.09.07.55.26
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Apr 2024 07:55:27 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>)
+ id 1ruCwY-0005qw-Oz; Tue, 09 Apr 2024 10:59:28 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C181933A53;
+ Tue,  9 Apr 2024 14:59:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1712674764; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Iv5zxijU4VTR2socV22qkWlTQ7KvKyxtR+hGxJQFBQw=;
+ b=fjNX3ZQ/NjBWV8l9QF9l5cyrwChrDn5gyYKrA1WEeR2hhnCIOuHRtDIMJsiVfgW7B/QIZg
+ Rsk4HeAe0BprFq8oH5p55DUShnlaPOz+ZMOVjICXOyKiMsOf0l40w1NtSrW9IRneJLD9Vk
+ 7Yq0sbdKSMt6tacKxZOvW92taoAicgA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1712674764;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Iv5zxijU4VTR2socV22qkWlTQ7KvKyxtR+hGxJQFBQw=;
+ b=iYMrb5sFEuuRrKwx5oaXNKufuWaagsgAkCjIfrLoxRwBpsiVOO6Mflm+AlUQrJAhS6WzmM
+ gaRvabQrGUl9vVBg==
+Authentication-Results: smtp-out1.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=KYTb9oyo;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=4ze+nQpk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1712674763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Iv5zxijU4VTR2socV22qkWlTQ7KvKyxtR+hGxJQFBQw=;
+ b=KYTb9oyo+HeLoAZkiTKUaiIW8DIMYV27ipWJzozY5+2QoTh+tu5svNm2KYX3/9Clmm95TB
+ 0YqFEZrbh0vUWn2zbu7rMj71R+DLjN8O6tfQOy4gIfq1SYF6Ugm7SKFSKTK+vL6JQBtA1b
+ RimvmSgpHVX5oq+MpQn628JUHOG3rKg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1712674763;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Iv5zxijU4VTR2socV22qkWlTQ7KvKyxtR+hGxJQFBQw=;
+ b=4ze+nQpkAfAEjc+ZASmaUWRSHCdJ/8ZURQBoXhBi3oJBkx+FwwsQ147xm28WusclH6DJfL
+ vEYPlQV+C2O8XpAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8AE5013313;
+ Tue,  9 Apr 2024 14:59:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id w0Y6FMhXFWZGOAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 09 Apr 2024 14:59:20 +0000
+From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Bin Meng <bin.meng@windriver.com>,
- Mauro Matteo Cascella <mcascell@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Chuhong Yuan <hslester96@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PATCH-for-9.0 v2] hw/sd/sdhci: Do not update TRNMOD when Command
- Inhibit (DAT) is set
-Date: Tue,  9 Apr 2024 16:55:24 +0200
-Message-ID: <20240409145524.27913-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Jo=C3=A3o=20Silva?= <jsilva@suse.de>, Lin Ma <lma@suse.com>,
+ Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3 00/11] block: Convert qmp_query_block into a coroutine
+Date: Tue,  9 Apr 2024 11:59:06 -0300
+Message-Id: <20240409145917.6780-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: C181933A53
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.51 / 50.00]; BAYES_HAM(-3.00)[100.00%];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ DWL_DNSWL_LOW(-1.00)[suse.de:dkim];
+ R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ NEURAL_HAM_SHORT(-0.20)[-0.999]; MIME_GOOD(-0.10)[text/plain];
+ MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ ARC_NA(0.00)[]; RCPT_COUNT_TWELVE(0.00)[12];
+ MIME_TRACE(0.00)[0:+]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ RCVD_TLS_ALL(0.00)[];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ FROM_EQ_ENVFROM(0.00)[]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,gitlab.com:url];
+ DKIM_TRACE(0.00)[suse.de:+]
+Received-SPF: pass client-ip=195.135.223.130; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,133 +125,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per "SD Host Controller Standard Specification Version 3.00":
+Hi, it's been a while since the last version, so a recap:
 
-  * 2.2.5 Transfer Mode Register (Offset 00Ch)
+This series converts qmp_query_block() & qmp_query_named_block_nodes()
+to coroutines so we can yield from them all the way back into the main
+loop. This addresses a vcpu softlockup encountered when querying a
+disk placed on NFS.
 
-    Writes to this register shall be ignored when the Command
-    Inhibit (DAT) in the Present State register is 1.
+If the NFS server happens to have high latency, an fstat() issued from
+raw_co_get_allocated_file_size() could take seconds while the whole
+QMP command is holding the BQL and blocks a vcpu thread going out of
+the guest to handle IO.
 
-Do not update the TRNMOD register when Command Inhibit (DAT)
-bit is set to avoid the present-status register going out of
-sync, leading to malicious guest using DMA mode and overflowing
-the FIFO buffer:
+This scenario is clearly undesireable since a query command is of much
+lower priority than the vcpu thread doing actual work.
 
-  $ cat << EOF | qemu-system-i386 \
-                     -display none -nodefaults \
-                     -machine accel=qtest -m 512M \
-                     -device sdhci-pci,sd-spec-version=3 \
-                     -device sd-card,drive=mydrive \
-                     -drive if=none,index=0,file=null-co://,format=raw,id=mydrive -nographic \
-                     -qtest stdio
-  outl 0xcf8 0x80001013
-  outl 0xcfc 0x91
-  outl 0xcf8 0x80001001
-  outl 0xcfc 0x06000000
-  write 0x9100002c 0x1 0x05
-  write 0x91000058 0x1 0x16
-  write 0x91000005 0x1 0x04
-  write 0x91000028 0x1 0x08
-  write 0x16 0x1 0x21
-  write 0x19 0x1 0x20
-  write 0x9100000c 0x1 0x01
-  write 0x9100000e 0x1 0x20
-  write 0x9100000f 0x1 0x00
-  write 0x9100000c 0x1 0x00
-  write 0x91000020 0x1 0x00
-  EOF
+Move the 'fstat' call into the thread-pool and make the necessary
+adaptations to ensure the whole QMP command that calls
+raw_co_get_allocated_file_size() runs in a coroutine.
 
-Stack trace (part):
-=================================================================
-==89993==ERROR: AddressSanitizer: heap-buffer-overflow on address
-0x615000029900 at pc 0x55d5f885700d bp 0x7ffc1e1e9470 sp 0x7ffc1e1e9468
-WRITE of size 1 at 0x615000029900 thread T0
-    #0 0x55d5f885700c in sdhci_write_dataport hw/sd/sdhci.c:564:39
-    #1 0x55d5f8849150 in sdhci_write hw/sd/sdhci.c:1223:13
-    #2 0x55d5fa01db63 in memory_region_write_accessor system/memory.c:497:5
-    #3 0x55d5fa01d245 in access_with_adjusted_size system/memory.c:573:18
-    #4 0x55d5fa01b1a9 in memory_region_dispatch_write system/memory.c:1521:16
-    #5 0x55d5fa09f5c9 in flatview_write_continue system/physmem.c:2711:23
-    #6 0x55d5fa08f78b in flatview_write system/physmem.c:2753:12
-    #7 0x55d5fa08f258 in address_space_write system/physmem.c:2860:18
-    ...
-0x615000029900 is located 0 bytes to the right of 512-byte region
-[0x615000029700,0x615000029900) allocated by thread T0 here:
-    #0 0x55d5f7237b27 in __interceptor_calloc
-    #1 0x7f9e36dd4c50 in g_malloc0
-    #2 0x55d5f88672f7 in sdhci_pci_realize hw/sd/sdhci-pci.c:36:5
-    #3 0x55d5f844b582 in pci_qdev_realize hw/pci/pci.c:2092:9
-    #4 0x55d5fa2ee74b in device_set_realized hw/core/qdev.c:510:13
-    #5 0x55d5fa325bfb in property_set_bool qom/object.c:2358:5
-    #6 0x55d5fa31ea45 in object_property_set qom/object.c:1472:5
-    #7 0x55d5fa332509 in object_property_set_qobject om/qom-qobject.c:28:10
-    #8 0x55d5fa31f6ed in object_property_set_bool qom/object.c:1541:15
-    #9 0x55d5fa2e2948 in qdev_realize hw/core/qdev.c:292:12
-    #10 0x55d5f8eed3f1 in qdev_device_add_from_qdict system/qdev-monitor.c:719:10
-    #11 0x55d5f8eef7ff in qdev_device_add system/qdev-monitor.c:738:11
-    #12 0x55d5f8f211f0 in device_init_func system/vl.c:1200:11
-    #13 0x55d5fad0877d in qemu_opts_foreach util/qemu-option.c:1135:14
-    #14 0x55d5f8f0df9c in qemu_create_cli_devices system/vl.c:2638:5
-    #15 0x55d5f8f0db24 in qmp_x_exit_preconfig system/vl.c:2706:5
-    #16 0x55d5f8f14dc0 in qemu_init system/vl.c:3737:9
-    ...
-SUMMARY: AddressSanitizer: heap-buffer-overflow hw/sd/sdhci.c:564:39
-in sdhci_write_dataport
+Changes since v2:
 
-Add assertions to ensure the fifo_buffer[] is not overflowed by
-malicious accesses to the Buffer Data Port register.
+- Do the changes more gradually to make it easier to reason about the
+  safety of the change.
 
-Fixes: CVE-2024-3447
-Cc: qemu-stable@nongnu.org
-Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
-Buglink: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=58813
-Reported-by: Alexander Bulekov <alxndr@bu.edu>
-Reported-by: Chuhong Yuan <hslester96@gmail.com>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
-Peter, since it is your patch, can I replace the Suggested-by your
-S-o-b tag?
+- Patch 4 addresses the issue I asked about recently on the ml [1]
+  about how to avoid dispatching the QMP command during an aio_poll().
 
-Supersedes: <20240404085549.16987-1-philmd@linaro.org>
----
- hw/sd/sdhci.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+- Converted qmp_query_block and qmp_query_named_block_nodes in a
+  single patch to avoid having hmp_info_block call a coroutine_fn out
+  of coroutine context.
 
-diff --git a/hw/sd/sdhci.c b/hw/sd/sdhci.c
-index c5e0bc018b..27673e1c70 100644
---- a/hw/sd/sdhci.c
-+++ b/hw/sd/sdhci.c
-@@ -473,6 +473,7 @@ static uint32_t sdhci_read_dataport(SDHCIState *s, unsigned size)
-     }
- 
-     for (i = 0; i < size; i++) {
-+        assert(s->data_count < s->buf_maxsz);
-         value |= s->fifo_buffer[s->data_count] << i * 8;
-         s->data_count++;
-         /* check if we've read all valid data (blksize bytes) from buffer */
-@@ -561,6 +562,7 @@ static void sdhci_write_dataport(SDHCIState *s, uint32_t value, unsigned size)
-     }
- 
-     for (i = 0; i < size; i++) {
-+        assert(s->data_count < s->buf_maxsz);
-         s->fifo_buffer[s->data_count] = value & 0xFF;
-         s->data_count++;
-         value >>= 8;
-@@ -1208,6 +1210,12 @@ sdhci_write(void *opaque, hwaddr offset, uint64_t val, unsigned size)
-         if (!(s->capareg & R_SDHC_CAPAB_SDMA_MASK)) {
-             value &= ~SDHC_TRNS_DMA;
-         }
-+
-+        /* TRNMOD writes are inhibited while Command Inhibit (DAT) is true */
-+        if (s->prnsts & SDHC_DATA_INHIBIT) {
-+            mask |= 0xffff;
-+        }
-+
-         MASKED_WRITE(s->trnmod, mask, value & SDHC_TRNMOD_MASK);
-         MASKED_WRITE(s->cmdreg, mask >> 16, value >> 16);
- 
+On v2, Hanna asked:
+
+  "I wonder how the threading is actually supposed to work.  I assume
+  QMP coroutines run in the main thread, so now we run
+  bdrv_co_get_allocated_file_size() in the main thread – is that
+  correct, or do we need to use bdrv_co_enter() like qmp_block_resize()
+  does?  And so, if we run it in the main thread, is it OK not to
+  acquire the AioContext around it to prevent interference from a
+  potential I/O thread?"
+
+The QMP coroutines and also bdrv_co_get_allocated_file_size() run in
+the main thread. This series doesn't change that. The difference is
+that instead of bdrv_co_get_allocated_file_size() yielding back to
+bdrv_poll(), it now yields back to the main loop.
+
+As for thread safety, that's basically what I asked about in [1], so
+I'm still gathering information and don't have a definite answer for
+it. Since we don't have the AioContext lock anymore, it seems that
+safety is now dependant on not dispatching the QMP command while other
+operations are ongoing.
+
+Still, for this particular case of fstat(), I don't think interference
+of an I/O thread could cause any problems, as long as the file
+descriptor is not closed prematurely. The fstat() manual already
+mentions that it is succeptible to return old information in some
+cases.
+
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1244905208
+
+1- Advice on block QMP command coroutines
+https://lore.kernel.org/r/87bk6trl9i.fsf@suse.de
+
+Initial discussion:
+https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03141.html
+v1:
+https://lore.kernel.org/r/20230523213903.18418-1-farosas@suse.de
+v2:
+https://lore.kernel.org/r/20230609201910.12100-1-farosas@suse.de
+
+Fabiano Rosas (9):
+  block: Allow the wrapper script to see functions declared in qapi.h
+  block: Temporarily mark bdrv_co_get_allocated_file_size as mixed
+  block: Take the graph lock in bdrv_snapshot_list
+  block: Reschedule query-block during qcow2 invalidation
+  block: Run bdrv_do_query_node_info in a coroutine
+  block: Convert bdrv_query_block_graph_info to coroutine
+  block: Convert bdrv_query_image_info to coroutine
+  block: Convert bdrv_block_device_info into co_wrapper
+  block: Don't query all block devices at hmp_nbd_server_start
+
+João Silva (1):
+  block: Add a thread-pool version of fstat
+
+Lin Ma (1):
+  block: Convert qmp_query_block and qmp_query_named_block_nodes to
+    coroutine
+
+ block.c                            |  9 +++--
+ block/file-posix.c                 | 40 +++++++++++++++++--
+ block/meson.build                  |  1 +
+ block/mirror.c                     |  1 +
+ block/monitor/block-hmp-cmds.c     | 34 +++++++++++-----
+ block/qapi.c                       | 63 +++++++++++++++---------------
+ block/qcow2.c                      | 20 ++++++++++
+ block/replication.c                |  1 +
+ block/snapshot.c                   |  2 +-
+ blockdev.c                         |  8 ++--
+ blockjob.c                         |  1 +
+ hmp-commands-info.hx               |  1 +
+ include/block/block-common.h       |  1 +
+ include/block/block-global-state.h |  3 +-
+ include/block/block-hmp-cmds.h     |  2 +-
+ include/block/qapi.h               | 24 ++++++++----
+ include/block/raw-aio.h            |  4 +-
+ migration/block.c                  |  1 +
+ qapi/block-core.json               |  5 ++-
+ qemu-img.c                         |  3 --
+ scripts/block-coroutine-wrapper.py |  1 +
+ 21 files changed, 157 insertions(+), 68 deletions(-)
+
 -- 
-2.41.0
+2.35.3
 
 
