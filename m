@@ -2,81 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F47689D32F
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 09:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 701C889D327
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 09:33:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru5y6-0006tw-Rq; Tue, 09 Apr 2024 03:32:34 -0400
+	id 1ru5yA-00070W-IQ; Tue, 09 Apr 2024 03:32:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5y4-0006rO-Tf
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5y8-0006uJ-08
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5y3-0001dG-7w
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:32 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5y6-0001dj-I5
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712647950;
+ s=mimecast20190719; t=1712647953;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SAP4+njt1pIwAfQTze1NdkgjAQFF4DuHgSbUxqb26Ps=;
- b=GuwXt5lXXgyOXNsiTSF1ocpNH38oA9jbm7z901ZtQA0li47avqH2B/wwF+0UeAfZ6Zqbd1
- cPccVyho5a7PXhRfbJj/Jkg3b59Jjl0XBPS5fqHfuIu0LXYsLbqZnilFK+1/w2Ply9D5ii
- XJUA5catIlld2cnJ1mX68VsaIer3kbU=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vH5L5pFLaSI06lO9xjFE/z5WyjmKBK04Tet3f92vU6A=;
+ b=QPpZ4paws40fXcfih4ZXaSSrhCExmXzVEpj5We2PR39RfN7IyAJvyLUXtlyMC0xeP9yJ9U
+ OsJ60KknqM2HsnM/b+DF25qXq/z3K7efgWtTvn5fDBbRVF6E3FRKk/xnrfuBDA+zZVb5U5
+ lbp7TEJU8yvv30gHl5ROhNI23Y1Moww=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-296-NIN-NNbXPZKoaSfZ9U_d6Q-1; Tue, 09 Apr 2024 03:32:29 -0400
-X-MC-Unique: NIN-NNbXPZKoaSfZ9U_d6Q-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-a4e9ac44d37so322820566b.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 00:32:28 -0700 (PDT)
+ us-mta-575-H2D3u9lrPviAi5CWT4jYSQ-1; Tue, 09 Apr 2024 03:32:32 -0400
+X-MC-Unique: H2D3u9lrPviAi5CWT4jYSQ-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5684bf1440dso2015061a12.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 00:32:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712647947; x=1713252747;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SAP4+njt1pIwAfQTze1NdkgjAQFF4DuHgSbUxqb26Ps=;
- b=j6cYMv94r2HXkD0uIR0CPL8hF8kvScoZpJFBHTUPYN9U5SnZGpXPc1dvmlG0pVq25N
- B7wqdafkFyUbaiKsYpNupm+O63UATM8I/A+6m3U2AnawqV0DIT7fr6i8tdN4UiZRfIQ8
- b9/ssV2gzxh3kPHS8XVrxDVvu2PBqI9GVRCaR0h1SXJ/yBV/3OMdz3C631iT81jJg71A
- xiclmlx3AojIbiBBimgS+Q9G75b8snFh8W8SD6NMUj/VYJq00IZ/fIdQT+2LqBaVwAro
- 6XshC3uTK3CzJ//7L6Z1Ix6x0mrJytUfbEX9iyunkoFM/1/XYKUssEZONe0wZbP3OryS
- PUVg==
-X-Gm-Message-State: AOJu0YwKZoGFaHzwZrQpa83AjuTovb6rxxo7FEDiKKw9QcqgpHeP1RKU
- zlgLdrIpHfhFyYG3Eq2VrXl2W7197AlxVxxWo9kXtltQj90eEOEwkO/KUjPUBeDu1QQsw4tlDYe
- Ld32y4cZgumHdHuawD02r/25d5R1r4EgbXByJn79B7V1sMitbi3eIP+zEQ/1NwIoQZhWsJkAOgp
- B5WtrRuLflUO/TifisiXD5PezY7ekfXA==
-X-Received: by 2002:a17:907:5c1:b0:a51:ce66:cf12 with SMTP id
- wg1-20020a17090705c100b00a51ce66cf12mr4481929ejb.35.1712647947367; 
- Tue, 09 Apr 2024 00:32:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEX+/QWPXxLBP0Thn2cYzJlES9HupbUQf0gFgQztgqNYiXItXGpewIPScieYwI5v6meEx/0JA==
-X-Received: by 2002:a17:907:5c1:b0:a51:ce66:cf12 with SMTP id
- wg1-20020a17090705c100b00a51ce66cf12mr4481907ejb.35.1712647946825; 
- Tue, 09 Apr 2024 00:32:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712647950; x=1713252750;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vH5L5pFLaSI06lO9xjFE/z5WyjmKBK04Tet3f92vU6A=;
+ b=cZIsy39Ooe8BEpQCESqVjrRkQHoDlNXiYWctjzNuSL3rOUXFI3ADdq1O4lncQS+EgW
+ YViLAPUTHjfcYLsA/dZldPm1LHTkGGm2tOfOl0wMO5DKzjnmRlaxkpL4sBp1syKvmJou
+ uUjo4qgQm0/a5E62Z6v65z2/Jqc5b2s5LRGYtsPgj+JJHjobtG4obCzqXOlzXcm+I/cZ
+ X0Y1gUko6kpR8EcUgTEWzByZW9n3FiUa1CxwrbZondVU4Y5sQXPJJzIK3725cdEbBW05
+ eU3jUS1AAAfAbM2aBSmdwpGzKEB1+ZBFjQbCtWs4ZySMUZAYc6gz1zcl+VkhV70PJtWq
+ oziw==
+X-Gm-Message-State: AOJu0Yx0FTi1xNWbwQQ0/rlNr5LX0jAc7iSPQ+ZARPl4/MfTlCGSAY44
+ sChcIGx7EX1j/hrLbh7jE1Lv4mVScOdjlFXDtI4moJuNiqTovaeQhAOXK/WN8mIEZQZe+FY9RU1
+ D8cmAC7WiGgwZ9/eTnM54LuEyUFOdr8UIs2cPa/8U6g/6wsNLQB1RKbPAa4jDF02ctYg8/GP2Rf
+ XdT3fejdhavQzG9YY+QFToXG3ABrd0RA==
+X-Received: by 2002:a50:9b56:0:b0:56b:fd17:3522 with SMTP id
+ a22-20020a509b56000000b0056bfd173522mr7971078edj.14.1712647950465; 
+ Tue, 09 Apr 2024 00:32:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFfmI15z1iU+N/YJLVDAItEnxPyp/nYlAdrcAtTJS3jYozitVZVbWUZBXkcu36NpRQzo9+b4w==
+X-Received: by 2002:a50:9b56:0:b0:56b:fd17:3522 with SMTP id
+ a22-20020a509b56000000b0056bfd173522mr7971038edj.14.1712647949828; 
+ Tue, 09 Apr 2024 00:32:29 -0700 (PDT)
 Received: from redhat.com ([2.52.134.26]) by smtp.gmail.com with ESMTPSA id
- dr19-20020a170907721300b00a4a33cfe593sm5318274ejc.39.2024.04.09.00.32.25
+ q18-20020aa7d452000000b0056e247de8e3sm4928413edr.1.2024.04.09.00.32.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 00:32:26 -0700 (PDT)
-Date: Tue, 9 Apr 2024 03:32:24 -0400
+ Tue, 09 Apr 2024 00:32:29 -0700 (PDT)
+Date: Tue, 9 Apr 2024 03:32:27 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>, Wafer <wafer@jaguarmicro.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: [PULL 4/7] hw/virtio: Fix packed virtqueue flush used_idx
-Message-ID: <2d9a31b3c27311eca1682cb2c076d7a300441960.1712647890.git.mst@redhat.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ lyx634449800 <yuxue.liu@jaguarmicro.com>, Jason Wang <jasowang@redhat.com>,
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 5/7] vdpa-dev: Fix the issue of device status not updating
+ when configuration interruption is triggered
+Message-ID: <6ae72f609a21cfc56bf655cd4bcded5d07691ce7.1712647890.git.mst@redhat.com>
 References: <cover.1712647890.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1712647890.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -100,64 +102,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wafer <wafer@jaguarmicro.com>
+From: lyx634449800 <yuxue.liu@jaguarmicro.com>
 
-In the event of writing many chains of descriptors, the device must
-write just the id of the last buffer in the descriptor chain, skip
-forward the number of descriptors in the chain, and then repeat the
-operations for the rest of chains.
+The set_config callback function vhost_vdpa_device_get_config in
+vdpa-dev does not fetch the current device status from the hardware
+device, causing the guest os to not receive the latest device status
+information.
 
-Current QEMU code writes all the buffer ids consecutively, and then
-skips all the buffers altogether. This is a bug, and can be reproduced
-with a VirtIONet device with _F_MRG_RXBUB and without
-_F_INDIRECT_DESC:
+The hardware updates the config status of the vdpa device and then
+notifies the os. The guest os receives an interrupt notification,
+triggering a get_config access in the kernel, which then enters qemu
+internally. Ultimately, the vhost_vdpa_device_get_config function of
+vdpa-dev is called
 
-If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
-but not the VIRTIO_RING_F_INDIRECT_DESC feature,
-'VirtIONetQueue->rx_vq' will use the merge feature
-to store data in multiple 'elems'.
-The 'num_buffers' in the virtio header indicates how many elements are merged.
-If the value of 'num_buffers' is greater than 1,
-all the merged elements will be filled into the descriptor ring.
-The 'idx' of the elements should be the value of 'vq->used_idx' plus 'ndescs'.
+One scenario encountered is when the device needs to bring down the
+vdpa net device. After modifying the status field of virtio_net_config
+in the hardware, it sends an interrupt notification. However, the guest
+os always receives the STATUS field as VIRTIO_NET_S_LINK_UP.
 
-Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Wafer <wafer@jaguarmicro.com>
-Message-Id: <20240407015451.5228-2-wafer@jaguarmicro.com>
+Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240408020003.1979-1-yuxue.liu@jaguarmicro.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ hw/virtio/vdpa-dev.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index d229755eae..c5bedca848 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -957,12 +957,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
-         return;
-     }
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 13e87f06f6..64b96b226c 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -195,7 +195,14 @@ static void
+ vhost_vdpa_device_get_config(VirtIODevice *vdev, uint8_t *config)
+ {
+     VhostVdpaDevice *s = VHOST_VDPA_DEVICE(vdev);
++    int ret;
  
-+    /*
-+     * For indirect element's 'ndescs' is 1.
-+     * For all other elemment's 'ndescs' is the
-+     * number of descriptors chained by NEXT (as set in virtqueue_packed_pop).
-+     * So When the 'elem' be filled into the descriptor ring,
-+     * The 'idx' of this 'elem' shall be
-+     * the value of 'vq->used_idx' plus the 'ndescs'.
-+     */
-+    ndescs += vq->used_elems[0].ndescs;
-     for (i = 1; i < count; i++) {
--        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
-+        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
-         ndescs += vq->used_elems[i].ndescs;
-     }
-     virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
--    ndescs += vq->used_elems[0].ndescs;
++    ret = vhost_dev_get_config(&s->dev, s->config, s->config_size,
++                            NULL);
++    if (ret < 0) {
++        error_report("get device config space failed");
++        return;
++    }
+     memcpy(config, s->config, s->config_size);
+ }
  
-     vq->inuse -= ndescs;
-     vq->used_idx += ndescs;
 -- 
 MST
 
