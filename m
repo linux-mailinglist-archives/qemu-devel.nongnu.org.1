@@ -2,82 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E532189DA97
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6C189DA8A
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:39:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruBgT-00064w-OZ; Tue, 09 Apr 2024 09:38:48 -0400
+	id 1ruBh3-0006NN-LV; Tue, 09 Apr 2024 09:39:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgC-0005uB-5w
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:28 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgH-0005yG-P2
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:34 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBg7-0008Dj-Iy
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:26 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-4169d794358so6526265e9.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgC-0008EA-3E
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:31 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-416b7f372b3so1963045e9.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712669900; x=1713274700; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712669905; x=1713274705; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DYq6emMuo84KXuK6pkPRkrWEaAEwv9PfaiSXDO6YJ5M=;
- b=cxnoEpD6KAKtBEw5QDjDUrmguX7lzbDV0x8vzdsb8XUcaMF+c/PECNPb7qMz3cRse5
- tuxwcywIHcy90NfWqp6yOx6VwXG+HWWsEZKBWJS0BNqFrS4xHazn3UXT8pimj86Y0KVC
- q1m63i4uFPfJn5/HFRi1e4b8BqsfjtHw3sQSHlMu8btsw2AVJTavZnfbKsEQdNPLW3QW
- KvhKctv52gsS4lJBXwTKIlvz6A/p7fLQSxxlVaaR3s67NrqwtxPvjdOnQ/AGceSYg2PP
- MyWKWXxGlCtLZ0L7dUcQciD+QH/PaY2EetO2VxruQu06qROX9zJMkf6ArpNpr7EZcJDL
- wGGQ==
+ bh=gF6HIIw6B4sYh42vGN4HzBKkT28PHylGD41Sq3YKysg=;
+ b=S8FpbpF7twbylfVlLu54c/YC69uDLbzg0pP476agLBBvdIKBMmCWTgyXahoachl3Ys
+ 7nZq0VV+H/KjA35lgZISJY+T53ras3swDGGHGCduHrSiXd5IoYetFmm97AqKSvIifvUA
+ 9XuLk2I+8BItERRWPANmPtkBwzxBsMUQDSNNVULKEmQFyeJmHltoxuRJCtjLb3+VxPXk
+ we4D9R1n7KLZcOu7c0E8K8JN33ibFTJ10Qcjhvma4TvNDg0Hni9jsNhpqHFPdBM21rIW
+ lfuMdWKXse2KfXM+5RQObW1S1ARYd1qwjKN9exmcwmFWRmWTEQ4sFDW+JrSep6meEGQf
+ cgOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712669900; x=1713274700;
+ d=1e100.net; s=20230601; t=1712669905; x=1713274705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DYq6emMuo84KXuK6pkPRkrWEaAEwv9PfaiSXDO6YJ5M=;
- b=iwSJqAlFIeLsuyfXngx4Yi+p3UELVI0Wbb2VkjKQ2hbP2lheAJZu+HPzi1REF82yIu
- mbgUsbU+A/WwLNJZSvl6tXlNoJ6+l3Y6d9M88657zQYf/pvTB4SUgr72vax5TTS7Kb6e
- AbS+uqQbxm21A+5qwfjNGid+ViCP61O2/xF4oSX+Y4bqubsQ39GBxXyySZ8FYuWMKSXP
- LxDTkip13EXhNbBzynOTuqB0o9DjDPfZPbQsz2DE7i/o3mftLy6FDiBQFG9sR+AIJg1w
- w8Bl7lTDLzVW2JX4npHVEqXy1dHUncqcf+xR3Al3uBwFkr6ONcuV0o5+ozM28hw1C8+r
- V2Hg==
-X-Gm-Message-State: AOJu0Yxdc3nkIgptEP4kJqcC6ypspimYEl1DpPnIeBbfZrlA65NbCmuZ
- WpBG1hfAj21aPFV9akjzMdq2+ALewbQf7/ce1wcngiMemwR5sDmJgBCHwdDTq07xpfod+NAHOFo
- L
-X-Google-Smtp-Source: AGHT+IFJNO3vuW3jY8RQ657X4tebjgJoKiFR1/PXa+vWUhVI1oog2dETBoUsBWazwOm1m14Pi+htyg==
-X-Received: by 2002:a05:600c:4f0e:b0:416:6e42:ecc5 with SMTP id
- l14-20020a05600c4f0e00b004166e42ecc5mr4129262wmq.40.1712669899965; 
- Tue, 09 Apr 2024 06:38:19 -0700 (PDT)
+ bh=gF6HIIw6B4sYh42vGN4HzBKkT28PHylGD41Sq3YKysg=;
+ b=og6LixhW6y3toAEHn3B68/A2YXcNriHS++uX7WtHqCX25PR/4W1bjXpCdtbMVZvRmg
+ vDS2CXS+9F0JlYCUnSHay6IJy7C9V9P8rUTQK8/85t/dy3n00Fnx5ljbm5lUZXcSOXIR
+ pTTNBmB1j+B68lcejFfCyALaWnByAJnUoyjWeEiZ2EHPG12WaCWdsqcHS1DI1xVp4Ojq
+ xD70kpiJFuVU2Wf/FARsgfX0hUuWwIZoU7gHlfLyv85Gy9liUVezeW5kuj1WBlI7yvVp
+ E1DmXiSY7nVpSU3V/Fa9opDt++94x9cUoStfpsTSSDwbBpTLStQBI+NOAz3i9UAO3Sh6
+ nyIg==
+X-Gm-Message-State: AOJu0YyrQk/6L9WlesPFRIYpeo1oV0E+K1WEfByW23lUmHR+PcG1Rai7
+ pL4b0bC/4nR2rA/7rmt2yNWj0QhPwZgXkA2n40Qh9entulSumJR1/F/Xxv/BfzmzxlNa7di9P1R
+ B
+X-Google-Smtp-Source: AGHT+IEu4ajUEx8yDVe2Upb/QIFMqZWoqh9Bt5y2VM4vhJrlFpuIF+nDaN+x+Cz8zu+WqYJUx5CeLQ==
+X-Received: by 2002:a05:600c:4f54:b0:416:6abe:2975 with SMTP id
+ m20-20020a05600c4f5400b004166abe2975mr4221251wmq.15.1712669905261; 
+ Tue, 09 Apr 2024 06:38:25 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.160.134])
  by smtp.gmail.com with ESMTPSA id
- q23-20020adfab17000000b003437799a373sm11657644wrc.83.2024.04.09.06.38.18
+ hn3-20020a05600ca38300b004162b578d8bsm16974787wmb.1.2024.04.09.06.38.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Apr 2024 06:38:19 -0700 (PDT)
+ Tue, 09 Apr 2024 06:38:24 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Chuhong Yuan <hslester96@gmail.com>, Jason Wang <jasowang@redhat.com>,
  Alexander Bulekov <alxndr@bu.edu>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 v2 03/11] hw/net/lan9118: Remove duplicated assignment
-Date: Tue,  9 Apr 2024 15:37:52 +0200
-Message-ID: <20240409133801.23503-4-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 04/11] hw/net/lan9118: Replace magic '5' value by
+ TX_FIF_SZ_RESET definition
+Date: Tue,  9 Apr 2024 15:37:53 +0200
+Message-ID: <20240409133801.23503-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240409133801.23503-1-philmd@linaro.org>
 References: <20240409133801.23503-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,25 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-s->txp->fifo_used is zeroed in the next 3 lines.
+TX_FIF_SZ is described in chapter 5.3.9,
+"HW_CFG — HARDWARE CONFIGURATION REGISTER".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/lan9118.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/net/lan9118.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 91d81b410b..d6f0e37eb1 100644
+index d6f0e37eb1..a6a869de32 100644
 --- a/hw/net/lan9118.c
 +++ b/hw/net/lan9118.c
-@@ -438,7 +438,6 @@ static void lan9118_reset(DeviceState *d)
-     s->hw_cfg = s->mode_16bit ? 0x00050000 : 0x00050004;
+@@ -71,6 +71,8 @@ do { printf("lan9118: " fmt , ## __VA_ARGS__); } while (0)
+ #define CSR_E2P_CMD     0xb0
+ #define CSR_E2P_DATA    0xb4
+ 
++#define TX_FIF_SZ_RESET 5
++
+ #define E2P_CMD_MAC_ADDR_LOADED 0x100
+ 
+ /* IRQ_CFG */
+@@ -435,7 +437,7 @@ static void lan9118_reset(DeviceState *d)
+     s->fifo_int = 0x48000000;
+     s->rx_cfg = 0;
+     s->tx_cfg = 0;
+-    s->hw_cfg = s->mode_16bit ? 0x00050000 : 0x00050004;
++    s->hw_cfg = (TX_FIF_SZ_RESET << 16) | (s->mode_16bit << 2);
      s->pmt_ctrl &= 0x45;
      s->gpio_cfg = 0;
--    s->txp->fifo_used = 0;
      s->txp->state = TX_IDLE;
-     s->txp->cmd_a = 0xffffffffu;
-     s->txp->cmd_b = 0xffffffffu;
 -- 
 2.41.0
 
