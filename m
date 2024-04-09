@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBBA89E3BC
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A65889E3B6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 21:37:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruHGf-0000br-G0; Tue, 09 Apr 2024 15:36:29 -0400
+	id 1ruHGi-0000dW-8u; Tue, 09 Apr 2024 15:36:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGc-0000bf-Pe
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:27 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1ruHGg-0000d0-O9
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:30 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ruHGb-0004et-5d
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:26 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e4bf0b3e06so6927745ad.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:24 -0700 (PDT)
+ id 1ruHGe-0004fA-Jl
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 15:36:30 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1e3dda73192so21587385ad.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 12:36:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712691384; x=1713296184; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712691385; x=1713296185; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7jtBLExS0tGWR2Q7Hyghjc2ZDJ4QMJ89vJLFL0IAkpg=;
- b=DE7+tfS1CW0d35m42dYOF78cC4Rxy9Gp4aOG1pi2/GYpIdTmMLh4r56c6O/XPoL0sK
- B8BG4vwx/tFFQ8FW9GhJhuH80q05gny+fhAguXplem1mgpsMxChUhK54Dbuzn6cN/PWq
- CKrE+JJ7BkYFGEd2VMdDTD1b2IdkwWa+U8lAYJmHW19R0MpIsauhBpMvIZrpE3z5QBha
- GaVn/HmO5uR27s2vUmWg9DHHmMb+tsMKpO+/PhKLHydhUoDJi5pqji16XRBBKyvxZOKa
- Qde+6xHGDRa0w9fYiYKRTz8jRGlFmfNX/t6kpMJBhZZ4CtNaJyHGzc3UywOcQ1Ypah8W
- ZjiQ==
+ bh=qu730y1a5bhHx8+lUgk6PRHwUAMG8x1kinVBmiKeHm0=;
+ b=nxaagpPBYzpTx3yZRMSBsGGRkBaJHvUGLmVx7to+4cHY8oitsJ6bFJSNmqWji7fWEo
+ nadJ80bqriMTJlTl+099JOHnp+4h6ERFWW4qCsnVArI/IRvnpt6isTuqoxzsr3FEDkI4
+ F4Vlu7LjWE6M3UuRMIvqNqHN852hHHL6q3VHkO45+0SxILAkJxtGZi9WTFoL4+OfYd0d
+ Vn2C7JB/wzeFMte3Gb0nB+k+cjE6nbnjgoDf9KoHpCV2JYxMm5oJukGOjrmT3I5wi8u5
+ Eokh/HJ82oPzMuKjOEP5ASJ1Ju/sBm8/obz/TJKpq7P3kk0QVufmblC64FFudGsR8rKn
+ mr/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712691384; x=1713296184;
+ d=1e100.net; s=20230601; t=1712691385; x=1713296185;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7jtBLExS0tGWR2Q7Hyghjc2ZDJ4QMJ89vJLFL0IAkpg=;
- b=IhZXXnIkjj80m8TjLFJSklvqwSiifJ+8rcEndj3Dc+5keiLdcWRYdQUX/qqJzKs4lf
- ty7NE2Q3ey+nXRrNtDXzMgjXhsNF2scTOSK91b5xPO29hGVyyEJpoU33Gm4gmPOkMzM7
- a5M0IR49Pm2qH0STF3FpEVoS8rAdA8j4gT21qxtbVQ9TxIYeZtpv28TqIjVNm+y2a4XM
- s65AWXHQBEGD8jcQ3/ecllWlZHyTGwMndCpNvo1S0lN6Olpo/iY3UEGzo9VxCK3z1xFU
- g0OVcBuWF20hqr2jv6VIfS3+HgzJkVxIJWMvzbxnNi8PTkBN1WHDSS8h2gYOqd2zUOLm
- YbVg==
-X-Gm-Message-State: AOJu0YymX/vF1/XQUUlVGXGrgbJu+kxSaXVJ7vmzE2A+Yd0DFVGUK8jA
- lZDc8NSNC3p0vL4SLv4CIdHrZIf8zpwT9rSmeD3Wmu8gc07233+hOkSE0vEz5iY9vNHY1ZhSbNo
- F
-X-Google-Smtp-Source: AGHT+IH5SOMUsH2RywfAizn+a7egYc7g24G9ldNDw0yOdAb3s+LCXy+b082BE49BI9f3kmORQArGUQ==
-X-Received: by 2002:a17:902:cece:b0:1e2:61c9:85de with SMTP id
- d14-20020a170902cece00b001e261c985demr883385plg.4.1712691383985; 
- Tue, 09 Apr 2024 12:36:23 -0700 (PDT)
+ bh=qu730y1a5bhHx8+lUgk6PRHwUAMG8x1kinVBmiKeHm0=;
+ b=KkExLiWQW5QcbHD9sxo7Om4cISxRRE81/6RXO/aTqflJqyrhjzr4dKfW8YHNeiXZBP
+ RuzrIQjenjbBdrotBGUlAPd3+X3u0SrMsGor8IV9puE4nFNVAs6OtiJdaJ0IMF1dhGY4
+ YpzyMEvYnCzC9pbdowZiEItwaIxIdD5g6Bh1v6TJyDi0JwVBOJNfbFIMkx8cevG5z190
+ uxbPaoa2XttHsXKRxA83HKHYMKnZ4FLr1NFsY4n7CVtLe26s+V2x+O2/2Qe7QaLV2HHP
+ c9/jPW9J1jyAiMyHRUfjgeuF79AI0UIaWbDm7YGNrp3QZ/EKLO8FS9vgkuhAC2Tkl/zj
+ secQ==
+X-Gm-Message-State: AOJu0Yx3aAUy9JiAfjuaueMQiFlnZJzsSBH4ltf2Wo+wgOjT0KA70NGP
+ vN0mhm08vW8jHBQnny+q0GM0IedhmbPH46lLryW7mJbcSvRoY4fDZO1D/wLKfGn3VgWCDvUJid2
+ k
+X-Google-Smtp-Source: AGHT+IFCA9nugoJKX6ZcRyOTZrDdSJpkV5H9aDyOS7XWhdE8zDCPceL+HkGbXy65nHym6c+CsjxMdg==
+X-Received: by 2002:a17:902:7ec1:b0:1e2:7d3b:353c with SMTP id
+ p1-20020a1709027ec100b001e27d3b353cmr615668plb.18.1712691385219; 
+ Tue, 09 Apr 2024 12:36:25 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.22
+ c17-20020a170902d49100b001e1071cf0bbsm6065843plg.302.2024.04.09.12.36.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 12:36:23 -0700 (PDT)
+ Tue, 09 Apr 2024 12:36:24 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?J=C3=B8rgen=20Hansen?= <Jorgen.Hansen@wdc.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 12/20] accel/tcg: Add insn_start to DisasContextBase
-Date: Tue,  9 Apr 2024 09:35:55 -1000
-Message-Id: <20240409193603.1703216-13-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL v2 13/20] target/arm: Use insn_start from DisasContextBase
+Date: Tue,  9 Apr 2024 09:35:56 -1000
+Message-Id: <20240409193603.1703216-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
 References: <20240409193603.1703216-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,58 +93,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is currently target-specific for many; begin making it
-target independent.
+To keep the multiple update check, replace insn_start
+with insn_start_updated.
 
-Tested-by: Jørgen Hansen <Jorgen.Hansen@wdc.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/translator.h | 3 +++
- accel/tcg/translator.c    | 2 ++
- 2 files changed, 5 insertions(+)
+ target/arm/tcg/translate.h     | 12 ++++++------
+ target/arm/tcg/translate-a64.c |  2 +-
+ target/arm/tcg/translate.c     |  2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 51624feb10..ceaeca8c91 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -74,6 +74,8 @@ typedef enum DisasJumpType {
-  * @singlestep_enabled: "Hardware" single stepping enabled.
-  * @saved_can_do_io: Known value of cpu->neg.can_do_io, or -1 for unknown.
-  * @plugin_enabled: TCG plugin enabled in this TB.
-+ * @insn_start: The last op emitted by the insn_start hook,
-+ *              which is expected to be INDEX_op_insn_start.
-  *
-  * Architecture-agnostic disassembly context.
-  */
-@@ -87,6 +89,7 @@ typedef struct DisasContextBase {
-     bool singlestep_enabled;
-     int8_t saved_can_do_io;
-     bool plugin_enabled;
-+    struct TCGOp *insn_start;
-     void *host_addr[2];
- } DisasContextBase;
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 93be745cf3..dc66ff2190 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -165,10 +165,10 @@ typedef struct DisasContext {
+     uint8_t gm_blocksize;
+     /* True if this page is guarded.  */
+     bool guarded_page;
++    /* True if the current insn_start has been updated. */
++    bool insn_start_updated;
+     /* Bottom two bits of XScale c15_cpar coprocessor access control reg */
+     int c15_cpar;
+-    /* TCG op of the current insn_start.  */
+-    TCGOp *insn_start;
+     /* Offset from VNCR_EL2 when FEAT_NV2 redirects this reg to memory */
+     uint32_t nv2_redirect_offset;
+ } DisasContext;
+@@ -276,10 +276,10 @@ static inline void disas_set_insn_syndrome(DisasContext *s, uint32_t syn)
+     syn &= ARM_INSN_START_WORD2_MASK;
+     syn >>= ARM_INSN_START_WORD2_SHIFT;
  
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 38c34009a5..ae61c154c2 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -140,6 +140,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     db->max_insns = *max_insns;
-     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
-     db->saved_can_do_io = -1;
-+    db->insn_start = NULL;
-     db->host_addr[0] = host_pc;
-     db->host_addr[1] = NULL;
+-    /* We check and clear insn_start_idx to catch multiple updates.  */
+-    assert(s->insn_start != NULL);
+-    tcg_set_insn_start_param(s->insn_start, 2, syn);
+-    s->insn_start = NULL;
++    /* Check for multiple updates.  */
++    assert(!s->insn_start_updated);
++    s->insn_start_updated = true;
++    tcg_set_insn_start_param(s->base.insn_start, 2, syn);
+ }
  
-@@ -157,6 +158,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     while (true) {
-         *max_insns = ++db->num_insns;
-         ops->insn_start(db, cpu);
-+        db->insn_start = tcg_last_op();
-         tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
+ static inline int curr_insn_len(DisasContext *s)
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 340265beb0..2666d52711 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -14179,7 +14179,7 @@ static void aarch64_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+         pc_arg &= ~TARGET_PAGE_MASK;
+     }
+     tcg_gen_insn_start(pc_arg, 0, 0);
+-    dc->insn_start = tcg_last_op();
++    dc->insn_start_updated = false;
+ }
  
-         if (plugin_enabled) {
+ static void aarch64_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index 69585e6003..dc49a8d806 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -9273,7 +9273,7 @@ static void arm_tr_insn_start(DisasContextBase *dcbase, CPUState *cpu)
+         condexec_bits = (dc->condexec_cond << 4) | (dc->condexec_mask >> 1);
+     }
+     tcg_gen_insn_start(pc_arg, condexec_bits, 0);
+-    dc->insn_start = tcg_last_op();
++    dc->insn_start_updated = false;
+ }
+ 
+ static bool arm_check_kernelpage(DisasContext *dc)
 -- 
 2.34.1
 
