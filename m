@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2116989D755
+	by mail.lfdr.de (Postfix) with ESMTPS id 493C289D758
 	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 12:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru99P-0001tg-QB; Tue, 09 Apr 2024 06:56:27 -0400
+	id 1ru99M-0001XH-Rk; Tue, 09 Apr 2024 06:56:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru99H-0001c3-MS
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 06:56:23 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ru995-0003C2-52
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 06:56:17 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-56e449187fcso3034002a12.3
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 03:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712660165; x=1713264965; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6X/is+z5mVOkZYdPvY4GBR/yTqnpSG/pltprumSeFRE=;
- b=pPXWKsz7IL3u3rwjL5Edr9NebonWc4fRW/JylFnSY+uu3DxkEbTr3MQUk2evi2AIVr
- 1VYsVh+Z10NbjxRF6BIA6tgcBM/1Ovl272NgLQk/Fk7/+1DjC6lLxS/D67mHNv10U+3x
- mrSIyj2j0qh970gfST1CMNQqcF7z4xXFD/4SQuCeM/8FRJR5ZXXHgGHefuLFldEmmnid
- EY046JpVnjYlDBWouR/jxj9d1JszVtTqtgJr99OCVtOKreqOnkdSNSPTRuiYPTUsaMqO
- 87ImlfIfnK0Gw3s8fKSTsINH4YX3sF1QJ4Oaj9Vn4faAV7PJzObHwwilrMFlSpsLwOu3
- Imqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712660165; x=1713264965;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6X/is+z5mVOkZYdPvY4GBR/yTqnpSG/pltprumSeFRE=;
- b=huELxfvbBxIkXcPYiMiMOla5goUU6ujPXckn1Rly2IKbxGHZnq9jOoT2v+mLitia8H
- Kb7eGskmchleL+Swmyszo6d2zTCf+Rw6w2PKCApt4/WtGm3nSWXaukYtDlgcLYEZLr56
- NGHv+RlRR4iGBsIsDN3fKPRuReNrPBV5giBTte6mZmnxq59z0knISjJZbH+4ToN5KxZi
- +HYZUz4exxR3yGQRvIFB31qm50JIlXPWED1NfUQLKpepkd2ruhu2dpF4448lWO4Eh0py
- R70elNfjhk9Am8xFzagoMRzWVjwj+6eoEztYxx7O4i7zcTbDTFTJhgtfIMw1Dds1IN57
- 6KZA==
-X-Gm-Message-State: AOJu0Yxc+B0F2CPa3uyXLo2dLdZEOFkwMnNAcxZLbb+/f75wG4SsrStR
- qOEHmqeF8B5PujJmUEVx1X3bo+QfZ3ZCcBOuNqTZsIX94fNJ72L3WvJfB/BD7/DId7l8LV82sDJ
- P
-X-Google-Smtp-Source: AGHT+IGcFauDh2oj7CDlFa4j3nnpnwtQ9TWRd/JNsJ4zNoqAoE45PuEcnv9w47mvHIvblOsBIuTNNQ==
-X-Received: by 2002:a50:bb65:0:b0:56e:34c5:c482 with SMTP id
- y92-20020a50bb65000000b0056e34c5c482mr7134612ede.27.1712660164654; 
- Tue, 09 Apr 2024 03:56:04 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.160.134])
- by smtp.gmail.com with ESMTPSA id
- a59-20020a509ec1000000b0056bc0c44f02sm5289539edf.96.2024.04.09.03.56.03
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Apr 2024 03:56:04 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Amit Shah <amit@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Laurent Vivier <lvivier@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>
-Subject: [PATCH-for-9.0 v2 4/4] hw/virtio/virtio-crypto: Protect from DMA
- re-entrancy bugs
-Date: Tue,  9 Apr 2024 12:55:37 +0200
-Message-ID: <20240409105537.18308-5-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240409105537.18308-1-philmd@linaro.org>
-References: <20240409105537.18308-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ru99C-0001V7-36
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 06:56:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1ru99A-0003DC-2a
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 06:56:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712660171;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=k9eX1qlYO0D9z00kIEcLvawtMAwU+mTnq7ImBQkpk4c=;
+ b=a+LfRtIaHwV987Zzunzww6OPCzSw65TvXJExSzaToNT8bDW7cu/lqGtP8XWhSvVM1vyzKF
+ sPVAjwXN6Jx5dSIWI339x4iKXFzlufJDH9dZN903Joaw44i4UIMJwJtpsVIwbuHWV+RETM
+ 3SFRB01safX5XeY0OHT5yjxWCSsEvpY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-592-sHN-7fEDNqGP34YroyTGig-1; Tue, 09 Apr 2024 06:56:06 -0400
+X-MC-Unique: sHN-7fEDNqGP34YroyTGig-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A92D10499A2;
+ Tue,  9 Apr 2024 10:56:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.192.74])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 95994920;
+ Tue,  9 Apr 2024 10:56:04 +0000 (UTC)
+Date: Tue, 9 Apr 2024 12:55:43 +0200
+From: Kevin Wolf <kwolf@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Qiang Liu <cyruscyliu@gmail.com>,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Alexander Bulekov <alxndr@bu.edu>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org
+Subject: Re: [PATCH-for-9.0? 0/3] hw/block/nand: Fix out-of-bound access in
+ NAND block buffer
+Message-ID: <ZhUer8fUjnSeOvLu@redhat.com>
+References: <20240408083605.55238-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <20240408083605.55238-1-philmd@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,36 +82,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace qemu_bh_new_guarded() by virtio_bh_new_guarded()
-so the bus and device use the same guard. Otherwise the
-DMA-reentrancy protection can be bypassed.
+Am 08.04.2024 um 10:36 hat Philippe Mathieu-DaudÈ geschrieben:
+> Fix for https://gitlab.com/qemu-project/qemu/-/issues/1446
+> 
+> Philippe Mathieu-DaudÈ (3):
+>   hw/block/nand: Factor nand_load_iolen() method out
+>   hw/block/nand: Have blk_load() return boolean indicating success
+>   hw/block/nand: Fix out-of-bound access in NAND block buffer
 
-Fixes: CVE-2024-3446
-Cc: qemu-stable@nongnu.org
-Suggested-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
----
- hw/virtio/virtio-crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+As we're short on time for 9.0:
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index fe1313f2ad..bbe8aa4b99 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -1080,8 +1080,8 @@ static void virtio_crypto_device_realize(DeviceState *dev, Error **errp)
-         vcrypto->vqs[i].dataq =
-                  virtio_add_queue(vdev, 1024, virtio_crypto_handle_dataq_bh);
-         vcrypto->vqs[i].dataq_bh =
--                 qemu_bh_new_guarded(virtio_crypto_dataq_bh, &vcrypto->vqs[i],
--                                     &dev->mem_reentrancy_guard);
-+                 virtio_bh_new_guarded(dev, virtio_crypto_dataq_bh,
-+                                       &vcrypto->vqs[i]);
-         vcrypto->vqs[i].vcrypto = vcrypto;
-     }
- 
--- 
-2.41.0
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
+
+But it feels to me like this device could use some more cleanup to make
+the code more robust.
+
+Kevin
 
 
