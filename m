@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B78889D1C0
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E58B89D1C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 07:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru3dr-0003CW-Fi; Tue, 09 Apr 2024 01:03:31 -0400
+	id 1ru3ds-0003CX-1u; Tue, 09 Apr 2024 01:03:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3dp-0003CD-S7
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:29 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1ru3dq-0003CN-EE
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:30 -0400
+Received: from mail-oi1-x22f.google.com ([2607:f8b0:4864:20::22f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1ru3dn-0005Jf-Vd
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:29 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6ead4093f85so4257062b3a.3
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:27 -0700 (PDT)
+ id 1ru3do-0005KD-O9
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 01:03:30 -0400
+Received: by mail-oi1-x22f.google.com with SMTP id
+ 5614622812f47-3c5efef980cso303318b6e.2
+ for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 22:03:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712639006; x=1713243806; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712639007; x=1713243807; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sAutoO51T8yiouPWosWlBYNCYdh90GN9jDKu8ChGAKw=;
- b=ulDFlVIZ77FV+0lanQXRDy9fpzQC4QcXNhKnNt0MTC3FxlZcoKz0dX+FdReUIwZtF6
- rXeGZJiuKP0VWMQcXrVChcan4DK4gutPoQH62t7W4P4c+b35Uof7fds4mcMIw4bxYBl7
- RilMKU+4uo7YxczC1jwF9nzxFcIJwCR3gryeBWtjLVrqLRp+2DH1+SDue2OOKJIdFjjo
- G4E74Ljize9OMrM/0wW2YYHjg4QR2fT68fCCGhQ7ukkbBElQw7T9grOawgkZllJovEPs
- T6jZqxmMgPXy/yGku8J1kBrMXgQ7FPszlQpgWa/vxz4UgPMPlTMasznRL1+FyxtNjpAK
- XAww==
+ :reply-to; bh=lfYCgXuXxRvNB6GamBg7nUp4jaKTlVTiooGSAkryLH8=;
+ b=lqnqz0UeH9XnkiLJWsRywouGizM1Ym/QZ7H+plEk6CsH0WiUNyE+g7gWpBAwJ6fuDY
+ Uzd7Z+FS4VBvlfAlYV28btvDulNRl3ELaFsirkMI1+b2Y35xCYSzLgFwV72b66rKsniR
+ xGlR/TLjzH/Gq6Q2l8cuJo3JrvOyrE9rflLU9wP38pOPDgwblt87/3bMxrB7hsKgEWlP
+ T0qxG2m1zzEfMVzr8LD3TI+67mypJNs63Z8D/kouzveeJCDKhendENjpjTbRkKytiXmO
+ 1B4b0QFiQ01AHrFUoqFuZ+ZfMmmbGe1+IiEa870884kaQ2JaIabf/RYxFZ0fc2gnfyNE
+ LbYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712639006; x=1713243806;
+ d=1e100.net; s=20230601; t=1712639007; x=1713243807;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sAutoO51T8yiouPWosWlBYNCYdh90GN9jDKu8ChGAKw=;
- b=Vw1dirOUdvZ57Xmmth/3GJ6m3/Dlq2srZ5ZAyiq6Mdhc+VpzlFolMz1x4P1NmvmnVG
- gTdhBhhngPjLIy8RlcBl4d9TcxwVhvVZW9WWrHGAwzrK5MC1CXfz2yjWBlTsZ22TLE0y
- 88JE35apqb1+5SeRf+giiuY6lhAvcp61trI6MukPN/WIegTmLAprcPVmqZFN1qGydJGs
- BCl3/4j3mSzHgP8HakiobEi5jP9lHz3tTNCGCOU2yryo4pXaTAJFmKGu0efbP6C2GNr9
- OYiDeGo0kPuuViAj+KTxnWEhTXnEMnsI/XDO0sI63pz8JH6d5n+t9DCcKh4vfKs0BxaM
- TXXA==
-X-Gm-Message-State: AOJu0YznabxMBbA4KBa3/4KfmLFpDjz5FlEuzpQlsqkZo+GjEbVgbmrk
- W3QCUMomWWUb7t2fF4R3OXS1oxMIhey+UDQ/dAV1Im4H4vWK86YNcau5KHKvmblF71aakrYIJg9
- Y
-X-Google-Smtp-Source: AGHT+IEux2BI+qVzXiRaftveK3LDZM2uXnsuxx7Fs7kipE720yBNuqcWTPNI+F2MNAuX6e8IzTcjDw==
-X-Received: by 2002:a05:6a00:2191:b0:6ed:5f66:602 with SMTP id
- h17-20020a056a00219100b006ed5f660602mr2923950pfi.9.1712639006439; 
- Mon, 08 Apr 2024 22:03:26 -0700 (PDT)
+ bh=lfYCgXuXxRvNB6GamBg7nUp4jaKTlVTiooGSAkryLH8=;
+ b=fzlCmujbWB9gOsGCKmzSbOzC8zJzdHtvGT4OMbuhyQzG+FbUf0HehYHFtqQT6bQF9h
+ v/9PPmKOKKTSWrv1VHIWjw+yK7qqxxci2Hqo/UbRGcVUrRrGJ9dNYMJwxTFQg6wK7ezp
+ z0Ddwy4RKU8ZRkv7s+jIysZ0raSugFweImxbRKJu1gOIk2f53gyDNRLCwEqqJIriur5m
+ X487ZVzTynq4Dp3XARW35WsVQt45BPXG8dCajrHgMIXy88HFCmfCUDdH7sfWji0huVNn
+ eR1MtIQHCFwLYs+N5IJA/4yvOsaJ//+hjY7kRp02jMi/8Vc0p1+zWpRMraTmo8042J2K
+ 0B0w==
+X-Gm-Message-State: AOJu0YxdfQeJI2HCxu7JjH2/eAobi7fToVln4Dimb90LjjDD3f6TmvVy
+ cu40SW+61MUWFdoYWbsK82vZegH85rDyZHBSYe+lofF42irc9VdFbvTyZy/oVGir6bHsMiIIHdE
+ L
+X-Google-Smtp-Source: AGHT+IGzTEB+sJnh4UeHa/tFlbut/7yUK7by8JNX2uyzRJHYnPcyOxuSQpnolqCBorkpNKW+Th59xA==
+X-Received: by 2002:aca:110d:0:b0:3c6:3bc:a686 with SMTP id
+ 13-20020aca110d000000b003c603bca686mr24979oir.17.1712639007568; 
+ Mon, 08 Apr 2024 22:03:27 -0700 (PDT)
 Received: from stoup.. (098-147-007-212.res.spectrum.com. [98.147.7.212])
  by smtp.gmail.com with ESMTPSA id
- z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.25
+ z26-20020aa785da000000b006e64ddfa71asm7654894pfn.170.2024.04.08.22.03.26
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 08 Apr 2024 22:03:26 -0700 (PDT)
+ Mon, 08 Apr 2024 22:03:27 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 17/28] linux-user/i386: Replace target_fpstate_fxsave with
- X86LegacyXSaveArea
-Date: Mon,  8 Apr 2024 19:02:51 -1000
-Message-Id: <20240409050302.1523277-18-richard.henderson@linaro.org>
+Subject: [PATCH v2 18/28] linux-user/i386: Split out struct target_fregs_state
+Date: Mon,  8 Apr 2024 19:02:52 -1000
+Message-Id: <20240409050302.1523277-19-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240409050302.1523277-1-richard.henderson@linaro.org>
 References: <20240409050302.1523277-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,163 +91,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the structure definition from target/i386/cpu.h.
-The only minor quirk is re-casting the sw_reserved
-area to the OS specific struct target_fpx_sw_bytes.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/i386/signal.c | 71 +++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 45 deletions(-)
+ linux-user/i386/signal.c | 43 +++++++++++++++++++++++-----------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
 diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
-index a4748b743d..ed98b4d073 100644
+index ed98b4d073..559b63c25b 100644
 --- a/linux-user/i386/signal.c
 +++ b/linux-user/i386/signal.c
-@@ -33,16 +33,6 @@ struct target_fpreg {
+@@ -33,6 +33,23 @@ struct target_fpreg {
      uint16_t exponent;
  };
  
--struct target_fpxreg {
--    uint16_t significand[4];
--    uint16_t exponent;
--    uint16_t padding[3];
--};
--
--struct target_xmmreg {
--    uint32_t element[4];
--};
--
++/* Legacy x87 fpu state format for FSAVE/FRESTOR. */
++struct target_fregs_state {
++    uint32_t cwd;
++    uint32_t swd;
++    uint32_t twd;
++    uint32_t fip;
++    uint32_t fcs;
++    uint32_t foo;
++    uint32_t fos;
++    struct target_fpreg st[8];
++
++    /* Software status information [not touched by FSAVE]. */
++    uint16_t status;
++    uint16_t magic;   /* 0xffff: FPU data only, 0x0000: FXSR FPU data */
++};
++QEMU_BUILD_BUG_ON(sizeof(struct target_fregs_state) != 32 + 80);
++
  struct target_fpx_sw_bytes {
      uint32_t magic1;
      uint32_t extended_size;
-@@ -52,25 +42,6 @@ struct target_fpx_sw_bytes {
- };
+@@ -43,29 +60,19 @@ struct target_fpx_sw_bytes {
  QEMU_BUILD_BUG_ON(sizeof(struct target_fpx_sw_bytes) != 12*4);
  
--struct target_fpstate_fxsave {
--    /* FXSAVE format */
--    uint16_t cw;
--    uint16_t sw;
--    uint16_t twd;
--    uint16_t fop;
--    uint64_t rip;
--    uint64_t rdp;
--    uint32_t mxcsr;
--    uint32_t mxcsr_mask;
--    uint32_t st_space[32];
--    uint32_t xmm_space[64];
--    uint32_t hw_reserved[12];
--    struct target_fpx_sw_bytes sw_reserved;
--};
--#define TARGET_FXSAVE_SIZE   sizeof(struct target_fpstate_fxsave)
--QEMU_BUILD_BUG_ON(TARGET_FXSAVE_SIZE != 512);
--QEMU_BUILD_BUG_ON(offsetof(struct target_fpstate_fxsave, sw_reserved) != 464);
--
  struct target_fpstate_32 {
-     /* Regular FPU environment */
-     uint32_t cw;
-@@ -83,7 +54,7 @@ struct target_fpstate_32 {
-     struct target_fpreg st[8];
-     uint16_t  status;
-     uint16_t  magic;          /* 0xffff = regular FPU data only */
--    struct target_fpstate_fxsave fxsave;
-+    X86LegacyXSaveArea fxsave;
+-    /* Regular FPU environment */
+-    uint32_t cw;
+-    uint32_t sw;
+-    uint32_t tag;
+-    uint32_t ipoff;
+-    uint32_t cssel;
+-    uint32_t dataoff;
+-    uint32_t datasel;
+-    struct target_fpreg st[8];
+-    uint16_t  status;
+-    uint16_t  magic;          /* 0xffff = regular FPU data only */
+-    X86LegacyXSaveArea fxsave;
++    struct target_fregs_state fpstate;
++    X86LegacyXSaveArea fxstate;
  };
  
  /*
-@@ -96,7 +67,7 @@ QEMU_BUILD_BUG_ON(offsetof(struct target_fpstate_32, fxsave) & 15);
- # define target_fpstate target_fpstate_32
- # define TARGET_FPSTATE_FXSAVE_OFFSET offsetof(struct target_fpstate_32, fxsave)
- #else
--# define target_fpstate target_fpstate_fxsave
-+# define target_fpstate X86LegacyXSaveArea
- # define TARGET_FPSTATE_FXSAVE_OFFSET 0
- #endif
- 
-@@ -240,15 +211,17 @@ struct rt_sigframe {
-  * Set up a signal frame.
+  * For simplicity, setup_frame aligns struct target_fpstate_32 to
+  * 16 bytes, so ensure that the FXSAVE area is also aligned.
   */
+-QEMU_BUILD_BUG_ON(offsetof(struct target_fpstate_32, fxsave) & 15);
++QEMU_BUILD_BUG_ON(offsetof(struct target_fpstate_32, fxstate) & 15);
  
--static void xsave_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxsave,
-+static void xsave_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
-                              abi_ulong fxsave_addr)
- {
-+    struct target_fpx_sw_bytes *sw = (void *)&fxsave->sw_reserved;
-+
-     if (!(env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE)) {
-         /* fxsave_addr must be 16 byte aligned for fxsave */
-         assert(!(fxsave_addr & 0xf));
+ #ifndef TARGET_X86_64
+ # define target_fpstate target_fpstate_32
+-# define TARGET_FPSTATE_FXSAVE_OFFSET offsetof(struct target_fpstate_32, fxsave)
++# define TARGET_FPSTATE_FXSAVE_OFFSET offsetof(struct target_fpstate_32, fxstate)
+ #else
+ # define target_fpstate X86LegacyXSaveArea
+ # define TARGET_FPSTATE_FXSAVE_OFFSET 0
+@@ -278,15 +285,15 @@ static void setup_sigcontext(struct target_sigcontext *sc,
+     __put_user(env->segs[R_SS].selector, (unsigned int *)&sc->ss);
  
-         cpu_x86_fxsave(env, fxsave_addr);
--        __put_user(0, &fxsave->sw_reserved.magic1);
-+        __put_user(0, &sw->magic1);
-     } else {
-         uint32_t xstate_size = xsave_area_size(env->xcr0, false);
- 
-@@ -266,10 +239,10 @@ static void xsave_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxs
-         /* Zero the header, XSAVE *adds* features to an existing save state.  */
-         memset(fxsave + 1, 0, sizeof(X86XSaveHeader));
-         cpu_x86_xsave(env, fxsave_addr, -1);
--        __put_user(TARGET_FP_XSTATE_MAGIC1, &fxsave->sw_reserved.magic1);
--        __put_user(extended_size, &fxsave->sw_reserved.extended_size);
--        __put_user(env->xcr0, &fxsave->sw_reserved.xfeatures);
--        __put_user(xstate_size, &fxsave->sw_reserved.xstate_size);
-+        __put_user(TARGET_FP_XSTATE_MAGIC1, &sw->magic1);
-+        __put_user(extended_size, &sw->extended_size);
-+        __put_user(env->xcr0, &sw->xfeatures);
-+        __put_user(xstate_size, &sw->xstate_size);
-         __put_user(TARGET_FP_XSTATE_MAGIC2,
-                    (uint32_t *)((void *)fxsave + xstate_size));
-     }
-@@ -383,9 +356,9 @@ get_sigframe(struct target_sigaction *ka, CPUX86State *env, size_t fxsave_offset
-     }
- 
+     cpu_x86_fsave(env, fpstate_addr, 1);
+-    fpstate->status = fpstate->sw;
++    fpstate->fpstate.status = fpstate->fpstate.swd;
      if (!(env->features[FEAT_1_EDX] & CPUID_FXSR)) {
--        return (esp - (fxsave_offset + TARGET_FXSAVE_SIZE)) & -8ul;
-+        return (esp - (fxsave_offset + sizeof(X86LegacyXSaveArea))) & -8ul;
-     } else if (!(env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE)) {
--        return ((esp - TARGET_FXSAVE_SIZE) & -16ul) - fxsave_offset;
-+        return ((esp - sizeof(X86LegacyXSaveArea)) & -16ul) - fxsave_offset;
+         magic = 0xffff;
      } else {
-         size_t xstate_size =
-                xsave_area_size(env->xcr0, false) + TARGET_FP_XSTATE_MAGIC2_SIZE;
-@@ -551,21 +524,29 @@ give_sigsegv:
-     force_sigsegv(sig);
- }
- 
--static int xrstor_sigcontext(CPUX86State *env, struct target_fpstate_fxsave *fxsave,
-+static int xrstor_sigcontext(CPUX86State *env, X86LegacyXSaveArea *fxsave,
-                              abi_ulong fxsave_addr)
- {
-+    struct target_fpx_sw_bytes *sw = (void *)&fxsave->sw_reserved;
-+
-     if (env->features[FEAT_1_ECX] & CPUID_EXT_XSAVE) {
--        uint32_t extended_size = tswapl(fxsave->sw_reserved.extended_size);
--        uint32_t xstate_size = tswapl(fxsave->sw_reserved.xstate_size);
-+        uint32_t magic1 = tswapl(sw->magic1);
-+        uint32_t extended_size = tswapl(sw->extended_size);
-+        uint32_t xstate_size = tswapl(sw->xstate_size);
-+        uint32_t minimum_size = (TARGET_FPSTATE_FXSAVE_OFFSET
-+                                 + TARGET_FP_XSTATE_MAGIC2_SIZE
-+                                 + xstate_size);
-+        uint32_t magic2;
- 
-         /* Linux checks MAGIC2 using xstate_size, not extended_size.  */
--        if (tswapl(fxsave->sw_reserved.magic1) == TARGET_FP_XSTATE_MAGIC1 &&
--            extended_size >= TARGET_FPSTATE_FXSAVE_OFFSET + xstate_size + TARGET_FP_XSTATE_MAGIC2_SIZE) {
-+        if (magic1 == TARGET_FP_XSTATE_MAGIC1
-+            && extended_size >= minimum_size) {
-             if (!access_ok(env_cpu(env), VERIFY_READ, fxsave_addr,
-                            extended_size - TARGET_FPSTATE_FXSAVE_OFFSET)) {
-                 return 1;
-             }
--            if (tswapl(*(uint32_t *)((void *)fxsave + xstate_size)) == TARGET_FP_XSTATE_MAGIC2) {
-+            magic2 = tswapl(*(uint32_t *)((void *)fxsave + xstate_size));
-+            if (magic2 == TARGET_FP_XSTATE_MAGIC2) {
-                 cpu_x86_xrstor(env, fxsave_addr, -1);
-                 return 0;
-             }
+-        xsave_sigcontext(env, &fpstate->fxsave,
++        xsave_sigcontext(env, &fpstate->fxstate,
+                          fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
+         magic = 0;
+     }
+-    __put_user(magic, &fpstate->magic);
++    __put_user(magic, &fpstate->fpstate.magic);
+ #else
+     __put_user(env->regs[R_EDI], &sc->rdi);
+     __put_user(env->regs[R_ESI], &sc->rsi);
+@@ -622,7 +629,7 @@ restore_sigcontext(CPUX86State *env, struct target_sigcontext *sc)
+             cpu_x86_frstor(env, fpstate_addr, 1);
+             err = 0;
+         } else {
+-            err = xrstor_sigcontext(env, &fpstate->fxsave,
++            err = xrstor_sigcontext(env, &fpstate->fxstate,
+                                     fpstate_addr + TARGET_FPSTATE_FXSAVE_OFFSET);
+         }
+ #else
 -- 
 2.34.1
 
