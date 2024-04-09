@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5D5A89DD87
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 17:01:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AEC89DD7B
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 17:00:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruCws-0001oO-QM; Tue, 09 Apr 2024 10:59:52 -0400
+	id 1ruCx1-0001tc-Qy; Tue, 09 Apr 2024 10:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1ruCwg-0001kR-Rw; Tue, 09 Apr 2024 10:59:35 -0400
-Received: from smtp-out2.suse.de ([195.135.223.131])
+ id 1ruCwm-0001oB-Hw; Tue, 09 Apr 2024 10:59:42 -0400
+Received: from smtp-out1.suse.de ([2a07:de40:b251:101:10:150:64:1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1ruCwf-0005u6-8u; Tue, 09 Apr 2024 10:59:34 -0400
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
- [IPv6:2a07:de40:b281:104:10:150:64:97])
+ id 1ruCwj-0005ug-KP; Tue, 09 Apr 2024 10:59:38 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 8D60B20A6A;
- Tue,  9 Apr 2024 14:59:31 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4AC1433A53;
+ Tue,  9 Apr 2024 14:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1712674771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1712674775; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZgR+jiIhx54qTUTAC4AMtnTlIllhTJDE02frQu2rkuE=;
- b=o2T3Ngz+Y6st5BRE+Y3QEbgPS2yCV0HBaZJUnS9YezVnVmeYRYOwxZqQmkl1xnUSDtmJwY
- HSMUGJgDr7T5q6pOCgBttF+Ecvi3wcA9W+ZyzvGxwAjqf9GeaB9V/Htpc00tkxVUCFxhZW
- teHMqfxEOlv6oAU1pyDe4wBGvWocigE=
+ bh=HliQrJKBtw9WoMssEwBhMGiZx/IPAwhMPbYu9kACb68=;
+ b=j+4g8CciXzEWx1QdwGgEi+IFgx4LkMHnzXdepD3WlQb6iZeAdRjvNGWOGfG4jDRK4V3rHp
+ QxGBKuugRxhVTTR4GdNWK5u2XwPIWNlSgXAZazlqyoBK9xDnk4Xh8DF8mbKByVz/nZ4DNm
+ q0vyZMLIgjokaLPosi53noZVIlcLJfE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1712674771;
+ s=susede2_ed25519; t=1712674775;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZgR+jiIhx54qTUTAC4AMtnTlIllhTJDE02frQu2rkuE=;
- b=ojhFCI4SQGmN3XS8z5Tzw77qJ9mvQABlr0hzPmvQ4usclCuDB5T2/5fUWAhK/BRKees2EM
- deC4mfawjv4ogeCw==
-Authentication-Results: smtp-out2.suse.de;
- dkim=pass header.d=suse.de header.s=susede2_rsa header.b=o2T3Ngz+;
- dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ojhFCI4S
+ bh=HliQrJKBtw9WoMssEwBhMGiZx/IPAwhMPbYu9kACb68=;
+ b=E4RAys7fIAMk7Pc1963jsDQbnxkqIWUjSyosYm7xYK3Xjt1Afgdgfrdt7QcwghGNJSrJyD
+ KfDRA2Cd6iZjLVDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1712674771; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1712674775; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZgR+jiIhx54qTUTAC4AMtnTlIllhTJDE02frQu2rkuE=;
- b=o2T3Ngz+Y6st5BRE+Y3QEbgPS2yCV0HBaZJUnS9YezVnVmeYRYOwxZqQmkl1xnUSDtmJwY
- HSMUGJgDr7T5q6pOCgBttF+Ecvi3wcA9W+ZyzvGxwAjqf9GeaB9V/Htpc00tkxVUCFxhZW
- teHMqfxEOlv6oAU1pyDe4wBGvWocigE=
+ bh=HliQrJKBtw9WoMssEwBhMGiZx/IPAwhMPbYu9kACb68=;
+ b=j+4g8CciXzEWx1QdwGgEi+IFgx4LkMHnzXdepD3WlQb6iZeAdRjvNGWOGfG4jDRK4V3rHp
+ QxGBKuugRxhVTTR4GdNWK5u2XwPIWNlSgXAZazlqyoBK9xDnk4Xh8DF8mbKByVz/nZ4DNm
+ q0vyZMLIgjokaLPosi53noZVIlcLJfE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1712674771;
+ s=susede2_ed25519; t=1712674775;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZgR+jiIhx54qTUTAC4AMtnTlIllhTJDE02frQu2rkuE=;
- b=ojhFCI4SQGmN3XS8z5Tzw77qJ9mvQABlr0hzPmvQ4usclCuDB5T2/5fUWAhK/BRKees2EM
- deC4mfawjv4ogeCw==
+ bh=HliQrJKBtw9WoMssEwBhMGiZx/IPAwhMPbYu9kACb68=;
+ b=E4RAys7fIAMk7Pc1963jsDQbnxkqIWUjSyosYm7xYK3Xjt1Afgdgfrdt7QcwghGNJSrJyD
+ KfDRA2Cd6iZjLVDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 607E413313;
- Tue,  9 Apr 2024 14:59:28 +0000 (UTC)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A51B13313;
+ Tue,  9 Apr 2024 14:59:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
- by imap1.dmz-prg2.suse.org with ESMTPSA id GN3dCdBXFWZGOAAAD6G6ig
- (envelope-from <farosas@suse.de>); Tue, 09 Apr 2024 14:59:28 +0000
+ by imap1.dmz-prg2.suse.org with ESMTPSA id qIiPMNNXFWZGOAAAD6G6ig
+ (envelope-from <farosas@suse.de>); Tue, 09 Apr 2024 14:59:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
@@ -79,38 +77,29 @@ Cc: qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
  Claudio Fontana <cfontana@suse.de>, Dario Faggioli <dfaggioli@suse.com>,
  Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 02/11] block: Temporarily mark
- bdrv_co_get_allocated_file_size as mixed
-Date: Tue,  9 Apr 2024 11:59:08 -0300
-Message-Id: <20240409145917.6780-3-farosas@suse.de>
+Subject: [PATCH v3 03/11] block: Take the graph lock in bdrv_snapshot_list
+Date: Tue,  9 Apr 2024 11:59:09 -0300
+Message-Id: <20240409145917.6780-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20240409145917.6780-1-farosas@suse.de>
 References: <20240409145917.6780-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.01 / 50.00]; BAYES_HAM(-3.00)[100.00%];
- NEURAL_HAM_LONG(-1.00)[-1.000];
- DWL_DNSWL_LOW(-1.00)[suse.de:dkim]; MID_CONTAINS_FROM(1.00)[];
- R_MISSING_CHARSET(0.50)[];
- R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- NEURAL_HAM_SHORT(-0.20)[-1.000]; MIME_GOOD(-0.10)[text/plain];
- MX_GOOD(-0.01)[];
+X-Spamd-Result: default: False [-2.80 / 50.00]; BAYES_HAM(-3.00)[99.99%];
+ MID_CONTAINS_FROM(1.00)[]; NEURAL_HAM_LONG(-1.00)[-1.000];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-0.986];
+ MIME_GOOD(-0.10)[text/plain]; ARC_NA(0.00)[];
+ MIME_TRACE(0.00)[0:+]; RCVD_COUNT_TWO(0.00)[2];
+ RCPT_COUNT_TWELVE(0.00)[12];
  DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
- FUZZY_BLOCKED(0.00)[rspamd.com]; MIME_TRACE(0.00)[0:+];
- ARC_NA(0.00)[]; RCPT_COUNT_TWELVE(0.00)[12];
- TO_MATCH_ENVRCPT_ALL(0.00)[]; RCVD_TLS_ALL(0.00)[];
- DKIM_TRACE(0.00)[suse.de:+]; FROM_EQ_ENVFROM(0.00)[];
- FROM_HAS_DN(0.00)[]; TO_DN_SOME(0.00)[];
- RCVD_COUNT_TWO(0.00)[2];
- R_RATELIMIT(0.00)[to_ip_from(RL8i9y4krh53rntrk3u7dj74zf)];
- RCVD_VIA_SMTP_AUTH(0.00)[];
- DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email]
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8D60B20A6A
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -4.01
-Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+ FUZZY_BLOCKED(0.00)[rspamd.com]; TO_MATCH_ENVRCPT_ALL(0.00)[];
+ FROM_HAS_DN(0.00)[]; RCVD_VIA_SMTP_AUTH(0.00)[];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ TO_DN_SOME(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
+X-Spam-Score: -2.80
+Received-SPF: pass client-ip=2a07:de40:b251:101:10:150:64:1;
+ envelope-from=farosas@suse.de; helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -133,33 +122,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some callers of this function are about to be converted to run in
-coroutines, so allow it to be executed both inside and outside a
-coroutine while we convert all the callers.
-
-This will be reverted once all callers of bdrv_do_query_node_info run
-in a coroutine.
+This function has up until now always ran in the main loop, outside of
+a coroutine. We're about to make it run inside a coroutine so start
+actually taking the graph lock.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Reviewed-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- include/block/block-io.h | 2 +-
+ block/snapshot.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/block/block-io.h b/include/block/block-io.h
-index b49e0537dd..349d7760a1 100644
---- a/include/block/block-io.h
-+++ b/include/block/block-io.h
-@@ -86,7 +86,7 @@ int64_t co_wrapper_mixed_bdrv_rdlock bdrv_getlength(BlockDriverState *bs);
- int64_t coroutine_fn GRAPH_RDLOCK
- bdrv_co_get_allocated_file_size(BlockDriverState *bs);
+diff --git a/block/snapshot.c b/block/snapshot.c
+index 8242b4abac..3db9536ca2 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -389,7 +389,7 @@ int bdrv_snapshot_list(BlockDriverState *bs,
+                        QEMUSnapshotInfo **psn_info)
+ {
+     GLOBAL_STATE_CODE();
+-    GRAPH_RDLOCK_GUARD_MAINLOOP();
++    GRAPH_RDLOCK_GUARD();
  
--int64_t co_wrapper_bdrv_rdlock
-+int64_t co_wrapper_mixed_bdrv_rdlock
- bdrv_get_allocated_file_size(BlockDriverState *bs);
- 
- BlockMeasureInfo *bdrv_measure(BlockDriver *drv, QemuOpts *opts,
+     BlockDriver *drv = bs->drv;
+     BlockDriverState *fallback_bs = bdrv_snapshot_fallback(bs);
 -- 
 2.35.3
 
