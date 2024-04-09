@@ -2,65 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B549389D4DC
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 10:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228DB89D4E3
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 10:50:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru799-0007xY-FI; Tue, 09 Apr 2024 04:48:03 -0400
+	id 1ru7Ba-0000xG-V0; Tue, 09 Apr 2024 04:50:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ru793-0007w2-LA
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:47:57 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ id 1ru7BY-0000wq-LH
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:50:32 -0400
+Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ru790-0006eX-Sq
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:47:57 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-56e6a1edecfso2139671a12.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 01:47:53 -0700 (PDT)
+ id 1ru7BW-00078p-Gt
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 04:50:32 -0400
+Received: by mail-ed1-x533.google.com with SMTP id
+ 4fb4d7f45d1cf-56e48d0a632so4387373a12.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 01:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712652472; x=1713257272; darn=nongnu.org;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tB5jbJyKVfjMYI2SGLQR2XRltgEq4aDOxenRiNtvyuU=;
- b=k3MgvK4EU7nvxx9IeDzOtDAA6DaX2ZvIYEO5jtFpROVFxBdJYGTVlvtTkqdWQ6LNUd
- sY4V33y7m5+FcRy2Sb5HIubBTWtYEW5iHFae2FVT1AnjDB/lzGeQYa+7nYDUb/+F3bqD
- 3kY4eCV+D5oNyDTS7IT4mjKVlFsf1yXqbusdOrCI/blVIq1ShIy61OZyyW4SR5xa3s9/
- LsdBtd87OW46NghdXkKBHdd/qe1hq2sLYbBFN52/B7WiEBMSGH2w9CNInU4UYuyVgZLE
- OcvhGHDL8ztONy74wP5/hW+Uh+lVuCepT60rVG35qjUzou3CY0hZx0YB58ibG/Bq8qWJ
- UDhw==
+ d=linaro.org; s=google; t=1712652629; x=1713257429; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hqgRmDRghhhbOVrW91LEfTvfhlWKyTVSf873gQJ8Nqw=;
+ b=eEIMAF8L0WmD2EpeXcJoxL5yjDMsP1MaIra6d+xxF4iWzzl31U5v4W/h+2M0oHISWZ
+ bcvs9AXZcGAiEzMDeZlLWTrW03CDMqsXZPcLNmkA08bCj7bysS6jfdPwSjnNLkQXq+DU
+ cFK86KClDLTli+yA7lvSx7hZYlpAVFZcqkG+27xWmmVkrqpcVBsLCw+8raO4vKXBkIHo
+ xOGLwi3wVZ6AVA8hUC5J1VnSHwEew4ZphdCO3lv15J74rsQ7Lfxm945P8JDqKWskk79y
+ x8FAI77tj7t1Z+uN61zGgUmxS6d9ikzh4vZTObs5oISSaEAInZ+0uInutYIjcHVA7Yds
+ TAkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712652472; x=1713257272;
- h=to:subject:message-id:date:from:in-reply-to:references:mime-version
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tB5jbJyKVfjMYI2SGLQR2XRltgEq4aDOxenRiNtvyuU=;
- b=R++6XYSN7tUMoSwlAQEP+fPOHr9nm7Ooo8+MRDtH6FDRI+HlvZ2ZQ08aLZPYNUCMk5
- Ftou+j8zQCds4oNcjGSnkCtXRJ0fyGKVVDeUvlpvsM0OF4nWk8mN5YM+bTDxofbzfWiV
- NgchoRmNOWCOgajFejdkdowiZt7Qb/loczmD8xVaXbMUJyG75Q90s6srbVzIFuzKMhsv
- /iR+EmGoprkvos3iZg8T3R27CEwbYLCnqwHB0vMV4lnc5FrwTUIzeEbjt3ZwGubUfzsG
- Ic3ZaD9H+umrZulnBYIdo4JpHJl98uGCEtzO9TSKY/VF6tGomETHqih2qzyzsNil+bc4
- Lzwg==
-X-Gm-Message-State: AOJu0YzRTzxpDkurH6M+/DnjDW6GCvoOlGelgMcVlstldObcha7Olppd
- gv/QOVQouypzjo+1LMnivro0yxuCMA0sN1ly77mP0PkepA3mPZqoEJ1Zy3qocK4uievLvsEK4GZ
- QHMaUSHBWjGQzpe0cSxmjXjKPYrruPsjuT7XljGRgD17iJ5Yf
-X-Google-Smtp-Source: AGHT+IFKNFTTBIPwvvEXNreHADjm6N5iBdvy5DrN5W0YLROyCuMyHCOInUdxn65lmvHFkX3+WFLdpY1BBsESlR2TLS0=
-X-Received: by 2002:a50:cd81:0:b0:56d:f54a:8765 with SMTP id
- p1-20020a50cd81000000b0056df54a8765mr8519384edi.23.1712652472440; Tue, 09 Apr
- 2024 01:47:52 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712652629; x=1713257429;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hqgRmDRghhhbOVrW91LEfTvfhlWKyTVSf873gQJ8Nqw=;
+ b=eAOOhbR9ihb5eHqHx/kC1D02ZXXUDAaoJC14CqSpBBETcmP4R8fSFZ3RkO0KpQbclB
+ 0LSY2szI5AMbQJkAVjBs37y3/iHAsRD2NxEm3dTB1C9YOvDdvcPD43Eu6fQDPeIyyP20
+ rvcZxasAGL6FMtqxTovhVso69XTvPenwDy/os3jSfj10SikI7RjSYKdka56GJG2l0fog
+ t8CdzTfPQ+wEx+FMK+bsx+OJjNOukqnWsI5i5LDDlr+wDImVhSC8S0OTfkDRghA9qQfg
+ 9MkXY5p0wQq5T3GLvAdC08WdIQMLUfY7KdWbFKWj1xqUJISxxDOc1Se07BIGykklbfVo
+ U0tQ==
+X-Gm-Message-State: AOJu0YyWyF+E1gJ27unOuZNGzRo3nFfILwFoY2dZomaY0HdfTrggR1f/
+ wp5kE0Pjz0NduHVnnJkZiQdn7RFPSLcDYpRHdd9CmLjzxAA3n4Q9hO1C+e/Wgj5WnhfEhykMBPf
+ f42cAFbNX8SE9JKMG2cgwdrKAu/Jwcxi93FMNERyCTgWS5NKr
+X-Google-Smtp-Source: AGHT+IEKdM0F59LAmP2J8XBkzJcf3fDqPDgwXsXLQyQYLjwdesIhpeYoWybEfFnu3guQbMGDbejykmx9yi8PBi6R+64=
+X-Received: by 2002:a50:cddd:0:b0:56b:cecb:a4c8 with SMTP id
+ h29-20020a50cddd000000b0056bcecba4c8mr378886edj.39.1712652628971; Tue, 09 Apr
+ 2024 01:50:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240408152346.3937318-1-peter.maydell@linaro.org>
-In-Reply-To: <20240408152346.3937318-1-peter.maydell@linaro.org>
+References: <20240408174929.862917-1-richard.henderson@linaro.org>
+In-Reply-To: <20240408174929.862917-1-richard.henderson@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Apr 2024 09:47:41 +0100
-Message-ID: <CAFEAcA_FCzKajcT7C7d2+N7JmVr6VS7VyoYFuNkwvMTVYzKG-g@mail.gmail.com>
-Subject: Re: [PULL 0/2] target-arm queue
-To: qemu-devel@nongnu.org
+Date: Tue, 9 Apr 2024 09:50:18 +0100
+Message-ID: <CAFEAcA-qn-zP2-OkeW1fLW2OPZbfk35jKZ0YUHXQ5Xf4Rma1Ow@mail.gmail.com>
+Subject: Re: [PULL 00/35] misc patch queue
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::533;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -83,11 +85,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 8 Apr 2024 at 16:23, Peter Maydell <peter.maydell@linaro.org> wrote:
+On Mon, 8 Apr 2024 at 18:51, Richard Henderson
+<richard.henderson@linaro.org> wrote:
 >
-> Two bug fixes for 9.0...
+> This started out to be tcg and linux-user only, but then added
+> a few target bug fixes, and the trolled back through my inbox
+> and picked up some other safe patch sets that got lost.
 >
-> -- PMM
+>
+> r~
+>
 >
 > The following changes since commit ce64e6224affb8b4e4b019f76d2950270b391af5:
 >
@@ -95,23 +102,30 @@ On Mon, 8 Apr 2024 at 16:23, Peter Maydell <peter.maydell@linaro.org> wrote:
 >
 > are available in the Git repository at:
 >
->   https://git.linaro.org/people/pmaydell/qemu-arm.git tags/pull-target-arm-20240408
+>   https://gitlab.com/rth7680/qemu.git tags/pull-misc-20240408
 >
-> for you to fetch changes up to 19b254e86a900dc5ee332e3ac0baf9c521301abf:
+> for you to fetch changes up to 50dbeda88ab71f9d426b7f4b126c79c44860e475:
 >
->   target/arm: Use correct SecuritySpace for AArch64 AT ops at EL3 (2024-04-08 15:38:53 +0100)
+>   util/bufferiszero: Simplify test_buffer_is_zero_next_accel (2024-04-08 06:27:58 -1000)
 >
 > ----------------------------------------------------------------
-> target-arm:
->  * Use correct SecuritySpace for AArch64 AT ops at EL3
->  * Fix CNTPOFF_EL2 trap to missing EL3
->
+> util/bufferiszero: Optimizations and cleanups, esp code removal
+> target/m68k: Semihosting for non-coldfire cpus
+> target/m68k: Fix fp accrued exception reporting
+> target/hppa: Fix IIAOQ, IIASQ for pa2.0
+> target/sh4: Fixes to mac.l and mac.w saturation
+> target/sh4: Fixes to illegal delay slot reporting
+> linux-user: Cleanups for do_setsockopt
+> linux-user: Add FITRIM ioctl
+> linux-user: Fix waitid return of siginfo_t and rusage
+> tcg/optimize: Do not attempt to constant fold neg_vec
+> accel/tcg: Improve can_do_io management, mmio bug fix
 
+This pullreq alone is more patches than have been committed
+in the entirety of the rc2-to-rc3 cycle so far. Are they
+really all important enough to put into rc3 on the day
+we tag it?
 
-Applied, thanks.
-
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
+thanks
 -- PMM
 
