@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D778E89DB83
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 16:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CC589DBA4
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 16:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruC1Z-00072Q-3t; Tue, 09 Apr 2024 10:00:33 -0400
+	id 1ruC4w-0002Oh-G4; Tue, 09 Apr 2024 10:04:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ruC1J-0006tV-QV
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:00:21 -0400
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+ id 1ruC4t-0002Ny-V6
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:03:59 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ruC1D-0004OG-JF
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:00:17 -0400
-Received: by mail-lj1-x22f.google.com with SMTP id
- 38308e7fff4ca-2d87450361fso44217641fa.2
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 07:00:07 -0700 (PDT)
+ id 1ruC4s-0005CO-0p
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 10:03:59 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-56e449187fcso3245035a12.3
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 07:03:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712671206; x=1713276006; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712671436; x=1713276236; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+lCs/PCN91N9C3zJ0fBleuXeCV1UwcWxGT+Kv0IgR+k=;
- b=XPu6byVeoO1sTMcRUArUpgp3tc+GVLi+M+D92//NVoWRuuE2N/IiIQpweghI+pYcet
- s8kG38qcjzuXxkGyyYbVyFmuHgsfxRDeYpVUhU6xQ49lVi2Gq/fvc6acd9fLI+lcPSnZ
- e6A+FnbqAN53XsnDHuJDAw3HoSNbBMrhi/tiAXHUnmzDwOUdxoWRyZ+YrikDA8Lfllf2
- uL+vc4W8kCEvKM/pH34VMPO5rmWAfJzEQwEHc/ehX0Wx4BR/EOLAFsMczOz3Mv6uXUFp
- PS8JXQQ0yhzGAjSHeUuAhlHEseriwTfcHhgibYwCPnKYULlnZqmJeAzL5PZ2Y3t/ZHoN
- NuUg==
+ bh=vzmYBdZ5mYJb9oSJsGiax8oqSCMQV8SWF1raZ7Z6dPw=;
+ b=myuQHTulG68B7fYUVbuKghJVjTgiQTVAjXL7EZI80aQvTJtav8GA8ChrQLWQ814naX
+ 4jGsRPo2QudIOFmxjV3Cnysf+uAdbcGWHt2UNn3M+9Q9YyCMKIAFH2MEHkjPvOeBWAA7
+ wUdpM76gCRnK0+XzQLdJe3tS9UTalRg1wkVtSjGtnsffXfwbQ008fNosW5ztun99UYti
+ +FEhx9lkw6DIgn5g3+/J99iQoFtjQMU5yrOkNUq08Fgvr3AVpjfjMYgOmdn4ZZrd+99/
+ K9Webv6NLXTdczfcvyLy50r6U31zvmky8vUFjVW7s4FQj+zilmaXBXOuiIeFYcneyA+P
+ Nd5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712671206; x=1713276006;
+ d=1e100.net; s=20230601; t=1712671436; x=1713276236;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+lCs/PCN91N9C3zJ0fBleuXeCV1UwcWxGT+Kv0IgR+k=;
- b=IyAFYOuVORR23UJZBLzShuNytf035Y9GnIOyltxfRXrAESzLy9tVxXnjobkMer9ANQ
- FK7w35iF7ERHtZIwlpYVh8tBEH7MIYBnRWmy4CSNK5kW3Kw4pF1GpeCrVBuE0XQWYLup
- p3FbjeNcoUzDl4462FQ9g8pnSS+PzDDmhZRO523XCFB638LGepgRjYjrePDge/3MAhwP
- x7uQNfFJnqyLrUiGB0AYGzdYJT7de37c4UAiQxq8VnM6BagvTWSxCLV5VYWxb//z0pE3
- +E/yfpOFCVQ+qi//lWPaSUlcjawBYvklu83BvaJ0u7hSEyS/9C+sFA/P4F8A/AmVAkIq
- a5nw==
-X-Gm-Message-State: AOJu0YzTjpsciPzWhw8ZXvOnjhyrBNFp1mdqIGZ5tOd4g37KL7+JPhsb
- +RUU+LQ7+rbFDtgtRQhGKT0eXoC8Ky6AL1NjftCSdVrMcfhYRPvVb5hpD5wsL9gACrcmpTsYWR5
- MTXYMDjEQmWcHDeIlmg3fDLjaz8OXjHoOR+IxjA==
-X-Google-Smtp-Source: AGHT+IGPe8ff03guCa5UiunQr/L5rBkZ9czbJQsc04byce4PEa2c1ELH2piPQzyeLOWB5dVrQ6BP3EouheMZ95h29xI=
-X-Received: by 2002:a2e:909a:0:b0:2d8:57da:c2c8 with SMTP id
- l26-20020a2e909a000000b002d857dac2c8mr8244757ljg.25.1712671206275; Tue, 09
- Apr 2024 07:00:06 -0700 (PDT)
+ bh=vzmYBdZ5mYJb9oSJsGiax8oqSCMQV8SWF1raZ7Z6dPw=;
+ b=fUICdqbkiXTC1Cgnz1wqlkihjegQc13QfAhGoLcie0ICi1gfCAJcK1FI5FgdR1bQj5
+ 9MT8Sa6QApA3VXq1bYrEfYDL6be/XvU7AMZw6quxIOYsBtkXyJaTnOfCvAynR5bgL3l2
+ TyaFHOApAlBPb7i6cBlm1oUWd1Bnyecjh1Eg97byQqOxGNp1crqbtSKXMzRud/VL3YjK
+ AR9AmlzQA7CyhnJmA71eRYJ0Qi6bBoNBzdb2Awr4itexp6Qq02g2yBNvQf1TxDMLUbjF
+ XMyosqkvopPZJTeXhqw4jvwz30e7gD3fvF3YVtnJaDCbOkBLl24D0A5/87QIcJaTzvWK
+ lm0w==
+X-Gm-Message-State: AOJu0YyneZ7byve2AuQ9rcpbbRI+pc2xwWrn1KwgmfyuqWmHVXRpsTy8
+ FS9VxClZmZF2JEZ1KjAghPA8ox4lyNvxCx5VwiI4N1ycg8UoURiWHdwPmGXE5CEICCvJKTBt1h0
+ roWqZf+ipysshoZw9us/sYrj2yNABNkqNk0kLoA==
+X-Google-Smtp-Source: AGHT+IGzW+72dWVtzRITRWTeg6S0bm81VvF8aOqp9+Wwvr7yJyZlmK7zDKgSAh3es8F+lAZtHdZaCpGQYV2/aAHuWvY=
+X-Received: by 2002:a50:c016:0:b0:56e:de1:f427 with SMTP id
+ r22-20020a50c016000000b0056e0de1f427mr7883074edb.25.1712671436235; Tue, 09
+ Apr 2024 07:03:56 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240409133801.23503-1-philmd@linaro.org>
- <20240409133801.23503-9-philmd@linaro.org>
-In-Reply-To: <20240409133801.23503-9-philmd@linaro.org>
+ <20240409133801.23503-10-philmd@linaro.org>
+In-Reply-To: <20240409133801.23503-10-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Apr 2024 14:59:55 +0100
-Message-ID: <CAFEAcA8eOnja8CYv2wD0VOqrZXMZmNRTyMbDOP_xOwHN=H=nsw@mail.gmail.com>
-Subject: Re: [PATCH-for-9.1 v2 08/11] hw/net/lan9118: Use RX_STATUS_FIFO_BYTES
- definition
+Date: Tue, 9 Apr 2024 15:03:44 +0100
+Message-ID: <CAFEAcA8fFyU+WkS=SkUAW7g8kydNiV9Z-YK5+aPH3hagOzKTeg@mail.gmail.com>
+Subject: Re: [PATCH-for-9.1 v2 09/11] hw/net/lan9118: Rename
+ rx_status_fifo_size -> rx_status_fifo_wordcount
 To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Chuhong Yuan <hslester96@gmail.com>, 
  Jason Wang <jasowang@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
  qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::22f;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,48 +91,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Apr 2024 at 14:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+On Tue, 9 Apr 2024 at 14:38, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
 > wrote:
 >
-> rx_status_fifo[] is an array of words,
-> rx_status_fifo_size is a word count.
+> rx_status_fifo_size is a word count, rename it to avoid confusion.
 >
+> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  hw/net/lan9118.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
+>  hw/net/lan9118.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
 >
 > diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-> index a983ce193b..cace22381d 100644
+> index cace22381d..663776f575 100644
 > --- a/hw/net/lan9118.c
 > +++ b/hw/net/lan9118.c
-> @@ -262,7 +262,7 @@ struct lan9118_state {
->      int32_t rx_status_fifo_size;
+> @@ -259,7 +259,7 @@ struct lan9118_state {
+>      int32_t tx_status_fifo_head;
+>      uint32_t tx_status_fifo[512];
+>
+> -    int32_t rx_status_fifo_size;
+> +    int32_t rx_status_fifo_wordcount;
 >      int32_t rx_status_fifo_used;
 >      int32_t rx_status_fifo_head;
-> -    uint32_t rx_status_fifo[896];
-> +    uint32_t rx_status_fifo[RX_STATUS_FIFO_BYTES / 4];
->      int32_t rx_fifo_size;
->      int32_t rx_fifo_used;
->      int32_t rx_fifo_head;
-> @@ -332,7 +332,9 @@ static const VMStateDescription vmstate_lan9118 =3D {
->          VMSTATE_INT32(rx_status_fifo_size, lan9118_state),
->          VMSTATE_INT32(rx_status_fifo_used, lan9118_state),
->          VMSTATE_INT32(rx_status_fifo_head, lan9118_state),
-> -        VMSTATE_UINT32_ARRAY(rx_status_fifo, lan9118_state, 896),
-> +        VMSTATE_UINT32_ARRAY(rx_status_fifo, lan9118_state,
-> +                             RX_STATUS_FIFO_BYTES / 4),
-> +        VMSTATE_UNUSED(896 * 4 - RX_STATUS_FIFO_BYTES),
->          VMSTATE_INT32(rx_fifo_size, lan9118_state),
->          VMSTATE_INT32(rx_fifo_used, lan9118_state),
->          VMSTATE_INT32(rx_fifo_head, lan9118_state),
 
+True, but rx_status_fifo_used and rx_status_fifo_head
+are also word counts. Should we try to indicate units in
+all these names, or is that getting unwieldy?
 
-Ideally in the state struct we should have the arrays be the
-size of the largest possible FIFO, not the size of the
-default-out-of-reset FIFO, to leave the way open for making the FIFO
-size be runtime configurable in future if we want that.
-
-thanks
 -- PMM
 
