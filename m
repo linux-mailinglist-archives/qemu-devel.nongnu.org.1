@@ -2,81 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F160C89D276
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 08:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC8689D27C
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 08:31:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru4zf-0002O9-T5; Tue, 09 Apr 2024 02:30:09 -0400
+	id 1ru50l-0003wu-6J; Tue, 09 Apr 2024 02:31:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1ru4zU-0002Lr-AH
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 02:29:56 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jason.chien@sifive.com>)
- id 1ru4zR-0005jo-Ux
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 02:29:56 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2d6ff0422a2so65049611fa.2
- for <qemu-devel@nongnu.org>; Mon, 08 Apr 2024 23:29:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sifive.com; s=google; t=1712644191; x=1713248991; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=1YNl4XRMhk+8qgIGEw0ZCW9ZqI2UvIL/DcKOJTTiqdA=;
- b=byMNp06ugngZkKuPmP3UOf6QOdxNzCpiNgpskC+btqbdggN1iL9+mLaFDpv3KbvtPh
- Uvi9iPdjdwzb0ObFFm3aDj33oxNSF3ithITRYNmqSggWOtAd8GGnf5RckwsoYEGtJFMh
- VdiclkkHTYIzckKPWVexXtNyG7ebcMU2zGGZVyLgqqNMyEF3O2oUKqMWxLRnILHJb0D4
- jXYN+79yr4FEacg1wsdyQBUA0UXnS1HiuWaY05gTx83mwTZGskVhRRwqpKsiJs0wdNpV
- T6g9DKPVy8Wt2oVVLplA2RskK8ejizOFkeMZIoO2nLtNmy6BlGpLIi90oCqItwtW4smU
- 9KKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712644191; x=1713248991;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1YNl4XRMhk+8qgIGEw0ZCW9ZqI2UvIL/DcKOJTTiqdA=;
- b=pZEYS1rGW1/66DaHKFMDJwYWOgf2DagGnEEV8RPru9lnOG4huIE4bJfKHcgOml2BR5
- y6O8poud7rPNvKWWkbyqfvhcXf5IsJlwPKFQCfnZo0zWWu/VRaeSxT3E/+hfYiitIvep
- YZ1oiz8YVCdyn6lyIj7tzQh8HOgy2aeuu80EgZpeUx8TfRnCuQa0ANItNpDJVIQrykRA
- urQMTUmXDF0lwZ4CraqJ17jNMnUJOrseyBjcUfi8kFrFlppypQS72oZlMjbhgk3XFjG6
- l90/o3aGfGTdwBDvqIGC8TN6eJOnDWfFOoeg8pJppi2+IvWGxvAG+2cCBz03KOZMHHR4
- BJag==
-X-Gm-Message-State: AOJu0Yx8PTw7srdpoJ8xYn5t6ANrGI1UEDgA2iMJllztnvn5i62S+vUc
- Z9IUjQ9ltwQSAlWwJoLpwKI1DNbXnANWfeEigN8VBwhyavv3JO1lI9xQ/qFwJQKWPjuUxVKeHyK
- Pj6FpbuHlwBmpbVg+rBSLDju/d5l9JdWq2UhSLmY/f5ih82Nj4FA=
-X-Google-Smtp-Source: AGHT+IHZ/rcSCbJ/4NIdfF8Or0Q6OIurnzbRj7E0cULnBUyxDnMiET1+Co+wxFJyFzgFnbXXhh/RWXhrzNsMxAk8UDU=
-X-Received: by 2002:a2e:330e:0:b0:2d8:7a75:9452 with SMTP id
- d14-20020a2e330e000000b002d87a759452mr5412982ljc.29.1712644191066; Mon, 08
- Apr 2024 23:29:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ru50K-0003oX-FN; Tue, 09 Apr 2024 02:30:49 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ru50H-00068T-3s; Tue, 09 Apr 2024 02:30:48 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:14ae:0:640:157e:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 6F712608F3;
+ Tue,  9 Apr 2024 09:30:40 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b66e::1:3c] (unknown
+ [2a02:6b8:b081:b66e::1:3c])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id dUSjpO1i2Sw0-6bSY8LRZ; Tue, 09 Apr 2024 09:30:39 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1712644239;
+ bh=r4evT4I1HLDZrYHL56S/UzK0D99bX+H2uOT/aenLSrU=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=MmSXl7ZouuHrbR93MO7y0/WmSYxHHC89EMzY//2kLTp1oB7rGVacnz3g9ogESaZzC
+ vUtkIXJcC86owdcCD33Z2zXVNxElpK2XFAYmRGecTvvhye77lkv6DXU7wZjZ0o90bD
+ NQ8WzI25nDST5QMlu4bsJnZRpC4O+naTurkp7jSU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <f00ac999-fb9b-4429-b5b9-be27153f77a5@yandex-team.ru>
+Date: Tue, 9 Apr 2024 09:30:39 +0300
 MIME-Version: 1.0
-References: <20240328022343.6871-1-jason.chien@sifive.com>
- <20240328022343.6871-4-jason.chien@sifive.com>
-In-Reply-To: <20240328022343.6871-4-jason.chien@sifive.com>
-From: Jason Chien <jason.chien@sifive.com>
-Date: Tue, 9 Apr 2024 14:29:39 +0800
-Message-ID: <CADr__8oVf4r=F6pAkt1KERKoR3HG5ViX_4b+NxC9Zw7r3kDH6Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] target/riscv: Relax vector register check in RISCV
- gdbstub
-To: qemu-devel@nongnu.org, qemu-riscv@nongnu.org
-Cc: Frank Chang <frank.chang@sifive.com>, Max Chou <max.chou@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>, 
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>, 
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Content-Type: multipart/alternative; boundary="000000000000a2bdd10615a40c1e"
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=jason.chien@sifive.com; helo=mail-lj1-x235.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/2] nbd/server: Mark negotiation functions as
+ coroutine_fn
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Zhu Yangyang <zhuyangyang14@huawei.com>
+References: <20240408160214.1200629-4-eblake@redhat.com>
+ <20240408160214.1200629-6-eblake@redhat.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20240408160214.1200629-6-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,100 +74,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a2bdd10615a40c1e
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Ping.
-
-Jason Chien <jason.chien@sifive.com> =E6=96=BC 2024=E5=B9=B43=E6=9C=8828=E6=
-=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=8810:24=E5=AF=AB=E9=81=93=EF=BC=
-=9A
-
-> In current implementation, the gdbstub allows reading vector registers
-> only if V extension is supported. However, all vector extensions and
-> vector crypto extensions have the vector registers and they all depend
-> on Zve32x. The gdbstub should check for Zve32x instead.
->
-> Signed-off-by: Jason Chien <jason.chien@sifive.com>
-> Reviewed-by: Frank Chang <frank.chang@sifive.com>
-> Reviewed-by: Max Chou <max.chou@sifive.com>
+On 08.04.24 19:00, Eric Blake wrote:
+> nbd_negotiate() is already marked coroutine_fn.  And given the fix in
+> the previous patch to have nbd_negotiate_handle_starttls not create
+> and wait on a g_main_loop (as that would violate coroutine
+> constraints), it is worth marking the rest of the related static
+> functions reachable only during option negotiation as also being
+> coroutine_fn.
+> 
+> Suggested-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> Signed-off-by: Eric Blake <eblake@redhat.com>
 > ---
->  target/riscv/gdbstub.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c
-> index be7a02cd90..d0cc5762c2 100644
-> --- a/target/riscv/gdbstub.c
-> +++ b/target/riscv/gdbstub.c
-> @@ -338,7 +338,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUStat=
-e
-> *cs)
->
-> gdb_find_static_feature("riscv-32bit-fpu.xml"),
->                                   0);
->      }
-> -    if (env->misa_ext & RVV) {
-> +    if (cpu->cfg.ext_zve32x) {
->          gdb_register_coprocessor(cs, riscv_gdb_get_vector,
->                                   riscv_gdb_set_vector,
->                                   ricsv_gen_dynamic_vector_feature(cs,
-> cs->gdb_num_regs),
-> --
-> 2.43.2
->
->
+>   nbd/server.c | 102 +++++++++++++++++++++++++++++----------------------
+>   1 file changed, 59 insertions(+), 43 deletions(-)
+> 
+> diff --git a/nbd/server.c b/nbd/server.c
+> index 98ae0e16326..1857fba51c1 100644
 
---000000000000a2bdd10615a40c1e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[..]
 
-<div dir=3D"ltr">Ping.<br></div><br><div class=3D"gmail_quote"><div dir=3D"=
-ltr" class=3D"gmail_attr">Jason Chien &lt;<a href=3D"mailto:jason.chien@sif=
-ive.com">jason.chien@sifive.com</a>&gt; =E6=96=BC 2024=E5=B9=B43=E6=9C=8828=
-=E6=97=A5 =E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=8810:24=E5=AF=AB=E9=81=93=EF=
-=BC=9A<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">In curren=
-t implementation, the gdbstub allows reading vector registers<br>
-only if V extension is supported. However, all vector extensions and<br>
-vector crypto extensions have the vector registers and they all depend<br>
-on Zve32x. The gdbstub should check for Zve32x instead.<br>
-<br>
-Signed-off-by: Jason Chien &lt;<a href=3D"mailto:jason.chien@sifive.com" ta=
-rget=3D"_blank">jason.chien@sifive.com</a>&gt;<br>
-Reviewed-by: Frank Chang &lt;<a href=3D"mailto:frank.chang@sifive.com" targ=
-et=3D"_blank">frank.chang@sifive.com</a>&gt;<br>
-Reviewed-by: Max Chou &lt;<a href=3D"mailto:max.chou@sifive.com" target=3D"=
-_blank">max.chou@sifive.com</a>&gt;<br>
----<br>
-=C2=A0target/riscv/gdbstub.c | 2 +-<br>
-=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
-<br>
-diff --git a/target/riscv/gdbstub.c b/target/riscv/gdbstub.c<br>
-index be7a02cd90..d0cc5762c2 100644<br>
---- a/target/riscv/gdbstub.c<br>
-+++ b/target/riscv/gdbstub.c<br>
-@@ -338,7 +338,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUState =
-*cs)<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 gdb_find_static_feature(&quot=
-;riscv-32bit-fpu.xml&quot;),<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 0);<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 if (env-&gt;misa_ext &amp; RVV) {<br>
-+=C2=A0 =C2=A0 if (cpu-&gt;cfg.ext_zve32x) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0gdb_register_coprocessor(cs, riscv_gdb_ge=
-t_vector,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 riscv_gdb_set_vector,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ricsv_gen_dynamic_vector_feat=
-ure(cs, cs-&gt;gdb_num_regs),<br>
--- <br>
-2.43.2<br>
-<br>
-</blockquote></div>
+>   {
+>       int rc;
+>       g_autofree char *name = NULL;
+> @@ -755,7 +764,8 @@ struct NBDTLSServerHandshakeData {
+>       Coroutine *co;
+>   };
+> 
+> -static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
+> +static coroutine_fn void
 
---000000000000a2bdd10615a40c1e--
+This is not, that's a callback for tls handshake, which is not coroutine context as I understand.
+without this hunk:
+
+
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+
+> +nbd_server_tls_handshake(QIOTask *task, void *opaque)
+>   {
+>       struct NBDTLSServerHandshakeData *data = opaque;
+> 
+> @@ -768,8 +778,8 @@ static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
+> 
+
+[..]
+
+-- 
+Best regards,
+Vladimir
+
 
