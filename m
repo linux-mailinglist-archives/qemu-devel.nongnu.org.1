@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B650E89DA84
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C29989DAA2
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:41:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruBg7-0005oy-La; Tue, 09 Apr 2024 09:38:23 -0400
+	id 1ruBj4-0004rp-R4; Tue, 09 Apr 2024 09:41:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ruBfz-0005oO-NH
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:15 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1ruBiq-0004j7-Ce
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:41:13 -0400
+Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ruBfy-0008BX-4z
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:15 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-41650de9e1eso14848675e9.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:13 -0700 (PDT)
+ id 1ruBio-0000S9-GB
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:41:11 -0400
+Received: by mail-lf1-x132.google.com with SMTP id
+ 2adb3069b0e04-516dbc36918so3907402e87.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:41:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712669892; x=1713274692; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712670068; x=1713274868; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KAapXbhkxXAWLitGi+5BQpI72nNXkUVLPYf/0C/E6HQ=;
- b=n581zRiOarV2TtBXaGMEYw1lRkKApyaC0WlSBzkPBp1ksPIMc8sMUSLqnOffmqCKTD
- fVgA5zTMBLX4WY0/4gyl80v1gASPQjpAszlJ1a+3Sk9DL/PDAIRVO9Z+1qZCUYt5ziT1
- Yy/q/vq79wxkrcyPaXYWHNHfcFnO2JrEpTo+/C4vMoBgH+U+UuLp+qLr9un30YGdp0rQ
- 4P7zs06GBU1XF1Ck6NU2lTFXV1JE7WKITzaWvPAb9TDAmOQazJwlo+fsLV+uUXNSeezE
- u1VCA7FTCI8RURXF1xj76FMZwtigWsHc5GkUu1TUCuaEbYARJ98JEPGL9etDxcnnBIwB
- Sm6A==
+ bh=4D3FSC9ddaqc6WPgOycbKu85N6QxdHBgLlA9EjGP3hc=;
+ b=LMXC9g01p0azmO+mrose5NdJdXfyejKXIdmZDH0f8qFD9GpA59/enAWmgXq7jKVA0B
+ o2UoA/WEcOPW5YiujPRTz7giT7htZwfj3OpkMQfLgsU4A/VkocvCzmeqRJ+Yb3KjY5W4
+ hvkiMfmKnKyfgJlXFnLKpEcMrDfvwHpa8uM5IjMRkGI3C9p8Cs3XXLP6vj0yW70vOVOA
+ Gq6q1KF/na+AgCAoXVidDGqerBNukNJuwD0h8+2t6CF/G0n+XkmUe8W72Hnc881pLvx5
+ 4SpCNbScTkgl8VcnIg6FrDAsl5UXaCY86fTVrIJqddpNNXAWDcLf7GcD5m41ueuH2TMi
+ SM9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712669892; x=1713274692;
+ d=1e100.net; s=20230601; t=1712670068; x=1713274868;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KAapXbhkxXAWLitGi+5BQpI72nNXkUVLPYf/0C/E6HQ=;
- b=VE8uFBa57P15G1ahGw1JENj/tttdPiTY5HQPzJS7AH1713Bq18MqcXPROVUMPEZuxc
- GhH3h8GAzMPZ7NwmURD+B9WcqWRJvjcW/Oz6UKt48hIExTyySOyQTLcq58ubYcZLYd16
- 3lpYjb65jOHlbv0170xc5HXGJuNWwSFjAIHmJLOWe/aluQXZc6Igqt+BW4DHL59T7Fkf
- AkTqySWeUeeV5//ZIDU0UuViSFiWQkJZblNlOl6XnPX2yMn9lNzj/E12Dov95bfNbjeg
- eaVve5mhC3UejEhQ1DuO9+HSmv9eJWzQ9Jb3GdjQKkTrylJB7hisdvRNwB6Lka0c/KIM
- xsmw==
-X-Gm-Message-State: AOJu0YxHefTWrUPHPI+5ehnhAciwxCKHtpHIdZTF81EgIbJNhLABI1Ny
- p0NuEyI172YVGcoe06yQLjumQUbbRAoKqrYw/Xquh6nf7vHb6auROFWNgDYtreYsRbejYMckHz8
- kn1bsRttHS9z76kz8ujg9OK9R45SKyMZbunaBMut8AK7WCRJg
-X-Google-Smtp-Source: AGHT+IHSht7OpBjcMvVk1N9lwBF3Or2JGRPYo0beplCPpxJbXtYl0N6uHNdDb6quO9qBudKxK10e0Zqk94JwuV5NgP0=
-X-Received: by 2002:a05:600c:3594:b0:416:3deb:e3ef with SMTP id
- p20-20020a05600c359400b004163debe3efmr2397064wmq.1.1712669892511; Tue, 09 Apr
- 2024 06:38:12 -0700 (PDT)
+ bh=4D3FSC9ddaqc6WPgOycbKu85N6QxdHBgLlA9EjGP3hc=;
+ b=THKsF3vnY4Qewab876ANQR4eDkFpWWTidOEBUsx0QYPMPxznPCQdksbk+oH8zA9OF0
+ fFiM/SupBDnYJbOAJq4G5H+XazBvv3jD4YoxWdUy6rJDavtJ4Yo3McvkPxIHzxunRiph
+ U76tDs7N5Jl8cFYMFBpywDml70PWlnDiT3YthpotvYRTomAp5AfUr1JLp38aVZMO2Hes
+ zfXWgznPN48OgsyHzUQ/I2N03Ug33yTjiM96nOpRefv6SSRHCJ5c8satFdGd9ffzqU96
+ DGB6oP7Ecubdjg80cqaIGsmdUHNwCUOhzCE+iJZx4xgB+WP3jcvp7fbPK2SE3mEvcYAd
+ mdAw==
+X-Gm-Message-State: AOJu0Yxomj0PlI3rWQmusS/YQ2q5IzAqu4sgioNQvEDMHVLvGCDXAEq0
+ n0fZ7YgXlBIzoHrL0wTSS+/l6JGJje4DmRlxPDLVgYzP4haoOjxmwP0uVgxjJRojw8MiC404C6Z
+ rR20rly0vt+oEyplHECWPbUDeipyIa1l7dLnzLQ==
+X-Google-Smtp-Source: AGHT+IFtqvydzATUTkgYNIRluPWXAbi+QigsX485PSVqCKx8MVpzi50SzerBqqMPKP7MKGNr3H627OhqdEXRNLsb9wo=
+X-Received: by 2002:a05:6512:3da7:b0:516:a978:7b06 with SMTP id
+ k39-20020a0565123da700b00516a9787b06mr9593784lfv.5.1712670068446; Tue, 09 Apr
+ 2024 06:41:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20240409115301.21829-1-abelova@astralinux.ru>
- <CAFEAcA_W4qr6EPhOu-s_+d_V+MfADzddKNwd_gUzBTbajQ+xvg@mail.gmail.com>
- <5263ef36-0b82-48fe-a351-b557ead15b01@astralinux.ru>
-In-Reply-To: <5263ef36-0b82-48fe-a351-b557ead15b01@astralinux.ru>
+References: <20240409133801.23503-1-philmd@linaro.org>
+ <20240409133801.23503-2-philmd@linaro.org>
+In-Reply-To: <20240409133801.23503-2-philmd@linaro.org>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 9 Apr 2024 14:38:00 +0100
-Message-ID: <CAFEAcA9LTLjMtEtCfqnR8_-WSdo2ZZCb28C-roRXgcv+ULa3ww@mail.gmail.com>
-Subject: Re: [PATCH] hw/dma: prevent overflow in soc_dma_set_request
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: qemu-devel@nongnu.org, Andrzej Zaborowski <balrogg@gmail.com>,
- sdl.qemu@linuxtesting.org
+Date: Tue, 9 Apr 2024 14:40:57 +0100
+Message-ID: <CAFEAcA-CVN_5ZFbd_j3_b4cKG1xpggM6sPmeGxWJs9r1oL5iLg@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0 v2 01/11] hw/net/lan9118: Replace magic '2048'
+ value by MIL_TXFIFO_SIZE definition
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Chuhong Yuan <hslester96@gmail.com>, 
+ Jason Wang <jasowang@redhat.com>, Alexander Bulekov <alxndr@bu.edu>,
+ qemu-arm@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::132;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x132.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,43 +91,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Apr 2024 at 14:32, Anastasia Belova <abelova@astralinux.ru> wrote=
-:
+On Tue, 9 Apr 2024 at 14:39, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org=
+> wrote:
 >
+> The magic 2048 is explained in the LAN9211 datasheet (DS00002414A)
+> in chapter 1.4, "10/100 Ethernet MAC":
 >
+>   The MAC Interface Layer (MIL), within the MAC, contains a
+>   2K Byte transmit and a 128 Byte receive FIFO which is separate
+>   from the TX and RX FIFOs. [...]
 >
-> 09/04/24 15:02, Peter Maydell =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > On Tue, 9 Apr 2024 at 12:54, Anastasia Belova <abelova@astralinux.ru> w=
-rote:
-> >> ch->num can reach values up to 31. Add casting to
-> >> a larger type before performing left shift to
-> >> prevent integer overflow.
-> > If ch->num can only reach up to 31, then 1 << ch->num
-> > is fine, because QEMU can assume that integers are 32 bits,
-> > and we compile with -fwrapv so there isn't a problem with
-> > shifting into the sign bit.
->
-> Right, thanks for your comments.
-> I didn't know about this flag before. It became more clear for me now.
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> (Not including Peter R-b from v1 due to semantic change)
 
-Yep; if you're using a static analyser you probably want to
-configure it to accept the behaviours that are
-undefined-in-standard-C and which get defined behaviour
-with -fwrapv.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-This code is definitely a bit dubious, though, because
-ch_enable_mask is a uint64_t, so the intention was clearly
-to allow up to 64 channels. So I think we should take this
-patch anyway, with a slightly adjusted commit message.
-
-All the soc_dma.c code will probably be removed in the
-9.2 release, because it's only used by the OMAP board models
-which we've just deprecated, so it doesn't seem worth spending
-too much time on cleaning up the code, but in this case you've
-already written the patch.
-
-I'll put this patch on my list to apply after we've made the
-9.0 release and restarted development for 9.1.
+Though the use of the constant in lan9118_receive()
+reveals that our implementation is using the same buffer
+for both tx and rx...
 
 thanks
 -- PMM
