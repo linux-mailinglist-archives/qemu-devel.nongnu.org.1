@@ -2,86 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE06989D8FB
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 14:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFB089D9E6
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:12:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruAKD-0002wK-Eu; Tue, 09 Apr 2024 08:11:41 -0400
+	id 1ruBFd-0007RK-Kc; Tue, 09 Apr 2024 09:11:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1ruAK9-0002pi-Sy
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 08:11:38 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ruBFa-0007Qm-7E
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:10:58 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1ruAK8-0000om-3u
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 08:11:37 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1e24c889618so44308815ad.2
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 05:11:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ruBFY-0003Ta-FB
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:10:57 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-34339f01cd2so4199792f8f.2
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1712664694; x=1713269494; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=+MtvqGedlmIcQBUKhZ9lqUhS+zk6jqD402XTV4y5BOs=;
- b=UFGfdVpZCNSjqYwbDWPemraJo8klwWVioEWrLawGWVXMFxLuDFizzkXgGeGh/PwUpj
- KHh3nhgj+X14lNRbjbm/G6T2uW2XiHhGY8vHfPDHqD+2NLJXh0pF3Fxat6tvtjdwI/Vk
- pkfQBaNVaQBiOHane+JMfka07imDxMABC095vO+b2jhwVFVOWnsPRtbKJSjBGKs7Vkm/
- 31G66H9sdxQ8I3FoNKhfxSzkz29vCjDVhQUwIi9hpq8NIBtw5/uwvlipxl4+HHI1GS8l
- 20brAtp396WB0l6OPT7XyAKFbzRpo7ECVpP+AkOZuFzy3t7Q7qBCT0T/HoN4VQpmjpam
- 9kDg==
+ d=linaro.org; s=google; t=1712668255; x=1713273055; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=Y4Nxs9MMLY9GubrjsqvRCZSSNoPAbmWLaA+XlQagn/U=;
+ b=HZMSng0Rh/ueH4F401TF2aD4RSy8GoOp5TD/y510jyl4SreqOyKv+AqNkX1VBuDaRN
+ KS2qsDQzBIR4jtLkweTt7t5N96ExhjHioQqKqy/etXdgLGPRuVoCcb6CLnrQ9DYHsR1Z
+ 5KOIsS0vmNsKnICnGH/17bIrDOVPsklFnlBSUyqom86VGNcfcc5nrozhYOU1LtLhnkGG
+ b1a4aIYYrfJ5C+KmY9N58BIkwC1o36B9ng2QchykEcm9RdNRv0VBrJrmFyWMCwkFWTLK
+ Jcsj1GJXFBbTXPEq2wDutRubrFlJiF3AzTcWMXAmYu+uS1wujDeHJUk5QLvd5eTR4npZ
+ CKAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712664694; x=1713269494;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+MtvqGedlmIcQBUKhZ9lqUhS+zk6jqD402XTV4y5BOs=;
- b=bjBy2FPSt3nTe/5cuMrDRDi+rcMSKdKEjnwdAvJDCO/G30AwO4iK7qUl6ovYfGbpMb
- xfipth/0i7oGuhm5ljVMoFeSvpGY6aXAvVcQEC5LrAGDyktC9wUAlZCduzZ0f7zF0H3W
- pD/1s3B9t/MKZCC9br+HyP0R2YlKFvkWwTjNX1dX83zelEngbzXt2zm9+Kbv9edyJGt0
- tSVF9C5TIbCU+qFr3ViljEIJ5YVvh1ikAewdF5HOhCVY0SlP6n53ZoGXXlOS49FxN2wW
- IXjXpAWCB9e9x3eULk7OWPbcnyi8YGbp6m5XEVqYZG6M1HK8/vNYBbm1DmXv10/7PDYY
- hSzQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU3bK2bWEDmU1ASDsdbZCRKZO7nkGGd8pvYi88tF6dsRpvnRieG6jQGIytj07HhLKIWj5Yf9votO88SA+s6I+vL8zfkk9Q=
-X-Gm-Message-State: AOJu0YydgfkWuu0LmHLKKnmt6rJn7vGeOJU1BIn6+0tfRu9vJy5+/VPa
- shUsfonlBRbzn6v67pvvb7rKd05pclM1Ash+R/YM0usKLQIX+AUAJM2r1fs8KbY=
-X-Google-Smtp-Source: AGHT+IF/q0ZgQ6ygDRt4xL5QffmD2jz0GuNr9yTnG2vQVYYfWCQC3kUdDrhlyCec7SvvLgIgQ0UBoQ==
-X-Received: by 2002:a17:902:cf07:b0:1e4:6e70:25d8 with SMTP id
- i7-20020a170902cf0700b001e46e7025d8mr3577434plg.13.1712664694280; 
- Tue, 09 Apr 2024 05:11:34 -0700 (PDT)
-Received: from [192.168.68.110] ([177.94.15.159])
- by smtp.gmail.com with ESMTPSA id
- k12-20020a170902c40c00b001d8edfec673sm8681795plk.214.2024.04.09.05.11.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 09 Apr 2024 05:11:34 -0700 (PDT)
-Message-ID: <e68e899e-444e-4f8b-9b76-9c178516330d@ventanamicro.com>
-Date: Tue, 9 Apr 2024 09:11:30 -0300
+ d=1e100.net; s=20230601; t=1712668255; x=1713273055;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Y4Nxs9MMLY9GubrjsqvRCZSSNoPAbmWLaA+XlQagn/U=;
+ b=nbg9vLOcSJc9GOytNXJAv5uDUMWizTlZzzC5FgppVW0On+kkQgPrF+5v/ySTGa8Rd+
+ X7PIeIPRuwOHHfAO3w66p0dHCBP78F4DAqRzs5hJnl/tkEw2ptJ0auOdZk8cBhdzNM/q
+ TAquc4kbYVQMUyxdLSFo5iOSkTI/C8AbnYPXB1bEh1I9tUIiPwl/Sa9lsdDaMVXCH4A2
+ BP15S46zN53A+C91eAUlQNbgEJqRHjabIceT/W9jyEhy7RK3NhbVLD1JQHJl00orRLxQ
+ x/pDNiBqL+JGwuObkFjkB4Te2mxk3G5qMdP6gf1wKNiin44KbvpUepTkVHIBV5EDY6PI
+ 8HIA==
+X-Gm-Message-State: AOJu0YwT4Cm5zJWgcXMV2nCyYLGCcllassZlT1vfz/Nz8hxo/3p70D/8
+ hvb9fM5YAFogH4ZYpu5oZ5ZFh9KH9z5itpw5IzvmFIJNpHUTSBekBPbWaMCP8ljQeo7riVxf+2z
+ fECw0JdPl6Qp0n9shdOJEyCn4dcjTcc++iK04Vz07hnyLPhzv
+X-Google-Smtp-Source: AGHT+IGdboeP3nS0ZNDCCyi4kYunzpr0HmnyfhLMnW7GnpbksV0t3luQcPIyTXOQofmSo1y7c1tCmQdoUk3sXkI4jFs=
+X-Received: by 2002:a5d:5047:0:b0:341:d8a9:5b7d with SMTP id
+ h7-20020a5d5047000000b00341d8a95b7dmr7619384wrt.28.1712668254585; Tue, 09 Apr
+ 2024 06:10:54 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/cpu_helper.c: fix wrong exception raise
-Content-Language: en-US
-To: Alexei Filippov <alexei.filippov@syntacore.com>, palmer@dabbelt.com,
- alistair.francis@wdc.com, bin.meng@windriver.com, liwei1518@gmail.com,
- zhiwei_liu@linux.alibaba.com
-Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org
-References: <20240329134527.1570936-1-alexei.filippov@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240329134527.1570936-1-alexei.filippov@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x632.google.com
+References: <20240325144440.1069662-1-kraxel@redhat.com>
+In-Reply-To: <20240325144440.1069662-1-kraxel@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 9 Apr 2024 14:10:42 +0100
+Message-ID: <CAFEAcA8eX=-6yXCZ2+X6niJPcgzkzXfHT9F6LpbfqV4b9VRW6w@mail.gmail.com>
+Subject: Re: [PATCH] edk2: get version + date from git submodule
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,66 +85,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 3/29/24 10:45, Alexei Filippov wrote:
-> Successed two stage translation, but failed pmp check can cause guest
-> page fault instead of regular page fault.
-> 
-> In case of execution ld instuction in VS mode we can
-> face situation when two stages of translation was passed successfully,
-> and if PMP check was failed first_stage_error variable going to be
-> setted to false and raise_mmu_exception will raise
-> RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT(scause == 21) instead of
-> RISCV_EXCP_LOAD_ACCESS_FAULT(scause == 5) and this is wrong, according
-> to RISCV privileged spec sect. 3.7: Attempting to execute a load or
-> load-reserved instruction which accesses a physical address within a
-> PMP region without read permissions raises a load access-fault
-> exception.
-> 
-> Signed-off-by: Alexei Filippov <alexei.filippov@syntacore.com>
+On Mon, 25 Mar 2024 at 14:45, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> Turned out hard-coding version and date in the Makefile wasn't a bright
+> idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
+> from git instead.
+>
+> Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
 > ---
->   target/riscv/cpu_helper.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-> index bc70ab5abc..eaef1c2c62 100644
-> --- a/target/riscv/cpu_helper.c
-> +++ b/target/riscv/cpu_helper.c
-> @@ -1408,9 +1408,7 @@ bool riscv_cpu_tlb_fill(CPUState *cs, vaddr address, int size,
->                                 __func__, pa, ret, prot_pmp, tlb_size);
->   
->                   prot &= prot_pmp;
-> -            }
-> -
-> -            if (ret != TRANSLATE_SUCCESS) {
-> +            } else {
+>  roms/Makefile | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/roms/Makefile b/roms/Makefile
+> index edc234a0e886..534eba17ebd0 100644
+> --- a/roms/Makefile
+> +++ b/roms/Makefile
+> @@ -51,6 +51,8 @@ SEABIOS_EXTRAVERSION="-prebuilt.qemu.org"
+>  # efi ia32, efi x64) into a single rom binary.
+>  #
+>  EDK2_EFIROM = edk2/BaseTools/Source/C/bin/EfiRom
+> +EDK2_STABLE = $(shell cd edk2; git describe --tags --match 'edk2-stable*')
+> +EDK2_DATE = $(shell cd edk2; git show --pretty='format:%cd' --date='format:%m/%d/%Y'| head -1)
+>
+>  default help:
+>         @echo "nothing is build by default"
+> @@ -149,8 +151,9 @@ skiboot:
+>
+>  efi:
+>         $(PYTHON) edk2-build.py --config edk2-build.config \
+> -               --version-override "edk2-stable202302-for-qemu" \
+> -               --release-date "03/01/2023"
+> +               --version-override "$(EDK2_STABLE)-for-qemu" \
+> +               --release-date "$(EDK2_DATE)" \
+> +               --silent --no-logs
+>         rm -f ../pc-bios/edk2-*.fd.bz2
+>         bzip2 --verbose ../pc-bios/edk2-*.fd
 
+Hi -- I've just noticed that we never made this change to
+automate the date/version for EDK2 ROMs, but we also never
+updated the version by hand. So at the moment we ship an
+EDK2 blob that wrongly claims to be an older version.
+See this bug report by a user:
 
-This solves the issue but we're leaving the 'first_stage_error' flag in an inconsistent
-state - the call for get_physical_address_pmp() inside "if (ret == TRANSLATE_SUCCESS)" is
-both a PMP error and also a non-first stage error, but now we're leaving it to 'true'.
-Raise raise_mmu_exception() will give the expected PMP fault for the wrong reasons, since
-it thinks that it's a first-stage fault when it's not. This will work now, but any
-future change to raise_mmu_exception can break this logic.
+https://gitlab.com/qemu-project/qemu/-/issues/2233
 
-I have an internal (not yet sent to review) fix for the same problem. In my case I was
-supposed to have an INST_ACCESS_FAULT (1) and was getting an INST_GUEST_PAGE_FAULT (20).
-I'll see if I can send it ASAP so you can have a look and see if it's also good for your
-problem.
+Is it possible to fix this for 9.0?
 
-
-
-Thanks,
-
-Daniel
-
-
-
-
-
-
->                   /*
->                    * Guest physical address translation failed, this is a HS
->                    * level exception
+thanks
+-- PMM
 
