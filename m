@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711A389DA94
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6172989DA89
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 15:39:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruBhF-0007Lc-2v; Tue, 09 Apr 2024 09:39:33 -0400
+	id 1ruBhD-000771-Ph; Tue, 09 Apr 2024 09:39:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgX-0006Ah-KT
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBga-0006Bb-8S
  for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:54 -0400
-Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgR-0008FV-Sq
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:46 -0400
-Received: by mail-lj1-x22e.google.com with SMTP id
- 38308e7fff4ca-2d8b194341eso4265381fa.3
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruBgY-0008Fg-Cl
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 09:38:51 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-345e1c64695so940193f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 06:38:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712669921; x=1713274721; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712669926; x=1713274726; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LWebOFnaO2YfqkM2Zqjj72nsNguBU6W//GqzHg4t0x0=;
- b=Qmf28Bqt9/Lk8VbUT/Uc313cTBuk3nl4lQP5KX8ZeS8GuAWTX2MbYz9C9XPSO4O1fF
- I77tuA9SO39o+EDBWIOhWNAgMVHe24e+xckBxIjBA4nBXBAYlmuPJpPbwUgmEGKlrzcJ
- G+UKytPg3lxUkcbdbDaR1r9HLiXABHva30zAQn7oWA0uu3vVuJKMXDKW3HuiOH3Dkk/5
- tOhJT8LHescq/62o/EanEkYKghAPApMIjBMe3/1HNW6EDmND9hnM57KbmKRnYQn7QWD8
- v2yjfdHMHYzUpfZsH4G4RWuj72D+b6mgKx2JF6CnH4hy9FYjCHG0n2i47lIv93BTa6CV
- U+4A==
+ bh=oGzPoYfNQCrbv8SBMTgNtn+qUHBJfLjzTK3ZMwrVVa0=;
+ b=YLVPHWI9qf0YqvGfy+qWUYDFO34sRgz35Kr5pF9BOGHm0J1/ie3U27Iv+Wg6NTQXmU
+ Zt9CCvlcOG/Lnm1t+h0k2OUElLmhMVMYZwQPhFgx3FUeEmF1t5/IeV+K/WBxU6uwNFqK
+ s57WPDAHjbduBqL0p6mss1NlQthDZfnGN+z5l4uGO7yzx67iR/pl9ksqhYvlg0ynzK8h
+ aj5rDi6uSDmgbxOIt+GsOjWuOQqwVE5KHMfSbocDELpm+NDYA8ycOWFMwWitQefCV8zi
+ hT4IxCEon3qEgB20gmuVtigvFkf11knelYlT2DjnWsU8C1T3OyFGtXYI5Yq26vPhhpTm
+ CIIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712669921; x=1713274721;
+ d=1e100.net; s=20230601; t=1712669926; x=1713274726;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LWebOFnaO2YfqkM2Zqjj72nsNguBU6W//GqzHg4t0x0=;
- b=RXqqVXEP0dMmbbtPuq8Jyn+AXpxx+65JIORJei8SmnVfT3g8iZjsRBJZDsSGD5fcVi
- LWhu5w+7pKHjAZxxos/Vr/46XBf7IRHAyEqGH358EsJZU6/baI1dzIXT+Yi/JIp3FIs/
- o7FOEt2ELR5xQckYgwryAfOqC+uf/o0qWfKvhiAaEejIe2iS19BFbTcEHZeFJ+rY0ICt
- DFLZLL7bDdSHVVTfJV9pFmdEgDVpN8D/6mTXKb92KRCn9DnkhcW688z3xoT5vE9f0vKf
- ApLOvdjbiHCjW6L6x8xdqld/gFJlV3cgZQrT+F8K7pIAbnpDLNVOhqyVpJzBuCkXw2xG
- E2yQ==
-X-Gm-Message-State: AOJu0YxxRqzdbGwjcNzMAXsXOIsfFjM5XEPy/QB9vIc1g7xK8GVPOTvr
- tDSjcJQTnTKsWYEJ5EbeLwlUfJg9MOpUG1bJBb+RpqaVZpjHJwA8oAnZa0Eakg1rkk6RmasAlkH
- E
-X-Google-Smtp-Source: AGHT+IH4G2ntijOoEIJR8CTEkeuHXC9H2zW1m+FdRHjMT5LRXs4HGgpqB5a7S0q9RTm5ovblVUgtOQ==
-X-Received: by 2002:a05:651c:794:b0:2d8:67ee:2a44 with SMTP id
- g20-20020a05651c079400b002d867ee2a44mr6899106lje.8.1712669921293; 
- Tue, 09 Apr 2024 06:38:41 -0700 (PDT)
+ bh=oGzPoYfNQCrbv8SBMTgNtn+qUHBJfLjzTK3ZMwrVVa0=;
+ b=HNe95lChZkKJiCDJQRNMZyP4YRBOhHRCvD3K356rDaVIuLVDML0XEm+Nw4IYhd3Exi
+ bjjwEskXc43A5YWHbLC7dcpxLoGsINjFaCBuqLynE0OnC2TWB8tjRMuKpnXuZ1FujLvl
+ ioGilqKIRC+EncGTvmMsqvduTs01Fr/Y8u6T4sNL30RDagRaMd9sVV9/TWI/9EotmjnM
+ 4UMWc8lq5L6KhksX2EGYhJGqZ+XiDQ2x/S8Wjseila/925D82y2E1LKFinc9lPhitItC
+ 2TozSK++bQZGwMZpKn0EdLksGUEY8GwccDlMFz+15Ync0q2ZHEYKSxcQHvY0Ey9NMO9O
+ uudQ==
+X-Gm-Message-State: AOJu0YwnnelMvHvQwuJVgOyeURkAtTYtbHo4OPjjQps8MVDVtxtbgjdz
+ Sp3QxKAonmgVX8aXKUi9DGL1WKBn7l5FEfIr1IyR/UGbv78U5fL3InzqsHc795fvZU+KjpeHXoq
+ T
+X-Google-Smtp-Source: AGHT+IETTIhcSQI8zV4cGPaMOo8NFq+qsrkkC9zgOGClodeEguSGylF62XY8LCwXvLt//E5O7GFuVA==
+X-Received: by 2002:adf:f7cb:0:b0:343:ba58:97c4 with SMTP id
+ a11-20020adff7cb000000b00343ba5897c4mr7607183wrq.10.1712669926663; 
+ Tue, 09 Apr 2024 06:38:46 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.160.134])
  by smtp.gmail.com with ESMTPSA id
- t20-20020a05600c199400b0041691379a84sm1446429wmq.1.2024.04.09.06.38.40
+ y13-20020a5d4acd000000b00343eac2acc4sm10864616wrs.111.2024.04.09.06.38.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Apr 2024 06:38:40 -0700 (PDT)
+ Tue, 09 Apr 2024 06:38:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Chuhong Yuan <hslester96@gmail.com>, Jason Wang <jasowang@redhat.com>,
  Alexander Bulekov <alxndr@bu.edu>, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH-for-9.1 v2 07/11] hw/net/lan9118: Rename tx_fifo_size ->
- tx_fifo_bytes
-Date: Tue,  9 Apr 2024 15:37:56 +0200
-Message-ID: <20240409133801.23503-8-philmd@linaro.org>
+Subject: [PATCH-for-9.1 v2 08/11] hw/net/lan9118: Use RX_STATUS_FIFO_BYTES
+ definition
+Date: Tue,  9 Apr 2024 15:37:57 +0200
+Message-ID: <20240409133801.23503-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240409133801.23503-1-philmd@linaro.org>
 References: <20240409133801.23503-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,62 +94,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-tx_fifo_size is a byte count, rename it to avoid confusion.
+rx_status_fifo[] is an array of words,
+rx_status_fifo_size is a word count.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/net/lan9118.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ hw/net/lan9118.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index ba92681e2e..a983ce193b 100644
+index a983ce193b..cace22381d 100644
 --- a/hw/net/lan9118.c
 +++ b/hw/net/lan9118.c
-@@ -251,7 +251,7 @@ struct lan9118_state {
-     int32_t eeprom_writable;
-     uint8_t eeprom[128];
- 
--    int32_t tx_fifo_size;
-+    int32_t tx_fifo_bytes;
-     LAN9118Packet *txp;
-     LAN9118Packet tx_packet;
- 
-@@ -322,7 +322,7 @@ static const VMStateDescription vmstate_lan9118 = {
-         VMSTATE_UINT32(phy_int_mask, lan9118_state),
-         VMSTATE_INT32(eeprom_writable, lan9118_state),
-         VMSTATE_UINT8_ARRAY(eeprom, lan9118_state, 128),
--        VMSTATE_INT32(tx_fifo_size, lan9118_state),
-+        VMSTATE_INT32(tx_fifo_bytes, lan9118_state),
-         /* txp always points at tx_packet so need not be saved */
-         VMSTATE_STRUCT(tx_packet, lan9118_state, 0,
-                        vmstate_lan9118_packet, LAN9118Packet),
-@@ -456,7 +456,7 @@ static void lan9118_reset(DeviceState *d)
-     s->txp->cmd_b = 0xffffffffu;
-     s->txp->len = 0;
+@@ -262,7 +262,7 @@ struct lan9118_state {
+     int32_t rx_status_fifo_size;
+     int32_t rx_status_fifo_used;
+     int32_t rx_status_fifo_head;
+-    uint32_t rx_status_fifo[896];
++    uint32_t rx_status_fifo[RX_STATUS_FIFO_BYTES / 4];
+     int32_t rx_fifo_size;
+     int32_t rx_fifo_used;
+     int32_t rx_fifo_head;
+@@ -332,7 +332,9 @@ static const VMStateDescription vmstate_lan9118 = {
+         VMSTATE_INT32(rx_status_fifo_size, lan9118_state),
+         VMSTATE_INT32(rx_status_fifo_used, lan9118_state),
+         VMSTATE_INT32(rx_status_fifo_head, lan9118_state),
+-        VMSTATE_UINT32_ARRAY(rx_status_fifo, lan9118_state, 896),
++        VMSTATE_UINT32_ARRAY(rx_status_fifo, lan9118_state,
++                             RX_STATUS_FIFO_BYTES / 4),
++        VMSTATE_UNUSED(896 * 4 - RX_STATUS_FIFO_BYTES),
+         VMSTATE_INT32(rx_fifo_size, lan9118_state),
+         VMSTATE_INT32(rx_fifo_used, lan9118_state),
+         VMSTATE_INT32(rx_fifo_head, lan9118_state),
+@@ -458,10 +460,9 @@ static void lan9118_reset(DeviceState *d)
      s->txp->fifo_used = 0;
--    s->tx_fifo_size = TX_DATA_FIFO_BYTES;
-+    s->tx_fifo_bytes = TX_DATA_FIFO_BYTES;
+     s->tx_fifo_bytes = TX_DATA_FIFO_BYTES;
      s->tx_status_fifo_used = 0;
-     s->rx_status_fifo_size = 704;
+-    s->rx_status_fifo_size = 704;
      s->rx_fifo_size = 2640;
-@@ -757,7 +757,7 @@ static void tx_fifo_push(lan9118_state *s, uint32_t val)
- {
-     int n;
- 
--    if (s->txp->fifo_used == s->tx_fifo_size) {
-+    if (s->txp->fifo_used == s->tx_fifo_bytes) {
-         s->int_sts |= TDFO_INT;
-         return;
-     }
-@@ -1285,7 +1285,7 @@ static uint64_t lan9118_readl(void *opaque, hwaddr offset,
-         return (s->rx_status_fifo_used << 16) | (s->rx_fifo_used << 2);
-     case CSR_TX_FIFO_INF:
-         return (s->tx_status_fifo_used << 16)
--               | (s->tx_fifo_size - s->txp->fifo_used);
-+               | (s->tx_fifo_bytes - s->txp->fifo_used);
-     case CSR_PMT_CTRL:
-         return s->pmt_ctrl;
-     case CSR_GPIO_CFG:
+     s->rx_fifo_used = 0;
+-    s->rx_status_fifo_size = 176;
++    s->rx_status_fifo_size = RX_STATUS_FIFO_BYTES / 4;
+     s->rx_status_fifo_used = 0;
+     s->rxp_offset = 0;
+     s->rxp_size = 0;
 -- 
 2.41.0
 
