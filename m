@@ -2,102 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B62389E20B
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 20:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ACA89E20F
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 20:03:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruFlV-0001cC-VC; Tue, 09 Apr 2024 14:00:14 -0400
+	id 1ruFo9-0004U2-WC; Tue, 09 Apr 2024 14:02:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1ruFl3-0001YO-5d; Tue, 09 Apr 2024 13:59:46 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ruFnj-0004Qa-MR
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 14:02:32 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chalapathi.v@linux.ibm.com>)
- id 1ruFkz-0004tS-CV; Tue, 09 Apr 2024 13:59:44 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 439HnB91008434; Tue, 9 Apr 2024 17:59:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=0EzdbDVuLZCw/eJ4MDkGX4+gksizigEUsKFw90GT9eU=;
- b=mmhWmBm1zujAho7ovwl/NdmClQCMJrd0JFunbQlvzbzyClV7vcPjKV6tTgAPrp3W0pWM
- SuZ5BUF69sYiwzm5TQ9wzzISi2XfkUzdR0KnvgU2C+ZpHBAYrdKnHJfkQK3n88XkF/FB
- 1qv+TdeXQcq0BTME02Qpj+Po8tmCUjyrjbbI4/MG5Nqv6buDRIHoMLcAFNCSKc1V5YWH
- rH+aCPwqIKdVL3ZnbePfZK/DV4zkNYGC1FvubCTmdJQlZP7Ip4MtctsSF0NzAvWzZSn+
- xUX+jZRZxF+rAikXcFaQlob4RI2QntrfThTcTkwfLtXtLgb1xi3u252jjGn7h1wXgwNL fA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xdada80n5-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Apr 2024 17:59:33 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 439HxWtC022061;
- Tue, 9 Apr 2024 17:59:32 GMT
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xdada80jb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Apr 2024 17:59:32 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 439FWWR6029894; Tue, 9 Apr 2024 17:57:38 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xbj7m7qr7-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 09 Apr 2024 17:57:37 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
- [10.20.54.101])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 439HvWFG34734664
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 9 Apr 2024 17:57:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 491F920043;
- Tue,  9 Apr 2024 17:57:32 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8ED312006B;
- Tue,  9 Apr 2024 17:57:30 +0000 (GMT)
-Received: from gfwr515.rchland.ibm.com (unknown [9.10.239.103])
- by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  9 Apr 2024 17:57:30 +0000 (GMT)
-From: Chalapathi V <chalapathi.v@linux.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
- clg@kaod.org, calebs@us.ibm.com, chalapathi.v@ibm.com,
- chalapathi.v@linux.ibm.com, saif.abrar@linux.vnet.ibm.com,
- dantan@us.ibm.com
-Subject: [PATCH v2 6/6] tests/qtest: Add pnv-spi-seeprom qtest
-Date: Tue,  9 Apr 2024 12:57:00 -0500
-Message-Id: <20240409175700.27535-7-chalapathi.v@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20240409175700.27535-1-chalapathi.v@linux.ibm.com>
-References: <20240409175700.27535-1-chalapathi.v@linux.ibm.com>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ruFnh-0005de-H4
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 14:02:31 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 76EA45D39D;
+ Tue,  9 Apr 2024 21:04:23 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id D7707AF84D;
+ Tue,  9 Apr 2024 21:02:25 +0300 (MSK)
+Message-ID: <82b11f6c-fe3c-4cd2-8dca-19b5db1cb09d@tls.msk.ru>
+Date: Tue, 9 Apr 2024 21:02:23 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: p1a7RNoAHe0aJImpYEJImj8CbbrLCUEu
-X-Proofpoint-GUID: z8GdOpWz1C2CLuqMPyjbcbuQ96Q_qJx5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-09_12,2024-04-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1015 mlxscore=0 spamscore=0
- adultscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- mlxlogscore=741 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2404010000 definitions=main-2404090118
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=chalapathi.v@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 1/4] edk2: get version + date from git submodule
+To: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20240409162942.454419-1-kraxel@redhat.com>
+ <20240409162942.454419-2-kraxel@redhat.com>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+In-Reply-To: <20240409162942.454419-2-kraxel@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,161 +83,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this commit Write a qtest pnv-spi-seeprom-test to check the
-SPI transactions between spi controller and seeprom device.
+09.04.2024 19:29, Gerd Hoffmann:
+> Turned out hard-coding version and date in the Makefile wasn't a bright
+> idea.  Updating it on edk2 updates is easily forgotten.  Fetch the info
+> from git instead.  Store in edk2-version, so this can be committed to
+> the repo and is present in tarballs too.
 
-Signed-off-by: Chalapathi V <chalapathi.v@linux.ibm.com>
----
- tests/qtest/pnv-spi-seeprom-test.c | 126 +++++++++++++++++++++++++++++
- tests/qtest/meson.build            |   1 +
- 2 files changed, 127 insertions(+)
- create mode 100644 tests/qtest/pnv-spi-seeprom-test.c
+This too,
+Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2233
 
-diff --git a/tests/qtest/pnv-spi-seeprom-test.c b/tests/qtest/pnv-spi-seeprom-test.c
-new file mode 100644
-index 0000000000..4f0fcb1ea3
---- /dev/null
-+++ b/tests/qtest/pnv-spi-seeprom-test.c
-@@ -0,0 +1,126 @@
-+/*
-+ * QTest testcase for PowerNV 10 Seeprom Communications
-+ *
-+ * Copyright (c) 2024, IBM Corporation.
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+#include <unistd.h>
-+#include "qemu/osdep.h"
-+#include "libqtest.h"
-+#include "qemu/bswap.h"
-+#include "hw/ppc/pnv_spi_controller_regs.h"
-+
-+#define P10_XSCOM_BASE          0x000603fc00000000ull
-+#define SPIC2_XSCOM_BASE        0xc0040
-+
-+/* To transmit READ opcode and address */
-+#define READ_OP_TDR_DATA        0x0300010000000000
-+/*
-+ * N1 shift - tx 4 bytes (transmit opcode and address)
-+ * N2 shift - tx and rx 8 bytes.
-+ */
-+#define READ_OP_COUNTER_CONFIG  0x2040000000002b00
-+/* SEQ_OP_SELECT_RESPONDER - N1 Shift - N2 Shift * 5 - SEQ_OP_STOP */
-+#define READ_OP_SEQUENCER       0x1130404040404010
-+
-+/* To transmit WREN(Set Write Enable Latch in status0 register) opcode */
-+#define WRITE_OP_WREN           0x0600000000000000
-+/* To transmit WRITE opcode, address and data */
-+#define WRITE_OP_TDR_DATA       0x0300010012345678
-+/* N1 shift - tx 8 bytes (transmit opcode, address and data) */
-+#define WRITE_OP_COUNTER_CONFIG 0x4000000000002000
-+/* SEQ_OP_SELECT_RESPONDER - N1 Shift - SEQ_OP_STOP */
-+#define WRITE_OP_SEQUENCER      0x1130100000000000
-+
-+static uint64_t pnv_xscom_addr(uint32_t pcba)
-+{
-+    return P10_XSCOM_BASE | ((uint64_t) pcba << 3);
-+}
-+
-+static uint64_t pnv_spi_seeprom_xscom_addr(uint32_t reg)
-+{
-+    return pnv_xscom_addr(SPIC2_XSCOM_BASE + reg);
-+}
-+
-+static void pnv_spi_controller_xscom_write(QTestState *qts, uint32_t reg,
-+                uint64_t val)
-+{
-+    qtest_writeq(qts, pnv_spi_seeprom_xscom_addr(reg), val);
-+}
-+
-+static uint64_t pnv_spi_controller_xscom_read(QTestState *qts, uint32_t reg)
-+{
-+    return qtest_readq(qts, pnv_spi_seeprom_xscom_addr(reg));
-+}
-+
-+static void spi_seeprom_transaction(QTestState *qts)
-+{
-+    /* SPI transactions to SEEPROM to read from SEEPROM image */
-+    pnv_spi_controller_xscom_write(qts, COUNTER_CONFIG_REG,
-+                                    READ_OP_COUNTER_CONFIG);
-+    pnv_spi_controller_xscom_write(qts, SEQUENCER_OPERATION_REG,
-+                                    READ_OP_SEQUENCER);
-+    pnv_spi_controller_xscom_write(qts, TRANSMIT_DATA_REG, READ_OP_TDR_DATA);
-+    pnv_spi_controller_xscom_write(qts, TRANSMIT_DATA_REG, 0);
-+    /* Read 5*8 bytes from SEEPROM at 0x100 */
-+    uint64_t rdr_val = pnv_spi_controller_xscom_read(qts, RECEIVE_DATA_REG);
-+    printf("RDR READ = 0x%lx\n", rdr_val);
-+    rdr_val = pnv_spi_controller_xscom_read(qts, RECEIVE_DATA_REG);
-+    rdr_val = pnv_spi_controller_xscom_read(qts, RECEIVE_DATA_REG);
-+    rdr_val = pnv_spi_controller_xscom_read(qts, RECEIVE_DATA_REG);
-+    rdr_val = pnv_spi_controller_xscom_read(qts, RECEIVE_DATA_REG);
-+    printf("RDR READ = 0x%lx\n", rdr_val);
-+
-+    /* SPI transactions to SEEPROM to write to SEEPROM image */
-+    pnv_spi_controller_xscom_write(qts, COUNTER_CONFIG_REG,
-+                                    WRITE_OP_COUNTER_CONFIG);
-+    /* Set Write Enable Latch bit of status0 register */
-+    pnv_spi_controller_xscom_write(qts, SEQUENCER_OPERATION_REG,
-+                                    WRITE_OP_SEQUENCER);
-+    pnv_spi_controller_xscom_write(qts, TRANSMIT_DATA_REG, WRITE_OP_WREN);
-+    /* write 8 bytes to SEEPROM at 0x100 */
-+    pnv_spi_controller_xscom_write(qts, SEQUENCER_OPERATION_REG,
-+                                    WRITE_OP_SEQUENCER);
-+    pnv_spi_controller_xscom_write(qts, TRANSMIT_DATA_REG, WRITE_OP_TDR_DATA);
-+}
-+
-+/* Find complete path of in_file in the current working directory */
-+static void find_file(const char *in_file, char *in_path)
-+{
-+    g_autofree char *cwd = g_get_current_dir();
-+    char *filepath = g_build_filename(cwd, in_file, NULL);
-+    if (!access(filepath, F_OK)) {
-+        strcpy(in_path, filepath);
-+    } else {
-+        strcpy(in_path, "");
-+        printf("File %s not found within %s\n", in_file, cwd);
-+    }
-+}
-+
-+static void test_spi_seeprom(void)
-+{
-+    QTestState *qts = NULL;
-+    char seepromfile[500];
-+    find_file("sbe_measurement_seeprom.bin.ecc", seepromfile);
-+    if (strcmp(seepromfile, "")) {
-+        printf("Starting QEMU with seeprom file.\n");
-+        qts = qtest_initf("-m 2G -machine powernv10 -smp 2,cores=2,"
-+                          "threads=1 -accel tcg,thread=single -nographic "
-+                          "-device loader,file=sbe_measurement_seeprom.bin.ecc"
-+                          ",addr=0x7000000");
-+    } else {
-+        printf("Starting QEMU without seeprom file.\n");
-+        qts = qtest_initf("-m 2G -machine powernv10 -smp 2,cores=2,"
-+                          "threads=1 -accel tcg,thread=single -nographic");
-+    }
-+    spi_seeprom_transaction(qts);
-+    qtest_quit(qts);
-+}
-+
-+int main(int argc, char **argv)
-+{
-+    g_test_init(&argc, &argv, NULL);
-+    qtest_add_func("spi_seeprom", test_spi_seeprom);
-+    return g_test_run();
-+}
-diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-index 36c5c13a7b..e95453022d 100644
---- a/tests/qtest/meson.build
-+++ b/tests/qtest/meson.build
-@@ -167,6 +167,7 @@ qtests_ppc64 = \
-   qtests_ppc + \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['device-plug-test'] : []) +               \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-xscom-test'] : []) +                 \
-+  (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-spi-seeprom-test'] : []) +           \
-   (config_all_devices.has_key('CONFIG_POWERNV') ? ['pnv-host-i2c-test'] : []) +              \
-   (config_all_devices.has_key('CONFIG_PSERIES') ? ['rtas-test'] : []) +                      \
-   (slirp.found() ? ['pxe-test'] : []) +              \
--- 
-2.39.3
 
+> +-include edk2-version
+
+> +edk2-version: edk2
+> +	if test -e edk2/.git; then \
+> +		echo "EDK2_STABLE = $$(cd edk2; git describe --tags --match 'edk2-stable*')" > $@; \
+> +		echo "EDK2_DATE = $$(cd edk2; git log -1 --pretty='format:%cd' --date='format:%m/%d/%Y')" >> $@; \
+> +	else \
+> +		touch $@; \
+> +	fi
+
+edk2-version will become a stray file in the source dir, not cleaned up.
+But since this code path is only evaluated once, it is trivial to inline
+it, in a way similar to the first version.
+
+BTW, git has -C option instead of using `cd'.
+
+So it goes like this:
+
+EDK2_STABLE = $(shell [ ! -d edk2/.git ] || git -C edk2 describe --tags --match 'edk2-stable*')
+
+ditto for EDK2_DATE.
+
+> +efi: edk2-version
+>   	$(PYTHON) edk2-build.py --config edk2-build.config \
+> -		--version-override "edk2-stable202302-for-qemu" \
+> -		--release-date "03/01/2023"
+> +		--version-override "$(EDK2_STABLE)-for-qemu" \
+> +		--release-date "$(EDK2_DATE)" \
+
+How it will look like if there's no edk2/.git, for example, when run in
+extracted release tarball, with empty EDK2_STABLE and EKD2_DATE?
+
+Should these values be a part of release tarball maybe?
+Or maybe it's better to base EKD2_{DATE|VERSION} on qemu date/version in
+this case?
+
+Thanks,
+
+/mjt
 
