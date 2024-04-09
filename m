@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A21589D363
-	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 09:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA17489D322
+	for <lists+qemu-devel@lfdr.de>; Tue,  9 Apr 2024 09:33:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ru63t-0003x1-Na; Tue, 09 Apr 2024 03:38:33 -0400
+	id 1ru5yQ-0007Sx-Uy; Tue, 09 Apr 2024 03:32:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru63r-0003wt-Lg
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:38:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5yH-0007Mo-29
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru63p-0002lX-Rm
- for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:38:31 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ru5yE-0001eL-1F
+ for qemu-devel@nongnu.org; Tue, 09 Apr 2024 03:32:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712648309;
+ s=mimecast20190719; t=1712647960;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=Y+PBU8FJD1KavZSixahSE19h37gczE5W26EChIaJ/bY=;
- b=GONpPoDufyyy5/f5fJv7AqRdcyVRHB1xwL7WrSQyT4xlFG3mh3fvdCD+qF9qfHcfxKeCy5
- +iAYjNaYAPR5VbZJMh1dc/+nutfYjdDIwrvYpannOYnls+QR5R6ExdyYMRo4MKEhRC17Wy
- wbGHh3Y/DpxE+jT3Phx24JBoJKjORMw=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SjJapfA0EMdaBP1MiLjrwUGdMH/J/+78hWE+vX3muqw=;
+ b=VLs76ezz02nsPGnbEaXqTUKe7RMr68hFrmhx3h3rF4bzOZLU/TtKFID3OGjtZez0Z8WNl1
+ oWSw3cZKyjxGr5PDf1qGWOj8Irc4OENXXTQOcrD+1RYgMtJixqhOMNpL0EvScfUZe6RoL7
+ Qb3WqrhLWAcva3eEVELQYHvezZaViG4=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-18-t1n1LgohMe-RJMPW63uR2A-1; Tue, 09 Apr 2024 03:38:27 -0400
-X-MC-Unique: t1n1LgohMe-RJMPW63uR2A-1
-Received: by mail-lj1-f200.google.com with SMTP id
- 38308e7fff4ca-2d85b4ca694so41433381fa.1
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 00:38:26 -0700 (PDT)
+ us-mta-410-e9Py1mDsOj2mS7wckG8-Rg-1; Tue, 09 Apr 2024 03:32:38 -0400
+X-MC-Unique: e9Py1mDsOj2mS7wckG8-Rg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a519e10623bso268642566b.0
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 00:32:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712648305; x=1713253105;
+ d=1e100.net; s=20230601; t=1712647957; x=1713252757;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Y+PBU8FJD1KavZSixahSE19h37gczE5W26EChIaJ/bY=;
- b=oobGv/IkPS/jtaA6xKnIR50XiWrZ24cJ9Dh1gaEuMpuiukt5vera3abnCc7hmr+gnL
- Bcyyw04O+Zg694ihL2EsCJzqc+21blBWNtrqG8ydNWMnPwcrRXtAtxRstmBvpIiLwQbl
- MocfbI5p78rOTN3ee78akYAGX3uDR7dterFKa/HQ3WjeFwBFaCBMfmUMs9am+cxLFWD6
- hmkxAr6x0usxRBNrMVLqGhFskMyhUnYHwsY31zLBR+ZFHIVgT4wnKyLIhF++C/1xXFV4
- iHeXN3llK6V/Mhq2E1ig3853kwgBbDRi3dhjgBaZoiBWbm+IUGRkZQ8PZY4N/ymtueXd
- Cvbw==
-X-Gm-Message-State: AOJu0Yzs6ofBYF4JrPHMXHr9HuBIYUAC4P4jlQG56D5LWbsp/CSbrk7D
- L5+SjOJxLrladZxN6q4m+JpHYPTowqGqUnJXEJUxGxvyYWDX8x4Szw1CSQiJYAHt63lYPnFmh0p
- zxISoALPOsORspFFGxtB4U+0MlohpHgGRuwlY6xSk7ToIgUXqwQCHKST++3kRBUf6l3PvXykx9Y
- kQYuYIQ0IL1P4Mezh7LeaaVtK6PHRHAg==
-X-Received: by 2002:a2e:a306:0:b0:2d8:52b2:2002 with SMTP id
- l6-20020a2ea306000000b002d852b22002mr8073647lje.47.1712648304680; 
- Tue, 09 Apr 2024 00:38:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXXDfbE4JnVQpsEyVRsjA0X7rBrJmVg7ldtlU+/qygahVV9t0aHOX2zG+KcXx3AHcsGXayhA==
-X-Received: by 2002:a17:906:235b:b0:a46:6fe4:af27 with SMTP id
- m27-20020a170906235b00b00a466fe4af27mr7504136eja.24.1712647952949; 
- Tue, 09 Apr 2024 00:32:32 -0700 (PDT)
+ bh=SjJapfA0EMdaBP1MiLjrwUGdMH/J/+78hWE+vX3muqw=;
+ b=Y3y7A1LbfVEBPCW6AaJAIKScRZX7Xw2+htrqllWCJEKQR45oEDZ1IJg6f77qF4svec
+ tPHF369PVvs2x+LlDBb3efAvkbDnU9cmQXgyuRBtvaEl7xZ61YQKFJHJ4hOhVlB+rU4m
+ Isekp6W+noEyLlhpinSB44JqqIc8iJRvptlPq76c92TGvAO8GJNzQNd/B7QF2LA1lRYf
+ iK9TCBSjraeUKxT/W3chCPXGtbNw+lW7cNF+qQbMSyzEAhJ1NXLxaXhXCN12C+saiIYa
+ fgVFW5835kCSt5AjkON2m3pg+e8ynpTMRvUEnIHa70TjNuhO9OVSzaAjWiL7cnbwW9oF
+ VtgQ==
+X-Gm-Message-State: AOJu0YzqHvc36JNXF8vF5AvqBNTuC2R7V6hl//TGMbPeyCZvEw0Ar2ED
+ VyAzfLujSV/JLPlrrXZ5RZEk8cJZCQdNmlUaRZmbVZIW4rw1gxbmPoPJMrY8dWSfSPV6EUYzfoS
+ 3PaUpP+TPd70eB1+0PHiOcI4Nwm4G4CYW+VtCiSX5j1La0Nzf5Z4XVyL4oDLWB1Zc5P3nn/Qzve
+ vjVJCxwFJdGT4bCCAIX0NkcXzMdaRz6w==
+X-Received: by 2002:a17:906:bc48:b0:a4e:8c9d:a724 with SMTP id
+ s8-20020a170906bc4800b00a4e8c9da724mr7418231ejv.69.1712647956738; 
+ Tue, 09 Apr 2024 00:32:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH0WH62Gjd0zz7nrdwhT+Up4RR+3xeh8r8Au3kZ5XRTAh6A3Yv/zE9zH2qJ73uYgKAr2sCq2A==
+X-Received: by 2002:a17:906:bc48:b0:a4e:8c9d:a724 with SMTP id
+ s8-20020a170906bc4800b00a4e8c9da724mr7418209ejv.69.1712647956282; 
+ Tue, 09 Apr 2024 00:32:36 -0700 (PDT)
 Received: from redhat.com ([2.52.134.26]) by smtp.gmail.com with ESMTPSA id
- xb8-20020a170907070800b00a4e07760215sm5328761ejb.69.2024.04.09.00.32.31
+ ld11-20020a170906f94b00b00a51d8a3a632sm1966027ejb.168.2024.04.09.00.32.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 09 Apr 2024 00:32:32 -0700 (PDT)
-Date: Tue, 9 Apr 2024 03:32:30 -0400
+ Tue, 09 Apr 2024 00:32:35 -0700 (PDT)
+Date: Tue, 9 Apr 2024 03:32:33 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Raphael Norwitz <raphael@enfabrica.net>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- qemu-block@nongnu.org
-Subject: [PULL 6/7] vhost-user-blk: simplify and fix
- vhost_user_blk_handle_config_change
-Message-ID: <f67d296b6ea0e946e4ca13a39c699ca13bd977b6.1712647890.git.mst@redhat.com>
+ Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL 7/7] qdev-monitor: fix error message in find_device_state()
+Message-ID: <e1999904a960c33b68fedf26dfb7b8e00abab8f2.1712647890.git.mst@redhat.com>
 References: <cover.1712647890.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -87,7 +85,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.494,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,78 +103,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Let's not care about what was changed and update the whole config,
-reasons:
+This "hotpluggable" here is misleading. Actually we check is object a
+device or not. Let's drop the word.
 
-1. config->geometry should be updated together with capacity, so we fix
-   a bug.
-
-2. Vhost-user protocol doesn't say anything about config change
-   limitation. Silent ignore of changes doesn't seem to be correct.
-
-3. vhost-user-vsock reads the whole config
-
-4. on realize we don't do any checks on retrieved config, so no reason
-   to care here
-
-Comment "valid for resize only" exists since introduction the whole
-hw/block/vhost-user-blk.c in commit
-   00343e4b54ba0685e9ebe928ec5713b0cf7f1d1c
-    "vhost-user-blk: introduce a new vhost-user-blk host device",
-seems it was just an extra limitation.
-
-Also, let's notify guest unconditionally:
-
-1. So does vhost-user-vsock
-
-2. We are going to reuse the functionality in new cases when we do want
-   to notify the guest unconditionally. So, no reason to create extra
-   branches in the logic.
-
+Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
-Message-Id: <20240329183758.3360733-2-vsementsov@yandex-team.ru>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Message-Id: <20240329183758.3360733-3-vsementsov@yandex-team.ru>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/block/vhost-user-blk.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ system/qdev-monitor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-index 6a856ad51a..9e6bbc6950 100644
---- a/hw/block/vhost-user-blk.c
-+++ b/hw/block/vhost-user-blk.c
-@@ -91,7 +91,6 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
- static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
- {
-     int ret;
--    struct virtio_blk_config blkcfg;
-     VirtIODevice *vdev = dev->vdev;
-     VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
-     Error *local_err = NULL;
-@@ -100,19 +99,15 @@ static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
-         return 0;
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index c1243891c3..840177d19f 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -891,7 +891,7 @@ static DeviceState *find_device_state(const char *id, Error **errp)
+ 
+     dev = (DeviceState *)object_dynamic_cast(obj, TYPE_DEVICE);
+     if (!dev) {
+-        error_setg(errp, "%s is not a hotpluggable device", id);
++        error_setg(errp, "%s is not a device", id);
+         return NULL;
      }
  
--    ret = vhost_dev_get_config(dev, (uint8_t *)&blkcfg,
-+    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
-                                vdev->config_len, &local_err);
-     if (ret < 0) {
-         error_report_err(local_err);
-         return ret;
-     }
- 
--    /* valid for resize only */
--    if (blkcfg.capacity != s->blkcfg.capacity) {
--        s->blkcfg.capacity = blkcfg.capacity;
--        memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
--        virtio_notify_config(dev->vdev);
--    }
-+    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
-+    virtio_notify_config(dev->vdev);
- 
-     return 0;
- }
 -- 
 MST
 
