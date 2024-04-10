@@ -2,82 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B06D89FC87
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 18:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C8489FC95
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 18:13:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruaUg-00022j-4I; Wed, 10 Apr 2024 12:08:14 -0400
+	id 1ruaYO-00073z-0t; Wed, 10 Apr 2024 12:12:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaU2-0000jQ-Po
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:35 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaTy-0002nw-3i
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:34 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a51beae2f13so504833566b.1
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 09:07:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712765248; x=1713370048; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UeYRJP22yetpo8HRu7YHvf77//gfViY+eu8d75tRzXk=;
- b=b7WGxMpvUr/7JNYG7q1dBqA/OJlwdZUXwVuWRnxSxhnn3lgpettZWZSMLCgJiKqhGa
- C39tTzpF6U3NpH+dk3hs9Yem9VUGa8qlvLGQ+hBGB4S0gS2OXnoLGngUToPFUbuSEe2x
- It6Kv6qQMJ3n7QsvBkowxAc43a6K3smjB4PC+Sgwye4YtLa7O1BdhCRy0HX4Rq0G2QtZ
- pcSA0Ie3T5zZpDKP+Vezp8hup5koLKp/RmarX2jddUz2GnuZ9anizNgd/3qlFrbj8thL
- 8GhIq0Bc6cPI4LqZKW306Ql6+PhKiKGZkd2SSKX74tb3oEI2udkMWczsNCoNRPEo8Wck
- /ppQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712765248; x=1713370048;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UeYRJP22yetpo8HRu7YHvf77//gfViY+eu8d75tRzXk=;
- b=ZkUhTLgtXbspKOoGNHQjpiwYfqefHbaM1ttUz862THZEoLqtOX/9zsSnmiRYSCieJ9
- 7JLcZXLiTjchsdDrNihMFhznzH3M4ConVz7jAUS0vgcDKOnQGv5jlrL6TsuRfAa8Y5gI
- oxyqB3gq1gn0yXyHXpQxYMorFsw+aQ9S8ldRLYhPGjVkCjR3SPRXJ41HKd3Sh9LWxdAN
- YV+tytv9Q32CmetYj9lm6rh62nk84whJ+rpF+ZJjAxwdOtJw7Hl4yZM0ME5P5ezLp8uL
- TTqsedpl3Ud6NG6FtnDie7KPpQosWUkT9OWzvnIqabaQ3MVpD5YvUJwVP2nmmqJMdED8
- hzEQ==
-X-Gm-Message-State: AOJu0Yzb7Sm9wnuvTom31WrTnie2Ls8RLU3eOsQn72sU8T/LNDzRW0Uv
- dDQM78TR/bdSC2BnVqcX9fLZS4Fb9XIK4/y70hauJDgmnqBtnaE8mEggpZKP1tlNHaNvhz3JtLD
- Z
-X-Google-Smtp-Source: AGHT+IFJlrbvkvXCPtVg+I26gMmwjxrbRCgY4nHxk56hI/7RLQFUup2oNBSjxaWAnd7wbrM0w1deWA==
-X-Received: by 2002:a17:906:7f19:b0:a51:b752:7ed8 with SMTP id
- d25-20020a1709067f1900b00a51b7527ed8mr1556519ejr.25.1712765248441; 
- Wed, 10 Apr 2024 09:07:28 -0700 (PDT)
-Received: from m1x-phil.lan (arl95-h02-176-184-34-173.dsl.sta.abo.bbox.fr.
- [176.184.34.173]) by smtp.gmail.com with ESMTPSA id
- re9-20020a170906d8c900b00a4e6750a358sm7054546ejb.187.2024.04.10.09.07.27
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Apr 2024 09:07:28 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH 12/12] backends/tpm: Use qemu_hexdump_line() to avoid sprintf()
-Date: Wed, 10 Apr 2024 18:06:13 +0200
-Message-ID: <20240410160614.90627-13-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240410160614.90627-1-philmd@linaro.org>
-References: <20240410160614.90627-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ruaXj-0006ss-E1
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:11:24 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1ruaXN-0003hk-Ux
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:11:22 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id AB1985DA5D;
+ Wed, 10 Apr 2024 19:12:55 +0300 (MSK)
+Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with ESMTP id 79A60B0A24;
+ Wed, 10 Apr 2024 19:10:56 +0300 (MSK)
+Message-ID: <dfe80894-8a1e-48ab-adbd-9398f4ef156a@tls.msk.ru>
+Date: Wed, 10 Apr 2024 19:10:56 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL v2 00/20] misc patch queue
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240409193603.1703216-1-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Michael Tokarev <mjt@tls.msk.ru>
+Autocrypt: addr=mjt@tls.msk.ru; keydata=
+ xsBLBETIiwkBCADh3cFB56BQYPjtMZCfK6PSLR8lw8EB20rsrPeJtd91IoNZlnCjSoxd9Th1
+ bLUR8YlpRJ2rjc6O1Bc04VghqUOHgS/tYt8vLjcGWixzdhSLJgPDK3QQZPAvBjMbCt1B6euC
+ WuD87Pv5Udlpnzf4aMwxkgfTusx+ynae/o+T5r7tXD+isccbC3SiGhmAPxFyY3zGcFk4+Rxc
+ 0tP8YY2FWE/baHu+lBDTUN79efWAkHhex1XzVZsV7ZD16rzDbXFK5m6ApvGJWlr5YDEEydTF
+ WwmvwBfr4OINVxzEG/ujNiG4fpMf2NsnFGyB9aSbFjXZevB4qWkduYYW+xpK1EryszHtAAYp
+ zSBNaWNoYWVsIFRva2FyZXYgPG1qdEB0bHMubXNrLnJ1PsLAlgQTAQoAQAIbAwYLCQgHAwIE
+ FQIIAwQWAgMBAh4BAheAAhkBFiEEbuGV0Yhuj/uBDUMkRXzgoIBEZcUFAmBbcjwFCS5e6jMA
+ CgkQRXzgoIBEZcUTIQgA1hPsOF82pXxbcJXBMc4zB9OQu4AlnZvERoGyw7I2222QzaN3RFuj
+ Fia//mapXzpIQNF08l/AA6cx+CKPeGnXwyZfF9fLa4RfifmdNKME8C00XlqnoJDZBGzq8yMy
+ LAKDxl9OQWFcDwDxV+irg5U3fbtNVhvV0kLbS2TyQ0aU5w60ERS2NcyDWplOo7AOzZWChcA4
+ UFf78oVdZdCW8YDtU0uQFhA9moNnrePy1HSFqduxnlFHEI+fDj/TiOm2ci48b8SBBJOIJFjl
+ SBgH8+SfT9ZqkzhN9vh3YJ49831NwASVm0x1rDHcIwWD32VFZViZ3NjehogRNH9br0PSUYOC
+ 3s7ATQRX2BjLAQgAnak3m0imYOkv2tO/olULFa686tlwuvl5kL0NWCdGQeXv2uMxy36szcrh
+ K1uYhpiQv4r2qNd8BJtYlnYIK16N8GBdkplaDIHcBMbU4t+6bQzEIJIaWoq1hzakmHHngE2a
+ pNMnUf/01GFvCRPlv3imkujE/5ILbagjtdyJaHF0wGOSlTnNT4W8j+zPJ/XK0I5EVQwtbmoc
+ GY62LKxxz2pID6sPZV4zQVY4JdUQaFvOz1emnBxakkt0cq3Qnnqso1tjiy7vyH9CAwPR/48W
+ fpK6dew4Fk+STYtBeixOTfSUS8qRS/wfpUeNa5RnEdTtFQ9IcjpQ/nPrvJJsu9FqwlpjMwAR
+ AQABwsBlBBgBCAAPBQJX2BjLAhsMBQkSzAMAAAoJEEV84KCARGXFUKcH/jqKETECkbyPktdP
+ cWVqw2ZIsmGxMkIdnZTbPwhORseGXMHadQODayhU9GWfCDdSPkWDWzMamD+qStfl9MhlVT60
+ HTbo6wu1W/ogUS70qQPTY9IfsvAj6f8TlSlK0eLMa3s2UxL2oe5FkNs2CnVeRlr4Yqvp/ZQV
+ 6LXtew4GPRrmplUT/Cre9QIUqR4pxYCQaMoOXQQw3Y0csBwoDYUQujn3slbDJRIweHoppBzT
+ rM6ZG5ldWQN3n3d71pVuv80guylX8+TSB8Mvkqwb5I36/NAFKl0CbGbTuQli7SmNiTAKilXc
+ Y5Uh9PIrmixt0JrmGVRzke6+11mTjVlio/J5dCM=
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zack Buhman <zack@buhman.org>, Keith Packard <keithp@keithp.com>
+In-Reply-To: <20240409193603.1703216-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,72 +82,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-resulting in painful developper experience.
+09.04.2024 22:35, Richard Henderson wrote:
 
-Use qemu_hexdump_line() to avoid sprintf() calls, silencing:
+> target/m68k: Fix fp accrued exception reporting
+> target/hppa: Fix IIAOQ, IIASQ for pa2.0
+> target/sh4: Fixes to mac.l and mac.w saturation
+> target/sh4: Fixes to illegal delay slot reporting
+> linux-user: Fix waitid return of siginfo_t and rusage
+> linux-user: Preserve unswapped siginfo_t for strace
+> tcg/optimize: Do not attempt to constant fold neg_vec
+> accel/tcg: Improve can_do_io management, mmio bug fix
 
-  backends/tpm/tpm_util.c:357:14: warning: 'sprintf' is deprecated:
-    This function is provided for compatibility reasons only.
-    Due to security concerns inherent in the design of sprintf(3),
-    it is highly recommended that you use snprintf(3) instead.
-    [-Wdeprecated-declarations]
-        p += sprintf(p, "%.2X ", buffer[i]);
-             ^
+ From this list, do we pick something for stable?
+It looks like
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- backends/tpm/tpm_util.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+  tcg/optimize: Do not attempt to constant fold neg_vec
+  linux-user: Fix waitid return of siginfo_t and rusage
+  target/hppa: Fix IIAOQ, IIASQ for pa2.0
 
-diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-index 1856589c3b..0747af2d1c 100644
---- a/backends/tpm/tpm_util.c
-+++ b/backends/tpm/tpm_util.c
-@@ -21,6 +21,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qemu/cutils.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
- #include "tpm_int.h"
-@@ -336,27 +337,18 @@ void tpm_sized_buffer_reset(TPMSizedBuffer *tsb)
- void tpm_util_show_buffer(const unsigned char *buffer,
-                           size_t buffer_size, const char *string)
- {
--    size_t len, i;
--    char *line_buffer, *p;
-+    size_t len;
-+    char *line, *lineup;
- 
-     if (!trace_event_get_state_backends(TRACE_TPM_UTIL_SHOW_BUFFER)) {
-         return;
-     }
-     len = MIN(tpm_cmd_get_size(buffer), buffer_size);
- 
--    /*
--     * allocate enough room for 3 chars per buffer entry plus a
--     * newline after every 16 chars and a final null terminator.
--     */
--    line_buffer = g_malloc(len * 3 + (len / 16) + 1);
-+    line = qemu_hexdump_line(buffer, 0, len, false);
-+    lineup = g_ascii_strup(line, -1);
-+    trace_tpm_util_show_buffer(string, len, lineup);
- 
--    for (i = 0, p = line_buffer; i < len; i++) {
--        if (i && !(i % 16)) {
--            p += sprintf(p, "\n");
--        }
--        p += sprintf(p, "%.2X ", buffer[i]);
--    }
--    trace_tpm_util_show_buffer(string, len, line_buffer);
--
--    g_free(line_buffer);
-+    g_free(line);
-+    g_free(lineup);
- }
--- 
-2.41.0
+should be picked.
+
+ From sh4 mac* et al, this can be picked too:
+
+  target/sh4: mac.w: memory accesses are 16-bit words
+
+but I dunno about the others:
+
+  target/sh4: Merge mach and macl into a union
+  target/sh4: Fix mac.l with saturation enabled
+  target/sh4: Fix mac.w with saturation enabled
+  target/sh4: add missing CHECK_NOT_DELAY_SLOT
+  target/m68k: Map FPU exceptions to FPSR register
+
+A long(ish) DisasContextBase series leading to
+
+   accel/tcg: Improve can_do_io management
+
+probably should not go to stable.
+
+Adding changes authors and reviewers to the Cc list
+for comments.
+
+Thanks,
+
+/mjt
+
+> ----------------------------------------------------------------
+> Keith Packard (1):
+>        target/m68k: Map FPU exceptions to FPSR register
+> 
+> Nguyen Dinh Phi (1):
+>        linux-user: replace calloc() with g_new0()
+> 
+> Richard Henderson (14):
+>        tcg/optimize: Do not attempt to constant fold neg_vec
+>        linux-user: Fix waitid return of siginfo_t and rusage
+>        target/hppa: Fix IIAOQ, IIASQ for pa2.0
+>        target/sh4: Merge mach and macl into a union
+>        tcg: Add TCGContext.emit_before_op
+>        accel/tcg: Add insn_start to DisasContextBase
+>        target/arm: Use insn_start from DisasContextBase
+>        target/hppa: Use insn_start from DisasContextBase
+>        target/i386: Preserve DisasContextBase.insn_start across rewind
+>        target/microblaze: Use insn_start from DisasContextBase
+>        target/riscv: Use insn_start from DisasContextBase
+>        target/s390x: Use insn_start from DisasContextBase
+>        accel/tcg: Improve can_do_io management
+>        linux-user: Preserve unswapped siginfo_t for strace
+> 
+> Zack Buhman (4):
+>        target/sh4: mac.w: memory accesses are 16-bit words
+>        target/sh4: Fix mac.l with saturation enabled
+>        target/sh4: Fix mac.w with saturation enabled
+>        target/sh4: add missing CHECK_NOT_DELAY_SLOT
+
 
 
