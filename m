@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F66289EA25
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F0989EA30
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQoV-0004nB-NG; Wed, 10 Apr 2024 01:48:03 -0400
+	id 1ruQom-00063o-EZ; Wed, 10 Apr 2024 01:48:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoK-0004ds-7O; Wed, 10 Apr 2024 01:47:52 -0400
+ id 1ruQoN-0004sO-7n; Wed, 10 Apr 2024 01:47:55 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoI-00026X-9Q; Wed, 10 Apr 2024 01:47:51 -0400
+ id 1ruQoL-000271-Lb; Wed, 10 Apr 2024 01:47:55 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 31AB65D4FE;
+ by isrv.corpit.ru (Postfix) with ESMTP id 414815D4FF;
  Wed, 10 Apr 2024 08:46:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id ED160B0165;
- Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182117 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 06E0FB0166;
+ Wed, 10 Apr 2024 08:44:19 +0300 (MSK)
+Received: (nullmailer pid 4182120 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [Stable-7.2.11 38/41] gitlab-ci/cirrus: switch from 'master' to
- 'latest'
-Date: Wed, 10 Apr 2024 08:43:59 +0300
-Message-Id: <20240410054416.4181891-38-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 39/41] hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS
+ if int group is disabled
+Date: Wed, 10 Apr 2024 08:44:00 +0300
+Message-Id: <20240410054416.4181891-39-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -59,29 +60,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit ab72522797 "gitlab: switch from 'stable' to
-'latest' docker container tags" switched most tags
-to 'latest' but missed cirrus image.  Fix this now.
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2256
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-id: 20240401051633.2780456-1-mjt@tls.msk.ru
+If the group of the highest priority pending interrupt is disabled
+via ICC_IGRPEN*, the ICC_HPPIR* registers should return
+INTID_SPURIOUS, not the interrupt ID.  (See the GIC architecture
+specification pseudocode functions ICC_HPPIR1_EL1[] and
+HighestPriorityPendingInterrupt().)
+
+Make HPPIR reads honour the group disable, the way we already do
+when determining whether to preempt in icc_hppi_can_preempt().
+
+Cc: qemu-stable@nongnu.org
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit 1d2f2b35bc86b7a13dc3009a3c5031220aa0b7de)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240328153333.2522667-1-peter.maydell@linaro.org
+(cherry picked from commit 44e25fbc1900c99c91a44e532c5bd680bc403459)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
-index 7b6504c956..c86487da5b 100644
---- a/.gitlab-ci.d/cirrus.yml
-+++ b/.gitlab-ci.d/cirrus.yml
-@@ -13,7 +13,7 @@
- .cirrus_build_job:
-   extends: .base_job_template
-   stage: build
--  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
-+  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:latest
-   needs: []
-   timeout: 80m
-   allow_failure: true
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index f71b3b07d8..ddfbc69d65 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -1065,7 +1065,7 @@ static uint64_t icc_hppir0_value(GICv3CPUState *cs, CPUARMState *env)
+      */
+     bool irq_is_secure;
+ 
+-    if (cs->hppi.prio == 0xff) {
++    if (icc_no_enabled_hppi(cs)) {
+         return INTID_SPURIOUS;
+     }
+ 
+@@ -1102,7 +1102,7 @@ static uint64_t icc_hppir1_value(GICv3CPUState *cs, CPUARMState *env)
+      */
+     bool irq_is_secure;
+ 
+-    if (cs->hppi.prio == 0xff) {
++    if (icc_no_enabled_hppi(cs)) {
+         return INTID_SPURIOUS;
+     }
+ 
 -- 
 2.39.2
 
