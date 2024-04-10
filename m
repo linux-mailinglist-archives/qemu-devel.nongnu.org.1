@@ -2,43 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE87C89EA17
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:50:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F66289EA25
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQoL-0004bJ-Kx; Wed, 10 Apr 2024 01:47:53 -0400
+	id 1ruQoV-0004nB-NG; Wed, 10 Apr 2024 01:48:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoH-0004N9-0k; Wed, 10 Apr 2024 01:47:49 -0400
+ id 1ruQoK-0004ds-7O; Wed, 10 Apr 2024 01:47:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoF-00025t-6c; Wed, 10 Apr 2024 01:47:48 -0400
+ id 1ruQoI-00026X-9Q; Wed, 10 Apr 2024 01:47:51 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 241F35D4FD;
+ by isrv.corpit.ru (Postfix) with ESMTP id 31AB65D4FE;
  Wed, 10 Apr 2024 08:46:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id DCCFBB0164;
+ by tsrv.corpit.ru (Postfix) with SMTP id ED160B0165;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182114 invoked by uid 1000);
+Received: (nullmailer pid 4182117 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Sven Schnelle <svens@stackframe.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 37/41] target/hppa: Clear psw_n for BE on
- use_nullify_skip path
-Date: Wed, 10 Apr 2024 08:43:58 +0300
-Message-Id: <20240410054416.4181891-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [Stable-7.2.11 38/41] gitlab-ci/cirrus: switch from 'master' to
+ 'latest'
+Date: Wed, 10 Apr 2024 08:43:59 +0300
+Message-Id: <20240410054416.4181891-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,31 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+Commit ab72522797 "gitlab: switch from 'stable' to
+'latest' docker container tags" switched most tags
+to 'latest' but missed cirrus image.  Fix this now.
 
-Along this path we have already skipped the insn to be
-nullified, so the subsequent insn should be executed.
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 4a3aa11e1fb25c28c24a43fd2835c429b00a463d)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2256
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-id: 20240401051633.2780456-1-mjt@tls.msk.ru
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 1d2f2b35bc86b7a13dc3009a3c5031220aa0b7de)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 1af77473da..ee68d2f834 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3473,6 +3473,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
-         tcg_gen_addi_reg(cpu_iaoq_b, cpu_iaoq_f, 4);
-         tcg_gen_mov_i64(cpu_iasq_f, new_spc);
-         tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
-+        nullify_set(ctx, 0);
-     } else {
-         copy_iaoq_entry(cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-         if (ctx->iaoq_b == -1) {
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index 7b6504c956..c86487da5b 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -13,7 +13,7 @@
+ .cirrus_build_job:
+   extends: .base_job_template
+   stage: build
+-  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
++  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:latest
+   needs: []
+   timeout: 80m
+   allow_failure: true
 -- 
 2.39.2
 
