@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FE389EA0F
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E807F89EA26
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQoC-0003SA-QU; Wed, 10 Apr 2024 01:47:44 -0400
+	id 1ruQoN-0004f4-Tl; Wed, 10 Apr 2024 01:47:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQnn-0000m9-0e; Wed, 10 Apr 2024 01:47:22 -0400
+ id 1ruQnp-0000nu-JR; Wed, 10 Apr 2024 01:47:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQnl-000212-C3; Wed, 10 Apr 2024 01:47:18 -0400
+ id 1ruQno-00021f-26; Wed, 10 Apr 2024 01:47:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id D7FC75D4F9;
+ by isrv.corpit.ru (Postfix) with ESMTP id E90015D4FA;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9C34BB0160;
+ by tsrv.corpit.ru (Postfix) with SMTP id AD0B0B0161;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182102 invoked by uid 1000);
+Received: (nullmailer pid 4182105 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Lorenz Brun <lorenz@brun.one>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+Cc: qemu-stable@nongnu.org, Yao Xingtao <yaoxt.fnst@fujitsu.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 33/41] hw/scsi/scsi-generic: Fix io_timeout property
- not applying
-Date: Wed, 10 Apr 2024 08:43:54 +0300
-Message-Id: <20240410054416.4181891-33-mjt@tls.msk.ru>
+ "Dr . David Alan Gilbert" <dave@treblig.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 34/41] monitor/hmp-cmds-target: Append a space in
+ error message in gpa2hva()
+Date: Wed, 10 Apr 2024 08:43:55 +0300
+Message-Id: <20240410054416.4181891-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -62,41 +61,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Lorenz Brun <lorenz@brun.one>
+From: Yao Xingtao <yaoxt.fnst@fujitsu.com>
 
-The io_timeout property, introduced in c9b6609 (part of 6.0) is
-silently overwritten by the hardcoded default value of 30 seconds
-(DEFAULT_IO_TIMEOUT) in scsi_generic_realize because that function is
-being called after the properties have already been applied.
+In qemu monitor mode, when we use gpa2hva command to print the host
+virtual address corresponding to a guest physical address, if the gpa is
+not in RAM, the error message is below:
 
-The property definition already has a default value which is applied
-correctly when no value is explicitly set, so we can just remove the
-code which overrides the io_timeout completely.
+  (qemu) gpa2hva 0x750000000
+  Memory at address 0x750000000is not RAM
 
-This has been tested by stracing SG_IO operations with the io_timeout
-property set and unset and now sets the timeout field in the ioctl
-request to the proper value.
+A space is missed between '0x750000000' and 'is'.
 
-Fixes: c9b6609b69facad ("scsi: make io_timeout configurable")
-Signed-off-by: Lorenz Brun <lorenz@brun.one>
-Message-ID: <20240315145831.2531695-1-lorenz@brun.one>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Yao Xingtao <yaoxt.fnst@fujitsu.com>
+Fixes: e9628441df ("hmp: gpa2hva and gpa2hpa hostaddr command")
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Dr. David Alan Gilbert <dave@treblig.org>
+Message-ID: <20240319021610.2423844-1-ruansy.fnst@fujitsu.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 7c7a9f578e4fb1adff7ac8d9acaaaedb87474e76)
+(cherry picked from commit a158c63b3ba120f1656e4dd815d186c623fb5ef6)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: in 7.2. it is in monitor/misc.c, not in monitor/hmp-cmds-target.c)
 
-diff --git a/hw/scsi/scsi-generic.c b/hw/scsi/scsi-generic.c
-index d513870181..87d84ee68e 100644
---- a/hw/scsi/scsi-generic.c
-+++ b/hw/scsi/scsi-generic.c
-@@ -765,7 +765,6 @@ static void scsi_generic_realize(SCSIDevice *s, Error **errp)
+diff --git a/monitor/misc.c b/monitor/misc.c
+index 205487e2b9..80dd1fa8e6 100644
+--- a/monitor/misc.c
++++ b/monitor/misc.c
+@@ -668,7 +668,7 @@ void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, uint64_t size, Error **errp)
+     }
  
-     /* Only used by scsi-block, but initialize it nevertheless to be clean.  */
-     s->default_scsi_version = -1;
--    s->io_timeout = DEFAULT_IO_TIMEOUT;
-     scsi_generic_read_device_inquiry(s);
- }
- 
+     if (!memory_region_is_ram(mrs.mr) && !memory_region_is_romd(mrs.mr)) {
+-        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx "is not RAM", addr);
++        error_setg(errp, "Memory at address 0x%" HWADDR_PRIx " is not RAM", addr);
+         memory_region_unref(mrs.mr);
+         return NULL;
+     }
 -- 
 2.39.2
 
