@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B2F89EA21
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF6E89EA27
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQnx-0000x8-BM; Wed, 10 Apr 2024 01:47:29 -0400
+	id 1ruQo9-0002tY-9b; Wed, 10 Apr 2024 01:47:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQne-0000bs-KZ; Wed, 10 Apr 2024 01:47:18 -0400
+ id 1ruQnj-0000fZ-Db; Wed, 10 Apr 2024 01:47:18 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQnZ-0001xm-Rc; Wed, 10 Apr 2024 01:47:08 -0400
+ id 1ruQnZ-0001xp-Rs; Wed, 10 Apr 2024 01:47:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A4AE45D4F6;
+ by isrv.corpit.ru (Postfix) with ESMTP id B70295D4F7;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6A097B015D;
+ by tsrv.corpit.ru (Postfix) with SMTP id 794D1B015E;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182092 invoked by uid 1000);
+Received: (nullmailer pid 4182096 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 30/41] target/i386: fix direction of "32-bit MMU" test
-Date: Wed, 10 Apr 2024 08:43:51 +0300
-Message-Id: <20240410054416.4181891-30-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Tao Su <tao1.su@linux.intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Markus Armbruster <armbru@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 31/41] target/i386: Revert monitor_puts() in
+ do_inject_x86_mce()
+Date: Wed, 10 Apr 2024 08:43:52 +0300
+Message-Id: <20240410054416.4181891-31-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -59,46 +60,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Tao Su <tao1.su@linux.intel.com>
 
-The low bit of MMU indices for x86 TCG indicates whether the processor is
-in 32-bit mode and therefore linear addresses have to be masked to 32 bits.
-However, the index was computed incorrectly, leading to possible conflicts
-in the TLB for any address above 4G.
+monitor_puts() doesn't check the monitor pointer, but do_inject_x86_mce()
+may have a parameter with NULL monitor pointer. Revert monitor_puts() in
+do_inject_x86_mce() to fix, then the fact that we send the same message to
+monitor and log is again more obvious.
 
-Analyzed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Fixes: b1661801c18 ("target/i386: Fix physical address truncation", 2024-02-28)
-Fixes: 1c15f97b4f1 ("target/i386: Fix physical address truncation" in stable-7.2)
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2206
+Fixes: bf0c50d4aa85 (monitor: expose monitor_puts to rest of code)
+Reviwed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Message-ID: <20240320083640.523287-1-tao1.su@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 2cc68629a6fc198f4a972698bdd6477f883aedfb)
+(cherry picked from commit 7fd226b04746f0be0b636de5097f1b42338951a0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: move changes for x86_cpu_mmu_index() to cpu_mmu_index() due to missing
- v8.2.0-1030-gace0c5fe59 "target/i386: Populate CPUClass.mmu_index")
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 73eee08f3f..326649ca99 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2201,7 +2201,7 @@ uint64_t cpu_get_tsc(CPUX86State *env);
- 
- static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
- {
--    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
-     int mmu_index_base =
-         (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER64_IDX :
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-@@ -2228,7 +2228,7 @@ static inline bool is_mmu_index_32(int mmu_index)
- 
- static inline int cpu_mmu_index_kernel(CPUX86State *env)
- {
--    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
-     int mmu_index_base =
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-         ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK)) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 0ac2da066d..290d9d309c 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -427,7 +427,7 @@ static void do_inject_x86_mce(CPUState *cs, run_on_cpu_data data)
+         if (need_reset) {
+             emit_guest_memory_failure(MEMORY_FAILURE_ACTION_RESET, ar,
+                                       recursive);
+-            monitor_puts(params->mon, msg);
++            monitor_printf(params->mon, "%s", msg);
+             qemu_log_mask(CPU_LOG_RESET, "%s\n", msg);
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
 -- 
 2.39.2
 
