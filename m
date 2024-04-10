@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0137289EC3E
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E7889EC1B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSQS-0004uy-5Z; Wed, 10 Apr 2024 03:31:20 -0400
+	id 1ruSQw-0005bt-2w; Wed, 10 Apr 2024 03:31:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSQ8-0004Ze-WF; Wed, 10 Apr 2024 03:31:03 -0400
+ id 1ruSQU-0005J0-Ph; Wed, 10 Apr 2024 03:31:23 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSQ6-0005Px-NX; Wed, 10 Apr 2024 03:31:00 -0400
+ id 1ruSQR-0005QD-RE; Wed, 10 Apr 2024 03:31:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 79F0F5D6C2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 89AA45D6C3;
  Wed, 10 Apr 2024 10:25:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1DE46B0302;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2E992B0303;
  Wed, 10 Apr 2024 10:23:10 +0300 (MSK)
-Received: (nullmailer pid 4191898 invoked by uid 1000);
+Received: (nullmailer pid 4191901 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Wei Wang <wei.w.wang@intel.com>,
- Lei Wang <lei4.wang@intel.com>, Peter Xu <peterx@redhat.com>,
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 82/87] migration/postcopy: ensure preempt channel is
- ready before loading states
-Date: Wed, 10 Apr 2024 10:22:55 +0300
-Message-Id: <20240410072303.4191455-82-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 83/87] target/arm: Use correct SecuritySpace for
+ AArch64 AT ops at EL3
+Date: Wed, 10 Apr 2024 10:22:56 +0300
+Message-Id: <20240410072303.4191455-83-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,58 +60,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wei Wang <wei.w.wang@intel.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-Before loading the guest states, ensure that the preempt channel has been
-ready to use, as some of the states (e.g. via virtio_load) might trigger
-page faults that will be handled through the preempt channel. So yield to
-the main thread in the case that the channel create event hasn't been
-dispatched.
+When we do an AT address translation operation, the page table walk
+is supposed to be performed in the context of the EL we're doing the
+walk for, so for instance an AT S1E2R walk is done for EL2.  In the
+pseudocode an EL is passed to AArch64.AT(), which calls
+SecurityStateAtEL() to find the security state that we should be
+doing the walk with.
 
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Fixes: 9358982744 ("migration: Send requested page directly in rp-return thread")
-Originally-by: Lei Wang <lei4.wang@intel.com>
-Link: https://lore.kernel.org/all/9aa5d1be-7801-40dd-83fd-f7e041ced249@intel.com/T/
-Signed-off-by: Lei Wang <lei4.wang@intel.com>
-Signed-off-by: Wei Wang <wei.w.wang@intel.com>
-Link: https://lore.kernel.org/r/20240405034056.23933-1-wei.w.wang@intel.com
-[peterx: add a todo section, add Fixes and copy stable for 8.0+]
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 7afbdada7effbc2b97281bfbce0c6df351a3cf88)
+In ats_write64() we get this wrong, instead using the current
+security space always.  This is fine for AT operations performed from
+EL1 and EL2, because there the current security state and the
+security state for the lower EL are the same.  But for AT operations
+performed from EL3, the current security state is always either
+Secure or Root, whereas we want to use the security state defined by
+SCR_EL3.{NS,NSE} for the walk. This affects not just guests using
+FEAT_RME but also ones where EL3 is Secure state and the EL3 code
+is trying to do an AT for a NonSecure EL2 or EL1.
+
+Use arm_security_space_below_el3() to get the SecuritySpace to
+pass to do_ats_write() for all AT operations except the
+AT S1E3* operations.
+
+Cc: qemu-stable@nongnu.org
+Fixes: e1ee56ec2383 ("target/arm: Pass security space rather than flag for AT instructions")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2250
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-id: 20240405180232.3570066-1-peter.maydell@linaro.org
+(cherry picked from commit 19b254e86a900dc5ee332e3ac0baf9c521301abf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index eec5503a42..f374da85b9 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -2343,6 +2343,27 @@ static int loadvm_handle_cmd_packaged(MigrationIncomingState *mis)
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index df1646de3a..ca2c6e9732 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -3703,6 +3703,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+     ARMMMUIdx mmu_idx;
+     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
+     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
++    bool for_el3 = false;
++    ARMSecuritySpace ss;
  
-     QEMUFile *packf = qemu_file_new_input(QIO_CHANNEL(bioc));
+     switch (ri->opc2 & 6) {
+     case 0:
+@@ -3720,6 +3722,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+             break;
+         case 6: /* AT S1E3R, AT S1E3W */
+             mmu_idx = ARMMMUIdx_E3;
++            for_el3 = true;
+             break;
+         default:
+             g_assert_not_reached();
+@@ -3738,8 +3741,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
+         g_assert_not_reached();
+     }
  
-+    /*
-+     * Before loading the guest states, ensure that the preempt channel has
-+     * been ready to use, as some of the states (e.g. via virtio_load) might
-+     * trigger page faults that will be handled through the preempt channel.
-+     * So yield to the main thread in the case that the channel create event
-+     * hasn't been dispatched.
-+     *
-+     * TODO: if we can move migration loadvm out of main thread, then we
-+     * won't block main thread from polling the accept() fds.  We can drop
-+     * this as a whole when that is done.
-+     */
-+    do {
-+        if (!migrate_postcopy_preempt() || !qemu_in_coroutine() ||
-+            mis->postcopy_qemufile_dst) {
-+            break;
-+        }
-+
-+        aio_co_schedule(qemu_get_current_aio_context(), qemu_coroutine_self());
-+        qemu_coroutine_yield();
-+    } while (1);
-+
-     ret = qemu_loadvm_state_main(packf, mis);
-     trace_loadvm_handle_cmd_packaged_main(ret);
-     qemu_fclose(packf);
+-    env->cp15.par_el[1] = do_ats_write(env, value, access_type,
+-                                       mmu_idx, arm_security_space(env));
++    ss = for_el3 ? arm_security_space(env) : arm_security_space_below_el3(env);
++    env->cp15.par_el[1] = do_ats_write(env, value, access_type, mmu_idx, ss);
+ #else
+     /* Handled by hardware accelerator. */
+     g_assert_not_reached();
 -- 
 2.39.2
 
