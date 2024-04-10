@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BE489EC18
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A3389EC72
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNO-0003GT-3f; Wed, 10 Apr 2024 03:28:10 -0400
+	id 1ruSNR-0003LJ-Gj; Wed, 10 Apr 2024 03:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMw-0002bL-B8; Wed, 10 Apr 2024 03:27:44 -0400
+ id 1ruSN0-0002hk-N9; Wed, 10 Apr 2024 03:27:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMt-0004rO-ME; Wed, 10 Apr 2024 03:27:41 -0400
+ id 1ruSMw-0004ro-DR; Wed, 10 Apr 2024 03:27:46 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 16D355D6A2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2637B5D6A3;
  Wed, 10 Apr 2024 10:25:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B014EB02E2;
+ by tsrv.corpit.ru (Postfix) with SMTP id C00F5B02E3;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191799 invoked by uid 1000);
+Received: (nullmailer pid 4191802 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 50/87] target/loongarch: Fix qemu-loongarch64 hang when
- executing 'll.d $t0, $t0, 0'
-Date: Wed, 10 Apr 2024 10:22:23 +0300
-Message-Id: <20240410072303.4191455-50-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>
+Subject: [Stable-8.2.3 51/87] docs/conf.py: Remove usage of distutils
+Date: Wed, 10 Apr 2024 10:22:24 +0300
+Message-Id: <20240410072303.4191455-51-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,43 +58,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Song Gao <gaosong@loongson.cn>
+From: Thomas Huth <thuth@redhat.com>
 
-On gen_ll, if a->imm is zero, make_address_x return src1,
-but the load to destination may clobber src1. We use a new
-destination to fix this problem.
+The macOS jobs in our CI recently started failing, complaining that
+the distutils module is not available anymore. And indeed, according to
+https://peps.python.org/pep-0632/ it's been deprecated since a while
+and now likely got removed in recent Python versions.
 
-Fixes: c5af6628f4be (target/loongarch: Extract make_address_i() helper)
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Suggested-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Message-Id: <20240320013955.1561311-1-gaosong@loongson.cn>
-(cherry picked from commit 77642f92c0b71a105aba2a4d03bc62328eae703b)
+Fortunately, we only use it for a version check via LooseVersion here
+which we don't really need anymore - according to Repology.org, these
+are the versions of sphinx-rtd-theme that are currently used by the
+various distros:
+
+ centos_stream_8: 0.3.1
+ centos_stream_9: 0.5.1
+ fedora_38: 1.1.1
+ fedora_39: 1.2.2
+ freebsd: 1.0.0
+ haikuports_master: 1.2.1
+ openbsd: 1.2.2
+ opensuse_leap_15_5: 0.5.1
+ pkgsrc_current: 2.0.0
+ debian_11: 0.5.1
+ debian_12: 1.2.0
+ ubuntu_20_04: 0.4.3
+ ubuntu_22_04: 1.0.0
+ ubuntu_24_04: 2.0.0
+
+So except for CentOS 8, all distros are using a newer version of
+sphinx-rtd-theme, and for CentOS 8 we don't support compiling with
+the Sphinx of the distro anymore anyway, since it's based on the
+Python 3.6 interpreter there. For compiling on CentOS 8, you have
+to use the alternative Python 3.8 interpreter which comes without
+Sphinx, so that needs the Sphinx installed via pip in the venv
+instead, and that is using a newer version, too, according to our
+pythondeps.toml file.
+
+Thus we can simply drop the version check now to get rid of the
+distutils dependency here.
+
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-id: 20240304130403.129543-1-thuth@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit eb844330bd36ebdd4959053da08069d1e5d49119)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/insn_trans/trans_atomic.c.inc b/target/loongarch/insn_trans/trans_atomic.c.inc
-index 80c2e286fd..974bc2a70f 100644
---- a/target/loongarch/insn_trans/trans_atomic.c.inc
-+++ b/target/loongarch/insn_trans/trans_atomic.c.inc
-@@ -5,14 +5,14 @@
+diff --git a/docs/conf.py b/docs/conf.py
+index e84a95e71c..1b2afa241c 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -29,7 +29,6 @@
+ import os
+ import sys
+ import sphinx
+-from distutils.version import LooseVersion
+ from sphinx.errors import ConfigError
  
- static bool gen_ll(DisasContext *ctx, arg_rr_i *a, MemOp mop)
- {
--    TCGv dest = gpr_dst(ctx, a->rd, EXT_NONE);
-+    TCGv t1 = tcg_temp_new();
-     TCGv src1 = gpr_src(ctx, a->rj, EXT_NONE);
-     TCGv t0 = make_address_i(ctx, src1, a->imm);
+ # The per-manual conf.py will set qemu_docdir for a single-manual build;
+@@ -165,11 +164,10 @@
+ # Theme options are theme-specific and customize the look and feel of a theme
+ # further.  For a list of options available for each theme, see the
+ # documentation.
+-if LooseVersion(sphinx_rtd_theme.__version__) >= LooseVersion("0.4.3"):
+-    html_theme_options = {
+-        "style_nav_header_background": "#802400",
+-        "navigation_with_keys": True,
+-    }
++html_theme_options = {
++    "style_nav_header_background": "#802400",
++    "navigation_with_keys": True,
++}
  
--    tcg_gen_qemu_ld_i64(dest, t0, ctx->mem_idx, mop);
-+    tcg_gen_qemu_ld_i64(t1, t0, ctx->mem_idx, mop);
-     tcg_gen_st_tl(t0, tcg_env, offsetof(CPULoongArchState, lladdr));
--    tcg_gen_st_tl(dest, tcg_env, offsetof(CPULoongArchState, llval));
--    gen_set_gpr(a->rd, dest, EXT_NONE);
-+    tcg_gen_st_tl(t1, tcg_env, offsetof(CPULoongArchState, llval));
-+    gen_set_gpr(a->rd, t1, EXT_NONE);
+ html_logo = os.path.join(qemu_docdir, "../ui/icons/qemu_128x128.png")
  
-     return true;
- }
 -- 
 2.39.2
 
