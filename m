@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 030EC89E9FF
+	by mail.lfdr.de (Postfix) with ESMTPS id 481FD89EA00
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:48:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQmj-0005jK-BZ; Wed, 10 Apr 2024 01:46:13 -0400
+	id 1ruQnv-0000fa-EB; Wed, 10 Apr 2024 01:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQlv-00053y-Cl; Wed, 10 Apr 2024 01:45:24 -0400
+ id 1ruQlz-00056E-0c; Wed, 10 Apr 2024 01:45:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQlt-0001hI-PT; Wed, 10 Apr 2024 01:45:23 -0400
+ id 1ruQlx-0001hr-1N; Wed, 10 Apr 2024 01:45:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9D3225D4E7;
+ by isrv.corpit.ru (Postfix) with ESMTP id AC6985D4E8;
  Wed, 10 Apr 2024 08:46:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 63452B014E;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7282CB014F;
  Wed, 10 Apr 2024 08:44:17 +0300 (MSK)
-Received: (nullmailer pid 4182046 invoked by uid 1000);
+Received: (nullmailer pid 4182049 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 15/41] hw/nvme: cleanup error reporting in
- nvme_init_pci()
-Date: Wed, 10 Apr 2024 08:43:36 +0300
-Message-Id: <20240410054416.4181891-15-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Minwoo Im <minwoo.im@samsung.com>,
+ Klaus Jensen <k.jensen@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 16/41] hw/nvme: separate 'serial' property for VFs
+Date: Wed, 10 Apr 2024 08:43:37 +0300
+Message-Id: <20240410054416.4181891-16-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,81 +58,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Klaus Jensen <k.jensen@samsung.com>
+From: Minwoo Im <minwoo.im@samsung.com>
 
-Replace the local Error variable with errp and ERRP_GUARD() and change
-the return value to bool.
+Currently, when a VF is created, it uses the 'params' object of the PF
+as it is. In other words, the 'params.serial' string memory area is also
+shared. In this situation, if the VF is removed from the system, the
+PF's 'params.serial' object is released with object_finalize() followed
+by object_property_del_all() which release the memory for 'serial'
+property. If that happens, the next VF created will inherit a serial
+from a corrupted memory area.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+If this happens, an error will occur when comparing subsys->serial and
+n->params.serial in the nvme_subsys_register_ctrl() function.
+
+Cc: qemu-stable@nongnu.org
+Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
+Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 973f76cf7743545a5d8a0a8bfdfe2cd02aa3e238)
+(cherry picked from commit 4f0a4a3d5854824e5c5eccf353d4a1f4f749a29d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: needed for v8.2.0-2319-gfa905f65c5
- "hw/nvme: add machine compatibility parameter to enable msix exclusive bar")
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 75180823a6..f2b308f5fa 100644
+index f2b308f5fa..c2c0fc991d 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -7288,15 +7288,14 @@ static int nvme_add_pm_capability(PCIDevice *pci_dev, uint8_t offset)
-     return 0;
- }
- 
--static int nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-+static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
- {
-+    ERRP_GUARD();
-     uint8_t *pci_conf = pci_dev->config;
-     uint64_t bar_size;
-     unsigned msix_table_offset, msix_pba_offset;
-     int ret;
- 
--    Error *err = NULL;
--
-     pci_conf[PCI_INTERRUPT_PIN] = 1;
-     pci_config_set_prog_interface(pci_conf, 0x2);
- 
-@@ -7333,14 +7332,14 @@ static int nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-     }
-     ret = msix_init(pci_dev, n->params.msix_qsize,
-                     &n->bar0, 0, msix_table_offset,
--                    &n->bar0, 0, msix_pba_offset, 0, &err);
--    if (ret < 0) {
--        if (ret == -ENOTSUP) {
--            warn_report_err(err);
--        } else {
--            error_propagate(errp, err);
--            return ret;
--        }
-+                    &n->bar0, 0, msix_pba_offset, 0, errp);
-+    if (ret == -ENOTSUP) {
-+        /* report that msix is not supported, but do not error out */
-+        warn_report_err(*errp);
-+        *errp = NULL;
-+    } else if (ret < 0) {
-+        /* propagate error to caller */
-+        return false;
+@@ -7515,9 +7515,15 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
+     if (pci_is_vf(pci_dev)) {
+         /*
+          * VFs derive settings from the parent. PF's lifespan exceeds
+-         * that of VF's, so it's safe to share params.serial.
++         * that of VF's.
+          */
+         memcpy(&n->params, &pn->params, sizeof(NvmeParams));
++
++        /*
++         * Set PF's serial value to a new string memory to prevent 'serial'
++         * property object release of PF when a VF is removed from the system.
++         */
++        n->params.serial = g_strdup(pn->params.serial);
+         n->subsys = pn->subsys;
      }
  
-     nvme_update_msixcap_ts(pci_dev, n->conf_msix_qsize);
-@@ -7357,7 +7356,7 @@ static int nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
-         nvme_init_sriov(n, pci_dev, 0x120);
-     }
- 
--    return 0;
-+    return true;
- }
- 
- static void nvme_init_subnqn(NvmeCtrl *n)
-@@ -7533,7 +7532,7 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
-         return;
-     }
-     nvme_init_state(n);
--    if (nvme_init_pci(n, pci_dev, errp)) {
-+    if (!nvme_init_pci(n, pci_dev, errp)) {
-         return;
-     }
-     nvme_init_ctrl(n, pci_dev);
 -- 
 2.39.2
 
