@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA4A389EC1A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5AE89EC45
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:38:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNJ-00035y-9x; Wed, 10 Apr 2024 03:28:05 -0400
+	id 1ruSNV-0003Tp-4Q; Wed, 10 Apr 2024 03:28:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMV-0001m7-12; Wed, 10 Apr 2024 03:27:20 -0400
+ id 1ruSMW-0001qC-Pv; Wed, 10 Apr 2024 03:27:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMT-0004ns-90; Wed, 10 Apr 2024 03:27:14 -0400
+ id 1ruSMU-0004o5-UH; Wed, 10 Apr 2024 03:27:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C80715D69E;
+ by isrv.corpit.ru (Postfix) with ESMTP id DA0145D69F;
  Wed, 10 Apr 2024 10:25:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 6BC79B02DE;
+ by tsrv.corpit.ru (Postfix) with SMTP id 7DF1AB02DF;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191786 invoked by uid 1000);
+Received: (nullmailer pid 4191789 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 46/87] target/hppa: fix access_id check
-Date: Wed, 10 Apr 2024 10:22:19 +0300
-Message-Id: <20240410072303.4191455-46-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 47/87] target/hppa: exit tb on flush cache instructions
+Date: Wed, 10 Apr 2024 10:22:20 +0300
+Message-Id: <20240410072303.4191455-47-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -61,117 +61,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-PA2.0 provides 8 instead of 4 PID registers.
+When the guest modifies the tb it is currently executing from,
+it executes a fic instruction. Exit the tb on such instruction,
+otherwise we might execute stale code.
 
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240319161921.487080-4-svens@stackframe.org>
+Message-Id: <20240319161921.487080-5-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit ae157fc25053917830c3b581bc282f906e6d95d3)
+(cherry picked from commit ad1fdacd1b936557514dd72c2079a80be0c2dfb4)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
-index 4fcc612754..3a34c4f748 100644
---- a/target/hppa/mem_helper.c
-+++ b/target/hppa/mem_helper.c
-@@ -152,6 +152,49 @@ static HPPATLBEntry *hppa_alloc_tlb_ent(CPUHPPAState *env)
-     return ent;
+diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
+index 5412ff9836..f58455dfdb 100644
+--- a/target/hppa/insns.decode
++++ b/target/hppa/insns.decode
+@@ -144,9 +144,9 @@ getshadowregs   1111 1111 1111 1101 1110 1010 1101 0010
+ nop             000001 ----- ----- -- 11001010 0 -----         # fdc, disp
+ nop_addrx       000001 ..... ..... -- 01001010 . -----  @addrx # fdc, index
+ nop_addrx       000001 ..... ..... -- 01001011 . -----  @addrx # fdce
+-nop_addrx       000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
+-nop_addrx       000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
+-nop_addrx       000001 ..... ..... --- 0001011 . -----  @addrx # fice
++fic             000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
++fic             000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
++fic             000001 ..... ..... --- 0001011 . -----  @addrx # fice
+ nop_addrx       000001 ..... ..... -- 01001110 . 00000  @addrx # pdc
+ 
+ probe           000001 b:5 ri:5 sp:2 imm:1 100011 write:1 0 t:5
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 15a8bfd48c..ccf03b1ce7 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -2337,6 +2337,13 @@ static bool trans_nop_addrx(DisasContext *ctx, arg_ldst *a)
+     return true;
  }
  
-+#define ACCESS_ID_MASK 0xffff
-+
-+/* Return the set of protections allowed by a PID match. */
-+static int match_prot_id_1(uint32_t access_id, uint32_t prot_id)
++static bool trans_fic(DisasContext *ctx, arg_ldst *a)
 +{
-+    if (((access_id ^ (prot_id >> 1)) & ACCESS_ID_MASK) == 0) {
-+        return (prot_id & 1
-+                ? PAGE_EXEC | PAGE_READ
-+                : PAGE_EXEC | PAGE_READ | PAGE_WRITE);
-+    }
-+    return 0;
++    /* End TB for flush instruction cache, so we pick up new insns. */
++    ctx->base.is_jmp = DISAS_IAQ_N_STALE;
++    return trans_nop_addrx(ctx, a);
 +}
 +
-+static int match_prot_id32(CPUHPPAState *env, uint32_t access_id)
-+{
-+    int r, i;
-+
-+    for (i = CR_PID1; i <= CR_PID4; ++i) {
-+        r = match_prot_id_1(access_id, env->cr[i]);
-+        if (r) {
-+            return r;
-+        }
-+    }
-+    return 0;
-+}
-+
-+static int match_prot_id64(CPUHPPAState *env, uint32_t access_id)
-+{
-+    int r, i;
-+
-+    for (i = CR_PID1; i <= CR_PID4; ++i) {
-+        r = match_prot_id_1(access_id, env->cr[i]);
-+        if (r) {
-+            return r;
-+        }
-+        r = match_prot_id_1(access_id, env->cr[i] >> 32);
-+        if (r) {
-+            return r;
-+        }
-+    }
-+    return 0;
-+}
-+
- int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-                               int type, hwaddr *pphys, int *pprot,
-                               HPPATLBEntry **tlb_entry)
-@@ -224,29 +267,30 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
-         break;
-     }
- 
-+    /*
-+     * No guest access type indicates a non-architectural access from
-+     * within QEMU.  Bypass checks for access, D, B, P and T bits.
-+     */
-+    if (type == 0) {
-+        goto egress;
-+    }
-+
-     /* access_id == 0 means public page and no check is performed */
-     if (ent->access_id && MMU_IDX_TO_P(mmu_idx)) {
--        /* If bits [31:1] match, and bit 0 is set, suppress write.  */
--        int match = ent->access_id * 2 + 1;
--
--        if (match == env->cr[CR_PID1] || match == env->cr[CR_PID2] ||
--            match == env->cr[CR_PID3] || match == env->cr[CR_PID4]) {
--            prot &= PAGE_READ | PAGE_EXEC;
--            if (type == PAGE_WRITE) {
--                ret = EXCP_DMPI;
--                goto egress;
--            }
-+        int access_prot = (hppa_is_pa20(env)
-+                           ? match_prot_id64(env, ent->access_id)
-+                           : match_prot_id32(env, ent->access_id));
-+        if (unlikely(!(type & access_prot))) {
-+            /* Not allowed -- Inst/Data Memory Protection Id Fault. */
-+            ret = type & PAGE_EXEC ? EXCP_IMP : EXCP_DMPI;
-+            goto egress;
-         }
--    }
--
--    /* No guest access type indicates a non-architectural access from
--       within QEMU.  Bypass checks for access, D, B and T bits.  */
--    if (type == 0) {
--        goto egress;
-+        /* Otherwise exclude permissions not allowed (i.e WD). */
-+        prot &= access_prot;
-     }
- 
-     if (unlikely(!(prot & type))) {
--        /* The access isn't allowed -- Inst/Data Memory Protection Fault.  */
-+        /* Not allowed -- Inst/Data Memory Access Rights Fault. */
-         ret = (type & PAGE_EXEC) ? EXCP_IMP : EXCP_DMAR;
-         goto egress;
-     }
+ static bool trans_probe(DisasContext *ctx, arg_probe *a)
+ {
+     TCGv_i64 dest, ofs;
 -- 
 2.39.2
 
