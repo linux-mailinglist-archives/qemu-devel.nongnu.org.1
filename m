@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E59589EBD6
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:26:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B46D189EBE4
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:27:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSJV-0000X7-0f; Wed, 10 Apr 2024 03:24:09 -0400
+	id 1ruSJV-0000cE-9V; Wed, 10 Apr 2024 03:24:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJG-00005c-Di; Wed, 10 Apr 2024 03:23:59 -0400
+ id 1ruSJL-000085-GK; Wed, 10 Apr 2024 03:24:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJD-0003xN-K8; Wed, 10 Apr 2024 03:23:54 -0400
+ id 1ruSJI-0003xn-MI; Wed, 10 Apr 2024 03:23:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 623255D67D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 7F4535D67E;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id EE521B02BE;
- Wed, 10 Apr 2024 10:23:04 +0300 (MSK)
-Received: (nullmailer pid 4191687 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 1712DB02BF;
+ Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
+Received: (nullmailer pid 4191690 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Laurent Vivier <lvivier@redhat.com>,
- akihiko.odaki@daynix.com, Jason Wang <jasowang@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 14/87] igb: fix link state on resume
-Date: Wed, 10 Apr 2024 10:21:47 +0300
-Message-Id: <20240410072303.4191455-14-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 15/87] e1000e: fix link state on resume
+Date: Wed, 10 Apr 2024 10:21:48 +0300
+Message-Id: <20240410072303.4191455-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -61,7 +61,7 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Laurent Vivier <lvivier@redhat.com>
 
-On resume igb_vm_state_change() always calls igb_autoneg_resume()
+On resume e1000e_vm_state_change() always calls e1000e_autoneg_resume()
 that sets link_down to false, and thus activates the link even
 if we have disabled it.
 
@@ -71,115 +71,123 @@ to be up.
 
 Reproducer:
 
-   # qemu-system-x86_64 ... -device igb,netdev=netdev0,id=net0 -S
+   # qemu-system-x86_64 ... -device e1000e,netdev=netdev0,id=net0 -S
 
    {"execute": "qmp_capabilities" }
    {"execute": "set_link", "arguments": {"name": "net0", "up": false}}
    {"execute": "cont" }
 
-To fix the problem, merge the content of igb_vm_state_change()
-into igb_core_post_load() as e1000 does.
+To fix the problem, merge the content of e1000e_vm_state_change()
+into e1000e_core_post_load() as e1000 does.
 
 Buglink: https://issues.redhat.com/browse/RHEL-21867
-Fixes: 3a977deebe6b ("Intrdocue igb device emulation")
-Cc: akihiko.odaki@daynix.com
+Fixes: 6f3fbe4ed06a ("net: Introduce e1000e device emulation")
 Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Laurent Vivier <lvivier@redhat.com>
 Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 65c2ab808571dcd9322020690a63df63281a67f0)
+(cherry picked from commit 4cadf10234989861398e19f3bb441d3861f3bb7c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/igb_core.c b/hw/net/igb_core.c
-index 2a7a11aa9e..bcd5f6cd9c 100644
---- a/hw/net/igb_core.c
-+++ b/hw/net/igb_core.c
-@@ -160,14 +160,6 @@ igb_intmgr_timer_resume(IGBIntrDelayTimer *timer)
+diff --git a/hw/net/e1000e_core.c b/hw/net/e1000e_core.c
+index e324c02dd5..3ae2a184d5 100644
+--- a/hw/net/e1000e_core.c
++++ b/hw/net/e1000e_core.c
+@@ -123,14 +123,6 @@ e1000e_intmgr_timer_resume(E1000IntrDelayTimer *timer)
      }
  }
  
 -static void
--igb_intmgr_timer_pause(IGBIntrDelayTimer *timer)
+-e1000e_intmgr_timer_pause(E1000IntrDelayTimer *timer)
 -{
 -    if (timer->running) {
 -        timer_del(timer->timer);
 -    }
 -}
 -
- static void
- igb_intrmgr_on_msix_throttling_timer(void *opaque)
+ static inline void
+ e1000e_intrmgr_stop_timer(E1000IntrDelayTimer *timer)
  {
-@@ -212,16 +204,6 @@ igb_intrmgr_resume(IGBCore *core)
+@@ -398,24 +390,6 @@ e1000e_intrmgr_resume(E1000ECore *core)
      }
  }
  
 -static void
--igb_intrmgr_pause(IGBCore *core)
+-e1000e_intrmgr_pause(E1000ECore *core)
 -{
 -    int i;
 -
--    for (i = 0; i < IGB_INTR_NUM; i++) {
--        igb_intmgr_timer_pause(&core->eitr[i]);
+-    e1000e_intmgr_timer_pause(&core->radv);
+-    e1000e_intmgr_timer_pause(&core->rdtr);
+-    e1000e_intmgr_timer_pause(&core->raid);
+-    e1000e_intmgr_timer_pause(&core->tidv);
+-    e1000e_intmgr_timer_pause(&core->tadv);
+-
+-    e1000e_intmgr_timer_pause(&core->itr);
+-
+-    for (i = 0; i < E1000E_MSIX_VEC_NUM; i++) {
+-        e1000e_intmgr_timer_pause(&core->eitr[i]);
 -    }
 -}
 -
  static void
- igb_intrmgr_reset(IGBCore *core)
+ e1000e_intrmgr_reset(E1000ECore *core)
  {
-@@ -4290,12 +4272,6 @@ igb_core_read(IGBCore *core, hwaddr addr, unsigned size)
+@@ -3334,12 +3308,6 @@ e1000e_core_read(E1000ECore *core, hwaddr addr, unsigned size)
      return 0;
  }
  
 -static inline void
--igb_autoneg_pause(IGBCore *core)
+-e1000e_autoneg_pause(E1000ECore *core)
 -{
 -    timer_del(core->autoneg_timer);
 -}
 -
  static void
- igb_autoneg_resume(IGBCore *core)
+ e1000e_autoneg_resume(E1000ECore *core)
  {
-@@ -4307,22 +4283,6 @@ igb_autoneg_resume(IGBCore *core)
+@@ -3351,22 +3319,6 @@ e1000e_autoneg_resume(E1000ECore *core)
      }
  }
  
 -static void
--igb_vm_state_change(void *opaque, bool running, RunState state)
+-e1000e_vm_state_change(void *opaque, bool running, RunState state)
 -{
--    IGBCore *core = opaque;
+-    E1000ECore *core = opaque;
 -
 -    if (running) {
 -        trace_e1000e_vm_state_running();
--        igb_intrmgr_resume(core);
--        igb_autoneg_resume(core);
+-        e1000e_intrmgr_resume(core);
+-        e1000e_autoneg_resume(core);
 -    } else {
 -        trace_e1000e_vm_state_stopped();
--        igb_autoneg_pause(core);
--        igb_intrmgr_pause(core);
+-        e1000e_autoneg_pause(core);
+-        e1000e_intrmgr_pause(core);
 -    }
 -}
 -
  void
- igb_core_pci_realize(IGBCore        *core,
-                      const uint16_t *eeprom_templ,
-@@ -4335,8 +4295,6 @@ igb_core_pci_realize(IGBCore        *core,
-                                        igb_autoneg_timer, core);
-     igb_intrmgr_pci_realize(core);
+ e1000e_core_pci_realize(E1000ECore     *core,
+                         const uint16_t *eeprom_templ,
+@@ -3379,9 +3331,6 @@ e1000e_core_pci_realize(E1000ECore     *core,
+                                        e1000e_autoneg_timer, core);
+     e1000e_intrmgr_pci_realize(core);
  
--    core->vmstate = qemu_add_vm_change_state_handler(igb_vm_state_change, core);
+-    core->vmstate =
+-        qemu_add_vm_change_state_handler(e1000e_vm_state_change, core);
 -
-     for (i = 0; i < IGB_NUM_QUEUES; i++) {
+     for (i = 0; i < E1000E_NUM_QUEUES; i++) {
          net_tx_pkt_init(&core->tx[i].tx_pkt, E1000E_MAX_TX_FRAGS);
      }
-@@ -4360,8 +4318,6 @@ igb_core_pci_uninit(IGBCore *core)
+@@ -3405,8 +3354,6 @@ e1000e_core_pci_uninit(E1000ECore *core)
  
-     igb_intrmgr_pci_unint(core);
+     e1000e_intrmgr_pci_unint(core);
  
 -    qemu_del_vm_change_state_handler(core->vmstate);
 -
-     for (i = 0; i < IGB_NUM_QUEUES; i++) {
+     for (i = 0; i < E1000E_NUM_QUEUES; i++) {
          net_tx_pkt_uninit(core->tx[i].tx_pkt);
      }
-@@ -4586,5 +4542,12 @@ igb_core_post_load(IGBCore *core)
+@@ -3576,5 +3523,12 @@ e1000e_core_post_load(E1000ECore *core)
       */
      nc->link_down = (core->mac[STATUS] & E1000_STATUS_LU) == 0;
  
@@ -187,24 +195,24 @@ index 2a7a11aa9e..bcd5f6cd9c 100644
 +     * we need to restart intrmgr timers, as an older version of
 +     * QEMU can have stopped them before migration
 +     */
-+    igb_intrmgr_resume(core);
-+    igb_autoneg_resume(core);
++    e1000e_intrmgr_resume(core);
++    e1000e_autoneg_resume(core);
 +
      return 0;
  }
-diff --git a/hw/net/igb_core.h b/hw/net/igb_core.h
-index bf8c46f26b..d70b54e318 100644
---- a/hw/net/igb_core.h
-+++ b/hw/net/igb_core.h
-@@ -90,8 +90,6 @@ struct IGBCore {
+diff --git a/hw/net/e1000e_core.h b/hw/net/e1000e_core.h
+index 66b025cc43..01510ca78b 100644
+--- a/hw/net/e1000e_core.h
++++ b/hw/net/e1000e_core.h
+@@ -98,8 +98,6 @@ struct E1000Core {
  
-     IGBIntrDelayTimer eitr[IGB_INTR_NUM];
+     E1000IntrDelayTimer eitr[E1000E_MSIX_VEC_NUM];
  
 -    VMChangeStateEntry *vmstate;
 -
-     uint32_t eitr_guest_value[IGB_INTR_NUM];
+     uint32_t itr_guest_value;
+     uint32_t eitr_guest_value[E1000E_MSIX_VEC_NUM];
  
-     uint8_t permanent_mac[ETH_ALEN];
 -- 
 2.39.2
 
