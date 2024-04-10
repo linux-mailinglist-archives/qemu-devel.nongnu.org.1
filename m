@@ -2,72 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FE289F081
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 13:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0963D89F083
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 13:17:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruVwH-0007i1-MM; Wed, 10 Apr 2024 07:16:25 -0400
+	id 1ruVx5-0000vV-ON; Wed, 10 Apr 2024 07:17:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1ruVw5-0007ad-9J
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:16:14 -0400
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+ id 1ruVwn-0000jp-8B
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:16:57 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1ruVw3-0001Ac-2n
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:16:13 -0400
-Received: by mail-ed1-x52e.google.com with SMTP id
- 4fb4d7f45d1cf-56e6a1edecfso3989843a12.1
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 04:16:10 -0700 (PDT)
+ id 1ruVwk-0001DU-IV
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:16:56 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-56e2b3e114fso6765892a12.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 04:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1712747769; x=1713352569; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1712747813; x=1713352613; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=+IN7un69bqHkcPqreTU10boYRttPxsSWpC4RIALq0Tk=;
- b=SHhBf0sM2qZxdjPx8tfrEZCtrPXM+JGExdqUI+oHqRWwz5CJandFl8iNcIxcsePfJb
- 8QCrKSxVgzpZRDaxLpkXrOQD/q3O70MHpPiU0/r3smSQ/qOi0yAhDG3UrU1q0CX+SdXX
- 5OvN7zhhs8j3j36+LpAZrnEzcTK0aVKYrQKVgVzEDhyi/Tid+1kTeMjA8Lpa62bd+LL5
- OSiwXSrJ+xNKlQcp0Rdb+LPjO3kh4nAn8+eV68j+gcnigESoiHjrQayltAdutSyJQWeo
- GVlV605TFBbLk9tr5niC4QF48PYrLW6eSnsbKq1wqBshgT5kTF4u5MN2YVIhsP0YCkuJ
- k6Zw==
+ bh=XXuEyWGKyd6shOUPsOvMnxOTSgyVEg2dFYS/NWsx1Hk=;
+ b=fh292kfRT3vFIbcR+zjm53gDEXxqFdeMrCYM9rSDRFPpK0B/dTYBUfhWQwSFiVrDW9
+ dP9PJj06kcAHC7NFUlVteKuZ5P73tDZHU794CAwl7KyCZZUdw62qVRO4K558LYESlM5t
+ k71cElgdSRmO+it/6PPA4pNnWydZCIhj0k8aKYTQ6TI0aL4K6bVfohwYLZKfRZj4hLV1
+ XPsqs4ExlafhbU7JBSyG/BcSWjsJEhtOz5LjWyQadsD7ARgbkZn+wvUXQeMlnRsOZUEk
+ 8Lwj2GgQhXJrd7RdXn+rbZdM5e9n/YEy7bVARt3N71neoK4FD32i4ZDxvnE3bxZpC9f3
+ o3yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712747769; x=1713352569;
+ d=1e100.net; s=20230601; t=1712747813; x=1713352613;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=+IN7un69bqHkcPqreTU10boYRttPxsSWpC4RIALq0Tk=;
- b=TAxIn6PRlsDshYsPAYtDH1ZzsldDnkufMwSdkHJ3ceLCbx0/cvWI3FBThbO27W5k8g
- 1swkoYYjWjAqoiYCSCrjqCbqMAirrbc/DYw8OvAcY9E15c76iJohYWwnnX/0Kch5DHmD
- n3PrZ+zQ+XAy9NEVbpczMrQux9HHsr1Bkq9Yzmfh6XU4/l4R9+y2K3H4rpCN5w5LOUxs
- 020+JcdAqVCQ8ocNgZZ/19KPhHyhq9RvJy4/o/RUmeehbhHLLe/5WvXLiZaYFomXcQtP
- U4ZeaW86jA4fpRAcwL5Tfs/lYo2goIuyfDyKa49A7svwH19xMqmk8foRFuyg/v6x0+kD
- 019Q==
-X-Gm-Message-State: AOJu0YxaxW+jRItdAtJ6VedojFJaeV8qQwEUxyNl+AFo0xxInF707z6C
- 6sb+B51uW87GCADEJB1hcbsSSjtdhxfdB0yBZ+ibcINOEiNAo9ltipjGcx+gs16dgEMzft9XShz
- BiSU2z3011Nnlz7Ubth79/iFxe9M=
-X-Google-Smtp-Source: AGHT+IEW01CMFpOVcXIOi32Peel71hH36R4znipkhO//pqBD9Ikcs10QfxtQoTAD+2CiKEFtzpYGR32oXz94nkrl0e8=
-X-Received: by 2002:a50:c313:0:b0:56e:447:1e44 with SMTP id
- a19-20020a50c313000000b0056e04471e44mr1631304edb.8.1712747768656; Wed, 10 Apr
- 2024 04:16:08 -0700 (PDT)
+ bh=XXuEyWGKyd6shOUPsOvMnxOTSgyVEg2dFYS/NWsx1Hk=;
+ b=trxLCBYHP4EqgYdeVcOhbCaNKihb+rlhH/piMJ146r6HiS5LQf/JYJOPyQ0H6jvBU+
+ 1RiDUHzAbJ3kL2k5m6SkMv7g+U/6wmwufbxXH/xEcpTM41/LpNPDp10eVCR86/HkP3LO
+ CKcK1OrW98jTBmVtm4S2dwC5hg6QADVsC7lAPiGtALHXpxBJiCtOnGF4iiU1Q4B1aE81
+ 9W3D4I6oD4eXWBg1QSwnsItgiTxvstPlpJlYJ5CKqizoEycuw6yRnlfa/zHa15Yfkzd2
+ VORDzvFWsDEKNvBGGM6keyJRJ1S7E2lc+atW3nHpJekgp+XFIFdxHpQXOIKBdWuqdsVO
+ XDxg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXdhqRMyNcpMTvHbIsMsnby9UBUJKEyvrwXNSE25sEZ+06BjZRNPigIU5cGwfIAg9mUXCnEZINvPWl9Ty9CCykx+ri56vs=
+X-Gm-Message-State: AOJu0YzY13kZutJ7CJ1CpW/gtbIfQdVzl04QMYIeHUFfBMN5HrEab5IQ
+ 2faVJE1xzr8s/xfdye4Kii1rZAqcikO8S651LP02jA3kuVd69DccS0fVzVnIdX7Pe6HHcOBY3St
+ lC2fvHVhT2KJRe6MJqu33e811keY=
+X-Google-Smtp-Source: AGHT+IH6SmNE7KfCLbME02RaYkGbD4/bVZiSVYSE2JOJaBgkqvkWNzuTqa1BZxvwbZsVpWLZsW5Qb109+McIEGvC6DU=
+X-Received: by 2002:a50:f61d:0:b0:566:777:af4f with SMTP id
+ c29-20020a50f61d000000b005660777af4fmr1423220edn.1.1712747812674; Wed, 10 Apr
+ 2024 04:16:52 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240227223501.28475-1-vikram.garhwal@amd.com>
- <20240227223501.28475-4-vikram.garhwal@amd.com>
-In-Reply-To: <20240227223501.28475-4-vikram.garhwal@amd.com>
+ <20240227223501.28475-6-vikram.garhwal@amd.com>
+ <alpine.DEB.2.22.394.2402291510270.853156@ubuntu-linux-20-04-desktop>
+In-Reply-To: <alpine.DEB.2.22.394.2402291510270.853156@ubuntu-linux-20-04-desktop>
 From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Wed, 10 Apr 2024 13:15:57 +0200
-Message-ID: <CAJy5ezrmVBH1FD0oQy+hxmx5yymkp0EQr4-xO+F00M46yd7nkQ@mail.gmail.com>
-Subject: Re: [QEMU][PATCH v3 3/7] softmmu: let qemu_map_ram_ptr() use
- qemu_ram_ptr_length()
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, sstabellini@kernel.org, jgross@suse.com, 
+Date: Wed, 10 Apr 2024 13:16:41 +0200
+Message-ID: <CAJy5ezo=wyZnbCa5xBKNx59qVTZtrReLkgWf=_s8+db+tijOYg@mail.gmail.com>
+Subject: Re: [QEMU][PATCH v3 5/7] memory: add MemoryRegion map and unmap
+ callbacks
+To: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org,
+ jgross@suse.com, 
  Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Content-Type: multipart/alternative; boundary="000000000000573c170615bc2ad7"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x52e.google.com
+Content-Type: multipart/alternative; boundary="000000000000f6e3f50615bc2cf9"
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,22 +94,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000573c170615bc2ad7
+--000000000000f6e3f50615bc2cf9
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 27, 2024 at 11:37=E2=80=AFPM Vikram Garhwal <vikram.garhwal@amd=
-.com>
+On Fri, Mar 1, 2024 at 12:11=E2=80=AFAM Stefano Stabellini <sstabellini@ker=
+nel.org>
 wrote:
 
-> From: Juergen Gross <jgross@suse.com>
+> On Tue, 27 Feb 2024, Vikram Garhwal wrote:
+> > From: Juergen Gross <jgross@suse.com>
+> >
+> > In order to support mapping and unmapping guest memory dynamically to
+> > and from qemu during address_space_[un]map() operations add the map()
+> > and unmap() callbacks to MemoryRegionOps.
+> >
+> > Those will be used e.g. for Xen grant mappings when performing guest
+> > I/Os.
+> >
+> > Signed-off-by: Juergen Gross <jgross@suse.com>
+> > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 >
-> qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so
-> modify qemu_ram_ptr_length() a little bit and use it for
-> qemu_map_ram_ptr(), too.
->
-> Signed-off-by: Juergen Gross <jgross@suse.com>
-> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
 > Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
 >
 
@@ -113,279 +122,393 @@ Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
 
 
 
-
 > ---
->  system/physmem.c | 56 ++++++++++++++++++++----------------------------
->  1 file changed, 23 insertions(+), 33 deletions(-)
->
-> diff --git a/system/physmem.c b/system/physmem.c
-> index 84f3022099..949dcb20ba 100644
-> --- a/system/physmem.c
-> +++ b/system/physmem.c
-> @@ -2163,43 +2163,17 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t
-> length)
->  }
->  #endif /* !_WIN32 */
->
-> -/* Return a host pointer to ram allocated with qemu_ram_alloc.
-> - * This should not be used for general purpose DMA.  Use address_space_m=
-ap
-> - * or address_space_rw instead. For local memory (e.g. video ram) that t=
-he
-> - * device owns, use memory_region_get_ram_ptr.
-> - *
-> - * Called within RCU critical section.
-> - */
-> -void *qemu_map_ram_ptr(RAMBlock *block, ram_addr_t addr)
-> -{
-> -    if (block =3D=3D NULL) {
-> -        block =3D qemu_get_ram_block(addr);
-> -        addr -=3D block->offset;
-> -    }
-> -
-> -    if (xen_enabled() && block->host =3D=3D NULL) {
-> -        /* We need to check if the requested address is in the RAM
-> -         * because we don't want to map the entire memory in QEMU.
-> -         * In that case just map until the end of the page.
-> -         */
-> -        if (block->offset =3D=3D 0) {
-> -            return xen_map_cache(addr, 0, 0, false);
-> -        }
-> -
-> -        block->host =3D xen_map_cache(block->offset, block->max_length, =
-1,
-> false);
-> -    }
-> -    return ramblock_ptr(block, addr);
-> -}
-> -
-> -/* Return a host pointer to guest's ram. Similar to qemu_map_ram_ptr
-> - * but takes a size argument.
-> +/*
-> + * Return a host pointer to guest's ram.
->   *
->   * Called within RCU critical section.
->   */
->  static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,
->                                   hwaddr *size, bool lock)
->  {
-> -    if (*size =3D=3D 0) {
-> +    hwaddr len =3D 0;
-> +
-> +    if (size && *size =3D=3D 0) {
->          return NULL;
->      }
->
-> @@ -2207,7 +2181,10 @@ static void *qemu_ram_ptr_length(RAMBlock *block,
-> ram_addr_t addr,
->          block =3D qemu_get_ram_block(addr);
->          addr -=3D block->offset;
->      }
-> -    *size =3D MIN(*size, block->max_length - addr);
-> +    if (size) {
-> +        *size =3D MIN(*size, block->max_length - addr);
-> +        len =3D *size;
-> +    }
->
->      if (xen_enabled() && block->host =3D=3D NULL) {
->          /* We need to check if the requested address is in the RAM
-> @@ -2215,7 +2192,7 @@ static void *qemu_ram_ptr_length(RAMBlock *block,
-> ram_addr_t addr,
->           * In that case just map the requested area.
->           */
->          if (block->offset =3D=3D 0) {
-> -            return xen_map_cache(addr, *size, lock, lock);
-> +            return xen_map_cache(addr, len, lock, lock);
->          }
->
->          block->host =3D xen_map_cache(block->offset, block->max_length, =
-1,
-> lock);
-> @@ -2224,6 +2201,19 @@ static void *qemu_ram_ptr_length(RAMBlock *block,
-> ram_addr_t addr,
->      return ramblock_ptr(block, addr);
->  }
->
-> +/*
-> + * Return a host pointer to ram allocated with qemu_ram_alloc.
-> + * This should not be used for general purpose DMA.  Use address_space_m=
-ap
-> + * or address_space_rw instead. For local memory (e.g. video ram) that t=
-he
-> + * device owns, use memory_region_get_ram_ptr.
-> + *
-> + * Called within RCU critical section.
-> + */
-> +void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
-> +{
-> +    return qemu_ram_ptr_length(ram_block, addr, NULL, false);
-> +}
-> +
->  /* Return the offset of a hostpointer within a ramblock */
->  ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)
->  {
-> --
-> 2.17.1
->
+> >  include/exec/memory.h | 21 ++++++++++++++++++
+> >  system/physmem.c      | 50 +++++++++++++++++++++++++++++++++----------
+> >  2 files changed, 60 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/include/exec/memory.h b/include/exec/memory.h
+> > index 8626a355b3..9f7dfe59c7 100644
+> > --- a/include/exec/memory.h
+> > +++ b/include/exec/memory.h
+> > @@ -282,6 +282,27 @@ struct MemoryRegionOps {
+> >                                      unsigned size,
+> >                                      MemTxAttrs attrs);
+> >
+> > +    /*
+> > +     * Dynamically create mapping. @addr is the guest address to map;
+> @plen
+> > +     * is the pointer to the usable length of the buffer.
+> > +     * @mr contents can be changed in case a new memory region is
+> created for
+> > +     * the mapping.
+> > +     * Returns the buffer address for accessing the data.
+> > +     */
+> > +    void *(*map)(MemoryRegion **mr,
+> > +                 hwaddr addr,
+> > +                 hwaddr *plen,
+> > +                 bool is_write,
+> > +                 MemTxAttrs attrs);
+> > +
+> > +    /* Unmap an area obtained via map() before. */
+> > +    void (*unmap)(MemoryRegion *mr,
+> > +                  void *buffer,
+> > +                  ram_addr_t addr,
+> > +                  hwaddr len,
+> > +                  bool is_write,
+> > +                  hwaddr access_len);
+> > +
+> >      enum device_endian endianness;
+> >      /* Guest-visible constraints: */
+> >      struct {
+> > diff --git a/system/physmem.c b/system/physmem.c
+> > index 949dcb20ba..d989e9fc1f 100644
+> > --- a/system/physmem.c
+> > +++ b/system/physmem.c
+> > @@ -3141,6 +3141,7 @@ void *address_space_map(AddressSpace *as,
+> >      hwaddr len =3D *plen;
+> >      hwaddr l, xlat;
+> >      MemoryRegion *mr;
+> > +    void *ptr =3D NULL;
+> >      FlatView *fv;
+> >
+> >      if (len =3D=3D 0) {
+> > @@ -3174,12 +3175,20 @@ void *address_space_map(AddressSpace *as,
+> >          return bounce.buffer;
+> >      }
+> >
+> > -
+> >      memory_region_ref(mr);
+> > +
+> > +    if (mr->ops && mr->ops->map) {
+> > +        ptr =3D mr->ops->map(&mr, addr, plen, is_write, attrs);
+> > +    }
+> > +
+> >      *plen =3D flatview_extend_translation(fv, addr, len, mr, xlat,
+> >                                          l, is_write, attrs);
+> >      fuzz_dma_read_cb(addr, *plen, mr);
+> > -    return qemu_ram_ptr_length(mr->ram_block, xlat, plen, true);
+> > +    if (ptr =3D=3D NULL) {
+> > +        ptr =3D qemu_ram_ptr_length(mr->ram_block, xlat, plen, true);
+> > +    }
+> > +
+> > +    return ptr;
+> >  }
+> >
+> >  /* Unmaps a memory region previously mapped by address_space_map().
+> > @@ -3195,11 +3204,16 @@ void address_space_unmap(AddressSpace *as, void
+> *buffer, hwaddr len,
+> >
+> >          mr =3D memory_region_from_host(buffer, &addr1);
+> >          assert(mr !=3D NULL);
+> > -        if (is_write) {
+> > -            invalidate_and_set_dirty(mr, addr1, access_len);
+> > -        }
+> > -        if (xen_enabled()) {
+> > -            xen_invalidate_map_cache_entry(buffer);
+> > +
+> > +        if (mr->ops && mr->ops->unmap) {
+> > +            mr->ops->unmap(mr, buffer, addr1, len, is_write,
+> access_len);
+> > +        } else {
+> > +            if (is_write) {
+> > +                invalidate_and_set_dirty(mr, addr1, access_len);
+> > +            }
+> > +            if (xen_enabled()) {
+> > +                xen_invalidate_map_cache_entry(buffer);
+> > +            }
+> >          }
+> >          memory_region_unref(mr);
+> >          return;
+> > @@ -3272,10 +3286,18 @@ int64_t
+> address_space_cache_init(MemoryRegionCache *cache,
+> >           * doing this if we found actual RAM, which behaves the same
+> >           * regardless of attributes; so UNSPECIFIED is fine.
+> >           */
+> > +        if (mr->ops && mr->ops->map) {
+> > +            cache->ptr =3D mr->ops->map(&mr, addr, &l, is_write,
+> > +                                      MEMTXATTRS_UNSPECIFIED);
+> > +        }
+> > +
+> >          l =3D flatview_extend_translation(cache->fv, addr, len, mr,
+> >                                          cache->xlat, l, is_write,
+> >                                          MEMTXATTRS_UNSPECIFIED);
+> > -        cache->ptr =3D qemu_ram_ptr_length(mr->ram_block, cache->xlat,
+> &l, true);
+> > +        if (!cache->ptr) {
+> > +            cache->ptr =3D qemu_ram_ptr_length(mr->ram_block,
+> cache->xlat, &l,
+> > +                                             true);
+> > +        }
+> >      } else {
+> >          cache->ptr =3D NULL;
+> >      }
+> > @@ -3297,14 +3319,20 @@ void
+> address_space_cache_invalidate(MemoryRegionCache *cache,
+> >
+> >  void address_space_cache_destroy(MemoryRegionCache *cache)
+> >  {
+> > -    if (!cache->mrs.mr) {
+> > +    MemoryRegion *mr =3D cache->mrs.mr;
+> > +
+> > +    if (!mr) {
+> >          return;
+> >      }
+> >
+> > -    if (xen_enabled()) {
+> > +    if (mr->ops && mr->ops->unmap) {
+> > +            mr->ops->unmap(mr, cache->ptr, cache->xlat, cache->len,
+> > +                           cache->is_write, cache->len);
+> > +    } else if (xen_enabled()) {
+> >          xen_invalidate_map_cache_entry(cache->ptr);
+> >      }
+> > -    memory_region_unref(cache->mrs.mr);
+> > +
+> > +    memory_region_unref(mr);
+> >      flatview_unref(cache->fv);
+> >      cache->mrs.mr =3D NULL;
+> >      cache->fv =3D NULL;
+> > --
+> > 2.17.1
+> >
 >
 >
 
---000000000000573c170615bc2ad7
+--000000000000f6e3f50615bc2cf9
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Feb 27, 2024 at 11:37=E2=80=
-=AFPM Vikram Garhwal &lt;<a href=3D"mailto:vikram.garhwal@amd.com">vikram.g=
-arhwal@amd.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">From: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" ta=
+<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Mar 1, 2024 at 12:11=E2=80=AF=
+AM Stefano Stabellini &lt;<a href=3D"mailto:sstabellini@kernel.org">sstabel=
+lini@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex">On Tue, 27 Feb 2024, Vikram Garhwal wrote:<br>
+&gt; From: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" target=3D"_=
+blank">jgross@suse.com</a>&gt;<br>
+&gt; <br>
+&gt; In order to support mapping and unmapping guest memory dynamically to<=
+br>
+&gt; and from qemu during address_space_[un]map() operations add the map()<=
+br>
+&gt; and unmap() callbacks to MemoryRegionOps.<br>
+&gt; <br>
+&gt; Those will be used e.g. for Xen grant mappings when performing guest<b=
+r>
+&gt; I/Os.<br>
+&gt; <br>
+&gt; Signed-off-by: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" ta=
 rget=3D"_blank">jgross@suse.com</a>&gt;<br>
+&gt; Signed-off-by: Vikram Garhwal &lt;<a href=3D"mailto:vikram.garhwal@amd=
+.com" target=3D"_blank">vikram.garhwal@amd.com</a>&gt;<br>
 <br>
-qemu_map_ram_ptr() and qemu_ram_ptr_length() share quite some code, so<br>
-modify qemu_ram_ptr_length() a little bit and use it for<br>
-qemu_map_ram_ptr(), too.<br>
-<br>
-Signed-off-by: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" target=
-=3D"_blank">jgross@suse.com</a>&gt;<br>
-Signed-off-by: Vikram Garhwal &lt;<a href=3D"mailto:vikram.garhwal@amd.com"=
- target=3D"_blank">vikram.garhwal@amd.com</a>&gt;<br>
 Reviewed-by: Stefano Stabellini &lt;<a href=3D"mailto:sstabellini@kernel.or=
 g" target=3D"_blank">sstabellini@kernel.org</a>&gt;<br></blockquote><div><b=
 r></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.igl=
-esias@amd.com">edgar.iglesias@amd.com</a>&gt;<br></div><div><br></div><div>=
-<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
+esias@amd.com">edgar.iglesias@amd.com</a>&gt;=C2=A0</div><div><br></div><di=
+v><br></div><div><br></div><blockquote class=3D"gmail_quote" style=3D"margi=
 n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
 ">
----<br>
-=C2=A0system/physmem.c | 56 ++++++++++++++++++++---------------------------=
--<br>
-=C2=A01 file changed, 23 insertions(+), 33 deletions(-)<br>
-<br>
-diff --git a/system/physmem.c b/system/physmem.c<br>
-index 84f3022099..949dcb20ba 100644<br>
---- a/system/physmem.c<br>
-+++ b/system/physmem.c<br>
-@@ -2163,43 +2163,17 @@ void qemu_ram_remap(ram_addr_t addr, ram_addr_t len=
-gth)<br>
-=C2=A0}<br>
-=C2=A0#endif /* !_WIN32 */<br>
-<br>
--/* Return a host pointer to ram allocated with qemu_ram_alloc.<br>
-- * This should not be used for general purpose DMA.=C2=A0 Use address_spac=
-e_map<br>
-- * or address_space_rw instead. For local memory (e.g. video ram) that the=
-<br>
-- * device owns, use memory_region_get_ram_ptr.<br>
-- *<br>
-- * Called within RCU critical section.<br>
-- */<br>
--void *qemu_map_ram_ptr(RAMBlock *block, ram_addr_t addr)<br>
--{<br>
--=C2=A0 =C2=A0 if (block =3D=3D NULL) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 block =3D qemu_get_ram_block(addr);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 addr -=3D block-&gt;offset;<br>
--=C2=A0 =C2=A0 }<br>
--<br>
--=C2=A0 =C2=A0 if (xen_enabled() &amp;&amp; block-&gt;host =3D=3D NULL) {<b=
-r>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* We need to check if the requested address i=
-s in the RAM<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* because we don&#39;t want to map the e=
-ntire memory in QEMU.<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* In that case just map until the end of=
- the page.<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (block-&gt;offset =3D=3D 0) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return xen_map_cache(addr, 0, 0,=
- false);<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
--<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 block-&gt;host =3D xen_map_cache(block-&gt;off=
-set, block-&gt;max_length, 1, false);<br>
--=C2=A0 =C2=A0 }<br>
--=C2=A0 =C2=A0 return ramblock_ptr(block, addr);<br>
--}<br>
--<br>
--/* Return a host pointer to guest&#39;s ram. Similar to qemu_map_ram_ptr<b=
-r>
-- * but takes a size argument.<br>
-+/*<br>
-+ * Return a host pointer to guest&#39;s ram.<br>
-=C2=A0 *<br>
-=C2=A0 * Called within RCU critical section.<br>
-=C2=A0 */<br>
-=C2=A0static void *qemu_ram_ptr_length(RAMBlock *block, ram_addr_t addr,<br=
->
+&gt; ---<br>
+&gt;=C2=A0 include/exec/memory.h | 21 ++++++++++++++++++<br>
+&gt;=C2=A0 system/physmem.c=C2=A0 =C2=A0 =C2=A0 | 50 ++++++++++++++++++++++=
++++++++++++----------<br>
+&gt;=C2=A0 2 files changed, 60 insertions(+), 11 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/include/exec/memory.h b/include/exec/memory.h<br>
+&gt; index 8626a355b3..9f7dfe59c7 100644<br>
+&gt; --- a/include/exec/memory.h<br>
+&gt; +++ b/include/exec/memory.h<br>
+&gt; @@ -282,6 +282,27 @@ struct MemoryRegionOps {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 unsigned siz=
+e,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MemTxAttrs a=
+ttrs);<br>
+&gt;=C2=A0 <br>
+&gt; +=C2=A0 =C2=A0 /*<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* Dynamically create mapping. @addr is the guest =
+address to map; @plen<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* is the pointer to the usable length of the buff=
+er.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* @mr contents can be changed in case a new memor=
+y region is created for<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* the mapping.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0* Returns the buffer address for accessing the da=
+ta.<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0*/<br>
+&gt; +=C2=A0 =C2=A0 void *(*map)(MemoryRegion **mr,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0hwaddr =
+addr,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0hwaddr =
+*plen,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0bool is=
+_write,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0MemTxAt=
+trs attrs);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 /* Unmap an area obtained via map() before. */<br>
+&gt; +=C2=A0 =C2=A0 void (*unmap)(MemoryRegion *mr,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 void *=
+buffer,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ram_ad=
+dr_t addr,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 hwaddr=
+ len,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 bool i=
+s_write,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 hwaddr=
+ access_len);<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 enum device_endian endianness;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 /* Guest-visible constraints: */<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 struct {<br>
+&gt; diff --git a/system/physmem.c b/system/physmem.c<br>
+&gt; index 949dcb20ba..d989e9fc1f 100644<br>
+&gt; --- a/system/physmem.c<br>
+&gt; +++ b/system/physmem.c<br>
+&gt; @@ -3141,6 +3141,7 @@ void *address_space_map(AddressSpace *as,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 hwaddr len =3D *plen;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 hwaddr l, xlat;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 MemoryRegion *mr;<br>
+&gt; +=C2=A0 =C2=A0 void *ptr =3D NULL;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 FlatView *fv;<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 if (len =3D=3D 0) {<br>
+&gt; @@ -3174,12 +3175,20 @@ void *address_space_map(AddressSpace *as,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return bounce.buffer;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt; -<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 memory_region_ref(mr);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 if (mr-&gt;ops &amp;&amp; mr-&gt;ops-&gt;map) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D mr-&gt;ops-&gt;map(&amp;mr, addr,=
+ plen, is_write, attrs);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 *plen =3D flatview_extend_translation(fv, addr, le=
+n, mr, xlat,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 hwaddr *size, bool lock)<br>
-=C2=A0{<br>
--=C2=A0 =C2=A0 if (*size =3D=3D 0) {<br>
-+=C2=A0 =C2=A0 hwaddr len =3D 0;<br>
-+<br>
-+=C2=A0 =C2=A0 if (size &amp;&amp; *size =3D=3D 0) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0return NULL;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-@@ -2207,7 +2181,10 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ra=
-m_addr_t addr,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0block =3D qemu_get_ram_block(addr);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0addr -=3D block-&gt;offset;<br>
-=C2=A0 =C2=A0 =C2=A0}<br>
--=C2=A0 =C2=A0 *size =3D MIN(*size, block-&gt;max_length - addr);<br>
-+=C2=A0 =C2=A0 if (size) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 *size =3D MIN(*size, block-&gt;max_length - ad=
-dr);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 len =3D *size;<br>
-+=C2=A0 =C2=A0 }<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0if (xen_enabled() &amp;&amp; block-&gt;host =3D=3D NULL=
-) {<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0/* We need to check if the requested addr=
-ess is in the RAM<br>
-@@ -2215,7 +2192,7 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ram=
-_addr_t addr,<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 * In that case just map the requested ar=
-ea.<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if (block-&gt;offset =3D=3D 0) {<br>
--=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return xen_map_cache(addr, *size=
-, lock, lock);<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return xen_map_cache(addr, len, =
-lock, lock);<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0block-&gt;host =3D xen_map_cache(block-&g=
-t;offset, block-&gt;max_length, 1, lock);<br>
-@@ -2224,6 +2201,19 @@ static void *qemu_ram_ptr_length(RAMBlock *block, ra=
-m_addr_t addr,<br>
-=C2=A0 =C2=A0 =C2=A0return ramblock_ptr(block, addr);<br>
-=C2=A0}<br>
-<br>
-+/*<br>
-+ * Return a host pointer to ram allocated with qemu_ram_alloc.<br>
-+ * This should not be used for general purpose DMA.=C2=A0 Use address_spac=
-e_map<br>
-+ * or address_space_rw instead. For local memory (e.g. video ram) that the=
-<br>
-+ * device owns, use memory_region_get_ram_ptr.<br>
-+ *<br>
-+ * Called within RCU critical section.<br>
-+ */<br>
-+void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)<br>
-+{<br>
-+=C2=A0 =C2=A0 return qemu_ram_ptr_length(ram_block, addr, NULL, false);<br=
->
-+}<br>
-+<br>
-=C2=A0/* Return the offset of a hostpointer within a ramblock */<br>
-=C2=A0ram_addr_t qemu_ram_block_host_offset(RAMBlock *rb, void *host)<br>
-=C2=A0{<br>
--- <br>
-2.17.1<br>
-<br>
+=A0 l, is_write, attrs);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 fuzz_dma_read_cb(addr, *plen, mr);<br>
+&gt; -=C2=A0 =C2=A0 return qemu_ram_ptr_length(mr-&gt;ram_block, xlat, plen=
+, true);<br>
+&gt; +=C2=A0 =C2=A0 if (ptr =3D=3D NULL) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 ptr =3D qemu_ram_ptr_length(mr-&gt;ram_bl=
+ock, xlat, plen, true);<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 return ptr;<br>
+&gt;=C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 /* Unmaps a memory region previously mapped by address_space_map=
+().<br>
+&gt; @@ -3195,11 +3204,16 @@ void address_space_unmap(AddressSpace *as, voi=
+d *buffer, hwaddr len,<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mr =3D memory_region_from_host(buffe=
+r, &amp;addr1);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 assert(mr !=3D NULL);<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (is_write) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 invalidate_and_set_dirty(mr=
+, addr1, access_len);<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (xen_enabled()) {<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 xen_invalidate_map_cache_en=
+try(buffer);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (mr-&gt;ops &amp;&amp; mr-&gt;ops-&gt;=
+unmap) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mr-&gt;ops-&gt;unmap(mr, bu=
+ffer, addr1, len, is_write, access_len);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (is_write) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 invalidate_an=
+d_set_dirty(mr, addr1, access_len);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 if (xen_enabled()) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 xen_invalidat=
+e_map_cache_entry(buffer);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 memory_region_unref(mr);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
+&gt; @@ -3272,10 +3286,18 @@ int64_t address_space_cache_init(MemoryRegionC=
+ache *cache,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* doing this if we found actua=
+l RAM, which behaves the same<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* regardless of attributes; so=
+ UNSPECIFIED is fine.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (mr-&gt;ops &amp;&amp; mr-&gt;ops-&gt;=
+map) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cache-&gt;ptr =3D mr-&gt;op=
+s-&gt;map(&amp;mr, addr, &amp;l, is_write,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 MEMTXATTRS_=
+UNSPECIFIED);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 l =3D flatview_extend_translation(ca=
+che-&gt;fv, addr, len, mr,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 cache-&gt;xlat, l, is_write,<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 MEMTXATTRS_UNSPECIFIED);<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 cache-&gt;ptr =3D qemu_ram_ptr_length(mr-=
+&gt;ram_block, cache-&gt;xlat, &amp;l, true);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (!cache-&gt;ptr) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cache-&gt;ptr =3D qemu_ram_=
+ptr_length(mr-&gt;ram_block, cache-&gt;xlat, &amp;l,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0true);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 cache-&gt;ptr =3D NULL;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; @@ -3297,14 +3319,20 @@ void address_space_cache_invalidate(MemoryRegi=
+onCache *cache,<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 void address_space_cache_destroy(MemoryRegionCache *cache)<br>
+&gt;=C2=A0 {<br>
+&gt; -=C2=A0 =C2=A0 if (!cache-&gt;<a href=3D"http://mrs.mr" rel=3D"norefer=
+rer" target=3D"_blank">mrs.mr</a>) {<br>
+&gt; +=C2=A0 =C2=A0 MemoryRegion *mr =3D cache-&gt;<a href=3D"http://mrs.mr=
+" rel=3D"noreferrer" target=3D"_blank">mrs.mr</a>;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 if (!mr) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 return;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt; -=C2=A0 =C2=A0 if (xen_enabled()) {<br>
+&gt; +=C2=A0 =C2=A0 if (mr-&gt;ops &amp;&amp; mr-&gt;ops-&gt;unmap) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 mr-&gt;ops-&gt;unmap(mr, ca=
+che-&gt;ptr, cache-&gt;xlat, cache-&gt;len,<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0cache-&gt;is_write, cache-&gt;len);<br>
+&gt; +=C2=A0 =C2=A0 } else if (xen_enabled()) {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 xen_invalidate_map_cache_entry(cache=
+-&gt;ptr);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; -=C2=A0 =C2=A0 memory_region_unref(cache-&gt;<a href=3D"http://mrs.mr"=
+ rel=3D"noreferrer" target=3D"_blank">mrs.mr</a>);<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 memory_region_unref(mr);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 flatview_unref(cache-&gt;fv);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 cache-&gt;<a href=3D"http://mrs.mr" rel=3D"norefer=
+rer" target=3D"_blank">mrs.mr</a> =3D NULL;<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 cache-&gt;fv =3D NULL;<br>
+&gt; -- <br>
+&gt; 2.17.1<br>
+&gt; <br>
 <br>
 </blockquote></div></div>
 
---000000000000573c170615bc2ad7--
+--000000000000f6e3f50615bc2cf9--
 
