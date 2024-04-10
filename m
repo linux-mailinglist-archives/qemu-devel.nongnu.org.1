@@ -2,39 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A3389EC72
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 343B589EC4F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:40:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNR-0003LJ-Gj; Wed, 10 Apr 2024 03:28:13 -0400
+	id 1ruSNc-0003lr-0V; Wed, 10 Apr 2024 03:28:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSN0-0002hk-N9; Wed, 10 Apr 2024 03:27:48 -0400
+ id 1ruSNL-0003Fn-Bz; Wed, 10 Apr 2024 03:28:07 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMw-0004ro-DR; Wed, 10 Apr 2024 03:27:46 -0400
+ id 1ruSNI-0004s3-Cj; Wed, 10 Apr 2024 03:28:07 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2637B5D6A3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 372D95D6A4;
  Wed, 10 Apr 2024 10:25:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C00F5B02E3;
+ by tsrv.corpit.ru (Postfix) with SMTP id CF963B02E4;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191802 invoked by uid 1000);
+Received: (nullmailer pid 4191805 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>
-Subject: [Stable-8.2.3 51/87] docs/conf.py: Remove usage of distutils
-Date: Wed, 10 Apr 2024 10:22:24 +0300
-Message-Id: <20240410072303.4191455-51-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 52/87] target/loongarch: Fix qemu-system-loongarch64
+ assert failed with the option '-d int'
+Date: Wed, 10 Apr 2024 10:22:25 +0300
+Message-Id: <20240410072303.4191455-52-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -58,80 +61,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Song Gao <gaosong@loongson.cn>
 
-The macOS jobs in our CI recently started failing, complaining that
-the distutils module is not available anymore. And indeed, according to
-https://peps.python.org/pep-0632/ it's been deprecated since a while
-and now likely got removed in recent Python versions.
+qemu-system-loongarch64 assert failed with the option '-d int',
+the helper_idle() raise an exception EXCP_HLT, but the exception name is undefined.
 
-Fortunately, we only use it for a version check via LooseVersion here
-which we don't really need anymore - according to Repology.org, these
-are the versions of sphinx-rtd-theme that are currently used by the
-various distros:
-
- centos_stream_8: 0.3.1
- centos_stream_9: 0.5.1
- fedora_38: 1.1.1
- fedora_39: 1.2.2
- freebsd: 1.0.0
- haikuports_master: 1.2.1
- openbsd: 1.2.2
- opensuse_leap_15_5: 0.5.1
- pkgsrc_current: 2.0.0
- debian_11: 0.5.1
- debian_12: 1.2.0
- ubuntu_20_04: 0.4.3
- ubuntu_22_04: 1.0.0
- ubuntu_24_04: 2.0.0
-
-So except for CentOS 8, all distros are using a newer version of
-sphinx-rtd-theme, and for CentOS 8 we don't support compiling with
-the Sphinx of the distro anymore anyway, since it's based on the
-Python 3.6 interpreter there. For compiling on CentOS 8, you have
-to use the alternative Python 3.8 interpreter which comes without
-Sphinx, so that needs the Sphinx installed via pip in the venv
-instead, and that is using a newer version, too, according to our
-pythondeps.toml file.
-
-Thus we can simply drop the version check now to get rid of the
-distutils dependency here.
-
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
-Message-id: 20240304130403.129543-1-thuth@redhat.com
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit eb844330bd36ebdd4959053da08069d1e5d49119)
+Signed-off-by: Song Gao <gaosong@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20240321123606.1704900-1-gaosong@loongson.cn>
+(cherry picked from commit 1590154ee4376819a8c6ee61e849ebf4a4e7cd02)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/docs/conf.py b/docs/conf.py
-index e84a95e71c..1b2afa241c 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -29,7 +29,6 @@
- import os
- import sys
- import sphinx
--from distutils.version import LooseVersion
- from sphinx.errors import ConfigError
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index fc075952e6..570201e616 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -35,33 +35,45 @@ const char * const fregnames[32] = {
+     "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
+ };
  
- # The per-manual conf.py will set qemu_docdir for a single-manual build;
-@@ -165,11 +164,10 @@
- # Theme options are theme-specific and customize the look and feel of a theme
- # further.  For a list of options available for each theme, see the
- # documentation.
--if LooseVersion(sphinx_rtd_theme.__version__) >= LooseVersion("0.4.3"):
--    html_theme_options = {
--        "style_nav_header_background": "#802400",
--        "navigation_with_keys": True,
--    }
-+html_theme_options = {
-+    "style_nav_header_background": "#802400",
-+    "navigation_with_keys": True,
-+}
+-static const char * const excp_names[] = {
+-    [EXCCODE_INT] = "Interrupt",
+-    [EXCCODE_PIL] = "Page invalid exception for load",
+-    [EXCCODE_PIS] = "Page invalid exception for store",
+-    [EXCCODE_PIF] = "Page invalid exception for fetch",
+-    [EXCCODE_PME] = "Page modified exception",
+-    [EXCCODE_PNR] = "Page Not Readable exception",
+-    [EXCCODE_PNX] = "Page Not Executable exception",
+-    [EXCCODE_PPI] = "Page Privilege error",
+-    [EXCCODE_ADEF] = "Address error for instruction fetch",
+-    [EXCCODE_ADEM] = "Address error for Memory access",
+-    [EXCCODE_SYS] = "Syscall",
+-    [EXCCODE_BRK] = "Break",
+-    [EXCCODE_INE] = "Instruction Non-Existent",
+-    [EXCCODE_IPE] = "Instruction privilege error",
+-    [EXCCODE_FPD] = "Floating Point Disabled",
+-    [EXCCODE_FPE] = "Floating Point Exception",
+-    [EXCCODE_DBP] = "Debug breakpoint",
+-    [EXCCODE_BCE] = "Bound Check Exception",
+-    [EXCCODE_SXD] = "128 bit vector instructions Disable exception",
+-    [EXCCODE_ASXD] = "256 bit vector instructions Disable exception",
++struct TypeExcp {
++    int32_t exccode;
++    const char * const name;
++};
++
++static const struct TypeExcp excp_names[] = {
++    {EXCCODE_INT, "Interrupt"},
++    {EXCCODE_PIL, "Page invalid exception for load"},
++    {EXCCODE_PIS, "Page invalid exception for store"},
++    {EXCCODE_PIF, "Page invalid exception for fetch"},
++    {EXCCODE_PME, "Page modified exception"},
++    {EXCCODE_PNR, "Page Not Readable exception"},
++    {EXCCODE_PNX, "Page Not Executable exception"},
++    {EXCCODE_PPI, "Page Privilege error"},
++    {EXCCODE_ADEF, "Address error for instruction fetch"},
++    {EXCCODE_ADEM, "Address error for Memory access"},
++    {EXCCODE_SYS, "Syscall"},
++    {EXCCODE_BRK, "Break"},
++    {EXCCODE_INE, "Instruction Non-Existent"},
++    {EXCCODE_IPE, "Instruction privilege error"},
++    {EXCCODE_FPD, "Floating Point Disabled"},
++    {EXCCODE_FPE, "Floating Point Exception"},
++    {EXCCODE_DBP, "Debug breakpoint"},
++    {EXCCODE_BCE, "Bound Check Exception"},
++    {EXCCODE_SXD, "128 bit vector instructions Disable exception"},
++    {EXCCODE_ASXD, "256 bit vector instructions Disable exception"},
++    {EXCP_HLT, "EXCP_HLT"},
+ };
  
- html_logo = os.path.join(qemu_docdir, "../ui/icons/qemu_128x128.png")
+ const char *loongarch_exception_name(int32_t exception)
+ {
+-    assert(excp_names[exception]);
+-    return excp_names[exception];
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(excp_names); i++) {
++        if (excp_names[i].exccode == exception) {
++            return excp_names[i].name;
++        }
++    }
++    return "Unknown";
+ }
  
+ void G_NORETURN do_raise_exception(CPULoongArchState *env,
+@@ -70,7 +82,7 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
+ {
+     CPUState *cs = env_cpu(env);
+ 
+-    qemu_log_mask(CPU_LOG_INT, "%s: %d (%s)\n",
++    qemu_log_mask(CPU_LOG_INT, "%s: expection: %d (%s)\n",
+                   __func__,
+                   exception,
+                   loongarch_exception_name(exception));
+@@ -145,22 +157,16 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
+     CPULoongArchState *env = &cpu->env;
+     bool update_badinstr = 1;
+     int cause = -1;
+-    const char *name;
+     bool tlbfill = FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR);
+     uint32_t vec_size = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, VS);
+ 
+     if (cs->exception_index != EXCCODE_INT) {
+-        if (cs->exception_index < 0 ||
+-            cs->exception_index >= ARRAY_SIZE(excp_names)) {
+-            name = "unknown";
+-        } else {
+-            name = excp_names[cs->exception_index];
+-        }
+-
+         qemu_log_mask(CPU_LOG_INT,
+                      "%s enter: pc " TARGET_FMT_lx " ERA " TARGET_FMT_lx
+-                     " TLBRERA " TARGET_FMT_lx " %s exception\n", __func__,
+-                     env->pc, env->CSR_ERA, env->CSR_TLBRERA, name);
++                     " TLBRERA " TARGET_FMT_lx " exception: %d (%s)\n",
++                     __func__, env->pc, env->CSR_ERA, env->CSR_TLBRERA,
++                     cs->exception_index,
++                     loongarch_exception_name(cs->exception_index));
+     }
+ 
+     switch (cs->exception_index) {
 -- 
 2.39.2
 
