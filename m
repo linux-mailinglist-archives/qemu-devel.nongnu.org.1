@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF8F89EC57
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD8889EC7D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:42:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNg-00047a-AJ; Wed, 10 Apr 2024 03:28:28 -0400
+	id 1ruSNW-0003ZM-Ca; Wed, 10 Apr 2024 03:28:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSNS-0003Te-NL; Wed, 10 Apr 2024 03:28:14 -0400
+ id 1ruSNS-0003SN-8d; Wed, 10 Apr 2024 03:28:14 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSNQ-0004uK-Tk; Wed, 10 Apr 2024 03:28:14 -0400
+ id 1ruSNQ-0004uS-Bm; Wed, 10 Apr 2024 03:28:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 727F75D6A7;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8EF655D6A8;
  Wed, 10 Apr 2024 10:25:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1268CB02E7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2719FB02E8;
  Wed, 10 Apr 2024 10:23:08 +0300 (MSK)
-Received: (nullmailer pid 4191814 invoked by uid 1000);
+Received: (nullmailer pid 4191817 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Stefan Reiter <s.reiter@proxmox.com>,
- Thomas Lamprecht <t.lamprecht@proxmox.com>, Fiona Ebner <f.ebner@proxmox.com>,
+Cc: qemu-stable@nongnu.org, Fiona Ebner <f.ebner@proxmox.com>,
  Kevin Wolf <kwolf@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 55/87] block/io: accept NULL qiov in bdrv_pad_request
-Date: Wed, 10 Apr 2024 10:22:28 +0300
-Message-Id: <20240410072303.4191455-55-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 56/87] block-backend: fix edge case in bdrv_next()
+ where BDS associated to BB changes
+Date: Wed, 10 Apr 2024 10:22:29 +0300
+Message-Id: <20240410072303.4191455-56-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,92 +60,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stefan Reiter <s.reiter@proxmox.com>
+From: Fiona Ebner <f.ebner@proxmox.com>
 
-Some operations, e.g. block-stream, perform reads while discarding the
-results (only copy-on-read matters). In this case, they will pass NULL
-as the target QEMUIOVector, which will however trip bdrv_pad_request,
-since it wants to extend its passed vector. In particular, this is the
-case for the blk_co_preadv() call in stream_populate().
+The old_bs variable in bdrv_next() is currently determined by looking
+at the old block backend. However, if the block graph changes before
+the next bdrv_next() call, it might be that the associated BDS is not
+the same that was referenced previously. In that case, the wrong BDS
+is unreferenced, leading to an assertion failure later:
 
-If there is no qiov, no operation can be done with it, but the bytes
-and offset still need to be updated, so the subsequent aligned read
-will actually be aligned and not run into an assertion failure.
+> bdrv_unref: Assertion `bs->refcnt > 0' failed.
 
-In particular, this can happen when the request alignment of the top
-node is larger than the allocated part of the bottom node, in which
-case padding becomes necessary. For example:
+In particular, this can happen in the context of bdrv_flush_all(),
+when polling for bdrv_co_flush() in the generated co-wrapper leads to
+a graph change (for example with a stream block job [0]).
 
-> ./qemu-img create /tmp/backing.qcow2 -f qcow2 64M -o cluster_size=32768
+A racy reproducer:
+
+> #!/bin/bash
+> rm -f /tmp/backing.qcow2
+> rm -f /tmp/top.qcow2
+> ./qemu-img create /tmp/backing.qcow2 -f qcow2 64M
 > ./qemu-io -c "write -P42 0x0 0x1" /tmp/backing.qcow2
 > ./qemu-img create /tmp/top.qcow2 -f qcow2 64M -b /tmp/backing.qcow2 -F qcow2
 > ./qemu-system-x86_64 --qmp stdio \
 > --blockdev qcow2,node-name=node0,file.driver=file,file.filename=/tmp/top.qcow2 \
 > <<EOF
 > {"execute": "qmp_capabilities"}
-> {"execute": "blockdev-add", "arguments": { "driver": "compress", "file": "node0", "node-name": "node1" } }
-> {"execute": "block-stream", "arguments": { "job-id": "stream0", "device": "node1" } }
+> {"execute": "block-stream", "arguments": { "job-id": "stream0", "device": "node0" } }
+> {"execute": "quit"}
 > EOF
 
-Originally-by: Stefan Reiter <s.reiter@proxmox.com>
-Signed-off-by: Thomas Lamprecht <t.lamprecht@proxmox.com>
-[FE: do update bytes and offset in any case
-     add reproducer to commit message]
+[0]:
+
+> #0  bdrv_replace_child_tran (child=..., new_bs=..., tran=...)
+> #1  bdrv_replace_node_noperm (from=..., to=..., auto_skip=..., tran=..., errp=...)
+> #2  bdrv_replace_node_common (from=..., to=..., auto_skip=..., detach_subchain=..., errp=...)
+> #3  bdrv_drop_filter (bs=..., errp=...)
+> #4  bdrv_cor_filter_drop (cor_filter_bs=...)
+> #5  stream_prepare (job=...)
+> #6  job_prepare_locked (job=...)
+> #7  job_txn_apply_locked (fn=..., job=...)
+> #8  job_do_finalize_locked (job=...)
+> #9  job_exit (opaque=...)
+> #10 aio_bh_poll (ctx=...)
+> #11 aio_poll (ctx=..., blocking=...)
+> #12 bdrv_poll_co (s=...)
+> #13 bdrv_flush (bs=...)
+> #14 bdrv_flush_all ()
+> #15 do_vm_stop (state=..., send_stop=...)
+> #16 vm_shutdown ()
+
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-Message-ID: <20240322095009.346989-2-f.ebner@proxmox.com>
+Message-ID: <20240322095009.346989-3-f.ebner@proxmox.com>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 3f934817c82c2f1bf1c238f8d1065a3be10a3c9e)
+(cherry picked from commit f6d38c9f6dae6fce99dcaf6ca16a1fe5b5e19c4c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/io.c b/block/io.c
-index d202987770..8a75da704b 100644
---- a/block/io.c
-+++ b/block/io.c
-@@ -1756,22 +1756,29 @@ static int bdrv_pad_request(BlockDriverState *bs,
-         return 0;
+diff --git a/block/block-backend.c b/block/block-backend.c
+index ec21148806..4a419f75fb 100644
+--- a/block/block-backend.c
++++ b/block/block-backend.c
+@@ -613,14 +613,14 @@ BlockDriverState *bdrv_next(BdrvNextIterator *it)
+     /* Must be called from the main loop */
+     assert(qemu_get_current_aio_context() == qemu_get_aio_context());
+ 
++    old_bs = it->bs;
++
+     /* First, return all root nodes of BlockBackends. In order to avoid
+      * returning a BDS twice when multiple BBs refer to it, we only return it
+      * if the BB is the first one in the parent list of the BDS. */
+     if (it->phase == BDRV_NEXT_BACKEND_ROOTS) {
+         BlockBackend *old_blk = it->blk;
+ 
+-        old_bs = old_blk ? blk_bs(old_blk) : NULL;
+-
+         do {
+             it->blk = blk_all_next(it->blk);
+             bs = it->blk ? blk_bs(it->blk) : NULL;
+@@ -634,11 +634,10 @@ BlockDriverState *bdrv_next(BdrvNextIterator *it)
+         if (bs) {
+             bdrv_ref(bs);
+             bdrv_unref(old_bs);
++            it->bs = bs;
+             return bs;
+         }
+         it->phase = BDRV_NEXT_MONITOR_OWNED;
+-    } else {
+-        old_bs = it->bs;
      }
  
--    sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
--                                  &sliced_head, &sliced_tail,
--                                  &sliced_niov);
--
--    /* Guaranteed by bdrv_check_request32() */
--    assert(*bytes <= SIZE_MAX);
--    ret = bdrv_create_padded_qiov(bs, pad, sliced_iov, sliced_niov,
--                                  sliced_head, *bytes);
--    if (ret < 0) {
--        bdrv_padding_finalize(pad);
--        return ret;
-+    /*
-+     * For prefetching in stream_populate(), no qiov is passed along, because
-+     * only copy-on-read matters.
-+     */
-+    if (qiov && *qiov) {
-+        sliced_iov = qemu_iovec_slice(*qiov, *qiov_offset, *bytes,
-+                                      &sliced_head, &sliced_tail,
-+                                      &sliced_niov);
-+
-+        /* Guaranteed by bdrv_check_request32() */
-+        assert(*bytes <= SIZE_MAX);
-+        ret = bdrv_create_padded_qiov(bs, pad, sliced_iov, sliced_niov,
-+                                      sliced_head, *bytes);
-+        if (ret < 0) {
-+            bdrv_padding_finalize(pad);
-+            return ret;
-+        }
-+        *qiov = &pad->local_qiov;
-+        *qiov_offset = 0;
-     }
-+
-     *bytes += pad->head + pad->tail;
-     *offset -= pad->head;
--    *qiov = &pad->local_qiov;
--    *qiov_offset = 0;
-     if (padded) {
-         *padded = true;
-     }
+     /* Then return the monitor-owned BDSes without a BB attached. Ignore all
 -- 
 2.39.2
 
