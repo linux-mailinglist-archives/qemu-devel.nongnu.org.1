@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F5AE89EC45
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C8789EC2C
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:35:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNV-0003Tp-4Q; Wed, 10 Apr 2024 03:28:17 -0400
+	id 1ruSNN-0003ES-2s; Wed, 10 Apr 2024 03:28:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMW-0001qC-Pv; Wed, 10 Apr 2024 03:27:21 -0400
+ id 1ruSMs-0002Ml-67; Wed, 10 Apr 2024 03:27:38 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMU-0004o5-UH; Wed, 10 Apr 2024 03:27:16 -0400
+ id 1ruSMq-0004oJ-HR; Wed, 10 Apr 2024 03:27:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id DA0145D69F;
+ by isrv.corpit.ru (Postfix) with ESMTP id EC00F5D6A0;
  Wed, 10 Apr 2024 10:25:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 7DF1AB02DF;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9018FB02E0;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191789 invoked by uid 1000);
+Received: (nullmailer pid 4191792 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 47/87] target/hppa: exit tb on flush cache instructions
-Date: Wed, 10 Apr 2024 10:22:20 +0300
-Message-Id: <20240410072303.4191455-47-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 48/87] target/hppa: mask privilege bits in mfia
+Date: Wed, 10 Apr 2024 10:22:21 +0300
+Message-Id: <20240410072303.4191455-48-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -61,51 +61,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-When the guest modifies the tb it is currently executing from,
-it executes a fic instruction. Exit the tb on such instruction,
-otherwise we might execute stale code.
+mfia should return only the iaoq bits without privilege
+bits.
 
+Fixes: 98a9cb792c8 ("target-hppa: Implement system and memory-management insns")
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Message-Id: <20240319161921.487080-5-svens@stackframe.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Message-Id: <20240319161921.487080-6-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit ad1fdacd1b936557514dd72c2079a80be0c2dfb4)
+(cherry picked from commit b5e0b3a53c983c4a9620a44a6a557b389e589218)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/insns.decode b/target/hppa/insns.decode
-index 5412ff9836..f58455dfdb 100644
---- a/target/hppa/insns.decode
-+++ b/target/hppa/insns.decode
-@@ -144,9 +144,9 @@ getshadowregs   1111 1111 1111 1101 1110 1010 1101 0010
- nop             000001 ----- ----- -- 11001010 0 -----         # fdc, disp
- nop_addrx       000001 ..... ..... -- 01001010 . -----  @addrx # fdc, index
- nop_addrx       000001 ..... ..... -- 01001011 . -----  @addrx # fdce
--nop_addrx       000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
--nop_addrx       000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
--nop_addrx       000001 ..... ..... --- 0001011 . -----  @addrx # fice
-+fic             000001 ..... ..... --- 0001010 . -----  @addrx # fic 0x0a
-+fic             000001 ..... ..... -- 01001111 . 00000  @addrx # fic 0x4f
-+fic             000001 ..... ..... --- 0001011 . -----  @addrx # fice
- nop_addrx       000001 ..... ..... -- 01001110 . 00000  @addrx # pdc
- 
- probe           000001 b:5 ri:5 sp:2 imm:1 100011 write:1 0 t:5
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 15a8bfd48c..ccf03b1ce7 100644
+index ccf03b1ce7..19c4df8960 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -2337,6 +2337,13 @@ static bool trans_nop_addrx(DisasContext *ctx, arg_ldst *a)
-     return true;
- }
- 
-+static bool trans_fic(DisasContext *ctx, arg_ldst *a)
-+{
-+    /* End TB for flush instruction cache, so we pick up new insns. */
-+    ctx->base.is_jmp = DISAS_IAQ_N_STALE;
-+    return trans_nop_addrx(ctx, a);
-+}
-+
- static bool trans_probe(DisasContext *ctx, arg_probe *a)
+@@ -2011,7 +2011,7 @@ static bool trans_mfia(DisasContext *ctx, arg_mfia *a)
  {
-     TCGv_i64 dest, ofs;
+     unsigned rt = a->t;
+     TCGv_i64 tmp = dest_gpr(ctx, rt);
+-    tcg_gen_movi_i64(tmp, ctx->iaoq_f);
++    tcg_gen_movi_i64(tmp, ctx->iaoq_f & ~3ULL);
+     save_gpr(ctx, rt, tmp);
+ 
+     cond_free(&ctx->null_cond);
 -- 
 2.39.2
 
