@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F0D89E9FE
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9EB89EA03
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:48:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQo5-0002Oy-TQ; Wed, 10 Apr 2024 01:47:38 -0400
+	id 1ruQnz-0001CU-30; Wed, 10 Apr 2024 01:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmy-00072q-JV; Wed, 10 Apr 2024 01:46:29 -0400
+ id 1ruQn3-00075v-E4; Wed, 10 Apr 2024 01:46:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmt-0001ng-Jb; Wed, 10 Apr 2024 01:46:28 -0400
+ id 1ruQn1-0001on-O0; Wed, 10 Apr 2024 01:46:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2FCAD5D4EF;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3F3805D4F0;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id E5B49B0156;
- Wed, 10 Apr 2024 08:44:17 +0300 (MSK)
-Received: (nullmailer pid 4182071 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 04DD6B0157;
+ Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
+Received: (nullmailer pid 4182074 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, Peter Xu <peterx@redhat.com>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 23/41] migration: Skip only empty block devices
-Date: Wed, 10 Apr 2024 08:43:44 +0300
-Message-Id: <20240410054416.4181891-23-mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 24/41] tests/unit: Bump test-aio-multithread test
+ timeout to 2 minutes
+Date: Wed, 10 Apr 2024 08:43:45 +0300
+Message-Id: <20240410054416.4181891-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -46,7 +45,7 @@ X-Spam_score_int: -68
 X-Spam_score: -6.9
 X-Spam_bar: ------
 X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,45 +61,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Cédric Le Goater <clg@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
 
-The block .save_setup() handler calls a helper routine
-init_blk_migration() which builds a list of block devices to take into
-account for migration. When one device is found to be empty (sectors
-== 0), the loop exits and all the remaining devices are ignored. This
-is a regression introduced when bdrv_iterate() was removed.
+When running the tests in slow mode on a very loaded system and with
+--enable-debug, the test-aio-multithread can take longer than 1 minute.
+Bump the timeout to two minutes to make sure that it also passes in
+such situations.
 
-Change that by skipping only empty devices.
-
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Suggested-by: Kevin Wolf <kwolf@redhat.com>
-Fixes: fea68bb6e9fa ("block: Eliminate bdrv_iterate(), use bdrv_next()")
-Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Kevin Wolf <kwolf@redhat.com>
-Link: https://lore.kernel.org/r/20240312120431.550054-1-clg@redhat.com
-[peterx: fix "Suggested-by:"]
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit 2e128776dc56f502c2ee41750afe83938f389528)
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+Message-Id: <20231215070357.10888-14-thuth@redhat.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+(cherry picked from commit c45f8f1aef35730a2dcf3cabe296ac12965db43d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/block.c b/migration/block.c
-index 4026b73f75..867901d2b1 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -415,7 +415,10 @@ static int init_blk_migration(QEMUFile *f)
-         }
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index b497a41378..df6269b44c 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -166,6 +166,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
+ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
  
-         sectors = bdrv_nb_sectors(bs);
--        if (sectors <= 0) {
-+        if (sectors == 0) {
-+            continue;
-+        }
-+        if (sectors < 0) {
-             ret = sectors;
-             bdrv_next_cleanup(&it);
-             goto out;
+ slow_tests = {
++  'test-aio-multithread' : 120,
+   'test-crypto-tlscredsx509': 45,
+   'test-crypto-tlssession': 45
+ }
 -- 
 2.39.2
 
