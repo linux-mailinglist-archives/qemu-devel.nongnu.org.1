@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6188089FC85
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 18:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DCF89FC98
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 18:13:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruaUY-0001V8-9P; Wed, 10 Apr 2024 12:08:06 -0400
+	id 1ruaUZ-0001dq-CD; Wed, 10 Apr 2024 12:08:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaTr-0000XV-71
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:23 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaTx-0000d2-On
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:31 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaTn-0002lD-IT
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:21 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56e477db7fbso6642908a12.3
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 09:07:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruaTs-0002m3-DY
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 12:07:28 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-56e2e09fc27so10177013a12.0
+ for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 09:07:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712765238; x=1713370038; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712765243; x=1713370043; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tmrbaiUVNJN3VwkspX6n0mLGveiY6Yl+m30htubqYrE=;
- b=JVdI3/bJyAnRiH7HM0mKCBnRJihYXsZIOUsDWSD3sC5DjVTt6pGKrkp2JfW2S+DWmE
- adeWdhxLYuUs2HZexMoICMxAusqGH/0ogO2zYoLDb4bNcfjMmii8BcYH03bCNxJEPHg/
- aG9kkuGQJoDa0DvRO9zbrZYyhC/pLa3W4AmbcNktrCYyafp3z+T5hkZUwSrQcRsd8aDq
- ff5fBygq0kgRXVrd9+1Oyk+Yx4vvKVcFffYrBYmAbOo//pRMeHkJBLg1XtDLqpZ/7pPy
- xlh651SeqU0Ykk+SzGq4HJsy9KDfJ5y3lXFO1hKuWI+DuYQ0sj7wKBLtO5NEC18v6oR0
- 7/Dw==
+ bh=XpfjBls1Q1Prp7MdrT8xYPE9RcXt49p2EGfNxpQiHmA=;
+ b=N3xqMDZa86/KP5ggtImz01ldF4iYqq1O/1aPDpU/g5ACAmFPzq5uiSis1u2+9L/bkm
+ qGEBLC9m/hnwCawX2VvXnEhXg9CIINrlGhxPB+5VUtmztX4lWGe5fD9hkakefQC5f598
+ jyAbg/MgNU/wXok1Ea1HVbFO60yPwJR2hOeMfI9tsD268EY6k3uyI0clXS42Ff/NJLYZ
+ aa2btk2SvXbTBu+Eee9KA0EcyYBKIibfdCum/bVmVz1T95d6SaBKw5QvWwtClEZZirX3
+ sDzHGdz1CME7S7ZBgv53EbwH0faF2Dv/dfBDtso1uXwgB8guvaf3Eq00P4H+IBz4pnTk
+ yjsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712765238; x=1713370038;
+ d=1e100.net; s=20230601; t=1712765243; x=1713370043;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tmrbaiUVNJN3VwkspX6n0mLGveiY6Yl+m30htubqYrE=;
- b=sRrYWvSF0NqNB6J56Fk3ChGKMMcj3wpJhNR63Zs0kK4OKVOaDdU706Ql5tAbW+uhJJ
- 1oR9P3QWpWyW3R/B5wiepcAjWhyuVssb7Z/DM4Il/izDdRp9Llq2345n7V1NTWwWwP5C
- +S5jtFHgFzgl3QQzhDXowUxG3QMRnG20KUfzULdJpVf98vv58AT6FRros0wEXGa4oNoe
- 2DLmm1F0xUpxiVkdI/GmxYRJRz6ObhwT4k/WxbCtndOwxM5d0fd+IUU2mf/HGpLXRapL
- cSXA6zUCQ41qbAoNMm6y8fMn/n3ljOybSbsKgF42JG3yaEPkDBzJA+ePhayNtjVqaM0Z
- +24Q==
-X-Gm-Message-State: AOJu0YxtnDGpCeLf3Cm376W8T/+YgXvh68hnPVxjTX7uOZKnTdXQgtyQ
- LMcq0i/+DHXpQ3O0FAvHGnGMCh6HPORd2wCq0n3GG+B8xAQpXCuONkUkQLTcDnjqKV5y8QXrGhD
- M
-X-Google-Smtp-Source: AGHT+IF4Hj4yM+NUJlh2q5C2+b+zKy6sx63eZVouiYM6yePYg4h/PddlxxkdJX1YEuebTRtCPJ5dVQ==
-X-Received: by 2002:a50:d6da:0:b0:56e:230b:853c with SMTP id
- l26-20020a50d6da000000b0056e230b853cmr2079454edj.15.1712765236469; 
- Wed, 10 Apr 2024 09:07:16 -0700 (PDT)
+ bh=XpfjBls1Q1Prp7MdrT8xYPE9RcXt49p2EGfNxpQiHmA=;
+ b=gSofnhx0o6UKTft5dd1/OfqKLsGHKKT61vBltyKTIde1Pm6UQPYa/90G+nWsnZVi4Q
+ bbs6zWbT29BsUnhfITncXAvEiDZUX5fwnnn8BRTPIU6fzc50LIijahWThMdMKIFWL3Ai
+ vZ0d7zJv9zL9eo/FzZ1a5JQHvm0bmgjGaItcT0hnyvOpGaP8GrUkQS/XlY+Rav7XDUPr
+ EwGllY2l4svQ/BZaGpLRlOMSjN2jG8Z6vzokSB6hoRDLvLmMqmPOLtS3mC6nYZ35PKTI
+ pwAEA8sLB47zfi+bRPsqDB8T+oK6DUWsYJJqflxnQk8A8bjtfLJskb67eJLy3IuG4rCk
+ JXVw==
+X-Gm-Message-State: AOJu0YwoNoNGRFZFAR9QXoBLBa+nIRXk4xRhtA8mIIz+8vViKttc1jDd
+ R9EhWB7wjkQSjcNi2FpRDa9/SwHMqd2q80VH4DL+v/xMb5InjUhLnJvLlaLwy4OQsFHMlmm8Duy
+ T
+X-Google-Smtp-Source: AGHT+IFKQSC72dunI2u+kZ6IqCSxRMN/G1zfIVesfOLY3KgXO06qFSjVwtRjoNU5a/IEXnn2kJ27jw==
+X-Received: by 2002:a05:6402:1955:b0:56e:6fcd:bae7 with SMTP id
+ f21-20020a056402195500b0056e6fcdbae7mr103914edz.5.1712765242764; 
+ Wed, 10 Apr 2024 09:07:22 -0700 (PDT)
 Received: from m1x-phil.lan (arl95-h02-176-184-34-173.dsl.sta.abo.bbox.fr.
  [176.184.34.173]) by smtp.gmail.com with ESMTPSA id
- y9-20020a056402440900b0056e3707323bsm5824580eda.97.2024.04.10.09.07.15
+ h25-20020a056402095900b0056e62321eedsm3669224edz.17.2024.04.10.09.07.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Apr 2024 09:07:16 -0700 (PDT)
+ Wed, 10 Apr 2024 09:07:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH 10/12] hw/ide/atapi: Use qemu_hexdump_line() to avoid sprintf()
-Date: Wed, 10 Apr 2024 18:06:11 +0200
-Message-ID: <20240410160614.90627-11-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [PATCH 11/12] hw/dma/pl330: Use qemu_hexdump_line() to avoid sprintf()
+Date: Wed, 10 Apr 2024 18:06:12 +0200
+Message-ID: <20240410160614.90627-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240410160614.90627-1-philmd@linaro.org>
 References: <20240410160614.90627-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,46 +98,56 @@ resulting in painful developper experience.
 
 Use qemu_hexdump_line() to avoid sprintf() calls, silencing:
 
-  [1367/1604] Compiling C object libcommon.fa.p/backends_tpm_tpm_util.c.o
-  backends/tpm/tpm_util.c:355:18: warning: 'sprintf' is deprecated:
+  [5/8] Compiling C object libcommon.fa.p/hw_dma_pl330.c.o
+  hw/dma/pl330.c:333:13: warning: 'sprintf' is deprecated:
     This function is provided for compatibility reasons only.
     Due to security concerns inherent in the design of sprintf(3),
     it is highly recommended that you use snprintf(3) instead.
     [-Wdeprecated-declarations]
-            p += sprintf(p, "\n");
-                 ^
+            sprintf(tmpbuf + strlen(tmpbuf), " %02x", buf[b + i]);
+            ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/atapi.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ hw/dma/pl330.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-index 73ec373184..27b6aa59fd 100644
---- a/hw/ide/atapi.c
-+++ b/hw/ide/atapi.c
-@@ -24,6 +24,7 @@
+diff --git a/hw/dma/pl330.c b/hw/dma/pl330.c
+index 70a502d245..0435378b7e 100644
+--- a/hw/dma/pl330.c
++++ b/hw/dma/pl330.c
+@@ -15,6 +15,7 @@
   */
  
  #include "qemu/osdep.h"
 +#include "qemu/cutils.h"
- #include "hw/scsi/scsi.h"
- #include "sysemu/block-backend.h"
- #include "scsi/constants.h"
-@@ -1309,12 +1310,7 @@ void ide_atapi_cmd(IDEState *s)
-     trace_ide_atapi_cmd(s, s->io_buffer[0]);
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/sysbus.h"
+@@ -317,21 +318,14 @@ typedef struct PL330InsnDesc {
  
-     if (trace_event_get_state_backends(TRACE_IDE_ATAPI_CMD_PACKET)) {
--        /* Each pretty-printed byte needs two bytes and a space; */
--        char *ppacket = g_malloc(ATAPI_PACKET_SIZE * 3 + 1);
--        int i;
--        for (i = 0; i < ATAPI_PACKET_SIZE; i++) {
--            sprintf(ppacket + (i * 3), "%02x ", buf[i]);
+ static void pl330_hexdump(uint8_t *buf, size_t size)
+ {
+-    unsigned int b, i, len;
+-    char tmpbuf[80];
++    unsigned int b, len;
+ 
+     for (b = 0; b < size; b += 16) {
+         len = size - b;
+         if (len > 16) {
+             len = 16;
+         }
+-        tmpbuf[0] = '\0';
+-        for (i = 0; i < len; i++) {
+-            if ((i % 4) == 0) {
+-                strcat(tmpbuf, " ");
+-            }
+-            sprintf(tmpbuf + strlen(tmpbuf), " %02x", buf[b + i]);
 -        }
-+        char *ppacket = qemu_hexdump_line(buf, 0, ATAPI_PACKET_SIZE, false);
-         trace_ide_atapi_cmd_packet(s, s->lcyl | (s->hcyl << 8), ppacket);
-         g_free(ppacket);
++        g_autofree char *tmpbuf = qemu_hexdump_line(buf, b, len, false);
+         trace_pl330_hexdump(b, tmpbuf);
      }
+ }
 -- 
 2.41.0
 
