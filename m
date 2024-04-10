@@ -2,43 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE4889EC5C
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B34889EC2B
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:35:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSPR-00026p-NV; Wed, 10 Apr 2024 03:30:17 -0400
+	id 1ruSPV-0002MF-1D; Wed, 10 Apr 2024 03:30:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSP8-0001Xt-Vm; Wed, 10 Apr 2024 03:29:59 -0400
+ id 1ruSPA-0001eZ-U4; Wed, 10 Apr 2024 03:30:02 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSP6-00054x-FJ; Wed, 10 Apr 2024 03:29:57 -0400
+ id 1ruSP9-00055J-1t; Wed, 10 Apr 2024 03:30:00 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B0B365D6B7;
+ by isrv.corpit.ru (Postfix) with ESMTP id C0ECC5D6B8;
  Wed, 10 Apr 2024 10:25:07 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 53C97B02F7;
+ by tsrv.corpit.ru (Postfix) with SMTP id 65CE8B02F8;
  Wed, 10 Apr 2024 10:23:09 +0300 (MSK)
-Received: (nullmailer pid 4191864 invoked by uid 1000);
+Received: (nullmailer pid 4191867 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>,
- Andrew Jones <ajones@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Alistair Francis <alistair.francis@wdc.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 71/87] target/riscv/kvm: fix timebase-frequency when
- using KVM acceleration
-Date: Wed, 10 Apr 2024 10:22:44 +0300
-Message-Id: <20240410072303.4191455-71-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 72/87] virtio-net: Fix vhost virtqueue notifiers for RSS
+Date: Wed, 10 Apr 2024 10:22:45 +0300
+Message-Id: <20240410072303.4191455-72-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -62,66 +58,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The timebase-frequency of guest OS should be the same with host
-machine. The timebase-frequency value in DTS should be got from
-hypervisor when using KVM acceleration.
+virtio_net_guest_notifier_pending() and virtio_net_guest_notifier_mask()
+checked VIRTIO_NET_F_MQ to know there are multiple queues, but
+VIRTIO_NET_F_RSS also enables multiple queues. Refer to n->multiqueue,
+which is set to true either of VIRTIO_NET_F_MQ or VIRTIO_NET_F_RSS is
+enabled.
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Message-ID: <20240314061510.9800-1-yongxuan.wang@sifive.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-(cherry picked from commit 385e575cd5ab2436c123e4b7f8c9b383a64c0dbe)
+Fixes: 68b0a6395f36 ("virtio-net: align ctrl_vq index for non-mq guest for vhost_vdpa")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+(cherry picked from commit 1c188fc8cbffc5f05cc616cab4e1372fb6e6f11f)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fix due to missing other changes in this area in 8.2.x)
 
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index d2eac24156..7e802c3837 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -743,6 +743,8 @@ static void create_fdt_sockets(RISCVVirtState *s, const MemMapEntry *memmap,
- 
-     qemu_fdt_add_subnode(ms->fdt, "/cpus");
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "timebase-frequency",
-+                          kvm_enabled() ?
-+                          kvm_riscv_get_timebase_frequency(first_cpu) :
-                           RISCV_ACLINT_DEFAULT_TIMEBASE_FREQ);
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#size-cells", 0x0);
-     qemu_fdt_setprop_cell(ms->fdt, "/cpus", "#address-cells", 0x1);
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 117e33cf90..c1675158fe 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -684,6 +684,15 @@ static void kvm_riscv_put_regs_timer(CPUState *cs)
-     env->kvm_timer_dirty = false;
- }
- 
-+uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs)
-+{
-+    uint64_t reg;
-+
-+    KVM_RISCV_GET_TIMER(cs, frequency, reg);
-+
-+    return reg;
-+}
-+
- typedef struct KVMScratchCPU {
-     int kvmfd;
-     int vmfd;
-diff --git a/target/riscv/kvm/kvm_riscv.h b/target/riscv/kvm/kvm_riscv.h
-index 8329cfab82..4728281632 100644
---- a/target/riscv/kvm/kvm_riscv.h
-+++ b/target/riscv/kvm/kvm_riscv.h
-@@ -27,5 +27,6 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-                           uint64_t guest_num);
- void riscv_kvm_aplic_request(void *opaque, int irq, int level);
- int kvm_riscv_sync_mpstate_to_kvm(RISCVCPU *cpu, int state);
-+uint64_t kvm_riscv_get_timebase_frequency(CPUState *cs);
- 
- #endif
+diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
+index 73024babd4..a29c1fafd4 100644
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -3370,7 +3370,7 @@ static bool virtio_net_guest_notifier_pending(VirtIODevice *vdev, int idx)
+     VirtIONet *n = VIRTIO_NET(vdev);
+     NetClientState *nc;
+     assert(n->vhost_started);
+-    if (!virtio_vdev_has_feature(vdev, VIRTIO_NET_F_MQ) && idx == 2) {
++    if (!n->multiqueue && idx == 2) {
+         /* Must guard against invalid features and bogus queue index
+          * from being set by malicious guest, or penetrated through
+          * buggy migration stream.
+@@ -3402,7 +3402,7 @@ static void virtio_net_guest_notifier_mask(VirtIODevice *vdev, int idx,
+     VirtIONet *n = VIRTIO_NET(vdev);
+     NetClientState *nc;
+     assert(n->vhost_started);
+-    if (!virtio_vdev_has_feature(vdev, VIRTIO_NET_F_MQ) && idx == 2) {
++    if (!n->multiqueue && idx == 2) {
+         /* Must guard against invalid features and bogus queue index
+          * from being set by malicious guest, or penetrated through
+          * buggy migration stream.
 -- 
 2.39.2
 
