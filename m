@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C21489EBE0
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:27:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE5789EC49
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSK7-00038E-Im; Wed, 10 Apr 2024 03:24:47 -0400
+	id 1ruSK0-0002bX-44; Wed, 10 Apr 2024 03:24:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJk-00029f-W5; Wed, 10 Apr 2024 03:24:26 -0400
+ id 1ruSJn-0002NB-6V; Wed, 10 Apr 2024 03:24:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJj-00044Z-0c; Wed, 10 Apr 2024 03:24:24 -0400
+ id 1ruSJl-00045e-Hv; Wed, 10 Apr 2024 03:24:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B278C5D681;
+ by isrv.corpit.ru (Postfix) with ESMTP id C11885D682;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 57F20B02C2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 66F85B02C3;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191699 invoked by uid 1000);
+Received: (nullmailer pid 4191702 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Minwoo Im <minwoo.im@samsung.com>,
- Klaus Jensen <k.jensen@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 18/87] hw/nvme: separate 'serial' property for VFs
-Date: Wed, 10 Apr 2024 10:21:51 +0300
-Message-Id: <20240410072303.4191455-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
+ Minwoo Im <minwoo.im@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 19/87] hw/nvme: fix invalid check on mcl
+Date: Wed, 10 Apr 2024 10:21:52 +0300
+Message-Id: <20240410072303.4191455-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -58,48 +58,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Minwoo Im <minwoo.im@samsung.com>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Currently, when a VF is created, it uses the 'params' object of the PF
-as it is. In other words, the 'params.serial' string memory area is also
-shared. In this situation, if the VF is removed from the system, the
-PF's 'params.serial' object is released with object_finalize() followed
-by object_property_del_all() which release the memory for 'serial'
-property. If that happens, the next VF created will inherit a serial
-from a corrupted memory area.
-
-If this happens, an error will occur when comparing subsys->serial and
-n->params.serial in the nvme_subsys_register_ctrl() function.
+The number of logical blocks within a source range is converted into a
+1s based number at the time of parsing. However, when verifying the copy
+length we add one again, causing the check against MCL to fail in error.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Fixes: 381ab99d8587 ("hw/nvme: check maximum copy length (MCL) for COPY")
+Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 4f0a4a3d5854824e5c5eccf353d4a1f4f749a29d)
+(cherry picked from commit 8c78015a55d84c016da6d5e41b6b5f618ecb25ab)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 76fe039704..94ef639457 100644
+index 94ef639457..abc0387f2c 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -8309,9 +8309,15 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
-     if (pci_is_vf(pci_dev)) {
-         /*
-          * VFs derive settings from the parent. PF's lifespan exceeds
--         * that of VF's, so it's safe to share params.serial.
-+         * that of VF's.
-          */
-         memcpy(&n->params, &pn->params, sizeof(NvmeParams));
-+
-+        /*
-+         * Set PF's serial value to a new string memory to prevent 'serial'
-+         * property object release of PF when a VF is removed from the system.
-+         */
-+        n->params.serial = g_strdup(pn->params.serial);
-         n->subsys = pn->subsys;
+@@ -2855,7 +2855,7 @@ static inline uint16_t nvme_check_copy_mcl(NvmeNamespace *ns,
+         uint32_t nlb;
+         nvme_copy_source_range_parse(iocb->ranges, idx, iocb->format, NULL,
+                                      &nlb, NULL, NULL, NULL);
+-        copy_len += nlb + 1;
++        copy_len += nlb;
      }
  
+     if (copy_len > ns->id_ns.mcl) {
 -- 
 2.39.2
 
