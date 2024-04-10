@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA4089EBC3
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1107F89EBD1
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:24:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSIq-0007Zk-Vi; Wed, 10 Apr 2024 03:23:29 -0400
+	id 1ruSIw-0007jW-TS; Wed, 10 Apr 2024 03:23:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIh-0007R2-LL; Wed, 10 Apr 2024 03:23:20 -0400
+ id 1ruSIk-0007Sl-3l; Wed, 10 Apr 2024 03:23:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIe-0003s2-SS; Wed, 10 Apr 2024 03:23:19 -0400
+ id 1ruSIi-0003td-6i; Wed, 10 Apr 2024 03:23:21 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 9DFE85D673;
+ by isrv.corpit.ru (Postfix) with ESMTP id AD6835D674;
  Wed, 10 Apr 2024 10:25:02 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 41E1BB02B4;
+ by tsrv.corpit.ru (Postfix) with SMTP id 52AC8B02B5;
  Wed, 10 Apr 2024 10:23:04 +0300 (MSK)
-Received: (nullmailer pid 4191656 invoked by uid 1000);
+Received: (nullmailer pid 4191659 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Alexey Sheplyakov <asheplyakov@yandex.ru>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 04/87] linux-user: Remove pgb_dynamic alignment
- assertion
-Date: Wed, 10 Apr 2024 10:21:37 +0300
-Message-Id: <20240410072303.4191455-4-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 05/87] gitlab: update FreeBSD Cirrus CI image to 13.3
+Date: Wed, 10 Apr 2024 10:21:38 +0300
+Message-Id: <20240410072303.4191455-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -62,35 +60,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The assertion was never correct, because the alignment is a composite
-of the image alignment and SHMLBA.  Even if the image alignment didn't
-match the image address, an assertion would not be correct -- more
-appropriate would be an error message about an ill formed image.  But
-the image cannot be held to SHMLBA under any circumstances.
+The 13.2 images have been deleted from gcloud
 
-Fixes: ee94743034b ("linux-user: completely re-write init_guest_space")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2157
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Reported-by: Alexey Sheplyakov <asheplyakov@yandex.ru>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit b816e1b5ba58a986b10cd830d6617f351979ab91)
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-id: 20240304144456.3825935-3-berrange@redhat.com
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 9ea920dc28254cd9a363aaef01985dffd8abedd7)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index cf9e74468b..7cc8d9685e 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -3016,8 +3016,6 @@ static void pgb_dynamic(const char *image_name, uintptr_t guest_loaddr,
-     uintptr_t brk, ret;
-     PGBAddrs ga;
- 
--    assert(QEMU_IS_ALIGNED(guest_loaddr, align));
--
-     /* Try the identity map first. */
-     if (pgb_addr_set(&ga, guest_loaddr, guest_hiaddr, true)) {
-         brk = (uintptr_t)sbrk(0);
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index 64f2e25afa..b45f9de62f 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -52,7 +52,7 @@ x64-freebsd-13-build:
+     NAME: freebsd-13
+     CIRRUS_VM_INSTANCE_TYPE: freebsd_instance
+     CIRRUS_VM_IMAGE_SELECTOR: image_family
+-    CIRRUS_VM_IMAGE_NAME: freebsd-13-2
++    CIRRUS_VM_IMAGE_NAME: freebsd-13-3
+     CIRRUS_VM_CPUS: 8
+     CIRRUS_VM_RAM: 8G
+     UPDATE_COMMAND: pkg update; pkg upgrade -y
 -- 
 2.39.2
 
