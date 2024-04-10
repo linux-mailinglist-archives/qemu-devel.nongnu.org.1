@@ -2,37 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12A389EA23
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1261789E9FD
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:47:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQo1-0001fZ-7x; Wed, 10 Apr 2024 01:47:33 -0400
+	id 1ruQnS-00088M-6F; Wed, 10 Apr 2024 01:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmW-0005Xm-EN; Wed, 10 Apr 2024 01:46:03 -0400
+ id 1ruQmb-0005gu-8T; Wed, 10 Apr 2024 01:46:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmU-0001n1-TQ; Wed, 10 Apr 2024 01:46:00 -0400
+ id 1ruQmZ-0001nY-Hx; Wed, 10 Apr 2024 01:46:04 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0CD5C5D4ED;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1C99B5D4EE;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C52EFB0154;
+ by tsrv.corpit.ru (Postfix) with SMTP id D6293B0155;
  Wed, 10 Apr 2024 08:44:17 +0300 (MSK)
-Received: (nullmailer pid 4182065 invoked by uid 1000);
+Received: (nullmailer pid 4182068 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 21/41] pcie_sriov: Validate NumVFs
-Date: Wed, 10 Apr 2024 08:43:42 +0300
-Message-Id: <20240410054416.4181891-21-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 22/41] hmat acpi: Fix out of bounds access due to
+ missing use of indirection
+Date: Wed, 10 Apr 2024 08:43:43 +0300
+Message-Id: <20240410054416.4181891-22-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -60,36 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-The guest may write NumVFs greater than TotalVFs and that can lead
-to buffer overflow in VF implementations.
+With a numa set up such as
 
-Cc: qemu-stable@nongnu.org
-Fixes: CVE-2024-26327
-Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240228-reuse-v8-2-282660281e60@daynix.com>
+-numa nodeid=0,cpus=0 \
+-numa nodeid=1,memdev=mem \
+-numa nodeid=2,cpus=1
+
+and appropriate hmat_lb entries the initiator list is correctly
+computed and writen to HMAT as 0,2 but then the LB data is accessed
+using the node id (here 2), landing outside the entry_list array.
+
+Stash the reverse lookup when writing the initiator list and use
+it to get the correct array index index.
+
+Fixes: 4586a2cb83 ("hmat acpi: Build System Locality Latency and Bandwidth Information Structure(s)")
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20240307160326.31570-3-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
-(cherry picked from commit 6081b4243cd64dff1b2cf5b0c215c71e9d7e753b)
+(cherry picked from commit 74e2845c5f95b0c139c79233ddb65bb17f2dd679)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 3703d250f0..0d58e4db43 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
+diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
+index 3a6d51282a..768038e0da 100644
+--- a/hw/acpi/hmat.c
++++ b/hw/acpi/hmat.c
+@@ -77,6 +77,7 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+                           uint32_t *initiator_list)
+ {
+     int i, index;
++    uint32_t initiator_to_index[MAX_NODES] = {};
+     HMAT_LB_Data *lb_data;
+     uint16_t *entry_list;
+     uint32_t base;
+@@ -120,6 +121,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+     /* Initiator Proximity Domain List */
+     for (i = 0; i < num_initiator; i++) {
+         build_append_int_noprefix(table_data, initiator_list[i], 4);
++        /* Reverse mapping for array possitions */
++        initiator_to_index[initiator_list[i]] = i;
+     }
  
-     assert(sriov_cap > 0);
-     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
-+    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
-+        return;
-+    }
+     /* Target Proximity Domain List */
+@@ -131,7 +134,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
+     entry_list = g_new0(uint16_t, num_initiator * num_target);
+     for (i = 0; i < hmat_lb->list->len; i++) {
+         lb_data = &g_array_index(hmat_lb->list, HMAT_LB_Data, i);
+-        index = lb_data->initiator * num_target + lb_data->target;
++        index = initiator_to_index[lb_data->initiator] * num_target +
++            lb_data->target;
  
-     dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
- 
+         entry_list[index] = (uint16_t)(lb_data->data / hmat_lb->base);
+     }
 -- 
 2.39.2
 
