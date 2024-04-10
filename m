@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE5789EC49
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27DB589EC01
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:30:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSK0-0002bX-44; Wed, 10 Apr 2024 03:24:40 -0400
+	id 1ruSK5-00034f-B4; Wed, 10 Apr 2024 03:24:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJn-0002NB-6V; Wed, 10 Apr 2024 03:24:28 -0400
+ id 1ruSJo-0002NM-El; Wed, 10 Apr 2024 03:24:28 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJl-00045e-Hv; Wed, 10 Apr 2024 03:24:26 -0400
+ id 1ruSJm-00046D-O4; Wed, 10 Apr 2024 03:24:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C11885D682;
+ by isrv.corpit.ru (Postfix) with ESMTP id DCAC05D683;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 66F85B02C3;
+ by tsrv.corpit.ru (Postfix) with SMTP id 761A9B02C4;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191702 invoked by uid 1000);
+Received: (nullmailer pid 4191705 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Klaus Jensen <k.jensen@samsung.com>,
- Minwoo Im <minwoo.im@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 19/87] hw/nvme: fix invalid check on mcl
-Date: Wed, 10 Apr 2024 10:21:52 +0300
-Message-Id: <20240410072303.4191455-19-mjt@tls.msk.ru>
+ Jesper Wendel Devantier <foss@defmacro.it>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 20/87] hw/nvme: generalize the mbar size helper
+Date: Wed, 10 Apr 2024 10:21:53 +0300
+Message-Id: <20240410072303.4191455-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,30 +60,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Klaus Jensen <k.jensen@samsung.com>
 
-The number of logical blocks within a source range is converted into a
-1s based number at the time of parsing. However, when verifying the copy
-length we add one again, causing the check against MCL to fail in error.
+Generalize the mbar size helper such that it can handle cases where the
+MSI-X table and PBA are expected to be in an exclusive bar.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 381ab99d8587 ("hw/nvme: check maximum copy length (MCL) for COPY")
-Reviewed-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Jesper Wendel Devantier <foss@defmacro.it>
 Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-(cherry picked from commit 8c78015a55d84c016da6d5e41b6b5f618ecb25ab)
+(cherry picked from commit ee7bda4d38cda3eaf114c850a723dd12e23d3abc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 94ef639457..abc0387f2c 100644
+index abc0387f2c..74da28a35a 100644
 --- a/hw/nvme/ctrl.c
 +++ b/hw/nvme/ctrl.c
-@@ -2855,7 +2855,7 @@ static inline uint16_t nvme_check_copy_mcl(NvmeNamespace *ns,
-         uint32_t nlb;
-         nvme_copy_source_range_parse(iocb->ranges, idx, iocb->format, NULL,
-                                      &nlb, NULL, NULL, NULL);
--        copy_len += nlb + 1;
-+        copy_len += nlb;
+@@ -8003,13 +8003,18 @@ static void nvme_init_pmr(NvmeCtrl *n, PCIDevice *pci_dev)
+     memory_region_set_enabled(&n->pmr.dev->mr, false);
+ }
+ 
+-static uint64_t nvme_bar_size(unsigned total_queues, unsigned total_irqs,
+-                              unsigned *msix_table_offset,
+-                              unsigned *msix_pba_offset)
++static uint64_t nvme_mbar_size(unsigned total_queues, unsigned total_irqs,
++                               unsigned *msix_table_offset,
++                               unsigned *msix_pba_offset)
+ {
+-    uint64_t bar_size, msix_table_size, msix_pba_size;
++    uint64_t bar_size, msix_table_size;
+ 
+     bar_size = sizeof(NvmeBar) + 2 * total_queues * NVME_DB_SIZE;
++
++    if (total_irqs == 0) {
++        goto out;
++    }
++
+     bar_size = QEMU_ALIGN_UP(bar_size, 4 * KiB);
+ 
+     if (msix_table_offset) {
+@@ -8024,11 +8029,10 @@ static uint64_t nvme_bar_size(unsigned total_queues, unsigned total_irqs,
+         *msix_pba_offset = bar_size;
      }
  
-     if (copy_len > ns->id_ns.mcl) {
+-    msix_pba_size = QEMU_ALIGN_UP(total_irqs, 64) / 8;
+-    bar_size += msix_pba_size;
++    bar_size += QEMU_ALIGN_UP(total_irqs, 64) / 8;
+ 
+-    bar_size = pow2ceil(bar_size);
+-    return bar_size;
++out:
++    return pow2ceil(bar_size);
+ }
+ 
+ static void nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset)
+@@ -8036,7 +8040,7 @@ static void nvme_init_sriov(NvmeCtrl *n, PCIDevice *pci_dev, uint16_t offset)
+     uint16_t vf_dev_id = n->params.use_intel_id ?
+                          PCI_DEVICE_ID_INTEL_NVME : PCI_DEVICE_ID_REDHAT_NVME;
+     NvmePriCtrlCap *cap = &n->pri_ctrl_cap;
+-    uint64_t bar_size = nvme_bar_size(le16_to_cpu(cap->vqfrsm),
++    uint64_t bar_size = nvme_mbar_size(le16_to_cpu(cap->vqfrsm),
+                                       le16_to_cpu(cap->vifrsm),
+                                       NULL, NULL);
+ 
+@@ -8075,7 +8079,7 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+     ERRP_GUARD();
+     uint8_t *pci_conf = pci_dev->config;
+     uint64_t bar_size;
+-    unsigned msix_table_offset, msix_pba_offset;
++    unsigned msix_table_offset = 0, msix_pba_offset = 0;
+     int ret;
+ 
+     pci_conf[PCI_INTERRUPT_PIN] = 1;
+@@ -8098,8 +8102,8 @@ static bool nvme_init_pci(NvmeCtrl *n, PCIDevice *pci_dev, Error **errp)
+     }
+ 
+     /* add one to max_ioqpairs to account for the admin queue pair */
+-    bar_size = nvme_bar_size(n->params.max_ioqpairs + 1, n->params.msix_qsize,
+-                             &msix_table_offset, &msix_pba_offset);
++    bar_size = nvme_mbar_size(n->params.max_ioqpairs + 1, n->params.msix_qsize,
++                              &msix_table_offset, &msix_pba_offset);
+ 
+     memory_region_init(&n->bar0, OBJECT(n), "nvme-bar0", bar_size);
+     memory_region_init_io(&n->iomem, OBJECT(n), &nvme_mmio_ops, n, "nvme",
 -- 
 2.39.2
 
