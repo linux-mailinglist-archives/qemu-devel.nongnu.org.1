@@ -2,80 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9122989E9D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D3FE89EA2E
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQeB-0003bg-Nb; Wed, 10 Apr 2024 01:37:23 -0400
+	id 1ruQlA-0004iX-9V; Wed, 10 Apr 2024 01:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruQe9-0003bX-S0
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 01:37:21 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruQe8-0008Gk-4J
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 01:37:21 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a51d05c50b2so387028566b.0
- for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 22:37:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712727435; x=1713332235; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=lSrMZkwIweBcmheInohcAPU95k3T864698IRAu4QHPo=;
- b=iD1FU7WUtzVF2XXnvQzP4GxbMsZO8MmMoE6l6m/JjSkrY56zJvJitCO516E3oCDgul
- rGPWgyaW0najVubsdWAp24ez47w1dsDIOYqxgl/cX4v6VmXE3+4FU9aUYqU26f78pU1h
- HnqHyL8A4T7aQTntBXdZiZF0C5Io4eVS3bzC12mEtESw+M3f4YAOF9HaycyYBSosTzWP
- AmgxZrLtLuRseKncyTiGmwyrK9b8WVng/5WKI0QmZ8GTleBCuLWk8fPL3WlhM4x3xBA5
- iY/OAs4VzUSHxPmA9jtdKMRIphW1/fIsVSM0TBxlwcIDFhjOBumoZlWFiyvUpLR5Pvdi
- MZjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712727435; x=1713332235;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=lSrMZkwIweBcmheInohcAPU95k3T864698IRAu4QHPo=;
- b=Nr22V0fbNmEIBQNoc6xSX6bPDjQq8Q0Lhjin0t/3y1ETB+ff6KX81ioQYnCWaryqZb
- NewaAjF6EkR6upcXfP9IRFOqoHIENI4STTpvJhigNEv8/G3+s4ONmrd2jQfWetD+uE2s
- aBp5kWXmrltxRsbjRag9Bd61ax28ix6ZWuhQATmb8b5ns0N6KJh8vVViOjb+f9mJ9eJR
- ttBnjrnd8+cn/XYNtkH+52m/6+te9dAGVvlYWtV+WkfLv2rF3TviVgYxCnNmLEr2ysda
- IIKVCxyWfBUAhgT4DMvGc4zt/iMd9W1u8N0G1tTPdIR7sEu3Ifs2BhySBJMaWKjdM18t
- PVdQ==
-X-Gm-Message-State: AOJu0YwVYuXMNFqs2X3XDcevCjxqQWxqRMHYGx6hgqpYJ/4N9K4xspTK
- pw5mTR400VQzobzitM/6OnaHhAWzZ8zJe1VGQHokro8BLy4oh5l5lI8T/ygoROHlP1HDHB9pjG7
- g
-X-Google-Smtp-Source: AGHT+IEpuUNesqKpV1GWxybi4Ydn/65/YRZKVqPfx0wZbjJyD8FhLzQs1er+3JpjJP3rn965kMtc4A==
-X-Received: by 2002:a17:907:25ca:b0:a51:cb1b:618b with SMTP id
- ae10-20020a17090725ca00b00a51cb1b618bmr1114580ejc.11.1712727435567; 
- Tue, 09 Apr 2024 22:37:15 -0700 (PDT)
-Received: from m1x-phil.lan (arl95-h02-176-184-34-173.dsl.sta.abo.bbox.fr.
- [176.184.34.173]) by smtp.gmail.com with ESMTPSA id
- q19-20020a1709060f9300b00a51983e6190sm6468265ejj.205.2024.04.09.22.37.14
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 09 Apr 2024 22:37:14 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ruQl5-0004hp-SQ; Wed, 10 Apr 2024 01:44:31 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1ruQl3-00015a-Vd; Wed, 10 Apr 2024 01:44:31 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 8F4035D4D8;
+ Wed, 10 Apr 2024 08:46:14 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 50FA7B013F;
+ Wed, 10 Apr 2024 08:44:16 +0300 (MSK)
+Received: (nullmailer pid 4181998 invoked by uid 1000);
+ Wed, 10 Apr 2024 05:44:16 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] hw/audio/virtio-snd: Remove unused assignment
-Date: Wed, 10 Apr 2024 07:37:12 +0200
-Message-ID: <20240410053712.34747-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 00/41] Patch Round-up for stable 7.2.11,
+ freeze on 2024-04-20
+Date: Wed, 10 Apr 2024 08:43:21 +0300
+Message-Id: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,50 +57,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity reported:
+The following patches are queued for QEMU stable v7.2.11:
 
-  >>>     CID 1542933:  Code maintainability issues  (UNUSED_VALUE)
-  >>>     CID 1542934:  Code maintainability issues  (UNUSED_VALUE)
-  >>>     Assigning value "NULL" to "stream" here, but that stored
-          value is overwritten before it can be used.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-7.2
 
-Simply remove the unused assignments.
+Patch freeze is 2024-04-20, and the release is planned for 2024-04-22:
 
-Resolves: Coverity CID 1542933
-Resolves: Coverity CID 1542934
-Fixes: 731655f87f ("virtio-snd: rewrite invalid tx/rx message handling")
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- hw/audio/virtio-snd.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+  https://wiki.qemu.org/Planning/7.2
 
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index 90d9a2796e..c80b58bf5d 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -885,7 +885,9 @@ static void virtio_snd_handle_tx_xfer(VirtIODevice *vdev, VirtQueue *vq)
-     }
-     trace_virtio_snd_handle_tx_xfer();
- 
--    for (VirtIOSoundPCMStream *stream = NULL;; stream = NULL) {
-+    for (;;) {
-+        VirtIOSoundPCMStream *stream;
-+
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-         if (!elem) {
-             break;
-@@ -964,7 +966,9 @@ static void virtio_snd_handle_rx_xfer(VirtIODevice *vdev, VirtQueue *vq)
-     }
-     trace_virtio_snd_handle_rx_xfer();
- 
--    for (VirtIOSoundPCMStream *stream = NULL;; stream = NULL) {
-+    for (;;) {
-+        VirtIOSoundPCMStream *stream;
-+
-         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
-         if (!elem) {
-             break;
--- 
-2.41.0
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
+
+Thanks!
+
+/mjt
+
+--------------------------------------
+01 9ea920dc2825 Daniel P. Berrangé:
+   gitlab: update FreeBSD Cirrus CI image to 13.3
+02 f5af80271aad David Parsons:
+   ui/cocoa: Fix window clipping on macOS 14
+03 bc6bd20ee353 Zhuojia Shen:
+   target/arm: align exposed ID registers with Linux
+04 3dc2afeab296 Peter Maydell:
+   tests/tcg/aarch64/sysregs.c: Use S syntax for id_aa64zfr0_el1 and 
+   id_aa64smfr0_el1
+05 1f51573f7925 Richard Henderson:
+   target/arm: Fix SME full tile indexing
+06 fd7f95f23d6f Peter Maydell:
+   hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+07 012b170173bc Dmitrii Gavrilov:
+   system/qdev-monitor: move drain_call_rcu call under if (!dev) in 
+   qmp_device_add()
+08 a9198b3132d8 Sven Schnelle:
+   hw/scsi/lsi53c895a: stop script on phase mismatch
+09 8b09b7fe4708 Sven Schnelle:
+   hw/scsi/lsi53c895a: add missing decrement of reentrancy counter
+10 9876359990dd Sven Schnelle:
+   hw/scsi/lsi53c895a: add timer to scripts processing
+11 9bc9e9511944 Michael Tokarev:
+   make-release: switch to .xz format by default
+12 4cadf1023498 Laurent Vivier:
+   e1000e: fix link state on resume
+13 6a5287ce8047 Nick Briggs:
+   Avoid unaligned fetch in ladr_match()
+14 784fd35387e9 Klaus Jensen:
+   hw/nvme: clean up confusing use of errp/local_err
+15 973f76cf7743 Klaus Jensen:
+   hw/nvme: cleanup error reporting in nvme_init_pci()
+16 4f0a4a3d5854 Minwoo Im:
+   hw/nvme: separate 'serial' property for VFs
+17 ee7bda4d38cd Klaus Jensen:
+   hw/nvme: generalize the mbar size helper
+18 fa905f65c554 Klaus Jensen:
+   hw/nvme: add machine compatibility parameter to enable msix exclusive bar
+19 31180dbdca28 Akihiko Odaki:
+   pcie: Introduce pcie_sriov_num_vfs
+20 91bb64a8d201 Akihiko Odaki:
+   hw/nvme: Use pcie_sriov_num_vfs()
+21 6081b4243cd6 Akihiko Odaki:
+   pcie_sriov: Validate NumVFs
+22 74e2845c5f95 Jonathan Cameron:
+   hmat acpi: Fix out of bounds access due to missing use of indirection
+23 2e128776dc56 Cédric Le Goater:
+   migration: Skip only empty block devices
+24 c45f8f1aef35 Thomas Huth:
+   tests/unit: Bump test-aio-multithread test timeout to 2 minutes
+25 e1b363e328d5 Thomas Huth:
+   tests/unit: Bump test-crypto-block test timeout to 5 minutes
+26 63b18312d14a Kevin Wolf:
+   tests/unit: Bump test-replication timeout to 60 seconds
+27 55f7c6a5f2bd Peter Maydell:
+   tests: Raise timeouts for bufferiszero and crypto-tlscredsx509
+28 5f97afe2543f Paolo Bonzini:
+   target/i386: introduce function to query MMU indices
+29 90f641531c78 Paolo Bonzini:
+   target/i386: use separate MMU indexes for 32-bit accesses
+30 2cc68629a6fc Paolo Bonzini:
+   target/i386: fix direction of "32-bit MMU" test
+31 7fd226b04746 Tao Su:
+   target/i386: Revert monitor_puts() in do_inject_x86_mce()
+32 1590154ee437 Song Gao:
+   target/loongarch: Fix qemu-system-loongarch64 assert failed with the 
+   option '-d int'
+33 7c7a9f578e4f Lorenz Brun:
+   hw/scsi/scsi-generic: Fix io_timeout property not applying
+34 a158c63b3ba1 Yao Xingtao:
+   monitor/hmp-cmds-target: Append a space in error message in gpa2hva()
+35 1c188fc8cbff Akihiko Odaki:
+   virtio-net: Fix vhost virtqueue notifiers for RSS
+36 2911e9b95f3b Richard Henderson:
+   tcg/optimize: Fix sign_mask for logical right-shift
+37 4a3aa11e1fb2 Richard Henderson:
+   target/hppa: Clear psw_n for BE on use_nullify_skip path
+38 1d2f2b35bc86 Michael Tokarev:
+   gitlab-ci/cirrus: switch from 'master' to 'latest'
+39 44e25fbc1900 Peter Maydell:
+   hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS if int group is disabled
+40 4c54f5bc8e1d Yajun Wu:
+   hw/net/virtio-net: fix qemu set used ring flag even vhost started
+41 2d9a31b3c273 Wafer:
+   hw/virtio: Fix packed virtqueue flush used_idx
 
