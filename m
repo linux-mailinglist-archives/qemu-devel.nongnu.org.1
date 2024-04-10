@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A84E89EE68
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 11:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A6489EE74
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 11:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruU1f-0005mU-1G; Wed, 10 Apr 2024 05:13:51 -0400
+	id 1ruU1i-0005nU-Vy; Wed, 10 Apr 2024 05:13:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruU1d-0005l6-1X
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 05:13:49 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruU1h-0005nM-Rw
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 05:13:53 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruU1a-0005Yx-O1
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 05:13:48 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-56c5d05128dso7273348a12.0
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 02:13:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruU1g-0005ZW-8K
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 05:13:53 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a5200afe39eso147156766b.1
+ for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 02:13:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712740424; x=1713345224; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712740430; x=1713345230; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=jcCYZ0ICkBKBb87mzxsdf9nmTwmmEuaTsn4C58m0KwA=;
- b=aS/e5d5SgNWtgf6Nj2rGDJQHJfapXyVAnltTsda5O+X4Z/WGVcqwz65LTqdCsBGgoi
- 7wCQOTsYowWo9sLeECtjxzvSu6aJuSXWXNELY5Dki+aY71CpPKPsgHyFH4cPpu8Qfu74
- 9qgaNfXjXE+bshp9ynWh4zTzmxrv0VzubPOKyfNWSw0v+YIQVc3JgAMp0n/AXjl4iuiV
- Fj39Ys+mIQhsqfsU/LrLdXjlv19YFJ9Y9eugtVW7Te3QscrXXAWBf345fZpz05KtHrw8
- 6xGM3oPSBlv1onypR/94aU3Sf9WJlvpvgiTbufDwZd85NJvPJqCYjDGGfET/yu8Jsq4C
- s22w==
+ bh=+KsSirCZg01hhKd4JAUXgq8lzzdN/Hb2WqmF/tsoo34=;
+ b=g8dVZt2nAQq1yN7yU8j0Srki/Lh3hrZSTekEbT44PdmZOjvmTwTPzIrrI8jPKAwM3P
+ 1E9XnUuM7ihPEJuhcPM36Nu7Ql23WtcLMb1bWxI+YfTM1rWMZ85AB3AIZ0M6OKT3cRB1
+ IuL8IcUjHLAzap//pBU9JiJEg9vnHAtFFi1Y7VoltyR+aOW85kvEwSG0xqdOBxhw3l23
+ lycq5KBPD/UblaUqClZGL5yuYkWlBNwXYQBVW3DzqbTWGF2ZajuUPiy72//H/Nw84sVq
+ bWcX+7mg/vL5F61uFfe+IC5BcVmJ/HVS1hqGW/ovfrC0o3LlYpjKoVy6qsC5+ASkgQKA
+ Y72A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712740424; x=1713345224;
+ d=1e100.net; s=20230601; t=1712740430; x=1713345230;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=jcCYZ0ICkBKBb87mzxsdf9nmTwmmEuaTsn4C58m0KwA=;
- b=EKnn8W3x7IJYfAjnuu7YMdN7zk/i60hYNRAt+xBdU9e7LDHS69i2Qkg22sWnH1B2FB
- g1lxKmUkPc2e4yfH/I+hR9bMDGrpt6+TjbxXUgePPs1U3U4yID4SCcgztwaCk0bYFSJW
- 4NFbNeDT+0j+N6EJMcZUSqjJ80j+x1RDnvX6fnWtBkEGlT+53cTvkxVwPRL3RqJN8+F9
- AaGEzGXAHqPLn8f9X3QjDkiH7aVGFfP/LgIW1AIvBJV7LG+tltqdxbak5fQNoLD/a9ZF
- LepzzmdoVGcnQiSDhEs+eRr3pl4TGQD4771BWixyCrXgVHYbRpWagvaYTvCJqlCKzoB+
- B3pQ==
-X-Gm-Message-State: AOJu0YwKiL49ajDrlghWq+oOzPfqVvHMJojL8wVBdwyAnLNGO0DdGI92
- tazT50auL1kF7ylvxX004Vk4XxR5B38YTYml2KLDDSYKQZ61sMt0OJLQRpK71nE0oFEFXcUjlKn
- j
-X-Google-Smtp-Source: AGHT+IFDjLHPBNAYm9Erw9+ciQqbdZrsdWOIKKgNeZ0U4PmnCNqCV8V9gPqSJ3jjEMYMUYJt4p2Kag==
-X-Received: by 2002:a50:9b19:0:b0:56e:238e:372c with SMTP id
- o25-20020a509b19000000b0056e238e372cmr1315225edi.26.1712740424537; 
- Wed, 10 Apr 2024 02:13:44 -0700 (PDT)
+ bh=+KsSirCZg01hhKd4JAUXgq8lzzdN/Hb2WqmF/tsoo34=;
+ b=qtJf/QX/KI9OArmVOUcLT698jeNFJCACydIXbw8Wa9QnG0OQaxn2H3lHdg0/KpgbL4
+ ZuIPgMYxa0zbRHvuY5p1b9XUYZKP3/NaED8Gaa2hX23r7susTy0bNar1SYVE3yc1ATes
+ EHKVS9N3sIJZo26QQ/MAgWCfGvrq1VwnODiPTfv3bBT050Jw7Gb+vLGk/7U+5o8DkJz6
+ tGiUwd6jaP6jdRVzVsFc2TxhycaElGNNH0HDHZ7IyDDjZLZUAcImUUvjB3qlpKKMQrUF
+ g4ONneXFjn37Bib/m3KzswFPYffM5zq6bGjrYieXpPynp7qTOE+9eWzl2x1DR5FvC/ZA
+ XKyQ==
+X-Gm-Message-State: AOJu0YxivZ7gM1xXxJUPT678pqir3xQ0P7zH8KnjUdCrTrCglBwYA1WC
+ FtEq+yFdsAxoGJShd0co43cOgMQrWgMxGrlRkicPvrf7gy0ZV7NDNmhNYL104O1l9ibNJAlP/7O
+ Y
+X-Google-Smtp-Source: AGHT+IGfbrGv2eRQo22z+re7ozKJqKSBXnJkE8EPhHfBWLFhkVQ6x3/4nVassDnuBA0bYsdMW4tmIg==
+X-Received: by 2002:a17:906:f116:b0:a52:10dc:4ca8 with SMTP id
+ gv22-20020a170906f11600b00a5210dc4ca8mr782642ejb.72.1712740430220; 
+ Wed, 10 Apr 2024 02:13:50 -0700 (PDT)
 Received: from m1x-phil.lan (arl95-h02-176-184-34-173.dsl.sta.abo.bbox.fr.
  [176.184.34.173]) by smtp.gmail.com with ESMTPSA id
- b93-20020a509f66000000b0056e0376286bsm6419677edf.24.2024.04.10.02.13.42
+ hd19-20020a170907969300b00a51bd3b432fsm5302611ejc.115.2024.04.10.02.13.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 10 Apr 2024 02:13:43 -0700 (PDT)
+ Wed, 10 Apr 2024 02:13:49 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-stable@nongnu.org, Alexander Bulekov <alxndr@bu.edu>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>
-Subject: [PULL 04/16] hw/virtio/virtio-crypto: Protect from DMA re-entrancy
- bugs
-Date: Wed, 10 Apr 2024 11:13:03 +0200
-Message-ID: <20240410091315.57241-5-philmd@linaro.org>
+Cc: Yuquan Wang <wangyuquan1236@phytium.com.cn>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 05/16] qemu-options: Fix CXL Fixed Memory Window
+ interleave-granularity typo
+Date: Wed, 10 Apr 2024 11:13:04 +0200
+Message-ID: <20240410091315.57241-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240410091315.57241-1-philmd@linaro.org>
 References: <20240410091315.57241-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,37 +93,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Replace qemu_bh_new_guarded() by virtio_bh_new_guarded()
-so the bus and device use the same guard. Otherwise the
-DMA-reentrancy protection can be bypassed.
+From: Yuquan Wang <wangyuquan1236@phytium.com.cn>
 
-Fixes: CVE-2024-3446
-Cc: qemu-stable@nongnu.org
-Suggested-by: Alexander Bulekov <alxndr@bu.edu>
-Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Fix the unit typo of interleave-granularity of CXL Fixed Memory
+Window in qemu-option.hx.
+
+Fixes: 03b39fcf64 ("hw/cxl: Make the CFMW a machine parameter.")
+Signed-off-by: Yuquan Wang wangyuquan1236@phytium.com.cn
+Message-ID: <20240407083539.1488172-2-wangyuquan1236@phytium.com.cn>
+[PMD: Reworded]
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20240409105537.18308-5-philmd@linaro.org>
 ---
- hw/virtio/virtio-crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ qemu-options.hx | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
-index fe1313f2ad..bbe8aa4b99 100644
---- a/hw/virtio/virtio-crypto.c
-+++ b/hw/virtio/virtio-crypto.c
-@@ -1080,8 +1080,8 @@ static void virtio_crypto_device_realize(DeviceState *dev, Error **errp)
-         vcrypto->vqs[i].dataq =
-                  virtio_add_queue(vdev, 1024, virtio_crypto_handle_dataq_bh);
-         vcrypto->vqs[i].dataq_bh =
--                 qemu_bh_new_guarded(virtio_crypto_dataq_bh, &vcrypto->vqs[i],
--                                     &dev->mem_reentrancy_guard);
-+                 virtio_bh_new_guarded(dev, virtio_crypto_dataq_bh,
-+                                       &vcrypto->vqs[i]);
-         vcrypto->vqs[i].vcrypto = vcrypto;
-     }
+diff --git a/qemu-options.hx b/qemu-options.hx
+index 7fd1713fa8..8ce85d4559 100644
+--- a/qemu-options.hx
++++ b/qemu-options.hx
+@@ -151,14 +151,14 @@ SRST
+         platform and configuration dependent.
  
+         ``interleave-granularity=granularity`` sets the granularity of
+-        interleave. Default 256KiB. Only 256KiB, 512KiB, 1024KiB, 2048KiB
+-        4096KiB, 8192KiB and 16384KiB granularities supported.
++        interleave. Default 256 (bytes). Only 256, 512, 1k, 2k,
++        4k, 8k and 16k granularities supported.
+ 
+         Example:
+ 
+         ::
+ 
+-            -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512k
++            -machine cxl-fmw.0.targets.0=cxl.0,cxl-fmw.0.targets.1=cxl.1,cxl-fmw.0.size=128G,cxl-fmw.0.interleave-granularity=512
+ ERST
+ 
+ DEF("M", HAS_ARG, QEMU_OPTION_M,
 -- 
 2.41.0
 
