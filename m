@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9EB89EA03
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF0F89EA31
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQnz-0001CU-30; Wed, 10 Apr 2024 01:47:31 -0400
+	id 1ruQnm-0008QZ-EL; Wed, 10 Apr 2024 01:47:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQn3-00075v-E4; Wed, 10 Apr 2024 01:46:33 -0400
+ id 1ruQn2-00075o-BU; Wed, 10 Apr 2024 01:46:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQn1-0001on-O0; Wed, 10 Apr 2024 01:46:33 -0400
+ id 1ruQmz-0001sw-V1; Wed, 10 Apr 2024 01:46:31 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 3F3805D4F0;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4E8295D4F1;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 04DD6B0157;
+ by tsrv.corpit.ru (Postfix) with SMTP id 140DCB0158;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182074 invoked by uid 1000);
+Received: (nullmailer pid 4182077 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 24/41] tests/unit: Bump test-aio-multithread test
- timeout to 2 minutes
-Date: Wed, 10 Apr 2024 08:43:45 +0300
-Message-Id: <20240410054416.4181891-24-mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 25/41] tests/unit: Bump test-crypto-block test timeout
+ to 5 minutes
+Date: Wed, 10 Apr 2024 08:43:46 +0300
+Message-Id: <20240410054416.4181891-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -64,25 +64,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Thomas Huth <thuth@redhat.com>
 
 When running the tests in slow mode on a very loaded system and with
---enable-debug, the test-aio-multithread can take longer than 1 minute.
-Bump the timeout to two minutes to make sure that it also passes in
+--enable-debug, the test-crypto-block can take longer than 4 minutes.
+Bump the timeout to 5 minutes to make sure that it also passes in
 such situations.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231215070357.10888-14-thuth@redhat.com>
+Message-Id: <20231215070357.10888-15-thuth@redhat.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-(cherry picked from commit c45f8f1aef35730a2dcf3cabe296ac12965db43d)
+(cherry picked from commit e1b363e328d559cd5f86d3d1d7b84d0154e153d3)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index b497a41378..df6269b44c 100644
+index df6269b44c..2727ec235e 100644
 --- a/tests/unit/meson.build
 +++ b/tests/unit/meson.build
-@@ -166,6 +166,7 @@ test_env.set('G_TEST_SRCDIR', meson.current_source_dir())
- test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+@@ -167,6 +167,7 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
  
  slow_tests = {
-+  'test-aio-multithread' : 120,
+   'test-aio-multithread' : 120,
++  'test-crypto-block' : 300,
    'test-crypto-tlscredsx509': 45,
    'test-crypto-tlssession': 45
  }
