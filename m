@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A2C589EC17
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0105589EC5D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:41:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSPu-0003CR-Lh; Wed, 10 Apr 2024 03:30:46 -0400
+	id 1ruSPy-0003el-03; Wed, 10 Apr 2024 03:30:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSPa-0002zr-CN; Wed, 10 Apr 2024 03:30:28 -0400
+ id 1ruSPc-00030a-QR; Wed, 10 Apr 2024 03:30:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSPY-0005D8-SK; Wed, 10 Apr 2024 03:30:26 -0400
+ id 1ruSPa-0005Mi-F7; Wed, 10 Apr 2024 03:30:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id F0B7B5D6BB;
- Wed, 10 Apr 2024 10:25:07 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0D2895D6BC;
+ Wed, 10 Apr 2024 10:25:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 952C4B02FB;
+ by tsrv.corpit.ru (Postfix) with SMTP id A5937B02FC;
  Wed, 10 Apr 2024 10:23:09 +0300 (MSK)
-Received: (nullmailer pid 4191876 invoked by uid 1000);
+Received: (nullmailer pid 4191879 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Sven Schnelle <svens@stackframe.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 75/87] target/hppa: Clear psw_n for BE on
- use_nullify_skip path
-Date: Wed, 10 Apr 2024 10:22:48 +0300
-Message-Id: <20240410072303.4191455-75-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Avihai Horon <avihaih@nvidia.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 76/87] migration/postcopy: Ensure postcopy_start() sets
+ errp if it fails
+Date: Wed, 10 Apr 2024 10:22:49 +0300
+Message-Id: <20240410072303.4191455-76-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -62,31 +61,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Avihai Horon <avihaih@nvidia.com>
 
-Along this path we have already skipped the insn to be
-nullified, so the subsequent insn should be executed.
+There are several places where postcopy_start() fails without setting
+errp. This can cause a null pointer de-reference, as in case of error,
+the caller of postcopy_start() copies/prints the error set in errp.
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Sven Schnelle <svens@stackframe.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 4a3aa11e1fb25c28c24a43fd2835c429b00a463d)
+Fix it by setting errp in all of postcopy_start() error paths.
+
+Cc: qemu-stable <qemu-stable@nongnu.org>
+Fixes: 908927db28ea ("migration: Update error description whenever migration fails")
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+Link: https://lore.kernel.org/r/20240328140252.16756-3-avihaih@nvidia.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+(cherry picked from commit d0ad271a7613459bd0a3397c8071a4ad06f3f7eb)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 19c4df8960..d82d3c8748 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -3819,6 +3819,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
-         copy_iaoq_entry(ctx, cpu_iaoq_b, -1, tmp);
-         tcg_gen_mov_i64(cpu_iasq_f, new_spc);
-         tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
-+        nullify_set(ctx, 0);
-     } else {
-         copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
-         if (ctx->iaoq_b == -1) {
+diff --git a/migration/migration.c b/migration/migration.c
+index 982ab85f04..dbc6c3947c 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -2408,6 +2408,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+         migration_wait_main_channel(ms);
+         if (postcopy_preempt_establish_channel(ms)) {
+             migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
++            error_setg(errp, "%s: Failed to establish preempt channel",
++                       __func__);
+             return -1;
+         }
+     }
+@@ -2427,17 +2429,22 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+     global_state_store();
+     ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "%s: Failed to stop the VM", __func__);
+         goto fail;
+     }
+ 
+     ret = migration_maybe_pause(ms, &cur_state,
+                                 MIGRATION_STATUS_POSTCOPY_ACTIVE);
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "%s: Failed in migration_maybe_pause()",
++                         __func__);
+         goto fail;
+     }
+ 
+     ret = bdrv_inactivate_all();
+     if (ret < 0) {
++        error_setg_errno(errp, -ret, "%s: Failed in bdrv_inactivate_all()",
++                         __func__);
+         goto fail;
+     }
+     restart_block = true;
+@@ -2514,6 +2521,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
+ 
+     /* Now send that blob */
+     if (qemu_savevm_send_packaged(ms->to_dst_file, bioc->data, bioc->usage)) {
++        error_setg(errp, "%s: Failed to send packaged data", __func__);
+         goto fail_closefb;
+     }
+     qemu_fclose(fb);
 -- 
 2.39.2
 
