@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE0789EC86
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:43:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9282489EC3F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:37:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSND-0002rS-7f; Wed, 10 Apr 2024 03:27:59 -0400
+	id 1ruSMP-00014t-F3; Wed, 10 Apr 2024 03:27:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSLc-0006Nq-7T; Wed, 10 Apr 2024 03:26:22 -0400
+ id 1ruSLy-0008Bb-8i; Wed, 10 Apr 2024 03:26:42 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSLZ-0004bT-ID; Wed, 10 Apr 2024 03:26:20 -0400
+ id 1ruSLt-0004bU-LX; Wed, 10 Apr 2024 03:26:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1C14F5D695;
+ by isrv.corpit.ru (Postfix) with ESMTP id 2BAFB5D696;
  Wed, 10 Apr 2024 10:25:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B5319B02D5;
+ by tsrv.corpit.ru (Postfix) with SMTP id C4E89B02D6;
  Wed, 10 Apr 2024 10:23:06 +0300 (MSK)
-Received: (nullmailer pid 4191758 invoked by uid 1000);
+Received: (nullmailer pid 4191761 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 37/87] target/i386: fix direction of "32-bit MMU" test
-Date: Wed, 10 Apr 2024 10:22:10 +0300
-Message-Id: <20240410072303.4191455-37-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 38/87] Revert "chardev/char-socket: Fix TLS io channels
+ sending too much data to the backend"
+Date: Wed, 10 Apr 2024 10:22:11 +0300
+Message-Id: <20240410072303.4191455-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,46 +61,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Daniel P. Berrangé <berrange@redhat.com>
 
-The low bit of MMU indices for x86 TCG indicates whether the processor is
-in 32-bit mode and therefore linear addresses have to be masked to 32 bits.
-However, the index was computed incorrectly, leading to possible conflicts
-in the TLB for any address above 4G.
+This commit results in unexpected termination of the TLS connection.
+When 'fd_can_read' returns 0, the code goes on to pass a zero length
+buffer to qio_channel_read. The TLS impl calls into gnutls_recv()
+with this zero length buffer, at which point GNUTLS returns an error
+GNUTLS_E_INVALID_REQUEST. This is treated as fatal by QEMU's TLS code
+resulting in the connection being torn down by the chardev.
 
-Analyzed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Fixes: b1661801c18 ("target/i386: Fix physical address truncation", 2024-02-28)
-Fixes: a28b6b4e743 ("target/i386: Fix physical address truncation" in stable-8.2)
-Cc: qemu-stable@nongnu.org
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2206
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 2cc68629a6fc198f4a972698bdd6477f883aedfb)
+Simply skipping the qio_channel_read when the buffer length is zero
+is also not satisfactory, as it results in a high CPU burn busy loop
+massively slowing QEMU's functionality.
+
+The proper solution is to avoid tcp_chr_read being called at all
+unless the frontend is able to accept more data. This will be done
+in a followup commit.
+
+This reverts commit 462945cd22d2bcd233401ed3aa167d83a8e35b05
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+(cherry picked from commit e8ee827ffdb86ebbd5f5213a1f78123c25a90864)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: move changes for x86_cpu_mmu_index() to cpu_mmu_index() due to missing
- v8.2.0-1030-gace0c5fe59 "target/i386: Populate CPUClass.mmu_index")
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 70e6713ba3..2f1e7425a3 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2308,7 +2308,7 @@ uint64_t cpu_get_tsc(CPUX86State *env);
- 
- static inline int cpu_mmu_index(CPUX86State *env, bool ifetch)
- {
--    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_CS64_MASK) ? 0 : 1;
-     int mmu_index_base =
-         (env->hflags & HF_CPL_MASK) == 3 ? MMU_USER64_IDX :
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-@@ -2335,7 +2335,7 @@ static inline bool is_mmu_index_32(int mmu_index)
- 
- static inline int cpu_mmu_index_kernel(CPUX86State *env)
- {
--    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 1 : 0;
-+    int mmu_index_32 = (env->hflags & HF_LMA_MASK) ? 0 : 1;
-     int mmu_index_base =
-         !(env->hflags & HF_SMAP_MASK) ? MMU_KNOSMAP64_IDX :
-         ((env->hflags & HF_CPL_MASK) < 3 && (env->eflags & AC_MASK)) ? MMU_KNOSMAP64_IDX : MMU_KSMAP64_IDX;
+diff --git a/chardev/char-socket.c b/chardev/char-socket.c
+index 034840593d..73947da188 100644
+--- a/chardev/char-socket.c
++++ b/chardev/char-socket.c
+@@ -492,9 +492,9 @@ static gboolean tcp_chr_read(QIOChannel *chan, GIOCondition cond, void *opaque)
+         s->max_size <= 0) {
+         return TRUE;
+     }
+-    len = tcp_chr_read_poll(opaque);
+-    if (len > sizeof(buf)) {
+-        len = sizeof(buf);
++    len = sizeof(buf);
++    if (len > s->max_size) {
++        len = s->max_size;
+     }
+     size = tcp_chr_recv(chr, (void *)buf, len);
+     if (size == 0 || (size == -1 && errno != EAGAIN)) {
 -- 
 2.39.2
 
