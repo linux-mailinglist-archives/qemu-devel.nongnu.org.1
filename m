@@ -2,82 +2,142 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EEF89F075
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 13:14:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D34589F082
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 13:17:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruVuS-0006h4-Um; Wed, 10 Apr 2024 07:14:32 -0400
+	id 1ruVvv-0007UZ-Rb; Wed, 10 Apr 2024 07:16:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1ruVuR-0006gl-Dg
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:14:31 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
- id 1ruVuP-0000su-RV
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:14:31 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-56bdf81706aso8773431a12.2
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 04:14:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1712747668; x=1713352468; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=94RVQwcYAG4eFmMmGTmocKdyi2FDWMMAMoG0R8BdJRo=;
- b=REAXYuWjWoEFtU5FxhZeTrL8EIUTgFBE5PR30UwM0GsinO+YdLqkeyae3ToSur7OPI
- jZB5wHErABfIOyxKnLSzlMRwlEscARThdPYB0SmDXviKZ7WZjh5GZ3MiWXHrXeMb5sET
- gY5GcSB8lDQRdtJmz7/gWghR6rRv1ONjraIB2D9+ojRlqHTbVizssxFqtHY6VH2hyaEa
- 2lqtELJEIpDSMdnVq4b7dc2YaAK0wMVKpdtD6Sc5G6Sl+AjqBdAXMoo1nLz+ypFV4jL9
- AN5qSBz4kVgTVUdIR/nfp8DO+o2DsVoyDVTBPr327cYQ4PUI9hlTP5+voFnTe0yOoine
- 1ePA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712747668; x=1713352468;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=94RVQwcYAG4eFmMmGTmocKdyi2FDWMMAMoG0R8BdJRo=;
- b=AxKENZmOP7/e1q8d/aOjqlvPNokQirM9m5KDxNbCJjhJB/WgH3DaU14NPFG9FEQwmN
- SlRfDPLSNupEMyt+OuDq/YIXn0gHMhybp3ZF/mFTL+GzzQGv62LObOW3FNiv5GDNDbZG
- HmkjKJcil0PojSKbYT7tv2NBpZPe6UQmECzFH7JbWprxAaSuGWETBoo7//JW/NXQgqMP
- SIJqQ7TF1lR+CLtTYa06PH2hYak49OVlfGa2UHRA836tQyCdhZT/xk54fr1YBWhFJbLM
- HerFzLxw1ogP/n6B/2QJZ2TxSEMSf4uZTqMLLycTo4i3HMsUpYDjlXcs07FRHhqIMY7L
- rIXQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXCYJW8Za4qO6NBCIFbR8eOIzfOm5iGwbw4RWA3pCPVDN3Cydz/02m6aizM2hoP/27m1ujDDWfIS9ryvzLTXWfXVQj0wRs=
-X-Gm-Message-State: AOJu0Ywa6Nrth1hNgayBQ5gpYbqvTm40clX4xGiBQzX1GxGiDXmrdiIu
- 8J2ZCoz5Pd/aVlAG7Y0W5DnWQ5jBicAjV7lkOsls6Rmqk18cn2Nys4TuFjVxsLt7N7yZEeaImwu
- fZ4I6Jpn/DUcVorG60jDVM6CIGds=
-X-Google-Smtp-Source: AGHT+IHZUo6Pt6cHPn2HE+zPZFOJvm6Ppz12wUMJIHfV1gr9Dy/wFeCvOTGykeUz1W16/FiVEwX1BlwUryFYMPLE4VE=
-X-Received: by 2002:a50:d5d9:0:b0:568:8e22:4eff with SMTP id
- g25-20020a50d5d9000000b005688e224effmr1525770edj.37.1712747668168; Wed, 10
- Apr 2024 04:14:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1ruVvs-0007TG-LU
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:16:00 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1ruVvp-00019F-8M
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 07:15:59 -0400
+Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 439Ku0uF015416;
+ Wed, 10 Apr 2024 04:15:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ from:to:cc:subject:date:message-id:content-transfer-encoding
+ :content-type:mime-version; s=proofpoint20171006; bh=/9FLvqG5pUW
+ JAD1s8VedIKA1uWOEQOT36XyHpWnVZKk=; b=D2dlOp5f60Itjd8shI/VqDD5o7a
+ P1efP55gZhvoe3nfp15oIGGzg/h3v6NmN38HZhPx4zt3dwfsaC55hP0Iv21+d0nx
+ 9knP9rB3kcIbD4BY2ryKtu6YcMRZ1TERB5meafp+ZBHhFRYZCeUkOi0P2Q2cgkI2
+ DzJC/8xWSXoIFRw3BzglQJIS3aDhPAhNy+TNoA4tFpEAYB7ePNCJ9hwBOaK6hzej
+ JsahiBlZ8LobtRtZlmcX1VJdHOn7ReZcEh5clCLcHuRVETUeS8LUqD5IE7MFK8+8
+ WhVbGPVVEPlH5kDUDjgvqxyIp0BuT/d0Ns2iAFBZDQr1eVAqIi3KW+yuH2A==
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3xcvwy2v5u-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 10 Apr 2024 04:15:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A7BVriiM8GZd8i++Mh+VEPx7+KqD8ETE10xANuBBK5pptW6KHG7QmSKtF0qBDOL+Asoo8JhhFPCKv4uD2lwC5CKUlL5RSXw4EMQ0D9xjlDWSazC3kpGjLxw0TywFZkyRECptl6t3QtogZF/epHeQ2xF4CjE87J5//t0VOpwklqOCvdPNyJIaW1dkCaOjPuDmxj32yLyi7RGH5zHLWVqz5f/tvdOr5BoCNyr5MxAx1d8TZ08hI/7hd8aDhfAIdwD5FZdPi6/dUBWifW98L0w99FNLWsG2iakz7ESpVU4siOTyEweMFvfNcCxfi6StlA8kBCG+Z69F5K2XAbq/bsrbvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/9FLvqG5pUWJAD1s8VedIKA1uWOEQOT36XyHpWnVZKk=;
+ b=ga+eBXHrffLbSSEADicagdyxWevmiYK6r3FMaNaDTXYidYmYTqVu2iiObLTbhCVtNE0bU01sZj/gD3UI/Ga2NRbhXkjodgsbEjab4B6uw8IUSAUdcjcQcLD0P9V8HE4O0JbERTW+UjXE/NLHtUtGPc6t6Hfj1iOZoFjgnVcmAlXs04Jm9dgL8LOrxER1TrEsHs9dlk8aqgGWXtnIb34LfBknIUnyAVoWVos7ZplbVRd+9v5PnHJD3/U3odoT1nSnYE7x2JtNGujdKpHzISDitNk6KEkY0MhhPDq5GwcJrZuHjDyaRfvkeSx61Y2mggiH6/22R1eZNVCHiEPXEGvEGQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/9FLvqG5pUWJAD1s8VedIKA1uWOEQOT36XyHpWnVZKk=;
+ b=n+XLfzopSA+Xd2tb7m6WHtQ92VlWBhsJBFGFwwQAxf8Wae7tlGuLsGhzFIajhLrXmRKv4mb7bAlv7Aaqu+64Vn34fJV7nZjv3hARPlaR8PrWepvQu/Ledwwee7ciU3o57J7c+Kndc8ZY5Fj3Ws6/XVMZCfznTYdIZc0iV+b1FKzPFQ61qoIlEOXxLtNs7HTtxrG7ObuufB1mu/SdZnLxawcZZC08GFOt7SbejU2V0aXrMnSrrw7+nP6wdOGiYxl488+ZMk1O8rSMRVlkwJvWiHOgPxEDiQNJU72BN/0xDNc6hHXXdiYltEuBlqDsuynedVUd9AkKN+Jf3t0z2M+JQA==
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
+ by CH2PR02MB6791.namprd02.prod.outlook.com (2603:10b6:610:ab::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Wed, 10 Apr
+ 2024 11:15:49 +0000
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::225c:2edd:87e:7cf0]) by SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::225c:2edd:87e:7cf0%7]) with mapi id 15.20.7409.053; Wed, 10 Apr 2024
+ 11:15:48 +0000
+From: Het Gala <het.gala@nutanix.com>
+To: qemu-devel@nongnu.org
+Cc: thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
+ peterx@redhat.com, farosas@suse.de, prerna.saxena@nutanix.com,
+ Het Gala <het.gala@nutanix.com>
+Subject: [PATCH 0/4] tests/qtest/migration: Add postcopy qtests for
+ introducing 'channels' argument with new QAPI syntax
+Date: Wed, 10 Apr 2024 11:15:37 +0000
+Message-Id: <20240410111541.188504-1-het.gala@nutanix.com>
+X-Mailer: git-send-email 2.22.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PH0PR07CA0016.namprd07.prod.outlook.com
+ (2603:10b6:510:5::21) To SJ2PR02MB9955.namprd02.prod.outlook.com
+ (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
-References: <20240227223501.28475-1-vikram.garhwal@amd.com>
- <20240227223501.28475-5-vikram.garhwal@amd.com>
- <87o7bx5187.fsf@draig.linaro.org>
-In-Reply-To: <87o7bx5187.fsf@draig.linaro.org>
-From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Date: Wed, 10 Apr 2024 13:14:16 +0200
-Message-ID: <CAJy5ezrG0m6_5hKD1axpOSYLp-jk14=E+XPo9=oThyY-TN-7TQ@mail.gmail.com>
-Subject: Re: [QEMU][PATCH v3 4/7] xen: let xen_ram_addr_from_mapcache() return
- -1 in case of not found entry
-To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
-Cc: Vikram Garhwal <vikram.garhwal@amd.com>, qemu-devel@nongnu.org,
- sstabellini@kernel.org, 
- jgross@suse.com, Anthony Perard <anthony.perard@citrix.com>,
- Paul Durrant <paul@xen.org>, 
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Content-Type: multipart/alternative; boundary="00000000000059e8be0615bc2419"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x52b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|CH2PR02MB6791:EE_
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: eVZ3LceXt2utZTAdbsI2Iwbs6vV20DAlHfch/dJuku5eDwxB0RBVShcxhjxSW7Q2WlMardIBCOX+wNVMBFe7x6LxfLCTl9yBKUYbKqJv2ETvWIi2SP90lee7MLc+87JGk4qdXAgk7c6rIvaY8BYHGCZATy5I+0bcBWgujmmZ1Vu7P2S12opJbt55Kt0bB9VhFgIoxR8+QURmGrLGUVsN0+7VHeOleTS9wLVBapyRZuVOlOqsuIs+AjCgdeogmEV4UWzQCa7tulZfiT9vkL725os3IVctijsVUlGKdcHrlFUKcyjB9A1TpcriZ5m91u0J8WVl5wTFD6u9aguxjr5rL++EV7QuQpJ9nSCY0LBAzc2CU2Ii3XR7SXartbe8IaUdrr6CI/mZcAau3T1y2FXpsNKmM+hWqM8VFmn18i5fsFCMJS4kHDk/48JIuUxZfJC8/gkVX9IDHTDymCBGH/mQAWfVD4uysvO5LVAZhg1e/F/Ri2zv3mAANoFf1MMaQHhcXZ7dKcWNSrhEk2GTbIE1+JrOvW1jCccjm2MUi3j4TfaIh2C1vzTwC7m+emvGVs/zFNXt2xWk/Nd6RWjHvY6tPBVV9+3o0wfoO6Tqbyr40cL69EzGX8Qh6w0IXUBj9LgoTV5olsgvye/am7KS8gUY1SQkCvDRPxK4pHliFiuf4ngV52BnG7ih5E9VKuYNawA4gfAXRU7ZxpUQsPNZyLlXdZKy7h7WA6dGjjsr3QgOVHc=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(366007)(52116005)(376005)(38350700005); DIR:OUT;
+ SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ko6UWeaSNpkh9jW/4Jf0tD6HFwJkihGGVBYYvO5zlQT8DWzvlxSFxIoDpyzY?=
+ =?us-ascii?Q?aBb9b7HIxuZuIMQPmi7FZLgv1Z4m9BCfBwTo6EXgosVHt3XJGVAabu2jTGVi?=
+ =?us-ascii?Q?AfVBXo1wYBAYX+4fCyMe4mAyFYslco2HrkeMf4Lxhfoy+xe0r6UUCUZoPIG6?=
+ =?us-ascii?Q?JjBF7tXXd1wXBVux5gL1Q+ontd/SdG3TF1D3FIKVt+fewJdp6xxem0FiuzLu?=
+ =?us-ascii?Q?KlzitsrwEHZiZcn27DhQ8UyLPnDRFFMQcSCMR7e8VDnos/cQ/H5WjDqf+DLG?=
+ =?us-ascii?Q?QGxF2vmgDuqwBGKB0HO2apkuOwMLXqwwYGZ4ZK7B5cyd/dDPYJxxqpcM9/7h?=
+ =?us-ascii?Q?M7r5bmSnINEAh3N2HTz4s572UEGb1HJnCtJY2ua/qzRvJxg37CAKT8jriwVO?=
+ =?us-ascii?Q?IAGDnuBjkUM2gEzxdZz4EHFplHLTVL53YIqJ7O+yZF8SkgIjWneJke5v/f2I?=
+ =?us-ascii?Q?gXBaUT4irjqGx57eYOURMsEJHCvGBihpcbo61mKxYrvhCIRwoRFVV5SsnAF6?=
+ =?us-ascii?Q?PExIqadjcgf3Mx36DTM3vUJlsSDEu0ZUC5lgq4uPfEPs2qeQ7slJcJ6F/la9?=
+ =?us-ascii?Q?/qljNabWJgmNjGozqZQ5ZHfIYOE1SqR49j85QU/H2BtbSSn+sLQsX6WJIHF3?=
+ =?us-ascii?Q?sYkQVCmnCzjkbXjgt7zfDQDs1FAjyi0qt+6mx6FCoaDWX0CQPjGKvLznecd2?=
+ =?us-ascii?Q?+HvmH6BWd4eZwvnSMjffO56Ufl6pXJAmZ9R0uw/dE/vRhLOBbdkGUMZig2OF?=
+ =?us-ascii?Q?SxGGlpQqEbKtnQZIrIpeGgZgvigkXhHt4wVvRhe8o/EFeguifoF38Hv7bbMQ?=
+ =?us-ascii?Q?dmQ5aStrUmjzXVJzZ+uCq92wQyo2MKhfiPnZ+0Zw5oxkm4x1mil6l2Kowi0Y?=
+ =?us-ascii?Q?V4mHilI56azShk/0cqUXZ4TkAH5vhcOGif+WgDxz7USSEz3pEfdMjCt/4Lgm?=
+ =?us-ascii?Q?/MZUdR4kRXzXn7tgQgkT9NEXuqPZj3XezOOIb3wp3VBV8c8ndaqX7su6MqCM?=
+ =?us-ascii?Q?/eZUUC9+KQy0dORh55+pAsrrSzDA8glJELIQ5Ve1NF+L+KcKY3MLTFKMVcWi?=
+ =?us-ascii?Q?G1vW10YYwVCmJl9ASGsmv20k2y+8xly+BjBv9DKzwWCc/QQ0eQgwRqMPSRBy?=
+ =?us-ascii?Q?QefIlQqeU/oCaMDiPRZRnkO+JnVY42Xgy38SRC5F2HrdbNDFV1dLki2fc4LK?=
+ =?us-ascii?Q?i7xsB/sb8blFXCeEH7RXvbiEflud0wue9uzZdYNve9e2+QtPrYYBo74EtsxX?=
+ =?us-ascii?Q?KQ+/jdf2PlyFQYP5qSKvi080XBLNYMK3pFI4QnTJtzBEx8o+q3M0dntTxD3z?=
+ =?us-ascii?Q?MsmO77f6PjZ+OCfKlNmY1Gka5W4D44G3l67CWlS11OijpBDRoX01aWaMXDCp?=
+ =?us-ascii?Q?djOArtuEcAGOdld+L/c5SFRHISTH9aEcN+VJVtFT+1SorP/HF7TcGKwV9XJk?=
+ =?us-ascii?Q?SGutKNrSnY7t+QbCtJs2icKmi+FikVBzipSuRJhfLnA8RNrHPbmO4Buuh/d/?=
+ =?us-ascii?Q?LLfZILeDKKYNuqjMf78fy3o7aC2KtfNwabLGBUhodV8e2hFABZxyyS21dgKe?=
+ =?us-ascii?Q?+sKayi8dWanIswhBegILMQy8LVeMSgLvbyIxKHb4?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9c4bb7c-cb11-4699-be36-08dc594f9325
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2024 11:15:48.7499 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OB7lqoMmh0mrVK9QScO0u3wX/a1IrOxzzG/F8NwxZ3Po1tMJdv3ig2rIddqimIgFVoTHyRAIZ+Ns7jsBl3/uzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6791
+X-Proofpoint-GUID: W3KBRlKYiLj5WVdA_P6QzHXMjzHd3gF4
+X-Proofpoint-ORIG-GUID: W3KBRlKYiLj5WVdA_P6QzHXMjzHd3gF4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-10_04,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,115 +154,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000059e8be0615bc2419
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add postcopy migration qtests with new QAPI syntax, having 'channels' as
+the starting argument.
+Also, introduce 'channels' to migrate_incoming_qmp function so as to
+call migration with the new QAPI syntax from src as well as dest.
 
-On Fri, Mar 1, 2024 at 6:08=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linaro=
-.org> wrote:
+Patch 1:
+--------
+Revert back commit which temporarily introduced 'migrate-incoming' QAPI
+with the new 'channels' syntax.
 
-> Vikram Garhwal <vikram.garhwal@amd.com> writes:
->
-> > From: Juergen Gross <jgross@suse.com>
-> >
-> > Today xen_ram_addr_from_mapcache() will either abort() or return 0 in
-> > case it can't find a matching entry for a pointer value. Both cases
-> > are bad, so change that to return an invalid address instead.
-> >
-> > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-> > ---
-> >  hw/xen/xen-mapcache.c | 11 +++--------
-> >  1 file changed, 3 insertions(+), 8 deletions(-)
-> >
-> > diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-> > index dfc412d138..179b7e95b2 100644
-> > --- a/hw/xen/xen-mapcache.c
-> > +++ b/hw/xen/xen-mapcache.c
-> > @@ -396,13 +396,8 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)
-> >          }
-> >      }
-> >      if (!found) {
-> > -        trace_xen_ram_addr_from_mapcache_not_found(ptr);
-> > -        QTAILQ_FOREACH(reventry, &mapcache->locked_entries, next) {
-> > -
-> trace_xen_ram_addr_from_mapcache_found(reventry->paddr_index,
-> > -                                                   reventry->vaddr_req=
-);
-> > -        }
->
-> If these tracepoints aren't useful they need removing from trace-events.
-> However I suspect it would be better to keep them in as they are fairly
-> cheap.
->
-> Otherwise:
->
-> Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->
->
-Reviewed-by: Edgar E. Iglesias <edgar.iglesias@amd.com>
+Patch 2-3:
+---------
+Introduce channels arg to migrate_incoming_qmp
 
---00000000000059e8be0615bc2419
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Patch 4:
+-------
+Introduce postcopy qtests with new QAPI syntax
 
-<div dir=3D"ltr"><div dir=3D"ltr">On Fri, Mar 1, 2024 at 6:08=E2=80=AFPM Al=
-ex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.org">alex.bennee@li=
-naro.org</a>&gt; wrote:<br></div><div class=3D"gmail_quote"><blockquote cla=
-ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
-rgb(204,204,204);padding-left:1ex">Vikram Garhwal &lt;<a href=3D"mailto:vik=
-ram.garhwal@amd.com" target=3D"_blank">vikram.garhwal@amd.com</a>&gt; write=
-s:<br>
-<br>
-&gt; From: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" target=3D"_=
-blank">jgross@suse.com</a>&gt;<br>
-&gt;<br>
-&gt; Today xen_ram_addr_from_mapcache() will either abort() or return 0 in<=
-br>
-&gt; case it can&#39;t find a matching entry for a pointer value. Both case=
-s<br>
-&gt; are bad, so change that to return an invalid address instead.<br>
-&gt;<br>
-&gt; Signed-off-by: Juergen Gross &lt;<a href=3D"mailto:jgross@suse.com" ta=
-rget=3D"_blank">jgross@suse.com</a>&gt;<br>
-&gt; Reviewed-by: Stefano Stabellini &lt;<a href=3D"mailto:sstabellini@kern=
-el.org" target=3D"_blank">sstabellini@kernel.org</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 hw/xen/xen-mapcache.c | 11 +++--------<br>
-&gt;=C2=A0 1 file changed, 3 insertions(+), 8 deletions(-)<br>
-&gt;<br>
-&gt; diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c<br>
-&gt; index dfc412d138..179b7e95b2 100644<br>
-&gt; --- a/hw/xen/xen-mapcache.c<br>
-&gt; +++ b/hw/xen/xen-mapcache.c<br>
-&gt; @@ -396,13 +396,8 @@ ram_addr_t xen_ram_addr_from_mapcache(void *ptr)<=
-br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 if (!found) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_xen_ram_addr_from_mapcache_not_foun=
-d(ptr);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 QTAILQ_FOREACH(reventry, &amp;mapcache-&g=
-t;locked_entries, next) {<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 trace_xen_ram_addr_from_map=
-cache_found(reventry-&gt;paddr_index,<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0reventry-&gt;vaddr_req);<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
-<br>
-If these tracepoints aren&#39;t useful they need removing from trace-events=
-.<br>
-However I suspect it would be better to keep them in as they are fairly<br>
-cheap.<br>
-<br>
-Otherwise:<br>
-<br>
-Reviewed-by: Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.org"=
- target=3D"_blank">alex.bennee@linaro.org</a>&gt;<br>
-<br></blockquote><div><br></div><div>Reviewed-by: Edgar E. Iglesias &lt;<a =
-href=3D"mailto:edgar.iglesias@amd.com">edgar.iglesias@amd.com</a>&gt;<br></=
-div><div><br></div></div></div>
+Het Gala (4):
+  Revert "migration: modify test_multifd_tcp_none() to use new QAPI
+    syntax"
+  tests/qtest/migration: Replace 'migrate-incoming'
+    qtest_qmp_assert_success with migrate_incoming_qmp
+  tests/qtest/migration: Add channels parameter in migrate_incoming_qmp
+  tests/qtest/migration: Add postcopy migration qtests to use 'channels'
+    argument instead of uri
 
---00000000000059e8be0615bc2419--
+ tests/qtest/migration-helpers.c   | 13 ++++++--
+ tests/qtest/migration-helpers.h   |  4 +--
+ tests/qtest/migration-test.c      | 54 +++++++++++++++++++++++--------
+ tests/qtest/virtio-net-failover.c |  8 ++---
+ 4 files changed, 58 insertions(+), 21 deletions(-)
+
+-- 
+2.22.3
+
 
