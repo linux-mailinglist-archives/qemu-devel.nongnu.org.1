@@ -2,35 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC5C89EBDA
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A874089EC19
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:32:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSKN-0004Ay-TZ; Wed, 10 Apr 2024 03:25:04 -0400
+	id 1ruSKb-0004g4-QK; Wed, 10 Apr 2024 03:25:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSKC-0003q5-F5; Wed, 10 Apr 2024 03:24:53 -0400
+ id 1ruSKE-0003sK-To; Wed, 10 Apr 2024 03:24:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSK9-000495-Uq; Wed, 10 Apr 2024 03:24:52 -0400
+ id 1ruSKC-0004Ds-QZ; Wed, 10 Apr 2024 03:24:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 099CD5D685;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1A77D5D686;
  Wed, 10 Apr 2024 10:25:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A2F0EB02C6;
+ by tsrv.corpit.ru (Postfix) with SMTP id B2A47B02C7;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191712 invoked by uid 1000);
+Received: (nullmailer pid 4191715 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 22/87] hw/nvme: Use pcie_sriov_num_vfs()
-Date: Wed, 10 Apr 2024 10:21:55 +0300
-Message-Id: <20240410072303.4191455-22-mjt@tls.msk.ru>
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 23/87] pcie_sriov: Validate NumVFs
+Date: Wed, 10 Apr 2024 10:21:56 +0300
+Message-Id: <20240410072303.4191455-23-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,82 +62,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-nvme_sriov_pre_write_ctrl() used to directly inspect SR-IOV
-configurations to know the number of VFs being disabled due to SR-IOV
-configuration writes, but the logic was flawed and resulted in
-out-of-bound memory access.
-
-It assumed PCI_SRIOV_NUM_VF always has the number of currently enabled
-VFs, but it actually doesn't in the following cases:
-- PCI_SRIOV_NUM_VF has been set but PCI_SRIOV_CTRL_VFE has never been.
-- PCI_SRIOV_NUM_VF was written after PCI_SRIOV_CTRL_VFE was set.
-- VFs were only partially enabled because of realization failure.
-
-It is a responsibility of pcie_sriov to interpret SR-IOV configurations
-and pcie_sriov does it correctly, so use pcie_sriov_num_vfs(), which it
-provides, to get the number of enabled VFs before and after SR-IOV
-configuration writes.
+The guest may write NumVFs greater than TotalVFs and that can lead
+to buffer overflow in VF implementations.
 
 Cc: qemu-stable@nongnu.org
-Fixes: CVE-2024-26328
-Fixes: 11871f53ef8e ("hw/nvme: Add support for the Virtualization Management command")
-Suggested-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: CVE-2024-26327
+Fixes: 7c0fa8dff811 ("pcie: Add support for Single Root I/O Virtualization (SR/IOV)")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20240228-reuse-v8-1-282660281e60@daynix.com>
+Message-Id: <20240228-reuse-v8-2-282660281e60@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 91bb64a8d2014fda33a81fcf0fce37340f0d3b0c)
+Reviewed-by: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
+(cherry picked from commit 6081b4243cd64dff1b2cf5b0c215c71e9d7e753b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
-index 585bd3b397..eaa6946604 100644
---- a/hw/nvme/ctrl.c
-+++ b/hw/nvme/ctrl.c
-@@ -8497,36 +8497,26 @@ static void nvme_pci_reset(DeviceState *qdev)
-     nvme_ctrl_reset(n, NVME_RESET_FUNCTION);
- }
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index a1fe65f5d8..da209b7f47 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -176,6 +176,9 @@ static void register_vfs(PCIDevice *dev)
  
--static void nvme_sriov_pre_write_ctrl(PCIDevice *dev, uint32_t address,
--                                      uint32_t val, int len)
-+static void nvme_sriov_post_write_config(PCIDevice *dev, uint16_t old_num_vfs)
- {
-     NvmeCtrl *n = NVME(dev);
-     NvmeSecCtrlEntry *sctrl;
--    uint16_t sriov_cap = dev->exp.sriov_cap;
--    uint32_t off = address - sriov_cap;
--    int i, num_vfs;
-+    int i;
+     assert(sriov_cap > 0);
+     num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
++    if (num_vfs > pci_get_word(dev->config + sriov_cap + PCI_SRIOV_TOTAL_VF)) {
++        return;
++    }
  
--    if (!sriov_cap) {
--        return;
--    }
--
--    if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
--        if (!(val & PCI_SRIOV_CTRL_VFE)) {
--            num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
--            for (i = 0; i < num_vfs; i++) {
--                sctrl = &n->sec_ctrl_list.sec[i];
--                nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
--            }
--        }
-+    for (i = pcie_sriov_num_vfs(dev); i < old_num_vfs; i++) {
-+        sctrl = &n->sec_ctrl_list.sec[i];
-+        nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
-     }
- }
+     dev->exp.sriov_pf.vf = g_new(PCIDevice *, num_vfs);
  
- static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
-                                   uint32_t val, int len)
- {
--    nvme_sriov_pre_write_ctrl(dev, address, val, len);
-+    uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
-+
-     pci_default_write_config(dev, address, val, len);
-     pcie_cap_flr_write_config(dev, address, val, len);
-+    nvme_sriov_post_write_config(dev, old_num_vfs);
- }
- 
- static const VMStateDescription nvme_vmstate = {
 -- 
 2.39.2
 
