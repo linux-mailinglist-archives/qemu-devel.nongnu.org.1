@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADDB89EC3C
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:37:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 692E989EC25
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNO-0003GN-MX; Wed, 10 Apr 2024 03:28:10 -0400
+	id 1ruSNS-0003MI-Hr; Wed, 10 Apr 2024 03:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMR-0001gv-Oa; Wed, 10 Apr 2024 03:27:12 -0400
+ id 1ruSMT-0001jh-Ho; Wed, 10 Apr 2024 03:27:17 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSMO-0004gw-Id; Wed, 10 Apr 2024 03:27:11 -0400
+ id 1ruSMR-0004ne-R1; Wed, 10 Apr 2024 03:27:13 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A771A5D69C;
+ by isrv.corpit.ru (Postfix) with ESMTP id B666E5D69D;
  Wed, 10 Apr 2024 10:25:05 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 4B926B02DC;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5AC0EB02DD;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191780 invoked by uid 1000);
+Received: (nullmailer pid 4191783 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>, Helge Deller <deller@gmx.de>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 44/87] target/hppa: ldcw,s uses static shift of 3
-Date: Wed, 10 Apr 2024 10:22:17 +0300
-Message-Id: <20240410072303.4191455-44-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 45/87] target/hppa: fix shrp for wide mode
+Date: Wed, 10 Apr 2024 10:22:18 +0300
+Message-Id: <20240410072303.4191455-45-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -61,27 +61,37 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-Fixes: 96d6407f363 ("target-hppa: Implement loads and stores")
+Fixes: f7b775a9c075 ("target/hppa: Implement SHRPD")
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240319161921.487080-2-svens@stackframe.org>
+Reviewed-by: Helge Deller <deller@gmx.de>
+Message-Id: <20240319161921.487080-3-svens@stackframe.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit c3ea1996a14d5dbbedb3f9036f7ebec4395dc889)
+(cherry picked from commit d37fad0ae5bd2c544fdb0f2eff6acdb28a155be0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 23ff14c39b..533feca5ec 100644
+index 533feca5ec..15a8bfd48c 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -3129,7 +3129,7 @@ static bool trans_ldc(DisasContext *ctx, arg_ldst *a)
-         dest = dest_gpr(ctx, a->t);
+@@ -3506,7 +3506,7 @@ static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
+     /* Install the new nullification.  */
+     cond_free(&ctx->null_cond);
+     if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
++        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
      }
- 
--    form_gva(ctx, &addr, &ofs, a->b, a->x, a->scale ? a->size : 0,
-+    form_gva(ctx, &addr, &ofs, a->b, a->x, a->scale ? 3 : 0,
-              a->disp, a->sp, a->m, MMU_DISABLED(ctx));
- 
-     /*
+     return nullify_end(ctx);
+ }
+@@ -3549,7 +3549,7 @@ static bool trans_shrp_imm(DisasContext *ctx, arg_shrp_imm *a)
+     /* Install the new nullification.  */
+     cond_free(&ctx->null_cond);
+     if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, false, dest);
++        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     }
+     return nullify_end(ctx);
+ }
 -- 
 2.39.2
 
