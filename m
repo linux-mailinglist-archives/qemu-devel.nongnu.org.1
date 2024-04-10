@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0105589EC5D
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:41:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3155E89EC22
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:34:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSPy-0003el-03; Wed, 10 Apr 2024 03:30:50 -0400
+	id 1ruSPw-0003YB-6a; Wed, 10 Apr 2024 03:30:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSPc-00030a-QR; Wed, 10 Apr 2024 03:30:30 -0400
+ id 1ruSPd-00030c-FA; Wed, 10 Apr 2024 03:30:30 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSPa-0005Mi-F7; Wed, 10 Apr 2024 03:30:28 -0400
+ id 1ruSPb-0005Mz-Ok; Wed, 10 Apr 2024 03:30:29 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 0D2895D6BC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 1BB4F5D6BD;
  Wed, 10 Apr 2024 10:25:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A5937B02FC;
+ by tsrv.corpit.ru (Postfix) with SMTP id B6899B02FD;
  Wed, 10 Apr 2024 10:23:09 +0300 (MSK)
-Received: (nullmailer pid 4191879 invoked by uid 1000);
+Received: (nullmailer pid 4191882 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Avihai Horon <avihaih@nvidia.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Peter Xu <peterx@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 76/87] migration/postcopy: Ensure postcopy_start() sets
- errp if it fails
-Date: Wed, 10 Apr 2024 10:22:49 +0300
-Message-Id: <20240410072303.4191455-76-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: [Stable-8.2.3 77/87] gitlab-ci/cirrus: switch from 'master' to
+ 'latest'
+Date: Wed, 10 Apr 2024 10:22:50 +0300
+Message-Id: <20240410072303.4191455-77-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,68 +59,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+Commit ab72522797 "gitlab: switch from 'stable' to
+'latest' docker container tags" switched most tags
+to 'latest' but missed cirrus image.  Fix this now.
 
-There are several places where postcopy_start() fails without setting
-errp. This can cause a null pointer de-reference, as in case of error,
-the caller of postcopy_start() copies/prints the error set in errp.
-
-Fix it by setting errp in all of postcopy_start() error paths.
-
-Cc: qemu-stable <qemu-stable@nongnu.org>
-Fixes: 908927db28ea ("migration: Update error description whenever migration fails")
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Link: https://lore.kernel.org/r/20240328140252.16756-3-avihaih@nvidia.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-(cherry picked from commit d0ad271a7613459bd0a3397c8071a4ad06f3f7eb)
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2256
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Message-id: 20240401051633.2780456-1-mjt@tls.msk.ru
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 1d2f2b35bc86b7a13dc3009a3c5031220aa0b7de)
 
-diff --git a/migration/migration.c b/migration/migration.c
-index 982ab85f04..dbc6c3947c 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -2408,6 +2408,8 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-         migration_wait_main_channel(ms);
-         if (postcopy_preempt_establish_channel(ms)) {
-             migrate_set_state(&ms->state, ms->state, MIGRATION_STATUS_FAILED);
-+            error_setg(errp, "%s: Failed to establish preempt channel",
-+                       __func__);
-             return -1;
-         }
-     }
-@@ -2427,17 +2429,22 @@ static int postcopy_start(MigrationState *ms, Error **errp)
-     global_state_store();
-     ret = migration_stop_vm(RUN_STATE_FINISH_MIGRATE);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed to stop the VM", __func__);
-         goto fail;
-     }
- 
-     ret = migration_maybe_pause(ms, &cur_state,
-                                 MIGRATION_STATUS_POSTCOPY_ACTIVE);
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed in migration_maybe_pause()",
-+                         __func__);
-         goto fail;
-     }
- 
-     ret = bdrv_inactivate_all();
-     if (ret < 0) {
-+        error_setg_errno(errp, -ret, "%s: Failed in bdrv_inactivate_all()",
-+                         __func__);
-         goto fail;
-     }
-     restart_block = true;
-@@ -2514,6 +2521,7 @@ static int postcopy_start(MigrationState *ms, Error **errp)
- 
-     /* Now send that blob */
-     if (qemu_savevm_send_packaged(ms->to_dst_file, bioc->data, bioc->usage)) {
-+        error_setg(errp, "%s: Failed to send packaged data", __func__);
-         goto fail_closefb;
-     }
-     qemu_fclose(fb);
+diff --git a/.gitlab-ci.d/cirrus.yml b/.gitlab-ci.d/cirrus.yml
+index b45f9de62f..4671f069c3 100644
+--- a/.gitlab-ci.d/cirrus.yml
++++ b/.gitlab-ci.d/cirrus.yml
+@@ -13,7 +13,7 @@
+ .cirrus_build_job:
+   extends: .base_job_template
+   stage: build
+-  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:master
++  image: registry.gitlab.com/libvirt/libvirt-ci/cirrus-run:latest
+   needs: []
+   # 20 mins larger than "timeout_in" in cirrus/build.yml
+   # as there's often a 5-10 minute delay before Cirrus CI
 -- 
 2.39.2
 
