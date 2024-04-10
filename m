@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E7889EC1B
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA9089EC20
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:33:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSQw-0005bt-2w; Wed, 10 Apr 2024 03:31:50 -0400
+	id 1ruSQw-0005Zs-6X; Wed, 10 Apr 2024 03:31:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSQU-0005J0-Ph; Wed, 10 Apr 2024 03:31:23 -0400
+ id 1ruSQW-0005Qq-8R; Wed, 10 Apr 2024 03:31:29 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSQR-0005QD-RE; Wed, 10 Apr 2024 03:31:21 -0400
+ id 1ruSQU-0005QY-HE; Wed, 10 Apr 2024 03:31:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 89AA45D6C3;
+ by isrv.corpit.ru (Postfix) with ESMTP id 9AB035D6C4;
  Wed, 10 Apr 2024 10:25:08 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2E992B0303;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3E3C9B0304;
  Wed, 10 Apr 2024 10:23:10 +0300 (MSK)
-Received: (nullmailer pid 4191901 invoked by uid 1000);
+Received: (nullmailer pid 4191904 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 83/87] target/arm: Use correct SecuritySpace for
- AArch64 AT ops at EL3
-Date: Wed, 10 Apr 2024 10:22:56 +0300
-Message-Id: <20240410072303.4191455-83-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Wafer <wafer@jaguarmicro.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 84/87] hw/virtio: Fix packed virtqueue flush used_idx
+Date: Wed, 10 Apr 2024 10:22:57 +0300
+Message-Id: <20240410072303.4191455-84-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,70 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Wafer <wafer@jaguarmicro.com>
 
-When we do an AT address translation operation, the page table walk
-is supposed to be performed in the context of the EL we're doing the
-walk for, so for instance an AT S1E2R walk is done for EL2.  In the
-pseudocode an EL is passed to AArch64.AT(), which calls
-SecurityStateAtEL() to find the security state that we should be
-doing the walk with.
+In the event of writing many chains of descriptors, the device must
+write just the id of the last buffer in the descriptor chain, skip
+forward the number of descriptors in the chain, and then repeat the
+operations for the rest of chains.
 
-In ats_write64() we get this wrong, instead using the current
-security space always.  This is fine for AT operations performed from
-EL1 and EL2, because there the current security state and the
-security state for the lower EL are the same.  But for AT operations
-performed from EL3, the current security state is always either
-Secure or Root, whereas we want to use the security state defined by
-SCR_EL3.{NS,NSE} for the walk. This affects not just guests using
-FEAT_RME but also ones where EL3 is Secure state and the EL3 code
-is trying to do an AT for a NonSecure EL2 or EL1.
+Current QEMU code writes all the buffer ids consecutively, and then
+skips all the buffers altogether. This is a bug, and can be reproduced
+with a VirtIONet device with _F_MRG_RXBUB and without
+_F_INDIRECT_DESC:
 
-Use arm_security_space_below_el3() to get the SecuritySpace to
-pass to do_ats_write() for all AT operations except the
-AT S1E3* operations.
+If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
+but not the VIRTIO_RING_F_INDIRECT_DESC feature,
+'VirtIONetQueue->rx_vq' will use the merge feature
+to store data in multiple 'elems'.
+The 'num_buffers' in the virtio header indicates how many elements are merged.
+If the value of 'num_buffers' is greater than 1,
+all the merged elements will be filled into the descriptor ring.
+The 'idx' of the elements should be the value of 'vq->used_idx' plus 'ndescs'.
 
-Cc: qemu-stable@nongnu.org
-Fixes: e1ee56ec2383 ("target/arm: Pass security space rather than flag for AT instructions")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2250
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240405180232.3570066-1-peter.maydell@linaro.org
-(cherry picked from commit 19b254e86a900dc5ee332e3ac0baf9c521301abf)
+Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Wafer <wafer@jaguarmicro.com>
+Message-Id: <20240407015451.5228-2-wafer@jaguarmicro.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 2d9a31b3c27311eca1682cb2c076d7a300441960)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index df1646de3a..ca2c6e9732 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -3703,6 +3703,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-     ARMMMUIdx mmu_idx;
-     uint64_t hcr_el2 = arm_hcr_el2_eff(env);
-     bool regime_e20 = (hcr_el2 & (HCR_E2H | HCR_TGE)) == (HCR_E2H | HCR_TGE);
-+    bool for_el3 = false;
-+    ARMSecuritySpace ss;
- 
-     switch (ri->opc2 & 6) {
-     case 0:
-@@ -3720,6 +3722,7 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-             break;
-         case 6: /* AT S1E3R, AT S1E3W */
-             mmu_idx = ARMMMUIdx_E3;
-+            for_el3 = true;
-             break;
-         default:
-             g_assert_not_reached();
-@@ -3738,8 +3741,8 @@ static void ats_write64(CPUARMState *env, const ARMCPRegInfo *ri,
-         g_assert_not_reached();
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index 356d690cc9..aa02c4937c 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -957,12 +957,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
+         return;
      }
  
--    env->cp15.par_el[1] = do_ats_write(env, value, access_type,
--                                       mmu_idx, arm_security_space(env));
-+    ss = for_el3 ? arm_security_space(env) : arm_security_space_below_el3(env);
-+    env->cp15.par_el[1] = do_ats_write(env, value, access_type, mmu_idx, ss);
- #else
-     /* Handled by hardware accelerator. */
-     g_assert_not_reached();
++    /*
++     * For indirect element's 'ndescs' is 1.
++     * For all other elemment's 'ndescs' is the
++     * number of descriptors chained by NEXT (as set in virtqueue_packed_pop).
++     * So When the 'elem' be filled into the descriptor ring,
++     * The 'idx' of this 'elem' shall be
++     * the value of 'vq->used_idx' plus the 'ndescs'.
++     */
++    ndescs += vq->used_elems[0].ndescs;
+     for (i = 1; i < count; i++) {
+-        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
++        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
+         ndescs += vq->used_elems[i].ndescs;
+     }
+     virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
+-    ndescs += vq->used_elems[0].ndescs;
+ 
+     vq->inuse -= ndescs;
+     vq->used_idx += ndescs;
 -- 
 2.39.2
 
