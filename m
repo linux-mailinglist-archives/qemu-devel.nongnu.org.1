@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F286689EA24
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB2989EA11
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:50:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQo8-0002aA-Ev; Wed, 10 Apr 2024 01:47:40 -0400
+	id 1ruQoC-0003P0-C0; Wed, 10 Apr 2024 01:47:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQn5-0007Bp-AK; Wed, 10 Apr 2024 01:46:35 -0400
+ id 1ruQn7-0007JS-1U; Wed, 10 Apr 2024 01:46:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQn3-0001tU-P5; Wed, 10 Apr 2024 01:46:35 -0400
+ id 1ruQn4-0001tj-TH; Wed, 10 Apr 2024 01:46:36 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5DB465D4F2;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6CE945D4F3;
  Wed, 10 Apr 2024 08:46:16 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 235AFB0159;
+ by tsrv.corpit.ru (Postfix) with SMTP id 32AF3B015A;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182080 invoked by uid 1000);
+Received: (nullmailer pid 4182083 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 26/41] tests/unit: Bump test-replication timeout to 60
- seconds
-Date: Wed, 10 Apr 2024 08:43:47 +0300
-Message-Id: <20240410054416.4181891-26-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 27/41] tests: Raise timeouts for bufferiszero and
+ crypto-tlscredsx509
+Date: Wed, 10 Apr 2024 08:43:48 +0300
+Message-Id: <20240410054416.4181891-27-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,36 +61,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
 
-We're seeing timeouts for this test on CI runs (specifically for
-ubuntu-20.04-s390x-all). It doesn't fail consistently, but even the
-successful runs take about 27 or 28 seconds, which is not very far from
-the 30 seconds timeout.
+On our gcov CI job, the bufferiszero and crypto-tlscredsx509
+tests time out occasionally, making the job flaky. Double the
+timeout on these two tests.
 
-Bump the timeout a bit to make failure less likely even on this CI host.
-
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240125165803.48373-1-kwolf@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit 63b18312d14ac984acaf13c7c55d9baa2d61496e)
+Cc: qemu-stable@nongnu.org
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2221
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-id: 20240312110815.116992-1-peter.maydell@linaro.org
+(cherry picked from commit 55f7c6a5f2bd82e1d2d0eac6eee0185ce0451815)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 2727ec235e..60eb89ea98 100644
+index 60eb89ea98..ca44f45232 100644
 --- a/tests/unit/meson.build
 +++ b/tests/unit/meson.build
-@@ -169,7 +169,8 @@ slow_tests = {
+@@ -167,9 +167,10 @@ test_env.set('G_TEST_BUILDDIR', meson.current_build_dir())
+ 
+ slow_tests = {
    'test-aio-multithread' : 120,
++  'test-bufferiszero': 60,
    'test-crypto-block' : 300,
-   'test-crypto-tlscredsx509': 45,
--  'test-crypto-tlssession': 45
-+  'test-crypto-tlssession': 45,
-+  'test-replication': 60,
+-  'test-crypto-tlscredsx509': 45,
+-  'test-crypto-tlssession': 45,
++  'test-crypto-tlscredsx509': 90,
++  'test-crypto-tlssession': 90,
+   'test-replication': 60,
  }
  
- foreach test_name, extra: tests
 -- 
 2.39.2
 
