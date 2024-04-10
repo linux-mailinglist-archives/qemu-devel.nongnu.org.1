@@ -2,42 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343B589EC4F
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7BD89EC38
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:36:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSNc-0003lr-0V; Wed, 10 Apr 2024 03:28:24 -0400
+	id 1ruSNS-0003P6-PB; Wed, 10 Apr 2024 03:28:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSNL-0003Fn-Bz; Wed, 10 Apr 2024 03:28:07 -0400
+ id 1ruSNO-0003Kx-Fr; Wed, 10 Apr 2024 03:28:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSNI-0004s3-Cj; Wed, 10 Apr 2024 03:28:07 -0400
+ id 1ruSNM-0004sR-6P; Wed, 10 Apr 2024 03:28:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 372D95D6A4;
+ by isrv.corpit.ru (Postfix) with ESMTP id 4BD815D6A5;
  Wed, 10 Apr 2024 10:25:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CF963B02E4;
+ by tsrv.corpit.ru (Postfix) with SMTP id E0581B02E5;
  Wed, 10 Apr 2024 10:23:07 +0300 (MSK)
-Received: (nullmailer pid 4191805 invoked by uid 1000);
+Received: (nullmailer pid 4191808 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Song Gao <gaosong@loongson.cn>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+Cc: qemu-stable@nongnu.org, Ido Plat <ido.plat@ibm.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 52/87] target/loongarch: Fix qemu-system-loongarch64
- assert failed with the option '-d int'
-Date: Wed, 10 Apr 2024 10:22:25 +0300
-Message-Id: <20240410072303.4191455-52-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 53/87] target/s390x: Use mutable temporary value for
+ op_ts
+Date: Wed, 10 Apr 2024 10:22:26 +0300
+Message-Id: <20240410072303.4191455-53-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,126 +62,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Song Gao <gaosong@loongson.cn>
+From: Ido Plat <ido.plat@ibm.com>
 
-qemu-system-loongarch64 assert failed with the option '-d int',
-the helper_idle() raise an exception EXCP_HLT, but the exception name is undefined.
+Otherwise TCG would assume the register that holds t1 would be constant
+and reuse whenever it needs the value within it.
 
-Signed-off-by: Song Gao <gaosong@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240321123606.1704900-1-gaosong@loongson.cn>
-(cherry picked from commit 1590154ee4376819a8c6ee61e849ebf4a4e7cd02)
+Cc: qemu-stable@nongnu.org
+Fixes: f1ea739bd598 ("target/s390x: Use tcg_constant_* in local contexts")
+Reviewed-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+[iii: Adjust a newline and capitalization, add tags]
+Signed-off-by: Ido Plat <ido.plat@ibm.com>
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Message-ID: <20240318202722.20675-1-iii@linux.ibm.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit 272fba9779af0bb1c29cd30302fc1e31c59274d0)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
-index fc075952e6..570201e616 100644
---- a/target/loongarch/cpu.c
-+++ b/target/loongarch/cpu.c
-@@ -35,33 +35,45 @@ const char * const fregnames[32] = {
-     "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
- };
+diff --git a/target/s390x/tcg/translate.c b/target/s390x/tcg/translate.c
+index 8df00b7df9..3af81fa8f0 100644
+--- a/target/s390x/tcg/translate.c
++++ b/target/s390x/tcg/translate.c
+@@ -4783,9 +4783,10 @@ static DisasJumpType op_trXX(DisasContext *s, DisasOps *o)
  
--static const char * const excp_names[] = {
--    [EXCCODE_INT] = "Interrupt",
--    [EXCCODE_PIL] = "Page invalid exception for load",
--    [EXCCODE_PIS] = "Page invalid exception for store",
--    [EXCCODE_PIF] = "Page invalid exception for fetch",
--    [EXCCODE_PME] = "Page modified exception",
--    [EXCCODE_PNR] = "Page Not Readable exception",
--    [EXCCODE_PNX] = "Page Not Executable exception",
--    [EXCCODE_PPI] = "Page Privilege error",
--    [EXCCODE_ADEF] = "Address error for instruction fetch",
--    [EXCCODE_ADEM] = "Address error for Memory access",
--    [EXCCODE_SYS] = "Syscall",
--    [EXCCODE_BRK] = "Break",
--    [EXCCODE_INE] = "Instruction Non-Existent",
--    [EXCCODE_IPE] = "Instruction privilege error",
--    [EXCCODE_FPD] = "Floating Point Disabled",
--    [EXCCODE_FPE] = "Floating Point Exception",
--    [EXCCODE_DBP] = "Debug breakpoint",
--    [EXCCODE_BCE] = "Bound Check Exception",
--    [EXCCODE_SXD] = "128 bit vector instructions Disable exception",
--    [EXCCODE_ASXD] = "256 bit vector instructions Disable exception",
-+struct TypeExcp {
-+    int32_t exccode;
-+    const char * const name;
-+};
-+
-+static const struct TypeExcp excp_names[] = {
-+    {EXCCODE_INT, "Interrupt"},
-+    {EXCCODE_PIL, "Page invalid exception for load"},
-+    {EXCCODE_PIS, "Page invalid exception for store"},
-+    {EXCCODE_PIF, "Page invalid exception for fetch"},
-+    {EXCCODE_PME, "Page modified exception"},
-+    {EXCCODE_PNR, "Page Not Readable exception"},
-+    {EXCCODE_PNX, "Page Not Executable exception"},
-+    {EXCCODE_PPI, "Page Privilege error"},
-+    {EXCCODE_ADEF, "Address error for instruction fetch"},
-+    {EXCCODE_ADEM, "Address error for Memory access"},
-+    {EXCCODE_SYS, "Syscall"},
-+    {EXCCODE_BRK, "Break"},
-+    {EXCCODE_INE, "Instruction Non-Existent"},
-+    {EXCCODE_IPE, "Instruction privilege error"},
-+    {EXCCODE_FPD, "Floating Point Disabled"},
-+    {EXCCODE_FPE, "Floating Point Exception"},
-+    {EXCCODE_DBP, "Debug breakpoint"},
-+    {EXCCODE_BCE, "Bound Check Exception"},
-+    {EXCCODE_SXD, "128 bit vector instructions Disable exception"},
-+    {EXCCODE_ASXD, "256 bit vector instructions Disable exception"},
-+    {EXCP_HLT, "EXCP_HLT"},
- };
- 
- const char *loongarch_exception_name(int32_t exception)
+ static DisasJumpType op_ts(DisasContext *s, DisasOps *o)
  {
--    assert(excp_names[exception]);
--    return excp_names[exception];
-+    int i;
-+
-+    for (i = 0; i < ARRAY_SIZE(excp_names); i++) {
-+        if (excp_names[i].exccode == exception) {
-+            return excp_names[i].name;
-+        }
-+    }
-+    return "Unknown";
- }
+-    TCGv_i32 t1 = tcg_constant_i32(0xff);
++    TCGv_i32 ff = tcg_constant_i32(0xff);
++    TCGv_i32 t1 = tcg_temp_new_i32();
  
- void G_NORETURN do_raise_exception(CPULoongArchState *env,
-@@ -70,7 +82,7 @@ void G_NORETURN do_raise_exception(CPULoongArchState *env,
- {
-     CPUState *cs = env_cpu(env);
- 
--    qemu_log_mask(CPU_LOG_INT, "%s: %d (%s)\n",
-+    qemu_log_mask(CPU_LOG_INT, "%s: expection: %d (%s)\n",
-                   __func__,
-                   exception,
-                   loongarch_exception_name(exception));
-@@ -145,22 +157,16 @@ static void loongarch_cpu_do_interrupt(CPUState *cs)
-     CPULoongArchState *env = &cpu->env;
-     bool update_badinstr = 1;
-     int cause = -1;
--    const char *name;
-     bool tlbfill = FIELD_EX64(env->CSR_TLBRERA, CSR_TLBRERA, ISTLBR);
-     uint32_t vec_size = FIELD_EX64(env->CSR_ECFG, CSR_ECFG, VS);
- 
-     if (cs->exception_index != EXCCODE_INT) {
--        if (cs->exception_index < 0 ||
--            cs->exception_index >= ARRAY_SIZE(excp_names)) {
--            name = "unknown";
--        } else {
--            name = excp_names[cs->exception_index];
--        }
--
-         qemu_log_mask(CPU_LOG_INT,
-                      "%s enter: pc " TARGET_FMT_lx " ERA " TARGET_FMT_lx
--                     " TLBRERA " TARGET_FMT_lx " %s exception\n", __func__,
--                     env->pc, env->CSR_ERA, env->CSR_TLBRERA, name);
-+                     " TLBRERA " TARGET_FMT_lx " exception: %d (%s)\n",
-+                     __func__, env->pc, env->CSR_ERA, env->CSR_TLBRERA,
-+                     cs->exception_index,
-+                     loongarch_exception_name(cs->exception_index));
-     }
- 
-     switch (cs->exception_index) {
+-    tcg_gen_atomic_xchg_i32(t1, o->in2, t1, get_mem_index(s), MO_UB);
++    tcg_gen_atomic_xchg_i32(t1, o->in2, ff, get_mem_index(s), MO_UB);
+     tcg_gen_extract_i32(cc_op, t1, 7, 1);
+     set_cc_static(s);
+     return DISAS_NEXT;
 -- 
 2.39.2
 
