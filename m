@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458ED89EBD2
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AADBD89EBDD
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSJ1-0007yl-6c; Wed, 10 Apr 2024 03:23:39 -0400
+	id 1ruSJQ-0008LF-Fu; Wed, 10 Apr 2024 03:24:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIv-0007mm-Ik; Wed, 10 Apr 2024 03:23:33 -0400
+ id 1ruSJ6-0008Ip-S0; Wed, 10 Apr 2024 03:23:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIq-0003vI-RR; Wed, 10 Apr 2024 03:23:33 -0400
+ id 1ruSIx-0003w5-UB; Wed, 10 Apr 2024 03:23:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 12BDE5D679;
+ by isrv.corpit.ru (Postfix) with ESMTP id 24F9C5D67A;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id AA8FAB02BA;
+ by tsrv.corpit.ru (Postfix) with SMTP id BB625B02BB;
  Wed, 10 Apr 2024 10:23:04 +0300 (MSK)
-Received: (nullmailer pid 4191674 invoked by uid 1000);
+Received: (nullmailer pid 4191677 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Sven Schnelle <svens@stackframe.org>,
- Helge Deller <deller@gmx.de>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 10/87] hw/scsi/lsi53c895a: stop script on phase mismatch
-Date: Wed, 10 Apr 2024 10:21:43 +0300
-Message-Id: <20240410072303.4191455-10-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 11/87] hw/scsi/lsi53c895a: add timer to scripts
+ processing
+Date: Wed, 10 Apr 2024 10:21:44 +0300
+Message-Id: <20240410072303.4191455-11-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -39,11 +40,11 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,83 +62,170 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Sven Schnelle <svens@stackframe.org>
 
-Netbsd isn't happy with qemu lsi53c895a emulation:
+HP-UX 10.20 seems to make the lsi53c895a spinning on a memory location
+under certain circumstances. As the SCSI controller and CPU are not
+running at the same time this loop will never finish. After some
+time, the check loop interrupts with a unexpected device disconnect.
+This works, but is slow because the kernel resets the scsi controller.
+Instead of signaling UDC, start a timer and exit the loop. Until the
+timer fires, the CPU can process instructions which might changes the
+memory location.
 
-cd0(esiop0:0:2:0): command with tag id 0 reset
-esiop0: autoconfiguration error: phase mismatch without command
-esiop0: autoconfiguration error: unhandled scsi interrupt, sist=0x80 sstat1=0x0 DSA=0x23a64b1 DSP=0x50
+The limit of instructions is also reduced because scripts running on
+the SCSI processor are usually very short. This keeps the time until
+the loop is exit short.
 
-This is because lsi_bad_phase() triggers a phase mismatch, which
-stops SCRIPT processing. However, after returning to
-lsi_command_complete(), SCRIPT is restarted with lsi_resume_script().
-Fix this by adding a return value to lsi_bad_phase(), and only resume
-script processing when lsi_bad_phase() didn't trigger a host interrupt.
-
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Tested-by: Helge Deller <deller@gmx.de>
-Message-ID: <20240302214453.2071388-1-svens@stackframe.org>
+Message-ID: <20240229204407.1699260-1-svens@stackframe.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit a9198b3132d81a6bfc9fdbf6f3d3a514c2864674)
+(cherry picked from commit 9876359990dd4c8a48de65cf5e1c3d13e96a7f4e)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/scsi/lsi53c895a.c b/hw/scsi/lsi53c895a.c
-index afbea0fefa..46c17b320e 100644
+index 46c17b320e..4d0c5fcd9b 100644
 --- a/hw/scsi/lsi53c895a.c
 +++ b/hw/scsi/lsi53c895a.c
-@@ -570,8 +570,9 @@ static inline void lsi_set_phase(LSIState *s, int phase)
-     s->sstat1 = (s->sstat1 & ~PHASE_MASK) | phase;
+@@ -188,7 +188,7 @@ static const char *names[] = {
+ #define LSI_TAG_VALID     (1 << 16)
+ 
+ /* Maximum instructions to process. */
+-#define LSI_MAX_INSN    10000
++#define LSI_MAX_INSN    100
+ 
+ typedef struct lsi_request {
+     SCSIRequest *req;
+@@ -205,6 +205,7 @@ enum {
+     LSI_WAIT_RESELECT, /* Wait Reselect instruction has been issued */
+     LSI_DMA_SCRIPTS, /* processing DMA from lsi_execute_script */
+     LSI_DMA_IN_PROGRESS, /* DMA operation is in progress */
++    LSI_WAIT_SCRIPTS, /* SCRIPTS stopped because of instruction count limit */
+ };
+ 
+ enum {
+@@ -224,6 +225,7 @@ struct LSIState {
+     MemoryRegion ram_io;
+     MemoryRegion io_io;
+     AddressSpace pci_io_as;
++    QEMUTimer *scripts_timer;
+ 
+     int carry; /* ??? Should this be an a visible register somewhere?  */
+     int status;
+@@ -415,6 +417,7 @@ static void lsi_soft_reset(LSIState *s)
+     s->sbr = 0;
+     assert(QTAILQ_EMPTY(&s->queue));
+     assert(!s->current);
++    timer_del(s->scripts_timer);
  }
  
--static void lsi_bad_phase(LSIState *s, int out, int new_phase)
-+static int lsi_bad_phase(LSIState *s, int out, int new_phase)
- {
-+    int ret = 0;
-     /* Trigger a phase mismatch.  */
-     if (s->ccntl0 & LSI_CCNTL0_ENPMJ) {
-         if ((s->ccntl0 & LSI_CCNTL0_PMJCTL)) {
-@@ -584,8 +585,10 @@ static void lsi_bad_phase(LSIState *s, int out, int new_phase)
-         trace_lsi_bad_phase_interrupt();
-         lsi_script_scsi_interrupt(s, LSI_SIST0_MA, 0);
-         lsi_stop_script(s);
-+        ret = 1;
+ static int lsi_dma_40bit(LSIState *s)
+@@ -1135,6 +1138,12 @@ static void lsi_wait_reselect(LSIState *s)
      }
-     lsi_set_phase(s, new_phase);
-+    return ret;
  }
  
- 
-@@ -789,7 +792,7 @@ static int lsi_queue_req(LSIState *s, SCSIRequest *req, uint32_t len)
- static void lsi_command_complete(SCSIRequest *req, size_t resid)
++static void lsi_scripts_timer_start(LSIState *s)
++{
++    trace_lsi_scripts_timer_start();
++    timer_mod(s->scripts_timer, qemu_clock_get_us(QEMU_CLOCK_VIRTUAL) + 500);
++}
++
+ static void lsi_execute_script(LSIState *s)
  {
-     LSIState *s = LSI53C895A(req->bus->qbus.parent);
--    int out;
-+    int out, stop = 0;
+     PCIDevice *pci_dev = PCI_DEVICE(s);
+@@ -1144,6 +1153,11 @@ static void lsi_execute_script(LSIState *s)
+     int insn_processed = 0;
+     static int reentrancy_level;
  
-     out = (s->sstat1 & PHASE_MASK) == PHASE_DO;
-     trace_lsi_command_complete(req->status);
-@@ -797,7 +800,10 @@ static void lsi_command_complete(SCSIRequest *req, size_t resid)
-     s->command_complete = 2;
-     if (s->waiting && s->dbc != 0) {
-         /* Raise phase mismatch for short transfers.  */
--        lsi_bad_phase(s, out, PHASE_ST);
-+        stop = lsi_bad_phase(s, out, PHASE_ST);
-+        if (stop) {
-+            s->waiting = 0;
-+        }
-     } else {
-         lsi_set_phase(s, PHASE_ST);
-     }
-@@ -807,7 +813,9 @@ static void lsi_command_complete(SCSIRequest *req, size_t resid)
-         lsi_request_free(s, s->current);
-         scsi_req_unref(req);
-     }
--    lsi_resume_script(s);
-+    if (!stop) {
-+        lsi_resume_script(s);
++    if (s->waiting == LSI_WAIT_SCRIPTS) {
++        timer_del(s->scripts_timer);
++        s->waiting = LSI_NOWAIT;
 +    }
++
+     reentrancy_level++;
+ 
+     s->istat1 |= LSI_ISTAT1_SRUN;
+@@ -1151,8 +1165,8 @@ again:
+     /*
+      * Some windows drivers make the device spin waiting for a memory location
+      * to change. If we have executed more than LSI_MAX_INSN instructions then
+-     * assume this is the case and force an unexpected device disconnect. This
+-     * is apparently sufficient to beat the drivers into submission.
++     * assume this is the case and start a timer. Until the timer fires, the
++     * host CPU has a chance to run and change the memory location.
+      *
+      * Another issue (CVE-2023-0330) can occur if the script is programmed to
+      * trigger itself again and again. Avoid this problem by stopping after
+@@ -1160,13 +1174,8 @@ again:
+      * which should be enough for all valid use cases).
+      */
+     if (++insn_processed > LSI_MAX_INSN || reentrancy_level > 8) {
+-        if (!(s->sien0 & LSI_SIST0_UDC)) {
+-            qemu_log_mask(LOG_GUEST_ERROR,
+-                          "lsi_scsi: inf. loop with UDC masked");
+-        }
+-        lsi_script_scsi_interrupt(s, LSI_SIST0_UDC, 0);
+-        lsi_disconnect(s);
+-        trace_lsi_execute_script_stop();
++        s->waiting = LSI_WAIT_SCRIPTS;
++        lsi_scripts_timer_start(s);
+         reentrancy_level--;
+         return;
+     }
+@@ -2205,6 +2214,9 @@ static int lsi_post_load(void *opaque, int version_id)
+         return -EINVAL;
+     }
+ 
++    if (s->waiting == LSI_WAIT_SCRIPTS) {
++        lsi_scripts_timer_start(s);
++    }
+     return 0;
  }
  
-  /* Callback to indicate that the SCSI layer has completed a transfer.  */
+@@ -2302,6 +2314,15 @@ static const struct SCSIBusInfo lsi_scsi_info = {
+     .cancel = lsi_request_cancelled
+ };
+ 
++static void scripts_timer_cb(void *opaque)
++{
++    LSIState *s = opaque;
++
++    trace_lsi_scripts_timer_triggered();
++    s->waiting = LSI_NOWAIT;
++    lsi_execute_script(s);
++}
++
+ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+ {
+     LSIState *s = LSI53C895A(dev);
+@@ -2321,6 +2342,7 @@ static void lsi_scsi_realize(PCIDevice *dev, Error **errp)
+                           "lsi-ram", 0x2000);
+     memory_region_init_io(&s->io_io, OBJECT(s), &lsi_io_ops, s,
+                           "lsi-io", 256);
++    s->scripts_timer = timer_new_us(QEMU_CLOCK_VIRTUAL, scripts_timer_cb, s);
+ 
+     /*
+      * Since we use the address-space API to interact with ram_io, disable the
+@@ -2345,6 +2367,7 @@ static void lsi_scsi_exit(PCIDevice *dev)
+     LSIState *s = LSI53C895A(dev);
+ 
+     address_space_destroy(&s->pci_io_as);
++    timer_del(s->scripts_timer);
+ }
+ 
+ static void lsi_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/scsi/trace-events b/hw/scsi/trace-events
+index bdd4e2c7c7..5f4f4c54bb 100644
+--- a/hw/scsi/trace-events
++++ b/hw/scsi/trace-events
+@@ -301,6 +301,8 @@ lsi_execute_script_stop(void) "SCRIPTS execution stopped"
+ lsi_awoken(void) "Woken by SIGP"
+ lsi_reg_read(const char *name, int offset, uint8_t ret) "Read reg %s 0x%x = 0x%02x"
+ lsi_reg_write(const char *name, int offset, uint8_t val) "Write reg %s 0x%x = 0x%02x"
++lsi_scripts_timer_triggered(void) "SCRIPTS timer triggered"
++lsi_scripts_timer_start(void) "SCRIPTS timer started"
+ 
+ # virtio-scsi.c
+ virtio_scsi_cmd_req(int lun, uint32_t tag, uint8_t cmd) "virtio_scsi_cmd_req lun=%u tag=0x%x cmd=0x%x"
 -- 
 2.39.2
 
