@@ -2,36 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C5489EBCF
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5CD189EBF0
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:29:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSJw-0002N4-KW; Wed, 10 Apr 2024 03:24:38 -0400
+	id 1ruSK1-0002k7-5U; Wed, 10 Apr 2024 03:24:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJh-0001ZO-E2; Wed, 10 Apr 2024 03:24:21 -0400
+ id 1ruSJk-00023X-4s; Wed, 10 Apr 2024 03:24:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJf-0003y3-Ir; Wed, 10 Apr 2024 03:24:21 -0400
+ id 1ruSJh-0003yN-K6; Wed, 10 Apr 2024 03:24:23 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 907585D67F;
+ by isrv.corpit.ru (Postfix) with ESMTP id A2FA25D680;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 34AA9B02C0;
+ by tsrv.corpit.ru (Postfix) with SMTP id 45908B02C1;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191693 invoked by uid 1000);
+Received: (nullmailer pid 4191696 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Nick Briggs <nicholas.h.briggs@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 16/87] Avoid unaligned fetch in ladr_match()
-Date: Wed, 10 Apr 2024 10:21:49 +0300
-Message-Id: <20240410072303.4191455-16-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Peng Fan <peng.fan@nxp.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 17/87] xen: Drop out of coroutine context
+ xen_invalidate_map_cache_entry
+Date: Wed, 10 Apr 2024 10:21:50 +0300
+Message-Id: <20240410072303.4191455-17-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -59,33 +60,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Nick Briggs <nicholas.h.briggs@gmail.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-There is no guarantee that the PCNetState is allocated such that
-csr[8] is allocated on an 8-byte boundary.  Since not all hosts are
-capable of unaligned fetches the 16-bit elements need to be fetched
-individually to avoid a potential fault.  Closes issue #2143
+xen_invalidate_map_cache_entry is not expected to run in a
+coroutine. Without this, there is crash:
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2143
-Signed-off-by: Nick Briggs <nicholas.h.briggs@gmail.com>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 6a5287ce80470bb8df95901d73ee779a64e70c3a)
+    signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
+    threadid=<optimized out>) at pthread_kill.c:78
+    at /usr/src/debug/glibc/2.38+git-r0/sysdeps/posix/raise.c:26
+    fmt=0xffff9e1ca8a8 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n",
+    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
+    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
+    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:92
+    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
+    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
+    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:101
+    at ../qemu-xen-dir-remote/block/graph-lock.c:260
+    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/block/graph-lock.h:259
+    host=host@entry=0xffff742c8000, size=size@entry=2097152)
+    at ../qemu-xen-dir-remote/block/io.c:3362
+    host=0xffff742c8000, size=2097152)
+    at ../qemu-xen-dir-remote/block/block-backend.c:2859
+    host=<optimized out>, size=<optimized out>, max_size=<optimized out>)
+    at ../qemu-xen-dir-remote/block/block-ram-registrar.c:33
+    size=2097152, max_size=2097152)
+    at ../qemu-xen-dir-remote/hw/core/numa.c:883
+    buffer=buffer@entry=0xffff743c5000 "")
+    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:475
+    buffer=buffer@entry=0xffff743c5000 "")
+    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:487
+    as=as@entry=0xaaaae1ca3ae8 <address_space_memory>, buffer=0xffff743c5000,
+    len=<optimized out>, is_write=is_write@entry=true,
+    access_len=access_len@entry=32768)
+    at ../qemu-xen-dir-remote/system/physmem.c:3199
+    dir=DMA_DIRECTION_FROM_DEVICE, len=<optimized out>,
+    buffer=<optimized out>, as=0xaaaae1ca3ae8 <address_space_memory>)
+    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/sysemu/dma.h:236
+    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:758
+    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769, idx=idx@entry=0)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:919
+    elem=elem@entry=0xaaaaf620aa30, len=32769)
+    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:994
+    req=req@entry=0xaaaaf620aa30, status=status@entry=0 '\000')
+    at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:67
+    ret=0) at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:136
+    at ../qemu-xen-dir-remote/block/block-backend.c:1559
+--Type <RET> for more, q to quit, c to continue without paging--
+    at ../qemu-xen-dir-remote/block/block-backend.c:1614
+    i1=<optimized out>) at ../qemu-xen-dir-remote/util/coroutine-ucontext.c:177
+    at ../sysdeps/unix/sysv/linux/aarch64/setcontext.S:123
+
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Message-Id: <20240124021450.21656-1-peng.fan@oss.nxp.com>
+Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
+(cherry picked from commit 9253d83062268209533df4b29859e5b51a2dc324)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/pcnet.c b/hw/net/pcnet.c
-index a7e123e60d..7d574f487b 100644
---- a/hw/net/pcnet.c
-+++ b/hw/net/pcnet.c
-@@ -632,7 +632,7 @@ static inline int ladr_match(PCNetState *s, const uint8_t *buf, int size)
+diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
+index f7d974677d..8d62b3d2ed 100644
+--- a/hw/xen/xen-mapcache.c
++++ b/hw/xen/xen-mapcache.c
+@@ -481,11 +481,37 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
+     g_free(entry);
+ }
+ 
+-void xen_invalidate_map_cache_entry(uint8_t *buffer)
++typedef struct XenMapCacheData {
++    Coroutine *co;
++    uint8_t *buffer;
++} XenMapCacheData;
++
++static void xen_invalidate_map_cache_entry_bh(void *opaque)
  {
-     struct qemu_ether_header *hdr = (void *)buf;
-     if ((*(hdr->ether_dhost)&0x01) &&
--        ((uint64_t *)&s->csr[8])[0] != 0LL) {
-+        (s->csr[8] | s->csr[9] | s->csr[10] | s->csr[11]) != 0) {
-         uint8_t ladr[8] = {
-             s->csr[8] & 0xff, s->csr[8] >> 8,
-             s->csr[9] & 0xff, s->csr[9] >> 8,
++    XenMapCacheData *data = opaque;
++
+     mapcache_lock();
+-    xen_invalidate_map_cache_entry_unlocked(buffer);
++    xen_invalidate_map_cache_entry_unlocked(data->buffer);
+     mapcache_unlock();
++
++    aio_co_wake(data->co);
++}
++
++void coroutine_mixed_fn xen_invalidate_map_cache_entry(uint8_t *buffer)
++{
++    if (qemu_in_coroutine()) {
++        XenMapCacheData data = {
++            .co = qemu_coroutine_self(),
++            .buffer = buffer,
++        };
++        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
++                                xen_invalidate_map_cache_entry_bh, &data);
++        qemu_coroutine_yield();
++    } else {
++        mapcache_lock();
++        xen_invalidate_map_cache_entry_unlocked(buffer);
++        mapcache_unlock();
++    }
+ }
+ 
+ void xen_invalidate_map_cache(void)
 -- 
 2.39.2
 
