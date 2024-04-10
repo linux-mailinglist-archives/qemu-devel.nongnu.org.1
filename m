@@ -2,48 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30ABF89EA2F
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A6E89EA15
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:50:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQop-0006F8-Io; Wed, 10 Apr 2024 01:48:23 -0400
+	id 1ruQp0-0007AN-6V; Wed, 10 Apr 2024 01:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQom-0006D3-UX; Wed, 10 Apr 2024 01:48:21 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1ruQox-00074e-HY
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 01:48:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQok-00027h-5l; Wed, 10 Apr 2024 01:48:20 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 655D85D501;
- Wed, 10 Apr 2024 08:46:17 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 2992DB0168;
- Wed, 10 Apr 2024 08:44:19 +0300 (MSK)
-Received: (nullmailer pid 4182127 invoked by uid 1000);
- Wed, 10 Apr 2024 05:44:16 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Wafer <wafer@jaguarmicro.com>,
- =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 41/41] hw/virtio: Fix packed virtqueue flush used_idx
-Date: Wed, 10 Apr 2024 08:44:02 +0300
-Message-Id: <20240410054416.4181891-41-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
-References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
+ id 1ruQow-0002Dv-2W
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 01:48:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712728109;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Aqm8BRHEYAMlTASdrlz3TRv/0AL45a291pR1V6IyaxE=;
+ b=Ylyg4l5xkNa1I8Cqjnp2lgRv2ClJzs6Kb88kaFEBH2PaHdxR+evIhYlv8lJqNCg9qYOCK5
+ IkRw2EPc6szvQqw0D145FmLb+UPGAlFBA8+Q3mQb+HDtUmFdMXWxQ5XDmbK06xuNCusnbv
+ e4SnsfdWRosnhBWcBiho7j/yA2j/ElE=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-277-_iuUDXA0N8qm6ry8aqFBXg-1; Wed, 10 Apr 2024 01:48:25 -0400
+X-MC-Unique: _iuUDXA0N8qm6ry8aqFBXg-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-5d5a080baf1so4675668a12.1
+ for <qemu-devel@nongnu.org>; Tue, 09 Apr 2024 22:48:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712728105; x=1713332905;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Aqm8BRHEYAMlTASdrlz3TRv/0AL45a291pR1V6IyaxE=;
+ b=kozfcZSwgiRQ96it+sFMzeGIornm9E15G5E0yYwZXs4fbxBouIy0pe3AKniNx+shWU
+ Z4tUJ/4XoSKziPoZtHJD2t+aeZBLxCXQuqcNkpao6NnG6XdcQZXzBw/27BUgMp9ZT0vq
+ ZYEkPNsSfUXxhzZVzeThQcA18wNT9XdgkOdrYtBcBzvkKjy1dANrwBR68f3yvT1ZlyGu
+ oP1DxGoJ9wWUxeZ4gOYrSJIIkaFTIIhhlk+kUzI4rUudwdp+vEDS/8Zb39mzDu1Fwu9C
+ pfpjlmMQ1KUzDG5YF02BbkzrpLiCxHSmgw7YauhgfVAqdCqq0EX2xY2YaERpN3jFKB3Z
+ 6nLg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUwn2GbnbsV29WlRbzOHzNLzP3BKjlXEQ7XsYOMpn6cMFfqzoStS51nVt6pvLcq0foVA/0pOPesyr37AnJlRCKKiiIxyro=
+X-Gm-Message-State: AOJu0Yxw1rWCKWotXDtBNC7d9H5xJA9cFoPb9byQDcFe0zZGlUl82Q+Q
+ pEGnws3FOSZZcU8xrSXFV5zytBzeiQzwvAXHRlqO2a2XNnlkshwo66r5QC9XPelxRQmdIRUd4sT
+ tJ7R2z0Lsil0KK1NgsdxNFg3IMtwiD4INAbjO719ew5doqsSEXO3y66Zn8PH4h5pigJ1m3o+9G2
+ zD6nlc2lLBhiVLjGe6/IVhucRcmw4=
+X-Received: by 2002:a05:6a21:880d:b0:1a3:e2ed:62af with SMTP id
+ ta13-20020a056a21880d00b001a3e2ed62afmr2109645pzc.34.1712728104509; 
+ Tue, 09 Apr 2024 22:48:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFEBlix2qcjpgcyMu2GmAHmxEBecDuYWClnuQ1oSts6LQAsQP9jUJ3VdmRV4L7pOk/OOnO6UyNsKaM0t43aH3M=
+X-Received: by 2002:a05:6a21:880d:b0:1a3:e2ed:62af with SMTP id
+ ta13-20020a056a21880d00b001a3e2ed62afmr2109632pzc.34.1712728104211; Tue, 09
+ Apr 2024 22:48:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+References: <20240410052926.417674-1-lulu@redhat.com>
+ <20240410052926.417674-2-lulu@redhat.com>
+In-Reply-To: <20240410052926.417674-2-lulu@redhat.com>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 10 Apr 2024 13:48:13 +0800
+Message-ID: <CACGkMEunM_JPGg82kN+SvFVeNO4jtf-PRfkEjoNkCYwxy204Mg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] virtio-pci: Fix the crash that the vector was used
+ after released.
+To: Cindy Lu <lulu@redhat.com>
+Cc: mst@redhat.com, qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,64 +98,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Wafer <wafer@jaguarmicro.com>
+On Wed, Apr 10, 2024 at 1:29=E2=80=AFPM Cindy Lu <lulu@redhat.com> wrote:
+>
+> When the guest triggers vhost_stop and then virtio_reset, the vector will=
+ the
+> IRQFD for this vector will be released and change to VIRTIO_NO_VECTOR.
+> After that, the guest called vhost_net_start,  (at this time, the configu=
+re
+> vector is still VIRTIO_NO_VECTOR),  vector 0 still was not "init".
+> The guest system continued to boot, set the vector back to 0, and then me=
+t the crash.
 
-In the event of writing many chains of descriptors, the device must
-write just the id of the last buffer in the descriptor chain, skip
-forward the number of descriptors in the chain, and then repeat the
-operations for the rest of chains.
+Btw, the description of the cover letter seems to be better, how about
+just using that (so there won't be a cover letter since this series
+just have 1 patch)?
 
-Current QEMU code writes all the buffer ids consecutively, and then
-skips all the buffers altogether. This is a bug, and can be reproduced
-with a VirtIONet device with _F_MRG_RXBUB and without
-_F_INDIRECT_DESC:
-
-If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
-but not the VIRTIO_RING_F_INDIRECT_DESC feature,
-'VirtIONetQueue->rx_vq' will use the merge feature
-to store data in multiple 'elems'.
-The 'num_buffers' in the virtio header indicates how many elements are merged.
-If the value of 'num_buffers' is greater than 1,
-all the merged elements will be filled into the descriptor ring.
-The 'idx' of the elements should be the value of 'vq->used_idx' plus 'ndescs'.
-
-Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Wafer <wafer@jaguarmicro.com>
-Message-Id: <20240407015451.5228-2-wafer@jaguarmicro.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 2d9a31b3c27311eca1682cb2c076d7a300441960)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index b7da7f074d..e4f8ed1e63 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -1367,12 +1367,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
-         return;
-     }
- 
-+    /*
-+     * For indirect element's 'ndescs' is 1.
-+     * For all other elemment's 'ndescs' is the
-+     * number of descriptors chained by NEXT (as set in virtqueue_packed_pop).
-+     * So When the 'elem' be filled into the descriptor ring,
-+     * The 'idx' of this 'elem' shall be
-+     * the value of 'vq->used_idx' plus the 'ndescs'.
-+     */
-+    ndescs += vq->used_elems[0].ndescs;
-     for (i = 1; i < count; i++) {
--        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
-+        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
-         ndescs += vq->used_elems[i].ndescs;
-     }
-     virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
--    ndescs += vq->used_elems[0].ndescs;
- 
-     vq->inuse -= ndescs;
-     vq->used_idx += ndescs;
--- 
-2.39.2
+Thanks
 
 
