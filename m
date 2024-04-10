@@ -2,45 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE5E89EBD3
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:24:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E59E889EBC6
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:23:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSIz-0007vU-4N; Wed, 10 Apr 2024 03:23:37 -0400
+	id 1ruSJ0-0007xD-OT; Wed, 10 Apr 2024 03:23:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIp-0007aM-E5; Wed, 10 Apr 2024 03:23:27 -0400
+ id 1ruSIv-0007lE-Eh; Wed, 10 Apr 2024 03:23:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSIm-0003ub-RB; Wed, 10 Apr 2024 03:23:27 -0400
+ id 1ruSIp-0003v8-VT; Wed, 10 Apr 2024 03:23:33 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E66FE5D677;
- Wed, 10 Apr 2024 10:25:02 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0176C5D678;
+ Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 84D19B02B8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9AF6AB02B9;
  Wed, 10 Apr 2024 10:23:04 +0300 (MSK)
-Received: (nullmailer pid 4191668 invoked by uid 1000);
+Received: (nullmailer pid 4191671 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Artyom Tarasenko <atar4qemu@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 08/87] hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
-Date: Wed, 10 Apr 2024 10:21:41 +0300
-Message-Id: <20240410072303.4191455-8-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Dmitrii Gavrilov <ds-gavr@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 09/87] system/qdev-monitor: move drain_call_rcu call
+ under if (!dev) in qmp_device_add()
+Date: Wed, 10 Apr 2024 10:21:42 +0300
+Message-Id: <20240410072303.4191455-9-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -64,55 +59,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
 
-The sun4v RTC device model added under commit a0e893039cf2ce0 in 2016
-was unfortunately added with a license of GPL-v3-or-later, which is
-not compatible with other QEMU code which has a GPL-v2-only license.
+Original goal of addition of drain_call_rcu to qmp_device_add was to cover
+the failure case of qdev_device_add. It seems call of drain_call_rcu was
+misplaced in 7bed89958bfbf40df what led to waiting for pending RCU callbacks
+under happy path too. What led to overall performance degradation of
+qmp_device_add.
 
-Relicense the code in the .c and the .h file to GPL-v2-or-later,
-to make it compatible with the rest of QEMU.
+In this patch call of drain_call_rcu moved under handling of failure of
+qdev_device_add.
 
+Signed-off-by: Dmitrii Gavrilov <ds-gavr@yandex-team.ru>
+Message-ID: <20231103105602.90475-1-ds-gavr@yandex-team.ru>
+Fixes: 7bed89958bf ("device_core: use drain_call_rcu in in qmp_device_add", 2020-10-12)
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Paolo Bonzini (for Red Hat) <pbonzini@redhat.com>
-Signed-off-by: Artyom Tarasenko <atar4qemu@gmail.com>
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Message-id: 20240223161300.938542-1-peter.maydell@linaro.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-(cherry picked from commit fd7f95f23d6fe485332c1d4b489eb719fcb7c225)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit 012b170173bcaa14b9bc26209e0813311ac78489)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/rtc/sun4v-rtc.c b/hw/rtc/sun4v-rtc.c
-index e037acd1b5..ffcc0aa25d 100644
---- a/hw/rtc/sun4v-rtc.c
-+++ b/hw/rtc/sun4v-rtc.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright (c) 2016 Artyom Tarasenko
-  *
-- * This code is licensed under the GNU GPL v3 or (at your option) any later
-+ * This code is licensed under the GNU GPL v2 or (at your option) any later
-  * version.
-  */
- 
-diff --git a/include/hw/rtc/sun4v-rtc.h b/include/hw/rtc/sun4v-rtc.h
-index fc54dfcba4..26a9eb6196 100644
---- a/include/hw/rtc/sun4v-rtc.h
-+++ b/include/hw/rtc/sun4v-rtc.h
-@@ -5,7 +5,7 @@
-  *
-  * Copyright (c) 2016 Artyom Tarasenko
-  *
-- * This code is licensed under the GNU GPL v3 or (at your option) any later
-+ * This code is licensed under the GNU GPL v2 or (at your option) any later
-  * version.
-  */
- 
+diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
+index a13db763e5..874d65191c 100644
+--- a/system/qdev-monitor.c
++++ b/system/qdev-monitor.c
+@@ -858,19 +858,18 @@ void qmp_device_add(QDict *qdict, QObject **ret_data, Error **errp)
+         return;
+     }
+     dev = qdev_device_add(opts, errp);
+-
+-    /*
+-     * Drain all pending RCU callbacks. This is done because
+-     * some bus related operations can delay a device removal
+-     * (in this case this can happen if device is added and then
+-     * removed due to a configuration error)
+-     * to a RCU callback, but user might expect that this interface
+-     * will finish its job completely once qmp command returns result
+-     * to the user
+-     */
+-    drain_call_rcu();
+-
+     if (!dev) {
++        /*
++         * Drain all pending RCU callbacks. This is done because
++         * some bus related operations can delay a device removal
++         * (in this case this can happen if device is added and then
++         * removed due to a configuration error)
++         * to a RCU callback, but user might expect that this interface
++         * will finish its job completely once qmp command returns result
++         * to the user
++         */
++        drain_call_rcu();
++
+         qemu_opts_del(opts);
+         return;
+     }
 -- 
 2.39.2
 
