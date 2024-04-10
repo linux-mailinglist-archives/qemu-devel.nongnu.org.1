@@ -2,37 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5CD189EBF0
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C21489EBE0
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:27:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSK1-0002k7-5U; Wed, 10 Apr 2024 03:24:41 -0400
+	id 1ruSK7-00038E-Im; Wed, 10 Apr 2024 03:24:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJk-00023X-4s; Wed, 10 Apr 2024 03:24:26 -0400
+ id 1ruSJk-00029f-W5; Wed, 10 Apr 2024 03:24:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSJh-0003yN-K6; Wed, 10 Apr 2024 03:24:23 -0400
+ id 1ruSJj-00044Z-0c; Wed, 10 Apr 2024 03:24:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A2FA25D680;
+ by isrv.corpit.ru (Postfix) with ESMTP id B278C5D681;
  Wed, 10 Apr 2024 10:25:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 45908B02C1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 57F20B02C2;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191696 invoked by uid 1000);
+Received: (nullmailer pid 4191699 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peng Fan <peng.fan@nxp.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 17/87] xen: Drop out of coroutine context
- xen_invalidate_map_cache_entry
-Date: Wed, 10 Apr 2024 10:21:50 +0300
-Message-Id: <20240410072303.4191455-17-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Minwoo Im <minwoo.im@samsung.com>,
+ Klaus Jensen <k.jensen@samsung.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 18/87] hw/nvme: separate 'serial' property for VFs
+Date: Wed, 10 Apr 2024 10:21:51 +0300
+Message-Id: <20240410072303.4191455-18-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -60,108 +58,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Minwoo Im <minwoo.im@samsung.com>
 
-xen_invalidate_map_cache_entry is not expected to run in a
-coroutine. Without this, there is crash:
+Currently, when a VF is created, it uses the 'params' object of the PF
+as it is. In other words, the 'params.serial' string memory area is also
+shared. In this situation, if the VF is removed from the system, the
+PF's 'params.serial' object is released with object_finalize() followed
+by object_property_del_all() which release the memory for 'serial'
+property. If that happens, the next VF created will inherit a serial
+from a corrupted memory area.
 
-    signo=signo@entry=6, no_tid=no_tid@entry=0) at pthread_kill.c:44
-    threadid=<optimized out>) at pthread_kill.c:78
-    at /usr/src/debug/glibc/2.38+git-r0/sysdeps/posix/raise.c:26
-    fmt=0xffff9e1ca8a8 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n",
-    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
-    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
-    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:92
-    assertion=assertion@entry=0xaaaae0d25740 "!qemu_in_coroutine()",
-    file=file@entry=0xaaaae0d301a8 "../qemu-xen-dir-remote/block/graph-lock.c", line=line@entry=260,
-    function=function@entry=0xaaaae0e522c0 <__PRETTY_FUNCTION__.3> "bdrv_graph_rdlock_main_loop") at assert.c:101
-    at ../qemu-xen-dir-remote/block/graph-lock.c:260
-    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/block/graph-lock.h:259
-    host=host@entry=0xffff742c8000, size=size@entry=2097152)
-    at ../qemu-xen-dir-remote/block/io.c:3362
-    host=0xffff742c8000, size=2097152)
-    at ../qemu-xen-dir-remote/block/block-backend.c:2859
-    host=<optimized out>, size=<optimized out>, max_size=<optimized out>)
-    at ../qemu-xen-dir-remote/block/block-ram-registrar.c:33
-    size=2097152, max_size=2097152)
-    at ../qemu-xen-dir-remote/hw/core/numa.c:883
-    buffer=buffer@entry=0xffff743c5000 "")
-    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:475
-    buffer=buffer@entry=0xffff743c5000 "")
-    at ../qemu-xen-dir-remote/hw/xen/xen-mapcache.c:487
-    as=as@entry=0xaaaae1ca3ae8 <address_space_memory>, buffer=0xffff743c5000,
-    len=<optimized out>, is_write=is_write@entry=true,
-    access_len=access_len@entry=32768)
-    at ../qemu-xen-dir-remote/system/physmem.c:3199
-    dir=DMA_DIRECTION_FROM_DEVICE, len=<optimized out>,
-    buffer=<optimized out>, as=0xaaaae1ca3ae8 <address_space_memory>)
-    at /home/Freenix/work/sw-stash/xen/upstream/tools/qemu-xen-dir-remote/include/sysemu/dma.h:236
-    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769)
-    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:758
-    elem=elem@entry=0xaaaaf620aa30, len=len@entry=32769, idx=idx@entry=0)
-    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:919
-    elem=elem@entry=0xaaaaf620aa30, len=32769)
-    at ../qemu-xen-dir-remote/hw/virtio/virtio.c:994
-    req=req@entry=0xaaaaf620aa30, status=status@entry=0 '\000')
-    at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:67
-    ret=0) at ../qemu-xen-dir-remote/hw/block/virtio-blk.c:136
-    at ../qemu-xen-dir-remote/block/block-backend.c:1559
---Type <RET> for more, q to quit, c to continue without paging--
-    at ../qemu-xen-dir-remote/block/block-backend.c:1614
-    i1=<optimized out>) at ../qemu-xen-dir-remote/util/coroutine-ucontext.c:177
-    at ../sysdeps/unix/sysv/linux/aarch64/setcontext.S:123
+If this happens, an error will occur when comparing subsys->serial and
+n->params.serial in the nvme_subsys_register_ctrl() function.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Message-Id: <20240124021450.21656-1-peng.fan@oss.nxp.com>
-Signed-off-by: Anthony PERARD <anthony.perard@citrix.com>
-(cherry picked from commit 9253d83062268209533df4b29859e5b51a2dc324)
+Cc: qemu-stable@nongnu.org
+Fixes: 44c2c09488db ("hw/nvme: Add support for SR-IOV")
+Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
+Reviewed-by: Klaus Jensen <k.jensen@samsung.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+(cherry picked from commit 4f0a4a3d5854824e5c5eccf353d4a1f4f749a29d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/xen/xen-mapcache.c b/hw/xen/xen-mapcache.c
-index f7d974677d..8d62b3d2ed 100644
---- a/hw/xen/xen-mapcache.c
-+++ b/hw/xen/xen-mapcache.c
-@@ -481,11 +481,37 @@ static void xen_invalidate_map_cache_entry_unlocked(uint8_t *buffer)
-     g_free(entry);
- }
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 76fe039704..94ef639457 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -8309,9 +8309,15 @@ static void nvme_realize(PCIDevice *pci_dev, Error **errp)
+     if (pci_is_vf(pci_dev)) {
+         /*
+          * VFs derive settings from the parent. PF's lifespan exceeds
+-         * that of VF's, so it's safe to share params.serial.
++         * that of VF's.
+          */
+         memcpy(&n->params, &pn->params, sizeof(NvmeParams));
++
++        /*
++         * Set PF's serial value to a new string memory to prevent 'serial'
++         * property object release of PF when a VF is removed from the system.
++         */
++        n->params.serial = g_strdup(pn->params.serial);
+         n->subsys = pn->subsys;
+     }
  
--void xen_invalidate_map_cache_entry(uint8_t *buffer)
-+typedef struct XenMapCacheData {
-+    Coroutine *co;
-+    uint8_t *buffer;
-+} XenMapCacheData;
-+
-+static void xen_invalidate_map_cache_entry_bh(void *opaque)
- {
-+    XenMapCacheData *data = opaque;
-+
-     mapcache_lock();
--    xen_invalidate_map_cache_entry_unlocked(buffer);
-+    xen_invalidate_map_cache_entry_unlocked(data->buffer);
-     mapcache_unlock();
-+
-+    aio_co_wake(data->co);
-+}
-+
-+void coroutine_mixed_fn xen_invalidate_map_cache_entry(uint8_t *buffer)
-+{
-+    if (qemu_in_coroutine()) {
-+        XenMapCacheData data = {
-+            .co = qemu_coroutine_self(),
-+            .buffer = buffer,
-+        };
-+        aio_bh_schedule_oneshot(qemu_get_current_aio_context(),
-+                                xen_invalidate_map_cache_entry_bh, &data);
-+        qemu_coroutine_yield();
-+    } else {
-+        mapcache_lock();
-+        xen_invalidate_map_cache_entry_unlocked(buffer);
-+        mapcache_unlock();
-+    }
- }
- 
- void xen_invalidate_map_cache(void)
 -- 
 2.39.2
 
