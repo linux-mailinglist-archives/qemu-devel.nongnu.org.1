@@ -2,42 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA35289E9FC
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB77689EA2D
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQmk-00060C-Uj; Wed, 10 Apr 2024 01:46:16 -0400
+	id 1ruQmx-0006PN-KJ; Wed, 10 Apr 2024 01:46:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmS-0005Uu-TJ; Wed, 10 Apr 2024 01:46:02 -0400
+ id 1ruQmW-0005Xl-09; Wed, 10 Apr 2024 01:46:03 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQmP-0001m9-2y; Wed, 10 Apr 2024 01:45:55 -0400
+ id 1ruQmT-0001mb-0z; Wed, 10 Apr 2024 01:45:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id E0ED65D4EB;
+ by isrv.corpit.ru (Postfix) with ESMTP id EFFFA5D4EC;
  Wed, 10 Apr 2024 08:46:15 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A27ADB0152;
+ by tsrv.corpit.ru (Postfix) with SMTP id B5B82B0153;
  Wed, 10 Apr 2024 08:44:17 +0300 (MSK)
-Received: (nullmailer pid 4182058 invoked by uid 1000);
+Received: (nullmailer pid 4182061 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- Gal Hammer <gal.hammer@sap.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 19/41] pcie: Introduce pcie_sriov_num_vfs
-Date: Wed, 10 Apr 2024 08:43:40 +0300
-Message-Id: <20240410054416.4181891-19-mjt@tls.msk.ru>
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 20/41] hw/nvme: Use pcie_sriov_num_vfs()
+Date: Wed, 10 Apr 2024 08:43:41 +0300
+Message-Id: <20240410054416.4181891-20-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -63,44 +60,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-igb can use this function to change its behavior depending on the
-number of virtual functions currently enabled.
+nvme_sriov_pre_write_ctrl() used to directly inspect SR-IOV
+configurations to know the number of VFs being disabled due to SR-IOV
+configuration writes, but the logic was flawed and resulted in
+out-of-bound memory access.
 
-Signed-off-by: Gal Hammer <gal.hammer@sap.com>
-Signed-off-by: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+It assumed PCI_SRIOV_NUM_VF always has the number of currently enabled
+VFs, but it actually doesn't in the following cases:
+- PCI_SRIOV_NUM_VF has been set but PCI_SRIOV_CTRL_VFE has never been.
+- PCI_SRIOV_NUM_VF was written after PCI_SRIOV_CTRL_VFE was set.
+- VFs were only partially enabled because of realization failure.
+
+It is a responsibility of pcie_sriov to interpret SR-IOV configurations
+and pcie_sriov does it correctly, so use pcie_sriov_num_vfs(), which it
+provides, to get the number of enabled VFs before and after SR-IOV
+configuration writes.
+
+Cc: qemu-stable@nongnu.org
+Fixes: CVE-2024-26328
+Fixes: 11871f53ef8e ("hw/nvme: Add support for the Virtualization Management command")
+Suggested-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-(cherry picked from commit 31180dbdca2859ae9841939f85158908453ea01d)
+Message-Id: <20240228-reuse-v8-1-282660281e60@daynix.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 91bb64a8d2014fda33a81fcf0fce37340f0d3b0c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: needed for v8.2.0-2290-g91bb64a8d2
- "hw/nvme: Use pcie_sriov_num_vfs()" (CVE-2024-26328))
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 61a4e06768..3703d250f0 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -299,3 +299,8 @@ PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n)
-     }
-     return NULL;
+diff --git a/hw/nvme/ctrl.c b/hw/nvme/ctrl.c
+index 88c40afc28..027d67f10b 100644
+--- a/hw/nvme/ctrl.c
++++ b/hw/nvme/ctrl.c
+@@ -7704,36 +7704,26 @@ static void nvme_pci_reset(DeviceState *qdev)
+     nvme_ctrl_reset(n, NVME_RESET_FUNCTION);
  }
-+
-+uint16_t pcie_sriov_num_vfs(PCIDevice *dev)
-+{
-+    return dev->exp.sriov_pf.num_vfs;
-+}
-diff --git a/include/hw/pci/pcie_sriov.h b/include/hw/pci/pcie_sriov.h
-index 80f5c84e75..072a583405 100644
---- a/include/hw/pci/pcie_sriov.h
-+++ b/include/hw/pci/pcie_sriov.h
-@@ -74,4 +74,7 @@ PCIDevice *pcie_sriov_get_pf(PCIDevice *dev);
-  */
- PCIDevice *pcie_sriov_get_vf_at_index(PCIDevice *dev, int n);
  
-+/* Returns the current number of virtual functions. */
-+uint16_t pcie_sriov_num_vfs(PCIDevice *dev);
+-static void nvme_sriov_pre_write_ctrl(PCIDevice *dev, uint32_t address,
+-                                      uint32_t val, int len)
++static void nvme_sriov_post_write_config(PCIDevice *dev, uint16_t old_num_vfs)
+ {
+     NvmeCtrl *n = NVME(dev);
+     NvmeSecCtrlEntry *sctrl;
+-    uint16_t sriov_cap = dev->exp.sriov_cap;
+-    uint32_t off = address - sriov_cap;
+-    int i, num_vfs;
++    int i;
+ 
+-    if (!sriov_cap) {
+-        return;
+-    }
+-
+-    if (range_covers_byte(off, len, PCI_SRIOV_CTRL)) {
+-        if (!(val & PCI_SRIOV_CTRL_VFE)) {
+-            num_vfs = pci_get_word(dev->config + sriov_cap + PCI_SRIOV_NUM_VF);
+-            for (i = 0; i < num_vfs; i++) {
+-                sctrl = &n->sec_ctrl_list.sec[i];
+-                nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
+-            }
+-        }
++    for (i = pcie_sriov_num_vfs(dev); i < old_num_vfs; i++) {
++        sctrl = &n->sec_ctrl_list.sec[i];
++        nvme_virt_set_state(n, le16_to_cpu(sctrl->scid), false);
+     }
+ }
+ 
+ static void nvme_pci_write_config(PCIDevice *dev, uint32_t address,
+                                   uint32_t val, int len)
+ {
+-    nvme_sriov_pre_write_ctrl(dev, address, val, len);
++    uint16_t old_num_vfs = pcie_sriov_num_vfs(dev);
 +
- #endif /* QEMU_PCIE_SRIOV_H */
+     pci_default_write_config(dev, address, val, len);
+     pcie_cap_flr_write_config(dev, address, val, len);
++    nvme_sriov_post_write_config(dev, old_num_vfs);
+ }
+ 
+ static const VMStateDescription nvme_vmstate = {
 -- 
 2.39.2
 
