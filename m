@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F26189EBD7
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA15889EC3A
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:36:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSLA-0005DK-4s; Wed, 10 Apr 2024 03:25:54 -0400
+	id 1ruSLe-0005nF-IQ; Wed, 10 Apr 2024 03:26:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSKG-00040o-U3; Wed, 10 Apr 2024 03:24:58 -0400
+ id 1ruSKI-00043H-9u; Wed, 10 Apr 2024 03:25:00 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSKD-0004E4-TV; Wed, 10 Apr 2024 03:24:56 -0400
+ id 1ruSKG-0004EV-CQ; Wed, 10 Apr 2024 03:24:58 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2A6465D687;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3B1D75D688;
  Wed, 10 Apr 2024 10:25:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C3CAAB02C8;
+ by tsrv.corpit.ru (Postfix) with SMTP id D349AB02C9;
  Wed, 10 Apr 2024 10:23:05 +0300 (MSK)
-Received: (nullmailer pid 4191718 invoked by uid 1000);
+Received: (nullmailer pid 4191721 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 24/87] hmat acpi: Fix out of bounds access due to
- missing use of indirection
-Date: Wed, 10 Apr 2024 10:21:57 +0300
-Message-Id: <20240410072303.4191455-24-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 25/87] hw/audio/virtio-sound: return correct command
+ response size
+Date: Wed, 10 Apr 2024 10:21:58 +0300
+Message-Id: <20240410072303.4191455-25-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,60 +62,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Volker Rümelin <vr_qemu@t-online.de>
 
-With a numa set up such as
+The payload size returned by command VIRTIO_SND_R_PCM_INFO is
+wrong. The code in process_cmd() assumes that all commands
+return only a virtio_snd_hdr payload, but some commands like
+VIRTIO_SND_R_PCM_INFO may return an additional payload.
 
--numa nodeid=0,cpus=0 \
--numa nodeid=1,memdev=mem \
--numa nodeid=2,cpus=1
+Add a zero initialized payload_size variable to struct
+virtio_snd_ctrl_command to allow for additional payloads.
 
-and appropriate hmat_lb entries the initiator list is correctly
-computed and writen to HMAT as 0,2 but then the LB data is accessed
-using the node id (here 2), landing outside the entry_list array.
-
-Stash the reverse lookup when writing the initiator list and use
-it to get the correct array index index.
-
-Fixes: 4586a2cb83 ("hmat acpi: Build System Locality Latency and Bandwidth Information Structure(s)")
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20240307160326.31570-3-Jonathan.Cameron@huawei.com>
+Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Signed-off-by: Volker Rümelin <vr_qemu@t-online.de>
+Message-Id: <20240218083351.8524-1-vr_qemu@t-online.de>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 74e2845c5f95b0c139c79233ddb65bb17f2dd679)
+(cherry picked from commit 633487df8d303b37a88584d5a57a39dbcd91c7bf)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
-index 3042d223c8..2f3a2362bd 100644
---- a/hw/acpi/hmat.c
-+++ b/hw/acpi/hmat.c
-@@ -78,6 +78,7 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
-                           uint32_t *initiator_list)
- {
-     int i, index;
-+    uint32_t initiator_to_index[MAX_NODES] = {};
-     HMAT_LB_Data *lb_data;
-     uint16_t *entry_list;
-     uint32_t base;
-@@ -121,6 +122,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
-     /* Initiator Proximity Domain List */
-     for (i = 0; i < num_initiator; i++) {
-         build_append_int_noprefix(table_data, initiator_list[i], 4);
-+        /* Reverse mapping for array possitions */
-+        initiator_to_index[initiator_list[i]] = i;
+diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+index 137fa77a01..cfb12ba78a 100644
+--- a/hw/audio/virtio-snd.c
++++ b/hw/audio/virtio-snd.c
+@@ -243,12 +243,13 @@ static void virtio_snd_handle_pcm_info(VirtIOSound *s,
+         memset(&pcm_info[i].padding, 0, 5);
      }
  
-     /* Target Proximity Domain List */
-@@ -132,7 +135,8 @@ static void build_hmat_lb(GArray *table_data, HMAT_LB_Info *hmat_lb,
-     entry_list = g_new0(uint16_t, num_initiator * num_target);
-     for (i = 0; i < hmat_lb->list->len; i++) {
-         lb_data = &g_array_index(hmat_lb->list, HMAT_LB_Data, i);
--        index = lb_data->initiator * num_target + lb_data->target;
-+        index = initiator_to_index[lb_data->initiator] * num_target +
-+            lb_data->target;
++    cmd->payload_size = sizeof(virtio_snd_pcm_info) * count;
+     cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
+     iov_from_buf(cmd->elem->in_sg,
+                  cmd->elem->in_num,
+                  sizeof(virtio_snd_hdr),
+                  pcm_info,
+-                 sizeof(virtio_snd_pcm_info) * count);
++                 cmd->payload_size);
+ }
  
-         entry_list[index] = (uint16_t)(lb_data->data / hmat_lb->base);
+ /*
+@@ -749,7 +750,8 @@ process_cmd(VirtIOSound *s, virtio_snd_ctrl_command *cmd)
+                  0,
+                  &cmd->resp,
+                  sizeof(virtio_snd_hdr));
+-    virtqueue_push(cmd->vq, cmd->elem, sizeof(virtio_snd_hdr));
++    virtqueue_push(cmd->vq, cmd->elem,
++                   sizeof(virtio_snd_hdr) + cmd->payload_size);
+     virtio_notify(VIRTIO_DEVICE(s), cmd->vq);
+ }
+ 
+@@ -808,6 +810,7 @@ static void virtio_snd_handle_ctrl(VirtIODevice *vdev, VirtQueue *vq)
+         cmd->elem = elem;
+         cmd->vq = vq;
+         cmd->resp.code = cpu_to_le32(VIRTIO_SND_S_OK);
++        /* implicit cmd->payload_size = 0; */
+         QTAILQ_INSERT_TAIL(&s->cmdq, cmd, next);
+         elem = virtqueue_pop(vq, sizeof(VirtQueueElement));
      }
+diff --git a/include/hw/audio/virtio-snd.h b/include/hw/audio/virtio-snd.h
+index c3767f442b..3d79181364 100644
+--- a/include/hw/audio/virtio-snd.h
++++ b/include/hw/audio/virtio-snd.h
+@@ -230,6 +230,7 @@ struct virtio_snd_ctrl_command {
+     VirtQueue *vq;
+     virtio_snd_hdr ctrl;
+     virtio_snd_hdr resp;
++    size_t payload_size;
+     QTAILQ_ENTRY(virtio_snd_ctrl_command) next;
+ };
+ #endif
 -- 
 2.39.2
 
