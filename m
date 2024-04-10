@@ -2,38 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3C189EA2B
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30ABF89EA2F
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQoo-0006Et-RV; Wed, 10 Apr 2024 01:48:22 -0400
+	id 1ruQop-0006F8-Io; Wed, 10 Apr 2024 01:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoR-00050n-FP; Wed, 10 Apr 2024 01:47:59 -0400
+ id 1ruQom-0006D3-UX; Wed, 10 Apr 2024 01:48:21 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoO-00027V-4E; Wed, 10 Apr 2024 01:47:59 -0400
+ id 1ruQok-00027h-5l; Wed, 10 Apr 2024 01:48:20 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 54CB55D500;
+ by isrv.corpit.ru (Postfix) with ESMTP id 655D85D501;
  Wed, 10 Apr 2024 08:46:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1611AB0167;
+ by tsrv.corpit.ru (Postfix) with SMTP id 2992DB0168;
  Wed, 10 Apr 2024 08:44:19 +0300 (MSK)
-Received: (nullmailer pid 4182123 invoked by uid 1000);
+Received: (nullmailer pid 4182127 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Yajun Wu <yajunw@nvidia.com>,
- Jiri Pirko <jiri@nvidia.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 40/41] hw/net/virtio-net: fix qemu set used ring flag
- even vhost started
-Date: Wed, 10 Apr 2024 08:44:01 +0300
-Message-Id: <20240410054416.4181891-40-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Wafer <wafer@jaguarmicro.com>,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 41/41] hw/virtio: Fix packed virtqueue flush used_idx
+Date: Wed, 10 Apr 2024 08:44:02 +0300
+Message-Id: <20240410054416.4181891-41-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -62,65 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yajun Wu <yajunw@nvidia.com>
+From: Wafer <wafer@jaguarmicro.com>
 
-When vhost-user or vhost-kernel is handling virtio net datapath,
-QEMU should not touch used ring.
+In the event of writing many chains of descriptors, the device must
+write just the id of the last buffer in the descriptor chain, skip
+forward the number of descriptors in the chain, and then repeat the
+operations for the rest of chains.
 
-But with vhost-user socket reconnect scenario, in a very rare case
-(has pending kick event). VRING_USED_F_NO_NOTIFY is set by QEMU in
-following code path:
+Current QEMU code writes all the buffer ids consecutively, and then
+skips all the buffers altogether. This is a bug, and can be reproduced
+with a VirtIONet device with _F_MRG_RXBUB and without
+_F_INDIRECT_DESC:
 
-	#0  virtio_queue_split_set_notification (vq=0x7ff5f4c920a8, enable=0) at ../hw/virtio/virtio.c:511
-	#1  0x0000559d6dbf033b in virtio_queue_set_notification (vq=0x7ff5f4c920a8, enable=0) at ../hw/virtio/virtio.c:576
-	#2  0x0000559d6dbbbdbc in virtio_net_handle_tx_bh (vdev=0x559d703a6aa0, vq=0x7ff5f4c920a8) at ../hw/net/virtio-net.c:2801
-	#3  0x0000559d6dbf4791 in virtio_queue_notify_vq (vq=0x7ff5f4c920a8) at ../hw/virtio/virtio.c:2248
-	#4  0x0000559d6dbf79da in virtio_queue_host_notifier_read (n=0x7ff5f4c9211c) at ../hw/virtio/virtio.c:3525
-	#5  0x0000559d6d9a5814 in virtio_bus_cleanup_host_notifier (bus=0x559d703a6a20, n=1) at ../hw/virtio/virtio-bus.c:321
-	#6  0x0000559d6dbf83c9 in virtio_device_stop_ioeventfd_impl (vdev=0x559d703a6aa0) at ../hw/virtio/virtio.c:3774
-	#7  0x0000559d6d9a55c8 in virtio_bus_stop_ioeventfd (bus=0x559d703a6a20) at ../hw/virtio/virtio-bus.c:259
-	#8  0x0000559d6d9a53e8 in virtio_bus_grab_ioeventfd (bus=0x559d703a6a20) at ../hw/virtio/virtio-bus.c:199
-	#9  0x0000559d6dbf841c in virtio_device_grab_ioeventfd (vdev=0x559d703a6aa0) at ../hw/virtio/virtio.c:3783
-	#10 0x0000559d6d9bde18 in vhost_dev_enable_notifiers (hdev=0x559d707edd70, vdev=0x559d703a6aa0) at ../hw/virtio/vhost.c:1592
-	#11 0x0000559d6d89a0b8 in vhost_net_start_one (net=0x559d707edd70, dev=0x559d703a6aa0) at ../hw/net/vhost_net.c:266
-	#12 0x0000559d6d89a6df in vhost_net_start (dev=0x559d703a6aa0, ncs=0x559d7048d890, data_queue_pairs=31, cvq=0) at ../hw/net/vhost_net.c:412
-	#13 0x0000559d6dbb5b89 in virtio_net_vhost_status (n=0x559d703a6aa0, status=15 '\017') at ../hw/net/virtio-net.c:311
-	#14 0x0000559d6dbb5e34 in virtio_net_set_status (vdev=0x559d703a6aa0, status=15 '\017') at ../hw/net/virtio-net.c:392
-	#15 0x0000559d6dbb60d8 in virtio_net_set_link_status (nc=0x559d7048d890) at ../hw/net/virtio-net.c:455
-	#16 0x0000559d6da64863 in qmp_set_link (name=0x559d6f0b83d0 "hostnet1", up=true, errp=0x7ffdd76569f0) at ../net/net.c:1459
-	#17 0x0000559d6da7226e in net_vhost_user_event (opaque=0x559d6f0b83d0, event=CHR_EVENT_OPENED) at ../net/vhost-user.c:301
-	#18 0x0000559d6ddc7f63 in chr_be_event (s=0x559d6f2ffea0, event=CHR_EVENT_OPENED) at ../chardev/char.c:62
-	#19 0x0000559d6ddc7fdc in qemu_chr_be_event (s=0x559d6f2ffea0, event=CHR_EVENT_OPENED) at ../chardev/char.c:82
+If a virtio-net device has the VIRTIO_NET_F_MRG_RXBUF feature
+but not the VIRTIO_RING_F_INDIRECT_DESC feature,
+'VirtIONetQueue->rx_vq' will use the merge feature
+to store data in multiple 'elems'.
+The 'num_buffers' in the virtio header indicates how many elements are merged.
+If the value of 'num_buffers' is greater than 1,
+all the merged elements will be filled into the descriptor ring.
+The 'idx' of the elements should be the value of 'vq->used_idx' plus 'ndescs'.
 
-This issue causes guest kernel stop kicking device and traffic stop.
-
-Add vhost_started check in virtio_net_handle_tx_bh to fix this wrong
-VRING_USED_F_NO_NOTIFY set.
-
-Signed-off-by: Yajun Wu <yajunw@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Message-ID: <20240402045109.97729-1-yajunw@nvidia.com>
-[PMD: Use unlikely()]
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 4c54f5bc8e1d38f15cc35b6a6932d8fbe219c692)
+Fixes: 86044b24e8 ("virtio: basic packed virtqueue support")
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Wafer <wafer@jaguarmicro.com>
+Message-Id: <20240407015451.5228-2-wafer@jaguarmicro.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 2d9a31b3c27311eca1682cb2c076d7a300441960)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 57d5a377c8..b6177a6afe 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -2746,6 +2746,10 @@ static void virtio_net_handle_tx_bh(VirtIODevice *vdev, VirtQueue *vq)
-     VirtIONet *n = VIRTIO_NET(vdev);
-     VirtIONetQueue *q = &n->vqs[vq2q(virtio_get_queue_index(vq))];
- 
-+    if (unlikely(n->vhost_started)) {
-+        return;
-+    }
-+
-     if (unlikely((n->status & VIRTIO_NET_S_LINK_UP) == 0)) {
-         virtio_net_drop_tx_queue_data(vdev, vq);
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index b7da7f074d..e4f8ed1e63 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -1367,12 +1367,20 @@ static void virtqueue_packed_flush(VirtQueue *vq, unsigned int count)
          return;
+     }
+ 
++    /*
++     * For indirect element's 'ndescs' is 1.
++     * For all other elemment's 'ndescs' is the
++     * number of descriptors chained by NEXT (as set in virtqueue_packed_pop).
++     * So When the 'elem' be filled into the descriptor ring,
++     * The 'idx' of this 'elem' shall be
++     * the value of 'vq->used_idx' plus the 'ndescs'.
++     */
++    ndescs += vq->used_elems[0].ndescs;
+     for (i = 1; i < count; i++) {
+-        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], i, false);
++        virtqueue_packed_fill_desc(vq, &vq->used_elems[i], ndescs, false);
+         ndescs += vq->used_elems[i].ndescs;
+     }
+     virtqueue_packed_fill_desc(vq, &vq->used_elems[0], 0, true);
+-    ndescs += vq->used_elems[0].ndescs;
+ 
+     vq->inuse -= ndescs;
+     vq->used_idx += ndescs;
 -- 
 2.39.2
 
