@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEF289EA09
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE87C89EA17
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 07:50:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruQoH-0004CO-SF; Wed, 10 Apr 2024 01:47:50 -0400
+	id 1ruQoL-0004bJ-Kx; Wed, 10 Apr 2024 01:47:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoD-0003t6-OQ; Wed, 10 Apr 2024 01:47:45 -0400
+ id 1ruQoH-0004N9-0k; Wed, 10 Apr 2024 01:47:49 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruQoB-00023D-OL; Wed, 10 Apr 2024 01:47:45 -0400
+ id 1ruQoF-00025t-6c; Wed, 10 Apr 2024 01:47:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 13E015D4FC;
+ by isrv.corpit.ru (Postfix) with ESMTP id 241F35D4FD;
  Wed, 10 Apr 2024 08:46:17 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id CD2CDB0163;
+ by tsrv.corpit.ru (Postfix) with SMTP id DCCFBB0164;
  Wed, 10 Apr 2024 08:44:18 +0300 (MSK)
-Received: (nullmailer pid 4182111 invoked by uid 1000);
+Received: (nullmailer pid 4182114 invoked by uid 1000);
  Wed, 10 Apr 2024 05:44:16 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Sven Schnelle <svens@stackframe.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 36/41] tcg/optimize: Fix sign_mask for logical
- right-shift
-Date: Wed, 10 Apr 2024 08:43:57 +0300
-Message-Id: <20240410054416.4181891-36-mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 37/41] target/hppa: Clear psw_n for BE on
+ use_nullify_skip path
+Date: Wed, 10 Apr 2024 08:43:58 +0300
+Message-Id: <20240410054416.4181891-37-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240410084037@cover.tls.msk.ru>
@@ -63,78 +64,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-The 'sign' computation is attempting to locate the sign bit that has
-been repeated, so that we can test if that bit is known zero.  That
-computation can be zero if there are no known sign repetitions.
+Along this path we have already skipped the insn to be
+nullified, so the subsequent insn should be executed.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 93a967fbb57 ("tcg/optimize: Propagate sign info for shifting")
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2248
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Reported-by: Sven Schnelle <svens@stackframe.org>
+Tested-by: Sven Schnelle <svens@stackframe.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 2911e9b95f3bb03783ae5ca3e2494dc3b44a9161)
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 4a3aa11e1fb25c28c24a43fd2835c429b00a463d)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: trivial context fixup in tests/tcg/aarch64/Makefile.target)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index ae081ab29c..b6f6436c74 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1907,7 +1907,7 @@ static bool fold_shift(OptContext *ctx, TCGOp *op)
-          * will not reduced the number of input sign repetitions.
-          */
-         sign = (s_mask & -s_mask) >> 1;
--        if (!(z_mask & sign)) {
-+        if (sign && !(z_mask & sign)) {
-             ctx->s_mask = s_mask;
-         }
-         break;
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 5e4ea7c998..474f61bc30 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -10,6 +10,7 @@ VPATH 		+= $(AARCH64_SRC)
- 
- # Base architecture tests
- AARCH64_TESTS=fcvt pcalign-a64
-+AARCH64_TESTS += test-2248
- 
- fcvt: LDFLAGS+=-lm
- 
-diff --git a/tests/tcg/aarch64/test-2248.c b/tests/tcg/aarch64/test-2248.c
-new file mode 100644
-index 0000000000..aac2e17836
---- /dev/null
-+++ b/tests/tcg/aarch64/test-2248.c
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* See https://gitlab.com/qemu-project/qemu/-/issues/2248 */
-+
-+#include <assert.h>
-+
-+__attribute__((noinline))
-+long test(long x, long y, long sh)
-+{
-+    long r;
-+    asm("cmp   %1, %2\n\t"
-+        "cset  x12, lt\n\t"
-+        "and   w11, w12, #0xff\n\t"
-+        "cmp   w11, #0\n\t"
-+        "csetm x14, ne\n\t"
-+        "lsr   x13, x14, %3\n\t"
-+        "sxtb  %0, w13"
-+        : "=r"(r)
-+        : "r"(x), "r"(y), "r"(sh)
-+        : "x11", "x12", "x13", "x14");
-+    return r;
-+}
-+
-+int main()
-+{
-+    long r = test(0, 1, 2);
-+    assert(r == -1);
-+    return 0;
-+}
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 1af77473da..ee68d2f834 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -3473,6 +3473,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+         tcg_gen_addi_reg(cpu_iaoq_b, cpu_iaoq_f, 4);
+         tcg_gen_mov_i64(cpu_iasq_f, new_spc);
+         tcg_gen_mov_i64(cpu_iasq_b, cpu_iasq_f);
++        nullify_set(ctx, 0);
+     } else {
+         copy_iaoq_entry(cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
+         if (ctx->iaoq_b == -1) {
 -- 
 2.39.2
 
