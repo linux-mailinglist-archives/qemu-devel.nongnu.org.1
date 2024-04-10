@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E127489EC2A
-	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B14E89EC74
+	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSPe-0002jk-EX; Wed, 10 Apr 2024 03:30:31 -0400
+	id 1ruSVD-0007VG-C8; Wed, 10 Apr 2024 03:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruSPP-0002Am-QZ
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 03:30:15 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruSPN-0005In-SH
- for qemu-devel@nongnu.org; Wed, 10 Apr 2024 03:30:15 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-5176f217b7bso464001e87.0
- for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 00:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712734212; x=1713339012; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=6a0AyuBt9tF0vgU4LfHtvzWxQ3dEICuSYekuHcUWePo=;
- b=IhvMZLW7q6yU7sjJdA1hgDDgSivsQLL5qKAkANcPmLKK2b2GF1z0UvN4s6p8udsFWb
- SOMZKrv5CSuPv5+SYGXdWDsqhHc2iexIpy/NL345H9jo/pzjmE+DBjkqtYTyQ81aHI9c
- xiwhLQTbT5wfNXMCO9QBHXQgMKrNiEvzql5S0q8ZN7yEQSf3GAPsVn2Z9hNlWQ+2t/bY
- vnKvGSsu+IXp2W5VFzIUAqhI2ecm17lti3N5KXO7KrSuYjZW3sz56pnlA8veuPvDHp37
- cM3Z76Db8kfouX2irWEd8PVdIH3XTZCIaLLi2df1qRGKg5gd8ZHB2JnV1Vmr0kRg6ghG
- V8IA==
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1ruSUm-0007Pf-Kn
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 03:35:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mcascell@redhat.com>)
+ id 1ruSUi-0006ZQ-A6
+ for qemu-devel@nongnu.org; Wed, 10 Apr 2024 03:35:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712734540;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lrLayFUfoZ0ymDtj9HUjpsKQGi5aMTuDCsxyMoqv16A=;
+ b=iKcAD/qqP4JEEw9gbmiDmhp4dMMBXcP6bIsBMJoHrz3XWlZlxZ7p5xr5FHGBkHv+wTJJHs
+ BygQj/mbWZ78o23XaQKBzSXxcHD9Z+rwd2rXpd0jm1PK6jk9YwHlKp05iww95edps/ewPV
+ x9tMj/pL/FzQXPVgQ2F8WxhI+QuOFvY=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-303-m5uC1wmwPCWv8NoTLv2yuQ-1; Wed, 10 Apr 2024 03:35:39 -0400
+X-MC-Unique: m5uC1wmwPCWv8NoTLv2yuQ-1
+Received: by mail-pj1-f72.google.com with SMTP id
+ 98e67ed59e1d1-2a5c5e69461so431537a91.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 00:35:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712734212; x=1713339012;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6a0AyuBt9tF0vgU4LfHtvzWxQ3dEICuSYekuHcUWePo=;
- b=m0YwYnz2QKIcDlzs2wHvot9MFzFSIbmGNnmBa6rk4+X7/B2HMSJ98+FnKEoiJWXSFQ
- PKvhuN1dUfFCuL8wcyROKSWrdwtvZMkO7zlnzzAUBasFZa04FUuwMOnxzpsqL7yyMjEl
- Gj/AXfeo9TTcOYwq2hyOdgiM18kcuqWukn9AINIspzMAhrtk2bJHq1UAHIpf+kAb1pdS
- JsvZ6D0UbVe89R1p3dOVMkKtHa8FlgBVLlV94s57NLdjTP83NadtnvbEqTxPNWLJZFuw
- O3iydWrUDFJ3/l50F0l+Zgw3HMs9KdG/hvCBWDFzeNllw7FXhCDfZ59+bX5hApm8jn05
- s9Xg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUvKmrxyxwMdrPSrp/rgH75lhORLWVn8dU3xz+W8Z3GlZNvLj9FO2nXIinyg1tsweqosB2BmJ+HMDIKg1eTgJvvn19zefE=
-X-Gm-Message-State: AOJu0YzUo35zBGxMP5E5A5tOQz/yJCr1JG6A6VtBRlJ5rZOfonxtZH9v
- YRsCUZVfjNQo+UDmx2AOMVLHdb63Tq3N3DNi1Gk35WbJ2XdSFQmIGqW7gMrYC6g=
-X-Google-Smtp-Source: AGHT+IEqGC82B21+coPmwyfx/iGeKv5U6UnMNApgYzyLYp2wOJUWsmXaKEjvCI6zYhnygJiKnxuqDg==
-X-Received: by 2002:a19:ee18:0:b0:515:9c73:e29a with SMTP id
- g24-20020a19ee18000000b005159c73e29amr1194483lfb.66.1712734211727; 
- Wed, 10 Apr 2024 00:30:11 -0700 (PDT)
-Received: from [192.168.69.100] (arl95-h02-176-184-34-173.dsl.sta.abo.bbox.fr.
- [176.184.34.173]) by smtp.gmail.com with ESMTPSA id
- pj27-20020a170906d79b00b00a4da28f42f1sm6714142ejb.177.2024.04.10.00.30.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 10 Apr 2024 00:30:11 -0700 (PDT)
-Message-ID: <6e459ba8-9cac-4774-8b6c-fdd87130a7fa@linaro.org>
-Date: Wed, 10 Apr 2024 09:30:09 +0200
+ d=1e100.net; s=20230601; t=1712734538; x=1713339338;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=lrLayFUfoZ0ymDtj9HUjpsKQGi5aMTuDCsxyMoqv16A=;
+ b=iN0t4Xx9LaIeV/spfElWH7INXELZ5pmvz50qqup5NwDg21RX+XJ7RlftldIANoyABh
+ Q2l7TishjCOiMFnvbT+/5g65kMP66NmA5BfDTF0awV86dI0AxroGZF7jydRiOFVRsEiS
+ npg7O85juUf1dYDHvQTfyDvs1zhFiauQd6QIYlbhThUAbOTK2c1k70JTLzRCIZVukB0g
+ 79T84ZvJ88+rQyRd+NAzzE89D+pRSKX4W8GJk6AzYkvVdwUxKhI6BaCmjmKOvdGm9JFJ
+ 5cgPXsZqGRVvukUVj9gh/CnNTff+Dw3JYOQqlDeIWSD3kTaRZCabACyi7Eze+5e7iQgb
+ XTGQ==
+X-Gm-Message-State: AOJu0Yxpi/RrZC1UoEgKNzH+rrIB91lXhw+HvFW5YVJJx4ecbk+wUzfj
+ fXk5nCp4rTU9Na7wnqMor029bDgQvGyZdqC8GM894b1K9+0sDbzke6plLaD6i3dRroe0v2l2A3Q
+ EYhgD4ATeuf8dWw7f68UTrnpv8vz4lbm6safJZiutjDWrx5v0uFOFXFf5ssH6pLLx7nmAyH1trr
+ XhC+OhQkiZk3FZ2sEWtJfhOIxU+oh4KZWit09bvQ==
+X-Received: by 2002:a17:90b:243:b0:2a5:e1e7:b98f with SMTP id
+ fz3-20020a17090b024300b002a5e1e7b98fmr385072pjb.5.1712734537981; 
+ Wed, 10 Apr 2024 00:35:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFZYxP6cUolaufv9BZVVGk5Tb3NBsxdV9jYc7bn9U/zU16JG2j1i8Z5JjuW6gdx3OR3ffpze+/CGp/SKQmXbI=
+X-Received: by 2002:a17:90b:243:b0:2a5:e1e7:b98f with SMTP id
+ fz3-20020a17090b024300b002a5e1e7b98fmr385052pjb.5.1712734537640; Wed, 10 Apr
+ 2024 00:35:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Update Sriram Yagnaraman mail address
-To: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>, qemu-devel@nongnu.org
-References: <20240228080625.2412372-1-sriram.yagnaraman@ericsson.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240228080625.2412372-1-sriram.yagnaraman@ericsson.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240410070459.49112-1-philmd@linaro.org>
+In-Reply-To: <20240410070459.49112-1-philmd@linaro.org>
+From: Mauro Matteo Cascella <mcascell@redhat.com>
+Date: Wed, 10 Apr 2024 09:35:26 +0200
+Message-ID: <CAA8xKjVrv5cnpuLiNsZxoA8RfX8-jN3PvKYCAcPXY2Xcmw-wFw@mail.gmail.com>
+Subject: Re: [PATCH-for-9.0? v2] hw/net/net_tx_pkt: Fix overrun in
+ update_sctp_checksum()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Dmitry Fleytman <dmitry.fleytman@gmail.com>, 
+ Jason Wang <jasowang@redhat.com>, Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Sriram Yagnaraman <sriram.yagnaraman@est.tech>, qemu-stable@nongnu.org, 
+ Zheyu Ma <zheyuma97@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mcascell@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.701,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,16 +98,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/2/24 09:06, Sriram Yagnaraman wrote:
-> Due to company policies, I have changed my mail address. Updating
-> MAINTAINERS and .mailmap to show my latest mail address.
-> 
-> Signed-off-by: Sriram Yagnaraman <sriram.yagnaraman@ericsson.com>
-> ---
->   .mailmap    | 1 +
->   MAINTAINERS | 2 +-
->   2 files changed, 2 insertions(+), 1 deletion(-)
+Hi,
 
-Thanks, patch queued.
+On Wed, Apr 10, 2024 at 9:05=E2=80=AFAM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> If a fragmented packet size is too short, do not try to
+> calculate its checksum.
+
+This was assigned CVE-2024-3567.
+
+Thanks,
+
+> Reproduced using:
+>
+>   $ cat << EOF | qemu-system-i386 -display none -nodefaults \
+>                                   -machine q35,accel=3Dqtest -m 32M \
+>                                   -device igb,netdev=3Dnet0 \
+>                                   -netdev user,id=3Dnet0 \
+>                                   -qtest stdio
+>   outl 0xcf8 0x80000810
+>   outl 0xcfc 0xe0000000
+>   outl 0xcf8 0x80000804
+>   outw 0xcfc 0x06
+>   write 0xe0000403 0x1 0x02
+>   writel 0xe0003808 0xffffffff
+>   write 0xe000381a 0x1 0x5b
+>   write 0xe000381b 0x1 0x00
+>   EOF
+>   Assertion failed: (offset =3D=3D 0), function iov_from_buf_full, file u=
+til/iov.c, line 39.
+>   #1 0x5575e81e952a in iov_from_buf_full qemu/util/iov.c:39:5
+>   #2 0x5575e6500768 in net_tx_pkt_update_sctp_checksum qemu/hw/net/net_tx=
+_pkt.c:144:9
+>   #3 0x5575e659f3e1 in igb_setup_tx_offloads qemu/hw/net/igb_core.c:478:1=
+1
+>   #4 0x5575e659f3e1 in igb_tx_pkt_send qemu/hw/net/igb_core.c:552:10
+>   #5 0x5575e659f3e1 in igb_process_tx_desc qemu/hw/net/igb_core.c:671:17
+>   #6 0x5575e659f3e1 in igb_start_xmit qemu/hw/net/igb_core.c:903:9
+>   #7 0x5575e659f3e1 in igb_set_tdt qemu/hw/net/igb_core.c:2812:5
+>   #8 0x5575e657d6a4 in igb_core_write qemu/hw/net/igb_core.c:4248:9
+>
+> Cc: qemu-stable@nongnu.org
+> Reported-by: Zheyu Ma <zheyuma97@gmail.com>
+> Fixes: f199b13bc1 ("igb: Implement Tx SCTP CSO")
+> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2273
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> Since v1: check at offset 8 (Akihiko)
+> ---
+>  hw/net/net_tx_pkt.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/hw/net/net_tx_pkt.c b/hw/net/net_tx_pkt.c
+> index 2134a18c4c..b7b1de816d 100644
+> --- a/hw/net/net_tx_pkt.c
+> +++ b/hw/net/net_tx_pkt.c
+> @@ -141,6 +141,10 @@ bool net_tx_pkt_update_sctp_checksum(struct NetTxPkt=
+ *pkt)
+>      uint32_t csum =3D 0;
+>      struct iovec *pl_start_frag =3D pkt->vec + NET_TX_PKT_PL_START_FRAG;
+>
+> +    if (iov_size(pl_start_frag, pkt->payload_frags) < 8 + sizeof(csum)) =
+{
+> +        return false;
+> +    }
+> +
+>      if (iov_from_buf(pl_start_frag, pkt->payload_frags, 8, &csum, sizeof=
+(csum)) < sizeof(csum)) {
+>          return false;
+>      }
+> --
+> 2.41.0
+>
+
+--=20
+Mauro Matteo Cascella
+Red Hat Product Security
+PGP-Key ID: BB3410B0
 
 
