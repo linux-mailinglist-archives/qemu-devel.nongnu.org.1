@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0945A89EBED
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EB489EBEC
 	for <lists+qemu-devel@lfdr.de>; Wed, 10 Apr 2024 09:28:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruSLj-0006Kx-7i; Wed, 10 Apr 2024 03:26:27 -0400
+	id 1ruSLc-0005kc-IW; Wed, 10 Apr 2024 03:26:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSKn-0005Gu-Ec; Wed, 10 Apr 2024 03:25:33 -0400
+ id 1ruSKn-0005Gx-Fr; Wed, 10 Apr 2024 03:25:33 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1ruSKe-0004FC-EB; Wed, 10 Apr 2024 03:25:25 -0400
+ id 1ruSKh-0004VL-B0; Wed, 10 Apr 2024 03:25:28 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5E1845D68A;
+ by isrv.corpit.ru (Postfix) with ESMTP id 6F22C5D68B;
  Wed, 10 Apr 2024 10:25:04 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0386EB02CB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 130B7B02CC;
  Wed, 10 Apr 2024 10:23:06 +0300 (MSK)
-Received: (nullmailer pid 4191727 invoked by uid 1000);
+Received: (nullmailer pid 4191730 invoked by uid 1000);
  Wed, 10 Apr 2024 07:23:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Eric Blake <eblake@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 27/87] mirror: Don't call job_pause_point() under graph
- lock
-Date: Wed, 10 Apr 2024 10:22:00 +0300
-Message-Id: <20240410072303.4191455-27-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 28/87] nbd/server: only traverse NBDExport->clients
+ from main loop thread
+Date: Wed, 10 Apr 2024 10:22:01 +0300
+Message-Id: <20240410072303.4191455-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240410085155@cover.tls.msk.ru>
@@ -59,78 +59,167 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kevin Wolf <kwolf@redhat.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-Calling job_pause_point() while holding the graph reader lock
-potentially results in a deadlock: bdrv_graph_wrlock() first drains
-everything, including the mirror job, which pauses it. The job is only
-unpaused at the end of the drain section, which is when the graph writer
-lock has been successfully taken. However, if the job happens to be
-paused at a pause point where it still holds the reader lock, the writer
-lock can't be taken as long as the job is still paused.
+The NBD clients list is currently accessed from both the export
+AioContext and the main loop thread. When the AioContext lock is removed
+there will be nothing protecting the clients list.
 
-Mark job_pause_point() as GRAPH_UNLOCKED and fix mirror accordingly.
+Adding a lock around the clients list is tricky because NBDClient
+structs are refcounted and may be freed from the export AioContext or
+the main loop thread. nbd_export_request_shutdown() -> client_close() ->
+nbd_client_put() is also tricky because the list lock would be held
+while indirectly dropping references to NDBClients.
 
-Cc: qemu-stable@nongnu.org
-Buglink: https://issues.redhat.com/browse/RHEL-28125
-Fixes: 004915a96a7a ("block: Protect bs->backing with graph_lock")
+A simpler approach is to only allow nbd_client_put() and client_close()
+calls from the main loop thread. Then the NBD clients list is only
+accessed from the main loop thread and no fancy locking is needed.
+
+nbd_trip() just needs to reschedule itself in the main loop AioContext
+before calling nbd_client_put() and client_close(). This costs more CPU
+cycles per NBD request so add nbd_client_put_nonzero() to optimize the
+common case where more references to NBDClient remain.
+
+Note that nbd_client_get() can still be called from either thread, so
+make NBDClient->refcount atomic.
+
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20231221192452.1785567-6-stefanha@redhat.com>
+Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-Message-ID: <20240313153000.33121-1-kwolf@redhat.com>
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
-(cherry picked from commit ae5a40e8581185654a667fbbf7e4adbc2a2a3e45)
+(cherry picked from commit f816310d0c32c8482e56807ea0f9faa8d1b5f696)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/block/mirror.c b/block/mirror.c
-index cd9d3ad4a8..abbddb39e4 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -479,9 +479,9 @@ static unsigned mirror_perform(MirrorBlockJob *s, int64_t offset,
-     return bytes_handled;
+diff --git a/nbd/server.c b/nbd/server.c
+index 895cf0a752..65ec99fa92 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -122,7 +122,7 @@ struct NBDMetaContexts {
+ };
+ 
+ struct NBDClient {
+-    int refcount;
++    int refcount; /* atomic */
+     void (*close_fn)(NBDClient *client, bool negotiated);
+ 
+     NBDExport *exp;
+@@ -1501,14 +1501,17 @@ static int coroutine_fn nbd_receive_request(NBDClient *client, NBDRequest *reque
+ 
+ #define MAX_NBD_REQUESTS 16
+ 
++/* Runs in export AioContext and main loop thread */
+ void nbd_client_get(NBDClient *client)
+ {
+-    client->refcount++;
++    qatomic_inc(&client->refcount);
  }
  
--static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
-+static void coroutine_fn GRAPH_UNLOCKED mirror_iteration(MirrorBlockJob *s)
+ void nbd_client_put(NBDClient *client)
  {
--    BlockDriverState *source = s->mirror_top_bs->backing->bs;
-+    BlockDriverState *source;
-     MirrorOp *pseudo_op;
-     int64_t offset;
-     /* At least the first dirty chunk is mirrored in one iteration. */
-@@ -489,6 +489,10 @@ static void coroutine_fn GRAPH_RDLOCK mirror_iteration(MirrorBlockJob *s)
-     bool write_zeroes_ok = bdrv_can_write_zeroes_with_unmap(blk_bs(s->target));
-     int max_io_bytes = MAX(s->buf_size / MAX_IN_FLIGHT, MAX_IO_BYTES);
- 
-+    bdrv_graph_co_rdlock();
-+    source = s->mirror_top_bs->backing->bs;
-+    bdrv_graph_co_rdunlock();
+-    if (--client->refcount == 0) {
++    assert(qemu_in_main_thread());
 +
-     bdrv_dirty_bitmap_lock(s->dirty_bitmap);
-     offset = bdrv_dirty_iter_next(s->dbi);
-     if (offset < 0) {
-@@ -1078,9 +1082,7 @@ static int coroutine_fn mirror_run(Job *job, Error **errp)
-                 mirror_wait_for_free_in_flight_slot(s);
-                 continue;
-             } else if (cnt != 0) {
--                bdrv_graph_co_rdlock();
-                 mirror_iteration(s);
--                bdrv_graph_co_rdunlock();
-             }
-         }
++    if (qatomic_fetch_dec(&client->refcount) == 1) {
+         /* The last reference should be dropped by client->close,
+          * which is called by client_close.
+          */
+@@ -1529,8 +1532,35 @@ void nbd_client_put(NBDClient *client)
+     }
+ }
  
-diff --git a/include/qemu/job.h b/include/qemu/job.h
-index e502787dd8..b4bc2e174b 100644
---- a/include/qemu/job.h
-+++ b/include/qemu/job.h
-@@ -503,7 +503,7 @@ void job_enter(Job *job);
-  *
-  * Called with job_mutex *not* held.
-  */
--void coroutine_fn job_pause_point(Job *job);
-+void coroutine_fn GRAPH_UNLOCKED job_pause_point(Job *job);
++/*
++ * Tries to release the reference to @client, but only if other references
++ * remain. This is an optimization for the common case where we want to avoid
++ * the expense of scheduling nbd_client_put() in the main loop thread.
++ *
++ * Returns true upon success or false if the reference was not released because
++ * it is the last reference.
++ */
++static bool nbd_client_put_nonzero(NBDClient *client)
++{
++    int old = qatomic_read(&client->refcount);
++    int expected;
++
++    do {
++        if (old == 1) {
++            return false;
++        }
++
++        expected = old;
++        old = qatomic_cmpxchg(&client->refcount, expected, expected - 1);
++    } while (old != expected);
++
++    return true;
++}
++
+ static void client_close(NBDClient *client, bool negotiated)
+ {
++    assert(qemu_in_main_thread());
++
+     if (client->closing) {
+         return;
+     }
+@@ -2936,15 +2966,20 @@ static coroutine_fn int nbd_handle_request(NBDClient *client,
+ static coroutine_fn void nbd_trip(void *opaque)
+ {
+     NBDClient *client = opaque;
+-    NBDRequestData *req;
++    NBDRequestData *req = NULL;
+     NBDRequest request = { 0 };    /* GCC thinks it can be used uninitialized */
+     int ret;
+     Error *local_err = NULL;
  
- /**
-  * @job: The job that calls the function.
++    /*
++     * Note that nbd_client_put() and client_close() must be called from the
++     * main loop thread. Use aio_co_reschedule_self() to switch AioContext
++     * before calling these functions.
++     */
++
+     trace_nbd_trip();
+     if (client->closing) {
+-        nbd_client_put(client);
+-        return;
++        goto done;
+     }
+ 
+     if (client->quiescing) {
+@@ -2952,10 +2987,9 @@ static coroutine_fn void nbd_trip(void *opaque)
+          * We're switching between AIO contexts. Don't attempt to receive a new
+          * request and kick the main context which may be waiting for us.
+          */
+-        nbd_client_put(client);
+         client->recv_coroutine = NULL;
+         aio_wait_kick();
+-        return;
++        goto done;
+     }
+ 
+     req = nbd_request_get(client);
+@@ -3015,8 +3049,13 @@ static coroutine_fn void nbd_trip(void *opaque)
+ 
+     qio_channel_set_cork(client->ioc, false);
+ done:
+-    nbd_request_put(req);
+-    nbd_client_put(client);
++    if (req) {
++        nbd_request_put(req);
++    }
++    if (!nbd_client_put_nonzero(client)) {
++        aio_co_reschedule_self(qemu_get_aio_context());
++        nbd_client_put(client);
++    }
+     return;
+ 
+ disconnect:
+@@ -3024,6 +3063,8 @@ disconnect:
+         error_reportf_err(local_err, "Disconnect client, due to: ");
+     }
+     nbd_request_put(req);
++
++    aio_co_reschedule_self(qemu_get_aio_context());
+     client_close(client, true);
+     nbd_client_put(client);
+ }
 -- 
 2.39.2
 
