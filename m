@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43E68A0ACC
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 10:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD608A0ADD
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 10:10:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rupOS-00017S-R4; Thu, 11 Apr 2024 04:02:48 -0400
+	id 1rupUd-0002z6-30; Thu, 11 Apr 2024 04:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rupOQ-000174-KV
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 04:02:46 -0400
-Received: from mail-oi1-x232.google.com ([2607:f8b0:4864:20::232])
+ id 1rupUW-0002ya-LI
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 04:09:04 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rupOO-00031p-WA
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 04:02:46 -0400
-Received: by mail-oi1-x232.google.com with SMTP id
- 5614622812f47-3c60019eecaso1134489b6e.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 01:02:44 -0700 (PDT)
+ id 1rupUT-00049y-Ds
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 04:09:03 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1e4c4fb6af3so3841095ad.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 01:09:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712822563; x=1713427363; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712822940; x=1713427740; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id:from
  :to:cc:subject:date:message-id:reply-to;
- bh=ZjSSGpOHlSf6np+XiIunTqGmsycHzgHyHURl/FpD9x8=;
- b=oovuxFYnZ9dMCeC3Pq9kr7rcg4WQNOU43gk73pwhThvf9IfPEjS3qzll26rxtuQ0G1
- FbA13RsqlUWpiEGOKrlD0BhsXAkghEbVUqMdYPP+hHjk9NO2FWs7aNFP1Gp6lVHhlj2Q
- 9HNJjilhrG7bki3FXn51FZpMI8K6iE38wSrJjRw64czojJ0OjbZ2OrnNJo1W3jrvxd7y
- 01lR+e2Ti9OCx49doB9o7s9GI+104AA+h7vnDQJ6hlB6jq5W3bKaDemTdENI+7dCz5if
- chdmMVw+QK8PNWCVLytWQPM5kTho0OXM0ZFXhq+TKJdgb1RtD2s7zFFam6eYFzhun/8E
- WFRw==
+ bh=YhjrtrvNS6EG2cpnzyGjK0N9rZLNNP1bqfLrLW3JvJU=;
+ b=tWcwcKno1+hScWR5UFHgL0l1l8M8e4wgELiXcGPnzIvvOE57u2vJL1npr3vKTgr0eD
+ XCpO1Jx3RdI5Ggyd9a7jueXDenbCTtbk2cutLiL3D1ayUgPc4eTF/vbyrNLp/YTPrWil
+ bVVuRVkKN02mj4SVRGGMV7+TC4qztIr8Qk5iKbFg/17A9Gfgh4YOcrFnRR/slXm/4myV
+ 355O4VoC0qmUq5G9XpttA9lcCiDWKxzVTK4FgY+R5wQU5qK/4F+gGTkVUZSvImyyy2Jr
+ kE6ONGb4RA2CngoOY7Q/fh31BwQQ1bTVw72V6U3V8luF/39+3lVHJ8hau+QTNYvnCcac
+ rcVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712822563; x=1713427363;
+ d=1e100.net; s=20230601; t=1712822940; x=1713427740;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZjSSGpOHlSf6np+XiIunTqGmsycHzgHyHURl/FpD9x8=;
- b=YxI//RTt2Phff0YwNm+X+seUbAbLYYq//tmoZPz193U9ZPimPwkhhX2wLImD9FGG7X
- P4sDRUA2LWqhETcpi2kLDowtMswbhTGOXoZ9MKRxZN4rbIIDHBpsY+RbANQ34ECFUnYv
- QA5vE19GJiONcFqe4QwsHVT5BcVFLcYLg7RjYb2McLZQB6iKdOlXYYuuR3eBmlaGfE0M
- oSeOFfs36JNOtjhkPEzhKL2EmcklpwSViMTNqhdk+BCnfbGwX3zq8Td3XQfVkrp6UmMo
- KjaEtMjnze5jf4sQ/wUYBpL1e9E1QNb0dD9lKuB42oVonlKQDrmKacCpvtKv+14QXgVj
- 6SBg==
+ bh=YhjrtrvNS6EG2cpnzyGjK0N9rZLNNP1bqfLrLW3JvJU=;
+ b=dVriA7Ef2jLqvCESZW7VjLpthyCdbeeQRfrEG81IkqrW73nj5o+TZeBShSxO6k879l
+ /EvbXikgd/VhZRZUBmgEmolwIwwtwyFBbJs9zgPl/LRanJf8jUEVEmTMZcJf6hrVRDDj
+ u4an00W1spqPAOler/bE3fJkq8nnEYg7R8rAgRRn2Vk9cWzM5OpEf1AL6/vr/DNmTCD8
+ GgHEHDrFKjRK0HPuX7mQbmrzdHX4Y6OgeSIFxWdeROzk1yHUrAmuU3zdedPzXhMO+7HP
+ bUMLXxluvKKVZ6cEkhHSg5BTuWNK4jjll3bqazwikawGtPL5T0T5czu5eqkOcxGmVNXz
+ GTPQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCUy77Kb9Yu+v3urE2RLQY78GYrI0C0bMCtmlZkk5lDacA/hcYduIoltrcrCPaKHbeLj5GdZB7ejOFDixWLanO1tGV+SLUA=
-X-Gm-Message-State: AOJu0Yy7U+DX8DBL2fSJ+zumodXDyx3Gl3jaIDxw1iHwTLL756BsqKGs
- HNXfSHUHJViVkHh2z6CbHNceHab3YsiwP1md3X5RicIxCQbEW7+miJb0es0jdR8DX1yZY86S2H7
- 2
-X-Google-Smtp-Source: AGHT+IExrVKSDCGBBzpTHzWggDwSz+E3J+qMbzg6BP7FDtA3k6dHV52TgpZpeFCoGvh/YGQVlXH8Gg==
-X-Received: by 2002:a05:6871:8783:b0:22a:9d77:f654 with SMTP id
- td3-20020a056871878300b0022a9d77f654mr6002496oab.31.1712822563470; 
- Thu, 11 Apr 2024 01:02:43 -0700 (PDT)
+ AJvYcCVRY31kNDbBl75Tl2kvnZVlsJf5doHSkezeuUpo8W+hHQpBIpDRCOpnoJg/CyOuXDIoKMGutK7TyvRClG/O+QY621qxKBg=
+X-Gm-Message-State: AOJu0YxhWITuP/Ch0RW/hMZ7wlbl7gu97Y1PHy8jvmqfmCHBxVN8UISw
+ UouzzodoU5nKkNE8yqYVg4Ivd0nHzno06NXDSTYAJ1c/XclHK/0ObD9lRQ+g294=
+X-Google-Smtp-Source: AGHT+IFpz1KkMfpVKy32stE4LYecyWrw3IPz7C3RVMSXg9qsu6cDTncG12hiYgiTq+xAWlvv1Q1a/A==
+X-Received: by 2002:a17:903:2309:b0:1e2:a7f5:baf7 with SMTP id
+ d9-20020a170903230900b001e2a7f5baf7mr3165293plh.25.1712822939930; 
+ Thu, 11 Apr 2024 01:08:59 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- m23-20020aa78a17000000b006ecfd2ad4ddsm746656pfa.146.2024.04.11.01.02.42
+ lf16-20020a170902fb5000b001e5119c1923sm693684plb.71.2024.04.11.01.08.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Apr 2024 01:02:43 -0700 (PDT)
-Message-ID: <2b50017e-5e7a-4c13-b54a-9db9c79d3ade@linaro.org>
-Date: Thu, 11 Apr 2024 01:02:41 -0700
+ Thu, 11 Apr 2024 01:08:59 -0700 (PDT)
+Message-ID: <a4cba502-7288-406b-b658-3f6a081c6e58@linaro.org>
+Date: Thu, 11 Apr 2024 01:08:57 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1 14/19] target/i386: move BSWAP to new decoder
+Subject: Re: [PATCH for-9.1 15/19] target/i386: port extensions of one-byte
+ opcodes to new decoder
 To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
 References: <20240409164323.776660-1-pbonzini@redhat.com>
- <20240409164323.776660-15-pbonzini@redhat.com>
+ <20240409164323.776660-16-pbonzini@redhat.com>
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240409164323.776660-15-pbonzini@redhat.com>
+In-Reply-To: <20240409164323.776660-16-pbonzini@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::232;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x232.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,31 +97,19 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/9/24 09:43, Paolo Bonzini wrote:
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   target/i386/tcg/translate.c      |  4 +++-
->   target/i386/tcg/decode-new.c.inc |  9 +++++++++
->   target/i386/tcg/emit.c.inc       | 11 +++++++++++
->   3 files changed, 23 insertions(+), 1 deletion(-)
+> A few two-byte opcodes are simple extensions of existing one-byte opcodes;
+> they are easy to decode and need no change to emit.c.inc.  Port them to
+> the new decoder.
 > 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index f3c437aee88..a1e6e8ec7d9 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -3209,7 +3209,9 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
->   #ifndef CONFIG_USER_ONLY
->           use_new &= b <= limit;
->   #endif
-> -        if (use_new && (b >= 0x138 && b <= 0x19f)) {
-> +        if (use_new &&
-> +	    ((b >= 0x138 && b <= 0x19f) ||
-> +             (b >= 0x1c8 && b <= 0x1cf))) {
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/decode-new.h     |  1 +
+>   target/i386/tcg/translate.c      |  4 ++++
+>   target/i386/tcg/decode-new.c.inc | 27 +++++++++++++++++++++++++++
+>   target/i386/tcg/emit.c.inc       | 15 +++++++++++++++
+>   4 files changed, 47 insertions(+)
 
-Tab.
-
-Otherwise,
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
 
 r~
 
