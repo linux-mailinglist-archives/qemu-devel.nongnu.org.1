@@ -2,63 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE1F8A06FD
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 06:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5200E8A0A75
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:48:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruln2-0007sX-Kp; Thu, 11 Apr 2024 00:11:56 -0400
+	id 1rup9k-0001Ef-4T; Thu, 11 Apr 2024 03:47:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1ruln0-0007s7-5v
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 00:11:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rulmy-000187-Cp
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 00:11:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712808711;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=sR+FBGG3kkWsvPq/ow8wf6Iko+fXNksNyaJcdR0nL0c=;
- b=cqOvnVCtQ7ZyElYWZgf9jhU1brLFD5OBhaAOMycbaVKRcu8dgV0EcQ4QQanVbuopMRUXRC
- DrO8PiQWBRZg1yLWv5B1e3WwlJoE/TxsJUNxm2RnN4xLg9OjPItj5bU1caLtG3z3tkTYrA
- dy75ZpQ6OY7kaDKHluFtaXsnhfOLL0U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-yHw7c31UMESVDOS_C_8WxA-1; Thu, 11 Apr 2024 00:11:44 -0400
-X-MC-Unique: yHw7c31UMESVDOS_C_8WxA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 41DFC801797
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 04:11:44 +0000 (UTC)
-Received: from server.redhat.com (unknown [10.72.112.22])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1DF3F492BC8;
- Thu, 11 Apr 2024 04:11:41 +0000 (UTC)
-From: Cindy Lu <lulu@redhat.com>
-To: lulu@redhat.com, mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH v4] virtio-pci: Fix the crash that the vector was used after
- released.
-Date: Thu, 11 Apr 2024 12:11:30 +0800
-Message-ID: <20240411041130.449406-1-lulu@redhat.com>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rup9f-0001EM-GA
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:31 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rup9e-0000k9-0W
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:31 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-5aa27dba8a1so2638936eaf.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 00:47:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712821648; x=1713426448; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=3T5/AILhEQStoOlRYJVmo5r/Tn2I0lzJRWJxOdGHW6o=;
+ b=y34vuEt8brINS8m2q3yObY0gXuszU3S6E50WlyZ+j7Up70JthsWAiG0JWHzNwNidzA
+ bEuSbiKT4L5ZdDKzDDRwdH9e4WAxtrXp4QAXoXh5qcSPws0JQlshPA8NS8xfjermfmeD
+ 58FeE49XQzYNt1x2ysACJA2ADO8bUAbk/5h/kz9E+dd5nwq/7Wv8mscQyarclq5udJxX
+ HdP0Ocwgr5G2B7lcQ3+Bm7NTIXZyNbLU1w5latFRtHQ8c2fAxv92lAxB2nyh3u+3OMOP
+ VpwIwRCIeK8eGno+dywvO/Cmghm9rZw5vrqwoYg28LK/FlOkvzyksL+vL73a+rFv9Xsb
+ n/PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712821648; x=1713426448;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=3T5/AILhEQStoOlRYJVmo5r/Tn2I0lzJRWJxOdGHW6o=;
+ b=APG5yTS/+ZGBCuldL4XW7XEq9mdHuXkQuF9h7cU0I4UrBnpJMJktW7uSTg8rl0JH0t
+ mq6EAQ3/5BbLWijMBp3SJkZGP9bHF7IDInj0VcfTff7y+zZ6hrB+fI5kQNs7RACCW3El
+ SPy5oz856pIQOr0E1NrQd2q1ucSRjriBY3A+6+sCjlCKJlBv/n+pvqDjPeQYK4hS3reK
+ WH/jST/t9NOJaJ+GFVdphWt/c8xpCmlcZHBH3S8e9Vx/Ms0wulxyHCTNrrdUpkiuw/8Y
+ axyJ4HaEvq3FYU3Dg41L4Mpum8lBYMG3VzHPC9pIksgNr7xZ81YtDkjKSaupTCss4Tok
+ USgg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV170l+52wzTRU8Wa+lJYIMEZoddhHJAiIys/U2C8HApczRUmgRUpzzv0Ay35+JivC1oMqiS63HU6CfdKZgeITHpYcSRmE=
+X-Gm-Message-State: AOJu0YzUE7ngO8hQYj6Wwl7KtiP+JyEnJqVgiOHZ5hg36wKfmikYNhnP
+ eH4BWIon2SNtY6aOgaPDYGyKTH4G5SRvTp+O9r4pZjE3Ox8RbIDsJqglrRh/B24=
+X-Google-Smtp-Source: AGHT+IGPfqt18yxyxmkhTUYf76LuSqQN7gZz1U83dNGYBijqhSZ5yemPpDCUwS2KT52ZwFtCneU7bg==
+X-Received: by 2002:a05:6358:ed0c:b0:186:1908:4c4f with SMTP id
+ hy12-20020a056358ed0c00b0018619084c4fmr5209257rwb.13.1712821648518; 
+ Thu, 11 Apr 2024 00:47:28 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ q2-20020a656a82000000b005dbd0facb4dsm493803pgu.61.2024.04.11.00.47.27
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Apr 2024 00:47:27 -0700 (PDT)
+Message-ID: <f211d5d7-9d0f-455a-97c5-d2c09d600bcb@linaro.org>
+Date: Wed, 10 Apr 2024 18:12:35 -1000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lulu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.1 09/19] target/i386: move 60-BF opcodes to new
+ decoder
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240409164323.776660-1-pbonzini@redhat.com>
+ <20240409164323.776660-10-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240409164323.776660-10-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+X-Spam_score_int: -4
+X-Spam_score: -0.5
+X-Spam_bar: /
+X-Spam_report: (-0.5 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,126 +96,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-During the booting process of the non-standard image, the behavior of the
-called function in qemu is as follows:
+On 4/9/24 06:43, Paolo Bonzini wrote:
+> +static void gen_ARPL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+> +{
+> +    TCGLabel *label1 = gen_new_label();
+> +    TCGv rpl_adj = tcg_temp_new();
+> +    TCGv flags = tcg_temp_new();
+> +
+> +    gen_mov_eflags(s, flags);
+> +    tcg_gen_andi_tl(flags, flags, ~CC_Z);
+> +
+> +    /* Compute dest[rpl] - src[rpl], adjust if result <0.  */
+> +    tcg_gen_andi_tl(rpl_adj, s->T0, 3);
+> +    tcg_gen_andi_tl(s->T1, s->T1, 3);
+> +    tcg_gen_sub_tl(rpl_adj, rpl_adj, s->T1);
+> +
+> +    tcg_gen_brcondi_tl(TCG_COND_LT, rpl_adj, 0, label1);
 
-1. vhost_net_stop() was triggered by guest image. This will call the function
-virtio_pci_set_guest_notifiers() with assgin= false,
-virtio_pci_set_guest_notifiers(） will release the irqfd for vector 0
+Comment is right, but branch condition is wrong.
 
-2. virtio_reset() was triggered, this will set configure vector to VIRTIO_NO_VECTOR
+I think this might be better as:
 
-3.vhost_net_start() was called (at this time, the configure vector is
-still VIRTIO_NO_VECTOR) and then call virtio_pci_set_guest_notifiers() with
-assgin=true, so the irqfd for vector 0 is still not "init" during this process
+     /* SRC = DST with SRC[RPL] */
+     tcg_gen_deposit_tl(s->T1, s->T0, s->T1, 0, 2);
+     /* Z flag set if DST < SRC */
+     tcg_gen_setcond_tl(TCG_COND_LTU, tmp, s->T0, s->T1);
+     /* Install Z */
+     tcg_gen_deposit_tl(flags, flags, tmp, ctz(CC_Z), 1);
+     /* DST with maximum RPL */
+     tcg_gen_umax_tl(s->T0, s->T0, s->T1);
 
-4. The system continues to boot and sets the vector back to 0. After that
-msix_fire_vector_notifier() was triggered to unmask the vector 0 and  meet the crash
 
-To fix the issue, we need to support changing the vector after VIRTIO_CONFIG_S_DRIVER_OK is set.
+> +    case MO_32:
+> +#ifdef TARGET_X86_64
+> +        /*
+> +         * This could also use the same algorithm as MO_16.  It produces fewer
+> +         * TCG ops and better code if flags are needed, but it requires a 64-bit
+> +         * multiply even if they are not (and thus the high part of the multiply
+> +         * is dead).
+> +         */
 
-(gdb) bt
-0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0)
-    at pthread_kill.c:44
-1  0x00007fc87148ec53 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at pthread_kill.c:78
-2  0x00007fc87143e956 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
-3  0x00007fc8714287f4 in __GI_abort () at abort.c:79
-4  0x00007fc87142871b in __assert_fail_base
-    (fmt=0x7fc8715bbde0 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n", assertion=0x5606413efd53 "ret == 0", file=0x5606413ef87d "../accel/kvm/kvm-all.c", line=1837, function=<optimized out>) at assert.c:92
-5  0x00007fc871437536 in __GI___assert_fail
-    (assertion=0x5606413efd53 "ret == 0", file=0x5606413ef87d "../accel/kvm/kvm-all.c", line=1837, function=0x5606413f06f0 <__PRETTY_FUNCTION__.19> "kvm_irqchip_commit_routes") at assert.c:101
-6  0x0000560640f884b5 in kvm_irqchip_commit_routes (s=0x560642cae1f0) at ../accel/kvm/kvm-all.c:1837
-7  0x0000560640c98f8e in virtio_pci_one_vector_unmask
-    (proxy=0x560643c65f00, queue_no=4294967295, vector=0, msg=..., n=0x560643c6e4c8)
-    at ../hw/virtio/virtio-pci.c:1005
-8  0x0000560640c99201 in virtio_pci_vector_unmask (dev=0x560643c65f00, vector=0, msg=...)
-    at ../hw/virtio/virtio-pci.c:1070
-9  0x0000560640bc402e in msix_fire_vector_notifier (dev=0x560643c65f00, vector=0, is_masked=false)
-    at ../hw/pci/msix.c:120
-10 0x0000560640bc40f1 in msix_handle_mask_update (dev=0x560643c65f00, vector=0, was_masked=true)
-    at ../hw/pci/msix.c:140
-11 0x0000560640bc4503 in msix_table_mmio_write (opaque=0x560643c65f00, addr=12, val=0, size=4)
-    at ../hw/pci/msix.c:231
-12 0x0000560640f26d83 in memory_region_write_accessor
-    (mr=0x560643c66540, addr=12, value=0x7fc86b7bc628, size=4, shift=0, mask=4294967295, attrs=...)
-    at ../system/memory.c:497
-13 0x0000560640f270a6 in access_with_adjusted_size
+Is 64-bit multiply ever slower these days?
+My intuition says "slow" multiply is at least a decade out of date.
 
-     (addr=12, value=0x7fc86b7bc628, size=4, access_size_min=1, access_size_max=4, access_fn=0x560640f26c8d <memory_region_write_accessor>, mr=0x560643c66540, attrs=...) at ../system/memory.c:573
-14 0x0000560640f2a2b5 in memory_region_dispatch_write (mr=0x560643c66540, addr=12, data=0, op=MO_32, attrs=...)
-    at ../system/memory.c:1521
-15 0x0000560640f37bac in flatview_write_continue
-    (fv=0x7fc65805e0b0, addr=4273803276, attrs=..., ptr=0x7fc871e9c028, len=4, addr1=12, l=4, mr=0x560643c66540)
-    at ../system/physmem.c:2714
-16 0x0000560640f37d0f in flatview_write
-    (fv=0x7fc65805e0b0, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4) at ../system/physmem.c:2756
-17 0x0000560640f380bf in address_space_write
-    (as=0x560642161ae0 <address_space_memory>, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4)
-    at ../system/physmem.c:2863
-18 0x0000560640f3812c in address_space_rw
-    (as=0x560642161ae0 <address_space_memory>, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4, is_write=true) at ../system/physmem.c:2873
---Type <RET> for more, q to quit, c to continue without paging--
-19 0x0000560640f8aa55 in kvm_cpu_exec (cpu=0x560642f205e0) at ../accel/kvm/kvm-all.c:2915
-20 0x0000560640f8d731 in kvm_vcpu_thread_fn (arg=0x560642f205e0) at ../accel/kvm/kvm-accel-ops.c:51
-21 0x00005606411949f4 in qemu_thread_start (args=0x560642f292b0) at ../util/qemu-thread-posix.c:541
-22 0x00007fc87148cdcd in start_thread (arg=<optimized out>) at pthread_create.c:442
-23 0x00007fc871512630 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
-(gdb)
-Signed-off-by: Cindy Lu <lulu@redhat.com>
----
- hw/virtio/virtio-pci.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+> +        tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
+> +        tcg_gen_trunc_tl_i32(s->tmp3_i32, s->T1);
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index 1a7039fb0c..f124a9e20b 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -1570,7 +1570,22 @@ static void virtio_pci_common_write(void *opaque, hwaddr addr,
-         } else {
-             val = VIRTIO_NO_VECTOR;
-         }
-+        vector = vdev->config_vector;
-         vdev->config_vector = val;
-+        /*
-+         * If the device uses irqfd and the vector changes after DRIVER_OK is
-+         * set, we need to release the old vector and set up the new one.
-+         */
-+        if ((vdev->status & VIRTIO_CONFIG_S_DRIVER_OK) &&
-+            (msix_enabled(&proxy->pci_dev) && kvm_msi_via_irqfd_enabled()) &&
-+            (val != vector)) {
-+            if (vector != VIRTIO_NO_VECTOR) {
-+                kvm_virtio_pci_vector_release_one(proxy, VIRTIO_CONFIG_IRQ_IDX);
-+            }
-+            if (val != VIRTIO_NO_VECTOR) {
-+                kvm_virtio_pci_vector_use_one(proxy, VIRTIO_CONFIG_IRQ_IDX);
-+            }
-+        }
-         break;
-     case VIRTIO_PCI_COMMON_STATUS:
-         if (!(val & VIRTIO_CONFIG_S_DRIVER_OK)) {
-@@ -1611,6 +1626,21 @@ static void virtio_pci_common_write(void *opaque, hwaddr addr,
-             val = VIRTIO_NO_VECTOR;
-         }
-         virtio_queue_set_vector(vdev, vdev->queue_sel, val);
-+
-+        /*
-+         * If the device uses irqfd and the vector changes after DRIVER_OK is
-+         * set, we need to release the old vector and set up the new one.
-+         */
-+        if ((vdev->status & VIRTIO_CONFIG_S_DRIVER_OK) &&
-+            (msix_enabled(&proxy->pci_dev) && kvm_msi_via_irqfd_enabled()) &&
-+            (val != vector)) {
-+            if (vector != VIRTIO_NO_VECTOR) {
-+                kvm_virtio_pci_vector_release_one(proxy, vdev->queue_sel);
-+            }
-+            if (val != VIRTIO_NO_VECTOR) {
-+                kvm_virtio_pci_vector_use_one(proxy, vdev->queue_sel);
-+            }
-+        }
-         break;
-     case VIRTIO_PCI_COMMON_Q_ENABLE:
-         if (val == 1) {
--- 
-2.43.0
+Avoid s->tmp*, especially in new code.
 
+> +        tcg_gen_muls2_i32(s->tmp2_i32, s->tmp3_i32,
+> +                          s->tmp2_i32, s->tmp3_i32);
+> +        tcg_gen_extu_i32_tl(s->T0, s->tmp2_i32);
+> +
+> +        cc_src_rhs = tcg_temp_new();
+> +        tcg_gen_extu_i32_tl(cc_src_rhs, s->tmp3_i32);
+> +        /* Compare the high part to the sign bit of the truncated result */
+> +        tcg_gen_negsetcondi_i32(TCG_COND_LT, s->tmp2_i32, s->tmp2_i32, 0);
+
+This seems like something the optimizer should handle, but doesn't.
+I'd write this as
+
+     tcg_gen_sari_i32(tmp, tmp, 31);
+or
+     tcg_gen_sextract_i32(tmp, tmp, 31, 1);
+
+which I know will expand to the same thing.
+
+> +    case MO_64:
+> +#endif
+> +        cc_src_rhs = tcg_temp_new();
+> +        tcg_gen_muls2_tl(s->T0, cc_src_rhs, s->T0, s->T1);
+> +        /* Compare the high part to the sign bit of the truncated result */
+> +        tcg_gen_negsetcondi_tl(TCG_COND_LT, s->T1, s->T0, 0);
+
+Similarly.
+
+
+r~
 
