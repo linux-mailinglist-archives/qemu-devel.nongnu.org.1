@@ -2,84 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02B6D8A0F3D
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 651808A11B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:46:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurYx-0000UR-35; Thu, 11 Apr 2024 06:21:47 -0400
+	id 1ruruH-0002kC-T4; Thu, 11 Apr 2024 06:43:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rurYq-0000JI-I1
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
- id 1rurYb-0000DO-Kf
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712830883;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Jpf7ulNgxQ2wtOe1r2RNuRfhZSnxrlZ2QWZQE2lnupE=;
- b=LNB29QCFFnyOUJFKHUai4CneqPPMMBxZ+JFEglXVNwemLAOvBBCtrN8jkg4fcrDxcxtsP1
- 5SywsYn5KYgZXVJtZSrd+Pkf9xlXy3xB5Ci0V/Mi6wsycjsMP9UQ7dFHdgtfX5taAFodqO
- LS4W2OGSCvWrwqn114y8Kxn7+LZ3qTU=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-E3w4HMj6MEavxgLKML8eeA-1; Thu, 11 Apr 2024 06:21:22 -0400
-X-MC-Unique: E3w4HMj6MEavxgLKML8eeA-1
-Received: by mail-ed1-f71.google.com with SMTP id
- 4fb4d7f45d1cf-56fe1a9d358so374536a12.2
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:21:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruG-0002jN-6P
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:48 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruD-00048C-Bm
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:47 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-345522f7c32so1476098f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:43:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712832223; x=1713437023; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=StAg582IsYUfzw7jTeYwZAGK85x75PWnZXDo6iqC+rM=;
+ b=jUJhgtshcfKZbJ3KL3IFB8D3BAMZNSnSbsLDimh9H2aDa+ZgUwCLa9IDHvxuRRsxoZ
+ P+qpTuxPO8YhVszlq/M5kYG4oaZc4vRYNeEtoBFcF5exfwjMZKdNDmNAo9gpeU/8BO0H
+ HIavHQvuzwgLg1rEFQ6+DEFioXnZ9b9gj/3g1IRGr8pmfT5rNUs0b6JRQ/XTJDnkF+31
+ avEgkcdVZVpDYp/pA9NYPCUpbpkLzLsNimVAjQToUXNI2BYnQarHDEOfIn0jiovAhGsp
+ Vl4NUXNbiZhqnH+zH5k4RCNobaRCj1qZwQ26OzjGEeyEZIHoHocMXgcIS9kds4xbHv0B
+ Rolg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712830881; x=1713435681;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Jpf7ulNgxQ2wtOe1r2RNuRfhZSnxrlZ2QWZQE2lnupE=;
- b=xK7j77IriqPMYpNFc+g5YuYALp/FgJCdZEAq9hyDik7VQiy5ZgDy/OuJ8c7rOFuvh8
- 1o9YDnvZIdbB4RL8fC70QaKwmvBXA799Q/YFK3VOdf/F7IAaEb+REOS5ytl96GLU077M
- KnSKRNTtyGKot7GzQYdaCg3f7BXc9zTSA2XXVd2+agd1Jx33IYPjhk0cbG2CK9zm8kPO
- RiHD0LLa7EPAVxpuNz+FoLOZYoKy4cXuKMLP27jd5ejJ/YYPYs5SoNP+OGwZGi7k4VJj
- B2Jr7JU53IePYI4wlh8tCImHS1I9Y8y1yxkGrCc5g5bQd0lCiqcQL3qfVIgZVEQuNZVa
- VwdQ==
-X-Gm-Message-State: AOJu0Yz9NA2TKBHQjtAEnowdq0CYLe/VNXCaOAlhMXXs45v+ED6Cy8zy
- WIdERzNVt1xibk3WohthmvCSEfyo0xjBOfC+34jriSqAs8y3mfYsbhAcdMXGoJeATYHosOutUZS
- tFjSElV8b8EZdYEeqgLRybVDnbPzRZcxZRWuHKSK8v4NsEOhVWu2a39WaOGkuaGnXZz7PHV/PaM
- 2Z0mD268nUYDDU92NmNgf2rlRXq64=
-X-Received: by 2002:a50:d51e:0:b0:567:45e2:c4db with SMTP id
- u30-20020a50d51e000000b0056745e2c4dbmr3345533edi.39.1712830881207; 
- Thu, 11 Apr 2024 03:21:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7Ub+EO4Hq/EUG81B5vI/SCkwDXHWtB/Vk4w0HzMzkeOY2Rjp7HU4bv9yV1dGOFE97HMAIKAXT8Val3Cdv7+0=
-X-Received: by 2002:a50:d51e:0:b0:567:45e2:c4db with SMTP id
- u30-20020a50d51e000000b0056745e2c4dbmr3345517edi.39.1712830880796; Thu, 11
- Apr 2024 03:21:20 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712832223; x=1713437023;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=StAg582IsYUfzw7jTeYwZAGK85x75PWnZXDo6iqC+rM=;
+ b=tcKpHc9bqgclSzRxL840R8a12SlG3WjHub5kCsduvw3lFy2To3lsV9Cky2u2jBvlOZ
+ wjeaOt3wPa8f/e94dUSdBsA/nR0abruyS76TqNiFSHvY9XNNlzs+oJX8V+M3LKPJNaMl
+ KaUOu0MTvEsqyTMcijBcDM5gDIa5utGBWcx1kXsTUf7rXowDrv/oA/iH7ookhMWKcTCw
+ C6kCdVEKeORDUtNPfkZyo6SppuSi/3Wupw0KkB+y5C3kmphnvLAE3/qitFm5RTtTANuZ
+ 1STIZiMcx9AkECwDLwrv3pXCjzxc9o/0roVAOV8mH/tHKFinIjdDvhOlJ2xbnkGGEITb
+ iSEw==
+X-Gm-Message-State: AOJu0Yx9USMFuzOP1Wyaer/ruaVYOhAyABR30Thug0c9G6VN6Fmqycnw
+ MCHgy/hT9NMfmU/mjW/w3BLVYapqAQXPneQV2ix01RlHKlZor681xzE8yITd5TD1yBck3LUyscG
+ nVbM=
+X-Google-Smtp-Source: AGHT+IFi9/8iv6Qesk2ck+iKMFQl0VhFPHk3PrG4jLviJ88A8hvuZ0qNjj9KAPOtFpNX9gIPVohOig==
+X-Received: by 2002:a5d:5885:0:b0:346:b8cf:b61d with SMTP id
+ n5-20020a5d5885000000b00346b8cfb61dmr1142647wrf.43.1712832223279; 
+ Thu, 11 Apr 2024 03:43:43 -0700 (PDT)
+Received: from localhost.localdomain
+ (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
+ by smtp.gmail.com with ESMTPSA id
+ h6-20020a5d5046000000b00346df659e7dsm98738wrt.17.2024.04.11.03.43.42
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 11 Apr 2024 03:43:42 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/9] misc: Replace sprintf() by snprintf() due to macOS
+ deprecation
+Date: Thu, 11 Apr 2024 12:43:31 +0200
+Message-ID: <20240411104340.6617-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20240411101550.99392-1-philmd@linaro.org>
- <20240411101550.99392-2-philmd@linaro.org>
-In-Reply-To: <20240411101550.99392-2-philmd@linaro.org>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Date: Thu, 11 Apr 2024 14:21:09 +0400
-Message-ID: <CAMxuvawSYW079_H8yOPV3tqft0iWrD_EhRtz+z5qrWDxaSW7NQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/13] ui/console-vc: Replace sprintf() by snprintf()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org, 
- qemu-ppc@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,47 +91,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 11, 2024 at 2:16=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
-<philmd@linaro.org> wrote:
->
-> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-> resulting in painful developper experience.
->
-> Replace sprintf() by snprintf() in order to avoid:
->
->   [702/1310] Compiling C object libcommon.fa.p/ui_console-vc.c.o
->   ui/console-vc.c:824:21: warning: 'sprintf' is deprecated:
->     This function is provided for compatibility reasons only.
->     Due to security concerns inherent in the design of sprintf(3),
->     it is highly recommended that you use snprintf(3) instead.
->     [-Wdeprecated-declarations]
->                     sprintf(response, "\033[%d;%dR",
->                     ^
->   1 warning generated.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Continuation of:
+https://lore.kernel.org/qemu-devel/20240411101550.99392-1-philmd@linaro.org/
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+*** BLURB HERE ***
 
-> ---
->  ui/console-vc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/ui/console-vc.c b/ui/console-vc.c
-> index 899fa11c94..847d5fb174 100644
-> --- a/ui/console-vc.c
-> +++ b/ui/console-vc.c
-> @@ -821,7 +821,7 @@ static void vc_putchar(VCChardev *vc, int ch)
->                      break;
->                  case 6:
->                      /* report cursor position */
-> -                    sprintf(response, "\033[%d;%dR",
-> +                    snprintf(response, sizeof(response), "\033[%d;%dR",
->                             (s->y_base + s->y) % s->total_height + 1,
->                              s->x + 1);
->                      vc_respond_str(vc, response);
-> --
-> 2.41.0
->
+Philippe Mathieu-Daudé (9):
+  disas/m68k: Replace sprintf() by snprintf()
+  disas/microblaze: Replace sprintf() by snprintf()
+  disas/riscv: Replace sprintf() by snprintf()
+  linux-user/flatload: Replace sprintf() by snprintf()
+  hw/misc/imx: Replace sprintf() by snprintf()
+  hw/net/rocker: Replace sprintf() by snprintf()
+  hw/riscv/virt: Replace sprintf() by snprintf()
+  target/arm: Replace sprintf() by snprintf()
+  target/i386: Replace sprintf() by snprintf()
+
+ disas/m68k.c           |  2 +-
+ disas/microblaze.c     | 25 ++++++++++++++++---------
+ disas/riscv.c          | 10 +++++-----
+ hw/misc/imx25_ccm.c    |  2 +-
+ hw/misc/imx31_ccm.c    |  2 +-
+ hw/misc/imx6_ccm.c     |  4 ++--
+ hw/misc/imx6_src.c     |  2 +-
+ hw/misc/imx6ul_ccm.c   |  4 ++--
+ hw/misc/imx7_src.c     |  2 +-
+ hw/net/imx_fec.c       |  2 +-
+ hw/net/rocker/rocker.c | 24 ++++++++++++------------
+ hw/riscv/virt.c        |  5 +++--
+ hw/ssi/imx_spi.c       |  2 +-
+ linux-user/flatload.c  |  2 +-
+ target/arm/cpu64.c     |  4 ++--
+ target/i386/kvm/kvm.c  |  3 ++-
+ 16 files changed, 52 insertions(+), 43 deletions(-)
+
+-- 
+2.41.0
 
 
