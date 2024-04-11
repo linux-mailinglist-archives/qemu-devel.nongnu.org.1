@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138DF8A0F76
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B6D8A0F3D
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:22:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurYu-0000GJ-5i; Thu, 11 Apr 2024 06:21:44 -0400
+	id 1rurYx-0000UR-35; Thu, 11 Apr 2024 06:21:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYc-0008CH-N3
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:28 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rurYq-0000JI-I1
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYY-0000D8-JV
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1712830881;
- bh=+QYZVsfW80rN0aldZ0gNPIPNihlL1741+ROhUZjpSDE=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=4DzSn8ylqV8mj/BlW7cb/wI2lF59NnHqotWkx/0kBrAB9tlQhCi06dx1DDoXNEJfZ
- cs/PgbXTf3E6buhnDX1eLSSmK/mOOxoTVZ5Pqa9FHlJTC5NCntlfETRWeVNu3b0O6Z
- ztXRBd8+7gitJUVxGHyPPj4A7LMDEmSqUt/b9vlllEeLRX/X/CUsG5/xeRCAEG+DZl
- CK/b9a1JO4gkiey76w5d8Ta0OeJIGXBAla69PACyoh5tMV52lSui/J9oGFUMopUu7u
- 0ShGQ3QAWD/v0nyFxYwXkOHGvstV0HHn4lSh3dsuBxP5/IX/RuthM4cf9LIPF76mHx
- RAoQ3uCls7Mpg==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id A5AE83782139;
- Thu, 11 Apr 2024 10:21:19 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-Subject: [PATCH v7 10/10] virtio-gpu: Initialize Venus
-Date: Thu, 11 Apr 2024 13:20:02 +0300
-Message-ID: <20240411102002.240536-11-dmitry.osipenko@collabora.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
-References: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <mlureau@redhat.com>)
+ id 1rurYb-0000DO-Kf
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712830883;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Jpf7ulNgxQ2wtOe1r2RNuRfhZSnxrlZ2QWZQE2lnupE=;
+ b=LNB29QCFFnyOUJFKHUai4CneqPPMMBxZ+JFEglXVNwemLAOvBBCtrN8jkg4fcrDxcxtsP1
+ 5SywsYn5KYgZXVJtZSrd+Pkf9xlXy3xB5Ci0V/Mi6wsycjsMP9UQ7dFHdgtfX5taAFodqO
+ LS4W2OGSCvWrwqn114y8Kxn7+LZ3qTU=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-3-E3w4HMj6MEavxgLKML8eeA-1; Thu, 11 Apr 2024 06:21:22 -0400
+X-MC-Unique: E3w4HMj6MEavxgLKML8eeA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-56fe1a9d358so374536a12.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:21:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712830881; x=1713435681;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Jpf7ulNgxQ2wtOe1r2RNuRfhZSnxrlZ2QWZQE2lnupE=;
+ b=xK7j77IriqPMYpNFc+g5YuYALp/FgJCdZEAq9hyDik7VQiy5ZgDy/OuJ8c7rOFuvh8
+ 1o9YDnvZIdbB4RL8fC70QaKwmvBXA799Q/YFK3VOdf/F7IAaEb+REOS5ytl96GLU077M
+ KnSKRNTtyGKot7GzQYdaCg3f7BXc9zTSA2XXVd2+agd1Jx33IYPjhk0cbG2CK9zm8kPO
+ RiHD0LLa7EPAVxpuNz+FoLOZYoKy4cXuKMLP27jd5ejJ/YYPYs5SoNP+OGwZGi7k4VJj
+ B2Jr7JU53IePYI4wlh8tCImHS1I9Y8y1yxkGrCc5g5bQd0lCiqcQL3qfVIgZVEQuNZVa
+ VwdQ==
+X-Gm-Message-State: AOJu0Yz9NA2TKBHQjtAEnowdq0CYLe/VNXCaOAlhMXXs45v+ED6Cy8zy
+ WIdERzNVt1xibk3WohthmvCSEfyo0xjBOfC+34jriSqAs8y3mfYsbhAcdMXGoJeATYHosOutUZS
+ tFjSElV8b8EZdYEeqgLRybVDnbPzRZcxZRWuHKSK8v4NsEOhVWu2a39WaOGkuaGnXZz7PHV/PaM
+ 2Z0mD268nUYDDU92NmNgf2rlRXq64=
+X-Received: by 2002:a50:d51e:0:b0:567:45e2:c4db with SMTP id
+ u30-20020a50d51e000000b0056745e2c4dbmr3345533edi.39.1712830881207; 
+ Thu, 11 Apr 2024 03:21:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7Ub+EO4Hq/EUG81B5vI/SCkwDXHWtB/Vk4w0HzMzkeOY2Rjp7HU4bv9yV1dGOFE97HMAIKAXT8Val3Cdv7+0=
+X-Received: by 2002:a50:d51e:0:b0:567:45e2:c4db with SMTP id
+ u30-20020a50d51e000000b0056745e2c4dbmr3345517edi.39.1712830880796; Thu, 11
+ Apr 2024 03:21:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240411101550.99392-1-philmd@linaro.org>
+ <20240411101550.99392-2-philmd@linaro.org>
+In-Reply-To: <20240411101550.99392-2-philmd@linaro.org>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Date: Thu, 11 Apr 2024 14:21:09 +0400
+Message-ID: <CAMxuvawSYW079_H8yOPV3tqft0iWrD_EhRtz+z5qrWDxaSW7NQ@mail.gmail.com>
+Subject: Re: [PATCH v2 01/13] ui/console-vc: Replace sprintf() by snprintf()
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org, 
+ qemu-ppc@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mlureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,104 +95,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+On Thu, Apr 11, 2024 at 2:16=E2=80=AFPM Philippe Mathieu-Daud=C3=A9
+<philmd@linaro.org> wrote:
+>
+> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+> resulting in painful developper experience.
+>
+> Replace sprintf() by snprintf() in order to avoid:
+>
+>   [702/1310] Compiling C object libcommon.fa.p/ui_console-vc.c.o
+>   ui/console-vc.c:824:21: warning: 'sprintf' is deprecated:
+>     This function is provided for compatibility reasons only.
+>     Due to security concerns inherent in the design of sprintf(3),
+>     it is highly recommended that you use snprintf(3) instead.
+>     [-Wdeprecated-declarations]
+>                     sprintf(response, "\033[%d;%dR",
+>                     ^
+>   1 warning generated.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
-Request Venus when initializing VirGL and if vulkan=true flag is set for
-virtio-gpu device.
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
----
- hw/display/virtio-gpu-virgl.c  |  5 +++++
- hw/display/virtio-gpu.c        | 15 +++++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- meson.build                    |  1 +
- 4 files changed, 24 insertions(+)
-
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index 0d8f00c7939a..c4448d663282 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1052,6 +1052,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#ifdef VIRGL_RENDERER_VENUS
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index dd8dcc441709..6130592d65cd 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1491,6 +1491,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef HAVE_VIRGL_VENUS
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+#else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-@@ -1667,6 +1680,8 @@ static Property virtio_gpu_properties[] = {
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
-     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
-+    DEFINE_PROP_BIT("vulkan", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index a16263334b47..71fbfff0258a 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -103,6 +103,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -121,6 +122,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/meson.build b/meson.build
-index dcc5568bb382..040d843f054c 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2286,6 +2286,7 @@ if virgl.version().version_compare('>=1.0.0')
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
-   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
-   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
-+  config_host_data.set('HAVE_VIRGL_VENUS', 1)
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
--- 
-2.44.0
+> ---
+>  ui/console-vc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/ui/console-vc.c b/ui/console-vc.c
+> index 899fa11c94..847d5fb174 100644
+> --- a/ui/console-vc.c
+> +++ b/ui/console-vc.c
+> @@ -821,7 +821,7 @@ static void vc_putchar(VCChardev *vc, int ch)
+>                      break;
+>                  case 6:
+>                      /* report cursor position */
+> -                    sprintf(response, "\033[%d;%dR",
+> +                    snprintf(response, sizeof(response), "\033[%d;%dR",
+>                             (s->y_base + s->y) % s->total_height + 1,
+>                              s->x + 1);
+>                      vc_respond_str(vc, response);
+> --
+> 2.41.0
+>
 
 
