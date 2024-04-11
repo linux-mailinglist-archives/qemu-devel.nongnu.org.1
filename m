@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0387F8A0A71
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4398A0AB2
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:58:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rup9b-0001D6-1G; Thu, 11 Apr 2024 03:47:27 -0400
+	id 1rupIg-0007gF-BP; Thu, 11 Apr 2024 03:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rup9U-0001BP-P3
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rup9S-0000io-1w
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712821634;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=i8U/sQ8CkeLkjs7bm1HRLLJIytyVKeKbbadhT01xLQs=;
- b=f9v3ZzOFfqSakaL1tTEnQ3fcyqBGbkeSdCDO1CzOYuG1TDJqJ9vNSIVn/83sANp0PEsXHD
- aGU+b6V5pI4PSRtftzEinaSVuAOWZQ3EVmZmQgSsvqJI9FyjyEayMHEn8BRa/kFv7L1pwU
- IKGCOFPR9gK5uhwaYJanv6WM5zo51J4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-PqIVvN-MP_KVrbHWsRRmLg-1; Thu, 11 Apr 2024 03:47:09 -0400
-X-MC-Unique: PqIVvN-MP_KVrbHWsRRmLg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A68741807B28;
- Thu, 11 Apr 2024 07:47:08 +0000 (UTC)
-Received: from sirius.home.kraxel.org (unknown [10.39.192.204])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A0CF1121306;
- Thu, 11 Apr 2024 07:47:08 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 123E9180063D; Thu, 11 Apr 2024 09:47:03 +0200 (CEST)
-Date: Thu, 11 Apr 2024 09:47:03 +0200
-From: Gerd Hoffmann <kraxel@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
- qemu-block@nongnu.org,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
-Subject: Re: [PATCH 01/12] ui/console-vc: Replace sprintf() by
- g_strdup_printf()
-Message-ID: <dx3zdfuwz7gam7brijaqfd4kg4uttybr2s2pjonhl4twyivhf3@afcjz4iulzcn>
-References: <20240410160614.90627-1-philmd@linaro.org>
- <20240410160614.90627-2-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rupIe-0007fx-5v
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:56:48 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rupIc-0001nv-I1
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:56:47 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e504f58230so11355965ad.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 00:56:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712822205; x=1713427005; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=k/+VETl9mNAi6QQPSGS6bukMLcr4tsK6d3+n8KpMA0Q=;
+ b=RLgtaoYkTBkDH9X74t8i/y5pDB7Ay1OsOH1yAvdtrNUaYauaFxSKlKXZeC33zNyLSh
+ z+nXCkvifFoX1Xyivw0E8kTb/08cL1lZ6MV5/Ml6HEEYc/KpzDwQRaadyfTe30j6m2qB
+ Cn0Jh1hOCGy5oTaag5hs09RWNXZUi0LC3j0ykt/+iTxwkQjL5QmkAe4tKc/+3obpRuVQ
+ JF9zStER6wLPVeZvVszJUEthdUjxQI6IK0ydOX/PqVpE6JB98cctd5zMjGCCOT7TvrzT
+ Stdmm7wvu/7xEYgSycWWNzyuWQZs/JuHy+C6imNQLOZaOYVvc9S94S9NDvCvOz299uuX
+ wZ0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712822205; x=1713427005;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=k/+VETl9mNAi6QQPSGS6bukMLcr4tsK6d3+n8KpMA0Q=;
+ b=lpLyfpF+/cR8DPoa51JqnlPe04FufEtWnYs4/yixmymQh46sv5QSCDi5n5Y4o3scxL
+ 7LkEqR5NHcYXOBjIAMstKdVHoSk6LonluRnLZrk1f5pv5bmYB8xMB3wmRDODVsr8J7j/
+ An84tbXNJMYSwMUPr5gvipAL+ax3ZnMduBES3RIa4Ye5s2rBLs0yCoBF0SAb2BkC8eIi
+ OcfPqh2NLmzqxdXVEn54kZpw8C9EPIPZn2j+42L1+Yi5iRHVK/T9e+FtRXfLAU8ifoPK
+ CVF0wyRvZlHTIPZuD4zqBWl79PJjHzwVRMqUNaDrW34sOXN4Ca7kHE46Sol7DT60hz0K
+ u/Gg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVw10oTP/rxcNjHLnIUPqRCXNZ31r3oNUicGkjXHekPcA3Fg12pV+ZoHADRhqv54m7VnmIFcsC5+bTytTndrFHOLxFDMcs=
+X-Gm-Message-State: AOJu0YxcgHPzKHmxPaFCqADHr8urlg+7vs9tsZmySp2oVyUv4EBAVa13
+ 0t2F9M1QI55T5011XrouEGUUZ9ZnWbNKemWtaHjlSeNLaXqXuGrqcXmHRRvlQjWzBfaiQqbkVWX
+ C
+X-Google-Smtp-Source: AGHT+IFRxirin/8Hq8zG408E6F4w17hmlzOVV3zDW2FYvmsy/F6LijIpgyeYv+icS2tOE39NIEPkhg==
+X-Received: by 2002:a17:903:948:b0:1e4:a120:14f4 with SMTP id
+ ma8-20020a170903094800b001e4a12014f4mr6764358plb.14.1712822204790; 
+ Thu, 11 Apr 2024 00:56:44 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ b6-20020a170902d50600b001e4e8278847sm675266plg.56.2024.04.11.00.56.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Apr 2024 00:56:44 -0700 (PDT)
+Message-ID: <b84fd5ed-9bb7-4557-8406-2723febef518@linaro.org>
+Date: Thu, 11 Apr 2024 00:56:42 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240410160614.90627-2-philmd@linaro.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -40
-X-Spam_score: -4.1
-X-Spam_bar: ----
-X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.1 12/19] target/i386: merge and enlarge a few ranges
+ for call to disas_insn_new
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240409164323.776660-1-pbonzini@redhat.com>
+ <20240409164323.776660-13-pbonzini@redhat.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240409164323.776660-13-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,26 +97,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  Hi,
+On 4/9/24 09:43, Paolo Bonzini wrote:
+> Since new opcodes are not going to be added in translate.c, round the
+> case labels that call to disas_insn_new(), including whole sets of
+> eight opcodes when possible.
+> 
+> Signed-off-by: Paolo Bonzini<pbonzini@redhat.com>
+> ---
+>   target/i386/tcg/translate.c | 5 ++---
+>   1 file changed, 2 insertions(+), 3 deletions(-)
 
->     Due to security concerns inherent in the design of sprintf(3),
->     it is highly recommended that you use snprintf(3) instead.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-> -    char response[40];
-> +    g_autofree char *response = NULL;
-
-> -                    sprintf(response, "\033[%d;%dR",
-> +                    response = g_strdup_printf("\033[%d;%dR",
-
-Any specific reason why you don't go with the recommendation above?
-
-While using g_strdup_printf() isn't wrong it allocates memory which
-is not needed here because you can continue to use the stack buffer
-this way:
-
-	snprintf(response, sizeof(response), ...);
-
-take care,
-  Gerd
-
+r~
 
