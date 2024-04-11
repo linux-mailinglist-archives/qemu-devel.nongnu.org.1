@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170DA8A0F77
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 703338A0F3E
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:22:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurYn-0008Cj-Hj; Thu, 11 Apr 2024 06:21:39 -0400
+	id 1rurYp-00084c-B7; Thu, 11 Apr 2024 06:21:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYX-0007Mp-ND
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:21 -0400
-Received: from madrid.collaboradmins.com ([46.235.227.194])
+ id 1rurYZ-0007aI-4d
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:23 -0400
+Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYV-0000B8-EU
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:21 -0400
+ id 1rurYW-0000C3-H7
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1712830877;
- bh=IZKSC/QyEPEfJ641+peVhMc+dWa805S4GwOhNG9IHzU=;
+ s=mail; t=1712830879;
+ bh=mlszudGjqElMGgV9115m/wyU4i02wJCD06saT6t2rRM=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=Qbvg8FoCriofAGyHKdfyPJV3iXlYisbMCo0K0scrWr85IHkgqV40PhhywGL+SqRAC
- khhZbQAKg6zb+/g7IbZjxIRn+aboZeuaKO+pHrEPPFCNIAOCIXj4o78ClnMt7l02o7
- MZGSN1xH6yHzIF80bj1rt70CpTQJyJ40UO0ffAr/fzDKpsK7PxrxuGrupCkdFjBcMn
- 6YBfotBG1hXz605+WbAEEmt8XssqFG8YNlhxBhsAzuPLr/eGLItPEENxT+r5cCsYad
- hKkoTqrSXHEfmX/pu6iTJxaphDWfDNLvM3IcC/WZarkSy0jqEJ/VyoRrkafPE8LTef
- crH9NIhfbAo0A==
+ b=nOasrlAo0Ll9HIOsah+sJ8ntR8jcszqo4M0qkYCD9rop7EiDOo6b61QmQA5+4cqto
+ EFXKMExqStWSRz+xXCiPrHMzSvBQdwz7XdlfU4hhsZEz4R8r6RBHdR04Zx0y5h4Et9
+ bbcrYr5bief87OJXJ3StSGtx2q7bVQpg+URLy9D/P88rAm7sb87r54E1IDX93Adqtv
+ gHscaTmnA5alWFa9SpVyCSJ2YZRg9Ye2b6oRM+lPacSxOSAcm+QRIpbK4mhhF8IZ2I
+ FJ+O5MsmaDoKcpMeilN/xJUejkxDnAEnyZdf5//rQ8sBSgoYyEijIpDpeVcUJ+Vunl
+ UUw+JpU7oXQvA==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 745EE3782137;
- Thu, 11 Apr 2024 10:21:15 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 86EB03782136;
+ Thu, 11 Apr 2024 10:21:17 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -57,15 +57,15 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>
-Subject: [PATCH v7 08/10] virtio-gpu: Resource UUID
-Date: Thu, 11 Apr 2024 13:20:00 +0300
-Message-ID: <20240411102002.240536-9-dmitry.osipenko@collabora.com>
+Subject: [PATCH v7 09/10] virtio-gpu: Support Venus capset
+Date: Thu, 11 Apr 2024 13:20:01 +0300
+Message-ID: <20240411102002.240536-10-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
 References: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
+Received-SPF: pass client-ip=2a00:1098:ed:100::25;
  envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -90,177 +90,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Antonio Caggiano <antonio.caggiano@collabora.com>
 
-Enable resource UUID feature and implement command resource assign UUID.
-UUID feature availability is mandatory for Vulkan Venus context.
-
-UUID is intended for sharing dmabufs between virtio devices on host. Qemu
-doesn't have second virtio device for sharing, thus a simple stub UUID
-implementation is enough. More complete implementation using global UUID
-resource table might become interesting for a multi-gpu cases.
+Add support for the Venus capset, which enables Vulkan support through
+the Venus Vulkan driver for virtio-gpu.
 
 Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
 Signed-off-by: Huang Rui <ray.huang@amd.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/trace-events        |  1 +
- hw/display/virtio-gpu-base.c   |  1 +
- hw/display/virtio-gpu-virgl.c  | 31 +++++++++++++++++++++++++++++++
- hw/display/virtio-gpu.c        |  5 +++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- 5 files changed, 41 insertions(+)
+ hw/display/virtio-gpu-virgl.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/hw/display/trace-events b/hw/display/trace-events
-index 2336a0ca1570..54d6894c59f4 100644
---- a/hw/display/trace-events
-+++ b/hw/display/trace-events
-@@ -41,6 +41,7 @@ virtio_gpu_cmd_res_create_blob(uint32_t res, uint64_t size) "res 0x%x, size %" P
- virtio_gpu_cmd_res_unref(uint32_t res) "res 0x%x"
- virtio_gpu_cmd_res_back_attach(uint32_t res) "res 0x%x"
- virtio_gpu_cmd_res_back_detach(uint32_t res) "res 0x%x"
-+virtio_gpu_cmd_res_assign_uuid(uint32_t res) "res 0x%x"
- virtio_gpu_cmd_res_xfer_toh_2d(uint32_t res) "res 0x%x"
- virtio_gpu_cmd_res_xfer_toh_3d(uint32_t res) "res 0x%x"
- virtio_gpu_cmd_res_xfer_fromh_3d(uint32_t res) "res 0x%x"
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 4fc7ef8896c1..610926348bd9 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -225,6 +225,7 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
-     if (virtio_gpu_virgl_enabled(g->conf) ||
-         virtio_gpu_rutabaga_enabled(g->conf)) {
-         features |= (1 << VIRTIO_GPU_F_VIRGL);
-+        features |= (1 << VIRTIO_GPU_F_RESOURCE_UUID);
-     }
-     if (virtio_gpu_edid_enabled(g->conf)) {
-         features |= (1 << VIRTIO_GPU_F_EDID);
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index ec63f5d698b7..e01ab8295d4d 100644
+index e01ab8295d4d..0d8f00c7939a 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -113,6 +113,7 @@ static void virgl_cmd_create_resource_2d(VirtIOGPU *g,
-     res->format = c2d.format;
-     res->resource_id = c2d.resource_id;
-     res->dmabuf_fd = -1;
-+    qemu_uuid_generate(&res->uuid);
-     QTAILQ_INSERT_HEAD(&g->reslist, res, next);
+@@ -517,6 +517,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
+         virgl_renderer_get_cap_set(resp.capset_id,
+                                    &resp.capset_max_version,
+                                    &resp.capset_max_size);
++    } else if (info.capset_index == 2) {
++        resp.capset_id = VIRTIO_GPU_CAPSET_VENUS;
++        virgl_renderer_get_cap_set(resp.capset_id,
++                                   &resp.capset_max_version,
++                                   &resp.capset_max_size);
+     } else {
+         resp.capset_max_version = 0;
+         resp.capset_max_size = 0;
+@@ -1067,10 +1072,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
  
-     args.handle = c2d.resource_id;
-@@ -161,6 +162,7 @@ static void virgl_cmd_create_resource_3d(VirtIOGPU *g,
-     res->format = c3d.format;
-     res->resource_id = c3d.resource_id;
-     res->dmabuf_fd = -1;
-+    qemu_uuid_generate(&res->uuid);
-     QTAILQ_INSERT_HEAD(&g->reslist, res, next);
- 
-     args.handle = c3d.resource_id;
-@@ -584,6 +586,7 @@ static void virgl_cmd_resource_create_blob(VirtIOGPU *g,
-     res->resource_id = cblob.resource_id;
-     res->blob_size = cblob.size;
-     res->dmabuf_fd = -1;
-+    qemu_uuid_generate(&res->uuid);
- 
-     if (cblob.blob_mem != VIRTIO_GPU_BLOB_MEM_HOST3D) {
-         ret = virtio_gpu_create_mapping_iov(g, cblob.nr_entries, sizeof(cblob),
-@@ -781,6 +784,31 @@ static void virgl_cmd_set_scanout_blob(VirtIOGPU *g,
- }
- #endif /* HAVE_VIRGL_RESOURCE_BLOB */
- 
-+static void virgl_cmd_assign_uuid(VirtIOGPU *g,
-+                                  struct virtio_gpu_ctrl_command *cmd)
-+{
-+    struct virtio_gpu_resource_assign_uuid assign;
-+    struct virtio_gpu_resp_resource_uuid resp;
-+    struct virtio_gpu_simple_resource *res;
-+
-+    VIRTIO_GPU_FILL_CMD(assign);
-+    virtio_gpu_bswap_32(&assign, sizeof(assign));
-+    trace_virtio_gpu_cmd_res_assign_uuid(assign.resource_id);
-+
-+    res = virtio_gpu_find_resource(g, assign.resource_id);
-+    if (!res) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "%s: resource does not exist %d\n",
-+                      __func__, assign.resource_id);
-+        cmd->error = VIRTIO_GPU_RESP_ERR_INVALID_RESOURCE_ID;
-+        return;
-+    }
-+
-+    memset(&resp, 0, sizeof(resp));
-+    resp.hdr.type = VIRTIO_GPU_RESP_OK_RESOURCE_UUID;
-+    memcpy(resp.uuid, res->uuid.data, sizeof(resp.uuid));
-+    virtio_gpu_ctrl_response(g, cmd, &resp.hdr, sizeof(resp));
-+}
-+
- void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
-                                       struct virtio_gpu_ctrl_command *cmd)
+ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
  {
-@@ -835,6 +863,9 @@ void virtio_gpu_virgl_process_cmd(VirtIOGPU *g,
-         /* TODO add security */
-         virgl_cmd_ctx_detach_resource(g, cmd);
-         break;
-+    case VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID:
-+        virgl_cmd_assign_uuid(g, cmd);
-+        break;
-     case VIRTIO_GPU_CMD_GET_CAPSET_INFO:
-         virgl_cmd_get_capset_info(g, cmd);
-         break;
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index e6e09f4bf8da..dd8dcc441709 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1231,6 +1231,7 @@ static int virtio_gpu_save(QEMUFile *f, void *opaque, size_t size,
-         }
-         qemu_put_buffer(f, (void *)pixman_image_get_data(res->image),
-                         pixman_image_get_stride(res->image) * res->height);
-+        qemu_put_buffer(f, res->uuid.data, sizeof(res->uuid.data));
-     }
-     qemu_put_be32(f, 0); /* end of list */
- 
-@@ -1328,6 +1329,7 @@ static int virtio_gpu_load(QEMUFile *f, void *opaque, size_t size,
-         }
-         qemu_get_buffer(f, (void *)pixman_image_get_data(res->image),
-                         pixman_image_get_stride(res->image) * res->height);
-+        qemu_get_buffer(f, res->uuid.data, sizeof(res->uuid.data));
- 
-         if (!virtio_gpu_load_restore_mapping(g, res)) {
-             pixman_image_unref(res->image);
-@@ -1366,6 +1368,7 @@ static int virtio_gpu_blob_save(QEMUFile *f, void *opaque, size_t size,
-             qemu_put_be64(f, res->addrs[i]);
-             qemu_put_be32(f, res->iov[i].iov_len);
-         }
-+        qemu_put_buffer(f, res->uuid.data, sizeof(res->uuid.data));
-     }
-     qemu_put_be32(f, 0); /* end of list */
- 
-@@ -1400,6 +1403,8 @@ static int virtio_gpu_blob_load(QEMUFile *f, void *opaque, size_t size,
-             res->iov[i].iov_len = qemu_get_be32(f);
-         }
- 
-+        qemu_get_buffer(f, res->uuid.data, sizeof(res->uuid.data));
+-    uint32_t capset2_max_ver, capset2_max_size;
++    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
++    num_capsets = 1;
 +
-         if (!virtio_gpu_load_restore_mapping(g, res)) {
-             g_free(res);
-             return -EINVAL;
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index f3681476eaf6..a16263334b47 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -19,6 +19,7 @@
- #include "ui/console.h"
- #include "hw/virtio/virtio.h"
- #include "qemu/log.h"
-+#include "qemu/uuid.h"
- #include "sysemu/vhost-user-backend.h"
- 
- #include "standard-headers/linux/virtio_gpu.h"
-@@ -62,6 +63,8 @@ struct virtio_gpu_simple_resource {
-     uint8_t *remapped;
-     MemoryRegion *mr;
- 
-+    QemuUUID uuid;
+     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
+-                              &capset2_max_ver,
+-                              &capset2_max_size);
++                               &capset2_max_ver,
++                               &capset2_max_size);
++    num_capsets += capset2_max_ver ? 1 : 0;
 +
-     QTAILQ_ENTRY(virtio_gpu_simple_resource) next;
- };
++    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
++                               &capset2_max_ver,
++                               &capset2_max_size);
++    num_capsets += capset2_max_size ? 1 : 0;
  
+-    return capset2_max_ver ? 2 : 1;
++    return num_capsets;
+ }
 -- 
 2.44.0
 
