@@ -2,85 +2,137 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622138A0A70
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 267678A0881
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 08:32:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rup9o-0001G9-P5; Thu, 11 Apr 2024 03:47:41 -0400
+	id 1runxf-0003Ly-AQ; Thu, 11 Apr 2024 02:31:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rup9l-0001FD-AP
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:37 -0400
-Received: from mail-oa1-x34.google.com ([2001:4860:4864:20::34])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rup9j-0000kO-Hl
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:37 -0400
-Received: by mail-oa1-x34.google.com with SMTP id
- 586e51a60fabf-22efc6b8dc5so3261743fac.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 00:47:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712821652; x=1713426452; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=uw76+n953sJlDol0pcpJf71gyUQa84+tdUxz9ZulaGI=;
- b=VHhiUzvEiSzegrB2BbUdEiAhO0kigvi/ALabbl65sFh37QXPleVgs4XQ5WvGNnnx7I
- yQxI/iwtSaAL1nUaBQicsH/AAQpIOBJuyJM5Llgr2KwMTEgTJBHq3GZxziFFbj7BkXtP
- GrDS4MK2QHRV1khADd3MboukbF42iwAQdAP2PQYx4ojXNN6oGzFvA4zrXqfzzrSk2lLS
- AbNjdlIitaLD/qwIR5SrIb+sCAcoRC15H9PclrVRSBt5gDUFasUXiGWDtSUPunYpdQtu
- Lo1KJm8sWGfEWuw38Zt0zMcp4ihVGTqgr4ZxKJ/9zL86+mbGBq2U3xazrt5kEwHneX/1
- nMIg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1runxL-0003Km-V0
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 02:30:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1runxG-0005aQ-9I
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 02:30:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712817036;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=q9wP7RqptDYcyEGY/IwvOXaC/781qbPTDuNq7oEuTfk=;
+ b=RysFqHeh1ntv4bZJyxlcjUtcORvf4QxB0MHmyIaI8rtJFASVJjPKBsca4vPDmaJxcBg904
+ wICp36n8g/syVWyG1lzFdjFVEjqpcQKa/4jldkyMUXWnI4r+nYVMDro5wFTR+nQm4/uCBa
+ eZdfOgDKHQ30FZ3WzAL8CA7o0VdnmaM=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-601-rwErIfk6NQmIRqOT8iL8HQ-1; Thu, 11 Apr 2024 02:30:31 -0400
+X-MC-Unique: rwErIfk6NQmIRqOT8iL8HQ-1
+Received: by mail-qv1-f71.google.com with SMTP id
+ 6a1803df08f44-69945716e94so63993866d6.2
+ for <qemu-devel@nongnu.org>; Wed, 10 Apr 2024 23:30:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712821652; x=1713426452;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uw76+n953sJlDol0pcpJf71gyUQa84+tdUxz9ZulaGI=;
- b=bI2qIEoSVaogcz+DQvWmKz3sIxMEe9OmnUgDO0ocNQsznOW/uY291nXcJe6p726P0N
- wpgNsbtGyDY2oS+1A7W/LHny4j3LGo/u4FO5V5GFQ3Q64q8bzdW6xa43CIAyCLjE8q4o
- +ea4dQinxxIO//pI3lW/+6GWrDRIWWOxHQwU7mWx6dI3pJfYSlksXWrOtFKu3D9R9Cs+
- i20tTdBIPis/W869N3RBYvyRBQ67TunBVd9rprff04zSzROpQUwpiBBmj7zsz0RG6s/X
- xK20OCYeNeyIszi4jUdW2GkC8o9quLudjHDSPyhf/mWVt9pjZ6I9adCi6m/wCnBwGkT9
- 7l7Q==
+ d=1e100.net; s=20230601; t=1712817031; x=1713421831;
+ h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+ :from:references:cc:to:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=q9wP7RqptDYcyEGY/IwvOXaC/781qbPTDuNq7oEuTfk=;
+ b=BA9CldOyfDealesQbNudYkCUAOrBFnU9adGl79YW/qpwx56IImRQIWWk/KboWMiTtu
+ Crgi02875S7HyW6b/DXrEckzXcKfrnSbE+M8y6fsDRfYDAJXUeFSzLV+36Huk+QrlBTf
+ y8N53KG0H6b3gMEj2B9xlr0nzfnEGTCcIWIbu4VU9BpUxEqxLLu1wv5WYzTr7SAUeqI/
+ v0mNIztMOymUzLmjSOGmo9xIi+dOYilHNP2Mv9j/8rsqMvgpeg/fEMUphhmj94nUQUQs
+ cVOpv3z59jI1nx3nR+81lHmK2UjIB+PPgD4a8YLK9drtA3f0WA6wrvxgC2ro2t1IR0+V
+ bVUg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVpkY4IR0CR1yqtRb8V7iih1vbVvvks8FDIhwTnqXSDJQ4suA8asho9WQ5c82KyGR1BZlaDBYoMQeZKGOkMih4YpPtsyfE=
-X-Gm-Message-State: AOJu0YwyvFd4uNx5+sxHxrPubGwXI/LbVpaxOGL4jw3vJqHrGHG1/0EW
- 58wHm2MNky7GeSUTBrZVMAvbXaYLUVYzitOhEyliv+qihIRrZFJYGTd9ynb/A4g=
-X-Google-Smtp-Source: AGHT+IEry9izyG67Yd481mJVdQerQ3xqUXlSCmY4s3ffEMOo+8Av6bo8Z/YOebqTqScwHbCQd/w2xQ==
-X-Received: by 2002:a05:6870:55cd:b0:22a:5bae:9cd5 with SMTP id
- qk13-20020a05687055cd00b0022a5bae9cd5mr5019871oac.48.1712821652368; 
- Thu, 11 Apr 2024 00:47:32 -0700 (PDT)
-Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- q2-20020a656a82000000b005dbd0facb4dsm493803pgu.61.2024.04.11.00.47.31
+ AJvYcCWOkDZ4558ZYj5okcezeomoz4EUwu7nImvZycrunwrPkOj+XqaTXpp67Muyd0XFjOFMnOHx2GhzBEtIrWm/xenOs6g/Qvc=
+X-Gm-Message-State: AOJu0YwE/iy7n7o6F2Q0SYwoRvKVQv9o6dBiZCMx5+rGgfiMuPgiKhZh
+ KeSEqB5ipQNCYbWuwUfbq4b5XCFHIC69wlR8yqvKr4WJm78HjHOdFFfFu1ZhnOa5Gyvf3BuLX/m
+ VQy7sNawYhHMui5vuctsyFWHhe1xrlcfZ0NZADp/9gbpn/d4zyZTY
+X-Received: by 2002:ad4:5966:0:b0:691:46ee:6abc with SMTP id
+ eq6-20020ad45966000000b0069146ee6abcmr4430655qvb.3.1712817031203; 
+ Wed, 10 Apr 2024 23:30:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFtxmEMr5ymT6xbwHlSkk0YqI7YLszhDkWVEQ8jryiLhdlC/kntdTvQwoVHCHTvGXo9BQzJxQ==
+X-Received: by 2002:ad4:5966:0:b0:691:46ee:6abc with SMTP id
+ eq6-20020ad45966000000b0069146ee6abcmr4430641qvb.3.1712817030944; 
+ Wed, 10 Apr 2024 23:30:30 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-179-142.web.vodafone.de.
+ [109.43.179.142]) by smtp.gmail.com with ESMTPSA id
+ g6-20020ad45106000000b0069b439190c8sm550747qvp.64.2024.04.10.23.30.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Apr 2024 00:47:31 -0700 (PDT)
-Message-ID: <4f9ac251-4123-41a9-8ce0-4417ab7b7c09@linaro.org>
-Date: Wed, 10 Apr 2024 23:02:36 -0700
+ Wed, 10 Apr 2024 23:30:30 -0700 (PDT)
+Message-ID: <9199442f-f799-4f97-ac80-aa78eaf61958@redhat.com>
+Date: Thu, 11 Apr 2024 08:30:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.1 11/19] target/i386: move C0-FF opcodes to new
- decoder (except for x87)
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20240409164323.776660-1-pbonzini@redhat.com>
- <20240409164323.776660-12-pbonzini@redhat.com>
+Subject: Re: [PATCH 05/12] system/qtest: Replace sprintf() by
+ g_string_append_printf()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, qemu-arm@nongnu.org, qemu-block@nongnu.org,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20240410160614.90627-1-philmd@linaro.org>
+ <20240410160614.90627-6-philmd@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240409164323.776660-12-pbonzini@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <20240410160614.90627-6-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2001:4860:4864:20::34;
- envelope-from=richard.henderson@linaro.org; helo=mail-oa1-x34.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 7
+X-Spam_score: 0.7
+X-Spam_bar: /
+X-Spam_report: (0.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,138 +148,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/9/24 06:43, Paolo Bonzini wrote:
-> diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-> index 05a1912f8a3..88653c4f824 100644
-> --- a/include/tcg/tcg.h
-> +++ b/include/tcg/tcg.h
-> @@ -105,6 +105,12 @@ typedef uint64_t TCGRegSet;
->   /* Turn some undef macros into true macros.  */
->   #define TCG_TARGET_HAS_add2_i32         1
->   #define TCG_TARGET_HAS_sub2_i32         1
-> +/* Define parameterized _tl macros.  */
-> +#define TCG_TARGET_deposit_tl_valid     TCG_TARGET_deposit_i32_valid
-> +#define TCG_TARGET_extract_tl_valid     TCG_TARGET_extract_i32_valid
-> +#else
-> +#define TCG_TARGET_deposit_tl_valid     TCG_TARGET_deposit_i64_valid
-> +#define TCG_TARGET_extract_tl_valid     TCG_TARGET_extract_i64_valid
->   #endif
+On 10/04/2024 18.06, Philippe Mathieu-Daudé wrote:
+> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+> resulting in painful developper experience.
+> 
+> Replace sprintf() by GString API uses in order to avoid:
+> 
+>    [120/169] Compiling C object libcommon.fa.p/system_qtest.c.o
+>    system/qtest.c:623:13: warning: 'sprintf' is deprecated:
+>      This function is provided for compatibility reasons only.
+>      Due to security concerns inherent in the design of sprintf(3),
+>      it is highly recommended that you use snprintf(3) instead.
+>      [-Wdeprecated-declarations]
+>              sprintf(&enc[i * 2], "%02x", data[i]);
+>              ^
+>    1 warning generated.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   system/qtest.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
 
-So far we have been localizing these to emit.c.inc.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-In general I'm not sure how I feel about them.  It would be cleaner not to expose tcg 
-backend details at all, but there are several points where we can legitimately produce 
-better code knowing what the backend has, without having to have a strong optimizer.
-
-
-> +static void decode_group2(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-> +{
-> +    static const X86GenFunc group2_gen[8] = {
-> +        gen_ROL, gen_ROR, gen_RCL, gen_RCR, gen_SHL, gen_SHR, gen_SHL, gen_SAR,
-> +    };
-
-I think you need to keep a comment for /6 (currently OP_SHL1 /* undocumented */; I presume 
-this to be the original SAL opcode, before some prehistoric documentation changed it to 
-share /4 with SHL).
-
-> +static const X86OpEntry opcodes_grp3[16] = {
-> +    /* 0xf6 */
-> +    [0x00] = X86_OP_ENTRYrr(AND, E,b, I,b),
-> +    [0x02] = X86_OP_ENTRY1(NOT,  E,b,      lock),
-> +    [0x03] = X86_OP_ENTRY1(NEG,  E,b,      lock),
-> +    [0x04] = X86_OP_ENTRYrr(MUL, E,b, 0,b, zextT0),
-> +    [0x05] = X86_OP_ENTRYrr(IMUL,E,b, 0,b, sextT0),
-> +    [0x06] = X86_OP_ENTRYr(DIV,  E,b),
-> +    [0x07] = X86_OP_ENTRYr(IDIV, E,b),
-> +
-> +    /* 0xf7 */
-> +    [0x08] = X86_OP_ENTRYrr(AND, E,v, I,z),
-> +    [0x0a] = X86_OP_ENTRY1(NOT,  E,v,      lock),
-> +    [0x0b] = X86_OP_ENTRY1(NEG,  E,v,      lock),
-> +    [0x0c] = X86_OP_ENTRYrr(MUL, E,v, 0,v, zextT0),
-> +    [0x0d] = X86_OP_ENTRYrr(IMUL,E,v, 0,v, sextT0),
-> +    [0x0e] = X86_OP_ENTRYr(DIV,  E,v),
-> +    [0x0f] = X86_OP_ENTRYr(IDIV, E,v),
-> +};
-> +
-> +static void decode_group3(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-> +{
-> +    int w = (*b & 1);
-> +    int reg = (get_modrm(s, env) >> 3) & 7;
-> +
-> +    *entry = opcodes_grp3[(w << 3) | reg];
-> +}
-> +
-> +static const X86OpEntry opcodes_grp4[16] = {
-> +    /* 0xfe */
-> +    [0x00] = X86_OP_ENTRY1(INC,     E,b, lock),
-> +    [0x01] = X86_OP_ENTRY1(DEC,     E,b, lock),
-> +
-> +    /* 0xff */
-> +    [0x08] = X86_OP_ENTRY1(INC,     E,v, lock),
-> +    [0x09] = X86_OP_ENTRY1(DEC,     E,v, lock),
-> +    [0x0a] = X86_OP_ENTRY3(CALL_m,  None, None, E,f64, None, None, zextT0),
-> +    [0x0b] = X86_OP_ENTRYr(CALLF_m, M,p),
-> +    [0x0c] = X86_OP_ENTRY3(JMP_m,   None, None, E,f64, None, None, zextT0),
-> +    [0x0d] = X86_OP_ENTRYr(JMPF_m,  M,p),
-> +    [0x0e] = X86_OP_ENTRYr(PUSH,    E,f64),
-> +};
-> +
-> +static void decode_group4(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
-> +{
-> +    int w = (*b & 1);
-> +    int reg = (get_modrm(s, env) >> 3) & 7;
-> +
-> +    *entry = opcodes_grp4[(w << 3) | reg];
-> +}
-
-Did these tables need to be outside their functions?
-Though this works, 0xff is named grp5.
-
-> +    [0xF1] = X86_OP_ENTRY0(INT1,   svm(ICEBP)),
-> +    [0xF4] = X86_OP_ENTRY0(HLT,    chk(cpl0)),
-> +    [0xF5] = X86_OP_ENTRY0(CMC),
-> +    [0xF6] = X86_OP_GROUP1(group3, E,b),
-> +    [0xF7] = X86_OP_GROUP1(group3, E,v),
-
-Not adding spacers as you were above?
-
-> +static void gen_RCL(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
-> +{
-> +    bool have_1bit_cin, can_be_zero;
-> +    TCGv count;
-> +    TCGLabel *zero_label = NULL;
-> +    MemOp ot = gen_shift_count(s, decode, &can_be_zero, &count);
-> +    TCGv low = tcg_temp_new();
-> +    TCGv high = tcg_temp_new();
-> +    TCGv low_count = tcg_temp_new();
-> +
-> +    if (!count) {
-> +        return;
-> +    }
-> +
-
-Delay all temp allocation until after the early return.
-
-
-> +static void gen_rot_carry(X86DecodedInsn *decode, TCGv result, TCGv count, int bit)
-> +{
-> +    TCGv temp = count ? tcg_temp_new() : decode->cc_dst;
-> +
-> +    tcg_gen_setcondi_tl(TCG_COND_TSTNE, temp, result, 1ULL << bit);
-
-tcg_gen_extract_tl.
-
-It might be easier to read with only one if:
-
-     if (count == NULL) {
-         extract
-     } else {
-         temp = new
-         extract
-         movcond
-     }
-
-
-r~
 
