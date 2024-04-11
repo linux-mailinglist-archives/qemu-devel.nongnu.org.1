@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A5E8A1191
+	by mail.lfdr.de (Postfix) with ESMTPS id 043248A1190
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:45:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruruN-0002lt-BV; Thu, 11 Apr 2024 06:43:55 -0400
+	id 1ruruT-0002ne-4n; Thu, 11 Apr 2024 06:44:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruL-0002kv-A1
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:53 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruR-0002mv-4l
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:59 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruI-0004BG-T3
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:53 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-343f1957ffcso449401f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:43:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruO-0004Dv-Cd
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:43:58 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3458b699d6cso2049759f8f.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:43:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712832229; x=1713437029; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712832235; x=1713437035; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=u3g1QSRg86bxVtcxnKKn01h0Ac3fWVT80PO+fMEEjTc=;
- b=ujZpLNuGHK2mgdbNq1+2c8R/e0NYK1eJuktMVqdvKiJhiB4WtUPEa8yu1DKTX9KJu6
- iH3B8pl8mwtJE3vId/+Xvaz9Eyy53LyIZLniC92hpKueuIJ9gXidZVC+yYgSSS6SzpfR
- HHPINm0UkW+MKIFrPbo+M0FriOEdFfbvIDWpoSAPMiqq8/iOUcrsV8i+tYCvQNX+/8sC
- DQu4PnehSbTywx1gtfTnnqFRQ2T2teeXLgdQ0+1b5C048d8GuPevS1kigPRLqteMFuQB
- +ob8Y0yH/Q8fvaWpcAEKS+ZpHNraGxM6Ns7yTXb5LoNRzsPBIM6W1zEwKo/zQwqNlVA9
- 9izQ==
+ bh=ZARctQBaWTgi16Nsw9jDwGPNb4MI5ibxpQ1TfC8D7e4=;
+ b=Uyq3ZvysZVVtHJqCKPc03g5Bsc5oinb0hXgKU+H4K5AlZ/8HcxFapInf8Z4Bz1ShGO
+ 8KmPGbqO+fb3KLveXljBwmkqj4Zhu++jDyU5Tu6syvG3RWsQnxyOmqinSOEnHHwL90Ik
+ SMugQiXDytI8bGOe3zaB3YhaWDdnITY+oSdm5/YHxG4v3Nyemr8sod6Qoz3r9tF0wJtN
+ U83nfCBILtZ3labYAJlxnxic6UZaC2qjBD3SI0zVAArDrRc9RdqQ4dVWlKacV04vQ1u2
+ /1wZSEAcw9YeJ+mxq8/U+4CqZyJrN09hHIyo4laihz7i/96ptAHxUQkcOoh6Hmo/IooK
+ zbmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712832229; x=1713437029;
+ d=1e100.net; s=20230601; t=1712832235; x=1713437035;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=u3g1QSRg86bxVtcxnKKn01h0Ac3fWVT80PO+fMEEjTc=;
- b=lnqLnH+DVk+XUbVSpQq82dR3GpK1VSEiPefytIDHou9A3d+GRwBah3XR2YcahcshD/
- 06plHmXgqDiTQeuvzXVCWhUHY7f/LA9TOgceO5KqdYkIs3QmJK0f71w0cpllzOp0hZWG
- XbJEou2fql09EkOIrxJGcOkdKNgPqWnUBN4LD2vET+ZwmiPoLGaWkeMfXclMpxGp4A17
- 9d1Xk//MiDWql/eK7Zue/49rAqxBwZfTWRVo/oIqH1vKoFnH0VOgkE6rmMRYcNLjjTma
- ono1yGd9ISfqnrl7C91TcukeHWrLhDJugbcc5L/WOv06PaihUrRVIfQ++RmMQZGWL6IR
- rkfw==
-X-Gm-Message-State: AOJu0YywRDbbczg9elMXAWq4Y7PrR9elTfuMxnmg/q46JDf4458/SlPr
- +YX4Lkz5CfihNPfOHTqB9nV/4FAp0VJ1F4h+2B/MMdj3d2GaROfHOoMBpsiEllXClkBFvvnN6Q3
- n4kE=
-X-Google-Smtp-Source: AGHT+IFE1VighhGsxizlW1KVNqq6FJI4NrlkdeqVvnU3HOZQW/MzQeccuj1xC3nxBApNspbdHZsN6A==
-X-Received: by 2002:a5d:456d:0:b0:346:65dd:5580 with SMTP id
- a13-20020a5d456d000000b0034665dd5580mr1693002wrc.3.1712832229124; 
- Thu, 11 Apr 2024 03:43:49 -0700 (PDT)
+ bh=ZARctQBaWTgi16Nsw9jDwGPNb4MI5ibxpQ1TfC8D7e4=;
+ b=JsI8bvXcX7R6r1cJjYzqFIKTu0e8FNs3Y/r3gzGRGhyk5ZAinIqpWXJIf+4sPWQyAJ
+ A+yOLTNabaY9kuU0wQAqSSgVrO2CYGkP5/u7m/rM7eQFUB+zqJv1OVbP/0Ya0fFpyAew
+ X0Tzitw/c8IjTs0chsMDKyC1i94KczyWnjhYdwEEtYzA0VtpCP1Gjx9dDzA8syFZScAe
+ fAO1krS664BQpksL5CJobr3ilQpvKoz5qxlnhw/5/Lplrwzu0M4razE/F6wlwJTsQ5IE
+ PsmiLBUF7+DjPpupQCFhFVChG5Nc0eJmCAf6jSJnoQLDvbifvRQtYhPn1e+1kYgWzqfn
+ t5jQ==
+X-Gm-Message-State: AOJu0YxYmRUXB8TN+a46QR/AHtaekBH3sjFJp4xmXi/Uc53KrimsU7SS
+ cNIzyRTTTUPBCGhWYomkh3BpPm7/utww69UA2sjpqgg8mTE93vq0MYo8ECpjYDR3DeU1WxcTldb
+ CxSM=
+X-Google-Smtp-Source: AGHT+IFltCQplSMOQ6kMZ2B9MhaX0r2Lrd/lueNmil7OV2EbqlCrwSBa6bBQw/tU3i3Ti1Mq/6pdWQ==
+X-Received: by 2002:a5d:58c2:0:b0:346:ba70:f261 with SMTP id
+ o2-20020a5d58c2000000b00346ba70f261mr952868wrf.2.1712832234836; 
+ Thu, 11 Apr 2024 03:43:54 -0700 (PDT)
 Received: from localhost.localdomain
  (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
  by smtp.gmail.com with ESMTPSA id
- m5-20020a5d6245000000b0034334af2957sm1469250wrv.37.2024.04.11.03.43.47
+ t7-20020adfe447000000b00343eac2acc4sm1461921wrm.111.2024.04.11.03.43.53
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:43:48 -0700 (PDT)
+ Thu, 11 Apr 2024 03:43:54 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 1/9] disas/m68k: Replace sprintf() by snprintf()
-Date: Thu, 11 Apr 2024 12:43:32 +0200
-Message-ID: <20240411104340.6617-2-philmd@linaro.org>
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Subject: [PATCH 2/9] disas/microblaze: Replace sprintf() by snprintf()
+Date: Thu, 11 Apr 2024 12:43:33 +0200
+Message-ID: <20240411104340.6617-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240411104340.6617-1-philmd@linaro.org>
 References: <20240411104340.6617-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,22 +99,101 @@ resulting in painful developper experience. Use snprintf() instead.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- disas/m68k.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ disas/microblaze.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/disas/m68k.c b/disas/m68k.c
-index 1f16e295ab..800b4145ac 100644
---- a/disas/m68k.c
-+++ b/disas/m68k.c
-@@ -1000,7 +1000,7 @@ print_indexed (int basereg,
+diff --git a/disas/microblaze.c b/disas/microblaze.c
+index 0b89b9c4fa..49a4c0fd40 100644
+--- a/disas/microblaze.c
++++ b/disas/microblaze.c
+@@ -600,7 +600,8 @@ static char *
+ get_field (long instr, long mask, unsigned short low)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%s%d", register_prefix, (int)((instr & mask) >> low));
++  snprintf(tmpstr, sizeof(tmpstr), "%s%d", register_prefix,
++           (int)((instr & mask) >> low));
+   return(strdup(tmpstr));
+ }
  
-   /* Generate the text for the index register.
-      Where this will be output is not yet determined.  */
--  sprintf (buf, "%s:%c%s",
-+  snprintf(buf, sizeof(buf), "%s:%c%s",
- 	   reg_names[(word >> 12) & 0xf],
- 	   (word & 0x800) ? 'l' : 'w',
- 	   scales[(word >> 9) & 3]);
+@@ -608,7 +609,8 @@ static char *
+ get_field_imm (long instr)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%d", (short)((instr & IMM_MASK) >> IMM_LOW));
++  snprintf(tmpstr, sizeof(tmpstr), "%d",
++           (short)((instr & IMM_MASK) >> IMM_LOW));
+   return(strdup(tmpstr));
+ }
+ 
+@@ -616,7 +618,8 @@ static char *
+ get_field_imm5 (long instr)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%d", (short)((instr & IMM5_MASK) >> IMM_LOW));
++  snprintf(tmpstr, sizeof(tmpstr), "%d",
++           (short)((instr & IMM5_MASK) >> IMM_LOW));
+   return(strdup(tmpstr));
+ }
+ 
+@@ -624,7 +627,8 @@ static char *
+ get_field_rfsl (long instr)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%s%d", fsl_register_prefix, (short)((instr & RFSL_MASK) >> IMM_LOW));
++  snprintf(tmpstr, sizeof(tmpstr), "%s%d", fsl_register_prefix,
++           (short)((instr & RFSL_MASK) >> IMM_LOW));
+   return(strdup(tmpstr));
+ }
+ 
+@@ -632,7 +636,8 @@ static char *
+ get_field_imm15 (long instr)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%d", (short)((instr & IMM15_MASK) >> IMM_LOW));
++  snprintf(tmpstr, sizeof(tmpstr), "%d",
++           (short)((instr & IMM15_MASK) >> IMM_LOW));
+   return(strdup(tmpstr));
+ }
+ 
+@@ -641,7 +646,8 @@ static char *
+ get_field_unsigned_imm (long instr)
+ {
+   char tmpstr[25];
+-  sprintf(tmpstr, "%d", (int)((instr & IMM_MASK) >> IMM_LOW));
++  snprintf(tmpstr, sizeof(tmpstr), "%d",
++           (int)((instr & IMM_MASK) >> IMM_LOW));
+   return(strdup(tmpstr));
+ }
+ #endif
+@@ -653,7 +659,8 @@ get_field_unsigned_imm (long instr)
+   {
+   char tmpstr[25];
+   
+-  sprintf(tmpstr, "%s%s", register_prefix, (((instr & IMM_MASK) >> IMM_LOW) & REG_MSR_MASK) == 0 ? "pc" : "msr");
++  snprintf(tmpstr, sizeof(tmpstr), "%s%s", register_prefix,
++          (((instr & IMM_MASK) >> IMM_LOW) & REG_MSR_MASK) == 0 ? "pc" : "msr");
+   
+   return(strdup(tmpstr));
+   }
+@@ -709,7 +716,7 @@ get_field_special(long instr, const struct op_code_struct *op)
+    default :
+      {
+        if ( ((((instr & IMM_MASK) >> IMM_LOW) ^ op->immval_mask) & 0xE000) == REG_PVR_MASK) {
+-	  sprintf(tmpstr, "%s%u", pvr_register_prefix,
++          snprintf(tmpstr, sizeof(tmpstr), "%s%u", pvr_register_prefix,
+                  (unsigned short)(((instr & IMM_MASK) >> IMM_LOW) ^
+                                   op->immval_mask) ^ REG_PVR_MASK);
+ 	 return(strdup(tmpstr));
+@@ -720,7 +727,7 @@ get_field_special(long instr, const struct op_code_struct *op)
+      break;
+    }
+    
+-   sprintf(tmpstr, "%s%s", register_prefix, spr);
++   snprintf(tmpstr, sizeof(tmpstr), "%s%s", register_prefix, spr);
+    return(strdup(tmpstr));
+ }
+ 
 -- 
 2.41.0
 
