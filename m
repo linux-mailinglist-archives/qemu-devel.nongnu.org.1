@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9EA8A11A9
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA6558A1194
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:45:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurue-0002vD-Ho; Thu, 11 Apr 2024 06:44:12 -0400
+	id 1rurul-0002xr-Jc; Thu, 11 Apr 2024 06:44:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruc-0002t4-PJ
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:44:10 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruruj-0002x8-2t
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:44:17 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurua-0004Ip-3i
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:44:10 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-41551639550so53105795e9.2
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:44:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurug-0004KI-Px
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:44:16 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-417da6ca440so3572735e9.1
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:44:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712832246; x=1713437046; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712832252; x=1713437052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+zSTvPGfcRjEBEVqiYMcCOTilCqnhe5Ojdjg6D66FBk=;
- b=g/IYJVI4TbLIZNWEaOtyNXFOaUJQriPR0NuDWqHXF562W7r8h4uT0kewQ7GjUp2IpN
- CmwWDW7PcUt+mtLAC7j2Q8gDGXZhqEPq1h9rIL6i2To4e/if2r6MeRhDg9RRXK35NPyi
- xRuDCX7F/YKJN/pfv+7vKnNpK2ux6Y8tuFqkicRazqn5uK28h5BdYhBZyXP6rZY3r8N5
- ZrUx3BBHF9DkkVh9Gm67H+AuPHXtQSROCq1rfLtLuiyTyCF1YUBBePMlbWBYyPfP/fza
- KTcs1+TPCi+PVEzso55hM0FKUFSgtDXAex9C9tHhKyam7HTr5DlFDMWLaPybq0enJ1tN
- 51MA==
+ bh=CeYnoI7aOgEwL66760hzse5mJ3cb0VBg+S1wKs8bFQ0=;
+ b=G5bDdycK8Ly0Pi6hc566NKP7L8l/jED7DIFXFYByOqqqLEwgrjdSHO9AHgGU+hNZ9m
+ xxmdD1IFlkQ5QONWaVPFvCZGvUmflW7gganTiPa0i4o5hb1/MMIbEacA6jAkgbDWF2wi
+ rTwcY5U9RmMLwRerS3J1x2LkEFSndt4OJGfWkfIxaDU1BniN9q6mgykaFMzopGeIFmrD
+ rVa5mu7sguckJ/Q2EdG24xv2Zva4OFBGRY6qVE7GNEBY6XN8U87KQkn8bXj3zSmElcEx
+ KuCUplLGv65ttCDk+sVpt/pJn58g5dyY1Vi14Vz0XsYQI3Nv0UqHXfmyU5MHNQ6OvAHu
+ 1ssA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712832246; x=1713437046;
+ d=1e100.net; s=20230601; t=1712832252; x=1713437052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+zSTvPGfcRjEBEVqiYMcCOTilCqnhe5Ojdjg6D66FBk=;
- b=tLuuupQfKcDVXPj8y148us6exhJTVjM6Z247toRkD8YRctsg/NykilankRHzeKXnm5
- F8Ci8YXQLcLGg4ITbSja/ckXzsrHEj34A+4nJ3fhp2z8WklqDxMQH2gkPayv2T7GJLXi
- AOkMJREWDaDJjMQfCr1txAsl0KBdOXW6w+dn0K1tMBplXH7yJ5cXjls9yizueurTSjWO
- AzAVNPHrqw29oLbl02naRA28hiCREJ+Ugj7XJX9Ozeu4usX/ugRwfdGh7S0RA9c5iiPV
- jDAh69gzfI9xkozTeiNKBuk21b9Ykr+OUyq3Xp+CEL1T4DLIgY7tQWHXCkhqZU9VwYSE
- eBcw==
-X-Gm-Message-State: AOJu0YyGn1+Ct4x/o560830v1/5SjX2zFFUnjqL9EPO6nh8oYyqTkMvH
- Y3LMwrxkCsljGRscswuizGzNQwW8glFJitBjM1J9//cvYSgPJcbfEauE8ldVaVrShUIVt6LDAXm
- W2P8=
-X-Google-Smtp-Source: AGHT+IHxWCKV8vYBX67vSm5fYCoJpyfz69U+mU6osVHyQ5gWbl898Jyb5aDRd9nQg5wgrHKpy7krBg==
-X-Received: by 2002:a05:600c:3154:b0:416:b7c0:23bc with SMTP id
- h20-20020a05600c315400b00416b7c023bcmr4403843wmo.10.1712832246485; 
- Thu, 11 Apr 2024 03:44:06 -0700 (PDT)
+ bh=CeYnoI7aOgEwL66760hzse5mJ3cb0VBg+S1wKs8bFQ0=;
+ b=TV1y6RfPIrzKuNIz7gKdQ8sFo16wII6dzYvWPAQaa49F5pC44PpUTp1LJuWeRJotiC
+ UhgrrRlvlr2MoXx22WWuZXJ2XZNfyXlQw6JPnhKHcdQX/ctHO9XgPymwgLGOYcB85inu
+ G3nEzGQBN13qyONRXqbfyvG4e9JfCS0RnDcJQdq9yiYyMghpqte2H/vnv5K3SITluhq2
+ Ti6PkQPV8lUU1o1R6CQ5a90ryqwv/egFXfOGT8n+XcfXqY3a/3hVU7ss6jqPYrTMIQvt
+ sMac+nz4RcqZdVQWQQZ/vLylbfk+FsTGqIMlF/IsLhtjA1GGjwG8S/SBf/q7cBMhT/Mh
+ kZtw==
+X-Gm-Message-State: AOJu0YwuGKZ8TSbRsZaMVpz9KM7rSv+MWWfu4cNVe1p6xNkZqkueOREu
+ ziroZSFoQiYSfVsZOj69DbzMt1UfaZmxDkk70Q2RQuY6ATgjJ5Ca1VLGLbT0rWXeqPTUhd1j58O
+ ap1s=
+X-Google-Smtp-Source: AGHT+IHZwP4w7kgYlcRHvHPtn5xaFB3CMNvvDS+8wnLG/q7rQtgc/WRYzMesP2ko7FKOiMmKT9TvnQ==
+X-Received: by 2002:adf:ce86:0:b0:346:bc1b:4e7c with SMTP id
+ r6-20020adfce86000000b00346bc1b4e7cmr1325606wrn.35.1712832252684; 
+ Thu, 11 Apr 2024 03:44:12 -0700 (PDT)
 Received: from localhost.localdomain
  (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
  by smtp.gmail.com with ESMTPSA id
- t13-20020a05600c450d00b004171f151a5csm1914852wmo.16.2024.04.11.03.44.05
+ c10-20020adfc04a000000b003467a420243sm1485130wrf.12.2024.04.11.03.44.11
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:44:06 -0700 (PDT)
+ Thu, 11 Apr 2024 03:44:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 4/9] linux-user/flatload: Replace sprintf() by snprintf()
-Date: Thu, 11 Apr 2024 12:43:35 +0200
-Message-ID: <20240411104340.6617-5-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Jean-Christophe Dubois <jcd@tribudubois.net>,
+ Andrey Smirnov <andrew.smirnov@gmail.com>,
+ Jason Wang <jasowang@redhat.com>, Alistair Francis <alistair@alistair23.me>
+Subject: [PATCH 5/9] hw/misc/imx: Replace sprintf() by snprintf()
+Date: Thu, 11 Apr 2024 12:43:36 +0200
+Message-ID: <20240411104340.6617-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240411104340.6617-1-philmd@linaro.org>
 References: <20240411104340.6617-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,22 +102,138 @@ resulting in painful developper experience. Use snprintf() instead.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- linux-user/flatload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/misc/imx25_ccm.c  | 2 +-
+ hw/misc/imx31_ccm.c  | 2 +-
+ hw/misc/imx6_ccm.c   | 4 ++--
+ hw/misc/imx6_src.c   | 2 +-
+ hw/misc/imx6ul_ccm.c | 4 ++--
+ hw/misc/imx7_src.c   | 2 +-
+ hw/net/imx_fec.c     | 2 +-
+ hw/ssi/imx_spi.c     | 2 +-
+ 8 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 5b62aa0a2b..b0f04af4b6 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -692,7 +692,7 @@ static int load_flat_shared_library(int id, struct lib_info *libs)
- 	char buf[16];
+diff --git a/hw/misc/imx25_ccm.c b/hw/misc/imx25_ccm.c
+index d888966014..faa726a86a 100644
+--- a/hw/misc/imx25_ccm.c
++++ b/hw/misc/imx25_ccm.c
+@@ -91,7 +91,7 @@ static const char *imx25_ccm_reg_name(uint32_t reg)
+     case IMX25_CCM_LPIMR1_REG:
+         return "lpimr1";
+     default:
+-        sprintf(unknown, "[%u ?]", reg);
++        snprintf(unknown, sizeof(unknown), "[%u ?]", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx31_ccm.c b/hw/misc/imx31_ccm.c
+index a9059bb1f7..125d4fceeb 100644
+--- a/hw/misc/imx31_ccm.c
++++ b/hw/misc/imx31_ccm.c
+@@ -89,7 +89,7 @@ static const char *imx31_ccm_reg_name(uint32_t reg)
+     case IMX31_CCM_PDR2_REG:
+         return "PDR2";
+     default:
+-        sprintf(unknown, "[%u ?]", reg);
++        snprintf(unknown, sizeof(unknown), "[%u ?]", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6_ccm.c b/hw/misc/imx6_ccm.c
+index 56489d8b57..b1def7f05b 100644
+--- a/hw/misc/imx6_ccm.c
++++ b/hw/misc/imx6_ccm.c
+@@ -85,7 +85,7 @@ static const char *imx6_ccm_reg_name(uint32_t reg)
+     case CCM_CMEOR:
+         return "CMEOR";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+@@ -224,7 +224,7 @@ static const char *imx6_analog_reg_name(uint32_t reg)
+     case USB_ANALOG_DIGPROG:
+         return "USB_ANALOG_DIGPROG";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6_src.c b/hw/misc/imx6_src.c
+index 0c6003559f..3766bdf561 100644
+--- a/hw/misc/imx6_src.c
++++ b/hw/misc/imx6_src.c
+@@ -68,7 +68,7 @@ static const char *imx6_src_reg_name(uint32_t reg)
+     case SRC_GPR10:
+         return "SRC_GPR10";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx6ul_ccm.c b/hw/misc/imx6ul_ccm.c
+index bbc0be9921..0ac49ea34b 100644
+--- a/hw/misc/imx6ul_ccm.c
++++ b/hw/misc/imx6ul_ccm.c
+@@ -143,7 +143,7 @@ static const char *imx6ul_ccm_reg_name(uint32_t reg)
+     case CCM_CMEOR:
+         return "CMEOR";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+@@ -274,7 +274,7 @@ static const char *imx6ul_analog_reg_name(uint32_t reg)
+     case USB_ANALOG_DIGPROG:
+         return "USB_ANALOG_DIGPROG";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/misc/imx7_src.c b/hw/misc/imx7_src.c
+index b3725ff6e7..d19f0450d4 100644
+--- a/hw/misc/imx7_src.c
++++ b/hw/misc/imx7_src.c
+@@ -75,7 +75,7 @@ static const char *imx7_src_reg_name(uint32_t reg)
+     case SRC_GPR10:
+         return "SRC_GPR10";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
+diff --git a/hw/net/imx_fec.c b/hw/net/imx_fec.c
+index cee84af7ba..8c91d20d44 100644
+--- a/hw/net/imx_fec.c
++++ b/hw/net/imx_fec.c
+@@ -41,7 +41,7 @@
+ static const char *imx_default_reg_name(IMXFECState *s, uint32_t index)
+ {
+     static char tmp[20];
+-    sprintf(tmp, "index %d", index);
++    snprintf(tmp, sizeof(tmp), "index %d", index);
+     return tmp;
+ }
  
- 	/* Create the file name */
--	sprintf(buf, "/lib/lib%d.so", id);
-+    snprintf(buf, sizeofbuf), "/lib/lib%d.so", id);
- 
- 	/* Open the file up */
- 	bprm.filename = buf;
+diff --git a/hw/ssi/imx_spi.c b/hw/ssi/imx_spi.c
+index d8a7583ff3..12d897d306 100644
+--- a/hw/ssi/imx_spi.c
++++ b/hw/ssi/imx_spi.c
+@@ -53,7 +53,7 @@ static const char *imx_spi_reg_name(uint32_t reg)
+     case ECSPI_MSGDATA:
+         return  "ECSPI_MSGDATA";
+     default:
+-        sprintf(unknown, "%u ?", reg);
++        snprintf(unknown, sizeof(unknown), "%u ?", reg);
+         return unknown;
+     }
+ }
 -- 
 2.41.0
 
