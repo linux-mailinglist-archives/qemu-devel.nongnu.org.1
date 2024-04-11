@@ -2,78 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833E18A0EBE
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748E58A0ECA
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:18:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurUg-0005JV-3n; Thu, 11 Apr 2024 06:17:23 -0400
+	id 1rurUw-0006BR-K1; Thu, 11 Apr 2024 06:17:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTp-00058u-5a
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:31 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTr-0005Bk-Vm
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:32 -0400
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTg-0007UT-1O
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:28 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-34665dd7744so1303453f8f.1
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:16:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTm-0007V9-5E
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:31 -0400
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-343c891bca5so4897311f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:16:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712830577; x=1713435377; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712830583; x=1713435383; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4MCcGHhKA7wPhoBY3l6p9Olu+doueLftUh6GAPbrfFo=;
- b=OSb52WSY0B2mZTlTPa51sMidfmq+eaI6IArXxnW6ZQBxwoqvhQP5jryhgCXSXQc8PL
- p/lBeOKhVGgbQRll8N0Fb3EiunFeqMiXsOnxGrIkeyDGji2xjyc6oAQ/CGJJ5eRCADNA
- u2XxT1q4+lFAx68Hfp5tQ4MqgwvRjh1OIVGiRXVAXc5xzs6xyw1IJBaBiQ8h3zlvjlSw
- L6hJr3dwWdIHfs4/GTloxSeJS/LWOkTIjadIxUtAhQvHpjfGSSiT1rMAVe7Eu1lxs4uS
- 07wGXhtecaogZBZkVFridO2JiUWf0KYI+EXexT/CcUytBuqttjzDuVntNEXCY6nAiFQ5
- 7a6g==
+ bh=TngF+9Flkc8Ihe+8OkjidPkiP1940GOGXxohU6xSHFo=;
+ b=Bvd2d0jIKuuWpq3aXGxTREH3PuavjFdc9GOPgWMGu230MvDukKBJnYPFDudeQfhCYR
+ uVCxh2Vje6zy6Iaopn1Zo7dFHUkPQzYMlbOJ0c1jbM9MDtWj33M845foy3XFlqYlDeu8
+ IxAaGgIhPesPMiWNRpyaz8a2XapDd1/EEZzt1RBSnJCNnvj6koX/iv5o5DHc0pf1fPPt
+ Q9QTOoRe8U5dh614w26Vu+CmJvVQdUGRodYO83WIHkBje/yHetopp3B96CM7J7LRKDCG
+ nIrNQBkDJmfvTTFOzN7qvsATe/jK04HwoZIwUceriia9qHF2JMjNvOruqg65Cn5rRajA
+ VwaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712830577; x=1713435377;
+ d=1e100.net; s=20230601; t=1712830583; x=1713435383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4MCcGHhKA7wPhoBY3l6p9Olu+doueLftUh6GAPbrfFo=;
- b=CW8L/GFP99C/gWgff8wOX5SNkYfoMIaJroOJVHNkeCosRxDGJ6jsxKVJlrS+ndlXkV
- 7zer7J5FmxTl/rb+9fbkWweeoQOWSuMcikgCOdEx6qCWssrhW0yBCrjCKEoSMzjy8po4
- aIQQMndp9Kd4ThIevojyE2ii8b2JsayR/pbb3tR1VsZFPTXjZmI6dHOLsXd+uEb+cJbs
- SSNGa/HKVqB6peVlXI/3yT1zQbHOQPEicCng61434fFcXbvM5ZRMZe16cWM1AVr4HHNs
- p7hHG86vAXjFe3BpIYNkXYXZ8JYgE/gaLN5WG6sJpPmLhLPnpujwAC7HsnGTzvmExDkh
- UACQ==
-X-Gm-Message-State: AOJu0YwwIPQsOi2874+4V3TjT/a38LP3PYs3FjcSLYHRX+KsUo/dIPzl
- TnIUZ9DSTS/0zT02pknOHj+2GiuJqcu+indGDX1JxemwbSOFM1usFi4YuWNBHKu7M8BgQnpJoMl
- zrEE=
-X-Google-Smtp-Source: AGHT+IE1XZFffVamGkaISdsLeS03pdk/2Hl5TfVLkxg2EG/LL60TBqhAjliiXh4ShbVrYS0mBCau6A==
-X-Received: by 2002:adf:e702:0:b0:346:305c:d34a with SMTP id
- c2-20020adfe702000000b00346305cd34amr3676036wrm.20.1712830577088; 
- Thu, 11 Apr 2024 03:16:17 -0700 (PDT)
+ bh=TngF+9Flkc8Ihe+8OkjidPkiP1940GOGXxohU6xSHFo=;
+ b=RFM3yINGsKeR0DT0SHPcNowVj+hDUOE1COg6OwSH04qC9/GfLJfyzUs0Pol1Qbdtbd
+ lQOHYX1V9kJjM1xd9LeNXYTSL8C4i8Lk0UlttdpOV7vo/4Ga/oPixDxcL9NR4ocdZD3z
+ X+eAFRRG490IP7w8fiuqkPopJJ0KkkjiayGkH/LGhH2FSC9PjbVdgh53Tq4LQWiPXL1H
+ sZZ4L9yDvtS/gXTs4ga5Qb/ea56vo2pIuFpdAQPfPjP51rLd/o0H7bBtWycErcygBYrv
+ xmZ3vf6fysp2dJXN/iSx4XBqt6ClqWmsvFGDwJr2LEYQsVHF+b/Y3nKVF21NWRBmd9XE
+ 6THQ==
+X-Gm-Message-State: AOJu0YwU9TUqowG3KMY9r7hszvwNLYmH77xFzNmV+O6c4eQWoxA/9wa3
+ 5SiQ2CUOG3VS8deQQPVFEnXC734YlxJQDMMftcVA69FaPn+T83d2RzlvfBoadepXfMJ8fYLVWZx
+ GwCg=
+X-Google-Smtp-Source: AGHT+IFr4kWKlSx9Mg10izvC3Z0ZvArjeCv79MrwZfhQdwYXPdXAzPjFDzxiA6LLEQ2WakAqohoVDw==
+X-Received: by 2002:a5d:644b:0:b0:341:66c2:3dbb with SMTP id
+ d11-20020a5d644b000000b0034166c23dbbmr3737072wrw.30.1712830583121; 
+ Thu, 11 Apr 2024 03:16:23 -0700 (PDT)
 Received: from localhost.localdomain
  (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
  by smtp.gmail.com with ESMTPSA id
- dl5-20020a0560000b8500b00345fb949c28sm1404822wrb.100.2024.04.11.03.16.15
+ u7-20020adfeb47000000b0033ec9ddc638sm1413671wrn.31.2024.04.11.03.16.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:16:16 -0700 (PDT)
+ Thu, 11 Apr 2024 03:16:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Aurelien Jarno <aurelien@aurel32.net>,
  Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v2 04/13] hw/mips/malta: Add re-usable rng_seed_hex_new()
- method
-Date: Thu, 11 Apr 2024 12:15:40 +0200
-Message-ID: <20240411101550.99392-5-philmd@linaro.org>
+Subject: [PATCH v2 05/13] hw/mips/malta: Replace sprintf() by snprintf()
+Date: Thu, 11 Apr 2024 12:15:41 +0200
+Message-ID: <20240411101550.99392-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240411101550.99392-1-philmd@linaro.org>
 References: <20240411101550.99392-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,66 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Extract common code from reinitialize_rng_seed() and
-load_kernel() to rng_seed_hex_new().
+sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+resulting in painful developper experience.
+
+Replace sprintf() by snprintf() in order to avoid:
+
+  [120/169] Compiling C object libcommon.fa.p/system_qtest.c.o
+  hw/mips/malta.c:860:9: warning: 'sprintf' is deprecated:
+          sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
+          ^
+    This function is provided for compatibility reasons only.
+    Due to security concerns inherent in the design of sprintf(3),
+    it is highly recommended that you use snprintf(3) instead.
+    [-Wdeprecated-declarations]
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/mips/malta.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ hw/mips/malta.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index af74008c82..9fc6a7d313 100644
+index 9fc6a7d313..5d33aa5123 100644
 --- a/hw/mips/malta.c
 +++ b/hw/mips/malta.c
-@@ -850,15 +850,24 @@ static void G_GNUC_PRINTF(3, 4) prom_set(uint32_t *prom_buf, int index,
-     va_end(ap);
- }
- 
--static void reinitialize_rng_seed(void *opaque)
-+static char *rng_seed_hex_new(void)
- {
--    char *rng_seed_hex = opaque;
-     uint8_t rng_seed[32];
-+    char rng_seed_hex[sizeof(rng_seed) * 2 + 1];
+@@ -857,7 +857,8 @@ static char *rng_seed_hex_new(void)
  
      qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
      for (size_t i = 0; i < sizeof(rng_seed); ++i) {
-         sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
-     }
-+
-+    return g_strdup(rng_seed_hex);
-+}
-+
-+static void reinitialize_rng_seed(void *opaque)
-+{
-+    g_autofree char *rng_seed_hex = rng_seed_hex_new();
-+
-+    strcpy(opaque, rng_seed_hex);
- }
- 
- /* Kernel */
-@@ -870,8 +879,7 @@ static uint64_t load_kernel(void)
-     uint32_t *prom_buf;
-     long prom_size;
-     int prom_index = 0;
--    uint8_t rng_seed[32];
--    char rng_seed_hex[sizeof(rng_seed) * 2 + 1];
-+    g_autofree char *rng_seed_hex = rng_seed_hex_new();
-     size_t rng_seed_prom_offset;
- 
-     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
-@@ -946,10 +954,6 @@ static uint64_t load_kernel(void)
-     prom_set(prom_buf, prom_index++, "modetty0");
-     prom_set(prom_buf, prom_index++, "38400n8r");
- 
--    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
--    for (size_t i = 0; i < sizeof(rng_seed); ++i) {
 -        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
--    }
-     prom_set(prom_buf, prom_index++, "rngseed");
-     rng_seed_prom_offset = prom_index * ENVP_ENTRY_SIZE +
-                            sizeof(uint32_t) * ENVP_NB_ENTRIES;
++        snprintf(rng_seed_hex + i * 2, sizeof(rng_seed_hex) - i * 2,
++                 "%02x", rng_seed[i]);
+     }
+ 
+     return g_strdup(rng_seed_hex);
 -- 
 2.41.0
 
