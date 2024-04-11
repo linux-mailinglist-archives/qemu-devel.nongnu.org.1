@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 748E58A0ECA
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 133F48A0EF6
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurUw-0006BR-K1; Thu, 11 Apr 2024 06:17:38 -0400
+	id 1rurUt-00065h-UF; Thu, 11 Apr 2024 06:17:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTr-0005Bk-Vm
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:32 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurU1-0005GF-Iz
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:42 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTm-0007V9-5E
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:31 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-343c891bca5so4897311f8f.2
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:16:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTu-0007W7-KM
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:40 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-416c3aca500so14249375e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712830583; x=1713435383; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712830590; x=1713435390; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TngF+9Flkc8Ihe+8OkjidPkiP1940GOGXxohU6xSHFo=;
- b=Bvd2d0jIKuuWpq3aXGxTREH3PuavjFdc9GOPgWMGu230MvDukKBJnYPFDudeQfhCYR
- uVCxh2Vje6zy6Iaopn1Zo7dFHUkPQzYMlbOJ0c1jbM9MDtWj33M845foy3XFlqYlDeu8
- IxAaGgIhPesPMiWNRpyaz8a2XapDd1/EEZzt1RBSnJCNnvj6koX/iv5o5DHc0pf1fPPt
- Q9QTOoRe8U5dh614w26Vu+CmJvVQdUGRodYO83WIHkBje/yHetopp3B96CM7J7LRKDCG
- nIrNQBkDJmfvTTFOzN7qvsATe/jK04HwoZIwUceriia9qHF2JMjNvOruqg65Cn5rRajA
- VwaA==
+ bh=0NkZbdhuZimuvYHJRoYOcJ4m476kCV6CLgO0HzeNjj0=;
+ b=wQxCVpM/tsYxZblIZozkm4q1DN38xsPQGDxCvZ/LWsfnrjZmLFdc3Bmz/InSAlBuOl
+ WSSOlBHgqsCdTq9J0gd3/6+X6eHdDbvRT18KtjJQQhtrThT+VTCkKevSEfLTRhSiwLf0
+ 26vece0JrNTX0aFxfO4ZX7IH1qD8e3KLW8VhwNCTtRwlpQCUjpXF6ampdmJwgPR9RWRf
+ 2FsX0Aus4ZAHSERlEUuuEEJba1NGrjYtFfH7qAwpx5v3WmGI+QIM/GeLgJ4cYavRazTR
+ 5JariKb09vxVvWzJZZ5INsijJjHfmeJZmq5XY0DnF7q7di9mYRnkqIuGnO9NgWxUhLSD
+ AyJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712830583; x=1713435383;
+ d=1e100.net; s=20230601; t=1712830590; x=1713435390;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TngF+9Flkc8Ihe+8OkjidPkiP1940GOGXxohU6xSHFo=;
- b=RFM3yINGsKeR0DT0SHPcNowVj+hDUOE1COg6OwSH04qC9/GfLJfyzUs0Pol1Qbdtbd
- lQOHYX1V9kJjM1xd9LeNXYTSL8C4i8Lk0UlttdpOV7vo/4Ga/oPixDxcL9NR4ocdZD3z
- X+eAFRRG490IP7w8fiuqkPopJJ0KkkjiayGkH/LGhH2FSC9PjbVdgh53Tq4LQWiPXL1H
- sZZ4L9yDvtS/gXTs4ga5Qb/ea56vo2pIuFpdAQPfPjP51rLd/o0H7bBtWycErcygBYrv
- xmZ3vf6fysp2dJXN/iSx4XBqt6ClqWmsvFGDwJr2LEYQsVHF+b/Y3nKVF21NWRBmd9XE
- 6THQ==
-X-Gm-Message-State: AOJu0YwU9TUqowG3KMY9r7hszvwNLYmH77xFzNmV+O6c4eQWoxA/9wa3
- 5SiQ2CUOG3VS8deQQPVFEnXC734YlxJQDMMftcVA69FaPn+T83d2RzlvfBoadepXfMJ8fYLVWZx
- GwCg=
-X-Google-Smtp-Source: AGHT+IFr4kWKlSx9Mg10izvC3Z0ZvArjeCv79MrwZfhQdwYXPdXAzPjFDzxiA6LLEQ2WakAqohoVDw==
-X-Received: by 2002:a5d:644b:0:b0:341:66c2:3dbb with SMTP id
- d11-20020a5d644b000000b0034166c23dbbmr3737072wrw.30.1712830583121; 
- Thu, 11 Apr 2024 03:16:23 -0700 (PDT)
+ bh=0NkZbdhuZimuvYHJRoYOcJ4m476kCV6CLgO0HzeNjj0=;
+ b=jfAsnxbrtzpLwS2DqPCH7QX1Cf/2532cNCe/AjoNEzoFXuStEYrmHjObvwbIFmhOcO
+ 2bBAvwSbIMlKDvS2Z1aT77BWHUdeU1z0GlGsn+Q504JVimSt5m69+HM5AXjS3DoIPGdS
+ M8hPNv/WUHVwsJVT2vYcmSDC7v0JopQcByR9wNIJ40klFLPxEkdA4OU8w++z7dD//fPi
+ f8/1+YzMWeNY9lBy9i1n56hlWm+1ZTx2bETnF5KUojWB6w7gJ25vjsmxDfcGkLlA2cPK
+ z5eoMLw/xLn/2SDa7GFWMBTNchz6mg9Mi9wsh4O+jlAlfQAgQsa+FS1GOk2bAJ3HVzrD
+ WtYg==
+X-Gm-Message-State: AOJu0YyYrQ7bDMUzRuCdZ1n+b/kC3G/I7jofM5+kd6vYPab6863Xa+st
+ 6PpElPFGnkSGb0UTeN9qjn+pDb0c4N4FLJyThEapalWf9QCU0PnO8BAFbJxdZ0+eK+pbmXMo6e1
+ /Hnc=
+X-Google-Smtp-Source: AGHT+IGMnvPHl9fzIeVzOggZW568jpYi0m2gNVtQ3UOY8oJCxoruSA/ooqNQmFoEppDPTbKQe3MB4Q==
+X-Received: by 2002:a05:600c:468f:b0:417:d75f:fb4 with SMTP id
+ p15-20020a05600c468f00b00417d75f0fb4mr1182890wmo.10.1712830590481; 
+ Thu, 11 Apr 2024 03:16:30 -0700 (PDT)
 Received: from localhost.localdomain
  (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
  by smtp.gmail.com with ESMTPSA id
- u7-20020adfeb47000000b0033ec9ddc638sm1413671wrn.31.2024.04.11.03.16.21
+ i7-20020a05600c354700b00416aca5ff66sm5046906wmq.19.2024.04.11.03.16.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:16:22 -0700 (PDT)
+ Thu, 11 Apr 2024 03:16:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PATCH v2 05/13] hw/mips/malta: Replace sprintf() by snprintf()
-Date: Thu, 11 Apr 2024 12:15:41 +0200
-Message-ID: <20240411101550.99392-6-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 06/13] system/qtest: Replace sprintf() by
+ g_string_append_printf()
+Date: Thu, 11 Apr 2024 12:15:42 +0200
+Message-ID: <20240411101550.99392-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240411101550.99392-1-philmd@linaro.org>
 References: <20240411101550.99392-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,36 +99,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
 resulting in painful developper experience.
 
-Replace sprintf() by snprintf() in order to avoid:
+Replace sprintf() by GString API uses in order to avoid:
 
   [120/169] Compiling C object libcommon.fa.p/system_qtest.c.o
-  hw/mips/malta.c:860:9: warning: 'sprintf' is deprecated:
-          sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
-          ^
+  system/qtest.c:623:13: warning: 'sprintf' is deprecated:
     This function is provided for compatibility reasons only.
     Due to security concerns inherent in the design of sprintf(3),
     it is highly recommended that you use snprintf(3) instead.
     [-Wdeprecated-declarations]
+            sprintf(&enc[i * 2], "%02x", data[i]);
+            ^
+  1 warning generated.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/mips/malta.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ system/qtest.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index 9fc6a7d313..5d33aa5123 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -857,7 +857,8 @@ static char *rng_seed_hex_new(void)
+diff --git a/system/qtest.c b/system/qtest.c
+index 6da58b3874..22bf1a33dc 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -601,9 +601,9 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+         qtest_send_prefix(chr);
+         qtest_sendf(chr, "OK 0x%016" PRIx64 "\n", value);
+     } else if (strcmp(words[0], "read") == 0) {
++        g_autoptr(GString) enc = g_string_new("");
+         uint64_t addr, len, i;
+         uint8_t *data;
+-        char *enc;
+         int ret;
  
-     qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
-     for (size_t i = 0; i < sizeof(rng_seed); ++i) {
--        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
-+        snprintf(rng_seed_hex + i * 2, sizeof(rng_seed_hex) - i * 2,
-+                 "%02x", rng_seed[i]);
-     }
+         g_assert(words[1] && words[2]);
+@@ -618,16 +618,14 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+         address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED, data,
+                            len);
  
-     return g_strdup(rng_seed_hex);
+-        enc = g_malloc(2 * len + 1);
+         for (i = 0; i < len; i++) {
+-            sprintf(&enc[i * 2], "%02x", data[i]);
++            g_string_append_printf(enc, "%02x", data[i]);
+         }
+ 
+         qtest_send_prefix(chr);
+-        qtest_sendf(chr, "OK 0x%s\n", enc);
++        qtest_sendf(chr, "OK 0x%s\n", enc->str);
+ 
+         g_free(data);
+-        g_free(enc);
+     } else if (strcmp(words[0], "b64read") == 0) {
+         uint64_t addr, len;
+         uint8_t *data;
 -- 
 2.41.0
 
