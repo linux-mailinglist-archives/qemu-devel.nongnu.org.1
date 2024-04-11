@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43098A0EC1
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7838A0EC0
 	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:17:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurTm-000519-8m; Thu, 11 Apr 2024 06:16:26 -0400
+	id 1rurTy-00052h-7x; Thu, 11 Apr 2024 06:16:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTL-0004x5-Jb
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:10 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTV-0004xS-Up
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:12 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTI-0007Rf-4b
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:15:59 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-417d14b3b29so4420105e9.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:15:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurTO-0007SS-3s
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:16:09 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-41650ee55ffso30708675e9.0
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:16:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712830553; x=1713435353; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=DYu9NeN6C15PoB5yWPnrDM1Qg3VSjQOVFu4GcSZeT34=;
- b=Cx3RV9w8wW+GAi+XbsX7x/6b4qcdxcuyoOH1t6BI+h7gSUAUerFu/oNjoAuM8NLAtG
- f6U6YRZWNcaaQzLXoe69uEFIDhrD8NU45NslJXJmEo2/MZV/20ZPvU94Rsu0g7X/35t5
- nq4JZ6AsC7nKeTSTj1+L3GDOQEk02p+PlJ2gopVWHSKFQW8BnFNGexlwU8uKXdgzxwxv
- RPALybwWTfTGlN91JFk4+GnNE+tAU061KZy61nEw8bG/OQ8nRGDXDlf55ELHXchXc+ZK
- K1cr5890Yi/NEHjRgEBMvDz2zgdLoyV7g2W/DD9j8DDu50XcowWysYyN76A++AeHJxwG
- 8UBw==
+ d=linaro.org; s=google; t=1712830559; x=1713435359; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yioT4noxDvhbuL7egM0nA5pMTUC57Trd6rEmG3sDLks=;
+ b=RXlA8NqfCIRGixF6bIle6C3AdW0BdiJshvhBe5wRA2l3C552fBE9NNQL/nKckc1gAK
+ zunU+pnppiCl1TCioE9iP3M5U/kgM4FEky0qnrFsOM3lWKNJMfoz6fffkpCzK9H7nCnk
+ OuUpM3rbjfkjxsOACd8jYbIzhMBPaF/Mm8IixiKqjZxu3F6hECQ771mWzFvyKWfqa+2D
+ wy8s+by1GIC/FkvQO2/1fZ78QvYRIMoBhBS+SkP0BuFuzHtwYgTyWweoQrwFNoYa8w5D
+ TNXurcnEGIgrHTtexlgWmVx/A1Lf8Y7+RaaPCCq8BVa8CEyXMwrEbUMplz1d4QAt1L46
+ paFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712830553; x=1713435353;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=DYu9NeN6C15PoB5yWPnrDM1Qg3VSjQOVFu4GcSZeT34=;
- b=v1Dhgf0njb0kAGU+1WUA2UAUCarI1kPVdR9/cBoWC/9rhsL7v+A8qgC0TlNHbovT6n
- 96dL/uc4HL6Bjez6z5bQNSlrLHAJeARgEzjn5Y/D5YP9ruhMIZejzOMjP4t5KnRb8VXo
- 35xKKtProUcOLuZ3JZrz5ZRfjIrD0JCUUxt/idp7FMBCdVrdRqnKNaSJiRmKMuK4GG0v
- 7aHTpS6YW/Nk9ELCZQtNYPMWc7NhQq11LMuxMD4UPdAlPjlhxwfiW6yR+i9XJZV7Njpp
- s8H3pqNoUiAQc4Ib37xEvoyoLukviiErtxG6th/vy3pNb6lWN4yFdL2ufP0XqsZ4AuIV
- vkIw==
-X-Gm-Message-State: AOJu0Yxrzyb2P/lGp42C0vEFxIxIzfowJNlzQIHiOIqc5Vt8ea4EQoL0
- JKjHv6Rk9G5J+NjPly/0JuNhXMFzhWKdIvW+qgr5WyycwJPxUfbvwlly8FJPBHeTtxt+2ehJzjj
- rwgQ=
-X-Google-Smtp-Source: AGHT+IGfgM4NHsDiXCi+A2tAf3CuQHSnVnG3nzYQJQ/yrV2P9p1w41Q0djsjgQVl9Cm8951JPsJ1xQ==
-X-Received: by 2002:a05:600c:4f95:b0:416:b650:cefe with SMTP id
- n21-20020a05600c4f9500b00416b650cefemr4789263wmq.14.1712830553135; 
- Thu, 11 Apr 2024 03:15:53 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712830559; x=1713435359;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yioT4noxDvhbuL7egM0nA5pMTUC57Trd6rEmG3sDLks=;
+ b=o9eSYhudTVUO1gOaSACeq7YFsWa6Dg/VbPpPK7u0Hd0y/V4mghuA+ltSgbFIGlRGrh
+ weab9g3rs5pBbnpa00Gg5SSlE+/4jwld1CCeKnwNOswHKFc5lxvqV/Sl8FD0DswWEMnB
+ SabpzkFYjq/XflOpvOKQSpFRmsH74jw772S+fjhEHW2FHa/9U8yA9THj3yR9jZjdXbTR
+ c5Oui/IuJ6wV5buh8Hxa85uM4B7UaWHn2rtC5giVs0Tvgu4pGxOB+o7BDOoMD3BdWT6c
+ EEjwXGDXyck4qnG5t6WXbqJ8C9ebNvKXuLUlwqX89JZHpJEfVOM7orJXxVev8fC4KmxS
+ OAKg==
+X-Gm-Message-State: AOJu0YznFsjwYcvB16z+VhEUrYCarvD//Dsl08sK/CAMA7l0Z+wHYJZg
+ VHSy8rjPH+Op6ARpIkww1/7L78P9yLuclmoWKSf+yIQNJMkUvc6/knItonsSzRlUsj4U36QrbR4
+ u8RI=
+X-Google-Smtp-Source: AGHT+IFO1DlwI9OOKAT/T9rhe0sIkMxzudWXL8Nc6fqKGekHmZROyHvmBy6Snrq2nv/QudP7jR06tQ==
+X-Received: by 2002:a05:600c:1d8b:b0:417:e090:4772 with SMTP id
+ p11-20020a05600c1d8b00b00417e0904772mr654387wms.34.1712830558952; 
+ Thu, 11 Apr 2024 03:15:58 -0700 (PDT)
 Received: from localhost.localdomain
  (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
  by smtp.gmail.com with ESMTPSA id
- he8-20020a05600c540800b00416a08788a5sm5055032wmb.27.2024.04.11.03.15.51
+ u14-20020a05600c19ce00b004162bac1393sm1848952wmq.43.2024.04.11.03.15.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:15:52 -0700 (PDT)
+ Thu, 11 Apr 2024 03:15:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 00/13] misc: Remove sprintf() due to macOS deprecation
-Date: Thu, 11 Apr 2024 12:15:36 +0200
-Message-ID: <20240411101550.99392-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v2 01/13] ui/console-vc: Replace sprintf() by snprintf()
+Date: Thu, 11 Apr 2024 12:15:37 +0200
+Message-ID: <20240411101550.99392-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240411101550.99392-1-philmd@linaro.org>
+References: <20240411101550.99392-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,61 +95,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Use snprintf() in patches 1-5
-
-Hi,
-
 sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
 resulting in painful developper experience.
 
-Suggestion to avoid the super-noisy warning on macOS forum are [*]:
+Replace sprintf() by snprintf() in order to avoid:
 
-* use -Wno-deprecated-declarations on the whole build
-* surgically add #pragma clang diagnostic around each use.
+  [702/1310] Compiling C object libcommon.fa.p/ui_console-vc.c.o
+  ui/console-vc.c:824:21: warning: 'sprintf' is deprecated:
+    This function is provided for compatibility reasons only.
+    Due to security concerns inherent in the design of sprintf(3),
+    it is highly recommended that you use snprintf(3) instead.
+    [-Wdeprecated-declarations]
+                    sprintf(response, "\033[%d;%dR",
+                    ^
+  1 warning generated.
 
-None of these options seem reasonable, so we are somehow forced to
-spend time converting each sprintf() call, even if they are safe
-enough.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ ui/console-vc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm so tired of seeing them than I started the conversion. This is
-the first part. Help for the rest is welcomed.
-
-Regards,
-
-Phil.
-
-[*] https://forums.developer.apple.com/forums/thread/714675
-
-Philippe Mathieu-Daudé (13):
-  ui/console-vc: Replace sprintf() by snprintf()
-  hw/vfio/pci: Replace sprintf() by snprintf()
-  hw/ppc/spapr: Replace sprintf() by snprintf()
-  hw/mips/malta: Add re-usable rng_seed_hex_new() method
-  hw/mips/malta: Replace sprintf() by snprintf()
-  system/qtest: Replace sprintf() by g_string_append_printf()
-  util/hexdump: Rename @offset argument in qemu_hexdump_line()
-  util/hexdump: Have qemu_hexdump_line() return heap allocated buffer
-  util/hexdump: Replace sprintf() by g_string_append_printf()
-  hw/scsi/scsi-disk: Use qemu_hexdump_line() to avoid sprintf()
-  hw/ide/atapi: Use qemu_hexdump_line() to avoid sprintf()
-  hw/dma/pl330: Use qemu_hexdump_line() to avoid sprintf()
-  backends/tpm: Use qemu_hexdump_line() to avoid sprintf()
-
- include/qemu/cutils.h   | 17 ++++++++++++++---
- backends/tpm/tpm_util.c | 24 ++++++++----------------
- hw/dma/pl330.c          | 12 +++---------
- hw/ide/atapi.c          |  8 ++------
- hw/mips/malta.c         | 23 ++++++++++++++---------
- hw/ppc/spapr.c          |  2 +-
- hw/scsi/scsi-disk.c     |  8 ++------
- hw/vfio/pci.c           |  2 +-
- hw/virtio/vhost-vdpa.c  | 11 ++++++-----
- system/qtest.c          |  8 +++-----
- ui/console-vc.c         |  2 +-
- util/hexdump.c          | 33 ++++++++++++++++++---------------
- 12 files changed, 73 insertions(+), 77 deletions(-)
-
+diff --git a/ui/console-vc.c b/ui/console-vc.c
+index 899fa11c94..847d5fb174 100644
+--- a/ui/console-vc.c
++++ b/ui/console-vc.c
+@@ -821,7 +821,7 @@ static void vc_putchar(VCChardev *vc, int ch)
+                     break;
+                 case 6:
+                     /* report cursor position */
+-                    sprintf(response, "\033[%d;%dR",
++                    snprintf(response, sizeof(response), "\033[%d;%dR",
+                            (s->y_base + s->y) % s->total_height + 1,
+                             s->x + 1);
+                     vc_respond_str(vc, response);
 -- 
 2.41.0
 
