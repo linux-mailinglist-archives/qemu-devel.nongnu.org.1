@@ -2,68 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5482C8A1749
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 16:34:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCD68A17F4
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 16:56:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruvTe-0002TM-J9; Thu, 11 Apr 2024 10:32:35 -0400
+	id 1ruvp3-00006X-G0; Thu, 11 Apr 2024 10:54:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ruvT9-0002QQ-7C
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:32:04 -0400
-Received: from mgamail.intel.com ([198.175.65.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1ruvT4-0001Xi-TK
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:32:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712845920; x=1744381920;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=9iYwU/GixJig1EPBHxi1sh8g6A/f9aPX/0fmYayaLLI=;
- b=dtUJlIShNVRzuIFfsu6n4kcx6dqHQrOYiKsjMeHJSQW/wZOV+GVKidu7
- vaVwOI2QVClcXoTXBF+KK6j9LnGtFGJ3D9gcUaMXK0PZ8KD+cIONulMhk
- AUGfZFqhWq/j2lx054R1dYzDaFGjiVRlu/mz6u6eqfnG/HxxhHqUL2aUN
- UlTfgtvfMMI/EzmvpRf1/0limuIr1cT/XilSt/81F6tsF0993Lh27Gtct
- fnriML4Lqvb9T6YMY+tjf2PHv3Y/qypknoMDIiRdSvGlPmON52KT8m4Jj
- dc8vttAf9Tf975N/7yCFh55mIyVUmFtjEf28/CE/effh/TGFeM4++Wqjk A==;
-X-CSE-ConnectionGUID: fD33OqOwSEO1m3wi72MJgg==
-X-CSE-MsgGUID: wV2rY5iASdi39sqafMO01w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="25712645"
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="25712645"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Apr 2024 07:31:56 -0700
-X-CSE-ConnectionGUID: 5OwuhGWCTGq7kKD8g0a7WA==
-X-CSE-MsgGUID: r+Ll/ui8TKCz6eWLNkK3+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,193,1708416000"; d="scan'208";a="21358377"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa006.jf.intel.com with ESMTP; 11 Apr 2024 07:31:55 -0700
-Date: Thu, 11 Apr 2024 22:45:56 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH for-9.1 10/19] target/i386: generalize gen_movl_seg_T0
-Message-ID: <Zhf3pDGRxqRmr5np@intel.com>
-References: <20240409164323.776660-1-pbonzini@redhat.com>
- <20240409164323.776660-11-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruvor-000067-4l
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:54:30 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruvop-0005pa-CU
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:54:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-416c4767ae6so12739955e9.3
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 07:54:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712847265; x=1713452065; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=i/KYfvrMFNJKui52jTgtyjSDfhz7doA4Av/pJx3IXoI=;
+ b=Sp4BMbAQw+b1Yj3xzNv5ASJyftD6LkAQSzf2/VNDlxc7rYboHeh/w50Y2fayOl+TbW
+ HPrZ9y7FOcNYIKFtm/0QXgGIDUpHY83S0arICuAD+CNUWTlXPRCt7R6HbKaMDq/hWgrL
+ MXpEh2JzZrzbV7VWPp9H08xcz1fsIP4/J9Qogd/0FCm9rDmBBN14OOwrFuIadL7eoKNf
+ imYuM+5UxxtJsfZfCBA21idi313eudN2VcoDGF/WRvKm2gnD16sDipNpbqlB14v0SYPh
+ HaiTkkW0Y7C2XizjrSJ+ETfuiZUCtjHZyddBL64UBRyBN/BG95GqsrXfiDXcxv+qIjJZ
+ EEmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712847265; x=1713452065;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=i/KYfvrMFNJKui52jTgtyjSDfhz7doA4Av/pJx3IXoI=;
+ b=G2DkKwhVug7JidLjCVgczgIwGdMt99irGguORf7dtDWU9Bbw81uIeElJWaRd/FQCc1
+ +8a/SbKUssS59oVFuLfkcgJDQFRJSlf9nCqmjJ8mQiAurkbo+ejR8ctMxNBno6DKMMUz
+ z/m4ID0Q1Px1acFsbpq3ZhhBAz0ptlkGoHGkASawMF8JeEB93RptMQcaC3EBRaTC4h9I
+ qUOeJwazqkC00+tRGzlazopyKM89QjQgeoyxsj7Mn8hOFDCjoPw63io04SGIkdUQcBRx
+ yjETNnYk+GCPoBU37vrg5F8Waj/CI1YzGkamcm9m2ywBn2WTfNyhK5QLIObdfX8+SB8v
+ eYOQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXOZsfYAY81TD2ICF5Tp6TK+wSS2oXnYvge7wdzGwy60Vd+BIUNOR1rrkbj2wh1eQzuYw06T0XOElf9psfm+OGj5VnwGio=
+X-Gm-Message-State: AOJu0YzvXcpiQ++676289kPyUtv4UHjt13tKtdqg5aKCcpPFQYEwjSrf
+ 7jhen85BRgIdrDJBsvs1qpHmQIC7O6VDZi5jpOCZfGlNBbQCSbhLOG8xw4jA2Gbw5LGuSbp9KVM
+ HN5w=
+X-Google-Smtp-Source: AGHT+IFQn37paZ/ecCxUBaue7MALOxz7ITqW3boEY9SR9mVXnX5E09DMKfo9PF8eOI0E1sHdfhjnhw==
+X-Received: by 2002:a05:600c:b93:b0:416:c229:596c with SMTP id
+ fl19-20020a05600c0b9300b00416c229596cmr30563wmb.10.1712847265153; 
+ Thu, 11 Apr 2024 07:54:25 -0700 (PDT)
+Received: from [192.168.120.175] ([92.88.171.159])
+ by smtp.gmail.com with ESMTPSA id
+ w16-20020a05600c475000b00417e36953a0sm1292915wmo.20.2024.04.11.07.54.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Apr 2024 07:54:24 -0700 (PDT)
+Message-ID: <17c09795-8dc9-4a80-9877-8c72e45c198c@linaro.org>
+Date: Thu, 11 Apr 2024 16:54:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240409164323.776660-11-pbonzini@redhat.com>
-Received-SPF: pass client-ip=198.175.65.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -52
-X-Spam_score: -5.3
-X-Spam_bar: -----
-X-Spam_report: (-5.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.49,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] linux-user/flatload.c: Remove unused bFLT shared-library
+ and ZFLAT code
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20240411115313.680433-1-peter.maydell@linaro.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240411115313.680433-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,49 +95,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Paolo,
-
-On Tue, Apr 09, 2024 at 06:43:14PM +0200, Paolo Bonzini wrote:
-> Date: Tue,  9 Apr 2024 18:43:14 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: [PATCH for-9.1 10/19] target/i386: generalize gen_movl_seg_T0
-> X-Mailer: git-send-email 2.44.0
+On 11/4/24 13:53, Peter Maydell wrote:
+> Ever since the bFLT format support was added in 2006, there has been
+> a chunk of code in the file guarded by CONFIG_BINFMT_SHARED_FLAT
+> which is supposedly for shared library support.  This is not enabled
+> and it's not possible to enable it, because if you do you'll run into
+> the "#error needs checking" in the calc_reloc() function.
 > 
-> In the new decoder it is sometimes easier to put the segment
-> in T1 instead of T0, usually because another operand was loaded
-> by common code in T0.  Genrealize gen_movl_seg_T0 to allow
-> using any source.
+> Similarly, CONFIG_BINFMT_ZFLAT exists but can't be enabled because of
+> an "#error code needs checking" in load_flat_file().
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> This code is obviously unfinished and has never been used; nobody in
+> the intervening 18 years has complained about this or fixed it, so
+> just delete the dead code.  If anybody ever wants the feature they
+> can always pull it out of git, or (perhaps better) write it from
+> scratch based on the current Linux bFLT loader rather than the one of
+> 18 years ago.
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 > ---
->  target/i386/tcg/translate.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-> index de1ccb6ea7f..8a34e50c452 100644
-> --- a/target/i386/tcg/translate.c
-> +++ b/target/i386/tcg/translate.c
-> @@ -2531,12 +2531,12 @@ static void gen_op_movl_seg_real(DisasContext *s, X86Seg seg_reg, TCGv seg)
->      tcg_gen_shli_tl(cpu_seg_base[seg_reg], selector, 4);
->  }
->  
-> -/* move T0 to seg_reg and compute if the CPU state may change. Never
-> +/* move SRC to seg_reg and compute if the CPU state may change. Never
->     call this function with seg_reg == R_CS */
-> -static void gen_movl_seg_T0(DisasContext *s, X86Seg seg_reg)
-> +static void gen_movl_seg(DisasContext *s, X86Seg seg_reg, TCGv src)
->  {
->      if (PE(s) && !VM86(s)) {
-> -        tcg_gen_trunc_tl_i32(s->tmp2_i32, s->T0);
-> +        tcg_gen_trunc_tl_i32(s->tmp2_i32, src);
->          gen_helper_load_seg(tcg_env, tcg_constant_i32(seg_reg), s->tmp2_i32);
->          /* abort translation because the addseg value may change or
->             because ss32 may change. For R_SS, translation must always
+>   linux-user/flat.h     |   5 +-
+>   linux-user/flatload.c | 293 ++----------------------------------------
+>   2 files changed, 11 insertions(+), 287 deletions(-)
 
-This patch missed to include another gen_movl_seg_T0() use in emit.c.inc,
-which was cleaned up later in patch 11. We could move that cleanup into
-this patch to avoid compiling failures.
 
--Zhao
+> @@ -268,40 +115,7 @@ calc_reloc(abi_ulong r, struct lib_info *p, int curid, int internalp)
+>       abi_ulong text_len;
+>       abi_ulong start_code;
+>   
+> -#ifdef CONFIG_BINFMT_SHARED_FLAT
+> -#error needs checking
+> -    if (r == 0)
+> -        id = curid;	/* Relocs of 0 are always self referring */
+> -    else {
+> -        id = (r >> 24) & 0xff;	/* Find ID for this reloc */
+> -        r &= 0x00ffffff;	/* Trim ID off here */
+> -    }
+> -    if (id >= MAX_SHARED_LIBS) {
+> -        fprintf(stderr, "BINFMT_FLAT: reference 0x%x to shared library %d\n",
+> -                (unsigned) r, id);
+> -        goto failed;
+> -    }
+> -    if (curid != id) {
+> -        if (internalp) {
+> -            fprintf(stderr, "BINFMT_FLAT: reloc address 0x%x not "
+> -                    "in same module (%d != %d)\n",
+> -                    (unsigned) r, curid, id);
+> -            goto failed;
+> -        } else if (!p[id].loaded && is_error(load_flat_shared_library(id, p))) {
+> -            fprintf(stderr, "BINFMT_FLAT: failed to load library %d\n", id);
+> -            goto failed;
+> -        }
+> -        /* Check versioning information (i.e. time stamps) */
+> -        if (p[id].build_date && p[curid].build_date
+> -            && p[curid].build_date < p[id].build_date) {
+> -            fprintf(stderr, "BINFMT_FLAT: library %d is younger than %d\n",
+> -                    id, curid);
+> -            goto failed;
+> -        }
+> -    }
+> -#else
+>       id = 0;
+
+I note 'curid' is not used, and 'id' is always 0, because
+
+#define    MAX_SHARED_LIBS                 (1)
+
+Having:
+
+struct lib_info libinfo[MAX_SHARED_LIBS];
+
+Maybe we can remove MAX_SHARED_LIBS entirely to simplify
+further?
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> -#endif
+>   
+>       start_brk = p[id].start_brk;
+>       start_data = p[id].start_data;
+> @@ -425,12 +239,10 @@ static int load_flat_file(struct linux_binprm * bprm,
+>       if (rev == OLD_FLAT_VERSION && flat_old_ram_flag(flags))
+>           flags = FLAT_FLAG_RAM;
+>   
+> -#ifndef CONFIG_BINFMT_ZFLAT
+>       if (flags & (FLAT_FLAG_GZIP|FLAT_FLAG_GZDATA)) {
+> -        fprintf(stderr, "Support for ZFLAT executables is not enabled\n");
+> +        fprintf(stderr, "ZFLAT executables are not supported\n");
+>           return -ENOEXEC;
+>       }
+> -#endif
 
 
