@@ -2,77 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181698A1316
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 13:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 743C98A1318
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 13:35:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rusgD-0000Ro-M8; Thu, 11 Apr 2024 07:33:21 -0400
+	id 1rusi1-0002ie-D3; Thu, 11 Apr 2024 07:35:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rusfm-0000NK-Qe
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 07:32:55 -0400
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rusfk-0006Fr-Eo
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 07:32:53 -0400
-Received: by mail-ed1-x533.google.com with SMTP id
- 4fb4d7f45d1cf-56e69888a36so5572451a12.3
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 04:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712835171; x=1713439971; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=gKW27QqBx2ht5r59ew3GF9HDkfUQawGcCPc7HVvCMwk=;
- b=Y6V/KAYks98/K5ima+xgnU4xKC61hkhQ+gDslVxqftOg8EoQSsOWW2RRXBvCjJGVLQ
- lvkpbQAyv+NA42dB0I8Mu8kcEhJ5rm+KyWtaxC9pKLA5oJv+hzwGvdf1hD2B/wARMcXi
- Fcn3MJqYsdmmrr0XkSr4jjrVH3fK/bV1JJgtchJhz50MKBsfPpI+NMnK3K9QE0WZzGT5
- DZ9CxpKHolrL9RO1ZrTcYMu1LnTkTR/Jeewo8h/vqCEUV1yYjInNIXgQSztwS/dG8Nfv
- LzpTyqXpW4AouqePrzq8gbZS1bSkCk1kiHdYkUJe+daP9PUNpN1BMHtqYy6f00HHDtWb
- qong==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712835171; x=1713439971;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=gKW27QqBx2ht5r59ew3GF9HDkfUQawGcCPc7HVvCMwk=;
- b=XF7P+SthdddSDBztWLfQ9IxMKBkgbRx8z1G8U98Mk/shHE76Du1WJdS4vUNRHMIEzn
- 8o4ACTxrYYBIfD+/FPSjs2w7oPv1mY9B6lxyd2651OMUA1U9blSKpK+EXZZeY+CaGTt0
- YKnOi3jIjgK4YkF+IHG+LOfNtLVRwc7n7yrJ89080KdgJxFzzi21GlkL3eaLW3H0nFiE
- fYnDHgmOhS95jACfTF7L9K5HKLZuzNC+z21d5I+z7UuHbq+6EPWPDy+sE1z9vAQGUko0
- zCurWLl/3OF97jjcphMpIrX/wUduWkejj9Lsgh1jmkFHv8SgyKSfMW/NzYP6EfZjpWb6
- z7SA==
-X-Gm-Message-State: AOJu0Yw5QpJhRoq00ieWCcOlKr2Gi6pFKIToNhKjlRLNgY+An1ErJlvK
- Smu3YyWdyW9X/cUVAX0yRd6rYYo5uqkP9Z+nJubuQNuMPNrrIownKGa006Dkz0se5O2e3VGXjK2
- 5C8jUqyyb00slExg05IFUXxDkcoJJl9ZQhyThTQ==
-X-Google-Smtp-Source: AGHT+IGMxi7mNHEK6ElvMbN4l63YR5wesesQnIfm9RF0dY01ebFD7Y80oJeu2PAOm2Bf+bA3LO2YipHXiRtbAc1d6P4=
-X-Received: by 2002:a50:8e50:0:b0:56d:f3a7:60e with SMTP id
- 16-20020a508e50000000b0056df3a7060emr3752165edx.22.1712835170769; Thu, 11 Apr
- 2024 04:32:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
+ id 1rushy-0002fc-Ad
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 07:35:10 -0400
+Received: from smtpbgau2.qq.com ([54.206.34.216])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <chunfu.jian@shingroup.cn>)
+ id 1rushi-0006Ww-IC
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 07:35:10 -0400
+X-QQ-mid: bizesmtp77t1712835254t2pj01zg
+X-QQ-Originating-IP: 35nfrdd5gv3Z0cbK7zSfoar6tdxjeF3/YedJb90i93M=
+Received: from localhost.localdomain ( [112.0.147.129])
+ by bizesmtp.qq.com (ESMTP) with 
+ id ; Thu, 11 Apr 2024 19:34:06 +0800 (CST)
+X-QQ-SSF: 0140000000000090B000000A0000000
+X-QQ-FEAT: tnN4C/PdIDX9ci0/KCVZhBUlZ9bFAfqm4BdGOrMsm3PkXaCbUDM8H7CfQtQtx
+ Or6+H/OZFaZxJk+47z997UUmnCqnkPBVARrLSIobUGsByd1MBitSCej9FvRDmhL4CMOcJc1
+ gSRYcc2TllNdTIjZ0lELJQbg5cBxvOBRmqxRfrvIwzzzXKYYSJWBMoWwNFg27+eFGNV0Hac
+ tu89HZBLuxE5rZpRNAbv8uuYCBBF/f58Vr5v4yFiRrYeZiNSN5YY3UcLnfDplz3shHkNQ1Z
+ 4rsly5KL2Vbej7xNCcwTUCOzAGOOqt0413IM702D/3WCkkULrza5+OuGlrz7dmQsyezYLRB
+ aS111khAhhZp+rBi1ctFdp95buqE99req2Bf+hxM3ItxhBKRVu1opDb15QcMxVFbUqgwG2q
+ aulCov9LfsY=
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 11069852116706908286
+From: JianChunfu <chunfu.jian@shingroup.cn>
+To: mst@redhat.com,
+	cohuck@redhat.com,
+	pbonzini@redhat.com
+Cc: qemu-devel@nongnu.org,
+	JianChunfu <chunfu.jian@shingroup.cn>
+Subject: [PATCH] linux-headers: change the annotation of
+ VFIO_IOMMU_SPAPR_REGISTER_MEMORY in vfio.h
+Date: Thu, 11 Apr 2024 19:34:04 +0800
+Message-Id: <20240411113404.1274855-1-chunfu.jian@shingroup.cn>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <20240411104340.6617-1-philmd@linaro.org>
- <20240411104340.6617-9-philmd@linaro.org>
-In-Reply-To: <20240411104340.6617-9-philmd@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 11 Apr 2024 12:32:40 +0100
-Message-ID: <CAFEAcA_2=3-jCR0FDPAE=Y-wG+LCx-Pqq-Oe4ageuUi=beGCrw@mail.gmail.com>
-Subject: Re: [PATCH 8/9] target/arm: Replace sprintf() by snprintf()
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::533;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x533.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrsz:qybglogicsvrsz4a-1
+Received-SPF: pass client-ip=54.206.34.216;
+ envelope-from=chunfu.jian@shingroup.cn; helo=smtpbgau2.qq.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,42 +70,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 11 Apr 2024 at 11:44, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-> resulting in painful developper experience. Use snprintf() instead.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> ---
->  target/arm/cpu64.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
-> index 985b1efe16..f0f4fe6714 100644
-> --- a/target/arm/cpu64.c
-> +++ b/target/arm/cpu64.c
-> @@ -433,7 +433,7 @@ void aarch64_add_sve_properties(Object *obj)
->
->      for (vq =3D 1; vq <=3D ARM_MAX_VQ; ++vq) {
->          char name[8];
-> -        sprintf(name, "sve%d", vq * 128);
-> +        snprintf(name, sizeof(name), "sve%d", vq * 128);
->          object_property_add(obj, name, "bool", cpu_arm_get_vq,
->                              cpu_arm_set_vq, NULL, &cpu->sve_vq);
->      }
-> @@ -458,7 +458,7 @@ void aarch64_add_sme_properties(Object *obj)
->
->      for (vq =3D 1; vq <=3D ARM_MAX_VQ; vq <<=3D 1) {
->          char name[8];
-> -        sprintf(name, "sme%d", vq * 128);
-> +        snprintf(name, sizeof(name), "sme%d", vq * 128);
->          object_property_add(obj, name, "bool", cpu_arm_get_vq,
->                              cpu_arm_set_vq, NULL, &cpu->sme_vq);
->      }
+The ioctl(VFIO_IOMMU_MAP_DMA/VFIO_IOMMU_UNMAP_DMA) won't be called
+in SPAPR machine, which is replaced by VFIO_IOMMU_SPAPR_TCE_CREATE/
+VFIO_IOMMU_SPAPR_TCE_REMOVE, so change the description.
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: JianChunfu <chunfu.jian@shingroup.cn>
+---
+ linux-headers/linux/vfio.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks
--- PMM
+diff --git a/linux-headers/linux/vfio.h b/linux-headers/linux/vfio.h
+index b4be37b22..20e8e6ae8 100644
+--- a/linux-headers/linux/vfio.h
++++ b/linux-headers/linux/vfio.h
+@@ -1764,7 +1764,7 @@ struct vfio_eeh_pe_op {
+  *
+  * Registers user space memory where DMA is allowed. It pins
+  * user pages and does the locked memory accounting so
+- * subsequent VFIO_IOMMU_MAP_DMA/VFIO_IOMMU_UNMAP_DMA calls
++ * subsequent VFIO_IOMMU_SPAPR_TCE_CREATE/VFIO_IOMMU_SPAPR_TCE_REMOVE calls
+  * get faster.
+  */
+ struct vfio_iommu_spapr_register_memory {
+-- 
+2.27.0
+
 
