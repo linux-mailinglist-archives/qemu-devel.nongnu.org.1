@@ -2,123 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39A88A0A3F
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:42:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0387F8A0A71
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 09:48:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rup3l-0008DN-Qg; Thu, 11 Apr 2024 03:41:25 -0400
+	id 1rup9b-0001D6-1G; Thu, 11 Apr 2024 03:47:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gavin.liu@jaguarmicro.com>)
- id 1rup3j-0008D5-GV
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:41:23 -0400
-Received: from mail-sgaapc01on2092.outbound.protection.outlook.com
- ([40.107.215.92] helo=APC01-SG2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rup9U-0001BP-P3
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gavin.liu@jaguarmicro.com>)
- id 1rup3f-00082x-Fz
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:41:23 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OhNemYYDGgEmi9xCrITH6/psz+vGrtZFCoHgiF5WHQwHuNax1eId118kSNBsjIPqMvUfFk8TzfPvfKHWgt/bZY6Hluz/70w04CvSwKOdUp/Kbd86juC7ptiAuQ2RCM3ewxRB9Oz36y9lBuAPg7VMxQ4k6YuSP9ws7rpBGMf5VavcKq78H+L1YTs3wtOtBpHfdSF39n6ngX74A0dzMSc4jQYwGN/yz9TFHIfMXw8rHBRkKGeYUcvsMUECjQcc2LGW2QbNcLGNTlK6+jAZ9t+dH9GLn74e335popaPuadxr2S2YNzycHzJiunPFGZq0vTonBFVOKu4TCBS3ZxhFCoKfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7S0m/1Q3+hWLIlbmMxTvF9GS3aOlSpD4ajaDFILnIDQ=;
- b=Dw0IiausOFr97lPBBbDhnpoYnlm1m3IFhsVcpnTasXe8IgN/wGJm+jPWIWKa2ACCgMVKVaRGg/43gP3CAmwvqsSxxGqfjUQ44ENqz+fWN0s5BoXuD4qnJvS7Nr/7akjCO0HocoSCA2A2g/NiaY+B8glD8bVhV1AG3C60NPHMjO3hRIJMCBHM9KzA3eF95RW13c/fWEagcZhKYxtcABSF9yCIljCdxW7nd/rHCrD4/THcIaLh0IjmHxt/WCBQ2R6ZgHvaGpY3P+yYUgW0CbKhCdOF7nA0AfyqnWfbnPxYFWqix1REl9ts6/TntgqvF0HLcHNJbvZJr34ai/qRS6xnVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=jaguarmicro.com; dmarc=pass action=none
- header.from=jaguarmicro.com; dkim=pass header.d=jaguarmicro.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jaguarmicro.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7S0m/1Q3+hWLIlbmMxTvF9GS3aOlSpD4ajaDFILnIDQ=;
- b=hjkzs2d7pjXEkp6JvTRDTApHZllyR6Apv3MdTSd9Ws8EsZ2bWVJwrIHFXbGC5rfVToZHuM6bsc5uLiqqulBdgh9eHo+qxaUBtTRZcUgh+qksqOo9kJXdre4ERHMV9rDtxZ5hDcbJI/Fwummsq4w2SrhsJt5yf9baV7DEsddxAoG9vVSfkipk5LicL3qsmNXL8rJtTnkiIyURnq2lFyyFu/UdW9k5xaVz/skR+RLvPUbOllOOTqV4Ensec5fGOOPw9lhrc70BwvlmZDGl5/3X0+tCjgJQeKs9Af6ObjNlFl7yJj7D1HAwRp3XZF3uHzsXt06kXwPkXNzjCm4RjGD8IQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=jaguarmicro.com;
-Received: from SEYPR06MB6756.apcprd06.prod.outlook.com (2603:1096:101:165::11)
- by KL1PR0601MB5680.apcprd06.prod.outlook.com (2603:1096:820:b7::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Thu, 11 Apr
- 2024 07:36:09 +0000
-Received: from SEYPR06MB6756.apcprd06.prod.outlook.com
- ([fe80::922f:a649:adbf:6634]) by SEYPR06MB6756.apcprd06.prod.outlook.com
- ([fe80::922f:a649:adbf:6634%6]) with mapi id 15.20.7409.042; Thu, 11 Apr 2024
- 07:36:08 +0000
-From: "Yuxue Liu yuxue.liu@jaguarmicro.com" <yuxue.liu@jaguarmicro.com>
-To: pbonzini@redhat.com
-Cc: lvivier@redhat.com, thuth@redhat.com, yuxue.liu@jaguarmicro.com,
- mst@redhat.com, qemu-devel@nongnu.org
-Subject: [PATCH] vhost-user-test: no set non-blocking for cal fd less than 0.
-Date: Thu, 11 Apr 2024 15:35:55 +0800
-Message-Id: <20240411073555.1357-1-yuxue.liu@jaguarmicro.com>
-X-Mailer: git-send-email 2.33.0.windows.2
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR01CA0027.apcprd01.prod.exchangelabs.com
- (2603:1096:4:192::7) To SEYPR06MB6756.apcprd06.prod.outlook.com
- (2603:1096:101:165::11)
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rup9S-0000io-1w
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 03:47:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712821634;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=i8U/sQ8CkeLkjs7bm1HRLLJIytyVKeKbbadhT01xLQs=;
+ b=f9v3ZzOFfqSakaL1tTEnQ3fcyqBGbkeSdCDO1CzOYuG1TDJqJ9vNSIVn/83sANp0PEsXHD
+ aGU+b6V5pI4PSRtftzEinaSVuAOWZQ3EVmZmQgSsvqJI9FyjyEayMHEn8BRa/kFv7L1pwU
+ IKGCOFPR9gK5uhwaYJanv6WM5zo51J4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-604-PqIVvN-MP_KVrbHWsRRmLg-1; Thu, 11 Apr 2024 03:47:09 -0400
+X-MC-Unique: PqIVvN-MP_KVrbHWsRRmLg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A68741807B28;
+ Thu, 11 Apr 2024 07:47:08 +0000 (UTC)
+Received: from sirius.home.kraxel.org (unknown [10.39.192.204])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A0CF1121306;
+ Thu, 11 Apr 2024 07:47:08 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+ id 123E9180063D; Thu, 11 Apr 2024 09:47:03 +0200 (CEST)
+Date: Thu, 11 Apr 2024 09:47:03 +0200
+From: Gerd Hoffmann <kraxel@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org, 
+ qemu-block@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>
+Subject: Re: [PATCH 01/12] ui/console-vc: Replace sprintf() by
+ g_strdup_printf()
+Message-ID: <dx3zdfuwz7gam7brijaqfd4kg4uttybr2s2pjonhl4twyivhf3@afcjz4iulzcn>
+References: <20240410160614.90627-1-philmd@linaro.org>
+ <20240410160614.90627-2-philmd@linaro.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SEYPR06MB6756:EE_|KL1PR0601MB5680:EE_
-X-MS-Office365-Filtering-Correlation-Id: 24c3b7c9-6d66-40dd-7a76-08dc59fa0db6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lhtBDQKGucJZtEYDHr6/PBj6K42TDizpaAfmjp5t40IXJ5mjKjeRUrBjLppCZ3PC9Dq7LrNJ7QCLwXYqMtVv1pE6W2YxGBZGCyikPZGwzVaKO8U0WCiR6Tnv/OjeBpxhctSvTwmt9URCcqAigU2linMC1PjUmNgJMlmwLVFIpMM45F35uMthh115ZizJIxWZkJC0MQdAOkSRDTWXpOVRSGgt7+Ss4teksjLCvomT+Co97LpGVcPx7ifOV+moGaBI1tRNbzhsm4iXzP0+c9s3tQExGYBaL8xaVEi6FDDR4TWOAZFQYuFZ2F9nIaMgpt9EvhaKLlLn4flXAxwNAkyZrfvKOOb6hDWVbIRPE3a6XBb2lb+o3fZV1W2EWSNyIMt3GT6vguNYVksVVQDVZ2TZkmHb4OigifKQcWXJfXUWe+BX97ptJCoi+ZV1/o+sKcWcpS0Zd4duj1DnefSaPc2M1r7jBUz5/GjV1CrhijGhFvvqrW5bi+nOXlvoAn1mM6WI6/JFt6kHRcAp3nmFSBn5WoJy8yx0RX9EE3k2uWgY18kHBsXmqTJIksvRLCsENJf48OpRV5/UukLqyaVPfNYc0+iBhZdz1nXoGaxWAfUOZ9DdaUyJjI2LEpM7zdClt2cD+aM1KSmTNjqQW1BsnmMbF237jjFQi1WXgjJE5c1tJ3daZybCWQbN7sUd+2CK9QyPiMpY9lJ3dUzz7/3fhiGztN1icq5OomUT4lRrjVWi96w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SEYPR06MB6756.apcprd06.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(52116005)(376005)(38350700005); DIR:OUT;
- SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?N5fYY4k3edaFJ46EHyu1aQ7JOihishLE7qXiJU8oQ7Wbyh8gEWz2wGwZlFCh?=
- =?us-ascii?Q?NOJf4m/a2XtGaepxN46jlMuU9L+aB64hvdJEH1SshpXeYeqCcvPMtinQDDuq?=
- =?us-ascii?Q?XGhznGZ9oOvfJ18VlFNmI4fgDzsgmm9Mb4yqnO2jGC6jXROPEc6pyCnxYBkX?=
- =?us-ascii?Q?bIiuKYKJpDyBrGqoo9Fppp+9nB50Du14CEBTKrLoSAiRZH7tZfWyt+Cab1rS?=
- =?us-ascii?Q?NnE9XjI07DLWimkuHw7Frs53yVbeg6wPBmZYqyzek8go3HZ5iFm5g0lalezx?=
- =?us-ascii?Q?RHocSFEaP5d1+0/joKOo/qOKeHWvozXiCTV4r0/GxOqYvNcukBrUo5HtbfAX?=
- =?us-ascii?Q?SCwJJjNvzsoqeiEPHnIvGS7m1PULn8MFr6Vv8KqWHn5UbpwGA3kIS4y9PVoK?=
- =?us-ascii?Q?u8rZ22pVgBmUprAIoA0ToXJloZmfkIgzgJ50923qaJ6f0XyDaB+J/2aHRvWr?=
- =?us-ascii?Q?E7ug73ZH1ioObAvSlTzLuI+0V5hX1cHMuGs3rKww5xNG+Ka+zVcY4XeAroRl?=
- =?us-ascii?Q?/Uhl25b0hSBjOe6ATVugJWti7L9z0yTVoY/NpzQVKX50JEVj4JTYrtzpKfYj?=
- =?us-ascii?Q?x0T7SKoUFk872/AUIdHSX7fFhxIFaMylCF/DzVJ5vAzTN2KuOrJogyIyJrWT?=
- =?us-ascii?Q?iNdyrYbisaNXUSgCSgjq+2oqewhPM0AiLDdgpFOmVgPp89BBb7rfq7OIMxWb?=
- =?us-ascii?Q?73tdpSKRkooRx7PTvc0F21yxeNiTSLUZMxFwzl8T/Yq9MO0aoF3pfgTMmLLV?=
- =?us-ascii?Q?/FCaAxDNabrTdc1gOayHbs20p+pVWjP9eES4xfpS2oSemvNRv8R5ft3aeGpe?=
- =?us-ascii?Q?WwKyzDrNZcet4U63rwFcvWAEnlTaSUGbGQ2nNB2ksZtZ9eyDme+wQ81UrmdH?=
- =?us-ascii?Q?sVF0afUdO/10AktPL2rS9LTd38wsaBfGoKxwtXH41OfiYbDLz2owxkDN12vB?=
- =?us-ascii?Q?Yeit8BlWwr7VVHnw7CXTocuxJlgFsgwoG5dZ0rsi8WJfJHOzXmS/Am2eJ9ng?=
- =?us-ascii?Q?yuLXopJCxEJXjmN/5BPat72uHQBJ/rRGnURaQFKJ5qfy5jJHV/jGgZnuOkch?=
- =?us-ascii?Q?L2bR2f4XibchJXuiP7+kuwyH77JV0qohOJTYGIk0xs55EYwMoc3xjd3HN0Gt?=
- =?us-ascii?Q?11W8NR/pXyEI6eHU0xSVG/S20TWP4rIuLpKdmDghHxZho7te73ztIOThi7v/?=
- =?us-ascii?Q?4Y5P4BRBK2RPICfkyR+2IGCj0OiJlFEusffuzkcEMdEhVxDL6tnJNHlyKzTF?=
- =?us-ascii?Q?M/JbpnKBNzhJyNXt4Emuzo2GheYh4EiRSXSJmGXdMmY0mvtBXllR/F3O7zvF?=
- =?us-ascii?Q?OzuN6/VW0O3emzOYX6xWVqz4N1zSG9SuIqsjr4MJo2PW3RTZHyFi2n+z2bsN?=
- =?us-ascii?Q?RVVdjy9thswxu5KYrs+7OXqzvmudrvhlkzHnfrsey+diBJ7/Fx7t18ccNrrF?=
- =?us-ascii?Q?VS11SSlWO18Ux+MZ3HSTG0WBn68B2JpUobF28Yn2oUIQ8jSz3Kef0wEn0Ubl?=
- =?us-ascii?Q?VT01+2rhgsWp2HBZzcnm4XWAB7RzZfbXBq0MgtLp0omIcA9+YWv2w0bWEl1l?=
- =?us-ascii?Q?YsS3bYF2OSZ1rji2I9+Fph9kJzfsNgRDIjdJqrSrc2fZMofdu6ibpn+8oQGx?=
- =?us-ascii?Q?OQ=3D=3D?=
-X-OriginatorOrg: jaguarmicro.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 24c3b7c9-6d66-40dd-7a76-08dc59fa0db6
-X-MS-Exchange-CrossTenant-AuthSource: SEYPR06MB6756.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2024 07:36:08.8516 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 1e45a5c2-d3e1-46b3-a0e6-c5ebf6d8ba7b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +xbTjpqH7oWepWOnVnlC5dGWoZQe0YfxQ1fHIa1d0oEaqeao1uY5prfWkcyq8JEiNYzqYrGxShTlvi9mpoxOk9DCo8FytIRWaWULI1Y0LXI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: KL1PR0601MB5680
-Received-SPF: pass client-ip=40.107.215.92;
- envelope-from=gavin.liu@jaguarmicro.com;
- helo=APC01-SG2-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240410160614.90627-2-philmd@linaro.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.049,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,41 +82,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+  Hi,
 
-In the scenario where vhost-user sets eventfd to -1,
-qemu_chr_fe_get_msgfds retrieves fd as -1. When vhost_user_read
-receives, it does not perform blocking operations on the descriptor
-with fd=-1, so non-blocking operations should not be performed here
-either.This is a normal use case. Calling g_unix_set_fd_nonblocking
-at this point will cause the test to interrupt.
+>     Due to security concerns inherent in the design of sprintf(3),
+>     it is highly recommended that you use snprintf(3) instead.
 
-When vhost_user_write sets the call fd to -1, it sets the number of
-fds to 0, so the fds obtained by qemu_chr_fe_get_msgfds will also
-be 0.
+> -    char response[40];
+> +    g_autofree char *response = NULL;
 
-Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
----
- tests/qtest/vhost-user-test.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> -                    sprintf(response, "\033[%d;%dR",
+> +                    response = g_strdup_printf("\033[%d;%dR",
 
-diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-index d4e437265f..7c8ef6268d 100644
---- a/tests/qtest/vhost-user-test.c
-+++ b/tests/qtest/vhost-user-test.c
-@@ -458,7 +458,10 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
-     case VHOST_USER_SET_VRING_KICK:
-     case VHOST_USER_SET_VRING_CALL:
-         /* consume the fd */
--        qemu_chr_fe_get_msgfds(chr, &fd, 1);
-+        if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
-+            qos_printf("call fd :%d, no set non-blocking\n", fd);
-+            break;
-+        }
-         /*
-          * This is a non-blocking eventfd.
-          * The receive function forces it to be blocking,
--- 
-2.43.0
+Any specific reason why you don't go with the recommendation above?
+
+While using g_strdup_printf() isn't wrong it allocates memory which
+is not needed here because you can continue to use the stack buffer
+this way:
+
+	snprintf(response, sizeof(response), ...);
+
+take care,
+  Gerd
 
 
