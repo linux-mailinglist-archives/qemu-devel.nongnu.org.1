@@ -2,85 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7613E8A17F7
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 16:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B30FE8A1844
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 17:11:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ruvqn-00017r-LS; Thu, 11 Apr 2024 10:56:29 -0400
+	id 1ruw3t-0005i4-QT; Thu, 11 Apr 2024 11:10:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruvqi-00017b-QT
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:56:25 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1ruvqf-0006IR-MS
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 10:56:24 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-343cfe8cae1so4978596f8f.3
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 07:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712847380; x=1713452180; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=JLhzofJJmUcfk3U5SxiHtfwYLmME0/8dxqXUqvpisNw=;
- b=CPpKbjE6MLgzsB3T1YNeQqAZx7ywTk7DJRB56QFNpQWphpQAnhZQvrYH0i66MVxBCU
- YqgiJEtcn/OLdJFoPvExXmCk7FA1NGJf0vYeIcfLQ1HjRpucawY0t4ll1DyCA+cR/tE+
- qWTUbY4a93xvAHrqQyEnjF1QLsDImaFyIrOUZMnjObiXIqszd5+cMH3kT8R5DNt5QAF2
- +j1eutnX9+vsH3ltVSG+bCU8itpyfp1anZrSJk5jrO7qrnW+DVOeO65mYbdHr13z350T
- euGpLXogZzZHNHpEUKmw2XrNjlcp1mna6n7wOf9oyBivenYi8seP63gtrqqq6Kh4mIvr
- HBMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712847380; x=1713452180;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JLhzofJJmUcfk3U5SxiHtfwYLmME0/8dxqXUqvpisNw=;
- b=MCbeLPQ227tsyDYHJjbE/JbyZak7WnfARIINGAM7oHZcsT4DKovRIeDWJYW3LioQvQ
- zemCpKfqzkyK60oLMbOuw+SD66vFNPwLQuyHIz7T0dfzEQM01TGyemxiXnE+17Q908/7
- 5wbkiB2XkPrGDW283rciIuzGpvqIZpERu47md+rTT305IOjp1/WDQaAJvhNj6WlJKUnO
- twk1EloLxJf4zOu+TMqz32Vd9Ag/DNX0KjtrebouAnMrz5cFuZ9B+wP2v2SQ5Wd2m5qJ
- fTO0LJNdIJngoaiB5LNsJ4818QUUz6XVgNoBtkJ0PpFJD14X7FhAgOTHd/nS3x4Q7goB
- hkIg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUe4vkPXzv544mshTblrpW08+bty1jE5NL0VltZXjnO0QRVeMCOhO6U7qIlLoPJVIYq3aRjNOgOgx0AiU7MIoQ8jzZ7xvQ=
-X-Gm-Message-State: AOJu0YzBmNZqlUFXU8lbB9B1TqhOZnU1J3x0XDMJNJ5D3C062OqC4C5M
- mvxFNs8XyMMOkdb4P9xhsaO2WzzSzAM1aPClkJMfApAt9LzCWrsUTCus4IjJafE=
-X-Google-Smtp-Source: AGHT+IFz1Uvm14fPMKBS5p5SBHKIH4JCWtSeG2AebLupfjf7ndS0HdwT3DRA53CNRvfaW70+itx43A==
-X-Received: by 2002:a05:6000:104d:b0:33e:6d6c:8503 with SMTP id
- c13-20020a056000104d00b0033e6d6c8503mr3734889wrx.16.1712847379577; 
- Thu, 11 Apr 2024 07:56:19 -0700 (PDT)
-Received: from [192.168.120.175] ([92.88.171.159])
- by smtp.gmail.com with ESMTPSA id
- b4-20020a5d4b84000000b0033e786abf84sm1946490wrt.54.2024.04.11.07.56.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 11 Apr 2024 07:56:18 -0700 (PDT)
-Message-ID: <6a848564-c40c-4ad0-83c4-a380af354fa2@linaro.org>
-Date: Thu, 11 Apr 2024 16:56:15 +0200
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1ruw3s-0005hs-1T
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 11:10:00 -0400
+Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
+ id 1ruw3q-0008LP-3P
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 11:09:59 -0400
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id
+ 43B8FxwD017146; Thu, 11 Apr 2024 15:09:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ from:to:cc:subject:date:message-id:mime-version
+ :content-transfer-encoding:content-type; s=qcppdkim1; bh=4g5zHVd
+ UW6QD6Wxtj+cBMFx4VjDviOK+vGqqBGtKeO8=; b=LHX0bBlkLNaBnu8jJWm6KyI
+ 6XE4Sxjvx6CoLuSLzwk4ZNndlymZBHQUT+0zUeRDNyLVIBx9vkQ91jMbfu4YcEZO
+ OYxFqDlz6cuM1PvBxJGlrKgHB5GXF6swVrHwdJMlUb2mCj3aGLIEhICPlF5RN1E2
+ m+HRXRs+H7+PJ8Fowt7YUkd3EyArVN1PxGuGAfG0jzfU6NiihizA+mY9tGaaFfeB
+ tpMluZT+9pJ4124jymDcmcZjcLe3AwejX59pasw8Ds8dX8niVIPD2nv2J76XOhoK
+ 6Ci+bci3cF228dasRPFdZ+wwDx+fYt4VQRD4JKN45OCZN2wL0u+EQ2lEzrLBDGg=
+ =
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3xec6vsea6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Apr 2024 15:09:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 43BF9gVp023268
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 11 Apr 2024 15:09:42 GMT
+Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Thu, 11 Apr 2024 08:09:42 -0700
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <pbonzini@redhat.com>, <martin@geanix.com>, =?UTF-8?q?Alex=20Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>
+Subject: [PATCH] Makefile: fix use of -j without an argument
+Date: Thu, 11 Apr 2024 12:09:32 -0300
+Message-ID: <99185cfa61404dfa019a5e2c292b928791e85af5.1712848167.git.quic_mathbern@quicinc.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0] meson.build: Disable -fzero-call-used-regs on
- OpenBSD
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Brad Smith <brad@comstyle.com>, Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20240411120819.56417-1-thuth@redhat.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240411120819.56417-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: SkYi-eusWzVcrJhwVVqAig4iBme8HIsZ
+X-Proofpoint-GUID: SkYi-eusWzVcrJhwVVqAig4iBme8HIsZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-11_08,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1011 adultscore=0
+ lowpriorityscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2404010003 definitions=main-2404110110
+Received-SPF: pass client-ip=205.220.180.131;
+ envelope-from=quic_mathbern@quicinc.com; helo=mx0b-0031df01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,41 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 11/4/24 14:08, Thomas Huth wrote:
-> QEMU currently does not work on OpenBSD since the -fzero-call-used-regs
-> option that we added to meson.build recently does not work with the
-> "retguard" extension from OpenBSD's Clang. Thus let's disable the
-> -fzero-call-used-regs here until there's a better solution available.
-> 
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2278
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   Note: Given that we're close to the release, I think the host_os check
->   is the best we can do ... the problem does not seem to trigger in all
->   functions, only if certain registers are used by the compiler, so a
->   more sophisticated check here seems to be too fragile to me right now.
-> 
->   meson.build | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/meson.build b/meson.build
-> index c9c3217ba4..91a0aa64c6 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -562,7 +562,11 @@ hardening_flags = [
->   #
->   # NB: Clang 17 is broken and SEGVs
->   # https://github.com/llvm/llvm-project/issues/75168
-> -if cc.compiles('extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }',
-> +#
-> +# NB2: This clashes with the "retguard" extension of OpenBSD's Clang
-> +# https://gitlab.com/qemu-project/qemu/-/issues/2278
-> +if host_os != 'openbsd' and \
-> +   cc.compiles('extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }',
->                  name: '-fzero-call-used-regs=used-gpr',
->                  args: ['-O2', '-fzero-call-used-regs=used-gpr'])
->       hardening_flags += '-fzero-call-used-regs=used-gpr'
+Our Makefile massages the given make arguments to invoke ninja
+accordingly. One key difference is that ninja will parallelize by
+default, whereas make only does so with -j<n> or -j. The make man page
+says that "if the -j option is given without an argument, make will not
+limit the number of jobs that can run simultaneously". We use to support
+that by replacing -j with "" (empty string) when calling ninja, so that
+it would do its auto-parallelization based on the number of CPU cores.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This was accidentally broken at d1ce2cc95b (Makefile: preserve
+--jobserver-auth argument when calling ninja, 2024-04-02),
+causing `make -j` to fail:
+
+$ make -j V=1
+  /usr/bin/ninja -v   -j -d keepdepfile all | cat
+  make  -C contrib/plugins/ V="1" TARGET_DIR="contrib/plugins/" all
+  ninja: fatal: invalid -j parameter
+  make: *** [Makefile:161: run-ninja] Error
+
+Let's fix that and indent the touched code for better readability.
+
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+---
+ Makefile | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 183756018f..d299c14dab 100644
+--- a/Makefile
++++ b/Makefile
+@@ -142,8 +142,12 @@ MAKE.k = $(findstring k,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.q = $(findstring q,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.nq = $(if $(word 2, $(MAKE.n) $(MAKE.q)),nq)
+ NINJAFLAGS = $(if $V,-v) $(if $(MAKE.n), -n) $(if $(MAKE.k), -k0) \
+-        $(or $(filter -l% -j%, $(MAKEFLAGS)), $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1)) \
+-        -d keepdepfile
++        $(if $(filter -j, $(MAKEFLAGS)) \
++	     ,, \
++	     $(or \
++	          $(filter -l% -j%, $(MAKEFLAGS)), \
++	          $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1)) \
++        ) -d keepdepfile
+ ninja-cmd-goals = $(or $(MAKECMDGOALS), all)
+ ninja-cmd-goals += $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
+ 
+-- 
+2.37.2
 
 
