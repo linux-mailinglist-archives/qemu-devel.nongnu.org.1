@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F1028A2103
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 23:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758068A2113
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 23:46:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rv297-0003Oc-5q; Thu, 11 Apr 2024 17:39:49 -0400
+	id 1rv2FV-0005eC-B1; Thu, 11 Apr 2024 17:46:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rv296-0003OU-3z
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 17:39:48 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rv2FM-0005dL-RQ
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 17:46:18 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rv294-0004mR-2Q
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 17:39:47 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-346b146199eso181626f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 14:39:45 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rv2FK-0005lp-TR
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 17:46:16 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-6ed2dbf3c92so237951b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 14:46:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712871584; x=1713476384; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HrhzeMzxNuIZGu7VGzskxIOg/oIQUJqRCAaEjVEOSZ4=;
- b=mUy2uOPkLEF8rszY7JedBItwmrbtrdmFYDD7JC2pLbqRzV5uIiSwyhslz/4SaPO8ZU
- mAZDWUrEcb3/2+7r3/V/ORtEebPRFFluXQdVpBAwDFIZLkP3VcsSdNASFLHYqwtY5EVb
- J5yWAq3WBmQyAeBEI73CRnD2YJmLXZYm5Va6vK8/jaxP95J06x9HfqK9ZIBzNyAF+/R0
- J9LvAMqxbPQj+rSSVayM2HXoZGaG/pNujjjZxp/DdUlEzQd9HS/pmg4kdtQrX0LQaJ3q
- K7gSKQ8Di5F4tKNO7yxR9n8SDbhB3PK9UBjKYmUbscOZQBzm/iaE4dkyfl/rLvdSQJY6
- Eqaw==
+ d=linaro.org; s=google; t=1712871973; x=1713476773; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=vpxrA8cRe/B7k0FRnDEX/5CDR+EgATsgI9uZLnSVd4c=;
+ b=qo6C2kgSBnOTL1PsfGSPeyD2ZyrlVP54H1QYFfr5epBF5i+hfgOtW+KpdH1R3Pkdbx
+ +qLta/4NlcZwfNUq2OdUL/m72IxJAR8fqvWssq/g78m6zxpLn7NvIa1cuCry6pMrwm1S
+ 7ELBgHMDgTax1zObI196bzDAzakxczlJJIWPq78vMmtvoaOm2vylQG1b2JCHJBtguIwQ
+ 6SxpJgxoafBKvRf787cliLSBOLPAcYRWSf7p+Z7nLc0V3enKxLMJ4Z4q/447pA+wHRj4
+ WHjxJRs8YIFYygpMyzXj50JmE/KQ9hQjiLzbxghXmF8RrRf/tEZAW/ab4F/qAIzldXnz
+ cKng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712871584; x=1713476384;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HrhzeMzxNuIZGu7VGzskxIOg/oIQUJqRCAaEjVEOSZ4=;
- b=CB03zyx53JBLSlDPXFWn+Hj49acW7xzietfYPOoV02EwKNkUnFnG7YzMIo0aRK/0/W
- 2+upip/2yl0RC/mwaSVmQtp2epYCtS54jU4BgxssfSF6jpWTkMJkIIPCl4B5ij5iMHiN
- utWsy/9SS7TTFrIJR8bz2d/CFz2NJjc4AmCfqVWuK9vzaEoxPeLEy1/m8vyXRpyniz5u
- palno3QAs3D8YazIvBmyMlhMOAtLW/5HGGMRiy6dhx+ao2YOOYwmVfT386K+k3dKxYGe
- OmKP7OPTotMollKnjjuT2bLDfWTbjEu0srY65jN5r5Fh6fcWu67FfFEd4+WEoEg+dacm
- +eXw==
-X-Gm-Message-State: AOJu0YxbxOw8aSI38pVaGEbRMpSLcG18JAa+uQapasa9Lt/fJh+pLjlf
- kU0JbTNMzNTwL+78QilSEJbN62oF9q+GigTAfLT47tduNpQTWnYLHaKxoWQ9YSX0s4B3nPCz6M1
- QW5Q=
-X-Google-Smtp-Source: AGHT+IG6Q0gnfj6jMf36tSDGoDoq1L78JcjoTdtATXPa0/ycJEhGSMJbE39xa11I+X96xuIiXAwEpg==
-X-Received: by 2002:a5d:68c3:0:b0:343:7f4b:6d9d with SMTP id
- p3-20020a5d68c3000000b003437f4b6d9dmr463738wrw.53.1712871584250; 
- Thu, 11 Apr 2024 14:39:44 -0700 (PDT)
-Received: from m1.home (lfbn-bay-1-170-196.w83-193.abo.wanadoo.fr.
- [83.193.250.196]) by smtp.gmail.com with ESMTPSA id
- d15-20020a056000114f00b00346d3a626b8sm1745217wrx.3.2024.04.11.14.39.43
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 14:39:43 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] target/m68k: Remove sprintf() calls
-Date: Thu, 11 Apr 2024 23:39:33 +0200
-Message-ID: <20240411213933.36548-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240411213933.36548-1-philmd@linaro.org>
-References: <20240411213933.36548-1-philmd@linaro.org>
+ d=1e100.net; s=20230601; t=1712871973; x=1713476773;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=vpxrA8cRe/B7k0FRnDEX/5CDR+EgATsgI9uZLnSVd4c=;
+ b=mfU31WrqWRgvRK9XeiGxv9zZBrKt+EvaMaz7ASfthMfnEHL+2XEWnJwDrVIA3BWd37
+ LLKLF/F5kNyaovJDMqyzvsnXorTRlgBOjMtQbdhaneqMDQbTnFryX4gHwM1gn1p53DPl
+ G7lqeAd79tBmn+zRqqqErX1ORmco6xAnp32zjU0JPfkQlKle2yJMxbub9z1oYdTAzPL2
+ UwAm4dTjqFDweH3yQ4dhAA60fmkxjo+Rf9ke+FD2wBPfSdl55pCw+Dezq6mjKSuIFgfr
+ mEH49JNp3iitgLPPHb5MVHfpiVgTPJYX8Vu+kPBfac0c+TbTzaE2FMFWIRniixahz6xZ
+ QYTg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVxZbHvuMlHwrVNBni3oDwIYjlQGhLcUQ0XPMp7mt5CO4rb+xBGuCqBNBM27/MTEdpOgeZDdogBnFTE84Llw/aRrycecLM=
+X-Gm-Message-State: AOJu0Yx9+9tnXiHgRT9FQAR1HZZdrHOR4aVCygnmUGcLOVJocQNAyo2t
+ VSzPGb1PhnmSj3HPeMxczvRVVUr6ZfWSULhWxDEiEA6T7F80854cYCQK7rYwNOM=
+X-Google-Smtp-Source: AGHT+IEAmMBgzzxSBOQseK4jVdkR+ivU9lItBRBDfAd5s0LfjurNfasO7U9U2ClfQPiqVXdsc9ouUw==
+X-Received: by 2002:a05:6a00:1915:b0:6e8:f708:4b09 with SMTP id
+ y21-20020a056a00191500b006e8f7084b09mr1103194pfi.15.1712871973271; 
+ Thu, 11 Apr 2024 14:46:13 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
+ by smtp.gmail.com with ESMTPSA id
+ e24-20020a62aa18000000b006eadfbdcc13sm1631776pff.67.2024.04.11.14.46.12
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 11 Apr 2024 14:46:12 -0700 (PDT)
+Message-ID: <5245b4a6-7246-456d-8be0-91fef19b8367@linaro.org>
+Date: Thu, 11 Apr 2024 14:46:11 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 9/9] target/i386: Replace sprintf() by snprintf()
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ kvm@vger.kernel.org
+References: <20240411104340.6617-1-philmd@linaro.org>
+ <20240411104340.6617-10-philmd@linaro.org>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240411104340.6617-10-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,89 +99,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-resulting in painful developper experience.
+On 4/11/24 03:43, Philippe Mathieu-Daudé wrote:
+> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+> resulting in painful developper experience. Use snprintf() instead.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/i386/kvm/kvm.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index e68cbe9293..a46d1426bf 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -5335,7 +5335,8 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
+>       case KVM_EXIT_NOTIFY:
+>           ctx_invalid = !!(run->notify.flags & KVM_NOTIFY_CONTEXT_INVALID);
+>           state = KVM_STATE(current_accel());
+> -        sprintf(str, "Encounter a notify exit with %svalid context in"
+> +        snprintf(str, sizeof(str),
+> +                     "Encounter a notify exit with %svalid context in"
+>                        " guest. There can be possible misbehaves in guest."
+>                        " Please have a look.", ctx_invalid ? "in" : "");
+>           if (ctx_invalid ||
 
-Since they are very few register names, use const arrays instead
-of trying to be clever generating the names. This silences:
+In the larger context,
 
-  [2/8] Compiling C object libqemu-m68k-softmmu.fa.p/target_m68k_translate.c.o
-  target/m68k/translate.c:92:9: warning: 'sprintf' is deprecated:
-    This function is provided for compatibility reasons only.
-    Due to security concerns inherent in the design of sprintf(3),
-    it is highly recommended that you use snprintf(3) instead.
-    [-Wdeprecated-declarations]
-        sprintf(p, "D%d", i);
-        ^
-        sprintf(p, "A%d", i);
-        ^
-        sprintf(p, "ACC%d", i);
-        ^
+>         if (ctx_invalid ||
+>             state->notify_vmexit == NOTIFY_VMEXIT_OPTION_INTERNAL_ERROR) {
+>             warn_report("KVM internal error: %s", str);
+>             ret = -1;
+>         } else {
+>             warn_report_once("KVM: %s", str);
+>             ret = 0;
+>         }
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- target/m68k/translate.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+so there's really no need to sprintf into a buffer at all -- just pass it all to 
+warn_report_*.
 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 8a194f2f21..d0561c18fe 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -48,7 +48,6 @@
- static TCGv_i32 cpu_halted;
- static TCGv_i32 cpu_exception_index;
- 
--static char cpu_reg_names[2 * 8 * 3 + 5 * 4];
- static TCGv cpu_dregs[8];
- static TCGv cpu_aregs[8];
- static TCGv_i64 cpu_macc[4];
-@@ -66,7 +65,15 @@ static TCGv store_dummy;
- 
- void m68k_tcg_init(void)
- {
--    char *p;
-+    static const char dreg_names[8][3] = {
-+        "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7"
-+    };
-+    static const char areg_names[8][3] = {
-+        "A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7"
-+    };
-+    static const char macc_names[4][5] = {
-+        "ACC0", "ACC1", "ACC2", "ACC3"
-+    };
-     int i;
- 
- #define DEFO32(name, offset) \
-@@ -87,22 +94,18 @@ void m68k_tcg_init(void)
-                                                  offsetof(CPUState, exception_index),
-                                                  "EXCEPTION");
- 
--    p = cpu_reg_names;
-     for (i = 0; i < 8; i++) {
--        sprintf(p, "D%d", i);
-         cpu_dregs[i] = tcg_global_mem_new(tcg_env,
--                                          offsetof(CPUM68KState, dregs[i]), p);
--        p += 3;
--        sprintf(p, "A%d", i);
-+                                          offsetof(CPUM68KState, dregs[i]),
-+                                          dreg_names[i]);
-         cpu_aregs[i] = tcg_global_mem_new(tcg_env,
--                                          offsetof(CPUM68KState, aregs[i]), p);
--        p += 3;
-+                                          offsetof(CPUM68KState, aregs[i]),
-+                                          areg_names[i]);
-     }
-     for (i = 0; i < 4; i++) {
--        sprintf(p, "ACC%d", i);
-         cpu_macc[i] = tcg_global_mem_new_i64(tcg_env,
--                                         offsetof(CPUM68KState, macc[i]), p);
--        p += 5;
-+                                         offsetof(CPUM68KState, macc[i]),
-+                                         macc_names[i]);
-     }
- 
-     NULL_QREG = tcg_global_mem_new(tcg_env, -4, "NULL");
--- 
-2.41.0
+The English text could use some improvement as well.  :-)
 
+
+r~
 
