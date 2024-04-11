@@ -2,85 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F41498A0EDC
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAFA8A0ED9
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:18:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurVH-0006Uw-5A; Thu, 11 Apr 2024 06:17:59 -0400
+	id 1rurVp-0001pp-Kj; Thu, 11 Apr 2024 06:18:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurUa-0005Yh-JV
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:17:18 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rurUX-0007eN-4D
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:17:14 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-343cfa6faf0so5805123f8f.0
- for <qemu-devel@nongnu.org>; Thu, 11 Apr 2024 03:17:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712830631; x=1713435431; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=2cVNgvNeXvdU51bO0Cz/mKYmbc4VssBzSVzGArcUzjU=;
- b=csDD1xx0Z0zF6wd1E23GjOvXPx3NEC5RNlBSZDRspr2zmMs+NclJfIRFriPRDXdt4r
- d8Ji4BQJfWRuQTlQHDHnSrwmuPB2ceiNlUfxc0Oj9D5JmvTixhaRZuDtVVBkIIhEwbYY
- SeNGX+ieQ1kyML4edBYmFXiSje6yy8GC4iy69WlGzyhchqvSULK3bR5MUdow7evnTZVj
- qqAN+k5nvmz0WbE8MAT+rsC4d4jmSC3E/qrM1zEAv2bgoNhQUzC9mLQAyIxRWFbcVb+j
- 4LLhaoq1eMoPiwmE13BAyBt1S+El2JjQZwg1lO9fHlhn3J2SxFdF3GDQjdCoAS6+20J7
- cUDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712830631; x=1713435431;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=2cVNgvNeXvdU51bO0Cz/mKYmbc4VssBzSVzGArcUzjU=;
- b=FDMtfUYHrkS9FlxSfs43BdtZPSwB2uCuedy+PvljEApIi21mjKZWlYdCszPqTK03jH
- 5b1tM5TtR/2opTwG21ysEuAuKJd+KIwLvv137ELUlMk79sqdvaffXuvl9BagB7X8zvOZ
- Olhjofvk8VKjYNCk0WRiXTZboR2FEkurR35gpUShrzqSTeAkuwACD593h2OlV82t7Gnz
- tafBLdxCFq02xWqeSBKRTVQDRCmLH1ZP8LUh4mN5xRz0kJTPlJK6h0l7UGmKf8Bt3uMq
- +UNGFBH6YYaXEotwxQVOMUdaBxKoXGmQcczdnJxPt5Jn8MDgAwTufm0ZhZyzxaXasGqV
- dEcg==
-X-Gm-Message-State: AOJu0Yz21uaO371cExYU34tXYhL0f2Eci+fLEJnzApexICZ1FZnfSF1L
- 0zUkoBFTVo4Q3khpWM6u/7JtRLSDULyQ2Y7s4dc8w58UFBXgujx4Q9FmkBK3uySiZb2J0bR8yYr
- nlds=
-X-Google-Smtp-Source: AGHT+IHdltH2e6GjIrJCIhTrRGuk53JS50K8lEHZCpVMgnPXaBK8O9V3kEWM4ilpsXuryIUk+KWEoA==
-X-Received: by 2002:a05:6000:186b:b0:343:6b76:251f with SMTP id
- d11-20020a056000186b00b003436b76251fmr5589625wri.42.1712830631600; 
- Thu, 11 Apr 2024 03:17:11 -0700 (PDT)
-Received: from localhost.localdomain
- (137.red-88-29-174.dynamicip.rima-tde.net. [88.29.174.137])
- by smtp.gmail.com with ESMTPSA id
- e18-20020adffd12000000b00343826878e8sm1413910wrr.38.2024.04.11.03.17.10
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 11 Apr 2024 03:17:11 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-block@nongnu.org, qemu-ppc@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Berger <stefanb@linux.ibm.com>,
- Stefan Berger <stefanb@linux.vnet.ibm.com>
-Subject: [PATCH v2 13/13] backends/tpm: Use qemu_hexdump_line() to avoid
- sprintf()
-Date: Thu, 11 Apr 2024 12:15:49 +0200
-Message-ID: <20240411101550.99392-14-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240411101550.99392-1-philmd@linaro.org>
-References: <20240411101550.99392-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rurVh-0001Or-Dq
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:18:25 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rurVe-0007ka-41
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:18:24 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VFbBK0msbz6K8wH;
+ Thu, 11 Apr 2024 18:13:29 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id BA4B81400E7;
+ Thu, 11 Apr 2024 18:18:17 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 11 Apr
+ 2024 11:18:17 +0100
+Date: Thu, 11 Apr 2024 11:18:16 +0100
+To: Li Zhijian <lizhijian@fujitsu.com>
+CC: Fan Ni <fan.ni@samsung.com>, <qemu-devel@nongnu.org>,
+ <linux-cxl@vger.kernel.org>, Dan Williams <dan.j.williams@intel.com>
+Subject: Re: [PATCH v2] hw/mem/cxl_type3: reset dvsecs in ct3d_reset()
+Message-ID: <20240411111816.0000343c@Huawei.com>
+In-Reply-To: <20240409075846.85370-1-lizhijian@fujitsu.com>
+References: <20240409075846.85370-1-lizhijian@fujitsu.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,76 +64,89 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
-resulting in painful developper experience.
+On Tue,  9 Apr 2024 15:58:46 +0800
+Li Zhijian <lizhijian@fujitsu.com> wrote:
 
-Use qemu_hexdump_line() to avoid sprintf() calls, silencing:
+> After the kernel commit
+> 0cab68720598 ("cxl/pci: Fix disabling memory if DVSEC CXL Range does not match a CFMWS window")
+> CXL type3 devices cannot be enabled again after the reboot because the
+> control register(see 8.1.3.2 in CXL specifiction 2.0 for more details) was
+> not reset.
+> 
+> These registers could be changed by the firmware or OS, let them have
+> their initial value in reboot so that the OS can read their clean status.
+> 
+> Fixes: e1706ea83da0 ("hw/cxl/device: Add a memory device (8.2.8.5)")
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Hi,
 
-  backends/tpm/tpm_util.c:357:14: warning: 'sprintf' is deprecated:
-    This function is provided for compatibility reasons only.
-    Due to security concerns inherent in the design of sprintf(3),
-    it is highly recommended that you use snprintf(3) instead.
-    [-Wdeprecated-declarations]
-        p += sprintf(p, "%.2X ", buffer[i]);
-             ^
+We need to have a close look at what this is actually doing before
+considering applying it.  I don't have time to get that this week, but
+hopefully will find some time later this month.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
----
- backends/tpm/tpm_util.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+I don't want a partial fix for one particular case that causes
+us potential trouble in others.
 
-diff --git a/backends/tpm/tpm_util.c b/backends/tpm/tpm_util.c
-index 1856589c3b..0747af2d1c 100644
---- a/backends/tpm/tpm_util.c
-+++ b/backends/tpm/tpm_util.c
-@@ -21,6 +21,7 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/error-report.h"
-+#include "qemu/cutils.h"
- #include "qapi/error.h"
- #include "qapi/visitor.h"
- #include "tpm_int.h"
-@@ -336,27 +337,18 @@ void tpm_sized_buffer_reset(TPMSizedBuffer *tsb)
- void tpm_util_show_buffer(const unsigned char *buffer,
-                           size_t buffer_size, const char *string)
- {
--    size_t len, i;
--    char *line_buffer, *p;
-+    size_t len;
-+    char *line, *lineup;
- 
-     if (!trace_event_get_state_backends(TRACE_TPM_UTIL_SHOW_BUFFER)) {
-         return;
-     }
-     len = MIN(tpm_cmd_get_size(buffer), buffer_size);
- 
--    /*
--     * allocate enough room for 3 chars per buffer entry plus a
--     * newline after every 16 chars and a final null terminator.
--     */
--    line_buffer = g_malloc(len * 3 + (len / 16) + 1);
-+    line = qemu_hexdump_line(buffer, 0, len, false);
-+    lineup = g_ascii_strup(line, -1);
-+    trace_tpm_util_show_buffer(string, len, lineup);
- 
--    for (i = 0, p = line_buffer; i < len; i++) {
--        if (i && !(i % 16)) {
--            p += sprintf(p, "\n");
--        }
--        p += sprintf(p, "%.2X ", buffer[i]);
--    }
--    trace_tpm_util_show_buffer(string, len, line_buffer);
--
--    g_free(line_buffer);
-+    g_free(line);
-+    g_free(lineup);
- }
--- 
-2.41.0
+Jonathan
+
+> ---
+> root_port, usp and dsp have the same issue, if this patch get approved,
+> I will send another patch to fix them later.
+> 
+> V2:
+>    Add fixes tag.
+>    Reset all dvsecs registers instead of CTRL only
+> ---
+>  hw/mem/cxl_type3.c | 11 +++++++----
+>  1 file changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> index b0a7e9f11b64..4f09d0b8fedc 100644
+> --- a/hw/mem/cxl_type3.c
+> +++ b/hw/mem/cxl_type3.c
+> @@ -30,6 +30,7 @@
+>  #include "hw/pci/msix.h"
+>  
+>  #define DWORD_BYTE 4
+> +#define CT3D_CAP_SN_OFFSET PCI_CONFIG_SPACE_SIZE
+>  
+>  /* Default CDAT entries for a memory region */
+>  enum {
+> @@ -284,6 +285,10 @@ static void build_dvsecs(CXLType3Dev *ct3d)
+>               range2_size_hi = 0, range2_size_lo = 0,
+>               range2_base_hi = 0, range2_base_lo = 0;
+>  
+> +    cxl_cstate->dvsec_offset = CT3D_CAP_SN_OFFSET;
+> +    if (ct3d->sn != UI64_NULL) {
+> +        cxl_cstate->dvsec_offset += PCI_EXT_CAP_DSN_SIZEOF;
+> +    }
+>      /*
+>       * Volatile memory is mapped as (0x0)
+>       * Persistent memory is mapped at (volatile->size)
+> @@ -664,10 +669,7 @@ static void ct3_realize(PCIDevice *pci_dev, Error **errp)
+>  
+>      pcie_endpoint_cap_init(pci_dev, 0x80);
+>      if (ct3d->sn != UI64_NULL) {
+> -        pcie_dev_ser_num_init(pci_dev, 0x100, ct3d->sn);
+> -        cxl_cstate->dvsec_offset = 0x100 + 0x0c;
+> -    } else {
+> -        cxl_cstate->dvsec_offset = 0x100;
+> +        pcie_dev_ser_num_init(pci_dev, CT3D_CAP_SN_OFFSET, ct3d->sn);
+>      }
+>  
+>      ct3d->cxl_cstate.pdev = pci_dev;
+> @@ -907,6 +909,7 @@ static void ct3d_reset(DeviceState *dev)
+>  
+>      cxl_component_register_init_common(reg_state, write_msk, CXL2_TYPE3_DEVICE);
+>      cxl_device_register_init_t3(ct3d);
+> +    build_dvsecs(ct3d);
+>  
+>      /*
+>       * Bring up an endpoint to target with MCTP over VDM.
 
 
