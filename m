@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 703338A0F3E
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 138DF8A0F76
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 12:24:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rurYp-00084c-B7; Thu, 11 Apr 2024 06:21:39 -0400
+	id 1rurYu-0000GJ-5i; Thu, 11 Apr 2024 06:21:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYZ-0007aI-4d
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:23 -0400
+ id 1rurYc-0008CH-N3
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:28 -0400
 Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rurYW-0000C3-H7
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:22 -0400
+ id 1rurYY-0000D8-JV
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 06:21:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1712830879;
- bh=mlszudGjqElMGgV9115m/wyU4i02wJCD06saT6t2rRM=;
+ s=mail; t=1712830881;
+ bh=+QYZVsfW80rN0aldZ0gNPIPNihlL1741+ROhUZjpSDE=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=nOasrlAo0Ll9HIOsah+sJ8ntR8jcszqo4M0qkYCD9rop7EiDOo6b61QmQA5+4cqto
- EFXKMExqStWSRz+xXCiPrHMzSvBQdwz7XdlfU4hhsZEz4R8r6RBHdR04Zx0y5h4Et9
- bbcrYr5bief87OJXJ3StSGtx2q7bVQpg+URLy9D/P88rAm7sb87r54E1IDX93Adqtv
- gHscaTmnA5alWFa9SpVyCSJ2YZRg9Ye2b6oRM+lPacSxOSAcm+QRIpbK4mhhF8IZ2I
- FJ+O5MsmaDoKcpMeilN/xJUejkxDnAEnyZdf5//rQ8sBSgoYyEijIpDpeVcUJ+Vunl
- UUw+JpU7oXQvA==
+ b=4DzSn8ylqV8mj/BlW7cb/wI2lF59NnHqotWkx/0kBrAB9tlQhCi06dx1DDoXNEJfZ
+ cs/PgbXTf3E6buhnDX1eLSSmK/mOOxoTVZ5Pqa9FHlJTC5NCntlfETRWeVNu3b0O6Z
+ ztXRBd8+7gitJUVxGHyPPj4A7LMDEmSqUt/b9vlllEeLRX/X/CUsG5/xeRCAEG+DZl
+ CK/b9a1JO4gkiey76w5d8Ta0OeJIGXBAla69PACyoh5tMV52lSui/J9oGFUMopUu7u
+ 0ShGQ3QAWD/v0nyFxYwXkOHGvstV0HHn4lSh3dsuBxP5/IX/RuthM4cf9LIPF76mHx
+ RAoQ3uCls7Mpg==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 86EB03782136;
- Thu, 11 Apr 2024 10:21:17 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id A5AE83782139;
+ Thu, 11 Apr 2024 10:21:19 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -57,9 +57,9 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>
-Subject: [PATCH v7 09/10] virtio-gpu: Support Venus capset
-Date: Thu, 11 Apr 2024 13:20:01 +0300
-Message-ID: <20240411102002.240536-10-dmitry.osipenko@collabora.com>
+Subject: [PATCH v7 10/10] virtio-gpu: Initialize Venus
+Date: Thu, 11 Apr 2024 13:20:02 +0300
+Message-ID: <20240411102002.240536-11-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
 References: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
@@ -90,55 +90,101 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Antonio Caggiano <antonio.caggiano@collabora.com>
 
-Add support for the Venus capset, which enables Vulkan support through
-the Venus Vulkan driver for virtio-gpu.
+Request Venus when initializing VirGL and if vulkan=true flag is set for
+virtio-gpu device.
 
 Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
 Signed-off-by: Huang Rui <ray.huang@amd.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- hw/display/virtio-gpu-virgl.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ hw/display/virtio-gpu-virgl.c  |  5 +++++
+ hw/display/virtio-gpu.c        | 15 +++++++++++++++
+ include/hw/virtio/virtio-gpu.h |  3 +++
+ meson.build                    |  1 +
+ 4 files changed, 24 insertions(+)
 
 diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index e01ab8295d4d..0d8f00c7939a 100644
+index 0d8f00c7939a..c4448d663282 100644
 --- a/hw/display/virtio-gpu-virgl.c
 +++ b/hw/display/virtio-gpu-virgl.c
-@@ -517,6 +517,11 @@ static void virgl_cmd_get_capset_info(VirtIOGPU *g,
-         virgl_renderer_get_cap_set(resp.capset_id,
-                                    &resp.capset_max_version,
-                                    &resp.capset_max_size);
-+    } else if (info.capset_index == 2) {
-+        resp.capset_id = VIRTIO_GPU_CAPSET_VENUS;
-+        virgl_renderer_get_cap_set(resp.capset_id,
-+                                   &resp.capset_max_version,
-+                                   &resp.capset_max_size);
-     } else {
-         resp.capset_max_version = 0;
-         resp.capset_max_size = 0;
-@@ -1067,10 +1072,18 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+@@ -1052,6 +1052,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
+         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
+     }
+ #endif
++#ifdef VIRGL_RENDERER_VENUS
++    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
++        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
++    }
++#endif
  
- int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
- {
--    uint32_t capset2_max_ver, capset2_max_size;
-+    uint32_t capset2_max_ver, capset2_max_size, num_capsets;
-+    num_capsets = 1;
-+
-     virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VIRGL2,
--                              &capset2_max_ver,
--                              &capset2_max_size);
-+                               &capset2_max_ver,
-+                               &capset2_max_size);
-+    num_capsets += capset2_max_ver ? 1 : 0;
-+
-+    virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                               &capset2_max_ver,
-+                               &capset2_max_size);
-+    num_capsets += capset2_max_size ? 1 : 0;
+     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
+     if (ret != 0) {
+diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
+index dd8dcc441709..6130592d65cd 100644
+--- a/hw/display/virtio-gpu.c
++++ b/hw/display/virtio-gpu.c
+@@ -1491,6 +1491,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
+ #endif
+     }
  
--    return capset2_max_ver ? 2 : 1;
-+    return num_capsets;
- }
++    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
++#ifdef HAVE_VIRGL_VENUS
++        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
++            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
++            error_setg(errp, "venus requires enabled blob and hostmem options");
++            return;
++        }
++#else
++        error_setg(errp, "old virglrenderer, venus unsupported");
++        return;
++#endif
++    }
++
+     if (!virtio_gpu_base_device_realize(qdev,
+                                         virtio_gpu_handle_ctrl_cb,
+                                         virtio_gpu_handle_cursor_cb,
+@@ -1667,6 +1680,8 @@ static Property virtio_gpu_properties[] = {
+     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
+                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
+     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
++    DEFINE_PROP_BIT("vulkan", VirtIOGPU, parent_obj.conf.flags,
++                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
+     DEFINE_PROP_END_OF_LIST(),
+ };
+ 
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index a16263334b47..71fbfff0258a 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -103,6 +103,7 @@ enum virtio_gpu_base_conf_flags {
+     VIRTIO_GPU_FLAG_BLOB_ENABLED,
+     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
+     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
++    VIRTIO_GPU_FLAG_VENUS_ENABLED,
+ };
+ 
+ #define virtio_gpu_virgl_enabled(_cfg) \
+@@ -121,6 +122,8 @@ enum virtio_gpu_base_conf_flags {
+     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
+ #define virtio_gpu_hostmem_enabled(_cfg) \
+     (_cfg.hostmem > 0)
++#define virtio_gpu_venus_enabled(_cfg) \
++    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
+ 
+ struct virtio_gpu_base_conf {
+     uint32_t max_outputs;
+diff --git a/meson.build b/meson.build
+index dcc5568bb382..040d843f054c 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2286,6 +2286,7 @@ if virgl.version().version_compare('>=1.0.0')
+   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
+   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
+   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
++  config_host_data.set('HAVE_VIRGL_VENUS', 1)
+ endif
+ config_host_data.set('CONFIG_VIRTFS', have_virtfs)
+ config_host_data.set('CONFIG_VTE', vte.found())
 -- 
 2.44.0
 
