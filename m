@@ -2,46 +2,47 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55D38A0CCA
-	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 11:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5425A8A0CBF
+	for <lists+qemu-devel@lfdr.de>; Thu, 11 Apr 2024 11:49:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rur3G-0006ln-IR; Thu, 11 Apr 2024 05:49:02 -0400
+	id 1rur2z-0006jr-V3; Thu, 11 Apr 2024 05:48:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rur3D-0006lc-PK
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 05:48:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rur2x-0006jj-Th
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 05:48:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rur3C-000380-0J
- for qemu-devel@nongnu.org; Thu, 11 Apr 2024 05:48:59 -0400
+ (Exim 4.90_1) (envelope-from <kraxel@redhat.com>) id 1rur2v-000335-FH
+ for qemu-devel@nongnu.org; Thu, 11 Apr 2024 05:48:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712828936;
+ s=mimecast20190719; t=1712828920;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=o1v1K0CmQ40+EW0VELKjSxYUsEiCfyKNJapsqmpTKdw=;
- b=DbNCtOrSONFvFAwiOVvucM+h+4ln9U3749bngrMsZaWfGgtQOri9Ws6OUf0Ao/KrX7zAES
- OJUkkvCdsih+moZ6A+ZfEiPziSEWHvGeluD6w+8fBDi6uDbciIVfthImkubYeyHFUOnn/b
- yGt+kRP/SkoBTcl+GMEI3AJVfRVdPts=
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=gywRNX+aKWVuwSdGbyoeWVGIjrJ39JGDTzeWj2Aewg8=;
+ b=gDMrqkYGgOxccG0VYBobPNHxmdQwHiLqq3qD9ClbtoEC/ht63sAnibagB2Y4DHGRyxjOUA
+ bwDxDrKr/3HXZODb0bY5HSqknAdRACirWjpj8EUxSy6nvBqIGh6vQg41W5O1CepiOvGSsi
+ xNacYZpjoXsOIstsYOezdTXiMVHLIZs=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-yr8CGKGYO3emLMSdbqpyew-1; Thu, 11 Apr 2024 05:48:52 -0400
-X-MC-Unique: yr8CGKGYO3emLMSdbqpyew-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-167-_tO3crPmMVqotTaEyPjdUA-1; Thu, 11 Apr 2024 05:48:36 -0400
+X-MC-Unique: _tO3crPmMVqotTaEyPjdUA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 75E9B806603;
- Thu, 11 Apr 2024 09:48:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 37B5E80171B;
+ Thu, 11 Apr 2024 09:48:36 +0000 (UTC)
 Received: from sirius.home.kraxel.org (unknown [10.39.192.204])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 438513C24;
- Thu, 11 Apr 2024 09:48:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 43C54C27EAE;
+ Thu, 11 Apr 2024 09:48:35 +0000 (UTC)
 Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
- id 3DE1D180063D; Thu, 11 Apr 2024 11:48:30 +0200 (CEST)
+ id 50FBD18009A6; Thu, 11 Apr 2024 11:48:30 +0200 (CEST)
 From: Gerd Hoffmann <kraxel@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -51,14 +52,15 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH 0/5] x86/loader: secure boot support for direct kernel load
-Date: Thu, 11 Apr 2024 11:48:24 +0200
-Message-ID: <20240411094830.1337658-1-kraxel@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 1/5] vl: fix qemu_validate_options() indention
+Date: Thu, 11 Apr 2024 11:48:25 +0200
+Message-ID: <20240411094830.1337658-2-kraxel@redhat.com>
+In-Reply-To: <20240411094830.1337658-1-kraxel@redhat.com>
+References: <20240411094830.1337658-1-kraxel@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kraxel@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kraxel@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -40
 X-Spam_score: -4.1
@@ -82,41 +84,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series allows to boot linux kernels and other efi binaries via
-direct kernel load with secure boot enabled.
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+---
+ system/vl.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-The series adds two new fw_cfg files: 'etc/boot/kernel' contains the
-kernel without modifications (no setup header patching), and
-'etc/boot/shim' contains shim.
-
-The path to the shim binary can be passed to qemu using the new '-shim'
-command line switch.
-
-This needs a companion patch series for tianocore which will put the new
-fw_cfg files into use, a draft of that series can be found here:
-
-https://github.com/kraxel/edk2/commits/devel/direct-secure-boot/
-
-With everything in place it is possible to use direct kernel load with
-secure boot enabled.
-
-take care,
-  Gerd
-
-Gerd Hoffmann (5):
-  vl: fix qemu_validate_options() indention
-  x86/loader: only patch linux kernels
-  x86/loader: read complete kernel
-  x86/loader: expose unpatched kernel
-  x86/loader: add -shim option
-
- include/hw/boards.h |  1 +
- hw/core/machine.c   | 20 ++++++++++++++++++++
- hw/i386/x86.c       | 32 ++++++++++++++++++++++++++------
- system/vl.c         | 25 +++++++++++++++++--------
- qemu-options.hx     |  7 +++++++
- 5 files changed, 71 insertions(+), 14 deletions(-)
-
+diff --git a/system/vl.c b/system/vl.c
+index c64422298245..0c6201c5bdc5 100644
+--- a/system/vl.c
++++ b/system/vl.c
+@@ -2411,15 +2411,15 @@ static void qemu_validate_options(const QDict *machine_opts)
+     const char *kernel_cmdline = qdict_get_try_str(machine_opts, "append");
+ 
+     if (kernel_filename == NULL) {
+-         if (kernel_cmdline != NULL) {
+-              error_report("-append only allowed with -kernel option");
+-              exit(1);
+-          }
++        if (kernel_cmdline != NULL) {
++            error_report("-append only allowed with -kernel option");
++            exit(1);
++        }
+ 
+-          if (initrd_filename != NULL) {
+-              error_report("-initrd only allowed with -kernel option");
+-              exit(1);
+-          }
++        if (initrd_filename != NULL) {
++            error_report("-initrd only allowed with -kernel option");
++            exit(1);
++        }
+     }
+ 
+     if (loadvm && incoming) {
 -- 
 2.44.0
 
