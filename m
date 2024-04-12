@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52D48A2850
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38EB68A2854
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:38:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQI-00074H-Jz; Fri, 12 Apr 2024 03:34:10 -0400
+	id 1rvBQI-000740-68; Fri, 12 Apr 2024 03:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQA-00070s-9l
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:03 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rvBQB-00071Z-W9
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:04 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ7-0007BB-Ve
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:01 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e3c9300c65so6283825ad.0
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:59 -0700 (PDT)
+ id 1rvBQ9-0007Bz-67
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:02 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1e3cf5b171eso5656085ad.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:34:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712907239; x=1713512039; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712907240; x=1713512040; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rYVeh39A85lKzN367OYcjUFCWQI2goI5Bmql3JBqN/4=;
- b=Oie4f+HNrso8VcxuLvXfbRirQR/F89QWTrudQ2ye6PCwB+7oi2KSKbEW9N04VEMGq2
- ANF3azTIB8F9t9IGp7Fv/VeiSleiPBGuxD3h3oJHw58t0PUNHHQWx8mJsEwkZKv9ZZsX
- apktQXyVDnCXCXiDiADyRS2YYLDQlrRs6SAqbUIJO6Ed0HrYS9hPNeYKhMsqpWhUu4/t
- D2GhUOdeOvRsuUZDzpYfKz+i8btM5ke11yZpQTHtNEQLXcQqujxoWLv6hHiAbgqSh2Rg
- E/D31qHb3sSVpp6DpmUPfdmUA9XXDAseNRBw+ZZAHyQtstQa1vK3SBhleUxocFI1Ie8Q
- hFoA==
+ :reply-to; bh=6HJ1SMmA8I+3QuAFdhuJVGFMyvOQ304pvIkGq8bmlYE=;
+ b=fRWCKJ16wj/9zLqvhGd1JWRQZn6wUegW8N9LV/hGOeVqc/SesWVm2f88wcSwSPJHfX
+ hanCVfY8ysxdXySt4AZ+puG6mj5SPCEBp+ZrqJTcKwYK8zKIzv8lNHsYm9rzLwe/f1E+
+ RYGXp4c+/pA3FbV56bXlTNuSfKkokvKBfY14HhKNmgMQylu6OmfplbUKrFNm0XAmltZ8
+ xOB4U93KIjo5OGF0dL+2X9UL1/+fZet4Bz1pPyzaWfdaCI0ekZCNLLHyhxXZ8cdts4RK
+ xo95E2UJ/NwlvSV5CHJSJtqnUtAcWzCNzGoACHd6kLl8mAlVKat89IjN5aVA+T+x8pRV
+ CbZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712907239; x=1713512039;
+ d=1e100.net; s=20230601; t=1712907240; x=1713512040;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rYVeh39A85lKzN367OYcjUFCWQI2goI5Bmql3JBqN/4=;
- b=WZncITnH6S4EVZlyeZqUWxaL0SEdtu2StVU47NE5VnY8OBkq6C+QLjnDqi8snOmFQm
- 7wreJ+jx5HQJqY11eivmrZH2lpMCq4Pd2y+nhbDB0YnFXdTYdZHV22PiG/zq5m1c09mf
- hbEbJ1cSPiLJ8bjGYDLKG6P4iqonmOLtlHDQQlS58rh/ADwg9NxHMtmLu65sbRX7z3o9
- MYmYMNSD2LdtohULfaf9w8zzYbN58RDXMTrVqZ11YeV6klIEGKf6p2aHo28x9QmQc6OH
- JwAi+m7YOpzneoVBh3/s5070QahgGjeqcQ7/1pZZXIfvhgvZgHYwpyTLE9mqlKtaRFCZ
- uShQ==
-X-Gm-Message-State: AOJu0Yxj0n74qo67S9Jsm/r6oeaUaJiIhaskbU2g3E9n+jF+qo29KJvl
- dO1pjtsQ+YcTlgmzZwDs+hULijd0EWYnn4yWnxcDyvzgLmehcMsYvbcOOf7ud/B3AVuMBb3nsEj
- T
-X-Google-Smtp-Source: AGHT+IGzGaK0wHiD+ekAvlxNIssQ1JJ0aRWXHhHPuixoMGvretn8jfyoxHJZU3Zi45GfnG+j+CtAMA==
-X-Received: by 2002:a17:902:ba84:b0:1e4:4a3f:9a88 with SMTP id
- k4-20020a170902ba8400b001e44a3f9a88mr1489311pls.46.1712907238778; 
- Fri, 12 Apr 2024 00:33:58 -0700 (PDT)
+ bh=6HJ1SMmA8I+3QuAFdhuJVGFMyvOQ304pvIkGq8bmlYE=;
+ b=Fq8exkgfPAQswrPk2xWJfxOviWCoHPifXWBcfFhrWflnvp9jTd2eujHkh/n4FDKGfh
+ yll7/roYMhCPOss2ULqcSNhJ2PSGvi+1vOzAQEA+xdKUHqEdQ13egZ9gGoGj/hnLv4um
+ nWpx/RKqFHKsCvIwBTq5cTRZxhoxgAo4rn1alnf1BKAOuiYmdhD6d7PAPCahmhn/yisz
+ mnwAN//S8KUbMeMbouGrDJltVKNty8suxmSeRQoYbaMTrndUdgafOLaocHmnu23o7GcU
+ upIpzNrUL6aNi/pVIBsATBRH8Vfrwp7uAGLGq+FxZ4Npub+CAkhpD2o+DU3gwfyn2xe8
+ FBZw==
+X-Gm-Message-State: AOJu0YzZrnWgQD6UnicGSUe8Ghc2dKYQ/+N4Di+T9pmcs+QZVGEjrzP8
+ 7uGgWZpWx1B8Fr2gwNL4t5RNK76DdziMZSsnT8y8uo9noz7sJH2EdUnVMvn9IKgh+qw8gAA54Z2
+ H
+X-Google-Smtp-Source: AGHT+IHpJFz5Lq/IyHGyhh3KLglRPs4wpTYLyI/hFXwz1nYFKVayjRnLPqe9fJ4hul0efOkixz6q9A==
+X-Received: by 2002:a17:902:a98a:b0:1e3:de79:35d1 with SMTP id
+ bh10-20020a170902a98a00b001e3de7935d1mr1685068plb.23.1712907239662; 
+ Fri, 12 Apr 2024 00:33:59 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.58
+ e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.59
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 00:33:58 -0700 (PDT)
+ Fri, 12 Apr 2024 00:33:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 14/27] disas/microblaze: Split out print_immval_addr
-Date: Fri, 12 Apr 2024 00:33:33 -0700
-Message-Id: <20240412073346.458116-15-richard.henderson@linaro.org>
+Subject: [PATCH v3 15/27] target/microblaze: Re-indent print_insn_microblaze
+Date: Fri, 12 Apr 2024 00:33:34 -0700
+Message-Id: <20240412073346.458116-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
 References: <20240412073346.458116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,134 +91,291 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unify the code blocks that try to print a symbolic address.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- disas/microblaze.c | 89 +++++++++++++++-------------------------------
- 1 file changed, 29 insertions(+), 60 deletions(-)
+ disas/microblaze.c | 263 ++++++++++++++++++++++++---------------------
+ 1 file changed, 141 insertions(+), 122 deletions(-)
 
 diff --git a/disas/microblaze.c b/disas/microblaze.c
-index 49a4c0fd40..3473c94164 100644
+index 3473c94164..c729c76585 100644
 --- a/disas/microblaze.c
 +++ b/disas/microblaze.c
-@@ -767,6 +767,24 @@ read_insn_microblaze (bfd_vma memaddr,
-   return inst;
+@@ -787,134 +787,153 @@ static void print_immval_addr(struct disassemble_info *info, bool immfound,
  }
  
-+static void print_immval_addr(struct disassemble_info *info, bool immfound,
-+                              int immval, unsigned inst, int addend)
-+{
-+    if (info->print_address_func && info->symbol_at_address_func) {
-+        if (immfound) {
-+            immval |= get_int_field_imm(inst) & 0x0000ffff;
-+        } else {
-+            immval = (int16_t)get_int_field_imm(inst);
-+        }
-+        immval += addend;
-+        if (immval != 0 && info->symbol_at_address_func(immval, info)) {
-+            info->fprintf_func(info->stream, "\t// ");
-+            info->print_address_func (immval, info);
-+        } else if (addend) {
-+            info->fprintf_func(info->stream, "\t// %x", immval);
-+        }
-+    }
-+}
- 
  int 
- print_insn_microblaze (bfd_vma memaddr, struct disassemble_info * info)
-@@ -821,18 +839,8 @@ print_insn_microblaze (bfd_vma memaddr, struct disassemble_info * info)
-      break;
-         case INST_TYPE_RD_R1_IMM:
- 	  fprintf_func(stream, "\t%s, %s, %s", get_field_rd(inst), get_field_r1(inst), get_field_imm(inst));
--	  if (info->print_address_func && get_int_field_r1(inst) == 0 && info->symbol_at_address_func) {
--	    if (immfound)
--	      immval |= (get_int_field_imm(inst) & 0x0000ffff);
--	    else {
--	      immval = get_int_field_imm(inst);
--	      if (immval & 0x8000)
--		immval |= 0xFFFF0000;
--	    }
--	    if (immval > 0 && info->symbol_at_address_func(immval, info)) {
--	      fprintf_func (stream, "\t// ");
--	      info->print_address_func (immval, info);
--	    }
-+	  if (get_int_field_r1(inst) == 0) {
-+              print_immval_addr(info, immfound, immval, inst, 0);
- 	  }
- 	  break;
- 	case INST_TYPE_RD_R1_IMM5:
-@@ -860,61 +868,22 @@ print_insn_microblaze (bfd_vma memaddr, struct disassemble_info * info)
- 	  fprintf_func(stream, "\t%s, %s", get_field_r1(inst), get_field_imm(inst));
- 	  /* The non-pc relative instructions are returns, which shouldn't 
- 	     have a label printed */
--	  if (info->print_address_func && op->inst_offset_type == INST_PC_OFFSET && info->symbol_at_address_func) {
--	    if (immfound)
--	      immval |= (get_int_field_imm(inst) & 0x0000ffff);
--	    else {
--	      immval = get_int_field_imm(inst);
--	      if (immval & 0x8000)
--		immval |= 0xFFFF0000;
--	    }
--	    immval += memaddr;
--	    if (immval > 0 && info->symbol_at_address_func(immval, info)) {
--	      fprintf_func (stream, "\t// ");
--	      info->print_address_func (immval, info);
--	    } else {
--	      fprintf_func (stream, "\t\t// ");
--	      fprintf_func (stream, "%x", immval);
--	    }
-+	  if (op->inst_offset_type == INST_PC_OFFSET) {
-+              print_immval_addr(info, immfound, immval, inst, memaddr);
- 	  }
- 	  break;
-         case INST_TYPE_RD_IMM:
- 	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_imm(inst));
--	  if (info->print_address_func && info->symbol_at_address_func) {
--	    if (immfound)
--	      immval |= (get_int_field_imm(inst) & 0x0000ffff);
--	    else {
--	      immval = get_int_field_imm(inst);
--	      if (immval & 0x8000)
--		immval |= 0xFFFF0000;
--	    }
--	    if (op->inst_offset_type == INST_PC_OFFSET)
--	      immval += (int) memaddr;
--	    if (info->symbol_at_address_func(immval, info)) {
--	      fprintf_func (stream, "\t// ");
--	      info->print_address_func (immval, info);
--	    } 
+-print_insn_microblaze (bfd_vma memaddr, struct disassemble_info * info)
++print_insn_microblaze(bfd_vma memaddr, struct disassemble_info *info)
+ {
+-  fprintf_function    fprintf_func = info->fprintf_func;
+-  void *              stream = info->stream;
+-  unsigned long       inst, prev_inst;
+-  const struct op_code_struct *op, *pop;
+-  int                 immval = 0;
+-  bfd_boolean         immfound = FALSE;
+-  static bfd_vma prev_insn_addr = -1; /*init the prev insn addr */
+-  static int     prev_insn_vma = -1;  /*init the prev insn vma */
+-  int            curr_insn_vma = info->buffer_vma;
++    fprintf_function fprintf_func = info->fprintf_func;
++    void *stream = info->stream;
++    unsigned long inst, prev_inst;
++    const struct op_code_struct *op, *pop;
++    int immval = 0;
++    bool immfound = false;
++    static bfd_vma prev_insn_addr = -1; /*init the prev insn addr */
++    static int prev_insn_vma = -1;  /*init the prev insn vma */
++    int curr_insn_vma = info->buffer_vma;
+ 
+-  info->bytes_per_chunk = 4;
++    info->bytes_per_chunk = 4;
+ 
+-  inst = read_insn_microblaze (memaddr, info, &op);
+-  if (inst == 0) {
+-    return -1;
+-  }
++    inst = read_insn_microblaze (memaddr, info, &op);
++    if (inst == 0) {
++        return -1;
++    }
+   
+-  if (prev_insn_vma == curr_insn_vma) {
+-  if (memaddr-(info->bytes_per_chunk) == prev_insn_addr) {
+-    prev_inst = read_insn_microblaze (prev_insn_addr, info, &pop);
+-    if (prev_inst == 0)
+-      return -1;
+-    if (pop->instr == imm) {
+-      immval = (get_int_field_imm(prev_inst) << 16) & 0xffff0000;
+-      immfound = TRUE;
++    if (prev_insn_vma == curr_insn_vma) {
++        if (memaddr - info->bytes_per_chunk == prev_insn_addr) {
++            prev_inst = read_insn_microblaze (prev_insn_addr, info, &pop);
++            if (prev_inst == 0)
++                return -1;
++            if (pop->instr == imm) {
++                immval = (get_int_field_imm(prev_inst) << 16) & 0xffff0000;
++                immfound = TRUE;
++            }
++            else {
++                immval = 0;
++                immfound = FALSE;
++            }
++        }
+     }
+-    else {
+-      immval = 0;
+-      immfound = FALSE;
+-    }
+-  }
+-  }
+-  /* make curr insn as prev insn */
+-  prev_insn_addr = memaddr;
+-  prev_insn_vma = curr_insn_vma;
++    /* make curr insn as prev insn */
++    prev_insn_addr = memaddr;
++    prev_insn_vma = curr_insn_vma;
+ 
+-  if (op->name == 0) {
+-    fprintf_func (stream, ".short 0x%04lx", inst);
+-  }
+-  else
+-    {
+-      fprintf_func (stream, "%s", op->name);
++    if (op->name == 0) {
++        fprintf_func (stream, ".short 0x%04lx", inst);
++        return 4;
++    }
++
++    fprintf_func (stream, "%s", op->name);
+       
+-      switch (op->inst_type)
+-	{
+-  case INST_TYPE_RD_R1_R2:
+-     fprintf_func(stream, "\t%s, %s, %s", get_field_rd(inst), get_field_r1(inst), get_field_r2(inst));
+-     break;
+-        case INST_TYPE_RD_R1_IMM:
+-	  fprintf_func(stream, "\t%s, %s, %s", get_field_rd(inst), get_field_r1(inst), get_field_imm(inst));
+-	  if (get_int_field_r1(inst) == 0) {
+-              print_immval_addr(info, immfound, immval, inst, 0);
 -	  }
-+          print_immval_addr(info, immfound, immval, inst,
-+                            op->inst_offset_type == INST_PC_OFFSET
-+                            ? memaddr : 0);
- 	  break;
-         case INST_TYPE_IMM:
- 	  fprintf_func(stream, "\t%s", get_field_imm(inst));
--	  if (info->print_address_func && info->symbol_at_address_func && op->instr != imm) {
--	    if (immfound)
--	      immval |= (get_int_field_imm(inst) & 0x0000ffff);
--	    else {
--	      immval = get_int_field_imm(inst);
--	      if (immval & 0x8000)
--		immval |= 0xFFFF0000;
--	    }
--	    if (op->inst_offset_type == INST_PC_OFFSET)
--	      immval += (int) memaddr;
--	    if (immval > 0 && info->symbol_at_address_func(immval, info)) {
--	      fprintf_func (stream, "\t// ");
--	      info->print_address_func (immval, info);
--	    } else if (op->inst_offset_type == INST_PC_OFFSET) {
--	      fprintf_func (stream, "\t\t// ");
--	      fprintf_func (stream, "%x", immval);
--	    }
-+	  if (op->instr != imm) {
-+              print_immval_addr(info, immfound, immval, inst,
-+                                op->inst_offset_type == INST_PC_OFFSET
-+                                ? memaddr : 0);
- 	  }
- 	  break;
-         case INST_TYPE_RD_R2:
+-	  break;
+-	case INST_TYPE_RD_R1_IMM5:
+-	  fprintf_func(stream, "\t%s, %s, %s", get_field_rd(inst), get_field_r1(inst), get_field_imm5(inst));
+-	  break;
+-	case INST_TYPE_RD_RFSL:
+-	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_rfsl(inst));
+-	  break;
+-	case INST_TYPE_R1_RFSL:
+-	  fprintf_func(stream, "\t%s, %s", get_field_r1(inst), get_field_rfsl(inst));
+-	  break;
+-	case INST_TYPE_RD_SPECIAL:
+-	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_special(inst, op));
+-	  break;
+-	case INST_TYPE_SPECIAL_R1:
+-	  fprintf_func(stream, "\t%s, %s", get_field_special(inst, op), get_field_r1(inst));
+-	  break;
+-	case INST_TYPE_RD_R1:
+-	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_r1(inst));
+-	  break;
+-	case INST_TYPE_R1_R2:
+-	  fprintf_func(stream, "\t%s, %s", get_field_r1(inst), get_field_r2(inst));
+-	  break;
+-	case INST_TYPE_R1_IMM:
+-	  fprintf_func(stream, "\t%s, %s", get_field_r1(inst), get_field_imm(inst));
+-	  /* The non-pc relative instructions are returns, which shouldn't 
+-	     have a label printed */
+-	  if (op->inst_offset_type == INST_PC_OFFSET) {
+-              print_immval_addr(info, immfound, immval, inst, memaddr);
+-	  }
+-	  break;
+-        case INST_TYPE_RD_IMM:
+-	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_imm(inst));
+-          print_immval_addr(info, immfound, immval, inst,
+-                            op->inst_offset_type == INST_PC_OFFSET
+-                            ? memaddr : 0);
+-	  break;
+-        case INST_TYPE_IMM:
+-	  fprintf_func(stream, "\t%s", get_field_imm(inst));
+-	  if (op->instr != imm) {
+-              print_immval_addr(info, immfound, immval, inst,
+-                                op->inst_offset_type == INST_PC_OFFSET
+-                                ? memaddr : 0);
+-	  }
+-	  break;
+-        case INST_TYPE_RD_R2:
+-	  fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_r2(inst));
+-	  break;
+-  case INST_TYPE_R2:
+-     fprintf_func(stream, "\t%s", get_field_r2(inst));
+-     break;
+-  case INST_TYPE_R1:
+-     fprintf_func(stream, "\t%s", get_field_r1(inst));
+-     break;
+-  case INST_TYPE_RD_R1_SPECIAL:
+-     fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_r2(inst));
+-     break;
+-  case INST_TYPE_RD_IMM15:
+-     fprintf_func(stream, "\t%s, %s", get_field_rd(inst), get_field_imm15(inst));
+-     break;
+-     /* For tuqula instruction */
+-  case INST_TYPE_RD:
+-     fprintf_func(stream, "\t%s", get_field_rd(inst));
+-     break;
+-  case INST_TYPE_RFSL:
+-     fprintf_func(stream, "\t%s", get_field_rfsl(inst));
+-     break;
+-  default:
+-	  /* if the disassembler lags the instruction set */
+-	  fprintf_func (stream, "\tundecoded operands, inst is 0x%04lx", inst);
+-	  break;
+-	}
++    switch (op->inst_type) {
++    case INST_TYPE_RD_R1_R2:
++        fprintf_func(stream, "\t%s, %s, %s",
++                     get_field_rd(inst), get_field_r1(inst),
++                     get_field_r2(inst));
++        break;
++    case INST_TYPE_RD_R1_IMM:
++        fprintf_func(stream, "\t%s, %s, %s",
++                     get_field_rd(inst), get_field_r1(inst),
++                     get_field_imm(inst));
++        if (get_int_field_r1(inst) == 0) {
++            print_immval_addr(info, immfound, immval, inst, 0);
++        }
++        break;
++    case INST_TYPE_RD_R1_IMM5:
++        fprintf_func(stream, "\t%s, %s, %s",
++                     get_field_rd(inst), get_field_r1(inst),
++                     get_field_imm5(inst));
++        break;
++    case INST_TYPE_RD_RFSL:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_rfsl(inst));
++        break;
++    case INST_TYPE_R1_RFSL:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_r1(inst), get_field_rfsl(inst));
++        break;
++    case INST_TYPE_RD_SPECIAL:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_special(inst, op));
++        break;
++    case INST_TYPE_SPECIAL_R1:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_special(inst, op), get_field_r1(inst));
++        break;
++    case INST_TYPE_RD_R1:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_r1(inst));
++        break;
++    case INST_TYPE_R1_R2:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_r1(inst), get_field_r2(inst));
++        break;
++    case INST_TYPE_R1_IMM:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_r1(inst), get_field_imm(inst));
++        /*
++         * The non-pc relative instructions are returns,
++         * which shouldn't have a label printed.
++         */
++        if (op->inst_offset_type == INST_PC_OFFSET) {
++            print_immval_addr(info, immfound, immval, inst, memaddr);
++        }
++        break;
++    case INST_TYPE_RD_IMM:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_imm(inst));
++        print_immval_addr(info, immfound, immval, inst,
++                          op->inst_offset_type == INST_PC_OFFSET
++                          ? memaddr : 0);
++        break;
++    case INST_TYPE_IMM:
++        fprintf_func(stream, "\t%s", get_field_imm(inst));
++        if (op->instr != imm) {
++            print_immval_addr(info, immfound, immval, inst,
++                              op->inst_offset_type == INST_PC_OFFSET
++                              ? memaddr : 0);
++        }
++        break;
++    case INST_TYPE_RD_R2:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_r2(inst));
++        break;
++    case INST_TYPE_R2:
++        fprintf_func(stream, "\t%s",
++                     get_field_r2(inst));
++        break;
++    case INST_TYPE_R1:
++        fprintf_func(stream, "\t%s",
++                     get_field_r1(inst));
++        break;
++    case INST_TYPE_RD_R1_SPECIAL:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_r2(inst));
++        break;
++    case INST_TYPE_RD_IMM15:
++        fprintf_func(stream, "\t%s, %s",
++                     get_field_rd(inst), get_field_imm15(inst));
++        break;
++        /* For tuqula instruction */
++    case INST_TYPE_RD:
++        fprintf_func(stream, "\t%s",
++                     get_field_rd(inst));
++        break;
++    case INST_TYPE_RFSL:
++        fprintf_func(stream, "\t%s",
++                     get_field_rfsl(inst));
++        break;
++    default:
++        /* if the disassembler lags the instruction set */
++        fprintf_func(stream, "\tundecoded operands, inst is 0x%04lx", inst);
++        break;
+     }
+-  
+-  /* Say how many bytes we consumed? */
+-  return 4;
++    return 4;
+ }
 -- 
 2.34.1
 
