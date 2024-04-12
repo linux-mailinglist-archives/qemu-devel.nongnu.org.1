@@ -2,140 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE6E8A2AC0
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 11:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5A48A2B88
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 11:49:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvD1L-0002eF-El; Fri, 12 Apr 2024 05:16:31 -0400
+	id 1rvDWH-0002f9-Um; Fri, 12 Apr 2024 05:48:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvD0s-0002dE-Ng
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:16:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvD0p-0001TS-GS
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:16:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712913354;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
- bh=STt9A/a+9/d2iC/Ukekn+zLalCOcNBmhcUjt+fpbm4s=;
- b=cq9eKgheksFulA57hS2jsldjw19Yt9gMD1W9JQ3cWqcIA7P0hgMoDiiqnrjxPv1RZLgbWO
- a4Bahr2oBPdOy24MmSuqKpDJmLR1w4ak/Q0KyUEUg9U/b/sw5xmru8qS7J7cWws3nyrknZ
- pPyREo6237VfvmR9ET7DQVldl1rGMGk=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-35-v-trwtIhN5-ae-Az0mqnNg-1; Fri, 12 Apr 2024 05:15:50 -0400
-X-MC-Unique: v-trwtIhN5-ae-Az0mqnNg-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-78ed20d9423so6656385a.3
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 02:15:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvDWC-0002dp-IJ
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:48:24 -0400
+Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvDW8-0006kM-Gg
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:48:24 -0400
+Received: by mail-ed1-x52c.google.com with SMTP id
+ 4fb4d7f45d1cf-5700106506fso335406a12.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 02:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712915298; x=1713520098; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zZB8y0xNEwspYUuJxh7QF5y7cPX4V9BxIXwM0skdv1E=;
+ b=Osg2HxdyAxqTkfUeH+GhjY3mfDEoF5T05WTQ6IP+t9g9o4mrm7wV7DJs+pqtlym1BI
+ 1GFc3b1EfupoNHC7GrCeZUa5LEy9iF45QMXHzdsvWmybynpf+ZfpmksVS6L/CeV+uMqn
+ 04dFDFMPx2G3neZ+vgiZUhWydF4ei9IpWExY8IaJOC3qy2fpPNlpqiujT7vXwNNpeWrp
+ VFkF3XJDdD53NwN5RLQqeyFlZy0Lbph4bnaVxucGaruWD3aKyHunAR3iTnxuPah+Ki/e
+ h9V2i1k15bmPyquM83CrMvHlZOU+JYwCD/nO+W2xefkYNfvi7y70ZkAl4gw8eFXTZN/M
+ EZBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712913349; x=1713518149;
- h=content-transfer-encoding:in-reply-to:autocrypt:content-language
- :references:cc:to:from:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=STt9A/a+9/d2iC/Ukekn+zLalCOcNBmhcUjt+fpbm4s=;
- b=GxtEXF2fWy0exLgIoj+YMmqzf/zP5jaXanCuzWhlLCeQGQK5KJH1LZDligtvvlIySG
- EFTVVnxxlBq+owW7ikKJqKSrUs+2lFQx0qS7h7YHfNgh8aaBo1EjmSPATsRJCkzEefHw
- zAa1HMkYkKk/Sl5zxZoRDogfctqvSssH3bKwJQpGBLaIuEQUvjaLgKltkQcD1lACtUCN
- J0Xh5KMSLTiT1pgCi/gd+OKxD+n63khtJVLU0lhRyHI0QbYE8j20+6WG1ppoulUCwVU5
- V2JIHVVZd84dWo5b9JqAme3joKfQ2ERzVymIjSsZQl5GFCxEglzZo9hBnBW+ryDOokWw
- bTKg==
-X-Gm-Message-State: AOJu0YywQu0PgZ/zysMxiNxF5i87peMQVIfeRk8jmjO6yUqItfEMo6NO
- qPwr8dt+ixvKhotZKEQ/dKoIAnYbaHTurA0ly5vWzUY69esdYhfWGt5zGE1jTSe9ZEmAGVacPnQ
- e2ObEos9SWrP3NGsVQI2ODwK/tN4MxuOaMkZ+mZ0dGx7FVvA0dnMl2yOVkvaObpXTAnpw5Zk+gQ
- BLVV+yi58XBOznVPLknkWNCZdJV83m1Ttt
-X-Received: by 2002:a05:620a:b84:b0:78d:5afc:eeec with SMTP id
- k4-20020a05620a0b8400b0078d5afceeecmr1822485qkh.20.1712913349598; 
- Fri, 12 Apr 2024 02:15:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6L8Qo456VhwNR5y9Xd9Qtq3e8DHYpzf55Ip0I0lUeVwAAy90WOfT3zcCjwo7uLbXQgg7dUg==
-X-Received: by 2002:a05:620a:b84:b0:78d:5afc:eeec with SMTP id
- k4-20020a05620a0b8400b0078d5afceeecmr1822466qkh.20.1712913349280; 
- Fri, 12 Apr 2024 02:15:49 -0700 (PDT)
-Received: from [192.168.0.9] (ip-109-43-179-142.web.vodafone.de.
- [109.43.179.142]) by smtp.gmail.com with ESMTPSA id
- qp13-20020a05620a388d00b0078ec3c4452dsm1788403qkn.9.2024.04.12.02.15.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Apr 2024 02:15:48 -0700 (PDT)
-Message-ID: <12d6a650-a0a9-4e25-9ad1-68aa03064794@redhat.com>
-Date: Fri, 12 Apr 2024 11:15:45 +0200
+ d=1e100.net; s=20230601; t=1712915298; x=1713520098;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zZB8y0xNEwspYUuJxh7QF5y7cPX4V9BxIXwM0skdv1E=;
+ b=qOe4nLcSdb3gQQTKSN2U5nUFsdijC7lROIthsD5h40hhxjUflWH1hBLcxJD36WG7EP
+ wrmfCcdR8dPVLynYURrbuNX5jZ+QhpjMnjSYGwJ8aFikaSuDHdzGKTe/rpHwASDohcon
+ zvUGXJ39WBT6TTs0i0Bcnl1afpJMBiRHA2ihr077vW9Ca+HM1mIqWRMnLBY+fDliEsbi
+ 2fOSX/VfADexk0fZBHzBe3VUm9gToEIkI5n1PV2HjWCqiKtwkwnsNM7SxGViY9Tdw5Zc
+ gMBhZyH5HXhDv7hNJRc3O66LNupj4gj/Q/3U5umwfJAzfaJXh1JTRbbC5SUslABy9DRe
+ C0aQ==
+X-Gm-Message-State: AOJu0Ywx8Vc/3eHPJuCaEzJHRl3W3cUGaHO/OYIXywuzB2i/d0Q7yEsH
+ ks98zdKUkJOBW1T8ujRjwTak8Iv/IBS49oTlAj2LXhZDH0NXRbntUeWcLLp481OGLG1Dg9ia9ah
+ O8WfzYzABfyQ95QlrROv47N4jayamfVInEAVfyg==
+X-Google-Smtp-Source: AGHT+IF3TI86TAXH/Vff4KI7pLvNcQ9azZKz4+CCPp6R6F3ywlHopf2Eg1dI8da18/R4K1cJJHd3PcZ1XaQHCLjOfVU=
+X-Received: by 2002:a50:8a91:0:b0:56d:f246:bfa4 with SMTP id
+ j17-20020a508a91000000b0056df246bfa4mr1938855edj.23.1712915297839; Fri, 12
+ Apr 2024 02:48:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] hw: Add a Kconfig switch for the TYPE_CPU_CLUSTER
- device
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-riscv@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>
-References: <20240412062042.105174-1-thuth@redhat.com>
- <20240412062042.105174-3-thuth@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20240412062042.105174-3-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.49,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20240412073346.458116-1-richard.henderson@linaro.org>
+ <20240412073346.458116-23-richard.henderson@linaro.org>
+In-Reply-To: <20240412073346.458116-23-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Apr 2024 10:48:06 +0100
+Message-ID: <CAFEAcA9cY_DOpg7+5pVtH3biLMOUburV89=EE101fyDvdsV33Q@mail.gmail.com>
+Subject: Re: [PATCH v3 22/27] linux-user/flatload: Replace sprintf() by
+ snprintf()
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -151,69 +90,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 12/04/2024 08.20, Thomas Huth wrote:
-> The cpu-cluster device is only needed for some few arm and riscv
-> machines. Let's avoid compiling and linking it if it is not really
-> necessary.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   hw/arm/Kconfig     | 3 +++
->   hw/cpu/Kconfig     | 3 +++
->   hw/cpu/meson.build | 2 +-
->   hw/riscv/Kconfig   | 2 ++
->   4 files changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index d97015c45c..5d4015b75a 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -485,6 +485,7 @@ config XLNX_ZYNQMP_ARM
->       select AHCI
->       select ARM_GIC
->       select CADENCE
-> +    select CPU_CLUSTER
->       select DDC
->       select DPCD
->       select SDHCI
-> @@ -503,6 +504,7 @@ config XLNX_VERSAL
->       default y
->       depends on TCG && AARCH64
->       select ARM_GIC
-> +    select CPU_CLUSTER
->       select PL011
->       select CADENCE
->       select VIRTIO_MMIO
-> @@ -688,6 +690,7 @@ config ARMSSE
->       select CMSDK_APB_DUALTIMER
->       select CMSDK_APB_UART
->       select CMSDK_APB_WATCHDOG
-> +    select CPU_CLUSTER
->       select IOTKIT_SECCTL
->       select IOTKIT_SYSCTL
->       select IOTKIT_SYSINFO
-> diff --git a/hw/cpu/Kconfig b/hw/cpu/Kconfig
-> index f776e884cd..baff478e1b 100644
-> --- a/hw/cpu/Kconfig
-> +++ b/hw/cpu/Kconfig
-> @@ -12,3 +12,6 @@ config A15MPCORE
->   config ARM11MPCORE
->       bool
->       select ARM11SCU
-> +
-> +config CPU_CLUSTER
-> +    bool
-> diff --git a/hw/cpu/meson.build b/hw/cpu/meson.build
-> index 38cdcfbe57..43a34c4c6e 100644
-> --- a/hw/cpu/meson.build
-> +++ b/hw/cpu/meson.build
-> @@ -1,4 +1,4 @@
-> -system_ss.add(files('core.c', 'cluster.c'))
-> +system_ss.add(when: 'CONFIG_CPU_CLUSTER', if_true: files('core.c', 'cluster.c'))
+On Fri, 12 Apr 2024 at 08:36, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> From: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+> sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1,
+> resulting in painful developper experience. Use snprintf() instead.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> Message-Id: <20240411104340.6617-5-philmd@linaro.org>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 
-Oops, sorry, the switch should only be used for cluster.c, not for core.c. 
-I'll change it in v2 ...
+Rather than this, I think we should use my patch which
+drops this dead code entirely:
 
-  Thomas
+https://patchew.org/QEMU/20240411115313.680433-1-peter.maydell@linaro.org/
 
+-- PMM
 
