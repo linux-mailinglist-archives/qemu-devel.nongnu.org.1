@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5D58A2BA8
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 11:58:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B16C8A2BB5
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 12:01:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvDfD-0000AW-RE; Fri, 12 Apr 2024 05:57:43 -0400
+	id 1rvDiK-0001mp-Em; Fri, 12 Apr 2024 06:00:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rvDfA-0000A5-TM
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:57:41 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rvDho-0001mD-Ro
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:00:26 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rvDf9-0000Th-57
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 05:57:40 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-34641b7c49aso499234f8f.2
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 02:57:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rvDhi-00012x-2Q
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:00:22 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-346b96f1483so371628f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 03:00:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712915857; x=1713520657; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712916015; x=1713520815; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=C1Tz1ZS73XEON099vogrXxYrWoknfUamFqo+pBOVEb0=;
- b=vmfoZmu9MqkiU1KU3DG4OkmEe3h/70jhbqr2aTgOpskcRxI6qBiq8HedyKbM724WOf
- ucMHu09sCipqs8jfhNoPl0tslHWyPKAbwQHfA42ClbRYV9ML4tJ6Jw4R4QV10gLSeRxn
- aaDxOy+inxgWrnhlU+NiimLAeXQDU6RD0WiwHoSQoii/GeU7HscbMNkBBNGOlHNyB0Zz
- lLuw8TxSHrrtlRc1iZR93IVAQSlGkffgCM89MX3Im++TATxR4yEhZ38uzYGOU0wnCy+E
- 2y9GDcFKZkpl6MYFsa1aghJJDYuHj6112ywOEDB44dEIPAtm/opA6uaFTqE9dfiz3GXx
- /pyg==
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=lrhE71LSgkGFtR5fBLCZ3ZIpkZ0j4N9kUQY21X4yfug=;
+ b=oMQN+hzfxboDsPZaks8yIUi9yzvFrDsEHZ/UspPCEs5GivwzvZex0JA/IV+bSJJgJA
+ dEp5cUrxl7xfZJgiLwUTQspeM0RpZo8hLxKyIZ0nrcW0SqumY0t8DI1ZZLjYYllstjqU
+ 2Jl6eYUziv6nezoOfv1qcKSw9i9rSOcVrW3bvMbNz2UZ79NgCu4CLqMi5V1HJuPXoQ/H
+ /XSR/NhRZIanmrFnXliJTkYfRs21/EEDqfO3P3uG740BOTGUk6Jq4hINdEyCdIhj+fyD
+ yp6Lq6KLExM+rywASD2mYvLNB86g8B7JSO1tGvymgxF3AoJABRxFwtY5FUviWsM/kQUb
+ Kizw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712915857; x=1713520657;
+ d=1e100.net; s=20230601; t=1712916015; x=1713520815;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :references:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=C1Tz1ZS73XEON099vogrXxYrWoknfUamFqo+pBOVEb0=;
- b=V2QUmtAVLgND8JDdqSHTMsEne+dPMTNyoOEQ05SKLec8SE1aXjnVQ2SNaI76qtzrrF
- xL0n31I83RsfykvnmhMOnPKy7F61CxB0JVCsh6ohgH2J7L9cLWAEBEwZiYEdsvwOPI2k
- edO9WoH7PteqfyVOpPSSasfwCxm0gJcx/+T7zy2wudAPBrZhoaJQg/3L7eICIy9hK/Aq
- q95NEe43sXkjmArI/1W+JalaPcv3P8L4FzneBqaNfLXoFibXBye5By4b0gua1EooQ76l
- zR9P/Cxc2cpoJKDdrmR6YrxYeWL+WrZUMEMtIPwbb66MyI3qKM2wpVQ4qgiypRJZFPS0
- vh2Q==
-X-Gm-Message-State: AOJu0YypCbgOo2BiezG0jxtA/uFffwnm28HHOXz1buGcUk17pPXPpxk5
- 2VPTyGzjxN7mwiFpPQnGtz61skookrm88OqcbkrfTZb/W8JB2jZ37TU6DSEFGTU=
-X-Google-Smtp-Source: AGHT+IEbXOPLWdyFxgYiDGL/tTOKih7fkvdkdlpxnHEG4dFEyjReADG0GFQtsIETU6NS3NtcHBT6qw==
-X-Received: by 2002:adf:a150:0:b0:343:d35d:71d with SMTP id
- r16-20020adfa150000000b00343d35d071dmr1273942wrr.8.1712915856787; 
- Fri, 12 Apr 2024 02:57:36 -0700 (PDT)
+ bh=lrhE71LSgkGFtR5fBLCZ3ZIpkZ0j4N9kUQY21X4yfug=;
+ b=GqC78GuihRwgOquXrkO5CC3io/bLIZQf4shB9fSCEh+TtfyUsD1JMsr2Bu7S5Ub0OT
+ djPP2w+Lvtt4qnDfm7lMeziu+kEYeMzeol6xmE9y5g1UFidRBn3LLWw8lZ9OKEFUQBgX
+ NKfETM3M8cFT1XCvf9nTaNJ5PSA5zgMo0bhiXr9m26nq2P6diff+neOyNeM1I4q2nq9r
+ 7IyffMagjd9oP6j/RYuosuKSm+MQgV6KLfUZHH0h1dqStlCZi5DJ85pRuARbg667ay49
+ H1cMqwEvghSoNkAZxBH/4yDfhv6kE074QOTZNndDBdOuqqe5UUvzSInvxT1GV6Zdtxax
+ WrMg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVK0O06M4yWeddoDy6H0Y0nCw6UHSrQnQQHFtzlY4NBhuibGCRPeOMCl0l6WG7QW46QzyLGZZBswlbQF2EEYNVSMJFSMvw=
+X-Gm-Message-State: AOJu0Yxus10EbeDNUOe/U0MQCJiH8hXm8hjsvRqwPfx9J4RSago8mwj5
+ LBsk4ar0YS1iS02Uyw0EKlwysQaEIK+S+taVRRW8yU4Lw987hJNd7Q+h5pyLy/gQgnPWA2uRU2X
+ MXYs=
+X-Google-Smtp-Source: AGHT+IGfTiLsv64s3BiDYn102wSMBKrhLlaBzcLcZZTtTE/8G+1RbKKwAMznFi+H0xzurSgbL9sqPg==
+X-Received: by 2002:adf:cd8f:0:b0:346:a9b3:f0f6 with SMTP id
+ q15-20020adfcd8f000000b00346a9b3f0f6mr1701127wrj.18.1712916015282; 
+ Fri, 12 Apr 2024 03:00:15 -0700 (PDT)
 Received: from [192.168.1.28] (lfbn-bay-1-170-196.w83-193.abo.wanadoo.fr.
  [83.193.250.196]) by smtp.gmail.com with ESMTPSA id
- dd14-20020a0560001e8e00b00343e9f52903sm3859601wrb.57.2024.04.12.02.57.35
+ g12-20020a5d488c000000b003472489d26fsm348461wrq.19.2024.04.12.03.00.14
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Apr 2024 02:57:36 -0700 (PDT)
-Message-ID: <305d659b-d4d6-4681-bdad-cd869e552333@linaro.org>
-Date: Fri, 12 Apr 2024 11:57:35 +0200
+ Fri, 12 Apr 2024 03:00:14 -0700 (PDT)
+Message-ID: <8f9dad3b-7105-4820-9c29-170aadd51e1a@linaro.org>
+Date: Fri, 12 Apr 2024 12:00:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers for
- PC Q35
-To: Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini
- <pbonzini@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
- Ani Sinha <anisinha@redhat.com>, Igor Mammedov <imammedo@redhat.com>
-References: <20240412085358.731560-1-zhao1.liu@linux.intel.com>
+Subject: Re: [PATCH v3 01/27] util/hexdump: Remove b parameter from
+ qemu_hexdump_line
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240412073346.458116-1-richard.henderson@linaro.org>
+ <20240412073346.458116-2-richard.henderson@linaro.org>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <20240412085358.731560-1-zhao1.liu@linux.intel.com>
+In-Reply-To: <20240412073346.458116-2-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42e.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,40 +95,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Zhao,
-
-On 12/4/24 10:53, Zhao Liu wrote:
-> From: Zhao Liu <zhao1.liu@intel.com>
+On 12/4/24 09:33, Richard Henderson wrote:
+> Require that the caller output the offset and increment bufptr.
+> Use QEMU_HEXDUMP_LINE_BYTES in vhost_vdpa_dump_config instead
+> of raw integer.
 > 
-> Commit e4e98c7eebfa ("pc: q35: Bump max_cpus to 4096 vcpus") increases
-> the supported CPUs for PC Q35 machine.
-> 
-> Update maximum CPU numbers for PC Q35 in the document.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   docs/system/target-i386-desc.rst.inc | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/docs/system/target-i386-desc.rst.inc b/docs/system/target-i386-desc.rst.inc
-> index 5ebbcda9db4c..319e540573d3 100644
-> --- a/docs/system/target-i386-desc.rst.inc
-> +++ b/docs/system/target-i386-desc.rst.inc
-> @@ -36,7 +36,7 @@ The QEMU PC System emulator simulates the following peripherals:
->   -  PCI UHCI, OHCI, EHCI or XHCI USB controller and a virtual USB-1.1
->      hub.
+>   include/qemu/cutils.h  |  2 +-
+>   hw/virtio/vhost-vdpa.c |  4 ++--
+>   util/hexdump.c         | 13 ++++++-------
+>   hw/virtio/trace-events |  2 +-
+>   4 files changed, 10 insertions(+), 11 deletions(-)
+
+
+> @@ -58,8 +57,8 @@ void qemu_hexdump(FILE *fp, const char *prefix,
 >   
-> -SMP is supported with up to 255 CPUs.
-> +SMP is supported with up to 255 CPUs (and 4096 CPUs for PC Q35 machine).
+>       for (b = 0; b < size; b += QEMU_HEXDUMP_LINE_BYTES) {
+>           len = size - b;
+> -        qemu_hexdump_line(line, b, bufptr, len, true);
+> -        fprintf(fp, "%s: %s\n", prefix, line);
+> +        qemu_hexdump_line(line, bufptr + b, len, true);
+> +        fprintf(fp, "%s: %04x: %s\n", prefix, b, line);
 
-This comment is not accurate since a while, IIUC:
+Clever :)
 
-Up to q35-2.7: 255
-q35-2.8: 288
-q35-8.0+: 1024
-q35-9.0: 4096
-
->   QEMU uses the PC BIOS from the Seabios project and the Plex86/Bochs LGPL
->   VGA BIOS.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
