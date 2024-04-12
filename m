@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA64A8A289A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:57:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F098A28AD
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 10:03:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBmU-0000Am-8D; Fri, 12 Apr 2024 03:57:06 -0400
+	id 1rvBs7-0003L5-1r; Fri, 12 Apr 2024 04:02:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rvBmK-0000AG-0u
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:56:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rvBs4-0003Ks-KQ
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:02:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rvBmH-0003IN-8e
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:56:54 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rvBrz-0004K1-VT
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:02:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712908611;
+ s=mimecast20190719; t=1712908966;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/4paDVo5jdXquRvqeO2PrDh5bh917/gaAvlXp96AlTg=;
- b=Y22Fjj7QEUHRrxxWjv4enSHEaWSGBPU42jiILS8VkHedhttlLV7nf/nwmWeyN8TImic9in
- qiW3vnLx5joUNvsnPVw7jJy6TjKW88YHzGkg9v8JtFTlDfZSo5C5QUyA59CIxq2vxIq7kB
- cTEOpFa+t7kIrmygtDc23U2/mtsR3aM=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=A5Llucl1jLUHeO2gAswtv29kQ2WFQbLL8CXHS8kKVi4=;
+ b=SjAgnY8GRyKGp7YSVmhnqrV8l4HGqzTzezOAnF/6hbu9q+CNCDVv8JWBX54VOMh3ueP4ro
+ 5lSPva4d5LEhr0FmJB5rrBn4WOODICOcHTLUQ+BKiEvpYfD1NBJkdy9AElmXHePDqrRVdd
+ ig0xfaMdQJae7fPwIs7DcEN6bsbPbBk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-JXYrpGkpMHa_CgMtT1eIyw-1; Fri, 12 Apr 2024 03:56:48 -0400
-X-MC-Unique: JXYrpGkpMHa_CgMtT1eIyw-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-dcbee93a3e1so1203861276.3
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:56:48 -0700 (PDT)
+ us-mta-98-JP5lpbHiN1GS-J5tbQCdjA-1; Fri, 12 Apr 2024 04:02:40 -0400
+X-MC-Unique: JP5lpbHiN1GS-J5tbQCdjA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a523c6b9639so11540266b.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 01:02:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712908608; x=1713513408;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/4paDVo5jdXquRvqeO2PrDh5bh917/gaAvlXp96AlTg=;
- b=ricv28Yip71/jeL83u/SOUT5vkiBhCQN4djQis2LL9zMYMmkdKvS029GCqDpzm12sH
- kxtYVhVLqWZAOUPqXI2XdvRqEF/5zVL27JvlzqDDGJgwI4sIRE6YwacQ8zicgj1jSC2v
- rw+Jpb1JLTPijE0QEbcJTY8Hz53PcIiZaTylYvdkVNVdV63ESp4N1P1BtdTQVTEB7528
- axbxA4r41wt32BcOKROQ2P2Lb9wSLGS2N5+wlD5rvQ16UmX4RCvI4wM0RsM/8lujKLTn
- 6MZfZrx+aAJTCrmFgaPQSBTeZW3hreqtX06JNY3XuUJZY5k70fLD3JMG8tsm7kY6qZly
- aKzw==
-X-Gm-Message-State: AOJu0YytvD8kub02c8XXtgexjn6lxxPS3XeP01r6xf0ZZXxD2LEf9S4W
- 3nUeqUV1EGOyNOXAVrghkb1aoZp7zPWPkUy2MzDCk1SbtP4+MJb0nl6t/yyp9y7X934530PJyGv
- VPO5O2VbYCehMD1pfyK11br7nV0kscn/rAWtfeW7BR1s3MgD4iRjyzZ+qcuNfWsjYErrVGWtqAP
- S56AvWondDsUq5ly4RPaaBn1uuT84=
-X-Received: by 2002:a25:860e:0:b0:dc6:d457:ac92 with SMTP id
- y14-20020a25860e000000b00dc6d457ac92mr1512087ybk.31.1712908608057; 
- Fri, 12 Apr 2024 00:56:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFsATN990TsziU0rDn00OVHeBAtGb7AzZ/lV658xNRCkJvH8EmMnmNXd8ibUb4z0Nz8huqF2oLBnWOoiRpR5KM=
-X-Received: by 2002:a25:860e:0:b0:dc6:d457:ac92 with SMTP id
- y14-20020a25860e000000b00dc6d457ac92mr1512073ybk.31.1712908607743; Fri, 12
- Apr 2024 00:56:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712908957; x=1713513757;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=A5Llucl1jLUHeO2gAswtv29kQ2WFQbLL8CXHS8kKVi4=;
+ b=df7gQjUdsTxTti38j1sr3gXg2htjiBpxx0S26/t4kbeuty1HMFMwmiBCkRYrnQU4gM
+ UC2An6EkCtvtzj2G/WuuAHNZa83zxLWU3poNRLmYl7Kzun41DpCrkvFPqjS6ZWVsRrL5
+ 2ILboixskUvCX6bmoR/g14Flfbh2JPj5fARRNVCqXWOnGgK/ZqhhbtDWz1WGLLEYzJeB
+ U6G0lZPPMJnivOq149oKA+jFLWYMGFX9nCoUYtgwHG5qmO7ursBGYVWDpG0X1NXOKhPV
+ yymziSqe60x/f+08fc48jo/6MiwFKFMzI+nb1qVACy24REX0kObRGCNnXoClxY7VXrxA
+ xBuw==
+X-Gm-Message-State: AOJu0YzFXirfDbz9CNGkLi+cVXeShic484MsWwK5Jm2wNSm5+yJkNX2N
+ qfAWESt213Di34f9yxl5LfvWHGu/yovr8V3fsbC9yGZ8ofLWlIEOw6VVNV0MxKDf53w3lXOnpmu
+ IsxZOMMUuTnHFgjC4gjyexHhfuJUgvWQaKww22q1zlBV9cYtyOANti6dEbT9FUlExAk2FARPVUE
+ fPYeVEyeB2D6NSMvYI+8lz6LoNwSHFOWiMkOXF
+X-Received: by 2002:a17:906:5fc2:b0:a51:ae51:5206 with SMTP id
+ k2-20020a1709065fc200b00a51ae515206mr1062252ejv.42.1712908957514; 
+ Fri, 12 Apr 2024 01:02:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IErYet4bg0RW0ZUFW5vbK0hieqtx589Pl3BQxJEIVNRcGIFWcxktt9Y+3yogZ4bLyEvdBLGIQ==
+X-Received: by 2002:a17:906:5fc2:b0:a51:ae51:5206 with SMTP id
+ k2-20020a1709065fc200b00a51ae515206mr1062236ejv.42.1712908957125; 
+ Fri, 12 Apr 2024 01:02:37 -0700 (PDT)
+Received: from [192.168.10.117] ([176.206.87.39])
+ by smtp.gmail.com with ESMTPSA id
+ wp20-20020a170907061400b00a5226f9542dsm1178675ejb.27.2024.04.12.01.02.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Apr 2024 01:02:36 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Subject: [PATCH v2] Makefile: fix use of -j without an argument
+Date: Fri, 12 Apr 2024 10:02:35 +0200
+Message-ID: <20240412080235.11478-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-References: <20240410100345.389462-1-eperezma@redhat.com>
- <CACGkMEuJc1ba67Hge+MfpV6npy9KJf84q=uMSP3VYDEA4FiZ=A@mail.gmail.com>
-In-Reply-To: <CACGkMEuJc1ba67Hge+MfpV6npy9KJf84q=uMSP3VYDEA4FiZ=A@mail.gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Fri, 12 Apr 2024 09:56:11 +0200
-Message-ID: <CAJaqyWemfoCTLr21ukNszqnqaaEbuB_h+s3R4j-eC_YvHJpEGg@mail.gmail.com>
-Subject: Re: [RFC 0/2] Identify aliased maps in vdpa SVQ iova_tree
-To: Jason Wang <jasowang@redhat.com>
-Cc: qemu-devel@nongnu.org, Si-Wei Liu <si-wei.liu@oracle.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Lei Yang <leiyang@redhat.com>,
- Peter Xu <peterx@redhat.com>, 
- Jonah Palmer <jonah.palmer@oracle.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
@@ -98,85 +97,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 12, 2024 at 8:47=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> On Wed, Apr 10, 2024 at 6:03=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redh=
-at.com> wrote:
-> >
-> > The guest may have overlapped memory regions, where different GPA leads
-> > to the same HVA.  This causes a problem when overlapped regions
-> > (different GPA but same translated HVA) exists in the tree, as looking
-> > them by HVA will return them twice.
->
-> I think I don't understand if there's any side effect for shadow virtqueu=
-e?
->
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 
-My bad, I totally forgot to put a reference to where this comes from.
+Our Makefile massages the given make arguments to invoke ninja
+accordingly. One key difference is that ninja will parallelize by
+default, whereas make only does so with -j<n> or -j. The make man page
+says that "if the -j option is given without an argument, make will not
+limit the number of jobs that can run simultaneously". We use to support
+that by replacing -j with "" (empty string) when calling ninja, so that
+it would do its auto-parallelization based on the number of CPU cores.
 
-Si-Wei found that during initialization this sequences of maps /
-unmaps happens [1]:
+This was accidentally broken at d1ce2cc95b (Makefile: preserve
+--jobserver-auth argument when calling ninja, 2024-04-02),
+causing `make -j` to fail:
 
-HVA                    GPA                IOVA
----------------------------------------------------------------------------=
-----------------------------------------------
-Map
-[0x7f7903e00000, 0x7f7983e00000)    [0x0, 0x80000000) [0x1000, 0x80000000)
-[0x7f7983e00000, 0x7f9903e00000)    [0x100000000, 0x2080000000)
-[0x80001000, 0x2000001000)
-[0x7f7903ea0000, 0x7f7903ec0000)    [0xfeda0000, 0xfedc0000)
-[0x2000001000, 0x2000021000)
+$ make -j V=1
+  /usr/bin/ninja -v   -j -d keepdepfile all | cat
+  make  -C contrib/plugins/ V="1" TARGET_DIR="contrib/plugins/" all
+  ninja: fatal: invalid -j parameter
+  make: *** [Makefile:161: run-ninja] Error
 
-Unmap
-[0x7f7903ea0000, 0x7f7903ec0000)    [0xfeda0000, 0xfedc0000) [0x1000,
-0x20000) ???
+Let's fix that and indent the touched code for better readability.
 
-The third HVA range is contained in the first one, but exposed under a
-different GVA (aliased). This is not "flattened" by QEMU, as GPA does
-not overlap, only HVA.
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Fixes: d1ce2cc95b ("Makefile: preserve --jobserver-auth argument when calling ninja", 2024-04-02)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ Makefile | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-At the third chunk unmap, the current algorithm finds the first chunk,
-not the second one. This series is the way to tell the difference at
-unmap time.
-
-[1] https://lists.nongnu.org/archive/html/qemu-devel/2024-04/msg00079.html
-
-Thanks!
-
-> Thanks
->
-> >
-> > To solve this, track GPA in the DMA entry that acs as unique identifier=
-s
-> > to the maps.  When the map needs to be removed, iova tree is able to
-> > find the right one.
-> >
-> > Users that does not go to this extra layer of indirection can use the
-> > iova tree as usual, with id =3D 0.
-> >
-> > This was found by Si-Wei Liu <si-wei.liu@oracle.com>, but I'm having a =
-hard
-> > time to reproduce the issue.  This has been tested only without overlap=
-ping
-> > maps.  If it works with overlapping maps, it will be intergrated in the=
- main
-> > series.
-> >
-> > Comments are welcome.  Thanks!
-> >
-> > Eugenio P=C3=A9rez (2):
-> >   iova_tree: add an id member to DMAMap
-> >   vdpa: identify aliased maps in iova_tree
-> >
-> >  hw/virtio/vhost-vdpa.c   | 2 ++
-> >  include/qemu/iova-tree.h | 5 +++--
-> >  util/iova-tree.c         | 3 ++-
-> >  3 files changed, 7 insertions(+), 3 deletions(-)
-> >
-> > --
-> > 2.44.0
-> >
->
+diff --git a/Makefile b/Makefile
+index 183756018ff..02a257584ba 100644
+--- a/Makefile
++++ b/Makefile
+@@ -141,8 +141,13 @@ MAKE.n = $(findstring n,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.k = $(findstring k,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.q = $(findstring q,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.nq = $(if $(word 2, $(MAKE.n) $(MAKE.q)),nq)
+-NINJAFLAGS = $(if $V,-v) $(if $(MAKE.n), -n) $(if $(MAKE.k), -k0) \
+-        $(or $(filter -l% -j%, $(MAKEFLAGS)), $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1)) \
++NINJAFLAGS = \
++        $(if $V,-v) \
++        $(if $(MAKE.n), -n) \
++        $(if $(MAKE.k), -k0) \
++        $(filter-out -j, \
++          $(or $(filter -l% -j%, $(MAKEFLAGS)), \
++               $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1))) \
+         -d keepdepfile
+ ninja-cmd-goals = $(or $(MAKECMDGOALS), all)
+ ninja-cmd-goals += $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
+-- 
+2.44.0
 
 
