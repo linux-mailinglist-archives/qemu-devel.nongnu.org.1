@@ -2,73 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46E6D8A333A
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E9328A3361
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:13:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvJRu-0001uu-IU; Fri, 12 Apr 2024 12:08:22 -0400
+	id 1rvJWO-0006mm-JC; Fri, 12 Apr 2024 12:13:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvJRr-0001tW-Hm
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:19 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1rvJWK-0006mM-UX
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:12:57 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvJRo-0004a8-5O
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:19 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-343d7ff2350so723600f8f.0
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:08:15 -0700 (PDT)
+ id 1rvJWJ-0005tD-3M
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:12:56 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-516d1c8dc79so1420671e87.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712938094; x=1713542894; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=e/uP53aB4q+23J2glSZ0OAwIIKnVVLxT2g0uleIPttY=;
- b=XWG1zu8ljbyJMYJ9W9FpUwi411DDItepa15utZcBeuA81L8m/aLqgTqjqV5LCZ7SWP
- l5a8OOJgThYPpzhgUs19zsK206/BFkGnzOLo2xcjRfzauCWOy1WgCc2cRHb/RH5Lhb09
- HoZQSSU+CXX9uPaapwOKw9MLz9jhY7qc5OS9X5G8pnEjHkvUj/dB3cLMDb6JlHSU0cqi
- v6Nn54M5prnxx+re2YE4bkox2Fs/cIllqqLGEiAQ8Rq39ncNQSf95yoeXv0i8GLHCVun
- RKpU1wlOi/oRzGEIxX+HvNdlGJv1rN5VCIBzalKw6Ry2v7waBr+QhxfM1LtbZflQc0J2
- bo8A==
+ d=linaro.org; s=google; t=1712938373; x=1713543173; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=V3852QV6s65GqgCR2vPGXyOMOsR4FSOJ5DvcnjCol3c=;
+ b=HT6bXfzXWau8AUam0Vv4frATlHjqDbkQ9iB1Pxxax+fOPc9cocPRRSN313XCI7HDJI
+ 0VYdWp/l+AVQ1116nOI44ey1wjnZoU/NllI/9x7zhznpQQaLv71SsMjk1b7l28OB6rWT
+ e3qGxKRuxHNzxrJWOyD0P10+h6FdQHtJKjrzgAdEWxdkRsfe25lU/P6qtDZ0hEmDXCSy
+ E0v8VUaCG+sFkK6bLwC2+wVC21AVaVmahXGfqaepouSrZZLxGTJQ5tP8EDl8qsZuMbJ9
+ 970+NNwnAfuyA+tu5WxiugXWHXqhqLDEjZeO4EYCSHg598+O5ink/WzZWUHh36rmj7kP
+ xzOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712938094; x=1713542894;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1712938373; x=1713543173;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e/uP53aB4q+23J2glSZ0OAwIIKnVVLxT2g0uleIPttY=;
- b=haXrsLTopVl3tMriLDGpRlnW6vz05+L1K5Zr1CeVvmBtDMax2qmg2HUdR4Y8mrJ6Dk
- SfWPB4aPvwlHywCkVxiTMfyspFznsbyvm5QzqYx9CCOMuwxqDCDvtTwnOD5kemM0PLtK
- 9CE3FTVBUtr/i3wH2R0q4tLRBGBK2J8J1HiRe58NNMrB6Ok3fIERG4NrgpJtvoPs/pag
- e/9xKteES2P9e1810lr1wx45/qPTC/VWQAO3rpys17DBVIp588gVMnu3B27Q/sbsRhRg
- W0qbdemBFWuCDv+g2ObBiqmHIeW5VX2Xxhfus+HRyXKEpIhZ3w+MUOhxz8u8CYNPOvIs
- PwRQ==
-X-Gm-Message-State: AOJu0Yzr3MHKxXbczAhXrgeq6TsrRpq9uMUe/HjPSRF7qNwlLbQG+bkL
- Y+fBZ0dZ/nrPUBh2wL0q/A+YPRJO1i1GDHS4PtOH4zN0oxXBrJkrWABeK+shNHd2/MCu5N7/fko
- e
-X-Google-Smtp-Source: AGHT+IH+Fgy1wR/6XkYSy17qHW2EY30ITTmhFUDjXuxz5nJ0Fz4wbYUPznW0NDgRzVKGQPCoA7goMA==
-X-Received: by 2002:adf:fe07:0:b0:346:aab2:7979 with SMTP id
- n7-20020adffe07000000b00346aab27979mr1886852wrr.25.1712938094576; 
- Fri, 12 Apr 2024 09:08:14 -0700 (PDT)
-Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
- by smtp.gmail.com with ESMTPSA id
- cr12-20020a05600004ec00b00341ce80ea66sm4582371wrb.82.2024.04.12.09.08.14
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 09:08:14 -0700 (PDT)
-From: Peter Maydell <peter.maydell@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 6/6] reset: Add RESET_TYPE_SNAPSHOT_LOAD
-Date: Fri, 12 Apr 2024 17:08:09 +0100
-Message-Id: <20240412160809.1260625-7-peter.maydell@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240412160809.1260625-1-peter.maydell@linaro.org>
-References: <20240412160809.1260625-1-peter.maydell@linaro.org>
+ bh=V3852QV6s65GqgCR2vPGXyOMOsR4FSOJ5DvcnjCol3c=;
+ b=Q/VAuh+HcLe8j4XK4c00i85vrvUhcrkBOJ4+fTHURLt+qwgZYQt76mTxQi8B7e9+ng
+ sURi+JZ5+aPBxsnazOwYFAHCv5xjUP9iEgpmfXxJjucIFa7cLW+g55hELz5Bu47SXIKu
+ KheFls8ix1nE+bJ4GJb91wacFgrXXlpq45CnsWUriVIX+zX/V5KKK2o7tP6Wpb7RqrwJ
+ e3lyhVWxOIvCr5Da9bSfkWdPwjs/Zn9Y4U7XUbYgLR/zWd65Cjvi2iZhfex1BLsOaYia
+ Wj52zmRBSmoHwdL95uVsYOlMNRgKlvh8mwYU56ErkC0D/8HiTnc5aGMuwIxCUnK1r7tP
+ xD/w==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX9ws87SQlwnwKNHAWAGddSpp3AXmF+2ERYejxQGw0e+m/j/Yf+LGEd78ylocqyB6tE72Ue4lP6O7AL1+6c3HATYU2lYF0=
+X-Gm-Message-State: AOJu0YwwtoW/xUWFkZEgRMWj+9v8DXLHt0S8HwN5HUs1ofD3B6s4D44A
+ aN4OPDmPCjZ2X0Tr9DXtVWmzUj0SMI6fn2gZMhaE+GzbtfvQb6X++yT/rZIbM7tr7/gROvW9QqQ
+ zlAjN0xTDopRmCG708msc9zhglRlcgdfRYk/a9A==
+X-Google-Smtp-Source: AGHT+IGxWoDTXj46aIEXnKXZ6rIxwCK0oKN7m+LqlpR8gA9KSiRjaw1j0PYrojUfKT5rGH2WbTMHMfyD24Y7LznQt64=
+X-Received: by 2002:ac2:555c:0:b0:513:bf92:79ad with SMTP id
+ l28-20020ac2555c000000b00513bf9279admr2108941lfk.45.1712938372957; Fri, 12
+ Apr 2024 09:12:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+References: <20190821163341.16309-1-damien.hedde@greensocs.com>
+ <20190821163341.16309-3-damien.hedde@greensocs.com>
+ <CAFEAcA8FUgmnq0-QfutpbN=xkeKxRe75b56Fu2zoXknXczwnvA@mail.gmail.com>
+ <6b384586-c7ad-4b6c-a1f1-8a8d8b0ad526@linaro.org>
+ <CAFEAcA9+LXUg_u2QFuYMbhxeqofD3iC4CGHo5WXL77QMCOYy8Q@mail.gmail.com>
+ <CAJy5ezqkz9RLytkysd8RKvVGP6oSc-xd-mjdv9K0E=7W7xMBxA@mail.gmail.com>
+In-Reply-To: <CAJy5ezqkz9RLytkysd8RKvVGP6oSc-xd-mjdv9K0E=7W7xMBxA@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Apr 2024 17:12:41 +0100
+Message-ID: <CAFEAcA_vgb7MDEXrgJsmgbwQj-2zqwbjTSLfFnZATM+J=znPtg@mail.gmail.com>
+Subject: Re: [PATCH v4 02/10] hw/core: create Resettable QOM interface
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com, 
+ david@gibson.dropbear.id.au, Damien Hedde <damien.hedde@dahe.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,143 +96,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some devices and machines need to handle the reset before a vmsave
-snapshot is loaded differently -- the main user is the handling of
-RNG seed information, which does not want to put a new RNG seed into
-a ROM blob when we are doing a snapshot load.
+On Fri, 12 Apr 2024 at 14:38, Edgar E. Iglesias
+<edgar.iglesias@gmail.com> wrote:
+>
+> On Fri, Apr 12, 2024 at 3:05=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+ro.org> wrote:
+> >
+> > On Thu, 11 Apr 2024 at 18:23, Philippe Mathieu-Daud=C3=A9 <philmd@linar=
+o.org> wrote:
+> > >
+> > > On 11/4/24 15:43, Peter Maydell wrote:
+> > > > On Wed, 21 Aug 2019 at 17:34, Damien Hedde <damien.hedde@greensocs.=
+com> wrote:
+> > > >>
+> > > >> This commit defines an interface allowing multi-phase reset. This =
+aims
+> > > >> to solve a problem of the actual single-phase reset (built in
+> > > >> DeviceClass and BusClass): reset behavior is dependent on the orde=
+r
+> > > >> in which reset handlers are called. In particular doing external
+> > > >> side-effect (like setting an qemu_irq) is problematic because rece=
+iving
+> > > >> object may not be reset yet.
+> > > >
+> > > > So, I wanted to drag up this ancient patch to ask a couple
+> > > > of Resettable questions, because I'm working on adding a
+> > > > new ResetType (the equivalent of SHUTDOWN_CAUSE_SNAPSHOT_LOAD).
+> > > >
+> > > >> +/**
+> > > >> + * ResetType:
+> > > >> + * Types of reset.
+> > > >> + *
+> > > >> + * + Cold: reset resulting from a power cycle of the object.
+> > > >> + *
+> > > >> + * TODO: Support has to be added to handle more types. In particu=
+lar,
+> > > >> + * ResetState structure needs to be expanded.
+> > > >> + */
+> > > >
+> > > > Does anybody remember what this TODO comment is about? What
+> > > > in particular would need to be in the ResetState struct
+> > > > to allow another type to be added?
+> > >
+> > > IIRC this comes from this discussion:
+> > > https://lore.kernel.org/qemu-devel/7c193b33-8188-2cda-cbf2-fb54525445=
+8b@greensocs.com/
+> > > Updated in this patch (see after '---' description):
+> > > https://lore.kernel.org/qemu-devel/20191018150630.31099-9-damien.hedd=
+e@greensocs.com/
+> >
+> > Hmm, I can't see anything in there that mentions this
+> > TODO or what we'd need more ResetState fields to handle.
+> > I guess I'll go ahead with adding my new ResetType and ignore
+> > this TODO, because I can't see any reason why we need to
+> > do anything in particular for a new ResetType...
+> >
+> > > >
+> > > >> +typedef enum ResetType {
+> > > >> +    RESET_TYPE_COLD,
+> > > >> +} ResetType;
+> > > >
+> > > >> +typedef void (*ResettableInitPhase)(Object *obj, ResetType type);
+> > > >> +typedef void (*ResettableHoldPhase)(Object *obj);
+> > > >> +typedef void (*ResettableExitPhase)(Object *obj);
+> > > >
+> > > > Was there a reason why we only pass the ResetType to the init
+> > > > phase method, and not also to the hold and exit phases ?
+> > > > Given that many devices don't need to implement init, it
+> > > > seems awkward to require them to do so just to stash the
+> > > > ResetType somewhere so they can look at it in the hold
+> > > > or exit phase, so I was thinking about adding the argument
+> > > > to the other two phase methods.
+> > >
+> > > You are right, the type should be propagated to to all phase
+> > > handlers.
+> >
+> > I have some patches which do this; I'll probably send them out
+> > in a series next week once I've figured out whether they fit
+> > better in with other patches that give the motivation.
 
-Currently this kind of reset handling is supported only for:
- * TYPE_MACHINE reset methods, which take a ShutdownCause argument
- * reset functions registered with qemu_register_reset_nosnapshotload
+> I don't remember the details on your first questions but I also agree
+> with adding the type to the other callbacks!
 
-To allow a three-phase-reset device to also distinguish "snapshot
-load" reset from the normal kind, add a new ResetType
-RESET_TYPE_SNAPSHOT_LOAD. All our existing reset methods ignore
-the reset type, so we don't need to update any device code.
+I've now posted the series that adds the type the the hold
+and exit callbacks, and adds a new RESET_TYPE_SNAPSHOT_LOAD:
 
-Add the enum type, and make qemu_devices_reset() use the
-right reset type for the ShutdownCause it is passed. This
-allows us to get rid of the device_reset_reason global we
-were using to implement qemu_register_reset_nosnapshotload().
+https://patchew.org/QEMU/20240412160809.1260625-1-peter.maydell@linaro.org/
 
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
----
- docs/devel/reset.rst    | 17 ++++++++++++++---
- include/hw/resettable.h |  1 +
- hw/core/reset.c         | 15 ++++-----------
- hw/core/resettable.c    |  4 ----
- 4 files changed, 19 insertions(+), 18 deletions(-)
-
-diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-index 49baa1ea271..9746a4e8a0b 100644
---- a/docs/devel/reset.rst
-+++ b/docs/devel/reset.rst
-@@ -27,9 +27,7 @@ instantly reset an object, without keeping it in reset state, just call
- ``resettable_reset()``. These functions take two parameters: a pointer to the
- object to reset and a reset type.
- 
--Several types of reset will be supported. For now only cold reset is defined;
--others may be added later. The Resettable interface handles reset types with an
--enum:
-+The Resettable interface handles reset types with an enum ``ResetType``:
- 
- ``RESET_TYPE_COLD``
-   Cold reset is supported by every resettable object. In QEMU, it means we reset
-@@ -37,6 +35,19 @@ enum:
-   from what is a real hardware cold reset. It differs from other resets (like
-   warm or bus resets) which may keep certain parts untouched.
- 
-+``RESET_TYPE_SNAPSHOT_LOAD``
-+  This is called for a reset which is being done to put the system into a
-+  clean state prior to loading a snapshot. (This corresponds to a reset
-+  with ``SHUTDOWN_CAUSE_SNAPSHOT_LOAD``.) Almost all devices should treat
-+  this the same as ``RESET_TYPE_COLD``. The main exception is devices which
-+  have some non-deterministic state they want to reinitialize to a different
-+  value on each cold reset, such as RNG seed information, and which they
-+  must not reinitialize on a snapshot-load reset.
-+
-+Devices which implement reset methods must treat any unknown ``ResetType``
-+as equivalent to ``RESET_TYPE_COLD``; this will reduce the amount of
-+existing code we need to change if we add more types in future.
-+
- Calling ``resettable_reset()`` is equivalent to calling
- ``resettable_assert_reset()`` then ``resettable_release_reset()``. It is
- possible to interleave multiple calls to these three functions. There may
-diff --git a/include/hw/resettable.h b/include/hw/resettable.h
-index 3161e471c9b..7e249deb8b5 100644
---- a/include/hw/resettable.h
-+++ b/include/hw/resettable.h
-@@ -35,6 +35,7 @@ typedef struct ResettableState ResettableState;
-  */
- typedef enum ResetType {
-     RESET_TYPE_COLD,
-+    RESET_TYPE_SNAPSHOT_LOAD,
- } ResetType;
- 
- /*
-diff --git a/hw/core/reset.c b/hw/core/reset.c
-index f9fef45e050..58dfc8db3dc 100644
---- a/hw/core/reset.c
-+++ b/hw/core/reset.c
-@@ -43,13 +43,6 @@ static ResettableContainer *get_root_reset_container(void)
-     return root_reset_container;
- }
- 
--/*
-- * Reason why the currently in-progress qemu_devices_reset() was called.
-- * If we made at least SHUTDOWN_CAUSE_SNAPSHOT_LOAD have a corresponding
-- * ResetType we could perhaps avoid the need for this global.
-- */
--static ShutdownCause device_reset_reason;
--
- /*
-  * This is an Object which implements Resettable simply to call the
-  * callback function in the hold phase.
-@@ -77,8 +70,7 @@ static void legacy_reset_hold(Object *obj, ResetType type)
- {
-     LegacyReset *lr = LEGACY_RESET(obj);
- 
--    if (device_reset_reason == SHUTDOWN_CAUSE_SNAPSHOT_LOAD &&
--        lr->skip_on_snapshot_load) {
-+    if (type == RESET_TYPE_SNAPSHOT_LOAD && lr->skip_on_snapshot_load) {
-         return;
-     }
-     lr->func(lr->opaque);
-@@ -180,8 +172,9 @@ void qemu_unregister_resettable(Object *obj)
- 
- void qemu_devices_reset(ShutdownCause reason)
- {
--    device_reset_reason = reason;
-+    ResetType type = (reason == SHUTDOWN_CAUSE_SNAPSHOT_LOAD) ?
-+        RESET_TYPE_SNAPSHOT_LOAD : RESET_TYPE_COLD;
- 
-     /* Reset the simulation */
--    resettable_reset(OBJECT(get_root_reset_container()), RESET_TYPE_COLD);
-+    resettable_reset(OBJECT(get_root_reset_container()), type);
- }
-diff --git a/hw/core/resettable.c b/hw/core/resettable.c
-index bebf7f10b26..6dd3e3dc487 100644
---- a/hw/core/resettable.c
-+++ b/hw/core/resettable.c
-@@ -48,8 +48,6 @@ void resettable_reset(Object *obj, ResetType type)
- 
- void resettable_assert_reset(Object *obj, ResetType type)
- {
--    /* TODO: change this assert when adding support for other reset types */
--    assert(type == RESET_TYPE_COLD);
-     trace_resettable_reset_assert_begin(obj, type);
-     assert(!enter_phase_in_progress);
- 
-@@ -64,8 +62,6 @@ void resettable_assert_reset(Object *obj, ResetType type)
- 
- void resettable_release_reset(Object *obj, ResetType type)
- {
--    /* TODO: change this assert when adding support for other reset types */
--    assert(type == RESET_TYPE_COLD);
-     trace_resettable_reset_release_begin(obj, type);
-     assert(!enter_phase_in_progress);
- 
--- 
-2.34.1
-
+thanks
+-- PMM
 
