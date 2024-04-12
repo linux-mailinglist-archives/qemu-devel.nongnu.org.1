@@ -2,63 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825428A2885
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA64A8A289A
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:57:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBip-0006JE-5C; Fri, 12 Apr 2024 03:53:19 -0400
+	id 1rvBmU-0000Am-8D; Fri, 12 Apr 2024 03:57:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rvBil-0006Dx-AL
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:53:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rvBmK-0000AG-0u
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:56:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cohuck@redhat.com>) id 1rvBij-0002J8-6N
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:53:14 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1rvBmH-0003IN-8e
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:56:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712908391;
+ s=mimecast20190719; t=1712908611;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lFSOZh3K0g68XIpp4i2jC3/kkxxLC4ls39D6hyUFkLk=;
- b=MRPHWrd45USMyhGZ3bEFeXsddk7kC96YXrvctDhdUzV0Asj2PVlqdSdd1gzrXsKOnbiSU/
- 6rM7kQ0v0l1leRJsoTFaNBWcw3NyPIbgOvNgGp0k/v4xFpBedd6dL65AV7PIG6oFlRcNVk
- 6s9fR/aWr/kLcOck9DtTpz5jfIGGu+Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=/4paDVo5jdXquRvqeO2PrDh5bh917/gaAvlXp96AlTg=;
+ b=Y22Fjj7QEUHRrxxWjv4enSHEaWSGBPU42jiILS8VkHedhttlLV7nf/nwmWeyN8TImic9in
+ qiW3vnLx5joUNvsnPVw7jJy6TjKW88YHzGkg9v8JtFTlDfZSo5C5QUyA59CIxq2vxIq7kB
+ cTEOpFa+t7kIrmygtDc23U2/mtsR3aM=
+Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
+ [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-60-CG8nu0xBPDKFgXPP3JqMjQ-1; Fri, 12 Apr 2024 03:53:09 -0400
-X-MC-Unique: CG8nu0xBPDKFgXPP3JqMjQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50C8C10499A0;
- Fri, 12 Apr 2024 07:53:09 +0000 (UTC)
-Received: from localhost (dhcp-192-239.str.redhat.com [10.33.192.239])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DC5A92026D06;
- Fri, 12 Apr 2024 07:53:08 +0000 (UTC)
-From: Cornelia Huck <cohuck@redhat.com>
-To: JianChunfu <chunfu.jian@shingroup.cn>, mst@redhat.com, pbonzini@redhat.com
-Cc: qemu-devel@nongnu.org, JianChunfu <chunfu.jian@shingroup.cn>
-Subject: Re: [PATCH] linux-headers: change the annotation of
- VFIO_IOMMU_SPAPR_REGISTER_MEMORY in vfio.h
-In-Reply-To: <20240411113404.1274855-1-chunfu.jian@shingroup.cn>
-Organization: "Red Hat GmbH, Sitz: Werner-von-Siemens-Ring 12, D-85630
- Grasbrunn, Handelsregister: Amtsgericht =?utf-8?Q?M=C3=BCnchen=2C?= HRB
- 153243,
- =?utf-8?Q?Gesch=C3=A4ftsf=C3=BChrer=3A?= Ryan Barnhart, Charles Cachera,
- Michael O'Neill, Amy Ross"
-References: <20240411113404.1274855-1-chunfu.jian@shingroup.cn>
-User-Agent: Notmuch/0.37 (https://notmuchmail.org)
-Date: Fri, 12 Apr 2024 09:53:07 +0200
-Message-ID: <877ch3hva4.fsf@redhat.com>
+ us-mta-45-JXYrpGkpMHa_CgMtT1eIyw-1; Fri, 12 Apr 2024 03:56:48 -0400
+X-MC-Unique: JXYrpGkpMHa_CgMtT1eIyw-1
+Received: by mail-yb1-f198.google.com with SMTP id
+ 3f1490d57ef6-dcbee93a3e1so1203861276.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:56:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1712908608; x=1713513408;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=/4paDVo5jdXquRvqeO2PrDh5bh917/gaAvlXp96AlTg=;
+ b=ricv28Yip71/jeL83u/SOUT5vkiBhCQN4djQis2LL9zMYMmkdKvS029GCqDpzm12sH
+ kxtYVhVLqWZAOUPqXI2XdvRqEF/5zVL27JvlzqDDGJgwI4sIRE6YwacQ8zicgj1jSC2v
+ rw+Jpb1JLTPijE0QEbcJTY8Hz53PcIiZaTylYvdkVNVdV63ESp4N1P1BtdTQVTEB7528
+ axbxA4r41wt32BcOKROQ2P2Lb9wSLGS2N5+wlD5rvQ16UmX4RCvI4wM0RsM/8lujKLTn
+ 6MZfZrx+aAJTCrmFgaPQSBTeZW3hreqtX06JNY3XuUJZY5k70fLD3JMG8tsm7kY6qZly
+ aKzw==
+X-Gm-Message-State: AOJu0YytvD8kub02c8XXtgexjn6lxxPS3XeP01r6xf0ZZXxD2LEf9S4W
+ 3nUeqUV1EGOyNOXAVrghkb1aoZp7zPWPkUy2MzDCk1SbtP4+MJb0nl6t/yyp9y7X934530PJyGv
+ VPO5O2VbYCehMD1pfyK11br7nV0kscn/rAWtfeW7BR1s3MgD4iRjyzZ+qcuNfWsjYErrVGWtqAP
+ S56AvWondDsUq5ly4RPaaBn1uuT84=
+X-Received: by 2002:a25:860e:0:b0:dc6:d457:ac92 with SMTP id
+ y14-20020a25860e000000b00dc6d457ac92mr1512087ybk.31.1712908608057; 
+ Fri, 12 Apr 2024 00:56:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFsATN990TsziU0rDn00OVHeBAtGb7AzZ/lV658xNRCkJvH8EmMnmNXd8ibUb4z0Nz8huqF2oLBnWOoiRpR5KM=
+X-Received: by 2002:a25:860e:0:b0:dc6:d457:ac92 with SMTP id
+ y14-20020a25860e000000b00dc6d457ac92mr1512073ybk.31.1712908607743; Fri, 12
+ Apr 2024 00:56:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=cohuck@redhat.com;
+References: <20240410100345.389462-1-eperezma@redhat.com>
+ <CACGkMEuJc1ba67Hge+MfpV6npy9KJf84q=uMSP3VYDEA4FiZ=A@mail.gmail.com>
+In-Reply-To: <CACGkMEuJc1ba67Hge+MfpV6npy9KJf84q=uMSP3VYDEA4FiZ=A@mail.gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Fri, 12 Apr 2024 09:56:11 +0200
+Message-ID: <CAJaqyWemfoCTLr21ukNszqnqaaEbuB_h+s3R4j-eC_YvHJpEGg@mail.gmail.com>
+Subject: Re: [RFC 0/2] Identify aliased maps in vdpa SVQ iova_tree
+To: Jason Wang <jasowang@redhat.com>
+Cc: qemu-devel@nongnu.org, Si-Wei Liu <si-wei.liu@oracle.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Lei Yang <leiyang@redhat.com>,
+ Peter Xu <peterx@redhat.com>, 
+ Jonah Palmer <jonah.palmer@oracle.com>, Dragos Tatulea <dtatulea@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
@@ -82,19 +98,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 11 2024, JianChunfu <chunfu.jian@shingroup.cn> wrote:
-
-> The ioctl(VFIO_IOMMU_MAP_DMA/VFIO_IOMMU_UNMAP_DMA) won't be called
-> in SPAPR machine, which is replaced by VFIO_IOMMU_SPAPR_TCE_CREATE/
-> VFIO_IOMMU_SPAPR_TCE_REMOVE, so change the description.
+On Fri, Apr 12, 2024 at 8:47=E2=80=AFAM Jason Wang <jasowang@redhat.com> wr=
+ote:
 >
-> Signed-off-by: JianChunfu <chunfu.jian@shingroup.cn>
-> ---
->  linux-headers/linux/vfio.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On Wed, Apr 10, 2024 at 6:03=E2=80=AFPM Eugenio P=C3=A9rez <eperezma@redh=
+at.com> wrote:
+> >
+> > The guest may have overlapped memory regions, where different GPA leads
+> > to the same HVA.  This causes a problem when overlapped regions
+> > (different GPA but same translated HVA) exists in the tree, as looking
+> > them by HVA will return them twice.
+>
+> I think I don't understand if there's any side effect for shadow virtqueu=
+e?
+>
 
-Instead of editing things under linux-headers directly, the kernel
-source file needs to be changed instead so that a headers sync will
-update the file here. [No opinion on the actual change.]
+My bad, I totally forgot to put a reference to where this comes from.
+
+Si-Wei found that during initialization this sequences of maps /
+unmaps happens [1]:
+
+HVA                    GPA                IOVA
+---------------------------------------------------------------------------=
+----------------------------------------------
+Map
+[0x7f7903e00000, 0x7f7983e00000)    [0x0, 0x80000000) [0x1000, 0x80000000)
+[0x7f7983e00000, 0x7f9903e00000)    [0x100000000, 0x2080000000)
+[0x80001000, 0x2000001000)
+[0x7f7903ea0000, 0x7f7903ec0000)    [0xfeda0000, 0xfedc0000)
+[0x2000001000, 0x2000021000)
+
+Unmap
+[0x7f7903ea0000, 0x7f7903ec0000)    [0xfeda0000, 0xfedc0000) [0x1000,
+0x20000) ???
+
+The third HVA range is contained in the first one, but exposed under a
+different GVA (aliased). This is not "flattened" by QEMU, as GPA does
+not overlap, only HVA.
+
+At the third chunk unmap, the current algorithm finds the first chunk,
+not the second one. This series is the way to tell the difference at
+unmap time.
+
+[1] https://lists.nongnu.org/archive/html/qemu-devel/2024-04/msg00079.html
+
+Thanks!
+
+> Thanks
+>
+> >
+> > To solve this, track GPA in the DMA entry that acs as unique identifier=
+s
+> > to the maps.  When the map needs to be removed, iova tree is able to
+> > find the right one.
+> >
+> > Users that does not go to this extra layer of indirection can use the
+> > iova tree as usual, with id =3D 0.
+> >
+> > This was found by Si-Wei Liu <si-wei.liu@oracle.com>, but I'm having a =
+hard
+> > time to reproduce the issue.  This has been tested only without overlap=
+ping
+> > maps.  If it works with overlapping maps, it will be intergrated in the=
+ main
+> > series.
+> >
+> > Comments are welcome.  Thanks!
+> >
+> > Eugenio P=C3=A9rez (2):
+> >   iova_tree: add an id member to DMAMap
+> >   vdpa: identify aliased maps in iova_tree
+> >
+> >  hw/virtio/vhost-vdpa.c   | 2 ++
+> >  include/qemu/iova-tree.h | 5 +++--
+> >  util/iova-tree.c         | 3 ++-
+> >  3 files changed, 7 insertions(+), 3 deletions(-)
+> >
+> > --
+> > 2.44.0
+> >
+>
 
 
