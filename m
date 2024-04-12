@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684C28A2BDB
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 12:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D87EA8A2BF0
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 12:07:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvDlm-0005EN-4Y; Fri, 12 Apr 2024 06:04:30 -0400
+	id 1rvDoS-0000RG-5N; Fri, 12 Apr 2024 06:07:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvDld-0005Cd-F3
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvDlV-0001ZA-0Q
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712916252;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=r2BbovmUqZ6XBAj8TY6CbhKs/XGlgMyKhhvHB01jC9I=;
- b=Igka8zAgvsD4IqXiMQHbxoyx4MI8qGjW+iPBQW+zaETnQbdhuNtnVWJ4uEV3ryTeRY2Azl
- 0/tuxNr1vNfhVt24KwTAfc/WkY567TXl9vZNcMP1f48dF/sMduSxGrhgyylHRD/q8vGo9T
- l9eiypEIHgC1JSEke5kMqQ/x71jQdmY=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-G5ZEf8cLN62_geJ80CL2AQ-1; Fri, 12 Apr 2024 06:04:10 -0400
-X-MC-Unique: G5ZEf8cLN62_geJ80CL2AQ-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-517866a127fso767996e87.1
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 03:04:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvDoP-0000Qn-Uz
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:07:13 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvDoJ-00027t-Lx
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:07:13 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-56e346224bdso627342a12.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 03:07:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1712916425; x=1713521225; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=CRq1VK8S0LEFDcUOe52ENFNImtSvO7NrWm3Uw1gqR4Q=;
+ b=in/FYg+NCQRDFLJogW5NSSF/Ti9i8u/NQI7x8pPwPmwj/Ci4lsYCpVIOGogK8DpEkf
+ qMf8LFcy/qqMnJJ2eDRb2Tauaz65hPVdFnxa1KhdHZtbkxH8rKuXN+UZM9PcgTxbgWZT
+ lGLDVOMrjSYclfNjLXuA7BTH6GvvuUOGIZi54EEONcEH5oXTx3+b73J5BTtS6/rxwafQ
+ VR9ptlYQkjv01wYEguTJz59pj4QJpfXeqtgFI+4hQGodkYNLd9J+ARF88uOTA7/z49Gp
+ g/tMQmaRhU/+218whA+h0cxWI99WDQzRt4YAYeRpndtk9FQ1HoCK7gmQrDVzEOgzAH46
+ 4v7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712916248; x=1713521048;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=r2BbovmUqZ6XBAj8TY6CbhKs/XGlgMyKhhvHB01jC9I=;
- b=E1KWYkL3cltmul+hTevTGRa88ho/ewEY4V61v7qBx1l8rJyUokrS6lYHklnzGZHqL7
- Ny18yvdwjtiy2H7mPNxL7RWR9ZG4srbBz3da29IiGN4zrEXUS0WDdVXJm71T2nbZYDno
- CcRmEcHyInXhCiVVz0a3r0awP1M547e6kjkABupw1vi1cOXronV0M4oAEJ7YOAS+bYM8
- CQh5d10s98zOy4QDgVd59LxsDIUPo5ABJBlAW4OWSyQfKVP2aeKlw51DcVa+bZhqDdv9
- GPSbOsqHSJiwZDOKaU2ldVGse7TmzWsxzmg3jxz74KjIgatD6VtSebqJjDdzIpXfkckk
- EB0A==
-X-Gm-Message-State: AOJu0YxYPO2o1VYmhnXY1C5r1c9TKCnG/VoGXIBi5VFCOX/GgaD+B0NT
- 5OqxjcCbo6NOxp5n9LVrDQBc3CKSX4H821KETx/yoQL6deOx/MvShB3YcancEL+s6iv/EdegF/c
- DXlySId2PKG23yfPdtHCUnfRK09cqGKqcCDnVuHCIzzODuiCfCa2RlfqksRJTNf9+U53hYr68fU
- Epi2nnBwhcJn8NrOlZhuIbq6AQt96x3ASNGnhq
-X-Received: by 2002:a05:6512:b94:b0:518:902d:8b98 with SMTP id
- b20-20020a0565120b9400b00518902d8b98mr736109lfv.18.1712916248339; 
- Fri, 12 Apr 2024 03:04:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGRU/t4cGza1xPrVQyJrQ62s4awbiG6ha8gvL968scZzu8kkZnJWW4qVpLcdiAfR7TUv9M4Wg==
-X-Received: by 2002:a05:6512:b94:b0:518:902d:8b98 with SMTP id
- b20-20020a0565120b9400b00518902d8b98mr736078lfv.18.1712916247845; 
- Fri, 12 Apr 2024 03:04:07 -0700 (PDT)
-Received: from avogadro.local ([176.206.87.39])
- by smtp.gmail.com with ESMTPSA id
- w6-20020a1709064a0600b00a5209dc79c1sm1654420eju.146.2024.04.12.03.04.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 03:04:07 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 2/2] meson.build: Disable -fzero-call-used-regs on OpenBSD
-Date: Fri, 12 Apr 2024 12:04:01 +0200
-Message-ID: <20240412100401.20047-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240412100401.20047-1-pbonzini@redhat.com>
-References: <20240412100401.20047-1-pbonzini@redhat.com>
+ d=1e100.net; s=20230601; t=1712916425; x=1713521225;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=CRq1VK8S0LEFDcUOe52ENFNImtSvO7NrWm3Uw1gqR4Q=;
+ b=kSpv0he/xqK/Ok++sXyx94cnIeX2StE14W3skW4V6shjVCEm6sqVvxV9KBs2J0HA8Q
+ B6gg45twbnZLNwLmbrKDuXbanT1KPephRZtNDHxxh9Va4ROJOMZXItfQf0W6IqTIGZrC
+ 1AWcPr42ZsQOsWlFyylpqSRQvSiKcMq82Hh4GkidKQXEsAtgEd+Az1w5AXS/SeoaX8DK
+ AX11k9TFuxprx+9G4w4ji2+JPEKhPWqSyDn5Z6oHgbVMXhKSi8a7KyT9yDssY3a/hcmK
+ UaYuYLbEBsO+8zsZGWF9rNzs+YPVoonXYOKiN+hSucQNmXJBRvPkaEVQHluhxemi9AtJ
+ yl7A==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVF98sx8VuRvOAlGiu8TRVC78wdwn50Am8UwzDhShJR4abl3JuLzUPaVxPjJJ09F2iU//+n1oL0QGdL9rlwRXlZT+oymOA=
+X-Gm-Message-State: AOJu0YyLdyPqJziMXcs+Kyz/WlXCZR41YiSuGghUQVWDdDhxaWW7HyiJ
+ YU8kbK7odOUb/2rfEux6qcg+zZp7wSOuwaJkyqg34wRy0WCGQ3+nmOVxudy+wurmPk+SgJwmHGa
+ ahiSAgJI6jrT80ruf0HAz8bMAc3Sahka1EuNHf75cnnROL2op
+X-Google-Smtp-Source: AGHT+IG3E6TyTVC4L/oAn+xXwRa38DWTAhJ+TGxyvDeWXq1rT8iidFEWU7Wafdf7X90VmtdW3p2S+92Mw2cOBUGV8x0=
+X-Received: by 2002:a50:9e84:0:b0:56d:f979:8d82 with SMTP id
+ a4-20020a509e84000000b0056df9798d82mr1430825edf.25.1712916425565; Fri, 12 Apr
+ 2024 03:07:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.49,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240412081328.11183-1-adiupina@astralinux.ru>
+In-Reply-To: <20240412081328.11183-1-adiupina@astralinux.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 12 Apr 2024 11:06:54 +0100
+Message-ID: <CAFEAcA9wfzpc74iA_2G-YbtQtwGCA9VPQuXagg-Q0FwC92tg+w@mail.gmail.com>
+Subject: Re: [PATCH RFC] prevent overflow in
+ xlnx_dpdma_desc_get_source_address()
+To: Alexandra Diupina <adiupina@astralinux.ru>
+Cc: Alistair Francis <alistair@alistair23.me>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>, 
+ qemu-arm@nongnu.org, qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x529.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,40 +90,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+On Fri, 12 Apr 2024 at 09:13, Alexandra Diupina <adiupina@astralinux.ru> wrote:
+>
+> Overflow can occur in a situation where desc->source_address
+> has a maximum value (pow(2, 32) - 1), so add a cast to a
+> larger type before the assignment.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: d3c6369a96 ("introduce xlnx-dpdma")
+> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+> ---
+>  hw/dma/xlnx_dpdma.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+> index 1f5cd64ed1..224259225c 100644
+> --- a/hw/dma/xlnx_dpdma.c
+> +++ b/hw/dma/xlnx_dpdma.c
+> @@ -175,24 +175,24 @@ static uint64_t xlnx_dpdma_desc_get_source_address(DPDMADescriptor *desc,
+>
+>      switch (frag) {
+>      case 0:
+> -        addr = desc->source_address
+> -            + (extract32(desc->address_extension, 16, 12) << 20);
+> +        addr = (uint64_t)(desc->source_address
+> +            + (extract32(desc->address_extension, 16, 12) << 20));
 
-QEMU currently does not work on OpenBSD since the -fzero-call-used-regs
-option that we added to meson.build recently does not work with the
-"retguard" extension from OpenBSD's Clang. Thus let's disable the
--fzero-call-used-regs here until there's a better solution available.
+Unless I'm confused, this cast doesn't help, because we
+will have already done a 32-bit addition of desc->source_address
+and the value from the address_extension part, so it doesn't
+change the result.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2278
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240411120819.56417-1-thuth@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- meson.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+If we want to do the addition at 64 bits then using extract64()
+would be the simplest way to arrange for that.
 
-diff --git a/meson.build b/meson.build
-index c9c3217ba4b..91a0aa64c64 100644
---- a/meson.build
-+++ b/meson.build
-@@ -562,7 +562,11 @@ hardening_flags = [
- #
- # NB: Clang 17 is broken and SEGVs
- # https://github.com/llvm/llvm-project/issues/75168
--if cc.compiles('extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }',
-+#
-+# NB2: This clashes with the "retguard" extension of OpenBSD's Clang
-+# https://gitlab.com/qemu-project/qemu/-/issues/2278
-+if host_os != 'openbsd' and \
-+   cc.compiles('extern struct { void (*cb)(void); } s; void f(void) { s.cb(); }',
-                name: '-fzero-call-used-regs=used-gpr',
-                args: ['-O2', '-fzero-call-used-regs=used-gpr'])
-     hardening_flags += '-fzero-call-used-regs=used-gpr'
--- 
-2.44.0
+However, I can't figure out what this code is trying to do and
+make that line up with the data sheet; maybe this isn't the
+right datasheet for this device?
 
+https://docs.amd.com/r/en-US/ug1085-zynq-ultrascale-trm/ADDR_EXT-Field
+
+The datasheet suggests that we should take 32 bits of the address
+from one field (here desc->source_address) and 16 bits of the
+address from another (here desc->address_extension's high bits)
+and combine them to make a 48 bit address. But this code is only
+looking at 12 bits of the high 16 in address_extension, and it
+doesn't shift them right enough to put them into bits [47:32]
+of the final address.
+
+Xilinx folks: what hardware is this modelling, and is it
+really the right behaviour?
+
+Also, this device looks like it has a host-endianness bug: the
+DPDMADescriptor struct is read directly from guest memory in
+dma_memory_read(), but the device never does anything to swap
+the fields from guest memory order to host memory order. So
+this is likely broken on big-endian hosts.
+
+thanks
+-- PMM
 
