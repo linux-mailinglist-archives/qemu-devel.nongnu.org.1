@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95288A3344
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9848A333B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:09:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvJRu-0001uO-0R; Fri, 12 Apr 2024 12:08:22 -0400
+	id 1rvJRs-0001tf-6y; Fri, 12 Apr 2024 12:08:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvJRq-0001sj-2m
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:18 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1rvJRp-0001sf-UL
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:17 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvJRm-0004ZE-G6
+ id 1rvJRm-0004ZL-9G
  for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:17 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-41819c27ea3so116435e9.0
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:08:12 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-417c339d261so8016705e9.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:08:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712938091; x=1713542891; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712938092; x=1713542892; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=dnNoCn2uuTyof16mVyr36WFsEKC/7L9I7y8bsz+RKho=;
- b=qN27ALbOigZLK8Eod9grGvVpybJOgDXRrFFonbfhYKJf7hnXEHRjP7i06DgWywPx8u
- KwgMEGtRiF6VFU0c957cSWO7zuj6TA2boQzw6uPPFHsZIk3Gn0Nn4UuzwvYKfCNJRx4n
- 8KMt39BQEsHiZArk2qEy2qAMad1eLNv+6ZcsEmN+xqedlnSN/uqdwpPXjoG+rl/LRmRp
- H4W+BP+olg/OyE2c8l/gnsdj6ORBaa/qP6jcxXLdo04QZDiUvYb9MmjeHssMP6jr9Wth
- 0zKQRI+bUILpF4uNrZkuQM0YWc9TQzgSGPhDz2ws1Wsa2A6VottIlMXcyh2cohhNg36u
- yBKw==
+ :reply-to; bh=cdQqFsNDDUWJxTigPswVdc5hROMiTrrzC++GHPfi+hc=;
+ b=AuiXPQN2j4iL6pyuzDGTlCYrlv0Z73vrU8HQJrnvmR0Lv/Zhlsauhe1pgbVr+r6SXb
+ 9t34wueF5gmR5OSAePd74OV+22Us0aHbOe88pirJlcBU8w+ohQuV3yPFriONBMMHW14T
+ 4roY4ixPkRphxD0YAGAofC2rhgsfoIekpcn47vOAgmkA97+3I2yFZNJ2xwc6hRvKmD1h
+ bCSxJx2me3ILyPlfoVD4tdTvptKnxlvRgnYBedY196ys047ulU6vjkNfcMc1YnexZ149
+ VLrp9ArW18ChZa33sNzQe2qJpefgztcKBV4VfdmcKFMUwB2dG4t0hUQwqWrHcSOeWPI4
+ QGpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712938091; x=1713542891;
+ d=1e100.net; s=20230601; t=1712938092; x=1713542892;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dnNoCn2uuTyof16mVyr36WFsEKC/7L9I7y8bsz+RKho=;
- b=BwEH9vdLLN4dIbh5HOleOEVOduyLd0Ad3+Yop8zA/wgDcki9zbBKnq0fM3eC245Uby
- uB2WE5wXegYqgfIla05nu/XtjdOfWUsoE2rHkLo1h33ZevJi5dAEFqgkkha1RtrQClDy
- rZU36bsxrLB+dalZL9GmB3wbAnTPCM15w64ndYtmbIIGVVOSOFBBBo9FMyJ2cyv/+ewy
- fJbfApRwUyeqwlSa+GP6w78vlvxS7cIrToTNsPz3m0P+UEBGLpNe6gYE1JhfL4DqRXee
- l7BNkciItcsbHJZIRh/7QXlrK3PbhTo51yGbp4RojBQEiRowOBnqh5YdGQuVtZmLH5Hw
- wxaA==
-X-Gm-Message-State: AOJu0YyMZOmNMEoxh31Kt/XTZPvYFoPfPRKiNjVxc/IVgXiHDe+i34tQ
- 6yO32g2RWI+SfMKsY7IH5fUwOChQzpnulkvGr6RdrBRExa7jMIpRIlGvpPj5itJPTkh8EwkofLR
- l
-X-Google-Smtp-Source: AGHT+IGgDifFk87qM9eBg/xZtCCIz6uynT3d0aviSe/eQtDiQ6mVWI84p/TrO00VFqZyYFJ+F+DxiA==
-X-Received: by 2002:a5d:6841:0:b0:346:bbd8:dd07 with SMTP id
- o1-20020a5d6841000000b00346bbd8dd07mr1785319wrw.30.1712938091057; 
- Fri, 12 Apr 2024 09:08:11 -0700 (PDT)
+ bh=cdQqFsNDDUWJxTigPswVdc5hROMiTrrzC++GHPfi+hc=;
+ b=mMQ52E+oQc8b+9ckR3oMnjzs8VKKitqMm8QWPBVW+jErqs7L1w4BmQUn5UOIRQL+Re
+ qYchUp10bLxuaz9tM/e1uRRwAuHQWZaUY2P/dp9wmTBUHSERmMMbnSkhf9a6NwhXmdZA
+ WsKE0dEQHysrXTnF/dJ+nBbKSR4qD1068+5PW31bwo9PEdjt+kjcDnlVW2jzGRAgJ10/
+ XGX3gLvuDmxPGkuoVQgGBpj15RLKST/nw7s8m/T5ftIqzbGrQyBWej1tCHTZmzDlFdm9
+ wkP6kIo6YlSzac5dhz919/mZNwe/JCHAHJB2vZeqpot9EGfZqYf2ZYHTgyQEEzus0OtY
+ fgYg==
+X-Gm-Message-State: AOJu0YznWsoQkUR6ktfLb+bHpNa/VwDa3nXwGH+oN2iJi5vA6FCBuT9o
+ LF2VDjOpEA+qgMkaGlz+SIQjZmwNEf6UfjiEfvbQQWVy5u3y5vVikohlCXuy+8Q8+1WSCoimYIV
+ g
+X-Google-Smtp-Source: AGHT+IHmc+UfwJ85J6tZVeJu3eQ/MN0uyHTXS2jWyS4pvhzwzfMmGUAVc/Pl/ANJ4eTkr37+/2J/Fw==
+X-Received: by 2002:a05:6000:1ace:b0:346:251a:396d with SMTP id
+ i14-20020a0560001ace00b00346251a396dmr2509725wry.51.1712938092128; 
+ Fri, 12 Apr 2024 09:08:12 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- cr12-20020a05600004ec00b00341ce80ea66sm4582371wrb.82.2024.04.12.09.08.10
+ cr12-20020a05600004ec00b00341ce80ea66sm4582371wrb.82.2024.04.12.09.08.11
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 09:08:10 -0700 (PDT)
+ Fri, 12 Apr 2024 09:08:11 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 1/6] hw/misc: Don't special case RESET_TYPE_COLD in
- npcm7xx_clk, gcr
-Date: Fri, 12 Apr 2024 17:08:04 +0100
-Message-Id: <20240412160809.1260625-2-peter.maydell@linaro.org>
+Subject: [PATCH 2/6] allwinner-i2c,
+ adm1272: Use device_cold_reset() for software-triggered reset
+Date: Fri, 12 Apr 2024 17:08:05 +0100
+Message-Id: <20240412160809.1260625-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240412160809.1260625-1-peter.maydell@linaro.org>
 References: <20240412160809.1260625-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,75 +92,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The npcm7xx_clk and npcm7xx_gcr device reset methods look at
-the ResetType argument and only handle RESET_TYPE_COLD,
-producing a warning if another reset type is passed. This
-is different from how every other three-phase-reset method
-we have works, and makes it difficult to add new reset types.
-
-A better pattern is "assume that any reset type you don't know
-about should be handled like RESET_TYPE_COLD"; switch these
-devices to do that. Then adding a new reset type will only
-need to touch those devices where its behaviour really needs
-to be different from the standard cold reset.
+Rather than directly calling the device's implementation of its 'hold'
+reset phase, call device_cold_reset(). This means we don't have to
+adjust this callsite when we add another argument to the function
+signature for the hold and exit reset methods.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/misc/npcm7xx_clk.c | 13 +++----------
- hw/misc/npcm7xx_gcr.c | 12 ++++--------
- 2 files changed, 7 insertions(+), 18 deletions(-)
+ hw/i2c/allwinner-i2c.c | 3 +--
+ hw/sensor/adm1272.c    | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/hw/misc/npcm7xx_clk.c b/hw/misc/npcm7xx_clk.c
-index ac1622c38aa..2098c85ee01 100644
---- a/hw/misc/npcm7xx_clk.c
-+++ b/hw/misc/npcm7xx_clk.c
-@@ -873,20 +873,13 @@ static void npcm7xx_clk_enter_reset(Object *obj, ResetType type)
+diff --git a/hw/i2c/allwinner-i2c.c b/hw/i2c/allwinner-i2c.c
+index 8abcc39a5c2..96c20c86372 100644
+--- a/hw/i2c/allwinner-i2c.c
++++ b/hw/i2c/allwinner-i2c.c
+@@ -385,8 +385,7 @@ static void allwinner_i2c_write(void *opaque, hwaddr offset,
+         break;
+     case TWI_SRST_REG:
+         if (((value & TWI_SRST_MASK) == 0) && (s->srst & TWI_SRST_MASK)) {
+-            /* Perform reset */
+-            allwinner_i2c_reset_hold(OBJECT(s));
++            device_cold_reset(DEVICE(s));
+         }
+         s->srst = value & TWI_SRST_MASK;
+         break;
+diff --git a/hw/sensor/adm1272.c b/hw/sensor/adm1272.c
+index 1f7c8abb838..a19557ec9ea 100644
+--- a/hw/sensor/adm1272.c
++++ b/hw/sensor/adm1272.c
+@@ -386,7 +386,7 @@ static int adm1272_write_data(PMBusDevice *pmdev, const uint8_t *buf,
+         break;
  
-     QEMU_BUILD_BUG_ON(sizeof(s->regs) != sizeof(cold_reset_values));
+     case ADM1272_MFR_POWER_CYCLE:
+-        adm1272_exit_reset((Object *)s);
++        device_cold_reset(DEVICE(s));
+         break;
  
--    switch (type) {
--    case RESET_TYPE_COLD:
--        memcpy(s->regs, cold_reset_values, sizeof(cold_reset_values));
--        s->ref_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--        npcm7xx_clk_update_all_clocks(s);
--        return;
--    }
--
-+    memcpy(s->regs, cold_reset_values, sizeof(cold_reset_values));
-+    s->ref_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+    npcm7xx_clk_update_all_clocks(s);
-     /*
-      * A small number of registers need to be reset on a core domain reset,
-      * but no such reset type exists yet.
-      */
--    qemu_log_mask(LOG_UNIMP, "%s: reset type %d not implemented.",
--                  __func__, type);
- }
- 
- static void npcm7xx_clk_init_clock_hierarchy(NPCM7xxCLKState *s)
-diff --git a/hw/misc/npcm7xx_gcr.c b/hw/misc/npcm7xx_gcr.c
-index 9252f9d1488..c4c4e246d7e 100644
---- a/hw/misc/npcm7xx_gcr.c
-+++ b/hw/misc/npcm7xx_gcr.c
-@@ -159,14 +159,10 @@ static void npcm7xx_gcr_enter_reset(Object *obj, ResetType type)
- 
-     QEMU_BUILD_BUG_ON(sizeof(s->regs) != sizeof(cold_reset_values));
- 
--    switch (type) {
--    case RESET_TYPE_COLD:
--        memcpy(s->regs, cold_reset_values, sizeof(s->regs));
--        s->regs[NPCM7XX_GCR_PWRON] = s->reset_pwron;
--        s->regs[NPCM7XX_GCR_MDLR] = s->reset_mdlr;
--        s->regs[NPCM7XX_GCR_INTCR3] = s->reset_intcr3;
--        break;
--    }
-+    memcpy(s->regs, cold_reset_values, sizeof(s->regs));
-+    s->regs[NPCM7XX_GCR_PWRON] = s->reset_pwron;
-+    s->regs[NPCM7XX_GCR_MDLR] = s->reset_mdlr;
-+    s->regs[NPCM7XX_GCR_INTCR3] = s->reset_intcr3;
- }
- 
- static void npcm7xx_gcr_realize(DeviceState *dev, Error **errp)
+     case ADM1272_HYSTERESIS_LOW:
 -- 
 2.34.1
 
