@@ -2,75 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8218A2D88
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 13:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 635A68A2DD1
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 13:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvFBP-0000sp-2l; Fri, 12 Apr 2024 07:35:05 -0400
+	id 1rvFSm-0005L6-2Z; Fri, 12 Apr 2024 07:53:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rvFBL-0000sf-1K
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 07:34:59 -0400
-Received: from mgamail.intel.com ([192.198.163.18])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rvFSk-0005Ks-9k; Fri, 12 Apr 2024 07:52:58 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rvFBH-0002Cl-6d
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 07:34:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1712921695; x=1744457695;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=dlyMxfaxOonmDS5+XCzDETRRzK4rIxMFOVjW/aZ5EP8=;
- b=Fz4wFn0ZwROIwW+K09P9WYta4B3Sq0k2uA6LLJksyt0xKZsN4R8oxpzz
- WsRMdmB25C+abpb77VGFT6x2nWm44W2p2UyJbv7CI1j7A+QpjZD4cd9ms
- iOkryDe+zPX01XO5uG4MuJ4im9UC7Z1rAlKTqcsMXPa9RtiMi2b+AS1kI
- EpK1E/Jqn10pZi21yVk6IkYQhqj2IW/f//EUHHoiyxj/ZG9kESoNaryQD
- FiLm7ckhgbjcKUFCpxOABNwoIuSeKTZ2pkL21U5YFVkXmgNwg0j4SFD0Q
- zZ+Sr33BU9N1bmdqzFalylOXan7L3BN/vXeepP1ZiVmuHV+adBO8r2M7y w==;
-X-CSE-ConnectionGUID: ZTLXAY9nTs+ltaygKt0cUA==
-X-CSE-MsgGUID: 1Wzp759sQLazAoIiH824kw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11041"; a="8228907"
-X-IronPort-AV: E=Sophos;i="6.07,195,1708416000"; 
-   d="scan'208";a="8228907"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Apr 2024 04:34:53 -0700
-X-CSE-ConnectionGUID: 68VQyTqzQVynbkCPUOO3uQ==
-X-CSE-MsgGUID: +ZjAS4UbTe+1+W78AE19bQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,196,1708416000"; d="scan'208";a="44470146"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 12 Apr 2024 04:34:51 -0700
-Date: Fri, 12 Apr 2024 19:48:53 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Zhao Liu <zhao1.liu@intel.com>, Ani Sinha <anisinha@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>
-Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers for
- PC Q35
-Message-ID: <ZhkfpQUwRMXDUSsp@intel.com>
-References: <20240412085358.731560-1-zhao1.liu@linux.intel.com>
- <305d659b-d4d6-4681-bdad-cd869e552333@linaro.org>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1rvFSi-0004tJ-E2; Fri, 12 Apr 2024 07:52:58 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 2D0E944FFA;
+ Fri, 12 Apr 2024 13:52:45 +0200 (CEST)
+Message-ID: <81117f0e-407b-4729-bb78-cbadc196c8f1@proxmox.com>
+Date: Fri, 12 Apr 2024 13:52:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Makefile: preserve --jobserver-auth argument when calling
+ ninja
+To: =?UTF-8?Q?Martin_Hundeb=C3=B8ll?= <martin@geanix.com>,
+ qemu-devel@nongnu.org
+Cc: qemu-trivial@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20240402081738.1051560-1-martin@geanix.com>
+Content-Language: en-US
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <20240402081738.1051560-1-martin@geanix.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <305d659b-d4d6-4681-bdad-cd869e552333@linaro.org>
-Received-SPF: none client-ip=192.198.163.18;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.103,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,31 +56,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
-
-On Fri, Apr 12, 2024 at 11:57:35AM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Fri, 12 Apr 2024 11:57:35 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH-for-9.0?] docs: i386: pc: Update maximum CPU numbers
->  for PC Q35
+Am 02.04.24 um 10:17 schrieb Martin HundebÃ¸ll:
+> Qemu wraps its call to ninja in a Makefile. Since ninja, as opposed to
+> make, utilizes all CPU cores by default, the qemu Makefile translates
+> the absense of a `-jN` argument into `-j1`. This breaks jobserver
+> functionality, so update the -jN mangling to take the --jobserver-auth
+> argument into considerationa too.
 > 
-> > -SMP is supported with up to 255 CPUs.
-> > +SMP is supported with up to 255 CPUs (and 4096 CPUs for PC Q35 machine).
+> Signed-off-by: Martin HundebÃ¸ll <martin@geanix.com>
+> ---
+>  Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This comment is not accurate since a while, IIUC:
-> 
-> Up to q35-2.7: 255
-> q35-2.8: 288
-> q35-8.0+: 1024
-> q35-9.0: 4096
+> diff --git a/Makefile b/Makefile
+> index 8f36990335..183756018f 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -142,7 +142,7 @@ MAKE.k = $(findstring k,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+>  MAKE.q = $(findstring q,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+>  MAKE.nq = $(if $(word 2, $(MAKE.n) $(MAKE.q)),nq)
+>  NINJAFLAGS = $(if $V,-v) $(if $(MAKE.n), -n) $(if $(MAKE.k), -k0) \
+> -        $(filter-out -j, $(lastword -j1 $(filter -l% -j%, $(MAKEFLAGS)))) \
+> +        $(or $(filter -l% -j%, $(MAKEFLAGS)), $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1)) \
+>          -d keepdepfile
+>  ninja-cmd-goals = $(or $(MAKECMDGOALS), all)
+>  ninja-cmd-goals += $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
 
-Yes, I think there should be no need to mention older versions here?
+Hi,
 
-Since the Q35's 4096 CPUs change will be stated in the v9.0 release, I
-doubt we should synchronize the doc update (so I added the "for-v9.0?"
-tag to throw this question out).
+unfortunately, this patch breaks build when specifying just '-j' as a
+make flag (i.e. without a number), because it will now end up being
+passed to ninja:
 
-Thanks,
-Zhao
+> $ make -j
+> changing dir to build for make ""...
+> make[1]: Entering directory '/home/febner/repos/qemu/build'
+> ninja: fatal: invalid -j parameter
+
+Best Regards,
+Fiona
 
 
