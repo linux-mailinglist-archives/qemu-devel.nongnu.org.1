@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632178A2ED7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 15:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 432098A2F53
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 15:25:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvGb7-0005zL-GR; Fri, 12 Apr 2024 09:05:41 -0400
+	id 1rvGtP-0002vU-Ut; Fri, 12 Apr 2024 09:24:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvGb4-0005z6-RB
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:05:38 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rvGb1-0002l4-Hv
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:05:37 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-516d6e23253so988640e87.1
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 06:05:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712927131; x=1713531931; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=I1MOjo/tesYJzjRcZzNY5Ac0a4FIQTuccTizRqRwbbA=;
- b=YCP97QkqbDvGJVRh1PU9N62ECievdnVzJZqhUPQ7DkA3Z1QjcGcTyVQzouXE8XZGRq
- CbYnu6kx8bN1m0fYHKftPdjF6ftguV+7jWP7AVtlz2qImp6rzLpxGyLV82RR7tjDE6Sp
- sAdW9i82s6eb9/XSZybKTHbZdE9MDahsN3JYWWW7cFGe/pVA2KPeXyUQN39pysAB5sus
- bC6jdYeud+xdvlo3FFg4uM9bSQQZ9v4KaW/fq1sX4bf5LSZuvW8IDdymouz1GSmksr6P
- T7tS2hQL113P8x6cf63hKozhGLRlR8OXHVlaqfvRj1Fhx7O/mWvWGL5UhTEFkJSL+RGf
- sP4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712927131; x=1713531931;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I1MOjo/tesYJzjRcZzNY5Ac0a4FIQTuccTizRqRwbbA=;
- b=tSLZFoJ/BuLo2aoAb3nJxv11xdgm5ltqmzs5xUFStCA3B2jLvC1lqYS9IHhHTFVeIW
- dB44AElPmjld2zlnd0gSp8jed0R2fR1livZdrZINQVNpZznxKFEREDF/jfO+bJKObMGk
- Hbl+zA9CN79ND5tdZ2Rpgm+vmh1hKTGBBIwnU0dZXrvQOpj1QHUFgjtkP2PSdgpXRFw5
- peMiII67ZdFrmuoSOxcLY6Fphqq8AyIzkaQW9Lb3RERmcuMuMNrbee47Ewmhhao7NpHe
- +p93cS9aGKADyz7ugNGRwPv8AcasLQlQT1revGRsD+3K9NYqRnU+4EXSSw08l+8lZ2Cq
- oVxQ==
-X-Gm-Message-State: AOJu0YwWGePT5LBTskt89XgrEbU5lHS2doYapfMQjxxNu8E3bpDuTdhT
- KOlY0t0gBdClujbBfp+WLFeSEZ1Fr8aDzHZ0kYxOCJQocvjHRfY3lG6v2x1VgxF1/chRnY0nHS0
- +2uPkNPHESagT7a12RGXduHU+f85IBlfYXcbg3g==
-X-Google-Smtp-Source: AGHT+IHCvbLMUBQnCbRWRkVGKQ1qlf/B11KwegLOT9WrjIFQe1Rl8wsOSPrvMmCTGsnjp6afk6k7a4nodGqW3Sn9zLY=
-X-Received: by 2002:a05:6512:3b97:b0:513:df6:dcd3 with SMTP id
- g23-20020a0565123b9700b005130df6dcd3mr2948751lfv.48.1712927131533; Fri, 12
- Apr 2024 06:05:31 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGtN-0002ut-P1
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:24:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGtK-00076x-JE
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:24:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1712928268;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Fi84kRaz7h99oBfhODi8u2Fa4iXGQNDWIt/C1FT1Ue4=;
+ b=IHIVYP/LfmuFU3lpzHNaHFvX+7+4q88wKKnLLEM/RS+yDUW1aEtr+6a79HfogcHtXT/Ctv
+ w9UOX7BtGvzqMyjBqSanx+pdNA7pBN5xl9sBdby9o4ldQzQoKJavqKuR4g9RsL01FOUTA9
+ QdFLs0SZl0v9hsGXofkeBjBm9mXmi9o=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-489-lySKy0kKOWW6NsPvnY2eBw-1; Fri,
+ 12 Apr 2024 09:24:25 -0400
+X-MC-Unique: lySKy0kKOWW6NsPvnY2eBw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A4E838035B5;
+ Fri, 12 Apr 2024 13:24:25 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.215])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9BFB92166B31;
+ Fri, 12 Apr 2024 13:24:21 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Peter Lieven <pl@kamp.de>, "Richard W.M. Jones" <rjones@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
+Subject: [PATCH v2 00/13] Drop old distros,
+ bump glib and switch to glib URI parsing code
+Date: Fri, 12 Apr 2024 15:24:02 +0200
+Message-ID: <20240412132415.282354-1-thuth@redhat.com>
 MIME-Version: 1.0
-References: <20190821163341.16309-1-damien.hedde@greensocs.com>
- <20190821163341.16309-3-damien.hedde@greensocs.com>
- <CAFEAcA8FUgmnq0-QfutpbN=xkeKxRe75b56Fu2zoXknXczwnvA@mail.gmail.com>
- <6b384586-c7ad-4b6c-a1f1-8a8d8b0ad526@linaro.org>
-In-Reply-To: <6b384586-c7ad-4b6c-a1f1-8a8d8b0ad526@linaro.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 12 Apr 2024 14:05:20 +0100
-Message-ID: <CAFEAcA9+LXUg_u2QFuYMbhxeqofD3iC4CGHo5WXL77QMCOYy8Q@mail.gmail.com>
-Subject: Re: [PATCH v4 02/10] hw/core: create Resettable QOM interface
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, berrange@redhat.com, 
- david@gibson.dropbear.id.au, Damien Hedde <damien.hedde@dahe.fr>, 
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.103,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,76 +81,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 11 Apr 2024 at 18:23, Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g> wrote:
->
-> On 11/4/24 15:43, Peter Maydell wrote:
-> > On Wed, 21 Aug 2019 at 17:34, Damien Hedde <damien.hedde@greensocs.com>=
- wrote:
-> >>
-> >> This commit defines an interface allowing multi-phase reset. This aims
-> >> to solve a problem of the actual single-phase reset (built in
-> >> DeviceClass and BusClass): reset behavior is dependent on the order
-> >> in which reset handlers are called. In particular doing external
-> >> side-effect (like setting an qemu_irq) is problematic because receivin=
-g
-> >> object may not be reset yet.
-> >
-> > So, I wanted to drag up this ancient patch to ask a couple
-> > of Resettable questions, because I'm working on adding a
-> > new ResetType (the equivalent of SHUTDOWN_CAUSE_SNAPSHOT_LOAD).
-> >
-> >> +/**
-> >> + * ResetType:
-> >> + * Types of reset.
-> >> + *
-> >> + * + Cold: reset resulting from a power cycle of the object.
-> >> + *
-> >> + * TODO: Support has to be added to handle more types. In particular,
-> >> + * ResetState structure needs to be expanded.
-> >> + */
-> >
-> > Does anybody remember what this TODO comment is about? What
-> > in particular would need to be in the ResetState struct
-> > to allow another type to be added?
->
-> IIRC this comes from this discussion:
-> https://lore.kernel.org/qemu-devel/7c193b33-8188-2cda-cbf2-fb545254458b@g=
-reensocs.com/
-> Updated in this patch (see after '---' description):
-> https://lore.kernel.org/qemu-devel/20191018150630.31099-9-damien.hedde@gr=
-eensocs.com/
+In the QEMU 9.1 development cycle, we can drop the support for
+Ubuntu 20.04 and CentOS 8 since the following major versions of
+these distributions are available since 2 years already.
 
-Hmm, I can't see anything in there that mentions this
-TODO or what we'd need more ResetState fields to handle.
-I guess I'll go ahead with adding my new ResetType and ignore
-this TODO, because I can't see any reason why we need to
-do anything in particular for a new ResetType...
+This allows us to bump the minimum version of glib to 2.66 which
+comes with a nice set of URI parsing functions. By switching to
+these parsing functions, we can finally drop our own URI parsing
+code in util/uri.c.
 
-> >
-> >> +typedef enum ResetType {
-> >> +    RESET_TYPE_COLD,
-> >> +} ResetType;
-> >
-> >> +typedef void (*ResettableInitPhase)(Object *obj, ResetType type);
-> >> +typedef void (*ResettableHoldPhase)(Object *obj);
-> >> +typedef void (*ResettableExitPhase)(Object *obj);
-> >
-> > Was there a reason why we only pass the ResetType to the init
-> > phase method, and not also to the hold and exit phases ?
-> > Given that many devices don't need to implement init, it
-> > seems awkward to require them to do so just to stash the
-> > ResetType somewhere so they can look at it in the hold
-> > or exit phase, so I was thinking about adding the argument
-> > to the other two phase methods.
->
-> You are right, the type should be propagated to to all phase
-> handlers.
+NB: We also need to update some of the custom runners in our CI
+environment first (since they still use Ubuntu 20.04).
 
-I have some patches which do this; I'll probably send them out
-in a series next week once I've figured out whether they fit
-better in with other patches that give the motivation.
+v2:
+- Added Paolo's patch to bump the external CI runners
+- Added patch to drop more glib compatibility hunks
+- Use g_autoptr() in the URI patches for simplification
+- Don't allow port 0 in the URIs
 
-thanks
--- PMM
+Paolo Bonzini (1):
+  ci: move external build environment setups to CentOS Stream 9
+
+Thomas Huth (12):
+  tests: Remove Ubuntu 20.04 container
+  tests/lcitool/libvirt-ci: Update to the latest master branch
+  tests/docker/dockerfiles: Run lcitool-refresh after the lcitool update
+  tests: Update our CI to use CentOS Stream 9 instead of 8
+  .travis.yml: Update the jobs to Ubuntu 22.04
+  Bump minimum glib version to v2.66
+  Remove glib compatibility code that is not required anymore
+  block/gluster: Use URI parsing code from glib
+  block/nbd: Use URI parsing code from glib
+  block/nfs: Use URI parsing code from glib
+  block/ssh: Use URI parsing code from glib
+  util/uri: Remove the old URI parsing code
+
+ meson.build                                   |   16 +-
+ include/glib-compat.h                         |   27 +-
+ include/qemu/uri.h                            |   99 --
+ block/gluster.c                               |   71 +-
+ block/nbd.c                                   |   76 +-
+ block/nfs.c                                   |  110 +-
+ block/ssh.c                                   |   75 +-
+ qga/commands-posix-ssh.c                      |   12 +-
+ util/error-report.c                           |   10 -
+ util/uri.c                                    | 1466 -----------------
+ .gitlab-ci.d/buildtest.yml                    |   16 +-
+ .gitlab-ci.d/container-core.yml               |    4 +-
+ .travis.yml                                   |   13 +-
+ .../stream/{8 => 9}/build-environment.yml     |   31 +-
+ .../stream/{8 => 9}/x86_64/configure          |    4 +-
+ .../stream/{8 => 9}/x86_64/test-avocado       |    0
+ scripts/ci/setup/build-environment.yml        |   44 +-
+ tests/docker/dockerfiles/alpine.docker        |    3 +-
+ .../{centos8.docker => centos9.docker}        |   35 +-
+ .../dockerfiles/debian-amd64-cross.docker     |    3 +-
+ .../dockerfiles/debian-arm64-cross.docker     |    3 +-
+ .../dockerfiles/debian-armel-cross.docker     |    3 +-
+ .../dockerfiles/debian-armhf-cross.docker     |    3 +-
+ .../dockerfiles/debian-i686-cross.docker      |    3 +-
+ .../dockerfiles/debian-mips64el-cross.docker  |    3 +-
+ .../dockerfiles/debian-mipsel-cross.docker    |    3 +-
+ .../dockerfiles/debian-ppc64el-cross.docker   |    3 +-
+ .../dockerfiles/debian-riscv64-cross.docker   |    3 +-
+ .../dockerfiles/debian-s390x-cross.docker     |    3 +-
+ tests/docker/dockerfiles/debian.docker        |    1 +
+ .../dockerfiles/fedora-win64-cross.docker     |    3 +-
+ tests/docker/dockerfiles/fedora.docker        |    1 +
+ tests/docker/dockerfiles/opensuse-leap.docker |    1 +
+ tests/docker/dockerfiles/ubuntu2004.docker    |  157 --
+ tests/docker/dockerfiles/ubuntu2204.docker    |    1 +
+ tests/lcitool/libvirt-ci                      |    2 +-
+ tests/lcitool/mappings.yml                    |   20 -
+ tests/lcitool/refresh                         |    3 +-
+ tests/vm/centos                               |    4 +-
+ util/meson.build                              |    2 +-
+ 40 files changed, 265 insertions(+), 2072 deletions(-)
+ delete mode 100644 include/qemu/uri.h
+ delete mode 100644 util/uri.c
+ rename scripts/ci/org.centos/stream/{8 => 9}/build-environment.yml (75%)
+ rename scripts/ci/org.centos/stream/{8 => 9}/x86_64/configure (98%)
+ rename scripts/ci/org.centos/stream/{8 => 9}/x86_64/test-avocado (100%)
+ rename tests/docker/dockerfiles/{centos8.docker => centos9.docker} (82%)
+ delete mode 100644 tests/docker/dockerfiles/ubuntu2004.docker
+
+-- 
+2.44.0
+
 
