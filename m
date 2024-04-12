@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42798A284E
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:37:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D7788A2835
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQ7-00070R-DK; Fri, 12 Apr 2024 03:33:59 -0400
+	id 1rvBQB-00070j-Q4; Fri, 12 Apr 2024 03:34:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ5-0006zo-T7
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:57 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rvBQ6-00070C-ER
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:58 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ4-000786-CQ
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:57 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e51398cc4eso6364615ad.2
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:55 -0700 (PDT)
+ id 1rvBQ4-00078P-Va
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:58 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1e5c11076b9so640725ad.3
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1712907235; x=1713512035; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vWTBmrF16GSaydEzWRv0Zn9YqSFsjsSSjgb9YwJ02w4=;
- b=Zuz3gB39RFRPXjjhlMe00Gye62SaGQL9MZHWpfKIzppFAiGXWsnI1oqea+lJUC9vDI
- KdrbE3r12I3nIQhES049JHCTs8xbWHpLoxRGVEGxjfjdVzc1IZ42X/sejepJ/stMfScG
- Qi+MVCORtIQBXUYbF8yp0bBupNMnD6u8kewKSuunjmKJ6WqMERrTLgWWXI8YoAMD3IlM
- Yxu+uwMuM4aJT+C6J3XRvg2s0XHrnEVwwnmz126O4ImNpFeAcO8d1tHslTfAFUF//BHy
- E46FEh3pD7zFQtJEb79g3KWZnhp8y2jIA+3roQbWGuvngF6OKsF44aQ5nNMnErLWfYsT
- YtAg==
+ bh=6ilxVF5BFwS4yjUJP5brLaFANRlAZicyrMWrO+XSuc0=;
+ b=TZXSFWDsAsMGQVsYPjBqDchaQDmbOPAHKM/mgPJZFKOqGbDHoFqE4DMQTolwJT/oPm
+ eOGKEAk3lg4DGoTK9ZxQQRwo6OMgkkM67eYoF/rRZoqW804imrnbw14AJgpmL1lezudM
+ a6EG09maLY4M/phWqabf8jytQRcGNq08Fb0HzpjJmkeOpwZs5MJQtiwPCpiUGew22ZBe
+ 3VVYNIXpThn5fnOObzkVzxohofOnGOJMvFEKsWeoeP4681R0vQTBZGeLv9+3tUwqF4MT
+ NOjIelZwb11j1Qlpbz0cQid/SEqf48j1mN2FarH0ufaUoeGlqkEOf8xOm9jLzPy7LnrX
+ 3Ffw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1712907235; x=1713512035;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vWTBmrF16GSaydEzWRv0Zn9YqSFsjsSSjgb9YwJ02w4=;
- b=Uo3UIrwI38THwhwHMCA+WWH79pcoXnzZZC7Bb9JQ8TbC+4qXqcTlQ+j4ytrxLE+Olm
- fxVclEvBBQbpL9/OtTNtPdZGANLZOEURZKXr2o0e+ayUzetbUpmFc3Sqia6yyVppadMV
- Ja+Jua+dl7OT6sidSjiC1T+0qLz1GKW2wPx8oH74L+IHs2OId/CwOTzuYa5F7ILUv2q2
- X5kN0LCpQpaRcIn0hZIwGux2G7u5of+85RvqiTfLjfwIdhLlmXDnANEnpkZDwRU5iV/V
- l9YGHJ3w0ZuYhT1zHsXffFOsgU4+LoruBzPLe01CdjMJZCgL04Vd8M8ivGokHYAGlqjc
- NxYQ==
-X-Gm-Message-State: AOJu0YyP17coF7LsZfvfK7V1hm20t77ln2KGc+31Ff+gjRch/L/d8SOH
- COd7wp+mTNKp98XDva6dwrp+gZtWCXlh2MVLKeRxFyMz3PIalATGPFmAj7RM7hukv31KA8Mite2
- o
-X-Google-Smtp-Source: AGHT+IGsxKRM8R7Pclaj2h3kb6YavwQ6drPmrrbSr59Iij5QFltY/IbyeEiK2HE5Qh3BfyebQKo05Q==
-X-Received: by 2002:a17:903:2289:b0:1e2:81c1:b35e with SMTP id
- b9-20020a170903228900b001e281c1b35emr2143992plh.54.1712907234841; 
- Fri, 12 Apr 2024 00:33:54 -0700 (PDT)
+ bh=6ilxVF5BFwS4yjUJP5brLaFANRlAZicyrMWrO+XSuc0=;
+ b=baQwoQO5atYM08PmEa8jorRxcv0EAN8KH9XvosgMt9lUuFfsAGopK/6NP8ndEDJnR4
+ S4++yolis/J7p27lGWN8gRbG0i/n1g1l16Oy75Ox7MBiaPOYmaaIX0hsY92Jl/YbIpvX
+ ynItaMcZhmQQBSCbUXmToDEIbgtyryEIkT/pvrpTpg1OYIdC45Rahbw0HV3oow82wUQB
+ wVvHzMHT4hQ6DlkPekceNJOsT4fuF/C4KkMzyRUgRyKkDsaUwuHbNStwi/C1+i+zNwRf
+ korrMZegqP4OBhbV0bzCdsALE7t6dDboiyq33KOWKc4FNGpJskSvz5wFyF4tbEpnxvQR
+ wzKQ==
+X-Gm-Message-State: AOJu0YyHqfBGS1vKELy7eEV0+EKOU5jzJ915aEfJizH+Wp4APjcbnWbv
+ WOVOATm3IXuoWW1HqQkFjXEC1n9q7xH0mEo7NxhX5pG1jXRdw0ClFBGGJfLPvXY15mPCTYoma8K
+ z
+X-Google-Smtp-Source: AGHT+IFIMoPGKgkXg1GY63SfyjaPXmkZpZTU2GlLISIDNSVn8pE+lGFT5Lcx7Z4tVcNYnVRhogK/MA==
+X-Received: by 2002:a17:902:f64a:b0:1e3:ff5e:159f with SMTP id
+ m10-20020a170902f64a00b001e3ff5e159fmr2442098plg.18.1712907235663; 
+ Fri, 12 Apr 2024 00:33:55 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.54
+ e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 00:33:54 -0700 (PDT)
+ Fri, 12 Apr 2024 00:33:55 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 09/27] hw/ide/atapi: Use qemu_hexdump_line to avoid sprintf
-Date: Fri, 12 Apr 2024 00:33:28 -0700
-Message-Id: <20240412073346.458116-10-richard.henderson@linaro.org>
+Subject: [PATCH v3 10/27] hw/dma/pl330: Use qemu_hexdump_line to avoid sprintf
+Date: Fri, 12 Apr 2024 00:33:29 -0700
+Message-Id: <20240412073346.458116-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
 References: <20240412073346.458116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -102,39 +102,51 @@ simplifies the code base.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/ide/atapi.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ hw/dma/pl330.c | 23 ++++++++---------------
+ 1 file changed, 8 insertions(+), 15 deletions(-)
 
-diff --git a/hw/ide/atapi.c b/hw/ide/atapi.c
-index 73ec373184..fcb6cca157 100644
---- a/hw/ide/atapi.c
-+++ b/hw/ide/atapi.c
-@@ -24,6 +24,7 @@
+diff --git a/hw/dma/pl330.c b/hw/dma/pl330.c
+index 70a502d245..5f89295af3 100644
+--- a/hw/dma/pl330.c
++++ b/hw/dma/pl330.c
+@@ -15,6 +15,7 @@
   */
  
  #include "qemu/osdep.h"
 +#include "qemu/cutils.h"
- #include "hw/scsi/scsi.h"
- #include "sysemu/block-backend.h"
- #include "scsi/constants.h"
-@@ -1309,14 +1310,9 @@ void ide_atapi_cmd(IDEState *s)
-     trace_ide_atapi_cmd(s, s->io_buffer[0]);
+ #include "hw/irq.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/sysbus.h"
+@@ -317,22 +318,14 @@ typedef struct PL330InsnDesc {
  
-     if (trace_event_get_state_backends(TRACE_IDE_ATAPI_CMD_PACKET)) {
--        /* Each pretty-printed byte needs two bytes and a space; */
--        char *ppacket = g_malloc(ATAPI_PACKET_SIZE * 3 + 1);
--        int i;
--        for (i = 0; i < ATAPI_PACKET_SIZE; i++) {
--            sprintf(ppacket + (i * 3), "%02x ", buf[i]);
+ static void pl330_hexdump(uint8_t *buf, size_t size)
+ {
+-    unsigned int b, i, len;
+-    char tmpbuf[80];
++    g_autoptr(GString) str = g_string_sized_new(64);
++    size_t b, len;
+ 
+-    for (b = 0; b < size; b += 16) {
+-        len = size - b;
+-        if (len > 16) {
+-            len = 16;
 -        }
--        trace_ide_atapi_cmd_packet(s, s->lcyl | (s->hcyl << 8), ppacket);
--        g_free(ppacket);
-+        g_autoptr(GString) str =
-+            qemu_hexdump_line(NULL, buf, ATAPI_PACKET_SIZE, 1, 0);
-+        trace_ide_atapi_cmd_packet(s, s->lcyl | (s->hcyl << 8), str->str);
+-        tmpbuf[0] = '\0';
+-        for (i = 0; i < len; i++) {
+-            if ((i % 4) == 0) {
+-                strcat(tmpbuf, " ");
+-            }
+-            sprintf(tmpbuf + strlen(tmpbuf), " %02x", buf[b + i]);
+-        }
+-        trace_pl330_hexdump(b, tmpbuf);
++    for (b = 0; b < size; b += len) {
++        len = MIN(16, size - b);
++        g_string_truncate(str, 0);
++        qemu_hexdump_line(str, buf + b, len, 1, 4);
++        trace_pl330_hexdump(b, str->str);
      }
+ }
  
-     /*
 -- 
 2.34.1
 
