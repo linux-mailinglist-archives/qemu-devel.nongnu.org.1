@@ -2,78 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5578A283B
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F278A2836
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQJ-00074M-H7; Fri, 12 Apr 2024 03:34:11 -0400
+	id 1rvBQ5-0006zl-S3; Fri, 12 Apr 2024 03:33:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQF-00073M-M2
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:07 -0400
-Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
+ id 1rvBQ3-0006yh-Po
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:55 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ0-00075y-Vg
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:06 -0400
-Received: by mail-pl1-x635.google.com with SMTP id
- d9443c01a7336-1e455b630acso3259055ad.1
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:52 -0700 (PDT)
+ id 1rvBQ2-00076m-7N
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:55 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1e3e84a302eso4959245ad.0
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712907231; x=1713512031; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712907232; x=1713512032; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=rvakkgiyK54UTlLULBlH8+XzGitioxqA6YEQltyd0/U=;
- b=hKhneatP3JxefFbpSjx+2RsvWTzNmgAROrGwt10PAYaGUGnMYQqWju2IjtD9lhLw3G
- 3cDQz/YzF6IzIA8A0R9etF06dNM9pgKspsuTBfWNaaM1KydQN9NlpqtmDzDb0CZ8mqAn
- U76MfmrFD+Ap72LpiwR+B/cbzmO2PHW8IokQ/IgPZvCf1RaaaOzYoRlb2dOXKA1iizyu
- BBlcChnOFfg8nB5yBMSmJnXyHZxWhyHW1w1OoxXxmjbqWc9hxNzgqN9Y1b25WvUUmCyB
- 7lLm9SKdutRX8ZmHrw7FiSmo019YHbAnbauSkIiUsOiL7LZbYZjDVBAn4bZWx0UmrxoI
- jXIg==
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qyr/Ts8Rn5hOhvh/4SLos/fwt7+2NBBMVS+YXiC8DT0=;
+ b=VvfbjnnzFXryrybZSXsWtuc97xkdxA3A9l6/f/WNc9652gAHjBunrhAOqgtv5gtm8w
+ c7rZOo35DswuFVNIT03tigsEbiwuQCTSxkHWZae5Sj422mqiP1MK2xoSGDfqvNzJhW3q
+ bGWB6pfF/HTilifFCuYHARFF2k3jVkSnILPaxDJlcJStTJICA0ZhGXkP0I9ngH+K9Fd9
+ Mdqcrmjsy6rok338UG7tWxkC0uR5fNZf7Bry0ynMZwToqSdhjESrUerDcVrjYR5DmIUd
+ 7jS13ZVurCJ+BAzAJdRb2KuM51fRGjJYz1i/FPetX9Bga/3rKtnM+Zw9A8E7DE1Utiml
+ H4tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712907231; x=1713512031;
+ d=1e100.net; s=20230601; t=1712907232; x=1713512032;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=rvakkgiyK54UTlLULBlH8+XzGitioxqA6YEQltyd0/U=;
- b=of0EQwyglxxM+qxmUejj1hXznes6C+R7D+0lJZ2GtRN0dNZAonisC5zuLwphzyO4zN
- vXSwah4VW2k4+BVQojV1Ffrvyi9Lg6XhqHbjPims897OK3AAcF8qNWMOeP4R8gnOJjfX
- w5wbEsoqub2sVxPZO4y4ELtan6lLydB2Ggv6RvuO4Zw6dDA8zb38qMAew8e5aK5hnUBS
- A1U+2xuJ+1MUMX2OyRClLscLX3SOIb3RK4bZDqTD6q94bqcqeBxXvF0S3Ub+RaQ4BuNj
- a4AaZD/+uQ4zzpjCBO2ISX6XodlPuFKfEfMhUOjV5UFYKcytVmy8YXmxNcDFvavUrxct
- Wbew==
-X-Gm-Message-State: AOJu0YyZodsSI2NWI/H6qC/YsFp+0KH0WpxAHPykF5m9WwMDOFEMzVz4
- 7HcinVxXdV8+eSi8zLMmZJbPrIJblIGBtP1QPJRUO4F1wBw6CTiJt5owH9s6FEj805sYoW9oY5s
- i
-X-Google-Smtp-Source: AGHT+IGb66LroTK49OZTU7Mt0yOPDcjzDGRZNIr4HEmn0XXOQl9Lzcvpin+8kCao63rM1+deY7WWxw==
-X-Received: by 2002:a17:902:6f16:b0:1e5:3c5:55a5 with SMTP id
- w22-20020a1709026f1600b001e503c555a5mr1557546plk.8.1712907231562; 
- Fri, 12 Apr 2024 00:33:51 -0700 (PDT)
+ bh=qyr/Ts8Rn5hOhvh/4SLos/fwt7+2NBBMVS+YXiC8DT0=;
+ b=TycboKdIINWdTPflxM/BBDqnn0ESC9REnPLHjWtsVlClWnhCXwuOhp8568EXofSAND
+ sDe63JuL/rgqIkMQIl7+FC3b22fMx10iBvXgHfDz2jJHG/FouzcMAGcUUk7KXQK0MHao
+ m0iKDVwmY+/auX3nzED1NEMjWWu6e2BMES3lQDZ+Y+d1gw386AQ2BIIyXwcBwKDyYa+A
+ SCLQW/5QFDNeNMTI3VtgwJAx9Ym/My7ZO0O1UgOv9FiyFsAdcQ3fkp9gW/yh1By1PQ8I
+ IAr1cv5Vj2dzvsZI7t3HJkURjpxXdh8yn9d/KqjoDHFTGaL+4JRDzoVViYcNiFuvzv06
+ yCGA==
+X-Gm-Message-State: AOJu0YzlupyETpjFLb1/UEdkN5xxN5C0DNEz2dLkEO6Kmrxq8NceXB6d
+ oTZan4Z9HnnqdJvwN3QBmr/W3O51ujhawoe1b5TQYSgzbS3wn8dmOmZmpMw6O0+Bi5aPRG2/OWC
+ G
+X-Google-Smtp-Source: AGHT+IFywLt/S5guoQIEXM/568KzcCsZ2G+2Zsqnsoe2NUlN1r56usylDUOLQpM6d6ql/pJvx6G0nQ==
+X-Received: by 2002:a17:902:c40b:b0:1e1:4806:79cb with SMTP id
+ k11-20020a170902c40b00b001e1480679cbmr1948271plk.56.1712907232517; 
+ Fri, 12 Apr 2024 00:33:52 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
  e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.51
- for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 00:33:51 -0700 (PDT)
+ Fri, 12 Apr 2024 00:33:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 05/27] util/hexdump: Inline g_string_append_printf "%02x"
-Date: Fri, 12 Apr 2024 00:33:24 -0700
-Message-Id: <20240412073346.458116-6-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 06/27] hw/mips/malta: Add re-usable rng_seed_hex_new()
+ method
+Date: Fri, 12 Apr 2024 00:33:25 -0700
+Message-Id: <20240412073346.458116-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
 References: <20240412073346.458116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x635.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,51 +94,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Trivial arithmetic can be used for emitting the nibbles,
-rather than full-blown printf formatting.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1.
+
+Extract common code from reinitialize_rng_seed and load_kernel
+to rng_seed_hex_new.  Using qemu_hexdump_line both fixes the
+deprecation warning and simplifies the code base.
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+[rth: Use qemu_hexdump_line.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/hexdump.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ hw/mips/malta.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/util/hexdump.c b/util/hexdump.c
-index b29326b7f2..ae0d4992dc 100644
---- a/util/hexdump.c
-+++ b/util/hexdump.c
-@@ -16,6 +16,11 @@
- #include "qemu/osdep.h"
- #include "qemu/cutils.h"
+diff --git a/hw/mips/malta.c b/hw/mips/malta.c
+index af74008c82..664a2ae0a9 100644
+--- a/hw/mips/malta.c
++++ b/hw/mips/malta.c
+@@ -26,6 +26,7 @@
+ #include "qemu/units.h"
+ #include "qemu/bitops.h"
+ #include "qemu/datadir.h"
++#include "qemu/cutils.h"
+ #include "qemu/guest-random.h"
+ #include "hw/clock.h"
+ #include "hw/southbridge/piix.h"
+@@ -850,15 +851,18 @@ static void G_GNUC_PRINTF(3, 4) prom_set(uint32_t *prom_buf, int index,
+     va_end(ap);
+ }
  
-+static inline char hexdump_nibble(unsigned x)
-+{
-+    return (x < 10 ? '0' : 'a' - 10) + x;
+-static void reinitialize_rng_seed(void *opaque)
++static GString *rng_seed_hex_new(void)
+ {
+-    char *rng_seed_hex = opaque;
+     uint8_t rng_seed[32];
+ 
+     qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
+-    for (size_t i = 0; i < sizeof(rng_seed); ++i) {
+-        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
+-    }
++    return qemu_hexdump_line(NULL, rng_seed, sizeof(rng_seed), 0, 0);
 +}
 +
- GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len,
-                            size_t unit_len, size_t block_len)
- {
-@@ -35,6 +40,8 @@ GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len,
-     }
++static void reinitialize_rng_seed(void *opaque)
++{
++    g_autoptr(GString) hex = rng_seed_hex_new();
++    memcpy(opaque, hex->str, hex->len);
+ }
  
-     for (u = 0, b = 0; len; u++, b++, len--, buf++) {
-+        uint8_t c;
-+
-         if (unit_len && u == unit_len) {
-             g_string_append_c(str, ' ');
-             u = 0;
-@@ -43,7 +50,10 @@ GString *qemu_hexdump_line(GString *str, const void *vbuf, size_t len,
-             g_string_append_c(str, ' ');
-             b = 0;
-         }
--        g_string_append_printf(str, "%02x", *buf);
-+
-+        c = *buf;
-+        g_string_append_c(str, hexdump_nibble(c / 16));
-+        g_string_append_c(str, hexdump_nibble(c % 16));
-     }
+ /* Kernel */
+@@ -870,8 +874,6 @@ static uint64_t load_kernel(void)
+     uint32_t *prom_buf;
+     long prom_size;
+     int prom_index = 0;
+-    uint8_t rng_seed[32];
+-    char rng_seed_hex[sizeof(rng_seed) * 2 + 1];
+     size_t rng_seed_prom_offset;
  
-     return str;
+     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
+@@ -946,14 +948,13 @@ static uint64_t load_kernel(void)
+     prom_set(prom_buf, prom_index++, "modetty0");
+     prom_set(prom_buf, prom_index++, "38400n8r");
+ 
+-    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
+-    for (size_t i = 0; i < sizeof(rng_seed); ++i) {
+-        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
+-    }
+     prom_set(prom_buf, prom_index++, "rngseed");
+     rng_seed_prom_offset = prom_index * ENVP_ENTRY_SIZE +
+                            sizeof(uint32_t) * ENVP_NB_ENTRIES;
+-    prom_set(prom_buf, prom_index++, "%s", rng_seed_hex);
++    {
++        g_autoptr(GString) hex = rng_seed_hex_new();
++        prom_set(prom_buf, prom_index++, "%s", hex->str);
++    }
+ 
+     prom_set(prom_buf, prom_index++, NULL);
+ 
 -- 
 2.34.1
 
