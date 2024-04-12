@@ -2,80 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684918A2837
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CAD8A285B
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:38:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQU-00079P-SL; Fri, 12 Apr 2024 03:34:22 -0400
+	id 1rvBUd-0006ik-Sp; Fri, 12 Apr 2024 03:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQT-00078Z-7c
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:21 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQJ-0007Dr-5S
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:34:20 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1e3f17c64daso5128175ad.3
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:34:09 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rvBUb-0006iO-6Q; Fri, 12 Apr 2024 03:38:37 -0400
+Received: from out30-99.freemail.mail.aliyun.com ([115.124.30.99])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eric.huang@linux.alibaba.com>)
+ id 1rvBUX-0007xs-2H; Fri, 12 Apr 2024 03:38:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712907249; x=1713512049; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3QxLZpCYn/H6Te2A9HVNEOscia45z8pGQiv2WcFZT0s=;
- b=sqmwV4bcV2mM3oMSICPtAvruRkJsxnk65pSTxClQmxUHHaRai22N9eQ9LJUT5vwie1
- 52MGSDVhIRL33nrl52nR5BpV224k+2zShb8eLuNQPdakNotfBRGFz0nz1kuZkRmdwnUI
- XyKAF3M+r9AbB7TLdVyf16TiQzpvw2RfX1XP0geMZuacpXbTunV6uJIs46cZHkLgEpv2
- x30OuoVf1N6AvW4H1B+swjmU+bTTTRAAJygk/agqloXCnOURIZo7shVk43171+un6d1T
- rdDTzjKygy00fQgwUThsBAhNTGzCk9lnxXPDb4iwn5+owii4NiYVPaCXGQcAOQfWqJAn
- GxnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712907249; x=1713512049;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=3QxLZpCYn/H6Te2A9HVNEOscia45z8pGQiv2WcFZT0s=;
- b=gO6UitRlUFFPy2Y5kl8KEnYLboqXOCc7slKnVGutn9APgNz0SKuwGtwNozIhGQQN0P
- JQ6/h7JVkWzwpWD8kZyM0TRlsm7B/TXGREtI4T2unMmhZCCiXllJ5rgkQ+xFDGXKilgc
- Jj2HFXdFqvsSbLqwwgcHzgoY2g8Za89pM7Yga+Ud6+f1QWBP00VXrfewGExNs0788DkD
- GgemT+gbhLHpQs8rDhS5W0ufjcaW+deRB5e4VzxuJNU9UyYA+a0i+QhWcAfcMFqQlYYN
- SmcmR2vm5usMcklGfmKmadoc9h0G0vN8Yi2VVLG1tz1nyaP0S3pA1qL6ouzwCbJrurhz
- KAnA==
-X-Gm-Message-State: AOJu0YzJzlDjCJNPEZ5gEd1JqM6exMNEq7gamlQndKOST/e/qsxuoYzg
- 2Fg5qghuX3jPEjd6/tXstPwPU21/dj2ZJpCWrKpiNI/JIfneapJvXm8e7ORwG/LxLE0ZOSoZYdh
- 9
-X-Google-Smtp-Source: AGHT+IG5RBGt5Un9YK75iOBNtHp3ZYReVPH39LObGB0GWouGYiwCRgbyffJJEM8+R9qOEXv7q56dQg==
-X-Received: by 2002:a17:902:7008:b0:1e2:a5b3:e7 with SMTP id
- y8-20020a170902700800b001e2a5b300e7mr1477387plk.58.1712907249051; 
- Fri, 12 Apr 2024 00:34:09 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.34.08
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 00:34:08 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ d=linux.alibaba.com; s=default;
+ t=1712907502; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+ bh=4+2qdm/apoMiVfH3kMPqOvk4CSUGbdlyWLmKvixE+wk=;
+ b=ZNopkPM8LhYf1R0gTfgjJM3yzGKGEwdu3+spgplicSD5RHyX4gUAegRIgWN96Aqv2bXW2Mz7pk6PFZnNEdavnYEAKANQgdIBijol8dZpvrEmmyIIEAcPAtDyoJKZvOex2sTGWN7JYWxI0EyW12tqjeZWsAHkT6DEwwOJGX3rgQ4=
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R461e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046060;
+ MF=eric.huang@linux.alibaba.com; NM=1; PH=DS; RN=9; SR=0;
+ TI=SMTPD_---0W4NVPPR_1712907499; 
+Received: from localhost.localdomain(mailfrom:eric.huang@linux.alibaba.com
+ fp:SMTPD_---0W4NVPPR_1712907499) by smtp.aliyun-inc.com;
+ Fri, 12 Apr 2024 15:38:21 +0800
+From: Huang Tao <eric.huang@linux.alibaba.com>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 27/27] target/i386/kvm: Improve KVM_EXIT_NOTIFY warnings
-Date: Fri, 12 Apr 2024 00:33:46 -0700
-Message-Id: <20240412073346.458116-28-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
-References: <20240412073346.458116-1-richard.henderson@linaro.org>
+Cc: qemu-riscv@nongnu.org, zhiwei_liu@linux.alibaba.com,
+ dbarboza@ventanamicro.com, liwei1518@gmail.com, bin.meng@windriver.com,
+ alistair.francis@wdc.com, palmer@dabbelt.com,
+ Huang Tao <eric.huang@linux.alibaba.com>
+Subject: [PATCH 00/65]target/riscv: Support XTheadVector extension
+Date: Fri, 12 Apr 2024 15:36:30 +0800
+Message-ID: <20240412073735.76413-1-eric.huang@linux.alibaba.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=115.124.30.99;
+ envelope-from=eric.huang@linux.alibaba.com;
+ helo=out30-99.freemail.mail.aliyun.com
+X-Spam_score_int: -174
+X-Spam_score: -17.5
+X-Spam_bar: -----------------
+X-Spam_report: (-17.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,46 +67,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/i386/kvm/kvm.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+This patchset implements the XTheadVector extension for RISC-V on QEMU.
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index e68cbe9293..1fc809b2f9 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -5275,7 +5275,6 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-     uint64_t code;
-     int ret;
-     bool ctx_invalid;
--    char str[256];
-     KVMState *state;
- 
-     switch (run->exit_reason) {
-@@ -5335,15 +5334,16 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-     case KVM_EXIT_NOTIFY:
-         ctx_invalid = !!(run->notify.flags & KVM_NOTIFY_CONTEXT_INVALID);
-         state = KVM_STATE(current_accel());
--        sprintf(str, "Encounter a notify exit with %svalid context in"
--                     " guest. There can be possible misbehaves in guest."
--                     " Please have a look.", ctx_invalid ? "in" : "");
-         if (ctx_invalid ||
-             state->notify_vmexit == NOTIFY_VMEXIT_OPTION_INTERNAL_ERROR) {
--            warn_report("KVM internal error: %s", str);
-+            warn_report("KVM internal error: Encountered a notify exit "
-+                        "with invalid context in guest.");
-             ret = -1;
-         } else {
--            warn_report_once("KVM: %s", str);
-+            warn_report_once("KVM: Encounterd a notify exit with valid "
-+                             "context in guest. "
-+                             "The guest could be misbehaving. "
-+                             "Please have a look.");
-             ret = 0;
-         }
-         break;
+You can find the full description of the XTheadVector extension at:
+https://github.com/RISCV-SPEC/thead-extension-spec/blob/master/xtheadvector.adoc
+
+The XTheadvector extension is a non-standard extension for RISC-V. The
+encoding space of the XTheadVector instructions overlaps with those of
+the V extension.
+
+The XTheadVector is similar to the V extension v0.7.1, so it has several
+differences with the current V extension v1.0 which is supported by
+QEMU.
+
+Here is a simple list of the differences:
+  * Different instructions
+  * Different CSR behaviors
+  * Different mask register layout
+  * Different overlap policy
+  * Different masked/tail element processing policy
+  * Same instructions have different behaviors in detail
+
+This patchset is based on https://github.com/alistair23/qemu/tree/riscv-to-apply.next,
+relay on some former patches which are not merged into upstream yet:
+  * target/riscv: Implement dynamic establishment of custom decoder
+  (https://patchew.org/QEMU/20240314092158.65866-1-eric.huang@linux.alibaba.com/)
+  * riscv: set vstart_eq_zero on vector insns
+  (https://patchew.org/QEMU/20240313220141.427730-1-dbarboza@ventanamicro.com/)
+  * riscv: thead: Add th.sxstatus CSR emulation
+  (https://patchew.org/QEMU/20240329120427.684677-1-christoph.muellner@vrull.eu/)
+
+
+The patch 'riscv: thead: Add th.sxstatus CSR emulation' is included in the patchset
+for we need to change it to support XTheadVector csrs.
+
+Christoph Müllner (1):
+  riscv: thead: Add th.sxstatus CSR emulation
+
+Huang Tao (64):
+  target/riscv: Reuse th_csr.c to add user-mode csrs
+  target/riscv: Add properties for XTheadVector extension
+  target/riscv: Override some csr ops for XTheadVector
+  target/riscv: Add mlen in DisasContext
+  target/riscv: Implement insns decode rules for XTheadVector
+  target/riscv: implement th.vsetvl{i} for XTheadVector
+  target/riscv: Add strided load instructions for XTheadVector
+  target/riscv: Add strided store instructions for XTheadVector
+  target/riscv: Add unit-stride load instructions for XTheadVector
+  target/riscv: Add unit-stride store instructions for XTheadVector
+  target/riscv: Add indexed load instructions for XTheadVector
+  target/riscv: Add indexed store instructions for XTheadVector
+  target/riscv: Add unit-stride fault-only-first instructions for
+    XTheadVector
+  target/riscv: Add vector amo operations for XTheadVector
+  target/riscv: Add single-width integer add and subtract instructions
+    for XTheadVector
+  target/riscv: Add widening integer add/subtract instructions for
+    XTheadVector
+  target/riscv: Add integer add-with-carry/sub-with-borrow instructions
+    for XTheadVector
+  target/riscv: Add bitwise logical instructions for XTheadVector
+  target/riscv: Add single-width bit shift instructions for XTheadVector
+  target/riscv: Add narrowing integer right shift instructions for
+    XTheadVector
+  target/riscv: Add integer compare instructions for XTheadVector
+  target/riscv: Add integer min/max instructions for XTheadVector
+  target/riscv: Add single-width integer multiply instructions for
+    XTheadVector
+  target/riscv: Add integer divide instructions for XTheadVector
+  target/riscv: Add widening integer multiply instructions for
+    XTheadVector
+  target/riscv: Add single-width integer multiply-add instructions for
+    XTheadVector
+  target/riscv: Add widening integer multiply-add instructions for
+    XTheadVector
+  target/riscv: Add integer merge and move instructions for XTheadVector
+  target/riscv: Add single-width saturating add and sub instructions for
+    XTheadVector
+  target/riscv: Add single-width average add and sub instructions for
+    XTheadVector
+  target/riscv: Add single-width fractional mul with rounding and
+    saturation for XTheadVector
+  target/riscv: Add widening saturating scaled multiply-add instructions
+    for XTheadVector
+  target/riscv: Add single-width scaling shift instructions for
+    XTheadVector
+  target/riscv: Add narrowing fixed-point clip instructions for
+    XTheadVector
+  target/riscv: Add single-width floating-point add/sub instructions for
+    XTheadVector
+  target/riscv: Add widening floating-point add/sub instructions for
+    XTheadVector
+  target/riscv: Add single-width floating-point multiply/divide
+    instructions for XTheadVector
+  target/riscv: Add widening floating-point multiply instructions for
+    XTheadVector
+  target/riscv: Add single-width floating-point fused multiply-add
+    instructions for XTheadVector
+  target/riscv: Add widening floating-point fused mul-add instructions
+    for XTheadVector
+  target/riscv: Add floating-pointing square-root instructions for
+    XTheadVector
+  target/riscv: Add floating-point MIN/MAX instructions for XTheadVector
+  target/riscv: Add floating-point sign-injection instructions for
+    XTheadVector
+  target/riscv: Add floating-point compare instructions for XTheadVector
+  target/riscv: Add floating-point classify and merge instructions for
+    XTheadVector
+  target/riscv: Add single-width floating-point/integer type-convert
+    instructions for XTheadVector
+  target/riscv: Add widening floating-point/integer type-convert
+    instructions for XTheadVector
+  target/riscv: Add narrowing floating-point/integer type-convert
+    instructions for XTheadVector
+  target/riscv: Add single-width integer reduction instructions for
+    XTheadVector
+  target/riscv: Add widening integer reduction instructions for
+    XTheadVector
+  target/riscv: Add single-width floating-point reduction instructions
+    for XTheadVector
+  target/riscv: Add widening floating-point reduction instructions for
+    XTheadVector
+  target/riscv: Add mask-register logical instructions for XTheadVector
+  target/riscv: Add vector mask population count vmpopc for XTheadVector
+  target/riscv: Add th.vmfirst.m for XTheadVector
+  target/riscv: Add set-X-first mask bit instructrions for XTheadVector
+  target/riscv: Add vector iota instruction for XTheadVector
+  target/riscv: Add vector element index instruction for XTheadVector
+  target/riscv: Add integer extract and scalar move instructions for
+    XTheadVector
+  target/riscv: Add floating-point scalar move instructions for
+    XTheadVector
+  target/riscv: Add vector slide instructions for XTheadVector
+  target/riscv: Add vector register gather instructions for XTheadVector
+  target/riscv: Add vector compress instruction for XTheadVector
+  target/riscv: Enable XTheadVector extension for c906
+
+ target/riscv/cpu.c                            |    4 +
+ target/riscv/cpu.h                            |   39 +
+ target/riscv/cpu_bits.h                       |   18 +
+ target/riscv/cpu_cfg.h                        |    2 +
+ target/riscv/cpu_helper.c                     |    2 +-
+ target/riscv/csr.c                            |   42 +-
+ target/riscv/helper.h                         | 1067 +++++
+ .../riscv/insn_trans/trans_xtheadvector.c.inc | 2933 +++++++++++++
+ target/riscv/internals.h                      |   12 +
+ target/riscv/meson.build                      |    3 +
+ target/riscv/tcg/tcg-cpu.c                    |   33 +
+ target/riscv/th_csr.c                         |  250 ++
+ target/riscv/translate.c                      |    7 +
+ target/riscv/vector_helper.c                  |  306 +-
+ target/riscv/vector_internals.h               |  187 +
+ target/riscv/xtheadvector.decode              |  390 ++
+ target/riscv/xtheadvector_helper.c            | 3894 +++++++++++++++++
+ 17 files changed, 8983 insertions(+), 206 deletions(-)
+ create mode 100644 target/riscv/insn_trans/trans_xtheadvector.c.inc
+ create mode 100644 target/riscv/th_csr.c
+ create mode 100644 target/riscv/xtheadvector.decode
+ create mode 100644 target/riscv/xtheadvector_helper.c
+
 -- 
-2.34.1
+2.44.0
 
 
