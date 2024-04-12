@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0FA8A2BD7
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 12:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AB58A2BDC
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 12:05:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvDlX-0005AK-Vr; Fri, 12 Apr 2024 06:04:16 -0400
+	id 1rvDlZ-0005BC-T4; Fri, 12 Apr 2024 06:04:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvDlT-00058a-0i
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rvDlU-00059A-IX
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvDlP-0001YI-03
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:10 -0400
+ id 1rvDlR-0001Yc-SL
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 06:04:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712916246;
+ s=mimecast20190719; t=1712916248;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:  content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mA3b2aFkTIhdcZfVSWsZn6Bp7tzG7GqbDMcehh+jthA=;
- b=TT1nRaniUijEGCdl1bORodJqbvJ7zsfcuGVJC8Fq0p9i6P6Thc8nglVzIm+/Edvd0ziqdG
- P1XTBsa7aDs6uN539b6im15NrZ/tyHp+Ty9q+XUDR06YeGDcwCFZYUrNwTvbIn+6Mlabdk
- bB5ITF/uop88pRRSYQNR4G60qy7hmrw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=A5Llucl1jLUHeO2gAswtv29kQ2WFQbLL8CXHS8kKVi4=;
+ b=NJud7B2zxyvh77j0uh8L2V3dnCyxky0xZ1yjbGaNEu+d+4iBLtyo+oQoqTK7YTfcXPgEMD
+ dWHt9Dk6p7p1X2scEiIdfX1ACLSlC6S7mdz8Ky8VkwK9TDXxcr6EOuIkhN9mTBYZ7wD16c
+ gE8wy9OeI4SZ1BVP9qhCYj2W7EvbZ/c=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-658-189T5Ht5NZ-xxAPTy2a85A-1; Fri, 12 Apr 2024 06:04:04 -0400
-X-MC-Unique: 189T5Ht5NZ-xxAPTy2a85A-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a52052809caso56153366b.2
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 03:04:04 -0700 (PDT)
+ us-mta-551-WJqSSSvZP-21LgZPLianIw-1; Fri, 12 Apr 2024 06:04:07 -0400
+X-MC-Unique: WJqSSSvZP-21LgZPLianIw-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-56fe77747a0so1951922a12.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 03:04:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712916243; x=1713521043;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mA3b2aFkTIhdcZfVSWsZn6Bp7tzG7GqbDMcehh+jthA=;
- b=jtRp3BMVmO2LOlw4Y6rbZnCUXREFXL+d6PpsfquODOOMif+16XiYFPmg3tNh91ILyO
- dMVEE0eM2u21Q84FSQ43xCER8WRZR4fvtv4CfD5OW8I7mejJJlAxr+2QWfPEYCrMEBxj
- o8DEYuaybzpjMak8Cwwlc+10r+tpGH480scckrb3Bp/eqaJVH6bGTt1pwGxKWH2nNFWC
- doxCkUpINhKXmUQtd4pZOVQ0zZHjVFsgrnjj5cMWm6OXHao5061GO7tDIbwQFB+fEq5a
- Zy/Y7BAVSVn0LGJoSZXcrDo5TukJg0R4wKxyc+oO1cnE9EnxFtBcBXdUxyNSsR7lOOSv
- jq8w==
-X-Gm-Message-State: AOJu0YzrW5nxaOTlve0NZCiJFMKH70UdSt2QCayhdqDiRYtjghDBl7s/
- of+jLQjyxn1xo/rF1L1MJlHFfQ83WhL3DewaRZWvXW1CtebtRdOYvQj4/v4SkH+rNOl5NNhGOj2
- 1HNpu/oVK4UNF17E54lAItmfQdbaVF4f6w/J4lCLYinA17QyX0DvnkjGfXiosq4KgkV9aZaAvXI
- 42jqJ5eKd/ji8Wh8TZX90pjxaZDdgXMJ2wLAbc
-X-Received: by 2002:a17:907:2dac:b0:a52:3556:85db with SMTP id
- gt44-20020a1709072dac00b00a52355685dbmr1571013ejc.19.1712916243152; 
- Fri, 12 Apr 2024 03:04:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFw6u9s2lZcYppZ2UMWaaWJ5Na4jYhQASxyHLqd0YKzfCKJro226lbqt0VHmFngNF5+CKzvsg==
-X-Received: by 2002:a17:907:2dac:b0:a52:3556:85db with SMTP id
- gt44-20020a1709072dac00b00a52355685dbmr1570994ejc.19.1712916242733; 
- Fri, 12 Apr 2024 03:04:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712916245; x=1713521045;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=A5Llucl1jLUHeO2gAswtv29kQ2WFQbLL8CXHS8kKVi4=;
+ b=CVVyMXvZgDQSaZAavLoXLWy163cjcOar51ldc/TkcrAI6i7rRhIcbD3t2lPYKpPLPs
+ B2+aU9G+OE0OY/D7p27yOoPVkKSawxQTW9ynrkJ1wF6KBNw4UKWPhfagjKBkYFO1cgEp
+ qZMaAqNBV7qgoRYZlARWq6ON8rN+mJ2MUdJFvNtF01/ZOkb5ZkAfJLmhq4pqL4UxCXos
+ N1DTkwRd7w+ey9T/bMXBMwQLEh8UjFNCalJ1KYCZsxn5lnnR41+d6P1E7QziSrl/bUKU
+ ts9bm0QpYlt06nEe/5JALF+/ODZMpKjutO27V42iaqjEW4cwsZ+phTtNWtkU/Ga3FDgz
+ 97LA==
+X-Gm-Message-State: AOJu0Yw3XnrYRJfTpLxaEAH1FZnQF4Z4PnW5+HXvfykVQhgF92s8bmb3
+ 3HLjYx5zWp1XCWXUXHl0AG1XG3hnC6Pd+s2CLN0/OOrY/agmYiJrlrkhOOBHT7C/oumvRbPbO9n
+ YgD2l/yYzPY3CoygqooQXhuUy1bHWtZD52+7m0oEKgGH54IfpjEktGdzps9dpoO9HMMM93qp/YN
+ meygN3tRtR7itEpEFxdyDoYyje/xzxLGGaWJZd
+X-Received: by 2002:a50:f604:0:b0:56b:d013:a67e with SMTP id
+ c4-20020a50f604000000b0056bd013a67emr1916308edn.18.1712916245597; 
+ Fri, 12 Apr 2024 03:04:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHvk4F6HwlTEZvLA3g8y47IjrnxSeaJ0O4otCmhUZDVCde6k9Ro5o7bIvLOQS8s83DRV+kX7w==
+X-Received: by 2002:a50:f604:0:b0:56b:d013:a67e with SMTP id
+ c4-20020a50f604000000b0056bd013a67emr1916295edn.18.1712916245272; 
+ Fri, 12 Apr 2024 03:04:05 -0700 (PDT)
 Received: from avogadro.local ([176.206.87.39])
  by smtp.gmail.com with ESMTPSA id
- hz22-20020a1709072cf600b00a522f866cd3sm800644ejc.143.2024.04.12.03.04.02
- for <qemu-devel@nongnu.org>
+ dh5-20020a0564021d2500b0056e3e0394absm1504902edb.68.2024.04.12.03.04.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 03:04:02 -0700 (PDT)
+ Fri, 12 Apr 2024 03:04:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 0/2] Final build system fixes for 9.0
-Date: Fri, 12 Apr 2024 12:03:59 +0200
-Message-ID: <20240412100401.20047-1-pbonzini@redhat.com>
+Cc: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Subject: [PULL 1/2] Makefile: fix use of -j without an argument
+Date: Fri, 12 Apr 2024 12:04:00 +0200
+Message-ID: <20240412100401.20047-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240412100401.20047-1-pbonzini@redhat.com>
+References: <20240412100401.20047-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -45
 X-Spam_score: -4.6
@@ -97,31 +100,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 02e16ab9f4f19c4bdd17c51952d70e2ded74c6bf:
+From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 
-  Update version for v9.0.0-rc3 release (2024-04-10 18:05:18 +0100)
+Our Makefile massages the given make arguments to invoke ninja
+accordingly. One key difference is that ninja will parallelize by
+default, whereas make only does so with -j<n> or -j. The make man page
+says that "if the -j option is given without an argument, make will not
+limit the number of jobs that can run simultaneously". We use to support
+that by replacing -j with "" (empty string) when calling ninja, so that
+it would do its auto-parallelization based on the number of CPU cores.
 
-are available in the Git repository at:
+This was accidentally broken at d1ce2cc95b (Makefile: preserve
+--jobserver-auth argument when calling ninja, 2024-04-02),
+causing `make -j` to fail:
 
-  https://gitlab.com/bonzini/qemu.git tags/for-upstream
+$ make -j V=1
+  /usr/bin/ninja -v   -j -d keepdepfile all | cat
+  make  -C contrib/plugins/ V="1" TARGET_DIR="contrib/plugins/" all
+  ninja: fatal: invalid -j parameter
+  make: *** [Makefile:161: run-ninja] Error
 
-for you to fetch changes up to 2d6d995709482cc8b6a76dbb5334a28001a14a9a:
+Let's fix that and indent the touched code for better readability.
 
-  meson.build: Disable -fzero-call-used-regs on OpenBSD (2024-04-12 12:02:12 +0200)
+Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+Fixes: d1ce2cc95b ("Makefile: preserve --jobserver-auth argument when calling ninja", 2024-04-02)
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ Makefile | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-----------------------------------------------------------------
-build system fixes
-
-----------------------------------------------------------------
-Matheus Tavares Bernardino (1):
-      Makefile: fix use of -j without an argument
-
-Thomas Huth (1):
-      meson.build: Disable -fzero-call-used-regs on OpenBSD
-
- Makefile    | 9 +++++++--
- meson.build | 6 +++++-
- 2 files changed, 12 insertions(+), 3 deletions(-)
+diff --git a/Makefile b/Makefile
+index 183756018ff..02a257584ba 100644
+--- a/Makefile
++++ b/Makefile
+@@ -141,8 +141,13 @@ MAKE.n = $(findstring n,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.k = $(findstring k,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.q = $(findstring q,$(firstword $(filter-out --%,$(MAKEFLAGS))))
+ MAKE.nq = $(if $(word 2, $(MAKE.n) $(MAKE.q)),nq)
+-NINJAFLAGS = $(if $V,-v) $(if $(MAKE.n), -n) $(if $(MAKE.k), -k0) \
+-        $(or $(filter -l% -j%, $(MAKEFLAGS)), $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1)) \
++NINJAFLAGS = \
++        $(if $V,-v) \
++        $(if $(MAKE.n), -n) \
++        $(if $(MAKE.k), -k0) \
++        $(filter-out -j, \
++          $(or $(filter -l% -j%, $(MAKEFLAGS)), \
++               $(if $(filter --jobserver-auth=%, $(MAKEFLAGS)),, -j1))) \
+         -d keepdepfile
+ ninja-cmd-goals = $(or $(MAKECMDGOALS), all)
+ ninja-cmd-goals += $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
 -- 
 2.44.0
 
