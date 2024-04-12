@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8377F8A2F63
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 15:27:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1EE8A2F62
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 15:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvGu4-0003Cc-P4; Fri, 12 Apr 2024 09:25:16 -0400
+	id 1rvGu4-0003Bs-Jg; Fri, 12 Apr 2024 09:25:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGtw-00037G-W4
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:25:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGu0-00039k-Uc
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:25:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGtu-0007DO-OR
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:25:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rvGtz-0007Ee-53
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 09:25:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712928305;
+ s=mimecast20190719; t=1712928310;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+AH6t0lPqGWZlIgwPuu3kIvSTGx5Kuv+0nKFDMD0o40=;
- b=hrc0JUcAsmrxUXz8Bcs+eZOoRBGSNn6uyuySAqzr7RypajnPyp+53M83V27z9TS8w/ZPIS
- kJ6uFOavCXADso/H/PRMNl9xVVVwZ7FB8iZsBzOLKxTChGVS2XfbH5LU0X6Q/o+YX/wRkD
- GSK5ca06o5vzMThUTYoT8qyA7hLesk0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-TAzu2iwWOQKe4Z65e6xukw-1; Fri,
- 12 Apr 2024 09:25:04 -0400
-X-MC-Unique: TAzu2iwWOQKe4Z65e6xukw-1
+ bh=EX4Uerm0eo5Kmx5JIUK0JJzWYqOJJrmeNb+2wE1NvaU=;
+ b=dNUbxddcPtuBMuPT9jGjc6iHk58+xZbUA4oGsVNN/f1hEhLF0OIGQx0TyFQApYZbzIIL4m
+ i8fEuXVjAxgVKNO/rBwIbPAnYEHmoWykwDhEcIWdX6Wbh5bfdzKicqQPZHGa6fzHKm2Krw
+ x2vvzxVgLE1VBcZ5P/BgZxkYV35mcNs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-677-FxEHK-C4Opajgpb3bJ9r2g-1; Fri, 12 Apr 2024 09:25:07 -0400
+X-MC-Unique: FxEHK-C4Opajgpb3bJ9r2g-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F7A63C01B97;
- Fri, 12 Apr 2024 13:25:03 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C9B521044572;
+ Fri, 12 Apr 2024 13:25:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.215])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C4E742166B31;
- Fri, 12 Apr 2024 13:25:00 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C77032166B31;
+ Fri, 12 Apr 2024 13:25:03 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -51,9 +51,9 @@ To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v2 11/13] block/nfs: Use URI parsing code from glib
-Date: Fri, 12 Apr 2024 15:24:13 +0200
-Message-ID: <20240412132415.282354-12-thuth@redhat.com>
+Subject: [PATCH v2 12/13] block/ssh: Use URI parsing code from glib
+Date: Fri, 12 Apr 2024 15:24:14 +0200
+Message-ID: <20240412132415.282354-13-thuth@redhat.com>
 In-Reply-To: <20240412132415.282354-1-thuth@redhat.com>
 References: <20240412132415.282354-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -87,155 +87,130 @@ Since version 2.66, glib has useful URI parsing functions, too.
 Use those instead of the QEMU-internal ones to be finally able
 to get rid of the latter.
 
+Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- block/nfs.c | 110 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 54 insertions(+), 56 deletions(-)
+ block/ssh.c | 75 ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 40 insertions(+), 35 deletions(-)
 
-diff --git a/block/nfs.c b/block/nfs.c
-index f737e19cd3..07f50b7402 100644
---- a/block/nfs.c
-+++ b/block/nfs.c
-@@ -38,7 +38,6 @@
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
--#include "qemu/uri.h"
+diff --git a/block/ssh.c b/block/ssh.c
+index 2748253d4a..18ae565e55 100644
+--- a/block/ssh.c
++++ b/block/ssh.c
+@@ -37,7 +37,6 @@
+ #include "qemu/ctype.h"
  #include "qemu/cutils.h"
- #include "sysemu/replay.h"
+ #include "qemu/sockets.h"
+-#include "qemu/uri.h"
+ #include "qapi/qapi-visit-sockets.h"
  #include "qapi/qapi-visit-block-core.h"
-@@ -79,77 +78,76 @@ typedef struct NFSRPC {
+ #include "qapi/qmp/qdict.h"
+@@ -181,65 +180,71 @@ static void sftp_error_trace(BDRVSSHState *s, const char *op)
  
- static int nfs_parse_uri(const char *filename, QDict *options, Error **errp)
+ static int parse_uri(const char *filename, QDict *options, Error **errp)
  {
 -    URI *uri = NULL;
--    QueryParams *qp = NULL;
--    int ret = -EINVAL, i;
+-    QueryParams *qp;
 +    g_autoptr(GUri) uri = g_uri_parse(filename, G_URI_FLAGS_NONE, NULL);
-+    GUriParamsIter qp;
-+    const char *uri_server, *uri_path, *uri_query;
++    const char *uri_host, *uri_path, *uri_user, *uri_query;
+     char *port_str;
+-    int i;
++    int port;
++    g_autoptr(GError) gerror = NULL;
 +    char *qp_name, *qp_value;
-+    GError *gerror = NULL;
++    GUriParamsIter qp;
  
 -    uri = uri_parse(filename);
      if (!uri) {
-         error_setg(errp, "Invalid URI specified");
--        goto out;
-+        return -EINVAL;
+         return -EINVAL;
      }
--    if (g_strcmp0(uri->scheme, "nfs") != 0) {
-+    if (!g_str_equal(g_uri_get_scheme(uri), "nfs")) {
-         error_setg(errp, "URI scheme must be 'nfs'");
--        goto out;
+ 
+-    if (g_strcmp0(uri->scheme, "ssh") != 0) {
++    if (g_strcmp0(g_uri_get_scheme(uri), "ssh") != 0) {
+         error_setg(errp, "URI scheme must be 'ssh'");
+-        goto err;
 +        return -EINVAL;
      }
  
--    if (!uri->server) {
-+    uri_server = g_uri_get_host(uri);
-+    if (!uri_server || !uri_server[0]) {
+-    if (!uri->server || strcmp(uri->server, "") == 0) {
++    uri_host = g_uri_get_host(uri);
++    if (!uri_host || g_str_equal(uri_host, "")) {
          error_setg(errp, "missing hostname in URI");
--        goto out;
+-        goto err;
 +        return -EINVAL;
      }
  
--    if (!uri->path) {
+-    if (!uri->path || strcmp(uri->path, "") == 0) {
 +    uri_path = g_uri_get_path(uri);
-+    if (!uri_path || !uri_path[0]) {
-         error_setg(errp, "missing file path in URI");
--        goto out;
++    if (!uri_path || g_str_equal(uri_path, "")) {
+         error_setg(errp, "missing remote path in URI");
+-        goto err;
 -    }
 -
 -    qp = query_params_parse(uri->query);
 -    if (!qp) {
 -        error_setg(errp, "could not parse query parameters");
--        goto out;
+-        goto err;
 +        return -EINVAL;
      }
  
+-    if(uri->user && strcmp(uri->user, "") != 0) {
+-        qdict_put_str(options, "user", uri->user);
++    uri_user = g_uri_get_user(uri);
++    if (uri_user && !g_str_equal(uri_user, "")) {
++        qdict_put_str(options, "user", uri_user);
+     }
+ 
 -    qdict_put_str(options, "server.host", uri->server);
-+    qdict_put_str(options, "server.host", uri_server);
-     qdict_put_str(options, "server.type", "inet");
++    qdict_put_str(options, "server.host", uri_host);
+ 
+-    port_str = g_strdup_printf("%d", uri->port ?: 22);
++    port = g_uri_get_port(uri);
++    port_str = g_strdup_printf("%d", port > 0 ? port : 22);
+     qdict_put_str(options, "server.port", port_str);
+     g_free(port_str);
+ 
 -    qdict_put_str(options, "path", uri->path);
 -
--    for (i = 0; i < qp->n; i++) {
--        uint64_t val;
--        if (!qp->p[i].value) {
--            error_setg(errp, "Value for NFS parameter expected: %s",
--                       qp->p[i].name);
--            goto out;
--        }
--        if (parse_uint_full(qp->p[i].value, 0, &val)) {
--            error_setg(errp, "Illegal value for NFS parameter: %s",
--                       qp->p[i].name);
--            goto out;
--        }
--        if (!strcmp(qp->p[i].name, "uid")) {
--            qdict_put_str(options, "user", qp->p[i].value);
--        } else if (!strcmp(qp->p[i].name, "gid")) {
--            qdict_put_str(options, "group", qp->p[i].value);
--        } else if (!strcmp(qp->p[i].name, "tcp-syncnt")) {
--            qdict_put_str(options, "tcp-syn-count", qp->p[i].value);
--        } else if (!strcmp(qp->p[i].name, "readahead")) {
--            qdict_put_str(options, "readahead-size", qp->p[i].value);
--        } else if (!strcmp(qp->p[i].name, "pagecache")) {
--            qdict_put_str(options, "page-cache-size", qp->p[i].value);
--        } else if (!strcmp(qp->p[i].name, "debug")) {
--            qdict_put_str(options, "debug", qp->p[i].value);
--        } else {
--            error_setg(errp, "Unknown NFS parameter name: %s",
--                       qp->p[i].name);
--            goto out;
+-    /* Pick out any query parameters that we understand, and ignore
+-     * the rest.
+-     */
+-    for (i = 0; i < qp->n; ++i) {
+-        if (strcmp(qp->p[i].name, "host_key_check") == 0) {
+-            qdict_put_str(options, "host_key_check", qp->p[i].value);
 +    qdict_put_str(options, "path", uri_path);
 +
 +    uri_query = g_uri_get_query(uri);
 +    if (uri_query) {
 +        g_uri_params_iter_init(&qp, uri_query, -1, "&", G_URI_PARAMS_NONE);
 +        while (g_uri_params_iter_next(&qp, &qp_name, &qp_value, &gerror)) {
-+            uint64_t val;
-+            if (!qp_name || gerror) {
-+                error_setg(errp, "Failed to parse NFS parameter");
-+                return -EINVAL;
++            if (!qp_name || !qp_value || gerror) {
++                warn_report("Failed to parse SSH URI parameters '%s'.",
++                            uri_query);
++                break;
 +            }
-+            if (!qp_value) {
-+                error_setg(errp, "Value for NFS parameter expected: %s",
-+                           qp_name);
-+                return -EINVAL;
-+            }
-+            if (parse_uint_full(qp_value, 0, &val)) {
-+                error_setg(errp, "Illegal value for NFS parameter: %s",
-+                           qp_name);
-+                return -EINVAL;
-+            }
-+            if (g_str_equal(qp_name, "uid")) {
-+                qdict_put_str(options, "user", qp_value);
-+            } else if (g_str_equal(qp_name, "gid")) {
-+                qdict_put_str(options, "group", qp_value);
-+            } else if (g_str_equal(qp_name, "tcp-syncnt")) {
-+                qdict_put_str(options, "tcp-syn-count", qp_value);
-+            } else if (g_str_equal(qp_name, "readahead")) {
-+                qdict_put_str(options, "readahead-size", qp_value);
-+            } else if (g_str_equal(qp_name, "pagecache")) {
-+                qdict_put_str(options, "page-cache-size", qp_value);
-+            } else if (g_str_equal(qp_name, "debug")) {
-+                qdict_put_str(options, "debug", qp_value);
++            /*
++             * Pick out the query parameters that we understand, and ignore
++             * (or rather warn about) the rest.
++             */
++            if (g_str_equal(qp_name, "host_key_check")) {
++                qdict_put_str(options, "host_key_check", qp_value);
 +            } else {
-+                error_setg(errp, "Unknown NFS parameter name: %s", qp_name);
-+                return -EINVAL;
++                warn_report("Unsupported parameter '%s' in URI.", qp_name);
 +            }
          }
      }
--    ret = 0;
--out:
--    if (qp) {
--        query_params_free(qp);
--    }
+ 
+-    query_params_free(qp);
 -    uri_free(uri);
--    return ret;
-+
-+    return 0;
+     return 0;
+-
+- err:
+-    uri_free(uri);
+-    return -EINVAL;
  }
  
- static bool nfs_has_filename_options_conflict(QDict *options, Error **errp)
+ static bool ssh_has_filename_options_conflict(QDict *options, Error **errp)
 -- 
 2.44.0
 
