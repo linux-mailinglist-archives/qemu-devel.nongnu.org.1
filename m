@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DEF8A2AEC
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 11:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4A578A28F4
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 10:14:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvD4d-00059S-Uw; Fri, 12 Apr 2024 05:19:56 -0400
+	id 1rvC33-00017n-2W; Fri, 12 Apr 2024 04:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sf@sfritsch.de>) id 1rvBwD-0006Ah-PG
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:07:11 -0400
-Received: from manul.sfritsch.de ([2a01:4f8:262:44c1:112::2])
+ (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
+ id 1rvC30-00017V-F0; Fri, 12 Apr 2024 04:14:10 -0400
+Received: from new-mail.astralinux.ru ([51.250.53.244])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sf@sfritsch.de>) id 1rvBwA-0004z3-P6
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:07:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sfritsch.de
- ; s=rsa-1;
- h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
- Cc:To:From:From:Reply-To:Subject:Content-Type:Content-ID:Content-Description:
- In-Reply-To:References:X-Debbugs-Cc;
- bh=IZhTvU1TRRoPdACQE+iV/SSJmbrlIalWzaEBCFoTG8M=; t=1712909224; x=1713773224; 
- b=ubwIvAaloy6swlzOEWGPPHlyPaJo6dg7haQt11BTTb7NEmDSpydu9mSD+AjELBjpOjUnH4T59hc
- 3VEct5kz+PQBToGDA6OZX3mLBxXQuwdmF4F7qJw56BIYOSwwyYJhYMb/LIsJKNAz85pf198CjfQHl
- 9UBykH211ja2qaF1YOyNUfz8b+vP3SS0b0e1XQaIjmE9L8kv3FB4rFyw2cclA7rxlpXjg62Io9aCV
- IRvzhlNNtr1nTVSn0lDssv4z7r6qyGgmAQQBZlag0DB8r6wo+8NIilnZXE5b9u+ZSoKkuG0nuBGcf
- qdOqvBjgxJrskRy7pHRLabb6k2pOu6n5+Ebg==;
-From: Stefan Fritsch <sf@sfritsch.de>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Fritsch <sf@sfritsch.de>
-Subject: [PATCH] dma-helpers: Fix iovec alignment
-Date: Fri, 12 Apr 2024 10:06:17 +0200
-Message-Id: <20240412080617.1299883-1-sf@sfritsch.de>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
+ id 1rvC2y-0006PD-90; Fri, 12 Apr 2024 04:14:10 -0400
+Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.177.236.225])
+ by new-mail.astralinux.ru (Postfix) with ESMTPA id 4VG8Ts37rXzyf3;
+ Fri, 12 Apr 2024 11:13:53 +0300 (MSK)
+From: Alexandra Diupina <adiupina@astralinux.ru>
+To: Alistair Francis <alistair@alistair23.me>
+Cc: Alexandra Diupina <adiupina@astralinux.ru>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
+Subject: [PATCH RFC] prevent overflow in xlnx_dpdma_desc_get_source_address()
+Date: Fri, 12 Apr 2024 11:13:28 +0300
+Message-Id: <20240412081328.11183-1-adiupina@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a01:4f8:262:44c1:112::2;
- envelope-from=sf@sfritsch.de; helo=manul.sfritsch.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-DrWeb-SpamScore: -100
+X-DrWeb-SpamState: legit
+X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgrucffihhuphhinhgruceorgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeduleetfeehffekueeuffektefgudfgffeutdefudfghedvieffheehleeuieehteenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudejjedrvdefiedrvddvheenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdqfedtvdeiledtrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrddujeejrddvfeeirddvvdehmeehheefiedvpdhmrghilhhfrhhomheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopeejpdhrtghpthhtoheprghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvpdhrtghpthhtoheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhrtghpthhtohepvggughgrrhdrihhglhgvshhirghssehgmhgrihhlrdgtohhmpdhrtghpthhtohepphgvthgvrhdrmhgrhiguvghllheslhhinhgrrhhordhorhhgpdhrtghpthhtoh
+ epqhgvmhhuqdgrrhhmsehnohhnghhnuhdrohhrghdprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepshgulhdrqhgvmhhusehlihhnuhigthgvshhtihhnghdrohhrgh
+X-DrWeb-SpamVersion: Vade Retro 01.423.251#02 AS+AV+AP Profile: DRWEB;
+ Bailout: 300
+X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128,
+ SE: 11.1.12.2210241838, Core engine: 7.00.62.01180, Virus records: 12591016,
+ Updated: 2024-Apr-12 06:38:41 UTC]
+Received-SPF: pass client-ip=51.250.53.244;
+ envelope-from=adiupina@astralinux.ru; helo=new-mail.astralinux.ru
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Fri, 12 Apr 2024 05:19:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,35 +62,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 99868af3d0 changed the hardcoded constant BDRV_SECTOR_SIZE to a
-dynamic field 'align' but introduced a bug. qemu_iovec_discard_back()
-is now passed the wanted iov length instead of the actually required
-amount that should be removed from the end of the iov.
+Overflow can occur in a situation where desc->source_address
+has a maximum value (pow(2, 32) - 1), so add a cast to a
+larger type before the assignment.
 
-The bug can likely only be hit in uncommon configurations, e.g. with
-icount enabled or when reading from disk directly to device memory.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 99868af3d0a75cf6 ("dma-helpers: explicitly pass alignment into DMA helpers")
-Signed-off-by: Stefan Fritsch <sf@sfritsch.de>
+Fixes: d3c6369a96 ("introduce xlnx-dpdma")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
 ---
- system/dma-helpers.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ hw/dma/xlnx_dpdma.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/system/dma-helpers.c b/system/dma-helpers.c
-index 9b221cf94e..c9677fd39b 100644
---- a/system/dma-helpers.c
-+++ b/system/dma-helpers.c
-@@ -174,8 +174,7 @@ static void dma_blk_cb(void *opaque, int ret)
-     }
+diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
+index 1f5cd64ed1..224259225c 100644
+--- a/hw/dma/xlnx_dpdma.c
++++ b/hw/dma/xlnx_dpdma.c
+@@ -175,24 +175,24 @@ static uint64_t xlnx_dpdma_desc_get_source_address(DPDMADescriptor *desc,
  
-     if (!QEMU_IS_ALIGNED(dbs->iov.size, dbs->align)) {
--        qemu_iovec_discard_back(&dbs->iov,
--                                QEMU_ALIGN_DOWN(dbs->iov.size, dbs->align));
-+        qemu_iovec_discard_back(&dbs->iov, dbs->iov.size % dbs->align);
-     }
- 
-     dbs->acb = dbs->io_func(dbs->offset, &dbs->iov,
+     switch (frag) {
+     case 0:
+-        addr = desc->source_address
+-            + (extract32(desc->address_extension, 16, 12) << 20);
++        addr = (uint64_t)(desc->source_address
++            + (extract32(desc->address_extension, 16, 12) << 20));
+         break;
+     case 1:
+-        addr = desc->source_address2
+-            + (extract32(desc->address_extension_23, 0, 12) << 8);
++        addr = (uint64_t)(desc->source_address2
++            + (extract32(desc->address_extension_23, 0, 12) << 8));
+         break;
+     case 2:
+-        addr = desc->source_address3
+-            + (extract32(desc->address_extension_23, 16, 12) << 20);
++        addr = (uint64_t)(desc->source_address3
++            + (extract32(desc->address_extension_23, 16, 12) << 20));
+         break;
+     case 3:
+-        addr = desc->source_address4
+-            + (extract32(desc->address_extension_45, 0, 12) << 8);
++        addr = (uint64_t)(desc->source_address4
++            + (extract32(desc->address_extension_45, 0, 12) << 8));
+         break;
+     case 4:
+-        addr = desc->source_address5
+-            + (extract32(desc->address_extension_45, 16, 12) << 20);
++        addr = (uint64_t)(desc->source_address5
++            + (extract32(desc->address_extension_45, 16, 12) << 20));
+         break;
+     default:
+         addr = 0;
 -- 
-2.43.0
+2.30.2
 
 
