@@ -2,86 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219F78A28B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 10:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61DEF8A2AEC
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 11:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBsQ-0003Ob-OG; Fri, 12 Apr 2024 04:03:14 -0400
+	id 1rvD4d-00059S-Uw; Fri, 12 Apr 2024 05:19:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvBsO-0003OQ-3O
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:03:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <sf@sfritsch.de>) id 1rvBwD-0006Ah-PG
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:07:11 -0400
+Received: from manul.sfritsch.de ([2a01:4f8:262:44c1:112::2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rvBsM-0004OW-Lm
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:03:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1712908989;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=WbdgDfRvQi2vhixie8/s65y+Az6KP8Euugnz4ck/tiM=;
- b=V+zzIqJ9WCTSdZ1sGqNrTYWBFBVfyXq6cAtTEJJc8IO7ZCsaeWhNA2orXGEDJkTZWF3z5R
- 6R14x0nQlniqY2k9bxUP2BZBPFmDNDHiIvCp2WFCGo9jrBo5VPUq1vGt3jaX93A3wQ76u1
- Fzs1tBL9vLJJJyrRcLUFHH2j8kE55As=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558-GC5GlGH9OHiqzp_bt_mG-g-1; Fri, 12 Apr 2024 04:03:07 -0400
-X-MC-Unique: GC5GlGH9OHiqzp_bt_mG-g-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-417db791f5eso3646815e9.1
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 01:03:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712908986; x=1713513786;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WbdgDfRvQi2vhixie8/s65y+Az6KP8Euugnz4ck/tiM=;
- b=aCtjNVGs5+vPTbpl5NTW7EB5BUpQ+lzZoMRFk8tlRfPiyGSmaz/prIeE8PuOwqFv3p
- PVpnXnLX9eq0Zf0rOHJHYwAfX5Rc3k/0oED7ipjbjWrHo7SGjWYLtw/hOJf9qzBURgvY
- EpYYvakkoUjCFVMfq6EOK/uJjLG3l1GFwRJeYYST7pzahn7N8WXG+vPR2O6siJGM1pIq
- hCOHcfutYa7G3InjeUjtZZf5BpWfFioeZ01YfOrFAMY+KAfoQsvhekIs1gpWtu1K0Vv6
- 6vjFHdwSK+3CZc1hZHgL1HWg9S4wVqepA5JVo2s6EZ6SzYQAdXkqcjhyMsTQDVkgaWwH
- 2bsw==
-X-Gm-Message-State: AOJu0Yx36B9vwHyZ8YMz6JMB8cIL32iHpmIywOZHLUwuppLLncFSooIK
- O6fx+bPVA19ZwgSc7piO+s/Cee0g1ZnHAdM7s37QtVYk9bJTTDEuQpnYELIt6rDR0bAMUWzq00P
- teGff3rkorZsxat7Hquhfpuly1HR0FRPc0GbXi24ixwbZamBs7DD6f1AqTVLmQAHhhBp5engJKl
- Ez+hLL+8wy+Vl6LmdbqRuwURyV+/w=
-X-Received: by 2002:a5d:59a5:0:b0:343:b295:4d99 with SMTP id
- p5-20020a5d59a5000000b00343b2954d99mr1649010wrr.56.1712908986486; 
- Fri, 12 Apr 2024 01:03:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7aqMPOP0DTQBVkLfWD19+835hybbew1SDXnQoq59fBQzjNAOmr4kCC2Ms01W4Bur+VZjF1/B+yDax3gHgngI=
-X-Received: by 2002:a5d:59a5:0:b0:343:b295:4d99 with SMTP id
- p5-20020a5d59a5000000b00343b2954d99mr1648995wrr.56.1712908986222; Fri, 12 Apr
- 2024 01:03:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <sf@sfritsch.de>) id 1rvBwA-0004z3-P6
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 04:07:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sfritsch.de
+ ; s=rsa-1;
+ h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+ Cc:To:From:From:Reply-To:Subject:Content-Type:Content-ID:Content-Description:
+ In-Reply-To:References:X-Debbugs-Cc;
+ bh=IZhTvU1TRRoPdACQE+iV/SSJmbrlIalWzaEBCFoTG8M=; t=1712909224; x=1713773224; 
+ b=ubwIvAaloy6swlzOEWGPPHlyPaJo6dg7haQt11BTTb7NEmDSpydu9mSD+AjELBjpOjUnH4T59hc
+ 3VEct5kz+PQBToGDA6OZX3mLBxXQuwdmF4F7qJw56BIYOSwwyYJhYMb/LIsJKNAz85pf198CjfQHl
+ 9UBykH211ja2qaF1YOyNUfz8b+vP3SS0b0e1XQaIjmE9L8kv3FB4rFyw2cclA7rxlpXjg62Io9aCV
+ IRvzhlNNtr1nTVSn0lDssv4z7r6qyGgmAQQBZlag0DB8r6wo+8NIilnZXE5b9u+ZSoKkuG0nuBGcf
+ qdOqvBjgxJrskRy7pHRLabb6k2pOu6n5+Ebg==;
+From: Stefan Fritsch <sf@sfritsch.de>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Stefan Fritsch <sf@sfritsch.de>
+Subject: [PATCH] dma-helpers: Fix iovec alignment
+Date: Fri, 12 Apr 2024 10:06:17 +0200
+Message-Id: <20240412080617.1299883-1-sf@sfritsch.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <99185cfa61404dfa019a5e2c292b928791e85af5.1712848167.git.quic_mathbern@quicinc.com>
-In-Reply-To: <99185cfa61404dfa019a5e2c292b928791e85af5.1712848167.git.quic_mathbern@quicinc.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 12 Apr 2024 10:02:54 +0200
-Message-ID: <CABgObfa5NVGTTC=D09tomXf6FhYnbCt6wY_K=L32cWLXOhaJgg@mail.gmail.com>
-Subject: Re: [PATCH] Makefile: fix use of -j without an argument
-To: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-Cc: qemu-devel@nongnu.org, martin@geanix.com, 
- =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
- Thomas Huth <thuth@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -45
-X-Spam_score: -4.6
-X-Spam_bar: ----
-X-Spam_report: (-4.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.49,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a01:4f8:262:44c1:112::2;
+ envelope-from=sf@sfritsch.de; helo=manul.sfritsch.de
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Fri, 12 Apr 2024 05:19:52 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -96,27 +63,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 11, 2024 at 5:46=E2=80=AFPM Matheus Tavares Bernardino
-<quic_mathbern@quicinc.com> wrote:
-> +        $(if $(filter -j, $(MAKEFLAGS)) \
-> +            ,, \
-> +            $(or \
-> +                 $(filter -l% -j%, $(MAKEFLAGS)), \
-> +                 $(if $(filter --jobserver-auth=3D%, $(MAKEFLAGS)),, -j1=
-)) \
-> +        ) -d keepdepfile
+Commit 99868af3d0 changed the hardcoded constant BDRV_SECTOR_SIZE to a
+dynamic field 'align' but introduced a bug. qemu_iovec_discard_back()
+is now passed the wanted iov length instead of the actually required
+amount that should be removed from the end of the iov.
 
-This is more easily written as $(filter-out -j, $(or ...)).
+The bug can likely only be hit in uncommon configurations, e.g. with
+icount enabled or when reading from disk directly to device memory.
 
-I've sent a v2.
+Fixes: 99868af3d0a75cf6 ("dma-helpers: explicitly pass alignment into DMA helpers")
+Signed-off-by: Stefan Fritsch <sf@sfritsch.de>
+---
+ system/dma-helpers.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Paolo
-
->  ninja-cmd-goals =3D $(or $(MAKECMDGOALS), all)
->  ninja-cmd-goals +=3D $(foreach g, $(MAKECMDGOALS), $(.ninja-goals.$g))
->
-> --
-> 2.37.2
->
+diff --git a/system/dma-helpers.c b/system/dma-helpers.c
+index 9b221cf94e..c9677fd39b 100644
+--- a/system/dma-helpers.c
++++ b/system/dma-helpers.c
+@@ -174,8 +174,7 @@ static void dma_blk_cb(void *opaque, int ret)
+     }
+ 
+     if (!QEMU_IS_ALIGNED(dbs->iov.size, dbs->align)) {
+-        qemu_iovec_discard_back(&dbs->iov,
+-                                QEMU_ALIGN_DOWN(dbs->iov.size, dbs->align));
++        qemu_iovec_discard_back(&dbs->iov, dbs->iov.size % dbs->align);
+     }
+ 
+     dbs->acb = dbs->io_func(dbs->offset, &dbs->iov,
+-- 
+2.43.0
 
 
