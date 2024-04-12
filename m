@@ -2,88 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC118A3313
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB038A3343
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 18:09:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvJLX-0006Lf-3V; Fri, 12 Apr 2024 12:01:47 -0400
+	id 1rvJRt-0001uD-LW; Fri, 12 Apr 2024 12:08:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rvJKz-00066g-Sb
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:01:21 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvJRq-0001t4-FW
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:18 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rvJKt-0002yq-B0
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:01:12 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-5aa20adda1dso705522eaf.1
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:00:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvJRm-0004ZA-GP
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 12:08:18 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-343eb6cc46bso685109f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 09:08:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1712937658; x=1713542458; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xIMcktWFO91El3u/U/XloLit4e/clcy7kEqGAJx1vmo=;
- b=XdaFogKAC/sIRPeA9KeyWjywM6VC0V48qwVPtFNU8ycqT1P7KdjolPSIs4pRqu2Gyy
- +yqk/tocv2XY2rgIUJ7BaRvNM5jZDip3yGMjhDm5Puhg+snukiV4zSoNs1nK0zZtZ2zS
- vn9UTIXERaBuvRDzDPXjSViFxHlC3fynm0L+1Wd6ZPhbAeMgyrsrUPhemujuF1+CF/Ob
- rrczwTV8d11S2pfItKcMsVzWYE37iP1tJOQxIZegjTwKKv0BUtAwi4btj18Wd7xPWHXq
- AGxDmOTAYBYUzjgqJI9Qrp+FZI8uYiYwdkh7ZpJgKDik/mvHiGORa0ZVQa1qtNcwueyd
- A0cw==
+ d=linaro.org; s=google; t=1712938091; x=1713542891; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=YPNUCG34JRtanqhu40n9+rt/oe0ODrWbJJWPvLvAacM=;
+ b=AO2sDC3Q87jebDEjw2c6aO3gHudt6i0aeSwU3cr7/cmX6P7eB/xwroGt+mXC+gL+WW
+ S62gJn6kVHzwAEhxiIub5mkxUFBa0jqK4ShuWNMcM8IGIwhkEkO5rufxae3fk6V8PX+H
+ xO9OryDwlJ0YsKgWO62rAaJ0Yaq5A1KmFcTVB27zmdIllN9WdCAnVSZdDUO4d0PITRbT
+ 9uVtMQc6tbF6qBu2NI/RsDeU/41bdXnncVbiLxeXA0ZyAnYjeTSsLr2ivxiGo1Z0u2Nw
+ IGZjTLTbHb0I6Njogf/YT3wrX1EVjEV1aADMKfDeAVPXqHncpVKmYzZ0mWkVc4ak1Bjc
+ A2YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712937658; x=1713542458;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xIMcktWFO91El3u/U/XloLit4e/clcy7kEqGAJx1vmo=;
- b=BdFkr96SJGiBxxydlB9pVwdDNf4cHIoQCbaQAYwdTCN/+mX1617ERYveCES6s9bSSD
- mtb5/tM71V9thKnRc+27S/2sIAsjxVhOqgVDORCX8fZpq2ndnuQE7G7Bnfy8YI57+WuL
- 9MkYa6cbO/rt9zK167KyFs6GFVFBWwEWAApse5GhYbC/O99PYQbrXPqi3cZj0bB9K0BR
- OvvW7uXjFt4V2NcRv0BEQjlKMR1jhPAtaHp8aZfmDiQ3QqnWDtWYb5Oqu8lr33iV3UqG
- yrIuwfV7bbcTZpaufIzH/P9kt+LrnV1+T70oiP5//FTRm01FGziaPgDfxfrFMeN6mIzw
- GdzQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUABxuiOzBLi6cHMhDO+zro86Vay97Cm4iwuHsyzBSLKxZrPdClLzQ8Ikop5wv3UAwBYdv03u3R4lbwDk5G7giOhrKvNGc=
-X-Gm-Message-State: AOJu0YyvlaIECwatktdKMPQWcHdMUqSt+is9e4f5YhcoL156sPmu3wts
- f00c19o8dGStnrWlQmQpGTqNhJ2//Yp0hgZzYblbXRgf6w/T5LUoZZlNvNwU2Pk=
-X-Google-Smtp-Source: AGHT+IHXaMIlRoBs5IRmG30cBM8SGuhFmcNNlsUo0vm+AtNtSEkoR2X1F/JTH0mBQBJlXoKTzqfI6A==
-X-Received: by 2002:a05:6359:7981:b0:17e:f422:5e48 with SMTP id
- xe1-20020a056359798100b0017ef4225e48mr2863271rwb.13.1712937657830; 
- Fri, 12 Apr 2024 09:00:57 -0700 (PDT)
-Received: from [192.168.68.110] ([177.45.186.202])
+ d=1e100.net; s=20230601; t=1712938091; x=1713542891;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YPNUCG34JRtanqhu40n9+rt/oe0ODrWbJJWPvLvAacM=;
+ b=fAjT+2r0QsXo5wJmg9Wre3DL2gbBN8caiturCBa5hXphY+cTLM2fiFQ7SZkEjDgSJT
+ ZZaLhyoCdHjlsv5cBNEAhBbHnDV+mxWKZ7EMJBXHp3LjIX2JKGHlNR652JzBfa6HOF76
+ VxPcb8LuUxbrwM42QYMZ1se2KpbAWM0DT5hWf9vdz3FKH0lR6NYfnbvfh4jVTawF6RI0
+ QEBsr5o+oHyNgC0sZo1brCcQKUL2yHCwqJ/s/4w509zyOKoF1ubNu+BPWVJgmFSJ5Qg/
+ YDCMkrs/llc6pOTiJGGj3kZerb7VY/oMdNXMHYOnEeVjqotDwhUGuXUWdGFQssOQAYAh
+ IJ0w==
+X-Gm-Message-State: AOJu0YyMm+mnvC+WigLRZDd/bJGFDrf774dycsxgdGIF/l5QdG3tFGVa
+ WtCJGUOyW5FFdAc8+aBBX9w06RW44TPeb4gwuANb9OlKCRu1e3HadcItB7djxqsApmSSUhsP8oI
+ L
+X-Google-Smtp-Source: AGHT+IHN1mVsSN3sHhwLQidMwnAh/9/jM7SdbaODEOHCCesKN6OULHGizTP/zg8NzSLEMDch8apppg==
+X-Received: by 2002:a5d:640b:0:b0:343:77f4:e663 with SMTP id
+ z11-20020a5d640b000000b0034377f4e663mr1922582wru.18.1712938090609; 
+ Fri, 12 Apr 2024 09:08:10 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- x11-20020a656aab000000b005dcc8a3b26esm2468192pgu.16.2024.04.12.09.00.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 12 Apr 2024 09:00:57 -0700 (PDT)
-Message-ID: <6947ea59-ccbd-43b8-b8a0-bc543b9992f9@ventanamicro.com>
-Date: Fri, 12 Apr 2024 13:00:51 -0300
+ cr12-20020a05600004ec00b00341ce80ea66sm4582371wrb.82.2024.04.12.09.08.10
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 12 Apr 2024 09:08:10 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-devel@nongnu.org
+Subject: [PATCH 0/6] reset: Add RESET_TYPE_SNAPSHOT_LOAD
+Date: Fri, 12 Apr 2024 17:08:03 +0100
+Message-Id: <20240412160809.1260625-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-9.0] target/riscv: prioritize pmp errors in
- raise_mmu_exception()
-Content-Language: en-US
-To: Aleksei Filippov <alexei.filippov@syntacore.com>, qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- richard.henderson@linaro.org, Joseph Chan <jchan@ventanamicro.com>
-References: <20240409175241.1297072-1-dbarboza@ventanamicro.com>
- <a8680fb3-8547-4b68-98d1-fd2d2d278375@syntacore.com>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <a8680fb3-8547-4b68-98d1-fd2d2d278375@syntacore.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,133 +88,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Some devices and machines need to handle the reset before a vmsave
+snapshot is loaded differently -- the main user is the handling of
+RNG seed information, which does not want to put a new RNG seed into
+a ROM blob when we are doing a snapshot load.
 
+Currently this kind of reset handling is supported only for:
+ * TYPE_MACHINE reset methods, which take a ShutdownCause argument
+ * reset functions registered with qemu_register_reset_nosnapshotload
 
-On 4/12/24 11:15, Aleksei Filippov wrote:
-> 
-> 
-> On 09.04.2024 20:52, Daniel Henrique Barboza wrote:
->> raise_mmu_exception(), as is today, is prioritizing guest page faults by
->> checking first if virt_enabled && !first_stage, and then considering the
->> regular inst/load/store faults.
->>
->> There's no mention in the spec about guest page fault being a higher
->> priority that PMP faults. In fact, privileged spec section 3.7.1 says:
->>
->> "Attempting to fetch an instruction from a PMP region that does not have
->> execute permissions raises an instruction access-fault exception.
->> Attempting to execute a load or load-reserved instruction which accesses
->> a physical address within a PMP region without read permissions raises a
->> load access-fault exception. Attempting to execute a store,
->> store-conditional, or AMO instruction which accesses a physical address
->> within a PMP region without write permissions raises a store
->> access-fault exception."
->>
->> So, in fact, we're doing it wrong - PMP faults should always be thrown,
->> regardless of also being a first or second stage fault.
->>
->> The way riscv_cpu_tlb_fill() and get_physical_address() work is
->> adequate: a TRANSLATE_PMP_FAIL error is immediately reported and
->> reflected in the 'pmp_violation' flag. What we need is to change
->> raise_mmu_exception() to prioritize it.
->>
->> Reported-by: Joseph Chan <jchan@ventanamicro.com>
->> Fixes: 82d53adfbb ("target/riscv/cpu_helper.c: Invalid exception on MMU translation stage")
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/cpu_helper.c | 22 ++++++++++++----------
->>   1 file changed, 12 insertions(+), 10 deletions(-)
->>
->> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
->> index fc090d729a..e3a7797d00 100644
->> --- a/target/riscv/cpu_helper.c
->> +++ b/target/riscv/cpu_helper.c
->> @@ -1176,28 +1176,30 @@ static void raise_mmu_exception(CPURISCVState *env, target_ulong address,
->>
->>       switch (access_type) {
->>       case MMU_INST_FETCH:
->> -        if (env->virt_enabled && !first_stage) {
->> +        if (pmp_violation) {
->> +            cs->exception_index = RISCV_EXCP_INST_ACCESS_FAULT;
->> +        } else if (env->virt_enabled && !first_stage) {
->>               cs->exception_index = RISCV_EXCP_INST_GUEST_PAGE_FAULT;
->>           } else {
->> -            cs->exception_index = pmp_violation ?
->> -                RISCV_EXCP_INST_ACCESS_FAULT : RISCV_EXCP_INST_PAGE_FAULT;
->> +            cs->exception_index = RISCV_EXCP_INST_PAGE_FAULT;
->>           }
->>           break;
->>       case MMU_DATA_LOAD:
->> -        if (two_stage && !first_stage) {
->> +        if (pmp_violation) {
->> +            cs->exception_index = RISCV_EXCP_LOAD_ACCESS_FAULT;
->> +        } else if (two_stage && !first_stage) {
->>               cs->exception_index = RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT;
->>           } else {
->> -            cs->exception_index = pmp_violation ?
->> -                RISCV_EXCP_LOAD_ACCESS_FAULT : RISCV_EXCP_LOAD_PAGE_FAULT;
->> +            cs->exception_index = RISCV_EXCP_LOAD_PAGE_FAULT;
->>           }
->>           break;
->>       case MMU_DATA_STORE:
->> -        if (two_stage && !first_stage) {
->> +        if (pmp_violation) {
->> +            cs->exception_index = RISCV_EXCP_STORE_AMO_ACCESS_FAULT;
->> +        } else if (two_stage && !first_stage) {
->>               cs->exception_index = RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT;
->>           } else {
->> -            cs->exception_index = pmp_violation ?
->> -                RISCV_EXCP_STORE_AMO_ACCESS_FAULT :
->> -                RISCV_EXCP_STORE_PAGE_FAULT;
->> +            cs->exception_index = RISCV_EXCP_STORE_PAGE_FAULT;
->>           }
->>           break;
->>       default:
-> 
-> 
-> Just tested your patch and found out that we still need to fix `if else` in
-> riscv_cpu_tlb_fill() after pmp check in 2 stage translation part, as I suggested
-> before, cz the problem with mtval2 will happened in case of successes 2 stage
-> translation but failed pmp check. In this case we gonna set
-> mtval2(env->guest_phys_fault_addr in context of riscv_cpu_tlb_fill()) as this
-> was a guest-page-fault, but it didn't and mtval2 should be zero, according to
-> RISCV privileged spec sect. 9.4.4: When a guest page-fault is taken into M-mode,
-> mtval2 is written with either zero or guest physical address that faulted,
-> shifted by 2 bits. *For other traps, mtval2 is set to zero...*
+Adding a new ResetType that indicates the pre-snapshot-load reset
+allows code that implements reset via Resettable to also do this.
+As an immediate consequence, that means we can clean up the ugly
+global variable in reset.c that we use to implement the
+qemu_register_reset_nosnapshotload() callbacks. Slightly longer
+term, I'm looking at making TYPE_MACHINE a subtype of TYPE_DEVICE,
+and converting the non-standard reset method of MachineClass into
+a Resettable as a result, so we'll need this ResetType there too.
 
-Thanks for giving it a go. You're right, this patch alone is not enough and we'll
-need your patch too.
+Adding a new reset type makes plain an awkwardness in our current
+Resettable API: we only pass the ResetType in to the 'enter' phase
+method, not 'hold' and 'exit', even though we have it available
+in the calling code. To avoid annoying workarounds like implementing
+an 'enter' method that stashes the ResetType for the later 'hold'
+or 'exit' method to use, we change the signatures of the 'hold'
+and 'exit' methods to also pass the ResetType. Patch 3 is a
+Coccinelle script which implements the transformation of the code,
+and patch 4 is the result of running that script, with no manual
+tweaks. This is really the biggest part of this patchset.
 
-But note that, with what you've said in mind, your patch will also end up setting
-mtval2 and env->guest_phys_fault_addr in case a PMP fault occurs during the
-get_physical_address() right at the start of second stage:
+Patch 6 is the actual addition of the new ResetType, which isn't
+very complicated. There is a TODO comment in resettable.h that
+claims that "ResettableState structure has to be expanded" to
+add more ResetTypes, but I can't see any reason why this should
+be, and I didn't find any discussion in the mailing list archives
+about it, so I have gone ahead anyway...
 
-         if (ret == TRANSLATE_SUCCESS) {
-             /* Second stage lookup */
-             im_address = pa;
+thanks
+-- PMM
 
-             ret = get_physical_address(env, &pa, &prot2, im_address, NULL,
-                                        access_type, MMUIdx_U, false, true,
-                                        false);
+Peter Maydell (6):
+  hw/misc: Don't special case RESET_TYPE_COLD in npcm7xx_clk, gcr
+  allwinner-i2c, adm1272: Use device_cold_reset() for software-triggered
+    reset
+  scripts/coccinelle: New script to add ResetType to hold and exit
+    phases
+  hw, target: Add ResetType argument to hold and exit phase methods
+  docs/devel/reset: Update to new API for hold and exit phase methods
+  reset: Add RESET_TYPE_SNAPSHOT_LOAD
 
+ docs/devel/reset.rst                |  25 ++++--
+ scripts/coccinelle/reset-type.cocci | 133 ++++++++++++++++++++++++++++
+ include/hw/resettable.h             |   5 +-
+ hw/adc/npcm7xx_adc.c                |   2 +-
+ hw/arm/pxa2xx_pic.c                 |   2 +-
+ hw/arm/smmu-common.c                |   2 +-
+ hw/arm/smmuv3.c                     |   4 +-
+ hw/arm/stellaris.c                  |  10 +--
+ hw/audio/asc.c                      |   2 +-
+ hw/char/cadence_uart.c              |   2 +-
+ hw/char/sifive_uart.c               |   2 +-
+ hw/core/cpu-common.c                |   2 +-
+ hw/core/qdev.c                      |   4 +-
+ hw/core/reset.c                     |  17 ++--
+ hw/core/resettable.c                |   8 +-
+ hw/display/virtio-vga.c             |   4 +-
+ hw/gpio/npcm7xx_gpio.c              |   2 +-
+ hw/gpio/pl061.c                     |   2 +-
+ hw/gpio/stm32l4x5_gpio.c            |   2 +-
+ hw/hyperv/vmbus.c                   |   2 +-
+ hw/i2c/allwinner-i2c.c              |   5 +-
+ hw/i2c/npcm7xx_smbus.c              |   2 +-
+ hw/input/adb.c                      |   2 +-
+ hw/input/ps2.c                      |  12 +--
+ hw/intc/arm_gic_common.c            |   2 +-
+ hw/intc/arm_gic_kvm.c               |   4 +-
+ hw/intc/arm_gicv3_common.c          |   2 +-
+ hw/intc/arm_gicv3_its.c             |   4 +-
+ hw/intc/arm_gicv3_its_common.c      |   2 +-
+ hw/intc/arm_gicv3_its_kvm.c         |   4 +-
+ hw/intc/arm_gicv3_kvm.c             |   4 +-
+ hw/intc/xics.c                      |   2 +-
+ hw/m68k/q800-glue.c                 |   2 +-
+ hw/misc/djmemc.c                    |   2 +-
+ hw/misc/iosb.c                      |   2 +-
+ hw/misc/mac_via.c                   |   8 +-
+ hw/misc/macio/cuda.c                |   4 +-
+ hw/misc/macio/pmu.c                 |   4 +-
+ hw/misc/mos6522.c                   |   2 +-
+ hw/misc/npcm7xx_clk.c               |  13 +--
+ hw/misc/npcm7xx_gcr.c               |  12 +--
+ hw/misc/npcm7xx_mft.c               |   2 +-
+ hw/misc/npcm7xx_pwm.c               |   2 +-
+ hw/misc/stm32l4x5_exti.c            |   2 +-
+ hw/misc/stm32l4x5_rcc.c             |  10 +--
+ hw/misc/stm32l4x5_syscfg.c          |   2 +-
+ hw/misc/xlnx-versal-cframe-reg.c    |   2 +-
+ hw/misc/xlnx-versal-crl.c           |   2 +-
+ hw/misc/xlnx-versal-pmc-iou-slcr.c  |   2 +-
+ hw/misc/xlnx-versal-trng.c          |   2 +-
+ hw/misc/xlnx-versal-xramc.c         |   2 +-
+ hw/misc/xlnx-zynqmp-apu-ctrl.c      |   2 +-
+ hw/misc/xlnx-zynqmp-crf.c           |   2 +-
+ hw/misc/zynq_slcr.c                 |   4 +-
+ hw/net/can/xlnx-zynqmp-can.c        |   2 +-
+ hw/net/e1000.c                      |   2 +-
+ hw/net/e1000e.c                     |   2 +-
+ hw/net/igb.c                        |   2 +-
+ hw/net/igbvf.c                      |   2 +-
+ hw/nvram/xlnx-bbram.c               |   2 +-
+ hw/nvram/xlnx-versal-efuse-ctrl.c   |   2 +-
+ hw/nvram/xlnx-zynqmp-efuse.c        |   2 +-
+ hw/pci-bridge/cxl_root_port.c       |   4 +-
+ hw/pci-bridge/pcie_root_port.c      |   2 +-
+ hw/pci-host/bonito.c                |   2 +-
+ hw/pci-host/pnv_phb.c               |   4 +-
+ hw/pci-host/pnv_phb3_msi.c          |   4 +-
+ hw/pci/pci.c                        |   4 +-
+ hw/rtc/mc146818rtc.c                |   2 +-
+ hw/s390x/css-bridge.c               |   2 +-
+ hw/sensor/adm1266.c                 |   2 +-
+ hw/sensor/adm1272.c                 |   4 +-
+ hw/sensor/isl_pmbus_vr.c            |  10 +--
+ hw/sensor/max31785.c                |   2 +-
+ hw/sensor/max34451.c                |   2 +-
+ hw/ssi/npcm7xx_fiu.c                |   2 +-
+ hw/timer/etraxfs_timer.c            |   2 +-
+ hw/timer/npcm7xx_timer.c            |   2 +-
+ hw/usb/hcd-dwc2.c                   |   8 +-
+ hw/usb/xlnx-versal-usb2-ctrl-regs.c |   2 +-
+ hw/virtio/virtio-pci.c              |   2 +-
+ target/arm/cpu.c                    |   4 +-
+ target/avr/cpu.c                    |   4 +-
+ target/cris/cpu.c                   |   4 +-
+ target/hexagon/cpu.c                |   4 +-
+ target/i386/cpu.c                   |   4 +-
+ target/loongarch/cpu.c              |   4 +-
+ target/m68k/cpu.c                   |   4 +-
+ target/microblaze/cpu.c             |   4 +-
+ target/mips/cpu.c                   |   4 +-
+ target/nios2/cpu.c                  |   4 +-
+ target/openrisc/cpu.c               |   4 +-
+ target/ppc/cpu_init.c               |   4 +-
+ target/riscv/cpu.c                  |   4 +-
+ target/rx/cpu.c                     |   4 +-
+ target/sh4/cpu.c                    |   4 +-
+ target/sparc/cpu.c                  |   4 +-
+ target/tricore/cpu.c                |   4 +-
+ target/xtensa/cpu.c                 |   4 +-
+ 99 files changed, 317 insertions(+), 195 deletions(-)
+ create mode 100644 scripts/coccinelle/reset-type.cocci
 
-I think your patch needs to also prevent env->guest_phys_fault_addr to be set when
-ret == TRANSLATE_PMP_FAIL.
-
-With these changes in your patch, and this patch, we're free to set "first_stage_error = false;"
-at the start of second stage lookup, keeping consistency, because raise_mmu_exception is now
-able to deal with it. I can amend this change in this patch. This patch would prioritize
-PMP errors, your patch will fix the problem with mtval2.
-
-Let me know what do you think. If you agree I can re-send both patches together.
-
-
-Thanks,
-
-
-Daniel
-
-
-
+-- 
+2.34.1
 
 
