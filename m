@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F278A2836
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAC08A2833
 	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:35:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQ5-0006zl-S3; Fri, 12 Apr 2024 03:33:57 -0400
+	id 1rvBQ6-000703-R8; Fri, 12 Apr 2024 03:33:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ3-0006yh-Po
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:55 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ id 1rvBQ4-0006zD-Cz
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:56 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBQ2-00076m-7N
- for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:55 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1e3e84a302eso4959245ad.0
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:53 -0700 (PDT)
+ id 1rvBQ2-00076y-QP
+ for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:56 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1e50a04c317so3847065ad.1
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712907232; x=1713512032; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712907233; x=1713512033; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qyr/Ts8Rn5hOhvh/4SLos/fwt7+2NBBMVS+YXiC8DT0=;
- b=VvfbjnnzFXryrybZSXsWtuc97xkdxA3A9l6/f/WNc9652gAHjBunrhAOqgtv5gtm8w
- c7rZOo35DswuFVNIT03tigsEbiwuQCTSxkHWZae5Sj422mqiP1MK2xoSGDfqvNzJhW3q
- bGWB6pfF/HTilifFCuYHARFF2k3jVkSnILPaxDJlcJStTJICA0ZhGXkP0I9ngH+K9Fd9
- Mdqcrmjsy6rok338UG7tWxkC0uR5fNZf7Bry0ynMZwToqSdhjESrUerDcVrjYR5DmIUd
- 7jS13ZVurCJ+BAzAJdRb2KuM51fRGjJYz1i/FPetX9Bga/3rKtnM+Zw9A8E7DE1Utiml
- H4tQ==
+ bh=fnSXZctlzd8Wm3DUoANmQRZQ2vSrRZB+EmzfSv7sIGQ=;
+ b=jfS7hNKjWkfRCMcM1YDj6JhZgolCUtddi8g4hfJjyh3vwZpAhb6pqMfliCbFChFCz7
+ QJyeRsvFgutfHRhb8dJ8XuVFJw96SL/NMyBwSTTHD4yEzYmo9vCA1eWzuOzbXzIH5yxQ
+ bnbYuJLzhEkkdfFUD8Flwh5T18sNGdMw7cnhXf/qDNEujPF65ks18vMwp4vh4oAlh/YS
+ GfroGsNUqAaezoAYjClvZUN1RRSoGoFGF3aYJTBzHbN55ojbyWNA3QZBzg8AB3S3ndvd
+ OQuzBDcub1Ln0gFvS1uuVDoJEl+bSWKon/cl3ZB93TI2pP8P6+zav6rSNZyoBIJjbRtL
+ Ggfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712907232; x=1713512032;
+ d=1e100.net; s=20230601; t=1712907233; x=1713512033;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qyr/Ts8Rn5hOhvh/4SLos/fwt7+2NBBMVS+YXiC8DT0=;
- b=TycboKdIINWdTPflxM/BBDqnn0ESC9REnPLHjWtsVlClWnhCXwuOhp8568EXofSAND
- sDe63JuL/rgqIkMQIl7+FC3b22fMx10iBvXgHfDz2jJHG/FouzcMAGcUUk7KXQK0MHao
- m0iKDVwmY+/auX3nzED1NEMjWWu6e2BMES3lQDZ+Y+d1gw386AQ2BIIyXwcBwKDyYa+A
- SCLQW/5QFDNeNMTI3VtgwJAx9Ym/My7ZO0O1UgOv9FiyFsAdcQ3fkp9gW/yh1By1PQ8I
- IAr1cv5Vj2dzvsZI7t3HJkURjpxXdh8yn9d/KqjoDHFTGaL+4JRDzoVViYcNiFuvzv06
- yCGA==
-X-Gm-Message-State: AOJu0YzlupyETpjFLb1/UEdkN5xxN5C0DNEz2dLkEO6Kmrxq8NceXB6d
- oTZan4Z9HnnqdJvwN3QBmr/W3O51ujhawoe1b5TQYSgzbS3wn8dmOmZmpMw6O0+Bi5aPRG2/OWC
- G
-X-Google-Smtp-Source: AGHT+IFywLt/S5guoQIEXM/568KzcCsZ2G+2Zsqnsoe2NUlN1r56usylDUOLQpM6d6ql/pJvx6G0nQ==
-X-Received: by 2002:a17:902:c40b:b0:1e1:4806:79cb with SMTP id
- k11-20020a170902c40b00b001e1480679cbmr1948271plk.56.1712907232517; 
- Fri, 12 Apr 2024 00:33:52 -0700 (PDT)
+ bh=fnSXZctlzd8Wm3DUoANmQRZQ2vSrRZB+EmzfSv7sIGQ=;
+ b=I5DntoSogwyRd0sYc2E89v/P8D7pfMORlHHlJ4EKTcI73dFP+QgUR/LGmLO2BDWkbL
+ fOU4jQEQ3nEctjrbr9T/YdEjjzDFLP/tmQdk48d50N/NE/xX6eQJPpBHQOH4lk14AbNW
+ WpPDol4qPN5rLiLcKxHd17uY7ptJUqIVGAajFZ5ieRSO6WXyUzqlT2X3lsqg442ukl0o
+ 2nGbv1Pki0EsbKjGX7N47p5Y8nlENviH60VWnEjPtHznWg2JG2SU2sJq+A0MY+8myRvC
+ Vqhqbc5CbHZQoLBSRPMhjMJCuzZK67pVKO4d0BzVDQ4kmsAziBNyITUnaPWFI6TQND2L
+ waIA==
+X-Gm-Message-State: AOJu0YxtGDSLRISbZ9YwPzOQXdb3ylipxQfV3DkLJHHW+iEqswBes7Rs
+ RwiK4oyFNaUTcCOcTbEARQqdSc9a4CTUWbt7HGaRqeFfVJFOQLbml3Wz2o4EkmvBgWaffOpNL5S
+ i
+X-Google-Smtp-Source: AGHT+IGt1RoBHzBXLy3l2+OuGMj/MegPm8dlfRvCyChDb358gcnNq+Q9QCQ15LguqFdJjxv83ugXKA==
+X-Received: by 2002:a17:902:ea10:b0:1dd:135e:2604 with SMTP id
+ s16-20020a170902ea1000b001dd135e2604mr1977494plg.40.1712907233310; 
+ Fri, 12 Apr 2024 00:33:53 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.51
+ e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.52
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 12 Apr 2024 00:33:52 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v3 06/27] hw/mips/malta: Add re-usable rng_seed_hex_new()
- method
-Date: Fri, 12 Apr 2024 00:33:25 -0700
-Message-Id: <20240412073346.458116-7-richard.henderson@linaro.org>
+Subject: [PATCH v3 07/27] system/qtest: Replace sprintf by qemu_hexdump_line
+Date: Fri, 12 Apr 2024 00:33:26 -0700
+Message-Id: <20240412073346.458116-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
 References: <20240412073346.458116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,82 +96,51 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 sprintf() is deprecated on Darwin since macOS 13.0 / XCode 14.1.
+Using qemu_hexdump_line both fixes the deprecation warning and
+simplifies the code base.
 
-Extract common code from reinitialize_rng_seed and load_kernel
-to rng_seed_hex_new.  Using qemu_hexdump_line both fixes the
-deprecation warning and simplifies the code base.
-
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-[rth: Use qemu_hexdump_line.]
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>`
+[rth: Use qemu_hexdump_line]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- hw/mips/malta.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ system/qtest.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index af74008c82..664a2ae0a9 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -26,6 +26,7 @@
- #include "qemu/units.h"
- #include "qemu/bitops.h"
- #include "qemu/datadir.h"
-+#include "qemu/cutils.h"
- #include "qemu/guest-random.h"
- #include "hw/clock.h"
- #include "hw/southbridge/piix.h"
-@@ -850,15 +851,18 @@ static void G_GNUC_PRINTF(3, 4) prom_set(uint32_t *prom_buf, int index,
-     va_end(ap);
- }
+diff --git a/system/qtest.c b/system/qtest.c
+index 6da58b3874..507a358f3b 100644
+--- a/system/qtest.c
++++ b/system/qtest.c
+@@ -601,9 +601,9 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+         qtest_send_prefix(chr);
+         qtest_sendf(chr, "OK 0x%016" PRIx64 "\n", value);
+     } else if (strcmp(words[0], "read") == 0) {
+-        uint64_t addr, len, i;
++        g_autoptr(GString) enc = NULL;
++        uint64_t addr, len;
+         uint8_t *data;
+-        char *enc;
+         int ret;
  
--static void reinitialize_rng_seed(void *opaque)
-+static GString *rng_seed_hex_new(void)
- {
--    char *rng_seed_hex = opaque;
-     uint8_t rng_seed[32];
+         g_assert(words[1] && words[2]);
+@@ -618,16 +618,12 @@ static void qtest_process_command(CharBackend *chr, gchar **words)
+         address_space_read(first_cpu->as, addr, MEMTXATTRS_UNSPECIFIED, data,
+                            len);
  
-     qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
--    for (size_t i = 0; i < sizeof(rng_seed); ++i) {
--        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
--    }
-+    return qemu_hexdump_line(NULL, rng_seed, sizeof(rng_seed), 0, 0);
-+}
-+
-+static void reinitialize_rng_seed(void *opaque)
-+{
-+    g_autoptr(GString) hex = rng_seed_hex_new();
-+    memcpy(opaque, hex->str, hex->len);
- }
+-        enc = g_malloc(2 * len + 1);
+-        for (i = 0; i < len; i++) {
+-            sprintf(&enc[i * 2], "%02x", data[i]);
+-        }
++        enc = qemu_hexdump_line(NULL, data, len, 0, 0);
  
- /* Kernel */
-@@ -870,8 +874,6 @@ static uint64_t load_kernel(void)
-     uint32_t *prom_buf;
-     long prom_size;
-     int prom_index = 0;
--    uint8_t rng_seed[32];
--    char rng_seed_hex[sizeof(rng_seed) * 2 + 1];
-     size_t rng_seed_prom_offset;
+         qtest_send_prefix(chr);
+-        qtest_sendf(chr, "OK 0x%s\n", enc);
++        qtest_sendf(chr, "OK 0x%s\n", enc->str);
  
-     kernel_size = load_elf(loaderparams.kernel_filename, NULL,
-@@ -946,14 +948,13 @@ static uint64_t load_kernel(void)
-     prom_set(prom_buf, prom_index++, "modetty0");
-     prom_set(prom_buf, prom_index++, "38400n8r");
- 
--    qemu_guest_getrandom_nofail(rng_seed, sizeof(rng_seed));
--    for (size_t i = 0; i < sizeof(rng_seed); ++i) {
--        sprintf(rng_seed_hex + i * 2, "%02x", rng_seed[i]);
--    }
-     prom_set(prom_buf, prom_index++, "rngseed");
-     rng_seed_prom_offset = prom_index * ENVP_ENTRY_SIZE +
-                            sizeof(uint32_t) * ENVP_NB_ENTRIES;
--    prom_set(prom_buf, prom_index++, "%s", rng_seed_hex);
-+    {
-+        g_autoptr(GString) hex = rng_seed_hex_new();
-+        prom_set(prom_buf, prom_index++, "%s", hex->str);
-+    }
- 
-     prom_set(prom_buf, prom_index++, NULL);
- 
+         g_free(data);
+-        g_free(enc);
+     } else if (strcmp(words[0], "b64read") == 0) {
+         uint64_t addr, len;
+         uint8_t *data;
 -- 
 2.34.1
 
