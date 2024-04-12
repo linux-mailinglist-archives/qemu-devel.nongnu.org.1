@@ -2,71 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57B28A2843
-	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109478A2847
+	for <lists+qemu-devel@lfdr.de>; Fri, 12 Apr 2024 09:36:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvBQ2-0006xC-Av; Fri, 12 Apr 2024 03:33:54 -0400
+	id 1rvBQ3-0006yT-3W; Fri, 12 Apr 2024 03:33:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBPz-0006wv-Ki
+ id 1rvBPz-0006ww-OW
  for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:51 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvBPx-00074Y-Oe
+ id 1rvBPx-00074a-Qf
  for qemu-devel@nongnu.org; Fri, 12 Apr 2024 03:33:51 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1e3f17c6491so5935845ad.2
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:48 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5ce07cf1e5dso421993a12.2
+ for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 00:33:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712907227; x=1713512027; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=wA/Z0yFKpXqvP59rryTrHQVNqpWGjyyXV79BO4MCFxQ=;
- b=D32tte0eSPrIZcSxBCBbosnCrJRNabn0B4qKipx6jFcb1APh700luBYVohe/HnHmSL
- +2GFpUWzard54aXhiGl5RS7/JUTGQo+X2jX0h51rWeS+PRIvzwClok8ql7byDuBBYLUt
- wcvMjJqqBDAdQ1T+04SjjMK1JFEW59/C6U/4cUCF8Slds792RxfJoVoxIV0HQB8JQ+sg
- M/ilfaS2E9X/tRo0J0XYdDP8xtIiXSbJt7BDfYChYuj9NvdikASwZmxUcr4Z6pqbBeD8
- 7gWaXvPYh3Z4CaT7tQr7RMqmcS8450xzvYOmWuhp6SlG/FGX/YJxArJV3ze1hGkmBWS4
- OPuQ==
+ d=linaro.org; s=google; t=1712907228; x=1713512028; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ISGCLEDJVFZiUeSj505TnpSQiQ8gRVs+fhfSNIPx8Ks=;
+ b=RaCYFfs38nvxICiWQCl6+45MYFyfzIsrBmBLs9NTtKTwIZH3tc47PtZauX4mEkGNYA
+ DE98YqDOiTkqh5RTEISNhWensMSu2B7LVLG+Z5oauXSX1z/+pkxVeqHVmVhZdHGERbNd
+ 0nQ5tZQlBmyUND4KSzZR94C6rkTVcD/+3xN6xjPF1U4hHGvbrQ39K1Ewsfjxd119qykO
+ DO4Psm8O7cOTzot1isbzrffti0CelbxuH5r71sR8ylpynUntvIWzpptMA1oJC1eSFIXs
+ 9MkhcC6KI+Od1OlNE8NXM1tGIV36uT3HUo+uUav0Dd/AV1VLB1phu6wB3jb2U/fOpDfI
+ Dl5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712907227; x=1713512027;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wA/Z0yFKpXqvP59rryTrHQVNqpWGjyyXV79BO4MCFxQ=;
- b=LcgQTJbNV3bVqlHGjDyF8ae3ofKjQqtDxKL1T+GoE7TGDkEHdLv/hKItskHJZiNwn5
- ezJJjJ+AtcpXL30FeoomjsXpcNhJYV3gIUu3hvNw1JZGNWlFWk164nNlHWxrqdxh8Wl4
- 1nL1tT2R9v2pFnAquiVNKe5dREmhg75HuML7ob+9f7ZY0RuUIsBZoBmfjIQLRQrPTlkQ
- 9od7oTrecsIsCV5H/vNCfiHb9C0KFyJ60keat6bWa+eujBthPzJ7fIYGr8iEIC6Ko5f2
- 5ZJ0bZwj8yGGxS1x7js6jvaOHjyiMH+kqCAwmHgJ4hkEGIwUAfx0N8iCRC/1sobX9DRy
- fI8g==
-X-Gm-Message-State: AOJu0Yw7xU7ptWDs1eLCmT9iNzGbunmAlkUDPMsiiBPtEJ5KBPaDDpGH
- uf1uyYCRJU8Io0uHb4cxDmCatVP3f2wdSNPCmceu1PvU55LIRVc9D9NGnd/VdB07AZFreuHpawy
- s
-X-Google-Smtp-Source: AGHT+IFRN7a1rypQ1UkNrUDXvfWLhtHfWLnskl+CSt73nhvGOVJ0WTJtjl0SncmP3C9emRgdg3KIuw==
-X-Received: by 2002:a17:902:ec85:b0:1e5:559b:fa98 with SMTP id
- x5-20020a170902ec8500b001e5559bfa98mr2065437plg.34.1712907227406; 
- Fri, 12 Apr 2024 00:33:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1712907228; x=1713512028;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ISGCLEDJVFZiUeSj505TnpSQiQ8gRVs+fhfSNIPx8Ks=;
+ b=ZG5W/G34smriHMz+CdxtSmc/vFBAeRASJVL3+crunjQTTuDRxSOCDV+H8PpIkx8yAb
+ 6xhpwKRjFgtVchYKO1GHkvkUMdVBNyhpplOlGzg9JTDsTNwFruSptIdNS6bQvHBI0pjz
+ 4Yw4JfhhNdHg0jrXfnOuZ557uZH8DSayDxsmbQXfHAhe7Lc1G0PEXZSn+OfpLNL11GUe
+ G0wSHj09vHdmnpbXweGiMZgAHMbowXhE6eD0lg/YXWZAPhWHlyuWe15F+gAr13z4o0Cz
+ xtp2qhpgURJ/dUw7mqwNdfowUj4cNh6YiFM9GurE7gJTTuYej0Zy8K/y+mPEgXweMnPR
+ 2TKg==
+X-Gm-Message-State: AOJu0Yxx2IOdqSXXN9f8YJyyDdi9N47DGS/GoxnrPsEOlRhnnvcQq9Hm
+ iCXsec+kkgFMUNl18pAAzGxkt7aKiwWO6s5i0oS93Dz/jH0C7vKw5Cam6JbMFDHCxSxSFG6VveS
+ S
+X-Google-Smtp-Source: AGHT+IEnd0rmDPo0aYVMqOy1/eSlsemPhUtzIqHjNRKp5GkbmIhthdNb0lm/JIm7U/5TDoJRIZ2Zlw==
+X-Received: by 2002:a05:6a21:3e02:b0:1a7:9adc:86de with SMTP id
+ bk2-20020a056a213e0200b001a79adc86demr2025603pzc.20.1712907228329; 
+ Fri, 12 Apr 2024 00:33:48 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.46
+ e5-20020a17090301c500b001e556734814sm2206099plh.134.2024.04.12.00.33.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 12 Apr 2024 00:33:47 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 00/27] misc: Replace sprintf
-Date: Fri, 12 Apr 2024 00:33:19 -0700
-Message-Id: <20240412073346.458116-1-richard.henderson@linaro.org>
+Subject: [PATCH v3 01/27] util/hexdump: Remove b parameter from
+ qemu_hexdump_line
+Date: Fri, 12 Apr 2024 00:33:20 -0700
+Message-Id: <20240412073346.458116-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240412073346.458116-1-richard.henderson@linaro.org>
+References: <20240412073346.458116-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -89,78 +92,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Phil,
+Require that the caller output the offset and increment bufptr.
+Use QEMU_HEXDUMP_LINE_BYTES in vhost_vdpa_dump_config instead
+of raw integer.
 
-This incorporates my comments against
-    20240411104340.6617-1-philmd@linaro.org
-and
-    20240411101550.99392-1-philmd@linaro.org
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/qemu/cutils.h  |  2 +-
+ hw/virtio/vhost-vdpa.c |  4 ++--
+ util/hexdump.c         | 13 ++++++-------
+ hw/virtio/trace-events |  2 +-
+ 4 files changed, 10 insertions(+), 11 deletions(-)
 
-Especially cleanups to hexdup and disas.
-
-
-r~
-
-
-Philippe Mathieu-Daudé (13):
-  hw/mips/malta: Add re-usable rng_seed_hex_new() method
-  system/qtest: Replace sprintf by qemu_hexdump_line
-  hw/scsi/scsi-disk: Use qemu_hexdump_line to avoid sprintf
-  hw/ide/atapi: Use qemu_hexdump_line to avoid sprintf
-  hw/dma/pl330: Use qemu_hexdump_line to avoid sprintf
-  backends/tpm: Use qemu_hexdump_line to avoid sprintf
-  disas/m68k: Replace sprintf() by snprintf()
-  disas/microblaze: Replace sprintf() by snprintf()
-  linux-user/flatload: Replace sprintf() by snprintf()
-  hw/misc/imx: Replace sprintf() by snprintf()
-  hw/net/rocker: Replace sprintf() by snprintf()
-  hw/riscv/virt: Replace sprintf by g_strdup_printf
-  target/arm: Replace sprintf() by snprintf()
-
-Richard Henderson (14):
-  util/hexdump: Remove b parameter from qemu_hexdump_line
-  util/hexdump: Remove ascii parameter from qemu_hexdump_line
-  util/hexdump: Use a GString for qemu_hexdump_line
-  util/hexdump: Add unit_len and block_len to qemu_hexdump_line
-  util/hexdump: Inline g_string_append_printf "%02x"
-  disas/microblaze: Split out print_immval_addr
-  target/microblaze: Re-indent print_insn_microblaze
-  disas/microblaze: Merge op->name output into each fprintf
-  disas/microblaze: Print registers directly with PRIreg
-  disas/microblaze: Print immediates directly with PRIimm
-  disas/microblaze: Print registers directly with PRIrfsl
-  disas/microblaze: Split get_field_special
-  disas/riscv: Use GString in format_inst
-  target/i386/kvm: Improve KVM_EXIT_NOTIFY warnings
-
- include/qemu/cutils.h   |  20 +-
- backends/tpm/tpm_util.c |  24 +-
- disas/m68k.c            |   2 +-
- disas/microblaze.c      | 544 +++++++++++++++++-----------------------
- disas/riscv.c           | 209 +++++++--------
- hw/dma/pl330.c          |  23 +-
- hw/ide/atapi.c          |  12 +-
- hw/mips/malta.c         |  25 +-
- hw/misc/imx25_ccm.c     |   2 +-
- hw/misc/imx31_ccm.c     |   2 +-
- hw/misc/imx6_ccm.c      |   4 +-
- hw/misc/imx6_src.c      |   2 +-
- hw/misc/imx6ul_ccm.c    |   4 +-
- hw/misc/imx7_src.c      |   2 +-
- hw/net/imx_fec.c        |   2 +-
- hw/net/rocker/rocker.c  |  24 +-
- hw/riscv/virt.c         |  17 +-
- hw/scsi/scsi-disk.c     |  13 +-
- hw/ssi/imx_spi.c        |   2 +-
- hw/virtio/vhost-vdpa.c  |  14 +-
- linux-user/flatload.c   |   2 +-
- system/qtest.c          |  12 +-
- target/arm/cpu64.c      |   4 +-
- target/i386/kvm/kvm.c   |  12 +-
- util/hexdump.c          |  98 +++++---
- hw/virtio/trace-events  |   2 +-
- 26 files changed, 494 insertions(+), 583 deletions(-)
-
+diff --git a/include/qemu/cutils.h b/include/qemu/cutils.h
+index 92c927a6a3..3415f5d249 100644
+--- a/include/qemu/cutils.h
++++ b/include/qemu/cutils.h
+@@ -257,7 +257,7 @@ int parse_debug_env(const char *name, int max, int initial);
+  */
+ #define QEMU_HEXDUMP_LINE_BYTES 16 /* Number of bytes to dump */
+ #define QEMU_HEXDUMP_LINE_LEN 75   /* Number of characters in line */
+-void qemu_hexdump_line(char *line, unsigned int b, const void *bufptr,
++void qemu_hexdump_line(char *line, const void *bufptr,
+                        unsigned int len, bool ascii);
+ 
+ /*
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index e827b9175f..b4afa142f6 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -946,8 +946,8 @@ static void vhost_vdpa_dump_config(struct vhost_dev *dev, const uint8_t *config,
+ 
+     for (b = 0; b < config_len; b += 16) {
+         len = config_len - b;
+-        qemu_hexdump_line(line, b, config, len, false);
+-        trace_vhost_vdpa_dump_config(dev, line);
++        qemu_hexdump_line(line, config + b, len, false);
++        trace_vhost_vdpa_dump_config(dev, b, line);
+     }
+ }
+ 
+diff --git a/util/hexdump.c b/util/hexdump.c
+index 9921114b3c..7324e7b126 100644
+--- a/util/hexdump.c
++++ b/util/hexdump.c
+@@ -16,7 +16,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ 
+-void qemu_hexdump_line(char *line, unsigned int b, const void *bufptr,
++void qemu_hexdump_line(char *line, const void *bufptr,
+                        unsigned int len, bool ascii)
+ {
+     const char *buf = bufptr;
+@@ -26,13 +26,12 @@ void qemu_hexdump_line(char *line, unsigned int b, const void *bufptr,
+         len = QEMU_HEXDUMP_LINE_BYTES;
+     }
+ 
+-    line += snprintf(line, 6, "%04x:", b);
+     for (i = 0; i < QEMU_HEXDUMP_LINE_BYTES; i++) {
+-        if ((i % 4) == 0) {
++        if (i != 0 && (i % 4) == 0) {
+             *line++ = ' ';
+         }
+         if (i < len) {
+-            line += sprintf(line, " %02x", (unsigned char)buf[b + i]);
++            line += sprintf(line, " %02x", (unsigned char)buf[i]);
+         } else {
+             line += sprintf(line, "   ");
+         }
+@@ -40,7 +39,7 @@ void qemu_hexdump_line(char *line, unsigned int b, const void *bufptr,
+     if (ascii) {
+         *line++ = ' ';
+         for (i = 0; i < len; i++) {
+-            c = buf[b + i];
++            c = buf[i];
+             if (c < ' ' || c > '~') {
+                 c = '.';
+             }
+@@ -58,8 +57,8 @@ void qemu_hexdump(FILE *fp, const char *prefix,
+ 
+     for (b = 0; b < size; b += QEMU_HEXDUMP_LINE_BYTES) {
+         len = size - b;
+-        qemu_hexdump_line(line, b, bufptr, len, true);
+-        fprintf(fp, "%s: %s\n", prefix, line);
++        qemu_hexdump_line(line, bufptr + b, len, true);
++        fprintf(fp, "%s: %04x: %s\n", prefix, b, line);
+     }
+ 
+ }
+diff --git a/hw/virtio/trace-events b/hw/virtio/trace-events
+index 96632fd026..d01bc85037 100644
+--- a/hw/virtio/trace-events
++++ b/hw/virtio/trace-events
+@@ -50,7 +50,7 @@ vhost_vdpa_get_device_id(void *dev, uint32_t device_id) "dev: %p device_id %"PRI
+ vhost_vdpa_reset_device(void *dev) "dev: %p"
+ vhost_vdpa_get_vq_index(void *dev, int idx, int vq_idx) "dev: %p idx: %d vq idx: %d"
+ vhost_vdpa_set_vring_enable_one(void *dev, unsigned i, int enable, int r) "dev: %p, idx: %u, enable: %u, r: %d"
+-vhost_vdpa_dump_config(void *dev, const char *line) "dev: %p %s"
++vhost_vdpa_dump_config(void *dev, unsigned ofs, const char *line) "dev: %p %04x: %s"
+ vhost_vdpa_set_config(void *dev, uint32_t offset, uint32_t size, uint32_t flags) "dev: %p offset: %"PRIu32" size: %"PRIu32" flags: 0x%"PRIx32
+ vhost_vdpa_get_config(void *dev, void *config, uint32_t config_len) "dev: %p config: %p config_len: %"PRIu32
+ vhost_vdpa_suspend(void *dev) "dev: %p"
 -- 
 2.34.1
 
