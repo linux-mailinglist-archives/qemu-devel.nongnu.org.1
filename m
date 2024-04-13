@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA98A3B1C
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Apr 2024 07:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE908A3B20
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Apr 2024 07:25:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvVrf-0001tz-9p; Sat, 13 Apr 2024 01:23:47 -0400
+	id 1rvVrf-0001u5-W0; Sat, 13 Apr 2024 01:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvVrd-0001tb-As
+ id 1rvVrd-0001ta-8i
  for qemu-devel@nongnu.org; Sat, 13 Apr 2024 01:23:45 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvVra-0001dT-DB
- for qemu-devel@nongnu.org; Sat, 13 Apr 2024 01:23:45 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2a526803fccso904135a91.1
+ id 1rvVrb-0001da-HA
+ for qemu-devel@nongnu.org; Sat, 13 Apr 2024 01:23:44 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1e2bbc2048eso13204925ad.3
  for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 22:23:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712985821; x=1713590621; darn=nongnu.org;
+ d=linaro.org; s=google; t=1712985822; x=1713590622; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pF9Q6sT8QWcjaBZdy/z96I4yqBVj9yrUa4QsuaKPwaQ=;
- b=QPo3Khdj1My1L00CDFnB45MqqE0xgVk3NvX09InE+z9LkqmTsv6HvoEbVrQOPB4KHO
- SFvNU5TAB7RcE9/1WSsroyqfqxOsAuSEy6mTOrxzUIBpFmON18tL+ni5XdLXldIID5bA
- WgEvTlzZRVKfouKw+aicU30MgMOtbLFgwBuo69fGKyqRCL3N9CGRUPRs90W6WyrimtYI
- 8xtj4YfCJ0Pd0v8mihQ4Qzf8ZzEYYWk1spm3bbd0K0od85gp/9NZSLyOFHOe/bMK1e+Z
- 2I+ftX1fzJC9g6+8Z54s1doflodMgjgug5f5f0c5TgqdfsoDojDg/apCVsYCAb6fOy96
- YrEg==
+ bh=1i3GYPODdGEunG05Dn7518COsozxbeHPzw45fI5pR1c=;
+ b=VNApF3/hWFHop3H4G2rHERoXM7b22zAN6+1OnAOZSUQ0vRmBA/EKJ0FYfQmd39EmXK
+ WPlU4MeOg1m16VCrA/TiWrfjLVzdcwj01kPA8rkSI9CaVId1ISjHHXh9JRIxz7pUCEA7
+ +tGhoIjSEwRZitRXpcFyWjjqQTwrD+19UdfMTrGq5eQdDUZxSj2BBdoyGAPuMgad21Qt
+ M6RQRDltUMtZXWDJtxpPVeCKiNH9jBN3USdPMdqkFXY0Pk4tcIaKvdaDU9zkZmWzdn44
+ Pzb2ngOXNYJdJfu3a8KrfFeZmBZV8LEMFoIlk7r9yjB0dti4Pcm8lEVByyqWl9AAz35O
+ 5hcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712985821; x=1713590621;
+ d=1e100.net; s=20230601; t=1712985822; x=1713590622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pF9Q6sT8QWcjaBZdy/z96I4yqBVj9yrUa4QsuaKPwaQ=;
- b=RL76l4QpFM9OXCeht7oYlAoqiZZJ2LOQoXXpHHg7AscZ6qHeJqnvsP1PK8hROdjbj7
- a7ldGbKploYjm3Vj2PnHeY2XRI9JYw0PENtGbThV0viQaVl3yBec6DgXEP5XeYA6RtUr
- P2mf2gF3OTvrqyzQygxO6BPEAv0gCRKM61FROSqf+ZjP+eyEEyGgan2zEKr4jqOKxuEy
- t239U9NF/Q6PJi5HRb5lSZ3vBXlBdzx/EqC5+qa8zJl4gZb/ltNbjSX2/q6Lp2HiIUlI
- O37Q7aY3xG/vUFMLld0kxlPOmH1JIDPAfbMI6+WlaBSKIdKd8pX0IS7MF2GR7abnwSvk
- yfQA==
-X-Gm-Message-State: AOJu0YxpH+d3M1oUf1GGEkg4O08tJkLvRxxZBp/i+0G0GCMabPBzWSrc
- xcfZgc0g64mJZNSEonJpB4kJ5s2BYaWVIB4Of0NwRYlW0Jq+OVVRQF57UqSHXty75/iWAN5/WT6
- 4
-X-Google-Smtp-Source: AGHT+IGe8yiK9Wol7Ag8uXF3OOWu4DfxzeZBV900Fclb9ozPEx1Z1EHR2puPMDBwLJLjCXhtH3UN1Q==
-X-Received: by 2002:a17:90b:46c8:b0:2a2:50ef:ece2 with SMTP id
- jx8-20020a17090b46c800b002a250efece2mr4154763pjb.17.1712985821014; 
+ bh=1i3GYPODdGEunG05Dn7518COsozxbeHPzw45fI5pR1c=;
+ b=vbgVlLd5RhgKcWYsRt3gzrsSewWTqO55QRN2PomGmbeekU/8YCgJ/hWLOqXwr4HNTn
+ OBiOZl19lwVIWD+44r0Dyw5tvWiH/t4uwtMQzelZB4zGSRSZsj41eDqRaEfBhMzUWpkz
+ NDPz7vDoIP9R4HRhAO8r32PYqfJtlSc71hy9tFbMwrxqsVnHFjRsQIj/v3c51VLJ1Hn1
+ HeSSlxvdddF0B0n+Rs7ucYf9UPougIpUKh0gQ8w2fkwGeTmwiuEpmne+37eAcJHfWGr1
+ IsMSyeFn9eVOcoCsJ+h4/XyloJ8U2J+842rGaUMZyDan6J6JDivKPbNYHjep0+7jvbL1
+ b9ng==
+X-Gm-Message-State: AOJu0YwU6cOBZW6XuRenl5JyNdPo/QB4a8UfK3ialSqw9EHnm8aje1BA
+ YQMyv6EtRgLna7fW6EoU7Tz9kRTkNMrscCkZwBHwXVeetRXds5l3cUPSvg7/FijkAQHD2ixTpHB
+ t
+X-Google-Smtp-Source: AGHT+IGC78uYqxyTgow5ZpgGrA5vO4+oDzbQp5d/T/Jvjdm81AEEDXml1BmiZpixiFFJAaQVnWnXDg==
+X-Received: by 2002:a05:6a20:5648:b0:1a7:47ff:5f3e with SMTP id
+ is8-20020a056a20564800b001a747ff5f3emr4370168pzc.9.1712985821960; 
  Fri, 12 Apr 2024 22:23:41 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- v19-20020a17090abb9300b002a0544b81d6sm3564074pjr.35.2024.04.12.22.23.40
+ v19-20020a17090abb9300b002a0544b81d6sm3564074pjr.35.2024.04.12.22.23.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 22:23:40 -0700 (PDT)
+ Fri, 12 Apr 2024 22:23:41 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: edgar.iglesias@gmail.com,
 	philmd@linaro.org
-Subject: [PATCH 5/6] disas/cris: Remove struct cris_disasm_data
-Date: Fri, 12 Apr 2024 22:23:32 -0700
-Message-Id: <20240413052333.688151-6-richard.henderson@linaro.org>
+Subject: [PATCH 6/6] disas/cris: Improve output of register names
+Date: Fri, 12 Apr 2024 22:23:33 -0700
+Message-Id: <20240413052333.688151-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240413052333.688151-1-richard.henderson@linaro.org>
 References: <20240413052333.688151-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,514 +93,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As the structure contains one element, pass the element around
-instead of the structure.
+Add REGISTER_PREFIX as a string literal that may be concatenated
+with other string literals.  Use a table of the 16 register names
+instead of using g_string_append_printf.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- disas/cris.c | 187 +++++++++++++++++++++------------------------------
- 1 file changed, 76 insertions(+), 111 deletions(-)
+ disas/cris.c | 45 +++++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
 diff --git a/disas/cris.c b/disas/cris.c
-index 692cd4d163..71c292188a 100644
+index 71c292188a..01ea63c428 100644
 --- a/disas/cris.c
 +++ b/disas/cris.c
-@@ -1239,30 +1239,11 @@ cris_cc_strings[] =
+@@ -1234,6 +1234,7 @@ cris_cc_strings[] =
+ #endif
+ 
+ /* Sometimes we prefix all registers with this character.  */
++#define REGISTER_PREFIX      "$"
+ #define REGISTER_PREFIX_CHAR '$'
+ 
  enum cris_disass_family
-  { cris_dis_v0_v10, cris_dis_common_v10_v32, cris_dis_v32 };
- 
--/* Stored in the disasm_info->private_data member.  */
--struct cris_disasm_data
--{
--  /* Whether this code is flagged as crisv32.  FIXME: Should be an enum
--     that includes "compatible".  */
--  enum cris_disass_family distype;
--};
--
--static int cris_constraint
--  (const char *, unsigned, unsigned, struct cris_disasm_data *);
--
--/* Parse disassembler options and store state in info.  FIXME: For the
--   time being, we abuse static variables.  */
--
--static void
--cris_parse_disassembler_options (struct cris_disasm_data *disdata,
--                                 char *disassembler_options,
--                                 enum cris_disass_family distype)
--{
--  disdata->distype = distype;
--}
-+static int cris_constraint(const char *, unsigned, unsigned,
-+                           enum cris_disass_family);
- 
- static const struct cris_spec_reg *
--spec_reg_info (unsigned int sreg, enum cris_disass_family distype)
-+spec_reg_info(unsigned int sreg, enum cris_disass_family distype)
- {
-   int i;
- 
-@@ -1309,9 +1290,9 @@ number_of_bits (unsigned int val)
- /* Get an entry in the opcode-table.  */
- 
- static const struct cris_opcode *
--get_opcode_entry (unsigned int insn,
--                  unsigned int prefix_insn,
--                  struct cris_disasm_data *disdata)
-+get_opcode_entry(unsigned int insn,
-+                 unsigned int prefix_insn,
-+                 enum cris_disass_family distype)
- {
-   /* For non-prefixed insns, we keep a table of pointers, indexed by the
-      insn code.  Each entry is initialized when found to be NULL.  */
-@@ -1349,7 +1330,7 @@ get_opcode_entry (unsigned int insn,
-       const struct cris_opcode *popcodep
-         = (opc_table[prefix_insn] != NULL
-            ? opc_table[prefix_insn]
--           : get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata));
-+           : get_opcode_entry(prefix_insn, NO_CRIS_PREFIX, distype));
- 
-       if (popcodep == NULL)
-         return NULL;
-@@ -1406,7 +1387,7 @@ get_opcode_entry (unsigned int insn,
-         {
-           int level_of_match;
- 
--          if (disdata->distype == cris_dis_v32)
-+          if (distype == cris_dis_v32)
-             {
-               switch (opcodep->applicable_version)
-                 {
-@@ -1469,10 +1450,8 @@ get_opcode_entry (unsigned int insn,
-           if ((opcodep->match & insn) == opcodep->match
-               && (opcodep->lose & insn) == 0
-               && ((level_of_match
--                   = cris_constraint (opcodep->args,
--                                      insn,
--                                      prefix_insn,
--                                      disdata))
-+                   = cris_constraint(opcodep->args, insn,
-+                                     prefix_insn, distype))
-                   >= 0)
-               && ((level_of_match
-                    += 2 * number_of_bits (opcodep->match
-@@ -1509,10 +1488,10 @@ get_opcode_entry (unsigned int insn,
-    indicating the confidence in the match (higher is better).  */
- 
- static int
--cris_constraint (const char *cs,
--                 unsigned int insn,
--                 unsigned int prefix_insn,
--                 struct cris_disasm_data *disdata)
-+cris_constraint(const char *cs,
-+                unsigned int insn,
-+                unsigned int prefix_insn,
-+                enum cris_disass_family distype)
- {
-   int retval = 0;
-   int tmp;
-@@ -1526,7 +1505,7 @@ cris_constraint (const char *cs,
-         /* Do not recognize "pop" if there's a prefix and then only for
-            v0..v10.  */
-         if (prefix_insn != NO_CRIS_PREFIX
--            || disdata->distype != cris_dis_v0_v10)
-+            || distype != cris_dis_v0_v10)
-           return -1;
-         break;
- 
-@@ -1569,7 +1548,7 @@ cris_constraint (const char *cs,
-             if (insn & 0x400)
-               {
-                 const struct cris_opcode *prefix_opcodep
--                  = get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata);
-+                  = get_opcode_entry(prefix_insn, NO_CRIS_PREFIX, distype);
- 
-                 if (prefix_opcodep->match == DIP_OPCODE)
-                   return -1;
-@@ -1589,7 +1568,7 @@ cris_constraint (const char *cs,
-           {
-             /* Match the prefix insn to BDAPQ.  */
-             const struct cris_opcode *prefix_opcodep
--              = get_opcode_entry (prefix_insn, NO_CRIS_PREFIX, disdata);
-+              = get_opcode_entry(prefix_insn, NO_CRIS_PREFIX, distype);
- 
-             if (prefix_opcodep->match == BDAP_QUICK_OPCODE)
-               {
-@@ -1602,7 +1581,7 @@ cris_constraint (const char *cs,
-                   {
-                     unsigned int spec_reg = (insn >> 12) & 15;
-                     const struct cris_spec_reg *sregp
--                      = spec_reg_info (spec_reg, disdata->distype);
-+                      = spec_reg_info(spec_reg, distype);
- 
-                     /* For a special-register, the "prefix size" must
-                        match the size of the register.  */
-@@ -1631,7 +1610,7 @@ cris_constraint (const char *cs,
-       case 'P':
-         {
-           const struct cris_spec_reg *sregp
--            = spec_reg_info ((insn >> 12) & 15, disdata->distype);
-+            = spec_reg_info((insn >> 12) & 15, distype);
- 
-           /* Since we match four bits, we will give a value of 4-1 = 3
-              in a match.  If there is a corresponding exact match of a
-@@ -1688,7 +1667,7 @@ format_dec(long number, GString *str, int signedp)
- /* Format the name of the general register regno into outbuffer.  */
- 
+@@ -1669,26 +1670,31 @@ format_dec(long number, GString *str, int signedp)
  static void
--format_reg(struct cris_disasm_data *disdata, int regno, GString *str)
-+format_reg(enum cris_disass_family distype, int regno, GString *str)
+ format_reg(enum cris_disass_family distype, int regno, GString *str)
  {
-   g_string_append_c(str, REGISTER_PREFIX_CHAR);
+-  g_string_append_c(str, REGISTER_PREFIX_CHAR);
++  static const char reg_names[16][5] = {
++    REGISTER_PREFIX "r0",
++    REGISTER_PREFIX "r1",
++    REGISTER_PREFIX "r2",
++    REGISTER_PREFIX "r3",
++    REGISTER_PREFIX "r4",
++    REGISTER_PREFIX "r5",
++    REGISTER_PREFIX "r6",
++    REGISTER_PREFIX "r7",
++    REGISTER_PREFIX "r8",
++    REGISTER_PREFIX "r9",
++    REGISTER_PREFIX "r10",
++    REGISTER_PREFIX "r11",
++    REGISTER_PREFIX "r12",
++    REGISTER_PREFIX "r13",
++    REGISTER_PREFIX "sp",
++    REGISTER_PREFIX "pc",
++  };
++  const char *name = reg_names[regno];
  
-@@ -1696,7 +1675,7 @@ format_reg(struct cris_disasm_data *disdata, int regno, GString *str)
-     {
-     case 15:
-       /* For v32, there is no context in which we output PC.  */
--      if (disdata->distype == cris_dis_v32)
-+      if (distype == cris_dis_v32)
-         g_string_append(str, "acr");
-       else
-         g_string_append(str, "pc");
-@@ -1736,10 +1715,10 @@ format_sup_reg(unsigned int regno, GString *str)
- /* Return the length of an instruction.  */
+-  switch (regno)
+-    {
+-    case 15:
+-      /* For v32, there is no context in which we output PC.  */
+-      if (distype == cris_dis_v32)
+-        g_string_append(str, "acr");
+-      else
+-        g_string_append(str, "pc");
+-      break;
++  /* For v32, there is no context in which we output PC.  */
++  if (regno == 15 && distype == cris_dis_v32)
++    name = REGISTER_PREFIX "acr";
  
- static unsigned
--bytes_to_skip (unsigned int insn,
--               const struct cris_opcode *matchedp,
--               enum cris_disass_family distype,
--               const struct cris_opcode *prefix_matchedp)
-+bytes_to_skip(unsigned int insn,
-+              const struct cris_opcode *matchedp,
-+              enum cris_disass_family distype,
-+              const struct cris_opcode *prefix_matchedp)
- {
-   /* Each insn is a word plus "immediate" operands.  */
-   unsigned to_skip = 2;
-@@ -1760,7 +1739,7 @@ bytes_to_skip (unsigned int insn,
-         else if (matchedp->imm_oprnd_size == SIZE_SPEC_REG)
-           {
-             const struct cris_spec_reg *sregp
--              = spec_reg_info ((insn >> 12) & 15, distype);
-+              = spec_reg_info((insn >> 12) & 15, distype);
- 
-             /* FIXME: Improve error handling; should have been caught
-                earlier.  */
-@@ -1787,7 +1766,7 @@ bytes_to_skip (unsigned int insn,
- /* Print condition code flags.  */
- 
- static void
--print_flags(struct cris_disasm_data *disdata, unsigned int insn, GString *str)
-+print_flags(enum cris_disass_family distype, unsigned int insn, GString *str)
- {
-   /* Use the v8 (Etrax 100) flag definitions for disassembly.
-      The differences with v0 (Etrax 1..4) vs. Svinto are:
-@@ -1796,8 +1775,7 @@ print_flags(struct cris_disasm_data *disdata, unsigned int insn, GString *str)
-      FIXME: Emit v0..v3 flag names somehow.  */
-   static const char v8_fnames[] = "cvznxibm";
-   static const char v32_fnames[] = "cvznxiup";
--  const char *fnames
--    = disdata->distype == cris_dis_v32 ? v32_fnames : v8_fnames;
-+  const char *fnames = distype == cris_dis_v32 ? v32_fnames : v8_fnames;
- 
-   unsigned char flagbits = (((insn >> 8) & 0xf0) | (insn & 15));
-   int i;
-@@ -1812,24 +1790,25 @@ print_flags(struct cris_disasm_data *disdata, unsigned int insn, GString *str)
-    supposed to be output as an address mode.  */
- 
- static void
--print_with_operands (const struct cris_opcode *opcodep,
--                     unsigned int insn,
--                     unsigned char *buffer,
--                     bfd_vma addr,
--                     disassemble_info *info,
--                     /* If a prefix insn was before this insn (and is supposed
--                        to be output as an address), here is a description of
--                        it.  */
--                     const struct cris_opcode *prefix_opcodep,
--                     unsigned int prefix_insn,
--                     unsigned char *prefix_buffer)
-+print_with_operands(const struct cris_opcode *opcodep,
-+                    unsigned int insn,
-+                    unsigned char *buffer,
-+                    bfd_vma addr,
-+                    disassemble_info *info,
-+                    /*
-+                     * If a prefix insn was before this insn
-+                     * (and is supposed to be output as an address),
-+                     * here is a description of it.
-+                     */
-+                    const struct cris_opcode *prefix_opcodep,
-+                    unsigned int prefix_insn,
-+                    unsigned char *prefix_buffer,
-+                    enum cris_disass_family distype)
- {
-   g_autoptr(GString) str = g_string_new(opcodep->name);
-   static const char mode_char[] = "bwd?";
-   const char *s;
-   const char *cs;
--  struct cris_disasm_data *disdata
--    = (struct cris_disasm_data *) info->private_data;
- 
-   cs = opcodep->args;
-   s = cs;
-@@ -1912,11 +1891,11 @@ print_with_operands (const struct cris_opcode *opcodep,
- 
-       case 'D':
-       case 'r':
--        format_reg(disdata, insn & 15, str);
-+        format_reg(distype, insn & 15, str);
-         break;
- 
-       case 'R':
--        format_reg(disdata, (insn >> 12) & 15, str);
-+        format_reg(distype, (insn >> 12) & 15, str);
-         break;
- 
-       case 'n':
-@@ -1960,7 +1939,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-             else if (opcodep->imm_oprnd_size == SIZE_SPEC_REG)
-               {
-                 const struct cris_spec_reg *sregp
--                  = spec_reg_info ((insn >> 12) & 15, disdata->distype);
-+                  = spec_reg_info((insn >> 12) & 15, distype);
- 
-                 /* A NULL return should have been as a non-match earlier,
-                    so catch it as an internal error in the error-case
-@@ -1972,7 +1951,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-                   /* PC is always incremented by a multiple of two.
-                      For CRISv32, immediates are always 4 bytes for
-                      special registers.  */
--                  nbytes = disdata->distype == cris_dis_v32
-+                  nbytes = distype == cris_dis_v32
-                     ? 4 : (sregp->reg_size + 1) & ~1;
-               }
-             else
-@@ -2035,7 +2014,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-                 else if (opcodep->imm_oprnd_size == SIZE_SPEC_REG)
-                   {
-                     const struct cris_spec_reg *sregp
--                      = spec_reg_info ((insn >> 12) & 15, disdata->distype);
-+                      = spec_reg_info((insn >> 12) & 15, distype);
- 
-                     /* FIXME: Improve error handling; should have been caught
-                        earlier.  */
-@@ -2060,7 +2039,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-               {
-                 if (insn & 0x400)
-                   {
--                    format_reg(disdata, insn & 15, str);
-+                    format_reg(distype, insn & 15, str);
-                     g_string_append_c(str, '=');
-                   }
- 
-@@ -2093,7 +2072,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-                         info->target2 = prefix_insn & 15;
- 
-                         g_string_append_c(str, '[');
--                        format_reg(disdata, prefix_insn & 15, str);
-+                        format_reg(distype, prefix_insn & 15, str);
-                         if (prefix_insn & 0x400)
-                           g_string_append_c(str, '+');
-                         g_string_append_c(str, ']');
-@@ -2109,7 +2088,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-                         number -= 256;
- 
-                       /* Output "reg+num" or, if num < 0, "reg-num".  */
--                      format_reg(disdata, (prefix_insn >> 12) & 15, str);
-+                      format_reg(distype, (prefix_insn >> 12) & 15, str);
-                       if (number >= 0)
-                         g_string_append_c(str, '+');
-                       format_dec(number, str, 1);
-@@ -2122,9 +2101,9 @@ print_with_operands (const struct cris_opcode *opcodep,
- 
-                   case BIAP_OPCODE:
-                     /* Output "r+R.m".  */
--                    format_reg(disdata, prefix_insn & 15, str);
-+                    format_reg(distype, prefix_insn & 15, str);
-                     g_string_append_c(str, '+');
--                    format_reg(disdata, (prefix_insn >> 12) & 15, str);
-+                    format_reg(distype, (prefix_insn >> 12) & 15, str);
-                     g_string_append_c(str, '.');
-                     g_string_append_c(str, mode_char[(prefix_insn >> 4) & 3]);
- 
-@@ -2139,7 +2118,7 @@ print_with_operands (const struct cris_opcode *opcodep,
- 
-                   case BDAP_INDIR_OPCODE:
-                     /* Output "r+s.m", or, if "s" is [pc+], "r+s" or "r-s". */
--                    format_reg(disdata, (prefix_insn >> 12) & 15, str);
-+                    format_reg(distype, (prefix_insn >> 12) & 15, str);
- 
-                     if ((prefix_insn & 0x400) && (prefix_insn & 15) == 15)
-                       {
-@@ -2202,7 +2181,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-                         /* Output "r+[R].m" or "r+[R+].m".  */
-                         g_string_append_c(str, '+');
-                         g_string_append_c(str, '[');
--                        format_reg(disdata, prefix_insn & 15, str);
-+                        format_reg(distype, prefix_insn & 15, str);
-                         if (prefix_insn & 0x400)
-                           g_string_append_c(str, '+');
-                         g_string_append_c(str, ']');
-@@ -2230,7 +2209,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-               }
-             else
-               {
--                format_reg(disdata, insn & 15, str);
-+                format_reg(distype, insn & 15, str);
- 
-                 info->flags |= CRIS_DIS_FLAG_MEM_TARGET_IS_REG;
-                 info->target = insn & 15;
-@@ -2243,7 +2222,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-         break;
- 
-       case 'x':
--        format_reg(disdata, (insn >> 12) & 15, str);
-+        format_reg(distype, (insn >> 12) & 15, str);
-         g_string_append_c(str, '.');
-         g_string_append_c(str, mode_char[(insn >> 4) & 3]);
-         break;
-@@ -2259,7 +2238,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-           if (where > 32767)
-             where -= 65536;
- 
--          where += addr + ((disdata->distype == cris_dis_v32) ? 0 : 4);
-+          where += addr + ((distype == cris_dis_v32) ? 0 : 4);
- 
-           if (insn == BA_PC_INCR_OPCODE)
-             info->insn_type = dis_branch;
-@@ -2294,7 +2273,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-         else
-           info->insn_type = dis_condbranch;
- 
--        target = addr + ((disdata->distype == cris_dis_v32) ? 0 : 2) + offset;
-+        target = addr + (distype == cris_dis_v32 ? 0 : 2) + offset;
-         info->target = target;
-         format_hex(target, str);
-       }
-@@ -2310,12 +2289,12 @@ print_with_operands (const struct cris_opcode *opcodep,
- 
-         format_dec(number, str, 1);
-         g_string_append_c(str, ',');
--        format_reg(disdata, (insn >> 12) & 15, str);
-+        format_reg(distype, (insn >> 12) & 15, str);
-       }
-       break;
- 
-     case 'f':
--      print_flags(disdata, insn, str);
-+      print_flags(distype, insn, str);
-       break;
- 
-     case 'i':
-@@ -2325,7 +2304,7 @@ print_with_operands (const struct cris_opcode *opcodep,
-     case 'P':
-       {
-         const struct cris_spec_reg *sregp
--          = spec_reg_info ((insn >> 12) & 15, disdata->distype);
-+          = spec_reg_info((insn >> 12) & 15, distype);
- 
-         if (sregp == NULL || sregp->name == NULL)
-           /* Should have been caught as a non-match earlier.  */
-@@ -2356,15 +2335,14 @@ print_with_operands (const struct cris_opcode *opcodep,
-    WITH_REG_PREFIX.  */
- 
- static int
--print_insn_cris_generic (bfd_vma memaddr,
--                         disassemble_info *info)
-+print_insn_cris_generic(bfd_vma memaddr,
-+                        disassemble_info *info,
-+                        enum cris_disass_family distype)
- {
-   int nbytes;
-   unsigned int insn;
-   const struct cris_opcode *matchedp;
-   int advance = 0;
--  struct cris_disasm_data *disdata
--    = (struct cris_disasm_data *) info->private_data;
- 
-   /* No instruction will be disassembled as longer than this number of
-      bytes; stacked prefixes will not be expanded.  */
-@@ -2416,7 +2394,7 @@ print_insn_cris_generic (bfd_vma memaddr,
-              of a nuiscance that we will just output "bcc .+2" for it
-              and signal it as a noninsn.  */
-           (*info->fprintf_func) (info->stream,
--                                 disdata->distype == cris_dis_v32
-+                                 distype == cris_dis_v32
-                                  ? "bcc ." : "bcc .+2");
-           info->insn_type = dis_noninsn;
-           advance += 2;
-@@ -2428,7 +2406,7 @@ print_insn_cris_generic (bfd_vma memaddr,
-           unsigned int prefix_insn = insn;
-           int prefix_size = 0;
- 
--          matchedp = get_opcode_entry (insn, NO_CRIS_PREFIX, disdata);
-+          matchedp = get_opcode_entry(insn, NO_CRIS_PREFIX, distype);
- 
-           /* Check if we're supposed to write out prefixes as address
-              modes and if this was a prefix.  */
-@@ -2436,12 +2414,11 @@ print_insn_cris_generic (bfd_vma memaddr,
-             {
-               /* If it's a prefix, put it into the prefix vars and get the
-                  main insn.  */
--              prefix_size = bytes_to_skip (prefix_insn, matchedp,
--                                           disdata->distype, NULL);
-+              prefix_size = bytes_to_skip(prefix_insn, matchedp, distype, NULL);
-               prefix_opcodep = matchedp;
- 
-               insn = bufp[prefix_size] + bufp[prefix_size + 1] * 256;
--              matchedp = get_opcode_entry (insn, prefix_insn, disdata);
-+              matchedp = get_opcode_entry(insn, prefix_insn, distype);
- 
-               if (matchedp != NULL)
-                 {
-@@ -2469,15 +2446,13 @@ print_insn_cris_generic (bfd_vma memaddr,
-             }
-           else
-             {
--              advance
--                += bytes_to_skip (insn, matchedp, disdata->distype,
--                                  prefix_opcodep);
-+              advance += bytes_to_skip(insn, matchedp, distype, prefix_opcodep);
- 
-               /* The info_type and assorted fields will be set according
-                  to the operands.   */
--              print_with_operands (matchedp, insn, bufp, addr, info,
--                                   prefix_opcodep, prefix_insn,
--                                   prefix_buffer);
-+              print_with_operands(matchedp, insn, bufp, addr, info,
-+                                  prefix_opcodep, prefix_insn,
-+                                  prefix_buffer, distype);
-             }
-         }
-     }
-@@ -2513,23 +2488,13 @@ print_insn_cris_generic (bfd_vma memaddr,
+-    case 14:
+-      g_string_append(str, "sp");
+-      break;
+-
+-    default:
+-      g_string_append_printf(str, "r%d", regno);
+-      break;
+-    }
++  g_string_append(str, name);
  }
  
- int
--print_insn_crisv10 (bfd_vma vma,
--                    disassemble_info *info)
-+print_insn_crisv10(bfd_vma vma, disassemble_info *info)
- {
--  struct cris_disasm_data disdata;
--  info->private_data = &disdata;
--  cris_parse_disassembler_options (&disdata, info->disassembler_options,
--                                   cris_dis_v0_v10);
--  return print_insn_cris_generic (vma, info);
-+  return print_insn_cris_generic(vma, info, cris_dis_v0_v10);
- }
+ /* Format the name of a support register into outbuffer.  */
+@@ -1861,8 +1867,7 @@ print_with_operands(const struct cris_opcode *opcodep,
+         break;
  
- int
--print_insn_crisv32 (bfd_vma vma,
--                    disassemble_info *info)
-+print_insn_crisv32(bfd_vma vma, disassemble_info *info)
- {
--  struct cris_disasm_data disdata;
--  info->private_data = &disdata;
--  cris_parse_disassembler_options (&disdata, info->disassembler_options,
--                                   cris_dis_v32);
--  return print_insn_cris_generic (vma, info);
-+  return print_insn_cris_generic(vma, info, cris_dis_v32);
- }
+       case 'A':
+-        g_string_append_c(str, REGISTER_PREFIX_CHAR);
+-        g_string_append(str, "acr");
++        g_string_append(str, REGISTER_PREFIX "acr");
+         break;
+ 
+       case '[':
 -- 
 2.34.1
 
