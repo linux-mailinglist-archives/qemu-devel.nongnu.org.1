@@ -2,75 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE908A3B20
-	for <lists+qemu-devel@lfdr.de>; Sat, 13 Apr 2024 07:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B918A3BB2
+	for <lists+qemu-devel@lfdr.de>; Sat, 13 Apr 2024 10:47:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rvVrf-0001u5-W0; Sat, 13 Apr 2024 01:23:48 -0400
+	id 1rvZ1L-0005a6-8y; Sat, 13 Apr 2024 04:45:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvVrd-0001ta-8i
- for qemu-devel@nongnu.org; Sat, 13 Apr 2024 01:23:45 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvZ1D-0005YV-Ox
+ for qemu-devel@nongnu.org; Sat, 13 Apr 2024 04:45:53 -0400
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rvVrb-0001da-HA
- for qemu-devel@nongnu.org; Sat, 13 Apr 2024 01:23:44 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1e2bbc2048eso13204925ad.3
- for <qemu-devel@nongnu.org>; Fri, 12 Apr 2024 22:23:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rvZ19-0007D3-2u
+ for qemu-devel@nongnu.org; Sat, 13 Apr 2024 04:45:49 -0400
+Received: by mail-ed1-x536.google.com with SMTP id
+ 4fb4d7f45d1cf-56fffb1d14bso2105645a12.1
+ for <qemu-devel@nongnu.org>; Sat, 13 Apr 2024 01:45:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1712985822; x=1713590622; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1i3GYPODdGEunG05Dn7518COsozxbeHPzw45fI5pR1c=;
- b=VNApF3/hWFHop3H4G2rHERoXM7b22zAN6+1OnAOZSUQ0vRmBA/EKJ0FYfQmd39EmXK
- WPlU4MeOg1m16VCrA/TiWrfjLVzdcwj01kPA8rkSI9CaVId1ISjHHXh9JRIxz7pUCEA7
- +tGhoIjSEwRZitRXpcFyWjjqQTwrD+19UdfMTrGq5eQdDUZxSj2BBdoyGAPuMgad21Qt
- M6RQRDltUMtZXWDJtxpPVeCKiNH9jBN3USdPMdqkFXY0Pk4tcIaKvdaDU9zkZmWzdn44
- Pzb2ngOXNYJdJfu3a8KrfFeZmBZV8LEMFoIlk7r9yjB0dti4Pcm8lEVByyqWl9AAz35O
- 5hcQ==
+ d=linaro.org; s=google; t=1712997945; x=1713602745; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=hHl+uaacNZoO469pzd7El9ANHKIMAnHMvS64gxQXJmg=;
+ b=CyV1DhumSzOAtNgeGr0To5h8eZPLOfvJDT8T3QTrc7TfjMcMkHUhXGfXNgdYS0ZDkC
+ BX5Qqv+1hrlAZBQ4+0TbyD7d8jWZZBMQBygd5awg7z3fVlAlEuMEFs+1uQfyWK3wNgBh
+ Zo1zz+tOwn4HqeRPyA/SZZlqHaQ+XIi4sW4V280LbbeGTmdSkgWZO4J8rSh283k6axB3
+ PyEVAK0y0D61HT63+X9GU8JdFwfQKwR5A7We5GCyiaokyIQvT68UR5DfoWQ31Kk8lAb6
+ 0XlvjmJwmnQSHaXpdga/o4LodBbUrDz7p0BrVEgl7pCk/y75sEBJu4xu2tTGdIWPbm+S
+ 4FUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1712985822; x=1713590622;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=1i3GYPODdGEunG05Dn7518COsozxbeHPzw45fI5pR1c=;
- b=vbgVlLd5RhgKcWYsRt3gzrsSewWTqO55QRN2PomGmbeekU/8YCgJ/hWLOqXwr4HNTn
- OBiOZl19lwVIWD+44r0Dyw5tvWiH/t4uwtMQzelZB4zGSRSZsj41eDqRaEfBhMzUWpkz
- NDPz7vDoIP9R4HRhAO8r32PYqfJtlSc71hy9tFbMwrxqsVnHFjRsQIj/v3c51VLJ1Hn1
- HeSSlxvdddF0B0n+Rs7ucYf9UPougIpUKh0gQ8w2fkwGeTmwiuEpmne+37eAcJHfWGr1
- IsMSyeFn9eVOcoCsJ+h4/XyloJ8U2J+842rGaUMZyDan6J6JDivKPbNYHjep0+7jvbL1
- b9ng==
-X-Gm-Message-State: AOJu0YwU6cOBZW6XuRenl5JyNdPo/QB4a8UfK3ialSqw9EHnm8aje1BA
- YQMyv6EtRgLna7fW6EoU7Tz9kRTkNMrscCkZwBHwXVeetRXds5l3cUPSvg7/FijkAQHD2ixTpHB
- t
-X-Google-Smtp-Source: AGHT+IGC78uYqxyTgow5ZpgGrA5vO4+oDzbQp5d/T/Jvjdm81AEEDXml1BmiZpixiFFJAaQVnWnXDg==
-X-Received: by 2002:a05:6a20:5648:b0:1a7:47ff:5f3e with SMTP id
- is8-20020a056a20564800b001a747ff5f3emr4370168pzc.9.1712985821960; 
- Fri, 12 Apr 2024 22:23:41 -0700 (PDT)
-Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
- by smtp.gmail.com with ESMTPSA id
- v19-20020a17090abb9300b002a0544b81d6sm3564074pjr.35.2024.04.12.22.23.41
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 12 Apr 2024 22:23:41 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: edgar.iglesias@gmail.com,
-	philmd@linaro.org
-Subject: [PATCH 6/6] disas/cris: Improve output of register names
-Date: Fri, 12 Apr 2024 22:23:33 -0700
-Message-Id: <20240413052333.688151-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240413052333.688151-1-richard.henderson@linaro.org>
-References: <20240413052333.688151-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1712997945; x=1713602745;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=hHl+uaacNZoO469pzd7El9ANHKIMAnHMvS64gxQXJmg=;
+ b=rvnNPLuOt0821WPCfoL1/XinZpXJlYr80OW4QJBqZlbW0+FuFMtX0CciP2/Kn434HI
+ MWx2OvLYIXxfr/R/J6ol3rQPJ0sL1sQUZJ7KnAEdv8bERi65fAMYrt+PVc49gtHwU8pQ
+ vJa1huPvujrIoKu8+KPkxAsWT0RIouvWmFcA1Ixa7EfxQ2VOMThv/L8OaFP2aZQ7zhtW
+ 8b6RKAbp11929LFOye9AS/mbNnmmYwRFi83hsuDHx26BKkQhEOFTwmLIt85YwiRGhyqF
+ xUsNAqB4l66qR9tlxqH4RZ5pQ03/9dMbgZteCrX/pBgc+o9MypWP99rvGgGeFL5P/csZ
+ dxDw==
+X-Gm-Message-State: AOJu0YzbLX4VK1KIrhNzeK3vxQoTlMQcZCF399ztTyiFRBJYrQD97CwX
+ F/HzcfnHYDZlHl8pZYDf/PzB3ol74eS4TTdlE+/jbK9TA+/YdTEF+uhVUQowCRDwZOdHrfQqoSz
+ iRCRqghQD40qB4m/OjCtuD91hHDgIkMZF2Hp9FQ==
+X-Google-Smtp-Source: AGHT+IE3kdaHBvVwx+GLfnDRVeccpUOyFtqNVD2EFczIQqm4hjNRuiB5IjT4om6W+yLj47TlhXevxicZ9WgrBcoJV5E=
+X-Received: by 2002:a05:6402:c4f:b0:56d:fbe4:aeba with SMTP id
+ cs15-20020a0564020c4f00b0056dfbe4aebamr7269218edb.21.1712997945346; Sat, 13
+ Apr 2024 01:45:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+References: <20240413052333.688151-1-richard.henderson@linaro.org>
+In-Reply-To: <20240413052333.688151-1-richard.henderson@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 13 Apr 2024 09:45:33 +0100
+Message-ID: <CAFEAcA89WnvcE-0OAun-19vsWLqbSqtx-DMCJ+YaPHKShgzyvg@mail.gmail.com>
+Subject: Re: [PATCH 0/6] disas/cris: Use GString instead of sprintf
+To: Richard Henderson <richard.henderson@linaro.org>
+Cc: qemu-devel@nongnu.org, edgar.iglesias@gmail.com, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::536;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,88 +85,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add REGISTER_PREFIX as a string literal that may be concatenated
-with other string literals.  Use a table of the 16 register names
-instead of using g_string_append_printf.
+On Sat, 13 Apr 2024 at 06:25, Richard Henderson
+<richard.henderson@linaro.org> wrote:
+>
+> More sprintf cleanup encouraged by the Apple deprecation.
+> Probably there's a more minimal patch.  On the other hand,
+> there's certainly a larger cleanup possible.
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- disas/cris.c | 45 +++++++++++++++++++++++++--------------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+The CRIS architecture is deprecated, so all this code will
+be deleted in 9.2; that seems to me to limit the utility
+of doing big cleanups on it.
 
-diff --git a/disas/cris.c b/disas/cris.c
-index 71c292188a..01ea63c428 100644
---- a/disas/cris.c
-+++ b/disas/cris.c
-@@ -1234,6 +1234,7 @@ cris_cc_strings[] =
- #endif
- 
- /* Sometimes we prefix all registers with this character.  */
-+#define REGISTER_PREFIX      "$"
- #define REGISTER_PREFIX_CHAR '$'
- 
- enum cris_disass_family
-@@ -1669,26 +1670,31 @@ format_dec(long number, GString *str, int signedp)
- static void
- format_reg(enum cris_disass_family distype, int regno, GString *str)
- {
--  g_string_append_c(str, REGISTER_PREFIX_CHAR);
-+  static const char reg_names[16][5] = {
-+    REGISTER_PREFIX "r0",
-+    REGISTER_PREFIX "r1",
-+    REGISTER_PREFIX "r2",
-+    REGISTER_PREFIX "r3",
-+    REGISTER_PREFIX "r4",
-+    REGISTER_PREFIX "r5",
-+    REGISTER_PREFIX "r6",
-+    REGISTER_PREFIX "r7",
-+    REGISTER_PREFIX "r8",
-+    REGISTER_PREFIX "r9",
-+    REGISTER_PREFIX "r10",
-+    REGISTER_PREFIX "r11",
-+    REGISTER_PREFIX "r12",
-+    REGISTER_PREFIX "r13",
-+    REGISTER_PREFIX "sp",
-+    REGISTER_PREFIX "pc",
-+  };
-+  const char *name = reg_names[regno];
- 
--  switch (regno)
--    {
--    case 15:
--      /* For v32, there is no context in which we output PC.  */
--      if (distype == cris_dis_v32)
--        g_string_append(str, "acr");
--      else
--        g_string_append(str, "pc");
--      break;
-+  /* For v32, there is no context in which we output PC.  */
-+  if (regno == 15 && distype == cris_dis_v32)
-+    name = REGISTER_PREFIX "acr";
- 
--    case 14:
--      g_string_append(str, "sp");
--      break;
--
--    default:
--      g_string_append_printf(str, "r%d", regno);
--      break;
--    }
-+  g_string_append(str, name);
- }
- 
- /* Format the name of a support register into outbuffer.  */
-@@ -1861,8 +1867,7 @@ print_with_operands(const struct cris_opcode *opcodep,
-         break;
- 
-       case 'A':
--        g_string_append_c(str, REGISTER_PREFIX_CHAR);
--        g_string_append(str, "acr");
-+        g_string_append(str, REGISTER_PREFIX "acr");
-         break;
- 
-       case '[':
--- 
-2.34.1
-
+thanks
+-- PMM
 
