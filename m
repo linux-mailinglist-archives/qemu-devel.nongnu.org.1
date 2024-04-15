@@ -2,49 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A228A58FB
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 19:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C658A5901
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 19:19:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwPxH-0006t9-Q0; Mon, 15 Apr 2024 13:17:21 -0400
+	id 1rwPzF-0008BJ-5L; Mon, 15 Apr 2024 13:19:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rwPx7-0006sg-2a
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 13:17:09 -0400
+ id 1rwPzC-0008AU-6V
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 13:19:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rwPx5-0001Vw-6d
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 13:17:08 -0400
+ id 1rwPz9-0001ps-V2
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 13:19:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713201426;
+ s=mimecast20190719; t=1713201555;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qZPM4E17Sw4PhwjCB2LnDEE9CqJscVOoKssdAGg++II=;
- b=Jx/KK6VcWagZllPY+UjrEHr0gdBzCyg2Q52I/uTK0Ux9YXplirPzvKBwJLZY07DhHd8n9H
- 83r/BqfPhemHAYjjzGwPkAcglJdcyNhIFSFBp+cjMN+RhJDaUva5Uk43g+9QYIkZPwXfuS
- msQqobkdD32vdioLW/iBp13YUP3Tdk8=
+ bh=ihMdqfXVjEl2830PVlwa7JSD/9Xhqg0ws7JwxXHEzfU=;
+ b=DIn4gOUH8L+LQmi7rwC+LlM34hvXpzHntLfXEP9WFu5cZFFMI5GFSoH1YNF7ClI9bSGWcW
+ lsPtJPAtXJVmgBFeplDztgEJUhTtGqcGAsh7C/VOVsg9ylROwPGeSuoxv+5RA3Fny+A3pz
+ cwOd/wLGt/3JO2ns4GYbdo8fDabNfM0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-251-FLXIUZVKOmqkh665ddXFFg-1; Mon,
- 15 Apr 2024 13:17:04 -0400
-X-MC-Unique: FLXIUZVKOmqkh665ddXFFg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-681-B75tjtyAM3qr26tYogWckw-1; Mon,
+ 15 Apr 2024 13:19:11 -0400
+X-MC-Unique: B75tjtyAM3qr26tYogWckw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5F08F3C0ED4C;
- Mon, 15 Apr 2024 17:17:04 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FAF03810B26;
+ Mon, 15 Apr 2024 17:19:11 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.20])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B4858C15771;
- Mon, 15 Apr 2024 17:17:02 +0000 (UTC)
-Date: Mon, 15 Apr 2024 18:16:56 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C79281121313;
+ Mon, 15 Apr 2024 17:19:09 +0000 (UTC)
+Date: Mon, 15 Apr 2024 18:19:03 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Thomas Huth <thuth@redhat.com>
 Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -55,18 +55,17 @@ Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH v2 08/13] Remove glib compatibility code that is not
- required anymore
-Message-ID: <Zh1hCJt3AEeREe-8@redhat.com>
+Subject: Re: [PATCH v2 09/13] block/gluster: Use URI parsing code from glib
+Message-ID: <Zh1hh7zj1wOHiCoY@redhat.com>
 References: <20240412132415.282354-1-thuth@redhat.com>
- <20240412132415.282354-9-thuth@redhat.com>
+ <20240412132415.282354-10-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240412132415.282354-9-thuth@redhat.com>
+In-Reply-To: <20240412132415.282354-10-thuth@redhat.com>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -42
@@ -92,16 +91,15 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Apr 12, 2024 at 03:24:10PM +0200, Thomas Huth wrote:
-> Now that we bumped the minumum glib version to 2.66, we can drop
-> the old code.
+On Fri, Apr 12, 2024 at 03:24:11PM +0200, Thomas Huth wrote:
+> Since version 2.66, glib has useful URI parsing functions, too.
+> Use those instead of the QEMU-internal ones to be finally able
+> to get rid of the latter.
 > 
-> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 > Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->  qga/commands-posix-ssh.c |  8 --------
->  util/error-report.c      | 10 ----------
->  2 files changed, 18 deletions(-)
+>  block/gluster.c | 71 ++++++++++++++++++++++++-------------------------
+>  1 file changed, 35 insertions(+), 36 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
