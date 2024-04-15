@@ -2,75 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D503A8A52EB
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 16:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0BB8A535A
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 16:26:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwN8u-00009g-3F; Mon, 15 Apr 2024 10:17:08 -0400
+	id 1rwNHr-0002z0-8w; Mon, 15 Apr 2024 10:26:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rwN8r-00009Q-2p
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:17:05 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
+ id 1rwNHp-0002yR-BR
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:26:21 -0400
+Received: from sin.source.kernel.org ([145.40.73.55])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1rwN8m-0003DU-9o
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:17:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713190618;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=gxcol1la9PzcZ/kgyAmMidRTLlKJKG+qZ5HbAazhlRk=;
- b=fT/Sd2op8jBo0OOBfL62mWeBk1SzMs6GUWpWXX6kOio5OQEN3qYCgpYChkBW1N9efvJr0C
- IQVwKq25V9TZj1oIwYTeYaqBPpyPTyL0DRRdJ4lBoB+ZToO12q6NDdNCdxgcGSum2henof
- QAEGvFg8szlLxfoRlJhw/egptED93S4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-UoOTM04wOSC44d4u9FN5_g-1; Mon,
- 15 Apr 2024 10:16:54 -0400
-X-MC-Unique: UoOTM04wOSC44d4u9FN5_g-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE1E53C0F441;
- Mon, 15 Apr 2024 14:16:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.61])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 03F131BDAA;
- Mon, 15 Apr 2024 14:16:51 +0000 (UTC)
-Date: Mon, 15 Apr 2024 09:16:46 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
- Peter Lieven <pl@dlhnet.de>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- "Richard W.M. Jones" <rjones@redhat.com>, qemu-devel@nongnu.org, 
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>,
- Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>, 
- Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: MAINTAINERS tweak [was: [PATCH for-9.1 0/9] Switch to glib URI
- parsing code]
-Message-ID: <vd2bfo3hvalu77sutxo7h3qjesagau6rugao4v6qala4rbn4xz@mn5wzjniftg3>
-References: <20240328140607.2433889-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <gregkh@linuxfoundation.org>)
+ id 1rwNHm-0005Po-HK
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:26:21 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by sin.source.kernel.org (Postfix) with ESMTP id 2DF6ECE0AD8;
+ Mon, 15 Apr 2024 14:26:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8EBC113CC;
+ Mon, 15 Apr 2024 14:26:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+ s=korg; t=1713191172;
+ bh=ljaw1E3qFIqt2x4A+U9bPaVD6pkQHPufn25O4pnueYk=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=nU9Zczi7FTOEfjZlClZUiYn0FcpoGgKphKbYwoIAQv8iYgpJJ/aX9MLQ0gqnWjgbZ
+ WMoP0rvFRZHHVwmmLWvXfRuw8gU808XaXuD8MeQJEABoYXxUibHXLJRhRfixZ5m86g
+ KL4r7zIbshUq24B9mjzSxOwkoBz3yYA6ILGMYKpU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, patches@lists.linux.dev,
+ qemu-devel@nongnu.org, Breno Leitao <leitao@debian.org>,
+ Heng Qi <hengqi@linux.alibaba.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.8 008/172] virtio_net: Do not send RSS key if it is not
+ supported
+Date: Mon, 15 Apr 2024 16:18:27 +0200
+Message-ID: <20240415142000.227047251@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240415141959.976094777@linuxfoundation.org>
+References: <20240415141959.976094777@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328140607.2433889-1-thuth@redhat.com>
-User-Agent: NeoMutt/20240201
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=145.40.73.55;
+ envelope-from=gregkh@linuxfoundation.org; helo=sin.source.kernel.org
+X-Spam_score_int: -65
+X-Spam_score: -6.6
+X-Spam_bar: ------
+X-Spam_report: (-6.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,55 +72,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-[Trying Peter Lieven's alternate address...]
+6.8-stable review patch.  If anyone has any objections, please let me know.
 
-On Thu, Mar 28, 2024 at 03:05:57PM +0100, Thomas Huth wrote:
-> In the QEMU 9.1 development cycle, we can drop the support for
-> Ubuntu 20.04 and CentOS 8 since the following major versions of
-> these distributions are available since 2 years already.
+------------------
 
-Every time I've replied to any message in this thread, I've gotten a
-response:
+From: Breno Leitao <leitao@debian.org>
 
-| +Your message to pl@kamp.de couldn't be delivered.
-| kamp.de couldn't confirm that your message was sent from a trusted location.
-| eblake  Office 365      pl
-| Action Required                 Recipient
-| SPF validation error
-| 
-| How to Fix It
-| Your organization's email admin will have to diagnose and fix your domain's email settings. Please forward this message to your
-| +email admin.
-| 
-| ________________________________
-| 
-| More Info for Email Admins
-| Status code: 550 5.7.23
-| 
-| This error occurs when Sender Policy Framework (SPF) validation for the sender's domain fails. If you're the sender's email
-| +admin, make sure the SPF records for your domain at your domain registrar are set up correctly. Office 365 supports only one
-| +SPF record (a TXT record that defines SPF) for your domain. Include the following domain name: spf.protection.outlook.com. If
-| +you have a hybrid configuration (some mailboxes in the cloud, and some mailboxes on premises) or if you're an Exchange Online
-| +Protection standalone customer, add the outbound IP address of your on-premises servers to the TXT record.
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream.
 
-Red Hat IT says that it is unlikely to be Red Hat's SPF settings, and
-suspects that it is instead something caused by whatever Peter is
-using to bounce mail from his alias Peter Lieven <pl@kamp.de> to his
-Office 365 account.  As I appear to be unable to contact Peter (even
-my use of direct email, bypassing the list, and using a personal
-account instead of my Red Hat email) about this issue, I'm wondering
-if Peter is still an active contributor to the project.
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
 
-But while typing this email, to see if RBD, iSCSI, and NFS need a new
-entry in MAINTAINERS, I did a search through the list archives, where
-the last email I found from Peter was
-https://lists.gnu.org/archive/html/qemu-devel/2023-01/msg00574.html,
-which asked to update MAINTAINERS to his new address, and that has not
-made it in so far...
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+    # ethtool -X eth0  hfunc toeplitz
+
+This is how the problem happens:
+
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
+
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
+
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
+
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
+
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
+
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
+
+6) virtio_error() (also QEMU function) set the device as broken
+
+    vdev->broken = true;
+
+7) Qemu bails out, and do not repond this crazy kernel.
+
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
+
+9) The kernel is waiting doing the following :
+
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
+
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
+
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Cc: stable@vger.kernel.org
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/virtio_net.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3768,6 +3768,7 @@ static int virtnet_set_rxfh(struct net_d
+ 			    struct netlink_ext_ack *extack)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
+ 
+ 	if (rxfh->hfunc != ETH_RSS_HASH_NO_CHANGE &&
+@@ -3775,13 +3776,28 @@ static int virtnet_set_rxfh(struct net_d
+ 		return -EOPNOTSUPP;
+ 
+ 	if (rxfh->indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = rxfh->indir[i];
++		update = true;
+ 	}
+-	if (rxfh->key)
++
++	if (rxfh->key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, rxfh->key, vi->rss_key_size);
++		update = true;
++	}
+ 
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -4686,13 +4702,15 @@ static int virtnet_probe(struct virtio_d
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+ 
+
 
 
