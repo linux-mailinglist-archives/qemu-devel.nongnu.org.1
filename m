@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE8F8A4CF6
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 12:53:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8465B8A4CF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 12:53:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwJwE-0005Er-4v; Mon, 15 Apr 2024 06:51:50 -0400
+	id 1rwJxD-0005Ze-Bg; Mon, 15 Apr 2024 06:52:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rwJwC-0005Eh-Jw
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 06:51:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rwJxC-0005Xw-8s
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 06:52:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1rwJwA-000388-Nt
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 06:51:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rwJxA-0003D1-O4
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 06:52:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713178305;
+ s=mimecast20190719; t=1713178368;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=9Vb5Z8IaKIcGxjdavaFjlYXpK/HtQXD7d8zT72u2jVM=;
- b=ItQVuMFofdQm+QvIBBWaRqs11Gze7By+dyUhS1k9HALY/viduFhMPdlBGgU//wAQGLW3lt
- lAXqYCcLSUJ2S5DdaMe4gpwu32r65m7I9AgDwaouO+6Mdhe+voC5CLK6o1ibq63krPSSjG
- SjST7RTcl8MakSo96+iuIiB+Ab1YDw4=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=l+juIvxJLR81n7mcxw8RIhek+hBjbS5jCMqN29aOWCM=;
+ b=XOqhBqmdmGTonnLpXKZq/fixtjjyQaH1/RGHDAg0BpAQ4yeKAmvSarWyY56Rd+HAa6iS3N
+ PdJhCL6LM4IRzzj9te4RIELy600vXEZz+eh5ylngElGIuuEILVDlSF/DTcQNqc594F2/SI
+ XTWKdd9JJY8hIOSgxEA+8lQxRQw1a8o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-UTRbOOuhMJSRXc8HkDySqg-1; Mon, 15 Apr 2024 06:51:44 -0400
-X-MC-Unique: UTRbOOuhMJSRXc8HkDySqg-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-dccc49ef73eso4370800276.2
- for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 03:51:44 -0700 (PDT)
+ us-mta-692-MBOTz9sENmmGD57IYRPaEw-1; Mon, 15 Apr 2024 06:52:46 -0400
+X-MC-Unique: MBOTz9sENmmGD57IYRPaEw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4183b895ef1so3226645e9.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 03:52:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713178303; x=1713783103;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9Vb5Z8IaKIcGxjdavaFjlYXpK/HtQXD7d8zT72u2jVM=;
- b=v9AZjfxzW0O4CRqTRd5zldFW5rXCqMDoEF2X/ovVSNck1wm+ayloLdQrefqVU6Miu6
- Hrvt9Vp751w36RB0z8jpx6TQRUKXcjfvuWAKIfV9Agz8VHPnwDW/Zj1jifJPO0JsNDUz
- ILUiKIT1BD8KN9rB0TATHseJxyZzwJVuTivJaTStzFJZKOF4R3Sd/OdOI6L4+S0tWksI
- FSVtwJaG3kYfHwOa0pyM2j4kkQVGGS9nf4PiW0YgKnkSi+am0FqY2VXt3HSw3zXItzRU
- kht5aR/x0rZgGT+ntKBGneda0/IyPrhCJ1ix6FzXJdIyze24TFKZ20xOqSXtyDnaWMkU
- AbEg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXlk23BwZ2sGtPh0es0d8URu0Zu/aCkTrXWEMYe+7oTNd2alwWq5mL0apuhqH7UTEYW0FocyTklUO1SUxG4nQGIXAplmQU=
-X-Gm-Message-State: AOJu0YwWqPWZtBhNE+cmBZdFDCIORbn6w2Foln+/11xmYQVcjS+HrJq1
- yyLwhmelk9mzZ+MyeacpHlZM691P8H5VEULggbX79lab259n4Mk8hHJ5hj+Fo51/+BhdfQNQBom
- Y3LZDJOIY+F1RhaH7XQ8kRBYKfinNEnUJL5/4YWdVePQEpTl5/kIY7OEyTktTVZ+l/x7Ckjabbp
- dhWf5cPWxV2LbPsQhp68NSC+Dzroo=
-X-Received: by 2002:a25:dc92:0:b0:dc2:2041:fc49 with SMTP id
- y140-20020a25dc92000000b00dc22041fc49mr9066430ybe.5.1713178303673; 
- Mon, 15 Apr 2024 03:51:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6KnIB5YiwH7CuaPq/+ry0D3a10aWEBPHNewBP9S4d5Mw4Bo8Il7WORXS+FMEFKdYTS9qRZb28J+1qtPIC+5k=
-X-Received: by 2002:a25:dc92:0:b0:dc2:2041:fc49 with SMTP id
- y140-20020a25dc92000000b00dc22041fc49mr9066424ybe.5.1713178303429; Mon, 15
- Apr 2024 03:51:43 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713178365; x=1713783165;
+ h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=l+juIvxJLR81n7mcxw8RIhek+hBjbS5jCMqN29aOWCM=;
+ b=WoCq9txOKLY8nSW5e0DFDzVAjNgkQUBPPRfVEz5kCxMBCRU5IY2De6Wk538Ty5XCGQ
+ IX22e0NjH3IZTQGKIK4lSly8ehWVXebQ924V9IXq9lPXT7SdUWCbBDF/l6zDObx2Dyhu
+ WbfUOx3PvkZynHjokWDmDNdbjUkqKxuaVM5fiiGQfrnTLu14KANH7mEIqRRk0Jsrw/XJ
+ O/45LaqrU0Ubz9ZOkXGhiK4PE3skXo4kzT4le7+JriQ3cookbvt1J6OUgqTt285ii/vZ
+ W3oQvwiQhQBj53aeUG9K3JJyfMSTKin5lmNoBJUmbbnzoDwDNdzkUFocmMLMEe++khce
+ Go9Q==
+X-Gm-Message-State: AOJu0Yw/L06yXEdCWZImJ1o7MF9zr91z5Jma1415ytIX3peERUEPnibu
+ cQVXBmDaqUfIqTuq6HXzcvUwdSrdpjlwdDZWq1wYcp5OPonaXf6aCD2G2Op4au8ZKYpKoHU/DiY
+ oeBAA+2oO1+BxBuTjgA88OOrR3qc8khDi3aCrrxD2IuIGfJkdW3znrS0nrHvXO7ELvbGAmCgcKl
+ WenjCGyJxLyoZYB9OOm9n9yElQD5pm2g==
+X-Received: by 2002:a05:600c:45cc:b0:416:902e:51ac with SMTP id
+ s12-20020a05600c45cc00b00416902e51acmr7861973wmo.39.1713178365140; 
+ Mon, 15 Apr 2024 03:52:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqXeZipBNRM54/gdXapXLyzXsgOjgOMRnS4K5VIf3gI7/OBolYnVSbdh+zddgp792+yjbIdw==
+X-Received: by 2002:a05:600c:45cc:b0:416:902e:51ac with SMTP id
+ s12-20020a05600c45cc00b00416902e51acmr7861949wmo.39.1713178364440; 
+ Mon, 15 Apr 2024 03:52:44 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:172:a95b:a91:79d:72cd:ca48])
+ by smtp.gmail.com with ESMTPSA id
+ e20-20020a05600c4e5400b004186f1ed3a2sm2006194wmq.36.2024.04.15.03.52.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Apr 2024 03:52:43 -0700 (PDT)
+Date: Mon, 15 Apr 2024 06:52:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Subject: [PULL 0/1] virtio: bugfix
+Message-ID: <cover.1713178348.git.mst@redhat.com>
 MIME-Version: 1.0
-References: <CAJaqyWcL7DRSj7bPK=MfAZoTw-GgZCKr4on3U0Q8jmRd2OZSPg@mail.gmail.com>
- <20240414044353-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20240414044353-mutt-send-email-mst@kernel.org>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Mon, 15 Apr 2024 12:51:07 +0200
-Message-ID: <CAJaqyWfgSYXn4UXxnzKRquJZegKuY0n9USd0TfO0k2t+jTME5A@mail.gmail.com>
-Subject: Re: Discrepancy between mmap call on DPDK/libvduse and rust vm-memory
- crate
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>,
- Maxime Coquelin <maxime.coquelin@redhat.com>, 
- qemu-devel <qemu-devel@nongnu.org>, German Maglione <gmaglione@redhat.com>, 
- Hanna Czenczek <hczenczek@redhat.com>, Xie Yongji <xieyongji@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
+X-Mutt-Fcc: =sent
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -101,93 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Apr 14, 2024 at 11:02=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com=
-> wrote:
->
-> On Fri, Apr 12, 2024 at 12:15:40PM +0200, Eugenio Perez Martin wrote:
-> > Hi!
-> >
-> > I'm building a bridge to expose vhost-user devices through VDUSE. The
-> > code is still immature but I'm able to forward packets using
-> > dpdk-l2fwd through VDUSE to VM. I'm now developing exposing virtiofsd,
-> > but I've hit an error I'd like to discuss.
-> >
-> > VDUSE devices can get all the memory regions the driver is using by
-> > VDUSE_IOTLB_GET_FD ioctl. It returns a file descriptor with a memory
-> > region associated that can be mapped with mmap, and an information
-> > entry about the map it contains:
-> > * Start and end addresses from the driver POV
-> > * Offset within the mmaped region of these start and end
-> > * Device permissions over that region.
-> >
-> > [start=3D0xc3000][last=3D0xe7fff][offset=3D0xc3000][perm=3D1]
-> >
-> > Now when I try to map it, it is impossible for the userspace device to
-> > call mmap with any offset different than 0.
->
-> How exactly did you allocate memory? hugetlbfs?
->
+The following changes since commit e1999904a960c33b68fedf26dfb7b8e00abab8f2:
 
-Yes, that was definitely the cause, thank you very much!
+  qdev-monitor: fix error message in find_device_state() (2024-04-09 02:31:33 -0400)
 
-> > So the "straightforward"
-> > mmap with size =3D entry.last-entry.start and offset =3D entry.offset d=
-oes
-> > not work. I don't know if this is a limitation of Linux or VDUSE.
-> >
-> > Checking QEMU's
-> > subprojects/libvduse/libvduse.c:vduse_iova_add_region() I see it
-> > handles the offset by adding it up to the size, instead of using it
-> > directly as a parameter in the mmap:
-> >
-> > void *mmap_addr =3D mmap(0, size + offset, prot, MAP_SHARED, fd, 0);
->
->
-> CC Xie Yongji who wrote this code, too.
->
+are available in the Git repository at:
 
-Thanks!
+  https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
 
->
-> > I can replicate it on the bridge for sure.
-> >
-> > Now I send the VhostUserMemoryRegion to the vhost-user application.
-> > The struct has these members:
-> > struct VhostUserMemoryRegion {
-> >     uint64_t guest_phys_addr;
-> >     uint64_t memory_size;
-> >     uint64_t userspace_addr;
-> >     uint64_t mmap_offset;
-> > };
-> >
-> > So I can send the offset to the vhost-user device. I can check that
-> > dpdk-l2fwd uses the same trick of adding offset to the size of the
-> > mapping region [1], at
-> > lib/vhost/vhost_user.c:vhost_user_mmap_region():
-> >
-> > mmap_size =3D region->size + mmap_offset;
-> > mmap_addr =3D mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
-> >             MAP_SHARED | populate, region->fd, 0);
-> >
-> > So mmap is called with offset =3D=3D 0 and everybody is happy.
-> >
-> > Now I'm moving to virtiofsd, and vm-memory crate in particular. And it
-> > performs the mmap without the size +=3D offset trick, at
-> > MmapRegionBuilder<B>:build() [2].
-> >
-> > I can try to apply the offset + size trick in my bridge but I don't
-> > think it is the right solution. At first glance, the right solution is
-> > to mmap with the offset as vm-memory crate do. But having libvduse and
-> > DPDK apply the same trick sounds to me like it is a known limitation /
-> > workaround I don't know about. What is the history of this? Can VDUSE
-> > problem (if any) be solved? Am I missing something?
-> >
-> > Thanks!
-> >
-> > [1] https://github.com/DPDK/dpdk/blob/e2e546ab5bf5e024986ccb5310ab43982=
-f3bb40c/lib/vhost/vhost_user.c#L1305
-> > [2] https://github.com/rust-vmm/vm-memory/blob/main/src/mmap_unix.rs#L1=
-28
->
+for you to fetch changes up to 2ce6cff94df2650c460f809e5ad263f1d22507c0:
+
+  virtio-pci: fix use of a released vector (2024-04-15 06:50:44 -0400)
+
+----------------------------------------------------------------
+virtio: bugfix
+
+A last minute fix for a use of a vector after it's released.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Cindy Lu (1):
+      virtio-pci: fix use of a released vector
+
+ hw/virtio/virtio-pci.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
 
