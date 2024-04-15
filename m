@@ -2,68 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CEF8A5E13
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 01:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8628A5EB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 01:45:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwVUM-0004jy-74; Mon, 15 Apr 2024 19:11:50 -0400
+	id 1rwVzG-0002a2-RT; Mon, 15 Apr 2024 19:43:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rwVUI-0004jB-Ul
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 19:11:46 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1rwVzA-0002Xx-8X; Mon, 15 Apr 2024 19:43:40 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rwVUF-0004RA-Ff
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 19:11:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713222703; x=1744758703;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=RT/BH3qg8Jmw7tZPJXCSDX0TBSe2uO95fK+KjIqEghc=;
- b=G03nzcQZ/YWW/6vEAgvNzP0WVpm7PgnzdDsHTuJL2FTjihwTr8fKhIUg
- Jf8i8hSd3FGGXSg/9AzW99zjNLmOHrEIP1RduS6kUPSjuLQDk1gkf9iIT
- BJxHdx8xvLBPMLiE2CRuUYObXUjd2LVxO6jbuua4sGpGPzOIifvpH1OGs
- 3d14Z74NNSPEHzdKlozBlUaGqBW+xLi0vcJbaDp4DBUDtBvsg/IPPRfvL
- F2F7uRGAUTPZK4Ac8Pcvv7jy3xJX17EdmLpxvbdBURuSPzy9nTdb5LWrX
- SQ1JNEPNRD2NOsXiakQPcu7GuIC1tw0gTM4ymzkfjShNAFIn9IM5ToXei w==;
-X-CSE-ConnectionGUID: /knTYCmiQFegA0vHsjLR2w==
-X-CSE-MsgGUID: zSzrmf/7Scmb7ohlFP3Q2w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="19242742"
-X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; d="scan'208";a="19242742"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Apr 2024 16:11:34 -0700
-X-CSE-ConnectionGUID: y4TSK2uzToCFm38DCrNvWg==
-X-CSE-MsgGUID: 52iVSm59SZezrDQ5lv2G0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,204,1708416000"; d="scan'208";a="26726947"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by fmviesa004.fm.intel.com with ESMTP; 15 Apr 2024 16:11:35 -0700
-From: dongwon.kim@intel.com
+ (Exim 4.90_1) (envelope-from <alan.adamson@oracle.com>)
+ id 1rwVz7-0000YJ-NA; Mon, 15 Apr 2024 19:43:39 -0400
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43FNF98a027633; Mon, 15 Apr 2024 23:43:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding;
+ s=corp-2023-11-20; bh=W9feHLyyMT6KOV00+MsVXU+/gKGDwdmxLhlzDDzFoio=;
+ b=Ntqb0cjo2oeEabtHZgFQ77qXMckI3F4J0O5dsodptGRX4Z7z3oqX40HKBIxuYQy3YIL0
+ wWYgDu4qBrMVBYXw4fR4QF4YtorSDijj6RDZsmE3jrSJU3nEd3kgPWfs6S37Iqu/D1v6
+ vnd6/X3pHVxXCcNBoh6GDmOEJ03Hdep2ECsvshL8YhTJbpE6PbRyRFZto108p5R8x8dk
+ M+HpGHd4C6l4a8EJ3iKnMwrknSZKT4l6Cc3rnVI7Ibabv27ePaKZRXVYmCDrf2+1h++y
+ ajMh6s3wYdtl/1JLOoFuG2YT2jfnT4pwER9lQmPN8Jal6k341pp0iFh+n6b2wkbiLxCW aA== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3xfgycm0t8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Apr 2024 23:43:28 +0000
+Received: from pps.filterd
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 43FMYeYx004328; Mon, 15 Apr 2024 23:43:27 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3xfggcquh2-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 15 Apr 2024 23:43:27 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43FNhQpc021896;
+ Mon, 15 Apr 2024 23:43:26 GMT
+Received: from ca-dev94.us.oracle.com (ca-dev94.us.oracle.com [10.129.136.30])
+ by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with
+ ESMTP id 3xfggcqucj-1; Mon, 15 Apr 2024 23:43:26 +0000
+From: Alan Adamson <alan.adamson@oracle.com>
 To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com
-Subject: [PATCH v5 3/3] ui/console: Introduce dpy_gl_qemu_dmabuf_new() and
- free() helpers
-Date: Mon, 15 Apr 2024 16:07:24 -0700
-Message-Id: <20240415230724.9573-4-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240415230724.9573-1-dongwon.kim@intel.com>
-References: <20240415230724.9573-1-dongwon.kim@intel.com>
+Cc: alan.adamson@oracle.com, kbusch@kernel.org, its@irrelevant.dk,
+ qemu-block@nongnu.org
+Subject: [RFC 0/1] hw/nvme: add atomic write support
+Date: Mon, 15 Apr 2024 16:46:38 -0700
+Message-Id: <20240415234639.3021291-1-alan.adamson@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.11;
- envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-15_19,2024-04-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ adultscore=0
+ mlxlogscore=999 suspectscore=0 bulkscore=0 spamscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404150159
+X-Proofpoint-ORIG-GUID: uctqGBtZZ_cNA2w8sglXmsj-KxCRoeiC
+X-Proofpoint-GUID: uctqGBtZZ_cNA2w8sglXmsj-KxCRoeiC
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=alan.adamson@oracle.com; helo=mx0a-00069f02.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -80,346 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+Since there is discussion in the Linux NVMe Driver community to add NVMe Atomic Write
+support, it would be desirable to test it with qemu nvme emulation.
+ 
+Initially, this RFC will focus on supporting NVMe controller atomic write parameters(AWUN,
+AWUPF, and ACWU) but will be extended to support Namespace parameters (NAWUN, NAWUPF
+and NACWU).
+ 
+Atomic Write Parameters for NVMe QEMU
+-------------------------------------
+New NVMe QEMU Parameters (See NVMe Specification for details):
+        atomic.dn (default off) - Set the value of Disable Normal.
+        atomic.awun=UINT16 (default: 0)
+        atomic.awupf=UINT16 (default: 0)
+        atomic.acwu=UINT16 (default: 0)
+ 
+qemu command line example:
+        qemu-system-x86_64 -cpu host --enable-kvm -smp cpus=4 -no-reboot -m 8192M -drive file=./disk.img,if=ide \
+        -boot c -device e1000,netdev=net0,mac=DE:CC:CC:EF:99:88 -netdev tap,id=net0 \
+        -device nvme,id=nvme-ctrl-0,serial=nvme-1,atomic.dn=off,atomic.awun=63,atomic.awupf=63,atomic.acwu=0 \
+        -drive file=./nvme.img,if=none,id=nvm-1 -device nvme-ns,drive=nvm-1,bus=nvme-ctrl-0 nvme-ns,drive=nvm-1,bus=nvme-ctrl-0
+ 
+Making Writes Atomic:
+---------------------
+- Prior to a command being pulled off the SQ and executed, a check is made to see if it
+  conflicts "atomically" with a currently executing command.
+- All currently executing commands on the same namespace, across all SQs need to be checked.
+- If an atomic conflict is detected, the command is not started and remains on the queue.
+ 
+Testing
+-------
+NVMe QEMU Parameters used: atomic.dn=off,atomic.awun=63,atomic.awupf=63,atomic.acwu=0
+ 
+# nvme id-ctrl /dev/nvme0 | grep awun
+awun      : 63
+# nvme id-ctrl /dev/nvme0 | grep awupf
+awupf     : 63
+# nvme id-ctrl /dev/nvme0 | grep acwu
+acwu      : 0    < Since qemu-nvme doesn't support Compare and Write, this is always zero
+# nvme get-feature /dev/nvme0  -f 0xa
+get-feature:0x0a (Write Atomicity Normal), Current value:00000000
+#
+ 
+# fio --filename=/dev/nvme0n1 --direct=1 --rw=randwrite --bs=32k --iodepth=256 --name=iops --numjobs=50 --verify=crc64 --verify_fatal=1 --ioengine=libaio
+ 
+When executed without atomic write support, eventually the following error will be
+observed:
+ 
+        crc64: verify failed at file /dev/nvme0n1 offset 857669632, length 32768
+(requested block: offset=857669632, length=32768, flags=88)
+            Expected CRC: 9c87d3539dafdca0
+            Received CRC: d521f7ea3b69d2ee
+ 
+When executed with atomic write support, this error no longer happens.
+ 
+Questions
+---------
+AWUN vs AWUPF - Does the nvme emulation need to do treat these differently? Currently the
+larger of the two will be used as the max atomic write size.
+ 
+Future Work
+-----------
+- Namespace support (NAWUN, NAWUPF and NACWU)
+- Namespace Boundary support (NABSN, NABO, and NABSPF)
+- Atomic Compare and Write Unit (ACWU)
 
-This commit introduces utility functions for the creation and deallocation
-of QemuDmaBuf instances. Additionally, it updates all relevant sections
-of the codebase to utilize these new utility functions.
+Alan Adamson (1):
+  nvme: add atomic write support
 
-Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
----
- include/hw/vfio/vfio-common.h   |  2 +-
- include/hw/virtio/virtio-gpu.h  |  4 ++--
- include/ui/console.h            |  8 +++++++-
- hw/display/vhost-user-gpu.c     | 32 +++++++++++++++++--------------
- hw/display/virtio-gpu-udmabuf.c | 24 +++++++++--------------
- hw/vfio/display.c               | 26 ++++++++++++-------------
- ui/console.c                    | 34 +++++++++++++++++++++++++++++++++
- ui/dbus-listener.c              | 28 ++++++++++++---------------
- 8 files changed, 95 insertions(+), 63 deletions(-)
+ hw/nvme/ctrl.c | 147 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ hw/nvme/nvme.h |  17 ++++++
+ 2 files changed, 163 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index b9da6c08ef..d66e27db02 100644
---- a/include/hw/vfio/vfio-common.h
-+++ b/include/hw/vfio/vfio-common.h
-@@ -148,7 +148,7 @@ typedef struct VFIOGroup {
- } VFIOGroup;
- 
- typedef struct VFIODMABuf {
--    QemuDmaBuf buf;
-+    QemuDmaBuf *buf;
-     uint32_t pos_x, pos_y, pos_updates;
-     uint32_t hot_x, hot_y, hot_updates;
-     int dmabuf_id;
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index ed44cdad6b..56d6e821bf 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -169,7 +169,7 @@ struct VirtIOGPUBaseClass {
-     DEFINE_PROP_UINT32("yres", _state, _conf.yres, 800)
- 
- typedef struct VGPUDMABuf {
--    QemuDmaBuf buf;
-+    QemuDmaBuf *buf;
-     uint32_t scanout_id;
-     QTAILQ_ENTRY(VGPUDMABuf) next;
- } VGPUDMABuf;
-@@ -238,7 +238,7 @@ struct VhostUserGPU {
-     VhostUserBackend *vhost;
-     int vhost_gpu_fd; /* closed by the chardev */
-     CharBackend vhost_chr;
--    QemuDmaBuf dmabuf[VIRTIO_GPU_MAX_SCANOUTS];
-+    QemuDmaBuf *dmabuf[VIRTIO_GPU_MAX_SCANOUTS];
-     bool backend_blocked;
- };
- 
-diff --git a/include/ui/console.h b/include/ui/console.h
-index 3d9d8b9fce..6d7c03b7c5 100644
---- a/include/ui/console.h
-+++ b/include/ui/console.h
-@@ -358,7 +358,13 @@ void dpy_gl_cursor_dmabuf(QemuConsole *con, QemuDmaBuf *dmabuf,
-                           bool have_hot, uint32_t hot_x, uint32_t hot_y);
- void dpy_gl_cursor_position(QemuConsole *con,
-                             uint32_t pos_x, uint32_t pos_y);
--
-+QemuDmaBuf *dpy_gl_qemu_dmabuf_new(uint32_t width, uint32_t height,
-+                                   uint32_t stride, uint32_t x,
-+                                   uint32_t y, uint32_t backing_width,
-+                                   uint32_t backing_height, uint32_t fourcc,
-+                                   uint64_t modifier, uint32_t dmabuf_fd,
-+                                   bool allow_fences, bool y0_top);
-+void dpy_gl_qemu_dmabuf_free(QemuDmaBuf *dmabuf);
- int32_t dpy_gl_qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf);
- uint32_t dpy_gl_qemu_dmabuf_get_width(QemuDmaBuf *dmabuf);
- uint32_t dpy_gl_qemu_dmabuf_get_height(QemuDmaBuf *dmabuf);
-diff --git a/hw/display/vhost-user-gpu.c b/hw/display/vhost-user-gpu.c
-index 87dcfbca10..4d8461e94a 100644
---- a/hw/display/vhost-user-gpu.c
-+++ b/hw/display/vhost-user-gpu.c
-@@ -250,6 +250,7 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
-         VhostUserGpuDMABUFScanout *m = &msg->payload.dmabuf_scanout;
-         int fd = qemu_chr_fe_get_msgfd(&g->vhost_chr);
-         int old_fd;
-+        uint64_t modifier = 0;
-         QemuDmaBuf *dmabuf;
- 
-         if (m->scanout_id >= g->parent_obj.conf.max_outputs) {
-@@ -262,31 +263,34 @@ vhost_user_gpu_handle_display(VhostUserGPU *g, VhostUserGpuMsg *msg)
- 
-         g->parent_obj.enable = 1;
-         con = g->parent_obj.scanout[m->scanout_id].con;
--        dmabuf = &g->dmabuf[m->scanout_id];
--        old_fd = dpy_gl_qemu_dmabuf_get_fd(dmabuf);
--        if (old_fd >= 0) {
--            close(old_fd);
--            dmabuf->fd = -1;
-+        dmabuf = g->dmabuf[m->scanout_id];
-+        if (dmabuf) {
-+            old_fd = dpy_gl_qemu_dmabuf_get_fd(dmabuf);
-+            if (old_fd >= 0) {
-+                close(old_fd);
-+                dpy_gl_qemu_dmabuf_set_fd(dmabuf, -1);
-+            }
-         }
-         dpy_gl_release_dmabuf(con, dmabuf);
-+        g_clear_pointer(&dmabuf, dpy_gl_qemu_dmabuf_free);
-         if (fd == -1) {
-             dpy_gl_scanout_disable(con);
-             break;
-         }
--        *dmabuf = (QemuDmaBuf) {
--            .fd = fd,
--            .width = m->fd_width,
--            .height = m->fd_height,
--            .stride = m->fd_stride,
--            .fourcc = m->fd_drm_fourcc,
--            .y0_top = m->fd_flags & VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP,
--        };
-+
-         if (msg->request == VHOST_USER_GPU_DMABUF_SCANOUT2) {
-             VhostUserGpuDMABUFScanout2 *m2 = &msg->payload.dmabuf_scanout2;
--            dmabuf->modifier = m2->modifier;
-+            modifier = m2->modifier;
-         }
- 
-+        dmabuf = dpy_gl_qemu_dmabuf_new(m->fd_width, m->fd_height,
-+                                        m->fd_stride, 0, 0, 0, 0,
-+                                        m->fd_drm_fourcc, modifier,
-+                                        fd, false, m->fd_flags &
-+                                        VIRTIO_GPU_RESOURCE_FLAG_Y_0_TOP);
-+
-         dpy_gl_scanout_dmabuf(con, dmabuf);
-+        g->dmabuf[m->scanout_id] = dmabuf;
-         break;
-     }
-     case VHOST_USER_GPU_DMABUF_UPDATE: {
-diff --git a/hw/display/virtio-gpu-udmabuf.c b/hw/display/virtio-gpu-udmabuf.c
-index e3f358b575..79eafc7289 100644
---- a/hw/display/virtio-gpu-udmabuf.c
-+++ b/hw/display/virtio-gpu-udmabuf.c
-@@ -162,7 +162,8 @@ static void virtio_gpu_free_dmabuf(VirtIOGPU *g, VGPUDMABuf *dmabuf)
-     struct virtio_gpu_scanout *scanout;
- 
-     scanout = &g->parent_obj.scanout[dmabuf->scanout_id];
--    dpy_gl_release_dmabuf(scanout->con, &dmabuf->buf);
-+    dpy_gl_release_dmabuf(scanout->con, dmabuf->buf);
-+    g_clear_pointer(&dmabuf->buf, dpy_gl_qemu_dmabuf_free);
-     QTAILQ_REMOVE(&g->dmabuf.bufs, dmabuf, next);
-     g_free(dmabuf);
- }
-@@ -181,17 +182,10 @@ static VGPUDMABuf
-     }
- 
-     dmabuf = g_new0(VGPUDMABuf, 1);
--    dmabuf->buf.width = r->width;
--    dmabuf->buf.height = r->height;
--    dmabuf->buf.stride = fb->stride;
--    dmabuf->buf.x = r->x;
--    dmabuf->buf.y = r->y;
--    dmabuf->buf.backing_width = fb->width;
--    dmabuf->buf.backing_height = fb->height;
--    dmabuf->buf.fourcc = qemu_pixman_to_drm_format(fb->format);
--    dmabuf->buf.fd = res->dmabuf_fd;
--    dmabuf->buf.allow_fences = true;
--    dmabuf->buf.draw_submitted = false;
-+    dmabuf->buf = dpy_gl_qemu_dmabuf_new(r->width, r->height, fb->stride,
-+                                         r->x, r->y, fb->width, fb->height,
-+                                         qemu_pixman_to_drm_format(fb->format),
-+                                         0, res->dmabuf_fd, false, 0);
-     dmabuf->scanout_id = scanout_id;
-     QTAILQ_INSERT_HEAD(&g->dmabuf.bufs, dmabuf, next);
- 
-@@ -217,11 +211,11 @@ int virtio_gpu_update_dmabuf(VirtIOGPU *g,
-         old_primary = g->dmabuf.primary[scanout_id];
-     }
- 
--    width = dpy_gl_qemu_dmabuf_get_width(&new_primary->buf);
--    height = dpy_gl_qemu_dmabuf_get_height(&new_primary->buf);
-+    width = dpy_gl_qemu_dmabuf_get_width(new_primary->buf);
-+    height = dpy_gl_qemu_dmabuf_get_height(new_primary->buf);
-     g->dmabuf.primary[scanout_id] = new_primary;
-     qemu_console_resize(scanout->con, width, height);
--    dpy_gl_scanout_dmabuf(scanout->con, &new_primary->buf);
-+    dpy_gl_scanout_dmabuf(scanout->con, new_primary->buf);
- 
-     if (old_primary) {
-         virtio_gpu_free_dmabuf(g, old_primary);
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index f9c39cbd51..7e26d9667f 100644
---- a/hw/vfio/display.c
-+++ b/hw/vfio/display.c
-@@ -241,14 +241,11 @@ static VFIODMABuf *vfio_display_get_dmabuf(VFIOPCIDevice *vdev,
- 
-     dmabuf = g_new0(VFIODMABuf, 1);
-     dmabuf->dmabuf_id  = plane.dmabuf_id;
--    dmabuf->buf.width  = plane.width;
--    dmabuf->buf.height = plane.height;
--    dmabuf->buf.backing_width = plane.width;
--    dmabuf->buf.backing_height = plane.height;
--    dmabuf->buf.stride = plane.stride;
--    dmabuf->buf.fourcc = plane.drm_format;
--    dmabuf->buf.modifier = plane.drm_format_mod;
--    dmabuf->buf.fd     = fd;
-+    dmabuf->buf = dpy_gl_qemu_dmabuf_new(plane.width, plane.height,
-+                                         plane.stride, 0, 0, plane.width,
-+                                         plane.height, plane.drm_format,
-+                                         plane.drm_format_mod, fd, false, 0);
-+
-     if (plane_type == DRM_PLANE_TYPE_CURSOR) {
-         vfio_display_update_cursor(dmabuf, &plane);
-     }
-@@ -263,8 +260,9 @@ static void vfio_display_free_one_dmabuf(VFIODisplay *dpy, VFIODMABuf *dmabuf)
- 
-     QTAILQ_REMOVE(&dpy->dmabuf.bufs, dmabuf, next);
- 
--    fd = dpy_gl_qemu_dmabuf_get_fd(&dmabuf->buf);
--    dpy_gl_release_dmabuf(dpy->con, &dmabuf->buf);
-+    fd = dpy_gl_qemu_dmabuf_get_fd(dmabuf->buf);
-+    dpy_gl_release_dmabuf(dpy->con, dmabuf->buf);
-+    g_clear_pointer(&dmabuf->buf, dpy_gl_qemu_dmabuf_free);
-     close(fd);
-     g_free(dmabuf);
- }
-@@ -301,13 +299,13 @@ static void vfio_display_dmabuf_update(void *opaque)
-         return;
-     }
- 
--    width = dpy_gl_qemu_dmabuf_get_width(&primary->buf);
--    height = dpy_gl_qemu_dmabuf_get_height(&primary->buf);
-+    width = dpy_gl_qemu_dmabuf_get_width(primary->buf);
-+    height = dpy_gl_qemu_dmabuf_get_height(primary->buf);
- 
-     if (dpy->dmabuf.primary != primary) {
-         dpy->dmabuf.primary = primary;
-         qemu_console_resize(dpy->con, width, height);
--        dpy_gl_scanout_dmabuf(dpy->con, &primary->buf);
-+        dpy_gl_scanout_dmabuf(dpy->con, primary->buf);
-         free_bufs = true;
-     }
- 
-@@ -321,7 +319,7 @@ static void vfio_display_dmabuf_update(void *opaque)
-     if (cursor && (new_cursor || cursor->hot_updates)) {
-         bool have_hot = (cursor->hot_x != 0xffffffff &&
-                          cursor->hot_y != 0xffffffff);
--        dpy_gl_cursor_dmabuf(dpy->con, &cursor->buf, have_hot,
-+        dpy_gl_cursor_dmabuf(dpy->con, cursor->buf, have_hot,
-                              cursor->hot_x, cursor->hot_y);
-         cursor->hot_updates = 0;
-     } else if (!cursor && new_cursor) {
-diff --git a/ui/console.c b/ui/console.c
-index d4ca9e6e0f..ea23fd8af6 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1132,6 +1132,40 @@ void dpy_gl_cursor_position(QemuConsole *con,
-     }
- }
- 
-+QemuDmaBuf *dpy_gl_qemu_dmabuf_new(uint32_t width, uint32_t height,
-+                                   uint32_t stride, uint32_t x,
-+                                   uint32_t y, uint32_t backing_width,
-+                                   uint32_t backing_height, uint32_t fourcc,
-+                                   uint64_t modifier, uint32_t dmabuf_fd,
-+                                   bool allow_fences, bool y0_top) {
-+    QemuDmaBuf *dmabuf;
-+
-+    dmabuf = g_new0(QemuDmaBuf, 1);
-+
-+    dmabuf->width = width;
-+    dmabuf->height = height;
-+    dmabuf->stride = stride;
-+    dmabuf->x = x;
-+    dmabuf->y = y;
-+    dmabuf->backing_width = backing_width;
-+    dmabuf->backing_height = backing_height;
-+    dmabuf->fourcc = fourcc;
-+    dmabuf->modifier = modifier;
-+    dmabuf->fd = dmabuf_fd;
-+    dmabuf->allow_fences = allow_fences;
-+    dmabuf->y0_top = y0_top;
-+    dmabuf->fence_fd = -1;
-+
-+    return dmabuf;
-+}
-+
-+void dpy_gl_qemu_dmabuf_free(QemuDmaBuf *dmabuf)
-+{
-+    assert(dmabuf != NULL);
-+
-+    g_free(dmabuf);
-+}
-+
- int32_t dpy_gl_qemu_dmabuf_get_fd(QemuDmaBuf *dmabuf)
- {
-     assert(dmabuf != NULL);
-diff --git a/ui/dbus-listener.c b/ui/dbus-listener.c
-index c6c7d93753..85d779a45c 100644
---- a/ui/dbus-listener.c
-+++ b/ui/dbus-listener.c
-@@ -442,28 +442,24 @@ static void dbus_scanout_texture(DisplayChangeListener *dcl,
-     trace_dbus_scanout_texture(tex_id, backing_y_0_top,
-                                backing_width, backing_height, x, y, w, h);
- #ifdef CONFIG_GBM
--    QemuDmaBuf dmabuf = {
--        .width = w,
--        .height = h,
--        .y0_top = backing_y_0_top,
--        .x = x,
--        .y = y,
--        .backing_width = backing_width,
--        .backing_height = backing_height,
--    };
-+    int32_t fd;
-+    uint32_t stride, fourcc;
-+    uint64_t modifier;
-+    QemuDmaBuf *dmabuf;
- 
-     assert(tex_id);
--    dmabuf.fd = egl_get_fd_for_texture(
--        tex_id, (EGLint *)&dmabuf.stride,
--        (EGLint *)&dmabuf.fourcc,
--        &dmabuf.modifier);
--    if (dmabuf.fd < 0) {
-+    fd = egl_get_fd_for_texture(tex_id, (EGLint *)&stride, (EGLint *)&fourcc,
-+                                &modifier);
-+    if (fd < 0) {
-         error_report("%s: failed to get fd for texture", __func__);
-         return;
-     }
-+    dmabuf = dpy_gl_qemu_dmabuf_new(w, h, stride, x, y, backing_width,
-+                                    backing_height, fourcc, modifier, fd,
-+                                    false, backing_y_0_top);
- 
--    dbus_scanout_dmabuf(dcl, &dmabuf);
--    close(dmabuf.fd);
-+    dbus_scanout_dmabuf(dcl, dmabuf);
-+    close(fd);
- #endif
- 
- #ifdef WIN32
 -- 
-2.34.1
+2.39.3
 
 
