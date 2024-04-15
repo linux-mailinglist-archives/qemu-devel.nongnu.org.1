@@ -2,90 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B46738A4ADB
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 10:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A578A4A63
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 10:33:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwI4d-00007J-Pv; Mon, 15 Apr 2024 04:52:23 -0400
+	id 1rwHl2-00037S-TN; Mon, 15 Apr 2024 04:32:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rwI4b-00006R-Ib; Mon, 15 Apr 2024 04:52:21 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>)
- id 1rwI4Z-00032a-MK; Mon, 15 Apr 2024 04:52:21 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-a523524e5baso334236066b.3; 
- Mon, 15 Apr 2024 01:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713171137; x=1713775937; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WlwEbuBnPTwkbYIObk+FEeTP3OlrkRLzF7+OAThsGAs=;
- b=XO78S2rhSMSe4W66xssTl6/+8IcUw328xRvdbRg5EhTQPYrrFosbMdjdD2azOCGRzz
- x7N5T7mL5TkS/d/l3OWtQILaKd5AvIqKZycVOMuriEFfPUd4gZ+eC2FFobzZQIJfmjWw
- 9OFCdy1JaZOg+Mo9POMwWuZlKMoUtMrv3SGcCVILx8s2cCbdbWIK45uzaj5uKIs0nsec
- dy9rl35dAT9TXjqbOXfaUho3lpj78sbrjaeabsj+FKL+Cv0tFaOYsiPoag6WTv21hfsI
- a70B7FZN1fighKVim/scYe6W+LE/pPZh2KUjh2ZjsrvlUiZ5gKlICafGDC0TBIzR4rF7
- RL6Q==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rwHkz-00037C-G9
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 04:32:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rwHkx-0006hr-BZ
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 04:32:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713169922;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=DyVNjLFKQZug9xZidML/UrV0l6/OLEDMm3+9ZALeUTo=;
+ b=EpvKG7KxrxeFE5GrEpb4Pe5krPJAeCEMWbJvkHUqMD/oUqx5Gyt3mBrQ1nwB/WeWfkqdXW
+ N2VJ2UnsLGJzPyeWNJdpBDiDum50/7Al1nVhJzNZwLowwv6UdiOfuN4IihiGGdDzHe/JuF
+ 64O+Y9903ldhE52uP5kn2aCmqrTb8Oc=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-327-gjoTapPWNf-B1rSAT1Biug-1; Mon, 15 Apr 2024 04:31:59 -0400
+X-MC-Unique: gjoTapPWNf-B1rSAT1Biug-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d8781cabdaso24382021fa.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 01:31:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713171137; x=1713775937;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WlwEbuBnPTwkbYIObk+FEeTP3OlrkRLzF7+OAThsGAs=;
- b=I4b0ytpLhEijp99V2LgJ8MoZIdMd9gdPCI0r0wnwD2tJBVD9kbU+xNslc/AHwfygYb
- XvyaQy+l5l4MBYesGjauGNqUn0Ba1G2GGNZB3YCJdhCqFrfKuIeYLGo6xSaPJJVVyYiJ
- Gj38gYDyoums5Y+niGmK5kw3b4noqRV5S1HmVxjT2VFtjiqaYNyvKFsUTK+ztuZqYsBM
- ZwnsslMvAELI1ijsnS2PlII+K0p6N3N+L9LBGILSFxSziAXxBj6/CauktSb/qE7OVZYY
- isrLOx15NIXtAiKIAai1xq2Hv/6i1Kut+5k8B93pS9nLWR3JC1IZxb2MphX9vDWn12hP
- SniQ==
+ d=1e100.net; s=20230601; t=1713169918; x=1713774718;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=DyVNjLFKQZug9xZidML/UrV0l6/OLEDMm3+9ZALeUTo=;
+ b=EGy82AccHJheVw0R5yNFaQFdeQcti+2MxaCU6EoCSAB8v9Z5dNrRaktlHZiJawUI/t
+ +PmJq4PMxfAh7sM8hLRWKHnP38a7esBHnneruLtxyhS+GAFbPumB07vB2CG0wesk7IB1
+ RWSE3oMPmcoHSUKqpl3+EfXEwofra/D0QtvHRYSgQogAzaHHhInbs2ah4WT/1uZ1qJGM
+ p9LaUvOpjfZT564a7Y+qaX1iGPNP8UfzNs3eixLD4WGsgM6ZH7qQogl6fh1jig9qx35N
+ ul5hWwY8GLIpokwCRnH6f4Dqhqpb4/C1OAmYv+SacEHDBRCRD0JuIMPaR9v4ZK9E0Mz3
+ EEaQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWbQ5mPX84qM5aYXBD3TLq1pri4IaWN2j3DjXi0SgKR2N8MRIKQawe0v2WuHGEvLhEyB+PpMG0IYvX29mqgEfAtsTjf7v/XZQh2Ln3S1zbkc8yvg1Ht6A5a50FwDw==
-X-Gm-Message-State: AOJu0YyP5wutmAF46vtCVdkaFlIKagU+rkC5JZhLjpbNrBxUThArJfHn
- pG3sAxjyf90xgk/77Z081YyDX1ukxSDSrOkFmLIJ2Kdn3ylqLD+X
-X-Google-Smtp-Source: AGHT+IHgxc8dQIxPxHQDNlTubhbaKJumZmGB+DUoJD71gyY+Oogs9D76Pqp45QmfV2p+I8+jBUWS1Q==
-X-Received: by 2002:a17:906:f0ce:b0:a52:4363:b028 with SMTP id
- dk14-20020a170906f0ce00b00a524363b028mr4917168ejb.29.1713171137090; 
- Mon, 15 Apr 2024 01:52:17 -0700 (PDT)
-Received: from [127.0.0.1] (business-90-187-110-129.pool2.vodafone-ip.de.
- [90.187.110.129]) by smtp.gmail.com with ESMTPSA id
- j15-20020a170906254f00b00a54c12de34dsm270467ejb.188.2024.04.15.01.52.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 15 Apr 2024 01:52:16 -0700 (PDT)
-Date: Mon, 15 Apr 2024 08:05:42 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Laurent Vivier <lvivier@redhat.com>, Thomas Huth <thuth@redhat.com>,
- BALATON Zoltan <balaton@eik.bme.hu>, Ani Sinha <anisinha@redhat.com>,
- qemu-block@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, John Snow <jsnow@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH v2 11/15] hw/southbridge/ich9: Add a AHCI function
-In-Reply-To: <20240226111416.39217-12-philmd@linaro.org>
-References: <20240226111416.39217-1-philmd@linaro.org>
- <20240226111416.39217-12-philmd@linaro.org>
-Message-ID: <E3144A4C-E0F8-4E39-A791-576E0D017FBF@gmail.com>
+ AJvYcCWbuyl4d416stJaH/94bv3KN327BVJ7nrjRGgTvVo+7Ocp6sc7rwJiGvgaDh463TXiLHtC/cCaYTpj+K23H2A0nhCZq6RY=
+X-Gm-Message-State: AOJu0YytZiIVcQRWidfw4FS7OSZJ2Sd6q1V9Vrl/z8EDAQKQVwcMgXy2
+ IV7EyxBnTmVxwq+m2iPutcaU4lvCTHA96s90CuFXxuxrjRRxjlzCoGv65SwHYMtOsh17Zftdpd2
+ tV3WoEJwHwvXTGW7t/zfmq7INdS8WcGh3q545UzkyKD6NSb3laEjG
+X-Received: by 2002:a05:651c:548:b0:2d8:785c:cdb0 with SMTP id
+ q8-20020a05651c054800b002d8785ccdb0mr6516868ljp.8.1713169917834; 
+ Mon, 15 Apr 2024 01:31:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6NrJ/2NwShhXXXLg7vlJ/L2Vl3WnX27gT/DXPY708nrm8jUmyUT88XMIwZyUC5AcSBmDwOQ==
+X-Received: by 2002:a05:651c:548:b0:2d8:785c:cdb0 with SMTP id
+ q8-20020a05651c054800b002d8785ccdb0mr6516826ljp.8.1713169917172; 
+ Mon, 15 Apr 2024 01:31:57 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:172:a95b:a91:79d:72cd:ca48])
+ by smtp.gmail.com with ESMTPSA id
+ m6-20020a05600c4f4600b0041875ff29adsm938509wmq.2.2024.04.15.01.31.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 15 Apr 2024 01:31:56 -0700 (PDT)
+Date: Mon, 15 Apr 2024 04:31:52 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Cindy Lu <lulu@redhat.com>
+Cc: jasowang@redhat.com, qemu-devel@nongnu.org, qemu-stable@nongnu.org,
+ Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH v6] virtio-pci: Fix the crash that the vector was used
+ after released.
+Message-ID: <20240415042934-mutt-send-email-mst@kernel.org>
+References: <20240412062750.475180-1-lulu@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240412062750.475180-1-lulu@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.127,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,221 +101,162 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 26=2E Februar 2024 11:14:10 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <=
-philmd@linaro=2Eorg>:
->Instantiate TYPE_ICH9_AHCI in TYPE_ICH9_SOUTHBRIDGE=2E
+On Fri, Apr 12, 2024 at 02:26:55PM +0800, Cindy Lu wrote:
+> During the booting process of the non-standard image, the behavior of the
+> called function in qemu is as follows:
+> 
+> 1. vhost_net_stop() was triggered by guest image. This will call the function
+> virtio_pci_set_guest_notifiers() with assgin= false,
+> virtio_pci_set_guest_notifiers(） will release the irqfd for vector 0
+> 
+> 2. virtio_reset() was triggered, this will set configure vector to VIRTIO_NO_VECTOR
+> 
+> 3.vhost_net_start() was called (at this time, the configure vector is
+> still VIRTIO_NO_VECTOR) and then call virtio_pci_set_guest_notifiers() with
+> assgin=true, so the irqfd for vector 0 is still not "init" during this process
+> 
+> 4. The system continues to boot and sets the vector back to 0. After that
+> msix_fire_vector_notifier() was triggered to unmask the vector 0 and  meet the crash
+> 
+> To fix the issue, we need to support changing the vector after VIRTIO_CONFIG_S_DRIVER_OK is set.
+> 
+> (gdb) bt
+> 0  __pthread_kill_implementation (threadid=<optimized out>, signo=signo@entry=6, no_tid=no_tid@entry=0)
+>     at pthread_kill.c:44
+> 1  0x00007fc87148ec53 in __pthread_kill_internal (signo=6, threadid=<optimized out>) at pthread_kill.c:78
+> 2  0x00007fc87143e956 in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26
+> 3  0x00007fc8714287f4 in __GI_abort () at abort.c:79
+> 4  0x00007fc87142871b in __assert_fail_base
+>     (fmt=0x7fc8715bbde0 "%s%s%s:%u: %s%sAssertion `%s' failed.\n%n", assertion=0x5606413efd53 "ret == 0", file=0x5606413ef87d "../accel/kvm/kvm-all.c", line=1837, function=<optimized out>) at assert.c:92
+> 5  0x00007fc871437536 in __GI___assert_fail
+>     (assertion=0x5606413efd53 "ret == 0", file=0x5606413ef87d "../accel/kvm/kvm-all.c", line=1837, function=0x5606413f06f0 <__PRETTY_FUNCTION__.19> "kvm_irqchip_commit_routes") at assert.c:101
+> 6  0x0000560640f884b5 in kvm_irqchip_commit_routes (s=0x560642cae1f0) at ../accel/kvm/kvm-all.c:1837
+> 7  0x0000560640c98f8e in virtio_pci_one_vector_unmask
+>     (proxy=0x560643c65f00, queue_no=4294967295, vector=0, msg=..., n=0x560643c6e4c8)
+>     at ../hw/virtio/virtio-pci.c:1005
+> 8  0x0000560640c99201 in virtio_pci_vector_unmask (dev=0x560643c65f00, vector=0, msg=...)
+>     at ../hw/virtio/virtio-pci.c:1070
+> 9  0x0000560640bc402e in msix_fire_vector_notifier (dev=0x560643c65f00, vector=0, is_masked=false)
+>     at ../hw/pci/msix.c:120
+> 10 0x0000560640bc40f1 in msix_handle_mask_update (dev=0x560643c65f00, vector=0, was_masked=true)
+>     at ../hw/pci/msix.c:140
+> 11 0x0000560640bc4503 in msix_table_mmio_write (opaque=0x560643c65f00, addr=12, val=0, size=4)
+>     at ../hw/pci/msix.c:231
+> 12 0x0000560640f26d83 in memory_region_write_accessor
+>     (mr=0x560643c66540, addr=12, value=0x7fc86b7bc628, size=4, shift=0, mask=4294967295, attrs=...)
+>     at ../system/memory.c:497
+> 13 0x0000560640f270a6 in access_with_adjusted_size
+> 
+>      (addr=12, value=0x7fc86b7bc628, size=4, access_size_min=1, access_size_max=4, access_fn=0x560640f26c8d <memory_region_write_accessor>, mr=0x560643c66540, attrs=...) at ../system/memory.c:573
+> 14 0x0000560640f2a2b5 in memory_region_dispatch_write (mr=0x560643c66540, addr=12, data=0, op=MO_32, attrs=...)
+>     at ../system/memory.c:1521
+> 15 0x0000560640f37bac in flatview_write_continue
+>     (fv=0x7fc65805e0b0, addr=4273803276, attrs=..., ptr=0x7fc871e9c028, len=4, addr1=12, l=4, mr=0x560643c66540)
+>     at ../system/physmem.c:2714
+> 16 0x0000560640f37d0f in flatview_write
+>     (fv=0x7fc65805e0b0, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4) at ../system/physmem.c:2756
+> 17 0x0000560640f380bf in address_space_write
+>     (as=0x560642161ae0 <address_space_memory>, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4)
+>     at ../system/physmem.c:2863
+> 18 0x0000560640f3812c in address_space_rw
+>     (as=0x560642161ae0 <address_space_memory>, addr=4273803276, attrs=..., buf=0x7fc871e9c028, len=4, is_write=true) at ../system/physmem.c:2873
+> --Type <RET> for more, q to quit, c to continue without paging--
+> 19 0x0000560640f8aa55 in kvm_cpu_exec (cpu=0x560642f205e0) at ../accel/kvm/kvm-all.c:2915
+> 20 0x0000560640f8d731 in kvm_vcpu_thread_fn (arg=0x560642f205e0) at ../accel/kvm/kvm-accel-ops.c:51
+> 21 0x00005606411949f4 in qemu_thread_start (args=0x560642f292b0) at ../util/qemu-thread-posix.c:541
+> 22 0x00007fc87148cdcd in start_thread (arg=<optimized out>) at pthread_create.c:442
+> 23 0x00007fc871512630 in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+> (gdb)
+> 
+> Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
+> Cc: qemu-stable@nongnu.org
 >
->Since the PC machines can disable SATA (see the
->PC_MACHINE_SATA dynamic property), add the 'sata-enabled'
->property to disable it=2E
->
->Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->---
-> MAINTAINERS                   |  2 ++
-> include/hw/southbridge/ich9=2Eh |  4 ----
-> hw/i386/pc_q35=2Ec              | 21 +++------------------
-> hw/southbridge/ich9=2Ec         | 35 +++++++++++++++++++++++++++++++++++
-> hw/i386/Kconfig               |  1 -
-> hw/southbridge/Kconfig        |  1 +
-> 6 files changed, 41 insertions(+), 23 deletions(-)
->
->diff --git a/MAINTAINERS b/MAINTAINERS
->index 4576339053=2E=2E7d1b3e0d99 100644
->--- a/MAINTAINERS
->+++ b/MAINTAINERS
->@@ -2615,10 +2615,12 @@ M: Marcel Apfelbaum <marcel=2Eapfelbaum@gmail=2Ec=
-om>
-> S: Supported
-> F: hw/acpi/ich9*=2Ec
-> F: hw/i2c/smbus_ich9=2Ec
->+F: hw/ide/ich9_ahci=2Ec
-> F: hw/isa/lpc_ich9=2Ec
-> F: hw/southbridge/ich9=2Ec
-> F: include/hw/acpi/ich9*=2Eh
-> F: include/hw/i2c/ich9_smbus=2Eh
->+F: include/hw/ide/ahci-pci=2Eh
-> F: include/hw/pci-bridge/ich9_dmi=2Eh
-> F: include/hw/southbridge/ich9=2Eh
->=20
->diff --git a/include/hw/southbridge/ich9=2Eh b/include/hw/southbridge/ich=
-9=2Eh
->index b9122d299d=2E=2Eac7f9f4ff5 100644
->--- a/include/hw/southbridge/ich9=2Eh
->+++ b/include/hw/southbridge/ich9=2Eh
->@@ -166,10 +166,6 @@ struct ICH9LPCState {
->=20
-> #define ICH9_GPIO_GSI "gsi"
->=20
->-/* D31:F2 SATA Controller #1 */
->-#define ICH9_SATA1_DEV                          31
->-#define ICH9_SATA1_FUNC                         2
->-
-> /* D31:F0 power management I/O registers
->    offset from the address ICH9_LPC_PMBASE */
->=20
->diff --git a/hw/i386/pc_q35=2Ec b/hw/i386/pc_q35=2Ec
->index f951cf1e3a=2E=2E6903719b97 100644
->--- a/hw/i386/pc_q35=2Ec
->+++ b/hw/i386/pc_q35=2Ec
->@@ -60,9 +60,6 @@
-> #include "hw/i386/acpi-build=2Eh"
-> #include "target/i386/cpu=2Eh"
->=20
->-/* ICH9 AHCI has 6 ports */
->-#define MAX_SATA_PORTS     6
->-
-> struct ehci_companions {
->     const char *name;
->     int func;
->@@ -134,7 +131,6 @@ static void pc_q35_init(MachineState *machine)
->     ISABus *isa_bus;
->     int i;
->     ram_addr_t lowmem;
->-    DriveInfo *hd[MAX_SATA_PORTS];
->     MachineClass *mc =3D MACHINE_GET_CLASS(machine);
->     bool acpi_pcihp;
->     bool keep_pci_slot_hpc;
->@@ -227,6 +223,7 @@ static void pc_q35_init(MachineState *machine)
->     object_property_set_link(OBJECT(ich9), "mch-pcie-bus",
->                              OBJECT(pcms->pcibus), &error_abort);
->     qdev_prop_set_bit(ich9, "d2p-enabled", false);
->+    qdev_prop_set_bit(ich9, "sata-enabled", pcms->sata_enabled);
->     qdev_realize_and_unref(ich9, NULL, &error_fatal);
->=20
->     /* create ISA bus */
->@@ -287,20 +284,8 @@ static void pc_q35_init(MachineState *machine)
->                          0xff0104);
->=20
->     if (pcms->sata_enabled) {
->-        PCIDevice *pdev;
->-        AHCIPCIState *ich9;
 
-The ahci include and perhaps all ide includes can be removed here=2E
+empty line not needed here
+ 
+> Signed-off-by: Cindy Lu <lulu@redhat.com>
 
-Any plans for a v3?
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-Best regards,
-Bernhard
+It's guest triggerable so either we merge this before the release,
+or rely on stable process :(
 
->-
->-        /* ahci and SATA device, for q35 1 ahci controller is built-in *=
-/
->-        pdev =3D pci_create_simple_multifunction(pcms->pcibus,
->-                                               PCI_DEVFN(ICH9_SATA1_DEV,
->-                                                         ICH9_SATA1_FUNC=
-),
->-                                               "ich9-ahci");
->-        ich9 =3D ICH9_AHCI(pdev);
->-        pcms->idebus[0] =3D qdev_get_child_bus(DEVICE(pdev), "ide=2E0");
->-        pcms->idebus[1] =3D qdev_get_child_bus(DEVICE(pdev), "ide=2E1");
->-        g_assert(MAX_SATA_PORTS =3D=3D ich9->ahci=2Eports);
->-        ide_drive_get(hd, ich9->ahci=2Eports);
->-        ahci_ide_create_devs(&ich9->ahci, hd);
->+        pcms->idebus[0] =3D qdev_get_child_bus(ich9, "ide=2E0");
->+        pcms->idebus[1] =3D qdev_get_child_bus(ich9, "ide=2E1");
->     }
->=20
->     if (machine_usb(machine)) {
->diff --git a/hw/southbridge/ich9=2Ec b/hw/southbridge/ich9=2Ec
->index 8c4356ff74=2E=2E37255bb941 100644
->--- a/hw/southbridge/ich9=2Ec
->+++ b/hw/southbridge/ich9=2Ec
->@@ -13,22 +13,30 @@
-> #include "hw/southbridge/ich9=2Eh"
-> #include "hw/pci/pci=2Eh"
-> #include "hw/pci-bridge/ich9_dmi=2Eh"
->+#include "hw/ide/ahci-pci=2Eh"
->+#include "hw/ide/ide-dev=2Eh"
->=20
-> #define ICH9_D2P_DEVFN          PCI_DEVFN(30, 0)
->+#define ICH9_SATA1_DEVFN        PCI_DEVFN(31, 2)
->+
->+#define SATA_PORTS              6
->=20
-> struct ICH9State {
->     DeviceState parent_obj;
->=20
->     I82801b11Bridge d2p;
->+    AHCIPCIState sata0;
->=20
->     PCIBus *pci_bus;
->     bool d2p_enabled;
->+    bool sata_enabled;
-> };
->=20
-> static Property ich9_props[] =3D {
->     DEFINE_PROP_LINK("mch-pcie-bus", ICH9State, pci_bus,
->                      TYPE_PCIE_BUS, PCIBus *),
->     DEFINE_PROP_BOOL("d2p-enabled", ICH9State, d2p_enabled, true),
->+    DEFINE_PROP_BOOL("sata-enabled", ICH9State, sata_enabled, true),
->     DEFINE_PROP_END_OF_LIST(),
-> };
->=20
->@@ -52,6 +60,29 @@ static bool ich9_realize_d2p(ICH9State *s, Error **err=
-p)
->     return true;
-> }
->=20
->+static bool ich9_realize_sata(ICH9State *s, Error **errp)
->+{
->+    DriveInfo *hd[SATA_PORTS];
->+
->+    object_initialize_child(OBJECT(s), "sata[0]", &s->sata0, TYPE_ICH9_A=
-HCI);
->+    qdev_prop_set_int32(DEVICE(&s->sata0), "addr", ICH9_SATA1_DEVFN);
->+    if (!qdev_realize(DEVICE(&s->sata0), BUS(s->pci_bus), errp)) {
->+        return false;
->+    }
->+    for (unsigned i =3D 0; i < SATA_PORTS; i++) {
->+        g_autofree char *portname =3D g_strdup_printf("ide=2E%u", i);
->+
->+        object_property_add_alias(OBJECT(s), portname,
->+                                  OBJECT(&s->sata0), portname);
->+    }
->+
->+    g_assert(SATA_PORTS =3D=3D s->sata0=2Eahci=2Eports);
->+    ide_drive_get(hd, s->sata0=2Eahci=2Eports);
->+    ahci_ide_create_devs(&s->sata0=2Eahci, hd);
->+
->+    return true;
->+}
->+
-> static void ich9_realize(DeviceState *dev, Error **errp)
-> {
->     ICH9State *s =3D ICH9_SOUTHBRIDGE(dev);
->@@ -64,6 +95,10 @@ static void ich9_realize(DeviceState *dev, Error **err=
-p)
->     if (s->d2p_enabled && !ich9_realize_d2p(s, errp)) {
->         return;
->     }
->+
->+    if (s->sata_enabled && !ich9_realize_sata(s, errp)) {
->+        return;
->+    }
-> }
->=20
-> static void ich9_class_init(ObjectClass *klass, void *data)
->diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
->index d21638f4f9=2E=2E226d7f6916 100644
->--- a/hw/i386/Kconfig
->+++ b/hw/i386/Kconfig
->@@ -101,7 +101,6 @@ config Q35
->     select PCI_EXPRESS_Q35
->     select ICH9
->     select LPC_ICH9
->-    select AHCI_ICH9
->     select DIMM
->     select SMBIOS
->     select FW_CFG_DMA
->diff --git a/hw/southbridge/Kconfig b/hw/southbridge/Kconfig
->index db7259bf6f=2E=2Ef806033d48 100644
->--- a/hw/southbridge/Kconfig
->+++ b/hw/southbridge/Kconfig
->@@ -4,3 +4,4 @@ config ICH9
->     bool
->     depends on PCI_EXPRESS
->     imply I82801B11
->+    select AHCI_ICH9
+> ---
+>  hw/virtio/virtio-pci.c | 43 ++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 41 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index 1a7039fb0c..f83ec92990 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -1423,6 +1423,36 @@ static int virtio_pci_add_mem_cap(VirtIOPCIProxy *proxy,
+>  
+>      return offset;
+>  }
+> +static void virtio_pci_set_and_change_vector(VirtIODevice *vdev,
+> +                                             VirtIOPCIProxy *proxy,
+> +                                             int queue_no, uint16_t old_vector,
+> +                                             uint16_t new_vector)
+> +{
+> +    /*
+> +     * If the device uses irqfd and the vector changes after DRIVER_OK is
+> +     * set, we need to release the old vector and set up the new one.
+> +     * others just need to set the new vector to device
+> +     */
+> +    if ((vdev->status & VIRTIO_CONFIG_S_DRIVER_OK) &&
+> +        (msix_enabled(&proxy->pci_dev) && kvm_msi_via_irqfd_enabled())) {
+> +        if (old_vector != VIRTIO_NO_VECTOR) {
+> +            kvm_virtio_pci_vector_release_one(proxy, queue_no);
+> +        }
+> +    }
+> +    /*set the new vector to device*/
+> +    if (queue_no == VIRTIO_CONFIG_IRQ_IDX) {
+> +        vdev->config_vector = new_vector;
+> +    } else {
+> +        virtio_queue_set_vector(vdev, queue_no, new_vector);
+> +    }
+> +    /* if the new vector chanegd need to set it up */
+
+typo
+
+> +    if ((vdev->status & VIRTIO_CONFIG_S_DRIVER_OK) &&
+> +        (msix_enabled(&proxy->pci_dev) && kvm_msi_via_irqfd_enabled())) {
+> +        if (new_vector != VIRTIO_NO_VECTOR) {
+> +            kvm_virtio_pci_vector_use_one(proxy, queue_no);
+> +        }
+> +    }
+> +}
+>  
+>  int virtio_pci_add_shm_cap(VirtIOPCIProxy *proxy,
+>                             uint8_t bar, uint64_t offset, uint64_t length,
+> @@ -1570,7 +1600,12 @@ static void virtio_pci_common_write(void *opaque, hwaddr addr,
+>          } else {
+>              val = VIRTIO_NO_VECTOR;
+>          }
+> -        vdev->config_vector = val;
+> +        vector = vdev->config_vector;
+> +        /*check if need to change the vector*/
+> +        if (val != vector) {
+> +            virtio_pci_set_and_change_vector(vdev, proxy, VIRTIO_CONFIG_IRQ_IDX,
+> +                                             vector, val);
+> +        }
+>          break;
+>      case VIRTIO_PCI_COMMON_STATUS:
+>          if (!(val & VIRTIO_CONFIG_S_DRIVER_OK)) {
+> @@ -1610,7 +1645,11 @@ static void virtio_pci_common_write(void *opaque, hwaddr addr,
+>          } else {
+>              val = VIRTIO_NO_VECTOR;
+>          }
+> -        virtio_queue_set_vector(vdev, vdev->queue_sel, val);
+> +        /*check if need to change the vector*/
+> +        if (val != vector) {
+> +            virtio_pci_set_and_change_vector(vdev, proxy, vdev->queue_sel,
+> +                                             vector, val);
+> +        }
+>          break;
+>      case VIRTIO_PCI_COMMON_Q_ENABLE:
+>          if (val == 1) {
+> -- 
+> 2.43.0
+
 
