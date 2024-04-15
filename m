@@ -2,83 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74DC88A55B4
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8078A55B6
 	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 16:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwNk8-0002mz-Jm; Mon, 15 Apr 2024 10:55:36 -0400
+	id 1rwNkB-0002pi-HX; Mon, 15 Apr 2024 10:55:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwNjw-0002lY-JW
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:55:24 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwNk9-0002p4-Ou
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:55:37 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwNjt-0002Tw-HC
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:55:24 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-4187c47405aso2861755e9.3
- for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 07:55:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwNju-0002UR-E7
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:55:37 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2d895e2c6efso42171521fa.0
+ for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 07:55:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713192914; x=1713797714; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713192920; x=1713797720; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=nBKvjyZHrA8if2PPwIeCgkhgbYs8MogwQPuCwsG2SeE=;
- b=P4S1nKySTLpYB6AJ3EFlhCwPGOAzdMXu74VtLZ1GgtSeuBkLKDyJb+XZs6VekU2vaD
- C7B6coLRymMSUtQHVcxUEnUqHKNOTCr1w01/D+LQ/gvvMOezWSRkYH8tJw08DW9jmaLx
- ZRvAGCdTZ5w+HZHHoT38bCQvx89iAhiA6pTtZ+QYdhxmsrtoHHLpIYvZ6v8my7GI38Jh
- QB2M6YKRSClZz/+yT86ejtDhUqFpG78PqEfNu9R1UsnJ524P5PUTC5PihKJzq+Nj04Fs
- LQMXhxnCrZr2JEQtLEmcHdRZhpUga5bpozyKMmlc0HpjQQmTjwofyIxsajTTQk2nOW6Q
- bn0g==
+ bh=26xL4nyLa03qsh/MrJ5eSnLADg5vlBGpuAoX914Cqss=;
+ b=xvc5kimLxXb2u67kG4ew1S2OCiuf6Q8LLJg/ELH6cbhPTRfYN1no0p2LtyCjZOSQsA
+ uxrVJEMYuAVubdMlFDuDECNIyNnIBoB5rzO8G9UeC5iZHCWkjmeM0iQ9FLQ1DTWdzlZP
+ d6HkrvWjjEmdSydTjvuto6r1dGFVAcnCgRAAxg3YFOM/1AAmkpzr+gVE7tBkC7P1Tk0U
+ KRVi4v1jcKxXCtuGfTbq/7VfRz5ETVj4/gXLuoz2ImUfWUPfu8DKaRtjdGIxgfHP5xiO
+ ZflTOIXQZ4Ag62yq7jYMadjLAIcr5UJLDJ2TNC7EW6pUV0+O0ZkLBFKV5wl7eyYX7/C6
+ 1RLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713192914; x=1713797714;
+ d=1e100.net; s=20230601; t=1713192920; x=1713797720;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nBKvjyZHrA8if2PPwIeCgkhgbYs8MogwQPuCwsG2SeE=;
- b=vIe1vkQ6KUv5r4FNNvoNyBt/6gjYANZKcBnFaLk5mrJ3J4xo7FUI8XaHmioFxzKrj1
- qXWZkmEf3hQWi6yKdaoxvCVWm8nb3wjfFRrgoRH5hBYA68h5IS3ENEjKT0Dxa5trp4lf
- Y4WAwIm97/6ktjoYjYphNFYjZytLyKNHgTTbIWC0vrfhz3ckSZow1m3BCDYTklmHqWAH
- hEHcm839CEBNojMuOs4poMkEpDk3w67UV47mMfTxaLulNq/Ad2F2Io+ct9/TC30kbOwF
- FIgxIraolcVPDcre9o31UqLjfy5tNitwsneGiMpcQFFgGmXYv+CtQ8Cfh8KemyOtW0Xm
- kZ4w==
-X-Gm-Message-State: AOJu0YxzPS/Glpns1W3/oyAn6wXGtASIAvqu+39sC/1Fdi8GxNz/Xlh8
- JDilNM3m+COyjSqkMmHtBn6GCnAwrTiU+89SYDq153jOWrCPAKz24ERjtdY4n5eVFO1wIYmlMjY
- 4
-X-Google-Smtp-Source: AGHT+IFfPtjdg9SvpAyQMsi/x44alks2bOcBb0OS/XScqo+BKslr699DR4HQhrmbl3RIxAOxcK6zNQ==
-X-Received: by 2002:a05:600c:4690:b0:418:6044:26cf with SMTP id
- p16-20020a05600c469000b00418604426cfmr1627759wmo.28.1713192914500; 
- Mon, 15 Apr 2024 07:55:14 -0700 (PDT)
+ bh=26xL4nyLa03qsh/MrJ5eSnLADg5vlBGpuAoX914Cqss=;
+ b=QZbpL1K4y3RDiQsN2fT1UjN1AvnhKU1/pFOc0RnW5fvspp3kel8JDkRvAydzDV3o4j
+ usu7qX/FBkHajFQd85cuRS+TKC4lTPWrItez/XUrGmRjfr8O7X+5sSdSbiphWVZXbv/s
+ hD5mvD3H7dkUUcrOOBqVmHTgRRMzpkWG/GqyXOsDPxUOo+zZ+Jjnpb3ZbncUGg5PiOdY
+ 3zpxDuVG3JD0krZgavsbZzZaD/vSAQ7oDQ2QPDzJZ2Ysh7cdhUd9mDTazMwYgILu/Xg0
+ Yl5Bc4B4+ey98cldXJu8ppmlnQ6agjIIa6Sjt6jFzq3IlNgIxRXo+Ows9SInWqayO0v9
+ 0wow==
+X-Gm-Message-State: AOJu0YzO4u2GmqF75VxKiEgS301xQ/vND/ugi9EbPSZ3yKDdzOAhA1YP
+ QY+8DqtcRFlxZCtExMzFJXBFCYLBXTLNyy2ls8tH7SOUB86vaX+UxEAVAYKtuWyzCY9z/PZruGo
+ A
+X-Google-Smtp-Source: AGHT+IGC5OJIjtV5dEH1v8O60J2IgVleuBvXDJwsy5DXIpn+q+lPuwrXU6joBxIRM8gYeAyYXSbYwg==
+X-Received: by 2002:a2e:8ecc:0:b0:2da:6f70:56e6 with SMTP id
+ e12-20020a2e8ecc000000b002da6f7056e6mr2257927ljl.24.1713192920284; 
+ Mon, 15 Apr 2024 07:55:20 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.132.126])
  by smtp.gmail.com with ESMTPSA id
- l16-20020a05600c4f1000b00418729383a4sm2497829wmq.46.2024.04.15.07.55.13
+ bi27-20020a05600c3d9b00b004187c57e161sm1369461wmb.0.2024.04.15.07.55.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 15 Apr 2024 07:55:14 -0700 (PDT)
+ Mon, 15 Apr 2024 07:55:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-ppc@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
  qemu-stable@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: [PULL 1/2] hw/isa/vt82c686: Keep track of PIRQ/PINT pins separately
-Date: Mon, 15 Apr 2024 16:55:04 +0200
-Message-ID: <20240415145506.48179-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 2/2] hw/pci-host/ppc440_pcix: Do not expose a bridge device on
+ PCI bus
+Date: Mon, 15 Apr 2024 16:55:05 +0200
+Message-ID: <20240415145506.48179-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240415145506.48179-1-philmd@linaro.org>
 References: <20240415145506.48179-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::22e;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,41 +95,62 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: BALATON Zoltan <balaton@eik.bme.hu>
 
-Move calculation of mask after the switch which sets the function
-number for PIRQ/PINT pins to make sure the state of these pins are
-kept track of separately and IRQ is raised if any of them is active.
+Real 460EX SoC apparently does not expose a bridge device and having
+it appear on PCI bus confuses an AmigaOS file system driver that uses
+this to detect which machine it is running on.
 
 Cc: qemu-stable@nongnu.org
-Fixes: 7e01bd80c1 hw/isa/vt82c686: Bring back via_isa_set_irq()
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240410222543.0EA534E6005@zero.eik.bme.hu>
+Message-ID: <20240411192443.B4D644E6026@zero.eik.bme.hu>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/isa/vt82c686.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ hw/pci-host/ppc440_pcix.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index aa91942745..8582ac0322 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -658,7 +658,7 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
-     ViaISAState *s = VIA_ISA(pci_get_function_0(d));
-     uint8_t irq = d->config[PCI_INTERRUPT_LINE], max_irq = 15;
-     int f = PCI_FUNC(d->devfn);
--    uint16_t mask = BIT(f);
-+    uint16_t mask;
+diff --git a/hw/pci-host/ppc440_pcix.c b/hw/pci-host/ppc440_pcix.c
+index 1926ae2a27..ef212d99aa 100644
+--- a/hw/pci-host/ppc440_pcix.c
++++ b/hw/pci-host/ppc440_pcix.c
+@@ -52,7 +52,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
+ struct PPC440PCIXState {
+     PCIHostState parent_obj;
  
-     switch (f) {
-     case 0: /* PIRQ/PINT inputs */
-@@ -673,6 +673,7 @@ void via_isa_set_irq(PCIDevice *d, int pin, int level)
-     }
+-    PCIDevice *dev;
++    uint8_t config[PCI_CONFIG_SPACE_SIZE];
+     struct PLBOutMap pom[PPC440_PCIX_NR_POMS];
+     struct PLBInMap pim[PPC440_PCIX_NR_PIMS];
+     uint32_t sts;
+@@ -171,7 +171,7 @@ static void ppc440_pcix_reg_write4(void *opaque, hwaddr addr,
+     trace_ppc440_pcix_reg_write(addr, val, size);
+     switch (addr) {
+     case PCI_VENDOR_ID ... PCI_MAX_LAT:
+-        stl_le_p(s->dev->config + addr, val);
++        stl_le_p(s->config + addr, val);
+         break;
  
-     /* Keep track of the state of all sources */
-+    mask = BIT(f);
-     if (level) {
-         s->irq_state[0] |= mask;
-     } else {
+     case PCIX0_POM0LAL:
+@@ -302,7 +302,7 @@ static uint64_t ppc440_pcix_reg_read4(void *opaque, hwaddr addr,
+ 
+     switch (addr) {
+     case PCI_VENDOR_ID ... PCI_MAX_LAT:
+-        val = ldl_le_p(s->dev->config + addr);
++        val = ldl_le_p(s->config + addr);
+         break;
+ 
+     case PCIX0_POM0LAL:
+@@ -498,10 +498,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
+     memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
+     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
+                          ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
+-                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
+-
+-    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
+-                               TYPE_PPC4xx_HOST_BRIDGE);
++                         PCI_DEVFN(1, 0), 1, TYPE_PCI_BUS);
+ 
+     memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
+     memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
 -- 
 2.41.0
 
