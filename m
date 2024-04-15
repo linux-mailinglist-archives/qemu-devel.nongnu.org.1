@@ -2,81 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444CA8A5BF0
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 22:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECFE58A59ED
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 20:31:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwSWa-00082i-P8; Mon, 15 Apr 2024 16:01:56 -0400
+	id 1rwR5y-0006lC-8S; Mon, 15 Apr 2024 14:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1rwQuH-0004zK-Vt
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 14:18:18 -0400
-Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwR5l-0006kw-OZ
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 14:30:09 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1rwQuD-0005VT-1A
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 14:18:17 -0400
-Received: by mail-lj1-x234.google.com with SMTP id
- 38308e7fff4ca-2d718ee7344so34864511fa.2
- for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 11:18:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwR5k-0007uD-0j
+ for qemu-devel@nongnu.org; Mon, 15 Apr 2024 14:30:09 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-516d2b9cd69so4256954e87.2
+ for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 11:30:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713205090; x=1713809890; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kVIuQvNWbFay6L4rdMSFHCSF1ccIB+Fo5jWkybNc94c=;
- b=Wx98Jkj/mWo5s91bzSBL+nzz1hnRbv5AJAxFqZVxcrS8bo/nsb5M5AQ7HP4p5Ea7Q3
- iGM7ovmVLgiZ3z/6AfYiVi/HCObcvQd00VMdSST6xUX2AQ+rUSbXjnk/jwvhM8rfYVGM
- ZtLd6Lvkbqkt7offqk1AS1G4bCC9lDDr7bnlPlLi4ifAYbxlKjTSuBuK17E8/WB68X4y
- jFKwehCgYtCoHbfKkS+0MLqtW1uZtMbkUp/3zNf3kJaMeAQIgMHfW9miP8ehD9KIpCVF
- 6sMvSSQ6NedG3IpTZfqmJlAjneNguVrtAOMpgNN886lbf5LI7u9AamyXTMo+alVcdjxG
- 75zA==
+ d=linaro.org; s=google; t=1713205806; x=1713810606; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=ErqVx4xQAmKM1pbFeZnxTYHT3KuUv0DO97EtB5dIXHA=;
+ b=jIZkMFMQV3yEnLEbSZeOJudkl95HhAPglU2SkBN3xuFpoD48mBJZHd675Uis13UiLu
+ Sljdd5dvpymM6hEtlxpM02Qs9/ptD2dlvpbYUqUxn4ZE6wSydmTgDTUfw0zX9efhw9KB
+ NeF9/wwP7+vPPrmaX1og0NRb0s+Yjf/55Bmhqn1hwNoLSUivcsk1OsxjWjVPTSXQCLm5
+ lQKd2ips+gTaT+JzJEL5uvJh87vii+4WfebGodJxhXE4lDuoNajaW7AJW7zLdqbHZWRd
+ NHqXkHhi1O4NaJE+DkXsOhMrn/fsJ3CMcm+Y4cpt1D8AHZ0RSJfuw93XZEVW6/Bbd7Q2
+ r9hQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713205090; x=1713809890;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kVIuQvNWbFay6L4rdMSFHCSF1ccIB+Fo5jWkybNc94c=;
- b=GTnx4lJCO1wj1oYa2OHEYpzsJ6R5uc4aU5SIuXwPYFRoGzlOjrXouJ3K5wC8KslW8p
- WMgQ8g+XRDtVKhWgbfR12eVfJyNdSFK2gqbhtXpt9dO8dmCz+CpQ2CeIMrPYFER1P3NT
- MfNv4utxKOrX0bcF1VGFE6060kyKOt1OCP5MRHmbyPche/E8qXfiDQzc4Y5z4ztIqIn9
- PngB0ADFzZL6tL9s00maZFwBai3BFHpj1DP4zU3WQr97/vqpyyOpXZHZZLeVsjRTIbTK
- 5wS0JwXy+jRa9MSUqFs8L0lnPBG5etBUoQKNOPlT2+alxPFgnGw+3fUyXQX5TlH6OTZh
- 6Osg==
-X-Gm-Message-State: AOJu0YwQwGiQjRKLXgfentOo6IMZqun2MaaYX5qApkYcxhPsdmpqrRI7
- bzXWTx8lXh+R6TVmQRf3VMX8fvAxgxhuwiGuiNnQShWWeuAOsvmwlsif47jZfRbyLZ6jDslsXsL
- t3q/HTc93qV1q5Tqijq2VSrXtyEI=
-X-Google-Smtp-Source: AGHT+IGp4q7T8f7G2w0oDOosV0O9OXP9BuK741+Sn2tRN5SEa0W9F4XiMHX9zydATm5RgZ3V6xBuK1GesQFE+85p2qs=
-X-Received: by 2002:a2e:681a:0:b0:2d8:57a4:968d with SMTP id
- c26-20020a2e681a000000b002d857a4968dmr7759533lja.12.1713205089596; Mon, 15
- Apr 2024 11:18:09 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713205806; x=1713810606;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ErqVx4xQAmKM1pbFeZnxTYHT3KuUv0DO97EtB5dIXHA=;
+ b=lhY1803otIFQGsSihOeKfq+Cay4LqA7mIvW6sfkNe1nTZuV4w7fvK7Ef6ZZo+Ef9Pz
+ HUuQ1I1RFB91Sr9nXgWM3gHKcjM8TvbruijFPUC2gVXxC7ebKZ/g76IHxtd7m+86wFd3
+ RgdzXZuHlI+g3zV+y9730wJwmmfTj941K/vCAXbjePyYUapriscctMVPFUz/df8O/guN
+ x4ctEk0bkTiycgEZw9HN4eOMIq7VxQPARqwUXmFgWbALwjiEwO7Laiu1Vf2a7s0DkQc7
+ 9bn3jSecAxx55Xe5j+TVb2Hhi2OaSQ6X5LbMBWw5YqBf15POyS18W09VsX8ME/FR7fUr
+ T7+Q==
+X-Gm-Message-State: AOJu0Yyf/fGtbiUVHoGyBzPav93TTxI5MOxeDLpuHZt8iZ/rxNPWQnyM
+ PMEIJB8OXj5tAzLHIQB97SKNPoPlgWvay8BeTW4RDbX77R2BxpOSVGmz5RqbVOM=
+X-Google-Smtp-Source: AGHT+IEnI7HsAbnUgKwlwMvMAMayFD7KhTFd8uFT8rpoRJsrDL2sAnxDhWxbSigBCJc/48B+qwXyPw==
+X-Received: by 2002:a05:6512:3107:b0:518:6d2:2a8f with SMTP id
+ n7-20020a056512310700b0051806d22a8fmr6651256lfb.24.1713205805594; 
+ Mon, 15 Apr 2024 11:30:05 -0700 (PDT)
+Received: from [192.168.69.100] ([176.176.132.126])
+ by smtp.gmail.com with ESMTPSA id
+ t4-20020a05640203c400b005704011143asm70371edw.93.2024.04.15.11.30.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 15 Apr 2024 11:30:04 -0700 (PDT)
+Message-ID: <78b7d022-1bb8-4b1d-ad52-db241582350c@linaro.org>
+Date: Mon, 15 Apr 2024 20:30:02 +0200
 MIME-Version: 1.0
-References: <CAFfO_h6LZF4T1zfTWh9qhJLcMZWxZ5VAPx-pgO66pXbWiWhNtw@mail.gmail.com>
- <CAFEAcA_PTpGqm3Zco3zydpR=tU-MOgAW3ZNExBuUDCk6gcwHTw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_PTpGqm3Zco3zydpR=tU-MOgAW3ZNExBuUDCk6gcwHTw@mail.gmail.com>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Tue, 16 Apr 2024 00:17:57 +0600
-Message-ID: <CAFfO_h4kbH0BdvUOTaq-g3Z+afej9XhqzS1b+kJf7O1DTi4VCA@mail.gmail.com>
-Subject: Re: Questions about "QEMU gives wrong MPIDR value for Arm CPU types
- with MT=1" (gitlab issue #1608)
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::234;
- envelope-from=dorjoychy111@gmail.com; helo=mail-lj1-x234.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] target/i386: Give IRQs a chance when resetting
+ HF_INHIBIT_IRQ_MASK
+To: Paolo Bonzini <pbonzini@redhat.com>, Ruihan Li <lrh2000@pku.edu.cn>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20240415064518.4951-4-lrh2000@pku.edu.cn>
+ <CABgObfZmQoSBMQx=t0UYCa6t5d9RRZKy23zeW3orrBYnVQtKYQ@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <CABgObfZmQoSBMQx=t0UYCa6t5d9RRZKy23zeW3orrBYnVQtKYQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 15 Apr 2024 16:01:53 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -91,88 +94,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 15, 2024 at 5:35=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Sat, 13 Apr 2024 at 20:59, Dorjoy Chowdhury <dorjoychy111@gmail.com> w=
-rote:
-> >
-> > Hi,
-> > Hope everyone is doing well. I was looking at "Bite Sized" tagged QEMU
-> > issues in gitlab to see if there is anything that makes sense for me
-> > as a first time contributor. I see this issue "QEMU gives wrong MPIDR
-> > value for Arm CPU types with MT=3D1" (gitlab URL:
-> > https://gitlab.com/qemu-project/qemu/-/issues/1608 ).
-> >
-> > From the bug ticket description, it is very clear that I will need to
-> > add a bool member variable in the "AarchCPU" struct which is in
-> > "target/arm/cpu.h" file. I believe the next logical change is to set
-> > this member variable to "true" in the corresponding arm cpu "initfn"
-> > functions (a55, a76, noeverse_n1) which are in "target/arm/cpu64.c"
-> > file. I have a few questions about the following steps as I am looking
-> > through the code.
-> >
-> > 1. I believe I will need to update the "arm_build_mp_affinity"
-> > function in "target/arm/cpu.c" file to now also take in a bool
-> > parameter that will indicate if the function should instead put the
-> > "core index" in the "aff1" bits instead of the existing logic of
-> > "aff0" bits and the cluster id in the "aff2" bits instead of the
-> > existing logic of "aff1" bits. But I see this function being invoked
-> > from 3 other files: "hw/arm/sbsa-ref.c", "hw/arm/virt.c",
-> > "hw/arm/npcm7xx.c". Should the function calls in these files always
-> > have that corresponding argument set to "false"?
->
-> This bit of the codebase has got a bit more complicated since
-> I wrote up the bug report. I will look into this and get back
-> to you, but my suspicion is that these calls must return the
-> same value that the actual CPU MPIDR affinity values have,
-> because these values are going to end up in the DTB and ACPI
-> tables, and the OS will want them to match up with MPIDRs.
->
+On 15/4/24 11:32, Paolo Bonzini wrote:
+> On Mon, Apr 15, 2024 at 8:50 AM Ruihan Li <lrh2000@pku.edu.cn> wrote:
+>>
+>> When emulated with QEMU, interrupts will never come in the following
+>> loop. However, if the NOP instruction is uncommented, interrupts will
+>> fire as normal.
+>>
+>>          loop:
+>>                  cli
+>>                  call do_sti
+>>                  jmp loop
+>>
+>>          do_sti:
+>>                  sti
+>>                  # nop
+>>                  ret
+>>
+>> This behavior is different from that of a real processor. For example,
+>> if KVM is enabled, interrupts will always fire regardless of whether the
+>> NOP instruction is commented or not. Also, the Intel Software Developer
+>> Manual states that after the STI instruction is executed, the interrupt
+>> inhibit should end as soon as the next instruction (e.g., the RET
+>> instruction if the NOP instruction is commented) is executed.
+> 
+> Thanks, interesting bug!
+> 
+> What do you think about writing this:
+> 
+>>       /* If several instructions disable interrupts, only the first does it.  */
+>>       if (inhibit && !(s->flags & HF_INHIBIT_IRQ_MASK)) {
+>>           gen_set_hflag(s, HF_INHIBIT_IRQ_MASK);
+>> -    } else {
+>> +        inhibit_reset = false;
+>> +    } else if (!inhibit && (s->flags & HF_INHIBIT_IRQ_MASK)) {
+>>           gen_reset_hflag(s, HF_INHIBIT_IRQ_MASK);
+>> +        inhibit_reset = true;
+>> +    } else {
+>> +        inhibit_reset = false;
+>>       }
+> 
+> in a slightly simpler manner:
+> 
+>      inhibit_reset = false;
+>      if (s->flags & HF_INHIBIT_IRQ_MASK) {
+>          gen_reset_hflag(s, HF_INHIBIT_IRQ_MASK);
+>          inhibit_reset = true;
+>      } else if (inhibit) {
+>          gen_set_hflag(s, HF_INHIBIT_IRQ_MASK);
+>      }
+> 
+> No need to submit v3, I can do the change myself when applying.
 
-Sounds great. Let me know. It sounds like then it could make sense to
-change the "arm_build_mp_affinity" function signature in file
-"target/arm/cpu.c" file to be like this:
+Cc: qemu-stable@nongnu.org
 
-uint64_t arm_build_mp_affinity(bool has_smt, int idx, uint8_t clusterz)
 
-I think in all the files where it is invoked it should be possible to
-know the SMT status of the cpu using ARMCPU(qemu_get_cpu(cpu)) or
-similar. Let me know what you think.
-
-> > 2. As per the bug ticket description, I will also need to update the
-> > "mpidr_read_val" function in the "target/arm/helper.c" file to only
-> > set the MT bit (24th) to 1 if the member variable is true. I think
-> > there is nothing else to be done in this function apart from checking
-> > and then setting the MT bit. Is my assumption correct?
->
-> Yes, that's right.
->
-> > I think doing the above steps should fix the bug and probably we don't
-> > need anything else. It would be great if someone can help me answer
-> > the questions or any suggestion would be great if my assumptions are
-> > wrong. Thanks.
->
-> The other thing we need to do is check the TRM (technical reference
-> manual) for the CPUs that were added since I filed that bug in
-> April 2023, to see if they need to have the flag set or not. The
-> ones we need to check are:
->  * cortex-a710
->  * neoverse-n2
->  * neoverse-v1
->
-
-Good point. I have now looked at the TRMs of the a710, neoverse-n2,
-neoverse-v2 and they are similar like the ones mentioned in the gitlab
-bug ticket i.e., MT bit should be 1, Aff0 should be 0, Aff1 should be
-core index, Aff2 should be cluster id.
-
-> thanks
-> -- PMM
-
-Let me know what you think. If everything sounds alright, I will try
-and post a patch.
-
-Thanks and regards,
-Dorjoy.
 
