@@ -2,74 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A718A5352
-	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 16:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E14118A5588
+	for <lists+qemu-devel@lfdr.de>; Mon, 15 Apr 2024 16:48:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwNGn-0002Iy-Ct; Mon, 15 Apr 2024 10:25:17 -0400
+	id 1rwNc3-00072x-QM; Mon, 15 Apr 2024 10:47:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwNGZ-0002IM-VK
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:25:04 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwNGX-0004xA-83
- for qemu-devel@nongnu.org; Mon, 15 Apr 2024 10:25:03 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-56e2c1650d8so3063842a12.0
- for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 07:25:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713191097; x=1713795897; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=crDx7qj6hVccrprernvGpQInL+r05z8AKCSESGMvltU=;
- b=S80pbHeTqWtEL72HfOkXpSGo4Bl+bA7RvBRpDkTi0wu6W+CRb3t/nrV8vU/K1x5p3R
- tooTnZG61DctsLKqvnqTo0cuAjRpStfPMF48JGiHYIl8Wyb8ibEyhUxCFh/4tKDIaUun
- 91aKtiZisoP7TSkm/xVjqaIseKhAO1GDfgTjGDrpEEwNFjzLgk8by9V8XYUD+eI6cO3S
- psANSmK2qluQE32x/AWCEjNnmPm4JSsUTs73fS8DgX7jhRiNnag+M1zMxAFepFLLRX3F
- g0Kgteg4w+metGmYBgy8p5o4Ho3+LASHWKH11rBSk1lilBkiUlxByPBqaiWN4OvlvXON
- 1XPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713191097; x=1713795897;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=crDx7qj6hVccrprernvGpQInL+r05z8AKCSESGMvltU=;
- b=MCTQX/CYRxyCa60r9UykSz45d0asKJEPWAfC7bBAHLxVShnF0j4WoS9y1YsvVdsIsm
- SB/O3PRPngWk0kPpf1p33pybkJEVmNPPpzQbHmRwMd9ZTsKQwYnP/qcwr8wu2CjvZDG1
- iuJmCJ3eNfhMCDs+oTOgLxOWPaY2FjobPAknVkhmERIr2m0ZfnERCeTLlQkf2LtmOn15
- 0X2Q/HuMrzVyOlC46SlfbQw8wdd0ctkcTHtvgP9CmlFUgp6sHla21gulmImv9lrNV+Eq
- v5V043ecZSq18vvME+J/0FQ6+oe3/3xMctU1yVGjuIAC07XqJ8E5Y0G0StXebn8GqBuX
- Lt1A==
-X-Gm-Message-State: AOJu0YzVj6SJwnjajbk11qN2bjEE8Iz5sArSgJXB45GxF6+nd0FybiXx
- j3uyuiDlIJFZEL/xGlGpToSUnWU9ELKKYFxtQI5geYC9ZUggu9WBHKSwmyR6qWLz9UYg8zUrLE4
- i7FrDsimyvCxt6tnzvBEN6YvgmmAFzaNnAibPKw==
-X-Google-Smtp-Source: AGHT+IETaLnWCVd/uqtyWZitiMuO8jIrSeY7KNKTRrmD8ObWAmccdpTuN6UfRSZOkWhFftmyLBIwwqj2HRhQwOESzUc=
-X-Received: by 2002:a50:8a96:0:b0:56e:603:9ff2 with SMTP id
- j22-20020a508a96000000b0056e06039ff2mr7267539edj.11.1713191097534; Mon, 15
- Apr 2024 07:24:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <SRS0=9ZX0=LU=kaod.org=clg@ozlabs.org>)
+ id 1rwNbx-00072P-BD; Mon, 15 Apr 2024 10:47:09 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=9ZX0=LU=kaod.org=clg@ozlabs.org>)
+ id 1rwNbu-00016Z-11; Mon, 15 Apr 2024 10:47:09 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VJ93z4Yrbz4wb2;
+ Tue, 16 Apr 2024 00:46:55 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VJ93v6Wplz4wcC;
+ Tue, 16 Apr 2024 00:46:51 +1000 (AEST)
+Message-ID: <45c07dbb-f124-40d7-ad2a-e6d122e6263c@kaod.org>
+Date: Mon, 15 Apr 2024 16:46:46 +0200
 MIME-Version: 1.0
-References: <cover.1713178348.git.mst@redhat.com>
-In-Reply-To: <cover.1713178348.git.mst@redhat.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Mon, 15 Apr 2024 15:24:46 +0100
-Message-ID: <CAFEAcA_KDdMBiEsfcdznhSSZgpmbUwS7ZZSCWmzMr5ciwWjAFA@mail.gmail.com>
-Subject: Re: [PULL 0/1] virtio: bugfix
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] hw/ppc: remove SPI responder model
+To: Chalapathi V <chalapathi.v@linux.ibm.com>, qemu-devel@nongnu.org
+Cc: qemu-ppc@nongnu.org, fbarrat@linux.ibm.com, npiggin@gmail.com,
+ calebs@us.ibm.com, chalapathi.v@ibm.com, saif.abrar@linux.vnet.ibm.com,
+ dantan@us.ibm.com
+References: <20240409175700.27535-1-chalapathi.v@linux.ibm.com>
+ <20240409175700.27535-2-chalapathi.v@linux.ibm.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240409175700.27535-2-chalapathi.v@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=9ZX0=LU=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -23
+X-Spam_score: -2.4
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_LOW=-0.7,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,34 +64,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 15 Apr 2024 at 11:52, Michael S. Tsirkin <mst@redhat.com> wrote:
->
-> The following changes since commit e1999904a960c33b68fedf26dfb7b8e00abab8f2:
->
->   qdev-monitor: fix error message in find_device_state() (2024-04-09 02:31:33 -0400)
->
-> are available in the Git repository at:
->
->   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
->
-> for you to fetch changes up to 2ce6cff94df2650c460f809e5ad263f1d22507c0:
->
->   virtio-pci: fix use of a released vector (2024-04-15 06:50:44 -0400)
->
-> ----------------------------------------------------------------
-> virtio: bugfix
->
-> A last minute fix for a use of a vector after it's released.
->
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->
-> ----------------------------------------------------------------
+On 4/9/24 19:56, Chalapathi V wrote:
+> -- Empty commit to align the patch numbers between PATCH v1 and PATCH v2.
+> SPI responder model is removed as pnv spi controller and seeprom is
+> implemented using QEMU SSI framework.
+
+Please drop this empty patch. Patch numbers do not need to be aligned
+between respins of the same patchset.
+
+Thanks,
+
+C.
 
 
-Applied, thanks.
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/9.0
-for any user-visible changes.
-
--- PMM
 
