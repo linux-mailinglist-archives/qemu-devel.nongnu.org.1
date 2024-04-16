@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A158A6D04
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 618418A6D07
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:57:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwjIJ-0007FY-1a; Tue, 16 Apr 2024 09:56:19 -0400
+	id 1rwjIF-00075C-QY; Tue, 16 Apr 2024 09:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGz-0005WB-U7
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:59 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjH7-0005l0-Ln
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:55:07 -0400
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGu-0001yt-Uz
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:55 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-34782453ffdso2549102f8f.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:54:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjH1-0001zg-Nq
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:55:02 -0400
+Received: by mail-lf1-x129.google.com with SMTP id
+ 2adb3069b0e04-5171a529224so5630341e87.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:54:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713275690; x=1713880490; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713275696; x=1713880496; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=yRuCmU9cf0HsIcr2DFvli4GpYMIaf8UUti4fhCeSnNc=;
- b=qezkKTuHEPCFC4CgpalAcegtB7SbW5pAcgcGjdZ/q29HLN8mlpNuzNz68vzpkh42it
- JevJ8JN6lGh8pNt0tZ6QOImLSLXczRCcrZbTInfwMjHDEHYlP3QgB1ZbLiE7OT6L7TXQ
- 6RGGO7HsTqh/o72u31YETt9Te54oQ6yNVH41hbhX70t4zyB+sBhOAZFLT0kB8C2QM9O7
- 8UVNxUrsVbVWwRMmWy2VGIiMI5miH7WTp70wIHXLwfbWlvdHWOWEgWwpnvxS+A2xgO6y
- IjcIrOab0UQ3f1tIDQwKqETYMJAVE/sK2nwzC0A8JDWKHHzxZEz/bNEloWMiYW7iFLWh
- 8N2g==
+ bh=5Zw38H5IlW8RC6lHC20MJl65UFdMVvRtwGxRu2wIhD4=;
+ b=PxhRr4iCISLrcqgw8DLTBp33WGvFgzyyLVFtOOpGn473GvhsaQ+SyBrCdvdGpfmJC7
+ 9pARdrwCJnercwnrd1LK9qz5chqJ2Xwm1C5z6m8eAc6RCU3A0ipxq/LWAkNRd8N+ZmHL
+ 0GnEVV9u37LtQjFSiYfTcbb1M34H9a6T1USiKZlvKC9lvVKWi9n350vTouF5zaP/5R4s
+ mI/960rNFU58xE89aVezVqLxVvjrMy0xF6NY3sZaCeU472I423SB6L4aX6NUeepoa59u
+ 4rPRwUjjtQ8v4mx3Wc42aO7f4emi+yv789Ggx+vX+oRKQijXnTYPAizgzi6SEFaD7Gdj
+ MHJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713275690; x=1713880490;
+ d=1e100.net; s=20230601; t=1713275696; x=1713880496;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yRuCmU9cf0HsIcr2DFvli4GpYMIaf8UUti4fhCeSnNc=;
- b=FgCeQuy7W29pyexYJmiim8INZ/lfSKcSJUIww6K4Vunp7v6FdbAQWmA1zd+Om6Wb/9
- SqJtQIQtQeFEWeFJVw/inUzMYcsFVoMxQH0be9JXsLReFD2cNPX17SrbQcMB6Xv8LFx7
- 1UPU/86PDj4EkEP15TZiLpIEBL94kTlOHcs5zfBlLcURQkZIkO9zF3xF8Zp45Dn2S6Ht
- oUGtV439DQxU+u6QdzAXYj/DRz6LhWD/DvUJBt+eyc5gg96ft3S3JLPw44GGJ8E5Dh7s
- rYIzfMf95wVjK8WoqvsFye2w6VmxgMlpdqL1Lt79gXt20oQtM40aTrkN4jYTVRIoONUs
- daAg==
-X-Gm-Message-State: AOJu0Yz83tS48nd01J1ctH/Gpf4b3oEDA3cwpIdK+uXPJHTB3Ng2XJc7
- fxXWH8w6qJLTU8gJLKTA2lUJCt1Z1UF4FDf3eFJFJcWGLNxGQNR6FDjRIuBmSDnj75DK0+5KI/p
- g
-X-Google-Smtp-Source: AGHT+IGVN22N0EsiFa4ZpRTULhNjAQipMCrQPE+zSjsBFO9e/Y+jdUwVFZKFsPsF4sFDPjIWHOqisg==
-X-Received: by 2002:a05:6000:1d86:b0:347:e6ef:ea97 with SMTP id
- bk6-20020a0560001d8600b00347e6efea97mr4905335wrb.24.1713275690221; 
- Tue, 16 Apr 2024 06:54:50 -0700 (PDT)
+ bh=5Zw38H5IlW8RC6lHC20MJl65UFdMVvRtwGxRu2wIhD4=;
+ b=Mu7s7jeNRfiiv1v00hH4b8/ubPT/6RDTP56e5RmEPe+nD86bIVmtUsT+b1gJxS9iO2
+ TZ59OHNiCXmUZTF/8w0lZNZObRzC/bdbU80+dRWR+DsniC0sT2XXgM9Olqq3kj3YtOI0
+ rUvycSJFztd2eJaweuKpCREXBKsufJOsdW1LBEqP2YUzAPO6lEfMpfLV2/Eqt8JUCgM9
+ yx/tlctN/wf5utvZWolRI9xEhGcQVYdiIx9YU+dqhIxdAqjX+BpPi+N64JRfPhynnrNG
+ omZSm87dbbRsr7OWhI5r3N7VMwsIYNc2mZFywr8MBcQwpfwJbXMRvX9GW7sOrDK0FpJI
+ /wYg==
+X-Gm-Message-State: AOJu0YxO4IkCpvX9JgGAr/CLIcP7haQr7B4Da6cC06ENuEC9Y9nCo0IA
+ GsprQCpsCe63CoyScehVngbO1g9KVwdJPZKseDRYdavHzovCloGNPFgbWjZm5OnQz6WNvOd586C
+ 5
+X-Google-Smtp-Source: AGHT+IGNRqnyb8FO6tF8BJsTTajHP+R/Jl70KzE8zMr3zdyLnfTCwutzliUrccmeEdVZxpUYvxaTJg==
+X-Received: by 2002:a05:6512:3d1f:b0:516:d4c2:53f7 with SMTP id
+ d31-20020a0565123d1f00b00516d4c253f7mr11213990lfv.47.1713275696382; 
+ Tue, 16 Apr 2024 06:54:56 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- jw9-20020a170906e94900b00a52241b823esm6640542ejb.109.2024.04.16.06.54.48
+ p8-20020a05640210c800b005704825e8c3sm542692edu.27.2024.04.16.06.54.54
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 06:54:49 -0700 (PDT)
+ Tue, 16 Apr 2024 06:54:55 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -63,20 +63,20 @@ Cc: Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v3 18/22] hw/i386/pc: Remove PCMachineClass::rsdp_in_ram
-Date: Tue, 16 Apr 2024 15:52:47 +0200
-Message-ID: <20240416135252.8384-19-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v3 19/22] hw/i386/acpi: Remove AcpiBuildState::rsdp field
+Date: Tue, 16 Apr 2024 15:52:48 +0200
+Message-ID: <20240416135252.8384-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240416135252.8384-1-philmd@linaro.org>
 References: <20240416135252.8384-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::129;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,111 +99,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::rsdp_in_ram was only used by the
-pc-i440fx-2.2 machine, which got removed. It is
-now always true. Remove it, simplifying acpi_setup().
+AcpiBuildState::rsdp is always NULL, remove it,
+simplifying acpi_build_update().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20240305134221.30924-15-philmd@linaro.org>
+Message-Id: <20240305134221.30924-16-philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/i386/pc.h |  1 -
- hw/i386/acpi-build.c | 35 ++++-------------------------------
- hw/i386/pc.c         |  1 -
- 3 files changed, 4 insertions(+), 33 deletions(-)
+ hw/i386/acpi-build.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 10a8ffa0de..96ccb4583f 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -100,7 +100,6 @@ struct PCMachineClass {
- 
-     /* ACPI compat: */
-     bool has_acpi_build;
--    bool rsdp_in_ram;
-     unsigned acpi_data_size;
-     int pci_root_uid;
- 
 diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index ab2d4d8dcb..ed0adb0e82 100644
+index ed0adb0e82..6f9925d176 100644
 --- a/hw/i386/acpi-build.c
 +++ b/hw/i386/acpi-build.c
-@@ -2495,7 +2495,6 @@ static
- void acpi_build(AcpiBuildTables *tables, MachineState *machine)
- {
-     PCMachineState *pcms = PC_MACHINE(machine);
--    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-     X86MachineState *x86ms = X86_MACHINE(machine);
-     DeviceState *iommu = pcms->iommu;
-     GArray *table_offsets;
-@@ -2667,16 +2666,6 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
-             .rsdt_tbl_offset = &rsdt,
-         };
-         build_rsdp(tables->rsdp, tables->linker, &rsdp_data);
--        if (!pcmc->rsdp_in_ram) {
--            /* We used to allocate some extra space for RSDP revision 2 but
--             * only used the RSDP revision 0 space. The extra bytes were
--             * zeroed out and not used.
--             * Here we continue wasting those extra 16 bytes to make sure we
--             * don't break migration for machine types 2.2 and older due to
--             * RSDP blob size mismatch.
--             */
--            build_append_int_noprefix(tables->rsdp, 0, 16);
--        }
-     }
+@@ -2459,7 +2459,6 @@ struct AcpiBuildState {
+     MemoryRegion *table_mr;
+     /* Is table patched? */
+     uint8_t patched;
+-    void *rsdp;
+     MemoryRegion *rsdp_mr;
+     MemoryRegion *linker_mr;
+ } AcpiBuildState;
+@@ -2715,11 +2714,7 @@ static void acpi_build_update(void *build_opaque)
  
-     /* We'll expose it all to Guest so we want to reduce
-@@ -2755,7 +2744,6 @@ static const VMStateDescription vmstate_acpi_build = {
- void acpi_setup(void)
- {
-     PCMachineState *pcms = PC_MACHINE(qdev_get_machine());
--    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-     X86MachineState *x86ms = X86_MACHINE(pcms);
-     AcpiBuildTables tables;
-     AcpiBuildState *build_state;
-@@ -2817,25 +2805,10 @@ void acpi_setup(void)
+     acpi_ram_update(build_state->table_mr, tables.table_data);
+ 
+-    if (build_state->rsdp) {
+-        memcpy(build_state->rsdp, tables.rsdp->data, acpi_data_len(tables.rsdp));
+-    } else {
+-        acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+-    }
++    acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+ 
+     acpi_ram_update(build_state->linker_mr, tables.linker->cmd_blob);
+     acpi_build_tables_cleanup(&tables, true);
+@@ -2805,7 +2800,6 @@ void acpi_setup(void)
                             tables.vmgenid);
      }
  
--    if (!pcmc->rsdp_in_ram) {
--        /*
--         * Keep for compatibility with old machine types.
--         * Though RSDP is small, its contents isn't immutable, so
--         * we'll update it along with the rest of tables on guest access.
--         */
--        uint32_t rsdp_size = acpi_data_len(tables.rsdp);
--
--        build_state->rsdp = g_memdup(tables.rsdp->data, rsdp_size);
--        fw_cfg_add_file_callback(x86ms->fw_cfg, ACPI_BUILD_RSDP_FILE,
--                                 acpi_build_update, NULL, build_state,
--                                 build_state->rsdp, rsdp_size, true);
--        build_state->rsdp_mr = NULL;
--    } else {
--        build_state->rsdp = NULL;
--        build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
--                                                 build_state, tables.rsdp,
--                                                 ACPI_BUILD_RSDP_FILE);
--    }
-+    build_state->rsdp = NULL;
-+    build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
-+                                             build_state, tables.rsdp,
-+                                             ACPI_BUILD_RSDP_FILE);
- 
-     qemu_register_reset(acpi_build_reset, build_state);
-     acpi_build_reset(build_state);
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index c4a7885a3b..a1b0e94523 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1745,7 +1745,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
- 
-     pcmc->pci_enabled = true;
-     pcmc->has_acpi_build = true;
--    pcmc->rsdp_in_ram = true;
-     pcmc->smbios_defaults = true;
-     pcmc->gigabyte_align = true;
-     pcmc->has_reserved_memory = true;
+-    build_state->rsdp = NULL;
+     build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
+                                              build_state, tables.rsdp,
+                                              ACPI_BUILD_RSDP_FILE);
 -- 
 2.41.0
 
