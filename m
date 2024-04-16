@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E68A6EB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 233128A6EC3
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2g-0004xk-PL; Tue, 16 Apr 2024 10:44:16 -0400
+	id 1rwk2m-00052E-RB; Tue, 16 Apr 2024 10:44:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2U-0004xL-Cm
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:02 -0400
+ id 1rwk2k-00051Y-0Q
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:18 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2S-00029e-P0
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:02 -0400
+ id 1rwk2i-0002Ad-AT
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:17 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2I-0002eE-CT; Tue, 16 Apr 2024 16:43:50 +0200
+ id 1rwk2N-0002eY-OM; Tue, 16 Apr 2024 16:43:55 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,10 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 07/26] migration/postcopy: pass
- PostcopyPChannelConnectData when connecting sending preempt socket
-Date: Tue, 16 Apr 2024 16:42:46 +0200
-Message-ID: <5bd9a83e61c0f78805a9e1a51dff391f2e73aec0.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 08/26] migration: Allow passing migration header in
+ migration channel creation
+Date: Tue, 16 Apr 2024 16:42:47 +0200
+Message-ID: <c1538bf0593f5e0e46e0c98e91bc1892e6a314b0.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -61,136 +61,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+From: Avihai Horon <avihaih@nvidia.com>
 
-This will allow passing additional parameters there in the future.
-
+Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+[MSS: Rewrite using MFDSendChannelConnectData/PostcopyPChannelConnectData]
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/postcopy-ram.c | 68 +++++++++++++++++++++++++++++++++++-----
- 1 file changed, 61 insertions(+), 7 deletions(-)
+ migration/multifd.c      | 14 ++++++++++++--
+ migration/postcopy-ram.c | 14 ++++++++++++--
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
+diff --git a/migration/multifd.c b/migration/multifd.c
+index 58a18bb1e4a8..8eecda68ac0f 100644
+--- a/migration/multifd.c
++++ b/migration/multifd.c
+@@ -18,6 +18,7 @@
+ #include "exec/ramblock.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
++#include "channel.h"
+ #include "file.h"
+ #include "migration.h"
+ #include "migration-stats.h"
+@@ -1014,15 +1015,20 @@ struct MFDSendChannelConnectData {
+     unsigned int ref;
+     MultiFDSendParams *p;
+     QIOChannelTLS *tioc;
++    MigChannelHeader header;
+ };
+ 
+-static MFDSendChannelConnectData *mfd_send_channel_connect_data_new(MultiFDSendParams *p)
++static MFDSendChannelConnectData *mfd_send_channel_connect_data_new(MultiFDSendParams *p,
++                                                                    MigChannelHeader *header)
+ {
+     MFDSendChannelConnectData *data;
+ 
+     data = g_malloc0(sizeof(*data));
+     data->ref = 1;
+     data->p = p;
++    if (header) {
++        memcpy(&data->header, header, sizeof(*header));
++    }
+ 
+     return data;
+ }
+@@ -1110,6 +1116,10 @@ bool multifd_channel_connect(MFDSendChannelConnectData *data, QIOChannel *ioc,
+ {
+     MultiFDSendParams *p = data->p;
+ 
++    if (migration_channel_header_send(ioc, &data->header, errp)) {
++        return false;
++    }
++
+     qio_channel_set_delay(ioc, false);
+ 
+     migration_ioc_register_yank(ioc);
+@@ -1182,7 +1192,7 @@ static bool multifd_new_send_channel_create(MultiFDSendParams *p, Error **errp)
+ {
+     g_autoptr(MFDSendChannelConnectData) data = NULL;
+ 
+-    data = mfd_send_channel_connect_data_new(p);
++    data = mfd_send_channel_connect_data_new(p, NULL);
+ 
+     if (!multifd_use_packets()) {
+         return file_send_channel_create(data, errp);
 diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
-index e314e1023dc1..94fe872d8251 100644
+index 94fe872d8251..53c90344acce 100644
 --- a/migration/postcopy-ram.c
 +++ b/migration/postcopy-ram.c
-@@ -1617,14 +1617,62 @@ void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file)
-     trace_postcopy_preempt_new_channel();
- }
+@@ -19,6 +19,7 @@
+ #include "qemu/osdep.h"
+ #include "qemu/madvise.h"
+ #include "exec/target_page.h"
++#include "channel.h"
+ #include "migration.h"
+ #include "qemu-file.h"
+ #include "savevm.h"
+@@ -1620,15 +1621,20 @@ void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file)
+ typedef struct {
+     unsigned int ref;
+     MigrationState *s;
++    MigChannelHeader header;
+ } PostcopyPChannelConnectData;
  
-+typedef struct {
-+    unsigned int ref;
-+    MigrationState *s;
-+} PostcopyPChannelConnectData;
-+
-+static PostcopyPChannelConnectData *pcopy_preempt_connect_data_new(MigrationState *s)
-+{
-+    PostcopyPChannelConnectData *data;
-+
-+    data = g_malloc0(sizeof(*data));
-+    data->ref = 1;
-+    data->s = s;
-+
-+    return data;
-+}
-+
-+static void pcopy_preempt_connect_data_free(PostcopyPChannelConnectData *data)
-+{
-+    g_free(data);
-+}
-+
-+static PostcopyPChannelConnectData *
-+pcopy_preempt_connect_data_ref(PostcopyPChannelConnectData *data)
-+{
-+    unsigned int ref_old;
-+
-+    ref_old = qatomic_fetch_inc(&data->ref);
-+    assert(ref_old < UINT_MAX);
-+
-+    return data;
-+}
-+
-+static void pcopy_preempt_connect_data_unref(gpointer opaque)
-+{
-+    PostcopyPChannelConnectData *data = opaque;
-+    unsigned int ref_old;
-+
-+    ref_old = qatomic_fetch_dec(&data->ref);
-+    assert(ref_old > 0);
-+    if (ref_old == 1) {
-+        pcopy_preempt_connect_data_free(data);
-+    }
-+}
-+
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(PostcopyPChannelConnectData, pcopy_preempt_connect_data_unref)
-+
- /*
-  * Setup the postcopy preempt channel with the IOC.  If ERROR is specified,
-  * setup the error instead.  This helper will free the ERROR if specified.
-  */
- static void
--postcopy_preempt_send_channel_done(MigrationState *s,
-+postcopy_preempt_send_channel_done(PostcopyPChannelConnectData *data,
-                                    QIOChannel *ioc, Error *local_err)
+-static PostcopyPChannelConnectData *pcopy_preempt_connect_data_new(MigrationState *s)
++static PostcopyPChannelConnectData *pcopy_preempt_connect_data_new(MigrationState *s,
++                                                                   MigChannelHeader *header)
  {
-+    MigrationState *s = data->s;
+     PostcopyPChannelConnectData *data;
+ 
+     data = g_malloc0(sizeof(*data));
+     data->ref = 1;
+     data->s = s;
++    if (header) {
++        memcpy(&data->header, header, sizeof(*header));
++    }
+ 
+     return data;
+ }
+@@ -1673,6 +1679,10 @@ postcopy_preempt_send_channel_done(PostcopyPChannelConnectData *data,
+ {
+     MigrationState *s = data->s;
+ 
++    if (!local_err) {
++        migration_channel_header_send(ioc, &data->header, &local_err);
++    }
 +
      if (local_err) {
          migrate_set_error(s, local_err);
          error_free(local_err);
-@@ -1645,18 +1693,19 @@ static void
- postcopy_preempt_tls_handshake(QIOTask *task, gpointer opaque)
+@@ -1766,7 +1776,7 @@ void postcopy_preempt_setup(MigrationState *s)
  {
-     g_autoptr(QIOChannel) ioc = QIO_CHANNEL(qio_task_get_source(task));
--    MigrationState *s = opaque;
-+    PostcopyPChannelConnectData *data = opaque;
-     Error *local_err = NULL;
+     PostcopyPChannelConnectData *data;
  
-     qio_task_propagate_error(task, &local_err);
--    postcopy_preempt_send_channel_done(s, ioc, local_err);
-+    postcopy_preempt_send_channel_done(data, ioc, local_err);
- }
- 
- static void
- postcopy_preempt_send_channel_new(QIOTask *task, gpointer opaque)
- {
-     g_autoptr(QIOChannel) ioc = QIO_CHANNEL(qio_task_get_source(task));
--    MigrationState *s = opaque;
-+    PostcopyPChannelConnectData *data = opaque;
-+    MigrationState *s = data->s;
-     QIOChannelTLS *tioc;
-     Error *local_err = NULL;
- 
-@@ -1672,14 +1721,15 @@ postcopy_preempt_send_channel_new(QIOTask *task, gpointer opaque)
-         trace_postcopy_preempt_tls_handshake();
-         qio_channel_set_name(QIO_CHANNEL(tioc), "migration-tls-preempt");
-         qio_channel_tls_handshake(tioc, postcopy_preempt_tls_handshake,
--                                  s, NULL, NULL);
-+                                  pcopy_preempt_connect_data_ref(data),
-+                                  pcopy_preempt_connect_data_unref, NULL);
-         /* Setup the channel until TLS handshake finished */
-         return;
-     }
- 
- out:
-     /* This handles both good and error cases */
--    postcopy_preempt_send_channel_done(s, ioc, local_err);
-+    postcopy_preempt_send_channel_done(data, ioc, local_err);
- }
- 
- /*
-@@ -1714,8 +1764,12 @@ int postcopy_preempt_establish_channel(MigrationState *s)
- 
- void postcopy_preempt_setup(MigrationState *s)
- {
-+    PostcopyPChannelConnectData *data;
-+
-+    data = pcopy_preempt_connect_data_new(s);
+-    data = pcopy_preempt_connect_data_new(s);
++    data = pcopy_preempt_connect_data_new(s, NULL);
      /* Kick an async task to connect */
--    socket_send_channel_create(postcopy_preempt_send_channel_new, s, NULL);
-+    socket_send_channel_create(postcopy_preempt_send_channel_new,
-+                               data, pcopy_preempt_connect_data_unref);
- }
- 
- static void postcopy_pause_ram_fast_load(MigrationIncomingState *mis)
+     socket_send_channel_create(postcopy_preempt_send_channel_new,
+                                data, pcopy_preempt_connect_data_unref);
 
