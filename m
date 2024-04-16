@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D068A61FF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 06:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 582068A6200
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 06:07:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwa5L-00081Q-Sf; Tue, 16 Apr 2024 00:06:19 -0400
+	id 1rwa5N-0008AO-8e; Tue, 16 Apr 2024 00:06:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rwa5J-0007t8-5t
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:17 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rwa5K-0007wS-27
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:18 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rwa5H-00079u-8g
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:16 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e6723c606dso14272295ad.1
- for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 21:06:14 -0700 (PDT)
+ id 1rwa5I-0007A5-3f
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:17 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e220e40998so25203965ad.1
+ for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 21:06:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713240374; x=1713845174; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713240375; x=1713845175; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aAiLRxdfYErxgfOh0gQk21KRRPoDj9hGg+dmJqqgE+Q=;
- b=dmmm1wld2bdTpFmPVDYZi7adYMZi+fk1ubyDMpALGVZS8AuhmDoRjn6dX7hvrCoxdv
- QpLgzv2tNGr6oFUDljkM66mFhgy0J4E+PExZKzzuMVcg4PvIcW3Bgjnzn4JwipRMISqQ
- md9WeCWnlqWc4X50XYl6DJrV9hiinGq69eONhxqL5eJrnoXoVfjjl8jE+LsuISN2UBGu
- Cwp9fZbuaPmrdKJ8v7SfjqAvPRsuiZC7bxFvfvLrCNM/Z0zCoshl+UEsEdPWh3iyYB3r
- At62ILxfPWredZPsPad/PbEQ+PVyyP8n6uFlzvK3i9fiH1anu/HfHYGEIlqAtWWUqFQc
- yt6A==
+ bh=Zbqcgu18SLn9cjl7+e/QBG9Rh9IFLtqhM10K4KhEsKw=;
+ b=EQdhEDTUckWVosXGgfbcekjkCjcxtIo0BHjQJcwU6TkcehlWCo3LyQieWGnzBJwR3M
+ XLFnP7VQJoxJp50EFK/Ub+Mb2cCy4wyhM1CyKgDzs753fHVN5A2we5hxajyPi65b9iHg
+ rJBhofBVIvB0dA4tkW9lZpp01aCFy/kfDHgEElJ0hluFrW975+GfC/JGFeYHrdK8nTyL
+ UW0gm+3d4UWYgQFex2toPbH4TrEO0eH5s6s3UtOpaL6sBrlTkyT+KvSwRA5JgdFiIkZC
+ ziBl64Hjgh/OK7lic16V30mAtsi75A2e2qd+LDiVTYML4upQE/cXEnmwu66kmwWHGGPr
+ EHYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713240374; x=1713845174;
+ d=1e100.net; s=20230601; t=1713240375; x=1713845175;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aAiLRxdfYErxgfOh0gQk21KRRPoDj9hGg+dmJqqgE+Q=;
- b=v6RdAS+4WWRSaSwFkuEqYgFauvzhXzEJcWsdPwGOLojIl64ZZ1bSmyKQMbatFx6Q53
- qT0KdDdZMANrSQF0/hDquqb7WOdnG9MfHPBDz1u8QE27EbJ92Rw3iZxr80WTkkJdbkBC
- X5vmKPfdDe4lGb4SbmNmLGQKMcAOBXRY6RcXpNbJrHyt3Gim7QL9ct3OVseZYh8luI2M
- 4wfJtEiL/nV0t4gFmYI3kjzKzR0cYZZRb9mEa7jAKaNqducK+JmnhyyOEcySanu+2/gR
- O8ADow+mItif3D//rmRgcuk18hwseNiz3moujBY83/TTzSFqI1bjpTux+v7Jkt7ZRNSc
- GyIg==
-X-Gm-Message-State: AOJu0YyceXigHApE/Kx8+bI0c7XGrnoyW0QxVyoKrut6RIy9FNwVLgDI
- 2EmPxLf7v4OnlhVkDc/g5B0ngkHujFdBaJAQ8pHIaqvxBCdSxEXVBWJfl/wKA6kMXLEmLr+v4K+
- y
-X-Google-Smtp-Source: AGHT+IEgvbOda4SoTtCo0RS7v5GODFA/XHhXV5nmZafOfpYSGwklwj+wYQHcjgsrMc066qgF/v11iw==
-X-Received: by 2002:a17:902:ed4c:b0:1dd:e114:121c with SMTP id
- y12-20020a170902ed4c00b001dde114121cmr13250311plb.56.1713240373959; 
- Mon, 15 Apr 2024 21:06:13 -0700 (PDT)
+ bh=Zbqcgu18SLn9cjl7+e/QBG9Rh9IFLtqhM10K4KhEsKw=;
+ b=jQwz6nAW1gGze/7fTpBeAtDfQRvRh+S5ujaEz3mHjM6qldSqcv5I1rCzQNf4xIsIn2
+ Cifx4XMLAeDWtNaKQ4WMHqa2dhddhMJODKqBZBtQcTwbU2HJLnhy/Zk93DjA4ER4iG4p
+ Qkspwo3jgnkyBIQ1ZErcm1YsjReC2Nxbxp4WMun+DfZLEM00JFJj9Xg/Tpc/+wpIBV3M
+ XOmY4aX67fPa6qmH04YETcM/dSgRkVaUwBQDdITEhD/n6DEprhZWYQN0rjgfleBg57X5
+ XKJxxnfTNBR8BZDDX/DmmguSAAkZWe6bNMkPBZGO7ZaeZR2MSIQxDRwqiBYjEY8+ws01
+ QeHw==
+X-Gm-Message-State: AOJu0YzFNg4TeWDaW6QAAwuh3KhvU7VVA0CSRfB0ZhtkSQFDKolnDjtM
+ k1R1LWtk4SNV3XHqPHGWndevoob87s1K18lstMXrmcUW85M7PJ3ULBuf4eC0VREHHvK7SIK8p1p
+ z
+X-Google-Smtp-Source: AGHT+IFRbQtj+sH6emYDvOVpOSePzRCOpPO5wtjr9NuKJB6G096d6lFKerSUb0BhozPjpFkmzvrQMw==
+X-Received: by 2002:a17:902:f785:b0:1e5:4f69:15eb with SMTP id
+ q5-20020a170902f78500b001e54f6915ebmr15578523pln.7.1713240374674; 
+ Mon, 15 Apr 2024 21:06:14 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- l1-20020a170902f68100b001e3e244e5c0sm8694439plg.78.2024.04.15.21.06.13
+ l1-20020a170902f68100b001e3e244e5c0sm8694439plg.78.2024.04.15.21.06.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Apr 2024 21:06:13 -0700 (PDT)
+ Mon, 15 Apr 2024 21:06:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org
-Subject: [PATCH 3/7] accel/tcg: Return the TranslationBlock from
- cpu_unwind_state_data
-Date: Mon, 15 Apr 2024 21:06:05 -0700
-Message-Id: <20240416040609.1313605-4-richard.henderson@linaro.org>
+Subject: [PATCH 4/7] plugins: Introduce TCGCPUOps callbacks for mid-tb
+ register reads
+Date: Mon, 15 Apr 2024 21:06:06 -0700
+Message-Id: <20240416040609.1313605-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240416040609.1313605-1-richard.henderson@linaro.org>
 References: <20240416040609.1313605-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,85 +93,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix the i386 get_memio_eip function to use tb->cflags
-instead of cs->tcg_cflags.
+Certain target registers are not updated continuously within
+the translation block.  For normal exception handling we use
+unwind info to re-generate the correct value when required.
+Leverage that same info for reading those registers for plugins.
+
+All targets will need updating for these new callbacks.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 9 +++++----
- accel/tcg/translate-all.c | 9 +++++----
- target/i386/helper.c      | 6 ++++--
- 3 files changed, 14 insertions(+), 10 deletions(-)
+ include/hw/core/tcg-cpu-ops.h | 13 +++++++++++++
+ plugins/api.c                 | 36 +++++++++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 2 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 6346df17ce..f056132cab 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -176,12 +176,13 @@ void list_cpus(void);
-  * @host_pc: the host pc within the translation
-  * @data: output data
-  *
-- * Attempt to load the the unwind state for a host pc occurring in
-- * translated code.  If @host_pc is not in translated code, the
-- * function returns false; otherwise @data is loaded.
-+ * Attempt to load the the unwind state for a host pc occurring in translated
-+ * code.  If @host_pc is not in translated code, the function returns NULL;
-+ * otherwise @data is loaded and the TranslationBlock is returned.
-  * This is the same unwind info as given to restore_state_to_opc.
-  */
--bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
-+const TranslationBlock *cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc,
-+                                              uint64_t *data);
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index bf8ff8e3ee..e954d83edf 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -49,6 +49,19 @@ struct TCGCPUOps {
+     /** @debug_excp_handler: Callback for handling debug exceptions */
+     void (*debug_excp_handler)(CPUState *cpu);
  
- /**
-  * cpu_restore_state:
-diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
-index 83cc14fbde..c745bc5b6c 100644
---- a/accel/tcg/translate-all.c
-+++ b/accel/tcg/translate-all.c
-@@ -243,15 +243,16 @@ bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc)
-     return false;
- }
++    /**
++     * @plugin_need_unwind_for_reg:
++     * True if unwind info needed for reading reg.
++     */
++    bool (*plugin_need_unwind_for_reg)(CPUState *cpu, int reg);
++    /**
++     * @plugin_unwind_read_reg:
++     * Like CPUClass.gdb_read_register, but for registers that require
++     * regeneration using unwind info, like in @restore_state_to_opc.
++     */
++    int (*plugin_unwind_read_reg)(CPUState *cpu, GByteArray *buf, int reg,
++                                  const TranslationBlock *tb,
++                                  const uint64_t *data);
+ #ifdef NEED_CPU_H
+ #ifdef CONFIG_USER_ONLY
+     /**
+diff --git a/plugins/api.c b/plugins/api.c
+index 3912c9cc8f..3543647a89 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -40,10 +40,12 @@
+ #include "qemu/plugin.h"
+ #include "qemu/log.h"
+ #include "tcg/tcg.h"
++#include "tcg/insn-start-words.h"
+ #include "exec/exec-all.h"
+ #include "exec/gdbstub.h"
+ #include "exec/ram_addr.h"
+ #include "disas/disas.h"
++#include "hw/core/tcg-cpu-ops.h"
+ #include "plugin.h"
+ #ifndef CONFIG_USER_ONLY
+ #include "qemu/plugin-memory.h"
+@@ -454,9 +456,39 @@ GArray *qemu_plugin_get_registers(void)
  
--bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
-+const TranslationBlock *
-+cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
+ int qemu_plugin_read_register(struct qemu_plugin_register *reg, GByteArray *buf)
  {
-     if (in_code_gen_buffer((const void *)(host_pc - tcg_splitwx_diff))) {
-         TranslationBlock *tb = tcg_tb_lookup(host_pc);
--        if (tb) {
--            return cpu_unwind_data_from_tb(tb, host_pc, data) >= 0;
-+        if (tb && cpu_unwind_data_from_tb(tb, host_pc, data) >= 0) {
-+            return tb;
-         }
-     }
--    return false;
-+    return NULL;
+-    g_assert(current_cpu);
++    CPUState *cs;
++    uintptr_t ra;
++    int regno;
+ 
+-    return gdb_read_register(current_cpu, buf, GPOINTER_TO_INT(reg));
++    assert(current_cpu);
++    cs = current_cpu;
++    ra = cs->neg.plugin_ra;
++    regno = GPOINTER_TO_INT(reg);
++
++    /*
++     * When plugin_ra is 0, we have no unwind info.  This will be true for
++     * TB callbacks that happen before any insns of the TB have started.
++     */
++    if (ra) {
++        const TCGCPUOps *tcg_ops = cs->cc->tcg_ops;
++
++        /*
++         * For plugins in the middle of the TB, we may need to locate
++         * and use unwind data to reconstruct a register value.
++         * Usually this required for the PC, but there may be others.
++         */
++        if (tcg_ops->plugin_need_unwind_for_reg &&
++            tcg_ops->plugin_need_unwind_for_reg(cs, regno)) {
++            uint64_t data[TARGET_INSN_START_WORDS];
++            const TranslationBlock *tb;
++
++            tb = cpu_unwind_state_data(cs, ra, data);
++            assert(tb);
++            return tcg_ops->plugin_unwind_read_reg(cs, buf, regno, tb, data);
++        }
++    }
++
++    return gdb_read_register(cs, buf, regno);
  }
  
- void page_init(void)
-diff --git a/target/i386/helper.c b/target/i386/helper.c
-index 23ccb23a5b..eaa691a851 100644
---- a/target/i386/helper.c
-+++ b/target/i386/helper.c
-@@ -517,13 +517,15 @@ static inline target_ulong get_memio_eip(CPUX86State *env)
- #ifdef CONFIG_TCG
-     uint64_t data[TARGET_INSN_START_WORDS];
-     CPUState *cs = env_cpu(env);
-+    const TranslationBlock *tb;
- 
--    if (!cpu_unwind_state_data(cs, cs->mem_io_pc, data)) {
-+    tb = cpu_unwind_state_data(cs, cs->mem_io_pc, data);
-+    if (!tb) {
-         return env->eip;
-     }
- 
-     /* Per x86_restore_state_to_opc. */
--    if (cs->tcg_cflags & CF_PCREL) {
-+    if (tb->cflags & CF_PCREL) {
-         return (env->eip & TARGET_PAGE_MASK) | data[0];
-     } else {
-         return data[0] - env->segs[R_CS].base;
+ struct qemu_plugin_scoreboard *qemu_plugin_scoreboard_new(size_t element_size)
 -- 
 2.34.1
 
