@@ -2,97 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7D8A7077
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 17:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6EED8A7159
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 18:28:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwl9n-0001xm-Ow; Tue, 16 Apr 2024 11:55:39 -0400
+	id 1rwlen-0002Hu-7v; Tue, 16 Apr 2024 12:27:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rwl9m-0001xI-00
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 11:55:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rwl9j-0006tj-MY
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 11:55:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713282933;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=mQBWeaqODzmr8hsr6l1ktupGFbcUK4piN++3rHs4ofw=;
- b=JccFBWEyrXhffptGHeEzaRYhdfbFF/lwAPCIdMQ7dhlMmWt1ANFQt8W+Rdt6yvXIqRgGtz
- ygKB6yU2n06LcVsZubLgHLJcKdK5dcFCh3TZHHrIv6B4ttdYg4yd82kNSb8as5q17RrNwc
- TLa+iiEw84NyyrtBc4Hdst/eolFP/LE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-KlOfUtmANvOe8K_Ne1wRnA-1; Tue, 16 Apr 2024 11:55:32 -0400
-X-MC-Unique: KlOfUtmANvOe8K_Ne1wRnA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4347df2ad8cso2064031cf.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 08:55:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713282932; x=1713887732;
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1rwleX-0002Gy-3r
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 12:27:25 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
+ id 1rwleU-0003So-MB
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 12:27:24 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-6eced6fd98aso4162797b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 09:27:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1713284841; x=1713889641; darn=nongnu.org;
  h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ :mime-version:references:message-id:subject:cc:to:date:from:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=SBG/mQ4GfyCu+fuVFl2L3ZeD8uCGStI54PbBXpfreoY=;
+ b=SKl2Z8Cv+QhOwKVCvlGfyJeHFkI9RmNzhVxvldgw8uPkdeCxdxv2BXI4ADyrTfs4Rs
+ pbmGOGodc3ZH4rQ8rLHYbK4fLMLUyXGHhRb8Ra0kXwWB5nP/mM3uBexKM8F34jtToKHH
+ TUNuCZyZJUg/Mjs1I/0QdhmLiue+B7UeaQtyAsIHWMxix94N0xTIG6P/lJDUUvg06uHM
+ KEFQRILCaxKAMefeHnuI6tSY3HN/ay1PhwjiM2x4Z+RWTbeuR70ypsTXfk3Gw0BK11q5
+ 5K9nAG7mi/sRwOhyArsSh6T70zl+VQMObiApwFMvO0Y4DPHDpqRjCDMNm+GRPSvNGau1
+ r4Hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713284841; x=1713889641;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:date:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mQBWeaqODzmr8hsr6l1ktupGFbcUK4piN++3rHs4ofw=;
- b=uliFNKu/4yZ8qQfhA038nDj0vN4ahWep2J6l6LaHQnfFKhUyWGJO3tbJOX9wvZrUUV
- K7BJ6bE6JeFnU52ey6gTxmuZYceirDc6mxH2VDrBiUihiBmnU6BBRJC55OfKlt0mc6iQ
- WVDCNVcFzjH2JSfvQtJHKoqLnKnKXxGIuDpIdhuPWiPStVd3+Mu85hw7S+0nKXsB7z9G
- njG4aK7vLbi2Pst3XBH5ihF8Z3B5ZBKj9L33tOL0HSljc/nJa4ZuG5zRXR+202ENguuT
- nB7wVRtwYro/y954BWP+PDXxe6sQLVtJKkW4WVMSvB5RvHIizAr5FL2cSmSVoySH8Nj0
- s5eQ==
+ bh=SBG/mQ4GfyCu+fuVFl2L3ZeD8uCGStI54PbBXpfreoY=;
+ b=MX+e+Qp7eQ5bsBOhe7OK35ZlUWjVeHVl1aG6Rp9g95rMXkOK4rRljJ/KE44SRTPi8e
+ UF5dLfBpk1VFCiP0bUswsV25c3gXcwOJQJHNZI8d+k6k6DzLQVy45ixeA4vXwIx+JL49
+ eJzPx8GpKQXjdHVSJ4Rf3AqCOT4letfC4KfFU0E85K7FaOhYZIhP7RBFS3KgJZ6ZuiYs
+ OWE/1WtzYZrdAS5BaYxI6cl1TweXAjuA3ey/W5EmvC8qv6LGd3a7NQIujB27/guhMuqx
+ kn7Fn7+hNZz7XtW1wrekfIg/5l7dH5UFjolTANdRWjSJ4FTP/JY98TJwmsfG1ekI1dAn
+ UrZg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVjBfGlTPhv13cBEWHEz6cwEwhba0J2fa5xlfXHGl3ZX6DOWElr2+vB7Z4zi8ATbDO/66PY9+jpjZseNa97jQgc/Gyo/cc=
-X-Gm-Message-State: AOJu0YyUJ8qxBn8QB5TjPgaoKOKbMm6a87//Zy1ZFdTEzwmZOWb5A5Xf
- ESzXMP7HrmX7GP8Z27CPRiqjVxz5OCSZddoaiySiQtgNg/LtF/cY6frKOE5rZHv4Y3Djr+bvceg
- vxviRXj/cA0VaHeABy73paA9cw3z5hBmzHuz2p011ppk0fZktb8UW
-X-Received: by 2002:a05:620a:4726:b0:78e:fba3:701d with SMTP id
- bs38-20020a05620a472600b0078efba3701dmr782274qkb.1.1713282931563; 
- Tue, 16 Apr 2024 08:55:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdZV+nbfnOtVR8CchifqsUdt2gRKWHFj7evRmm8ZbE9ae6Sid6eZP/0kKYoj589TN0kET2xA==
-X-Received: by 2002:a05:620a:4726:b0:78e:fba3:701d with SMTP id
- bs38-20020a05620a472600b0078efba3701dmr782235qkb.1.1713282930814; 
- Tue, 16 Apr 2024 08:55:30 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c22-20020a05620a135600b0078d68c42962sm7634847qkl.83.2024.04.16.08.55.30
+ AJvYcCU+/x6yFzbCYrgn/LssdjmARWQrdn6jWiYioIZEHw7hNzwzi+uieXOAcsdL6tDHcVubcmdsMn/MXqrNlCHw/3wrEPFZgRA=
+X-Gm-Message-State: AOJu0YztEodto9XqOljuaMHJSsOwriHp+tKm/AScHNk8IiieB9cxD2AU
+ 8hGaQINx7BqI7Q1wdEwE4MAvnMUw6OWZHQB8EnT3CxwzTp3laMzA
+X-Google-Smtp-Source: AGHT+IHGJV5CAsGQuYftg0YM8Z3RHPvXox35s2OBpa48nnHBotCg/3bZwRMsN39fmE7KL5L2sFmjog==
+X-Received: by 2002:a05:6a21:8cc7:b0:1aa:5a22:5eca with SMTP id
+ ta7-20020a056a218cc700b001aa5a225ecamr1367732pzb.31.1713284840845; 
+ Tue, 16 Apr 2024 09:27:20 -0700 (PDT)
+Received: from debian ([2601:641:300:14de:b278:701:b83f:cdc])
+ by smtp.gmail.com with ESMTPSA id
+ b25-20020a63a119000000b005e840ad9aaesm9037741pgf.30.2024.04.16.09.27.19
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Apr 2024 08:55:30 -0700 (PDT)
-Date: Tue, 16 Apr 2024 11:55:28 -0400
-From: Peter Xu <peterx@redhat.com>
-To: =?utf-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, sstabellini@kernel.org, vikram.garhwal@amd.com
-Subject: Re: [QEMU][PATCH v3 5/7] memory: add MemoryRegion map and unmap
- callbacks
-Message-ID: <Zh6fcLzbm4cpknbT@x1n>
-References: <20240227223501.28475-1-vikram.garhwal@amd.com>
- <20240227223501.28475-6-vikram.garhwal@amd.com>
- <CAJy5ezpCWkOqthGR1c5Nsfyi_W_yGL_d17Jcp0VckaCEwx9z3Q@mail.gmail.com>
- <Zhbg9alYH1-J9poU@x1n>
- <CAJy5ezpfNGDC4Q=eMcQ-df_xZVYnc-CR5wfn4izW2CT532PbAA@mail.gmail.com>
- <3abfdbdd-ee70-4b61-a652-c7b2490732d6@suse.com>
+ Tue, 16 Apr 2024 09:27:20 -0700 (PDT)
+From: fan <nifan.cxl@gmail.com>
+X-Google-Original-From: fan <fan@debian>
+Date: Tue, 16 Apr 2024 09:27:06 -0700
+To: =?iso-8859-1?Q?J=F8rgen?= Hansen <Jorgen.Hansen@wdc.com>
+Cc: fan <nifan.cxl@gmail.com>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>,
+ "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
+ "gregory.price@memverge.com" <gregory.price@memverge.com>,
+ "ira.weiny@intel.com" <ira.weiny@intel.com>,
+ "dan.j.williams@intel.com" <dan.j.williams@intel.com>,
+ "a.manzanares@samsung.com" <a.manzanares@samsung.com>,
+ "dave@stgolabs.net" <dave@stgolabs.net>,
+ "nmtadam.samsung@gmail.com" <nmtadam.samsung@gmail.com>,
+ "jim.harris@samsung.com" <jim.harris@samsung.com>,
+ "wj28.lee@gmail.com" <wj28.lee@gmail.com>, Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v6 08/12] hw/cxl/cxl-mailbox-utils: Add mailbox commands
+ to support add/release dynamic capacity response
+Message-ID: <Zh6m2nRZEzxBhN2s@debian>
+References: <20240325190339.696686-1-nifan.cxl@gmail.com>
+ <20240325190339.696686-9-nifan.cxl@gmail.com>
+ <9e4207aa-be50-40ca-9fda-30e4fabf6e98@wdc.com>
+ <Zh1qRCV9EciuQsPi@debian>
+ <7a530a19-58e7-4847-ad29-699fc9e11a4f@wdc.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3abfdbdd-ee70-4b61-a652-c7b2490732d6@suse.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
+In-Reply-To: <7a530a19-58e7-4847-ad29-699fc9e11a4f@wdc.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.844,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,157 +110,294 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 16, 2024 at 03:28:41PM +0200, Jürgen Groß wrote:
-> On 16.04.24 13:32, Edgar E. Iglesias wrote:
-> > On Wed, Apr 10, 2024 at 8:56 PM Peter Xu <peterx@redhat.com> wrote:
-> > > 
-> > > On Wed, Apr 10, 2024 at 06:44:38PM +0200, Edgar E. Iglesias wrote:
-> > > > On Tue, Feb 27, 2024 at 11:37 PM Vikram Garhwal <vikram.garhwal@amd.com>
-> > > > wrote:
-> > > > 
-> > > > > From: Juergen Gross <jgross@suse.com>
-> > > > > 
-> > > > > In order to support mapping and unmapping guest memory dynamically to
-> > > > > and from qemu during address_space_[un]map() operations add the map()
-> > > > > and unmap() callbacks to MemoryRegionOps.
-> > > > > 
-> > > > > Those will be used e.g. for Xen grant mappings when performing guest
-> > > > > I/Os.
-> > > > > 
-> > > > > Signed-off-by: Juergen Gross <jgross@suse.com>
-> > > > > Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
-> > > > > 
-> > > > 
-> > > > 
-> > > > Paolo, Peter, David, Phiippe, do you guys have any concerns with this patch?
-> > > 
+On Tue, Apr 16, 2024 at 10:02:53AM +0000, J�rgen Hansen wrote:
+> On 4/15/24 19:56, fan wrote:
+> >  From 4b9695299d3d4b22f83666f8ab79099ec9f9817f Mon Sep 17 00:00:00 2001
+> > From: Fan Ni <fan.ni@samsung.com>
+> > Date: Tue, 20 Feb 2024 09:48:30 -0800
+> > Subject: [PATCH 08/13] hw/cxl/cxl-mailbox-utils: Add mailbox commands to
+> >   support add/release dynamic capacity response
 > > 
-> > Thanks for your comments Peter,
+> > Per CXL spec 3.1, two mailbox commands are implemented:
+> > Add Dynamic Capacity Response (Opcode 4802h) 8.2.9.9.9.3, and
+> > Release Dynamic Capacity (Opcode 4803h) 8.2.9.9.9.4.
 > > 
+> > For the process of the above two commands, we use two-pass approach.
+> > Pass 1: Check whether the input payload is valid or not; if not, skip
+> >          Pass 2 and return mailbox process error.
+> > Pass 2: Do the real work--add or release extents, respectively.
 > > 
-> > > This introduces a 3rd memory type afaict, neither direct nor !direct.
-> > > 
-> > > What happens if someone does address_space_write() to it?  I didn't see it
-> > > covered here..
+> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
+> > ---
+> >   hw/cxl/cxl-mailbox-utils.c  | 396 ++++++++++++++++++++++++++++++++++++
+> >   hw/mem/cxl_type3.c          |  11 +
+> >   include/hw/cxl/cxl_device.h |   4 +
+> >   3 files changed, 411 insertions(+)
 > > 
-> > You're right, that won't work, the memory needs to be mapped before it
-> > can be used.
-> > At minimum there should be some graceful failure, right now this will crash.
-> > 
-> > > 
-> > > OTOH, the cover letter didn't mention too much either on the big picture:
-> > > 
-> > > https://lore.kernel.org/all/20240227223501.28475-1-vikram.garhwal@amd.com/
-> > > 
-> > > I want to have a quick grasp on whether it's justified worthwhile we should
-> > > introduce this complexity to qemu memory core.
-> > > 
-> > > Could I request a better cover letter when repost?  It'll be great to
-> > > mention things like:
-> > 
-> > I'll do that, but also answer inline in the meantime since we should
-> > perhaps change the approach.
-> > 
-> > > 
-> > >    - what is grant mapping, why it needs to be used, when it can be used (is
-> > >      it only relevant to vIOMMU=on)?  Some more information on the high
-> > >      level design using this type or MR would be great.
-> > 
-> > https://github.com/xen-project/xen/blob/master/docs/misc/grant-tables.txt
-> > 
-> > Xen VM's that use QEMU's VirtIO have a QEMU instance running in a separate VM.
-> > 
-> > There's basically two mechanisms for QEMU's Virtio backends to access
-> > the guest's RAM.
-> > 1. Foreign mappings. This gives the VM running QEMU access to the
-> > entire RAM of the guest VM.
+> > diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> > index 1915959015..cd9092b6bf 100644
+> > --- a/hw/cxl/cxl-mailbox-utils.c
+> > +++ b/hw/cxl/cxl-mailbox-utils.c
 > 
-> Additionally it requires qemu to run in dom0, while in general Xen allows
-> to run backends in less privileged "driver domains", which are usually not
-> allowed to perform foreign mappings.
+> snip
 > 
-> > 2. Grant mappings. This allows the guest to dynamically grant and
-> > remove access to pages as needed.
-> > So the VM running QEMU, cannot map guest RAM unless it's been
-> > instructed to do so by the guest.
+> > +/*
+> > + * Copy extent list from src to dst
+> > + * Return value: number of extents copied
+> > + */
+> > +static uint32_t copy_extent_list(CXLDCExtentList *dst,
+> > +                                 const CXLDCExtentList *src)
+> > +{
+> > +    uint32_t cnt = 0;
+> > +    CXLDCExtent *ent;
+> > +
+> > +    if (!dst || !src) {
+> > +        return 0;
+> > +    }
+> > +
+> > +    QTAILQ_FOREACH(ent, src, node) {
+> > +        cxl_insert_extent_to_extent_list(dst, ent->start_dpa, ent->len,
+> > +                                         ent->tag, ent->shared_seq);
+> > +        cnt++;
+> > +    }
+> > +    return cnt;
+> > +}
+> > +
+> > +static CXLRetCode cxl_dc_extent_release_dry_run(CXLType3Dev *ct3d,
+> > +        const CXLUpdateDCExtentListInPl *in, CXLDCExtentList *updated_list,
+> > +        uint32_t *updated_list_size)
+> > +{
+> > +    CXLDCExtent *ent, *ent_next;
+> > +    uint64_t dpa, len;
+> > +    uint32_t i;
+> > +    int cnt_delta = 0;
+> > +    CXLRetCode ret = CXL_MBOX_SUCCESS;
+> > +
+> > +    QTAILQ_INIT(updated_list);
+> > +    copy_extent_list(updated_list, &ct3d->dc.extents);
+> > +
+> > +    for (i = 0; i < in->num_entries_updated; i++) {
+> > +        Range range;
+> > +
+> > +        dpa = in->updated_entries[i].start_dpa;
+> > +        len = in->updated_entries[i].len;
+> > +
+> > +        while (len > 0) {
+> > +            QTAILQ_FOREACH(ent, updated_list, node) {
+> > +                range_init_nofail(&range, ent->start_dpa, ent->len);
+> > +
+> > +                if (range_contains(&range, dpa)) {
+> > +                    uint64_t len1, len2 = 0, len_done = 0;
+> > +                    uint64_t ent_start_dpa = ent->start_dpa;
+> > +                    uint64_t ent_len = ent->len;
+> > +
+> > +                    len1 = dpa - ent->start_dpa;
+> > +                    /* Found the extent or the subset of an existing extent */
+> > +                    if (range_contains(&range, dpa + len - 1)) {
+> > +                        len2 = ent_start_dpa + ent_len - dpa - len;
+> > +                    } else {
+> > +                        /*
+> > +                         * TODO: we reject the attempt to remove an extent
+> > +                         * that overlaps with multiple extents in the device
+> > +                         * for now. We will allow it once superset release
+> > +                         * support is added.
+> > +                         */
+> > +                        ret = CXL_MBOX_INVALID_PA;
+> > +                        goto free_and_exit;
+> > +                    }
+> > +                    len_done = ent_len - len1 - len2;
+> > +
+> > +                    cxl_remove_extent_from_extent_list(updated_list, ent);
+> > +                    cnt_delta--;
+> > +
+> > +                    if (len1) {
+> > +                        cxl_insert_extent_to_extent_list(updated_list,
+> > +                                                         ent_start_dpa,
+> > +                                                         len1, NULL, 0);
+> > +                        cnt_delta++;
+> > +                    }
+> > +                    if (len2) {
+> > +                        cxl_insert_extent_to_extent_list(updated_list,
+> > +                                                         dpa + len,
+> > +                                                         len2, NULL, 0);
+> > +                        cnt_delta++;
+> > +                    }
+> > +
+> > +                    if (cnt_delta + ct3d->dc.total_extent_count >
+> > +                            CXL_NUM_EXTENTS_SUPPORTED) {
+> > +                        ret = CXL_MBOX_RESOURCES_EXHAUSTED;
+> > +                        goto free_and_exit;
+> > +                    }
+> > +
+> > +                    len -= len_done;
+> > +                    /* len == 0 here until superset release is added */
+> > +                    break;
+> > +                }
+> > +            }
+> > +            if (len) {
+> > +                ret = CXL_MBOX_INVALID_PA;
+> > +                goto free_and_exit;
+> > +            }
+> > +        }
+> > +    }
+> > +free_and_exit:
+> > +    if (ret != CXL_MBOX_SUCCESS) {
+> > +        QTAILQ_FOREACH_SAFE(ent, updated_list, node, ent_next) {
+> > +            cxl_remove_extent_from_extent_list(updated_list, ent);
+> > +        }
+> > +        *updated_list_size = 0;
+> > +    } else {
+> > +        *updated_list_size = ct3d->dc.total_extent_count + cnt_delta;
+> > +    }
+> > +
+> > +    return ret;
+> > +}
+> > +
+> > +/*
+> > + * CXL r3.1 section 8.2.9.9.9.4: Release Dynamic Capacity (Opcode 4803h)
+> > + */
+> > +static CXLRetCode cmd_dcd_release_dyn_cap(const struct cxl_cmd *cmd,
+> > +                                          uint8_t *payload_in,
+> > +                                          size_t len_in,
+> > +                                          uint8_t *payload_out,
+> > +                                          size_t *len_out,
+> > +                                          CXLCCI *cci)
+> > +{
+> > +    CXLUpdateDCExtentListInPl *in = (void *)payload_in;
+> > +    CXLType3Dev *ct3d = CXL_TYPE3(cci->d);
+> > +    CXLDCExtentList updated_list;
+> > +    CXLDCExtent *ent, *ent_next;
+> > +    uint32_t updated_list_size;
+> > +    CXLRetCode ret;
+> > +
+> > +    if (in->num_entries_updated == 0) {
+> > +        return CXL_MBOX_INVALID_INPUT;
+> > +    }
+> > +
+> > +    ret = cxl_detect_malformed_extent_list(ct3d, in);
+> > +    if (ret != CXL_MBOX_SUCCESS) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    ret = cxl_dc_extent_release_dry_run(ct3d, in, &updated_list,
+> > +                                        &updated_list_size);
+> > +    if (ret != CXL_MBOX_SUCCESS) {
+> > +        return ret;
+> > +    }
+> > +
+> > +    /*
+> > +     * If the dry run release passes, the returned updated_list will
+> > +     * be the updated extent list and we just need to clear the extents
+> > +     * in the accepted list and copy extents in the updated_list to accepted
+> > +     * list and update the extent count;
+> > +     */
+> > +    QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
+> > +        cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
+> > +    }
+> > +    copy_extent_list(&ct3d->dc.extents, &updated_list);
+> > +    QTAILQ_FOREACH_SAFE(ent, &updated_list, node, ent_next) {
+> > +        cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
+> > +    }
+> 
+> Instead of doing a copy-delete, it should be simple to just relink the 
+> list pointers of updated_list to ct3d->dc.extents - similar to the 
+> QSIMPLEQ_CONCAT operation for QSIMPLEQ (unfortunately there isn't one 
+> defined already for QTAILQ, but you could add one :)
+> 
+> Otherwise, looks great to me. Thanks for the update,
+> J�rgen
+
+Hi Jorgen,
+Thanks for the suggestion. The issue here is we will introduce a bitmap
+indicating which DPA range is backed with added extents in the next
+patch, for the add/release processing, we need to update the bitmap to
+reflect the update-to-date extent information. The remove and add action here
+provides a natural way to update the bitmap like below 
+
+
+   QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
+        ct3_clear_region_block_backed(ct3d, ent->start_dpa, ent->len);
+        cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
+    }
+    copy_extent_list(&ct3d->dc.extents, &updated_list);
+    QTAILQ_FOREACH_SAFE(ent, &updated_list, node, ent_next) {
+        ct3_set_region_block_backed(ct3d, ent->start_dpa, ent->len);
+        cxl_remove_extent_from_extent_list(&updated_list, ent);
+    }
+
+Fan
+> 
+> > +    ct3d->dc.total_extent_count = updated_list_size;
+> > +
+> > +    return CXL_MBOX_SUCCESS;
+> > +}
+> > +
+> >   #define IMMEDIATE_CONFIG_CHANGE (1 << 1)
+> >   #define IMMEDIATE_DATA_CHANGE (1 << 2)
+> >   #define IMMEDIATE_POLICY_CHANGE (1 << 3)
+> > @@ -1448,6 +1838,12 @@ static const struct cxl_cmd cxl_cmd_set_dcd[256][256] = {
+> >       [DCD_CONFIG][GET_DYN_CAP_EXT_LIST] = {
+> >           "DCD_GET_DYNAMIC_CAPACITY_EXTENT_LIST", cmd_dcd_get_dyn_cap_ext_list,
+> >           8, 0 },
+> > +    [DCD_CONFIG][ADD_DYN_CAP_RSP] = {
+> > +        "DCD_ADD_DYNAMIC_CAPACITY_RESPONSE", cmd_dcd_add_dyn_cap_rsp,
+> > +        ~0, IMMEDIATE_DATA_CHANGE },
+> > +    [DCD_CONFIG][RELEASE_DYN_CAP] = {
+> > +        "DCD_RELEASE_DYNAMIC_CAPACITY", cmd_dcd_release_dyn_cap,
+> > +        ~0, IMMEDIATE_DATA_CHANGE },
+> >   };
 > > 
-> > #2 is desirable because if QEMU gets compromised it has a smaller
-> > attack surface onto the guest.
-> 
-> And it allows to run the virtio backend in a less privileged VM.
-> 
+> >   static const struct cxl_cmd cxl_cmd_set_sw[256][256] = {
+> > diff --git a/hw/mem/cxl_type3.c b/hw/mem/cxl_type3.c
+> > index 48cce3bb13..2d4b6242f0 100644
+> > --- a/hw/mem/cxl_type3.c
+> > +++ b/hw/mem/cxl_type3.c
+> > @@ -671,6 +671,15 @@ static bool cxl_create_dc_regions(CXLType3Dev *ct3d, Error **errp)
+> >       return true;
+> >   }
 > > 
-> > > 
-> > >    - why a 3rd memory type is required?  Do we have other alternatives?
+> > +static void cxl_destroy_dc_regions(CXLType3Dev *ct3d)
+> > +{
+> > +    CXLDCExtent *ent, *ent_next;
+> > +
+> > +    QTAILQ_FOREACH_SAFE(ent, &ct3d->dc.extents, node, ent_next) {
+> > +        cxl_remove_extent_from_extent_list(&ct3d->dc.extents, ent);
+> > +    }
+> > +}
+> > +
+> >   static bool cxl_setup_memory(CXLType3Dev *ct3d, Error **errp)
+> >   {
+> >       DeviceState *ds = DEVICE(ct3d);
+> > @@ -867,6 +876,7 @@ err_free_special_ops:
+> >       g_free(regs->special_ops);
+> >   err_address_space_free:
+> >       if (ct3d->dc.host_dc) {
+> > +        cxl_destroy_dc_regions(ct3d);
+> >           address_space_destroy(&ct3d->dc.host_dc_as);
+> >       }
+> >       if (ct3d->hostpmem) {
+> > @@ -888,6 +898,7 @@ static void ct3_exit(PCIDevice *pci_dev)
+> >       cxl_doe_cdat_release(cxl_cstate);
+> >       g_free(regs->special_ops);
+> >       if (ct3d->dc.host_dc) {
+> > +        cxl_destroy_dc_regions(ct3d);
+> >           address_space_destroy(&ct3d->dc.host_dc_as);
+> >       }
+> >       if (ct3d->hostpmem) {
+> > diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> > index 6aec6ac983..df3511e91b 100644
+> > --- a/include/hw/cxl/cxl_device.h
+> > +++ b/include/hw/cxl/cxl_device.h
+> > @@ -551,4 +551,8 @@ void cxl_event_irq_assert(CXLType3Dev *ct3d);
 > > 
-> > Yes, there are alternatives.
+> >   void cxl_set_poison_list_overflowed(CXLType3Dev *ct3d);
 > > 
-> > 1. It was suggested by Stefano to try to handle this in existing qemu/hw/xen/*.
-> > This would be less intrusive but perhaps also less explicit.
-> > Concerns about touching the Memory API have been raised before, so
-> > perhaps we should try this.
-> > I'm a little unsure how we would deal with unmapping when the guest
-> > removes our grants and we're using models that don't map but use
-> > address_space_read/write().
-> 
-> Those would either need to use grant-copy hypercalls, or they'd need to map,
-> read/write, unmap.
-> 
+> > +CXLDCRegion *cxl_find_dc_region(CXLType3Dev *ct3d, uint64_t dpa, uint64_t len);
+> > +
+> > +void cxl_remove_extent_from_extent_list(CXLDCExtentList *list,
+> > +                                        CXLDCExtent *extent);
+> >   #endif
+> > --
+> > 2.43.0
 > > 
-> > 2. Another approach could be to change the Xen grant-iommu in the
-> > Linux kernel to work with a grant vIOMMU in QEMU.
-> > Linux could explicitly ask QEMU's grant vIOMMU to map/unmap granted regions.
-> > This would have the benefit that we wouldn't need to allocate
-> > address-bit 63 for grants.
-> > A drawback is that it may be slower since we're going to need to
-> > bounce between guest/qemu a bit more.
-> 
-> It would be a _lot_ slower, unless virtio-iommu and grants are both modified
-> to match. I have looked into that, but the needed effort is rather large. At
-> the last Xen summit I have suggested to introduce a new grant format which
-> would work more like a normal page table structure. Using the same format
-> for virtio-iommu would allow to avoid the additional bounces between qemu and
-> the guest (and in fact that was one of the motivations to suggest the new
-> grant format).
-
-I have a better picture now, thanks both.
-
-It really looks like an vIOMMU already to me, perhaps with a special refID
-mapping playing similar roles as IOVAs in the rest IOMMU worlds.
-
-I can't yet tell what's the best way for Xen - as of now QEMU's memory API
-does provide such translations via IOMMUMemoryRegionClass.translate(), but
-only from that.  So far it works for all vIOMMU emulations in QEMU, and I'd
-hope we don't need to hack another memory type if possible for this,
-especially if for performance's sake; more on below.
-
-QEMU also suffers from similar issues with other kind of DMA protections,
-at least that's what I'm aware with using either VT-d, SMMU, etc.. where
-dynamic DMA mappings will slow the IOs down to a degree that it may not be
-usable in real production.  We kept it like that and so far AFAIK we don't
-yet have a solution for that simply because of the nature on how DMA
-buffers are mapped and managed within a guest OS no matter Linux or not.
-
-For Linux as a guest we basically suggest enabling iommu=pt so that kernel
-drivers are trusted, and kernel driven devices can have full access to
-guest RAMs by using the vIOMMU's passthrough mode. Perhaps similar to
-foreign mappings for Xen, but maybe still different, as Xen's topology is
-definitely special as a hypervisor here.
-
-While for userspace drivers within the guest OS it'll always go through
-vfio-pci now, which will enforce effective DMA mappings not the passthrough
-mode. Then it's suggested to only map as less as possible, e.g. DPDK only
-maps at the start of the user driver so it's mostly not affected by the
-slowness of frequently changing DMA mappings.
-
-I'm not sure whether above ideas would even be applicable for Xen, but I
-just to share the status quo regarding to how we manage protected DMAs when
-without Xen, just in case there's anything useful to help route the path
-forward.
-
-Thanks,
-
--- 
-Peter Xu
-
 
