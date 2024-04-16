@@ -2,30 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3948A670C
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 11:22:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D513C8A6703
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 11:21:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rweyW-0002cQ-CZ; Tue, 16 Apr 2024 05:19:36 -0400
+	id 1rweyY-0002dZ-GQ; Tue, 16 Apr 2024 05:19:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rweyT-0002bD-Cb; Tue, 16 Apr 2024 05:19:33 -0400
+ id 1rweyV-0002cP-Mt; Tue, 16 Apr 2024 05:19:35 -0400
 Received: from mail.aspeedtech.com ([211.20.114.72] helo=TWMBX01.aspeed.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jamin_lin@aspeedtech.com>)
- id 1rweyS-0007Zt-09; Tue, 16 Apr 2024 05:19:33 -0400
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX01.aspeed.com
+ id 1rweyU-0007Zt-A7; Tue, 16 Apr 2024 05:19:35 -0400
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 16 Apr
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 16 Apr
  2024 17:19:06 +0800
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Tue, 16 Apr
- 2024 17:19:08 +0800
 Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 16 Apr 2024 17:19:05 +0800
+ Transport; Tue, 16 Apr 2024 17:19:06 +0800
 To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
  Joel Stanley <joel@jms.id.au>, Alistair Francis <alistair@alistair23.me>,
@@ -36,19 +33,15 @@ To: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>, Peter Maydell
  <qemu-devel@nongnu.org>
 CC: <jamin_lin@aspeedtech.com>, <troy_lee@aspeedtech.com>,
  <yunlin.tang@aspeedtech.com>
-Subject: [PATCH v3 03/16] aspeed/sdmc: remove redundant macros
-Date: Tue, 16 Apr 2024 17:18:50 +0800
-Message-ID: <20240416091904.935283-4-jamin_lin@aspeedtech.com>
+Subject: [PATCH v3 04/16] aspeed/sdmc: fix coding style
+Date: Tue, 16 Apr 2024 17:18:51 +0800
+Message-ID: <20240416091904.935283-5-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240416091904.935283-1-jamin_lin@aspeedtech.com>
 References: <20240416091904.935283-1-jamin_lin@aspeedtech.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: Fail (TWMBX02.aspeed.com: domain of jamin_lin@aspeedtech.com
- does not designate 192.168.10.10 as permitted sender)
- receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
- helo=localhost.localdomain;
 Received-SPF: pass client-ip=211.20.114.72;
  envelope-from=jamin_lin@aspeedtech.com; helo=TWMBX01.aspeed.com
 X-Spam_score_int: -18
@@ -73,47 +66,53 @@ From:  Jamin Lin via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These macros are no longer used for ASPEED SOCs, so removes them.
+Fix coding style issues from checkpatch.pl
+
+Test command:
+scripts/checkpatch.pl --no-tree -f hw/misc/aspeed_sdmc.c
 
 Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
 Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- hw/misc/aspeed_sdmc.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ hw/misc/aspeed_sdmc.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/hw/misc/aspeed_sdmc.c b/hw/misc/aspeed_sdmc.c
-index 64cd1a81dc..74279bbe8e 100644
+index 74279bbe8e..873d67c592 100644
 --- a/hw/misc/aspeed_sdmc.c
 +++ b/hw/misc/aspeed_sdmc.c
-@@ -76,10 +76,6 @@
- #define     ASPEED_SDMC_VGA_32MB            0x2
- #define     ASPEED_SDMC_VGA_64MB            0x3
- #define ASPEED_SDMC_DRAM_SIZE(x)        (x & 0x3)
--#define     ASPEED_SDMC_DRAM_64MB           0x0
--#define     ASPEED_SDMC_DRAM_128MB          0x1
--#define     ASPEED_SDMC_DRAM_256MB          0x2
--#define     ASPEED_SDMC_DRAM_512MB          0x3
+@@ -296,7 +296,8 @@ static void aspeed_2400_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
  
- #define ASPEED_SDMC_READONLY_MASK                       \
-     (ASPEED_SDMC_RESERVED | ASPEED_SDMC_VGA_COMPAT |    \
-@@ -100,17 +96,6 @@
- #define ASPEED_SDMC_CACHE_ENABLE        (1 << 10) /* differs from AST2400 */
- #define ASPEED_SDMC_DRAM_TYPE           (1 << 4)  /* differs from AST2400 */
+@@ -354,7 +355,8 @@ static void aspeed_2500_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+                                    uint32_t data)
+ {
+     if (reg == R_PROT) {
+-        s->regs[reg] = (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
++        s->regs[reg] =
++            (data == PROT_KEY_UNLOCK) ? PROT_UNLOCKED : PROT_SOFTLOCKED;
+         return;
+     }
  
--/* DRAM size definitions differs */
--#define     ASPEED_SDMC_AST2500_128MB       0x0
--#define     ASPEED_SDMC_AST2500_256MB       0x1
--#define     ASPEED_SDMC_AST2500_512MB       0x2
--#define     ASPEED_SDMC_AST2500_1024MB      0x3
--
--#define     ASPEED_SDMC_AST2600_256MB       0x0
--#define     ASPEED_SDMC_AST2600_512MB       0x1
--#define     ASPEED_SDMC_AST2600_1024MB      0x2
--#define     ASPEED_SDMC_AST2600_2048MB      0x3
--
- #define ASPEED_SDMC_AST2500_READONLY_MASK                               \
-     (ASPEED_SDMC_HW_VERSION(0xf) | ASPEED_SDMC_CACHE_INITIAL_DONE |     \
-      ASPEED_SDMC_AST2500_RESERVED | ASPEED_SDMC_VGA_COMPAT |            \
+@@ -434,8 +436,9 @@ static void aspeed_2600_sdmc_write(AspeedSDMCState *s, uint32_t reg,
+     }
+ 
+     if (s->regs[R_PROT] == PROT_HARDLOCKED) {
+-        qemu_log_mask(LOG_GUEST_ERROR, "%s: SDMC is locked until system reset!\n",
+-                __func__);
++        qemu_log_mask(LOG_GUEST_ERROR,
++                      "%s: SDMC is locked until system reset!\n",
++                      __func__);
+         return;
+     }
+ 
 -- 
 2.25.1
 
