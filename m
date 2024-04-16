@@ -2,90 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292B48A7449
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 21:05:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33AEB8A7497
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 21:21:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwo4Q-0004id-V1; Tue, 16 Apr 2024 15:02:19 -0400
+	id 1rwoLq-0006m4-DX; Tue, 16 Apr 2024 15:20:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo4M-0004N5-KR
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:02:14 -0400
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rwoLo-0006kD-Jv
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:20:16 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo4I-0005um-ON
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:02:14 -0400
-Received: by mail-lf1-x135.google.com with SMTP id
- 2adb3069b0e04-516f2e0edb7so5851778e87.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:02:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1rwoLm-0000Ye-Gs
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:20:16 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6effe9c852eso2025439b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:20:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713294129; x=1713898929; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=kMNnC0CtBUMfvsWtjsnWY6TflDR4yCy2djdqUVTuvak=;
- b=t8qs/JL8yAg1ebnAvx1Dg30Vhcqu7XK6aUmJbOqPN3aK2zHtuVx8yJ1wnXj5OKCEv1
- ff+HuhQ6I4YoZFL54caz/HOwpwFp8RkK42zn/nhGyO8YbQWY7cDXd77LLXU6UwHVy2zC
- lmS6fWa59XnTxFEUnOBwiExbsC4eZRx5CuLakiz7xa09hxh+5RO23gHWidxPDrFxlJLk
- myYdxS4F+L2oAout86NnOcqQHfiqe/jb1L+hQ4m0mNHW9Oft+JHx5MmQE5/u0mwcc8Q1
- iO+Xe38b20rqI1rdM7Fl37zblJy2l7aJFxpYgnQiYP5i8NgqKtSR80JM4FJd5Ag7+xZB
- cVBA==
+ d=linaro.org; s=google; t=1713295212; x=1713900012; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=WLQ/HcsoX9exGFJ0ckMYMcf7iU4Fld6gbQdibbI56Qc=;
+ b=IknN/i+ib7Cd7F4M7qEb6iE7lS9T9DEniMJH91y2On3IwIAs0G8/qJvKESzoY9xWSV
+ UdGNTNzF1Ic8WifE0I7KgyozrKL63GWdod5ncJZ1o6/0EwpYo5qlkSzh1Je3f40d6NMJ
+ T322bWcZrtRhMIWOn54DoM12OOVRPjwlskg/XTZfLobhewWEGBM7rPPUOsHii5UYl0fP
+ zZ/Wnr0JFecwWRLQxKIo9MkR9b0/i+5QY+pHmcDuKOAfxfmJwHztjrlaAsxTACmF4njx
+ KRL63yB4kTVCeYntm9cKR67AqiVlCO7b/X0f/FUyxkLNt0sXzxVzV/gPZ9PaYpiETWHO
+ uwWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713294129; x=1713898929;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=kMNnC0CtBUMfvsWtjsnWY6TflDR4yCy2djdqUVTuvak=;
- b=sNtyvDgAHMOACrkf1IYuP+T31fNPqUk68tYy7Uo122FQlmhQ/maN2u7+T42lQhASTN
- 2dPLgmAa5CBa6WIhogTGBnGVXjNb3WFz8R+jMs/LtTV4ajR5kMlbtGyNePob1NaX5vD8
- SNXFcrdxx83bBW2yv+EP7B2NAWeMvvH4FHW7c5gzjROw0pf8siequuovktA4gSPq39Mb
- 9LWk1sboMfSX1MuzqIK29tkcXijmkpo6E5JLhnZsQKbKvT5XaVWVMAXxQNTnYI7lmiIm
- Nm9ekrYcPUxxk0wYWsnG4Ka/bJyg1jCQR+GGDXV+CHyYndPMSRrPYcTBDgDRNoZBkYyB
- FN7Q==
-X-Gm-Message-State: AOJu0YxBS7ToSVPgDawXGviu5HV8FimRIN5lS+dgGWKJd1mQ9nNFZW8Q
- 2A9XEvE1vvOocvqIljzSp/2G1HihLBVB8S/W+NdF+CRY7FkcZEuDpOH8QbB/gYWt4TFZvm4/5+Q
- Y
-X-Google-Smtp-Source: AGHT+IGfYRyj7r002C9yM3FRzUGXQloA8hUqiyYSxfijYilgXSYfYJaEenswdOWXoxEW0bqJoGIMTA==
-X-Received: by 2002:a05:6512:33c8:b0:518:b069:3b7d with SMTP id
- d8-20020a05651233c800b00518b0693b7dmr6333284lfg.6.1713294128761; 
- Tue, 16 Apr 2024 12:02:08 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.155.61])
+ d=1e100.net; s=20230601; t=1713295212; x=1713900012;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=WLQ/HcsoX9exGFJ0ckMYMcf7iU4Fld6gbQdibbI56Qc=;
+ b=fcUoSt4MqBSiOJzgNKPAqJ9yjsix0c+EpFlQPUjY0a/tRojibREj+6/uBe8hMBuJ3C
+ 7vdGfWdceljrahSwGIsbEXS5EeGJs7PD/1h8QSgeaoCSElUmG9qFiho99CDyo3jVYmgc
+ xhpD6ndYE+hHUwFbDdfrsRcQXUtr9x/NzklaWepEr+FbV6jv06Ln7fYzYqHD4zzhBGAe
+ +EMST0f/19Hehed4BBYZ4Cmr1sC35cOcaCGYeiG9voiidDvgiCxeh2fRe3Qu/Rk7hOV9
+ QwOUvI0oesdEZ9Kf7bogoiqZtv5L5uxsVOwMJD2/ScQXaqDgzXZVU+lVSPKoSdR6QuaU
+ T63w==
+X-Gm-Message-State: AOJu0YxOGf7oYhEq0lyjDBIujsXlqBcU2anS1hl90eu01o7qH06VNtTR
+ 8XHa574SaiWj3xqNjeJhfu24Deg2NDnHGoY/M7J1FTZAlo8AH5RNUXyuhSsGdbE=
+X-Google-Smtp-Source: AGHT+IG6SmVExnOQXvlPEdNf0ZXSUbLWH+A1b3iObQo1JEANUj/IKNmA4B5aZqLpTiOiQzfdcCqlFg==
+X-Received: by 2002:a05:6a21:3a42:b0:1aa:14a1:e5ef with SMTP id
+ zu2-20020a056a213a4200b001aa14a1e5efmr6290137pzb.38.1713295211883; 
+ Tue, 16 Apr 2024 12:20:11 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- d19-20020a170906c21300b00a553846966csm1570949ejz.24.2024.04.16.12.02.06
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 12:02:08 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org,
-	Thomas Huth <thuth@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
- David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- kvm@vger.kernel.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PATCH v4 22/22] hw/i386/pc: Replace PCMachineClass::acpi_data_size
- by PC_ACPI_DATA_SIZE
-Date: Tue, 16 Apr 2024 20:59:38 +0200
-Message-ID: <20240416185939.37984-23-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240416185939.37984-1-philmd@linaro.org>
-References: <20240416185939.37984-1-philmd@linaro.org>
+ f22-20020a056a000b1600b006ecfb733248sm9678441pfu.13.2024.04.16.12.20.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Apr 2024 12:20:11 -0700 (PDT)
+Message-ID: <1f39a25e-6c64-4ff2-8521-7059c5ed2214@linaro.org>
+Date: Tue, 16 Apr 2024 12:20:09 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::135;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x135.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/8] target/ppc: Move cmp{rb, eqb}, tw[i], td[i], isel
+ instructions to decodetree.
+To: Chinmay Rath <rathc@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
+ harshpb@linux.ibm.com
+References: <20240416063927.99428-1-rathc@linux.ibm.com>
+ <20240416063927.99428-8-rathc@linux.ibm.com>
+Content-Language: en-US
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20240416063927.99428-8-rathc@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,93 +96,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PCMachineClass::acpi_data_size was only used by the pc-i440fx-2.0
-machine, which got removed. Since it is constant, replace the class
-field by a definition (local to hw/i386/pc.c, since not used
-elsewhere).
+On 4/15/24 23:39, Chinmay Rath wrote:
+> Moving the following instructions to decodetree specification :
+> 
+> 	cmp{rb, eqb}, t{w, d}	: X-form
+> 	t{w, d}i		: D-form
+> 	isel			: A-form
+> 
+> The changes were verified by validating that the tcg ops generated by those
+> instructions remain the same, which were captured using the '-d in_asm,op' flag.
+> 
+> Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
----
- include/hw/i386/pc.h |  4 ----
- hw/i386/pc.c         | 19 ++++++++++++-------
- 2 files changed, 12 insertions(+), 11 deletions(-)
+A faithful reorg of the existing code, so,
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 96ccb4583f..0ad971782c 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -74,9 +74,6 @@ typedef struct PCMachineState {
-  *
-  * Compat fields:
-  *
-- * @acpi_data_size: Size of the chunk of memory at the top of RAM
-- *                  for the BIOS ACPI tables and other BIOS
-- *                  datastructures.
-  * @gigabyte_align: Make sure that guest addresses aligned at
-  *                  1Gbyte boundaries get mapped to host
-  *                  addresses aligned at 1Gbyte boundaries. This
-@@ -100,7 +97,6 @@ struct PCMachineClass {
- 
-     /* ACPI compat: */
-     bool has_acpi_build;
--    unsigned acpi_data_size;
-     int pci_root_uid;
- 
-     /* SMBIOS compat: */
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 2e2146f42b..0be8f08c47 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -256,6 +256,16 @@ GlobalProperty pc_compat_2_4[] = {
- };
- const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
- 
-+/*
-+ * @PC_ACPI_DATA_SIZE:
-+ * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
-+ * and other BIOS datastructures.
-+ *
-+ * BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K
-+ * reported to be used at the moment, 32K should be enough for a while.
-+ */
-+#define PC_ACPI_DATA_SIZE (0x20000 + 0x8000)
-+
- GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
- {
-     GSIState *s;
-@@ -634,8 +644,7 @@ void xen_load_linux(PCMachineState *pcms)
-     fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, x86ms->boot_cpus);
-     rom_set_fw(fw_cfg);
- 
--    x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                   pcmc->pvh_enabled);
-+    x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     for (i = 0; i < nb_option_roms; i++) {
-         assert(!strcmp(option_rom[i].name, "linuxboot.bin") ||
-                !strcmp(option_rom[i].name, "linuxboot_dma.bin") ||
-@@ -969,8 +978,7 @@ void pc_memory_init(PCMachineState *pcms,
+Notes for improvement:
+
+> +static bool trans_CMPRB(DisasContext *ctx, arg_CMPRB *a)
+> +{
+> +    TCGv_i32 src1 = tcg_temp_new_i32();
+> +    TCGv_i32 src2 = tcg_temp_new_i32();
+> +    TCGv_i32 src2lo = tcg_temp_new_i32();
+> +    TCGv_i32 src2hi = tcg_temp_new_i32();
+> +    TCGv_i32 crf = cpu_crf[a->bf];
+> +
+> +    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
+> +    tcg_gen_trunc_tl_i32(src1, cpu_gpr[a->ra]);
+> +    tcg_gen_trunc_tl_i32(src2, cpu_gpr[a->rb]);
+> +
+> +    tcg_gen_andi_i32(src1, src1, 0xFF);
+> +    tcg_gen_ext8u_i32(src2lo, src2);
+> +    tcg_gen_shri_i32(src2, src2, 8);
+> +    tcg_gen_ext8u_i32(src2hi, src2);
+
+tcg_gen_extract_i32(src2hi, src2, 8, 8);
+
+> +
+> +    tcg_gen_setcond_i32(TCG_COND_LEU, src2lo, src2lo, src1);
+> +    tcg_gen_setcond_i32(TCG_COND_LEU, src2hi, src1, src2hi);
+> +    tcg_gen_and_i32(crf, src2lo, src2hi);
+> +
+> +    if (a->l) {
+> +        tcg_gen_shri_i32(src2, src2, 8);
+> +        tcg_gen_ext8u_i32(src2lo, src2);
+
+tcg_gen_extract_i32(src2lo, src2, 16, 8);
+
+> +        tcg_gen_shri_i32(src2, src2, 8);
+> +        tcg_gen_ext8u_i32(src2hi, src2);
+
+tcg_gen_extract_i32(src2hi, src2, 24, 8);
+
+> +/*
+> + * Fixed-Point Trap Instructions
+> + */
+> +
+> +static bool trans_TW(DisasContext *ctx, arg_TW *a)
+> +{
+> +    TCGv_i32 t0;
+> +
+> +    if (check_unconditional_trap(ctx, a->rt)) {
+> +        return true;
+> +    }
+> +    t0 = tcg_constant_i32(a->rt);
+> +    gen_helper_TW(tcg_env, cpu_gpr[a->ra], cpu_gpr[a->rb], t0);
+> +    return true;
+> +}
+> +
+> +static bool trans_TWI(DisasContext *ctx, arg_TWI *a)
+> +{
+> +    TCGv t0;
+> +    TCGv_i32 t1;
+> +
+> +    if (check_unconditional_trap(ctx, a->rt)) {
+> +        return true;
+> +    }
+> +    t0 = tcg_constant_tl(a->si);
+> +    t1 = tcg_constant_i32(a->rt);
+> +    gen_helper_TW(tcg_env, cpu_gpr[a->ra], t0, t1);
+> +    return true;
+> +}
+> +
+> +static bool trans_TD(DisasContext *ctx, arg_TD *a)
+> +{
+> +    TCGv_i32 t0;
+> +
+> +    REQUIRE_64BIT(ctx);
+> +    if (check_unconditional_trap(ctx, a->rt)) {
+> +        return true;
+> +    }
+> +    t0 = tcg_constant_i32(a->rt);
+> +    gen_helper_TD(tcg_env, cpu_gpr[a->ra], cpu_gpr[a->rb], t0);
+> +    return true;
+> +}
+> +
+> +static bool trans_TDI(DisasContext *ctx, arg_TDI *a)
+> +{
+> +    TCGv t0;
+> +    TCGv_i32 t1;
+> +
+> +    REQUIRE_64BIT(ctx);
+> +    if (check_unconditional_trap(ctx, a->rt)) {
+> +        return true;
+> +    }
+> +    t0 = tcg_constant_tl(a->si);
+> +    t1 = tcg_constant_i32(a->rt);
+> +    gen_helper_TD(tcg_env, cpu_gpr[a->ra], t0, t1);
+> +    return true;
+> +}
+
+See target/sparc/translate.c, delay_exception, for a method of implementing 
+compare-and-trap inline with no inline branch penalty.
+
+static void do_conditional_trap(DisasContext *ctx, unsigned to, TCGv a, TCGv b)
+{
+     static const TCGCond ucond[8] = {
+         TCG_COND_NEVER, TCG_COND_GTU, TCG_COND_LTU, TCG_COND_NE,
+         TCG_COND_EQ,    TCG_COND_GEU, TCG_COND_LEU, TCG_COND_ALWAYS,
+     };
+     static const TCGCond scond[8] = {
+         TCG_COND_NEVER, TCG_COND_EQ,  TCG_COND_GT,  TCG_COND_GE,
+         TCG_COND_LT,    TCG_COND_LE,  TCG_COND_NE,  TCG_COND_ALWAYS,
+     };
+
+     TCGCond uc = ucond[to & 7];
+     TCGCond sc = scond[to >> 2];
+
+     /* There is overlap with EQ; we may not need both comparisons. */
+     if (!(to & 0x18)) {
+         sc = TCG_COND_NEVER;
+     } else if (!(to & 0x03)) {
+         uc = TCG_COND_NEVER;
      }
- 
-     if (linux_boot) {
--        x86_load_linux(x86ms, fw_cfg, pcmc->acpi_data_size,
--                       pcmc->pvh_enabled);
-+        x86_load_linux(x86ms, fw_cfg, PC_ACPI_DATA_SIZE, pcmc->pvh_enabled);
-     }
- 
-     for (i = 0; i < nb_option_roms; i++) {
-@@ -1724,9 +1732,6 @@ static void pc_machine_class_init(ObjectClass *oc, void *data)
-     pcmc->gigabyte_align = true;
-     pcmc->has_reserved_memory = true;
-     pcmc->enforce_amd_1tb_hole = true;
--    /* BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K reported
--     * to be used at the moment, 32K should be enough for a while.  */
--    pcmc->acpi_data_size = 0x20000 + 0x8000;
-     pcmc->pvh_enabled = true;
-     pcmc->kvmclock_create_always = true;
-     x86mc->apic_xrupt_override = true;
--- 
-2.41.0
 
+     if (uc == TCG_COND_ALWAYS || sc == TCG_COND_ALWAYS) {
+         unconditional trap;
+         return true;
+     }
+     if (uc == TCG_COND_NEVER && sc == TCG_COND_NEVER) {
+         return true;
+     }
+
+     e = delay_exception(ctx, POWERPC_EXCP_TRAP);
+
+     if (uc != TCG_COND_NEVER) {
+         tcg_gen_brcond_tl(uc, a, b, e->lab);
+     }
+     if (sc != TCG_COND_NEVER) {
+         tcg_gen_brcond_tl(sc, a, b, e->lab);
+     }
+     return true;
+}
+
+bool trans_TW(...)
+{
+     TCGv a = tcg_temp_new();
+     TCGv b = tcg_temp_new();
+
+     /* Note that consistent sign extensions work for unsigned comparisons. */
+     tcg_gen_exts_i32_tl(a, ra);
+     tcg_gen_exts_i32_tl(b, rb);
+     return do_conditional_trap(ctx, to, a, b);
+}
+
+etc.
+
+
+r~
 
