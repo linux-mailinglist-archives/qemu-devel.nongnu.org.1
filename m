@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962F78A6CDF
+	by mail.lfdr.de (Postfix) with ESMTPS id E1BDB8A6CE2
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwjFV-0001oP-TP; Tue, 16 Apr 2024 09:53:25 -0400
+	id 1rwjFY-0001pO-DL; Tue, 16 Apr 2024 09:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFP-0001jN-CX
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:19 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFV-0001ol-BG
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:25 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFM-0001ZM-1f
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:19 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4167fce0a41so30183335e9.0
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:53:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFS-0001hk-0z
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:25 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-346359c8785so3413448f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713275594; x=1713880394; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713275600; x=1713880400; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r/B5UTN+VVzZIBHg8vuvzaIXLhoLwQMP7eYF+iW6nSk=;
- b=b23KKU09ePFrV1jVJJl/ioQJSuUgpPTMVX7uZDHfiyZDweIxQY56QHqQsukcYttyhv
- cIOjgnSuZFJQ5lu3NXnvHh7hjhYsscN47kIhyjjfyPoI4hL1+/ewr1cgmgvZ0tVNEtEU
- FPOVGnMGCfgFUNXfmWakC8hasbTGgNa+hYr0A3M8v2gwZA9lI7x3/jJ9HEtLf80QbxKi
- APKicOei6lluGwwahBPGJivJejlvU2slydSCVVLziA6yymXu0QdCJh3G7bmXrtHdK7Io
- uw0T30/lDgKPcSCxTE6rmdJQnwVW66UdCLpB8IZAp75VXn9U/R+MaeDoh0vNWi184Kes
- kKsg==
+ bh=r03IbH4Q5jukHMDYRNDrIPnxYvDkdnR4utG+Rvdo7L0=;
+ b=yRF1JSc9vOfeMJXY1dkhAcfTue6ucH2vX1XanashF2GYd98VwW5NZ5vQ+tjcRPmfgr
+ kV9qq9CuKPIJKecDs0CvQLckdBu5WVQs6kzeMYgp+H02DbDZbUNJ/Q4yaybLs+WRqUfH
+ GQ2B6iWApyQkXwVEl2FGJV3WlWY80W1qPcsy57QCVaeIjfyWq5FOCxAbzE5AcoOkVEqq
+ wNm1pXanch2iOHScqF/uda4mfr7IKbTk/3ZGCW3KubmWxHgvKWTdzssYZii1q4npcu1T
+ K7JCzz4/6UiUbUhuYjUZRnUXPYs4VH/NZHv1TOKtC2f3ZicylHHAal43yfUfNzmVqejg
+ kAyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713275594; x=1713880394;
+ d=1e100.net; s=20230601; t=1713275600; x=1713880400;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r/B5UTN+VVzZIBHg8vuvzaIXLhoLwQMP7eYF+iW6nSk=;
- b=rMBlKv2SJ1aOslCb6d2UwSDnwX05pGkus/gYI5M2j4zHqYaNoApPUVmCUfUl/GJ4JV
- fNYp5blictgN0xAP3/2rehQUAPwaImWVRPRvt7lNQ0YT1wFEhKcQOvurxjN9o/tPcqLg
- hCwKyWl9XHOO1G+sGg6iwKylruHDgHCVOYUvXbPttPpSx16aFRxC/8pGELRneyDw/rYY
- xNZn5lVxXcORMSmBmol7Odhfupeq0I8VlZL3AwKZbDrVZnQYNWp4VR2QP4N0gLt1qEq5
- PteJxPDNeI6n0OQInYZ2Yig1ayIwx7dFUAqQA+k0wUkQNpeskDVX5sxVzaTMGpawlvRZ
- YFsQ==
-X-Gm-Message-State: AOJu0YztJzbBL2Hv7U/iedaqqFjwx7ABbThZU6bvaJM2pxFUo/MuUC5u
- Vb5Bj02EYe1hcXxRGRlu9RF237XUjsdfWUBO+lN54QuqLu8YFneiVXP0bvKGa6uI+jFIk6JIs57
- 7
-X-Google-Smtp-Source: AGHT+IGr25g7tT9GOge8RppCUGG0XGC0pUUb6sMITSrWC+oN3oRm8Ll4CqHRAl7M2H0Fphqk+ClUQA==
-X-Received: by 2002:a05:600c:1c0d:b0:418:9ff4:3eed with SMTP id
- j13-20020a05600c1c0d00b004189ff43eedmr1222847wms.20.1713275593925; 
- Tue, 16 Apr 2024 06:53:13 -0700 (PDT)
+ bh=r03IbH4Q5jukHMDYRNDrIPnxYvDkdnR4utG+Rvdo7L0=;
+ b=Os5OSNqygklt64WripaVDVtt5Ih8/QgIVZGQmuHPE+IU417so3pbfykQB0W3Cbzsgj
+ kxjR++C4ibGYn7PqpaeNKLMSWI/ViXd/+9q+Cyvj4C/t7HCmlZHxplhARSRxvHpYUYik
+ x7wgispPmyK4nxqxKMwTm7DQ4V3MoPMXKG4HKsH7vmDy79Be18MVqMh2p4I00X8zBxaq
+ QhoxuTZo5eKTRmuEbYaT7R04mBAE649vVbzKUghBhkCby2s5sH5HWvWhpWbvpJGUsqkl
+ DevreJ7/NV2YuxS34qzTDleHPgqq7c2Us6YFQm5aPZufhiCtkw3aZdtOm358dVdyO5rR
+ le5w==
+X-Gm-Message-State: AOJu0YzRpyu3PcVcnEBMvfp8NehYP1GX00z4RA/HCeQJcinIiqLg8WYY
+ 0k3PV6uUM6pyGjD3ZmfNADzB5Yh9HKXu4zJUAf4u+LyZH1C9caiAhlByRsYDFpXdlqymICVqdbK
+ A
+X-Google-Smtp-Source: AGHT+IGJ2uGSR6KqQln7hRaQZa1PHMjIwlEBSzUIgzuLKKApN96nfJTrfhuAZdzCvzv0Ihnv1ZAsZA==
+X-Received: by 2002:a5d:69c5:0:b0:349:8fa4:1839 with SMTP id
+ s5-20020a5d69c5000000b003498fa41839mr924704wrw.1.1713275600053; 
+ Tue, 16 Apr 2024 06:53:20 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- m2-20020a05600c4f4200b0041892c774bcsm2586712wmq.2.2024.04.16.06.53.12
+ df10-20020a5d5b8a000000b003437799a373sm14861606wrb.83.2024.04.16.06.53.18
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 06:53:13 -0700 (PDT)
+ Tue, 16 Apr 2024 06:53:19 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -64,18 +64,17 @@ Cc: Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v3 03/22] hw/usb/hcd-xhci: Remove XHCI_FLAG_FORCE_PCIE_ENDCAP
- flag
-Date: Tue, 16 Apr 2024 15:52:32 +0200
-Message-ID: <20240416135252.8384-4-philmd@linaro.org>
+Subject: [PATCH v3 04/22] hw/usb/hcd-xhci: Remove XHCI_FLAG_SS_FIRST flag
+Date: Tue, 16 Apr 2024 15:52:33 +0200
+Message-ID: <20240416135252.8384-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240416135252.8384-1-philmd@linaro.org>
 References: <20240416135252.8384-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,58 +97,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XHCI_FLAG_FORCE_PCIE_ENDCAP was only used by the
-pc-i440fx-2.0 machine, which got removed. Remove it
-and simplify usb_xhci_pci_realize().
+XHCI_FLAG_SS_FIRST was only used by the pc-i440fx-2.0 machine,
+which got removed. Remove it and simplify various functions in
+hcd-xhci.c.
 
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/usb/hcd-xhci.h     | 1 -
- hw/usb/hcd-xhci-nec.c | 2 --
- hw/usb/hcd-xhci-pci.c | 3 +--
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ hw/usb/hcd-xhci.h     |  3 +--
+ hw/usb/hcd-xhci-nec.c |  2 --
+ hw/usb/hcd-xhci-pci.c |  1 -
+ hw/usb/hcd-xhci.c     | 42 ++++++++----------------------------------
+ 4 files changed, 9 insertions(+), 39 deletions(-)
 
 diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
-index 98f598382a..1efa4858fb 100644
+index 1efa4858fb..fe16d7ad05 100644
 --- a/hw/usb/hcd-xhci.h
 +++ b/hw/usb/hcd-xhci.h
-@@ -37,7 +37,6 @@ typedef struct XHCIEPContext XHCIEPContext;
+@@ -36,8 +36,7 @@ typedef struct XHCIStreamContext XHCIStreamContext;
+ typedef struct XHCIEPContext XHCIEPContext;
  
  enum xhci_flags {
-     XHCI_FLAG_SS_FIRST = 1,
--    XHCI_FLAG_FORCE_PCIE_ENDCAP,
-     XHCI_FLAG_ENABLE_STREAMS,
+-    XHCI_FLAG_SS_FIRST = 1,
+-    XHCI_FLAG_ENABLE_STREAMS,
++    XHCI_FLAG_ENABLE_STREAMS = 1,
  };
  
+ typedef enum TRBType {
 diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index 328e5bfe7c..5d5b069cf9 100644
+index 5d5b069cf9..0c063b3697 100644
 --- a/hw/usb/hcd-xhci-nec.c
 +++ b/hw/usb/hcd-xhci-nec.c
-@@ -43,8 +43,6 @@ static Property nec_xhci_properties[] = {
+@@ -41,8 +41,6 @@ struct XHCINecState {
+ static Property nec_xhci_properties[] = {
+     DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
      DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_BIT("superspeed-ports-first", XHCINecState, flags,
-                     XHCI_FLAG_SS_FIRST, true),
--    DEFINE_PROP_BIT("force-pcie-endcap", XHCINecState, flags,
--                    XHCI_FLAG_FORCE_PCIE_ENDCAP, false),
+-    DEFINE_PROP_BIT("superspeed-ports-first", XHCINecState, flags,
+-                    XHCI_FLAG_SS_FIRST, true),
      DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
      DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
      DEFINE_PROP_END_OF_LIST(),
 diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index 4423983308..cbad96f393 100644
+index cbad96f393..264d7ebb77 100644
 --- a/hw/usb/hcd-xhci-pci.c
 +++ b/hw/usb/hcd-xhci-pci.c
-@@ -148,8 +148,7 @@ static void usb_xhci_pci_realize(struct PCIDevice *dev, Error **errp)
-                      PCI_BASE_ADDRESS_MEM_TYPE_64,
-                      &s->xhci.mem);
+@@ -242,7 +242,6 @@ static void qemu_xhci_instance_init(Object *obj)
+     s->msix     = ON_OFF_AUTO_AUTO;
+     xhci->numintrs = XHCI_MAXINTRS;
+     xhci->numslots = XHCI_MAXSLOTS;
+-    xhci_set_flag(xhci, XHCI_FLAG_SS_FIRST);
+ }
  
--    if (pci_bus_is_express(pci_get_bus(dev)) ||
--        xhci_get_flag(&s->xhci, XHCI_FLAG_FORCE_PCIE_ENDCAP)) {
-+    if (pci_bus_is_express(pci_get_bus(dev))) {
-         ret = pcie_endpoint_cap_init(dev, 0xa0);
-         assert(ret > 0);
-     }
+ static const TypeInfo qemu_xhci_info = {
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index ad40232eb6..b6411f0bda 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -541,18 +541,10 @@ static XHCIPort *xhci_lookup_port(XHCIState *xhci, struct USBPort *uport)
+     case USB_SPEED_LOW:
+     case USB_SPEED_FULL:
+     case USB_SPEED_HIGH:
+-        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-            index = uport->index + xhci->numports_3;
+-        } else {
+-            index = uport->index;
+-        }
++        index = uport->index + xhci->numports_3;
+         break;
+     case USB_SPEED_SUPER:
+-        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-            index = uport->index;
+-        } else {
+-            index = uport->index + xhci->numports_2;
+-        }
++        index = uport->index;
+         break;
+     default:
+         return NULL;
+@@ -2779,11 +2771,7 @@ static uint64_t xhci_cap_read(void *ptr, hwaddr reg, unsigned size)
+         ret = 0x20425355; /* "USB " */
+         break;
+     case 0x28: /* Supported Protocol:08 */
+-        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-            ret = (xhci->numports_2<<8) | (xhci->numports_3+1);
+-        } else {
+-            ret = (xhci->numports_2<<8) | 1;
+-        }
++        ret = (xhci->numports_2 << 8) | (xhci->numports_3 + 1);
+         break;
+     case 0x2c: /* Supported Protocol:0c */
+         ret = 0x00000000; /* reserved */
+@@ -2795,11 +2783,7 @@ static uint64_t xhci_cap_read(void *ptr, hwaddr reg, unsigned size)
+         ret = 0x20425355; /* "USB " */
+         break;
+     case 0x38: /* Supported Protocol:08 */
+-        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-            ret = (xhci->numports_3<<8) | 1;
+-        } else {
+-            ret = (xhci->numports_3<<8) | (xhci->numports_2+1);
+-        }
++        ret = (xhci->numports_3 << 8) | 1;
+         break;
+     case 0x3c: /* Supported Protocol:0c */
+         ret = 0x00000000; /* reserved */
+@@ -3349,13 +3333,8 @@ static void usb_xhci_init(XHCIState *xhci)
+     for (i = 0; i < usbports; i++) {
+         speedmask = 0;
+         if (i < xhci->numports_2) {
+-            if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-                port = &xhci->ports[i + xhci->numports_3];
+-                port->portnr = i + 1 + xhci->numports_3;
+-            } else {
+-                port = &xhci->ports[i];
+-                port->portnr = i + 1;
+-            }
++            port = &xhci->ports[i + xhci->numports_3];
++            port->portnr = i + 1 + xhci->numports_3;
+             port->uport = &xhci->uports[i];
+             port->speedmask =
+                 USB_SPEED_MASK_LOW  |
+@@ -3366,13 +3345,8 @@ static void usb_xhci_init(XHCIState *xhci)
+             speedmask |= port->speedmask;
+         }
+         if (i < xhci->numports_3) {
+-            if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
+-                port = &xhci->ports[i];
+-                port->portnr = i + 1;
+-            } else {
+-                port = &xhci->ports[i + xhci->numports_2];
+-                port->portnr = i + 1 + xhci->numports_2;
+-            }
++            port = &xhci->ports[i];
++            port->portnr = i + 1;
+             port->uport = &xhci->uports[i];
+             port->speedmask = USB_SPEED_MASK_SUPER;
+             assert(i < XHCI_MAXPORTS);
 -- 
 2.41.0
 
