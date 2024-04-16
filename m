@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B2B8A6EB0
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4DE8A6EB2
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2J-0004vq-Hc; Tue, 16 Apr 2024 10:43:51 -0400
+	id 1rwk2J-0004w6-S1; Tue, 16 Apr 2024 10:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2H-0004vO-62
+ id 1rwk2H-0004vN-31
  for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:49 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2F-00020J-Pc
+ id 1rwk2F-00020G-Kq
  for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:48 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk22-0002dA-Jl; Tue, 16 Apr 2024 16:43:34 +0200
+ id 1rwk27-0002dW-Q4; Tue, 16 Apr 2024 16:43:39 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,10 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 04/26] multifd: change multifd_new_send_channel_create()
- param type
-Date: Tue, 16 Apr 2024 16:42:43 +0200
-Message-ID: <5c3960379819c9617755c97785844b840c616057.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 05/26] migration: Add a DestroyNotify parameter to
+ socket_send_channel_create()
+Date: Tue, 16 Apr 2024 16:42:44 +0200
+Message-ID: <8e8c54b8ef21a49b7204167d935744a145e1e98e.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -63,33 +63,74 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-This function is called only with MultiFDSendParams type param so use this
-type explicitly instead of using an opaque pointer.
+Makes managing the memory easier.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/multifd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ migration/multifd.c      | 2 +-
+ migration/postcopy-ram.c | 2 +-
+ migration/socket.c       | 6 ++++--
+ migration/socket.h       | 3 ++-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
 diff --git a/migration/multifd.c b/migration/multifd.c
-index 2802afe79d0d..039c0de40af5 100644
+index 039c0de40af5..4bc912d7500e 100644
 --- a/migration/multifd.c
 +++ b/migration/multifd.c
-@@ -1132,13 +1132,13 @@ out:
-     error_free(local_err);
- }
- 
--static bool multifd_new_send_channel_create(gpointer opaque, Error **errp)
-+static bool multifd_new_send_channel_create(MultiFDSendParams *p, Error **errp)
- {
-     if (!multifd_use_packets()) {
--        return file_send_channel_create(opaque, errp);
-+        return file_send_channel_create(p, errp);
+@@ -1138,7 +1138,7 @@ static bool multifd_new_send_channel_create(MultiFDSendParams *p, Error **errp)
+         return file_send_channel_create(p, errp);
      }
  
--    socket_send_channel_create(multifd_new_send_channel_async, opaque);
-+    socket_send_channel_create(multifd_new_send_channel_async, p);
+-    socket_send_channel_create(multifd_new_send_channel_async, p);
++    socket_send_channel_create(multifd_new_send_channel_async, p, NULL);
      return true;
  }
  
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index eccff499cb20..e314e1023dc1 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -1715,7 +1715,7 @@ int postcopy_preempt_establish_channel(MigrationState *s)
+ void postcopy_preempt_setup(MigrationState *s)
+ {
+     /* Kick an async task to connect */
+-    socket_send_channel_create(postcopy_preempt_send_channel_new, s);
++    socket_send_channel_create(postcopy_preempt_send_channel_new, s, NULL);
+ }
+ 
+ static void postcopy_pause_ram_fast_load(MigrationIncomingState *mis)
+diff --git a/migration/socket.c b/migration/socket.c
+index 9ab89b1e089b..6639581cf18d 100644
+--- a/migration/socket.c
++++ b/migration/socket.c
+@@ -35,11 +35,13 @@ struct SocketOutgoingArgs {
+     SocketAddress *saddr;
+ } outgoing_args;
+ 
+-void socket_send_channel_create(QIOTaskFunc f, void *data)
++void socket_send_channel_create(QIOTaskFunc f,
++                                void *data, GDestroyNotify data_destroy)
+ {
+     QIOChannelSocket *sioc = qio_channel_socket_new();
++
+     qio_channel_socket_connect_async(sioc, outgoing_args.saddr,
+-                                     f, data, NULL, NULL);
++                                     f, data, data_destroy, NULL);
+ }
+ 
+ QIOChannel *socket_send_channel_create_sync(Error **errp)
+diff --git a/migration/socket.h b/migration/socket.h
+index 46c233ecd29e..114ab34176aa 100644
+--- a/migration/socket.h
++++ b/migration/socket.h
+@@ -21,7 +21,8 @@
+ #include "io/task.h"
+ #include "qemu/sockets.h"
+ 
+-void socket_send_channel_create(QIOTaskFunc f, void *data);
++void socket_send_channel_create(QIOTaskFunc f,
++                                void *data, GDestroyNotify data_destroy);
+ QIOChannel *socket_send_channel_create_sync(Error **errp);
+ 
+ void socket_start_incoming_migration(SocketAddress *saddr, Error **errp);
 
