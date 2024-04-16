@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D3E8A6434
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 08:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 078918A6427
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 08:41:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwcUv-0004Zj-JK; Tue, 16 Apr 2024 02:40:53 -0400
+	id 1rwcUw-0004c1-5L; Tue, 16 Apr 2024 02:40:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1rwcUr-0004Rk-Mo; Tue, 16 Apr 2024 02:40:49 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ id 1rwcUt-0004UV-EU; Tue, 16 Apr 2024 02:40:51 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rathc@linux.ibm.com>)
- id 1rwcUp-0006jc-MD; Tue, 16 Apr 2024 02:40:49 -0400
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+ id 1rwcUr-0006ju-H8; Tue, 16 Apr 2024 02:40:51 -0400
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43G5tBNQ031943; Tue, 16 Apr 2024 06:40:45 GMT
+ 43G6ToNj026405; Tue, 16 Apr 2024 06:40:47 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=iS5nsO+H0N0ntk0aqBo6kfOQ1x5ffQQGDysOGKcrW/Q=;
- b=CCtnERa+MJDPOFYD3dGChdHmxCQ7ujbCk48k17FqrRzQCH/kfdbt1olBJMgkgm9N2T/l
- MrZIzM7LmRu3QFB3ybiIlvsvDGUhWd1h8ThmkJPTMSoF6HyLHUpHsebm07uMbCfr7Ufv
- SMH7dwDCgduMWkQ8y1LL8Y+LJENWzG4C8XiG3wCdymTUcqD3bIPliEXsb/9tfc+2YXo3
- Ef2QlnCgj3Vz/+k2bWaCMgtnrlwPBCTyzUaP5kHhPKJwfnxkQLbc/NC7q5REr7huKuIX
- cPOumcOXsLPgJ9eNzXcMLLQin3DTFKE6e4+MsAEHC8xbrPajJgbXpFf2Svd6jT5wmcxX LA== 
+ bh=u/bdAiVA+8bV4Oc0Rewr4IlSyjl4nGbh0yO6G29gaD4=;
+ b=M5eVCvTYH0sAclIaGGudPiEyrXGqk8VAZIsvn+Jx1tZew5z1c96VUW8FxDHPTuEWEEcM
+ hbNTGYJ+1pGFvKpN/ESC+taQJU2HBV1wDTgSlHdd5h73RCtjbZHthHWE++cgycy7K4m+
+ 5U5O2i57LEfFt4J4hXfRLJ9M549yptbCz56A1Bed7bjILXbhzh+8MZRKM8rFQQ5iBFaY
+ PNOIgfTAiVO7+qcfo7+mYrPVxKe/pMdYXdBva5z2xc5CPs3nZ3MNUvqK3UAtloX6l57R
+ 0QAIvUwJ2+oiV/bJotFWGIFMsc1Pq5SSPCA4AUg1msiLlEl1jZMB9TVsX8Ua4H1qx6gT lw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xhkds8348-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xhm3f80p7-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Apr 2024 06:40:44 +0000
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43G6eilH005177;
- Tue, 16 Apr 2024 06:40:44 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xhkds8346-1
+ Tue, 16 Apr 2024 06:40:47 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43G6eloD010896;
+ Tue, 16 Apr 2024 06:40:47 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xhm3f80p6-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Apr 2024 06:40:44 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43G51vgY018152; Tue, 16 Apr 2024 06:40:43 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xg4ct4rag-1
+ Tue, 16 Apr 2024 06:40:46 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43G3b1Pk021365; Tue, 16 Apr 2024 06:40:46 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xg6kkc5kn-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 16 Apr 2024 06:40:43 +0000
+ Tue, 16 Apr 2024 06:40:46 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com
  [10.20.54.100])
- by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43G6ed5T51839236
+ by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 43G6efDD12779820
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 16 Apr 2024 06:40:41 GMT
+ Tue, 16 Apr 2024 06:40:44 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id AE8452006C;
- Tue, 16 Apr 2024 06:40:39 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 4C5DD2004B;
+ Tue, 16 Apr 2024 06:40:41 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7B05D20067;
- Tue, 16 Apr 2024 06:40:38 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0E99320071;
+ Tue, 16 Apr 2024 06:40:40 +0000 (GMT)
 Received: from localhost.in.ibm.com (unknown [9.199.192.140])
  by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 16 Apr 2024 06:40:38 +0000 (GMT)
+ Tue, 16 Apr 2024 06:40:39 +0000 (GMT)
 From: Chinmay Rath <rathc@linux.ibm.com>
 To: qemu-ppc@nongnu.org
 Cc: qemu-devel@nongnu.org, npiggin@gmail.com, danielhb413@gmail.com,
  richard.henderson@linaro.org, harshpb@linux.ibm.com
-Subject: [PATCH 3/8] target/ppc: Move divw[u, e,
- eu] instructions to decodetree.
-Date: Tue, 16 Apr 2024 12:09:22 +0530
-Message-Id: <20240416063927.99428-4-rathc@linux.ibm.com>
+Subject: [PATCH 4/8] target/ppc: Move neg, darn, mod{sw, uw} to decodetree.
+Date: Tue, 16 Apr 2024 12:09:23 +0530
+Message-Id: <20240416063927.99428-5-rathc@linux.ibm.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20240416063927.99428-1-rathc@linux.ibm.com>
 References: <20240416063927.99428-1-rathc@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: aQQoE4DNpL6oYUn3ahiTxtKlognw9tPT
-X-Proofpoint-ORIG-GUID: dey5U5H3GtyXUVVflhH2uinOs-6KbUM0
+X-Proofpoint-ORIG-GUID: oYH3IBh5qbIueWmux9SvTh5ioh-BN9Mg
+X-Proofpoint-GUID: d-_kdyivd5rzW3_kQ4yvwF11KnghV38V
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-16_04,2024-04-15_01,2023-05-22_02
+ definitions=2024-04-16_03,2024-04-15_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 mlxscore=0
- impostorscore=0 spamscore=0 suspectscore=0 adultscore=0 mlxlogscore=680
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2404010000 definitions=main-2404160039
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=rathc@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
+ impostorscore=0
+ priorityscore=1501 clxscore=1015 phishscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0 spamscore=0
+ mlxlogscore=739 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404160038
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=rathc@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
 X-Spam_score: -2.0
 X-Spam_bar: --
@@ -112,161 +111,239 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Moving the following instructions to decodetree specification :
-	 divw[u, e, eu][o][.] 	: XO-form
+Moving the below instructions to decodetree specification :
+
+	neg[o][.]       	: XO-form
+	mod{sw, uw}, darn	: X-form
 
 The changes were verified by validating that the tcg ops generated by those
 instructions remain the same, which were captured with the '-d in_asm,op' flag.
 
 Signed-off-by: Chinmay Rath <rathc@linux.ibm.com>
 ---
- target/ppc/helper.h                        |  4 +--
- target/ppc/insn32.decode                   |  5 ++++
- target/ppc/int_helper.c                    |  4 +--
- target/ppc/translate.c                     | 31 ----------------------
- target/ppc/translate/fixedpoint-impl.c.inc | 24 +++++++++++++++++
- 5 files changed, 33 insertions(+), 35 deletions(-)
+ target/ppc/helper.h                        |  4 +-
+ target/ppc/insn32.decode                   |  8 ++++
+ target/ppc/int_helper.c                    |  4 +-
+ target/ppc/translate.c                     | 56 ----------------------
+ target/ppc/translate/fixedpoint-impl.c.inc | 44 +++++++++++++++++
+ 5 files changed, 56 insertions(+), 60 deletions(-)
 
 diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 86f97ee1e7..1fc8b7c5fd 100644
+index 1fc8b7c5fd..09d0b0074b 100644
 --- a/target/ppc/helper.h
 +++ b/target/ppc/helper.h
-@@ -55,8 +55,8 @@ DEF_HELPER_5(lscbx, tl, env, tl, i32, i32, i32)
- DEF_HELPER_4(divdeu, i64, env, i64, i64, i32)
- DEF_HELPER_4(divde, i64, env, i64, i64, i32)
+@@ -71,8 +71,8 @@ DEF_HELPER_FLAGS_2(cmpeqb, TCG_CALL_NO_RWG_SE, i32, tl, tl)
+ DEF_HELPER_FLAGS_1(popcntw, TCG_CALL_NO_RWG_SE, tl, tl)
+ DEF_HELPER_FLAGS_2(bpermd, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_3(srad, tl, env, tl, tl)
+-DEF_HELPER_FLAGS_0(darn32, TCG_CALL_NO_RWG, tl)
+-DEF_HELPER_FLAGS_0(darn64, TCG_CALL_NO_RWG, tl)
++DEF_HELPER_FLAGS_0(DARN32, TCG_CALL_NO_RWG, tl)
++DEF_HELPER_FLAGS_0(DARN64, TCG_CALL_NO_RWG, tl)
  #endif
--DEF_HELPER_4(divweu, tl, env, tl, tl, i32)
--DEF_HELPER_4(divwe, tl, env, tl, tl, i32)
-+DEF_HELPER_4(DIVWEU, tl, env, tl, tl, i32)
-+DEF_HELPER_4(DIVWE, tl, env, tl, tl, i32)
  
- DEF_HELPER_FLAGS_1(popcntb, TCG_CALL_NO_RWG_SE, tl, tl)
- DEF_HELPER_FLAGS_2(cmpb, TCG_CALL_NO_RWG_SE, tl, tl, tl)
+ DEF_HELPER_FLAGS_1(cntlsw32, TCG_CALL_NO_RWG_SE, i32, i32)
 diff --git a/target/ppc/insn32.decode b/target/ppc/insn32.decode
-index 0184680db8..bfccebd9a7 100644
+index bfccebd9a7..654f55471b 100644
 --- a/target/ppc/insn32.decode
 +++ b/target/ppc/insn32.decode
-@@ -362,6 +362,11 @@ MULLWO          011111 ..... ..... ..... 1 011101011 .  @XO_tab_rc
- MULHW           011111 ..... ..... ..... - 001001011 .  @XO_tab_rc
- MULHWU          011111 ..... ..... ..... - 000001011 .  @XO_tab_rc
+@@ -187,6 +187,9 @@
+ &X_a            ra
+ @X_a            ...... ra:3 .. ..... ..... .......... .         &X_a
  
-+DIVW            011111 ..... ..... ..... . 111101011 .  @XO
-+DIVWU           011111 ..... ..... ..... . 111001011 .  @XO
-+DIVWE           011111 ..... ..... ..... . 110101011 .  @XO
-+DIVWEU          011111 ..... ..... ..... . 110001011 .  @XO
++&X_tl           rt l
++@X_tl           ...... rt:5 ... l:2 ..... .......... .          &X_tl
++
+ &XO             rt ra rb oe:bool rc:bool
+ @XO             ...... rt:5 ra:5 rb:5 oe:1 ......... rc:1       &XO
+ 
+@@ -367,6 +370,11 @@ DIVWU           011111 ..... ..... ..... . 111001011 .  @XO
+ DIVWE           011111 ..... ..... ..... . 110101011 .  @XO
+ DIVWEU          011111 ..... ..... ..... . 110001011 .  @XO
+ 
++MODSW           011111 ..... ..... ..... 1100001011 -   @X
++MODUW           011111 ..... ..... ..... 0100001011 -   @X
++DARN            011111 ..... --- .. ----- 1011110011 -  @X_tl
++NEG             011111 ..... ..... ----- . 001101000 .  @XO_ta
 +
  ## Fixed-Point Logical Instructions
  
  CFUGED          011111 ..... ..... ..... 0011011100 -   @X
 diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
-index 0a5c3e78a4..dc1f72ff38 100644
+index dc1f72ff38..bc25d5b062 100644
 --- a/target/ppc/int_helper.c
 +++ b/target/ppc/int_helper.c
-@@ -44,7 +44,7 @@ static inline void helper_update_ov_legacy(CPUPPCState *env, int ov)
-     }
+@@ -171,7 +171,7 @@ uint32_t helper_cmpeqb(target_ulong ra, target_ulong rb)
+ /*
+  * Return a random number.
+  */
+-uint64_t helper_darn32(void)
++uint64_t helper_DARN32(void)
+ {
+     Error *err = NULL;
+     uint32_t ret;
+@@ -186,7 +186,7 @@ uint64_t helper_darn32(void)
+     return ret;
  }
  
--target_ulong helper_divweu(CPUPPCState *env, target_ulong ra, target_ulong rb,
-+target_ulong helper_DIVWEU(CPUPPCState *env, target_ulong ra, target_ulong rb,
-                            uint32_t oe)
+-uint64_t helper_darn64(void)
++uint64_t helper_DARN64(void)
  {
-     uint64_t rt = 0;
-@@ -71,7 +71,7 @@ target_ulong helper_divweu(CPUPPCState *env, target_ulong ra, target_ulong rb,
-     return (target_ulong)rt;
- }
- 
--target_ulong helper_divwe(CPUPPCState *env, target_ulong ra, target_ulong rb,
-+target_ulong helper_DIVWE(CPUPPCState *env, target_ulong ra, target_ulong rb,
-                           uint32_t oe)
- {
-     int64_t rt = 0;
+     Error *err = NULL;
+     uint64_t ret;
 diff --git a/target/ppc/translate.c b/target/ppc/translate.c
-index be7d807e3c..0a1d1d63b3 100644
+index 0a1d1d63b3..436fcfc645 100644
 --- a/target/ppc/translate.c
 +++ b/target/ppc/translate.c
-@@ -1778,21 +1778,6 @@ static inline void gen_op_arith_divw(DisasContext *ctx, TCGv ret,
-         gen_set_Rc0(ctx, ret);
+@@ -1878,17 +1878,6 @@ static inline void gen_op_arith_modw(DisasContext *ctx, TCGv ret, TCGv arg1,
      }
  }
--/* Div functions */
--#define GEN_INT_ARITH_DIVW(name, opc3, sign, compute_ov)                      \
--static void glue(gen_, name)(DisasContext *ctx)                               \
--{                                                                             \
--    gen_op_arith_divw(ctx, cpu_gpr[rD(ctx->opcode)],                          \
--                     cpu_gpr[rA(ctx->opcode)], cpu_gpr[rB(ctx->opcode)],      \
--                     sign, compute_ov, Rc(ctx->opcode));                      \
--}
--/* divwu  divwu.  divwuo  divwuo.   */
--GEN_INT_ARITH_DIVW(divwu, 0x0E, 0, 0);
--GEN_INT_ARITH_DIVW(divwuo, 0x1E, 0, 1);
--/* divw  divw.  divwo  divwo.   */
--GEN_INT_ARITH_DIVW(divw, 0x0F, 1, 0);
--GEN_INT_ARITH_DIVW(divwo, 0x1F, 1, 1);
--
- /* div[wd]eu[o][.] */
- #define GEN_DIVE(name, hlpr, compute_ov)                                      \
- static void gen_##name(DisasContext *ctx)                                     \
-@@ -1805,11 +1790,6 @@ static void gen_##name(DisasContext *ctx)                                     \
-     }                                                                         \
- }
  
--GEN_DIVE(divweu, divweu, 0);
--GEN_DIVE(divweuo, divweu, 1);
--GEN_DIVE(divwe, divwe, 0);
--GEN_DIVE(divweo, divwe, 1);
+-#define GEN_INT_ARITH_MODW(name, opc3, sign)                                \
+-static void glue(gen_, name)(DisasContext *ctx)                             \
+-{                                                                           \
+-    gen_op_arith_modw(ctx, cpu_gpr[rD(ctx->opcode)],                        \
+-                      cpu_gpr[rA(ctx->opcode)], cpu_gpr[rB(ctx->opcode)],   \
+-                      sign);                                                \
+-}
+-
+-GEN_INT_ARITH_MODW(moduw, 0x08, 0);
+-GEN_INT_ARITH_MODW(modsw, 0x18, 1);
 -
  #if defined(TARGET_PPC64)
- static inline void gen_op_arith_divd(DisasContext *ctx, TCGv ret, TCGv arg1,
-                                      TCGv arg2, int sign, int compute_ov)
-@@ -6562,17 +6542,6 @@ GEN_HANDLER_E(maddhd_maddhdu, 0x04, 0x18, 0xFF, 0x00000000, PPC_NONE,
+ static inline void gen_op_arith_modd(DisasContext *ctx, TCGv ret, TCGv arg1,
+                                      TCGv arg2, int sign)
+@@ -2055,27 +2044,6 @@ static inline void gen_op_arith_subf(DisasContext *ctx, TCGv ret, TCGv arg1,
+     }
+ }
+ 
+-/* neg neg. nego nego. */
+-static inline void gen_op_arith_neg(DisasContext *ctx, bool compute_ov)
+-{
+-    TCGv zero = tcg_constant_tl(0);
+-    gen_op_arith_subf(ctx, cpu_gpr[rD(ctx->opcode)], cpu_gpr[rA(ctx->opcode)],
+-                      zero, 0, 0, compute_ov, Rc(ctx->opcode));
+-}
+-
+-static void gen_neg(DisasContext *ctx)
+-{
+-    tcg_gen_neg_tl(cpu_gpr[rD(ctx->opcode)], cpu_gpr[rA(ctx->opcode)]);
+-    if (unlikely(Rc(ctx->opcode))) {
+-        gen_set_Rc0(ctx, cpu_gpr[rD(ctx->opcode)]);
+-    }
+-}
+-
+-static void gen_nego(DisasContext *ctx)
+-{
+-    gen_op_arith_neg(ctx, 1);
+-}
+-
+ /***                            Integer logical                            ***/
+ #define GEN_LOGICAL2(name, tcg_op, opc, type)                                 \
+ static void glue(gen_, name)(DisasContext *ctx)                               \
+@@ -2401,24 +2369,6 @@ static void gen_cnttzd(DisasContext *ctx)
+         gen_set_Rc0(ctx, cpu_gpr[rA(ctx->opcode)]);
+     }
+ }
+-
+-/* darn */
+-static void gen_darn(DisasContext *ctx)
+-{
+-    int l = L(ctx->opcode);
+-
+-    if (l > 2) {
+-        tcg_gen_movi_i64(cpu_gpr[rD(ctx->opcode)], -1);
+-    } else {
+-        translator_io_start(&ctx->base);
+-        if (l == 0) {
+-            gen_helper_darn32(cpu_gpr[rD(ctx->opcode)]);
+-        } else {
+-            /* Return 64-bit random for both CRN and RRN */
+-            gen_helper_darn64(cpu_gpr[rD(ctx->opcode)]);
+-        }
+-    }
+-}
+ #endif
+ 
+ /***                             Integer rotate                            ***/
+@@ -6330,8 +6280,6 @@ GEN_HANDLER(isel, 0x1F, 0x0F, 0xFF, 0x00000001, PPC_ISEL),
+ #if defined(TARGET_PPC64)
+ GEN_HANDLER(mulld, 0x1F, 0x09, 0x07, 0x00000000, PPC_64B),
+ #endif
+-GEN_HANDLER(neg, 0x1F, 0x08, 0x03, 0x0000F800, PPC_INTEGER),
+-GEN_HANDLER(nego, 0x1F, 0x08, 0x13, 0x0000F800, PPC_INTEGER),
+ GEN_HANDLER2(andi_, "andi.", 0x1C, 0xFF, 0xFF, 0x00000000, PPC_INTEGER),
+ GEN_HANDLER2(andis_, "andis.", 0x1D, 0xFF, 0xFF, 0x00000000, PPC_INTEGER),
+ GEN_HANDLER(cntlzw, 0x1F, 0x1A, 0x00, 0x00000000, PPC_INTEGER),
+@@ -6352,7 +6300,6 @@ GEN_HANDLER_E(prtyw, 0x1F, 0x1A, 0x04, 0x0000F801, PPC_NONE, PPC2_ISA205),
+ GEN_HANDLER(popcntd, 0x1F, 0x1A, 0x0F, 0x0000F801, PPC_POPCNTWD),
+ GEN_HANDLER(cntlzd, 0x1F, 0x1A, 0x01, 0x00000000, PPC_64B),
+ GEN_HANDLER_E(cnttzd, 0x1F, 0x1A, 0x11, 0x00000000, PPC_NONE, PPC2_ISA300),
+-GEN_HANDLER_E(darn, 0x1F, 0x13, 0x17, 0x001CF801, PPC_NONE, PPC2_ISA300),
+ GEN_HANDLER_E(prtyd, 0x1F, 0x1A, 0x05, 0x0000F801, PPC_NONE, PPC2_ISA205),
+ GEN_HANDLER_E(bpermd, 0x1F, 0x1C, 0x07, 0x00000001, PPC_NONE, PPC2_PERM_ISA206),
+ #endif
+@@ -6542,9 +6489,6 @@ GEN_HANDLER_E(maddhd_maddhdu, 0x04, 0x18, 0xFF, 0x00000000, PPC_NONE,
  GEN_HANDLER_E(maddld, 0x04, 0x19, 0xFF, 0x00000000, PPC_NONE, PPC2_ISA300),
  #endif
  
--#undef GEN_INT_ARITH_DIVW
--#define GEN_INT_ARITH_DIVW(name, opc3, sign, compute_ov)                      \
--GEN_HANDLER(name, 0x1F, 0x0B, opc3, 0x00000000, PPC_INTEGER)
--GEN_INT_ARITH_DIVW(divwu, 0x0E, 0, 0),
--GEN_INT_ARITH_DIVW(divwuo, 0x1E, 0, 1),
--GEN_INT_ARITH_DIVW(divw, 0x0F, 1, 0),
--GEN_INT_ARITH_DIVW(divwo, 0x1F, 1, 1),
--GEN_HANDLER_E(divwe, 0x1F, 0x0B, 0x0D, 0, PPC_NONE, PPC2_DIVE_ISA206),
--GEN_HANDLER_E(divweo, 0x1F, 0x0B, 0x1D, 0, PPC_NONE, PPC2_DIVE_ISA206),
--GEN_HANDLER_E(divweu, 0x1F, 0x0B, 0x0C, 0, PPC_NONE, PPC2_DIVE_ISA206),
--GEN_HANDLER_E(divweuo, 0x1F, 0x0B, 0x1C, 0, PPC_NONE, PPC2_DIVE_ISA206),
- GEN_HANDLER_E(modsw, 0x1F, 0x0B, 0x18, 0x00000001, PPC_NONE, PPC2_ISA300),
- GEN_HANDLER_E(moduw, 0x1F, 0x0B, 0x08, 0x00000001, PPC_NONE, PPC2_ISA300),
- 
+-GEN_HANDLER_E(modsw, 0x1F, 0x0B, 0x18, 0x00000001, PPC_NONE, PPC2_ISA300),
+-GEN_HANDLER_E(moduw, 0x1F, 0x0B, 0x08, 0x00000001, PPC_NONE, PPC2_ISA300),
+-
+ #if defined(TARGET_PPC64)
+ #undef GEN_INT_ARITH_DIVD
+ #define GEN_INT_ARITH_DIVD(name, opc3, sign, compute_ov)                      \
 diff --git a/target/ppc/translate/fixedpoint-impl.c.inc b/target/ppc/translate/fixedpoint-impl.c.inc
-index e12e533c67..3f787bbeaa 100644
+index 3f787bbeaa..2dfd6bea57 100644
 --- a/target/ppc/translate/fixedpoint-impl.c.inc
 +++ b/target/ppc/translate/fixedpoint-impl.c.inc
-@@ -466,6 +466,30 @@ static bool do_mulhw(DisasContext *ctx, arg_XO_tab_rc *a,
- TRANS(MULHW, do_mulhw, tcg_gen_muls2_i32)
- TRANS(MULHWU, do_mulhw, tcg_gen_mulu2_i32)
+@@ -490,6 +490,50 @@ TRANS(DIVWU, do_divw, 0);
+ TRANS(DIVWE, do_divwe, gen_helper_DIVWE);
+ TRANS(DIVWEU, do_divwe, gen_helper_DIVWEU);
  
-+static bool do_divw(DisasContext *ctx, arg_XO *a, int sign)
++static bool do_modw(DisasContext *ctx, arg_X *a, bool sign)
 +{
-+    gen_op_arith_divw(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], cpu_gpr[a->rb],
-+                      sign, a->oe, a->rc);
++    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
++    gen_op_arith_modw(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], cpu_gpr[a->rb],
++                      sign);
 +    return true;
 +}
 +
-+static bool do_divwe(DisasContext *ctx, arg_XO *a,
-+                     void (*helper)(TCGv, TCGv_ptr, TCGv, TCGv, TCGv_i32))
++TRANS(MODUW, do_modw, false);
++TRANS(MODSW, do_modw, true);
++
++static bool trans_NEG(DisasContext *ctx, arg_NEG *a)
 +{
-+    REQUIRE_INSNS_FLAGS2(ctx, DIVE_ISA206);
-+    helper(cpu_gpr[a->rt], tcg_env, cpu_gpr[a->ra], cpu_gpr[a->rb],
-+           tcg_constant_i32(a->oe));
-+    if (unlikely(a->rc)) {
-+        gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++    if (a->oe) {
++        TCGv zero = tcg_constant_tl(0);
++        gen_op_arith_subf(ctx, cpu_gpr[a->rt], cpu_gpr[a->ra], zero,
++                          false, false, true, a->rc);
++    } else {
++        tcg_gen_neg_tl(cpu_gpr[a->rt], cpu_gpr[a->ra]);
++        if (unlikely(a->rc)) {
++            gen_set_Rc0(ctx, cpu_gpr[a->rt]);
++        }
 +    }
 +    return true;
 +}
 +
-+TRANS(DIVW, do_divw, 1);
-+TRANS(DIVWU, do_divw, 0);
-+TRANS(DIVWE, do_divwe, gen_helper_DIVWE);
-+TRANS(DIVWEU, do_divwe, gen_helper_DIVWEU);
++static bool trans_DARN(DisasContext *ctx, arg_DARN *a)
++{
++    REQUIRE_64BIT(ctx);
++    REQUIRE_INSNS_FLAGS2(ctx, ISA300);
++    if (a->l > 2) {
++        tcg_gen_movi_i64(cpu_gpr[a->rt], -1);
++    } else {
++        translator_io_start(&ctx->base);
++        if (a->l == 0) {
++            gen_helper_DARN32(cpu_gpr[a->rt]);
++        } else {
++            /* Return 64-bit random for both CRN and RRN */
++            gen_helper_DARN64(cpu_gpr[a->rt]);
++        }
++    }
++    return true;
++}
 +
  static bool trans_INVALID(DisasContext *ctx, arg_INVALID *a)
  {
