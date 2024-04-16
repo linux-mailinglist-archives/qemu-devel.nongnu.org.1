@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383888A7437
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 21:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4088A7445
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 21:04:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwo4H-0003Lb-Ko; Tue, 16 Apr 2024 15:02:09 -0400
+	id 1rwo4O-0004IR-8t; Tue, 16 Apr 2024 15:02:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo42-0002XR-HV
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:01:56 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo47-0002v0-Mw
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:02:00 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo3y-0005ry-BB
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:01:54 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a51a7d4466bso543572466b.2
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:01:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwo44-0005sg-5Q
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:01:59 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-570423c4f80so1413002a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:01:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713294108; x=1713898908; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713294114; x=1713898914; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DC2xHT4tK3V/eBcSroqFKTXibEqMvehvouzWEl1ZI6k=;
- b=Vw0qqSforRQa8b8XeeRigOAuP82+FE3k52mrDXI27fKw2FiHNLOORUQ5EBxz+Qu473
- ijU4lQdt2iTYzULIMQU9NsSrXsjWEjfHivjtkCHrQU6GNmY0UekaLGKZ10feQLkIIegb
- INBQX4Txjh9Suy+sH6Q+GxSmfi2VWiq7fzvrY5mq40vRfsH6MZY+SUr38y4m182BWqRy
- ztEHWCJoGF56VgM1/1eXqMrRDWVLtDqCxw0dIus287gvgjTwoFdI6FPYXtG2ppMwlT/8
- Ib0gHKCKiG8zCwJtdRQSeSXoW4qbva9niIammY2eyYU6xOxPxvKR1REd2pQ8RrlHO4NY
- 51NQ==
+ bh=yRDJ/6CeDpX+rBaqWai3BvHbA1Ey+M3PEP71cuI1QCM=;
+ b=m2DHMs2zy2GwUfVXQEhJ88Tfb1wPPo3dABZmpNUi+8WiVMDjJsrPhhMtv5bsmW/oja
+ ir4X4tr/E3Xr6LaP/MSqs52r1WXWCsUP/AEkRDP/JwPu0v+vRiDEE7o38Owe+XwvJ7nx
+ FIZwFzJSTTq42djq8XpvIWnE6asWk8KgTf63pEeeR/RbkQYiZmiLHdj/duldgLXcbnsu
+ dXxbQjtBLqxBbXnV2/sjxakA24tYbxjoTC/S3UUTyVG/FSeIhKkWn0fkd9dZ/gi23LW7
+ BZI485uLuhQKLU+b8TPA4rcvpoR6fWrVpNuQBQ2zhec0dFt57M2Nc7sJ/I8Zdi0XDI+b
+ 4ZEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713294108; x=1713898908;
+ d=1e100.net; s=20230601; t=1713294114; x=1713898914;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DC2xHT4tK3V/eBcSroqFKTXibEqMvehvouzWEl1ZI6k=;
- b=tiL7rUk7CkS210v46K0jQQW6YOlr9Xi+XodFHqI8nIvjmwPQ8Ykarcyo66dMQSWODU
- CEjOYq/xwmMqs+x0Uu3YrOGj31a619eFOVRX9Xi+u65yu0jJsLbBRZq2vjt4tHHTN2pz
- dC0hDPj4/yD6OEOrE+qpze+YKQkcsQcjAsh4mNYlgwD6B+l/caCZHse/RHGP26U9ZdEH
- anETqV2ECvuVd3qxGrQoo4C6gDxCCXNPn0tcae50+wwuBRM/NobvpojL7/ORXT2UIkSF
- lxrEM+rBhXci7lDm2L5lKxvibGnpKHbEtf3YZB1xtMqtPHZLr8YSkoqCe1xAnjoeljsV
- pfDg==
-X-Gm-Message-State: AOJu0Yxs92bjBPdqCuCUg9cGK6cffwqWpAg390PCUm2PmnsVGzqk2srY
- iu/Y25VuRKwiPKvuVbUYXrQ1zoePw3Fv/JyOO+mt3KjS00aip3otJS+alpfwadAdsKIUXdocEKl
- K
-X-Google-Smtp-Source: AGHT+IEweZwN1XzO84AS/y9gMjvEcIKlXa10QZ5mIlzXvdKEUrwDWOrz4pI3PLDYD5OPCMFQHnZ4uw==
-X-Received: by 2002:a17:907:724c:b0:a54:e183:6249 with SMTP id
- ds12-20020a170907724c00b00a54e1836249mr4000170ejc.56.1713294107715; 
- Tue, 16 Apr 2024 12:01:47 -0700 (PDT)
+ bh=yRDJ/6CeDpX+rBaqWai3BvHbA1Ey+M3PEP71cuI1QCM=;
+ b=bYlMlrwp4CBlxawxmjXeVnHx2fk/pymiLpJxllb9I5k8Aic0/ZOmpLxCslprFOGG27
+ jZIs3QgKDLKbh1y+QUEFNvIStsrHskhpVoBalE8vMbF+8fIoVTk/AUvcLWA/s0naWR/Q
+ cOmkKkwy/jpNWjWkJz4Espy8x2b/TMTxxH93wdZ52wbFPQa6ifzfAeJwNAl7TlMwONWs
+ 40Hz5sMz05sOaoD8LKhtXvixvsU4nUWe3ioNy0FvR0UW6D4eKsYSk7mBGt8f7T1VpHBr
+ 311GqI78Y3mPox5FDe4BA9hLpgv6J3ZuEscvNqiRdiAi+Ifsh79mIVtrgxvYzLzPMpLu
+ /uoA==
+X-Gm-Message-State: AOJu0YwErp7toFOriiAdNnzKM4QlMsUuujxbC6cpv4bvfrj3Yde9DqkG
+ BJ+T41AI9F/WQbJgUkqYo2gU0X2a3jFmNIEvg3pbKnmgA0IQuKsF2m93RJW5WvtATgHaLswdzvR
+ W
+X-Google-Smtp-Source: AGHT+IGbN4pVpHOuCVs1vpZXoKir+5UlkDJfYGPm0F9gzxHmEpVmKVINj61gLzSY1JPoELa7vVkCfQ==
+X-Received: by 2002:a50:8e5c:0:b0:56e:2a0a:c133 with SMTP id
+ 28-20020a508e5c000000b0056e2a0ac133mr11019517edx.22.1713294113891; 
+ Tue, 16 Apr 2024 12:01:53 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- v13-20020a17090606cd00b00a526562de1fsm3471599ejb.73.2024.04.16.12.01.45
+ z3-20020a056402274300b0056e3d80ca71sm6417110edd.35.2024.04.16.12.01.52
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 12:01:47 -0700 (PDT)
+ Tue, 16 Apr 2024 12:01:53 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -63,21 +63,20 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-riscv@nongnu.org,
  kvm@vger.kernel.org, qemu-ppc@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>, Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH v4 19/22] hw/i386/acpi: Remove AcpiBuildState::rsdp field
-Date: Tue, 16 Apr 2024 20:59:35 +0200
-Message-ID: <20240416185939.37984-20-philmd@linaro.org>
+ devel@lists.libvirt.org, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v4 20/22] hw/i386/pc: Remove deprecated pc-i440fx-2.3 machine
+Date: Tue, 16 Apr 2024 20:59:36 +0200
+Message-ID: <20240416185939.37984-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240416185939.37984-1-philmd@linaro.org>
 References: <20240416185939.37984-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -100,49 +99,120 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-AcpiBuildState::rsdp is always NULL, remove it,
-simplifying acpi_build_update().
+The pc-i440fx-2.3 machine was deprecated for the 8.2
+release (see commit c7437f0ddb "docs/about: Mark the
+old pc-i440fx-2.0 - 2.3 machine types as deprecated"),
+time to remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/i386/acpi-build.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ docs/about/deprecated.rst       |  4 ++--
+ docs/about/removed-features.rst |  2 +-
+ hw/i386/pc.c                    | 25 -------------------------
+ hw/i386/pc_piix.c               | 19 -------------------
+ 4 files changed, 3 insertions(+), 47 deletions(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index ed0adb0e82..6f9925d176 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -2459,7 +2459,6 @@ struct AcpiBuildState {
-     MemoryRegion *table_mr;
-     /* Is table patched? */
-     uint8_t patched;
--    void *rsdp;
-     MemoryRegion *rsdp_mr;
-     MemoryRegion *linker_mr;
- } AcpiBuildState;
-@@ -2715,11 +2714,7 @@ static void acpi_build_update(void *build_opaque)
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 75bf0f4886..cb6ca372f2 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -219,8 +219,8 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
  
-     acpi_ram_update(build_state->table_mr, tables.table_data);
+-``pc-i440fx-2.3`` up to ``pc-i440fx-2.3`` (since 8.2) and ``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++``pc-i440fx-2.4`` up to ``pc-i440fx-2.12`` (since 9.1)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''
  
--    if (build_state->rsdp) {
--        memcpy(build_state->rsdp, tables.rsdp->data, acpi_data_len(tables.rsdp));
--    } else {
--        acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+ These old machine types are quite neglected nowadays and thus might have
+ various pitfalls with regards to live migration. Use a newer machine type
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 4664974a8b..0caa6a63e4 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -816,7 +816,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
+ 
+ This machine has been renamed ``fuloong2e``.
+ 
+-``pc-0.10`` up to ``pc-i440fx-2.2`` (removed in 4.0 up to 9.0)
++``pc-0.10`` up to ``pc-i440fx-2.3`` (removed in 4.0 up to 9.0)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ These machine types were very old and likely could not be used for live
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index a1b0e94523..2e2146f42b 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -256,31 +256,6 @@ GlobalProperty pc_compat_2_4[] = {
+ };
+ const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
+ 
+-GlobalProperty pc_compat_2_3[] = {
+-    PC_CPU_MODEL_IDS("2.3.0")
+-    { TYPE_X86_CPU, "arat", "off" },
+-    { "qemu64" "-" TYPE_X86_CPU, "min-level", "4" },
+-    { "kvm64" "-" TYPE_X86_CPU, "min-level", "5" },
+-    { "pentium3" "-" TYPE_X86_CPU, "min-level", "2" },
+-    { "n270" "-" TYPE_X86_CPU, "min-level", "5" },
+-    { "Conroe" "-" TYPE_X86_CPU, "min-level", "4" },
+-    { "Penryn" "-" TYPE_X86_CPU, "min-level", "4" },
+-    { "Nehalem" "-" TYPE_X86_CPU, "min-level", "4" },
+-    { "n270" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Penryn" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Conroe" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Nehalem" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Westmere" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "SandyBridge" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "IvyBridge" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Haswell" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Haswell-noTSX" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Broadwell" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { "Broadwell-noTSX" "-" TYPE_X86_CPU, "min-xlevel", "0x8000000a" },
+-    { TYPE_X86_CPU, "kvm-no-smi-migration", "on" },
+-};
+-const size_t pc_compat_2_3_len = G_N_ELEMENTS(pc_compat_2_3);
+-
+ GSIState *pc_gsi_create(qemu_irq **irqs, bool pci_enabled)
+ {
+     GSIState *s;
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 30bcd86ee6..370d130a6d 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -421,14 +421,6 @@ static void pc_set_south_bridge(Object *obj, int value, Error **errp)
+  * hw_compat_*, pc_compat_*, or * pc_*_machine_options().
+  */
+ 
+-static void pc_compat_2_3_fn(MachineState *machine)
+-{
+-    X86MachineState *x86ms = X86_MACHINE(machine);
+-    if (kvm_enabled()) {
+-        x86ms->smm = ON_OFF_AUTO_OFF;
 -    }
-+    acpi_ram_update(build_state->rsdp_mr, tables.rsdp);
+-}
+-
+ #ifdef CONFIG_ISAPC
+ static void pc_init_isa(MachineState *machine)
+ {
+@@ -812,17 +804,6 @@ static void pc_i440fx_2_4_machine_options(MachineClass *m)
+ DEFINE_I440FX_MACHINE(v2_4, "pc-i440fx-2.4", NULL,
+                       pc_i440fx_2_4_machine_options)
  
-     acpi_ram_update(build_state->linker_mr, tables.linker->cmd_blob);
-     acpi_build_tables_cleanup(&tables, true);
-@@ -2805,7 +2800,6 @@ void acpi_setup(void)
-                            tables.vmgenid);
-     }
- 
--    build_state->rsdp = NULL;
-     build_state->rsdp_mr = acpi_add_rom_blob(acpi_build_update,
-                                              build_state, tables.rsdp,
-                                              ACPI_BUILD_RSDP_FILE);
+-static void pc_i440fx_2_3_machine_options(MachineClass *m)
+-{
+-    pc_i440fx_2_4_machine_options(m);
+-    m->hw_version = "2.3.0";
+-    compat_props_add(m->compat_props, hw_compat_2_3, hw_compat_2_3_len);
+-    compat_props_add(m->compat_props, pc_compat_2_3, pc_compat_2_3_len);
+-}
+-
+-DEFINE_I440FX_MACHINE(v2_3, "pc-i440fx-2.3", pc_compat_2_3_fn,
+-                      pc_i440fx_2_3_machine_options);
+-
+ #ifdef CONFIG_ISAPC
+ static void isapc_machine_options(MachineClass *m)
+ {
 -- 
 2.41.0
 
