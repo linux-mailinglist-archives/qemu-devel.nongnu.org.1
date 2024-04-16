@@ -2,91 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789528A6C8B
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2AA8A6CC5
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:48:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwiwZ-0004Bt-Er; Tue, 16 Apr 2024 09:33:51 -0400
+	id 1rwj9e-00084K-8Y; Tue, 16 Apr 2024 09:47:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwiwE-00046j-0m
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:33:34 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwj9Z-00083k-PB
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:47:17 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwiwA-0006DP-W1
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:33:29 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3498c7d4473so349277f8f.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:33:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwj9Y-0000ei-1X
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:47:17 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-418a5ebe335so1432275e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:47:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713274405; x=1713879205; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713275234; x=1713880034; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=8ejCkE3cYY+5NHE0dWEkXgBRP4mtgFRv6mrQVJe9Kjo=;
- b=XAjHLgabfnZOzzaKrKG2a1y+Ld787QKVj/JxAuNHiFRsJLH4dvuIfH/tomy425KivL
- SVSiTID3OI+0GhZG+52rFVImvngM/xTCvq3foazEcxhgGCpMrKPgo1lcN3PwNnCr9nym
- Ai89O5wp1mEHcjvupshjy5tN1AzO/n79wWqv2pAyrZUG0QxT8j/hapckfiaPkF3p2oVE
- GWyuUFfjHRsYHePxnINoBh9aPAGlRy76Hrp4DEOedn9unRdM6z17mFSZGAaZLQ9q44ab
- 7Q/HDVw/3QoQVkmgPO1kTAz15bRE6Wm++Gos5ozm0ATNr7aRIwPY1RkIUnbtQPmGx1Tv
- Cw2A==
+ bh=OVn8qVlJsVHOMvdnKle/8wx/gr1e+AsIF3Uk1/9in5I=;
+ b=uUibAnOkP5UVNzj+mMM5Blr+K0PNgLXSer5fPQhK5xs5o1uTJJGRNhH8N2c/Byujf2
+ bmBAGJhkw4m+6oO2Rbe80fXJr93owTwRnekHZVzneYIz9BroeXORlaExJV+QdvcjzV6W
+ zAAVmlPmKqbPIrM2rirWytPXZmY9xx8jAcr1sGie2vLBfffrMm8et04L7cYIPuSKX8dt
+ 1jW09lx333Jww1KFCmf+Kd09083TxSXSxyiNlfQuUhQA+ocRQPTLssAXXCegkbm5NaFx
+ 5sDfYHJwaWSsolROkn/V82waNMvTHXy8WRHS/H8R+9hF0YziA6IghfJR76J4WgIPdtYT
+ dRGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713274405; x=1713879205;
+ d=1e100.net; s=20230601; t=1713275234; x=1713880034;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8ejCkE3cYY+5NHE0dWEkXgBRP4mtgFRv6mrQVJe9Kjo=;
- b=rV3Cijaazzx9lbJG2HfcXsRIGq5QrAUjKp1HaGGJxFSflVgELz6kPrikzqQSO1xPGk
- sMxNKcTHqGmUqLIF61tvAQi2J/r8kc2MYKougFntoD2qOVEnc3GGGvUvsNdL/tHntyRJ
- TBIdECO1Oc6W2+pC+TFITfDFe2M4PAU5XO5c8lk6ZxHo8GhYAg308t6b8cLlnQQ2ZnCN
- prDUHDZMSDGndyZrvVhYvayR3FAae3klU5CL/Z54K9G3e5U8pb3C090DwfOQWDjrpBIh
- Tc2CvG7qk7n5EOIS0lUclRVSGtD86pRwJTDYyCQ73i9EoUMglvPQ7yF9GWB3v9+6sPxj
- E4Kg==
+ bh=OVn8qVlJsVHOMvdnKle/8wx/gr1e+AsIF3Uk1/9in5I=;
+ b=k97bjD3+1PaKOdvaVXYP6IV3zg6r68Mescj8KUpijXQZLi4sI8ZXkopcHuCKorUOe/
+ 9JahuQgz8MosCbT/ir/LVT+1MLx04xmkc0t2JpnmPRvAXQSYjaRDN1KTaZp0AmpbXbxZ
+ yxpZvzcI2fvl2HwwttT97LseFkRCTKgAbZpZ2Jyvx+Bjfmxu9mpzsxSoKEQvXM5s3UzQ
+ oflsv57RsyMpyI3KRVsi4x9P+E/oVb4c2s9NeKw/Rns60uliqcDrQ9n2xssLyR8NIpCt
+ b1nEdYrw/4hDPREO06SXqQm8NUHupy1Ghm+1atHhF9pBmxXpP1dLpVlqI9VLozUZgoEb
+ GUKA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXTrHzRBqmIXRCHllaTNdFPuivJKtw/SmVCDjl7DmM9jfHPrNF5o3IJyE5GeCm5BOWbcHl9PAbH2Dr2IWYqxxaUq5o4Yxw=
-X-Gm-Message-State: AOJu0Ywjq9JO2RS8DvFhVml4HZLOiqQKc7UKzPA7vGTsCv4XJ/vC5ZP8
- tyDxCMKn8RqVmPasG/Vr3OhGMG4PtWDPmRDaHkVznNEvNK95vK/QV30yIcqi7as=
-X-Google-Smtp-Source: AGHT+IH92HJHUuNl6TyR7RfHKXIxtrZrX9UW/aYad8LjNwOFRn7nCyGMUtWcnxl8fGtGuf+eLBlrtw==
-X-Received: by 2002:a5d:54c8:0:b0:345:c169:8808 with SMTP id
- x8-20020a5d54c8000000b00345c1698808mr9106697wrv.4.1713274405201; 
- Tue, 16 Apr 2024 06:33:25 -0700 (PDT)
+ AJvYcCWC36FN9camjZKrWMmJSHD0QuPlxMARkD0dlzF2yiXSH2r0tIAnv+LpUD4/x+sKPm1oRb4tC5M4zkjV+nL2pGnPJptE6AA=
+X-Gm-Message-State: AOJu0YzWlgCABWXDCw5tXKtk98Ivjc6PqXHqI1DWMCRNW42UPzJcL5sW
+ f+d9OZo7hhV9sE0En5NG/C4Frf01J0uy1w86ALGyWgk/ru78WIxN2IDRE63M70M=
+X-Google-Smtp-Source: AGHT+IEa9Z7dp5dd89To97gfgQrhS3GkQxuimz3KjPcjwuG2xAvjmjZLbAIRFpIBvACGZcYlIzrHAg==
+X-Received: by 2002:a05:600c:3549:b0:418:23d7:816f with SMTP id
+ i9-20020a05600c354900b0041823d7816fmr5696604wmq.17.1713275234199; 
+ Tue, 16 Apr 2024 06:47:14 -0700 (PDT)
 Received: from [192.168.69.100] ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- dd15-20020a0560001e8f00b003436cb45f7esm14924652wrb.90.2024.04.16.06.33.23
+ z6-20020a056000110600b003499f9b4b6dsm195296wrw.101.2024.04.16.06.47.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 16 Apr 2024 06:33:24 -0700 (PDT)
-Message-ID: <b2c237b5-9dc4-4557-ab00-0c19a5be0366@linaro.org>
-Date: Tue, 16 Apr 2024 15:33:22 +0200
+ Tue, 16 Apr 2024 06:47:13 -0700 (PDT)
+Message-ID: <fb3e291a-a1ff-4e45-89fd-139f11275c88@linaro.org>
+Date: Tue, 16 Apr 2024 15:47:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH-for-9.1 v2 13/21] hw/mem/pc-dimm: Remove legacy_align
- argument from pc_dimm_pre_plug()
-To: David Hildenbrand <david@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, Igor Mammedov <imammedo@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, devel@lists.libvirt.org,
- Zhao Liu <zhao1.liu@intel.com>, Gerd Hoffmann <kraxel@redhat.com>,
+Subject: Re: [PATCH-for-9.1 v2 21/21] hw/i386/pc: Replace
+ PCMachineClass::acpi_data_size by PC_ACPI_DATA_SIZE
+To: Zhao Liu <zhao1.liu@intel.com>
+Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Igor Mammedov <imammedo@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ devel@lists.libvirt.org, Gerd Hoffmann <kraxel@redhat.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-arm@nongnu.org,
- qemu-ppc@nongnu.org
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 References: <20240327095124.73639-1-philmd@linaro.org>
- <20240327095124.73639-14-philmd@linaro.org>
- <5efe6309-2c7e-404c-9674-2221606b35ac@redhat.com>
+ <20240327095124.73639-22-philmd@linaro.org> <ZgTtvwXMNwm/3I7j@intel.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <5efe6309-2c7e-404c-9674-2221606b35ac@redhat.com>
+In-Reply-To: <ZgTtvwXMNwm/3I7j@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -109,24 +101,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/3/24 12:32, David Hildenbrand wrote:
-> On 27.03.24 10:51, Philippe Mathieu-Daudé wrote:
->> 'legacy_align' is always NULL, remove it.
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> Reviewed-by: Thomas Huth <thuth@redhat.com>
->> Message-Id: <20240305134221.30924-11-philmd@linaro.org>
->> ---
+On 28/3/24 05:10, Zhao Liu wrote:
+> Hi Philippe,
 > 
-> I was really confused for a second until I saw that this series is 
-> dependent on another one.
+> On Wed, Mar 27, 2024 at 10:51:23AM +0100, Philippe Mathieu-Daudé wrote:
+>> Date: Wed, 27 Mar 2024 10:51:23 +0100
+>> From: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> Subject: [PATCH-for-9.1 v2 21/21] hw/i386/pc: Replace
+>>   PCMachineClass::acpi_data_size by PC_ACPI_DATA_SIZE
+>> X-Mailer: git-send-email 2.41.0
 > 
-> Please make sure to CC people you CC on patches to also CC on the cover 
-> letter.
+> [snip]
+> 
+>> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+>> index 27e04c52f6..f01a30d3d9 100644
+>> --- a/hw/i386/pc.c
+>> +++ b/hw/i386/pc.c
+>> @@ -256,6 +256,16 @@ GlobalProperty pc_compat_2_4[] = {
+>>   };
+>>   const size_t pc_compat_2_4_len = G_N_ELEMENTS(pc_compat_2_4);
+>>   
+>> +/*
+>> + * @PC_ACPI_DATA_SIZE:
+>> + * Size of the chunk of memory at the top of RAM for the BIOS ACPI tables
+>> + * and other BIOS datastructures.
+>> + *
+>> + * BIOS ACPI tables: 128K. Other BIOS datastructures: less than 4K
+>> + * reported to be used at the moment, 32K should be enough for a while.
+>> + */
+>> +#define PC_ACPI_DATA_SIZE (0x20000 + 0x8000)
+>> +
+> 
+> What about putting this in pc.h? Because it is a general definition for
+> PC.
 
-Oops, sorry. I really should patch that on git-publish...
+Since nothing out of hw/i386/pc.c uses this definition,
+I rather avoid exposing it.
 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+> 
+> Others are good for me,
+> 
+> Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 
 Thanks!
 
