@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F7F8A6EBA
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5E38A6ED9
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2H-0004vL-Cq; Tue, 16 Apr 2024 10:43:49 -0400
+	id 1rwk2E-0004sm-44; Tue, 16 Apr 2024 10:43:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2E-0004td-KM
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:46 -0400
+ id 1rwk2B-0004sR-Nx
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:43 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2B-0001zN-T5
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:46 -0400
+ id 1rwk28-0001yk-VO
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:43 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk1s-0002ci-5r; Tue, 16 Apr 2024 16:43:24 +0200
+ id 1rwk1x-0002cs-DY; Tue, 16 Apr 2024 16:43:29 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,9 +30,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 02/26] migration: Add migration channel header send/receive
-Date: Tue, 16 Apr 2024 16:42:41 +0200
-Message-ID: <636cec92eb801f13ba893de79d4872f5d8342097.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 03/26] migration: Add send/receive header for main channel
+Date: Tue, 16 Apr 2024 16:42:42 +0200
+Message-ID: <2ea2f26a513ceb53fc33bc3a5073c64d11b3f76b.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -62,128 +62,155 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-Add functions to send and receive migration channel header.
+Add send and receive migration channel header for main channel.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-[MSS: Mark MigChannelHeader as packed, remove device id from it]
+[MSS: Rename main channel -> default channel where it matches the current term]
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/channel.c    | 59 ++++++++++++++++++++++++++++++++++++++++++
- migration/channel.h    | 14 ++++++++++
- migration/trace-events |  2 ++
- 3 files changed, 75 insertions(+)
+ migration/channel.c   |  9 +++++
+ migration/migration.c | 82 +++++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 84 insertions(+), 7 deletions(-)
 
 diff --git a/migration/channel.c b/migration/channel.c
-index f9de064f3b13..a72e85f5791c 100644
+index a72e85f5791c..0e3f51654752 100644
 --- a/migration/channel.c
 +++ b/migration/channel.c
-@@ -21,6 +21,7 @@
- #include "io/channel-socket.h"
- #include "qemu/yank.h"
- #include "yank_functions.h"
-+#include "options.h"
+@@ -81,6 +81,13 @@ void migration_channel_connect(MigrationState *s,
+                 return;
+             }
+         } else {
++            /* TODO: Send header after register yank? Make a QEMUFile variant? */
++            MigChannelHeader header = {};
++            header.channel_type = MIG_CHANNEL_TYPE_MAIN;
++            if (migration_channel_header_send(ioc, &header, &error)) {
++                goto out;
++            }
++
+             QEMUFile *f = qemu_file_new_output(ioc);
  
- /**
-  * @migration_channel_process_incoming - Create new incoming migration channel
-@@ -93,6 +94,64 @@ void migration_channel_connect(MigrationState *s,
+             migration_ioc_register_yank(ioc);
+@@ -90,6 +97,8 @@ void migration_channel_connect(MigrationState *s,
+             qemu_mutex_unlock(&s->qemu_file_lock);
+         }
+     }
++
++out:
+     migrate_fd_connect(s, error);
      error_free(error);
  }
+diff --git a/migration/migration.c b/migration/migration.c
+index 86bf76e92585..0eb5b4f4f5a1 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -869,12 +869,39 @@ void migration_fd_process_incoming(QEMUFile *f)
+     migration_incoming_process();
+ }
  
-+int migration_channel_header_recv(QIOChannel *ioc, MigChannelHeader *header,
-+                                  Error **errp)
++static bool migration_should_start_incoming_header(bool main_channel)
 +{
-+    uint64_t header_size;
-+    int ret;
++    MigrationIncomingState *mis = migration_incoming_get_current();
 +
-+    ret = qio_channel_read_all_eof(ioc, (char *)&header_size,
-+                                   sizeof(header_size), errp);
-+    if (ret == 0 || ret == -1) {
-+        return -1;
++    if (!mis->from_src_file) {
++        return false;
 +    }
 +
-+    header_size = be64_to_cpu(header_size);
-+    if (header_size > sizeof(*header)) {
-+        error_setg(errp,
-+                   "Received header of size %lu bytes which is greater than "
-+                   "max header size of %lu bytes",
-+                   header_size, sizeof(*header));
-+        return -EINVAL;
++    if (migrate_multifd()) {
++        return multifd_recv_all_channels_created();
 +    }
 +
-+    ret = qio_channel_read_all_eof(ioc, (char *)header, header_size, errp);
-+    if (ret == 0 || ret == -1) {
-+        return -1;
++    if (migrate_postcopy_preempt() && migrate_get_current()->preempt_pre_7_2) {
++        return mis->postcopy_qemufile_dst != NULL;
 +    }
 +
-+    header->channel_type = be32_to_cpu(header->channel_type);
++    if (migrate_postcopy_preempt()) {
++        return main_channel;
++    }
 +
-+    trace_migration_channel_header_recv(header->channel_type,
-+                                        header_size);
-+
-+    return 0;
++    return true;
 +}
 +
-+int migration_channel_header_send(QIOChannel *ioc, MigChannelHeader *header,
-+                                  Error **errp)
+ /*
+  * Returns true when we want to start a new incoming migration process,
+  * false otherwise.
+  */
+ static bool migration_should_start_incoming(bool main_channel)
+ {
++    if (migrate_channel_header()) {
++        return migration_should_start_incoming_header(main_channel);
++    }
++
+     /* Multifd doesn't start unless all channels are established */
+     if (migrate_multifd()) {
+         return migration_has_all_channels();
+@@ -894,7 +921,22 @@ static bool migration_should_start_incoming(bool main_channel)
+     return true;
+ }
+ 
+-void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
++static void migration_start_incoming(bool main_channel)
 +{
-+    uint64_t header_size = sizeof(*header);
++    if (!migration_should_start_incoming(main_channel)) {
++        return;
++    }
++
++    /* If it's a recovery, we're done */
++    if (postcopy_try_recover()) {
++        return;
++    }
++
++    migration_incoming_process();
++}
++
++static void migration_ioc_process_incoming_no_header(QIOChannel *ioc,
++                                                     Error **errp)
+ {
+     MigrationIncomingState *mis = migration_incoming_get_current();
+     Error *local_err = NULL;
+@@ -951,13 +993,39 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
+         }
+     }
+ 
+-    if (migration_should_start_incoming(default_channel)) {
+-        /* If it's a recovery, we're done */
+-        if (postcopy_try_recover()) {
+-            return;
+-        }
+-        migration_incoming_process();
++    migration_start_incoming(default_channel);
++}
++
++void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
++{
++    MigChannelHeader header = {};
++    bool default_channel = false;
++    QEMUFile *f;
 +    int ret;
 +
 +    if (!migrate_channel_header()) {
-+        return 0;
++        migration_ioc_process_incoming_no_header(ioc, errp);
++        return;
 +    }
 +
-+    trace_migration_channel_header_send(header->channel_type,
-+                                        header_size);
-+
-+    header_size = cpu_to_be64(header_size);
-+    ret = qio_channel_write_all(ioc, (char *)&header_size, sizeof(header_size),
-+                                errp);
++    ret = migration_channel_header_recv(ioc, &header, errp);
 +    if (ret) {
-+        return ret;
++        return;
 +    }
 +
-+    header->channel_type = cpu_to_be32(header->channel_type);
++    switch (header.channel_type) {
++    case MIG_CHANNEL_TYPE_MAIN:
++        f = qemu_file_new_input(ioc);
++        migration_incoming_setup(f);
++        default_channel = true;
++        break;
++    default:
++        error_setg(errp, "Received unknown migration channel type %u",
++                   header.channel_type);
++        return;
+     }
 +
-+    return qio_channel_write_all(ioc, (char *)header, sizeof(*header), errp);
-+}
++    migration_start_incoming(default_channel);
+ }
  
  /**
-  * @migration_channel_read_peek - Peek at migration channel, without
-diff --git a/migration/channel.h b/migration/channel.h
-index 5bdb8208a744..95d281828aaa 100644
---- a/migration/channel.h
-+++ b/migration/channel.h
-@@ -29,4 +29,18 @@ int migration_channel_read_peek(QIOChannel *ioc,
-                                 const char *buf,
-                                 const size_t buflen,
-                                 Error **errp);
-+typedef enum {
-+    MIG_CHANNEL_TYPE_MAIN,
-+} MigChannelTypes;
-+
-+typedef struct QEMU_PACKED {
-+    uint32_t channel_type;
-+} MigChannelHeader;
-+
-+int migration_channel_header_send(QIOChannel *ioc, MigChannelHeader *header,
-+                                  Error **errp);
-+
-+int migration_channel_header_recv(QIOChannel *ioc, MigChannelHeader *header,
-+                                  Error **errp);
-+
- #endif
-diff --git a/migration/trace-events b/migration/trace-events
-index f0e1cb80c75b..e48607d5a6a2 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -198,6 +198,8 @@ migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd, uint64_t rdma)
- # channel.c
- migration_set_incoming_channel(void *ioc, const char *ioctype) "ioc=%p ioctype=%s"
- migration_set_outgoing_channel(void *ioc, const char *ioctype, const char *hostname, void *err)  "ioc=%p ioctype=%s hostname=%s err=%p"
-+migration_channel_header_send(uint32_t channel_type, uint64_t header_size) "Migration channel header send: channel_type=%u, header_size=%lu"
-+migration_channel_header_recv(uint32_t channel_type, uint64_t header_size) "Migration channel header recv: channel_type=%u, header_size=%lu"
- 
- # global_state.c
- migrate_state_too_big(void) ""
 
