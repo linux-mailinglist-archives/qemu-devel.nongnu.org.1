@@ -2,50 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C388A6C46
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C208A6C65
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwisV-0001l9-TQ; Tue, 16 Apr 2024 09:29:39 -0400
+	id 1rwiuI-0002ex-LF; Tue, 16 Apr 2024 09:31:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rwisT-0001kq-Ey
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:29:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rwiuG-0002eK-2f
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:31:28 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1rwisR-0005ES-D3
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:29:37 -0400
+ id 1rwiuD-0005kn-JB
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:31:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713274173;
+ s=mimecast20190719; t=1713274284;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=DOzvuPk3l4UW+jQjqNwTbpPqeZwkuzPq9sWo/e7Ws+w=;
- b=iZEltRNjeH4OwLFP+rD28DXu8aqUC51bqvOyWI5e4vcj9r/+nsummoPIHWchrfR96NftQs
- nAcRMD66FFfcMTsh7jfu3Tucp9z03kTsZ1hSzUGKNvnv3Bd4QPKxH7NxJIENxoEOVrZmWm
- iF3utay6ehVeqJtubMwY4J7B+vcz1TQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-215-Y9ATW11BMAeKNhyvu8rObw-1; Tue, 16 Apr 2024 09:29:29 -0400
-X-MC-Unique: Y9ATW11BMAeKNhyvu8rObw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Ay8f3QrmesUuJpr6Xnv/URkLo7BCLLsv36wohgy4hCY=;
+ b=Ut5uRPaglBihLjoJ0ROoJSilEQePaNhqKagiXvxYPqTQz1TBCTVYuDE1gK8rsA6LSqvESa
+ 753P7ii4KX65Xyg9f2kY5RD9j/up8lUOqQWC/wtbjbZqOcgEVW2sUYTIqYQitxPfpJfXPr
+ MKyN1dduw9QWzg7126VWVIYInd9njbQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-466-2Y5RHPC4OSubIcIo7s8UPQ-1; Tue,
+ 16 Apr 2024 09:31:21 -0400
+X-MC-Unique: 2Y5RHPC4OSubIcIo7s8UPQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 32E2A8011AF;
- Tue, 16 Apr 2024 13:29:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D05583C0FCAA;
+ Tue, 16 Apr 2024 13:31:20 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.173])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C3EFA492BD4;
- Tue, 16 Apr 2024 13:29:25 +0000 (UTC)
-Date: Tue, 16 Apr 2024 14:29:19 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C3F1F1BDAA;
+ Tue, 16 Apr 2024 13:31:17 +0000 (UTC)
+Date: Tue, 16 Apr 2024 14:31:11 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Roy Hopkins <roy.hopkins@suse.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Roy Hopkins <roy.hopkins@suse.com>, qemu-devel@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>,
  Stefano Garzarella <sgarzare@redhat.com>,
  Marcelo Tosatti <mtosatti@redhat.com>,
  "Michael S . Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
@@ -57,18 +60,20 @@ Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Tom Lendacky <thomas.lendacky@amd.com>,
  Michael Roth <michael.roth@amd.com>, Ani Sinha <anisinha@redhat.com>,
  =?utf-8?B?SsO2cmc=?= Roedel <jroedel@suse.com>
-Subject: Re: [PATCH v2 02/10] backends/confidential-guest-support: Add IGVM
- file parameter
-Message-ID: <Zh59L_9w6gCQ_ZO_@redhat.com>
+Subject: Re: [PATCH v2 03/10] backends/confidential-guest-support: Add
+ functions to support IGVM
+Message-ID: <Zh59n3w5Ijfd2uLs@redhat.com>
 References: <cover.1712141833.git.roy.hopkins@suse.com>
- <af70dfcfeddf36d860ff28765ee30bdde2b2c110.1712141833.git.roy.hopkins@suse.com>
+ <1dff8015f9f9cf735de21a16e5dba14371c39155.1712141833.git.roy.hopkins@suse.com>
+ <c31dcace-92da-4de7-93e6-631120829a75@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <af70dfcfeddf36d860ff28765ee30bdde2b2c110.1712141833.git.roy.hopkins@suse.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c31dcace-92da-4de7-93e6-631120829a75@linaro.org>
 User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
@@ -93,116 +98,83 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 03, 2024 at 12:11:33PM +0100, Roy Hopkins wrote:
-> In order to add support for parsing IGVM files for secure virtual
-> machines, a the path to an IGVM file needs to be specified as
-> part of the guest configuration. It makes sense to add this to
-> the ConfidentialGuestSupport object as this is common to all secure
-> virtual machines that potentially could support IGVM based
-> configuration.
+On Thu, Apr 04, 2024 at 10:00:53AM +0200, Philippe Mathieu-Daudé wrote:
+> Hi Roy,
 > 
-> This patch allows the filename to be configured via the QEMU
-> object model in preparation for subsequent patches that will read and
-> parse the IGVM file.
+> On 3/4/24 13:11, Roy Hopkins wrote:
+> > In preparation for supporting the processing of IGVM files to configure
+> > guests, this adds a set of functions to ConfidentialGuestSupport
+> > allowing configuration of secure virtual machines that can be
+> > implemented for each supported isolation platform type such as Intel TDX
+> > or AMD SEV-SNP. These functions will be called by IGVM processing code
+> > in subsequent patches.
+> > 
+> > This commit provides a default implementation of the functions that
+> > either perform no action or generate a warning or error when they are
+> > called. Targets that support ConfidentalGuestSupport should override
+> > these implementations.
+> > 
+> > Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
+> > ---
+> >   backends/confidential-guest-support.c     | 32 ++++++++++
+> >   include/exec/confidential-guest-support.h | 74 +++++++++++++++++++++++
+> >   2 files changed, 106 insertions(+)
 > 
-> Signed-off-by: Roy Hopkins <roy.hopkins@suse.com>
-> ---
->  backends/confidential-guest-support.c     | 21 +++++++++++++++++++++
->  include/exec/confidential-guest-support.h |  9 +++++++++
->  qapi/qom.json                             | 13 +++++++++++++
->  qemu-options.hx                           |  8 +++++++-
->  4 files changed, 50 insertions(+), 1 deletion(-)
 > 
-> diff --git a/backends/confidential-guest-support.c b/backends/confidential-guest-support.c
-> index 052fde8db0..da436fb736 100644
-> --- a/backends/confidential-guest-support.c
-> +++ b/backends/confidential-guest-support.c
-> @@ -20,8 +20,29 @@ OBJECT_DEFINE_ABSTRACT_TYPE(ConfidentialGuestSupport,
->                              CONFIDENTIAL_GUEST_SUPPORT,
->                              OBJECT)
->  
-> +#if defined(CONFIG_IGVM)
-> +static char *get_igvm(Object *obj, Error **errp)
-> +{
-> +    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
-> +    return g_strdup(cgs->igvm_filename);
-> +}
-> +
-> +static void set_igvm(Object *obj, const char *value, Error **errp)
-> +{
-> +    ConfidentialGuestSupport *cgs = CONFIDENTIAL_GUEST_SUPPORT(obj);
-> +    g_free(cgs->igvm_filename);
-> +    cgs->igvm_filename = g_strdup(value);
-> +}
-> +#endif
-> +
->  static void confidential_guest_support_class_init(ObjectClass *oc, void *data)
->  {
-> +#if defined(CONFIG_IGVM)
-> +    object_class_property_add_str(oc, "igvm-file",
-> +        get_igvm, set_igvm);
-> +    object_class_property_set_description(oc, "igvm-file",
-> +        "Set the IGVM filename to use");
-> +#endif
->  }
->  
->  static void confidential_guest_support_init(Object *obj)
-> diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
-> index ba2dd4b5df..ec74da8877 100644
-> --- a/include/exec/confidential-guest-support.h
-> +++ b/include/exec/confidential-guest-support.h
-> @@ -51,6 +51,15 @@ struct ConfidentialGuestSupport {
->       * so 'ready' is not set, we'll abort.
->       */
->      bool ready;
-> +
-> +#if defined(CONFIG_IGVM)
-> +    /*
-> +     * igvm_filename: Optional filename that specifies a file that contains
-> +     *                the configuration of the guest in Independent Guest
-> +     *                Virtual Machine (IGVM) format.
-> +     */
-> +    char *igvm_filename;
-> +#endif
->  };
->  
->  typedef struct ConfidentialGuestSupportClass {
-> diff --git a/qapi/qom.json b/qapi/qom.json
-> index 85e6b4f84a..5935e1b7a6 100644
-> --- a/qapi/qom.json
-> +++ b/qapi/qom.json
-> @@ -874,6 +874,18 @@
->    'base': 'RngProperties',
->    'data': { '*filename': 'str' } }
->  
-> +##
-> +# @ConfidentialGuestProperties:
-> +#
-> +# Properties common to objects that are derivatives of confidential-guest-support.
-> +#
-> +# @igvm-file: IGVM file to use to configure guest (default: none)
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'struct': 'ConfidentialGuestProperties',
-> +  'data': { '*igvm-file': 'str' } }
+> >   struct ConfidentialGuestSupport {
+> >       Object parent;
+> > @@ -60,6 +94,46 @@ struct ConfidentialGuestSupport {
+> >        */
+> >       char *igvm_filename;
+> >   #endif
+> > +
+> > +    /*
+> > +     * The following virtual methods need to be implemented by systems that
+> > +     * support confidential guests that can be configured with IGVM and are
+> > +     * used during processing of the IGVM file with process_igvm().
+> > +     */
+> > +
+> > +    /*
+> > +     * Check for to see if this confidential guest supports a particular
+> > +     * platform or configuration
+> > +     */
+> > +    int (*check_support)(ConfidentialGuestPlatformType platform,
+> > +                         uint16_t platform_version, uint8_t highest_vtl,
+> > +                         uint64_t shared_gpa_boundary);
+> > +
+> > +    /*
+> > +     * Configure part of the state of a guest for a particular set of data, page
+> > +     * type and gpa. This can be used for example to pre-populate and measure
+> > +     * guest memory contents, define private ranges or set the initial CPU state
+> > +     * for one or more CPUs.
+> > +     *
+> > +     * If memory_type is CGS_PAGE_TYPE_VMSA then ptr points to the initial CPU
+> > +     * context for a virtual CPU. The format of the data depends on the type of
+> > +     * confidential virtual machine. For example, for SEV-ES ptr will point to a
+> > +     * vmcb_save_area structure that should be copied into guest memory at the
+> > +     * address specified in gpa. The cpu_index parameter contains the index of
+> > +     * the CPU the VMSA applies to.
+> > +     */
+> > +    int (*set_guest_state)(hwaddr gpa, uint8_t *ptr, uint64_t len,
+> > +                           ConfidentialGuestPageType memory_type,
+> > +                           uint16_t cpu_index, Error **errp);
+> > +
+> > +    /*
+> > +     * Iterate the system memory map, getting the entry with the given index
+> > +     * that can be populated into guest memory.
+> > +     *
+> > +     * Returns 0 for ok, 1 if the index is out of range and -1 on error.
+> > +     */
+> > +    int (*get_mem_map_entry)(int index, ConfidentialGuestMemoryMapEntry *entry,
+> > +                             Error **errp);
+> >   };
+> >   typedef struct ConfidentialGuestSupportClass {
+> 
+> Methods are usually a class field, not an instance one. Any
+> reason to diverge from this norm?
 
-Since the rest of this patch is conditional on CONFIG_IGVM,
-this property should be too, so apps can probe for whether
-QEMU is built with IGVM support or not.
+Agreed, this should all be against the Class.
 
-> +
->  ##
->  # @SevGuestProperties:
->  #
-> @@ -901,6 +913,7 @@
->  # Since: 2.12
->  ##
->  { 'struct': 'SevGuestProperties',
-> +  'base': 'ConfidentialGuestProperties',
->    'data': { '*sev-device': 'str',
->              '*dh-cert-file': 'str',
->              '*session-file': 'str',
 
 With regards,
 Daniel
