@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A938A6EAF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9E68A6EB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2S-0004wx-GM; Tue, 16 Apr 2024 10:44:00 -0400
+	id 1rwk2g-0004xk-PL; Tue, 16 Apr 2024 10:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2R-0004wo-5l
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:59 -0400
+ id 1rwk2U-0004xL-Cm
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:02 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2P-00025z-9s
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:58 -0400
+ id 1rwk2S-00029e-P0
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:02 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2D-0002dn-6D; Tue, 16 Apr 2024 16:43:45 +0200
+ id 1rwk2I-0002eE-CT; Tue, 16 Apr 2024 16:43:50 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,10 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 06/26] multifd: pass MFDSendChannelConnectData when
- connecting sending socket
-Date: Tue, 16 Apr 2024 16:42:45 +0200
-Message-ID: <6a28983b31e2791b0ca55f3c1cd4eae64f64f3b1.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 07/26] migration/postcopy: pass
+ PostcopyPChannelConnectData when connecting sending preempt socket
+Date: Tue, 16 Apr 2024 16:42:46 +0200
+Message-ID: <5bd9a83e61c0f78805a9e1a51dff391f2e73aec0.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -67,63 +67,40 @@ This will allow passing additional parameters there in the future.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/file.c    |  5 ++-
- migration/multifd.c | 95 ++++++++++++++++++++++++++++++++++-----------
- migration/multifd.h |  4 +-
- 3 files changed, 80 insertions(+), 24 deletions(-)
+ migration/postcopy-ram.c | 68 +++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 61 insertions(+), 7 deletions(-)
 
-diff --git a/migration/file.c b/migration/file.c
-index ab18ba505a1d..34dfbc4a5a2d 100644
---- a/migration/file.c
-+++ b/migration/file.c
-@@ -62,7 +62,10 @@ bool file_send_channel_create(gpointer opaque, Error **errp)
-         goto out;
-     }
- 
--    multifd_channel_connect(opaque, QIO_CHANNEL(ioc));
-+    ret = multifd_channel_connect(opaque, QIO_CHANNEL(ioc), errp);
-+    if (!ret) {
-+        object_unref(OBJECT(ioc));
-+    }
- 
- out:
-     /*
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 4bc912d7500e..58a18bb1e4a8 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1010,34 +1010,76 @@ out:
-     return NULL;
+diff --git a/migration/postcopy-ram.c b/migration/postcopy-ram.c
+index e314e1023dc1..94fe872d8251 100644
+--- a/migration/postcopy-ram.c
++++ b/migration/postcopy-ram.c
+@@ -1617,14 +1617,62 @@ void postcopy_preempt_new_channel(MigrationIncomingState *mis, QEMUFile *file)
+     trace_postcopy_preempt_new_channel();
  }
  
--static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque);
--
--typedef struct {
-+struct MFDSendChannelConnectData {
++typedef struct {
 +    unsigned int ref;
-     MultiFDSendParams *p;
-     QIOChannelTLS *tioc;
--} MultiFDTLSThreadArgs;
-+};
++    MigrationState *s;
++} PostcopyPChannelConnectData;
 +
-+static MFDSendChannelConnectData *mfd_send_channel_connect_data_new(MultiFDSendParams *p)
++static PostcopyPChannelConnectData *pcopy_preempt_connect_data_new(MigrationState *s)
 +{
-+    MFDSendChannelConnectData *data;
++    PostcopyPChannelConnectData *data;
 +
 +    data = g_malloc0(sizeof(*data));
 +    data->ref = 1;
-+    data->p = p;
++    data->s = s;
 +
 +    return data;
 +}
 +
-+static void mfd_send_channel_connect_data_free(MFDSendChannelConnectData *data)
++static void pcopy_preempt_connect_data_free(PostcopyPChannelConnectData *data)
 +{
 +    g_free(data);
 +}
 +
-+static MFDSendChannelConnectData *
-+mfd_send_channel_connect_data_ref(MFDSendChannelConnectData *data)
++static PostcopyPChannelConnectData *
++pcopy_preempt_connect_data_ref(PostcopyPChannelConnectData *data)
 +{
 +    unsigned int ref_old;
 +
@@ -133,146 +110,87 @@ index 4bc912d7500e..58a18bb1e4a8 100644
 +    return data;
 +}
 +
-+static void mfd_send_channel_connect_data_unref(gpointer opaque)
++static void pcopy_preempt_connect_data_unref(gpointer opaque)
 +{
-+    MFDSendChannelConnectData *data = opaque;
++    PostcopyPChannelConnectData *data = opaque;
 +    unsigned int ref_old;
 +
 +    ref_old = qatomic_fetch_dec(&data->ref);
 +    assert(ref_old > 0);
 +    if (ref_old == 1) {
-+        mfd_send_channel_connect_data_free(data);
++        pcopy_preempt_connect_data_free(data);
 +    }
 +}
 +
-+G_DEFINE_AUTOPTR_CLEANUP_FUNC(MFDSendChannelConnectData, mfd_send_channel_connect_data_unref)
++G_DEFINE_AUTOPTR_CLEANUP_FUNC(PostcopyPChannelConnectData, pcopy_preempt_connect_data_unref)
 +
-+static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque);
- 
- static void *multifd_tls_handshake_thread(void *opaque)
- {
--    MultiFDTLSThreadArgs *args = opaque;
-+    g_autoptr(MFDSendChannelConnectData) data = opaque;
-+    QIOChannelTLS *tioc = data->tioc;
- 
--    qio_channel_tls_handshake(args->tioc,
-+    qio_channel_tls_handshake(tioc,
-                               multifd_new_send_channel_async,
--                              args->p,
--                              NULL,
-+                              g_steal_pointer(&data),
-+                              mfd_send_channel_connect_data_unref,
-                               NULL);
--    g_free(args);
- 
-     return NULL;
- }
- 
--static bool multifd_tls_channel_connect(MultiFDSendParams *p,
-+static bool multifd_tls_channel_connect(MFDSendChannelConnectData *data,
-                                         QIOChannel *ioc,
-                                         Error **errp)
- {
-+    MultiFDSendParams *p = data->p;
-     MigrationState *s = migrate_get_current();
-     const char *hostname = s->hostname;
--    MultiFDTLSThreadArgs *args;
-     QIOChannelTLS *tioc;
- 
-     tioc = migration_tls_client_create(ioc, hostname, errp);
-@@ -1053,19 +1095,21 @@ static bool multifd_tls_channel_connect(MultiFDSendParams *p,
-     trace_multifd_tls_outgoing_handshake_start(ioc, tioc, hostname);
-     qio_channel_set_name(QIO_CHANNEL(tioc), "multifd-tls-outgoing");
- 
--    args = g_new0(MultiFDTLSThreadArgs, 1);
--    args->tioc = tioc;
--    args->p = p;
-+    data->tioc = tioc;
- 
-     p->tls_thread_created = true;
-     qemu_thread_create(&p->tls_thread, "multifd-tls-handshake-worker",
--                       multifd_tls_handshake_thread, args,
-+                       multifd_tls_handshake_thread,
-+                       mfd_send_channel_connect_data_ref(data),
-                        QEMU_THREAD_JOINABLE);
-     return true;
- }
- 
--void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
-+bool multifd_channel_connect(MFDSendChannelConnectData *data, QIOChannel *ioc,
-+                             Error **errp)
- {
-+    MultiFDSendParams *p = data->p;
-+
-     qio_channel_set_delay(ioc, false);
- 
-     migration_ioc_register_yank(ioc);
-@@ -1075,6 +1119,8 @@ void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
-     p->thread_created = true;
-     qemu_thread_create(&p->thread, p->name, multifd_send_thread, p,
-                        QEMU_THREAD_JOINABLE);
-+
-+    return true;
- }
- 
  /*
-@@ -1085,7 +1131,8 @@ void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc)
+  * Setup the postcopy preempt channel with the IOC.  If ERROR is specified,
+  * setup the error instead.  This helper will free the ERROR if specified.
   */
- static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
+ static void
+-postcopy_preempt_send_channel_done(MigrationState *s,
++postcopy_preempt_send_channel_done(PostcopyPChannelConnectData *data,
+                                    QIOChannel *ioc, Error *local_err)
  {
--    MultiFDSendParams *p = opaque;
-+    MFDSendChannelConnectData *data = opaque;
-+    MultiFDSendParams *p = data->p;
-     QIOChannel *ioc = QIO_CHANNEL(qio_task_get_source(task));
++    MigrationState *s = data->s;
++
+     if (local_err) {
+         migrate_set_error(s, local_err);
+         error_free(local_err);
+@@ -1645,18 +1693,19 @@ static void
+ postcopy_preempt_tls_handshake(QIOTask *task, gpointer opaque)
+ {
+     g_autoptr(QIOChannel) ioc = QIO_CHANNEL(qio_task_get_source(task));
+-    MigrationState *s = opaque;
++    PostcopyPChannelConnectData *data = opaque;
      Error *local_err = NULL;
-     bool ret;
-@@ -1101,13 +1148,12 @@ static void multifd_new_send_channel_async(QIOTask *task, gpointer opaque)
-                                        migrate_get_current()->hostname);
  
-     if (migrate_channel_requires_tls_upgrade(ioc)) {
--        ret = multifd_tls_channel_connect(p, ioc, &local_err);
-+        ret = multifd_tls_channel_connect(data, ioc, &local_err);
-         if (ret) {
-             return;
-         }
-     } else {
--        multifd_channel_connect(p, ioc);
--        ret = true;
-+        ret = multifd_channel_connect(data, ioc, &local_err);
+     qio_task_propagate_error(task, &local_err);
+-    postcopy_preempt_send_channel_done(s, ioc, local_err);
++    postcopy_preempt_send_channel_done(data, ioc, local_err);
+ }
+ 
+ static void
+ postcopy_preempt_send_channel_new(QIOTask *task, gpointer opaque)
+ {
+     g_autoptr(QIOChannel) ioc = QIO_CHANNEL(qio_task_get_source(task));
+-    MigrationState *s = opaque;
++    PostcopyPChannelConnectData *data = opaque;
++    MigrationState *s = data->s;
+     QIOChannelTLS *tioc;
+     Error *local_err = NULL;
+ 
+@@ -1672,14 +1721,15 @@ postcopy_preempt_send_channel_new(QIOTask *task, gpointer opaque)
+         trace_postcopy_preempt_tls_handshake();
+         qio_channel_set_name(QIO_CHANNEL(tioc), "migration-tls-preempt");
+         qio_channel_tls_handshake(tioc, postcopy_preempt_tls_handshake,
+-                                  s, NULL, NULL);
++                                  pcopy_preempt_connect_data_ref(data),
++                                  pcopy_preempt_connect_data_unref, NULL);
+         /* Setup the channel until TLS handshake finished */
+         return;
      }
  
  out:
-@@ -1134,11 +1180,16 @@ out:
+     /* This handles both good and error cases */
+-    postcopy_preempt_send_channel_done(s, ioc, local_err);
++    postcopy_preempt_send_channel_done(data, ioc, local_err);
+ }
  
- static bool multifd_new_send_channel_create(MultiFDSendParams *p, Error **errp)
+ /*
+@@ -1714,8 +1764,12 @@ int postcopy_preempt_establish_channel(MigrationState *s)
+ 
+ void postcopy_preempt_setup(MigrationState *s)
  {
-+    g_autoptr(MFDSendChannelConnectData) data = NULL;
++    PostcopyPChannelConnectData *data;
 +
-+    data = mfd_send_channel_connect_data_new(p);
-+
-     if (!multifd_use_packets()) {
--        return file_send_channel_create(p, errp);
-+        return file_send_channel_create(data, errp);
-     }
- 
--    socket_send_channel_create(multifd_new_send_channel_async, p, NULL);
-+    socket_send_channel_create(multifd_new_send_channel_async, g_steal_pointer(&data),
-+                               mfd_send_channel_connect_data_unref);
-     return true;
++    data = pcopy_preempt_connect_data_new(s);
+     /* Kick an async task to connect */
+-    socket_send_channel_create(postcopy_preempt_send_channel_new, s, NULL);
++    socket_send_channel_create(postcopy_preempt_send_channel_new,
++                               data, pcopy_preempt_connect_data_unref);
  }
  
-diff --git a/migration/multifd.h b/migration/multifd.h
-index c9d9b0923953..fd0cd29104c1 100644
---- a/migration/multifd.h
-+++ b/migration/multifd.h
-@@ -250,6 +250,8 @@ static inline void multifd_send_prepare_header(MultiFDSendParams *p)
-     p->iovs_num++;
- }
- 
--void multifd_channel_connect(MultiFDSendParams *p, QIOChannel *ioc);
-+struct MFDSendChannelConnectData;
-+typedef struct MFDSendChannelConnectData MFDSendChannelConnectData;
-+bool multifd_channel_connect(MFDSendChannelConnectData *data, QIOChannel *ioc, Error **errp);
- 
- #endif
+ static void postcopy_pause_ram_fast_load(MigrationIncomingState *mis)
 
