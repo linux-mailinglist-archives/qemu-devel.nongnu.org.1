@@ -2,78 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E2C8A6B70
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 14:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AAF8A6BD7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:08:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwiEx-0004Sa-PT; Tue, 16 Apr 2024 08:48:47 -0400
+	id 1rwiWa-00023E-9W; Tue, 16 Apr 2024 09:07:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rwiEv-0004Rz-1K
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 08:48:45 -0400
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rwiWR-00021C-N1
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:06:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rwiEr-0004yK-A3
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 08:48:43 -0400
+ (Exim 4.90_1) (envelope-from <lulu@redhat.com>) id 1rwiWL-0000kN-Aa
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:06:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713271720;
+ s=mimecast20190719; t=1713272804;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HWa+11aDS5+sC4igVjpxUSaARS6hQfyXQYY5jxAl8qU=;
- b=LzHGAJEjfOHqFVI0R6Jw6XEocgZNZGnWV12fMywVyvV1BiUmzwwKZTFfO93YWP5T/EYVQk
- DP6lgkEXKuqLHJkFYb9fPQZeQE21q5u9ZqvzCv+wOJe3XDXdc8BaPe819L88C+Aey+PVJr
- AdfYhTl/ohbd6siR/UTx0sx2R6dowHw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kBAHRbjY5/4GH+fddWQD8Hgf1ZHzV7eEnrxuqjBCAnc=;
+ b=M+IakIiXjcmILXgQqb1HGcobg+UAHgWW5+QxSNDPwK8pWgH5CUjqqD2o9VwznS2YezpvEf
+ yNEtRjK+KKXC4W702MhUyW+qGe1av7wsPgfgJWPWslIfRkOKlsYcFsiplKWT5MCuguJVMh
+ U7pHhhw154sYZqnTt0y653Y6mLpLlU8=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-Vb2UQjzDOlS-x7h60MLTcw-1; Tue, 16 Apr 2024 08:48:37 -0400
-X-MC-Unique: Vb2UQjzDOlS-x7h60MLTcw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-a4e9ac44d37so263827066b.0
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 05:48:37 -0700 (PDT)
+ us-mta-356-xP3MklqzNAOAaUBT3LaNdg-1; Tue, 16 Apr 2024 09:06:42 -0400
+X-MC-Unique: xP3MklqzNAOAaUBT3LaNdg-1
+Received: by mail-lj1-f199.google.com with SMTP id
+ 38308e7fff4ca-2d6ef704b35so38619911fa.2
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:06:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713271716; x=1713876516;
+ d=1e100.net; s=20230601; t=1713272801; x=1713877601;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=HWa+11aDS5+sC4igVjpxUSaARS6hQfyXQYY5jxAl8qU=;
- b=BllJiYb2LBW1rhjWoi5TncYUxUhJ4Idlqj/QJ4guDublBfMd0Ybm8rihNu8nhCI9mI
- WxuHY1LBVmbD3uLDsjWQKYVlbegGxv3pzKxgQ+8X05h0S7r4pzEkLkRlwe7pRoPgJSzw
- 88ms1NQE7fgSOHcH0hdfY0CSIhfgZ1Hq/fmtbkVxUkPwU2PKLTYPL0zYYu+hxtFIfsfn
- 6v4RdWlU+xlwXSsbTNe3W/JAFJv+jcdHbxZmS3PNyedXGKxXvAO6vP9Xz91NixTLjdZu
- /81A+71CC6E4/U7fzS27M8GqWRuY2t2TThzqg59CPs/0PxD9c4aifh7eXtZJ3BuPle6V
- n/nw==
+ bh=kBAHRbjY5/4GH+fddWQD8Hgf1ZHzV7eEnrxuqjBCAnc=;
+ b=dmZsHiZwZCf55pROvaErrV8wL7PU7uxH4qkdlt7GrijWdNa2BhHL95tD5SvAkj+SQV
+ 1+6hUNgf1mWqQjv8pRIfPX3S3RbgWUST0pdaFNG7C4hWN3IAUCo/KP7vU/fVEl1eYqnV
+ vktyhLdkJY8z7rIoFIqAfuYvly1qDrWnmOHO7DGkTS/5t8DtjGBD35RY53bSG8N+VsYO
+ xsV4aTselvC6Gn2DBE6Dd4/Gp32UpEGuZDPbPSo/I9YZEqMbsGRX27+Jw1j2dU4EFeJL
+ /S+t46/P0sGiNlkXMtt+Uj3tJ1lUUBxj9xENx2trKJBESo1wXwDX6eWfF7PYVjgPk43D
+ vQ2g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV226R+ZaSlsTaEqKKf+5bmPUpHZrboeM5OnUzCXstjXMVDSGYuu/r9W7w1HNFxln+AqOsJp1SWerbgBP5f4tB+/qqwwPY=
-X-Gm-Message-State: AOJu0YxkJTUaz3DjPr97s2GCzqM/O5W6KiUW2YmQGEX0e0AQxo0Y9pZc
- Nj+wcxY6m+AvmMaXxtGpHChH6xEwPFDMgpqYyF/FTa7zzOTgMo0OYXejkDC2HxlhuoH+MXu5VGu
- DSmmK4n3VSWMQ6SMoWaosqaCGuEMsu+HdfXJA4teDBji9NzXDDMDTk1ZIiG3XjWScBpNCO/pZCe
- ZWloh740Rg9fGH8uBjRzuig3nk/3A=
-X-Received: by 2002:a17:906:f745:b0:a52:6a7d:ebe2 with SMTP id
- jp5-20020a170906f74500b00a526a7debe2mr3158319ejb.14.1713271716707; 
- Tue, 16 Apr 2024 05:48:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJudLCRK7dq2ymZgWzJ/g+gb+HlYpoH/h9zckpz8aGuiKYCL/a23RDAasEwWk7g2l+w3Y1huMwwCujZEFlMWE=
-X-Received: by 2002:a17:906:f745:b0:a52:6a7d:ebe2 with SMTP id
- jp5-20020a170906f74500b00a526a7debe2mr3158306ejb.14.1713271716323; Tue, 16
- Apr 2024 05:48:36 -0700 (PDT)
+ AJvYcCXPOVnkB15nEiffI0So6cWKlpqs3+xkDQgtqjmxjgoI7cZj/AbqSuyhyrN+0gSIcXRW74T7D3KcxrFhKgpgXDaltiz+4o8=
+X-Gm-Message-State: AOJu0YxSVlIxyaW0Og32ER1OPBIDcWYBpFfNC3D/h2XfFxcmhPW4T7pD
+ 0Qg6a5BmJd7P0FlvMry0ia2dIT6lXp2UZElt2Vt+yMXX7r08FyX8orb+3Q+7CDHT/evcwT/VUQr
+ SfKX5Vdge/fdU5FNUg6mn0X6nH0cpTnz80x4gXNWlvaNfm7FbTdIXZbWWFXTl3UhuKJEyzTmG7Q
+ Ew0kdTzOPprMWGQKRalQ0L6puuud8=
+X-Received: by 2002:a05:6512:312a:b0:516:d448:b42a with SMTP id
+ p10-20020a056512312a00b00516d448b42amr8384767lfd.26.1713272801029; 
+ Tue, 16 Apr 2024 06:06:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFUTEGhRCV32+/AI8T+LEtJqUkZJQwbTBxB/nMf/N8T0taCaRt7xtpUobkGZpHcHwgm63yW/Q/rqOsUVyG9tns=
+X-Received: by 2002:a05:6512:312a:b0:516:d448:b42a with SMTP id
+ p10-20020a056512312a00b00516d448b42amr8384753lfd.26.1713272800586; Tue, 16
+ Apr 2024 06:06:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1713178348.git.mst@redhat.com>
  <2ce6cff94df2650c460f809e5ad263f1d22507c0.1713178348.git.mst@redhat.com>
  <CAFEAcA9Hs+05ux3SkJqZQ5RyAkwbgmDGMm5gn+GYZL76CJCYkQ@mail.gmail.com>
  <CACLfguX73rN77rK92xboF6hxERoO2F7kdqUgBohrURt7-38C2A@mail.gmail.com>
  <CAFEAcA_WxhOpjtZ5r-CfoOaf1aiKeaEV9eX=drb1JaBCiBoDKA@mail.gmail.com>
-In-Reply-To: <CAFEAcA_WxhOpjtZ5r-CfoOaf1aiKeaEV9eX=drb1JaBCiBoDKA@mail.gmail.com>
+ <CAFEAcA_AcKdOXO3+ez6J+hQ4NmGoUa+fBUNK3XL_YSvRk09Gcg@mail.gmail.com>
+In-Reply-To: <CAFEAcA_AcKdOXO3+ez6J+hQ4NmGoUa+fBUNK3XL_YSvRk09Gcg@mail.gmail.com>
 From: Cindy Lu <lulu@redhat.com>
-Date: Tue, 16 Apr 2024 20:47:57 +0800
-Message-ID: <CACLfguX=OXk9Q-ax87FOTADT+b5Yov1x14XBgxH5J2=SGy1O6w@mail.gmail.com>
+Date: Tue, 16 Apr 2024 21:06:02 +0800
+Message-ID: <CACLfguWfxarkB2qtn4Dt5JS01t-tFUsOfbX486exvNo8vOM1AA@mail.gmail.com>
 Subject: Re: [PULL 1/1] virtio-pci: fix use of a released vector
 To: Peter Maydell <peter.maydell@linaro.org>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
  qemu-stable@nongnu.org, 
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
+ Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=lulu@redhat.com;
@@ -100,60 +102,81 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Apr 16, 2024 at 7:50=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
+On Tue, Apr 16, 2024 at 8:22=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
 .org> wrote:
 >
-> On Tue, 16 Apr 2024 at 12:05, Cindy Lu <lulu@redhat.com> wrote:
+> On Tue, 16 Apr 2024 at 12:50, Peter Maydell <peter.maydell@linaro.org> wr=
+ote:
 > >
-> > On Tue, Apr 16, 2024 at 6:01=E2=80=AFPM Peter Maydell <peter.maydell@li=
-naro.org> wrote:
-> > > Here we pass that through to kvm_virtio_pci_vector_use_one().
-> > > In kvm_virtio_pci_vector_use_one()'s error-exit path ("undo")
-> > > it does
+> > On Tue, 16 Apr 2024 at 12:05, Cindy Lu <lulu@redhat.com> wrote:
+> > >
+> > > On Tue, Apr 16, 2024 at 6:01=E2=80=AFPM Peter Maydell <peter.maydell@=
+linaro.org> wrote:
+> > > > Hi; Coverity points out what it thinks is a problem in
+> > > > this commit (CID 1543938):
+>
+> > > > Here we pass that through to kvm_virtio_pci_vector_use_one().
+> > > > In kvm_virtio_pci_vector_use_one()'s error-exit path ("undo")
+> > > > it does
+> > > >     vector =3D virtio_queue_vector(vdev, queue_no);
+> > > > and in virtio_queue_vector() it does:
+> > > >
+> > > >     return n < VIRTIO_QUEUE_MAX ? vdev->vq[n].vector :
+> > > >         VIRTIO_NO_VECTOR;
+> > > >
+> > > > where 'n' is an int, so if we can get here with queue_no being
+> > > > VIRTIO_CONFIG_IRQ_IDX then we'll index off the front of the
+> > > > vdev->vq[] array.
+> > > >
+> > > > Maybe this is a "can't happen" case, but it does seem odd that
+> > > > virtio_queue_vector() only bounds-checks the "too big" case
+> > > > for its argument and not the "too small" case and/or it
+> > > > doesn't have a special case for VIRTIO_CONFIG_IRQ_IDX.
+> > > >
+> > > > > +    }
+> > > > > +}
+> > > > > +
+> > > >
+> > > hi peter
+> > > I think we can simply remove the part
 > > >     vector =3D virtio_queue_vector(vdev, queue_no);
-> > > and in virtio_queue_vector() it does:
-> > >
-> > >     return n < VIRTIO_QUEUE_MAX ? vdev->vq[n].vector :
-> > >         VIRTIO_NO_VECTOR;
-> > >
-> > > where 'n' is an int, so if we can get here with queue_no being
-> > > VIRTIO_CONFIG_IRQ_IDX then we'll index off the front of the
-> > > vdev->vq[] array.
-> > >
-> > > Maybe this is a "can't happen" case, but it does seem odd that
-> > > virtio_queue_vector() only bounds-checks the "too big" case
-> > > for its argument and not the "too small" case and/or it
-> > > doesn't have a special case for VIRTIO_CONFIG_IRQ_IDX.
-> > >
-> > > > +    }
-> > > > +}
-> > > > +
-> > >
-> > hi peter
-> > I think we can simply remove the part
-> >     vector =3D virtio_queue_vector(vdev, queue_no);
-> > the vector is get from virtio_pci_get_notifier() and don't need to get =
-it again
-> > I will send the fix soon
+> > > the vector is get from virtio_pci_get_notifier() and don't need to ge=
+t it again
+> > > I will send the fix soon
+> >
+> > The error handling in kvm_virtio_pci_vector_use_one() looks
+> > a bit odd in other ways, too. The only bit of "undoing"
+> > it does as far as I can see is calling kvm_virtio_pci_irqfd_release(),
+> > but there is no code path that gets to there where the
+> > main codepath's call to kvm_virtio-pci_irqfd_use() succeeded
+> > and needs to be undone. So perhaps the entire "undo" code
+> > block should be deleted, and the "goto undo" lines
+> > replaced by simple "return ret;" ?  (The codepath
+> > for "kvm_virtio_pci_irqfd_use() failed" already does the
+> > "kvm_virtio_pci_vq_vector_release()" by hand there.)
 >
-> The error handling in kvm_virtio_pci_vector_use_one() looks
-> a bit odd in other ways, too. The only bit of "undoing"
-> it does as far as I can see is calling kvm_virtio_pci_irqfd_release(),
-> but there is no code path that gets to there where the
-> main codepath's call to kvm_virtio-pci_irqfd_use() succeeded
-> and needs to be undone. So perhaps the entire "undo" code
-> block should be deleted, and the "goto undo" lines
-> replaced by simple "return ret;" ?  (The codepath
-> for "kvm_virtio_pci_irqfd_use() failed" already does the
-> "kvm_virtio_pci_vq_vector_release()" by hand there.)
+> In any case since the error handling in kvm_virtio_pci_vector_use_one()
+> isn't new in this commit (you can get the same problem via
+> kvm_virtio_pci_vector_config_use(), which is CID 1468940
+> first detected in 2022), I think this is not something we need
+> to rush to fix before we release 9.0. If anybody disagrees now
+> would be a good time to say so :-)
 >
+> Paolo's comment on CID 1468940 was to suggest "virtio_queue_vector
+> should check VIRTIO_CONFIG_IRQ_IDX just like virtio_pci_get_notifier",
+> incidentally.
+>
+Hi peter=EF=BC=8C
+Really sorry all these mess, but I still have a stuipid question,
+where can I get
+this CID result ?maybe there are a mailing list=EF=BC=9FI just wonder maybe=
+ I can fix
+these code earlier next time, Really thanks for your help
+
+thanks
+cindy
 > thanks
 > -- PMM
 >
-Hi peter,
-Really thanks for your help. I have rewrite this part, the error
-handling part is incorrect
-Thanks
-Cindy
 
 
