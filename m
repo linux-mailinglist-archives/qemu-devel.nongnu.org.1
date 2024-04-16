@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E9F8A6CFF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:57:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B0778A6CF7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:56:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwjGQ-00037k-8t; Tue, 16 Apr 2024 09:54:22 -0400
+	id 1rwjGR-0003N8-Pb; Tue, 16 Apr 2024 09:54:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGF-0002ok-Ul
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:12 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGJ-000308-MK
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:16 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGC-0001r0-G9
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:11 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-56e69a51a33so4328417a12.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:54:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjGI-0001sA-3j
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:54:15 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-56e2c1650d8so4418199a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:54:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713275646; x=1713880446; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713275652; x=1713880452; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=UuGQRWMqmr6ruVhTw3v1+AueGwovFmnNusAak3fPiJU=;
- b=eKE+BoUebL5WjsIkKju9B9igNMd8zk94zRmWT9YlQ1bQcklpByc2mQ3Jpghr+bumm4
- 4PGzTW8yFFL+PfGYZstYO6J8J9Vwx0gvo4gQxFnc+b85dVAP2t8QRGFFNjXp6z6wrAdM
- KGLn3RMrMIyly+hpWHDC7lgJZvB6gBKqT7HePnN+RYWHKqkFPwBJaUClmV4N+LitzM0i
- OU+w4V4Y1bmZK14aDs4Y/Wv0WzREcXOn4ABoUSAeKKhQVQOupzZ/Z/sMezmMnnOJinrT
- Br8KKSzKqwmlwc0dv8Pgr5h9yAf1QDABmvNxUjq9zFMaZpQ4dg5111OVp8vMHCusTMO9
- Z2Iw==
+ bh=xnRVHCDouTA+5HlMl31thguywp3whz3Nvn7kAUajqzI=;
+ b=NkqQ9jYU5x+proCeNpNSj+Iw2v6xVxmdRZE2io4XmOHGo9Pd9R8Rpiln98sql+8FwQ
+ ZypMYyquyscF/aTKvpxc0MF1DoNJBji6wnEE+lM2yvg6VdAtNSveM+iKviDAu7724YGi
+ 5QCAKimMWQyeWVIljaHTzxmh51xLkDJmC+wOmHLwfIpM3PtvBkJiXbvtcf/k0J4EPfkm
+ pzv5b17vTsAzd8UBgHIuALUPC5d3TiORz+LN6AC0DDrcHr9kGnZ6zor7Gpf84Wp5tZ4K
+ 4BFrsXeErVUnetyDtivoIrh6FukngierXR7hkET+wM0Tkwzho6BdCkMw/6vUZkcA7mWo
+ rWVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713275646; x=1713880446;
+ d=1e100.net; s=20230601; t=1713275652; x=1713880452;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UuGQRWMqmr6ruVhTw3v1+AueGwovFmnNusAak3fPiJU=;
- b=JS/H7zkYuapZ7ejnsvLirFTJeCBziP/QDT2S0sFVrzwTyHaQSmIVyZrk5VahhS38Ns
- JIxtPv+Y+WqCN8/tJUmCxxwpZFvJIid3C3aowFeDHmMhVVwKQWv35/k6OHjZNQCr41Ou
- /eoUosVixi2TCZFmhtmGWc4HIbuP2MdQ6kjUwDKtFvqZWwlQkb2PqJI2LBmV1DxLn6bb
- vNzsSe5qv5pj5gEReeop7KbQy80SLgYrDUCyQ9Z7P/mfMBiQ/zjZL/evCmMz6XamUmzp
- m4lQiIdyT9t3UgSdhGLc2rS3T8jM0P44TdVFKO/Cul6yeU9rDFQmXEy7S940e7ayzXNg
- qPtQ==
-X-Gm-Message-State: AOJu0YzUOLhB65uta5biDre0ayZ2M7F/K73F968imd9oOI93WT+ULzAP
- xluXF8ehqQwxg9isqxK0mokiQ85Cms4pU0v2rpAT6ki7Nlv5XnEQCV58g/e7ovjrWLN8rUTJB70
- Q
-X-Google-Smtp-Source: AGHT+IE6IYmo1VuVUOK6xZ/1XIADaz45DMu2bPe10Ti/wKiNWf8jwKdKozqu/pKdUXNHfmZznGGeng==
-X-Received: by 2002:a50:d55d:0:b0:566:d333:45e8 with SMTP id
- f29-20020a50d55d000000b00566d33345e8mr8949322edj.20.1713275646553; 
- Tue, 16 Apr 2024 06:54:06 -0700 (PDT)
+ bh=xnRVHCDouTA+5HlMl31thguywp3whz3Nvn7kAUajqzI=;
+ b=bZhvTZWXv0f3FRuR2B+Mu/cozEjdY0imiP0xB4rVvsarL39v8qUhiNKSHXHOHfaNdy
+ +l71tNDpE3jRTlDuXfWkcMNCXqOjZRfEOZVObM9FLV5nvF3YEzkInRJY5z81bfNRDIJx
+ d4CxVuhktV5wxaKj6/Eb4Rf6t4YHr4Vx0H1fSwGKwwwV7E43YXv7Mq9f4go79g8vMdOE
+ PsV+Bca7vd14i+7PvR/Nr3YF552sKPT35eN+fZi/R75WBrSZ/aKKH6bhoh+iCnVI3b+n
+ 6rTQ5uTmxq9NjcvY8+nh4eqzCBrDcYbVcoP6H01INXaL038Hpm+U80+bnoKjilvqJxIt
+ GiHA==
+X-Gm-Message-State: AOJu0YzXj4dod8OQ10jiPnengeTjCB13hhn7r8Uf7eeN9ZF7QiEctbIm
+ myFoeOdrZiRmg8IYjbNYA9GiO7uxcIpaWXldHwN/z5JbdBaixRYbtNJVINCAresyC3MSWRA0FPb
+ w
+X-Google-Smtp-Source: AGHT+IFhG4L3gtH69a1y/FdVwHzVlnymk2JnoSWQL//ktYw6Ci8bSUiIFfJZsqtAUnQlxka7xmRipw==
+X-Received: by 2002:a50:9ec8:0:b0:568:32cc:f808 with SMTP id
+ a66-20020a509ec8000000b0056832ccf808mr8400333edf.15.1713275652383; 
+ Tue, 16 Apr 2024 06:54:12 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- ee42-20020a056402292a00b005701550ddc5sm3802566edb.90.2024.04.16.06.54.04
+ fi11-20020a056402550b00b00570498c622asm375182edb.66.2024.04.16.06.54.10
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 06:54:06 -0700 (PDT)
+ Tue, 16 Apr 2024 06:54:12 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -62,28 +62,19 @@ Cc: Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org,
  qemu-ppc@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Song Gao <gaosong@loongson.cn>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-arm@nongnu.org
-Subject: [PATCH v3 11/22] hw/smbios: Remove 'uuid_encoded' argument from
- smbios_set_defaults()
-Date: Tue, 16 Apr 2024 15:52:40 +0200
-Message-ID: <20240416135252.8384-12-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 12/22] hw/smbios: Remove 'smbios_uuid_encoded',
+ simplify smbios_encode_uuid()
+Date: Tue, 16 Apr 2024 15:52:41 +0200
+Message-ID: <20240416135252.8384-13-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240416135252.8384-1-philmd@linaro.org>
 References: <20240416135252.8384-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -106,112 +97,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-'uuid_encoded' is always true, remove it.
+'smbios_encode_uuid' is always true, remove it,
+simplifying smbios_encode_uuid().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- include/hw/firmware/smbios.h | 3 +--
- hw/arm/virt.c                | 3 +--
- hw/i386/fw_cfg.c             | 2 +-
- hw/loongarch/virt.c          | 2 +-
- hw/riscv/virt.c              | 2 +-
- hw/smbios/smbios.c           | 6 ++----
- 6 files changed, 7 insertions(+), 11 deletions(-)
+ hw/smbios/smbios.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/include/hw/firmware/smbios.h b/include/hw/firmware/smbios.h
-index 8d3fb2fb3b..f066ab7262 100644
---- a/include/hw/firmware/smbios.h
-+++ b/include/hw/firmware/smbios.h
-@@ -331,8 +331,7 @@ void smbios_add_usr_blob_size(size_t size);
- void smbios_entry_add(QemuOpts *opts, Error **errp);
- void smbios_set_cpuid(uint32_t version, uint32_t features);
- void smbios_set_defaults(const char *manufacturer, const char *product,
--                         const char *version,
--                         bool uuid_encoded);
-+                         const char *version);
- void smbios_set_default_processor_family(uint16_t processor_family);
- uint8_t *smbios_get_table_legacy(size_t *length, Error **errp);
- void smbios_get_tables(MachineState *ms,
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a9a913aead..a55ef916cb 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -1650,8 +1650,7 @@ static void virt_build_smbios(VirtMachineState *vms)
-     }
- 
-     smbios_set_defaults("QEMU", product,
--                        vmc->smbios_old_sys_ver ? "1.0" : mc->name,
--                        true);
-+                        vmc->smbios_old_sys_ver ? "1.0" : mc->name);
- 
-     /* build the array of physical mem area from base_memmap */
-     mem_array.address = vms->memmap[VIRT_MEM].base;
-diff --git a/hw/i386/fw_cfg.c b/hw/i386/fw_cfg.c
-index f7c2501161..ecc4047a4b 100644
---- a/hw/i386/fw_cfg.c
-+++ b/hw/i386/fw_cfg.c
-@@ -63,7 +63,7 @@ void fw_cfg_build_smbios(PCMachineState *pcms, FWCfgState *fw_cfg,
- 
-     if (pcmc->smbios_defaults) {
-         /* These values are guest ABI, do not change */
--        smbios_set_defaults("QEMU", mc->desc, mc->name, true);
-+        smbios_set_defaults("QEMU", mc->desc, mc->name);
-     }
- 
-     /* tell smbios about cpuid version and features */
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 441d764843..00d3005e54 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -355,7 +355,7 @@ static void virt_build_smbios(LoongArchMachineState *lams)
-         return;
-     }
- 
--    smbios_set_defaults("QEMU", product, mc->name, true);
-+    smbios_set_defaults("QEMU", product, mc->name);
- 
-     smbios_get_tables(ms, SMBIOS_ENTRY_POINT_TYPE_64,
-                       NULL, 0,
-diff --git a/hw/riscv/virt.c b/hw/riscv/virt.c
-index d171e74f7b..1ed9b0552e 100644
---- a/hw/riscv/virt.c
-+++ b/hw/riscv/virt.c
-@@ -1277,7 +1277,7 @@ static void virt_build_smbios(RISCVVirtState *s)
-         product = "KVM Virtual Machine";
-     }
- 
--    smbios_set_defaults("QEMU", product, mc->name, true);
-+    smbios_set_defaults("QEMU", product, mc->name);
- 
-     if (riscv_is_32bit(&s->soc[0])) {
-         smbios_set_default_processor_family(0x200);
 diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-index eed5787b15..8261eb716f 100644
+index 8261eb716f..3b7703489d 100644
 --- a/hw/smbios/smbios.c
 +++ b/hw/smbios/smbios.c
-@@ -30,7 +30,7 @@
+@@ -30,7 +30,6 @@
  #include "hw/pci/pci_device.h"
  #include "smbios_build.h"
  
--static bool smbios_uuid_encoded = true;
-+static const bool smbios_uuid_encoded = true;
+-static const bool smbios_uuid_encoded = true;
  /*
   * SMBIOS tables provided by user with '-smbios file=<foo>' option
   */
-@@ -1017,11 +1017,9 @@ void smbios_set_default_processor_family(uint16_t processor_family)
+@@ -600,11 +599,9 @@ static void smbios_build_type_0_table(void)
+ static void smbios_encode_uuid(struct smbios_uuid *uuid, QemuUUID *in)
+ {
+     memcpy(uuid, in, 16);
+-    if (smbios_uuid_encoded) {
+-        uuid->time_low = bswap32(uuid->time_low);
+-        uuid->time_mid = bswap16(uuid->time_mid);
+-        uuid->time_hi_and_version = bswap16(uuid->time_hi_and_version);
+-    }
++    uuid->time_low = bswap32(uuid->time_low);
++    uuid->time_mid = bswap16(uuid->time_mid);
++    uuid->time_hi_and_version = bswap16(uuid->time_hi_and_version);
  }
  
- void smbios_set_defaults(const char *manufacturer, const char *product,
--                         const char *version,
--                         bool uuid_encoded)
-+                         const char *version)
- {
-     smbios_have_defaults = true;
--    smbios_uuid_encoded = uuid_encoded;
- 
-     SMBIOS_SET_DEFAULT(smbios_type1.manufacturer, manufacturer);
-     SMBIOS_SET_DEFAULT(smbios_type1.product, product);
+ static void smbios_build_type_1_table(void)
 -- 
 2.41.0
 
