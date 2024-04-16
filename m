@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5804D8A6EBE
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0558A6EC4
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk4L-0006J1-77; Tue, 16 Apr 2024 10:45:57 -0400
+	id 1rwk4N-000789-Ib; Tue, 16 Apr 2024 10:45:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk3I-0005xs-1Z
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:53 -0400
+ id 1rwk3L-00060h-AS
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:57 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk3G-0002Qd-Gb
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:51 -0400
+ id 1rwk3J-0002Qo-Kz
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:55 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk38-0002hj-MB; Tue, 16 Apr 2024 16:44:42 +0200
+ id 1rwk3D-0002i2-SW; Tue, 16 Apr 2024 16:44:47 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,10 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 17/26] migration: Add qemu_loadvm_load_state_buffer() and
- its handler
-Date: Tue, 16 Apr 2024 16:42:56 +0200
-Message-ID: <5482f99c572d339070127cf658968195dd85436e.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 18/26] migration: Add load_finish handler and associated
+ functions
+Date: Tue, 16 Apr 2024 16:42:57 +0200
+Message-ID: <22602ef370c2369519a0ef5e3a6f32ff04193b76.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -63,89 +63,174 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-qemu_loadvm_load_state_buffer() and its load_state_buffer
-SaveVMHandler allow providing device state buffer to explicitly
-specified device via its idstr and instance id.
+load_finish SaveVMHandler allows migration code to poll whether
+a device-specific asynchronous device state loading operation had finished.
+
+In order to avoid calling this handler needlessly the device is supposed
+to notify the migration code of its possible readiness via a call to
+qemu_loadvm_load_finish_ready_broadcast() while holding
+qemu_loadvm_load_finish_ready_lock.
 
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- include/migration/register.h | 15 +++++++++++++++
- migration/savevm.c           | 25 +++++++++++++++++++++++++
- migration/savevm.h           |  3 +++
- 3 files changed, 43 insertions(+)
+ include/migration/register.h | 21 +++++++++++++++
+ migration/migration.c        |  6 +++++
+ migration/migration.h        |  3 +++
+ migration/savevm.c           | 52 ++++++++++++++++++++++++++++++++++++
+ migration/savevm.h           |  4 +++
+ 5 files changed, 86 insertions(+)
 
 diff --git a/include/migration/register.h b/include/migration/register.h
-index 9d36e35bd612..7d29b7e0b559 100644
+index 7d29b7e0b559..f15881fc87cd 100644
 --- a/include/migration/register.h
 +++ b/include/migration/register.h
-@@ -257,6 +257,21 @@ typedef struct SaveVMHandlers {
-      */
-     int (*load_state)(QEMUFile *f, void *opaque, int version_id);
+@@ -272,6 +272,27 @@ typedef struct SaveVMHandlers {
+     int (*load_state_buffer)(void *opaque, char *data, size_t data_size,
+                              Error **errp);
  
 +    /**
-+     * @load_state_buffer
++     * @load_finish
 +     *
-+     * Load device state buffer provided to qemu_loadvm_load_state_buffer().
++     * Poll whether all asynchronous device state loading had finished.
++     * Not called on the load failure path.
++     *
++     * Called while holding the qemu_loadvm_load_finish_ready_lock.
++     *
++     * If this method signals "not ready" then it might not be called
++     * again until qemu_loadvm_load_finish_ready_broadcast() is invoked
++     * while holding qemu_loadvm_load_finish_ready_lock.
 +     *
 +     * @opaque: data pointer passed to register_savevm_live()
-+     * @data: the data buffer to load
-+     * @data_size: the data length in buffer
++     * @is_finished: whether the loading had finished (output parameter)
 +     * @errp: pointer to Error*, to store an error if it happens.
 +     *
 +     * Returns zero to indicate success and negative for error
++     * It's not an error that the loading still hasn't finished.
 +     */
-+    int (*load_state_buffer)(void *opaque, char *data, size_t data_size,
-+                             Error **errp);
++    int (*load_finish)(void *opaque, bool *is_finished, Error **errp);
 +
      /**
       * @load_setup
       *
-diff --git a/migration/savevm.c b/migration/savevm.c
-index fa35504678bf..2e4d63faca06 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -3073,6 +3073,31 @@ int qemu_loadvm_approve_switchover(void)
-     return migrate_send_rp_switchover_ack(mis);
+diff --git a/migration/migration.c b/migration/migration.c
+index 8fe8be71a0e3..e4f82695a338 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -234,6 +234,9 @@ void migration_object_init(void)
+     qemu_cond_init(&current_incoming->page_request_cond);
+     current_incoming->page_requested = g_tree_new(page_request_addr_cmp);
+ 
++    g_mutex_init(&current_incoming->load_finish_ready_mutex);
++    g_cond_init(&current_incoming->load_finish_ready_cond);
++
+     migration_object_check(current_migration, &error_fatal);
+ 
+     blk_mig_init();
+@@ -387,6 +390,9 @@ void migration_incoming_state_destroy(void)
+         mis->postcopy_qemufile_dst = NULL;
+     }
+ 
++    g_mutex_clear(&mis->load_finish_ready_mutex);
++    g_cond_clear(&mis->load_finish_ready_cond);
++
+     yank_unregister_instance(MIGRATION_YANK_INSTANCE);
  }
  
-+int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                  char *buf, size_t len, Error **errp)
+diff --git a/migration/migration.h b/migration/migration.h
+index a6114405917f..92014ef4cfcc 100644
+--- a/migration/migration.h
++++ b/migration/migration.h
+@@ -227,6 +227,9 @@ struct MigrationIncomingState {
+      * is needed as this field is updated serially.
+      */
+     unsigned int switchover_ack_pending_num;
++
++    GCond load_finish_ready_cond;
++    GMutex load_finish_ready_mutex;
+ };
+ 
+ MigrationIncomingState *migration_incoming_get_current(void);
+diff --git a/migration/savevm.c b/migration/savevm.c
+index 2e4d63faca06..30521ad3f340 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -2994,6 +2994,37 @@ int qemu_loadvm_state(QEMUFile *f)
+         return ret;
+     }
+ 
++    qemu_loadvm_load_finish_ready_lock();
++    while (!ret) { /* Don't call load_finish() handlers on the load failure path */
++        bool all_ready = true;
++        SaveStateEntry *se = NULL;
++
++        QTAILQ_FOREACH(se, &savevm_state.handlers, entry) {
++            bool this_ready;
++
++            if (!se->ops || !se->ops->load_finish) {
++                continue;
++            }
++
++            ret = se->ops->load_finish(se->opaque, &this_ready, &local_err);
++            if (ret) {
++                error_report_err(local_err);
++
++                qemu_loadvm_load_finish_ready_unlock();
++                return -EINVAL;
++            } else if (!this_ready) {
++                all_ready = false;
++            }
++        }
++
++        if (all_ready) {
++            break;
++        }
++
++        g_cond_wait(&mis->load_finish_ready_cond, &mis->load_finish_ready_mutex);
++    }
++    qemu_loadvm_load_finish_ready_unlock();
++
+     if (ret == 0) {
+         ret = qemu_file_get_error(f);
+     }
+@@ -3098,6 +3129,27 @@ int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
+     return 0;
+ }
+ 
++void qemu_loadvm_load_finish_ready_lock(void)
 +{
-+    SaveStateEntry *se;
++    MigrationIncomingState *mis = migration_incoming_get_current();
 +
-+    se = find_se(idstr, instance_id);
-+    if (!se) {
-+        error_setg(errp, "Unknown idstr %s or instance id %u for load state buffer",
-+                   idstr, instance_id);
-+        return -1;
-+    }
++    g_mutex_lock(&mis->load_finish_ready_mutex);
++}
 +
-+    if (!se->ops || !se->ops->load_state_buffer) {
-+        error_setg(errp, "idstr %s / instance %u has no load state buffer operation",
-+                   idstr, instance_id);
-+        return -1;
-+    }
++void qemu_loadvm_load_finish_ready_unlock(void)
++{
++    MigrationIncomingState *mis = migration_incoming_get_current();
 +
-+    if (se->ops->load_state_buffer(se->opaque, buf, len, errp) != 0) {
-+        return -1;
-+    }
++    g_mutex_unlock(&mis->load_finish_ready_mutex);
++}
 +
-+    return 0;
++void qemu_loadvm_load_finish_ready_broadcast(void)
++{
++    MigrationIncomingState *mis = migration_incoming_get_current();
++
++    g_cond_broadcast(&mis->load_finish_ready_cond);
 +}
 +
  bool save_snapshot(const char *name, bool overwrite, const char *vmstate,
                    bool has_devices, strList *devices, Error **errp)
  {
 diff --git a/migration/savevm.h b/migration/savevm.h
-index 74669733dd63..c879ba8c970e 100644
+index c879ba8c970e..85e8b882bd37 100644
 --- a/migration/savevm.h
 +++ b/migration/savevm.h
-@@ -70,4 +70,7 @@ int qemu_loadvm_approve_switchover(void);
- int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
-         bool in_postcopy, bool inactivate_disks);
+@@ -73,4 +73,8 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+ int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
+                                   char *buf, size_t len, Error **errp);
  
-+int qemu_loadvm_load_state_buffer(const char *idstr, uint32_t instance_id,
-+                                  char *buf, size_t len, Error **errp);
++void qemu_loadvm_load_finish_ready_lock(void);
++void qemu_loadvm_load_finish_ready_unlock(void);
++void qemu_loadvm_load_finish_ready_broadcast(void);
 +
  #endif
 
