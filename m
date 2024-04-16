@@ -2,67 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750A88A6C42
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0E48A6C43
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:28:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwiqx-00008E-D0; Tue, 16 Apr 2024 09:28:03 -0400
+	id 1rwiri-0001CO-Ka; Tue, 16 Apr 2024 09:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwiqt-0008WQ-Kj
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:27:59 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1rwirf-0001Bz-Ju
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:28:47 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwiqs-000519-2s
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:27:59 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-516cbf3fe68so5517200e87.0
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:27:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <jgross@suse.com>) id 1rwird-00057j-0i
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:28:47 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-56e78970853so8360020a12.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713274076; x=1713878876; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=3F7bJ8nbnYbDWR3CYPhpYslCgWCxAo0NClKpbkxjhpg=;
- b=tbmmCGAWsINEyS7km9yOQl4EMDCwajI197kVZpVJmF6FE7MYucJ3iMzXT77/JffA9b
- 7Cu/HfuITEAFrGEgKzVdrOcF/9DWPtZs/wZDb1MPgqZRkTfkL/8+lE6A5dtQdNn+8Byq
- +jPfuRngFt5hWfuOSe/S4Ta3m9hiobEf72Bs750ZOUf5v+4jVmuykA00zF69y+owuxjF
- ZGew8bVddO5Wf/hYkv3xQtD3FTPSRv1WlG96QrRrK1Yd5QeTz+Lxv4BpYLiCG0z4XcpI
- KkISgnQFKtiKho8OrcPDSPzExEccwB7yt5kC6CwwnzS5wqp+En/6OwaYEiDpnaQvTaj+
- wk0Q==
+ d=suse.com; s=google; t=1713274123; x=1713878923; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=nrphme9PznmU4fpqJRprcUnPzNkG0J1sP+MgqiS0S5M=;
+ b=SWCLk4TErsmseLx4AQGZlIDLcAFbO5kWi/qsTi4RRry/5fRiOVx6lWys/5yoc2o77L
+ uR2tE7vh+pEqqlGwgHgp6anuAvv/q5sy0wj6qxl/91ZmB0H8TmWqmzGL7C5YSb/KuWOB
+ HekJp2qD6zBjMbZ5RmqViHsUaVi0wVVBt//+6G87iHv+9T3izY3yioLix126Snx8Tx5R
+ vkhPLL05kP26z3lDDqZMoKpbKbOGO+G9qiOd4tdjHD/N7mRC6PZnV/3u7MvD6EH3mcm8
+ Zf9eLkKDAzmKtFPfCruMoQ+gD3aF9w41eZQ36PQO14GAeQxGJCyIISkOW9d96m4X9yI3
+ DJUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713274076; x=1713878876;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=3F7bJ8nbnYbDWR3CYPhpYslCgWCxAo0NClKpbkxjhpg=;
- b=F6RUZ7AaAolrzKLw9LuqeK04xkVCDDicz40+PGA8hDfCF+wZIIjTTwSSHV23VmxSWR
- J5DRNTAlUR/OqqUomAlAJ6Wvt1Hl/3g0erlMK32ifgM3LUojOM27ldp1Uxvx1KCd+Zxe
- 0lDWRO3v9VaiFNIpml4sWusqlANwthNMMS/lCSORqa9FNbEXxQXanMwfpEJ/Fy1ACfJ3
- 2wVjhannLPNksiQPD5rQWJo68frOOaPTtDG2DFxo5eg9xKXHOR8SyJzRxv9kDEJGqCCp
- qB8LNnf9JW5mFygtaSbiOaxhyN/UJop4HMPTF9kb8XCotfkRzQbeACNaKooAxF/E/qlh
- eGCQ==
-X-Gm-Message-State: AOJu0YwDkoONI68Kps3OBbRi1jw+6Tqbn9RqgLLV9NELcOO2y8AqJ9tF
- If4O4Z6DVWoB6y6saOfOa6lGNOHUXc/ChFGRLY/4IMvqcm5gZKiFmzlcsSoBVs1Rubrzn8PTqLV
- LfzPCyszxxW2tO3tzobrSMFSONnRP1oWE3vf2Eb1zkd+6LA6x
-X-Google-Smtp-Source: AGHT+IFOuLT33dfq8u6EYkimuPP4K0Etp3obeZvptHLXV55rP3MGfazaOIvg/2TZWFcLZy+zw5Tq7+inbvPQrLFzxhg=
-X-Received: by 2002:a05:6512:3f10:b0:516:d126:719a with SMTP id
- y16-20020a0565123f1000b00516d126719amr10462205lfa.9.1713274076125; Tue, 16
- Apr 2024 06:27:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713274123; x=1713878923;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nrphme9PznmU4fpqJRprcUnPzNkG0J1sP+MgqiS0S5M=;
+ b=TLv7sb1HoS5Ruc1NHuFsX2HoGs3CR2vbW6vmPL2o7qOLUCkqkMKM+MlC1FqeN3AEtM
+ dI1mnljRpnVP5acXfYK8co6pKBU+o0WRcFaOTZH/03qyMhN7rdqK8Yd8ShqbV0EmzCeH
+ 5YoKcrNlJxQFxuSMqCJEE1Et8vRsagRk24OelBr1IJaKDsMR9s5zBY259M1a0s9U9tSj
+ glBii84xH8lwdxdKQCT+2BPA6yQtFo8Vat69jnSCrt/ZqmIjFWoZwmzbT4WnSA65Wh5B
+ IVKTwV4r9BYAHDmQsvZjCHysvOpM0s8XEyKAL4DSEvb5rFyrnBV4H5dKcq/LjRcyQQdQ
+ GnjQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVZ6Adrx2s/WhtK8BT4fGFeNZLLrnFREKJfUP6LcSYaD2TBkMQkJD4FVajEvP7CCEdjMb8Hy0ugtMvr5Gu/U5iNHSM4ztM=
+X-Gm-Message-State: AOJu0YzBthIgRP954PYVoj6l5unCi5DpS0XcjBBNEXWNZFvEloUffdYa
+ fCukZJ+o2eFoqAp7PBUrH8zF3Nci+6Lj6+cJ4IBE2U5aAMmCJbv/VB9nag8jAb4=
+X-Google-Smtp-Source: AGHT+IHXSil6iGM6aIAJri9H2bj+eAIeOIagFpUAsZhEZmsYACgqQPvL6cvnxG+8VvSFUGCisyzZYw==
+X-Received: by 2002:a17:906:3b13:b0:a52:71d6:d605 with SMTP id
+ g19-20020a1709063b1300b00a5271d6d605mr1597846ejf.23.1713274122736; 
+ Tue, 16 Apr 2024 06:28:42 -0700 (PDT)
+Received: from ?IPV6:2003:e5:8705:9b00:4df1:9dd5:4f97:24a?
+ (p200300e587059b004df19dd54f97024a.dip0.t-ipconnect.de.
+ [2003:e5:8705:9b00:4df1:9dd5:4f97:24a])
+ by smtp.gmail.com with ESMTPSA id
+ x13-20020a170906b08d00b00a51d073da7esm6813015ejy.82.2024.04.16.06.28.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Apr 2024 06:28:42 -0700 (PDT)
+Message-ID: <3abfdbdd-ee70-4b61-a652-c7b2490732d6@suse.com>
+Date: Tue, 16 Apr 2024 15:28:41 +0200
 MIME-Version: 1.0
-References: <adPv4goMCNmjeDRUK1LGCAHIZdOxvMoFAqlU1bCnvTCPsCTUFRQnOQnThBC3oIzU9IczdS6aw1vKLQ-w7Zk9CRo5FfvINiaInut_U4VwbeI=@peterdavehello.org>
-In-Reply-To: <adPv4goMCNmjeDRUK1LGCAHIZdOxvMoFAqlU1bCnvTCPsCTUFRQnOQnThBC3oIzU9IczdS6aw1vKLQ-w7Zk9CRo5FfvINiaInut_U4VwbeI=@peterdavehello.org>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Apr 2024 14:27:45 +0100
-Message-ID: <CAFEAcA_D1+BUk01mXNwRehxYqyXQU+Zu98sWBujauk5L2tHh3w@mail.gmail.com>
-Subject: Re: [PATCH] Add zh_TW Traditional Chinese translation
-To: Peter Dave Hello <hsu@peterdavehello.org>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [QEMU][PATCH v3 5/7] memory: add MemoryRegion map and unmap
+ callbacks
+To: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Peter Xu <peterx@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand
+ <david@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, qemu-devel@nongnu.org, sstabellini@kernel.org,
+ vikram.garhwal@amd.com
+References: <20240227223501.28475-1-vikram.garhwal@amd.com>
+ <20240227223501.28475-6-vikram.garhwal@amd.com>
+ <CAJy5ezpCWkOqthGR1c5Nsfyi_W_yGL_d17Jcp0VckaCEwx9z3Q@mail.gmail.com>
+ <Zhbg9alYH1-J9poU@x1n>
+ <CAJy5ezpfNGDC4Q=eMcQ-df_xZVYnc-CR5wfn4izW2CT532PbAA@mail.gmail.com>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+In-Reply-To: <CAJy5ezpfNGDC4Q=eMcQ-df_xZVYnc-CR5wfn4izW2CT532PbAA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: permerror client-ip=2a00:1450:4864:20::531;
+ envelope-from=jgross@suse.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -85,66 +104,118 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Apr 2024 at 14:00, Peter Dave Hello <hsu@peterdavehello.org> wrote:
->
-> From: Peter Dave Hello <hsu@peterdavehello.org>
-> Date: Tue, 16 Apr 2024 00:43:29 +0800
-> Subject: [PATCH] Add a simple zh_TW Traditional Chinese translation
->
-> This patch adds a basic zh_TW translation file for Taiwan Traditional
-> Chinese users.
->
-> Signed-off-by: Peter Dave Hello <hsu@peterdavehello.org>
+On 16.04.24 13:32, Edgar E. Iglesias wrote:
+> On Wed, Apr 10, 2024 at 8:56 PM Peter Xu <peterx@redhat.com> wrote:
+>>
+>> On Wed, Apr 10, 2024 at 06:44:38PM +0200, Edgar E. Iglesias wrote:
+>>> On Tue, Feb 27, 2024 at 11:37 PM Vikram Garhwal <vikram.garhwal@amd.com>
+>>> wrote:
+>>>
+>>>> From: Juergen Gross <jgross@suse.com>
+>>>>
+>>>> In order to support mapping and unmapping guest memory dynamically to
+>>>> and from qemu during address_space_[un]map() operations add the map()
+>>>> and unmap() callbacks to MemoryRegionOps.
+>>>>
+>>>> Those will be used e.g. for Xen grant mappings when performing guest
+>>>> I/Os.
+>>>>
+>>>> Signed-off-by: Juergen Gross <jgross@suse.com>
+>>>> Signed-off-by: Vikram Garhwal <vikram.garhwal@amd.com>
+>>>>
+>>>
+>>>
+>>> Paolo, Peter, David, Phiippe, do you guys have any concerns with this patch?
+>>
+> 
+> Thanks for your comments Peter,
+> 
+> 
+>> This introduces a 3rd memory type afaict, neither direct nor !direct.
+>>
+>> What happens if someone does address_space_write() to it?  I didn't see it
+>> covered here..
+> 
+> You're right, that won't work, the memory needs to be mapped before it
+> can be used.
+> At minimum there should be some graceful failure, right now this will crash.
+> 
+>>
+>> OTOH, the cover letter didn't mention too much either on the big picture:
+>>
+>> https://lore.kernel.org/all/20240227223501.28475-1-vikram.garhwal@amd.com/
+>>
+>> I want to have a quick grasp on whether it's justified worthwhile we should
+>> introduce this complexity to qemu memory core.
+>>
+>> Could I request a better cover letter when repost?  It'll be great to
+>> mention things like:
+> 
+> I'll do that, but also answer inline in the meantime since we should
+> perhaps change the approach.
+> 
+>>
+>>    - what is grant mapping, why it needs to be used, when it can be used (is
+>>      it only relevant to vIOMMU=on)?  Some more information on the high
+>>      level design using this type or MR would be great.
+> 
+> https://github.com/xen-project/xen/blob/master/docs/misc/grant-tables.txt
+> 
+> Xen VM's that use QEMU's VirtIO have a QEMU instance running in a separate VM.
+> 
+> There's basically two mechanisms for QEMU's Virtio backends to access
+> the guest's RAM.
+> 1. Foreign mappings. This gives the VM running QEMU access to the
+> entire RAM of the guest VM.
 
-This name in your Signed-off-by line doesn't match the
-name you use in the .po file...
+Additionally it requires qemu to run in dom0, while in general Xen allows
+to run backends in less privileged "driver domains", which are usually not
+allowed to perform foreign mappings.
 
-> ---
->  po/LINGUAS  |  1 +
->  po/zh_TW.po | 93 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 94 insertions(+)
->  create mode 100644 po/zh_TW.po
->
-> diff --git a/po/LINGUAS b/po/LINGUAS
-> index 9b33a36..08163e8 100644
-> --- a/po/LINGUAS
-> +++ b/po/LINGUAS
-> @@ -7,3 +7,4 @@ sv
->  tr
->  uk
->  zh_CN
-> +zh_TW
-> diff --git a/po/zh_TW.po b/po/zh_TW.po
-> new file mode 100644
-> index 0000000..d25557e
-> --- /dev/null
-> +++ b/po/zh_TW.po
-> @@ -0,0 +1,93 @@
-> +# Chinese translations for PACKAGE package.
-> +# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
-> +# This file is distributed under the same license as the PACKAGE package.
+> 2. Grant mappings. This allows the guest to dynamically grant and
+> remove access to pages as needed.
+> So the VM running QEMU, cannot map guest RAM unless it's been
+> instructed to do so by the guest.
+> 
+> #2 is desirable because if QEMU gets compromised it has a smaller
+> attack surface onto the guest.
 
-Can you replace all these placeholder ALLCAPS items
-with the right values, please?
+And it allows to run the virtio backend in a less privileged VM.
 
-> +# Peter Hsu <hsu@peterdavehello.org>, 2024.
-> +#
-> +msgid ""
-> +msgstr ""
-> +"Project-Id-Version: PACKAGE VERSION\n"
+> 
+>>
+>>    - why a 3rd memory type is required?  Do we have other alternatives?
+> 
+> Yes, there are alternatives.
+> 
+> 1. It was suggested by Stefano to try to handle this in existing qemu/hw/xen/*.
+> This would be less intrusive but perhaps also less explicit.
+> Concerns about touching the Memory API have been raised before, so
+> perhaps we should try this.
+> I'm a little unsure how we would deal with unmapping when the guest
+> removes our grants and we're using models that don't map but use
+> address_space_read/write().
 
-There's another one here.
+Those would either need to use grant-copy hypercalls, or they'd need to map,
+read/write, unmap.
 
-> +"Report-Msgid-Bugs-To: \n"
-> +"POT-Creation-Date: 2024-04-16 17:52+0800\n"
-> +"PO-Revision-Date: 2024-04-16 17:52+0800\n"
-> +"Last-Translator: Peter Hsu <hsu@peterdavehello.org>\n"
-> +"Language-Team: Chinese (traditional)\n"
-> +"Language: zh_TW\n"
-> +"MIME-Version: 1.0\n"
-> +"Content-Type: text/plain; charset=ASCII\n"
-> +"Content-Transfer-Encoding: 8bit\n"
+> 
+> 2. Another approach could be to change the Xen grant-iommu in the
+> Linux kernel to work with a grant vIOMMU in QEMU.
+> Linux could explicitly ask QEMU's grant vIOMMU to map/unmap granted regions.
+> This would have the benefit that we wouldn't need to allocate
+> address-bit 63 for grants.
+> A drawback is that it may be slower since we're going to need to
+> bounce between guest/qemu a bit more.
 
-thanks
--- PMM
+It would be a _lot_ slower, unless virtio-iommu and grants are both modified
+to match. I have looked into that, but the needed effort is rather large. At
+the last Xen summit I have suggested to introduce a new grant format which
+would work more like a normal page table structure. Using the same format
+for virtio-iommu would allow to avoid the additional bounces between qemu and
+the guest (and in fact that was one of the motivations to suggest the new
+grant format).
+
+
+Juergen
 
