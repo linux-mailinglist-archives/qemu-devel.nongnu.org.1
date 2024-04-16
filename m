@@ -2,112 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3506B8A6713
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 11:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF128A6717
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 11:24:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwf1W-0000MO-TY; Tue, 16 Apr 2024 05:22:44 -0400
+	id 1rwf2y-0004FD-G5; Tue, 16 Apr 2024 05:24:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1rwf17-0008D6-Le
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:22:17 -0400
-Received: from mail-dm6nam04on20600.outbound.protection.outlook.com
- ([2a01:111:f403:2409::600]
- helo=NAM04-DM6-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
- id 1rwf14-0008WV-9y
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:22:17 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kT5wiRlRyvEb2A8FWM7Vft0T+8hfatTXYjf2wPRmHq56PAr+H2zXAGV55X+0Nern5sx+G/NReBAaKxL5r/W9HyKYUiZCvXoyM1aA1I6Bm2v3M1zET8po5W9hF6SV62dcx4iGKKLXpFlX98cisdA7Pihrv34INcSRkNAFt3bucV3c3EWnDBWya5Q42ysS7yoQaNze6ODn26WNykQSlbmcXCYLDfzFRkZP+7N8KsOI1PiPaVsqAdemj8Azg1P801Z+Hvq+mBH90JF/7NX+pSs8xjB+x99cJrJ1kL7McrV+h+N/xwl0GG13Z9vePa2oeNIj6LPuJhnSwz4FjLzu7elJ9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8nziMQxK0smHBvkGzi8/qz0Yb3SITAuIvfgvwq1jFcs=;
- b=Ygg/OvH7EnsuZhqF2XFip9zDoPmuyQfLmAvnS76KkZECl7Ii13nVMTpYlQ1Obrz9RVptwdsa9m006tAFwdCa9Uf+JYAOGvkA1TcXIsiokg1FVTRNcOOL/KrPm9WjCzi7hvoEzF/BJck1YodgMCH8+OOvFH56olT0t7xsbmKh7trAi8KP+vECakso0QzNfcblKJGSZnWYEserQw9y2u4d1dx3NlH6epsdeX5Uam7BipV3v8RUx9UrxCQMwOlqpSrIDa2XPME6/uBd3gF1KJ0tjIWDDcLOMarksloXfM3vB+Dqbg964sWwC20B7qzsvdc/Z+0IQD7tNesXzAcQUvRhPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8nziMQxK0smHBvkGzi8/qz0Yb3SITAuIvfgvwq1jFcs=;
- b=ahSnchf5l2GVk85myIK3ZranRz3eVstHG/ieFdb5DghRfGBkTZPEQP1TlYMuHt6qHWbG/fUK1HyP7U1gkhgg0Jaxk4rZdhyXpkoyVdj0ZeL5KvmQtaqCCK5CiIISchkMtF+Sap06M7MlomyPChE4vs2OcmONkJokhN5EP/M/7fY=
-Received: from DM6PR01CA0016.prod.exchangelabs.com (2603:10b6:5:296::21) by
- IA1PR12MB7733.namprd12.prod.outlook.com (2603:10b6:208:423::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
- 2024 09:22:07 +0000
-Received: from DS1PEPF00017095.namprd03.prod.outlook.com
- (2603:10b6:5:296:cafe::7) by DM6PR01CA0016.outlook.office365.com
- (2603:10b6:5:296::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.33 via Frontend
- Transport; Tue, 16 Apr 2024 09:22:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- DS1PEPF00017095.mail.protection.outlook.com (10.167.17.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Tue, 16 Apr 2024 09:22:07 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 16 Apr
- 2024 04:22:05 -0500
-Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Tue, 16 Apr 2024 04:22:05 -0500
-Date: Tue, 16 Apr 2024 11:21:58 +0200
-From: Luc Michel <luc.michel@amd.com>
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <qemu-devel@nongnu.org>
-Subject: Re: [PATCH 6/6] reset: Add RESET_TYPE_SNAPSHOT_LOAD
-Message-ID: <Zh5DNi7zISVmka3D@XFR-LUMICHEL-L2.amd.com>
-References: <20240412160809.1260625-1-peter.maydell@linaro.org>
- <20240412160809.1260625-7-peter.maydell@linaro.org>
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rwf2k-0003lQ-JY
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:24:00 -0400
+Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1rwf2e-0000lR-Ni
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:23:57 -0400
+Received: by mail-pl1-x62b.google.com with SMTP id
+ d9443c01a7336-1e3cf5b171eso33926105ad.0
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 02:23:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1713259428; x=1713864228; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=IpW/hijO0aHHxkG2Zb18GBzP2NduAGDhiCt875BvOCU=;
+ b=TeiCww9bvjJpD3tRM2PpBB03b4pr1Ad1TIyaANpZQX6kDEnzoXBua4jl14lTZ0ePSw
+ XZjBRBs8j0w3S4VOoClv+kb4NbaoABoO035qO8kS5HNC/DBJlIRN3KtOZXta08sTy1pJ
+ AB0NkOhkmLfqZKpiBFujDcNFzefxkwTR1wDnVkgzKrZLCWClH0yGlUweM/NZYHfAT4Mn
+ eDkEyVedJty2igTs4s2g9jj/BRjoxenFGUQOx0IfXGoq1JnDy9YeOYEpd1Jc5DHad8aP
+ PxoHOVENkq3Ed+erhiCUO3g2dGM/NSssERvcoiNA1hMbukbKrl5RSX9zTRw6UK+wWgV0
+ o+wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713259428; x=1713864228;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=IpW/hijO0aHHxkG2Zb18GBzP2NduAGDhiCt875BvOCU=;
+ b=kRoUBBllw1djartO/Tf4sZ0jGOZg6QmPhvDOXVWvm9PjcB9wIzoZy0tdEdT8dunFXn
+ 7SQeRIu0iM3oN+FoA3EmU/txiZgriCvYQp9o4p+yPc+BPHnq/GBJZ5XoCmo1i/wGE/e2
+ kUFSu5xc5+GfFowZ5hLeRd+j2cR5g67vdZdbpkGNMLY9WeVxNxqpEMY7KJOjGFmbLRvy
+ XRlGiu5UKu+F2+mYKd4AVY0hM49dtuY9blk2tzSfRa3AHnvJAjHcSOq7cqdV4UsGJDtG
+ 6qX7WLwuwqCP3OTplwrlMKHWyB2Jk9bPYQ3mTWI6SfbrZ2Yig+KjxbHTsXr1HSN/BWwQ
+ hHGQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUalOhB+wNiYiIJneojaCG5YiMSaq3RZKNpJSWgMsS5sr7B2h8L7yITqyYLgXLGKz2WSEbDJsBnWyvF68Ki76rKZ+9vD38=
+X-Gm-Message-State: AOJu0YyPG26EaVnRqfd+pz7raFz6/Mfx4HTvDkbzHuRMJpQFjZb8Xkad
+ /kc6O/hrbzRZL+pkKzAQb/AT9hn6scMRaWEK0+uNbUMRT8F8UvA6SMyFzn2a/zo=
+X-Google-Smtp-Source: AGHT+IFz7sxyqodhqcMHkpWTghH665tQ4vQZCJAbH/Yc1xan5QSBX/4nYRpWz375G6Ln2ElNnxZyrA==
+X-Received: by 2002:a17:902:ea12:b0:1e3:dfdc:6972 with SMTP id
+ s18-20020a170902ea1200b001e3dfdc6972mr17052582plg.9.1713259428336; 
+ Tue, 16 Apr 2024 02:23:48 -0700 (PDT)
+Received: from [192.168.68.110] ([177.45.186.202])
+ by smtp.gmail.com with ESMTPSA id
+ q6-20020a170902a3c600b001dd0d0d26a4sm9553362plb.147.2024.04.16.02.23.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Apr 2024 02:23:47 -0700 (PDT)
+Message-ID: <ada42503-dab4-474f-a61a-a9fe3fa63afa@ventanamicro.com>
+Date: Tue, 16 Apr 2024 06:23:43 -0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240412160809.1260625-7-peter.maydell@linaro.org>
-Received-SPF: None (SATLEXMB03.amd.com: luc.michel@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS1PEPF00017095:EE_|IA1PR12MB7733:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9405d74-5551-4162-987a-08dc5df6b00a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QDFGc8KBC0AG4HsXW0BR5goML+cs4PLimdEIm6Pm4Qc8MtJB6dAGMXRwmvEmnOrbXGNbCgrqv+62ExKhQzlxvX6p0vvNwU4LMkrMVs7nyLplm83Gp5/A+fuj1rljonWHrhvnJI0bLFI8lRrEhqmDbc+TsmBiucnDT8C5p6duOwamSp1rfauz2Wjhxo0G4cvIwFUjQcxvsdm9OYNB/izxasw+EbzBW1S3xedqUfWqL8tZTicty7uFXuzCdAt3dX/7r0T47Ru2fMYuHBAwZ169dVTjK9rjwYXFwN3sjVU/sKjKbb7zls+2v7Wzr5ABa+5hjNf95+2ennStSsFvGCGW5sXSY9McnKFHnRtVRU/9pPvcM67OFBlZCYEXbSjbz3bvMUwwQ+0tH9ODF7WPBZfMUij7ibyu8glJdbZs3wfp/vxG1EDJfaN/iultx+MDRWd4ftEu3z99Wh3XciHvjsblbsbGKWAQXalwVgMUfBf75nPFxa6TIYd8IQsRv5qJWU6epVvYsYmJ+j9TgZutGxmCiLQUoACF3baq3cu0BCcHp8oHaBghfK1i5vVpZHP69d9+0IPckD2HS4Ca9ibIjc39RfRdI/HJ4lt8jbhXxjjsTU8o+rG5rYEssFiW9eo30aR9S7Hp9yXHmjBWRrzNTdvmM9gT6mzyNcbOtDf2MuO9nQPub9daIBk8mMkzp+GMXltZ3GWRTDGsW3O9YEct8WdljTB/06CqkJMx7M5zrC6K0zcIJkUQWjx+Mbaab7BEsd7w
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(1800799015)(82310400014)(36860700004)(376005); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 09:22:07.5808 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9405d74-5551-4162-987a-08dc5df6b00a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017095.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7733
-Received-SPF: permerror client-ip=2a01:111:f403:2409::600;
- envelope-from=Luc.Michel@amd.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/4] target/riscv/kvm: add software breakpoints support
+Content-Language: en-US
+To: Chao Du <duchao@eswincomputing.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, pbonzini@redhat.com, alistair23@gmail.com,
+ bin.meng@windriver.com, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
+ palmer@dabbelt.com, anup@brainfault.org, atishp@atishpatra.org
+References: <20231221094923.7349-1-duchao@eswincomputing.com>
+ <20231221094923.7349-2-duchao@eswincomputing.com>
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+In-Reply-To: <20231221094923.7349-2-duchao@eswincomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,150 +98,309 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17:08 Fri 12 Apr     , Peter Maydell wrote:
-> Some devices and machines need to handle the reset before a vmsave
-> snapshot is loaded differently -- the main user is the handling of
-> RNG seed information, which does not want to put a new RNG seed into
-> a ROM blob when we are doing a snapshot load.
-> 
-> Currently this kind of reset handling is supported only for:
->  * TYPE_MACHINE reset methods, which take a ShutdownCause argument
->  * reset functions registered with qemu_register_reset_nosnapshotload
-> 
-> To allow a three-phase-reset device to also distinguish "snapshot
-> load" reset from the normal kind, add a new ResetType
-> RESET_TYPE_SNAPSHOT_LOAD. All our existing reset methods ignore
-> the reset type, so we don't need to update any device code.
-> 
-> Add the enum type, and make qemu_devices_reset() use the
-> right reset type for the ShutdownCause it is passed. This
-> allows us to get rid of the device_reset_reason global we
-> were using to implement qemu_register_reset_nosnapshotload().
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-Reviewed-by: Luc Michel <luc.michel@amd.com>
 
+On 12/21/23 06:49, Chao Du wrote:
+> This patch implements insert/remove software breakpoint process:
+> 
+> Add an input parameter for kvm_arch_insert_sw_breakpoint() and
+> kvm_arch_remove_sw_breakpoint() to pass the length information,
+> which helps us to know whether it is a compressed instruction.
+> For some remove cases, we do not have the length info, so we need
+> to judge by ourselves.
+> 
+> For RISC-V, GDB treats single-step similarly to breakpoint: add a
+> breakpoint at the next step address, then continue. So this also
+> works for single-step debugging.
+> 
+> Add some stubs which are necessary for building, and will be
+> implemented later.
+> 
+> Signed-off-by: Chao Du <duchao@eswincomputing.com>
 > ---
->  docs/devel/reset.rst    | 17 ++++++++++++++---
->  include/hw/resettable.h |  1 +
->  hw/core/reset.c         | 15 ++++-----------
->  hw/core/resettable.c    |  4 ----
->  4 files changed, 19 insertions(+), 18 deletions(-)
+>   accel/kvm/kvm-all.c        |  8 ++--
+>   include/sysemu/kvm.h       |  6 ++-
+>   target/arm/kvm64.c         |  6 ++-
+>   target/i386/kvm/kvm.c      |  6 ++-
+>   target/mips/kvm.c          |  6 ++-
+>   target/ppc/kvm.c           |  6 ++-
+>   target/riscv/kvm/kvm-cpu.c | 79 ++++++++++++++++++++++++++++++++++++++
+>   target/s390x/kvm/kvm.c     |  6 ++-
+>   8 files changed, 107 insertions(+), 16 deletions(-)
 > 
-> diff --git a/docs/devel/reset.rst b/docs/devel/reset.rst
-> index 49baa1ea271..9746a4e8a0b 100644
-> --- a/docs/devel/reset.rst
-> +++ b/docs/devel/reset.rst
-> @@ -27,9 +27,7 @@ instantly reset an object, without keeping it in reset state, just call
->  ``resettable_reset()``. These functions take two parameters: a pointer to the
->  object to reset and a reset type.
-> 
-> -Several types of reset will be supported. For now only cold reset is defined;
-> -others may be added later. The Resettable interface handles reset types with an
-> -enum:
-> +The Resettable interface handles reset types with an enum ``ResetType``:
-> 
->  ``RESET_TYPE_COLD``
->    Cold reset is supported by every resettable object. In QEMU, it means we reset
-> @@ -37,6 +35,19 @@ enum:
->    from what is a real hardware cold reset. It differs from other resets (like
->    warm or bus resets) which may keep certain parts untouched.
-> 
-> +``RESET_TYPE_SNAPSHOT_LOAD``
-> +  This is called for a reset which is being done to put the system into a
-> +  clean state prior to loading a snapshot. (This corresponds to a reset
-> +  with ``SHUTDOWN_CAUSE_SNAPSHOT_LOAD``.) Almost all devices should treat
-> +  this the same as ``RESET_TYPE_COLD``. The main exception is devices which
-> +  have some non-deterministic state they want to reinitialize to a different
-> +  value on each cold reset, such as RNG seed information, and which they
-> +  must not reinitialize on a snapshot-load reset.
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index e39a810a4e..ccc505d0c2 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -3231,7 +3231,7 @@ int kvm_insert_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+>           bp = g_new(struct kvm_sw_breakpoint, 1);
+>           bp->pc = addr;
+>           bp->use_count = 1;
+> -        err = kvm_arch_insert_sw_breakpoint(cpu, bp);
+> +        err = kvm_arch_insert_sw_breakpoint(cpu, bp, len);
+>           if (err) {
+>               g_free(bp);
+>               return err;
+> @@ -3270,7 +3270,7 @@ int kvm_remove_breakpoint(CPUState *cpu, int type, vaddr addr, vaddr len)
+>               return 0;
+>           }
+>   
+> -        err = kvm_arch_remove_sw_breakpoint(cpu, bp);
+> +        err = kvm_arch_remove_sw_breakpoint(cpu, bp, len);
+>           if (err) {
+>               return err;
+>           }
+> @@ -3300,10 +3300,10 @@ void kvm_remove_all_breakpoints(CPUState *cpu)
+>       CPUState *tmpcpu;
+>   
+>       QTAILQ_FOREACH_SAFE(bp, &s->kvm_sw_breakpoints, entry, next) {
+> -        if (kvm_arch_remove_sw_breakpoint(cpu, bp) != 0) {
+> +        if (kvm_arch_remove_sw_breakpoint(cpu, bp, 0) != 0) {
+>               /* Try harder to find a CPU that currently sees the breakpoint. */
+>               CPU_FOREACH(tmpcpu) {
+> -                if (kvm_arch_remove_sw_breakpoint(tmpcpu, bp) == 0) {
+> +                if (kvm_arch_remove_sw_breakpoint(tmpcpu, bp, 0) == 0) {
+>                       break;
+>                   }
+>               }
+> diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> index d614878164..ab38c23def 100644
+> --- a/include/sysemu/kvm.h
+> +++ b/include/sysemu/kvm.h
+> @@ -391,9 +391,11 @@ struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu,
+>   int kvm_sw_breakpoints_active(CPUState *cpu);
+>   
+>   int kvm_arch_insert_sw_breakpoint(CPUState *cpu,
+> -                                  struct kvm_sw_breakpoint *bp);
+> +                                  struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len);
+>   int kvm_arch_remove_sw_breakpoint(CPUState *cpu,
+> -                                  struct kvm_sw_breakpoint *bp);
+> +                                  struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len);
+>   int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type);
+>   int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type);
+>   void kvm_arch_remove_all_hw_breakpoints(void);
+> diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+> index 3c175c93a7..023e92b577 100644
+> --- a/target/arm/kvm64.c
+> +++ b/target/arm/kvm64.c
+> @@ -1139,7 +1139,8 @@ void kvm_arch_on_sigbus_vcpu(CPUState *c, int code, void *addr)
+>   /* C6.6.29 BRK instruction */
+>   static const uint32_t brk_insn = 0xd4200000;
+>   
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       if (have_guest_debug) {
+>           if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, 4, 0) ||
+> @@ -1153,7 +1154,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>       }
+>   }
+>   
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       static uint32_t brk;
+>   
+> diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+> index 4ce80555b4..742b7c8296 100644
+> --- a/target/i386/kvm/kvm.c
+> +++ b/target/i386/kvm/kvm.c
+> @@ -4935,7 +4935,8 @@ static int kvm_handle_tpr_access(X86CPU *cpu)
+>       return 1;
+>   }
+>   
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       static const uint8_t int3 = 0xcc;
+>   
+> @@ -4946,7 +4947,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>       return 0;
+>   }
+>   
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       uint8_t int3;
+>   
+> diff --git a/target/mips/kvm.c b/target/mips/kvm.c
+> index e22e24ed97..2f68938cdf 100644
+> --- a/target/mips/kvm.c
+> +++ b/target/mips/kvm.c
+> @@ -112,13 +112,15 @@ void kvm_mips_reset_vcpu(MIPSCPU *cpu)
+>       DPRINTF("%s\n", __func__);
+>   }
+>   
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       DPRINTF("%s\n", __func__);
+>       return 0;
+>   }
+>   
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       DPRINTF("%s\n", __func__);
+>       return 0;
+> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+> index 9b1abe2fc4..a99c85b2f3 100644
+> --- a/target/ppc/kvm.c
+> +++ b/target/ppc/kvm.c
+> @@ -1375,7 +1375,8 @@ static int kvmppc_handle_dcr_write(CPUPPCState *env,
+>       return 0;
+>   }
+>   
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       /* Mixed endian case is not handled */
+>       uint32_t sc = debug_inst_opcode;
+> @@ -1389,7 +1390,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>       return 0;
+>   }
+>   
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       uint32_t sc;
+>   
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index 45b6cf1cfa..e9110006b0 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -1521,3 +1521,82 @@ static const TypeInfo riscv_kvm_cpu_type_infos[] = {
+>   };
+>   
+>   DEFINE_TYPES(riscv_kvm_cpu_type_infos)
 > +
-> +Devices which implement reset methods must treat any unknown ``ResetType``
-> +as equivalent to ``RESET_TYPE_COLD``; this will reduce the amount of
-> +existing code we need to change if we add more types in future.
+> +static const uint32_t ebreak_insn = 0x00100073;
+> +static const uint16_t c_ebreak_insn = 0x9002;
 > +
->  Calling ``resettable_reset()`` is equivalent to calling
->  ``resettable_assert_reset()`` then ``resettable_release_reset()``. It is
->  possible to interleave multiple calls to these three functions. There may
-> diff --git a/include/hw/resettable.h b/include/hw/resettable.h
-> index 3161e471c9b..7e249deb8b5 100644
-> --- a/include/hw/resettable.h
-> +++ b/include/hw/resettable.h
-> @@ -35,6 +35,7 @@ typedef struct ResettableState ResettableState;
->   */
->  typedef enum ResetType {
->      RESET_TYPE_COLD,
-> +    RESET_TYPE_SNAPSHOT_LOAD,
->  } ResetType;
-> 
->  /*
-> diff --git a/hw/core/reset.c b/hw/core/reset.c
-> index f9fef45e050..58dfc8db3dc 100644
-> --- a/hw/core/reset.c
-> +++ b/hw/core/reset.c
-> @@ -43,13 +43,6 @@ static ResettableContainer *get_root_reset_container(void)
->      return root_reset_container;
->  }
-> 
-> -/*
-> - * Reason why the currently in-progress qemu_devices_reset() was called.
-> - * If we made at least SHUTDOWN_CAUSE_SNAPSHOT_LOAD have a corresponding
-> - * ResetType we could perhaps avoid the need for this global.
-> - */
-> -static ShutdownCause device_reset_reason;
-> -
->  /*
->   * This is an Object which implements Resettable simply to call the
->   * callback function in the hold phase.
-> @@ -77,8 +70,7 @@ static void legacy_reset_hold(Object *obj, ResetType type)
->  {
->      LegacyReset *lr = LEGACY_RESET(obj);
-> 
-> -    if (device_reset_reason == SHUTDOWN_CAUSE_SNAPSHOT_LOAD &&
-> -        lr->skip_on_snapshot_load) {
-> +    if (type == RESET_TYPE_SNAPSHOT_LOAD && lr->skip_on_snapshot_load) {
->          return;
->      }
->      lr->func(lr->opaque);
-> @@ -180,8 +172,9 @@ void qemu_unregister_resettable(Object *obj)
-> 
->  void qemu_devices_reset(ShutdownCause reason)
->  {
-> -    device_reset_reason = reason;
-> +    ResetType type = (reason == SHUTDOWN_CAUSE_SNAPSHOT_LOAD) ?
-> +        RESET_TYPE_SNAPSHOT_LOAD : RESET_TYPE_COLD;
-> 
->      /* Reset the simulation */
-> -    resettable_reset(OBJECT(get_root_reset_container()), RESET_TYPE_COLD);
-> +    resettable_reset(OBJECT(get_root_reset_container()), type);
->  }
-> diff --git a/hw/core/resettable.c b/hw/core/resettable.c
-> index bebf7f10b26..6dd3e3dc487 100644
-> --- a/hw/core/resettable.c
-> +++ b/hw/core/resettable.c
-> @@ -48,8 +48,6 @@ void resettable_reset(Object *obj, ResetType type)
-> 
->  void resettable_assert_reset(Object *obj, ResetType type)
->  {
-> -    /* TODO: change this assert when adding support for other reset types */
-> -    assert(type == RESET_TYPE_COLD);
->      trace_resettable_reset_assert_begin(obj, type);
->      assert(!enter_phase_in_progress);
-> 
-> @@ -64,8 +62,6 @@ void resettable_assert_reset(Object *obj, ResetType type)
-> 
->  void resettable_release_reset(Object *obj, ResetType type)
->  {
-> -    /* TODO: change this assert when adding support for other reset types */
-> -    assert(type == RESET_TYPE_COLD);
->      trace_resettable_reset_release_begin(obj, type);
->      assert(!enter_phase_in_progress);
-> 
-> --
-> 2.34.1
-> 
-> 
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+> +{
+> +    if (len != 4 && len != 2) {
+> +        return -EINVAL;
+> +    }
 
--- 
+I wonder if this verification should be moved to kvm_insert_breakpoint(). Is
+there any known reason why other archs would use 'len' other than 2 or 4? The
+parent function can throw the EINVAL in this case. Otherwise all callers from
+all archs will need a similar EINVAL check.
+
+> +
+> +    uint8_t * insn = (len == 4) ? (uint8_t *)&ebreak_insn :
+> +                                  (uint8_t *)&c_ebreak_insn;
+> +
+> +    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn, len, 0) ||
+> +        cpu_memory_rw_debug(cs, bp->pc, insn, len, 1)) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+> +{
+> +    uint8_t length;
+> +
+> +    if (len == 4 || len == 2) {
+> +        length = (uint8_t)len;
+
+Same question as above - perhaps the len = 0 | 2 | 4 conditional can be moved to
+kvm_remove_breakpoint().
+
+
+Thanks,
+
+
+Daniel
+
+
+> +    } else if (len == 0) {
+> +        /* Need to decide the instruction length in this case. */
+> +        uint32_t read_4_bytes;
+> +        uint16_t read_2_bytes;
+> +
+> +        if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&read_4_bytes, 4, 0) ||
+> +            cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&read_2_bytes, 2, 0)) {
+> +            return -EINVAL;
+> +        }
+> +
+> +        if (read_4_bytes == ebreak_insn) {
+> +            length = 4;
+> +        } else if (read_2_bytes == c_ebreak_insn) {
+> +            length = 2;
+> +        } else {
+> +            return -EINVAL;
+> +        }
+> +    } else {
+> +        return -EINVAL;
+> +    }
+> +
+> +    if (cpu_memory_rw_debug(cs, bp->pc, (uint8_t *)&bp->saved_insn,
+> +                            length, 1)) {
+> +        return -EINVAL;
+> +    }
+> +
+> +    return 0;
+> +}
+> +
+> +int kvm_arch_insert_hw_breakpoint(vaddr addr, vaddr len, int type)
+> +{
+> +    /* TODO; To be implemented later. */
+> +    return -EINVAL;
+> +}
+> +
+> +int kvm_arch_remove_hw_breakpoint(vaddr addr, vaddr len, int type)
+> +{
+> +    /* TODO; To be implemented later. */
+> +    return -EINVAL;
+> +}
+> +
+> +void kvm_arch_remove_all_hw_breakpoints(void)
+> +{
+> +    /* TODO; To be implemented later. */
+> +}
+> +
+> +void kvm_arch_update_guest_debug(CPUState *cs, struct kvm_guest_debug *dbg)
+> +{
+> +    /* TODO; To be implemented later. */
+> +}
+> diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+> index 33ab3551f4..fafacedd6a 100644
+> --- a/target/s390x/kvm/kvm.c
+> +++ b/target/s390x/kvm/kvm.c
+> @@ -867,7 +867,8 @@ static void determine_sw_breakpoint_instr(void)
+>           }
+>   }
+>   
+> -int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       determine_sw_breakpoint_instr();
+>   
+> @@ -879,7 +880,8 @@ int kvm_arch_insert_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+>       return 0;
+>   }
+>   
+> -int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp)
+> +int kvm_arch_remove_sw_breakpoint(CPUState *cs, struct kvm_sw_breakpoint *bp,
+> +                                  vaddr len)
+>   {
+>       uint8_t t[MAX_ILEN];
+>   
 
