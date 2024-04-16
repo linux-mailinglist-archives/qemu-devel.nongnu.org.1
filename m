@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F285B8A739B
+	by mail.lfdr.de (Postfix) with ESMTPS id 9723D8A7399
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 20:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwnqG-0003Zl-8K; Tue, 16 Apr 2024 14:47:40 -0400
+	id 1rwnqM-0003bY-VC; Tue, 16 Apr 2024 14:47:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwnqB-0003Ys-NJ
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 14:47:36 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwnqC-0003ZW-Ul
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 14:47:37 -0400
 Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwnq6-00031G-I5
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 14:47:35 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwnqA-00031T-OK
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 14:47:36 -0400
 Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-418a02562b3so4791455e9.3
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 11:47:26 -0700 (PDT)
+ 5b1f17b1804b1-4185e80adfbso13796815e9.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 11:47:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713293245; x=1713898045; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=xGn+yfMUz11JyYIw92kbWBG3cmCj73SLHNFhXZICy+A=;
- b=pCs3FpTHAOzE9KigXLe5mOORs24V/gHsE9FSUF+C0k7GZGAAKyvizpuEx1EMQ67U06
- CPgUCxDFpCQNTQRX1/ry82DzeKHmRivPz30pEDShi2CtaGHybiHFOf4fpB7iAht7Bt89
- 6zR9mfYcSbVZM79/D7NCjuLD/NGeUSQEjNNlywY/4SV45L8wHBH0Fdf+qs11MTUXfrUV
- sncM3eKXQHUkPXAZtWJkQ48yL213HDQR8WDykEXvmBHSOqmb/xJL85GB/u4WOxNETh6h
- 81NBa1488C9J7l2wykgGPxVK4MCv9ZomTdHIif0ukUlXJtwqkLh0cwJwTgVZYmQZl22N
- N2ew==
+ d=linaro.org; s=google; t=1713293251; x=1713898051; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Spf4Zi1bBqXxf2Gm6GK4HE1fTrLcNzSmKtfAQewlYLg=;
+ b=dd7N3ZE3hFx58vqNiJMX/fOLvm2IfdKY1DRm/XekDtR9wYR17mHLetsYE5fY8fbvgH
+ 4z3WayQ5xC7tYYVuZkzQGA+H2x4S4UvROCxQgSjNIGBxECTeLmQrJXGpI7yFy/Th9Cyx
+ uL4lRau6fR9K4N5Ry0JGc9IGvdkIHn9i9olEnkZ1i4TchNx0mlqWb4z9Fux/Ri+zm0Bh
+ 8NV1AmSdZuSTjr2K6j/ZlreoLEiFdiDHb4mv2YtmwdSFx0AYB35xffBQNkL5uixyWxfc
+ LZ2DdeIgznowhAKSCxqBa2fZHsOUezLl8hU2STOnyUcF3tXOvhxIirlaQwnsWfaOtDUp
+ 1i9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713293245; x=1713898045;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=xGn+yfMUz11JyYIw92kbWBG3cmCj73SLHNFhXZICy+A=;
- b=s+tuDM6Gx2KkHap2J7rxslpAByKrWFy+VG7TvCvkFHKaJMGjxpFNY+tDVn+p3pmvw6
- 66XN8UxEu2Ya7Gjn1LyDtWkVYOh7oTqLe0vc6skIyOW0R4iNCEr2gLnVq/njiYTe6o1R
- s0WNWI0sb6V7plViIfgDV+qGl5F2OJ/dcNeKRfE5bmjPcvd65vnrOmUD9iXfqg1xrHmA
- N8yIN46JN51s4WugARihMi6IGVWKHB0khmz9s9z6WP6F0Yb7v5TUD9lxLBxgYAlKlewX
- nHNXsuTj1igf5wOeSy3AypDDxxn4YOnTOfk2tZ4i3TbxVNSfgoWW8jVf12Cll4kqZbog
- TDcQ==
-X-Gm-Message-State: AOJu0YzcVBxuIIZJX3xjFUqZAypZWoOKpz5jNMXGKXj3/5rrbtfbHqck
- tvFvVBlOl1SyCOIpzeQ2ay+SydnRcniYqgVGJa10bjl7ZBybdeSsAUWBT8zJzUPYIDKiGRK22zI
- N
-X-Google-Smtp-Source: AGHT+IHc9Cr9JlX9kDpZ0pQjmz7zt77CFWxygaJ4KtwnQos7/bgIi88HQx1GzywBpIkj2VUduOA6aA==
-X-Received: by 2002:a05:600c:1e1b:b0:418:6900:96af with SMTP id
- ay27-20020a05600c1e1b00b00418690096afmr4449823wmb.25.1713293244987; 
- Tue, 16 Apr 2024 11:47:24 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713293251; x=1713898051;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Spf4Zi1bBqXxf2Gm6GK4HE1fTrLcNzSmKtfAQewlYLg=;
+ b=N+XcZYD7KvXYD+Smdo4o/Z06SvayNcqK6iH/eIXKBy6miI46eVP9zD10idaWsrJ4bQ
+ OXtiebDEYhpOzj1ZYmSwzzOBKwOGi4Oi8gi3AKgVICTvBlHA2PR7ZaJZgNapAY4YOrgr
+ O3k8esVxH99jcwzkzYvY/Qy6R1E0i20wltR3EWQeWPCE3u/YR54i/IMtTWbVVdFoJUgi
+ H1W6NazOsdEfiBJj9HKNA1TZbXUaZCuT3d1iXh24g/fE5g4Ubpu9L7cPVoLvy8SgCQif
+ GCP1wHetQzox9MlvbsM59N2FcVxqpggwLtX9us+nElRxQRg5xJsFf+4lUMoLZ48jGEOC
+ c92w==
+X-Gm-Message-State: AOJu0Yy5JQcbFpU4phyxd7E/xkO92AXdvXZOnml07lCQ3IU7VHLX3w8W
+ IKdgtCGNP+uWyA2FhPb2Bn+K5ZDDuOAz+T620+AF9PEwYbtK4giVGD697AKaYpLLHsjzX5Kx5jz
+ Y
+X-Google-Smtp-Source: AGHT+IE7UA5gf8SSfl83cHXb/2Xy1PaQGFDtgpO4jHPz6k1P3QaMR1axOMDHC9+aOnzWss5gvWEM7g==
+X-Received: by 2002:a05:600c:3491:b0:418:2323:e87 with SMTP id
+ a17-20020a05600c349100b0041823230e87mr7283079wmq.25.1713293250787; 
+ Tue, 16 Apr 2024 11:47:30 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- a13-20020a05600c348d00b004186eb69a55sm7331020wmq.25.2024.04.16.11.47.23
+ e29-20020adfa45d000000b00348b46a134bsm2810947wra.1.2024.04.16.11.47.29
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 11:47:24 -0700 (PDT)
+ Tue, 16 Apr 2024 11:47:30 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  Corey Minyard <cminyard@mvista.com>,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/4] hw/i2c: Convert to spec v7 (inclusive) terminology
-Date: Tue, 16 Apr 2024 20:47:17 +0200
-Message-ID: <20240416184722.28334-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 1/4] hw/i2c: Fix checkpatch block comment warnings
+Date: Tue, 16 Apr 2024 20:47:18 +0200
+Message-ID: <20240416184722.28334-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240416184722.28334-1-philmd@linaro.org>
+References: <20240416184722.28334-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
  envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
@@ -90,82 +93,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Convert TYPE_I2C_TARGET definition (Paolo)
+We are going to modify these lines, fix their style
+in order to avoid checkpatch.pl warnings:
 
-Mechanical (mostly) conversion inspired by Wolfram [*] to
-use inclusive terminology, similarly to the other renames
-we did 3 years ago, shortly before the I2C spec v7 was
-published.
+  WARNING: Block comments use a leading /* on a separate line
+  WARNING: Block comments use * on subsequent lines
+  WARNING: Block comments use a trailing */ on a separate line
 
-This series convert core I2C. Following will convert the
-devices and SMBus.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/hw/i2c/i2c.h | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-[*] https://lore.kernel.org/all/20240322132619.6389-1-wsa+renesas@sang-engineering.com/
-
-Philippe Mathieu-Daudé (4):
-  hw/i2c: Fix checkpatch block comment warnings
-  hw/i2c: Fix checkpatch line over 80 chars warnings
-  hw/i2c: Convert to spec v7 terminology (automatically)
-  hw/i2c: Convert to spec v7 terminology (manually)
-
- include/hw/display/i2c-ddc.h     |   2 +-
- include/hw/gpio/pca9552.h        |   2 +-
- include/hw/gpio/pca9554.h        |   2 +-
- include/hw/i2c/aspeed_i2c.h      |   4 +-
- include/hw/i2c/i2c.h             | 123 ++++++-------
- include/hw/i2c/i2c_mux_pca954x.h |   2 +-
- include/hw/i2c/smbus_slave.h     |   4 +-
- include/hw/nvram/eeprom_at24c.h  |   8 +-
- include/hw/sensor/tmp105.h       |   2 +-
- hw/arm/aspeed.c                  | 290 +++++++++++++++++--------------
- hw/arm/bananapi_m2u.c            |   2 +-
- hw/arm/cubieboard.c              |   2 +-
- hw/arm/musicpal.c                |   6 +-
- hw/arm/npcm7xx_boards.c          |  44 ++---
- hw/arm/nseries.c                 |   6 +-
- hw/arm/pxa2xx.c                  |  36 ++--
- hw/arm/realview.c                |   2 +-
- hw/arm/spitz.c                   |  12 +-
- hw/arm/stellaris.c               |   2 +-
- hw/arm/tosa.c                    |  14 +-
- hw/arm/versatilepb.c             |   2 +-
- hw/arm/vexpress.c                |   2 +-
- hw/arm/z2.c                      |  20 +--
- hw/audio/wm8750.c                |  18 +-
- hw/display/ati.c                 |   4 +-
- hw/display/i2c-ddc.c             |  10 +-
- hw/display/sii9022.c             |  16 +-
- hw/display/sm501.c               |   2 +-
- hw/display/ssd0303.c             |  14 +-
- hw/display/xlnx_dp.c             |   2 +-
- hw/gpio/max7310.c                |  14 +-
- hw/gpio/pca9552.c                |  14 +-
- hw/gpio/pca9554.c                |  14 +-
- hw/gpio/pcf8574.c                |  12 +-
- hw/i2c/aspeed_i2c.c              |  16 +-
- hw/i2c/core.c                    |  90 +++++-----
- hw/i2c/i2c_mux_pca954x.c         |   6 +-
- hw/i2c/imx_i2c.c                 |   2 +-
- hw/i2c/smbus_slave.c             |  12 +-
- hw/input/lm832x.c                |  14 +-
- hw/misc/axp2xx.c                 |  14 +-
- hw/misc/i2c-echo.c               |  14 +-
- hw/nvram/eeprom_at24c.c          |  26 +--
- hw/ppc/e500.c                    |   2 +-
- hw/ppc/pnv.c                     |   4 +-
- hw/ppc/sam460ex.c                |   2 +-
- hw/rtc/ds1338.c                  |  14 +-
- hw/rtc/m41t80.c                  |  12 +-
- hw/rtc/twl92230.c                |  16 +-
- hw/sensor/dps310.c               |  14 +-
- hw/sensor/emc141x.c              |  16 +-
- hw/sensor/lsm303dlhc_mag.c       |  16 +-
- hw/sensor/tmp105.c               |  16 +-
- hw/sensor/tmp421.c               |  20 +--
- hw/tpm/tpm_tis_i2c.c             |  12 +-
- 55 files changed, 541 insertions(+), 506 deletions(-)
-
+diff --git a/include/hw/i2c/i2c.h b/include/hw/i2c/i2c.h
+index 2a3abacd1b..c18a69e4b6 100644
+--- a/include/hw/i2c/i2c.h
++++ b/include/hw/i2c/i2c.h
+@@ -4,10 +4,12 @@
+ #include "hw/qdev-core.h"
+ #include "qom/object.h"
+ 
+-/* The QEMU I2C implementation only supports simple transfers that complete
+-   immediately.  It does not support slave devices that need to be able to
+-   defer their response (eg. CPU slave interfaces where the data is supplied
+-   by the device driver in response to an interrupt).  */
++/*
++ * The QEMU I2C implementation only supports simple transfers that complete
++ * immediately.  It does not support slave devices that need to be able to
++ * defer their response (eg. CPU slave interfaces where the data is supplied
++ * by the device driver in response to an interrupt).
++ */
+ 
+ enum i2c_event {
+     I2C_START_RECV,
 -- 
 2.41.0
 
