@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E0B8A750E
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1E88A750F
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 21:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwoge-0003IB-9J; Tue, 16 Apr 2024 15:41:48 -0400
+	id 1rwogf-0003J2-TZ; Tue, 16 Apr 2024 15:41:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rwogb-0003HV-Gq
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:41:45 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1rwoge-0003IJ-41
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:41:48 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rwogZ-00044u-35
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:41:44 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1e3c9300c65so41655945ad.0
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:41:42 -0700 (PDT)
+ id 1rwogb-00045I-P9
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 15:41:47 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1e3c3aa8938so30540625ad.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 12:41:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1713296501; x=1713901301; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1713296504; x=1713901304; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ssIuZaHoHfxGkU2ooOzNE6RgtnB9PZD34dZd+Oj8vXc=;
- b=pKIpe4hQb+qM27AKuCvcj/dUM4X+N2y4W2IIXltgWxMO76PrdPBDmBH5swU2d5FmUz
- wz4q8uLf37S+dqIoYBnoiLXaH0TWRkELNSVrw1+2tNZ/b4OGDrGTOuNOpuYti6EXkPGz
- a9kIW084h9hY+joDf9epYx67XL3dUv3BK+TmzFqe0hxXrGSJL2a8QXerkrdUo3icsFP9
- VDFsGx+M95WQKDVBj+bHGNjgbbui4VqWHLrCNoTjNCfDkDUpjwu7vY0M/KU/8A0R3w9Y
- xQ1rTadfSs2yQGU62ja/Z+rHjEJ6tCmm3a+4ZnP4oRE3q/SAa8EkP/9FkpCFxsKIezkj
- gCcw==
+ bh=nIXT4Ow0ePHNvQiW4c64R7S9d8m6CFTE0ZLlfQRIw4w=;
+ b=LJdXHhydNUPcBG2bNgcTSMO6VhAkgYelybgq/ziVH+dYgRo9CFM9osjaUx1Ti+vGtm
+ IXOE7Ac5w9O0fLz9HCOuWaM0e2XI7KBD2X17YY8hSvqZNvnmRnaWCEg4WZBAbZuFs+11
+ 4M6hTGf0TKrWPKb0F0FQJrtGyfMFVUnJ7S8SzraocNYfCTlOrKZa+tR4akko1UHKQ633
+ ppKdSDITAQNP4C1zLnQhSLHAhoe1czw3s5qAsqhzVms8imjbTx/nO7+RrGTJna0OVACS
+ dOUqq0tIi2lerxMIwl1qfhxL8dVvFsSUQrUXQsytMLr+dKj3hz6EgSIWVYuwJug5kfp/
+ A03w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713296501; x=1713901301;
+ d=1e100.net; s=20230601; t=1713296504; x=1713901304;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ssIuZaHoHfxGkU2ooOzNE6RgtnB9PZD34dZd+Oj8vXc=;
- b=wQJpqGQhe7SmrGaCa1k+dnq6nlLl7Q8n4zAYlwfgtIuV9I5C7sxkPdFSAfNKeMnVW0
- gy7eFEwz6XhpXwjr1IuGEBjsY09GHoqb/i+OjIhm3d2rZj0KPY8V2o/7wmWzZdJX47wc
- kl+MyMEMVmS0nNWG9yB9n/dkKzGLqYMsuD1a3sm26QQLRdpVUXuJQiv1h+QuO3jcBtD2
- mKBAEhjmIkARq4pSUUfuzY0GdKy6WJv1cG43Ra/b9WQtR0Zj8VZ3nlQKJpKSepA4usC4
- XAzuCYFFeW4nb8510JqPz1erLZcIJ2St68BTq4ZkOH1ION5inXVe7u8EUCVZa8cPjOaE
- 3a6A==
-X-Gm-Message-State: AOJu0YzVCA0WtcYhiJuVvG9dkpMzmZ59q02aWntq4kcrwyg6d2y5pJ0j
- vwATNVrO4p9yiMW828tU1lTnIMs5STwFwSHriIcwIAe0TIoCxouDBPJo0nS4bup7FlFRtThNLGO
- Z
-X-Google-Smtp-Source: AGHT+IFjQlCuRTBdopuP4NNlMBHNMACwASl3i1Delc1p19MBWSguSgTMc85d7l/Iiu6pmxffVVDZKg==
-X-Received: by 2002:a17:902:f64a:b0:1e4:9ac6:1f3f with SMTP id
- m10-20020a170902f64a00b001e49ac61f3fmr13834007plg.5.1713296501065; 
- Tue, 16 Apr 2024 12:41:41 -0700 (PDT)
+ bh=nIXT4Ow0ePHNvQiW4c64R7S9d8m6CFTE0ZLlfQRIw4w=;
+ b=Wz7cOoRexefj/2G1wj9/3DQRJmWosrq4BE9teHCpLeU67A7WmxcA3/BUZknVvDp1QA
+ wqvWpEqPJnW1GKctlFjBK1sXPEguo8lR+QftXjzqyJmrJa1Hau1CccV7+hWSqn5DPR8a
+ vmQh3kejhYjC8Eu617KnU/68DCx4yqIke2LKtw4pV80E2T3CdPtRUkyuN4ptN9fIwyUo
+ D7kGhaLZNHS/rfngqcUBEWdGDwhWwZO0GlJRNSvRbsN/skLKGat+bM9cl6hluajvkpS0
+ yWOk0U8kV5FaSrbEMVH5eLPid4wp4RmdigvngIupBB+FrXoDoI4j4FRPIUuOYNlBdIbm
+ /ogg==
+X-Gm-Message-State: AOJu0YwjyayxMe03E+V0zNyIDhcHBnvXS0irBOAooaOUwXOwdY9NLjvd
+ 4yWwvSbyEpjE2jMl2oU8dmC3gDwx9EMhzxKnq1FPnGpPBzmZoI5U9BmMVVKws2UCWvyerF71Sl2
+ N
+X-Google-Smtp-Source: AGHT+IG8lFONKE0bYSTjNnlkDB7gNgi017CmjRe3W4duWlr6iOdbUDUUvjfpZ2s8TRwDLnvAVmQAKQ==
+X-Received: by 2002:a17:903:26c3:b0:1e5:62:7aaa with SMTP id
+ jg3-20020a17090326c300b001e500627aaamr10843183plb.20.1713296503815; 
+ Tue, 16 Apr 2024 12:41:43 -0700 (PDT)
 Received: from grind.. ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
  by smtp.gmail.com with ESMTPSA id
- h5-20020a170902704500b001e3c972c83bsm10160586plt.76.2024.04.16.12.41.38
+ h5-20020a170902704500b001e3c972c83bsm10160586plt.76.2024.04.16.12.41.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 16 Apr 2024 12:41:40 -0700 (PDT)
+ Tue, 16 Apr 2024 12:41:43 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH for-9.1 v2 1/2] target/riscv/debug: set tval=pc in breakpoint
- exceptions
-Date: Tue, 16 Apr 2024 16:41:31 -0300
-Message-ID: <20240416194132.1843699-2-dbarboza@ventanamicro.com>
+Subject: [PATCH for-9.1 v2 2/2] trans_privileged.c.inc: set (m|s)tval on
+ ebreak breakpoint
+Date: Tue, 16 Apr 2024 16:41:32 -0300
+Message-ID: <20240416194132.1843699-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240416194132.1843699-1-dbarboza@ventanamicro.com>
 References: <20240416194132.1843699-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,72 +95,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We're not setting (s/m)tval when triggering breakpoints of type 2
-(mcontrol) and 6 (mcontrol6). According to the debug spec section
-5.7.12, "Match Control Type 6":
+Privileged spec section 4.1.9 mentions:
 
-"The Privileged Spec says that breakpoint exceptions that occur on
-instruction fetches, loads, or stores update the tval CSR with either
-zero or the faulting virtual address. The faulting virtual address for
-an mcontrol6 trigger with action = 0 is the address being accessed and
-which caused that trigger to fire."
+"When a trap is taken into S-mode, stval is written with
+exception-specific information to assist software in handling the trap.
+(...)
 
-A similar text is also found in the Debug spec section 5.7.11 w.r.t.
-mcontrol.
+If stval is written with a nonzero value when a breakpoint,
+address-misaligned, access-fault, or page-fault exception occurs on an
+instruction fetch, load, or store, then stval will contain the faulting
+virtual address."
 
-Note that what we're doing ATM is not violating the spec, but it's
-simple enough to set mtval/stval and it makes life easier for any
-software that relies on this info.
+A similar text is found for mtval in section 3.1.16.
 
-Given that we always use action = 0, save the faulting address for the
-mcontrol and mcontrol6 trigger breakpoints into env->badaddr, which is
-used as as scratch area for traps with address information. 'tval' is
-then set during riscv_cpu_do_interrupt().
+Setting mtval/stval in this scenario is optional, but some softwares read
+these regs when handling ebreaks.
+
+Write 'badaddr' in all ebreak breakpoints to write the appropriate
+'tval' during riscv_do_cpu_interrrupt().
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/cpu_helper.c | 1 +
- target/riscv/debug.c      | 3 +++
- 2 files changed, 4 insertions(+)
+ target/riscv/insn_trans/trans_privileged.c.inc | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
-index fc090d729a..f9c6d7053b 100644
---- a/target/riscv/cpu_helper.c
-+++ b/target/riscv/cpu_helper.c
-@@ -1717,6 +1717,7 @@ void riscv_cpu_do_interrupt(CPUState *cs)
-             tval = env->bins;
-             break;
-         case RISCV_EXCP_BREAKPOINT:
-+            tval = env->badaddr;
-             if (cs->watchpoint_hit) {
-                 tval = cs->watchpoint_hit->hitaddr;
-                 cs->watchpoint_hit = NULL;
-diff --git a/target/riscv/debug.c b/target/riscv/debug.c
-index e30d99cc2f..b110370ea6 100644
---- a/target/riscv/debug.c
-+++ b/target/riscv/debug.c
-@@ -798,6 +798,7 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
-                 if ((ctrl & TYPE2_EXEC) && (bp->pc == pc)) {
-                     /* check U/S/M bit against current privilege level */
-                     if ((ctrl >> 3) & BIT(env->priv)) {
-+                        env->badaddr = pc;
-                         return true;
-                     }
-                 }
-@@ -810,11 +811,13 @@ bool riscv_cpu_debug_check_breakpoint(CPUState *cs)
-                     if (env->virt_enabled) {
-                         /* check VU/VS bit against current privilege level */
-                         if ((ctrl >> 23) & BIT(env->priv)) {
-+                            env->badaddr = pc;
-                             return true;
-                         }
-                     } else {
-                         /* check U/S/M bit against current privilege level */
-                         if ((ctrl >> 3) & BIT(env->priv)) {
-+                            env->badaddr = pc;
-                             return true;
-                         }
-                     }
+diff --git a/target/riscv/insn_trans/trans_privileged.c.inc b/target/riscv/insn_trans/trans_privileged.c.inc
+index 620ab54eb0..b89e3bd5b5 100644
+--- a/target/riscv/insn_trans/trans_privileged.c.inc
++++ b/target/riscv/insn_trans/trans_privileged.c.inc
+@@ -62,6 +62,10 @@ static bool trans_ebreak(DisasContext *ctx, arg_ebreak *a)
+     if (pre == 0x01f01013 && ebreak == 0x00100073 && post == 0x40705013) {
+         generate_exception(ctx, RISCV_EXCP_SEMIHOST);
+     } else {
++        TCGv temp = tcg_temp_new();
++        tcg_gen_movi_tl(temp, ebreak_addr);
++        tcg_gen_st_tl(temp, tcg_env, offsetof(CPURISCVState, badaddr));
++
+         generate_exception(ctx, RISCV_EXCP_BREAKPOINT);
+     }
+     return true;
 -- 
 2.44.0
 
