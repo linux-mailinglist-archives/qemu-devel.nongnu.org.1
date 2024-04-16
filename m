@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 181A38A61F9
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 06:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D068A61FF
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 06:07:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwa5K-0007xm-Va; Tue, 16 Apr 2024 00:06:19 -0400
+	id 1rwa5L-00081Q-Sf; Tue, 16 Apr 2024 00:06:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rwa5I-0007rZ-MA
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:16 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rwa5J-0007t8-5t
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:17 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rwa5G-00079h-MQ
+ id 1rwa5H-00079u-8g
  for qemu-devel@nongnu.org; Tue, 16 Apr 2024 00:06:16 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1e5aa82d1f6so21593665ad.0
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1e6723c606dso14272295ad.1
  for <qemu-devel@nongnu.org>; Mon, 15 Apr 2024 21:06:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713240373; x=1713845173; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713240374; x=1713845174; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3ETaHVvoHKNHLSSeeGS1BiYVkaanEylQv/HH8WSVcLo=;
- b=EkHcV20Zj/NA54i21wioS079qCAEzd26Ouu+t4j+Z7ZydDaF6JFE79ob5LcCJzspPR
- sP65/pDSCLPX/bQeKw+x+yAfg3tlI7T4vTM3UFxpqUarbop1NXL2Yfp/QASlsgibCzT6
- m355bHJo+93+cqTv3uNg9o6diyenwDwnfY6JdA0nvleHG3qNxRMhlhqJ/I9GzhCpoKVh
- oe3C0ymyW7SzsTFf4mG7PPXaRsiCxp3iohVZQtmvovzrL0ljdkWMC5BzuHpbdAukjBmJ
- yCphbzBPfMeuuo/20VIQHQGtUsN2oeCx34pwapQpR+IWzOm0hzJYQjVUQte+EeOwo70d
- 8qfg==
+ bh=aAiLRxdfYErxgfOh0gQk21KRRPoDj9hGg+dmJqqgE+Q=;
+ b=dmmm1wld2bdTpFmPVDYZi7adYMZi+fk1ubyDMpALGVZS8AuhmDoRjn6dX7hvrCoxdv
+ QpLgzv2tNGr6oFUDljkM66mFhgy0J4E+PExZKzzuMVcg4PvIcW3Bgjnzn4JwipRMISqQ
+ md9WeCWnlqWc4X50XYl6DJrV9hiinGq69eONhxqL5eJrnoXoVfjjl8jE+LsuISN2UBGu
+ Cwp9fZbuaPmrdKJ8v7SfjqAvPRsuiZC7bxFvfvLrCNM/Z0zCoshl+UEsEdPWh3iyYB3r
+ At62ILxfPWredZPsPad/PbEQ+PVyyP8n6uFlzvK3i9fiH1anu/HfHYGEIlqAtWWUqFQc
+ yt6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713240373; x=1713845173;
+ d=1e100.net; s=20230601; t=1713240374; x=1713845174;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ETaHVvoHKNHLSSeeGS1BiYVkaanEylQv/HH8WSVcLo=;
- b=BFXRRlRAtaakOezLgYdJMGPwZO367iNueLRt+tseHjXtJo0hFIGsE6FHnQuR1IY4DY
- UaaC1OB2L4h18K3G9iec5H6cu5VZsMfDDwW1ZgPuCVQWCiiX6PiP7lI/ekc1kKuN6YMz
- 3AmFvv1zU9sKj3XqwKP93AmkcCofhK8zvZp0X5O1/aHOLIQJjUzifsqdn9phBIxz+foP
- GzgFPI1S2kxq6ijV65fus2WoSJxtUvhEFiifS2F/DPiNlLp+t9TdevqJBjbZHOM2KiG4
- fau7Rm3cZIS5YW2YOnpAZeJtCRNV9m+6S1/KLzEX4AjRbPi6sowybDJnPYclvRVgygvY
- 1FYQ==
-X-Gm-Message-State: AOJu0YxYOzZmSbrrST5H8YwdC34//7rB3uQJCjgSN0rd2r601a+alO64
- pbU8vN8ayiAD3OdZjWz+x1TchdJYbVNHp6o5MyFlVfgj5Vf8+8Qwxs8067K5TJY0wJBXUXM1IEX
- b
-X-Google-Smtp-Source: AGHT+IFx3xATxmCsX3o/78sxy3qbg3OcoRGZcv09Ai9H6d+f0z6nFXkOle3KQq6Ow+kPggeWhclFag==
-X-Received: by 2002:a17:902:e811:b0:1e4:6cd7:30b3 with SMTP id
- u17-20020a170902e81100b001e46cd730b3mr1246254plg.23.1713240373219; 
+ bh=aAiLRxdfYErxgfOh0gQk21KRRPoDj9hGg+dmJqqgE+Q=;
+ b=v6RdAS+4WWRSaSwFkuEqYgFauvzhXzEJcWsdPwGOLojIl64ZZ1bSmyKQMbatFx6Q53
+ qT0KdDdZMANrSQF0/hDquqb7WOdnG9MfHPBDz1u8QE27EbJ92Rw3iZxr80WTkkJdbkBC
+ X5vmKPfdDe4lGb4SbmNmLGQKMcAOBXRY6RcXpNbJrHyt3Gim7QL9ct3OVseZYh8luI2M
+ 4wfJtEiL/nV0t4gFmYI3kjzKzR0cYZZRb9mEa7jAKaNqducK+JmnhyyOEcySanu+2/gR
+ O8ADow+mItif3D//rmRgcuk18hwseNiz3moujBY83/TTzSFqI1bjpTux+v7Jkt7ZRNSc
+ GyIg==
+X-Gm-Message-State: AOJu0YyceXigHApE/Kx8+bI0c7XGrnoyW0QxVyoKrut6RIy9FNwVLgDI
+ 2EmPxLf7v4OnlhVkDc/g5B0ngkHujFdBaJAQ8pHIaqvxBCdSxEXVBWJfl/wKA6kMXLEmLr+v4K+
+ y
+X-Google-Smtp-Source: AGHT+IEgvbOda4SoTtCo0RS7v5GODFA/XHhXV5nmZafOfpYSGwklwj+wYQHcjgsrMc066qgF/v11iw==
+X-Received: by 2002:a17:902:ed4c:b0:1dd:e114:121c with SMTP id
+ y12-20020a170902ed4c00b001dde114121cmr13250311plb.56.1713240373959; 
  Mon, 15 Apr 2024 21:06:13 -0700 (PDT)
 Received: from stoup.. (174-21-72-5.tukw.qwest.net. [174.21.72.5])
  by smtp.gmail.com with ESMTPSA id
- l1-20020a170902f68100b001e3e244e5c0sm8694439plg.78.2024.04.15.21.06.12
+ l1-20020a170902f68100b001e3e244e5c0sm8694439plg.78.2024.04.15.21.06.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 15 Apr 2024 21:06:12 -0700 (PDT)
+ Mon, 15 Apr 2024 21:06:13 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: pierrick.bouvier@linaro.org
-Subject: [PATCH 2/7] accel/tcg: Set CPUState.plugin_ra before all plugin
- callbacks
-Date: Mon, 15 Apr 2024 21:06:04 -0700
-Message-Id: <20240416040609.1313605-3-richard.henderson@linaro.org>
+Subject: [PATCH 3/7] accel/tcg: Return the TranslationBlock from
+ cpu_unwind_state_data
+Date: Mon, 15 Apr 2024 21:06:05 -0700
+Message-Id: <20240416040609.1313605-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240416040609.1313605-1-richard.henderson@linaro.org>
 References: <20240416040609.1313605-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,151 +93,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix the i386 get_memio_eip function to use tb->cflags
+instead of cs->tcg_cflags.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/hw/core/cpu.h  |  1 +
- accel/tcg/plugin-gen.c | 50 +++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 46 insertions(+), 5 deletions(-)
+ include/exec/cpu-common.h | 9 +++++----
+ accel/tcg/translate-all.c | 9 +++++----
+ target/i386/helper.c      | 6 ++++--
+ 3 files changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 10cd492aff..f4af37c13d 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -350,6 +350,7 @@ typedef union IcountDecr {
- typedef struct CPUNegativeOffsetState {
-     CPUTLB tlb;
- #ifdef CONFIG_PLUGIN
-+    uintptr_t plugin_ra;
-     GArray *plugin_mem_cbs;
- #endif
-     IcountDecr icount_decr;
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 36e9134a5d..f96b49cce6 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -37,6 +37,12 @@ enum plugin_gen_from {
-     PLUGIN_GEN_AFTER_TB,
- };
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 6346df17ce..f056132cab 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -176,12 +176,13 @@ void list_cpus(void);
+  * @host_pc: the host pc within the translation
+  * @data: output data
+  *
+- * Attempt to load the the unwind state for a host pc occurring in
+- * translated code.  If @host_pc is not in translated code, the
+- * function returns false; otherwise @data is loaded.
++ * Attempt to load the the unwind state for a host pc occurring in translated
++ * code.  If @host_pc is not in translated code, the function returns NULL;
++ * otherwise @data is loaded and the TranslationBlock is returned.
+  * This is the same unwind info as given to restore_state_to_opc.
+  */
+-bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
++const TranslationBlock *cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc,
++                                              uint64_t *data);
  
-+enum plugin_gen_ra {
-+    GEN_RA_DONE,
-+    GEN_RA_FROM_TB,
-+    GEN_RA_FROM_INSN,
-+};
-+
- /* called before finishing a TB with exit_tb, goto_tb or goto_ptr */
- void plugin_gen_disable_mem_helpers(void)
- {
-@@ -151,11 +157,38 @@ static void gen_mem_cb(struct qemu_plugin_dyn_cb *cb,
-     tcg_temp_free_i32(cpu_index);
+ /**
+  * cpu_restore_state:
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index 83cc14fbde..c745bc5b6c 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -243,15 +243,16 @@ bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc)
+     return false;
  }
  
--static void inject_cb(struct qemu_plugin_dyn_cb *cb)
-+static void inject_ra(enum plugin_gen_ra *gen_ra)
-+{
-+    TCGv_ptr ra;
-+
-+    switch (*gen_ra) {
-+    case GEN_RA_DONE:
-+        return;
-+    case GEN_RA_FROM_TB:
-+        ra = tcg_constant_ptr(NULL);
-+        break;
-+    case GEN_RA_FROM_INSN:
-+        ra = tcg_temp_ebb_new_ptr();
-+        tcg_gen_plugin_pc(ra);
-+        break;
-+    default:
-+        g_assert_not_reached();
-+    }
-+
-+    tcg_gen_st_ptr(ra, tcg_env,
-+                   offsetof(CPUState, neg.plugin_ra) -
-+                   offsetof(ArchCPU, env));
-+    tcg_temp_free_ptr(ra);
-+    *gen_ra = GEN_RA_DONE;
-+}
-+
-+static void inject_cb(struct qemu_plugin_dyn_cb *cb,
-+                      enum plugin_gen_ra *gen_ra)
- 
+-bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
++const TranslationBlock *
++cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data)
  {
-     switch (cb->type) {
-     case PLUGIN_CB_REGULAR:
-+        inject_ra(gen_ra);
-         gen_udata_cb(cb);
-         break;
-     case PLUGIN_CB_INLINE:
-@@ -167,16 +200,18 @@ static void inject_cb(struct qemu_plugin_dyn_cb *cb)
- }
- 
- static void inject_mem_cb(struct qemu_plugin_dyn_cb *cb,
-+                          enum plugin_gen_ra *gen_ra,
-                           enum qemu_plugin_mem_rw rw,
-                           qemu_plugin_meminfo_t meminfo, TCGv_i64 addr)
- {
-     if (cb->rw & rw) {
-         switch (cb->type) {
-         case PLUGIN_CB_MEM_REGULAR:
-+            inject_ra(gen_ra);
-             gen_mem_cb(cb, meminfo, addr);
-             break;
-         default:
--            inject_cb(cb);
-+            inject_cb(cb, gen_ra);
-             break;
+     if (in_code_gen_buffer((const void *)(host_pc - tcg_splitwx_diff))) {
+         TranslationBlock *tb = tcg_tb_lookup(host_pc);
+-        if (tb) {
+-            return cpu_unwind_data_from_tb(tb, host_pc, data) >= 0;
++        if (tb && cpu_unwind_data_from_tb(tb, host_pc, data) >= 0) {
++            return tb;
          }
      }
-@@ -186,6 +221,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
- {
-     TCGOp *op, *next;
-     int insn_idx = -1;
-+    enum plugin_gen_ra gen_ra;
+-    return false;
++    return NULL;
+ }
  
-     if (unlikely(qemu_loglevel_mask(LOG_TB_OP_PLUGIN)
-                  && qemu_log_in_addr_range(plugin_tb->vaddr))) {
-@@ -205,10 +241,12 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-      */
-     memset(tcg_ctx->free_temps, 0, sizeof(tcg_ctx->free_temps));
+ void page_init(void)
+diff --git a/target/i386/helper.c b/target/i386/helper.c
+index 23ccb23a5b..eaa691a851 100644
+--- a/target/i386/helper.c
++++ b/target/i386/helper.c
+@@ -517,13 +517,15 @@ static inline target_ulong get_memio_eip(CPUX86State *env)
+ #ifdef CONFIG_TCG
+     uint64_t data[TARGET_INSN_START_WORDS];
+     CPUState *cs = env_cpu(env);
++    const TranslationBlock *tb;
  
-+    gen_ra = GEN_RA_FROM_TB;
-     QTAILQ_FOREACH_SAFE(op, &tcg_ctx->ops, link, next) {
-         switch (op->opc) {
-         case INDEX_op_insn_start:
-             insn_idx++;
-+            gen_ra = GEN_RA_FROM_INSN;
-             break;
+-    if (!cpu_unwind_state_data(cs, cs->mem_io_pc, data)) {
++    tb = cpu_unwind_state_data(cs, cs->mem_io_pc, data);
++    if (!tb) {
+         return env->eip;
+     }
  
-         case INDEX_op_plugin_cb:
-@@ -244,7 +282,8 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-                 cbs = plugin_tb->cbs;
-                 for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
-                     inject_cb(
--                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i));
-+                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i),
-+                        &gen_ra);
-                 }
-                 break;
- 
-@@ -256,7 +295,8 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-                 cbs = insn->insn_cbs;
-                 for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
-                     inject_cb(
--                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i));
-+                        &g_array_index(cbs, struct qemu_plugin_dyn_cb, i),
-+                        &gen_ra);
-                 }
-                 break;
- 
-@@ -288,7 +328,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-             cbs = insn->mem_cbs;
-             for (i = 0, n = (cbs ? cbs->len : 0); i < n; i++) {
-                 inject_mem_cb(&g_array_index(cbs, struct qemu_plugin_dyn_cb, i),
--                              rw, meminfo, addr);
-+                              &gen_ra, rw, meminfo, addr);
-             }
- 
-             tcg_ctx->emit_before_op = NULL;
+     /* Per x86_restore_state_to_opc. */
+-    if (cs->tcg_cflags & CF_PCREL) {
++    if (tb->cflags & CF_PCREL) {
+         return (env->eip & TARGET_PAGE_MASK) | data[0];
+     } else {
+         return data[0] - env->segs[R_CS].base;
 -- 
 2.34.1
 
