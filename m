@@ -2,56 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECAD8A6DAD
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:15:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52248A6DC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwjaB-0004my-L4; Tue, 16 Apr 2024 10:14:47 -0400
+	id 1rwjcw-0006es-WE; Tue, 16 Apr 2024 10:17:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rwja5-0004mW-9Q
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:14:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rwjco-0006cZ-BB
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:17:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1rwja2-0005c7-Se
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:14:40 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rwjci-0005yt-FP
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:17:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713276876;
+ s=mimecast20190719; t=1713277043;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=7YpE1eEq60PPyPPGLOLzheBER822cSy7TAfjKqgTugw=;
- b=bM0c/ZXLOnz0HZBEI9Nve1fyG88IfHTdfHbTwKeudmdI4ySmJAh4Ug38tBgbWcQmZjum8J
- 2rZgrslqEIJm7Mc4uHOJagkUIwY1p/xe5PRZz1EsKNTsphaCrIzJFAkaoxTGISjjll5yUx
- O3BHTi9/DdC+4d2zwQaCN2D2oCv1HXg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=PeKeC8mq230gpeDVmokE9xgNdY9hhaC6dqBwpF9B0Dw=;
+ b=c9eao/DXXXi60qkDL1DCRNwbGVdgGO46gt9aNjoWPUfWV51/Ul/TRg73BNiBDY5RkTuEUQ
+ avHHNDbSRraHcxg158G0XOwitJm4GuwD3sEsR6irqkFT0V5sNliJOeQ7hjFo0XxZHjDQaf
+ CNRusMhFUEb4/U6pG+mnmkjUR9uq8gE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-dBMF9b63OTCv3rC4_5XKSA-1; Tue, 16 Apr 2024 10:14:34 -0400
-X-MC-Unique: dBMF9b63OTCv3rC4_5XKSA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 587341802A04
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 14:14:34 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.39.194.131])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 91EE0C13FA2;
- Tue, 16 Apr 2024 14:14:32 +0000 (UTC)
-From: David Hildenbrand <david@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Liang Cong <lcong@redhat.com>,
- Mario Casquero <mcasquer@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH v1] virtio-mem: improve error message when unplug of device
- fails due to plugged memory
-Date: Tue, 16 Apr 2024 16:14:26 +0200
-Message-ID: <20240416141426.588544-1-david@redhat.com>
+ us-mta-101-TDVbtlroMsGwQyURRiB2iw-1; Tue, 16 Apr 2024 10:17:21 -0400
+X-MC-Unique: TDVbtlroMsGwQyURRiB2iw-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-415591b1500so17928495e9.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 07:17:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713277041; x=1713881841;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PeKeC8mq230gpeDVmokE9xgNdY9hhaC6dqBwpF9B0Dw=;
+ b=IlzZ4zizfIjid9NHMveV/uYIVPzxdhU+PWNztb4kwWUkxTJ2UOG0wBxvLgXsB47yKQ
+ mB+L32aERWNdGctLqaE9Iz5HVH+mblb+Dq3x+Y33+XqxKLyehT5x8plRoEGlISu9Zb5H
+ FG2EKupKI0LI83sJz8Nmi4O/+K4gDvyjXSqNYo1QNb3N4wdO38Kdkm39zTnZEOTuQLM7
+ Xgr8UOxcGay3qrzcOlLmmbpHtVZBFlXSLSeXQOQ+wZfsVGeiCLIqJCXiGyoqvz1iHaLM
+ odCYNPgHm04at0VyJih6lenWKrjRUApNGxWpNjHD+0HXWds0RPecuUhFsXyQvdKlTxVY
+ UkDw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWhgPXFJGmTu2JC7JaLVXdULi6861m0JvIDeuino1Aju3IR9cfAZFU2dKaV4RIolxHbJAmMSM+dh11NGdv7jgvcwoeV6w8=
+X-Gm-Message-State: AOJu0Yy2mmD8zol9JlgRQubL4fHkfPS8jia4mPsnT3ehl8fuUEpRZYj5
+ 6AmsC3T3etvR4Nu1N/s6Cci62chpMLvoHG+TIczyApuZIQVwKBlamMXQWf2JTcgTvjaNmUdKnLq
+ xbctrZ0VLckJkONec52FkjdIKeT3VLzYOjCoGDRzHtmCXmMVmsDN8
+X-Received: by 2002:a05:600c:3148:b0:418:4303:65e5 with SMTP id
+ h8-20020a05600c314800b00418430365e5mr6115853wmo.38.1713277040830; 
+ Tue, 16 Apr 2024 07:17:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFY9T0cYyaoQmMSU8DjjURtw76ryY1vblvwEBqF/WlD8Bd4sxcz9n9mv9FX//hiectIr7kjcQ==
+X-Received: by 2002:a05:600c:3148:b0:418:4303:65e5 with SMTP id
+ h8-20020a05600c314800b00418430365e5mr6115829wmo.38.1713277040368; 
+ Tue, 16 Apr 2024 07:17:20 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae?
+ ([2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae])
+ by smtp.gmail.com with ESMTPSA id
+ q1-20020adfb181000000b00346266b612csm15173102wra.81.2024.04.16.07.17.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 16 Apr 2024 07:17:19 -0700 (PDT)
+Message-ID: <5eb6c665-df8f-4c5e-8426-4678d8433a0c@redhat.com>
+Date: Tue, 16 Apr 2024 16:17:14 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] intel_iommu: Add a framework to do compatibility
+ check with host IOMMU cap/ecap
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20240408084404.1111628-1-zhenzhong.duan@intel.com>
+ <20240408084404.1111628-4-zhenzhong.duan@intel.com>
+ <251715ae-5378-4dfb-bc14-47ba2e62f83a@redhat.com>
+ <SJ0PR11MB67443BF6BC7CABCE28F482A392082@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB67443BF6BC7CABCE28F482A392082@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
@@ -75,38 +118,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The error message is actually expressive, considering QEMU only. But
-when called from Libvirt, talking about "size" can be confusing, because
-in Libvirt "size" translates to the memory backend size in QEMU (maximum
-size) and "current" translates to the QEMU "size" property.
+Hello,
 
-Let's simply avoid talking about the "size" property and spell out that
-some device memory is still plugged.
+On 4/16/24 09:09, Duan, Zhenzhong wrote:
+> Hi Cédric,
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Subject: Re: [PATCH v2 3/5] intel_iommu: Add a framework to do
+>> compatibility check with host IOMMU cap/ecap
+>>
+>> On 4/8/24 10:44, Zhenzhong Duan wrote:
+>>> From: Yi Liu <yi.l.liu@intel.com>
+>>>
+>>> If check fails, the host side device(either vfio or vdpa device) should not
+>>> be passed to guest.
+>>>
+>>> Implementation details for different backends will be in following patches.
+>>>
+>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+>>> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>> ---
+>>>    hw/i386/intel_iommu.c | 35
+>> +++++++++++++++++++++++++++++++++++
+>>>    1 file changed, 35 insertions(+)
+>>>
+>>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+>>> index 4f84e2e801..a49b587c73 100644
+>>> --- a/hw/i386/intel_iommu.c
+>>> +++ b/hw/i386/intel_iommu.c
+>>> @@ -35,6 +35,7 @@
+>>>    #include "sysemu/kvm.h"
+>>>    #include "sysemu/dma.h"
+>>>    #include "sysemu/sysemu.h"
+>>> +#include "sysemu/iommufd.h"
+>>>    #include "hw/i386/apic_internal.h"
+>>>    #include "kvm/kvm_i386.h"
+>>>    #include "migration/vmstate.h"
+>>> @@ -3819,6 +3820,32 @@ VTDAddressSpace
+>> *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>>>        return vtd_dev_as;
+>>>    }
+>>>
+>>> +static int vtd_check_legacy_hdev(IntelIOMMUState *s,
+>>> +                                 HostIOMMUDevice *hiod,
+>>> +                                 Error **errp)
+>>> +{
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
+>>> +                                  HostIOMMUDevice *hiod,
+>>> +                                  Error **errp)
+>>> +{
+>>> +    return 0;
+>>> +}
+>>> +
+>>> +static int vtd_check_hdev(IntelIOMMUState *s, VTDHostIOMMUDevice
+>> *vtd_hdev,
+>>> +                          Error **errp)
+>>> +{
+>>> +    HostIOMMUDevice *hiod = vtd_hdev->dev;
+>>> +
+>>> +    if (object_dynamic_cast(OBJECT(hiod), TYPE_HIOD_IOMMUFD)) {
+>>> +        return vtd_check_iommufd_hdev(s, hiod, errp);
+>>> +    }
+>>> +
+>>> +    return vtd_check_legacy_hdev(s, hiod, errp);
+>>> +}
+>>
+>>
+>> I think we should be using the .get_host_iommu_info() class handler
+>> instead. Can we refactor the code slightly to avoid this check on
+>> the type ?
+> 
+> There is some difficulty ini avoiding this check, the behavior of vtd_check_legacy_hdev
+> and vtd_check_iommufd_hdev are different especially after nesting support introduced.
+> vtd_check_iommufd_hdev() has much wider check over cap/ecap bits besides aw_bits.
 
-Cc: Liang Cong <lcong@redhat.com>
-Cc: Mario Casquero <mcasquer@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- hw/virtio/virtio-mem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I think it is important to fully separate the vIOMMU model from the
+host IOMMU backing device. Could we introduce a new HostIOMMUDeviceClass
+handler .check_hdev() handler, which would call .get_host_iommu_info() ?
 
-diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
-index ffd119ebac..ef64bf1b4a 100644
---- a/hw/virtio/virtio-mem.c
-+++ b/hw/virtio/virtio-mem.c
-@@ -1832,8 +1832,8 @@ static void virtio_mem_unplug_request_check(VirtIOMEM *vmem, Error **errp)
-     }
- 
-     if (vmem->size) {
--        error_setg(errp, "virtio-mem device cannot get unplugged while"
--                   " '" VIRTIO_MEM_SIZE_PROP "' != '0'");
-+        error_setg(errp, "virtio-mem device cannot get unplugged while some"
-+                   " of its memory is still plugged");
-         return;
-     }
-     if (vmem->requested_size) {
--- 
-2.44.0
+
+Thanks,
+
+C.
+
+
+> That the reason I have two functions to do different thing.
+> See:
+> https://github.com/yiliu1765/qemu/blob/zhenzhong/iommufd_nesting_rfcv2/hw/i386/intel_iommu.c#L5472
+> 
+> Meanwhile in vtd_check_legacy_hdev(), when legacy VFIO device attaches to modern vIOMMU,
+> this is unsupported and error out early, it will not call .get_host_iommu_info().
+> I mean we don't need to unconditionally call .get_host_iommu_info() in some cases.
+> 
+> Thanks
+> Zhenzhong
 
 
