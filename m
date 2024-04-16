@@ -2,78 +2,113 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951F18A66C6
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9F68A66C7
 	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 11:11:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwepX-0005u6-Ah; Tue, 16 Apr 2024 05:10:19 -0400
+	id 1rwepc-0005up-U0; Tue, 16 Apr 2024 05:10:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rwepU-0005tv-W0
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:10:17 -0400
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1rwepR-00069P-Ea
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:10:16 -0400
-Received: by mail-qt1-x82d.google.com with SMTP id
- d75a77b69052e-434b7ab085fso44284881cf.1
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 02:10:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713258612; x=1713863412; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Cph4wnFsS72o4diDKIbPBncVkYLnfyS5FY292uJ6NYg=;
- b=J4Im3HGOzv56Vt4d24s1yAcicxD5Tt+ocJR4tzXAE9XXmb5Hh1oM+gOPXncBCuAluq
- ZhvtEaOZd2LNqE93mQHdGqJ347P95xY/o0FfH+KmTH1MVnWRmNtla6TInXZ9WcwHNblQ
- 5sj+GenSggD7JIuIohrOKE1MAs3b+7CMKCsx/f3EQIOH/RfQu2sALdkw1H34VeuDcjEr
- ABLTMWgy60l9rltTnnc0EYFDJaewpt4rzuw1B9c+FYAFpCAaw86xTT8nSJVnPSEcyzYG
- t0WC8VdPxk59FVhcc+ngegYYo623IOuGISfIbc5U63GmqAF+TsEqu1fmN4N05Ky7ocdw
- enlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713258612; x=1713863412;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Cph4wnFsS72o4diDKIbPBncVkYLnfyS5FY292uJ6NYg=;
- b=Vb++bV/b4Qj/Vmt0C+HQHkVoZFCmdryU+Btw3AU+GQgzqpAQlgwa/mwrz2UGpeqOYW
- rA8bkb/h1Pop4ulUk8DXQejPEYTyw1BKHULgLUD91bQv72e37qZm8ZBxnFvj5pbMmAr2
- gPKecDIPBoJT6Wg9fHJBOhXNOh/3GIzkTk6baniVl55TmQphLXX66rBjHtJg/8Ae0r8E
- XcbAhZS/8iPps33hlXEuUwtd8kxyqyvL2NX/clIf3FBLxOSPD5Md2wLFmhjWeVKUhEu2
- /w79Wp7AIqVpc0HoIYNeT5/bZN7EE5ANRWQMjBo/l9blW0MfgbEA8cJbJ0PACysqD9EU
- 3Lcw==
-X-Gm-Message-State: AOJu0YyAcknivMBnkHZ4c+6xeY0CSsl0LMSbxQR+aD8uxkkot5UB8rgh
- hxL40U04JNRrR8zUi3ooXJt3LbEcGPF58zGDZH6xlfWOxQFZ+M7b31uuflBwvJ9ljRxvarcLfd2
- fBi/6AzeHp0sG1+q5KsixBkONyco=
-X-Google-Smtp-Source: AGHT+IEREJQv5AuemdOwRusZu/gF+fyZVY3aaaZaFObeZq+8UX76aHXSJHVVBdT1IZLjzq8/6Y3XIEPQW7EddhjVStc=
-X-Received: by 2002:ac8:5fc3:0:b0:434:6c3e:3074 with SMTP id
- k3-20020ac85fc3000000b004346c3e3074mr1897219qta.22.1713258611966; Tue, 16 Apr
- 2024 02:10:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1rwepa-0005uR-Tm
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:10:22 -0400
+Received: from mail-mw2nam10on20601.outbound.protection.outlook.com
+ ([2a01:111:f403:2412::601]
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <Luc.Michel@amd.com>)
+ id 1rwepY-0006AU-IR
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 05:10:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hH+roRLoJF9rxgkmokFSVrY8CPVPZNk3WM0geKHEE/BgwTMR04wU3M3b2rVVU8pj0bvt9o3E7U5hderX7RreDfpFFt4I6bjwPfstkKR51KPaknq/k5BW2uzs84vMR80zI7axFeseWi0RBa7QPFXMxT21U+sJb/P8iXxHluxhid7uS98dCt9KBz7GOm5B46QWXaOBL+HXZIOYKUkTv5Ml6yBL0STlGjmwMeOFBVOA50bHg85B5vyS0MTDjOa2RXX1tzpqhD5XwfsDYN/AhKqHjI74+BJ4xAMvxmtVvAoO4p5VPMgHDPAh3s4VdgTXFBAnPpmaY5ppMeNORCfJbmHsmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dEELkzLqeIM7c9oKoCCO0sgwfTXU5hYKoRoxqexffPc=;
+ b=Rq1dfSEFGzsCOOH6p1K0UfGTPBmvu+RmVIdH3YSrjJMyssqsztFGRscQq/+Da+w25m7GRKjyJRXiRaJJbTds9LtofGos0iA7mB0mjR65BMlq/3I+wOQ/eAaXefy46u76mTV6LW0rLAF62xRGO8WkxaxYu8398IHgKf1L3PPGdHFgSoMSVELGvZ2ri/J8pSFoY9ANZxskqEsYRXBwluCl1FYw1VD5HsogDy5IE3Xok1oVhCOFOgrSdOoX95r8HT0w+VOCLXBkXmK/cxXp9KOGfYaIHjXaOdgwd3GHIbzR3V3k6dh3RjX98Lf6UUYHAAJy/dgb3nnMSVlNVHoqZ+WNpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dEELkzLqeIM7c9oKoCCO0sgwfTXU5hYKoRoxqexffPc=;
+ b=mZ3e5y5B1+UhHAoHEZSyCrsbXxaw7dqxhUUobOcrVANlMmqWpX1s3tTxAVTzppJNOPem/g33k87/X7kY33J/rXzJ6OiXPE5nlHO6ZCirAHskmp0Tz6yjAj7Xt/WITW/DtdTvKNZX0Gzt45L3wOHobNUzrkaOcTxZuRULHNuZ6LY=
+Received: from BN9PR03CA0580.namprd03.prod.outlook.com (2603:10b6:408:10d::15)
+ by MW4PR12MB7482.namprd12.prod.outlook.com (2603:10b6:303:212::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
+ 2024 09:10:16 +0000
+Received: from BN2PEPF000044AC.namprd04.prod.outlook.com
+ (2603:10b6:408:10d:cafe::d1) by BN9PR03CA0580.outlook.office365.com
+ (2603:10b6:408:10d::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.34 via Frontend
+ Transport; Tue, 16 Apr 2024 09:10:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BN2PEPF000044AC.mail.protection.outlook.com (10.167.243.107) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7452.22 via Frontend Transport; Tue, 16 Apr 2024 09:10:15 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 16 Apr
+ 2024 04:10:14 -0500
+Received: from XFR-LUMICHEL-L2.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 16 Apr 2024 04:10:14 -0500
+Date: Tue, 16 Apr 2024 11:10:12 +0200
+From: Luc Michel <luc.michel@amd.com>
+To: Peter Maydell <peter.maydell@linaro.org>
+CC: <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 3/6] scripts/coccinelle: New script to add ResetType to
+ hold and exit phases
+Message-ID: <Zh5AdHLsBgXE1aW6@XFR-LUMICHEL-L2.amd.com>
+References: <20240412160809.1260625-1-peter.maydell@linaro.org>
+ <20240412160809.1260625-4-peter.maydell@linaro.org>
 MIME-Version: 1.0
-References: <20240324152150.21506-1-irina.ryapolova@syntacore.com>
- <CAJ+F1C+hB4Awoids71q3RU8od+_QfqEm47c=3AE8UoC=7+q74A@mail.gmail.com>
-In-Reply-To: <CAJ+F1C+hB4Awoids71q3RU8od+_QfqEm47c=3AE8UoC=7+q74A@mail.gmail.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 16 Apr 2024 13:10:00 +0400
-Message-ID: <CAJ+F1CJOt=HLASCwKeFqHwu0A+_H4vx+A=2ZOc-75vONkZYW2A@mail.gmail.com>
-Subject: Re: [PATCH] chardev/char-win-stdio: Fix keyboard input after exit
- Qemu on
-To: Irina Ryapolova <irina.ryapolova@syntacore.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82d;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82d.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240412160809.1260625-4-peter.maydell@linaro.org>
+Received-SPF: None (SATLEXMB03.amd.com: luc.michel@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044AC:EE_|MW4PR12MB7482:EE_
+X-MS-Office365-Filtering-Correlation-Id: 299694ba-354b-4e0b-cf2b-08dc5df50789
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: axW3FFe4y3X+0kHxupQ+eG415scckIORE5/Jbw8HjqqOYiap7ajXF7cY7sqyG0LH5Cj/xmp2GX5w+merF2tCNpe3Ss3c5tdZ4y0xV4t2EaU8mmKjoajyaEFwUUbYvi4Kgj9acu7gp196kbL2cUeNMZ7Zxqcc4jH/xzGGx5kS4DHz2gB7OZng9/pMVBi362BT4+gCLEz07GQJTuZNuYqBn56P0h55GfOa4BAfTsfsXylU8P8YPE9un/VD24cLg2UVEfAtW5mJeY8ubxo7t7ZkrC8kipPeiK5YeM6/fLyAwE0rjRvoB04nC5vsqMLkW3ouF2fN7e9op/hQ3V9EZhOXAjbXekeh+OwWZ8VvJtnxSpn2380+wlO3Io9KtLHmVjz0XWMRsscCf62fy9x843wz++n1fNV3r00k+sVQIPQfGqlcQJh7VNYV62bohvTf3PvJX8VpPHB/pe4+gf2s2qQ+qNNLW+et/ilQ4rLJPLNhm7L99BBTiMkGycuIJ2EwcQDcTXEv/kQf6/nxdp7e2e/u16HDXSn13hcKxyVDsCrRuvxou99I7NPg9zvYvbcKzNMw3+fqAnlvryhm4PVyPayPKa8dY7hbHX8q7cP+BLXVlvKsdbRlVS4rISBmVwxQEdIJ790000aY4x6r1yqyZcA6ODBZ0Y9QUAVb//9Y2Hb/dVWYMXHdmHjHWL54bWZtPQwg0boMexquvfSFJMMk/kCNcg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(376005)(36860700004)(82310400014)(1800799015); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 09:10:15.3985 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 299694ba-354b-4e0b-cf2b-08dc5df50789
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044AC.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7482
+Received-SPF: permerror client-ip=2a01:111:f403:2412::601;
+ envelope-from=Luc.Michel@amd.com;
+ helo=NAM10-MW2-obe.outbound.protection.outlook.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,51 +124,191 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Irina
+On 17:08 Fri 12 Apr     , Peter Maydell wrote:
+> We pass a ResetType argument to the Resettable class enter phase
+> method, but we don't pass it to hold and exit, even though the
+> callsites have it readily available.  This means that if a device
+> cared about the ResetType it would need to record it in the enter
+> phase method to use later on.  We should pass the type to all three
+> of the phase methods to avoid having to do that.
+> 
+> This coccinelle script adds the ResetType argument to the hold and
+> exit phases of the Resettable interface.
+> 
+> The first part of the script (rules holdfn_assigned, holdfn_defined,
+> exitfn_assigned, exitfn_defined) update implementations of the
+> interface within device models, both to change the signature of their
+> method implementations and to pass on the reset type when they invoke
+> reset on some other device.
+> 
+> The second part of the script is various special cases:
+>  * method callsites in resettable_phase_hold(), resettable_phase_exit()
+>    and device_phases_reset()
+>  * updating the typedefs for the methods
+>  * isl_pmbus_vr.c has some code where one device's reset method directly
+>    calls the implementation of a different device's method
+> 
+> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 
-On Mon, Mar 25, 2024 at 10:44=E2=80=AFAM Marc-Andr=C3=A9 Lureau
-<marcandre.lureau@gmail.com> wrote:
->
-> Hi
->
-> On Sun, Mar 24, 2024 at 7:23=E2=80=AFPM Irina Ryapolova
-> <irina.ryapolova@syntacore.com> wrote:
-> >
-> > After exit Qemu need to return the terminal to the default state.
-> >
-> > Signed-off-by: Irina Ryapolova <irina.ryapolova@syntacore.com>
-> > ---
-> >  chardev/char-win-stdio.c | 5 +++++
-> >  1 file changed, 5 insertions(+)
-> >
-> > diff --git a/chardev/char-win-stdio.c b/chardev/char-win-stdio.c
-> > index 1a18999e78..4fa2c3de8b 100644
-> > --- a/chardev/char-win-stdio.c
-> > +++ b/chardev/char-win-stdio.c
-> > @@ -220,6 +220,7 @@ err1:
-> >  static void char_win_stdio_finalize(Object *obj)
-> >  {
-> >      WinStdioChardev *stdio =3D WIN_STDIO_CHARDEV(obj);
-> > +    DWORD dwMode;
-> >
-> >      if (stdio->hInputReadyEvent !=3D INVALID_HANDLE_VALUE) {
-> >          CloseHandle(stdio->hInputReadyEvent);
-> > @@ -230,6 +231,10 @@ static void char_win_stdio_finalize(Object *obj)
-> >      if (stdio->hInputThread !=3D INVALID_HANDLE_VALUE) {
-> >          TerminateThread(stdio->hInputThread, 0);
-> >      }
-> > +
-> > +    GetConsoleMode(stdio->hStdIn, &dwMode);
-> > +    dwMode &=3D ~ENABLE_VIRTUAL_TERMINAL_INPUT;
-> > +    SetConsoleMode(stdio->hStdIn, dwMode);
->
-> I'd suggest saving the mode when opening instead, to make sure we
-> restore the same value.
->
-> thanks
+Reviewed-by: Luc Michel <luc.michel@amd.com>
 
-Do you agree? Could you update the patch? thanks
+(I'm not a coccinelle expert but LGTM)
 
---=20
-Marc-Andr=C3=A9 Lureau
+> ---
+> The structure here is a bit of an experiment: usually I would make
+> the coccinelle script cover the main mechanical change and do the
+> special cases by hand-editing. But I thought it might be clearer to
+> have the entire next commit be made by coccinelle, so reviewers don't
+> have to go hunting through a 99% automated commit for the 1% hand
+> written part. Let me know whether you like this or not...
+> ---
+>  scripts/coccinelle/reset-type.cocci | 133 ++++++++++++++++++++++++++++
+>  1 file changed, 133 insertions(+)
+>  create mode 100644 scripts/coccinelle/reset-type.cocci
+> 
+> diff --git a/scripts/coccinelle/reset-type.cocci b/scripts/coccinelle/reset-type.cocci
+> new file mode 100644
+> index 00000000000..14abdd7bd0c
+> --- /dev/null
+> +++ b/scripts/coccinelle/reset-type.cocci
+> @@ -0,0 +1,133 @@
+> +// Convert device code using three-phase reset to add a ResetType
+> +// argument to implementations of ResettableHoldPhase and
+> +// ResettableEnterPhase methods.
+> +//
+> +// Copyright Linaro Ltd 2024
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +//
+> +// for dir in include hw target; do \
+> +// spatch --macro-file scripts/cocci-macro-file.h \
+> +//        --sp-file scripts/coccinelle/reset-type.cocci \
+> +//        --keep-comments --smpl-spacing --in-place --include-headers \
+> +//        --dir $dir; done
+> +//
+> +// This coccinelle script aims to produce a complete change that needs
+> +// no human interaction, so as well as the generic "update device
+> +// implementations of the hold and exit phase methods" it includes
+> +// the special-case transformations needed for the core code and for
+> +// one device model that does something a bit nonstandard. Those
+> +// special cases are at the end of the file.
+> +
+> +// Look for where we use a function as a ResettableHoldPhase method,
+> +// either by directly assigning it to phases.hold or by calling
+> +// resettable_class_set_parent_phases, and remember the function name.
+> +@ holdfn_assigned @
+> +identifier enterfn, holdfn, exitfn;
+> +identifier rc;
+> +expression e;
+> +@@
+> +ResettableClass *rc;
+> +...
+> +(
+> + rc->phases.hold = holdfn;
+> +|
+> + resettable_class_set_parent_phases(rc, enterfn, holdfn, exitfn, e);
+> +)
+> +
+> +// Look for the definition of the function we found in holdfn_assigned,
+> +// and add the new argument. If the function calls a hold function
+> +// itself (probably chaining to the parent class reset) then add the
+> +// new argument there too.
+> +@ holdfn_defined @
+> +identifier holdfn_assigned.holdfn;
+> +typedef Object;
+> +identifier obj;
+> +expression parent;
+> +@@
+> +-holdfn(Object *obj)
+> ++holdfn(Object *obj, ResetType type)
+> +{
+> +    <...
+> +-    parent.hold(obj)
+> ++    parent.hold(obj, type)
+> +    ...>
+> +}
+> +
+> +// Similarly for ResettableExitPhase.
+> +@ exitfn_assigned @
+> +identifier enterfn, holdfn, exitfn;
+> +identifier rc;
+> +expression e;
+> +@@
+> +ResettableClass *rc;
+> +...
+> +(
+> + rc->phases.exit = exitfn;
+> +|
+> + resettable_class_set_parent_phases(rc, enterfn, holdfn, exitfn, e);
+> +)
+> +@ exitfn_defined @
+> +identifier exitfn_assigned.exitfn;
+> +typedef Object;
+> +identifier obj;
+> +expression parent;
+> +@@
+> +-exitfn(Object *obj)
+> ++exitfn(Object *obj, ResetType type)
+> +{
+> +    <...
+> +-    parent.exit(obj)
+> ++    parent.exit(obj, type)
+> +    ...>
+> +}
+> +
+> +// SPECIAL CASES ONLY BELOW HERE
+> +// We use a python scripted constraint on the position of the match
+> +// to ensure that they only match in a particular function. See
+> +// https://public-inbox.org/git/alpine.DEB.2.21.1808240652370.2344@hadrien/
+> +// which recommends this as the way to do "match only in this function".
+> +
+> +// Special case: isl_pmbus_vr.c has some reset methods calling others directly
+> +@ isl_pmbus_vr @
+> +identifier obj;
+> +@@
+> +- isl_pmbus_vr_exit_reset(obj);
+> ++ isl_pmbus_vr_exit_reset(obj, type);
+> +
+> +// Special case: device_phases_reset() needs to pass RESET_TYPE_COLD
+> +@ device_phases_reset_hold @
+> +expression obj;
+> +identifier rc;
+> +identifier phase;
+> +position p : script:python() { p[0].current_element == "device_phases_reset" };
+> +@@
+> +- rc->phases.phase(obj)@p
+> ++ rc->phases.phase(obj, RESET_TYPE_COLD)
+> +
+> +// Special case: in resettable_phase_hold() and resettable_phase_exit()
+> +// we need to pass through the ResetType argument to the method being called
+> +@ resettable_phase_hold @
+> +expression obj;
+> +identifier rc;
+> +position p : script:python() { p[0].current_element == "resettable_phase_hold" };
+> +@@
+> +- rc->phases.hold(obj)@p
+> ++ rc->phases.hold(obj, type)
+> +@ resettable_phase_exit @
+> +expression obj;
+> +identifier rc;
+> +position p : script:python() { p[0].current_element == "resettable_phase_exit" };
+> +@@
+> +- rc->phases.exit(obj)@p
+> ++ rc->phases.exit(obj, type)
+> +// Special case: the typedefs for the methods need to declare the new argument
+> +@ phase_typedef_hold @
+> +identifier obj;
+> +@@
+> +- typedef void (*ResettableHoldPhase)(Object *obj);
+> ++ typedef void (*ResettableHoldPhase)(Object *obj, ResetType type);
+> +@ phase_typedef_exit @
+> +identifier obj;
+> +@@
+> +- typedef void (*ResettableExitPhase)(Object *obj);
+> ++ typedef void (*ResettableExitPhase)(Object *obj, ResetType type);
+> --
+> 2.34.1
+> 
+> 
+
+-- 
 
