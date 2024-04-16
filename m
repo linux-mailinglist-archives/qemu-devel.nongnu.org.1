@@ -2,87 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 178BF8A6BEF
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E71C38A6BFC
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:16:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwias-0003SE-Sy; Tue, 16 Apr 2024 09:11:27 -0400
+	id 1rwieq-0004sV-Az; Tue, 16 Apr 2024 09:15:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwiao-0003Rm-3b
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:11:23 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ id 1rwieV-0004nM-Rd
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:15:12 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rwial-0001ue-PX
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:11:21 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-516d3a470d5so5023650e87.3
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:11:16 -0700 (PDT)
+ id 1rwieU-0002kh-36
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:15:11 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-56fffb1d14bso6462045a12.1
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:15:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713273074; x=1713877874; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713273308; x=1713878108; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Ro2fMHnjeUthqpsIxFUUg3EH8LaFn/o6R+MVUCk18Pk=;
- b=zDFhOvOV4Y0o2cmw1cJ5UaIFEqcS7jLJHrK1HyhRWqH9L6VcqWSEZHs2A2IqpAMYxG
- O7EnMHspYgpDs74O9PewX/M4cW4ZoHfey3t5fJe4/I+1acLH7Kotfysse8FoQfLWCGDC
- F6YBaSjLtsTQIyOstVeaGb7TRH0zhA68SthhlnFX7SE8rOdGVn9+7w5swBvfWvAMaIQ1
- EHfyYGpzzM6wI8V5qcd3wGmsr3p4t4mvIgCyrdN+cs+9uuiOG87drIMqXHNL3auIirdA
- mOjPMOVQhNhghLKLfZpRY5OppFyF9GfU+umfYHZu6YcuTetTuhmdMhgNgU1Dneldkco/
- bqCg==
+ bh=qmya1LfXZTf7z00Wm99G8Z5U3unPBDxqf746p8W1s+8=;
+ b=gc3CwbXumTtDY5JXeMQAwSYjS+p6PeWF0/x3FKovcSsxIIBZ3wuqvSrTyz9szvBALE
+ 0I6tCKTgqLRrTVR3KXcUlmo9TB2ZWE5hYt9vAdSEd5+kjGzFo10mWk83YZsi/Q8sCfBf
+ 228a4NdnRZSDcYsnRzy55Tmy4hGliRBsoqvECVEFqV+kXIk+HZDqRNeuugctfEc6d1F+
+ pRA7GeFcnLEUUkkfWk8cPe33tXJqnY+9hCay3R0sQXpdwwWlILJAXEkJWt70pWwo734t
+ F2ndT/vs3wht6FteyPkawYnTA6oZT8t+6ftdM2Vc/bkgdW6jADIpAPFY8rgQt3Sl3cnR
+ ouzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713273074; x=1713877874;
+ d=1e100.net; s=20230601; t=1713273308; x=1713878108;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ro2fMHnjeUthqpsIxFUUg3EH8LaFn/o6R+MVUCk18Pk=;
- b=uumdCy0uA+ml/g8HiaPAmas8I+1QjNBoV27IgXhZ7R0TbjTSsdLzjnSosGb0bl6w71
- bPjwoxeGRo5+0MP97AqprJ7XLu2K2aqvBUVhTbDRpghyc80ycMGY5b31cdwpXLziJi0i
- dGECx1gjqj742OucCJiZJiUtnabFG4bMGMJw6aHGTckvZk2L2/pyUspvVH1adpiDZDGg
- l5yQcYigZeUZRwdmLSfIAhsvaYVASJW7Y140KttblDJcGkXFsGqK+lMyuh0kBzWxYRku
- ySxKBlexEJX5MlnwQmWguyUCaZfh/WwSaOq4bI1Xs5dgeDz6WVQXlyqvSP/Kl3JvP7Ix
- TuZg==
+ bh=qmya1LfXZTf7z00Wm99G8Z5U3unPBDxqf746p8W1s+8=;
+ b=gURx0pMUr7lNw8qTbsnHUj8bQi42+5UD1DKTimsfrYF1t1kw7n9sVYeDd8f9FWJiTV
+ XrOzV4aDMOvFdljAUHskFUiWAMgpkL/3JLegrOWFFYSEBq52lUqXvzDHLoeFtTtUUMyy
+ yTT6FK5j2jM++5aD2z4nuQ/IQwvaZwmQaixa38bE7aWzhF/Uk3Nyyxxp1WayYkV9FAYw
+ k5nrsl5aBv0ZKAirT+fVxsNlVmkHRifwC3MjhNDq+fufc5KdXHbc8LL/qJg7aEFRzFPG
+ NtrY6xWB9hb023JXLuf4qRr0mASrUGUDcQVZ00x9Itu9KmSuaYUKS/ZhlebMhxFVFVPJ
+ ezXw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCWlGVrf14KRPGP3TrJUnNZYuNTa4GNZpJ2cNS3nDJI0x7LvWlZEXdlAovAdpQ+Jx421clB8lyvMSShwhuV3JmaCau50MeU=
-X-Gm-Message-State: AOJu0YwsFVbzDFWSibnYGUBi0+iFCWlRFgD/4b/wbz79a4fA8pg/iUjg
- YZyAnIM5ioE0IS+sADfwCa79m2TDuGFjJmgaHQvk0MQyDE/mkmdJ0vGHtgct0tvMjh55D5H8sJf
- MM1nGMz5oA229gFJhUUeMdbN4yopg7luxbQH6Dg==
-X-Google-Smtp-Source: AGHT+IEATC39Bld0haR37qPYF2C5uMd4/GAeVkHG5t9Uho3G7q7GxiVfxE148Horuectu7Yw3h0iUx9WsGKxaFGATWE=
-X-Received: by 2002:ac2:5931:0:b0:515:99f6:2ca4 with SMTP id
- v17-20020ac25931000000b0051599f62ca4mr8513146lfi.36.1713273074529; Tue, 16
- Apr 2024 06:11:14 -0700 (PDT)
+ AJvYcCXb8sfnMVUmgKKTfeI7GNy/h2acys1cWglymaLW5hBnpMG8ytLkDig4SP0LXk3l+5aLxYtCpXrdGa23vpkbwbH4P1tKCO4=
+X-Gm-Message-State: AOJu0YzBqQ0jfA9doI+bFkvXtx6wcWUx2Mvx0SylLjxS3qfI/HJYf58B
+ kSYWQqqIoBALs3niv7VYfLo0zr8AfUWQ9li6pG3/wHAEL+asdE/PECyXm8hY5MU+PzbWDGl4iGk
+ BqwKoMXWcOtonOFCuGAtFf61Bn8F6leFBMygXhdXlGjQpyMXS
+X-Google-Smtp-Source: AGHT+IGsbmyH3BzyICndrALY8nIxkV5EkQWkirAxRJ98USaLPtiitDNDErdCXVD7sPEMrKywsHF3PrWJRp8DX30of2I=
+X-Received: by 2002:a50:935a:0:b0:56d:e765:4356 with SMTP id
+ n26-20020a50935a000000b0056de7654356mr1917486eda.3.1713273308238; Tue, 16 Apr
+ 2024 06:15:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1713178348.git.mst@redhat.com>
- <2ce6cff94df2650c460f809e5ad263f1d22507c0.1713178348.git.mst@redhat.com>
- <CAFEAcA9Hs+05ux3SkJqZQ5RyAkwbgmDGMm5gn+GYZL76CJCYkQ@mail.gmail.com>
- <CACLfguX73rN77rK92xboF6hxERoO2F7kdqUgBohrURt7-38C2A@mail.gmail.com>
- <CAFEAcA_WxhOpjtZ5r-CfoOaf1aiKeaEV9eX=drb1JaBCiBoDKA@mail.gmail.com>
- <CAFEAcA_AcKdOXO3+ez6J+hQ4NmGoUa+fBUNK3XL_YSvRk09Gcg@mail.gmail.com>
- <CACLfguWfxarkB2qtn4Dt5JS01t-tFUsOfbX486exvNo8vOM1AA@mail.gmail.com>
-In-Reply-To: <CACLfguWfxarkB2qtn4Dt5JS01t-tFUsOfbX486exvNo8vOM1AA@mail.gmail.com>
+References: <20240416122919.597819-1-lulu@redhat.com>
+ <CAFEAcA-PbZd9vjyux_HqDKf9y6PxgBXJ9W21zLheE0hJOrLEFw@mail.gmail.com>
+ <CACLfguXs-YkMBZK9cNkuaG9dQzvUDY-znMGQN6JL8VR8ci8yng@mail.gmail.com>
+In-Reply-To: <CACLfguXs-YkMBZK9cNkuaG9dQzvUDY-znMGQN6JL8VR8ci8yng@mail.gmail.com>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 16 Apr 2024 14:11:03 +0100
-Message-ID: <CAFEAcA_B=Nauddj6_chxQQugDtsF1oRcjt1kE38ZY3y1TYh77g@mail.gmail.com>
-Subject: Re: [PULL 1/1] virtio-pci: fix use of a released vector
+Date: Tue, 16 Apr 2024 14:14:57 +0100
+Message-ID: <CAFEAcA-bXhCqTCiT5NshAzDb17c8+jqdmtOigfSbJ5ozckAUQg@mail.gmail.com>
+Subject: Re: [PATCH] virtio-pci: Fix the failure process in
+ kvm_virtio_pci_vector_use_one()
 To: Cindy Lu <lulu@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org,
- qemu-stable@nongnu.org, 
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
+Cc: mst@redhat.com, jasowang@redhat.com, qemu-devel@nongnu.org, 
+ qemu-stable@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x129.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,30 +93,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 16 Apr 2024 at 14:06, Cindy Lu <lulu@redhat.com> wrote:
+On Tue, 16 Apr 2024 at 13:41, Cindy Lu <lulu@redhat.com> wrote:
 >
-> On Tue, Apr 16, 2024 at 8:22=E2=80=AFPM Peter Maydell <peter.maydell@lina=
+> On Tue, Apr 16, 2024 at 8:30=E2=80=AFPM Peter Maydell <peter.maydell@lina=
 ro.org> wrote:
-> > Paolo's comment on CID 1468940 was to suggest "virtio_queue_vector
-> > should check VIRTIO_CONFIG_IRQ_IDX just like virtio_pci_get_notifier",
-> > incidentally.
 > >
-> Hi peter=EF=BC=8C
-> Really sorry all these mess, but I still have a stuipid question,
-> where can I get
-> this CID result ?maybe there are a mailing list=EF=BC=9FI just wonder may=
-be I can fix
-> these code earlier next time, Really thanks for your help
+> > On Tue, 16 Apr 2024 at 13:29, Cindy Lu <lulu@redhat.com> wrote:
+> > >
+> > > In function kvm_virtio_pci_vector_use_one(), in the undo label,
+> > > the function will get the vector incorrectly while using
+> > > VIRTIO_CONFIG_IRQ_IDX
+> > > To fix this, we remove this label and simplify the failure process
+> > >
+> > > Fixes: f9a09ca3ea ("vhost: add support for configure interrupt")
+> > > Cc: qemu-stable@nongnu.org
+> > > Signed-off-by: Cindy Lu <lulu@redhat.com>
+> > > ---
+> > >  hw/virtio/virtio-pci.c | 19 +++----------------
+> > >  1 file changed, 3 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> > > index b138fa127a..565bdb0897 100644
+> > > --- a/hw/virtio/virtio-pci.c
+> > > +++ b/hw/virtio/virtio-pci.c
+> > > @@ -892,7 +892,7 @@ static int kvm_virtio_pci_vector_use_one(VirtIOPC=
+IProxy *proxy, int queue_no)
+> > >      }
+> > >      ret =3D kvm_virtio_pci_vq_vector_use(proxy, vector);
+> > >      if (ret < 0) {
+> > > -        goto undo;
+> > > +        return ret;
+> > >      }
+> > >      /*
+> > >       * If guest supports masking, set up irqfd now.
+> > > @@ -902,25 +902,12 @@ static int kvm_virtio_pci_vector_use_one(VirtIO=
+PCIProxy *proxy, int queue_no)
+> > >          ret =3D kvm_virtio_pci_irqfd_use(proxy, n, vector);
+> > >          if (ret < 0) {
+> > >              kvm_virtio_pci_vq_vector_release(proxy, vector);
+> > > -            goto undo;
+> > > +            kvm_virtio_pci_irqfd_release(proxy, n, vector);
+> >
+> > Are you sure this is right? The kvm_virtio_pci_irqfd_use()
+> > just failed, so why do we need to call
+> > kvm_virtio_pci_irqfd_release() ?
 
-These CID numbers are the identifiers of the issues in the
-Coverity Scan online UI: https://scan.coverity.com/projects/qemu
-You need to apply for access but we give that to anybody who's
-a QEMU developer.
+> This version should be correct.  when kvm_virtio_pci_irqfd_use() fail
+> we need to call kvm_virtio_pci_vq_vector_release() and
+> kvm_virtio_pci_irqfd_release()
+> but for kvm_virtio_pci_vq_vector_use fail we can simple return,
 
-Unfortunately we can only do a very limited amount of Coverity
-Scan runs (about one a day), so we run them only on code that
-has been committed to QEMU already, and we aren't able to use
-it to find problems in patches before we apply them.
+But *why* do we need to call kvm_virtio_pci_irqfd_release()?
+
+In most API designs, this kind of pairing of "get/use/allocate
+something" and "free/release something" function only
+requires you to do the "release" if the "get" succeeded,
+because if the "get" fails it's supposed to fail in way that
+means "I didn't do anything". Is this API not following that
+standard pattern ?
+
+> in old version there is a error in failure process.
+> while the kvm_virtio_pci_vq_vector_use fail it  call the
+> kvm_virtio_pci_irqfd_release,but at this time this is irqfd
+> is not using now
 
 thanks
 -- PMM
