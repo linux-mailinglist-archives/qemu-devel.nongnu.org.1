@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A35F8A6EB3
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F7F8A6EBA
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2G-0004us-NZ; Tue, 16 Apr 2024 10:43:48 -0400
+	id 1rwk2H-0004vL-Cq; Tue, 16 Apr 2024 10:43:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2D-0004sl-3E
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:45 -0400
+ id 1rwk2E-0004td-KM
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:46 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2A-0001yc-5Q
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:44 -0400
+ id 1rwk2B-0001zN-T5
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:43:46 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk1m-0002ca-MS; Tue, 16 Apr 2024 16:43:18 +0200
+ id 1rwk1s-0002ci-5r; Tue, 16 Apr 2024 16:43:24 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,9 +30,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 01/26] migration: Add x-channel-header pseudo-capability
-Date: Tue, 16 Apr 2024 16:42:40 +0200
-Message-ID: <9994e4a41a0c893eec312baf1ef705ac42dafbc0.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 02/26] migration: Add migration channel header send/receive
+Date: Tue, 16 Apr 2024 16:42:41 +0200
+Message-ID: <636cec92eb801f13ba893de79d4872f5d8342097.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -62,94 +62,128 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Avihai Horon <avihaih@nvidia.com>
 
-Add x-channel-header pseudo-capability which indicates that a header
-should be sent through migration channels.
-
-The header is the first thing to be sent through a migration channel and
-it allows the destination to differentiate between the various channels
-(main, multifd and preempt).
-
-This eliminates the need to deduce the channel type by peeking in the
-channel's content, which can be done only on a best-effort basis. It
-will also allow other devices to create their own channels in the
-future.
-
-This patch only adds the pseudo-capability and sets it to false always.
-The following patches will add the actual functionality, after which it
-will be enabled..
+Add functions to send and receive migration channel header.
 
 Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+[MSS: Mark MigChannelHeader as packed, remove device id from it]
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- hw/core/machine.c     | 1 +
- migration/migration.h | 3 +++
- migration/options.c   | 9 +++++++++
- migration/options.h   | 1 +
- 4 files changed, 14 insertions(+)
+ migration/channel.c    | 59 ++++++++++++++++++++++++++++++++++++++++++
+ migration/channel.h    | 14 ++++++++++
+ migration/trace-events |  2 ++
+ 3 files changed, 75 insertions(+)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 37ede0e7d4fd..fa28c49f55b7 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -37,6 +37,7 @@ GlobalProperty hw_compat_8_2[] = {
-     { "migration", "zero-page-detection", "legacy"},
-     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
-     { TYPE_VIRTIO_IOMMU_PCI, "aw-bits", "64" },
-+    { "migration", "channel_header", "off" },
- };
- const size_t hw_compat_8_2_len = G_N_ELEMENTS(hw_compat_8_2);
+diff --git a/migration/channel.c b/migration/channel.c
+index f9de064f3b13..a72e85f5791c 100644
+--- a/migration/channel.c
++++ b/migration/channel.c
+@@ -21,6 +21,7 @@
+ #include "io/channel-socket.h"
+ #include "qemu/yank.h"
+ #include "yank_functions.h"
++#include "options.h"
  
-diff --git a/migration/migration.h b/migration/migration.h
-index 8045e39c26fa..a6114405917f 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -450,6 +450,9 @@ struct MigrationState {
-      */
-     uint8_t clear_bitmap_shift;
+ /**
+  * @migration_channel_process_incoming - Create new incoming migration channel
+@@ -93,6 +94,64 @@ void migration_channel_connect(MigrationState *s,
+     error_free(error);
+ }
  
-+    /* Whether a header is sent in migration channels */
-+    bool channel_header;
-+
-     /*
-      * This save hostname when out-going migration starts
-      */
-diff --git a/migration/options.c b/migration/options.c
-index bfd7753b69a5..8fd871cd956d 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -100,6 +100,7 @@ Property migration_properties[] = {
-                       clear_bitmap_shift, CLEAR_BITMAP_SHIFT_DEFAULT),
-     DEFINE_PROP_BOOL("x-preempt-pre-7-2", MigrationState,
-                      preempt_pre_7_2, false),
-+    DEFINE_PROP_BOOL("x-channel-header", MigrationState, channel_header, true),
- 
-     /* Migration parameters */
-     DEFINE_PROP_UINT8("x-compress-level", MigrationState,
-@@ -381,6 +382,14 @@ bool migrate_zero_copy_send(void)
- 
- /* pseudo capabilities */
- 
-+bool migrate_channel_header(void)
++int migration_channel_header_recv(QIOChannel *ioc, MigChannelHeader *header,
++                                  Error **errp)
 +{
-+    MigrationState *s = migrate_get_current();
++    uint64_t header_size;
++    int ret;
 +
-+    return false;
-+    return s->channel_header;
++    ret = qio_channel_read_all_eof(ioc, (char *)&header_size,
++                                   sizeof(header_size), errp);
++    if (ret == 0 || ret == -1) {
++        return -1;
++    }
++
++    header_size = be64_to_cpu(header_size);
++    if (header_size > sizeof(*header)) {
++        error_setg(errp,
++                   "Received header of size %lu bytes which is greater than "
++                   "max header size of %lu bytes",
++                   header_size, sizeof(*header));
++        return -EINVAL;
++    }
++
++    ret = qio_channel_read_all_eof(ioc, (char *)header, header_size, errp);
++    if (ret == 0 || ret == -1) {
++        return -1;
++    }
++
++    header->channel_type = be32_to_cpu(header->channel_type);
++
++    trace_migration_channel_header_recv(header->channel_type,
++                                        header_size);
++
++    return 0;
 +}
 +
- bool migrate_multifd_flush_after_each_section(void)
- {
-     MigrationState *s = migrate_get_current();
-diff --git a/migration/options.h b/migration/options.h
-index ab8199e20784..1144d72ec0db 100644
---- a/migration/options.h
-+++ b/migration/options.h
-@@ -52,6 +52,7 @@ bool migrate_zero_copy_send(void);
-  * check, but they are not a capability.
-  */
++int migration_channel_header_send(QIOChannel *ioc, MigChannelHeader *header,
++                                  Error **errp)
++{
++    uint64_t header_size = sizeof(*header);
++    int ret;
++
++    if (!migrate_channel_header()) {
++        return 0;
++    }
++
++    trace_migration_channel_header_send(header->channel_type,
++                                        header_size);
++
++    header_size = cpu_to_be64(header_size);
++    ret = qio_channel_write_all(ioc, (char *)&header_size, sizeof(header_size),
++                                errp);
++    if (ret) {
++        return ret;
++    }
++
++    header->channel_type = cpu_to_be32(header->channel_type);
++
++    return qio_channel_write_all(ioc, (char *)header, sizeof(*header), errp);
++}
  
-+bool migrate_channel_header(void);
- bool migrate_multifd_flush_after_each_section(void);
- bool migrate_postcopy(void);
- bool migrate_rdma(void);
+ /**
+  * @migration_channel_read_peek - Peek at migration channel, without
+diff --git a/migration/channel.h b/migration/channel.h
+index 5bdb8208a744..95d281828aaa 100644
+--- a/migration/channel.h
++++ b/migration/channel.h
+@@ -29,4 +29,18 @@ int migration_channel_read_peek(QIOChannel *ioc,
+                                 const char *buf,
+                                 const size_t buflen,
+                                 Error **errp);
++typedef enum {
++    MIG_CHANNEL_TYPE_MAIN,
++} MigChannelTypes;
++
++typedef struct QEMU_PACKED {
++    uint32_t channel_type;
++} MigChannelHeader;
++
++int migration_channel_header_send(QIOChannel *ioc, MigChannelHeader *header,
++                                  Error **errp);
++
++int migration_channel_header_recv(QIOChannel *ioc, MigChannelHeader *header,
++                                  Error **errp);
++
+ #endif
+diff --git a/migration/trace-events b/migration/trace-events
+index f0e1cb80c75b..e48607d5a6a2 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -198,6 +198,8 @@ migration_transferred_bytes(uint64_t qemu_file, uint64_t multifd, uint64_t rdma)
+ # channel.c
+ migration_set_incoming_channel(void *ioc, const char *ioctype) "ioc=%p ioctype=%s"
+ migration_set_outgoing_channel(void *ioc, const char *ioctype, const char *hostname, void *err)  "ioc=%p ioctype=%s hostname=%s err=%p"
++migration_channel_header_send(uint32_t channel_type, uint64_t header_size) "Migration channel header send: channel_type=%u, header_size=%lu"
++migration_channel_header_recv(uint32_t channel_type, uint64_t header_size) "Migration channel header recv: channel_type=%u, header_size=%lu"
+ 
+ # global_state.c
+ migrate_state_too_big(void) ""
 
