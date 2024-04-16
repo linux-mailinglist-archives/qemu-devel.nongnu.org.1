@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73068A6EC7
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C048A6EB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk35-0005Ep-4q; Tue, 16 Apr 2024 10:44:39 -0400
+	id 1rwk37-0005Q8-Ge; Tue, 16 Apr 2024 10:44:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2y-0005DV-QW
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:32 -0400
+ id 1rwk2z-0005E2-3z
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:33 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2u-0002Gk-1V
+ id 1rwk2x-0002Gy-Gw
  for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:32 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2i-0002fp-Ii; Tue, 16 Apr 2024 16:44:16 +0200
+ id 1rwk2n-0002g7-PI; Tue, 16 Apr 2024 16:44:21 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,9 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 12/26] migration: Enable x-channel-header pseudo-capability
-Date: Tue, 16 Apr 2024 16:42:51 +0200
-Message-ID: <540365a5a71597afae27d12f396bb7ebc994aeef.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 13/26] vfio/migration: Add save_{iterate,
+ complete_precopy}_started trace events
+Date: Tue, 16 Apr 2024 16:42:52 +0200
+Message-ID: <fb49530d14d2e9589dda457170248383fd212972.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -60,26 +61,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Now that migration channel header has been implemented, enable it.
+This way both the start and end points of migrating a particular VFIO
+device are known.
 
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
+Add also a vfio_save_iterate_empty_hit trace event so it is known when
+there's no more data to send for that device.
+
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/options.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/vfio/migration.c           | 13 +++++++++++++
+ hw/vfio/trace-events          |  3 +++
+ include/hw/vfio/vfio-common.h |  3 +++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/migration/options.c b/migration/options.c
-index abb5b485badd..949d8a6c0b62 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -386,7 +386,6 @@ bool migrate_channel_header(void)
- {
-     MigrationState *s = migrate_get_current();
+diff --git a/hw/vfio/migration.c b/hw/vfio/migration.c
+index 1149c6b3740f..bc3aea77455c 100644
+--- a/hw/vfio/migration.c
++++ b/hw/vfio/migration.c
+@@ -394,6 +394,9 @@ static int vfio_save_setup(QEMUFile *f, void *opaque)
+         return -ENOMEM;
+     }
  
--    return false;
-     return s->channel_header;
- }
++    migration->save_iterate_run = false;
++    migration->save_iterate_empty_hit = false;
++
+     if (vfio_precopy_supported(vbasedev)) {
+         int ret;
  
+@@ -515,9 +518,17 @@ static int vfio_save_iterate(QEMUFile *f, void *opaque)
+     VFIOMigration *migration = vbasedev->migration;
+     ssize_t data_size;
+ 
++    if (!migration->save_iterate_run) {
++        trace_vfio_save_iterate_started(vbasedev->name);
++        migration->save_iterate_run = true;
++    }
++
+     data_size = vfio_save_block(f, migration);
+     if (data_size < 0) {
+         return data_size;
++    } else if (data_size == 0 && !migration->save_iterate_empty_hit) {
++        trace_vfio_save_iterate_empty_hit(vbasedev->name);
++        migration->save_iterate_empty_hit = true;
+     }
+ 
+     vfio_update_estimated_pending_data(migration, data_size);
+@@ -542,6 +553,8 @@ static int vfio_save_complete_precopy(QEMUFile *f, void *opaque)
+     ssize_t data_size;
+     int ret;
+ 
++    trace_vfio_save_complete_precopy_started(vbasedev->name);
++
+     /* We reach here with device state STOP or STOP_COPY only */
+     ret = vfio_migration_set_state(vbasedev, VFIO_DEVICE_STATE_STOP_COPY,
+                                    VFIO_DEVICE_STATE_STOP);
+diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
+index f0474b244bf0..a72697678256 100644
+--- a/hw/vfio/trace-events
++++ b/hw/vfio/trace-events
+@@ -157,8 +157,11 @@ vfio_migration_state_notifier(const char *name, int state) " (%s) state %d"
+ vfio_save_block(const char *name, int data_size) " (%s) data_size %d"
+ vfio_save_cleanup(const char *name) " (%s)"
+ vfio_save_complete_precopy(const char *name, int ret) " (%s) ret %d"
++vfio_save_complete_precopy_started(const char *name) " (%s)"
+ vfio_save_device_config_state(const char *name) " (%s)"
+ vfio_save_iterate(const char *name, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
++vfio_save_iterate_started(const char *name) " (%s)"
++vfio_save_iterate_empty_hit(const char *name) " (%s)"
+ vfio_save_setup(const char *name, uint64_t data_buffer_size) " (%s) data buffer size 0x%"PRIx64
+ vfio_state_pending_estimate(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+ vfio_state_pending_exact(const char *name, uint64_t precopy, uint64_t postcopy, uint64_t stopcopy_size, uint64_t precopy_init_size, uint64_t precopy_dirty_size) " (%s) precopy 0x%"PRIx64" postcopy 0x%"PRIx64" stopcopy size 0x%"PRIx64" precopy initial size 0x%"PRIx64" precopy dirty size 0x%"PRIx64
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index b9da6c08ef41..9bb523249e73 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -71,6 +71,9 @@ typedef struct VFIOMigration {
+     uint64_t precopy_init_size;
+     uint64_t precopy_dirty_size;
+     bool initial_data_sent;
++
++    bool save_iterate_run;
++    bool save_iterate_empty_hit;
+ } VFIOMigration;
+ 
+ struct VFIOGroup;
 
