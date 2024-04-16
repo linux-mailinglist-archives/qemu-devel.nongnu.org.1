@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BDB8A6CE2
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:54:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E1D8A6CE3
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 15:54:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwjFY-0001pO-DL; Tue, 16 Apr 2024 09:53:28 -0400
+	id 1rwjG1-0002B6-8q; Tue, 16 Apr 2024 09:53:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFV-0001ol-BG
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:25 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFr-00023u-ND
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:47 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFS-0001hk-0z
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:25 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-346359c8785so3413448f8f.0
- for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:53:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rwjFb-0001ku-MM
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 09:53:47 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a526d0b2349so266829266b.3
+ for <qemu-devel@nongnu.org>; Tue, 16 Apr 2024 06:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713275600; x=1713880400; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713275609; x=1713880409; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r03IbH4Q5jukHMDYRNDrIPnxYvDkdnR4utG+Rvdo7L0=;
- b=yRF1JSc9vOfeMJXY1dkhAcfTue6ucH2vX1XanashF2GYd98VwW5NZ5vQ+tjcRPmfgr
- kV9qq9CuKPIJKecDs0CvQLckdBu5WVQs6kzeMYgp+H02DbDZbUNJ/Q4yaybLs+WRqUfH
- GQ2B6iWApyQkXwVEl2FGJV3WlWY80W1qPcsy57QCVaeIjfyWq5FOCxAbzE5AcoOkVEqq
- wNm1pXanch2iOHScqF/uda4mfr7IKbTk/3ZGCW3KubmWxHgvKWTdzssYZii1q4npcu1T
- K7JCzz4/6UiUbUhuYjUZRnUXPYs4VH/NZHv1TOKtC2f3ZicylHHAal43yfUfNzmVqejg
- kAyQ==
+ bh=GbDbMJ6uZWpUFLveYfiSh5ZQucMurGHlFI0AhTW7f68=;
+ b=qPxIx/zxfDmPvjJafmgwuzKHfdHrwCAci20orMl5E9GRPSpdt6ldtdlTmIZcwMMQEG
+ Wb0VhVR6QgdJwSrpZ4dbV9pACj1Te4iaYjcfATsBpSUHHynwqgU60PvU0h/NlP7iFa9X
+ y+Y9ITf83yGC2R8Yh8ckeh7W1IzWLyZ7WEqU7+oXEgewaOnwTh9jqTCI4HqqXGJWbyv6
+ Tbcy8TXcAqIErBCbAQyAUbud1FH2QhZn7TAhyw2/ztO6f1ZqQksIu/UEcxYqz6GC+MrJ
+ L4Do1PnrUMnU3hw0kR3JwFC5x5k/pkE/v6TIhAp0I8CJJ1rDflbhRIpmqN/clDheJ+gA
+ U3pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713275600; x=1713880400;
+ d=1e100.net; s=20230601; t=1713275609; x=1713880409;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r03IbH4Q5jukHMDYRNDrIPnxYvDkdnR4utG+Rvdo7L0=;
- b=Os5OSNqygklt64WripaVDVtt5Ih8/QgIVZGQmuHPE+IU417so3pbfykQB0W3Cbzsgj
- kxjR++C4ibGYn7PqpaeNKLMSWI/ViXd/+9q+Cyvj4C/t7HCmlZHxplhARSRxvHpYUYik
- x7wgispPmyK4nxqxKMwTm7DQ4V3MoPMXKG4HKsH7vmDy79Be18MVqMh2p4I00X8zBxaq
- QhoxuTZo5eKTRmuEbYaT7R04mBAE649vVbzKUghBhkCby2s5sH5HWvWhpWbvpJGUsqkl
- DevreJ7/NV2YuxS34qzTDleHPgqq7c2Us6YFQm5aPZufhiCtkw3aZdtOm358dVdyO5rR
- le5w==
-X-Gm-Message-State: AOJu0YzRpyu3PcVcnEBMvfp8NehYP1GX00z4RA/HCeQJcinIiqLg8WYY
- 0k3PV6uUM6pyGjD3ZmfNADzB5Yh9HKXu4zJUAf4u+LyZH1C9caiAhlByRsYDFpXdlqymICVqdbK
- A
-X-Google-Smtp-Source: AGHT+IGJ2uGSR6KqQln7hRaQZa1PHMjIwlEBSzUIgzuLKKApN96nfJTrfhuAZdzCvzv0Ihnv1ZAsZA==
-X-Received: by 2002:a5d:69c5:0:b0:349:8fa4:1839 with SMTP id
- s5-20020a5d69c5000000b003498fa41839mr924704wrw.1.1713275600053; 
- Tue, 16 Apr 2024 06:53:20 -0700 (PDT)
+ bh=GbDbMJ6uZWpUFLveYfiSh5ZQucMurGHlFI0AhTW7f68=;
+ b=MBLFgIWO8fwvMcrWYah87BCjQbZSETrnDRnvd2X8cIFxy/0bDSGeITpMBM785NBlV6
+ 2lq500FlkDbN6pfJY3vWeBJl1O7gEZ1FMhFe6ZtvJl8EiKDaDOdFNxSlpQyvIONopjxt
+ 7ORIAjvvwp4rdD2vEV0j0pXeoTVu7nvGUDLInwH9oRpu1hEr3APsahQfGv8nsi9w7txw
+ oF2mzYsMsaetoNH6loHu1BG8EEI3Yj1zFykER6II1zpO6itqp6BCK09z+oLO8UazSgMd
+ kBo2wu1G0KS4wrAkW4O8ufqFiGQZCZsDld+NBTW0H6X1XNfYkpKLgxme+gIl3+8YdXcj
+ eFTg==
+X-Gm-Message-State: AOJu0Yzdf2x3qNBjiZX++OPvpbsnYsYcJ0D9KdtWhk9DKTcL/djFa5Vi
+ zX1HEghSKP3XnnBaRKukWvXkvN5+M6Pr4yNa83eVcgQTGNBqb0SjKK2DX2dyXLug7OUPy+pu6T6
+ /
+X-Google-Smtp-Source: AGHT+IEX3lMg8wfCLuTktiK8EJeTbInOdt7P6XN70Yhe9usFrvcnOL8JErsvVAiVytuyfwt4Liwr1w==
+X-Received: by 2002:a17:906:1cd7:b0:a52:15dd:20d8 with SMTP id
+ i23-20020a1709061cd700b00a5215dd20d8mr8989112ejh.26.1713275606318; 
+ Tue, 16 Apr 2024 06:53:26 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.155.61])
  by smtp.gmail.com with ESMTPSA id
- df10-20020a5d5b8a000000b003437799a373sm14861606wrb.83.2024.04.16.06.53.18
+ n5-20020a170906724500b00a47423b4c33sm6892640ejk.128.2024.04.16.06.53.24
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 16 Apr 2024 06:53:19 -0700 (PDT)
+ Tue, 16 Apr 2024 06:53:25 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Thomas Huth <thuth@redhat.com>
@@ -63,18 +63,21 @@ Cc: Ani Sinha <anisinha@redhat.com>, qemu-riscv@nongnu.org,
  David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v3 04/22] hw/usb/hcd-xhci: Remove XHCI_FLAG_SS_FIRST flag
-Date: Tue, 16 Apr 2024 15:52:33 +0200
-Message-ID: <20240416135252.8384-5-philmd@linaro.org>
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH v3 05/22] hw/i386/acpi: Remove
+ PCMachineClass::legacy_acpi_table_size
+Date: Tue, 16 Apr 2024 15:52:34 +0200
+Message-ID: <20240416135252.8384-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240416135252.8384-1-philmd@linaro.org>
 References: <20240416135252.8384-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,142 +100,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-XHCI_FLAG_SS_FIRST was only used by the pc-i440fx-2.0 machine,
-which got removed. Remove it and simplify various functions in
-hcd-xhci.c.
+PCMachineClass::legacy_acpi_table_size was only used by the
+pc-i440fx-2.0 machine, which got removed. Remove it and simplify
+acpi_build().
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- hw/usb/hcd-xhci.h     |  3 +--
- hw/usb/hcd-xhci-nec.c |  2 --
- hw/usb/hcd-xhci-pci.c |  1 -
- hw/usb/hcd-xhci.c     | 42 ++++++++----------------------------------
- 4 files changed, 9 insertions(+), 39 deletions(-)
+ include/hw/i386/pc.h |  1 -
+ hw/i386/acpi-build.c | 62 +++++++++-----------------------------------
+ 2 files changed, 12 insertions(+), 51 deletions(-)
 
-diff --git a/hw/usb/hcd-xhci.h b/hw/usb/hcd-xhci.h
-index 1efa4858fb..fe16d7ad05 100644
---- a/hw/usb/hcd-xhci.h
-+++ b/hw/usb/hcd-xhci.h
-@@ -36,8 +36,7 @@ typedef struct XHCIStreamContext XHCIStreamContext;
- typedef struct XHCIEPContext XHCIEPContext;
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 67856f54c3..4ad724601a 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -103,7 +103,6 @@ struct PCMachineClass {
+     /* ACPI compat: */
+     bool has_acpi_build;
+     bool rsdp_in_ram;
+-    int legacy_acpi_table_size;
+     unsigned acpi_data_size;
+     int pci_root_uid;
  
- enum xhci_flags {
--    XHCI_FLAG_SS_FIRST = 1,
--    XHCI_FLAG_ENABLE_STREAMS,
-+    XHCI_FLAG_ENABLE_STREAMS = 1,
- };
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 53f804ac16..a6f8203460 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2499,13 +2499,12 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+     X86MachineState *x86ms = X86_MACHINE(machine);
+     DeviceState *iommu = pcms->iommu;
+     GArray *table_offsets;
+-    unsigned facs, dsdt, rsdt, fadt;
++    unsigned facs, dsdt, rsdt;
+     AcpiPmInfo pm;
+     AcpiMiscInfo misc;
+     AcpiMcfgInfo mcfg;
+     Range pci_hole = {}, pci_hole64 = {};
+     uint8_t *u;
+-    size_t aml_len = 0;
+     GArray *tables_blob = tables->table_data;
+     AcpiSlicOem slic_oem = { .id = NULL, .table_id = NULL };
+     Object *vmgenid_dev;
+@@ -2551,19 +2550,12 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+     build_dsdt(tables_blob, tables->linker, &pm, &misc,
+                &pci_hole, &pci_hole64, machine);
  
- typedef enum TRBType {
-diff --git a/hw/usb/hcd-xhci-nec.c b/hw/usb/hcd-xhci-nec.c
-index 5d5b069cf9..0c063b3697 100644
---- a/hw/usb/hcd-xhci-nec.c
-+++ b/hw/usb/hcd-xhci-nec.c
-@@ -41,8 +41,6 @@ struct XHCINecState {
- static Property nec_xhci_properties[] = {
-     DEFINE_PROP_ON_OFF_AUTO("msi", XHCIPciState, msi, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_ON_OFF_AUTO("msix", XHCIPciState, msix, ON_OFF_AUTO_AUTO),
--    DEFINE_PROP_BIT("superspeed-ports-first", XHCINecState, flags,
--                    XHCI_FLAG_SS_FIRST, true),
-     DEFINE_PROP_UINT32("intrs", XHCINecState, intrs, XHCI_MAXINTRS),
-     DEFINE_PROP_UINT32("slots", XHCINecState, slots, XHCI_MAXSLOTS),
-     DEFINE_PROP_END_OF_LIST(),
-diff --git a/hw/usb/hcd-xhci-pci.c b/hw/usb/hcd-xhci-pci.c
-index cbad96f393..264d7ebb77 100644
---- a/hw/usb/hcd-xhci-pci.c
-+++ b/hw/usb/hcd-xhci-pci.c
-@@ -242,7 +242,6 @@ static void qemu_xhci_instance_init(Object *obj)
-     s->msix     = ON_OFF_AUTO_AUTO;
-     xhci->numintrs = XHCI_MAXINTRS;
-     xhci->numslots = XHCI_MAXSLOTS;
--    xhci_set_flag(xhci, XHCI_FLAG_SS_FIRST);
- }
+-    /* Count the size of the DSDT and SSDT, we will need it for legacy
+-     * sizing of ACPI tables.
+-     */
+-    aml_len += tables_blob->len - dsdt;
+-
+     /* ACPI tables pointed to by RSDT */
+-    fadt = tables_blob->len;
+     acpi_add_table(table_offsets, tables_blob);
+     pm.fadt.facs_tbl_offset = &facs;
+     pm.fadt.dsdt_tbl_offset = &dsdt;
+     pm.fadt.xdsdt_tbl_offset = &dsdt;
+     build_fadt(tables_blob, tables->linker, &pm.fadt, oem_id, oem_table_id);
+-    aml_len += tables_blob->len - fadt;
  
- static const TypeInfo qemu_xhci_info = {
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index ad40232eb6..b6411f0bda 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -541,18 +541,10 @@ static XHCIPort *xhci_lookup_port(XHCIState *xhci, struct USBPort *uport)
-     case USB_SPEED_LOW:
-     case USB_SPEED_FULL:
-     case USB_SPEED_HIGH:
--        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--            index = uport->index + xhci->numports_3;
--        } else {
--            index = uport->index;
+     acpi_add_table(table_offsets, tables_blob);
+     acpi_build_madt(tables_blob, tables->linker, x86ms,
+@@ -2694,49 +2686,19 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+      * too simple to be enough.  4k turned out to be too small an
+      * alignment very soon, and in fact it is almost impossible to
+      * keep the table size stable for all (max_cpus, max_memory_slots)
+-     * combinations.  So the table size is always 64k for pc-i440fx-2.1
+-     * and we give an error if the table grows beyond that limit.
+-     *
+-     * We still have the problem of migrating from "-M pc-i440fx-2.0".  For
+-     * that, we exploit the fact that QEMU 2.1 generates _smaller_ tables
+-     * than 2.0 and we can always pad the smaller tables with zeros.  We can
+-     * then use the exact size of the 2.0 tables.
+-     *
+-     * All this is for PIIX4, since QEMU 2.0 didn't support Q35 migration.
++     * combinations.
+      */
+-    if (pcmc->legacy_acpi_table_size) {
+-        /* Subtracting aml_len gives the size of fixed tables.  Then add the
+-         * size of the PIIX4 DSDT/SSDT in QEMU 2.0.
+-         */
+-        int legacy_aml_len =
+-            pcmc->legacy_acpi_table_size +
+-            ACPI_BUILD_LEGACY_CPU_AML_SIZE * x86ms->apic_id_limit;
+-        int legacy_table_size =
+-            ROUND_UP(tables_blob->len - aml_len + legacy_aml_len,
+-                     ACPI_BUILD_ALIGN_SIZE);
+-        if ((tables_blob->len > legacy_table_size) &&
+-            !pcmc->resizable_acpi_blob) {
+-            /* Should happen only with PCI bridges and -M pc-i440fx-2.0.  */
+-            warn_report("ACPI table size %u exceeds %d bytes,"
+-                        " migration may not work",
+-                        tables_blob->len, legacy_table_size);
+-            error_printf("Try removing CPUs, NUMA nodes, memory slots"
+-                         " or PCI bridges.\n");
 -        }
-+        index = uport->index + xhci->numports_3;
-         break;
-     case USB_SPEED_SUPER:
--        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--            index = uport->index;
--        } else {
--            index = uport->index + xhci->numports_2;
+-        g_array_set_size(tables_blob, legacy_table_size);
+-    } else {
+-        /* Make sure we have a buffer in case we need to resize the tables. */
+-        if ((tables_blob->len > ACPI_BUILD_TABLE_SIZE / 2) &&
+-            !pcmc->resizable_acpi_blob) {
+-            /* As of QEMU 2.1, this fires with 160 VCPUs and 255 memory slots.  */
+-            warn_report("ACPI table size %u exceeds %d bytes,"
+-                        " migration may not work",
+-                        tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
+-            error_printf("Try removing CPUs, NUMA nodes, memory slots"
+-                         " or PCI bridges.\n");
 -        }
-+        index = uport->index;
-         break;
-     default:
-         return NULL;
-@@ -2779,11 +2771,7 @@ static uint64_t xhci_cap_read(void *ptr, hwaddr reg, unsigned size)
-         ret = 0x20425355; /* "USB " */
-         break;
-     case 0x28: /* Supported Protocol:08 */
--        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--            ret = (xhci->numports_2<<8) | (xhci->numports_3+1);
--        } else {
--            ret = (xhci->numports_2<<8) | 1;
--        }
-+        ret = (xhci->numports_2 << 8) | (xhci->numports_3 + 1);
-         break;
-     case 0x2c: /* Supported Protocol:0c */
-         ret = 0x00000000; /* reserved */
-@@ -2795,11 +2783,7 @@ static uint64_t xhci_cap_read(void *ptr, hwaddr reg, unsigned size)
-         ret = 0x20425355; /* "USB " */
-         break;
-     case 0x38: /* Supported Protocol:08 */
--        if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--            ret = (xhci->numports_3<<8) | 1;
--        } else {
--            ret = (xhci->numports_3<<8) | (xhci->numports_2+1);
--        }
-+        ret = (xhci->numports_3 << 8) | 1;
-         break;
-     case 0x3c: /* Supported Protocol:0c */
-         ret = 0x00000000; /* reserved */
-@@ -3349,13 +3333,8 @@ static void usb_xhci_init(XHCIState *xhci)
-     for (i = 0; i < usbports; i++) {
-         speedmask = 0;
-         if (i < xhci->numports_2) {
--            if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--                port = &xhci->ports[i + xhci->numports_3];
--                port->portnr = i + 1 + xhci->numports_3;
--            } else {
--                port = &xhci->ports[i];
--                port->portnr = i + 1;
--            }
-+            port = &xhci->ports[i + xhci->numports_3];
-+            port->portnr = i + 1 + xhci->numports_3;
-             port->uport = &xhci->uports[i];
-             port->speedmask =
-                 USB_SPEED_MASK_LOW  |
-@@ -3366,13 +3345,8 @@ static void usb_xhci_init(XHCIState *xhci)
-             speedmask |= port->speedmask;
-         }
-         if (i < xhci->numports_3) {
--            if (xhci_get_flag(xhci, XHCI_FLAG_SS_FIRST)) {
--                port = &xhci->ports[i];
--                port->portnr = i + 1;
--            } else {
--                port = &xhci->ports[i + xhci->numports_2];
--                port->portnr = i + 1 + xhci->numports_2;
--            }
-+            port = &xhci->ports[i];
-+            port->portnr = i + 1;
-             port->uport = &xhci->uports[i];
-             port->speedmask = USB_SPEED_MASK_SUPER;
-             assert(i < XHCI_MAXPORTS);
+-        acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
++    /* Make sure we have a buffer in case we need to resize the tables. */
++    if ((tables_blob->len > ACPI_BUILD_TABLE_SIZE / 2) &&
++        !pcmc->resizable_acpi_blob) {
++        /* As of QEMU 2.1, this fires with 160 VCPUs and 255 memory slots.  */
++        warn_report("ACPI table size %u exceeds %d bytes,"
++                    " migration may not work",
++                    tables_blob->len, ACPI_BUILD_TABLE_SIZE / 2);
++        error_printf("Try removing CPUs, NUMA nodes, memory slots"
++                     " or PCI bridges.\n");
+     }
++    acpi_align_size(tables_blob, ACPI_BUILD_TABLE_SIZE);
+ 
+     acpi_align_size(tables->linker->cmd_blob, ACPI_BUILD_ALIGN_SIZE);
+ 
 -- 
 2.41.0
 
