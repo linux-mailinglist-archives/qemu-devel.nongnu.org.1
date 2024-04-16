@@ -2,110 +2,179 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0808A6482
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 09:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A817C8A6489
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 09:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwcuD-0005qQ-PT; Tue, 16 Apr 2024 03:07:01 -0400
+	id 1rwcwh-0007hy-Bi; Tue, 16 Apr 2024 03:09:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1rwcu9-0005pL-Dt
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 03:06:57 -0400
-Received: from mail-bn8nam12on2074.outbound.protection.outlook.com
- ([40.107.237.74] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rwcwW-0007hk-4L
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 03:09:24 -0400
+Received: from mgamail.intel.com ([198.175.65.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Jiqian.Chen@amd.com>)
- id 1rwcu5-0001xT-1x
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 03:06:57 -0400
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1rwcwP-0002Hl-MR
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 03:09:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1713251358; x=1744787358;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=sMbCcMDyVlLCJI5T0KoZZvIQxx1iioW+9svD+F3BKL0=;
+ b=Qz3+mAOMH20LYKoWWMvCqvH/YerN8JtVUNYhEcm07SiyHjJxwqMfQQhM
+ bOgZXHRVIFdkvq86uIBOlb+fd7S3bqyfwqtJD7Thr4dhnfvTeFzePscaj
+ ZeFMo8IsH4CXjKpYzcDm7S3+zrPXKfkPPe6/cvrZxj01/3LYnyTq3Dw/y
+ AZJhJodQHYzf2iQV8Oh+lzpPlgdiUwH8MwSrkl6EqRbdFPB9V/eOvPccd
+ z8tNCIsL/Y64xaaAwDktS5Hm2Zld450IaSWSr558DdZ5YZCBQo//S2cyX
+ fniMxN5q4xy7TzYQ2nqGj5CvUWqZnZTeEi+AEcTrZaUXr9oULmB5bUnm6 A==;
+X-CSE-ConnectionGUID: k06byhe/TIKqLY9R7opPZw==
+X-CSE-MsgGUID: imRgE1ryScu4u2bTPHBFAA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="31153073"
+X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; d="scan'208";a="31153073"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Apr 2024 00:09:13 -0700
+X-CSE-ConnectionGUID: fKdxiz0CTGObpiCaJIOyjA==
+X-CSE-MsgGUID: h+EkDIAuTlOU1KSXpOnUQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,205,1708416000"; d="scan'208";a="26825572"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 16 Apr 2024 00:09:07 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Apr 2024 00:09:06 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35 via Frontend Transport; Tue, 16 Apr 2024 00:09:06 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 16 Apr 2024 00:09:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dPMtVDqYn+O0tbPlyt3UHwIFaJRjm/kLCgt2rzrzh8ukHQUadEKVpwTry0ZEMIYAjqWy/IngBAbOgkYlrBJwH56xa7lWX3u1hPqh5jNj7VAmtYvBjs3NBXkrNYTXUhTFg0QZWAcnb1Yv+CYx/JG8R5+xdrNo3z/kvt2VoBNdxpF5naz0+O56X29I4QJeWDds8fQpxj+yHEobbLFF12Fv5xQxUrHigb7koJJz/iIBlLKMr1pHwfDH/SPRQgQA0zTqbvoXG7GAWSRajecenXKfYt7KEH1WnYILyppTbQXo6EMzR46C82/DgfrUgGTEC8mg12jPA2vLg25B38dSVyBUzw==
+ b=SP3nxv9kLAIu/vfdmbkUl/I2IICzQGKMk9HW0bFngzeuKJ4ihM84p4bbNqvh9NRYrn1KTwtfafOen57HmgXhVdQC0nA75GrURlv3HnNEg2yNwmTHaVukQHzVWDiz7MwSEq+MQSbY8Z1uZFHHhuzgTkPWuGuslmR5mImW2cY5AW74oONSp8k/9bVqSxjGvd37GE7r0hct2mcr0F0ZhbTJTZYRFpyvmcxehidMWPxHjxf9Ez2JNRjlQ6dsWJmdag6Gmgs4KVz/kakWCNSedog6mGbvFOXAnzL7ABP0FFrFhXSl5XjY/DWAuBKJ4cJsNQdpCklRquby66tYwvw87rfDcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dqfWU1eXEp2ZbR32oVbCz+yZdeDAyZeRsf+SQU6ynLU=;
- b=biS7XBrawn9vYsDgbFPza5DocwyrcyuOfWyOMu48XzJXnCW0i6E5KT9mlyGVqUqQDlw4Sv/OBo4Wv5okls/zse2qk/N5lwGCXA7gC9ImFNj/4yolPs0CmHzgW5lS7tIGlEVWq+NDRU//VCV+rZq9gVDtOfaF4IFAQQeSnNO+EZtt5uTk45OIlWM+h1Q6dZH5tAhXfb+zZFENFmJRmO/kB3R5fEpdVV9pK8y2kfn8pIW52yHqkVu9DxOUUHSSTRG167WM73jsuSh8TjqskPejceaVGm+1D7Lsrtl5VhOzz49ky02rKSU1gz9jV+bTLl7Xe6eEcE/9NI0yuzP7MpJUrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=redhat.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dqfWU1eXEp2ZbR32oVbCz+yZdeDAyZeRsf+SQU6ynLU=;
- b=1eVKHTJWsAm//oZ9M+N99V8/MhfeR8KL+mXLS6hYymsP/NLzGBi/QrEjQnxFSKMcsDafBxnI3pdaQb2KiwujtV5rDbT4Im7PxMtiSUNw0ptjMjib/uusDEqz4nRGoswyAZZR8hFBm4uAb3bFsBt7eA/hjP/HyI506adypKNRXjc=
-Received: from CH2PR10CA0001.namprd10.prod.outlook.com (2603:10b6:610:4c::11)
- by IA0PR12MB8645.namprd12.prod.outlook.com (2603:10b6:208:48f::7)
+ bh=sMbCcMDyVlLCJI5T0KoZZvIQxx1iioW+9svD+F3BKL0=;
+ b=TYK1eYlltC09NEeQqC9FrzAfintztLWrhxH2HZLogjBg07WoH5RbIZPP28N64kIU0iqag6jdvdQJMKm18YoKRWkMoq/QK3VMSxvqfdeJ5mRMG4ip1c/Qvsr+0LBL6lXMNS0FcS2mUS/85/TR3SitxTZoqjNnn7hpxtEz3OE7nWBvDh9MnHqa+dSsUwyl9eQ7hBx3G084BLIHv/UEXJqn0yjDzmVnFroWvKPwUjwnTPKMJ6mFjOHGue/PQ13GbYdoS5gySB8c/iOW5gW49qlvNpIbAuKapteEvfGJH49Q+P7v+Zsk3nhQ9MnyYiBWSAkuFrF0uW8FlIHvrZZ55vGxrg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com (2603:10b6:a03:47d::10)
+ by MN0PR11MB6303.namprd11.prod.outlook.com (2603:10b6:208:3c1::10)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Tue, 16 Apr
- 2024 07:01:48 +0000
-Received: from DS3PEPF000099DF.namprd04.prod.outlook.com
- (2603:10b6:610:4c:cafe::73) by CH2PR10CA0001.outlook.office365.com
- (2603:10b6:610:4c::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.31 via Frontend
- Transport; Tue, 16 Apr 2024 07:01:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099DF.mail.protection.outlook.com (10.167.17.202) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7452.22 via Frontend Transport; Tue, 16 Apr 2024 07:01:47 +0000
-Received: from cjq-desktop.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 16 Apr
- 2024 02:01:44 -0500
-From: Jiqian Chen <Jiqian.Chen@amd.com>
-To: "Michael S . Tsirkin" <mst@redhat.com>
-CC: <qemu-devel@nongnu.org>, Jason Wang <jasowang@redhat.com>, Huang Rui
- <Ray.Huang@amd.com>, Jiqian Chen <Jiqian.Chen@amd.com>
-Subject: [RFC QEMU PATCH v9 2/2] virtio-pci: implement No_Soft_Reset bit
-Date: Tue, 16 Apr 2024 15:01:27 +0800
-Message-ID: <20240416070127.116922-3-Jiqian.Chen@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240416070127.116922-1-Jiqian.Chen@amd.com>
-References: <20240416070127.116922-1-Jiqian.Chen@amd.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DF:EE_|IA0PR12MB8645:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7e4b7c08-a869-4d01-3a6c-08dc5de3157f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: aMqkSRPzBtZEUuRYZHFEdd37jz2dmPpIMLpEfPjUgDfceR/Rcd6QfU0uxgnGOBwimrRZzLock4ArWp8FfvQLpLhRpx6CVZ+2caLYLR0/N4aPW8bS0XUt2le3QwCtbgdJMRyt/cQbCUTk5MUXOqmC9x2kjIzXOllAiRuEqXml/xTLxujj/aqiyzu6aW7Awb0woCEXuIiXPfSHu+shbsBSZBiuU+SRLIbbNmPmw2oTlJJYA8uxo4TECOjztDb0oYHassqxJidgMJr2m8i63EE6wJFAYwtvwA4llInmrUdo5idUoo80zYA1mJrucmZyld53B6F9x6wBoROOn6IVpobWnGM5KP9SbQyl3U8IAOKU9Qszn4NW/Dvyu2Z2FtG7H06Dj/KOZjN+lshZbaDTrVbbsmYYeZok6rNw2b2f8rJWTP5BNs+sp/YIONBTiufP85heSdIhG9Nep9lu/q0KbDJEF5OIKHg5BBXGwS+lu389YGqDaW823NlZwSv5o7WTPUKA3zwPtJE2P5Ngwu+NEBTJ6PxvicPIyA1UffyBswaKO6wo2VxeUKSzn4zNrGcY9dUW2nizvZaAeEM/VoGDDADdEb97933hADUZRzFkBjJE0ygfLmpwQp92My/ogXVL1xsvBjSlZwFSs5tLTGLGWmu6MqE/QNZ1LmSK0A9r1RvbkwpG8Y7YW+uc4FrarhzkfFz5JLnjBUY2nAU5ysQWZWwz+JcNKrrM0euh95hYr7gDtFvSnqJEocQJwoS4ppxILKZ8
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(36860700004)(1800799015)(82310400014)(376005); DIR:OUT;
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.28; Tue, 16 Apr
+ 2024 07:09:04 +0000
+Received: from SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129]) by SJ0PR11MB6744.namprd11.prod.outlook.com
+ ([fe80::e4a3:76ce:879:9129%7]) with mapi id 15.20.7472.025; Tue, 16 Apr 2024
+ 07:09:04 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: =?utf-8?B?Q8OpZHJpYyBMZSBHb2F0ZXI=?= <clg@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>, "joao.m.martins@oracle.com"
+ <joao.m.martins@oracle.com>, "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi
+ L" <yi.l.liu@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun
+ <yi.y.sun@linux.intel.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>
+Subject: RE: [PATCH v2 3/5] intel_iommu: Add a framework to do compatibility
+ check with host IOMMU cap/ecap
+Thread-Topic: [PATCH v2 3/5] intel_iommu: Add a framework to do compatibility
+ check with host IOMMU cap/ecap
+Thread-Index: AQHaiZFH29IOEDl1dk20/jsEyJLG5bFpgLMAgAD2WaA=
+Date: Tue, 16 Apr 2024 07:09:04 +0000
+Message-ID: <SJ0PR11MB67443BF6BC7CABCE28F482A392082@SJ0PR11MB6744.namprd11.prod.outlook.com>
+References: <20240408084404.1111628-1-zhenzhong.duan@intel.com>
+ <20240408084404.1111628-4-zhenzhong.duan@intel.com>
+ <251715ae-5378-4dfb-bc14-47ba2e62f83a@redhat.com>
+In-Reply-To: <251715ae-5378-4dfb-bc14-47ba2e62f83a@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ0PR11MB6744:EE_|MN0PR11MB6303:EE_
+x-ms-office365-filtering-correlation-id: 184d197c-3790-49b9-374c-08dc5de419c9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OfZpLM6giHLJswQPTq4Y86durHXwcc8pMDlWDeZslHLvtQmUe09FosNJKAPrbpK8/EUfw5jSJybXEHdilgCR2Iw4unsa16UogjUIp+VXCORQi7p6co174MUWGeFALi+ef4E2Y2SNleqzJticwITesq44MOygJgajKhTpcZLa7Pzrd++0sdnWJUDNgGB9tcCSOKdBUel5nqSE5slRBKLx/CwKVmMjZ4SiLlnkKVEORb4B2qdiZXBL+E+d1hXJ6yj9aYad7B3eqnrZFZc6mBqfDg9FP3i2fJyZ9N9T6nKXUV0POfOyVUeva5EiTgal7PNxoThJE2ZRJTLWIlyfB2WamxFQ/753yT2tXQB/30TrcqPVx+OttGA87zG/bRG38E5Flle8Sn8R2C16YRKPgc9Ehicla4acQJUB3HQVnMsxthK355/ralkltvAh1HruyoCuUiYQQsKmU7TdzoDYhc+w7EUbq8j4+geiuI2oeSve8Oyw18yPsATC+L17J67RlpWgI/dM0yhsQPamk+LyuW6w7JDZTNDDimUcuWg8LSVVJArdNO62Dz3Q4dvPZWSeswyfCOKt8BuMi1zeu/z99z1tHxk04GxY4Qqf2HVQrSLQoRrjqNq/62ve7+raJOTWEZ7887wntsTNVZyuvM9jftHEcMbK/S9QdwD4bFQXy4Dw5Hw=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR11MB6744.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(7416005)(376005)(366007)(38070700009); DIR:OUT;
  SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2024 07:01:47.8605 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7e4b7c08-a869-4d01-3a6c-08dc5de3157f
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF000099DF.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8645
-Received-SPF: permerror client-ip=40.107.237.74;
- envelope-from=Jiqian.Chen@amd.com;
- helo=NAM12-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WU5pN0tCWWFLWm8vQ3lESDlyYmJWQmhtK1JOekthZm16OG9BTUZzejJJWjJK?=
+ =?utf-8?B?bmRHekMzdWlzYzdleVRoeHFVNzF6NjVkQzdyYVRlbVQ5YlhPcU1lUjVGOUlt?=
+ =?utf-8?B?VlQxRlBWWGVxSFYzaUdSV3FidmFxNEhGeHQ4WjFXZkpIUUlOcXlZZHJMdm5y?=
+ =?utf-8?B?YlJIYURNNC9Ib3YxaXdDdE9iWGJhdm4wd2RGSm1yUWhIT2xkSnBZdmxsV2ZL?=
+ =?utf-8?B?K0U5VVJFNy9OT1I2bVdieTBHV0ZyL3JhZGw1Z0NZUXdSVXB6VjRHUHZSaWlz?=
+ =?utf-8?B?STE5OURxMklFdHNpdXhvOEw5TGViUVJldFNhbDdyaWFjNC9mLzdYNHpFOG5I?=
+ =?utf-8?B?bFFidU5uWE40NWpOYkwwdWVlemY5dGhkdzdwd2FpZ1NqdC8wQUgzOVYxb1Uw?=
+ =?utf-8?B?YmFRa0pOTW1ROW5YdzIrR1BFUWM1L3o0ZTFaaVJwaVhYeHJIcUVXK2trWlBt?=
+ =?utf-8?B?SmU5Y2Y1bnF5T1k0OWRidFp4dXljTDJFR1FzNDNlY0Jyc09oUmVvQ2hrR1Iz?=
+ =?utf-8?B?T0hwb09aMkRCNlhQNGYvaXczeks2RmNWMC9qemxEU1cxUUFzT1dWZCs2RjVw?=
+ =?utf-8?B?Z1IyQjBiTUNDL0hxeTJsMXQ3UzVNcGxmZFhHUGtjWDYyVVZYMnd6YUZZRkg4?=
+ =?utf-8?B?NU1PQ01WbzgrVXA1Sk5RcU9ka3JqbkIxRjNkNjJNTlVzRjJKRnVpWTdFREVG?=
+ =?utf-8?B?WWxsRjJtUHVwWWxhcnpyVFU4eUtmMmZxb20ySjJJOEFyTjVBdnJPRjA4d3dl?=
+ =?utf-8?B?b1VOTGVsUmhJazMwUzNNSjhITHZBVFhweVRFNHFQNFIrMkI4TDRjUWhnVmJD?=
+ =?utf-8?B?elFRYkVEL0tRQ1JNdHp5cTJyYklRZFZobVNCODJFYnpXRndMQ00vZ0FQeUd0?=
+ =?utf-8?B?R09VNmNCNjExY0RUZm1ML2hyeXF6Z1BXSngrdnZvU3g3RUlMbmt2UlRwYWNp?=
+ =?utf-8?B?MG5YeGh2TlJkcVc0L3hnekxxV3M4blRuVmh4MDFzYW85SzhtYVloR0srRmpE?=
+ =?utf-8?B?UFlCOWZWVHNWRmxWRkFMcmhrRzIrVGZZV3Azb0tPYlpjUk96VWxYZnhtVEo4?=
+ =?utf-8?B?MFNUbmx5bmV0RlNhdEFZOHpNNkYySFJWOXlyREFNY1ppbHRjTFRrZUVEckpP?=
+ =?utf-8?B?ZkFtYXFSUmx6Y2g3WXlucG1tQ1F3cFFFV0RBazlUUUNzUWxLaVJpY1QvTGZ0?=
+ =?utf-8?B?aHdpZkZTdU9kTU4zbEp5RnNaUGhGWTE1NEd1V1lGRVhzUERjMnMweWlRUjQz?=
+ =?utf-8?B?U2FPVUxNVU12ZDVCYUxVUmxXd3A0OSs0Lzh4bFZtZ1lEQS9nQWVsZjcrVFlK?=
+ =?utf-8?B?K1V6L2YvS3hrWWJVRU1Kc0o2SHo1SkVBRkdTdXloMkZnR1RjeG41NmRVVGpV?=
+ =?utf-8?B?Q0FyZUhnd1ZWeTkzL25WeE9iZlpDTWpPWHRaV2Fhd3FnMTc0cHJvZjlzbW1Q?=
+ =?utf-8?B?K1hYbWowNUEzbk9RdWU3ZUpDUnllRUI4bHdTK1Znd3BCWldoM05TQlh6SkVy?=
+ =?utf-8?B?K2VaQktnUzZjQW5pRCt3Y1BYVGc1TGM3aElFVzU5a05JL2kxcFhFS1lFOWJl?=
+ =?utf-8?B?Tnl4cHZtTkhiL2JYZUtyOWkvZGlJbW5TbDU5WkJlejJ4cVlycFJSa0ZwRlFp?=
+ =?utf-8?B?d3p4b2VYR3J4WlprQnJtK0xSai94TVYyeXFWbExCU3RaY3pISXlmVlVFc1ZF?=
+ =?utf-8?B?cUMrdkVNS2QwRVhwZ20zNGExNnZKWDFTMXVlTFRTSUlGUVpNdjJJdUdsUlRH?=
+ =?utf-8?B?M2pzNUdPVFlNa0pZOHpmUkZjSlFpRFJJN0M0eFlYUEFCeWJuNzkvY0RvYUI1?=
+ =?utf-8?B?ZFdlaFNUd2NZdmhQQmtja1RQVmZ6MXJWb0lQRm1nZ1diQTZIRnJJalE4b3pX?=
+ =?utf-8?B?TlNySVdJc2llZk15SXFoMi91aEJKa01xMzFoUGZac0MxTkNDd2VzQXZCQUs5?=
+ =?utf-8?B?NGM2elBSeGdpM1JNa3lRNnFlNDdQYXdIK3M5anhyemh3SjdyeGpaMFhIbitv?=
+ =?utf-8?B?Vyt6dmsyVnhJUnA3SUU0WGpPYTV5SEgwMTM5SWlvUHlsZC9Gc3hHVDJUVUx1?=
+ =?utf-8?B?RTNBZ2l3K05aaEZ6YWNjVFBqMXBDTkZ4ZXh5c3laMGZlcUdmY3RIUjR0YXpU?=
+ =?utf-8?Q?xXX5eRRU/tlCBLq1jYZseCFkd?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB6744.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 184d197c-3790-49b9-374c-08dc5de419c9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2024 07:09:04.6275 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 1YvY5MrxrGIOMo4muDSABk6645q2efCmc8EF61kJTeG/TmIMxmYrOOxSWiSniqvMcGVHqBTHZHZf1v/FQf6V4/NJmWhygglGUHfPHy1MWu0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6303
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=198.175.65.9;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.185,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,115 +190,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In current code, when guest does S3, virtio-gpu are reset due to the
-bit No_Soft_Reset is not set. After resetting, the display resources
-of virtio-gpu are destroyed, then the display can't come back and only
-show blank after resuming.
-
-Implement No_Soft_Reset bit of PCI_PM_CTRL register, then guest can check
-this bit, if this bit is set, the devices resetting will not be done, and
-then the display can work after resuming.
-
-No_Soft_Reset bit is implemented for all virtio devices, and was tested
-only on virtio-gpu device. Set it false by default for safety.
-
-Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
----
- hw/virtio/virtio-pci.c         | 37 ++++++++++++++++++++++++++++++++++
- include/hw/virtio/virtio-pci.h |  5 +++++
- 2 files changed, 42 insertions(+)
-
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index a1b61308e7a0..82fa4defe5cd 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -2230,6 +2230,11 @@ static void virtio_pci_realize(PCIDevice *pci_dev, Error **errp)
-             pcie_cap_lnkctl_init(pci_dev);
-         }
- 
-+        if (proxy->flags & VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET) {
-+            pci_set_word(pci_dev->config + pos + PCI_PM_CTRL,
-+                         PCI_PM_CTRL_NO_SOFT_RESET);
-+        }
-+
-         if (proxy->flags & VIRTIO_PCI_FLAG_INIT_PM) {
-             /* Init Power Management Control Register */
-             pci_set_word(pci_dev->wmask + pos + PCI_PM_CTRL,
-@@ -2292,11 +2297,37 @@ static void virtio_pci_reset(DeviceState *qdev)
-     }
- }
- 
-+static bool virtio_pci_no_soft_reset(PCIDevice *dev)
-+{
-+    uint16_t pmcsr;
-+
-+    if (!pci_is_express(dev) || !dev->exp.pm_cap) {
-+        return false;
-+    }
-+
-+    pmcsr = pci_get_word(dev->config + dev->exp.pm_cap + PCI_PM_CTRL);
-+
-+    /*
-+     * When No_Soft_Reset bit is set and the device
-+     * is in D3hot state, don't reset device
-+     */
-+    return (pmcsr & PCI_PM_CTRL_NO_SOFT_RESET) &&
-+           (pmcsr & PCI_PM_CTRL_STATE_MASK) == 3;
-+}
-+
- static void virtio_pci_bus_reset_hold(Object *obj)
- {
-     PCIDevice *dev = PCI_DEVICE(obj);
-     DeviceState *qdev = DEVICE(obj);
- 
-+    /*
-+     * Note that: a proposal to add SUSPEND bit is being discussed,
-+     * may need to consider the state of SUSPEND bit in future
-+     */
-+    if (virtio_pci_no_soft_reset(dev)) {
-+        return;
-+    }
-+
-     virtio_pci_reset(qdev);
- 
-     if (pci_is_express(dev)) {
-@@ -2336,6 +2367,12 @@ static Property virtio_pci_properties[] = {
-                     VIRTIO_PCI_FLAG_INIT_LNKCTL_BIT, true),
-     DEFINE_PROP_BIT("x-pcie-pm-init", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_INIT_PM_BIT, true),
-+    /*
-+     * for safety, set this false by default, if change it to true,
-+     * need to consider compatible for old machine
-+     */
-+    DEFINE_PROP_BIT("pcie-pm-no-soft-reset", VirtIOPCIProxy, flags,
-+                    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT, false),
-     DEFINE_PROP_BIT("x-pcie-flr-init", VirtIOPCIProxy, flags,
-                     VIRTIO_PCI_FLAG_INIT_FLR_BIT, true),
-     DEFINE_PROP_BIT("aer", VirtIOPCIProxy, flags,
-diff --git a/include/hw/virtio/virtio-pci.h b/include/hw/virtio/virtio-pci.h
-index 59d88018c16a..9e67ba38c748 100644
---- a/include/hw/virtio/virtio-pci.h
-+++ b/include/hw/virtio/virtio-pci.h
-@@ -43,6 +43,7 @@ enum {
-     VIRTIO_PCI_FLAG_INIT_FLR_BIT,
-     VIRTIO_PCI_FLAG_AER_BIT,
-     VIRTIO_PCI_FLAG_ATS_PAGE_ALIGNED_BIT,
-+    VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT,
- };
- 
- /* Need to activate work-arounds for buggy guests at vmstate load. */
-@@ -79,6 +80,10 @@ enum {
- /* Init Power Management */
- #define VIRTIO_PCI_FLAG_INIT_PM (1 << VIRTIO_PCI_FLAG_INIT_PM_BIT)
- 
-+/* Init The No_Soft_Reset bit of Power Management */
-+#define VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET \
-+  (1 << VIRTIO_PCI_FLAG_PM_NO_SOFT_RESET_BIT)
-+
- /* Init Function Level Reset capability */
- #define VIRTIO_PCI_FLAG_INIT_FLR (1 << VIRTIO_PCI_FLAG_INIT_FLR_BIT)
- 
--- 
-2.34.1
-
+SGkgQ8OpZHJpYywNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogQ8OpZHJp
+YyBMZSBHb2F0ZXIgPGNsZ0ByZWRoYXQuY29tPg0KPlN1YmplY3Q6IFJlOiBbUEFUQ0ggdjIgMy81
+XSBpbnRlbF9pb21tdTogQWRkIGEgZnJhbWV3b3JrIHRvIGRvDQo+Y29tcGF0aWJpbGl0eSBjaGVj
+ayB3aXRoIGhvc3QgSU9NTVUgY2FwL2VjYXANCj4NCj5PbiA0LzgvMjQgMTA6NDQsIFpoZW56aG9u
+ZyBEdWFuIHdyb3RlOg0KPj4gRnJvbTogWWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+Pg0K
+Pj4gSWYgY2hlY2sgZmFpbHMsIHRoZSBob3N0IHNpZGUgZGV2aWNlKGVpdGhlciB2ZmlvIG9yIHZk
+cGEgZGV2aWNlKSBzaG91bGQgbm90DQo+PiBiZSBwYXNzZWQgdG8gZ3Vlc3QuDQo+Pg0KPj4gSW1w
+bGVtZW50YXRpb24gZGV0YWlscyBmb3IgZGlmZmVyZW50IGJhY2tlbmRzIHdpbGwgYmUgaW4gZm9s
+bG93aW5nIHBhdGNoZXMuDQo+Pg0KPj4gU2lnbmVkLW9mZi1ieTogWWkgTGl1IDx5aS5sLmxpdUBp
+bnRlbC5jb20+DQo+PiBTaWduZWQtb2ZmLWJ5OiBZaSBTdW4gPHlpLnkuc3VuQGxpbnV4LmludGVs
+LmNvbT4NCj4+IFNpZ25lZC1vZmYtYnk6IFpoZW56aG9uZyBEdWFuIDx6aGVuemhvbmcuZHVhbkBp
+bnRlbC5jb20+DQo+PiAtLS0NCj4+ICAgaHcvaTM4Ni9pbnRlbF9pb21tdS5jIHwgMzUNCj4rKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPj4gICAxIGZpbGUgY2hhbmdlZCwgMzUg
+aW5zZXJ0aW9ucygrKQ0KPj4NCj4+IGRpZmYgLS1naXQgYS9ody9pMzg2L2ludGVsX2lvbW11LmMg
+Yi9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+IGluZGV4IDRmODRlMmU4MDEuLmE0OWI1ODdjNzMg
+MTAwNjQ0DQo+PiAtLS0gYS9ody9pMzg2L2ludGVsX2lvbW11LmMNCj4+ICsrKyBiL2h3L2kzODYv
+aW50ZWxfaW9tbXUuYw0KPj4gQEAgLTM1LDYgKzM1LDcgQEANCj4+ICAgI2luY2x1ZGUgInN5c2Vt
+dS9rdm0uaCINCj4+ICAgI2luY2x1ZGUgInN5c2VtdS9kbWEuaCINCj4+ICAgI2luY2x1ZGUgInN5
+c2VtdS9zeXNlbXUuaCINCj4+ICsjaW5jbHVkZSAic3lzZW11L2lvbW11ZmQuaCINCj4+ICAgI2lu
+Y2x1ZGUgImh3L2kzODYvYXBpY19pbnRlcm5hbC5oIg0KPj4gICAjaW5jbHVkZSAia3ZtL2t2bV9p
+Mzg2LmgiDQo+PiAgICNpbmNsdWRlICJtaWdyYXRpb24vdm1zdGF0ZS5oIg0KPj4gQEAgLTM4MTks
+NiArMzgyMCwzMiBAQCBWVERBZGRyZXNzU3BhY2UNCj4qdnRkX2ZpbmRfYWRkX2FzKEludGVsSU9N
+TVVTdGF0ZSAqcywgUENJQnVzICpidXMsDQo+PiAgICAgICByZXR1cm4gdnRkX2Rldl9hczsNCj4+
+ICAgfQ0KPj4NCj4+ICtzdGF0aWMgaW50IHZ0ZF9jaGVja19sZWdhY3lfaGRldihJbnRlbElPTU1V
+U3RhdGUgKnMsDQo+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgSG9zdElPTU1V
+RGV2aWNlICpoaW9kLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEVycm9y
+ICoqZXJycCkNCj4+ICt7DQo+PiArICAgIHJldHVybiAwOw0KPj4gK30NCj4+ICsNCj4+ICtzdGF0
+aWMgaW50IHZ0ZF9jaGVja19pb21tdWZkX2hkZXYoSW50ZWxJT01NVVN0YXRlICpzLA0KPj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBIb3N0SU9NTVVEZXZpY2UgKmhpb2QsDQo+
+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEVycm9yICoqZXJycCkNCj4+ICt7
+DQo+PiArICAgIHJldHVybiAwOw0KPj4gK30NCj4+ICsNCj4+ICtzdGF0aWMgaW50IHZ0ZF9jaGVj
+a19oZGV2KEludGVsSU9NTVVTdGF0ZSAqcywgVlRESG9zdElPTU1VRGV2aWNlDQo+KnZ0ZF9oZGV2
+LA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgRXJyb3IgKiplcnJwKQ0KPj4gK3sNCj4+
+ICsgICAgSG9zdElPTU1VRGV2aWNlICpoaW9kID0gdnRkX2hkZXYtPmRldjsNCj4+ICsNCj4+ICsg
+ICAgaWYgKG9iamVjdF9keW5hbWljX2Nhc3QoT0JKRUNUKGhpb2QpLCBUWVBFX0hJT0RfSU9NTVVG
+RCkpIHsNCj4+ICsgICAgICAgIHJldHVybiB2dGRfY2hlY2tfaW9tbXVmZF9oZGV2KHMsIGhpb2Qs
+IGVycnApOw0KPj4gKyAgICB9DQo+PiArDQo+PiArICAgIHJldHVybiB2dGRfY2hlY2tfbGVnYWN5
+X2hkZXYocywgaGlvZCwgZXJycCk7DQo+PiArfQ0KPg0KPg0KPkkgdGhpbmsgd2Ugc2hvdWxkIGJl
+IHVzaW5nIHRoZSAuZ2V0X2hvc3RfaW9tbXVfaW5mbygpIGNsYXNzIGhhbmRsZXINCj5pbnN0ZWFk
+LiBDYW4gd2UgcmVmYWN0b3IgdGhlIGNvZGUgc2xpZ2h0bHkgdG8gYXZvaWQgdGhpcyBjaGVjayBv
+bg0KPnRoZSB0eXBlID8NCg0KVGhlcmUgaXMgc29tZSBkaWZmaWN1bHR5IGluaSBhdm9pZGluZyB0
+aGlzIGNoZWNrLCB0aGUgYmVoYXZpb3Igb2YgdnRkX2NoZWNrX2xlZ2FjeV9oZGV2DQphbmQgdnRk
+X2NoZWNrX2lvbW11ZmRfaGRldiBhcmUgZGlmZmVyZW50IGVzcGVjaWFsbHkgYWZ0ZXIgbmVzdGlu
+ZyBzdXBwb3J0IGludHJvZHVjZWQuDQp2dGRfY2hlY2tfaW9tbXVmZF9oZGV2KCkgaGFzIG11Y2gg
+d2lkZXIgY2hlY2sgb3ZlciBjYXAvZWNhcCBiaXRzIGJlc2lkZXMgYXdfYml0cy4NClRoYXQgdGhl
+IHJlYXNvbiBJIGhhdmUgdHdvIGZ1bmN0aW9ucyB0byBkbyBkaWZmZXJlbnQgdGhpbmcuDQpTZWU6
+DQpodHRwczovL2dpdGh1Yi5jb20veWlsaXUxNzY1L3FlbXUvYmxvYi96aGVuemhvbmcvaW9tbXVm
+ZF9uZXN0aW5nX3JmY3YyL2h3L2kzODYvaW50ZWxfaW9tbXUuYyNMNTQ3Mg0KDQpNZWFud2hpbGUg
+aW4gdnRkX2NoZWNrX2xlZ2FjeV9oZGV2KCksIHdoZW4gbGVnYWN5IFZGSU8gZGV2aWNlIGF0dGFj
+aGVzIHRvIG1vZGVybiB2SU9NTVUsDQp0aGlzIGlzIHVuc3VwcG9ydGVkIGFuZCBlcnJvciBvdXQg
+ZWFybHksIGl0IHdpbGwgbm90IGNhbGwgLmdldF9ob3N0X2lvbW11X2luZm8oKS4NCkkgbWVhbiB3
+ZSBkb24ndCBuZWVkIHRvIHVuY29uZGl0aW9uYWxseSBjYWxsIC5nZXRfaG9zdF9pb21tdV9pbmZv
+KCkgaW4gc29tZSBjYXNlcy4NCg0KVGhhbmtzDQpaaGVuemhvbmcNCg==
 
