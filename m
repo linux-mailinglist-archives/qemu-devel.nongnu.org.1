@@ -2,26 +2,26 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673E68A6EC5
-	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94458A6EB8
+	for <lists+qemu-devel@lfdr.de>; Tue, 16 Apr 2024 16:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rwk2p-00053S-00; Tue, 16 Apr 2024 10:44:23 -0400
+	id 1rwk2z-0005Cx-8Z; Tue, 16 Apr 2024 10:44:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2m-00052T-9w
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:20 -0400
+ id 1rwk2v-00055k-4G
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:29 -0400
 Received: from vps-vb.mhejs.net ([37.28.154.113])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2k-0002FW-S9
- for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:20 -0400
+ id 1rwk2r-0002GQ-NE
+ for qemu-devel@nongnu.org; Tue, 16 Apr 2024 10:44:26 -0400
 Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.94.2)
  (envelope-from <mail@maciej.szmigiero.name>)
- id 1rwk2Y-0002fG-4V; Tue, 16 Apr 2024 16:44:06 +0200
+ id 1rwk2d-0002fX-CV; Tue, 16 Apr 2024 16:44:11 +0200
 From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 To: Peter Xu <peterx@redhat.com>,
 	Fabiano Rosas <farosas@suse.de>
@@ -30,10 +30,10 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>,
  Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: [PATCH RFC 10/26] migration: Add send/receive header for multifd
- channel
-Date: Tue, 16 Apr 2024 16:42:49 +0200
-Message-ID: <ee0bbaa7e7e9147a96f60a1a3a228fddc958c990.1713269378.git.maciej.szmigiero@oracle.com>
+Subject: [PATCH RFC 11/26] migration/options: Mapped-ram is not channel header
+ compatible
+Date: Tue, 16 Apr 2024 16:42:50 +0200
+Message-ID: <dc4bb55715e0cf079cc59f013a4a0680f0c53c5c.1713269378.git.maciej.szmigiero@oracle.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <cover.1713269378.git.maciej.szmigiero@oracle.com>
 References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
@@ -61,72 +61,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Avihai Horon <avihaih@nvidia.com>
+From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
 
-Add send and receive migration channel header for multifd channel.
+Mapped-ram is only available for multifd migration without channel
+header - add an appropriate check to migration options.
 
-Signed-off-by: Avihai Horon <avihaih@nvidia.com>
-[MSS: Adapt to rewritten migration header passing commit]
 Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 ---
- migration/channel.h   |  1 +
- migration/migration.c | 16 ++++++++++++++++
- migration/multifd.c   |  4 +++-
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ migration/options.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/migration/channel.h b/migration/channel.h
-index c59ccedc7b6b..4232ee649939 100644
---- a/migration/channel.h
-+++ b/migration/channel.h
-@@ -32,6 +32,7 @@ int migration_channel_read_peek(QIOChannel *ioc,
- typedef enum {
-     MIG_CHANNEL_TYPE_MAIN,
-     MIG_CHANNEL_TYPE_POSTCOPY_PREEMPT,
-+    MIG_CHANNEL_TYPE_MULTIFD,
- } MigChannelTypes;
+diff --git a/migration/options.c b/migration/options.c
+index 8fd871cd956d..abb5b485badd 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1284,6 +1284,13 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
+         return false;
+     }
  
- typedef struct QEMU_PACKED {
-diff --git a/migration/migration.c b/migration/migration.c
-index ac9ecf1f4f22..8fe8be71a0e3 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1024,6 +1024,22 @@ void migration_ioc_process_incoming(QIOChannel *ioc, Error **errp)
-         f = qemu_file_new_input(ioc);
-         postcopy_preempt_new_channel(migration_incoming_get_current(), f);
-         break;
-+    case MIG_CHANNEL_TYPE_MULTIFD:
-+    {
-+        Error *local_err = NULL;
-+
-+        assert(migrate_multifd());
-+        if (multifd_recv_setup(errp) != 0) {
-+            return;
-+        }
-+
-+        multifd_recv_new_channel(ioc, &local_err);
-+        if (local_err) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-+        break;
++    if (migrate_mapped_ram() &&
++        params->has_multifd_channels && migrate_channel_header()) {
++        error_setg(errp,
++                   "Mapped-ram only available for multifd migration without channel header");
++        return false;
 +    }
-     default:
-         error_setg(errp, "Received unknown migration channel type %u",
-                    header.channel_type);
-diff --git a/migration/multifd.c b/migration/multifd.c
-index 8eecda68ac0f..c2575e3d6dbf 100644
---- a/migration/multifd.c
-+++ b/migration/multifd.c
-@@ -1191,8 +1191,10 @@ out:
- static bool multifd_new_send_channel_create(MultiFDSendParams *p, Error **errp)
- {
-     g_autoptr(MFDSendChannelConnectData) data = NULL;
-+    MigChannelHeader header = {};
- 
--    data = mfd_send_channel_connect_data_new(p, NULL);
-+    header.channel_type = MIG_CHANNEL_TYPE_MULTIFD;
-+    data = mfd_send_channel_connect_data_new(p, &header);
- 
-     if (!multifd_use_packets()) {
-         return file_send_channel_create(data, errp);
++
+     if (params->has_x_vcpu_dirty_limit_period &&
+         (params->x_vcpu_dirty_limit_period < 1 ||
+          params->x_vcpu_dirty_limit_period > 1000)) {
 
