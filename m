@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26068A7E4B
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 10:31:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA4E8A7F45
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 11:09:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rx0h0-00042g-55; Wed, 17 Apr 2024 04:30:58 -0400
+	id 1rx1H4-0002cj-1u; Wed, 17 Apr 2024 05:08:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nadav.amit@gmail.com>)
- id 1rx0gu-000429-Gq
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 04:30:52 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nadav.amit@gmail.com>)
- id 1rx0gs-0000bT-TY
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 04:30:52 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-a55323f2ef9so317056766b.1
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 01:30:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713342647; x=1713947447; darn=nongnu.org;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=k7fbq7rP8fEuCV+Lwws9gmPYzMJZrPdHDLuBHpR6VoA=;
- b=F0eb01AAPOCN75/EP0gqDuuwXk1NYjWaTsD9R9nrLdqnTK+qI2LeJmAEaA5HJUXsWe
- vR2b8AY9dHLsXes7Q1mjd9LT+a0UGtrntlEz/glk17Hk5Pqz0gBpQ0BqLvlCMLUKfbxl
- 1AeourOFw1WJxdWsk1sJLhtKPONxvBFv+81LUyNgqM+g/Cp7fTZVSW73ZfuhCoxlKDaB
- PJmUG0e0JZsDzJAVN/Qh1HqdQuJ9AXYTMNZfXjQ0rYfU8Apu+mMIExac4kGVJ8eYy/1u
- qi1w+xOvTAoSOMmIgujj4XJold9hOdynqCC17CjPIJhkHljOHve8ykkK7iExyVMHZ8K9
- tGWA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rx1H2-0002bb-1g
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 05:08:12 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rx1Gy-0007E6-9O
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 05:08:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713344886;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=KAXOhBwjfVJcEAlUtSSuh7fjgs08OegDzUnYkLo4w1/CfnmyhAYFFD/3zvVGpyxzNYmwWv
+ SjUyR/Tg5MZhP8BFYFSa40nbcpc2HQvAFNPzWhGrDtKr7d0E1QI8HZP8watkjTVgOhPC/A
+ 9bop5akSNTGT1odhzFi85pxM69um6kc=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-161-QrID9b5fN6Kjn5HXMJZgBg-1; Wed, 17 Apr 2024 05:08:04 -0400
+X-MC-Unique: QrID9b5fN6Kjn5HXMJZgBg-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-516da5d2043so5035903e87.3
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 02:08:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713342647; x=1713947447;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1713344883; x=1713949683;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=k7fbq7rP8fEuCV+Lwws9gmPYzMJZrPdHDLuBHpR6VoA=;
- b=UQg50LVXO/csamrN9XxFoLHit9DbRRbwp1kP0ScIHR7xH6oYwF87VJ02p2qPvf+N8X
- LkTsE2TUnvfGQbrb21w6UXRfAop2bbTFOH8UeNwjVfqtySLlu7mHOrypHTFa5j5oTZDu
- MeWIA4tkLeouNV4Gfn4Bgi3pL1vMf6AvfDPPcCfeRe79YpO1NVN258xFUkxtGQktqNQM
- GpzeWomW/fMnJMgXqh3kJHI0xKmj8/lDfSLJ+qSPUFJ0Znpuc2/NSvBXDqa+xbjj6ad2
- hCZp7CXPhEXTfgZqPzJcQR5hHa3StHZG7L7cSqmNMxDUuArFWs+P6gE7XmztkgpzsIO2
- ZpCg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWBRLdktuEJjgFXPU7v0EDQTDtC+I4QmsRfdwWL+ambEfw0vW/03jHTD87ozSSfyaKLvQBdhZZDnoApQ+tmUzmD5i85Nq4=
-X-Gm-Message-State: AOJu0YwQ6NjrFquyIuTzH5otvZlOpGDdRIa4Vg9yXZcvE4Kmz5SRif5L
- a1OY1eQ6EEZV8QTxpaBm9giJtgsKF3RH1ps2qhpTnVfjofPGMEWn
-X-Google-Smtp-Source: AGHT+IFqrF6BPqG0X/Q2K+taULheOo6Ymd0rXjSckqEH5aLZCsAl6OLe65RfqmXdaDI0xPbDg7opAQ==
-X-Received: by 2002:a17:907:7208:b0:a51:a329:cd76 with SMTP id
- dr8-20020a170907720800b00a51a329cd76mr12604934ejc.13.1713342646773; 
- Wed, 17 Apr 2024 01:30:46 -0700 (PDT)
-Received: from smtpclient.apple ([132.69.239.36])
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=i6a3N0nyKoGYSQgYz9kUx0mr3M6JMBE0z1FYtDYXOVNzGcfCdAu47sove8V+9BoJbU
+ QyNF7B4GDDGYFVbpGE1YFcAdZTT4lTHBh3OCEfE3+E/kk3c0MuUtQciU593MRYT58F0j
+ HxkabzHqd9MrrZnHik3DTNckqvCsojCw+7KaxnzZgJsVaKgSt/0obZpe53IYh8HI4hfg
+ zcFE9IH4d/4rgFkxwMgCGZcUXEnpg1a17u9JBQUW4ZQHD4P/EUBR5YgjYldv6WXUyqYk
+ ETLwd9TkdWjOgWkKisWm98rVNDRplLi88ai1iMVDH1oHEVpnrp4+H+DI+UBt5h2ALUgv
+ 4mqQ==
+X-Gm-Message-State: AOJu0YyfUoerLmOAOCDd4CELz4wQScyTKN2+D1P0GbwfHz5rXyF5bAfQ
+ lNxueM8r2ENNos8+KgVNY5pdoNUkI3A4Y/k04W3JPUcAmqZibUJ71YlPNRA2pvsWS5o5QOfyerj
+ de0OGY7d13vsczq7xUGQhtfdDkOcbkPUrElYn6N3RUQUXR0KMMNTSwGWTKq+k
+X-Received: by 2002:a05:6512:694:b0:518:e2db:4f8b with SMTP id
+ t20-20020a056512069400b00518e2db4f8bmr9027469lfe.37.1713344883120; 
+ Wed, 17 Apr 2024 02:08:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsJ1esffExV5sRtYhfBw0kNL/l6z5eV0McRGdahjcSD/GfBoDpjsI/5RVqpp79VgP9f9f5ug==
+X-Received: by 2002:a05:6512:694:b0:518:e2db:4f8b with SMTP id
+ t20-20020a056512069400b00518e2db4f8bmr9027446lfe.37.1713344882724; 
+ Wed, 17 Apr 2024 02:08:02 -0700 (PDT)
+Received: from avogadro.local ([176.206.84.58])
  by smtp.gmail.com with ESMTPSA id
- hx17-20020a170906847100b00a4e1a9e1ab4sm7857274ejc.157.2024.04.17.01.30.45
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Wed, 17 Apr 2024 01:30:46 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: Add 'info pg' command to monitor
-From: Nadav Amit <nadav.amit@gmail.com>
-In-Reply-To: <bff71578-42ad-4af0-9ba6-e0962dd73710@cs.unc.edu>
-Date: Wed, 17 Apr 2024 11:30:32 +0300
-Cc: Peter Maydell <peter.maydell@linaro.org>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, dave@treblig.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <6D6FB5C3-D73F-427B-93F1-BFD3311F2697@gmail.com>
-References: <20240415160818.2316599-1-porter@cs.unc.edu>
- <CAFEAcA88myOeQwZ212q9R4EHBPpJbQ1qZYjuz6SS=HZbqS+NCQ@mail.gmail.com>
- <fadb288a-4c44-42c9-b706-f5595d97f952@cs.unc.edu>
- <CAFEAcA9Fe8TerNSrg_AfmpFZNL_4B9WV0OccFdLakJhtCN+m4A@mail.gmail.com>
- <bff71578-42ad-4af0-9ba6-e0962dd73710@cs.unc.edu>
-To: Don Porter <porter@cs.unc.edu>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=nadav.amit@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ jw10-20020a170906e94a00b00a523be5897bsm6476812ejb.103.2024.04.17.02.08.01
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 17 Apr 2024 02:08:01 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: qemu-devel@nongnu.org,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH 0/3] target/i386/cpu: Misc cleanup for warning message
+Date: Wed, 17 Apr 2024 10:34:06 +0200
+Message-ID: <20240417083407.1811888-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240327103951.3853425-1-zhao1.liu@linux.intel.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.844,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,43 +99,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Queued, thanks.
 
-
-> On 16 Apr 2024, at 21:11, Don Porter <porter@cs.unc.edu> wrote:
-> 
-> On 4/16/24 13:03, Peter Maydell wrote:
->> On Tue, 16 Apr 2024 at 17:53, Don Porter <porter@cs.unc.edu> wrote:
->>> There is still a lot I am learning about the code base, but it seems
->>> that qemu_get_guest_memory_mapping() does most of what one would need.
->>> It currently only returns the "leaves" of the page table tree in a list.
->>> 
->>> What if I extend this function with an optional argument to either
->>> 1) return the interior nodes of the page table in additional lists (and
->>> then parse+print in the monitor code), or
->>> 2) inline the monitor printing in the arch-specific hook, and pass a
->>> flag to get_guest_memory_mapping() that turns on/off the statements that
->>> pretty print the page tables?
->>> 
->>> It looks like most CPUs implement this function as part of checkpointing.
->> As far as I can see only x86 implements the get_memory_mapping
->> function, so once again somebody has added some bit of
->> functionality that does a walk of the page tables that is
->> x86 only and that shares no code with any of the other
->> page table walking code :-(
-> 
-> My mistake - get_memory_mappings() is only implemented in x86.
-> 
-
-Hi Don,
-
-Your email popped up, so I just drop my 2 cents.
-
-If you are only interested in x86, you can just build a gdb script that would
-parse the page tables and present the data. It might be less efficient, but
-easier to maintain.
-
-Regards,
-Nadav
-
+Paolo
 
 
