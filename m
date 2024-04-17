@@ -2,87 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0378A85DF
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 16:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0E78A86DF
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 17:01:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rx69A-0000Ks-Pc; Wed, 17 Apr 2024 10:20:24 -0400
+	id 1rx6lQ-0003bM-QI; Wed, 17 Apr 2024 10:59:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rx692-0000I8-0Z
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 10:20:17 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rx690-0006pJ-7s
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 10:20:15 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-418d1edcd4cso1075995e9.1
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 07:20:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713363612; x=1713968412; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=g64g9Pt7qYCOpYOwvn3RujnDyp9ytH97gIhVySUkEbw=;
- b=AnM8JlPjLg/KW/dBfYha08dPX4cO/ulcd/BWZVs/3RS9htRbFLlhO/c5IT9abZ3gUT
- mekzUJUiRsZ7NZ20EIFCEgnagtuQ49xphdFeR2MOiTMyPG0Y/TDd2FPlmYpiMj6xXbqp
- L8c1vcJygjmjcT0U4+jwd+I5PiM4OT4qorrDy7K+8Zb0kQ6hDomHamFQpVlr6lEqqqfJ
- l0k6176jFSIteTyBx8oAftetorE8QAvPnKraq5c0nfEsKmopIdFeaIrSqzjIKRKHmEDC
- l8LETli50a8jOA3TxuM7cZ2VV7yd+5+mlrB3IQ9I0Gr3Hwa0qa1dJeYubjz6ioCak93w
- plsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713363612; x=1713968412;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=g64g9Pt7qYCOpYOwvn3RujnDyp9ytH97gIhVySUkEbw=;
- b=a+32Xzz9FIgNDDEiZrRI5TT0NCUu4DcVuB3NN1xIicb/uV1MGV1LrGdFB/XmX1tRro
- sBg3VXc6t0GYg/83Aph/2vaCMPOABGmN2n2HRLRDapmCmQ8ofY1ridhMIXF2OoM4uY8g
- nQFd5Wpqu88HTRFlfBxksg4qge9Wlj0rWdeRODrNVRVkMyAjIfDuX6x9Ji/riqYUKqcp
- ypT+hfa84XqHcD1BjWBFxAhj+WQ9nR7eLeDB8+MWseP8IFy2Kkl+zoLa4NPh3jKuLiSh
- VfGHePrUZr+jI55Ml7GyA05XeiX7+v8v2Ao+GAyOBF2vDpe2paW7YGTiJx2CzkTArST8
- GS+A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWWHWJtC8PilJct41H7CxGgR4hYfDM8Ftf+g5EAcnLczVzJCuKBtyZKhMZ/RdbD9FO0j4ivo0rFWE920AzcfSLG6AVs+4o=
-X-Gm-Message-State: AOJu0YzMWggn4WuWYASaGlCKoT8U1dXmSilRHY03/vSFDQRIC7CAQvad
- 6VOa1EQcVAEQDpExJouX3x+iakkAgHZOcNi2YVB1lkZdRT07bpas/mJ+eYurgQ4=
-X-Google-Smtp-Source: AGHT+IF6Rss2bSmv3KpuS6EE5mk/PigbaBa3Ugivi4GOTh/NWSwnGsvpkq0mO65NDVuZZ6imPpaaSQ==
-X-Received: by 2002:a05:600c:4e8e:b0:417:f7ad:7066 with SMTP id
- f14-20020a05600c4e8e00b00417f7ad7066mr12090784wmq.38.1713363612186; 
- Wed, 17 Apr 2024 07:20:12 -0700 (PDT)
-Received: from [192.168.69.100] ([176.187.201.23])
- by smtp.gmail.com with ESMTPSA id
- d5-20020adfc805000000b00349bd105089sm1780408wrh.47.2024.04.17.07.20.10
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 17 Apr 2024 07:20:11 -0700 (PDT)
-Message-ID: <9722502e-ce18-49d4-932e-4ff777163763@linaro.org>
-Date: Wed, 17 Apr 2024 16:20:09 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rx6lP-0003bD-2s
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 10:59:55 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1rx6lM-00061E-UE
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 10:59:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1713365993; x=1744901993;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=hFxoYz8OFTAduk1qJEadGSlqTNmbCwLMPN3rP4CIP5o=;
+ b=NlL/E5C80KacKdpxJOWORmXnosppldaR69X7g9suhuoKWKUimI6ah5uo
+ TxCB08xRoQcAzpf7uJ/j+X2FwD40inTOaW5yUEYUfh1/0E34QReDc9TUf
+ UdAf8EcsLburMGbK6MTMgnMrtH5iLZ3k9YlI52cRg3FrIOdYhvzBDpq1Q
+ Afy0ZIFZBOZfy1E2x01rFermD0LspNb/GFhjsLmD+wNhayRkeSzrd92IN
+ Ky+vyAXqnmSKtYrMV4/qa4vzJ6LWh2uBISUhs9fdQzJNwWkmd49hPUrCY
+ kbZpxh03Akb1Q8ZbTWT4fwImFsPSBeFOmnoqzcI9fnXLvibaCCTFczQ7A Q==;
+X-CSE-ConnectionGUID: b8bD35rIQbSihiMNAKYbMg==
+X-CSE-MsgGUID: VOU7+BaMQQi0GSNtpxYckw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="9032428"
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; 
+   d="scan'208";a="9032428"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Apr 2024 07:59:49 -0700
+X-CSE-ConnectionGUID: B14wT2GaSUWREF7EScVLeQ==
+X-CSE-MsgGUID: TKzeaDAlTtmRZfY7S3vkXA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,209,1708416000"; d="scan'208";a="27084276"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa005.fm.intel.com with ESMTP; 17 Apr 2024 07:59:48 -0700
+Date: Wed, 17 Apr 2024 23:13:52 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
+Cc: Anthony Harivel <aharivel@redhat.com>, pbonzini@redhat.com,
+ mtosatti@redhat.com, qemu-devel@nongnu.org, vchundur@redhat.com,
+ rjarry@redhat.com
+Subject: Re: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
+Message-ID: <Zh/nMFpfKIORYW97@intel.com>
+References: <20240411121434.253353-1-aharivel@redhat.com>
+ <20240411121434.253353-4-aharivel@redhat.com>
+ <Zh+fRliUJ8sPcOpD@intel.com> <Zh_AF3YfiZeIAkCU@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] hw/i2c: Fix checkpatch line over 80 chars warnings
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Corey Minyard <cminyard@mvista.com>, Peter Maydell
- <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
- Joel Stanley <joel@jms.id.au>
-References: <20240416184722.28334-1-philmd@linaro.org>
- <20240416184722.28334-3-philmd@linaro.org>
- <4513c447-2ef3-4547-875b-5500067b44eb@kaod.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-In-Reply-To: <4513c447-2ef3-4547-875b-5500067b44eb@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+In-Reply-To: <Zh_AF3YfiZeIAkCU@redhat.com>
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -44
+X-Spam_score: -4.5
+X-Spam_bar: ----
+X-Spam_report: (-4.5 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.719,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,67 +85,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 17/4/24 08:24, Cédric Le Goater wrote:
-> Hello,
-> 
-> On 4/16/24 20:47, Philippe Mathieu-Daudé wrote:
->> We are going to modify these lines, fix their style
->> in order to avoid checkpatch.pl warnings:
->>
->>    WARNING: line over 80 characters
->>
->> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->> ---
->>   include/hw/i2c/i2c.h            |  11 ++-
->>   include/hw/nvram/eeprom_at24c.h |   6 +-
->>   hw/arm/aspeed.c                 | 140 +++++++++++++++++++-------------
->>   hw/nvram/eeprom_at24c.c         |   6 +-
->>   4 files changed, 98 insertions(+), 65 deletions(-)
+Hi Daniel,
 
-
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3), 
->> "dps310", 0x76);
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3), 
->> "max31785", 0x52);
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), 
->> "tmp423", 0x4c);
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5), 
->> "tmp423", 0x4c);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3),
->> +                            "dps310", 0x76);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3),
->> +                            "max31785", 0x52);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4),
->> +                            "tmp423", 0x4c);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5),
->> +                            "tmp423", 0x4c);
->>       /* The Witherspoon expects a TMP275 but a TMP105 is compatible */
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), 
->> TYPE_TMP105,
->> -                     0x4a);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9),
->> +                            TYPE_TMP105, 0x4a);
->>       /* The witherspoon board expects Epson RX8900 I2C RTC but a 
->> ds1338 is
->>        * good enough */
->> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), 
->> "ds1338", 0x32);
->> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11),
->> +                            "ds1338", 0x32);
+On Wed, Apr 17, 2024 at 01:27:03PM +0100, Daniel P. Berrang� wrote:
+> Date: Wed, 17 Apr 2024 13:27:03 +0100
+> From: "Daniel P. Berrang�" <berrange@redhat.com>
+> Subject: Re: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
 > 
-> If the definitions were on a single line, they would be more
-> readable IMHO. So I would do the opposit change ...
+> On Wed, Apr 17, 2024 at 06:07:02PM +0800, Zhao Liu wrote:
+> > Hi Anthony,
+> > 
+> > May I ask what your usage scenario is? Is it to measure Guest's energy
+> > consumption and to charged per watt consumed? ;-)
+> > 
+> > On Thu, Apr 11, 2024 at 02:14:34PM +0200, Anthony Harivel wrote:
+> > > Date: Thu, 11 Apr 2024 14:14:34 +0200
+> > > From: Anthony Harivel <aharivel@redhat.com>
+> > > Subject: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
+> > > 
+> > > Starting with the "Sandy Bridge" generation, Intel CPUs provide a RAPL
+> > > interface (Running Average Power Limit) for advertising the accumulated
+> > > energy consumption of various power domains (e.g. CPU packages, DRAM,
+> > > etc.).
+> > >
+> > > The consumption is reported via MSRs (model specific registers) like
+> > > MSR_PKG_ENERGY_STATUS for the CPU package power domain. These MSRs are
+> > > 64 bits registers that represent the accumulated energy consumption in
+> > > micro Joules. They are updated by microcode every ~1ms.
+> > 
+> > What is your current target platform?
 > 
-> An alternate solution could be to define an array of devices
-> at the machine class level, something like
->    struct i2c_device [
->            const char *type;
->            uint8_t bus;
->            uint8_t addr;
->    } devices[] = { ... };
+> I think we can assume /all/ future CPUs are conceptially in scope
+> for this.
+> 
+> The use case is to allow guest owners to monitor the power consumption
+> of their workloads, so they can take steps to optimize their guest VM
+> workloads to reduce power consumed.
 
-I agree this would be better, but this should be done separately
-of this series. For now I propose not modifying hw/arm/aspeed.c
-in this patch, and ignoring the checkpatch errors in the next
-patch. What do you think?
+Thanks for the explanation! 
+
+> > On future Xeon platforms (EMR and beyond) RAPL will support TPMI (an MMIO
+> > interface) and the TPMI based RAPL will be preferred in the future as
+> > well:
+> 
+> Is the MSR based interface likely to be removed in future silicon,
+> or it will be remain for back compat ?
+
+For Xeon, GNR will have both TMPI & MSR RAPL, but eventually MSR RAPL
+will be removed. Therefore, if RAPL support is desired for all future
+Xeons, then it's necessary to consider TMPI as the next plan.
+
+Alternatively, the whole RAPL scope can be split into rapl-msr and
+rapl-tpmi features.
+
+> > * TPMI doc: https://github.com/intel/tpmi_power_management
+> > * TPMI based RAPL driver: drivers/powercap/intel_rapl_tpmi.c
+> >
+
+Regards,
+Zhao
+
 
