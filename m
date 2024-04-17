@@ -2,86 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3A0D8A7D69
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 09:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DE68A7E4C
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 10:31:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rx04X-00057B-6A; Wed, 17 Apr 2024 03:51:13 -0400
+	id 1rx0gc-0003wp-6y; Wed, 17 Apr 2024 04:30:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rx04T-00056c-CP
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 03:51:09 -0400
-Received: from esa9.hc1455-7.c3s2.iphmx.com ([139.138.36.223])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rx0ga-0003wX-6A
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 04:30:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ruansy.fnst@fujitsu.com>)
- id 1rx04N-00023B-FP
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 03:51:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
- d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
- t=1713340263; x=1744876263;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=89O176AgrkL1yroy9Jo+jq3lmWUoJwoXlAdzQfc3vn0=;
- b=En2bxBeO9+v+G6sc8HtfdvywOf8eeJ4LCLlyRgBPwLDmpBzVQ6hwOsM0
- lJxh7MQ7eMwO+7XB4JYDvgTEhTnXPIvAn4p/ES/lCj131+IgPqY8N8wjY
- uEoNVzs9AMR0JjXHlj1tjsjKSxZZv749mwuW2S2hTJjIkM22Hz1mfKBJi
- 7I1+W492B6totQi2IlaY8XRvKgwNXPiuSFAR7zv3keHObh8AnvXqR/o8B
- qyyWG578txq6YzoOEI9FAcuOV4Inw8HCDx+Nz91pF7H6dAtGf/xAwsQod
- LnQKOq647zqQ91my0z343/AwHWOGtsZU2gXM5PS+T0eJHs7zRMU7s094b A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11046"; a="144302857"
-X-IronPort-AV: E=Sophos;i="6.07,208,1708354800"; d="scan'208";a="144302857"
-Received: from unknown (HELO oym-r1.gw.nic.fujitsu.com) ([210.162.30.89])
- by esa9.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Apr 2024 16:50:58 +0900
-Received: from oym-m2.gw.nic.fujitsu.com (oym-nat-oym-m2.gw.nic.fujitsu.com
- [192.168.87.59])
- by oym-r1.gw.nic.fujitsu.com (Postfix) with ESMTP id 1FD0FD4804
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 16:50:56 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com
- [192.51.206.21])
- by oym-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 4696A1CA52C
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 16:50:55 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
- by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id CD0A62030C7D2
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 16:50:54 +0900 (JST)
-Received: from irides.g08.fujitsu.local (unknown [10.167.226.114])
- by edo.cn.fujitsu.com (Postfix) with ESMTP id 54CCB1A000A;
- Wed, 17 Apr 2024 15:50:54 +0800 (CST)
-To: qemu-devel@nongnu.org,
-	linux-cxl@vger.kernel.org
-Cc: Jonathan.Cameron@huawei.com, dan.j.williams@intel.com, dave@stgolabs.net,
- ira.weiny@intel.com, alison.schofield@intel.com
-Subject: [PATCH v3 2/2] cxl/core: add poison creation event handler
-Date: Wed, 17 Apr 2024 15:50:53 +0800
-Message-Id: <20240417075053.3273543-3-ruansy.fnst@fujitsu.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
-References: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1rx0gX-0000a5-Uk
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 04:30:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713342628;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VbxSUXQhR3ody6mEnLm8wjPs7QsJj7p5SuhdZybj7J0=;
+ b=Ml0vDVIhQcaVmnFLu5eMxU2T56H812py3XSF7V88BSOXnHJLPfpMgeVH6dgn1b2tkDVyPP
+ xcApZjO0zp8g4vRSNULFSKvBH6cg51t37xG48PlqBuG7B3kDJvOUPBTQGD1SUv9aFa97m9
+ iMcO4ycLiNcx/zHw5TtXhNY/azLIXt8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-513-LdlsXn3lN9mAG_xoYHPRQQ-1; Wed, 17 Apr 2024 04:30:26 -0400
+X-MC-Unique: LdlsXn3lN9mAG_xoYHPRQQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4183b895ef1so12012275e9.2
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 01:30:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713342626; x=1713947426;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VbxSUXQhR3ody6mEnLm8wjPs7QsJj7p5SuhdZybj7J0=;
+ b=aQfP2UwW/V2c8EbpcjDGV6KwgAgmBR0zrNgV4YbJPsrbVDdnuc2pogo9ehyuDB+QN3
+ QqcCSEJ4Si7NZ5dAXpgjnb5cJVrSXWJWn6cydmGY/1EaAodBxEnFKEJtS6vWTkm/bhDW
+ /PC3rlUen/BFdsZ+MuDg284s4UiVQWlslyAF7YrleJ488bTrZ9/SqaT6zORXw8rP0MCo
+ wS2uUn1Jn/raKlM+5ZgQ+e3tolx1g+lzh5ObSmW4I8pwpfZkZfu8vdfx/lkvVdxvHUt7
+ dBW63LhnONiOAiQT9gvQhKHI3qNpBSDFv5pyah5xD8uE/hyAIBJHSo2aB+KClelYskMc
+ UaSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUcm4jdrlyj4V4YCVpLoHvLbL1TIuT8JO/IgXw5ahkK2ZNf1lDqEWOIgaEUhh4+hnt3VbWl7oSsHjDhe8xWemNNtZl4VrA=
+X-Gm-Message-State: AOJu0YyQnZmpCCE8DXmQvmvqZeYJ3VrVSZbeR2/uwgjvqYmxj8irwOob
+ eAoFB5MOQOr9U4Cj1Ylj5SOYdNJbLze4SjcOYxXWm0ZYRIcQI0+6KskJmCdjU6HD8GUdjNiB7MN
+ FABM3mgnBO1wW++8P1G5c/RYlcwbzxg6BJPqiflIZlaQak+q7O4p7
+X-Received: by 2002:a05:600c:4f96:b0:418:5d6c:43ea with SMTP id
+ n22-20020a05600c4f9600b004185d6c43eamr7468609wmq.4.1713342625892; 
+ Wed, 17 Apr 2024 01:30:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqKpxrvZfFXD3Ci9TFi4rTW3wnq03tNTQ5XW4io1SnMee7IxJUzoCcEvcqUioqOxlLGrqdFg==
+X-Received: by 2002:a05:600c:4f96:b0:418:5d6c:43ea with SMTP id
+ n22-20020a05600c4f9600b004185d6c43eamr7468576wmq.4.1713342625452; 
+ Wed, 17 Apr 2024 01:30:25 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae?
+ ([2a01:e0a:9e2:9000:d55d:ba01:adf2:d3ae])
+ by smtp.gmail.com with ESMTPSA id
+ p7-20020a05600c468700b00418accde252sm1835797wmo.30.2024.04.17.01.30.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 17 Apr 2024 01:30:24 -0700 (PDT)
+Message-ID: <b67b6ba8-b506-4865-9ab0-e9107cd5b12a@redhat.com>
+Date: Wed, 17 Apr 2024 10:30:22 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/5] intel_iommu: Add a framework to do compatibility
+ check with host IOMMU cap/ecap
+To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "peterx@redhat.com" <peterx@redhat.com>,
+ "jasowang@redhat.com" <jasowang@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
+ "nicolinc@nvidia.com" <nicolinc@nvidia.com>,
+ "joao.m.martins@oracle.com" <joao.m.martins@oracle.com>,
+ "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
+ "Peng, Chao P" <chao.p.peng@intel.com>, Yi Sun <yi.y.sun@linux.intel.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+References: <20240408084404.1111628-1-zhenzhong.duan@intel.com>
+ <20240408084404.1111628-4-zhenzhong.duan@intel.com>
+ <251715ae-5378-4dfb-bc14-47ba2e62f83a@redhat.com>
+ <SJ0PR11MB67443BF6BC7CABCE28F482A392082@SJ0PR11MB6744.namprd11.prod.outlook.com>
+ <5eb6c665-df8f-4c5e-8426-4678d8433a0c@redhat.com>
+ <SJ0PR11MB6744F7A99B9303C8A3699EE9920F2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <SJ0PR11MB6744F7A99B9303C8A3699EE9920F2@SJ0PR11MB6744.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28326.005
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28326.005
-X-TMASE-Result: 10--16.044500-10.000000
-X-TMASE-MatchedRID: DIEPoA0d9jzvjhWxSrUkKRFbgtHjUWLy/OuUJVcMZhsshTvdDYMpJmdv
- IBM8UuLSeJaFFPX0aSQzZRFJRee/WnuDhljfG03rTuctSpiuWyUUi4Ehat0545Tx+2LIqNmteVs
- 0skyEaS3LfxMfp01yFeQEkglipGR3fDPEC/yQgPRFThfcy7XcjI5UafLmrvaGvn+2qfQyWg0Skx
- jSj8Gsp+GmDaCURky8QvDfXpsV7A2f80tdhYBdg9Hu43wY4QfHfrTt+hmA5bK7Iv2OMTayQWlwp
- eAR2tzqI0ExTNeC7Ia4Yr4jUnU84qqoNk0mVBa9MrR3zbmt+0V9LQinZ4QefPcjNeVeWlqY+gtH
- j7OwNO0CpgETeT0ynA==
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
-Received-SPF: pass client-ip=139.138.36.223;
- envelope-from=ruansy.fnst@fujitsu.com; helo=esa9.hc1455-7.c3s2.iphmx.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.844,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,247 +117,169 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Shiyang Ruan <ruansy.fnst@fujitsu.com>
-From:  Shiyang Ruan via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently driver only traces cxl events, poison creation (for both vmem
-and pmem type) on cxl memdev is silent.  OS needs to be notified then it
-could handle poison pages in time.  Per CXL spec, the device error event
-could be signaled through FW-First and OS-First methods.
+On 4/17/24 06:21, Duan, Zhenzhong wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Cédric Le Goater <clg@redhat.com>
+>> Subject: Re: [PATCH v2 3/5] intel_iommu: Add a framework to do
+>> compatibility check with host IOMMU cap/ecap
+>>
+>> Hello,
+>>
+>> On 4/16/24 09:09, Duan, Zhenzhong wrote:
+>>> Hi Cédric,
+>>>
+>>>> -----Original Message-----
+>>>> From: Cédric Le Goater <clg@redhat.com>
+>>>> Subject: Re: [PATCH v2 3/5] intel_iommu: Add a framework to do
+>>>> compatibility check with host IOMMU cap/ecap
+>>>>
+>>>> On 4/8/24 10:44, Zhenzhong Duan wrote:
+>>>>> From: Yi Liu <yi.l.liu@intel.com>
+>>>>>
+>>>>> If check fails, the host side device(either vfio or vdpa device) should not
+>>>>> be passed to guest.
+>>>>>
+>>>>> Implementation details for different backends will be in following
+>> patches.
+>>>>>
+>>>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+>>>>> Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+>>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+>>>>> ---
+>>>>>     hw/i386/intel_iommu.c | 35
+>>>> +++++++++++++++++++++++++++++++++++
+>>>>>     1 file changed, 35 insertions(+)
+>>>>>
+>>>>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+>>>>> index 4f84e2e801..a49b587c73 100644
+>>>>> --- a/hw/i386/intel_iommu.c
+>>>>> +++ b/hw/i386/intel_iommu.c
+>>>>> @@ -35,6 +35,7 @@
+>>>>>     #include "sysemu/kvm.h"
+>>>>>     #include "sysemu/dma.h"
+>>>>>     #include "sysemu/sysemu.h"
+>>>>> +#include "sysemu/iommufd.h"
+>>>>>     #include "hw/i386/apic_internal.h"
+>>>>>     #include "kvm/kvm_i386.h"
+>>>>>     #include "migration/vmstate.h"
+>>>>> @@ -3819,6 +3820,32 @@ VTDAddressSpace
+>>>> *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>>>>>         return vtd_dev_as;
+>>>>>     }
+>>>>>
+>>>>> +static int vtd_check_legacy_hdev(IntelIOMMUState *s,
+>>>>> +                                 HostIOMMUDevice *hiod,
+>>>>> +                                 Error **errp)
+>>>>> +{
+>>>>> +    return 0;
+>>>>> +}
+>>>>> +
+>>>>> +static int vtd_check_iommufd_hdev(IntelIOMMUState *s,
+>>>>> +                                  HostIOMMUDevice *hiod,
+>>>>> +                                  Error **errp)
+>>>>> +{
+>>>>> +    return 0;
+>>>>> +}
+>>>>> +
+>>>>> +static int vtd_check_hdev(IntelIOMMUState *s,
+>> VTDHostIOMMUDevice
+>>>> *vtd_hdev,
+>>>>> +                          Error **errp)
+>>>>> +{
+>>>>> +    HostIOMMUDevice *hiod = vtd_hdev->dev;
+>>>>> +
+>>>>> +    if (object_dynamic_cast(OBJECT(hiod), TYPE_HIOD_IOMMUFD)) {
+>>>>> +        return vtd_check_iommufd_hdev(s, hiod, errp);
+>>>>> +    }
+>>>>> +
+>>>>> +    return vtd_check_legacy_hdev(s, hiod, errp);
+>>>>> +}
+>>>>
+>>>>
+>>>> I think we should be using the .get_host_iommu_info() class handler
+>>>> instead. Can we refactor the code slightly to avoid this check on
+>>>> the type ?
+>>>
+>>> There is some difficulty ini avoiding this check, the behavior of
+>> vtd_check_legacy_hdev
+>>> and vtd_check_iommufd_hdev are different especially after nesting
+>> support introduced.
+>>> vtd_check_iommufd_hdev() has much wider check over cap/ecap bits
+>> besides aw_bits.
+>>
+>> I think it is important to fully separate the vIOMMU model from the
+>> host IOMMU backing device. Could we introduce a new
+>> HostIOMMUDeviceClass
+>> handler .check_hdev() handler, which would call .get_host_iommu_info() ?
+> 
+> Understood, besides the new .check_hdev() handler, I think we also need a new interface
+> class TYPE_IOMMU_CHECK_HDEV which has two handlers check_[legacy|iommufd]_hdev(),
+> and different vIOMMUs have different implementation.
 
-So, add poison creation event handler in OS-First method:
-  - Qemu:
-    - CXL device reports POISON creation event to OS by MSI by sending
-      GMER/DER after injecting a poison record;
-  - CXL driver:
-    a. parse the POISON event from GMER/DER;
-    b. translate poisoned DPA to HPA (PFN);
-    c. enqueue poisoned PFN to memory_failure's work queue;
+I am not sure to understand. Which class hierarchy would implement this
+new "TYPE_IOMMU_CHECK_HDEV" interface ? vIOMMU or host iommu  ?
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
----
- drivers/cxl/core/mbox.c   | 119 +++++++++++++++++++++++++++++++++-----
- drivers/cxl/cxlmem.h      |   8 +--
- include/linux/cxl-event.h |  18 +++++-
- 3 files changed, 125 insertions(+), 20 deletions(-)
+Could you please explain with an update of your diagram :
 
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index f0f54aeccc87..76af0d73859d 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -837,25 +837,116 @@ int cxl_enumerate_cmds(struct cxl_memdev_state *mds)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_enumerate_cmds, CXL);
- 
--void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
--			    enum cxl_event_log_type type,
--			    enum cxl_event_type event_type,
--			    const uuid_t *uuid, union cxl_event *evt)
-+static void cxl_report_poison(struct cxl_memdev *cxlmd, struct cxl_region *cxlr,
-+			      u64 dpa)
- {
--	if (event_type == CXL_CPER_EVENT_GEN_MEDIA)
-+	u64 hpa = cxl_trace_hpa(cxlr, cxlmd, dpa);
-+	unsigned long pfn = PHYS_PFN(hpa);
-+
-+	if (!IS_ENABLED(CONFIG_MEMORY_FAILURE))
-+		return;
-+
-+	memory_failure_queue(pfn, MF_ACTION_REQUIRED);
-+}
-+
-+static int __cxl_report_poison(struct device *dev, void *arg)
-+{
-+	struct cxl_endpoint_decoder *cxled;
-+	struct cxl_memdev *cxlmd;
-+	u64 dpa = *(u64 *)arg;
-+
-+	cxled = to_cxl_endpoint_decoder(dev);
-+	if (!cxled || !cxled->dpa_res || !resource_size(cxled->dpa_res))
-+		return 0;
-+
-+	if (cxled->mode == CXL_DECODER_MIXED) {
-+		dev_dbg(dev, "poison list read unsupported in mixed mode\n");
-+		return 0;
-+	}
-+
-+	if (dpa > cxled->dpa_res->end || dpa < cxled->dpa_res->start)
-+		return 0;
-+
-+	cxlmd = cxled_to_memdev(cxled);
-+	cxl_report_poison(cxlmd, cxled->cxld.region, dpa);
-+
-+	return 1;
-+}
-+
-+static void cxl_event_handle_poison(struct cxl_memdev *cxlmd, u64 dpa)
-+{
-+	struct cxl_port *port = cxlmd->endpoint;
-+
-+	/*
-+	 * No region is mapped to this endpoint, that is to say no HPA is
-+	 * mapped.
-+	 */
-+	if (!port || !is_cxl_endpoint(port) ||
-+	    cxl_num_decoders_committed(port) == 0)
-+		return;
-+
-+	device_for_each_child(&port->dev, &dpa, __cxl_report_poison);
-+}
-+
-+static void cxl_event_handle_general_media(struct cxl_memdev *cxlmd,
-+					   enum cxl_event_log_type type,
-+					   struct cxl_event_gen_media *rec)
-+{
-+	u64 dpa = le64_to_cpu(rec->phys_addr) & CXL_DPA_MASK;
-+
-+	if (type == CXL_EVENT_TYPE_FAIL) {
-+		switch (rec->transaction_type) {
-+		case CXL_EVENT_TRANSACTION_READ:
-+		case CXL_EVENT_TRANSACTION_WRITE:
-+		case CXL_EVENT_TRANSACTION_INJECT_POISON:
-+			cxl_event_handle_poison(cxlmd, dpa);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+static void cxl_event_handle_dram(struct cxl_memdev *cxlmd,
-+				  enum cxl_event_log_type type,
-+				  struct cxl_event_dram *rec)
-+{
-+	u64 dpa = le64_to_cpu(rec->phys_addr) & CXL_DPA_MASK;
-+
-+	if (type == CXL_EVENT_TYPE_FAIL) {
-+		switch (rec->transaction_type) {
-+		case CXL_EVENT_TRANSACTION_READ:
-+		case CXL_EVENT_TRANSACTION_WRITE:
-+		case CXL_EVENT_TRANSACTION_INJECT_POISON:
-+			cxl_event_handle_poison(cxlmd, dpa);
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+}
-+
-+void cxl_event_handle_record(struct cxl_memdev *cxlmd,
-+			     enum cxl_event_log_type type,
-+			     enum cxl_event_type event_type,
-+			     const uuid_t *uuid, union cxl_event *evt)
-+{
-+	if (event_type == CXL_CPER_EVENT_GEN_MEDIA) {
- 		trace_cxl_general_media(cxlmd, type, &evt->gen_media);
--	else if (event_type == CXL_CPER_EVENT_DRAM)
-+		cxl_event_handle_general_media(cxlmd, type, &evt->gen_media);
-+	} else if (event_type == CXL_CPER_EVENT_DRAM) {
- 		trace_cxl_dram(cxlmd, type, &evt->dram);
--	else if (event_type == CXL_CPER_EVENT_MEM_MODULE)
-+		cxl_event_handle_dram(cxlmd, type, &evt->dram);
-+	} else if (event_type == CXL_CPER_EVENT_MEM_MODULE)
- 		trace_cxl_memory_module(cxlmd, type, &evt->mem_module);
- 	else
- 		trace_cxl_generic_event(cxlmd, type, uuid, &evt->generic);
- }
--EXPORT_SYMBOL_NS_GPL(cxl_event_trace_record, CXL);
-+EXPORT_SYMBOL_NS_GPL(cxl_event_handle_record, CXL);
- 
--static void __cxl_event_trace_record(const struct cxl_memdev *cxlmd,
--				     enum cxl_event_log_type type,
--				     struct cxl_event_record_raw *record)
-+static void __cxl_event_handle_record(struct cxl_memdev *cxlmd,
-+				      enum cxl_event_log_type type,
-+				      struct cxl_event_record_raw *record)
- {
- 	enum cxl_event_type ev_type = CXL_CPER_EVENT_GENERIC;
- 	const uuid_t *uuid = &record->id;
-@@ -867,7 +958,7 @@ static void __cxl_event_trace_record(const struct cxl_memdev *cxlmd,
- 	else if (uuid_equal(uuid, &CXL_EVENT_MEM_MODULE_UUID))
- 		ev_type = CXL_CPER_EVENT_MEM_MODULE;
- 
--	cxl_event_trace_record(cxlmd, type, ev_type, uuid, &record->event);
-+	cxl_event_handle_record(cxlmd, type, ev_type, uuid, &record->event);
- }
- 
- static int cxl_clear_event_record(struct cxl_memdev_state *mds,
-@@ -979,8 +1070,8 @@ static void cxl_mem_get_records_log(struct cxl_memdev_state *mds,
- 			break;
- 
- 		for (i = 0; i < nr_rec; i++)
--			__cxl_event_trace_record(cxlmd, type,
--						 &payload->records[i]);
-+			__cxl_event_handle_record(cxlmd, type,
-+						  &payload->records[i]);
- 
- 		if (payload->flags & CXL_GET_EVENT_FLAG_OVERFLOW)
- 			trace_cxl_overflow(cxlmd, type, payload);
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 36cee9c30ceb..ba1347de5651 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -822,10 +822,10 @@ void set_exclusive_cxl_commands(struct cxl_memdev_state *mds,
- void clear_exclusive_cxl_commands(struct cxl_memdev_state *mds,
- 				  unsigned long *cmds);
- void cxl_mem_get_event_records(struct cxl_memdev_state *mds, u32 status);
--void cxl_event_trace_record(const struct cxl_memdev *cxlmd,
--			    enum cxl_event_log_type type,
--			    enum cxl_event_type event_type,
--			    const uuid_t *uuid, union cxl_event *evt);
-+void cxl_event_handle_record(struct cxl_memdev *cxlmd,
-+			     enum cxl_event_log_type type,
-+			     enum cxl_event_type event_type,
-+			     const uuid_t *uuid, union cxl_event *evt);
- int cxl_set_timestamp(struct cxl_memdev_state *mds);
- int cxl_poison_state_init(struct cxl_memdev_state *mds);
- int cxl_mem_get_poison(struct cxl_memdev *cxlmd, u64 offset, u64 len,
-diff --git a/include/linux/cxl-event.h b/include/linux/cxl-event.h
-index 03fa6d50d46f..8189bed76c12 100644
---- a/include/linux/cxl-event.h
-+++ b/include/linux/cxl-event.h
-@@ -23,6 +23,20 @@ struct cxl_event_generic {
- 	u8 data[CXL_EVENT_RECORD_DATA_LENGTH];
- } __packed;
- 
-+/*
-+ * Event transaction type
-+ * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
-+ */
-+enum cxl_event_transaction_type {
-+	CXL_EVENT_TRANSACTION_UNKNOWN = 0X00,
-+	CXL_EVENT_TRANSACTION_READ,
-+	CXL_EVENT_TRANSACTION_WRITE,
-+	CXL_EVENT_TRANSACTION_SCAN_MEDIA,
-+	CXL_EVENT_TRANSACTION_INJECT_POISON,
-+	CXL_EVENT_TRANSACTION_MEDIA_SCRUB,
-+	CXL_EVENT_TRANSACTION_MEDIA_MANAGEMENT,
-+};
-+
- /*
-  * General Media Event Record
-  * CXL rev 3.0 Section 8.2.9.2.1.1; Table 8-43
-@@ -33,7 +47,7 @@ struct cxl_event_gen_media {
- 	__le64 phys_addr;
- 	u8 descriptor;
- 	u8 type;
--	u8 transaction_type;
-+	u8 transaction_type;	/* enum cxl_event_transaction_type */
- 	u8 validity_flags[2];
- 	u8 channel;
- 	u8 rank;
-@@ -52,7 +66,7 @@ struct cxl_event_dram {
- 	__le64 phys_addr;
- 	u8 descriptor;
- 	u8 type;
--	u8 transaction_type;
-+	u8 transaction_type;	/* enum cxl_event_transaction_type */
- 	u8 validity_flags[2];
- 	u8 channel;
- 	u8 rank;
--- 
-2.34.1
+                         HostIOMMUDevice
+                                | .get_host_iommu_info()
+                                |
+                                |
+             .------------------------------------.
+             |                  |                 |
+       HIODLegacyVFIO    [HIODLegacyVDPA]    HIODIOMMUFD
+             | .vdev            | [.vdev]         | .iommufd
+                                                  | .devid
+                                                  | [.ioas_id]
+                                                  | [.attach_hwpt()]
+                                                  | [.detach_hwpt()]
+                                                  |
+                                     .----------------------.
+                                     |                      |
+                            HIODIOMMUFDVFIO         [HIODIOMMUFDVDPA]
+                                     | .vdev                | [.vdev]
+
+
+Thanks,
+
+C.
+
+
+> Then legacy and iommufd host device have different implementation of .check_hdev()
+> and calls into one of the two interface handlers.
+> 
+> Let me know if I misunderstand any of your point.
+> 
+> Thanks
+> Zhenzhong
+> 
+>>
+>>
+>> Thanks,
+>>
+>> C.
+>>
+>>
+>>> That the reason I have two functions to do different thing.
+>>> See:
+>>>
+>> https://github.com/yiliu1765/qemu/blob/zhenzhong/iommufd_nesting_rfc
+>> v2/hw/i386/intel_iommu.c#L5472
+>>>
+>>> Meanwhile in vtd_check_legacy_hdev(), when legacy VFIO device attaches
+>> to modern vIOMMU,
+>>> this is unsupported and error out early, it will not
+>> call .get_host_iommu_info().
+>>> I mean we don't need to unconditionally call .get_host_iommu_info() in
+>> some cases.
+>>>
+>>> Thanks
+>>> Zhenzhong
+> 
 
 
