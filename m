@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822918A8B23
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E338A8B29
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:31:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxA3F-00050V-WD; Wed, 17 Apr 2024 14:30:34 -0400
+	id 1rxA3K-0005bd-6i; Wed, 17 Apr 2024 14:30:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2p-0004T0-7I
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:07 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2w-0004jT-Ek
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:15 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2m-0003qa-MZ
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:06 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a5565291ee7so67397666b.2
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:30:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2s-00040w-9j
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:13 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-56e37503115so13264a12.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:30:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713378602; x=1713983402; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713378608; x=1713983408; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TBfKa5T3GDZ4GDMPsL3PnIky1YQxa2I821vkb85I41c=;
- b=nmR9IEaG9vO4U+3UZfNf73oBe816hzShXAPcvGXbpmFtTxEIn4UQF74MHllEscZIZ5
- 0sttTn1w7Byqde8AwrhzvnLG545AkYakpe6fqmnHPKXdNBA0MyYe+CI4Wc2gCGIjnfZT
- 6WJyXuI7tlU+pxDwXIh/z33cpVNsfStRkORlk7GPmCrdl0RdpOYeAxVroa2Lt3/zJbiC
- NQHWWgcwGizv1wUDivRFmO5qvH4xA7oE3nDvEEErEja8Z8zkJftceS8cxVnJKF3/Gutz
- ljiss+esnuiX1hs4yGFyb7QiIVOiaNYHtDgHzkfO9ihIlUHgJFZOWcdZkoCX9lxp3AwL
- q4Ew==
+ bh=T2iJJmV+2DNCV1vqfBBGFjheXtYtlaqsPcXM/OBu1Kk=;
+ b=jo5u4ce0FeUMneV8F7Ls0Nr5gNiJBFbSFRCVyrNPdSA7cze0BKBEhlBw7xLF1uTgFZ
+ oPk64MQ2ob6IiUYs2uUu3Oz5TjWJS2wkPriK6OGbX1Xe2a4ngYaBZJqimgnkZEVIy6zK
+ B36n/huHLt/O5ruc3rxqByWbD5202UuCt4QtSZwmriTSjGSPUQrgV+uqD+lQjHRV0e0h
+ KE8eiDXUpizjiC4K5N4/VB+F6ON9jTprp+RW41OgqOBR4zp6jk9w9w4Pd9zypGRYxqqe
+ VYiio/wyZrqhnkep4fCqub8HKsjyVWD+V5V9jhv/ee8sFNEPkSf7BuSfZmigNDdnorvI
+ X/ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713378602; x=1713983402;
+ d=1e100.net; s=20230601; t=1713378608; x=1713983408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TBfKa5T3GDZ4GDMPsL3PnIky1YQxa2I821vkb85I41c=;
- b=hJcTHTrG2M8sND5b11tGjrtufl44Y/lIKNBlh1O3Zl16a669+RprcY2oRKoYgBznRg
- fjuzPZXxwMgLJRH/RKIEZtwGjuYIVlf7QgPPTLtXneJ3g2vIqPuey3WfsmTS2VIyrD/5
- Zr7mFFCCZzamY1I3uTmK9MCQGP7fsLTKeW8QJSxNU++Lun7+uYzMAOfGorO+oG71tIgD
- X8njIO4k+4KUr3baPjxaJZK6uQQAhJvdUjDJMvpPnu/Mji3f/O66a+JgSNXi1ld05NQs
- 91FYVdqnmAegkVEAeIyIlg5iWsqHevAeRnQXmkAtCngBKGXaomA//S5CsBlYElla8tY6
- Lcow==
-X-Gm-Message-State: AOJu0YztnunEOO56egfRrQsopMum/yAhThqR+T0Qar12ne9GyfDIcNz9
- rbxw+dYDao5BAb6vYaWt9sfzPoinrjLCb11Jwc0tTjJNyj8jijQD+Wv9uVxsDinkNzKpviHkr9G
- L
-X-Google-Smtp-Source: AGHT+IFV1r+V1FeKw7LfngvF7zK4bYJVhlwo8o8M2P2uNa2hIpNlhbvYwbTjbLjxhZhIJja8ioopgg==
-X-Received: by 2002:a17:906:e2d6:b0:a52:54be:dd8a with SMTP id
- gr22-20020a170906e2d600b00a5254bedd8amr199140ejb.15.1713378602704; 
- Wed, 17 Apr 2024 11:30:02 -0700 (PDT)
+ bh=T2iJJmV+2DNCV1vqfBBGFjheXtYtlaqsPcXM/OBu1Kk=;
+ b=Q1oikTpoW7k3+4AKmXLq0hbJsW42FTgPeFzGEl5jcqNAcStzoVG9KFrzo2NUef2ZM8
+ 17fn2Xfgiu/iHGUzq++uGBNW7tib8KWxPWMqvD6J6y+u+5yHqICraTwjW+v30OIppKjl
+ O7LUD7IeHD+2gQvD75IvQxLeimjNCsOd/q3gbTCX5zA3A9XgOcWdE/bUXfHvc/pjaxoo
+ AOh/I1DtXDNzP7nct3JpQlFnAg0VRJjkPERg3b2NISMznZqJgVq8uoDta98T/2DYnHJ8
+ 9RO5++gE166QD8BRIuIyc/rMDRpVM5MU2wQVQU47HKBHD3AJ8YDcsBoT8u0YP3xcW389
+ 6rhQ==
+X-Gm-Message-State: AOJu0YzqcMWdY8wEImKLBBuKlny1TgL/wLyrlZuD8kot0/TdwEady6g8
+ 072RfNlQfJL8guWti0fwCGrFMg0pJKTAkvRBRSYIq49+pMDG4q/NPnXCThkhp+Gi3ZhwUAxzBqK
+ c
+X-Google-Smtp-Source: AGHT+IFPW8DI84t0fCPJYcuOwRuBH1BfbTttDro0zYs74B+ghQSKMr2oM9unIcsCYStPMLVAH7G1TA==
+X-Received: by 2002:a50:9e4e:0:b0:570:d50:e7d8 with SMTP id
+ z72-20020a509e4e000000b005700d50e7d8mr306233ede.22.1713378608179; 
+ Wed, 17 Apr 2024 11:30:08 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.201.23])
  by smtp.gmail.com with ESMTPSA id
- js7-20020a17090797c700b00a51db8c559csm8415307ejc.178.2024.04.17.11.30.01
+ t6-20020a056402020600b0057030326144sm3467024edv.47.2024.04.17.11.30.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Apr 2024 11:30:02 -0700 (PDT)
+ Wed, 17 Apr 2024 11:30:07 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH 20/21] exec/user: Do not include 'cpu.h' in 'abitypes.h'
-Date: Wed, 17 Apr 2024 20:28:05 +0200
-Message-ID: <20240417182806.69446-21-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 21/21] exec: Declare abi_ptr type in its own 'abi_ptr.h' header
+Date: Wed, 17 Apr 2024 20:28:06 +0200
+Message-ID: <20240417182806.69446-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240417182806.69446-1-philmd@linaro.org>
 References: <20240417182806.69446-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,41 +92,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/user/abitypes.h" requires:
-
- - "exec/cpu-defs.h"           (TARGET_LONG_BITS)
- - "exec/tswap.h"              (tswap32)
-
-In order to avoid "cpu.h", pick the minimum required headers.
-
-Assert this user-specific header is only included from user
-emulation.
+The abi_ptr type is declared in "exec/cpu_ldst.h" with all
+the load/store helpers. Some source files requiring abi_ptr
+type don't need the load/store helpers. In order to simplify,
+create a new "exec/abi_ptr.h" header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-Id: <20231212123401.37493-20-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20231212123401.37493-21-philmd@linaro.org>
 ---
- include/exec/user/abitypes.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/exec/abi_ptr.h    | 33 +++++++++++++++++++++++++++++++++
+ include/exec/cpu_ldst.h   | 17 +++--------------
+ include/exec/exec-all.h   |  1 +
+ include/exec/translator.h |  5 ++++-
+ 4 files changed, 41 insertions(+), 15 deletions(-)
+ create mode 100644 include/exec/abi_ptr.h
 
-diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
-index 56e96fcb99..b5c7ad4d1a 100644
---- a/include/exec/user/abitypes.h
-+++ b/include/exec/user/abitypes.h
-@@ -1,7 +1,12 @@
- #ifndef EXEC_USER_ABITYPES_H
- #define EXEC_USER_ABITYPES_H
- 
--#include "cpu.h"
-+#ifndef CONFIG_USER_ONLY
-+#error Cannot include this header from system emulation
+diff --git a/include/exec/abi_ptr.h b/include/exec/abi_ptr.h
+new file mode 100644
+index 0000000000..2aedcceb0c
+--- /dev/null
++++ b/include/exec/abi_ptr.h
+@@ -0,0 +1,33 @@
++/*
++ * QEMU abi_ptr type definitions
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++#ifndef EXEC_ABI_PTR_H
++#define EXEC_ABI_PTR_H
++
++#include "cpu-param.h"
++
++#if defined(CONFIG_USER_ONLY)
++/*
++ * sparc32plus has 64bit long but 32bit space address
++ * this can make bad result with g2h() and h2g()
++ */
++#if TARGET_VIRT_ADDR_SPACE_BITS <= 32
++typedef uint32_t abi_ptr;
++#define TARGET_ABI_FMT_ptr "%x"
++#else
++typedef uint64_t abi_ptr;
++#define TARGET_ABI_FMT_ptr "%"PRIx64
 +#endif
 +
-+#include "exec/cpu-defs.h"
-+#include "exec/tswap.h"
- #include "user/tswap-target.h"
++#else /* !CONFIG_USER_ONLY */
++
++#include "exec/target_long.h"
++
++typedef target_ulong abi_ptr;
++#define TARGET_ABI_FMT_ptr TARGET_FMT_lx
++
++#endif /* !CONFIG_USER_ONLY */
++
++#endif
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 82690d3947..64e0319996 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -63,20 +63,11 @@
+ #define CPU_LDST_H
  
- #ifdef TARGET_ABI32
+ #include "exec/memopidx.h"
++#include "exec/abi_ptr.h"
+ #include "qemu/int128.h"
+ #include "cpu.h"
+ 
+ #if defined(CONFIG_USER_ONLY)
+-/* sparc32plus has 64bit long but 32bit space address
+- * this can make bad result with g2h() and h2g()
+- */
+-#if TARGET_VIRT_ADDR_SPACE_BITS <= 32
+-typedef uint32_t abi_ptr;
+-#define TARGET_ABI_FMT_ptr "%x"
+-#else
+-typedef uint64_t abi_ptr;
+-#define TARGET_ABI_FMT_ptr "%"PRIx64
+-#endif
+ 
+ #ifndef TARGET_TAGGED_ADDRESSES
+ static inline abi_ptr cpu_untagged_addr(CPUState *cs, abi_ptr x)
+@@ -120,10 +111,8 @@ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
+     assert(h2g_valid(x)); \
+     h2g_nocheck(x); \
+ })
+-#else
+-typedef vaddr abi_ptr;
+-#define TARGET_ABI_FMT_ptr VADDR_PRIx
+-#endif
++
++#endif /* CONFIG_USER_ONLY */
+ 
+ uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
+ int cpu_ldsb_data(CPUArchState *env, abi_ptr ptr);
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index 3e53501691..e932d364b6 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -22,6 +22,7 @@
+ 
+ #include "cpu.h"
+ #if defined(CONFIG_USER_ONLY)
++#include "exec/abi_ptr.h"
+ #include "exec/cpu_ldst.h"
+ #endif
+ #include "exec/translation-block.h"
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 2c4fb818e7..6cd937ac5c 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -19,7 +19,10 @@
+  */
+ 
+ #include "qemu/bswap.h"
+-#include "exec/cpu_ldst.h"	/* for abi_ptr */
++#include "exec/cpu-common.h"
++#include "exec/cpu-defs.h"
++#include "exec/abi_ptr.h"
++#include "cpu.h"
+ 
+ /**
+  * gen_intermediate_code
 -- 
 2.41.0
 
