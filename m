@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2862C8A8B21
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CAF8A8B13
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:29:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxA1O-0007dY-Gz; Wed, 17 Apr 2024 14:28:38 -0400
+	id 1rxA1U-0007fG-Of; Wed, 17 Apr 2024 14:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA1M-0007d8-Go
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:28:36 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA1S-0007eD-KZ
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:28:42 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA1K-0003JL-TA
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:28:36 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-416a8ec0239so568055e9.0
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:28:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA1Q-0003Jw-Na
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:28:42 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-418db9aa891so312215e9.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:28:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713378513; x=1713983313; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713378518; x=1713983318; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NnqT/8KLlXL1A5GjOlmM9XBc7s531rVah3xCrUywBWs=;
- b=VSTTlE+JZTXVo9hmJ1LWMJ3FJxxeHLYFYBbubOiXxeVjaKAS+PxsNwdyeS9zJ3z7cj
- LY8Q/34i6+oVahCPucxg7f3sOwjZE9gqGICiACdN4hakuk69+QoAMWBGnrQPDY2+JZ92
- ILEKTLZbq0M2ztfhPn1YA8iXKFOasFM+1rK/U9K2HRP4VfA0mI4bditAsomowAPwx+oc
- iuYpdj9zpIvp1/I6xT4tPKmlUl6hCOFiycTBIhb0yJauEeFluohD6PeYoV/2UXshPnpF
- 9fjfX3JnZyN3pEt9fDgJJ1uN8vdOgKXHg2FGxayXAYwqKfGkzO4P+hEc2krYkjV6Ji+v
- 3r6A==
+ bh=rI+phs//gjZco0fvuUEX1KPF7mTDgm4gz1xheV8LKk0=;
+ b=Zwg14XFahuzecCyN8f6uSyWtRSbf+Ugd4qs0L+9Uxhg5m5TQfzL9D/LjLzLr6u804Y
+ ArVu+UAEgtBafdh9Qgrz3uVhYpZDNfgQBLruTCZuCWtvh5uUhHSr0Cl2OxMMuVWEpbDG
+ Bn9zdk9c49QG8sGaDoQJ3YulF2SRXLkFp9DUDmfznGSSKDsH9I/dkC7j9s9IfOWqm+RD
+ tVUbbgNjNKowP+obgAxUIETOK8qupGuZ0mEj4iEbEJU7mkfPP5tsigFo/KArO0A9mAHO
+ AASGMJSIKdn0VP185RJRQ601rO4FIiBLUf69TQp8zmg7wuTDVVhiuUSbKsFthfS9di7F
+ oHzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713378513; x=1713983313;
+ d=1e100.net; s=20230601; t=1713378518; x=1713983318;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NnqT/8KLlXL1A5GjOlmM9XBc7s531rVah3xCrUywBWs=;
- b=eBWDwMmr7Ju8eOVOKmFoTqPlSJ1sA0wooS6YcNiOAR80uwHiialmc48PLKvkRYpiC2
- 5So91R0w6FuT0TfxcDTor9hK4xnDJkJ2euEPzkobIYLidktW8LYx/pFEWhQ0s/evfZ/e
- DV4Y/Wb9pV6iMYD0OHIspzeDrXJStNW3WKS2S7QGmUaavmjshcCgY3INvllyuZUILOnv
- +fi7chQOpAyhYYjGNKdtI9hvNYNwUrnsrLuWaOQ/OqZYysJIA8MS4HtQCt+iORf4ccRQ
- /sRy+4MZEWzq8KXTTinTzOyiI9Gzc9f8YJFw7H42ehkZok6k3n/XRLLBxWk9RlkgFj3C
- 7xyQ==
-X-Gm-Message-State: AOJu0YxZWmU+aAONXk1g//hAd2TarnfS4rOekYwW12YPFzh2UMlzS/YP
- 2Sijq5z0mvK1v/qMzx9FURZPf1YoRsWlTYBQbuAUYGfuZRHRoz8dZSE9uu3x/ynm4Kmfu9FCrGb
- 8
-X-Google-Smtp-Source: AGHT+IFKEsx9LL/RI3h2OhBGQlrVhdbEYY5AV3HGCqe5GJ+zPPZBxvt3iU6+c+xB8zPytwGT8cqh/w==
-X-Received: by 2002:a05:600c:1da9:b0:418:93d2:3bf8 with SMTP id
- p41-20020a05600c1da900b0041893d23bf8mr203138wms.3.1713378513074; 
- Wed, 17 Apr 2024 11:28:33 -0700 (PDT)
+ bh=rI+phs//gjZco0fvuUEX1KPF7mTDgm4gz1xheV8LKk0=;
+ b=B0sV72HWmDvYrDrwM0vb1aKthSFrSQ3ZjvMPtSyxmtuGluhYG9vm+/kB5T45xOIbFO
+ ZfJ0ueQqy8TtbETL8s4Qt/BjnK/iVFE0s4hrxDdOJg4Pdl8iNt7QzjedB4QiGqL1q591
+ TFZ8PkDIOI66JfdXu25kCJIDIuGZf+PlVJtOCJxEfKaCzBZ0E49zYWkd+xI960HUQ/Og
+ pzgImtP/TqPPDm4eoJSTJ0DDW89BRUWP9P4uYnmoLandyUH629f9XGJ6Si+EC5l2Nh/2
+ +BcX83tcXx1+C+Sxy/dOnM5MhOCsGGQbircw8DKxi8Qqm9u6CNKSa8o3lkX9INTEdHy4
+ 6rVg==
+X-Gm-Message-State: AOJu0Yw/VWSUga1Vu5z8VEmUg9OUzxIMM5QDvH+9Kn723C8hf8QIsGin
+ vRW5Hw6TTbLmkxAYE1Cv1L3eVy9I7rZl5GzT8Avg1PD1iWabM8d0OhDd7xvfz3Nr0lQcIuh35ex
+ k
+X-Google-Smtp-Source: AGHT+IHGIEMORXo/HW5Je/5hc+rGEhIaeHwmnNpC5ocMuVVhQnNDxttfuPgCNe6MOdJ7OVWUHL+3Hw==
+X-Received: by 2002:a05:600c:4591:b0:416:8efd:1645 with SMTP id
+ r17-20020a05600c459100b004168efd1645mr406430wmo.7.1713378518617; 
+ Wed, 17 Apr 2024 11:28:38 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.201.23])
  by smtp.gmail.com with ESMTPSA id
- h5-20020adff4c5000000b003437a76565asm18092458wrp.25.2024.04.17.11.28.32
+ u12-20020a05600c19cc00b004182cd07133sm3716196wmq.3.2024.04.17.11.28.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Apr 2024 11:28:32 -0700 (PDT)
+ Wed, 17 Apr 2024 11:28:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Warner Losh <imp@bsdimp.com>
-Subject: [PATCH 04/21] exec: Include 'cpu.h' before validating CPUArchState
- placement
-Date: Wed, 17 Apr 2024 20:27:49 +0200
-Message-ID: <20240417182806.69446-5-philmd@linaro.org>
+Subject: [PATCH 05/21] exec: Expose 'target_page.h' API to user emulation
+Date: Wed, 17 Apr 2024 20:27:50 +0200
+Message-ID: <20240417182806.69446-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240417182806.69446-1-philmd@linaro.org>
 References: <20240417182806.69446-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,28 +93,153 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUArchState 'env' field is defined within the ArchCPU structure,
-so we need to include each target "cpu.h" header which defines it.
+User-only objects might benefit from the "exec/target_page.h"
+API, which allows to build some objects once for all targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
-Message-Id: <20231211212003.21686-2-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20231211212003.21686-3-philmd@linaro.org>
 ---
- include/exec/cpu-all.h | 1 +
- 1 file changed, 1 insertion(+)
+ meson.build            |  2 +-
+ page-target.c          | 44 ++++++++++++++++++++++++++++++++++++++++++
+ system/physmem.c       | 30 ----------------------------
+ target/target-common.c | 10 ----------
+ target/meson.build     |  2 --
+ 5 files changed, 45 insertions(+), 43 deletions(-)
+ create mode 100644 page-target.c
+ delete mode 100644 target/target-common.c
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 1a6510fd3b..b86209fc49 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -391,6 +391,7 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
- #endif /* !CONFIG_USER_ONLY */
+diff --git a/meson.build b/meson.build
+index da8295b405..44d337f67b 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3554,7 +3554,7 @@ if get_option('b_lto')
+   pagevary = declare_dependency(link_with: pagevary)
+ endif
+ common_ss.add(pagevary)
+-specific_ss.add(files('page-vary-target.c'))
++specific_ss.add(files('page-target.c', 'page-vary-target.c'))
  
- /* Validate correct placement of CPUArchState. */
+ subdir('backends')
+ subdir('disas')
+diff --git a/page-target.c b/page-target.c
+new file mode 100644
+index 0000000000..82211c8593
+--- /dev/null
++++ b/page-target.c
+@@ -0,0 +1,44 @@
++/*
++ * QEMU page values getters (target independent)
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "exec/target_page.h"
++#include "exec/cpu-defs.h"
 +#include "cpu.h"
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, parent_obj) != 0);
- QEMU_BUILD_BUG_ON(offsetof(ArchCPU, env) != sizeof(CPUState));
++#include "exec/cpu-all.h"
++
++size_t qemu_target_page_size(void)
++{
++    return TARGET_PAGE_SIZE;
++}
++
++int qemu_target_page_mask(void)
++{
++    return TARGET_PAGE_MASK;
++}
++
++int qemu_target_page_bits(void)
++{
++    return TARGET_PAGE_BITS;
++}
++
++int qemu_target_page_bits_min(void)
++{
++    return TARGET_PAGE_BITS_MIN;
++}
++
++/* Convert target pages to MiB (2**20). */
++size_t qemu_target_pages_to_MiB(size_t pages)
++{
++    int page_bits = TARGET_PAGE_BITS;
++
++    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
++    g_assert(page_bits < 20);
++
++    return pages >> (20 - page_bits);
++}
+diff --git a/system/physmem.c b/system/physmem.c
+index a4fe3d2bf8..dd7b222942 100644
+--- a/system/physmem.c
++++ b/system/physmem.c
+@@ -3504,36 +3504,6 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
+     return 0;
+ }
  
+-/*
+- * Allows code that needs to deal with migration bitmaps etc to still be built
+- * target independent.
+- */
+-size_t qemu_target_page_size(void)
+-{
+-    return TARGET_PAGE_SIZE;
+-}
+-
+-int qemu_target_page_bits(void)
+-{
+-    return TARGET_PAGE_BITS;
+-}
+-
+-int qemu_target_page_bits_min(void)
+-{
+-    return TARGET_PAGE_BITS_MIN;
+-}
+-
+-/* Convert target pages to MiB (2**20). */
+-size_t qemu_target_pages_to_MiB(size_t pages)
+-{
+-    int page_bits = TARGET_PAGE_BITS;
+-
+-    /* So far, the largest (non-huge) page size is 64k, i.e. 16 bits. */
+-    g_assert(page_bits < 20);
+-
+-    return pages >> (20 - page_bits);
+-}
+-
+ bool cpu_physical_memory_is_io(hwaddr phys_addr)
+ {
+     MemoryRegion*mr;
+diff --git a/target/target-common.c b/target/target-common.c
+deleted file mode 100644
+index 903b10cfe4..0000000000
+--- a/target/target-common.c
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-#include "qemu/osdep.h"
+-
+-#include "cpu.h"
+-#include "exec/target_page.h"
+-
+-int qemu_target_page_mask(void)
+-{
+-    return TARGET_PAGE_MASK;
+-}
+diff --git a/target/meson.build b/target/meson.build
+index dee2ac47e0..a53a60486f 100644
+--- a/target/meson.build
++++ b/target/meson.build
+@@ -19,5 +19,3 @@ subdir('sh4')
+ subdir('sparc')
+ subdir('tricore')
+ subdir('xtensa')
+-
+-specific_ss.add(files('target-common.c'))
 -- 
 2.41.0
 
