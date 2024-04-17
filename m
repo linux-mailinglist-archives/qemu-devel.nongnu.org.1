@@ -2,55 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED778A8ECA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 00:15:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2539F8A8F08
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 00:56:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxDXq-0001Zp-Gh; Wed, 17 Apr 2024 18:14:22 -0400
+	id 1rxEAy-0000Vj-AQ; Wed, 17 Apr 2024 18:54:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rxDXn-0001ZP-F5
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 18:14:19 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1rxDXj-0005SI-8r
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 18:14:19 -0400
-Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:c10a:0:640:882f:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 8DFCA60A9B;
- Thu, 18 Apr 2024 01:14:07 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b58f::1:2c])
- by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id XDN2JB0IW0U0-kbk7cGeA; Thu, 18 Apr 2024 01:14:06 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1713392046;
- bh=FQjW2JABBoz6njABOJV/+vzRR1pd5nmxRBXMhpsKZi8=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=VVequCZ3Hz+dTQTtgznSl2KgNEK56JrXSI1FdEDQIVEK7HJzBqAdZxGebDT87+bno
- 0tpHomSXS9iDuW6c+RWEheK3bqCqH2ItxdCvwvOG+KbiwcY/B3RILc+CX52cAUIwu6
- rdiXLyMdDUsL/vu6026VDzvO2vpZvlk/7XNBQWgY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: peterx@redhat.com,
-	farosas@suse.de
-Cc: vsementsov@yandex-team.ru, yc-core@yandex-team.ru, thuth@redhat.com,
- lvivier@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
- pkrempa@redhat.com
-Subject: [PATCH] migration: do not exit on incoming failure
-Date: Thu, 18 Apr 2024 01:13:29 +0300
-Message-Id: <20240417221329.248803-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
+ id 1rxEAv-0000UM-1r
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 18:54:45 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <christoph.muellner@vrull.eu>)
+ id 1rxEAs-0003Rp-V3
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 18:54:44 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1e5aa82d1f6so8787015ad.0
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 15:54:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=vrull.eu; s=google; t=1713394481; x=1713999281; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5nhFzDwMwsBmId2Yv/fozBSKG3x2HPZ/nSpW3DQKzUE=;
+ b=jb4LOuJBEOEJVJZptTOC0UjK7BTWpjY2vb7YsoMBg+WoQBhF8YzlIDivb798SAifel
+ 0pIM6VVM9D6SrtztS2pUFt/CfTxCBUNNyfuEfQ/iPISHwDuEYeTh2yOVC9D/ZZfGUCXz
+ ap7W4RLoPfE/jJ/mnEhrDcVWeBiabWfTH56gkoVS1ERfziz29kKmxFbPkOVLHhcta2yi
+ OT5fAnb03R05h91PNLDNv45sqAxCSqf13hSJOpCUxXmvcdaekWDQWCvLov6bMfvVInKv
+ nijp6fdXCBTaR9SJJLgzmYnBHrFtWK89Mf5H88N50MWwG/uoK2koh6FrH4/ZP9yAOmOA
+ ACWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713394481; x=1713999281;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=5nhFzDwMwsBmId2Yv/fozBSKG3x2HPZ/nSpW3DQKzUE=;
+ b=AsdGdDgqVopL1GwN2jteEdqcXdGaOIq1TV73kWSE/6uT1G/QGqSlKzicGtbKL3c94i
+ gFqTmllfUzreUZoQMNhvXoQFf5pAiIBModia1M2EpU5kHA+sDoA9sQFc34vBy1RJ763u
+ doczcJMxqADYMdhEGyuELwE5j+msnfFlPEyclmBuvXMdQl7M8XNdq++DjyVI9D4/XPin
+ TH5+LdEayncNLR1IRSv3y0IHLeYbQwHbJ2FR50XyxqsNgX7+I2zFSuqeVt1VTlJ7Z+cz
+ nYhJYTzIOlNAnaCzVBisD/Qitg+S+ysnsx1nXYSGSBhTnfhX8NtQmLESox0n2cXoVmt+
+ OMKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVLADFu8ZGaUuaAh3pTQBzU4AvpNrOuEOy2j2a6I4Ad6cH3dVzuUcHRhQwUy9mf4TUISiEzNvolTSDdTbwGRpGv6LJvFow=
+X-Gm-Message-State: AOJu0YyvcnY7g8DWo4nNKtw+Ut5PlOB3G4JH225ZdYGfR8hUCLa7RNZY
+ xmDkjwQzaTB5MWZdfAQMJW66kPvD7RFyEbJMrxXezqT86RpF0i7oQMnen0hWLGFSu4mhHYchT70
+ br4cdT26o+HMhQauUMe6jE8/MWytrB3cseWA2yQ==
+X-Google-Smtp-Source: AGHT+IHSkeQa0ItnovW8NPslgtAD3ldSJi0dYQvmQRP/ttv1Fc6KtV9NxIQhB4kXHlU+Wtav4Wx+Ko49i31xC+kYp9g=
+X-Received: by 2002:a17:90b:1896:b0:2a5:6753:98e0 with SMTP id
+ mn22-20020a17090b189600b002a5675398e0mr751464pjb.0.1713394481310; Wed, 17 Apr
+ 2024 15:54:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+References: <20240329120427.684677-1-christoph.muellner@vrull.eu>
+ <4e07e450-9b79-42d9-9ac1-dc59849e175d@linux.alibaba.com>
+In-Reply-To: <4e07e450-9b79-42d9-9ac1-dc59849e175d@linux.alibaba.com>
+From: =?UTF-8?Q?Christoph_M=C3=BCllner?= <christoph.muellner@vrull.eu>
+Date: Thu, 18 Apr 2024 00:54:29 +0200
+Message-ID: <CAEg0e7hc9Dnus5uz4eL0zHuW7hrpTr5Cyb9B=qQCnQLdKiaPrg@mail.gmail.com>
+Subject: Re: [PATCH v2] riscv: thead: Add th.sxstatus CSR emulation
+To: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Cc: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, 
+ Alistair Francis <alistair.francis@wdc.com>, Bin Meng <bin.meng@windriver.com>,
+ Philipp Tomsich <philipp.tomsich@vrull.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Cooper Qu <cooper.qu@linux.alibaba.com>, 
+ Huang Tao <eric.huang@linux.alibaba.com>, Conor Dooley <conor@kernel.org>, 
+ Andrew Jones <ajones@ventanamicro.com>, 
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Vivian Wang <uwu@dram.page>, 
+ Qingfang Deng <dqfext@gmail.com>, Alexandre Ghiti <alex@ghiti.fr>,
+ Weiwei Li <liwei1518@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=christoph.muellner@vrull.eu; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -61,6 +88,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,176 +100,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do set MIGRATION_FAILED state, but don't give a chance to
-orchestrator to query migration state and get the error.
+On Fri, Apr 5, 2024 at 3:36=E2=80=AFAM LIU Zhiwei <zhiwei_liu@linux.alibaba=
+.com> wrote:
+>
+>
+> On 2024/3/29 20:04, Christoph M=C3=BCllner wrote:
+> > The th.sxstatus CSR can be used to identify available custom extension
+> > on T-Head CPUs. The CSR is documented here:
+> >    https://github.com/T-head-Semi/thead-extension-spec/pull/46
+> >
+> > An important property of this patch is, that the th.sxstatus MAEE field
+> > is not set (indicating that XTheadMaee is not available).
+> > XTheadMaee is a memory attribute extension (similar to Svpbmt) which is
+> > implemented in many T-Head CPUs (C906, C910, etc.) and utilizes bits
+> > in PTEs that are marked as reserved. QEMU maintainers prefer to not
+> > implement XTheadMaee, so we need give kernels a mechanism to identify
+> > if XTheadMaee is available in a system or not. And this patch introduce=
+s
+> > this mechanism in QEMU in a way that's compatible with real HW
+> > (i.e., probing the th.sxstatus.MAEE bit).
+> >
+> > Further context can be found on the list:
+> > https://lists.gnu.org/archive/html/qemu-devel/2024-02/msg00775.html
+> >
+> > Signed-off-by: Christoph M=C3=BCllner <christoph.muellner@vrull.eu>
+> > ---
+> >   target/riscv/cpu.c       |  1 +
+> >   target/riscv/cpu.h       |  3 ++
+> >   target/riscv/meson.build |  1 +
+> >   target/riscv/th_csr.c    | 78 +++++++++++++++++++++++++++++++++++++++=
++
+> >   4 files changed, 83 insertions(+)
+> >   create mode 100644 target/riscv/th_csr.c
+> >
+> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > index 36e3e5fdaf..b82ba95ae6 100644
+> > --- a/target/riscv/cpu.c
+> > +++ b/target/riscv/cpu.c
+> > @@ -545,6 +545,7 @@ static void rv64_thead_c906_cpu_init(Object *obj)
+> >       cpu->cfg.mvendorid =3D THEAD_VENDOR_ID;
+> >   #ifndef CONFIG_USER_ONLY
+> >       set_satp_mode_max_supported(cpu, VM_1_10_SV39);
+> > +    th_register_custom_csrs(cpu);
+> >   #endif
+> >
+> >       /* inherited from parent obj via riscv_cpu_init() */
+> > diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> > index 3b1a02b944..c9f8f06751 100644
+> > --- a/target/riscv/cpu.h
+> > +++ b/target/riscv/cpu.h
+> > @@ -824,4 +824,7 @@ void riscv_cpu_register_gdb_regs_for_features(CPUSt=
+ate *cs);
+> >   uint8_t satp_mode_max_from_map(uint32_t map);
+> >   const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
+> >
+> > +/* Implemented in th_csr.c */
+> > +void th_register_custom_csrs(RISCVCPU *cpu);
+> > +
+> >   #endif /* RISCV_CPU_H */
+> > diff --git a/target/riscv/meson.build b/target/riscv/meson.build
+> > index a5e0734e7f..a4bd61e52a 100644
+> > --- a/target/riscv/meson.build
+> > +++ b/target/riscv/meson.build
+> > @@ -33,6 +33,7 @@ riscv_system_ss.add(files(
+> >     'monitor.c',
+> >     'machine.c',
+> >     'pmu.c',
+> > +  'th_csr.c',
+> >     'time_helper.c',
+> >     'riscv-qmp-cmds.c',
+> >   ))
+> > diff --git a/target/riscv/th_csr.c b/target/riscv/th_csr.c
+> > new file mode 100644
+> > index 0000000000..66d260cabd
+> > --- /dev/null
+> > +++ b/target/riscv/th_csr.c
+> > @@ -0,0 +1,78 @@
+> > +/*
+> > + * T-Head-specific CSRs.
+> > + *
+> > + * Copyright (c) 2024 VRULL GmbH
+> > + *
+> > + * This program is free software; you can redistribute it and/or modif=
+y it
+> > + * under the terms and conditions of the GNU General Public License,
+> > + * version 2 or later, as published by the Free Software Foundation.
+> > + *
+> > + * This program is distributed in the hope it will be useful, but WITH=
+OUT
+> > + * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY =
+or
+> > + * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public Licen=
+se for
+> > + * more details.
+> > + *
+> > + * You should have received a copy of the GNU General Public License a=
+long with
+> > + * this program.  If not, see <http://www.gnu.org/licenses/>.
+> > + */
+> > +
+> > +#include "qemu/osdep.h"
+> > +#include "cpu.h"
+> > +#include "cpu_vendorid.h"
+> > +
+> > +#define CSR_TH_SXSTATUS 0x5c0
+> > +
+> > +/* TH_SXSTATUS bits */
+> > +#define TH_SXSTATUS_UCME        BIT(16)
+> > +#define TH_SXSTATUS_MAEE        BIT(21)
+> > +#define TH_SXSTATUS_THEADISAEE  BIT(22)
+> > +
+> > +typedef struct {
+> > +    int csrno;
+> > +    int (*insertion_test)(RISCVCPU *cpu);
+> > +    riscv_csr_operations csr_ops;
+> > +} riscv_csr;
+> > +
+> > +static RISCVException s_mode_csr(CPURISCVState *env, int csrno)
+> > +{
+> > +    if (env->debugger)
+> > +        return RISCV_EXCP_NONE;
+> > +
+> > +    if (env->priv >=3D PRV_S)
+> > +        return RISCV_EXCP_NONE;
+> This will be checked by riscv_csrrw_check.
 
-Let's report an error through QAPI like we do on outgoing migration.
+Indeed! I missed that.
 
-migration-test is updated correspondingly.
+> > +
+> > +    return RISCV_EXCP_ILLEGAL_INST;
+> > +}
+> Insteadly, reuse the smode in csr.c, where it checks iscv_has_ext(env, RV=
+S).
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
+I saw that but preferred to not touch csr.c at all.
+But you are right, removing the "static" from smode() is much better than
+a useless duplication.
 
-Doubt: is exiting on failure a contract? Will this commit break
-something in Libvirt? Finally, could we just change the logic, or I need
-and additional migration-parameter for new behavior?
+Thanks!
 
- migration/migration.c           | 22 +++++++---------------
- tests/qtest/migration-helpers.c | 13 ++++++++++---
- tests/qtest/migration-helpers.h |  3 ++-
- tests/qtest/migration-test.c    | 14 +++++++-------
- 4 files changed, 26 insertions(+), 26 deletions(-)
-
-diff --git a/migration/migration.c b/migration/migration.c
-index 86bf76e925..3c203e767d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -738,11 +738,12 @@ process_incoming_migration_co(void *opaque)
-     MigrationIncomingState *mis = migration_incoming_get_current();
-     PostcopyState ps;
-     int ret;
-+    Error *local_err = NULL;
- 
-     assert(mis->from_src_file);
- 
-     if (compress_threads_load_setup(mis->from_src_file)) {
--        error_report("Failed to setup decompress threads");
-+        error_setg(&local_err, "Failed to setup decompress threads");
-         goto fail;
-     }
- 
-@@ -779,32 +780,23 @@ process_incoming_migration_co(void *opaque)
-     }
- 
-     if (ret < 0) {
--        MigrationState *s = migrate_get_current();
--
--        if (migrate_has_error(s)) {
--            WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
--                error_report_err(s->error);
--            }
--        }
--        error_report("load of migration failed: %s", strerror(-ret));
-+        error_setg(&local_err, "load of migration failed: %s", strerror(-ret));
-         goto fail;
-     }
- 
-     if (colo_incoming_co() < 0) {
-+        error_setg(&local_err, "colo incoming failed");
-         goto fail;
-     }
- 
-     migration_bh_schedule(process_incoming_migration_bh, mis);
-     return;
- fail:
-+    migrate_set_error(migrate_get_current(), local_err);
-+    error_report_err(local_err);
-     migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
-                       MIGRATION_STATUS_FAILED);
--    qemu_fclose(mis->from_src_file);
--
--    multifd_recv_cleanup();
--    compress_threads_load_cleanup();
--
--    exit(EXIT_FAILURE);
-+    migration_incoming_state_destroy();
- }
- 
- /**
-diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index e451dbdbed..91c13bd566 100644
---- a/tests/qtest/migration-helpers.c
-+++ b/tests/qtest/migration-helpers.c
-@@ -211,7 +211,8 @@ void wait_for_migration_complete(QTestState *who)
-     wait_for_migration_status(who, "completed", NULL);
- }
- 
--void wait_for_migration_fail(QTestState *from, bool allow_active)
-+void wait_for_migration_fail(QTestState *from, bool allow_active,
-+                             bool is_incoming)
- {
-     g_test_timer_start();
-     QDict *rsp_return;
-@@ -236,8 +237,14 @@ void wait_for_migration_fail(QTestState *from, bool allow_active)
-     /* Is the machine currently running? */
-     rsp_return = qtest_qmp_assert_success_ref(from,
-                                               "{ 'execute': 'query-status' }");
--    g_assert(qdict_haskey(rsp_return, "running"));
--    g_assert(qdict_get_bool(rsp_return, "running"));
-+    if (is_incoming) {
-+        if (qdict_haskey(rsp_return, "running")) {
-+            g_assert(!qdict_get_bool(rsp_return, "running"));
-+        }
-+    } else {
-+        g_assert(qdict_haskey(rsp_return, "running"));
-+        g_assert(qdict_get_bool(rsp_return, "running"));
-+    }
-     qobject_unref(rsp_return);
- }
- 
-diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
-index 3bf7ded1b9..7bd07059ae 100644
---- a/tests/qtest/migration-helpers.h
-+++ b/tests/qtest/migration-helpers.h
-@@ -46,7 +46,8 @@ void wait_for_migration_status(QTestState *who,
- 
- void wait_for_migration_complete(QTestState *who);
- 
--void wait_for_migration_fail(QTestState *from, bool allow_active);
-+void wait_for_migration_fail(QTestState *from, bool allow_active,
-+                             bool is_incoming);
- 
- char *find_common_machine_version(const char *mtype, const char *var1,
-                                   const char *var2);
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 1d2cee87ea..e00b755f05 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -1670,7 +1670,7 @@ static void test_baddest(void)
-         return;
-     }
-     migrate_qmp(from, "tcp:127.0.0.1:0", "{}");
--    wait_for_migration_fail(from, false);
-+    wait_for_migration_fail(from, false, false);
-     test_migrate_end(from, to, false);
- }
- 
-@@ -1781,10 +1781,10 @@ static void test_precopy_common(MigrateCommon *args)
- 
-     if (args->result != MIG_TEST_SUCCEED) {
-         bool allow_active = args->result == MIG_TEST_FAIL;
--        wait_for_migration_fail(from, allow_active);
-+        wait_for_migration_fail(from, allow_active, false);
- 
-         if (args->result == MIG_TEST_FAIL_DEST_QUIT_ERR) {
--            qtest_set_expected_status(to, EXIT_FAILURE);
-+            wait_for_migration_fail(to, true, true);
-         }
-     } else {
-         if (args->live) {
-@@ -2571,8 +2571,8 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
-     migrate_qmp(from, uri, "{}");
- 
-     if (should_fail) {
--        qtest_set_expected_status(to, EXIT_FAILURE);
--        wait_for_migration_fail(from, true);
-+        wait_for_migration_fail(to, true, true);
-+        wait_for_migration_fail(from, true, false);
-     } else {
-         wait_for_migration_complete(from);
-     }
-@@ -3047,8 +3047,8 @@ static void test_multifd_tcp_cancel(void)
-     migrate_cancel(from);
- 
-     /* Make sure QEMU process "to" exited */
--    qtest_set_expected_status(to, EXIT_FAILURE);
--    qtest_wait_qemu(to);
-+    wait_for_migration_fail(to, true, true);
-+    qtest_quit(to);
- 
-     args = (MigrateStart){
-         .only_target = true,
--- 
-2.34.1
-
+> > +
+> > +static int test_thead_mvendorid(RISCVCPU *cpu)
+> > +{
+> > +    if (cpu->cfg.mvendorid !=3D THEAD_VENDOR_ID)
+> > +        return -1;
+> > +    return 0;
+> > +}
+> > +
+> > +static RISCVException read_th_sxstatus(CPURISCVState *env, int csrno,
+> > +                                       target_ulong *val)
+> > +{
+> > +    /* We don't set MAEE here, because QEMU does not implement MAEE. *=
+/
+> > +    *val =3D TH_SXSTATUS_UCME | TH_SXSTATUS_THEADISAEE;
+> > +    return RISCV_EXCP_NONE;
+> > +}
+> > +
+> > +static riscv_csr th_csr_list[] =3D {
+> > +    {
+> > +        .csrno =3D CSR_TH_SXSTATUS,
+> > +        .insertion_test =3D test_thead_mvendorid,
+> > +        .csr_ops =3D { "th.sxstatus", s_mode_csr, read_th_sxstatus }
+> > +    }
+> > +};
+> > +
+> > +void th_register_custom_csrs(RISCVCPU *cpu)
+> > +{
+> > +    for (size_t i =3D 0; i < ARRAY_SIZE(th_csr_list); i++) {
+> > +        int csrno =3D th_csr_list[i].csrno;
+> > +        riscv_csr_operations *csr_ops =3D &th_csr_list[i].csr_ops;
+> > +        if (!th_csr_list[i].insertion_test(cpu))
+> > +            riscv_set_csr_ops(csrno, csr_ops);
+> > +    }
+> > +}
+>
+> Otherwise,
+>
+> Reviewed-by: LIU Zhiwei <zhiwe_liu@linux.alibaba.com>
+>
+> Zhiwei
+>
 
