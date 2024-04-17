@@ -2,74 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E338A8B29
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3138A8B32
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:34:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxA3K-0005bd-6i; Wed, 17 Apr 2024 14:30:38 -0400
+	id 1rxA6t-00044w-DL; Wed, 17 Apr 2024 14:34:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2w-0004jT-Ek
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:15 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2s-00040w-9j
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:13 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-56e37503115so13264a12.1
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:30:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713378608; x=1713983408; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T2iJJmV+2DNCV1vqfBBGFjheXtYtlaqsPcXM/OBu1Kk=;
- b=jo5u4ce0FeUMneV8F7Ls0Nr5gNiJBFbSFRCVyrNPdSA7cze0BKBEhlBw7xLF1uTgFZ
- oPk64MQ2ob6IiUYs2uUu3Oz5TjWJS2wkPriK6OGbX1Xe2a4ngYaBZJqimgnkZEVIy6zK
- B36n/huHLt/O5ruc3rxqByWbD5202UuCt4QtSZwmriTSjGSPUQrgV+uqD+lQjHRV0e0h
- KE8eiDXUpizjiC4K5N4/VB+F6ON9jTprp+RW41OgqOBR4zp6jk9w9w4Pd9zypGRYxqqe
- VYiio/wyZrqhnkep4fCqub8HKsjyVWD+V5V9jhv/ee8sFNEPkSf7BuSfZmigNDdnorvI
- X/ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713378608; x=1713983408;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T2iJJmV+2DNCV1vqfBBGFjheXtYtlaqsPcXM/OBu1Kk=;
- b=Q1oikTpoW7k3+4AKmXLq0hbJsW42FTgPeFzGEl5jcqNAcStzoVG9KFrzo2NUef2ZM8
- 17fn2Xfgiu/iHGUzq++uGBNW7tib8KWxPWMqvD6J6y+u+5yHqICraTwjW+v30OIppKjl
- O7LUD7IeHD+2gQvD75IvQxLeimjNCsOd/q3gbTCX5zA3A9XgOcWdE/bUXfHvc/pjaxoo
- AOh/I1DtXDNzP7nct3JpQlFnAg0VRJjkPERg3b2NISMznZqJgVq8uoDta98T/2DYnHJ8
- 9RO5++gE166QD8BRIuIyc/rMDRpVM5MU2wQVQU47HKBHD3AJ8YDcsBoT8u0YP3xcW389
- 6rhQ==
-X-Gm-Message-State: AOJu0YzqcMWdY8wEImKLBBuKlny1TgL/wLyrlZuD8kot0/TdwEady6g8
- 072RfNlQfJL8guWti0fwCGrFMg0pJKTAkvRBRSYIq49+pMDG4q/NPnXCThkhp+Gi3ZhwUAxzBqK
- c
-X-Google-Smtp-Source: AGHT+IFPW8DI84t0fCPJYcuOwRuBH1BfbTttDro0zYs74B+ghQSKMr2oM9unIcsCYStPMLVAH7G1TA==
-X-Received: by 2002:a50:9e4e:0:b0:570:d50:e7d8 with SMTP id
- z72-20020a509e4e000000b005700d50e7d8mr306233ede.22.1713378608179; 
- Wed, 17 Apr 2024 11:30:08 -0700 (PDT)
-Received: from m1x-phil.lan ([176.187.201.23])
- by smtp.gmail.com with ESMTPSA id
- t6-20020a056402020600b0057030326144sm3467024edv.47.2024.04.17.11.30.07
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Apr 2024 11:30:07 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rxA6r-00044X-4n
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:34:17 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rxA6m-0004qw-Ol
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:34:16 -0400
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:c10a:0:640:882f:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 12E9460B0D;
+ Wed, 17 Apr 2024 21:34:06 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b58f::1:2c])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ZXJAD70If4Y0-82BNRhce; Wed, 17 Apr 2024 21:34:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1713378845;
+ bh=znaRLD9fB/1boWuMdchXq2LTMHx2NjDn0dXBdwcCIbc=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=j9BKwLrCFCjKzmBZ7ftVqbV5TK5vgWELOLewkFWf8R0ptn/2Mbu15takTjiGGN61j
+ GVlIUCgVxj22iyaThaKjmHirrFuLQhfC/0i+w21jttzaIeg//RaLzKt8sQkNVf/wqR
+ NBwxhHB735+yjK+lPAao+eV+qdG5hYmYBty1Wrl0=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 21/21] exec: Declare abi_ptr type in its own 'abi_ptr.h' header
-Date: Wed, 17 Apr 2024 20:28:06 +0200
-Message-ID: <20240417182806.69446-22-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240417182806.69446-1-philmd@linaro.org>
-References: <20240417182806.69446-1-philmd@linaro.org>
+Cc: vsementsov@yandex-team.ru, pbonzini@redhat.com,
+ richard.henderson@linaro.org, stefanha@redhat.com, groug@kaod.org
+Subject: [PATCH for-9.1] util/log: add cleanup function
+Date: Wed, 17 Apr 2024 21:33:33 +0300
+Message-Id: <20240417183333.39256-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,129 +70,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The abi_ptr type is declared in "exec/cpu_ldst.h" with all
-the load/store helpers. Some source files requiring abi_ptr
-type don't need the load/store helpers. In order to simplify,
-create a new "exec/abi_ptr.h" header.
+We leak global_filename, and do not close global_file. Let's fix that.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20231212123401.37493-21-philmd@linaro.org>
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- include/exec/abi_ptr.h    | 33 +++++++++++++++++++++++++++++++++
- include/exec/cpu_ldst.h   | 17 +++--------------
- include/exec/exec-all.h   |  1 +
- include/exec/translator.h |  5 ++++-
- 4 files changed, 41 insertions(+), 15 deletions(-)
- create mode 100644 include/exec/abi_ptr.h
 
-diff --git a/include/exec/abi_ptr.h b/include/exec/abi_ptr.h
-new file mode 100644
-index 0000000000..2aedcceb0c
---- /dev/null
-+++ b/include/exec/abi_ptr.h
-@@ -0,0 +1,33 @@
-+/*
-+ * QEMU abi_ptr type definitions
-+ *
-+ * SPDX-License-Identifier: LGPL-2.1-or-later
-+ */
-+#ifndef EXEC_ABI_PTR_H
-+#define EXEC_ABI_PTR_H
-+
-+#include "cpu-param.h"
-+
-+#if defined(CONFIG_USER_ONLY)
-+/*
-+ * sparc32plus has 64bit long but 32bit space address
-+ * this can make bad result with g2h() and h2g()
-+ */
-+#if TARGET_VIRT_ADDR_SPACE_BITS <= 32
-+typedef uint32_t abi_ptr;
-+#define TARGET_ABI_FMT_ptr "%x"
-+#else
-+typedef uint64_t abi_ptr;
-+#define TARGET_ABI_FMT_ptr "%"PRIx64
-+#endif
-+
-+#else /* !CONFIG_USER_ONLY */
-+
-+#include "exec/target_long.h"
-+
-+typedef target_ulong abi_ptr;
-+#define TARGET_ABI_FMT_ptr TARGET_FMT_lx
-+
-+#endif /* !CONFIG_USER_ONLY */
-+
-+#endif
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 82690d3947..64e0319996 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -63,20 +63,11 @@
- #define CPU_LDST_H
+Interesting: seems, nobody is maintainer of util/log.c
+
+ util/log.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/util/log.c b/util/log.c
+index d36c98da0b..30de209210 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -85,6 +85,15 @@ static void qemu_log_thread_cleanup(Notifier *n, void *unused)
+     }
+ }
  
- #include "exec/memopidx.h"
-+#include "exec/abi_ptr.h"
- #include "qemu/int128.h"
- #include "cpu.h"
- 
- #if defined(CONFIG_USER_ONLY)
--/* sparc32plus has 64bit long but 32bit space address
-- * this can make bad result with g2h() and h2g()
-- */
--#if TARGET_VIRT_ADDR_SPACE_BITS <= 32
--typedef uint32_t abi_ptr;
--#define TARGET_ABI_FMT_ptr "%x"
--#else
--typedef uint64_t abi_ptr;
--#define TARGET_ABI_FMT_ptr "%"PRIx64
--#endif
- 
- #ifndef TARGET_TAGGED_ADDRESSES
- static inline abi_ptr cpu_untagged_addr(CPUState *cs, abi_ptr x)
-@@ -120,10 +111,8 @@ static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
-     assert(h2g_valid(x)); \
-     h2g_nocheck(x); \
- })
--#else
--typedef vaddr abi_ptr;
--#define TARGET_ABI_FMT_ptr VADDR_PRIx
--#endif
++static void __attribute__((__destructor__)) cleanup(void)
++{
++    g_free(global_filename);
++    if (global_file && global_file != stderr) {
++        fclose(global_file);
++        global_file = NULL;
++    }
++}
 +
-+#endif /* CONFIG_USER_ONLY */
+ /* Lock/unlock output. */
  
- uint32_t cpu_ldub_data(CPUArchState *env, abi_ptr ptr);
- int cpu_ldsb_data(CPUArchState *env, abi_ptr ptr);
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 3e53501691..e932d364b6 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -22,6 +22,7 @@
- 
- #include "cpu.h"
- #if defined(CONFIG_USER_ONLY)
-+#include "exec/abi_ptr.h"
- #include "exec/cpu_ldst.h"
- #endif
- #include "exec/translation-block.h"
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index 2c4fb818e7..6cd937ac5c 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -19,7 +19,10 @@
-  */
- 
- #include "qemu/bswap.h"
--#include "exec/cpu_ldst.h"	/* for abi_ptr */
-+#include "exec/cpu-common.h"
-+#include "exec/cpu-defs.h"
-+#include "exec/abi_ptr.h"
-+#include "cpu.h"
- 
- /**
-  * gen_intermediate_code
+ static FILE *qemu_log_trylock_with_err(Error **errp)
 -- 
-2.41.0
+2.34.1
 
 
