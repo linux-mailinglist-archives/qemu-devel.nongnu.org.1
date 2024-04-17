@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C908A8B26
-	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA4578A8B28
+	for <lists+qemu-devel@lfdr.de>; Wed, 17 Apr 2024 20:31:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxA2v-0004T9-1s; Wed, 17 Apr 2024 14:30:15 -0400
+	id 1rxA30-0004Xe-IZ; Wed, 17 Apr 2024 14:30:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2g-00040i-MY
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:00 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2i-00044J-Vb
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:02 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2b-0003ko-M2
- for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:29:56 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-a51aac16b6eso322119766b.1
- for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:29:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxA2g-0003mq-Pn
+ for qemu-devel@nongnu.org; Wed, 17 Apr 2024 14:30:00 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-56e346224bdso1939a12.1
+ for <qemu-devel@nongnu.org>; Wed, 17 Apr 2024 11:29:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713378591; x=1713983391; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713378597; x=1713983397; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=n0UB6yYdJ7G4jV8uDJ7wPEMwbZmtBQgbO2jPSnrKT98=;
- b=fSk4uxYokOVaUFqEjuTMy0dfw5Y93qtqkCi/m4E+Ws9TJxaf1zB2mtcajW+zzV1Csm
- w+CQnYvYPcDFc9JqdobVQ2+Rz+SaNlVIeWr0uzCh7BAoYJzYX6466hhl6B7ASlSZa8je
- Tpx+JrV2Jy5+sfrl/6UZDUJAZrMltbnZLOtVYUK3DyPUwOcPOzRHsPdxHGyboUSBUa33
- elx2xzUBdpDdMZfmhJeq7bQampzWIlAr8UcDQIDbdI2NcdnS1zqBOwTgszthO1aVADqn
- gtht8rHQhSZ5cseQkFx4UeYuHT1MmnzoouE5ih/HAvAV18S3+HGlf+nnZ8qSfR/s1ckf
- 1EjA==
+ bh=J8eo2jSvcn1ZSvG3FSu+38gN1aTmZ4jM+1lXBXdjpkc=;
+ b=Dl4YDuDnTMAXAE4tt+gI8zRxQMID6+23TH9SFhhRow4XahmGRyJz2ceycoUJuFKLIM
+ DQKVDyDI9WzfS85IdatAD3njfA5WJ6BZHDtK/sUWzbZzXA3MSTZBOWNfD6rTrTeQuiPK
+ KKvrjVOWb17EnY18j/+EJwlsOMNEKiVj0NvXtp8afU7yzPf8TRXimg9ro5eHsuhOiRJH
+ gnPtz2MpvOXRIZvp3Wtn44oohi+WyREWK9kYeAE4wnxPJcpKNkr8uwh/usiL8feN+1qq
+ /R2EtqEIsQSfTNfvrRcX1SMrHtD/a7gIJCJsd8CRkPwaOGBzx/WzVyeOjc8a1LfHvHdZ
+ BA6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713378591; x=1713983391;
+ d=1e100.net; s=20230601; t=1713378597; x=1713983397;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n0UB6yYdJ7G4jV8uDJ7wPEMwbZmtBQgbO2jPSnrKT98=;
- b=oxSCWxeSPw40EUMGBAP/HLmn0uuvwHLglEVY+q5g0zdUMnIS9bkZUSau/O1fj8Zj2l
- mcJgozlGx5hNgy3tuNPwDF66Bw1fOtmuw2tNSb8V/4QD6Ojk1rXTND2mPWEbyGlb9SSe
- 9+dm4NwYlY7pVZegA5c0ShjEwueJfDonHlKu1C8pJvWml+/DPZNLdR8pT3zWnabkjGqZ
- gT8UHftMf0Fw+rqK8DoG+WAnpNQJfT0kOwv/dVecFXTo+qeScFZlYGqLVI6urDyGuDEa
- DmaECqsyiO6AEOV1NvTRSi6ayGm5hQrbK+VoSzqQTsgruyuOOaSpxEP1gtczJjkINCx/
- MMMQ==
-X-Gm-Message-State: AOJu0Yyr30t3e0ahHsnBDm3Nvn7ZscqEV0YefO9jpzpmB3EMqCuOKqNO
- DLR4PikdJrqmdd6d/kYUA66am9OyWslemTqYx+VgXsj422MLK7FQRM3kUImwdLQE+GUb+065hhJ
- C
-X-Google-Smtp-Source: AGHT+IEPnLcnJvK2uygwVmFbaNVvWoZmxBuf/A5rPEpIDlLZ4TQ8s8T75t/ux5mEm0q9I/elU5G7og==
-X-Received: by 2002:a50:9faa:0:b0:570:37d:badd with SMTP id
- c39-20020a509faa000000b00570037dbaddmr322504edf.28.1713378591399; 
- Wed, 17 Apr 2024 11:29:51 -0700 (PDT)
+ bh=J8eo2jSvcn1ZSvG3FSu+38gN1aTmZ4jM+1lXBXdjpkc=;
+ b=IAobYp8HFFzvFKS5Dkvo6eFz1Z+VFzBMkjdlpYG53j5VTrLawbkPQPbu3Ao4dY7ePt
+ 2/5iuelj00o6+j/MVORrnj4Po/yKYdW13g7Lbz7V4IGIDN3tppgdodcSOMDO2lRXgcky
+ NHn9pO7W4M9m40+2u3DhcnYan3tP6x4fmbrGIR65O3INGou5FVGkD2GM+4qKESQdjtWU
+ jx+oeo+OdmukSH/J/k9q4IzQIB8VlOvjQugMdUtwE6p9qu6CfKBBxSAtVMQ5Y1doJ5kZ
+ cM5kf6JCTu1VQdcY48AJa1aLjG501UpSZvG07tOGTkUQgsDXflQ+N9RMC7vAM62uH2fH
+ D4eQ==
+X-Gm-Message-State: AOJu0YxJAFjTCQSaUcM42ZUfx09BMrj4CS4SUD5HMPYTfS9MFrUImmuF
+ YXMJMZ8jIKiB+XWMVkLD/QeDFvauQuOQeXKhE3cMZ2uCwJpIGiiKzfIbUKoSK2BrQg/MKZcW8HB
+ c
+X-Google-Smtp-Source: AGHT+IHHIB7qHxMG68OhofnspXIyIB8oUaFO0rsERtfE8Mn4CGR36tq3nfKuj+x2bOaAJVxyamQFrQ==
+X-Received: by 2002:a50:ab57:0:b0:568:a30c:2db5 with SMTP id
+ t23-20020a50ab57000000b00568a30c2db5mr220732edc.40.1713378597013; 
+ Wed, 17 Apr 2024 11:29:57 -0700 (PDT)
 Received: from m1x-phil.lan ([176.187.201.23])
  by smtp.gmail.com with ESMTPSA id
- z3-20020a056402274300b0056e3d80ca71sm7557489edd.35.2024.04.17.11.29.50
+ n22-20020aa7c796000000b0056feeb85ed0sm6935158eds.19.2024.04.17.11.29.55
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 17 Apr 2024 11:29:50 -0700 (PDT)
+ Wed, 17 Apr 2024 11:29:56 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PATCH 18/21] exec: Declare target_words_bigendian() in 'exec/tswap.h'
-Date: Wed, 17 Apr 2024 20:28:03 +0200
-Message-ID: <20240417182806.69446-19-philmd@linaro.org>
+Subject: [PATCH 19/21] exec: Move [b]tswapl() declarations to
+ 'exec/user/tswap-target.h'
+Date: Wed, 17 Apr 2024 20:28:04 +0200
+Message-ID: <20240417182806.69446-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240417182806.69446-1-philmd@linaro.org>
 References: <20240417182806.69446-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,167 +94,209 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We usually check target endianess before swapping values,
-so target_words_bigendian() declaration makes sense in
-"exec/tswap.h" with the target swapping helpers.
-
-Remove "hw/core/cpu.h" when it was only included to get
-the target_words_bigendian() declaration.
+tswapl() and bswaptls() are target-dependent and only used
+by user emulation. Move their definitions to a new header:
+"exec/user/tswap-target.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20231212123401.37493-16-philmd@linaro.org>
+Message-Id: <20231212123401.37493-17-philmd@linaro.org>
 ---
- include/exec/tswap.h     | 12 +++++++++++-
- include/hw/core/cpu.h    | 11 -----------
- cpu-target.c             |  1 +
- disas/disas.c            |  1 +
- hw/audio/virtio-snd.c    |  2 +-
- hw/core/cpu-sysemu.c     |  2 +-
- hw/core/generic-loader.c |  2 +-
- hw/display/vga.c         |  2 +-
- hw/virtio/virtio.c       |  1 +
- 9 files changed, 18 insertions(+), 16 deletions(-)
+ MAINTAINERS                        |  1 +
+ bsd-user/freebsd/target_os_elf.h   |  1 +
+ bsd-user/freebsd/target_os_stack.h |  1 +
+ bsd-user/netbsd/target_os_elf.h    |  1 +
+ bsd-user/openbsd/target_os_elf.h   |  1 +
+ include/exec/cpu-all.h             |  8 --------
+ include/exec/user/abitypes.h       |  1 +
+ include/user/tswap-target.h        | 22 ++++++++++++++++++++++
+ bsd-user/signal.c                  |  1 +
+ bsd-user/strace.c                  |  1 +
+ linux-user/elfload.c               |  1 +
+ linux-user/i386/signal.c           |  1 +
+ linux-user/ppc/signal.c            |  1 +
+ 13 files changed, 33 insertions(+), 8 deletions(-)
+ create mode 100644 include/user/tswap-target.h
 
-diff --git a/include/exec/tswap.h b/include/exec/tswap.h
-index 5089cd6a4c..b7a4191347 100644
---- a/include/exec/tswap.h
-+++ b/include/exec/tswap.h
-@@ -8,9 +8,19 @@
- #ifndef TSWAP_H
- #define TSWAP_H
+diff --git a/MAINTAINERS b/MAINTAINERS
+index f1f6922025..e85b358683 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3704,6 +3704,7 @@ Overall usermode emulation
+ M: Riku Voipio <riku.voipio@iki.fi>
+ S: Maintained
+ F: accel/tcg/user-exec*.c
++F: include/exec/user/
+ F: include/user/
+ F: common-user/
  
--#include "hw/core/cpu.h"
- #include "qemu/bswap.h"
+diff --git a/bsd-user/freebsd/target_os_elf.h b/bsd-user/freebsd/target_os_elf.h
+index 9df17d56d8..01124979f7 100644
+--- a/bsd-user/freebsd/target_os_elf.h
++++ b/bsd-user/freebsd/target_os_elf.h
+@@ -22,6 +22,7 @@
  
-+/**
-+ * target_words_bigendian:
-+ * Returns true if the (default) endianness of the target is big endian,
-+ * false otherwise. Note that in target-specific code, you can use
-+ * TARGET_BIG_ENDIAN directly instead. On the other hand, common
-+ * code should normally never need to know about the endianness of the
-+ * target, so please do *not* use this function unless you know very well
-+ * what you are doing!
-+ */
-+bool target_words_bigendian(void);
-+
+ #include "target_arch_elf.h"
+ #include "elf.h"
++#include "user/tswap-target.h"
+ 
+ #define bsd_get_ncpu() 1 /* until we pull in bsd-proc.[hc] */
+ 
+diff --git a/bsd-user/freebsd/target_os_stack.h b/bsd-user/freebsd/target_os_stack.h
+index d15fc3263f..ac0ef22cd7 100644
+--- a/bsd-user/freebsd/target_os_stack.h
++++ b/bsd-user/freebsd/target_os_stack.h
+@@ -23,6 +23,7 @@
+ #include <sys/param.h>
+ #include "target_arch_sigtramp.h"
+ #include "qemu/guest-random.h"
++#include "user/tswap-target.h"
+ 
  /*
-  * If we're in target-specific code, we can hard-code the swapping
-  * condition, otherwise we have to do (slower) run-time checks.
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 7f037b158e..3a66d8581e 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -1169,17 +1169,6 @@ bool cpu_exec_realizefn(CPUState *cpu, Error **errp);
- void cpu_exec_unrealizefn(CPUState *cpu);
- void cpu_exec_reset_hold(CPUState *cpu);
+  * The initial FreeBSD stack is as follows:
+diff --git a/bsd-user/netbsd/target_os_elf.h b/bsd-user/netbsd/target_os_elf.h
+index 2f3cb20871..9de0f290c0 100644
+--- a/bsd-user/netbsd/target_os_elf.h
++++ b/bsd-user/netbsd/target_os_elf.h
+@@ -22,6 +22,7 @@
  
--/**
-- * target_words_bigendian:
-- * Returns true if the (default) endianness of the target is big endian,
-- * false otherwise. Note that in target-specific code, you can use
-- * TARGET_BIG_ENDIAN directly instead. On the other hand, common
-- * code should normally never need to know about the endianness of the
-- * target, so please do *not* use this function unless you know very well
-- * what you are doing!
-- */
--bool target_words_bigendian(void);
--
- const char *target_name(void);
+ #include "target_arch_elf.h"
+ #include "elf.h"
++#include "user/tswap-target.h"
  
- #ifdef COMPILING_PER_TARGET
-diff --git a/cpu-target.c b/cpu-target.c
-index 4c0621bf33..f88649c299 100644
---- a/cpu-target.c
-+++ b/cpu-target.c
-@@ -35,6 +35,7 @@
+ /* this flag is uneffective under linux too, should be deleted */
+ #ifndef MAP_DENYWRITE
+diff --git a/bsd-user/openbsd/target_os_elf.h b/bsd-user/openbsd/target_os_elf.h
+index 6dca9c5a85..4cf5747dcd 100644
+--- a/bsd-user/openbsd/target_os_elf.h
++++ b/bsd-user/openbsd/target_os_elf.h
+@@ -22,6 +22,7 @@
+ 
+ #include "target_arch_elf.h"
+ #include "elf.h"
++#include "user/tswap-target.h"
+ 
+ /* this flag is uneffective under linux too, should be deleted */
+ #ifndef MAP_DENYWRITE
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index 7c44ffb3af..78848f018c 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -36,14 +36,6 @@
+ #define BSWAP_NEEDED
  #endif
- #include "sysemu/cpus.h"
- #include "sysemu/tcg.h"
-+#include "exec/tswap.h"
- #include "exec/replay-core.h"
- #include "exec/cpu-common.h"
- #include "exec/exec-all.h"
-diff --git a/disas/disas.c b/disas/disas.c
-index 7e3b0bb46c..ec14715ecd 100644
---- a/disas/disas.c
-+++ b/disas/disas.c
-@@ -6,6 +6,7 @@
- #include "disas/disas.h"
- #include "disas/capstone.h"
- #include "hw/core/cpu.h"
-+#include "exec/tswap.h"
- #include "exec/memory.h"
  
- /* Filled in by elfload.c.  Simplistic, but will do for now. */
-diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
-index c80b58bf5d..6a2ee085c0 100644
---- a/hw/audio/virtio-snd.c
-+++ b/hw/audio/virtio-snd.c
-@@ -20,11 +20,11 @@
- #include "qemu/log.h"
- #include "qemu/error-report.h"
- #include "include/qemu/lockable.h"
-+#include "exec/tswap.h"
- #include "sysemu/runstate.h"
- #include "trace.h"
- #include "qapi/error.h"
- #include "hw/audio/virtio-snd.h"
--#include "hw/core/cpu.h"
- 
- #define VIRTIO_SOUND_VM_VERSION 1
- #define VIRTIO_SOUND_JACK_DEFAULT 0
-diff --git a/hw/core/cpu-sysemu.c b/hw/core/cpu-sysemu.c
-index d0d6a910f9..2a9a2a4eb5 100644
---- a/hw/core/cpu-sysemu.c
-+++ b/hw/core/cpu-sysemu.c
-@@ -20,7 +20,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
--#include "hw/core/cpu.h"
-+#include "exec/tswap.h"
- #include "hw/core/sysemu-cpu-ops.h"
- 
- bool cpu_paging_enabled(const CPUState *cpu)
-diff --git a/hw/core/generic-loader.c b/hw/core/generic-loader.c
-index d4b5c501d8..ea8628b892 100644
---- a/hw/core/generic-loader.c
-+++ b/hw/core/generic-loader.c
-@@ -31,7 +31,7 @@
+-#if TARGET_LONG_SIZE == 4
+-#define tswapl(s) tswap32(s)
+-#define bswaptls(s) bswap32s(s)
+-#else
+-#define tswapl(s) tswap64(s)
+-#define bswaptls(s) bswap64s(s)
+-#endif
+-
+ /* Target-endianness CPU memory access functions. These fit into the
+  * {ld,st}{type}{sign}{size}{endian}_p naming scheme described in bswap.h.
   */
+diff --git a/include/exec/user/abitypes.h b/include/exec/user/abitypes.h
+index 6178453d94..56e96fcb99 100644
+--- a/include/exec/user/abitypes.h
++++ b/include/exec/user/abitypes.h
+@@ -2,6 +2,7 @@
+ #define EXEC_USER_ABITYPES_H
  
+ #include "cpu.h"
++#include "user/tswap-target.h"
+ 
+ #ifdef TARGET_ABI32
+ #define TARGET_ABI_BITS 32
+diff --git a/include/user/tswap-target.h b/include/user/tswap-target.h
+new file mode 100644
+index 0000000000..4719330dbb
+--- /dev/null
++++ b/include/user/tswap-target.h
+@@ -0,0 +1,22 @@
++/*
++ * target-specific swap() definitions
++ *
++ *  Copyright (c) 2003 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: LGPL-2.1-or-later
++ */
++#ifndef USER_TSWAP_H
++#define USER_TSWAP_H
++
++#include "exec/cpu-defs.h"
++#include "exec/tswap.h"
++
++#if TARGET_LONG_SIZE == 4
++#define tswapl(s) tswap32(s)
++#define bswaptls(s) bswap32s(s)
++#else
++#define tswapl(s) tswap64(s)
++#define bswaptls(s) bswap64s(s)
++#endif
++
++#endif
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index e5a773ddde..b2faf1d0dd 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -21,6 +21,7 @@
  #include "qemu/osdep.h"
--#include "hw/core/cpu.h"
-+#include "exec/tswap.h"
- #include "sysemu/dma.h"
- #include "sysemu/reset.h"
- #include "hw/boards.h"
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 77f59e8c11..d17ff4b93a 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -26,7 +26,7 @@
- #include "qemu/units.h"
- #include "sysemu/reset.h"
- #include "qapi/error.h"
--#include "hw/core/cpu.h"
-+#include "exec/tswap.h"
- #include "hw/display/vga.h"
- #include "hw/i386/x86.h"
- #include "hw/pci/pci.h"
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 871674f9be..893a072c9d 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -20,6 +20,7 @@
  #include "qemu/log.h"
- #include "qemu/main-loop.h"
- #include "qemu/module.h"
-+#include "exec/tswap.h"
- #include "qom/object_interfaces.h"
- #include "hw/core/cpu.h"
- #include "hw/virtio/virtio.h"
+ #include "qemu.h"
++#include "user/tswap-target.h"
+ #include "gdbstub/user.h"
+ #include "signal-common.h"
+ #include "trace.h"
+diff --git a/bsd-user/strace.c b/bsd-user/strace.c
+index 96499751eb..6dc01d3be7 100644
+--- a/bsd-user/strace.c
++++ b/bsd-user/strace.c
+@@ -22,6 +22,7 @@
+ #include <sys/ioccom.h>
+ 
+ #include "qemu.h"
++#include "user/tswap-target.h"
+ 
+ #include "os-strace.h"  /* OS dependent strace print functions */
+ 
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index 60cf55b36c..28d9e8a9a5 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -7,6 +7,7 @@
+ #include <sys/shm.h>
+ 
+ #include "qemu.h"
++#include "user/tswap-target.h"
+ #include "user-internals.h"
+ #include "signal-common.h"
+ #include "loader.h"
+diff --git a/linux-user/i386/signal.c b/linux-user/i386/signal.c
+index cfe70fc5cf..990048f42a 100644
+--- a/linux-user/i386/signal.c
++++ b/linux-user/i386/signal.c
+@@ -21,6 +21,7 @@
+ #include "user-internals.h"
+ #include "signal-common.h"
+ #include "linux-user/trace.h"
++#include "user/tswap-target.h"
+ 
+ /* from the Linux kernel - /arch/x86/include/uapi/asm/sigcontext.h */
+ 
+diff --git a/linux-user/ppc/signal.c b/linux-user/ppc/signal.c
+index 652038a53c..a1d8c0bccc 100644
+--- a/linux-user/ppc/signal.c
++++ b/linux-user/ppc/signal.c
+@@ -21,6 +21,7 @@
+ #include "user-internals.h"
+ #include "signal-common.h"
+ #include "linux-user/trace.h"
++#include "user/tswap-target.h"
+ #include "vdso-asmoffset.h"
+ 
+ /* See arch/powerpc/include/asm/ucontext.h.  Only used for 32-bit PPC;
 -- 
 2.41.0
 
