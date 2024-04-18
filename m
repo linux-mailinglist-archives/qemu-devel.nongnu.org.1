@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D415C8A970F
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0ACE8A970B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:13:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxOk8-0001g1-92; Thu, 18 Apr 2024 06:11:48 -0400
+	id 1rxOkD-0001sb-Fi; Thu, 18 Apr 2024 06:11:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk5-0001eP-F1
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk8-0001gP-SG
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk3-0004ty-Tp
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk6-0004ug-SM
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713435103;
+ s=mimecast20190719; t=1713435106;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n74ZHL7EK3XF7NDi4XnwnYA/67ic+xr/yA0vlDR0ey8=;
- b=dDHDWEEKNCe+fhQ5JibGLr5YL4HxtELuiSmtobLHnilKVSdNOc+LDhr0c74TjewoZprhNN
- FclFzAB4RzJ/yj+/sNYXCdrliznPKKw1W4cSlzEFMjCZEWdBTiXCLD0VG0fDF3FM7bSvgn
- 7xvk/zOs3faudV32N1ocLijcTEim260=
+ bh=lMSlSFcYeK8hInpdrU6Bwba7std9sqSqnsjh+sWoVLw=;
+ b=i/VYaB5juJ4NSuUNrQzgyr9RasZ3qJd5vtz06h6Tl/LwNVnBT3ZVWCmUyeFh9qfWd4o+y2
+ aherhXP1WQyx/XQJv8QQ4+LoO00eiGqHgwjcX45nNGSsfFJxMn+nflQk7xRp8ZDzUYeM6r
+ atmpXAAXNJqRCH+tmos4CdOJdiZqOdE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-381-riL_0EbzMeevlUNoXj2L6w-1; Thu, 18 Apr 2024 06:11:39 -0400
-X-MC-Unique: riL_0EbzMeevlUNoXj2L6w-1
+ us-mta-325-DAc8JY3dNBG_HYdfUQ1Stg-1; Thu, 18 Apr 2024 06:11:42 -0400
+X-MC-Unique: DAc8JY3dNBG_HYdfUQ1Stg-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 83418830E85;
- Thu, 18 Apr 2024 10:11:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 570C6104B502;
+ Thu, 18 Apr 2024 10:11:42 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.223])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 2D4C8C1A225;
- Thu, 18 Apr 2024 10:11:35 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C5C7BC1A225;
+ Thu, 18 Apr 2024 10:11:39 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -51,10 +51,9 @@ To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v3 08/13] Remove glib compatibility code that is not required
- anymore
-Date: Thu, 18 Apr 2024 12:10:51 +0200
-Message-ID: <20240418101056.302103-9-thuth@redhat.com>
+Subject: [PATCH v3 09/13] block/gluster: Use URI parsing code from glib
+Date: Thu, 18 Apr 2024 12:10:52 +0200
+Message-ID: <20240418101056.302103-10-thuth@redhat.com>
 In-Reply-To: <20240418101056.302103-1-thuth@redhat.com>
 References: <20240418101056.302103-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -85,64 +84,150 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we bumped the minumum glib version to 2.66, we can drop
-the old code.
+Since version 2.66, glib has useful URI parsing functions, too.
+Use those instead of the QEMU-internal ones to be finally able
+to get rid of the latter.
 
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Since g_uri_get_path() returns a const pointer, we also need to
+tweak the parameter of parse_volume_options() (where we use the
+result of g_uri_get_path() as input).
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- qga/commands-posix-ssh.c |  8 --------
- util/error-report.c      | 10 ----------
- 2 files changed, 18 deletions(-)
+ block/gluster.c | 71 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 35 insertions(+), 36 deletions(-)
 
-diff --git a/qga/commands-posix-ssh.c b/qga/commands-posix-ssh.c
-index b0e0b1d674..cc1f5a708e 100644
---- a/qga/commands-posix-ssh.c
-+++ b/qga/commands-posix-ssh.c
-@@ -288,7 +288,6 @@ qmp_guest_ssh_get_authorized_keys(const char *username, Error **errp)
+diff --git a/block/gluster.c b/block/gluster.c
+index cc74af06dc..1c9505f8bb 100644
+--- a/block/gluster.c
++++ b/block/gluster.c
+@@ -17,7 +17,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qmp/qerror.h"
+-#include "qemu/uri.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+@@ -289,9 +288,9 @@ static void glfs_clear_preopened(glfs_t *fs)
+     }
  }
  
- #ifdef QGA_BUILD_UNIT_TEST
--#if GLIB_CHECK_VERSION(2, 60, 0)
- static const strList test_key2 = {
-     .value = (char *)"algo key2 comments"
- };
-@@ -484,11 +483,4 @@ int main(int argc, char *argv[])
- 
-     return g_test_run();
- }
--#else
--int main(int argc, char *argv[])
--{
--    g_test_message("test skipped, needs glib >= 2.60");
--    return 0;
--}
--#endif /* GLIB_2_60 */
- #endif /* BUILD_UNIT_TEST */
-diff --git a/util/error-report.c b/util/error-report.c
-index 6e44a55732..1b17c11de1 100644
---- a/util/error-report.c
-+++ b/util/error-report.c
-@@ -172,18 +172,8 @@ static void print_loc(void)
- static char *
- real_time_iso8601(void)
+-static int parse_volume_options(BlockdevOptionsGluster *gconf, char *path)
++static int parse_volume_options(BlockdevOptionsGluster *gconf, const char *path)
  {
--#if GLIB_CHECK_VERSION(2,62,0)
-     g_autoptr(GDateTime) dt = g_date_time_new_now_utc();
--    /* ignore deprecation warning, since GLIB_VERSION_MAX_ALLOWED is 2.56 */
--#pragma GCC diagnostic push
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-     return g_date_time_format_iso8601(dt);
--#pragma GCC diagnostic pop
--#else
--    GTimeVal tv;
--    g_get_current_time(&tv);
--    return g_time_val_to_iso8601(&tv);
--#endif
+-    char *p, *q;
++    const char *p, *q;
+ 
+     if (!path) {
+         return -EINVAL;
+@@ -349,13 +348,13 @@ static int parse_volume_options(BlockdevOptionsGluster *gconf, char *path)
+ static int qemu_gluster_parse_uri(BlockdevOptionsGluster *gconf,
+                                   const char *filename)
+ {
++    g_autoptr(GUri) uri = g_uri_parse(filename, G_URI_FLAGS_NONE, NULL);
++    g_autoptr(GHashTable) qp = NULL;
+     SocketAddress *gsconf;
+-    URI *uri;
+-    QueryParams *qp = NULL;
+     bool is_unix = false;
+-    int ret = 0;
++    const char *uri_scheme, *uri_query, *uri_server;
++    int uri_port, ret;
+ 
+-    uri = uri_parse(filename);
+     if (!uri) {
+         return -EINVAL;
+     }
+@@ -364,57 +363,57 @@ static int qemu_gluster_parse_uri(BlockdevOptionsGluster *gconf,
+     QAPI_LIST_PREPEND(gconf->server, gsconf);
+ 
+     /* transport */
+-    if (!uri->scheme || !strcmp(uri->scheme, "gluster")) {
++    uri_scheme = g_uri_get_scheme(uri);
++    if (!uri_scheme || !strcmp(uri_scheme, "gluster")) {
+         gsconf->type = SOCKET_ADDRESS_TYPE_INET;
+-    } else if (!strcmp(uri->scheme, "gluster+tcp")) {
++    } else if (!strcmp(uri_scheme, "gluster+tcp")) {
+         gsconf->type = SOCKET_ADDRESS_TYPE_INET;
+-    } else if (!strcmp(uri->scheme, "gluster+unix")) {
++    } else if (!strcmp(uri_scheme, "gluster+unix")) {
+         gsconf->type = SOCKET_ADDRESS_TYPE_UNIX;
+         is_unix = true;
+-    } else if (!strcmp(uri->scheme, "gluster+rdma")) {
++    } else if (!strcmp(uri_scheme, "gluster+rdma")) {
+         gsconf->type = SOCKET_ADDRESS_TYPE_INET;
+         warn_report("rdma feature is not supported, falling back to tcp");
+     } else {
+-        ret = -EINVAL;
+-        goto out;
++        return -EINVAL;
+     }
+ 
+-    ret = parse_volume_options(gconf, uri->path);
++    ret = parse_volume_options(gconf, g_uri_get_path(uri));
+     if (ret < 0) {
+-        goto out;
++        return ret;
+     }
+ 
+-    qp = query_params_parse(uri->query);
+-    if (qp->n > 1 || (is_unix && !qp->n) || (!is_unix && qp->n)) {
+-        ret = -EINVAL;
+-        goto out;
++    uri_query = g_uri_get_query(uri);
++    if (uri_query) {
++        qp = g_uri_parse_params(uri_query, -1, "&", G_URI_PARAMS_NONE, NULL);
++        if (!qp) {
++            return -EINVAL;
++        }
++        ret = g_hash_table_size(qp);
++        if (ret > 1 || (is_unix && !ret) || (!is_unix && ret)) {
++            return -EINVAL;
++        }
+     }
+ 
++    uri_server = g_uri_get_host(uri);
++    uri_port = g_uri_get_port(uri);
++
+     if (is_unix) {
+-        if (uri->server || uri->port) {
+-            ret = -EINVAL;
+-            goto out;
+-        }
+-        if (strcmp(qp->p[0].name, "socket")) {
+-            ret = -EINVAL;
+-            goto out;
++        char *uri_socket = g_hash_table_lookup(qp, "socket");
++        if (uri_server || uri_port != -1 || !uri_socket) {
++            return -EINVAL;
+         }
+-        gsconf->u.q_unix.path = g_strdup(qp->p[0].value);
++        gsconf->u.q_unix.path = g_strdup(uri_socket);
+     } else {
+-        gsconf->u.inet.host = g_strdup(uri->server ? uri->server : "localhost");
+-        if (uri->port) {
+-            gsconf->u.inet.port = g_strdup_printf("%d", uri->port);
++        gsconf->u.inet.host = g_strdup(uri_server ? uri_server : "localhost");
++        if (uri_port > 0) {
++            gsconf->u.inet.port = g_strdup_printf("%d", uri_port);
+         } else {
+             gsconf->u.inet.port = g_strdup_printf("%d", GLUSTER_DEFAULT_PORT);
+         }
+     }
+ 
+-out:
+-    if (qp) {
+-        query_params_free(qp);
+-    }
+-    uri_free(uri);
+-    return ret;
++    return 0;
  }
  
- /*
+ static struct glfs *qemu_gluster_glfs_init(BlockdevOptionsGluster *gconf,
 -- 
 2.44.0
 
