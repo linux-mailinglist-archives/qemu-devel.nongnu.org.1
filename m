@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E163D8AA2D2
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 624338AA2C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:30:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXSM-0007h8-24; Thu, 18 Apr 2024 15:30:02 -0400
+	id 1rxXST-0008EI-EF; Thu, 18 Apr 2024 15:30:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQo-0002wc-Ak
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:32 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQu-0002xV-4T
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:33 -0400
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQl-0007lQ-5o
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:25 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-418d1edcd4cso9435345e9.1
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:28:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQq-0007mD-Vh
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:31 -0400
+Received: by mail-ej1-x62a.google.com with SMTP id
+ a640c23a62f3a-a5561b88bb3so130442966b.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:28:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468501; x=1714073301; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468507; x=1714073307; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/Yz7aRuiYxkABVdFEv0r+XjMMhiAPKgmd2KiD0xHfQg=;
- b=X7vURuSvQT07cVgIi989oUl+bZhnHoK29CgeeFQxYymNaWLK5OblSHmRF7Tjg51WnB
- zPhuB/xUeh58Z3cFClgBHDZdfXm7Y22Sk3JtlAlHTQ1c9Yh7El2odjwatSrrZIxmEgwn
- 2br76v9t3LeU4lzGfIr0l2mrqtqlG+w7ZLmcS8mFSt37dyfcDtlskn5YXqrH9cUB97vB
- D6cT0QmeYMqGNrPOmDGhzyFs/bFcpKGl02M0qCOMil47F0Zo+kguv0rSefT25UtDH7ex
- Z0bT17Ga/g3rFh3+2gUVgrVugdXzkszACplAFYd63RIvyRWj9j/Rfy/to+KSq41I0e5L
- MuYg==
+ bh=1RS5jD62Ba4lXsw4t8DJy1DGdcN7GiTei/ES6lsX54Q=;
+ b=QNPxqinriTRgMpcl66cpBmTca9NapujWI8A914HTs2AZytmXxDyZuyES/ThX5NTLGz
+ B6SXVdgFp5QD4jTtap3xeFLzQuBh19+75iZQtcSAqYHzwS9nYhdkzYnZUSyKhTsc1wHN
+ Y0kNz13zIdJB8ssHasoD+dmDjrqicVa0GL6wX+0CZcP0Ean2tPnFHzvdpfi/mq4oZkyy
+ B0GLy53rlYamUBE45ODkynCmPSf8iyNMQiFxDqBTa56BLiLJyFQemsv9D458B7tnqyxJ
+ rFOCueYVBbleHS99YwL5G1/wVZfl5ExEledz7VRu4zN2CE7DLG9pTQ48J+oNkjKCulDm
+ Wjpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468501; x=1714073301;
+ d=1e100.net; s=20230601; t=1713468507; x=1714073307;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/Yz7aRuiYxkABVdFEv0r+XjMMhiAPKgmd2KiD0xHfQg=;
- b=pJ9lySGIBvxK5tbnl2TkhTCj9Yf3+8K7fkWlo48+YVdGDO4GzBOq6LzbHAjadyTm4c
- 4vBU+62rx7gqT36k3+MYWEuF7BdPrCPD6Srcb4Z5kY+c25EosF7+U2/rgayhl/sPyO+D
- abhNcNr/jk7vU0fqhV9NxRqkZTvsvCzyCzQKkq1ZCFehdJgMGRPGIEfMkFKQ8zC33Jr3
- K6nlO8AW+BGzZj//YiyrHf6CSXXMQ4yLSe/oWGkUCcJSEUdUVnTKGJ23Ui7FRxRtisCB
- paGnnfxqrZGvcjt5TQWa8SDa5bJWCxG0HtIbuHClNxvvM2hFGcGarM7RWTrZWTVhtfsh
- ZGng==
-X-Gm-Message-State: AOJu0YzWN3YqOiNGziBspbmZ0CjGCSY0MYgeMR6+j+GNgXEACojn8Xz9
- jQlBuPoD9XlYtNPtNAv3h7v6LykVXmgv5itzhL+HUEmJ/KdD9CCHEze7qPMz7nrcQHrt6mVzP0U
- b
-X-Google-Smtp-Source: AGHT+IE562H6bYcdnvQhGKG5MNuVHbGU/S9+AnWWXJN4YRjw79fzPiSU1R9hf/G0jjN+LtZRXHV9Vw==
-X-Received: by 2002:a5d:64ca:0:b0:346:44:3910 with SMTP id
- f10-20020a5d64ca000000b0034600443910mr2930235wri.49.1713468501071; 
- Thu, 18 Apr 2024 12:28:21 -0700 (PDT)
+ bh=1RS5jD62Ba4lXsw4t8DJy1DGdcN7GiTei/ES6lsX54Q=;
+ b=n9StB00xXX1+Vl9+CVvauIGVyx4/VpI/6B0kOmKydHp/OgpRnXn6S/okVgYLM8qeXd
+ 6jrDMeX7yEGX/oT1MRFE3zDJBWTah6m1Fo0UptvEuCmHDRy+1iR9OPY9IzHiTBU8wjTP
+ yS9kI1kv6GYGDNdt2wlOtVKUcMUpEZBj2njNGYii9Dvb8u6oMRf1sJ7LNjk85MXmeDDP
+ 5H1NJWts7k+oEuVyazrAuusVbxy40+B/axIeSbGLwUWe4MGOr3MGuCkzzjoZ720u7oYs
+ X8vrk4nA09eaCOckHO6bQlfQgmryJd5Hh47u/C2ervObRl0HiMB0w5rvmurJN1XigEnu
+ kPNg==
+X-Gm-Message-State: AOJu0Yxj66kRAp98H2jbobbPjD38jOpNLK3m/Yo1Iry+KIc7QGJ2zYDz
+ s0X2tlxnQRiIgTaDvs6lpoR6rvBiuHT1iOuB0aEWwXnUkszlK3QOM7TexH3SjvS2P+Rr9NSsA5p
+ 9
+X-Google-Smtp-Source: AGHT+IGnTKynFh1txoZ9rF9Vyl15tlc6kOiNOpj1xrRbtFLNtjZUfEfbPneu9vzj/dXaKDU0HdxgVA==
+X-Received: by 2002:a17:906:f87:b0:a51:b463:6b41 with SMTP id
+ q7-20020a1709060f8700b00a51b4636b41mr56034ejj.61.1713468507162; 
+ Thu, 18 Apr 2024 12:28:27 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- u21-20020a1709064ad500b00a47423b4c33sm1256988ejt.128.2024.04.18.12.28.19
+ s17-20020a170906bc5100b00a4660b63502sm1277805ejv.12.2024.04.18.12.28.25
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:28:20 -0700 (PDT)
+ Thu, 18 Apr 2024 12:28:26 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,19 +64,21 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>, Brian Cain <bcain@quicinc.com>,
- Song Gao <gaosong@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>
-Subject: [PATCH 23/24] exec: Remove 'disas/disas.h' from 'exec/log.h'
-Date: Thu, 18 Apr 2024 21:25:22 +0200
-Message-ID: <20240418192525.97451-24-philmd@linaro.org>
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PATCH 24/24] exec: Remove unnecessary inclusions of 'hw/core/cpu.h'
+Date: Thu, 18 Apr 2024 21:25:23 +0200
+Message-ID: <20240418192525.97451-25-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,91 +101,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/log.h" doesn't require "disas/disas.h". Remove it,
-including it in the sources when required.
+When "hw/core/cpu.h" is not required, remove it.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/log.h               | 1 -
- target/avr/translate.c           | 1 +
- target/hexagon/translate.c       | 1 +
- target/loongarch/tcg/translate.c | 1 +
- target/rx/translate.c            | 1 +
- tcg/tcg.c                        | 1 +
- 6 files changed, 5 insertions(+), 1 deletion(-)
+ include/exec/cpu-all.h    | 1 -
+ include/exec/cpu-defs.h   | 1 -
+ include/hw/boards.h       | 1 -
+ include/hw/ppc/openpic.h  | 1 -
+ include/sysemu/hw_accel.h | 1 -
+ 5 files changed, 5 deletions(-)
 
-diff --git a/include/exec/log.h b/include/exec/log.h
-index e0ff778a10..ee33981aab 100644
---- a/include/exec/log.h
-+++ b/include/exec/log.h
-@@ -4,7 +4,6 @@
- #include "qemu/log.h"
- #include "qemu/log-for-trace.h"
- #include "hw/core/cpu.h"
--#include "disas/disas.h"
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index cfbf51822c..03963442a0 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -21,7 +21,6 @@
  
- /* cpu_dump_state() logging functions: */
- /**
-diff --git a/target/avr/translate.c b/target/avr/translate.c
-index 87e2bd5ef1..b2005f3cbe 100644
---- a/target/avr/translate.c
-+++ b/target/avr/translate.c
-@@ -29,6 +29,7 @@
- #include "exec/helper-gen.h"
- #include "exec/log.h"
- #include "exec/translator.h"
-+#include "disas/disas.h"
+ #include "exec/cpu-common.h"
+ #include "exec/memory.h"
+-#include "hw/core/cpu.h"
  
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
-index 47a870f42d..6bec38404e 100644
---- a/target/hexagon/translate.c
-+++ b/target/hexagon/translate.c
-@@ -25,6 +25,7 @@
- #include "exec/translation-block.h"
- #include "exec/cpu_ldst.h"
- #include "exec/log.h"
-+#include "disas/disas.h"
- #include "internal.h"
- #include "attribs.h"
- #include "insn.h"
-diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
-index 7567712655..ae87a68c69 100644
---- a/target/loongarch/tcg/translate.c
-+++ b/target/loongarch/tcg/translate.c
-@@ -14,6 +14,7 @@
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
- #include "exec/log.h"
-+#include "disas/disas.h"
- #include "qemu/qemu-print.h"
- #include "fpu/softfloat.h"
- #include "translate.h"
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index f6e9e0ec90..4259ad6d74 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -27,6 +27,7 @@
- #include "exec/helper-gen.h"
- #include "exec/translator.h"
- #include "exec/log.h"
-+#include "disas/disas.h"
- 
- #define HELPER_H "helper.h"
- #include "exec/helper-info.c.inc"
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 6a32656cd4..e7e0ab6846 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -51,6 +51,7 @@
+ /* some important defines:
+  *
+diff --git a/include/exec/cpu-defs.h b/include/exec/cpu-defs.h
+index 0dbef3010c..2b88db71a8 100644
+--- a/include/exec/cpu-defs.h
++++ b/include/exec/cpu-defs.h
+@@ -29,7 +29,6 @@
+ #include "exec/hwaddr.h"
  #endif
+ #include "exec/memattrs.h"
+-#include "hw/core/cpu.h"
  
- #include "elf.h"
-+#include "disas/disas.h"
- #include "exec/log.h"
- #include "tcg/tcg-ldst.h"
- #include "tcg/tcg-temp-internal.h"
+ #include "cpu-param.h"
+ 
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 8b8f6d5c00..2daa23082f 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -9,7 +9,6 @@
+ #include "qapi/qapi-types-machine.h"
+ #include "qemu/module.h"
+ #include "qom/object.h"
+-#include "hw/core/cpu.h"
+ 
+ #define TYPE_MACHINE_SUFFIX "-machine"
+ 
+diff --git a/include/hw/ppc/openpic.h b/include/hw/ppc/openpic.h
+index 9c6af8e207..8fe3a5902f 100644
+--- a/include/hw/ppc/openpic.h
++++ b/include/hw/ppc/openpic.h
+@@ -2,7 +2,6 @@
+ #define OPENPIC_H
+ 
+ #include "hw/sysbus.h"
+-#include "hw/core/cpu.h"
+ #include "qom/object.h"
+ 
+ #define MAX_CPU     32
+diff --git a/include/sysemu/hw_accel.h b/include/sysemu/hw_accel.h
+index c71b77e71f..6aca3c6178 100644
+--- a/include/sysemu/hw_accel.h
++++ b/include/sysemu/hw_accel.h
+@@ -11,7 +11,6 @@
+ #ifndef QEMU_HW_ACCEL_H
+ #define QEMU_HW_ACCEL_H
+ 
+-#include "hw/core/cpu.h"
+ #include "sysemu/kvm.h"
+ #include "sysemu/hvf.h"
+ #include "sysemu/whpx.h"
 -- 
 2.41.0
 
