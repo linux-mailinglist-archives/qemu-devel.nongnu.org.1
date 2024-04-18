@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37388AA19D
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 754438AA19C
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:54:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVwA-0005MN-Fr; Thu, 18 Apr 2024 13:52:42 -0400
+	id 1rxVxE-0004Pb-Sv; Thu, 18 Apr 2024 13:53:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVw2-000529-PJ; Thu, 18 Apr 2024 13:52:34 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVw0-0007lQ-T4; Thu, 18 Apr 2024 13:52:34 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id ADA565FD7D;
- Thu, 18 Apr 2024 20:50:06 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 0D6F5B9357;
- Thu, 18 Apr 2024 20:50:04 +0300 (MSK)
-Received: (nullmailer pid 947890 invoked by uid 1000);
- Thu, 18 Apr 2024 17:49:55 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
-To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Kowshik Jois <kowsjois@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 116/116] ppc/spapr: Initialize max_cpus limit to
- SPAPR_IRQ_NR_IPIS.
-Date: Thu, 18 Apr 2024 20:49:46 +0300
-Message-Id: <20240418174955.947730-29-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
-References: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rxVx6-000449-Ky
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:53:40 -0400
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
+ id 1rxVx4-0007xF-Oc
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:53:40 -0400
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3c70ef25e19so582325b6e.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 10:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1713462816; x=1714067616; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=mbcSiwrgv0MtL78cnFJJ4ARfr4Y9GjjcXT1C15oFZRM=;
+ b=QVQKQvfPaqCj/5U30AnA8nW4VeOD6bInq+hnZI96Obmwe24w2KSLeQ6isuwYXi4X5W
+ ZElXYhgqyzQL/mp8bCDhZmXtkGDGCEWP6qvPLZf2Kk6/9xbOo832dEc0lyju1qRFC5pL
+ xaFPOPi6Q9reIC3HsB2HORnRQYyU2EGwflXdBhyDsnw2yVRLKTVx9/1PFzE2hmtj+iMx
+ PuOu7J542/AvkQWEAqejZFB6XXoCdRdcYR4BmtrcLx1jiIMFiho8Fb5HvkOBJ4vz+26c
+ P/rsyyC+6cpJe4eVq2Dg5BxY7HExp0bYbelVuTv63VSg5c4hqpqCBAKdE91cigfhC8ax
+ t6Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713462816; x=1714067616;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=mbcSiwrgv0MtL78cnFJJ4ARfr4Y9GjjcXT1C15oFZRM=;
+ b=Gcjg/NrkqW7KzfZ28Yeu5fXly9JePrDgDpWX0wEXrKpGfonyN/hAV+g7mrmv3uXd02
+ 1c+/EfvI64ub/Y33MW2l0uKIs6zbD/zmrbKfRgeIsd3b6vwDPx9k1SOiGUD8+oowPMRK
+ qhG06ab+N8MJAI/XNk+wAbjSoy1Nqf5DVShBMSU45b23LeQULDbz6Q9YLxZ9P9zkGnVK
+ HIlpdyZEnXD9XyukYjpl+QQul4tn7otgICHYuGJY/TPaIcW8C7uRKj98NyGShl7pb4Em
+ YICRMhzg21Urulgdxljv4F+F+k0HWVOGjrU8pNzkqZXuO/yBXPCSmIMyXvWEYsnsj1t8
+ ZH+g==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVj4OFnm6gvdZ80lWDDyLYo6SLkRlxt4SgagODSAB9ftY8pDHA5aZvLRfzSCJ5XgDrK20qGGAzEcO4ebbiYe3+ZTlFgzy8=
+X-Gm-Message-State: AOJu0Yyp1h40DHWRPZfSMFhQ1EZwVd2e6dElT+SK6SGz1QI8OpUub27y
+ QIUCx5Nn3AGCDCWEy9hdJapU9l1wDYUt7FbmAaYJYmCyZumfQ9Ga8obUOf98kKg=
+X-Google-Smtp-Source: AGHT+IHV/hGfEXQpYSyenoBFq+ttVM3EWMJXtyftbuEaZNLxhSEbXAcv134GPeG6L0G+ebPkYG/osQ==
+X-Received: by 2002:a05:6808:98:b0:3c6:900:17a with SMTP id
+ s24-20020a056808009800b003c60900017amr3904472oic.9.1713462815027; 
+ Thu, 18 Apr 2024 10:53:35 -0700 (PDT)
+Received: from ?IPV6:2604:3d08:937d:c610::fc11? ([2604:3d08:937d:c610::fc11])
+ by smtp.gmail.com with ESMTPSA id
+ x14-20020a63db4e000000b005f750f36968sm1703213pgi.42.2024.04.18.10.53.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Apr 2024 10:53:34 -0700 (PDT)
+Message-ID: <600a8262-ecd6-4205-bdca-c858cac538a1@linaro.org>
+Date: Thu, 18 Apr 2024 10:53:33 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] tcg: Introduce INDEX_op_plugin_pc
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+References: <20240416040609.1313605-1-richard.henderson@linaro.org>
+ <20240416040609.1313605-2-richard.henderson@linaro.org>
+Content-Language: en-US
+From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+In-Reply-To: <20240416040609.1313605-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-oi1-x235.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,74 +95,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+On 4/15/24 21:06, Richard Henderson wrote:
+> Add an opcode to find a code address within the current insn,
+> for later use with unwinding.  Generate the code generically
+> using tcg_reg_alloc_do_movi.
+> 
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   include/tcg/tcg-op-common.h |  1 +
+>   include/tcg/tcg-opc.h       |  1 +
+>   tcg/tcg-op.c                |  5 +++++
+>   tcg/tcg.c                   | 10 ++++++++++
+>   4 files changed, 17 insertions(+)
+> 
+> diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
+> index 009e2778c5..a32c88a182 100644
+> --- a/include/tcg/tcg-op-common.h
+> +++ b/include/tcg/tcg-op-common.h
+> @@ -76,6 +76,7 @@ void tcg_gen_lookup_and_goto_ptr(void);
+>   
+>   void tcg_gen_plugin_cb(unsigned from);
+>   void tcg_gen_plugin_mem_cb(TCGv_i64 addr, unsigned meminfo);
+> +void tcg_gen_plugin_pc(TCGv_ptr);
+>   
+>   /* 32 bit ops */
+>   
+> diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+> index 546eb49c11..087d1b82da 100644
+> --- a/include/tcg/tcg-opc.h
+> +++ b/include/tcg/tcg-opc.h
+> @@ -199,6 +199,7 @@ DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
+>   
+>   DEF(plugin_cb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
+>   DEF(plugin_mem_cb, 0, 1, 1, TCG_OPF_NOT_PRESENT)
+> +DEF(plugin_pc, 1, 0, 0, TCG_OPF_NOT_PRESENT)
+>   
+>   /* Replicate ld/st ops for 32 and 64-bit guest addresses. */
+>   DEF(qemu_ld_a32_i32, 1, 1, 1,
+> diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+> index eff3728622..b8ca78cbe4 100644
+> --- a/tcg/tcg-op.c
+> +++ b/tcg/tcg-op.c
+> @@ -322,6 +322,11 @@ void tcg_gen_plugin_mem_cb(TCGv_i64 addr, unsigned meminfo)
+>       tcg_gen_op2(INDEX_op_plugin_mem_cb, tcgv_i64_arg(addr), meminfo);
+>   }
+>   
+> +void tcg_gen_plugin_pc(TCGv_ptr arg)
+> +{
+> +    tcg_gen_op1(INDEX_op_plugin_pc, tcgv_ptr_arg(arg));
+> +}
+> +
+>   /* 32 bit ops */
+>   
+>   void tcg_gen_discard_i32(TCGv_i32 arg)
+> diff --git a/tcg/tcg.c b/tcg/tcg.c
+> index d248c52e96..42e2b53729 100644
+> --- a/tcg/tcg.c
+> +++ b/tcg/tcg.c
+> @@ -4701,6 +4701,13 @@ static void tcg_reg_alloc_mov(TCGContext *s, const TCGOp *op)
+>       }
+>   }
+>   
+> +static void tcg_reg_alloc_plugin_pc(TCGContext *s, const TCGOp *op)
+> +{
+> +    tcg_reg_alloc_do_movi(s, arg_temp(op->args[0]),
+> +                          (uintptr_t)tcg_splitwx_to_rx(s->code_ptr),
+> +                          op->life, output_pref(op, 0));
+> +}
+> +
+>   /*
+>    * Specialized code generation for INDEX_op_dup_vec.
+>    */
+> @@ -6208,6 +6215,9 @@ int tcg_gen_code(TCGContext *s, TranslationBlock *tb, uint64_t pc_start)
+>           case INDEX_op_mov_vec:
+>               tcg_reg_alloc_mov(s, op);
+>               break;
+> +        case INDEX_op_plugin_pc:
+> +            tcg_reg_alloc_plugin_pc(s, op);
+> +            break;
+>           case INDEX_op_dup_vec:
+>               tcg_reg_alloc_dup(s, op);
+>               break;
 
-Initialize the machine specific max_cpus limit as per the maximum range
-of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
-free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
-assert in tcg_region_init or spapr_xive_claim_irq.
-
-Logs:
-
-Without patch fix:
-
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: IRQ 4096 is not free
-[root@host build]#
-
-On LPAR:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-**
-ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Aborted (core dumped)
-[root@host build]#
-
-On x86:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
-Assertion `lisn < xive->nr_irqs' failed.
-Aborted (core dumped)
-[root@host build]#
-
-With patch fix:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
-machine 'pseries-8.2' is 4096
-[root@host build]#
-
-Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Tested-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit c4f91d7b7be76c47015521ab0109c6e998a369b0)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index df09aa9d6a..222d926f46 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4647,13 +4647,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_SCSI;
- 
-     /*
--     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
--     * should be limited by the host capability instead of hardcoded.
--     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
--     * guests are welcome to have as many CPUs as the host are capable
--     * of emulate.
-+     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
-+     * In TCG the limit is restricted by the range of CPU IPIs available.
-      */
--    mc->max_cpus = INT32_MAX;
-+    mc->max_cpus = SPAPR_IRQ_NR_IPIS;
- 
-     mc->no_parallel = 1;
-     mc->default_boot_order = "";
--- 
-2.39.2
-
+Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
