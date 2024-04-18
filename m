@@ -2,64 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8F68A9709
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBEBC8A9799
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxOkd-0002X0-Qf; Thu, 18 Apr 2024 06:12:23 -0400
+	id 1rxPBI-0007L3-Ky; Thu, 18 Apr 2024 06:39:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOkN-0002Em-Fj
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:12:03 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rxPBE-0007Kd-Fy
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:39:48 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOkI-0004wn-Sz
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:12:03 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rxPBB-0001SV-NB
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:39:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713435118;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ s=mimecast20190719; t=1713436784;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PKlBW9PvX1xzn3YMS7ItEOlKYHaYe9KWBcYzEF9aGbc=;
- b=LoJ2wONvujSfMwhNTQ4Lduj3Snr9Zo8Lww9MGMGPx0/QxQmD8hEfgfH+R01PMQ3d0ydHDb
- VbSGm7fJSDOnsPc1xNc5YA75itOtzqZ466/9fxJPMtE/whs0C74P4BAVGMPfWKHDmwAsjy
- aadDe3zgXAJzm6OJ6vJc2Tg8RU4kJsQ=
+ bh=6bzVSN5vmjPewQi2ieeAHpQhqXd7H5/793Aq48dQfis=;
+ b=MbSF5Y6+ea7wd6OG9bma6mZxrGIkH7HH4m9tem2Ta1wd7WTAphzFRWBfEpYq+LxeFFuIRM
+ RNQzyGsHCH0gJrO0hvwJGdchsBmQY6UyyQ0vp7d7oW71guvKAQWI+y/Gw5lGkY6LAIgnB4
+ Opi+PYe5+P8BvJR5raH0MG/A6v9TvKA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-BLrHemK8NnG0VVQWPd4c7Q-1; Thu,
- 18 Apr 2024 06:11:56 -0400
-X-MC-Unique: BLrHemK8NnG0VVQWPd4c7Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-671-eN-rktZ2PdSemc2QvFwUrg-1; Thu,
+ 18 Apr 2024 06:39:41 -0400
+X-MC-Unique: eN-rktZ2PdSemc2QvFwUrg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B87E3C1015F;
- Thu, 18 Apr 2024 10:11:56 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.192.223])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DC061C271A4;
- Thu, 18 Apr 2024 10:11:52 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Peter Lieven <pl@dlhnet.de>, "Richard W.M. Jones" <rjones@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v3 13/13] util/uri: Remove the old URI parsing code
-Date: Thu, 18 Apr 2024 12:10:56 +0200
-Message-ID: <20240418101056.302103-14-thuth@redhat.com>
-In-Reply-To: <20240418101056.302103-1-thuth@redhat.com>
-References: <20240418101056.302103-1-thuth@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE5B21C106A6;
+ Thu, 18 Apr 2024 10:39:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B840140005B;
+ Thu, 18 Apr 2024 10:39:38 +0000 (UTC)
+Date: Thu, 18 Apr 2024 11:39:36 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Avihai Horon <avihaih@nvidia.com>,
+ Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Subject: Re: [PATCH RFC 00/26] =?utf-8?Q?Multifd_?= =?utf-8?B?8J+UgA==?=
+ device state transfer support with VFIO consumer
+Message-ID: <ZiD4aLSre6qubuHr@redhat.com>
+References: <cover.1713269378.git.maciej.szmigiero@oracle.com>
+ <Zh-KF72Fe9oV6tfT@redhat.com>
+ <c0b1dbb1-d353-4832-af90-96895b2129fc@maciej.szmigiero.name>
+ <Zh_6W8u3H4FmGS49@redhat.com>
+ <71ede5c8-857c-418b-9e37-b8d343ddfa06@maciej.szmigiero.name>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+In-Reply-To: <71ede5c8-857c-418b-9e37-b8d343ddfa06@maciej.szmigiero.name>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -37
 X-Spam_score: -3.8
@@ -80,1614 +89,285 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that we switched all consumers of the URI code to use the URI
-parsing functions from glib instead, we can remove our internal
-URI parsing code since it is not used anymore.
+On Thu, Apr 18, 2024 at 11:50:12AM +0200, Maciej S. Szmigiero wrote:
+> On 17.04.2024 18:35, Daniel P. Berrangé wrote:
+> > On Wed, Apr 17, 2024 at 02:11:37PM +0200, Maciej S. Szmigiero wrote:
+> > > On 17.04.2024 10:36, Daniel P. Berrangé wrote:
+> > > > On Tue, Apr 16, 2024 at 04:42:39PM +0200, Maciej S. Szmigiero wrote:
+> > > > > From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> > > > > 
+> > > > > VFIO device state transfer is currently done via the main migration channel.
+> > > > > This means that transfers from multiple VFIO devices are done sequentially
+> > > > > and via just a single common migration channel.
+> > > > > 
+> > > > > Such way of transferring VFIO device state migration data reduces
+> > > > > performance and severally impacts the migration downtime (~50%) for VMs
+> > > > > that have multiple such devices with large state size - see the test
+> > > > > results below.
+> > > > > 
+> > > > > However, we already have a way to transfer migration data using multiple
+> > > > > connections - that's what multifd channels are.
+> > > > > 
+> > > > > Unfortunately, multifd channels are currently utilized for RAM transfer
+> > > > > only.
+> > > > > This patch set adds a new framework allowing their use for device state
+> > > > > transfer too.
+> > > > > 
+> > > > > The wire protocol is based on Avihai's x-channel-header patches, which
+> > > > > introduce a header for migration channels that allow the migration source
+> > > > > to explicitly indicate the migration channel type without having the
+> > > > > target deduce the channel type by peeking in the channel's content.
+> > > > > 
+> > > > > The new wire protocol can be switch on and off via migration.x-channel-header
+> > > > > option for compatibility with older QEMU versions and testing.
+> > > > > Switching the new wire protocol off also disables device state transfer via
+> > > > > multifd channels.
+> > > > > 
+> > > > > The device state transfer can happen either via the same multifd channels
+> > > > > as RAM data is transferred, mixed with RAM data (when
+> > > > > migration.x-multifd-channels-device-state is 0) or exclusively via
+> > > > > dedicated device state transfer channels (when
+> > > > > migration.x-multifd-channels-device-state > 0).
+> > > > > 
+> > > > > Using dedicated device state transfer multifd channels brings further
+> > > > > performance benefits since these channels don't need to participate in
+> > > > > the RAM sync process.
+> > > > 
+> > > > I'm not convinced there's any need to introduce the new "channel header"
+> > > > protocol messages. The multifd channels already have an initialization
+> > > > message that is extensible to allow extra semantics to be indicated.
+> > > > So if we want some of the multifd channels to be reserved for device
+> > > > state, we could indicate that via some data in the MultiFDInit_t
+> > > > message struct.
+> > > 
+> > > The reason for introducing x-channel-header was to avoid having to deduce
+> > > the channel type by peeking in the channel's content - where any channel
+> > > that does not start with QEMU_VM_FILE_MAGIC is currently treated as a
+> > > multifd one.
+> > > 
+> > > But if this isn't desired then, as you say, the multifd channel type can
+> > > be indicated by using some unused field of the MultiFDInit_t message.
+> > > 
+> > > Of course, this would still keep the QEMU_VM_FILE_MAGIC heuristic then.
+> > 
+> > I don't like the heuristics we currently have, and would to have
+> > a better solution. What makes me cautious is that this proposal
+> > is a protocol change, but only addressing one very narrow problem
+> > with the migration protocol.
+> > 
+> > I'd like migration to see a more explicit bi-directional protocol
+> > negotiation message set, where both QEMU can auto-negotiate amongst
+> > themselves many of the features that currently require tedious
+> > manual configuration by mgmt apps via migrate parameters/capabilities.
+> > That would address the problem you describe here, and so much more.
+> 
+> Isn't the capability negotiation handled automatically by libvirt
+> today?
+> I guess you'd prefer for QEMU to internally handle it instead?
 
-Reviewed-by: Eric Blake <eblake@redhat.com>
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- include/qemu/uri.h |   99 ---
- util/uri.c         | 1466 --------------------------------------------
- util/meson.build   |    2 +-
- 3 files changed, 1 insertion(+), 1566 deletions(-)
- delete mode 100644 include/qemu/uri.h
- delete mode 100644 util/uri.c
+Yes, it would be much saner if QEMU handled it automatically as
+part of its own protocol handshake. This avoids the need to change
+libvirt to enable new functionality in the migration protocol in
+many (but not all) cases, and thus speed up development and deployment
+of new features.
 
-diff --git a/include/qemu/uri.h b/include/qemu/uri.h
-deleted file mode 100644
-index 255e61f452..0000000000
---- a/include/qemu/uri.h
-+++ /dev/null
-@@ -1,99 +0,0 @@
--/**
-- * Summary: library of generic URI related routines
-- * Description: library of generic URI related routines
-- *              Implements RFC 2396
-- *
-- * Copyright (C) 1998-2003 Daniel Veillard.  All Rights Reserved.
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-- * DANIEL VEILLARD BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-- *
-- * Except as contained in this notice, the name of Daniel Veillard shall not
-- * be used in advertising or otherwise to promote the sale, use or other
-- * dealings in this Software without prior written authorization from him.
-- *
-- * Author: Daniel Veillard
-- **
-- * Copyright (C) 2007 Red Hat, Inc.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library. If not, see <https://www.gnu.org/licenses/>.
-- *
-- * Authors:
-- *    Richard W.M. Jones <rjones@redhat.com>
-- *
-- * Utility functions to help parse and assemble query strings.
-- */
--
--#ifndef QEMU_URI_H
--#define QEMU_URI_H
--
--/**
-- * URI:
-- *
-- * A parsed URI reference. This is a struct containing the various fields
-- * as described in RFC 2396 but separated for further processing.
-- */
--typedef struct URI {
--    char *scheme;      /* the URI scheme */
--    char *opaque;      /* opaque part */
--    char *authority;   /* the authority part */
--    char *server;      /* the server part */
--    char *user;        /* the user part */
--    int port;          /* the port number */
--    char *path;        /* the path string */
--    char *fragment;    /* the fragment identifier */
--    int cleanup;       /* parsing potentially unclean URI */
--    char *query;       /* the query string (as it appears in the URI) */
--} URI;
--
--URI *uri_new(void);
--URI *uri_parse(const char *str);
--URI *uri_parse_raw(const char *str, int raw);
--int uri_parse_into(URI *uri, const char *str);
--char *uri_to_string(URI *uri);
--void uri_free(URI *uri);
--
--/* Single web service query parameter 'name=value'. */
--typedef struct QueryParam {
--  char *name;          /* Name (unescaped). */
--  char *value;         /* Value (unescaped). */
--  int ignore;          /* Ignore this field in qparam_get_query */
--} QueryParam;
--
--/* Set of parameters. */
--typedef struct QueryParams {
--  int n;               /* number of parameters used */
--  int alloc;           /* allocated space */
--  QueryParam *p;       /* array of parameters */
--} QueryParams;
--
--QueryParams *query_params_new(int init_alloc);
--QueryParams *query_params_parse(const char *query);
--void query_params_free(QueryParams *ps);
--
--#endif /* QEMU_URI_H */
-diff --git a/util/uri.c b/util/uri.c
-deleted file mode 100644
-index 573174bf47..0000000000
---- a/util/uri.c
-+++ /dev/null
-@@ -1,1466 +0,0 @@
--/**
-- * uri.c: set of generic URI related routines
-- *
-- * Reference: RFCs 3986, 2732 and 2373
-- *
-- * Copyright (C) 1998-2003 Daniel Veillard.  All Rights Reserved.
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a copy
-- * of this software and associated documentation files (the "Software"), to deal
-- * in the Software without restriction, including without limitation the rights
-- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-- * copies of the Software, and to permit persons to whom the Software is
-- * furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-- * DANIEL VEILLARD BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-- * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-- *
-- * Except as contained in this notice, the name of Daniel Veillard shall not
-- * be used in advertising or otherwise to promote the sale, use or other
-- * dealings in this Software without prior written authorization from him.
-- *
-- * daniel@veillard.com
-- *
-- **
-- *
-- * Copyright (C) 2007, 2009-2010 Red Hat, Inc.
-- *
-- * This library is free software; you can redistribute it and/or
-- * modify it under the terms of the GNU Lesser General Public
-- * License as published by the Free Software Foundation; either
-- * version 2.1 of the License, or (at your option) any later version.
-- *
-- * This library is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-- * Lesser General Public License for more details.
-- *
-- * You should have received a copy of the GNU Lesser General Public
-- * License along with this library. If not, see <https://www.gnu.org/licenses/>.
-- *
-- * Authors:
-- *    Richard W.M. Jones <rjones@redhat.com>
-- *
-- */
--
--#include "qemu/osdep.h"
--#include "qemu/cutils.h"
--
--#include "qemu/uri.h"
--
--static void uri_clean(URI *uri);
--
--/*
-- * Old rule from 2396 used in legacy handling code
-- * alpha    = lowalpha | upalpha
-- */
--#define IS_ALPHA(x) (IS_LOWALPHA(x) || IS_UPALPHA(x))
--
--/*
-- * lowalpha = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" |
-- *            "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" |
-- *            "u" | "v" | "w" | "x" | "y" | "z"
-- */
--
--#define IS_LOWALPHA(x) (((x) >= 'a') && ((x) <= 'z'))
--
--/*
-- * upalpha = "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" |
-- *           "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" |
-- *           "U" | "V" | "W" | "X" | "Y" | "Z"
-- */
--#define IS_UPALPHA(x) (((x) >= 'A') && ((x) <= 'Z'))
--
--#ifdef IS_DIGIT
--#undef IS_DIGIT
--#endif
--/*
-- * digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-- */
--#define IS_DIGIT(x) (((x) >= '0') && ((x) <= '9'))
--
--/*
-- * alphanum = alpha | digit
-- */
--
--#define IS_ALPHANUM(x) (IS_ALPHA(x) || IS_DIGIT(x))
--
--/*
-- * mark = "-" | "_" | "." | "!" | "~" | "*" | "'" | "(" | ")"
-- */
--
--#define IS_MARK(x) (((x) == '-') || ((x) == '_') || ((x) == '.') ||            \
--    ((x) == '!') || ((x) == '~') || ((x) == '*') || ((x) == '\'') ||           \
--    ((x) == '(') || ((x) == ')'))
--
--/*
-- * unwise = "{" | "}" | "|" | "\" | "^" | "`"
-- */
--
--#define IS_UNWISE(p)                                                           \
--    (((*(p) == '{')) || ((*(p) == '}')) || ((*(p) == '|')) ||                  \
--     ((*(p) == '\\')) || ((*(p) == '^')) || ((*(p) == '[')) ||                 \
--     ((*(p) == ']')) || ((*(p) == '`')))
--/*
-- * reserved = ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | "," |
-- *            "[" | "]"
-- */
--
--#define IS_RESERVED(x) (((x) == ';') || ((x) == '/') || ((x) == '?') ||        \
--    ((x) == ':') || ((x) == '@') || ((x) == '&') || ((x) == '=') ||            \
--    ((x) == '+') || ((x) == '$') || ((x) == ',') || ((x) == '[') ||            \
--    ((x) == ']'))
--
--/*
-- * unreserved = alphanum | mark
-- */
--
--#define IS_UNRESERVED(x) (IS_ALPHANUM(x) || IS_MARK(x))
--
--/*
-- * Skip to next pointer char, handle escaped sequences
-- */
--
--#define NEXT(p) ((*p == '%') ? p += 3 : p++)
--
--/*
-- * Productions from the spec.
-- *
-- *    authority     = server | reg_name
-- *    reg_name      = 1*( unreserved | escaped | "$" | "," |
-- *                        ";" | ":" | "@" | "&" | "=" | "+" )
-- *
-- * path          = [ abs_path | opaque_part ]
-- */
--
--/************************************************************************
-- *                                                                      *
-- *                         RFC 3986 parser                              *
-- *                                                                      *
-- ************************************************************************/
--
--#define ISA_DIGIT(p) ((*(p) >= '0') && (*(p) <= '9'))
--#define ISA_ALPHA(p) (((*(p) >= 'a') && (*(p) <= 'z')) ||                      \
--                      ((*(p) >= 'A') && (*(p) <= 'Z')))
--#define ISA_HEXDIG(p)                                                          \
--    (ISA_DIGIT(p) || ((*(p) >= 'a') && (*(p) <= 'f')) ||                       \
--     ((*(p) >= 'A') && (*(p) <= 'F')))
--
--/*
-- *    sub-delims    = "!" / "$" / "&" / "'" / "(" / ")"
-- *                     / "*" / "+" / "," / ";" / "="
-- */
--#define ISA_SUB_DELIM(p)                                                       \
--    (((*(p) == '!')) || ((*(p) == '$')) || ((*(p) == '&')) ||                  \
--     ((*(p) == '(')) || ((*(p) == ')')) || ((*(p) == '*')) ||                  \
--     ((*(p) == '+')) || ((*(p) == ',')) || ((*(p) == ';')) ||                  \
--     ((*(p) == '=')) || ((*(p) == '\'')))
--
--/*
-- *    unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
-- */
--#define ISA_UNRESERVED(p)                                                      \
--    ((ISA_ALPHA(p)) || (ISA_DIGIT(p)) || ((*(p) == '-')) ||                    \
--     ((*(p) == '.')) || ((*(p) == '_')) || ((*(p) == '~')))
--
--/*
-- *    pct-encoded   = "%" HEXDIG HEXDIG
-- */
--#define ISA_PCT_ENCODED(p)                                                     \
--    ((*(p) == '%') && (ISA_HEXDIG(p + 1)) && (ISA_HEXDIG(p + 2)))
--
--/*
-- *    pchar         = unreserved / pct-encoded / sub-delims / ":" / "@"
-- */
--#define ISA_PCHAR(p)                                                           \
--    (ISA_UNRESERVED(p) || ISA_PCT_ENCODED(p) || ISA_SUB_DELIM(p) ||            \
--     ((*(p) == ':')) || ((*(p) == '@')))
--
--/**
-- * rfc3986_parse_scheme:
-- * @uri:  pointer to an URI structure
-- * @str:  pointer to the string to analyze
-- *
-- * Parse an URI scheme
-- *
-- * ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_scheme(URI *uri, const char **str)
--{
--    const char *cur;
--
--    if (str == NULL) {
--        return -1;
--    }
--
--    cur = *str;
--    if (!ISA_ALPHA(cur)) {
--        return 2;
--    }
--    cur++;
--    while (ISA_ALPHA(cur) || ISA_DIGIT(cur) || (*cur == '+') || (*cur == '-') ||
--           (*cur == '.')) {
--        cur++;
--    }
--    if (uri != NULL) {
--        g_free(uri->scheme);
--        uri->scheme = g_strndup(*str, cur - *str);
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_fragment:
-- * @uri:  pointer to an URI structure
-- * @str:  pointer to the string to analyze
-- *
-- * Parse the query part of an URI
-- *
-- * fragment      = *( pchar / "/" / "?" )
-- * NOTE: the strict syntax as defined by 3986 does not allow '[' and ']'
-- *       in the fragment identifier but this is used very broadly for
-- *       xpointer scheme selection, so we are allowing it here to not break
-- *       for example all the DocBook processing chains.
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_fragment(URI *uri, const char **str)
--{
--    const char *cur;
--
--    if (str == NULL) {
--        return -1;
--    }
--
--    cur = *str;
--
--    while ((ISA_PCHAR(cur)) || (*cur == '/') || (*cur == '?') ||
--           (*cur == '[') || (*cur == ']') ||
--           ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur)))) {
--        NEXT(cur);
--    }
--    if (uri != NULL) {
--        g_free(uri->fragment);
--        if (uri->cleanup & 2) {
--            uri->fragment = g_strndup(*str, cur - *str);
--        } else {
--            uri->fragment = g_uri_unescape_segment(*str, cur, NULL);
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_query:
-- * @uri:  pointer to an URI structure
-- * @str:  pointer to the string to analyze
-- *
-- * Parse the query part of an URI
-- *
-- * query = *uric
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_query(URI *uri, const char **str)
--{
--    const char *cur;
--
--    if (str == NULL) {
--        return -1;
--    }
--
--    cur = *str;
--
--    while ((ISA_PCHAR(cur)) || (*cur == '/') || (*cur == '?') ||
--           ((uri != NULL) && (uri->cleanup & 1) && (IS_UNWISE(cur)))) {
--        NEXT(cur);
--    }
--    if (uri != NULL) {
--        g_free(uri->query);
--        uri->query = g_strndup(*str, cur - *str);
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_port:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse a port  part and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * port          = *DIGIT
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_port(URI *uri, const char **str)
--{
--    const char *cur = *str;
--    int port = 0;
--
--    if (ISA_DIGIT(cur)) {
--        while (ISA_DIGIT(cur)) {
--            port = port * 10 + (*cur - '0');
--            if (port > 65535) {
--                return 1;
--            }
--            cur++;
--        }
--        if (uri) {
--            uri->port = port;
--        }
--        *str = cur;
--        return 0;
--    }
--    return 1;
--}
--
--/**
-- * rfc3986_parse_user_info:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse a user information part and fill in the appropriate fields
-- * of the @uri structure
-- *
-- * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_user_info(URI *uri, const char **str)
--{
--    const char *cur;
--
--    cur = *str;
--    while (ISA_UNRESERVED(cur) || ISA_PCT_ENCODED(cur) || ISA_SUB_DELIM(cur) ||
--           (*cur == ':')) {
--        NEXT(cur);
--    }
--    if (*cur == '@') {
--        if (uri != NULL) {
--            g_free(uri->user);
--            if (uri->cleanup & 2) {
--                uri->user = g_strndup(*str, cur - *str);
--            } else {
--                uri->user = g_uri_unescape_segment(*str, cur, NULL);
--            }
--        }
--        *str = cur;
--        return 0;
--    }
--    return 1;
--}
--
--/**
-- * rfc3986_parse_dec_octet:
-- * @str:  the string to analyze
-- *
-- *    dec-octet     = DIGIT                 ; 0-9
-- *                  / %x31-39 DIGIT         ; 10-99
-- *                  / "1" 2DIGIT            ; 100-199
-- *                  / "2" %x30-34 DIGIT     ; 200-249
-- *                  / "25" %x30-35          ; 250-255
-- *
-- * Skip a dec-octet.
-- *
-- * Returns 0 if found and skipped, 1 otherwise
-- */
--static int rfc3986_parse_dec_octet(const char **str)
--{
--    const char *cur = *str;
--
--    if (!(ISA_DIGIT(cur))) {
--        return 1;
--    }
--    if (!ISA_DIGIT(cur + 1)) {
--        cur++;
--    } else if ((*cur != '0') && (ISA_DIGIT(cur + 1)) && (!ISA_DIGIT(cur + 2))) {
--        cur += 2;
--    } else if ((*cur == '1') && (ISA_DIGIT(cur + 1)) && (ISA_DIGIT(cur + 2))) {
--        cur += 3;
--    } else if ((*cur == '2') && (*(cur + 1) >= '0') && (*(cur + 1) <= '4') &&
--             (ISA_DIGIT(cur + 2))) {
--        cur += 3;
--    } else if ((*cur == '2') && (*(cur + 1) == '5') && (*(cur + 2) >= '0') &&
--             (*(cur + 1) <= '5')) {
--        cur += 3;
--    } else {
--        return 1;
--    }
--    *str = cur;
--    return 0;
--}
--/**
-- * rfc3986_parse_host:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an host part and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * host          = IP-literal / IPv4address / reg-name
-- * IP-literal    = "[" ( IPv6address / IPvFuture  ) "]"
-- * IPv4address   = dec-octet "." dec-octet "." dec-octet "." dec-octet
-- * reg-name      = *( unreserved / pct-encoded / sub-delims )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_host(URI *uri, const char **str)
--{
--    const char *cur = *str;
--    const char *host;
--
--    host = cur;
--    /*
--     * IPv6 and future addressing scheme are enclosed between brackets
--     */
--    if (*cur == '[') {
--        cur++;
--        while ((*cur != ']') && (*cur != 0)) {
--            cur++;
--        }
--        if (*cur != ']') {
--            return 1;
--        }
--        cur++;
--        goto found;
--    }
--    /*
--     * try to parse an IPv4
--     */
--    if (ISA_DIGIT(cur)) {
--        if (rfc3986_parse_dec_octet(&cur) != 0) {
--            goto not_ipv4;
--        }
--        if (*cur != '.') {
--            goto not_ipv4;
--        }
--        cur++;
--        if (rfc3986_parse_dec_octet(&cur) != 0) {
--            goto not_ipv4;
--        }
--        if (*cur != '.') {
--            goto not_ipv4;
--        }
--        if (rfc3986_parse_dec_octet(&cur) != 0) {
--            goto not_ipv4;
--        }
--        if (*cur != '.') {
--            goto not_ipv4;
--        }
--        if (rfc3986_parse_dec_octet(&cur) != 0) {
--            goto not_ipv4;
--        }
--        goto found;
--    not_ipv4:
--        cur = *str;
--    }
--    /*
--     * then this should be a hostname which can be empty
--     */
--    while (ISA_UNRESERVED(cur) || ISA_PCT_ENCODED(cur) || ISA_SUB_DELIM(cur)) {
--        NEXT(cur);
--    }
--found:
--    if (uri != NULL) {
--        g_free(uri->authority);
--        uri->authority = NULL;
--        g_free(uri->server);
--        if (cur != host) {
--            if (uri->cleanup & 2) {
--                uri->server = g_strndup(host, cur - host);
--            } else {
--                uri->server = g_uri_unescape_segment(host, cur, NULL);
--            }
--        } else {
--            uri->server = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_authority:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an authority part and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * authority     = [ userinfo "@" ] host [ ":" port ]
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_authority(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--    /*
--     * try to parse a userinfo and check for the trailing @
--     */
--    ret = rfc3986_parse_user_info(uri, &cur);
--    if ((ret != 0) || (*cur != '@')) {
--        cur = *str;
--    } else {
--        cur++;
--    }
--    ret = rfc3986_parse_host(uri, &cur);
--    if (ret != 0) {
--        return ret;
--    }
--    if (*cur == ':') {
--        cur++;
--        ret = rfc3986_parse_port(uri, &cur);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_segment:
-- * @str:  the string to analyze
-- * @forbid: an optional forbidden character
-- * @empty: allow an empty segment
-- *
-- * Parse a segment and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * segment       = *pchar
-- * segment-nz    = 1*pchar
-- * segment-nz-nc = 1*( unreserved / pct-encoded / sub-delims / "@" )
-- *               ; non-zero-length segment without any colon ":"
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_segment(const char **str, char forbid, int empty)
--{
--    const char *cur;
--
--    cur = *str;
--    if (!ISA_PCHAR(cur)) {
--        if (empty) {
--            return 0;
--        }
--        return 1;
--    }
--    while (ISA_PCHAR(cur) && (*cur != forbid)) {
--        NEXT(cur);
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_path_ab_empty:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an path absolute or empty and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * path-abempty  = *( "/" segment )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_path_ab_empty(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--
--    while (*cur == '/') {
--        cur++;
--        ret = rfc3986_parse_segment(&cur, 0, 1);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (uri != NULL) {
--        g_free(uri->path);
--        if (*str != cur) {
--            if (uri->cleanup & 2) {
--                uri->path = g_strndup(*str, cur - *str);
--            } else {
--                uri->path = g_uri_unescape_segment(*str, cur, NULL);
--            }
--        } else {
--            uri->path = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_path_absolute:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an path absolute and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * path-absolute = "/" [ segment-nz *( "/" segment ) ]
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_path_absolute(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--
--    if (*cur != '/') {
--        return 1;
--    }
--    cur++;
--    ret = rfc3986_parse_segment(&cur, 0, 0);
--    if (ret == 0) {
--        while (*cur == '/') {
--            cur++;
--            ret = rfc3986_parse_segment(&cur, 0, 1);
--            if (ret != 0) {
--                return ret;
--            }
--        }
--    }
--    if (uri != NULL) {
--        g_free(uri->path);
--        if (cur != *str) {
--            if (uri->cleanup & 2) {
--                uri->path = g_strndup(*str, cur - *str);
--            } else {
--                uri->path = g_uri_unescape_segment(*str, cur, NULL);
--            }
--        } else {
--            uri->path = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_path_rootless:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an path without root and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * path-rootless = segment-nz *( "/" segment )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_path_rootless(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--
--    ret = rfc3986_parse_segment(&cur, 0, 0);
--    if (ret != 0) {
--        return ret;
--    }
--    while (*cur == '/') {
--        cur++;
--        ret = rfc3986_parse_segment(&cur, 0, 1);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (uri != NULL) {
--        g_free(uri->path);
--        if (cur != *str) {
--            if (uri->cleanup & 2) {
--                uri->path = g_strndup(*str, cur - *str);
--            } else {
--                uri->path = g_uri_unescape_segment(*str, cur, NULL);
--            }
--        } else {
--            uri->path = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_path_no_scheme:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an path which is not a scheme and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * path-noscheme = segment-nz-nc *( "/" segment )
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_path_no_scheme(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--
--    ret = rfc3986_parse_segment(&cur, ':', 0);
--    if (ret != 0) {
--        return ret;
--    }
--    while (*cur == '/') {
--        cur++;
--        ret = rfc3986_parse_segment(&cur, 0, 1);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (uri != NULL) {
--        g_free(uri->path);
--        if (cur != *str) {
--            if (uri->cleanup & 2) {
--                uri->path = g_strndup(*str, cur - *str);
--            } else {
--                uri->path = g_uri_unescape_segment(*str, cur, NULL);
--            }
--        } else {
--            uri->path = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_hier_part:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an hierarchical part and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * hier-part     = "//" authority path-abempty
-- *                / path-absolute
-- *                / path-rootless
-- *                / path-empty
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_hier_part(URI *uri, const char **str)
--{
--    const char *cur;
--    int ret;
--
--    cur = *str;
--
--    if ((*cur == '/') && (*(cur + 1) == '/')) {
--        cur += 2;
--        ret = rfc3986_parse_authority(uri, &cur);
--        if (ret != 0) {
--            return ret;
--        }
--        ret = rfc3986_parse_path_ab_empty(uri, &cur);
--        if (ret != 0) {
--            return ret;
--        }
--        *str = cur;
--        return 0;
--    } else if (*cur == '/') {
--        ret = rfc3986_parse_path_absolute(uri, &cur);
--        if (ret != 0) {
--            return ret;
--        }
--    } else if (ISA_PCHAR(cur)) {
--        ret = rfc3986_parse_path_rootless(uri, &cur);
--        if (ret != 0) {
--            return ret;
--        }
--    } else {
--        /* path-empty is effectively empty */
--        if (uri != NULL) {
--            g_free(uri->path);
--            uri->path = NULL;
--        }
--    }
--    *str = cur;
--    return 0;
--}
--
--/**
-- * rfc3986_parse_relative_ref:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an URI string and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * relative-ref  = relative-part [ "?" query ] [ "#" fragment ]
-- * relative-part = "//" authority path-abempty
-- *               / path-absolute
-- *               / path-noscheme
-- *               / path-empty
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_relative_ref(URI *uri, const char *str)
--{
--    int ret;
--
--    if ((*str == '/') && (*(str + 1) == '/')) {
--        str += 2;
--        ret = rfc3986_parse_authority(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--        ret = rfc3986_parse_path_ab_empty(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    } else if (*str == '/') {
--        ret = rfc3986_parse_path_absolute(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    } else if (ISA_PCHAR(str)) {
--        ret = rfc3986_parse_path_no_scheme(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    } else {
--        /* path-empty is effectively empty */
--        if (uri != NULL) {
--            g_free(uri->path);
--            uri->path = NULL;
--        }
--    }
--
--    if (*str == '?') {
--        str++;
--        ret = rfc3986_parse_query(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (*str == '#') {
--        str++;
--        ret = rfc3986_parse_fragment(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (*str != 0) {
--        uri_clean(uri);
--        return 1;
--    }
--    return 0;
--}
--
--/**
-- * rfc3986_parse:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an URI string and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * scheme ":" hier-part [ "?" query ] [ "#" fragment ]
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse(URI *uri, const char *str)
--{
--    int ret;
--
--    ret = rfc3986_parse_scheme(uri, &str);
--    if (ret != 0) {
--        return ret;
--    }
--    if (*str != ':') {
--        return 1;
--    }
--    str++;
--    ret = rfc3986_parse_hier_part(uri, &str);
--    if (ret != 0) {
--        return ret;
--    }
--    if (*str == '?') {
--        str++;
--        ret = rfc3986_parse_query(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (*str == '#') {
--        str++;
--        ret = rfc3986_parse_fragment(uri, &str);
--        if (ret != 0) {
--            return ret;
--        }
--    }
--    if (*str != 0) {
--        uri_clean(uri);
--        return 1;
--    }
--    return 0;
--}
--
--/**
-- * rfc3986_parse_uri_reference:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an URI reference string and fills in the appropriate fields
-- * of the @uri structure
-- *
-- * URI-reference = URI / relative-ref
-- *
-- * Returns 0 or the error code
-- */
--static int rfc3986_parse_uri_reference(URI *uri, const char *str)
--{
--    int ret;
--
--    if (str == NULL) {
--        return -1;
--    }
--    uri_clean(uri);
--
--    /*
--     * Try first to parse absolute refs, then fallback to relative if
--     * it fails.
--     */
--    ret = rfc3986_parse(uri, str);
--    if (ret != 0) {
--        uri_clean(uri);
--        ret = rfc3986_parse_relative_ref(uri, str);
--        if (ret != 0) {
--            uri_clean(uri);
--            return ret;
--        }
--    }
--    return 0;
--}
--
--/**
-- * uri_parse:
-- * @str:  the URI string to analyze
-- *
-- * Parse an URI based on RFC 3986
-- *
-- * URI-reference = [ absoluteURI | relativeURI ] [ "#" fragment ]
-- *
-- * Returns a newly built URI or NULL in case of error
-- */
--URI *uri_parse(const char *str)
--{
--    URI *uri;
--    int ret;
--
--    if (str == NULL) {
--        return NULL;
--    }
--    uri = uri_new();
--    ret = rfc3986_parse_uri_reference(uri, str);
--    if (ret) {
--        uri_free(uri);
--        return NULL;
--    }
--    return uri;
--}
--
--/**
-- * uri_parse_into:
-- * @uri:  pointer to an URI structure
-- * @str:  the string to analyze
-- *
-- * Parse an URI reference string based on RFC 3986 and fills in the
-- * appropriate fields of the @uri structure
-- *
-- * URI-reference = URI / relative-ref
-- *
-- * Returns 0 or the error code
-- */
--int uri_parse_into(URI *uri, const char *str)
--{
--    return rfc3986_parse_uri_reference(uri, str);
--}
--
--/**
-- * uri_parse_raw:
-- * @str:  the URI string to analyze
-- * @raw:  if 1 unescaping of URI pieces are disabled
-- *
-- * Parse an URI but allows to keep intact the original fragments.
-- *
-- * URI-reference = URI / relative-ref
-- *
-- * Returns a newly built URI or NULL in case of error
-- */
--URI *uri_parse_raw(const char *str, int raw)
--{
--    URI *uri;
--    int ret;
--
--    if (str == NULL) {
--        return NULL;
--    }
--    uri = uri_new();
--    if (raw) {
--        uri->cleanup |= 2;
--    }
--    ret = uri_parse_into(uri, str);
--    if (ret) {
--        uri_free(uri);
--        return NULL;
--    }
--    return uri;
--}
--
--/************************************************************************
-- *                                                                      *
-- *                    Generic URI structure functions                   *
-- *                                                                      *
-- ************************************************************************/
--
--/**
-- * uri_new:
-- *
-- * Simply creates an empty URI
-- *
-- * Returns the new structure or NULL in case of error
-- */
--URI *uri_new(void)
--{
--    return g_new0(URI, 1);
--}
--
--/**
-- * realloc2n:
-- *
-- * Function to handle properly a reallocation when saving an URI
-- * Also imposes some limit on the length of an URI string output
-- */
--static char *realloc2n(char *ret, int *max)
--{
--    char *temp;
--    int tmp;
--
--    tmp = *max * 2;
--    temp = g_realloc(ret, (tmp + 1));
--    *max = tmp;
--    return temp;
--}
--
--/**
-- * uri_to_string:
-- * @uri:  pointer to an URI
-- *
-- * Save the URI as an escaped string
-- *
-- * Returns a new string (to be deallocated by caller)
-- */
--char *uri_to_string(URI *uri)
--{
--    char *ret = NULL;
--    char *temp;
--    const char *p;
--    int len;
--    int max;
--
--    if (uri == NULL) {
--        return NULL;
--    }
--
--    max = 80;
--    ret = g_malloc(max + 1);
--    len = 0;
--
--    if (uri->scheme != NULL) {
--        p = uri->scheme;
--        while (*p != 0) {
--            if (len >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            ret[len++] = *p++;
--        }
--        if (len >= max) {
--            temp = realloc2n(ret, &max);
--            ret = temp;
--        }
--        ret[len++] = ':';
--    }
--    if (uri->opaque != NULL) {
--        p = uri->opaque;
--        while (*p != 0) {
--            if (len + 3 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            if (IS_RESERVED(*(p)) || IS_UNRESERVED(*(p))) {
--                ret[len++] = *p++;
--            } else {
--                int val = *(unsigned char *)p++;
--                int hi = val / 0x10, lo = val % 0x10;
--                ret[len++] = '%';
--                ret[len++] = hi + (hi > 9 ? 'A' - 10 : '0');
--                ret[len++] = lo + (lo > 9 ? 'A' - 10 : '0');
--            }
--        }
--    } else {
--        if (uri->server != NULL) {
--            if (len + 3 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            ret[len++] = '/';
--            ret[len++] = '/';
--            if (uri->user != NULL) {
--                p = uri->user;
--                while (*p != 0) {
--                    if (len + 3 >= max) {
--                        temp = realloc2n(ret, &max);
--                        ret = temp;
--                    }
--                    if ((IS_UNRESERVED(*(p))) || ((*(p) == ';')) ||
--                        ((*(p) == ':')) || ((*(p) == '&')) || ((*(p) == '=')) ||
--                        ((*(p) == '+')) || ((*(p) == '$')) || ((*(p) == ','))) {
--                        ret[len++] = *p++;
--                    } else {
--                        int val = *(unsigned char *)p++;
--                        int hi = val / 0x10, lo = val % 0x10;
--                        ret[len++] = '%';
--                        ret[len++] = hi + (hi > 9 ? 'A' - 10 : '0');
--                        ret[len++] = lo + (lo > 9 ? 'A' - 10 : '0');
--                    }
--                }
--                if (len + 3 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                ret[len++] = '@';
--            }
--            p = uri->server;
--            while (*p != 0) {
--                if (len >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                ret[len++] = *p++;
--            }
--            if (uri->port > 0) {
--                if (len + 10 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                len += snprintf(&ret[len], max - len, ":%d", uri->port);
--            }
--        } else if (uri->authority != NULL) {
--            if (len + 3 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            ret[len++] = '/';
--            ret[len++] = '/';
--            p = uri->authority;
--            while (*p != 0) {
--                if (len + 3 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                if ((IS_UNRESERVED(*(p))) || ((*(p) == '$')) ||
--                    ((*(p) == ',')) || ((*(p) == ';')) || ((*(p) == ':')) ||
--                    ((*(p) == '@')) || ((*(p) == '&')) || ((*(p) == '=')) ||
--                    ((*(p) == '+'))) {
--                    ret[len++] = *p++;
--                } else {
--                    int val = *(unsigned char *)p++;
--                    int hi = val / 0x10, lo = val % 0x10;
--                    ret[len++] = '%';
--                    ret[len++] = hi + (hi > 9 ? 'A' - 10 : '0');
--                    ret[len++] = lo + (lo > 9 ? 'A' - 10 : '0');
--                }
--            }
--        } else if (uri->scheme != NULL) {
--            if (len + 3 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            ret[len++] = '/';
--            ret[len++] = '/';
--        }
--        if (uri->path != NULL) {
--            p = uri->path;
--            /*
--             * the colon in file:///d: should not be escaped or
--             * Windows accesses fail later.
--             */
--            if ((uri->scheme != NULL) && (p[0] == '/') &&
--                (((p[1] >= 'a') && (p[1] <= 'z')) ||
--                 ((p[1] >= 'A') && (p[1] <= 'Z'))) &&
--                (p[2] == ':') && (!strcmp(uri->scheme, "file"))) {
--                if (len + 3 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                ret[len++] = *p++;
--                ret[len++] = *p++;
--                ret[len++] = *p++;
--            }
--            while (*p != 0) {
--                if (len + 3 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                if ((IS_UNRESERVED(*(p))) || ((*(p) == '/')) ||
--                    ((*(p) == ';')) || ((*(p) == '@')) || ((*(p) == '&')) ||
--                    ((*(p) == '=')) || ((*(p) == '+')) || ((*(p) == '$')) ||
--                    ((*(p) == ','))) {
--                    ret[len++] = *p++;
--                } else {
--                    int val = *(unsigned char *)p++;
--                    int hi = val / 0x10, lo = val % 0x10;
--                    ret[len++] = '%';
--                    ret[len++] = hi + (hi > 9 ? 'A' - 10 : '0');
--                    ret[len++] = lo + (lo > 9 ? 'A' - 10 : '0');
--                }
--            }
--        }
--        if (uri->query != NULL) {
--            if (len + 1 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            ret[len++] = '?';
--            p = uri->query;
--            while (*p != 0) {
--                if (len + 1 >= max) {
--                    temp = realloc2n(ret, &max);
--                    ret = temp;
--                }
--                ret[len++] = *p++;
--            }
--        }
--    }
--    if (uri->fragment != NULL) {
--        if (len + 3 >= max) {
--            temp = realloc2n(ret, &max);
--            ret = temp;
--        }
--        ret[len++] = '#';
--        p = uri->fragment;
--        while (*p != 0) {
--            if (len + 3 >= max) {
--                temp = realloc2n(ret, &max);
--                ret = temp;
--            }
--            if ((IS_UNRESERVED(*(p))) || (IS_RESERVED(*(p)))) {
--                ret[len++] = *p++;
--            } else {
--                int val = *(unsigned char *)p++;
--                int hi = val / 0x10, lo = val % 0x10;
--                ret[len++] = '%';
--                ret[len++] = hi + (hi > 9 ? 'A' - 10 : '0');
--                ret[len++] = lo + (lo > 9 ? 'A' - 10 : '0');
--            }
--        }
--    }
--    if (len >= max) {
--        temp = realloc2n(ret, &max);
--        ret = temp;
--    }
--    ret[len] = 0;
--    return ret;
--}
--
--/**
-- * uri_clean:
-- * @uri:  pointer to an URI
-- *
-- * Make sure the URI struct is free of content
-- */
--static void uri_clean(URI *uri)
--{
--    if (uri == NULL) {
--        return;
--    }
--
--    g_free(uri->scheme);
--    uri->scheme = NULL;
--    g_free(uri->server);
--    uri->server = NULL;
--    g_free(uri->user);
--    uri->user = NULL;
--    g_free(uri->path);
--    uri->path = NULL;
--    g_free(uri->fragment);
--    uri->fragment = NULL;
--    g_free(uri->opaque);
--    uri->opaque = NULL;
--    g_free(uri->authority);
--    uri->authority = NULL;
--    g_free(uri->query);
--    uri->query = NULL;
--}
--
--/**
-- * uri_free:
-- * @uri:  pointer to an URI, NULL is ignored
-- *
-- * Free up the URI struct
-- */
--void uri_free(URI *uri)
--{
--    uri_clean(uri);
--    g_free(uri);
--}
--
--/************************************************************************
-- *                                                                      *
-- *                           Public functions                           *
-- *                                                                      *
-- ************************************************************************/
--
--/*
-- * Utility functions to help parse and assemble query strings.
-- */
--
--struct QueryParams *query_params_new(int init_alloc)
--{
--    struct QueryParams *ps;
--
--    if (init_alloc <= 0) {
--        init_alloc = 1;
--    }
--
--    ps = g_new(QueryParams, 1);
--    ps->n = 0;
--    ps->alloc = init_alloc;
--    ps->p = g_new(QueryParam, ps->alloc);
--
--    return ps;
--}
--
--/* Ensure there is space to store at least one more parameter
-- * at the end of the set.
-- */
--static int query_params_append(struct QueryParams *ps, const char *name,
--                               const char *value)
--{
--    if (ps->n >= ps->alloc) {
--        ps->p = g_renew(QueryParam, ps->p, ps->alloc * 2);
--        ps->alloc *= 2;
--    }
--
--    ps->p[ps->n].name = g_strdup(name);
--    ps->p[ps->n].value = g_strdup(value);
--    ps->p[ps->n].ignore = 0;
--    ps->n++;
--
--    return 0;
--}
--
--void query_params_free(struct QueryParams *ps)
--{
--    int i;
--
--    for (i = 0; i < ps->n; ++i) {
--        g_free(ps->p[i].name);
--        g_free(ps->p[i].value);
--    }
--    g_free(ps->p);
--    g_free(ps);
--}
--
--struct QueryParams *query_params_parse(const char *query)
--{
--    struct QueryParams *ps;
--    const char *end, *eq;
--
--    ps = query_params_new(0);
--    if (!query || query[0] == '\0') {
--        return ps;
--    }
--
--    while (*query) {
--        char *name = NULL, *value = NULL;
--
--        /* Find the next separator, or end of the string. */
--        end = strchr(query, '&');
--        if (!end) {
--            end = qemu_strchrnul(query, ';');
--        }
--
--        /* Find the first '=' character between here and end. */
--        eq = strchr(query, '=');
--        if (eq && eq >= end) {
--            eq = NULL;
--        }
--
--        /* Empty section (eg. "&&"). */
--        if (end == query) {
--            goto next;
--        }
--
--        /* If there is no '=' character, then we have just "name"
--         * and consistent with CGI.pm we assume value is "".
--         */
--        else if (!eq) {
--            name = g_uri_unescape_segment(query, end, NULL);
--            value = NULL;
--        }
--        /* Or if we have "name=" here (works around annoying
--         * problem when calling uri_string_unescape with len = 0).
--         */
--        else if (eq + 1 == end) {
--            name = g_uri_unescape_segment(query, eq, NULL);
--            value = g_new0(char, 1);
--        }
--        /* If the '=' character is at the beginning then we have
--         * "=value" and consistent with CGI.pm we _ignore_ this.
--         */
--        else if (query == eq) {
--            goto next;
--        }
--
--        /* Otherwise it's "name=value". */
--        else {
--            name = g_uri_unescape_segment(query, eq, NULL);
--            value = g_uri_unescape_segment(eq + 1, end, NULL);
--        }
--
--        /* Append to the parameter set. */
--        query_params_append(ps, name, value);
--        g_free(name);
--        g_free(value);
--
--    next:
--        query = end;
--        if (*query) {
--            query++; /* skip '&' separator */
--        }
--    }
--
--    return ps;
--}
-diff --git a/util/meson.build b/util/meson.build
-index 0ef9886be0..e6a2c9acc8 100644
---- a/util/meson.build
-+++ b/util/meson.build
-@@ -94,7 +94,7 @@ if have_block
-   util_ss.add(files('hbitmap.c'))
-   util_ss.add(files('hexdump.c'))
-   util_ss.add(files('iova-tree.c'))
--  util_ss.add(files('iov.c', 'uri.c'))
-+  util_ss.add(files('iov.c'))
-   util_ss.add(files('nvdimm-utils.c'))
-   util_ss.add(files('block-helpers.c'))
-   util_ss.add(files('qemu-coroutine-sleep.c'))
+Libvirt should really only need to be changed to support runtime
+performance tunables, rather than migration protocol features.
+
+> > > > That said, the idea of reserving channels specifically for VFIO doesn't
+> > > > make a whole lot of sense to me either.
+> > > > 
+> > > > Once we've done the RAM transfer, and are in the switchover phase
+> > > > doing device state transfer, all the multifd channels are idle.
+> > > > We should just use all those channels to transfer the device state,
+> > > > in parallel.  Reserving channels just guarantees many idle channels
+> > > > during RAM transfer, and further idle channels during vmstate
+> > > > transfer.
+> > > > 
+> > > > IMHO it is more flexible to just use all available multifd channel
+> > > > resources all the time.
+> > > 
+> > > The reason for having dedicated device state channels is that they
+> > > provide lower downtime in my tests.
+> > > 
+> > > With either 15 or 11 mixed multifd channels (no dedicated device state
+> > > channels) I get a downtime of about 1250 msec.
+> > > 
+> > > Comparing that with 15 total multifd channels / 4 dedicated device
+> > > state channels that give downtime of about 1100 ms it means that using
+> > > dedicated channels gets about 14% downtime improvement.
+> > 
+> > Hmm, can you clarify. /when/ is the VFIO vmstate transfer taking
+> > place ? Is is transferred concurrently with the RAM ? I had thought
+> > this series still has the RAM transfer iterations running first,
+> > and then the VFIO VMstate at the end, simply making use of multifd
+> > channels for parallelism of the end phase. your reply though makes
+> > me question my interpretation though.
+> > 
+> > Let me try to illustrate channel flow in various scenarios, time
+> > flowing left to right:
+> > 
+> > 1. serialized RAM, then serialized VM state  (ie historical migration)
+> > 
+> >        main: | Init | RAM iter 1 | RAM iter 2 | ... | RAM iter N | VM State |
+> > 
+> > 
+> > 2. parallel RAM, then serialized VM state (ie today's multifd)
+> > 
+> >        main: | Init |                                            | VM state |
+> >    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> > 
+> > 
+> > 3. parallel RAM, then parallel VM state
+> > 
+> >        main: | Init |                                            | VM state |
+> >    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd4:                                                     | VFIO VM state |
+> >    multifd5:                                                     | VFIO VM state |
+> > 
+> > 
+> > 4. parallel RAM and VFIO VM state, then remaining VM state
+> > 
+> >        main: | Init |                                            | VM state |
+> >    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N |
+> >    multifd4:        | VFIO VM state                                         |
+> >    multifd5:        | VFIO VM state                                         |
+> > 
+> > 
+> > I thought this series was implementing approx (3), but are you actually
+> > implementing (4), or something else entirely ?
+> 
+> You are right that this series operation is approximately implementing
+> the schema described as numer 3 in your diagrams.
+
+> However, there are some additional details worth mentioning:
+> * There's some but relatively small amount of VFIO data being
+> transferred from the "save_live_iterate" SaveVMHandler while the VM is
+> still running.
+> 
+> This is still happening via the main migration channel.
+> Parallelizing this transfer in the future might make sense too,
+> although obviously this doesn't impact the downtime.
+> 
+> * After the VM is stopped and downtime starts the main (~ 400 MiB)
+> VFIO device state gets transferred via multifd channels.
+> 
+> However, these multifd channels (if they are not dedicated to device
+> state transfer) aren't idle during that time.
+> Rather they seem to be transferring the residual RAM data.
+> 
+> That's most likely what causes the additional observed downtime
+> when dedicated device state transfer multifd channels aren't used.
+
+Ahh yes, I forgot about the residual dirty RAM, that makes sense as
+an explanation. Allow me to work through the scenarios though, as I
+still think my suggestion to not have separate dedicate channels is
+better....
+
+
+Lets say hypothetically we have an existing deployment today that
+uses 6 multifd channels for RAM. ie:
+ 
+        main: | Init |                                            | VM state |
+    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd4:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd5:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd6:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+
+That value of 6 was chosen because that corresponds to the amount
+of network & CPU utilization the admin wants to allow, for this
+VM to migrate. All 6 channels are fully utilized at all times.
+
+
+If we now want to parallelize VFIO VM state, the peak network
+and CPU utilization the admin wants to reserve for the VM should
+not change. Thus the admin will still wants to configure only 6
+channels total.
+
+With your proposal the admin has to reduce RAM transfer to 4 of the
+channels, in order to then reserve 2 channels for VFIO VM state, so we
+get a flow like:
+
+ 
+        main: | Init |                                            | VM state |
+    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd4:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd5:                                                     | VFIO VM state |
+    multifd6:                                                     | VFIO VM state |
+
+This is bad, as it reduces performance of RAM transfer. VFIO VM
+state transfer is better, but that's not a net win overall.
+
+
+
+So lets say the admin was happy to increase the number of multifd
+channels from 6 to 8.
+
+This series proposes that they would leave RAM using 6 channels as
+before, and now reserve the 2 extra ones for VFIO VM state:
+
+        main: | Init |                                            | VM state |
+    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd4:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd5:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd6:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM |
+    multifd7:                                                     | VFIO VM state |
+    multifd8:                                                     | VFIO VM state |
+
+
+RAM would perform as well as it did historically, and VM state would
+improve due to the 2 parallel channels, and not competing with the
+residual RAM transfer.
+
+This is what your latency comparison numbers show as a benefit for
+this channel reservation design.
+
+I believe this comparison is inappropriate / unfair though, as it is
+comparing a situation with 6 total channels against a situation with
+8 total channels.
+
+If the admin was happy to increase the total channels to 8, then they
+should allow RAM to use all 8 channels, and then VFIO VM state +
+residual RAM to also use the very same set of 8 channels:
+
+        main: | Init |                                            | VM state |
+    multifd1:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd2:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd3:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd4:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd5:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd6:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd7:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+    multifd8:        | RAM iter 1 | RAM iter 2 | ... | RAM iter N | Residual RAM + VFIO VM state|
+
+This will speed up initial RAM iters still further & the final switch
+over phase even more. If residual RAM is larger than VFIO VM state,
+then it will dominate the switchover latency, so having VFIO VM state
+compete is not a problem. If VFIO VM state is larger than residual RAM,
+then allowing it acces to all 8 channels instead of only 2 channels
+will be a clear win.
+
+With regards,
+Daniel
 -- 
-2.44.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
