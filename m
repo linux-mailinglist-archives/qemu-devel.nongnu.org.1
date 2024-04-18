@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5778AA2D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E163D8AA2D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:31:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXSW-0008Jx-H5; Thu, 18 Apr 2024 15:30:12 -0400
+	id 1rxXSM-0007h8-24; Thu, 18 Apr 2024 15:30:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQg-0002eb-RA
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:19 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQo-0002wc-Ak
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:32 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQe-0007kE-R1
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:18 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-56fe7dc7f58so1268271a12.2
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:28:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQl-0007lQ-5o
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:25 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-418d1edcd4cso9435345e9.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468495; x=1714073295; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468501; x=1714073301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZdGtqepmHp/hs0/Z1yrPy9JbSuxwne+2qc6kJd/9zb0=;
- b=aYkuFhDxu0z/m0eHlNwToFwvxtSqdEXlxcHuIiK5otrmQjPGhTtAn5uj/VhCGOoAFd
- 0b1F7y7r8gYIAf6mr+WvgPr/NlzXWNuy30NsHxh/VyzrROg1smcjh8cd3MqKzRn1VPe0
- LPExxJsgnvhtuKyGlhz1CfRgSXERxp//6YB93ZNdp+Xjo7CTDAceu16R/VPs7o+XLAI3
- BRTgxNlUfsh87FpY5C6dgv8ScTAchndt4Hz5/HbakoIRSVIoDhCCqS6sAhhF/9BXGVsn
- +dnEQaeL4m0IcuMH5dPuItZcLQjkYhF2EyRTqUHN0kH797Z/RWTxsDkU8c5wiosKFZ/7
- 0+ZQ==
+ bh=/Yz7aRuiYxkABVdFEv0r+XjMMhiAPKgmd2KiD0xHfQg=;
+ b=X7vURuSvQT07cVgIi989oUl+bZhnHoK29CgeeFQxYymNaWLK5OblSHmRF7Tjg51WnB
+ zPhuB/xUeh58Z3cFClgBHDZdfXm7Y22Sk3JtlAlHTQ1c9Yh7El2odjwatSrrZIxmEgwn
+ 2br76v9t3LeU4lzGfIr0l2mrqtqlG+w7ZLmcS8mFSt37dyfcDtlskn5YXqrH9cUB97vB
+ D6cT0QmeYMqGNrPOmDGhzyFs/bFcpKGl02M0qCOMil47F0Zo+kguv0rSefT25UtDH7ex
+ Z0bT17Ga/g3rFh3+2gUVgrVugdXzkszACplAFYd63RIvyRWj9j/Rfy/to+KSq41I0e5L
+ MuYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468495; x=1714073295;
+ d=1e100.net; s=20230601; t=1713468501; x=1714073301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZdGtqepmHp/hs0/Z1yrPy9JbSuxwne+2qc6kJd/9zb0=;
- b=SBLnVCnW0TsLDqo4wQNsBclIyRSmYvFe3/Mz/PHk0z2cVYo6l7LIXosi67TQWJZRx1
- PFbZP1CEkeYjjWHzVmBYXUbf12ATpzJvgVGBUwZ5nKkniFNDgm0pHzVim6WurQ2fSbdL
- Jz1dwkHpL4kzCZflPIBFfBF6ewzKrYO4Nie6CCo5AN/cA70NNADbAjx8nTkeZ2wmkMfy
- JegO5yMu4/egQfPBxbbhbAc9bJAQXj+IVDz/4B0Tb9J8aXSenbc90hMxTfnhzDrZjQJI
- SCEJAyOaCfWCIbAoWlauumddcG4lZSP+rNmlFPt0kmDtpGRBYT3H42nLdDzoaRtbGcPW
- SQAA==
-X-Gm-Message-State: AOJu0Ywle3Lt1lhnw21GI8yYvDsTUTlX61QOVUDiu77CsGUFsWL4baXP
- LgE1aVtm1HhZzsU06Ve7xTK7IgM4Qpc4aEsNnQrC/Xw4Wpet4yLALm6LbejvOqHEzBz9P4OnuMX
- 8
-X-Google-Smtp-Source: AGHT+IFOIY5gAThTWZwjM0+HF7s5tNrh3iGimgDUj1yFPdFdyFFdGwZS1SuNu7kuksfDMB5GlMY4Wg==
-X-Received: by 2002:a17:906:f0d9:b0:a51:b666:b372 with SMTP id
- dk25-20020a170906f0d900b00a51b666b372mr61046ejb.27.1713468495043; 
- Thu, 18 Apr 2024 12:28:15 -0700 (PDT)
+ bh=/Yz7aRuiYxkABVdFEv0r+XjMMhiAPKgmd2KiD0xHfQg=;
+ b=pJ9lySGIBvxK5tbnl2TkhTCj9Yf3+8K7fkWlo48+YVdGDO4GzBOq6LzbHAjadyTm4c
+ 4vBU+62rx7gqT36k3+MYWEuF7BdPrCPD6Srcb4Z5kY+c25EosF7+U2/rgayhl/sPyO+D
+ abhNcNr/jk7vU0fqhV9NxRqkZTvsvCzyCzQKkq1ZCFehdJgMGRPGIEfMkFKQ8zC33Jr3
+ K6nlO8AW+BGzZj//YiyrHf6CSXXMQ4yLSe/oWGkUCcJSEUdUVnTKGJ23Ui7FRxRtisCB
+ paGnnfxqrZGvcjt5TQWa8SDa5bJWCxG0HtIbuHClNxvvM2hFGcGarM7RWTrZWTVhtfsh
+ ZGng==
+X-Gm-Message-State: AOJu0YzWN3YqOiNGziBspbmZ0CjGCSY0MYgeMR6+j+GNgXEACojn8Xz9
+ jQlBuPoD9XlYtNPtNAv3h7v6LykVXmgv5itzhL+HUEmJ/KdD9CCHEze7qPMz7nrcQHrt6mVzP0U
+ b
+X-Google-Smtp-Source: AGHT+IE562H6bYcdnvQhGKG5MNuVHbGU/S9+AnWWXJN4YRjw79fzPiSU1R9hf/G0jjN+LtZRXHV9Vw==
+X-Received: by 2002:a5d:64ca:0:b0:346:44:3910 with SMTP id
+ f10-20020a5d64ca000000b0034600443910mr2930235wri.49.1713468501071; 
+ Thu, 18 Apr 2024 12:28:21 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- jp4-20020a170906f74400b00a4734125fd2sm1265134ejb.31.2024.04.18.12.28.12
+ u21-20020a1709064ad500b00a47423b4c33sm1256988ejt.128.2024.04.18.12.28.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:28:14 -0700 (PDT)
+ Thu, 18 Apr 2024 12:28:20 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,28 +64,19 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Tyrone Ting <kfting@nuvoton.com>,
- Hao Wu <wuhaotsh@google.com>, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aurelien Jarno <aurelien@aurel32.net>, BALATON Zoltan <balaton@eik.bme.hu>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 22/24] exec: Remove 'exec/tswap.h' from 'exec/cpu-all.h'
-Date: Thu, 18 Apr 2024 21:25:21 +0200
-Message-ID: <20240418192525.97451-23-philmd@linaro.org>
+ Michael Rolnik <mrolnik@gmail.com>, Brian Cain <bcain@quicinc.com>,
+ Song Gao <gaosong@loongson.cn>, Yoshinori Sato <ysato@users.sourceforge.jp>
+Subject: [PATCH 23/24] exec: Remove 'disas/disas.h' from 'exec/log.h'
+Date: Thu, 18 Apr 2024 21:25:22 +0200
+Message-ID: <20240418192525.97451-24-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -108,182 +99,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/cpu-all.h" doesn't require "exec/tswap.h". Remove it,
+"exec/log.h" doesn't require "disas/disas.h". Remove it,
 including it in the sources when required.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/xtensa/bootparam.h       | 1 +
- include/exec/cpu-all.h      | 1 -
- accel/tcg/translator.c      | 1 +
- hw/arm/boot.c               | 1 +
- hw/arm/npcm7xx.c            | 1 +
- hw/mips/fuloong2e.c         | 1 +
- hw/mips/malta.c             | 1 +
- hw/ppc/sam460ex.c           | 1 +
- hw/ppc/spapr.c              | 1 +
- hw/ppc/virtex_ml507.c       | 1 +
- hw/sh4/r2d.c                | 1 +
- target/arm/gdbstub.c        | 1 +
- target/xtensa/xtensa-semi.c | 1 +
- 13 files changed, 12 insertions(+), 1 deletion(-)
+ include/exec/log.h               | 1 -
+ target/avr/translate.c           | 1 +
+ target/hexagon/translate.c       | 1 +
+ target/loongarch/tcg/translate.c | 1 +
+ target/rx/translate.c            | 1 +
+ tcg/tcg.c                        | 1 +
+ 6 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/hw/xtensa/bootparam.h b/hw/xtensa/bootparam.h
-index f57ff850bc..e1d47b503c 100644
---- a/hw/xtensa/bootparam.h
-+++ b/hw/xtensa/bootparam.h
-@@ -1,6 +1,7 @@
- #ifndef HW_XTENSA_BOOTPARAM_H
- #define HW_XTENSA_BOOTPARAM_H
- 
-+#include "exec/tswap.h"
- #include "exec/cpu-common.h"
- 
- #define BP_TAG_COMMAND_LINE     0x1001  /* command line (0-terminated string)*/
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 554b937ddb..cfbf51822c 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -21,7 +21,6 @@
- 
- #include "exec/cpu-common.h"
- #include "exec/memory.h"
--#include "exec/tswap.h"
- #include "hw/core/cpu.h"
- 
- /* some important defines:
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index 6832e55135..85950377d9 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -12,6 +12,7 @@
- #include "qemu/error-report.h"
- #include "exec/exec-all.h"
- #include "exec/translator.h"
-+#include "exec/tswap.h"
- #include "exec/cpu_ldst.h"
- #include "exec/plugin-gen.h"
- #include "tcg/tcg-op-common.h"
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 84ea6a807a..93945a1a15 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -22,6 +22,7 @@
- #include "sysemu/reset.h"
- #include "hw/loader.h"
- #include "elf.h"
-+#include "exec/tswap.h"
- #include "sysemu/device_tree.h"
- #include "qemu/config-file.h"
- #include "qemu/option.h"
-diff --git a/hw/arm/npcm7xx.c b/hw/arm/npcm7xx.c
-index cc68b5d8f1..1ef303415b 100644
---- a/hw/arm/npcm7xx.c
-+++ b/hw/arm/npcm7xx.c
-@@ -27,6 +27,7 @@
- #include "qemu/units.h"
- #include "sysemu/sysemu.h"
- #include "target/arm/cpu-qom.h"
-+#include "exec/tswap.h"
- 
- /*
-  * This covers the whole MMIO space. We'll use this to catch any MMIO accesses
-diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-index a45aac368c..1d0613a76f 100644
---- a/hw/mips/fuloong2e.c
-+++ b/hw/mips/fuloong2e.c
-@@ -40,6 +40,7 @@
- #include "sysemu/reset.h"
- #include "sysemu/sysemu.h"
- #include "qemu/error-report.h"
-+#include "exec/tswap.h"
- 
- #define ENVP_PADDR              0x2000
- #define ENVP_VADDR              cpu_mips_phys_to_kseg0(NULL, ENVP_PADDR)
-diff --git a/hw/mips/malta.c b/hw/mips/malta.c
-index af74008c82..3dca0f100c 100644
---- a/hw/mips/malta.c
-+++ b/hw/mips/malta.c
-@@ -56,6 +56,7 @@
- #include "semihosting/semihost.h"
- #include "hw/mips/cps.h"
- #include "hw/qdev-clock.h"
-+#include "exec/tswap.h"
- #include "target/mips/internal.h"
- #include "trace.h"
- #include "cpu.h"
-diff --git a/hw/ppc/sam460ex.c b/hw/ppc/sam460ex.c
-index d42b677898..abc02f0817 100644
---- a/hw/ppc/sam460ex.c
-+++ b/hw/ppc/sam460ex.c
-@@ -24,6 +24,7 @@
- #include "hw/loader.h"
- #include "elf.h"
- #include "exec/memory.h"
-+#include "exec/tswap.h"
- #include "ppc440.h"
- #include "hw/pci-host/ppc4xx.h"
- #include "hw/block/flash.h"
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index e9bc97fee0..b4b1f43983 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -74,6 +74,7 @@
- #include "hw/virtio/virtio-scsi.h"
- #include "hw/virtio/vhost-scsi-common.h"
- 
-+#include "exec/tswap.h"
- #include "exec/ram_addr.h"
- #include "hw/usb.h"
- #include "qemu/config-file.h"
-diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-index d02f330650..fd23afebf5 100644
---- a/hw/ppc/virtex_ml507.c
-+++ b/hw/ppc/virtex_ml507.c
-@@ -38,6 +38,7 @@
- #include "qapi/error.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
-+#include "exec/tswap.h"
- 
- #include "hw/intc/ppc-uic.h"
- #include "hw/ppc/ppc.h"
-diff --git a/hw/sh4/r2d.c b/hw/sh4/r2d.c
-index e5ac6751bd..5f4420f534 100644
---- a/hw/sh4/r2d.c
-+++ b/hw/sh4/r2d.c
-@@ -43,6 +43,7 @@
- #include "hw/loader.h"
- #include "hw/usb.h"
- #include "hw/block/flash.h"
-+#include "exec/tswap.h"
- 
- #define FLASH_BASE 0x00000000
- #define FLASH_SIZE (16 * MiB)
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index a3bb73cfa7..f2b001afdd 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -20,6 +20,7 @@
- #include "qemu/osdep.h"
- #include "cpu.h"
- #include "exec/gdbstub.h"
-+#include "exec/tswap.h"
- #include "gdbstub/helpers.h"
- #include "sysemu/tcg.h"
- #include "internals.h"
-diff --git a/target/xtensa/xtensa-semi.c b/target/xtensa/xtensa-semi.c
-index fa21b7e11f..dbc42d1587 100644
---- a/target/xtensa/xtensa-semi.c
-+++ b/target/xtensa/xtensa-semi.c
-@@ -29,6 +29,7 @@
- #include "cpu.h"
- #include "chardev/char-fe.h"
- #include "exec/helper-proto.h"
-+#include "exec/tswap.h"
- #include "semihosting/semihost.h"
- #include "qapi/error.h"
+diff --git a/include/exec/log.h b/include/exec/log.h
+index e0ff778a10..ee33981aab 100644
+--- a/include/exec/log.h
++++ b/include/exec/log.h
+@@ -4,7 +4,6 @@
  #include "qemu/log.h"
+ #include "qemu/log-for-trace.h"
+ #include "hw/core/cpu.h"
+-#include "disas/disas.h"
+ 
+ /* cpu_dump_state() logging functions: */
+ /**
+diff --git a/target/avr/translate.c b/target/avr/translate.c
+index 87e2bd5ef1..b2005f3cbe 100644
+--- a/target/avr/translate.c
++++ b/target/avr/translate.c
+@@ -29,6 +29,7 @@
+ #include "exec/helper-gen.h"
+ #include "exec/log.h"
+ #include "exec/translator.h"
++#include "disas/disas.h"
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
+diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+index 47a870f42d..6bec38404e 100644
+--- a/target/hexagon/translate.c
++++ b/target/hexagon/translate.c
+@@ -25,6 +25,7 @@
+ #include "exec/translation-block.h"
+ #include "exec/cpu_ldst.h"
+ #include "exec/log.h"
++#include "disas/disas.h"
+ #include "internal.h"
+ #include "attribs.h"
+ #include "insn.h"
+diff --git a/target/loongarch/tcg/translate.c b/target/loongarch/tcg/translate.c
+index 7567712655..ae87a68c69 100644
+--- a/target/loongarch/tcg/translate.c
++++ b/target/loongarch/tcg/translate.c
+@@ -14,6 +14,7 @@
+ #include "exec/helper-proto.h"
+ #include "exec/helper-gen.h"
+ #include "exec/log.h"
++#include "disas/disas.h"
+ #include "qemu/qemu-print.h"
+ #include "fpu/softfloat.h"
+ #include "translate.h"
+diff --git a/target/rx/translate.c b/target/rx/translate.c
+index f6e9e0ec90..4259ad6d74 100644
+--- a/target/rx/translate.c
++++ b/target/rx/translate.c
+@@ -27,6 +27,7 @@
+ #include "exec/helper-gen.h"
+ #include "exec/translator.h"
+ #include "exec/log.h"
++#include "disas/disas.h"
+ 
+ #define HELPER_H "helper.h"
+ #include "exec/helper-info.c.inc"
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 6a32656cd4..e7e0ab6846 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -51,6 +51,7 @@
+ #endif
+ 
+ #include "elf.h"
++#include "disas/disas.h"
+ #include "exec/log.h"
+ #include "tcg/tcg-ldst.h"
+ #include "tcg/tcg-temp-internal.h"
 -- 
 2.41.0
 
