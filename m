@@ -2,38 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B54F8AA170
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B2A8AA174
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVur-0001X8-UR; Thu, 18 Apr 2024 13:51:23 -0400
+	id 1rxVuz-0001kY-Ls; Thu, 18 Apr 2024 13:51:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVuk-0001SB-UG; Thu, 18 Apr 2024 13:51:15 -0400
+ id 1rxVum-0001T2-46; Thu, 18 Apr 2024 13:51:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVuj-0007eV-7C; Thu, 18 Apr 2024 13:51:14 -0400
+ id 1rxVuj-0007ef-VC; Thu, 18 Apr 2024 13:51:15 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A28ED5FD72;
+ by isrv.corpit.ru (Postfix) with ESMTP id CB6FA5FD73;
  Thu, 18 Apr 2024 20:50:03 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 10D1AB934C;
+ by tsrv.corpit.ru (Postfix) with SMTP id 3BE41B934D;
  Thu, 18 Apr 2024 20:50:01 +0300 (MSK)
-Received: (nullmailer pid 947857 invoked by uid 1000);
+Received: (nullmailer pid 947860 invoked by uid 1000);
  Thu, 18 Apr 2024 17:49:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zheyu Ma <zheyuma97@gmail.com>, zhenwei pi <pizhenwei@bytedance.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 105/116] backends/cryptodev: Do not abort for invalid
- session ID
-Date: Thu, 18 Apr 2024 20:49:35 +0300
-Message-Id: <20240418174955.947730-18-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 106/116] hw/net/lan9118: Replace magic '2048' value by
+ MIL_TXFIFO_SIZE definition
+Date: Thu, 18 Apr 2024 20:49:36 +0300
+Message-Id: <20240418174955.947730-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
@@ -64,62 +63,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Instead of aborting when a session ID is invalid,
-return VIRTIO_CRYPTO_INVSESS ("Invalid session id").
+The magic 2048 is explained in the LAN9211 datasheet (DS00002414A)
+in chapter 1.4, "10/100 Ethernet MAC":
 
-Reproduced using:
+  The MAC Interface Layer (MIL), within the MAC, contains a
+  2K Byte transmit and a 128 Byte receive FIFO which is separate
+  from the TX and RX FIFOs. [...]
 
-  $ cat << EOF | qemu-system-i386 -display none \
-     -machine q35,accel=qtest -m 512M -nodefaults \
-     -object cryptodev-backend-builtin,id=cryptodev0 \
-     -device virtio-crypto-pci,id=crypto0,cryptodev=cryptodev0 \
-     -qtest stdio
-  outl 0xcf8 0x80000804
-  outw 0xcfc 0x06
-  outl 0xcf8 0x80000820
-  outl 0xcfc 0xe0008000
-  write 0x10800e 0x1 0x01
-  write 0xe0008016 0x1 0x01
-  write 0xe0008020 0x4 0x00801000
-  write 0xe0008028 0x4 0x00c01000
-  write 0xe000801c 0x1 0x01
-  write 0x110000 0x1 0x05
-  write 0x110001 0x1 0x04
-  write 0x108002 0x1 0x11
-  write 0x108008 0x1 0x48
-  write 0x10800c 0x1 0x01
-  write 0x108018 0x1 0x10
-  write 0x10801c 0x1 0x02
-  write 0x10c002 0x1 0x01
-  write 0xe000b005 0x1 0x00
-  EOF
-  Assertion failed: (session_id < MAX_NUM_SESSIONS && builtin->sessions[session_id]),
-  function cryptodev_builtin_close_session, file cryptodev-builtin.c, line 430.
+Note, the use of the constant in lan9118_receive() reveals that
+our implementation is using the same buffer for both tx and rx.
 
-Cc: qemu-stable@nongnu.org
-Reported-by: Zheyu Ma <zheyuma97@gmail.com>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2274
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20240409094757.9127-1-philmd@linaro.org>
-(cherry picked from commit eaf2bd29538d039df80bb4b1584de33a61312bc6)
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Message-Id: <20240409133801.23503-2-philmd@linaro.org>
+(cherry picked from commit a45223467e4e185fff1c76a6483784fa379ded77)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/backends/cryptodev-builtin.c b/backends/cryptodev-builtin.c
-index 39d0455280..a514bbb310 100644
---- a/backends/cryptodev-builtin.c
-+++ b/backends/cryptodev-builtin.c
-@@ -427,7 +427,9 @@ static int cryptodev_builtin_close_session(
-                       CRYPTODEV_BACKEND_BUILTIN(backend);
-     CryptoDevBackendBuiltinSession *session;
+diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
+index cf7b8c897a..f0a8a3fa10 100644
+--- a/hw/net/lan9118.c
++++ b/hw/net/lan9118.c
+@@ -150,6 +150,12 @@ do { printf("lan9118: " fmt , ## __VA_ARGS__); } while (0)
  
--    assert(session_id < MAX_NUM_SESSIONS && builtin->sessions[session_id]);
-+    if (session_id >= MAX_NUM_SESSIONS || !builtin->sessions[session_id]) {
-+        return -VIRTIO_CRYPTO_INVSESS;
-+    }
+ #define GPT_TIMER_EN    0x20000000
  
-     session = builtin->sessions[session_id];
-     if (session->cipher) {
++/*
++ * The MAC Interface Layer (MIL), within the MAC, contains a 2K Byte transmit
++ * and a 128 Byte receive FIFO which is separate from the TX and RX FIFOs.
++ */
++#define MIL_TXFIFO_SIZE         2048
++
+ enum tx_state {
+     TX_IDLE,
+     TX_B,
+@@ -166,7 +172,7 @@ typedef struct {
+     int32_t pad;
+     int32_t fifo_used;
+     int32_t len;
+-    uint8_t data[2048];
++    uint8_t data[MIL_TXFIFO_SIZE];
+ } LAN9118Packet;
+ 
+ static const VMStateDescription vmstate_lan9118_packet = {
+@@ -182,7 +188,7 @@ static const VMStateDescription vmstate_lan9118_packet = {
+         VMSTATE_INT32(pad, LAN9118Packet),
+         VMSTATE_INT32(fifo_used, LAN9118Packet),
+         VMSTATE_INT32(len, LAN9118Packet),
+-        VMSTATE_UINT8_ARRAY(data, LAN9118Packet, 2048),
++        VMSTATE_UINT8_ARRAY(data, LAN9118Packet, MIL_TXFIFO_SIZE),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -544,7 +550,7 @@ static ssize_t lan9118_receive(NetClientState *nc, const uint8_t *buf,
+         return -1;
+     }
+ 
+-    if (size >= 2048 || size < 14) {
++    if (size >= MIL_TXFIFO_SIZE || size < 14) {
+         return -1;
+     }
+ 
 -- 
 2.39.2
 
