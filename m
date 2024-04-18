@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E33C8AA2BA
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E1B8AA2C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:29:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXQi-00021Z-1c; Thu, 18 Apr 2024 15:28:20 -0400
+	id 1rxXRK-0003Bq-JT; Thu, 18 Apr 2024 15:28:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOW-0007lJ-N7
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:07 -0400
-Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOb-0007mL-G4
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:11 -0400
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOT-0007Kj-Qf
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:04 -0400
-Received: by mail-ed1-x52a.google.com with SMTP id
- 4fb4d7f45d1cf-56c5d05128dso1153664a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:26:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOZ-0007Lr-DC
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:09 -0400
+Received: by mail-ed1-x52e.google.com with SMTP id
+ 4fb4d7f45d1cf-56e6a1edecfso1870838a12.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:26:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468359; x=1714073159; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468365; x=1714073165; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A5AN2zfNkbZgNzq4yMXaRJrNHQuv3As8IXVhhvnN+gY=;
- b=kWfD3cqyKXkpJywFm4hz1taUSWiPgaOQYBWpLgXQVQj0bWi+YeQgPvJ+WLCJHiIX0N
- grwLsEFVrGWzc7ambiU7upeH+e1uujDt9a2EPAC0HXplilD8BdYmP+aLjWs+vorzCoiX
- +VjcyFPk01i0vtgHWioVZgyXfGrWIRk0s8g01FMAbjpwT6NogsoVraEONx7F+RCs1GqU
- EwjzHus+71ToGm0Ql2ALRzYJc1dL5J9dniYs/wiy77ocyonO8D31o+KeeWKXhejU+nPm
- dThiL3kaSD+uqU8d74EjZ/JCb/vClEVrFRYqdwNXp46ITQLshCIQ4ti0tgtjrYJs9iW8
- fCmg==
+ bh=kMOTCzZ8G1QDoqpRuDm+110xUKe36YwlxUEiY1YFvik=;
+ b=Q7WYsWSZ+N9wV4Y81fNy5BB3MIr7PNKoUY0ZECRnyrkpvvL9iBKP71IYNc3o9FYV/S
+ fqsnn/qte7tZgNO8cVtB7BOdeNSZpy3VXmpzKubQtcGPaeQni7nhCQncwybTRquoo3TU
+ vhqc0IXMvMeeMOoNxsc+yTBcI1AeyzJdFivQh9gBBozbHzDwiEGPNKGZ97rg2GeoH8Nx
+ cKPkJ8aefyE+g7KjVC/2Nftx0pX7T/HNtAzKZ8p89HeX0D7QUtP7iErq+6NQBR47T3f0
+ 2UWThA3ztsI7N6OES/CGSf+0ZN/0aSJjDVUPYq+EDXivRGBkdpOOJJfpShhgmIZxC5YH
+ /HmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468359; x=1714073159;
+ d=1e100.net; s=20230601; t=1713468365; x=1714073165;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A5AN2zfNkbZgNzq4yMXaRJrNHQuv3As8IXVhhvnN+gY=;
- b=r9FxwG4ffRASNogAmthib/G8tMmM1nsD7xJo6WqW5xsk3fk1QVfqvIJPnzxDy3sB6k
- b8JbTrYYOkU+uq4RnPLbOMdW2YDXPHGc0zgvVvMcNAOmMthKnSNAzdeoNzY07v1biPlE
- FkUxN/Cy9L8kFXNm9BIYp1aX/Jj+eoc6mUwxqrX3IWKycasyA0lxs8oGzaJ6mjCPp5jX
- 8utzb5HrHDV5KPM2d5u8Q09IF07IYh6Syep00wJPIorkkYqeMpZHBm1CHVjqIeW+inXg
- d0Nr3wiu6P8aR863cdgThDV93w7OuCVch5pIKnP3q9rNB3tRCbhG+enrwdI/yeE4Ijk4
- wI6g==
-X-Gm-Message-State: AOJu0YyiMH+/WV6pq3E/RATxTu+iJAfhEiqR3vFHEMsqXrQ2E9EIkMMj
- xDxT+7ul08D3Uz4QzWSsAw34RhTzKQk11G0dYjb0go5k9KicLWzMRXWOKAj3A0PnaipbaEltD5O
- 1
-X-Google-Smtp-Source: AGHT+IFLSLQi8pDowoTVpwvSQYRuYn13I7Tn86X4cb0qyEAJ8RLgeCtpawdlVQYvcABi9MDTksrlmA==
-X-Received: by 2002:a17:906:1949:b0:a52:5925:1f76 with SMTP id
- b9-20020a170906194900b00a5259251f76mr47729eje.47.1713468359292; 
- Thu, 18 Apr 2024 12:25:59 -0700 (PDT)
+ bh=kMOTCzZ8G1QDoqpRuDm+110xUKe36YwlxUEiY1YFvik=;
+ b=X/+Q7kTUmpY87XSCE0I3kgrjJxM2yK6/g4SfP52l9daDZfj/Yi7KDVC3nQ9VeTEILt
+ D3tZ0jHyR5RXDMn4gPnbBLgiS3czGaQq1aPVNC65hhGqRGx+PS3R4RgNgyui+5WfFYgy
+ IvOthHQgk/CCSCya5sQPGrXYM/O5tvMDoNYPFaJ+gkqPUz/jX8TmjN65mWw1WgeK1LCC
+ 3/eVD7AZr5egINN02p++XQKgiJ6MkyaLeucwlvSAJiSr1vGXZSqQ43lczCgC81ZyRFrs
+ drVg1VfqZ+zuvj8mjjNPQdaRj51w67rNxM4XyWR3s3tPv76WuEVVgijI/BDl78N0qip+
+ QpoQ==
+X-Gm-Message-State: AOJu0YyLR0uAcbvcgGdgVJC+AXwcMR7tgqdAOJNTy514SPvTZLQEl8Z1
+ 2TSUlVPFwd+FKWjl63mDwanU7++pfhRNFdBOgbA7BZRMI/ZcY1SRFQo6d8OUrduKV6SN7emczL+
+ i
+X-Google-Smtp-Source: AGHT+IGauXFub4OFdy7tZBt9c2yQKaEln2/oxE9Uk8pxg4A6jmXoRy5XQ4BNQTCVjKmFKW2y4HZUKg==
+X-Received: by 2002:a50:951a:0:b0:56e:2fb9:66d6 with SMTP id
+ u26-20020a50951a000000b0056e2fb966d6mr107290eda.27.1713468365147; 
+ Thu, 18 Apr 2024 12:26:05 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- z18-20020a170906435200b00a4e657a5f1asm1259445ejm.112.2024.04.18.12.25.57
+ fj17-20020a0564022b9100b0056fe8f3eec6sm1194542edb.62.2024.04.18.12.26.03
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:25:58 -0700 (PDT)
+ Thu, 18 Apr 2024 12:26:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,17 +64,18 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 05/24] exec: Restrict 'cpu_ldst.h' to TCG accelerator
-Date: Thu, 18 Apr 2024 21:25:04 +0200
-Message-ID: <20240418192525.97451-6-philmd@linaro.org>
+Subject: [PATCH 06/24] exec: Have guest_addr_valid() methods take
+ abi_ptr/size_t arguments
+Date: Thu, 18 Apr 2024 21:25:05 +0200
+Message-ID: <20240418192525.97451-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52e;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,36 +98,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/cpu_ldst.h" is specific to TCG, do not allow its
-inclusion from other accelerators.
+abi_ulong is target specific, replace by abi_ptr which isn't.
+Use size_t for the @len type.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cpu_ldst.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/exec/cpu_ldst.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index 5b99666702..f3c2a3ca74 100644
+index f3c2a3ca74..63186b07e4 100644
 --- a/include/exec/cpu_ldst.h
 +++ b/include/exec/cpu_ldst.h
-@@ -1,5 +1,5 @@
- /*
-- *  Software MMU support
-+ *  Software MMU support (per-target)
-  *
-  * This library is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU Lesser General Public
-@@ -62,6 +62,10 @@
- #ifndef CPU_LDST_H
- #define CPU_LDST_H
+@@ -92,12 +92,12 @@ static inline void *g2h(CPUState *cs, abi_ptr x)
+     return g2h_untagged(cpu_untagged_addr(cs, x));
+ }
  
-+#ifndef CONFIG_TCG
-+#error Can only include this header with TCG
-+#endif
-+
- #include "exec/memopidx.h"
- #include "exec/abi_ptr.h"
- #include "exec/mmu-access-type.h"
+-static inline bool guest_addr_valid_untagged(abi_ulong x)
++static inline bool guest_addr_valid_untagged(abi_ptr x)
+ {
+     return x <= GUEST_ADDR_MAX;
+ }
+ 
+-static inline bool guest_range_valid_untagged(abi_ulong start, abi_ulong len)
++static inline bool guest_range_valid_untagged(abi_ptr start, size_t len)
+ {
+     return len - 1 <= GUEST_ADDR_MAX && start <= GUEST_ADDR_MAX - len + 1;
+ }
 -- 
 2.41.0
 
