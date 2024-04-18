@@ -2,40 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F528AA3AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D80D8AA3AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:03:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXxw-0001VL-Bv; Thu, 18 Apr 2024 16:02:40 -0400
+	id 1rxXy1-0001WB-Ft; Thu, 18 Apr 2024 16:02:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXxn-0001UN-GW; Thu, 18 Apr 2024 16:02:33 -0400
+ id 1rxXxq-0001Ur-S2; Thu, 18 Apr 2024 16:02:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXxl-0005Fp-FZ; Thu, 18 Apr 2024 16:02:31 -0400
+ id 1rxXxo-0005GT-Uj; Thu, 18 Apr 2024 16:02:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 346515FE09;
+ by isrv.corpit.ru (Postfix) with ESMTP id 45E395FE0A;
  Thu, 18 Apr 2024 23:02:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 9647BB93EF;
+ by tsrv.corpit.ru (Postfix) with SMTP id A59BBB93F0;
  Thu, 18 Apr 2024 23:02:24 +0300 (MSK)
-Received: (nullmailer pid 952842 invoked by uid 1000);
+Received: (nullmailer pid 952845 invoked by uid 1000);
  Thu, 18 Apr 2024 20:02:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ Alex Fan <alex.fan.q@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 42/59] tcg/optimize: Do not attempt to constant fold
- neg_vec
-Date: Thu, 18 Apr 2024 23:02:02 +0300
-Message-Id: <20240418200224.952785-1-mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 43/59] linux-user: Fix waitid return of siginfo_t and
+ rusage
+Date: Thu, 18 Apr 2024 23:02:03 +0300
+Message-Id: <20240418200224.952785-2-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,90 +64,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Split out the tail of fold_neg to fold_neg_no_const so that we
-can avoid attempting to constant fold vector negate.
+The copy back to siginfo_t should be conditional only on arg3,
+not the specific values that might have been written.
+The copy back to rusage was missing entirely.
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2150
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2262
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit e25fe886b89a396bae5847520b70c148587d490a)
+Tested-by: Alex Fan <alex.fan.q@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+(cherry picked from commit f0907ff4cae743f1a4ef3d0a55a047029eed06ff)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: context fixup in tests/tcg/aarch64/Makefile.target)
 
-diff --git a/tcg/optimize.c b/tcg/optimize.c
-index b6f6436c74..100b75efd8 100644
---- a/tcg/optimize.c
-+++ b/tcg/optimize.c
-@@ -1634,16 +1634,10 @@ static bool fold_nand(OptContext *ctx, TCGOp *op)
-     return false;
- }
- 
--static bool fold_neg(OptContext *ctx, TCGOp *op)
-+static bool fold_neg_no_const(OptContext *ctx, TCGOp *op)
- {
--    uint64_t z_mask;
--
--    if (fold_const1(ctx, op)) {
--        return true;
--    }
--
-     /* Set to 1 all bits to the left of the rightmost.  */
--    z_mask = arg_info(op->args[1])->z_mask;
-+    uint64_t z_mask = arg_info(op->args[1])->z_mask;
-     ctx->z_mask = -(z_mask & -z_mask);
- 
-     /*
-@@ -1654,6 +1648,11 @@ static bool fold_neg(OptContext *ctx, TCGOp *op)
-     return true;
- }
- 
-+static bool fold_neg(OptContext *ctx, TCGOp *op)
-+{
-+    return fold_const1(ctx, op) || fold_neg_no_const(ctx, op);
-+}
+diff --git a/linux-user/syscall.c b/linux-user/syscall.c
+index aead0f6ac9..41017b0df2 100644
+--- a/linux-user/syscall.c
++++ b/linux-user/syscall.c
+@@ -8759,14 +8759,24 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+ #ifdef TARGET_NR_waitid
+     case TARGET_NR_waitid:
+         {
++            struct rusage ru;
+             siginfo_t info;
+-            info.si_pid = 0;
+-            ret = get_errno(safe_waitid(arg1, arg2, &info, arg4, NULL));
+-            if (!is_error(ret) && arg3 && info.si_pid != 0) {
+-                if (!(p = lock_user(VERIFY_WRITE, arg3, sizeof(target_siginfo_t), 0)))
 +
- static bool fold_nor(OptContext *ctx, TCGOp *op)
- {
-     if (fold_const2_commutative(ctx, op) ||
-@@ -1949,7 +1948,7 @@ static bool fold_sub_to_neg(OptContext *ctx, TCGOp *op)
-     if (have_neg) {
-         op->opc = neg_op;
-         op->args[1] = op->args[2];
--        return fold_neg(ctx, op);
-+        return fold_neg_no_const(ctx, op);
-     }
-     return false;
- }
-diff --git a/tests/tcg/aarch64/Makefile.target b/tests/tcg/aarch64/Makefile.target
-index 474f61bc30..bd29446835 100644
---- a/tests/tcg/aarch64/Makefile.target
-+++ b/tests/tcg/aarch64/Makefile.target
-@@ -10,7 +10,7 @@ VPATH 		+= $(AARCH64_SRC)
- 
- # Base architecture tests
- AARCH64_TESTS=fcvt pcalign-a64
--AARCH64_TESTS += test-2248
-+AARCH64_TESTS += test-2248 test-2150
- 
- fcvt: LDFLAGS+=-lm
- 
-diff --git a/tests/tcg/aarch64/test-2150.c b/tests/tcg/aarch64/test-2150.c
-new file mode 100644
-index 0000000000..fb86c11958
---- /dev/null
-+++ b/tests/tcg/aarch64/test-2150.c
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* See https://gitlab.com/qemu-project/qemu/-/issues/2150 */
-+
-+int main()
-+{
-+    asm volatile(
-+        "movi     v6.4s, #1\n"
-+        "movi     v7.4s, #0\n"
-+        "sub      v6.2d, v7.2d, v6.2d\n"
-+        : : : "v6", "v7");
-+    return 0;
-+}
++            ret = get_errno(safe_waitid(arg1, arg2, (arg3 ? &info : NULL),
++                                        arg4, (arg5 ? &ru : NULL)));
++            if (!is_error(ret)) {
++                if (arg3) {
++                    p = lock_user(VERIFY_WRITE, arg3,
++                                  sizeof(target_siginfo_t), 0);
++                    if (!p) {
++                        return -TARGET_EFAULT;
++                    }
++                    host_to_target_siginfo(p, &info);
++                    unlock_user(p, arg3, sizeof(target_siginfo_t));
++                }
++                if (arg5 && host_to_target_rusage(arg5, &ru)) {
+                     return -TARGET_EFAULT;
+-                host_to_target_siginfo(p, &info);
+-                unlock_user(p, arg3, sizeof(target_siginfo_t));
++                }
+             }
+         }
+         return ret;
 -- 
 2.39.2
 
