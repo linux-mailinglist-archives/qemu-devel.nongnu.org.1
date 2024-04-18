@@ -2,79 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3E48A99A8
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 14:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0943A8A9A71
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 14:54:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxQkh-00028d-1J; Thu, 18 Apr 2024 08:20:31 -0400
+	id 1rxRGy-00013Q-Nf; Thu, 18 Apr 2024 08:53:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rxQkV-000287-5l
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:20:22 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rxRGU-0000zg-DI
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:53:23 -0400
+Received: from phobos.denx.de ([85.214.62.61])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rxQkB-0002co-Tx
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:20:18 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2d8a24f8a3cso9529871fa.1
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 05:19:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713442794; x=1714047594; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=V6dbRVO5l22jaDMVZgf+JMaBxDRGqVTS+Kl5b1IVopo=;
- b=Dd0XuUY6jpefvkW/rMw4xKcjM90nhwbWCb+fsQQjtQ4loIvEUQ/0+INVCLhnWJiOLD
- kURJ+wAE7+l0L6sOwWVXOLBCum1GKyh/IfQTmOk/Yg0C/h6tzYzFzx5lUkrFaAt9Uqz8
- nqLSwNn0Ac9EIVRTTMjZ4DbwvmA/C9Pr9BK8ALW095F15HFerx29A2e1wLqnj9FdnVKd
- 0IRcDGrmgw4zGh6M1L5JnxrDoYTHv/6gRFTlNTUiUf4H1rHkFR2f2cwxDNKGxdetRfCl
- /N1mI57ZV9curJhREsIPVtNqCJlAgOn9QSOMinF+7M+8GF+16BQnaksf93k7JT1LqbVn
- kAfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713442794; x=1714047594;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=V6dbRVO5l22jaDMVZgf+JMaBxDRGqVTS+Kl5b1IVopo=;
- b=WptOy6VVCLDR2RQn1uadfGQPlX0vUOTeuu7tjFxt6r0yPTo2wEsiCQ9FVvY2++yQA8
- ZgHpASHZ7xXgN9IBA8qXjVkNFhyXJOyO+wC/ZjXfaZgM84m9S8ifJcKdkuBAsCC52N5S
- khP34fvUaTUNWMH0gK8rsQQwTjtmgVyccJwUDPCdpLKf23j9XabXnGp25vTqJ0AwjUbr
- ONE+y3FL64t6ePu9L3WS9H209terU7IxpnEnoxHiaxi3U5PhmJJa6F1MbIFm5AHX46AW
- v5IFYtIT6Y67YApMTBlBR01I20sbWuD1nhrezILvNO59C1GLPiW5/XmVVV0lj0IHylUK
- 87dA==
-X-Gm-Message-State: AOJu0Yx8BURAc2ZjbxkrMWxLH+Ezg3YUDaUnT5BEbF1Q7C2CPWszdsg1
- otXObzMKOoWbYTOtN84KmNFVaohgtptKMVgRDYDG6J0a97SFYip8oDt8sN9sb3KbUKXZqtgnSho
- bREk8NK9q+n9fcHJ61XQb9z58aF5k26psVp4En0SxNyPIrZLZ
-X-Google-Smtp-Source: AGHT+IGTndAxqN6nCIzImYsU5YViT+/a4CuomsO2OtnyCB3P03m6ANO4Bj/3WFXEXZuqkCsS1w2c5kj6ajWznilo4Sc=
-X-Received: by 2002:a2e:b0f5:0:b0:2d8:10d3:1a0b with SMTP id
- h21-20020a2eb0f5000000b002d810d31a0bmr1518119ljl.39.1713442793618; Thu, 18
- Apr 2024 05:19:53 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rxRGS-0000r5-2d
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:53:21 -0400
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+ (No client certificate requested)
+ (Authenticated sender: marex@denx.de)
+ by phobos.denx.de (Postfix) with ESMTPSA id DFC0C8863F;
+ Thu, 18 Apr 2024 14:53:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+ s=phobos-20191101; t=1713444796;
+ bh=qiauDGd5nvpF0uqMxoHBcAQllVXTs/3t5gRKxCiSPsw=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=QjIaOZK4WVMwTBiMJYC7kfxxKho2FLGrqBFbV0jDftN3+6vQsTv8JrvlTIJyTbuPX
+ bNxdJp6r8dCsXTmnJlxVArJP3IfE16mpYu577obEBMWSc+xWDhB0d70XmnU+OhjGBK
+ PMJoyWmbSGhq1o/gda61JxidMk5wRtc0izYiH5Vw6V8EOjMY7YWhQoxUtHAiT3Pt5G
+ E5MKiUM4ZXfSz3+MAVxazFoEbsQLek8wnOI5vWFMiJyWwORUXyE/8JSYAXF5QwOCNO
+ 2nQRFr+KiqZQDxVVW6QczSnbXfqcHBnt+H14E9CnDR5D78URLjDwlmcDJ4ULhji9yW
+ lgqJWA3SrOkVQ==
+Message-ID: <65d43669-d4d1-44eb-870e-7a20af64e14a@denx.de>
+Date: Thu, 18 Apr 2024 14:49:04 +0200
 MIME-Version: 1.0
-References: <20240113012741.54664-1-masscry@gmail.com>
- <CABH+J_76pW0-XQVUsJ+7faK-gCVaoa7DScDcdHmcZxdc25GC5g@mail.gmail.com>
-In-Reply-To: <CABH+J_76pW0-XQVUsJ+7faK-gCVaoa7DScDcdHmcZxdc25GC5g@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 18 Apr 2024 13:19:42 +0100
-Message-ID: <CAFEAcA_68NR-SV+4anovL3nx+VFJYKeT3XXFq0k2oSFAuHH1SQ@mail.gmail.com>
-Subject: Re: [PATCH 0/2] Fix pointer arithmetic in indirect read for
- libvhost-user and libvduse
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?B?0KLQuNC80YPRgA==?= <masscry@gmail.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>, 
- Raphael Norwitz <raphael@enfabrica.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+User-Agent: Mozilla Thunderbird
+Subject: Re: Deprecation/removal of nios2 target support
+To: Thomas Huth <thuth@redhat.com>, Sandra Loosemore
+ <sloosemore@baylibre.com>, gcc@gcc.gnu.org, binutils@sourceware.org,
+ gdb-patches@sourceware.org, libc-alpha@sourceware.org,
+ Chung-Lin Tang <cltang@baylibre.com>, andrew@reenigne.org,
+ Yao Qi <qiyaoltc@gmail.com>
+Cc: Dinh Nguyen <dinguyen@kernel.org>, qemu-devel@nongnu.org,
+ newlib@sourceware.org, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <f4bug@amsat.org>, Chris Wulff <crwulff@gmail.com>
+References: <55a1bc52-b435-463e-8be1-4b23e44393a0@baylibre.com>
+ <6b7e61bb-edd3-42ee-a39c-f77fd43aa7df@redhat.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <6b7e61bb-edd3-42ee-a39c-f77fd43aa7df@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+Received-SPF: pass client-ip=85.214.62.61; envelope-from=marex@denx.de;
+ helo=phobos.denx.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,62 +78,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Temir: yeah, this was our fault, apologies for not responding.
+On 4/18/24 7:53 AM, Thomas Huth wrote:
+> On 18/04/2024 05.27, Sandra Loosemore wrote:
+>> Tomorrow I plan to push patches to mark the nios2 target as obsolete 
+>> in GCC 14.
+>>
+>> Background: Intel has EOL'ed the Nios II processor IP and is now 
+>> directing their FPGA customers to a RISC-V platform instead.
+>>
+>> https://www.intel.com/content/www/us/en/content-details/781327/intel-is-discontinuing-ip-ordering-codes-listed-in-pdn2312-for-nios-ii-ip.html
+>>
+>> The Nios II hardware on loan from Intel that we were using for testing 
+>> at Mentor Graphics/Siemens was returned around the first of the year. 
+>> For some time we had been using QEMU to test the nios2-elf target, but 
+>> we never had a QEMU test harness set up that would boot the Linux 
+>> kernel, and user-mode QEMU on this target is too buggy/unmaintained to 
+>> use for primary testing. So the current situation is that none of the 
+>> listed maintainers for any of the GNU toolchain components have access 
+>> to a fully working test configuration any more, we have all moved on 
+>> to new jobs and different projects, Intel has also moved on to a 
+>> different platform, and our former contacts on Intel's Nios II team 
+>> have moved on as well.  It seems like it's time to pull the plug.
+>>
+>> Therefore I'd like to mark Nios II as obsolete in GCC 14 now, and 
+>> remove support from all toolchain components after the release is 
+>> made.  I'm not sure there is an established process for 
+>> obsoleting/removing support in other components; besides binutils, 
+>> GDB, and GLIBC, there's QEMU, newlib/libgloss, and the Linux kernel.  
+>> But, we need to get the ball rolling somewhere.
+> 
+> Thanks for the heads-up, Sandra! FWIW: QEMU already marked the nios2 
+> target as deprecated, too, and plans to remove it in version 9.1 (in 
+> autumn this year).
 
-Michael, David, Raphael -- looks like we unfortunately lost
-track of this patchset -- could one of you have a look and
-review it, please?
-
-thanks
--- PMM
-
-On Sun, 4 Feb 2024 at 09:42, =D0=A2=D0=B8=D0=BC=D1=83=D1=80 <masscry@gmail.=
-com> wrote:
->
-> Hello, I am very sorry for bothering community on a such minor problem ag=
-ain, but I got no response for a few weeks, so maybe I have started thread =
-on a wrong mailing list, so I made an issue in gitlab issue tracker: https:=
-//gitlab.com/qemu-project/qemu/-/issues/2149 referencing this thread.
->
-> Maybe, it would help attract proper eyes to such a simple problem, so no =
-one bothers in trying to fix it, albeit it lives in the codebase for some t=
-ime already and is being copied around.
->
-> Sincerely,
-> Temir.
->
-> =D1=81=D0=B1, 13 =D1=8F=D0=BD=D0=B2. 2024=E2=80=AF=D0=B3. =D0=B2 04:28, T=
-emir Zharaspayev <masscry@gmail.com>:
->>
->> Hello! I have found a problem with virtqueue_read_indirect_desc function=
-, which
->> was advancing pointer to struct as it was a byte pointer, so every eleme=
-nt
->> comming after first chunk would be copied somewhere out of buffer.
->>
->> As I understand this is cold path, but nevertheless worth fixing.
->>
->> Also, exacly same problem in vduse_queue_read_indirect_desc function, be=
-cause
->> as I understand it is a copy of virtqueue_read_indirect_desc with vduse
->> backend.
->>
->> I was not sure if element of scattered buffer may end in the middle of
->> vring_desc struct data, so instead of writing
->> desc +=3D read_len/sizeof(struct vring_desc)
->> have implemented fix with proper byte pointer arithmetic.
->>
->> Sincerely,
->> Temir.
->>
->> Temir Zharaspayev (2):
->>   libvhost-user: Fix pointer arithmetic in indirect read
->>   libvduse: Fix pointer arithmetic in indirect read
->>
->>  subprojects/libvduse/libvduse.c           | 11 ++++++-----
->>  subprojects/libvhost-user/libvhost-user.c | 11 ++++++-----
->>  2 files changed, 12 insertions(+), 10 deletions(-)
->>
->> --
->> 2.34.
+Thank you and sorry for being inactive for so long around nios2.
 
