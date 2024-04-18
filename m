@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0FF8AA2BC
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:29:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E33C8AA2BA
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:28:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXQ7-0000kw-CP; Thu, 18 Apr 2024 15:27:43 -0400
+	id 1rxXQi-00021Z-1c; Thu, 18 Apr 2024 15:28:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOR-0007g3-DD
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:01 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOW-0007lJ-N7
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:07 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOO-0007IC-6B
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:59 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-a5200afe39eso131757366b.1
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:25:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOT-0007Kj-Qf
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:26:04 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-56c5d05128dso1153664a12.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:26:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468353; x=1714073153; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468359; x=1714073159; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=akXy09tUeGr6mCjhMUDCOqgVvIVDrIu0xemDF/6ToBg=;
- b=w9Tvs5ydrAfdcvCpUw1hnTnuV0alj/n+NqHob3B5ivBx86udhY17/aiKGMoZH4sdI+
- rtQ2xi5KMOV2HLdHrJD38edvafwScUwon3MvgaMsgWTNQE4rq8U/aZnZYv6ux5YnQCyL
- I6JCqTkwVWn8dFCXsv6A/J//ceza4QDI/4sVVyk0PYIYa5CtMvCSJ94pjLD6NvQb0Dcs
- 5nTEirbXjKM+H0lvuY98apBHTq8mvoqY2/bJnvSOAKtLi0vIbMjpnquxM/pf4/GxMI1q
- JzyXtbtV5BDXfv/6oOpPlaXsqrFjqhSSe4XrREPSwuj08P1EQW5fur/RuqHkPh+J/Bse
- 4OTQ==
+ bh=A5AN2zfNkbZgNzq4yMXaRJrNHQuv3As8IXVhhvnN+gY=;
+ b=kWfD3cqyKXkpJywFm4hz1taUSWiPgaOQYBWpLgXQVQj0bWi+YeQgPvJ+WLCJHiIX0N
+ grwLsEFVrGWzc7ambiU7upeH+e1uujDt9a2EPAC0HXplilD8BdYmP+aLjWs+vorzCoiX
+ +VjcyFPk01i0vtgHWioVZgyXfGrWIRk0s8g01FMAbjpwT6NogsoVraEONx7F+RCs1GqU
+ EwjzHus+71ToGm0Ql2ALRzYJc1dL5J9dniYs/wiy77ocyonO8D31o+KeeWKXhejU+nPm
+ dThiL3kaSD+uqU8d74EjZ/JCb/vClEVrFRYqdwNXp46ITQLshCIQ4ti0tgtjrYJs9iW8
+ fCmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468353; x=1714073153;
+ d=1e100.net; s=20230601; t=1713468359; x=1714073159;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=akXy09tUeGr6mCjhMUDCOqgVvIVDrIu0xemDF/6ToBg=;
- b=NltsUME2Mm/NDkyXahIdGsKD/Wy638YYtrmpuSvmiXoblVN3l88iXwoIKeKSSVZTXW
- 76nY35Sfg5BXtZPFhBda5dgRHqP3+caSfSyuzq5RVLcnhRqoo2dUG6wWUhvia4/YdBw0
- QOGtkoD9nZ/BVeZTki/F5+d0VUIcw4vY31lXVUKVRPQsHA7lWpoqvdr85q4J5pF7cTn4
- Vu30+BgoTg/VFOcAs/et0o7MNHz0OV7GArU/Ds5P5KSsfbTwRfZh0zP1XYX0L2pHhpnS
- Xv4+WUZR3XNC4agayCisI2HwH3bIZR1oQKEdCp8EP09xEj98g/fr3AJrUK7OvROoO0DR
- MGXA==
-X-Gm-Message-State: AOJu0YzzyRf8IbQj3+MYWsO6qpY0uFSH3POheTrdCCmVZrAGOoiyzTpp
- n7VNfom+janZ0tp4tg6AlIHd/XqB5i8TTXLISDIABgLFNnqdiWFgmg9+O0pbflBUXWVxejfFbH9
- I
-X-Google-Smtp-Source: AGHT+IGHWdMJNoXaAn2jkLARpnzm1AkwDW/nssSUAmn21RnLFR4YTnbmDPzOOELnW5gLZFOLDS380g==
-X-Received: by 2002:a17:906:915:b0:a51:c964:3cb7 with SMTP id
- i21-20020a170906091500b00a51c9643cb7mr50934ejd.61.1713468353390; 
- Thu, 18 Apr 2024 12:25:53 -0700 (PDT)
+ bh=A5AN2zfNkbZgNzq4yMXaRJrNHQuv3As8IXVhhvnN+gY=;
+ b=r9FxwG4ffRASNogAmthib/G8tMmM1nsD7xJo6WqW5xsk3fk1QVfqvIJPnzxDy3sB6k
+ b8JbTrYYOkU+uq4RnPLbOMdW2YDXPHGc0zgvVvMcNAOmMthKnSNAzdeoNzY07v1biPlE
+ FkUxN/Cy9L8kFXNm9BIYp1aX/Jj+eoc6mUwxqrX3IWKycasyA0lxs8oGzaJ6mjCPp5jX
+ 8utzb5HrHDV5KPM2d5u8Q09IF07IYh6Syep00wJPIorkkYqeMpZHBm1CHVjqIeW+inXg
+ d0Nr3wiu6P8aR863cdgThDV93w7OuCVch5pIKnP3q9rNB3tRCbhG+enrwdI/yeE4Ijk4
+ wI6g==
+X-Gm-Message-State: AOJu0YyiMH+/WV6pq3E/RATxTu+iJAfhEiqR3vFHEMsqXrQ2E9EIkMMj
+ xDxT+7ul08D3Uz4QzWSsAw34RhTzKQk11G0dYjb0go5k9KicLWzMRXWOKAj3A0PnaipbaEltD5O
+ 1
+X-Google-Smtp-Source: AGHT+IFLSLQi8pDowoTVpwvSQYRuYn13I7Tn86X4cb0qyEAJ8RLgeCtpawdlVQYvcABi9MDTksrlmA==
+X-Received: by 2002:a17:906:1949:b0:a52:5925:1f76 with SMTP id
+ b9-20020a170906194900b00a5259251f76mr47729eje.47.1713468359292; 
+ Thu, 18 Apr 2024 12:25:59 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- i7-20020a1709061e4700b00a52244ab819sm1270026ejj.170.2024.04.18.12.25.51
+ z18-20020a170906435200b00a4e657a5f1asm1259445ejm.112.2024.04.18.12.25.57
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:25:53 -0700 (PDT)
+ Thu, 18 Apr 2024 12:25:58 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,17 +64,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/24] exec: Restrict TCG specific declarations of 'cputlb.h'
-Date: Thu, 18 Apr 2024 21:25:03 +0200
-Message-ID: <20240418192525.97451-5-philmd@linaro.org>
+Subject: [PATCH 05/24] exec: Restrict 'cpu_ldst.h' to TCG accelerator
+Date: Thu, 18 Apr 2024 21:25:04 +0200
+Message-ID: <20240418192525.97451-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -97,32 +97,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid TCG specific declarations being used from non-TCG accelerators.
+"exec/cpu_ldst.h" is specific to TCG, do not allow its
+inclusion from other accelerators.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/cputlb.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/exec/cpu_ldst.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/cputlb.h b/include/exec/cputlb.h
-index 6da1462c4f..ef18642a32 100644
---- a/include/exec/cputlb.h
-+++ b/include/exec/cputlb.h
-@@ -22,9 +22,14 @@
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 5b99666702..f3c2a3ca74 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -1,5 +1,5 @@
+ /*
+- *  Software MMU support
++ *  Software MMU support (per-target)
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Lesser General Public
+@@ -62,6 +62,10 @@
+ #ifndef CPU_LDST_H
+ #define CPU_LDST_H
  
- #include "exec/cpu-common.h"
- 
-+#ifdef CONFIG_TCG
++#ifndef CONFIG_TCG
++#error Can only include this header with TCG
++#endif
 +
- #if !defined(CONFIG_USER_ONLY)
- /* cputlb.c */
- void tlb_protect_code(ram_addr_t ram_addr);
- void tlb_unprotect_code(ram_addr_t ram_addr);
- #endif
-+
-+#endif /* CONFIG_TCG */
-+
- #endif
+ #include "exec/memopidx.h"
+ #include "exec/abi_ptr.h"
+ #include "exec/mmu-access-type.h"
 -- 
 2.41.0
 
