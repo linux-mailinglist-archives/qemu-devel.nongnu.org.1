@@ -2,61 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5BF08AA148
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:41:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD1D8AA17B
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:52:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVl0-0005kR-DU; Thu, 18 Apr 2024 13:41:10 -0400
+	id 1rxVte-00089G-ND; Thu, 18 Apr 2024 13:50:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxVks-0005jl-GW; Thu, 18 Apr 2024 13:41:02 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rxVtb-000881-R2; Thu, 18 Apr 2024 13:50:03 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxVkp-0005pD-M0; Thu, 18 Apr 2024 13:41:02 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VL4l02Jmqz6JB0K;
- Fri, 19 Apr 2024 01:38:52 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id 93BC7140D1A;
- Fri, 19 Apr 2024 01:40:55 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
- 2024 18:40:55 +0100
-Date: Thu, 18 Apr 2024 18:40:54 +0100
-To: Jonathan Cameron via <qemu-devel@nongnu.org>, <linuxarm@huawei.com>
-CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Richard Henderson
- <richard.henderson@linaro.org>, <qemu-arm@nongnu.org>, Philippe
- =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Idan Horowitz
- <idan.horowitz@gmail.com>, <kraxel@redhat.com>, <devel@edk2.groups.io>
-Subject: Re: [PATCH v3 5/6] target/arm: Do memory type alignment check when
- translation disabled
-Message-ID: <20240418183600.00000345@huawei.com>
-In-Reply-To: <20240418091555.00006666@Huawei.com>
-References: <20240301204110.656742-1-richard.henderson@linaro.org>
- <20240301204110.656742-6-richard.henderson@linaro.org>
- <20240416161111.0000607c@huawei.com>
- <0c878d25-3fbb-4f0b-bc9e-ca638f8c4f1e@linaro.org>
- <20240418091555.00006666@Huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1rxVtY-0007Hz-UX; Thu, 18 Apr 2024 13:50:03 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 68D7D5FD60;
+ Thu, 18 Apr 2024 20:49:58 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id AFE67B9336;
+ Thu, 18 Apr 2024 20:49:55 +0300 (MSK)
+Received: (nullmailer pid 947801 invoked by uid 1000);
+ Thu, 18 Apr 2024 17:49:55 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 v2 000/116] Patch Round-up for stable 8.2.3,
+ freeze on 2024-04-20
+Date: Thu, 18 Apr 2024 20:49:17 +0300
+Message-Id: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -69,135 +54,267 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 18 Apr 2024 09:15:55 +0100
-Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
+The following patches are queued for QEMU stable v8.2.3:
 
-> On Wed, 17 Apr 2024 13:07:35 -0700
-> Richard Henderson <richard.henderson@linaro.org> wrote:
->=20
-> > On 4/16/24 08:11, Jonathan Cameron wrote: =20
-> > > On Fri,  1 Mar 2024 10:41:09 -1000
-> > > Richard Henderson <richard.henderson@linaro.org> wrote:
-> > >    =20
-> > >> If translation is disabled, the default memory type is Device, which
-> > >> requires alignment checking.  This is more optimally done early via
-> > >> the MemOp given to the TCG memory operation.
-> > >>
-> > >> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> > >> Reported-by: Idan Horowitz <idan.horowitz@gmail.com>
-> > >> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1204
-> > >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>   =20
-> > >=20
-> > > Hi Richard.
-> > >=20
-> > > I noticed some tests I was running stopped booting with master.
-> > > (it's a fun and complex stack of QEMU + kvm on QEMU for vCPU Hotplug =
-kernel work,
-> > > but this is the host booting)
-> > >=20
-> > > EDK2 build from upstream as of somepoint last week.
-> > >=20
-> > > Bisects to this patch.
-> > >=20
-> > >   qemu-system-aarch64 -M virt,gic-version=3D3,virtualization=3Dtrue -=
-m 4g,maxmem=3D8G,slots=3D8 -cpu cortex-a76 -smp cpus=3D4,threads=3D2,cluste=
-rs=3D2,sockets=3D1 \
-> > >   -kernel Image \
-> > >   -drive if=3Dnone,file=3Dfull.qcow2,format=3Dqcow2,id=3Dhd \
-> > >   -device ioh3420,id=3Droot_port1 -device virtio-blk-pci,drive=3Dhd \
-> > >   -netdev user,id=3Dmynet,hostfwd=3Dtcp::5555-:22 -device virtio-net-=
-pci,netdev=3Dmynet,id=3Dbob \
-> > >   -nographic -no-reboot -append 'earlycon root=3D/dev/vda2 fsck.mode=
-=3Dskip tp_printk' \
-> > >   -monitor telnet:127.0.0.1:1235,server,nowait -bios QEMU_EFI.fd \
-> > >   -object memory-backend-ram,size=3D4G,id=3Dmem0 \
-> > >   -numa node,nodeid=3D0,cpus=3D0-3,memdev=3Dmem0
-> > >=20
-> > > Symptoms: Nothing on console from edk2 which is built in debug mode s=
-o is normally very noisy.
-> > >            No sign of anything much happening at all :(   =20
-> >=20
-> > This isn't a fantastic bug report.
-> >=20
-> > (1) If it doesn't boot efi, then none of the -kernel parameters are nec=
-essary.
-> > (2) I'd be surprised if the full.qcow2 drive parameters are necessary e=
-ither.
-> >      But if they are, what contents?  Is a new empty drive sufficient, =
-just
-> >      enough to send the bios through the correct device initialization?
-> > (3) edk2 build from ...
-> >      Well, this is partly edk2's fault, as the build documentation is a=
-wful.
-> >      I spent an entire afternoon trying to figure it out and gave up.
-> >=20
-> > I will say that the edk2 shipped with qemu does work, so... are you abs=
-olutely
-> > certain that it isn't a bug in edk2 since then?  Firmware bugs are exac=
-tly what
-> > that patch is supposed to expose, as requested by issue #1204.
-> >=20
-> > I'd say you should boot with "-d int" and see what kind of interrupts y=
-ou're getting very=20
-> > early on.  I suspect that you'll see data aborts with ESR xx/yy where t=
-he last 6 bits of=20
-> > yy are 0x21 (alignment fault). =20
->=20
-> Hi Richard,
->=20
-> Sorry for lack of details, I was aware it wasn't great and should have st=
-ated I planned
-> to come back with more details when I had time to debug.  Snowed under so=
- for now I've
-> just dropped back to 8.2 and will get back to this perhaps next week.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.2
 
-+CC EDK2 list and Gerd.
+Patch freeze is 2024-04-20, and the release is planned for 2024-04-22:
 
-Still not a thorough report but some breadcrumbs.
+  https://wiki.qemu.org/Planning/8.2
 
-May be something about my local build setup as the shipped EDK2 succeeds,
-but the one I'm building via
-uefi-tools/edk2-build.sh armvirtqemu64
-(some aged instructions here that are more or less working still)
-https://people.kernel.org/jic23/
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Indeed starts out with some alignment faults.
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-Gerd, any ideas?  Maybe I needs something subtly different in my
-edk2 build?  I've not looked at this bit of the qemu infrastructure
-before - is there a document on how that image is built?
-As Richard observed, EDK2 isn't the simplest thing to build - I've
-been using uefitools for this for a long time, so maybe I missed some
-new requirement?
+Thanks!
 
-Build machine is x86_64 ubuntu, gcc 12.2.0.
+/mjt
 
-I need to build it because of some necessary tweaks to debug a
-PCI enumeration issue in Linux. (these tests were without those
-tweaks)
+--------------------------------------
+01* eae7509be9 Michael Tokarev:
+   Revert "configure: run plugin TCG tests again"
+02* 15cc10336249 Paolo Bonzini:
+   configure: run plugin TCG tests again
+03* 7f89fdf8ebe6 Richard Henderson:
+   tcg/aarch64: Apple does not align __int128_t in even registers
+04* b816e1b5ba58 Richard Henderson:
+   linux-user: Remove pgb_dynamic alignment assertion
+05* 9ea920dc2825 Daniel P. Berrangé:
+   gitlab: update FreeBSD Cirrus CI image to 13.3
+06* f5af80271aad David Parsons:
+   ui/cocoa: Fix window clipping on macOS 14
+07* d572bcb22201 Richard Henderson:
+   target/arm: Fix 32-bit SMOPA
+08* fd7f95f23d6f Peter Maydell:
+   hw/rtc/sun4v-rtc: Relicense to GPLv2-or-later
+09* 012b170173bc Dmitrii Gavrilov:
+   system/qdev-monitor: move drain_call_rcu call under if (!dev) in 
+   qmp_device_add()
+10* a9198b3132d8 Sven Schnelle:
+   hw/scsi/lsi53c895a: stop script on phase mismatch
+11* 9876359990dd Sven Schnelle:
+   hw/scsi/lsi53c895a: add timer to scripts processing
+12* 9bc9e9511944 Michael Tokarev:
+   make-release: switch to .xz format by default
+13* 69f7b00d057f Yu Zhang:
+   migration/rdma: Fix a memory issue for migration
+14* 65c2ab808571 Laurent Vivier:
+   igb: fix link state on resume
+15* 4cadf1023498 Laurent Vivier:
+   e1000e: fix link state on resume
+16* 6a5287ce8047 Nick Briggs:
+   Avoid unaligned fetch in ladr_match()
+17* 9253d8306226 Peng Fan:
+   xen: Drop out of coroutine context xen_invalidate_map_cache_entry
+18* 4f0a4a3d5854 Minwoo Im:
+   hw/nvme: separate 'serial' property for VFs
+19* 8c78015a55d8 Klaus Jensen:
+   hw/nvme: fix invalid check on mcl
+20* ee7bda4d38cd Klaus Jensen:
+   hw/nvme: generalize the mbar size helper
+21* fa905f65c554 Klaus Jensen:
+   hw/nvme: add machine compatibility parameter to enable msix exclusive bar
+22* 91bb64a8d201 Akihiko Odaki:
+   hw/nvme: Use pcie_sriov_num_vfs()
+23* 6081b4243cd6 Akihiko Odaki:
+   pcie_sriov: Validate NumVFs
+24* 74e2845c5f95 Jonathan Cameron:
+   hmat acpi: Fix out of bounds access due to missing use of indirection
+25* 633487df8d30 Volker Rümelin:
+   hw/audio/virtio-sound: return correct command response size
+26* 2e128776dc56 Cédric Le Goater:
+   migration: Skip only empty block devices
+27* ae5a40e85811 Kevin Wolf:
+   mirror: Don't call job_pause_point() under graph lock
+28* f816310d0c32 Stefan Hajnoczi:
+   nbd/server: only traverse NBDExport->clients from main loop thread
+29* 7075d235114b Stefan Hajnoczi:
+   nbd/server: introduce NBDClient->lock to protect fields
+30* 9c707525cbb1 Kevin Wolf:
+   nbd/server: Fix race in draining the export
+31* e8fce34eccf6 Kevin Wolf:
+   iotests: Add test for reset/AioContext switches with NBD exports
+32* c45f8f1aef35 Thomas Huth:
+   tests/unit: Bump test-aio-multithread test timeout to 2 minutes
+33* e1b363e328d5 Thomas Huth:
+   tests/unit: Bump test-crypto-block test timeout to 5 minutes
+34* 63b18312d14a Kevin Wolf:
+   tests/unit: Bump test-replication timeout to 60 seconds
+35* 5f97afe2543f Paolo Bonzini:
+   target/i386: introduce function to query MMU indices
+36* 90f641531c78 Paolo Bonzini:
+   target/i386: use separate MMU indexes for 32-bit accesses
+37* 2cc68629a6fc Paolo Bonzini:
+   target/i386: fix direction of "32-bit MMU" test
+38* e8ee827ffdb8 Daniel P. Berrangé:
+   Revert "chardev/char-socket: Fix TLS io channels sending too much data to 
+   the backend"
+39* d4069a84a338 Marc-André Lureau:
+   ui: compile dbus-display1.c with -fPIC as necessary
+40* 7fd226b04746 Tao Su:
+   target/i386: Revert monitor_puts() in do_inject_x86_mce()
+41* 72bace2d13cb Richard Henderson:
+   target/hppa: Fix assemble_16 insns for wide mode
+42* 4768c28edd40 Richard Henderson:
+   target/hppa: Fix assemble_11a insns for wide mode
+43* 46174e140d27 Richard Henderson:
+   target/hppa: Fix assemble_12a insns for wide mode
+44* c3ea1996a14d Sven Schnelle:
+   target/hppa: ldcw,s uses static shift of 3
+45* d37fad0ae5bd Sven Schnelle:
+   target/hppa: fix shrp for wide mode
+46* ae157fc25053 Sven Schnelle:
+   target/hppa: fix access_id check
+47* ad1fdacd1b93 Sven Schnelle:
+   target/hppa: exit tb on flush cache instructions
+48* b5e0b3a53c98 Sven Schnelle:
+   target/hppa: mask privilege bits in mfia
+49* 518d2f4300e5 Sven Schnelle:
+   target/hppa: fix do_stdby_e()
+50* 77642f92c0b7 Song Gao:
+   target/loongarch: Fix qemu-loongarch64 hang when executing 'll.d $t0, 
+   $t0, 0'
+51* eb844330bd36 Thomas Huth:
+   docs/conf.py: Remove usage of distutils
+52* 1590154ee437 Song Gao:
+   target/loongarch: Fix qemu-system-loongarch64 assert failed with the 
+   option '-d int'
+53* 272fba9779af Ido Plat:
+   target/s390x: Use mutable temporary value for op_ts
+54* 2c66de61f88d Kevin Wolf:
+   vdpa-dev: Fix initialisation order to restore VDUSE compatibility
+55* 3f934817c82c Stefan Reiter:
+   block/io: accept NULL qiov in bdrv_pad_request
+56* f6d38c9f6dae Fiona Ebner:
+   block-backend: fix edge case in bdrv_next() where BDS associated to BB 
+   changes
+57* bac09b093ebb Fiona Ebner:
+   block-backend: fix edge case in bdrv_next_cleanup() where BDS associated 
+   to BB changes
+58* 12d7b3bbd333 Fiona Ebner:
+   iotests: add test for stream job with an unaligned prefetch read
+59* 9dab7bbb017d Gregory Price:
+   target/i386/tcg: Enable page walking from MMIO memory
+60* 7c7a9f578e4f Lorenz Brun:
+   hw/scsi/scsi-generic: Fix io_timeout property not applying
+61* a158c63b3ba1 Yao Xingtao:
+   monitor/hmp-cmds-target: Append a space in error message in gpa2hva()
+62* d3646e31ce6d Daniel Henrique Barboza:
+   target/riscv/vector_helper.c: set vstart = 0 in GEN_VEXT_VSLIDEUP_VX()
+63* 0848f7c18ef5 Daniel Henrique Barboza:
+   trans_rvv.c.inc: set vstart = 0 in int scalar move insns
+64* 768e7b329c0b Daniel Henrique Barboza:
+   target/riscv/vector_helper.c: fix 'vmvr_v' memcpy endianess
+65* 7e53e3ddf6df Daniel Henrique Barboza:
+   target/riscv: always clear vstart in whole vec move insns
+66* df4252b2ecaf Daniel Henrique Barboza:
+   target/riscv/vector_helpers: do early exit when vstart >= vl
+67* 0a11629c915f Daniel Henrique Barboza:
+   target/riscv/vector_helper.c: optimize loops in ldst helpers
+68* 078189b327ae Frank Chang:
+   hw/intc: Update APLIC IDC after claiming iforce register
+69* c9b07fe14d35 Max Chou:
+   target/riscv: rvv: Remove the dependency of Zvfbfmin to Zfbfmin
+70* e06adebb0832 Irina Ryapolova:
+   target/riscv: Fix mode in riscv_tlb_fill
+71* 385e575cd5ab Yong-Xuan Wang:
+   target/riscv/kvm: fix timebase-frequency when using KVM acceleration
+72* 1c188fc8cbff Akihiko Odaki:
+   virtio-net: Fix vhost virtqueue notifiers for RSS
+73* 89a8de364b51 Akihiko Odaki:
+   hw/net/net_tx_pkt: Fix virtio header without checksum offloading
+74* 2911e9b95f3b Richard Henderson:
+   tcg/optimize: Fix sign_mask for logical right-shift
+75* 4a3aa11e1fb2 Richard Henderson:
+   target/hppa: Clear psw_n for BE on use_nullify_skip path
+76* d0ad271a7613 Avihai Horon:
+   migration/postcopy: Ensure postcopy_start() sets errp if it fails
+77* 1d2f2b35bc86 Michael Tokarev:
+   gitlab-ci/cirrus: switch from 'master' to 'latest'
+78* 44e25fbc1900 Peter Maydell:
+   hw/intc/arm_gicv3: ICC_HPPIR* return SPURIOUS if int group is disabled
+79* fbe5ac5671a9 Peter Maydell:
+   target/arm: take HSTR traps of cp15 accesses to EL2, not EL1
+80* 4c54f5bc8e1d Yajun Wu:
+   hw/net/virtio-net: fix qemu set used ring flag even vhost started
+81* bbdf9023665f Zheyu Ma:
+   block/virtio-blk: Fix memory leak from virtio_blk_zone_report
+82* 7afbdada7eff Wei Wang:
+   migration/postcopy: ensure preempt channel is ready before loading states
+83* 19b254e86a90 Peter Maydell:
+   target/arm: Use correct SecuritySpace for AArch64 AT ops at EL3
+84* 2d9a31b3c273 Wafer:
+   hw/virtio: Fix packed virtqueue flush used_idx
+85* 6ae72f609a21 lyx634449800:
+   vdpa-dev: Fix the issue of device status not updating when configuration 
+   interruption is triggered
+86* a45f09935c88 Zheyu Ma:
+   virtio-snd: Enhance error handling for invalid transfers
+87* 731655f87f31 Manos Pitsidianakis:
+   virtio-snd: rewrite invalid tx/rx message handling
+88 e25fe886b89a Richard Henderson:
+   tcg/optimize: Do not attempt to constant fold neg_vec
+89 f0907ff4cae7 Richard Henderson:
+   linux-user: Fix waitid return of siginfo_t and rusage
+90 b0f2f2976b4d Zack Buhman:
+   target/sh4: mac.w: memory accesses are 16-bit words
+91 7d95db5e78a2 Richard Henderson:
+   target/sh4: Merge mach and macl into a union
+92 c97e8977dcac Zack Buhman:
+   target/sh4: Fix mac.l with saturation enabled
+93 7227c0cd506e Zack Buhman:
+   target/sh4: Fix mac.w with saturation enabled
+94 b754cb2dcde2 Zack Buhman:
+   target/sh4: add missing CHECK_NOT_DELAY_SLOT
+95 5888357942da Keith Packard:
+   target/m68k: Map FPU exceptions to FPSR register
+96 ec0504b989ca Philippe Mathieu-Daudé:
+   hw/virtio: Introduce virtio_bh_new_guarded() helper
+97 ba28e0ff4d95 Philippe Mathieu-Daudé:
+   hw/display/virtio-gpu: Protect from DMA re-entrancy bugs
+98 b4295bff25f7 Philippe Mathieu-Daudé:
+   hw/char/virtio-serial-bus: Protect from DMA re-entrancy bugs
+99 f4729ec39ad9 Philippe Mathieu-Daudé:
+   hw/virtio/virtio-crypto: Protect from DMA re-entrancy bugs
+100 aa88f99c87c0 Yuquan Wang:
+   qemu-options: Fix CXL Fixed Memory Window interleave-granularity typo
+101 7a86544f286d Philippe Mathieu-Daudé:
+   hw/block/nand: Factor nand_load_iolen() method out
+102 2e3e09b36800 Philippe Mathieu-Daudé:
+   hw/block/nand: Have blk_load() take unsigned offset and return boolean
+103 d39fdfff348f Philippe Mathieu-Daudé:
+   hw/block/nand: Fix out-of-bound access in NAND block buffer
+104 fc09ff2979de Philippe Mathieu-Daudé:
+   hw/misc/applesmc: Fix memory leak in reset() handler
+105 eaf2bd29538d Philippe Mathieu-Daudé:
+   backends/cryptodev: Do not abort for invalid session ID
+106 a45223467e4e Philippe Mathieu-Daudé:
+   hw/net/lan9118: Replace magic '2048' value by MIL_TXFIFO_SIZE definition
+107 ad766d603f39 Philippe Mathieu-Daudé:
+   hw/net/lan9118: Fix overflow in MIL TX FIFO
+108 9e4b27ca6bf4 Philippe Mathieu-Daudé:
+   hw/sd/sdhci: Do not update TRNMOD when Command Inhibit (DAT) is set
+109 83ddb3dbba2e Philippe Mathieu-Daudé:
+   hw/net/net_tx_pkt: Fix overrun in update_sctp_checksum()
+110 dcb0a1ac03d6 Philippe Mathieu-Daudé:
+   hw/audio/virtio-snd: Remove unused assignment
+111 4ef1f559f270 Richard Henderson:
+   linux-user/x86_64: Handle the vsyscall page in open_self_maps_{2,4}
+112 2ce6cff94df2 Cindy Lu:
+   virtio-pci: fix use of a released vector
+113 f33274265a24 BALATON Zoltan:
+   hw/isa/vt82c686: Keep track of PIRQ/PINT pins separately
+114 6e4aceba2079 BALATON Zoltan:
+   hw/pci-host/ppc440_pcix: Do not expose a bridge device on PCI bus
+115 2df5c1f5b014 Harsh Prateek Bora:
+   ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to refer IRQ range for CPU IPIs.
+116 c4f91d7b7be7 Harsh Prateek Bora:
+   ppc/spapr: Initialize max_cpus limit to SPAPR_IRQ_NR_IPIS.
 
-As Richard observed, most of the command line isn't needed.
-
-qemu-system-aarch64 -M virt,virtualization=3Dtrue, -m 4g -cpu cortex-a76 \
--bios QEMU_EFI.fd -d int
-
-Jonathan
-
-=20
-
-
->=20
-> Jonathan
->=20
-> >=20
-> >=20
-> > r~ =20
->=20
->=20
-
+(commit(s) marked with * were in previous series and are not resent)
 
