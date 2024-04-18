@@ -2,92 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F397B8AA0A6
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5BF08AA148
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:41:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxV7y-00037A-7j; Thu, 18 Apr 2024 13:00:50 -0400
+	id 1rxVl0-0005kR-DU; Thu, 18 Apr 2024 13:41:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <sloosemore@baylibre.com>)
- id 1rxV7o-00036a-5Y
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:00:40 -0400
-Received: from mail-il1-x134.google.com ([2607:f8b0:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <sloosemore@baylibre.com>)
- id 1rxV7m-00077P-BU
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:00:39 -0400
-Received: by mail-il1-x134.google.com with SMTP id
- e9e14a558f8ab-36b30909b01so4080835ab.2
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 10:00:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713459636; x=1714064436;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=qNlS77H+pL42RlL7qf4MOHsQ3NM/Ilv2Mnjc9BC9ICo=;
- b=pqDFjbAJk+wvC1K1nySnbFJ6i99OMEH6LLOJDTC7eoteT5ibQ3UUgj8a0FogVluMbh
- rWK5ogngUwcOgBnSGIvO3KphhFZVGTFT9vFMffX50CLxbAopPlu10B4IT5lyF3G42H4+
- 9yMi5lh0TRnc8hxZNtY/p7vRaO/YfMlxDYfYTcGIkU+72q8ZrxRB5uOaFTYyD+TfbcHd
- 3AV51FnoA04pMrwr53+7wHBGe1OqmjUubk5BPAtYlbenY1toRI7jv5jZwaUJ5/Y+j1UC
- pHKjeYScIQ9mz1pZJyRlIjQ5whMfOiahYI6cVtiE8HIXSMIWdS+1UgiwWJoU1yXYbnaH
- prvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713459636; x=1714064436;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qNlS77H+pL42RlL7qf4MOHsQ3NM/Ilv2Mnjc9BC9ICo=;
- b=ar5C1ZTpLvzoUqv49ODvLWAbSNikOArGvhjxoKTxbzzc9s1+1ltAqYhH5BFrKiUTe+
- p3iJmpGBNcgWzHg8Q9Y30Nd9Yd7nhMqE7oewzxanbF6g6n/AOZc4+2Sla8o0gw1OXpuZ
- TGNrPjSIGUc95w+HHVHjvFd3PGvr4JPRFDrx9cRaGN8nYdvhUirp3/rW9RFNOXxbTKVF
- vUr4nzrcgF6Qyewt6qE2kLCScaKxfPHOfkALAQaDZg/3HyeiccodZ6F548+w+WhJDFCD
- 2P+oWve5hEQuwPN+e9oxtFArnXNod9zkL9BxEgwk++qaO0ljxOYOWszi8Gf4gaSGffUI
- U5rQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXDhKll5yMAGvvTHdxG2eLLEUxgzsK0MPu6buSjeos6O1ewuC6MYYAHgGGbU3MTSN8b083kqzt/l3ulvXfrJrCJAloazSE=
-X-Gm-Message-State: AOJu0Yy4IQ+WAymK/5ZFmYGNRzXPoEazvxYAQcHcT8arRanZKOh7AD5p
- mUTopfdd+TMVUfStxKsZ96e6cxE/6le+SWzO2R7u9uZlH3MwYpQBXHwuxwSbcAU=
-X-Google-Smtp-Source: AGHT+IHKlphkHSaQOsmfMnKfwDNWSaDF/GST0ATSlmdqgQEYowZAXXRPLPhQxIBXjIu4HbLTlHD9fw==
-X-Received: by 2002:a05:6e02:16c9:b0:36b:2e91:efc0 with SMTP id
- 9-20020a056e0216c900b0036b2e91efc0mr4004441ilx.23.1713459636161; 
- Thu, 18 Apr 2024 10:00:36 -0700 (PDT)
-Received: from ?IPV6:2601:281:d901:5620:a066:ea41:9db5:8f23?
- ([2601:281:d901:5620:a066:ea41:9db5:8f23])
- by smtp.gmail.com with ESMTPSA id
- f4-20020a056638168400b0048275128dbfsm508078jat.96.2024.04.18.10.00.35
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Apr 2024 10:00:35 -0700 (PDT)
-Message-ID: <442883ff-6900-4a5e-ba4e-f4af50fd6e2d@baylibre.com>
-Date: Thu, 18 Apr 2024 11:00:34 -0600
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rxVks-0005jl-GW; Thu, 18 Apr 2024 13:41:02 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1rxVkp-0005pD-M0; Thu, 18 Apr 2024 13:41:02 -0400
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VL4l02Jmqz6JB0K;
+ Fri, 19 Apr 2024 01:38:52 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+ by mail.maildlp.com (Postfix) with ESMTPS id 93BC7140D1A;
+ Fri, 19 Apr 2024 01:40:55 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
+ 2024 18:40:55 +0100
+Date: Thu, 18 Apr 2024 18:40:54 +0100
+To: Jonathan Cameron via <qemu-devel@nongnu.org>, <linuxarm@huawei.com>
+CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Richard Henderson
+ <richard.henderson@linaro.org>, <qemu-arm@nongnu.org>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Idan Horowitz
+ <idan.horowitz@gmail.com>, <kraxel@redhat.com>, <devel@edk2.groups.io>
+Subject: Re: [PATCH v3 5/6] target/arm: Do memory type alignment check when
+ translation disabled
+Message-ID: <20240418183600.00000345@huawei.com>
+In-Reply-To: <20240418091555.00006666@Huawei.com>
+References: <20240301204110.656742-1-richard.henderson@linaro.org>
+ <20240301204110.656742-6-richard.henderson@linaro.org>
+ <20240416161111.0000607c@huawei.com>
+ <0c878d25-3fbb-4f0b-bc9e-ca638f8c4f1e@linaro.org>
+ <20240418091555.00006666@Huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Deprecation/removal of nios2 target support
-To: Jeff Law <jeffreyalaw@gmail.com>, joel@rtems.org,
- Joseph Myers <josmyers@redhat.com>
-Cc: gcc@gcc.gnu.org, binutils@sourceware.org, gdb-patches@sourceware.org,
- libc-alpha@sourceware.org, Chung-Lin Tang <cltang@baylibre.com>,
- andrew@reenigne.org, Yao Qi <qiyaoltc@gmail.com>,
- Dinh Nguyen <dinguyen@kernel.org>, qemu-devel@nongnu.org,
- newlib@sourceware.org, Arnd Bergmann <arnd@arndb.de>
-References: <55a1bc52-b435-463e-8be1-4b23e44393a0@baylibre.com>
- <b5d375ed-283-974a-febf-892760ff855@redhat.com>
- <CAF9ehCVZddmGe0emH8H6ChjuUxia-NOpxa0dCA=5+2PAnvytZA@mail.gmail.com>
- <1fc9fdd9-bbb7-4506-bfe5-b31e9331eb90@gmail.com>
-Content-Language: en-US
-From: Sandra Loosemore <sloosemore@baylibre.com>
-In-Reply-To: <1fc9fdd9-bbb7-4506-bfe5-b31e9331eb90@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::134;
- envelope-from=sloosemore@baylibre.com; helo=mail-il1-x134.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,35 +69,135 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/18/24 10:06, Jeff Law wrote:
-> 
-> ACK.  Just one more note to the wider audience.  I looked at QEMU's user 
-> mode support for nios2 on/off over the last couple years.  It never 
-> seemed to work well enough be able to run the GCC testsuite reliably.
+On Thu, 18 Apr 2024 09:15:55 +0100
+Jonathan Cameron via <qemu-devel@nongnu.org> wrote:
 
-I looked at the problems with the nios2 user-mode support in QEMU in 
-some detail a few years ago.  It looked like the problem was that it had 
-copied the target syscall data structures from GLIBC and wasn't 
-accounting for 32-bit target/64-bit host differences -- this 
-particularly affected signal handling.  I'm pretty sure we asked Intel 
-if they wanted this fixed and they were not interested in pursuing that. 
-  The end result is that user-mode QEMU is not very useful for GLIBC or 
-GDB testing.
+> On Wed, 17 Apr 2024 13:07:35 -0700
+> Richard Henderson <richard.henderson@linaro.org> wrote:
+>=20
+> > On 4/16/24 08:11, Jonathan Cameron wrote: =20
+> > > On Fri,  1 Mar 2024 10:41:09 -1000
+> > > Richard Henderson <richard.henderson@linaro.org> wrote:
+> > >    =20
+> > >> If translation is disabled, the default memory type is Device, which
+> > >> requires alignment checking.  This is more optimally done early via
+> > >> the MemOp given to the TCG memory operation.
+> > >>
+> > >> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
+> > >> Reported-by: Idan Horowitz <idan.horowitz@gmail.com>
+> > >> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1204
+> > >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>   =20
+> > >=20
+> > > Hi Richard.
+> > >=20
+> > > I noticed some tests I was running stopped booting with master.
+> > > (it's a fun and complex stack of QEMU + kvm on QEMU for vCPU Hotplug =
+kernel work,
+> > > but this is the host booting)
+> > >=20
+> > > EDK2 build from upstream as of somepoint last week.
+> > >=20
+> > > Bisects to this patch.
+> > >=20
+> > >   qemu-system-aarch64 -M virt,gic-version=3D3,virtualization=3Dtrue -=
+m 4g,maxmem=3D8G,slots=3D8 -cpu cortex-a76 -smp cpus=3D4,threads=3D2,cluste=
+rs=3D2,sockets=3D1 \
+> > >   -kernel Image \
+> > >   -drive if=3Dnone,file=3Dfull.qcow2,format=3Dqcow2,id=3Dhd \
+> > >   -device ioh3420,id=3Droot_port1 -device virtio-blk-pci,drive=3Dhd \
+> > >   -netdev user,id=3Dmynet,hostfwd=3Dtcp::5555-:22 -device virtio-net-=
+pci,netdev=3Dmynet,id=3Dbob \
+> > >   -nographic -no-reboot -append 'earlycon root=3D/dev/vda2 fsck.mode=
+=3Dskip tp_printk' \
+> > >   -monitor telnet:127.0.0.1:1235,server,nowait -bios QEMU_EFI.fd \
+> > >   -object memory-backend-ram,size=3D4G,id=3Dmem0 \
+> > >   -numa node,nodeid=3D0,cpus=3D0-3,memdev=3Dmem0
+> > >=20
+> > > Symptoms: Nothing on console from edk2 which is built in debug mode s=
+o is normally very noisy.
+> > >            No sign of anything much happening at all :(   =20
+> >=20
+> > This isn't a fantastic bug report.
+> >=20
+> > (1) If it doesn't boot efi, then none of the -kernel parameters are nec=
+essary.
+> > (2) I'd be surprised if the full.qcow2 drive parameters are necessary e=
+ither.
+> >      But if they are, what contents?  Is a new empty drive sufficient, =
+just
+> >      enough to send the bios through the correct device initialization?
+> > (3) edk2 build from ...
+> >      Well, this is partly edk2's fault, as the build documentation is a=
+wful.
+> >      I spent an entire afternoon trying to figure it out and gave up.
+> >=20
+> > I will say that the edk2 shipped with qemu does work, so... are you abs=
+olutely
+> > certain that it isn't a bug in edk2 since then?  Firmware bugs are exac=
+tly what
+> > that patch is supposed to expose, as requested by issue #1204.
+> >=20
+> > I'd say you should boot with "-d int" and see what kind of interrupts y=
+ou're getting very=20
+> > early on.  I suspect that you'll see data aborts with ESR xx/yy where t=
+he last 6 bits of=20
+> > yy are 0x21 (alignment fault). =20
+>=20
+> Hi Richard,
+>=20
+> Sorry for lack of details, I was aware it wasn't great and should have st=
+ated I planned
+> to come back with more details when I had time to debug.  Snowed under so=
+ for now I've
+> just dropped back to 8.2 and will get back to this perhaps next week.
 
-> As a result, my tester builds nios2 and will run the testsuite, but all 
-> the execution tests are only built, they're not actually run.  It's been 
-> fairly stable, but its not doing in-depth testing.
++CC EDK2 list and Gerd.
 
-Yes, as I noted in my previous message, there is nothing seriously wrong 
-with the nios2 GCC port at present; it just seems kind of pointless to 
-invest time in continuing to maintain it as a hobby when the 
-architecture is dead.  I think legacy customers generally would prefer 
-to keep using the toolchains previously distributed by Altera/Intel or 
-Mentor/Siemens instead of trying to build a new bleeding-edge toolchain 
-from scratch, too.
+Still not a thorough report but some breadcrumbs.
 
--Sandra
+May be something about my local build setup as the shipped EDK2 succeeds,
+but the one I'm building via
+uefi-tools/edk2-build.sh armvirtqemu64
+(some aged instructions here that are more or less working still)
+https://people.kernel.org/jic23/
+
+Indeed starts out with some alignment faults.
+
+Gerd, any ideas?  Maybe I needs something subtly different in my
+edk2 build?  I've not looked at this bit of the qemu infrastructure
+before - is there a document on how that image is built?
+As Richard observed, EDK2 isn't the simplest thing to build - I've
+been using uefitools for this for a long time, so maybe I missed some
+new requirement?
+
+Build machine is x86_64 ubuntu, gcc 12.2.0.
+
+I need to build it because of some necessary tweaks to debug a
+PCI enumeration issue in Linux. (these tests were without those
+tweaks)
+
+As Richard observed, most of the command line isn't needed.
+
+qemu-system-aarch64 -M virt,virtualization=3Dtrue, -m 4g -cpu cortex-a76 \
+-bios QEMU_EFI.fd -d int
+
+Jonathan
+
+=20
+
+
+>=20
+> Jonathan
+>=20
+> >=20
+> >=20
+> > r~ =20
+>=20
+>=20
+
 
