@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 766AE8AA3B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 359768AA3C2
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:07:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXz7-0002sm-T6; Thu, 18 Apr 2024 16:03:54 -0400
+	id 1rxXyP-0001Zf-Az; Thu, 18 Apr 2024 16:03:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXz4-0002lb-S8; Thu, 18 Apr 2024 16:03:50 -0400
+ id 1rxXxr-0001Uu-6r; Thu, 18 Apr 2024 16:02:35 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXz3-0005Tl-1V; Thu, 18 Apr 2024 16:03:50 -0400
+ id 1rxXxp-0005GY-4X; Thu, 18 Apr 2024 16:02:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 71FBF5FE1A;
- Thu, 18 Apr 2024 23:02:28 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 56DFB5FE0B;
+ Thu, 18 Apr 2024 23:02:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id D02CFB9400;
- Thu, 18 Apr 2024 23:02:25 +0300 (MSK)
-Received: (nullmailer pid 952894 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id B6C8CB93F1;
+ Thu, 18 Apr 2024 23:02:24 +0300 (MSK)
+Received: (nullmailer pid 952848 invoked by uid 1000);
  Thu, 18 Apr 2024 20:02:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
- Kowshik Jois <kowsjois@linux.ibm.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 59/59] ppc/spapr: Initialize max_cpus limit to
- SPAPR_IRQ_NR_IPIS.
-Date: Thu, 18 Apr 2024 23:02:19 +0300
-Message-Id: <20240418200224.952785-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 44/59] hw/virtio: Introduce virtio_bh_new_guarded()
+ helper
+Date: Thu, 18 Apr 2024 23:02:04 +0300
+Message-Id: <20240418200224.952785-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
@@ -62,73 +62,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Initialize the machine specific max_cpus limit as per the maximum range
-of CPU IPIs available. Keeping between 4096 to 8192 will throw IRQ not
-free error due to XIVE/XICS limitation and keeping beyond 8192 will hit
-assert in tcg_region_init or spapr_xive_claim_irq.
+Introduce virtio_bh_new_guarded(), similar to qemu_bh_new_guarded()
+but using the transport memory guard, instead of the device one
+(there can only be one virtio device per virtio bus).
 
-Logs:
-
-Without patch fix:
-
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: IRQ 4096 is not free
-[root@host build]#
-
-On LPAR:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-**
-ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Bail out! ERROR:../tcg/region.c:774:tcg_region_init: assertion failed:
-(region_size >= 2 * page_size)
-Aborted (core dumped)
-[root@host build]#
-
-On x86:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=8193
-qemu-system-ppc64: ../hw/intc/spapr_xive.c:596: spapr_xive_claim_irq:
-Assertion `lisn < xive->nr_irqs' failed.
-Aborted (core dumped)
-[root@host build]#
-
-With patch fix:
-[root@host build]# qemu-system-ppc64 -accel tcg -smp 10,maxcpus=4097
-qemu-system-ppc64: Invalid SMP CPUs 4097. The max CPUs supported by
-machine 'pseries-8.2' is 4096
-[root@host build]#
-
-Reported-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Tested-by: Kowshik Jois <kowsjois@linux.ibm.com>
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-(cherry picked from commit c4f91d7b7be76c47015521ab0109c6e998a369b0)
+Inspired-by: Gerd Hoffmann <kraxel@redhat.com>
+Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Message-Id: <20240409105537.18308-2-philmd@linaro.org>
+(cherry picked from commit ec0504b989ca61e03636384d3602b7bf07ffe4da)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+(Mjt: trivial #include context fixup in include/hw/virtio/virtio.h)
 
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 66b414d2e9..9e860f5047 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4602,13 +4602,10 @@ static void spapr_machine_class_init(ObjectClass *oc, void *data)
-     mc->block_default_type = IF_SCSI;
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index e4f8ed1e63..4a35d7cb0c 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -5029,3 +5029,13 @@ static void virtio_register_types(void)
+ }
  
-     /*
--     * Setting max_cpus to INT32_MAX. Both KVM and TCG max_cpus values
--     * should be limited by the host capability instead of hardcoded.
--     * max_cpus for KVM guests will be checked in kvm_init(), and TCG
--     * guests are welcome to have as many CPUs as the host are capable
--     * of emulate.
-+     * While KVM determines max cpus in kvm_init() using kvm_max_vcpus(),
-+     * In TCG the limit is restricted by the range of CPU IPIs available.
-      */
--    mc->max_cpus = INT32_MAX;
-+    mc->max_cpus = SPAPR_IRQ_NR_IPIS;
+ type_init(virtio_register_types)
++
++QEMUBH *virtio_bh_new_guarded_full(DeviceState *dev,
++                                   QEMUBHFunc *cb, void *opaque,
++                                   const char *name)
++{
++    DeviceState *transport = qdev_get_parent_bus(dev)->parent;
++
++    return qemu_bh_new_full(cb, opaque, name,
++                            &transport->mem_reentrancy_guard);
++}
+diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
+index 96a56430a6..c1a7c9bd3b 100644
+--- a/include/hw/virtio/virtio.h
++++ b/include/hw/virtio/virtio.h
+@@ -23,6 +23,7 @@
+ #include "standard-headers/linux/virtio_ring.h"
+ #include "qom/object.h"
+ #include "hw/virtio/vhost.h"
++#include "block/aio.h"
  
-     mc->no_parallel = 1;
-     mc->default_boot_order = "";
+ /*
+  * A guest should never accept this. It implies negotiation is broken
+@@ -463,4 +464,10 @@ static inline bool virtio_device_disabled(VirtIODevice *vdev)
+ bool virtio_legacy_allowed(VirtIODevice *vdev);
+ bool virtio_legacy_check_disabled(VirtIODevice *vdev);
+ 
++QEMUBH *virtio_bh_new_guarded_full(DeviceState *dev,
++                                   QEMUBHFunc *cb, void *opaque,
++                                   const char *name);
++#define virtio_bh_new_guarded(dev, cb, opaque) \
++    virtio_bh_new_guarded_full((dev), (cb), (opaque), (stringify(cb)))
++
+ #endif
 -- 
 2.39.2
 
