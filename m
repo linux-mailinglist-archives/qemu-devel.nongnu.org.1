@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FAE8AA2B5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:27:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6987E8AA2B7
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:27:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXOc-0007eM-UH; Thu, 18 Apr 2024 15:26:12 -0400
+	id 1rxXPu-0000Bu-Hq; Thu, 18 Apr 2024 15:27:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOE-0007Yb-C7
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:46 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOO-0007ef-BE
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:57 -0400
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOC-0007GH-IC
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:46 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-a51ddc783e3so143533466b.0
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:25:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXOI-0007H3-5l
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:51 -0400
+Received: by mail-lf1-x130.google.com with SMTP id
+ 2adb3069b0e04-5194a4da476so1633759e87.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:25:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468341; x=1714073141; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468347; x=1714073147; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Rg2JOTw5ouUti560CWKRK7poJqCPTKGwJpqCuG5tVqg=;
- b=UvG7XzXja7W/vpv+RxjXTKd/QJrmfmCasdlRzL7j4UFNjVz+dWb56rIjPtrlz9r4S2
- kTzAClKeIX9oqw1TfXSytPPwuSL/m1H4cuvlvL6/gIk1/AEFYgcqk2/9p/MYxtlKzXZi
- D/FL/PutDeDnt0anMkXIvQF06JV47wMOKLt7rIhAIpTIqFWV+K1sP1GFZ5Chy9/BDSSO
- MQFqk8yxgw/5AdikOLmqsFfn4CNcNxgwyActLZeB5YT7xVFgNucDK4i3I0tPmEXmPOb7
- BHLMwsaynffcNJJFBchrzbmwFsKO95z3ZxYzHBGOBYNbc8GQwU3S6wvxTjGqOHVX6Oep
- oH/w==
+ bh=qM1+ePV7JI08UmjLq5CXr5Pnp/lUDlPFaqkC073bDHw=;
+ b=wezRyQWSZWKwxXifmcQF0z7lKN6y241aje35cbC9rX6PjqiAeOiL6fvOXfYzbrivwP
+ 0iqnvJKuzbpD4e0l3Qq5AQXY1poJryZQzbzVoV30r1hwGQYWMWOzZZqbNJSG4etVz4v8
+ e4VjqYNCaRq4o5NJhv8Bbfp5u4Sso1E+lXOjuagJrKnpMaIKFEA+a+hHYQ6+P5uF4Lqb
+ H7HGkCq6oMQ9lZqUPNRTzksIMmUNr2CMPbh4HsyN8cx0v849vZt62j8xV6Ae/p5RNqWt
+ oVhoOVIl94RLa+MXZLYl111APRJQvYF1aHgWDhD+PId81B27EIoHo/RvPFNIetgh7/Kb
+ w6AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468341; x=1714073141;
+ d=1e100.net; s=20230601; t=1713468347; x=1714073147;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Rg2JOTw5ouUti560CWKRK7poJqCPTKGwJpqCuG5tVqg=;
- b=keFN8BQbDX6e7UJx3gHnipJun6g1Ak1jnDO+D8T01lexJcEDPK7mxkfRDkIjeDdji6
- GtE7XRSVftWBFFaMCZSVxqUxjWR/l9V+3Ea5w8l1oDNPXHaP9ixbHpofOfjTjnhZnlDW
- hKGQkiAy8V7o/dzoHD0LZLCGiCJemxPaYGTHMUntWO9qbuc/+S2u4efwwf+uWimFEtIz
- PI/Jmix+GeYuegKnzOnPF7g17GUFKUNJGWsCTzz1TV1/MdVhuJsEr5uaLQs30GiZjt5A
- q8bgDrNKaOj4zcMEsePuwhnfG0Oo4f7SqkNlDF/HBnSAYThpasgAgSCCROmmJD1Bnf5o
- +VJg==
-X-Gm-Message-State: AOJu0YyKJiX+CsxNH41qvnBe/ZnMRxI7Y8L5+fXUDeU2coymyfvz2fF3
- xvIqgyGVoaKrshIZOyzR4W9zxnpsD3dQNFXZobII3xSIOCGC/SURv+5IkbrRfV32QYFpdfnHdn/
- B
-X-Google-Smtp-Source: AGHT+IGASUllNpo0Va0P2dkaALouSNHWQpdA0Wzw0LXpl6pAHWuJa2Joj8M3jDkvfPrz+ilPpgnX1w==
-X-Received: by 2002:a17:906:2591:b0:a52:6cb2:9347 with SMTP id
- m17-20020a170906259100b00a526cb29347mr49043ejb.8.1713468341444; 
- Thu, 18 Apr 2024 12:25:41 -0700 (PDT)
+ bh=qM1+ePV7JI08UmjLq5CXr5Pnp/lUDlPFaqkC073bDHw=;
+ b=qmuDUN1v+qcMufn68Q607uIGOTVgDqXXir+VhIVGxwb/PGqPRKhlkVAMAcUiotXvGw
+ ZGpyoRIjBJKBZ5bH7a8jOCv2mIVZq///rOqxftrPK/NG42mIoXpdUWCIrmcLIOBYJH+M
+ 4y1YKBrBGVCZserZ/M1mTGFGQZoIDWLW1+CrJzzLk1P30BMvzmj5vg4OqLIOduSLCpjr
+ rh4s6fvY0ADn7Rm55OpGiEuyNpcHToA1IbBCVjHE35xQXqGbqkVxEYkMA0mTw+Df32Fw
+ 9V0P4WpAyKwzsD/SW5vgFpVlqtPNA5SnIovfR0DN6+rt7NydPlbuVg/xXkYCMqaseJ8/
+ Onhg==
+X-Gm-Message-State: AOJu0YxcsOFNqNkVmZCd6tFwCTnb5mUuUznHNWkczEaiNo3TJirozf8E
+ r+7aLF+aZVvLR4H/r9Xgyfvts6kQcZDk/4IZorHzgk1hRsB2hGodSJiFYI6wgElIAOiTcg7U9rR
+ w
+X-Google-Smtp-Source: AGHT+IGbmgL9q5GYwqiriM3TxUUJmdVS5GsQvbF3Zc7lx0z/Cqw6N44I5tEaB6OpQn1vVifcnkd4Ww==
+X-Received: by 2002:a19:f616:0:b0:518:d6ea:9f5d with SMTP id
+ x22-20020a19f616000000b00518d6ea9f5dmr2755246lfe.42.1713468347556; 
+ Thu, 18 Apr 2024 12:25:47 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- hx12-20020a170906846c00b00a5582324219sm68524ejc.16.2024.04.18.12.25.39
+ w23-20020a170907271700b00a556f2f18d6sm1195356ejk.57.2024.04.18.12.25.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:25:41 -0700 (PDT)
+ Thu, 18 Apr 2024 12:25:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -63,36 +63,26 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liwei1518@gmail.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-Subject: [PATCH 02/24] exec: Declare CPUBreakpoint/CPUWatchpoint type in
- 'breakpoint.h' header
-Date: Thu, 18 Apr 2024 21:25:01 +0200
-Message-ID: <20240418192525.97451-3-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 03/24] hw/core: Avoid including the full 'hw/core/cpu.h' in
+ 'tcg-cpu-ops.h'
+Date: Thu, 18 Apr 2024 21:25:02 +0200
+Message-ID: <20240418192525.97451-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::130;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x130.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,122 +98,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The CPUBreakpoint and CPUWatchpoint structures are declared
-in "hw/core/cpu.h", which contains declarations related to
-CPUState and CPUClass. Some source files only require the
-BP/WP definitions and don't need to pull in all CPU* API.
-In order to simplify, create a new "exec/breakpoint.h" header.
+Only include what is required, avoiding the full
+CPUState API from the huge "hw/core/cpu.h" header.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/breakpoint.h | 23 +++++++++++++++++++++++
- include/hw/core/cpu.h     | 16 +---------------
- target/arm/internals.h    |  1 +
- target/ppc/internal.h     |  1 +
- target/riscv/debug.h      |  2 ++
- 5 files changed, 28 insertions(+), 15 deletions(-)
- create mode 100644 include/exec/breakpoint.h
+ include/hw/core/tcg-cpu-ops.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/exec/breakpoint.h b/include/exec/breakpoint.h
-new file mode 100644
-index 0000000000..45038263e3
---- /dev/null
-+++ b/include/exec/breakpoint.h
-@@ -0,0 +1,23 @@
-+#ifndef EXEC_BREAKPOINT_H
-+#define EXEC_BREAKPOINT_H
-+
-+#include "qemu/queue.h"
+diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
+index dc1f16a977..9387d38748 100644
+--- a/include/hw/core/tcg-cpu-ops.h
++++ b/include/hw/core/tcg-cpu-ops.h
+@@ -10,7 +10,11 @@
+ #ifndef TCG_CPU_OPS_H
+ #define TCG_CPU_OPS_H
+ 
+-#include "hw/core/cpu.h"
++#include "exec/breakpoint.h"
++#include "exec/hwaddr.h"
++#include "exec/memattrs.h"
++#include "exec/mmu-access-type.h"
 +#include "exec/vaddr.h"
-+#include "exec/memattrs.h" //MemTxAttrs
-+
-+typedef struct CPUBreakpoint {
-+    vaddr pc;
-+    int flags; /* BP_* */
-+    QTAILQ_ENTRY(CPUBreakpoint) entry;
-+} CPUBreakpoint;
-+
-+typedef struct CPUWatchpoint {
-+    vaddr vaddr;
-+    vaddr len;
-+    vaddr hitaddr;
-+    MemTxAttrs hitattrs;
-+    int flags; /* BP_* */
-+    QTAILQ_ENTRY(CPUWatchpoint) entry;
-+} CPUWatchpoint;
-+
-+#endif
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5f0422493b..6f5a16e0fc 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -22,6 +22,7 @@
  
- #include "hw/qdev-core.h"
- #include "disas/dis-asm.h"
-+#include "exec/breakpoint.h"
- #include "exec/hwaddr.h"
- #include "exec/vaddr.h"
- #include "exec/memattrs.h"
-@@ -347,21 +348,6 @@ typedef struct CPUNegativeOffsetState {
-     bool can_do_io;
- } CPUNegativeOffsetState;
- 
--typedef struct CPUBreakpoint {
--    vaddr pc;
--    int flags; /* BP_* */
--    QTAILQ_ENTRY(CPUBreakpoint) entry;
--} CPUBreakpoint;
--
--struct CPUWatchpoint {
--    vaddr vaddr;
--    vaddr len;
--    vaddr hitaddr;
--    MemTxAttrs hitattrs;
--    int flags; /* BP_* */
--    QTAILQ_ENTRY(CPUWatchpoint) entry;
--};
--
- struct KVMState;
- struct kvm_run;
- 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index dd3da211a3..a7c5ec1849 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -25,6 +25,7 @@
- #ifndef TARGET_ARM_INTERNALS_H
- #define TARGET_ARM_INTERNALS_H
- 
-+#include "exec/breakpoint.h"
- #include "hw/registerfields.h"
- #include "tcg/tcg-gvec-desc.h"
- #include "syndrome.h"
-diff --git a/target/ppc/internal.h b/target/ppc/internal.h
-index 5b20ecbd33..601c0b533f 100644
---- a/target/ppc/internal.h
-+++ b/target/ppc/internal.h
-@@ -18,6 +18,7 @@
- #ifndef PPC_INTERNAL_H
- #define PPC_INTERNAL_H
- 
-+#include "exec/breakpoint.h"
- #include "hw/registerfields.h"
- 
- /* PM instructions */
-diff --git a/target/riscv/debug.h b/target/riscv/debug.h
-index 5794aa6ee5..c347863578 100644
---- a/target/riscv/debug.h
-+++ b/target/riscv/debug.h
-@@ -22,6 +22,8 @@
- #ifndef RISCV_DEBUG_H
- #define RISCV_DEBUG_H
- 
-+#include "exec/breakpoint.h"
-+
- #define RV_MAX_TRIGGERS         2
- 
- /* register index of tdata CSRs */
+ struct TCGCPUOps {
+     /**
 -- 
 2.41.0
 
