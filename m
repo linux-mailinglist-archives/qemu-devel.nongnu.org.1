@@ -2,94 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6528AA236
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 20:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA968AA26A
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:02:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxWht-00053K-Q6; Thu, 18 Apr 2024 14:42:01 -0400
+	id 1rxX0M-0003oM-C2; Thu, 18 Apr 2024 15:01:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arnd@arndb.de>) id 1rxWhr-00052v-Br
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 14:41:59 -0400
-Received: from fhigh8-smtp.messagingengine.com ([103.168.172.159])
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1rxX0H-0003ng-Ee
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:01 -0400
+Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <arnd@arndb.de>) id 1rxWhp-0007kC-GX
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 14:41:59 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailfhigh.nyi.internal (Postfix) with ESMTP id C28561140094;
- Thu, 18 Apr 2024 14:41:51 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
- by compute5.internal (MEProxy); Thu, 18 Apr 2024 14:41:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
- :cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:subject
- :subject:to:to; s=fm2; t=1713465711; x=1713552111; bh=WYona33Oi0
- 91DmN3yevCSRN9ewoDtBHoqopr8VTRAnM=; b=gVLvCxMIpcQ+HMquC6K/n1sHMJ
- GdZPYyzlKf6w6OJUhXoVhtdz0r3qgYSSRcEGZD7rNCBlmpd2aZ2VCaqD1EQgn4bO
- eEWxCbte0LES0O3a79A2E84rXJUjpFtaarXRLFsOYIT6D5UBZ9WP3iq7Cj50wzmr
- nOdSUrAZ809gbZCqeMNSRCd4wTvY9adVvssUEBjyeVIMaZzS2XKXcob6knLBWTHi
- ccXkf28c64Gip381CGkWt7JYNHpuI7z/eqnGRLE6PkbrjsQWkNpyVJYAq0Stv5lL
- F5VNG+g4mkcYqNMco70937f7jpCsnWtfwFRkgvAhQi09IwyG1GVcY3qzU67A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm3; t=1713465711; x=1713552111; bh=WYona33Oi091DmN3yevCSRN9ewoD
- tBHoqopr8VTRAnM=; b=P5hlAXkwi7ODwwNHH8mGFota2lxmlcL8dyjn19Lgz0Qo
- rvv4QxCON/6NLayy0jHW94UAqJd72XxAcugHQxoqNWhPz0PDu6e6e7w0jcGwG/m7
- RJAYzOYNqojB16P0wsefXsP0oWugipemGdZi3+aWPOyD6dQPMxrwx7BL8+tyh4pf
- HBiEZUpGUeOaZRjK/L0euvkCtKva/i5SPMfI8YTvfBfAWqMTpmvb5iEU4wOUq8Z9
- gbCuXp1QHn4nOybr9lC0K1XxodLkASgW2Qs/jKn0VrW53Zh05RVrjKct0ddXAl97
- yxrubCJ0CYM/57f/12S09Kjbq2WJY4dY5NfHlLby1A==
-X-ME-Sender: <xms:b2khZiuNJNjhd1upEA6hRgg5IOsWQNB1Zc9T_vqt5CgTRFRRy97qvw>
- <xme:b2khZnfZ_pPDxQZhSFHQKveKsW7Hhce076MRjppp-jegNt5F00S5mptOQAC3G8hFG
- _ULb4-ucTU7r8cySrE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudektddguddvjecutefuodetggdotefrod
- ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
- necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
- enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
- rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
- htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
- keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
- grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:b2khZtzZ952xaa1RjxYuUIlqgZbN6igB3jxwdoJP7xSVNqjzKeZXtg>
- <xmx:b2khZtPW9tMjTI7BsNG9syTDd6kiBbnmKBO3Yw9RL0cLzSG9YTjdzQ>
- <xmx:b2khZi_O4kXQi-CTFpPBJeWLbrx1kynZd_2pMnNiR-0gzc50taSZnw>
- <xmx:b2khZlWgCt2RzWmw9HWfWTpdgqCTq9nnTqV5gKhKOf6Q0jQ3R4BleQ>
- <xmx:b2khZmU0dU692nswnxkOv7NuXrZyCPS4D-xMDWWcv0KZfQKX_XFGG0qY>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 4D343B6008D; Thu, 18 Apr 2024 14:41:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-379-gabd37849b7-fm-20240408.001-gabd37849
+ (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
+ id 1rxX0D-0002wi-Hu
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1713466855;
+ bh=ntV8AMAxwSVviMTSTSO8OBDrYNxZ6+aOr758qIkpS0w=;
+ h=From:To:Cc:Subject:Date:From;
+ b=aktcQtcg4cKn7CSM9nPCVzQaORJ7aDHveAjdyIig1tflgnge43VfFH1inwyo9EjrN
+ N7fsRDvxvhRV9gLSURcDY6vqwt6WokbX3lACDGnUmtZazrX6bAEHYQ9c3FJZc98bJK
+ oDCMkd0plrp/9YTWU3ULdthzDptciseWdCcJxkR1eWESZpWljXzkzSkR3ilb+tYWHu
+ GUx2DOR+OrMEcYhcgo1GE8BV++aArjjA4g/isK5Obw3GaaK0d+OwakD8WMFlEx8LjN
+ sYPyBY5vzPIqu22MoPQ1ZG9qvK282HVbjclxGPR0H4IRJK4VNmLXdpb6pHkc1w9cQR
+ qIdBSkaM5Orpw==
+Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ (Authenticated sender: dmitry.osipenko)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 786233782017;
+ Thu, 18 Apr 2024 19:00:53 +0000 (UTC)
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Gert Wollny <gert.wollny@collabora.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
+ ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
+ =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Stefano Stabellini <stefano.stabellini@amd.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+ Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
+ Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
+Subject: [PATCH v8 00/11] Support blob memory and venus on qemu
+Date: Thu, 18 Apr 2024 22:00:29 +0300
+Message-ID: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Message-Id: <320677a6-1c3a-477c-95fc-b74cb5a4c5c6@app.fastmail.com>
-In-Reply-To: <b5d375ed-283-974a-febf-892760ff855@redhat.com>
-References: <55a1bc52-b435-463e-8be1-4b23e44393a0@baylibre.com>
- <b5d375ed-283-974a-febf-892760ff855@redhat.com>
-Date: Thu, 18 Apr 2024 20:41:30 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Joseph Myers" <josmyers@redhat.com>,
- "Sandra Loosemore" <sloosemore@baylibre.com>
-Cc: gcc@gcc.gnu.org, binutils@sourceware.org, gdb-patches@sourceware.org,
- "Xi Ruoyao" <libc-alpha@sourceware.org>,
- "Chung-Lin Tang" <cltang@baylibre.com>, andrew@reenigne.org,
- "Yao Qi" <qiyaoltc@gmail.com>, "Dinh Nguyen" <dinguyen@kernel.org>,
- qemu-devel@nongnu.org, newlib@sourceware.org,
- "Andreas Oetken" <andreas.oetken@siemens.com>,
- "Bernd Weiberg" <bernd.weiberg@siemens.com>, "Marek Vasut" <marex@denx.de>
-Subject: Re: Deprecation/removal of nios2 target support
-Content-Type: text/plain
-Received-SPF: pass client-ip=103.168.172.159; envelope-from=arnd@arndb.de;
- helo=fhigh8-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=46.235.227.194;
+ envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,33 +87,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 18, 2024, at 17:44, Joseph Myers wrote:
-> On Wed, 17 Apr 2024, Sandra Loosemore wrote:
->
->> Therefore I'd like to mark Nios II as obsolete in GCC 14 now, and remove
->> support from all toolchain components after the release is made.  I'm not sure
->> there is an established process for obsoleting/removing support in other
->> components; besides binutils, GDB, and GLIBC, there's QEMU, newlib/libgloss,
->> and the Linux kernel.  But, we need to get the ball rolling somewhere.
->
-> CC:ing Arnd Bergmann regarding the obsolescence in the Linux kernel.
+Hello,
 
-We have not yet marked nios2 as deprecated in the kernel, but that
-is mostly because the implementation does not get in the way too
-much and Dinh Nguyen is still around as a maintainer and merging
-bugfixes.
+This series enables Vulkan Venus context support on virtio-gpu.
 
-Almost all nios2 kernel changes I see in the past decade have been
-done blindly without testing on hardware, either for treewide
-changes, or by code inspection. The only notable exceptions I could
-find are from Andreas Oetken and Bernd Weiberg at Siemens and
-from Marek Vasut (all added to Cc in case they have something to add).
+All virglrender and almost all Linux kernel prerequisite changes
+needed by Venus are already in upstream. For kernel there is a pending
+KVM patchset that fixes mapping of compound pages needed for DRM drivers
+using TTM [1], othewrwise hostmem blob mapping will fail with a KVM error
+from Qemu.
 
-We should probably remove nios2 from the kernel in the near future,
-but even if we decide not to, I think deprecating it from gcc is the
-right idea: If there are a few remaining users that still plan
-to update their kernels, gcc-14 will still be able to build new
-kernels for several years.
+[1] https://lore.kernel.org/kvm/20240229025759.1187910-1-stevensd@google.com/
 
-     Arnd
+Example Qemu cmdline that enables Venus for virtio-gpu:
+
+  qemu-system-x86_64 -device virtio-vga-gl,hostmem=4G,blob=true,vulkan=true
+
+
+Changes from V7 to V8
+
+- Supported suspension of virtio-gpu commands processing and made
+  unmapping of hostmem region asynchronous by blocking/suspending
+  cmd processing until region is unmapped. Suggested by Akihiko Odaki.
+
+- Fixed arm64 building of x86 targets using updated linux-headers.
+  Corrected the update script. Thanks to Rob Clark for reporting
+  the issue.
+
+- Added new patch that makes registration of virgl capsets dynamic.
+  Requested by Antonio Caggiano and Pierre-Eric Pelloux-Prayer.
+
+- Venus capset now isn't advertised if Vulkan is disabled with vulkan=false
+
+Changes from V6 to V7
+
+- Used scripts/update-linux-headers.sh to update Qemu headers based
+  on Linux v6.8-rc3 that adds Venus capset definition to virtio-gpu
+  protocol, was requested by Peter Maydel
+
+- Added r-bs that were given to v6 patches. Corrected missing s-o-bs
+
+- Dropped context_init Qemu's virtio-gpu device configuration flag,
+  was suggested by Marc-André Lureau
+
+- Added missing error condition checks spotted by Marc-André Lureau
+  and Akihiko Odaki, and few more
+
+- Returned back res->mr referencing to memory_region_init_ram_ptr() like
+  was suggested by Akihiko Odaki. Incorporated fix suggested by Pierre-Eric
+  to specify the MR name
+
+- Dropped the virgl_gpu_resource wrapper, cleaned up and simplified
+  patch that adds blob-cmd support
+
+- Fixed improper blob resource removal from resource list on resource_unref
+  that was spotted by Akihiko Odaki
+
+- Change order of the blob patches, was suggested by Akihiko Odaki.
+  The cmd_set_scanout_blob support is enabled first
+
+- Factored out patch that adds resource management support to virtio-gpu-gl,
+  was requested by Marc-André Lureau
+
+- Simplified and improved the UUID support patch, dropped the hash table
+  as we don't need it for now. Moved QemuUUID to virtio_gpu_simple_resource.
+  This all was suggested by Akihiko Odaki and Marc-André Lureau
+
+- Dropped console_has_gl() check, suggested by Akihiko Odaki
+
+- Reworked Meson cheking of libvirglrender features, made new features
+  available based on virglrender pkgconfig version instead of checking
+  symbols in header. This should fix build error using older virglrender
+  version, reported by Alex Bennée
+
+- Made enabling of Venus context configrable via new virtio-gpu device
+  "vulkan=true" flag, suggested by Marc-André Lureau. The flag is disabled
+  by default because it requires blob and hostmem options to be enabled
+  and configured
+
+Changes from V5 to V6
+
+- Move macros configurations under virgl.found() and rename
+  HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS.
+
+- Handle the case while context_init is disabled.
+
+- Enable context_init by default.
+
+- Move virtio_gpu_virgl_resource_unmap() into
+  virgl_cmd_resource_unmap_blob().
+
+- Introduce new struct virgl_gpu_resource to store virgl specific members.
+
+- Remove erro handling of g_new0, because glib will abort() on OOM.
+
+- Set resource uuid as option.
+
+- Implement optional subsection of vmstate_virtio_gpu_resource_uuid_state
+  for virtio live migration.
+
+- Use g_int_hash/g_int_equal instead of the default
+
+- Add scanout_blob function for virtio-gpu-virgl
+
+- Resolve the memory leak on virtio-gpu-virgl
+
+- Remove the unstable API flags check because virglrenderer is already 1.0
+
+- Squash the render server flag support into "Initialize Venus"
+
+Changes from V4 (virtio gpu V4) to V5
+
+- Inverted patch 5 and 6 because we should configure
+  HAVE_VIRGL_CONTEXT_INIT firstly.
+
+- Validate owner of memory region to avoid slowing down DMA.
+
+- Use memory_region_init_ram_ptr() instead of
+  memory_region_init_ram_device_ptr().
+
+- Adjust sequence to allocate gpu resource before virglrender resource
+  creation
+
+- Add virtio migration handling for uuid.
+
+- Send kernel patch to define VIRTIO_GPU_CAPSET_VENUS.
+  https://lore.kernel.org/lkml/20230915105918.3763061-1-ray.huang@amd.com/
+
+- Add meson check to make sure unstable APIs defined from 0.9.0.
+
+Changes from V1 to V2 (virtio gpu V4)
+
+- Remove unused #include "hw/virtio/virtio-iommu.h"
+
+- Add a local function, called virgl_resource_destroy(), that is used
+  to release a vgpu resource on error paths and in resource_unref.
+
+- Remove virtio_gpu_virgl_resource_unmap from
+  virtio_gpu_cleanup_mapping(),
+  since this function won't be called on blob resources and also because
+  blob resources are unmapped via virgl_cmd_resource_unmap_blob().
+
+- In virgl_cmd_resource_create_blob(), do proper cleanup in error paths
+  and move QTAILQ_INSERT_HEAD(&g->reslist, res, next) after the resource
+  has been fully initialized.
+
+- Memory region has a different life-cycle from virtio gpu resources
+  i.e. cannot be released synchronously along with the vgpu resource.
+  So, here the field "region" was changed to a pointer and is allocated
+  dynamically when the blob is mapped.
+  Also, since the pointer can be used to indicate whether the blob
+  is mapped, the explicite field "mapped" was removed.
+
+- In virgl_cmd_resource_map_blob(), add check on the value of
+  res->region, to prevent beeing called twice on the same resource.
+
+- Add a patch to enable automatic deallocation of memory regions to resolve
+  use-after-free memory corruption with a reference.
+
+Antonio Caggiano (3):
+  virtio-gpu: Handle resource blob commands
+  virtio-gpu: Resource UUID
+  virtio-gpu: Support Venus context
+
+Dmitry Osipenko (4):
+  linux-headers: Update to Linux v6.9-rc3
+  virtio-gpu: Use pkgconfig version to decide which virgl features are
+    available
+  virtio-gpu: Don't require udmabuf when blobs and virgl are enabled
+  virtio-gpu: Support suspension of commands processing
+
+Huang Rui (2):
+  virtio-gpu: Support context-init feature with virglrenderer
+  virtio-gpu: Add virgl resource management
+
+Pierre-Eric Pelloux-Prayer (1):
+  virtio-gpu: Register capsets dynamically
+
+Robert Beckett (1):
+  virtio-gpu: Support blob scanout using dmabuf fd
+
+ hw/display/trace-events                       |   1 +
+ hw/display/virtio-gpu-base.c                  |   1 +
+ hw/display/virtio-gpu-gl.c                    |   5 +
+ hw/display/virtio-gpu-rutabaga.c              |   1 +
+ hw/display/virtio-gpu-virgl.c                 | 519 ++++++++++++-
+ hw/display/virtio-gpu.c                       |  42 +-
+ hw/i386/x86.c                                 |   8 -
+ include/hw/virtio/virtio-gpu.h                |  21 +
+ include/standard-headers/asm-x86/bootparam.h  |  17 +-
+ include/standard-headers/asm-x86/kvm_para.h   |   3 +-
+ include/standard-headers/asm-x86/setup_data.h |  83 +++
+ include/standard-headers/linux/ethtool.h      |  48 ++
+ include/standard-headers/linux/fuse.h         |  39 +-
+ .../linux/input-event-codes.h                 |   1 +
+ include/standard-headers/linux/virtio_gpu.h   |   2 +
+ include/standard-headers/linux/virtio_pci.h   |  10 +-
+ include/standard-headers/linux/virtio_snd.h   | 154 ++++
+ linux-headers/asm-arm64/kvm.h                 |  15 +-
+ linux-headers/asm-arm64/sve_context.h         |  11 +
+ linux-headers/asm-generic/bitsperlong.h       |   4 +
+ linux-headers/asm-loongarch/kvm.h             |   2 -
+ linux-headers/asm-mips/kvm.h                  |   2 -
+ linux-headers/asm-powerpc/kvm.h               |  45 +-
+ linux-headers/asm-riscv/kvm.h                 |   3 +-
+ linux-headers/asm-s390/kvm.h                  | 315 +++++++-
+ linux-headers/asm-x86/kvm.h                   | 308 +++++++-
+ linux-headers/linux/bits.h                    |  15 +
+ linux-headers/linux/kvm.h                     | 689 +-----------------
+ linux-headers/linux/psp-sev.h                 |  59 ++
+ linux-headers/linux/vhost.h                   |   7 +
+ meson.build                                   |  10 +-
+ scripts/update-linux-headers.sh               |   5 +-
+ 32 files changed, 1679 insertions(+), 766 deletions(-)
+ create mode 100644 include/standard-headers/asm-x86/setup_data.h
+ create mode 100644 linux-headers/linux/bits.h
+
+-- 
+2.44.0
+
 
