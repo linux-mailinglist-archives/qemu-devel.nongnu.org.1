@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D78AA1AC
+	by mail.lfdr.de (Postfix) with ESMTPS id EACC68AA1AD
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:56:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVzi-0003s3-HY; Thu, 18 Apr 2024 13:56:22 -0400
+	id 1rxW0E-00059A-Eq; Thu, 18 Apr 2024 13:56:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rxVze-0003hD-RR
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:18 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rxW0B-000530-A8
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:51 -0400
+Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rxVzd-0000G9-7X
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:18 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6ed9fc77bbfso950482b3a.1
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 10:56:16 -0700 (PDT)
+ id 1rxW09-0000Sl-8V
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:51 -0400
+Received: by mail-pj1-x1030.google.com with SMTP id
+ 98e67ed59e1d1-2a68a2b3747so902153a91.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 10:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713462976; x=1714067776; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713463008; x=1714067808; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qHnil1lWS8KrpZkQrwQieUyLD43mQT1Y8ff8vzPt6CA=;
- b=lj4PWZH6+Ae7hOLC4bWL3gtxPegF1V5PeMsJTtvRSZ70NlJUXkvolDdSey98Up9FNy
- pd8kF7rixH5tw69TaOEZXDgqgJVzTGkUPig36s9ewTJqSjRSCHmclYcUl9uFlTmKkseO
- 3p4F++6zZfN36lgI4qmO5EAS5K0Tuc+fhmE+pw8xIy+ko+74iknCoz7Zd7wNE+ismKaK
- 6XsrLm0qnWXl8jsJ9jdAoMyOAhaLxaJMrcO7t/LthttESC4nzzSDfj2mA8S9JKdBQ0Mg
- AmFOjRIyxHWbYCm2JRNTQ5bFyZ6tBrDGhaE3Z2/KyQKodzP8DEDGbOcn7QXb2+QRdvDo
- LkhA==
+ bh=4GhetyBAL6y2MoesB+OoCXNMx9EhlE70+vmqNmEMY3g=;
+ b=taqrAuCSTsNEmhpG1ko17wNIr9OL4qiMKqU5GPPFxHS18+dKifoVHZw06F1480Vw6C
+ SsjKlp0YkuzG9n48qQz22hqCE7d8XulD0kJvJsmWqv52M1Kn8/OG/2r8lb/T2/1JmG2z
+ ZPL8um+3zS9u3HoBBF+iOM7t9OEvfDAgujX3ovC98KBvyu/kr/4avhD+etzyDfLo8zCl
+ VNx4zYR7V4bHVSFwqp4rH9qfCWT5TH46D7GoBFOmbzxNwWgFRoUbtxNG5GBfndmf91Dh
+ boCaF5bg5Rhij3EGbR3pW251qZZKl7QkdpIv79L/oBmSEEFkFBg9eyIHzSVyzkiHuge4
+ Sslw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713462976; x=1714067776;
+ d=1e100.net; s=20230601; t=1713463008; x=1714067808;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qHnil1lWS8KrpZkQrwQieUyLD43mQT1Y8ff8vzPt6CA=;
- b=ooC8nyKLXLqwoidRSS2ZIRPQx9nneetIBlXijE5ijHcACg3OpvRGorOKJOAb18lPDo
- eMxsH3b8DN5LXuPSGMe75eXfK3yBZsQffFe/9x3dw5nBZPu+3QFBMLA13oy39wfE4QtZ
- HoJSgy6I7U4bW4E4uNtUezRP5gA2DJbFZRmhSVxp4wHBLGtfQTwz2DF9rSd2ncUKxEfE
- X/6t653/l84sOBw+C8x31xdVhtdj+755UfqGL4jSkBdHWMLxTF9i8dyBEOZbMzbzt/m9
- ymMnmyVNZtM1/vKwXYoSWZLWEU3x39xIbFshyQImf6Q6AK7f44uf/aAxfD+TCTe+V6Cf
- PwDg==
+ bh=4GhetyBAL6y2MoesB+OoCXNMx9EhlE70+vmqNmEMY3g=;
+ b=iOpYbaa1mhxUJzPeaJZ6oPW5wmdyO53ply6ENOEI8VQHTzmYY8OpqV2X3r97WwSNbY
+ XQMQ50tcMmD0MtEXvmUGSoTNkdIpU3YCP7tdLQkTzaqtqnNHEvdmedauuLn6P+6JQkJR
+ mUCBHgQ1LFe74QdqEfOBHDLn9jwwlVl5c9v2dopllUMWsyTrJ17LoCi0W7/hwAlFWTi4
+ NdvgkAkMvRf8w7C9mXswLUN+M63sGvwOKfZ+3/wJ6LTcf8SuShqEtqq7d7cRuGzLCRzL
+ UVYkJw/r5p/fi03XeAAjwTvxGtuNzFE7Ghuapi0aOddC101Wtn+QZuiFwo5FzwUyJeof
+ 8UhQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXpFHyP2yMr4N70POrzMqOSUl9Of1OLv2Z/aNGjo95SgY7cX/UYf61eu2N0fW+uFa1F3yYPdiwBoSGT9IRmECzwnC/K740=
-X-Gm-Message-State: AOJu0YwROAE3j/qaS3nF3wTz0mQp4MEox4cKQyCDKXzuYfgYLmPiHdw8
- wVlNv0sTbgw3Py8hDW2UAVwL8mzAD4RTzn4AgyAiVA2XlSCmssYTCHYExOB7zKs=
-X-Google-Smtp-Source: AGHT+IHN2jCdljAWl2j/jKQE1FDNnbxL7tWsvdj7FNrShDUB1d6gq02GIWb1oFDRmUooSIdKBA7a2w==
-X-Received: by 2002:a05:6a00:4fcc:b0:6ed:4203:bdd2 with SMTP id
- le12-20020a056a004fcc00b006ed4203bdd2mr4335788pfb.9.1713462975730; 
- Thu, 18 Apr 2024 10:56:15 -0700 (PDT)
+ AJvYcCWDFvzeAFNfWuWFAaBvHXPS83q6kQ65uiVX0TFmTV8K4sqfmzYzo4caaDwOdqIwpedxxVp/1YAnaw4n3dykaYCnvLUSgxs=
+X-Gm-Message-State: AOJu0YwSzScMzk6YHLO5LDgDu3hLvyain1r2v8uA6ajUUKeg5MpTzaYE
+ Enqpkkzc1kYA/HQDYWyx19CFLyRpUnGQPnQNbwmDOgs++KiMWrncqm3a23zMBRM27IryM6cxH3p
+ 3q2Q=
+X-Google-Smtp-Source: AGHT+IFgGYdOTohHy6CPz+BcWr41PC1XQNd2+TtzP3XIYs7VsRL4uk3feMZL/R7EW9j9sUsKix4cPg==
+X-Received: by 2002:a17:90b:688:b0:29b:961a:29c3 with SMTP id
+ m8-20020a17090b068800b0029b961a29c3mr2918938pjz.49.1713463007697; 
+ Thu, 18 Apr 2024 10:56:47 -0700 (PDT)
 Received: from ?IPV6:2604:3d08:937d:c610::fc11? ([2604:3d08:937d:c610::fc11])
  by smtp.gmail.com with ESMTPSA id
- du19-20020a056a002b5300b006ece7286c68sm1767807pfb.41.2024.04.18.10.56.15
+ p4-20020a17090ac00400b002a3a154b974sm1740653pjt.55.2024.04.18.10.56.46
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Apr 2024 10:56:15 -0700 (PDT)
-Message-ID: <98a7be34-d07b-437a-84d2-7542c4a35337@linaro.org>
-Date: Thu, 18 Apr 2024 10:56:14 -0700
+ Thu, 18 Apr 2024 10:56:47 -0700 (PDT)
+Message-ID: <1de592dc-3903-455a-bf6b-6c4c15d8e398@linaro.org>
+Date: Thu, 18 Apr 2024 10:56:46 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/7] target/i386: Introduce cpu_compute_eflags_ccop
+Subject: Re: [PATCH 7/7] target/i386: Implement TCGCPUOps for plugin register
+ reads
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 References: <20240416040609.1313605-1-richard.henderson@linaro.org>
- <20240416040609.1313605-7-richard.henderson@linaro.org>
+ <20240416040609.1313605-8-richard.henderson@linaro.org>
 From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240416040609.1313605-7-richard.henderson@linaro.org>
+In-Reply-To: <20240416040609.1313605-8-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
+ envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,49 +98,127 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 4/15/24 21:06, Richard Henderson wrote:
-> This is a generalization of cpu_compute_eflags, with a dynamic
-> value of cc_op, and is thus tcg specific.
-> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   target/i386/cpu.h           |  2 ++
->   target/i386/tcg/cc_helper.c | 10 ++++++++++
->   2 files changed, 12 insertions(+)
+>   target/i386/tcg/tcg-cpu.c | 72 ++++++++++++++++++++++++++++++---------
+>   1 file changed, 56 insertions(+), 16 deletions(-)
 > 
-> diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-> index 6b05738079..285f26d99d 100644
-> --- a/target/i386/cpu.h
-> +++ b/target/i386/cpu.h
-> @@ -2379,6 +2379,8 @@ void cpu_x86_inject_mce(Monitor *mon, X86CPU *cpu, int bank,
+> diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
+> index cca19cd40e..2370053df2 100644
+> --- a/target/i386/tcg/tcg-cpu.c
+> +++ b/target/i386/tcg/tcg-cpu.c
+> @@ -22,9 +22,11 @@
+>   #include "helper-tcg.h"
+>   #include "qemu/accel.h"
+>   #include "hw/core/accel-cpu.h"
+> -
+> +#include "gdbstub/helpers.h"
+> +#include "gdb-internal.h"
+>   #include "tcg-cpu.h"
 >   
->   uint32_t cpu_cc_compute_all(CPUX86State *env1);
->   
-> +uint32_t cpu_compute_eflags_ccop(CPUX86State *env, CCOp op);
 > +
->   static inline uint32_t cpu_compute_eflags(CPUX86State *env)
->   {
->       uint32_t eflags = env->eflags;
-> diff --git a/target/i386/tcg/cc_helper.c b/target/i386/tcg/cc_helper.c
-> index f76e9cb8cf..8203682ca8 100644
-> --- a/target/i386/tcg/cc_helper.c
-> +++ b/target/i386/tcg/cc_helper.c
-> @@ -225,6 +225,16 @@ uint32_t cpu_cc_compute_all(CPUX86State *env)
->       return helper_cc_compute_all(CC_DST, CC_SRC, CC_SRC2, CC_OP);
+>   /* Frob eflags into and out of the CPU temporary format.  */
+>   
+>   static void x86_cpu_exec_enter(CPUState *cs)
+> @@ -61,38 +63,74 @@ static void x86_cpu_synchronize_from_tb(CPUState *cs,
+>       }
 >   }
 >   
-> +uint32_t cpu_compute_eflags_ccop(CPUX86State *env, CCOp op)
+> -static void x86_restore_state_to_opc(CPUState *cs,
+> -                                     const TranslationBlock *tb,
+> -                                     const uint64_t *data)
+> +static uint64_t eip_from_unwind(CPUX86State *env, const TranslationBlock *tb,
+> +                                uint64_t data0)
+>   {
+> -    X86CPU *cpu = X86_CPU(cs);
+> -    CPUX86State *env = &cpu->env;
+> -    int cc_op = data[1];
+>       uint64_t new_pc;
+>   
+>       if (tb_cflags(tb) & CF_PCREL) {
+>           /*
+> -         * data[0] in PC-relative TBs is also a linear address, i.e. an address with
+> -         * the CS base added, because it is not guaranteed that EIP bits 12 and higher
+> -         * stay the same across the translation block.  Add the CS base back before
+> -         * replacing the low bits, and subtract it below just like for !CF_PCREL.
+> +         * data[0] in PC-relative TBs is also a linear address,
+> +         * i.e. an address with the CS base added, because it is
+> +         * not guaranteed that EIP bits 12 and higher stay the
+> +         * same across the translation block.  Add the CS base
+> +         * back before replacing the low bits, and subtract it
+> +         * below just like for !CF_PCREL.
+>            */
+>           uint64_t pc = env->eip + tb->cs_base;
+> -        new_pc = (pc & TARGET_PAGE_MASK) | data[0];
+> +        new_pc = (pc & TARGET_PAGE_MASK) | data0;
+>       } else {
+> -        new_pc = data[0];
+> +        new_pc = data0;
+>       }
+>       if (tb->flags & HF_CS64_MASK) {
+> -        env->eip = new_pc;
+> -    } else {
+> -        env->eip = (uint32_t)(new_pc - tb->cs_base);
+> +        return new_pc;
+>       }
+> +    return (uint32_t)(new_pc - tb->cs_base);
+> +}
+>   
+> +static void x86_restore_state_to_opc(CPUState *cs,
+> +                                     const TranslationBlock *tb,
+> +                                     const uint64_t *data)
 > +{
-> +    uint32_t eflags;
+> +    CPUX86State *env = cpu_env(cs);
+> +    CCOp cc_op;
 > +
-> +    eflags = helper_cc_compute_all(CC_DST, CC_SRC, CC_SRC2, op);
-> +    eflags |= env->df & DF_MASK;
-> +    eflags |= env->eflags & ~(VM_MASK | RF_MASK);
-> +    return eflags;
+> +    env->eip = eip_from_unwind(env, tb, data[0]);
+> +
+> +    cc_op = data[1];
+>       if (cc_op != CC_OP_DYNAMIC) {
+>           env->cc_op = cc_op;
+>       }
+>   }
+>   
+> +static bool x86_plugin_need_unwind_for_reg(CPUState *cs, int reg)
+> +{
+> +    return reg == IDX_IP_REG || reg == IDX_FLAGS_REG;
 > +}
 > +
->   target_ulong helper_cc_compute_c(target_ulong dst, target_ulong src1,
->                                    target_ulong src2, int op)
+> +static int x86_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf, int reg,
+> +                                      const TranslationBlock *tb,
+> +                                      const uint64_t *data)
+> +{
+> +    CPUX86State *env = cpu_env(cs);
+> +    CCOp cc_op;
+> +
+> +    switch (reg) {
+> +    case IDX_IP_REG:
+> +        return gdb_get_regl(buf, eip_from_unwind(env, tb, data[0]));
+> +
+> +    case IDX_FLAGS_REG:
+> +        cc_op = data[1];
+> +        if (cc_op == CC_OP_DYNAMIC) {
+> +            cc_op = env->cc_op;
+> +        }
+> +        return gdb_get_reg32(buf, cpu_compute_eflags_ccop(env, cc_op));
+> +
+> +    default:
+> +        g_assert_not_reached();
+> +    }
+> +}
+> +
+>   #ifndef CONFIG_USER_ONLY
+>   static bool x86_debug_check_breakpoint(CPUState *cs)
 >   {
+> @@ -110,6 +148,8 @@ static const TCGCPUOps x86_tcg_ops = {
+>       .initialize = tcg_x86_init,
+>       .synchronize_from_tb = x86_cpu_synchronize_from_tb,
+>       .restore_state_to_opc = x86_restore_state_to_opc,
+> +    .plugin_need_unwind_for_reg = x86_plugin_need_unwind_for_reg,
+> +    .plugin_unwind_read_reg = x86_plugin_unwind_read_reg,
+>       .cpu_exec_enter = x86_cpu_exec_enter,
+>       .cpu_exec_exit = x86_cpu_exec_exit,
+>   #ifdef CONFIG_USER_ONLY
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 
