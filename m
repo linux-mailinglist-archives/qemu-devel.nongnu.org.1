@@ -2,83 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456268A9FAF
+	by mail.lfdr.de (Postfix) with ESMTPS id D90B48A9FB2
 	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 18:11:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxUKq-0000lJ-7K; Thu, 18 Apr 2024 12:10:04 -0400
+	id 1rxULI-0000pA-Pr; Thu, 18 Apr 2024 12:10:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxUKn-0000kv-2S
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 12:10:01 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxUKl-0006YY-26
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 12:10:00 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3476dcd9c46so718458f8f.0
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 09:09:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713456597; x=1714061397; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=RC3I7eEuU1Vrf2ad1mlMtTC053sX+mHPqI7q34t9+Ao=;
- b=iLe/mHvHZ3DmAiEZCSMcWExrF96RqQZXTGRfz6y5119Jne/1epHOw7X+HcbNuQZcgP
- trjepu6BoKan6rLTeh2OvPS0NMwmbNoqTLdL2lJCnN1Ty0TOh7jSbIgsGRN4CRACncVH
- dzhzt3SUVeIGwezkt9YH4/eei008A7FDKGxmS8XP8of9La7+sExwyBr/y2HVqjhI2Lda
- ew+4Z2S8YQDQzZ1quTyx5fa/uePE9NspQxVngZhc06TZASWg2mNInohNl6Qz+esBOBDb
- uqs187/ouJ/X8hCXQ2fhsoABWN8sUGtCtGAQrRRfkogHTLzTMk1SZWl5n5qX3D0wwuul
- vCjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713456597; x=1714061397;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=RC3I7eEuU1Vrf2ad1mlMtTC053sX+mHPqI7q34t9+Ao=;
- b=vPEQ702/xy2kXoBfANky9F1Ja+Ig/JhJoV2a7izHntdcctgNbxlEj3MSiDG+B1nw5m
- TGuUvOW8D861gub2J7fPESyHpzLfbP6yTKlVP9hX4NCSAOQaYhBtLj2b+L4aebZum7d4
- Cn1G251yTMQS+V5xiyHwTdeq+IpcstVJGVqS95ql+A+Q/1zQotY/v6V71AfQTsX6Trs3
- npxnDD521PGzPIgLwtvatQN14XpA215YPWMS1a251wp4GFSflqif7svBzh3/WkJ3P0QT
- 7v5lIjkKTNm4TxQSLv62tY7XJge5CXgVZXeEaOm8SLXzhmB2dsHqTvVP3ogVA4e0TGfM
- wMcg==
-X-Gm-Message-State: AOJu0Yxf7yVkfB4nxEAWsVGdSxuNyf5wQbNrRAHgZV0R+cs8y2kOl3yt
- HoTw6PDCYpa9GaVc/HHWmIrl8tsclR05cno8PHPb5h11sO5GuihPjzkJK6ICouSg0ALCfjNVJkr
- +
-X-Google-Smtp-Source: AGHT+IFqQr1grcS6Vv0q2R8fNpGw+sUBkGr/sEJtqbVYxP3cv0SlnpNkBVS/32q5ifVtO3wIYSRCxw==
-X-Received: by 2002:adf:e6cb:0:b0:349:cbaa:3bfd with SMTP id
- y11-20020adfe6cb000000b00349cbaa3bfdmr2071143wrm.14.1713456596692; 
- Thu, 18 Apr 2024 09:09:56 -0700 (PDT)
-Received: from m1x-phil.lan ([176.176.151.213])
- by smtp.gmail.com with ESMTPSA id
- v10-20020a5d590a000000b003437ad152f9sm2145991wrd.105.2024.04.18.09.09.55
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 09:09:56 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 2/2] accel/tcg: Rename load-extract/store-insert headers using
- .h.inc suffix
-Date: Thu, 18 Apr 2024 18:09:43 +0200
-Message-ID: <20240418160943.95047-3-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240418160943.95047-1-philmd@linaro.org>
-References: <20240418160943.95047-1-philmd@linaro.org>
+ (Exim 4.90_1) (envelope-from <SRS0=S08W=LX=kaod.org=clg@ozlabs.org>)
+ id 1rxUL5-0000nx-Kc; Thu, 18 Apr 2024 12:10:19 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <SRS0=S08W=LX=kaod.org=clg@ozlabs.org>)
+ id 1rxUL1-0006lb-N4; Thu, 18 Apr 2024 12:10:19 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VL2mc1K9Qz4wnr;
+ Fri, 19 Apr 2024 02:10:08 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VL2mV5Xqrz4wd3;
+ Fri, 19 Apr 2024 02:10:02 +1000 (AEST)
+Message-ID: <9b6d5078-121d-4370-86fc-4bb25ad4e72f@kaod.org>
+Date: Thu, 18 Apr 2024 18:09:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/16] aspeed/smc: support 64 bits dma dram address
+To: Jamin Lin <jamin_lin@aspeedtech.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Joel Stanley <joel@jms.id.au>,
+ Alistair Francis <alistair@alistair23.me>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, "open list:ASPEED BMCs"
+ <qemu-arm@nongnu.org>, "open list:All patches CC here"
+ <qemu-devel@nongnu.org>
+Cc: troy_lee@aspeedtech.com, yunlin.tang@aspeedtech.com
+References: <20240416091904.935283-1-jamin_lin@aspeedtech.com>
+ <20240416091904.935283-9-jamin_lin@aspeedtech.com>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <20240416091904.935283-9-jamin_lin@aspeedtech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
+ envelope-from=SRS0=S08W=LX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,83 +71,224 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since commit 139c1837db ("meson: rename included C source files
-to .c.inc"), QEMU standard procedure for included C files is to
-use *.c.inc.
+Hello Jamin,
 
-Besides, since commit 6a0057aa22 ("docs/devel: make a statement
-about includes") this is documented in the Coding Style:
+On 4/16/24 11:18, Jamin Lin wrote:
+> AST2700 support the maximum dram size is 8GiB
+> and has a "DMA DRAM Side Address High Part(0x7C)"
+> register to support 64 bits dma dram address.
+> Add helper routines functions to compute the dma dram
+> address, new features and update trace-event
+> to support 64 bits dram address.
+> 
+> Signed-off-by: Troy Lee <troy_lee@aspeedtech.com>
+> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> ---
+>   hw/ssi/aspeed_smc.c | 66 +++++++++++++++++++++++++++++++++++++++------
+>   hw/ssi/trace-events |  2 +-
+>   2 files changed, 59 insertions(+), 9 deletions(-)
+> 
+> diff --git a/hw/ssi/aspeed_smc.c b/hw/ssi/aspeed_smc.c
+> index 71abc7a2d8..a67cac3d0f 100644
+> --- a/hw/ssi/aspeed_smc.c
+> +++ b/hw/ssi/aspeed_smc.c
+> @@ -132,6 +132,9 @@
+>   #define   FMC_WDT2_CTRL_BOOT_SOURCE      BIT(4) /* O: primary 1: alternate */
+>   #define   FMC_WDT2_CTRL_EN               BIT(0)
+>   
+> +/* DMA DRAM Side Address High Part (AST2700) */
+> +#define R_DMA_DRAM_ADDR_HIGH   (0x7c / 4)
+> +
+>   /* DMA Control/Status Register */
+>   #define R_DMA_CTRL        (0x80 / 4)
+>   #define   DMA_CTRL_REQUEST      (1 << 31)
+> @@ -187,6 +190,7 @@
+>    *   0x1FFFFFF: 32M bytes
+>    */
+>   #define DMA_DRAM_ADDR(asc, val)   ((val) & (asc)->dma_dram_mask)
+> +#define DMA_DRAM_ADDR_HIGH(val)   ((val) & 0xf)
+>   #define DMA_FLASH_ADDR(asc, val)  ((val) & (asc)->dma_flash_mask)
+>   #define DMA_LENGTH(val)         ((val) & 0x01FFFFFF)
+>   
+> @@ -207,6 +211,7 @@ static const AspeedSegments aspeed_2500_spi2_segments[];
+>   #define ASPEED_SMC_FEATURE_DMA       0x1
+>   #define ASPEED_SMC_FEATURE_DMA_GRANT 0x2
+>   #define ASPEED_SMC_FEATURE_WDT_CONTROL 0x4
+> +#define ASPEED_SMC_FEATURE_DMA_DRAM_ADDR_HIGH 0x08
+>   
+>   static inline bool aspeed_smc_has_dma(const AspeedSMCClass *asc)
+>   {
+> @@ -218,6 +223,11 @@ static inline bool aspeed_smc_has_wdt_control(const AspeedSMCClass *asc)
+>       return !!(asc->features & ASPEED_SMC_FEATURE_WDT_CONTROL);
+>   }
+>   
+> +static inline bool aspeed_smc_has_dma_dram_addr_high(const AspeedSMCClass *asc)
 
-  If you do use template header files they should be named with
-  the ``.c.inc`` or ``.h.inc`` suffix to make it clear they are
-  being included for expansion.
+To ease the reading, I would call the helper aspeed_smc_has_dma64()
 
-Therefore rename 'store-insert-al16.h' as 'store-insert-al16.h.inc'
-and 'load-extract-al16-al8.h' as 'load-extract-al16-al8.h.inc'.
+> +{
+> +    return !!(asc->features & ASPEED_SMC_FEATURE_DMA_DRAM_ADDR_HIGH);
+> +}
+> +
+>   #define aspeed_smc_error(fmt, ...)                                      \
+>       qemu_log_mask(LOG_GUEST_ERROR, "%s: " fmt "\n", __func__, ## __VA_ARGS__)
+>   
+> @@ -747,6 +757,9 @@ static uint64_t aspeed_smc_read(void *opaque, hwaddr addr, unsigned int size)
+>           (aspeed_smc_has_dma(asc) && addr == R_DMA_CTRL) ||
+>           (aspeed_smc_has_dma(asc) && addr == R_DMA_FLASH_ADDR) ||
+>           (aspeed_smc_has_dma(asc) && addr == R_DMA_DRAM_ADDR) ||
+> +        (aspeed_smc_has_dma(asc) &&
+> +         aspeed_smc_has_dma_dram_addr_high(asc) &&
+> +         addr == R_DMA_DRAM_ADDR_HIGH) ||
+>           (aspeed_smc_has_dma(asc) && addr == R_DMA_LEN) ||
+>           (aspeed_smc_has_dma(asc) && addr == R_DMA_CHECKSUM) ||
+>           (addr >= R_SEG_ADDR0 &&
+> @@ -847,6 +860,23 @@ static bool aspeed_smc_inject_read_failure(AspeedSMCState *s)
+>       }
+>   }
+>   
+> +static uint64_t aspeed_smc_dma_dram_addr(AspeedSMCState *s)
+> +{
+> +    AspeedSMCClass *asc = ASPEED_SMC_GET_CLASS(s);
+> +    uint64_t dram_addr_high;
+> +    uint64_t dma_dram_addr;
+> +
+> +    if (aspeed_smc_has_dma_dram_addr_high(asc)) {
+> +        dram_addr_high = s->regs[R_DMA_DRAM_ADDR_HIGH];
+> +        dram_addr_high <<= 32;
+> +        dma_dram_addr = dram_addr_high | s->regs[R_DMA_DRAM_ADDR];
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- .../host/{store-insert-al16.h => store-insert-al16.h.inc}     | 0
- .../{load-extract-al16-al8.h => load-extract-al16-al8.h.inc}  | 0
- accel/tcg/ldst_atomicity.c.inc                                | 4 ++--
- 8 files changed, 2 insertions(+), 2 deletions(-)
- rename host/include/aarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/aarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/generic/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/generic/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/loongarch64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
- rename host/include/loongarch64/host/{store-insert-al16.h => store-insert-al16.h.inc} (100%)
- rename host/include/x86_64/host/{load-extract-al16-al8.h => load-extract-al16-al8.h.inc} (100%)
+Here is a proposal to shorten the routine :
 
-diff --git a/host/include/aarch64/host/load-extract-al16-al8.h b/host/include/aarch64/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/aarch64/host/load-extract-al16-al8.h
-rename to host/include/aarch64/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/aarch64/host/store-insert-al16.h b/host/include/aarch64/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/aarch64/host/store-insert-al16.h
-rename to host/include/aarch64/host/store-insert-al16.h.inc
-diff --git a/host/include/generic/host/load-extract-al16-al8.h b/host/include/generic/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/generic/host/load-extract-al16-al8.h
-rename to host/include/generic/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/generic/host/store-insert-al16.h b/host/include/generic/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/generic/host/store-insert-al16.h
-rename to host/include/generic/host/store-insert-al16.h.inc
-diff --git a/host/include/loongarch64/host/load-extract-al16-al8.h b/host/include/loongarch64/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/loongarch64/host/load-extract-al16-al8.h
-rename to host/include/loongarch64/host/load-extract-al16-al8.h.inc
-diff --git a/host/include/loongarch64/host/store-insert-al16.h b/host/include/loongarch64/host/store-insert-al16.h.inc
-similarity index 100%
-rename from host/include/loongarch64/host/store-insert-al16.h
-rename to host/include/loongarch64/host/store-insert-al16.h.inc
-diff --git a/host/include/x86_64/host/load-extract-al16-al8.h b/host/include/x86_64/host/load-extract-al16-al8.h.inc
-similarity index 100%
-rename from host/include/x86_64/host/load-extract-al16-al8.h
-rename to host/include/x86_64/host/load-extract-al16-al8.h.inc
-diff --git a/accel/tcg/ldst_atomicity.c.inc b/accel/tcg/ldst_atomicity.c.inc
-index 97dae70d53..134da3c1da 100644
---- a/accel/tcg/ldst_atomicity.c.inc
-+++ b/accel/tcg/ldst_atomicity.c.inc
-@@ -9,8 +9,8 @@
-  * See the COPYING file in the top-level directory.
-  */
- 
--#include "host/load-extract-al16-al8.h"
--#include "host/store-insert-al16.h"
-+#include "host/load-extract-al16-al8.h.inc"
-+#include "host/store-insert-al16.h.inc"
- 
- #ifdef CONFIG_ATOMIC64
- # define HAVE_al8          true
--- 
-2.41.0
+         return ((uint64_t) s->regs[R_DMA_DRAM_ADDR_HIGH] << 32) |
+             s->regs[R_DMA_DRAM_ADDR];
+
+
+> +    } else {
+> +        dma_dram_addr = s->regs[R_DMA_DRAM_ADDR];
+
+and
+         return s->regs[R_DMA_DRAM_ADDR];
+	
+> +    }
+> +
+> +    return dma_dram_addr;
+> +}
+> +
+>   static uint32_t aspeed_smc_dma_len(AspeedSMCState *s)
+>   {
+>       AspeedSMCClass *asc = ASPEED_SMC_GET_CLASS(s);
+> @@ -914,24 +944,34 @@ static void aspeed_smc_dma_checksum(AspeedSMCState *s)
+>   
+>   static void aspeed_smc_dma_rw(AspeedSMCState *s)
+>   {
+> +    AspeedSMCClass *asc = ASPEED_SMC_GET_CLASS(s);
+> +    uint64_t dram_addr_high;
+
+This variable doesn't look very useful
+  
+> +    uint64_t dma_dram_addr;
+> +    uint64_t dram_addr;
+
+and dram_addr is redundant with dma_dram_addr. Please use only one.
+
+
+>       MemTxResult result;
+>       uint32_t dma_len;
+>       uint32_t data;
+>   
+>       dma_len = aspeed_smc_dma_len(s);
+> +    dma_dram_addr = aspeed_smc_dma_dram_addr(s);
+> +
+> +    if (aspeed_smc_has_dma_dram_addr_high(asc)) {
+> +        dram_addr = dma_dram_addr - s->dram_mr->container->addr;
+
+Why do you truncate the address again ? It should already be done with
+
+#define DMA_DRAM_ADDR_HIGH(val)   ((val) & 0xf)
+
+> +    } else {
+> +        dram_addr = dma_dram_addr;
+> +    }
+>   
+>       trace_aspeed_smc_dma_rw(s->regs[R_DMA_CTRL] & DMA_CTRL_WRITE ?
+>                               "write" : "read",
+>                               s->regs[R_DMA_FLASH_ADDR],
+> -                            s->regs[R_DMA_DRAM_ADDR],
+> +                            dram_addr,
+>                               dma_len);
+>       while (dma_len) {
+>           if (s->regs[R_DMA_CTRL] & DMA_CTRL_WRITE) {
+> -            data = address_space_ldl_le(&s->dram_as, s->regs[R_DMA_DRAM_ADDR],
+> +            data = address_space_ldl_le(&s->dram_as, dram_addr,
+>                                           MEMTXATTRS_UNSPECIFIED, &result);
+>               if (result != MEMTX_OK) {
+> -                aspeed_smc_error("DRAM read failed @%08x",
+> -                                 s->regs[R_DMA_DRAM_ADDR]);
+> +                aspeed_smc_error("DRAM read failed @%" PRIx64, dram_addr);
+>                   return;
+>               }
+>   
+> @@ -951,11 +991,10 @@ static void aspeed_smc_dma_rw(AspeedSMCState *s)
+>                   return;
+>               }
+>   
+> -            address_space_stl_le(&s->dram_as, s->regs[R_DMA_DRAM_ADDR],
+> +            address_space_stl_le(&s->dram_as, dram_addr,
+>                                    data, MEMTXATTRS_UNSPECIFIED, &result);
+>               if (result != MEMTX_OK) {
+> -                aspeed_smc_error("DRAM write failed @%08x",
+> -                                 s->regs[R_DMA_DRAM_ADDR]);
+> +                aspeed_smc_error("DRAM write failed @%" PRIx64, dram_addr);
+>                   return;
+>               }
+>           }
+> @@ -964,8 +1003,15 @@ static void aspeed_smc_dma_rw(AspeedSMCState *s)
+>            * When the DMA is on-going, the DMA registers are updated
+>            * with the current working addresses and length.
+>            */
+> +        dram_addr += 4;
+> +        dma_dram_addr += 4;
+> +        if (aspeed_smc_has_dma_dram_addr_high(asc)) {
+> +            dram_addr_high = dma_dram_addr >> 32;
+> +            s->regs[R_DMA_DRAM_ADDR_HIGH] = dram_addr_high;
+
+             s->regs[R_DMA_DRAM_ADDR_HIGH] = dma_dram_addr >> 32;
+
+> +        }
+> +
+> +        s->regs[R_DMA_DRAM_ADDR] = dma_dram_addr & 0xffffffff;
+
+use DMA_DRAM_ADDR() may be instead.
+
+>           s->regs[R_DMA_FLASH_ADDR] += 4;
+> -        s->regs[R_DMA_DRAM_ADDR] += 4;
+>           dma_len -= 4;
+>           s->regs[R_DMA_LEN] = dma_len;
+>           s->regs[R_DMA_CHECKSUM] += data;
+> @@ -1118,6 +1164,10 @@ static void aspeed_smc_write(void *opaque, hwaddr addr, uint64_t data,
+>       } else if (aspeed_smc_has_dma(asc) && addr == R_DMA_LEN &&
+>                  aspeed_smc_dma_granted(s)) {
+>           s->regs[addr] = DMA_LENGTH(value);
+> +    } else if (aspeed_smc_has_dma(asc) &&
+> +               aspeed_smc_has_dma_dram_addr_high(asc) &&
+> +               addr == R_DMA_DRAM_ADDR_HIGH) {
+> +        s->regs[addr] = DMA_DRAM_ADDR_HIGH(value);
+>       } else {
+>           qemu_log_mask(LOG_UNIMP, "%s: not implemented: 0x%" HWADDR_PRIx "\n",
+>                         __func__, addr);
+> diff --git a/hw/ssi/trace-events b/hw/ssi/trace-events
+> index 2d5bd2b83d..7b5ad6a939 100644
+> --- a/hw/ssi/trace-events
+> +++ b/hw/ssi/trace-events
+> @@ -6,7 +6,7 @@ aspeed_smc_do_snoop(int cs, int index, int dummies, int data) "CS%d index:0x%x d
+>   aspeed_smc_flash_write(int cs, uint64_t addr,  uint32_t size, uint64_t data, int mode) "CS%d @0x%" PRIx64 " size %u: 0x%" PRIx64" mode:%d"
+>   aspeed_smc_read(uint64_t addr,  uint32_t size, uint64_t data) "@0x%" PRIx64 " size %u: 0x%" PRIx64
+>   aspeed_smc_dma_checksum(uint32_t addr, uint32_t data) "0x%08x: 0x%08x"
+> -aspeed_smc_dma_rw(const char *dir, uint32_t flash_addr, uint32_t dram_addr, uint32_t size) "%s flash:@0x%08x dram:@0x%08x size:0x%08x"
+> +aspeed_smc_dma_rw(const char *dir, uint32_t flash_addr, uint64_t dram_addr, uint32_t size) "%s flash:@0x%08x dram:@0x%" PRIx64 " size:0x%08x"
+>   aspeed_smc_write(uint64_t addr,  uint32_t size, uint64_t data) "@0x%" PRIx64 " size %u: 0x%" PRIx64
+>   aspeed_smc_flash_select(int cs, const char *prefix) "CS%d %sselect"
+>   
 
 
