@@ -2,90 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810378A9E2B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 17:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 136518A9EB2
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 17:40:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxTZ6-0003Me-BG; Thu, 18 Apr 2024 11:20:44 -0400
+	id 1rxTqM-0002Ms-6a; Thu, 18 Apr 2024 11:38:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxTZ1-0003LH-Nr
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:20:40 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rxTqI-0002Mf-Ej
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:38:30 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxTZ0-0004ta-1Q
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:20:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1713453631;
- bh=EiAuudDgstcvn9E/vSNNH/dpfPFMZhFN6EpCRvLSr0I=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=Z6ncbRCXYomdTrNqDBQEd76Ofz+pDnJdNvXbefEmgcFBY1UfswYj8vUjU7DJ2bxpR
- swO7zkvWQh57farc3NZEqpwGCaAkSu5qHncRfe3QIEUAqZnP2Ogyyz0Rjk7JOiw7CT
- 7MDZyyfv7G4mSGvkbkQUIbLgdgGDqb3I2K68sc+zYBtA02Nx2iAktVh2l+f+oNqNNV
- p4yuWwu6N+FlHZ6ddcamH8rU9epcWup+KIOtIQ/9t5pkrM92EejvhxnfdEME1VygUY
- 36S6XW2bO0ozmkkp70mjae4ihA3nmOPEHlYlxV67WlQu/i1Qpn9vdFnFS30QWZEykp
- j1zKprcrJlP8Q==
-Received: from [IPV6:fd00::1:f0c8] (cola.collaboradmins.com
- [IPv6:2a01:4f8:1c1c:5717::1])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 943663782117;
- Thu, 18 Apr 2024 15:20:29 +0000 (UTC)
-Message-ID: <2858607a-9ac4-4be9-a2fd-515c8e5d9884@collabora.com>
-Date: Thu, 18 Apr 2024 18:20:26 +0300
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rxTqD-00008S-4d
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:38:29 -0400
+Received: from mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:220a:0:640:7faf:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 1ADB960B4A;
+ Thu, 18 Apr 2024 18:38:19 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8814::1:9] (unknown
+ [2a02:6b8:b081:8814::1:9])
+ by mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id HcHbXR0GZW20-NhKcZktn; Thu, 18 Apr 2024 18:38:18 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1713454698;
+ bh=4WUv9BPDToEcWOcEWiHApukSfEOqcDKzFB7ImqHahYA=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=STrYkDUseKQiGoUTeqndF+6DFktqMr2o/tFKFw3qUgCLoGW7g+HImH8HGNUnl6Q/P
+ 29q6F2uBlqVm3oqLzE1TBFWI6AcHSSoe0zxlwO1uzhO16CloGqgE+Pd3TUSseHwfnJ
+ +gOImGzfAv8UZ/RUxVtfN9KW7n73VCmSqR2wH4uA=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-66.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b2078889-57a7-4be3-a0bf-5054fc30a028@yandex-team.ru>
+Date: Thu, 18 Apr 2024 18:38:17 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/10] virtio-gpu: Handle resource blob commands
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>
-References: <20240411102002.240536-1-dmitry.osipenko@collabora.com>
- <20240411102002.240536-8-dmitry.osipenko@collabora.com>
- <29a55f63-593e-46d0-8dfe-f55e2b2de7ac@daynix.com>
- <918fb26b-72e9-446a-841b-810eb983dabe@collabora.com>
- <83e4454f-98d5-4e7d-b8d0-46d3d52442b1@daynix.com>
- <68c33b13-83ea-4ea4-b219-43a930a6ad10@collabora.com>
- <1fc1d55d-7eb7-49f4-9ed1-f52fe34cc876@daynix.com>
+Subject: Re: [PATCH] migration: do not exit on incoming failure
+To: Fabiano Rosas <farosas@suse.de>, peterx@redhat.com
+Cc: yc-core@yandex-team.ru, thuth@redhat.com, lvivier@redhat.com,
+ pbonzini@redhat.com, qemu-devel@nongnu.org, pkrempa@redhat.com
+References: <20240417221329.248803-1-vsementsov@yandex-team.ru>
+ <87ttjyiw4y.fsf@suse.de>
 Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <1fc1d55d-7eb7-49f4-9ed1-f52fe34cc876@daynix.com>
-Content-Type: text/plain; charset=UTF-8
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <87ttjyiw4y.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -97,53 +76,214 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/15/24 13:05, Akihiko Odaki wrote:
-...
->> Do you have example of a legit use-case where hostmem MR could outlive
->> resource mapping?
+On 18.04.24 17:27, Fabiano Rosas wrote:
+> Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
 > 
-> MR outliving after memory_region_del_subregion() is not a use-case, but
-> a situation that occurs due to the limitation of the memory subsystem.
-> It is not easy to answer how often such a situation happens.
-> 
+>> We do set MIGRATION_FAILED state, but don't give a chance to
+>> orchestrator to query migration state and get the error.
 >>
->> Turning it into a error condition is much more reasonable to do than to
->> to worry about edge case that nobody cares about, which can't be tested
->> easily and that not trivial to support, IMO.
+>> Let's report an error through QAPI like we do on outgoing migration.
 >>
-> I'm not sure what you mean by turning into an error condition. I doubt
-> it's possible to emit errors when someone touches an unmapped region.
+>> migration-test is updated correspondingly.
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> ---
+>>
+>> Doubt: is exiting on failure a contract? Will this commit break
+>> something in Libvirt? Finally, could we just change the logic, or I need
+>> and additional migration-parameter for new behavior?
+> 
+> It seems we depend on the non-zero value:
+> 
+>    4aead69241 ("migration: reflect incoming failure to shell")
+>    Author: Eric Blake <eblake@redhat.com>
+>    Date:   Tue Apr 16 15:50:41 2013 -0600
+>    
+>        migration: reflect incoming failure to shell
+>        
+>        Management apps like libvirt don't know to pay attention to
+>        stderr unless there is a non-zero exit status.
+>        
+>        * migration.c (process_incoming_migration_co): Exit with non-zero
+>        status on failure.
+>        
+>        Signed-off-by: Eric Blake <eblake@redhat.com>
+>        Message-id: 1366149041-626-1-git-send-email-eblake@redhat.com
+>        Signed-off-by: Anthony Liguori <aliguori@us.ibm.com>
+> 
+> One idea would be to plumb the s->error somehow through
+> migration_shutdown() and allow qemu_cleanup() to change the status
+> value.
 
-My idea was about failing in virtio_gpu_virgl_unmap_resource_blob()
-where we could check whether MR has external reference and fail if it has.
+The idea is not to exit at all, and wait for 'quit' QMP command to exit. But I agree with Daniel that new behavior is good only for -incoming defer.
 
-> Reproducing this issue is not easy as it's often cases for
-> use-after-free bugs, but fixing it is not that complicated in my opinion
-> since you already have an implementation which asynchronously unmaps the
-> region in v6. I write my suggestions to fix problems in v6:
 > 
-> - Remove ref member in virgl_gpu_resource, vres_get_ref(),
-> vres_put_ref(), and virgl_resource_unmap().
+>>   migration/migration.c           | 22 +++++++---------------
+>>   tests/qtest/migration-helpers.c | 13 ++++++++++---
+>>   tests/qtest/migration-helpers.h |  3 ++-
+>>   tests/qtest/migration-test.c    | 14 +++++++-------
+>>   4 files changed, 26 insertions(+), 26 deletions(-)
+>>
+>> diff --git a/migration/migration.c b/migration/migration.c
+>> index 86bf76e925..3c203e767d 100644
+>> --- a/migration/migration.c
+>> +++ b/migration/migration.c
+>> @@ -738,11 +738,12 @@ process_incoming_migration_co(void *opaque)
+>>       MigrationIncomingState *mis = migration_incoming_get_current();
+>>       PostcopyState ps;
+>>       int ret;
+>> +    Error *local_err = NULL;
+>>   
+>>       assert(mis->from_src_file);
+>>   
+>>       if (compress_threads_load_setup(mis->from_src_file)) {
+>> -        error_report("Failed to setup decompress threads");
+>> +        error_setg(&local_err, "Failed to setup decompress threads");
+>>           goto fail;
+>>       }
+>>   
+>> @@ -779,32 +780,23 @@ process_incoming_migration_co(void *opaque)
+>>       }
+>>   
+>>       if (ret < 0) {
+>> -        MigrationState *s = migrate_get_current();
+>> -
+>> -        if (migrate_has_error(s)) {
+>> -            WITH_QEMU_LOCK_GUARD(&s->error_mutex) {
+>> -                error_report_err(s->error);
+>> -            }
+>> -        }
+>> -        error_report("load of migration failed: %s", strerror(-ret));
+>> +        error_setg(&local_err, "load of migration failed: %s", strerror(-ret));
+>>           goto fail;
+>>       }
+>>   
+>>       if (colo_incoming_co() < 0) {
+>> +        error_setg(&local_err, "colo incoming failed");
+>>           goto fail;
+>>       }
+>>   
+>>       migration_bh_schedule(process_incoming_migration_bh, mis);
+>>       return;
+>>   fail:
+>> +    migrate_set_error(migrate_get_current(), local_err);
+>> +    error_report_err(local_err);
 > 
-> - Change virtio_gpu_virgl_process_cmd(),
-> virgl_cmd_resource_unmap_blob(), and virgl_cmd_resource_unref() to
-> return a bool, which tells if the command was processed or suspended.
-> 
-> - In virtio_gpu_process_cmdq(), break if the command was suspended.
-> 
-> - In virgl_resource_blob_async_unmap(), call virtio_gpu_gl_block(g, false).
-> 
-> - In virgl_cmd_resource_unmap_blob() and virgl_cmd_resource_unref(),
-> call memory_region_del_subregion() and virtio_gpu_gl_block(g, true), and
-> tell that the command was suspended if the reference counter of
-> MemoryRegion > 0. Free and unmap the MR otherwise.
+> This will report an different error from the QMP one if s->error happens
+> to be already set. Either use s->error here or prepend the "load of
+> migration..." error to the s->error above.
 
-Your suggestion works, I'll proceed with it in v8.
+I had another idea: first, modify migrate_set_error so that it always prints the error. This way we should not care to print it here.
 
-Thanks for the review
+> 
+>>       migrate_set_state(&mis->state, MIGRATION_STATUS_ACTIVE,
+>>                         MIGRATION_STATUS_FAILED);
+>> -    qemu_fclose(mis->from_src_file);
+>> -
+>> -    multifd_recv_cleanup();
+>> -    compress_threads_load_cleanup();
+>> -
+>> -    exit(EXIT_FAILURE);
+>> +    migration_incoming_state_destroy();
+>>   }
+>>   
+>>   /**
+>> diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+>> index e451dbdbed..91c13bd566 100644
+>> --- a/tests/qtest/migration-helpers.c
+>> +++ b/tests/qtest/migration-helpers.c
+>> @@ -211,7 +211,8 @@ void wait_for_migration_complete(QTestState *who)
+>>       wait_for_migration_status(who, "completed", NULL);
+>>   }
+>>   
+>> -void wait_for_migration_fail(QTestState *from, bool allow_active)
+>> +void wait_for_migration_fail(QTestState *from, bool allow_active,
+>> +                             bool is_incoming)
+>>   {
+>>       g_test_timer_start();
+>>       QDict *rsp_return;
+>> @@ -236,8 +237,14 @@ void wait_for_migration_fail(QTestState *from, bool allow_active)
+>>       /* Is the machine currently running? */
+>>       rsp_return = qtest_qmp_assert_success_ref(from,
+>>                                                 "{ 'execute': 'query-status' }");
+>> -    g_assert(qdict_haskey(rsp_return, "running"));
+>> -    g_assert(qdict_get_bool(rsp_return, "running"));
+>> +    if (is_incoming) {
+>> +        if (qdict_haskey(rsp_return, "running")) {
+>> +            g_assert(!qdict_get_bool(rsp_return, "running"));
+>> +        }
+>> +    } else {
+>> +        g_assert(qdict_haskey(rsp_return, "running"));
+>> +        g_assert(qdict_get_bool(rsp_return, "running"));
+>> +    }
+>>       qobject_unref(rsp_return);
+>>   }
+>>   
+>> diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+>> index 3bf7ded1b9..7bd07059ae 100644
+>> --- a/tests/qtest/migration-helpers.h
+>> +++ b/tests/qtest/migration-helpers.h
+>> @@ -46,7 +46,8 @@ void wait_for_migration_status(QTestState *who,
+>>   
+>>   void wait_for_migration_complete(QTestState *who);
+>>   
+>> -void wait_for_migration_fail(QTestState *from, bool allow_active);
+>> +void wait_for_migration_fail(QTestState *from, bool allow_active,
+>> +                             bool is_incoming);
+>>   
+>>   char *find_common_machine_version(const char *mtype, const char *var1,
+>>                                     const char *var2);
+>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>> index 1d2cee87ea..e00b755f05 100644
+>> --- a/tests/qtest/migration-test.c
+>> +++ b/tests/qtest/migration-test.c
+>> @@ -1670,7 +1670,7 @@ static void test_baddest(void)
+>>           return;
+>>       }
+>>       migrate_qmp(from, "tcp:127.0.0.1:0", "{}");
+>> -    wait_for_migration_fail(from, false);
+>> +    wait_for_migration_fail(from, false, false);
+>>       test_migrate_end(from, to, false);
+>>   }
+>>   
+>> @@ -1781,10 +1781,10 @@ static void test_precopy_common(MigrateCommon *args)
+>>   
+>>       if (args->result != MIG_TEST_SUCCEED) {
+>>           bool allow_active = args->result == MIG_TEST_FAIL;
+>> -        wait_for_migration_fail(from, allow_active);
+>> +        wait_for_migration_fail(from, allow_active, false);
+>>   
+>>           if (args->result == MIG_TEST_FAIL_DEST_QUIT_ERR) {
+>> -            qtest_set_expected_status(to, EXIT_FAILURE);
+>> +            wait_for_migration_fail(to, true, true);
+>>           }
+>>       } else {
+>>           if (args->live) {
+>> @@ -2571,8 +2571,8 @@ static void do_test_validate_uuid(MigrateStart *args, bool should_fail)
+>>       migrate_qmp(from, uri, "{}");
+>>   
+>>       if (should_fail) {
+>> -        qtest_set_expected_status(to, EXIT_FAILURE);
+>> -        wait_for_migration_fail(from, true);
+>> +        wait_for_migration_fail(to, true, true);
+>> +        wait_for_migration_fail(from, true, false);
+>>       } else {
+>>           wait_for_migration_complete(from);
+>>       }
+>> @@ -3047,8 +3047,8 @@ static void test_multifd_tcp_cancel(void)
+>>       migrate_cancel(from);
+>>   
+>>       /* Make sure QEMU process "to" exited */
+>> -    qtest_set_expected_status(to, EXIT_FAILURE);
+>> -    qtest_wait_qemu(to);
+>> +    wait_for_migration_fail(to, true, true);
+>> +    qtest_quit(to);
+>>   
+>>       args = (MigrateStart){
+>>           .only_target = true,
 
 -- 
 Best regards,
-Dmitry
+Vladimir
 
 
