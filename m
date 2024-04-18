@@ -2,67 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B248A96C1
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 11:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4A68A97CE
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:51:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxOSF-0005Zt-Lr; Thu, 18 Apr 2024 05:53:19 -0400
+	id 1rxPM5-0002km-K2; Thu, 18 Apr 2024 06:51:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxOSD-0005Zh-TQ
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 05:53:17 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rxPM4-0002kc-8L
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:51:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxOSC-0000sk-Bi
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 05:53:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713433997; x=1744969997;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=pSE4sw8sEmhVNn6Z8gs3SlL9juuU9kHHJYJauxlbyGo=;
- b=fVRHqXtvQUriyVUaiLqKJfMogiNqemzpXypTPY/fEz05Fa97zKDM4ek7
- nUTKTudxxMcYdArYMsdOAXpQZyWu9IlB9z4A8FXrX3SfPdIVyLxSoJl2+
- lWzkJU4j+/S432Ch0G1YYBiZFFj1rde3/elzd4xZmyH0oyBXMTeKFA46B
- Rc368rt72jWRGtnWnSFTYovB6ifK3TYqzhMw+yE6qPyo4D7t4hPwxmyo7
- b6kE7vl54Fxoe2qYNDKFXLkDsiuFqebd2lR+vsPJQ22dGcoyZmt5Q/0DB
- bPTsEmPHqw7fqiyXrD17aQsLNAXk5+iqWlbI4ycCVmnOKn98rJZqX52ps g==;
-X-CSE-ConnectionGUID: yxwjKjgXSseoJ9E6GRgY2A==
-X-CSE-MsgGUID: R3hprJDYQHSaM85gVg8OEA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="12756601"
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="12756601"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 02:53:15 -0700
-X-CSE-ConnectionGUID: J0T+FlFISt++hgl8eLXt2g==
-X-CSE-MsgGUID: MDqYUXTKQH+rpy4YlY9P7g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,211,1708416000"; d="scan'208";a="60355675"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 18 Apr 2024 02:53:13 -0700
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH] accel/tcg/icount-common: Consolidate the use of
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rxPM2-0003Wh-65
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:51:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713437457;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=Nu/eCXRyNcZ2CQYvzalXFY8C+ATGw/U0ghj2w1W9xmf3hFTWGc66y35qLUiVbBuJYR2wOH
+ DluDFTxRc5VRVKxtXxhGjF007W1Zozka+/5BzZ8Ar+BEX77InJc6G2fBPi8QpbS6nPmuCE
+ gN7eGi8wZtZ0SLM4C1+iYqoGoyAxlfw=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-395-ibNYRYaNMj6IU7sg4WVfkg-1; Thu, 18 Apr 2024 06:50:55 -0400
+X-MC-Unique: ibNYRYaNMj6IU7sg4WVfkg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a524b774e39so86172166b.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 03:50:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713437455; x=1714042255;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=Qxxj36YLOmzspIERdPSXinNj0LFWuLjY8jBtFBL3jKqSboQAtcpqhO4QCzeNQL4tK1
+ Aft4QaY9EWLhE08l7tbXZtK+5qb0AYH98cQRycWBZbtZGkaUj1O0XLko32BhkTb+Lw6b
+ /fZn8opNwXQZn+3velxNiA2OvP2l+ZkcPRfUjFyn8uqqJ/Fz+DZCfGyWCyejQBqXnLxm
+ s4lE30K6NX9yNgxwKN1bQr7vjoMdjEIsc7y/OkMJGfzk2siG4zi891gVumyNoWwYVqyL
+ eZbVobq8bq+MuipS8Gc7Ap6UHOp5GABaL/GpIOD7VVWpEMEBSgmVXm5cPCHeCRS1qWzQ
+ 03ZA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWQ4UYNN97pgayhY+sP6od03/3t2wHk2RfILmjX5PZOlYE79OsqY9PM/TQEtxEwA0s6Bszcu1mQd4Fli72GU1wFqW0qRDs=
+X-Gm-Message-State: AOJu0YysujMRXbuuefv7wtAcsVAL6AUuXbBBHot4Lk7k2+2vz18m5tat
+ jwzG0q7dPp6ZXNji2jkBI+YOvyN1mqBNLmyUvvaN5DEIzY0O++eIgdb+OmwnuQJmKxurI8eGiqx
+ 8xVOhlx/54qf1KZUpdZ/ZQR4cSJqFnU+AsPZVfzmiEgYu31XDlT8/
+X-Received: by 2002:a17:907:2d90:b0:a55:3463:ce54 with SMTP id
+ gt16-20020a1709072d9000b00a553463ce54mr1865307ejc.8.1713437454931; 
+ Thu, 18 Apr 2024 03:50:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqfHxff7+rBntXv9CoXYnoQ58cPUlzL0/N+eLP4evlPnzseDWLDyH8gpN8Sucqe4QcLLXBUg==
+X-Received: by 2002:a17:907:2d90:b0:a55:3463:ce54 with SMTP id
+ gt16-20020a1709072d9000b00a553463ce54mr1865295ejc.8.1713437454574; 
+ Thu, 18 Apr 2024 03:50:54 -0700 (PDT)
+Received: from avogadro.local ([176.206.84.58])
+ by smtp.gmail.com with ESMTPSA id
+ qs29-20020a170906459d00b00a5197fa2970sm721980ejc.25.2024.04.18.03.50.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Apr 2024 03:50:54 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Zhao Liu <zhao1.liu@linux.intel.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: Re: [PATCH] accel/tcg/icount-common: Consolidate the use of
  warn_report_once()
-Date: Thu, 18 Apr 2024 18:07:16 +0800
-Message-Id: <20240418100716.1085491-1-zhao1.liu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+Date: Thu, 18 Apr 2024 12:06:21 +0200
+Message-ID: <20240418100621.25379-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240418100716.1085491-1-zhao1.liu@linux.intel.com>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=198.175.65.15;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -59
-X-Spam_score: -6.0
-X-Spam_bar: ------
-X-Spam_report: (-6.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.719,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
+X-Spam_bar: ---
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.719,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SPACE_RATIO=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,38 +103,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+Queued, thanks.
 
-Use warn_report_once() to get rid of the static local variable "notified".
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
----
-Note: After cleaning up similar uses in x86, only icount-common.c and
-virtio-mem.c still have "only once" usage with static variables.
-However, virtio-mem.c uses warn_report_err() and has no associated
-*_err_once variant, so it does not need to be cleaned up.
----
- accel/tcg/icount-common.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index a4a747d1dc99..8d3d3a7e9dc9 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -336,10 +336,8 @@ void icount_start_warp_timer(void)
-     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-                                           ~QEMU_TIMER_ATTR_EXTERNAL);
-     if (deadline < 0) {
--        static bool notified;
--        if (!icount_sleep && !notified) {
--            warn_report("icount sleep disabled and no active timers");
--            notified = true;
-+        if (!icount_sleep) {
-+            warn_report_once("icount sleep disabled and no active timers");
-         }
-         return;
-     }
--- 
-2.34.1
+Paolo
 
 
