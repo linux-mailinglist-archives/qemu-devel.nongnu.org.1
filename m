@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8A8AA17A
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6758AA187
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:53:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVuM-0000Sr-7Y; Thu, 18 Apr 2024 13:50:50 -0400
+	id 1rxVuO-0000U6-44; Thu, 18 Apr 2024 13:50:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVuJ-0000RO-Ql; Thu, 18 Apr 2024 13:50:47 -0400
+ id 1rxVuK-0000Sf-Vf; Thu, 18 Apr 2024 13:50:48 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVuI-0007ad-02; Thu, 18 Apr 2024 13:50:47 -0400
+ id 1rxVuI-0007ao-Cc; Thu, 18 Apr 2024 13:50:48 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BA3B95FD6E;
+ by isrv.corpit.ru (Postfix) with ESMTP id EF73C5FD6F;
  Thu, 18 Apr 2024 20:50:02 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 21462B9348;
+ by tsrv.corpit.ru (Postfix) with SMTP id 5659CB9349;
  Thu, 18 Apr 2024 20:50:00 +0300 (MSK)
-Received: (nullmailer pid 947845 invoked by uid 1000);
+Received: (nullmailer pid 947848 invoked by uid 1000);
  Thu, 18 Apr 2024 17:49:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
@@ -30,10 +30,10 @@ Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
  Kevin Wolf <kwolf@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 101/116] hw/block/nand: Factor nand_load_iolen() method
- out
-Date: Thu, 18 Apr 2024 20:49:31 +0300
-Message-Id: <20240418174955.947730-14-mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 102/116] hw/block/nand: Have blk_load() take unsigned
+ offset and return boolean
+Date: Thu, 18 Apr 2024 20:49:32 +0300
+Message-Id: <20240418174955.947730-15-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
@@ -64,75 +64,57 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
+Negative offset is meaningless, use unsigned type.
+Return a boolean value indicating success.
+
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Kevin Wolf <kwolf@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240409135944.24997-2-philmd@linaro.org>
-(cherry picked from commit 7a86544f286d8af4fa5251101c1026ddae92cc3d)
+Message-Id: <20240409135944.24997-3-philmd@linaro.org>
+(cherry picked from commit 2e3e09b368001f7eaeeca7a9b49cb1f0c9092d85)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/block/nand.c b/hw/block/nand.c
-index 9c1b89cfa6..58ef547c5a 100644
+index 58ef547c5a..d945c0b9e3 100644
 --- a/hw/block/nand.c
 +++ b/hw/block/nand.c
-@@ -243,9 +243,28 @@ static inline void nand_pushio_byte(NANDFlashState *s, uint8_t value)
+@@ -84,7 +84,11 @@ struct NANDFlashState {
+ 
+     void (*blk_write)(NANDFlashState *s);
+     void (*blk_erase)(NANDFlashState *s);
+-    void (*blk_load)(NANDFlashState *s, uint64_t addr, int offset);
++    /*
++     * Returns %true when block containing (@addr + @offset) is
++     * successfully loaded, otherwise %false.
++     */
++    bool (*blk_load)(NANDFlashState *s, uint64_t addr, unsigned offset);
+ 
+     uint32_t ioaddr_vmstate;
+ };
+@@ -772,11 +776,11 @@ static void glue(nand_blk_erase_, NAND_PAGE_SIZE)(NANDFlashState *s)
      }
  }
  
-+/*
-+ * nand_load_block: Load block containing (s->addr + @offset).
-+ * Returns length of data available at @offset in this block.
-+ */
-+static unsigned nand_load_block(NANDFlashState *s, unsigned offset)
-+{
-+    unsigned iolen;
-+
-+    s->blk_load(s, s->addr, offset);
-+
-+    iolen = (1 << s->page_shift);
-+    if (s->gnd) {
-+        iolen += 1 << s->oob_shift;
-+    }
-+    assert(offset <= iolen);
-+    iolen -= offset;
-+
-+    return iolen;
-+}
-+
- static void nand_command(NANDFlashState *s)
+-static void glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
+-                uint64_t addr, int offset)
++static bool glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
++                                                 uint64_t addr, unsigned offset)
  {
--    unsigned int offset;
-     switch (s->cmd) {
-     case NAND_CMD_READ0:
-         s->iolen = 0;
-@@ -271,12 +290,7 @@ static void nand_command(NANDFlashState *s)
-     case NAND_CMD_NOSERIALREAD2:
-         if (!(nand_flash_ids[s->chip_id].options & NAND_SAMSUNG_LP))
-             break;
--        offset = s->addr & ((1 << s->addr_shift) - 1);
--        s->blk_load(s, s->addr, offset);
--        if (s->gnd)
--            s->iolen = (1 << s->page_shift) - offset;
--        else
--            s->iolen = (1 << s->page_shift) + (1 << s->oob_shift) - offset;
-+        s->iolen = nand_load_block(s, s->addr & ((1 << s->addr_shift) - 1));
-         break;
- 
-     case NAND_CMD_RESET:
-@@ -597,12 +611,7 @@ uint32_t nand_getio(DeviceState *dev)
-     if (!s->iolen && s->cmd == NAND_CMD_READ0) {
-         offset = (int) (s->addr & ((1 << s->addr_shift) - 1)) + s->offset;
-         s->offset = 0;
--
--        s->blk_load(s, s->addr, offset);
--        if (s->gnd)
--            s->iolen = (1 << s->page_shift) - offset;
--        else
--            s->iolen = (1 << s->page_shift) + (1 << s->oob_shift) - offset;
-+        s->iolen = nand_load_block(s, offset);
+     if (PAGE(addr) >= s->pages) {
+-        return;
++        return false;
      }
  
-     if (s->ce || s->iolen <= 0) {
+     if (s->blk) {
+@@ -804,6 +808,8 @@ static void glue(nand_blk_load_, NAND_PAGE_SIZE)(NANDFlashState *s,
+                         offset, NAND_PAGE_SIZE + OOB_SIZE - offset);
+         s->ioaddr = s->io;
+     }
++
++    return true;
+ }
+ 
+ static void glue(nand_init_, NAND_PAGE_SIZE)(NANDFlashState *s)
 -- 
 2.39.2
 
