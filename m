@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF1228AA18B
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:54:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6108AA1A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:55:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxVw6-00054E-WA; Thu, 18 Apr 2024 13:52:39 -0400
+	id 1rxVwA-0005Jr-LD; Thu, 18 Apr 2024 13:52:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVve-0004Oj-TU; Thu, 18 Apr 2024 13:52:12 -0400
+ id 1rxVvg-0004Qz-Oo; Thu, 18 Apr 2024 13:52:15 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxVvc-0007kw-Ux; Thu, 18 Apr 2024 13:52:10 -0400
+ id 1rxVve-0007l9-Ty; Thu, 18 Apr 2024 13:52:12 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 446B75FD7B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 77FC05FD7C;
  Thu, 18 Apr 2024 20:50:06 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id A1D47B9355;
+ by tsrv.corpit.ru (Postfix) with SMTP id D54CCB9356;
  Thu, 18 Apr 2024 20:50:03 +0300 (MSK)
-Received: (nullmailer pid 947884 invoked by uid 1000);
+Received: (nullmailer pid 947887 invoked by uid 1000);
  Thu, 18 Apr 2024 17:49:55 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, BALATON Zoltan <balaton@eik.bme.hu>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.2.3 114/116] hw/pci-host/ppc440_pcix: Do not expose a
- bridge device on PCI bus
-Date: Thu, 18 Apr 2024 20:49:44 +0300
-Message-Id: <20240418174955.947730-27-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Cedric Le Goater <clg@kaod.org>, Kowshik Jois <kowsjois@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.2.3 115/116] ppc/spapr: Introduce SPAPR_IRQ_NR_IPIS to
+ refer IRQ range for CPU IPIs.
+Date: Thu, 18 Apr 2024 20:49:45 +0300
+Message-Id: <20240418174955.947730-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
 References: <qemu-stable-8.2.3-20240418204921@cover.tls.msk.ru>
@@ -61,63 +61,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: BALATON Zoltan <balaton@eik.bme.hu>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Real 460EX SoC apparently does not expose a bridge device and having
-it appear on PCI bus confuses an AmigaOS file system driver that uses
-this to detect which machine it is running on.
+spapr_irq_init currently uses existing macro SPAPR_XIRQ_BASE to refer to
+the range of CPU IPIs during initialization of nr-irqs property.
+It is more appropriate to have its own define which can be further
+reused as appropriate for correct interpretation.
 
-Cc: qemu-stable@nongnu.org
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240411192443.B4D644E6026@zero.eik.bme.hu>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-(cherry picked from commit 6e4aceba2079e3df42edc89d44f4ee02343bb09e)
+Suggested-by: Cedric Le Goater <clg@kaod.org>
+Reviewed-by: Cédric Le Goater <clg@kaod.org>
+Tested-by: Kowshik Jois <kowsjois@linux.ibm.com>
+Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+(cherry picked from commit 2df5c1f5b014126595a26c6797089d284a3b211c)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/ppc/ppc440_pcix.c b/hw/ppc/ppc440_pcix.c
-index df4ee374d0..0468b22080 100644
---- a/hw/ppc/ppc440_pcix.c
-+++ b/hw/ppc/ppc440_pcix.c
-@@ -53,7 +53,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(PPC440PCIXState, PPC440_PCIX_HOST)
- struct PPC440PCIXState {
-     PCIHostState parent_obj;
+diff --git a/hw/ppc/spapr_irq.c b/hw/ppc/spapr_irq.c
+index a0d1e1298e..97b2fc42ab 100644
+--- a/hw/ppc/spapr_irq.c
++++ b/hw/ppc/spapr_irq.c
+@@ -23,6 +23,8 @@
  
--    PCIDevice *dev;
-+    uint8_t config[PCI_CONFIG_SPACE_SIZE];
-     struct PLBOutMap pom[PPC440_PCIX_NR_POMS];
-     struct PLBInMap pim[PPC440_PCIX_NR_PIMS];
-     uint32_t sts;
-@@ -172,7 +172,7 @@ static void ppc440_pcix_reg_write4(void *opaque, hwaddr addr,
-     trace_ppc440_pcix_reg_write(addr, val, size);
-     switch (addr) {
-     case PCI_VENDOR_ID ... PCI_MAX_LAT:
--        stl_le_p(s->dev->config + addr, val);
-+        stl_le_p(s->config + addr, val);
-         break;
+ #include "trace.h"
  
-     case PCIX0_POM0LAL:
-@@ -303,7 +303,7 @@ static uint64_t ppc440_pcix_reg_read4(void *opaque, hwaddr addr,
++QEMU_BUILD_BUG_ON(SPAPR_IRQ_NR_IPIS > SPAPR_XIRQ_BASE);
++
+ static const TypeInfo spapr_intc_info = {
+     .name = TYPE_SPAPR_INTC,
+     .parent = TYPE_INTERFACE,
+@@ -329,7 +331,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+         int i;
  
-     switch (addr) {
-     case PCI_VENDOR_ID ... PCI_MAX_LAT:
--        val = ldl_le_p(s->dev->config + addr);
-+        val = ldl_le_p(s->config + addr);
-         break;
+         dev = qdev_new(TYPE_SPAPR_XIVE);
+-        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_XIRQ_BASE);
++        qdev_prop_set_uint32(dev, "nr-irqs", smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
+         /*
+          * 8 XIVE END structures per CPU. One for each available
+          * priority
+@@ -356,7 +358,7 @@ void spapr_irq_init(SpaprMachineState *spapr, Error **errp)
+     }
  
-     case PCIX0_POM0LAL:
-@@ -499,10 +499,7 @@ static void ppc440_pcix_realize(DeviceState *dev, Error **errp)
-     memory_region_init(&s->iomem, OBJECT(dev), "pci-io", 64 * KiB);
-     h->bus = pci_register_root_bus(dev, NULL, ppc440_pcix_set_irq,
-                          ppc440_pcix_map_irq, &s->irq, &s->busmem, &s->iomem,
--                         PCI_DEVFN(0, 0), 1, TYPE_PCI_BUS);
--
--    s->dev = pci_create_simple(h->bus, PCI_DEVFN(0, 0),
--                               TYPE_PPC4xx_HOST_BRIDGE);
-+                         PCI_DEVFN(1, 0), 1, TYPE_PCI_BUS);
+     spapr->qirqs = qemu_allocate_irqs(spapr_set_irq, spapr,
+-                                      smc->nr_xirqs + SPAPR_XIRQ_BASE);
++                                      smc->nr_xirqs + SPAPR_IRQ_NR_IPIS);
  
-     memory_region_init(&s->bm, OBJECT(s), "bm-ppc440-pcix", UINT64_MAX);
-     memory_region_add_subregion(&s->bm, 0x0, &s->busmem);
+     /*
+      * Mostly we don't actually need this until reset, except that not
+diff --git a/include/hw/ppc/spapr_irq.h b/include/hw/ppc/spapr_irq.h
+index c22a72c9e2..4fd2d5853d 100644
+--- a/include/hw/ppc/spapr_irq.h
++++ b/include/hw/ppc/spapr_irq.h
+@@ -14,9 +14,21 @@
+ #include "qom/object.h"
+ 
+ /*
+- * IRQ range offsets per device type
++ * The XIVE IRQ backend uses the same layout as the XICS backend but
++ * covers the full range of the IRQ number space. The IRQ numbers for
++ * the CPU IPIs are allocated at the bottom of this space, below 4K,
++ * to preserve compatibility with XICS which does not use that range.
++ */
++
++/*
++ * CPU IPI range (XIVE only)
+  */
+ #define SPAPR_IRQ_IPI        0x0
++#define SPAPR_IRQ_NR_IPIS    0x1000
++
++/*
++ * IRQ range offsets per device type
++ */
+ 
+ #define SPAPR_XIRQ_BASE      XICS_IRQ_BASE /* 0x1000 */
+ #define SPAPR_IRQ_EPOW       (SPAPR_XIRQ_BASE + 0x0000)
 -- 
 2.39.2
 
