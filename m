@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F8A8A9716
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0828A9712
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 12:13:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxOk6-0001eW-Ao; Thu, 18 Apr 2024 06:11:46 -0400
+	id 1rxOk5-0001dh-9H; Thu, 18 Apr 2024 06:11:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk3-0001df-TP
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk2-0001cf-3A
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk0-0004tO-F3
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:43 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxOk0-0004tH-EJ
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:11:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713435099;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RjMb3Pg6/OUNtybxhe3hrJ32jglibhNx5G1TDCLq18w=;
- b=gU9j9VMdNS7CzeeHoAjF+wIvP4TBtNxT6lVdnxfdq9tHlWYbF841dJ3gOjsCxzR+5+TLJb
- BquzLSG3sRLoshpZiVIY3Bq4JZrAxCjCuTUu3RzONTsYjTSUQZCg4pz/t7q9KQcsClo5eW
- 4jHWvD3eY403tsw0bns8z7xr50X8Ijk=
+ bh=MhtouUqqye7q6PlBmUe1x2ANsRy3/FjDuF8x6a48zZQ=;
+ b=e2us3JLL4SUGxEQxlltSvtmtvk6TMfMJEWwN62Wyu7wezAaWHRhsTtFjTt6HRlcCPwMsKe
+ VNXEOaThaO6sA3Jwl5JQ0tQWb5cR+wdzAxYhrS5eOGTIlNfmrNOGS3ya3whYWTWZc0Aurz
+ YK7lTIlaDbyPrzv6oyZ+A9u8jzfl7GA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-670--D6wjPEqO8irBQzwtj3Rjw-1; Thu, 18 Apr 2024 06:11:36 -0400
-X-MC-Unique: -D6wjPEqO8irBQzwtj3Rjw-1
+ us-mta-346-V0E_OjYjNFO5Nbm02hDYXw-1; Thu, 18 Apr 2024 06:11:36 -0400
+X-MC-Unique: V0E_OjYjNFO5Nbm02hDYXw-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
  [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F07561049C9B;
- Thu, 18 Apr 2024 10:11:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA40F81384D;
+ Thu, 18 Apr 2024 10:11:35 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.223])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A5A57C1A225;
- Thu, 18 Apr 2024 10:11:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3A9FDC271B7;
+ Thu, 18 Apr 2024 10:11:27 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
@@ -51,10 +51,9 @@ To: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Konstantin Kostiuk <kkostiuk@redhat.com>, qemu-block@nongnu.org
-Subject: [PATCH v3 06/13] ci: move external build environment setups to CentOS
- Stream 9
-Date: Thu, 18 Apr 2024 12:10:49 +0200
-Message-ID: <20240418101056.302103-7-thuth@redhat.com>
+Subject: [PATCH v3 07/13] Bump minimum glib version to v2.66
+Date: Thu, 18 Apr 2024 12:10:50 +0200
+Message-ID: <20240418101056.302103-8-thuth@redhat.com>
 In-Reply-To: <20240418101056.302103-1-thuth@redhat.com>
 References: <20240418101056.302103-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -69,8 +68,7 @@ X-Spam_bar: ---
 X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-1.719,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- T_FILL_THIS_FORM_SHORT=0.01 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,256 +84,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+Now that we dropped support for CentOS 8 and Ubuntu 20.04, we can
+look into bumping the glib version to a new minimum for further
+clean-ups. According to repology.org, available versions are:
 
-RHEL 9 (and thus also the derivatives) are available since two years
-now, so according to QEMU's support policy, we can drop the active
-support for the previous major version 8 now.
+ CentOS Stream 9:       2.66.7
+ Debian 11:             2.66.8
+ Fedora 38:             2.74.1
+ Freebsd:               2.78.4
+ Homebrew:              2.80.0
+ Openbsd:               2.78.4
+ OpenSuse leap 15.5:    2.70.5
+ pkgsrc_current:        2.78.4
+ Ubuntu 22.04:          2.72.1
 
-Thus upgrade our CentOS Stream build environment playbooks to major
-version 9 now.
+Thus it should be safe to bump the minimum glib version to 2.66 now.
+Version 2.66 comes with new functions for URI parsing which will
+allow further clean-ups in the following patches.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20240412103708.27650-1-pbonzini@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .../stream/{8 => 9}/build-environment.yml     | 31 ++++++-------
- .../stream/{8 => 9}/x86_64/configure          |  4 +-
- .../stream/{8 => 9}/x86_64/test-avocado       |  0
- scripts/ci/setup/build-environment.yml        | 44 +++++++------------
- 4 files changed, 34 insertions(+), 45 deletions(-)
- rename scripts/ci/org.centos/stream/{8 => 9}/build-environment.yml (75%)
- rename scripts/ci/org.centos/stream/{8 => 9}/x86_64/configure (98%)
- rename scripts/ci/org.centos/stream/{8 => 9}/x86_64/test-avocado (100%)
+ meson.build              | 16 +---------------
+ include/glib-compat.h    | 27 ++-------------------------
+ qga/commands-posix-ssh.c |  4 ++--
+ 3 files changed, 5 insertions(+), 42 deletions(-)
 
-diff --git a/scripts/ci/org.centos/stream/8/build-environment.yml b/scripts/ci/org.centos/stream/9/build-environment.yml
-similarity index 75%
-rename from scripts/ci/org.centos/stream/8/build-environment.yml
-rename to scripts/ci/org.centos/stream/9/build-environment.yml
-index 1ead77e2cb..cd29fe6f27 100644
---- a/scripts/ci/org.centos/stream/8/build-environment.yml
-+++ b/scripts/ci/org.centos/stream/9/build-environment.yml
-@@ -2,32 +2,32 @@
- - name: Installation of extra packages to build QEMU
-   hosts: all
-   tasks:
--    - name: Extra check for CentOS Stream 8
-+    - name: Extra check for CentOS Stream 9
-       lineinfile:
-         path: /etc/redhat-release
--        line: CentOS Stream release 8
-+        line: CentOS Stream release 9
-         state: present
-       check_mode: yes
--      register: centos_stream_8
-+      register: centos_stream_9
+diff --git a/meson.build b/meson.build
+index 91a0aa64c6..142bafab61 100644
+--- a/meson.build
++++ b/meson.build
+@@ -869,7 +869,7 @@ have_xen_pci_passthrough = get_option('xen_pci_passthrough') \
  
--    - name: Enable EPEL repo on CentOS Stream 8
-+    - name: Enable EPEL repo on CentOS Stream 9
-       dnf:
-         name:
-           - epel-release
-         state: present
-       when:
--        - centos_stream_8
-+        - centos_stream_9
+ # When bumping glib minimum version, please check also whether to increase
+ # the _WIN32_WINNT setting in osdep.h according to the value from glib
+-glib_req_ver = '>=2.56.0'
++glib_req_ver = '>=2.66.0'
+ glib_pc = dependency('glib-2.0', version: glib_req_ver, required: true,
+                     method: 'pkg-config')
+ glib_cflags = []
+@@ -910,20 +910,6 @@ if not cc.compiles('''
+         to the right pkg-config files for your build target.''')
+ endif
  
--    - name: Enable PowerTools repo on CentOS Stream 8
-+    - name: Enable CRB repo on CentOS Stream 9
-       ini_file:
--        path: /etc/yum.repos.d/CentOS-Stream-PowerTools.repo
--        section: powertools
-+        path: /etc/yum.repos.d/centos.repo
-+        section: crb
-         option: enabled
-         value: "1"
-       when:
--        - centos_stream_8
-+        - centos_stream_9
+-# Silence clang warnings triggered by glib < 2.57.2
+-if not cc.compiles('''
+-  #include <glib.h>
+-  typedef struct Foo {
+-    int i;
+-  } Foo;
+-  static void foo_free(Foo *f)
+-  {
+-    g_free(f);
+-  }
+-  G_DEFINE_AUTOPTR_CLEANUP_FUNC(Foo, foo_free)
+-  int main(void) { return 0; }''', dependencies: glib_pc, args: ['-Wunused-function', '-Werror'])
+-  glib_cflags += cc.get_supported_arguments('-Wno-unused-function')
+-endif
+ glib = declare_dependency(dependencies: [glib_pc, gmodule],
+                           compile_args: glib_cflags,
+                           version: glib_pc.version())
+diff --git a/include/glib-compat.h b/include/glib-compat.h
+index 43a562974d..86be439ba0 100644
+--- a/include/glib-compat.h
++++ b/include/glib-compat.h
+@@ -19,12 +19,12 @@
+ /* Ask for warnings for anything that was marked deprecated in
+  * the defined version, or before. It is a candidate for rewrite.
+  */
+-#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_56
++#define GLIB_VERSION_MIN_REQUIRED GLIB_VERSION_2_66
  
--    - name: Install basic packages to build QEMU on CentOS Stream 8
-+    - name: Install basic packages to build QEMU on CentOS Stream 9
-       dnf:
-         name:
-           - bzip2
-@@ -42,7 +42,6 @@
-           - gettext
-           - git
-           - glib2-devel
--          - glusterfs-api-devel
-           - gnutls-devel
-           - libaio-devel
-           - libcap-ng-devel
-@@ -61,22 +60,24 @@
-           - lzo-devel
-           - make
-           - mesa-libEGL-devel
-+          - meson
-           - nettle-devel
-           - ninja-build
-           - nmap-ncat
-           - numactl-devel
-           - pixman-devel
--          - python38
-+          - python3
-+          - python3-pip
-           - python3-sphinx
-+          - python3-sphinx_rtd_theme
-+          - python3-tomli
-           - rdma-core-devel
-           - redhat-rpm-config
-           - snappy-devel
--          - spice-glib-devel
--          - spice-server-devel
-           - systemd-devel
-           - systemtap-sdt-devel
-           - tar
-           - zlib-devel
-         state: present
-       when:
--        - centos_stream_8
-+        - centos_stream_9
-diff --git a/scripts/ci/org.centos/stream/8/x86_64/configure b/scripts/ci/org.centos/stream/9/x86_64/configure
-similarity index 98%
-rename from scripts/ci/org.centos/stream/8/x86_64/configure
-rename to scripts/ci/org.centos/stream/9/x86_64/configure
-index 76781f17f4..1b6f40fd78 100755
---- a/scripts/ci/org.centos/stream/8/x86_64/configure
-+++ b/scripts/ci/org.centos/stream/9/x86_64/configure
-@@ -16,7 +16,7 @@
- # that patches adding downstream specific devices are not available.
- #
- ../configure \
----python=/usr/bin/python3.8 \
-+--python=/usr/bin/python3.9 \
- --prefix="/usr" \
- --libdir="/usr/lib64" \
- --datadir="/usr/share" \
-@@ -157,7 +157,6 @@
- --enable-docs \
- --enable-fdt \
- --enable-gcrypt \
----enable-glusterfs \
- --enable-gnutls \
- --enable-guest-agent \
- --enable-iconv \
-@@ -180,7 +179,6 @@
- --enable-seccomp \
- --enable-snappy \
- --enable-smartcard \
----enable-spice \
- --enable-system \
- --enable-tcg \
- --enable-tools \
-diff --git a/scripts/ci/org.centos/stream/8/x86_64/test-avocado b/scripts/ci/org.centos/stream/9/x86_64/test-avocado
-similarity index 100%
-rename from scripts/ci/org.centos/stream/8/x86_64/test-avocado
-rename to scripts/ci/org.centos/stream/9/x86_64/test-avocado
-diff --git a/scripts/ci/setup/build-environment.yml b/scripts/ci/setup/build-environment.yml
-index f344d1a850..9b7d96c01b 100644
---- a/scripts/ci/setup/build-environment.yml
-+++ b/scripts/ci/setup/build-environment.yml
-@@ -174,26 +174,26 @@
-         - ansible_facts['distribution_version'] == '22.04'
-         - ansible_facts['architecture'] == 'aarch64'
+ /* Ask for warnings if code tries to use function that did not
+  * exist in the defined version. These risk breaking builds
+  */
+-#define GLIB_VERSION_MAX_ALLOWED GLIB_VERSION_2_56
++#define GLIB_VERSION_MAX_ALLOWED GLIB_VERSION_2_66
  
--    - name: Enable EPEL repo on EL8
-+    - name: Enable EPEL repo on EL9
-       dnf:
-         name:
-           - epel-release
-         state: present
-       when:
-         - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
--        - ansible_facts['distribution_major_version'] == '8'
-+        - ansible_facts['distribution_major_version'] == '9'
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+@@ -105,29 +105,6 @@ static inline gpointer g_memdup2_qemu(gconstpointer mem, gsize byte_size)
+ }
+ #define g_memdup2(m, s) g_memdup2_qemu(m, s)
  
--    - name: Enable PowerTools repo on CentOS 8
-+    - name: Enable CRB repo on CentOS 9
-       ini_file:
--        path: /etc/yum.repos.d/CentOS-Stream-PowerTools.repo
--        section: powertools
-+        path: /etc/yum.repos.d/centos.repo
-+        section: crb
-         option: enabled
-         value: "1"
-       when:
-         - ansible_facts['distribution_file_variety'] == 'CentOS'
--        - ansible_facts['distribution_major_version'] == '8'
-+        - ansible_facts['distribution_major_version'] == '9'
- 
--    - name: Install basic packages to build QEMU on EL8
-+    - name: Install basic packages to build QEMU on EL9
-       dnf:
-         # This list of packages start with tests/docker/dockerfiles/centos8.docker
-         # but only include files that are common to all distro variants and present
-@@ -211,7 +211,6 @@
-           - gettext
-           - git
-           - glib2-devel
--          - glusterfs-api-devel
-           - gnutls-devel
-           - libaio-devel
-           - libcap-ng-devel
-@@ -229,17 +228,20 @@
-           - lzo-devel
-           - make
-           - mesa-libEGL-devel
-+          - meson
-           - nettle-devel
-           - ninja-build
-           - nmap-ncat
-           - numactl-devel
-           - pixman-devel
--          - python38
-+          - python3
-+          - python3-pip
-           - python3-sphinx
-+          - python3-sphinx_rtd_theme
-+          - python3-tomli
-           - rdma-core-devel
-           - redhat-rpm-config
-           - snappy-devel
--          - spice-glib-devel
-           - systemd-devel
-           - systemtap-sdt-devel
-           - tar
-@@ -247,28 +249,16 @@
-         state: present
-       when:
-         - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
--        - ansible_facts['distribution_version'] == '8'
+-#if defined(G_OS_UNIX)
+-/*
+- * Note: The fallback implementation is not MT-safe, and it returns a copy of
+- * the libc passwd (must be g_free() after use) but not the content. Because of
+- * these important differences the caller must be aware of, it's not #define for
+- * GLib API substitution.
+- */
+-static inline struct passwd *
+-g_unix_get_passwd_entry_qemu(const gchar *user_name, GError **error)
+-{
+-#if GLIB_CHECK_VERSION(2, 64, 0)
+-    return g_unix_get_passwd_entry(user_name, error);
+-#else
+-    struct passwd *p = getpwnam(user_name);
+-    if (!p) {
+-        g_set_error_literal(error, G_UNIX_ERROR, 0, g_strerror(errno));
+-        return NULL;
+-    }
+-    return (struct passwd *)g_memdup(p, sizeof(*p));
+-#endif
+-}
+-#endif /* G_OS_UNIX */
 -
--    - name: Install packages only available on x86 and aarch64
--      dnf:
--        # Spice server not available in ppc64le
--        name:
--          - spice-server
--          - spice-server-devel
--        state: present
--      when:
--        - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
--        - ansible_facts['distribution_version'] == '8'
--        - ansible_facts['architecture'] == 'aarch64' or ansible_facts['architecture'] == 'x86_64'
-+        - ansible_facts['distribution_version'] == '9'
+ static inline bool
+ qemu_g_test_slow(void)
+ {
+diff --git a/qga/commands-posix-ssh.c b/qga/commands-posix-ssh.c
+index 236f80de44..b0e0b1d674 100644
+--- a/qga/commands-posix-ssh.c
++++ b/qga/commands-posix-ssh.c
+@@ -35,7 +35,7 @@ test_get_passwd_entry(const gchar *user_name, GError **error)
+     return p;
+ }
  
-     - name: Check whether the Python runtime version is managed by alternatives
-       stat:
-         path: /etc/alternatives/python3
-       register: python3
+-#define g_unix_get_passwd_entry_qemu(username, err) \
++#define g_unix_get_passwd_entry(username, err) \
+    test_get_passwd_entry(username, err)
+ #endif
  
--    - name: Set default Python runtime to 3.8 on EL8
--      command: alternatives --set python3 /usr/bin/python3.8
-+    - name: Set default Python runtime to 3.9 on EL9
-+      command: alternatives --set python3 /usr/bin/python3.9
-       when:
-         - ansible_facts['distribution_file_variety'] in ['RedHat', 'CentOS']
--        - ansible_facts['distribution_version'] == '8'
--        - python3.stat.islnk and python3.stat.lnk_target != '/usr/bin/python3.8'
-+        - ansible_facts['distribution_version'] == '9'
-+        - python3.stat.exists and python3.stat.islnk and python3.stat.lnk_target != '/usr/bin/python3.9'
+@@ -45,7 +45,7 @@ get_passwd_entry(const char *username, Error **errp)
+     g_autoptr(GError) err = NULL;
+     struct passwd *p;
+ 
+-    p = g_unix_get_passwd_entry_qemu(username, &err);
++    p = g_unix_get_passwd_entry(username, &err);
+     if (p == NULL) {
+         error_setg(errp, "failed to lookup user '%s': %s",
+                    username, err->message);
 -- 
 2.44.0
 
