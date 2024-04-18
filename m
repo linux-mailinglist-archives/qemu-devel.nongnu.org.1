@@ -2,85 +2,169 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EACC68AA1AD
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 19:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7E18AA1C0
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 20:05:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxW0E-00059A-Eq; Thu, 18 Apr 2024 13:56:54 -0400
+	id 1rxW6x-00050d-Fp; Thu, 18 Apr 2024 14:03:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rxW0B-000530-A8
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:51 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <pierrick.bouvier@linaro.org>)
- id 1rxW09-0000Sl-8V
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 13:56:51 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2a68a2b3747so902153a91.3
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 10:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713463008; x=1714067808; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4GhetyBAL6y2MoesB+OoCXNMx9EhlE70+vmqNmEMY3g=;
- b=taqrAuCSTsNEmhpG1ko17wNIr9OL4qiMKqU5GPPFxHS18+dKifoVHZw06F1480Vw6C
- SsjKlp0YkuzG9n48qQz22hqCE7d8XulD0kJvJsmWqv52M1Kn8/OG/2r8lb/T2/1JmG2z
- ZPL8um+3zS9u3HoBBF+iOM7t9OEvfDAgujX3ovC98KBvyu/kr/4avhD+etzyDfLo8zCl
- VNx4zYR7V4bHVSFwqp4rH9qfCWT5TH46D7GoBFOmbzxNwWgFRoUbtxNG5GBfndmf91Dh
- boCaF5bg5Rhij3EGbR3pW251qZZKl7QkdpIv79L/oBmSEEFkFBg9eyIHzSVyzkiHuge4
- Sslw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713463008; x=1714067808;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4GhetyBAL6y2MoesB+OoCXNMx9EhlE70+vmqNmEMY3g=;
- b=iOpYbaa1mhxUJzPeaJZ6oPW5wmdyO53ply6ENOEI8VQHTzmYY8OpqV2X3r97WwSNbY
- XQMQ50tcMmD0MtEXvmUGSoTNkdIpU3YCP7tdLQkTzaqtqnNHEvdmedauuLn6P+6JQkJR
- mUCBHgQ1LFe74QdqEfOBHDLn9jwwlVl5c9v2dopllUMWsyTrJ17LoCi0W7/hwAlFWTi4
- NdvgkAkMvRf8w7C9mXswLUN+M63sGvwOKfZ+3/wJ6LTcf8SuShqEtqq7d7cRuGzLCRzL
- UVYkJw/r5p/fi03XeAAjwTvxGtuNzFE7Ghuapi0aOddC101Wtn+QZuiFwo5FzwUyJeof
- 8UhQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWDFvzeAFNfWuWFAaBvHXPS83q6kQ65uiVX0TFmTV8K4sqfmzYzo4caaDwOdqIwpedxxVp/1YAnaw4n3dykaYCnvLUSgxs=
-X-Gm-Message-State: AOJu0YwSzScMzk6YHLO5LDgDu3hLvyain1r2v8uA6ajUUKeg5MpTzaYE
- Enqpkkzc1kYA/HQDYWyx19CFLyRpUnGQPnQNbwmDOgs++KiMWrncqm3a23zMBRM27IryM6cxH3p
- 3q2Q=
-X-Google-Smtp-Source: AGHT+IFgGYdOTohHy6CPz+BcWr41PC1XQNd2+TtzP3XIYs7VsRL4uk3feMZL/R7EW9j9sUsKix4cPg==
-X-Received: by 2002:a17:90b:688:b0:29b:961a:29c3 with SMTP id
- m8-20020a17090b068800b0029b961a29c3mr2918938pjz.49.1713463007697; 
- Thu, 18 Apr 2024 10:56:47 -0700 (PDT)
-Received: from ?IPV6:2604:3d08:937d:c610::fc11? ([2604:3d08:937d:c610::fc11])
- by smtp.gmail.com with ESMTPSA id
- p4-20020a17090ac00400b002a3a154b974sm1740653pjt.55.2024.04.18.10.56.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 18 Apr 2024 10:56:47 -0700 (PDT)
-Message-ID: <1de592dc-3903-455a-bf6b-6c4c15d8e398@linaro.org>
-Date: Thu, 18 Apr 2024 10:56:46 -0700
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rxW6v-00050H-MK
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 14:03:49 -0400
+Received: from mail-mw2nam12on2102.outbound.protection.outlook.com
+ ([40.107.244.102] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rxW6t-0001Jj-OH
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 14:03:49 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D3/kBZ8xFY9iuHdgjX6/ZT7UeehpLV8dNOYpUvZEgPN0RUGQYMBHxNygx33KAzyfiv+hdgNlvHUCjhtAOihWb0t9QmTcrceJfBI7MXsmlbjdWDB6t8/I58TLw1U8G7GGMnSzYVi7ygujgt8In0O0CgrlVbNDJlYxKU4Yj67NaV0l+u19qb1HvgPC6yQZzyjrNswkHr1ivvbe+YAPuMX/6kDjgnO32xOYWyYOu8+tjgI6cwSchYulMrIdVwOnyO9hg8nHvnWt1mEuZgpe3tSfbigHUfFI24gmf5t5zxnYUMXBpJwjYh77jhqLt7jbhtET1UWGyhGB2AeOmmrbCrlt7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u+jzjAz+E+p8ZoqISesL/6FzFgsFdhkxwoG8rFiKA38=;
+ b=BaWgdABz6wa+6TpZkOPNYqjX4OEf1MncmtguGEEJ9Uoqedkd7mmEe9/ffcS5+5rwvgOeKno2AieKKtpBXo+poEo/GA8GfYzGlPYvRN2brhCXBQWbICCTO/LD28zzBdIqyYfh/bdeR046FhXgffNeN6LvZn0uWN/4UBQR5tHsPYXYBVmeskpJh0WCURyWRFY3729sdxmL+whHe9710V7mcIUF7uSsPNGeHkFkz1JziiiJaL208E7ndjeptCZsJR065dZkuCeIcup8a8JIEklWmbYh68Cs1I9lFXIPPZxmEUsTkpTF9q8/h2VEcakvhiWrsDirfllhXW55ALklYsQu2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u+jzjAz+E+p8ZoqISesL/6FzFgsFdhkxwoG8rFiKA38=;
+ b=iKyayCBMmJP3sYp7iT6DP1VdRpncruTTbR3581cXwNsUXSXJ+KDATKTMaULn+LxBJIjgM/21N+3RacJxB+H9ahSnReP8oWWd0S4dTYEVjWsM055URl1QPVjrxUZ049D1WZqb9MDngBv/u2XqhjU7us8cz1GKXmSJpPAFB6+xgfU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by BL3PR17MB6164.namprd17.prod.outlook.com (2603:10b6:208:38c::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.41; Thu, 18 Apr
+ 2024 17:58:41 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8%4]) with mapi id 15.20.7452.049; Thu, 18 Apr 2024
+ 17:58:40 +0000
+Date: Thu, 18 Apr 2024 13:58:41 -0400
+From: Gregory Price <gregory.price@memverge.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: fan <nifan.cxl@gmail.com>, qemu-devel@nongnu.org,
+ linux-cxl@vger.kernel.org, ira.weiny@intel.com,
+ dan.j.williams@intel.com, a.manzanares@samsung.com,
+ dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
+ Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v6 10/12] hw/mem/cxl_type3: Add dpa range validation for
+ accesses to DC regions
+Message-ID: <ZiFfUQonwWdrEVNP@memverge.com>
+References: <20240325190339.696686-1-nifan.cxl@gmail.com>
+ <20240325190339.696686-11-nifan.cxl@gmail.com>
+ <Zhm7ssKVGdGlR9Iq@memverge.com> <Zh1lk8FWmf0oI7RM@debian>
+ <20240416160056.0000325c@Huawei.com> <Zh6pNVIZFMQadmOm@debian>
+ <20240417125951.00001db1@Huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240417125951.00001db1@Huawei.com>
+X-ClientProxiedBy: SJ0PR05CA0173.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::28) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/7] target/i386: Implement TCGCPUOps for plugin register
- reads
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20240416040609.1313605-1-richard.henderson@linaro.org>
- <20240416040609.1313605-8-richard.henderson@linaro.org>
-From: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-In-Reply-To: <20240416040609.1313605-8-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=pierrick.bouvier@linaro.org; helo=mail-pj1-x1030.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|BL3PR17MB6164:EE_
+X-MS-Office365-Filtering-Correlation-Id: 245fd504-6d06-4484-05e4-08dc5fd12e20
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?VTZCUi9rT0QyK25SL1NyVENaSis5WlNyUS9iL05OTHFHNDNROXZITzVvWEM3?=
+ =?utf-8?B?N1lXTnNwNVVPWVNGOTdML29lOENOVXdpYWx3akpTM3gwRmtQWnh5UUlxMjRE?=
+ =?utf-8?B?WVJiYk80V05FNDZRc0Jpd1ZCMXdGWjUzUWduU3RtUHVkS29QVHVqQXdyVWsr?=
+ =?utf-8?B?UWNVSmRvWWFKeHkwZTZTTHI1L05QcnJGdFVoeUhieWQ1VmxxaUhINVpjUWZ0?=
+ =?utf-8?B?Q3phcUxudWpnOEFBM3JIWEc1OWU1Z1krWktidWJ5Yzg5TmxqbkorU1EvMkIy?=
+ =?utf-8?B?VWJ1bm03RnA1aGhrNXptaVRYMVhDNENPbVVsTVMzMFh4QnFJUmRmUkJGN2VU?=
+ =?utf-8?B?aHYzbmwwM3VVdmI3VGFMdUlzOG0xY3FzVEdDL1ZCZThieExHMlVuRXJBaDZ6?=
+ =?utf-8?B?ZldUOE8vbWI4VkswOFRuaXUrYVFMQmlXR1NMNkpPNnd0dm54bVg2b3ZlTFlI?=
+ =?utf-8?B?ZmVNSEQ1Wk5aZlVBNzgrWTFzSmtCcUd4aTVETEdUYk5SUGw5OUx4c0RoMkVQ?=
+ =?utf-8?B?ZTRhcXk3ZkYrc2MwV2dST3VGZWhXL2p2d3ozRkhnZVpzRUhNN2RyczlTZkVa?=
+ =?utf-8?B?QnRPcFBXdVBOdHFXcGV2aEFlamdoczJ5aXdLWUlhVE9oY1hEdjlpSlZDbTR0?=
+ =?utf-8?B?a0FLNDhwdXVKYUJvTi84eCtGQVlnS29XL2EzUWZ6YldVOTdqSlhrM0FpU3hj?=
+ =?utf-8?B?ZS9aY2lUQlgybm1NSHdYc3BKYjl1SU5RSmZGbEt4N2ZEOHViS3VrUkZuYk1D?=
+ =?utf-8?B?SlFIeFllZGk1VTlMVmlSdlpQbXJleHNhZ0FhMXRvQmlMaVpnVHUwcitKcWI3?=
+ =?utf-8?B?KzR6Y1pkc0prYkNrU1R2UnNWVHBlNjZTbmU4SHVZeGYwWHE4bk9sdGRKVTBH?=
+ =?utf-8?B?TG40eEJEWHZEMFhrTzB3YnVGMkRLWkllby9UaWFnSHJoQXBpNkxjMFhkS0tO?=
+ =?utf-8?B?YytQbk1MVWQ0d3JaaURuL0EyVWpiL3ZmeGJVeVZzUTFXTWM0bWxxQVRtWEpS?=
+ =?utf-8?B?aWI5RHpiZGsxRTE0cW9mSThRREx6WklHcjBoMXIyb0w2ZURPUGhnR2Nta1gw?=
+ =?utf-8?B?WEtlenBPS2Q0VmRVKzRQSkU2S0FDUVNZb0xUa0tyL1piLzJOUHlPVnpaRCtO?=
+ =?utf-8?B?WHhDV29SWXhkSHBhUGhuK3RGT2FrTW40TU5LVGR3T3JNSnAwMmZNMjk1OHl4?=
+ =?utf-8?B?M05VWEI1c0svYUVPNDJ1QmZmeFFicUsrMFNMcUNOWjE1YnRsRFdOWEE4dTE5?=
+ =?utf-8?B?djJncVBoZExDTysrMTN2Ukt3aERCdy9zTEFneEgrK3NSM1kwcTVSQ2lLWWNT?=
+ =?utf-8?B?SDZjRTZpL1JZaHdlRXZhc2pHK0tsQ05RTGplbWltem5pOHVtVWVuL3pXbkFT?=
+ =?utf-8?B?UkNrcEhHRzdDYlVuRWpySlRPdU9BR3d4WCtHMDJOQnpwaFRBM1VvbWFLZTBK?=
+ =?utf-8?B?Ny9rcWt4cXI4VkFPUjh5MlJXMmhLdnpMMkQ4R0hSUGZIdzI2b2RGa09lM0dB?=
+ =?utf-8?B?cUNKcDZJL2dLbzNPNkN5dzBmVWhsT2xGWU0vb1BLVWRaWmltZnAvdmU2U3dS?=
+ =?utf-8?B?VVp6YksvWXRDUlNTajBDM2M0aitzZnkxT1F4Zm5GdVZ4bGh6L3RnNkJkc1ZV?=
+ =?utf-8?B?eTB1VFBvTmxmbVVPRyt2MXBvenQzTzBPbGpHUTZxd2FaZDNoOXc2ZjdSbExo?=
+ =?utf-8?B?cnNVdlh1ckdwQkNVK1JxcFU5UTgydTZpMDlIblNkMTF2QXJ4aVZRSjJnPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(1800799015)(7416005)(376005)(366007); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K25DdUdMNXd2dVMxaXNYY3d0cHJ5ajFVa1IwUEtDZkpxNG5aMVQzQjZ6OVFO?=
+ =?utf-8?B?azM3amlPeEZmRlZEalh0TnBEU2tqUGh6YVl0UUk2Q2dhYWg4UlRrTlo0MEwv?=
+ =?utf-8?B?bUhjZ2xoNjRuYXZIUXpBOXlsenVRRXVvQ2JSZUJMbXJHZWJxaVBLMm9ibGZo?=
+ =?utf-8?B?UXAzMHNEYURTbmZ5aSt4RXhSUjltTnh6V3pTdU1wSTIvL2t2V2hGcnM2ZlZN?=
+ =?utf-8?B?bjZ3NDhGLzArZXBUWm9ub1kzZ1RPaGxCTDE1ODNCb2l1SUo1YmwvcXFocWZQ?=
+ =?utf-8?B?bnAzSWlnWTgwQm15RXVvU1dRRU9hYm1OUDAvRDdYOWN3SUpVdi9VR20wTjhW?=
+ =?utf-8?B?UXlsbFIyakVlZVNMVDd3elRiK1JEclMxdnZoekJKamhPaUVReXgwRTJ2cll6?=
+ =?utf-8?B?Z00wajBqc2x0UXUxRlBtWVp2Mm1QZjROcERRdnR6VkxXWGgvMzF0SlloRCsz?=
+ =?utf-8?B?QzRoVDJ6T3VOeFhzWWEweDNDaVl1c0J1M2h1ck1HVUFuQWJsSmNEZ0FFQWNZ?=
+ =?utf-8?B?T2NiZTQ4WWNTb2hVN3pRREVYOGxOOVNQZHYvY01DbEhNdWNOZkNTYTlWL2wv?=
+ =?utf-8?B?M0hqbmNoS0kvSlNTT2RpeTVNU25mNHNuekcrQy9LUmJuZDlMZW5OUWtUTHd2?=
+ =?utf-8?B?Q3NsU0JjQ2IxOXVIclo0TCtlc3NoSisvZGRCekR3VTkxZDZrNmZKT3cyQVRx?=
+ =?utf-8?B?eU91MjBOK1htWWRZZFZOUU1vSVZVSWpwSXhpdG5YUGVzNEwwTFBEVlFPbmxX?=
+ =?utf-8?B?OC9GUkVSZ3FaT0RNSGRSUmpFWktSalo2SUQ0UnRmV056UjNqNjRFT3BIMU50?=
+ =?utf-8?B?dzFUL0gwdzBnV3NZRDB2cjE5cm51SGlsTmcyblRycXl1eWtGL1RzLzhTbzlX?=
+ =?utf-8?B?YTFrN0hRMlJuYklHZFpIdzVuU01raXZTWHdzTDdJOVFON0dEWVd2K1R6SGtX?=
+ =?utf-8?B?cDRIQzEreUtQVlh1TE9iaG1JUzlKdFFYUjlTNlR3TTlnK05wSVVpYjV3bnhl?=
+ =?utf-8?B?ZnpucUJSNFIxaFdONERjTzI0RHVXYTRpMHdrRDYxdjBoRW5ST2IvOURmbU9a?=
+ =?utf-8?B?akpYbGpIWE91OXMvT0hNS0cxVEp0SlJwNFZVY1ZKZmczRUhyZ2U0L251Z1lj?=
+ =?utf-8?B?dFZhVnV5elB1ZUVnd1lZNWhFZ24wYkwwcmllYlNEclRoUWRYc2YwSEZMclpD?=
+ =?utf-8?B?QzZVaHNmK3B2Q04rSnoxY2t3Z1pxNzkzQXFlbVhNOTZNbHhCOWVveTMyWXdi?=
+ =?utf-8?B?WUVWZk56bnVXSnZiU2FPcXFpeW0vNHhvOWxrTDhidktkZ1l6bDhlNS9mYnpQ?=
+ =?utf-8?B?RStIWXpVNG9aU2pMejVEb3lWVEZ0KzY5ejltcHZZNGdpQTFySXErSzIwa216?=
+ =?utf-8?B?bXFROG4xVEV5WXF4RG42TmJSOE1FUy95Uk50UW04bVpSUWFwYUlIaXZEYkpw?=
+ =?utf-8?B?UVQvYTVxd2tJQU0vd3hSaGtSYXRvNlVaa3BTRTNGQWsrbEl6K3d1b2lGZFA0?=
+ =?utf-8?B?d1I4ZW1jMGpkM2tGdFNrNGhnTXo5dG5vb3dUbzhiSDVycUNLdFJOS0MrL0do?=
+ =?utf-8?B?SzhBVHNUMkF4T0pLN2Q3bG16ZUxIRTlyMEN2MTQzT0lpN0xYUENDaEJjK3Z5?=
+ =?utf-8?B?dVlDNDlSUmw5UWRCcnVKeVExWjF0OGJhbjQyNkJ5c3ArbjljbDZMMFA0U3FM?=
+ =?utf-8?B?ZDlia29XYTBQc2g0ZngrRzVjbmZyYnprNk9hVUVkd3B1bzk1OVpWa3FudXRk?=
+ =?utf-8?B?NlcwU2VwY3dSM3NmT3R3QmpGbU1wM1ZGaHBwdGdJbzEwOWhkREw2WnpseE04?=
+ =?utf-8?B?eWZDbngzRmJ1Y2pSUjluR1FKNERtSURYMktOSk1obDJDc3dxMllzdzJVNDdh?=
+ =?utf-8?B?T2JiN1VHZVd0OWtDbGZhQTBnSWxaaDNDdkFLL2wvTHNCVmR5aUR3cVhCNlJG?=
+ =?utf-8?B?Y1lKQ0t3NmRZVlc1YVV5WlpjZ0F5RldyZ3pHRzNyMmw3WU9VZG1IRkcvRnZa?=
+ =?utf-8?B?QzA4YnB3TEkyeHgzb2V6dXpkdHVTeUVDeHkwOGVNQkFWMlZUdTJETDlCbHVx?=
+ =?utf-8?B?S1hWcGxzbXdubEhKM3EzMGQ4YlVNZ1hpOGgyN2JEbElLTFRHd2xLRGR2azlo?=
+ =?utf-8?B?S29rWUI1aXptdVczVjhFOUkvRXJMNTBVb0tkLzc2aW8zUVJjc21iZ2hkRjVx?=
+ =?utf-8?B?eXc9PQ==?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 245fd504-6d06-4484-05e4-08dc5fd12e20
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 17:58:40.7625 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6Qna1AkG1rYEN+K3EbGJGQhzY//zGCovy5CYii8bvQ1LkBc5lynA/SbykiZY6mht5w0DxxHJEHYKgnlyJCT9i7f4KKtWrLKul0cIVxJZkvQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR17MB6164
+Received-SPF: pass client-ip=40.107.244.102;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -97,128 +181,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/15/24 21:06, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   target/i386/tcg/tcg-cpu.c | 72 ++++++++++++++++++++++++++++++---------
->   1 file changed, 56 insertions(+), 16 deletions(-)
+On Wed, Apr 17, 2024 at 12:59:51PM +0100, Jonathan Cameron wrote:
+> On Tue, 16 Apr 2024 09:37:09 -0700
+> fan <nifan.cxl@gmail.com> wrote:
 > 
-> diff --git a/target/i386/tcg/tcg-cpu.c b/target/i386/tcg/tcg-cpu.c
-> index cca19cd40e..2370053df2 100644
-> --- a/target/i386/tcg/tcg-cpu.c
-> +++ b/target/i386/tcg/tcg-cpu.c
-> @@ -22,9 +22,11 @@
->   #include "helper-tcg.h"
->   #include "qemu/accel.h"
->   #include "hw/core/accel-cpu.h"
-> -
-> +#include "gdbstub/helpers.h"
-> +#include "gdb-internal.h"
->   #include "tcg-cpu.h"
->   
-> +
->   /* Frob eflags into and out of the CPU temporary format.  */
->   
->   static void x86_cpu_exec_enter(CPUState *cs)
-> @@ -61,38 +63,74 @@ static void x86_cpu_synchronize_from_tb(CPUState *cs,
->       }
->   }
->   
-> -static void x86_restore_state_to_opc(CPUState *cs,
-> -                                     const TranslationBlock *tb,
-> -                                     const uint64_t *data)
-> +static uint64_t eip_from_unwind(CPUX86State *env, const TranslationBlock *tb,
-> +                                uint64_t data0)
->   {
-> -    X86CPU *cpu = X86_CPU(cs);
-> -    CPUX86State *env = &cpu->env;
-> -    int cc_op = data[1];
->       uint64_t new_pc;
->   
->       if (tb_cflags(tb) & CF_PCREL) {
->           /*
-> -         * data[0] in PC-relative TBs is also a linear address, i.e. an address with
-> -         * the CS base added, because it is not guaranteed that EIP bits 12 and higher
-> -         * stay the same across the translation block.  Add the CS base back before
-> -         * replacing the low bits, and subtract it below just like for !CF_PCREL.
-> +         * data[0] in PC-relative TBs is also a linear address,
-> +         * i.e. an address with the CS base added, because it is
-> +         * not guaranteed that EIP bits 12 and higher stay the
-> +         * same across the translation block.  Add the CS base
-> +         * back before replacing the low bits, and subtract it
-> +         * below just like for !CF_PCREL.
->            */
->           uint64_t pc = env->eip + tb->cs_base;
-> -        new_pc = (pc & TARGET_PAGE_MASK) | data[0];
-> +        new_pc = (pc & TARGET_PAGE_MASK) | data0;
->       } else {
-> -        new_pc = data[0];
-> +        new_pc = data0;
->       }
->       if (tb->flags & HF_CS64_MASK) {
-> -        env->eip = new_pc;
-> -    } else {
-> -        env->eip = (uint32_t)(new_pc - tb->cs_base);
-> +        return new_pc;
->       }
-> +    return (uint32_t)(new_pc - tb->cs_base);
-> +}
->   
-> +static void x86_restore_state_to_opc(CPUState *cs,
-> +                                     const TranslationBlock *tb,
-> +                                     const uint64_t *data)
-> +{
-> +    CPUX86State *env = cpu_env(cs);
-> +    CCOp cc_op;
-> +
-> +    env->eip = eip_from_unwind(env, tb, data[0]);
-> +
-> +    cc_op = data[1];
->       if (cc_op != CC_OP_DYNAMIC) {
->           env->cc_op = cc_op;
->       }
->   }
->   
-> +static bool x86_plugin_need_unwind_for_reg(CPUState *cs, int reg)
-> +{
-> +    return reg == IDX_IP_REG || reg == IDX_FLAGS_REG;
-> +}
-> +
-> +static int x86_plugin_unwind_read_reg(CPUState *cs, GByteArray *buf, int reg,
-> +                                      const TranslationBlock *tb,
-> +                                      const uint64_t *data)
-> +{
-> +    CPUX86State *env = cpu_env(cs);
-> +    CCOp cc_op;
-> +
-> +    switch (reg) {
-> +    case IDX_IP_REG:
-> +        return gdb_get_regl(buf, eip_from_unwind(env, tb, data[0]));
-> +
-> +    case IDX_FLAGS_REG:
-> +        cc_op = data[1];
-> +        if (cc_op == CC_OP_DYNAMIC) {
-> +            cc_op = env->cc_op;
-> +        }
-> +        return gdb_get_reg32(buf, cpu_compute_eflags_ccop(env, cc_op));
-> +
-> +    default:
-> +        g_assert_not_reached();
-> +    }
-> +}
-> +
->   #ifndef CONFIG_USER_ONLY
->   static bool x86_debug_check_breakpoint(CPUState *cs)
->   {
-> @@ -110,6 +148,8 @@ static const TCGCPUOps x86_tcg_ops = {
->       .initialize = tcg_x86_init,
->       .synchronize_from_tb = x86_cpu_synchronize_from_tb,
->       .restore_state_to_opc = x86_restore_state_to_opc,
-> +    .plugin_need_unwind_for_reg = x86_plugin_need_unwind_for_reg,
-> +    .plugin_unwind_read_reg = x86_plugin_unwind_read_reg,
->       .cpu_exec_enter = x86_cpu_exec_enter,
->       .cpu_exec_exit = x86_cpu_exec_exit,
->   #ifdef CONFIG_USER_ONLY
+> > 
+> > Currently, we do not allow releasing an extent when it is still pending,
+> > which aligns with the case you mentioned above "not release for reuse", I
+> > think.
+> > Can the second add mean a retry instead of reuse? 
+> No - or at least the device should not be doing that.  The FM might try
+> again, but only once it knows try 1 failed. For reasons of this aligning
+> with MHD case where you definitely can't offer it to more than one host,
+> I think we should not do it.  Whether we should put any effort into blocking
+> it is a different question.  User error :)
+> 
+> Note, the host must not remove a log entry until it has dealt with it
+> (sent a response) so there is no obvious reason to bother with a retry.
+> Maybe a booting host would reject all offered extents (because it's not ready
+> for them yet), but then I'd want the FM to explicitly decide to tell the device
+> to offer gain.
+> 
 
-Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
+This might be the only time a forced-removal makes sense, considering
+that removal of a pending add could be potentially catestrophic, but if
+the FM knows the host is not coming up and never coming up, an
+allocation stuck in pending would not be recoverable unless you
+force-removed it.
+
+> Whilst this is a custom interface, the equivalent FM API does say.
+> 
+> "The command, with selection policy Enable Shared Access, shall also fail with Invalid
+> Input under the following conditions:
+> • When the specified region is not Sharable
+> • When the tagged capacity is already mapped to any Host ID via a non-Sharable
+> region
+> • When the tagged capacity cannot be added to the requested region due to deviceimposed
+> restrictions
+> • When the same tagged capacity is currently accessible by the same LD"
+> 
+> Little fuzzy because of the whole pending vs 'mapped / accessible' wording but
+> I think intent is you can't send again until first one is dealt with.
+> 
+> Jonathan
+> 
+> > 
+> > Fan
+> > 
+> > > 
+> > >   
+> > > > From the kernel side, if the first one is accepted, the second one will
+> > > > get rejected, and there is no issue there.
+> > > > If the first is reject for some reason, the second one can get
+> > > > accepted or rejected and do not need to worry about the first one.
+> > > > 
+> > > > 
+> > > > Fan
+> > > >   
+> > >   
+> 
 
