@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3468AA268
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EE48AA271
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:02:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxX0W-0003pG-Tr; Thu, 18 Apr 2024 15:01:16 -0400
+	id 1rxX0g-0003sm-Nv; Thu, 18 Apr 2024 15:01:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxX0I-0003o0-Sz
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:03 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ id 1rxX0M-0003or-9h
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:06 -0400
+Received: from madrid.collaboradmins.com ([46.235.227.194])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxX0G-0002x1-Vs
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:02 -0400
+ id 1rxX0J-0002xN-J0
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1713466859;
- bh=h5CbIOpto2HG2a9azhthnWjxmgbFKvMuRY1FpYQxt54=;
+ s=mail; t=1713466862;
+ bh=7WT/MI+6czQUrKwB+2rCbg/VE4FVyKvqRtn0SkA3ZFs=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=utpxBBDxIoaOqoICxSOxedRowZMOSGKj5trvCBiShhZbClNHcwORflzfKrzw9Cv61
- XC+cXAyQWO1Fdq9MTefOh6wfi9yxkoy2rE1cE8OhL2duJkjrCZpTT/06LywwzIg4LN
- YQcVireYSWuP1wulB9jZUy5Get+dvmX7J79X0FnGHwldJN8/+DpJ3kkM2acxJaIcSQ
- bwe4ha23Stctb1r2drqZ1uvywJL3Xaj9GjLDldtbSegOr7obe8rGTd1Wa2dH1ALtMN
- U8bXSBZWUjYqRBVdh+X1bg9JFVpEIYTeJZLDCSQuehteV/GWZGohceXsa/+6z/bA42
- j/Pv0xDzpHZkg==
+ b=r69Z9uPHR6l2krLb0HSAIhhaoTWFhHYMBuGELCLmamlFtXZQyq1cnPv5kZxVcKQ0r
+ ETPTRzuM0zp3Ui4acSIZZ2rmVNBh87nZrsTfsLpzUj1E6wg0eQH416EdE6yBZ3LO41
+ xp3qNbHJEBxiNEU9veU0YSbm8rPpiKa2pwFOEknADhPqRl1sEbXPX+vCzLYjvjnuDR
+ SJKrOPHDZwIEagmRlAaeEaTBODSAyG1zlzHPacngrn01nmp4a7Yo4Jf7sAWfoJbbLv
+ MlIT/dDO6NmKgPZg63O5YnM5k3d+aV8yeMh04+WlLokXsX1qtUHjAbaxcZH/g9a+Od
+ ESYwZmUv7Besg==
 Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
  (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id D429E3782149;
- Thu, 18 Apr 2024 19:00:57 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id F3464378214A;
+ Thu, 18 Apr 2024 19:00:59 +0000 (UTC)
 From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
@@ -57,16 +57,16 @@ Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
  Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
  Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
  Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v8 02/11] virtio-gpu: Use pkgconfig version to decide which
- virgl features are available
-Date: Thu, 18 Apr 2024 22:00:31 +0300
-Message-ID: <20240418190040.1110210-3-dmitry.osipenko@collabora.com>
+Subject: [PATCH v8 03/11] virtio-gpu: Support context-init feature with
+ virglrenderer
+Date: Thu, 18 Apr 2024 22:00:32 +0300
+Message-ID: <20240418190040.1110210-4-dmitry.osipenko@collabora.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
 References: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
+Received-SPF: pass client-ip=46.235.227.194;
  envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -89,31 +89,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-New virglrerenderer features were stabilized with release of v1.0.0.
-Presence of symbols in virglrenderer.h doesn't guarantee ABI compatibility
-with pre-release development versions of libvirglerender. Use virglrenderer
-version to decide reliably which virgl features are available.
+From: Huang Rui <ray.huang@amd.com>
 
+Patch "virtio-gpu: CONTEXT_INIT feature" has added the context_init
+feature flags. Expose this feature and support creating virglrenderer
+context with flags using context_id if libvirglrenderer is new enough.
+
+Originally-by: Antonio Caggiano <antonio.caggiano@collabora.com>
+Signed-off-by: Huang Rui <ray.huang@amd.com>
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 ---
- meson.build | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ hw/display/virtio-gpu-gl.c    |  4 ++++
+ hw/display/virtio-gpu-virgl.c | 20 ++++++++++++++++++--
+ meson.build                   |  1 +
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
+diff --git a/hw/display/virtio-gpu-gl.c b/hw/display/virtio-gpu-gl.c
+index e06be60dfbfc..ba478124e2c2 100644
+--- a/hw/display/virtio-gpu-gl.c
++++ b/hw/display/virtio-gpu-gl.c
+@@ -127,6 +127,10 @@ static void virtio_gpu_gl_device_realize(DeviceState *qdev, Error **errp)
+     VIRTIO_GPU_BASE(g)->virtio_config.num_capsets =
+         virtio_gpu_virgl_get_num_capsets(g);
+ 
++#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
++    g->parent_obj.conf.flags |= 1 << VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED;
++#endif
++
+     virtio_gpu_device_realize(qdev, errp);
+ }
+ 
+diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
+index 9f34d0e6619c..ef598d8d23ee 100644
+--- a/hw/display/virtio-gpu-virgl.c
++++ b/hw/display/virtio-gpu-virgl.c
+@@ -106,8 +106,24 @@ static void virgl_cmd_context_create(VirtIOGPU *g,
+     trace_virtio_gpu_cmd_ctx_create(cc.hdr.ctx_id,
+                                     cc.debug_name);
+ 
+-    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen,
+-                                  cc.debug_name);
++    if (cc.context_init) {
++        if (!virtio_gpu_context_init_enabled(g->parent_obj.conf)) {
++            qemu_log_mask(LOG_GUEST_ERROR, "%s: context_init disabled",
++                          __func__);
++            cmd->error = VIRTIO_GPU_RESP_ERR_UNSPEC;
++            return;
++        }
++
++#ifdef HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS
++        virgl_renderer_context_create_with_flags(cc.hdr.ctx_id,
++                                                 cc.context_init,
++                                                 cc.nlen,
++                                                 cc.debug_name);
++        return;
++#endif
++    }
++
++    virgl_renderer_context_create(cc.hdr.ctx_id, cc.nlen, cc.debug_name);
+ }
+ 
+ static void virgl_cmd_context_destroy(VirtIOGPU *g,
 diff --git a/meson.build b/meson.build
-index 91a0aa64c640..cafc32521efb 100644
+index cafc32521efb..d71d33d69b45 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -2286,11 +2286,8 @@ config_host_data.set('CONFIG_PNG', png.found())
- config_host_data.set('CONFIG_VNC', vnc.found())
- config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
+@@ -2288,6 +2288,7 @@ config_host_data.set('CONFIG_VNC_JPEG', jpeg.found())
  config_host_data.set('CONFIG_VNC_SASL', sasl.found())
--if virgl.found()
--  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT',
--                       cc.has_member('struct virgl_renderer_resource_info_ext', 'd3d_tex2d',
--                                     prefix: '#include <virglrenderer.h>',
--                                     dependencies: virgl))
-+if virgl.version().version_compare('>=1.0.0')
-+  config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
+ if virgl.version().version_compare('>=1.0.0')
+   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
++  config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
  endif
  config_host_data.set('CONFIG_VIRTFS', have_virtfs)
  config_host_data.set('CONFIG_VTE', vte.found())
