@@ -2,47 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 762AA8A9AB4
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 15:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57FD18A9A70
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 14:54:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxROZ-000429-Ir; Thu, 18 Apr 2024 09:01:51 -0400
+	id 1rxRGh-00011N-LE; Thu, 18 Apr 2024 08:53:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangzw@tecorigin.com>)
- id 1rxP52-00060l-2B
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:33:24 -0400
-Received: from out28-148.mail.aliyun.com ([115.124.28.148])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jiangzw@tecorigin.com>)
- id 1rxP4x-0000eE-F9
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 06:33:23 -0400
-X-Alimail-AntiSpam: AC=CONTINUE; BC=0.1101409|-1; CH=green; DM=|CONTINUE|false|;
- DS=CONTINUE|ham_system_inform|0.00147396-2.70649e-05-0.998499;
- FP=0|0|0|0|0|-1|-1|-1; HT=ay29a033018047209; MF=jiangzw@tecorigin.com; NM=1;
- PH=DS; RN=4; RT=4; SR=0; TI=SMTPD_---.XEijZRr_1713436069; 
-Received: from localhost.localdomain(mailfrom:jiangzw@tecorigin.com
- fp:SMTPD_---.XEijZRr_1713436069) by smtp.aliyun-inc.com;
- Thu, 18 Apr 2024 18:27:56 +0800
-From: Zhiwei Jiang <jiangzw@tecorigin.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, pbonzini@redhat.com,
- Zhiwei Jiang <jiangzw@tecorigin.com>
-Subject: [PATCH] tcg: Fix the overflow in indexing tcg_ctx->temps
-Date: Thu, 18 Apr 2024 10:27:47 +0000
-Message-Id: <20240418102747.27703-1-jiangzw@tecorigin.com>
-X-Mailer: git-send-email 2.17.1
-Received-SPF: pass client-ip=115.124.28.148;
- envelope-from=jiangzw@tecorigin.com; helo=out28-148.mail.aliyun.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rxRGU-0000ze-D3
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:53:23 -0400
+Received: from phobos.denx.de ([2a01:238:438b:c500:173d:9f52:ddab:ee01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rxRGS-0000qx-2h
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 08:53:21 -0400
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+ (No client certificate requested)
+ (Authenticated sender: marex@denx.de)
+ by phobos.denx.de (Postfix) with ESMTPSA id E10FC88606;
+ Thu, 18 Apr 2024 14:53:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+ s=phobos-20191101; t=1713444795;
+ bh=aXlTu9n43PjlP+ztKoRn3YAP4AKQDjREGqwjd6iLUK4=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=TlYykysLmxC0+nX/FymjfbI5A/Mwcw1ajPoh7PP8GijgviNLBDiaozknS3+2RMHva
+ 4oB/OJqfpNRsgLISvTzypD3tkUBdtnvgaFJiNnO33b/EtVaHOv1SFdmJoLyFkZz/GS
+ sMGAyKVRH9Z5WS99JvyD9BDS47BGn/JN/bZlcVZY4mYHKQUdzJqXh9iicHVOZjmWtN
+ bIAv/N0jmQrq5j6vK4QxkL0VEUUpej3C295uFy1cCptj64CLf3uJPfqZGJkNX8fDCA
+ j1zwWxFoLL8YhJh0ES/cJz3fTGrbQTTzQFtsPe7Y+1yduhOJ1Cjda+kkXFBeFAu3SJ
+ NoNiS4WSmr6+A==
+Message-ID: <892a0a7d-5f74-4207-90e0-e747be0b3df1@denx.de>
+Date: Thu, 18 Apr 2024 14:04:11 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.1 v2 2/3] target/nios2: Remove the deprecated Nios
+ II target
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Sandra Loosemore <sloosemore@baylibre.com>,
+ Chung-Lin Tang <cltang@baylibre.com>, andrew@reenigne.org,
+ Yao Qi <qiyaoltc@gmail.com>
+Cc: devel@lists.libvirt.org, Laurent Vivier <laurent@vivier.eu>,
+ Chris Wulff <crwulff@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+References: <20240327144806.11319-1-philmd@linaro.org>
+ <20240327144806.11319-3-philmd@linaro.org>
+ <fd68f7e5-11ed-4459-96ac-b4a417dc9aa0@linaro.org>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <fd68f7e5-11ed-4459-96ac-b4a417dc9aa0@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+Received-SPF: pass client-ip=2a01:238:438b:c500:173d:9f52:ddab:ee01;
+ envelope-from=marex@denx.de; helo=phobos.denx.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Thu, 18 Apr 2024 09:00:56 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,46 +91,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sometimes, when the address of the passed TCGTemp *ts variable is the same as tcg_ctx,
-the index calculated in the temp_idx function, i.e., ts - tcg_ctx->temps,
-can result in a particularly large value, causing overflow in the subsequent array access.
+On 4/18/24 1:10 PM, Philippe Mathieu-Daudé wrote:
+> On 27/3/24 15:48, Philippe Mathieu-Daudé wrote:
+>> The Nios II target is deprecated since v8.2 in commit 9997771bc1
+>> ("target/nios2: Deprecate the Nios II architecture").
+>>
+>> Remove:
+>> - Buildsys / CI infra
+>> - User emulation
+>> - System emulation (10m50-ghrd & nios2-generic-nommu machines)
+>> - Tests
+>>
+>> Cc: Marek Vasut <marex@denx.de>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-0  0x00007f79590132ac in test_bit (addr=<optimized out>, nr=<optimized out>)
-    at /data/system/jiangzw/release_version/qemu8.2/include/qemu/bitops.h:135
-1  init_ts_info (ctx=ctx@entry=0x7f794bffe460, ts=0x7f76fc000e00) at ../tcg/optimize.c:148
-2  0x00007f7959014b50 in init_arguments (nb_args=2, op=0x7f76fc0101f8, ctx=0x7f794bffe460) at ../tcg/optimize.c:792
-3  fold_call (op=0x7f76fc0101f8, ctx=0x7f794bffe460) at ../tcg/optimize.c:1348
-4  tcg_optimize (s=<optimized out>) at ../tcg/optimize.c:2369
-5  0x00007f7958ffa136 in tcg_gen_code (s=0x7f76fc000e00, tb=0x7f7904202380, pc_start=140741246462840) at ../tcg/tcg.c:6066
-
-Signed-off-by: Zhiwei Jiang <jiangzw@tecorigin.com>
----
- include/tcg/tcg.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 05a1912f8a..4b38d2702d 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -629,7 +629,7 @@ static inline size_t temp_idx(TCGTemp *ts)
-  */
- static inline TCGTemp *tcgv_i32_temp(TCGv_i32 v)
- {
--    return (void *)tcg_ctx + (uintptr_t)v;
-+    return (void *)tcg_ctx->temps + (uintptr_t)v;
- }
- #endif
- 
-@@ -681,7 +681,7 @@ static inline TCGArg tcgv_vec_arg(TCGv_vec v)
- static inline TCGv_i32 temp_tcgv_i32(TCGTemp *t)
- {
-     (void)temp_idx(t); /* trigger embedded assert */
--    return (TCGv_i32)((void *)t - (void *)tcg_ctx);
-+    return (TCGv_i32)((void *)t - (void *)tcg_ctx->temps);
- }
- 
- static inline TCGv_i64 temp_tcgv_i64(TCGTemp *t)
--- 
-2.17.1
-
+Thank you
 
