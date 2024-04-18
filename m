@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43BE8AA2D5
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:32:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353428AA2C6
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:30:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXSf-0000sa-Oe; Thu, 18 Apr 2024 15:30:21 -0400
+	id 1rxXSN-0007i2-FI; Thu, 18 Apr 2024 15:30:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQD-0001VZ-Vd
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:27:50 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQM-0001Yt-Tc
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:28:01 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQC-0007e5-Dz
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:27:49 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-56e56ee8d5cso1908727a12.2
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:27:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXQI-0007f9-6b
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:27:58 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5176f217b7bso2158942e87.0
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:27:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468465; x=1714073265; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713468470; x=1714073270; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=zuWZ6VCaeCTfKgGM+fcYzWiSC9LIi21t46RdwEg8Jqc=;
- b=x5wRfVcOKCY5n9oADH2ZhfSsE7uQ3MTtfu3jpEtNiUvAAHPMo1BquWtLKtkybqxbEm
- gPDRlQ3Mj0VkWEoUQ9OyDIB8CtJb1QdYZJxN7lVi6jvFB4gs9CpPSrVUb0EwBLeYUlT6
- JuZE0gTxGt1pcM9rGcvud/K99h+Y/rAOVPSR61hWV2uQ/p97UzO4AuuCVW/updWH9ug7
- G35x6dDVLgYjsCpXsfCp5Ya0G0eWuiL9vdjWvcwtOyBSmulb13vPTnn5HZRdExejIreg
- GGzzhWN5k/fBlDPyn0JHcTgrXac4s9qJlCoNDdGrV9rxpC6t654/oM839wBzGYwKhj69
- bxQg==
+ bh=zNTjYBQSXlJdcfDAGNfhN/k6Tw+ZuKx0L+6ToWVAoUI=;
+ b=ZwyPaKn3Ee4HVquN364xaRf+LilSRpTtrJ8VmCW+TGl1THY1hUvfr8bJkbPCVzTL0O
+ eOfFSGovndkedIMQESYB4sfNRG3VeIayto6YgEZujgdXS5yw9LxH7MCYweGwZrWnG1Nr
+ uXNOrw/epMEXW1V5da6QQq4zwoyehC4IqsDYwlfq1NHmZakLWDwaIzmVs85LErki8gkR
+ YWrMZqt1mKSt+2xFOvAyK9TYopkQETpvPlSHgQoBFJBW9pVB63e6xv6m1RuBONfJZ34y
+ jyj/LX9VHhv+0ne8ET2lSC6rssyBbzaOPr0yEMKmkrFGIsvIaV5Ki4XNhkY0OZuUQ9nS
+ Sl8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468465; x=1714073265;
+ d=1e100.net; s=20230601; t=1713468470; x=1714073270;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zuWZ6VCaeCTfKgGM+fcYzWiSC9LIi21t46RdwEg8Jqc=;
- b=HaVUXlvRzA9s5NQ+SOk90oKDNcGlMBJFm3E9F+dinbwUSIQlJZaTBuDK1hv2jnFUVV
- kPc3Hzka8jczuK3Ktx1+EWYkYEgtaW/699f12+7hXA0wUkUTSciaeBgDoc086HN455xd
- 5xO0JhPhDHS/NSUKj5+edCO5eLmTKHuzVb0LThvWn1pBc0z2O8HHgys3oyKEGjFwBVrD
- /xmKs/SD30fzxxVxUJV0cVZVpte+hvr9ZEcHXA/NI02CtdHAue+c0QceIybKYAC0om8P
- BUBQ3tsMpOm81ugzAyF3Y0AmNiknkDhKiNhOAqLQLhpOIAawlkNfI5NlK1IPbdrgYlwJ
- jCeQ==
-X-Gm-Message-State: AOJu0Yx+1LjZ4XAuAXQy8ud0fJoAIy3TIHF8Qu0l/KF1na/cQdjWaDvM
- f/J+8Vo3VwHm2crOuyZyhq4VDltV/nWL4J/8E4QvuyksGLGVcJsOrbvCo5U3wnrk+QzwQLaV9GD
- 1
-X-Google-Smtp-Source: AGHT+IHNrvZlZ7Uei/H294UHaKVP1n4MPQEnwPA0Hao+SxNQsQzhpCkD7PK2coUvXZVR5L3VPti1CA==
-X-Received: by 2002:a50:aad4:0:b0:56d:fca8:d209 with SMTP id
- r20-20020a50aad4000000b0056dfca8d209mr113241edc.10.1713468464845; 
- Thu, 18 Apr 2024 12:27:44 -0700 (PDT)
+ bh=zNTjYBQSXlJdcfDAGNfhN/k6Tw+ZuKx0L+6ToWVAoUI=;
+ b=ABobP0CXXEeHQAhPn7Quq5NbrVgQmn5fZE4ZvpCGqDovFNi3xwrqb9O+ehQ5v91YH2
+ 68zX3OXZJP4zp8N+Zn2ws/Xu9aZOxDiaHnH2ocRHKwfL+PnaVk2NEME0E+UH62cxCxTS
+ FpqC9PG49hSCfwWDJTuaDieu0mkzGkQ+7MIT1xh0WGEPwxdhYqrjoMk1zdTPONAzCtZm
+ zwRLClbE0oE7t48jh7/cY6Ee2r6OZVRbKgjPLZlAIKFo62ulSiiICJmtYV5ln/xSlkfw
+ /BZ2oxKxzgREVi+Bo0/MsIlL021pe8pFHQqFzx4F1VL+mBkwbuz3rqAgAUDTnWbPsIu0
+ iqXA==
+X-Gm-Message-State: AOJu0YyGDAZTx+TEQsHIxh7XdSxrrwSddZf7SlvUyGhT+tXj8DIXp3eg
+ 0b2KnltuiYpuFR/NrmX/cCYYHf+Qxv9OOE94/J+w0Rbtvdlzfr6Q6B/zny4o/34MpJtFK0chnte
+ N
+X-Google-Smtp-Source: AGHT+IGRtbT7LlcI6CQVHjULTyTQXTmBNJ6XYFrkIeD3sIOYqal3qJsUOamHWsXIg/SR6F1S1/+Vaw==
+X-Received: by 2002:a19:550e:0:b0:516:d250:91a7 with SMTP id
+ n14-20020a19550e000000b00516d25091a7mr8569lfe.12.1713468470564; 
+ Thu, 18 Apr 2024 12:27:50 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- fi5-20020a056402550500b0056e598155fasm1213489edb.64.2024.04.18.12.27.23
+ z5-20020a170906714500b00a51bbee7e55sm1259679ejj.53.2024.04.18.12.27.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:27:44 -0700 (PDT)
+ Thu, 18 Apr 2024 12:27:50 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -64,18 +64,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 17/24] exec: Include missing 'qemu/log-for-trace.h' header in
- 'exec/log.h'
-Date: Thu, 18 Apr 2024 21:25:16 +0200
-Message-ID: <20240418192525.97451-18-philmd@linaro.org>
+Subject: [PATCH 18/24] plugins: Include missing 'qemu/bitmap.h' header
+Date: Thu, 18 Apr 2024 21:25:17 +0200
+Message-ID: <20240418192525.97451-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
 References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,25 +97,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"exec/log.h" accesses the qemu_loglevel variable,
-which is declared in "qemu/log-for-trace.h".
+"qemu/plugin.h" uses DECLARE_BITMAP(), which is
+declared in "qemu/bitmap.h".
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/exec/log.h | 1 +
+ include/qemu/plugin.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/exec/log.h b/include/exec/log.h
-index 4a7375a45f..e0ff778a10 100644
---- a/include/exec/log.h
-+++ b/include/exec/log.h
-@@ -2,6 +2,7 @@
- #define QEMU_EXEC_LOG_H
- 
- #include "qemu/log.h"
-+#include "qemu/log-for-trace.h"
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index 12a96cea2a..41db748eda 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -13,6 +13,7 @@
+ #include "qemu/queue.h"
+ #include "qemu/option.h"
+ #include "qemu/plugin-event.h"
++#include "qemu/bitmap.h"
+ #include "exec/memopidx.h"
  #include "hw/core/cpu.h"
- #include "disas/disas.h"
  
 -- 
 2.41.0
