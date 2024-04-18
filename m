@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359768AA3C2
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36178AA3B9
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:05:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXyP-0001Zf-Az; Thu, 18 Apr 2024 16:03:09 -0400
+	id 1rxXyT-0001ea-5k; Thu, 18 Apr 2024 16:03:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXxr-0001Uu-6r; Thu, 18 Apr 2024 16:02:35 -0400
+ id 1rxXy1-0001YN-7A; Thu, 18 Apr 2024 16:02:45 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXxp-0005GY-4X; Thu, 18 Apr 2024 16:02:34 -0400
+ id 1rxXxx-0005HV-Pt; Thu, 18 Apr 2024 16:02:44 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 56DFB5FE0B;
+ by isrv.corpit.ru (Postfix) with ESMTP id 943B85FE0E;
  Thu, 18 Apr 2024 23:02:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B6C8CB93F1;
+ by tsrv.corpit.ru (Postfix) with SMTP id F28F3B93F4;
  Thu, 18 Apr 2024 23:02:24 +0300 (MSK)
-Received: (nullmailer pid 952848 invoked by uid 1000);
+Received: (nullmailer pid 952857 invoked by uid 1000);
  Thu, 18 Apr 2024 20:02:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 44/59] hw/virtio: Introduce virtio_bh_new_guarded()
- helper
-Date: Thu, 18 Apr 2024 23:02:04 +0300
-Message-Id: <20240418200224.952785-3-mjt@tls.msk.ru>
+ Alexander Bulekov <alxndr@bu.edu>, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 47/59] hw/virtio/virtio-crypto: Protect from DMA
+ re-entrancy bugs
+Date: Thu, 18 Apr 2024 23:02:07 +0300
+Message-Id: <20240418200224.952785-6-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
@@ -64,61 +64,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Introduce virtio_bh_new_guarded(), similar to qemu_bh_new_guarded()
-but using the transport memory guard, instead of the device one
-(there can only be one virtio device per virtio bus).
+Replace qemu_bh_new_guarded() by virtio_bh_new_guarded()
+so the bus and device use the same guard. Otherwise the
+DMA-reentrancy protection can be bypassed.
 
-Inspired-by: Gerd Hoffmann <kraxel@redhat.com>
+Fixes: CVE-2024-3446
+Cc: qemu-stable@nongnu.org
+Suggested-by: Alexander Bulekov <alxndr@bu.edu>
 Reviewed-by: Gerd Hoffmann <kraxel@redhat.com>
 Acked-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20240409105537.18308-2-philmd@linaro.org>
-(cherry picked from commit ec0504b989ca61e03636384d3602b7bf07ffe4da)
+Message-Id: <20240409105537.18308-5-philmd@linaro.org>
+(cherry picked from commit f4729ec39ad97a42ceaa7b5697f84f440ea6e5dc)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(Mjt: trivial #include context fixup in include/hw/virtio/virtio.h)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index e4f8ed1e63..4a35d7cb0c 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -5029,3 +5029,13 @@ static void virtio_register_types(void)
- }
+diff --git a/hw/virtio/virtio-crypto.c b/hw/virtio/virtio-crypto.c
+index b2e0646d9a..ce995c66d8 100644
+--- a/hw/virtio/virtio-crypto.c
++++ b/hw/virtio/virtio-crypto.c
+@@ -1057,8 +1057,8 @@ static void virtio_crypto_device_realize(DeviceState *dev, Error **errp)
+         vcrypto->vqs[i].dataq =
+                  virtio_add_queue(vdev, 1024, virtio_crypto_handle_dataq_bh);
+         vcrypto->vqs[i].dataq_bh =
+-                 qemu_bh_new_guarded(virtio_crypto_dataq_bh, &vcrypto->vqs[i],
+-                                     &dev->mem_reentrancy_guard);
++                 virtio_bh_new_guarded(dev, virtio_crypto_dataq_bh,
++                                       &vcrypto->vqs[i]);
+         vcrypto->vqs[i].vcrypto = vcrypto;
+     }
  
- type_init(virtio_register_types)
-+
-+QEMUBH *virtio_bh_new_guarded_full(DeviceState *dev,
-+                                   QEMUBHFunc *cb, void *opaque,
-+                                   const char *name)
-+{
-+    DeviceState *transport = qdev_get_parent_bus(dev)->parent;
-+
-+    return qemu_bh_new_full(cb, opaque, name,
-+                            &transport->mem_reentrancy_guard);
-+}
-diff --git a/include/hw/virtio/virtio.h b/include/hw/virtio/virtio.h
-index 96a56430a6..c1a7c9bd3b 100644
---- a/include/hw/virtio/virtio.h
-+++ b/include/hw/virtio/virtio.h
-@@ -23,6 +23,7 @@
- #include "standard-headers/linux/virtio_ring.h"
- #include "qom/object.h"
- #include "hw/virtio/vhost.h"
-+#include "block/aio.h"
- 
- /*
-  * A guest should never accept this. It implies negotiation is broken
-@@ -463,4 +464,10 @@ static inline bool virtio_device_disabled(VirtIODevice *vdev)
- bool virtio_legacy_allowed(VirtIODevice *vdev);
- bool virtio_legacy_check_disabled(VirtIODevice *vdev);
- 
-+QEMUBH *virtio_bh_new_guarded_full(DeviceState *dev,
-+                                   QEMUBHFunc *cb, void *opaque,
-+                                   const char *name);
-+#define virtio_bh_new_guarded(dev, cb, opaque) \
-+    virtio_bh_new_guarded_full((dev), (cb), (opaque), (stringify(cb)))
-+
- #endif
 -- 
 2.39.2
 
