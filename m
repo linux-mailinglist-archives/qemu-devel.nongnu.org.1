@@ -2,78 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDCF8AA269
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16FD98AA2AC
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:25:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxX0m-0003w1-Gu; Thu, 18 Apr 2024 15:01:32 -0400
+	id 1rxXM3-0006Sh-8S; Thu, 18 Apr 2024 15:23:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxX0d-0003tq-H9
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:25 -0400
-Received: from madrid.collaboradmins.com ([2a00:1098:ed:100::25])
+ (Exim 4.90_1) (envelope-from <raphael.poggi@lynxleap.co.uk>)
+ id 1rxXFW-0004ax-3j
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:16:48 -0400
+Received: from 6.mo582.mail-out.ovh.net ([87.98.177.69])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rxX0b-0002zr-3P
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:01:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1713466880;
- bh=gMtgP0rJU2m+1aXLSNZsZqWOrZ0VhF1ca/AZ+D5UnRQ=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=yNcCmENy+krc8Wkr67Xl6Y7gvojeTGlOsvApDjOfLiEJr2H08ZZkL3QPyKrjjio6R
- Ht88dVds9MGm0YryPZFuNQINkFmH6tdoSHqA6kUbmyugdyfAcVSmnNieC6c5Iz0Qwl
- pP0hMVAGbKK//tNnPelj5ZlYybCLrd+Ub9fB4nbfFJhZ5oyawQGLRL5omMsMlz5KDw
- Bwv9CSn6CXRLAd1SuALeKhF9Mi61usDpuIdtOQHAIQHY7PF+HuoTgX8QFaS6qDuR8J
- amGdo7dCs68TqUI49PjPTOAG5y6/fNZO6F8F3fK4OlE8qaJ99XpFVl7Uq+Z+HfaNhy
- A1zK3WSpSLEKg==
-Received: from workpc.. (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 2F8FE3782017;
- Thu, 18 Apr 2024 19:01:18 +0000 (UTC)
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Gurchetan Singh <gurchetansingh@chromium.org>,
- ernunes@redhat.com, Alyssa Ross <hi@alyssa.is>,
- =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>
-Subject: [PATCH v8 11/11] virtio-gpu: Support Venus context
-Date: Thu, 18 Apr 2024 22:00:40 +0300
-Message-ID: <20240418190040.1110210-12-dmitry.osipenko@collabora.com>
+ (Exim 4.90_1) (envelope-from <raphael.poggi@lynxleap.co.uk>)
+ id 1rxXFU-0005ee-Cx
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:16:45 -0400
+Received: from director3.ghost.mail-out.ovh.net (unknown [10.109.140.131])
+ by mo582.mail-out.ovh.net (Postfix) with ESMTP id 4VL6vd322Bz17TM
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 19:16:29 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-4h4mz (unknown [10.110.113.134])
+ by director3.ghost.mail-out.ovh.net (Postfix) with ESMTPS id EBF2F1FD5B;
+ Thu, 18 Apr 2024 19:16:28 +0000 (UTC)
+Received: from lynxleap.co.uk ([37.59.142.109])
+ by ghost-submission-6684bf9d7b-4h4mz with ESMTPSA
+ id B3nUNYxxIWb1BwAAGjRT0g
+ (envelope-from <raphael.poggi@lynxleap.co.uk>); Thu, 18 Apr 2024 19:16:28 +0000
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-109S003c0c2ac64-ee81-4ecf-a791-ffc80ccacd0e,
+ 7D36A28102BF8EA446AFB9278237F9F63EFFF5A1)
+ smtp.auth=raphael.poggi@lynxleap.co.uk
+X-OVh-ClientIp: 2.28.204.171
+From: Raphael Poggi <raphael.poggi@lynxleap.co.uk>
+To: qemu-devel@nongnu.org
+Cc: luc@lmichel.fr, damien.hedde@dahe.fr,
+ Raphael Poggi <raphael.poggi@lynxleap.co.uk>
+Subject: [PATCH] hw/core/clock: always iterate through childs in
+ clock_propagate_period
+Date: Thu, 18 Apr 2024 20:16:02 +0100
+Message-ID: <20240418191602.2017-1-raphael.poggi@lynxleap.co.uk>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
-References: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1098:ed:100::25;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+X-Ovh-Tracer-Id: 8182196098676629022
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudektddgudefgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecunecujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomheptfgrphhhrggvlhcurfhoghhgihcuoehrrghphhgrvghlrdhpohhgghhisehlhihngihlvggrphdrtghordhukheqnecuggftrfgrthhtvghrnhepvdejjefghfduffdujeethfduheetgeetgeduudelkeetveeuheeuleegkeeuvedunecukfhppeduvdejrddtrddtrddupddvrddvkedrvddtgedrudejuddpfeejrdehledrudegvddruddtleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprhgrphhhrggvlhdrphhoghhgiheslhihnhiglhgvrghprdgtohdruhhkpdhnsggprhgtphhtthhopedupdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdpoffvtefjohhsthepmhhoheekvddpmhhouggvpehsmhhtphhouhht
+Received-SPF: pass client-ip=87.98.177.69;
+ envelope-from=raphael.poggi@lynxleap.co.uk; helo=6.mo582.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Thu, 18 Apr 2024 15:23:28 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,118 +72,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Antonio Caggiano <antonio.caggiano@collabora.com>
+When dealing with few clocks depending with each others, sometimes
+we might only want to update the multiplier/diviser on a specific clock
+(cf clockB in drawing below) and call "clock_propagate(clockA)" to
+update the childs period according to the potential new multiplier/diviser values.
 
-Request Venus when initializing VirGL and if vulkan=true flag is set for
-virtio-gpu device.
++--------+     +--------+      +--------+
+| clockA | --> | clockB |  --> | clockC |
++--------+     +--------+      +--------+
 
-Signed-off-by: Antonio Caggiano <antonio.caggiano@collabora.com>
-Signed-off-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+The actual code would not allow that because, since we cannot call
+"clock_propagate" directly on a child, it would exit on the
+first child has the period has not changed for clockB, only clockC is
+impacted in our example.
+
+Signed-off-by: Raphael Poggi <raphael.poggi@lynxleap.co.uk>
 ---
- hw/display/virtio-gpu-virgl.c  | 14 ++++++++++++++
- hw/display/virtio-gpu.c        | 15 +++++++++++++++
- include/hw/virtio/virtio-gpu.h |  3 +++
- meson.build                    |  1 +
- 4 files changed, 33 insertions(+)
+ hw/core/clock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/display/virtio-gpu-virgl.c b/hw/display/virtio-gpu-virgl.c
-index c0e1ca3ff339..2eac09370b84 100644
---- a/hw/display/virtio-gpu-virgl.c
-+++ b/hw/display/virtio-gpu-virgl.c
-@@ -1095,6 +1095,11 @@ int virtio_gpu_virgl_init(VirtIOGPU *g)
-         flags |= VIRGL_RENDERER_D3D11_SHARE_TEXTURE;
-     }
- #endif
-+#ifdef VIRGL_RENDERER_VENUS
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        flags |= VIRGL_RENDERER_VENUS | VIRGL_RENDERER_RENDER_SERVER;
-+    }
-+#endif
- 
-     ret = virgl_renderer_init(g, flags, &virtio_gpu_3d_cbs);
-     if (ret != 0) {
-@@ -1138,5 +1143,14 @@ int virtio_gpu_virgl_get_num_capsets(VirtIOGPU *g)
-         virtio_gpu_virgl_add_capset(g, VIRTIO_GPU_CAPSET_VIRGL2);
-     }
- 
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+        virgl_renderer_get_cap_set(VIRTIO_GPU_CAPSET_VENUS,
-+                                   &capset2_max_ver,
-+                                   &capset2_max_size);
-+        if (capset2_max_size) {
-+            virtio_gpu_virgl_add_capset(g, VIRTIO_GPU_CAPSET_VENUS);
-+        }
-+    }
+diff --git a/hw/core/clock.c b/hw/core/clock.c
+index a19c7db7df..85421f8b55 100644
+--- a/hw/core/clock.c
++++ b/hw/core/clock.c
+@@ -101,8 +101,9 @@ static void clock_propagate_period(Clock *clk, bool call_callbacks)
+             if (call_callbacks) {
+                 clock_call_callback(child, ClockUpdate);
+             }
+-            clock_propagate_period(child, call_callbacks);
+         }
 +
-     return g->num_capsets;
++        clock_propagate_period(child, call_callbacks);
+     }
  }
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index fbf5c0e6b8b7..a811a86dd600 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1496,6 +1496,19 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
- #endif
-     }
  
-+    if (virtio_gpu_venus_enabled(g->parent_obj.conf)) {
-+#ifdef HAVE_VIRGL_VENUS
-+        if (!virtio_gpu_blob_enabled(g->parent_obj.conf) ||
-+            !virtio_gpu_hostmem_enabled(g->parent_obj.conf)) {
-+            error_setg(errp, "venus requires enabled blob and hostmem options");
-+            return;
-+        }
-+#else
-+        error_setg(errp, "old virglrenderer, venus unsupported");
-+        return;
-+#endif
-+    }
-+
-     if (!virtio_gpu_base_device_realize(qdev,
-                                         virtio_gpu_handle_ctrl_cb,
-                                         virtio_gpu_handle_cursor_cb,
-@@ -1672,6 +1685,8 @@ static Property virtio_gpu_properties[] = {
-     DEFINE_PROP_BIT("blob", VirtIOGPU, parent_obj.conf.flags,
-                     VIRTIO_GPU_FLAG_BLOB_ENABLED, false),
-     DEFINE_PROP_SIZE("hostmem", VirtIOGPU, parent_obj.conf.hostmem, 0),
-+    DEFINE_PROP_BIT("vulkan", VirtIOGPU, parent_obj.conf.flags,
-+                    VIRTIO_GPU_FLAG_VENUS_ENABLED, false),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 3d7d001a85c5..87d812972988 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -106,6 +106,7 @@ enum virtio_gpu_base_conf_flags {
-     VIRTIO_GPU_FLAG_BLOB_ENABLED,
-     VIRTIO_GPU_FLAG_CONTEXT_INIT_ENABLED,
-     VIRTIO_GPU_FLAG_RUTABAGA_ENABLED,
-+    VIRTIO_GPU_FLAG_VENUS_ENABLED,
- };
- 
- #define virtio_gpu_virgl_enabled(_cfg) \
-@@ -124,6 +125,8 @@ enum virtio_gpu_base_conf_flags {
-     (_cfg.flags & (1 << VIRTIO_GPU_FLAG_RUTABAGA_ENABLED))
- #define virtio_gpu_hostmem_enabled(_cfg) \
-     (_cfg.hostmem > 0)
-+#define virtio_gpu_venus_enabled(_cfg) \
-+    (_cfg.flags & (1 << VIRTIO_GPU_FLAG_VENUS_ENABLED))
- 
- struct virtio_gpu_base_conf {
-     uint32_t max_outputs;
-diff --git a/meson.build b/meson.build
-index 3ade035e8300..30c4eaa43de0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -2290,6 +2290,7 @@ if virgl.version().version_compare('>=1.0.0')
-   config_host_data.set('HAVE_VIRGL_D3D_INFO_EXT', 1)
-   config_host_data.set('HAVE_VIRGL_CONTEXT_CREATE_WITH_FLAGS', 1)
-   config_host_data.set('HAVE_VIRGL_RESOURCE_BLOB', 1)
-+  config_host_data.set('HAVE_VIRGL_VENUS', 1)
- endif
- config_host_data.set('CONFIG_VIRTFS', have_virtfs)
- config_host_data.set('CONFIG_VTE', vte.found())
 -- 
 2.44.0
 
