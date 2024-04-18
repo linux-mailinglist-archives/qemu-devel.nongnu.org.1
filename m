@@ -2,58 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7838AA2B3
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:26:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095CF8AA2B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 21:27:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXO6-0007TC-5D; Thu, 18 Apr 2024 15:25:38 -0400
+	id 1rxXOE-0007Wc-M5; Thu, 18 Apr 2024 15:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXO2-0007RI-68
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:34 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXO8-0007UA-CE
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:40 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXNz-0007EM-3b
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:33 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-571c25a329eso1058865a12.0
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:25:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rxXO5-0007FO-FX
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 15:25:40 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-516db2214e6so1664070e87.1
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 12:25:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713468329; x=1714073129; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UatYjw6LkKqMQcEs0xLI/ll8in5w62RsbSuNUqaD+hU=;
- b=yHL2q8P1Dwav1dlPbpPB+CtOWXCNvtxHmw0gOWZ53mU72BFSPeQYfUrM8UUWKt3Tjy
- rUUyRUmxkpEeET4otq3n4TcghYa6gxmjL7LntEFhsZEeaANddgNJr5C+Q4/2h0ADdLVu
- vheK6sFIsgP5jcAO/6rGcJq8SRsP0bX6Xbc7X0Bc+2VQi5rMxT4Zm+Rc/8JMk/3d0SLH
- TMIJp1g/wUZ+ySXg0Eyc1REOU6T2TKxnouo5waIwkzHmJ2v9dJbQqr/b42rawV+ES4LJ
- kvFulMocmexrUckSR7LuKZOWE8HD+q2HzzY6bzg6Gao1Ev6S+YEFe0fuhSfAIGmbbE5c
- Sg2g==
+ d=linaro.org; s=google; t=1713468335; x=1714073135; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=a05kQu+3IE9JJfcYC8SvHu7OLyLA4nojU3zTAPx26K0=;
+ b=F4hSO3e6Nq99Q23RPlrRgQSJyhcKyRF0hhqc8N3XLNvNLL49i9X4li5zlFd1ZPaPbq
+ AG/8vS8omBz05xV2R2lRam/vuW7m7cMl3plwui0WURyi6Kh7aHHwDXWwDpeNgYkVKgrJ
+ mZ8eRXr+kvjm2jntI3kIgbO0zRE9hFY3uWMi2b0TVKf7xiGA8xEF/jyRVACn1ib0w46P
+ +gTKAJLnDgGjo/8yoIOhjiH4guI+fpRUYfNQG95iUfBx2+IY6+9ezUL7VgyyIIwtE+nb
+ f2MTmlfOZpgwu9YwSg3uHcCWOoyj3jDkhfpOMlw2sQIzrCYmBb8kS01hojo/IX3ss71q
+ +fpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713468329; x=1714073129;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=UatYjw6LkKqMQcEs0xLI/ll8in5w62RsbSuNUqaD+hU=;
- b=lLaGzcYFKAjs0pRBkOcSsgwpXEKium86NlJVyYZ/PvQyibpq6/ftZqPoYu9UoT3dWI
- pbe8CNRDa+hSEdeezI8WodaZy64EBri3Y7wbrkhXEGt/e4ARL5sinzK1doupH/FXDRi9
- LHsDP2pQkyLRqnITCS3LzJyeFsj57Wf2njyGb2sSWWLiJ96cyJCu/UckUxEBpoM8zzdK
- ezNpHgcNVmHW8TOddDUmMOKADqbf4YTlSwLTxPOymDsisz3hu1IH0ohwvFMarXQf8+F4
- 8aqbbwW0G9gRjFdCcxDyUTARB+I0sK2ux6YFygmKSq43O5/6O/4HzUMUf2LLqRaMMCCW
- YC0Q==
-X-Gm-Message-State: AOJu0YxiHPcV5+kHqwnjDDwPuQOHRL0Gsj5RnXo+E5W0mdAPVFDhcjz0
- BOTIYfQwqw+kOtTy2TRjyTv3dcvFFtkTwMcifKhTuAwMgJMDQ7RJdzcS6ofe8pjuZdEh7xCjzKD
- x
-X-Google-Smtp-Source: AGHT+IG6mbo7Ujao5nYsEjpEqJP1F0wz9b6JL8jKjwrBHCw0/6R9oQcHVTB20tlAD3rgevO7qdU+6w==
-X-Received: by 2002:a05:6402:35c5:b0:571:bc64:f8bf with SMTP id
- z5-20020a05640235c500b00571bc64f8bfmr2699703edc.14.1713468328813; 
- Thu, 18 Apr 2024 12:25:28 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713468335; x=1714073135;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=a05kQu+3IE9JJfcYC8SvHu7OLyLA4nojU3zTAPx26K0=;
+ b=g2cfKcK/Ntn9XNMubPoBbfXUjvusgbkgORMmNwd5k3tW9MF7675pJQnPSpaVdacwMy
+ Wqu1cJQrscmTB+4aAWsYGTK0s8873Y61DIE5vYM8UDY51LnU2e8MbEoT4HbRhj9R9DZQ
+ GwL5t5PVsHlDoY0vdmxUbsBK4Qn6cIBR/dIcsO2bK7Gi9a+KuxOsZuK0TABX8ykaOYtM
+ FNvHQM4cM7EdBnNpb5wQJ2q5jfzDx6YhBO+t3vVkA3OCql59ifHRjr5LrOlmVfgqZEL9
+ E7T3cAaNbJr7Fd5JiSPWTq0mF7GF/Qz37kDXeBMuuvU4nxTvXUGp4NR9jyPDtppj9N6+
+ RB8g==
+X-Gm-Message-State: AOJu0YwfwKmYDhWDjiG7U8Mgj04vXRs2C9LW8x2MKkV90LEJPQpQEM7w
+ bwiyzs56xJ8RnQ1rOOj50oGdtBeDZH1W/d9ebHP2S49OLOvoFPU023m/vNEpfLTdSIprkmEkwNw
+ Y
+X-Google-Smtp-Source: AGHT+IHfNUYllVyhV+QY71Ro4Kj4dJNcZ5I4DM2/UYYkrguyOxfOHqu9Q/5fh3sLLZjgbH1NDAnw6A==
+X-Received: by 2002:a19:2d42:0:b0:519:67f6:cd93 with SMTP id
+ t2-20020a192d42000000b0051967f6cd93mr2279810lft.49.1713468334923; 
+ Thu, 18 Apr 2024 12:25:34 -0700 (PDT)
 Received: from m1x-phil.lan ([176.176.151.213])
  by smtp.gmail.com with ESMTPSA id
- b10-20020aa7dc0a000000b0056fe755f1e6sm1202106edu.91.2024.04.18.12.25.27
+ h17-20020a1709070b1100b00a558206b2c5sm77249ejl.99.2024.04.18.12.25.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 18 Apr 2024 12:25:28 -0700 (PDT)
+ Thu, 18 Apr 2024 12:25:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -62,16 +63,22 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Anton Johansson <anjo@rev.ng>,
- Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/24] include/exec: Rework (part 2)
-Date: Thu, 18 Apr 2024 21:24:59 +0200
-Message-ID: <20240418192525.97451-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PATCH 01/24] exec: Declare MMUAccessType type in 'mmu-access-type.h'
+ header
+Date: Thu, 18 Apr 2024 21:25:00 +0200
+Message-ID: <20240418192525.97451-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240418192525.97451-1-philmd@linaro.org>
+References: <20240418192525.97451-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52d;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x52d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,101 +101,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reordering exec/, second round. Mostly splitting:
-- TCG LDST API (to "exec/cpu_ldst.h")
-- CPU TLB APIs (to "exec/cputlb.h")
-from "exec/cpu-all.h" and "exec/exec-all.h", and
-reducing inclusions of "hw/core/cpu.h".
+The MMUAccessType enum is declared in "hw/core/cpu.h".
+"hw/core/cpu.h" contains declarations related to CPUState
+and CPUClass. Some source files only require MMUAccessType
+and don't need to pull in all CPU* declarations. In order
+to simplify, create a new "exec/mmu-access-type.h" header.
 
-Based-on: <20240417182806.69446-1-philmd@linaro.org>
-or https://gitlab.com/philmd/qemu/-/commits/exec-next
-
-Philippe Mathieu-Daudé (24):
-  exec: Declare MMUAccessType type in 'mmu-access-type.h' header
-  exec: Declare CPUBreakpoint/CPUWatchpoint type in 'breakpoint.h'
-    header
-  hw/core: Avoid including the full 'hw/core/cpu.h' in 'tcg-cpu-ops.h'
-  exec: Restrict TCG specific declarations of 'cputlb.h'
-  exec: Restrict 'cpu_ldst.h' to TCG accelerator
-  exec: Have guest_addr_valid() methods take abi_ptr/size_t arguments
-  exec: Un-inline tlb_vaddr_to_host() and declare it in 'exec/cputlb.h'
-  physmem: Move TCG CPU IOTLB methods around
-  physmem: Restrict TCG CPU IOTLB code to TCG accel
-  exec: Reduce tlb_set_dirty() declaration scope
-  exec: Move tlb_reset_dirty*() declarations to 'exec/cputlb.h'
-  exec: Move CPUTLBEntry helpers to cputlb.c
-  target/sparc: Replace abi_ulong by uint32_t for TARGET_ABI32
-  exec: Rename 'exec/user/guest-base.h' as 'user/guest-base.h'
-  exec: Restrict inclusion of 'user/guest-base.h'
-  exec: Move GUEST_ADDR_MAX definition to 'cpu_ldst.h'
-  exec: Include missing 'qemu/log-for-trace.h' header in 'exec/log.h'
-  plugins: Include missing 'qemu/bitmap.h' header
-  gdbstub: Avoid including 'cpu.h' in 'gdbstub/helpers.h'
-  hw/xtensa: Include missing 'exec/cpu-common.h' in 'bootparam.h'
-  plugins: Un-inline qemu_plugin_disable_mem_helpers()
-  exec: Remove 'exec/tswap.h' from 'exec/cpu-all.h'
-  exec: Remove 'disas/disas.h' from 'exec/log.h'
-  exec: Remove unnecessary inclusions of 'hw/core/cpu.h'
-
- hw/xtensa/bootparam.h            |   3 +
- include/exec/breakpoint.h        |  23 ++++++
- include/exec/cpu-all.h           |  39 +---------
- include/exec/cpu-defs.h          |   1 -
- include/exec/cpu_ldst.h          | 122 ++++++++++---------------------
- include/exec/cputlb.h            |  58 ++++++++++++++-
- include/exec/exec-all.h          |  26 +------
- include/exec/log.h               |   2 +-
- include/exec/mmu-access-type.h   |  18 +++++
- include/exec/ram_addr.h          |   1 +
- include/exec/user/guest-base.h   |  12 ---
- include/gdbstub/helpers.h        |   3 +-
- include/hw/boards.h              |   1 -
- include/hw/core/cpu.h            |  24 +-----
- include/hw/core/tcg-cpu-ops.h    |   6 +-
- include/hw/ppc/openpic.h         |   1 -
- include/qemu/plugin.h            |   7 +-
- include/sysemu/hw_accel.h        |   1 -
- include/user/guest-base.h        |  18 +++++
- target/arm/internals.h           |   1 +
- target/ppc/internal.h            |   1 +
- target/riscv/debug.h             |   2 +
- accel/stubs/tcg-stub.c           |   4 -
- accel/tcg/cpu-exec.c             |   1 -
- accel/tcg/cputlb.c               |  53 +++++++++++++-
- accel/tcg/translator.c           |   1 +
- accel/tcg/user-exec.c            |   7 ++
- bsd-user/main.c                  |   1 +
- hw/arm/boot.c                    |   1 +
- hw/arm/npcm7xx.c                 |   1 +
- hw/mips/fuloong2e.c              |   1 +
- hw/mips/malta.c                  |   1 +
- hw/ppc/sam460ex.c                |   1 +
- hw/ppc/spapr.c                   |   1 +
- hw/ppc/virtex_ml507.c            |   1 +
- hw/sh4/r2d.c                     |   1 +
- linux-user/elfload.c             |   1 +
- linux-user/main.c                |   1 +
- plugins/core.c                   |   5 ++
- system/physmem.c                 |  58 ++++++++-------
- target/arm/gdbstub.c             |   1 +
- target/arm/tcg/helper-a64.c      |   1 +
- target/avr/gdbstub.c             |   1 +
- target/avr/translate.c           |   1 +
- target/hexagon/translate.c       |   1 +
- target/loongarch/tcg/translate.c |   1 +
- target/riscv/vector_helper.c     |   1 +
- target/rx/translate.c            |   1 +
- target/sparc/gdbstub.c           |   2 +-
- target/sparc/mmu_helper.c        |   1 +
- target/tricore/gdbstub.c         |   1 +
- target/xtensa/xtensa-semi.c      |   1 +
- tcg/tcg.c                        |   3 +-
- 53 files changed, 300 insertions(+), 226 deletions(-)
- create mode 100644 include/exec/breakpoint.h
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/exec/cpu_ldst.h        |  1 +
+ include/exec/exec-all.h        |  1 +
+ include/exec/mmu-access-type.h | 18 ++++++++++++++++++
+ include/hw/core/cpu.h          |  8 +-------
+ 4 files changed, 21 insertions(+), 7 deletions(-)
  create mode 100644 include/exec/mmu-access-type.h
- delete mode 100644 include/exec/user/guest-base.h
- create mode 100644 include/user/guest-base.h
 
+diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
+index 64e0319996..5b99666702 100644
+--- a/include/exec/cpu_ldst.h
++++ b/include/exec/cpu_ldst.h
+@@ -64,6 +64,7 @@
+ 
+ #include "exec/memopidx.h"
+ #include "exec/abi_ptr.h"
++#include "exec/mmu-access-type.h"
+ #include "qemu/int128.h"
+ #include "cpu.h"
+ 
+diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
+index e932d364b6..5cddfea01b 100644
+--- a/include/exec/exec-all.h
++++ b/include/exec/exec-all.h
+@@ -25,6 +25,7 @@
+ #include "exec/abi_ptr.h"
+ #include "exec/cpu_ldst.h"
+ #endif
++#include "exec/mmu-access-type.h"
+ #include "exec/translation-block.h"
+ #include "qemu/clang-tsa.h"
+ 
+diff --git a/include/exec/mmu-access-type.h b/include/exec/mmu-access-type.h
+new file mode 100644
+index 0000000000..28bbb05b94
+--- /dev/null
++++ b/include/exec/mmu-access-type.h
+@@ -0,0 +1,18 @@
++/*
++ * QEMU MMU Access type definitions
++ *
++ * Copyright (c) 2012 SUSE LINUX Products GmbH
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++#ifndef EXEC_MMU_ACCESS_TYPE_H
++#define EXEC_MMU_ACCESS_TYPE_H
++
++typedef enum MMUAccessType {
++    MMU_DATA_LOAD  = 0,
++    MMU_DATA_STORE = 1,
++    MMU_INST_FETCH = 2
++#define MMU_ACCESS_COUNT 3
++} MMUAccessType;
++
++#endif
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index 3a66d8581e..5f0422493b 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -25,6 +25,7 @@
+ #include "exec/hwaddr.h"
+ #include "exec/vaddr.h"
+ #include "exec/memattrs.h"
++#include "exec/mmu-access-type.h"
+ #include "exec/tlb-common.h"
+ #include "qapi/qapi-types-run-state.h"
+ #include "qemu/bitmap.h"
+@@ -80,13 +81,6 @@ DECLARE_CLASS_CHECKERS(CPUClass, CPU,
+     typedef struct ArchCPU CpuInstanceType; \
+     OBJECT_DECLARE_TYPE(ArchCPU, CpuClassType, CPU_MODULE_OBJ_NAME);
+ 
+-typedef enum MMUAccessType {
+-    MMU_DATA_LOAD  = 0,
+-    MMU_DATA_STORE = 1,
+-    MMU_INST_FETCH = 2
+-#define MMU_ACCESS_COUNT 3
+-} MMUAccessType;
+-
+ typedef struct CPUWatchpoint CPUWatchpoint;
+ 
+ /* see accel-cpu.h */
 -- 
 2.41.0
 
