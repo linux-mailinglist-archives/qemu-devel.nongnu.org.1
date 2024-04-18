@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E6A8AA3C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:07:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5CFC8AA3B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 22:04:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxXyi-0001p7-R2; Thu, 18 Apr 2024 16:03:28 -0400
+	id 1rxXyk-0001qV-7R; Thu, 18 Apr 2024 16:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXya-0001lY-Lv; Thu, 18 Apr 2024 16:03:21 -0400
+ id 1rxXyg-0001p5-Ei; Thu, 18 Apr 2024 16:03:26 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rxXyY-0005QJ-Te; Thu, 18 Apr 2024 16:03:20 -0400
+ id 1rxXye-0005R2-Qf; Thu, 18 Apr 2024 16:03:26 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 199E65FE15;
+ by isrv.corpit.ru (Postfix) with ESMTP id 285545FE16;
  Thu, 18 Apr 2024 23:02:28 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 784EBB93FB;
+ by tsrv.corpit.ru (Postfix) with SMTP id 894A2B93FC;
  Thu, 18 Apr 2024 23:02:25 +0300 (MSK)
-Received: (nullmailer pid 952878 invoked by uid 1000);
+Received: (nullmailer pid 952882 invoked by uid 1000);
  Thu, 18 Apr 2024 20:02:24 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Chuhong Yuan <hslester96@gmail.com>, Peter Maydell <peter.maydell@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-7.2.11 54/59] hw/net/lan9118: Fix overflow in MIL TX FIFO
-Date: Thu, 18 Apr 2024 23:02:14 +0300
-Message-Id: <20240418200224.952785-13-mjt@tls.msk.ru>
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-7.2.11 55/59] hw/net/lan9118: Replace magic '2048' value by
+ MIL_TXFIFO_SIZE definition
+Date: Thu, 18 Apr 2024 23:02:15 +0300
+Message-Id: <20240418200224.952785-14-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
 References: <qemu-stable-7.2.11-20240418230159@cover.tls.msk.ru>
@@ -63,71 +63,66 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-When the MAC Interface Layer (MIL) transmit FIFO is full,
-truncate the packet, and raise the Transmitter Error (TXE)
-flag.
+The magic 2048 is explained in the LAN9211 datasheet (DS00002414A)
+in chapter 1.4, "10/100 Ethernet MAC":
 
-Broken since model introduction in commit 2a42499017
-("LAN9118 emulation").
+  The MAC Interface Layer (MIL), within the MAC, contains a
+  2K Byte transmit and a 128 Byte receive FIFO which is separate
+  from the TX and RX FIFOs. [...]
 
-When using the reproducer from
-https://gitlab.com/qemu-project/qemu/-/issues/2267 we get:
+Note, the use of the constant in lan9118_receive() reveals that
+our implementation is using the same buffer for both tx and rx.
 
-  hw/net/lan9118.c:798:17: runtime error:
-  index 2048 out of bounds for type 'uint8_t[2048]' (aka 'unsigned char[2048]')
-    #0 0x563ec9a057b1 in tx_fifo_push hw/net/lan9118.c:798:43
-    #1 0x563ec99fbb28 in lan9118_writel hw/net/lan9118.c:1042:9
-    #2 0x563ec99f2de2 in lan9118_16bit_mode_write hw/net/lan9118.c:1205:9
-    #3 0x563ecbf78013 in memory_region_write_accessor system/memory.c:497:5
-    #4 0x563ecbf776f5 in access_with_adjusted_size system/memory.c:573:18
-    #5 0x563ecbf75643 in memory_region_dispatch_write system/memory.c:1521:16
-    #6 0x563ecc01bade in flatview_write_continue_step system/physmem.c:2713:18
-    #7 0x563ecc01b374 in flatview_write_continue system/physmem.c:2743:19
-    #8 0x563ecbff1c9b in flatview_write system/physmem.c:2774:12
-    #9 0x563ecbff1768 in address_space_write system/physmem.c:2894:18
-    ...
-
-[*] LAN9118 DS00002266B.pdf, Table 5.3.3 "INTERRUPT STATUS REGISTER"
-
-Cc: qemu-stable@nongnu.org
-Reported-by: Will Lester
-Reported-by: Chuhong Yuan <hslester96@gmail.com>
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2267
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-Id: <20240409133801.23503-3-philmd@linaro.org>
-(cherry picked from commit ad766d603f39888309cfb1433ba2de1d0e9e4f58)
+Message-Id: <20240409133801.23503-2-philmd@linaro.org>
+(cherry picked from commit a45223467e4e185fff1c76a6483784fa379ded77)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/net/lan9118.c b/hw/net/lan9118.c
-index 00a6d82efb..bf81c84984 100644
+index bf81c84984..f269d72d9e 100644
 --- a/hw/net/lan9118.c
 +++ b/hw/net/lan9118.c
-@@ -798,8 +798,22 @@ static void tx_fifo_push(lan9118_state *s, uint32_t val)
-             /* Documentation is somewhat unclear on the ordering of bytes
-                in FIFO words.  Empirical results show it to be little-endian.
-                */
--            /* TODO: FIFO overflow checking.  */
-             while (n--) {
-+                if (s->txp->len == MIL_TXFIFO_SIZE) {
-+                    /*
-+                     * No more space in the FIFO. The datasheet is not
-+                     * precise about this case. We choose what is easiest
-+                     * to model: the packet is truncated, and TXE is raised.
-+                     *
-+                     * Note, it could be a fragmented packet, but we currently
-+                     * do not handle that (see earlier TX_B case).
-+                     */
-+                    qemu_log_mask(LOG_GUEST_ERROR,
-+                                  "MIL TX FIFO overrun, discarding %u byte%s\n",
-+                                  n, n > 1 ? "s" : "");
-+                    s->int_sts |= TXE_INT;
-+                    break;
-+                }
-                 s->txp->data[s->txp->len] = val & 0xff;
-                 s->txp->len++;
-                 val >>= 8;
+@@ -155,6 +155,12 @@ do { fprintf(stderr, "lan9118: error: " fmt , ## __VA_ARGS__);} while (0)
+ 
+ #define GPT_TIMER_EN    0x20000000
+ 
++/*
++ * The MAC Interface Layer (MIL), within the MAC, contains a 2K Byte transmit
++ * and a 128 Byte receive FIFO which is separate from the TX and RX FIFOs.
++ */
++#define MIL_TXFIFO_SIZE         2048
++
+ enum tx_state {
+     TX_IDLE,
+     TX_B,
+@@ -171,7 +177,7 @@ typedef struct {
+     int32_t pad;
+     int32_t fifo_used;
+     int32_t len;
+-    uint8_t data[2048];
++    uint8_t data[MIL_TXFIFO_SIZE];
+ } LAN9118Packet;
+ 
+ static const VMStateDescription vmstate_lan9118_packet = {
+@@ -187,7 +193,7 @@ static const VMStateDescription vmstate_lan9118_packet = {
+         VMSTATE_INT32(pad, LAN9118Packet),
+         VMSTATE_INT32(fifo_used, LAN9118Packet),
+         VMSTATE_INT32(len, LAN9118Packet),
+-        VMSTATE_UINT8_ARRAY(data, LAN9118Packet, 2048),
++        VMSTATE_UINT8_ARRAY(data, LAN9118Packet, MIL_TXFIFO_SIZE),
+         VMSTATE_END_OF_LIST()
+     }
+ };
+@@ -549,7 +555,7 @@ static ssize_t lan9118_receive(NetClientState *nc, const uint8_t *buf,
+         return -1;
+     }
+ 
+-    if (size >= 2048 || size < 14) {
++    if (size >= MIL_TXFIFO_SIZE || size < 14) {
+         return -1;
+     }
+ 
 -- 
 2.39.2
 
