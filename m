@@ -2,59 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854E18A94CB
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 10:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591818A9514
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 10:34:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxMwL-0001uj-Ot; Thu, 18 Apr 2024 04:16:17 -0400
+	id 1rxNCq-0005w9-HC; Thu, 18 Apr 2024 04:33:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxMwI-0001uL-1h; Thu, 18 Apr 2024 04:16:14 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <SRS0=S08W=LX=kaod.org=clg@ozlabs.org>)
+ id 1rxNCY-0005ul-8g; Thu, 18 Apr 2024 04:33:04 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxMwE-0006Tn-Ms; Thu, 18 Apr 2024 04:16:13 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.216])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VKrC36F1mz6K5qR;
- Thu, 18 Apr 2024 16:13:51 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id D8A22140684;
- Thu, 18 Apr 2024 16:15:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 18 Apr
- 2024 09:15:54 +0100
-Date: Thu, 18 Apr 2024 09:15:55 +0100
-To: Richard Henderson <richard.henderson@linaro.org>
-CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, Philippe
- =?ISO-8859-1?Q?Ma?= =?ISO-8859-1?Q?thieu-Daud=E9?= <philmd@linaro.org>, Idan
- Horowitz <idan.horowitz@gmail.com>, <linuxarm@huawei.com>
-Subject: Re: [PATCH v3 5/6] target/arm: Do memory type alignment check when
- translation disabled
-Message-ID: <20240418091555.00006666@Huawei.com>
-In-Reply-To: <0c878d25-3fbb-4f0b-bc9e-ca638f8c4f1e@linaro.org>
-References: <20240301204110.656742-1-richard.henderson@linaro.org>
- <20240301204110.656742-6-richard.henderson@linaro.org>
- <20240416161111.0000607c@huawei.com>
- <0c878d25-3fbb-4f0b-bc9e-ca638f8c4f1e@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <SRS0=S08W=LX=kaod.org=clg@ozlabs.org>)
+ id 1rxNCV-0000kW-DT; Thu, 18 Apr 2024 04:33:02 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4VKrcx5s7fz4x1V;
+ Thu, 18 Apr 2024 18:32:49 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4VKrct1cjdz4wyh;
+ Thu, 18 Apr 2024 18:32:45 +1000 (AEST)
+Message-ID: <a74efe19-83b0-4700-a1f3-d2f366f29be2@kaod.org>
+Date: Thu, 18 Apr 2024 10:32:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/4] hw/i2c: Fix checkpatch line over 80 chars warnings
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ Corey Minyard <cminyard@mvista.com>, Peter Maydell
+ <peter.maydell@linaro.org>, Andrew Jeffery <andrew@codeconstruct.com.au>,
+ Joel Stanley <joel@jms.id.au>
+References: <20240416184722.28334-1-philmd@linaro.org>
+ <20240416184722.28334-3-philmd@linaro.org>
+ <4513c447-2ef3-4547-875b-5500067b44eb@kaod.org>
+ <9722502e-ce18-49d4-932e-4ff777163763@linaro.org>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <9722502e-ce18-49d4-932e-4ff777163763@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=S08W=LX=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -39
+X-Spam_score: -4.0
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,94 +66,71 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 17 Apr 2024 13:07:35 -0700
-Richard Henderson <richard.henderson@linaro.org> wrote:
+On 4/17/24 16:20, Philippe Mathieu-Daudé wrote:
+> On 17/4/24 08:24, Cédric Le Goater wrote:
+>> Hello,
+>>
+>> On 4/16/24 20:47, Philippe Mathieu-Daudé wrote:
+>>> We are going to modify these lines, fix their style
+>>> in order to avoid checkpatch.pl warnings:
+>>>
+>>>    WARNING: line over 80 characters
+>>>
+>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>> ---
+>>>   include/hw/i2c/i2c.h            |  11 ++-
+>>>   include/hw/nvram/eeprom_at24c.h |   6 +-
+>>>   hw/arm/aspeed.c                 | 140 +++++++++++++++++++-------------
+>>>   hw/nvram/eeprom_at24c.c         |   6 +-
+>>>   4 files changed, 98 insertions(+), 65 deletions(-)
+> 
+> 
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3), "dps310", 0x76);
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3), "max31785", 0x52);
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4), "tmp423", 0x4c);
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5), "tmp423", 0x4c);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3),
+>>> +                            "dps310", 0x76);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 3),
+>>> +                            "max31785", 0x52);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 4),
+>>> +                            "tmp423", 0x4c);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 5),
+>>> +                            "tmp423", 0x4c);
+>>>       /* The Witherspoon expects a TMP275 but a TMP105 is compatible */
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9), TYPE_TMP105,
+>>> -                     0x4a);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 9),
+>>> +                            TYPE_TMP105, 0x4a);
+>>>       /* The witherspoon board expects Epson RX8900 I2C RTC but a ds1338 is
+>>>        * good enough */
+>>> -    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11), "ds1338", 0x32);
+>>> +    i2c_slave_create_simple(aspeed_i2c_get_bus(&soc->i2c, 11),
+>>> +                            "ds1338", 0x32);
+>>
+>> If the definitions were on a single line, they would be more
+>> readable IMHO. So I would do the opposit change ...
+>>
+>> An alternate solution could be to define an array of devices
+>> at the machine class level, something like
+>>    struct i2c_device [
+>>            const char *type;
+>>            uint8_t bus;
+>>            uint8_t addr;
+>>    } devices[] = { ... };
+> 
+> I agree this would be better, but this should be done separately
+> of this series. For now I propose not modifying hw/arm/aspeed.c
+> in this patch, and ignoring the checkpatch errors in the next
+> patch. What do you think?
 
-> On 4/16/24 08:11, Jonathan Cameron wrote:
-> > On Fri,  1 Mar 2024 10:41:09 -1000
-> > Richard Henderson <richard.henderson@linaro.org> wrote:
-> >  =20
-> >> If translation is disabled, the default memory type is Device, which
-> >> requires alignment checking.  This is more optimally done early via
-> >> the MemOp given to the TCG memory operation.
-> >>
-> >> Reviewed-by: Philippe Mathieu-Daud=E9 <philmd@linaro.org>
-> >> Reported-by: Idan Horowitz <idan.horowitz@gmail.com>
-> >> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1204
-> >> Signed-off-by: Richard Henderson <richard.henderson@linaro.org> =20
-> >=20
-> > Hi Richard.
-> >=20
-> > I noticed some tests I was running stopped booting with master.
-> > (it's a fun and complex stack of QEMU + kvm on QEMU for vCPU Hotplug ke=
-rnel work,
-> > but this is the host booting)
-> >=20
-> > EDK2 build from upstream as of somepoint last week.
-> >=20
-> > Bisects to this patch.
-> >=20
-> >   qemu-system-aarch64 -M virt,gic-version=3D3,virtualization=3Dtrue -m =
-4g,maxmem=3D8G,slots=3D8 -cpu cortex-a76 -smp cpus=3D4,threads=3D2,clusters=
-=3D2,sockets=3D1 \
-> >   -kernel Image \
-> >   -drive if=3Dnone,file=3Dfull.qcow2,format=3Dqcow2,id=3Dhd \
-> >   -device ioh3420,id=3Droot_port1 -device virtio-blk-pci,drive=3Dhd \
-> >   -netdev user,id=3Dmynet,hostfwd=3Dtcp::5555-:22 -device virtio-net-pc=
-i,netdev=3Dmynet,id=3Dbob \
-> >   -nographic -no-reboot -append 'earlycon root=3D/dev/vda2 fsck.mode=3D=
-skip tp_printk' \
-> >   -monitor telnet:127.0.0.1:1235,server,nowait -bios QEMU_EFI.fd \
-> >   -object memory-backend-ram,size=3D4G,id=3Dmem0 \
-> >   -numa node,nodeid=3D0,cpus=3D0-3,memdev=3Dmem0
-> >=20
-> > Symptoms: Nothing on console from edk2 which is built in debug mode so =
-is normally very noisy.
-> >            No sign of anything much happening at all :( =20
->=20
-> This isn't a fantastic bug report.
->=20
-> (1) If it doesn't boot efi, then none of the -kernel parameters are neces=
-sary.
-> (2) I'd be surprised if the full.qcow2 drive parameters are necessary eit=
-her.
->      But if they are, what contents?  Is a new empty drive sufficient, ju=
-st
->      enough to send the bios through the correct device initialization?
-> (3) edk2 build from ...
->      Well, this is partly edk2's fault, as the build documentation is awf=
-ul.
->      I spent an entire afternoon trying to figure it out and gave up.
->=20
-> I will say that the edk2 shipped with qemu does work, so... are you absol=
-utely
-> certain that it isn't a bug in edk2 since then?  Firmware bugs are exactl=
-y what
-> that patch is supposed to expose, as requested by issue #1204.
->=20
-> I'd say you should boot with "-d int" and see what kind of interrupts you=
-'re getting very=20
-> early on.  I suspect that you'll see data aborts with ESR xx/yy where the=
- last 6 bits of=20
-> yy are 0x21 (alignment fault).
+sure, np.
 
-Hi Richard,
+Thanks,
 
-Sorry for lack of details, I was aware it wasn't great and should have stat=
-ed I planned
-to come back with more details when I had time to debug.  Snowed under so f=
-or now I've
-just dropped back to 8.2 and will get back to this perhaps next week.
-
-Jonathan
-
->=20
->=20
-> r~
+C.
 
 
