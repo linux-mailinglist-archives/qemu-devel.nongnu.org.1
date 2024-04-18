@@ -2,80 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D85C8A9EBB
-	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 17:41:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC548A9EC3
+	for <lists+qemu-devel@lfdr.de>; Thu, 18 Apr 2024 17:44:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxTt0-0004QA-Oj; Thu, 18 Apr 2024 11:41:18 -0400
+	id 1rxTvJ-0005wU-Sh; Thu, 18 Apr 2024 11:43:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rxTsy-0004Ku-G9
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:41:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rxTvH-0005vd-KY
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:43:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1rxTsw-0000pX-Iw
- for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:41:16 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rxTvE-0001BT-Sk
+ for qemu-devel@nongnu.org; Thu, 18 Apr 2024 11:43:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713454866;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1713455016;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3uJcuA8FSOvZeR+LohFdLOJ7K3BM1wnMOQsbcnznqN4=;
- b=IQ5nokjBTHgNQAno3GLUWT49TaUahWfLy19uGKs+Glr9xEcJrzaoY4RYGbqdXX1mJ0WTKv
- MJWBLffx4/P+zapXz/UfdJoWc6OFs/aDQUnaxilKjuXCCf+7d/fJKlKj4RTBomnz9E6Xjv
- C9h/qnQDJ9EXBCWgpHxwJ5twMj5Odd0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-132-GS3HCiy4PDqRaGcv3ZLRCQ-1; Thu, 18 Apr 2024 11:41:03 -0400
-X-MC-Unique: GS3HCiy4PDqRaGcv3ZLRCQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-418f3082647so2843325e9.0
- for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 08:41:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713454862; x=1714059662;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3uJcuA8FSOvZeR+LohFdLOJ7K3BM1wnMOQsbcnznqN4=;
- b=n8QzXAeR1VwODZbHfUej0bStwex/OPgcSinDL8VeK8/3cC9jf0UMrdfYH/D8j7rt8N
- Ys6rKMn8x8pT/BILRio+I8UEg1TKYRzSedPtOLnDsNfvy0Iy7G2aIA0oYNi3PlMGalOa
- 01eLP8J1V2WggJsFlEYnQfm17lRXRbZIfWf8yfnS5T4aNOQqgA8UGzBxOvdbfXwpeeBL
- Zrx76CgQr0uo+fFI8c3ld6YFVVMpDVzDRVVEtBbYB/Q/sFzawmw7N5bSj5p2+MNevbsG
- 0XI1Pef26JeyBT9+ncqK3+lAYccIyGsGj+xlzYxHUlgok/o38mjXiQD3Wt1lTPxYwgkZ
- Z5Qw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUUiQEkSZK6GhIoje0y3OnEUzV+ulOFei+/O2NT4LD6UYRMJLD7jx5+59xSb4yBPMV54z1CTCTK89Wbxan7O1e+eylhgnU=
-X-Gm-Message-State: AOJu0YyCTK0e/WUgGF0Di1XSfhOhNIGqWa7yS0Nb8E80CNbdf2Sw56dg
- AbWuZNwLX3zAXAg2RrBcf+TnrGBIrmQ0V/NjzxBPMTxLj6RNxkuLWQeIQCnY/YhrYgPUIgip2L6
- YZO1SpeD5a4H9Tr02m66aI9knZrqjhPpLs1GD4HkN6f3prBX25GTg
-X-Received: by 2002:a05:600c:524a:b0:416:8091:a39e with SMTP id
- fc10-20020a05600c524a00b004168091a39emr2550333wmb.10.1713454861817; 
- Thu, 18 Apr 2024 08:41:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGztL+5SjQ/4Lgp6StwjAaL4ZYzuTJlipRBc12V2M8yM4kfS0dveD7ObjeyOPiYX8RqhltqCA==
-X-Received: by 2002:a05:600c:524a:b0:416:8091:a39e with SMTP id
- fc10-20020a05600c524a00b004168091a39emr2550313wmb.10.1713454861235; 
- Thu, 18 Apr 2024 08:41:01 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1fc:1e9b:54cd:34ea:3dbb:5a75])
- by smtp.gmail.com with ESMTPSA id
- e2-20020adfc842000000b00346cc85c821sm2099551wrh.89.2024.04.18.08.40.59
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 18 Apr 2024 08:41:00 -0700 (PDT)
-Date: Thu, 18 Apr 2024 11:40:56 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "Yuxue Liu yuxue.liu@jaguarmicro.com" <yuxue.liu@jaguarmicro.com>
-Cc: pbonzini@redhat.com, lvivier@redhat.com, thuth@redhat.com,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] vhost-user-test: no set non-blocking for cal fd less
- than 0.
-Message-ID: <20240418114037-mutt-send-email-mst@kernel.org>
-References: <20240411073555.1357-1-yuxue.liu@jaguarmicro.com>
+ bh=6wF57Na8KP12SJ8r7qxg+aDEgUr4iFUQCEQLjjJSbSs=;
+ b=PC9UeRla0JfxXmHvkP3DtN+9yfDBJ+tKk7XQ6JuphoGUkHh/ty15zHZxgcKQRRw5n/PlNj
+ 5dqsMq7MmaoTsFpBipy9nwZII2CgysQwJTThFEPZ/YUPR+kLkkBQ62x+uUNXm1v4uzQN39
+ E383uvEmoBVu6oGlbhJ0FIDcbHwIQKk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-Q10jWELUN-OxzJ5qX0pO7Q-1; Thu,
+ 18 Apr 2024 11:43:32 -0400
+X-MC-Unique: Q10jWELUN-OxzJ5qX0pO7Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A16F1C07F3B;
+ Thu, 18 Apr 2024 15:43:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.72])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C262940357A7;
+ Thu, 18 Apr 2024 15:43:29 +0000 (UTC)
+Date: Thu, 18 Apr 2024 16:43:27 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: peterx@redhat.com, farosas@suse.de, yc-core@yandex-team.ru,
+ thuth@redhat.com, lvivier@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, pkrempa@redhat.com
+Subject: Re: [PATCH] migration: do not exit on incoming failure
+Message-ID: <ZiE_n7qwvRCz3vjE@redhat.com>
+References: <20240417221329.248803-1-vsementsov@yandex-team.ru>
+ <ZiEwF0rWlLaKMzqw@redhat.com>
+ <0a1d8984-bc01-41bf-9099-0ef426e848ca@yandex-team.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240411073555.1357-1-yuxue.liu@jaguarmicro.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0a1d8984-bc01-41bf-9099-0ef426e848ca@yandex-team.ru>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -96,49 +83,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 11, 2024 at 03:35:55PM +0800, Yuxue Liu yuxue.liu@jaguarmicro.com wrote:
-> From: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+On Thu, Apr 18, 2024 at 06:40:38PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> On 18.04.24 17:37, Daniel P. Berrangé wrote:
+> > On Thu, Apr 18, 2024 at 01:13:29AM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> > > We do set MIGRATION_FAILED state, but don't give a chance to
+> > > orchestrator to query migration state and get the error.
+> > > 
+> > > Let's report an error through QAPI like we do on outgoing migration.
+> > > 
+> > > migration-test is updated correspondingly.
+> > > 
+> > > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> > > ---
+> > > 
+> > > Doubt: is exiting on failure a contract? Will this commit break
+> > > something in Libvirt? Finally, could we just change the logic, or I need
+> > > and additional migration-parameter for new behavior?
+> > 
+> > There's a decent risk that this could break apps, whether
+> > libvirt or something else, especially if the app is just
+> > launching QEMU with '-incoming URI', rather than using
+> > '-incoming defer' and then explicitly using QMP to start the
+> > incoming migration.
+> > 
+> > I'd say that with '-incoming defer' we should *not* exit on
+> > migration error, because that arg implies the app explicitly
+> > wants to be using QMP to control migration.
+> > 
+> > With the legacy '-incoming URI' it is probably best to keep
+> > exit on error, as that's comparatively more likely to be used
+> > in adhoc scenarios where the app/user is ignoring QMP on the
+> > dst side.
+> > 
+> > None the less, I think we need to check how libvirt behaves
+> > with this patch to be sure of no surprises.
+> > 
 > 
-> In the scenario where vhost-user sets eventfd to -1,
-> qemu_chr_fe_get_msgfds retrieves fd as -1. When vhost_user_read
-> receives, it does not perform blocking operations on the descriptor
-> with fd=-1, so non-blocking operations should not be performed here
-> either.This is a normal use case. Calling g_unix_set_fd_nonblocking
-> at this point will cause the test to interrupt.
-> 
-> When vhost_user_write sets the call fd to -1, it sets the number of
-> fds to 0, so the fds obtained by qemu_chr_fe_get_msgfds will also
-> be 0.
-> 
-> Signed-off-by: Yuxue Liu <yuxue.liu@jaguarmicro.com>
+> Sounds reasonable, thanks! I'll rework it to behave the new
+> way only with "-incoming defer", and check how libvirt behave with it.
 
-A bit more detail here please.
-When does all this happen?
+If there are problems and/or we want to be super safe wrt
+backcompat, we could add a new  '-incoming managed' as
+being equivalent to '-incoming defer' but without the
+implicit exit.
 
-> ---
->  tests/qtest/vhost-user-test.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/qtest/vhost-user-test.c b/tests/qtest/vhost-user-test.c
-> index d4e437265f..7c8ef6268d 100644
-> --- a/tests/qtest/vhost-user-test.c
-> +++ b/tests/qtest/vhost-user-test.c
-> @@ -458,7 +458,10 @@ static void chr_read(void *opaque, const uint8_t *buf, int size)
->      case VHOST_USER_SET_VRING_KICK:
->      case VHOST_USER_SET_VRING_CALL:
->          /* consume the fd */
-> -        qemu_chr_fe_get_msgfds(chr, &fd, 1);
-> +        if (!qemu_chr_fe_get_msgfds(chr, &fd, 1) && fd < 0) {
-> +            qos_printf("call fd :%d, no set non-blocking\n", fd);
-> +            break;
-> +        }
->          /*
->           * This is a non-blocking eventfd.
->           * The receive function forces it to be blocking,
-> -- 
-> 2.43.0
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
