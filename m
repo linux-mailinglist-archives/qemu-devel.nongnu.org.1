@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CBEB8AA7CA
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A01E8AA7BE
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1Q-0007W7-I6; Fri, 19 Apr 2024 00:38:48 -0400
+	id 1rxg1U-0007Xt-KG; Fri, 19 Apr 2024 00:38:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1G-0007TO-MZ
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1G-0007TM-At
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1E-0004DM-V7
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1E-0004DF-AF
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501516;
+ s=mimecast20190719; t=1713501515;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aT7Zt+MnqDBeB3Aa1m9yjVj+44B/I2Lh5VoQCq7rSj8=;
- b=gmnTtJkNLUCOUBl5JdFTECCgtxW2hes5fceUHYbcIx20Et3P+1Qf/FcAcCuwxAYKIsfeQ2
- jnpZhbrR2Q0NS9/ysRtfVjdMaFBqzMjLxXTm43TESwpobLJxvJ+g5dfUfj/fARR+shM1kW
- LNjQkQyj4b//snts9DjOTJMB+Ozxjos=
+ bh=v8sVACIrRr62XXP78wsALvQJ+r6VO2WQThyIRVJL9Fw=;
+ b=YIiqmS1g/xHOv3qNR0wy4TPWHt2RnPGMkPS9Ik9TYPxsjsBT8IUPLrJY3fdDnvvX44KbkY
+ cMN9Ojm+6twhVWdMSk3ZkDF8zVGZjZoRkzUyfjoaPtTcy/L3Bsxv4XQl4eNRLkjm6epG9q
+ gnihoXye9Jv49UF0X9vwYNSLhqoA2Q0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-260-mNEPjwTxN4-f2B3iwoVt8g-1; Fri, 19 Apr 2024 00:38:32 -0400
-X-MC-Unique: mNEPjwTxN4-f2B3iwoVt8g-1
+ us-mta-626-7G7w6msjNDCoqcoaiODsEQ-1; Fri, 19 Apr 2024 00:38:33 -0400
+X-MC-Unique: 7G7w6msjNDCoqcoaiODsEQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF6A8810602;
- Fri, 19 Apr 2024 04:38:31 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AD12280021A;
+ Fri, 19 Apr 2024 04:38:32 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4AC424011FF7;
- Fri, 19 Apr 2024 04:38:31 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0729040357A7;
+ Fri, 19 Apr 2024 04:38:32 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -48,9 +48,9 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 14/27] docs/qapi-domain: add qapi:alternate directive
-Date: Fri, 19 Apr 2024 00:38:02 -0400
-Message-ID: <20240419043820.178731-15-jsnow@redhat.com>
+Subject: [PATCH 15/27] docs/qapi-domain: add qapi:event directive
+Date: Fri, 19 Apr 2024 00:38:03 -0400
+Message-ID: <20240419043820.178731-16-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -80,92 +80,145 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add the .. qapi:alternate:: directive, object, and qapi:alt:`name`
-cross-reference role.
+Adds the .. qapi:event:: directive, object, and :qapi:event:`name`
+cross-referencing role.
 
-Add the "Choices:" field list for describing alternate choices. Like
-other field lists that reference QAPI types, a forthcoming commit will
-add cross-referencing support to this field.
+Adds the :memb type name: field list syntax for documenting event data
+members. As this syntax and phrasing will be shared with Structs and
+Unions as well, add the field list definition to a shared abstract
+class.
 
-RFC: In the future, it would be nice to directly inline Alternates as
-part of the type information in the containing object (i.e. directly in
-arguments/members) - but that's a task for another series. For now, the
-branch "names" are documented just like qapidoc.py does, even though
-this information is superfluous for user documentation. Room for future
-improvement, but not now.
+As per usual, QAPI cross-referencing for types in the member field list
+will be added in a forthcoming commit.
+
+NOTE 1: The "str?" type annotation syntax sneaks into this commit in the
+demonstration doc. It isn't processed yet, so just ignore it for
+now. The non-RFC version of this series won't include the sandbox doc,
+so that inconsistency will sort itself out later. (Skip ahead to the
+commit that adds XRef support for TypedField and GroupedField lists to
+learn what the deal is there and leave feedback on that syntax.)
+
+NOTE 2: We already have a QMP lexer, turn it on for example blocks in this
+sample demo.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/qapi/index.rst        |  7 +++++++
- docs/sphinx/qapi-domain.py | 19 +++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ docs/qapi/index.rst        | 40 ++++++++++++++++++++++++++++++++++++++
+ docs/sphinx/qapi-domain.py | 25 ++++++++++++++++++++++++
+ 2 files changed, 65 insertions(+)
 
 diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index cf794e6e739..9bfe4d9f454 100644
+index 9bfe4d9f454..d81bccfb06a 100644
 --- a/docs/qapi/index.rst
 +++ b/docs/qapi/index.rst
-@@ -127,3 +127,10 @@ Explicit cross-referencing syntax for QAPI modules is available with
-       is treated solely as a read-only manifest of blocks to copy.
-    :value always: The bitmap is always synchronized with the operation,
-       regardless of whether or not the operation was successful.
+@@ -2,6 +2,12 @@
+ QAPI Domain Test
+ ----------------
+ 
++.. this sets the code-highlighting language to QMP for this *document*.
++   I wonder if I can set a domain default...?
 +
-+.. qapi:alternate:: BlockDirtyBitmapOrStr
-+   :since: 4.1
++.. highlight:: QMP
 +
-+   :choice str local: name of the bitmap, attached to the same node as
-+      target bitmap.
-+   :choice BlockDirtyBitmap external: bitmap with specified node
++
+ .. qapi:module:: foo-module
+    :no-index:
+ 
+@@ -134,3 +140,37 @@ Explicit cross-referencing syntax for QAPI modules is available with
+    :choice str local: name of the bitmap, attached to the same node as
+       target bitmap.
+    :choice BlockDirtyBitmap external: bitmap with specified node
++
++.. qapi:event:: BLOCK_JOB_COMPLETED
++   :since: 1.1
++
++   Emitted when a block job has completed.
++
++   :memb JobType type: job type
++   :memb str device: The job identifier. Originally the device name but
++      other values are allowed since QEMU 2.7
++   :memb int len: maximum progress value
++   :memb int offset: current progress value. On success this is equal to
++      len. On failure this is less than len
++   :memb int speed: rate limit, bytes per second
++   :memb str? error: error message. Only present on failure. This field
++      contains a human-readable error message. There are no semantics
++      other than that streaming has failed and clients should not try to
++      interpret the error string
++
++   Example::
++
++     <- {
++       "event": "BLOCK_JOB_COMPLETED",
++       "data": {
++         "type": "stream",
++         "device": "virtio-disk0",
++         "len": 10737418240,
++         "offset": 10737418240,
++         "speed": 0
++       },
++       "timestamp": {
++         "seconds": 1267061043,
++         "microseconds": 959568
++       }
++     }
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index 6759c39290d..c6eb6324594 100644
+index c6eb6324594..74dc578b3c7 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -305,6 +305,22 @@ class QAPIEnum(QAPIObject):
+@@ -321,6 +321,28 @@ class QAPIAlternate(QAPIObject):
      )
  
  
-+class QAPIAlternate(QAPIObject):
-+    """Description of a QAPI Alternate."""
++class QAPIObjectWithMembers(QAPIObject):
++    """Base class for Events/Structs/Unions"""
 +
 +    doc_field_types = QAPIObject.doc_field_types.copy()
 +    doc_field_types.extend(
 +        [
 +            TypedField(
-+                "choice",
-+                label=_("Choices"),
-+                names=("choice",),
++                "member",
++                label=_("Members"),
++                names=("memb",),
 +                can_collapse=True,
 +            ),
 +        ]
 +    )
 +
 +
++class QAPIEvent(QAPIObjectWithMembers):
++    """Description of a QAPI Event."""
++
++    pass
++
++
  class QAPIModule(SphinxDirective):
      """
      Directive to mark description of a new module.
-@@ -458,6 +474,7 @@ class QAPIDomain(Domain):
+@@ -473,6 +495,7 @@ class QAPIDomain(Domain):
+     object_types: Dict[str, ObjType] = {
          "module": ObjType(_("module"), "mod", "obj"),
          "command": ObjType(_("command"), "cmd", "obj"),
++        "event": ObjType(_("event"), "event", "obj"),
          "enum": ObjType(_("enum"), "enum", "obj", "type"),
-+        "alternate": ObjType(_("alternate"), "alt", "obj", "type"),
+         "alternate": ObjType(_("alternate"), "alt", "obj", "type"),
      }
- 
-     # Each of these provides a ReST directive,
-@@ -466,6 +483,7 @@ class QAPIDomain(Domain):
+@@ -482,6 +505,7 @@ class QAPIDomain(Domain):
+     directives = {
          "module": QAPIModule,
          "command": QAPICommand,
++        "event": QAPIEvent,
          "enum": QAPIEnum,
-+        "alternate": QAPIAlternate,
+         "alternate": QAPIAlternate,
      }
- 
-     # These are all cross-reference roles; e.g.
-@@ -475,6 +493,7 @@ class QAPIDomain(Domain):
+@@ -492,6 +516,7 @@ class QAPIDomain(Domain):
+     roles = {
          "mod": QAPIXRefRole(),
          "cmd": QAPIXRefRole(),
++        "event": QAPIXRefRole(),
          "enum": QAPIXRefRole(),
-+        "alt": QAPIXRefRole(),
+         "alt": QAPIXRefRole(),
          "type": QAPIXRefRole(),  # reference any data type (excludes modules, commands, events)
-         "obj": QAPIXRefRole(),  # reference *any* type of QAPI object.
-     }
 -- 
 2.44.0
 
