@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97E38AA7BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02638AA7B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1W-0007ZX-E0; Fri, 19 Apr 2024 00:38:54 -0400
+	id 1rxg1W-0007ZU-9G; Fri, 19 Apr 2024 00:38:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1H-0007TY-RN
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:40 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1K-0007UJ-3M
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1G-0004DW-0u
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:39 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1I-0004E5-El
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501517;
+ s=mimecast20190719; t=1713501519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5IjAMj3TcxONzH6juApwTygBs9hbOUIr24XnNgh7nRc=;
- b=eM1Zq5v09q8OvCN6ulC/aKe2hvAXy/TIsXuOx6ExvNVA6mPltJvpNRvtN4tFFGTuKd5XaZ
- RJQnzJkRHiaFLAxGnNZPaTHcHV9+7lI9SToH+rQQ7uxVooKf4ju47YXSR+J3mHEGDeHjRE
- x8aQtjRn5hfzJSjTOnIzZb5apt07TBI=
+ bh=fYQSZakUdyxax3fEvSg4ELSQbAzBJgzgMMYPGKLJpy4=;
+ b=T1m/3L/tVpPx13TZpqCD0z2ADtlFPYCM01Dbx3CKfQgatzTkLE2lwXxThDRks0r4mqk8eR
+ Pv6SXGJqyB2p3ROu4vcmXr8JqssaWyLnV9wVTUmWs3zNVhX6dk4AwPL/vhZ97BU3zP+OWq
+ oMASlOHe5GlmkPjXe7NLeABM3k0xdEI=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-199-pDANlRLQNfuFMp5rcCVxRg-1; Fri,
- 19 Apr 2024 00:38:35 -0400
-X-MC-Unique: pDANlRLQNfuFMp5rcCVxRg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-7-cai7qDqoMhuJfyVEgPBCjQ-1; Fri,
+ 19 Apr 2024 00:38:36 -0400
+X-MC-Unique: cai7qDqoMhuJfyVEgPBCjQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E6E261C0C644;
- Fri, 19 Apr 2024 04:38:34 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0F4B21C0C652;
+ Fri, 19 Apr 2024 04:38:36 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 3A1D84011FF7;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 01F8C40829C3;
  Fri, 19 Apr 2024 04:38:34 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
@@ -49,9 +49,9 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>,
  Harmonie Snow <harmonie@gmail.com>
-Subject: [PATCH 18/27] docs/qapi-domain: add :deprecated: directive option
-Date: Fri, 19 Apr 2024 00:38:06 -0400
-Message-ID: <20240419043820.178731-19-jsnow@redhat.com>
+Subject: [PATCH 19/27] docs/qapi-domain: add :unstable: directive option
+Date: Fri, 19 Apr 2024 00:38:07 -0400
+Message-ID: <20240419043820.178731-20-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -82,152 +82,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Although "deprecated" is a feature (and *will* appear in the features
-list), add a special :deprecated: option to generate an eye-catch that
+Although "unstable" is a feature (and *will* appear in the features
+list), add a special :unstable: option to generate an eye-catch that
 makes this information very hard to miss.
 
 (The intent is to modify qapidoc.py to add this option whenever it
 detects that the features list attached to a definition contains the
-"deprecated" entry.)
+"unstable" entry.)
 
--
-
-RFC: Technically, this object-level option is un-needed and could be
-replaced with a standard content-level directive that e.g. qapidoc.py
-could insert at the beginning of the content block. I've done it here as
-an option to demonstrate how it would be possible to do.
-
-It's a matter of taste for "where" we feel like implementing it.
-
-One benefit of doing it this way is that we can create a single
-containing box to set CSS style options controlling the flow of multiple
-infoboxes. The other way to achieve that would be to create a directive
-that allows us to set multiple options instead, e.g.:
-
-.. qapi:infoboxes:: deprecated unstable
-
-or possibly:
-
-.. qapi:infoboxes::
-   :deprecated:
-   :unstable:
-
-For now, I've left these as top-level QAPI object options. "Hey, it works."
-
-P.S., I outsourced the CSS ;)
+RFC: Same comments as last patch.
 
 Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/qapi/index.rst                    |  4 ++++
- docs/sphinx-static/theme_overrides.css | 25 +++++++++++++++++++++++++
- docs/sphinx/qapi-domain.py             | 24 ++++++++++++++++++++++++
- 3 files changed, 53 insertions(+)
+ docs/qapi/index.rst                    | 4 +++-
+ docs/sphinx-static/theme_overrides.css | 6 +++++-
+ docs/sphinx/qapi-domain.py             | 8 ++++++++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
 diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index d37ceac497f..b9a69f6bd17 100644
+index b9a69f6bd17..6350791a3ed 100644
 --- a/docs/qapi/index.rst
 +++ b/docs/qapi/index.rst
-@@ -95,6 +95,7 @@ Explicit cross-referencing syntax for QAPI modules is available with
- 
+@@ -96,13 +96,13 @@ Explicit cross-referencing syntax for QAPI modules is available with
  .. qapi:command:: fake-command
     :since: 13.37
-+   :deprecated:
+    :deprecated:
++   :unstable:
  
     This is a fake command, it's not real. It can't hurt you.
  
-@@ -116,6 +117,9 @@ Explicit cross-referencing syntax for QAPI modules is available with
-       :arg int64 zzxyz: And this is another argument belonging to that same branch.
+    :arg int foo: normal parameter documentation.
+    :arg str bar: Another normal parameter description.
+    :arg baz: Missing a type.
+-   :feat unstable: More than unstable, this command doesn't even exist!
+    :arg no-descr:
+    :arg BitmapSyncMode discrim: How about branches in commands?
  
-    :feat hallucination: This command is a figment of your imagination.
-+   :feat deprecated: Although this command is fake, you should know that
-+      it's also deprecated. That's great news! Maybe it will go away and
-+      stop haunting you someday.
+@@ -120,6 +120,8 @@ Explicit cross-referencing syntax for QAPI modules is available with
+    :feat deprecated: Although this command is fake, you should know that
+       it's also deprecated. That's great news! Maybe it will go away and
+       stop haunting you someday.
++   :feat unstable: This command, as a figment of your imagination, is
++      highly unstable and should not be relied upon.
     :error CommandNotFound: When you try to use this command, because it
        isn't real.
     :error GenericError: If the system decides it doesn't like the
 diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index c70ef951286..97b8c1c60e6 100644
+index 97b8c1c60e6..acdf11675db 100644
 --- a/docs/sphinx-static/theme_overrides.css
 +++ b/docs/sphinx-static/theme_overrides.css
-@@ -159,3 +159,28 @@ div[class^="highlight"] pre {
-         color: inherit;
-     }
+@@ -172,7 +172,7 @@ div[class^="highlight"] pre {
+     margin: 0.25em;
  }
-+
-+/* QAPI domain theming */
-+
-+.qapi-infopips {
-+    margin-bottom: 1em;
+ 
+-.qapi-deprecated {
++.qapi-deprecated,.qapi-unstable {
+     background-color: #fffef5;
+     border: solid #fff176 6px;
+     font-weight: bold;
+@@ -181,6 +181,10 @@ div[class^="highlight"] pre {
+     margin: 5px;
+ }
+ 
++.qapi-unstable::before {
++    content: '🚧 ';
 +}
 +
-+.qapi-infopip {
-+    display: inline-block;
-+    padding: 0em 0.5em 0em 0.5em;
-+    margin: 0.25em;
-+}
-+
-+.qapi-deprecated {
-+    background-color: #fffef5;
-+    border: solid #fff176 6px;
-+    font-weight: bold;
-+    padding: 8px;
-+    border-radius: 15px;
-+    margin: 5px;
-+}
-+
-+.qapi-deprecated::before {
-+    content: '⚠️ ';
-+}
+ .qapi-deprecated::before {
+     content: '⚠️ ';
+ }
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index f0094300c03..065ad501960 100644
+index 065ad501960..76157476e02 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -150,6 +150,7 @@ class QAPIObject(ObjectDescription[Signature]):
-             "module": directives.unchanged,  # Override contextual module name
+@@ -151,6 +151,7 @@ class QAPIObject(ObjectDescription[Signature]):
              # These are QAPI originals:
              "since": since_validator,
-+            "deprecated": directives.flag,
+             "deprecated": directives.flag,
++            "unstable": directives.flag,
          }
      )
  
-@@ -249,6 +250,28 @@ def add_target_and_index(
-                     ("single", indextext, node_id, "", None)
-                 )
+@@ -269,6 +270,13 @@ def _add_pip(source: str, content: str, classname: str) -> None:
+                 "qapi-deprecated",
+             )
  
-+    def _add_infopips(self, contentnode: addnodes.desc_content) -> None:
-+        # Add various eye-catches and things that go below the signature
-+        # bar, but precede the user-defined content.
-+        infopips = nodes.container()
-+        infopips.attributes["classes"].append("qapi-infopips")
-+
-+        def _add_pip(source: str, content: str, classname: str) -> None:
-+            node = nodes.container(source)
-+            node.append(nodes.Text(content))
-+            node.attributes["classes"].extend(["qapi-infopip", classname])
-+            infopips.append(node)
-+
-+        if "deprecated" in self.options:
++        if "unstable" in self.options:
 +            _add_pip(
-+                ":deprecated:",
-+                f"This {self.objtype} is deprecated.",
-+                "qapi-deprecated",
++                ":unstable:",
++                f"This {self.objtype} is unstable/experimental.",
++                "qapi-unstable",
 +            )
 +
-+        if infopips.children:
-+            contentnode.insert(0, infopips)
-+
-     def _merge_adjoining_field_lists(self, contentnode: addnodes.desc_content) -> None:
-         # Take any adjacent field lists and glue them together into
-         # one list for further processing by Sphinx. This is done so
-@@ -271,6 +294,7 @@ def _merge_adjoining_field_lists(self, contentnode: addnodes.desc_content) -> No
-             contentnode.remove(child)
+         if infopips.children:
+             contentnode.insert(0, infopips)
  
-     def transform_content(self, contentnode: addnodes.desc_content) -> None:
-+        self._add_infopips(contentnode)
-         self._merge_adjoining_field_lists(contentnode)
- 
-     def _toc_entry_name(self, sig_node: desc_signature) -> str:
 -- 
 2.44.0
 
