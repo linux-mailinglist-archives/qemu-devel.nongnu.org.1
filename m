@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238B48AA893
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 08:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 090F98AA88D
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 08:44:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxhyF-0007sC-TZ; Fri, 19 Apr 2024 02:43:39 -0400
+	id 1rxhyI-0007tS-Be; Fri, 19 Apr 2024 02:43:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxhy5-0007oc-IN; Fri, 19 Apr 2024 02:43:29 -0400
+ id 1rxhy6-0007ov-7v; Fri, 19 Apr 2024 02:43:31 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxhy2-0001C1-IA; Fri, 19 Apr 2024 02:43:29 -0400
+ id 1rxhy4-0001CX-L9; Fri, 19 Apr 2024 02:43:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713509006; x=1745045006;
+ t=1713509008; x=1745045008;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IZecTxaU+frQtocDHWoMZbTxqF4pkIWlVnz4Y1UGpIM=;
- b=DmJr01r/aX+QCm2bHHzuwve3NOADZbPleqfkLedzsVKgq0n+ccPuBaYO
- O9DtBFQtO6GuIbw4zipKkWD1jHULpmavlPndEwkVAfN98TJJvqAkIdNVn
- saxabOUBE1ZNxHs4nNR2RM1Ev4xHtfUH/662LjenusV4YAFksvR993TOS
- VdcJahFujJxAxBWdmilS2NUlGlSzNO5LdXqsVedJexDrlGodIHQjg+0J+
- auZnZa3PK8lkSUnvEx1RKBriz2zdDJHxShZP8RjRSx9IxrgqSf9AnOycg
- 5lxHpwvqZOSibaa/83Al2rLPqrcRphb+jSP4XTyLcRuQn3dwsooc/DFrk w==;
-X-CSE-ConnectionGUID: I5jaqsLnSAqRjm7dog+veg==
-X-CSE-MsgGUID: QYaAYf6mTn+TIXtyxREEUQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="19659953"
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="19659953"
+ bh=QW0U6rqEdHhhrUN6J4GUhhbNLR4rcAUCgpYyl5CCOUg=;
+ b=gYHtscWrXwtPsmRzhGd4kG+Y8Ha2X4SstYd/iU06D8CmlW+Ya57KK2TD
+ eg27vY++KSAO55p7bSwfA4ldu97mXkUh/REA60QsPPXe2IOfLzuIi/lML
+ jMV4vsjp4Afa13eJNyUCyCkKGVE1bgi1rkZvumkJdm3HJIiimrr75IjYC
+ V7jVvy38eS1SxRJLZe+C4pivaZFwFKndkD07UJqJDaS9tnFRyBmdIAkaX
+ lddsdqabr1e/LlE46W2buIvlSqVJonzfzRFsCKrnXIMAJ8XI2uiv6HNhl
+ ttIsWzdK8zaqF85F2eSztV58GprpLlnxSMl/9NX/EV1JCywCod4XafoOZ g==;
+X-CSE-ConnectionGUID: jq94hL5bT920tJDdBRd1hg==
+X-CSE-MsgGUID: noKV8yJbTCGXUlO0TY2Htw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="19659959"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="19659959"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 23:43:24 -0700
-X-CSE-ConnectionGUID: l2dhBQ8GRZ2UN4QvOcGYJg==
-X-CSE-MsgGUID: Jv+QNeDzQ2mcIPgqa1ZLMw==
+ 18 Apr 2024 23:43:27 -0700
+X-CSE-ConnectionGUID: DWmkPqKvR1eDdtP7gcRgIg==
+X-CSE-MsgGUID: cokQpEhZSsWGHwmJ33GhqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="28071914"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="28071927"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 18 Apr 2024 23:43:22 -0700
+ by orviesa004.jf.intel.com with ESMTP; 18 Apr 2024 23:43:24 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -48,10 +48,10 @@ To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 5/6] target/s390x/cpu_models: Make kvm_s390_apply_cpu_model()
- return boolean
-Date: Fri, 19 Apr 2024 14:57:11 +0800
-Message-Id: <20240419065712.1225038-6-zhao1.liu@linux.intel.com>
+Subject: [PATCH 6/6] target/s390x/cpu_models_sysemu: Drop local @err in
+ apply_cpu_model()
+Date: Fri, 19 Apr 2024 14:57:12 +0800
+Message-Id: <20240419065712.1225038-7-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240419065712.1225038-1-zhao1.liu@linux.intel.com>
 References: <20240419065712.1225038-1-zhao1.liu@linux.intel.com>
@@ -82,118 +82,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-As error.h suggested, the best practice for callee is to return
-something to indicate success / failure.
-
-So make kvm_s390_apply_cpu_model() return boolean and check the
-returned boolean in apply_cpu_model() instead of accessing @err.
+Use @errp to fetech error information directly and drop the local
+virable @err.
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/s390x/cpu_models.h        |  5 +++--
- target/s390x/cpu_models_sysemu.c |  3 +--
- target/s390x/kvm/kvm.c           | 15 ++++++++-------
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ target/s390x/cpu_models_sysemu.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
-index 5041c1e10fed..1be94294319d 100644
---- a/target/s390x/cpu_models.h
-+++ b/target/s390x/cpu_models.h
-@@ -117,16 +117,17 @@ S390CPUDef const *s390_find_cpu_def(uint16_t type, uint8_t gen, uint8_t ec_ga,
- #ifdef CONFIG_KVM
- bool kvm_s390_cpu_models_supported(void);
- bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp);
--void kvm_s390_apply_cpu_model(const S390CPUModel *model,  Error **errp);
-+bool kvm_s390_apply_cpu_model(const S390CPUModel *model,  Error **errp);
- #else
- static inline bool kvm_s390_get_host_cpu_model(S390CPUModel *model,
-                                                Error **errp)
- {
-     return true;
- }
--static inline void kvm_s390_apply_cpu_model(const S390CPUModel *model,
-+static inline bool kvm_s390_apply_cpu_model(const S390CPUModel *model,
-                                             Error **errp)
- {
-+    return true;
- }
- static inline bool kvm_s390_cpu_models_supported(void)
- {
 diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index 2d99218069cb..bf855c659d5e 100644
+index bf855c659d5e..15be729c3d48 100644
 --- a/target/s390x/cpu_models_sysemu.c
 +++ b/target/s390x/cpu_models_sysemu.c
-@@ -405,8 +405,7 @@ void apply_cpu_model(const S390CPUModel *model, Error **errp)
+@@ -389,7 +389,6 @@ CpuModelBaselineInfo *qmp_query_cpu_model_baseline(CpuModelInfo *infoa,
+ 
+ void apply_cpu_model(const S390CPUModel *model, Error **errp)
+ {
+-    Error *err = NULL;
+     static S390CPUModel applied_model;
+     static bool applied;
+ 
+@@ -405,8 +404,7 @@ void apply_cpu_model(const S390CPUModel *model, Error **errp)
      }
  
      if (kvm_enabled()) {
--        kvm_s390_apply_cpu_model(model, &err);
--        if (err) {
-+        if (!kvm_s390_apply_cpu_model(model, &err)) {
-             error_propagate(errp, err);
+-        if (!kvm_s390_apply_cpu_model(model, &err)) {
+-            error_propagate(errp, err);
++        if (!kvm_s390_apply_cpu_model(model, errp)) {
              return;
          }
-diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
-index 57937b4ddbef..6334fb84141b 100644
---- a/target/s390x/kvm/kvm.c
-+++ b/target/s390x/kvm/kvm.c
-@@ -2543,7 +2543,7 @@ static void kvm_s390_configure_apie(bool interpret)
      }
- }
- 
--void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
-+bool kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
- {
-     struct kvm_s390_vm_cpu_processor prop  = {
-         .fac_list = { 0 },
-@@ -2560,11 +2560,11 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
-         if (kvm_s390_cmma_available()) {
-             kvm_s390_enable_cmma();
-         }
--        return;
-+        return true;
-     }
-     if (!kvm_s390_cpu_models_supported()) {
-         error_setg(errp, "KVM doesn't support CPU models");
--        return;
-+        return false;
-     }
-     prop.cpuid = s390_cpuid_from_cpu_model(model);
-     prop.ibc = s390_ibc_from_cpu_model(model);
-@@ -2574,19 +2574,19 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
-     rc = kvm_vm_ioctl(kvm_state, KVM_SET_DEVICE_ATTR, &attr);
-     if (rc) {
-         error_setg(errp, "KVM: Error configuring the CPU model: %d", rc);
--        return;
-+        return false;
-     }
-     /* configure cpu features indicated e.g. via SCLP */
-     rc = configure_cpu_feat(model->features);
-     if (rc) {
-         error_setg(errp, "KVM: Error configuring CPU features: %d", rc);
--        return;
-+        return false;
-     }
-     /* configure cpu subfunctions indicated via query / test bit */
-     rc = configure_cpu_subfunc(model->features);
-     if (rc) {
-         error_setg(errp, "KVM: Error configuring CPU subfunctions: %d", rc);
--        return;
-+        return false;
-     }
-     /* enable CMM via CMMA */
-     if (test_bit(S390_FEAT_CMM, model->features)) {
-@@ -2601,8 +2601,9 @@ void kvm_s390_apply_cpu_model(const S390CPUModel *model, Error **errp)
-     rc = configure_uv_feat_guest(model->features);
-     if (rc) {
-         error_setg(errp, "KVM: Error configuring CPU UV features %d", rc);
--        return;
-+        return false;
-     }
-+    return true;
- }
- 
- void kvm_s390_restart_interrupt(S390CPU *cpu)
 -- 
 2.34.1
 
