@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0F38AAAEB
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 10:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1978AAAE1
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 10:49:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxjyg-0005xz-8M; Fri, 19 Apr 2024 04:52:14 -0400
+	id 1rxjv2-0002eq-Hh; Fri, 19 Apr 2024 04:48:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxjyb-0005xV-8X
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 04:52:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxjv0-0002eQ-ST
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 04:48:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxjyY-0008Gf-W8
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 04:52:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxjuz-0007YT-7n
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 04:48:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713516726;
+ s=mimecast20190719; t=1713516504;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LEurQWwIj1ae0zpFiHYFzGSS3+PXFjNqJBQ/9xpNOOI=;
- b=cN5agRlkrKrc1+rvocQ0YLKrgr7BpWfTYgbTQ1mTou46WpBDGSseAfBQhyvSusa1YUI4LY
- I1Ye4qqy3++5cDSiuYv7lPYHDQ0HGy25Jl8NiMCK43zX6GLhHfSl43Go8V4geQz+/CIQhm
- jHASWlqm8C6GYWiGKCBBQF9G5eQoT9A=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-eiDEitBkMke1VTFcydvbtA-1; Fri, 19 Apr 2024 04:48:21 -0400
-X-MC-Unique: eiDEitBkMke1VTFcydvbtA-1
+ bh=pjHqJKJAYlMpX924z0U0Cp6GUUtCDMf6NG/thlD52Gs=;
+ b=G5scpgKDEhMxs+livqcw2JzqzURdi4H4RzLTVlfVB3WJsFiSvg09bcjv7R675unw3hlYKl
+ qa+4bm/ZQGm5KlN+cg5UfZayhlXfRaixRxG7LOdj1n9FT0lOs1QF5e9W0veeoR4BaAZmN4
+ syt7ij6ClNsxddxLqivFGLawDa7PJEc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-329--HGkZNnrNKyleWJhZL8N0Q-1; Fri,
+ 19 Apr 2024 04:48:22 -0400
+X-MC-Unique: -HGkZNnrNKyleWJhZL8N0Q-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9467180D730;
- Fri, 19 Apr 2024 08:48:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69B603C02B6E;
+ Fri, 19 Apr 2024 08:48:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.194.170])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 922591121306;
- Fri, 19 Apr 2024 08:48:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D981D1121306;
+ Fri, 19 Apr 2024 08:48:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org, Artyom Tarasenko <atar4qemu@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Cc: Eduardo Habkost <eduardo@habkost.net>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2 2/4] target/sparc/cpu: Avoid spaces by default in the CPU
- names
-Date: Fri, 19 Apr 2024 10:48:10 +0200
-Message-ID: <20240419084812.504779-3-thuth@redhat.com>
+Subject: [PATCH v2 3/4] docs/system/target-sparc: Improve the Sparc
+ documentation
+Date: Fri, 19 Apr 2024 10:48:11 +0200
+Message-ID: <20240419084812.504779-4-thuth@redhat.com>
 In-Reply-To: <20240419084812.504779-1-thuth@redhat.com>
 References: <20240419084812.504779-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -80,282 +80,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The output of "-cpu help" is currently rather confusing to the users:
-It might not be fully clear which part of the output defines the CPU
-names since the CPU names contain white spaces (which we later have to
-convert into dashes internally). At best it's at least a nuisance since
-the users might need to specify the CPU names with quoting on the command
-line if they are not aware of the fact that the CPU names could be written
-with dashes instead. So let's finally clean up this mess by using dashes
-instead of white spaces for the CPU names, like we're doing it internally
-later (and like we're doing it in most other targets of QEMU).
-Note that it is still possible to pass the CPU names with spaces to the
-"-cpu" option, since sparc_cpu_type_name() still translates those to "-".
+Add some words about how to enable or disable boolean features,
+and remove the note about a Linux kernel being available on the
+QEMU website (they have been removed long ago already), and the
+note about NetBSD and OpenBSD still having issues (they should
+work fine nowadays).
 
 Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2141
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- target/sparc/cpu.c | 56 +++++++++++++++++++++++-----------------------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+ docs/system/target-sparc.rst | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/target/sparc/cpu.c b/target/sparc/cpu.c
-index 774e234e09..593c8d6867 100644
---- a/target/sparc/cpu.c
-+++ b/target/sparc/cpu.c
-@@ -206,7 +206,7 @@ void cpu_sparc_set_id(CPUSPARCState *env, unsigned int cpu)
- static const sparc_def_t sparc_defs[] = {
- #ifdef TARGET_SPARC64
-     {
--        .name = "Fujitsu Sparc64",
-+        .name = "Fujitsu-Sparc64",
-         .iu_version = ((0x04ULL << 48) | (0x02ULL << 32) | (0ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -215,7 +215,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Fujitsu Sparc64 III",
-+        .name = "Fujitsu-Sparc64-III",
-         .iu_version = ((0x04ULL << 48) | (0x03ULL << 32) | (0ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -224,7 +224,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Fujitsu Sparc64 IV",
-+        .name = "Fujitsu-Sparc64-IV",
-         .iu_version = ((0x04ULL << 48) | (0x04ULL << 32) | (0ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -233,7 +233,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Fujitsu Sparc64 V",
-+        .name = "Fujitsu-Sparc64-V",
-         .iu_version = ((0x04ULL << 48) | (0x05ULL << 32) | (0x51ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -242,7 +242,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI UltraSparc I",
-+        .name = "TI-UltraSparc-I",
-         .iu_version = ((0x17ULL << 48) | (0x10ULL << 32) | (0x40ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -251,7 +251,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI UltraSparc II",
-+        .name = "TI-UltraSparc-II",
-         .iu_version = ((0x17ULL << 48) | (0x11ULL << 32) | (0x20ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -260,7 +260,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI UltraSparc IIi",
-+        .name = "TI-UltraSparc-IIi",
-         .iu_version = ((0x17ULL << 48) | (0x12ULL << 32) | (0x91ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -269,7 +269,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI UltraSparc IIe",
-+        .name = "TI-UltraSparc-IIe",
-         .iu_version = ((0x17ULL << 48) | (0x13ULL << 32) | (0x14ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -278,7 +278,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc III",
-+        .name = "Sun-UltraSparc-III",
-         .iu_version = ((0x3eULL << 48) | (0x14ULL << 32) | (0x34ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -287,7 +287,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc III Cu",
-+        .name = "Sun-UltraSparc-III-Cu",
-         .iu_version = ((0x3eULL << 48) | (0x15ULL << 32) | (0x41ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_3,
-@@ -296,7 +296,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc IIIi",
-+        .name = "Sun-UltraSparc-IIIi",
-         .iu_version = ((0x3eULL << 48) | (0x16ULL << 32) | (0x34ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -305,7 +305,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc IV",
-+        .name = "Sun-UltraSparc-IV",
-         .iu_version = ((0x3eULL << 48) | (0x18ULL << 32) | (0x31ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_4,
-@@ -314,7 +314,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc IV plus",
-+        .name = "Sun-UltraSparc-IV-plus",
-         .iu_version = ((0x3eULL << 48) | (0x19ULL << 32) | (0x22ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -323,7 +323,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES | CPU_FEATURE_CMT,
-     },
-     {
--        .name = "Sun UltraSparc IIIi plus",
-+        .name = "Sun-UltraSparc-IIIi-plus",
-         .iu_version = ((0x3eULL << 48) | (0x22ULL << 32) | (0ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_3,
-@@ -332,7 +332,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Sun UltraSparc T1",
-+        .name = "Sun-UltraSparc-T1",
-         /* defined in sparc_ifu_fdp.v and ctu.h */
-         .iu_version = ((0x3eULL << 48) | (0x23ULL << 32) | (0x02ULL << 24)),
-         .fpu_version = 0x00000000,
-@@ -343,7 +343,7 @@ static const sparc_def_t sparc_defs[] = {
-         | CPU_FEATURE_GL,
-     },
-     {
--        .name = "Sun UltraSparc T2",
-+        .name = "Sun-UltraSparc-T2",
-         /* defined in tlu_asi_ctl.v and n2_revid_cust.v */
-         .iu_version = ((0x3eULL << 48) | (0x24ULL << 32) | (0x02ULL << 24)),
-         .fpu_version = 0x00000000,
-@@ -354,7 +354,7 @@ static const sparc_def_t sparc_defs[] = {
-         | CPU_FEATURE_GL,
-     },
-     {
--        .name = "NEC UltraSparc I",
-+        .name = "NEC-UltraSparc-I",
-         .iu_version = ((0x22ULL << 48) | (0x10ULL << 32) | (0x40ULL << 24)),
-         .fpu_version = 0x00000000,
-         .mmu_version = mmu_us_12,
-@@ -364,7 +364,7 @@ static const sparc_def_t sparc_defs[] = {
-     },
- #else
-     {
--        .name = "Fujitsu MB86904",
-+        .name = "Fujitsu-MB86904",
-         .iu_version = 0x04 << 24, /* Impl 0, ver 4 */
-         .fpu_version = 4 << FSR_VER_SHIFT, /* FPU version 4 (Meiko) */
-         .mmu_version = 0x04 << 24, /* Impl 0, ver 4 */
-@@ -377,7 +377,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "Fujitsu MB86907",
-+        .name = "Fujitsu-MB86907",
-         .iu_version = 0x05 << 24, /* Impl 0, ver 5 */
-         .fpu_version = 4 << FSR_VER_SHIFT, /* FPU version 4 (Meiko) */
-         .mmu_version = 0x05 << 24, /* Impl 0, ver 5 */
-@@ -390,7 +390,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI MicroSparc I",
-+        .name = "TI-MicroSparc-I",
-         .iu_version = 0x41000000,
-         .fpu_version = 4 << FSR_VER_SHIFT,
-         .mmu_version = 0x41000000,
-@@ -403,7 +403,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_FEATURE_MUL | CPU_FEATURE_DIV,
-     },
-     {
--        .name = "TI MicroSparc II",
-+        .name = "TI-MicroSparc-II",
-         .iu_version = 0x42000000,
-         .fpu_version = 4 << FSR_VER_SHIFT,
-         .mmu_version = 0x02000000,
-@@ -416,7 +416,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI MicroSparc IIep",
-+        .name = "TI-MicroSparc-IIep",
-         .iu_version = 0x42000000,
-         .fpu_version = 4 << FSR_VER_SHIFT,
-         .mmu_version = 0x04000000,
-@@ -429,7 +429,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc 40", /* STP1020NPGA */
-+        .name = "TI-SuperSparc-40", /* STP1020NPGA */
-         .iu_version = 0x41000000, /* SuperSPARC 2.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x00000800, /* SuperSPARC 2.x, no MXCC */
-@@ -442,7 +442,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc 50", /* STP1020PGA */
-+        .name = "TI-SuperSparc-50", /* STP1020PGA */
-         .iu_version = 0x40000000, /* SuperSPARC 3.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x01000800, /* SuperSPARC 3.x, no MXCC */
-@@ -455,7 +455,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc 51",
-+        .name = "TI-SuperSparc-51",
-         .iu_version = 0x40000000, /* SuperSPARC 3.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x01000000, /* SuperSPARC 3.x, MXCC */
-@@ -469,7 +469,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc 60", /* STP1020APGA */
-+        .name = "TI-SuperSparc-60", /* STP1020APGA */
-         .iu_version = 0x40000000, /* SuperSPARC 3.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x01000800, /* SuperSPARC 3.x, no MXCC */
-@@ -482,7 +482,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc 61",
-+        .name = "TI-SuperSparc-61",
-         .iu_version = 0x44000000, /* SuperSPARC 3.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x01000000, /* SuperSPARC 3.x, MXCC */
-@@ -496,7 +496,7 @@ static const sparc_def_t sparc_defs[] = {
-         .features = CPU_DEFAULT_FEATURES,
-     },
-     {
--        .name = "TI SuperSparc II",
-+        .name = "TI-SuperSparc-II",
-         .iu_version = 0x40000000, /* SuperSPARC II 1.x */
-         .fpu_version = 0 << FSR_VER_SHIFT,
-         .mmu_version = 0x08000000, /* SuperSPARC II 1.x, MXCC */
+diff --git a/docs/system/target-sparc.rst b/docs/system/target-sparc.rst
+index 9ec8c90c14..54bd8b6ead 100644
+--- a/docs/system/target-sparc.rst
++++ b/docs/system/target-sparc.rst
+@@ -27,6 +27,11 @@ architecture machines:
+ The emulation is somewhat complete. SMP up to 16 CPUs is supported, but
+ Linux limits the number of usable CPUs to 4.
+ 
++The list of available CPUs can be viewed by starting QEMU with ``-cpu help``.
++Optional boolean features can be added with a "+" in front of the feature name,
++or disabled with a "-" in front of the name, for example
++``-cpu TI-SuperSparc-II,+float128``.
++
+ QEMU emulates the following sun4m peripherals:
+ 
+ -  IOMMU
+@@ -55,8 +60,5 @@ OpenBIOS is a free (GPL v2) portable firmware implementation. The goal
+ is to implement a 100% IEEE 1275-1994 (referred to as Open Firmware)
+ compliant firmware.
+ 
+-A sample Linux 2.6 series kernel and ram disk image are available on the
+-QEMU web site. There are still issues with NetBSD and OpenBSD, but most
+-kernel versions work. Please note that currently older Solaris kernels
+-don't work probably due to interface issues between OpenBIOS and
+-Solaris.
++Please note that currently older Solaris kernels don't work probably due
++to interface issues between OpenBIOS and Solaris.
 -- 
 2.44.0
 
