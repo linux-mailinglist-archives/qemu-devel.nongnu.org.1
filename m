@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6106E8AA7C4
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 303E48AA7B0
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:39:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1P-0007VV-Ju; Fri, 19 Apr 2024 00:38:47 -0400
+	id 1rxg1F-0007SC-If; Fri, 19 Apr 2024 00:38:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1B-0007QG-Ab
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1A-0007PB-Df
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg18-00049t-Gz
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:33 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg17-00049u-SI
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501508;
+ s=mimecast20190719; t=1713501509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Yd3gqttPN7y/yTkQ3a8gByZcKPzL7SnUWn217oHpxJI=;
- b=XDudCDnn/pN6bgOCz64qBGFvnOhyja6q76/MTsUx6aM6CbEVmaChBb16pw2Iw+rEq1aXmo
- OYIHY5BrmBpFxk55FxPZlenr+zTuqwRHnctiHJc2dP1P95wOF6B/xXbRAr/X+d/Thtb3Bd
- xonVgqCP+zCti0ml5viDCRjkYwHV8mY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-193-13vhTZKfMQqnhK7fAlMlrQ-1; Fri, 19 Apr 2024 00:38:25 -0400
-X-MC-Unique: 13vhTZKfMQqnhK7fAlMlrQ-1
+ bh=eGh0Yo04442PQ/AzZ8ROlY8swRWkIkztCTSNUHGcCT0=;
+ b=NtJCURMQ367FQplZwNy6/nOI+KMRkmIyKr1mMxTGGtP5v1RwkEeYYhBV8l2u0GmY1bJX34
+ 2N4YiR9zR8Kst/NE88T82MsBlU9silipDZVI+go175QFZNZ546tbgyoiZPp54CeEoHFKhU
+ l2HEGTtA9TrfYIxlWJVxx4OR1bCDzq8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-6-nQvZ5gL6MMeY3PtFUAa08Q-1; Fri,
+ 19 Apr 2024 00:38:25 -0400
+X-MC-Unique: nQvZ5gL6MMeY3PtFUAa08Q-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9992B811029;
- Fri, 19 Apr 2024 04:38:24 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C4251C0C66A;
+ Fri, 19 Apr 2024 04:38:25 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E76984011FF7;
- Fri, 19 Apr 2024 04:38:23 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id A81EC40829C3;
+ Fri, 19 Apr 2024 04:38:24 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -48,15 +48,15 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 04/27] docs/qapi-domain: add QAPI index
-Date: Fri, 19 Apr 2024 00:37:52 -0400
-Message-ID: <20240419043820.178731-5-jsnow@redhat.com>
+Subject: [PATCH 05/27] docs/qapi-domain: add resolve_any_xref()
+Date: Fri, 19 Apr 2024 00:37:53 -0400
+Message-ID: <20240419043820.178731-6-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -80,145 +80,163 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use the QAPI object registry to generate a special index just for QAPI
-definitions. The index can show entries both by definition type and
-alphabetically.
+Add the ability to resolve cross-references using the `any`
+cross-reference syntax. Adding QAPI-specific cross-reference roles will
+be added in a forthcoming commit, and will share the same find_obj()
+helper.
 
-The index can be linked from anywhere in the QEMU manual by using
-`qapi-index`.
+(There's less code needed for the generic cross-reference resolver, so
+it comes first in this series.)
+
+Once again, this code is based very heavily on sphinx.domains.python.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/qapi/index.rst        |  6 +++-
- docs/sphinx/qapi-domain.py | 66 +++++++++++++++++++++++++++++++++++---
- 2 files changed, 66 insertions(+), 6 deletions(-)
+ docs/qapi/index.rst        |  7 +++
+ docs/sphinx/qapi-domain.py | 95 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 101 insertions(+), 1 deletion(-)
 
 diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index 880fd17c709..051dc6b3a37 100644
+index 051dc6b3a37..39ad405fd93 100644
 --- a/docs/qapi/index.rst
 +++ b/docs/qapi/index.rst
-@@ -9,7 +9,8 @@ QAPI Domain Test
-    doesn't create a cross-reference target and it isn't added to the
-    index.
+@@ -40,3 +40,10 @@ QAPI Domain Test
  
--   Check out the `genindex` for proof that foo-module is not present.
-+   Check out the `genindex` or the `qapi-index` for proof that
-+   foo-module is not present.
- 
- .. qapi:module:: bar-module
-    :no-typesetting:
-@@ -36,3 +37,6 @@ QAPI Domain Test
- 
-    The ``block-core`` module will have two entries in the `genindex`,
-    under both "block-core" and "QAPI module".
+    Modules will also be reported in the `qapi-index`, under the Modules
+    category and in the alphabetical categories that follow.
 +
-+   Modules will also be reported in the `qapi-index`, under the Modules
-+   category and in the alphabetical categories that follow.
++
++QAPI modules can now be cross-referenced using the ```any```
++cross-referencing syntax. Here's a link to `bar-module`, even though
++the actual output of that directive was suppressed. Here's a link to
++`block-core`. A link to ```foo-module``` won't resolve because of the
++``:no-index:`` option we used for that directive.
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index ab80fd5f634..65409786119 100644
+index 65409786119..4758451ff0e 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -12,6 +12,7 @@
-     Iterable,
-     List,
-     NamedTuple,
-+    Optional,
-     Tuple,
-     cast,
- )
-@@ -20,7 +21,12 @@
+@@ -21,6 +21,7 @@
  from docutils.parsers.rst import directives
  
  from sphinx import addnodes
--from sphinx.domains import Domain, ObjType
-+from sphinx.domains import (
-+    Domain,
-+    Index,
-+    IndexEntry,
-+    ObjType,
-+)
++from sphinx.addnodes import pending_xref
+ from sphinx.domains import (
+     Domain,
+     Index,
+@@ -30,13 +31,19 @@
  from sphinx.locale import _, __
  from sphinx.util import logging
  from sphinx.util.docutils import SphinxDirective, switch_source_input
-@@ -74,9 +80,10 @@ class QAPIModule(SphinxDirective):
-     a pass-through for the content body. Named section titles are
-     allowed in the content body.
- 
--    Use this directive to associate subsequent definitions with the
--    module they are defined in for purposes of search and QAPI index
--    organization.
-+    Use this directive to create entries for the QAPI module in the
-+    global index and the qapi index; as well as to associate subsequent
-+    definitions with the module they are defined in for purposes of
-+    search and QAPI index organization.
- 
-     :arg: The name of the module.
-     :opt no-index: Don't add cross-reference targets or index entries.
-@@ -155,6 +162,52 @@ def run(self) -> List[Node]:
-         return ret
+-from sphinx.util.nodes import make_id, nested_parse_with_titles
++from sphinx.util.nodes import (
++    make_id,
++    make_refnode,
++    nested_parse_with_titles,
++)
  
  
-+class QAPIIndex(Index):
-+    """
-+    Index subclass to provide the QAPI definition index.
-+    """
+ if TYPE_CHECKING:
+     from docutils.nodes import Element, Node
+ 
+     from sphinx.application import Sphinx
++    from sphinx.builders import Builder
++    from sphinx.environment import BuildEnvironment
+     from sphinx.util.typing import OptionSpec
+ 
+ logger = logging.getLogger(__name__)
+@@ -289,6 +296,92 @@ def merge_domaindata(self, docnames: List[str], otherdata: Dict[str, Any]) -> No
+                 ), f"!?!? collision on merge? {fullname=} {obj=} {self.objects[fullname]=}"
+                 self.objects[fullname] = obj
+ 
++    def find_obj(
++        self, modname: str, name: str, type: Optional[str]
++    ) -> list[tuple[str, ObjectEntry]]:
++        """
++        Find a QAPI object for "name", perhaps using the given module.
 +
-+    name = "index"
-+    localname = _("QAPI Index")
-+    shortname = _("QAPI Index")
++        Returns a list of (name, object entry) tuples.
 +
-+    def generate(
++        :param modname: The current module context (if any!)
++                        under which we are searching.
++        :param name: The name of the x-ref to resolve;
++                     may or may not include a leading module.
++        :param type: The role name of the x-ref we're resolving, if provided.
++                     (This is absent for "any" lookups.)
++        """
++        if not name:
++            return []
++
++        names: list[str] = []
++        matches: list[tuple[str, ObjectEntry]] = []
++
++        fullname = name
++        if "." in fullname:
++            # We're searching for a fully qualified reference;
++            # ignore the contextual module.
++            pass
++        elif modname:
++            # We're searching for something from somewhere;
++            # try searching the current module first.
++            # e.g. :qapi:cmd:`query-block` or `query-block` is being searched.
++            fullname = f"{modname}.{name}"
++
++        if type is None:
++            # type isn't specified, this is a generic xref.
++            # search *all* qapi-specific object types.
++            objtypes: Optional[List[str]] = list(self.object_types)
++        else:
++            # type is specified and will be a role (e.g. obj, mod, cmd)
++            # convert this to eligible object types (e.g. command, module)
++            # using the QAPIDomain.object_types table.
++            objtypes = self.objtypes_for_role(type)
++
++        # Either we should have been given no type, or the type we were
++        # given should correspond to at least one real actual object
++        # type.
++        assert objtypes
++
++        if name in self.objects and self.objects[name].objtype in objtypes:
++            names = [name]
++        elif fullname in self.objects and self.objects[fullname].objtype in objtypes:
++            names = [fullname]
++        else:
++            # exact match wasn't found; e.g. we are searching for
++            # `query-block` from a different (or no) module.
++            searchname = "." + name
++            names = [
++                oname
++                for oname in self.objects
++                if oname.endswith(searchname)
++                and self.objects[oname].objtype in objtypes
++            ]
++
++        matches = [(oname, self.objects[oname]) for oname in names]
++        if len(matches) > 1:
++            matches = [m for m in matches if not m[1].aliased]
++        return matches
++
++    def resolve_any_xref(
 +        self,
-+        docnames: Optional[Iterable[str]] = None,
-+    ) -> Tuple[List[Tuple[str, List[IndexEntry]]], bool]:
-+        assert isinstance(self.domain, QAPIDomain)
-+        content: Dict[str, List[IndexEntry]] = {}
-+        collapse = False
-+
-+        # list of all object (name, ObjectEntry) pairs, sorted by name
-+        objects = sorted(self.domain.objects.items(), key=lambda x: x[0].lower())
-+
-+        for objname, obj in objects:
-+            if docnames and obj.docname not in docnames:
-+                continue
-+
-+            # Strip the module name out:
-+            objname = objname.split(".")[-1]
-+
-+            # Add an alphabetical entry:
-+            entries = content.setdefault(objname[0].upper(), [])
-+            entries.append(
-+                IndexEntry(objname, 0, obj.docname, obj.node_id, obj.objtype, "", "")
++        env: BuildEnvironment,
++        fromdocname: str,
++        builder: Builder,
++        target: str,
++        node: pending_xref,
++        contnode: Element,
++    ) -> list[tuple[str, Element]]:
++        results: list[tuple[str, Element]] = []
++        matches = self.find_obj(node.get("qapi:module"), target, None)
++        for name, obj in matches:
++            role = "qapi:" + self.role_for_objtype(obj.objtype)
++            refnode = make_refnode(
++                builder, fromdocname, obj.docname, obj.node_id, contnode, name
 +            )
++            results.append((role, refnode))
++        return results
 +
-+            # Add a categorical entry:
-+            category = obj.objtype.title() + "s"
-+            entries = content.setdefault(category, [])
-+            entries.append(IndexEntry(objname, 0, obj.docname, obj.node_id, "", "", ""))
-+
-+        # alphabetically sort categories; type names first, ABC entries last.
-+        sorted_content = sorted(
-+            content.items(),
-+            key=lambda x: (len(x[0]) == 1, x[0]),
-+        )
-+        return sorted_content, collapse
-+
-+
- class QAPIDomain(Domain):
-     """QAPI language domain."""
  
-@@ -182,7 +235,10 @@ class QAPIDomain(Domain):
-         "objects": {},  # fullname -> ObjectEntry
-     }
- 
--    indices = []
-+    # Index pages to generate; each entry is an Index class.
-+    indices = [
-+        QAPIIndex,
-+    ]
- 
-     @property
-     def objects(self) -> Dict[str, ObjectEntry]:
+ def setup(app: Sphinx) -> Dict[str, Any]:
+     app.setup_extension("sphinx.directives")
 -- 
 2.44.0
 
