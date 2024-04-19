@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FF98AA7C9
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F448AA7B7
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1V-0007Yu-G6; Fri, 19 Apr 2024 00:38:53 -0400
+	id 1rxg1X-0007aH-8i; Fri, 19 Apr 2024 00:38:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1K-0007UL-W5
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1L-0007UO-CO
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1J-0004EH-5z
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:42 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1J-0004EN-LH
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501520;
+ s=mimecast20190719; t=1713501521;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7jjLauuGCciQkrLfyUwiXsCrDWKAvSteSgJzJEAZUE8=;
- b=JYw/KNo4uWj9ZCw5Djqe7k6NyVXMFtSNa9OwWfU3ABZ0ZWl5+xTAkgDURhOWZfLaJfuVTK
- fjuzL42GYOVHaGmcRc0s7sRytNRnXGiG85Rx3JdyL0Q4kKzCqAGI+W/dF8Mh2LXu9drIck
- nnmDXA+siKV8CLPQJsh1Szn2vv5vVsc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-259-3ztlf7YMP8C0syRqoqQUPw-1; Fri,
- 19 Apr 2024 00:38:38 -0400
-X-MC-Unique: 3ztlf7YMP8C0syRqoqQUPw-1
+ bh=VGse/02Q0gYpHJXH+gJ0nNA2UseR1liYR+1bHBVp6ag=;
+ b=JxSQUJJaZC8JxkXDDoX4rf3wcPdIczC5koFJpKgfhJ1I01nNHJLOhfqvlADewUnekN2BwN
+ EAl6XX30ILOSQRHYeg5rFOj/+XyXHtWjyO49BYrhbX5lvNSpydhRCbVDEh0cv5hkWUC0pU
+ NSc/8z1CuZB2nO/2NTE+XDKh6+9z0iM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-295-ghUg9HZkPbySjCO8vzBQuw-1; Fri, 19 Apr 2024 00:38:39 -0400
+X-MC-Unique: ghUg9HZkPbySjCO8vzBQuw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5473D29AA38E;
- Fri, 19 Apr 2024 04:38:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13B22811002;
+ Fri, 19 Apr 2024 04:38:39 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id A331C40C1233;
- Fri, 19 Apr 2024 04:38:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 62E3740829C3;
+ Fri, 19 Apr 2024 04:38:38 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -48,9 +48,10 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 22/27] docs/qapi-domain: add warnings for malformed field lists
-Date: Fri, 19 Apr 2024 00:38:10 -0400
-Message-ID: <20240419043820.178731-23-jsnow@redhat.com>
+Subject: [PATCH 23/27] docs/qapi-domain: RFC patch - delete malformed field
+ lists
+Date: Fri, 19 Apr 2024 00:38:11 -0400
+Message-ID: <20240419043820.178731-24-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -80,192 +81,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Normally, Sphinx will silently fall back to its standard field list
-processing if it doesn't match one of your defined fields. A lot of the
-time, that's not what we want - we want to be warned if we goof
-something up.
-
-For instance, the canonical argument field list form is:
-
-:arg type name: descr
-
-This form is captured by Sphinx and transformed so that the field label
-will become "Arguments:". It's possible to omit the type name and descr
-and still have it be processed correctly. However, if you omit the type
-name, Sphinx no longer recognizes it:
-
-:arg: this is not recognized.
-
-This will turn into an arbitrary field list entry whose label is "Arg:",
-and it otherwise silently fails. You may also see failures for doing
-things like using :values: instead of :value:, or :errors: instead of
-:error:, and so on. It's also case sensitive, and easy to trip up.
-
-Add a validator that guarantees all field list entries that are the
-direct child of an ObjectDescription use only recognized forms of field
-lists, and emit a warning (treated as error by default in most build
-configurations) whenever we detect one that is goofed up.
-
-However, there's still benefit to allowing arbitrary fields -- they are
-after all not a Sphinx invention, but perfectly normal docutils
-syntax. Create an allow list for known spellings we don't mind letting
-through, but warn against anything else.
-
--
-
-RFC: Yes, this patch breaks the build! I thought it'd be helpful for you
-to see the error checking in action. The next commit drops the erroneous
-fields.
+Cleanup of the last patch to fix the build before closing out this RFC
+series.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/conf.py               | 12 ++++++++
- docs/qapi/index.rst        | 27 +++++++++++++++++
- docs/sphinx/qapi-domain.py | 59 ++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
+ docs/qapi/index.rst | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/docs/conf.py b/docs/conf.py
-index b15665d956d..7a7d7005780 100644
---- a/docs/conf.py
-+++ b/docs/conf.py
-@@ -148,6 +148,18 @@
- with open(os.path.join(qemu_docdir, 'defs.rst.inc')) as f:
-     rst_epilog += f.read()
- 
-+
-+# Normally, the QAPI domain is picky about what field lists you use to
-+# describe a QAPI entity. If you'd like to use arbitrary additional
-+# fields in source documentation, add them here.
-+qapi_allowed_fields = {
-+    "example",
-+    "note",
-+    "see also",
-+    "TODO",
-+}
-+
-+
- # -- Options for HTML output ----------------------------------------------
- 
- # The theme to use for HTML and HTML Help pages.  See the documentation for
 diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index 5bb1c37a5ed..ef58dfc4bcd 100644
+index ef58dfc4bcd..8352a27d4a5 100644
 --- a/docs/qapi/index.rst
 +++ b/docs/qapi/index.rst
-@@ -133,6 +133,33 @@ Explicit cross-referencing syntax for QAPI modules is available with
-    :memb: this is malformed and unrecognized.
-    :choice type name: This is unrecognized.
-    :errors FooError: Also malformed.
-+   :example: This isn't a "semantic" field, but it's been added to the
-+      allowed field names list. you can use whatever field names you'd
-+      like; but to prevent accidental typos, there is an allow list of
-+      "arbitrary" section names.
-+
-+      You can nestle code-blocks in here, too, by using the ``::``
-+      syntax::
-+
-+         -> { [ "bidirectional QMP example" ] }
-+         <- { [ "hello world!"] }
-+
-+      Or use explicit ``.. code-block:: QMP`` syntax, but it must start
-+      on its own line with a blank line both before and after the
-+      directive to render correctly:
-+
-+      .. code-block:: QMP
-+
-+         -> "Hello friend!"
-+
-+      Note that the QMP highlighter is merely garden-variety JSON, but
-+      with the addition of ``->``, ``<-`` and ``...`` symbols to help
-+      denote bidirectionality and elided segments. Eduardo Habkost and I
-+      wrote this lexer many moons ago to support the
-+      :doc:`/interop/bitmaps` documentation.
-+   :see also: This is also not a "semantic" field. The only limit is
-+      your imagination and what you can convince others to let you check
-+      into conf.py.
- 
-    Field lists can appear anywhere in the directive block, but any field
-    list entries in the same list block that are recognized as special
-diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index e44db10488f..bf8bb933345 100644
---- a/docs/sphinx/qapi-domain.py
-+++ b/docs/sphinx/qapi-domain.py
-@@ -334,10 +334,63 @@ def _merge_adjoining_field_lists(self, contentnode: addnodes.desc_content) -> No
-         for child in delete_queue:
-             contentnode.remove(child)
- 
-+    def _validate_field(self, field: nodes.field) -> None:
-+        field_name = field.children[0]
-+        assert isinstance(field_name, nodes.field_name)
-+        allowed_fields = set(self.env.app.config.qapi_allowed_fields)
-+
-+        field_label = field_name.astext()
-+        if re.match(r"\[\S+ = \S+\]", field_label) or field_label in allowed_fields:
-+            # okie-dokey. branch entry or known good allowed name.
-+            return
-+
-+        try:
-+            # split into field type and argument
-+            field_type, fieldarg = field_label.split(None, 1)
-+        except ValueError:
-+            # No arguments provided
-+            field_type = field_label
-+            fieldarg = ""
-+
-+        typemap = self.get_field_type_map()
-+        if field_type in typemap:
-+            # This is a semantic field, yet-to-be-processed. Catch
-+            # correct names, but incorrect arguments (which WILL fail to
-+            # process correctly).
-+            typedesc = typemap[field_type][0]
-+            if typedesc.has_arg != bool(fieldarg):
-+                msg = f"semantic field list type {field_type!r} "
-+                if typedesc.has_arg:
-+                    msg += "requires an argument."
-+                else:
-+                    msg += "takes no arguments."
-+                logger.warning(msg, location=field)
-+        else:
-+            # This is unrecognized entirely.
-+            valid = ", ".join(sorted(set(typemap) | allowed_fields))
-+            msg = (
-+                f"Unrecognized field list name {field_label!r}.\n"
-+                f"Valid fields for qapi:{self.objtype} are: {valid}\n"
-+                "\n"
-+                "If this usage is intentional, please add it to "
-+                "'qapi_allowed_fields' in docs/conf.py."
-+            )
-+            logger.warning(msg, location=field)
-+
-     def transform_content(self, contentnode: addnodes.desc_content) -> None:
-         self._add_infopips(contentnode)
-         self._merge_adjoining_field_lists(contentnode)
- 
-+        # Validate field lists. Note that this hook runs after any
-+        # branch directives have processed and transformed their field
-+        # lists, but before the main object directive has had a chance
-+        # to do so.
-+        for child in contentnode:
-+            if isinstance(child, nodes.field_list):
-+                for field in child.children:
-+                    assert isinstance(field, nodes.field)
-+                    self._validate_field(field)
-+
-     def _toc_entry_name(self, sig_node: desc_signature) -> str:
-         # This controls the name in the TOC and on the sidebar.
- 
-@@ -872,6 +925,12 @@ def resolve_any_xref(
- 
- def setup(app: Sphinx) -> Dict[str, Any]:
-     app.setup_extension("sphinx.directives")
-+    app.add_config_value(
-+        "qapi_allowed_fields",
-+        set(),
-+        "env",  # Setting impacts parsing phase
-+        types=set,
-+    )
-     app.add_domain(QAPIDomain)
- 
-     return {
+@@ -129,10 +129,6 @@ Explicit cross-referencing syntax for QAPI modules is available with
+       argument values. It's very temperamental.
+    :return SomeTypeName: An esoteric collection of mystical nonsense to
+       both confound and delight.
+-   :arg: this is malformed.
+-   :memb: this is malformed and unrecognized.
+-   :choice type name: This is unrecognized.
+-   :errors FooError: Also malformed.
+    :example: This isn't a "semantic" field, but it's been added to the
+       allowed field names list. you can use whatever field names you'd
+       like; but to prevent accidental typos, there is an allow list of
 -- 
 2.44.0
 
