@@ -2,69 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941948AB565
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 21:06:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAA78AB5C4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 21:53:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxtXD-0005vv-Gq; Fri, 19 Apr 2024 15:04:31 -0400
+	id 1rxuHH-0004U5-6t; Fri, 19 Apr 2024 15:52:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rxtX4-0005tP-An
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 15:04:22 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rxuHF-0004Tb-0e
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 15:52:05 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rxtX2-0004ET-7O
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 15:04:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713553460; x=1745089460;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=sO7a70G4LBuEj95EnA0tucUSAOBNfhfKnI1rEBBPdbc=;
- b=k+d8UWJwHJyj6W2qu/G3H9e7rZXQI5ZtRrL16nyG1sn+rLtGhy+Eu7E5
- Phrnyky3bD9ySzGL5HtWg+GLzRw5PUSB8Mb7x5PjNXU6H/so9rZpXFwZT
- bYjb7zmBsVr5tnQ9B8LawGB1QkxQcwGjUmmRnPXb5WKcT8WCIxYWnL1f6
- 4WYoUhlSSLEhNbLyuQl74mTvh8Lztv+6vw8wDGMHk9pXh9kbaoSVhY8HG
- uRGc6QebeHUVixmaNzUusrZ8MR3XP0cSfNtZQhm2xWFvayJty2X/Zm8+p
- GQfvn2hgToiBg1jYjbnRBE2vV0tTeZP0/fDiLy7AnCQ/eizQPCdauWdFE Q==;
-X-CSE-ConnectionGUID: /rijgTEhSZavws7aZLXXSw==
-X-CSE-MsgGUID: dc3AMfoTQ8eya+3vFxl+EQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="20565003"
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="20565003"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2024 12:04:08 -0700
-X-CSE-ConnectionGUID: 6BGczYvMQZOk0Bl2ZygGag==
-X-CSE-MsgGUID: i9K444ZKRr2deviIKWhP9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="54346791"
-Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
- by orviesa002.jf.intel.com with ESMTP; 19 Apr 2024 12:04:09 -0700
-From: dongwon.kim@intel.com
-To: qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com,
-	berrange@redhat.com,
-	philmd@linaro.org
-Subject: [PATCH v8 6/6] ui/console: move QemuDmaBuf struct def to dmabuf.c
-Date: Fri, 19 Apr 2024 11:59:52 -0700
-Message-Id: <20240419185952.991930-7-dongwon.kim@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240419185952.991930-1-dongwon.kim@intel.com>
-References: <20240419185952.991930-1-dongwon.kim@intel.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rxuHA-0004q4-Lp
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 15:52:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=ORrWk6OZBCnrD3OWSoi1f9pNjLtL8H1wx40T95LWl4Q=; b=1goBwYmGmEpxUAOzeAAyVaSUGS
+ Hclesiz4r7Owp2ndb0RGXzA1cqUzIz6Xv7OvRmngvJhVGEMymV/Hw+xB/gCThGtHNzXkqyQO/O6R8
+ u9/8J7T5AnQsYScfip8dZYBqarPbyKZQhNUZkilENZ6IGHT3vf95/Tu2jUg2C1Yg9kFCY38RsV6qN
+ m9IAS2DViTtdXWmI5ePPOTfrC1ABOjb+a7ppxzKazHtEz2+YIecw4xTVkmgwyrEayHSKa0rWGwIrp
+ 93HxbZu3cTwfIdkfoiRXkaP+m/Bss3RYguwolwbjmjzzVbDkNATJPod7q2eU93WBfw6jzA4+g7q5r
+ lxe3oJqZMIQw3qMYoOpYdt51Bmim9YG069Pq1RDYLkzJ/IayDkNMXgkPpjtxTt7aLUaG5eRYup9nQ
+ ZlYLs7D250HFIA4LwKlY3gosea2scIi3zWIjPK95/KY1by//EGLjowc9VKPz1KSjSbinWNEDgDh0H
+ KV5rr8aW2RhOQby4AJnrNwZc8C8owrrtA3lC/aCe6B9f1pmFWsHA20RY7VDWOoOlKAe49fU9jRumY
+ 8qBN2+CJD+9/pAEXa9wFKyGG39I7faeulnxhz76BwRm0IzRMoD8rzW+MMgOhzUlVtZmhmcHqY2Oxa
+ ARWvqs6qE1PlC//19Wb9eUIWVqr2ouYMd0MmF5qnE=;
+Received: from [2a00:23c4:8bb4:4000:a36d:d178:601a:c356]
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1rxuG3-00050p-7H; Fri, 19 Apr 2024 20:50:55 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: pbonzini@redhat.com, richard.henderson@linaro.org, eduardo@habkost.net,
+ qemu-devel@nongnu.org
+Date: Fri, 19 Apr 2024 20:51:47 +0100
+Message-Id: <20240419195147.434894-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.10;
- envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -66
-X-Spam_score: -6.7
-X-Spam_bar: ------
-X-Spam_report: (-6.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.313,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:a36d:d178:601a:c356
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH] target/i386/translate.c: always write 32-bits for SGDT and
+ SIDT
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,82 +76,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Dongwon Kim <dongwon.kim@intel.com>
+The various Intel CPU manuals claim that SGDT and SIDT can write either 24-bits
+or 32-bits depending upon the operand size, but this is incorrect. Not only do
+the Intel CPU manuals give contradictory information between processor
+revisions, but this information doesn't even match real-life behaviour.
 
-To complete privatizing process of QemuDmaBuf, QemuDmaBuf struct def
-is moved to dmabuf.c
+In fact, tests on real hardware show that the CPU always writes 32-bits for SGDT
+and SIDT, and this behaviour is required for at least OS/2 Warp and WFW 3.11 with
+Win32s to function correctly. Remove the masking applied due to the operand size
+for SGDT and SIDT so that the TCG behaviour matches the behaviour on real
+hardware.
 
-Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/2198
+
+--
+MCA: Whilst I don't have a copy of OS/2 Warp handy, I've confirmed that this
+patch fixes the issue in WFW 3.11 with Win32s. For more technical information I
+highly recommend the excellent write-up at
+https://www.os2museum.com/wp/sgdtsidt-fiction-and-reality/.
 ---
- include/ui/dmabuf.h | 19 +------------------
- ui/dmabuf.c         | 19 +++++++++++++++++++
- 2 files changed, 20 insertions(+), 18 deletions(-)
+ target/i386/tcg/translate.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/include/ui/dmabuf.h b/include/ui/dmabuf.h
-index e332958c39..0723846a3a 100644
---- a/include/ui/dmabuf.h
-+++ b/include/ui/dmabuf.h
-@@ -27,24 +27,7 @@
- #ifndef DMABUF_H
- #define DMABUF_H
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 76a42c679c..3026eb6774 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -5846,9 +5846,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             gen_op_st_v(s, MO_16, s->T0, s->A0);
+             gen_add_A0_im(s, 2);
+             tcg_gen_ld_tl(s->T0, tcg_env, offsetof(CPUX86State, gdt.base));
+-            if (dflag == MO_16) {
+-                tcg_gen_andi_tl(s->T0, s->T0, 0xffffff);
+-            }
++            /*
++             * NB: Despite claims to the contrary in Intel CPU documentation,
++             *     all 32-bits are written regardless of operand size.
++             */
+             gen_op_st_v(s, CODE64(s) + MO_32, s->T0, s->A0);
+             break;
  
--typedef struct QemuDmaBuf {
--    int       fd;
--    uint32_t  width;
--    uint32_t  height;
--    uint32_t  stride;
--    uint32_t  fourcc;
--    uint64_t  modifier;
--    uint32_t  texture;
--    uint32_t  x;
--    uint32_t  y;
--    uint32_t  backing_width;
--    uint32_t  backing_height;
--    bool      y0_top;
--    void      *sync;
--    int       fence_fd;
--    bool      allow_fences;
--    bool      draw_submitted;
--} QemuDmaBuf;
-+typedef struct QemuDmaBuf QemuDmaBuf;
+@@ -5901,9 +5902,10 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
+             gen_op_st_v(s, MO_16, s->T0, s->A0);
+             gen_add_A0_im(s, 2);
+             tcg_gen_ld_tl(s->T0, tcg_env, offsetof(CPUX86State, idt.base));
+-            if (dflag == MO_16) {
+-                tcg_gen_andi_tl(s->T0, s->T0, 0xffffff);
+-            }
++            /*
++             * NB: Despite claims to the contrary in Intel CPU documentation,
++             *     all 32-bits are written regardless of operand size.
++             */
+             gen_op_st_v(s, CODE64(s) + MO_32, s->T0, s->A0);
+             break;
  
- QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
-                                    uint32_t stride, uint32_t x,
-diff --git a/ui/dmabuf.c b/ui/dmabuf.c
-index ef3b07956e..7a919160dc 100644
---- a/ui/dmabuf.c
-+++ b/ui/dmabuf.c
-@@ -27,6 +27,25 @@
- #include "qemu/osdep.h"
- #include "ui/dmabuf.h"
- 
-+struct QemuDmaBuf {
-+    int       fd;
-+    uint32_t  width;
-+    uint32_t  height;
-+    uint32_t  stride;
-+    uint32_t  fourcc;
-+    uint64_t  modifier;
-+    uint32_t  texture;
-+    uint32_t  x;
-+    uint32_t  y;
-+    uint32_t  backing_width;
-+    uint32_t  backing_height;
-+    bool      y0_top;
-+    void      *sync;
-+    int       fence_fd;
-+    bool      allow_fences;
-+    bool      draw_submitted;
-+};
-+
- QemuDmaBuf *qemu_dmabuf_new(uint32_t width, uint32_t height,
-                             uint32_t stride, uint32_t x,
-                             uint32_t y, uint32_t backing_width,
 -- 
-2.34.1
+2.39.2
 
 
