@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92F78AA7B2
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DB68AA7B8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1N-0007Se-6t; Fri, 19 Apr 2024 00:38:45 -0400
+	id 1rxg1N-0007Tt-FX; Fri, 19 Apr 2024 00:38:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1A-0007P2-9P
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1A-0007PO-Ko
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg17-00049g-UF
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg18-00049w-0V
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501508;
+ s=mimecast20190719; t=1713501509;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=tbx+fvhdbNSPrwljvaeH4rMdFjLjZX/GTuVJYLukLjo=;
- b=Ln8/pfuDGf/OgaCglUjAVuSwhWF9DZQbbyt8MjZH1p3V+P4mo5rl2vi26hpmZIEhxyN93i
- 9YCbvqAWlibTkAKWGm1j5KvTWzO9usH4BdR1O2jwOAn1CAnAb5AsXDJg4nw2di0vKrS8KD
- HSw7WSWbNc94s3ChLU7x3RYEvM8w/nc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-FLHQZqTUPCie_RCVCD2E4g-1; Fri, 19 Apr 2024 00:38:26 -0400
-X-MC-Unique: FLHQZqTUPCie_RCVCD2E4g-1
+ bh=3l3KznzN5IC/sqY7udLFwiu1omnR5f9e149VssCm8M4=;
+ b=JmWjrzpmFhYnSTyIligfZt0CudonvyYQejTacTfW7pmDwy+37PG4fBx1E1Ka7OOPX4zRil
+ fUmNSz0bvzWwaeQNzEo8oMRlSHWZiBYBuE0YYMG0wXMCprfvjkLjRFA4gNj71tPD9WlD3x
+ iGML9YHJlf9w0nOsrey3Mj697J41h4s=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-tUZYw9Z_MqylqBWHWXXE0A-1; Fri,
+ 19 Apr 2024 00:38:27 -0400
+X-MC-Unique: tUZYw9Z_MqylqBWHWXXE0A-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1ABD9811001;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CE9DE286A9D6;
  Fri, 19 Apr 2024 04:38:26 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 69CA140C1233;
- Fri, 19 Apr 2024 04:38:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 2BC664011FF7;
+ Fri, 19 Apr 2024 04:38:26 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -48,15 +48,15 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 06/27] docs/qapi-domain: add QAPI xref roles
-Date: Fri, 19 Apr 2024 00:37:54 -0400
-Message-ID: <20240419043820.178731-7-jsnow@redhat.com>
+Subject: [PATCH 07/27] docs/qapi-domain: add qapi:command directive
+Date: Fri, 19 Apr 2024 00:37:55 -0400
+Message-ID: <20240419043820.178731-8-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -80,153 +80,245 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add domain-specific cross-reference syntax. As of this commit, that
-means new :qapi:mod:`block-core` and :qapi:obj:`block-core` referencing
-syntax.
+This commit adds a generic QAPIObject class for use in documenting
+various QAPI entities in the Sphinx ecosystem.
 
-:mod: will only find modules, but :obj: will find anything registered to
-the QAPI domain. (In forthcoming commits, this means commands, events,
-enums, etc.)
+It also adds a stubbed version of QAPICommand that utilizes the
+QAPIObject class; along with the qapi:command directive, the
+:qapi:cmd: cross-reference role, and the "command" object type in the
+QAPI object registry.
 
-Creating the cross-references is powered by the QAPIXRefRole class;
-resolving them is handled by QAPIDomain.resolve_xref().
+They don't do anything *particularly* interesting yet, but that will
+come in forthcoming commits.
 
-QAPIXrefRole is copied almost verbatim from Sphinx's own
-PyXrefRole. PyXrefRole (and QAPIXrefRole) adds two features over the
-base class:
+Note: some versions of mypy get a little confused over the difference
+between class and instance variables; because sphinx's ObjectDescription
+does not declare option_spec as a ClassVar (even though it's obvious
+that it is), mypy may produce this error:
 
-(1) Creating a cross-reference with e.g. :py:class:`~class.name`
-instructs sphinx to omit the fully qualified parts of the resolved name
-from the actual link text. This may be useful in the future if we add
-namespaces to QAPI documentation, e.g. :qapi:cmd:`~qsd.blockdev-backup`
-could link to the QSD-specific documentation for blockdev-backup while
-omitting that prefix from the link text.
+qapi-domain.py:125: error: Cannot override instance variable (previously
+declared on base class "ObjectDescription") with class variable [misc]
 
-(2) Prefixing the link target with a "." changes the search behavior to
-prefer locally-scoped items first.
-
-I think both of these are worth keeping to help manage future namespace
-issues between QEMU, QSD and QGA; but it's possible it's extraneous. It
-may possibly be worth keeping just to keep feature parity with Sphinx's
-other domains; e.g. "principle of least surprise". Dunno.
+I can't control that; so silence the error with a pragma.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/qapi/index.rst        |  4 +++
- docs/sphinx/qapi-domain.py | 67 +++++++++++++++++++++++++++++++++++++-
- 2 files changed, 70 insertions(+), 1 deletion(-)
+ docs/qapi/index.rst        |  34 ++++++++++
+ docs/sphinx/qapi-domain.py | 132 ++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 165 insertions(+), 1 deletion(-)
 
 diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index 39ad405fd93..e2223d5f363 100644
+index e2223d5f363..5516f762a24 100644
 --- a/docs/qapi/index.rst
 +++ b/docs/qapi/index.rst
-@@ -47,3 +47,7 @@ cross-referencing syntax. Here's a link to `bar-module`, even though
- the actual output of that directive was suppressed. Here's a link to
- `block-core`. A link to ```foo-module``` won't resolve because of the
- ``:no-index:`` option we used for that directive.
+@@ -51,3 +51,37 @@ the actual output of that directive was suppressed. Here's a link to
+ Explicit cross-referencing syntax for QAPI modules is available with
+ ``:qapi:mod:`foo```, here's a link to :qapi:mod:`bar-module` and one to
+ :qapi:mod:`block-core`.
 +
-+Explicit cross-referencing syntax for QAPI modules is available with
-+``:qapi:mod:`foo```, here's a link to :qapi:mod:`bar-module` and one to
-+:qapi:mod:`block-core`.
++
++.. qapi:command:: example-command
++
++   This directive creates a QAPI command named `example-command` that
++   appears in both the `genindex` and the `qapi-index`. As of this
++   commit, there aren't any special arguments or options you can give to
++   this directive, it merely parses its content block and handles the
++   TOC/index/xref book-keeping.
++
++   Unlike the QAPI module directive, this directive *does* add a TOC
++   entry by default.
++
++   This object can be referenced in *quite a few ways*:
++
++   * ```example-command``` => `example-command`
++   * ```block-core.example-command``` => `block-core.example-command`
++   * ``:qapi:cmd:`example-command``` => :qapi:cmd:`example-command`
++   * ``:qapi:cmd:`block-core.example-command``` => :qapi:cmd:`block-core.example-command`
++   * ``:qapi:cmd:`~example-command``` => :qapi:cmd:`~example-command`
++   * ``:qapi:cmd:`~block-core.example-command``` => :qapi:cmd:`~block-core.example-command`
++   * ``:qapi:obj:`example-command``` => :qapi:obj:`example-command`
++   * ``:qapi:obj:`block-core.example-command``` => :qapi:obj:`block-core.example-command`
++   * ``:qapi:obj:`~example-command``` => :qapi:obj:`~example-command`
++   * ``:qapi:obj:`~block-core.example-command``` => :qapi:obj:`~block-core.example-command`
++
++   As of Sphinx v7.2.6, there are a few sphinx-standard options this
++   directive has:
++
++   * ``:no-index:`` or ``:noindex:`` Don't add to the `genindex` nor
++     the `qapi-index`; do not register for cross-references.
++   * ``:no-index-entry:`` or ``:noindexentry:``
++   * ``:no-contents-entry:`` or ``:nocontentsentry:``
++   * ``:no-typesetting:``
 diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
-index 4758451ff0e..d28ac1cb9d8 100644
+index d28ac1cb9d8..2c1e60290d9 100644
 --- a/docs/sphinx/qapi-domain.py
 +++ b/docs/sphinx/qapi-domain.py
-@@ -29,6 +29,7 @@
-     ObjType,
- )
- from sphinx.locale import _, __
-+from sphinx.roles import XRefRole
- from sphinx.util import logging
- from sphinx.util.docutils import SphinxDirective, switch_source_input
- from sphinx.util.nodes import (
-@@ -56,6 +57,34 @@ class ObjectEntry(NamedTuple):
-     aliased: bool
+@@ -21,7 +21,8 @@
+ from docutils.parsers.rst import directives
+ 
+ from sphinx import addnodes
+-from sphinx.addnodes import pending_xref
++from sphinx.addnodes import desc_signature, pending_xref
++from sphinx.directives import ObjectDescription
+ from sphinx.domains import (
+     Domain,
+     Index,
+@@ -108,6 +109,132 @@ def _nested_parse(directive: SphinxDirective, content_node: Element) -> None:
+             nested_parse_with_titles(directive.state, directive.content, content_node)
  
  
-+class QAPIXRefRole(XRefRole):
-+    def process_link(
-+        self,
-+        env: BuildEnvironment,
-+        refnode: Element,
-+        has_explicit_title: bool,
-+        title: str,
-+        target: str,
-+    ) -> tuple[str, str]:
-+        refnode["qapi:module"] = env.ref_context.get("qapi:module")
-+        if not has_explicit_title:
-+            title = title.lstrip(".")  # only has a meaning for the target
-+            target = target.lstrip("~")  # only has a meaning for the title
-+            # if the first character is a tilde, don't display the module
-+            # parts of the contents
-+            if title[0:1] == "~":
-+                title = title[1:]
-+                dot = title.rfind(".")
-+                if dot != -1:
-+                    title = title[dot + 1 :]
-+        # if the first character is a dot, search more specific namespaces first
-+        # else search builtins first
-+        if target[0:1] == ".":
-+            target = target[1:]
-+            refnode["refspecific"] = True
-+        return title, target
++# Alias for the return of handle_signature(), which is used in several places.
++# (In the Python domain, this is Tuple[str, str] instead.)
++Signature = str
 +
 +
- def _nested_parse(directive: SphinxDirective, content_node: Element) -> None:
++class QAPIObject(ObjectDescription[Signature]):
++    """
++    Description of a generic QAPI object.
++
++    It's not used directly, but is instead subclassed by specific directives.
++    """
++
++    # Inherit some standard options from Sphinx's ObjectDescription
++    option_spec: OptionSpec = ObjectDescription.option_spec.copy()  # type:ignore[misc]
++    option_spec.update(
++        {
++            # Borrowed from the Python domain:
++            "module": directives.unchanged,  # Override contextual module name
++        }
++    )
++
++    def get_signature_prefix(self, sig: str) -> List[nodes.Node]:
++        """Returns a prefix to put before the object name in the signature."""
++        assert self.objtype
++        return [
++            addnodes.desc_sig_keyword("", self.objtype.title()),
++            addnodes.desc_sig_space(),
++        ]
++
++    def get_signature_suffix(self, sig: str) -> list[nodes.Node]:
++        """Returns a suffix to put after the object name in the signature."""
++        return []
++
++    def handle_signature(self, sig: str, signode: desc_signature) -> Signature:
++        """
++        Transform a QAPI definition name into RST nodes.
++
++        This method was originally intended for handling function
++        signatures. In the QAPI domain, however, we only pass the
++        command name as the directive argument and handle everything
++        else in the content body with field lists.
++
++        As such, the only argument here is "sig", which is just the QAPI
++        definition name.
++        """
++        modname = self.options.get("module", self.env.ref_context.get("qapi:module"))
++
++        signode["fullname"] = sig
++        signode["module"] = modname
++        sig_prefix = self.get_signature_prefix(sig)
++        if sig_prefix:
++            signode += addnodes.desc_annotation(str(sig_prefix), "", *sig_prefix)
++        signode += addnodes.desc_name(sig, sig)
++        signode += self.get_signature_suffix(sig)
++
++        return sig
++
++    def _object_hierarchy_parts(self, sig_node: desc_signature) -> Tuple[str, ...]:
++        if "fullname" not in sig_node:
++            return ()
++        modname = sig_node.get("module")
++        fullname = sig_node["fullname"]
++
++        if modname:
++            return (modname, *fullname.split("."))
++        else:
++            return tuple(fullname.split("."))
++
++    def get_index_text(self, modname: str, name: Signature) -> str:
++        """Return the text for the index entry of the object."""
++        # NB this is used for the global index, not the QAPI index.
++        return f"{name} (QMP {self.objtype})"
++
++    def add_target_and_index(
++        self, name: Signature, sig: str, signode: desc_signature
++    ) -> None:
++        # Called by ObjectDescription.run with the result of
++        # handle_signature; name is the return value of handle_signature
++        # where sig is the original argument to handle_signature. In our
++        # case, they're the same for now.
++        assert self.objtype
++
++        modname = self.options.get("module", self.env.ref_context.get("qapi:module"))
++        # Here, sphinx decides to prepend the module name. OK.
++        fullname = (modname + "." if modname else "") + name
++        node_id = make_id(self.env, self.state.document, "", fullname)
++        signode["ids"].append(node_id)
++        self.state.document.note_explicit_target(signode)
++
++        domain = cast(QAPIDomain, self.env.get_domain("qapi"))
++        domain.note_object(fullname, self.objtype, node_id, location=signode)
++
++        if "no-index-entry" not in self.options:
++            indextext = self.get_index_text(modname, name)
++            assert self.indexnode is not None
++            if indextext:
++                self.indexnode["entries"].append(
++                    ("single", indextext, node_id, "", None)
++                )
++
++    def _toc_entry_name(self, sig_node: desc_signature) -> str:
++        # This controls the name in the TOC and on the sidebar.
++
++        # This is the return type of _object_hierarchy_parts().
++        toc_parts = cast(Tuple[str, ...], sig_node.get("_toc_parts", ()))
++        if not toc_parts:
++            return ""
++
++        config = self.env.app.config
++        *parents, name = toc_parts
++        if config.toc_object_entries_show_parents == "domain":
++            return sig_node.get("fullname", name)
++        if config.toc_object_entries_show_parents == "hide":
++            return name
++        if config.toc_object_entries_show_parents == "all":
++            return ".".join(parents + [name])
++        return ""
++
++
++class QAPICommand(QAPIObject):
++    """Description of a QAPI Command."""
++
++    # Nothing unique for now! Changed in later commits O:-)
++    pass
++
++
+ class QAPIModule(SphinxDirective):
      """
-     This helper preserves error parsing context across sphinx versions.
-@@ -234,7 +263,13 @@ class QAPIDomain(Domain):
-         "module": QAPIModule,
+     Directive to mark description of a new module.
+@@ -255,12 +382,14 @@ class QAPIDomain(Domain):
+     # for each object type.
+     object_types: Dict[str, ObjType] = {
+         "module": ObjType(_("module"), "mod", "obj"),
++        "command": ObjType(_("command"), "cmd", "obj"),
      }
  
--    roles = {}
-+    # These are all cross-reference roles; e.g.
-+    # :qapi:cmd:`query-block`. The keys correlate to the names used in
-+    # the object_types table values above.
-+    roles = {
-+        "mod": QAPIXRefRole(),
-+        "obj": QAPIXRefRole(),  # reference *any* type of QAPI object.
-+    }
+     # Each of these provides a ReST directive,
+     # e.g. .. qapi:module:: block-core
+     directives = {
+         "module": QAPIModule,
++        "command": QAPICommand,
+     }
  
-     # Moved into the data property at runtime;
-     # this is the internal index of reference-able objects.
-@@ -363,6 +398,36 @@ def find_obj(
-             matches = [m for m in matches if not m[1].aliased]
-         return matches
+     # These are all cross-reference roles; e.g.
+@@ -268,6 +397,7 @@ class QAPIDomain(Domain):
+     # the object_types table values above.
+     roles = {
+         "mod": QAPIXRefRole(),
++        "cmd": QAPIXRefRole(),
+         "obj": QAPIXRefRole(),  # reference *any* type of QAPI object.
+     }
  
-+    def resolve_xref(
-+        self,
-+        env: BuildEnvironment,
-+        fromdocname: str,
-+        builder: Builder,
-+        type: str,
-+        target: str,
-+        node: pending_xref,
-+        contnode: Element,
-+    ) -> Element | None:
-+        modname = node.get("qapi:module")
-+        matches = self.find_obj(modname, target, type)
-+        multiple_matches = len(matches) > 1
-+
-+        if not matches:
-+            return None
-+        elif multiple_matches:
-+            logger.warning(
-+                __("more than one target found for cross-reference %r: %s"),
-+                target,
-+                ", ".join(match[0] for match in matches),
-+                type="ref",
-+                subtype="qapi",
-+                location=node,
-+            )
-+        name, obj = matches[0]
-+        return make_refnode(
-+            builder, fromdocname, obj.docname, obj.node_id, contnode, name
-+        )
-+
-     def resolve_any_xref(
-         self,
-         env: BuildEnvironment,
 -- 
 2.44.0
 
