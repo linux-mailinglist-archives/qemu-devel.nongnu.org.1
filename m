@@ -2,87 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3D18AB2CD
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C84608AB2E4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:09:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxqgo-0003qx-EJ; Fri, 19 Apr 2024 12:02:14 -0400
+	id 1rxqnd-0003EX-FJ; Fri, 19 Apr 2024 12:09:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqen-0001Hd-Dw
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:10 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqeg-0001Bv-9o
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:08 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-34388753650so1027760f8f.3
- for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 09:00:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713542400; x=1714147200; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8BWAuiO9PeeT7wJXoLX3l8pOkv9yYOvs9jxN8c0Qe4w=;
- b=ia0anlCwjHODhxg/poAUcqpCB6Ld1f+eUuRpJJuz8zv4m5GUg66XzRiOLRdJXXYlXR
- y8fceJioz/Dxf31mh8myQeT5iSxmW9vcLp61JdT9L1Ke4VUz8QqiZI8QYA7zblwBhOSK
- 9baxidZh/r98mDLzNvlAlQ78IYLa9FKULFqfMnqFpGha6CExHm9bY8zzpuw/LhoooOnr
- 04SJvWpbrRO84LjYTJal/mNtGchuu9R3EpSNWtRUq9QzgC3T95y08dqybyOyiClmk1cB
- W6zybA0iFJBvLP+J0yquYAEpS9ozhwKxtgAGjHNOQEMM0nowx4g842WX2eP0R97uHPGS
- sNQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713542400; x=1714147200;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=8BWAuiO9PeeT7wJXoLX3l8pOkv9yYOvs9jxN8c0Qe4w=;
- b=GVJ7MyVQfvepsamaBEtF3FtOufbg065NPl9SeQ9t51b/pPNWBrrNly9NIJdYJxUMHw
- CZkJeMlXX5vMEi5nawZ/ZQ5pYxSkHiENdDeUNcEXxezQWzIElC9CIQTJ9KXixr2cfWrl
- MoErBfzN9u1JMizRrfJovxv295veATUO7t3k9g1kAyFs5zJzngixmdgeeP2bQZSVvQCY
- UF7076k61EMB+z2l1MgklNtfyb5vAv8LtvuohN7rBfLYVtD6DklXmUKW6dPVKFKhER9R
- vtHBTnke+yDDmLEffPlqFTtyjyo98I5kAMTL3OJb3GyPfhM3r7T1NLB2nDBIa4Sg5Z/D
- /UoQ==
+ (Exim 4.90_1) (envelope-from <raphael.poggi@lynxleap.co.uk>)
+ id 1rxqnZ-00030l-IO
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:09:13 -0400
+Received: from 17.mo583.mail-out.ovh.net ([46.105.56.132])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <raphael.poggi@lynxleap.co.uk>)
+ id 1rxqnX-0002fC-1f
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:09:13 -0400
+Received: from director1.ghost.mail-out.ovh.net (unknown [10.109.139.129])
+ by mo583.mail-out.ovh.net (Postfix) with ESMTP id 4VLfhz3gldz1RyX
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 16:09:07 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-npzmc (unknown [10.110.113.115])
+ by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 176BC1FD4F
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 16:09:07 +0000 (UTC)
+Received: from lynxleap.co.uk ([37.59.142.97])
+ by ghost-submission-6684bf9d7b-npzmc with ESMTPSA
+ id u5MnASOXImZjyhwA1Q5sOg
+ (envelope-from <raphael.poggi@lynxleap.co.uk>)
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 16:09:07 +0000
+Authentication-Results: garm.ovh; auth=pass
+ (GARM-97G0027b9ce061-cc7d-41be-92c0-9440cbb3cda3,
+ F65BB45773F307CC52C61DE7E0999B19AE952020)
+ smtp.auth=raphael.poggi@lynxleap.co.uk
+X-OVh-ClientIp: 209.85.218.49
+Received: by mail-ej1-f49.google.com with SMTP id
+ a640c23a62f3a-a4702457ccbso247906366b.3
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 09:09:06 -0700 (PDT)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUwj2tgRBBH6FsRyCC/9pe+bNhDItxEXC6QKEdA6GO44NPpCMDRAbHhP2f1dOSVpRLcVAZa9dm78NEyQJK7rArjtZ32Hgw=
-X-Gm-Message-State: AOJu0YyJ0SX063NARDg4fBmduSTB1sEw6b5OpW7k5Ar6XiiHogX+szPJ
- SZ6IgRLNFpMIsCFWCKvgwEIbN/EDzAVytd2kw52O2xqXMDivYwIS5wH1NGfy6W2XhblUL8yYXM5
- y
-X-Google-Smtp-Source: AGHT+IHL2b232p3lFzAWlqwCwOnXVcHu34vFIkav0qsljUhtn7NkN1WBCwMvjAVu9roxBgpBo+CyLQ==
-X-Received: by 2002:a5d:69c1:0:b0:343:ef1b:9f69 with SMTP id
- s1-20020a5d69c1000000b00343ef1b9f69mr1972749wrw.43.1713542400612; 
- Fri, 19 Apr 2024 09:00:00 -0700 (PDT)
-Received: from localhost.localdomain ([2.221.137.100])
- by smtp.gmail.com with ESMTPSA id
- p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.09.00.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Apr 2024 09:00:00 -0700 (PDT)
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-To: peter.maydell@linaro.org,
-	richard.henderson@linaro.org
-Cc: philmd@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org,
- Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v2 21/22] hw/arm/virt: Move virt_flash_create() to
- machvirt_init()
-Date: Fri, 19 Apr 2024 16:57:09 +0100
-Message-ID: <20240419155709.318866-23-jean-philippe@linaro.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240419155709.318866-2-jean-philippe@linaro.org>
-References: <20240419155709.318866-2-jean-philippe@linaro.org>
+ AJvYcCWSTDWpGMvAdi5d1yv1ePCtKZmQTG1wC+eacUWMuEb5Gs6Txa85sGC1EqRVM3XCATt1LgyMNFIq8z883sv2+e2Vng9SQqU=
+X-Gm-Message-State: AOJu0YwEYjb3AJK3OHXI32QAH7kpoPsrJYuUNXwLmMmSQh/WN5zMcFpW
+ F1p1euj4UD5TCQu+vNCWqtgOZdEEVNSK3Qe/H6GsYGWAvbs0udvTNKW658koyfMEjDUd0SjMhM7
+ 2hGbmZiSNWKQlP2UBx1o9DbodElc=
+X-Google-Smtp-Source: AGHT+IEjLk8uJCnZMUkp56b4bRqHfQkioa045ntneEf5fVbhmBQGsAODH29ar9iNnFrwKJooKwvpfnQH9BiVTc4/ISk=
+X-Received: by 2002:a17:906:7056:b0:a52:46ea:8b61 with SMTP id
+ r22-20020a170906705600b00a5246ea8b61mr1563453ejj.53.1713542946184; Fri, 19
+ Apr 2024 09:09:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20240418191602.2017-1-raphael.poggi@lynxleap.co.uk>
+ <5b8ce05b-62c6-4362-aa16-a9e845eb4df7@linaro.org>
+ <CACqcpZCubN0Bnmht03TRCWdtYUd4aOpitcx31J+NiMEe2vWhSA@mail.gmail.com>
+ <CAFEAcA9wcaptrL5LHWah0MeKP1CV-WbfwsS65kibLwJ4TpvjTg@mail.gmail.com>
+In-Reply-To: <CAFEAcA9wcaptrL5LHWah0MeKP1CV-WbfwsS65kibLwJ4TpvjTg@mail.gmail.com>
+From: Raphael Poggi <raphael.poggi@lynxleap.co.uk>
+Date: Fri, 19 Apr 2024 17:08:33 +0100
+X-Gmail-Original-Message-ID: <CACqcpZDv8gjKhMygmAWkyfYqPH-NVz4RpPb8Q0tBTege_Gro4Q@mail.gmail.com>
+Message-ID: <CACqcpZDv8gjKhMygmAWkyfYqPH-NVz4RpPb8Q0tBTege_Gro4Q@mail.gmail.com>
+Subject: Re: [PATCH] hw/core/clock: always iterate through childs in
+ clock_propagate_period
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: Raphael Poggi <raphael.poggi@lynxleap.co.uk>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, luc@lmichel.fr, damien.hedde@dahe.fr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Ovh-Tracer-Id: 10890548327346806399
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrudekvddguddttdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpeggfhgjhfffkffuvfevtgfgsehtqhertddttdejnecuhfhrohhmpeftrghphhgrvghlucfrohhgghhiuceorhgrphhhrggvlhdrphhoghhgiheslhihnhiglhgvrghprdgtohdruhhkqeenucggtffrrghtthgvrhhnpedtheeivdehvddugfejueffhfegkedthfekieetvefhgeefleejvefggeefvdevffenucfkphepuddvjedrtddrtddruddpvddtledrkeehrddvudekrdegledpfeejrdehledrudegvddrleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpehrrghphhgrvghlrdhpohhgghhisehlhihngihlvggrphdrtghordhukhdpnhgspghrtghpthhtohepuddprhgtphhtthhopehqvghmuhdquggvvhgvlhesnhhonhhgnhhurdhorhhgpdfovfetjfhoshhtpehmohehkeefpdhmohguvgepshhmthhpohhuth
+Received-SPF: pass client-ip=46.105.56.132;
+ envelope-from=raphael.poggi@lynxleap.co.uk; helo=17.mo583.mail-out.ovh.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,42 +91,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For confidential VMs we'll want to skip flash device creation.
-Unfortunately, in virt_instance_init() the machine->cgs member has not
-yet been initialized, so we cannot check whether confidential guest is
-enabled. Move virt_flash_create() to machvirt_init(), where we can
-access the machine->cgs member.
+Hi Peter,
 
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
----
-v1->v2: new
----
- hw/arm/virt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Le ven. 19 avr. 2024 =C3=A0 16:08, Peter Maydell <peter.maydell@linaro.org>=
+ a =C3=A9crit :
+>
+> On Thu, 18 Apr 2024 at 21:39, Raphael Poggi
+> <raphael.poggi@lynxleap.co.uk> wrote:
+> >
+> > Hi Philippe,
+> >
+> > Le jeu. 18 avr. 2024 =C3=A0 20:43, Philippe Mathieu-Daud=C3=A9
+> > <philmd@linaro.org> a =C3=A9crit :
+> > >
+> > > Hi Raphael,
+> > >
+> > > On 18/4/24 21:16, Raphael Poggi wrote:
+> > > > When dealing with few clocks depending with each others, sometimes
+> > > > we might only want to update the multiplier/diviser on a specific c=
+lock
+> > > > (cf clockB in drawing below) and call "clock_propagate(clockA)" to
+> > > > update the childs period according to the potential new multiplier/=
+diviser values.
+> > > >
+> > > > +--------+     +--------+      +--------+
+> > > > | clockA | --> | clockB |  --> | clockC |
+> > > > +--------+     +--------+      +--------+
+> > > >
+> > > > The actual code would not allow that because, since we cannot call
+> > > > "clock_propagate" directly on a child, it would exit on the
+> > > > first child has the period has not changed for clockB, only clockC =
+is
+> > >
+> > > Typo "as the period has not changed"?
+> >
+> > That's a typo indeed, thanks!
+> >
+> > >
+> > > Why can't you call clock_propagate() on a child?
+> >
+> > There is an assert "assert(clk->source =3D=3D NULL);" in clock_propagat=
+e().
+> > If I am not wrong, clk->source is set when the clock has a parent.
+>
+> I think that assertion is probably there because we didn't
+> originally have the idea of a clock having a multiplier/divider
+> setting. So the idea was that calling clock_propagate() on a
+> clock with a parent would always be wrong, because the only
+> reason for its period to change would be if the parent had
+> changed, and if the parent changes then clock_propagate()
+> should be called on the parent.
+>
+> We added mul/div later, and we (I) didn't think through all
+> the consequences. If you change the mul/div settings on
+> clockB in this example then you need to call clock_propagate()
+> on it, so we should remove that assert(). Then when you change
+> the mul/div on clockB you can directly clock_propagate(clockB),
+> and I don't think you need this patch at that point.
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index eca9a96b5a..bed19d0b79 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -2071,6 +2071,8 @@ static void machvirt_init(MachineState *machine)
-     unsigned int smp_cpus = machine->smp.cpus;
-     unsigned int max_cpus = machine->smp.max_cpus;
- 
-+    virt_flash_create(vms);
-+
-     possible_cpus = mc->possible_cpu_arch_ids(machine);
- 
-     /*
-@@ -3229,8 +3231,6 @@ static void virt_instance_init(Object *obj)
- 
-     vms->irqmap = a15irqmap;
- 
--    virt_flash_create(vms);
--
-     vms->oem_id = g_strndup(ACPI_BUILD_APPNAME6, 6);
-     vms->oem_table_id = g_strndup(ACPI_BUILD_APPNAME8, 8);
- }
--- 
-2.44.0
+Alright, that makes sense, is that OK if I send a patch removing the assert=
+ ?
 
+Thanks,
+>
+> thanks
+> -- PMM
 
