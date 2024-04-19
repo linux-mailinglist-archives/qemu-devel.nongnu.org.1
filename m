@@ -2,95 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C86118AB4B1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 20:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B098AB4FD
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 20:18:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxsYh-0002EG-SM; Fri, 19 Apr 2024 14:01:59 -0400
+	id 1rxsnt-0007ir-Kb; Fri, 19 Apr 2024 14:17:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rxsXB-0001Un-7l
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 14:00:26 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rxsnp-0007iK-OU
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 14:17:37 -0400
+Received: from mail-mw2nam04on2120.outbound.protection.outlook.com
+ ([40.107.101.120] helo=NAM04-MW2-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rxsWv-0008RN-1F
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 14:00:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=8H00RKYrD7GHuBFs3C5JTE5gBpRbC5sKoFu7ikfj1Uk=; b=EnWpC8keQmqz+v5VOcvIytZZrA
- 2Ko8v+JWXceJSsinKFZzMJHlWIoHg4wvzjgwnM9/Tp5dbTMvpnstWlMIh1Ri0Fuw7672MrWEeLTp+
- pgajrGHCBUhFT/n8Ne3KCfw6oBZ/RQHQW7aOlvB5+DIlI31r+PUfOaQTgrHBjdFgsF3Y76/5UvBnW
- zPq8BoaH7hA50njenPFRG7t+1mkzR9lPzSDlOtLeIDu9OSXHuCrnceKgPVuZ2q1dwodlygBA04HwT
- +Zp7YQo4aOQqOrHQjkVINBr2NvbLkSXEPN+m6vVeOJ/53VlEThyJHn6k7MR/ZNP9gnQq5Qx10UTKr
- ay13KKH+NAgG5+b9FEDCNaI4ra7s3TzpmxmlznHfUEeOVFmO5ULRfD99aURddKGnsM1bi4V8JTUaZ
- Z7F8/q7ZAaNNucVsyUgMbFQ8+PcGriiSA92xkGH9EfXkDuU/sDYqbgieH60nszOjeFDSLaESGtn6I
- bjZDSNJtiME6UWagY9/2saaVSVW4709JrdqVf8TgSCbbuTvyuwm8Z9N1dYv0KhLLDtldX1nT0nRfF
- zdvPsq8t0Kj7qrW/19iGWVa2JcXcKIJEf0xUCOLSyHrqUhhM34cDv2yP0jJfeGLrgpVkmr7aIU7E3
- S8b7NhNGd5NRJLqpOS8EzC+r4CajCLM2u/rEGiWl4=;
-Received: from [2a00:23c4:8bb4:4000:a36d:d178:601a:c356]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1rxsVp-0003sJ-A9; Fri, 19 Apr 2024 18:59:05 +0100
-Message-ID: <46d1e7b8-fb98-4f48-92be-f55085d3da72@ilande.co.uk>
-Date: Fri, 19 Apr 2024 18:59:57 +0100
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1rxsnl-0004iU-AU
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 14:17:35 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=APJRp6V1YIp/LHsLQFwRzws5IuI+Z8+QR/r867bEfIqa9D0iOgnQylkUQeN6Ypk5P1eeCqMxXFOVdARpsCCXVaOmlcy/Af+HHrtXPHl5ixrpjTeHztm+u/VFFdc5jtQqzJOe0MKpd1Im09op62ekF/UQwD63DN/3CgBzWU8RGZVRO4WBFS4rMbkwm7mD1DMVdKx7qdXDTOabjxL2hHCBXbuvQiwwAMvhW3LlGfxCsVspiMRXt9m3Yzkw4lP4EPhJp73zEgc1o5v1sE5l/tjA+3YZ8TsBOQ0bKgv9vtdCzZ1YjCk9imN3EzeNnbpiEMD5VN9D4K1L0TZjqTNtQzWelQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9QSUq8fEngG2ytREEJvBapmEPDGy6fjOpqznaiQhMGI=;
+ b=QoMlTG54s0a0bdmiO3b0zq4AH2UtaraPVGp7TnHAqNHXIzbSetvpya11xZLWg4yu5eSUAW1wBFop6LHRN++iW+f1CJYrlbLkAGQSF0u2nYBc3KHwxjgkmBn/ynPEugqNWA6cywFOF/lK4tAnQLSL9TbDb8bkzQ+RrHKkauZX+xlLlGLgV4oUfSm2L7arbTSDJvsNpoVlwUi9306EmCOjz/foUnKz/x1tHEm2ytDU0Vf+HSmvZE4SMRqYLbdLPXLLvrPT9BBnydC2ATAvpwKWV1S5DlgaWLwQ6nNsWrM0E2IrC+M0916BBGSizabi7lp3IG4wTuBnQQtE7/yh6nrl1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9QSUq8fEngG2ytREEJvBapmEPDGy6fjOpqznaiQhMGI=;
+ b=oAiGEsuau/maWBEXEuiVDOaQcBYctqq6dI/+FKfhwgTESjfoaZ4kjslz7F+nVIIKcUXRhCCh4e7tomgIhbuQmn5zUpb7U1sq5bRHkuARvitXh8upJS82QVEQ2+HZTastoEv+xmGXatn6wkoSafuoneCN9bSSgpXh2Z/AqD6RLJI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by SA1PR17MB4691.namprd17.prod.outlook.com (2603:10b6:806:19a::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.43; Fri, 19 Apr
+ 2024 18:12:24 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8%4]) with mapi id 15.20.7472.042; Fri, 19 Apr 2024
+ 18:12:24 +0000
+Date: Fri, 19 Apr 2024 14:12:16 -0400
+From: Gregory Price <gregory.price@memverge.com>
+To: nifan.cxl@gmail.com
+Cc: qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
+ linux-cxl@vger.kernel.org, ira.weiny@intel.com,
+ dan.j.williams@intel.com, a.manzanares@samsung.com,
+ dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
+ Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v7 08/12] hw/cxl/cxl-mailbox-utils: Add mailbox commands
+ to support add/release dynamic capacity response
+Message-ID: <ZiK0ADOsUMtX1GAK@memverge.com>
+References: <20240418232902.583744-1-fan.ni@samsung.com>
+ <20240418232902.583744-9-fan.ni@samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240418232902.583744-9-fan.ni@samsung.com>
+X-ClientProxiedBy: BYAPR08CA0049.namprd08.prod.outlook.com
+ (2603:10b6:a03:117::26) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Markus Armbruster <armbru@redhat.com>
-References: <20240419084812.504779-1-thuth@redhat.com>
- <20240419084812.504779-4-thuth@redhat.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
- xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
- 3JzBTbtd4JfFcSupo6MNNOrCzdCbCjZ64ik8ycaUOSzK2tKbeQLEXzXoaDL1Y7vuVO7nL9bG
- E5Ru3wkhCFc7SkoypIoAUqz8EtiB6T89/D9TDEyjdXUacc53R5gu8wEWiMg5MQQuGwzbQy9n
- PFI+mXC7AaEUqBVc2lBQVpAYXkN0EyqNNT12UfDLdxaxaFpUAE2pCa2LTyo5vn5hEW+i3VdN
- PkmjyPvL6DdY03fvC01PyY8zaw+UI94QqjlrDisHpUH40IUPpC/NB0LwzL2aQOMkzT2NABEB
- AAHNME1hcmsgQ2F2ZS1BeWxhbmQgPG1hcmsuY2F2ZS1heWxhbmRAaWxhbmRlLmNvLnVrPsLA
- eAQTAQIAIgUCVAm7PAIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQW8LFb64PMh9f
- NAgAuc3ObOEY8NbZko72AGrg2tWKdybcMVITxmcor4hb9155o/OWcA4IDbeATR6cfiDL/oxU
- mcmtXVgPqOwtW3NYAKr5g/FrZZ3uluQ2mtNYAyTFeALy8YF7N3yhs7LOcpbFP7tEbkSzoXNG
- z8iYMiYtKwttt40WaheWuRs0ZOLbs6yoczZBDhna3Nj0LA3GpeJKlaV03O4umjKJgACP1c/q
- T2Pkg+FCBHHFP454+waqojHp4OCBo6HyK+8I4wJRa9Z0EFqXIu8lTDYoggeX0Xd6bWeCFHK3
- DhD0/Xi/kegSW33unsp8oVcM4kcFxTkpBgj39dB4KwAUznhTJR0zUHf63M7ATQRUCbs8AQgA
- y7kyevA4bpetM/EjtuqQX4U05MBhEz/2SFkX6IaGtTG2NNw5wbcAfhOIuNNBYbw6ExuaJ3um
- 2uLseHnudmvN4VSJ5Hfbd8rhqoMmmO71szgT/ZD9MEe2KHzBdmhmhxJdp+zQNivy215j6H27
- 14mbC2dia7ktwP1rxPIX1OOfQwPuqlkmYPuVwZP19S4EYnCELOrnJ0m56tZLn5Zj+1jZX9Co
- YbNLMa28qsktYJ4oU4jtn6V79H+/zpERZAHmH40IRXdR3hA+Ye7iC/ZpWzT2VSDlPbGY9Yja
- Sp7w2347L5G+LLbAfaVoejHlfy/msPeehUcuKjAdBLoEhSPYzzdvEQARAQABwsBfBBgBAgAJ
- BQJUCbs8AhsMAAoJEFvCxW+uDzIfabYIAJXmBepHJpvCPiMNEQJNJ2ZSzSjhic84LTMWMbJ+
- opQgr5cb8SPQyyb508fc8b4uD8ejlF/cdbbBNktp3BXsHlO5BrmcABgxSP8HYYNsX0n9kERv
- NMToU0oiBuAaX7O/0K9+BW+3+PGMwiu5ml0cwDqljxfVN0dUBZnQ8kZpLsY+WDrIHmQWjtH+
- Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
- KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
- imgcU9TTGC5qd9g=
-In-Reply-To: <20240419084812.504779-4-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8bb4:4000:a36d:d178:601a:c356
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH v2 3/4] docs/system/target-sparc: Improve the Sparc
- documentation
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|SA1PR17MB4691:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d831e21-6f95-4805-3ea4-08dc609c4363
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?/wDY+WMDAcC057qJ3nbFaKVMn/UgnsEecqnjBlot0QtV6T2R5hBfZzx3CySs?=
+ =?us-ascii?Q?ay6DJncYXPyTHXbIfexhDRl/bXYZhQ0fNiuUtPBBOIFDDxix8mbAoAOLK/3J?=
+ =?us-ascii?Q?R4+sjRx50m3+a/kpmdifm1dha3BIl2L9WnFxZKc5cL3JczUtrz0CFtEJro32?=
+ =?us-ascii?Q?1c3xv7cMPkO5YsrjJsX57RkJSrphJac1/n59fVoEkD0OPsMhbI0ruGSb3tnG?=
+ =?us-ascii?Q?j05SZPXSDPY7/zi+Ngpn0NIJupTgF8hmqFMpCqZaSbNPMnQJ8PNf0H0pNpLf?=
+ =?us-ascii?Q?Wr/+otHRR813FTfWORYU53Igr16DLpQ5rdOfKU2upH+20nD4eRMtZwoZq7iE?=
+ =?us-ascii?Q?SYHt/rB9fpST2vZhtfFHvkgSffKinN58PzhKwTLZtx0E2fOgG1C0XVIErQY0?=
+ =?us-ascii?Q?N2AK7Vl7goZHAZphZZ/EyGK0CWkPDiYeH5caeFhU3QgP+ftlMEc3dfANMjun?=
+ =?us-ascii?Q?Xsd5CcGKof5BCXV3RWJsotkGB/wiwVDUhcqRXGkcb894uvziU7oyh56uSnhS?=
+ =?us-ascii?Q?E0H5bd7ZRufxC76hxR0ytPL5vzemqlA/iRovJoYOsyBdbhD4RQjGpYonLL7a?=
+ =?us-ascii?Q?0YLmrG3r8u7fj39PvtDpuchCWX1KsL3Eiz2zCcUzH9FLuPZYcbEaluCf6ZEA?=
+ =?us-ascii?Q?NIGFYPw3jkPIy6LZRpSGGDg5CD6NZ/fcw4rK+UgKyLXrDmN2fvbZgCmkIhva?=
+ =?us-ascii?Q?QBoM8jIWzJpOah/F1XgSO1RrAsBal03oexFpGM85ehmHBR1OMfo1KupQC2x2?=
+ =?us-ascii?Q?t8sdQlMgMvhos1punCbVYzAzskAHAm3krrgz6oRLtRHQ/ON8rztCXyzCFyto?=
+ =?us-ascii?Q?guYweQl+ZgjuM3J7r/Dq5zdKF3dsh3sfX6g92j2VWX0W9x62StmyjnmWZ3yp?=
+ =?us-ascii?Q?oUWQV7zdsgYAoGJX3Qmj63R/GVXKME9nl/gOGwqZlENxMef94Aiw26pR6d3Q?=
+ =?us-ascii?Q?+C4CSuIgIPX8lfALtK64oJ+WrF5zu5YeJeyxBuM2ArzaqIbae+qcM7CAvXBC?=
+ =?us-ascii?Q?ZCL+LXbtEMwQzo/EJC4xQRDwjWQgFS1hsKZQ88fj9BFhlsuvQDjN6og4ZgAL?=
+ =?us-ascii?Q?331H8R+bO7qyQmw/qUfEEj/VXloqODW+m7RBgzDIBTWL6VfahUgqZrg8zN6e?=
+ =?us-ascii?Q?3Gs/lyUorvyNSjXMW7blz3PxdNtd9BqhhOAAfXAoH80lKmvutB7DS6xMkKHl?=
+ =?us-ascii?Q?0zJ2YUVKue/srpe7FQs/20v26sOcehLdYKxwZmpbKqr0LmA80R7wQYHEg5Zl?=
+ =?us-ascii?Q?FT3ALP2QoO0PjQVmWj9eauVu2ly2O36OHW54iYNGsA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366007)(7416005)(376005)(1800799015); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?gO3ZxG/zqfQRdidJw8JAQwOsahW5DHQ46inE1f5C+L84ljXTXMpF0w4BMYN8?=
+ =?us-ascii?Q?8Z/3hMe847Zxzn1kPeK3oOpWhquTuH4WvnpH3GRUk9kJ5fJqD4UXFUxUlizp?=
+ =?us-ascii?Q?a7w+36tIJNQnVWS0a/cYSIMS6AQ7yeLVIXFkBxOXqM9+03Sb0wT31F3ZQyjR?=
+ =?us-ascii?Q?STKZAJ/Mr27mABztj7NRbeCmZVZ/1dicNkRONrD4S/tqyeFlnYByTO0+3HfA?=
+ =?us-ascii?Q?AfHcTkzZgR2+idovf4x+lYc8q0jUWKWaJeuBpD68gNiy2blatH5RC+/Fk7ue?=
+ =?us-ascii?Q?pk0lj/LmkJyukyDy0UUzlUkcCmtCDyHOWmy/lYNdGOZh6NZl8xUbVvnKpx/C?=
+ =?us-ascii?Q?wAFT7HXqRSCwssJmotS5BNncnsdSOvSN/uVuxZJR1ZJl4l0km5NQE4EL6X1g?=
+ =?us-ascii?Q?XiSkklxIGsJ4AlCYfkERoonmDKvZ0630wQ1N6iLpQHD+i3oByMpYxmXIaZve?=
+ =?us-ascii?Q?9e+7mE+HVC6p5Lu6ED3doFb7Xajb6rJOaoi8Iffy6i53edEfFJlwCP0SPlnN?=
+ =?us-ascii?Q?M9tX72/w5c8uUN3f1Abnuv+y5ckrk7BgtUUV+uAfEg8GQf5yiTJ9ZBveDFvC?=
+ =?us-ascii?Q?6RZ+Jsrgoa9vdsuEI2KWUNSVnjkFDxTsuHC30AhwWLeUo/UuiRHq0NUYKAgR?=
+ =?us-ascii?Q?Tkl5xC0gHiMb3JCFOfdu3FH/NKYw/jplU96WkUNymcyY1DXflLGHIl87PHyZ?=
+ =?us-ascii?Q?ffSDWZoYYfW5PbWYSavdtZZgl+G98n/yauwkWm3Rih3ihREMjzyUEMKP6Nki?=
+ =?us-ascii?Q?C+Ja5QUPnO9wX1FOxBe5qosp/kvpWTxVE45cv0t7cO9l3YJ2J6teSPyqktHy?=
+ =?us-ascii?Q?aIOg07STdpeKdzQQMtQ3aiWvXJzxeOpTYega1A0r/dkGSPD8Ao9N/UKPxiPl?=
+ =?us-ascii?Q?Lx9w2Dq62curf4FpXaT6uloKmN5u56iHIDmCxOSvvECqv4YT1l0e0zW2sPff?=
+ =?us-ascii?Q?uTgSHPjku+TVGoX9zxGRSxabtobTbNvCHVQIeP23fhW7n7w9OCEZvoiIR602?=
+ =?us-ascii?Q?eismeohlql963Tq30jizRcWVPCt/TlISnztDsjWKId9ujhHp4/MLrskOEzEg?=
+ =?us-ascii?Q?J+UO5s39cXr7BD/z8pAJtAR2zRDAqBkciBhGSgPJivtoToW59Uz7FHIJ+8/L?=
+ =?us-ascii?Q?JAhRLtaIQarJ3KM9GZXM+FzO9AafFBIA3WgCGG/b8AkOHkNFmN9QN5C5JT8a?=
+ =?us-ascii?Q?gs/nOj922Bs6yA5jJaXZ2mUkaZQNh+qFKsXswZnjgMVpQgr7dx7/AwGmWrEK?=
+ =?us-ascii?Q?k+MYtmYtp5bBy5AuyX4ZRuzKIFhOGdF5wqrS/yYz+bLK60oYLGJNK10JLexf?=
+ =?us-ascii?Q?qp7ibfuCQaIh170tfyWacz/RJ99NhBuc4+KIM2nvTp/LmcdbedxjykCU17AR?=
+ =?us-ascii?Q?aupvpTseNETQBe7wwD3DfPtKpSsqYHDMCqqD82BuBqVMDQe7imvtako66Yle?=
+ =?us-ascii?Q?dCsU4HEowRsPdwMy3uwsbi9smcAwgfjk0WZk3aH2oBQTHDciAd8pEjZ+iLVb?=
+ =?us-ascii?Q?emBastP6RpIalvy5PeInRIGpysfk6K4aOb+OKn6md+6pNhkyz7U8TA0Ojv3u?=
+ =?us-ascii?Q?OZ9ESdc69MNCS0XE/5G4rfqrMN6G6RAT1CqCANoM4yi98Oa3S+6maqBx0++L?=
+ =?us-ascii?Q?wQ=3D=3D?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d831e21-6f95-4805-3ea4-08dc609c4363
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 18:12:24.3444 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g+eWBULsbPddnZPE6tjRuFU4sdLpX2qQdUY1LTWDh4KuvmL8PlVZ75FhvzBwc7EOcFv4Gha1jvppABEqx5vTOPAS2q/e0d1/wWviBR3qSMA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR17MB4691
+Received-SPF: pass client-ip=40.107.101.120;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM04-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,53 +161,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 19/04/2024 09:48, Thomas Huth wrote:
-
-> Add some words about how to enable or disable boolean features,
-> and remove the note about a Linux kernel being available on the
-> QEMU website (they have been removed long ago already), and the
-> note about NetBSD and OpenBSD still having issues (they should
-> work fine nowadays).
+On Thu, Apr 18, 2024 at 04:10:59PM -0700, nifan.cxl@gmail.com wrote:
+> From: Fan Ni <fan.ni@samsung.com>
 > 
-> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/2141
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Per CXL spec 3.1, two mailbox commands are implemented:
+> Add Dynamic Capacity Response (Opcode 4802h) 8.2.9.9.9.3, and
+> Release Dynamic Capacity (Opcode 4803h) 8.2.9.9.9.4.
+> 
+> For the process of the above two commands, we use two-pass approach.
+> Pass 1: Check whether the input payload is valid or not; if not, skip
+>         Pass 2 and return mailbox process error.
+> Pass 2: Do the real work--add or release extents, respectively.
+> 
+> Signed-off-by: Fan Ni <fan.ni@samsung.com>
 > ---
->   docs/system/target-sparc.rst | 12 +++++++-----
->   1 file changed, 7 insertions(+), 5 deletions(-)
+>  hw/cxl/cxl-mailbox-utils.c  | 394 ++++++++++++++++++++++++++++++++++++
+>  hw/mem/cxl_type3.c          |  11 +
+>  include/hw/cxl/cxl_device.h |   4 +
+>  3 files changed, 409 insertions(+)
 > 
-> diff --git a/docs/system/target-sparc.rst b/docs/system/target-sparc.rst
-> index 9ec8c90c14..54bd8b6ead 100644
-> --- a/docs/system/target-sparc.rst
-> +++ b/docs/system/target-sparc.rst
-> @@ -27,6 +27,11 @@ architecture machines:
->   The emulation is somewhat complete. SMP up to 16 CPUs is supported, but
->   Linux limits the number of usable CPUs to 4.
->   
-> +The list of available CPUs can be viewed by starting QEMU with ``-cpu help``.
-> +Optional boolean features can be added with a "+" in front of the feature name,
-> +or disabled with a "-" in front of the name, for example
-> +``-cpu TI-SuperSparc-II,+float128``.
-> +
->   QEMU emulates the following sun4m peripherals:
->   
->   -  IOMMU
-> @@ -55,8 +60,5 @@ OpenBIOS is a free (GPL v2) portable firmware implementation. The goal
->   is to implement a 100% IEEE 1275-1994 (referred to as Open Firmware)
->   compliant firmware.
->   
-> -A sample Linux 2.6 series kernel and ram disk image are available on the
-> -QEMU web site. There are still issues with NetBSD and OpenBSD, but most
-> -kernel versions work. Please note that currently older Solaris kernels
-> -don't work probably due to interface issues between OpenBIOS and
-> -Solaris.
-> +Please note that currently older Solaris kernels don't work probably due
-> +to interface issues between OpenBIOS and Solaris.
 
-Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-
-ATB,
-
-Mark.
-
+Reviewed-by: Gregory Price <gregory.price@memverge.com>
 
