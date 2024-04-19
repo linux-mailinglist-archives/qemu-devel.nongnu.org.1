@@ -2,85 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EE0F8AB2E1
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:09:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7118AB2CA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:04:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxqgq-00043s-4v; Fri, 19 Apr 2024 12:02:17 -0400
+	id 1rxqhN-0004uB-U1; Fri, 19 Apr 2024 12:02:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqem-0001HP-GM
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:09 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ id 1rxqen-0001He-En
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:10 -0400
+Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqee-0001B9-BK
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:06 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-349545c3eb8so1530773f8f.2
- for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 08:59:59 -0700 (PDT)
+ id 1rxqef-0001Bn-Jp
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:08 -0400
+Received: by mail-wm1-x32f.google.com with SMTP id
+ 5b1f17b1804b1-418c2bf2f90so12800835e9.1
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 09:00:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713542399; x=1714147199; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713542400; x=1714147200; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=x3JoLPVQQvT5k1rWnbAuPJlJNM/iQBnM7RUlxuCBbcU=;
- b=QrjAZlgdKTOMz5j+Feqy1hH9c9e28jzzjaedF2IfvpHIBsAm4RhJ4XGfY1GGb5pluJ
- R8REHxE8cpUt+D51vnCOGU4hfksjYf9bb+BASIVTryz/7SJiT9QvkGm2+qasw5AjveKO
- 877RXRJ3LwRsZN6zifIq/VkY/AT1PauQsroQpP/firmWmA2Nmhs3lwjgiPBfzOp7TmZB
- Z9pr7Qodj3I/BBg2te8zUdaCHUihzctWkSOv5bC+6PCJBzCeYv39WZFEvz8WopB+ijM1
- EamJ50ryI5+iIJjtgg36m+FvDlKcsm78GyJmE51zFIiW+mjhhuAUWM3XXvPTwwLUD19m
- Zjhg==
+ bh=FkRIZYSXM60C11pVAmU0c6gDc0GU3jgcOc8qxUScJ1Y=;
+ b=HXm0WKxJZuapCTyseNNu6b/ahE7eAiH7GdiHTSJF/2GE4xjaXSLBdOdJGo63ETPPub
+ Y65256jbNksuCQ0ZJ9bfzTz+/8Azys6k30yWo8jVB1ktL9swCn09SdWII1L5TWqdahb2
+ R6GXSlK9u2ebQ5WuisTS0ePM98jUvjzVs5Q2IOM9a20YpRR7TdSpfsdfabZNzTNsEk6z
+ 7gpL7R1FvyKE8CmuamlEZRAdKCgHh3IqI/aOqECYSU4NTi6lFeaeSYX1+53MyngClI1D
+ qLHYUCvLePFHcURsYfe3fFbARkYAlwqX6Z6A9V47ITVqs86klM7pdveNT6L4RLqdr3h4
+ g8+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713542399; x=1714147199;
+ d=1e100.net; s=20230601; t=1713542400; x=1714147200;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x3JoLPVQQvT5k1rWnbAuPJlJNM/iQBnM7RUlxuCBbcU=;
- b=vdYdyR4nMIc7WWrItEnsEJJ3mu2tG/SFl8w5vw4v3yfOHvGo6vB0zO/t0lGLFdfayR
- 9K7CSeCQ4HZMrmXbSzMAl5BkYnGA5vSE6hcPzbFqx/bSX2+uf64jsXRJApU+MDQypgCN
- jX3CrE4M1kaFek/D+3wB4jmGnkLh10oKJWicefgvZ+fWfND8Xu9ZvEJ5nLvidiAS79EQ
- K23cnt9pM+oFAflD/AtaXoe76BAv4NfzobWHFlN+8QNgOcrRspO89ozj8EPdLm83eCy1
- 3o0qgEia8P4rsA20tzW/hOIhpR3PrpwWaivGDKRsWRIrQj/JEaHWIAnFFlSE/jhSve5y
- 2eTA==
+ bh=FkRIZYSXM60C11pVAmU0c6gDc0GU3jgcOc8qxUScJ1Y=;
+ b=RKHsHLObMxT0Ib/yVmuJUmkx2cp6JdmShcgLpY+SbyFVK9ift3PgyNTR08GGJuSJaW
+ q83B5Sh21yKbCaC/YhAQBWYp1dX5PeJx8Irs+zkR4y5VESLINfU8fqu7GyuUclCT/n6F
+ JptFSWk09cA6dp4DnRk6jolzQi+oVa9y+dnist2fBvGvpM011Gci5h74YVSEEq+ri4Ip
+ mmM+GR5lTcvFThDgjUUOcVwc7dAp92c7KjXIwlNQ69TVPwI7jIF3XgDXI2rnwaPaKNa5
+ TvFs2qC3M2pcL6QFZJ/n0Qz6iL2LNfD1dPW9Hi5QQD8NlzO/HJSfsw90OIsWGOhUXE4u
+ dBOA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU16t6pQhEBzwJc1zxchQ0NyO7K5y1iAghgnlVRNlSj8WkPDvTjThTLp8766C84Vebr6CObAts3fG0gdjMRsYVeJyVPwrg=
-X-Gm-Message-State: AOJu0YzDUXcvA/WkC52R6vgQhnfcIsclGv67WO1ok4TCF6o4ixSJv/oh
- TA8k53I/VBG6RR79jZXuLz7rdXmU1BUpkvwRJLOhTg9JI0RnR9zlTvEfNlNBNQc=
-X-Google-Smtp-Source: AGHT+IHnxptXvLJAPUL2didr1nfepWS4oCESmrqqIlU1k9RReNLLbvyLdOAWHLHwb9pBReExK6Cq2A==
-X-Received: by 2002:a5d:628c:0:b0:349:cba9:572d with SMTP id
- k12-20020a5d628c000000b00349cba9572dmr1732749wru.54.1713542398799; 
- Fri, 19 Apr 2024 08:59:58 -0700 (PDT)
+ AJvYcCXs+/k+0zQyeOUZN+2JwobCimt5Ft2Tn1pbcgx1m99ZkKgRsdF19mcjcZKK3xpW8CrMe6E3VMwhsWXSnt9f/Fv+fo4Hir0=
+X-Gm-Message-State: AOJu0Yzm9cQSZ4W6FbddNRKCO08j1ybul2wC5+66ifWRLAEJ19P46HJi
+ Q3ce1ziDEICtX2Q8Stt6FH9dM+OX20CQnCPSsHNne/TQq/fhdw7Nt2g+MU8Q2Bg=
+X-Google-Smtp-Source: AGHT+IHAbdi0c326+6wQmTCOWDDeEMqnDrJNMO++dLbiFMIKRETjm2YK89aW5Ik3rFD1vYXenRdRYw==
+X-Received: by 2002:a05:600c:4c17:b0:418:f6e7:3599 with SMTP id
+ d23-20020a05600c4c1700b00418f6e73599mr3254144wmp.3.1713542399993; 
+ Fri, 19 Apr 2024 08:59:59 -0700 (PDT)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
- p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.08.59.58
+ p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.08.59.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Apr 2024 08:59:58 -0700 (PDT)
+ Fri, 19 Apr 2024 08:59:59 -0700 (PDT)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org,
 	richard.henderson@linaro.org
 Cc: philmd@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v2 18/22] target/arm/kvm: Disable Realm reboot
-Date: Fri, 19 Apr 2024 16:57:06 +0100
-Message-ID: <20240419155709.318866-20-jean-philippe@linaro.org>
+Subject: [PATCH v2 20/22] target/arm/kvm-rme: Enable guest memfd
+Date: Fri, 19 Apr 2024 16:57:08 +0100
+Message-ID: <20240419155709.318866-22-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240419155709.318866-2-jean-philippe@linaro.org>
 References: <20240419155709.318866-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x32f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,41 +96,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A realm cannot be reset, it must be recreated from scratch. The RMM
-specification defines states of a Realm as NEW -> ACTIVE -> SYSTEM_OFF,
-after which the Realm can only be destroyed. A PCSI_SYSTEM_RESET call,
-which normally reboots the system, puts the Realm in SYSTEM_OFF state.
+Request that RAM block uses the KVM guest memfd call to allocate guest
+memory. With RME, guest memory is not accessible by the host, and using
+guest memfd ensures that the host kernel is aware of this and doesn't
+attempt to access guest pages.
 
-QEMU does not support recreating a VM. Normally, a reboot request by the
-guest causes all devices to reset, which cannot work for a Realm.
-Indeed, loading images into Realm memory and changing the PC is only
-allowed for a Realm in NEW state. Resetting the images for a Realm in
-SYSTEM_OFF state will cause QEMU to crash with a bus error.
+Done in a separate patch because ms->require_guest_memfd is not yet
+merged.
 
-Handle reboot requests by the guest more gracefully, by indicating to
-runstate.c that the vCPUs of a Realm are not resettable, and that QEMU
-should exit.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
- target/arm/kvm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+v1->v2: new
+---
+ target/arm/kvm-rme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index 9855cadb1b..60c2ef9388 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1694,7 +1694,8 @@ int kvm_arch_msi_data_to_gsi(uint32_t data)
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index 8f39e54aaa..71cc1d4147 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -263,6 +263,7 @@ int kvm_arm_rme_init(MachineState *ms)
+     rme_guest->rom_load_notifier.notify = rme_rom_load_notify;
+     rom_add_load_notifier(&rme_guest->rom_load_notifier);
  
- bool kvm_arch_cpu_check_are_resettable(void)
- {
--    return true;
-+    /* A Realm cannot be reset */
-+    return !kvm_arm_rme_enabled();
++    ms->require_guest_memfd = true;
+     cgs->ready = true;
+     return 0;
  }
- 
- static void kvm_arch_get_eager_split_size(Object *obj, Visitor *v,
 -- 
 2.44.0
 
