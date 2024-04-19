@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304598AA7BC
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC4F8AA7BA
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1Z-0007eZ-G0; Fri, 19 Apr 2024 00:38:57 -0400
+	id 1rxg1a-0007ed-6b; Fri, 19 Apr 2024 00:38:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1P-0007W8-Vo
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1Q-0007WL-Dg
  for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1N-0004FC-C0
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:47 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1O-0004FH-NT
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501524;
+ s=mimecast20190719; t=1713501526;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h9ivFynH+DrIyxyCrgkjda0tH5zkdVzYPlc+LqwrpBU=;
- b=YQJhgU9r0EVfzxFvVgDMx25Cb2sboJA/Xo4aElzHw0+2gsreFYWnOcqBB/prtYCHuSN2yO
- 9hOUx2XlFDW2rAAPKoUXYNN5y9Y5XmJ2UOf8ed63r4OiweOXPVjU0mS1R1QDn9HFViCzfE
- 1dbgKtF9Y/nDJ69K9JUa6TSXBmaMIpI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-548-SWjDAIYJOgWopWUA_tmK-g-1; Fri,
- 19 Apr 2024 00:38:41 -0400
-X-MC-Unique: SWjDAIYJOgWopWUA_tmK-g-1
+ bh=5abJCU0h5aF3vdT6HE6N8xKGQV3SNeJnkpXl7YahGbw=;
+ b=gd4g84OjNxJFhF15NkycTENp/9EnYtpATFBqnFRv0+FJ9Pib1IiH2M9MYM4UDUq3Y2dHpj
+ Uj4O8MeArnSX37BmPcPfPfTE74jER9xmsnRIoHnHGuk7CJD0tob1/4KQgEjIRxH2wvbLhN
+ Emes/eZjwpcbpjzmj5jpMWbPdZbZtiw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-169-Qv6s_TVfNCiNXHLVTS8sbQ-1; Fri, 19 Apr 2024 00:38:42 -0400
+X-MC-Unique: Qv6s_TVfNCiNXHLVTS8sbQ-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3EBD63CBDF61;
- Fri, 19 Apr 2024 04:38:41 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 035B918065AF;
+ Fri, 19 Apr 2024 04:38:42 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 8F8614011FF7;
- Fri, 19 Apr 2024 04:38:40 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4E8C540829C5;
+ Fri, 19 Apr 2024 04:38:41 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Markus Armbruster <armbru@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 26/27] docs/qapi-domain: RFC patch - Add one last sample
- command
-Date: Fri, 19 Apr 2024 00:38:14 -0400
-Message-ID: <20240419043820.178731-27-jsnow@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>, Harmonie Snow <harmonie@gmail.com>,
+ John Snow <jsnow@redhat.com>
+Subject: [PATCH 27/27] docs/qapi-domain: add CSS styling
+Date: Fri, 19 Apr 2024 00:38:15 -0400
+Message-ID: <20240419043820.178731-28-jsnow@redhat.com>
 In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
 References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -82,92 +81,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just to have a bit more to look at in the generated doc, here's a fairly
-complex command with a lot of bells and whistles.
+From: Harmonie Snow <harmonie@gmail.com>
 
+Improve the general look and feel of generated QAPI docs.
+
+Attempt to limit line lengths to offer a more comfortable measure on
+maximized windows, and improve some margin and spacing for field lists.
+
+Signed-off-by: Harmonie Snow <harmonie@gmail.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- docs/qapi/index.rst | 67 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ docs/sphinx-static/theme_overrides.css | 50 ++++++++++++++++++++++++--
+ 1 file changed, 48 insertions(+), 2 deletions(-)
 
-diff --git a/docs/qapi/index.rst b/docs/qapi/index.rst
-index 6e85ea5280d..4562e755d21 100644
---- a/docs/qapi/index.rst
-+++ b/docs/qapi/index.rst
-@@ -267,6 +267,73 @@ Explicit cross-referencing syntax for QAPI modules is available with
-       :memb str key-secret: ID of a QCryptoSecret object providing a
-          passphrase for unlocking the encryption
+diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
+index b239a762a9e..9a58cf86b5c 100644
+--- a/docs/sphinx-static/theme_overrides.css
++++ b/docs/sphinx-static/theme_overrides.css
+@@ -18,8 +18,8 @@ h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend {
  
-+.. qapi:command:: blockdev-backup
-+   :since: 4.2
+ .rst-content dl:not(.docutils) dt {
+     border-top: none;
+-    border-left: solid 3px #ccc;
+-    background-color: #f0f0f0;
++    border-left: solid 5px #bcc6d2;
++    background-color: #eaedf1;
+     color: black;
+ }
+ 
+@@ -162,6 +162,18 @@ div[class^="highlight"] pre {
+ 
+ /* QAPI domain theming */
+ 
++/* most content in a qapi object definition should not eclipse about
++   80ch, but nested field lists are explicitly exempt due to their
++   two-column nature */
++.qapi dd *:not(dl) {
++    max-width: 80ch;
++}
 +
-+   Start a point-in-time copy of a block device to a new
-+   destination. The status of ongoing blockdev-backup operations can be
-+   checked with query-block-jobs where the BlockJobInfo.type field has
-+   the value ‘backup’. The operation can be stopped before it has
-+   completed using the block-job-cancel command.
++/* but the content column itself should still be less than ~80ch. */
++.qapi .field-list dd {
++    max-width: 80ch;
++}
 +
-+   :arg str target:
-+      the device name or node-name of the backup target node.
-+   :arg str? job-id:
-+      identifier for the newly-created block job. If omitted, the device
-+      name will be used. (Since 2.7)
-+   :arg str device:
-+      the device name or node-name of a root node which should be copied.
-+   :arg MirrorSyncMode sync:
-+      what parts of the disk image should be copied to the destination
-+      (all the disk, only the sectors allocated in the topmost image,
-+      from a dirty bitmap, or only new I/O).
-+   :arg int? speed:
-+      the maximum speed, in bytes per second. The default is 0, for unlimited.
-+   :arg str? bitmap:
-+      The name of a dirty bitmap to use. Must be present if sync is
-+      ``bitmap`` or ``incremental``. Can be present if sync is ``full`` or
-+      ``top``. Must not be present otherwise. (Since 2.4 (drive-backup),
-+      3.1 (blockdev-backup))
-+   :arg BitmapSyncMode? bitmap-mode:
-+      Specifies the type of data the bitmap should contain after the
-+      operation concludes. Must be present if a bitmap was provided,
-+      Must NOT be present otherwise. (Since 4.2)
-+   :arg bool? compress:
-+      true to compress data, if the target format supports it. (default:
-+      false) (since 2.8)
-+   :arg BlockdevOnError? on-source-error:
-+      the action to take on an error on the source, default
-+      ``report``. ``stop`` and ``enospc`` can only be used if the block device
-+      supports io-status (see BlockInfo).
-+   :arg BlockdevOnError? on-target-error:
-+      the action to take on an error on the target, default ``report`` (no
-+      limitations, since this applies to a different block device than
-+      device).
-+   :arg bool? auto-finalize:
-+      When false, this job will wait in a ``PENDING`` state after it has
-+      finished its work, waiting for block-job-finalize before making
-+      any block graph changes. When true, this job will automatically
-+      perform its abort or commit actions. Defaults to true. (Since
-+      2.12)
-+   :arg bool? auto-dismiss:
-+      When false, this job will wait in a ``CONCLUDED`` state after it has
-+      completely ceased all work, and awaits block-job-dismiss. When
-+      true, this job will automatically disappear from the query list
-+      without user intervention. Defaults to true. (Since 2.12)
-+   :arg str? filter-node-name:
-+      the node name that should be assigned to the filter driver that
-+      the backup job inserts into the graph above node specified by
-+      drive. If this option is not given, a node name is
-+      autogenerated. (Since: 4.2)
-+   :arg BackupPerf? x-perf:
-+      Performance options. (Since 6.0)
-+   :feat unstable: Member ``x-perf`` is experimental.
-+   :error DeviceNotFound: if ``device`` is not a valid block device.
+ .qapi-infopips {
+     margin-bottom: 1em;
+ }
+@@ -201,3 +213,37 @@ div[class^="highlight"] pre {
+     border-radius: 15px;
+     margin: 5px;
+ }
 +
-+   .. note:: ``on-source-error`` and ``on-target-error only`` affect
-+             background I/O. If an error occurs during a guest write
-+             request, the device's rerror/werror actions will be used.
++/* code blocks */
++.qapi div[class^="highlight"] {
++    width: fit-content;
++    background-color: #fffafd;
++    border: 2px solid #ffe1f3;
++}
 +
- .. qapi:command:: x-debug-query-block-graph
-    :since: 4.0
-    :unstable:
++/* note, warning, etc. */
++.qapi .admonition {
++    width: fit-content;
++}
++
++/* pad the top of the field-list so the text doesn't start directly at
++   the top border; primarily for the field list labels, but adjust the
++   field bodies as well for parity. */
++dl.field-list > dt:first-of-type, dl.field-list > dd:first-of-type {
++    padding-top: 0.3em;
++}
++
++dl.field-list > dt:last-of-type, dl.field-list > dd:last-of-type {
++    padding-bottom: 0.3em;
++}
++
++/* pad the field list labels so they don't crash into the border */
++dl.field-list > dt {
++    padding-left: 0.5em;
++    padding-right: 0.5em;
++}
++
++/* Add a little padding between field list sections */
++dl.field-list > dd:not(:last-child) {
++    padding-bottom: 1em;
++}
 -- 
 2.44.0
 
