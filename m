@@ -2,44 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666B98AA7B3
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 066FE8AA7B4
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg17-0007Mi-PS; Fri, 19 Apr 2024 00:38:29 -0400
+	id 1rxg1C-0007RB-PH; Fri, 19 Apr 2024 00:38:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg15-0007Lv-NY
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg19-0007Ok-SP
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg13-00049M-QD
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:27 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg17-00049j-Jk
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501503;
+ s=mimecast20190719; t=1713501508;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=hHv50p2eP8cgQe12OJpLLZ7Gh71se+BPfE/yPrXUvw4=;
- b=CPXC4KwtIGsZpO1X2MPV3BFMWevmsB/idsEFPiaS6/Gma9DduTz4XZm89FYtmLsNS9HIFf
- YlP1h1wgHHC8kE4VvV1kRPzlTLddsBVKgrfNgignvHZCHcSFgdO2nTvg33pqrB9YoIkIll
- xp5LN7I14rrPLwjCnq9WNuo6Io9u/J8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-480-TRXNGWcGNU-NIbsuYru8Hg-1; Fri,
- 19 Apr 2024 00:38:21 -0400
-X-MC-Unique: TRXNGWcGNU-NIbsuYru8Hg-1
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8n+UfeBL2CIYHwJZ2oAWjPHIDqW+hEsaFx7BYgalx9k=;
+ b=MmSqLRCP6EyUIZlGJwVYZ9x06/o/X3UWeLaE8c5AZCIqRZ1w5biJgEQlauPC4MFnaNd3Q5
+ kTBRBZThkeiRwcJnMNnW+FE0dfEF6XLoblBUwewP0MEtC2J0mODg3DNssg+UqDytunqKoz
+ Abbvdqt1l+EYLE/A8DmnzCPGtIbfgxE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-1-T4PRfAqwORewWj-MK1Z8kw-1; Fri, 19 Apr 2024 00:38:22 -0400
+X-MC-Unique: T4PRfAqwORewWj-MK1Z8kw-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
  [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5FAF29AA38E;
- Fri, 19 Apr 2024 04:38:21 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 663CB80021A;
+ Fri, 19 Apr 2024 04:38:22 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D43A14011FF7;
- Fri, 19 Apr 2024 04:38:20 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B423440357A7;
+ Fri, 19 Apr 2024 04:38:21 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
@@ -47,14 +48,15 @@ Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Victor Toso de Carvalho <victortoso@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: [PATCH 00/27] Add qapi-domain Sphinx extension
-Date: Fri, 19 Apr 2024 00:37:48 -0400
-Message-ID: <20240419043820.178731-1-jsnow@redhat.com>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH 01/27] docs/sphinx: create QAPI domain extension stub
+Date: Fri, 19 Apr 2024 00:37:49 -0400
+Message-ID: <20240419043820.178731-2-jsnow@redhat.com>
+In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
+References: <20240419043820.178731-1-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -78,152 +80,88 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series adds a new qapi-domain extension for Sphinx, which adds a=0D
-series of custom directives for documenting QAPI definitions.=0D
-=0D
-GitLab CI: https://gitlab.com/jsnow/qemu/-/pipelines/1259566476=0D
-=0D
-(Link to a demo HTML page at the end of this cover letter, but I want=0D
-you to read the cover letter first to explain what you're seeing.)=0D
-=0D
-This adds a new QAPI Index page, cross-references for QMP commands,=0D
-events, and data types, and improves the aesthetics of the QAPI/QMP=0D
-documentation.=0D
-=0D
-This series adds only the new ReST syntax, *not* the autogenerator. The=0D
-ReST syntax used in this series is, in general, not intended for anyone=0D
-to actually write by hand. This mimics how Sphinx's own autodoc=0D
-extension generates Python domain directives, which are then re-parsed=0D
-to produce the final result.=0D
-=0D
-I have prototyped such a generator, but it isn't ready for inclusion=0D
-yet. (Rest assured: error context reporting is preserved down to the=0D
-line, even in generated ReST. There is no loss in usability for this=0D
-approach. It will likely either supplant qapidoc.py or heavily alter=0D
-it.) The generator requires only extremely minor changes to=0D
-scripts/qapi/parser.py to preserve nested indentation and provide more=0D
-accurate line information. It is less invasive than you may=0D
-fear. Relying on a secondary ReST parse phase eliminates much of the=0D
-complexity of qapidoc.py. Sleep soundly.=0D
-=0D
-The purpose of sending this series in its current form is largely to=0D
-solicit feedback on general aesthetics, layout, and features. Sphinx is=0D
-a wily beast, and feedback at this stage will dictate how and where=0D
-certain features are implemented.=0D
-=0D
-A goal for this syntax (and the generator) is to fully in-line all=0D
-command/event/object members, inherited or local, boxed or not, branched=0D
-or not. This should provide a boon to using these docs as a reference,=0D
-because users will not have to grep around the page looking for various=0D
-types, branches, or inherited members. Any arguments types will be=0D
-hyperlinked to their definition, further aiding usability. Commands can=0D
-be hotlinked from anywhere else in the manual, and will provide a=0D
-complete reference directly on the first screenful of information.=0D
-=0D
-(Okay, maybe two screenfuls for commands with a ton of=0D
-arguments... There's only so much I can do!)=0D
-=0D
-This RFC series includes a "sandbox" .rst document that showcases the=0D
-features of this domain by writing QAPI directives by hand; this=0D
-document will be removed from the series before final inclusion. It's=0D
-here to serve as a convenient test-bed for y'all to give feedback.=0D
-=0D
-All that said, here's the sandbox document fully rendered:=0D
-https://jsnow.gitlab.io/qemu/qapi/index.html=0D
-=0D
-And here's the new QAPI index page created by that sandbox document:=0D
-https://jsnow.gitlab.io/qemu/qapi-index.html=0D
-=0D
-Known issues / points of interest:=0D
-=0D
-- The formatting upsets checkpatch. The default line length for the=0D
-  "black" formatting tool is a little long. I'll fix it next spin.=0D
-=0D
-- I did my best to preserve cross-version compatibility, but some=0D
-  problems have crept in here and there. This series may require=0D
-  Sphinx>=3D 4.0, like the dbus extension. Notably, the Ubuntu build fails=
-=0D
-  on Gitlab CI currently. The next version will text against more Sphinx=0D
-  versions more rigorously. Sphinx version 5.3.0 and above should work=0D
-  perfectly.=0D
-=0D
-- There's a bug in Sphinx itself that may manifest in your testing,=0D
-  concerning reported error locations. There's a patch in this series=0D
-  that fixes it, but it's later in the series. If you run into the bug=0D
-  while testing with this series, try applying that patch first.=0D
-=0D
-- QAPI 'namespaces' aren't yet handled. i.e., there's nothing to=0D
-  distinguish entities between QMP, QGA and QSD yet. That feature will=0D
-  be added to a future version of this patchset (Likely when the=0D
-  generator is ready for inclusion: without it, references will clash=0D
-  and the index will gripe about duplicated entries.)=0D
-=0D
-- Per-member features and ifcond are not yet accounted for; though=0D
-  definition-scoped features and ifconds are. Please feel free to=0D
-  suggest how you'd like to see those represented.=0D
-=0D
-- Inlining all members means there is some ambiguity on what to do with=0D
-  doc block sections on inlined entities; features and members have an=0D
-  obvious home - body, since, and misc sections are not as obvious on=0D
-  how to handle. This will feature more prominently in the generator=0D
-  series.=0D
-=0D
-- Some features could be implemented in either the QAPI domain syntax=0D
-  *or* the generator, or some combination of both. Depending on=0D
-  aesthetic feedback, this may influence where those features should be=0D
-  implemented.=0D
-=0D
-- The formatting and aesthetics of branches are a little up in the air,=0D
-  see the qapi:union patch for more details.=0D
-=0D
-- It's late, maybe other things. Happy Friday!=0D
-=0D
-Hope you like it!=0D
-=0D
---js=0D
-=0D
-Harmonie Snow (1):=0D
-  docs/qapi-domain: add CSS styling=0D
-=0D
-John Snow (26):=0D
-  docs/sphinx: create QAPI domain extension stub=0D
-  docs/qapi-domain: add qapi:module directive=0D
-  docs/qapi-module: add QAPI domain object registry=0D
-  docs/qapi-domain: add QAPI index=0D
-  docs/qapi-domain: add resolve_any_xref()=0D
-  docs/qapi-domain: add QAPI xref roles=0D
-  docs/qapi-domain: add qapi:command directive=0D
-  docs/qapi-domain: add :since: directive option=0D
-  docs/qapi-domain: add "Arguments:" field lists=0D
-  docs/qapi-domain: add "Features:" field lists=0D
-  docs/qapi-domain: add "Errors:" field lists=0D
-  docs/qapi-domain: add "Returns:" field lists=0D
-  docs/qapi-domain: add qapi:enum directive=0D
-  docs/qapi-domain: add qapi:alternate directive=0D
-  docs/qapi-domain: add qapi:event directive=0D
-  docs/qapi-domain: add qapi:struct directive=0D
-  docs/qapi-domain: add qapi:union and qapi:branch directives=0D
-  docs/qapi-domain: add :deprecated: directive option=0D
-  docs/qapi-domain: add :unstable: directive option=0D
-  docs/qapi-domain: add :ifcond: directive option=0D
-  docs/qapi-domain: RFC patch - add malformed field list entries=0D
-  docs/qapi-domain: add warnings for malformed field lists=0D
-  docs/qapi-domain: RFC patch - delete malformed field lists=0D
-  docs/qapi-domain: add type cross-refs to field lists=0D
-  docs/qapi-domain: implement error context reporting fix=0D
-  docs/qapi-domain: RFC patch - Add one last sample command=0D
-=0D
- docs/conf.py                           |   15 +-=0D
- docs/index.rst                         |    1 +=0D
- docs/qapi/index.rst                    |  364 ++++++++=0D
- docs/sphinx-static/theme_overrides.css |   92 +-=0D
- docs/sphinx/qapi-domain.py             | 1061 ++++++++++++++++++++++++=0D
- 5 files changed, 1530 insertions(+), 3 deletions(-)=0D
- create mode 100644 docs/qapi/index.rst=0D
- create mode 100644 docs/sphinx/qapi-domain.py=0D
-=0D
--- =0D
-2.44.0=0D
-=0D
+It doesn't really do anything yet, we'll get to it brick-by-brick in the
+forthcoming commits to keep the series breezy and the git history
+informative.
+
+Signed-off-by: John Snow <jsnow@redhat.com>
+---
+ docs/conf.py               |  3 ++-
+ docs/sphinx/qapi-domain.py | 50 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 1 deletion(-)
+ create mode 100644 docs/sphinx/qapi-domain.py
+
+diff --git a/docs/conf.py b/docs/conf.py
+index aae0304ac6e..b15665d956d 100644
+--- a/docs/conf.py
++++ b/docs/conf.py
+@@ -61,7 +61,8 @@
+ # Add any Sphinx extension module names here, as strings. They can be
+ # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
+ # ones.
+-extensions = ['kerneldoc', 'qmp_lexer', 'hxtool', 'depfile', 'qapidoc']
++extensions = ['kerneldoc', 'hxtool', 'depfile',
++              'qapidoc', 'qapi-domain', 'qmp_lexer']
+ 
+ if sphinx.version_info[:3] > (4, 0, 0):
+     tags.add('sphinx4')
+diff --git a/docs/sphinx/qapi-domain.py b/docs/sphinx/qapi-domain.py
+new file mode 100644
+index 00000000000..163b9ff21c3
+--- /dev/null
++++ b/docs/sphinx/qapi-domain.py
+@@ -0,0 +1,50 @@
++"""
++QAPI domain extension.
++"""
++
++from __future__ import annotations
++
++from typing import (
++    TYPE_CHECKING,
++    Any,
++    Dict,
++    List,
++    Tuple,
++)
++
++from sphinx.domains import Domain, ObjType
++from sphinx.util import logging
++
++
++if TYPE_CHECKING:
++    from sphinx.application import Sphinx
++
++logger = logging.getLogger(__name__)
++
++
++class QAPIDomain(Domain):
++    """QAPI language domain."""
++
++    name = "qapi"
++    label = "QAPI"
++
++    object_types: Dict[str, ObjType] = {}
++    directives = {}
++    roles = {}
++    initial_data: Dict[str, Dict[str, Tuple[Any]]] = {}
++    indices = []
++
++    def merge_domaindata(self, docnames: List[str], otherdata: Dict[str, Any]) -> None:
++        pass
++
++
++def setup(app: Sphinx) -> Dict[str, Any]:
++    app.setup_extension("sphinx.directives")
++    app.add_domain(QAPIDomain)
++
++    return {
++        "version": "1.0",
++        "env_version": 1,
++        "parallel_read_safe": True,
++        "parallel_write_safe": True,
++    }
+-- 
+2.44.0
 
 
