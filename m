@@ -2,69 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF5D8AB010
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 16:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F42128AB0EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 16:44:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxoop-0005DD-TJ; Fri, 19 Apr 2024 10:02:24 -0400
+	id 1rxpRv-0002DA-8X; Fri, 19 Apr 2024 10:42:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxooQ-00056E-DS
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:01:58 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxooN-0003T7-Cz
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:01:58 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VLbsq4rHjz6K8x1;
- Fri, 19 Apr 2024 22:01:35 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id E2C3E140B2A;
- Fri, 19 Apr 2024 22:01:36 +0800 (CST)
-Received: from localhost (10.48.153.65) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 19 Apr
- 2024 15:01:36 +0100
-Date: Fri, 19 Apr 2024 15:01:34 +0100
-To: "Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com>
-CC: "Huang, Ying" <ying.huang@intel.com>, Gregory Price
- <gourry.memverge@gmail.com>, <aneesh.kumar@linux.ibm.com>, <mhocko@suse.com>, 
- <tj@kernel.org>, <john@jagalactic.com>, Eishan Mirakhur
- <emirakhur@micron.com>, Vinicius Tavares Petrucci <vtavarespetr@micron.com>,
- Ravis OpenSrc <Ravis.OpenSrc@micron.com>, Alistair Popple
- <apopple@nvidia.com>, Srinivasulu Thanneeru <sthanneeru@micron.com>, SeongJae
- Park <sj@kernel.org>, Dan Williams <dan.j.williams@intel.com>, Vishal Verma
- <vishal.l.verma@intel.com>, "Dave Jiang" <dave.jiang@intel.com>, Andrew
- Morton <akpm@linux-foundation.org>, <nvdimm@lists.linux.dev>,
- <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, "Ho-Ren (Jack) Chuang" <horenc@vt.edu>, "Ho-Ren (Jack)
- Chuang" <horenchuang@gmail.com>, <qemu-devel@nongnu.org>, Hao Xiang
- <hao.xiang@bytedance.com>
-Subject: Re: [PATCH v11 2/2] memory tier: create CPUless memory tiers after
- obtaining HMAT info
-Message-ID: <20240419150134.000032ff@Huawei.com>
-In-Reply-To: <20240405000707.2670063-3-horenchuang@bytedance.com>
-References: <20240405000707.2670063-1-horenchuang@bytedance.com>
- <20240405000707.2670063-3-horenchuang@bytedance.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rxpRs-0002CT-6Q
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:42:44 -0400
+Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rxpRp-0002Jp-Ec
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:42:43 -0400
+Received: by mail-lj1-x230.google.com with SMTP id
+ 38308e7fff4ca-2d8a2cbe1baso27733291fa.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 07:42:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1713537759; x=1714142559; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=TrM9X4uMslc4/C1Na1YYTRdStooeAAUKzGJl409xXY4=;
+ b=K0yx40e0v54DbrISlaY2hMkpoQi5qRJ17WNke5nm0GE+fUSnNj6VjZFXYeecu5J0Wt
+ p/6gn0dAix/X3wRPUY8DEnURE1qWvKa2utH6YXk8QsxvmaAhECNHTygviLWON1ObeqRd
+ Jb5rqIda8Wc7Hy9EVCojvdo0GdW7u6tkk1nvpHAI1GO0yWF+nUkhe38KFw/K83ZF59qU
+ TFP4NpDE+6XK/24iDbAIG2v3djitIr7DcD/ikc9UdUKISD//UH9j7+O9qtKWOtYMcwuc
+ 90v8E6gInAsgSeo/RoWuc/NtB4npZpcS+H2gj1KzUPg7aj+UO9hGYvQ3VCtOt8ElRMVz
+ RjGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713537759; x=1714142559;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TrM9X4uMslc4/C1Na1YYTRdStooeAAUKzGJl409xXY4=;
+ b=i6ogEJb0e5B8ElixAt925m7GhDlDbHkkSmXCufFSA++LT/AkEPYtSOgmp8+oj0Fhc+
+ 4aQYSXpimXATKtoxCQwgth07ZKpvkrsgF8blHr1io3Zf+0rDTe3WkG0z2oeag4u9ELyA
+ ma5bvPixdV464J+Pn2nzzGXjfhNFFdmNU/cgR6HOdMgNFDp+SA8OPrLZJHqnkBT0E8k0
+ CIJLBGjS64deIWoZ8LGYosboNLAvN/u1re4N8lHPiNgZaRswyBRndSA979oBlfcRO5gl
+ f9uQwfjBPDsC4GDUito5PDyvQHw/W3Pda/4FIREVjY7oGzjaQVERxVzTQzfEcNjSE/uL
+ 5Deg==
+X-Gm-Message-State: AOJu0YwtFlbdidErJy2hFaZ+jXSIMSMPNYpAiT3QAyJJy/cVkVtL6uSs
+ DhEFZERdn88EX5dPAfDD4NdYstL/3QzShFFi1oD951ZyDWWoMcYVEodELSWPJy80+xQLn4fEoCz
+ Ow1OvvNlf0Ztie4x4k8bqRsLY5t/eg445tmQOhA==
+X-Google-Smtp-Source: AGHT+IGCI0rJIoUbXgsgfb8gxC3yyQpokkmmR40s7mcHPcQgKd6fzRV+3QY7qS3U7jYGXlNkJ+o1Uaf4MGrlhozCcOs=
+X-Received: by 2002:a2e:8195:0:b0:2da:4bf:ab14 with SMTP id
+ e21-20020a2e8195000000b002da04bfab14mr1922719ljg.45.1713537759226; Fri, 19
+ Apr 2024 07:42:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.48.153.65]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20240329174402.60382-1-arnaud.minier@telecom-paris.fr>
+ <CAFEAcA_xuXMRnmFMs_GzfrDN_kpR+c4C04OcPjxtz+hSB_ga2w@mail.gmail.com>
+In-Reply-To: <CAFEAcA_xuXMRnmFMs_GzfrDN_kpR+c4C04OcPjxtz+hSB_ga2w@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Apr 2024 15:42:27 +0100
+Message-ID: <CAFEAcA-mQk8XZ=nBRqRBCotMVP_cFW3V_cn0efHq0UbKfDgZow@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] hw/char: Implement the STM32L4x5 USART,
+ UART and LPUART
+To: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-arm@nongnu.org, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ =?UTF-8?B?SW7DqHMgVmFyaG9s?= <ines.varhol@telecom-paris.fr>, 
+ Laurent Vivier <lvivier@redhat.com>,
+ Samuel Tardieu <samuel.tardieu@telecom-paris.fr>, 
+ Alistair Francis <alistair@alistair23.me>, Thomas Huth <thuth@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::230;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x230.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,57 +90,29 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri,  5 Apr 2024 00:07:06 +0000
-"Ho-Ren (Jack) Chuang" <horenchuang@bytedance.com> wrote:
+On Fri, 5 Apr 2024 at 15:27, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> On Fri, 29 Mar 2024 at 17:44, Arnaud Minier
+> <arnaud.minier@telecom-paris.fr> wrote:
+> >
+> > This patch adds the STM32L4x5 USART
+> > (Universal Synchronous/Asynchronous Receiver/Transmitter)
+> > device and is part of a series implementing the
+> > STM32L4x5 with a few peripherals.
+> >
+> > It implements the necessary functionalities to receive/send
+> > characters over the serial port, which are useful to
+> > communicate with the program currently running.
+>
+> All the patches here are reviewed, so once we reopen
+> for the 9.1 release (in another two or three weeks) it
+> should be ready to go in. I'll keep it on my list to apply
+> once I start collecting 9.1 patchsets.
 
-> The current implementation treats emulated memory devices, such as
-> CXL1.1 type3 memory, as normal DRAM when they are emulated as normal memory
-> (E820_TYPE_RAM). However, these emulated devices have different
-> characteristics than traditional DRAM, making it important to
-> distinguish them. Thus, we modify the tiered memory initialization process
-> to introduce a delay specifically for CPUless NUMA nodes. This delay
-> ensures that the memory tier initialization for these nodes is deferred
-> until HMAT information is obtained during the boot process. Finally,
-> demotion tables are recalculated at the end.
-> 
-> * late_initcall(memory_tier_late_init);
-> Some device drivers may have initialized memory tiers between
-> `memory_tier_init()` and `memory_tier_late_init()`, potentially bringing
-> online memory nodes and configuring memory tiers. They should be excluded
-> in the late init.
-> 
-> * Handle cases where there is no HMAT when creating memory tiers
-> There is a scenario where a CPUless node does not provide HMAT information.
-> If no HMAT is specified, it falls back to using the default DRAM tier.
-> 
-> * Introduce another new lock `default_dram_perf_lock` for adist calculation
-> In the current implementation, iterating through CPUlist nodes requires
-> holding the `memory_tier_lock`. However, `mt_calc_adistance()` will end up
-> trying to acquire the same lock, leading to a potential deadlock.
-> Therefore, we propose introducing a standalone `default_dram_perf_lock` to
-> protect `default_dram_perf_*`. This approach not only avoids deadlock
-> but also prevents holding a large lock simultaneously.
-> 
-> * Upgrade `set_node_memory_tier` to support additional cases, including
->   default DRAM, late CPUless, and hot-plugged initializations.
-> To cover hot-plugged memory nodes, `mt_calc_adistance()` and
-> `mt_find_alloc_memory_type()` are moved into `set_node_memory_tier()` to
-> handle cases where memtype is not initialized and where HMAT information is
-> available.
-> 
-> * Introduce `default_memory_types` for those memory types that are not
->   initialized by device drivers.
-> Because late initialized memory and default DRAM memory need to be managed,
-> a default memory type is created for storing all memory types that are
-> not initialized by device drivers and as a fallback.
-> 
-> Signed-off-by: Ho-Ren (Jack) Chuang <horenchuang@bytedance.com>
-> Signed-off-by: Hao Xiang <hao.xiang@bytedance.com>
-> Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I've now applied this to target-arm.next for 9.1; thanks.
+
+-- PMM
 
