@@ -2,85 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383458AB2DC
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CDD8AB2C9
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:04:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxqgV-0002Ky-Qm; Fri, 19 Apr 2024 12:01:56 -0400
+	id 1rxqge-0002zk-H4; Fri, 19 Apr 2024 12:02:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqef-0001Dj-Qf
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:02 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1rxqej-0001Fn-Bd
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:07 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
- id 1rxqeZ-00017E-O5
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:01 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-34a32ba1962so1148564f8f.2
- for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 08:59:55 -0700 (PDT)
+ id 1rxqeb-00019N-AH
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:00:02 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-346b09d474dso2032878f8f.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 08:59:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713542394; x=1714147194; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713542395; x=1714147195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=blRxAD//qWk7awT/WiqSSIKjaOzzlNxFM9Csitf6cJ0=;
- b=EXUi66CPIKd4xJAss7y15jFi5UVbWQIRHS4EGuT/yY7V8XIL++i4zPlrgytOg63ajW
- saccqyxKcK56vWdVi8jCFvCqNRId4/pz6bTJw9kevivzMl5WiJS0u+Rgw2FGEzMPeGNk
- cp1q5UjYLI9Y1GsX22XbVAp8kqX4hKT1lyaUU+VNW5fE3q9ZVBeG8OliER9PH2+bgm1k
- 7NDqrTdQNXW2UE1zW99i74cCpA9qY6dEHL6m55D/8T5/Fi28eePEGOldxsMYVHo5exVR
- 6cXxr0YGcCR63aLiryqdBjiNuyNB8zyThA9ayO9ZAqWZrAH2dGM7Bs2vhMhfjSWHaxiv
- 2tnw==
+ bh=6nYDbfiehTdxZ4oKQVaAYQN5jvjqz012O7hP4xktYbg=;
+ b=ZjRQcMD3Xx0BKMjZrbWgFtTm0A5ycbuKX+djZhe4EAASdcr0A6pTcZlaZoAQ0iOPTE
+ rSytwbC1zKg0Ii1k1KcVb75dg0A1TdIAvT0+bt40Xcl+qAGGCRWGRFeeHBc6nwy4v+fi
+ KuexClAQ/zo9gAz2JuEA4RN4dcx9mcvEYDgIh7ixyQDh/wfMe/+MW7XUS55q2yoVaYoA
+ KE1KuUnE8Ux0GjjWJpurdYOjBoc70IHCr6wEWtzNBGq9HCJ02cLZ88TVruAgREm7vsH3
+ TFkCXBzfL03rMPIAtvRyEOz7s6gCPquZ3ZmKx5KLdiXwT7DxlSLc8Ql67aqafEvO4mhY
+ 3GpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713542394; x=1714147194;
+ d=1e100.net; s=20230601; t=1713542395; x=1714147195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=blRxAD//qWk7awT/WiqSSIKjaOzzlNxFM9Csitf6cJ0=;
- b=KW0g93BmRxPBA2VQ4+cj08nL5DceU3MK4sG6zEYbY7MqN9QzyGjar6sWJxZ3VTmPRR
- Yvn6fLU5MawdKxEcXwfqsHn942M6zZOU/KVice/TfyagyDe5DdJn3hSubanzUZwwMz77
- kCyYJnBtrJDyBvWUHM8IQLngptaGVprkkeF4d+mmOrkRIFgySrWXHb2nA9wsPCRBggqe
- gB4KeBhJM+uSzpud3SXVqZhwbaIyM3LJEhe0FCxMVnJMcYwEaSjuwbp50JjyH6L/vk9j
- +WXiHjUCeTMlOba4AsCYxNYsKd9D3hGyr8mi0CLwxoEWaOpadypP55kGVkC9JwbsCVDn
- xKtg==
+ bh=6nYDbfiehTdxZ4oKQVaAYQN5jvjqz012O7hP4xktYbg=;
+ b=enjKn9yl0G4X9i34j/oulqfm/vYvtdmxJgs+hSpRmPy6vXoeBOLG9m+y49t3Qdb03S
+ Afz6DtLdY96a4QDjdr6ofcEsyAY6LBreIrIYKDD2UQHACnUbMQbtPhvK6xnii8vkCgRh
+ hpmGTiRleSnNmwtoUmhO0CCYbY/8GimNr0dzeyDe8NYsANf4eynjt9wK0c1zmdiu8a8H
+ j1s8dEepF4pg8oV4kZ8UBQJ+lgyK46G0nfkLes9weiHJpprS90ID40nePQ3jpHrZxh8W
+ Xu1CJmRjEzj0rOQuGnpOT1P/zA9TuFH4LOUuzgNNW2yvyeVJVKGJUflLekxC42xSlNv+
+ bG+A==
 X-Forwarded-Encrypted: i=1;
- AJvYcCXtG7yl/E/w+ZFEuGpKdm2TcVPthCtDDEqWX5oMT1pvua5y1KFIWPuSPjT/6yUlOzFbprXIKFYaA3G9vYzl+ImQVqype5c=
-X-Gm-Message-State: AOJu0Yz3lWGSDpdh5s3cI3GWqlVP1Hw3LOnFxAJ6EOyf83g0QtI2SXLt
- SH8sOzYFadN5wBf50TIOoGeJG+lt7HRA0ot/ofTZiitv37EKbni41dG+ifA2gNc=
-X-Google-Smtp-Source: AGHT+IHzG9aZ9yLn4f5iy1UKnAuX/xeyHRxk/T1DgICVc15UBelbDjjnn3z1bs1ndgp8yIOgSrqAjQ==
-X-Received: by 2002:a5d:4a81:0:b0:343:8d1b:b12d with SMTP id
- o1-20020a5d4a81000000b003438d1bb12dmr1452401wrq.46.1713542394163; 
- Fri, 19 Apr 2024 08:59:54 -0700 (PDT)
+ AJvYcCURIuWTYg1/2xLgApiuuazL/WPtmma+LC9KU/ksASTx5thcfStQXcXkqghY2zBRrC1ckdyZoFlU18KNVIM7bpwxcnesqnQ=
+X-Gm-Message-State: AOJu0YyTLF+HATMqwFfWeAqt7RAcoDtVgJwd+QCBJw8HWDCLB/oOH9yH
+ xhZ8X4bCZHRTCi/XyL4LO3wy241bqeCSH0viorh5pJpHC2aEaSqVvuPJ/qYJIhY=
+X-Google-Smtp-Source: AGHT+IENd+TeX2PBr9ChBBd+ruacRcP4c4TYBzXGQ3ipRL9oc1orolv3f+o8CLX8XZE/mgXca1Ufaw==
+X-Received: by 2002:a5d:6da8:0:b0:343:7032:7283 with SMTP id
+ u8-20020a5d6da8000000b0034370327283mr2695209wrs.8.1713542395421; 
+ Fri, 19 Apr 2024 08:59:55 -0700 (PDT)
 Received: from localhost.localdomain ([2.221.137.100])
  by smtp.gmail.com with ESMTPSA id
- p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.08.59.53
+ p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.08.59.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 19 Apr 2024 08:59:53 -0700 (PDT)
+ Fri, 19 Apr 2024 08:59:55 -0700 (PDT)
 From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 To: peter.maydell@linaro.org,
 	richard.henderson@linaro.org
 Cc: philmd@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org,
  qemu-devel@nongnu.org, qemu-arm@nongnu.org,
  Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: [PATCH v2 11/22] hw/core/loader: Add ROM loader notifier
-Date: Fri, 19 Apr 2024 16:56:59 +0100
-Message-ID: <20240419155709.318866-13-jean-philippe@linaro.org>
+Subject: [PATCH v2 13/22] hw/arm/boot: Register Linux BSS section for
+ confidential guests
+Date: Fri, 19 Apr 2024 16:57:01 +0100
+Message-ID: <20240419155709.318866-15-jean-philippe@linaro.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240419155709.318866-2-jean-philippe@linaro.org>
 References: <20240419155709.318866-2-jean-philippe@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,94 +97,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a function to register a notifier, that is invoked after a ROM gets
-loaded into guest memory.
+Although the BSS section is not currently part of the kernel blob, it
+needs to be registered as guest RAM for confidential guest support,
+because the kernel needs to access it before it is able to setup its RAM
+regions.
 
-It will be used by Arm confidential guest support, in order to register
-all blobs loaded into memory with KVM, so that their content is part of
-the initial VM measurement and contribute to the guest attestation.
+It would be tempting to simply add the BSS as part of the ROM blob (ie
+pass kernel_size as max_len argument to rom_add_blob()) and let the ROM
+loader notifier deal with the full image size generically, but that
+would add zero-initialization of the BSS region by the loader, which
+adds a significant overhead. For a 40MB kernel with a 17MB BSS, I
+measured an average boot time regression of 2.8ms on a fast desktop,
+5.7% of the QEMU setup time). On a slower host, the regression could be
+much larger.
+
+Instead, add a special case to initialize the kernel's BSS IPA range.
 
 Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 ---
 v1->v2: new
 ---
- include/hw/loader.h | 15 +++++++++++++++
- hw/core/loader.c    | 15 +++++++++++++++
- 2 files changed, 30 insertions(+)
+ target/arm/kvm_arm.h |  5 +++++
+ hw/arm/boot.c        | 11 +++++++++++
+ target/arm/kvm-rme.c | 10 ++++++++++
+ 3 files changed, 26 insertions(+)
 
-diff --git a/include/hw/loader.h b/include/hw/loader.h
-index 8685e27334..79fab25dd9 100644
---- a/include/hw/loader.h
-+++ b/include/hw/loader.h
-@@ -356,6 +356,21 @@ void hmp_info_roms(Monitor *mon, const QDict *qdict);
- ssize_t rom_add_vga(const char *file);
- ssize_t rom_add_option(const char *file, int32_t bootindex);
+diff --git a/target/arm/kvm_arm.h b/target/arm/kvm_arm.h
+index 47777386b0..4b787dd628 100644
+--- a/target/arm/kvm_arm.h
++++ b/target/arm/kvm_arm.h
+@@ -218,6 +218,7 @@ int kvm_arm_set_irq(int cpu, int irqtype, int irq, int level);
  
-+typedef struct RomLoaderNotify {
-+    /* Parameters passed to rom_add_blob() */
-+    hwaddr addr;
-+    size_t len;
-+    size_t max_len;
-+} RomLoaderNotify;
-+
-+/**
-+ * rom_add_load_notifier - Add a notifier for loaded images
-+ *
-+ * Add a notifier that will be invoked with a RomLoaderNotify structure for each
-+ * blob loaded into guest memory, after the blob is loaded.
-+ */
-+void rom_add_load_notifier(Notifier *notifier);
-+
- /* This is the usual maximum in uboot, so if a uImage overflows this, it would
-  * overflow on real hardware too. */
- #define UBOOT_MAX_GUNZIP_BYTES (64 << 20)
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index b8e52f3fb0..4bd236cf89 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -67,6 +67,8 @@
- #include <zlib.h>
+ int kvm_arm_rme_init(MachineState *ms);
+ int kvm_arm_rme_vm_type(MachineState *ms);
++void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size);
  
- static int roms_loaded;
-+static NotifierList rom_loader_notifier =
-+    NOTIFIER_LIST_INITIALIZER(rom_loader_notifier);
- 
- /* return the size or -1 if error */
- int64_t get_image_size(const char *filename)
-@@ -1209,6 +1211,11 @@ MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
-     return mr;
+ bool kvm_arm_rme_enabled(void);
+ int kvm_arm_rme_vcpu_init(CPUState *cs);
+@@ -243,6 +244,10 @@ static inline bool kvm_arm_sve_supported(void)
+     return false;
  }
  
-+void rom_add_load_notifier(Notifier *notifier)
++static inline void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
 +{
-+    notifier_list_add(&rom_loader_notifier, notifier);
 +}
 +
- /* This function is specific for elf program because we don't need to allocate
-  * all the rom. We just allocate the first part and the rest is just zeros. This
-  * is why romsize and datasize are different. Also, this function takes its own
-@@ -1250,6 +1257,7 @@ ssize_t rom_add_option(const char *file, int32_t bootindex)
- static void rom_reset(void *unused)
+ /*
+  * These functions should never actually be called without KVM support.
+  */
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 84ea6a807a..9f522e332b 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -26,6 +26,7 @@
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ #include "qemu/units.h"
++#include "kvm_arm.h"
+ 
+ /* Kernel boot protocol is specified in the kernel docs
+  * Documentation/arm/Booting and Documentation/arm64/booting.txt
+@@ -850,6 +851,7 @@ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
  {
-     Rom *rom;
-+    RomLoaderNotify notify;
+     hwaddr kernel_load_offset = KERNEL64_LOAD_ADDR;
+     uint64_t kernel_size = 0;
++    uint64_t page_size;
+     uint8_t *buffer;
+     int size;
  
-     QTAILQ_FOREACH(rom, &roms, next) {
-         if (rom->fw_file) {
-@@ -1298,6 +1306,13 @@ static void rom_reset(void *unused)
-         cpu_flush_icache_range(rom->addr, rom->datasize);
+@@ -916,6 +918,15 @@ static uint64_t load_aarch64_image(const char *filename, hwaddr mem_base,
+     *entry = mem_base + kernel_load_offset;
+     rom_add_blob_fixed_as(filename, buffer, size, *entry, as);
  
-         trace_loader_write_rom(rom->name, rom->addr, rom->datasize, rom->isrom);
++    /*
++     * Register the kernel BSS as realm resource, so the kernel can use it right
++     * away. Align up to skip the last page, which still contains kernel
++     * data.
++     */
++    page_size = qemu_real_host_page_size();
++    kvm_arm_rme_init_guest_ram(QEMU_ALIGN_UP(*entry + size, page_size),
++                               QEMU_ALIGN_DOWN(kernel_size - size, page_size));
 +
-+        notify = (RomLoaderNotify) {
-+            .addr = rom->addr,
-+            .len = rom->datasize,
-+            .max_len = rom->romsize,
-+        };
-+        notifier_list_notify(&rom_loader_notifier, &notify);
-     }
+     g_free(buffer);
+ 
+     return kernel_size;
+diff --git a/target/arm/kvm-rme.c b/target/arm/kvm-rme.c
+index bee6694d6d..b2ad10ef6d 100644
+--- a/target/arm/kvm-rme.c
++++ b/target/arm/kvm-rme.c
+@@ -203,6 +203,16 @@ int kvm_arm_rme_init(MachineState *ms)
+     return 0;
  }
  
++/*
++ * kvm_arm_rme_init_guest_ram - Initialize a Realm IPA range
++ */
++void kvm_arm_rme_init_guest_ram(hwaddr base, size_t size)
++{
++    if (rme_guest) {
++        rme_add_ram_region(base, size, /* populate */ false);
++    }
++}
++
+ int kvm_arm_rme_vcpu_init(CPUState *cs)
+ {
+     ARMCPU *cpu = ARM_CPU(cs);
 -- 
 2.44.0
 
