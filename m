@@ -2,71 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7868AB1EE
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 17:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 757918AB2B3
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:01:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxqFN-0002gi-GP; Fri, 19 Apr 2024 11:33:53 -0400
+	id 1rxqfF-0001Om-8T; Fri, 19 Apr 2024 12:00:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rxqFJ-0002gO-Gh
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 11:33:49 -0400
-Received: from mgamail.intel.com ([192.198.163.10])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rxqFG-00050B-PJ
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 11:33:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713540827; x=1745076827;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=OjL9zuSBepPcGKGulHFLf8EQXC8Vuo7eSuUhldPlItw=;
- b=IAmgOVkSe7wndRFTQj88o9/oZBGPHMAHLMakmhbYTjCko+8lHBdP/jPP
- 62xiuFz2hlGwmaxUg06CXqXB76cP4eMrh3BihuQqw66BpPlWNzTIvRpI/
- fajDVhxpO6kB1wG3EOfHb14nHv+r6cT440UF1kfXI4npKxWxI2G0uPcZL
- jiLXFrkUihEt/uWnyeoe35ZE/M8w8+IUNCEBp/TZQ+XbmpHMGtVyswv3b
- k4h4YqdHxUYwY7wY0YGqIOruPIZ8RikK+O/5i/vVWDVdjRlrLbDIhlPRT
- mPf5MYnN9rAg49rS00+XemRqhhRC4o+EdZxh4am9IjFNNBgOxarMUFbTx g==;
-X-CSE-ConnectionGUID: 1IpnBtGRTtqLIbcDqvuLCA==
-X-CSE-MsgGUID: H5WjZ4M3TS2VsJ/nmtAQLg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11049"; a="20539146"
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="20539146"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Apr 2024 08:33:44 -0700
-X-CSE-ConnectionGUID: o1h8OHf+SgW3/a/vV8806Q==
-X-CSE-MsgGUID: hsfeakOJQWyeirNqkdpPig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,214,1708416000"; d="scan'208";a="23435683"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa007.fm.intel.com with ESMTP; 19 Apr 2024 08:33:41 -0700
-Date: Fri, 19 Apr 2024 23:47:46 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Anthony Harivel <aharivel@redhat.com>
-Cc: pbonzini@redhat.com, mtosatti@redhat.com, berrange@redhat.com,
- qemu-devel@nongnu.org, vchundur@redhat.com, rjarry@redhat.com
-Subject: Re: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
-Message-ID: <ZiKSIkQQnIBQU4pV@intel.com>
-References: <20240411121434.253353-1-aharivel@redhat.com>
- <20240411121434.253353-4-aharivel@redhat.com>
- <Zh+fRliUJ8sPcOpD@intel.com> <D0N6WWRR5VKO.29E6AQDHW1X6A@fedora>
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1rxqeY-00014t-6U
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 11:59:55 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <jean-philippe@linaro.org>)
+ id 1rxqeT-00015N-NZ
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 11:59:53 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-419c8c314d4so2902625e9.0
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 08:59:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1713542387; x=1714147187; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wF2tUJhmRvxM/T9bOvPLdjIMa/R/CPSkeOISd4fhQks=;
+ b=SfgLhn10dTv6h5Y1T+oLUfxgy3Khm9RiK/I9Dx3m2n6n1rYEs0jKdCg3STrVzBEW7I
+ Zd3QngQGudESwR0WPRoOiWsSRqv/uIw9F2pyRtbaL/Ejs3Rlr/E4ygB5hsMswCJ9aA6e
+ pizmaKJah5468ugT0N8L6ZbgN7qMSjbz3LmhRYsmttUwkIefhGQ8jE74d8goWZ6Sc9jW
+ vQ93s1RtBwJPRPJmBiC27TwK7ClJ+1s9bXpGG3NcjRSNUVVB+Z+GpnsAF33Q8B0fgyMo
+ TcxAu5loCXlw/SOsh2Q1r7LcsRNthzUjPDZrE/kSwAOXz8jfAfGiHnO9oCYZFbndy7VY
+ PL9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713542387; x=1714147187;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=wF2tUJhmRvxM/T9bOvPLdjIMa/R/CPSkeOISd4fhQks=;
+ b=HalZbJLPa7m/GoW6ptJ/CKaztkdFJVRCWx/RShq9vtxpzVoon8JwtYBBJnWDpXN4DV
+ SoAm4+otn+qtMlN2Urk6Hs6/gYtQyep1ezZjr1ErisPlIEmAvaryknhJPtrIV4gF7KTI
+ ENHOnh9vYMEcKfHxOpI7K/YXdGTHI7x74cKmwP3V7F4k8M22U6W8o9VSmg4StFmVVlhT
+ MTthQAonXFw/w5DAFnT4YnpYIx04CLHSzuZ7KnKVcqQ8h3RnY/1gC3+SANGmzAtynq41
+ dnIrFq20uABlqP1SBmZtdrOxZv0G2p5XDTN/Tk1RmnrO71FFl6P7qb/BWkc5k6MZgD7Q
+ GDbA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWEN+eVmwPmOoNBkegVFiV71SKDuf+3NfAeEISrD2vv7yA4ouyfDonTA3EN5ME5AsZEZi6UoIkp4AQXi2g6reP0GWEueJI=
+X-Gm-Message-State: AOJu0Yz0qGxJ2tcMYgNPIgEkHHflwwmjykBPCR+aHyhkGk6fG80QKJoQ
+ DaDDiwrHbmayl52X/aOfbtwByU3Cf9VAkmyUd5JJJlmyjH/cc7PoCT6FtKUuHdI=
+X-Google-Smtp-Source: AGHT+IEiRI0eMWirDzLkMfmstUZjsYIpT5VQHFucWRVWQQLXNXR8Do1zelw3/ID4ONhnZvX3HWIgqw==
+X-Received: by 2002:adf:e60d:0:b0:34a:4f5a:ac20 with SMTP id
+ p13-20020adfe60d000000b0034a4f5aac20mr1535118wrm.11.1713542386895; 
+ Fri, 19 Apr 2024 08:59:46 -0700 (PDT)
+Received: from localhost.localdomain ([2.221.137.100])
+ by smtp.gmail.com with ESMTPSA id
+ p13-20020adfe60d000000b00349b73143e7sm4793089wrm.75.2024.04.19.08.59.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 19 Apr 2024 08:59:46 -0700 (PDT)
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+To: peter.maydell@linaro.org,
+	richard.henderson@linaro.org
+Cc: philmd@linaro.org, pbonzini@redhat.com, alex.bennee@linaro.org,
+ qemu-devel@nongnu.org, qemu-arm@nongnu.org,
+ Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [PATCH v2 00/22] arm: Run CCA VMs with KVM
+Date: Fri, 19 Apr 2024 16:56:48 +0100
+Message-ID: <20240419155709.318866-2-jean-philippe@linaro.org>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D0N6WWRR5VKO.29E6AQDHW1X6A@fedora>
-Received-SPF: pass client-ip=192.198.163.10; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -66
-X-Spam_score: -6.7
-X-Spam_bar: ------
-X-Spam_report: (-6.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.313,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=jean-philippe@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,203 +94,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Anthony,
+These patches enable launching a confidential guest with QEMU KVM on
+Arm. The KVM changes for CCA have now been posted as v2 [1]. Launching a
+confidential VM requires two additional command-line parameters:
 
-On Thu, Apr 18, 2024 at 12:52:14PM +0200, Anthony Harivel wrote:
-> Date: Thu, 18 Apr 2024 12:52:14 +0200
-> From: Anthony Harivel <aharivel@redhat.com>
-> Subject: Re: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
-> 
-> > The package energy consumption includes core part and uncore part, where
-> > uncore part consumption may not be able to be scaled based on vCPU
-> > runtime ratio.
-> >
-> > When the uncore part consumption is small, the error in this part is
-> > small, but if it is large, then the error generated by scaling by vCPU
-> > runtime will be large.
-> >
-> 
-> So far we can only work with what Intel is giving us i.e Package power 
-> plane and DRAM power plane on server, which is the main target of 
-> this feature. Maybe in the future, Intel will expand the core power 
-> plane and the uncore power plane to server class CPU ?
+        -M confidential-guest-support=rme0
+        -object rme-guest,id=rme0
 
-Not future features, I'd like to illustrate the impact of the uncore
-part (iGPU/NPU on Client or various accelerators on Server) on this
-algorithm. Because the consumption of the uncore part is complex and not
-necessarily linearly related to the vCPU task running time.
+Since the RFC [2] I tried to address all review comments, and added a
+few features:
 
-It might be worth to state potential impact on accuracy of uncore parts
-to doc (I doubt that heavy uncore consumption will even affect the
-consistency of the energy trend as you said).
+* Enabled support for guest memfd by Xiaoyao Li and Chao Peng [3].
+  Guest memfd is mandatory for CCA.
 
-Anyway, clearer scenarios help this feature get used.
+* Support firmware boot (edk2).
 
-> > May I ask what your usage scenario is? Is there significant uncore
-> > consumption (e.g. GPU)?
-> >
-> 
-> Same answer as above: uncore/graphics power plane is only available on 
-> client class CPU. 
+* Use CPU command-line arguments for Realm parameters. SVE vector length
+  uses the existing sve<N> -cpu parameters, while breakpoints, watchpoints
+  and PMU counters use new CPU parameters.
 
-Yes, iGPU is, but server may have other accelerators, e.g., DSA/IAA/QAT
-on SPR.
+The full series based on the memfd patches is at:
+https://git.codelinaro.org/linaro/dcap/qemu.git branch cca/v2
 
-> > Also, I think of a generic question is whether the error in this
-> > calculation is measurable? Like comparing the RAPL status of the same
-> > workload on Guest and bare metal to check the error.
-> >
-> > IIUC, this calculation is highly affected by native/sibling Guests,
-> > especially in cloud scenarios where there are multiple Guests, the
-> > accuracy of this algorithm needs to be checked.
-> >
-> 
-> Indeed, depending on where your vCPUs are running within the package (on 
-> the native or sibling CPU), you might observe different power 
-> consumption levels. However, I don't consider this to be a problem, as 
-> the ratio calculation takes into account the vCPU's location.
-> 
-> We also need to approach the measurement differently. Due to the 
-> complexity of factors influencing power consumption, we must compare 
-> what is comparable. If you require precise power consumption data, 
-> use a power meter on the PSU of the server.It will provide the 
-> ultimate judgment. However, if you need an estimation to optimize 
-> software workloads in a guest, then this feature could be useful. All my 
-> tests have consistently shown reproducible output in terms of power 
-> consumption, which has convinced me that we can effectively work with 
-> it.
+Please find instructions for building and running the whole CCA stack at:
+https://linaro.atlassian.net/wiki/spaces/QEMU/pages/29051027459/Building+an+RME+stack+for+QEMU
 
-Thanks, another mail in which you illustrated that the trend is
-consistent.
+[1] https://lore.kernel.org/kvm/20240412084056.1733704-1-steven.price@arm.com/
+[2] https://lore.kernel.org/all/20230127150727.612594-1-jean-philippe@linaro.org/
+[3] https://lore.kernel.org/qemu-devel/20240322181116.1228416-1-pbonzini@redhat.com/
 
-[snip]
+Jean-Philippe Brucker (22):
+  kvm: Merge kvm_check_extension() and kvm_vm_check_extension()
+  target/arm: Add confidential guest support
+  target/arm/kvm: Return immediately on error in kvm_arch_init()
+  target/arm/kvm-rme: Initialize realm
+  hw/arm/virt: Add support for Arm RME
+  hw/arm/virt: Disable DTB randomness for confidential VMs
+  hw/arm/virt: Reserve one bit of guest-physical address for RME
+  target/arm/kvm: Split kvm_arch_get/put_registers
+  target/arm/kvm-rme: Initialize vCPU
+  target/arm/kvm: Create scratch VM as Realm if necessary
+  hw/core/loader: Add ROM loader notifier
+  target/arm/kvm-rme: Populate Realm memory
+  hw/arm/boot: Register Linux BSS section for confidential guests
+  target/arm/kvm-rme: Add Realm Personalization Value parameter
+  target/arm/kvm-rme: Add measurement algorithm property
+  target/arm/cpu: Set number of breakpoints and watchpoints in KVM
+  target/arm/cpu: Set number of PMU counters in KVM
+  target/arm/kvm: Disable Realm reboot
+  target/arm/cpu: Inform about reading confidential CPU registers
+  target/arm/kvm-rme: Enable guest memfd
+  hw/arm/virt: Move virt_flash_create() to machvirt_init()
+  hw/arm/virt: Use RAM instead of flash for confidential guest firmware
 
-> >
-> > In addition, RAPL is basically a CPU feature, I think it would be more
-> > appropriate to make it as a x86 CPU's property.
-> >
-> > Your RAPL support actually provides a framework for assisting KVM
-> > emulation in userspace, so this informs other feature support (maybe model
-> > specific, or architectural) in the future. Enabling/disabling CPU features
-> > via -cpu looks more natural.
-> 
-> This is totally dependant of KVM because it used the KVM MSR Filtering 
-> to access userspace when a specific MSR is required.
+ docs/system/arm/virt.rst                   |   9 +-
+ docs/system/confidential-guest-support.rst |   1 +
+ qapi/qom.json                              |  34 +-
+ include/hw/arm/boot.h                      |   9 +
+ include/hw/arm/virt.h                      |   2 +-
+ include/hw/loader.h                        |  15 +
+ include/sysemu/kvm.h                       |   2 -
+ include/sysemu/kvm_int.h                   |   1 +
+ target/arm/cpu.h                           |  10 +
+ target/arm/kvm_arm.h                       |  25 ++
+ accel/kvm/kvm-all.c                        |  34 +-
+ hw/arm/boot.c                              |  45 ++-
+ hw/arm/virt.c                              | 118 ++++--
+ hw/core/loader.c                           |  15 +
+ target/arm/arm-qmp-cmds.c                  |   1 +
+ target/arm/cpu.c                           |   5 +
+ target/arm/cpu64.c                         | 118 ++++++
+ target/arm/kvm-rme.c                       | 413 +++++++++++++++++++++
+ target/arm/kvm.c                           | 200 +++++++++-
+ target/i386/kvm/kvm.c                      |   6 +-
+ target/ppc/kvm.c                           |  36 +-
+ target/arm/meson.build                     |   7 +-
+ 22 files changed, 1023 insertions(+), 83 deletions(-)
+ create mode 100644 target/arm/kvm-rme.c
 
-Yes, but in other words, other KVM based features (completely hardware
-virtualization) are also configured by -cpu. This RAPL is still a CPU
-feature and just need KVM's help.
- 
-> I can try to find a way to use -cpu for this feature and check if KVM is 
-> activated or not. 
->
-
-[snip]
-
-> >
-> > I understand tick would ignore frequency changes, e.g., HWP's auto-pilot
-> > or turbo boost. All these CPU frequency change would impact on core energy
-> > consumption.
-> >
-> > I think the better way would be to use APERF counter, but unfortunately it
-> > lacks virtualization support (for Intel).
-> >
-> > Due to such considerations, it may be more worthwhile to evaluate the
-> > accuracy of this tick-based algorithm.
-> >
-> 
-> I've evaluated such things with another tool called Kepler [1]. This 
-> tool calculate the power ratio with metrics from RAPL and uses either 
-> eBPF or the tick based systems for time metrics.
-
-Thanks for this information! I understand current tick based algorithm
-is a common approximation in the industry (like Kepler), right?
-
-> The eBPF part [2] is 
-> triggered on each 'finish_task_switch' of Thread and calculate the delta 
-> of cpu cycle, cache miss, cpu time, etc. Very complex. My tests showed 
-> that the difference between using eBPF and tick based ratio is really 
-> not that important. Maybe on some special cases, using eBPF would show 
-> a way better accuracy but I'm not aware of that.
-
-Good to know!
-
-Just curious, so for using Kepler in Guest to optimize the task (your
-use case), is it only necessary that the trends are similar and there
-is no requirement for accuracy of the values?
- 
-> [1]: https://github.com/sustainable-computing-io/kepler
-> [2]: https://github.com/sustainable-computing-io/kepler/blob/main/bpfassets/libbpf/src/kepler.bpf.c
-> 
-
-[snip]
-
-> >
-> > > +        /* Sleep a short period while the other threads are working */
-> > > +        usleep(MSR_ENERGY_THREAD_SLEEP_US);
-> >
-> > Is it possible to passively read the energy status? i.e. access the Host
-> > MSR and calculate the energy consumption for the Guest when the Guest
-> > triggers the relevant exit.
-> >
-> 
-> Yes it could be possible. But what I wanted to avoid with my approach is 
-> the overhead it could take when accessing a RAPL MSR in the Guest.
-> The value is always available and return very quickly. 
-> I'm not sure about the overhead if we have to have to access the MSR, 
-> then do the calculation and so on.
-> 
-> > I think this might make the error larger, but not sure the error would
-> > be so large as to be unacceptable.
-> >
-> 
-> I'm a bit concerned about the potential overflow in calculation if the 
-> time in between is too big. 
-
-Okay.
-
-[snip]
-
-> > > +int is_rapl_enabled(void)
-> > > +{
-> > > +    const char *path = "/sys/class/powercap/intel-rapl/enabled";
-> >
-> > This field does not ensure the existence of RAPL MSRs since TPMI would
-> > also enable this field. (See powercap_register_control_type() in
-> > drivers/powercap/intel_rapl_{msr,tpmi}.c)
-> >
-> 
-> But this is exactly what it is intended to do. Wether it is MSR of TPMI, 
-> checking this, tell me that RAPL is activated or not. If it is 
-> activated...
->
-> > We can read RAPL MSRs directly. If we get 0 or failure, then there's no
-> > RAPL MSRs on Host.
-> >
-> 
-> ... then it is safe to access the RAPL MSR. I would not like to access 
-> this on a XYZ cpu without knowing I can !
-
-RAPL will disappear and this field can't ease your concern. ;-)
-
-Even if there are no commercially available machines yet, the logic of
-the linux driver has shown that relying on this item is unreliable.
-
-For model specific features, either use the CPU model ID to know if it
-is supported, or to access the relevant MSR directly. Even if the
-feature is not supported, the register address should not be used for
-other purposes, so I don't think there is information leak problem here.
-
-[snip]
-> 
-> Thanks a lot for all your feedback Zhao !
->
-
-You're welcome! I've also been thinking about how to support the
-emulation of other thermal features in user space in QEMU, as you did
-with RAPL.
-
-Regards,
-Zhao
+-- 
+2.44.0
 
 
