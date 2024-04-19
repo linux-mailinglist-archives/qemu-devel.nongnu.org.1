@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E728AA88C
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 08:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA3B8AA88E
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 08:44:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxhy8-0007oZ-Hv; Fri, 19 Apr 2024 02:43:32 -0400
+	id 1rxhyF-0007pa-1x; Fri, 19 Apr 2024 02:43:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxhxv-0007mv-VV; Fri, 19 Apr 2024 02:43:22 -0400
+ id 1rxhxy-0007nA-HC; Fri, 19 Apr 2024 02:43:23 -0400
 Received: from mgamail.intel.com ([198.175.65.11])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rxhxu-0001C1-9C; Fri, 19 Apr 2024 02:43:19 -0400
+ id 1rxhxw-0001C1-Ju; Fri, 19 Apr 2024 02:43:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713508998; x=1745044998;
+ t=1713509000; x=1745045000;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UkzcgPrX7JhPfDWYAR9t1jT+HmH8Ih9TbuBc2w9snTU=;
- b=Thh8p90paUwISuCL9RBg9/ZBu5OL620AzLhMXyksVvKVHbPEXzGSEFhz
- hk2psyg34Ix8Itu5Qu2mPd1slj/lMe5xltDHZYsINH1nnyyDrmoPDjuwj
- N4igtfBv9F4cbpQtjgndNl5AtY8HYqG5eLWUnHi55mgZMz/Tam1i2eDrU
- pwAPpDTuNOt3tsR6IWSFruGsg0PVJQlgsxYVwWv60AWlE8xMXllsCNN0q
- D4v0a3ecCL5tD4+pQwwdxZuD4SKSNsIvPiLMD+BIqY+7cn7BO6SxjKXAw
- eq8fufI/fZ2hQJ7Rwf5cIOKonVXv2Cx+U4RcZXID/zU5cpELQrsezKcVX w==;
-X-CSE-ConnectionGUID: mywXvmwSQWaKgpeEB6s+Pw==
-X-CSE-MsgGUID: hENosOE/RVu789S1fHoyWA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="19659924"
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="19659924"
+ bh=LwFLeqkK2C7815gQQwiOlEqSvA1CBsyQ8KubM+wnykI=;
+ b=ZGv44uPu4cfSRTB+AQ4tTQabXwqpguKH4WOXCLGpqPwEAIOF6gC2hS0I
+ 7G+hmGCgP47VoWIP3C/ObSEx3/v3kmXjtzXpW/0IqreDlZ1IVuUcDTHLl
+ VyT18aG+M8fJIMvHCjPkj+oZAw762LoTJtRW8GJwHb8WkUp/3cmoeYYwZ
+ Pf4w2wp3RwPRZOJV+wR/yyPbkbwUkLKrzUroTEP8+Q5a7ClA6kkIzVt4q
+ wiNHUQIV/8/TpTdUyjZp7jEPbHwfs1rkczgIYhgMhqX8kD9vQAqRm8nRG
+ s6V/u6BQUKD0KGiXtKU8SSIKuVCQ9bOa5nSiK+wFbKJjz8VD6yQXnDjd6 Q==;
+X-CSE-ConnectionGUID: cIh4/bI5RqylTy+/0yNmyw==
+X-CSE-MsgGUID: bKoxjEcvTGO57vwlGiFlxg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11047"; a="19659930"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="19659930"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Apr 2024 23:43:16 -0700
-X-CSE-ConnectionGUID: GDKasGoYTKaAuq9XzRk/6Q==
-X-CSE-MsgGUID: 7yRWAzbTQEukKOq5RH76+A==
+ 18 Apr 2024 23:43:19 -0700
+X-CSE-ConnectionGUID: OQCZVyfFT9mVPkcdyuOKRQ==
+X-CSE-MsgGUID: RGPOX07FTkijby1WNR6q+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="28071850"
+X-IronPort-AV: E=Sophos;i="6.07,213,1708416000"; d="scan'208";a="28071880"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa004.jf.intel.com with ESMTP; 18 Apr 2024 23:43:14 -0700
+ by orviesa004.jf.intel.com with ESMTP; 18 Apr 2024 23:43:16 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -48,10 +48,10 @@ To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Christian Borntraeger <borntraeger@linux.ibm.com>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH 2/6] target/s390x/cpu_model: Drop local @err in
- s390_realize_cpu_model()
-Date: Fri, 19 Apr 2024 14:57:08 +0800
-Message-Id: <20240419065712.1225038-3-zhao1.liu@linux.intel.com>
+Subject: [PATCH 3/6] target/s390x/cpu_models: Make
+ kvm_s390_get_host_cpu_model() return boolean
+Date: Fri, 19 Apr 2024 14:57:09 +0800
+Message-Id: <20240419065712.1225038-4-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240419065712.1225038-1-zhao1.liu@linux.intel.com>
 References: <20240419065712.1225038-1-zhao1.liu@linux.intel.com>
@@ -82,37 +82,132 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Use @errp to fetech error information directly and drop the local
-virable @err.
+As error.h suggested, the best practice for callee is to return
+something to indicate success / failure.
 
-Suggested-by: Thomas Huth <thuth@redhat.com>
+So make kvm_s390_get_host_cpu_model() return boolean and check the
+returned boolean in get_max_cpu_model() instead of accessing @err.
+
+Additionally, since now get_max_cpu_model() returns directly if
+kvm_s390_get_host_cpu_model() fills @err, so make
+kvm_s390_get_host_cpu_model() return true by default for the non-KVM
+case in target/s390x/cpu_models.h.
+
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 ---
- target/s390x/cpu_models.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/s390x/cpu_models.c |  9 ++++-----
+ target/s390x/cpu_models.h |  5 +++--
+ target/s390x/kvm/kvm.c    | 13 +++++++------
+ 3 files changed, 14 insertions(+), 13 deletions(-)
 
 diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 8cb47d905fb4..052540a866ac 100644
+index 052540a866ac..a0e4acb707d7 100644
 --- a/target/s390x/cpu_models.c
 +++ b/target/s390x/cpu_models.c
-@@ -577,7 +577,6 @@ S390CPUModel *get_max_cpu_model(Error **errp)
- void s390_realize_cpu_model(CPUState *cs, Error **errp)
- {
-     ERRP_GUARD();
--    Error *err = NULL;
-     S390CPUClass *xcc = S390_CPU_GET_CLASS(cs);
-     S390CPU *cpu = S390_CPU(cs);
-     const S390CPUModel *max_model;
-@@ -606,8 +605,7 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
-     cpu->model->cpu_ver = max_model->cpu_ver;
- 
-     check_consistency(cpu->model);
--    if (!check_compatibility(max_model, cpu->model, &err)) {
--        error_propagate(errp, err);
-+    if (!check_compatibility(max_model, cpu->model, errp)) {
-         return;
+@@ -560,16 +560,15 @@ S390CPUModel *get_max_cpu_model(Error **errp)
      }
  
+     if (kvm_enabled()) {
+-        kvm_s390_get_host_cpu_model(&max_model, &err);
++        if (!kvm_s390_get_host_cpu_model(&max_model, &err)) {
++            error_propagate(errp, err);
++            return NULL;
++        }
+     } else {
+         max_model.def = s390_find_cpu_def(QEMU_MAX_CPU_TYPE, QEMU_MAX_CPU_GEN,
+                                           QEMU_MAX_CPU_EC_GA, NULL);
+         bitmap_copy(max_model.features, qemu_max_cpu_feat, S390_FEAT_MAX);
+     }
+-    if (err) {
+-        error_propagate(errp, err);
+-        return NULL;
+-    }
+     cached = true;
+     return &max_model;
+ }
+diff --git a/target/s390x/cpu_models.h b/target/s390x/cpu_models.h
+index d7b89129891a..5041c1e10fed 100644
+--- a/target/s390x/cpu_models.h
++++ b/target/s390x/cpu_models.h
+@@ -116,12 +116,13 @@ S390CPUDef const *s390_find_cpu_def(uint16_t type, uint8_t gen, uint8_t ec_ga,
+ 
+ #ifdef CONFIG_KVM
+ bool kvm_s390_cpu_models_supported(void);
+-void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp);
++bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp);
+ void kvm_s390_apply_cpu_model(const S390CPUModel *model,  Error **errp);
+ #else
+-static inline void kvm_s390_get_host_cpu_model(S390CPUModel *model,
++static inline bool kvm_s390_get_host_cpu_model(S390CPUModel *model,
+                                                Error **errp)
+ {
++    return true;
+ }
+ static inline void kvm_s390_apply_cpu_model(const S390CPUModel *model,
+                                             Error **errp)
+diff --git a/target/s390x/kvm/kvm.c b/target/s390x/kvm/kvm.c
+index 4ce809c5d46b..57937b4ddbef 100644
+--- a/target/s390x/kvm/kvm.c
++++ b/target/s390x/kvm/kvm.c
+@@ -2375,7 +2375,7 @@ bool kvm_s390_cpu_models_supported(void)
+                              KVM_S390_VM_CPU_MACHINE_SUBFUNC);
+ }
+ 
+-void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
++bool kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+ {
+     struct kvm_s390_vm_cpu_machine prop = {};
+     struct kvm_device_attr attr = {
+@@ -2390,14 +2390,14 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+ 
+     if (!kvm_s390_cpu_models_supported()) {
+         error_setg(errp, "KVM doesn't support CPU models");
+-        return;
++        return false;
+     }
+ 
+     /* query the basic cpu model properties */
+     rc = kvm_vm_ioctl(kvm_state, KVM_GET_DEVICE_ATTR, &attr);
+     if (rc) {
+         error_setg(errp, "KVM: Error querying host CPU model: %d", rc);
+-        return;
++        return false;
+     }
+ 
+     cpu_type = cpuid_type(prop.cpuid);
+@@ -2420,13 +2420,13 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+     rc = query_cpu_feat(model->features);
+     if (rc) {
+         error_setg(errp, "KVM: Error querying CPU features: %d", rc);
+-        return;
++        return false;
+     }
+     /* get supported cpu subfunctions indicated via query / test bit */
+     rc = query_cpu_subfunc(model->features);
+     if (rc) {
+         error_setg(errp, "KVM: Error querying CPU subfunctions: %d", rc);
+-        return;
++        return false;
+     }
+ 
+     /* PTFF subfunctions might be indicated although kernel support missing */
+@@ -2482,7 +2482,7 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+     }
+     if (!model->def) {
+         error_setg(errp, "KVM: host CPU model could not be identified");
+-        return;
++        return false;
+     }
+     /* for now, we can only provide the AP feature with HW support */
+     if (ap_available()) {
+@@ -2506,6 +2506,7 @@ void kvm_s390_get_host_cpu_model(S390CPUModel *model, Error **errp)
+     /* strip of features that are not part of the maximum model */
+     bitmap_and(model->features, model->features, model->def->full_feat,
+                S390_FEAT_MAX);
++    return true;
+ }
+ 
+ static int configure_uv_feat_guest(const S390FeatBitmap features)
 -- 
 2.34.1
 
