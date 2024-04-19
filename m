@@ -2,63 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943648AB2E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEB18AB34C
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 18:26:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxqoL-0004Lt-1R; Fri, 19 Apr 2024 12:10:01 -0400
+	id 1rxr2T-000069-Fx; Fri, 19 Apr 2024 12:24:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxqo8-0004FR-C8; Fri, 19 Apr 2024 12:09:48 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1rxqo5-0002ge-8K; Fri, 19 Apr 2024 12:09:48 -0400
-Received: from mail.maildlp.com (unknown [172.18.186.31])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VLfgB67pKz6JBJF;
- Sat, 20 Apr 2024 00:07:34 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
- by mail.maildlp.com (Postfix) with ESMTPS id BFEF4140A35;
- Sat, 20 Apr 2024 00:09:40 +0800 (CST)
-Received: from localhost (10.122.247.231) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 19 Apr
- 2024 17:09:40 +0100
-Date: Fri, 19 Apr 2024 17:09:38 +0100
-To: Gerd Hoffmann <kraxel@redhat.com>
-CC: <devel@edk2.groups.io>, Jonathan Cameron via <qemu-devel@nongnu.org>,
- <linuxarm@huawei.com>, Richard Henderson <richard.henderson@linaro.org>,
- <qemu-arm@nongnu.org>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Idan Horowitz <idan.horowitz@gmail.com>, "Ard
- Biesheuvel" <ardb@kernel.org>
-Subject: Re: [edk2-devel] [PATCH v3 5/6] target/arm: Do memory type
- alignment check when translation disabled
-Message-ID: <20240419170938.00000551@huawei.com>
-In-Reply-To: <kjpkyoux2xcegrqshde5ddhicf33jnlelobuzuo4uj4svvlzdn@rilun7dz6776>
-References: <20240301204110.656742-1-richard.henderson@linaro.org>
- <20240301204110.656742-6-richard.henderson@linaro.org>
- <20240416161111.0000607c@huawei.com>
- <0c878d25-3fbb-4f0b-bc9e-ca638f8c4f1e@linaro.org>
- <20240418091555.00006666@Huawei.com>
- <20240418183600.00000345@huawei.com>
- <kjpkyoux2xcegrqshde5ddhicf33jnlelobuzuo4uj4svvlzdn@rilun7dz6776>
-Organization: Huawei Technologies R&D (UK) Ltd.
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.29; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rxr2Q-00005u-Dz
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:24:35 -0400
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1rxr2O-00055R-Ij
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 12:24:34 -0400
+Received: by mail-ed1-x534.google.com with SMTP id
+ 4fb4d7f45d1cf-56e48d0a632so3295139a12.2
+ for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 09:24:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1713543871; x=1714148671; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ThOdf3CEKVS76HfiU+v7D2UgrXRt1rmfNWDmDmqWuvY=;
+ b=mMsFpFfmKRKu10JO+x3wYb6hC3d5pfHL9Mg5FVPdwLkjzF0VhmMSVRZh66W2D1arty
+ KOQTNu3/Nwchjx3kauY05l7pp+DnvDMpF3+lu45UdSNZ1XT4oykddr7skMiiIbp44tEA
+ 15yVYAgHaDUi+X/E8P3z+mxOH2PlUa5Mw0rVfsZvdjULXa9B4flwUi9sPgTdB/qxoOOG
+ CH5KnfSRBzqatya1AOrly4FbvSxEpDSJOZ7yGyC3ArxMd9xlR2OR/2pXgipV5QYTD/60
+ 739jolivR1QIVPyC+My7gMEuVBjQ6QnzpqhsrkGTsVqi8NwKGNqCpDE/Vsz7L5e3SIEq
+ YxkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713543871; x=1714148671;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ThOdf3CEKVS76HfiU+v7D2UgrXRt1rmfNWDmDmqWuvY=;
+ b=HEDJb0rGhw3UP1AjyTIX/OyhOFRbphFmqmtk1VEK0V7QBRl30mxyX36+ehZ4dU8Gcv
+ 560D17gq3VyBqjKADVYSOFktfBrgS9gF8bDe5hjo0BJJqGYSkphGJqVZH+2mugVqLcgx
+ Qloi421l9tQzQo4uMJCnIN9WiUHZOeg2dhyhb9D+bEcKjk7/Tk/KcZ8EV/MuPFMR9i2J
+ s/19lS7lZ4LgCSmw5ZcCY9r+sxOQH0YWZ4sEKR0VjYJLKDGvAKVfytEiHdugOHuKUHTi
+ qmbrdmlPxnqKdsclht7YQmeIQZ00XKzdOdxClp7HePpJ8Y5P3zkfBXZbS/WuRlMV2TLd
+ owBA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWocEP24Lb0AbCuCUnmQQWZkXEWIH/cjtow4RmTd7yzWrHnQpu4nAR0NSMwWbeo90DDK4XKqGKGrcBJ9BCwabnnT/I0VOI=
+X-Gm-Message-State: AOJu0Yzt4w4QeoxqNPWulRfFOSZ98JBQP1U4DUrhBNcyFdLaGtmjDBYD
+ QPe1zNQcNDRyx0naNhMB4MDx8phSjceKTkkWox8gD/W5fHOd+unsDIn5kje0aiE/hUrqDPmI61Q
+ aaE5yTjMR3GWscdHbZJI1kX3bNTESVIE3I3qiMBE+pqk/sLz4
+X-Google-Smtp-Source: AGHT+IF+NkntMuL4xFbpCPWgyeyJVzcCFTmduE/pSTE+ZCH57YXceVBSmvP6QXkmZS2QlcYMAASGFtOeZR+DZq3zA10=
+X-Received: by 2002:a50:ccd7:0:b0:56e:edc:9837 with SMTP id
+ b23-20020a50ccd7000000b0056e0edc9837mr2481210edj.35.1713543870869; Fri, 19
+ Apr 2024 09:24:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20240418191602.2017-1-raphael.poggi@lynxleap.co.uk>
+ <5b8ce05b-62c6-4362-aa16-a9e845eb4df7@linaro.org>
+ <CACqcpZCubN0Bnmht03TRCWdtYUd4aOpitcx31J+NiMEe2vWhSA@mail.gmail.com>
+ <CAFEAcA9wcaptrL5LHWah0MeKP1CV-WbfwsS65kibLwJ4TpvjTg@mail.gmail.com>
+ <CACqcpZDv8gjKhMygmAWkyfYqPH-NVz4RpPb8Q0tBTege_Gro4Q@mail.gmail.com>
+In-Reply-To: <CACqcpZDv8gjKhMygmAWkyfYqPH-NVz4RpPb8Q0tBTege_Gro4Q@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 19 Apr 2024 17:24:19 +0100
+Message-ID: <CAFEAcA939C3jQ+=of1L1+iGybTuPDfoL0+dgshuuyd9AKhXnQA@mail.gmail.com>
+Subject: Re: [PATCH] hw/core/clock: always iterate through childs in
+ clock_propagate_period
+To: Raphael Poggi <raphael.poggi@lynxleap.co.uk>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ qemu-devel@nongnu.org, luc@lmichel.fr, damien.hedde@dahe.fr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::534;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x534.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,119 +92,42 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 19 Apr 2024 13:52:07 +0200
-Gerd Hoffmann <kraxel@redhat.com> wrote:
+On Fri, 19 Apr 2024 at 17:09, Raphael Poggi
+<raphael.poggi@lynxleap.co.uk> wrote:
+>
+> Hi Peter,
+>
+> Le ven. 19 avr. 2024 =C3=A0 16:08, Peter Maydell <peter.maydell@linaro.or=
+g> a =C3=A9crit :
+> >
+> > On Thu, 18 Apr 2024 at 21:39, Raphael Poggi
+> > <raphael.poggi@lynxleap.co.uk> wrote:
+> > > There is an assert "assert(clk->source =3D=3D NULL);" in clock_propag=
+ate().
+> > > If I am not wrong, clk->source is set when the clock has a parent.
+> >
+> > I think that assertion is probably there because we didn't
+> > originally have the idea of a clock having a multiplier/divider
+> > setting. So the idea was that calling clock_propagate() on a
+> > clock with a parent would always be wrong, because the only
+> > reason for its period to change would be if the parent had
+> > changed, and if the parent changes then clock_propagate()
+> > should be called on the parent.
+> >
+> > We added mul/div later, and we (I) didn't think through all
+> > the consequences. If you change the mul/div settings on
+> > clockB in this example then you need to call clock_propagate()
+> > on it, so we should remove that assert(). Then when you change
+> > the mul/div on clockB you can directly clock_propagate(clockB),
+> > and I don't think you need this patch at that point.
+>
+> Alright, that makes sense, is that OK if I send a patch removing the asse=
+rt ?
 
->   Hi,
-> 
-> > Gerd, any ideas?  Maybe I needs something subtly different in my
-> > edk2 build?  I've not looked at this bit of the qemu infrastructure
-> > before - is there a document on how that image is built?  
-> 
-> There is roms/Makefile for that.
-> 
-> make -C roms help
-> make -C roms efi
-> 
-> So easiest would be to just update the edk2 submodule to what you
-> need, then rebuild.
-> 
-> The build is handled by the roms/edk2-build.py script,
-> with the build configuration being in roms/edk2-build.config.
-> That is usable outside the qemu source tree too, i.e. like this:
-> 
->   python3 /path/to/qemu.git/roms/edk2-build.py \
->     --config /path/to/qemu.git/roms/edk2-build.config \
->     --core /path/to/edk2.git \
->     --match armvirt \
->     --silent --no-logs
-> 
-> That'll try to place the images build in "../pc-bios", so maybe better
-> work with a copy of the config file where you adjust this.
-> 
-> HTH,
->   Gerd
-> 
+Yes, please do.
 
-Thanks Gerd!
-
-So the builds are very similar via the two method...
-However - the QEMU build sets -D CAVIUM_ERRATUM_27456=TRUE
-
-And that's the difference - with that set for my other builds the alignment
-problems go away...
-
-Any idea why we have that set in roms/edk2-build.config?
-Superficially it seems rather unlikely anyone cares about thunderx1
-(if they do we need to get them some new hardware with fresh bugs)
-bugs now and this config file was only added last year.
-
-
-However, the last comment in Ard's commit message below seems
-highly likely to be relevant!
-
-Chasing through Ard's patch it has the side effect of dropping
-an override of a requirement for strict alignment. 
-So with out the errata 
-DEFINE GCC_AARCH64_CC_XIPFLAGS     = -mstrict-align -mgeneral-regs-only
-is replaced with
- [BuildOptions]
-+!if $(CAVIUM_ERRATUM_27456) == TRUE^M
-+  GCC:*_*_AARCH64_PP_FLAGS = -DCAVIUM_ERRATUM_27456^M
-+!else^M
-   GCC:*_*_AARCH64_CC_XIPFLAGS ==
-+!endif^M
-
-The edk2 commit that added this was the following +CC Ard.
-
-Given I wasn't sure of the syntax of that file I set it
-manually to the original value and indeed it works.
-
-
-commit ec54ce1f1ab41b92782b37ae59e752fff0ef9c41
-Author: Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed Jan 4 16:51:35 2023 +0100
-
-    ArmVirtPkg/ArmVirtQemu: Avoid early ID map on ThunderX
-
-    The early ID map used by ArmVirtQemu uses ASID scoped non-global
-    mappings, as this allows us to switch to the permanent ID map seamlessly
-    without the need for explicit TLB maintenance.
-
-    However, this triggers a known erratum on ThunderX, which does not
-    tolerate non-global mappings that are executable at EL1, as this appears
-    to result in I-cache corruption. (Linux disables the KPTI based Meltdown
-    mitigation on ThunderX for the same reason)
-
-    So work around this, by detecting the CPU implementor and part number,
-    and proceeding without the early ID map if a ThunderX CPU is detected.
-
-    Note that this requires the C code to be built with strict alignment
-    again, as we may end up executing it with the MMU and caches off.
-
-    Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-    Acked-by: Laszlo Ersek <lersek@redhat.com>
-    Tested-by: dann frazier <dann.frazier@canonical.com>
-
-Test case is
-qemu-system-aarch64 -M virt,virtualization=true, -m 4g -cpu cortex-a76 \
--bios QEMU_EFI.fd -d int
-
-Which gets alignment faults since:
-https://lore.kernel.org/all/20240301204110.656742-6-richard.henderson@linaro.org/
-
-So my feeling here is EDK2 should either have yet another config for QEMU as a host
-or should always set the alignment without needing to pick the CAVIUM 27456 errata
-which I suspect will get dropped soonish anyway if anyone ever cleans up
-old errata.
-
-Jonathan
-
-
-
+-- PMM
 
