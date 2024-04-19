@@ -2,62 +2,130 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC4F8AA7BA
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 06:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4752B8AA7D7
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 07:01:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxg1a-0007ed-6b; Fri, 19 Apr 2024 00:38:58 -0400
+	id 1rxgLj-0000rM-LG; Fri, 19 Apr 2024 00:59:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1Q-0007WL-Dg
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxgLh-0000qt-DD
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:59:45 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1rxg1O-0004FH-NT
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:38:48 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rxgLf-0007bp-Oq
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 00:59:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713501526;
+ s=mimecast20190719; t=1713502782;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5abJCU0h5aF3vdT6HE6N8xKGQV3SNeJnkpXl7YahGbw=;
- b=gd4g84OjNxJFhF15NkycTENp/9EnYtpATFBqnFRv0+FJ9Pib1IiH2M9MYM4UDUq3Y2dHpj
- Uj4O8MeArnSX37BmPcPfPfTE74jER9xmsnRIoHnHGuk7CJD0tob1/4KQgEjIRxH2wvbLhN
- Emes/eZjwpcbpjzmj5jpMWbPdZbZtiw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+ bh=SNhjBb7iRbtRd2OnyQJzLHhVIWv6Lqm5Fc6lVzwJzKQ=;
+ b=Ab/JZRBTbZ7RhtGgnjvAFlE5QhDsi/2QHq8CUJMasHY/R0kmN+C4ZQ9hPzo9O4+tyxEC2a
+ iPWfSNNa7Q7E5ZVTXdM19CYixx1QkS/j2rWKCFra7RRyfg2shUzkHFVQ/RKSnMwnQDWRsY
+ 8r4bFcLE7n/ZMYN3x9D+QICpGW+H+8k=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-169-Qv6s_TVfNCiNXHLVTS8sbQ-1; Fri, 19 Apr 2024 00:38:42 -0400
-X-MC-Unique: Qv6s_TVfNCiNXHLVTS8sbQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 035B918065AF;
- Fri, 19 Apr 2024 04:38:42 +0000 (UTC)
-Received: from scv.redhat.com (unknown [10.22.8.7])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4E8C540829C5;
- Fri, 19 Apr 2024 04:38:41 +0000 (UTC)
-From: John Snow <jsnow@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Victor Toso de Carvalho <victortoso@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Harmonie Snow <harmonie@gmail.com>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH 27/27] docs/qapi-domain: add CSS styling
-Date: Fri, 19 Apr 2024 00:38:15 -0400
-Message-ID: <20240419043820.178731-28-jsnow@redhat.com>
-In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com>
-References: <20240419043820.178731-1-jsnow@redhat.com>
+ us-mta-613-kvgHSNbOPRqABa-0ggMstg-1; Fri, 19 Apr 2024 00:59:40 -0400
+X-MC-Unique: kvgHSNbOPRqABa-0ggMstg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-a4455ae71fcso78358566b.3
+ for <qemu-devel@nongnu.org>; Thu, 18 Apr 2024 21:59:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713502779; x=1714107579;
+ h=content-transfer-encoding:in-reply-to:autocrypt:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=SNhjBb7iRbtRd2OnyQJzLHhVIWv6Lqm5Fc6lVzwJzKQ=;
+ b=TtmLMfHfN+LssXfRgGTik7I9nkkCb6B9s1tBZ8Ax/VJDs4Sy5jR3hl5jG2We2VbJER
+ UMZYoMS7kiIDe2Z7pJC9qV0PM7HhR32mSmhaYGPUSbywDDoCqik9U/ZNz+dsoxu0i6Ec
+ y9sdQy+7LazVsNGIJ9zZ5lQhYt6GiG5JyNDdV7+UEFUnAyEj7AjhLt9G264NYMo5tcXI
+ Xn5tlTYIC6nVTk4/rRtdOj82YJ7uh3cw8s9YzFpCW16LIhU2awJhtuMHGRgdzzxgMObl
+ sFv3ttk/5QCWyCNHka9w5DyAi+527PWKa2K+fX2r4DCv4iVym59CvuDCGAFTUXsRERvh
+ e+MA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUigIEZoZO4CeyOsnIqw1YYmFzr7kkp/4/4gfLVxMXKrkPEO+pcSqQ2MJVdO6Q8SE8L7vB1eguotHpAt4rgkBf7ydzPr6E=
+X-Gm-Message-State: AOJu0YxKI3olehLVFNM+Fxs+M6HSvH8kM6EdQRz91beWCSN/+Mxl8s9S
+ WSB4M34FMM3WaHC9UdZ3PcEdb+wxxNSD/EOF1lhl8/ci5rQIHVNS9Bb5QF9U0+tRvasPvCiQOwm
+ gwPGf2ymeodnidKINGyrQXIMJsvJNtp3J+Da81d6pjVweGDjD7w6j
+X-Received: by 2002:a17:906:17cf:b0:a55:5ddd:ec0f with SMTP id
+ u15-20020a17090617cf00b00a555dddec0fmr593124eje.12.1713502779338; 
+ Thu, 18 Apr 2024 21:59:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVM84TnSlMyLjoRFETt9cEust51UKUBbyQEVXAiGiJiiJ14Hw/olY6y+/MwxE69/g27QKlRQ==
+X-Received: by 2002:a17:906:17cf:b0:a55:5ddd:ec0f with SMTP id
+ u15-20020a17090617cf00b00a555dddec0fmr593113eje.12.1713502778969; 
+ Thu, 18 Apr 2024 21:59:38 -0700 (PDT)
+Received: from [192.168.0.9] (ip-109-43-177-117.web.vodafone.de.
+ [109.43.177.117]) by smtp.gmail.com with ESMTPSA id
+ e9-20020a17090681c900b00a4a33cfe593sm1685048ejx.39.2024.04.18.21.59.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 18 Apr 2024 21:59:38 -0700 (PDT)
+Message-ID: <ee98c81b-0b07-4469-9135-ac3be7dc7564@redhat.com>
+Date: Fri, 19 Apr 2024 06:59:37 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] docs/system/target-sparc: Improve the Sparc
+ documentation
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org,
+ Artyom Tarasenko <atar4qemu@gmail.com>
+Cc: Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20240307174334.130407-1-thuth@redhat.com>
+ <20240307174334.130407-5-thuth@redhat.com>
+ <529ece4e-1de6-4941-bb75-c10997aad13c@ilande.co.uk>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <529ece4e-1de6-4941-bb75-c10997aad13c@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
@@ -81,92 +149,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Harmonie Snow <harmonie@gmail.com>
+On 18/04/2024 22.27, Mark Cave-Ayland wrote:
+> On 07/03/2024 17:43, Thomas Huth wrote:
+> 
+>> Add some words about how to enable or disable boolean features,
+>> and remove the note about a Linux kernel being available on the
+>> QEMU website (they have been removed long ago already).
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   docs/system/target-sparc.rst | 8 ++++++--
+>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/docs/system/target-sparc.rst b/docs/system/target-sparc.rst
+>> index 9ec8c90c14..9f418b9d3e 100644
+>> --- a/docs/system/target-sparc.rst
+>> +++ b/docs/system/target-sparc.rst
+>> @@ -27,6 +27,11 @@ architecture machines:
+>>   The emulation is somewhat complete. SMP up to 16 CPUs is supported, but
+>>   Linux limits the number of usable CPUs to 4.
+>> +The list of available CPUs can be viewed by starting QEMU with ``-cpu 
+>> help``.
+>> +Optional boolean features can be added with a "+" in front of the feature 
+>> name,
+>> +or disabled with a "-" in front of the name, for example
+>> +``-cpu TI-SuperSparc-II,+float128``.
+>> +
+>>   QEMU emulates the following sun4m peripherals:
+>>   -  IOMMU
+>> @@ -55,8 +60,7 @@ OpenBIOS is a free (GPL v2) portable firmware 
+>> implementation. The goal
+>>   is to implement a 100% IEEE 1275-1994 (referred to as Open Firmware)
+>>   compliant firmware.
+>> -A sample Linux 2.6 series kernel and ram disk image are available on the
+>> -QEMU web site. There are still issues with NetBSD and OpenBSD, but most
+>> +There are still issues with NetBSD and OpenBSD, but most
+>>   kernel versions work. Please note that currently older Solaris kernels
+>>   don't work probably due to interface issues between OpenBIOS and
+>>   Solaris.
+> 
+> Just curious as to what current issues exist with NetBSD and OpenBSD? At 
+> least both my NetBSD and OpenBSD test images survive a casual boot test here 
+> with latest git.
 
-Improve the general look and feel of generated QAPI docs.
+Maybe it's also about a long fixed bug ... shall I remove that sentence 
+while I'm at it?
 
-Attempt to limit line lengths to offer a more comfortable measure on
-maximized windows, and improve some margin and spacing for field lists.
+  Thomas
 
-Signed-off-by: Harmonie Snow <harmonie@gmail.com>
-Signed-off-by: John Snow <jsnow@redhat.com>
----
- docs/sphinx-static/theme_overrides.css | 50 ++++++++++++++++++++++++--
- 1 file changed, 48 insertions(+), 2 deletions(-)
-
-diff --git a/docs/sphinx-static/theme_overrides.css b/docs/sphinx-static/theme_overrides.css
-index b239a762a9e..9a58cf86b5c 100644
---- a/docs/sphinx-static/theme_overrides.css
-+++ b/docs/sphinx-static/theme_overrides.css
-@@ -18,8 +18,8 @@ h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend {
- 
- .rst-content dl:not(.docutils) dt {
-     border-top: none;
--    border-left: solid 3px #ccc;
--    background-color: #f0f0f0;
-+    border-left: solid 5px #bcc6d2;
-+    background-color: #eaedf1;
-     color: black;
- }
- 
-@@ -162,6 +162,18 @@ div[class^="highlight"] pre {
- 
- /* QAPI domain theming */
- 
-+/* most content in a qapi object definition should not eclipse about
-+   80ch, but nested field lists are explicitly exempt due to their
-+   two-column nature */
-+.qapi dd *:not(dl) {
-+    max-width: 80ch;
-+}
-+
-+/* but the content column itself should still be less than ~80ch. */
-+.qapi .field-list dd {
-+    max-width: 80ch;
-+}
-+
- .qapi-infopips {
-     margin-bottom: 1em;
- }
-@@ -201,3 +213,37 @@ div[class^="highlight"] pre {
-     border-radius: 15px;
-     margin: 5px;
- }
-+
-+/* code blocks */
-+.qapi div[class^="highlight"] {
-+    width: fit-content;
-+    background-color: #fffafd;
-+    border: 2px solid #ffe1f3;
-+}
-+
-+/* note, warning, etc. */
-+.qapi .admonition {
-+    width: fit-content;
-+}
-+
-+/* pad the top of the field-list so the text doesn't start directly at
-+   the top border; primarily for the field list labels, but adjust the
-+   field bodies as well for parity. */
-+dl.field-list > dt:first-of-type, dl.field-list > dd:first-of-type {
-+    padding-top: 0.3em;
-+}
-+
-+dl.field-list > dt:last-of-type, dl.field-list > dd:last-of-type {
-+    padding-bottom: 0.3em;
-+}
-+
-+/* pad the field list labels so they don't crash into the border */
-+dl.field-list > dt {
-+    padding-left: 0.5em;
-+    padding-right: 0.5em;
-+}
-+
-+/* Add a little padding between field list sections */
-+dl.field-list > dd:not(:last-child) {
-+    padding-bottom: 1em;
-+}
--- 
-2.44.0
 
 
