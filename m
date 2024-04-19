@@ -2,80 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D998AB0ED
-	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 16:44:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C8E8AB0F8
+	for <lists+qemu-devel@lfdr.de>; Fri, 19 Apr 2024 16:47:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rxpSG-0002Ko-Bg; Fri, 19 Apr 2024 10:43:08 -0400
+	id 1rxpVZ-00048L-G5; Fri, 19 Apr 2024 10:46:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rxpSE-0002Kd-3V
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:43:06 -0400
-Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rxpSC-0002LF-Gd
- for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:43:05 -0400
-Received: by mail-ej1-x62a.google.com with SMTP id
- a640c23a62f3a-a51aac16b6eso96080166b.1
- for <qemu-devel@nongnu.org>; Fri, 19 Apr 2024 07:43:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713537783; x=1714142583; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WVpvi44kReWGomfJfcfp/Rk/QyWby+3LNyh0waSAiTA=;
- b=W2DJb8i8Kld8lXvhZx/GO+2SzuVDH5gEUgiHsAKr6JfIhx2nNV8DFB21GddmpwblqW
- dASNy2SbsQu0BVcqqgtr3mRrTtf7OY4Wx7ZxutKH0KJk5aIXFLj1R1zh66ChJbjOoluT
- CPN58KKrxOGyA8sE6T+Iwo82JmJT5KRd8sf3Fii87/+Ukg5bZDLX31LxFSTRv9ThFbfS
- K2SjhHnM3tl3CxpKfNJcw6X5Z3E0AMVI7LPXlVDSMF5vXSUrZR9srJxtrkqRgRwdC9e7
- wMS5KiKYPeBjLXjpCa5apHHwxbR3HsZ8IaXNmeRXJMo+Fp8fkwi4/SBg1Cu3HuJfpvCE
- kWUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713537783; x=1714142583;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WVpvi44kReWGomfJfcfp/Rk/QyWby+3LNyh0waSAiTA=;
- b=n2IurRh+tkYknn0OaYlbu0w5lQroo4nIhQdk8FG4jzB2UofNH/kAJpf3PvWP6Nl317
- TTqdUxQi1ztqLV7DeAwDCzhmcQ7jZN9mTSJ+XAzAKaV3Oc6fbP8gcbxTe9kia3PSdyJj
- h38fkeKvzLyaVg4F2tgL/g85Kkje3fFbN06r379d4HL1O8bYQHIqxjdB+BYP0l6qnuyU
- fLbt7a5y0M4GYb+UmRAk0zt4JnR9GCsnxLc3kdISgUVepkiNmYnJ5puWpb3oa0liU+Ul
- 1ttWVdMM254YvkUVhvhg56l4cVcHPkvTXw8SHx4Dzpgw0ZSB+7A8ZM+VJRF7h5ak/+BK
- KKlg==
-X-Gm-Message-State: AOJu0YyD3hIV8agy3Gj6KKea9zszeTHB7tw7MwWwzgig+gdtrIiVsVph
- TZtf6e9FPPR8+urQeHiXYcTOAP1WQYNZBvupI87VsDjfqmpUEl19UOGaPF3jYx+mVBD6hgVN4Yw
- 7DG+zvtZLdmxfMClJNfC5MJJ0VCOiIYqPTLYKKg==
-X-Google-Smtp-Source: AGHT+IEjJ2G4TS5cZ3mK5+Vy66Y/ZqEhsJbw5k9ZJ2ulvDL3umg3YJcbjcjR0XJNQZpQBCkOQfJ1fM5g8KlggsoCgPI=
-X-Received: by 2002:aa7:c594:0:b0:56e:2abd:9d10 with SMTP id
- g20-20020aa7c594000000b0056e2abd9d10mr2298284edq.22.1713537782803; Fri, 19
- Apr 2024 07:43:02 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rxpUn-00045o-9f
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:45:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rxpUj-0002yF-St
+ for qemu-devel@nongnu.org; Fri, 19 Apr 2024 10:45:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713537939;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=RF/G95/H2cGc7CBQpDBEXy/nX1AO2EkwfzfcTJnVTYs=;
+ b=FebN4oo9bBvg6s+KFGCqBncPvab323s9LsWSEldcsv6X/+hxK0G1aP+PTHnwNiTYHcHYqs
+ XgW7ZBeVI/CcTVCFhERKV1XhQAldl5BYrBnjv8EIYWKldig/ffiI/atxtYXd0p3Bn7cH2F
+ qVWElD76Iu/r199oicrkORf4+TRQ+ls=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-Co_idonpOT6dKptTYbzo1Q-1; Fri, 19 Apr 2024 10:45:33 -0400
+X-MC-Unique: Co_idonpOT6dKptTYbzo1Q-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA3EA81B5AF;
+ Fri, 19 Apr 2024 14:45:28 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 7991F400EAC;
+ Fri, 19 Apr 2024 14:45:28 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 63DEB21E668A; Fri, 19 Apr 2024 16:45:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ Victor Toso de Carvalho <victortoso@redhat.com>,  Peter Maydell
+ <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 00/27] Add qapi-domain Sphinx extension
+In-Reply-To: <20240419043820.178731-1-jsnow@redhat.com> (John Snow's message
+ of "Fri, 19 Apr 2024 00:37:48 -0400")
+References: <20240419043820.178731-1-jsnow@redhat.com>
+Date: Fri, 19 Apr 2024 16:45:27 +0200
+Message-ID: <87msppl8c8.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-References: <20240409115301.21829-1-abelova@astralinux.ru>
- <CAFEAcA_W4qr6EPhOu-s_+d_V+MfADzddKNwd_gUzBTbajQ+xvg@mail.gmail.com>
- <5263ef36-0b82-48fe-a351-b557ead15b01@astralinux.ru>
- <CAFEAcA9LTLjMtEtCfqnR8_-WSdo2ZZCb28C-roRXgcv+ULa3ww@mail.gmail.com>
-In-Reply-To: <CAFEAcA9LTLjMtEtCfqnR8_-WSdo2ZZCb28C-roRXgcv+ULa3ww@mail.gmail.com>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Fri, 19 Apr 2024 15:42:52 +0100
-Message-ID: <CAFEAcA_H53jOSVBjZ5tfOd_U1++CLVqzFSBHt1=amnouFrZwJA@mail.gmail.com>
-Subject: Re: [PATCH] hw/dma: prevent overflow in soc_dma_set_request
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: qemu-devel@nongnu.org, Andrzej Zaborowski <balrogg@gmail.com>,
- sdl.qemu@linuxtesting.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62a;
- envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x62a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-2.313,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,49 +84,202 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 9 Apr 2024 at 14:38, Peter Maydell <peter.maydell@linaro.org> wrote=
-:
->
-> On Tue, 9 Apr 2024 at 14:32, Anastasia Belova <abelova@astralinux.ru> wro=
-te:
-> >
-> >
-> >
-> > 09/04/24 15:02, Peter Maydell =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
-> > > On Tue, 9 Apr 2024 at 12:54, Anastasia Belova <abelova@astralinux.ru>=
- wrote:
-> > >> ch->num can reach values up to 31. Add casting to
-> > >> a larger type before performing left shift to
-> > >> prevent integer overflow.
-> > > If ch->num can only reach up to 31, then 1 << ch->num
-> > > is fine, because QEMU can assume that integers are 32 bits,
-> > > and we compile with -fwrapv so there isn't a problem with
-> > > shifting into the sign bit.
-> >
-> > Right, thanks for your comments.
-> > I didn't know about this flag before. It became more clear for me now.
->
-> Yep; if you're using a static analyser you probably want to
-> configure it to accept the behaviours that are
-> undefined-in-standard-C and which get defined behaviour
-> with -fwrapv.
->
-> This code is definitely a bit dubious, though, because
-> ch_enable_mask is a uint64_t, so the intention was clearly
-> to allow up to 64 channels. So I think we should take this
-> patch anyway, with a slightly adjusted commit message.
->
-> All the soc_dma.c code will probably be removed in the
-> 9.2 release, because it's only used by the OMAP board models
-> which we've just deprecated, so it doesn't seem worth spending
-> too much time on cleaning up the code, but in this case you've
-> already written the patch.
->
-> I'll put this patch on my list to apply after we've made the
-> 9.0 release and restarted development for 9.1.
+John Snow <jsnow@redhat.com> writes:
 
-Now applied to target-arm.next for 9.1 (with adjustments
-to the commit message); thanks.
+> This series adds a new qapi-domain extension for Sphinx, which adds a
+> series of custom directives for documenting QAPI definitions.
+>
+> GitLab CI: https://gitlab.com/jsnow/qemu/-/pipelines/1259566476
+>
+> (Link to a demo HTML page at the end of this cover letter, but I want
+> you to read the cover letter first to explain what you're seeing.)
+>
+> This adds a new QAPI Index page, cross-references for QMP commands,
+> events, and data types, and improves the aesthetics of the QAPI/QMP
+> documentation.
 
--- PMM
+Cross-references alone will be a *massive* improvement!  I'm sure
+readers will appreciate better looks and an index, too.
+
+> This series adds only the new ReST syntax, *not* the autogenerator. The
+> ReST syntax used in this series is, in general, not intended for anyone
+> to actually write by hand. This mimics how Sphinx's own autodoc
+> extension generates Python domain directives, which are then re-parsed
+> to produce the final result.
+>
+> I have prototyped such a generator, but it isn't ready for inclusion
+> yet. (Rest assured: error context reporting is preserved down to the
+> line, even in generated ReST. There is no loss in usability for this
+> approach. It will likely either supplant qapidoc.py or heavily alter
+> it.) The generator requires only extremely minor changes to
+> scripts/qapi/parser.py to preserve nested indentation and provide more
+> accurate line information. It is less invasive than you may
+> fear. Relying on a secondary ReST parse phase eliminates much of the
+> complexity of qapidoc.py. Sleep soundly.
+
+I'm a Sphinx noob.  Let me paraphrase you to make sure I understand.
+
+You proprose to generate formatted documentation in two steps:
+
+=E2=80=A2 First, the QAPI generator generates .rst from the QAPI schema.  T=
+he
+  generated .rst makes use of a custom directives.
+
+=E2=80=A2 Second, Sphinx turns the .rst into formatted documentation.  A Sp=
+hinx
+  qapi-domain extension implements the custom directives
+
+This mirrors how Sphinx works for Python docs.  Which is its original
+use case.
+
+Your series demonstrates the second step, with test input you wrote
+manually.
+
+You have code for the first step, but you'd prefer to show it later.
+
+Fair?
+
+> The purpose of sending this series in its current form is largely to
+> solicit feedback on general aesthetics, layout, and features. Sphinx is
+> a wily beast, and feedback at this stage will dictate how and where
+> certain features are implemented.
+
+I'd appreciate help with that.  Opinions?
+
+> A goal for this syntax (and the generator) is to fully in-line all
+> command/event/object members, inherited or local, boxed or not, branched
+> or not. This should provide a boon to using these docs as a reference,
+> because users will not have to grep around the page looking for various
+> types, branches, or inherited members. Any arguments types will be
+> hyperlinked to their definition, further aiding usability. Commands can
+> be hotlinked from anywhere else in the manual, and will provide a
+> complete reference directly on the first screenful of information.
+
+Let me elaborate a bit here.
+
+A command's arguments can be specified inline, like so:
+
+    { 'command': 'job-cancel', 'data': { 'id': 'str' } }
+
+The arguments are then documented right with the command.
+
+But they can also be specified by referencing an object type, like so:
+
+    { 'command': 'block-dirty-bitmap-remove',
+      'data': 'BlockDirtyBitmap' }
+
+Reasons for doing it this way:
+
+=E2=80=A2 Several commands take the same arguments, and you don't want to r=
+epeat
+  yourself.
+
+=E2=80=A2 You want generated C take a single struct argument ('boxed': true=
+).
+
+=E2=80=A2 The arguments are a union (which requires 'boxed': true).
+
+Drawback: the arguments are then documented elsewhere.  Not nice.
+
+Bug: the generated documentation fails to point there.
+
+You're proposing to inline the argument documentation, so it appears
+right with the command.
+
+An event's data is just like a command's argument.
+
+A command's return value can only specified by referencing a type.  Same
+doc usability issue.
+
+Similarly, a union type's base can specified inline or by referencing a
+struct type, and a union's branches must be specified by referencing a
+struct type.  Same doc usability issue.
+
+At least, the generated documentation does point to the referenced
+types.
+
+> (Okay, maybe two screenfuls for commands with a ton of
+> arguments... There's only so much I can do!)
+
+*cough* blockdev-add *cough*
+
+> This RFC series includes a "sandbox" .rst document that showcases the
+> features of this domain by writing QAPI directives by hand; this
+> document will be removed from the series before final inclusion. It's
+> here to serve as a convenient test-bed for y'all to give feedback.
+>
+> All that said, here's the sandbox document fully rendered:
+> https://jsnow.gitlab.io/qemu/qapi/index.html
+>
+> And here's the new QAPI index page created by that sandbox document:
+> https://jsnow.gitlab.io/qemu/qapi-index.html
+>
+> Known issues / points of interest:
+>
+> - The formatting upsets checkpatch. The default line length for the
+>   "black" formatting tool is a little long. I'll fix it next spin.
+>
+> - I did my best to preserve cross-version compatibility, but some
+>   problems have crept in here and there. This series may require
+>   Sphinx>=3D 4.0, like the dbus extension. Notably, the Ubuntu build fails
+>   on Gitlab CI currently. The next version will text against more Sphinx
+>   versions more rigorously. Sphinx version 5.3.0 and above should work
+>   perfectly.
+>
+> - There's a bug in Sphinx itself that may manifest in your testing,
+>   concerning reported error locations. There's a patch in this series
+>   that fixes it, but it's later in the series. If you run into the bug
+>   while testing with this series, try applying that patch first.
+>
+> - QAPI 'namespaces' aren't yet handled. i.e., there's nothing to
+>   distinguish entities between QMP, QGA and QSD yet. That feature will
+>   be added to a future version of this patchset (Likely when the
+>   generator is ready for inclusion: without it, references will clash
+>   and the index will gripe about duplicated entries.)
+
+qemu-storage-daemon's QMP is a proper subset of qemu-system-FOO's.
+Regardless, each of them has its own, independent reference manual.
+That's defensible.
+
+But the way we build them can complicate matters.  For instance, when I
+tried to elide types not used for QMP from the reference manuals, I got
+defeated by Sphinx caching.
+
+> - Per-member features and ifcond are not yet accounted for; though
+>   definition-scoped features and ifconds are. Please feel free to
+>   suggest how you'd like to see those represented.
+>
+> - Inlining all members means there is some ambiguity on what to do with
+>   doc block sections on inlined entities; features and members have an
+>   obvious home - body, since, and misc sections are not as obvious on
+>   how to handle. This will feature more prominently in the generator
+>   series.
+
+Yes, this is a real problem.
+
+The member documentation gets written in the context of the type.  It
+may make sense only in that context.  Inlining copies it into a
+different context.
+
+Features may need to combine.  Say a command's arguments are a union
+type, and several branches of the union both contain deprecated members.
+These branch types all document feature @deprecated.  Simply inlining
+their feature documentation results in feature @deprecated documented
+several times.  Ugh.  Combining them would be better.  But how?  Do we
+need to rethink how we document features?
+
+> - Some features could be implemented in either the QAPI domain syntax
+>   *or* the generator, or some combination of both. Depending on
+>   aesthetic feedback, this may influence where those features should be
+>   implemented.
+>
+> - The formatting and aesthetics of branches are a little up in the air,
+>   see the qapi:union patch for more details.
+>
+> - It's late, maybe other things. Happy Friday!
+>
+> Hope you like it!
+
+Looks promising!
+
 
