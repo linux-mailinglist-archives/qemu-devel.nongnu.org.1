@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C6C8ACE8E
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 15:44:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E81BD8ACEB3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 15:50:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rytxB-0005rC-5t; Mon, 22 Apr 2024 09:43:29 -0400
+	id 1ryu3j-0000vh-Hm; Mon, 22 Apr 2024 09:50:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rytx9-0005ow-0t
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:43:27 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ryu3g-0000uq-FU
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:50:12 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rytx7-0007qk-BH
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:43:26 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-56e136cbcecso6237204a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 06:43:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1ryu3e-00017X-JT
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:50:12 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-56e1bbdb362so4840844a12.1
+ for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 06:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1713793403; x=1714398203; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=nGQkPv4m2z9EI2iKsw1AFJwH5qqanLv5zdewOw8PZtM=;
- b=LWrjwlnHgbw5dvUiw14Onszct5HrQQF0mxqoACO5g+64jmD2EHRUPIppy1wARQgOrF
- 3l7tePES+PPd186jnoS5jema+TOy2zWflArPNUB1BXvfZpWU0J8c58J6/UHPtGvmrd0e
- wuqa5txe0VOKUf+/PwmxEGSnRCsmj0Sr8MpLtLn3MZh5U7ZHDQeftKUuE0X9zb0gLMjB
- NFcjBLgNGibihOssaBfJy/IvdfD6eaQ7Gj3WeyynsFccZmqVR/tPuO+x8Dt3Uxy0PWyF
- yVNqpuF6FJqvndJAONQXZz8RhRmIazvva4lrHjBL6GNVaqngHUDa5ITNCUguK1lOw8Xt
- EjPQ==
+ d=linaro.org; s=google; t=1713793808; x=1714398608; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=FT0pNmlLF8T1db8AyoCWX9vXkT6kKYWcAtRC3FBdyVM=;
+ b=zGmTvlTD6p610Ikgktovl4G8Oh/Ty1GNJIeXwG9Vtxrh7Gykd1hkDH/vIbodV/BfDx
+ oFzk3LgT/AHgYenwxj3SQ1lf/v9iZ8TvPPRUKMCfRinScFdFXDOpYiuuWpWC8QMNh2cn
+ m6DaR/h9UeibJU9dV6sbBTalnc1FuELxOdeybJw1uIpOc64f3ZuuaM2sgGL4675Ta/Nb
+ Ya6W+g+D8563UH8drUb+aBTt/3vnbd3lev9aqYf/O2eoUdJXQtSagCyyBng03ZVp/ClB
+ aoJi8c6ak2kQYLPcMrxayEAX8nSDcdsyFi663tUtXvvO3cMDtYWni+lzYQisO8x8Mqe6
+ UpeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713793403; x=1714398203;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nGQkPv4m2z9EI2iKsw1AFJwH5qqanLv5zdewOw8PZtM=;
- b=qHF452yiFUHL3GCNs6pQCglm1hNe8WRgYqwigEeIOVpYFYlLHtz989EOxxHZuvEFE4
- spdzeNVWDYtU474v93cjoMr46WxgX/bzyJvmRDO+YmGNrpV0UG0WMPNnrey5o0c4vmz0
- XkUJaHt9LdSsRZ0FadLHfLcIXXaypcOIB/XIM9rBVxS2eaiMWZlgZep/sNmyF0H7Bb6u
- +ASrpCbly3hnl2Fq0NqXQ0RpCxexUkFcXO9L133KSKiRJAOF+oG6LGr6qfwh47qR/Wwe
- AQDbrLiHw0h1GeSlpPJbND79rvu6yoTVV6nLz6afBkPbgDdgbQ45WIm4zzQCED3M1Rq3
- /gpg==
-X-Gm-Message-State: AOJu0YypCkCy0LLxJ1Rf8SHLPnIJY5RKySenDo8oXdmcJHd37chHtfRE
- J3py6zuBQEZwyFq7aZ4bKRM5y7yNHsFpn1xpRtdWje9AJCITb3Gnijp3kF3+chw=
-X-Google-Smtp-Source: AGHT+IGuf/znZGI1pI1xeELZuFJP7IbDgwIFIfbuA1QTUS42xous2k2DUnZVFE6K3pi2+Nw0L3x4XQ==
-X-Received: by 2002:a17:906:c1c5:b0:a51:d522:13dd with SMTP id
- bw5-20020a170906c1c500b00a51d52213ddmr7476809ejb.47.1713793403140; 
- Mon, 22 Apr 2024 06:43:23 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
+ d=1e100.net; s=20230601; t=1713793808; x=1714398608;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FT0pNmlLF8T1db8AyoCWX9vXkT6kKYWcAtRC3FBdyVM=;
+ b=sNM0H5JLuuvbTmrqYe84dTSfG9roOaWN60B/tllpG15Aq5TqPktPW6T5nblVP0XEG6
+ lG9Sq+CaxyOvBkv4jvcDIeqZl7JNKx/mhYemO5Eevx05hHzcxp3Ye6o6HGnDTft/jugZ
+ 0Nz6NuK1eyLCunGeFk2ulCLsZPZuiyr+lw30cBr1i+CagAm7otMa/lQ3V/ITobV3gErw
+ 9g9oOSbhN583cgBsAHE7l8eT70GW/5Ajce8UknE5REJWBV+qiFt4uBbVsqtvBazKjASO
+ ajLvBMNJ77S3jqBGpgilpoCs1O4485HisKHSQ4DiD4k6tioWP7Hlrqi3LOglQQVnDEzd
+ fDFg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWvmQcORkX3g2rc60goZ/KmPaFnbe5bvi1ixn7niMgqC6jh6FZ/XIeI9eLfapLKZpw/7WRHAmil7CWlXiaXmJPU9QUgqT4=
+X-Gm-Message-State: AOJu0YyRBNWnMhC4Oou9iC7vngvUNcCeEVGQnteW52vQKaC0pTR/2Rs3
+ wwi/uj9RZ4DVSQw40gnZHYRKYOlEnNROMgrZluU33/aBpi8xmqMNA3ZUa3SyAfJzoqjhtu8uQfq
+ s
+X-Google-Smtp-Source: AGHT+IH1Bgw+w5bFT5OrYFD7LMKXILoSiXr7X1GfMQQX+/SNycH+Nn0r+2HTjbs+HgFosAqEXbeFuw==
+X-Received: by 2002:a50:c345:0:b0:571:bed1:3a36 with SMTP id
+ q5-20020a50c345000000b00571bed13a36mr10938598edb.38.1713793808016; 
+ Mon, 22 Apr 2024 06:50:08 -0700 (PDT)
+Received: from meli-email.org (adsl-53.37.6.0.tellas.gr. [37.6.0.53])
  by smtp.gmail.com with ESMTPSA id
- f15-20020a170906c08f00b00a553574ae71sm5743547ejz.7.2024.04.22.06.43.22
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Apr 2024 06:43:22 -0700 (PDT)
-Date: Mon, 22 Apr 2024 15:43:21 +0200
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Subject: Re: [PATCH] target/riscv/kvm: tolerate KVM disable ext errors
-Message-ID: <20240422-8145ee4f1a24e27ac9dcb1b3@orel>
-References: <20240422131253.313869-1-dbarboza@ventanamicro.com>
+ k3-20020aa7c383000000b00570439141a0sm5685531edq.3.2024.04.22.06.50.07
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 22 Apr 2024 06:50:07 -0700 (PDT)
+Date: Mon, 22 Apr 2024 16:45:20 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH v2] hw/audio/virtio-snd: Use device endianness instead of
+ target one
+User-Agent: meli 0.8.5-rc.3
+References: <20240422131355.2264-1-philmd@linaro.org>
+In-Reply-To: <20240422131355.2264-1-philmd@linaro.org>
+Message-ID: <ccjrh.pmmuyk4rntp2@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240422131253.313869-1-dbarboza@ventanamicro.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=ajones@ventanamicro.com; helo=mail-ed1-x536.google.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,83 +100,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 22, 2024 at 10:12:53AM -0300, Daniel Henrique Barboza wrote:
-> Running a KVM guest using a 6.9-rc3 kernel, in a 6.8 host that has zkr
-> enabled, will fail with a kernel oops SIGILL right at the start. The
-> reason is that we can't expose zkr without implementing the SEED CSR.
-> Disabling zkr in the guest would be a workaround, but if the KVM doesn't
-> allow it we'll error out and never boot.
-> 
-> In hindsight this is too strict. If we keep proceeding, despite not
-> disabling the extension in the KVM vcpu, we'll not add extension in
-                                                        ^ the
-> riscv,isa. The guest kernel will be unaware of the extension, i.e. it
- ^ the
+On Mon, 22 Apr 2024 16:13, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>Since VirtIO devices can change endianness at runtime,
+>we need to use the device endianness, not the target
+>one.
 
-> doesn't matter if the KVM vcpu has it enabled underneath or not. So it's
-> ok to keep booting in this case.
-> 
-> Change our current logic to not error out if we fail to disable an
-> extension in kvm_set_one_reg(): throw an warning instead and keep
-> booting.  We'll keep the existing behavior when we fail to enable an
-> extension in KVM, since adding the extension in riscv,isa at this point
-> will cause a guest malfunction because the extension isn't enabled in
-> the vcpu.
+Hey Philippe, can you clarify what do you mean by they can change 
+endianness at runtime?
 
-I'd probably add a sentence or two explaining why we still want to warn,
-which is because KVM is stating that while you may think you're disabling
-an extension, that extension's behavior (instructions, etc.) will still
-be exposed to the guest since there's no way not to expose it.  The user
-should be aware that a guest could use it anyway, since that means the
-attempt to disable it can't be relied upon for migration compatibility of
-arbitrary guests. The guest needs to be well behaved, i.e. one that won't
-try to use any extensions which aren't in the ISA string. So, disabling
-these types of extensions either shouldn't generally be done (so a noisy
-warning helps prohibit that) or done for debug purposes (where a noisy
-warning is fine).
+The target's one is used because that's the one it will be using to do 
+I/O with its kernel's audio interface.
 
-> 
-> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> ---
->  target/riscv/kvm/kvm-cpu.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index 6a6c6cae80..261ca24504 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -427,10 +427,14 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
->          reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
->          ret = kvm_set_one_reg(cs, id, &reg);
->          if (ret != 0) {
-> -            error_report("Unable to %s extension %s in KVM, error %d",
-> -                         reg ? "enable" : "disable",
-> -                         multi_ext_cfg->name, ret);
-> -            exit(EXIT_FAILURE);
-> +            if (reg) {
-> +                error_report("Unable to enable extension %s in KVM, error %d",
-> +                             multi_ext_cfg->name, ret);
-> +                exit(EXIT_FAILURE);
-> +            } else {
 
-Maybe we should check for a specific error. Is it EINVAL? If we do, then
-the message below would drop the (error %d) part and instead state
-explicitly that it cannot disable this extension since it's not possible.
 
-> +                warn_report("KVM did not disable extension %s (error %d)",
 
-s/did not/cannot/
 
-> +                            multi_ext_cfg->name, ret);
-> +            }
->          }
->      }
->  }
-> -- 
-> 2.44.0
 >
-
-Thanks,
-drew
+>Cc: qemu-stable@nongnu.org
+>Fixes: eb9ad377bb ("virtio-sound: handle control messages and streams")
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
+> hw/audio/virtio-snd.c | 8 +++++---
+> 1 file changed, 5 insertions(+), 3 deletions(-)
+>
+>diff --git a/hw/audio/virtio-snd.c b/hw/audio/virtio-snd.c
+>index c80b58bf5d..82c5647660 100644
+>--- a/hw/audio/virtio-snd.c
+>+++ b/hw/audio/virtio-snd.c
+>@@ -395,13 +395,15 @@ static uint32_t virtio_snd_get_qemu_freq(uint32_t rate)
+>  * Get QEMU Audiosystem compatible audsettings from virtio based pcm stream
+>  * params.
+>  */
+>-static void virtio_snd_get_qemu_audsettings(audsettings *as,
+>+static void virtio_snd_get_qemu_audsettings(VirtIOSound *s, audsettings *as,
+>                                             virtio_snd_pcm_set_params *params)
+> {
+>+    VirtIODevice *vdev = VIRTIO_DEVICE(s);
+>+
+>     as->nchannels = MIN(AUDIO_MAX_CHANNELS, params->channels);
+>     as->fmt = virtio_snd_get_qemu_format(params->format);
+>     as->freq = virtio_snd_get_qemu_freq(params->rate);
+>-    as->endianness = target_words_bigendian() ? 1 : 0;
+>+    as->endianness = virtio_is_big_endian(vdev) ? 1 : 0;
+> }
+> 
+> /*
+>@@ -464,7 +466,7 @@ static uint32_t virtio_snd_pcm_prepare(VirtIOSound *s, uint32_t stream_id)
+>         s->pcm->streams[stream_id] = stream;
+>     }
+> 
+>-    virtio_snd_get_qemu_audsettings(&as, params);
+>+    virtio_snd_get_qemu_audsettings(s, &as, params);
+>     stream->info.direction = stream_id < s->snd_conf.streams / 2 +
+>         (s->snd_conf.streams & 1) ? VIRTIO_SND_D_OUTPUT : VIRTIO_SND_D_INPUT;
+>     stream->info.hdr.hda_fn_nid = VIRTIO_SOUND_HDA_FN_NID;
+>-- 
+>2.41.0
+>
 
