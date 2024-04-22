@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480758AD5A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 22:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE048AD5A3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 22:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ryzw4-0007Sp-TT; Mon, 22 Apr 2024 16:06:44 -0400
+	id 1ryzw7-0007TS-Sy; Mon, 22 Apr 2024 16:06:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzw1-0007S9-2b
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:41 -0400
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzw3-0007Se-08
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:43 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzvz-0004hN-GF
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:40 -0400
-Received: by mail-ej1-x636.google.com with SMTP id
- a640c23a62f3a-a55911bff66so357185766b.0
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 13:06:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzw1-0004he-Ay
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:42 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-a5544fd07easo539900666b.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 13:06:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713816397; x=1714421197; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1713816398; x=1714421198; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZG/ndfe8xsvdvVaLhadRrtKayU/SCqRwtgihcJ0dO/Y=;
- b=Oo9FUbyoPWuztsGt1U5p3/T9ag+DtQuIzPpTiyQMv1qG1wgkfBPEoy4Dw+jzcvH3oz
- 2FCpI7AiSkPp4iwE60j5ZTU6+/+F5azyFZ7WDYuVobb1xv5taPeWmw1dJQbuchImnAkX
- ADPwTscJjBG1/kMePEjwcGFdX5fzFV+9V4LSwlzBdM/0ka0Y51n9pDAHBtwdsfFMZ7Mf
- uqnyfNdFE7n0N/R572pJ6TQfMwmBbRrHZdYKkcnnqpnJCjieVs185DamiA4CfwPFDtaN
- Boh3oYIzlCANj/3B0cbrPzHBbPDwmnLKh4xj/Hu5ocjX+0jfPpXTMp8mB/hmxBGguKdK
- lV/w==
+ bh=B3mpE8mPOXIfCN0iys//quAbHTgXlOuPmee5Oc6B/Lo=;
+ b=ZP7jFYbjMim/YjgmzvIyhGM7uqbS32dVqkgqdQfX15TkLJdnzFIZev5OeZ5/au6VdX
+ vyL2TSmpRP2YF7/HqfreAgKFo1g8qo5OIVzikuDF8bwpS4G9GgQ67E1drme/i0q5MG1Y
+ nLzxd1J0j8FHmmcXwX8cHrjO2uEsTpJKDLgRFg4aCPdZNWwFcHlF/fwhMqXgypsFnGEM
+ 0Nz2UMUh/65JW0DrXBzoUAUdL9hRlW+A9EaEk2UQY/68nkC/9znBuA+l4qpkocF4XkQ3
+ Eafiyln7dNmG7j0jJIe2UzjRXSSSgNiTUEUNvoTb0biUdX3zFU1+9M/ReDxfnf2kB6P4
+ MpQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713816397; x=1714421197;
+ d=1e100.net; s=20230601; t=1713816398; x=1714421198;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZG/ndfe8xsvdvVaLhadRrtKayU/SCqRwtgihcJ0dO/Y=;
- b=PB42QqktVw+rqxHc68v0yD+XVuyORPMaJi1IbyC0KsVGPWzMnzUg/ULI1SrfFY7oFJ
- 2w/H2+LdN86gWWi/0HycmfgV8CzdEmA+WaRdff3ixhUgl4KDYNhPqiBD0bukS7KotTHr
- xyOfnQlDYKD/3PJCurEdX9mV1oFT6oXnb/uxusppHL6F/eHvQBi6Qk+X2K5F32Bg5lW0
- BGHRP6UPPWh1HmOoF/c/zteZxVv9toaTO7Sjklx2mculSCqc02lQZrrbYw8sZ4GswLev
- d3uZUd4q/Z72Z7VjczU1ykNpYUUWzsm0GCFbeOo8JVaxKRHnAFgd4EU/QquY5wSAhaHe
- fFaA==
-X-Gm-Message-State: AOJu0YwuHXaaGmlqNfjtfS4LB2KfHRHLbWAGG9TYcoj5t1HPNhlZb5jA
- FA8Ww7Lw3kgjN1SnR3V+jdxTZZp+FFCA5noXKXyKFKTVgVeaFcD2VidOdw==
-X-Google-Smtp-Source: AGHT+IGwQeOjmolOLnPLCvf+xKdfiluk7k2+Xo1bCo26I6LCGGWFC3qn9AwjYtfJl25ru0eMLNIR9Q==
-X-Received: by 2002:a17:907:e8d:b0:a55:b9c6:bd99 with SMTP id
- ho13-20020a1709070e8d00b00a55b9c6bd99mr2562175ejc.56.1713816396956; 
- Mon, 22 Apr 2024 13:06:36 -0700 (PDT)
+ bh=B3mpE8mPOXIfCN0iys//quAbHTgXlOuPmee5Oc6B/Lo=;
+ b=o+2Qu3tzr5DjtW4nDiKld49vW/cfYjBvG6WYAtWXgoNz1d98KDWG23jvRq0QNF/ukg
+ 1te3LX5t+UvwFTrDwF5ZGce7d+RCXoyOQHlbq6RDL4CuW7uaLJJ5KdanHi4PJq4dWIwn
+ zGGDyev3gzlgqWDJjXUC0ZUkAGlmoJyWJg6uwGdZNpaAIcd+J5EIze45dU9vXPYhHG/H
+ Bib5P0FXtOTuqKTr/mLYoDjgah12WoAB91MGmD/hZfP0QC1ABRGXXbsgu8mUb/tlfgh0
+ z/WwkuC9PPaTI/CA8BZ3Bi84HixetsrAe6oa8ghlo05E1i6YccCJRVbWHUJcnZQ+nKCj
+ Qyxw==
+X-Gm-Message-State: AOJu0YwTmqVl4rdWkb/WZUU6t54NACDgmGIWqF+3GX8iTZPRhIugXnVY
+ n8al95zlC4KxrMLEdwVNKT4DdIom+8PqRSzQcRVnnET7eJAhdq4DWz6LwQ==
+X-Google-Smtp-Source: AGHT+IG+1veOecIW/1kYH99vzn3ZTgbrGUQam27XQWVISaczGxRYJS4L9R0vrvLGGMJVWPDQElVlmw==
+X-Received: by 2002:a17:906:2491:b0:a52:6fcb:564a with SMTP id
+ e17-20020a170906249100b00a526fcb564amr6270998ejb.9.1713816398422; 
+ Mon, 22 Apr 2024 13:06:38 -0700 (PDT)
 Received: from Provence.localdomain
  (dynamic-077-188-098-082.77.188.pool.telefonica.de. [77.188.98.82])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a17090665c200b00a55bbc4fd16sm1209230ejn.48.2024.04.22.13.06.34
+ z2-20020a17090665c200b00a55bbc4fd16sm1209230ejn.48.2024.04.22.13.06.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Apr 2024 13:06:35 -0700 (PDT)
+ Mon, 22 Apr 2024 13:06:37 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
@@ -62,16 +62,17 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 2/4] hw/i386/pc_sysfw: Alias rather than copy isa-bios region
-Date: Mon, 22 Apr 2024 22:06:23 +0200
-Message-ID: <20240422200625.2768-3-shentey@gmail.com>
+Subject: [PATCH 3/4] hw/i386/x86: Eliminate two if statements in
+ x86_bios_rom_init()
+Date: Mon, 22 Apr 2024 22:06:24 +0200
+Message-ID: <20240422200625.2768-4-shentey@gmail.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240422200625.2768-1-shentey@gmail.com>
 References: <20240422200625.2768-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::636;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x636.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,54 +95,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In the -bios case the "isa-bios" memory region is an alias to the BIOS mapped
-to the top of the 4G memory boundary. Do the same in the -pflash case to have
-common behavior. This also makes pflash commands work in the "isa-bios" region
-which some real-world legacy bioses rely on.
+Given that memory_region_set_readonly() is a no-op when the readonlyness is
+already as requested it is possible to simplify the pattern
 
-Note that in the sev_enabled() case, the "isa-bios" memory region in the -pflash
-case will now also point to encrypted memory, just like it already does in the
--bios case.
+  if (condition) {
+    foo(true);
+  }
+
+to
+
+  foo(condition);
+
+which is shorter and allows to see the invariant of the code more easily.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- hw/i386/pc_sysfw.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ hw/i386/x86.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 87b5bf59d6..6e89671c26 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -46,27 +46,18 @@ static void pc_isa_bios_init(MemoryRegion *rom_memory,
-     int isa_bios_size;
-     MemoryRegion *isa_bios;
-     uint64_t flash_size;
--    void *flash_ptr, *isa_bios_ptr;
- 
-     flash_size = memory_region_size(flash_mem);
- 
-     /* map the last 128KB of the BIOS in ISA space */
-     isa_bios_size = MIN(flash_size, 128 * KiB);
-     isa_bios = g_malloc(sizeof(*isa_bios));
--    memory_region_init_ram(isa_bios, NULL, "isa-bios", isa_bios_size,
--                           &error_fatal);
-+    memory_region_init_alias(isa_bios, NULL, "isa-bios", flash_mem,
-+                             flash_size - isa_bios_size, isa_bios_size);
-     memory_region_add_subregion_overlap(rom_memory,
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index ffbda48917..32cd22a4a8 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -1171,9 +1171,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
+         load_image_size(filename, ptr, bios_size);
+         x86_firmware_configure(ptr, bios_size);
+     } else {
+-        if (!isapc_ram_fw) {
+-            memory_region_set_readonly(bios, true);
+-        }
++        memory_region_set_readonly(bios, !isapc_ram_fw);
+         ret = rom_add_file_fixed(bios_name, (uint32_t)(-bios_size), -1);
+         if (ret != 0) {
+             goto bios_error;
+@@ -1190,9 +1188,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
                                          0x100000 - isa_bios_size,
                                          isa_bios,
                                          1);
--
--    /* copy ISA rom image from top of flash memory */
--    flash_ptr = memory_region_get_ram_ptr(flash_mem);
--    isa_bios_ptr = memory_region_get_ram_ptr(isa_bios);
--    memcpy(isa_bios_ptr,
--           ((uint8_t*)flash_ptr) + (flash_size - isa_bios_size),
--           isa_bios_size);
--
-     memory_region_set_readonly(isa_bios, true);
- }
+-    if (!isapc_ram_fw) {
+-        memory_region_set_readonly(isa_bios, true);
+-    }
++    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
  
+     /* map all the bios at the top of memory */
+     memory_region_add_subregion(rom_memory,
 -- 
 2.44.0
 
