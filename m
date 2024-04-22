@@ -2,83 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5987F8ACEA5
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 15:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D058ACECA
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 15:53:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rytzu-0007XT-0o; Mon, 22 Apr 2024 09:46:18 -0400
+	id 1ryu6F-0002Hv-9P; Mon, 22 Apr 2024 09:52:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rytzl-0007JO-Kb
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:46:09 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <ajones@ventanamicro.com>)
- id 1rytzj-0000GC-Td
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:46:09 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-34782453ffdso4372791f8f.1
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 06:46:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1713793566; x=1714398366; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=tAPZ9edf4TI7D81b9AdMksyI8LjSYzU3sU/h7DSxoJk=;
- b=QuhB5I2y4HZWPQGhk62QVaAm6VQid4+r00zF31KNc9YqA/mnKB+DBqT50G40U8gm8/
- C5Mf9ZBqsKlnEs1rOujOWq3l5a8nOE8kUD3pVff3Mj9vbngKBqKLmPiUM2c/aqJrsAwF
- 66c7ZsjHz7SJIdE+7I4viNhsC0ijNIXJSgs2LPv2SCxvAeurchzhF5hudAli1qwzhvXc
- twASTMQESPpw7UI+xctUeKEAgIAzvFqNwjpNLihdTF4B5u4e3N/RC0N7tbDyqaiS20TR
- 5kHXJPY5x33jaWAkn5J57wHCeZNWKfee9SBUE8Gjb+WteCesRdMzc6Q2XyRdaCTmoiG2
- uBUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713793566; x=1714398366;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=tAPZ9edf4TI7D81b9AdMksyI8LjSYzU3sU/h7DSxoJk=;
- b=vKL3djj6c/lp0rbMBP8vNKp/PyhqSNJ9KewgFwvCAPiAmpNdteRgK+mFEhkZM/cH3Y
- x30npH8fiJkRY1ZRdl4pnt2ROmgywtTh3rs48cc/AwNl9AOqxJC+n7pqx8tGrQnKJ3kI
- J5+61qB/VLX8Cp14JHs5EBTZtFpRAzbKpDkMmzAVRzWuTHmXqDHf5nexBOa7GVLoEsh9
- 37gOfE7vqBQoRHsO/QB5msTimhFMCUIUcYnPTipHed+ge+mJWGpimk8sIKhr80JWfFmD
- m2M6Q1bdEORVU/kdQWRm8XZex8E45T+c9ec+BzHu+UZvGJG+bite01HFLhvNctAGLBkw
- XgHw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCURgGc3BYaD0a2C3iT19fJewzV3tW7EgKoHF7967/nL/vjyMMHESyqff4E7+AX2USrcNxtq3n3GB6V7cTDmHtTZv37i5x0=
-X-Gm-Message-State: AOJu0YzBfPS10uYZhVJf/tjD61K1pcbrx5tJQTXl2QFoSw9a0kh0pPRp
- XZo2MZgFvEl8wSPj7IORofDc0n1e2FSqtA5ful/RZGQ/awt0oGCm8jIn00dc5QE=
-X-Google-Smtp-Source: AGHT+IFpP8swYuoMbq8zgc1WTO7dcQ3sQAf6y/9sfek82t463bps9kgeZ/Z7MTEtXTBQp8u1mTNXVA==
-X-Received: by 2002:adf:f38f:0:b0:346:bc1b:4e7c with SMTP id
- m15-20020adff38f000000b00346bc1b4e7cmr7741631wro.35.1713793566462; 
- Mon, 22 Apr 2024 06:46:06 -0700 (PDT)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz.
- [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
- by smtp.gmail.com with ESMTPSA id
- ig11-20020a1709072e0b00b00a525492801dsm5774128ejc.119.2024.04.22.06.46.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Apr 2024 06:46:06 -0700 (PDT)
-From: Andrew Jones <ajones@ventanamicro.com>
-To: qemu-riscv@nongnu.org, qemu-devel@nongnu.org, kvm-riscv@lists.infradead.org
-Cc: palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com,
- liwei1518@gmail.com, dbarboza@ventanamicro.com,
- zhiwei_liu@linux.alibaba.com, apatel@ventanamicro.com
-Subject: [PATCH] target/riscv/kvm: Fix exposure of Zkr
-Date: Mon, 22 Apr 2024 15:46:06 +0200
-Message-ID: <20240422134605.534207-2-ajones@ventanamicro.com>
-X-Mailer: git-send-email 2.44.0
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ryu6C-0002G6-4S
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:52:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ryu69-0001Vt-UQ
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:52:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713793964;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=QmRbRu/3cSgah9VfTSsATRVA9ATWppHT1+RcbuEZpdE=;
+ b=eF0sTUWmHl8mxgVIv0yhrJYbBN67nhENqapVuLgPCCVBQtyechrRIhGS4JXiXDVeK/yVcK
+ UPQiNTT7/g/ol/muisASG2QEe+4jJDKlJq+BTYWxtW8fWdCjsw6V+Kj8M+1JKV+Z5/7zij
+ 5cJID2O1GF6X3CuZ8GibejH6ysCq53o=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-33-aEDcwoNEPI-ZoEf8kCoiNQ-1; Mon, 22 Apr 2024 09:52:38 -0400
+X-MC-Unique: aEDcwoNEPI-ZoEf8kCoiNQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4AA7981B5AF;
+ Mon, 22 Apr 2024 13:52:33 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EE567492BC6;
+ Mon, 22 Apr 2024 13:52:32 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id DEBF021E6811; Mon, 22 Apr 2024 15:52:31 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Michael Roth <michael.roth@amd.com>
+Cc: <qemu-devel@nongnu.org>,  <kvm@vger.kernel.org>,  Tom Lendacky
+ <thomas.lendacky@amd.com>,  "Paolo Bonzini" <pbonzini@redhat.com>,  Daniel
+ P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>,  Pankaj Gupta
+ <pankaj.gupta@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,  Isaku Yamahata
+ <isaku.yamahata@linux.intel.com>,  Brijesh Singh <brijesh.singh@amd.com>
+Subject: Re: [PATCH v3 22/49] i386/sev: Introduce 'sev-snp-guest' object
+In-Reply-To: <20240320083945.991426-23-michael.roth@amd.com> (Michael Roth's
+ message of "Wed, 20 Mar 2024 03:39:18 -0500")
+References: <20240320083945.991426-1-michael.roth@amd.com>
+ <20240320083945.991426-23-michael.roth@amd.com>
+Date: Mon, 22 Apr 2024 15:52:31 +0200
+Message-ID: <871q6xec80.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=ajones@ventanamicro.com; helo=mail-wr1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,117 +84,200 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The Zkr extension may only be exposed to KVM guests if the VMM
-implements the SEED CSR. Use the same implementation as TCG.
+Michael Roth <michael.roth@amd.com> writes:
 
-Without this patch, running with a KVM which does not forward the
-SEED CSR access to QEMU will result in an ILL exception being
-injected into the guest (this results in Linux guests crashing on
-boot). And, when running with a KVM which does forward the access,
-QEMU will crash, since QEMU doesn't know what to do with the exit.
+> From: Brijesh Singh <brijesh.singh@amd.com>
+>
+> SEV-SNP support relies on a different set of properties/state than the
+> existing 'sev-guest' object. This patch introduces the 'sev-snp-guest'
+> object, which can be used to configure an SEV-SNP guest. For example,
+> a default-configured SEV-SNP guest with no additional information
+> passed in for use with attestation:
+>
+>   -object sev-snp-guest,id=sev0
+>
+> or a fully-specified SEV-SNP guest where all spec-defined binary
+> blobs are passed in as base64-encoded strings:
+>
+>   -object sev-snp-guest,id=sev0, \
+>     policy=0x30000, \
+>     init-flags=0, \
+>     id-block=YWFhYWFhYWFhYWFhYWFhCg==, \
+>     id-auth=CxHK/OKLkXGn/KpAC7Wl1FSiisWDbGTEKz..., \
+>     auth-key-enabled=on, \
+>     host-data=LNkCWBRC5CcdGXirbNUV1OrsR28s..., \
+>     guest-visible-workarounds=AA==, \
+>
+> See the QAPI schema updates included in this patch for more usage
+> details.
+>
+> In some cases these blobs may be up to 4096 characters, but this is
+> generally well below the default limit for linux hosts where
+> command-line sizes are defined by the sysconf-configurable ARG_MAX
+> value, which defaults to 2097152 characters for Ubuntu hosts, for
+> example.
+>
+> Signed-off-by: Brijesh Singh <brijesh.singh@amd.com>
+> Co-developed-by: Michael Roth <michael.roth@amd.com>
+> Acked-by: Markus Armbruster <armbru@redhat.com> (for QAPI schema)
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
 
-Fixes: 3108e2f1c69d ("target/riscv/kvm: update KVM exts to Linux 6.8")
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
----
- target/riscv/cpu.h         |  3 +++
- target/riscv/csr.c         | 18 ++++++++++++++----
- target/riscv/kvm/kvm-cpu.c | 25 +++++++++++++++++++++++++
- 3 files changed, 42 insertions(+), 4 deletions(-)
+[...]
 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 3b1a02b9449a..52fb8c15d08f 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -821,6 +821,9 @@ void riscv_set_csr_ops(int csrno, riscv_csr_operations *ops);
- 
- void riscv_cpu_register_gdb_regs_for_features(CPUState *cs);
- 
-+target_ulong riscv_new_csr_seed(target_ulong new_value,
-+                                target_ulong write_mask);
-+
- uint8_t satp_mode_max_from_map(uint32_t map);
- const char *satp_mode_str(uint8_t satp_mode, bool is_32_bit);
- 
-diff --git a/target/riscv/csr.c b/target/riscv/csr.c
-index 726096444fae..829d8346ed4e 100644
---- a/target/riscv/csr.c
-+++ b/target/riscv/csr.c
-@@ -4267,10 +4267,8 @@ static RISCVException write_upmbase(CPURISCVState *env, int csrno,
- #endif
- 
- /* Crypto Extension */
--static RISCVException rmw_seed(CPURISCVState *env, int csrno,
--                               target_ulong *ret_value,
--                               target_ulong new_value,
--                               target_ulong write_mask)
-+target_ulong riscv_new_csr_seed(target_ulong new_value,
-+                                target_ulong write_mask)
- {
-     uint16_t random_v;
-     Error *random_e = NULL;
-@@ -4294,6 +4292,18 @@ static RISCVException rmw_seed(CPURISCVState *env, int csrno,
-         rval = random_v | SEED_OPST_ES16;
-     }
- 
-+    return rval;
-+}
-+
-+static RISCVException rmw_seed(CPURISCVState *env, int csrno,
-+                               target_ulong *ret_value,
-+                               target_ulong new_value,
-+                               target_ulong write_mask)
-+{
-+    target_ulong rval;
-+
-+    rval = riscv_new_csr_seed(new_value, write_mask);
-+
-     if (ret_value) {
-         *ret_value = rval;
-     }
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 6a6c6cae80f1..50bdbd24a878 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1418,6 +1418,28 @@ static int kvm_riscv_handle_sbi(CPUState *cs, struct kvm_run *run)
-     return ret;
- }
- 
-+static int kvm_riscv_handle_csr(CPUState *cs, struct kvm_run *run)
-+{
-+    target_ulong csr_num = run->riscv_csr.csr_num;
-+    target_ulong new_value = run->riscv_csr.new_value;
-+    target_ulong write_mask = run->riscv_csr.write_mask;
-+    int ret = 0;
-+
-+    switch (csr_num) {
-+    case CSR_SEED:
-+        run->riscv_csr.ret_value = riscv_new_csr_seed(new_value, write_mask);
-+        break;
-+    default:
-+        qemu_log_mask(LOG_UNIMP,
-+                      "%s: un-handled CSR EXIT for CSR %lx\n",
-+                      __func__, csr_num);
-+        ret = -1;
-+        break;
-+    }
-+
-+    return ret;
-+}
-+
- int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
- {
-     int ret = 0;
-@@ -1425,6 +1447,9 @@ int kvm_arch_handle_exit(CPUState *cs, struct kvm_run *run)
-     case KVM_EXIT_RISCV_SBI:
-         ret = kvm_riscv_handle_sbi(cs, run);
-         break;
-+    case KVM_EXIT_RISCV_CSR:
-+        ret = kvm_riscv_handle_csr(cs, run);
-+        break;
-     default:
-         qemu_log_mask(LOG_UNIMP, "%s: un-handled exit reason %d\n",
-                       __func__, run->exit_reason);
--- 
-2.44.0
+> diff --git a/qapi/qom.json b/qapi/qom.json
+> index 66b5781ca6..b25a3043da 100644
+> --- a/qapi/qom.json
+> +++ b/qapi/qom.json
+> @@ -920,6 +920,55 @@
+>              '*handle': 'uint32',
+>              '*kernel-hashes': 'bool' } }
+>  
+> +##
+> +# @SevSnpGuestProperties:
+> +#
+> +# Properties for sev-snp-guest objects. Most of these are direct arguments
+> +# for the KVM_SNP_* interfaces documented in the linux kernel source
+
+"Linux", please.
+
+> +# under Documentation/virt/kvm/amd-memory-encryption.rst, which are in
+
+Does not seem to exist.  Do you mean
+Documentation/arch/x86/amd-memory-encryption.rst?
+
+> +# turn closely coupled with the SNP_INIT/SNP_LAUNCH_* firmware commands
+> +# documented in the SEV-SNP Firmware ABI Specification (Rev 0.9).
+
+docs/devel/qapi-code-gen.rst:
+
+    For legibility, wrap text paragraphs so every line is at most 70
+    characters long.
+
+    Separate sentences with two spaces.
+
+> +#
+> +# More usage information is also available in the QEMU source tree under
+> +# docs/amd-memory-encryption.
+> +#
+> +# @policy: the 'POLICY' parameter to the SNP_LAUNCH_START command, as
+> +#          defined in the SEV-SNP firmware ABI (default: 0x30000)
+
+docs/devel/qapi-code-gen.rst:
+
+    Descriptions start with '\@name:'.  The description text must be
+    indented like this::
+
+     # @name: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+     #     do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+> +#
+> +# @guest-visible-workarounds: 16-byte, base64-encoded blob to report
+> +#                             hypervisor-defined workarounds, corresponding
+> +#                             to the 'GOSVW' parameter of the
+> +#                             SNP_LAUNCH_START command defined in the
+> +#                             SEV-SNP firmware ABI (default: all-zero)
+> +#
+> +# @id-block: 96-byte, base64-encoded blob to provide the 'ID Block'
+> +#            structure for the SNP_LAUNCH_FINISH command defined in the
+> +#            SEV-SNP firmware ABI (default: all-zero)
+> +#
+> +# @id-auth: 4096-byte, base64-encoded blob to provide the 'ID Authentication
+> +#           Information Structure' for the SNP_LAUNCH_FINISH command defined
+> +#           in the SEV-SNP firmware ABI (default: all-zero)
+> +#
+> +# @auth-key-enabled: true if 'id-auth' blob contains the 'AUTHOR_KEY' field
+> +#                    defined SEV-SNP firmware ABI (default: false)
+> +#
+> +# @host-data: 32-byte, base64-encoded, user-defined blob to provide to the
+> +#             guest, as documented for the 'HOST_DATA' parameter of the
+> +#             SNP_LAUNCH_FINISH command in the SEV-SNP firmware ABI
+> +#             (default: all-zero)
+> +#
+> +# Since: 7.2
+
+9.1
+
+> +##
+
+Together:
+
+    ##
+    # @SevSnpGuestProperties:
+    #
+    # Properties for sev-snp-guest objects.  Most of these are direct
+    # arguments for the KVM_SNP_* interfaces documented in the Linux
+    # kernel source under
+    # Documentation/arch/x86/amd-memory-encryption.rst, which are in turn
+    # closely coupled with the SNP_INIT/SNP_LAUNCH_* firmware commands
+    # documented in the SEV-SNP Firmware ABI Specification (Rev 0.9).
+    #
+    # More usage information is also available in the QEMU source tree
+    # under docs/amd-memory-encryption.
+    #
+    # @policy: the 'POLICY' parameter to the SNP_LAUNCH_START command, as
+    #     defined in the SEV-SNP firmware ABI (default: 0x30000)
+    #
+    # @guest-visible-workarounds: 16-byte, base64-encoded blob to report
+    #     hypervisor-defined workarounds, corresponding to the 'GOSVW'
+    #     parameter of the SNP_LAUNCH_START command defined in the SEV-SNP
+    #     firmware ABI (default: all-zero)
+    #
+    # @id-block: 96-byte, base64-encoded blob to provide the 'ID Block'
+    #     structure for the SNP_LAUNCH_FINISH command defined in the
+    #     SEV-SNP firmware ABI (default: all-zero)
+    #
+    # @id-auth: 4096-byte, base64-encoded blob to provide the 'ID
+    #     Authentication Information Structure' for the SNP_LAUNCH_FINISH
+    #     command defined in the SEV-SNP firmware ABI (default: all-zero)
+    #
+    # @auth-key-enabled: true if 'id-auth' blob contains the 'AUTHOR_KEY'
+    #     field defined SEV-SNP firmware ABI (default: false)
+    #
+    # @host-data: 32-byte, base64-encoded, user-defined blob to provide to
+    #     the guest, as documented for the 'HOST_DATA' parameter of the
+    #     SNP_LAUNCH_FINISH command in the SEV-SNP firmware ABI (default:
+    #     all-zero)
+    #
+    # @certs-path: path to certificate data that can be passed to guests
+    #     via SNP Extended Guest Requests.  File should be in the format
+    #     described in the GHCB specification.  (default: none)
+    #
+    # Since: 9.1
+    ##
+
+We generally prefer symbolic to numeric / binary encoding in QMP.  Can
+you explain briefly why you choose numeric and binary here?
+
+> +{ 'struct': 'SevSnpGuestProperties',
+> +  'base': 'SevCommonProperties',
+> +  'data': {
+> +            '*policy': 'uint64',
+> +            '*guest-visible-workarounds': 'str',
+> +            '*id-block': 'str',
+> +            '*id-auth': 'str',
+> +            '*auth-key-enabled': 'bool',
+> +            '*host-data': 'str' } }
+> +
+>  ##
+>  # @ThreadContextProperties:
+>  #
+> @@ -998,6 +1047,7 @@
+>      { 'name': 'secret_keyring',
+>        'if': 'CONFIG_SECRET_KEYRING' },
+>      'sev-guest',
+> +    'sev-snp-guest',
+>      'thread-context',
+>      's390-pv-guest',
+>      'throttle-group',
+> @@ -1068,6 +1118,7 @@
+>        'secret_keyring':             { 'type': 'SecretKeyringProperties',
+>                                        'if': 'CONFIG_SECRET_KEYRING' },
+>        'sev-guest':                  'SevGuestProperties',
+> +      'sev-snp-guest':              'SevSnpGuestProperties',
+>        'thread-context':             'ThreadContextProperties',
+>        'throttle-group':             'ThrottleGroupProperties',
+>        'tls-creds-anon':             'TlsCredsAnonProperties',
+
+[...]
 
 
