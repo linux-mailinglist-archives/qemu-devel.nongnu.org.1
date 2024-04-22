@@ -2,92 +2,151 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036D88AD10B
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 17:38:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85C38AD13D
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 17:49:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ryvjY-0001Qh-QA; Mon, 22 Apr 2024 11:37:32 -0400
+	id 1ryvtR-0004p6-SU; Mon, 22 Apr 2024 11:47:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1ryvjX-0001QS-22
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 11:37:31 -0400
-Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcin.juszkiewicz@linaro.org>)
- id 1ryvjV-0004ez-8D
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 11:37:30 -0400
-Received: by mail-ed1-x52f.google.com with SMTP id
- 4fb4d7f45d1cf-572146dd1c8so736080a12.3
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 08:37:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713800246; x=1714405046; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=UhoLDngw5CiwXftE0s78MinMLVHsaWibEwQOSgqzh2w=;
- b=dXuJGRIsBvOqhvrcjIkFdNFbQGmwSfM2VQrTlp8AeoTiWfguXSZH2RBZqadzol7Hno
- TB9WVxiywp+1nFNbMwqYgbcaVnNgea3H8Y7Kk3kXU/MnNfAIkejV05hLsVN/o70sbdvG
- T87MbP+eZXlbtEvO6aiESNNApmBzqKyK3Hxi+wj+zJV8tuO6LWdP5j7rqjbUGIQCA6la
- 0UPcZki/wgZNIgjixEjOuPprZ8iun+LQ+Vck+u9Np9Wv8sl4wc3WbbhzQC8pKIi4mLN/
- xxw7UsQfwuF/axIpO/4EcfbksuxoivdTePgyf0FNjjRyoxJZfwV1SYxWYQdBOFI92C+b
- pdDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713800246; x=1714405046;
- h=content-transfer-encoding:in-reply-to:organization:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UhoLDngw5CiwXftE0s78MinMLVHsaWibEwQOSgqzh2w=;
- b=lKCmpRnoy55nb8SE7VK5MLXvGwmbVD0kPrMozguFfG6KY7C2v26+ceznX3JxitEb5p
- lGjwsHllM4my44EcK/pQjAvrKOMS4v71+ryVhy1Wja/zucj0VMEwaP813scDoP7x2VvI
- fLhrDw3ft1Nr8lUR6Yh6GLwHKDKtD1hcuuv0AFTAKCVzmpTvIlVb17fU33gT2d8kseMX
- a+a23cAIVDCaKoFSL5lxK/aUG6Q6oM+5sQmtdvPeVtenD5iwcdvUsvLoe7JHbMhJwqlt
- SKIXu3DmWoJ4WAq3pnw7hdDlqT8uDfMkuXRQQoNIWL2eO6w6v58uIzOdtarWQtUTMKyT
- jmwQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXzogBoI9Ww53XiolfolFsnlBGEGrca0hVG3lvO/7zsIINeV4mDk6ybBhCOaiLssEemRMtFyvP/8hmhR4nuwgvz5Z6+qOE=
-X-Gm-Message-State: AOJu0YxWlhf25JpdEUThCU6Im+L1Y+lejKVN8CU9CxOSfguc4Y6jItXy
- nZYeyAMjmPd+jWQL+O9ktGN7IlmNiYNemWujKHeYwA3ybeuJJ7TQP4doBrt0hzc=
-X-Google-Smtp-Source: AGHT+IFtn696B+mr0uCUHntIMkRGHogWmiTkHOZ8NT+k2jgONKi8Fff02IOSOQZ+5P+K3WlpJ46dgQ==
-X-Received: by 2002:a17:907:9710:b0:a55:b36e:3e15 with SMTP id
- jg16-20020a170907971000b00a55b36e3e15mr3790168ejc.6.1713800243449; 
- Mon, 22 Apr 2024 08:37:23 -0700 (PDT)
-Received: from [192.168.200.106] (83.11.0.31.ipv4.supernova.orange.pl.
- [83.11.0.31]) by smtp.gmail.com with ESMTPSA id
- gc24-20020a170906c8d800b00a55ac217235sm2108402ejb.90.2024.04.22.08.37.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Apr 2024 08:37:22 -0700 (PDT)
-Message-ID: <fa0465a4-6604-4ec3-af45-2d329ca513fa@linaro.org>
-Date: Mon, 22 Apr 2024 17:37:21 +0200
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1ryvtJ-0004ol-QJ
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 11:47:38 -0400
+Received: from mail-mw2nam12on2101.outbound.protection.outlook.com
+ ([40.107.244.101] helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
+ id 1ryvtH-0006ig-1G
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 11:47:36 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dO/NQCZ8pYsYCa+Q2JBOB5Raj2gVGZ8THaEnjSAocQFeNDk9amNPeogtj77sLcI091azNMYoi9TcPqdBXmFx2rNmM6dmlYkHlEgw2kwbBRD81IGIqc0wMdKCYbOvm9Bb96d6NZ8+p0ca7dL/jjwcThZbznePFCyJh14GfLNc/EHuuYEh8IYMXBcwVGNf1PmKdvRes5yMYGEQ7Ih35DIKoXBTEah3icXK/rvqwRTan6arX+/t61OBF9t7U967l6Vocnw5jHtxB7s827TH6a/Kry2MkvKzjJ7ShjfG4tkc/3Tom6gzZ4Ii0p3NrbK8syO9dY9dXE3kt3fBf8mnrSh/sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=riC2sX5TvCgAs1jkHv8tugHYcufokv7UMZM8+qMbncc=;
+ b=BbEc9WHwxL7bxuEABYfvXQ+sdeGYsl6Syj+8dxi9AJyqSeyUEu3DJ43B2fwkvxJH1xXyS+BttP0M4nq4KOraFhIMM9vfiqvx4NlMQnt04+MXnF5VWpojQaWhAb25eMLHbjCIxUC1caW/WPeUF2JX7eKdIqG0ZpRjHCAe3rL3MeU0IvC9NeZCzOtena9kWYDTUfhNeN4BgpDiIh7UC0Inm6z+0ssVUziQ6fFZOFEUMUyK9XVHCcemB/x1DS/dE6RRAhYO3+KHz8UV2UUfNjwnSstv8pgGwsEeJkn4cgfuirWTcqdowh6XHTbpb2/7J8ytzqzcE9jS3uVmGyHLKljCPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
+ dkim=pass header.d=memverge.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=riC2sX5TvCgAs1jkHv8tugHYcufokv7UMZM8+qMbncc=;
+ b=gE2Uy3BZN069u5kCxnYaxAm86iCdjTrNDOkj2Ke2qgfpMCL3Nv703A2uMWwrhskCqr1iA0xBlx96WyjXvI+eoB8izOF0Gl3FegU1mKzrS3iRZoN0Bs3Y2M/1bfNgr0j8dXfN0Jlyv5Jg3kpMnxdX/OqmL9MBPfeDTBoiYlXdmJk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=memverge.com;
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
+ by PH7PR17MB6858.namprd17.prod.outlook.com (2603:10b6:510:24d::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Mon, 22 Apr
+ 2024 15:42:29 +0000
+Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8]) by SJ0PR17MB5512.namprd17.prod.outlook.com
+ ([fe80::5d53:b947:4cab:2cc8%4]) with mapi id 15.20.7472.044; Mon, 22 Apr 2024
+ 15:42:29 +0000
+Date: Mon, 22 Apr 2024 11:42:25 -0400
+From: Gregory Price <gregory.price@memverge.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: fan <nifan.cxl@gmail.com>, qemu-devel@nongnu.org,
+ linux-cxl@vger.kernel.org, ira.weiny@intel.com,
+ dan.j.williams@intel.com, a.manzanares@samsung.com,
+ dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
+ fan.ni@samsung.com
+Subject: Re: [PATCH v7 00/12] Enabling DCD emulation support in Qemu
+Message-ID: <ZiaFYUB6FC9NR7W4@memverge.com>
+References: <20240418232902.583744-1-fan.ni@samsung.com>
+ <ZiK25Log7LmtBffa@memverge.com> <ZiK7QtVxutwDys4K@debian>
+ <ZiQnIkYjY3ngRLAi@memverge.com>
+ <20240422130448.000057ec@huawei.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240422130448.000057ec@huawei.com>
+X-ClientProxiedBy: PH0PR07CA0082.namprd07.prod.outlook.com
+ (2603:10b6:510:f::27) To SJ0PR17MB5512.namprd17.prod.outlook.com
+ (2603:10b6:a03:394::19)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] target/arm: Make the counter frequency default 1GHz
- for new CPUs, machines
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Radoslaw Biernacki <rad@semihalf.com>
-References: <20240419184608.2675213-1-peter.maydell@linaro.org>
- <CAFEAcA91ZULEjEgTotevp-epgH_azcwrSi9PVnnOSk8gq5j22g@mail.gmail.com>
- <c84bfac7-5fb5-4fca-90a3-93adb40bcf3c@linaro.org>
- <CAFEAcA_PWyu=ca-S=qwePDdGqjX95k3oQ+BJUZc541YEyV7i2w@mail.gmail.com>
-Content-Language: pl-PL, en-GB, en-HK
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Organization: Linaro
-In-Reply-To: <CAFEAcA_PWyu=ca-S=qwePDdGqjX95k3oQ+BJUZc541YEyV7i2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
- envelope-from=marcin.juszkiewicz@linaro.org; helo=mail-ed1-x52f.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|PH7PR17MB6858:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1937aa50-366f-4e93-3582-08dc62e2d13f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?sDojiZU/zCU4hvqr7UHecqAgcsnAtBUenvWkvfgX1skfr9Ah2VLEqU3vsJwN?=
+ =?us-ascii?Q?BQg9DA/Nk1ulE1ceTIZdR0DmL29GCFWqOtV1/7sx7Pz0e3ppxIAJeJZZoQx5?=
+ =?us-ascii?Q?xSjHrl6bhQ3rFztxHC7p8xfrtvDHhmqWWqRmIPe9BkjMdpenOkfh/sEVZAup?=
+ =?us-ascii?Q?/JNH7ARc1pjXO3wzr6XMTHDN1gkHwRgO6PzZnkZTmawuxxmSUHTzxGvS+q5b?=
+ =?us-ascii?Q?Q1wMHkE0G3YwzXNJUvQV6TnzKztY4FUNevFZuSE0xaHC0d7BNpgH+SpyEz8t?=
+ =?us-ascii?Q?nvgYZobOon2S8QqRMtGkDCy+QxTaQDUqk4Z92+XHoBhbsc2coGGuJIJDbmyW?=
+ =?us-ascii?Q?1Edp6bXQpACJrjtSv7dUGopr5wwnfj9D8pfYThAg11JIpjx39ntnAhXSDMvz?=
+ =?us-ascii?Q?V3eGF4uREs21tVwt4JauAIMPlMOpNIrjtaI5Cja+ZnywMGCmo+eYRevGk8y6?=
+ =?us-ascii?Q?/+62PFxaeu67blUlYb8fuDY6C6ZnZHxq4ziugY4N6Ad6vvy+UaT6kC9/WC+h?=
+ =?us-ascii?Q?VMXXSilxPzfvvsyZymqZ0Ez7pebPR6+zj/ddwi++dMxFQp5Ob05P00bx+FxF?=
+ =?us-ascii?Q?N0DH7hLaeJkuxm6zUVo6vF+/YVBFrYndKQPmlH6ZN1NDg0CBhraNMl64phPF?=
+ =?us-ascii?Q?9HQTOjjo6F66U0gXLYLoyS95+SDv5XiGS0Cn2YjMhwcQ2gtiVEWShg35vZwf?=
+ =?us-ascii?Q?FLjDWSws4BourNxwSJKTCAPaUEDpknlG6oLuDnQjrb6YKHM/0SVxhbjkGHwW?=
+ =?us-ascii?Q?keIQo3FvCtANDItEWYIa33BTCouVIsWSvQgGpQ0a9zczeUCC9Q5GR/lt0rJ7?=
+ =?us-ascii?Q?lCfcByJ/OGM3zAwoaHelld3lOyy+qpdc0aPdbZNEmwO7LgDc7YV08iQAmh65?=
+ =?us-ascii?Q?NUmct33/vlCVsIWuKgHMexIQoAU8fF5BV+l1+dyMAjFqrw/X0QE5urRTk2yr?=
+ =?us-ascii?Q?dtrnXOtJJEJuGsfDgd2TZADkchSQXTDfwEjVOsdeT5MZ+YZSMizq/9/SlFx8?=
+ =?us-ascii?Q?RsLzr4NKsdzHAEe6ytDaJ1u+GDt0DGoaLKgNAuyxjCK08sWCVs0JSjAjaAxQ?=
+ =?us-ascii?Q?bj87tCdCeX3wF14ZJVB2a1XoK9R2yonakhDS0vQoJ2hyUHThgWVc25/ZGbI1?=
+ =?us-ascii?Q?vRY8MWGkEyT+fIlIWzOWNpfIp0vun4nsHqNOnW3/nMBgnzRkFFmv7gKpUZTx?=
+ =?us-ascii?Q?d4AWf0wqLG3HYEkyx092atezYQa+wsnTcLVZsnuZ7GQCbJ1fdb2OvPzii4C2?=
+ =?us-ascii?Q?EigRyKEnYvIAYxFObqDq+7q5Q67uiFO5hIMTkNjz/w=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376005)(366007)(1800799015)(7416005); DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KsRryjeXEywDfTBozx2vM2JWX3/f2Z32jPlW/VG7nMrJyPavuqXpAhw9lG98?=
+ =?us-ascii?Q?ClS3E7zwCkeDxIjE+yI/h4FL6HxR8wkDRu729wKqizQd12I75mjY9REZdh8P?=
+ =?us-ascii?Q?G+ZHkxAR7qaewjWpSzSOJe+jhf+xEUVJkikcS+fPeRZ4nfxQXBGDYnXXh09c?=
+ =?us-ascii?Q?i9smjSmNcaHWjv4Jn0WhWnn0/SOA8VA+N/+YSfBWmui6kwdFzVP0c65I1VqX?=
+ =?us-ascii?Q?5q2AbeJ9tE0MXv57rkJge00LitlBY5h93VieuHA08n+SZ5p2YINIt2AyjQAq?=
+ =?us-ascii?Q?ZMVaVkVB38RHlgzHdXZ8Z55ivL1KpSK1jeAnOSTD4gdz47YnXCeVRFkbXem5?=
+ =?us-ascii?Q?XtILQ5GbswYRaS7/VKYXJSslz7oyjxmBC1DK84QH7GlJ4UWVoYWcMZEnGZGX?=
+ =?us-ascii?Q?ZJ2NbK3g90KdWoA0YJASmMVFt8BM3fU35ISMSQ7LLhrsHyUIiBAcdFixc2n0?=
+ =?us-ascii?Q?RD0UJnSUPiITgKIlIcbdEAC4bMZiZE2GkkYM9al6x6K5TZ1uEcZYsmu8xsnY?=
+ =?us-ascii?Q?fMoSUEjM27yxYhSFeD2JBUwAuYzhPfmaxICCV9Aw7jT1e8l3QhnjdAwbrSpN?=
+ =?us-ascii?Q?1s3lEP9PKgGRZ+r5bEoq4+UduL5CXGp9S6Uj+4wdzMW7yxJUiWFHqckWyY0x?=
+ =?us-ascii?Q?eVBenvwOZVMSvTK3nPIz31pLSOZA3T7UtK1uN6JTCu1NFaFRLYf5sPT/nqNR?=
+ =?us-ascii?Q?cdx551WWYm/BWDV/qiFqiCt5QKxUeQuOmVrxQTskWHZANf1vmk1KPqXVVtuG?=
+ =?us-ascii?Q?tdg6OfUbr/p2v1Tzhk15TPKXllKTFsDy6USSeAc316GfrcOEC67ZVknydR4T?=
+ =?us-ascii?Q?/MWJRzr2nZY4SjeSFK9kKgGzoMOxdoloZVL7ZtGyEmhQ2bNDR7c7Wb1rmJsm?=
+ =?us-ascii?Q?4ldTt3w/QhsIS5wxQ4FAdBZFanwOy1AiokHsHwvI8C1TL9QJrYvNCeMCjQOh?=
+ =?us-ascii?Q?WcrPHnd4kLrKOeT6zWZ0GeL8lwB63+X+9ucnFj5IW7iThIKCU87xo29+lAag?=
+ =?us-ascii?Q?4sUIhmrybaN04Q/ccsXCE5nj/28LFSDjxhyO1/vy+/WvmdCtdWCHRDnIvqWS?=
+ =?us-ascii?Q?aN11YA4tNuAXYUEWMKCIule0w0CjjeMB+i8M2AzT656XufPwhkfX1NH2Y+S8?=
+ =?us-ascii?Q?6wJxio8nWtcX+LXj+rvxkK350KCBwQ502rVfOwIrfV3TAhQigZfCDdpcJDvs?=
+ =?us-ascii?Q?qLvq8AnjeWpaLqxjam4LMr20iufZErToPIoXM/6t9U7ETyFjm010D+3XZs6T?=
+ =?us-ascii?Q?sMQfCkE/8+YmLlGs/rE0OpBHiOdAYeeR/p0YKL0FSMCHGZv23wezj3mtE3lq?=
+ =?us-ascii?Q?X59DhEHu69FrB/QSjDm1tcKGt+hUxjNJ9hwE7L+/RQsBoH3hRNw6sB5wAM9L?=
+ =?us-ascii?Q?ak3XXk+S1Mt0QZeTJ3Jdj3v2lgYMFcqqmPzLluE2iOZCgZF5HlwyTFALypDk?=
+ =?us-ascii?Q?5L3CxB47yE7CpRMWCyjxoYxphpnVE/VfMAVGPmAO3wW7AKwRmyCK3GMX4wi6?=
+ =?us-ascii?Q?+Vb3owqJpE3AxX4aq9Rxfxp3ROf57UgYzYTDQ+Iw4Kt3HNHEnHzMtEKnerCR?=
+ =?us-ascii?Q?pxf9MCITjlXgrRC2LZhftw1u/xdWXApMIcId3+fVteLGHG3N2lk6XV2JL4Fz?=
+ =?us-ascii?Q?Jg=3D=3D?=
+X-OriginatorOrg: memverge.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1937aa50-366f-4e93-3582-08dc62e2d13f
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2024 15:42:29.4403 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: P/B5mp/xXIBQLH6hY7ONVNOif8yN0tsXER/ZT9jwbfqV5Nq5EmlU2b2etxQkZk62CpHsNcbKMVeRhmsX7joK3stIs+dF0LiyfdP6Mvml40E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR17MB6858
+Received-SPF: pass client-ip=40.107.244.101;
+ envelope-from=gregory.price@memverge.com;
+ helo=NAM12-MW2-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,32 +162,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-W dniu 22.04.2024 o 16:18, Peter Maydell pisze:
-> On Mon, 22 Apr 2024 at 14:38, Marcin Juszkiewicz
-
->>   From what I see in EDK2 code we read CNTFREQ_EL0:
->>
->> GetPlatformTimerFreq() checks for PcdArmArchTimerFreqInHz variable which
->> sbsa-ref has set to 0. So it calls ArmGenericTimerGetTimerFreq() ->
->> ArmReadCntFrq() -> "mrs x0, cntfrq_el0"
+On Mon, Apr 22, 2024 at 01:04:48PM +0100, Jonathan Cameron wrote:
+> On Sat, 20 Apr 2024 16:35:46 -0400
+> Gregory Price <gregory.price@memverge.com> wrote:
 > 
-> Yeah, it looks like it's TF-A that hardcodes the frequency:
-> https://github.com/ARM-software/arm-trusted-firmware/blob/c8be7c08c3b3a2330d54b58651faa9438ff34f6e/plat/qemu/qemu_sbsa/include/platform_def.h#L269
+> > On Fri, Apr 19, 2024 at 11:43:14AM -0700, fan wrote:
+> > > On Fri, Apr 19, 2024 at 02:24:36PM -0400, Gregory Price wrote:  
+> > > > 
+> > > > added review to all patches, will hopefully be able to add a Tested-by
+> > > > tag early next week, along with a v1 RFC for MHD bit-tracking.
+> > > > 
+> > > > We've been testing v5/v6 for a bit, so I expect as soon as we get the
+> > > > MHD code ported over to v7 i'll ship a tested-by tag pretty quick.
+> > > > 
+> > > > The super-set release will complicate a few things but this doesn't
+> > > > look like a blocker on our end, just a change to how we track bits in a
+> > > > shared bit/bytemap.
+> > > >   
+> > > 
+> > > Hi Gregory,
+> > > Thanks for reviewing the patches so quickly. 
+> > > 
+> > > No pressure, but look forward to your MHD work. :)
+> > > 
+> > > Fan  
+> > 
+> > Starting to get into versioniong hell a bit, since the Niagara work was
+> > based off of jonathan's branch and the mhd-dcd work needs some of the
+> > extentions from that branch - while this branch is based on master.
+> > 
+> > Probably we'll need to wait for a new cxl dated branch to try and sus
+> > out the pain points before we push an RFC.  I would not want to have
+> > conflicting commits for something like this for example:
+> > 
+> > https://lore.kernel.org/qemu-devel/20230901012914.226527-2-gregory.price@memverge.com/
+> > 
+> > We get merge conflicts here because this is behind that patch. So
+> > pushing up an RFC in this state would be mostly useless to everyone
 > 
-> I imagine that value gets written into CNTFRQ by TF-A somewhere
-> along the line (and then read by EDK2 later), though I haven't
-> quite found where. Plus I notice that the TF-A sbsa-watchdog-timer
-> assumes that the generic-timer frequency and the watchdog
-> timer frequency are the same, which is a bit dubious IMHO.
+> Subtle hint noted ;) 
+>
+
+Gentle nudge/poke/prod :P
+
+Got your updates, thank you!  We should have something cleaned up today hopefully.
+
+> I'll build a fresh tree - any remaining rebases until QEMU 9.0 should be
+> straight forward anyway.   My ideal is that the NUMA GP series lands early
+> in 9.1 cycle and this can go in parallel.  I'd really like to
+> get this in early if possible so we can start clearing some of the other
+> stuff that ended up built on top of it!
 > 
-> It also seems to be hardcoded in TF-A's support for the virt
-> board too, annoyingly.
-
-I looked at it and it seems that TF-A can just read what is in 
-CNTFRQ_EL0 instead of hardcoding the value.
-
-Submitted patch:
-
-https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/28313
-refactor(qemu): do not hardcode counter frequency [NEW]
+> Jonathan
+> 
+> > 
+> > ~Gregory
+> 
 
