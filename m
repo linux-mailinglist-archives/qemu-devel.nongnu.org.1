@@ -2,81 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA9C8AD5A0
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 22:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C31728AD5C3
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 22:20:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ryzw9-0007Tb-Ey; Mon, 22 Apr 2024 16:06:49 -0400
+	id 1rz07r-0003H2-OX; Mon, 22 Apr 2024 16:18:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzw4-0007TI-Vz
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:45 -0400
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rz07o-0003GZ-Bx
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:18:52 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1ryzw3-0004i3-5t
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:06:44 -0400
-Received: by mail-lf1-x132.google.com with SMTP id
- 2adb3069b0e04-518a3e0d2ecso7238032e87.3
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 13:06:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1rz07l-0006bt-Kh
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 16:18:51 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-a55b3d57277so188190266b.2
+ for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 13:18:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713816400; x=1714421200; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PuRE8lv8XMhRFudEtOkTIi3D71/1B4iCJia6S9gyhAM=;
- b=RaBcF6JbwmesWsc70J66Amq4EqW6n1EH3HkWe/Nbd+qxwHZSKJMsLjjzEWcQkgwYa5
- j4OzQKKvmnBPdAUX60D2vS1VBmnb0RSRFNf4+qjR4BScyTYCsX3wu5sq4ZXeFMoxQBpK
- 0bFYbW76MP7+C4nUMpV975NNDrH2Uv5+Mv30Dq8WphP+zQIJE9J5oe1rpPmm8X82aZ88
- p5XcIohwqTW9jZw0TW1CS9/GtzVCwzEoGfcZWcMOPFg22/YU57cPUzW4I4Djw1v+7Ukp
- JdSKukvOFYqjrGbMVYaYCXzfkjX+H2U8bKqMwG+6PWeiKTu13TDbIJxO0Echg21QZPuX
- hOiA==
+ d=linaro.org; s=google; t=1713817124; x=1714421924; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=FoTjUmsI06mXdlRsjSLRmG7j9QE6cwxbcOFwfN5sLnQ=;
+ b=tHwXHwd87Ak6qXYFQrz9GMMG6N7/azpsdteAFBj9yRaZY6IwFNQE7kl6Q00uozH8Dc
+ 6jMDs52xWWgQus0s1AyxiA6FlT53I5/No/Ic+/SXBIrVJNq1+n5H+9MhBQ9dulPF0PFw
+ 1+F034p9RlhULe9hxJbPh/Zj+41RO5yeWtvBQw710m8JoVg8vd6Ez1jIatrshMmnz1lH
+ jKzZ8v36Z8lQFunW6cnDQsV0KkXWfzgAH44v+9j5Z0/lFThwFwpstyKt3vdhg0MyYWSO
+ wtBR644JADyje+GfH3DzsT+gcImTjEYzGkQz/b95PU8Z9Qh/bfb1jqXYOmVdIn9AsbJJ
+ 2faQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713816400; x=1714421200;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PuRE8lv8XMhRFudEtOkTIi3D71/1B4iCJia6S9gyhAM=;
- b=jh7C1tZR1P2Or9rhloQkp6xkljG9xqJSHh1H8WYKaJnjHpQTbu3kGgs/D0aZir7snC
- n+rAoOZEQcO2OHZ89Vnl1h29zCYH5BqCHe5zMeu9sQICFLgxtrdDFn0ugdOOg1NiKAfP
- vszqO7NO/n56z9EwqG0E3PuM7gEyuwf8gZqwOEGtj85T/gX/Hu0Cm40nZApejjMJtrOq
- rhTafBWwqsjYYppJrDBu3PCBRjthpaM5EcPmK93RBxYMMbjx6Y2upo3SntxRg2ajITFh
- 1W2aPKIf/rL0abDYgg4XY7KBRPuLBJ0WvCl54KaB/LWIUA7gRgyZ7f9/VDOIzyVpb/Lj
- oENQ==
-X-Gm-Message-State: AOJu0Yw92IRFVBx3ZqvpbTacU/cfkqqQmgxrXQV9mb+6A+aFhrK5FQSL
- NHNnThtfXkGIh69pAdSwmz5p3+JevsrGnhEGFZYsijN9qC8sXR9lJiUOKw==
-X-Google-Smtp-Source: AGHT+IG8PPgbvm8dHQQs8xUFYYvwr0/Kpj+ec6lTKs0tZIJc+wcvaidF8k1cvmlzYhxhlyqdl0ECyQ==
-X-Received: by 2002:ac2:5e8c:0:b0:519:6402:d19e with SMTP id
- b12-20020ac25e8c000000b005196402d19emr8470842lfq.68.1713816400149; 
- Mon, 22 Apr 2024 13:06:40 -0700 (PDT)
-Received: from Provence.localdomain
- (dynamic-077-188-098-082.77.188.pool.telefonica.de. [77.188.98.82])
+ d=1e100.net; s=20230601; t=1713817124; x=1714421924;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=FoTjUmsI06mXdlRsjSLRmG7j9QE6cwxbcOFwfN5sLnQ=;
+ b=QINfHh0fd8mHUXAGbEwj88kMK6hK9duZBj9on6+Z2ZQlFsCJf2FmpsymPbju8sCEe9
+ S+WoVJL0Bt311lqiwG6/3MGoyARztB2+x0Vk2H9ESkc5W0DeuLZb5pKCINLOYDalce9i
+ 3MkkydkPFEBEeH76BEtcnLB2YCv++OWGefORsKFK9KfVv0PoJlRADfWEZwVGl72nC03y
+ uV2nprlRUZ9rwNti3+VMs9A1U5ziAEvEY5odnZ49eGNfLTRw3qe78AhEgteZYuDhRiwz
+ nw7kOtCabvOf3DYhrbsFu/V8Lyu5b+0WGah+bWRUMyzDBKW866UXBdtIa7iQEtjioT6D
+ 9Nkw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWhlxAb62YzN2I6/+tHaruuyYUxqzDVjXzByPT0/ChfpycNpzK+IGDY0xL4HbPZN2pM7x8S88wSbRe7ciPRrTn8kP9m7gU=
+X-Gm-Message-State: AOJu0YyUVOHUQS5GGikJRs77WcrmsV3E89zbJD2bAzFKV7103MknC5qU
+ l9a1LBGj9qSpNsGEob0B7n5YGFeQj4DlxKvisDvAoFTQVEpl2qLuuxaWivooDqA=
+X-Google-Smtp-Source: AGHT+IGSTWGMNUBvvfxKQarG0UKGpGW07NUhtmPA+Ts7NRd+Luboe4WkqRu5BCJpSv4hzJY5zeLqHQ==
+X-Received: by 2002:a17:906:3842:b0:a54:4f06:4d00 with SMTP id
+ w2-20020a170906384200b00a544f064d00mr6135641ejc.65.1713817123973; 
+ Mon, 22 Apr 2024 13:18:43 -0700 (PDT)
+Received: from meli-email.org (adsl-53.37.6.0.tellas.gr. [37.6.0.53])
  by smtp.gmail.com with ESMTPSA id
- z2-20020a17090665c200b00a55bbc4fd16sm1209230ejn.48.2024.04.22.13.06.38
+ h3-20020a170906260300b00a559965b896sm3511158ejc.202.2024.04.22.13.18.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Apr 2024 13:06:39 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH 4/4] hw/i386: Consolidate isa-bios creation
-Date: Mon, 22 Apr 2024 22:06:25 +0200
-Message-ID: <20240422200625.2768-5-shentey@gmail.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240422200625.2768-1-shentey@gmail.com>
-References: <20240422200625.2768-1-shentey@gmail.com>
+ Mon, 22 Apr 2024 13:18:43 -0700 (PDT)
+Date: Mon, 22 Apr 2024 23:10:51 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ qemu-stable@nongnu.org
+Subject: Re: [PATCH v3] hw/audio/virtio-snd: Use device endianness instead of
+ target one
+User-Agent: meli 0.8.5-rc.3
+References: <20240422142056.3023-1-philmd@linaro.org>
+In-Reply-To: <20240422142056.3023-1-philmd@linaro.org>
+Message-ID: <cd1r5.n1iglebry01@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::132;
- envelope-from=shentey@gmail.com; helo=mail-lf1-x132.google.com
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-ej1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,144 +99,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that the -bios and -pflash code paths work the same it is possible to have a
-common implementation.
+On Mon, 22 Apr 2024 17:20, Philippe Mathieu-Daudé <philmd@linaro.org> 
+wrote:
+>Since VirtIO devices can change endianness at runtime,
+>we need to use the device endianness, not the target
+>one.
+>
+>Cc: qemu-stable@nongnu.org
+>Fixes: eb9ad377bb ("virtio-sound: handle control messages and streams")
+>Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>---
 
-While at it convert the magic number 0x100000 (== 1MiB) to increase readability.
+Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- include/hw/i386/x86.h |  2 ++
- hw/i386/pc_sysfw.c    | 28 ++++------------------------
- hw/i386/x86.c         | 29 ++++++++++++++++++-----------
- 3 files changed, 24 insertions(+), 35 deletions(-)
-
-diff --git a/include/hw/i386/x86.h b/include/hw/i386/x86.h
-index 4dc30dcb4d..8e6ba4a726 100644
---- a/include/hw/i386/x86.h
-+++ b/include/hw/i386/x86.h
-@@ -116,6 +116,8 @@ void x86_cpu_unplug_request_cb(HotplugHandler *hotplug_dev,
- void x86_cpu_unplug_cb(HotplugHandler *hotplug_dev,
-                        DeviceState *dev, Error **errp);
- 
-+void x86_isa_bios_init(MemoryRegion *rom_memory, MemoryRegion *bios,
-+                       bool isapc_ram_fw);
- void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-                        MemoryRegion *rom_memory, bool isapc_ram_fw);
- 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 6e89671c26..e529182b48 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -28,7 +28,6 @@
- #include "sysemu/block-backend.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
--#include "qemu/units.h"
- #include "hw/sysbus.h"
- #include "hw/i386/x86.h"
- #include "hw/i386/pc.h"
-@@ -40,27 +39,6 @@
- 
- #define FLASH_SECTOR_SIZE 4096
- 
--static void pc_isa_bios_init(MemoryRegion *rom_memory,
--                             MemoryRegion *flash_mem)
--{
--    int isa_bios_size;
--    MemoryRegion *isa_bios;
--    uint64_t flash_size;
--
--    flash_size = memory_region_size(flash_mem);
--
--    /* map the last 128KB of the BIOS in ISA space */
--    isa_bios_size = MIN(flash_size, 128 * KiB);
--    isa_bios = g_malloc(sizeof(*isa_bios));
--    memory_region_init_alias(isa_bios, NULL, "isa-bios", flash_mem,
--                             flash_size - isa_bios_size, isa_bios_size);
--    memory_region_add_subregion_overlap(rom_memory,
--                                        0x100000 - isa_bios_size,
--                                        isa_bios,
--                                        1);
--    memory_region_set_readonly(isa_bios, true);
--}
--
- static PFlashCFI01 *pc_pflash_create(PCMachineState *pcms,
-                                      const char *name,
-                                      const char *alias_prop_name)
-@@ -121,7 +99,7 @@ void pc_system_flash_cleanup_unused(PCMachineState *pcms)
-  * pcms->max_fw_size.
-  *
-  * If pcms->flash[0] has a block backend, its memory is passed to
-- * pc_isa_bios_init().  Merging several flash devices for isa-bios is
-+ * x86_isa_bios_init(). Merging several flash devices for isa-bios is
-  * not supported.
-  */
- static void pc_system_flash_map(PCMachineState *pcms,
-@@ -176,7 +154,9 @@ static void pc_system_flash_map(PCMachineState *pcms,
- 
-         if (i == 0) {
-             flash_mem = pflash_cfi01_get_memory(system_flash);
--            pc_isa_bios_init(rom_memory, flash_mem);
-+
-+            /* Map the last 128KB of the BIOS in ISA space */
-+            x86_isa_bios_init(rom_memory, flash_mem, false);
- 
-             /* Encrypt the pflash boot ROM */
-             if (sev_enabled()) {
-diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-index 32cd22a4a8..7366b0cee4 100644
---- a/hw/i386/x86.c
-+++ b/hw/i386/x86.c
-@@ -1136,13 +1136,28 @@ void x86_load_linux(X86MachineState *x86ms,
-     nb_option_roms++;
- }
- 
-+void x86_isa_bios_init(MemoryRegion *rom_memory, MemoryRegion *bios,
-+                       bool isapc_ram_fw)
-+{
-+    int bios_size = memory_region_size(bios);
-+    int isa_bios_size = MIN(bios_size, 128 * KiB);
-+    MemoryRegion *isa_bios;
-+
-+    isa_bios = g_malloc(sizeof(*isa_bios));
-+    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
-+                             bios_size - isa_bios_size, isa_bios_size);
-+    memory_region_add_subregion_overlap(rom_memory, 1 * MiB - isa_bios_size,
-+                                        isa_bios, 1);
-+    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
-+}
-+
- void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-                        MemoryRegion *rom_memory, bool isapc_ram_fw)
- {
-     const char *bios_name;
-     char *filename;
--    MemoryRegion *bios, *isa_bios;
--    int bios_size, isa_bios_size;
-+    MemoryRegion *bios;
-+    int bios_size;
-     ssize_t ret;
- 
-     /* BIOS load */
-@@ -1180,15 +1195,7 @@ void x86_bios_rom_init(MachineState *ms, const char *default_firmware,
-     g_free(filename);
- 
-     /* map the last 128KB of the BIOS in ISA space */
--    isa_bios_size = MIN(bios_size, 128 * KiB);
--    isa_bios = g_malloc(sizeof(*isa_bios));
--    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
--                             bios_size - isa_bios_size, isa_bios_size);
--    memory_region_add_subregion_overlap(rom_memory,
--                                        0x100000 - isa_bios_size,
--                                        isa_bios,
--                                        1);
--    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
-+    x86_isa_bios_init(rom_memory, bios, isapc_ram_fw);
- 
-     /* map all the bios at the top of memory */
-     memory_region_add_subregion(rom_memory,
--- 
-2.44.0
-
+Thanks for the explanation on v2 btw. virtio_is_big_endian()'s doc 
+should probably reflect it's not just about legacy devices (virtio sound 
+isn't legacy) but about target originating data streams too
 
