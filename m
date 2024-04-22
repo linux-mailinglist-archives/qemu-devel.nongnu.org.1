@@ -2,87 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DF58ACEEB
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 16:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 231028ACFED
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 16:53:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ryuCA-0003sC-ST; Mon, 22 Apr 2024 09:58:58 -0400
+	id 1ryv18-00054Q-Vq; Mon, 22 Apr 2024 10:51:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1ryuC7-0003px-Cq
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:58:55 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1ryuC3-0002jY-B2
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 09:58:54 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-34a0cc29757so526625f8f.1
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 06:58:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1713794329; x=1714399129;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=iZkvdy3nHVfG+OpWotHOqDYl4caZhvGaq43kdwd0U8c=;
- b=ZDnVTNCF7kn5qvq6nMoORfnAOTcVmKBXLWvZmvkg0W5Tg5LIrhXOLaQBWGQlhly1QV
- 5DJ/IYoEoDNTFezysKpGcgcHvIC+q7HuPfuF226AErk71EiYs6dhQc1abpl2YMvGCW5c
- wCWwQHopIpp8cFTGooGUkogxtSR4+5CFoSvFLVYEeKdn16FJDLTCyufyBVOx6t+H4fez
- czu23fPHVJPLoNVBqQqjy39C/0QANA8kq73qw6NqlOMC7SCyPAD0sRa0dOsOG+bRU5KS
- LZWtH2sLNxyLgkPc6U0cq+5T+Wkov4U7TFXUYF2Wbud+ew8INfHt8ta/nLyBf5+zbHB3
- tFOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713794329; x=1714399129;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=iZkvdy3nHVfG+OpWotHOqDYl4caZhvGaq43kdwd0U8c=;
- b=D/9QjOVQMwqxP2Z3GnFy3I9N2TVpiBdO6unofS3fqKVaRT1Z9hEsfBuW9Y1WOI1r/B
- Www5Zvr4sAh9zX1Z1Dya+FxpYHtjtjo/hWh6aWEutT3JpRdiWzLXbew/2ba6ng49KCpj
- gBxySmC5+Wbn0hch49AnbMZXRuNzc7at8C/Ux+BCHmy+M8yUCyuLXsnTmcprWaS/I0W+
- 4uMomc0tY13qyiLBqoWeQ1o6+NpNzJKNnjoQUuehfArZk/RhZPhuYhJg5yB0ITS1tSoM
- LuZRy9K986tjj6mmbzbkQRKZVGgZ5Xcn7cQOiZJY3eICz8VpP5J+du+RHGgErCUEsE9V
- Gv1Q==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUf9wfGYwNFxeDBsxwmEpAz2K2F5S8zk1bysgqeR/QCmSl6uyKDMS7ceV5yDFa1zIsT2q7S9Vl2Z/KKW5Hs32OtvLiXgoo=
-X-Gm-Message-State: AOJu0YyvgD4CJQ6++rE5r0KLtTmYuCE964nhKxPtmHjyVP62wfD6RuXV
- 9HTd5RFqZjNJQoaCFSCMNWtZpczKXbMPKpIlFrjkf+MLr9ErxdpcP94Su5gb75E=
-X-Google-Smtp-Source: AGHT+IE6GvAPJJEhjEGyRH5alMtBQCKezk2s1FFlEO/wMK3k8B7UfIMhQ4cFlIkGsCaJYiH6i+xOmw==
-X-Received: by 2002:a05:600c:1c90:b0:418:31b9:55c3 with SMTP id
- k16-20020a05600c1c9000b0041831b955c3mr6748756wms.3.1713794328865; 
- Mon, 22 Apr 2024 06:58:48 -0700 (PDT)
-Received: from carbon-x1.. ([2a01:e0a:999:a3a0:e027:15d5:993a:92b])
- by smtp.gmail.com with ESMTPSA id
- v11-20020a05600c444b00b00418d5b16f85sm16746838wmn.21.2024.04.22.06.58.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 22 Apr 2024 06:58:48 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>
-To: Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, qemu-riscv@nongnu.org
-Cc: =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
- Weiwei Li <liwei1518@gmail.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org
-Subject: [PATCH] target/riscv: change RISCV_EXCP_SEMIHOST exception number to
- 63
-Date: Mon, 22 Apr 2024 15:58:36 +0200
-Message-ID: <20240422135840.1959967-1-cleger@rivosinc.com>
-X-Mailer: git-send-email 2.43.0
+ (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
+ id 1rypxf-0000wS-EQ
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 05:27:43 -0400
+Received: from out-180.mta1.migadu.com ([2001:41d0:203:375::b4])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zenghui.yu@linux.dev>)
+ id 1rypxc-0000mB-5v
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 05:27:43 -0400
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
+ include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+ t=1713778055;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Co44Q9mlr4zNsi4wNMbg2xr+Hkh3wz3o/Kg+Jwyh0d4=;
+ b=jCfpUiFTGUPXPYsp3pm3Ur6ev6kvmfoiYjjLuoCshXsFTzZ3APSPHDYHcs1KGuvM5BL0iW
+ 7aAzgJsJ9ebxp9++NZG/L5IrT4RJefIR2W2pZ6UopAdmIvUcqyP7ak3IYCYAWHTf1G0ATZ
+ 7vOqqujywPWxxJsaA+Zm3RxdJ7Srduk=
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: agraf@csgraf.de, peter.maydell@linaro.org, wanghaibin.wang@huawei.com,
+ Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH] hvf: arm: Remove PL1_WRITE_MASK
+Date: Mon, 22 Apr 2024 17:27:15 +0800
+Message-Id: <20240422092715.71973-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=cleger@rivosinc.com; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Migadu-Flow: FLOW_OUT
+Received-SPF: pass client-ip=2001:41d0:203:375::b4;
+ envelope-from=zenghui.yu@linux.dev; helo=out-180.mta1.migadu.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 22 Apr 2024 10:51:35 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -97,37 +64,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The current semihost exception number (16) is a reserved number (range
-[16-17]). The upcoming double trap specification uses that number for
-the double trap exception. Since the privileged spec (Table 22) defines
-ranges for custom uses change the semihosting exception number to 63
-which belongs to the range [48-63] in order to avoid any future
-collisions with reserved exception.
+As it had never been used since the first commit a1477da3ddeb ("hvf: Add
+Apple Silicon support").
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
 ---
- target/riscv/cpu_bits.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/arm/hvf/hvf.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/target/riscv/cpu_bits.h b/target/riscv/cpu_bits.h
-index fc2068ee4d..74318a925c 100644
---- a/target/riscv/cpu_bits.h
-+++ b/target/riscv/cpu_bits.h
-@@ -670,11 +670,11 @@ typedef enum RISCVException {
-     RISCV_EXCP_INST_PAGE_FAULT = 0xc, /* since: priv-1.10.0 */
-     RISCV_EXCP_LOAD_PAGE_FAULT = 0xd, /* since: priv-1.10.0 */
-     RISCV_EXCP_STORE_PAGE_FAULT = 0xf, /* since: priv-1.10.0 */
--    RISCV_EXCP_SEMIHOST = 0x10,
-     RISCV_EXCP_INST_GUEST_PAGE_FAULT = 0x14,
-     RISCV_EXCP_LOAD_GUEST_ACCESS_FAULT = 0x15,
-     RISCV_EXCP_VIRT_INSTRUCTION_FAULT = 0x16,
-     RISCV_EXCP_STORE_GUEST_AMO_ACCESS_FAULT = 0x17,
-+    RISCV_EXCP_SEMIHOST = 0x3f,
- } RISCVException;
+diff --git a/target/arm/hvf/hvf.c b/target/arm/hvf/hvf.c
+index 65a5601804..015e96a6d3 100644
+--- a/target/arm/hvf/hvf.c
++++ b/target/arm/hvf/hvf.c
+@@ -150,7 +150,6 @@ void hvf_arm_init_debug(void)
  
- #define RISCV_EXCP_INT_FLAG                0x80000000
+ #define HVF_SYSREG(crn, crm, op0, op1, op2) \
+         ENCODE_AA64_CP_REG(CP_REG_ARM64_SYSREG_CP, crn, crm, op0, op1, op2)
+-#define PL1_WRITE_MASK 0x4
+ 
+ #define SYSREG_OP0_SHIFT      20
+ #define SYSREG_OP0_MASK       0x3
 -- 
-2.43.0
+2.34.1
 
 
