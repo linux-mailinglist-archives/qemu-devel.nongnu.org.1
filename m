@@ -2,78 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087428ACF00
-	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 16:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E148ACF2A
+	for <lists+qemu-devel@lfdr.de>; Mon, 22 Apr 2024 16:19:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ryuLj-0006HO-QI; Mon, 22 Apr 2024 10:08:51 -0400
+	id 1ryuVQ-0000og-G7; Mon, 22 Apr 2024 10:18:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1ryuLg-0006H3-4K
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 10:08:48 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ryuVP-0000oM-6S
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 10:18:51 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1ryuLZ-0004kQ-GN
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 10:08:44 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1e3c9300c65so37775045ad.0
- for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 07:08:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ryuVN-0006qI-8I
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 10:18:50 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-a55b10bfd30so91678766b.0
+ for <qemu-devel@nongnu.org>; Mon, 22 Apr 2024 07:18:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1713794916; x=1714399716; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6cFMVmV1V+IsJmWjvHA1Pf92EBcGaU+9cGPfXHv2Dts=;
- b=IOMPIOXs4Dp3AhQV//Ta6KDZoq4+5oawOlHl2ZMt338SWSZtL7CP89MLbRydZQvV4f
- YXOD3gA/tz1ZGk3HCMdvduzpdNyTGmsfDNoXiYgJlRjOx3odznPB3IfCivA750F0uTyX
- AFCHY9jGe1bqEKm0W2P5yz6Nh5bvqjw045XU1ogSumzZMZ6WXvhqHP0d3uikGCwrALvH
- tYdEAXNNkoZW+DP6QVjiO1/vOGySiXA/JJo8cAKlGpcW+hL9amZU+fsq4yqEnPIn29GM
- qg27eR+TBvBFvPmeUGfp4FWH3/O3J7ivwgihwQCzf0pyuQBlWtIYG0GtbS7o/HGpnk7f
- XTog==
+ d=linaro.org; s=google; t=1713795527; x=1714400327; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=xWcMe1r1xfrYk7035Y+Y06ENIVgnk/UML/pGeVuWqME=;
+ b=uzkXmmpTfBtKZwcnZpXzmavU9oaQ9v46n/7HK0HIIVx1iMqeOS4ka3rD72f9YpbuDp
+ mfkFz2RrQxZDxnWLbz95xbct3YO7EfAi5F/Wp5FMUiBHzYTIrOBXobsxwIRN6oZnd8wP
+ CS4+fW4d6qU8YWH0O+bWSjy31SQLLwNxKWL7frgEjNJQ2zCGRnRHA5+qNABPAHVB/Xmy
+ FsEeWGLx+k1XZVobrSU+ZvmWcJEQxkF7Qz0C+aJgY+SZavqq18oDX6M6arLkM8O/+OVH
+ IHCC0G5OH5AaRJtfJ71tRwZJ96GEEwjeRaEzPEIq9fryoUvv71GBRzUZ6i3GWOeib1G1
+ xD4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713794916; x=1714399716;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6cFMVmV1V+IsJmWjvHA1Pf92EBcGaU+9cGPfXHv2Dts=;
- b=OlZH5oECZ0kyYy8i8b3eZ05YNGTGhg6Qq8X4VRMV/et3S7cEW5yikPjqvFwqo8hbSh
- 3OyFZ1qIu9YGpDmNzvel0fQfNvqMx4OtZatF1oC1vHvuWqtLXTc2azCxxH5J8WtDLaps
- Eyd4vtGBIkqjDUdqmOvQ2nh1EuPCELazYrcRB1i6oaRUNXN8KEuNcYsB2EmdZHWybygt
- JooBLGmjXMwr7R66l8xjeTfnKt9bspX9h4OoUHUcuEo4nzuN8E2ZMg4arht0AR9Mrovr
- Y2XKa/i8lyUPWMK7RF59EurNz527oim8IvnTunayzFdXYekBZ47rUqNLQ8d918o+pJ3I
- oFGg==
-X-Gm-Message-State: AOJu0YwBwPodPasYlzZtFv2i+3mcB9X/6wZWMeH0Eu/1iD2Bl4OuF8jF
- MMTmt++omskscDjxRYC6RPi0az7nsmjR+dQcjXBTlwOc67/4yZh9Hy1sf4dUsDc=
-X-Google-Smtp-Source: AGHT+IFGj2R7ewFPLB3losamGt3SrThYqax5I20UY+H8ndeqsZ5M3BRHUQo64ytnAEQ2GyBgo5+7RQ==
-X-Received: by 2002:a17:902:aa4a:b0:1e3:1526:77d5 with SMTP id
- c10-20020a170902aa4a00b001e3152677d5mr9631747plr.23.1713794915976; 
- Mon, 22 Apr 2024 07:08:35 -0700 (PDT)
-Received: from [192.168.68.110] ([191.255.35.121])
- by smtp.gmail.com with ESMTPSA id
- s10-20020a170902a50a00b001e0da190a07sm8180072plq.167.2024.04.22.07.08.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 22 Apr 2024 07:08:35 -0700 (PDT)
-Message-ID: <09749ed3-840c-4a47-8cd2-9a50c9951cdb@ventanamicro.com>
-Date: Mon, 22 Apr 2024 11:08:31 -0300
+ d=1e100.net; s=20230601; t=1713795527; x=1714400327;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xWcMe1r1xfrYk7035Y+Y06ENIVgnk/UML/pGeVuWqME=;
+ b=fGG3JJPPlKLGeGCMskDpYNgcPdYc50KQwxLyy0Wiuz9WwG4rnbT/vUZRVpZF1ugRD2
+ ILi+Km8yQI2Us8CJpLsIXD48BoA/JIPCegbJMjWwckRdGRWTln52ad1EFS8fGhh4/ANV
+ Kxa5Uaf6K9adcXrUnt/urCnvHTaul7CQVL4sp/GXc/eBz2cPCV9qw8ovOFxnZU6aIOct
+ tmUigdBn0EyGApq1TCV6MArntlI3uBAnCZ1o94+FOwcFdtEsFnUEswf+dFCmzvubq/+h
+ NYyOJjmhIGxVBv2nt4Wy9icPUjRkzu+z6amP4glW9RjsA0BbQMv2a+AxtnjlWLxMgX+b
+ X75Q==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUclmv6N1VRUch1E0A6KtBig6jtfprZxkWgpZTrEm6x8tuMP5e3s3Rxa5qj1VZQQuUDfAwrlv1xYtODcVwPzVkTGcFdK+E=
+X-Gm-Message-State: AOJu0Yy35/Pbeg3NeSruyr65DeEqL4JDE2IFmN5HIuO7lELChyyt/JrN
+ VDKmxIgfhFaN807yEN4H0kiu0TSNWGUDPOIRU1Nq70z2V3JNOlx0NyYpJvVv92FC6q6nkF6CVA4
+ B+zP7e6aqMrjlyXw/JItcyDspmlsyIqChhUZMdw==
+X-Google-Smtp-Source: AGHT+IG+oiZYigBpRUgLze0h2VtG7j2k5UWSCshkjqTLb9tK9oLYS+xTqPJVL/B3pCnEk06t12qNTnhAP0Ya5pDC3uA=
+X-Received: by 2002:a50:cdc1:0:b0:568:d7fe:a768 with SMTP id
+ h1-20020a50cdc1000000b00568d7fea768mr8176946edj.25.1713795527342; Mon, 22 Apr
+ 2024 07:18:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv/kvm: tolerate KVM disable ext errors
-Content-Language: en-US
-To: Andrew Jones <ajones@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liwei1518@gmail.com, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com
-References: <20240422131253.313869-1-dbarboza@ventanamicro.com>
- <20240422-8145ee4f1a24e27ac9dcb1b3@orel>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20240422-8145ee4f1a24e27ac9dcb1b3@orel>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+References: <20240419184608.2675213-1-peter.maydell@linaro.org>
+ <CAFEAcA91ZULEjEgTotevp-epgH_azcwrSi9PVnnOSk8gq5j22g@mail.gmail.com>
+ <c84bfac7-5fb5-4fca-90a3-93adb40bcf3c@linaro.org>
+In-Reply-To: <c84bfac7-5fb5-4fca-90a3-93adb40bcf3c@linaro.org>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Mon, 22 Apr 2024 15:18:35 +0100
+Message-ID: <CAFEAcA_PWyu=ca-S=qwePDdGqjX95k3oQ+BJUZc541YEyV7i2w@mail.gmail.com>
+Subject: Re: [PATCH 0/3] target/arm: Make the counter frequency default 1GHz
+ for new CPUs, machines
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Radoslaw Biernacki <rad@semihalf.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,108 +92,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 22 Apr 2024 at 14:38, Marcin Juszkiewicz
+<marcin.juszkiewicz@linaro.org> wrote:
+>
+> W dniu 22.04.2024 o 14:56, Peter Maydell pisze:
+> > On Fri, 19 Apr 2024 at 19:46, Peter Maydell <peter.maydell@linaro.org> wrote:
+>
+> >> The upshot is that the only CPU type that changes is 'max'; but any
+> >> new type we add in future (whether v8.6 or not) will also get the new
+> >> 1GHz default (assuming we spot in code review any attempts to set
+> >> the ARM_FEATURE_BACKCOMPAT_CNTFRQ flag on new CPU types as a result
+> >> of cut-n-paste from an older CPU initfn ;-)).
+> >>
+> >> It remains the case that the machine model can override the default
+> >> value via the 'cntfrq' QOM property (regardless of the CPU type).
+> >
+> > This patchset turns out to break the sbsa-ref board: the
+> > Aarch64SbsarefMachine.test_sbsaref_alpine_linux_max_pauth_impdef
+> > avocado test both (a) takes rather longer to boot and (b) when
+> > running thinks that time is advancing very fast.
+> >
+> > I suspect this may be because the firmware hard-codes the
+> > generic timer clock frequency it is expecting. I've cc'd the
+> > sbsa-ref maintainers: is that correct?
+> >
+> > If so, we can deal with it by making the sbsa-ref board set the
+> > cntfrq QOM property on its CPUs to force them to the old
+> > frequency. However this will produce a technically-out-of-spec
+> > CPU when used with a v8.6-compliant CPU type, so probably we
+> > should do something to be able to tell the firmware the clock
+> > frequency (if it doesn't want to just read CNTFRQ_EL0 itself).
+>
+>  From what I see in EDK2 code we read CNTFREQ_EL0:
+>
+> GetPlatformTimerFreq() checks for PcdArmArchTimerFreqInHz variable which
+> sbsa-ref has set to 0. So it calls ArmGenericTimerGetTimerFreq() ->
+> ArmReadCntFrq() -> "mrs x0, cntfrq_el0"
 
+Yeah, it looks like it's TF-A that hardcodes the frequency:
+https://github.com/ARM-software/arm-trusted-firmware/blob/c8be7c08c3b3a2330d54b58651faa9438ff34f6e/plat/qemu/qemu_sbsa/include/platform_def.h#L269
 
-On 4/22/24 10:43, Andrew Jones wrote:
-> On Mon, Apr 22, 2024 at 10:12:53AM -0300, Daniel Henrique Barboza wrote:
->> Running a KVM guest using a 6.9-rc3 kernel, in a 6.8 host that has zkr
->> enabled, will fail with a kernel oops SIGILL right at the start. The
->> reason is that we can't expose zkr without implementing the SEED CSR.
->> Disabling zkr in the guest would be a workaround, but if the KVM doesn't
->> allow it we'll error out and never boot.
->>
->> In hindsight this is too strict. If we keep proceeding, despite not
->> disabling the extension in the KVM vcpu, we'll not add extension in
->                                                          ^ the
->> riscv,isa. The guest kernel will be unaware of the extension, i.e. it
->   ^ the
-> 
->> doesn't matter if the KVM vcpu has it enabled underneath or not. So it's
->> ok to keep booting in this case.
->>
->> Change our current logic to not error out if we fail to disable an
->> extension in kvm_set_one_reg(): throw an warning instead and keep
->> booting.  We'll keep the existing behavior when we fail to enable an
->> extension in KVM, since adding the extension in riscv,isa at this point
->> will cause a guest malfunction because the extension isn't enabled in
->> the vcpu.
-> 
-> I'd probably add a sentence or two explaining why we still want to warn,
-> which is because KVM is stating that while you may think you're disabling
-> an extension, that extension's behavior (instructions, etc.) will still
-> be exposed to the guest since there's no way not to expose it.  The user
-> should be aware that a guest could use it anyway, since that means the
-> attempt to disable it can't be relied upon for migration compatibility of
-> arbitrary guests. The guest needs to be well behaved, i.e. one that won't
-> try to use any extensions which aren't in the ISA string. So, disabling
-> these types of extensions either shouldn't generally be done (so a noisy
-> warning helps prohibit that) or done for debug purposes (where a noisy
-> warning is fine).
+I imagine that value gets written into CNTFRQ by TF-A somewhere
+along the line (and then read by EDK2 later), though I haven't
+quite found where. Plus I notice that the TF-A sbsa-watchdog-timer
+assumes that the generic-timer frequency and the watchdog
+timer frequency are the same, which is a bit dubious IMHO.
 
-I'll add this in the next version.
+It also seems to be hardcoded in TF-A's support for the virt
+board too, annoyingly.
 
-> 
->>
->> Suggested-by: Andrew Jones <ajones@ventanamicro.com>
->> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->> ---
->>   target/riscv/kvm/kvm-cpu.c | 12 ++++++++----
->>   1 file changed, 8 insertions(+), 4 deletions(-)
->>
->> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
->> index 6a6c6cae80..261ca24504 100644
->> --- a/target/riscv/kvm/kvm-cpu.c
->> +++ b/target/riscv/kvm/kvm-cpu.c
->> @@ -427,10 +427,14 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCPU *cpu, CPUState *cs)
->>           reg = kvm_cpu_cfg_get(cpu, multi_ext_cfg);
->>           ret = kvm_set_one_reg(cs, id, &reg);
->>           if (ret != 0) {
->> -            error_report("Unable to %s extension %s in KVM, error %d",
->> -                         reg ? "enable" : "disable",
->> -                         multi_ext_cfg->name, ret);
->> -            exit(EXIT_FAILURE);
->> +            if (reg) {
->> +                error_report("Unable to enable extension %s in KVM, error %d",
->> +                             multi_ext_cfg->name, ret);
->> +                exit(EXIT_FAILURE);
->> +            } else {
-> 
-> Maybe we should check for a specific error. Is it EINVAL? If we do, then
-> the message below would drop the (error %d) part and instead state
-> explicitly that it cannot disable this extension since it's not possible.
-
-It's throwing a 22 (EINVAL).
-
-> 
->> +                warn_report("KVM did not disable extension %s (error %d)",
-> 
-> s/did not/cannot/
-> 
->> +                            multi_ext_cfg->name, ret);
->> +            }
-
-
-I don't mind rephrasing it to "The KVM module is not able to disable extension %s"
-But I'm unsure what we gain from not showing the error code.
-
-Aside EINVAL the other (very unlikely) error code being thrown would be EBUSY. Should
-we handle EBUSY differently in this case? I don't think so. If we're already throwing a
-warning, with error code, the user is well informed about the guest having a flaky
-start and can proceed with discretion. Regardless of the extension disablement failing
-due to EINVAL or EBUSY.
-
-
-Thanks,
-
-Daniel
-
->>           }
->>       }
->>   }
->> -- 
->> 2.44.0
->>
-> 
-> Thanks,
-> drew
+thanks
+-- PMM
 
