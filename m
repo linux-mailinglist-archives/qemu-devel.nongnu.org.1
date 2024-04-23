@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA2F8AEA9B
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC9D8AEA75
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:15:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnX-0006Wu-R8; Tue, 23 Apr 2024 11:11:07 -0400
+	id 1rzHnl-0007kL-D3; Tue, 23 Apr 2024 11:11:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnD-0004l7-6L
+ id 1rzHnD-0004l6-5x
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn8-0000IK-7T
+ id 1rzHn9-0000IY-4I
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885041;
+ s=mimecast20190719; t=1713885042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kKv7TTBo0ShoANH9BNuuNFXwEQDRmEh6JnmdU8vLcGQ=;
- b=VfHC76/M+zALgbcVVAijwgbWFC0xaulhyT7O0p4XgdL8zzJgbFmRLRZ82Z99O9ph/2RNzl
- Lt3MsNFouA2UnDJucwWRJhgNru654IIJWHfNZgsopcZHFAO1kOxd9UMvuteGCO4jql9aWW
- ogDUi+356xnr28AYvlIaAWWSeWZMZfQ=
+ bh=cP+1P7Y6S/eXga8mEPV8i4pJLBRlFOrcvRvOHfVnpVY=;
+ b=Pt0kd6Isx5dj6fp5vLIDBRSdHSW1Swz2tpaG5g5eaBoY9JeQXQ1j7rxqLqFN/t92noiTgx
+ OiEAofTkAqA0IxDgqbYhyM/kDa62YyIHNz4rMeCo0sqx6BU5edyHDCmzY8xkYRCGp4frih
+ F8f2fTX1+i4QcIRWLodC4RwW5cLR5BM=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-xioNxp6KMVeBGpyiuwotxw-1; Tue, 23 Apr 2024 11:10:40 -0400
-X-MC-Unique: xioNxp6KMVeBGpyiuwotxw-1
+ us-mta-47-QoWoTMGfOny-cYFJts8VTQ-1; Tue, 23 Apr 2024 11:10:40 -0400
+X-MC-Unique: QoWoTMGfOny-cYFJts8VTQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AA1A9812C39;
- Tue, 23 Apr 2024 15:10:39 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C204812C50;
+ Tue, 23 Apr 2024 15:10:40 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1F2472026D0A;
- Tue, 23 Apr 2024 15:10:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EA1B620128F3;
+ Tue, 23 Apr 2024 15:10:39 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 47/63] trace/kvm: Split address space and slot id in
- trace_kvm_set_user_memory()
-Date: Tue, 23 Apr 2024 17:09:35 +0200
-Message-ID: <20240423150951.41600-48-pbonzini@redhat.com>
+Subject: [PULL 48/63] kvm: Introduce support for memory_attributes
+Date: Tue, 23 Apr 2024 17:09:36 +0200
+Message-ID: <20240423150951.41600-49-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -82,46 +81,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-The upper 16 bits of kvm_userspace_memory_region::slot are
-address space id. Parse it separately in trace_kvm_set_user_memory().
+Introduce the helper functions to set the attributes of a range of
+memory to private or shared.
+
+This is necessary to notify KVM the private/shared attribute of each gpa
+range. KVM needs the information to decide the GPA needs to be mapped at
+hva-based shared memory or guest_memfd based private memory.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20240229063726.610065-5-xiaoyao.li@intel.com>
+Message-ID: <20240320083945.991426-11-michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c    | 5 +++--
- accel/kvm/trace-events | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/sysemu/kvm.h |  4 ++++
+ accel/kvm/kvm-all.c  | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 36 insertions(+)
 
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index bd247f3a239..594ae9b4605 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -536,4 +536,8 @@ void kvm_mark_guest_state_protected(void);
+  * reported for the VM.
+  */
+ bool kvm_hwpoisoned_mem(void);
++
++int kvm_set_memory_attributes_private(hwaddr start, uint64_t size);
++int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size);
++
+ #endif
 diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 5a2fbee32a3..ed50c80b1e4 100644
+index ed50c80b1e4..db0b1a16edd 100644
 --- a/accel/kvm/kvm-all.c
 +++ b/accel/kvm/kvm-all.c
-@@ -303,8 +303,9 @@ static int kvm_set_user_memory_region(KVMMemoryListener *kml, KVMSlot *slot, boo
-     ret = kvm_vm_ioctl(s, KVM_SET_USER_MEMORY_REGION, &mem);
-     slot->old_flags = mem.flags;
- err:
--    trace_kvm_set_user_memory(mem.slot, mem.flags, mem.guest_phys_addr,
--                              mem.memory_size, mem.userspace_addr, ret);
-+    trace_kvm_set_user_memory(mem.slot >> 16, (uint16_t)mem.slot, mem.flags,
-+                              mem.guest_phys_addr, mem.memory_size,
-+                              mem.userspace_addr, ret);
-     if (ret < 0) {
-         error_report("%s: KVM_SET_USER_MEMORY_REGION failed, slot=%d,"
-                      " start=0x%" PRIx64 ", size=0x%" PRIx64 ": %s",
-diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
-index a25902597b1..9f599abc172 100644
---- a/accel/kvm/trace-events
-+++ b/accel/kvm/trace-events
-@@ -15,7 +15,7 @@ kvm_irqchip_update_msi_route(int virq) "Updating MSI route virq=%d"
- kvm_irqchip_release_virq(int virq) "virq %d"
- kvm_set_ioeventfd_mmio(int fd, uint64_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%" PRIx64 " val=0x%x assign: %d size: %d match: %d"
- kvm_set_ioeventfd_pio(int fd, uint16_t addr, uint32_t val, bool assign, uint32_t size, bool datamatch) "fd: %d @0x%x val=0x%x assign: %d size: %d match: %d"
--kvm_set_user_memory(uint32_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
-+kvm_set_user_memory(uint16_t as, uint16_t slot, uint32_t flags, uint64_t guest_phys_addr, uint64_t memory_size, uint64_t userspace_addr, int ret) "AddrSpace#%d Slot#%d flags=0x%x gpa=0x%"PRIx64 " size=0x%"PRIx64 " ua=0x%"PRIx64 " ret=%d"
- kvm_clear_dirty_log(uint32_t slot, uint64_t start, uint32_t size) "slot#%"PRId32" start 0x%"PRIx64" size 0x%"PRIx32
- kvm_resample_fd_notify(int gsi) "gsi %d"
- kvm_dirty_ring_full(int id) "vcpu %d"
+@@ -91,6 +91,7 @@ bool kvm_msi_use_devid;
+ static bool kvm_has_guest_debug;
+ static int kvm_sstep_flags;
+ static bool kvm_immediate_exit;
++static uint64_t kvm_supported_memory_attributes;
+ static hwaddr kvm_max_slot_size = ~0;
+ 
+ static const KVMCapabilityInfo kvm_required_capabilites[] = {
+@@ -1266,6 +1267,36 @@ void kvm_set_max_memslot_size(hwaddr max_slot_size)
+     kvm_max_slot_size = max_slot_size;
+ }
+ 
++static int kvm_set_memory_attributes(hwaddr start, uint64_t size, uint64_t attr)
++{
++    struct kvm_memory_attributes attrs;
++    int r;
++
++    assert((attr & kvm_supported_memory_attributes) == attr);
++    attrs.attributes = attr;
++    attrs.address = start;
++    attrs.size = size;
++    attrs.flags = 0;
++
++    r = kvm_vm_ioctl(kvm_state, KVM_SET_MEMORY_ATTRIBUTES, &attrs);
++    if (r) {
++        error_report("failed to set memory (0x%" HWADDR_PRIx "+0x%" PRIx64 ") "
++                     "with attr 0x%" PRIx64 " error '%s'",
++                     start, size, attr, strerror(errno));
++    }
++    return r;
++}
++
++int kvm_set_memory_attributes_private(hwaddr start, uint64_t size)
++{
++    return kvm_set_memory_attributes(start, size, KVM_MEMORY_ATTRIBUTE_PRIVATE);
++}
++
++int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size)
++{
++    return kvm_set_memory_attributes(start, size, 0);
++}
++
+ /* Called with KVMMemoryListener.slots_lock held */
+ static void kvm_set_phys_mem(KVMMemoryListener *kml,
+                              MemoryRegionSection *section, bool add)
+@@ -2387,6 +2418,7 @@ static int kvm_init(MachineState *ms)
+         goto err;
+     }
+ 
++    kvm_supported_memory_attributes = kvm_check_extension(s, KVM_CAP_MEMORY_ATTRIBUTES);
+     kvm_immediate_exit = kvm_check_extension(s, KVM_CAP_IMMEDIATE_EXIT);
+     s->nr_slots = kvm_check_extension(s, KVM_CAP_NR_MEMSLOTS);
+ 
 -- 
 2.44.0
 
