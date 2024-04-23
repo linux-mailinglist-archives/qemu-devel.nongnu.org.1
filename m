@@ -2,34 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7292B8AFBCF
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:35:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131368AFBD3
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOfq-0001Ao-5l; Tue, 23 Apr 2024 18:31:38 -0400
+	id 1rzOfx-0001F9-4M; Tue, 23 Apr 2024 18:31:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfb-00016v-SG; Tue, 23 Apr 2024 18:31:25 -0400
+ id 1rzOfe-000175-26; Tue, 23 Apr 2024 18:31:29 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfY-0004an-6a; Tue, 23 Apr 2024 18:31:23 -0400
+ id 1rzOfc-0004bH-A5; Tue, 23 Apr 2024 18:31:25 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id C161D4E6042;
- Wed, 24 Apr 2024 00:31:16 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id CB5AD4E6031;
+ Wed, 24 Apr 2024 00:31:17 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id wRP8tTGP9yDN; Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
+ with ESMTP id KZdOsRHPTW55; Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id D45FC4E6031; Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
-Message-Id: <70bd4c106a5dd14eacf4b79131741c76accb9ad4.1713907038.git.balaton@eik.bme.hu>
+ id DD7714E6054; Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
+Message-Id: <60e5167ed91a2d98a08899e52b89d28bcd2d7d8d.1713907038.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1713907038.git.balaton@eik.bme.hu>
 References: <cover.1713907038.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 04/24] target/ppc: Remove unused helper
+Subject: [PATCH 05/24] target/ppc/mmu_common.c: Move calculation of a value
+ closer to its usage
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
+Date: Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -60,63 +61,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The helper_rac function is defined but not used, remove it.
+In mmubooke_check_tlb() prot2 is calculated first but only used after
+an unrelated check that can return before tha value is used. Move the
+calculation after the check, closer to where it is used, to keep them
+together and avoid computing it when not needed.
 
-Fixes: 005b69fdcc (target/ppc: Remove PowerPC 601 CPUs)
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/helper.h     |  2 --
- target/ppc/mmu_helper.c | 24 ------------------------
- 2 files changed, 26 deletions(-)
+ target/ppc/mmu_common.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/target/ppc/helper.h b/target/ppc/helper.h
-index 86f97ee1e7..f769e01c3d 100644
---- a/target/ppc/helper.h
-+++ b/target/ppc/helper.h
-@@ -700,8 +700,6 @@ DEF_HELPER_2(book3s_msgclr, void, env, tl)
+diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
+index 751403f1c8..168ff842a5 100644
+--- a/target/ppc/mmu_common.c
++++ b/target/ppc/mmu_common.c
+@@ -634,12 +634,6 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
+         return -1;
+     }
  
- DEF_HELPER_4(dlmzb, tl, env, tl, tl, i32)
- #if !defined(CONFIG_USER_ONLY)
--DEF_HELPER_2(rac, tl, env, tl)
--
- DEF_HELPER_2(load_dcr, tl, env, tl)
- DEF_HELPER_3(store_dcr, void, env, tl, tl)
- #endif
-diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
-index c071b4d5e2..817836b731 100644
---- a/target/ppc/mmu_helper.c
-+++ b/target/ppc/mmu_helper.c
-@@ -595,30 +595,6 @@ void helper_6xx_tlbi(CPUPPCState *env, target_ulong EPN)
-     do_6xx_tlb(env, EPN, 1);
- }
- 
--/*****************************************************************************/
--/* PowerPC 601 specific instructions (POWER bridge) */
--
--target_ulong helper_rac(CPUPPCState *env, target_ulong addr)
--{
--    mmu_ctx_t ctx;
--    int nb_BATs;
--    target_ulong ret = 0;
--
--    /*
--     * We don't have to generate many instances of this instruction,
--     * as rac is supervisor only.
--     *
--     * XXX: FIX THIS: Pretend we have no BAT
--     */
--    nb_BATs = env->nb_BATs;
--    env->nb_BATs = 0;
--    if (get_physical_address_wtlb(env, &ctx, addr, 0, ACCESS_INT, 0) == 0) {
--        ret = ctx.raddr;
+-    if (FIELD_EX64(env->msr, MSR, PR)) {
+-        prot2 = tlb->prot & 0xF;
+-    } else {
+-        prot2 = (tlb->prot >> 4) & 0xF;
 -    }
--    env->nb_BATs = nb_BATs;
--    return ret;
--}
 -
- static inline target_ulong booke_tlb_to_page_size(int size)
- {
-     return 1024 << (2 * size);
+     /* Check the address space */
+     if ((access_type == MMU_INST_FETCH ?
+         FIELD_EX64(env->msr, MSR, IR) :
+@@ -648,6 +642,11 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
+         return -1;
+     }
+ 
++    if (FIELD_EX64(env->msr, MSR, PR)) {
++        prot2 = tlb->prot & 0xF;
++    } else {
++        prot2 = (tlb->prot >> 4) & 0xF;
++    }
+     *prot = prot2;
+     if (prot2 & prot_for_access_type(access_type)) {
+         qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
 -- 
 2.30.9
 
