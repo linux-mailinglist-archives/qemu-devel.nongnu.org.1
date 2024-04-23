@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287E48AE78E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:10:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6487A8AE789
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzFsm-0001Gk-66; Tue, 23 Apr 2024 09:08:24 -0400
+	id 1rzFsl-0001HA-Ok; Tue, 23 Apr 2024 09:08:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mii@sfc.wide.ad.jp>)
- id 1rz9Vx-0003Mq-Go
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 02:20:27 -0400
-Received: from mail1.sfc.wide.ad.jp ([2001:200:0:8803:203:178:142:133])
+ id 1rzCDf-000356-4O
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 05:13:43 -0400
+Received: from mail1.sfc.wide.ad.jp ([203.178.142.133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mii@sfc.wide.ad.jp>)
- id 1rz9Vp-0000pv-GE
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 02:20:21 -0400
+ id 1rzCDc-0005y9-4E
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 05:13:42 -0400
 Received: from k8s-worker-01.tail4d807.ts.net (unknown
  [IPv6:2400:4051:3e03:2d00:1e98:ecff:fe05:4840])
  (Authenticated sender: mii)
- by mail1.sfc.wide.ad.jp (Postfix) with ESMTPSA id 593A373C;
- Tue, 23 Apr 2024 15:19:53 +0900 (JST)
+ by mail1.sfc.wide.ad.jp (Postfix) with ESMTPSA id 1AA6173C;
+ Tue, 23 Apr 2024 18:13:31 +0900 (JST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sfc.wide.ad.jp;
- s=mail1; t=1713853193;
- bh=iLgfuzBLOT/ymiieytEdCw3BXsG+02NpZNhpnVVpgeQ=;
+ s=mail1; t=1713863611;
+ bh=4rgFMcl4PjAWS04UAp8ksMm7DNH0AzJ3elAESeixJrw=;
  h=From:To:Cc:Subject:Date:From;
- b=VL2553Ab8jR0VTL1icDMIdFCETfP/NNAfIy19KvMnnOIOIoj9PXstJ+V8w9itOTgt
- nkvDESoXRZpMoruoj7wt/USOR3vzeq/ci7LhjVsvVYwuSYk6njYwBts/rFIg6TIeNq
- tOigm5AYze9Mlx3EtN+bJoN+5nLFqUXVwSFVHeAeOvCiHTTBs2Bl3NEOXJgMQUWzC0
- tjW4s+ZzuvKkmxJVZ1KqAtnwyYV4AoTMhb3EgXfx22LztKAabfRJ8Brx4KzQuu+HVs
- Sl5VZOAwwTPq/fp6YWyLkbvrq4vNU2gXxV/YGcBIepWD7ZsX/a/1udOkwySbMliWqT
- m4YqiBLnL++dA==
+ b=KzuWrQCcwJ4FAxc5VAWygao2toZ6/nCgdzWjpb1SSSO5cwB1eWUCdjmBiittc9tnX
+ kELj1jB9kaAP0ZHx2exy2XD8ZG7NzZyY9KgJJKONNSgTRAazVgMJy7yxDaDPTx/9fQ
+ eqittpQkQv8mw9T8HPJqn0RgSz+Rj0/aCyhMF6+iUh9KK3gJLq8aWWIwiUV9de2YhD
+ jFmrV6t2OgEBjZRp60IUQV3ciSgN+U+0qSd3jfgw/93AFVwdpbGuGm0YjhNrZ1UpiW
+ 3ydHoAJA6Q5FtoQEaPel6TfT49mhfrzTXSwdhzAla66yQ2zn4rMd/PvUxMkB0uUtsH
+ GF//Xa9QbcRvw==
 From: Masato Imai <mii@sfc.wide.ad.jp>
 To: qemu-devel@nongnu.org
-Cc: Masato Imai <mii@sfc.wide.ad.jp>, Hyman Huang <yong.huang@smartx.com>,
- Peter Xu <peterx@redhat.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH] migration/dirtyrate: Fix segmentation fault
-Date: Tue, 23 Apr 2024 06:19:25 +0000
-Message-Id: <20240423061925.254941-1-mii@sfc.wide.ad.jp>
+Cc: Masato Imai <mii@sfc.wide.ad.jp>
+Subject: [PATCH v2 0/1] migration/dirtyrate: Fix segmentation fault
+Date: Tue, 23 Apr 2024 09:13:06 +0000
+Message-Id: <20240423091306.754432-1-mii@sfc.wide.ad.jp>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2001:200:0:8803:203:178:142:133;
- envelope-from=mii@sfc.wide.ad.jp; helo=mail1.sfc.wide.ad.jp
-X-Spam_score_int: -26
-X-Spam_score: -2.7
-X-Spam_bar: --
-X-Spam_report: (-2.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_LOW=-0.7,
+Received-SPF: pass client-ip=203.178.142.133; envelope-from=mii@sfc.wide.ad.jp;
+ helo=mail1.sfc.wide.ad.jp
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Tue, 23 Apr 2024 09:08:17 -0400
@@ -67,29 +66,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the KVM acceleration parameter is not set, executing calc_dirty_rate
-with the -r option results in a segmentation fault due to accessing a
-null kvm_state pointer in the kvm_dirty_rate_enabled function.
-This commit adds a check for kvm_enabled to prevent segmentation faults.
+Changes from v1:
+- fix typo in commit message
+- added an extra check for dirty bitmap mode
 
-Signed-off-by: Masato Imai <mii@sfc.wide.ad.jp>
----
- migration/dirtyrate.c | 2 ++
- 1 file changed, 2 insertions(+)
+Masato Imai (1):
+  migration/dirtyrate: Fix segmentation fault
 
-diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
-index 1d2e85746f..4c1579c6e9 100644
---- a/migration/dirtyrate.c
-+++ b/migration/dirtyrate.c
-@@ -800,6 +800,8 @@ void qmp_calc_dirty_rate(int64_t calc_time,
-      * on the contrary, dirty bitmap mode is not.
-      */
-     if (((mode == DIRTY_RATE_MEASURE_MODE_DIRTY_RING) &&
-+        !kvm_enabled()) ||
-+        ((mode == DIRTY_RATE_MEASURE_MODE_DIRTY_RING) &&
-         !kvm_dirty_ring_enabled()) ||
-         ((mode == DIRTY_RATE_MEASURE_MODE_DIRTY_BITMAP) &&
-          kvm_dirty_ring_enabled())) {
+ migration/dirtyrate.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
 -- 
 2.34.1
 
