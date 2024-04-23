@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF938AE7D3
+	by mail.lfdr.de (Postfix) with ESMTPS id 627C58AE7D2
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzG1d-0005oN-1Q; Tue, 23 Apr 2024 09:17:33 -0400
+	id 1rzG1g-0005yi-6L; Tue, 23 Apr 2024 09:17:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG1G-0005Mz-NT
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:11 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzG1J-0005OQ-1S
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG1E-000266-V1
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:10 -0400
+ id 1rzG1H-00026U-K0
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713878228;
+ s=mimecast20190719; t=1713878231;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/ae08np63GuCGS29+G5r73docyIdCs5Sqmj6L0PV170=;
- b=BHaF6fT19FIG6TBwbUZwFI+Vgz0xmtzemJJoMXlT4bDidfv1ikWHg6bFS+WMlf6aX6s6nr
- +E/XYFUtcBdnhazInPnl1Q3wkseV82TGcqTs6g6GvH3lDa4rETjZcW4o9EQGBZ6z8gZW9b
- G+sqdcacPHqF6EB8j4FjSkoktCLEsbI=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=V9u5KdLBjt3phFKYb28PcAbu+aFuu+sa8p7olAJeG70=;
+ b=g9RPl1aREIAh1VFPIibhiAPnHwgNUAgnZHolVTzinz0FPSgevh6GCHKL3qSeNXOUob7MX5
+ 4ZkxvJSObZjw9J8gwpARY6Ldg6NZsNI3NkjUqr4pUL3s5OXBfTPTu7P4LaS3KeQoIrLAlL
+ 5TEuaCuq+wFPZrWKit75fuABeI55sBU=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-517-lAbQWvfpNnCoUhHW5JjlnA-1; Tue, 23 Apr 2024 09:17:07 -0400
-X-MC-Unique: lAbQWvfpNnCoUhHW5JjlnA-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-a556121c01aso292427766b.2
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:17:06 -0700 (PDT)
+ us-mta-90-EXurDrqnOkKXiKB7gq8rUg-1; Tue, 23 Apr 2024 09:17:09 -0400
+X-MC-Unique: EXurDrqnOkKXiKB7gq8rUg-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-518d2f112d2so4856810e87.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:17:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713878225; x=1714483025;
+ d=1e100.net; s=20230601; t=1713878227; x=1714483027;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/ae08np63GuCGS29+G5r73docyIdCs5Sqmj6L0PV170=;
- b=vy/zWvJzW7eFAlpLJEKhNRTbT+yv2+RVAE5UEfJatF4OlqvilmBslsC8m8x4mg6ncG
- yoPNoTlDZvmN7fIvX3LvGW8iw9Uj/eleJpbvvAbf6SI/ZGtiM0g4Fpd9UBgF0oRe/6xY
- icxLpUUO/bVe+jztSG9suS/NlMIRdkyL9zfJEWvyDZ4c1JXmmSiIo7z78L+bSsvv/BoQ
- LeKcq1Hok1U1YirhPq28V2R3PcFBdH4nuVUTM6AyPGLfuGX7WmcceuBuYPQ52QGZb79a
- OWBdOKV3kgn8FH5Fpazx+AfvI9pmk/i4HcB91Ck9mNzSng+lxHa95JGRy0rAHNm0IFpZ
- N2eA==
-X-Gm-Message-State: AOJu0YzRqvi/S3EWu6CambfD5JQHOGHsq8C1kIVn6E0JutGknzXq/1AB
- +5Y6BXaVoK/YJOHqLj9PNxBVjpTYloFoSUA/rSmXXRaaP3e87g80kIF8A1Hhb1X5CqeIpGryCdG
- v4kDbdz0lvz9rOJhgwtdIjNM567v6wt6L8OTQe2bZYm3dxCO7QtvCAjr2hdvhQu6TkpmZzNeGCQ
- eiFUMrKQ7p14rs3gHHaJeQnERqS08RvLBORDzR
-X-Received: by 2002:a17:907:3ea6:b0:a51:8145:6877 with SMTP id
- hs38-20020a1709073ea600b00a5181456877mr9787476ejc.37.1713878225130; 
- Tue, 23 Apr 2024 06:17:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9JET7dwBQGPvazKl50jzX4vyX1BvrKmzuRtXhPbqRyf7OqMZEYgDk5hwWzdHzMhNze5XJyA==
-X-Received: by 2002:a17:907:3ea6:b0:a51:8145:6877 with SMTP id
- hs38-20020a1709073ea600b00a5181456877mr9787462ejc.37.1713878224810; 
- Tue, 23 Apr 2024 06:17:04 -0700 (PDT)
+ bh=V9u5KdLBjt3phFKYb28PcAbu+aFuu+sa8p7olAJeG70=;
+ b=VRPmRMPLCyAsp3SClqrkuDZgLi5VEcWKyOxBRnvwebvyzeSrP3/fLHlzflJ5zAa/3h
+ w6kO7SrC9vn/Rz6AvyLy1ZwvzStk9rde5nl4tLbnD+vJ8HzNTrx72P+2ZqgZtTNkQgOd
+ 2EhNLa02F9E3lj558NLV5ZB7J68VD8JVZOkjAILu1PqZUsoZTO1uyFw5aX4kxIe4g6Cu
+ +XNwgPC2sJc58RtfjWo15CE4gwdyjleBG4NGcUdKKK4hE/HWHRjhHbiUyK9n+OMYqU6A
+ gKMuNKaPA3iTlaUQh5m79CwBMHIOweGx7WIVC+IMllrjRoQSEZGP4KW/6r40NcSGCChv
+ odIg==
+X-Gm-Message-State: AOJu0YwjZk/LQP2EkVNNwGw+aeVytTCXxocG1A7U0yBJkJS9hC5FaFLy
+ e0H5vXb54WH3TSKuG4VHNgyTmhnzGIwFc76fxDHMRHmkvWKy8cs/DwH9XCb+A99uQzd7DjUo4Nu
+ 9p+CN7BVk6KBwIjEOFC1wKLP0NJuOVmzA5AMO86Rz6c+Ipzb+clHBSy541eS0bdqSZ/Hk9G3aOF
+ bX4d9B8P/vR14BeJDT8b3MfGDYZz6OLjgPtiH9
+X-Received: by 2002:a05:6512:3daa:b0:51a:d74b:f122 with SMTP id
+ k42-20020a0565123daa00b0051ad74bf122mr12070559lfv.59.1713878227387; 
+ Tue, 23 Apr 2024 06:17:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLv4LpBDJAx7EZ1BJLykwYnmh9A9AMsI5FTWiATs+U1pE4L9UGrI1iLu9RJWyY5Z+vHTSOog==
+X-Received: by 2002:a05:6512:3daa:b0:51a:d74b:f122 with SMTP id
+ k42-20020a0565123daa00b0051ad74bf122mr12070543lfv.59.1713878227097; 
+ Tue, 23 Apr 2024 06:17:07 -0700 (PDT)
 Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- e18-20020a170906315200b00a55b0d2f204sm2959051eje.44.2024.04.23.06.17.03
+ x15-20020aa7d38f000000b0057033a63559sm6773403edq.21.2024.04.23.06.17.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 06:17:03 -0700 (PDT)
+ Tue, 23 Apr 2024 06:17:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	farosas@suse.de
-Subject: [PATCH 20/22] sparc: switch boards to "default y"
-Date: Tue, 23 Apr 2024 15:16:10 +0200
-Message-ID: <20240423131612.28362-21-pbonzini@redhat.com>
+Subject: [PATCH 21/22] tricore: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:16:11 +0200
+Message-ID: <20240423131612.28362-22-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423131612.28362-1-pbonzini@redhat.com>
 References: <20240423131612.28362-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -103,90 +103,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with SPARC and SPARC64.
+Continue with TriCore.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/sparc-softmmu/default.mak   | 7 +++----
- configs/devices/sparc64-softmmu/default.mak | 7 +++----
- hw/sparc/Kconfig                            | 4 ++++
- hw/sparc64/Kconfig                          | 4 ++++
- 4 files changed, 14 insertions(+), 8 deletions(-)
+ configs/devices/tricore-softmmu/default.mak | 7 +++++--
+ hw/tricore/Kconfig                          | 4 ++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/configs/devices/sparc-softmmu/default.mak b/configs/devices/sparc-softmmu/default.mak
-index ee852181151..87668fda5ea 100644
---- a/configs/devices/sparc-softmmu/default.mak
-+++ b/configs/devices/sparc-softmmu/default.mak
-@@ -5,7 +5,6 @@
- #CONFIG_TCX=n
- #CONFIG_CG3=n
- 
--# Boards:
--#
--CONFIG_SUN4M=y
--CONFIG_LEON3=y
+diff --git a/configs/devices/tricore-softmmu/default.mak b/configs/devices/tricore-softmmu/default.mak
+index cb8fc286eb2..c7ab542244b 100644
+--- a/configs/devices/tricore-softmmu/default.mak
++++ b/configs/devices/tricore-softmmu/default.mak
+@@ -1,2 +1,5 @@
+-CONFIG_TRICORE_TESTBOARD=y
+-CONFIG_TRIBOARD=y
++# Default configuration for tricore-softmmu
++
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_SUN4M=n
-+# CONFIG_LEON3=n
-diff --git a/configs/devices/sparc64-softmmu/default.mak b/configs/devices/sparc64-softmmu/default.mak
-index e50030a229c..fa82f39a200 100644
---- a/configs/devices/sparc64-softmmu/default.mak
-+++ b/configs/devices/sparc64-softmmu/default.mak
-@@ -6,7 +6,6 @@
- #CONFIG_SUNHME=n
- #CONFIG_TEST_DEVICES=n
++# CONFIG_TRICORE_TESTBOARD=n
++# CONFIG_TRIBOARD=n
+diff --git a/hw/tricore/Kconfig b/hw/tricore/Kconfig
+index 33c1e852c33..6c04f64949d 100644
+--- a/hw/tricore/Kconfig
++++ b/hw/tricore/Kconfig
+@@ -1,8 +1,12 @@
+ config TRICORE_TESTBOARD
++    default y
++    depends on TRICORE
+     bool
  
--# Boards:
--#
--CONFIG_SUN4U=y
--CONFIG_NIAGARA=y
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_SUN4U=n
-+# CONFIG_NIAGARA=n
-diff --git a/hw/sparc/Kconfig b/hw/sparc/Kconfig
-index 79d58beb7a6..3cc165dbfb7 100644
---- a/hw/sparc/Kconfig
-+++ b/hw/sparc/Kconfig
-@@ -1,5 +1,7 @@
- config SUN4M
+ config TRIBOARD
      bool
 +    default y
-+    depends on SPARC && !SPARC64
-     imply TCX
-     imply CG3
-     select CS4231
-@@ -18,6 +20,8 @@ config SUN4M
++    depends on TRICORE
+     select TC27X_SOC
  
- config LEON3
-     bool
-+    default y
-+    depends on SPARC && !SPARC64
-     select GRLIB
- 
- config GRLIB
-diff --git a/hw/sparc64/Kconfig b/hw/sparc64/Kconfig
-index 7e557ad17b0..3b948a22907 100644
---- a/hw/sparc64/Kconfig
-+++ b/hw/sparc64/Kconfig
-@@ -1,5 +1,7 @@
- config SUN4U
-     bool
-+    default y
-+    depends on SPARC64
-     imply PCI_DEVICES
-     imply SUNHME
-     imply TEST_DEVICES
-@@ -16,6 +18,8 @@ config SUN4U
- 
- config NIAGARA
-     bool
-+    default y
-+    depends on SPARC64
-     select EMPTY_SLOT
-     select SUN4V_RTC
-     select UNIMP
+ config TC27X_SOC
 -- 
 2.44.0
 
