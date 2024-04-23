@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15E28AEACB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:19:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7683E8AEAB4
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnI-00053U-2a; Tue, 23 Apr 2024 11:10:52 -0400
+	id 1rzHnf-0007Ku-2D; Tue, 23 Apr 2024 11:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmk-0004NS-5p
+ id 1rzHmk-0004Na-DD
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmg-00006P-Ol
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:17 -0400
+ id 1rzHmh-00006a-GE
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885013;
+ s=mimecast20190719; t=1713885014;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wCSeEIzDnWvUBvWxUzklJfIexfxTGnWOXXLod2ADtIE=;
- b=VR/sujl/Gy60TyHDbJ/aPQRuB9r4RMYEZH64avUtzfTwYZt+1/gsXupZ4l96VL47e3KkA8
- pM6C+MoYv+Pmd9X9CvN8iwyJgH58cZqLqdNc6wcwPdPyIj8hRMQAgGBmvINpGfpU8Muiqx
- rMWJJIeBYNi8qcJZwixnWM2TUy1fHvc=
+ bh=NlpPVTBNKVZ/awosdGXGLIItCtvp+4fpatVD/Uy1dPI=;
+ b=HN4beVNIfdnZznBagLCkawUhsHUsM8zNJJ38j2uBLxGGIES+PuoYuGOxq2D6bjpFjcSgp8
+ Vbsp4WDXhURnhCBWXYOvz2x4QumRHAUX43Z6dqLtbweuO3JbRry1wxZ172LAghBx0P0yQl
+ fGBRuEo7FMuWe7l/+q8hLrcf2JQHiro=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-134-4jHyxC_1ML2oe9smxHAr_A-1; Tue, 23 Apr 2024 11:10:11 -0400
-X-MC-Unique: 4jHyxC_1ML2oe9smxHAr_A-1
+ us-mta-617-amladxOgOCyvuMKwWJb8QQ-1; Tue, 23 Apr 2024 11:10:12 -0400
+X-MC-Unique: amladxOgOCyvuMKwWJb8QQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 410528107BF
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D9E01827100;
+ Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CC903200E290
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:10 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 86AB4200AFA2;
+ Tue, 23 Apr 2024 15:10:11 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 17/63] stubs: include stubs only if needed
-Date: Tue, 23 Apr 2024 17:09:05 +0200
-Message-ID: <20240423150951.41600-18-pbonzini@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 18/63] stubs: move monitor_fdsets_cleanup with other fdset stubs
+Date: Tue, 23 Apr 2024 17:09:06 +0200
+Message-ID: <20240423150951.41600-19-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,163 +79,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently it is not documented anywhere why some functions need to
-be stubbed.
-
-Group the files in stubs/meson.build according to who needs them, both
-to reduce the size of the compilation and to clarify the use of stubs.
+Even though monitor_get_fd() has to remain separate because it is mocked by
+tests/unit/test-util-sockets, monitor_fdsets_cleanup() is logically part
+of the stubs for monitor/fds.c, so move it there.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240408155330.522792-18-pbonzini@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-ID: <20240408155330.522792-19-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/{monitor.c => monitor-internal.c} |   0
- stubs/meson.build                       | 122 +++++++++++++++---------
- 2 files changed, 75 insertions(+), 47 deletions(-)
- rename stubs/{monitor.c => monitor-internal.c} (100%)
+ stubs/fdset.c            | 6 ++++++
+ stubs/monitor-internal.c | 5 -----
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/stubs/monitor.c b/stubs/monitor-internal.c
-similarity index 100%
-rename from stubs/monitor.c
-rename to stubs/monitor-internal.c
-diff --git a/stubs/meson.build b/stubs/meson.build
-index 4a524f5816b..8ee1fd57530 100644
---- a/stubs/meson.build
-+++ b/stubs/meson.build
-@@ -1,58 +1,86 @@
--stub_ss.add(files('bdrv-next-monitor-owned.c'))
--stub_ss.add(files('blk-commit-all.c'))
--stub_ss.add(files('blk-exp-close-all.c'))
--stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
--stub_ss.add(files('change-state-handler.c'))
--stub_ss.add(files('cmos.c'))
-+# If possible, add new files to other directories, by using "if_false".
-+# If you need them here, try to add them under one of the if statements
-+# below, so that it is clear who needs the stubbed functionality.
+diff --git a/stubs/fdset.c b/stubs/fdset.c
+index 56b3663d588..d7c39a28acb 100644
+--- a/stubs/fdset.c
++++ b/stubs/fdset.c
+@@ -1,5 +1,7 @@
+ #include "qemu/osdep.h"
++#include "qapi/error.h"
+ #include "monitor/monitor.h"
++#include "../monitor/monitor-internal.h"
+ 
+ int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
+ {
+@@ -15,3 +17,7 @@ int64_t monitor_fdset_dup_fd_find(int dup_fd)
+ void monitor_fdset_dup_fd_remove(int dupfd)
+ {
+ }
 +
- stub_ss.add(files('cpu-get-clock.c'))
--stub_ss.add(files('cpus-get-virtual-clock.c'))
--stub_ss.add(files('qemu-timer-notify-cb.c'))
--stub_ss.add(files('icount.c'))
--stub_ss.add(files('dump.c'))
--stub_ss.add(files('error-printf.c'))
- stub_ss.add(files('fdset.c'))
--stub_ss.add(files('gdbstub.c'))
--stub_ss.add(files('get-vm-name.c'))
--stub_ss.add(files('graph-lock.c'))
--stub_ss.add(files('hotplug-stubs.c'))
--if linux_io_uring.found()
--  stub_ss.add(files('io_uring.c'))
--endif
- stub_ss.add(files('iothread-lock.c'))
--if have_block
--  stub_ss.add(files('iothread-lock-block.c'))
--endif
- stub_ss.add(files('is-daemonized.c'))
--if libaio.found()
--  stub_ss.add(files('linux-aio.c'))
--endif
--stub_ss.add(files('migr-blocker.c'))
--stub_ss.add(files('monitor.c'))
- stub_ss.add(files('monitor-core.c'))
--stub_ss.add(files('physmem.c'))
--stub_ss.add(files('qemu-timer-notify-cb.c'))
--stub_ss.add(files('qmp-command-available.c'))
--stub_ss.add(files('qmp-quit.c'))
--stub_ss.add(files('qtest.c'))
--stub_ss.add(files('ram-block.c'))
--stub_ss.add(files('replay.c'))
- stub_ss.add(files('replay-mode.c'))
--stub_ss.add(files('runstate-check.c'))
--stub_ss.add(files('sysbus.c'))
--stub_ss.add(files('target-get-monitor-def.c'))
--stub_ss.add(files('target-monitor-defs.c'))
- stub_ss.add(files('trace-control.c'))
--stub_ss.add(files('uuid.c'))
--stub_ss.add(files('vmstate.c'))
--stub_ss.add(files('vm-stop.c'))
--stub_ss.add(files('win32-kbd-hook.c'))
--stub_ss.add(files('cpu-synchronize-state.c'))
--if have_block or have_ga
-+
-+if have_block
-+  stub_ss.add(files('bdrv-next-monitor-owned.c'))
-+  stub_ss.add(files('blk-commit-all.c'))
-+  stub_ss.add(files('blk-exp-close-all.c'))
-+  stub_ss.add(files('blockdev-close-all-bdrv-states.c'))
-+  stub_ss.add(files('change-state-handler.c'))
-+  stub_ss.add(files('get-vm-name.c'))
-+  stub_ss.add(files('iothread-lock-block.c'))
-+  stub_ss.add(files('migr-blocker.c'))
-+  stub_ss.add(files('physmem.c'))
-+  stub_ss.add(files('ram-block.c'))
-   stub_ss.add(files('replay-tools.c'))
-+  stub_ss.add(files('runstate-check.c'))
-+  stub_ss.add(files('uuid.c'))
- endif
--if have_system
--  stub_ss.add(files('fw_cfg.c'))
--  stub_ss.add(files('xen-hw-stub.c'))
--else
-+
-+if have_block or have_ga
-+  # stubs for hooks in util/main-loop.c, util/async.c etc.
-+  stub_ss.add(files('cpus-get-virtual-clock.c'))
-+  stub_ss.add(files('icount.c'))
-+  stub_ss.add(files('graph-lock.c'))
-+  if linux_io_uring.found()
-+    stub_ss.add(files('io_uring.c'))
-+  endif
-+  if libaio.found()
-+    stub_ss.add(files('linux-aio.c'))
-+  endif
-+  stub_ss.add(files('qemu-timer-notify-cb.c'))
-+
-+  # stubs for monitor
-+  stub_ss.add(files('monitor-internal.c'))
-+  stub_ss.add(files('qmp-command-available.c'))
-+  stub_ss.add(files('qmp-quit.c'))
-+endif
-+
-+if have_block or have_user
-+  stub_ss.add(files('qtest.c'))
-+  stub_ss.add(files('vm-stop.c'))
-+  stub_ss.add(files('vmstate.c'))
-+
-+  # more symbols provided by the monitor
-+  stub_ss.add(files('error-printf.c'))
-+endif
-+
-+if have_user
-+  # Symbols that are used by hw/core.
-+  stub_ss.add(files('cpu-synchronize-state.c'))
-   stub_ss.add(files('qdev.c'))
- endif
-+
-+if have_system
-+  # Symbols that are only needed in some configurations.  Try not
-+  # adding more of these.  If the symbol is used in specific_ss,
-+  # in particular, consider defining a preprocessor macro via
-+  # Kconfig or configs/targets/.
-+  stub_ss.add(files('dump.c'))
-+  stub_ss.add(files('cmos.c'))
-+  stub_ss.add(files('fw_cfg.c'))
-+  stub_ss.add(files('target-get-monitor-def.c'))
-+  stub_ss.add(files('target-monitor-defs.c'))
-+  stub_ss.add(files('win32-kbd-hook.c'))
-+  stub_ss.add(files('xen-hw-stub.c'))
-+endif
-+
-+if have_system or have_user
-+  stub_ss.add(files('gdbstub.c'))
-+
-+  # Also included in have_system for --disable-tcg builds
-+  stub_ss.add(files('replay.c'))
-+
-+  # Also included in have_system for tests/unit/test-qdev-global-props
-+  stub_ss.add(files('hotplug-stubs.c'))
-+  stub_ss.add(files('sysbus.c'))
-+endif
++void monitor_fdsets_cleanup(void)
++{
++}
+diff --git a/stubs/monitor-internal.c b/stubs/monitor-internal.c
+index 20786ac4ffb..4fece49d531 100644
+--- a/stubs/monitor-internal.c
++++ b/stubs/monitor-internal.c
+@@ -1,7 +1,6 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "monitor/monitor.h"
+-#include "../monitor/monitor-internal.h"
+ 
+ int monitor_get_fd(Monitor *mon, const char *name, Error **errp)
+ {
+@@ -12,7 +11,3 @@ int monitor_get_fd(Monitor *mon, const char *name, Error **errp)
+ void monitor_init_hmp(Chardev *chr, bool use_readline, Error **errp)
+ {
+ }
+-
+-void monitor_fdsets_cleanup(void)
+-{
+-}
 -- 
 2.44.0
 
