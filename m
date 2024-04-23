@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32098AFBCE
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA9C8AFBBE
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:33:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOfs-0001Cz-7o; Tue, 23 Apr 2024 18:31:40 -0400
+	id 1rzOfy-0001HA-TU; Tue, 23 Apr 2024 18:31:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfh-00017E-BI; Tue, 23 Apr 2024 18:31:29 -0400
+ id 1rzOfh-000181-Sk; Tue, 23 Apr 2024 18:31:31 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOff-0004cF-7v; Tue, 23 Apr 2024 18:31:29 -0400
+ id 1rzOfg-0004cc-6p; Tue, 23 Apr 2024 18:31:29 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 340CA4E6041;
- Wed, 24 Apr 2024 00:31:25 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4AB494E603E;
+ Wed, 24 Apr 2024 00:31:26 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id bLvPjQN-Squc; Wed, 24 Apr 2024 00:31:23 +0200 (CEST)
+ with ESMTP id SuFV9X7D57eU; Wed, 24 Apr 2024 00:31:24 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4A0D24E603E; Wed, 24 Apr 2024 00:31:23 +0200 (CEST)
-Message-Id: <e480d376d0eb1164a7af4a169a589682a05898b7.1713907038.git.balaton@eik.bme.hu>
+ id 5D7F44E603D; Wed, 24 Apr 2024 00:31:24 +0200 (CEST)
+Message-Id: <d10dd341c58026d789c5b8867450c9b29219f2e8.1713907038.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1713907038.git.balaton@eik.bme.hu>
 References: <cover.1713907038.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 12/24] target/ppc/mmu_common.c: Inline and remove
- check_physical()
+Subject: [PATCH 13/24] target/ppc/mmu_common.c: Simplify
+ mmubooke_get_physical_address()
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +38,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Wed, 24 Apr 2024 00:31:23 +0200 (CEST)
+Date: Wed, 24 Apr 2024 00:31:24 +0200 (CEST)
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,58 +61,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function just does two assignments and and unnecessary check that
-is always true so inline it in the only caller left and remove it.
-
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 26 +++-----------------------
- 1 file changed, 3 insertions(+), 23 deletions(-)
+ target/ppc/mmu_common.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index fb66468d34..843f909619 100644
+index 843f909619..d40ddb6fc3 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -1166,28 +1166,6 @@ void dump_mmu(CPUPPCState *env)
-     }
- }
+@@ -668,31 +668,24 @@ static int mmubooke_get_physical_address(CPUPPCState *env, mmu_ctx_t *ctx,
+                                          MMUAccessType access_type)
+ {
+     ppcemb_tlb_t *tlb;
+-    hwaddr raddr;
+-    int i, ret;
++    hwaddr raddr = (hwaddr)-1ULL;
++    int i, ret = -1;
  
--static int check_physical(CPUPPCState *env, mmu_ctx_t *ctx, target_ulong eaddr,
--                          MMUAccessType access_type)
--{
--    ctx->raddr = eaddr;
--    ctx->prot = PAGE_READ | PAGE_EXEC;
+-    ret = -1;
+-    raddr = (hwaddr)-1ULL;
+     for (i = 0; i < env->nb_tlb; i++) {
+         tlb = &env->tlb.tlbe[i];
+         ret = mmubooke_check_tlb(env, tlb, &raddr, &ctx->prot, address,
+                                  access_type, i);
+         if (ret != -1) {
++            if (ret >= 0) {
++                ctx->raddr = raddr;
++            }
+             break;
+         }
+     }
 -
--    switch (env->mmu_model) {
--    case POWERPC_MMU_SOFT_6xx:
--    case POWERPC_MMU_SOFT_4xx:
--    case POWERPC_MMU_REAL:
--    case POWERPC_MMU_BOOKE:
--        ctx->prot |= PAGE_WRITE;
--        break;
--
--    default:
--        /* Caller's checks mean we should never get here for other models */
--        g_assert_not_reached();
+-    if (ret >= 0) {
+-        ctx->raddr = raddr;
+-        qemu_log_mask(CPU_LOG_MMU, "%s: access granted " TARGET_FMT_lx
+-                      " => " HWADDR_FMT_plx " %d %d\n", __func__,
+-                      address, ctx->raddr, ctx->prot, ret);
+-    } else {
+-         qemu_log_mask(CPU_LOG_MMU, "%s: access refused " TARGET_FMT_lx
+-                       " => " HWADDR_FMT_plx " %d %d\n", __func__,
+-                       address, raddr, ctx->prot, ret);
 -    }
 -
--    return 0;
--}
--
- int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-                                      target_ulong eaddr,
-                                      MMUAccessType access_type, int type,
-@@ -1207,7 +1185,9 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
-     if (real_mode && (env->mmu_model == POWERPC_MMU_SOFT_6xx ||
-                       env->mmu_model == POWERPC_MMU_SOFT_4xx ||
-                       env->mmu_model == POWERPC_MMU_REAL)) {
--        return check_physical(env, ctx, eaddr, access_type);
-+        ctx->raddr = eaddr;
-+        ctx->prot = PAGE_READ | PAGE_WRITE | PAGE_EXEC;
-+        return 0;
-     }
++    qemu_log_mask(CPU_LOG_MMU,
++                  "%s: access %s " TARGET_FMT_lx " => " HWADDR_FMT_plx
++                  " %d %d\n", __func__, ret < 0 ? "refused" : "granted",
++                  address, raddr, ctx->prot, ret);
+     return ret;
+ }
  
-     switch (env->mmu_model) {
 -- 
 2.30.9
 
