@@ -2,54 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F108AEA71
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B208AEA90
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:16:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnR-0005pF-KD; Tue, 23 Apr 2024 11:11:01 -0400
+	id 1rzHnU-0006Fg-HY; Tue, 23 Apr 2024 11:11:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn8-0004e9-64
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:45 -0400
+ id 1rzHnC-0004k9-K1
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn2-0000Go-9T
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:41 -0400
+ id 1rzHn7-0000HE-VN
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885034;
+ s=mimecast20190719; t=1713885035;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n3mpida+7pBeEIwF72SudzUqBOgjk+1wmiY+VpH0hr4=;
- b=InkxS5U+GsUTEUvLF6xqraL6psuGiX8YL97Xf/hlKbc2nZYqXJi8YPBJFZnvNkGmsgJnuq
- QMqMra3Tje7m7Jldw4I0wy6fvzCEhFYDQtPCIO+3kIaoga9MGH7XKTd1RudtiVXHH1mB12
- HHdlWKP/RifVerd3jkQtt2l88cvSovU=
+ bh=/oyq/pYGuo/iu0l7uKUoPfrHl8ZU1WATY9EZskgY+m8=;
+ b=a+VdgUrpp2A/fCcxQyKRcf16DArCG6y74XX7i9casjmLo0cGd/8Y6hz9jPrZp8Xg68cIqS
+ pkvaEcpv8SBWQykpDjAFxuZ1zWnG6XxqfNCBycX3feyBY8VVNiIQdmXOWP9BxRqqfIPByD
+ 6EVu4jhPIS9V+ZCloOsdh/n6VSfrhrc=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-606-WtESKvyEPMiKOdSdveQmNQ-1; Tue,
- 23 Apr 2024 11:10:30 -0400
-X-MC-Unique: WtESKvyEPMiKOdSdveQmNQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-516-0FBpigayPYGn_cDTXQ3Akw-1; Tue,
+ 23 Apr 2024 11:10:31 -0400
+X-MC-Unique: 0FBpigayPYGn_cDTXQ3Akw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 69C7D3C3D0C8;
- Tue, 23 Apr 2024 15:10:30 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4413638116F1;
+ Tue, 23 Apr 2024 15:10:31 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D686A200E290;
- Tue, 23 Apr 2024 15:10:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id ADC742026D0A;
+ Tue, 23 Apr 2024 15:10:30 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Michael Roth <michael.roth@amd.com>
-Subject: [PULL 36/63] scripts/update-linux-headers: Add setup_data.h to import
- list
-Date: Tue, 23 Apr 2024 17:09:24 +0200
-Message-ID: <20240423150951.41600-37-pbonzini@redhat.com>
+Subject: [PULL 37/63] scripts/update-linux-headers: Add bits.h to file imports
+Date: Tue, 23 Apr 2024 17:09:25 +0200
+Message-ID: <20240423150951.41600-38-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -82,70 +81,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Michael Roth <michael.roth@amd.com>
 
-Data structures like struct setup_data have been moved to a separate
-setup_data.h header which bootparam.h relies on. Add setup_data.h to
-the cp_portable() list and sync it along with the other header files.
-
-Note that currently struct setup_data is stripped away as part of
-generating bootparam.h, but that handling is no currently needed for
-setup_data.h since it doesn't pull in many external
-headers/dependencies. However, QEMU currently redefines struct
-setup_data in hw/i386/x86.c, so that will need to be removed as part of
-any header update that pulls in the new setup_data.h to avoid build
-bisect breakage.
-
-Because <asm/setup_data.h> is the first architecture specific #include
-in include/standard-headers/, add a new sed substitution to rewrite
-asm/ include to the standard-headers/asm-* subdirectory for the current
-architecture.
-
-And while at it, remove asm-generic/kvm_para.h from the list of
-allowed includes: it does not have a matching substitution, and therefore
-it would not be possible to use it on non-Linux systems where there is
-no /usr/include/asm-generic/ directory.
-
 Signed-off-by: Michael Roth <michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- scripts/update-linux-headers.sh | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ scripts/update-linux-headers.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
-index a0006eec6fd..d48856f9e24 100755
+index d48856f9e24..5f20434d5c5 100755
 --- a/scripts/update-linux-headers.sh
 +++ b/scripts/update-linux-headers.sh
-@@ -61,7 +61,7 @@ cp_portable() {
-                                      -e 'linux/const' \
-                                      -e 'linux/kernel' \
-                                      -e 'linux/sysinfo' \
--                                     -e 'asm-generic/kvm_para' \
-+                                     -e 'asm/setup_data.h' \
-                                      > /dev/null
-     then
-         echo "Unexpected #include in input file $f".
-@@ -77,6 +77,7 @@ cp_portable() {
-         -e 's/__be\([0-9][0-9]*\)/uint\1_t/g' \
-         -e 's/"\(input-event-codes\.h\)"/"standard-headers\/linux\/\1"/' \
-         -e 's/<linux\/\([^>]*\)>/"standard-headers\/linux\/\1"/' \
-+        -e 's/<asm\/\([^>]*\)>/"standard-headers\/asm-'$arch'\/\1"/' \
-         -e 's/__bitwise//' \
-         -e 's/__attribute__((packed))/QEMU_PACKED/' \
-         -e 's/__inline__/inline/' \
-@@ -155,11 +156,14 @@ for arch in $ARCHLIST; do
-                "$tmpdir/include/asm/bootparam.h" > "$tmpdir/bootparam.h"
-         cp_portable "$tmpdir/bootparam.h" \
-                     "$output/include/standard-headers/asm-$arch"
-+        cp_portable "$tmpdir/include/asm/setup_data.h" \
-+                    "$output/standard-headers/asm-x86"
-     fi
-     if [ $arch = riscv ]; then
-         cp "$tmpdir/include/asm/ptrace.h" "$output/linux-headers/asm-riscv/"
-     fi
- done
-+arch=
- 
- rm -rf "$output/linux-headers/linux"
+@@ -169,7 +169,7 @@ rm -rf "$output/linux-headers/linux"
  mkdir -p "$output/linux-headers/linux"
+ for header in const.h stddef.h kvm.h vfio.h vfio_ccw.h vfio_zdev.h vhost.h \
+               psci.h psp-sev.h userfaultfd.h memfd.h mman.h nvme_ioctl.h \
+-              vduse.h iommufd.h; do
++              vduse.h iommufd.h bits.h; do
+     cp "$tmpdir/include/linux/$header" "$output/linux-headers/linux"
+ done
+ 
 -- 
 2.44.0
 
