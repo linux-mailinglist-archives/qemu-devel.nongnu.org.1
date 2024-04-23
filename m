@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979458AEA83
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 439C98AEA61
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHng-0007Ql-Fk; Tue, 23 Apr 2024 11:11:16 -0400
+	id 1rzHnJ-00057b-6t; Tue, 23 Apr 2024 11:10:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHml-0004Nl-MG
+ id 1rzHmm-0004Ou-8E
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmj-000073-T7
+ id 1rzHmj-00007N-TG
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885015;
+ s=mimecast20190719; t=1713885016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kmfWPYUoXX6bScoUXzhELmYVEYe3YTHOcJQw40qC8FE=;
- b=XYF1/UVyd5ofNjj5zbupO6UfBKLcpTnHYh7lKno9pdYXcZGw62j343eOivOo8QEhc18Vex
- swaaDLuXIN04sbtEuBcXff2xMUd6qo/ZC37VsBWxl0cDE//6mKaygLSi4TnkI0bXWS9ANj
- aHBSli+49jcA9nU1nUdxuM2mdS18EqA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-356-GqO07TOgN3CR957pJmIVew-1; Tue, 23 Apr 2024 11:10:13 -0400
-X-MC-Unique: GqO07TOgN3CR957pJmIVew-1
+ bh=fsp+LIRyKEp36ECWTky61fIKHdbp9NieE8/Mzncu1DI=;
+ b=FaeEw3+tavQyA0Vg7pA75GM7fuDBkR4AGOPGLsHed9vIsqu4rQXH7OBurD7PXXIo3Dg+N2
+ 8JFAeAJUwxq+KwCoLEpR1lWbqbVOhXD/Qpg3G1tWi2dBRoU87AB65SjycO01K/eZU4Maji
+ wiUv3LMVDqzxFQKs8oANTuvqftAYBI8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-Fh-wHzYyMnq2rKqrPP5MJg-1; Tue,
+ 23 Apr 2024 11:10:14 -0400
+X-MC-Unique: Fh-wHzYyMnq2rKqrPP5MJg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 798A2804C61
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34CB03811701
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:14 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 11CBD200E290
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BCAA9200AFA2
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:13 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 20/63] vga: move dirty memory region code together
-Date: Tue, 23 Apr 2024 17:09:08 +0200
-Message-ID: <20240423150951.41600-21-pbonzini@redhat.com>
+Subject: [PULL 21/63] kvm: use configs/ definition to conditionalize debug
+ support
+Date: Tue, 23 Apr 2024 17:09:09 +0200
+Message-ID: <20240423150951.41600-22-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,40 +79,183 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Take into account split screen mode close to wrap around, which is the
-other special case for dirty memory region computation.
+If an architecture adds support for KVM_CAP_SET_GUEST_DEBUG but QEMU does not
+have the necessary code, QEMU will fail to build after updating kernel headers.
+Avoid this by using a #define in config-target.h instead of KVM_CAP_SET_GUEST_DEBUG.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/display/vga.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ configs/targets/aarch64-softmmu.mak |  1 +
+ configs/targets/i386-softmmu.mak    |  1 +
+ configs/targets/ppc-softmmu.mak     |  1 +
+ configs/targets/ppc64-softmmu.mak   |  1 +
+ configs/targets/s390x-softmmu.mak   |  1 +
+ configs/targets/x86_64-softmmu.mak  |  1 +
+ include/sysemu/kvm.h                |  2 +-
+ include/sysemu/kvm_int.h            |  2 +-
+ accel/kvm/kvm-accel-ops.c           |  4 ++--
+ accel/kvm/kvm-all.c                 | 10 +++++-----
+ 10 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 77d709a3d69..e91a76bf76b 100644
---- a/hw/display/vga.c
-+++ b/hw/display/vga.c
-@@ -1596,6 +1596,10 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
-         region_end = s->vbe_size;
-         force_shadow = true;
+diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
+index b4338e95680..83c22391a69 100644
+--- a/configs/targets/aarch64-softmmu.mak
++++ b/configs/targets/aarch64-softmmu.mak
+@@ -1,5 +1,6 @@
+ TARGET_ARCH=aarch64
+ TARGET_BASE_ARCH=arm
+ TARGET_SUPPORTS_MTTCG=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml gdb-xml/aarch64-pauth.xml
+ TARGET_NEED_FDT=y
+diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
+index 6b3c99fc86c..d61b5076134 100644
+--- a/configs/targets/i386-softmmu.mak
++++ b/configs/targets/i386-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_NEED_FDT=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/i386-32bit.xml
+diff --git a/configs/targets/ppc-softmmu.mak b/configs/targets/ppc-softmmu.mak
+index 774440108f7..f3ea9c98f75 100644
+--- a/configs/targets/ppc-softmmu.mak
++++ b/configs/targets/ppc-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=ppc
+ TARGET_BIG_ENDIAN=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/power-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml
+ TARGET_NEED_FDT=y
+diff --git a/configs/targets/ppc64-softmmu.mak b/configs/targets/ppc64-softmmu.mak
+index ddf0c39617f..1db8d8381d0 100644
+--- a/configs/targets/ppc64-softmmu.mak
++++ b/configs/targets/ppc64-softmmu.mak
+@@ -2,5 +2,6 @@ TARGET_ARCH=ppc64
+ TARGET_BASE_ARCH=ppc
+ TARGET_BIG_ENDIAN=y
+ TARGET_SUPPORTS_MTTCG=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/power64-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml gdb-xml/power-vsx.xml
+ TARGET_NEED_FDT=y
+diff --git a/configs/targets/s390x-softmmu.mak b/configs/targets/s390x-softmmu.mak
+index 70d2f9f0ba0..b22218aacc8 100644
+--- a/configs/targets/s390x-softmmu.mak
++++ b/configs/targets/s390x-softmmu.mak
+@@ -1,4 +1,5 @@
+ TARGET_ARCH=s390x
+ TARGET_BIG_ENDIAN=y
+ TARGET_SUPPORTS_MTTCG=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/s390x-core64.xml gdb-xml/s390-acr.xml gdb-xml/s390-fpr.xml gdb-xml/s390-vx.xml gdb-xml/s390-cr.xml gdb-xml/s390-virt.xml gdb-xml/s390-virt-kvm.xml gdb-xml/s390-gs.xml
+diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
+index 197817c9434..c5f882e5ba1 100644
+--- a/configs/targets/x86_64-softmmu.mak
++++ b/configs/targets/x86_64-softmmu.mak
+@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
+ TARGET_BASE_ARCH=i386
+ TARGET_SUPPORTS_MTTCG=y
+ TARGET_NEED_FDT=y
++TARGET_KVM_HAVE_GUEST_DEBUG=y
+ TARGET_XML_FILES= gdb-xml/i386-64bit.xml
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index fad9a7e8ff3..2cba899270c 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -224,7 +224,7 @@ void kvm_flush_coalesced_mmio_buffer(void);
+  * calling down to kvm_arch_update_guest_debug after the generic
+  * fields have been set.
+  */
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+ int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap);
+ #else
+ static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap)
+diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
+index 882e37e12c5..94488d2c1a2 100644
+--- a/include/sysemu/kvm_int.h
++++ b/include/sysemu/kvm_int.h
+@@ -78,7 +78,7 @@ struct KVMState
+     struct kvm_coalesced_mmio_ring *coalesced_mmio_ring;
+     bool coalesced_flush_in_progress;
+     int vcpu_events;
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+     QTAILQ_HEAD(, kvm_sw_breakpoint) kvm_sw_breakpoints;
+ #endif
+     int max_nested_state_len;
+diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
+index b3c946dc4b4..f5ac643fca3 100644
+--- a/accel/kvm/kvm-accel-ops.c
++++ b/accel/kvm/kvm-accel-ops.c
+@@ -85,7 +85,7 @@ static bool kvm_cpus_are_resettable(void)
+     return !kvm_enabled() || kvm_cpu_check_are_resettable();
+ }
+ 
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+ static int kvm_update_guest_debug_ops(CPUState *cpu)
+ {
+     return kvm_update_guest_debug(cpu, 0);
+@@ -104,7 +104,7 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, void *data)
+     ops->synchronize_state = kvm_cpu_synchronize_state;
+     ops->synchronize_pre_loadvm = kvm_cpu_synchronize_pre_loadvm;
+ 
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+     ops->update_guest_debug = kvm_update_guest_debug_ops;
+     ops->supports_guest_debug = kvm_supports_guest_debug;
+     ops->insert_breakpoint = kvm_insert_breakpoint;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index 931f74256e8..d58916e33ae 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2360,7 +2360,7 @@ static int kvm_init(MachineState *ms)
+     s->sigmask_len = 8;
+     accel_blocker_init();
+ 
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+     QTAILQ_INIT(&s->kvm_sw_breakpoints);
+ #endif
+     QLIST_INIT(&s->kvm_parked_vcpus);
+@@ -2544,7 +2544,7 @@ static int kvm_init(MachineState *ms)
+     kvm_vm_attributes_allowed =
+         (kvm_check_extension(s, KVM_CAP_VM_ATTRIBUTES) > 0);
+ 
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+     kvm_has_guest_debug =
+         (kvm_check_extension(s, KVM_CAP_SET_GUEST_DEBUG) > 0);
+ #endif
+@@ -2553,7 +2553,7 @@ static int kvm_init(MachineState *ms)
+     if (kvm_has_guest_debug) {
+         kvm_sstep_flags = SSTEP_ENABLE;
+ 
+-#if defined KVM_CAP_SET_GUEST_DEBUG2
++#if defined TARGET_KVM_HAVE_GUEST_DEBUG
+         int guest_debug_flags =
+             kvm_check_extension(s, KVM_CAP_SET_GUEST_DEBUG2);
+ 
+@@ -3157,7 +3157,7 @@ bool kvm_arm_supports_user_irq(void)
+     return kvm_check_extension(kvm_state, KVM_CAP_ARM_USER_IRQ);
+ }
+ 
+-#ifdef KVM_CAP_SET_GUEST_DEBUG
++#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
+ struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu, vaddr pc)
+ {
+     struct kvm_sw_breakpoint *bp;
+@@ -3317,7 +3317,7 @@ void kvm_remove_all_breakpoints(CPUState *cpu)
      }
-+    if (s->params.line_compare < height) {
-+        /* split screen mode */
-+        region_start = 0;
-+    }
+ }
  
-     /*
-      * Check whether we can share the surface with the backend
-@@ -1667,10 +1671,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
-     y1 = 0;
+-#endif /* !KVM_CAP_SET_GUEST_DEBUG */
++#endif /* !TARGET_KVM_HAVE_GUEST_DEBUG */
  
-     if (!full_update) {
--        if (s->params.line_compare < height) {
--            /* split screen mode */
--            region_start = 0;
--        }
-         snap = memory_region_snapshot_and_clear_dirty(&s->vram, region_start,
-                                                       region_end - region_start,
-                                                       DIRTY_MEMORY_VGA);
+ static int kvm_set_signal_mask(CPUState *cpu, const sigset_t *sigset)
+ {
 -- 
 2.44.0
 
