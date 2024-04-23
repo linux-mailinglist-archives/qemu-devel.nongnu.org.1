@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E798AEA45
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979838AEA52
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnZ-0006jI-Oc; Tue, 23 Apr 2024 11:11:09 -0400
+	id 1rzHnd-00077h-9E; Tue, 23 Apr 2024 11:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnG-000509-5M
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rzHnJ-0005B8-5k
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnE-0000KV-Fb
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:49 -0400
+ id 1rzHnH-0000LN-GT
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885047;
+ s=mimecast20190719; t=1713885050;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Cjy7Ijt3qnLWCz8+8hriRM5HGAkmtAHB92I6+4Xy2m4=;
- b=RVpJsDBuOL9+VvovDucbWvJtOqdvu8Y3qP4/ZqtBJ+tvXn6om/WwWDWpK9qIfElF8HiYXf
- DkjqpUsCBqZ3aOBScfl9OC6Miht8k1/WBXvYD8VU1c0JL5XcTz4oHzyDzhKcCINuA0C15D
- r3Pb0UIszaDGVDZpB6aqS8A6mhpN6Mw=
+ bh=4lvnwCtrPDnXyVmehzwWHmW4+Ppw0puxVjxFyVwmVZY=;
+ b=UB7PliO3mFmSqsJus22+QhfTVJn+IRlMLDe3CjjboBMzX9VTQ5tAxfAR9gwNUY51WilQu6
+ /gRsjcHOJBd1Zkub8Yg1cRoi4vMXkgCxrZ22vtEgtlpH+nFQGJN/pLPQYpXuG8NCdSM6K3
+ WG1kwtYtjwF+1rcTHYqRMuxnj/zfZFQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-pSHFOqK0MJqLt85Iq1qdrw-1; Tue, 23 Apr 2024 11:10:45 -0400
-X-MC-Unique: pSHFOqK0MJqLt85Iq1qdrw-1
+ us-mta-413-1aUZcpzmPpiYIJpPxhonnw-1; Tue, 23 Apr 2024 11:10:47 -0400
+X-MC-Unique: 1aUZcpzmPpiYIJpPxhonnw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 746FD812C50
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:45 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCA0C1827103;
+ Tue, 23 Apr 2024 15:10:46 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0AE212033979
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:44 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BA6802026D0A;
+ Tue, 23 Apr 2024 15:10:45 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 53/63] RAMBlock: make guest_memfd require uncoordinated discard
-Date: Tue, 23 Apr 2024 17:09:41 +0200
-Message-ID: <20240423150951.41600-54-pbonzini@redhat.com>
+Cc: Xiaoyao Li <xiaoyao.li@intel.com>, David Hildenbrand <david@redhat.com>,
+ Michael Roth <michael.roth@amd.com>
+Subject: [PULL 54/63] physmem: Introduce ram_block_discard_guest_memfd_range()
+Date: Tue, 23 Apr 2024 17:09:42 +0200
+Message-ID: <20240423150951.41600-55-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,69 +80,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some subsystems like VFIO might disable ram block discard, but guest_memfd
-uses discard operations to implement conversions between private and
-shared memory.  Because of this, sequences like the following can result
-in stale IOMMU mappings:
+From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-1. allocate shared page
-2. convert page shared->private
-3. discard shared page
-4. convert page private->shared
-5. allocate shared page
-6. issue DMA operations against that shared page
+When memory page is converted from private to shared, the original
+private memory is back'ed by guest_memfd. Introduce
+ram_block_discard_guest_memfd_range() for discarding memory in
+guest_memfd.
 
-This is not a use-after-free, because after step 3 VFIO is still pinning
-the page.  However, DMA operations in step 6 will hit the old mapping
-that was allocated in step 1.
+Based on a patch by Isaku Yamahata <isaku.yamahata@intel.com>.
 
-Address this by taking ram_block_discard_is_enabled() into account when
-deciding whether or not to discard pages.
-
-Since kvm_convert_memory()/guest_memfd doesn't implement a
-RamDiscardManager handler to convey and replay discard operations,
-this is a case of uncoordinated discard, which is blocked/released
-by ram_block_discard_require().  Interestingly, this function had
-no use so far.
-
-Alternative approaches would be to block discard of shared pages, but
-this would cause guests to consume twice the memory if they use VFIO;
-or to implement a RamDiscardManager and only block uncoordinated
-discard, i.e. use ram_block_coordinated_discard_require().
-
-[Commit message mostly by Michael Roth <michael.roth@amd.com>]
-
+Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Message-ID: <20240320083945.991426-12-michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- system/physmem.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/exec/cpu-common.h |  2 ++
+ system/physmem.c          | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 6346df17ce9..6d5318895a3 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -159,6 +159,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
+ 
+ int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
+ int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++                                        size_t length);
+ 
+ #endif
+ 
 diff --git a/system/physmem.c b/system/physmem.c
-index f5dfa20e57e..5ebcf5be116 100644
+index 5ebcf5be116..c3d04ca9212 100644
 --- a/system/physmem.c
 +++ b/system/physmem.c
-@@ -1846,6 +1846,13 @@ static void ram_block_add(RAMBlock *new_block, Error **errp)
-         assert(kvm_enabled());
-         assert(new_block->guest_memfd < 0);
+@@ -3721,6 +3721,29 @@ err:
+     return ret;
+ }
  
-+        if (ram_block_discard_require(true) < 0) {
-+            error_setg_errno(errp, errno,
-+                             "cannot set up private guest memory: discard currently blocked");
-+            error_append_hint(errp, "Are you using assigned devices?\n");
-+            goto out_free;
-+        }
++int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
++                                        size_t length)
++{
++    int ret = -1;
 +
-         new_block->guest_memfd = kvm_create_guest_memfd(new_block->max_length,
-                                                         0, errp);
-         if (new_block->guest_memfd < 0) {
-@@ -2109,6 +2116,7 @@ static void reclaim_ramblock(RAMBlock *block)
- 
-     if (block->guest_memfd >= 0) {
-         close(block->guest_memfd);
-+        ram_block_discard_require(false);
-     }
- 
-     g_free(block);
++#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
++    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
++                    start, length);
++
++    if (ret) {
++        ret = -errno;
++        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
++                     __func__, rb->idstr, start, length, ret);
++    }
++#else
++    ret = -ENOSYS;
++    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
++                 __func__, rb->idstr, start, length, ret);
++#endif
++
++    return ret;
++}
++
+ bool ramblock_is_pmem(RAMBlock *rb)
+ {
+     return rb->flags & RAM_PMEM;
 -- 
 2.44.0
 
