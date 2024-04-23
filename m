@@ -2,84 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C28AF8BA
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 23:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B33D8AF8C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 23:12:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzNN2-0006VI-RK; Tue, 23 Apr 2024 17:08:10 -0400
+	id 1rzNQi-0001NB-Hw; Tue, 23 Apr 2024 17:11:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1rzNMa-0006RH-M4; Tue, 23 Apr 2024 17:07:41 -0400
+ id 1rzNQg-0001L8-OD; Tue, 23 Apr 2024 17:11:54 -0400
 Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
- id 1rzNMY-0006Zn-8K; Tue, 23 Apr 2024 17:07:40 -0400
+ id 1rzNQe-0007ZX-OG; Tue, 23 Apr 2024 17:11:54 -0400
 Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43NKS0uR018359; Tue, 23 Apr 2024 21:07:28 GMT
+ 43NKRaKM018069; Tue, 23 Apr 2024 21:11:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=545sj9a7A9I8Uwccefn0NuYhkRfF6SeQaOyFAC7LTe8=;
- b=YcKnJL3vvf5LyUZ1FrMVUKRxbLvj6uPEVAKxfgiVRhkKw/H8NSKpE2NZIA0yOKtH9xUy
- 0LqRAgxA/mVJPghInRBGJMKO3f6XPPWM/x0uV/GtQtvRrs4VZATYeJYv5yOHHHrid4Wp
- n3EF3fU1Vh4RC4efG2v5gCgV58Auh8NHnv1tATZGVvCtAxZOLq84Nh6UndVvEzjzIKDj
- +7OvJBcHSnFaQYXhfsbmllwJyNuRN5ReH1rK/yRjJTxnV6d7kXwAB3VycTqgARifpvmG
- LftjgxRVlqWWFEX/cid7uYoDeisOEvA7ZaPaM5RdLWn/btOytbuyfnoTfwQFr5YSkMsi 9w== 
+ bh=I1Hq77wTuHn2ILswR7l/yj/W9IpNy1UxIHJQoDt9WpI=;
+ b=eOLx2LcuL4csmaI5NSIgqHcQpYilqH2ADgdtTZJT8O0+bAmA5oBkkYKw80kBVjBwBveP
+ KJ8k0Cl+x9U5qGmTPfmlKkPNLL+oQN1jYxqEjoabf4reNWwmKK+HnhbomEgQgUTJh0xc
+ pyk2Ccb+JYY+I6hDg0Xg+QQ/obmveOeHOaHiDWN8epeKY4x/esGztBUwRFQ1I/fKOmFS
+ XoIIVKHBfhJnB/NKXE6v9eWsK9fkKX18PSCEQB9Flwlf0Pes7H02aSsuVUeuZqnjuZHk
+ DunwhKOA+LYZMNOASCm7HTaapLVFHKxbBTqGe7EHfAtGIhTQRVE7JwFP9TTPLxoILfbC Xw== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpm1mg391-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpm1mg3nu-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Apr 2024 21:07:27 +0000
+ Tue, 23 Apr 2024 21:11:44 +0000
 Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43NL7Ria013895;
- Tue, 23 Apr 2024 21:07:27 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43NLBEsm020446;
+ Tue, 23 Apr 2024 21:11:43 GMT
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpm1mg38v-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xpm1mg3nq-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 23 Apr 2024 21:07:27 +0000
+ Tue, 23 Apr 2024 21:11:43 +0000
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
  by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 43NK8jv7023012; Tue, 23 Apr 2024 21:07:26 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xms1p006n-1
+ 43NKaTvd023051; Tue, 23 Apr 2024 21:07:26 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3xms1p006p-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Tue, 23 Apr 2024 21:07:26 +0000
 Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
  [10.241.53.103])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 43NL7NDY58655032
+ by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 43NL7O2s24380072
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 23 Apr 2024 21:07:25 GMT
+ Tue, 23 Apr 2024 21:07:26 GMT
 Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 776AF5805E;
+ by IMSVA (Postfix) with ESMTP id 1A42558056;
+ Tue, 23 Apr 2024 21:07:24 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 8C4C75805A;
  Tue, 23 Apr 2024 21:07:23 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id E9F6B5805A;
- Tue, 23 Apr 2024 21:07:22 +0000 (GMT)
 Received: from li-d664314c-3171-11b2-a85c-fa8047ef35bd.pok.ibm.com (unknown
  [9.12.68.85]) by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue, 23 Apr 2024 21:07:22 +0000 (GMT)
+ Tue, 23 Apr 2024 21:07:23 +0000 (GMT)
 From: Collin Walling <walling@linux.ibm.com>
 To: qemu-s390x@nongnu.org, qemu-devel@nongnu.org
 Cc: thuth@redhat.com, david@redhat.com, wangyanan55@huawei.com,
  philmd@linaro.org, marcel.apfelbaum@gmail.com, eduardo@habkost.net,
  armbru@redhat.com, Collin Walling <walling@linux.ibm.com>
-Subject: [PATCH v2 1/3] cpu-models: add "disable-deprecated-feats" option to
- cpu model expansion
-Date: Tue, 23 Apr 2024 17:06:53 -0400
-Message-ID: <20240423210655.66656-2-walling@linux.ibm.com>
+Subject: [PATCH v2 2/3] target/s390x: add support for
+ "disable-deprecated-feats" expansion option
+Date: Tue, 23 Apr 2024 17:06:54 -0400
+Message-ID: <20240423210655.66656-3-walling@linux.ibm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240423210655.66656-1-walling@linux.ibm.com>
 References: <20240423210655.66656-1-walling@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BD2B6rlEIiQt0jCNe_ac3knP1BKRxJzP
-X-Proofpoint-ORIG-GUID: J5qpejMGOqip3wjAggPTRUATcFaS3xXX
+X-Proofpoint-GUID: yT9jFdOeRDUlINjwNVURPqL9PEcnQD4d
+X-Proofpoint-ORIG-GUID: 5qKomWfABW_BWAQ3KAM93gOTC4TO60qQ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
  definitions=2024-04-23_16,2024-04-23_02,2023-05-22_02
@@ -113,122 +113,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This optional parameter for query-cpu-model-expansion enables CPU
-model features flagged as deprecated to appear in the resulting
-list of properties.
+Retain a list of deprecated features disjoint from any particular
+CPU model. When a query-cpu-model-expansion is provided with the
+"disable-deprecated-feats" option set, the resulting properties list
+will include all deprecated features paired with false. Example:
 
-This commit does not add support beyond adding a new argument
-to the query. All queries with this option present will result
-in an error claiming this option is not supported.
+	{ ... "bpb": false, "csske": false, ...}
+
+It is recommended that s390 guests operate with these features
+explicitly disabled to ensure compatability with future hardware.
 
 Signed-off-by: Collin Walling <walling@linux.ibm.com>
 ---
- qapi/machine-target.json         | 7 ++++++-
- target/arm/arm-qmp-cmds.c        | 7 +++++++
- target/i386/cpu-sysemu.c         | 7 +++++++
- target/s390x/cpu_models_sysemu.c | 7 +++++++
- 4 files changed, 27 insertions(+), 1 deletion(-)
+ target/s390x/cpu_features.c      | 14 ++++++++++++++
+ target/s390x/cpu_features.h      |  1 +
+ target/s390x/cpu_models_sysemu.c | 20 ++++++++++++--------
+ 3 files changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/qapi/machine-target.json b/qapi/machine-target.json
-index 29e695aa06..b9da284d2d 100644
---- a/qapi/machine-target.json
-+++ b/qapi/machine-target.json
-@@ -285,6 +285,10 @@
- #
- # @type: expansion type, specifying how to expand the CPU model
- #
-+# @disable-deprecated-feats: include CPU model features that are
-+#     flagged as deprecated. If supported, these features will appear
-+#     in the properties list paired with false.
-+#
- # Returns: a CpuModelExpansionInfo describing the expanded CPU model
- #
- # Errors:
-@@ -298,7 +302,8 @@
- ##
- { 'command': 'query-cpu-model-expansion',
-   'data': { 'type': 'CpuModelExpansionType',
--            'model': 'CpuModelInfo' },
-+            'model': 'CpuModelInfo',
-+            '*disable-deprecated-feats': 'bool' },
-   'returns': 'CpuModelExpansionInfo',
-   'if': { 'any': [ 'TARGET_S390X',
-                    'TARGET_I386',
-diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-index 3cc8cc738b..1010d654e3 100644
---- a/target/arm/arm-qmp-cmds.c
-+++ b/target/arm/arm-qmp-cmds.c
-@@ -100,6 +100,8 @@ static const char *cpu_model_advertised_features[] = {
+diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+index d28eb65845..efafc9711c 100644
+--- a/target/s390x/cpu_features.c
++++ b/target/s390x/cpu_features.c
+@@ -212,6 +212,20 @@ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+     };
+ }
  
- CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-                                                      CpuModelInfo *model,
-+                                                     bool has_disable_deprecated_feats,
-+                                                     bool disable_deprecated_feats,
-                                                      Error **errp)
- {
-     CpuModelExpansionInfo *expansion_info;
-@@ -110,6 +112,11 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     const char *name;
-     int i;
- 
-+    if (has_disable_deprecated_feats) {
-+        error_setg(&err, "Unsupported option 'disable-deprecated-feats'");
-+        return NULL;
-+    }
++void s390_get_deprecated_features(S390FeatBitmap features)
++{
++    static const int feats[] = {
++         /* CSSKE is deprecated on newer generations */
++         S390_FEAT_CONDITIONAL_SSKE,
++         S390_FEAT_BPB,
++    };
++    int i;
 +
-     if (type != CPU_MODEL_EXPANSION_TYPE_FULL) {
-         error_setg(errp, "The requested expansion type is not supported");
-         return NULL;
-diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 3f9093d285..c15786fb66 100644
---- a/target/i386/cpu-sysemu.c
-+++ b/target/i386/cpu-sysemu.c
-@@ -196,6 +196,8 @@ out:
- CpuModelExpansionInfo *
- qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-                                                       CpuModelInfo *model,
-+                                                      bool has_disable_deprecated_feats,
-+                                                      bool disable_deprecated_feats,
-                                                       Error **errp)
- {
-     X86CPU *xc = NULL;
-@@ -204,6 +206,11 @@ qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-     QDict *props = NULL;
-     const char *base_name;
- 
-+    if (has_disable_deprecated_feats) {
-+        error_setg(&err, "Unsupported option 'disable-deprecated-feats'");
-+        goto out;
++    for (i = 0; i < ARRAY_SIZE(feats); i++) {
++        set_bit(feats[i], features);
 +    }
++}
 +
-     xc = x86_cpu_from_model(model->name, model->props, "model.props", &err);
-     if (err) {
-         goto out;
+ #define FEAT_GROUP_INIT(_name, _group, _desc)        \
+     {                                                \
+         .name = _name,                               \
+diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
+index a9bd68a2e1..661a8cd6db 100644
+--- a/target/s390x/cpu_features.h
++++ b/target/s390x/cpu_features.h
+@@ -69,6 +69,7 @@ void s390_add_from_feat_block(S390FeatBitmap features, S390FeatType type,
+                           uint8_t *data);
+ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+                                void (*fn)(const char *name, void *opaque));
++void s390_get_deprecated_features(S390FeatBitmap features);
+ 
+ /* Definition of a CPU feature group */
+ typedef struct {
 diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-index 2d99218069..ef9fa80efd 100644
+index ef9fa80efd..b002819188 100644
 --- a/target/s390x/cpu_models_sysemu.c
 +++ b/target/s390x/cpu_models_sysemu.c
-@@ -210,6 +210,8 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+@@ -171,7 +171,8 @@ static void qdict_add_enabled_feat(const char *name, void *opaque)
  
- CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
-                                                       CpuModelInfo *model,
-+                                                      bool has_disable_deprecated_feats,
-+                                                      bool disable_deprecated_feats,
-                                                       Error **errp)
+ /* convert S390CPUDef into a static CpuModelInfo */
+ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+-                                bool delta_changes)
++                                bool delta_changes,
++                                bool disable_deprecated_feats)
  {
-     Error *err = NULL;
-@@ -217,6 +219,11 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+     QDict *qdict = qdict_new();
+     S390FeatBitmap bitmap;
+@@ -201,6 +202,13 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+         s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_disabled_feat);
+     }
+ 
++    /* features flagged as deprecated */
++    if (disable_deprecated_feats) {
++        bitmap_zero(bitmap, S390_FEAT_MAX);
++        s390_get_deprecated_features(bitmap);
++        s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_disabled_feat);
++    }
++
+     if (!qdict_size(qdict)) {
+         qobject_unref(qdict);
+     } else {
+@@ -219,11 +227,6 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
      S390CPUModel s390_model;
      bool delta_changes = false;
  
-+    if (has_disable_deprecated_feats) {
-+        error_setg(&err, "Unsupported option 'disable-deprecated-feats'");
-+        return NULL;
-+    }
-+
+-    if (has_disable_deprecated_feats) {
+-        error_setg(&err, "Unsupported option 'disable-deprecated-feats'");
+-        return NULL;
+-    }
+-
      /* convert it to our internal representation */
      cpu_model_from_info(&s390_model, model, "model", &err);
      if (err) {
+@@ -241,7 +244,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+     /* convert it back to a static representation */
+     expansion_info = g_new0(CpuModelExpansionInfo, 1);
+     expansion_info->model = g_malloc0(sizeof(*expansion_info->model));
+-    cpu_info_from_model(expansion_info->model, &s390_model, delta_changes);
++    cpu_info_from_model(expansion_info->model, &s390_model,
++                        delta_changes, disable_deprecated_feats);
+     return expansion_info;
+ }
+ 
+@@ -390,7 +394,7 @@ CpuModelBaselineInfo *qmp_query_cpu_model_baseline(CpuModelInfo *infoa,
+ 
+     baseline_info = g_new0(CpuModelBaselineInfo, 1);
+     baseline_info->model = g_malloc0(sizeof(*baseline_info->model));
+-    cpu_info_from_model(baseline_info->model, &model, true);
++    cpu_info_from_model(baseline_info->model, &model, true, false);
+     return baseline_info;
+ }
+ 
 -- 
 2.43.0
 
