@@ -2,90 +2,136 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047A98AFC16
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 333808AFC5E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 01:00:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOnK-0002OG-HV; Tue, 23 Apr 2024 18:39:22 -0400
+	id 1rzP6I-0005US-Lw; Tue, 23 Apr 2024 18:58:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmo-0001fE-Fy
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rzP6C-0005UB-Fm
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:58:52 -0400
+Received: from mail-dm6nam11on2063.outbound.protection.outlook.com
+ ([40.107.223.63] helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmm-0006Fm-OE
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713911928;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=M+gOpvRG0UHv/ctwGx6rMTNZQF29KVYeLViX3Vc4ac8=;
- b=MfjdG4eLW9+dHlpgwaQHH6lZxoXBJHG516A1E6bvTcihb2ZfGeY+baVGiaE37+3ekVLMZn
- bG4JbHF/N6EMjMPwNCEkKvmC/gRhz+pezpajN00HvHdpfaIQub+f9bJgz3yB19GB4JfY4A
- qhDny1MXpKQWUfLzV2RpC4dT0O/PLzc=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-166-ZFhKdTx5OhCjCnsKIrYRAg-1; Tue, 23 Apr 2024 18:38:47 -0400
-X-MC-Unique: ZFhKdTx5OhCjCnsKIrYRAg-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6a05461964cso18606076d6.2
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911926; x=1714516726;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=M+gOpvRG0UHv/ctwGx6rMTNZQF29KVYeLViX3Vc4ac8=;
- b=fnosozo1tZO4yIkvESY8oQPATmSTOj9DPneGkD4Ysr75q8JnXrgzuvKP2VZB+VRFTM
- 2tMyoJvQAZnZqP4J2/dcdEhtfIrF8b/5UE7YQuWhf8+9InHRrFxvRaZMV68fIl+ttzRF
- MmbnOdRH6GQtdJdbJxDzJS36Z90emjTgWJIOpZCHDs+hnzS4wt9hHlHH3Y6ozzUQcWn+
- RN8gWDGZ4ZxWynEUnuRSPOzTEqxU4AJp/1v7AC3GjfUOnszgUgmIgHuQ3FBYQA8qyRtW
- z/Nn8/h2cInyiLchVuddbzYUkIQIXWlEglG9xKJtK6QzB6+2d8qUOG0czNxg/FAr+UOM
- hfKQ==
-X-Gm-Message-State: AOJu0Yz44pVj7b9mERKl2SNwzxv2aX3WfBG4Lr5UEIy9t2Hp3AeI5mw7
- sl+izFzp+N0rDxh4jJG28W1YGVapisqCAReKJ4q2G6WBzNWcFt1SA5xbwTRnv0rmIp1wCHYhLdu
- Cs7lxsYU7SBbx0i8Jk7BShw2btreqaaDs4twwaor28vMwGwFTOobJ4I/ZZB+VbVJFR2zrB/x+6t
- iIZXI2F3r2jNGj6QYt2c/s+wm9EHR5sz+Ttg==
-X-Received: by 2002:a05:620a:4081:b0:790:7d78:1ca0 with SMTP id
- f1-20020a05620a408100b007907d781ca0mr1090055qko.2.1713911926268; 
- Tue, 23 Apr 2024 15:38:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYFoisrMMorSfG9dfRl80g5YdOaPbQhh1cA7AcGRbsSf6YFi2DSJVsAeW8faOzcIpRaJC2Wg==
-X-Received: by 2002:a05:620a:4081:b0:790:7d78:1ca0 with SMTP id
- f1-20020a05620a408100b007907d781ca0mr1090027qko.2.1713911925501; 
- Tue, 23 Apr 2024 15:38:45 -0700 (PDT)
-Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
- [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:38:45 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- Li Zhijian <lizhijian@fujitsu.com>, qemu-stable@nongnu.org,
- Zhang Chen <chen.zhang@intel.com>
-Subject: [PULL 26/26] migration/colo: Fix bdrv_graph_rdlock_main_loop:
- Assertion `!qemu_in_coroutine()' failed.
-Date: Tue, 23 Apr 2024 18:38:13 -0400
-Message-ID: <20240423223813.3237060-27-peterx@redhat.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240423223813.3237060-1-peterx@redhat.com>
-References: <20240423223813.3237060-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <Michael.Roth@amd.com>)
+ id 1rzP69-0001BV-Mx
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:58:52 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mDnrVkxu1AE6iNOJRtNuNd6PZWj2Uoxm7ZufqTxbn4km06DiyEdx9+lphdOMCOWYSeTdZXZe01M2SpICMnWgtQ6gb5fZWElNcJlIdcR469Kx+Aa8O+lgy1kL0yJeMFUhWdhjOt19JrrQ9wneuepvwZj6YsydHPiE8DaH88Jfb+QqlEgDw8X4ZHb9RkM4FML0UVceMgCIlFu7hLpFqro4EQ7SZXNcPxPMpVKLDFeJ6yd9o2PjnUSQ26I62j38IvD16Me+FagBs3X4MB3EMbMCx6ufze5f6E6OgLHJFPgyGCWzHqLrGvPehPHdWvZcj4Z00emI0503HfM9uZvli21bPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wYvQUoiMtBp9fif4eK7lJkINGixky+KB+t5inQD4l4A=;
+ b=V2wsTy0JxrnQJGXn3lyn/LbsBia701AGNcnHY/rWlrGTOc8RQIIo/Zy38/7yycvrs8zBVNqdKz0lZkMmhSULb/FsMIbss5MBhOymUHjGSKQqOTxbBnk5up0/pS52IaXqTbW+dkIweDL07i3WcUtk1wjMEjJ9KDLnZEFtCteuKvMLkOh/LYScCJnwA/z+EtX9Q6IU8RDwRGJYWwDdwp+/UqfHGgRUJOSrvWaAaxHNKe1/aw/WO5DIEdPIQOW5lQE0LFrkajbYbUdf+GmcZOtkyAa/6mxcRCa3+XfPNVusufGQ4xgozVlyMqlDv1zDnvYgUABXPyQl9uYfI0mAGARgdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wYvQUoiMtBp9fif4eK7lJkINGixky+KB+t5inQD4l4A=;
+ b=xYUQOaEpRLNWWmRN2QKlSuX0ssdiiZjTBbag0BwnpijODAm89XQA5FLXnf7KO80X5y5J6EI0qBba29xrxrkl8qeWOoSxl6zHii0Glj90b3zDhv2/QisGc03X1O9EZE1lZPehsL5WAJVZ6zeNDFspzdbAQlqhV6O+zVd77+ffntU=
+Received: from DS7PR03CA0268.namprd03.prod.outlook.com (2603:10b6:5:3b3::33)
+ by DS7PR12MB5768.namprd12.prod.outlook.com (2603:10b6:8:77::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7472.44; Tue, 23 Apr
+ 2024 22:53:43 +0000
+Received: from CY4PEPF0000EDD4.namprd03.prod.outlook.com
+ (2603:10b6:5:3b3:cafe::84) by DS7PR03CA0268.outlook.office365.com
+ (2603:10b6:5:3b3::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.22 via Frontend
+ Transport; Tue, 23 Apr 2024 22:53:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD4.mail.protection.outlook.com (10.167.241.208) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7519.19 via Frontend Transport; Tue, 23 Apr 2024 22:53:42 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 23 Apr
+ 2024 17:53:42 -0500
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Subject: [ANNOUNCE] QEMU 9.0.0 is now available
+From: Michael Roth <michael.roth@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 23 Apr 2024 17:53:20 -0500
+Message-ID: <171391280061.1793640.6382208414891377838@amd.com>
+User-Agent: alot/0.9
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD4:EE_|DS7PR12MB5768:EE_
+X-MS-Office365-Filtering-Correlation-Id: 519dccb4-0eb2-4e43-9002-08dc63e8397a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eTdxWHhBUGJxN1Z1TlRXMERuTmZ3Z3FTR3J6ekVYaVFwQkJOUnVaM3hlWmhC?=
+ =?utf-8?B?aXN5eVc3Y0N4NXZmK01UZGNNeXA2VStFU2RLTU9NS0RqSTVTeUhQdlNyaUtl?=
+ =?utf-8?B?N3AzMVdBUFdEVGRQT0prSWM2Nlh2MWFUQktkcllOMVFSZ1paVUJ3eDVyWGY1?=
+ =?utf-8?B?Z3BPbDJRSVRITEd6ZmtPazhYamRscmZIWFZ1NXUxam5XQmtmQnVRc00vaTM4?=
+ =?utf-8?B?cld0V1QvY3FCZE41b2ltTUpUYmliSkdFVWtqbkNVVlppSmVQQzhZL29nMzNh?=
+ =?utf-8?B?dGxBbU4za0JWU0hCUUpkZ00yeVEvaVZMSUlMN2ZVby92emlUSzNBT1NMajk5?=
+ =?utf-8?B?bGhsVUtsb3AvTDJBNWtnWXBBY0c2SHpqcUdHL3NRSE1PandNOUtjR1pzTDZG?=
+ =?utf-8?B?M1A5bTJSd3ltZnYyRWpTVEFIU3hMZHhPQ05wVytkMVcrNkxsZjVEMzB5YW00?=
+ =?utf-8?B?a1FzWXZRODMxSnlFVTNzN3BvaUhFQ3dYQ2hmbjc5NjRWUS9GMzNjZmNDYnR6?=
+ =?utf-8?B?djg2RXJSVEp4bnBUL2crbjZpUmhVZE5zMDg5VGZUWDcwTU9mNHRqZWZvOTY1?=
+ =?utf-8?B?cWlVOXh3Z0NFVnhpYnZzaHBDUVg1Umx4Z0hqelUzSzRZYWxkNithNXg4Vnhr?=
+ =?utf-8?B?cmJqRThiN2N4cGx1ZWVreTZQZVJiTStpWm0xMEs0WGRncG9yV0Q2U0NXSlB6?=
+ =?utf-8?B?YnY1UmlmT2hkeTJMNjgvck1XaWx0WndEcFYxd0xqbHFZQm9ROWgzbk1pejRM?=
+ =?utf-8?B?dnpXWU40bThFVkR1eDc5ODJyYWVDYk80bTdXSHBZdDVjM0Y1N2ppN2xndU1s?=
+ =?utf-8?B?dUlwdFRsUWpxTlZwOVRxa1BLdEM2cWxyTWhkbG9raW9CNHhIcW5yaUdvNUZK?=
+ =?utf-8?B?OGVqWThxanZzM2hTeWwvMC93ZEJ1T2oxY3hkVTA0SE1jaEtwZTNKQmpRRjBW?=
+ =?utf-8?B?YlRWaVJzeUROcUlEVTNJaElwajRrOGl1WUlBQUh1clh6NjNIajBXaklBSlVJ?=
+ =?utf-8?B?VlVScHNwQk52SG5TSTcrbEVNWUFRcTFVRWJ4OEFIUFhKWlN3MmNIZGErODlk?=
+ =?utf-8?B?bFo5UlhobVBxU3c5WHl5QlFoaVRqMkg1RWFmTjJMWmo4bjNPcENPTjhxRCtR?=
+ =?utf-8?B?M21uWnh3RTk4UXY0b3RicEx6N0xaclYrejhNYnVFeVBZWGtVdXZuNk5ZN1Br?=
+ =?utf-8?B?RHJhaWNSVlh5SE84YndyQmRvcEVsRlI0a2JqRE9JZkF5SnFBcmVZQkVCdDlY?=
+ =?utf-8?B?NytyTWR0ajZmdTdmbjJySjN4a1hYcy9SeFpPUTE1amtpcG5aZGRHTGhXcWNM?=
+ =?utf-8?B?SlpjWkhuY0dON2NwcVE3cDBmSWxxZkU2cVdRaXA3VFJvUWtQOS84cjNHRkVs?=
+ =?utf-8?B?akxCTDdzb001QmdPM1l3L0JHQmtzQmgxNFBieHVIRnNkS0JlWVAyak1nYnhl?=
+ =?utf-8?B?R1pCek4rZ2dNcjhXZDVzYzJTSnpWVjUwbHBzYzIrZ3dlSTJ2VmoybzNMY0pG?=
+ =?utf-8?B?QzdYU2t5ZEFpN0tWQXNaK0dhd01GQ2Jaczk5b2RTYTRQalM0V3Q5ZWlNN3lN?=
+ =?utf-8?B?QUlWZTVoMUhjNytKaTYxTURzRjBwbUZGZEVKRWdhUVg3dFRKUUpra3k2bmgr?=
+ =?utf-8?B?LzBMVVRISWcwbXN6RzROM0ZJQzRoUXE5MGE5N2VidjZpQlBZZTNLczJZanVq?=
+ =?utf-8?B?Y0ZqVlAzbExZTGRTS1hGeXUrdld0MnhFc2VHOE1YZ3hQcUl3T0pldEE3OWM1?=
+ =?utf-8?Q?wFXZaqa9M2XtEzZyw0/4LdURvfY/WhO/en7B/If?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(376005)(36860700004)(1800799015)(82310400014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Apr 2024 22:53:42.6570 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 519dccb4-0eb2-4e43-9002-08dc63e8397a
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD4.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5768
+Received-SPF: permerror client-ip=40.107.223.63;
+ envelope-from=Michael.Roth@amd.com;
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.67,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,79 +147,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+Hello,
 
-bdrv_activate_all() should not be called from the coroutine context, move
-it to the QEMU thread colo_process_incoming_thread() with the bql_lock
-protected.
+On behalf of the QEMU Team, I'd like to announce the availability of
+the QEMU 9.0.0 release. This release contains 2700+ commits from 220
+authors.
 
-The backtrace is as follows:
- #4  0x0000561af7948362 in bdrv_graph_rdlock_main_loop () at ../block/graph-lock.c:260
- #5  0x0000561af7907a68 in graph_lockable_auto_lock_mainloop (x=0x7fd29810be7b) at /patch/to/qemu/include/block/graph-lock.h:259
- #6  0x0000561af79167d1 in bdrv_activate_all (errp=0x7fd29810bed0) at ../block.c:6906
- #7  0x0000561af762b4af in colo_incoming_co () at ../migration/colo.c:935
- #8  0x0000561af7607e57 in process_incoming_migration_co (opaque=0x0) at ../migration/migration.c:793
- #9  0x0000561af7adbeeb in coroutine_trampoline (i0=-106876144, i1=22042) at ../util/coroutine-ucontext.c:175
- #10 0x00007fd2a5cf21c0 in  () at /lib64/libc.so.6
+You can grab the tarball from our download page here:
 
-Cc: qemu-stable@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/2277
-Fixes: 2b3912f135 ("block: Mark bdrv_first_blk() and bdrv_is_root_node() GRAPH_RDLOCK")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Zhang Chen <chen.zhang@intel.com>
-Tested-by: Zhang Chen <chen.zhang@intel.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240417025634.1014582-1-lizhijian@fujitsu.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- migration/colo.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+  https://www.qemu.org/download/#source
 
-diff --git a/migration/colo.c b/migration/colo.c
-index 84632a603e..5600a43d78 100644
---- a/migration/colo.c
-+++ b/migration/colo.c
-@@ -835,6 +835,16 @@ static void *colo_process_incoming_thread(void *opaque)
-         return NULL;
-     }
- 
-+    /* Make sure all file formats throw away their mutable metadata */
-+    bql_lock();
-+    bdrv_activate_all(&local_err);
-+    if (local_err) {
-+        bql_unlock();
-+        error_report_err(local_err);
-+        return NULL;
-+    }
-+    bql_unlock();
-+
-     failover_init_state();
- 
-     mis->to_src_file = qemu_file_get_return_path(mis->from_src_file);
-@@ -922,7 +932,6 @@ out:
- int coroutine_fn colo_incoming_co(void)
- {
-     MigrationIncomingState *mis = migration_incoming_get_current();
--    Error *local_err = NULL;
-     QemuThread th;
- 
-     assert(bql_locked());
-@@ -931,13 +940,6 @@ int coroutine_fn colo_incoming_co(void)
-         return 0;
-     }
- 
--    /* Make sure all file formats throw away their mutable metadata */
--    bdrv_activate_all(&local_err);
--    if (local_err) {
--        error_report_err(local_err);
--        return -EINVAL;
--    }
--
-     qemu_thread_create(&th, "COLO incoming", colo_process_incoming_thread,
-                        mis, QEMU_THREAD_JOINABLE);
- 
--- 
-2.44.0
+The full list of changes are available at:
 
+  https://wiki.qemu.org/ChangeLog/9.0
+
+Highlights include:
+
+ * block: virtio-blk now supports multiqueue where different queues of a
+   single disk can be processed by different I/O threads
+ * gdbstub: various improvements such as catching syscalls in user-mode,
+   support for fork-follow modes, and support for siginfo:read
+ * memory: preallocation of memory backends can now be handled
+   concurrently using multiple threads in some cases
+ * migration: support for "mapped-ram" capability allowing for more
+   efficient VM snapshots, improved support for zero-page detection, and
+   checkpoint-restart support for VFIO
+
+ * ARM: architectural feature support for ECV (Enhanced Counter
+   Virtualization), NV (Nested Virtualization), and NV2 (Enhanced Nested
+   Virtualization)
+ * ARM: board support for B-L475E-IOT01A IoT node, mp3-an536 (MPS3 dev board
+   + AN536 firmware), and raspi4b (Raspberry Pi 4 Model B)
+ * ARM: additional IO/disk/USB/SPI/ethernet controller and timer support for
+   Freescale i.MX6, Allwinner R40, Banana Pi, npcm7xxx, and virt boards
+ * HPPA: numerous bug fixes and SeaBIOS-hppa firmware updated to version 16
+ * LoongArch: KVM acceleration support, including LSX/LASX vector extensions
+ * RISC-V: ISA/extension support for Zacas, amocas, RVA22 profiles,
+   Zaamo, Zalrsc, Ztso, and more
+ * RISC-V: SMBIOS support for RISC-V virt machine, ACPI support for
+   SRAT, SLIT, AIA, PLIC and updated RHCT table support, and numerous
+   fixes
+ * s390x: Emulation support for CVDG, CVB, CVBY and CVBG instructions,
+   and fixes for LAE (Load Address Extended) emulation
+
+ * and lots more...
+
+Thank you to everyone involved!
 
