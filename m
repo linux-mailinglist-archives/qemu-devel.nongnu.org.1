@@ -2,79 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C208AF5A4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 19:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0642D8AF5C2
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 19:43:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzK5Q-0000Cp-5n; Tue, 23 Apr 2024 13:37:44 -0400
+	id 1rzKAa-0002TN-7Q; Tue, 23 Apr 2024 13:43:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rzK5O-0000Cf-9e
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 13:37:42 -0400
-Received: from madrid.collaboradmins.com ([46.235.227.194])
+ (Exim 4.90_1) (envelope-from <alison.schofield@intel.com>)
+ id 1rzKAX-0002T1-1X
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 13:43:01 -0400
+Received: from mgamail.intel.com ([192.198.163.9])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dmitry.osipenko@collabora.com>)
- id 1rzK5M-0004K5-F7
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 13:37:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1713893857;
- bh=m8raZZ7KgNCqY7RsIKeE/4W/5Fvf6z4P+Aw5YFE5KT4=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=PBd830VI1eqn1Z/YoXTTGbtWGajOe9E2tSzKVl+FmISWNldMx3lHelvokecqeC3fA
- iXTKItr0Jog1yBJdDInJZyiLXmRRjSS2jt9AlDNrUOHC3VDBVa1JmYVN7r6PoHtIMC
- Hm24SJVDtcvfAigcLI5vLjCd7P+m2GbAo9afEC/xf2beLdw6afemZ7NFHmLzTrkTII
- nxMshP8KSWFHS+gYeO1v+4ot/H1ZV23wwASk5a/weezhVcrL/eWZD6ZQxlB0tvCkJK
- wUcDeNqfalzOmB1pKDEflf87RuvLdHLZRDauBBpehz7J5oNfVbKdivpm2ldkGeNM8d
- r3+N2tLsMG+Uw==
-Received: from [100.109.49.129] (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- (Authenticated sender: dmitry.osipenko)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4FA47378212F;
- Tue, 23 Apr 2024 17:37:35 +0000 (UTC)
-Message-ID: <77e78ba1-3900-4193-9132-ed5fc6135987@collabora.com>
-Date: Tue, 23 Apr 2024 20:37:32 +0300
+ (Exim 4.90_1) (envelope-from <alison.schofield@intel.com>)
+ id 1rzKAP-0005OG-TQ
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 13:42:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1713894174; x=1745430174;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ock0VCrBpI7qAgfi6oLSfb/6Aqj77P5qLwRspEkgA+0=;
+ b=bXo2uPxbz48p5O8Wab5pDLB0Sh0HPLwR5ZdsKM8v1/JhDFp0zMT0toH2
+ zog3yByewdfxL/1CRUcE0hNO3FTczjOEjovFSyHf1O+aZkH574xPHe1oH
+ NNha0TXRzGSwk0rzBOWYQZ9Zqv/U1RpxbGgKspYeykRYWd9dD85zhgjj3
+ j4a3UwwOWbSmQPGI5bzKs05VrldEb1GZe/cmLFrryGRcZAC4XbjdDRsSn
+ xr0En7toQq9frMI+RyXOyMUcZGX6wksSjtnbSwMgkeHNdQr+AtZB3C10S
+ 8HF5UNH2j5+PKBXdiGYeuHu1Yqjxh87j+i5PXirq2zvqhY+OgKRD3oXYz A==;
+X-CSE-ConnectionGUID: F5VxsoEyRz2h12a8f6HsEA==
+X-CSE-MsgGUID: XM4GDATVRlm8DoY90NU31w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="20190154"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="20190154"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 10:42:49 -0700
+X-CSE-ConnectionGUID: 8ZFtQpYoRle0DVMZKA1F/A==
+X-CSE-MsgGUID: ypecsz0uS+eYg2VyLCsuSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="24321377"
+Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2)
+ ([10.209.29.57])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Apr 2024 10:42:49 -0700
+Date: Tue, 23 Apr 2024 10:42:47 -0700
+From: Alison Schofield <alison.schofield@intel.com>
+To: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
+ Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
+ dave@stgolabs.net, ira.weiny@intel.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] cxl/core: correct length of DPA field masks
+Message-ID: <ZifzF8cXObFiDiIK@aschofie-mobl2>
+References: <20240417075053.3273543-1-ruansy.fnst@fujitsu.com>
+ <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/11] Support blob memory and venus on qemu
-To: =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Huang Rui <ray.huang@amd.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Anthony PERARD <anthony.perard@citrix.com>,
- Antonio Caggiano <quic_acaggian@quicinc.com>,
- "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
- Robert Beckett <bob.beckett@collabora.com>,
- Gert Wollny <gert.wollny@collabora.com>, qemu-devel@nongnu.org,
- Gurchetan Singh <gurchetansingh@chromium.org>, ernunes@redhat.com,
- Alyssa Ross <hi@alyssa.is>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?=
- <roger.pau@citrix.com>, Alex Deucher <alexander.deucher@amd.com>,
- Stefano Stabellini <stefano.stabellini@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
- Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>, Julia Zhang <julia.zhang@amd.com>,
- Chen Jiqian <Jiqian.Chen@amd.com>, Yiwei Zhang <zzyiwei@chromium.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-References: <20240418190040.1110210-1-dmitry.osipenko@collabora.com>
- <87jzkoqy59.fsf@draig.linaro.org>
-Content-Language: en-US
-From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <87jzkoqy59.fsf@draig.linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=46.235.227.194;
- envelope-from=dmitry.osipenko@collabora.com; helo=madrid.collaboradmins.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417075053.3273543-2-ruansy.fnst@fujitsu.com>
+Received-SPF: pass client-ip=192.198.163.9;
+ envelope-from=alison.schofield@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.67,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,59 +83,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/23/24 11:30, Alex Bennée wrote:
-> Dmitry Osipenko <dmitry.osipenko@collabora.com> writes:
+On Wed, Apr 17, 2024 at 03:50:52PM +0800, Shiyang Ruan wrote:
+> The length of Physical Address in General Media Event Record/DRAM Event
+> Record is 64-bit, so the field mask should be defined as such length.
+> Otherwise, this causes cxl_general_media and cxl_dram tracepoints to
+> mask off the upper-32-bits of DPA addresses. The cxl_poison event is
+> unaffected.
 > 
->> Hello,
->>
->> This series enables Vulkan Venus context support on virtio-gpu.
->>
->> All virglrender and almost all Linux kernel prerequisite changes
->> needed by Venus are already in upstream. For kernel there is a pending
->> KVM patchset that fixes mapping of compound pages needed for DRM drivers
->> using TTM [1], othewrwise hostmem blob mapping will fail with a KVM error
->> from Qemu.
->>
->> [1]
->> https://lore.kernel.org/kvm/20240229025759.1187910-1-stevensd@google.com/
+> If userspace was doing its own DPA-to-HPA translation this could lead to
+> incorrect page retirement decisions, but there is no known consumer
+> (like rasdaemon) of this event today.
 > 
-> Following the link for the TTM/KVM patches on the kernel side points at
-> changes for AMD cards getting NAK'ed so I'm a little confused as to what
-> parts are needed.
 
-I wouldn't say that patches are NAK'ed, they more having a problem with
-getting a review. Without KMV patches host blobs don't work depending on
-a host GPU driver and kernel configuration.
+So, an invalid DPA is emitted in the trace event log and that could
+lead to 'incorrect page retirement decisions...'
 
-It's actually not only TTM drivers that are requiring the KVM changes,
-but a non-TTM GPU drivers that use huge pages may also need them too.
-You may need a patched KVM for i915 driver that doesn't use TTM,
-depending on whether transparent huge pages are enabled in the kernel
-config.
+> Fixes: d54a531a430b ("cxl/mem: Trace General Media Event Record")
+> Cc: <stable@vger.kernel.org>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Davidlohr Bueso <dave@stgolabs.net>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+> ---
+>  drivers/cxl/core/trace.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/cxl/core/trace.h b/drivers/cxl/core/trace.h
+> index e5f13260fc52..cdfce932d5b1 100644
+> --- a/drivers/cxl/core/trace.h
+> +++ b/drivers/cxl/core/trace.h
+> @@ -253,7 +253,7 @@ TRACE_EVENT(cxl_generic_event,
+>   * DRAM Event Record
+>   * CXL rev 3.0 section 8.2.9.2.1.2; Table 8-44
+>   */
+> -#define CXL_DPA_FLAGS_MASK			0x3F
+> +#define CXL_DPA_FLAGS_MASK			0x3FULL
+>  #define CXL_DPA_MASK				(~CXL_DPA_FLAGS_MASK)
+>  
+>  #define CXL_DPA_VOLATILE			BIT(0)
 
-> Is this only relevant for ensuring the virtual mappings to the
-> underlying hardware aren't moved around when KVM is exporting those
-> pages to the guest?
+This works but I'm thinking this is the time to convene on one 
+CXL_EVENT_DPA_MASK for both all CXL events, rather than having
+cxl_poison event be different.
 
-Yes, host GPU driver needs to handle guest access page fault to keep
-pages in place.
+I prefer how poison defines it:
 
-> Our interest is in Xen which obviously mediates everything through stage
-> 2 mappings to from the real PA to the IPA the domains see. However AIUI
-> all the blob allocation is managed by the GEM/TTM layer of whichever
-> kernel is responsible for driving the GPU. Does this layer work with
-> kernel vaddr or the underlying IPA of the resources? We shouldn't
-> expect the IPA to change between allocations should we?
+cxlmem.h:#define CXL_POISON_START_MASK          GENMASK_ULL(63, 6)
 
-TTM works with memory pages and it moves pages around. It may swap out
-pages and then relies on a working page faulting notification to swap-in
-pages back.
+Can we rename that CXL_EVENT_DPA_MASK and use for all events?
 
-Whether PA stays fixed, I don't know for sure. Robert Beckett or
-somebody from AMD should know better how it works for Xen and may
-comment on it.
--- 
-Best regards,
-Dmitry
+--Alison
 
+> -- 
+> 2.34.1
+> 
 
