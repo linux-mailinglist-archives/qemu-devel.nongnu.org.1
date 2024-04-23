@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039408AEAB7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9298AEA8D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:16:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnI-000561-JT; Tue, 23 Apr 2024 11:10:52 -0400
+	id 1rzHnh-0007Un-Li; Tue, 23 Apr 2024 11:11:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmo-0004SR-CT
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:25 -0400
+ id 1rzHmq-0004U5-39
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmm-000089-31
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:21 -0400
+ id 1rzHmn-00009D-8n
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885019;
+ s=mimecast20190719; t=1713885020;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bUMHGpCVxIHKiN0MLiRHD2ZyHKe2Wcki4o8FSWGa7Ro=;
- b=Vf2a5JfOeFokpOhEdW2cHDyf0Ajx4g53zRXf72stj5YyABt3xHw0cA89wjV1YYzveN8WwH
- PEDHqfpTiLUlx1U57tlzMh++DL4BnQdFI2jmlhh3wMG9wGnctv5BGKbDbxxu4tGSCmIssQ
- ooQ8XEXlpVNYH3wtHz6GnHKmv4i/IDg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-IcqTNz9HO-6AmkMANVspog-1; Tue,
- 23 Apr 2024 11:10:15 -0400
-X-MC-Unique: IcqTNz9HO-6AmkMANVspog-1
+ bh=x5cKQCHXEvjif26oj6Q4YxlSTQkFR+HVsUva+brgfXI=;
+ b=YRmLZ/cVzSjDjngq/ds/Z/odIQt3IaPzRIZVLCAr44vh/dea1lt2BT3h7hUxhc0EVQbE0z
+ dHxsj4I5DxEqqwsWtYVDTvVBwM8XLUbfgEhOabh79+DWN2/qTyeQ8evA0emsXYgk+GQgzx
+ QpMFrju50u2TdDiuUoAexkby3nUdwoc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-L8D3364uMC6g9F8bWBmTfA-1; Tue, 23 Apr 2024 11:10:17 -0400
+X-MC-Unique: L8D3364uMC6g9F8bWBmTfA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A079729ABA14;
- Tue, 23 Apr 2024 15:10:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF378812C57;
+ Tue, 23 Apr 2024 15:10:16 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7902A20296D2;
- Tue, 23 Apr 2024 15:10:14 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E54AB20296D2;
+ Tue, 23 Apr 2024 15:10:15 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Harsh Prateek Bora <harshpb@linux.ibm.com>, Zhao Liu <zhao1.liu@intel.com>,
- Gavin Shan <gshan@redhat.com>
-Subject: [PULL 22/63] hw: Add compat machines for 9.1
-Date: Tue, 23 Apr 2024 17:09:10 +0200
-Message-ID: <20240423150951.41600-23-pbonzini@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 23/63] target/i386: add guest-phys-bits cpu property
+Date: Tue, 23 Apr 2024 17:09:11 +0200
+Message-ID: <20240423150951.41600-24-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -81,274 +80,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add 9.1 machine types for arm/i440fx/m68k/q35/s390x/spapr.
+From: Gerd Hoffmann <kraxel@redhat.com>
 
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Acked-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Allows to set guest-phys-bits (cpuid leaf 80000008, eax[23:16])
+via -cpu $model,guest-phys-bits=$nr.
+
+Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
+Message-ID: <20240318155336.156197-3-kraxel@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-Cc: Gavin Shan <gshan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/boards.h        |  3 +++
- include/hw/i386/pc.h       |  3 +++
- hw/arm/virt.c              | 11 +++++++++--
- hw/core/machine.c          |  3 +++
- hw/i386/pc.c               |  3 +++
- hw/i386/pc_piix.c          | 17 ++++++++++++++---
- hw/i386/pc_q35.c           | 14 ++++++++++++--
- hw/m68k/virt.c             | 11 +++++++++--
- hw/ppc/spapr.c             | 17 ++++++++++++++---
- hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
- 10 files changed, 83 insertions(+), 13 deletions(-)
+ target/i386/cpu.h |  8 ++++++++
+ hw/i386/pc.c      |  4 +++-
+ target/i386/cpu.c | 22 ++++++++++++++++++++++
+ 3 files changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/include/hw/boards.h b/include/hw/boards.h
-index 8b8f6d5c00d..50e0cf4278e 100644
---- a/include/hw/boards.h
-+++ b/include/hw/boards.h
-@@ -425,6 +425,9 @@ struct MachineState {
-     } \
-     type_init(machine_initfn##_register_types)
+diff --git a/target/i386/cpu.h b/target/i386/cpu.h
+index 6b057380791..6112e27bfd5 100644
+--- a/target/i386/cpu.h
++++ b/target/i386/cpu.h
+@@ -2027,6 +2027,14 @@ struct ArchCPU {
+     /* Number of physical address bits supported */
+     uint32_t phys_bits;
  
-+extern GlobalProperty hw_compat_9_0[];
-+extern const size_t hw_compat_9_0_len;
++    /*
++     * Number of guest physical address bits available. Usually this is
++     * identical to host physical address bits. With NPT or EPT 4-level
++     * paging, guest physical address space might be restricted to 48 bits
++     * even if the host cpu supports more physical address bits.
++     */
++    uint32_t guest_phys_bits;
 +
- extern GlobalProperty hw_compat_8_2[];
- extern const size_t hw_compat_8_2_len;
- 
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 27a68071d77..349f79df086 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -198,6 +198,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
- /* sgx.c */
- void pc_machine_init_sgx_epc(PCMachineState *pcms);
- 
-+extern GlobalProperty pc_compat_9_0[];
-+extern const size_t pc_compat_9_0_len;
-+
- extern GlobalProperty pc_compat_8_2[];
- extern const size_t pc_compat_8_2_len;
- 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index a9a913aeadb..c9119ef3847 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -3223,10 +3223,17 @@ static void machvirt_machine_init(void)
- }
- type_init(machvirt_machine_init);
- 
--static void virt_machine_9_0_options(MachineClass *mc)
-+static void virt_machine_9_1_options(MachineClass *mc)
- {
- }
--DEFINE_VIRT_MACHINE_AS_LATEST(9, 0)
-+DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
-+
-+static void virt_machine_9_0_options(MachineClass *mc)
-+{
-+    virt_machine_9_1_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+}
-+DEFINE_VIRT_MACHINE(9, 0)
- 
- static void virt_machine_8_2_options(MachineClass *mc)
- {
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 37ede0e7d4f..a92bec23147 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -33,6 +33,9 @@
- #include "hw/virtio/virtio-iommu.h"
- #include "audio/audio.h"
- 
-+GlobalProperty hw_compat_9_0[] = {};
-+const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
-+
- GlobalProperty hw_compat_8_2[] = {
-     { "migration", "zero-page-detection", "legacy"},
-     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
+     /* in order to simplify APIC support, we leave this pointer to the
+        user */
+     struct DeviceState *apic_state;
 diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 5c21b0c4dbf..b0d818b2094 100644
+index b0d818b2094..41909f7bd7a 100644
 --- a/hw/i386/pc.c
 +++ b/hw/i386/pc.c
-@@ -78,6 +78,9 @@
+@@ -78,7 +78,9 @@
      { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
      { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
  
-+GlobalProperty pc_compat_9_0[] = {};
-+const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
-+
+-GlobalProperty pc_compat_9_0[] = {};
++GlobalProperty pc_compat_9_0[] = {
++    { TYPE_X86_CPU, "guest-phys-bits", "0" },
++};
+ const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
+ 
  GlobalProperty pc_compat_8_2[] = {};
- const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 33760a2ee16..eef3d08473e 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -6570,6 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
+         if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
+             /* 64 bit processor */
+              *eax |= (cpu_x86_virtual_addr_width(env) << 8);
++             *eax |= (cpu->guest_phys_bits << 16);
+         }
+         *ebx = env->features[FEAT_8000_0008_EBX];
+         if (cs->nr_cores * cs->nr_threads > 1) {
+@@ -7329,6 +7330,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         goto out;
+     }
  
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 18ba0766092..8850c49c66a 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -513,13 +513,26 @@ static void pc_i440fx_machine_options(MachineClass *m)
-                                      "Use a different south bridge than PIIX3");
- }
- 
--static void pc_i440fx_9_0_machine_options(MachineClass *m)
-+static void pc_i440fx_9_1_machine_options(MachineClass *m)
- {
-     pc_i440fx_machine_options(m);
-     m->alias = "pc";
-     m->is_default = true;
- }
- 
-+DEFINE_I440FX_MACHINE(v9_1, "pc-i440fx-9.1", NULL,
-+                      pc_i440fx_9_1_machine_options);
++    if (cpu->guest_phys_bits == -1) {
++        /*
++         * If it was not set by the user, or by the accelerator via
++         * cpu_exec_realizefn, clear.
++         */
++        cpu->guest_phys_bits = 0;
++    }
 +
-+static void pc_i440fx_9_0_machine_options(MachineClass *m)
-+{
-+    pc_i440fx_9_1_machine_options(m);
-+    m->alias = NULL;
-+    m->is_default = false;
-+
-+    compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+    compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-+}
-+
- DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
-                       pc_i440fx_9_0_machine_options);
+     if (cpu->ucode_rev == 0) {
+         /*
+          * The default is the same as KVM's. Note that this check
+@@ -7379,6 +7388,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+         if (cpu->phys_bits == 0) {
+             cpu->phys_bits = TCG_PHYS_ADDR_BITS;
+         }
++        if (cpu->guest_phys_bits &&
++            (cpu->guest_phys_bits > cpu->phys_bits ||
++            cpu->guest_phys_bits < 32)) {
++            error_setg(errp, "guest-phys-bits should be between 32 and %u "
++                             " (but is %u)",
++                             cpu->phys_bits, cpu->guest_phys_bits);
++            return;
++        }
+     } else {
+         /* For 32 bit systems don't use the user set value, but keep
+          * phys_bits consistent with what we tell the guest.
+@@ -7387,6 +7404,10 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
+             error_setg(errp, "phys-bits is not user-configurable in 32 bit");
+             return;
+         }
++        if (cpu->guest_phys_bits != 0) {
++            error_setg(errp, "guest-phys-bits is not user-configurable in 32 bit");
++            return;
++        }
  
-@@ -528,8 +541,6 @@ static void pc_i440fx_8_2_machine_options(MachineClass *m)
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
- 
-     pc_i440fx_9_0_machine_options(m);
--    m->alias = NULL;
--    m->is_default = false;
- 
-     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index c7bc8a2041f..6e1180d4b60 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -365,12 +365,23 @@ static void pc_q35_machine_options(MachineClass *m)
-                      pc_q35_compat_defaults, pc_q35_compat_defaults_len);
- }
- 
--static void pc_q35_9_0_machine_options(MachineClass *m)
-+static void pc_q35_9_1_machine_options(MachineClass *m)
- {
-     pc_q35_machine_options(m);
-     m->alias = "q35";
- }
- 
-+DEFINE_Q35_MACHINE(v9_1, "pc-q35-9.1", NULL,
-+                   pc_q35_9_1_machine_options);
-+
-+static void pc_q35_9_0_machine_options(MachineClass *m)
-+{
-+    pc_q35_9_1_machine_options(m);
-+    m->alias = NULL;
-+    compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+    compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
-+}
-+
- DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
-                    pc_q35_9_0_machine_options);
- 
-@@ -378,7 +389,6 @@ static void pc_q35_8_2_machine_options(MachineClass *m)
- {
-     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_9_0_machine_options(m);
--    m->alias = NULL;
-     m->max_cpus = 1024;
-     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
-     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
-diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
-index b8e5e102e6b..09bc9bdfefb 100644
---- a/hw/m68k/virt.c
-+++ b/hw/m68k/virt.c
-@@ -357,10 +357,17 @@ type_init(virt_machine_register_types)
-     } \
-     type_init(machvirt_machine_##major##_##minor##_init);
- 
--static void virt_machine_9_0_options(MachineClass *mc)
-+static void virt_machine_9_1_options(MachineClass *mc)
- {
- }
--DEFINE_VIRT_MACHINE(9, 0, true)
-+DEFINE_VIRT_MACHINE(9, 1, true)
-+
-+static void virt_machine_9_0_options(MachineClass *mc)
-+{
-+    virt_machine_9_1_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+}
-+DEFINE_VIRT_MACHINE(9, 0, false)
- 
- static void virt_machine_8_2_options(MachineClass *mc)
- {
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index e9bc97fee08..36ada4d0baf 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -4806,14 +4806,25 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
-     type_init(spapr_machine_register_##suffix)
- 
- /*
-- * pseries-9.0
-+ * pseries-9.1
-  */
--static void spapr_machine_9_0_class_options(MachineClass *mc)
-+static void spapr_machine_9_1_class_options(MachineClass *mc)
- {
-     /* Defaults for the latest behaviour inherited from the base class */
- }
- 
--DEFINE_SPAPR_MACHINE(9_0, "9.0", true);
-+DEFINE_SPAPR_MACHINE(9_1, "9.1", true);
-+
-+/*
-+ * pseries-9.0
-+ */
-+static void spapr_machine_9_0_class_options(MachineClass *mc)
-+{
-+    spapr_machine_9_1_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
-+}
-+
-+DEFINE_SPAPR_MACHINE(9_0, "9.0", false);
- 
- /*
-  * pseries-8.2
-diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
-index b1dcb3857f0..7cebbf6c02a 100644
---- a/hw/s390x/s390-virtio-ccw.c
-+++ b/hw/s390x/s390-virtio-ccw.c
-@@ -859,14 +859,26 @@ bool css_migration_enabled(void)
-     }                                                                         \
-     type_init(ccw_machine_register_##suffix)
- 
-+static void ccw_machine_9_1_instance_options(MachineState *machine)
-+{
-+}
-+
-+static void ccw_machine_9_1_class_options(MachineClass *mc)
-+{
-+}
-+DEFINE_CCW_MACHINE(9_1, "9.1", true);
-+
- static void ccw_machine_9_0_instance_options(MachineState *machine)
- {
-+    ccw_machine_9_1_instance_options(machine);
- }
- 
- static void ccw_machine_9_0_class_options(MachineClass *mc)
- {
-+    ccw_machine_9_1_class_options(mc);
-+    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
- }
--DEFINE_CCW_MACHINE(9_0, "9.0", true);
-+DEFINE_CCW_MACHINE(9_0, "9.0", false);
- 
- static void ccw_machine_8_2_instance_options(MachineState *machine)
- {
+         if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
+             cpu->phys_bits = 36;
+@@ -7887,6 +7908,7 @@ static Property x86_cpu_properties[] = {
+     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
+     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
+     DEFINE_PROP_UINT32("phys-bits", X86CPU, phys_bits, 0),
++    DEFINE_PROP_UINT32("guest-phys-bits", X86CPU, guest_phys_bits, -1),
+     DEFINE_PROP_BOOL("host-phys-bits", X86CPU, host_phys_bits, false),
+     DEFINE_PROP_UINT8("host-phys-bits-limit", X86CPU, host_phys_bits_limit, 0),
+     DEFINE_PROP_BOOL("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
 -- 
 2.44.0
 
