@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4590F8AE7C8
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 550D38AE7DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:20:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzG0k-00059n-Fp; Tue, 23 Apr 2024 09:16:38 -0400
+	id 1rzG0l-0005A6-Uv; Tue, 23 Apr 2024 09:16:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0b-00057W-Hz
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:29 -0400
+ id 1rzG0d-00058X-Vf
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0Z-0001st-RS
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:29 -0400
+ id 1rzG0b-0001ta-Qi
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713878186;
+ s=mimecast20190719; t=1713878188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DmvHSqu5XipQmDsZg4N60N7DRIVaJnPkLHNypoyLe7s=;
- b=BN2Qr7AdPyWvvfkcfqZfsHcxvAN+NIQ9vDHb965ZsnMxkQtc6TopFko87H0ufo4Tk/ggd7
- hg17lMADM6YWsnllo8kayyZh3sBzh34F8npoUgTIzI/krq0R4IIWqRxnoWT23kZhcGgCwC
- ckQzGZqjvamaVjGfP+W/ocBUY98ygwE=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=0DIuiCzMSL0+YSjMXWZ5/ZMwYhFwNNGbX4Rtfk9cIAE=;
+ b=VhdNCLajRLrzzvwMGObde5wsWrJ08k51ryFq8r+K/+vSoFKFq+q0PoUnkg8iXjgsRImU2c
+ P8o1Y8ngKd0HNOVWt6i9sRdry/Q31eEyGsuSXxpLNx50DGOlN9S2OqFfJjBJgjVBrxsaR+
+ cdygCdo8CUzvbsActKquDg/B6Bq3GGc=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-kbvqsKoiMyay-FJpTeg_bw-1; Tue, 23 Apr 2024 09:16:25 -0400
-X-MC-Unique: kbvqsKoiMyay-FJpTeg_bw-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-56e46bd7f6eso3068403a12.2
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:25 -0700 (PDT)
+ us-mta-398-wkLUZBBnPaOVaoVrCQ2quA-1; Tue, 23 Apr 2024 09:16:27 -0400
+X-MC-Unique: wkLUZBBnPaOVaoVrCQ2quA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a46852c2239so384743366b.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713878183; x=1714482983;
+ d=1e100.net; s=20230601; t=1713878186; x=1714482986;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DmvHSqu5XipQmDsZg4N60N7DRIVaJnPkLHNypoyLe7s=;
- b=wRaj+yHNSbFk4mwwO1uqo+qFne92jzXs4zKi9c1fn8KslelHF/t66VatDQ165OB/Rx
- IAx4XZ4XNylNgSmWTQu0qRBWeYQ0p6idjV6D7x4zNpJ0MJBzPROQC7EJx5dFpibiDAxV
- 8piIfo4n8i8TI888nf1Olngw9/aMz2P/X837FkZp8Bhpzr9de6P3DZwwMbRfGabNB2Iy
- 1I7DYlxileM5c6swbYJKnrmTKVch+hPQoM6fboWXWxIjNEsuygy6W6aSl2eB5w2JMgfo
- ohROeweP1R+BpTqLdeSGLYV9jpCMP7q5mg6qRy/Fv/3SE/UAguZ56nXBaFp+kUAbMr8C
- WxRQ==
-X-Gm-Message-State: AOJu0YyMnsPNjAJr8bwWBoKZdapHqiCkzCbTa4y1SPKjy2vYxQyXFsHT
- A1IwuyPmGFyUgaLgXtHub/IWa8ChXm25yrI7tGzn3lWy9KHN4cejXT4qBcoLz2dHatev417YDTG
- F9P81SDBWoQsSCJ9RpjzNuDw2XIDyopnphXKOew0YJQxx/KNw1UZwkblblCQJHajXcohw+4a76h
- MA9TkWOKs3P+QRUBFsr/H8FDR26zXEp7xVsZAT
-X-Received: by 2002:a50:9b01:0:b0:571:cad0:a702 with SMTP id
- o1-20020a509b01000000b00571cad0a702mr935885edi.17.1713878183235; 
- Tue, 23 Apr 2024 06:16:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLnDaBcWHecU+xlyabcXE7plMqtY/pp/tA+p3WmfAehJ4emCvPrLCzULsIVVWziklkLFp7KA==
-X-Received: by 2002:a50:9b01:0:b0:571:cad0:a702 with SMTP id
- o1-20020a509b01000000b00571cad0a702mr935874edi.17.1713878182980; 
- Tue, 23 Apr 2024 06:16:22 -0700 (PDT)
+ bh=0DIuiCzMSL0+YSjMXWZ5/ZMwYhFwNNGbX4Rtfk9cIAE=;
+ b=vCGf09Duf35SlyPAGnmmwRI6EPFIJzlvey8JYdt7OiMS0xrM80OYfpPbicj+tmhy6w
+ fkC4uozavmt7D8XfTuonn813pAp53sqLLU7qv9iJRI1MYCJ62/y/Z4kTaGj5fJz2YgK6
+ RNX23xHDFhPeZSrpGl69vmefVIPaYWCDexgUwIMrXQkc3MAnivBGOpM61wvYO/p3W6v4
+ 72cnqiYg3W2OA4727ljDaTg0SzKXxVCnRpGfUdnV7k1FzXJ8P+Vi4JXssMe6XzZSAZxn
+ h/53Gz3b4sfVH+uyfmeV0FRbi6Xq/PTiRHgvtdsSVJcw/+BGX4RrqCQirNCckLpF1Ofb
+ pAEg==
+X-Gm-Message-State: AOJu0Yytccp3jUV/kYbMo0gA5QMLum3zzcUzYKDLDswHQNn3bfxvacu8
+ /P4vU4QD6YikuQmSlXAuKcjVAxVsh9I0wmF1PsSV9XsoSPpWXc49TMydS+LMaVRlskJ3BcF8/np
+ a6z8SCbTxCyCD5e1NxFKhOQbx73rDXwda5Qg4S67TgTWaqhphKc+3Cl5jsDfv/dm/NR8M+OLl2y
+ KURulwlBLtMUx6RNYCCffF7arQQz7SxRKhGQ6Y
+X-Received: by 2002:a17:907:940f:b0:a55:b520:768 with SMTP id
+ dk15-20020a170907940f00b00a55b5200768mr5281716ejc.32.1713878185895; 
+ Tue, 23 Apr 2024 06:16:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR3YaadCy5TKi4y+AYRxIUXWyVK2mlxEukfKzgvByCOnSWz7PvuE0JWYA9nC7E2vsTclxCyw==
+X-Received: by 2002:a17:907:940f:b0:a55:b520:768 with SMTP id
+ dk15-20020a170907940f00b00a55b5200768mr5281703ejc.32.1713878185624; 
+ Tue, 23 Apr 2024 06:16:25 -0700 (PDT)
 Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- f15-20020aa7d84f000000b00571db231915sm4710789eds.78.2024.04.23.06.16.20
+ n24-20020a170906841800b00a5568959abdsm7052650ejx.134.2024.04.23.06.16.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 06:16:21 -0700 (PDT)
+ Tue, 23 Apr 2024 06:16:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	farosas@suse.de
-Subject: [PATCH 03/22] arm: switch boards to "default y"
-Date: Tue, 23 Apr 2024 15:15:53 +0200
-Message-ID: <20240423131612.28362-4-pbonzini@redhat.com>
+Subject: [PATCH 04/22] avr: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:15:54 +0200
+Message-ID: <20240423131612.28362-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423131612.28362-1-pbonzini@redhat.com>
 References: <20240423131612.28362-1-pbonzini@redhat.com>
@@ -101,43 +101,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For ARM targets, boards that require TCG are already using "default y".
-Switch ARM_VIRT to the same selection mechanism.
+Some targets use "default y" for boards to filter out those that require
+TCG.  For consistency we are switching all other targets to do the same.
+Continue with AVR.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/arm-softmmu/default.mak | 3 ++-
- hw/arm/Kconfig                          | 2 ++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ configs/devices/avr-softmmu/default.mak | 5 ++---
+ hw/avr/Kconfig                          | 3 +++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/configs/devices/arm-softmmu/default.mak b/configs/devices/arm-softmmu/default.mak
-index c1cfb3bcf75..31f77c20269 100644
---- a/configs/devices/arm-softmmu/default.mak
-+++ b/configs/devices/arm-softmmu/default.mak
-@@ -5,7 +5,8 @@
- # CONFIG_PCI_DEVICES=n
- # CONFIG_TEST_DEVICES=n
+diff --git a/configs/devices/avr-softmmu/default.mak b/configs/devices/avr-softmmu/default.mak
+index 80218add98c..4207e7b3ce2 100644
+--- a/configs/devices/avr-softmmu/default.mak
++++ b/configs/devices/avr-softmmu/default.mak
+@@ -1,5 +1,4 @@
+ # Default configuration for avr-softmmu
  
--CONFIG_ARM_VIRT=y
+-# Boards:
+-#
+-CONFIG_ARDUINO=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_ARM_VIRT=n
++# CONFIG_ARDUINO=n
+diff --git a/hw/avr/Kconfig b/hw/avr/Kconfig
+index d31298c3cce..b29937be414 100644
+--- a/hw/avr/Kconfig
++++ b/hw/avr/Kconfig
+@@ -5,5 +5,8 @@ config AVR_ATMEGA_MCU
+     select AVR_POWER
  
- # These are selected by default when TCG is enabled, uncomment them to
- # keep out of the build.
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 893a7bff66b..1e7cd01087f 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -1,5 +1,7 @@
- config ARM_VIRT
-     bool
+ config ARDUINO
++    bool
 +    default y
-+    depends on ARM
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VFIO_AMD_XGBE
++    depends on AVR
+     select AVR_ATMEGA_MCU
+     select UNIMP
 -- 
 2.44.0
 
