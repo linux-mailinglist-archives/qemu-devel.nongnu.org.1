@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0878AFBF0
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACEB8AFC0B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:41:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOnD-0001rZ-AN; Tue, 23 Apr 2024 18:39:17 -0400
+	id 1rzOnq-0003dZ-7h; Tue, 23 Apr 2024 18:39:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOml-0001eV-HX
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmm-0001eW-4o
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmj-0006EP-L9
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmk-0006EY-6i
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713911925;
@@ -22,61 +22,62 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uufuWa7UUHVcyWc4Hr5CmlTlCPL2KkHNrpavQ9qeFxE=;
- b=N1hwswR8Bbvm13LBdoFYWH2ByGBMJOzvVw+R8OEYUDcUlrXffYPoPCox8DiecjEGGVkDUO
- ieyFq1uRMQ2ZhtfU5GAj1JECNr6PHMZi+NEMvCdekftAlGGAF5nsgTxGr6dzWxJwO+s964
- mlQgpoLjmlKaQ0Y2PvVOJpXllLUD+A4=
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
- [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=jJyFsvQUN501aNClmLpvJ1SUtq8254UQPDpetRvAXmM=;
+ b=RxvsQI9FHLwIVWumIsc2RoKk/KAOIWxXh2x/Tqe+oinz4MvsLihOmc51l+oUGlPws0rNCN
+ bNQnoX5chlqmZ+Zq+gsUenV4hPswWT3BPLSQ/BxY4qGJ8y1HjY1xR/OSFKBDPnD0IY1OZG
+ 2iktZn7XU5cynxz0JJxIj+hT7rlsifg=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-82-thX1BInyNTmEjYsCDayV-A-1; Tue, 23 Apr 2024 18:38:43 -0400
-X-MC-Unique: thX1BInyNTmEjYsCDayV-A-1
-Received: by mail-oi1-f199.google.com with SMTP id
- 5614622812f47-3c72fe44b54so1300020b6e.0
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:43 -0700 (PDT)
+ us-mta-679-AXekD6IPN0WhmavYXaDUEw-1; Tue, 23 Apr 2024 18:38:44 -0400
+X-MC-Unique: AXekD6IPN0WhmavYXaDUEw-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3c73b20ff25so1675851b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911922; x=1714516722;
+ d=1e100.net; s=20230601; t=1713911923; x=1714516723;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uufuWa7UUHVcyWc4Hr5CmlTlCPL2KkHNrpavQ9qeFxE=;
- b=dpusbZAvC0Fmc27QW3KkOrFhICUoBXQyxYOxJMA85B+NY1l7B7P8+eAugeVxu41i1J
- XpJZKaXjkUIfYw9U53oX0nLT9Ron19rGQXDeiNyeIGiYiUrZ8HlKtZ2euv42zY3u8MQg
- H2lQdVbPrITEobZX4ugvhsBfB4yxafJAuytaGXjmlLSYB6OVrgoM/Csgevs+hhcSJpY/
- Fw+QP7b8SYvYPXDA8+Dp5lbgOH+jpvHWRIDzi4h9cpzxASJkoCO3M7YwRBoR2fsCaoD5
- dmYo0Mk0GSuBYqHonf2kzzViaUxPKx+Tvf5xAd9E051xti8f0GQq7Okm9IoDcuSvWe+e
- lkEQ==
-X-Gm-Message-State: AOJu0YwSMCT4e4EL4riJzBkexQK9lPxmFtRa30iJLeEwM8JAlZNwnbKS
- qzoXRYMgR0LpBwNlcIyTenzOEzBXuyREzbTemQIntdQLL7USf5996Zyg8wHeb0JgDBU43nczAx5
- 7cSdwTVmqGzTu7wUPx/G2aPOEpycXlXq5VkqmI/YP8iBTlSWWc1C8RaCACliUeVlKOR3m4oMzFc
- vySeOcoIwkEDg3lBgPxKKHZ0CtJ5kpAPK1Kw==
-X-Received: by 2002:a05:6808:13c1:b0:3c8:2a1b:d2a0 with SMTP id
- d1-20020a05680813c100b003c82a1bd2a0mr765466oiw.4.1713911922362; 
+ bh=jJyFsvQUN501aNClmLpvJ1SUtq8254UQPDpetRvAXmM=;
+ b=lEcC1Muyei+Os0ULCKaeg+V5CWCDRLF5UpEIaa7NtXb//e9FTSx15kTGw8IozGS4lv
+ ucDHXWlFxya3wTIRCZnOPuFKkDAnJJCG97sK67L76jckYGmVkgcRqsWPeAQK1Fx8tlPq
+ JyrHmsdPzbuPvoNKQrWL84mcWzOC648pYrV0/mozUK8jymalbtVdbTlGPT8fVVQqmhjr
+ NNL07oevAy7AzjqhGmTr8qY25BM/hWcCpxNwhi1lVhlS2eln4UWnSCWSdLKSLgCSISWP
+ AW4ICvxz8c2CcE7xy5//26gFikwVXqalI8rkRyqzOADBRwIncbYFPLVYNaZd9tvnh5L7
+ XTzg==
+X-Gm-Message-State: AOJu0Yy4rw+LE4X2HIIoiF5Mfi64kIY8rqdfj1/pjop4v8kOOehoDiVj
+ Caqx/Uo7bAx2udb763Z6B15fL48J3bA2vzNweI7Ok5ZpFSkID3Z3eH/Ia8KgCFPGvxUkP3ddKi9
+ n/awJvgE1bE7dylQkJtqrDUgBnEwf0+6edTCsNJ63z5uH2czaRFUf+oMF1vSTJ1NkuINgiYlwZV
+ +ZInOrsJTYPtDLgfSk87Q1udbjpH+KawYrfQ==
+X-Received: by 2002:a9d:5c87:0:b0:6eb:ac96:d26f with SMTP id
+ a7-20020a9d5c87000000b006ebac96d26fmr1094356oti.3.1713911923270; 
+ Tue, 23 Apr 2024 15:38:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCPzIw9ollZdtcJsSqbuPXKScNztkXbhQxBo+FTaORlVx7EWUvlLTbpUYOXwQb0BmOjxJ+rw==
+X-Received: by 2002:a9d:5c87:0:b0:6eb:ac96:d26f with SMTP id
+ a7-20020a9d5c87000000b006ebac96d26fmr1094326oti.3.1713911922648; 
  Tue, 23 Apr 2024 15:38:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHvscFnMiaf1fObzVL6J/AgUi90/1NhLq2CYcZOT9DRDnFrSJ+bGviOZ1f72B9HGk958SOZ5g==
-X-Received: by 2002:a05:6808:13c1:b0:3c8:2a1b:d2a0 with SMTP id
- d1-20020a05680813c100b003c82a1bd2a0mr765440oiw.4.1713911921843; 
- Tue, 23 Apr 2024 15:38:41 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.41
+ c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:38:41 -0700 (PDT)
+ Tue, 23 Apr 2024 15:38:42 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 22/26] migration: Add Error** argument to xbzrle_init()
-Date: Tue, 23 Apr 2024 18:38:09 -0400
-Message-ID: <20240423223813.3237060-23-peterx@redhat.com>
+Subject: [PULL 23/26] migration: Modify ram_init_bitmaps() to report dirty
+ tracking errors
+Date: Tue, 23 Apr 2024 18:38:10 -0400
+Message-ID: <20240423223813.3237060-24-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423223813.3237060-1-peterx@redhat.com>
 References: <20240423223813.3237060-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -102,92 +103,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@redhat.com>
 
-Since the return value (-ENOMEM) is not exploited, follow the
-recommendations of qapi/error.h and change it to a bool
+The .save_setup() handler has now an Error** argument that we can use
+to propagate errors reported by the .log_global_start() handler. Do
+that for the RAM. The caller qemu_savevm_state_setup() will store the
+error under the migration stream for later detection in the migration
+sequence.
 
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240320064911.545001-14-clg@redhat.com
+Link: https://lore.kernel.org/r/20240320064911.545001-15-clg@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/ram.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ migration/ram.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
 diff --git a/migration/ram.c b/migration/ram.c
-index 26ce11a337..70797ef5d8 100644
+index 70797ef5d8..daffcd82d4 100644
 --- a/migration/ram.c
 +++ b/migration/ram.c
-@@ -2727,44 +2727,41 @@ int ram_discard_range(const char *rbname, uint64_t start, size_t length)
-  * For every allocation, we will try not to crash the VM if the
-  * allocation failed.
-  */
--static int xbzrle_init(void)
-+static bool xbzrle_init(Error **errp)
+@@ -2857,9 +2857,8 @@ static void migration_bitmap_clear_discarded_pages(RAMState *rs)
+     }
+ }
+ 
+-static void ram_init_bitmaps(RAMState *rs)
++static bool ram_init_bitmaps(RAMState *rs, Error **errp)
+ {
+-    Error *local_err = NULL;
+     bool ret = true;
+ 
+     qemu_mutex_lock_ramlist();
+@@ -2868,10 +2867,8 @@ static void ram_init_bitmaps(RAMState *rs)
+         ram_list_init_bitmaps();
+         /* We don't use dirty log with background snapshots */
+         if (!migrate_background_snapshot()) {
+-            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION,
+-                                                &local_err);
++            ret = memory_global_dirty_log_start(GLOBAL_DIRTY_MIGRATION, errp);
+             if (!ret) {
+-                error_report_err(local_err);
+                 goto out_unlock;
+             }
+             migration_bitmap_sync_precopy(rs, false);
+@@ -2882,7 +2879,7 @@ out_unlock:
+ 
+     if (!ret) {
+         ram_bitmaps_destroy();
+-        return;
++        return false;
+     }
+ 
+     /*
+@@ -2890,24 +2887,23 @@ out_unlock:
+      * containing all 1s to exclude any discarded pages from migration.
+      */
+     migration_bitmap_clear_discarded_pages(rs);
++    return true;
+ }
+ 
+-static int ram_init_all(RAMState **rsp)
++static int ram_init_all(RAMState **rsp, Error **errp)
  {
 -    Error *local_err = NULL;
 -
-     if (!migrate_xbzrle()) {
--        return 0;
-+        return true;
-     }
- 
-     XBZRLE_cache_lock();
- 
-     XBZRLE.zero_target_page = g_try_malloc0(TARGET_PAGE_SIZE);
-     if (!XBZRLE.zero_target_page) {
--        error_report("%s: Error allocating zero page", __func__);
-+        error_setg(errp, "%s: Error allocating zero page", __func__);
-         goto err_out;
-     }
- 
-     XBZRLE.cache = cache_init(migrate_xbzrle_cache_size(),
--                              TARGET_PAGE_SIZE, &local_err);
-+                              TARGET_PAGE_SIZE, errp);
-     if (!XBZRLE.cache) {
+-    if (!ram_state_init(rsp, &local_err)) {
 -        error_report_err(local_err);
-         goto free_zero_page;
-     }
- 
-     XBZRLE.encoded_buf = g_try_malloc0(TARGET_PAGE_SIZE);
-     if (!XBZRLE.encoded_buf) {
--        error_report("%s: Error allocating encoded_buf", __func__);
-+        error_setg(errp, "%s: Error allocating encoded_buf", __func__);
-         goto free_cache;
-     }
- 
-     XBZRLE.current_buf = g_try_malloc(TARGET_PAGE_SIZE);
-     if (!XBZRLE.current_buf) {
--        error_report("%s: Error allocating current_buf", __func__);
-+        error_setg(errp, "%s: Error allocating current_buf", __func__);
-         goto free_encoded_buf;
-     }
- 
-     /* We are all good */
-     XBZRLE_cache_unlock();
--    return 0;
-+    return true;
- 
- free_encoded_buf:
-     g_free(XBZRLE.encoded_buf);
-@@ -2777,7 +2774,7 @@ free_zero_page:
-     XBZRLE.zero_target_page = NULL;
- err_out:
-     XBZRLE_cache_unlock();
--    return -ENOMEM;
-+    return false;
- }
- 
- static bool ram_state_init(RAMState **rsp, Error **errp)
-@@ -2904,7 +2901,8 @@ static int ram_init_all(RAMState **rsp)
++    if (!ram_state_init(rsp, errp)) {
          return -1;
      }
  
--    if (xbzrle_init()) {
-+    if (!xbzrle_init(&local_err)) {
-+        error_report_err(local_err);
+-    if (!xbzrle_init(&local_err)) {
+-        error_report_err(local_err);
++    if (!xbzrle_init(errp)) {
          ram_state_cleanup(rsp);
          return -1;
      }
+ 
+-    ram_init_bitmaps(*rsp);
++    if (!ram_init_bitmaps(*rsp, errp)) {
++        return -1;
++    }
+ 
+     return 0;
+ }
+@@ -3104,8 +3100,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque, Error **errp)
+ 
+     /* migration has already setup the bitmap, reuse it. */
+     if (!migration_in_colo_state()) {
+-        if (ram_init_all(rsp) != 0) {
+-            error_setg(errp, "%s: failed to setup RAM for migration", __func__);
++        if (ram_init_all(rsp, errp) != 0) {
+             compress_threads_save_cleanup();
+             return -1;
+         }
 -- 
 2.44.0
 
