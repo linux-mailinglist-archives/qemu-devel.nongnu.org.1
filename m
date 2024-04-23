@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C288AE7D5
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:19:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D45678AE7E7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:20:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzG14-0005FD-D9; Tue, 23 Apr 2024 09:16:58 -0400
+	id 1rzG1A-0005Fq-0E; Tue, 23 Apr 2024 09:17:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0y-0005Ct-S1
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:53 -0400
+ id 1rzG11-0005Ez-0N
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:55 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0x-000203-3y
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:52 -0400
+ id 1rzG0y-000212-VS
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713878210;
+ s=mimecast20190719; t=1713878212;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/gCKlrw9o4yb5qaqhszZhhWNDYutIOFOseJT54YRJVM=;
- b=ISnKAwEznzn5+C2PiSk7P5EhqliA90igBXXcWuKnNNJVnfo3PJ+ExcK5uPnM3KwjpqbAJy
- ON1XqvkHu14g2PkmbELFXzMcOyuxpE/GWLCo51kyt93TWoArv61NztLNKKxRh9oPnjGZqD
- vSWM/4ADRx3S8SOhqGvkBZ00L2WY61o=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=MIzw1ooJRYdWb1ORIWKZDYF2U0eSao1bJMHeOLukmWI=;
+ b=jSRsxjEg3eMIEUpSyMoRGkOM68Lgt3Am4llLqGoJg3k2VjeUCNxWb+4haXCe/fy+0VMAPT
+ OFaB+pN7KP0pYxJUNt0siFMZZbB1sNlGxCWGLSO0c2njWdzkFx7XcGjHje+3SJJ4Gxz5C0
+ Pq+iIaaM3nlKck6e6PwWgUi/I/d+2Qw=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-536-HL1JgqtBO9O2BcgB0ctMrA-1; Tue, 23 Apr 2024 09:16:49 -0400
-X-MC-Unique: HL1JgqtBO9O2BcgB0ctMrA-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-56e645a8762so3298793a12.3
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:49 -0700 (PDT)
+ us-mta-358-ziM5RclPNJOKrgbGGMm7HA-1; Tue, 23 Apr 2024 09:16:51 -0400
+X-MC-Unique: ziM5RclPNJOKrgbGGMm7HA-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-56e46bd7f6eso3068579a12.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713878207; x=1714483007;
+ d=1e100.net; s=20230601; t=1713878209; x=1714483009;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/gCKlrw9o4yb5qaqhszZhhWNDYutIOFOseJT54YRJVM=;
- b=wAu2TwWIHmQS+afuZmEuifhfrasLcz23/AoJWfBPUPqRciWF1qwLvUAtwUJwlsf0li
- +mEEYHv9/vl5XiKpG3cx9FvZZ1C6lazQJSVSQlJVt38WuxbSv870SH3G5scbm7EeEiC+
- 8UAxB/P3WXpcAzwXzzXqnzWJNz0f3NYO4cIjeEHdMqpgmdHeuviy8gwss/n3HU2dwBx8
- hc/C4dz9R5n9FhmHGo++USAvlUob/P7kPP+90Rwuol60r9F9LJ+Wjd3uV68Vs+a/wJ7n
- EScOyleEuhxRU52n2PXVLsin9lG1cL7hi1I1WmnXCJRdE1e3+7j6nynvSW+hvBXYyXZ3
- otEQ==
-X-Gm-Message-State: AOJu0Yy7MoDpwzXaLkETaJTKCt0L1Ts54n22txjHbZcb1fpJbyGpeadM
- sfn/lsxQP+e0cr7xXlS9sQb8E+z1CLOIBRXOnCN8FgP20OFFHF2OCYNvETnWEEQ9W6fjSnTuE7C
- XqutaALQJaJQcPLXwgdUyTcGdDpk4qECXtv1zRVFULW0X+lKCMpqnAKSdTwZtLOFMtq0GDO7wOM
- ZC9b2/xCYtdA7cyz6ZPOasaa3iCRHvR2DL9s9n
-X-Received: by 2002:a50:9b51:0:b0:56d:c40d:b921 with SMTP id
- a17-20020a509b51000000b0056dc40db921mr8986172edj.20.1713878207578; 
- Tue, 23 Apr 2024 06:16:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG3HB9RM3Jlm3AGEFE3hIXuDFIsPvldm3qDjERHpPtKZ6uYkH4+GRuyETMc4xK40vW5fBFdbw==
-X-Received: by 2002:a50:9b51:0:b0:56d:c40d:b921 with SMTP id
- a17-20020a509b51000000b0056dc40db921mr8986158edj.20.1713878207306; 
- Tue, 23 Apr 2024 06:16:47 -0700 (PDT)
+ bh=MIzw1ooJRYdWb1ORIWKZDYF2U0eSao1bJMHeOLukmWI=;
+ b=KOJ7G1RXvNt6IT8EEhb9KMONmjjG3y9NyOu9CbluI4IfRDNu8mYqSK89Cz0isCai/8
+ dANQC+/x8dtOdjyAg2mQlHmDOY8QkhYuYu0fSCzEW3Ky2GHKN2dPu7j31KLGWmUfg7V9
+ EU18YtwLi97MDkINz/NyLEnJ+U3XQch2n+pltC0aV1o/iPliPZWHiT9y615byauWS4wM
+ mYFuyrc4wGP8DH1KNXrsx8QwvKy2mOTZl/gajAOTnrZCZhstXY9FuU2HzHX8LveK631V
+ LGvAN/zjcK4Wn/osfvxlnuENK4LLmFw6ioYSoqRCfpKnpwtohkWA4vDbsJwfl+xASJGH
+ QaDw==
+X-Gm-Message-State: AOJu0Yz/X0j9ZtqsMHOYIe7Igw4qaZm8Q9GeWunoKE9GtEpLPaw19r+Y
+ FZyFZ3+LX/fjz4AUW7fIP9NfW2LVeF7XBFLfSrWgQoNu6PxmjAao6xO/Ti6PoXUvdnLNqB7dW/5
+ WIht06Ll5IguA4a9LNbEoK10Cxy4OHcehzsj4MlsVLNroxLcTWQOyYVftVp2hRjKVJyhnuuJi0X
+ IQ/m79b5g8X1BG5T3mHonSOzkujDWGprSLo6pM
+X-Received: by 2002:a50:8e1a:0:b0:56d:f035:7db2 with SMTP id
+ 26-20020a508e1a000000b0056df0357db2mr8842769edw.24.1713878209724; 
+ Tue, 23 Apr 2024 06:16:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGg9B6mf0iHnWdtKBxVdwmjzif7VodSQg+NMjzEb/G30Drc8LKb2eilYBFquOZ+DUHSXk3CQg==
+X-Received: by 2002:a50:8e1a:0:b0:56d:f035:7db2 with SMTP id
+ 26-20020a508e1a000000b0056df0357db2mr8842758edw.24.1713878209401; 
+ Tue, 23 Apr 2024 06:16:49 -0700 (PDT)
 Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- z8-20020a50cd08000000b0056ff82e54a0sm6963745edi.31.2024.04.23.06.16.45
+ o12-20020aa7dd4c000000b005704419f56csm6663143edw.86.2024.04.23.06.16.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 06:16:45 -0700 (PDT)
+ Tue, 23 Apr 2024 06:16:48 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	farosas@suse.de
-Subject: [PATCH 12/22] mips: switch boards to "default y"
-Date: Tue, 23 Apr 2024 15:16:02 +0200
-Message-ID: <20240423131612.28362-13-pbonzini@redhat.com>
+Subject: [PATCH 13/22] nios2: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:16:03 +0200
+Message-ID: <20240423131612.28362-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423131612.28362-1-pbonzini@redhat.com>
 References: <20240423131612.28362-1-pbonzini@redhat.com>
@@ -103,116 +103,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with MIPS.
+Continue with Nios2.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/mips-softmmu/common.mak      |  5 +++--
- configs/devices/mips64-softmmu/default.mak   |  4 +++-
- configs/devices/mips64el-softmmu/default.mak | 10 ++++++----
- hw/mips/Kconfig                              | 12 ++++++++++++
- 4 files changed, 24 insertions(+), 7 deletions(-)
+ configs/devices/nios2-softmmu/default.mak | 7 +++----
+ hw/nios2/Kconfig                          | 9 ++++-----
+ 2 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/configs/devices/mips-softmmu/common.mak b/configs/devices/mips-softmmu/common.mak
-index 416a5d353e8..b50107feafe 100644
---- a/configs/devices/mips-softmmu/common.mak
-+++ b/configs/devices/mips-softmmu/common.mak
-@@ -4,5 +4,6 @@
- # CONFIG_PCI_DEVICES=n
- # CONFIG_TEST_DEVICES=n
+diff --git a/configs/devices/nios2-softmmu/default.mak b/configs/devices/nios2-softmmu/default.mak
+index e130d024e62..50a68d26b0f 100644
+--- a/configs/devices/nios2-softmmu/default.mak
++++ b/configs/devices/nios2-softmmu/default.mak
+@@ -1,6 +1,5 @@
+ # Default configuration for nios2-softmmu
  
--CONFIG_MALTA=y
--CONFIG_MIPSSIM=y
+-# Boards:
+-#
+-CONFIG_NIOS2_10M50=y
+-CONFIG_NIOS2_GENERIC_NOMMU=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_MALTA=n
-+# CONFIG_MIPSSIM=n
-diff --git a/configs/devices/mips64-softmmu/default.mak b/configs/devices/mips64-softmmu/default.mak
-index 566672f3c22..1b8d7ced1c6 100644
---- a/configs/devices/mips64-softmmu/default.mak
-+++ b/configs/devices/mips64-softmmu/default.mak
-@@ -1,4 +1,6 @@
- # Default configuration for mips64-softmmu
- 
- include ../mips-softmmu/common.mak
--CONFIG_JAZZ=y
-+
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_JAZZ=n
-diff --git a/configs/devices/mips64el-softmmu/default.mak b/configs/devices/mips64el-softmmu/default.mak
-index 88a37cf27f1..9dce346c4fb 100644
---- a/configs/devices/mips64el-softmmu/default.mak
-+++ b/configs/devices/mips64el-softmmu/default.mak
-@@ -1,7 +1,9 @@
- # Default configuration for mips64el-softmmu
- 
- include ../mips-softmmu/common.mak
--CONFIG_FULOONG=y
--CONFIG_LOONGSON3V=y
--CONFIG_JAZZ=y
--CONFIG_MIPS_BOSTON=y
-+
-+# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_FULOONG=n
-+# CONFIG_LOONGSON3V=n
-+# CONFIG_JAZZ=n
-+# CONFIG_MIPS_BOSTON=n
-diff --git a/hw/mips/Kconfig b/hw/mips/Kconfig
-index 5c83ef49cf6..9bccb363eb9 100644
---- a/hw/mips/Kconfig
-+++ b/hw/mips/Kconfig
-@@ -1,5 +1,7 @@
- config MALTA
++# CONFIG_NIOS2_10M50=n
++# CONFIG_NIOS2_GENERIC_NOMMU=n
+diff --git a/hw/nios2/Kconfig b/hw/nios2/Kconfig
+index 4748ae27b67..ab7866a5358 100644
+--- a/hw/nios2/Kconfig
++++ b/hw/nios2/Kconfig
+@@ -1,13 +1,12 @@
+ config NIOS2_10M50
      bool
+-    select NIOS2
 +    default y
-+    depends on MIPS
-     imply PCNET_PCI
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-@@ -13,11 +15,15 @@ config MALTA
- 
- config MIPSSIM
-     bool
-+    default y
-+    depends on MIPS
++    depends on NIOS2
      select SERIAL
-     select MIPSNET
+     select ALTERA_TIMER
+     select NIOS2_VIC
  
- config JAZZ
+ config NIOS2_GENERIC_NOMMU
      bool
+-    select NIOS2
+-
+-config NIOS2
+-    bool
 +    default y
-+    depends on MIPS64
-     select ISA_BUS
-     select RC4030
-     select I8259
-@@ -38,6 +44,8 @@ config JAZZ
- 
- config FULOONG
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply ATI_VGA
-@@ -48,6 +56,8 @@ config FULOONG
- 
- config LOONGSON3V
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     imply VIRTIO_PCI
-@@ -69,6 +79,8 @@ config MIPS_CPS
- 
- config MIPS_BOSTON
-     bool
-+    default y
-+    depends on MIPS64 && !TARGET_BIG_ENDIAN
-     imply PCI_DEVICES
-     imply TEST_DEVICES
-     select FITLOADER
++    depends on NIOS2
 -- 
 2.44.0
 
