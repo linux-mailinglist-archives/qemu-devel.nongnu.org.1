@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC438AEAD0
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2388AEA65
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnK-0005Ck-J9; Tue, 23 Apr 2024 11:10:54 -0400
+	id 1rzHnM-0005KM-FC; Tue, 23 Apr 2024 11:10:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn0-0004YB-Pk
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rzHn6-0004dt-42
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:43 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmy-0000Ff-HT
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:34 -0400
+ id 1rzHmy-0000G0-Il
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885029;
+ s=mimecast20190719; t=1713885030;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JXhyvJ+wYl9brMCYra0pqKgvzj0mvCbsTlo8ke5p4JQ=;
- b=LrfG7u2rqMTk8K5n5Lb/d/Ov+Zde3pr+jDmc7QTow46WWjiOuXcknFHsc/9XzWMEIMFjMB
- z1slAaebCrYbv9BjV0UoW4FDx5YEGZho8O9S+RyNddFCKQuGRczNLDNgThU4Mm8u9BU+VR
- w9HVwk5ZEWTyWM6RPmfS6wOFedYmQ4U=
+ bh=hq8XYXGaInvX7KB6BRg5A7kCiWC3hjv/40JkR4yO+6o=;
+ b=QaV3c5iqP4LNL5I6+m9VM3cIe2N29Tfb4jHbre5eK0rqeHV0trab89rYLXMT71zctUTtJK
+ 7kcEdAuvcdTYCJB3kbSdUDX2H4fgaIKZ34VO87VmmP4oX/Qoy9jOLK2TF7Zzd9O8qH8pue
+ W/b4VpolX81VSsj+Vq/yG0PMDLtR6k0=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-FZXOdNPrMXWO5SM5GFyGpQ-1; Tue,
- 23 Apr 2024 11:10:28 -0400
-X-MC-Unique: FZXOdNPrMXWO5SM5GFyGpQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-Y66SMCy3PQmFnnia5di_PA-1; Tue,
+ 23 Apr 2024 11:10:29 -0400
+X-MC-Unique: Y66SMCy3PQmFnnia5di_PA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED2E01C0C650;
- Tue, 23 Apr 2024 15:10:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF0DD38116F0;
+ Tue, 23 Apr 2024 15:10:28 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 672DE2026D0A;
- Tue, 23 Apr 2024 15:10:27 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 39251200E290;
+ Tue, 23 Apr 2024 15:10:28 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 33/63] i386/sev: Switch to use confidential_guest_kvm_init()
-Date: Tue, 23 Apr 2024 17:09:21 +0200
-Message-ID: <20240423150951.41600-34-pbonzini@redhat.com>
+Subject: [PULL 34/63] ppc/pef: switch to use
+ confidential_guest_kvm_init/reset()
+Date: Tue, 23 Apr 2024 17:09:22 +0200
+Message-ID: <20240423150951.41600-35-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -81,256 +82,127 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Use confidential_guest_kvm_init() instead of calling SEV
-specific sev_kvm_init(). This allows the introduction of multiple
-confidential-guest-support subclasses for different x86 vendors.
+Use the unified interface to call confidential guest related kvm_init()
+and kvm_reset(), to avoid exposing pef specific functions.
 
-As a bonus, stubs are not needed anymore since there is no
-direct call from target/i386/kvm/kvm.c to SEV code.
+As a bonus, pef.h goes away since there is no direct call from sPAPR
+board code to PEF code anymore.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-Id: <20240229060038.606591-1-xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/sev.h           |   2 -
- target/i386/kvm/kvm.c       |  10 +--
- target/i386/kvm/sev-stub.c  |  21 ------
- target/i386/sev.c           | 127 ++++++++++++++++++------------------
- target/i386/kvm/meson.build |   2 -
- 5 files changed, 69 insertions(+), 93 deletions(-)
- delete mode 100644 target/i386/kvm/sev-stub.c
+ include/hw/ppc/pef.h | 17 -----------------
+ hw/ppc/pef.c         |  9 ++++++---
+ hw/ppc/spapr.c       | 10 +++++++---
+ 3 files changed, 13 insertions(+), 23 deletions(-)
+ delete mode 100644 include/hw/ppc/pef.h
 
-diff --git a/target/i386/sev.h b/target/i386/sev.h
-index e7499c95b1e..9e10d09539a 100644
---- a/target/i386/sev.h
-+++ b/target/i386/sev.h
-@@ -57,6 +57,4 @@ int sev_inject_launch_secret(const char *hdr, const char *secret,
- int sev_es_save_reset_vector(void *flash_ptr, uint64_t flash_size);
- void sev_es_set_reset_vector(CPUState *cpu);
- 
--int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
--
- #endif
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index fcf9603d3e6..e554075185b 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2543,10 +2543,12 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
-      * mechanisms are supported in future (e.g. TDX), they'll need
-      * their own initialization either here or elsewhere.
-      */
--    ret = sev_kvm_init(ms->cgs, &local_err);
--    if (ret < 0) {
--        error_report_err(local_err);
--        return ret;
-+    if (ms->cgs) {
-+        ret = confidential_guest_kvm_init(ms->cgs, &local_err);
-+        if (ret < 0) {
-+            error_report_err(local_err);
-+            return ret;
-+        }
-     }
- 
-     has_xcrs = kvm_check_extension(s, KVM_CAP_XCRS);
-diff --git a/target/i386/kvm/sev-stub.c b/target/i386/kvm/sev-stub.c
+diff --git a/include/hw/ppc/pef.h b/include/hw/ppc/pef.h
 deleted file mode 100644
-index 1be5341e8a6..00000000000
---- a/target/i386/kvm/sev-stub.c
+index 707dbe524c4..00000000000
+--- a/include/hw/ppc/pef.h
 +++ /dev/null
-@@ -1,21 +0,0 @@
+@@ -1,17 +0,0 @@
 -/*
-- * QEMU SEV stub
+- * PEF (Protected Execution Facility) for POWER support
 - *
-- * Copyright Advanced Micro Devices 2018
-- *
-- * Authors:
-- *      Brijesh Singh <brijesh.singh@amd.com>
+- * Copyright Red Hat.
 - *
 - * This work is licensed under the terms of the GNU GPL, version 2 or later.
 - * See the COPYING file in the top-level directory.
 - *
 - */
 -
--#include "qemu/osdep.h"
--#include "sev.h"
+-#ifndef HW_PPC_PEF_H
+-#define HW_PPC_PEF_H
 -
--int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
--{
--    /* If we get here, cgs must be some non-SEV thing */
--    return 0;
--}
-diff --git a/target/i386/sev.c b/target/i386/sev.c
-index 72930ff0dcc..b8f79d34d19 100644
---- a/target/i386/sev.c
-+++ b/target/i386/sev.c
-@@ -353,63 +353,6 @@ static void sev_guest_set_kernel_hashes(Object *obj, bool value, Error **errp)
-     sev->kernel_hashes = value;
+-int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
+-int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp);
+-
+-#endif /* HW_PPC_PEF_H */
+diff --git a/hw/ppc/pef.c b/hw/ppc/pef.c
+index d28ed3ba733..47553348b1e 100644
+--- a/hw/ppc/pef.c
++++ b/hw/ppc/pef.c
+@@ -15,7 +15,6 @@
+ #include "sysemu/kvm.h"
+ #include "migration/blocker.h"
+ #include "exec/confidential-guest-support.h"
+-#include "hw/ppc/pef.h"
+ 
+ #define TYPE_PEF_GUEST "pef-guest"
+ OBJECT_DECLARE_SIMPLE_TYPE(PefGuest, PEF_GUEST)
+@@ -93,7 +92,7 @@ static int kvmppc_svm_off(Error **errp)
+ #endif
  }
  
--static void
--sev_guest_class_init(ObjectClass *oc, void *data)
--{
--    object_class_property_add_str(oc, "sev-device",
--                                  sev_guest_get_sev_device,
--                                  sev_guest_set_sev_device);
--    object_class_property_set_description(oc, "sev-device",
--            "SEV device to use");
--    object_class_property_add_str(oc, "dh-cert-file",
--                                  sev_guest_get_dh_cert_file,
--                                  sev_guest_set_dh_cert_file);
--    object_class_property_set_description(oc, "dh-cert-file",
--            "guest owners DH certificate (encoded with base64)");
--    object_class_property_add_str(oc, "session-file",
--                                  sev_guest_get_session_file,
--                                  sev_guest_set_session_file);
--    object_class_property_set_description(oc, "session-file",
--            "guest owners session parameters (encoded with base64)");
--    object_class_property_add_bool(oc, "kernel-hashes",
--                                   sev_guest_get_kernel_hashes,
--                                   sev_guest_set_kernel_hashes);
--    object_class_property_set_description(oc, "kernel-hashes",
--            "add kernel hashes to guest firmware for measured Linux boot");
--}
--
--static void
--sev_guest_instance_init(Object *obj)
--{
--    SevGuestState *sev = SEV_GUEST(obj);
--
--    sev->sev_device = g_strdup(DEFAULT_SEV_DEVICE);
--    sev->policy = DEFAULT_GUEST_POLICY;
--    object_property_add_uint32_ptr(obj, "policy", &sev->policy,
--                                   OBJ_PROP_FLAG_READWRITE);
--    object_property_add_uint32_ptr(obj, "handle", &sev->handle,
--                                   OBJ_PROP_FLAG_READWRITE);
--    object_property_add_uint32_ptr(obj, "cbitpos", &sev->cbitpos,
--                                   OBJ_PROP_FLAG_READWRITE);
--    object_property_add_uint32_ptr(obj, "reduced-phys-bits",
--                                   &sev->reduced_phys_bits,
--                                   OBJ_PROP_FLAG_READWRITE);
--}
--
--/* sev guest info */
--static const TypeInfo sev_guest_info = {
--    .parent = TYPE_CONFIDENTIAL_GUEST_SUPPORT,
--    .name = TYPE_SEV_GUEST,
--    .instance_size = sizeof(SevGuestState),
--    .instance_finalize = sev_guest_finalize,
--    .class_init = sev_guest_class_init,
--    .instance_init = sev_guest_instance_init,
--    .interfaces = (InterfaceInfo[]) {
--        { TYPE_USER_CREATABLE },
--        { }
--    }
--};
--
- bool
- sev_enabled(void)
+-int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
++static int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
  {
-@@ -906,20 +849,15 @@ sev_vm_state_change(void *opaque, bool running, RunState state)
-     }
+     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
+         return 0;
+@@ -107,7 +106,7 @@ int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+     return kvmppc_svm_init(cgs, errp);
  }
  
--int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-+static int sev_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+-int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
++static int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
  {
--    SevGuestState *sev
--        = (SevGuestState *)object_dynamic_cast(OBJECT(cgs), TYPE_SEV_GUEST);
-+    SevGuestState *sev = SEV_GUEST(cgs);
-     char *devname;
-     int ret, fw_error, cmd;
-     uint32_t ebx;
-     uint32_t host_cbitpos;
-     struct sev_user_data_status status = {};
+     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
+         return 0;
+@@ -131,6 +130,10 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(PefGuest,
  
--    if (!sev) {
--        return 0;
--    }
--
-     ret = ram_block_discard_disable(true);
-     if (ret) {
-         error_report("%s: cannot disable RAM discard", __func__);
-@@ -1384,6 +1322,67 @@ bool sev_add_kernel_loader_hashes(SevKernelLoaderContext *ctx, Error **errp)
-     return ret;
- }
- 
-+static void
-+sev_guest_class_init(ObjectClass *oc, void *data)
-+{
+ static void pef_guest_class_init(ObjectClass *oc, void *data)
+ {
 +    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
 +
-+    klass->kvm_init = sev_kvm_init;
-+
-+    object_class_property_add_str(oc, "sev-device",
-+                                  sev_guest_get_sev_device,
-+                                  sev_guest_set_sev_device);
-+    object_class_property_set_description(oc, "sev-device",
-+            "SEV device to use");
-+    object_class_property_add_str(oc, "dh-cert-file",
-+                                  sev_guest_get_dh_cert_file,
-+                                  sev_guest_set_dh_cert_file);
-+    object_class_property_set_description(oc, "dh-cert-file",
-+            "guest owners DH certificate (encoded with base64)");
-+    object_class_property_add_str(oc, "session-file",
-+                                  sev_guest_get_session_file,
-+                                  sev_guest_set_session_file);
-+    object_class_property_set_description(oc, "session-file",
-+            "guest owners session parameters (encoded with base64)");
-+    object_class_property_add_bool(oc, "kernel-hashes",
-+                                   sev_guest_get_kernel_hashes,
-+                                   sev_guest_set_kernel_hashes);
-+    object_class_property_set_description(oc, "kernel-hashes",
-+            "add kernel hashes to guest firmware for measured Linux boot");
-+}
-+
-+static void
-+sev_guest_instance_init(Object *obj)
-+{
-+    SevGuestState *sev = SEV_GUEST(obj);
-+
-+    sev->sev_device = g_strdup(DEFAULT_SEV_DEVICE);
-+    sev->policy = DEFAULT_GUEST_POLICY;
-+    object_property_add_uint32_ptr(obj, "policy", &sev->policy,
-+                                   OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_uint32_ptr(obj, "handle", &sev->handle,
-+                                   OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_uint32_ptr(obj, "cbitpos", &sev->cbitpos,
-+                                   OBJ_PROP_FLAG_READWRITE);
-+    object_property_add_uint32_ptr(obj, "reduced-phys-bits",
-+                                   &sev->reduced_phys_bits,
-+                                   OBJ_PROP_FLAG_READWRITE);
-+}
-+
-+/* sev guest info */
-+static const TypeInfo sev_guest_info = {
-+    .parent = TYPE_CONFIDENTIAL_GUEST_SUPPORT,
-+    .name = TYPE_SEV_GUEST,
-+    .instance_size = sizeof(SevGuestState),
-+    .instance_finalize = sev_guest_finalize,
-+    .class_init = sev_guest_class_init,
-+    .instance_init = sev_guest_instance_init,
-+    .interfaces = (InterfaceInfo[]) {
-+        { TYPE_USER_CREATABLE },
-+        { }
++    klass->kvm_init = pef_kvm_init;
++    klass->kvm_reset = pef_kvm_reset;
+ }
+ 
+ static void pef_guest_init(Object *obj)
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index 36ada4d0baf..533ea0f9142 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -75,6 +75,7 @@
+ #include "hw/virtio/vhost-scsi-common.h"
+ 
+ #include "exec/ram_addr.h"
++#include "exec/confidential-guest-support.h"
+ #include "hw/usb.h"
+ #include "qemu/config-file.h"
+ #include "qemu/error-report.h"
+@@ -87,7 +88,6 @@
+ #include "hw/ppc/spapr_tpm_proxy.h"
+ #include "hw/ppc/spapr_nvdimm.h"
+ #include "hw/ppc/spapr_numa.h"
+-#include "hw/ppc/pef.h"
+ 
+ #include "monitor/monitor.h"
+ 
+@@ -1715,7 +1715,9 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
+         qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
+     }
+ 
+-    pef_kvm_reset(machine->cgs, &error_fatal);
++    if (machine->cgs) {
++        confidential_guest_kvm_reset(machine->cgs, &error_fatal);
 +    }
-+};
-+
- static void
- sev_register_types(void)
- {
-diff --git a/target/i386/kvm/meson.build b/target/i386/kvm/meson.build
-index 84d9143e602..e7850981e62 100644
---- a/target/i386/kvm/meson.build
-+++ b/target/i386/kvm/meson.build
-@@ -7,8 +7,6 @@ i386_kvm_ss.add(files(
+     spapr_caps_apply(spapr);
+     spapr_nested_reset(spapr);
  
- i386_kvm_ss.add(when: 'CONFIG_XEN_EMU', if_true: files('xen-emu.c'))
+@@ -2841,7 +2843,9 @@ static void spapr_machine_init(MachineState *machine)
+     /*
+      * if Secure VM (PEF) support is configured, then initialize it
+      */
+-    pef_kvm_init(machine->cgs, &error_fatal);
++    if (machine->cgs) {
++        confidential_guest_kvm_init(machine->cgs, &error_fatal);
++    }
  
--i386_kvm_ss.add(when: 'CONFIG_SEV', if_false: files('sev-stub.c'))
--
- i386_system_ss.add(when: 'CONFIG_HYPERV', if_true: files('hyperv.c'), if_false: files('hyperv-stub.c'))
+     msi_nonbroken = true;
  
- i386_system_ss.add_all(when: 'CONFIG_KVM', if_true: i386_kvm_ss)
 -- 
 2.44.0
 
