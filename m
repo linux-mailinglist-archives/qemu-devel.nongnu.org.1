@@ -2,61 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDB08AEA3F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8588AEA56
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnG-0004vm-Hj; Tue, 23 Apr 2024 11:10:50 -0400
+	id 1rzHnr-0008NN-IL; Tue, 23 Apr 2024 11:11:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmk-0004Nb-E0
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rzHnk-0007na-SY
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmg-00006U-Pb
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:17 -0400
+ id 1rzHni-0000QV-U7
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885013;
+ s=mimecast20190719; t=1713885077;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fDjSKg9j7/BPCoPR7rAcsTu+bH62iGTdw9jAhjhp9nc=;
- b=JbtSjMv5vEaaj0w7uhbKbbp2M5JPiXynm39e57jq7VkSulXKRjPSqYvS2+gLjsG9noibxD
- FvihPLaUwR/MdGEaKNZs/y5ugQrRQUo0KOkbfGqwAW/yMiK2O5Yc05mhewl2Nw3wDxCtEL
- 9m8pUscxtK3Ajw7D1/x8IsA7A9hT2SI=
+ bh=C8EZUwlLnYM4W49CBbIplSimkDLa0N6GmlrzgsYB0LM=;
+ b=G/Fu1mL1QPYKmRhGBAyqu2Xysy4QyRFEXBlJcaAUNQ9lON492x8zcZ9zQxZVQlSAD1YQh+
+ SmU959cEb9XVqNVuflIOMgAztEyweZLnTRH47iaXI/VLGYhfanQeb7kkqMfiDP2OLcda2u
+ zoR+17TLXwbPss2AjYKoNnzXDJ/zaHE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-SpzDhWJoPwOvnN1sRGEUWg-1; Tue, 23 Apr 2024 11:10:09 -0400
-X-MC-Unique: SpzDhWJoPwOvnN1sRGEUWg-1
+ us-mta-563-SJUmb5UTMO6d6rZstchlyg-1; Tue, 23 Apr 2024 11:10:13 -0400
+X-MC-Unique: SJUmb5UTMO6d6rZstchlyg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 302A48065D2;
- Tue, 23 Apr 2024 15:10:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB2D680D0FA
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:09 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7B451200E290;
- Tue, 23 Apr 2024 15:10:08 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 71758203397E
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:09 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 14/63] memory-device: move stubs out of stubs/
-Date: Tue, 23 Apr 2024 17:09:02 +0200
-Message-ID: <20240423150951.41600-15-pbonzini@redhat.com>
+Subject: [PULL 15/63] colo: move stubs out of stubs/
+Date: Tue, 23 Apr 2024 17:09:03 +0200
+Message-ID: <20240423150951.41600-16-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -80,49 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the memory-device stubs are needed exactly when the Kconfig symbols are not
-needed, move them to hw/mem/.
+Since the colo stubs are needed exactly when the build options are not
+enabled, move them together with the code they stub.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240408155330.522792-15-pbonzini@redhat.com>
+Message-ID: <20240408155330.522792-16-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/memory_device.c => hw/mem/memory-device-stubs.c | 0
- hw/mem/meson.build                                    | 1 +
- stubs/meson.build                                     | 1 -
- 3 files changed, 1 insertion(+), 1 deletion(-)
- rename stubs/memory_device.c => hw/mem/memory-device-stubs.c (100%)
+ stubs/colo.c => migration/colo-stubs.c   | 0
+ stubs/colo-compare.c => net/colo-stubs.c | 0
+ migration/meson.build                    | 2 ++
+ net/meson.build                          | 2 ++
+ stubs/meson.build                        | 2 --
+ 5 files changed, 4 insertions(+), 2 deletions(-)
+ rename stubs/colo.c => migration/colo-stubs.c (100%)
+ rename stubs/colo-compare.c => net/colo-stubs.c (100%)
 
-diff --git a/stubs/memory_device.c b/hw/mem/memory-device-stubs.c
+diff --git a/stubs/colo.c b/migration/colo-stubs.c
 similarity index 100%
-rename from stubs/memory_device.c
-rename to hw/mem/memory-device-stubs.c
-diff --git a/hw/mem/meson.build b/hw/mem/meson.build
-index faee1fe9360..1c1c6da24b5 100644
---- a/hw/mem/meson.build
-+++ b/hw/mem/meson.build
-@@ -6,6 +6,7 @@ mem_ss.add(when: 'CONFIG_NVDIMM', if_true: files('nvdimm.c'))
- mem_ss.add(when: 'CONFIG_CXL_MEM_DEVICE', if_true: files('cxl_type3.c'))
- system_ss.add(when: 'CONFIG_CXL_MEM_DEVICE', if_false: files('cxl_type3_stubs.c'))
+rename from stubs/colo.c
+rename to migration/colo-stubs.c
+diff --git a/stubs/colo-compare.c b/net/colo-stubs.c
+similarity index 100%
+rename from stubs/colo-compare.c
+rename to net/colo-stubs.c
+diff --git a/migration/meson.build b/migration/meson.build
+index 1eeb915ff63..f76b1ba3289 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -34,6 +34,8 @@ system_ss.add(files(
  
-+system_ss.add(when: 'CONFIG_MEM_DEVICE', if_false: files('memory-device-stubs.c'))
- system_ss.add_all(when: 'CONFIG_MEM_DEVICE', if_true: mem_ss)
+ if get_option('replication').allowed()
+   system_ss.add(files('colo-failover.c', 'colo.c'))
++else
++  system_ss.add(files('colo-stubs.c'))
+ endif
  
- system_ss.add(when: 'CONFIG_SPARSE_MEM', if_true: files('sparse-mem.c'))
+ system_ss.add(when: rdma, if_true: files('rdma.c'))
+diff --git a/net/meson.build b/net/meson.build
+index 9432a588e4e..e0cd71470e0 100644
+--- a/net/meson.build
++++ b/net/meson.build
+@@ -20,6 +20,8 @@ if get_option('replication').allowed() or \
+     get_option('colo_proxy').allowed()
+   system_ss.add(files('colo-compare.c'))
+   system_ss.add(files('colo.c'))
++else
++  system_ss.add(files('colo-stubs.c'))
+ endif
+ 
+ if get_option('colo_proxy').allowed()
 diff --git a/stubs/meson.build b/stubs/meson.build
-index 92887660e41..a4404e765ab 100644
+index a4404e765ab..a252bffad00 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -31,7 +31,6 @@ stub_ss.add(files('monitor.c'))
- stub_ss.add(files('monitor-core.c'))
- stub_ss.add(files('physmem.c'))
- stub_ss.add(files('qemu-timer-notify-cb.c'))
--stub_ss.add(files('memory_device.c'))
- stub_ss.add(files('qmp-command-available.c'))
- stub_ss.add(files('qmp-quit.c'))
- stub_ss.add(files('qtest.c'))
+@@ -42,8 +42,6 @@ stub_ss.add(files('target-get-monitor-def.c'))
+ stub_ss.add(files('target-monitor-defs.c'))
+ stub_ss.add(files('trace-control.c'))
+ stub_ss.add(files('uuid.c'))
+-stub_ss.add(files('colo.c'))
+-stub_ss.add(files('colo-compare.c'))
+ stub_ss.add(files('vmstate.c'))
+ stub_ss.add(files('vm-stop.c'))
+ stub_ss.add(files('win32-kbd-hook.c'))
 -- 
 2.44.0
 
