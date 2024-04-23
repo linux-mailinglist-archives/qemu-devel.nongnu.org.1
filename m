@@ -2,82 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FA708AFBF1
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A92FF8AFC07
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:41:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOoG-0004Fr-Vn; Tue, 23 Apr 2024 18:40:22 -0400
+	id 1rzOnI-00024Q-39; Tue, 23 Apr 2024 18:39:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOml-0001eU-BU
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOme-0001U3-UZ
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmj-0006E6-Fm
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:47 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOma-000670-TT
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713911924;
+ s=mimecast20190719; t=1713911915;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yHiFwpcPXTwGeM1wMg4mA9U44FpxrIXACxokqBE05fs=;
- b=N6ZQS+p/QaLgAFj1ToABQVP2IiIoc/0CcoCuHs+oRwRI2/vcPLGahF7lnK6ZZo4GtOq9WM
- +rDL9Srv9Ibuu/IsW/XucXJeBtG1CIu6y30a4Qxhm9zH5Z+BrCWMgrz8FH5baQcbPIaecE
- fXX+ZGv1rmTIEFtPLFPPiqiE2bwwH1w=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VCwGJ6Bu1YcEaYmeSeORMq4mMXrUShBq88eyBpSclzM=;
+ b=UHBB5+sHuvFViwXbyYtlxtYKG6Euy96iOFNzf886ejLyiPIpvxRXD/FB3nTrs6R5HlL56E
+ 9SFgXF7sgv1nHlT6cwHSeaNXW4jIxPfeGc7BGILUJRfmDI405VuOh0KMPvpnSNVmaFS5Sh
+ /37VsVAJdnYgA7C1V58scDuvNc55+HA=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-HpzZVVQCMMK4oANxXcfdiA-1; Tue, 23 Apr 2024 18:38:42 -0400
-X-MC-Unique: HpzZVVQCMMK4oANxXcfdiA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6a01116b273so18947636d6.1
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:40 -0700 (PDT)
+ us-mta-624-1iVpcqE2NsSvbuJDt9mEww-1; Tue, 23 Apr 2024 18:38:34 -0400
+X-MC-Unique: 1iVpcqE2NsSvbuJDt9mEww-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-6a06dad74faso13872876d6.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911912; x=1714516712;
+ d=1e100.net; s=20230601; t=1713911913; x=1714516713;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=yHiFwpcPXTwGeM1wMg4mA9U44FpxrIXACxokqBE05fs=;
- b=VfZEva8WMrYW9xFB7kAZAAnNZf6owzFbp2bYhaKcpr4aJt6AjIBj2TBRLOJE1AukiP
- 8ewWTU8x2r1kxtgHb9UUfjMbFdlUJ3lm2Or3iZK3giJILOJPrBBONbkAO6sAt/kqRzJu
- TV1mXZrwM58TM0bULSSfDPt9lLyfPmPmtTUTCOpO06FaxEYaTIb6RYQaeUcGkfqFW1h4
- 78KtMWBOWzAR6WbK2hnIWkXF78dcXIz/nybeLsAMipIUzNFCFItLtBLHLDh4+ZWqxtd9
- XeSwLSV4/cZWEOJ1kAVBaSxVX3USqxBmHZQg2HGqgx9KHyD5cxDX9/XZp4jDn/f100Rp
- oSFQ==
-X-Gm-Message-State: AOJu0YwAoT4rnLDDrojcrr9iY+2RYJRck8VqYXLZhEv5giweAlI+V+Ab
- GoU8p/tKVHgP7tddpoFFJcFnce5ouVd2fp1iMIh2TKmqn2dlUOdsUh+1m3jkAno4MjsrPz+8M6B
- NRXXUH8PR9h6pNwm/C05JxsaXA+SEoMgc+0jDh4MRl/stJZmMBPtvGnMJye/f9NWdn1Oa+CIpq6
- zadW6WXC0reGiCqdL99Seye4crTIifyPtSQg==
-X-Received: by 2002:a05:620a:3d09:b0:790:8bbb:dd5f with SMTP id
- tq9-20020a05620a3d0900b007908bbbdd5fmr702359qkn.3.1713911912123; 
+ bh=VCwGJ6Bu1YcEaYmeSeORMq4mMXrUShBq88eyBpSclzM=;
+ b=vvGRZVIIPCkY45l9eTA4gfK2VxDypZa9rvv0gaYY54TFa71X+D0qMaNIBrWfia6d7Q
+ IA+wlU2yBy6es6YPd21Iquf/wFSwTnEGCLDUCEpSl9/CI98x1HMpOe1zK+wGtidhK82E
+ copjB/JBtbNN0yi2oqq01GyEz84E3zxC+d2T4nctvZIM2PY/6dFDvVTr2giUzXzmedHt
+ eVeKVV0KSCluCsIlMFGvGSeoScLH/nSGDV9s82qZeEdFiEgHX6bCEhFeJXMLJUFbDVnc
+ ExMF0DLkhw6uzsfvtOBioK3lBT40cD6cWeW72O6l/8oEgGz0t50+tKXhcWTIzuGE94FT
+ qUTQ==
+X-Gm-Message-State: AOJu0YzDBE7UIlAYYv6ddDO2Y8A3rtPpL1T5h9QqaiNzsOZSA2TwQrKx
+ K4s9nJgOC9IBX3ARjWLjLJJuJ9nxWERy8cNi64px8M2JIgUFLlbJXo8cDGtfeFpAbHABLuMPhrO
+ XVpW4EQqlZDc2BnenF6f4VG3ehfqwydLF/EoMNJCcYhli7Qr3GNFgWgNa6GchuRlLayT6IfcmIu
+ Mx/2QDhbORf61RNTCt7Y+as1svq41K68AbDg==
+X-Received: by 2002:a05:620a:3914:b0:790:86bd:f445 with SMTP id
+ qr20-20020a05620a391400b0079086bdf445mr958695qkn.2.1713911913167; 
+ Tue, 23 Apr 2024 15:38:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH+1WYgONOoRh0i/zaOdsArzOY35EPB07lxWwKfNbbGWyg7F5eOEXHTvIWHxlr724MeQ+nYQA==
+X-Received: by 2002:a05:620a:3914:b0:790:86bd:f445 with SMTP id
+ qr20-20020a05620a391400b0079086bdf445mr958661qkn.2.1713911912265; 
  Tue, 23 Apr 2024 15:38:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH30vEj532dhsnWcieIV1tSTLDAZTzEiCpLgPGxyB6em9DSscR9rMkLs95wymKQLlON0x4OXA==
-X-Received: by 2002:a05:620a:3d09:b0:790:8bbb:dd5f with SMTP id
- tq9-20020a05620a3d0900b007908bbbdd5fmr702345qkn.3.1713911911396; 
- Tue, 23 Apr 2024 15:38:31 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.30
+ c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:38:31 -0700 (PDT)
+ Tue, 23 Apr 2024 15:38:32 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 12/26] migration: Always report an error in block_save_setup()
-Date: Tue, 23 Apr 2024 18:37:59 -0400
-Message-ID: <20240423223813.3237060-13-peterx@redhat.com>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
+Subject: [PULL 13/26] migration: Always report an error in ram_save_setup()
+Date: Tue, 23 Apr 2024 18:38:00 -0400
+Message-ID: <20240423223813.3237060-14-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423223813.3237060-1-peterx@redhat.com>
 References: <20240423223813.3237060-1-peterx@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -105,95 +104,71 @@ From: Cédric Le Goater <clg@redhat.com>
 
 This will prepare ground for future changes adding an Error** argument
 to the save_setup() handler. We need to make sure that on failure,
-block_save_setup() always sets a new error.
+ram_save_setup() sets a new error.
 
-Cc: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
-Link: https://lore.kernel.org/r/20240320064911.545001-4-clg@redhat.com
+Link: https://lore.kernel.org/r/20240320064911.545001-5-clg@redhat.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/block.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ migration/ram.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/migration/block.c b/migration/block.c
-index 2b9054889a..f8a11beb37 100644
---- a/migration/block.c
-+++ b/migration/block.c
-@@ -367,7 +367,7 @@ static void unset_dirty_tracking(void)
+diff --git a/migration/ram.c b/migration/ram.c
+index 8deb84984f..44d7073730 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -3074,12 +3074,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     int ret, max_hg_page_size;
+ 
+     if (compress_threads_save_setup()) {
++        error_report("%s: failed to start compress threads", __func__);
+         return -1;
      }
+ 
+     /* migration has already setup the bitmap, reuse it. */
+     if (!migration_in_colo_state()) {
+         if (ram_init_all(rsp) != 0) {
++            error_report("%s: failed to setup RAM for migration", __func__);
+             compress_threads_save_cleanup();
+             return -1;
+         }
+@@ -3116,12 +3118,14 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+ 
+     ret = rdma_registration_start(f, RAM_CONTROL_SETUP);
+     if (ret < 0) {
++        error_report("%s: failed to start RDMA registration", __func__);
+         qemu_file_set_error(f, ret);
+         return ret;
+     }
+ 
+     ret = rdma_registration_stop(f, RAM_CONTROL_SETUP);
+     if (ret < 0) {
++        error_report("%s: failed to stop RDMA registration", __func__);
+         qemu_file_set_error(f, ret);
+         return ret;
+     }
+@@ -3138,6 +3142,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     ret = multifd_send_sync_main();
+     bql_lock();
+     if (ret < 0) {
++        error_report("%s: multifd synchronization failed", __func__);
+         return ret;
+     }
+ 
+@@ -3147,7 +3152,11 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+     }
+ 
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+-    return qemu_fflush(f);
++    ret = qemu_fflush(f);
++    if (ret < 0) {
++        error_report("%s failed : %s", __func__, strerror(-ret));
++    }
++    return ret;
  }
  
--static int init_blk_migration(QEMUFile *f)
-+static int init_blk_migration(QEMUFile *f, Error **errp)
- {
-     BlockDriverState *bs;
-     BlkMigDevState *bmds;
-@@ -378,7 +378,6 @@ static int init_blk_migration(QEMUFile *f)
-         BlkMigDevState *bmds;
-         BlockDriverState *bs;
-     } *bmds_bs;
--    Error *local_err = NULL;
-     int ret;
- 
-     GRAPH_RDLOCK_GUARD_MAINLOOP();
-@@ -406,6 +405,8 @@ static int init_blk_migration(QEMUFile *f)
-             continue;
-         }
-         if (sectors < 0) {
-+            error_setg(errp, "Error getting length of block device %s",
-+                       bdrv_get_device_name(bs));
-             ret = sectors;
-             bdrv_next_cleanup(&it);
-             goto out;
-@@ -442,9 +443,8 @@ static int init_blk_migration(QEMUFile *f)
-         bs = bmds_bs[i].bs;
- 
-         if (bmds) {
--            ret = blk_insert_bs(bmds->blk, bs, &local_err);
-+            ret = blk_insert_bs(bmds->blk, bs, errp);
-             if (ret < 0) {
--                error_report_err(local_err);
-                 goto out;
-             }
- 
-@@ -714,6 +714,7 @@ static void block_migration_cleanup(void *opaque)
- static int block_save_setup(QEMUFile *f, void *opaque)
- {
-     int ret;
-+    Error *local_err = NULL;
- 
-     trace_migration_block_save("setup", block_mig_state.submitted,
-                                block_mig_state.transferred);
-@@ -721,18 +722,27 @@ static int block_save_setup(QEMUFile *f, void *opaque)
-     warn_report("block migration is deprecated;"
-                 " use blockdev-mirror with NBD instead");
- 
--    ret = init_blk_migration(f);
-+    ret = init_blk_migration(f, &local_err);
-     if (ret < 0) {
-+        error_report_err(local_err);
-         return ret;
-     }
- 
-     /* start track dirty blocks */
-     ret = set_dirty_tracking();
-     if (ret) {
-+        error_setg_errno(&local_err, -ret,
-+                         "Failed to start block dirty tracking");
-+        error_report_err(local_err);
-         return ret;
-     }
- 
-     ret = flush_blks(f);
-+    if (ret) {
-+        error_setg_errno(&local_err, -ret, "Flushing block failed");
-+        error_report_err(local_err);
-+        return ret;
-+    }
-     blk_mig_reset_dirty_cursor();
-     qemu_put_be64(f, BLK_MIG_FLAG_EOS);
- 
+ static void ram_save_file_bmap(QEMUFile *f)
 -- 
 2.44.0
 
