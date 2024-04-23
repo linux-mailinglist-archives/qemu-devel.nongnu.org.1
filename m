@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2C28AEAD2
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4B48AEA98
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:17:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnT-00065E-3Y; Tue, 23 Apr 2024 11:11:03 -0400
+	id 1rzHnb-0006uw-4P; Tue, 23 Apr 2024 11:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnL-0005Oz-Ot
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:55 -0400
+ id 1rzHnO-0005k4-OG
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnJ-0000M5-QT
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:55 -0400
+ id 1rzHnM-0000O5-Ro
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885053;
+ s=mimecast20190719; t=1713885056;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RJ9NjBd4Ldl0Zbc2tRqgEosye1gIgb6S3EDsnAKGjfk=;
- b=VcQDqY39vPOQAUNZG281+C8vzbeXeUHDavLNxoZZGjqSHp6YX5aUSJejSuqktf6Wmn4rVg
- 5+3u0GkSPQPcCrmWOrfnnlPdDDJhv1YbRojNR4gtxgv6UI1NDVw1mhEjrws6rYOnnk7MrS
- a3U2tBeYBn2N9fPXbi1G20H5HGYFi98=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-622-hRzLme8PNV2r32ZIwtZTkA-1; Tue,
- 23 Apr 2024 11:10:51 -0400
-X-MC-Unique: hRzLme8PNV2r32ZIwtZTkA-1
+ bh=MOg9KtNLxd3u1DXDqJr03F3rYuVq7N0n2StxlG1HCJo=;
+ b=YQY/P44Bby+ClQsLSoXyObDIGdjqxGwKbrIcXiHEUCyvBLw1q/iLk5IjtvlTUejv5Q5/5e
+ rDGrxISYiOKt21EFoSXjmuuyfhVL/iBF1oON6NsSrMRuuLEpuCwMOGhYXknwk3n4x/Xtpe
+ mHUZyEvDpG/zKL2t0VXc+m6vmvySt90=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-68-QaltHlzIO9W27Wk5eGIt8g-1; Tue, 23 Apr 2024 11:10:53 -0400
+X-MC-Unique: QaltHlzIO9W27Wk5eGIt8g-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 740C21C0C652;
- Tue, 23 Apr 2024 15:10:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E86E981F317;
+ Tue, 23 Apr 2024 15:10:52 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DE950200E290;
- Tue, 23 Apr 2024 15:10:50 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id B37152026D0A;
+ Tue, 23 Apr 2024 15:10:51 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 59/63] target/i386/cpu: Consolidate the use of
- warn_report_once()
-Date: Tue, 23 Apr 2024 17:09:47 +0200
-Message-ID: <20240423150951.41600-60-pbonzini@redhat.com>
+Subject: [PULL 60/63] target/i386/cpu: Merge the warning and error messages
+ for AMD HT check
+Date: Tue, 23 Apr 2024 17:09:48 +0200
+Message-ID: <20240423150951.41600-61-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -82,49 +82,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-The difference between error_printf() and error_report() is the latter
-may contain more information, such as the name of the program
-("qemu-system-x86_64").
+Currently, the difference between warn_report_once() and
+error_report_once() is the former has the "warning:" prefix, while the
+latter does not have a similar level prefix.
 
-Thus its variant error_report_once() and warn_report()'s variant
-warn_report_once() can be used here to print the information only once
-without a static local variable "ht_warned".
+At the meantime, considering that there is no error handling logic here,
+and the purpose of error_report_once() is only to prompt the user with
+an abnormal message, there is no need to use an error-level message here,
+and instead we can just use a warning.
+
+Therefore, downgrade the message in error_report_once() to warning, and
+merge it into the previous warn_report_once().
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240327103951.3853425-3-zhao1.liu@linux.intel.com>
+Message-ID: <20240327103951.3853425-4-zhao1.liu@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ target/i386/cpu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index eda15b0d4c7..28452983786 100644
+index 28452983786..fd6af0d7632 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -7367,7 +7367,6 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-     X86CPUClass *xcc = X86_CPU_GET_CLASS(dev);
-     CPUX86State *env = &cpu->env;
-     Error *local_err = NULL;
--    static bool ht_warned;
-     unsigned requested_lbr_fmt;
- 
- #if defined(CONFIG_TCG) && !defined(CONFIG_USER_ONLY)
-@@ -7610,13 +7609,11 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-      */
-     if (IS_AMD_CPU(env) &&
+@@ -7611,9 +7611,9 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
          !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
--        cs->nr_threads > 1 && !ht_warned) {
--            warn_report("This family of AMD CPU doesn't support "
--                        "hyperthreading(%d)",
--                        cs->nr_threads);
--            error_printf("Please configure -smp options properly"
--                         " or try enabling topoext feature.\n");
--            ht_warned = true;
-+        cs->nr_threads > 1) {
-+            warn_report_once("This family of AMD CPU doesn't support "
-+                             "hyperthreading(%d).", cs->nr_threads);
-+            error_report_once("Please configure -smp options properly"
-+                              " or try enabling topoext feature.");
+         cs->nr_threads > 1) {
+             warn_report_once("This family of AMD CPU doesn't support "
+-                             "hyperthreading(%d).", cs->nr_threads);
+-            error_report_once("Please configure -smp options properly"
+-                              " or try enabling topoext feature.");
++                             "hyperthreading(%d). Please configure -smp "
++                             "options properly or try enabling topoext "
++                             "feature.", cs->nr_threads);
      }
  
  #ifndef CONFIG_USER_ONLY
