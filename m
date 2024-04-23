@@ -2,55 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19ABF8AEA6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DF68AEA6D
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnd-00073Q-17; Tue, 23 Apr 2024 11:11:13 -0400
+	id 1rzHnP-0005kM-QQ; Tue, 23 Apr 2024 11:11:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnK-0005EF-5s
+ id 1rzHnK-0005Jt-QA
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:54 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnI-0000Lc-Ii
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:53 -0400
+ id 1rzHnJ-0000Lq-2A
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885051;
+ s=mimecast20190719; t=1713885052;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zGxoc9UBlEX5vxrnNvzneNQA59yDpCbjGcbofiTijjc=;
- b=VHoeh1q+qGKtVymnyL1HUffN2Y9AZz7XGvb5aHRxQYQo6s0HkwTBNE+FrfQSZ0REkhnnGu
- /E4ZTol24FBjs728I6O47YxyYaddOG4ojnLwUETaaXGZKuvMrwqXxcDUpzJh856Pc8jx0j
- FjM8peOylp1wCRlY3s/98RYwuQW/uBU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-347-x9sx4szIP0mVhqEkvNtXBg-1; Tue,
- 23 Apr 2024 11:10:50 -0400
-X-MC-Unique: x9sx4szIP0mVhqEkvNtXBg-1
+ bh=wBmnXuBpjnc81Gq2MR5tg8WIKRNSzy52xwv04f31Lgg=;
+ b=SGLTGAldd36/ize16UE2QE9ayOH+I/sfFdkyQoX13qdzcf5B9zM7/b5B1ErvHezA2F4JKv
+ qZUjjN9CE2GwqnxBJVSg+o33TVm6ClRTjxid3xo0vsKIXzOvPT8wRYbr0BKEu/hiACLz8n
+ ZkYn3syA76q6opUFuzbj75ExLTsqcRw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-531-CgToX6NaMcuHGhTVoRtZ7g-1; Tue, 23 Apr 2024 11:10:50 -0400
+X-MC-Unique: CgToX6NaMcuHGhTVoRtZ7g-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB0F53C3D0CD;
- Tue, 23 Apr 2024 15:10:49 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D79680D0FA;
+ Tue, 23 Apr 2024 15:10:50 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 07D762026D0A;
- Tue, 23 Apr 2024 15:10:48 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 12D92200E290;
+ Tue, 23 Apr 2024 15:10:49 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Isaku Yamahata <isaku.yamahata@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 57/63] kvm/tdx: Ignore memory conversion to shared of
- unassigned region
-Date: Tue, 23 Apr 2024 17:09:45 +0200
-Message-ID: <20240423150951.41600-58-pbonzini@redhat.com>
+Cc: Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 58/63] target/i386/host-cpu: Consolidate the use of
+ warn_report_once()
+Date: Tue, 23 Apr 2024 17:09:46 +0200
+Message-ID: <20240423150951.41600-59-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -81,51 +80,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Isaku Yamahata <isaku.yamahata@intel.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-TDX requires vMMIO region to be shared.  For KVM, MMIO region is the region
-which kvm memslot isn't assigned to (except in-kernel emulation).
-qemu has the memory region for vMMIO at each device level.
+Use warn_report_once() to get rid of the static local variable "warned".
 
-While OVMF issues MapGPA(to-shared) conservatively on 32bit PCI MMIO
-region, qemu doesn't find corresponding vMMIO region because it's before
-PCI device allocation and memory_region_find() finds the device region, not
-PCI bus region.  It's safe to ignore MapGPA(to-shared) because when guest
-accesses those region they use GPA with shared bit set for vMMIO.  Ignore
-memory conversion request of non-assigned region to shared and return
-success.  Otherwise OVMF is confused and panics there.
-
-Signed-off-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20240229063726.610065-35-xiaoyao.li@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20240327103951.3853425-2-zhao1.liu@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/kvm/kvm-all.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ target/i386/host-cpu.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 0911154bf8e..d7281b93f3b 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2923,6 +2923,18 @@ int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
-     section = memory_region_find(get_system_memory(), start, size);
-     mr = section.mr;
-     if (!mr) {
-+        /*
-+         * Ignore converting non-assigned region to shared.
-+         *
-+         * TDX requires vMMIO region to be shared to inject #VE to guest.
-+         * OVMF issues conservatively MapGPA(shared) on 32bit PCI MMIO region,
-+         * and vIO-APIC 0xFEC00000 4K page.
-+         * OVMF assigns 32bit PCI MMIO region to
-+         * [top of low memory: typically 2GB=0xC000000,  0xFC00000)
-+         */
-+        if (!to_private) {
-+            return 0;
-+        }
-         return -1;
+diff --git a/target/i386/host-cpu.c b/target/i386/host-cpu.c
+index 92ecb7254b8..280e427c017 100644
+--- a/target/i386/host-cpu.c
++++ b/target/i386/host-cpu.c
+@@ -55,18 +55,15 @@ static uint32_t host_cpu_adjust_phys_bits(X86CPU *cpu)
+ {
+     uint32_t host_phys_bits = host_cpu_phys_bits();
+     uint32_t phys_bits = cpu->phys_bits;
+-    static bool warned;
+ 
+     /*
+      * Print a warning if the user set it to a value that's not the
+      * host value.
+      */
+-    if (phys_bits != host_phys_bits && phys_bits != 0 &&
+-        !warned) {
+-        warn_report("Host physical bits (%u)"
+-                    " does not match phys-bits property (%u)",
+-                    host_phys_bits, phys_bits);
+-        warned = true;
++    if (phys_bits != host_phys_bits && phys_bits != 0) {
++        warn_report_once("Host physical bits (%u)"
++                         " does not match phys-bits property (%u)",
++                         host_phys_bits, phys_bits);
      }
  
+     if (cpu->host_phys_bits) {
 -- 
 2.44.0
 
