@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459988AEA46
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:12:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423D98AEABC
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:19:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnP-0005j6-G3; Tue, 23 Apr 2024 11:10:59 -0400
+	id 1rzHnK-0005CA-IC; Tue, 23 Apr 2024 11:10:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn0-0004Y2-56
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:39 -0400
+ id 1rzHn6-0004du-55
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmy-0000Fu-I5
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:33 -0400
+ id 1rzHmy-0000Fk-IE
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885030;
+ s=mimecast20190719; t=1713885029;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JPERydqbaBDZuUCv9C5JabcjB73wzXykKHQAmPAuFH0=;
- b=iV73J1tXEMjfLwL99BTFEOE+ZIDsOZ8eLDkoqPg1OdNeaeFGSfJT0LpN1zt8BMpKvCOhOK
- SjLohJSfMezeuoRzYVjJYnY+OUDa86ZBHF3RL9miMyxysSIp7fp0365+naSpMb3DivynCC
- 11FwEpcikeoywXCdbVLrJr9nTMFLvvo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-DQeEPtzXNrq-l9QgXugUzw-1; Tue, 23 Apr 2024 11:10:26 -0400
-X-MC-Unique: DQeEPtzXNrq-l9QgXugUzw-1
+ bh=qEJ0yKlHrmKhZxiI7OJ9cPT/90ybcJyHoiSWV5zSPBM=;
+ b=Ye0Pm3h5JbLXdPS+NiDBwGNI3Hcy4X4qC+eA4tWBbM1+Zx0+7umqDal+Fqfet4h0BI0zy+
+ 8r4SuSc0z2YirsvTqhaPIeCYE0v80HNns0HeZsVwMK/gbuNQVSs/KsMqh8S28I4nHKWulw
+ OmjqCJZoX75rz/en6YelIsuL8qa9cgc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-2kM03ivqPAWWW3f9iaTLzQ-1; Tue,
+ 23 Apr 2024 11:10:27 -0400
+X-MC-Unique: 2kM03ivqPAWWW3f9iaTLzQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 56BD9834FB8;
- Tue, 23 Apr 2024 15:10:26 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 26AB429AC00A;
+ Tue, 23 Apr 2024 15:10:27 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B311C20128F3;
- Tue, 23 Apr 2024 15:10:25 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9573B20128F3;
+ Tue, 23 Apr 2024 15:10:26 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 31/63] hw/i386/acpi: Set PCAT_COMPAT bit only when pic is not
- disabled
-Date: Tue, 23 Apr 2024 17:09:19 +0200
-Message-ID: <20240423150951.41600-32-pbonzini@redhat.com>
+Subject: [PULL 32/63] confidential guest support: Add kvm_init() and
+ kvm_reset() in class
+Date: Tue, 23 Apr 2024 17:09:20 +0200
+Message-ID: <20240423150951.41600-33-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -82,38 +82,77 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-A value 1 of PCAT_COMPAT (bit 0) of MADT.Flags indicates that the system
-also has a PC-AT-compatible dual-8259 setup, i.e., the PIC.  When PIC
-is not enabled (pic=off) for x86 machine, the PCAT_COMPAT bit needs to
-be cleared.  The PIC probe should then print:
+Different confidential VMs in different architectures all have the same
+needs to do their specific initialization (and maybe resetting) stuffs
+with KVM. Currently each of them exposes individual *_kvm_init()
+functions and let machine code or kvm code to call it.
 
-   [    0.155970] Using NULL legacy PIC
-
-However, no such log printed in guest kernel unless PCAT_COMPAT is
-cleared.
+To facilitate the introduction of confidential guest technology from
+different x86 vendors, add two virtual functions, kvm_init() and kvm_reset()
+in ConfidentialGuestSupportClass, and expose two helpers functions for
+invodking them.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Message-ID: <20240403145953.3082491-1-xiaoyao.li@intel.com>
+Message-Id: <20240229060038.606591-1-xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/i386/acpi-common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/exec/confidential-guest-support.h | 34 ++++++++++++++++++++++-
+ 1 file changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
-index 20f19269da4..0cc2919bb85 100644
---- a/hw/i386/acpi-common.c
-+++ b/hw/i386/acpi-common.c
-@@ -107,7 +107,9 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
-     acpi_table_begin(&table, table_data);
-     /* Local APIC Address */
-     build_append_int_noprefix(table_data, APIC_DEFAULT_ADDRESS, 4);
--    build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
-+    /* Flags. bit 0: PCAT_COMPAT */
-+    build_append_int_noprefix(table_data,
-+                              x86ms->pic != ON_OFF_AUTO_OFF ? 1 : 0 , 4);
+diff --git a/include/exec/confidential-guest-support.h b/include/exec/confidential-guest-support.h
+index ba2dd4b5dfc..e5b188cffbf 100644
+--- a/include/exec/confidential-guest-support.h
++++ b/include/exec/confidential-guest-support.h
+@@ -23,7 +23,10 @@
+ #include "qom/object.h"
  
-     for (i = 0; i < apic_ids->len; i++) {
-         pc_madt_cpu_entry(i, apic_ids, table_data, false);
+ #define TYPE_CONFIDENTIAL_GUEST_SUPPORT "confidential-guest-support"
+-OBJECT_DECLARE_SIMPLE_TYPE(ConfidentialGuestSupport, CONFIDENTIAL_GUEST_SUPPORT)
++OBJECT_DECLARE_TYPE(ConfidentialGuestSupport,
++                    ConfidentialGuestSupportClass,
++                    CONFIDENTIAL_GUEST_SUPPORT)
++
+ 
+ struct ConfidentialGuestSupport {
+     Object parent;
+@@ -55,8 +58,37 @@ struct ConfidentialGuestSupport {
+ 
+ typedef struct ConfidentialGuestSupportClass {
+     ObjectClass parent;
++
++    int (*kvm_init)(ConfidentialGuestSupport *cgs, Error **errp);
++    int (*kvm_reset)(ConfidentialGuestSupport *cgs, Error **errp);
+ } ConfidentialGuestSupportClass;
+ 
++static inline int confidential_guest_kvm_init(ConfidentialGuestSupport *cgs,
++                                              Error **errp)
++{
++    ConfidentialGuestSupportClass *klass;
++
++    klass = CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs);
++    if (klass->kvm_init) {
++        return klass->kvm_init(cgs, errp);
++    }
++
++    return 0;
++}
++
++static inline int confidential_guest_kvm_reset(ConfidentialGuestSupport *cgs,
++                                               Error **errp)
++{
++    ConfidentialGuestSupportClass *klass;
++
++    klass = CONFIDENTIAL_GUEST_SUPPORT_GET_CLASS(cgs);
++    if (klass->kvm_reset) {
++        return klass->kvm_reset(cgs, errp);
++    }
++
++    return 0;
++}
++
+ #endif /* !CONFIG_USER_ONLY */
+ 
+ #endif /* QEMU_CONFIDENTIAL_GUEST_SUPPORT_H */
 -- 
 2.44.0
 
