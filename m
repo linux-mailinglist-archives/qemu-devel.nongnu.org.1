@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312DD8AE7CE
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:18:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9548AE7E3
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:20:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzG1e-0005wz-Uw; Tue, 23 Apr 2024 09:17:35 -0400
+	id 1rzG1a-0005UN-W4; Tue, 23 Apr 2024 09:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG1C-0005HZ-6e
+ id 1rzG1E-0005Hc-Ep
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG1A-00025T-Pi
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:05 -0400
+ id 1rzG1C-00025r-Lm
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:17:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713878224;
+ s=mimecast20190719; t=1713878226;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RSGRxPuU7t+PHA40W2AJKTyVoCXEdGYsJXg3MuWZZfU=;
- b=FEx1UXN1H9PqY8L/iJQoRk+exHqvTNauK/D9MAsSQQSyUDdBY4reNBlsewl+XbvZidw2j4
- 1apzCoELnDYZ6sKQgQYq0dYDZFX39depTZLT53Jx7ffyENBnRi6QvTT9bkvNNma669tclt
- Sz2lG1Tgs6412iLyPZSfArivdXztPr0=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=8N+zUFPDrSdnCw0bn/ZtpXuLRB19RGrrPQeBkAwY8OI=;
+ b=H2bjenLy0O6uBJcNdZxY6mxQZ9AkIQCon5rZEqHkSY/dKr/ZljWIeBvv4yHPu93tTyn9Wz
+ paPaF8SE6zxhhqRpZAG+c2Ttg+cW+AoQjosd2LRP2dA1jpNpBKnPlZOVpei/595lru7+RV
+ t/qBwQJ8b8GqaqSYAQ9K88zZj20UeQc=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-lOiovvu4OgexGcy6oGqfNg-1; Tue, 23 Apr 2024 09:17:02 -0400
-X-MC-Unique: lOiovvu4OgexGcy6oGqfNg-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-51b4790d422so1962925e87.3
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:17:02 -0700 (PDT)
+ us-mta-513-vnlC8sjUOTKE0qG_mcUFQA-1; Tue, 23 Apr 2024 09:17:04 -0400
+X-MC-Unique: vnlC8sjUOTKE0qG_mcUFQA-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-5705ef0b425so2764617a12.1
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:17:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713878220; x=1714483020;
+ d=1e100.net; s=20230601; t=1713878223; x=1714483023;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RSGRxPuU7t+PHA40W2AJKTyVoCXEdGYsJXg3MuWZZfU=;
- b=o5x3YWH85Im999Jd8RvYzkVZJhYxX3UJhQ26nQGsW4+dUjfvfXLODdhenW8gGYexrc
- oOVk6Y2icLQdVz20itNqK2vNp0Ef3+fm5MRQnIbWc2HP+c+uqkjArVKm6Au7dtWjWZ6q
- gjddCWYZF0V8meIu4z2VMaxa6tQHex9SlX8ih/yCgoR7DElC3PgMNR0A+DRpZSqdvpUm
- +AXQgWXgBtljEy4xUjvQKwteEVoCerDoDRgAPSXtVRgpYuQSFzOmUbKL/vqApn9ZOMTW
- zD+WUib8a1gi9/fdIU3PybCddzPg1aG44m5BLuH8wv4x6rya7puHLRML8s1zT6pqEL19
- ppmg==
-X-Gm-Message-State: AOJu0YwsuAxe1/v/NB4aeM8U+2UErSlLwm4XSTw59CtDt9xZQJLqhMKd
- FKW3zmRlfwLC/kmnex+NBcU8yBc248vqeFztqNVw959d/6F4LVwm+skuA/bx95U7Uqz/h59ST4e
- bue7Nxg3VK6miTOmzyY6DzZRfUGLJhTEyOe5pBZ3OzKRmEsqpeYphI2zqDPq8grDwAYthJpsAeA
- 0XCuZ8AIVbyMju6DDke4+BcrJkrXQ4DhXyw2Bs
-X-Received: by 2002:a05:6512:38c5:b0:516:a091:db5e with SMTP id
- p5-20020a05651238c500b00516a091db5emr6913672lft.48.1713878220700; 
- Tue, 23 Apr 2024 06:17:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJhC8/AzbD8jqmsqGdCx2APdbbrac7me0v57V2LDVCXZBIZyAmshxkRVC9uFck7+JloJU4tg==
-X-Received: by 2002:a05:6512:38c5:b0:516:a091:db5e with SMTP id
- p5-20020a05651238c500b00516a091db5emr6913655lft.48.1713878220378; 
- Tue, 23 Apr 2024 06:17:00 -0700 (PDT)
+ bh=8N+zUFPDrSdnCw0bn/ZtpXuLRB19RGrrPQeBkAwY8OI=;
+ b=a0CMEtEBxGjAgMEg39Px1fCpixICDbuFopzVB1zsNZszKCbgK9UsfDU9/soWxDHmZl
+ VksqvaDY+99nAEAG6wguEPuIduf49oVVOJgNCCwDOWe0a5iVjvxzQ+Vn+AGu9Y3wXbxH
+ mt5f2D1I3nhioYQ9G75sDG9QT3YB4pDsD06yvDPM4uWcpT14jeQJwK4Es0/Oe36XDOQ0
+ DeBR8Xq7y4QlSwy24vvs9150BIR3W54POZ2EoTyyprC63JRT69jI59OGTux8kb0yf9Yz
+ HYBi+KFd3SgUBcNJm+Wz9tcKmVdhRq5/pkI7P/yA7r3S5z2TKxRn3nxhzjxDKa70bMtI
+ W3yw==
+X-Gm-Message-State: AOJu0Yz8Kd0eS2/Xj/HrxxJcQc7HXwZ7h3ap5JAdB6ccj36M1YfUyWwT
+ 4GH7GQjS6PwuqSHDgCgRSW6V9ztU0D/9hnOO68yGFuFF/ufuhZkexrHm4gOdQ/jaIOk9gfPK+Ge
+ MO2Vy+d1SQIExWdPuZvfR9Zgm3muMzxnLAfZhbITX4lgsg5ImF2sOO1SfzgZJrEvwD2mW5yfRhZ
+ XFxlhp+GY2fALq/sns6fBsEBAjunyisX83PPDX
+X-Received: by 2002:a50:d781:0:b0:56e:22b6:d924 with SMTP id
+ w1-20020a50d781000000b0056e22b6d924mr8759160edi.13.1713878223110; 
+ Tue, 23 Apr 2024 06:17:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFP4Ybl9EYNCbksILrpj8A4/SR6EyijhIAjZtZyB5oBIK5x8+feE8ij7BGQDAw3P9a1kPPjnw==
+X-Received: by 2002:a50:d781:0:b0:56e:22b6:d924 with SMTP id
+ w1-20020a50d781000000b0056e22b6d924mr8759146edi.13.1713878222819; 
+ Tue, 23 Apr 2024 06:17:02 -0700 (PDT)
 Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- k11-20020a17090632cb00b00a46a2779475sm7005937ejk.101.2024.04.23.06.16.58
+ dh20-20020a0564021d3400b005721ceed263sm1010894edb.32.2024.04.23.06.17.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 06:16:58 -0700 (PDT)
+ Tue, 23 Apr 2024 06:17:01 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	farosas@suse.de
-Subject: [PATCH 18/22] s390x: switch boards to "default y"
-Date: Tue, 23 Apr 2024 15:16:08 +0200
-Message-ID: <20240423131612.28362-19-pbonzini@redhat.com>
+Subject: [PATCH 19/22] sh4: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:16:09 +0200
+Message-ID: <20240423131612.28362-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423131612.28362-1-pbonzini@redhat.com>
 References: <20240423131612.28362-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -103,41 +103,52 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with s390.
+Continue with SH.
 
 No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/s390x-softmmu/default.mak | 5 ++---
- hw/s390x/Kconfig                          | 2 ++
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ configs/devices/sh4-softmmu/default.mak | 7 +++----
+ hw/sh4/Kconfig                          | 4 ++++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/configs/devices/s390x-softmmu/default.mak b/configs/devices/s390x-softmmu/default.mak
-index 6d87bc8b4b0..340c1092922 100644
---- a/configs/devices/s390x-softmmu/default.mak
-+++ b/configs/devices/s390x-softmmu/default.mak
-@@ -9,6 +9,5 @@
- #CONFIG_WDT_DIAG288=n
- #CONFIG_PCIE_DEVICES=n
+diff --git a/configs/devices/sh4-softmmu/default.mak b/configs/devices/sh4-softmmu/default.mak
+index 565e8b0b5df..c06a427053a 100644
+--- a/configs/devices/sh4-softmmu/default.mak
++++ b/configs/devices/sh4-softmmu/default.mak
+@@ -5,7 +5,6 @@
+ #CONFIG_PCI_DEVICES=n
+ #CONFIG_TEST_DEVICES=n
  
 -# Boards:
 -#
--CONFIG_S390_CCW_VIRTIO=y
+-CONFIG_R2D=y
+-CONFIG_SHIX=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_S390_CCW_VIRTIO=n
-diff --git a/hw/s390x/Kconfig b/hw/s390x/Kconfig
-index 26ad1044858..3bbf4ae56e4 100644
---- a/hw/s390x/Kconfig
-+++ b/hw/s390x/Kconfig
++# CONFIG_R2D=n
++# CONFIG_SHIX=n
+diff --git a/hw/sh4/Kconfig b/hw/sh4/Kconfig
+index e0c4ecd1a53..99a76a94c3f 100644
+--- a/hw/sh4/Kconfig
++++ b/hw/sh4/Kconfig
 @@ -1,5 +1,7 @@
- config S390_CCW_VIRTIO
+ config R2D
      bool
 +    default y
-+    depends on S390X
-     imply VIRTIO_PCI
-     imply TERMINAL3270
-     imply VFIO_AP
++    depends on SH4
+     imply PCI_DEVICES
+     imply TEST_DEVICES
+     imply RTL8139_PCI
+@@ -13,6 +15,8 @@ config R2D
+ 
+ config SHIX
+     bool
++    default y
++    depends on SH4
+     select SH7750
+     select TC58128
+ 
 -- 
 2.44.0
 
