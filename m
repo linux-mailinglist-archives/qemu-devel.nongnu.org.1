@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9298AEA8D
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4007B8AEA78
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:15:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnh-0007Un-Li; Tue, 23 Apr 2024 11:11:17 -0400
+	id 1rzHnl-0007kQ-8h; Tue, 23 Apr 2024 11:11:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmq-0004U5-39
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rzHnM-0005Wy-KL
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmn-00009D-8n
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:22 -0400
+ id 1rzHnK-0000Li-Hh
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885020;
+ s=mimecast20190719; t=1713885051;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=x5cKQCHXEvjif26oj6Q4YxlSTQkFR+HVsUva+brgfXI=;
- b=YRmLZ/cVzSjDjngq/ds/Z/odIQt3IaPzRIZVLCAr44vh/dea1lt2BT3h7hUxhc0EVQbE0z
- dHxsj4I5DxEqqwsWtYVDTvVBwM8XLUbfgEhOabh79+DWN2/qTyeQ8evA0emsXYgk+GQgzx
- QpMFrju50u2TdDiuUoAexkby3nUdwoc=
+ bh=2O+ZUuhThc22InOQCYS16t3F+F+zjm+2+sKco3fT3r0=;
+ b=Za1K0a1Eeyp0qvCrVMjCTSqInZQV9N+brPnfhLIXXg7rEYpemCojI21Mrys1f4MJp937Zr
+ I5g32Rh2RaS5sQHXtbfgxrQ2MiT2fHitumASTmEGUEAx3va3oXqOo5uneF5WqPBHhRdzSu
+ gXx5CGIDPBeDJuntuJZ+M5TCrYIcN44=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-L8D3364uMC6g9F8bWBmTfA-1; Tue, 23 Apr 2024 11:10:17 -0400
-X-MC-Unique: L8D3364uMC6g9F8bWBmTfA-1
+ us-mta-441-iKPHhaxKPvm-7N42wQRzEQ-1; Tue, 23 Apr 2024 11:10:30 -0400
+X-MC-Unique: iKPHhaxKPvm-7N42wQRzEQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CF378812C57;
- Tue, 23 Apr 2024 15:10:16 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2E752811029;
+ Tue, 23 Apr 2024 15:10:18 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E54AB20296D2;
- Tue, 23 Apr 2024 15:10:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1C9FE200AFA2;
+ Tue, 23 Apr 2024 15:10:16 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
-	Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 23/63] target/i386: add guest-phys-bits cpu property
-Date: Tue, 23 Apr 2024 17:09:11 +0200
-Message-ID: <20240423150951.41600-24-pbonzini@redhat.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 24/63] kvm: add support for guest physical bits
+Date: Tue, 23 Apr 2024 17:09:12 +0200
+Message-ID: <20240423150951.41600-25-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -82,114 +82,104 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Gerd Hoffmann <kraxel@redhat.com>
 
-Allows to set guest-phys-bits (cpuid leaf 80000008, eax[23:16])
-via -cpu $model,guest-phys-bits=$nr.
+Query kvm for supported guest physical address bits, in cpuid
+function 80000008, eax[23:16].  Usually this is identical to host
+physical address bits.  With NPT or EPT being used this might be
+restricted to 48 (max 4-level paging address space size) even if
+the host cpu supports more physical address bits.
+
+When set pass this to the guest, using cpuid too.  Guest firmware
+can use this to figure how big the usable guest physical address
+space is, so PCI bar mapping are actually reachable.
 
 Signed-off-by: Gerd Hoffmann <kraxel@redhat.com>
-Message-ID: <20240318155336.156197-3-kraxel@redhat.com>
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-ID: <20240318155336.156197-2-kraxel@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.h |  8 ++++++++
- hw/i386/pc.c      |  4 +++-
- target/i386/cpu.c | 22 ++++++++++++++++++++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ target/i386/kvm/kvm-cpu.c | 50 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 8 deletions(-)
 
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index 6b057380791..6112e27bfd5 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -2027,6 +2027,14 @@ struct ArchCPU {
-     /* Number of physical address bits supported */
-     uint32_t phys_bits;
+diff --git a/target/i386/kvm/kvm-cpu.c b/target/i386/kvm/kvm-cpu.c
+index 9c791b7b052..f76972e47e6 100644
+--- a/target/i386/kvm/kvm-cpu.c
++++ b/target/i386/kvm/kvm-cpu.c
+@@ -18,10 +18,32 @@
+ #include "kvm_i386.h"
+ #include "hw/core/accel-cpu.h"
  
-+    /*
-+     * Number of guest physical address bits available. Usually this is
-+     * identical to host physical address bits. With NPT or EPT 4-level
-+     * paging, guest physical address space might be restricted to 48 bits
-+     * even if the host cpu supports more physical address bits.
-+     */
-+    uint32_t guest_phys_bits;
++static void kvm_set_guest_phys_bits(CPUState *cs)
++{
++    X86CPU *cpu = X86_CPU(cs);
++    uint32_t eax, guest_phys_bits;
 +
-     /* in order to simplify APIC support, we leave this pointer to the
-        user */
-     struct DeviceState *apic_state;
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index b0d818b2094..41909f7bd7a 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -78,7 +78,9 @@
-     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
-     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
- 
--GlobalProperty pc_compat_9_0[] = {};
-+GlobalProperty pc_compat_9_0[] = {
-+    { TYPE_X86_CPU, "guest-phys-bits", "0" },
-+};
- const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
- 
- GlobalProperty pc_compat_8_2[] = {};
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 33760a2ee16..eef3d08473e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -6570,6 +6570,7 @@ void cpu_x86_cpuid(CPUX86State *env, uint32_t index, uint32_t count,
-         if (env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-             /* 64 bit processor */
-              *eax |= (cpu_x86_virtual_addr_width(env) << 8);
-+             *eax |= (cpu->guest_phys_bits << 16);
-         }
-         *ebx = env->features[FEAT_8000_0008_EBX];
-         if (cs->nr_cores * cs->nr_threads > 1) {
-@@ -7329,6 +7330,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         goto out;
-     }
- 
-+    if (cpu->guest_phys_bits == -1) {
-+        /*
-+         * If it was not set by the user, or by the accelerator via
-+         * cpu_exec_realizefn, clear.
-+         */
-+        cpu->guest_phys_bits = 0;
++    eax = kvm_arch_get_supported_cpuid(cs->kvm_state, 0x80000008, 0, R_EAX);
++    guest_phys_bits = (eax >> 16) & 0xff;
++    if (!guest_phys_bits) {
++        return;
++    }
++    cpu->guest_phys_bits = guest_phys_bits;
++    if (cpu->guest_phys_bits > cpu->phys_bits) {
++        cpu->guest_phys_bits = cpu->phys_bits;
 +    }
 +
-     if (cpu->ucode_rev == 0) {
-         /*
-          * The default is the same as KVM's. Note that this check
-@@ -7379,6 +7388,14 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         if (cpu->phys_bits == 0) {
-             cpu->phys_bits = TCG_PHYS_ADDR_BITS;
-         }
-+        if (cpu->guest_phys_bits &&
-+            (cpu->guest_phys_bits > cpu->phys_bits ||
-+            cpu->guest_phys_bits < 32)) {
-+            error_setg(errp, "guest-phys-bits should be between 32 and %u "
-+                             " (but is %u)",
-+                             cpu->phys_bits, cpu->guest_phys_bits);
-+            return;
-+        }
-     } else {
-         /* For 32 bit systems don't use the user set value, but keep
-          * phys_bits consistent with what we tell the guest.
-@@ -7387,6 +7404,10 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-             error_setg(errp, "phys-bits is not user-configurable in 32 bit");
-             return;
-         }
-+        if (cpu->guest_phys_bits != 0) {
-+            error_setg(errp, "guest-phys-bits is not user-configurable in 32 bit");
-+            return;
-+        }
++    if (cpu->host_phys_bits && cpu->host_phys_bits_limit &&
++        cpu->guest_phys_bits > cpu->host_phys_bits_limit) {
++        cpu->guest_phys_bits = cpu->host_phys_bits_limit;
++    }
++}
++
+ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+     CPUX86State *env = &cpu->env;
++    bool ret;
  
-         if (env->features[FEAT_1_EDX] & (CPUID_PSE36 | CPUID_PAE)) {
-             cpu->phys_bits = 36;
-@@ -7887,6 +7908,7 @@ static Property x86_cpu_properties[] = {
-     DEFINE_PROP_BOOL("x-force-features", X86CPU, force_features, false),
-     DEFINE_PROP_BOOL("kvm", X86CPU, expose_kvm, true),
-     DEFINE_PROP_UINT32("phys-bits", X86CPU, phys_bits, 0),
-+    DEFINE_PROP_UINT32("guest-phys-bits", X86CPU, guest_phys_bits, -1),
-     DEFINE_PROP_BOOL("host-phys-bits", X86CPU, host_phys_bits, false),
-     DEFINE_PROP_UINT8("host-phys-bits-limit", X86CPU, host_phys_bits_limit, 0),
-     DEFINE_PROP_BOOL("fill-mtrr-mask", X86CPU, fill_mtrr_mask, true),
+     /*
+      * The realize order is important, since x86_cpu_realize() checks if
+@@ -32,13 +54,15 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+      *
+      * realize order:
+      *
+-     * x86_cpu_realize():
+-     *  -> x86_cpu_expand_features()
+-     *  -> cpu_exec_realizefn():
+-     *            -> accel_cpu_common_realize()
+-     *               kvm_cpu_realizefn() -> host_cpu_realizefn()
+-     *  -> cpu_common_realizefn()
+-     *  -> check/update ucode_rev, phys_bits, mwait
++     * x86_cpu_realizefn():
++     *   x86_cpu_expand_features()
++     *   cpu_exec_realizefn():
++     *      accel_cpu_common_realize()
++     *        kvm_cpu_realizefn()
++     *          host_cpu_realizefn()
++     *          kvm_set_guest_phys_bits()
++     *   check/update ucode_rev, phys_bits, guest_phys_bits, mwait
++     *   cpu_common_realizefn() (via xcc->parent_realize)
+      */
+     if (cpu->max_features) {
+         if (enable_cpu_pm && kvm_has_waitpkg()) {
+@@ -50,7 +74,17 @@ static bool kvm_cpu_realizefn(CPUState *cs, Error **errp)
+                                                    MSR_IA32_UCODE_REV);
+         }
+     }
+-    return host_cpu_realizefn(cs, errp);
++    ret = host_cpu_realizefn(cs, errp);
++    if (!ret) {
++        return ret;
++    }
++
++    if ((env->features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) &&
++        cpu->guest_phys_bits == -1) {
++        kvm_set_guest_phys_bits(cs);
++    }
++
++    return true;
+ }
+ 
+ static bool lmce_supported(void)
 -- 
 2.44.0
 
