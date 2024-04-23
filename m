@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A4D8AFBD0
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7292B8AFBCF
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:35:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOfs-0001D0-Gb; Tue, 23 Apr 2024 18:31:40 -0400
+	id 1rzOfq-0001Ao-5l; Tue, 23 Apr 2024 18:31:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfb-00016s-18; Tue, 23 Apr 2024 18:31:25 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1rzOfb-00016v-SG; Tue, 23 Apr 2024 18:31:25 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfY-0004ah-6D; Tue, 23 Apr 2024 18:31:22 -0400
+ id 1rzOfY-0004an-6a; Tue, 23 Apr 2024 18:31:23 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id B683A4E6040;
- Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id C161D4E6042;
+ Wed, 24 Apr 2024 00:31:16 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id 24oEFHn6xHgW; Wed, 24 Apr 2024 00:31:13 +0200 (CEST)
+ with ESMTP id wRP8tTGP9yDN; Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id CA44D4E6042; Wed, 24 Apr 2024 00:31:13 +0200 (CEST)
-Message-Id: <ff8872bc79859700730cf325cf55741b2511e427.1713907038.git.balaton@eik.bme.hu>
+ id D45FC4E6031; Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
+Message-Id: <70bd4c106a5dd14eacf4b79131741c76accb9ad4.1713907038.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1713907038.git.balaton@eik.bme.hu>
 References: <cover.1713907038.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 03/24] target/ppc: Simplify syscall exception handlers
+Subject: [PATCH 04/24] target/ppc: Remove unused helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -37,9 +37,9 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Wed, 24 Apr 2024 00:31:13 +0200 (CEST)
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Date: Wed, 24 Apr 2024 00:31:14 +0200 (CEST)
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -60,81 +60,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-After previous changes the hypercall handling in 7xx and 74xx
-exception handlers can be folded into one if statement to simplify
-this code. Also add "unlikely" to mark the less frequently used branch
-for the compiler.
+The helper_rac function is defined but not used, remove it.
 
+Fixes: 005b69fdcc (target/ppc: Remove PowerPC 601 CPUs)
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 ---
- target/ppc/excp_helper.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ target/ppc/helper.h     |  2 --
+ target/ppc/mmu_helper.c | 24 ------------------------
+ 2 files changed, 26 deletions(-)
 
-diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-index fd145200dd..4c1375381d 100644
---- a/target/ppc/excp_helper.c
-+++ b/target/ppc/excp_helper.c
-@@ -762,26 +762,21 @@ static void powerpc_excp_7xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-     {
-         int lev = env->error_code;
+diff --git a/target/ppc/helper.h b/target/ppc/helper.h
+index 86f97ee1e7..f769e01c3d 100644
+--- a/target/ppc/helper.h
++++ b/target/ppc/helper.h
+@@ -700,8 +700,6 @@ DEF_HELPER_2(book3s_msgclr, void, env, tl)
+ 
+ DEF_HELPER_4(dlmzb, tl, env, tl, tl, i32)
+ #if !defined(CONFIG_USER_ONLY)
+-DEF_HELPER_2(rac, tl, env, tl)
 -
--        if (lev == 1 && cpu->vhyp) {
--            dump_hcall(env);
--        } else {
--            dump_syscall(env);
--        }
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-          * uses VOF and the 7xx CPUs, so although the 7xx don't have
-          * HV mode, we need to keep hypercall support.
-          */
--        if (lev == 1 && cpu->vhyp) {
-+        if (unlikely(lev == 1 && cpu->vhyp)) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-+            dump_hcall(env);
-             vhc->hypercall(cpu->vhyp, cpu);
-             powerpc_reset_excp_state(cpu);
-             return;
-         }
+ DEF_HELPER_2(load_dcr, tl, env, tl)
+ DEF_HELPER_3(store_dcr, void, env, tl, tl)
+ #endif
+diff --git a/target/ppc/mmu_helper.c b/target/ppc/mmu_helper.c
+index c071b4d5e2..817836b731 100644
+--- a/target/ppc/mmu_helper.c
++++ b/target/ppc/mmu_helper.c
+@@ -595,30 +595,6 @@ void helper_6xx_tlbi(CPUPPCState *env, target_ulong EPN)
+     do_6xx_tlb(env, EPN, 1);
+ }
+ 
+-/*****************************************************************************/
+-/* PowerPC 601 specific instructions (POWER bridge) */
 -
-+        dump_syscall(env);
-         break;
-     }
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
-@@ -907,26 +902,21 @@ static void powerpc_excp_74xx(PowerPCCPU *cpu, int excp)
-     case POWERPC_EXCP_SYSCALL:   /* System call exception                    */
-     {
-         int lev = env->error_code;
+-target_ulong helper_rac(CPUPPCState *env, target_ulong addr)
+-{
+-    mmu_ctx_t ctx;
+-    int nb_BATs;
+-    target_ulong ret = 0;
 -
--        if (lev == 1 && cpu->vhyp) {
--            dump_hcall(env);
--        } else {
--            dump_syscall(env);
--        }
-         /*
-          * The Virtual Open Firmware (VOF) relies on the 'sc 1'
-          * instruction to communicate with QEMU. The pegasos2 machine
-          * uses VOF and the 74xx CPUs, so although the 74xx don't have
-          * HV mode, we need to keep hypercall support.
-          */
--        if (lev == 1 && cpu->vhyp) {
-+        if (unlikely(lev == 1 && cpu->vhyp)) {
-             PPCVirtualHypervisorClass *vhc =
-                 PPC_VIRTUAL_HYPERVISOR_GET_CLASS(cpu->vhyp);
-+            dump_hcall(env);
-             vhc->hypercall(cpu->vhyp, cpu);
-             powerpc_reset_excp_state(cpu);
-             return;
-         }
+-    /*
+-     * We don't have to generate many instances of this instruction,
+-     * as rac is supervisor only.
+-     *
+-     * XXX: FIX THIS: Pretend we have no BAT
+-     */
+-    nb_BATs = env->nb_BATs;
+-    env->nb_BATs = 0;
+-    if (get_physical_address_wtlb(env, &ctx, addr, 0, ACCESS_INT, 0) == 0) {
+-        ret = ctx.raddr;
+-    }
+-    env->nb_BATs = nb_BATs;
+-    return ret;
+-}
 -
-+        dump_syscall(env);
-         break;
-     }
-     case POWERPC_EXCP_FPU:       /* Floating-point unavailable exception     */
+ static inline target_ulong booke_tlb_to_page_size(int size)
+ {
+     return 1024 << (2 * size);
 -- 
 2.30.9
 
