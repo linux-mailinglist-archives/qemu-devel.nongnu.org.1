@@ -2,94 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 056978AFBD1
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8855C8AFBD6
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOjy-0005VW-SB; Tue, 23 Apr 2024 18:35:55 -0400
+	id 1rzOmM-0001Pw-Rs; Tue, 23 Apr 2024 18:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOjv-0005Em-20
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:35:51 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmK-0001PY-JA
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOjs-0005fv-Ol
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:35:50 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmI-000658-QL
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713911747;
+ s=mimecast20190719; t=1713911898;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZmyL6OelpGAgbRLV/gLwXGJtGL8wOKtXlogwc0HDeqE=;
- b=C5pdNpjnjE77rgoUMwRd77RH5BjPaTj/Fd7x/7FmK8Bz9DjPlO+nA4ao4pequCg+/5MKpT
- Iyh3ELo2gpyNlt5Tcc+up1eVckVObSkQWNTKez1GYgL/mzDF26lelGLwQL5E6zGZ3AP9N5
- etdGmh3BWQphwEckd/X2h40tysitO6Q=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-transfer-encoding:content-transfer-encoding;
+ bh=WR9tzZjpJbU/j12hvv4ER+Qhum9sJQt4Y+15bRyr+hY=;
+ b=YsJnUFNlIhzi2OVOSKRp2130fi6NM9DqwV6ve/q7Dw4lv52Ct4XW1jXkNorYU5AB+S7YnW
+ MtzgymE6C+g/qKtYfFGugT+oU+6x92z1OLAk7oXHwqzIU/AcCDeX1DRRMM8b741VSDjlyF
+ lTrBCFUBWaXDcpXBa/xPVVwqwszxXE8=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-0VwfsgP-M3-EWDJ0AoOa1Q-1; Tue, 23 Apr 2024 18:35:45 -0400
-X-MC-Unique: 0VwfsgP-M3-EWDJ0AoOa1Q-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-6a01116b273so18944086d6.1
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:35:45 -0700 (PDT)
+ us-mta-519-f8l81ES6NLC4Q3XrOyGjtA-1; Tue, 23 Apr 2024 18:38:16 -0400
+X-MC-Unique: f8l81ES6NLC4Q3XrOyGjtA-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-6a05461964cso18604376d6.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911745; x=1714516545;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZmyL6OelpGAgbRLV/gLwXGJtGL8wOKtXlogwc0HDeqE=;
- b=HWeOasVn6fIMMpNDifud/q+1McVotNxahpEEv9t7/YVKlBcevPQoufFlnGIYvx8MbR
- 5GK9FRfmFQI6YJbiTtilUoPL2gOtaE3OBdT7nIFQqCUB3PYQgSWFOIg0Ef3Jwbq3+sNI
- uIHSsFMeDZ7Bvo9zQ2v3udiFQYvkVi14+slzQOJqBD5S6re2QTzIDrPcBTw7HfBQsgIO
- Q4PvFwl/SbPdtoRCUEm7frGijicJ57YAX1M5yYO5brgGAbaA6UKihRHvzj47Nin5OuFe
- hkwYebuPoi0mliPN/5EdIHykIwfKHK5ASkiYLeeEQaONhWY38wjLgM5xVFuNT4dXuOLQ
- YwSw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXlpV/e0IcxYCpzGWOZYwqwW8zZqtL+/MKCk3t9BJXkvYBM2KM8jdW/7tKe6wh7n+0TK+Cj2W05Bjr91lfdziQiDPa+spg=
-X-Gm-Message-State: AOJu0Ywvg9vB6PLBFlxhk+XjhrUEleHzbsS6+55jU7VXwmHrcX3N/whs
- zV5kmILuB9/OZefxaSwVO8PqVZhn0d4jK7wQyiZ1pG+u7OGYg/QkR1KPsF+uVNmYFKfNO1ljLwe
- J5sizz/JNlxFlMdEa40GPMzFbHa7wuEiz7rGwxpJ8v4n0WcmsfVCD
-X-Received: by 2002:a05:6214:21ac:b0:699:2d88:744f with SMTP id
- t12-20020a05621421ac00b006992d88744fmr771860qvc.4.1713911744397; 
- Tue, 23 Apr 2024 15:35:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFo2KEIDy0iM0DnJFXnBHTYto7375h+A3TbcvNJY4Y1nIwZdlnziTBot6UaUF+y+F+CpyaaQQ==
-X-Received: by 2002:a05:6214:21ac:b0:699:2d88:744f with SMTP id
- t12-20020a05621421ac00b006992d88744fmr771840qvc.4.1713911743966; 
- Tue, 23 Apr 2024 15:35:43 -0700 (PDT)
-Received: from x1n (pool-99-254-121-117.cpe.net.cable.rogers.com.
+ d=1e100.net; s=20230601; t=1713911896; x=1714516696;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=WR9tzZjpJbU/j12hvv4ER+Qhum9sJQt4Y+15bRyr+hY=;
+ b=BZntYSzhSmvsp7I4R2X4n5roZuUYUAVmGO7WJhVeIFgpaaVPE7X9cZW1aY/q0cjktV
+ jwNA+NAQ4rA/gO+XTzdMwTkdg0fq3xwLAygwJbyBTB4YW1O7s6worHhtq6A4eqeUeDGV
+ dHO/HEyHrME4T58BrT9+Nq1WOZ3tCfJvaUIaB1I1dRu/lQM3kZXYADpRc0d1p9EISSV1
+ 2yKi0D1HiTK6KxsJEImnukozcvLvrEWNfDDXeGECgLNQFdeTeVikVajKEpm9MiUJgdh7
+ FBxOMAhKEyoetTT9uFSm8Dj7dQMBzXDSQyw1lIsFT7oKxvvXmxHO/N9VDb6RyB3aZv4Y
+ /o5w==
+X-Gm-Message-State: AOJu0YzTOCk3UN6u6wL9n1g8RMIXAhKQxxM0y0wyvBI9QZ+eBBK4VHCU
+ MhRZKIUkasmCD73gzkmrGKi7d+CyInfAjrdZvttIW+D/iUycVQqoyo9FCscXYbpXOr385BCr/U3
+ UuXzN14frzw/KgRkFxvNE/21zz/3SXfyQNGoODv9sR8Y+kd6SOsvr52zuz4yJjNB1NIByeNhuP1
+ ns8SosVv1Z472SIq7nxrWsJTYSkctyRh61Sw==
+X-Received: by 2002:a05:620a:4612:b0:78e:c79a:ae37 with SMTP id
+ br18-20020a05620a461200b0078ec79aae37mr983932qkb.6.1713911895682; 
+ Tue, 23 Apr 2024 15:38:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwyY4WhQYTAm60plXoSB9UwE5PSxK8KvTMl2MDv40/SEPsTqXSw6OMdhkewSIy+pUc053qJQ==
+X-Received: by 2002:a05:620a:4612:b0:78e:c79a:ae37 with SMTP id
+ br18-20020a05620a461200b0078ec79aae37mr983899qkb.6.1713911894924; 
+ Tue, 23 Apr 2024 15:38:14 -0700 (PDT)
+Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- v18-20020a0cdd92000000b0069b7deb02dasm5467842qvk.117.2024.04.23.15.35.43
+ c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:35:43 -0700 (PDT)
-Date: Tue, 23 Apr 2024 18:35:41 -0400
+ Tue, 23 Apr 2024 15:38:14 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
-To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Cc: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>,
- Fabiano Rosas <farosas@suse.de>,
- Alex Williamson <alex.williamson@redhat.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Avihai Horon <avihaih@nvidia.com>,
- Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH RFC 00/26] =?utf-8?Q?Multifd_?= =?utf-8?B?8J+UgA==?=
- device state transfer support with VFIO consumer
-Message-ID: <Zig3vebacR4SfJLh@x1n>
-References: <Zh_6W8u3H4FmGS49@redhat.com>
- <71ede5c8-857c-418b-9e37-b8d343ddfa06@maciej.szmigiero.name>
- <ZiD4aLSre6qubuHr@redhat.com>
- <aebcd78e-b8b6-44db-b2be-0bbd5acccf3f@maciej.szmigiero.name>
- <ZiF8aWVfW7kPuOtn@x1n> <ZiJCSZvsekaO8dzO@redhat.com>
- <ZiKOTkgEIKo-wj5N@x1n>
- <d7d59001-0800-4073-9def-08327e904b7b@maciej.szmigiero.name>
- <Zig0IPofMCpJdGsn@x1n>
- <e88ecd55-14a2-4043-946b-9c2447fe9def@maciej.szmigiero.name>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>
+Subject: [PULL 00/26] Migration 20240423 patches
+Date: Tue, 23 Apr 2024 18:37:47 -0400
+Message-ID: <20240423223813.3237060-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e88ecd55-14a2-4043-946b-9c2447fe9def@maciej.szmigiero.name>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -114,101 +96,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 24, 2024 at 12:25:08AM +0200, Maciej S. Szmigiero wrote:
-> On 24.04.2024 00:20, Peter Xu wrote:
-> > On Tue, Apr 23, 2024 at 06:15:35PM +0200, Maciej S. Szmigiero wrote:
-> > > On 19.04.2024 17:31, Peter Xu wrote:
-> > > > On Fri, Apr 19, 2024 at 11:07:21AM +0100, Daniel P. Berrangé wrote:
-> > > > > On Thu, Apr 18, 2024 at 04:02:49PM -0400, Peter Xu wrote:
-> > > > > > On Thu, Apr 18, 2024 at 08:14:15PM +0200, Maciej S. Szmigiero wrote:
-> > > > > > > I think one of the reasons for these results is that mixed (RAM + device
-> > > > > > > state) multifd channels participate in the RAM sync process
-> > > > > > > (MULTIFD_FLAG_SYNC) whereas device state dedicated channels don't.
-> > > > > > 
-> > > > > > Firstly, I'm wondering whether we can have better names for these new
-> > > > > > hooks.  Currently (only comment on the async* stuff):
-> > > > > > 
-> > > > > >     - complete_precopy_async
-> > > > > >     - complete_precopy
-> > > > > >     - complete_precopy_async_wait
-> > > > > > 
-> > > > > > But perhaps better:
-> > > > > > 
-> > > > > >     - complete_precopy_begin
-> > > > > >     - complete_precopy
-> > > > > >     - complete_precopy_end
-> > > > > > 
-> > > > > > ?
-> > > > > > 
-> > > > > > As I don't see why the device must do something with async in such hook.
-> > > > > > To me it's more like you're splitting one process into multiple, then
-> > > > > > begin/end sounds more generic.
-> > > > > > 
-> > > > > > Then, if with that in mind, IIUC we can already split ram_save_complete()
-> > > > > > into >1 phases too. For example, I would be curious whether the performance
-> > > > > > will go back to normal if we offloading multifd_send_sync_main() into the
-> > > > > > complete_precopy_end(), because we really only need one shot of that, and I
-> > > > > > am quite surprised it already greatly affects VFIO dumping its own things.
-> > > > > > 
-> > > > > > I would even ask one step further as what Dan was asking: have you thought
-> > > > > > about dumping VFIO states via multifd even during iterations?  Would that
-> > > > > > help even more than this series (which IIUC only helps during the blackout
-> > > > > > phase)?
-> > > > > 
-> > > > > To dump during RAM iteration, the VFIO device will need to have
-> > > > > dirty tracking and iterate on its state, because the guest CPUs
-> > > > > will still be running potentially changing VFIO state. That seems
-> > > > > impractical in the general case.
-> > > > 
-> > > > We already do such interations in vfio_save_iterate()?
-> > > > 
-> > > > My understanding is the recent VFIO work is based on the fact that the VFIO
-> > > > device can track device state changes more or less (besides being able to
-> > > > save/load full states).  E.g. I still remember in our QE tests some old
-> > > > devices report much more dirty pages than expected during the iterations
-> > > > when we were looking into such issue that a huge amount of dirty pages
-> > > > reported.  But newer models seem to have fixed that and report much less.
-> > > > 
-> > > > That issue was about GPU not NICs, though, and IIUC a major portion of such
-> > > > tracking used to be for GPU vRAMs.  So maybe I was mixing up these, and
-> > > > maybe they work differently.
-> > > 
-> > > The device which this series was developed against (Mellanox ConnectX-7)
-> > > is already transferring its live state before the VM gets stopped (via
-> > > save_live_iterate SaveVMHandler).
-> > > 
-> > > It's just that in addition to the live state it has more than 400 MiB
-> > > of state that cannot be transferred while the VM is still running.
-> > > And that fact hurts a lot with respect to the migration downtime.
-> > > 
-> > > AFAIK it's a very similar story for (some) GPUs.
-> > 
-> > So during iteration phase VFIO cannot yet leverage the multifd channels
-> > when with this series, am I right?
-> 
-> That's right.
-> 
-> > Is it possible to extend that use case too?
-> 
-> I guess so, but since this phase (iteration while the VM is still
-> running) doesn't impact downtime it is much less critical.
+The following changes since commit c25df57ae8f9fe1c72eee2dab37d76d904ac382e:
 
-But it affects the bandwidth, e.g. even with multifd enabled, the device
-iteration data will still bottleneck at ~15Gbps on a common system setup
-the best case, even if the hosts are 100Gbps direct connected.  Would that
-be a concern in the future too, or it's known problem and it won't be fixed
-anyway?
+  Update version for 9.0.0 release (2024-04-23 14:19:21 +0100)
 
-I remember Avihai used to have plan to look into similar issues, I hope
-this is exactly what he is looking for.  Otherwise changing migration
-protocol from time to time is cumbersome; we always need to provide a flag
-to make sure old systems migrates in the old ways, new systems run the new
-ways, and for such a relatively major change I'd want to double check on
-how far away we can support offload VFIO iterations data to multifd.
+are available in the Git repository at:
 
-Thanks,
+  https://gitlab.com/peterx/qemu.git tags/migration-20240423-pull-request
+
+for you to fetch changes up to 2cc637f1ea08d2a1b19fc5b1a30bc609f948de93:
+
+  migration/colo: Fix bdrv_graph_rdlock_main_loop: Assertion `!qemu_in_coroutine()' failed. (2024-04-23 18:36:01 -0400)
+
+----------------------------------------------------------------
+Migration pull for 9.1
+
+- Het's new test cases for "channels"
+- Het's fix for a typo for vsock parsing
+- Cedric's VFIO error report series
+- Cedric's one more patch for dirty-bitmap error reports
+- Zhijian's rdma deprecation patch
+- Yuan's zeropage optimization to fix double faults on anon mem
+- Zhijian's COLO fix on a crash
+
+----------------------------------------------------------------
+
+Cédric Le Goater (15):
+  s390/stattrib: Add Error** argument to set_migrationmode() handler
+  vfio: Always report an error in vfio_save_setup()
+  migration: Always report an error in block_save_setup()
+  migration: Always report an error in ram_save_setup()
+  migration: Add Error** argument to vmstate_save()
+  migration: Add Error** argument to qemu_savevm_state_setup()
+  migration: Add Error** argument to .save_setup() handler
+  migration: Add Error** argument to .load_setup() handler
+  memory: Add Error** argument to .log_global_start() handler
+  migration: Introduce ram_bitmaps_destroy()
+  memory: Add Error** argument to the global_dirty_log routines
+  migration: Add Error** argument to ram_state_init()
+  migration: Add Error** argument to xbzrle_init()
+  migration: Modify ram_init_bitmaps() to report dirty tracking errors
+  migration: Add Error** argument to add_bitmaps_to_list()
+
+Het Gala (9):
+  tests/qtest/migration: Add 'to' object into migrate_qmp()
+  tests/qtest/migration: Replace connect_uri and move
+    migrate_get_socket_address inside migrate_qmp
+  tests/qtest/migration: Replace migrate_get_connect_uri inplace of
+    migrate_get_socket_address
+  tests/qtest/migration: Add channels parameter in migrate_qmp_fail
+  tests/qtest/migration: Add migrate_set_ports into migrate_qmp to
+    update migration port value
+  tests/qtest/migration: Add channels parameter in migrate_qmp
+  tests/qtest/migration: Add multifd_tcp_plain test using list of
+    channels instead of uri
+  tests/qtest/migration: Add negative tests to validate migration QAPIs
+  tests/qtest/migration: Fix typo for vsock in SocketAddress_to_str
+
+Li Zhijian (1):
+  migration/colo: Fix bdrv_graph_rdlock_main_loop: Assertion
+    `!qemu_in_coroutine()' failed.
+
+Yuan Liu (1):
+  migration/multifd: solve zero page causing multiple page faults
+
+ include/exec/memory.h                 |  10 +-
+ include/exec/ramblock.h               |   2 +-
+ include/hw/s390x/storage-attributes.h |   2 +-
+ include/migration/register.h          |   6 +-
+ migration/ram.h                       |   1 +
+ migration/savevm.h                    |   2 +-
+ tests/qtest/migration-helpers.h       |  10 +-
+ hw/i386/xen/xen-hvm.c                 |   5 +-
+ hw/ppc/spapr.c                        |   2 +-
+ hw/s390x/s390-stattrib-kvm.c          |  12 +-
+ hw/s390x/s390-stattrib.c              |  15 ++-
+ hw/vfio/common.c                      |   4 +-
+ hw/vfio/migration.c                   |  29 +++--
+ hw/virtio/vhost.c                     |   3 +-
+ migration/block-dirty-bitmap.c        |  34 ++---
+ migration/block.c                     |  17 ++-
+ migration/colo.c                      |  18 +--
+ migration/dirtyrate.c                 |  13 +-
+ migration/migration.c                 |  33 ++++-
+ migration/multifd-zero-page.c         |   4 +-
+ migration/multifd-zlib.c              |   1 +
+ migration/multifd-zstd.c              |   1 +
+ migration/multifd.c                   |   1 +
+ migration/ram.c                       | 110 +++++++++++-----
+ migration/savevm.c                    |  57 ++++----
+ system/memory.c                       |  44 ++++++-
+ tests/qtest/migration-helpers.c       | 158 +++++++++++++++++++++-
+ tests/qtest/migration-test.c          | 180 ++++++++++++++------------
+ 28 files changed, 558 insertions(+), 216 deletions(-)
 
 -- 
-Peter Xu
+2.44.0
 
 
