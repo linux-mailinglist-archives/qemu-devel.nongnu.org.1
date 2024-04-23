@@ -2,35 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131368AFBD3
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF4D8AFBBF
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:33:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOfx-0001F9-4M; Tue, 23 Apr 2024 18:31:45 -0400
+	id 1rzOfr-0001CU-HL; Tue, 23 Apr 2024 18:31:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfe-000175-26; Tue, 23 Apr 2024 18:31:29 -0400
+ id 1rzOff-000178-6B; Tue, 23 Apr 2024 18:31:29 -0400
 Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1rzOfc-0004bH-A5; Tue, 23 Apr 2024 18:31:25 -0400
+ id 1rzOfc-0004bG-Co; Tue, 23 Apr 2024 18:31:26 -0400
 Received: from zero.eik.bme.hu (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id CB5AD4E6031;
- Wed, 24 Apr 2024 00:31:17 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id D76564E6054;
+ Wed, 24 Apr 2024 00:31:18 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at eik.bme.hu
 Received: from zero.eik.bme.hu ([127.0.0.1])
  by zero.eik.bme.hu (zero.eik.bme.hu [127.0.0.1]) (amavisd-new, port 10028)
- with ESMTP id KZdOsRHPTW55; Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
+ with ESMTP id Ax8IgTfEiaPk; Wed, 24 Apr 2024 00:31:16 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DD7714E6054; Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
-Message-Id: <60e5167ed91a2d98a08899e52b89d28bcd2d7d8d.1713907038.git.balaton@eik.bme.hu>
+ id EC4D54E6055; Wed, 24 Apr 2024 00:31:16 +0200 (CEST)
+Message-Id: <69f0b11f0dcbc4ed8f9a89e7132c94a2e7e24c62.1713907038.git.balaton@eik.bme.hu>
 In-Reply-To: <cover.1713907038.git.balaton@eik.bme.hu>
 References: <cover.1713907038.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH 05/24] target/ppc/mmu_common.c: Move calculation of a value
- closer to its usage
+Subject: [PATCH 06/24] target/ppc/mmu_common.c: Simplify checking for real mode
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -38,7 +37,7 @@ To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
  Daniel Henrique Barboza <danielhb413@gmail.com>
-Date: Wed, 24 Apr 2024 00:31:15 +0200 (CEST)
+Date: Wed, 24 Apr 2024 00:31:16 +0200 (CEST)
 Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
  helo=zero.eik.bme.hu
 X-Spam_score_int: -18
@@ -61,45 +60,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In mmubooke_check_tlb() prot2 is calculated first but only used after
-an unrelated check that can return before tha value is used. Move the
-calculation after the check, closer to where it is used, to keep them
-together and avoid computing it when not needed.
+In get_physical_address_wtlb() the real_mode flag depends on either
+the MSR[IR] or MSR[DR] bit depending on access_type. Extract just the
+needed bit in a more straight forward way instead of doing unnecessary
+computation.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
- target/ppc/mmu_common.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ target/ppc/mmu_common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/target/ppc/mmu_common.c b/target/ppc/mmu_common.c
-index 751403f1c8..168ff842a5 100644
+index 168ff842a5..aa01469604 100644
 --- a/target/ppc/mmu_common.c
 +++ b/target/ppc/mmu_common.c
-@@ -634,12 +634,6 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
-         return -1;
-     }
+@@ -1188,8 +1188,10 @@ int get_physical_address_wtlb(CPUPPCState *env, mmu_ctx_t *ctx,
+                                      int mmu_idx)
+ {
+     int ret = -1;
+-    bool real_mode = (type == ACCESS_CODE && !FIELD_EX64(env->msr, MSR, IR)) ||
+-                     (type != ACCESS_CODE && !FIELD_EX64(env->msr, MSR, DR));
++    bool real_mode;
++
++    real_mode = (type == ACCESS_CODE) ? !FIELD_EX64(env->msr, MSR, IR)
++                                      : !FIELD_EX64(env->msr, MSR, DR);
  
--    if (FIELD_EX64(env->msr, MSR, PR)) {
--        prot2 = tlb->prot & 0xF;
--    } else {
--        prot2 = (tlb->prot >> 4) & 0xF;
--    }
--
-     /* Check the address space */
-     if ((access_type == MMU_INST_FETCH ?
-         FIELD_EX64(env->msr, MSR, IR) :
-@@ -648,6 +642,11 @@ static int mmubooke_check_tlb(CPUPPCState *env, ppcemb_tlb_t *tlb,
-         return -1;
-     }
- 
-+    if (FIELD_EX64(env->msr, MSR, PR)) {
-+        prot2 = tlb->prot & 0xF;
-+    } else {
-+        prot2 = (tlb->prot >> 4) & 0xF;
-+    }
-     *prot = prot2;
-     if (prot2 & prot_for_access_type(access_type)) {
-         qemu_log_mask(CPU_LOG_MMU, "%s: good TLB!\n", __func__);
+     switch (env->mmu_model) {
+     case POWERPC_MMU_SOFT_6xx:
 -- 
 2.30.9
 
