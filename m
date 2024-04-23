@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4B48AEA98
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 880638AEA67
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnb-0006uw-4P; Tue, 23 Apr 2024 11:11:11 -0400
+	id 1rzHnm-0007qb-Ae; Tue, 23 Apr 2024 11:11:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnO-0005k4-OG
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1rzHnQ-0005sE-2A
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnM-0000O5-Ro
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:58 -0400
+ id 1rzHnO-0000OM-3b
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885056;
+ s=mimecast20190719; t=1713885057;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MOg9KtNLxd3u1DXDqJr03F3rYuVq7N0n2StxlG1HCJo=;
- b=YQY/P44Bby+ClQsLSoXyObDIGdjqxGwKbrIcXiHEUCyvBLw1q/iLk5IjtvlTUejv5Q5/5e
- rDGrxISYiOKt21EFoSXjmuuyfhVL/iBF1oON6NsSrMRuuLEpuCwMOGhYXknwk3n4x/Xtpe
- mHUZyEvDpG/zKL2t0VXc+m6vmvySt90=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-68-QaltHlzIO9W27Wk5eGIt8g-1; Tue, 23 Apr 2024 11:10:53 -0400
-X-MC-Unique: QaltHlzIO9W27Wk5eGIt8g-1
+ bh=MpzSFoRgc3Tz5tG5vbWOuPSV975Dwi5ijRZXKg1roG0=;
+ b=MPmF/m5mWgJDS3BcgwP7+TRO5w2E3wP6on/mA4oxteqEp1f1iJ5qzIBAEiQ9MWutW3h0XV
+ yRT6aimHmgs8GZqClZZuWtZG8gCEm2ifDyWk4wXZWOF5tSZ81NoOwBu2tjRzhxVyevQ+EW
+ RPgk26W3Z5FazSbBEJbyDPsyS5O3D7U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-pNuJei4rO3Ssh6BgO-jmbA-1; Tue,
+ 23 Apr 2024 11:10:54 -0400
+X-MC-Unique: pNuJei4rO3Ssh6BgO-jmbA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E86E981F317;
- Tue, 23 Apr 2024 15:10:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C580D29AC00D;
+ Tue, 23 Apr 2024 15:10:53 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B37152026D0A;
- Tue, 23 Apr 2024 15:10:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 378762033979;
+ Tue, 23 Apr 2024 15:10:53 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 60/63] target/i386/cpu: Merge the warning and error messages
- for AMD HT check
-Date: Tue, 23 Apr 2024 17:09:48 +0200
-Message-ID: <20240423150951.41600-61-pbonzini@redhat.com>
+Subject: [PULL 61/63] accel/tcg/icount-common: Consolidate the use of
+ warn_report_once()
+Date: Tue, 23 Apr 2024 17:09:49 +0200
+Message-ID: <20240423150951.41600-62-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -82,42 +82,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Currently, the difference between warn_report_once() and
-error_report_once() is the former has the "warning:" prefix, while the
-latter does not have a similar level prefix.
-
-At the meantime, considering that there is no error handling logic here,
-and the purpose of error_report_once() is only to prompt the user with
-an abnormal message, there is no need to use an error-level message here,
-and instead we can just use a warning.
-
-Therefore, downgrade the message in error_report_once() to warning, and
-merge it into the previous warn_report_once().
+Use warn_report_once() to get rid of the static local variable "notified".
 
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240327103951.3853425-4-zhao1.liu@linux.intel.com>
+Message-ID: <20240418100716.1085491-1-zhao1.liu@linux.intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ accel/tcg/icount-common.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 28452983786..fd6af0d7632 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -7611,9 +7611,9 @@ static void x86_cpu_realizefn(DeviceState *dev, Error **errp)
-         !(env->features[FEAT_8000_0001_ECX] & CPUID_EXT3_TOPOEXT) &&
-         cs->nr_threads > 1) {
-             warn_report_once("This family of AMD CPU doesn't support "
--                             "hyperthreading(%d).", cs->nr_threads);
--            error_report_once("Please configure -smp options properly"
--                              " or try enabling topoext feature.");
-+                             "hyperthreading(%d). Please configure -smp "
-+                             "options properly or try enabling topoext "
-+                             "feature.", cs->nr_threads);
+diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
+index a4a747d1dc9..8d3d3a7e9dc 100644
+--- a/accel/tcg/icount-common.c
++++ b/accel/tcg/icount-common.c
+@@ -336,10 +336,8 @@ void icount_start_warp_timer(void)
+     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
+                                           ~QEMU_TIMER_ATTR_EXTERNAL);
+     if (deadline < 0) {
+-        static bool notified;
+-        if (!icount_sleep && !notified) {
+-            warn_report("icount sleep disabled and no active timers");
+-            notified = true;
++        if (!icount_sleep) {
++            warn_report_once("icount sleep disabled and no active timers");
+         }
+         return;
      }
- 
- #ifndef CONFIG_USER_ONLY
 -- 
 2.44.0
 
