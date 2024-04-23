@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2388AEA65
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC32A8AEAC0
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:19:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnM-0005KM-FC; Tue, 23 Apr 2024 11:10:56 -0400
+	id 1rzHnj-0007e0-W4; Tue, 23 Apr 2024 11:11:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHn6-0004dt-42
+ id 1rzHn6-0004dv-5X
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmy-0000G0-Il
+ id 1rzHn0-0000Gb-Ic
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885030;
+ s=mimecast20190719; t=1713885033;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hq8XYXGaInvX7KB6BRg5A7kCiWC3hjv/40JkR4yO+6o=;
- b=QaV3c5iqP4LNL5I6+m9VM3cIe2N29Tfb4jHbre5eK0rqeHV0trab89rYLXMT71zctUTtJK
- 7kcEdAuvcdTYCJB3kbSdUDX2H4fgaIKZ34VO87VmmP4oX/Qoy9jOLK2TF7Zzd9O8qH8pue
- W/b4VpolX81VSsj+Vq/yG0PMDLtR6k0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-Y66SMCy3PQmFnnia5di_PA-1; Tue,
- 23 Apr 2024 11:10:29 -0400
-X-MC-Unique: Y66SMCy3PQmFnnia5di_PA-1
+ bh=47V3oaPt23MbVmGEQPCO7LaPQQrDD/VRYl+nTb/ne1k=;
+ b=cJGGueJe1MJmI+W93XGNrp36DhQSpCR5+jxgwzBFcbM7DpttOT/6B1v/WDGAyLube8Q+qU
+ 8e4WpE5qNUxCgYf4oOmtlGHKb6d44jVwT/CPXoIxn/UyScB1c0QcunexhFiROGEByqTXUY
+ PI6zkBFeUXkU+z1/bss7DLeDkU6wA58=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-604-6qW50igZNtaI0w_3oVCHQA-1; Tue, 23 Apr 2024 11:10:29 -0400
+X-MC-Unique: 6qW50igZNtaI0w_3oVCHQA-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BF0DD38116F0;
- Tue, 23 Apr 2024 15:10:28 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 96A16834FBB;
+ Tue, 23 Apr 2024 15:10:29 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 39251200E290;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0AA47200E290;
  Tue, 23 Apr 2024 15:10:28 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PULL 34/63] ppc/pef: switch to use
- confidential_guest_kvm_init/reset()
-Date: Tue, 23 Apr 2024 17:09:22 +0200
-Message-ID: <20240423150951.41600-35-pbonzini@redhat.com>
+Subject: [PULL 35/63] s390: Switch to use confidential_guest_kvm_init()
+Date: Tue, 23 Apr 2024 17:09:23 +0200
+Message-ID: <20240423150951.41600-36-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -82,127 +81,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Use the unified interface to call confidential guest related kvm_init()
-and kvm_reset(), to avoid exposing pef specific functions.
-
-As a bonus, pef.h goes away since there is no direct call from sPAPR
-board code to PEF code anymore.
+Use unified confidential_guest_kvm_init() for consistency with
+other architectures.
 
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Message-Id: <20240229060038.606591-1-xiaoyao.li@intel.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/hw/ppc/pef.h | 17 -----------------
- hw/ppc/pef.c         |  9 ++++++---
- hw/ppc/spapr.c       | 10 +++++++---
- 3 files changed, 13 insertions(+), 23 deletions(-)
- delete mode 100644 include/hw/ppc/pef.h
+ target/s390x/kvm/pv.h      | 14 --------------
+ hw/s390x/s390-virtio-ccw.c |  5 ++++-
+ target/s390x/kvm/pv.c      | 10 +++++++++-
+ 3 files changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/include/hw/ppc/pef.h b/include/hw/ppc/pef.h
-deleted file mode 100644
-index 707dbe524c4..00000000000
---- a/include/hw/ppc/pef.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/*
-- * PEF (Protected Execution Facility) for POWER support
-- *
-- * Copyright Red Hat.
-- *
-- * This work is licensed under the terms of the GNU GPL, version 2 or later.
-- * See the COPYING file in the top-level directory.
-- *
-- */
+diff --git a/target/s390x/kvm/pv.h b/target/s390x/kvm/pv.h
+index 5877d28ff10..4b408174391 100644
+--- a/target/s390x/kvm/pv.h
++++ b/target/s390x/kvm/pv.h
+@@ -80,18 +80,4 @@ static inline int kvm_s390_dump_mem_state(uint64_t addr, size_t len,
+ static inline int kvm_s390_dump_completion_data(void *buff) { return 0; }
+ #endif /* CONFIG_KVM */
+ 
+-int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
+-static inline int s390_pv_init(ConfidentialGuestSupport *cgs, Error **errp)
+-{
+-    if (!cgs) {
+-        return 0;
+-    }
+-    if (kvm_enabled()) {
+-        return s390_pv_kvm_init(cgs, errp);
+-    }
 -
--#ifndef HW_PPC_PEF_H
--#define HW_PPC_PEF_H
+-    error_setg(errp, "Protected Virtualization requires KVM");
+-    return -1;
+-}
 -
--int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp);
--int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp);
--
--#endif /* HW_PPC_PEF_H */
-diff --git a/hw/ppc/pef.c b/hw/ppc/pef.c
-index d28ed3ba733..47553348b1e 100644
---- a/hw/ppc/pef.c
-+++ b/hw/ppc/pef.c
-@@ -15,7 +15,6 @@
- #include "sysemu/kvm.h"
- #include "migration/blocker.h"
- #include "exec/confidential-guest-support.h"
--#include "hw/ppc/pef.h"
- 
- #define TYPE_PEF_GUEST "pef-guest"
- OBJECT_DECLARE_SIMPLE_TYPE(PefGuest, PEF_GUEST)
-@@ -93,7 +92,7 @@ static int kvmppc_svm_off(Error **errp)
- #endif
- }
- 
--int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-+static int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
-         return 0;
-@@ -107,7 +106,7 @@ int pef_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
-     return kvmppc_svm_init(cgs, errp);
- }
- 
--int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
-+static int pef_kvm_reset(ConfidentialGuestSupport *cgs, Error **errp)
- {
-     if (!object_dynamic_cast(OBJECT(cgs), TYPE_PEF_GUEST)) {
-         return 0;
-@@ -131,6 +130,10 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(PefGuest,
- 
- static void pef_guest_class_init(ObjectClass *oc, void *data)
- {
-+    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
-+
-+    klass->kvm_init = pef_kvm_init;
-+    klass->kvm_reset = pef_kvm_reset;
- }
- 
- static void pef_guest_init(Object *obj)
-diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
-index 36ada4d0baf..533ea0f9142 100644
---- a/hw/ppc/spapr.c
-+++ b/hw/ppc/spapr.c
-@@ -75,6 +75,7 @@
- #include "hw/virtio/vhost-scsi-common.h"
- 
+ #endif /* HW_S390_PV_H */
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index 7cebbf6c02a..4dcc2138200 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -14,6 +14,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
  #include "exec/ram_addr.h"
 +#include "exec/confidential-guest-support.h"
- #include "hw/usb.h"
- #include "qemu/config-file.h"
- #include "qemu/error-report.h"
-@@ -87,7 +88,6 @@
- #include "hw/ppc/spapr_tpm_proxy.h"
- #include "hw/ppc/spapr_nvdimm.h"
- #include "hw/ppc/spapr_numa.h"
--#include "hw/ppc/pef.h"
+ #include "hw/s390x/s390-virtio-hcall.h"
+ #include "hw/s390x/sclp.h"
+ #include "hw/s390x/s390_flic.h"
+@@ -260,7 +261,9 @@ static void ccw_init(MachineState *machine)
+     s390_init_cpus(machine);
  
- #include "monitor/monitor.h"
- 
-@@ -1715,7 +1715,9 @@ static void spapr_machine_reset(MachineState *machine, ShutdownCause reason)
-         qemu_guest_getrandom_nofail(spapr->fdt_rng_seed, 32);
-     }
- 
--    pef_kvm_reset(machine->cgs, &error_fatal);
-+    if (machine->cgs) {
-+        confidential_guest_kvm_reset(machine->cgs, &error_fatal);
-+    }
-     spapr_caps_apply(spapr);
-     spapr_nested_reset(spapr);
- 
-@@ -2841,7 +2843,9 @@ static void spapr_machine_init(MachineState *machine)
-     /*
-      * if Secure VM (PEF) support is configured, then initialize it
-      */
--    pef_kvm_init(machine->cgs, &error_fatal);
+     /* Need CPU model to be determined before we can set up PV */
+-    s390_pv_init(machine->cgs, &error_fatal);
 +    if (machine->cgs) {
 +        confidential_guest_kvm_init(machine->cgs, &error_fatal);
 +    }
  
-     msi_nonbroken = true;
+     s390_flic_init();
  
+diff --git a/target/s390x/kvm/pv.c b/target/s390x/kvm/pv.c
+index 7ca7faec73e..dde836d21ae 100644
+--- a/target/s390x/kvm/pv.c
++++ b/target/s390x/kvm/pv.c
+@@ -334,12 +334,17 @@ static bool s390_pv_guest_check(ConfidentialGuestSupport *cgs, Error **errp)
+     return s390_pv_check_cpus(errp);
+ }
+ 
+-int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
++static int s390_pv_kvm_init(ConfidentialGuestSupport *cgs, Error **errp)
+ {
+     if (!object_dynamic_cast(OBJECT(cgs), TYPE_S390_PV_GUEST)) {
+         return 0;
+     }
+ 
++    if (!kvm_enabled()) {
++        error_setg(errp, "Protected Virtualization requires KVM");
++        return -1;
++    }
++
+     if (!s390_has_feat(S390_FEAT_UNPACK)) {
+         error_setg(errp,
+                    "CPU model does not support Protected Virtualization");
+@@ -364,6 +369,9 @@ OBJECT_DEFINE_TYPE_WITH_INTERFACES(S390PVGuest,
+ 
+ static void s390_pv_guest_class_init(ObjectClass *oc, void *data)
+ {
++    ConfidentialGuestSupportClass *klass = CONFIDENTIAL_GUEST_SUPPORT_CLASS(oc);
++
++    klass->kvm_init = s390_pv_kvm_init;
+ }
+ 
+ static void s390_pv_guest_init(Object *obj)
 -- 
 2.44.0
 
