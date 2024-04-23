@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7683E8AEAB4
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 496D08AEA6E
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnf-0007Ku-2D; Tue, 23 Apr 2024 11:11:15 -0400
+	id 1rzHnF-0004lg-4y; Tue, 23 Apr 2024 11:10:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmk-0004Na-DD
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
+ id 1rzHml-0004O4-Pe
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmh-00006a-GE
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:18 -0400
+ id 1rzHmj-00007M-TU
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885014;
+ s=mimecast20190719; t=1713885016;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NlpPVTBNKVZ/awosdGXGLIItCtvp+4fpatVD/Uy1dPI=;
- b=HN4beVNIfdnZznBagLCkawUhsHUsM8zNJJ38j2uBLxGGIES+PuoYuGOxq2D6bjpFjcSgp8
- Vbsp4WDXhURnhCBWXYOvz2x4QumRHAUX43Z6dqLtbweuO3JbRry1wxZ172LAghBx0P0yQl
- fGBRuEo7FMuWe7l/+q8hLrcf2JQHiro=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-amladxOgOCyvuMKwWJb8QQ-1; Tue, 23 Apr 2024 11:10:12 -0400
-X-MC-Unique: amladxOgOCyvuMKwWJb8QQ-1
+ bh=SadQhGVyBNGCc2yb4bNQuwqA8RB/KCwIQ9JEK7fOvIg=;
+ b=QGGm8uYrl6nI0YGkSIZoJwn6TPD1RapeY9oEb4t3VouY2pcazVT2+LZFOICITzrza4V3VO
+ c96ZU+TsN+wj/gIL6cTvL2YTHTmja31sDNiHd2KOcqwJROYODLzSJdnlSpIgtvWRC4NwcB
+ R8aS1XkxNcnvMJ+OZR1/NGUKcPgiTgc=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-Hl4l0pYFMuGH13w2Oe3HiQ-1; Tue,
+ 23 Apr 2024 11:10:13 -0400
+X-MC-Unique: Hl4l0pYFMuGH13w2Oe3HiQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1D9E01827100;
- Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C613E3C23FCD
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 86AB4200AFA2;
- Tue, 23 Apr 2024 15:10:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5D03B2026D0A
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 18/63] stubs: move monitor_fdsets_cleanup with other fdset stubs
-Date: Tue, 23 Apr 2024 17:09:06 +0200
-Message-ID: <20240423150951.41600-19-pbonzini@redhat.com>
+Subject: [PULL 19/63] vga: optimize computation of dirty memory region
+Date: Tue, 23 Apr 2024 17:09:07 +0200
+Message-ID: <20240423150951.41600-20-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -79,59 +78,64 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Even though monitor_get_fd() has to remain separate because it is mocked by
-tests/unit/test-util-sockets, monitor_fdsets_cleanup() is logically part
-of the stubs for monitor/fds.c, so move it there.
+The depth == 0 and depth == 15 have to be special cased because
+width * depth / 8 does not provide the correct scanline length.
+However, thanks to the recent reorganization of vga_draw_graphic()
+the correct value of VRAM bits per pixel is available in "bits".
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240408155330.522792-19-pbonzini@redhat.com>
+Use it (via the same "bwidth" computation that is used later in
+the function), thus restricting the slow path to the wraparound case.
+
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/fdset.c            | 6 ++++++
- stubs/monitor-internal.c | 5 -----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ hw/display/vga.c | 24 +++++++-----------------
+ 1 file changed, 7 insertions(+), 17 deletions(-)
 
-diff --git a/stubs/fdset.c b/stubs/fdset.c
-index 56b3663d588..d7c39a28acb 100644
---- a/stubs/fdset.c
-+++ b/stubs/fdset.c
-@@ -1,5 +1,7 @@
- #include "qemu/osdep.h"
-+#include "qapi/error.h"
- #include "monitor/monitor.h"
-+#include "../monitor/monitor-internal.h"
+diff --git a/hw/display/vga.c b/hw/display/vga.c
+index 77f59e8c113..77d709a3d69 100644
+--- a/hw/display/vga.c
++++ b/hw/display/vga.c
+@@ -1574,22 +1574,16 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
  
- int monitor_fdset_dup_fd_add(int64_t fdset_id, int flags)
- {
-@@ -15,3 +17,7 @@ int64_t monitor_fdset_dup_fd_find(int dup_fd)
- void monitor_fdset_dup_fd_remove(int dupfd)
- {
- }
-+
-+void monitor_fdsets_cleanup(void)
-+{
-+}
-diff --git a/stubs/monitor-internal.c b/stubs/monitor-internal.c
-index 20786ac4ffb..4fece49d531 100644
---- a/stubs/monitor-internal.c
-+++ b/stubs/monitor-internal.c
-@@ -1,7 +1,6 @@
- #include "qemu/osdep.h"
- #include "qapi/error.h"
- #include "monitor/monitor.h"
--#include "../monitor/monitor-internal.h"
+     /* Horizontal pel panning bit 3 is only used in text mode.  */
+     hpel = bits <= 8 ? s->params.hpel & 7 : 0;
++    bwidth = DIV_ROUND_UP(width * bits, 8); /* scanline length */
++    if (hpel) {
++        bwidth += 4;
++    }
  
- int monitor_get_fd(Monitor *mon, const char *name, Error **errp)
- {
-@@ -12,7 +11,3 @@ int monitor_get_fd(Monitor *mon, const char *name, Error **errp)
- void monitor_init_hmp(Chardev *chr, bool use_readline, Error **errp)
- {
- }
--
--void monitor_fdsets_cleanup(void)
--{
--}
+     region_start = (s->params.start_addr * 4);
+-    region_end = region_start + (ram_addr_t)s->params.line_offset * height;
+-    region_end += width * depth / 8; /* scanline length */
+-    region_end -= s->params.line_offset;
+-    if (hpel) {
+-        region_end += 4;
+-    }
+-    if (region_end > s->vbe_size || depth == 0 || depth == 15) {
++    region_end = region_start + (ram_addr_t)s->params.line_offset * (height - 1) + bwidth;
++    if (region_end > s->vbe_size) {
+         /*
+-         * We land here on:
+-         *  - wraps around (can happen with cirrus vbe modes)
+-         *  - depth == 0 (256 color palette video mode)
+-         *  - depth == 15
+-         *
+-         * Take the safe and slow route:
++         * On wrap around take the safe and slow route:
+          *   - create a dirty bitmap snapshot for all vga memory.
+          *   - force shadowing (so all vga memory access goes
+          *     through vga_read_*() helpers).
+@@ -1667,10 +1661,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+            s->params.line_compare, sr(s, VGA_SEQ_CLOCK_MODE));
+ #endif
+     addr1 = (s->params.start_addr * 4);
+-    bwidth = DIV_ROUND_UP(width * bits, 8);
+-    if (hpel) {
+-        bwidth += 4;
+-    }
+     y_start = -1;
+     d = surface_data(surface);
+     linesize = surface_stride(surface);
 -- 
 2.44.0
 
