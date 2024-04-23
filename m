@@ -2,82 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C6F8AE7D7
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:19:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6A68AE7C9
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:17:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzG0n-0005Au-8S; Tue, 23 Apr 2024 09:16:41 -0400
+	id 1rzG0q-0005BY-L3; Tue, 23 Apr 2024 09:16:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0l-0005A7-Di
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzG0o-0005BA-0T
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzG0j-0001ut-SU
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:39 -0400
+ id 1rzG0m-0001vK-DZ
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713878196;
+ s=mimecast20190719; t=1713878199;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Egl3GcZqSB42uzZMSKlL6fe7IRgq+LTcd6BHkfvOPqo=;
- b=LlBRkEZvZfJpYrB6dF5/Y1wlWuiWJWyqCeatK8Xcc3t7Y+H84uyK5t0VVSk7SqphzDVrIB
- CIRa62Y8QPOYy6jaWy5yw6L8c8+LTT2Jt3WdzbFN1r9wBgSXocxnjCgbGSc4Ycr6wVBsE5
- +fz1fz11Log6KF3pOguyW+UvkEuR3wI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=g0PAnrr4ct5Hs7lBGT5lWUo0Jjpb/hEa5kBgK9HEkWI=;
+ b=X0Ff4mnDbZ9OimjYlpyGDyK+qmNQ4qft7Bl2Pp2OSbPReKASKPd0wv2wfehlNXZ+14SDOm
+ QmPmtoUfQZHRtcQSdsrn1dQAJMOZRAOie2kGpir9qXS6aUo3drPxGVcPMOPgCnQpQw7y+9
+ w4jN+NN/Wl+8EJmwbEDAxZiowZt1cyA=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-KYZyQVhRM0GVCIGiUw1sbg-1; Tue, 23 Apr 2024 09:16:35 -0400
-X-MC-Unique: KYZyQVhRM0GVCIGiUw1sbg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-a51a2113040so265449766b.0
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:35 -0700 (PDT)
+ us-mta-328-pGqRnV39OoiL7fIzp-6vlA-1; Tue, 23 Apr 2024 09:16:38 -0400
+X-MC-Unique: pGqRnV39OoiL7fIzp-6vlA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a51fdbd06c8so393394166b.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713878192; x=1714482992;
+ d=1e100.net; s=20230601; t=1713878196; x=1714482996;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Egl3GcZqSB42uzZMSKlL6fe7IRgq+LTcd6BHkfvOPqo=;
- b=ti9t91I026TRpgYVnZyq9KawGLMUTUTrvgVAE6pOutoklz5RtsH/neT7HXxYqRxn/i
- h8j9Zfj6FQYuxb2ujf4nEW4UICNYb2E/5Pi7A9+tLXlJQQOayFJBDhL64uUc5aA84sJH
- AOVh18haeL875NiBtbaCmkSWi0oYCgWLyeugiYCASIYE5mIWEGqTK9Vyp1JvJnslUXE+
- DJynROUSDSK9kX3GCbyzEnj+wCOTF1jF+3ZliAsLExRGTGAdbdFT5qNZqLQLG9sbar2y
- rGaudQOU/n5YR7auVLjYpEujN5NDRMUBs73y368fqKye8Gml+TUCh01Spj0MJAOwT9FS
- A3hA==
-X-Gm-Message-State: AOJu0Yx5JTzqk9QFG6wZ90qtc0PAy2Mztmf6ITjBDluTdJiaHn+0I/MW
- 5utXK0gxdZm7LdJj/7K9YpVKhVPgKIIco+n/7s/VxmULiU5Dw2uK82mlBVRINa69kgiTCnA52Uh
- vDUtYXRpPGrb24Rxh/B09ldLRr09kYFVZ2/iaqptrUhIyd7WBDShP7+tYrcjo1WOuaVwNdWC0iB
- mbGtwaJI9Y3ryJMkG6zVejaeBVnTCm++NSzW7I
-X-Received: by 2002:a17:906:fb92:b0:a52:430a:19bd with SMTP id
- lr18-20020a170906fb9200b00a52430a19bdmr7193791ejb.73.1713878192463; 
- Tue, 23 Apr 2024 06:16:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgvVj1ViQby+xb/y7EPXeWt0l79fQlM5QBkQ/qULOEYi1A8zfQFbezELGB2rZdKEw0yYujzw==
-X-Received: by 2002:a17:906:fb92:b0:a52:430a:19bd with SMTP id
- lr18-20020a170906fb9200b00a52430a19bdmr7193782ejb.73.1713878192195; 
- Tue, 23 Apr 2024 06:16:32 -0700 (PDT)
+ bh=g0PAnrr4ct5Hs7lBGT5lWUo0Jjpb/hEa5kBgK9HEkWI=;
+ b=sw2GbwlgIwHgeDZIHRFbrzIc6OIHEG3fKaSI3nly6iv6d6mqWSGObdqwuB/ygvZKmz
+ 4uawMpHAgvT18SxsAXCOrot54iSHhe5Fvpa8GijEvdrcosAV7fDSkXeEjx5xMjS7kCnc
+ X5So7hC5kvP3syfUFYvnipaN81VlJdI6uALPwE/sVe5KfhGIO/8xA6nIyIFJAy8Gl6DB
+ fxHtGvk/tOmHT2au2TqPOGDp8Czo5Q8GQG8YSD78H+YgtefA5+Mjj4AVwCnMbVp3Dq6u
+ wZXdM6JsUfASMTObZgbjzZEqAjFoth1xRBW3xPhRMGjIVv79KwuAZnl8GsYzA2OdiU8H
+ fQ+w==
+X-Gm-Message-State: AOJu0Yw1CcBrApZpHg4238iOMSSUrnFbmtzEhnar6zmiiqrlVe6DkDFU
+ /QS++sAzErbI2hW/0rkbPHhIn2zp1TdJumvz3zQhv0UMNaqvuHz2YQxnItr/FxDyV1kdcl8/9am
+ yT85YBPiSvvw3AKQplqvlSFxQRLkp1VnuNR3hj7zlZVa4V8mCcHiEsncuEDEwASIPOv/01wDowt
+ 8+G70Mg/BoDdlp+rqAvqgEHI1GEm8/xwNU2K2a
+X-Received: by 2002:a50:8ad1:0:b0:56e:428d:77c1 with SMTP id
+ k17-20020a508ad1000000b0056e428d77c1mr8562423edk.36.1713878196468; 
+ Tue, 23 Apr 2024 06:16:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5G5dP5qhgp2ZCZIbbww1LTtTwcy48eitEGBU2ufgqYEi+Hp0NKisk4mbHJqvj4hDMXWGJhA==
+X-Received: by 2002:a50:8ad1:0:b0:56e:428d:77c1 with SMTP id
+ k17-20020a508ad1000000b0056e428d77c1mr8562409edk.36.1713878196203; 
+ Tue, 23 Apr 2024 06:16:36 -0700 (PDT)
 Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- k10-20020a17090627ca00b00a57b8297ad8sm1610905ejc.58.2024.04.23.06.16.31
+ cn18-20020a0564020cb200b00571bfc97b79sm6350281edb.55.2024.04.23.06.16.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 06:16:31 -0700 (PDT)
+ Tue, 23 Apr 2024 06:16:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org,
 	farosas@suse.de
-Subject: [PATCH 07/22] i386: switch boards to "default y"
-Date: Tue, 23 Apr 2024 15:15:57 +0200
-Message-ID: <20240423131612.28362-8-pbonzini@redhat.com>
+Subject: [PATCH 08/22] loongarch: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:15:58 +0200
+Message-ID: <20240423131612.28362-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423131612.28362-1-pbonzini@redhat.com>
 References: <20240423131612.28362-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -103,92 +103,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Some targets use "default y" for boards to filter out those that require
 TCG.  For consistency we are switching all other targets to do the same.
-Continue with i386.
+Continue with Loongarch.
 
-No changes to generated config-devices.mak files, other than
-adding CONFIG_I386 to the x86_64-softmmu target.
+No changes to generated config-devices.mak file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/devices/i386-softmmu/default.mak | 11 +++++------
- hw/i386/Kconfig                          | 10 +++++++++-
- target/i386/Kconfig                      |  1 +
- 3 files changed, 15 insertions(+), 7 deletions(-)
+ configs/devices/loongarch64-softmmu/default.mak | 3 ++-
+ hw/loongarch/Kconfig                            | 2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/configs/devices/i386-softmmu/default.mak b/configs/devices/i386-softmmu/default.mak
-index 598c6646dfc..448e3e3b1ba 100644
---- a/configs/devices/i386-softmmu/default.mak
-+++ b/configs/devices/i386-softmmu/default.mak
-@@ -24,9 +24,8 @@
- #CONFIG_VTD=n
- #CONFIG_SGX=n
+diff --git a/configs/devices/loongarch64-softmmu/default.mak b/configs/devices/loongarch64-softmmu/default.mak
+index 0893112b81d..ffe705836fd 100644
+--- a/configs/devices/loongarch64-softmmu/default.mak
++++ b/configs/devices/loongarch64-softmmu/default.mak
+@@ -3,4 +3,5 @@
+ # Uncomment the following lines to disable these optional devices:
+ # CONFIG_PCI_DEVICES=n
  
--# Boards:
--#
--CONFIG_ISAPC=y
--CONFIG_I440FX=y
--CONFIG_Q35=y
--CONFIG_MICROVM=y
+-CONFIG_LOONGARCH_VIRT=y
 +# Boards are selected by default, uncomment to keep out of the build.
-+# CONFIG_ISAPC=n
-+# CONFIG_I440FX=n
-+# CONFIG_Q35=n
-+# CONFIG_MICROVM=n
-diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
-index a6ee052f9a1..4362164962c 100644
---- a/hw/i386/Kconfig
-+++ b/hw/i386/Kconfig
-@@ -66,6 +66,8 @@ config PC_ACPI
- 
- config I440FX
++# CONFIG_LOONGARCH_VIRT=n
+diff --git a/hw/loongarch/Kconfig b/hw/loongarch/Kconfig
+index 5727efed6d8..78640505630 100644
+--- a/hw/loongarch/Kconfig
++++ b/hw/loongarch/Kconfig
+@@ -1,5 +1,7 @@
+ config LOONGARCH_VIRT
      bool
 +    default y
-+    depends on I386
-     imply E1000_PCI
-     imply VMPORT
-     imply VMMOUSE
-@@ -81,6 +83,8 @@ config I440FX
- 
- config ISAPC
-     bool
-+    default y
-+    depends on I386
-     imply VGA_ISA
-     select ISA_BUS
-     select PC
-@@ -91,6 +95,8 @@ config ISAPC
- 
- config Q35
-     bool
-+    default y
-+    depends on I386
-     imply VTD
-     imply AMD_IOMMU
-     imply E1000E_PCI_EXPRESS
-@@ -108,6 +114,8 @@ config Q35
- 
- config MICROVM
-     bool
-+    default y
-+    depends on I386
-     select SERIAL_ISA # for serial_hds_isa_init()
-     select ISA_BUS
-     select APIC
-@@ -142,4 +150,4 @@ config VMMOUSE
- config XEN_EMU
-     bool
-     default y
--    depends on KVM && (I386 || X86_64)
-+    depends on KVM && I386
-diff --git a/target/i386/Kconfig b/target/i386/Kconfig
-index ce6968906ee..3e62fdc7064 100644
---- a/target/i386/Kconfig
-+++ b/target/i386/Kconfig
-@@ -3,3 +3,4 @@ config I386
- 
- config X86_64
-     bool
-+    select I386
++    depends on LOONGARCH64
+     select PCI
+     select PCI_EXPRESS_GENERIC_BRIDGE
+     imply VIRTIO_VGA
 -- 
 2.44.0
 
