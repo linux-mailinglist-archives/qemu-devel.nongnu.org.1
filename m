@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376878AFC03
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBF98AFBDB
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOoA-00048P-3O; Tue, 23 Apr 2024 18:40:16 -0400
+	id 1rzOn6-0001pe-BB; Tue, 23 Apr 2024 18:39:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmV-0001Qw-Kq
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmV-0001Qv-KU
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmQ-00065j-Ht
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:28 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmR-00065v-Oe
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713911905;
+ s=mimecast20190719; t=1713911907;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5Gv2ze+DH5z8/6YTJMF78HsxLvKiWjs9ByVuDww7VIY=;
- b=bQgesmrGZGrQitAE2DLaln5n9y/ULKSvLGi8zH0ud6oJlZbRbIDgpxoAibCN0SGEW8rAcX
- +BQfAvg3csmlHzIXR1FhfyYXceGpP6aoyMRbrhBDHAhvyzmUoWXBOU6zZoEDAC52HmSRpw
- RaS30nRt4EV+E1E5xACSxkEZdy8KBnU=
-Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
- [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=d8tdYWqm0jGED0Z2NZXkzbiQXY2iDqRN/UMYVn/huvg=;
+ b=RfU7p2KWNRSSOGDBptiEz8nsXYFu4is7B801CWCIWJ9WgNyttMXHVj5NlUyT7RM6ZJ329x
+ 8DL+hB6h2iSdg4MBvZ6xs3i5iKzaB2ZHmFm80G9fMG62qJiWPque0TfXfSvwmDzSKmTAni
+ yhbKlXHEOmMtCNJXgvKDJVK0DrvTxNg=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-163-vlnlP7_AOqyVbC9sAyezaw-1; Tue, 23 Apr 2024 18:38:24 -0400
-X-MC-Unique: vlnlP7_AOqyVbC9sAyezaw-1
-Received: by mail-vs1-f72.google.com with SMTP id
- ada2fe7eead31-479d52894a3so245037137.0
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:24 -0700 (PDT)
+ us-mta-191-XOw_T4KnN_yHp9kHVxSwqg-1; Tue, 23 Apr 2024 18:38:25 -0400
+X-MC-Unique: XOw_T4KnN_yHp9kHVxSwqg-1
+Received: by mail-ot1-f69.google.com with SMTP id
+ 46e09a7af769-6eba7dc8f1dso1414133a34.2
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911904; x=1714516704;
+ d=1e100.net; s=20230601; t=1713911905; x=1714516705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5Gv2ze+DH5z8/6YTJMF78HsxLvKiWjs9ByVuDww7VIY=;
- b=ouKHwzS8T7rIxXHGUO64W/bBEyuQI20h9n3RgsnKO6triU7o4IYRxyLjvoKNUyRpL5
- ssibnYx0Y1SJyQ92OjQGOeKD25SgqjI04Whl4lSqfGfXRfyGbjN73OUrdKAm0RO0PQS7
- 8U1Yx7nvPyWHZ9VhkGnoP4IqyQiYZWCU66l822UIouGXmJOIpHsY41rQn13ld0+93qSZ
- ZphpCZu5kihQW5R5yrFs/8SpkcPUrrwNNQJYx35CEZrqxgsVB/pZPaLJ+LdBQHXSSUCv
- h0KpXS2CgFrqon6w4etsKiBwVizE8KENUMGXk2lCYhxxfWadPV5uF4BFpEmUZaNZmx/i
- PNQQ==
-X-Gm-Message-State: AOJu0Ywa6Da+Sa6bVvpvJ8MpEJvqTvBWY0LWgNe9uf5SbCguTtVxCLRg
- ypooI7ZEV4vyIi05e4Gc4cDBU3t3SVu8Rj+pDR7MXSGqqenEPs0OLXrtayxkHw2ydMAY2e/8eja
- z43ahdxUnIUiJhCizHjc+GkoCnqXCqN7JTnIAq2MtE4rHOcR0WAnKZsH6D4ANMGYtIqwOGjfEcV
- rwevkAWe2FiZhEJu7Et58D8LGsfSR8/t7BNQ==
-X-Received: by 2002:a05:6122:984:b0:4da:a7fb:67c with SMTP id
- g4-20020a056122098400b004daa7fb067cmr1064598vkd.0.1713911903650; 
- Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEiMN5ivqcp+spTPgIFiVwFfp7BaGTa+DMJbSZtw4pxb/2QtN+6weW7T6mNDrArZ+l4p3DCAQ==
-X-Received: by 2002:a05:6122:984:b0:4da:a7fb:67c with SMTP id
- g4-20020a056122098400b004daa7fb067cmr1064572vkd.0.1713911903102; 
+ bh=d8tdYWqm0jGED0Z2NZXkzbiQXY2iDqRN/UMYVn/huvg=;
+ b=PjuPrMCsmVO+T0aA01EY7PdhK1vnV9BJoaCW5EudylltFQ2i4yHRSq2P+UhqMpx5aI
+ WYsMjFhgaADWiXcOd3znE71+Z1PNxlMDivFUqeAq/4Xt3QrFbcKmiTt08wgX5zWudh3M
+ N76BLzK5uprXtn586uSmPCJ7XLnTt0N4UzLKx0yZnmMihv4/bfgXulZi+l1hM9gdnpg7
+ WQ5GWaIL8T04RLHTSkfM/QD+dX9lhAoB1/AOQHedANVN7jgb30qYxXz9GMPy4ax6oQ11
+ D6XoSpFCtslMVrSoszjY7CBsir/8oMuZSAcRsj4TyMvce+DLnyOPpQJUG/R4yxJlHkQP
+ F7tA==
+X-Gm-Message-State: AOJu0YzGGRzgKQ55AeVKEyZcw3YLC4OeB2XnfIlK1MvINsNT6kBA5hoU
+ FtDIqHi9BoedwswlgRRIhm7QhSNN36/y+O7ThLeEEtkUHJK6MJumuGlALbFZrbGlBLTMRqtWvHD
+ yrK39EoHCGowSp15v2OJmkxrmjwtu6JDSOKJLXbHrps7qCdmFPjjpDv89BtDJq3S3B9DhgvCv/g
+ ZdTKZZS4iF/LDVyqt5YTG7QsU8FnBr6x7xig==
+X-Received: by 2002:a05:6830:16c3:b0:6eb:7caf:6d7 with SMTP id
+ l3-20020a05683016c300b006eb7caf06d7mr1063843otr.3.1713911904491; 
+ Tue, 23 Apr 2024 15:38:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEwXyVpCeJe+DWVmMPs+XNWK05GObaz/oteDLoR+HNFEov31XgENwUk3ew42Sd9kT9QyKNUEg==
+X-Received: by 2002:a05:6830:16c3:b0:6eb:7caf:6d7 with SMTP id
+ l3-20020a05683016c300b006eb7caf06d7mr1063816otr.3.1713911903904; 
  Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.22
+ c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:38:22 -0700 (PDT)
+ Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  Het Gala <het.gala@nutanix.com>
-Subject: [PULL 03/26] tests/qtest/migration: Replace migrate_get_connect_uri
- inplace of migrate_get_socket_address
-Date: Tue, 23 Apr 2024 18:37:50 -0400
-Message-ID: <20240423223813.3237060-4-peterx@redhat.com>
+Subject: [PULL 04/26] tests/qtest/migration: Add channels parameter in
+ migrate_qmp_fail
+Date: Tue, 23 Apr 2024 18:37:51 -0400
+Message-ID: <20240423223813.3237060-5-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423223813.3237060-1-peterx@redhat.com>
 References: <20240423223813.3237060-1-peterx@redhat.com>
@@ -102,81 +102,90 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Het Gala <het.gala@nutanix.com>
 
-Refactor migrate_get_socket_address to internally utilize 'socket-address'
-parameter, reducing redundancy in the function definition.
-
-migrate_get_socket_address implicitly converts SocketAddress into str.
-Move migrate_get_socket_address inside migrate_get_connect_uri which
-should return the uri string instead.
+Alter migrate_qmp_fail() to allow both uri and channels
+independently. For channels, convert string to a Dict.
+No dealing with migrate_get_socket_address() here because
+we will fail before starting the migration anyway.
 
 Signed-off-by: Het Gala <het.gala@nutanix.com>
 Suggested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240312202634.63349-4-het.gala@nutanix.com
+Link: https://lore.kernel.org/r/20240312202634.63349-5-het.gala@nutanix.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-helpers.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ tests/qtest/migration-helpers.h |  5 +++--
+ tests/qtest/migration-helpers.c | 13 +++++++++++--
+ tests/qtest/migration-test.c    |  4 ++--
+ 3 files changed, 16 insertions(+), 6 deletions(-)
 
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index e16a34c796..4e664148a5 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -33,8 +33,9 @@ G_GNUC_PRINTF(3, 4)
+ void migrate_incoming_qmp(QTestState *who, const char *uri,
+                           const char *fmt, ...);
+ 
+-G_GNUC_PRINTF(3, 4)
+-void migrate_qmp_fail(QTestState *who, const char *uri, const char *fmt, ...);
++G_GNUC_PRINTF(4, 5)
++void migrate_qmp_fail(QTestState *who, const char *uri,
++                      const char *channels, const char *fmt, ...);
+ 
+ void migrate_set_capability(QTestState *who, const char *capability,
+                             bool value);
 diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index 3e8c19c4de..8806dc841e 100644
+index 8806dc841e..f215f44467 100644
 --- a/tests/qtest/migration-helpers.c
 +++ b/tests/qtest/migration-helpers.c
-@@ -48,28 +48,37 @@ static char *SocketAddress_to_str(SocketAddress *addr)
-     }
+@@ -100,7 +100,8 @@ bool migrate_watch_for_events(QTestState *who, const char *name,
+     return false;
  }
  
--static char *
--migrate_get_socket_address(QTestState *who, const char *parameter)
-+static SocketAddress *migrate_get_socket_address(QTestState *who)
+-void migrate_qmp_fail(QTestState *who, const char *uri, const char *fmt, ...)
++void migrate_qmp_fail(QTestState *who, const char *uri,
++                      const char *channels, const char *fmt, ...)
  {
-     QDict *rsp;
--    char *result;
-     SocketAddressList *addrs;
-+    SocketAddress *addr;
-     Visitor *iv = NULL;
-     QObject *object;
- 
-     rsp = migrate_query(who);
--    object = qdict_get(rsp, parameter);
-+    object = qdict_get(rsp, "socket-address");
- 
-     iv = qobject_input_visitor_new(object);
-     visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
-+    addr = addrs->value;
-     visit_free(iv);
- 
--    /* we are only using a single address */
--    result = SocketAddress_to_str(addrs->value);
--
--    qapi_free_SocketAddressList(addrs);
-     qobject_unref(rsp);
--    return result;
-+    return addr;
-+}
-+
-+static char *
-+migrate_get_connect_uri(QTestState *who)
-+{
-+    SocketAddress *addrs;
-+    char *connect_uri;
-+
-+    addrs = migrate_get_socket_address(who);
-+    connect_uri = SocketAddress_to_str(addrs);
-+
-+    qapi_free_SocketAddress(addrs);
-+    return connect_uri;
- }
- 
- bool migrate_watch_for_events(QTestState *who, const char *name,
-@@ -129,7 +138,7 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
+     va_list ap;
+     QDict *args, *err;
+@@ -110,7 +111,15 @@ void migrate_qmp_fail(QTestState *who, const char *uri, const char *fmt, ...)
+     va_end(ap);
  
      g_assert(!qdict_haskey(args, "uri"));
-     if (!uri) {
--        connect_uri = migrate_get_socket_address(to, "socket-address");
-+        connect_uri = migrate_get_connect_uri(to);
+-    qdict_put_str(args, "uri", uri);
++    if (uri) {
++        qdict_put_str(args, "uri", uri);
++    }
++
++    g_assert(!qdict_haskey(args, "channels"));
++    if (channels) {
++        QObject *channels_obj = qobject_from_json(channels, &error_abort);
++        qdict_put_obj(args, "channels", channels_obj);
++    }
+ 
+     err = qtest_qmp_assert_failure_ref(
+         who, "{ 'execute': 'migrate', 'arguments': %p}", args);
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 0c76fe2615..763ff27f33 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -1717,7 +1717,7 @@ static void test_precopy_common(MigrateCommon *args)
      }
-     qdict_put_str(args, "uri", uri ? uri : connect_uri);
+ 
+     if (args->result == MIG_TEST_QMP_ERROR) {
+-        migrate_qmp_fail(from, args->connect_uri, "{}");
++        migrate_qmp_fail(from, args->connect_uri, NULL, "{}");
+         goto finish;
+     }
+ 
+@@ -1812,7 +1812,7 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
+     }
+ 
+     if (args->result == MIG_TEST_QMP_ERROR) {
+-        migrate_qmp_fail(from, args->connect_uri, "{}");
++        migrate_qmp_fail(from, args->connect_uri, NULL, "{}");
+         goto finish;
+     }
  
 -- 
 2.44.0
