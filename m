@@ -2,60 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439C98AEA61
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039408AEAB7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnJ-00057b-6t; Tue, 23 Apr 2024 11:10:53 -0400
+	id 1rzHnI-000561-JT; Tue, 23 Apr 2024 11:10:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmm-0004Ou-8E
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzHmo-0004SR-CT
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmj-00007N-TG
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
+ id 1rzHmm-000089-31
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885016;
+ s=mimecast20190719; t=1713885019;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fsp+LIRyKEp36ECWTky61fIKHdbp9NieE8/Mzncu1DI=;
- b=FaeEw3+tavQyA0Vg7pA75GM7fuDBkR4AGOPGLsHed9vIsqu4rQXH7OBurD7PXXIo3Dg+N2
- 8JFAeAJUwxq+KwCoLEpR1lWbqbVOhXD/Qpg3G1tWi2dBRoU87AB65SjycO01K/eZU4Maji
- wiUv3LMVDqzxFQKs8oANTuvqftAYBI8=
+ bh=bUMHGpCVxIHKiN0MLiRHD2ZyHKe2Wcki4o8FSWGa7Ro=;
+ b=Vf2a5JfOeFokpOhEdW2cHDyf0Ajx4g53zRXf72stj5YyABt3xHw0cA89wjV1YYzveN8WwH
+ PEDHqfpTiLUlx1U57tlzMh++DL4BnQdFI2jmlhh3wMG9wGnctv5BGKbDbxxu4tGSCmIssQ
+ ooQ8XEXlpVNYH3wtHz6GnHKmv4i/IDg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-21-Fh-wHzYyMnq2rKqrPP5MJg-1; Tue,
- 23 Apr 2024 11:10:14 -0400
-X-MC-Unique: Fh-wHzYyMnq2rKqrPP5MJg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-198-IcqTNz9HO-6AmkMANVspog-1; Tue,
+ 23 Apr 2024 11:10:15 -0400
+X-MC-Unique: IcqTNz9HO-6AmkMANVspog-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 34CB03811701
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:14 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A079729ABA14;
+ Tue, 23 Apr 2024 15:10:15 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BCAA9200AFA2
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:13 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7902A20296D2;
+ Tue, 23 Apr 2024 15:10:14 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/63] kvm: use configs/ definition to conditionalize debug
- support
-Date: Tue, 23 Apr 2024 17:09:09 +0200
-Message-ID: <20240423150951.41600-22-pbonzini@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>, Zhao Liu <zhao1.liu@intel.com>,
+ Gavin Shan <gshan@redhat.com>
+Subject: [PULL 22/63] hw: Add compat machines for 9.1
+Date: Tue, 23 Apr 2024 17:09:10 +0200
+Message-ID: <20240423150951.41600-23-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -79,182 +81,273 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If an architecture adds support for KVM_CAP_SET_GUEST_DEBUG but QEMU does not
-have the necessary code, QEMU will fail to build after updating kernel headers.
-Avoid this by using a #define in config-target.h instead of KVM_CAP_SET_GUEST_DEBUG.
+Add 9.1 machine types for arm/i440fx/m68k/q35/s390x/spapr.
 
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Acked-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Cc: Gavin Shan <gshan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configs/targets/aarch64-softmmu.mak |  1 +
- configs/targets/i386-softmmu.mak    |  1 +
- configs/targets/ppc-softmmu.mak     |  1 +
- configs/targets/ppc64-softmmu.mak   |  1 +
- configs/targets/s390x-softmmu.mak   |  1 +
- configs/targets/x86_64-softmmu.mak  |  1 +
- include/sysemu/kvm.h                |  2 +-
- include/sysemu/kvm_int.h            |  2 +-
- accel/kvm/kvm-accel-ops.c           |  4 ++--
- accel/kvm/kvm-all.c                 | 10 +++++-----
- 10 files changed, 15 insertions(+), 9 deletions(-)
+ include/hw/boards.h        |  3 +++
+ include/hw/i386/pc.h       |  3 +++
+ hw/arm/virt.c              | 11 +++++++++--
+ hw/core/machine.c          |  3 +++
+ hw/i386/pc.c               |  3 +++
+ hw/i386/pc_piix.c          | 17 ++++++++++++++---
+ hw/i386/pc_q35.c           | 14 ++++++++++++--
+ hw/m68k/virt.c             | 11 +++++++++--
+ hw/ppc/spapr.c             | 17 ++++++++++++++---
+ hw/s390x/s390-virtio-ccw.c | 14 +++++++++++++-
+ 10 files changed, 83 insertions(+), 13 deletions(-)
 
-diff --git a/configs/targets/aarch64-softmmu.mak b/configs/targets/aarch64-softmmu.mak
-index b4338e95680..83c22391a69 100644
---- a/configs/targets/aarch64-softmmu.mak
-+++ b/configs/targets/aarch64-softmmu.mak
-@@ -1,5 +1,6 @@
- TARGET_ARCH=aarch64
- TARGET_BASE_ARCH=arm
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/aarch64-core.xml gdb-xml/aarch64-fpu.xml gdb-xml/arm-core.xml gdb-xml/arm-vfp.xml gdb-xml/arm-vfp3.xml gdb-xml/arm-vfp-sysregs.xml gdb-xml/arm-neon.xml gdb-xml/arm-m-profile.xml gdb-xml/arm-m-profile-mve.xml gdb-xml/aarch64-pauth.xml
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/i386-softmmu.mak b/configs/targets/i386-softmmu.mak
-index 6b3c99fc86c..d61b5076134 100644
---- a/configs/targets/i386-softmmu.mak
-+++ b/configs/targets/i386-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_NEED_FDT=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/i386-32bit.xml
-diff --git a/configs/targets/ppc-softmmu.mak b/configs/targets/ppc-softmmu.mak
-index 774440108f7..f3ea9c98f75 100644
---- a/configs/targets/ppc-softmmu.mak
-+++ b/configs/targets/ppc-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=ppc
- TARGET_BIG_ENDIAN=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/power-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/ppc64-softmmu.mak b/configs/targets/ppc64-softmmu.mak
-index ddf0c39617f..1db8d8381d0 100644
---- a/configs/targets/ppc64-softmmu.mak
-+++ b/configs/targets/ppc64-softmmu.mak
-@@ -2,5 +2,6 @@ TARGET_ARCH=ppc64
- TARGET_BASE_ARCH=ppc
- TARGET_BIG_ENDIAN=y
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/power64-core.xml gdb-xml/power-fpu.xml gdb-xml/power-altivec.xml gdb-xml/power-spe.xml gdb-xml/power-vsx.xml
- TARGET_NEED_FDT=y
-diff --git a/configs/targets/s390x-softmmu.mak b/configs/targets/s390x-softmmu.mak
-index 70d2f9f0ba0..b22218aacc8 100644
---- a/configs/targets/s390x-softmmu.mak
-+++ b/configs/targets/s390x-softmmu.mak
-@@ -1,4 +1,5 @@
- TARGET_ARCH=s390x
- TARGET_BIG_ENDIAN=y
- TARGET_SUPPORTS_MTTCG=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/s390x-core64.xml gdb-xml/s390-acr.xml gdb-xml/s390-fpr.xml gdb-xml/s390-vx.xml gdb-xml/s390-cr.xml gdb-xml/s390-virt.xml gdb-xml/s390-virt-kvm.xml gdb-xml/s390-gs.xml
-diff --git a/configs/targets/x86_64-softmmu.mak b/configs/targets/x86_64-softmmu.mak
-index 197817c9434..c5f882e5ba1 100644
---- a/configs/targets/x86_64-softmmu.mak
-+++ b/configs/targets/x86_64-softmmu.mak
-@@ -2,4 +2,5 @@ TARGET_ARCH=x86_64
- TARGET_BASE_ARCH=i386
- TARGET_SUPPORTS_MTTCG=y
- TARGET_NEED_FDT=y
-+TARGET_KVM_HAVE_GUEST_DEBUG=y
- TARGET_XML_FILES= gdb-xml/i386-64bit.xml
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index fad9a7e8ff3..2cba899270c 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -224,7 +224,7 @@ void kvm_flush_coalesced_mmio_buffer(void);
-  * calling down to kvm_arch_update_guest_debug after the generic
-  * fields have been set.
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 8b8f6d5c00d..50e0cf4278e 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -425,6 +425,9 @@ struct MachineState {
+     } \
+     type_init(machine_initfn##_register_types)
+ 
++extern GlobalProperty hw_compat_9_0[];
++extern const size_t hw_compat_9_0_len;
++
+ extern GlobalProperty hw_compat_8_2[];
+ extern const size_t hw_compat_8_2_len;
+ 
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 27a68071d77..349f79df086 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -198,6 +198,9 @@ void pc_system_parse_ovmf_flash(uint8_t *flash_ptr, size_t flash_size);
+ /* sgx.c */
+ void pc_machine_init_sgx_epc(PCMachineState *pcms);
+ 
++extern GlobalProperty pc_compat_9_0[];
++extern const size_t pc_compat_9_0_len;
++
+ extern GlobalProperty pc_compat_8_2[];
+ extern const size_t pc_compat_8_2_len;
+ 
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index a9a913aeadb..c9119ef3847 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3223,10 +3223,17 @@ static void machvirt_machine_init(void)
+ }
+ type_init(machvirt_machine_init);
+ 
+-static void virt_machine_9_0_options(MachineClass *mc)
++static void virt_machine_9_1_options(MachineClass *mc)
+ {
+ }
+-DEFINE_VIRT_MACHINE_AS_LATEST(9, 0)
++DEFINE_VIRT_MACHINE_AS_LATEST(9, 1)
++
++static void virt_machine_9_0_options(MachineClass *mc)
++{
++    virt_machine_9_1_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++}
++DEFINE_VIRT_MACHINE(9, 0)
+ 
+ static void virt_machine_8_2_options(MachineClass *mc)
+ {
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 37ede0e7d4f..a92bec23147 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -33,6 +33,9 @@
+ #include "hw/virtio/virtio-iommu.h"
+ #include "audio/audio.h"
+ 
++GlobalProperty hw_compat_9_0[] = {};
++const size_t hw_compat_9_0_len = G_N_ELEMENTS(hw_compat_9_0);
++
+ GlobalProperty hw_compat_8_2[] = {
+     { "migration", "zero-page-detection", "legacy"},
+     { TYPE_VIRTIO_IOMMU_PCI, "granule", "4k" },
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 5c21b0c4dbf..b0d818b2094 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -78,6 +78,9 @@
+     { "qemu64-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },\
+     { "athlon-" TYPE_X86_CPU, "model-id", "QEMU Virtual CPU version " v, },
+ 
++GlobalProperty pc_compat_9_0[] = {};
++const size_t pc_compat_9_0_len = G_N_ELEMENTS(pc_compat_9_0);
++
+ GlobalProperty pc_compat_8_2[] = {};
+ const size_t pc_compat_8_2_len = G_N_ELEMENTS(pc_compat_8_2);
+ 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 18ba0766092..8850c49c66a 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -513,13 +513,26 @@ static void pc_i440fx_machine_options(MachineClass *m)
+                                      "Use a different south bridge than PIIX3");
+ }
+ 
+-static void pc_i440fx_9_0_machine_options(MachineClass *m)
++static void pc_i440fx_9_1_machine_options(MachineClass *m)
+ {
+     pc_i440fx_machine_options(m);
+     m->alias = "pc";
+     m->is_default = true;
+ }
+ 
++DEFINE_I440FX_MACHINE(v9_1, "pc-i440fx-9.1", NULL,
++                      pc_i440fx_9_1_machine_options);
++
++static void pc_i440fx_9_0_machine_options(MachineClass *m)
++{
++    pc_i440fx_9_1_machine_options(m);
++    m->alias = NULL;
++    m->is_default = false;
++
++    compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++    compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
++}
++
+ DEFINE_I440FX_MACHINE(v9_0, "pc-i440fx-9.0", NULL,
+                       pc_i440fx_9_0_machine_options);
+ 
+@@ -528,8 +541,6 @@ static void pc_i440fx_8_2_machine_options(MachineClass *m)
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+ 
+     pc_i440fx_9_0_machine_options(m);
+-    m->alias = NULL;
+-    m->is_default = false;
+ 
+     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
+     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index c7bc8a2041f..6e1180d4b60 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -365,12 +365,23 @@ static void pc_q35_machine_options(MachineClass *m)
+                      pc_q35_compat_defaults, pc_q35_compat_defaults_len);
+ }
+ 
+-static void pc_q35_9_0_machine_options(MachineClass *m)
++static void pc_q35_9_1_machine_options(MachineClass *m)
+ {
+     pc_q35_machine_options(m);
+     m->alias = "q35";
+ }
+ 
++DEFINE_Q35_MACHINE(v9_1, "pc-q35-9.1", NULL,
++                   pc_q35_9_1_machine_options);
++
++static void pc_q35_9_0_machine_options(MachineClass *m)
++{
++    pc_q35_9_1_machine_options(m);
++    m->alias = NULL;
++    compat_props_add(m->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++    compat_props_add(m->compat_props, pc_compat_9_0, pc_compat_9_0_len);
++}
++
+ DEFINE_Q35_MACHINE(v9_0, "pc-q35-9.0", NULL,
+                    pc_q35_9_0_machine_options);
+ 
+@@ -378,7 +389,6 @@ static void pc_q35_8_2_machine_options(MachineClass *m)
+ {
+     PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_9_0_machine_options(m);
+-    m->alias = NULL;
+     m->max_cpus = 1024;
+     compat_props_add(m->compat_props, hw_compat_8_2, hw_compat_8_2_len);
+     compat_props_add(m->compat_props, pc_compat_8_2, pc_compat_8_2_len);
+diff --git a/hw/m68k/virt.c b/hw/m68k/virt.c
+index b8e5e102e6b..09bc9bdfefb 100644
+--- a/hw/m68k/virt.c
++++ b/hw/m68k/virt.c
+@@ -357,10 +357,17 @@ type_init(virt_machine_register_types)
+     } \
+     type_init(machvirt_machine_##major##_##minor##_init);
+ 
+-static void virt_machine_9_0_options(MachineClass *mc)
++static void virt_machine_9_1_options(MachineClass *mc)
+ {
+ }
+-DEFINE_VIRT_MACHINE(9, 0, true)
++DEFINE_VIRT_MACHINE(9, 1, true)
++
++static void virt_machine_9_0_options(MachineClass *mc)
++{
++    virt_machine_9_1_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++}
++DEFINE_VIRT_MACHINE(9, 0, false)
+ 
+ static void virt_machine_8_2_options(MachineClass *mc)
+ {
+diff --git a/hw/ppc/spapr.c b/hw/ppc/spapr.c
+index e9bc97fee08..36ada4d0baf 100644
+--- a/hw/ppc/spapr.c
++++ b/hw/ppc/spapr.c
+@@ -4806,14 +4806,25 @@ static void spapr_machine_latest_class_options(MachineClass *mc)
+     type_init(spapr_machine_register_##suffix)
+ 
+ /*
+- * pseries-9.0
++ * pseries-9.1
   */
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap);
- #else
- static inline int kvm_update_guest_debug(CPUState *cpu, unsigned long reinject_trap)
-diff --git a/include/sysemu/kvm_int.h b/include/sysemu/kvm_int.h
-index 882e37e12c5..94488d2c1a2 100644
---- a/include/sysemu/kvm_int.h
-+++ b/include/sysemu/kvm_int.h
-@@ -78,7 +78,7 @@ struct KVMState
-     struct kvm_coalesced_mmio_ring *coalesced_mmio_ring;
-     bool coalesced_flush_in_progress;
-     int vcpu_events;
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     QTAILQ_HEAD(, kvm_sw_breakpoint) kvm_sw_breakpoints;
- #endif
-     int max_nested_state_len;
-diff --git a/accel/kvm/kvm-accel-ops.c b/accel/kvm/kvm-accel-ops.c
-index b3c946dc4b4..f5ac643fca3 100644
---- a/accel/kvm/kvm-accel-ops.c
-+++ b/accel/kvm/kvm-accel-ops.c
-@@ -85,7 +85,7 @@ static bool kvm_cpus_are_resettable(void)
-     return !kvm_enabled() || kvm_cpu_check_are_resettable();
- }
- 
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- static int kvm_update_guest_debug_ops(CPUState *cpu)
+-static void spapr_machine_9_0_class_options(MachineClass *mc)
++static void spapr_machine_9_1_class_options(MachineClass *mc)
  {
-     return kvm_update_guest_debug(cpu, 0);
-@@ -104,7 +104,7 @@ static void kvm_accel_ops_class_init(ObjectClass *oc, void *data)
-     ops->synchronize_state = kvm_cpu_synchronize_state;
-     ops->synchronize_pre_loadvm = kvm_cpu_synchronize_pre_loadvm;
- 
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     ops->update_guest_debug = kvm_update_guest_debug_ops;
-     ops->supports_guest_debug = kvm_supports_guest_debug;
-     ops->insert_breakpoint = kvm_insert_breakpoint;
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 931f74256e8..d58916e33ae 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -2360,7 +2360,7 @@ static int kvm_init(MachineState *ms)
-     s->sigmask_len = 8;
-     accel_blocker_init();
- 
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     QTAILQ_INIT(&s->kvm_sw_breakpoints);
- #endif
-     QLIST_INIT(&s->kvm_parked_vcpus);
-@@ -2544,7 +2544,7 @@ static int kvm_init(MachineState *ms)
-     kvm_vm_attributes_allowed =
-         (kvm_check_extension(s, KVM_CAP_VM_ATTRIBUTES) > 0);
- 
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
-     kvm_has_guest_debug =
-         (kvm_check_extension(s, KVM_CAP_SET_GUEST_DEBUG) > 0);
- #endif
-@@ -2553,7 +2553,7 @@ static int kvm_init(MachineState *ms)
-     if (kvm_has_guest_debug) {
-         kvm_sstep_flags = SSTEP_ENABLE;
- 
--#if defined KVM_CAP_SET_GUEST_DEBUG2
-+#if defined TARGET_KVM_HAVE_GUEST_DEBUG
-         int guest_debug_flags =
-             kvm_check_extension(s, KVM_CAP_SET_GUEST_DEBUG2);
- 
-@@ -3157,7 +3157,7 @@ bool kvm_arm_supports_user_irq(void)
-     return kvm_check_extension(kvm_state, KVM_CAP_ARM_USER_IRQ);
+     /* Defaults for the latest behaviour inherited from the base class */
  }
  
--#ifdef KVM_CAP_SET_GUEST_DEBUG
-+#ifdef TARGET_KVM_HAVE_GUEST_DEBUG
- struct kvm_sw_breakpoint *kvm_find_sw_breakpoint(CPUState *cpu, vaddr pc)
+-DEFINE_SPAPR_MACHINE(9_0, "9.0", true);
++DEFINE_SPAPR_MACHINE(9_1, "9.1", true);
++
++/*
++ * pseries-9.0
++ */
++static void spapr_machine_9_0_class_options(MachineClass *mc)
++{
++    spapr_machine_9_1_class_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
++}
++
++DEFINE_SPAPR_MACHINE(9_0, "9.0", false);
+ 
+ /*
+  * pseries-8.2
+diff --git a/hw/s390x/s390-virtio-ccw.c b/hw/s390x/s390-virtio-ccw.c
+index b1dcb3857f0..7cebbf6c02a 100644
+--- a/hw/s390x/s390-virtio-ccw.c
++++ b/hw/s390x/s390-virtio-ccw.c
+@@ -859,14 +859,26 @@ bool css_migration_enabled(void)
+     }                                                                         \
+     type_init(ccw_machine_register_##suffix)
+ 
++static void ccw_machine_9_1_instance_options(MachineState *machine)
++{
++}
++
++static void ccw_machine_9_1_class_options(MachineClass *mc)
++{
++}
++DEFINE_CCW_MACHINE(9_1, "9.1", true);
++
+ static void ccw_machine_9_0_instance_options(MachineState *machine)
  {
-     struct kvm_sw_breakpoint *bp;
-@@ -3317,7 +3317,7 @@ void kvm_remove_all_breakpoints(CPUState *cpu)
-     }
++    ccw_machine_9_1_instance_options(machine);
  }
  
--#endif /* !KVM_CAP_SET_GUEST_DEBUG */
-+#endif /* !TARGET_KVM_HAVE_GUEST_DEBUG */
+ static void ccw_machine_9_0_class_options(MachineClass *mc)
+ {
++    ccw_machine_9_1_class_options(mc);
++    compat_props_add(mc->compat_props, hw_compat_9_0, hw_compat_9_0_len);
+ }
+-DEFINE_CCW_MACHINE(9_0, "9.0", true);
++DEFINE_CCW_MACHINE(9_0, "9.0", false);
  
- static int kvm_set_signal_mask(CPUState *cpu, const sigset_t *sigset)
+ static void ccw_machine_8_2_instance_options(MachineState *machine)
  {
 -- 
 2.44.0
