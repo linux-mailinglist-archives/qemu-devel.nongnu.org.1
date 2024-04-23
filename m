@@ -2,95 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3E08AE6DB
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 14:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1BD8AE7C7
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 15:17:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzFZW-0005Al-54; Tue, 23 Apr 2024 08:48:31 -0400
+	id 1rzG0b-00057L-Up; Tue, 23 Apr 2024 09:16:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1rzFZS-00058G-0Q
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 08:48:26 -0400
-Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <cleger@rivosinc.com>)
- id 1rzFZP-0004xc-NY
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 08:48:25 -0400
-Received: by mail-wr1-x42d.google.com with SMTP id
- ffacd0b85a97d-346a5dea2f4so1224449f8f.1
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 05:48:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1713876501; x=1714481301;
- darn=nongnu.org; 
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=upmp17IZU71FfVax5a4XTIDXJxQ3I1tlzX3P4AJdJe4=;
- b=gUqUMUDiVK55BpKFPb/QvliRBZWR891RbsF3e0jqgOrJ4fKt8oVRPOYezs286V/9wG
- if5G2gkebv1ybcfCQbbYSiErs0/tr+FhZrW7KD6Wb5RirhRmYUL16sOWrgUqZmvYjHdo
- iwgFK/gTJ44vSepQN21/DOjE55JGbePMWBdaNBuTRmXq8ACmdoUYkYTu1bhrP+XDbhl8
- SFK49+aiHN1YTuNswPLBgBcPnN7np3h7HMD312TfsgwAnKFzBY4sVq8078i7su1kUq8N
- 0zUSnd5KgxzzXj5p8nKWh0iAAtyuAXsZLFfA2eh/pAh5DlA4x9XlfpC7GDFlJQWgMTKD
- FpQA==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rzG0X-00056i-HG
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rzG0T-0001s9-70
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 09:16:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1713878179;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=e+O+W2i62FDGR13CKY50D1yVNwOkcbU/X4PHsRwARD4=;
+ b=SgEWD0pZkplE1HIW5JSmt2JKDM2qkmVTrdjYwC5SMEfjfrq1evyHIhc5BzDAroqGBqix57
+ 3oNNz7347GXWJObq4LiF+lp4/34M1x1J84Sh3+m2hKo6GXonDTy75Tq6oM46E8ZwNAh4Ub
+ MP5BO7XGoJrou/g56rUcIwKpRlIe38A=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-548-lTyHs_PiOwKWbhbSL0mv7A-1; Tue, 23 Apr 2024 09:16:17 -0400
+X-MC-Unique: lTyHs_PiOwKWbhbSL0mv7A-1
+Received: by mail-lj1-f200.google.com with SMTP id
+ 38308e7fff4ca-2dd05014390so33939941fa.3
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 06:16:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713876501; x=1714481301;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=upmp17IZU71FfVax5a4XTIDXJxQ3I1tlzX3P4AJdJe4=;
- b=Ng4fH4rlUhbQe5KHnKgDxKvpyJUhb7nEKU2csqNVZPg/uVEqOrbb19ui+07u/Y9AVi
- SWUwAdjaZfn9wt5tms1/clrfQ2IdmM08XlzH0BrxCv2c0E+WjBwwbGVdH4PhTaLTs7RO
- dMyHtApzmF/3eGj70+k7Ix0YklpU1TnyYy/f98B3XmscPJDwutr/npnSBwyPx/tWTX0u
- lyrcKIDMLmCBGrt1PyTFrJ0gC1AsDIIbERJDw2QcwFd9M+kBDg1wqNzah7XrZmwwhNSS
- NAShlDWX6XQ3Zhhht5cUa/ElGqq7NrmU2/6kWl6Y7I+16WN4t7UzSKIXNL6jYOnmMwiN
- HoDA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWAo4sZDCziYFEeO+OAy95n7ZntGXWpXWcvM9MyVRg2/y2JOSmQKsEF2Y18xFxDniahiXckH/0TYpxSl5FHg2I4Q8Hu+UM=
-X-Gm-Message-State: AOJu0YxqiQFYCoJ564cE58VNgVpSAz0yLEw9iN1WhieCKUp1z4KfJuaX
- LtaNw+SEIbxM7cTIft3QRxFEa0gP+B95iarXihNKuOpBJhWB11+SKKVu0AsaQ04=
-X-Google-Smtp-Source: AGHT+IFM52nFpTIiBtxGX82x28khIr4XteXRd9BeoHvRfr59TX2Ajz7HprGksnHgNFNUs5RFk94OWw==
-X-Received: by 2002:a05:600c:3b09:b0:418:ef65:4b11 with SMTP id
- m9-20020a05600c3b0900b00418ef654b11mr10129528wms.2.1713876501580; 
- Tue, 23 Apr 2024 05:48:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:999:a3a0:71cb:1f75:7053:849c?
- ([2a01:e0a:999:a3a0:71cb:1f75:7053:849c])
+ d=1e100.net; s=20230601; t=1713878175; x=1714482975;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=e+O+W2i62FDGR13CKY50D1yVNwOkcbU/X4PHsRwARD4=;
+ b=h4blVPwCgyBUbosDhgepe3b3L32BK/Ro7pwC3e6FYhLc/Cg1s4BriTUYd04+04Pr5m
+ nl1kM3phoaKlnq1eJdYuAguNVliDvk0wt+Hhy4H7dwItiElxxA0VZwuG42jzHVpMelr3
+ KtIZdHVaYrjW7/nz2HlNMjgMH4KWQkcbIiRQC4U9/v3nrwxgHznk5x/L858DkMnFQ/Do
+ 9Atu3iYssEwCTpP3kMnh8+UzaLKL7pVvJttfp+VgG+ZsqbZsEXnqShxwokrq8XuADZce
+ vc8z64mE5HW8d0rlriQDP21ZZo5AZfVEYv5mXMoVXkQR/USWAdL3DiZCZaZt7a9yG00S
+ NV+A==
+X-Gm-Message-State: AOJu0YyS+D/vimdpa7VGy0eAg8x83lBEiHuUfoknIx3BgXoeIqm9RSJs
+ nM9ZZYO4P+bebkW+Y4Oer9PaGRZZo07/TY9g/sTJxGqEvA2GkxfkDEw9mWhYES03xApOiyu0Ys3
+ d50PxYrACdlcQAkgpY2n88xWFLbRIDdb5SYj8aXTZNO+83LC7HHq/g0o+JPE6XAvsYZzGndtXIh
+ p17l/9bby25+ejnLkTLgABnW/jlMYO+3hOQ9Zq
+X-Received: by 2002:a05:651c:198c:b0:2dd:bd92:63a with SMTP id
+ bx12-20020a05651c198c00b002ddbd92063amr3865158ljb.34.1713878175213; 
+ Tue, 23 Apr 2024 06:16:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHRtqCELcigiTgM4KNXKt8pqLpau1Eo/BfNA8eyiXjz5rLBziMSaFSMU+NIf9Xe+Tuh+FNIFQ==
+X-Received: by 2002:a05:651c:198c:b0:2dd:bd92:63a with SMTP id
+ bx12-20020a05651c198c00b002ddbd92063amr3865125ljb.34.1713878174685; 
+ Tue, 23 Apr 2024 06:16:14 -0700 (PDT)
+Received: from avogadro.local ([151.81.119.75])
  by smtp.gmail.com with ESMTPSA id
- i13-20020a05600c354d00b00419fba938d8sm11455806wmq.27.2024.04.23.05.48.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 23 Apr 2024 05:48:20 -0700 (PDT)
-Message-ID: <3cec0ced-b017-4875-99fe-b1222b2f4372@rivosinc.com>
-Date: Tue, 23 Apr 2024 14:48:18 +0200
+ ch15-20020a0564021bcf00b0056e34297cbasm6697011edb.80.2024.04.23.06.16.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 23 Apr 2024 06:16:13 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org,
+	farosas@suse.de
+Subject: [PATCH 00/22] configs: switch boards to "default y"
+Date: Tue, 23 Apr 2024 15:15:50 +0200
+Message-ID: <20240423131612.28362-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/riscv: change RISCV_EXCP_SEMIHOST exception number
- to 63
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, qemu-riscv@nongnu.org
-Cc: Weiwei Li <liwei1518@gmail.com>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, qemu-devel@nongnu.org,
- Anup Patel <apatel@ventanamicro.com>
-References: <20240422135840.1959967-1-cleger@rivosinc.com>
- <b0fcb589-9217-4d30-8b72-5b0210ea871f@ventanamicro.com>
- <73af7008-f40a-4861-8826-2de4d5fc0564@linaro.org>
- <a3b54b5b-005f-46e4-a472-adbbf7d38635@ventanamicro.com>
-Content-Language: en-US
-From: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <cleger@rivosinc.com>
-In-Reply-To: <a3b54b5b-005f-46e4-a472-adbbf7d38635@ventanamicro.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
- envelope-from=cleger@rivosinc.com; helo=mail-wr1-x42d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.67,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,70 +98,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Some boards, notably ARM boards that use TCG, are already using
+"default y".  This was done to remove TCG-only boards from
+a KVM-only build in commit 29d9efca16 (2023-04-26).
 
+This series converts all other boards to that, so that the requirements
+of each board are clearer in the Kconfig files.
 
-On 22/04/2024 21:58, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 4/22/24 16:44, Richard Henderson wrote:
->> On 4/22/24 10:45, Daniel Henrique Barboza wrote:
->>> Palmer, Anup,
->>>
->>> On 4/22/24 10:58, Clément Léger wrote:
->>>> The current semihost exception number (16) is a reserved number (range
->>>> [16-17]). The upcoming double trap specification uses that number for
->>>> the double trap exception. Since the privileged spec (Table 22) defines
->>>> ranges for custom uses change the semihosting exception number to 63
->>>> which belongs to the range [48-63] in order to avoid any future
->>>> collisions with reserved exception.
->>>
->>>
->>> I didn't find any reference to a number for the SEMIHOST exception here:
->>>
->>>
->>> https://github.com/riscv-non-isa/riscv-semihosting
->>>
->>>
->>> Do we have any potential candidates? I would like to avoid, if
->>> possible, setting
->>> RISCV_EXCP_SEMIHOST to 63 as a band-aid just to replace it later on
->>> by the real
->>> value.
->>
->> RISCV_EXCP_SEMIHOST is internal to the qemu implementation and will
->> never be delivered to the guest.
->>
->> I suggest using a number high in the >64 reserved range which will
->> (likely) never be used by any implementation, including ones that *do*
->> define implementation-specific exceptions.  Which seems more likely
->> than not within the "implementation defined" range.
->>
->> E.g. target/i386 uses 0x100+n for qemu internal exceptions.
-> 
-> I'm not sure if we have a range for risc-v qemu internal exceptions
-> only. IIRC we don't.
-> 
-> If that's really the case I believe we could use whatever i386/ARM uses.
-> At least we'll have some
-> standardization.
+For now, the only such use is MIPS's 64-bit and endianness requirements.
+In the future, it will be possible to enable/disable boards based
+on the presence of required libraries, for example libfdt, or
+their deprecation status.
 
-The spec also states that numbers >= 64 are reserved which is why using
-a one for custom use was making sense.
+There is an important difference in that Kconfig symbols for boards
+have to be enabled in a --without-default-devices build, similar to
+devices.
 
-Thanks,
+Paolo
 
-Clément
+Paolo Bonzini (22):
+  configs: list "implied" device groups in the default configs
+  alpha: switch boards to "default y"
+  arm: switch boards to "default y"
+  avr: switch boards to "default y"
+  cris: switch boards to "default y"
+  hppa: switch boards to "default y"
+  i386: switch boards to "default y"
+  loongarch: switch boards to "default y"
+  m68k: switch boards to "default y"
+  microblaze: switch boards to "default y"
+  meson: make target endianneess available to Kconfig
+  mips: switch boards to "default y"
+  nios2: switch boards to "default y"
+  openrisc: switch boards to "default y"
+  ppc: switch boards to "default y"
+  riscv: switch boards to "default y"
+  rx: switch boards to "default y"
+  s390x: switch boards to "default y"
+  sh4: switch boards to "default y"
+  sparc: switch boards to "default y"
+  tricore: switch boards to "default y"
+  xtensa: switch boards to "default y"
 
-> 
-> 
-> Thanks,
-> 
-> Daniel
-> 
->>
->> But in any case, the number can be redefined at will and not cause
->> compatibility issues.
->>
->>
->> r~
+ configs/devices/alpha-softmmu/default.mak     |  5 ++--
+ configs/devices/arm-softmmu/default.mak       |  5 +++-
+ configs/devices/avr-softmmu/default.mak       |  5 ++--
+ configs/devices/cris-softmmu/default.mak      |  5 ++--
+ configs/devices/hppa-softmmu/default.mak      |  5 ++--
+ configs/devices/i386-softmmu/default.mak      | 11 ++++---
+ .../devices/loongarch64-softmmu/default.mak   |  6 +++-
+ configs/devices/m68k-softmmu/default.mak      | 13 ++++----
+ .../devices/microblaze-softmmu/default.mak    |  9 +++---
+ configs/devices/mips-softmmu/common.mak       |  5 ++--
+ configs/devices/mips64-softmmu/default.mak    |  4 ++-
+ configs/devices/mips64el-softmmu/default.mak  | 10 ++++---
+ configs/devices/nios2-softmmu/default.mak     |  7 ++---
+ configs/devices/or1k-softmmu/default.mak      |  9 ++++--
+ configs/devices/ppc-softmmu/default.mak       | 30 +++++++++++--------
+ configs/devices/ppc64-softmmu/default.mak     |  8 ++---
+ configs/devices/riscv32-softmmu/default.mak   | 17 +++++------
+ configs/devices/riscv64-softmmu/default.mak   | 19 ++++++------
+ configs/devices/rx-softmmu/default.mak        |  3 +-
+ configs/devices/s390x-softmmu/default.mak     |  5 ++--
+ configs/devices/sh4-softmmu/default.mak       |  7 ++---
+ configs/devices/sparc-softmmu/default.mak     |  7 ++---
+ configs/devices/sparc64-softmmu/default.mak   |  7 ++---
+ configs/devices/tricore-softmmu/default.mak   |  7 +++--
+ configs/devices/xtensa-softmmu/default.mak    | 11 ++++---
+ meson.build                                   | 12 ++++----
+ hw/alpha/Kconfig                              |  2 ++
+ hw/arm/Kconfig                                |  2 ++
+ hw/avr/Kconfig                                |  3 ++
+ hw/cris/Kconfig                               |  2 ++
+ hw/hppa/Kconfig                               |  2 ++
+ hw/i386/Kconfig                               | 10 ++++++-
+ hw/loongarch/Kconfig                          |  2 ++
+ hw/m68k/Kconfig                               | 10 +++++++
+ hw/microblaze/Kconfig                         |  6 ++++
+ hw/mips/Kconfig                               | 12 ++++++++
+ hw/nios2/Kconfig                              |  9 +++---
+ hw/openrisc/Kconfig                           |  4 +++
+ hw/ppc/Kconfig                                | 26 ++++++++++++++++
+ hw/riscv/Kconfig                              | 14 +++++++++
+ hw/rx/Kconfig                                 |  2 ++
+ hw/s390x/Kconfig                              |  2 ++
+ hw/sh4/Kconfig                                |  4 +++
+ hw/sparc/Kconfig                              |  4 +++
+ hw/sparc64/Kconfig                            |  4 +++
+ hw/tricore/Kconfig                            |  4 +++
+ hw/xtensa/Kconfig                             |  6 ++++
+ target/Kconfig                                |  3 ++
+ target/i386/Kconfig                           |  1 +
+ target/ppc/Kconfig                            |  1 +
+ 50 files changed, 252 insertions(+), 115 deletions(-)
+
+-- 
+2.44.0
+
 
