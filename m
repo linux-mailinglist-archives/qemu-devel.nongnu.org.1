@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5FFD8AEA99
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C3F8AEA50
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnO-0005YS-2F; Tue, 23 Apr 2024 11:10:58 -0400
+	id 1rzHnG-0004vk-Er; Tue, 23 Apr 2024 11:10:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmg-0004NI-VZ
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:15 -0400
+ id 1rzHmg-0004NK-Vf
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmc-000058-JU
+ id 1rzHmc-00005O-Q5
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713885009;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TCI8G6AGfryz/wVyTdfzVO73x/SIX8rjk25RIz7ksKo=;
- b=aOZjXsmx8N+gPSC03UAQhr3JJwbCacIHG5JedrxLSuMzitG/TckH43CQvdOTCyvXZqId9L
- QtSN3x0/ghdAhcCrV71WMxIZji/0CS3MmGk9QPYOnyCHlOLPT2L4WH+VBfZvkmCYZVmEmA
- wEhCevtapMu1f1OiZWviepaQo3sMknc=
+ bh=jCSaFbKWPsN7IuafQoBh1Uc+SE9mpb4ii6bTyqjUCWk=;
+ b=GL6s5mAOEr5/aAjS3WnGVfzJORtE0T523u64yeGdC2M8GkpQjacPe5D+5zrTC2+jqx29la
+ KcpVPtSzyaUlgx0iChdP16lWgBllx5PwEjbOaya53L7edsw6HjNjSz71FfHDvEfyfi071t
+ zfqz39UkyoRsSpVP8jh2jqstG9oeBlA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-FmH_wf9BP_OvZY7ERDx8rg-1; Tue, 23 Apr 2024 11:10:06 -0400
-X-MC-Unique: FmH_wf9BP_OvZY7ERDx8rg-1
+ us-mta-581-Od9HXFmzNzK5D3NFio_3RQ-1; Tue, 23 Apr 2024 11:10:07 -0400
+X-MC-Unique: Od9HXFmzNzK5D3NFio_3RQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7DCF28107BD;
- Tue, 23 Apr 2024 15:10:06 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 37B43812C39
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:07 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id EC6B5200AFA2;
- Tue, 23 Apr 2024 15:10:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C75E82026D0A
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:06 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/63] hw/virtio: move stubs out of stubs/
-Date: Tue, 23 Apr 2024 17:08:59 +0200
-Message-ID: <20240423150951.41600-12-pbonzini@redhat.com>
+Subject: [PULL 12/63] semihosting: move stubs out of stubs/
+Date: Tue, 23 Apr 2024 17:09:00 +0200
+Message-ID: <20240423150951.41600-13-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
@@ -79,50 +78,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the virtio memory device stubs are needed exactly when the
-Kconfig symbol is not enabled, they can be placed in hw/virtio/ and
-conditionalized on CONFIG_VIRTIO_MD.
+Since the semihosting stubs are needed exactly when the Kconfig symbols
+are not needed, move them to semihosting/ and conditionalize them
+on CONFIG_SEMIHOSTING and/or CONFIG_SYSTEM_ONLY.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-ID: <20240408155330.522792-12-pbonzini@redhat.com>
+Message-ID: <20240408155330.522792-13-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c | 0
- hw/virtio/meson.build                                | 2 ++
- stubs/meson.build                                    | 1 -
- 3 files changed, 2 insertions(+), 1 deletion(-)
- rename stubs/virtio-md-pci.c => hw/virtio/virtio-md-stubs.c (100%)
+ stubs/semihost-all.c => semihosting/stubs-all.c | 0
+ stubs/semihost.c => semihosting/stubs-system.c  | 0
+ semihosting/meson.build                         | 3 +++
+ stubs/meson.build                               | 2 --
+ 4 files changed, 3 insertions(+), 2 deletions(-)
+ rename stubs/semihost-all.c => semihosting/stubs-all.c (100%)
+ rename stubs/semihost.c => semihosting/stubs-system.c (100%)
 
-diff --git a/stubs/virtio-md-pci.c b/hw/virtio/virtio-md-stubs.c
+diff --git a/stubs/semihost-all.c b/semihosting/stubs-all.c
 similarity index 100%
-rename from stubs/virtio-md-pci.c
-rename to hw/virtio/virtio-md-stubs.c
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index d7f18c96e60..621fc65454c 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -87,6 +87,8 @@ specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
- system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: system_virtio_ss)
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('vhost-stub.c'))
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('virtio-stub.c'))
-+system_ss.add(when: 'CONFIG_VIRTIO_MD', if_false: files('virtio-md-stubs.c'))
-+
- system_ss.add(files('virtio-hmp-cmds.c'))
+rename from stubs/semihost-all.c
+rename to semihosting/stubs-all.c
+diff --git a/stubs/semihost.c b/semihosting/stubs-system.c
+similarity index 100%
+rename from stubs/semihost.c
+rename to semihosting/stubs-system.c
+diff --git a/semihosting/meson.build b/semihosting/meson.build
+index b07cbd980f2..34933e5a195 100644
+--- a/semihosting/meson.build
++++ b/semihosting/meson.build
+@@ -9,5 +9,8 @@ specific_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_true: fil
+   'uaccess.c',
+ ))
  
- specific_ss.add_all(when: 'CONFIG_VIRTIO', if_true: specific_virtio_ss)
++common_ss.add(when: ['CONFIG_SEMIHOSTING', 'CONFIG_SYSTEM_ONLY'], if_false: files('stubs-all.c'))
++system_ss.add(when: ['CONFIG_SEMIHOSTING'], if_false: files('stubs-system.c'))
++
+ specific_ss.add(when: ['CONFIG_ARM_COMPATIBLE_SEMIHOSTING'],
+ 		if_true: files('arm-compat-semi.c'))
 diff --git a/stubs/meson.build b/stubs/meson.build
-index 45616afbfaa..60e32d363fa 100644
+index 60e32d363fa..84ecaa4daa1 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -57,7 +57,6 @@ if have_system
+@@ -55,9 +55,7 @@ if have_block or have_ga
+ endif
+ if have_system
    stub_ss.add(files('fw_cfg.c'))
-   stub_ss.add(files('semihost.c'))
+-  stub_ss.add(files('semihost.c'))
    stub_ss.add(files('xen-hw-stub.c'))
--  stub_ss.add(files('virtio-md-pci.c'))
  else
    stub_ss.add(files('qdev.c'))
  endif
+-stub_ss.add(files('semihost-all.c'))
 -- 
 2.44.0
 
