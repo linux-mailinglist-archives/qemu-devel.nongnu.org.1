@@ -2,45 +2,45 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4D88ADBEB
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB708ADBE9
 	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 04:28:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rz5sU-0002gX-Gx; Mon, 22 Apr 2024 22:27:26 -0400
+	id 1rz5sV-0002gl-9x; Mon, 22 Apr 2024 22:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rz5sR-0002g8-TJ
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 22:27:23 -0400
+ id 1rz5sT-0002gY-SY
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 22:27:25 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
- id 1rz5sL-00034P-JJ
- for qemu-devel@nongnu.org; Mon, 22 Apr 2024 22:27:19 -0400
+ id 1rz5sS-00034P-7H
+ for qemu-devel@nongnu.org; Mon, 22 Apr 2024 22:27:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713839237; x=1745375237;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TZ4Rcq+b/U50SC5LMVI/ZIHtb4OkWd+cRz5+Y/HBUAc=;
- b=eykRr6VdFt0P0pxJ8qmMGAgmHP8JqepHK+7uhJscIS8JV2X5ME9aV7Ts
- p2lCJNM1SxDw/AfDcf0H/Sjlkh6FPNRUVN99ibVprIjjHkTBxantLTyc1
- qApRNFQrqRXD70cTv8EEcUxnaKKjPNf88uEDdLH5E+DNfhViCf4LpnAij
- sBYNq9YRCYgALQ4Ek5i8mAg40XnAozrgtpXel798l6dyrwMO/PuP0uI8r
- cjciTjAkaG24n3uB68o9EL0J/cFUbCVbV4WXIgFpO1MCMS5BE4Js5UDaO
- 9ck7jFOYGyeUyaqd2S/kOPgCfD7FijFi7jroPcXnsyvLjakXwGLe9xvLo Q==;
-X-CSE-ConnectionGUID: qFDLKRGaQsCYSblppW9o7w==
-X-CSE-MsgGUID: HdEFRi2lRs+/xj7Uh7IOXw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="26920033"
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="26920033"
+ t=1713839244; x=1745375244;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=67NgeQ/kFsPNIg8m3af1zHaTrIuCCnTfBkPGdpoYPQc=;
+ b=UklmIk4YJXp3446w8scIAFRC27TO9+bJarFgL64vBwcjZvFIrwY/GJoa
+ BEdVrEfR0vs2j4YD87qTPtf8KDCD6VM4loE4ALNwoHP041p+gbUO+85l/
+ e8i90vZNZPdFgLf8azsajEu6Vg4iMQoyJqcNskEG6+iwZOKxJdHsVj00m
+ lrr8kk/JYRSpAUcyCMaRoa3szqhu5PrgNyjO6tl5rCAzC7302xiCCXUlN
+ MMPkc/oqGiwvAO2RwQWava/PRhIy88dJ84oWSYzYcNpVsNLNgaHZl10Gs
+ o2qowci4KWejxsIqR3OMOKwHwhcClVLEVEiNV8Bt+uJdBRwShxS05LwQX w==;
+X-CSE-ConnectionGUID: NCU4ONYgQrSX66N7/mIrSA==
+X-CSE-MsgGUID: nt4yl9amR7+3kr06/P7rWA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11052"; a="26920036"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="26920036"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  22 Apr 2024 19:27:12 -0700
-X-CSE-ConnectionGUID: 9m8Bp3IvRxOTnPSC+vHrPQ==
-X-CSE-MsgGUID: pHAPlGwoTvKZUd/VSOC+Zw==
+X-CSE-ConnectionGUID: /VS9X4MLQhK033ywHTBogA==
+X-CSE-MsgGUID: Am/BI2ftSnuNZ78H9NYaeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29009367"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; d="scan'208";a="29009368"
 Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
  by orviesa005.jf.intel.com with ESMTP; 22 Apr 2024 19:27:12 -0700
 From: dongwon.kim@intel.com
@@ -48,10 +48,13 @@ To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com,
 	berrange@redhat.com,
 	philmd@linaro.org
-Subject: [PATCH v10 0/6] ui/console: Private QemuDmaBuf struct
-Date: Mon, 22 Apr 2024 19:22:47 -0700
-Message-Id: <20240423022253.1003295-1-dongwon.kim@intel.com>
+Subject: [PATCH v10 1/6] ui/gtk: Check if fence_fd is equal to or greater than
+ 0
+Date: Mon, 22 Apr 2024 19:22:48 -0700
+Message-Id: <20240423022253.1003295-2-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240423022253.1003295-1-dongwon.kim@intel.com>
+References: <20240423022253.1003295-1-dongwon.kim@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -81,79 +84,68 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Dongwon Kim <dongwon.kim@intel.com>
 
-This series introduces privacy enhancements to the QemuDmaBuf struct
-and its contained data to bolster security. it accomplishes this by
-introducing of helper functions for allocating, deallocating, and
-accessing individual fields within the struct and replacing all direct
-references to individual fields in the struct with methods using helpers
-throughout the codebase.
+'fence_fd' needs to be validated always before being referenced
+And the passing condition should include '== 0' as 0 is a valid
+value for the file descriptor.
 
-This change was made based on a suggestion from Marc-André Lureau
-<marcandre.lureau@redhat.com>
+Suggested-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+Cc: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Signed-off-by: Dongwon Kim <dongwon.kim@intel.com>
+---
+ ui/gtk-egl.c     |  2 +-
+ ui/gtk-gl-area.c |  2 +-
+ ui/gtk.c         | 10 ++++++----
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-(Resumitting same patch series with this new cover-leter)
-
-v6: fixed some typos in patch -
-    ui/console: Introduce dpy_gl_qemu_dmabuf_get_..() helpers)
-
-v7: included minor fix (ui/gtk: Check if fence_fd is equal to or greater than 0)
-    (Marc-André Lureau <marcandre.lureau@redhat.com>)
-
-    migrated all helpers and QemuDmaBuf struct into dmabuf.c and their prototypes
-    to dmabuf.h for better encapsulation (ui/dmabuf: New dmabuf.c and dmabuf.h..)
-    (Daniel P. Berrangé <berrange@redhat.com> and
-     Marc-André Lureau <marcandre.lureau@redhat.com>)
-
-    removed 'dpy_gl' from all helpers' names
-    Defined autoptr clean up function for QemuDmaBuf*
-    (Daniel P. Berrangé <berrange@redhat.com>)
-
-    Minor corrections
-
-v8: Introduce new dmabuf.c and dmabuf.h and all helper functions in the second
-    patch in the series (ui/console: new dmabuf.h and dmabuf.c for QemuDma....)
-    (Philippe Mathieu-Daudé <philmd@linaro.org>)
-
-v9: set dmabuf->allow_fences true when it is created in virtio-gpu-udmabuf
-
-    removed unnecessary spaces were added in the patch,
-    'ui/console: Use qemu_dmabuf_new() a...'
-
-v10: Change the license type for both dmabuf.h and dmabuf.c from MIT to
-     GPL to be in line with QEMU's default license
-     (Daniel P. Berrangé <berrange@redhat.com>)
-
-Dongwon Kim (6):
-  ui/gtk: Check if fence_fd is equal to or greater than 0
-  ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf struct and
-    helpers
-  ui/console: Use qemu_dmabuf_get_..() helpers instead
-  ui/console: Use qemu_dmabuf_set_..() helpers instead
-  ui/console: Use qemu_dmabuf_new() and free() helpers instead
-  ui/console: move QemuDmaBuf struct def to dmabuf.c
-
- include/hw/vfio/vfio-common.h   |   2 +-
- include/hw/virtio/virtio-gpu.h  |   4 +-
- include/ui/console.h            |  20 +--
- include/ui/dmabuf.h             |  47 ++++++++
- hw/display/vhost-user-gpu.c     |  32 +++--
- hw/display/virtio-gpu-udmabuf.c |  27 ++---
- hw/vfio/display.c               |  35 +++---
- ui/console.c                    |   4 +-
- ui/dbus-console.c               |   9 +-
- ui/dbus-listener.c              |  71 ++++++-----
- ui/dmabuf.c                     | 208 ++++++++++++++++++++++++++++++++
- ui/egl-headless.c               |  23 ++--
- ui/egl-helpers.c                |  59 +++++----
- ui/gtk-egl.c                    |  52 +++++---
- ui/gtk-gl-area.c                |  41 ++++---
- ui/gtk.c                        |  12 +-
- ui/spice-display.c              |  50 ++++----
- ui/meson.build                  |   1 +
- 18 files changed, 505 insertions(+), 192 deletions(-)
- create mode 100644 include/ui/dmabuf.h
- create mode 100644 ui/dmabuf.c
-
+diff --git a/ui/gtk-egl.c b/ui/gtk-egl.c
+index 3af5ac5bcf..955234429d 100644
+--- a/ui/gtk-egl.c
++++ b/ui/gtk-egl.c
+@@ -99,7 +99,7 @@ void gd_egl_draw(VirtualConsole *vc)
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd > 0) {
++            if (dmabuf->fence_fd >= 0) {
+                 qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
+diff --git a/ui/gtk-gl-area.c b/ui/gtk-gl-area.c
+index 52dcac161e..7fffd0544e 100644
+--- a/ui/gtk-gl-area.c
++++ b/ui/gtk-gl-area.c
+@@ -86,7 +86,7 @@ void gd_gl_area_draw(VirtualConsole *vc)
+ #ifdef CONFIG_GBM
+         if (dmabuf) {
+             egl_dmabuf_create_fence(dmabuf);
+-            if (dmabuf->fence_fd > 0) {
++            if (dmabuf->fence_fd >= 0) {
+                 qemu_set_fd_handler(dmabuf->fence_fd, gd_hw_gl_flushed, NULL, vc);
+                 return;
+             }
+diff --git a/ui/gtk.c b/ui/gtk.c
+index 810d7fc796..7819a86321 100644
+--- a/ui/gtk.c
++++ b/ui/gtk.c
+@@ -597,10 +597,12 @@ void gd_hw_gl_flushed(void *vcon)
+     VirtualConsole *vc = vcon;
+     QemuDmaBuf *dmabuf = vc->gfx.guest_fb.dmabuf;
+ 
+-    qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
+-    close(dmabuf->fence_fd);
+-    dmabuf->fence_fd = -1;
+-    graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    if (dmabuf->fence_fd >= 0) {
++        qemu_set_fd_handler(dmabuf->fence_fd, NULL, NULL, NULL);
++        close(dmabuf->fence_fd);
++        dmabuf->fence_fd = -1;
++        graphic_hw_gl_block(vc->gfx.dcl.con, false);
++    }
+ }
+ 
+ /** DisplayState Callbacks (opengl version) **/
 -- 
 2.34.1
 
