@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8588AEA56
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9348AEAAF
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnr-0008NN-IL; Tue, 23 Apr 2024 11:11:27 -0400
+	id 1rzHng-0007P9-0o; Tue, 23 Apr 2024 11:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnk-0007na-SY
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzHmk-0004Nc-Ep
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHni-0000QV-U7
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:20 -0400
+ id 1rzHmg-00006M-QB
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885077;
+ s=mimecast20190719; t=1713885012;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C8EZUwlLnYM4W49CBbIplSimkDLa0N6GmlrzgsYB0LM=;
- b=G/Fu1mL1QPYKmRhGBAyqu2Xysy4QyRFEXBlJcaAUNQ9lON492x8zcZ9zQxZVQlSAD1YQh+
- SmU959cEb9XVqNVuflIOMgAztEyweZLnTRH47iaXI/VLGYhfanQeb7kkqMfiDP2OLcda2u
- zoR+17TLXwbPss2AjYKoNnzXDJ/zaHE=
+ bh=ZSQguZveC9CWehs3CSqV4ojj8hfIHOficnxvbkiw+LQ=;
+ b=IvtaF3F5rbhfs7gbgzQ6YYqBHLOjSSh1YX5PoI21QDrWOL9sQ46I+OIR/xXATyWl9diwmH
+ MzeLziYtd78U8Cag1QvI/TPAF8EOAuTmWuaoXym7X0HTFraYLntZ5l6r1CfhkwJ6mUCXEC
+ nNMsVkh172D5Pk0lTYCJgb0jIIR+K9Q=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-SJUmb5UTMO6d6rZstchlyg-1; Tue, 23 Apr 2024 11:10:13 -0400
-X-MC-Unique: SJUmb5UTMO6d6rZstchlyg-1
+ us-mta-618-4z5rs5hMMj-SouGlBUFTUw-1; Tue, 23 Apr 2024 11:10:10 -0400
+X-MC-Unique: 4z5rs5hMMj-SouGlBUFTUw-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB2D680D0FA
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:09 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8C78D1827102
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:10 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 71758203397E
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:09 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 26A5C200E290
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:10 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 15/63] colo: move stubs out of stubs/
-Date: Tue, 23 Apr 2024 17:09:03 +0200
-Message-ID: <20240423150951.41600-16-pbonzini@redhat.com>
+Subject: [PULL 16/63] stubs: split record/replay stubs further
+Date: Tue, 23 Apr 2024 17:09:04 +0200
+Message-ID: <20240423150951.41600-17-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,69 +78,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since the colo stubs are needed exactly when the build options are not
-enabled, move them together with the code they stub.
+replay.c symbols are only needed by user mode emulation, with the
+exception of replay_mode that is needed by both user mode emulation
+(by way of qemu_guest_getrandom) and block layer tools (by way of
+util/qemu-timer.c).
+
+Since it is needed by libqemuutil rather than specific files that
+are part of the tools and emulators, split the replay_mode stub
+into its own file.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <20240408155330.522792-16-pbonzini@redhat.com>
+Message-ID: <20240408155330.522792-17-pbonzini@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- stubs/colo.c => migration/colo-stubs.c   | 0
- stubs/colo-compare.c => net/colo-stubs.c | 0
- migration/meson.build                    | 2 ++
- net/meson.build                          | 2 ++
- stubs/meson.build                        | 2 --
- 5 files changed, 4 insertions(+), 2 deletions(-)
- rename stubs/colo.c => migration/colo-stubs.c (100%)
- rename stubs/colo-compare.c => net/colo-stubs.c (100%)
+ stubs/replay-mode.c | 4 ++++
+ stubs/replay.c      | 2 --
+ stubs/meson.build   | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
+ create mode 100644 stubs/replay-mode.c
 
-diff --git a/stubs/colo.c b/migration/colo-stubs.c
-similarity index 100%
-rename from stubs/colo.c
-rename to migration/colo-stubs.c
-diff --git a/stubs/colo-compare.c b/net/colo-stubs.c
-similarity index 100%
-rename from stubs/colo-compare.c
-rename to net/colo-stubs.c
-diff --git a/migration/meson.build b/migration/meson.build
-index 1eeb915ff63..f76b1ba3289 100644
---- a/migration/meson.build
-+++ b/migration/meson.build
-@@ -34,6 +34,8 @@ system_ss.add(files(
+diff --git a/stubs/replay-mode.c b/stubs/replay-mode.c
+new file mode 100644
+index 00000000000..264be9d96c9
+--- /dev/null
++++ b/stubs/replay-mode.c
+@@ -0,0 +1,4 @@
++#include "qemu/osdep.h"
++#include "sysemu/replay.h"
++
++ReplayMode replay_mode;
+diff --git a/stubs/replay.c b/stubs/replay.c
+index 42c92e4acb8..b4dd6a566e8 100644
+--- a/stubs/replay.c
++++ b/stubs/replay.c
+@@ -1,8 +1,6 @@
+ #include "qemu/osdep.h"
+ #include "exec/replay-core.h"
  
- if get_option('replication').allowed()
-   system_ss.add(files('colo-failover.c', 'colo.c'))
-+else
-+  system_ss.add(files('colo-stubs.c'))
- endif
- 
- system_ss.add(when: rdma, if_true: files('rdma.c'))
-diff --git a/net/meson.build b/net/meson.build
-index 9432a588e4e..e0cd71470e0 100644
---- a/net/meson.build
-+++ b/net/meson.build
-@@ -20,6 +20,8 @@ if get_option('replication').allowed() or \
-     get_option('colo_proxy').allowed()
-   system_ss.add(files('colo-compare.c'))
-   system_ss.add(files('colo.c'))
-+else
-+  system_ss.add(files('colo-stubs.c'))
- endif
- 
- if get_option('colo_proxy').allowed()
+-ReplayMode replay_mode;
+-
+ void replay_finish(void)
+ {
+ }
 diff --git a/stubs/meson.build b/stubs/meson.build
-index a4404e765ab..a252bffad00 100644
+index a252bffad00..4a524f5816b 100644
 --- a/stubs/meson.build
 +++ b/stubs/meson.build
-@@ -42,8 +42,6 @@ stub_ss.add(files('target-get-monitor-def.c'))
- stub_ss.add(files('target-monitor-defs.c'))
- stub_ss.add(files('trace-control.c'))
- stub_ss.add(files('uuid.c'))
--stub_ss.add(files('colo.c'))
--stub_ss.add(files('colo-compare.c'))
- stub_ss.add(files('vmstate.c'))
- stub_ss.add(files('vm-stop.c'))
- stub_ss.add(files('win32-kbd-hook.c'))
+@@ -36,6 +36,7 @@ stub_ss.add(files('qmp-quit.c'))
+ stub_ss.add(files('qtest.c'))
+ stub_ss.add(files('ram-block.c'))
+ stub_ss.add(files('replay.c'))
++stub_ss.add(files('replay-mode.c'))
+ stub_ss.add(files('runstate-check.c'))
+ stub_ss.add(files('sysbus.c'))
+ stub_ss.add(files('target-get-monitor-def.c'))
 -- 
 2.44.0
 
