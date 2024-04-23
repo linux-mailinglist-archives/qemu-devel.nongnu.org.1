@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2CAF8AFBDD
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 376878AFC03
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 00:41:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzOnH-000249-MG; Tue, 23 Apr 2024 18:39:19 -0400
+	id 1rzOoA-00048P-3O; Tue, 23 Apr 2024 18:40:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmV-0001Qu-KT
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmV-0001Qw-Kq
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmQ-00065e-1l
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1rzOmQ-00065j-Ht
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 18:38:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713911905;
@@ -22,55 +22,55 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5eNuveqitURR0kH3nPIJdAd5OtAwF3JNpK0JKF34JG0=;
- b=ilheWzkP/KmX5ntWor5vrR7cnS8gqulcERnwNuybcMYNweYns/9VHr/4HzSpG4Ufk6ItLT
- IDjneuWqrH2fYN6T7br2aQdguqBuwR5V5H9bDGutN2zdUUKPyoIiSTF0WdgZ41mVv/VI+7
- pH88EuzvRUXO5onSrYOUaXG1nnqvkUs=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5Gv2ze+DH5z8/6YTJMF78HsxLvKiWjs9ByVuDww7VIY=;
+ b=bQgesmrGZGrQitAE2DLaln5n9y/ULKSvLGi8zH0ud6oJlZbRbIDgpxoAibCN0SGEW8rAcX
+ +BQfAvg3csmlHzIXR1FhfyYXceGpP6aoyMRbrhBDHAhvyzmUoWXBOU6zZoEDAC52HmSRpw
+ RaS30nRt4EV+E1E5xACSxkEZdy8KBnU=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-Y06PDAypPRixV2mDgMHpcQ-1; Tue, 23 Apr 2024 18:38:23 -0400
-X-MC-Unique: Y06PDAypPRixV2mDgMHpcQ-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-6a0426da999so19222716d6.2
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
+ us-mta-163-vlnlP7_AOqyVbC9sAyezaw-1; Tue, 23 Apr 2024 18:38:24 -0400
+X-MC-Unique: vlnlP7_AOqyVbC9sAyezaw-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-479d52894a3so245037137.0
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:38:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713911903; x=1714516703;
+ d=1e100.net; s=20230601; t=1713911904; x=1714516704;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5eNuveqitURR0kH3nPIJdAd5OtAwF3JNpK0JKF34JG0=;
- b=rgYX+GUWfzRzEP9skOi86zCVSHO7Nu1SthAvL28ue6ckkJ4tyqpSHKhE7fLTm7DaFw
- Mv8/+hGKrxEw4MuRp1eJVhhWV9dts36vDUMq2MAw1l7FIovo6VhzxHddSGOVTKKCXOy7
- WsZBD5xzxpn8vvNCL/9mG7CWbnJhgHup+wInRa6M7CIicg59QbdHpvlEACPMnIHm4ymS
- WSko3JtHfUbF72ob8/ABmROS2Tb8X7BH8tKQYj7jSZw3BqMY26wIiE8ERA3ESpI/MdES
- 0MUSwArUZUouR9rzYVR3NkdSIo0IBIrCfJE33LspfmPgTWif09QRTsFToHHsDSrX8iob
- XQjA==
-X-Gm-Message-State: AOJu0YzgBO6LKRkrCSTWnS01sXSl+QSTm1p/yIOeJ3GU3qeFRsveZTDw
- noWJpt1FxALeyAEvgf8CJfF2SfgfP9LFkCA7PT/FTMTAzDJNKaYgwez8O+xlbPawDtQ2qmB39sB
- SP6f0x/Syliu0o8Xzd/F3u2FzepzOqtLJIIjGskJbBrblqZlTDiCegva0XHpZmyL6zJlqsAAF4x
- RHiUivC7SEB0vLSx7sv5O66krzvoFARQuVNw==
-X-Received: by 2002:a05:6214:258a:b0:699:dfe:6015 with SMTP id
- fq10-20020a056214258a00b006990dfe6015mr756426qvb.5.1713911902937; 
- Tue, 23 Apr 2024 15:38:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGa0ykkvP6IOK5CMVOrFd23xBCmOJF+kOS0quJY7O7/Y29KIG0LtOJoGyszVc8p0ejRU/P5YQ==
-X-Received: by 2002:a05:6214:258a:b0:699:dfe:6015 with SMTP id
- fq10-20020a056214258a00b006990dfe6015mr756398qvb.5.1713911902182; 
- Tue, 23 Apr 2024 15:38:22 -0700 (PDT)
+ bh=5Gv2ze+DH5z8/6YTJMF78HsxLvKiWjs9ByVuDww7VIY=;
+ b=ouKHwzS8T7rIxXHGUO64W/bBEyuQI20h9n3RgsnKO6triU7o4IYRxyLjvoKNUyRpL5
+ ssibnYx0Y1SJyQ92OjQGOeKD25SgqjI04Whl4lSqfGfXRfyGbjN73OUrdKAm0RO0PQS7
+ 8U1Yx7nvPyWHZ9VhkGnoP4IqyQiYZWCU66l822UIouGXmJOIpHsY41rQn13ld0+93qSZ
+ ZphpCZu5kihQW5R5yrFs/8SpkcPUrrwNNQJYx35CEZrqxgsVB/pZPaLJ+LdBQHXSSUCv
+ h0KpXS2CgFrqon6w4etsKiBwVizE8KENUMGXk2lCYhxxfWadPV5uF4BFpEmUZaNZmx/i
+ PNQQ==
+X-Gm-Message-State: AOJu0Ywa6Da+Sa6bVvpvJ8MpEJvqTvBWY0LWgNe9uf5SbCguTtVxCLRg
+ ypooI7ZEV4vyIi05e4Gc4cDBU3t3SVu8Rj+pDR7MXSGqqenEPs0OLXrtayxkHw2ydMAY2e/8eja
+ z43ahdxUnIUiJhCizHjc+GkoCnqXCqN7JTnIAq2MtE4rHOcR0WAnKZsH6D4ANMGYtIqwOGjfEcV
+ rwevkAWe2FiZhEJu7Et58D8LGsfSR8/t7BNQ==
+X-Received: by 2002:a05:6122:984:b0:4da:a7fb:67c with SMTP id
+ g4-20020a056122098400b004daa7fb067cmr1064598vkd.0.1713911903650; 
+ Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEiMN5ivqcp+spTPgIFiVwFfp7BaGTa+DMJbSZtw4pxb/2QtN+6weW7T6mNDrArZ+l4p3DCAQ==
+X-Received: by 2002:a05:6122:984:b0:4da:a7fb:67c with SMTP id
+ g4-20020a056122098400b004daa7fb067cmr1064572vkd.0.1713911903102; 
+ Tue, 23 Apr 2024 15:38:23 -0700 (PDT)
 Received: from x1n.redhat.com (pool-99-254-121-117.cpe.net.cable.rogers.com.
  [99.254.121.117]) by smtp.gmail.com with ESMTPSA id
- c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.21
+ c21-20020a05620a11b500b0078d67886632sm5647726qkk.37.2024.04.23.15.38.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 23 Apr 2024 15:38:21 -0700 (PDT)
+ Tue, 23 Apr 2024 15:38:22 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Prasad Pandit <ppandit@redhat.com>,
  Peter Maydell <peter.maydell@linaro.org>, Fabiano Rosas <farosas@suse.de>,
  Het Gala <het.gala@nutanix.com>
-Subject: [PULL 02/26] tests/qtest/migration: Replace connect_uri and move
- migrate_get_socket_address inside migrate_qmp
-Date: Tue, 23 Apr 2024 18:37:49 -0400
-Message-ID: <20240423223813.3237060-3-peterx@redhat.com>
+Subject: [PULL 03/26] tests/qtest/migration: Replace migrate_get_connect_uri
+ inplace of migrate_get_socket_address
+Date: Tue, 23 Apr 2024 18:37:50 -0400
+Message-ID: <20240423223813.3237060-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240423223813.3237060-1-peterx@redhat.com>
 References: <20240423223813.3237060-1-peterx@redhat.com>
@@ -102,300 +102,82 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Het Gala <het.gala@nutanix.com>
 
-Move the calls to migrate_get_socket_address() into migrate_qmp().
-Get rid of connect_uri and replace it with args->connect_uri only
-because 'to' object will help to generate connect_uri with the
-correct port number.
+Refactor migrate_get_socket_address to internally utilize 'socket-address'
+parameter, reducing redundancy in the function definition.
+
+migrate_get_socket_address implicitly converts SocketAddress into str.
+Move migrate_get_socket_address inside migrate_get_connect_uri which
+should return the uri string instead.
 
 Signed-off-by: Het Gala <het.gala@nutanix.com>
 Suggested-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
-Link: https://lore.kernel.org/r/20240312202634.63349-3-het.gala@nutanix.com
+Link: https://lore.kernel.org/r/20240312202634.63349-4-het.gala@nutanix.com
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- tests/qtest/migration-helpers.c | 54 ++++++++++++++++++++-
- tests/qtest/migration-test.c    | 83 ++++-----------------------------
- 2 files changed, 63 insertions(+), 74 deletions(-)
+ tests/qtest/migration-helpers.c | 29 +++++++++++++++++++----------
+ 1 file changed, 19 insertions(+), 10 deletions(-)
 
 diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
-index b6206a04fb..3e8c19c4de 100644
+index 3e8c19c4de..8806dc841e 100644
 --- a/tests/qtest/migration-helpers.c
 +++ b/tests/qtest/migration-helpers.c
-@@ -13,6 +13,9 @@
- #include "qemu/osdep.h"
- #include "qemu/ctype.h"
- #include "qapi/qmp/qjson.h"
-+#include "qapi/qapi-visit-sockets.h"
-+#include "qapi/qobject-input-visitor.h"
-+#include "qapi/error.h"
- 
- #include "migration-helpers.h"
- 
-@@ -24,6 +27,51 @@
-  */
- #define MIGRATION_STATUS_WAIT_TIMEOUT 120
- 
-+static char *SocketAddress_to_str(SocketAddress *addr)
-+{
-+    switch (addr->type) {
-+    case SOCKET_ADDRESS_TYPE_INET:
-+        return g_strdup_printf("tcp:%s:%s",
-+                               addr->u.inet.host,
-+                               addr->u.inet.port);
-+    case SOCKET_ADDRESS_TYPE_UNIX:
-+        return g_strdup_printf("unix:%s",
-+                               addr->u.q_unix.path);
-+    case SOCKET_ADDRESS_TYPE_FD:
-+        return g_strdup_printf("fd:%s", addr->u.fd.str);
-+    case SOCKET_ADDRESS_TYPE_VSOCK:
-+        return g_strdup_printf("tcp:%s:%s",
-+                               addr->u.vsock.cid,
-+                               addr->u.vsock.port);
-+    default:
-+        return g_strdup("unknown address type");
-+    }
-+}
-+
-+static char *
-+migrate_get_socket_address(QTestState *who, const char *parameter)
-+{
-+    QDict *rsp;
-+    char *result;
-+    SocketAddressList *addrs;
-+    Visitor *iv = NULL;
-+    QObject *object;
-+
-+    rsp = migrate_query(who);
-+    object = qdict_get(rsp, parameter);
-+
-+    iv = qobject_input_visitor_new(object);
-+    visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
-+    visit_free(iv);
-+
-+    /* we are only using a single address */
-+    result = SocketAddress_to_str(addrs->value);
-+
-+    qapi_free_SocketAddressList(addrs);
-+    qobject_unref(rsp);
-+    return result;
-+}
-+
- bool migrate_watch_for_events(QTestState *who, const char *name,
-                               QDict *event, void *opaque)
- {
-@@ -73,13 +121,17 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
- {
-     va_list ap;
-     QDict *args;
-+    g_autofree char *connect_uri = NULL;
- 
-     va_start(ap, fmt);
-     args = qdict_from_vjsonf_nofail(fmt, ap);
-     va_end(ap);
- 
-     g_assert(!qdict_haskey(args, "uri"));
--    qdict_put_str(args, "uri", uri);
-+    if (!uri) {
-+        connect_uri = migrate_get_socket_address(to, "socket-address");
-+    }
-+    qdict_put_str(args, "uri", uri ? uri : connect_uri);
- 
-     qtest_qmp_assert_success(who,
-                              "{ 'execute': 'migrate', 'arguments': %p}", args);
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 39c393b7d9..0c76fe2615 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -13,16 +13,12 @@
- #include "qemu/osdep.h"
- 
- #include "libqtest.h"
--#include "qapi/error.h"
- #include "qapi/qmp/qdict.h"
- #include "qemu/module.h"
- #include "qemu/option.h"
- #include "qemu/range.h"
- #include "qemu/sockets.h"
- #include "chardev/char.h"
--#include "qapi/qapi-visit-sockets.h"
--#include "qapi/qobject-input-visitor.h"
--#include "qapi/qobject-output-visitor.h"
- #include "crypto/tlscredspsk.h"
- #include "qapi/qmp/qlist.h"
- 
-@@ -369,50 +365,6 @@ static void cleanup(const char *filename)
-     unlink(path);
+@@ -48,28 +48,37 @@ static char *SocketAddress_to_str(SocketAddress *addr)
+     }
  }
  
--static char *SocketAddress_to_str(SocketAddress *addr)
--{
--    switch (addr->type) {
--    case SOCKET_ADDRESS_TYPE_INET:
--        return g_strdup_printf("tcp:%s:%s",
--                               addr->u.inet.host,
--                               addr->u.inet.port);
--    case SOCKET_ADDRESS_TYPE_UNIX:
--        return g_strdup_printf("unix:%s",
--                               addr->u.q_unix.path);
--    case SOCKET_ADDRESS_TYPE_FD:
--        return g_strdup_printf("fd:%s", addr->u.fd.str);
--    case SOCKET_ADDRESS_TYPE_VSOCK:
--        return g_strdup_printf("tcp:%s:%s",
--                               addr->u.vsock.cid,
--                               addr->u.vsock.port);
--    default:
--        return g_strdup("unknown address type");
--    }
--}
--
--static char *migrate_get_socket_address(QTestState *who, const char *parameter)
--{
--    QDict *rsp;
+-static char *
+-migrate_get_socket_address(QTestState *who, const char *parameter)
++static SocketAddress *migrate_get_socket_address(QTestState *who)
+ {
+     QDict *rsp;
 -    char *result;
--    SocketAddressList *addrs;
--    Visitor *iv = NULL;
--    QObject *object;
--
--    rsp = migrate_query(who);
+     SocketAddressList *addrs;
++    SocketAddress *addr;
+     Visitor *iv = NULL;
+     QObject *object;
+ 
+     rsp = migrate_query(who);
 -    object = qdict_get(rsp, parameter);
--
--    iv = qobject_input_visitor_new(object);
--    visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
--    visit_free(iv);
--
++    object = qdict_get(rsp, "socket-address");
+ 
+     iv = qobject_input_visitor_new(object);
+     visit_type_SocketAddressList(iv, NULL, &addrs, &error_abort);
++    addr = addrs->value;
+     visit_free(iv);
+ 
 -    /* we are only using a single address */
 -    result = SocketAddress_to_str(addrs->value);
 -
 -    qapi_free_SocketAddressList(addrs);
--    qobject_unref(rsp);
+     qobject_unref(rsp);
 -    return result;
--}
--
- static long long migrate_get_parameter_int(QTestState *who,
-                                            const char *parameter)
- {
-@@ -1349,8 +1301,7 @@ static int migrate_postcopy_prepare(QTestState **from_ptr,
-     wait_for_serial("src_serial");
-     wait_for_suspend(from, &src_state);
++    return addr;
++}
++
++static char *
++migrate_get_connect_uri(QTestState *who)
++{
++    SocketAddress *addrs;
++    char *connect_uri;
++
++    addrs = migrate_get_socket_address(who);
++    connect_uri = SocketAddress_to_str(addrs);
++
++    qapi_free_SocketAddress(addrs);
++    return connect_uri;
+ }
  
--    g_autofree char *uri = migrate_get_socket_address(to, "socket-address");
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, NULL, "{}");
+ bool migrate_watch_for_events(QTestState *who, const char *name,
+@@ -129,7 +138,7 @@ void migrate_qmp(QTestState *who, QTestState *to, const char *uri,
  
-     migrate_wait_for_dirty_mem(from, to);
- 
-@@ -1733,7 +1684,6 @@ static void test_precopy_common(MigrateCommon *args)
- {
-     QTestState *from, *to;
-     void *data_hook = NULL;
--    g_autofree char *connect_uri = NULL;
- 
-     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-@@ -1766,18 +1716,12 @@ static void test_precopy_common(MigrateCommon *args)
-         }
-     }
- 
--    if (!args->connect_uri) {
+     g_assert(!qdict_haskey(args, "uri"));
+     if (!uri) {
 -        connect_uri = migrate_get_socket_address(to, "socket-address");
--    } else {
--        connect_uri = g_strdup(args->connect_uri);
--    }
--
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, connect_uri, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, "{}");
-         goto finish;
++        connect_uri = migrate_get_connect_uri(to);
      }
+     qdict_put_str(args, "uri", uri ? uri : connect_uri);
  
--    migrate_qmp(from, to, connect_uri, "{}");
-+    migrate_qmp(from, to, args->connect_uri, "{}");
- 
-     if (args->result != MIG_TEST_SUCCEED) {
-         bool allow_active = args->result == MIG_TEST_FAIL;
-@@ -1843,7 +1787,6 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
- {
-     QTestState *from, *to;
-     void *data_hook = NULL;
--    g_autofree char *connect_uri = g_strdup(args->connect_uri);
- 
-     if (test_migrate_start(&from, &to, args->listen_uri, &args->start)) {
-         return;
-@@ -1869,18 +1812,18 @@ static void test_file_common(MigrateCommon *args, bool stop_src)
-     }
- 
-     if (args->result == MIG_TEST_QMP_ERROR) {
--        migrate_qmp_fail(from, connect_uri, "{}");
-+        migrate_qmp_fail(from, args->connect_uri, "{}");
-         goto finish;
-     }
- 
--    migrate_qmp(from, to, connect_uri, "{}");
-+    migrate_qmp(from, to, args->connect_uri, "{}");
-     wait_for_migration_complete(from);
- 
-     /*
-      * We need to wait for the source to finish before starting the
-      * destination.
-      */
--    migrate_incoming_qmp(to, connect_uri, "{}");
-+    migrate_incoming_qmp(to, args->connect_uri, "{}");
-     wait_for_migration_complete(to);
- 
-     if (stop_src) {
-@@ -3017,7 +2960,6 @@ static void test_multifd_tcp_cancel(void)
-         .hide_stderr = true,
-     };
-     QTestState *from, *to, *to2;
--    g_autofree char *uri = NULL;
- 
-     if (test_migrate_start(&from, &to, "defer", &args)) {
-         return;
-@@ -3038,9 +2980,7 @@ static void test_multifd_tcp_cancel(void)
-     /* Wait for the first serial output from the source */
-     wait_for_serial("src_serial");
- 
--    uri = migrate_get_socket_address(to, "socket-address");
--
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, NULL, "{}");
- 
-     migrate_wait_for_dirty_mem(from, to);
- 
-@@ -3065,14 +3005,11 @@ static void test_multifd_tcp_cancel(void)
-     /* Start incoming migration from the 1st socket */
-     migrate_incoming_qmp(to2, "tcp:127.0.0.1:0", "{}");
- 
--    g_free(uri);
--    uri = migrate_get_socket_address(to2, "socket-address");
--
-     wait_for_migration_status(from, "cancelled", NULL);
- 
-     migrate_ensure_non_converge(from);
- 
--    migrate_qmp(from, to2, uri, "{}");
-+    migrate_qmp(from, to2, NULL, "{}");
- 
-     migrate_wait_for_dirty_mem(from, to2);
- 
-@@ -3405,7 +3342,7 @@ static void test_migrate_dirty_limit(void)
-     migrate_dirty_limit_wait_showup(from, dirtylimit_period, dirtylimit_value);
- 
-     /* Start migrate */
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, args.connect_uri, "{}");
- 
-     /* Wait for dirty limit throttle begin */
-     throttle_us_per_full = 0;
-@@ -3446,7 +3383,7 @@ static void test_migrate_dirty_limit(void)
-     }
- 
-     /* Start migrate */
--    migrate_qmp(from, to, uri, "{}");
-+    migrate_qmp(from, to, args.connect_uri, "{}");
- 
-     /* Wait for dirty limit throttle begin */
-     throttle_us_per_full = 0;
 -- 
 2.44.0
 
