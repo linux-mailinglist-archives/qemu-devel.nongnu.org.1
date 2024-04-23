@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979838AEA52
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:13:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 131F68AEA8A
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:16:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnd-00077h-9E; Tue, 23 Apr 2024 11:11:13 -0400
+	id 1rzHnb-0006yK-Rx; Tue, 23 Apr 2024 11:11:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnJ-0005B8-5k
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzHnI-00057X-8B
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnH-0000LN-GT
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:52 -0400
+ id 1rzHnG-0000L6-7X
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885050;
+ s=mimecast20190719; t=1713885049;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4lvnwCtrPDnXyVmehzwWHmW4+Ppw0puxVjxFyVwmVZY=;
- b=UB7PliO3mFmSqsJus22+QhfTVJn+IRlMLDe3CjjboBMzX9VTQ5tAxfAR9gwNUY51WilQu6
- /gRsjcHOJBd1Zkub8Yg1cRoi4vMXkgCxrZ22vtEgtlpH+nFQGJN/pLPQYpXuG8NCdSM6K3
- WG1kwtYtjwF+1rcTHYqRMuxnj/zfZFQ=
+ bh=6tUwxNFvDwg2j+J2ayrByxDVV2OoEExUkjc4qnuWI2Y=;
+ b=OAA/EBrJLEHsPvejD8JbIAknIO9bpzmJphhYG6liZVwRiuZvxoelnG8ctJuL3pkvZPXuTR
+ 3GemaGPDbekNV7H4FNcYDISd9WJrKJDDQmrm6daj3Dx8u4UhsOmyzAn5fmr1hVSUML2cKh
+ obdAbcGwzRD3YODtIpoR8jQeobOBGAU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-413-1aUZcpzmPpiYIJpPxhonnw-1; Tue, 23 Apr 2024 11:10:47 -0400
-X-MC-Unique: 1aUZcpzmPpiYIJpPxhonnw-1
+ us-mta-402-8E4S23jwMU-scPmni7FpVg-1; Tue, 23 Apr 2024 11:10:48 -0400
+X-MC-Unique: 8E4S23jwMU-scPmni7FpVg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CCA0C1827103;
- Tue, 23 Apr 2024 15:10:46 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C2DDE1049881;
+ Tue, 23 Apr 2024 15:10:47 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BA6802026D0A;
- Tue, 23 Apr 2024 15:10:45 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1A08F203397E;
+ Tue, 23 Apr 2024 15:10:46 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, David Hildenbrand <david@redhat.com>,
- Michael Roth <michael.roth@amd.com>
-Subject: [PULL 54/63] physmem: Introduce ram_block_discard_guest_memfd_range()
-Date: Tue, 23 Apr 2024 17:09:42 +0200
-Message-ID: <20240423150951.41600-55-pbonzini@redhat.com>
+Cc: Chao Peng <chao.p.peng@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>
+Subject: [PULL 55/63] kvm: handle KVM_EXIT_MEMORY_FAULT
+Date: Tue, 23 Apr 2024 17:09:43 +0200
+Message-ID: <20240423150951.41600-56-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -80,72 +79,184 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Xiaoyao Li <xiaoyao.li@intel.com>
+From: Chao Peng <chao.p.peng@linux.intel.com>
 
-When memory page is converted from private to shared, the original
-private memory is back'ed by guest_memfd. Introduce
-ram_block_discard_guest_memfd_range() for discarding memory in
-guest_memfd.
+Upon an KVM_EXIT_MEMORY_FAULT exit, userspace needs to do the memory
+conversion on the RAMBlock to turn the memory into desired attribute,
+switching between private and shared.
 
-Based on a patch by Isaku Yamahata <isaku.yamahata@intel.com>.
+Currently only KVM_MEMORY_EXIT_FLAG_PRIVATE in flags is valid when
+KVM_EXIT_MEMORY_FAULT happens.
 
+Note, KVM_EXIT_MEMORY_FAULT makes sense only when the RAMBlock has
+guest_memfd memory backend.
+
+Note, KVM_EXIT_MEMORY_FAULT returns with -EFAULT, so special handling is
+added.
+
+When page is converted from shared to private, the original shared
+memory can be discarded via ram_block_discard_range(). Note, shared
+memory can be discarded only when it's not back'ed by hugetlb because
+hugetlb is supposed to be pre-allocated and no need for discarding.
+
+Signed-off-by: Chao Peng <chao.p.peng@linux.intel.com>
+Co-developed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Michael Roth <michael.roth@amd.com>
-Message-ID: <20240320083945.991426-12-michael.roth@amd.com>
+
+Message-ID: <20240320083945.991426-13-michael.roth@amd.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- include/exec/cpu-common.h |  2 ++
- system/physmem.c          | 23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+)
+ include/sysemu/kvm.h   |  2 +
+ accel/kvm/kvm-all.c    | 98 +++++++++++++++++++++++++++++++++++++-----
+ accel/kvm/trace-events |  2 +
+ 3 files changed, 92 insertions(+), 10 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 6346df17ce9..6d5318895a3 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -159,6 +159,8 @@ typedef int (RAMBlockIterFunc)(RAMBlock *rb, void *opaque);
+diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+index 217f3fe17ba..47f9e8be1b3 100644
+--- a/include/sysemu/kvm.h
++++ b/include/sysemu/kvm.h
+@@ -542,4 +542,6 @@ int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp);
+ int kvm_set_memory_attributes_private(hwaddr start, uint64_t size);
+ int kvm_set_memory_attributes_shared(hwaddr start, uint64_t size);
  
- int qemu_ram_foreach_block(RAMBlockIterFunc func, void *opaque);
- int ram_block_discard_range(RAMBlock *rb, uint64_t start, size_t length);
-+int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-+                                        size_t length);
- 
++int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private);
++
  #endif
- 
-diff --git a/system/physmem.c b/system/physmem.c
-index 5ebcf5be116..c3d04ca9212 100644
---- a/system/physmem.c
-+++ b/system/physmem.c
-@@ -3721,6 +3721,29 @@ err:
-     return ret;
+diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+index f49b2b95b54..9eef2c64003 100644
+--- a/accel/kvm/kvm-all.c
++++ b/accel/kvm/kvm-all.c
+@@ -2900,6 +2900,69 @@ static void kvm_eat_signals(CPUState *cpu)
+     } while (sigismember(&chkset, SIG_IPI));
  }
  
-+int ram_block_discard_guest_memfd_range(RAMBlock *rb, uint64_t start,
-+                                        size_t length)
++int kvm_convert_memory(hwaddr start, hwaddr size, bool to_private)
 +{
++    MemoryRegionSection section;
++    ram_addr_t offset;
++    MemoryRegion *mr;
++    RAMBlock *rb;
++    void *addr;
 +    int ret = -1;
 +
-+#ifdef CONFIG_FALLOCATE_PUNCH_HOLE
-+    ret = fallocate(rb->guest_memfd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+                    start, length);
++    trace_kvm_convert_memory(start, size, to_private ? "shared_to_private" : "private_to_shared");
 +
-+    if (ret) {
-+        ret = -errno;
-+        error_report("%s: Failed to fallocate %s:%" PRIx64 " +%zx (%d)",
-+                     __func__, rb->idstr, start, length, ret);
++    if (!QEMU_PTR_IS_ALIGNED(start, qemu_real_host_page_size()) ||
++        !QEMU_PTR_IS_ALIGNED(size, qemu_real_host_page_size())) {
++        return -1;
 +    }
-+#else
-+    ret = -ENOSYS;
-+    error_report("%s: fallocate not available %s:%" PRIx64 " +%zx (%d)",
-+                 __func__, rb->idstr, start, length, ret);
-+#endif
 +
++    if (!size) {
++        return -1;
++    }
++
++    section = memory_region_find(get_system_memory(), start, size);
++    mr = section.mr;
++    if (!mr) {
++        return -1;
++    }
++
++    if (!memory_region_has_guest_memfd(mr)) {
++        error_report("Converting non guest_memfd backed memory region "
++                     "(0x%"HWADDR_PRIx" ,+ 0x%"HWADDR_PRIx") to %s",
++                     start, size, to_private ? "private" : "shared");
++        goto out_unref;
++    }
++
++    if (to_private) {
++        ret = kvm_set_memory_attributes_private(start, size);
++    } else {
++        ret = kvm_set_memory_attributes_shared(start, size);
++    }
++    if (ret) {
++        goto out_unref;
++    }
++
++    addr = memory_region_get_ram_ptr(mr) + section.offset_within_region;
++    rb = qemu_ram_block_from_host(addr, false, &offset);
++
++    if (to_private) {
++        if (rb->page_size != qemu_real_host_page_size()) {
++            /*
++             * shared memory is backed by hugetlb, which is supposed to be
++             * pre-allocated and doesn't need to be discarded
++             */
++            goto out_unref;
++        }
++        ret = ram_block_discard_range(rb, offset, size);
++    } else {
++        ret = ram_block_discard_guest_memfd_range(rb, offset, size);
++    }
++
++out_unref:
++    memory_region_unref(mr);
 +    return ret;
 +}
 +
- bool ramblock_is_pmem(RAMBlock *rb)
+ int kvm_cpu_exec(CPUState *cpu)
  {
-     return rb->flags & RAM_PMEM;
+     struct kvm_run *run = cpu->kvm_run;
+@@ -2967,18 +3030,20 @@ int kvm_cpu_exec(CPUState *cpu)
+                 ret = EXCP_INTERRUPT;
+                 break;
+             }
+-            fprintf(stderr, "error: kvm run failed %s\n",
+-                    strerror(-run_ret));
++            if (!(run_ret == -EFAULT && run->exit_reason == KVM_EXIT_MEMORY_FAULT)) {
++                fprintf(stderr, "error: kvm run failed %s\n",
++                        strerror(-run_ret));
+ #ifdef TARGET_PPC
+-            if (run_ret == -EBUSY) {
+-                fprintf(stderr,
+-                        "This is probably because your SMT is enabled.\n"
+-                        "VCPU can only run on primary threads with all "
+-                        "secondary threads offline.\n");
+-            }
++                if (run_ret == -EBUSY) {
++                    fprintf(stderr,
++                            "This is probably because your SMT is enabled.\n"
++                            "VCPU can only run on primary threads with all "
++                            "secondary threads offline.\n");
++                }
+ #endif
+-            ret = -1;
+-            break;
++                ret = -1;
++                break;
++            }
+         }
+ 
+         trace_kvm_run_exit(cpu->cpu_index, run->exit_reason);
+@@ -3061,6 +3126,19 @@ int kvm_cpu_exec(CPUState *cpu)
+                 break;
+             }
+             break;
++        case KVM_EXIT_MEMORY_FAULT:
++            trace_kvm_memory_fault(run->memory_fault.gpa,
++                                   run->memory_fault.size,
++                                   run->memory_fault.flags);
++            if (run->memory_fault.flags & ~KVM_MEMORY_EXIT_FLAG_PRIVATE) {
++                error_report("KVM_EXIT_MEMORY_FAULT: Unknown flag 0x%" PRIx64,
++                             (uint64_t)run->memory_fault.flags);
++                ret = -1;
++                break;
++            }
++            ret = kvm_convert_memory(run->memory_fault.gpa, run->memory_fault.size,
++                                     run->memory_fault.flags & KVM_MEMORY_EXIT_FLAG_PRIVATE);
++            break;
+         default:
+             ret = kvm_arch_handle_exit(cpu, run);
+             break;
+diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+index e8c52cb9e7a..681ccb667d6 100644
+--- a/accel/kvm/trace-events
++++ b/accel/kvm/trace-events
+@@ -31,3 +31,5 @@ kvm_cpu_exec(void) ""
+ kvm_interrupt_exit_request(void) ""
+ kvm_io_window_exit(void) ""
+ kvm_run_exit_system_event(int cpu_index, uint32_t event_type) "cpu_index %d, system_even_type %"PRIu32
++kvm_convert_memory(uint64_t start, uint64_t size, const char *msg) "start 0x%" PRIx64 " size 0x%" PRIx64 " %s"
++kvm_memory_fault(uint64_t start, uint64_t size, uint64_t flags) "start 0x%" PRIx64 " size 0x%" PRIx64 " flags 0x%" PRIx64
 -- 
 2.44.0
 
