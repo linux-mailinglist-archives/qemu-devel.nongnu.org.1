@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496D08AEA6E
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 979458AEA83
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:15:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnF-0004lg-4y; Tue, 23 Apr 2024 11:10:49 -0400
+	id 1rzHng-0007Ql-Fk; Tue, 23 Apr 2024 11:11:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHml-0004O4-Pe
+ id 1rzHml-0004Nl-MG
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHmj-00007M-TU
+ id 1rzHmj-000073-T7
  for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885016;
+ s=mimecast20190719; t=1713885015;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SadQhGVyBNGCc2yb4bNQuwqA8RB/KCwIQ9JEK7fOvIg=;
- b=QGGm8uYrl6nI0YGkSIZoJwn6TPD1RapeY9oEb4t3VouY2pcazVT2+LZFOICITzrza4V3VO
- c96ZU+TsN+wj/gIL6cTvL2YTHTmja31sDNiHd2KOcqwJROYODLzSJdnlSpIgtvWRC4NwcB
- R8aS1XkxNcnvMJ+OZR1/NGUKcPgiTgc=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-677-Hl4l0pYFMuGH13w2Oe3HiQ-1; Tue,
- 23 Apr 2024 11:10:13 -0400
-X-MC-Unique: Hl4l0pYFMuGH13w2Oe3HiQ-1
+ bh=kmfWPYUoXX6bScoUXzhELmYVEYe3YTHOcJQw40qC8FE=;
+ b=XYF1/UVyd5ofNjj5zbupO6UfBKLcpTnHYh7lKno9pdYXcZGw62j343eOivOo8QEhc18Vex
+ swaaDLuXIN04sbtEuBcXff2xMUd6qo/ZC37VsBWxl0cDE//6mKaygLSi4TnkI0bXWS9ANj
+ aHBSli+49jcA9nU1nUdxuM2mdS18EqA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-GqO07TOgN3CR957pJmIVew-1; Tue, 23 Apr 2024 11:10:13 -0400
+X-MC-Unique: GqO07TOgN3CR957pJmIVew-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C613E3C23FCD
- for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 798A2804C61
+ for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:13 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5D03B2026D0A
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 11CBD200E290
  for <qemu-devel@nongnu.org>; Tue, 23 Apr 2024 15:10:12 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 19/63] vga: optimize computation of dirty memory region
-Date: Tue, 23 Apr 2024 17:09:07 +0200
-Message-ID: <20240423150951.41600-20-pbonzini@redhat.com>
+Subject: [PULL 20/63] vga: move dirty memory region code together
+Date: Tue, 23 Apr 2024 17:09:08 +0200
+Message-ID: <20240423150951.41600-21-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,64 +78,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The depth == 0 and depth == 15 have to be special cased because
-width * depth / 8 does not provide the correct scanline length.
-However, thanks to the recent reorganization of vga_draw_graphic()
-the correct value of VRAM bits per pixel is available in "bits".
-
-Use it (via the same "bwidth" computation that is used later in
-the function), thus restricting the slow path to the wraparound case.
+Take into account split screen mode close to wrap around, which is the
+other special case for dirty memory region computation.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/display/vga.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ hw/display/vga.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/hw/display/vga.c b/hw/display/vga.c
-index 77f59e8c113..77d709a3d69 100644
+index 77d709a3d69..e91a76bf76b 100644
 --- a/hw/display/vga.c
 +++ b/hw/display/vga.c
-@@ -1574,22 +1574,16 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
- 
-     /* Horizontal pel panning bit 3 is only used in text mode.  */
-     hpel = bits <= 8 ? s->params.hpel & 7 : 0;
-+    bwidth = DIV_ROUND_UP(width * bits, 8); /* scanline length */
-+    if (hpel) {
-+        bwidth += 4;
+@@ -1596,6 +1596,10 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+         region_end = s->vbe_size;
+         force_shadow = true;
+     }
++    if (s->params.line_compare < height) {
++        /* split screen mode */
++        region_start = 0;
 +    }
  
-     region_start = (s->params.start_addr * 4);
--    region_end = region_start + (ram_addr_t)s->params.line_offset * height;
--    region_end += width * depth / 8; /* scanline length */
--    region_end -= s->params.line_offset;
--    if (hpel) {
--        region_end += 4;
--    }
--    if (region_end > s->vbe_size || depth == 0 || depth == 15) {
-+    region_end = region_start + (ram_addr_t)s->params.line_offset * (height - 1) + bwidth;
-+    if (region_end > s->vbe_size) {
-         /*
--         * We land here on:
--         *  - wraps around (can happen with cirrus vbe modes)
--         *  - depth == 0 (256 color palette video mode)
--         *  - depth == 15
--         *
--         * Take the safe and slow route:
-+         * On wrap around take the safe and slow route:
-          *   - create a dirty bitmap snapshot for all vga memory.
-          *   - force shadowing (so all vga memory access goes
-          *     through vga_read_*() helpers).
-@@ -1667,10 +1661,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
-            s->params.line_compare, sr(s, VGA_SEQ_CLOCK_MODE));
- #endif
-     addr1 = (s->params.start_addr * 4);
--    bwidth = DIV_ROUND_UP(width * bits, 8);
--    if (hpel) {
--        bwidth += 4;
--    }
-     y_start = -1;
-     d = surface_data(surface);
-     linesize = surface_stride(surface);
+     /*
+      * Check whether we can share the surface with the backend
+@@ -1667,10 +1671,6 @@ static void vga_draw_graphic(VGACommonState *s, int full_update)
+     y1 = 0;
+ 
+     if (!full_update) {
+-        if (s->params.line_compare < height) {
+-            /* split screen mode */
+-            region_start = 0;
+-        }
+         snap = memory_region_snapshot_and_clear_dirty(&s->vram, region_start,
+                                                       region_end - region_start,
+                                                       DIRTY_MEMORY_VGA);
 -- 
 2.44.0
 
