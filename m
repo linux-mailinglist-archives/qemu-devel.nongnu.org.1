@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880638AEA67
-	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 754A68AEAAD
+	for <lists+qemu-devel@lfdr.de>; Tue, 23 Apr 2024 17:18:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzHnm-0007qb-Ae; Tue, 23 Apr 2024 11:11:22 -0400
+	id 1rzHnf-0007Ls-BR; Tue, 23 Apr 2024 11:11:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnQ-0005sE-2A
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1rzHnR-00061o-M8
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1rzHnO-0000OM-3b
- for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:10:59 -0400
+ id 1rzHnP-0000Og-Mt
+ for qemu-devel@nongnu.org; Tue, 23 Apr 2024 11:11:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713885057;
+ s=mimecast20190719; t=1713885059;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MpzSFoRgc3Tz5tG5vbWOuPSV975Dwi5ijRZXKg1roG0=;
- b=MPmF/m5mWgJDS3BcgwP7+TRO5w2E3wP6on/mA4oxteqEp1f1iJ5qzIBAEiQ9MWutW3h0XV
- yRT6aimHmgs8GZqClZZuWtZG8gCEm2ifDyWk4wXZWOF5tSZ81NoOwBu2tjRzhxVyevQ+EW
- RPgk26W3Z5FazSbBEJbyDPsyS5O3D7U=
+ bh=ruRaz4oXdGL3mDDTaPGVqAT29VsGobpTUBZtq18D8V0=;
+ b=YoOEA+YPWXHIbEUATPIARAjQmyU1MamTW2fKhrqPcCtWqYBTeiZghRbf/hsHC7LJ65WBm2
+ ymji+/12o20r/6ACAMdPa5kx7rgf+e+8i2uV7MBSFcsLTia80vRSy6yAZUcigKNgqVTqSn
+ ly/Nk5xGe2/3iav8u2YIwUzQkCwMSHE=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-643-pNuJei4rO3Ssh6BgO-jmbA-1; Tue,
- 23 Apr 2024 11:10:54 -0400
-X-MC-Unique: pNuJei4rO3Ssh6BgO-jmbA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-Kk2MuucoP4mN2m93GPN_Cg-1; Tue,
+ 23 Apr 2024 11:10:55 -0400
+X-MC-Unique: Kk2MuucoP4mN2m93GPN_Cg-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C580D29AC00D;
- Tue, 23 Apr 2024 15:10:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BEEB21C0C64E;
+ Tue, 23 Apr 2024 15:10:54 +0000 (UTC)
 Received: from avogadro.lan (unknown [10.39.192.70])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 378762033979;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 12D93200E290;
  Tue, 23 Apr 2024 15:10:53 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 61/63] accel/tcg/icount-common: Consolidate the use of
- warn_report_once()
-Date: Tue, 23 Apr 2024 17:09:49 +0200
-Message-ID: <20240423150951.41600-62-pbonzini@redhat.com>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 62/63] pythondeps.toml: warn about updates needed to
+ docs/requirements.txt
+Date: Tue, 23 Apr 2024 17:09:50 +0200
+Message-ID: <20240423150951.41600-63-pbonzini@redhat.com>
 In-Reply-To: <20240423150951.41600-1-pbonzini@redhat.com>
 References: <20240423150951.41600-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -80,34 +81,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Zhao Liu <zhao1.liu@intel.com>
+docs/requirements.txt is expected by readthedocs and should be in sync
+with pythondeps.toml.  Add a comment to both.
 
-Use warn_report_once() to get rid of the static local variable "notified".
-
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Message-ID: <20240418100716.1085491-1-zhao1.liu@linux.intel.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- accel/tcg/icount-common.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ docs/requirements.txt | 3 +++
+ pythondeps.toml       | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index a4a747d1dc9..8d3d3a7e9dc 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -336,10 +336,8 @@ void icount_start_warp_timer(void)
-     deadline = qemu_clock_deadline_ns_all(QEMU_CLOCK_VIRTUAL,
-                                           ~QEMU_TIMER_ATTR_EXTERNAL);
-     if (deadline < 0) {
--        static bool notified;
--        if (!icount_sleep && !notified) {
--            warn_report("icount sleep disabled and no active timers");
--            notified = true;
-+        if (!icount_sleep) {
-+            warn_report_once("icount sleep disabled and no active timers");
-         }
-         return;
-     }
+diff --git a/docs/requirements.txt b/docs/requirements.txt
+index 691e5218ec7..02583f209aa 100644
+--- a/docs/requirements.txt
++++ b/docs/requirements.txt
+@@ -1,2 +1,5 @@
++# Used by readthedocs.io
++# Should be in sync with the "installed" key of pythondeps.toml
++
+ sphinx==5.3.0
+ sphinx_rtd_theme==1.1.1
+diff --git a/pythondeps.toml b/pythondeps.toml
+index 0e884159993..9c16602d303 100644
+--- a/pythondeps.toml
++++ b/pythondeps.toml
+@@ -22,6 +22,7 @@
+ meson = { accepted = ">=0.63.0", installed = "1.2.3", canary = "meson" }
+ 
+ [docs]
++# Please keep the installed versions in sync with docs/requirements.txt
+ sphinx = { accepted = ">=1.6", installed = "5.3.0", canary = "sphinx-build" }
+ sphinx_rtd_theme = { accepted = ">=0.5", installed = "1.1.1" }
+ 
 -- 
 2.44.0
 
