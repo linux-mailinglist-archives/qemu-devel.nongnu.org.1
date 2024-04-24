@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF1F8B16C0
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F4428B16BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:03:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzldU-0003n4-TL; Wed, 24 Apr 2024 19:02:44 -0400
+	id 1rzldV-0003n7-F7; Wed, 24 Apr 2024 19:02:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzldS-0003le-9H
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:42 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1rzldT-0003mE-Fn
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:43 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzldQ-0002eG-K0
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:42 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6ed04c91c46so446802b3a.0
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:02:40 -0700 (PDT)
+ id 1rzldR-0002eS-Gl
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:43 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-6f30f69a958so381062b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:02:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713999759; x=1714604559; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713999760; x=1714604560; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/FK2WWMw+RB5io7Nzuf8LNknc8niTsj2ljKDgkXD3m0=;
- b=fB62EToblP/73xujJ8oVS/pD/uf8LigxMIO9Tg5vlVJHBW34IXV8NTrB1WUtmswUXA
- NHEojeIP89HT/d17Ycjd3/04/pMzPEVuoRab94TMw+VktNsUyT+FFOQBLc/t2Vs74++w
- pstNt9lBr7TfDhiKVdhFTsXUprIjSce5d2aGjgq1WI7FcGmFWKXy2PQ3Xd725XHhr7wq
- TutEiH32b+E+RYK9unh9eiOcQo74yV4+FQh4sIyvGCXOjyoOwuaJsRcWU9g/oxCb5175
- e+5qkYXLJlDY/IxDJb7qn0RDJIJDCEUsJVgbaz019rSsberdeOYAoHxPrFpFcgZOIYjK
- P40Q==
+ bh=QUzW5EpE6psTv3wNqcRJ2QohJfV0nsRef4r1zjcLMwE=;
+ b=Lkf1T/s3EDd/ml7QWuJ8ii9k6ZZE9j++4tYtebUQfWry73t6mrz6Ivbi+VUpL0Fslp
+ 0PBINn9JqHdU8j52Bbw73sKj4NPgmUny6Qfuz1SGBDUSC7yyJnMchwxseJDuSZ2XPCvF
+ rILqiRJPQS3BLImp+XqrM2b5cJcSgbVexoFbeafLb3sdizeFq31wp/xx4tnFYelDADux
+ TsB3zMeGR+g4I+1FEE3Y7Mtv9nFA47Q6VW+CYiRW+EENJZl8NT4IIyLfgKMu+rB7OvTr
+ MnmjGlU7ydGuYsqwlgn+wyORkim1554VLPJzhMsoSjfHs05dau8Z9EvxxBIxgIEThhyD
+ 13ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713999759; x=1714604559;
+ d=1e100.net; s=20230601; t=1713999760; x=1714604560;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/FK2WWMw+RB5io7Nzuf8LNknc8niTsj2ljKDgkXD3m0=;
- b=DC7IZ1lyL7vAGrXEzhy/QdUhxeeYad8OtZRBm7hGZVOkDnnNfa6ew8xKweWR3efoQ+
- uhIFMwAHnjrSUphEDyBJCmwlKPF2MfXQvy+gWVa4znZk4Dogp6AfsJ6EspI9x2KjNCZx
- GV76tP+ladxHxmF/84jbbujeuFyttwEcsxcUFtMdFOO7n96sw7k/FB3RDWl9Yr/tORuK
- SxIbIxAWqY+AvpjXrh1bhrhQy2cn464lTJxJvWV4U4J6vpOOjvwMkEN8T+JFDz9kwALz
- YTpPuf0JJ9DEiFXsaiSJ6OGV5QKWuZpI0HFbfAgyOPq0TzZshZFLogxPSCiQ/Yuop63U
- 4GFw==
-X-Gm-Message-State: AOJu0Yw2FOWexQjo6AXmAmKblPgv+OpD4bkIQgs12NMZBT174CEAnptD
- Ol/YR+bZRWm+xfIzqij75BxldSsbmHYADsdxfS9eNepDTxvLthKMMzNF6C1VLtacJWNWDkGdl65
- T
-X-Google-Smtp-Source: AGHT+IEwev4judT9SFE7p97AhGlPG3UbAcggxBFCAs6hlsR3I6gqgyFl7v/O8t7GrDiHDcup5aPvWQ==
-X-Received: by 2002:a05:6a20:5b22:b0:1aa:bde:8c78 with SMTP id
- kl34-20020a056a205b2200b001aa0bde8c78mr3450969pzb.54.1713999759249; 
- Wed, 24 Apr 2024 16:02:39 -0700 (PDT)
+ bh=QUzW5EpE6psTv3wNqcRJ2QohJfV0nsRef4r1zjcLMwE=;
+ b=KGJsc5ScfXeIp43y/wxLnnWTLBWMeDhD7escqm0QhabZUQsv2hsurkNtO6kSUuMHrX
+ pjeqWM4C7UJklkW9Iw3eYzI2XCtMJGxLQ7Rh9oRQNGWUvsDYNVSKFZ1y5SdIhZ04yr+D
+ LwefLJzu2D8r2F2NE+RBWbD+0FacoF9HPsnTJ+aP3xzSgBGMCN9qqzkgbzV1Wjy7vJpk
+ UrYvH2bbW/zVdKgPaaOjHu95ATFEaA3taTpTAqcJtVInbdVu1VImBDU3nGHyLOFMdgl1
+ Wxiwj2dmqDEnYYlLxRDWjHb2vFdgP6kchOTI3KHE1J1y5+v8nvIUM31qlsYoKa106ScT
+ pQ+Q==
+X-Gm-Message-State: AOJu0YyBvJ57rqhFQdFRo/5x1REoGeBdlUhlML+V5+b/ivr9M4C5c3le
+ IHtiXVfz2sV9wj9VhQFpBVSLLlD75WG3uzDMOgvXp5Nr8GUkns7Z2ip9/rXs4JgD9mL8NS9F92j
+ x
+X-Google-Smtp-Source: AGHT+IGd03z96+f6rKMdGBvt5f38YLGwM9R5htw3pTtWgiHR8/XKZdC9vsVGIyB0pPICwfw8KLhIQg==
+X-Received: by 2002:a05:6a20:5525:b0:1a7:2ce0:633d with SMTP id
+ ko37-20020a056a20552500b001a72ce0633dmr3716580pzb.5.1713999760251; 
+ Wed, 24 Apr 2024 16:02:40 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- h5-20020a056a00000500b006ed4aa9d5c0sm11981405pfk.188.2024.04.24.16.02.38
+ h5-20020a056a00000500b006ed4aa9d5c0sm11981405pfk.188.2024.04.24.16.02.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 16:02:38 -0700 (PDT)
+ Wed, 24 Apr 2024 16:02:39 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Pierrick Bouvier <pierrick.bouvier@linaro.org>
-Subject: [PATCH v3 12/20] tcg: Remove TCG_CALL_PLUGIN
-Date: Wed, 24 Apr 2024 16:02:16 -0700
-Message-Id: <20240424230224.941028-13-richard.henderson@linaro.org>
+Subject: [PATCH v3 13/20] tcg: Remove INDEX_op_plugin_cb_{start,end}
+Date: Wed, 24 Apr 2024 16:02:17 -0700
+Message-Id: <20240424230224.941028-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424230224.941028-1-richard.henderson@linaro.org>
 References: <20240424230224.941028-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,73 +91,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we no longer emit plugin helpers during the initial code
-translation phase, we don't need to specially mark plugin helpers.
+These opcodes are no longer used.
 
 Reviewed-by: Pierrick Bouvier <pierrick.bouvier@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |  2 --
- plugins/core.c    | 10 ++++------
- tcg/tcg.c         |  4 +---
- 3 files changed, 5 insertions(+), 11 deletions(-)
+ include/tcg/tcg-op-common.h |  2 --
+ include/tcg/tcg-opc.h       |  2 --
+ accel/tcg/plugin-gen.c      | 18 ------------------
+ tcg/tcg-op.c                | 10 ----------
+ 4 files changed, 32 deletions(-)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 8d9f6585ff..196e3b7ba1 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -353,8 +353,6 @@ typedef TCGv_ptr TCGv_env;
- #define TCG_CALL_NO_SIDE_EFFECTS    0x0004
- /* Helper is G_NORETURN.  */
- #define TCG_CALL_NO_RETURN          0x0008
--/* Helper is part of Plugins.  */
--#define TCG_CALL_PLUGIN             0x0010
+diff --git a/include/tcg/tcg-op-common.h b/include/tcg/tcg-op-common.h
+index 72b80b20d0..009e2778c5 100644
+--- a/include/tcg/tcg-op-common.h
++++ b/include/tcg/tcg-op-common.h
+@@ -76,8 +76,6 @@ void tcg_gen_lookup_and_goto_ptr(void);
  
- /* convenience version of most used call flags */
- #define TCG_CALL_NO_RWG         TCG_CALL_NO_READ_GLOBALS
-diff --git a/plugins/core.c b/plugins/core.c
-index b0a2e80874..b0615f1e7f 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -339,9 +339,8 @@ void plugin_register_dyn_cb__udata(GArray **arr,
-                                    void *udata)
- {
-     static TCGHelperInfo info[3] = {
--        [QEMU_PLUGIN_CB_NO_REGS].flags = TCG_CALL_NO_RWG | TCG_CALL_PLUGIN,
--        [QEMU_PLUGIN_CB_R_REGS].flags = TCG_CALL_NO_WG | TCG_CALL_PLUGIN,
--        [QEMU_PLUGIN_CB_RW_REGS].flags = TCG_CALL_PLUGIN,
-+        [QEMU_PLUGIN_CB_NO_REGS].flags = TCG_CALL_NO_RWG,
-+        [QEMU_PLUGIN_CB_R_REGS].flags = TCG_CALL_NO_WG,
-         /*
-          * Match qemu_plugin_vcpu_udata_cb_t:
-          *   void (*)(uint32_t, void *)
-@@ -375,9 +374,8 @@ void plugin_register_vcpu_mem_cb(GArray **arr,
-         !__builtin_types_compatible_p(qemu_plugin_meminfo_t, int32_t));
+ void tcg_gen_plugin_cb(unsigned from);
+ void tcg_gen_plugin_mem_cb(TCGv_i64 addr, unsigned meminfo);
+-void tcg_gen_plugin_cb_start(unsigned from, unsigned type, unsigned wr);
+-void tcg_gen_plugin_cb_end(void);
  
-     static TCGHelperInfo info[3] = {
--        [QEMU_PLUGIN_CB_NO_REGS].flags = TCG_CALL_NO_RWG | TCG_CALL_PLUGIN,
--        [QEMU_PLUGIN_CB_R_REGS].flags = TCG_CALL_NO_WG | TCG_CALL_PLUGIN,
--        [QEMU_PLUGIN_CB_RW_REGS].flags = TCG_CALL_PLUGIN,
-+        [QEMU_PLUGIN_CB_NO_REGS].flags = TCG_CALL_NO_RWG,
-+        [QEMU_PLUGIN_CB_R_REGS].flags = TCG_CALL_NO_WG,
-         /*
-          * Match qemu_plugin_vcpu_mem_cb_t:
-          *   void (*)(uint32_t, qemu_plugin_meminfo_t, uint64_t, void *)
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 0bf218314b..363a065e28 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -2269,9 +2269,7 @@ static void tcg_gen_callN(void *func, TCGHelperInfo *info,
+ /* 32 bit ops */
  
- #ifdef CONFIG_PLUGIN
-     /* Flag helpers that may affect guest state */
--    if (tcg_ctx->plugin_insn &&
--        !(info->flags & TCG_CALL_PLUGIN) &&
--        !(info->flags & TCG_CALL_NO_SIDE_EFFECTS)) {
-+    if (tcg_ctx->plugin_insn && !(info->flags & TCG_CALL_NO_SIDE_EFFECTS)) {
-         tcg_ctx->plugin_insn->calls_helpers = true;
-     }
- #endif
+diff --git a/include/tcg/tcg-opc.h b/include/tcg/tcg-opc.h
+index be9e36e386..546eb49c11 100644
+--- a/include/tcg/tcg-opc.h
++++ b/include/tcg/tcg-opc.h
+@@ -199,8 +199,6 @@ DEF(goto_ptr, 0, 1, 0, TCG_OPF_BB_EXIT | TCG_OPF_BB_END)
+ 
+ DEF(plugin_cb, 0, 0, 1, TCG_OPF_NOT_PRESENT)
+ DEF(plugin_mem_cb, 0, 1, 1, TCG_OPF_NOT_PRESENT)
+-DEF(plugin_cb_start, 0, 0, 3, TCG_OPF_NOT_PRESENT)
+-DEF(plugin_cb_end, 0, 0, 0, TCG_OPF_NOT_PRESENT)
+ 
+ /* Replicate ld/st ops for 32 and 64-bit guest addresses. */
+ DEF(qemu_ld_a32_i32, 1, 1, 1,
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index fb77585ac0..d9ee9bb2ec 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -52,29 +52,11 @@
+ #include "exec/plugin-gen.h"
+ #include "exec/translator.h"
+ 
+-/*
+- * plugin_cb_start TCG op args[]:
+- * 0: enum plugin_gen_from
+- * 1: enum plugin_gen_cb
+- * 2: set to 1 for mem callback that is a write, 0 otherwise.
+- */
+-
+ enum plugin_gen_from {
+     PLUGIN_GEN_FROM_TB,
+     PLUGIN_GEN_FROM_INSN,
+     PLUGIN_GEN_AFTER_INSN,
+     PLUGIN_GEN_AFTER_TB,
+-    PLUGIN_GEN_N_FROMS,
+-};
+-
+-enum plugin_gen_cb {
+-    PLUGIN_GEN_CB_UDATA,
+-    PLUGIN_GEN_CB_UDATA_R,
+-    PLUGIN_GEN_CB_INLINE,
+-    PLUGIN_GEN_CB_MEM,
+-    PLUGIN_GEN_ENABLE_MEM_HELPER,
+-    PLUGIN_GEN_DISABLE_MEM_HELPER,
+-    PLUGIN_GEN_N_CBS,
+ };
+ 
+ static void plugin_gen_empty_callback(enum plugin_gen_from from)
+diff --git a/tcg/tcg-op.c b/tcg/tcg-op.c
+index 0ae12fa49d..eff3728622 100644
+--- a/tcg/tcg-op.c
++++ b/tcg/tcg-op.c
+@@ -322,16 +322,6 @@ void tcg_gen_plugin_mem_cb(TCGv_i64 addr, unsigned meminfo)
+     tcg_gen_op2(INDEX_op_plugin_mem_cb, tcgv_i64_arg(addr), meminfo);
+ }
+ 
+-void tcg_gen_plugin_cb_start(unsigned from, unsigned type, unsigned wr)
+-{
+-    tcg_gen_op3(INDEX_op_plugin_cb_start, from, type, wr);
+-}
+-
+-void tcg_gen_plugin_cb_end(void)
+-{
+-    tcg_emit_op(INDEX_op_plugin_cb_end, 0);
+-}
+-
+ /* 32 bit ops */
+ 
+ void tcg_gen_discard_i32(TCGv_i32 arg)
 -- 
 2.34.1
 
