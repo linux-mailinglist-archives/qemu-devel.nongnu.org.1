@@ -2,70 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13938B0425
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 106DB8B047B
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXqX-0006lk-Aq; Wed, 24 Apr 2024 04:19:17 -0400
+	id 1rzY7x-0004Mv-IL; Wed, 24 Apr 2024 04:37:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzXqR-0006TH-AR
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:19:11 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rzY7p-0004Mb-55
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:37:09 -0400
 Received: from mgamail.intel.com ([192.198.163.8])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzXqP-0006h2-Bn
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:19:10 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rzY7m-0001i8-Co
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:37:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713946749; x=1745482749;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=bFnz7FygbxZO/pmCm/pperaLmXCGTA5hGfUrid4KAIA=;
- b=LLpDb+rfeNG0JWi5SgkK7zGnc+gVnEsnXpK4iY1jBX3fGH93HHsirWa3
- +M9Mr5qJifIBX80NQIPZPPHX9IHcQsHX2iduhF+IuGHOCyoXlSmXvgMQC
- heBHavdjEL2b6MR5Vu8ueTYIMP5iKqSFFlXJvo9PNY+PaaNIIqWq5wO8R
- JY8FKQ6zw/RGNXgTnOPHyKjnQUv9cI7FD9Z78ShH2+H2RXhNBQAyfqQBo
- IR4MhLD7SGByMzZ30SN3rnGwrI7F7byJAw1Cc0gIRPr/RKhwkK8QCPR8k
- W3k4hQzXv3zuiFezWgjWlImLPrwvRkRSXTNHZjvQZiNgW6ZCZFE0CeuLy A==;
-X-CSE-ConnectionGUID: FMRn5Kd+QkWOX+geEBLhrg==
-X-CSE-MsgGUID: tuHTpugQRpS38wr/xl5Brw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="27079310"
-X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; d="scan'208";a="27079310"
+ t=1713947826; x=1745483826;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=HwhNyYjts/KO/U4osuBsr+iWfhazRKyuTN+3Rsb4SgU=;
+ b=D4ONc+oMpa69v3NXekn4xxseAdGQrkADzwtikhAZwrc8bUJedDoaA978
+ 3WFenhfdYUsKHP/tp/1udYEctlJ50hTpbW1qot53J8a8kFOr9knN5YPSu
+ qbVZ1zT3WdBQuoWPzfOEqUQXCXMsx9xAwl5ofEX6QF74QUGV4KUj6FKSk
+ MY8ukNO9AZOYEqJ4XLasEnXgzU+6TT6lsQucBTraMd6x/zZUMlswIdzeM
+ GI/+i2cjMDzy15iVkQc9LW/W3eLupvc5czHHqXFvmvZgUmb1MVfFD/dMR
+ HrCmbDjoacHYSV9CJt/fC2NXMFzZvDLCH+LIKKM75Xo+hFW8IZk+4lc/m g==;
+X-CSE-ConnectionGUID: yaS9v3RORemKn/9CQCs2fg==
+X-CSE-MsgGUID: EpCE1JGKS/y9QJs1qo0/LQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="27081046"
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; d="scan'208";a="27081046"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2024 01:19:07 -0700
-X-CSE-ConnectionGUID: AGNbggYMQYC3KCECNdPdPA==
-X-CSE-MsgGUID: jf/Xv6hwTbeaML7rtD2pcg==
+ 24 Apr 2024 01:37:04 -0700
+X-CSE-ConnectionGUID: 33AUFDLhTeOFjZNBeH3W/g==
+X-CSE-MsgGUID: cQ28aOZtSKK2Dk5ZxOTzfg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; d="scan'208";a="29117820"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa003.fm.intel.com with ESMTP; 24 Apr 2024 01:19:04 -0700
-Date: Wed, 24 Apr 2024 16:33:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Lei Wang <lei4.wang@intel.com>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, manish.mishra@nutanix.com,
- xiaoyao.li@intel.com, chenyi.qiang@intel.com, tao1.su@linux.intel.com
-Subject: Re: [PATCH] target/i386: Introduce SapphireRapids-v3 to add missing
- features
-Message-ID: <ZijDx4m117yv64JK@intel.com>
-References: <20240424072912.43188-1-lei4.wang@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,225,1708416000"; d="scan'208";a="29120440"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 01:37:02 -0700
+Message-ID: <2815f0f1-9e20-4985-849c-d74c6cdc94ae@intel.com>
+Date: Wed, 24 Apr 2024 16:36:59 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240424072912.43188-1-lei4.wang@intel.com>
-Received-SPF: pass client-ip=192.198.163.8; envelope-from=zhao1.liu@intel.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PULL 43/63] target/i386: Implement mc->kvm_type() to get VM type
+To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
+References: <20240423150951.41600-1-pbonzini@redhat.com>
+ <20240423150951.41600-44-pbonzini@redhat.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240423150951.41600-44-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.8; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.67,
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.67,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,24 +82,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Lei,
+On 4/23/2024 11:09 PM, Paolo Bonzini wrote:
+> +
+> +/**
+> + * x86_confidential_guest_kvm_type:
+> + *
+> + * Calls #X86ConfidentialGuestClass.unplug callback of @plug_handler.
 
-On Wed, Apr 24, 2024 at 03:29:12AM -0400, Lei Wang wrote:
-> Date: Wed, 24 Apr 2024 03:29:12 -0400
-> From: Lei Wang <lei4.wang@intel.com>
-> Subject: [PATCH] target/i386: Introduce SapphireRapids-v3 to add missing
->  features
-> X-Mailer: git-send-email 2.39.3
-> 
-> Add the missing features(ss, tsc-adjust, cldemote, movdiri, movdir64b) in
-> the SapphireRapids-v3 CPU model.
+the comment needs to be updated:
 
-Considering that these are missing features, not hardware updates/fixes/Linux
-support changes, then as opposed to adding v3, it would be more appropriate
-to add these flags directly to the v1 SPR model with Fixes tag (Fixes:
-commit 7eb061b06e97 ("i386: Add new CPU model SapphireRapids")).
+Calls #X86ConfidentialGuestClass.kvm_type() callback
 
-Regards,
-Zhao
+> + */
+> +static inline int x86_confidential_guest_kvm_type(X86ConfidentialGuest *cg)
+> +{
+> +    X86ConfidentialGuestClass *klass = X86_CONFIDENTIAL_GUEST_GET_CLASS(cg);
+> +
+> +    if (klass->kvm_type) {
+> +        return klass->kvm_type(cg);
+> +    } else {
+> +        return 0;
+> +    }
+> +}
 
 
