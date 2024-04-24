@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5BF8B0E9E
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 17:38:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E25E8B0F41
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 17:59:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzeh2-0008Cf-7n; Wed, 24 Apr 2024 11:37:56 -0400
+	id 1rzf06-00056b-NT; Wed, 24 Apr 2024 11:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzegz-00089z-Hv
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 11:37:53 -0400
-Received: from mgamail.intel.com ([192.198.163.13])
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rzezs-00056L-5r
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 11:57:24 -0400
+Received: from mgamail.intel.com ([192.198.163.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzegx-0005j1-R6
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 11:37:53 -0400
+ (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
+ id 1rzezp-0000ZR-Ho
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 11:57:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1713973072; x=1745509072;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=OlYKuDPPHSu3h5BsrEeYzI1MeMMYvSAts1dW6DU/vTY=;
- b=B9aSFJqjWMq3WGxNu+0+CE9T06qDGtjoqqTGo/gx9uARo6JQ8+y6QiBs
- QzHz4p2SlDZWo95rD1r7aEie/i9ClSSx6fkPC58cgWpsxr507ydSd2CyZ
- BhXi0yZFLfJjGYbYpLC2SGWWSVkRaWFc0m5r/opqPYymrlzNp9bg/C9tu
- L8CeAn1+rXxqKIw+ZCLk9/VtyFtlWLLqoJaeywm0Qu5MzU57j8xF1RRxC
- 3U8+lBo6ihvCM7UsoeUxlV77uRtZbiGWMrOBr/34ifXqPWC/1UNXJQNG4
- 5r1dr6AISw6u2CqDwS1IU/yVa6WrebncLmHQg5eJHHI+KVIiKpPPjJaOZ w==;
-X-CSE-ConnectionGUID: WY+9eBVYTK+uuhUfAeNRRQ==
-X-CSE-MsgGUID: jwxRCQPER5KosoMhLuucAQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="12545864"
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="12545864"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2024 08:37:39 -0700
-X-CSE-ConnectionGUID: XXNVp/cPSSarPdr4uQB0CA==
-X-CSE-MsgGUID: UveUyuf9THWITkMsV4ys6Q==
+ t=1713974241; x=1745510241;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=szSvnPPOZogSbQg2l5FImdE9D+W2Mso6/U/ehpDLjtg=;
+ b=izKOh63oGCKbT7myKf6mLyKKvl/DJlZfs0ngNNAZkLDeDNCuHwGD9rjw
+ V1ctaV5rWyGx412KGOaJxQuoR+yKWi2R8/ObTpe6kiP5ZPmjUmr8Dk+ZB
+ sXgMT28pXC1iMje7O8sr1Dn4rjsutDAM4P4i8jIDQoMb4cDFtJlo9rBQK
+ GVm0OGNhmkv/xFwEYI96GZ+9xTd77RoSzrc7U5ERaelj1kxyTEe+xGoXu
+ MncKuTqP2XXFrx2PpKjcBHtwEAFjxumxvOT4d7x95gwXvs6D9rCkWpGCL
+ tLMR3D0fp31GUaptavTZl82e+FULR18ij6IjTDbkWBfk1u1oLe/ymN8V3 w==;
+X-CSE-ConnectionGUID: 5Pbnf+5MR+mygMl4WRVKEA==
+X-CSE-MsgGUID: 8RIzLh9RS+i2FpPXu/+Gcw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9776172"
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; 
+   d="scan'208";a="9776172"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 08:57:17 -0700
+X-CSE-ConnectionGUID: sPs8qcndRmmnxNGDQsUxSw==
+X-CSE-MsgGUID: DrAM4+fPRKKgQpa+TloHrg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="25363356"
-Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 24 Apr 2024 08:37:35 -0700
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>, Babu Moger <babu.moger@amd.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- Yongwei Ma <yongwei.ma@intel.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v11 21/21] i386/cpu: Use CPUCacheInfo.share_level to encode
- CPUID[0x8000001D].EAX[bits 25:14]
-Date: Wed, 24 Apr 2024 23:49:29 +0800
-Message-Id: <20240424154929.1487382-22-zhao1.liu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240424154929.1487382-1-zhao1.liu@intel.com>
-References: <20240424154929.1487382-1-zhao1.liu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.07,226,1708416000"; d="scan'208";a="24770849"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.242.48])
+ ([10.124.242.48])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 08:57:14 -0700
+Message-ID: <fb252e78-2e71-4422-9499-9eac69102eec@intel.com>
+Date: Wed, 24 Apr 2024 23:57:11 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.198.163.13; envelope-from=zhao1.liu@intel.com;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock feature
+ name
+To: Zhao Liu <zhao1.liu@linux.intel.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S . Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Tim Wiederhake <twiederh@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
+References: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=192.198.163.15; envelope-from=xiaoyao.li@intel.com;
  helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HK_RANDOM_ENVFROM=0.001, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,64 +89,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUID[0x8000001D].EAX[bits 25:14] NumSharingCache: number of logical
-processors sharing cache.
+On 3/29/2024 6:19 PM, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+> 
+> Hi list,
+> 
+> This series is based on Paolo's guest_phys_bits patchset [1].
+> 
+> Currently, the old and new kvmclocks have the same feature name
+> "kvmclock" in FeatureWordInfo[FEAT_KVM].
+> 
+> When I tried to dig into the history of this unusual naming and fix it,
+> I realized that Tim was already trying to rename it, so I picked up his
+> renaming patch [2] (with a new commit message and other minor changes).
+> 
+> 13 years age, the same name was introduced in [3], and its main purpose
+> is to make it easy for users to enable/disable 2 kvmclocks. Then, in
+> 2012, Don tried to rename the new kvmclock, but the follow-up did not
+> address Igor and Eduardo's comments about compatibility.
+> 
+> Tim [2], not long ago, and I just now, were both puzzled by the naming
+> one after the other.
 
-The number of logical processors sharing this cache is
-NumSharingCache + 1.
+The commit message of [3] said the reason clearly:
 
-After cache models have topology information, we can use
-CPUCacheInfo.share_level to decide which topology level to be encoded
-into CPUID[0x8000001D].EAX[bits 25:14].
+   When we tweak flags involving this value - specially when we use "-",
+   we have to act on both.
 
-Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-Tested-by: Babu Moger <babu.moger@amd.com>
-Reviewed-by: Babu Moger <babu.moger@amd.com>
----
-Changes since v7:
- * Renamed max_processor_ids_for_cache() to max_thread_ids_for_cache().
- * Dropped Michael/Babu's ACKed/Tested tags since the code change.
- * Re-added Yongwei's Tested tag For his re-testing.
+So you are trying to change it to "when people want to disable kvmclock, 
+they need to use '-kvmclock,-kvmclock2' instead of '-kvmclock'"
 
-Changes since v3:
- * Explained what "CPUID[0x8000001D].EAX[bits 25:14]" means in the
-   commit message. (Babu)
+IMHO, I prefer existing code and I don't see much value of 
+differentiating them. If the current code puzzles you, then we can add 
+comment to explain.
 
-Changes since v1:
- * Used cache->share_level as the parameter in
-   max_processor_ids_for_cache().
----
- target/i386/cpu.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+> So, this series is to push for renaming the new kvmclock feature to
+> "kvmclock2" and adding compatibility support for older machines (PC 9.0
+> and older).
+> 
+> Finally, let's put an end to decades of doubt about this name.
+> 
+> 
+> Next Step
+> =========
+> 
+> This series just separates the two kvmclocks from the naming, and in
+> subsequent patches I plan to stop setting kvmclock(old kcmclock) by
+> default as long as KVM supports kvmclock2 (new kvmclock).
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index 6ab517a59aee..369c5ee54fa6 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -478,20 +478,12 @@ static void encode_cache_cpuid8000001d(CPUCacheInfo *cache,
-                                        uint32_t *eax, uint32_t *ebx,
-                                        uint32_t *ecx, uint32_t *edx)
- {
--    uint32_t num_sharing_cache;
-     assert(cache->size == cache->line_size * cache->associativity *
-                           cache->partitions * cache->sets);
- 
-     *eax = CACHE_TYPE(cache->type) | CACHE_LEVEL(cache->level) |
-                (cache->self_init ? CACHE_SELF_INIT_LEVEL : 0);
--
--    /* L3 is shared among multiple cores */
--    if (cache->level == 3) {
--        num_sharing_cache = 1 << apicid_die_offset(topo_info);
--    } else {
--        num_sharing_cache = 1 << apicid_core_offset(topo_info);
--    }
--    *eax |= (num_sharing_cache - 1) << 14;
-+    *eax |= max_thread_ids_for_cache(topo_info, cache->share_level) << 14;
- 
-     assert(cache->line_size > 0);
-     assert(cache->partitions > 0);
--- 
-2.34.1
+No. It will break existing guests that use KVM_FEATURE_CLOCKSOURCE.
+
+> Also, try to deprecate the old kvmclock in KVM side.
+> 
+> [1]: https://lore.kernel.org/qemu-devel/20240325141422.1380087-1-pbonzini@redhat.com/
+> [2]: https://lore.kernel.org/qemu-devel/20230908124534.25027-4-twiederh@redhat.com/
+> [3]: https://lore.kernel.org/qemu-devel/1300401727-5235-3-git-send-email-glommer@redhat.com/
+> [4]: https://lore.kernel.org/qemu-devel/1348171412-23669-3-git-send-email-Don@CloudSwitch.com/
+> 
+> Thanks and Best Regards,
+> Zhao
+> 
+> ---
+> Tim Wiederhake (1):
+>    target/i386: Fix duplicated kvmclock name in FEAT_KVM
+> 
+> Zhao Liu (6):
+>    target/i386/kvm: Add feature bit definitions for KVM CPUID
+>    target/i386/kvm: Remove local MSR_KVM_WALL_CLOCK and
+>      MSR_KVM_SYSTEM_TIME definitions
+>    target/i386/kvm: Only Save/load kvmclock MSRs when kvmclock enabled
+>    target/i386/kvm: Save/load MSRs of new kvmclock
+>      (KVM_FEATURE_CLOCKSOURCE2)
+>    target/i386/kvm: Add legacy_kvmclock cpu property
+>    target/i386/kvm: Update comment in kvm_cpu_realizefn()
+> 
+>   hw/i386/kvm/clock.c       |  5 ++--
+>   hw/i386/pc.c              |  1 +
+>   target/i386/cpu.c         |  3 +-
+>   target/i386/cpu.h         | 32 +++++++++++++++++++++
+>   target/i386/kvm/kvm-cpu.c | 25 ++++++++++++++++-
+>   target/i386/kvm/kvm.c     | 59 +++++++++++++++++++++++++--------------
+>   6 files changed, 99 insertions(+), 26 deletions(-)
+> 
 
 
