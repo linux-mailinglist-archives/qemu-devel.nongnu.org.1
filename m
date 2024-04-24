@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A558B03DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 933DC8B03DB
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:05:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXc1-0006ra-8p; Wed, 24 Apr 2024 04:04:18 -0400
+	id 1rzXc1-0006sa-8G; Wed, 24 Apr 2024 04:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbW-0005ss-OO
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:49 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbX-0005t2-7Z
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbR-0003nI-Ms
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbS-0003no-CW
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945820;
+ s=mimecast20190719; t=1713945821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=NiuiV2XNWoLOe0i8EiZrScnl5eVDDJW6PHINxn2sw/0=;
- b=Pg+WD1YOAMihhAGu9PCudo49jsD9Dt0SpsMdQ0Qtbf6ZzHBiHZqaAp8eIX5ovwzIOdM6pF
- 3c4oGzQPSLntr1TDaNohG9QwqU/uncuo7gJZDGQPsCulzirWWNQ8i8SLyHSjv5Yto3qGN4
- eCc4Q/XcjJNrm0vkZ8xO+DNB4szIfkY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-695-9BK_vXyENPqZQA65VJvL8w-1; Wed,
- 24 Apr 2024 04:03:38 -0400
-X-MC-Unique: 9BK_vXyENPqZQA65VJvL8w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ bh=RzyA+8FvRc0MMftFU70dD71qqB2P/3uuYTFBQFXNu+A=;
+ b=L3M6GV2AX+9bp1juEnhfpqe8rZS1kYNdX2Ww3dC95dPpoqj5Nc7Bg93knxRhkxiaKQovfm
+ 07SImKx5GBhvezjluQLjLegPpa4KgHnRcvv/xyjsEIjRMKsjhy4niTDvCOsOAfSOU52Qdi
+ iFC3+EuZ/+xZQ7AQFFgZY2TMwb+VXy4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-zeBbQLcpNeC5jJiFqucZ5w-1; Wed, 24 Apr 2024 04:03:39 -0400
+X-MC-Unique: zeBbQLcpNeC5jJiFqucZ5w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39CD31C03159;
- Wed, 24 Apr 2024 08:03:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 319E780D0FA;
+ Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 19F5A1121312;
- Wed, 24 Apr 2024 08:03:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 121A93543A;
+ Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3E1B221E669B; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
+ id 4499921E66A7; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 03/10] qapi: Inline and remove QERR_DEVICE_HAS_NO_MEDIUM
- definition
-Date: Wed, 24 Apr 2024 10:03:30 +0200
-Message-ID: <20240424080337.2782594-4-armbru@redhat.com>
+Subject: [PULL 05/10] qapi: Inline and remove QERR_INVALID_PARAMETER definition
+Date: Wed, 24 Apr 2024 10:03:32 +0200
+Message-ID: <20240424080337.2782594-6-armbru@redhat.com>
 In-Reply-To: <20240424080337.2782594-1-armbru@redhat.com>
 References: <20240424080337.2782594-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -91,76 +90,99 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, and manual cleanup.
+Mechanical transformation using:
+
+  $ sed -i -e "s/QERR_INVALID_PARAMETER,/\"Invalid parameter '%s'\",/" \
+    $(git grep -lw QERR_INVALID_PARAMETER)
+
+Manually simplify qemu_opts_create(), and remove the macro definition
+in include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240312141343.3168265-4-armbru@redhat.com>
+Message-ID: <20240312141343.3168265-6-armbru@redhat.com>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- block/snapshot.c          | 7 ++++---
- blockdev.c                | 2 +-
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ include/qapi/qmp/qerror.h |  3 ---
+ qapi/opts-visitor.c       |  2 +-
+ util/qemu-option.c        | 10 +++++-----
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 06a1d2248e..daa889809b 100644
+index e93211085a..63ab775dc5 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_DEVICE_HAS_NO_MEDIUM \
--    "Device '%s' has no medium"
+-#define QERR_INVALID_PARAMETER \
+-    "Invalid parameter '%s'"
 -
- #define QERR_DEVICE_NO_HOTPLUG \
-     "Device '%s' does not support hotplugging"
+ #define QERR_INVALID_PARAMETER_TYPE \
+     "Invalid parameter type for '%s', expected: %s"
  
-diff --git a/block/snapshot.c b/block/snapshot.c
-index 8242b4abac..8fd1756777 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -28,7 +28,6 @@
- #include "block/qdict.h"
- #include "qapi/error.h"
- #include "qapi/qmp/qdict.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/qmp/qstring.h"
- #include "qemu/option.h"
- #include "sysemu/block-backend.h"
-@@ -359,7 +358,8 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-     GLOBAL_STATE_CODE();
+diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
+index 8f1efab8b9..3d1a28b419 100644
+--- a/qapi/opts-visitor.c
++++ b/qapi/opts-visitor.c
+@@ -184,7 +184,7 @@ opts_check_struct(Visitor *v, Error **errp)
+         const QemuOpt *first;
  
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium",
-+                   bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
+         first = g_queue_peek_head(any);
+-        error_setg(errp, QERR_INVALID_PARAMETER, first->name);
++        error_setg(errp, "Invalid parameter '%s'", first->name);
+         return false;
      }
-     if (!snapshot_id && !name) {
-@@ -437,7 +437,8 @@ int bdrv_snapshot_load_tmp(BlockDriverState *bs,
-     GRAPH_RDLOCK_GUARD_MAINLOOP();
+     return true;
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index eedd08929b..201f7a87f3 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -498,7 +498,7 @@ static bool opt_validate(QemuOpt *opt, Error **errp)
  
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium",
-+                   bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
+     desc = find_desc_by_name(list->desc, opt->name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++        error_setg(errp, "Invalid parameter '%s'", opt->name);
+         return false;
      }
-     if (!snapshot_id && !name) {
-diff --git a/blockdev.c b/blockdev.c
-index 057601dcf0..08eccc9052 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1395,7 +1395,7 @@ static void external_snapshot_action(TransactionAction *action,
-     bdrv_drained_begin(state->old_bs);
  
-     if (!bdrv_is_inserted(state->old_bs)) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM,
-+        error_setg(errp, "Device '%s' has no medium",
-                    bdrv_get_device_or_node_name(state->old_bs));
-         return;
+@@ -531,7 +531,7 @@ bool qemu_opt_set_bool(QemuOpts *opts, const char *name, bool val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
      }
+ 
+@@ -554,7 +554,7 @@ bool qemu_opt_set_number(QemuOpts *opts, const char *name, int64_t val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
+     }
+ 
+@@ -612,7 +612,7 @@ QemuOpts *qemu_opts_create(QemuOptsList *list, const char *id,
+ 
+     if (list->merge_lists) {
+         if (id) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, "id");
++            error_setg(errp, "Invalid parameter 'id'");
+             return NULL;
+         }
+         opts = qemu_opts_find(list, NULL);
+@@ -1103,7 +1103,7 @@ bool qemu_opts_validate(QemuOpts *opts, const QemuOptDesc *desc, Error **errp)
+     QTAILQ_FOREACH(opt, &opts->head, next) {
+         opt->desc = find_desc_by_name(desc, opt->name);
+         if (!opt->desc) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++            error_setg(errp, "Invalid parameter '%s'", opt->name);
+             return false;
+         }
+ 
 -- 
 2.44.0
 
