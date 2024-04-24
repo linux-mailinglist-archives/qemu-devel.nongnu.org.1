@@ -2,61 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756F38B03D3
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FC8B03D2
 	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:04:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXbr-0006Na-K3; Wed, 24 Apr 2024 04:04:07 -0400
+	id 1rzXbu-0006Wq-75; Wed, 24 Apr 2024 04:04:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbT-0005pG-9l
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbY-0005td-Go
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbR-0003nB-Di
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:42 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbW-0003oI-H2
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945820;
+ s=mimecast20190719; t=1713945823;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ote8/Ggg+mQ1mV4i16sKa7lJ17Z9TkkbhrUQT2Vox2o=;
- b=b3aVhcyEbRlT3IL5vOga0LtU7VZb1qT9zE6W00QniufW9OOZjFGiXm/ylNcbfmmapM/XFA
- iKIeiEsgn1tgWefJY4aKbIFv3hc5Br7HwZZajbNzT2ReTHqF0R6UGGRv/AvjAVfed4zCFK
- Fbd9BHoPLe0VDo4Te6wZzfrY+Qlc+28=
+ bh=ZdO3ys51gFGTtlPnaZEuNtvyTcKAodScH+C3F5XFx4Q=;
+ b=Yv26J/PnBazg9yB/rQb5HNyYHqeOmCJxgzLov3YG1YI1Ryjr7W0WoR9OBRcijSi8zxmsFd
+ TiXtudBzQWDT3B0jyn1qOj+xQBzkJc0PK9iqEziaOd01mM6sdnkvf4Whg2tzRFea+T/zo2
+ 9jUyBY6HOeOv7oPaZyBk9ptmebrYaO0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-172-BWuTSmCpNRemtIC9zTbvEQ-1; Wed, 24 Apr 2024 04:03:38 -0400
-X-MC-Unique: BWuTSmCpNRemtIC9zTbvEQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-199-bbUme36JMGa1gPcDkbxOMw-1; Wed, 24 Apr 2024 04:03:39 -0400
+X-MC-Unique: bbUme36JMGa1gPcDkbxOMw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3F579834FB3;
- Wed, 24 Apr 2024 08:03:38 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44875812C39;
+ Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1EE301C060D0;
- Wed, 24 Apr 2024 08:03:38 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 257F5C13FA4;
+ Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4148621E669C; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
+ id 4AD0D21E65D8; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 04/10] qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG definition
-Date: Wed, 24 Apr 2024 10:03:31 +0200
-Message-ID: <20240424080337.2782594-5-armbru@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 07/10] qapi: Inline and remove QERR_INVALID_PARAMETER_TYPE
+ definition
+Date: Wed, 24 Apr 2024 10:03:34 +0200
+Message-ID: <20240424080337.2782594-8-armbru@redhat.com>
 In-Reply-To: <20240424080337.2782594-1-armbru@redhat.com>
 References: <20240424080337.2782594-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -90,66 +92,77 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, and manual cleanup.
+Manual changes (escaping the format in qapi/visit.py).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240312141343.3168265-5-armbru@redhat.com>
+Message-ID: <20240312141343.3168265-8-armbru@redhat.com>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
 ---
  include/qapi/qmp/qerror.h | 3 ---
- hw/core/qdev.c            | 4 ++--
- system/qdev-monitor.c     | 2 +-
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ qom/object.c              | 4 ++--
+ scripts/qapi/visit.py     | 5 ++---
+ 3 files changed, 4 insertions(+), 8 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index daa889809b..e93211085a 100644
+index 63ab775dc5..b723830eff 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_DEVICE_NO_HOTPLUG \
--    "Device '%s' does not support hotplugging"
+-#define QERR_INVALID_PARAMETER_TYPE \
+-    "Invalid parameter type for '%s', expected: %s"
 -
- #define QERR_INVALID_PARAMETER \
-     "Invalid parameter '%s'"
+ #define QERR_INVALID_PARAMETER_VALUE \
+     "Parameter '%s' expects %s"
  
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index c68d0f7c51..00efaf1bd1 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -29,7 +29,6 @@
- #include "qapi/error.h"
- #include "qapi/qapi-events-qdev.h"
- #include "qapi/qmp/qdict.h"
+diff --git a/qom/object.c b/qom/object.c
+index 3d96818f7d..44ec8f6460 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -23,7 +23,6 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/forward-visitor.h"
+ #include "qapi/qapi-builtin-visit.h"
 -#include "qapi/qmp/qerror.h"
- #include "qapi/visitor.h"
- #include "qemu/error-report.h"
- #include "qemu/option.h"
-@@ -479,7 +478,8 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
-     static int unattached_count;
+ #include "qapi/qmp/qjson.h"
+ #include "trace.h"
  
-     if (dev->hotplugged && !dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG, object_get_typename(obj));
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-+                   object_get_typename(obj));
-         return;
-     }
- 
-diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-index 2ae1460e21..6af6ef7d66 100644
---- a/system/qdev-monitor.c
-+++ b/system/qdev-monitor.c
-@@ -917,7 +917,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
-     }
- 
-     if (!dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-                    object_get_typename(OBJECT(dev)));
-         return;
-     }
+@@ -1912,7 +1911,8 @@ static Object *object_resolve_link(Object *obj, const char *name,
+     } else if (!target) {
+         target = object_resolve_path(path, &ambiguous);
+         if (target || ambiguous) {
+-            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, name, target_type);
++            error_setg(errp, "Invalid parameter type for '%s', expected: %s",
++                             name, target_type);
+         } else {
+             error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
+                       "Device '%s' not found", path);
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index c56ea4d724..a21b7b1468 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -278,8 +278,8 @@ def gen_visit_alternate(name: str, variants: QAPISchemaVariants) -> str:
+         abort();
+     default:
+         assert(visit_is_input(v));
+-        error_setg(errp, QERR_INVALID_PARAMETER_TYPE, name ? name : "null",
+-                   "%(name)s");
++        error_setg(errp, "Invalid parameter type for '%%s', expected: %(name)s",
++                         name ? name : "null");
+         /* Avoid passing invalid *obj to qapi_free_%(c_name)s() */
+         g_free(*obj);
+         *obj = NULL;
+@@ -356,7 +356,6 @@ def _begin_user_module(self, name: str) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "%(visit)s.h"
+ ''',
+                                       visit=visit))
 -- 
 2.44.0
 
