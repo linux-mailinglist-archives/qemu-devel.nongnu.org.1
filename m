@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8288B16A7
+	by mail.lfdr.de (Postfix) with ESMTPS id 055128B16A5
 	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:58:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzlYU-0005UW-DW; Wed, 24 Apr 2024 18:57:34 -0400
+	id 1rzlYU-0005Y3-MS; Wed, 24 Apr 2024 18:57:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlYL-0005Q1-Pc
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:26 -0400
-Received: from mail-pf1-x432.google.com ([2607:f8b0:4864:20::432])
+ id 1rzlYM-0005QJ-LS
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:27 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlYK-0001pD-A3
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:25 -0400
-Received: by mail-pf1-x432.google.com with SMTP id
- d2e1a72fcca58-6effe9c852eso372618b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:57:23 -0700 (PDT)
+ id 1rzlYL-0001pT-6O
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:26 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-5aa2a74c238so281508eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713999443; x=1714604243; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713999444; x=1714604244; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fwoFN6B2qbFkqUCTGf1HoUgZR053rQ1g2covN+0RlE8=;
- b=jaqRTVAyHV/qeNkMG4M2udOLBqLZpP33d1JgmFJVbkS6G9tUIYAV+W7TWA3h16qSXK
- D5/w6Qn3bdwLFcRg2eCBWHtwqTRY8tD0i6uMpqrdy5mvF/ve++a6VhSnxWvxL4Qqv6NZ
- EKZBv2qDMededM//hgPOSvQhlO5cOYG4+XqKUeHAYI1wvB6KW8c34h8HhhptWks7ARO5
- 6htFN6megQYgq2+WBCcj0Ju3OEzKODF1d1CLLXjLMOU0bTybuz5mRZpQcS1p+M5Vb2kk
- 7DSPUfTIubofzce/CuPR+63NkIeyU7LJKzuESI2wm/+OCTUoLQ3Sm3AOfSiYHZMLV7o6
- xbKA==
+ :reply-to; bh=uDnD2JhudGEyHc/H+ZZoiEcnN6tpSM/3wit8Um6ah6g=;
+ b=mG+rKjic6fGDOeNcPoWewMQB9wlHzaoVWPFgKzb4qzDWBFMe7HvJxL/PAYJa2FH1Kw
+ a/lqLwbEVtA7fz5EOZnLbkiud5jRMWv6TrOXEuauR/3aXt9g45/o8x4sQiMziOuNI5BV
+ FRmgDPqDQFw6V5ghxvGIDbMfvlXwVcF4eWiy2DNUyzkIXgpVkFvbYoI4mHGxaxe+XhIc
+ G/cm4gI0lKmy8ObgyH3qDOboFoOBR7PYR/TODRjBUkiQq32HWt/NrAGTcwPHCaqXcRF/
+ 9gSb65BYIWIXumGRFmKWTFcvQum9Uld8XiEdv963uT23soDgFNEhPEaXnF+cZB1JiJL2
+ 9+UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713999443; x=1714604243;
+ d=1e100.net; s=20230601; t=1713999444; x=1714604244;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fwoFN6B2qbFkqUCTGf1HoUgZR053rQ1g2covN+0RlE8=;
- b=Ssa0twqbbzFbRwTPpnHmK8QG5qwB/xKXil6LulE7xGIzZAY5jekrayTuz9jA4Y/XYc
- JEk4LP56T6GrH8Uhv472qLnLwuMjE3PaUbhzKtTm2XI+95SWBkOSMdeZKmjMt+iOJwHJ
- Iq8v2sVRXenJT+8YNqxLQEI4OKFzIqaVz8dvKnI3s5vKmxd5RlvYyQmYMSjrzinrhH8J
- heu7FnMf+GcdVgYTqt+ZXBVlfRuFSQjiuJ2v7P8X/crQfGHneJ5d+knX6iM5vWtXgW8W
- Lk8SkYLcAN6tGqZziZmHhHMp1JxNeoHuqc+VNgmeALVI19N2bRRJyPm7kTjoDsL9XUwg
- rMZg==
-X-Gm-Message-State: AOJu0Yw0hFmrCIege40BzVP2BsVsCm33NdxZM5FFvXTVJNFPNVmz/oO4
- HUtHrpmKOxHpQu3S6vCxIn+MNu7khMnPt8lEZyuVapZJYhhyJ4257CemP3zGn8aYHsbHaXwJ4QF
- i
-X-Google-Smtp-Source: AGHT+IFamRqhDaRYK8RcUfPmPKyvWx8+95ilLjX4iflBV1yoHZOVn0Fm0nytRkETNFd5gENQ1I7hrQ==
-X-Received: by 2002:a05:6a20:c901:b0:1a7:a3cb:7901 with SMTP id
- gx1-20020a056a20c90100b001a7a3cb7901mr4050098pzb.61.1713999443062; 
+ bh=uDnD2JhudGEyHc/H+ZZoiEcnN6tpSM/3wit8Um6ah6g=;
+ b=r2AHREOJYN0EnauQxG38EsUzsGxfk3ewZ5Z1ojb8ZfuBX4mZ+pIvyFqCfXbdKCJXcw
+ p8f2AP39BdpLCXVlYO5WQg1+WIb+WN6DwrgomJ7JnMIUwnsddhD93RTiCPmHe++xKy5v
+ VDExOEiPIyrYODiVyt9HgJruvYBfOvT2njQgwCihJ49CbCdN7Z52m5VqxSnwvA/zESP0
+ uPDvx6YWYWdXe3KnNL64BT+NGskhqv+Ghyvwr33gevZmZCCmZx9OqHB/BmVUR8LmDFJZ
+ uMYd3r0ubcauq58YNUC3N2rpQvvoVwV13kv7SAulLtbXXYZENXgRS4U/Qz6MnKl1x5Gy
+ /4vQ==
+X-Gm-Message-State: AOJu0Yz/WE/VuaTXJWBLiaHILkxDgf2J+E7oLxpa43460isNvGBKP1wN
+ QMqq1RqDNr4z/HZeozJlLD9VblVKuDP4u0qEnvlhPdh8msxUrMl78v7yGe9wBwMvgUJnsyNx2j0
+ u
+X-Google-Smtp-Source: AGHT+IHTPY/74tsfIDrYcStsv5KPyjyIfAvmqvx6MSnbk+mQ6XqpUDn5C73nrhmneTsEmX4IsJYqPQ==
+X-Received: by 2002:a05:6870:3101:b0:22e:8ed:9f7a with SMTP id
+ v1-20020a056870310100b0022e08ed9f7amr4331016oaa.4.1713999443927; 
  Wed, 24 Apr 2024 15:57:23 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- gu26-20020a056a004e5a00b006ed9760b815sm11947413pfb.211.2024.04.24.15.57.22
+ gu26-20020a056a004e5a00b006ed9760b815sm11947413pfb.211.2024.04.24.15.57.23
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 15:57:22 -0700 (PDT)
+ Wed, 24 Apr 2024 15:57:23 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v6 09/10] util/bufferiszero: Add simd acceleration for aarch64
-Date: Wed, 24 Apr 2024 15:57:04 -0700
-Message-Id: <20240424225705.929812-10-richard.henderson@linaro.org>
+Subject: [PATCH v6 10/10] tests/bench: Add bufferiszero-bench
+Date: Wed, 24 Apr 2024 15:57:05 -0700
+Message-Id: <20240424225705.929812-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424225705.929812-1-richard.henderson@linaro.org>
 References: <20240424225705.929812-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::432;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x432.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,107 +90,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Because non-embedded aarch64 is expected to have AdvSIMD enabled, merely
-double-check with the compiler flags for __ARM_NEON and don't bother with
-a runtime check.  Otherwise, model the loop after the x86 SSE2 function.
-
-Use UMAXV for the vector reduction.  This is 3 cycles on cortex-a76 and
-2 cycles on neoverse-n1.
+Benchmark each acceleration function vs an aligned buffer of zeros.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 77 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 77 insertions(+)
+ tests/bench/bufferiszero-bench.c | 47 ++++++++++++++++++++++++++++++++
+ tests/bench/meson.build          |  1 +
+ 2 files changed, 48 insertions(+)
+ create mode 100644 tests/bench/bufferiszero-bench.c
 
-diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index ff003dc40e..38477a3eac 100644
---- a/util/bufferiszero.c
-+++ b/util/bufferiszero.c
-@@ -213,7 +213,84 @@ bool test_buffer_is_zero_next_accel(void)
-     }
-     return false;
- }
+diff --git a/tests/bench/bufferiszero-bench.c b/tests/bench/bufferiszero-bench.c
+new file mode 100644
+index 0000000000..222695c1fa
+--- /dev/null
++++ b/tests/bench/bufferiszero-bench.c
+@@ -0,0 +1,47 @@
++/*
++ * QEMU buffer_is_zero speed benchmark
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or
++ * (at your option) any later version.  See the COPYING file in the
++ * top-level directory.
++ */
++#include "qemu/osdep.h"
++#include "qemu/cutils.h"
++#include "qemu/units.h"
 +
-+#elif defined(__aarch64__) && defined(__ARM_NEON)
-+#include <arm_neon.h>
-+
-+#define REASSOC_BARRIER(vec0, vec1) asm("" : "+w"(vec0), "+w"(vec1))
-+
-+static bool buffer_is_zero_simd(const void *buf, size_t len)
++static void test(const void *opaque)
 +{
-+    uint32x4_t t0, t1, t2, t3;
++    size_t max = 64 * KiB;
++    void *buf = g_malloc0(max);
++    int accel_index = 0;
 +
-+    /* Align head/tail to 16-byte boundaries.  */
-+    const uint32x4_t *p = QEMU_ALIGN_PTR_DOWN(buf + 16, 16);
-+    const uint32x4_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 16);
-+
-+    /* Unaligned loads at head/tail.  */
-+    t0 = vld1q_u32(buf) | vld1q_u32(buf + len - 16);
-+
-+    /* Collect a partial block at tail end.  */
-+    t1 = e[-7] | e[-6];
-+    t2 = e[-5] | e[-4];
-+    t3 = e[-3] | e[-2];
-+    t0 |= e[-1];
-+    REASSOC_BARRIER(t0, t1);
-+    REASSOC_BARRIER(t2, t3);
-+    t0 |= t1;
-+    t2 |= t3;
-+    REASSOC_BARRIER(t0, t2);
-+    t0 |= t2;
-+
-+    /*
-+     * Loop over complete 128-byte blocks.
-+     * With the head and tail removed, e - p >= 14, so the loop
-+     * must iterate at least once.
-+     */
 +    do {
-+        /*
-+         * Reduce via UMAXV.  Whatever the actual result,
-+         * it will only be zero if all input bytes are zero.
-+         */
-+        if (unlikely(vmaxvq_u32(t0) != 0)) {
-+            return false;
++        if (accel_index != 0) {
++            g_test_message("%s", "");  /* gnu_printf Werror for simple "" */
 +        }
++        for (size_t len = 1 * KiB; len <= max; len *= 4) {
++            double total = 0.0;
 +
-+        t0 = p[0] | p[1];
-+        t1 = p[2] | p[3];
-+        t2 = p[4] | p[5];
-+        t3 = p[6] | p[7];
-+        REASSOC_BARRIER(t0, t1);
-+        REASSOC_BARRIER(t2, t3);
-+        t0 |= t1;
-+        t2 |= t3;
-+        REASSOC_BARRIER(t0, t2);
-+        t0 |= t2;
-+        p += 8;
-+    } while (p < e - 7);
++            g_test_timer_start();
++            do {
++                buffer_is_zero_ge256(buf, len);
++                total += len;
++            } while (g_test_timer_elapsed() < 0.5);
 +
-+    return vmaxvq_u32(t0) == 0;
++            total /= MiB;
++            g_test_message("buffer_is_zero #%d: %2zuKB %8.0f MB/sec",
++                           accel_index, len / (size_t)KiB,
++                           total / g_test_timer_last());
++        }
++        accel_index++;
++    } while (test_buffer_is_zero_next_accel());
++
++    g_free(buf);
 +}
 +
-+static biz_accel_fn const accel_table[] = {
-+    buffer_is_zero_int_ge256,
-+    buffer_is_zero_simd,
-+};
-+
-+static unsigned accel_index = 1;
-+#define INIT_ACCEL buffer_is_zero_simd
-+
-+bool test_buffer_is_zero_next_accel(void)
++int main(int argc, char **argv)
 +{
-+    if (accel_index != 0) {
-+        buffer_is_zero_accel = accel_table[--accel_index];
-+        return true;
-+    }
-+    return false;
++    g_test_init(&argc, &argv, NULL);
++    g_test_add_data_func("/cutils/bufferiszero/speed", NULL, test);
++    return g_test_run();
 +}
-+
- #else
-+
- bool test_buffer_is_zero_next_accel(void)
- {
-     return false;
+diff --git a/tests/bench/meson.build b/tests/bench/meson.build
+index 7e76338a52..4cd7a2f6b5 100644
+--- a/tests/bench/meson.build
++++ b/tests/bench/meson.build
+@@ -21,6 +21,7 @@ benchs = {}
+ 
+ if have_block
+   benchs += {
++     'bufferiszero-bench': [],
+      'benchmark-crypto-hash': [crypto],
+      'benchmark-crypto-hmac': [crypto],
+      'benchmark-crypto-cipher': [crypto],
 -- 
 2.34.1
 
