@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01618B16F4
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D138B171E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:33:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzlps-0000Oz-RE; Wed, 24 Apr 2024 19:15:32 -0400
+	id 1rzm5X-0005lZ-1O; Wed, 24 Apr 2024 19:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlpe-0000Nr-1b
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:15:22 -0400
-Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
+ id 1rzm5Q-0005iP-PH
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:38 -0400
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlpc-0006x7-1d
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:15:17 -0400
-Received: by mail-pf1-x431.google.com with SMTP id
- d2e1a72fcca58-6ece8991654so447034b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:15:13 -0700 (PDT)
+ id 1rzm5O-0003Ma-RY
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:36 -0400
+Received: by mail-pj1-x1031.google.com with SMTP id
+ 98e67ed59e1d1-2abf9305afcso346688a91.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:31:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714000512; x=1714605312; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id:from
- :to:cc:subject:date:message-id:reply-to;
- bh=FpaiVEBlxxoYrCmqblEKTbgi1ilpb6EDQX934DCEWkM=;
- b=CWMST7g3lxYOdzVM18ggVLCwtjPNXTM0UKuHbfWX2QNUWdrhlpSv8gi90k42LsEGw+
- sSWpwXC/pWKzV95tmLPvtebMh5iUtesyCLuPQSBfxyrYD9Aqc158+6XPG3B0aPoB6ECC
- l3v7x7S6wBXliq60wKnf0bxO3Ft+M0szTMJsRyzgL8ad+fehY5o5JOsUXTpgx4CxegyO
- uJZ+2fHsE842ng2EjyXi8wE2tvkqF8AaVKKKs8K57n76+bY2tnFyzNkkT+R5F21+a5K0
- IA2KlKqXtYwIBUI6KXnhUiTZHZR7r0BDjQP2bJaxcqqxHl1bviXsVQkA0uQZNF49hVE1
- AnuA==
+ d=linaro.org; s=google; t=1714001493; x=1714606293; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=wMGnRSLzMfjPcAWv+gJ2QDXKCclkbKeAZ+VbEIoyrQE=;
+ b=xUi/nIQvn8MkDY6Nu3QxP2CCumO3PSoLJPXuxZYYMeF0i5xGc5rnaz2xh3MTv8e9vZ
+ MTg0sgpCQ8yqrNoQJz673mlDtNlkeVGMC/Vcz/1jNHkl6ic9cDzMmj9pmZ7dh6ua8yHo
+ LBYREg7nDpjM4bFf78/Oyg9T/liORKJP480ZhNvQaSxhgNU87aexQznLgaIt3utBvOWl
+ dWpQrOqDlaybGz1hZ5ppypTS4e15VC60nVDOEa4FX40CZf+PApLkGhy/kd9gToDQZ2jt
+ WwLtvZlIJX2AzDxi4kNB8Hk/mesXKIQRW6C7A4y3LDV+n5vtIBngALv6nxiByYIZ+CEu
+ QpOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714000512; x=1714605312;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FpaiVEBlxxoYrCmqblEKTbgi1ilpb6EDQX934DCEWkM=;
- b=WX2N0w4YwrCvOKXbn2XCwKWCNtZWDipwEwkya1xP8yi0CpAFiB3NgE7WNpw13xXRjc
- NZhGr95462WRX/GIWvcISM13flCASZjIEkM4v42SUqznKWH3eah3CToFvUetGqnOVId6
- dJnHnbq9qcS//sJ9Ws6Y3HyE+YzCdxCrq3Hnkc/xdbmoaWHB88wSmnGhh0XWmBOU/QXF
- I/UxaPg/TlTxaBsiUMlQVk41udflrKlwHcDH/Oo/0hV0J0Y+NwN8ckWdMP0LVAZFtlil
- jyicMLlGBsoBJHHyrRVa0ThvunceBmtIAm3Wc+KSwSpVdiGZ6TDoQ5cF9a5b5ZLXSic6
- IgfA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWYNr/l8+pWtWzOdhbXiDQRxdfPHciYaiUgKp4LEpEvdbKySb+NbMmSkBlAaQDW63PhRuY5P49bvBtpqtY9cxK7Ms481Kw=
-X-Gm-Message-State: AOJu0YzErDVfaCrU3G/imdDBjrRJv0cdDfugMVN1giaud64jBxKkbfAh
- n2FE6vHh9AXPUIzI9UqoRMNO9sCpufoO0YRpKoyjtCwjhRSZKGTNP61AN7zjG8g=
-X-Google-Smtp-Source: AGHT+IEnD6esIykGtn9/sugE1GBKMUCGtOmAyiiEFojoUw/MNDZzKuFyvCc6FA2QR4jJ7Hjds5p69w==
-X-Received: by 2002:a05:6a20:7f8f:b0:1a7:5425:3044 with SMTP id
- d15-20020a056a207f8f00b001a754253044mr5235697pzj.62.1714000512322; 
- Wed, 24 Apr 2024 16:15:12 -0700 (PDT)
-Received: from [192.168.91.227] ([156.19.246.23])
- by smtp.gmail.com with ESMTPSA id
- ka4-20020a056a00938400b006f3aa6a03dbsm1439338pfb.127.2024.04.24.16.15.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Apr 2024 16:15:11 -0700 (PDT)
-Message-ID: <9ce3f50f-2074-48ba-8827-3e5276cc88b4@linaro.org>
-Date: Wed, 24 Apr 2024 16:15:09 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] target/arm: Update emulation.rst, add some easy
- features
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20240418152004.2106516-1-peter.maydell@linaro.org>
-Content-Language: en-US
+ d=1e100.net; s=20230601; t=1714001493; x=1714606293;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=wMGnRSLzMfjPcAWv+gJ2QDXKCclkbKeAZ+VbEIoyrQE=;
+ b=syH3gxqHkVaXMMGbccHX6ux2EiCjS0QWKKPPT+dlyUCGxdh5IPaquwarM2bJWVZinM
+ FZ+rvl8n8kxXmHDsw4XaX0UO69tR5hEPmPAUDshtqBayhJ8Hh+wvd+kpaZ0bkKoeszom
+ PgO5fKayzXIJOCPN/MHwbgO1fg9gJ+08LdEZwR/p5H5QXZ2CWSRHOjf6N1ddO5bRnZGx
+ ts52s9yzRhzDC9qOXQm8Up5Qj7BpFWZT6ySVfhnZdGmzzC9kq2tCTptOQUYphZaecZsH
+ FCjENIpZBo3IRhblUM6vurUtEa4rFK5OGk4LTn+3a3xtVCCvirddn5Pl+jYLWVBNZny1
+ c2Qw==
+X-Gm-Message-State: AOJu0Yy8+4Luo3BHPsaIrqh1yDC5WH+yTVGUcQcH8raGafc2w87IYpha
+ xcHXxKWoORj8rb7AI3AEvlJccHJYQsTsL0LsH5t6c5z/3LSwwUClSo1FmP6vTM8fzoKFMdKa7yO
+ +
+X-Google-Smtp-Source: AGHT+IHUyqJBMoma2mBh3QzgKwOqbDPXhUV9ZXWs2LI7nknOSawXQUpsaDzZNEn2jSjwD+KR/ZKtLQ==
+X-Received: by 2002:a17:90a:7142:b0:2a5:d313:4d3f with SMTP id
+ g2-20020a17090a714200b002a5d3134d3fmr4405103pjs.34.1714001493152; 
+ Wed, 24 Apr 2024 16:31:33 -0700 (PDT)
+Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.32
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Apr 2024 16:31:32 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240418152004.2106516-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
+To: qemu-devel@nongnu.org
+Subject: [PATCH v2 00/33] accel/tcg: Improve disassembly for target and plugin
+Date: Wed, 24 Apr 2024 16:30:58 -0700
+Message-Id: <20240424233131.988727-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1031;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1031.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,15 +88,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/18/24 08:19, Peter Maydell wrote:
-> Peter Maydell (5):
->    docs/system/arm/emulation.rst: Add missing implemented features
->    target/arm: Enable FEAT_CSV2_3 for -cpu max
->    target/arm: Enable FEAT_ETS2 for -cpu max
->    target/arm: Implement ID_AA64MMFR3_EL1
->    target/arm: Enable FEAT_Spec_FPACC for -cpu max
+Based-on: 20240424230224.941028-1-richard.henderson@linaro.org
+("[PATCH v3 00/20] Rewrite plugin code generation")
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Rebase only.
+Reviews required for: 
+  04-accel-tcg-Reorg-translator_ld.patch
+  06-accel-tcg-Record-mmio-bytes-during-translation.patch
+  07-accel-tcg-Record-when-translator_fake_ldb-is-used.patch
+  08-accel-tcg-Record-DisasContextBase-in-tcg_ctx-for-.patch
+  09-plugins-Copy-memory-in-qemu_plugin_insn_data.patch
+  10-accel-tcg-Implement-translator_st.patch
+  11-plugins-Use-translator_st-for-qemu_plugin_insn_da.patch
+  12-plugins-Read-mem_only-directly-from-TB-cflags.patch
+  13-plugins-Use-DisasContextBase-for-qemu_plugin_insn.patch
+  15-plugins-Merge-alloc_tcg_plugin_context-into-plugi.patch
+  18-disas-Split-disas.c.patch
+  19-disas-Use-translator_st-to-get-disassembly-data.patch
+  21-target-s390x-Fix-translator_fake_ld-length.patch
+  22-target-s390x-Disassemble-EXECUTEd-instructions.patch
+  23-target-hexagon-Use-translator_ldl-in-pkt_crosses_.patch
+  29-target-riscv-Use-translator_ld-for-everything.patch
+  32-target-s390x-Use-translator_lduw-in-get_next_pc.patch
+
 
 r~
+
+
+Philippe Mathieu-Daudé (1):
+  accel/tcg: Remove cpu_ldsb_code / cpu_ldsw_code
+
+Richard Henderson (32):
+  accel/tcg: Use vaddr in translator_ld*
+  accel/tcg: Hide in_same_page outside of a target-specific context
+  accel/tcg: Pass DisasContextBase to translator_fake_ldb
+  accel/tcg: Reorg translator_ld*
+  accel/tcg: Cap the translation block when we encounter mmio
+  accel/tcg: Record mmio bytes during translation
+  accel/tcg: Record when translator_fake_ldb is used
+  accel/tcg: Record DisasContextBase in tcg_ctx for plugins
+  plugins: Copy memory in qemu_plugin_insn_data
+  accel/tcg: Implement translator_st
+  plugins: Use translator_st for qemu_plugin_insn_data
+  plugins: Read mem_only directly from TB cflags
+  plugins: Use DisasContextBase for qemu_plugin_insn_haddr
+  plugins: Use DisasContextBase for qemu_plugin_tb_vaddr
+  plugins: Merge  alloc_tcg_plugin_context into plugin_gen_tb_start
+  accel/tcg: Provide default implementation of disas_log
+  accel/tcg: Return bool from TranslatorOps.disas_log
+  disas: Split disas.c
+  disas: Use translator_st to get disassembly data
+  accel/tcg: Introduce translator_fake_ld
+  target/s390x: Fix translator_fake_ld length
+  target/s390x: Disassemble EXECUTEd instructions
+  target/hexagon: Use translator_ldl in pkt_crosses_page
+  target/microblaze: Use translator_ldl
+  target/i386: Use translator_ldub for everything
+  target/avr: Use translator_lduw
+  target/cris: Use translator_ld* in cris_fetch
+  target/cris: Use cris_fetch in translate_v10.c.inc
+  target/riscv: Use translator_ld* for everything
+  target/rx: Use translator_ld*
+  target/xtensa: Use translator_ldub in xtensa_insn_len
+  target/s390x: Use translator_lduw in get_next_pc
+
+ disas/disas-internal.h           |   4 +
+ include/disas/disas.h            |   9 +-
+ include/exec/cpu_ldst.h          |  10 -
+ include/exec/plugin-gen.h        |   7 +-
+ include/exec/translator.h        |  71 +++++--
+ include/qemu/plugin.h            |  22 +-
+ include/qemu/qemu-plugin.h       |  15 +-
+ include/qemu/typedefs.h          |   1 +
+ include/tcg/tcg.h                |   1 +
+ accel/tcg/plugin-gen.c           |  63 +++---
+ accel/tcg/translator.c           | 331 +++++++++++++++++++-----------
+ contrib/plugins/execlog.c        |   5 +-
+ contrib/plugins/howvec.c         |   4 +-
+ disas/disas-common.c             | 103 ++++++++++
+ disas/disas-host.c               | 129 ++++++++++++
+ disas/disas-mon.c                |  15 ++
+ disas/disas-target.c             |  99 +++++++++
+ disas/disas.c                    | 337 -------------------------------
+ disas/objdump.c                  |  37 ++++
+ plugins/api.c                    |  57 ++++--
+ target/alpha/translate.c         |   9 -
+ target/arm/tcg/translate-a64.c   |  11 -
+ target/arm/tcg/translate.c       |  12 --
+ target/avr/translate.c           |  11 +-
+ target/cris/translate.c          |  37 +---
+ target/hexagon/translate.c       |  11 +-
+ target/hppa/translate.c          |  21 +-
+ target/i386/tcg/translate.c      |  19 +-
+ target/loongarch/tcg/translate.c |   8 -
+ target/m68k/translate.c          |   9 -
+ target/microblaze/translate.c    |  11 +-
+ target/mips/tcg/translate.c      |   9 -
+ target/openrisc/translate.c      |  11 -
+ target/ppc/translate.c           |   9 -
+ target/riscv/translate.c         |  24 +--
+ target/rx/translate.c            |  35 ++--
+ target/s390x/tcg/translate.c     |  26 ++-
+ target/sh4/translate.c           |   9 -
+ target/sparc/translate.c         |   9 -
+ target/tricore/translate.c       |   9 -
+ target/xtensa/translate.c        |  12 +-
+ tcg/tcg.c                        |  12 --
+ target/cris/translate_v10.c.inc  |  30 +--
+ disas/meson.build                |   8 +-
+ 44 files changed, 818 insertions(+), 864 deletions(-)
+ create mode 100644 disas/disas-common.c
+ create mode 100644 disas/disas-host.c
+ create mode 100644 disas/disas-target.c
+ delete mode 100644 disas/disas.c
+ create mode 100644 disas/objdump.c
+
+-- 
+2.34.1
+
 
