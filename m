@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAE48B17D9
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 767188B17AF
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:05:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmY8-0008Nr-PO; Wed, 24 Apr 2024 20:01:16 -0400
+	id 1rzmXz-0008JV-32; Wed, 24 Apr 2024 20:01:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXU-00088h-B3
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:40 -0400
-Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
+ id 1rzmXW-0008AP-Uj
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:45 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXQ-00069y-9i
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:34 -0400
-Received: by mail-pj1-x102e.google.com with SMTP id
- 98e67ed59e1d1-2a58209b159so389516a91.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:31 -0700 (PDT)
+ id 1rzmXS-0006AO-AI
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:37 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-6ed691fb83eso403101b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1714003231; x=1714608031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Vx4Crlv1lb77eV2HoyqdyEXNFf4xuelX5wyOlguT8YE=;
- b=pXU1Ybqsnd+ITC99TXMMhhTdSYu/aq4Fh8SKzDoI57t+AHSALJ1FGfS6QxI5MppGFq
- lUr/bOul2USYKDrLn9D82HbdnEnNKTknqq1fnKpPT+H/nciN3LmctC3oxOU5fyNXCuAj
- Kef2XCi+Qr3V/Vn/sHRNPKZ/8YvKcRZZAg0sgeNaH6bCyOANSWfGBLLuJ2hnyi4ODCmb
- KgOKhEEnCDFK+nemx4y0eOHQstDmp4WoTU7yBDlOWXcX3/asIbygduyCRWAVfd9SOjUa
- LZHdudY7d1ziIQHTg5XshBqzHENszBvc+pWNkLbZdo1fTcPdMMKcMf65OBiTKJpyx4K5
- xBfg==
+ :reply-to; bh=mQ9zdVg0xUYM0d85EqWf/ZeSMSQay0WcihJzo1lOuI4=;
+ b=dSMMUOooLFpm1qDTpa/UuCDr7oo7sJWdtJ1j8S7Ttb2UpRM2Fs6CAlp6IErJWQtvxE
+ 5ntrBXkrVOj1bnCuc3lI3tLQLK1Da6j1IDxTkpOSXLB+359IIdZ4qfHID7/YGM9s0rat
+ KFp3ndx/NcfGBq2+6ZfTdQYHJh82Rz6QdgDTFiAUqrqsSrhWYkPVBe+rV34tScYv+/uc
+ 7xS4n+X8lztwCWARNAsX/3WS65DTh0pIK64IXTmmvdrXDM8ijWM/QyAaH6UFL6CcnWnt
+ FfYp9zhc0vSUBkc7ikGzcrL0X9IEQQ4GFPzRT6bI/DzRRicE7uIgca6QTcVGUAFVCC1g
+ rcQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1714003231; x=1714608031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Vx4Crlv1lb77eV2HoyqdyEXNFf4xuelX5wyOlguT8YE=;
- b=eqJ98uR4wS3BeXCKoUpXJ44IY7v6lhSp6raMzryYRndMOo+kNMhfSzkH8lCd8NwFnx
- f3jSS/UADgV4WPBtbzWOouMCIT5D4kKNu98lnTJeJetMOLtXVrPb6Fn8bWMdlu4VoeYu
- UQzAFpqvs57nBlBo9k8ABYlfv5QsEnao+LCFDTqx+S2ABGIx+qtgnNl+ZI+zBZIkiv7X
- XKZmx5GkdHYHpGycWo55wa+Ag+azL15GOmdOV51kh/Fh64RZVss5WRRB5tnz7ho5F6vC
- QbG2/8FYKOy/ynAd3gqE3oMwoc/dBKGUho2YuloKH42xtYrORkZKQKgsjMSgwj6uoUC1
- grOA==
-X-Gm-Message-State: AOJu0Yz9BrGcza0AfZyAvRFV7huvR1FvNYccNaVsKxJTpp8YncR88ZZM
- mHnWVYxgM5KJo+MCTO7bFhrQDIg8x1IDerlQVrCJDS9/utQA3xyndRxYH2+Dqzcz8t5HjXy/Y/L
- B
-X-Google-Smtp-Source: AGHT+IFVF/CGefarNH2I4TzadIzGWNMgwu4jDdZAWibaLBu/0maMaT9FHHi2SKnASosHaglxjzqRTw==
-X-Received: by 2002:a17:90a:c404:b0:2ab:de86:d667 with SMTP id
- i4-20020a17090ac40400b002abde86d667mr3736416pjt.48.1714003229321; 
- Wed, 24 Apr 2024 17:00:29 -0700 (PDT)
+ bh=mQ9zdVg0xUYM0d85EqWf/ZeSMSQay0WcihJzo1lOuI4=;
+ b=vjlXLU1pXevodQ5Ej+7byN9bUXl+3qd6ACQLlWajt6o6D5SHq0VsRItYzo2etaoblk
+ vZeEErKzWH2mr14MaDJgnThSd9itiZcVJX9FaRKKkcucqiqFpqbC1w5OChxxGmJE0XHf
+ CtN3SLhfhJgDH9lIAt3Lmn+CWbm+d7ndOefthZv479hDwGZP3+T8Lnv7vUG+lQP91LC2
+ 7o1k7CNf1YR99XzabzKXGqJfNKSf6sW/aJNGNChrRHTfe4WWnjBz09YIGT7FIFcyjqej
+ syGovzYfy876FAXWbe4tldzFPOUuK1/161By64vcIaBEmj5yRHtSdcg1ONzy8gw/JCy8
+ hBkw==
+X-Gm-Message-State: AOJu0YwLcYjbMD+6wbcIjkT4CenxxG60gB/d2u0mrbtQf8GhbKeF79hV
+ aBQRU2+0SFhSbqZwYW8mPHdtTI39yFUDwZyG61rN7wFjqJR2PzyiKMEsYbTDifwQAOkxoQ/jdXP
+ w
+X-Google-Smtp-Source: AGHT+IHg0FbOvwtruPqd3twnLpXLODehcd6AsyQlV9KfuxSMojxJE8vVTkspbSWZAGh8F/HjhKg/0g==
+X-Received: by 2002:a05:6a20:5b12:b0:1a9:c33f:224f with SMTP id
+ kl18-20020a056a205b1200b001a9c33f224fmr3828042pzb.16.1714003230122; 
+ Wed, 24 Apr 2024 17:00:30 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.28
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.29
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:00:28 -0700 (PDT)
+ Wed, 24 Apr 2024 17:00:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 03/45] target/hppa: Move constant destination check into
- use_goto_tb
-Date: Wed, 24 Apr 2024 16:59:41 -0700
-Message-Id: <20240425000023.1002026-4-richard.henderson@linaro.org>
+Subject: [PATCH 04/45] target/hppa: Pass displacement to do_dbranch
+Date: Wed, 24 Apr 2024 16:59:42 -0700
+Message-Id: <20240425000023.1002026-5-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,63 +90,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Share this check between gen_goto_tb and hppa_tr_translate_insn.
+Pass a displacement instead of an absolute value.
+
+In trans_be, remove the user-only do_dbranch case.  The branch we are
+attempting to optimize is to the zero page, which is perforce on a
+different page than the code currently executing, which means that
+we will *not* use a goto_tb.  Use a plain indirect branch instead,
+which is what we got out of the attempted direct branch anyway.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ target/hppa/translate.c | 33 +++++++++------------------------
+ 1 file changed, 9 insertions(+), 24 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 42fa480950..cb874e1c1e 100644
+index cb874e1c1e..cbf78a4007 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -661,9 +661,10 @@ static bool gen_illegal(DisasContext *ctx)
-     } while (0)
- #endif
+@@ -1765,9 +1765,11 @@ static bool do_fop_dedd(DisasContext *ctx, unsigned rt,
  
--static bool use_goto_tb(DisasContext *ctx, uint64_t dest)
-+static bool use_goto_tb(DisasContext *ctx, uint64_t bofs, uint64_t nofs)
+ /* Emit an unconditional branch to a direct target, which may or may not
+    have already had nullification handled.  */
+-static bool do_dbranch(DisasContext *ctx, uint64_t dest,
++static bool do_dbranch(DisasContext *ctx, int64_t disp,
+                        unsigned link, bool is_n)
  {
--    return translator_use_goto_tb(&ctx->base, dest);
-+    return (bofs != -1 && nofs != -1 &&
-+            translator_use_goto_tb(&ctx->base, bofs));
++    uint64_t dest = iaoq_dest(ctx, disp);
++
+     if (ctx->null_cond.c == TCG_COND_NEVER && ctx->null_lab == NULL) {
+         if (link != 0) {
+             copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
+@@ -1814,10 +1816,7 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
+ 
+     /* Handle TRUE and NEVER as direct branches.  */
+     if (c == TCG_COND_ALWAYS) {
+-        return do_dbranch(ctx, dest, 0, is_n && disp >= 0);
+-    }
+-    if (c == TCG_COND_NEVER) {
+-        return do_dbranch(ctx, ctx->iaoq_n, 0, is_n && disp < 0);
++        return do_dbranch(ctx, disp, 0, is_n && disp >= 0);
+     }
+ 
+     taken = gen_new_label();
+@@ -3913,22 +3912,6 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+ {
+     TCGv_i64 tmp;
+ 
+-#ifdef CONFIG_USER_ONLY
+-    /* ??? It seems like there should be a good way of using
+-       "be disp(sr2, r0)", the canonical gateway entry mechanism
+-       to our advantage.  But that appears to be inconvenient to
+-       manage along side branch delay slots.  Therefore we handle
+-       entry into the gateway page via absolute address.  */
+-    /* Since we don't implement spaces, just branch.  Do notice the special
+-       case of "be disp(*,r0)" using a direct branch to disp, so that we can
+-       goto_tb to the TB containing the syscall.  */
+-    if (a->b == 0) {
+-        return do_dbranch(ctx, a->disp, a->l, a->n);
+-    }
+-#else
+-    nullify_over(ctx);
+-#endif
+-
+     tmp = tcg_temp_new_i64();
+     tcg_gen_addi_i64(tmp, load_gpr(ctx, a->b), a->disp);
+     tmp = do_ibranch_priv(ctx, tmp);
+@@ -3938,6 +3921,8 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+ #else
+     TCGv_i64 new_spc = tcg_temp_new_i64();
+ 
++    nullify_over(ctx);
++
+     load_spr(ctx, new_spc, a->sp);
+     if (a->l) {
+         copy_iaoq_entry(ctx, cpu_gr[31], ctx->iaoq_n, ctx->iaoq_n_var);
+@@ -3967,7 +3952,7 @@ static bool trans_be(DisasContext *ctx, arg_be *a)
+ 
+ static bool trans_bl(DisasContext *ctx, arg_bl *a)
+ {
+-    return do_dbranch(ctx, iaoq_dest(ctx, a->disp), a->l, a->n);
++    return do_dbranch(ctx, a->disp, a->l, a->n);
  }
  
- /* If the next insn is to be nullified, and it's on the same page,
-@@ -677,16 +678,16 @@ static bool use_nullify_skip(DisasContext *ctx)
+ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+@@ -4021,7 +4006,7 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
+         save_gpr(ctx, a->l, tmp);
+     }
+ 
+-    return do_dbranch(ctx, dest, 0, a->n);
++    return do_dbranch(ctx, dest - iaoq_dest(ctx, 0), 0, a->n);
  }
  
- static void gen_goto_tb(DisasContext *ctx, int which,
--                        uint64_t f, uint64_t b)
-+                        uint64_t b, uint64_t n)
- {
--    if (f != -1 && b != -1 && use_goto_tb(ctx, f)) {
-+    if (use_goto_tb(ctx, b, n)) {
-         tcg_gen_goto_tb(which);
--        copy_iaoq_entry(ctx, cpu_iaoq_f, f, NULL);
--        copy_iaoq_entry(ctx, cpu_iaoq_b, b, NULL);
-+        copy_iaoq_entry(ctx, cpu_iaoq_f, b, NULL);
-+        copy_iaoq_entry(ctx, cpu_iaoq_b, n, NULL);
-         tcg_gen_exit_tb(ctx->base.tb, which);
+ static bool trans_blr(DisasContext *ctx, arg_blr *a)
+@@ -4034,7 +4019,7 @@ static bool trans_blr(DisasContext *ctx, arg_blr *a)
+         return do_ibranch(ctx, tmp, a->l, a->n);
      } else {
--        copy_iaoq_entry(ctx, cpu_iaoq_f, f, cpu_iaoq_b);
--        copy_iaoq_entry(ctx, cpu_iaoq_b, b, ctx->iaoq_n_var);
-+        copy_iaoq_entry(ctx, cpu_iaoq_f, b, cpu_iaoq_b);
-+        copy_iaoq_entry(ctx, cpu_iaoq_b, n, ctx->iaoq_n_var);
-         tcg_gen_lookup_and_goto_ptr();
+         /* BLR R0,RX is a good way to load PC+8 into RX.  */
+-        return do_dbranch(ctx, ctx->iaoq_f + 8, a->l, a->n);
++        return do_dbranch(ctx, 0, a->l, a->n);
      }
  }
-@@ -4743,8 +4744,7 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
-     /* Advance the insn queue.  Note that this check also detects
-        a priority change within the instruction queue.  */
-     if (ret == DISAS_NEXT && ctx->iaoq_b != ctx->iaoq_f + 4) {
--        if (ctx->iaoq_b != -1 && ctx->iaoq_n != -1
--            && use_goto_tb(ctx, ctx->iaoq_b)
-+        if (use_goto_tb(ctx, ctx->iaoq_b, ctx->iaoq_n)
-             && (ctx->null_cond.c == TCG_COND_NEVER
-                 || ctx->null_cond.c == TCG_COND_ALWAYS)) {
-             nullify_set(ctx, ctx->null_cond.c == TCG_COND_ALWAYS);
+ 
 -- 
 2.34.1
 
