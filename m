@@ -2,67 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342808B173D
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB808B1717
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzm63-00064J-V3; Wed, 24 Apr 2024 19:32:16 -0400
+	id 1rzm64-00064K-3V; Wed, 24 Apr 2024 19:32:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5q-00060x-Gm
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:32:02 -0400
+ id 1rzm5q-000615-Ub
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:32:03 -0400
 Received: from mail-pg1-x52d.google.com ([2607:f8b0:4864:20::52d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5o-0003u3-HT
+ id 1rzm5p-0003xi-FO
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:32:02 -0400
 Received: by mail-pg1-x52d.google.com with SMTP id
- 41be03b00d2f7-5c66b093b86so1176397a12.0
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:32:00 -0700 (PDT)
+ 41be03b00d2f7-60275a82611so328453a12.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:32:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714001519; x=1714606319; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714001520; x=1714606320; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=abuDTzJtuHQkleQ2JIJcQY+Wz/0ibhtmXe6lLhOCiLw=;
- b=yVyMBiBM0Zuq2mOa8apAYdprlW2l3d76enipPb+/VA3QDFxzSdxd38qGjWi3irYx7f
- VD/JYH2UlTueZDdHgxrwvPz+9JfOumkG6QjDzQ74Xpku878rVNtnEefOu9tH5fkVd91o
- p7xAnxKrESUDNk5rnCS9pZuN1QGBS8GXmCz/aPrbI0sbwc+BW3Pi0nJwP8Fl63BiIOn8
- 9HPVu3qLl2Cz0SGj54NKq/bYwfb7jXoopdGp/CAIkYB5lYl9rdl0MIr/a2CEGAoUWrkg
- F8XgVnONJ5bRLaEYfeAQLot2rD1GYL7D24ZshSm2Pa0M8/yELFMu8FTIX6tsYXW5tY7J
- 8OyQ==
+ bh=QiNkoAsgvTetR5YHMAeB2w6OV5e9o48b6mfaDP+sgJw=;
+ b=bUhXJ64ZORNYSgy8nLI3d6GS4kQtYURrUr4zCkJuZSf61KwtlP3aLISQJBi8nuC9UG
+ MfkapkNlCAsDBJ8lY2ivQiEURbE6Qqbzj2cJHwSma4k1VbkZ5wPxQxI7P6WJ/jdYJGnf
+ vkLqyXVohk7y4H9XE5G61R07V37/+YKL33BaOCgQqaa2g08X+Q0cZZUA2N5o0dvDPIui
+ IgQT+/H0GwnRE/eMzRT1DmvqYruAQtvOd6YEPC1tzH9qzh8K5D5pPjY9k41lrX9dPJLy
+ 5KYl0I7OTytHirTi3IE9gEPEJRHD27x95DwK0elwQ7gG5/jWNeibuUZ8F2XAXjY6dc5g
+ ASww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714001519; x=1714606319;
+ d=1e100.net; s=20230601; t=1714001520; x=1714606320;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=abuDTzJtuHQkleQ2JIJcQY+Wz/0ibhtmXe6lLhOCiLw=;
- b=CpbTDK8GRUmdlvtC1R6H/apzdNdSeh1Xux2DAoxIE+qEDETALor+kNfzU8jjvyKRRj
- eWWPiP8V350wtPkm36/hAdHsb6osj5CZthKEZwREZiUN+QN1O1CtekKLxI778/5bPkIv
- gtl141mT/eEgcqsEkdq5jGQucU8zFYccMbzL+jEVDc4wtArBEurrtcqMzd7KuLK7vgDL
- r76Ud6ipM8SqnPiSf3QpRrPNDGZP5PXb9wAmBmFlWO23oAc87fHof1wF9CxLzEjmzcW2
- QMJOU1Sq6Z9yHkeW0vDA7pSOi06ELjbGJ0Fv/kh/wcdbe5y3yuTqdm4wEdzqnrlYit04
- cYoA==
-X-Gm-Message-State: AOJu0YwMoNSl00p8BEwNNFhfL+7TteeAClxnJV4hKqOC2ROlK9Tmourn
- ooo278iNmc5KDBCR+4oHBs37Js5vS8yhutaOiwcYL8+L//pWwO9xIJsltGIpuUWmEuxnxqGS1pv
- v
-X-Google-Smtp-Source: AGHT+IFeXjEAk5rzV4qf+wD0Tb2IPyqR0GMY5SigCIH4JccUFUQFXF15u5gNyqJx9YQRnuc2+FTTyA==
-X-Received: by 2002:a17:90a:6d02:b0:2aa:90f3:a4b8 with SMTP id
- z2-20020a17090a6d0200b002aa90f3a4b8mr1486785pjj.24.1714001519370; 
- Wed, 24 Apr 2024 16:31:59 -0700 (PDT)
+ bh=QiNkoAsgvTetR5YHMAeB2w6OV5e9o48b6mfaDP+sgJw=;
+ b=eXFq+G6kWwOrWKL60IdfPXocEFS+nEXD1/iIhYIi0iSuI2UtEeIDfcG2sDdJAXnku4
+ YisdTGAcQlrHj75Krei/YDv9nj3hIa1eFJILm97AgllDl1vmh2izUasEG+aM87A/QjxK
+ 0Q/LmpNq9d8laXPYQOdwyNGx/8kojB/EsuLqZDjRMjavyCvdemM2GfDDI3K8nh6eIDKR
+ jzVrdar5D7RwR7n+IGQ6UxeB6kFf1k2hOAM9Uh8Ds+WM0tVoUsjyCRrpGA1h/4C86LDX
+ QLkbRZSyd8v1IrTVAz4EW7N05pF6wkL2F/KinEe7aOXNQ25ukBZ5HdfP6/daN+x6RIxP
+ 3T5Q==
+X-Gm-Message-State: AOJu0YwaZnjIlTi8NvYa3/0fxvpMwKO9yusOSPg74C2gSlvQ72OgC4r5
+ TZR1hMnjNWhjg7JVAVxSZTEhfdHyiRTXZgJDs5uRUtSxktl5KkiaNS0GwyZe41q/Eeq12rdX0bG
+ p
+X-Google-Smtp-Source: AGHT+IGpDEjKDlvix6YNwXW6IeySsv5QpeLKNyofqowY47aP9qzQC5L5Aq/Ce0WFCATOnsI+OmRorQ==
+X-Received: by 2002:a17:90a:7347:b0:2a2:4192:dfc1 with SMTP id
+ j7-20020a17090a734700b002a24192dfc1mr3697782pjs.14.1714001520213; 
+ Wed, 24 Apr 2024 16:32:00 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.58
+ z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 24 Apr 2024 16:31:59 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 30/33] target/rx: Use translator_ld*
-Date: Wed, 24 Apr 2024 16:31:28 -0700
-Message-Id: <20240424233131.988727-31-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 31/33] target/xtensa: Use translator_ldub in xtensa_insn_len
+Date: Wed, 24 Apr 2024 16:31:29 -0700
+Message-Id: <20240424233131.988727-32-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424233131.988727-1-richard.henderson@linaro.org>
 References: <20240424233131.988727-1-richard.henderson@linaro.org>
@@ -93,96 +92,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/rx/translate.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ target/xtensa/translate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/target/rx/translate.c b/target/rx/translate.c
-index 92fb2b43ad..9b81cf20b3 100644
---- a/target/rx/translate.c
-+++ b/target/rx/translate.c
-@@ -22,7 +22,6 @@
- #include "cpu.h"
- #include "exec/exec-all.h"
+diff --git a/target/xtensa/translate.c b/target/xtensa/translate.c
+index 42109d33ad..75b7bfda4c 100644
+--- a/target/xtensa/translate.c
++++ b/target/xtensa/translate.c
+@@ -35,7 +35,6 @@
  #include "tcg/tcg-op.h"
+ #include "qemu/log.h"
+ #include "qemu/qemu-print.h"
 -#include "exec/cpu_ldst.h"
- #include "exec/helper-proto.h"
- #include "exec/helper-gen.h"
+ #include "semihosting/semihost.h"
  #include "exec/translator.h"
-@@ -75,10 +74,10 @@ static TCGv_i64 cpu_acc;
  
- /* decoder helper */
- static uint32_t decode_load_bytes(DisasContext *ctx, uint32_t insn,
--                           int i, int n)
-+                                  int i, int n)
+@@ -1118,7 +1117,7 @@ static void disas_xtensa_insn(CPUXtensaState *env, DisasContext *dc)
+ 
+ static inline unsigned xtensa_insn_len(CPUXtensaState *env, DisasContext *dc)
  {
-     while (++i <= n) {
--        uint8_t b = cpu_ldub_code(ctx->env, ctx->base.pc_next++);
-+        uint8_t b = translator_ldub(ctx->env, &ctx->base, ctx->base.pc_next++);
-         insn |= b << (32 - i * 8);
-     }
-     return insn;
-@@ -90,22 +89,24 @@ static uint32_t li(DisasContext *ctx, int sz)
-     CPURXState *env = ctx->env;
-     addr = ctx->base.pc_next;
- 
--    tcg_debug_assert(sz < 4);
-     switch (sz) {
-     case 1:
-         ctx->base.pc_next += 1;
--        return cpu_ldsb_code(env, addr);
-+        return (int8_t)translator_ldub(env, &ctx->base, addr);
-     case 2:
-         ctx->base.pc_next += 2;
--        return cpu_ldsw_code(env, addr);
-+        return (int16_t)translator_lduw(env, &ctx->base, addr);
-     case 3:
-         ctx->base.pc_next += 3;
--        tmp = cpu_ldsb_code(env, addr + 2) << 16;
--        tmp |= cpu_lduw_code(env, addr) & 0xffff;
-+        tmp = (int8_t)translator_ldub(env, &ctx->base, addr + 2);
-+        tmp <<= 16;
-+        tmp |= translator_lduw(env, &ctx->base, addr);
-         return tmp;
-     case 0:
-         ctx->base.pc_next += 4;
--        return cpu_ldl_code(env, addr);
-+        return translator_ldl(env, &ctx->base, addr);
-+    default:
-+        g_assert_not_reached();
-     }
-     return 0;
- }
-@@ -190,22 +191,22 @@ static inline TCGv rx_index_addr(DisasContext *ctx, TCGv mem,
- {
-     uint32_t dsp;
- 
--    tcg_debug_assert(ld < 3);
-     switch (ld) {
-     case 0:
-         return cpu_regs[reg];
-     case 1:
--        dsp = cpu_ldub_code(ctx->env, ctx->base.pc_next) << size;
-+        dsp = translator_ldub(ctx->env, &ctx->base, ctx->base.pc_next) << size;
-         tcg_gen_addi_i32(mem, cpu_regs[reg], dsp);
-         ctx->base.pc_next += 1;
-         return mem;
-     case 2:
--        dsp = cpu_lduw_code(ctx->env, ctx->base.pc_next) << size;
-+        dsp = translator_lduw(ctx->env, &ctx->base, ctx->base.pc_next) << size;
-         tcg_gen_addi_i32(mem, cpu_regs[reg], dsp);
-         ctx->base.pc_next += 2;
-         return mem;
-+    default:
-+        g_assert_not_reached();
-     }
--    return NULL;
+-    uint8_t b0 = cpu_ldub_code(env, dc->pc);
++    uint8_t b0 = translator_ldub(env, &dc->base, dc->pc);
+     return xtensa_op0_insn_len(dc, b0);
  }
  
- static inline MemOp mi_to_mop(unsigned mi)
 -- 
 2.34.1
 
