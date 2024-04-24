@@ -2,92 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824BE8B1167
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C27418B116A
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:46:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzggb-0005QK-5C; Wed, 24 Apr 2024 13:45:37 -0400
+	id 1rzggR-0005JK-PC; Wed, 24 Apr 2024 13:45:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzggN-0005Ib-Ak
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:45:24 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzggF-0005Gj-GW
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:45:15 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzggL-0005az-G6
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:45:23 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-6ece8991654so167885b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:45:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzggB-0005Z1-OB
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:45:13 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-347c197a464so46853f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713980720; x=1714585520; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=UUisX1hzQQS8Kei+sBKavJsP0CqzohBLBY97e3PxcHo=;
- b=hh8Vvg4uZVyNHGmcAlxXAp7c+fvWyGWFmKdmmgHVUES4r0wHPXD1Zf8Tr/q5uvoZYY
- xa6fmuvtD2ELsULZusgmULZpj89cqmgl9LZyvRDPlmOZM287340aerdnsGH/FN7+1CzT
- tnT1o4i2wOLJDz6/7GRPhbcp1gN49RfhC66xhg5UvV1i8oBH+EZqY2qmttN4rz+PAvlg
- DTB423rTlrSCDAUXQxPDgZ9+SdWdJ0gos2JFkf2V2y8jUoVYVuVqTRceGNKzlZFa4sma
- IjKvMmnBeC3AXRtSPn68V/b5o+HHS2OG7xK0byzF4zyMR2UQoSE9qECCXCOmk/IWgCbs
- mgPw==
+ d=linaro.org; s=google; t=1713980709; x=1714585509; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Ml+4qNbbwrewfNa4tKqFrq9Yee47wMDeCNmhWRp2b6s=;
+ b=mmqRn2sWKxKWFqDbRi1SWv0AMAPn0YKxWhD+Mmap2tV+ILnHP0RezUrhhSuL3+a5oQ
+ URLQ7VZTbccfVtyjcezzow5RjaUOi3Qmi/5zrNIiD+88dIdOp+QvfaUPouuPWaEmucpX
+ LfNzvFvRnW7B7MrzgGvZLfUjwcwV+YavcyYle6Eh5Km3vBRJXD2u9aJR9zPsBvbV8k6u
+ bNZ0bggLB4zRmyc81aISpyq3lRZ4rcsBWEJnhaNeAJBwMCvgDA00SVkqNb3ejlfgXoi0
+ bh4r12awrD4taG2VqGfsTFdJfZrvoeVkbX4ev6LlYF8okrXHVWoIOt4GpZn1+H/rW5Av
+ rpyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713980720; x=1714585520;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UUisX1hzQQS8Kei+sBKavJsP0CqzohBLBY97e3PxcHo=;
- b=OC/3cEpCca2mHvY5UARRAnYd6TptkPS7pUDULsPm1sKWvlUzjkW+Kam/lALQMrya8f
- F36r9panyYyafaBq/AWjCv3dVN0akCl3MKTklJZZ4kJmXwA6drTP6rBc/ZwrxQPVa5n5
- 6wy8t+IamqkdehB0TAR03Hi8KWAqbSAjFDiUY4R+D/i3JxKUwAxC+rGEW5Y7a1gSgECx
- NsK6rjS/0+QqsjmeDJgv+yEv55v5Yf5mEZLYbouDPusuLhoSDlTpN4zixkvMFCMCVJqS
- 0XR9yOcj8XjZqKZydUf69NUb/Uq//fUHsKwj0CuqHp3UFm2KjTTJW62jPMzjf/9f3HTS
- oEEw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXZ8IcY7oDxOfmGkqL7OUB887831tafORioEtWrwZpfKw2jpeM5tos7bk8EdcbHYtwXz99fzatcB786TVQ8NfcJR4tUQlo=
-X-Gm-Message-State: AOJu0YzhCqWOhRLkl850v+3ElIYslt/ehNn2jtxUfzH3BYihHJs1jSh7
- PgGLmVUYOvKuFzE3PDJlUBnb+oVtj8niGMDiCk8IlOKg0BJLMbXHifZoXQ==
-X-Google-Smtp-Source: AGHT+IH08iEcxdee91ZKCmcfD34eF58jPYiw7s63UPDDko2fgLX4+RBXbx9vbYx5kantH6TLzY6kMA==
-X-Received: by 2002:a05:6a00:218f:b0:6eb:3c2d:76e0 with SMTP id
- h15-20020a056a00218f00b006eb3c2d76e0mr4250172pfi.11.1713980719871; 
- Wed, 24 Apr 2024 10:45:19 -0700 (PDT)
-Received: from debian ([2601:641:300:14de:b318:9476:706a:e82a])
+ d=1e100.net; s=20230601; t=1713980709; x=1714585509;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Ml+4qNbbwrewfNa4tKqFrq9Yee47wMDeCNmhWRp2b6s=;
+ b=Rs6Ge5+NOGPGJ/yw4I1ePLHqKwA0BD2B6zxHZaraU+3KEV1jfbZK8dIZGy3a8DUkMI
+ 2aJSm8FRDBpmgeraNRa4KLHoooehmt2Y7JHbJbeF/faVaWfoTTyj6EaohI4wHBRemvWI
+ lESIYKqXWxR390pN3SBLsQOVBRwO+NXCFLqwQxndB/WU+IFramv/WOWxBsJDRkVp3+Jl
+ mKFeKOl1iVOrIqrmoMjNP6D+o2eRLJkQ0blmLnKleMdJf2SAa3PPdSI94ym5VEJivTqD
+ Fy3hBfIm3Bl+Ivo7nt9r/Nq7rrJSU5FHRb02ZxyiX540td4AZKJlzxAplsoW6AkLEx/b
+ mI9w==
+X-Gm-Message-State: AOJu0Yz/y0AJmSQoHAxIrA6qp7JqaEFSWyIUmx+Sy5glWOgCdyt3yROs
+ wz4SHE0GsxCS2mauzpqTXkEzMlbFJPSs01DG/9rxQFEYdNEPYnkOulx65NtSP7xzb6Eb4LUoVhS
+ n
+X-Google-Smtp-Source: AGHT+IEm6fgQaSqX1ek6SlmYV0yiyp6MHtPp6J201wnsB2FAbYUmOGPzSy/L/prUfOGY0hOZ75QLag==
+X-Received: by 2002:adf:fb0b:0:b0:346:d12d:fcab with SMTP id
+ c11-20020adffb0b000000b00346d12dfcabmr1726298wrr.65.1713980708973; 
+ Wed, 24 Apr 2024 10:45:08 -0700 (PDT)
+Received: from localhost.localdomain
+ (mon75-h03-176-184-51-42.dsl.sta.abo.bbox.fr. [176.184.51.42])
  by smtp.gmail.com with ESMTPSA id
- f26-20020a056a000b1a00b006ecda086db2sm11734654pfu.110.2024.04.24.10.45.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 10:45:19 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Wed, 24 Apr 2024 10:44:54 -0700
-To: Markus Armbruster <armbru@redhat.com>
-Cc: fan <nifan.cxl@gmail.com>, qemu-devel@nongnu.org,
- jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
- gregory.price@memverge.com, ira.weiny@intel.com,
- dan.j.williams@intel.com, a.manzanares@samsung.com,
- dave@stgolabs.net, nmtadam.samsung@gmail.com,
- jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
- Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v5 09/13] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <ZilFFhySKFE6FmYC@debian>
-References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
- <20240304194331.1586191-10-nifan.cxl@gmail.com>
- <87a5livrdr.fsf@pond.sub.org> <Zik88BUMsMEFb0Nr@debian>
- <87pluebrk0.fsf@pond.sub.org>
+ f3-20020adfe903000000b003445bb2362esm17616085wrm.65.2024.04.24.10.45.07
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 24 Apr 2024 10:45:08 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Sunil Muthuswamy <sunilmut@microsoft.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Alexander Graf <agraf@csgraf.de>,
+ qemu-arm@nongnu.org, Cameron Esfahani <dirty@apple.com>,
+ Reinoud Zandijk <reinoud@netbsd.org>,
+ Philippe =?unknown-8bit?q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 0/3] accel: Add new @dirty field on HVF/NVMM/WHPX
+Date: Wed, 24 Apr 2024 19:45:03 +0200
+Message-ID: <20240424174506.326-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pluebrk0.fsf@pond.sub.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x42c.google.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,34 +94,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 24, 2024 at 07:26:23PM +0200, Markus Armbruster wrote:
-> fan <nifan.cxl@gmail.com> writes:
-> 
-> > On Wed, Apr 24, 2024 at 03:09:52PM +0200, Markus Armbruster wrote:
-> >> nifan.cxl@gmail.com writes:
-> >> 
-> >> > From: Fan Ni <fan.ni@samsung.com>
-> >> >
-> >> > Since fabric manager emulation is not supported yet, the change implements
-> >> > the functions to add/release dynamic capacity extents as QMP interfaces.
-> >> 
-> >> Will fabric manager emulation obsolete these commands?
-> >> 
-> >
-> > Hi Markus,
-> > Thanks for reviewing the patchset. This is v5 and we have sent out v7
-> > recently, there are a lot of changes from v5 to v7.
-> >
-> > FYI. v7: https://lore.kernel.org/linux-cxl/ZiaFYUB6FC9NR7W4@memverge.com/T/#t
-> 
-> Missed it because you neglected to cc: me for qapi/cxl.json :)
-> 
-> Thanks!
+We want CPUState to only contain fields used by common code.
+Start using a specific @dirty field for HVF/NVMM/WHPX
+(TCG then KVM will follow).
 
-Sorry for that. This is the first time I made changes to qapi/cxl.json so
-missed that.  I will cc you when I sent out the next version.
-Btw, thanks for the review. I have replied to your comments in another reply.
+Philippe Mathieu-Daudé (3):
+  accel/whpx: Use accel-specific per-vcpu @dirty field
+  accel/nvmm: Use accel-specific per-vcpu @dirty field
+  accel/hvf: Use accel-specific per-vcpu @dirty field
 
-Fan
-> 
+ include/hw/core/cpu.h       |  3 +--
+ include/sysemu/hvf_int.h    |  1 +
+ accel/hvf/hvf-accel-ops.c   | 10 +++++-----
+ target/arm/hvf/hvf.c        |  4 ++--
+ target/i386/hvf/hvf.c       |  4 ++--
+ target/i386/hvf/x86hvf.c    |  2 +-
+ target/i386/nvmm/nvmm-all.c | 21 +++++++++++----------
+ target/i386/whpx/whpx-all.c | 23 ++++++++++++-----------
+ 8 files changed, 35 insertions(+), 33 deletions(-)
+
+-- 
+2.41.0
+
 
