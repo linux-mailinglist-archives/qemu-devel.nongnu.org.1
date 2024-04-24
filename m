@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 205D18B065F
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 11:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2F58B0653
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 11:47:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzZDj-00083o-Lh; Wed, 24 Apr 2024 05:47:19 -0400
+	id 1rzZDp-00086r-AK; Wed, 24 Apr 2024 05:47:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rzZDi-00083L-E1
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 05:47:18 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+ id 1rzZDn-00085g-0w
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 05:47:23 -0400
+Received: from mail-pg1-x534.google.com ([2607:f8b0:4864:20::534])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1rzZDg-0006Jc-Tu
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 05:47:18 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e2b1cd446fso54706815ad.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 02:47:16 -0700 (PDT)
+ id 1rzZDl-0006K5-FA
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 05:47:22 -0400
+Received: by mail-pg1-x534.google.com with SMTP id
+ 41be03b00d2f7-5e8470c1cb7so4452956a12.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 02:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1713952035; x=1714556835; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1713952039; x=1714556839; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EVBbFgwhs4vkIs/l2c0xyQFfBRuV3ZIfacWshc9YUlc=;
- b=kDpjwkSrWo87MJvBELJDsfFKPzVdp1kjqGPpZsnJGZK3k3buWBsmAxbtcaDERU/vgh
- Np4LsgASJuJYD/UQFEAfCNIyTidCaw2pIoigqAXREum19+f1MWROL3Rhkmva/meTqKXg
- 8Z01ZrbfAg5P1s2JJPKX0LF7mlRtbPZiJiD8OB8B6Qtx5LAbB0BOlK5LZtDM0b59zHmM
- AgvjaSavXMp1Ha5NVj39O+6Qq6Xvg4WeKQAcRDI6+3JexeZL1NIhK1MuXAWbMcsahCfG
- 1XWTsQS29dMpG060ZJnEVK5ussiLlK/GuBXuAVRt+pI5j18BjuU42NJBhzMWZOoMj3Ht
- fjgg==
+ bh=+r1ThFSNKDGi1j4wtDaUMcGW640caYeTO8afX4z41sE=;
+ b=H52EtmYUJZT7g9gJhFDMw0iMlvBKW+VNZRQ9uc2JRU83Req/Jhmc0pcxh0pjk4BZma
+ SGGEXIZtweS+a832I65Dq13649sYBMOCnH0thMdc/qieMa5VWEuc66IbwXZOa8WhnGKi
+ za5/dvRBbJzDU4xxgwzRRn89ubEYr1w724+GMerzobJSnCxs27txrNyT9h2ld167tn3f
+ Vo3gZkqUdqxlBQ/x39Oy/pa6Xi/Ybc4AMFkO62w89waZOiQ4udMLygQjO0kC+pttX4dB
+ /eaY9Cir3PtDtasintva1vwRkcsQXsZEmGhOdShkHx968ERbxpIL1/P7o1APXXgMRXeI
+ izwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713952035; x=1714556835;
+ d=1e100.net; s=20230601; t=1713952039; x=1714556839;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EVBbFgwhs4vkIs/l2c0xyQFfBRuV3ZIfacWshc9YUlc=;
- b=UDGYxVLI5qwLW9aySON+pvBUlN7qHAvnG7B8HF+95G1b1hM/IQFx5Cuc/I5G0zm3g2
- p/ITzBRUv3i95LdLHQL+90KxNhd+BUAeMNKIH0+gO5uBHTlLX721P4SqC0KHsJnPyyZ6
- gT0AnrTCgOlc5K2y6Bhd4C79+CZ6JXANpWkgOfB+lCpzTMizEkPwvlG6XwKtAAcg5+Au
- xPCkhGCMs3mhZKM6/Fq4uEsEDwOQUv9Xrj0hBnKAuufOcQhGC0ra37SrOj8lKoNoWIYq
- JyNBCdgoKu8H893WQP7vBD1tzWJJEcCjPn7CnhK1C63SxCtTkamwZ2dvs7LNg8dXF3No
- +Nbw==
-X-Gm-Message-State: AOJu0Yz3/TbHtxm82ePK2RreYqjQnd+QOmfaOMGR0s5aaVBD9p+KSsGY
- JDcH+OUkDg+OqB2BuQVMe/DfpYaJaKUbmuAf8QCXtnCbylQT8TkS+KOu7VfWtcetISo8Zj8liIx
- 3
-X-Google-Smtp-Source: AGHT+IGksjfH2PSsjZu3hL+vKxpz3NOjkrzikzVM0bJVgA/p652BaE4aJkS/4wK1s7QW8znQ4+wrEA==
-X-Received: by 2002:a17:902:ea08:b0:1e3:d8ae:df34 with SMTP id
- s8-20020a170902ea0800b001e3d8aedf34mr2394352plg.11.1713952035345; 
- Wed, 24 Apr 2024 02:47:15 -0700 (PDT)
+ bh=+r1ThFSNKDGi1j4wtDaUMcGW640caYeTO8afX4z41sE=;
+ b=TwYlpp5GAFB0BrIJHEi8gba7Lp60bS1PIRtyAgC165ewao5ITFm2XnKUd36RkWw2G2
+ UVd1f3LAfPCghnCQqsupx+WAQBbelzv/edPtZiRw+YpxuzNf4usds9Gu0dlWv4Sl0D19
+ 2GmcmmWv/7PzVdnat+WXKn1fI91W8X6KzhSR0oJpD7w+euDBLDR+U7yYHDKzR1jXweDK
+ /TwbH+lFTYAkzeLSv/sNo4pG8Zzt+uhc9SYv0pmGQdy183tutECEjVW7CtEg4AmYixdO
+ 3r+LR4GTuCvIdFjnTIuOu3WpRucvnAsehrzz4Za4ZU31xNAj7dVTD5+jUr3Hdj+ai66I
+ mWJA==
+X-Gm-Message-State: AOJu0YwhEjSAaqirFnCOv7nduUqFZz1PP2kUbs5R3/3/fbIzQNjsXH7Y
+ Awx+fHoIEwv47TKanJh6uSV1DwPewazZn8MicN5brr9F3WmFU/V/wB/Qg/lYf6ZhAUCDbXfJjRX
+ b
+X-Google-Smtp-Source: AGHT+IFZ8p5A7ABwNV2ORCtu8CoKN4zkW8wH3dwJ6J72aDif+MpmoucR2BbhxgIQ5sRcHHOtyrpzzQ==
+X-Received: by 2002:a17:903:245:b0:1e4:6938:6fbd with SMTP id
+ j5-20020a170903024500b001e469386fbdmr2095438plh.7.1713952039272; 
+ Wed, 24 Apr 2024 02:47:19 -0700 (PDT)
 Received: from grind.. ([191.255.35.121]) by smtp.gmail.com with ESMTPSA id
- y24-20020a1709027c9800b001e0d62e077esm11513389pll.247.2024.04.24.02.47.11
+ y24-20020a1709027c9800b001e0d62e077esm11513389pll.247.2024.04.24.02.47.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 02:47:15 -0700 (PDT)
+ Wed, 24 Apr 2024 02:47:18 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
@@ -63,23 +63,23 @@ Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  thuth@redhat.com, alex.bennee@linaro.org, philmd@linaro.org,
  mjt@tls.msk.ru, ajones@ventanamicro.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH 1/2] target/riscv/kvm: remove sneaky strerrorname_np() instance
-Date: Wed, 24 Apr 2024 06:46:59 -0300
-Message-ID: <20240424094700.453356-2-dbarboza@ventanamicro.com>
+Subject: [PATCH 2/2] checkpatch.pl: forbid strerrorname_np()
+Date: Wed, 24 Apr 2024 06:47:00 -0300
+Message-ID: <20240424094700.453356-3-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240424094700.453356-1-dbarboza@ventanamicro.com>
 References: <20240424094700.453356-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::534;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x534.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,33 +95,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit d424db2354 excluded some strerrorname_np() instances because they
-break musl libc builds. Another instance happened to slip by via commit
-d4ff3da8f4.
+Commit d424db2354 removed an instance of strerrorname_np() because it
+was breaking building with musl libc. A recent RISC-V patch ended up
+re-introducing it again by accident.
 
-Remove it before it causes trouble again.
+Put this function in the baddies list in checkpatch.pl to avoid this
+situation again. This is what it will look like next time:
 
-Fixes: d4ff3da8f4 (target/riscv/kvm: initialize 'vlenb' via get-reg-list)
+ $ ./scripts/checkpatch.pl 0001-temp-test.patch
+ ERROR: use strerror() instead of strerrorname_np()
+ #22: FILE: target/riscv/kvm/kvm-cpu.c:1058:
+ +                         strerrorname_np(errno));
+
+ total: 1 errors, 0 warnings, 10 lines checked
+
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/kvm/kvm-cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/checkpatch.pl | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index 6a6c6cae80..ee69ea9785 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -1054,8 +1054,8 @@ static void kvm_riscv_read_vlenb(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 7026895074..be0982246d 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3056,6 +3056,10 @@ sub process {
+ 		}
+ 	}
  
-         ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-         if (ret != 0) {
--            error_report("Unable to read vlenb register, error code: %s",
--                         strerrorname_np(errno));
-+            error_report("Unable to read vlenb register, error code: %d",
-+                         errno);
-             exit(EXIT_FAILURE);
-         }
- 
++	if ($line =~ /\bstrerrorname_np\(/) {
++		ERROR("use strerror() instead of strerrorname_np()\n" . $herecurr);
++	}
++
+ # check for non-portable libc calls that have portable alternatives in QEMU
+ 		if ($line =~ /\bffs\(/) {
+ 			ERROR("use ctz32() instead of ffs()\n" . $herecurr);
 -- 
 2.44.0
 
