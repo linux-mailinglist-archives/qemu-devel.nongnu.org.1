@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A78F98B17AB
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9144A8B17A7
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:02:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmXz-0008Jd-UK; Wed, 24 Apr 2024 20:01:07 -0400
+	id 1rzmY9-0008Nv-0l; Wed, 24 Apr 2024 20:01:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXU-00088j-NG
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:40 -0400
-Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
+ id 1rzmXW-0008AQ-V2
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:45 -0400
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXN-00068n-K8
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:34 -0400
-Received: by mail-pf1-x42e.google.com with SMTP id
- d2e1a72fcca58-6ed32341906so488537b3a.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:28 -0700 (PDT)
+ id 1rzmXR-0006AH-A1
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:36 -0400
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-5f415fd71f8so337905a12.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003228; x=1714608028; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003231; x=1714608031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=3ygFLD876CIrAdUeERdKDaK6OhehnvKPDKxHUBl+Z6U=;
- b=lqE3RzEtD1mVqEHzftl5wCNvH5HyfiY/uZuRQ0OdRuABVeZB2tn4FdNx1DgDZvCTcJ
- wz1rBhX0eps3Xs3ULnWw7wOqKIxgdMRwEYEqLmvZ/JaUg84SOVb26Rxc4pEJi8avDE5H
- F9TI1d+dBJHeTyU/mtqBrGctFk/jHphd788MFsyhUEU+5WNua6K5h36J0UlFVpK3xKBc
- VDdBwYgAIFMO7wcCB5dbxSX6NbfS9ahDHtMI9jMxWau/fH3KXtuA5Npgh8k5GXwVbYtg
- 9ezlluXvo1HCeJYur0rM1vByRfwQbCi9kY9TRG0wRemUs0M1XdMqpxRvXUUgsl7b/eHg
- Nbew==
+ :reply-to; bh=JvZtT+b94F+EHwcSvNa04xBqeHxjFbplsfzPgMsFT1g=;
+ b=xpTZwfCCTdS8ObodZi+dXxxItX+zhQ5ffArw2SYD1qlJo4htKjK+vbXO8DbD36vZAx
+ nvi8zsmvjydV2zlP5aODSTebaYf7lpxSl5H3wqevJnvk2qLEy54e7cyXl16e9dTlQlOl
+ 58FO8z0Vnzf2oAk/2aYq7CPfWECyO5Rt+IUXZOR9n2yL08LuuW5vmlnp/GXCfsEkGz3+
+ nZPx1kr+GluzplYQ+I4r4y2icp7VF4OqFA7/qqsSaOKFj1RXVwbqxRvMmoAzgp4L/uy/
+ RthK06wxam7Sfc6ndJKxkNP2eQw4gYNE7lHmtPrMG0NDe7Y1Bi2lYdDuMQ75ySK2UTok
+ x3xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003228; x=1714608028;
+ d=1e100.net; s=20230601; t=1714003231; x=1714608031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3ygFLD876CIrAdUeERdKDaK6OhehnvKPDKxHUBl+Z6U=;
- b=beibRtv5Uirh392xAx6VuQoSErxQ3QQ2ayOOR5ERsH1ep6TJhtmPGZMRipK9W60gJ3
- atc6+kUXQ15vylikDeR0/et5t+2ZSAslu1QSKpsiNlIAc7wXZnWNDPI5pa63JRDio12X
- xVL4uMColVKxaaHejsKMrKZ1TxTw/C2drBug36i+Xi8QnEUiUPbSzzyze31+ynPdvmxl
- m2rDYT+B+YW7jg+rEGhuUfunsrxSP1lOSq7asIYFLjvXTuzrqmMnMDrz4fpPySbpP13k
- w1KabGkO/6erknunQhe8ayJYg0mw6HJYjP69bQw7Y0y+cjCrmIG0/k7q2VFV6xkri4Lb
- jpXg==
-X-Gm-Message-State: AOJu0Yz7xH2FRk82EUX4IeJ3kCh90vwhXlPVEXQaEcbPEEzP3YNkMXOH
- FOaS+RBFeClDVkdoelHRiqSdrhgU23gC0/s3xFvp+MaIB8X75RFry4n9pNwldXnZj+LNr2W2Wy8
- V
-X-Google-Smtp-Source: AGHT+IEJ6PUBsFgYu15QWIhzeyjCplblLsNaXABVCSFDc8qjoLNdxvPTo8ebzUQZsQWqkMOAbFE8og==
-X-Received: by 2002:a05:6a20:4392:b0:1aa:928e:62a2 with SMTP id
- i18-20020a056a20439200b001aa928e62a2mr5150599pzl.10.1714003227587; 
- Wed, 24 Apr 2024 17:00:27 -0700 (PDT)
+ bh=JvZtT+b94F+EHwcSvNa04xBqeHxjFbplsfzPgMsFT1g=;
+ b=fhHCu2DI/BwO0qp28q1FN9jKtCH9VaIolJUbJUR8F8irvznFtxf8CVa1lJxQBHJvGf
+ zxaTLj7+cFVNZEBX38v0mh6rRMKjQlQ1ERokMBsOGui1TgKkeJyWAltDX2Y1oXQnpSDx
+ OVRwV92Nzl3PFhOfZ9V4NoTqQEiY3/u1aylrcvIwuvUce3hq/I5SlcYV825IuoABH6b+
+ +cwkgSlKck+D1R+lDmtcTJDo0GbdUH+rNt0TvZ5Kr+wxJ7DDAX95UPCezKybY5C8OZD1
+ 5WY0qBiqbNefPVHp84Or7gq6W88OkOCwfxKWWb+0cdUBmqEJMulBwoC7oma1eVLbmsEA
+ fukg==
+X-Gm-Message-State: AOJu0Yz4PluSojQ46FJRqHavp+j4iSbqWnAHGd8VWa5yf4d41v2IF2hD
+ XhXEOY+VFIQ5HRjbJp6PJuYIPwUJ/vAdoSt8r9ZtTM7aWGMtEog887R9fAjM0mH+HHlbZOpPez3
+ L
+X-Google-Smtp-Source: AGHT+IFiqQ9amjc/etNg8hDltn41ge/g6LUypGv8EA5dPMEh7+SNB2eGla3sOFCYAf3Dxi4/8eCgjw==
+X-Received: by 2002:a05:6a20:9150:b0:1a3:64a9:11e5 with SMTP id
+ x16-20020a056a20915000b001a364a911e5mr4456766pzc.50.1714003230991; 
+ Wed, 24 Apr 2024 17:00:30 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.26
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.30
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:00:27 -0700 (PDT)
+ Wed, 24 Apr 2024 17:00:30 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 01/45] target/hppa: Move cpu_get_tb_cpu_state out of line
-Date: Wed, 24 Apr 2024 16:59:39 -0700
-Message-Id: <20240425000023.1002026-2-richard.henderson@linaro.org>
+Subject: [PATCH 05/45] target/hppa: Allow prior nullification in do_ibranch
+Date: Wed, 24 Apr 2024 16:59:43 -0700
+Message-Id: <20240425000023.1002026-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,119 +90,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Simplify the function by not attempting a conditional move
+on the branch destination -- just use nullify_over normally.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.h | 43 ++-----------------------------------------
- target/hppa/cpu.c | 42 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 44 insertions(+), 41 deletions(-)
+ target/hppa/translate.c | 73 +++++++++++------------------------------
+ 1 file changed, 20 insertions(+), 53 deletions(-)
 
-diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
-index a072d0bb63..01dc8781a5 100644
---- a/target/hppa/cpu.h
-+++ b/target/hppa/cpu.h
-@@ -320,47 +320,8 @@ hwaddr hppa_abs_to_phys_pa2_w1(vaddr addr);
- #define TB_FLAG_PRIV_SHIFT  8
- #define TB_FLAG_UNALIGN     0x400
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index cbf78a4007..ceba7a98e5 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -1870,17 +1870,15 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
+ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
+                        unsigned link, bool is_n)
+ {
+-    TCGv_i64 a0, a1, next, tmp;
+-    TCGCond c;
++    TCGv_i64 next;
  
--static inline void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
--                                        uint64_t *cs_base, uint32_t *pflags)
--{
--    uint32_t flags = env->psw_n * PSW_N;
+-    assert(ctx->null_lab == NULL);
++    if (ctx->null_cond.c == TCG_COND_NEVER && ctx->null_lab == NULL) {
++        next = tcg_temp_new_i64();
++        tcg_gen_mov_i64(next, dest);
+ 
+-    if (ctx->null_cond.c == TCG_COND_NEVER) {
+         if (link != 0) {
+             copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
+         }
+-        next = tcg_temp_new_i64();
+-        tcg_gen_mov_i64(next, dest);
+         if (is_n) {
+             if (use_nullify_skip(ctx)) {
+                 copy_iaoq_entry(ctx, cpu_iaoq_f, -1, next);
+@@ -1894,60 +1892,29 @@ static bool do_ibranch(DisasContext *ctx, TCGv_i64 dest,
+         }
+         ctx->iaoq_n = -1;
+         ctx->iaoq_n_var = next;
+-    } else if (is_n && use_nullify_skip(ctx)) {
+-        /* The (conditional) branch, B, nullifies the next insn, N,
+-           and we're allowed to skip execution N (no single-step or
+-           tracepoint in effect).  Since the goto_ptr that we must use
+-           for the indirect branch consumes no special resources, we
+-           can (conditionally) skip B and continue execution.  */
+-        /* The use_nullify_skip test implies we have a known control path.  */
+-        tcg_debug_assert(ctx->iaoq_b != -1);
+-        tcg_debug_assert(ctx->iaoq_n != -1);
++        return true;
++    }
+ 
+-        /* We do have to handle the non-local temporary, DEST, before
+-           branching.  Since IOAQ_F is not really live at this point, we
+-           can simply store DEST optimistically.  Similarly with IAOQ_B.  */
++    nullify_over(ctx);
++
++    if (is_n && use_nullify_skip(ctx)) {
+         copy_iaoq_entry(ctx, cpu_iaoq_f, -1, dest);
+         next = tcg_temp_new_i64();
+         tcg_gen_addi_i64(next, dest, 4);
+         copy_iaoq_entry(ctx, cpu_iaoq_b, -1, next);
 -
--    /* TB lookup assumes that PC contains the complete virtual address.
--       If we leave space+offset separate, we'll get ITLB misses to an
--       incomplete virtual address.  This also means that we must separate
--       out current cpu privilege from the low bits of IAOQ_F.  */
--#ifdef CONFIG_USER_ONLY
--    *pc = env->iaoq_f & -4;
--    *cs_base = env->iaoq_b & -4;
--    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
--#else
--    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
--    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
--    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
--
--    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
--                            env->iaoq_f & -4);
--    *cs_base = env->iasq_f;
--
--    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
--       low 32-bits of CS_BASE.  This will succeed for all direct branches,
--       which is the primary case we care about -- using goto_tb within a page.
--       Failure is indicated by a zero difference.  */
--    if (env->iasq_f == env->iasq_b) {
--        target_long diff = env->iaoq_b - env->iaoq_f;
--        if (diff == (int32_t)diff) {
--            *cs_base |= (uint32_t)diff;
+-        nullify_over(ctx);
+-        if (link != 0) {
+-            copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
 -        }
--    }
--    if ((env->sr[4] == env->sr[5])
--        & (env->sr[4] == env->sr[6])
--        & (env->sr[4] == env->sr[7])) {
--        flags |= TB_FLAG_SR_SAME;
--    }
--#endif
+-        tcg_gen_lookup_and_goto_ptr();
+-        return nullify_end(ctx);
++        nullify_set(ctx, 0);
+     } else {
+-        c = ctx->null_cond.c;
+-        a0 = ctx->null_cond.a0;
+-        a1 = ctx->null_cond.a1;
 -
--    *pflags = flags;
--}
-+void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-+                          uint64_t *cs_base, uint32_t *pflags);
- 
- target_ulong cpu_hppa_get_psw(CPUHPPAState *env);
- void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong);
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 3831cb6db2..1d5f5086bf 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -43,6 +43,48 @@ static vaddr hppa_cpu_get_pc(CPUState *cs)
-     return cpu->env.iaoq_f;
+-        tmp = tcg_temp_new_i64();
+-        next = tcg_temp_new_i64();
+-
+-        copy_iaoq_entry(ctx, tmp, ctx->iaoq_n, ctx->iaoq_n_var);
+-        tcg_gen_movcond_i64(c, next, a0, a1, tmp, dest);
+-        ctx->iaoq_n = -1;
+-        ctx->iaoq_n_var = next;
+-
+-        if (link != 0) {
+-            tcg_gen_movcond_i64(c, cpu_gr[link], a0, a1, cpu_gr[link], tmp);
+-        }
+-
+-        if (is_n) {
+-            /* The branch nullifies the next insn, which means the state of N
+-               after the branch is the inverse of the state of N that applied
+-               to the branch.  */
+-            tcg_gen_setcond_i64(tcg_invert_cond(c), cpu_psw_n, a0, a1);
+-            cond_free(&ctx->null_cond);
+-            ctx->null_cond = cond_make_n();
+-            ctx->psw_n_nonzero = true;
+-        } else {
+-            cond_free(&ctx->null_cond);
+-        }
++        copy_iaoq_entry(ctx, cpu_iaoq_f, ctx->iaoq_b, cpu_iaoq_b);
++        copy_iaoq_entry(ctx, cpu_iaoq_b, -1, dest);
++        nullify_set(ctx, is_n);
+     }
+-    return true;
++    if (link != 0) {
++        copy_iaoq_entry(ctx, cpu_gr[link], ctx->iaoq_n, ctx->iaoq_n_var);
++    }
++
++    tcg_gen_lookup_and_goto_ptr();
++    ctx->base.is_jmp = DISAS_NORETURN;
++    return nullify_end(ctx);
  }
  
-+void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-+                          uint64_t *cs_base, uint32_t *pflags)
-+{
-+    uint32_t flags = env->psw_n * PSW_N;
-+
-+    /* TB lookup assumes that PC contains the complete virtual address.
-+       If we leave space+offset separate, we'll get ITLB misses to an
-+       incomplete virtual address.  This also means that we must separate
-+       out current cpu privilege from the low bits of IAOQ_F.  */
-+#ifdef CONFIG_USER_ONLY
-+    *pc = env->iaoq_f & -4;
-+    *cs_base = env->iaoq_b & -4;
-+    flags |= TB_FLAG_UNALIGN * !env_cpu(env)->prctl_unalign_sigbus;
-+#else
-+    /* ??? E, T, H, L, B bits need to be here, when implemented.  */
-+    flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
-+    flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
-+
-+    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
-+                            env->iaoq_f & -4);
-+    *cs_base = env->iasq_f;
-+
-+    /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
-+       low 32-bits of CS_BASE.  This will succeed for all direct branches,
-+       which is the primary case we care about -- using goto_tb within a page.
-+       Failure is indicated by a zero difference.  */
-+    if (env->iasq_f == env->iasq_b) {
-+        target_long diff = env->iaoq_b - env->iaoq_f;
-+        if (diff == (int32_t)diff) {
-+            *cs_base |= (uint32_t)diff;
-+        }
-+    }
-+    if ((env->sr[4] == env->sr[5])
-+        & (env->sr[4] == env->sr[6])
-+        & (env->sr[4] == env->sr[7])) {
-+        flags |= TB_FLAG_SR_SAME;
-+    }
-+#endif
-+
-+    *pflags = flags;
-+}
-+
- static void hppa_cpu_synchronize_from_tb(CPUState *cs,
-                                          const TranslationBlock *tb)
- {
+ /* Implement
 -- 
 2.34.1
 
