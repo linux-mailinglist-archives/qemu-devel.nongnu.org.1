@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAFF8B039E
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 09:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C38438B03A9
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 09:59:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXWM-0004sq-PA; Wed, 24 Apr 2024 03:58:26 -0400
+	id 1rzXWQ-00052n-8t; Wed, 24 Apr 2024 03:58:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXWJ-0004lK-NG
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXWL-0004sU-UC
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXWI-00033U-Aj
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:23 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXWK-00033s-5y
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945501;
+ s=mimecast20190719; t=1713945503;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aoaWtNsCKSLRYqbbuYslzNbDypTwqGYuH1hIZaUzZcM=;
- b=DP8lTeTe/akVHhR//DK0okwbVO08N4Xp3w+PgN1ZLRSyuQ1VbRJq8MIpvJVS80XqLzFCFt
- XFr/FZinDf1aLROTe+mbC7+/VMVNhazFhRTRR4T08EeqGeLURplRnfGy5NdnfiKE+lXu0A
- qEeyrj1Nw0F2aDMR4AK9/5mJPiK89nQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-AivA7ysUMfyAIDkgK2Gciw-1; Wed,
- 24 Apr 2024 03:58:18 -0400
-X-MC-Unique: AivA7ysUMfyAIDkgK2Gciw-1
+ bh=B5k/XgyV6OBmCESICUalI1ibyWn0WpELMf2zPFLN3Uo=;
+ b=bddnJ3IJAFI0iRULiy10eUT2hRCCm9AV5e5SAK+oJZrA0I3IKyRau4EChBSD9zYHIOKDPi
+ gzABLlyNDQCLEE30r+Z7w+cP4QWYlGaQkOM4zBBW/L8fmO5NmxOw5gZpdFbwPM2WwJ+amb
+ s4CmmiNqn42FEc/axtvcbtO+lM3usTk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-454-lL4zu9BvOd21pfT6CCNyww-1; Wed, 24 Apr 2024 03:58:20 -0400
+X-MC-Unique: lL4zu9BvOd21pfT6CCNyww-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE83338143A2;
- Wed, 24 Apr 2024 07:58:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA0F118065AE;
+ Wed, 24 Apr 2024 07:58:19 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6940E3543A;
- Wed, 24 Apr 2024 07:58:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 695A83543A;
+ Wed, 24 Apr 2024 07:58:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>
-Subject: [PULL 15/17] docs/devel: fix minor typo in submitting-a-patch.rst
-Date: Wed, 24 Apr 2024 09:57:33 +0200
-Message-ID: <20240424075735.248041-16-thuth@redhat.com>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL 16/17] tests/unit: Remove debug statements in
+ test-nested-aio-poll.c
+Date: Wed, 24 Apr 2024 09:57:34 +0200
+Message-ID: <20240424075735.248041-17-thuth@redhat.com>
 In-Reply-To: <20240424075735.248041-1-thuth@redhat.com>
 References: <20240424075735.248041-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -78,31 +80,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-s/Resolved:/Resolves:/
+We have been running this test for almost a year; it
+is safe to remove its debug statements, which clutter
+CI jobs output:
 
-Signed-off-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-ID: <20240422124128.4034482-1-manos.pitsidianakis@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+  ▶  88/100 /nested-aio-poll                      OK
+  io_read 0x16bb26158
+  io_poll_true 0x16bb26158
+  > io_poll_ready
+  io_read 0x16bb26164
+  < io_poll_ready
+  io_poll_true 0x16bb26158
+  io_poll_false 0x16bb26164
+  > io_poll_ready
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_poll_false 0x16bb26164
+  io_read 0x16bb26164
+  < io_poll_ready
+  88/100 qemu:unit / test-nested-aio-poll        OK
+
+Reviewed-by: Eric Blake <eblake@redhat.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-ID: <20240422112246.83812-1-philmd@linaro.org>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- docs/devel/submitting-a-patch.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/unit/test-nested-aio-poll.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/docs/devel/submitting-a-patch.rst b/docs/devel/submitting-a-patch.rst
-index c641d948f1..83e9092b8c 100644
---- a/docs/devel/submitting-a-patch.rst
-+++ b/docs/devel/submitting-a-patch.rst
-@@ -177,7 +177,7 @@ add an additional line with "Fixes: <at-least-12-digits-of-SHA-commit-id>
+diff --git a/tests/unit/test-nested-aio-poll.c b/tests/unit/test-nested-aio-poll.c
+index db33742af3..d8fd92c43b 100644
+--- a/tests/unit/test-nested-aio-poll.c
++++ b/tests/unit/test-nested-aio-poll.c
+@@ -30,19 +30,16 @@ typedef struct {
  
- If your patch fixes a bug in the gitlab bug tracker, please add a line
- with "Resolves: <URL-of-the-bug>" to the commit message, too. Gitlab can
--close bugs automatically once commits with the "Resolved:" keyword get
-+close bugs automatically once commits with the "Resolves:" keyword get
- merged into the master branch of the project. And if your patch addresses
- a bug in another public bug tracker, you can also use a line with
- "Buglink: <URL-of-the-bug>" for reference here, too.
+ static void io_read(EventNotifier *notifier)
+ {
+-    fprintf(stderr, "%s %p\n", __func__, notifier);
+     event_notifier_test_and_clear(notifier);
+ }
+ 
+ static bool io_poll_true(void *opaque)
+ {
+-    fprintf(stderr, "%s %p\n", __func__, opaque);
+     return true;
+ }
+ 
+ static bool io_poll_false(void *opaque)
+ {
+-    fprintf(stderr, "%s %p\n", __func__, opaque);
+     return false;
+ }
+ 
+@@ -50,8 +47,6 @@ static void io_poll_ready(EventNotifier *notifier)
+ {
+     TestData *td = container_of(notifier, TestData, poll_notifier);
+ 
+-    fprintf(stderr, "> %s\n", __func__);
+-
+     g_assert(!td->nested);
+     td->nested = true;
+ 
+@@ -62,8 +57,6 @@ static void io_poll_ready(EventNotifier *notifier)
+     g_assert(aio_poll(td->ctx, true));
+ 
+     td->nested = false;
+-
+-    fprintf(stderr, "< %s\n", __func__);
+ }
+ 
+ /* dummy_notifier never triggers */
 -- 
 2.44.0
 
