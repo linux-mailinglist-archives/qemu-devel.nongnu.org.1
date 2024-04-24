@@ -2,58 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34EAD8B11CE
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 20:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8318B11E1
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 20:17:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzh80-0007LM-Kk; Wed, 24 Apr 2024 14:13:56 -0400
+	id 1rzhAM-00012W-Ox; Wed, 24 Apr 2024 14:16:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
- id 1rzh7v-0007KB-IS; Wed, 24 Apr 2024 14:13:51 -0400
-Received: from new-mail.astralinux.ru ([51.250.53.164])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rzhAI-000127-4u; Wed, 24 Apr 2024 14:16:20 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <adiupina@astralinux.ru>)
- id 1rzh7s-0005QZ-S7; Wed, 24 Apr 2024 14:13:51 -0400
-Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.177.232.60])
- by new-mail.astralinux.ru (Postfix) with ESMTPA id 4VPnDS4tVszqSSK;
- Wed, 24 Apr 2024 21:13:44 +0300 (MSK)
-From: Alexandra Diupina <adiupina@astralinux.ru>
-To: Alistair Francis <alistair@alistair23.me>
-Cc: Alexandra Diupina <adiupina@astralinux.ru>,
- "Konrad, Frederic" <Frederic.Konrad@amd.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
-Subject: [PATCH] fix bit fields extraction and prevent overflow
-Date: Wed, 24 Apr 2024 21:13:21 +0300
-Message-Id: <20240424181321.20844-2-adiupina@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <CAFEAcA-=kk_TQVRLLQvH96DC-ffmDqd_hU5=z=Og8ntYGxPUeg@mail.gmail.com>
-References: <20240424181321.20844-1-adiupina@astralinux.ru>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rzhAD-000689-Tv; Wed, 24 Apr 2024 14:16:17 -0400
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:c10a:0:640:882f:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 16FC060A03;
+ Wed, 24 Apr 2024 21:16:08 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:8811::1:29] (unknown
+ [2a02:6b8:b081:8811::1:29])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 7GQpQ73IamI0-0nxgfLQP; Wed, 24 Apr 2024 21:16:07 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1713982567;
+ bh=h160bdeEzMsp0Bg9tGZVv7rAjvV3NTdli/yO753rleo=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=IQraanN3xidMONVpP4E3OUpD2gZCBbvLU9oy7wUHlFpOvp83UvvlW7/+cEYkNi8Hz
+ 9PDGPfApz89s1yCq4lMLn+6oBTWOFHCNMUHLSVc7FvsasusoIvdJ+7E5BSu1zL5cuP
+ iOv+JR1D9azUEJmBISBCjAy+K7biz3snsX2SEJHU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <943009b6-fcab-461d-91eb-b20d6550a978@yandex-team.ru>
+Date: Wed, 24 Apr 2024 21:16:07 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DrWeb-SpamScore: -100
-X-DrWeb-SpamState: legit
-X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetlhgvgigrnhgurhgrucffihhuphhinhgruceorgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeefkedufedvkeffuedtgfdugeeutdegvdffffejfffgleffieduhfejvdelffdvudenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudejjedrvdefvddriedtnecurfgrrhgrmhephhgvlhhopehrsghtrgdqmhhskhdqlhhtqdeftddvieeltddrrghsthhrrghlihhnuhigrdhruhdpihhnvghtpedutddrudejjedrvdefvddriedtmeehieegjedvpdhmrghilhhfrhhomheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhnsggprhgtphhtthhopeekpdhrtghpthhtoheprghlihhsthgrihhrsegrlhhishhtrghirhdvfedrmhgvpdhrtghpthhtoheprgguihhuphhinhgrsegrshhtrhgrlhhinhhugidrrhhupdhrtghpthhtohephfhrvgguvghrihgtrdfmohhnrhgrugesrghmugdrtghomhdprhgtphhtthhopegvughgrghrrdhighhlvghsihgrshesghhmrghilhdrtghomhdprhgtphhtthhope
- hpvghtvghrrdhmrgihuggvlhhlsehlihhnrghrohdrohhrghdprhgtphhtthhopehqvghmuhdqrghrmhesnhhonhhgnhhurdhorhhgpdhrtghpthhtohepqhgvmhhuqdguvghvvghlsehnohhnghhnuhdrohhrghdprhgtphhtthhopehsughlrdhqvghmuheslhhinhhugihtvghsthhinhhgrdhorhhg
-X-DrWeb-SpamVersion: Vade Retro 01.423.251#02 AS+AV+AP Profile: DRWEB;
- Bailout: 300
-X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128,
- SE: 11.1.12.2210241838, Core engine: 7.00.62.01180, Virus records: 12628730,
- Updated: 2024-Apr-24 16:23:42 UTC]
-Received-SPF: pass client-ip=51.250.53.164;
- envelope-from=adiupina@astralinux.ru; helo=new-mail.astralinux.ru
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/avocado: add hotplug_blk test
+To: qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, crosa@redhat.com, philmd@linaro.org,
+ wainersm@redhat.com, bleal@redhat.com, yc-core@yandex-team.ru
+References: <20240409065854.366856-1-vsementsov@yandex-team.ru>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20240409065854.366856-1-vsementsov@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -65,58 +73,10 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a type cast and use extract64() instead of extract32()
-to avoid integer overflow on addition. Fix bit fields
-extraction according to documentation.
+ping!)
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: d3c6369a96 ("introduce xlnx-dpdma")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
----
- hw/dma/xlnx_dpdma.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/hw/dma/xlnx_dpdma.c b/hw/dma/xlnx_dpdma.c
-index 1f5cd64ed1..52e8c594fe 100644
---- a/hw/dma/xlnx_dpdma.c
-+++ b/hw/dma/xlnx_dpdma.c
-@@ -175,24 +175,24 @@ static uint64_t xlnx_dpdma_desc_get_source_address(DPDMADescriptor *desc,
- 
-     switch (frag) {
-     case 0:
--        addr = desc->source_address
--            + (extract32(desc->address_extension, 16, 12) << 20);
-+        addr = (uint64_t)desc->source_address
-+            + (extract64(desc->address_extension, 16, 12) << 20);
-         break;
-     case 1:
--        addr = desc->source_address2
--            + (extract32(desc->address_extension_23, 0, 12) << 8);
-+        addr = (uint64_t)desc->source_address2
-+            + (extract64(desc->address_extension_23, 0, 12) << 8);
-         break;
-     case 2:
--        addr = desc->source_address3
--            + (extract32(desc->address_extension_23, 16, 12) << 20);
-+        addr = (uint64_t)desc->source_address3
-+            + (extract64(desc->address_extension_23, 16, 12) << 20);
-         break;
-     case 3:
--        addr = desc->source_address4
--            + (extract32(desc->address_extension_45, 0, 12) << 8);
-+        addr = (uint64_t)desc->source_address4
-+            + (extract64(desc->address_extension_45, 0, 12) << 8);
-         break;
-     case 4:
--        addr = desc->source_address5
--            + (extract32(desc->address_extension_45, 16, 12) << 20);
-+        addr = (uint64_t)desc->source_address5
-+            + (extract64(desc->address_extension_45, 16, 12) << 20);
-         break;
-     default:
-         addr = 0;
 -- 
-2.30.2
+Best regards,
+Vladimir
 
 
