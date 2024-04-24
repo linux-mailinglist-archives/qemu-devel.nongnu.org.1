@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC2D8B1683
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8D38B16A3
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:58:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzlSk-00070m-Ei; Wed, 24 Apr 2024 18:51:38 -0400
+	id 1rzlYA-0005Ng-Sf; Wed, 24 Apr 2024 18:57:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlSj-0006ym-4S
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:51:37 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1rzlY7-0005Mc-LO
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:11 -0400
+Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlSh-0006hO-K9
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:51:36 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6f043f9e6d7so447750b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:51:35 -0700 (PDT)
+ id 1rzlY4-0001lc-RX
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:11 -0400
+Received: by mail-pg1-x52f.google.com with SMTP id
+ 41be03b00d2f7-5d3907ff128so321529a12.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713999094; x=1714603894; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=G1KuH29eWKziwjTP2PdMM65i8n1Oaouq5HMuEevb+aM=;
- b=Xv3f/LPjN1GU3fW0+zrMz3qZ4OtqiYKtMU2D7gVofRX6fb/oDDyMyOWRQAOAQua4On
- A+H1glALATjfCPHIIW0H4fkOowie/yfHmnZ+bDjvXDMnuhdUT7s2ahxIZdcQFq2FQgOR
- LFdLGAW7YKP4vBPIm0hAd5Is5I5ifDSJwimHmfI3izEuOReAhYaNtys4dRmgxXX/jYTO
- ujZoDswmUKpG7ZI+Ye2cCU3GyAsr+tm6ulQX0bXJi8mxwGXjCabnaDenf7Aq5AnEGsCC
- e8VftJYdFtdZ7oukl29jaMHxT3VfyDY7rAPlImz7Mm6qVfox4u7wxqajJruLbiqr7LHb
- Ps4Q==
+ d=linaro.org; s=google; t=1713999427; x=1714604227; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=w21pcEbv3KZfM/OcgeAu4UL167cnBeylLbvFPmblREA=;
+ b=yC8OuspVEZ++lZbIb2MwYUUAoK7sl3bjHDyCSJpKnRy8aJiC8KJEn1tO2ddiLxd60K
+ N3juFieYMjL/ctiV7E2lmqjZSA9EsnhDP/2r+81YLC9Fyy0FOBpAXq16sb15/lG3ppWu
+ Z3PU7gCMb7ENEHbedpJLAuLCu6TT2eRtEsjMSGK/to73C8VrgqQbp0a2Wp0i0m04TrFO
+ ZWnd9AR4SjMMXEX6lpCrtM6N9cmZVQGBoZdnre+kyhpxp7XTZAmB+gdxXpnSB1Uj+5QH
+ Qxc1xsuqsVczfEBIR9q/MgMa/WP+Mllro3leQvgLh3r2Loqm+3tE6LgiOPcvz96PXs08
+ oyHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713999094; x=1714603894;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=G1KuH29eWKziwjTP2PdMM65i8n1Oaouq5HMuEevb+aM=;
- b=Ip3b5h8H8V35KcG/fuHvcgb4CMH78iNa3+wpP3idd0BHGu2LTj+zuKVHKJ1wVHbnLJ
- fImWQMTSThb017JW/OghLzgNzpTxEBj/kfkk6HLi3eUWGdZzTeXJVQhN5fYdWMClDDW+
- hvAlda7hmtaFTsxis5lyGDbGmJt/ByetVQXlHZ1yIoJDvWdHybE6PWOx7LxSzUJmGbwt
- lapi4ZSbVsL1I8L6C30fe0IjiMVVPqb+cdY8Ifaa17BYicLT99c8ToUP6iGUzPpWGh8c
- jezRxQOJMA9QBoXlhAhy3+eR2xtSeU3PCMvR6LYcoYcCnz46tNl8Z54B3hJ8j1kJlfs0
- drvA==
-X-Gm-Message-State: AOJu0YxaJE54pg5mLCDjSA8zffE6dxOCtzcU8uwp+KwN4AmhDQW2P25G
- XcGiM1m6m3n0hpda7aySIzljywS6alFY31tVp5jwHuxPJV2WdQ+Oa8xDIqTVoYciyivqUkvSw7q
- S
-X-Google-Smtp-Source: AGHT+IEkVSn7F/keH1gg+6OUG59K7Aho0Tg7877FgFWd3CZqxAYqP+8ZxthE3JqyRMDWGLjusLtVYQ==
-X-Received: by 2002:a05:6a20:3d88:b0:1aa:340e:237e with SMTP id
- s8-20020a056a203d8800b001aa340e237emr4626663pzi.59.1713999094263; 
- Wed, 24 Apr 2024 15:51:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713999427; x=1714604227;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=w21pcEbv3KZfM/OcgeAu4UL167cnBeylLbvFPmblREA=;
+ b=LjyjQvI8oOoWxYwA2rONx6ovh+B6DMW55UOyHe5NjTLnoLKMBoFSUv/EEKN5ivXyu5
+ /7wHR0hVWuHKzO+XT/s3+d9FnYyuVmTogKQzUyQf/YA0+Caaxm6fMmAGm+tNwHbK5ExJ
+ oGB881mnS4gmGuzX71ZpdHCPjFcdCVoxkKnZAHtaG+ljMYepsPoZ3yKN4bb+EKqZhMUE
+ KM3vXYOmPx0cT8UOWYEgCkg0D6iWU6iGyc78jGbeAwY6mFBX3z//lzTuS3198SdT0bKs
+ AS79O6MpAjf4QfPzYcrjeM1fk3smPcpDgF1FkPOl0JPeCAYgxuMX4euGz9DHpLTiPD94
+ F4ag==
+X-Gm-Message-State: AOJu0Ywroi/u2DOxE61/l8H8bEZzBKFwegiUfTdGXnAJS8TwNlrsPfHQ
+ Tcl1W2uVJOVta3rxNdiDIgPIMIg+MNRnIDJunKc9itCBTiROUWId/m5na0SyfeMZ05wSE/j+N67
+ Q
+X-Google-Smtp-Source: AGHT+IGG2iwJwhHA2P7iU5Ud5oxZ8dVnpKeWQNrFsGcUg9MIxOMa4RzmbjkwaO3VowfLawCByCd2tg==
+X-Received: by 2002:a05:6a20:158c:b0:1a9:40a1:a4e9 with SMTP id
+ h12-20020a056a20158c00b001a940a1a4e9mr4867759pzj.3.1713999427111; 
+ Wed, 24 Apr 2024 15:57:07 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- it12-20020a056a00458c00b006ead792b6f2sm11960864pfb.1.2024.04.24.15.51.33
+ gu26-20020a056a004e5a00b006ed9760b815sm11947413pfb.211.2024.04.24.15.57.06
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 15:51:33 -0700 (PDT)
+ Wed, 24 Apr 2024 15:57:06 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Keith Packard <keithp@keithp.com>
-Subject: [PULL 9/9] target/m68k: Support semihosting on non-ColdFire targets
-Date: Wed, 24 Apr 2024 15:51:23 -0700
-Message-Id: <20240424225123.929152-10-richard.henderson@linaro.org>
+Subject: [PATCH v6 00/10] Optimize buffer_is_zero
+Date: Wed, 24 Apr 2024 15:56:55 -0700
+Message-Id: <20240424225705.929812-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240424225123.929152-1-richard.henderson@linaro.org>
-References: <20240424225123.929152-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,39 +87,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Keith Packard <keithp@keithp.com>
+v3: https://patchew.org/QEMU/20240206204809.9859-1-amonakov@ispras.ru/
+v4: https://patchew.org/QEMU/20240215081449.848220-1-richard.henderson@linaro.org/
+v5: https://patchew.org/QEMU/20240217003918.52229-1-richard.henderson@linaro.org/
 
-According to the m68k semihosting spec:
+Changes for v6:
+  - Fixes for bufferiszero-bench
 
-"The instruction used to trigger a semihosting request depends on the
- m68k processor variant.  On ColdFire, "halt" is used; on other processors
- (which don't implement "halt"), "bkpt #0" may be used."
 
-Add support for non-CodeFire processors by matching BKPT #0 instructions.
+r~
 
-Signed-off-by: Keith Packard <keithp@keithp.com>
-[rth: Use semihosting_test()]
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/m68k/translate.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-index 647bd9d9be..169927552a 100644
---- a/target/m68k/translate.c
-+++ b/target/m68k/translate.c
-@@ -2646,6 +2646,11 @@ DISAS_INSN(bkpt)
- #if defined(CONFIG_USER_ONLY)
-     gen_exception(s, s->base.pc_next, EXCP_DEBUG);
- #else
-+    /* BKPT #0 is the alternate semihosting instruction. */
-+    if ((insn & 7) == 0 && semihosting_test(s)) {
-+        gen_exception(s, s->pc, EXCP_SEMIHOSTING);
-+        return;
-+    }
-     gen_exception(s, s->base.pc_next, EXCP_ILLEGAL);
- #endif
- }
+Alexander Monakov (5):
+  util/bufferiszero: Remove SSE4.1 variant
+  util/bufferiszero: Remove AVX512 variant
+  util/bufferiszero: Reorganize for early test for acceleration
+  util/bufferiszero: Remove useless prefetches
+  util/bufferiszero: Optimize SSE2 and AVX2 variants
+
+Richard Henderson (5):
+  util/bufferiszero: Improve scalar variant
+  util/bufferiszero: Introduce biz_accel_fn typedef
+  util/bufferiszero: Simplify test_buffer_is_zero_next_accel
+  util/bufferiszero: Add simd acceleration for aarch64
+  tests/bench: Add bufferiszero-bench
+
+ include/qemu/cutils.h            |  32 ++-
+ tests/bench/bufferiszero-bench.c |  47 ++++
+ util/bufferiszero.c              | 448 +++++++++++++++++--------------
+ tests/bench/meson.build          |   1 +
+ 4 files changed, 321 insertions(+), 207 deletions(-)
+ create mode 100644 tests/bench/bufferiszero-bench.c
+
 -- 
 2.34.1
 
