@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B7C8B091B
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 14:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F398B09C9
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 14:35:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzbZL-0001tC-Ur; Wed, 24 Apr 2024 08:17:48 -0400
+	id 1rzboN-0005EB-6B; Wed, 24 Apr 2024 08:33:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rzbZK-0001t2-1N
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:17:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <th.huth@posteo.de>) id 1rzboK-0005D7-2U
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:33:16 -0400
+Received: from mout01.posteo.de ([185.67.36.65])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1rzbZI-0001Bq-5a
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:17:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713961062;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=MNqr3IHCfzprWKtVKTZH9+LYj6zgwI9P+4vNxSKeeLk=;
- b=emrh8XdE1s2gTpwgULbB4+i0YXAItnA25VGF5NXkCNiKuVAsBTZJ4la6hkngcIb92fULda
- s/Rad954GxDRocbCwG3UyVC8NJvoeHzMwsUxkSPNUXcSLH5Abq93BLxXSINOQ805+kPtpu
- 1QCRVFL33SZYz4IB26AJM2xmY7pg424=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-59R2i3KaMM-i-BGQRx3UCg-1; Wed, 24 Apr 2024 08:17:41 -0400
-X-MC-Unique: 59R2i3KaMM-i-BGQRx3UCg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 05A808B6BC0;
- Wed, 24 Apr 2024 12:17:41 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.202])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 516571121312;
- Wed, 24 Apr 2024 12:17:39 +0000 (UTC)
-Date: Wed, 24 Apr 2024 14:17:38 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Prasad Pandit <ppandit@redhat.com>
-Cc: stefanha@redhat.com, qemu-block@nongnu.org, qemu-devel@nongnu.org,
- mtosatti@redhat.com, Prasad Pandit <pjp@fedoraproject.org>
-Subject: Re: [PATCH v4] linux-aio: add IO_CMD_FDSYNC command support
-Message-ID: <Zij4YnZxXwXFcnN3@redhat.com>
-References: <20240314111628.1508636-1-ppandit@redhat.com>
+ (Exim 4.90_1) (envelope-from <th.huth@posteo.de>) id 1rzboF-0003zB-Pm
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:33:15 -0400
+Received: from submission (posteo.de [185.67.36.169]) 
+ by mout01.posteo.de (Postfix) with ESMTPS id 49D69240033
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 14:33:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+ t=1713961988; bh=9Ev9618ma5vERQhBo1JV5P5yZ6fPuNrS0jsrcfWeBHU=;
+ h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:Content-Type:
+ Content-Transfer-Encoding:From;
+ b=ptv7qhbbNkf//eI2Nh9He1fmIKvifrvkBbId62jUXUbHffLCiCgT2gC/UxCD40QJf
+ S/csiDg+SiKUem4x+H9XEYjGhmVzrjVJItNNweoSQu88/HZdoxqMsLQB6zMCJEFflH
+ nqgkUP+6VeQC0qXurWQazaL7sS6hLcvRhJebf1NLm7lE+yaxV/bFwVQXYIm16NmwoO
+ Ua/ltPSIkQrhjQrfL1HGbCG9QVhXn1X/ZYhr/EomV4N6v9hUVEgWGcQy6EQ4jNAU68
+ Y/hCZ/ePP9xAwMjuBu+1gd1+3t+8ormTy2IWarKJuy11QfazKZI2+br5yTFAHVgMau
+ NC1DWjGe6L8Jw==
+Received: from customer (localhost [127.0.0.1])
+ by submission (posteo.de) with ESMTPSA id 4VPdgC5dCpz6twh;
+ Wed, 24 Apr 2024 14:32:55 +0200 (CEST)
+Message-ID: <088ec61c-39ab-4b58-a02f-8897a3e7ae68@posteo.de>
+Date: Wed, 24 Apr 2024 12:32:55 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240314111628.1508636-1-ppandit@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Subject: Re: [PATCH v2 1/2] net: Provide MemReentrancyGuard * to qemu_new_nic()
+To: Prasad Pandit <pj.pandit@yahoo.in>,
+ Mauro Matteo Cascella <mcascell@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Alexander Bulekov <alxndr@bu.edu>,
+ Dmitry Fleytman <dmitry.fleytman@gmail.com>,
+ Beniamino Galvani <b.galvani@gmail.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Strahinja Jankovic <strahinja.p.jankovic@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
+ Alistair Francis <alistair@alistair23.me>, Stefan Weil <sw@weilnetz.de>,
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
+ Andrew Jeffery <andrew@aj.id.au>, Joel Stanley <joel@jms.id.au>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Helge Deller <deller@gmx.de>, Sriram Yagnaraman
+ <sriram.yagnaraman@est.tech>, Thomas Huth <huth@tuxfamily.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Subbaraya Sundeep <sundeep.lkml@gmail.com>, Jan Kiszka <jan.kiszka@web.de>,
+ Tyrone Ting <kfting@nuvoton.com>, Hao Wu <wuhaotsh@google.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>, Greg Kurz <groug@kaod.org>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Sven Schnelle <svens@stackframe.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony Perard <anthony.perard@citrix.com>, Paul Durrant <paul@xen.org>,
+ Rob Herring <robh@kernel.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-ppc@nongnu.org" <qemu-ppc@nongnu.org>,
+ "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>
+References: <20230601031859.7115-1-akihiko.odaki@daynix.com>
+ <20230601031859.7115-2-akihiko.odaki@daynix.com>
+ <ac66952e-4281-4250-96f4-dc3d5b518d24@linaro.org>
+ <1497808863.2030924.1713955286878@mail.yahoo.com>
+From: Thomas Huth <th.huth@posteo.de>
+Content-Language: en-US
+In-Reply-To: <1497808863.2030924.1713955286878@mail.yahoo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=185.67.36.65; envelope-from=th.huth@posteo.de;
+ helo=mout01.posteo.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,57 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 14.03.2024 um 12:16 hat Prasad Pandit geschrieben:
-> From: Prasad Pandit <pjp@fedoraproject.org>
+On 24/04/2024 12.41, Prasad Pandit wrote:
+> On Wednesday, 24 April, 2024 at 03:36:01 pm IST, Philippe Mathieu-Daudé wrote:
+>> On 1/6/23 05:18, Akihiko Odaki wrote:
+>>> Recently MemReentrancyGuard was added to DeviceState to record that the
+>>> device is engaging in I/O. The network device backend needs to update it
+>>> when delivering a packet to a device.
+>>>   
+>>> In preparation for such a change, add MemReentrancyGuard * as a
+>>> parameter of qemu_new_nic().
+>>
+>> An user on IRC asked if this patch is related/fixing CVE-2021-20255,
+>> any clue?
 > 
-> Libaio defines IO_CMD_FDSYNC command to sync all outstanding
-> asynchronous I/O operations, by flushing out file data to the
-> disk storage.
+> * CVE-2021-20255 bug: infinite recursion is pointing at a different fix patch.
+>    -> https://bugzilla.redhat.com/show_bug.cgi?id=CVE-2021-20255
 > 
-> Enable linux-aio to submit such aio request. This helps to
-> reduce latency induced via pthread_create calls by
-> thread-pool (aio=threads).
+> * And the this patch below has different issue tagged
+>    -> https://lists.nongnu.org/archive/html/qemu-devel/2023-05/msg08312.html
+>    Fixes: CVE-2023-3019
 > 
-> Signed-off-by: Prasad Pandit <pjp@fedoraproject.org>
+> 
+> * They look different, former is an infinite recursion issue and the latter is a use-after-free one.
 
-As we discussed in chat, it would be good to be more detailed about the
-scenario that we're really concerned about here. The commit message
-above sounds like submitting fdsync takes too long, but the real concern
-seems to be about the effect that creating and destroying a thread has
-on a vcpu by adding a TLB flush. Describing the mechanisms, the sequence
-of operations that happen and the problem this causes in more detail
-would make the commit message a lot more useful.
+I assume the eepro reentrancy issue has been fixed with:
 
->  block/file-posix.c      |  7 +++++++
->  block/linux-aio.c       | 21 ++++++++++++++++++++-
->  include/block/raw-aio.h |  1 +
->  3 files changed, 28 insertions(+), 1 deletion(-)
-> 
-> v4: New boolean field to indicate if aio_fdsync is available or not.
->     It is set at file open time and checked before AIO_FLUSH call.
->   - https://lists.nongnu.org/archive/html/qemu-devel/2024-03/msg03701.html
-> 
-> diff --git a/block/file-posix.c b/block/file-posix.c
-> index 35684f7e21..78a8cea03b 100644
-> --- a/block/file-posix.c
-> +++ b/block/file-posix.c
-> @@ -159,6 +159,7 @@ typedef struct BDRVRawState {
->      bool has_discard:1;
->      bool has_write_zeroes:1;
->      bool use_linux_aio:1;
-> +    bool has_laio_fdsync:1;
->      bool use_linux_io_uring:1;
->      int page_cache_inconsistent; /* errno from fdatasync failure */
->      bool has_fallocate;
-> @@ -718,6 +719,7 @@ static int raw_open_common(BlockDriverState *bs, QDict *options,
->          ret = -EINVAL;
->          goto fail;
->      }
-> +    s->has_laio_fdsync = laio_has_fdsync(s->fd);
+  https://gitlab.com/qemu-project/qemu/-/issues/556
+  i.e.:
+  https://gitlab.com/qemu-project/qemu/-/commit/c40ca2301c7603524eaddb5308a3
 
-I think this should be conditional on s->use_linux_aio. No point in
-probing it if we'll never call it anyway.
+  HTH,
+   Thomas
 
-Kevin
 
 
