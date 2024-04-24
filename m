@@ -2,69 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4158B10B5
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967168B10B8
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:10:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzg7Q-0001xb-5x; Wed, 24 Apr 2024 13:09:16 -0400
+	id 1rzg7R-0001yB-Gj; Wed, 24 Apr 2024 13:09:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzg7O-0001xD-Ap
+ id 1rzg7O-0001xR-Sw
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:09:14 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzg7M-0005Lu-LS
+ id 1rzg7N-0005M4-F2
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:09:14 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1e4c4fb6af3so1220785ad.0
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:09:12 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e411e339b8so234425ad.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:09:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713978551; x=1714583351; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=I7t1gFcl5wjkEgXtae5fqCcFMtN5cGYEa/oHN0TDXx8=;
- b=dIrB4V2h2ZyXVNH7GGF7HLheOPgMiVSuNihZpgSaV/zTgDyeY54qMZpk+zO7yOe4k5
- chnKTsSn2OAyvphneuLlbMAiNxl4Y+tVpFU3lxqnBiCWGeRJwyyGx9EiRlevhJeXRn+7
- T50/RTVCeQ1JQL+VIHIHvhYzyFjMx1v2szMwtZ7+rxgPB5w2Obgw/tKRqzrZxt78UzRU
- HAWTLFrDwrYBIoDNzmELMyVDnUq9a1Gs2gpHhghYo9bfnmD30RbZM9YOKsSX0zDS6UQV
- eRGWieLg6Rc8jAkZHhUMPMpe8l9D9RTt3DAi6r/5M1drOUb3YcXSdc6bBlzFwIvbSMT3
- Bp9g==
+ d=linaro.org; s=google; t=1713978552; x=1714583352; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=39YtgjPga6zni7TyfrRqLQG7p9NAFXqRFglkaRLeOY8=;
+ b=riY7IcgvqpyOOaYmLVHR+TEDUfAIXdU5SXlEvDEYFzxkJJJK4Tgs81O3lv4kGgDNRa
+ O0bDTt7GcE5WtobBbwIapEagi1Bo3H9Q8H6DQLqlJbAI7dcweUXvPoQf8JLp4OyUdNWv
+ jIvUolKhSRsel6/fQGf0PjP8ahP/8ZKXmKkCVxTkfbWhfG9KNF57uKd6Apxtc66OP0Ul
+ aiWAmOKFGzNI5dsz3Z73PpMBaUI8ttI6MINBF9t34Y+TlAnH4M4fa4S3vOJkTWJaRqnK
+ 4r6UqlMeXGpuYY7P2rK28InvW6YRuvowkjTZMz2h6ZU2HPaCTRvndSkj3wAxRkYM9ZSM
+ iOqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713978551; x=1714583351;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=I7t1gFcl5wjkEgXtae5fqCcFMtN5cGYEa/oHN0TDXx8=;
- b=neF83km3mTxRHuIn4i4TUgEl1i0GE3N4Y8CgpZrOcEFFDAUkD1pwGb8Gmuf544+XvY
- Vb1HOhvn0HQBQBQj7j3wpJTohtIfXyTgjFIMtpriIBOadjO7/Bvt1bVY1F9L7Rw9KvBl
- cqnijs6fffEgO2lEJOgSMdOG3ZL2MltvSis6KYSdCSkSA5H0KUHd0TxiwjjHdDB2faxR
- VSj7lBVM6Rijo4Rtl6obazR5ItoNYqSb5m1J1mJF+C3dYxFlzDl+PHd0dutU8nXEQZgH
- Wq7jSakUmfklLPylikC2JtxZz0gDbjm5FoyqjOd8Ic8M9EXoWSHe0+ojP3vQ+CjrH9oe
- /DnQ==
-X-Gm-Message-State: AOJu0Yx9S4hiqAnanuIz/10R5Wbt/nbapnWtUouoG//iq7mtQ1bxe66L
- NpA8kramXkRq2fFDH5WMmvPFIl0VjU+q15q6za/8pI6vEGvg2AXHthuEwHlA4HE4pe5lpEBIHnB
- w
-X-Google-Smtp-Source: AGHT+IE0cXxa4Jl02Zr5JVRVv2JHoH8BFXpj/NYh26lYMlu2aEU7VzEYPybLHAZkGVvvYOiTuCkN1w==
-X-Received: by 2002:a17:902:cf05:b0:1e5:5760:a6c1 with SMTP id
- i5-20020a170902cf0500b001e55760a6c1mr384070plg.21.1713978551009; 
- Wed, 24 Apr 2024 10:09:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713978552; x=1714583352;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=39YtgjPga6zni7TyfrRqLQG7p9NAFXqRFglkaRLeOY8=;
+ b=MCwpOOwciGlLAZs3P7kqq+gUrF7HctRPqR6XxBkKzPX3ZQSlhSvm7StnfUK9Rw7zxn
+ mqCLb+5Dyaf2g95GXBaEtc90lcv5iTkThs75mCXDmpHZmv9IIRo6MePKOkHGpjyO6EoM
+ U77vqNbNdVPwHxlHvA91jccAA/yMkmAmZOeliBY6WdGFlYo/lksIfAVcy2g6Bc19gxAO
+ Zxf9NrmlLN18Px5kEqBOSfYJ1RgiBaXulqI98i+gyPkBfoQbVsh1WqjIgqW4XzU2AbJD
+ KG0Q/oCvS5Bx12aIMjeNWwtmNLTXXNpnRuZQj2wExrwEgHSS+AXgV3KhfOfiNGMFXlgb
+ Zfsw==
+X-Gm-Message-State: AOJu0YxwNks/Bi+vUC9+AiDZyqe/t30rEoBN3x5vDin5nDb/vmmMge+z
+ oDpIT8qaFYEJnh/qMSdqd3CzzeLteh5QbwFAWx+cinto5awbLVz0NKxvQ9q+IPhwFVy5U0X+Owi
+ X
+X-Google-Smtp-Source: AGHT+IEi3kaQhKL6ZwhR5d9UW/yKOsN8PNq3Jv+ifr5sUV3Xb+LjKF0Kd1q6M5LpjTtCHg82uZLKiw==
+X-Received: by 2002:a17:902:e944:b0:1e3:dfdc:6972 with SMTP id
+ b4-20020a170902e94400b001e3dfdc6972mr4491229pll.9.1713978552013; 
+ Wed, 24 Apr 2024 10:09:12 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- u8-20020a170902e80800b001e0b5d49fc7sm12215489plg.161.2024.04.24.10.09.10
- for <qemu-devel@nongnu.org>
+ u8-20020a170902e80800b001e0b5d49fc7sm12215489plg.161.2024.04.24.10.09.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 10:09:10 -0700 (PDT)
+ Wed, 24 Apr 2024 10:09:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 0/5] tcg: Misc improvements
-Date: Wed, 24 Apr 2024 10:09:02 -0700
-Message-Id: <20240424170908.759043-1-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
+ qemu-stable@nongnu.org
+Subject: [PATCH] target/arm: Restrict translation disabled alignment check to
+ VMSA
+Date: Wed, 24 Apr 2024 10:09:03 -0700
+Message-Id: <20240424170908.759043-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240424170908.759043-1-richard.henderson@linaro.org>
+References: <20240424170908.759043-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,33 +94,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-One patch to allow two output operands from gvec expansion,
-to be used by target/arm for updating QC.
+For cpus using PMSA, when the MPU is disabled, the default memory
+type is Normal, Non-cachable.
 
-One patch to record the result of the generic breakpoint
-search so target translators do not need to repeat it.
+Fixes: 59754f85ed3 ("target/arm: Do memory type alignment check when translation disabled")
+Reported-by: Clément Chigot <chigot@adacore.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
 
-Three small optimization patches.
+Since v9 will likely be tagged tomorrow without this fixed,
+Cc: qemu-stable@nongnu.org
 
+---
+ target/arm/tcg/hflags.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-r~
-
-
-Richard Henderson (5):
-  tcg: Add write_aofs to GVecGen3i
-  tcg/i386: Simplify immediate 8-bit logical vector shifts
-  tcg/i386: Optimize setcond of TST{EQ,NE} with 0xffffffff
-  tcg/optimize: Optimize setcond with zmask
-  accel/tcg: Introduce CF_BP_PAGE
-
- include/exec/translation-block.h |   1 +
- include/tcg/tcg-op-gvec-common.h |   2 +
- accel/tcg/cpu-exec.c             |   2 +-
- tcg/optimize.c                   | 110 +++++++++++++++++++++++++++++++
- tcg/tcg-op-gvec.c                |  30 ++++++---
- tcg/i386/tcg-target.c.inc        |  78 ++++++++--------------
- 6 files changed, 165 insertions(+), 58 deletions(-)
-
+diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
+index 5da1b0fc1d..66de30b828 100644
+--- a/target/arm/tcg/hflags.c
++++ b/target/arm/tcg/hflags.c
+@@ -38,8 +38,16 @@ static bool aprofile_require_alignment(CPUARMState *env, int el, uint64_t sctlr)
+     }
+ 
+     /*
+-     * If translation is disabled, then the default memory type is
+-     * Device(-nGnRnE) instead of Normal, which requires that alignment
++     * With PMSA, when the MPU is disabled, all memory types in the
++     * default map is Normal.
++     */
++    if (arm_feature(env, ARM_FEATURE_PMSA)) {
++        return false;
++    }
++
++    /*
++     * With VMSA, if translation is disabled, then the default memory type
++     * is Device(-nGnRnE) instead of Normal, which requires that alignment
+      * be enforced.  Since this affects all ram, it is most efficient
+      * to handle this during translation.
+      */
 -- 
 2.34.1
 
