@@ -2,94 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647168B1153
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ADE28B1161
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:43:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzgb4-0001Tw-1t; Wed, 24 Apr 2024 13:39:54 -0400
+	id 1rzgeb-0003NX-7W; Wed, 24 Apr 2024 13:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzgap-0001QD-Go
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:39:40 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzgal-0003xI-J2
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:39:38 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-6f28bb6d747so159012b3a.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:39:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713980373; x=1714585173; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cR2up4bi4Kb1J42a3eTuZ1XQ06fTcq0vPdkBZmwmbEI=;
- b=OC58RwS44Wm+4Wj09YSgtQ+byGStNZZg4KyvddShBLtKGWPpuF+HJYlmc7V96ghYF+
- ErbGBpaGCBSYhUbEifWFsqPzNBMIEXIZhQ4Bq59HNaw02bKNAXcih1+EBjTfL9+H1Atu
- WRuEZhWlEeyLZheYz4Ws1Ab34+ZVUhrPa0unMOGqnDW0KhXW8/qP1HYuuXPtuwcYxZg7
- vjE3sD7u7MwFQNAN7nXinAowBGnT7HLHjx95Dvu3iO/0qWLKKfMto0ELJTAjFa6uwzkz
- GvwwbnjQy9hVqYnV62ER9YRi0YveVbFvxvN8K9nF9jAsDoBDdX8YNGYHCiruRwvhDQDA
- MZTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713980373; x=1714585173;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cR2up4bi4Kb1J42a3eTuZ1XQ06fTcq0vPdkBZmwmbEI=;
- b=KC7OUrdIweV8T4O8U67mDe6Q8G8hEPvKg//NOq/9GV6QqW0LlcU2S+EfudzH8vI/ym
- 37comP+UlGYVAoMNwofKGzRI+2gxPKFEgqD6JuIQU4AfQBNyVBw8tCyf9AV8Y+a/jGtH
- j7npQca9eJPpYXXgwsqEaObabDF+c8gBKHOLo5urSJM353XnP8tD/4MGsML+BrlyOAkh
- 6EnUeUCD0gEQnFlBKvYYAzSv1oSo7Orf1ZK/JAW7eauThi2TwXqmQ+vKbVx1IwW3VbwL
- Qm08/Pec/9QhLeeZttfL8x94lo22/fOhltxaZOEL8tNZk1j9BYtc2eUczA26VFUqQ7YF
- VN+A==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWuhCa9ZSQyhprXVivFgSeIfpWo3xzqyGa8QsLITZaJv/+BkZtg3z3oUhplcMEH+uZNQCufbP//bJHqTKbftfIRK0KG7xg=
-X-Gm-Message-State: AOJu0YyVPBrZLVySgI5PZ9fTQ2cA7Rhqaka9JFV5t2WGjw3OVzQ/39hr
- VKimhzLAcReqGUbraEqAbDR44Yy/4BGzdLfQ0iukpRShC+z4OOgb
-X-Google-Smtp-Source: AGHT+IHVNqcDsAXO2OPNUFuHejmO1SIZtipjUnEFl/Wm+N4DVytplmJd1ZsDajfzBYu+2RjMDAXnDQ==
-X-Received: by 2002:a05:6a00:893:b0:6ed:caf6:6e54 with SMTP id
- q19-20020a056a00089300b006edcaf66e54mr3820780pfj.28.1713980373348; 
- Wed, 24 Apr 2024 10:39:33 -0700 (PDT)
-Received: from debian ([2601:641:300:14de:b318:9476:706a:e82a])
- by smtp.gmail.com with ESMTPSA id
- v22-20020aa78516000000b006f03a06314esm11721432pfn.195.2024.04.24.10.39.29
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 10:39:33 -0700 (PDT)
-From: fan <nifan.cxl@gmail.com>
-X-Google-Original-From: fan <fan@debian>
-Date: Wed, 24 Apr 2024 10:39:27 -0700
-To: Markus Armbruster <armbru@redhat.com>
-Cc: nifan.cxl@gmail.com, qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
- linux-cxl@vger.kernel.org, gregory.price@memverge.com,
- ira.weiny@intel.com, dan.j.williams@intel.com,
- a.manzanares@samsung.com, dave@stgolabs.net,
- nmtadam.samsung@gmail.com, jim.harris@samsung.com,
- Jorgen.Hansen@wdc.com, wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v5 09/13] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <ZilDz3X5hmda5oNr@debian>
-References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
- <20240304194331.1586191-10-nifan.cxl@gmail.com>
- <87a5livrdr.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rzgeV-0003MS-Hi
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:43:27 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1rzgeP-0004iK-5Z
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:43:25 -0400
+Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:c10a:0:640:882f:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTPS id 50C10609CB;
+ Wed, 24 Apr 2024 20:43:15 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:8811::1:29])
+ by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id kgPOp63Iaa60-2Cef4kAv; Wed, 24 Apr 2024 20:43:14 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1713980594;
+ bh=CwbyAIff+N5GEmqRyCgcenHqcP96VzePJztpyU8IeDY=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=W3G5gnmmKfgG/TjAq7UdiCYEK0K50ohmbp79/PylzeDOe99jBYWjjFq2X2aqGhc0i
+ NxeUYnUZ+wiTUUg4reXXoNVpRstBD/BC10mzberUmXAfyTg3x8CDp9J6sAj8ERpJXT
+ tXEsjCDtfTXlQ42zHji+4wcoX2rLLZCHbnN/FVRo=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: peterx@redhat.com,
+	farosas@suse.de
+Cc: eblake@redhat.com, armbru@redhat.com, pbonzini@redhat.com,
+ qemu-devel@nongnu.org, vsementsov@yandex-team.ru, yc-core@yandex-team.ru
+Subject: [PATCH v2 0/2] migration: do not exit on incoming failure
+Date: Wed, 24 Apr 2024 20:42:43 +0300
+Message-Id: <20240424174245.1237942-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a5livrdr.fsf@pond.sub.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x429.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -101,244 +71,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 24, 2024 at 03:09:52PM +0200, Markus Armbruster wrote:
-> nifan.cxl@gmail.com writes:
-> 
-> > From: Fan Ni <fan.ni@samsung.com>
-> >
-> > Since fabric manager emulation is not supported yet, the change implements
-> > the functions to add/release dynamic capacity extents as QMP interfaces.
-> 
-> Will fabric manager emulation obsolete these commands?
+Hi all!
 
-If in the future, fabric manager emulation supports commands for dynamic capacity
-extent add/release, it is possible we do not need the commands.
-But it seems not to happen soon, we need the qmp commands for the
-end-to-end test with kernel DCD support.
+The series brings an option to not immediately exit on incoming
+migration failure, giving a possibility to orchestrator to get the error
+through QAPI and shutdown QEMU by "quit".
 
-> 
-> > Note: we skips any FM issued extent release request if the exact extent
-> > does not exist in the extent list of the device. We will loose the
-> > restriction later once we have partial release support in the kernel.
-> >
-> > 1. Add dynamic capacity extents:
-> >
-> > For example, the command to add two continuous extents (each 128MiB long)
-> > to region 0 (starting at DPA offset 0) looks like below:
-> >
-> > { "execute": "qmp_capabilities" }
-> >
-> > { "execute": "cxl-add-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "region-id": 0,
-> >       "extents": [
-> >       {
-> >           "dpa": 0,
-> >           "len": 134217728
-> >       },
-> >       {
-> >           "dpa": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> >
-> > 2. Release dynamic capacity extents:
-> >
-> > For example, the command to release an extent of size 128MiB from region 0
-> > (DPA offset 128MiB) look like below:
-> >
-> > { "execute": "cxl-release-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "region-id": 0,
-> >       "extents": [
-> >       {
-> >           "dpa": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> >
-> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
-> 
-> [...]
-> 
-> > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> > index 8cc4c72fa9..2645004666 100644
-> > --- a/qapi/cxl.json
-> > +++ b/qapi/cxl.json
-> > @@ -19,13 +19,16 @@
-> >  #
-> >  # @fatal: Fatal Event Log
-> >  #
-> > +# @dyncap: Dynamic Capacity Event Log
-> > +#
-> >  # Since: 8.1
-> >  ##
-> >  { 'enum': 'CxlEventLog',
-> >    'data': ['informational',
-> >             'warning',
-> >             'failure',
-> > -           'fatal']
-> > +           'fatal',
-> > +           'dyncap']
-> 
-> We tend to avoid abbreviations in QMP identifiers: dynamic-capacity.
+Vladimir Sementsov-Ogievskiy (2):
+  migration: rework migrate_set_error() to migrate_report_err()
+  qapi: introduce exit-on-error paramter for migrate-incoming
 
-FYI. This has been removed to avoid the potential side effect in the
-latest post.
-v7: https://lore.kernel.org/linux-cxl/ZiaFYUB6FC9NR7W4@memverge.com/T/#t
+ migration/migration-hmp-cmds.c |  2 +-
+ migration/migration.c          | 79 +++++++++++++++-------------------
+ migration/migration.h          |  5 ++-
+ migration/multifd.c            | 18 +++-----
+ migration/postcopy-ram.c       |  3 +-
+ migration/savevm.c             | 16 +++----
+ qapi/migration.json            |  7 ++-
+ system/vl.c                    |  7 +--
+ 8 files changed, 60 insertions(+), 77 deletions(-)
 
-> 
-> >   }
-> >  
-> >  ##
-> > @@ -361,3 +364,59 @@
-> >  ##
-> >  {'command': 'cxl-inject-correctable-error',
-> >   'data': {'path': 'str', 'type': 'CxlCorErrorType'}}
-> > +
-> > +##
-> > +# @CXLDCExtentRecord:
-> 
-> Such traffic jams of capital letters are hard to read.
-> 
-> What does DC mean?
-Dynamic capacity
-> 
-> > +#
-> > +# Record of a single extent to add/release
-> > +#
-> > +# @offset: offset to the start of the region where the extent to be operated
-> 
-> Blank line here, please
-> 
-> > +# @len: length of the extent
-> > +#
-> > +# Since: 9.0
-> > +##
-> > +{ 'struct': 'CXLDCExtentRecord',
-> > +  'data': {
-> > +      'offset':'uint64',
-> > +      'len': 'uint64'
-> > +  }
-> > +}
-> > +
-> > +##
-> > +# @cxl-add-dynamic-capacity:
-> > +#
-> > +# Command to start add dynamic capacity extents flow. The device will
-> 
-> I think we're missing an article here.  Is it "a flow" or "the flow"?
-> 
-> > +# have to acknowledged the acceptance of the extents before they are usable.
-> 
-> to acknowledge
+-- 
+2.34.1
 
-It should be "to be acknowledged". 
-
-> 
-> docs/devel/qapi-code-gen.rst:
-> 
->     For legibility, wrap text paragraphs so every line is at most 70
->     characters long.
-> 
->     Separate sentences with two spaces.
-
-Thanks. Will fix.
-> 
-> > +#
-> > +# @path: CXL DCD canonical QOM path
-> 
-> What is a CXL DCD?  Is it a device?
-Dynamic capacity device.
-Yes. It is cxl memory device that can change capacity dynamically.
-
-> 
-> I'd prefer @qom-path, unless you can make a consistency argument for
-> @path.
-> 
-> > +# @region-id: id of the region where the extent to add
-> 
-> What's a region, and how do they get their IDs?
-
-Each DCD device can support up to 8 regions (0-7).  
-
-> 
-> > +# @extents: Extents to add
-> 
-> Blank lines between argument descriptions, please.
-> 
-> > +#
-> > +# Since : 9.0
-> 
-> 9.1
-
-Already fixed in the latest post.
-
-> 
-> > +##
-> > +{ 'command': 'cxl-add-dynamic-capacity',
-> > +  'data': { 'path': 'str',
-> > +            'region-id': 'uint8',
-> > +            'extents': [ 'CXLDCExtentRecord' ]
-> > +           }
-> > +}
-> > +
-> > +##
-> > +# @cxl-release-dynamic-capacity:
-> > +#
-> > +# Command to start release dynamic capacity extents flow. The host will
-> 
-> Article again.
-> 
-> The host?  In cxl-add-dynamic-capacity's doc comment, it's the device.
-
-For add command, the host will send a mailbox command to response to the add
-request to the device to indicate whether it accepts the add capacity offer
-or not.
-
-For release command, the host send a mailbox command (not always a response
-since the host can proactively release capacity if it does not need it
-any more) to device to ask device release the capacity.
-
-But yes, the text needs to be polished.
-
-> 
-> > +# need to respond to indicate that it has released the capacity before it
-> > +# is made unavailable for read and write and can be re-added.
-> 
-> Is "and can be re-added" relevant here?
-
-Not really. Will fix.
-
-> 
-> > +#
-> > +# @path: CXL DCD canonical QOM path
-> > +# @region-id: id of the region where the extent to release
-> > +# @extents: Extents to release
-> > +#
-> > +# Since : 9.0
-> 
-> 9.1
-
-Already fixed in the latest post.
-
-Thanks again for the review. Will take care of the comments in the next
-version.
-
-Fan
-> 
-> > +##
-> > +{ 'command': 'cxl-release-dynamic-capacity',
-> > +  'data': { 'path': 'str',
-> > +            'region-id': 'uint8',
-> > +            'extents': [ 'CXLDCExtentRecord' ]
-> > +           }
-> > +}
-> 
 
