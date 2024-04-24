@@ -2,61 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F0798B0418
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 663DC8B042E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:21:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXpE-0001ID-7X; Wed, 24 Apr 2024 04:17:56 -0400
+	id 1rzXra-0001c3-Ha; Wed, 24 Apr 2024 04:20:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXog-0000PC-Pw
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:29 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rzXrV-0001Nd-4O
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:20:17 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoc-0006NR-Gu
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:22 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1rzXrS-0007Br-Ry
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:20:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713946637;
+ s=mimecast20190719; t=1713946813;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QcafE001xOcjxMIocmQop4ggl5SkBI7dDGkHJDJs+Ho=;
- b=Nf+wj000hqBIkynnrqjmVO3p2cC2HR1jqhV4i1lIkT2RUApam7sAX9qSiOSLtQnwwtHsOu
- IA+MZbnECtT+2cGu+tJZPSW/D74c5ybz4NXWrRlFPSQjAg+jvvv67B+reBbm0ppl9TmC0K
- KUSuqgUsA1TQw/Pr7y2CbfVCp62JbbY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=etyFpTU1imkR9862ICMwiC+afynsXV4iCP9PfkaQqD1buwXHQhm0BrH0kCUOQ27NTjSEmX
+ aoIRqRCVQq2HXyDUSaxbjJ+ZPjNm07WxpiYm4xlTXqJ/pCENs+23lflAQUKdk+0qC6A+dS
+ 2TrZgiNOnLyTGxfDuSSvrmiln+oqyco=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-8yL8lh6AM4O4FmnGtMUYSg-1; Wed, 24 Apr 2024 04:17:14 -0400
-X-MC-Unique: 8yL8lh6AM4O4FmnGtMUYSg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D65A80253A;
- Wed, 24 Apr 2024 08:17:14 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3D391C15771;
- Wed, 24 Apr 2024 08:17:14 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 179D721F980D; Wed, 24 Apr 2024 10:17:11 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org,
-	John Snow <jsnow@redhat.com>
-Subject: [PULL 25/25] qapi: Dumb down QAPISchema.lookup_entity()
-Date: Wed, 24 Apr 2024 10:17:10 +0200
-Message-ID: <20240424081710.2907748-26-armbru@redhat.com>
-In-Reply-To: <20240424081710.2907748-1-armbru@redhat.com>
-References: <20240424081710.2907748-1-armbru@redhat.com>
+ us-mta-220-a2K0GIjgNkW-FCXnsu6E0A-1; Wed, 24 Apr 2024 04:20:12 -0400
+X-MC-Unique: a2K0GIjgNkW-FCXnsu6E0A-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-a51c76700adso59504766b.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 01:20:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1713946811; x=1714551611;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=O8wwvIUnSpMXhXwvBbfzLiFFunKNFyHbGB97Gs6k6kOMtmm8C+PVArVUkP0wnXfSq3
+ DmukIKsQEouMrhHI3YXfWgqNnj9CM4cQQg5ft0W/RozBmvJKJ4l7LLgKq6PmqTm4Ck/G
+ hHfjeX0AhOnM/H+LHmt57Qny9FZc0V2b+Z1Fri/X0gBk4PC+gGr4VDxZSTXfsAicXsa0
+ fnYZz7Ewa21BsKs0wTjeovVPXxHAGnFzh70kJOtylOcrSQDqzQ7nEcGi3GZnAI079fsf
+ meVHV+xHxRloSNuQwrQ/C8JigarYRe/7Nw04E8WN5z+vfRgC0hEgyEBSlPu3Tmx6teIB
+ vItw==
+X-Gm-Message-State: AOJu0Yz+2bZsRS3NLiYFMxZ2km1uuudttg4GExWdiT5CrHlm+xjPmqG1
+ X/GHi3351HKFvHaWD335Ig+X/g8KiB48xQS3nBCp+MMcYNUCveLMbPlmiZj1mqy2rTslZ2jsqly
+ dXq2YcCQIaj6H4Q7z0hKlVp8kHolMzAGC9WvgL2aWBQTlcHOMmu/b
+X-Received: by 2002:a17:907:7759:b0:a52:119:3446 with SMTP id
+ kx25-20020a170907775900b00a5201193446mr4713851ejc.34.1713946811083; 
+ Wed, 24 Apr 2024 01:20:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG23VqKGu9EFgzap8ibhE8CwgjUmk2FAvOSzT/EQdAywkGkSYEMydLbwmHCTi5H47mCeoBW1w==
+X-Received: by 2002:a17:907:7759:b0:a52:119:3446 with SMTP id
+ kx25-20020a170907775900b00a5201193446mr4713836ejc.34.1713946810767; 
+ Wed, 24 Apr 2024 01:20:10 -0700 (PDT)
+Received: from avogadro.local ([151.81.119.75])
+ by smtp.gmail.com with ESMTPSA id
+ h20-20020a170906591400b00a51d3785c7bsm8001597ejq.196.2024.04.24.01.20.09
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Apr 2024 01:20:10 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Lei Wang <lei4.wang@intel.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, manish.mishra@nutanix.com,
+ xiaoyao.li@intel.com, chenyi.qiang@intel.com, tao1.su@linux.intel.com
+Subject: Re: [PATCH] target/i386: Introduce SapphireRapids-v3 to add missing
+ features
+Date: Wed, 24 Apr 2024 10:20:07 +0200
+Message-ID: <20240424082007.76659-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240424072912.43188-1-lei4.wang@intel.com>
+References: 
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -80,56 +100,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-QAPISchema.lookup_entity() takes an optional type argument, a subtype
-of QAPISchemaDefinition, and returns that type or None.  Callers can
-use this to save themselves an isinstance() test.
+Queued, thanks.
 
-The only remaining user of this convenience feature is .lookup_type().
-But we don't actually save anything anymore there: we still need the
-isinstance() to help mypy over the hump.
-
-Drop the .lookup_entity() argument, and adjust .lookup_type().
-
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240315152301.3621858-26-armbru@redhat.com>
-Reviewed-by: John Snow <jsnow@redhat.com>
-[Commit message typo fixed]
----
- scripts/qapi/schema.py | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
-
-diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index a6180f93c6..5924947fc3 100644
---- a/scripts/qapi/schema.py
-+++ b/scripts/qapi/schema.py
-@@ -1157,20 +1157,14 @@ def _def_definition(self, defn: QAPISchemaDefinition) -> None:
-                 defn.info, "%s is already defined" % other_defn.describe())
-         self._entity_dict[defn.name] = defn
- 
--    def lookup_entity(
--        self,
--        name: str,
--        typ: Optional[type] = None,
--    ) -> Optional[QAPISchemaDefinition]:
--        ent = self._entity_dict.get(name)
--        if typ and not isinstance(ent, typ):
--            return None
--        return ent
-+    def lookup_entity(self,name: str) -> Optional[QAPISchemaEntity]:
-+        return self._entity_dict.get(name)
- 
-     def lookup_type(self, name: str) -> Optional[QAPISchemaType]:
--        typ = self.lookup_entity(name, QAPISchemaType)
--        assert typ is None or isinstance(typ, QAPISchemaType)
--        return typ
-+        typ = self.lookup_entity(name)
-+        if isinstance(typ, QAPISchemaType):
-+            return typ
-+        return None
- 
-     def resolve_type(
-         self,
--- 
-2.44.0
+Paolo
 
 
