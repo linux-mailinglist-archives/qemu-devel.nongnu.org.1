@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBFA8B03D9
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAA98B03D7
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:04:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXbr-0006P3-UK; Wed, 24 Apr 2024 04:04:08 -0400
+	id 1rzXcG-000709-5F; Wed, 24 Apr 2024 04:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbY-0005te-JV
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbZ-0005w3-Tb
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:55 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbW-0003oV-N1
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbW-0003oj-Tj
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945824;
+ s=mimecast20190719; t=1713945825;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C0vcnHD36q3vBRtSJzWoo1mOJokKaLTmecVzyyv/5dE=;
- b=BaHFvdr0gQLd7ZW1wXT6hNtdAO+4nYj9UbUAPI3CcCXtCbUbL4iIfT2/oQ4rYdRN3FKYDC
- 4824vzhRcEK/IJpu4jkEraDdYPnLOHY9IzbFZiiisvOXqpc8wdd9IReLeYTEB7uR2PmSZb
- ltPUOAXcDmBMRY3xqSq5yMeP1gsayYQ=
+ bh=yY7Lyt8jbClugq7sDetbkp4p8g2FdKdPefPysU+ox9U=;
+ b=KG7Kau5qByNbMZurxfCxEkJLfkxbYBGgoeTNduzc2fwyxZKMxJIxLgJuX7AJ+kYAFCbshi
+ bv6C8YbZphDjbJXLmytISv4mm+vhUO5EWoN/dIS+w7+5upJvWOkxGuHrKeBUgmfNNRpmy1
+ ZhwqgvbdtnyEBeraTdtTrnykuk480R0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-201-POa6OTM0OZyIeAXV6jgEVQ-1; Wed, 24 Apr 2024 04:03:39 -0400
-X-MC-Unique: POa6OTM0OZyIeAXV6jgEVQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-186-f4WgmtguOB2o3NQYoFgtQQ-1; Wed, 24 Apr 2024 04:03:39 -0400
+X-MC-Unique: f4WgmtguOB2o3NQYoFgtQQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4610F812C55;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 464E5104B502;
  Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2599F1C060D0;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 25A3940C6CC0;
  Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 512FD21E65E1; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
+ id 5426021EE971; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Juan Quintela <quintela@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 09/10] qapi: Inline and remove QERR_MIGRATION_ACTIVE definition
-Date: Wed, 24 Apr 2024 10:03:36 +0200
-Message-ID: <20240424080337.2782594-10-armbru@redhat.com>
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 10/10] qapi: Inline and remove QERR_PROPERTY_VALUE_BAD
+ definition
+Date: Wed, 24 Apr 2024 10:03:37 +0200
+Message-ID: <20240424080337.2782594-11-armbru@redhat.com>
 In-Reply-To: <20240424080337.2782594-1-armbru@redhat.com>
 References: <20240424080337.2782594-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -91,85 +92,53 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, manually
-removing the definition in include/qapi/qmp/qerror.h.
+Manual change. Remove the definition in
+include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240312141343.3168265-10-armbru@redhat.com>
+Message-ID: <20240312141343.3168265-11-armbru@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
-[Straightforward conflict with commit aeaafb1e59f (migration: export
-migration_is_running) resolved]
 ---
  include/qapi/qmp/qerror.h | 3 ---
- migration/migration.c     | 2 +-
- migration/options.c       | 4 ++--
- migration/savevm.c        | 2 +-
- 4 files changed, 4 insertions(+), 7 deletions(-)
+ hw/core/qdev-properties.c | 3 +--
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index b723830eff..385a4876d6 100644
+index 385a4876d6..00b18e9082 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
-@@ -23,9 +23,6 @@
- #define QERR_IO_ERROR \
-     "An IO error has occurred"
- 
--#define QERR_MIGRATION_ACTIVE \
--    "There's a migration process in progress"
--
+@@ -26,9 +26,6 @@
  #define QERR_MISSING_PARAMETER \
      "Parameter '%s' is missing"
  
-diff --git a/migration/migration.c b/migration/migration.c
-index 86bf76e925..32cd89e13d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -1956,7 +1956,7 @@ static bool migrate_prepare(MigrationState *s, bool blk, bool blk_inc,
-     }
+-#define QERR_PROPERTY_VALUE_BAD \
+-    "Property '%s.%s' doesn't take value '%s'"
+-
+ #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
+     "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
  
-     if (migration_is_running()) {
--        error_setg(errp, QERR_MIGRATION_ACTIVE);
-+        error_setg(errp, "There's a migration process in progress");
-         return false;
-     }
- 
-diff --git a/migration/options.c b/migration/options.c
-index d7a773aea8..239f5ecfb4 100644
---- a/migration/options.c
-+++ b/migration/options.c
-@@ -685,7 +685,7 @@ bool migrate_cap_set(int cap, bool value, Error **errp)
-     bool new_caps[MIGRATION_CAPABILITY__MAX];
- 
-     if (migration_is_running()) {
--        error_setg(errp, QERR_MIGRATION_ACTIVE);
-+        error_setg(errp, "There's a migration process in progress");
-         return false;
-     }
- 
-@@ -729,7 +729,7 @@ void qmp_migrate_set_capabilities(MigrationCapabilityStatusList *params,
-     bool new_caps[MIGRATION_CAPABILITY__MAX];
- 
-     if (migration_is_running() || migration_in_colo_state()) {
--        error_setg(errp, QERR_MIGRATION_ACTIVE);
-+        error_setg(errp, "There's a migration process in progress");
-         return;
-     }
- 
-diff --git a/migration/savevm.c b/migration/savevm.c
-index e7c1215671..3fae9f155f 100644
---- a/migration/savevm.c
-+++ b/migration/savevm.c
-@@ -1707,7 +1707,7 @@ static int qemu_savevm_state(QEMUFile *f, Error **errp)
-     MigrationStatus status;
- 
-     if (migration_is_running()) {
--        error_setg(errp, QERR_MIGRATION_ACTIVE);
-+        error_setg(errp, "There's a migration process in progress");
-         return -EINVAL;
-     }
- 
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 7d6fa726fd..86a583574d 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -2,7 +2,6 @@
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-types-misc.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qemu/ctype.h"
+ #include "qemu/error-report.h"
+@@ -792,7 +791,7 @@ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
+         break;
+     default:
+     case -EINVAL:
+-        error_setg(errp, QERR_PROPERTY_VALUE_BAD,
++        error_setg(errp, "Property '%s.%s' doesn't take value '%s'",
+                    object_get_typename(obj), name, value);
+         break;
+     case -ENOENT:
 -- 
 2.44.0
 
