@@ -2,70 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 262938B16CE
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C20F8B16D1
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:05:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzldK-0003fg-MM; Wed, 24 Apr 2024 19:02:34 -0400
+	id 1rzldK-0003fZ-GO; Wed, 24 Apr 2024 19:02:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzldF-0003fE-BK
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:29 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
+ id 1rzldG-0003fP-1I
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:30 -0400
+Received: from mail-pf1-x42e.google.com ([2607:f8b0:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzldD-0002c7-PJ
+ id 1rzldE-0002cC-H3
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:02:29 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-6ee13f19e7eso425307b3a.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:02:27 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id
+ d2e1a72fcca58-6f07de6ab93so415771b3a.2
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713999746; x=1714604546; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:from:to:cc:subject:date:message-id:reply-to;
- bh=bxzymTeq9MJH9X+xVPTgvnNpZIp6J8+/r/qnwzsJCNo=;
- b=b/k4cIp0kdElxxxn9Pxl172SZz0woDOZDkLmn8KVcZ/x8NJpoCojW4rJ+DKF/RhfHT
- bmSSVF+eXuS7EAENLaCGhucyKte+HUW+Sv689XCfr+1aoSaGqHZQLy5dyWtakaJBaXCw
- fmBQlE2EznZYflzv3i0in8SdRgUyrxgKub1b47fB89fxKJE76SsJY9PiwNAE6ka4zOl8
- yRjH4qFPsR1uJtZlAWCy7KhvS3RMUM6n8KiVdFq58+57KCPTXxCOspHwHzq1e0psjmCJ
- AnmnRKJYO3UevBufwx01tCTT9Uo4ShDC+OdjR3/8eHrqQp0nX7EAl7Ia3XCjH2oLEkXw
- DWig==
+ d=linaro.org; s=google; t=1713999747; x=1714604547; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AXNxunD293g232TU+51MeWlmAuFekT13Nuf8XRAYogk=;
+ b=KpXBbAEbeGBO/K7/bvHe/unYFTFwkKBNs1cx+FBnYyxyJbUKZdrWBxnErqIVGrgs6m
+ AHTQEz+6HjM9Kqe2ElmVZJtOzEqYwV2ug+kz2jQ2JtqJVx26NGVjxbVaKbLiyAyF4bAs
+ o6wfwfPYf0YyXi5a52ZqYdM4qxxxc+7J6qa9quzSJdDFIodqRCanGi4dlmxTD2rwgkoB
+ zBxF4Hc+HP9Y1BCLANOOu0/2uThGfBXhsNzyeK3BtmI44GRIaWhXfaObD9LBc4wIo4zf
+ JfSZuCAQtecdHRXA2GlMANOchRH2Isul1JpuvHIHLJbrqaHRHgRuqP6rosEKowLn4Odh
+ bB0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713999746; x=1714604546;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bxzymTeq9MJH9X+xVPTgvnNpZIp6J8+/r/qnwzsJCNo=;
- b=G+7Ub1meNXuYb9Lf+xvJ/doKXpDBmyqhVMlmYtHGwVFk99jd6+uedpT4fqvx/UtN0X
- 8K6V858vmB8VvVR1FMOcsp0RZd0Yf6j0QINFey762cYC9BkfANdlAaoU0OSGhoVkOOzH
- 3VKWeACzyFT8Kw71L7WAFItKNrvIVSAFeT4HQzIPVahLN0yIKWkpf9+YRidpT7wAigGM
- 9mkgoJ/aCOdFdjxGm9xJ2YA+BM3W0dEe0g+EsXLo9S3MQvvy45WvTgz4NZZipQnzbcgV
- nHqvGhBmQHQz04rZotD3XjR3tgLywK3g3NSLa7gdFyosKwDZEh6SZJxCp929WfheLKtO
- vtgQ==
-X-Gm-Message-State: AOJu0YwvJdHuw3AscFBIwcA0j3ULNyEMLoW0EzBdIcAM0HWmUWSnACqN
- JJYcjysa6Zhnn1KA62dGMrnu6FojZugk6UETEKZKUh5Pz9EVPbwUdBuWztBDPqK4eEDpeAeUDNd
- P
-X-Google-Smtp-Source: AGHT+IEMWq/8bumPjZWakAjmvSAdV5CV0ALTLmhX8ch//NtId5Smi5zqrBjpQZa0JHN2ZrOvcuaxEg==
-X-Received: by 2002:a05:6a00:2d96:b0:6ec:f5cf:2bb1 with SMTP id
- fb22-20020a056a002d9600b006ecf5cf2bb1mr4336483pfb.6.1713999746161; 
- Wed, 24 Apr 2024 16:02:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1713999747; x=1714604547;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AXNxunD293g232TU+51MeWlmAuFekT13Nuf8XRAYogk=;
+ b=Sf37pVZyhoH8UvVL8/Ml5V1BtPXCJl0Rhisem/KPO4r5KnGj8div++M+Ibkh+5BCkP
+ svubuf0gEOBgQNwB9ZyvRQTvhrMwttY1/qA1QW34L8wtU1Ac9N168zOW9nq1q6z7aMRz
+ WBE+ayjZleaihTs92621+P2EtAW0+B5B9yQt0EEkCU5/6uiMembfD4Jbak7CjCEAv5DO
+ JhPOt3rwng3/GC+tBrRu8hEV54SxmRS3ltiXorgPrDgQDiEvtF2LdF6btnlETeyaPEH9
+ XUoGz9cdEorWjFW7B3w7PJnsQUl66Jwkf8WCF1TO5MrMEr29dBOlwqEKLpYvstzCkSyn
+ szXg==
+X-Gm-Message-State: AOJu0YxPHKZUxmC5c4V6t3RraOIM5gWCqzEwwdQ6id/4v8ZCrRgLGmaT
+ k2g4YgsFEmGw51feztCWmHB6Z99yMiNVHSWNdSq6sYQtgLo/2U/caZbzsAw4enBKB5sCzFUP6dn
+ e
+X-Google-Smtp-Source: AGHT+IFcAqCUh9kwu29eaO6ltidkfeoPNm5QQdFhcxIN7hb6Dd14y4fNsRWRf0jJj5F6TAHikhG2CA==
+X-Received: by 2002:a05:6a00:2388:b0:6ea:7468:1f31 with SMTP id
+ f8-20020a056a00238800b006ea74681f31mr4623725pfc.30.1713999747188; 
+ Wed, 24 Apr 2024 16:02:27 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- h5-20020a056a00000500b006ed4aa9d5c0sm11981405pfk.188.2024.04.24.16.02.25
- for <qemu-devel@nongnu.org>
+ h5-20020a056a00000500b006ed4aa9d5c0sm11981405pfk.188.2024.04.24.16.02.26
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 16:02:25 -0700 (PDT)
+ Wed, 24 Apr 2024 16:02:26 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v3 00/20] Rewrite plugin code generation
-Date: Wed, 24 Apr 2024 16:02:04 -0700
-Message-Id: <20240424230224.941028-1-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v3 01/20] tcg: Make tcg/helper-info.h self-contained
+Date: Wed, 24 Apr 2024 16:02:05 -0700
+Message-Id: <20240424230224.941028-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240424230224.941028-1-richard.henderson@linaro.org>
+References: <20240424230224.941028-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -88,57 +92,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Patches 6 & 7 still lack review.
-Changes for v3:
-  - Rebase.
+Move MAX_CALL_IARGS from tcg.h and include for
+the define of TCG_TARGET_REG_BITS.
 
-r~
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ include/tcg/helper-info.h | 3 +++
+ include/tcg/tcg.h         | 2 --
+ tcg/tci.c                 | 1 +
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-
-Richard Henderson (20):
-  tcg: Make tcg/helper-info.h self-contained
-  tcg: Pass function pointer to tcg_gen_call*
-  plugins: Zero new qemu_plugin_dyn_cb entries
-  plugins: Move function pointer in qemu_plugin_dyn_cb
-  plugins: Create TCGHelperInfo for all out-of-line callbacks
-  plugins: Use emit_before_op for PLUGIN_GEN_AFTER_INSN
-  plugins: Use emit_before_op for PLUGIN_GEN_FROM_TB
-  plugins: Add PLUGIN_GEN_AFTER_TB
-  plugins: Use emit_before_op for PLUGIN_GEN_FROM_INSN
-  plugins: Use emit_before_op for PLUGIN_GEN_FROM_MEM
-  plugins: Remove plugin helpers
-  tcg: Remove TCG_CALL_PLUGIN
-  tcg: Remove INDEX_op_plugin_cb_{start,end}
-  plugins: Simplify callback queues
-  plugins: Introduce PLUGIN_CB_MEM_REGULAR
-  plugins: Replace pr_ops with a proper debug dump flag
-  plugins: Split out common cb expanders
-  plugins: Merge qemu_plugin_tb_insn_get to plugin-gen.c
-  plugins: Inline plugin_gen_empty_callback
-  plugins: Update the documentation block for plugin-gen.c
-
- accel/tcg/plugin-helpers.h         |    5 -
- include/exec/helper-gen-common.h   |    4 -
- include/exec/helper-proto-common.h |    4 -
- include/exec/plugin-gen.h          |    4 -
- include/qemu/log.h                 |    1 +
- include/qemu/plugin.h              |   67 +-
- include/tcg/helper-info.h          |    3 +
- include/tcg/tcg-op-common.h        |    4 +-
- include/tcg/tcg-opc.h              |    4 +-
- include/tcg/tcg.h                  |   26 +-
- include/exec/helper-gen.h.inc      |   24 +-
- accel/tcg/plugin-gen.c             | 1007 +++++++---------------------
- plugins/api.c                      |   26 +-
- plugins/core.c                     |   61 +-
- tcg/tcg-op-ldst.c                  |    6 +-
- tcg/tcg-op.c                       |    8 +-
- tcg/tcg.c                          |   78 ++-
- tcg/tci.c                          |    1 +
- util/log.c                         |    4 +
- 19 files changed, 399 insertions(+), 938 deletions(-)
- delete mode 100644 accel/tcg/plugin-helpers.h
-
+diff --git a/include/tcg/helper-info.h b/include/tcg/helper-info.h
+index 7c27d6164a..909fe73afa 100644
+--- a/include/tcg/helper-info.h
++++ b/include/tcg/helper-info.h
+@@ -12,6 +12,9 @@
+ #ifdef CONFIG_TCG_INTERPRETER
+ #include <ffi.h>
+ #endif
++#include "tcg-target-reg-bits.h"
++
++#define MAX_CALL_IARGS  7
+ 
+ /*
+  * Describe the calling convention of a given argument type.
+diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
+index 05a1912f8a..e4c598428d 100644
+--- a/include/tcg/tcg.h
++++ b/include/tcg/tcg.h
+@@ -39,8 +39,6 @@
+ /* XXX: make safe guess about sizes */
+ #define MAX_OP_PER_INSTR 266
+ 
+-#define MAX_CALL_IARGS  7
+-
+ #define CPU_TEMP_BUF_NLONGS 128
+ #define TCG_STATIC_FRAME_SIZE  (CPU_TEMP_BUF_NLONGS * sizeof(long))
+ 
+diff --git a/tcg/tci.c b/tcg/tci.c
+index 39adcb7d82..3afb223528 100644
+--- a/tcg/tci.c
++++ b/tcg/tci.c
+@@ -19,6 +19,7 @@
+ 
+ #include "qemu/osdep.h"
+ #include "tcg/tcg.h"
++#include "tcg/helper-info.h"
+ #include "tcg/tcg-ldst.h"
+ #include <ffi.h>
+ 
 -- 
 2.34.1
 
