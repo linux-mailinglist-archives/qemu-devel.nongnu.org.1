@@ -2,73 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9EE8B089C
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 13:50:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7348B0BA4
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 15:56:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzb7a-0002A8-VW; Wed, 24 Apr 2024 07:49:06 -0400
+	id 1rzd5Y-0006Sw-6a; Wed, 24 Apr 2024 09:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzb7U-00029R-9s
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 07:49:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <ovs@ovs.to>) id 1rzaJO-00074j-NA
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 06:57:14 -0400
+Received: from qs51p00im-qukt01072301.me.com ([17.57.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzb7S-0004QE-22
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 07:48:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713959336;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=8LsSbt/JsCLWeUKHRoiPkAe6pwdStXYgUmbK0K/5wcg=;
- b=hc+QF4iZe0/+pjNx3rgvNva3rlx715SFz+zdFkdcu5N2Hk9C3liBN0z7WFDEi2ccQ/Ce9X
- R8v49e/jUlUhsryy4OK43ivWRumwjgXK+Ne0SHYsCEbJlzA4MmtwOWguhL1n4PVwvO76pW
- bZJs+WEvYb8G3hoYbLpvuQAhlP95jAQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-562-tdZx5ms6MWGRARU8gitYoA-1; Wed, 24 Apr 2024 07:48:53 -0400
-X-MC-Unique: tdZx5ms6MWGRARU8gitYoA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE775834FB4;
- Wed, 24 Apr 2024 11:48:52 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2FFBB490EE;
- Wed, 24 Apr 2024 11:48:52 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 328AB21E6680; Wed, 24 Apr 2024 13:48:51 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-block@nongnu.org,  raphael@enfabrica.net,  mst@redhat.com,
- kwolf@redhat.com,  hreitz@redhat.com,  pbonzini@redhat.com,
- berrange@redhat.com,  eduardo@habkost.net,  dave@treblig.org,
- eblake@redhat.com,  qemu-devel@nongnu.org,  yc-core@yandex-team.ru
-Subject: Re: [PATCH v3 4/5] qapi: introduce device-sync-config
-In-Reply-To: <20240329183758.3360733-5-vsementsov@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Fri, 29 Mar 2024 21:37:57 +0300")
-References: <20240329183758.3360733-1-vsementsov@yandex-team.ru>
- <20240329183758.3360733-5-vsementsov@yandex-team.ru>
-Date: Wed, 24 Apr 2024 13:48:51 +0200
-Message-ID: <87plufvv4s.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ (Exim 4.90_1) (envelope-from <ovs@ovs.to>) id 1rzaJM-00032Q-T8
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 06:57:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovs.to; s=sig1;
+ t=1713956228; bh=UWC2JDeqhopdUAA3a6ItrwHEC6ucS1ZQ3oowEpM9ofw=;
+ h=From:To:Subject:Date:Message-ID:MIME-Version;
+ b=pTEio9xTqdxG+fKfoJ+bNcsdFdWTvUhtppF6GvS8AGo1EM1MgCa7K5INjgLTA+51H
+ KyzYV99HGptkVeUji5/4gcwcbrpMFR3VSHIDXNKLpzYagv0qN59Va3pPJCJOlq62Uy
+ 9vHaTolna1zAiQS1zFHb0aUh4wDsFV3tAJkfIdRwrVcGoNN7trbUjDMMNsdJaI81ch
+ AkQcMZXxKRsuSxaWNre/bnwYMuOVvKO9YYDYTkGy9G/RjM9As5kN2tqgegf1g0Qi0V
+ 7Ome8NX3paXfDxJWwfDj+Av/zUPvUhRaAWfcnMpEpjcENaxjrsj8GAQsxqjkOtPB3/
+ fp6ZBpd9FGKVQ==
+Received: from localhost (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+ by qs51p00im-qukt01072301.me.com (Postfix) with ESMTPSA id
+ EF9F425400F3; Wed, 24 Apr 2024 10:57:06 +0000 (UTC)
+From: Konstantin Ovsepian <ovs@ovs.to>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: davem@davemloft.net, hengqi@linux.alibaba.com, leitao@debian.org,
+ xuanzhuo@linux.alibaba.com, ovs@meta.com, qemu-devel@nongnu.org
+Subject: [PATCH 6.1.y] virtio_net: Do not send RSS key if it is not supported
+Date: Wed, 24 Apr 2024 03:57:04 -0700
+Message-ID: <20240424105704.182708-1-ovs@ovs.to>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024041414-humming-alarm-eb41@gregkh>
+References: <2024041414-humming-alarm-eb41@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
+X-Proofpoint-ORIG-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-24_08,2024-04-23_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
+ spamscore=0 mlxlogscore=957
+ bulkscore=0 malwarescore=0 clxscore=1030 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2404240045
+Received-SPF: pass client-ip=17.57.155.12; envelope-from=ovs@ovs.to;
+ helo=qs51p00im-qukt01072301.me.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Wed, 24 Apr 2024 09:54:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,300 +76,135 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> writes:
+From: Breno Leitao <leitao@debian.org>
 
-> Add command to sync config from vhost-user backend to the device. It
-> may be helpful when VHOST_USER_SLAVE_CONFIG_CHANGE_MSG failed or not
-> triggered interrupt to the guest or just not available (not supported
-> by vhost-user server).
->
-> Command result is racy if allow it during migration. Let's allow the
-> sync only in RUNNING state.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  hw/block/vhost-user-blk.c | 27 ++++++++++++++++------
->  hw/virtio/virtio-pci.c    |  9 ++++++++
->  include/hw/qdev-core.h    |  3 +++
->  include/sysemu/runstate.h |  1 +
->  qapi/qdev.json            | 21 +++++++++++++++++
->  system/qdev-monitor.c     | 47 +++++++++++++++++++++++++++++++++++++++
->  system/runstate.c         |  5 +++++
->  7 files changed, 106 insertions(+), 7 deletions(-)
->
-> diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
-> index 9e6bbc6950..2f301f380c 100644
-> --- a/hw/block/vhost-user-blk.c
-> +++ b/hw/block/vhost-user-blk.c
-> @@ -88,27 +88,39 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
->      s->blkcfg.wce = blkcfg->wce;
->  }
->  
-> +static int vhost_user_blk_sync_config(DeviceState *dev, Error **errp)
-> +{
-> +    int ret;
-> +    VirtIODevice *vdev = VIRTIO_DEVICE(dev);
-> +    VHostUserBlk *s = VHOST_USER_BLK(vdev);
-> +
-> +    ret = vhost_dev_get_config(&s->dev, (uint8_t *)&s->blkcfg,
-> +                               vdev->config_len, errp);
-> +    if (ret < 0) {
-> +        return ret;
-> +    }
-> +
-> +    memcpy(vdev->config, &s->blkcfg, vdev->config_len);
-> +    virtio_notify_config(vdev);
-> +
-> +    return 0;
-> +}
-> +
->  static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
->  {
->      int ret;
-> -    VirtIODevice *vdev = dev->vdev;
-> -    VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
->      Error *local_err = NULL;
->  
->      if (!dev->started) {
->          return 0;
->      }
->  
-> -    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
-> -                               vdev->config_len, &local_err);
-> +    ret = vhost_user_blk_sync_config(DEVICE(dev->vdev), &local_err);
->      if (ret < 0) {
->          error_report_err(local_err);
->          return ret;
->      }
->  
-> -    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
-> -    virtio_notify_config(dev->vdev);
-> -
->      return 0;
->  }
+commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream
 
-This factors vhost_user_blk_sync_config() out of
-vhost_user_blk_handle_config_change() for reuse.  Correct?
+There is a bug when setting the RSS options in virtio_net that can break
+the whole machine, getting the kernel into an infinite loop.
 
->  
-> @@ -576,6 +588,7 @@ static void vhost_user_blk_class_init(ObjectClass *klass, void *data)
->  
->      device_class_set_props(dc, vhost_user_blk_properties);
->      dc->vmsd = &vmstate_vhost_user_blk;
-> +    dc->sync_config = vhost_user_blk_sync_config;
->      set_bit(DEVICE_CATEGORY_STORAGE, dc->categories);
->      vdc->realize = vhost_user_blk_device_realize;
->      vdc->unrealize = vhost_user_blk_device_unrealize;
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index eaaf86402c..92afbae71c 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -2501,6 +2501,14 @@ static void virtio_pci_dc_realize(DeviceState *qdev, Error **errp)
->      vpciklass->parent_dc_realize(qdev, errp);
->  }
->  
-> +static int virtio_pci_sync_config(DeviceState *dev, Error **errp)
-> +{
-> +    VirtIOPCIProxy *proxy = VIRTIO_PCI(dev);
-> +    VirtIODevice *vdev = virtio_bus_get_device(&proxy->bus);
-> +
-> +    return qdev_sync_config(DEVICE(vdev), errp);
-> +}
-> +
->  static void virtio_pci_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(klass);
-> @@ -2517,6 +2525,7 @@ static void virtio_pci_class_init(ObjectClass *klass, void *data)
->      device_class_set_parent_realize(dc, virtio_pci_dc_realize,
->                                      &vpciklass->parent_dc_realize);
->      rc->phases.hold = virtio_pci_bus_reset_hold;
-> +    dc->sync_config = virtio_pci_sync_config;
->  }
->  
+Running the following command in any QEMU virtual machine with virtionet
+will reproduce this problem:
 
-I tried to follow the callbacks, but quickly gave up.  Leaving to a
-reviewer who understands virtio.
+    # ethtool -X eth0  hfunc toeplitz
 
->  static const TypeInfo virtio_pci_info = {
-> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
-> index 9228e96c87..87135bdcdf 100644
-> --- a/include/hw/qdev-core.h
-> +++ b/include/hw/qdev-core.h
-> @@ -95,6 +95,7 @@ typedef void (*DeviceUnrealize)(DeviceState *dev);
->  typedef void (*DeviceReset)(DeviceState *dev);
->  typedef void (*BusRealize)(BusState *bus, Error **errp);
->  typedef void (*BusUnrealize)(BusState *bus);
-> +typedef int (*DeviceSyncConfig)(DeviceState *dev, Error **errp);
->  
->  /**
->   * struct DeviceClass - The base class for all devices.
-> @@ -162,6 +163,7 @@ struct DeviceClass {
->      DeviceReset reset;
->      DeviceRealize realize;
->      DeviceUnrealize unrealize;
-> +    DeviceSyncConfig sync_config;
->  
->      /**
->       * @vmsd: device state serialisation description for
-> @@ -546,6 +548,7 @@ bool qdev_hotplug_allowed(DeviceState *dev, Error **errp);
->   */
->  HotplugHandler *qdev_get_hotplug_handler(DeviceState *dev);
->  void qdev_unplug(DeviceState *dev, Error **errp);
-> +int qdev_sync_config(DeviceState *dev, Error **errp);
->  void qdev_simple_device_unplug_cb(HotplugHandler *hotplug_dev,
->                                    DeviceState *dev, Error **errp);
->  void qdev_machine_creation_done(void);
-> diff --git a/include/sysemu/runstate.h b/include/sysemu/runstate.h
-> index 0117d243c4..296af52322 100644
-> --- a/include/sysemu/runstate.h
-> +++ b/include/sysemu/runstate.h
-> @@ -5,6 +5,7 @@
->  #include "qemu/notify.h"
->  
->  bool runstate_check(RunState state);
-> +const char *current_run_state_str(void);
->  void runstate_set(RunState new_state);
->  RunState runstate_get(void);
->  bool runstate_is_running(void);
-> diff --git a/qapi/qdev.json b/qapi/qdev.json
-> index facaa0bc6a..e8be79c3d5 100644
-> --- a/qapi/qdev.json
-> +++ b/qapi/qdev.json
-> @@ -161,3 +161,24 @@
->  ##
->  { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
->    'data': { '*device': 'str', 'path': 'str' } }
-> +
-> +##
-> +# @device-sync-config:
-> +#
-> +# Synchronize config from backend to the guest. The command notifies
-> +# re-read the device config from the backend and notifies the guest
-> +# to re-read the config. The command may be used to notify the guest
-> +# about block device capcity change. Currently only vhost-user-blk
-> +# device supports this.
+This is how the problem happens:
 
-I'm not sure I understand this.  To work towards an understanding, I
-rephrase it, and you point out the errors.
+1) ethtool_set_rxfh() calls virtnet_set_rxfh()
 
-     Synchronize device configuration from host to guest part.  First,
-     copy the configuration from the host part (backend) to the guest
-     part (frontend).  Then notify guest software that device
-     configuration changed.
+2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
 
-I wonder how configuration can get out of sync.  Can you explain?
+3) virtnet_commit_rss_command() populates 4 entries for the rss
+scatter-gather
 
-> +#
-> +# @id: the device's ID or QOM path
-> +#
-> +# Features:
-> +#
-> +# @unstable: The command is experimental.
-> +#
-> +# Since: 9.1
-> +##
-> +{ 'command': 'device-sync-config',
-> +  'features': [ 'unstable' ],
-> +  'data': {'id': 'str'} }
-> diff --git a/system/qdev-monitor.c b/system/qdev-monitor.c
-> index 7e075d91c1..cb35ea0b86 100644
-> --- a/system/qdev-monitor.c
-> +++ b/system/qdev-monitor.c
-> @@ -23,6 +23,7 @@
->  #include "monitor/monitor.h"
->  #include "monitor/qdev.h"
->  #include "sysemu/arch_init.h"
-> +#include "sysemu/runstate.h"
->  #include "qapi/error.h"
->  #include "qapi/qapi-commands-qdev.h"
->  #include "qapi/qmp/dispatch.h"
-> @@ -969,6 +970,52 @@ void qmp_device_del(const char *id, Error **errp)
->      }
->  }
->  
-> +int qdev_sync_config(DeviceState *dev, Error **errp)
-> +{
-> +    DeviceClass *dc = DEVICE_GET_CLASS(dev);
-> +
-> +    if (!dc->sync_config) {
-> +        error_setg(errp, "device-sync-config is not supported for '%s'",
-> +                   object_get_typename(OBJECT(dev)));
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return dc->sync_config(dev, errp);
-> +}
-> +
-> +void qmp_device_sync_config(const char *id, Error **errp)
-> +{
-> +    DeviceState *dev;
-> +
-> +    /*
-> +     * During migration there is a race between syncing`config and
-> +     * migrating it, so let's just not allow it.
+4) Since the command above does not have a key, then the last
+scatter-gatter entry will be zeroed, since rss_key_size == 0.
+sg_buf_size = vi->rss_key_size;
 
-Can you briefly explain the race?
+5) This buffer is passed to qemu, but qemu is not happy with a buffer
+with zero length, and do the following in virtqueue_map_desc() (QEMU
+function):
 
-> +     *
-> +     * Moreover, let's not rely on setting up interrupts in paused
-> +     * state, which may be a part of migration process.
+  if (!sz) {
+      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
 
-What dependence exactly are you avoiding?  Config synchronization
-depending on guest interrupt delivery?
+6) virtio_error() (also QEMU function) set the device as broken
 
-> +     */
-> +
-> +    if (migration_is_running()) {
-> +        error_setg(errp, "Config synchronization is not allowed "
-> +                   "during migration.");
+    vdev->broken = true;
 
-qapi/error.h:
+7) Qemu bails out, and do not repond this crazy kernel.
 
-     * The resulting message should be a single phrase, with no newline or
-     * trailing punctuation.
+8) The kernel is waiting for the response to come back (function
+virtnet_send_command())
 
-Drop the period, please.
+9) The kernel is waiting doing the following :
 
-> +        return;
-> +    }
-> +
-> +    if (!runstate_is_running()) {
-> +        error_setg(errp, "Config synchronization allowed only in '%s' state, "
-> +                   "current state is '%s'", RunState_str(RUN_STATE_RUNNING),
-> +                   current_run_state_str());
-> +        return;
-> +    }
-> +
-> +    dev = find_device_state(id, true, errp);
-> +    if (!dev) {
-> +        return;
-> +    }
-> +
-> +    qdev_sync_config(dev, errp);
-> +}
-> +
->  void hmp_device_add(Monitor *mon, const QDict *qdict)
->  {
->      Error *err = NULL;
-> diff --git a/system/runstate.c b/system/runstate.c
-> index d6ab860eca..8fd89172ae 100644
-> --- a/system/runstate.c
-> +++ b/system/runstate.c
-> @@ -189,6 +189,11 @@ bool runstate_check(RunState state)
->      return current_run_state == state;
->  }
->  
-> +const char *current_run_state_str(void)
-> +{
-> +    return RunState_str(current_run_state);
-> +}
-> +
+      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
+	     !virtqueue_is_broken(vi->cvq))
+	      cpu_relax();
 
-This helper is used just once.  Suggest to use
-RunState_str(runstate_get()) instead.
+10) None of the following functions above is true, thus, the kernel
+loops here forever. Keeping in mind that virtqueue_is_broken() does
+not look at the qemu `vdev->broken`, so, it never realizes that the
+vitio is broken at QEMU side.
 
->  static void runstate_init(void)
->  {
->      const RunStateTransition *p;
+Fix it by not sending RSS commands if the feature is not available in
+the device.
+
+Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
+Cc: stable@vger.kernel.org
+Cc: qemu-devel@nongnu.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47)
+Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
+---
+ drivers/net/virtio_net.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 45f1a871b7da..32cddb633793 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -2948,19 +2948,35 @@ static int virtnet_get_rxfh(struct net_device *dev, u32 *indir, u8 *key, u8 *hfu
+ static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
++	bool update = false;
+ 	int i;
+ 
+ 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
+ 		return -EOPNOTSUPP;
+ 
+ 	if (indir) {
++		if (!vi->has_rss)
++			return -EOPNOTSUPP;
++
+ 		for (i = 0; i < vi->rss_indir_table_size; ++i)
+ 			vi->ctrl->rss.indirection_table[i] = indir[i];
++		update = true;
+ 	}
+-	if (key)
++
++	if (key) {
++		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
++		 * device provides hash calculation capabilities, that is,
++		 * hash_key is configured.
++		 */
++		if (!vi->has_rss && !vi->has_rss_hash_report)
++			return -EOPNOTSUPP;
++
+ 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
++		update = true;
++	}
+ 
+-	virtnet_commit_rss_command(vi);
++	if (update)
++		virtnet_commit_rss_command(vi);
+ 
+ 	return 0;
+ }
+@@ -3852,13 +3868,15 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
+ 		vi->has_rss_hash_report = true;
+ 
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
++	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
+ 		vi->has_rss = true;
+ 
+-	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_indir_table_size =
+ 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
+ 				rss_max_indirection_table_length));
++	}
++
++	if (vi->has_rss || vi->has_rss_hash_report) {
+ 		vi->rss_key_size =
+ 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
+ 
+-- 
+2.43.0
 
 
