@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83C48B1606
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1EC8B1682
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:52:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzkw3-0007Gm-Sv; Wed, 24 Apr 2024 18:17:51 -0400
+	id 1rzlSd-0006vr-Hi; Wed, 24 Apr 2024 18:51:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzkw1-0007GP-Mv
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:17:49 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1rzlSb-0006vS-4q
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:51:29 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzkw0-0002UF-7e
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:17:49 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2a4df5d83c7so331018a91.0
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:17:47 -0700 (PDT)
+ id 1rzlSZ-0006eY-C1
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:51:28 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-6ed3cafd766so418275b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713997066; x=1714601866; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=FPBnV6KSF0TYFLS4dHFyBK0BgyiaFG7LTVeC+UZDNPc=;
- b=hV2T1hQ2m8gxTG0O0Y1mkBkDVrR3/eYC6FQrr+xosR4HoxPu2Z7GOI85TTqfxBSLkw
- vsqdZlYxStEz3kwi0cISlJuBeV57Jkp1n46Acc3p27vA48X196fTQ8Jko+EJf0W3vw+g
- FXiTxDD29QfolL73X2/M5JOqCLIP6U6PWnFX3/3bc2fB62JNhu4FuSmXxLq2hkbWBUq1
- muh96j3wdiFs7p0LwEl0gr6gyDjjUUFlGtvGGMp85N5e+6DO8z15unqyPbzq2PUl9wcv
- 57QgQAOI081zIHfGwvXNComXxMINLeXtuXjH1VY5e9YTaBEk4jwWwL1as5INlKMDjtgf
- UCyg==
+ d=linaro.org; s=google; t=1713999086; x=1714603886; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NomqmSPMRpqEitleAPYfKErbwxRTqwPCVGJLQagZKDY=;
+ b=ChtvcujQKTfHWxhNrHmZGGJQqLQf721AOy9cCKCv28DP3DpXiJTj+UAiJCCAWw3+QA
+ g1kO5+P4V5L98atNCFGEKuepbA23cux94nKHL6IgAwvX3TJWLxO7+nq0lPER67O5OuRZ
+ tL+gIz29ru/ptDc1neEc5D/l1eaDTjDow9tWc5swCfsQHX4H7EA7co/cD0CdZOfcJR36
+ 1LeSSM26fzAhKNf48L3Fl8A/tarovfSV35tQE/8DB3hMCPvdZPliQe1NTP8wxJwNgge2
+ 3n0bVAaU605gbaOt4rD/54ewvSv8yNM8G1+v9yMcVv9OmLiHm85cUgGkV09ms4ygkTIc
+ zGYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713997066; x=1714601866;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=FPBnV6KSF0TYFLS4dHFyBK0BgyiaFG7LTVeC+UZDNPc=;
- b=ho/vQaHnQySMRtGnkI8iy3XEwmm4QHTLuDhWge7dYjiEgW3mh61aceG2UTcYWcI2bK
- E0TI34cjoNGNXXIzi/Al52QnO8JRMHpbJeP9J4s9EJ1gL4BwPNmRSckNCCK8uG2sS6ZK
- 5DmJh2IPG6Jcc6A47exhcpYfETIvfoVOQuI0TUrdcRQj295FhME4J+ZEI6c64DLeSkcW
- 19eJc5tDhgQhq/CnrhOVffg5JZcD502ZHxqCGbiAwiMX6px3q9YanQrplUpeYM9JDzw6
- DKq+KHGNybLcTjohAz1JC0kE53M+O0Lve22cqxavrg/SGXlbcVEBtfSpCojl8qELNNle
- tIMQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWftCMECRaPaEVyd8EjM4eO2Y0KHIAvJwrcxZDM+zcucadoBtC7pYJG5+WLNLNociGfqGhFwcyhJsMJUml9sM8km2tyVM4=
-X-Gm-Message-State: AOJu0Yy1ieVdgW3aj8ygyAzDp1y7lJJmTJY6E6n/nMBs028QZCjhJoVn
- qQxfsxfHrO9WTnyz4KFqc/F9J2l4jJj4a0NI/NzkFvaF6/M/tAXy7NSZ76Kx8TC4jdEJ09ci4Yv
- L
-X-Google-Smtp-Source: AGHT+IF6j7OyWaLKHG0Y5IUMFCajUY3JkkMnQ90dVS5aBuEtyaSYTxVDnCcZ7+1DJp3tdlpMM299Tw==
-X-Received: by 2002:a17:90a:ce03:b0:2a2:7992:fbf5 with SMTP id
- f3-20020a17090ace0300b002a27992fbf5mr3903029pju.48.1713997066647; 
- Wed, 24 Apr 2024 15:17:46 -0700 (PDT)
-Received: from [192.168.91.227] ([156.19.246.23])
- by smtp.gmail.com with ESMTPSA id
- e2-20020a17090ada0200b002abbea7239esm11673100pjv.6.2024.04.24.15.17.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Apr 2024 15:17:46 -0700 (PDT)
-Message-ID: <917cab32-bb33-4ecb-808d-92b630b87a70@linaro.org>
-Date: Wed, 24 Apr 2024 15:17:43 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] target/loongarch/cpu.c: typo fix: expection
-To: Michael Tokarev <mjt@tls.msk.ru>, qemu-devel@nongnu.org
-Cc: qemu-tivial@nongnu.org, Song Gao <gaosong@loongson.cn>
-References: <20240424202106.1465526-1-mjt@tls.msk.ru>
-Content-Language: en-US
+ d=1e100.net; s=20230601; t=1713999086; x=1714603886;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NomqmSPMRpqEitleAPYfKErbwxRTqwPCVGJLQagZKDY=;
+ b=KryJcbWIYT3pztq2ew28UcXXfrkqRUIwtZMq/pI8O+1sv4D/M0Zg77Ifc7GldzV1ZN
+ cS71uRuA7MaOqC2UyBCV/iV+GXMvanQrdHU51TQBlA7MIkx4Sd2prUQF3Ei6YFGviBTk
+ 9WWMlq96D1vlb4URbI9+520r+S7QhmjMiJsTMh6KAIBOK83NG6Hs09kvrgSU2x3RQCLa
+ +/bFHG1NcEHauDEh/F9wmuZuC2aMTM/o+xrLZpGaCZPUNP2WngmBtFJH83Asq4ZGoUYU
+ qsSofDUqhIeRh97VAEoaFqlNjlj3hXu5Nq5PqIfQndmDx8+IiBeJ7dm7+AXHAKUxNrN0
+ /zDw==
+X-Gm-Message-State: AOJu0YwwoTVMZGk+eBOLxlThch2AQNsrkK3UEa8FAsa3Hx/7Wx3Csvyp
+ 3+/Scqg1Vc7k+KaOBvdkVrGE/UcxOapG/QazgOS3309gPsvgvrOVQjkEA/vkIRuVCYIbklkLHky
+ j
+X-Google-Smtp-Source: AGHT+IF01S4FZ1ASgQy6JnPScRt0RjwguvQ31v7mxLgLnpDCZ9YziHiDSDtZ1LpqSZuRhpCes2xVBA==
+X-Received: by 2002:a05:6a00:240d:b0:6f0:c828:65c1 with SMTP id
+ z13-20020a056a00240d00b006f0c82865c1mr4291495pfh.2.1713999085582; 
+ Wed, 24 Apr 2024 15:51:25 -0700 (PDT)
+Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
+ it12-20020a056a00458c00b006ead792b6f2sm11960864pfb.1.2024.04.24.15.51.24
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 24 Apr 2024 15:51:25 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240424202106.1465526-1-mjt@tls.msk.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/9] tcg + linux-user patch queue
+Date: Wed, 24 Apr 2024 15:51:14 -0700
+Message-Id: <20240424225123.929152-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,14 +88,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/24 13:21, Michael Tokarev wrote:
-> Fixes: 1590154ee437 ("target/loongarch: Fix qemu-system-loongarch64 assert failed with the option '-d int'")
-> Signed-off-by: Michael Tokarev<mjt@tls.msk.ru>
-> ---
->   target/loongarch/cpu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+A few patches that missed 9.0-rc2 and were delayed.
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
+
+
+The following changes since commit 85b597413d4370cb168f711192eaef2eb70535ac:
+
+  Merge tag 'housekeeping-20240424' of https://github.com/philmd/qemu into staging (2024-04-24 11:49:57 -0700)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20240424
+
+for you to fetch changes up to 0815c228bd1e0c24ac064ce299807b32f8e05d83:
+
+  target/m68k: Support semihosting on non-ColdFire targets (2024-04-24 15:46:00 -0700)
+
+----------------------------------------------------------------
+meson: Make DEBUG_REMAP a meson option
+target/m68k: Support semihosting on non-ColdFire targets
+linux-user: do_setsockopt cleanups
+linux-user: Add FITRIM ioctl
+
+----------------------------------------------------------------
+Ilya Leoshkevich (1):
+      meson: Make DEBUG_REMAP a meson option
+
+Keith Packard (2):
+      target/m68k: Pass semihosting arg to exit
+      target/m68k: Support semihosting on non-ColdFire targets
+
+Michael Tokarev (4):
+      linux-user: do_setsockopt: fix SOL_ALG.ALG_SET_KEY
+      linux-user: do_setsockopt: make ip_mreq local to the place it is used and inline target_to_host_ip_mreq()
+      linux-user: do_setsockopt: make ip_mreq_source local to the place where it is used
+      linux-user: do_setsockopt: eliminate goto in switch for SO_SNDTIMEO
+
+Michael Vogt (1):
+      linux-user: Add FITRIM ioctl
+
+Richard Henderson (1):
+      target/m68k: Perform the semihosting test during translate
+
+ meson.build                   |  4 +++
+ bsd-user/qemu.h               |  6 ++--
+ linux-user/ioctls.h           |  3 ++
+ linux-user/qemu.h             |  4 +--
+ linux-user/syscall_defs.h     |  1 +
+ linux-user/syscall_types.h    |  5 +++
+ target/m68k/cpu.h             |  2 +-
+ linux-user/syscall.c          | 73 +++++++++++++++++++------------------------
+ linux-user/uaccess.c          |  4 +--
+ target/m68k/m68k-semi.c       |  4 +--
+ target/m68k/op_helper.c       | 14 ++-------
+ target/m68k/translate.c       | 50 ++++++++++++++++++++++++++---
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 ++
+ 14 files changed, 107 insertions(+), 68 deletions(-)
 
