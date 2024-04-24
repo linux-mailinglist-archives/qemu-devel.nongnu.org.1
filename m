@@ -2,66 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7348B0BA4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 15:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 414728B0968
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 14:26:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzd5Y-0006Sw-6a; Wed, 24 Apr 2024 09:55:08 -0400
+	id 1rzbgF-0003jt-3D; Wed, 24 Apr 2024 08:24:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ovs@ovs.to>) id 1rzaJO-00074j-NA
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 06:57:14 -0400
-Received: from qs51p00im-qukt01072301.me.com ([17.57.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ovs@ovs.to>) id 1rzaJM-00032Q-T8
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 06:57:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ovs.to; s=sig1;
- t=1713956228; bh=UWC2JDeqhopdUAA3a6ItrwHEC6ucS1ZQ3oowEpM9ofw=;
- h=From:To:Subject:Date:Message-ID:MIME-Version;
- b=pTEio9xTqdxG+fKfoJ+bNcsdFdWTvUhtppF6GvS8AGo1EM1MgCa7K5INjgLTA+51H
- KyzYV99HGptkVeUji5/4gcwcbrpMFR3VSHIDXNKLpzYagv0qN59Va3pPJCJOlq62Uy
- 9vHaTolna1zAiQS1zFHb0aUh4wDsFV3tAJkfIdRwrVcGoNN7trbUjDMMNsdJaI81ch
- AkQcMZXxKRsuSxaWNre/bnwYMuOVvKO9YYDYTkGy9G/RjM9As5kN2tqgegf1g0Qi0V
- 7Ome8NX3paXfDxJWwfDj+Av/zUPvUhRaAWfcnMpEpjcENaxjrsj8GAQsxqjkOtPB3/
- fp6ZBpd9FGKVQ==
-Received: from localhost (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
- by qs51p00im-qukt01072301.me.com (Postfix) with ESMTPSA id
- EF9F425400F3; Wed, 24 Apr 2024 10:57:06 +0000 (UTC)
-From: Konstantin Ovsepian <ovs@ovs.to>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: davem@davemloft.net, hengqi@linux.alibaba.com, leitao@debian.org,
- xuanzhuo@linux.alibaba.com, ovs@meta.com, qemu-devel@nongnu.org
-Subject: [PATCH 6.1.y] virtio_net: Do not send RSS key if it is not supported
-Date: Wed, 24 Apr 2024 03:57:04 -0700
-Message-ID: <20240424105704.182708-1-ovs@ovs.to>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024041414-humming-alarm-eb41@gregkh>
-References: <2024041414-humming-alarm-eb41@gregkh>
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rzbg8-0003ja-Og
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:24:48 -0400
+Received: from phobos.denx.de ([2a01:238:438b:c500:173d:9f52:ddab:ee01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marex@denx.de>) id 1rzbg6-0002RO-7S
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 08:24:48 -0400
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+ (No client certificate requested)
+ (Authenticated sender: marex@denx.de)
+ by phobos.denx.de (Postfix) with ESMTPSA id 6C1AA88732;
+ Wed, 24 Apr 2024 14:24:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+ s=phobos-20191101; t=1713961478;
+ bh=zBL6N2B38S9vuAjXt9/1WLPZ4tY/SD7adXgpqaQMljM=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+ b=RGTjwsTl5mXNHIyxfaAyJQryCdIyce+3Yv30P9iN3SCAXJDqD66kFG6HKYZddp07I
+ a5zzut2za3Lz6zklKbq0wST5W/qbLE9yJ2nAwSw78oAH0TGwIAHBY18YDNLveomoQ7
+ KNXjkxDVTWkHYR4pzRtXBdxTOBnmbCWYhfH0ZYnHYXvoJeYdA0sNj28OdwH2oLoGtd
+ GjEFHMpV7S7pywcVNbIRaidAyX8UEoe1imuiIxjTE9KuMlEM9YvuJyb5TOGJVcOWt2
+ KF7Rj+SLGFa1VlVoDe8krgdf8aR6/+giVmVGBmzrBRp3cpqmNY2kBttCs2Mj/84VzK
+ JU64qLQDf9A0A==
+Message-ID: <10b51e4b-c55b-445a-a0b3-05d0e3f6ffd7@denx.de>
+Date: Wed, 24 Apr 2024 13:39:01 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH-for-9.1 v2 2/3] target/nios2: Remove the deprecated Nios
+ II target
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Sandra Loosemore <sloosemore@baylibre.com>,
+ Chung-Lin Tang <cltang@baylibre.com>, andrew@reenigne.org,
+ Yao Qi <qiyaoltc@gmail.com>
+Cc: devel@lists.libvirt.org, Laurent Vivier <laurent@vivier.eu>,
+ Chris Wulff <crwulff@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Pavel Dovgalyuk <pavel.dovgaluk@ispras.ru>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+References: <20240327144806.11319-1-philmd@linaro.org>
+ <20240327144806.11319-3-philmd@linaro.org>
+ <fd68f7e5-11ed-4459-96ac-b4a417dc9aa0@linaro.org>
+ <892a0a7d-5f74-4207-90e0-e747be0b3df1@denx.de>
+ <3688d32a-a265-4d00-b698-ca2bd71d3342@linaro.org>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <3688d32a-a265-4d00-b698-ca2bd71d3342@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
-X-Proofpoint-ORIG-GUID: sdjGZWmWw7_ebjwMuRx20I3WAV38thMO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
- definitions=2024-04-24_08,2024-04-23_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0
- spamscore=0 mlxlogscore=957
- bulkscore=0 malwarescore=0 clxscore=1030 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2404240045
-Received-SPF: pass client-ip=17.57.155.12; envelope-from=ovs@ovs.to;
- helo=qs51p00im-qukt01072301.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+Received-SPF: pass client-ip=2a01:238:438b:c500:173d:9f52:ddab:ee01;
+ envelope-from=marex@denx.de; helo=phobos.denx.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Wed, 24 Apr 2024 09:54:58 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,135 +93,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Breno Leitao <leitao@debian.org>
+On 4/24/24 10:50 AM, Philippe Mathieu-Daudé wrote:
+> Hi Marek,
+> 
+> On 18/4/24 14:04, Marek Vasut wrote:
+>> On 4/18/24 1:10 PM, Philippe Mathieu-Daudé wrote:
+>>> On 27/3/24 15:48, Philippe Mathieu-Daudé wrote:
+>>>> The Nios II target is deprecated since v8.2 in commit 9997771bc1
+>>>> ("target/nios2: Deprecate the Nios II architecture").
+>>>>
+>>>> Remove:
+>>>> - Buildsys / CI infra
+>>>> - User emulation
+>>>> - System emulation (10m50-ghrd & nios2-generic-nommu machines)
+>>>> - Tests
+>>>>
+>>>> Cc: Marek Vasut <marex@denx.de>
+>>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>>
+>> Thank you
+> 
+> Thank you for adding NiosII user emulation and the
+> 10M50 board to QEMU :)
+> 
+> Can I use your Ack-by tag on this commit?
 
-commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47 upstream
-
-There is a bug when setting the RSS options in virtio_net that can break
-the whole machine, getting the kernel into an infinite loop.
-
-Running the following command in any QEMU virtual machine with virtionet
-will reproduce this problem:
-
-    # ethtool -X eth0  hfunc toeplitz
-
-This is how the problem happens:
-
-1) ethtool_set_rxfh() calls virtnet_set_rxfh()
-
-2) virtnet_set_rxfh() calls virtnet_commit_rss_command()
-
-3) virtnet_commit_rss_command() populates 4 entries for the rss
-scatter-gather
-
-4) Since the command above does not have a key, then the last
-scatter-gatter entry will be zeroed, since rss_key_size == 0.
-sg_buf_size = vi->rss_key_size;
-
-5) This buffer is passed to qemu, but qemu is not happy with a buffer
-with zero length, and do the following in virtqueue_map_desc() (QEMU
-function):
-
-  if (!sz) {
-      virtio_error(vdev, "virtio: zero sized buffers are not allowed");
-
-6) virtio_error() (also QEMU function) set the device as broken
-
-    vdev->broken = true;
-
-7) Qemu bails out, and do not repond this crazy kernel.
-
-8) The kernel is waiting for the response to come back (function
-virtnet_send_command())
-
-9) The kernel is waiting doing the following :
-
-      while (!virtqueue_get_buf(vi->cvq, &tmp) &&
-	     !virtqueue_is_broken(vi->cvq))
-	      cpu_relax();
-
-10) None of the following functions above is true, thus, the kernel
-loops here forever. Keeping in mind that virtqueue_is_broken() does
-not look at the qemu `vdev->broken`, so, it never realizes that the
-vitio is broken at QEMU side.
-
-Fix it by not sending RSS commands if the feature is not available in
-the device.
-
-Fixes: c7114b1249fa ("drivers/net/virtio_net: Added basic RSS support.")
-Cc: stable@vger.kernel.org
-Cc: qemu-devel@nongnu.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit 059a49aa2e25c58f90b50151f109dd3c4cdb3a47)
-Signed-off-by: Konstantin Ovsepian <ovs@ovs.to>
----
- drivers/net/virtio_net.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 45f1a871b7da..32cddb633793 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2948,19 +2948,35 @@ static int virtnet_get_rxfh(struct net_device *dev, u32 *indir, u8 *key, u8 *hfu
- static int virtnet_set_rxfh(struct net_device *dev, const u32 *indir, const u8 *key, const u8 hfunc)
- {
- 	struct virtnet_info *vi = netdev_priv(dev);
-+	bool update = false;
- 	int i;
- 
- 	if (hfunc != ETH_RSS_HASH_NO_CHANGE && hfunc != ETH_RSS_HASH_TOP)
- 		return -EOPNOTSUPP;
- 
- 	if (indir) {
-+		if (!vi->has_rss)
-+			return -EOPNOTSUPP;
-+
- 		for (i = 0; i < vi->rss_indir_table_size; ++i)
- 			vi->ctrl->rss.indirection_table[i] = indir[i];
-+		update = true;
- 	}
--	if (key)
-+
-+	if (key) {
-+		/* If either _F_HASH_REPORT or _F_RSS are negotiated, the
-+		 * device provides hash calculation capabilities, that is,
-+		 * hash_key is configured.
-+		 */
-+		if (!vi->has_rss && !vi->has_rss_hash_report)
-+			return -EOPNOTSUPP;
-+
- 		memcpy(vi->ctrl->rss.key, key, vi->rss_key_size);
-+		update = true;
-+	}
- 
--	virtnet_commit_rss_command(vi);
-+	if (update)
-+		virtnet_commit_rss_command(vi);
- 
- 	return 0;
- }
-@@ -3852,13 +3868,15 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
- 		vi->has_rss_hash_report = true;
- 
--	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
-+	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
- 		vi->has_rss = true;
- 
--	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_indir_table_size =
- 			virtio_cread16(vdev, offsetof(struct virtio_net_config,
- 				rss_max_indirection_table_length));
-+	}
-+
-+	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
- 
--- 
-2.43.0
-
+Acked-by: Marek Vasut <marex@denx.de>
 
