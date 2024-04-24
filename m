@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE1B8B041D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AD18B0416
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:18:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXp6-0000iU-8z; Wed, 24 Apr 2024 04:17:48 -0400
+	id 1rzXpB-00018s-US; Wed, 24 Apr 2024 04:17:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXod-0000My-T8
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoe-0000N3-1H
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoa-0006MJ-OM
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXob-0006MX-4M
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713946636;
@@ -22,41 +22,41 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fVJ3VfeNla0b1aH7kFiMHnp6SE+Kn03Pe0CfNwIitno=;
- b=MbvWDQO3uEdsZeSw5IMHAjyKhEfxGqvsDA1T5j7fC6ToxYQQqNns9qGtuvruLHu48tHqmQ
- u/FoUvfSoc1vE0yxc4y/6VhhSMSWC/+ggxgmgJWqcH/dkA8QkZo+mTXCr1iyWMXQeWGdIv
- twUsza9jRnDBa1XnUJItaXh4QetLWMg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-587-IX5_LUvMOnWnVYMAXZmrQw-1; Wed,
- 24 Apr 2024 04:17:12 -0400
-X-MC-Unique: IX5_LUvMOnWnVYMAXZmrQw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=okQXhM5EdV4nJ/xGs2usfi2oSxOw1NGs7cFrvbXnFKA=;
+ b=BPFKjjZoupC5gmuktDm2CR26xP4g5sIMD51X3nl720HpGlYKxuQ1iudr8orNyt9wvSuYRn
+ F1/ZeflbWYVnhluw5BMPJLU4EjWsZJ9Qn45t9pB7aTrZ/eLEVuEC+pTAUwC/9LryqS0pT0
+ M+mUTc5oMXzvDUq7Uq5Ifv9CASQOGIQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-20-qNUjfTvCOUS3PDl__OCwpg-1; Wed, 24 Apr 2024 04:17:12 -0400
+X-MC-Unique: qNUjfTvCOUS3PDl__OCwpg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EE57E3806272;
- Wed, 24 Apr 2024 08:17:11 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C17F812C55;
+ Wed, 24 Apr 2024 08:17:12 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CF391C08EE0;
- Wed, 24 Apr 2024 08:17:11 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0C3B78C4;
+ Wed, 24 Apr 2024 08:17:12 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C905E21E6690; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
+ id CC05821E669B; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 02/25] qapi/parser: shush up pylint
-Date: Wed, 24 Apr 2024 10:16:47 +0200
-Message-ID: <20240424081710.2907748-3-armbru@redhat.com>
+Subject: [PULL 03/25] qapi: sort pylint suppressions
+Date: Wed, 24 Apr 2024 10:16:48 +0200
+Message-ID: <20240424081710.2907748-4-armbru@redhat.com>
 In-Reply-To: <20240424081710.2907748-1-armbru@redhat.com>
 References: <20240424081710.2907748-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -82,28 +82,36 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-Shhh!
-
+Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240315152301.3621858-3-armbru@redhat.com>
+Message-ID: <20240315152301.3621858-4-armbru@redhat.com>
 ---
- scripts/qapi/parser.py | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/qapi/pylintrc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/qapi/parser.py b/scripts/qapi/parser.py
-index fed88e9074..ec4ebef4e3 100644
---- a/scripts/qapi/parser.py
-+++ b/scripts/qapi/parser.py
-@@ -607,6 +607,7 @@ class QAPIDoc:
-     """
+diff --git a/scripts/qapi/pylintrc b/scripts/qapi/pylintrc
+index 90546df534..1342412c3c 100644
+--- a/scripts/qapi/pylintrc
++++ b/scripts/qapi/pylintrc
+@@ -16,13 +16,13 @@ ignore-patterns=schema.py,
+ # --enable=similarities". If you want to run only the classes checker, but have
+ # no Warning level messages displayed, use "--disable=all --enable=classes
+ # --disable=W".
+-disable=fixme,
++disable=consider-using-f-string,
++        fixme,
+         missing-docstring,
+         too-many-arguments,
+         too-many-branches,
+-        too-many-statements,
+         too-many-instance-attributes,
+-        consider-using-f-string,
++        too-many-statements,
+         useless-option-value,
  
-     class Section:
-+        # pylint: disable=too-few-public-methods
-         def __init__(self, info: QAPISourceInfo,
-                      tag: Optional[str] = None):
-             # section source info, i.e. where it begins
+ [REPORTS]
 -- 
 2.44.0
 
