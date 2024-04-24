@@ -2,58 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD9298B03A4
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 09:59:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B45098B03D1
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:03:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXW8-0004gn-LL; Wed, 24 Apr 2024 03:58:13 -0400
+	id 1rzXWA-0004hQ-CB; Wed, 24 Apr 2024 03:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW4-0004gJ-PO
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW6-0004gV-B3
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW2-00030p-Vb
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:08 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW4-00030y-Vl
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945486;
+ s=mimecast20190719; t=1713945487;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oRGeLYG+EElZFZAs0NHIehBnVsCyvIAq02nbmcWYX6U=;
- b=cicvgcDqIkPDBEBHDzvCvI/OJ7Xqv0z+jvIztIDMhFMnPrpLAzE44GP/9TqwdMNwm5SZU4
- 3Ccf2vLrZ/YMA5j+nMYk9sdjgj9wzU1Ue9cxVUDuYl0OqA34Bw2wGJLd5zsJMpFZElR17Z
- IsIpfDA29bXIhR/hk8MrfWVkAjyRXkU=
+ bh=dxK9q9VV5FCogoinMTYiK7SpZ9hcA+rb8vnRNH3B0ns=;
+ b=Tb0N1ddHGmbqgM9ToF39nh1WjC+HbkU1FD8l5voGULsKQ1hWaXKP6/pvxElNT7xO6E1BUL
+ +NE4PSGWISbY/JA1nLSmc5AZ2h24TjPwkJ9OG/QGKtMlfWfwKucfao2zBY7gw7u8Xb+OC2
+ h0/UkkPV+SDEdmH9DF1an8Rkr9TxtU4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-425-26Nrz3FnP1Clw2THFsGx0g-1; Wed,
- 24 Apr 2024 03:58:02 -0400
-X-MC-Unique: 26Nrz3FnP1Clw2THFsGx0g-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-154-eCeFnLpRPaaWcCbMgYbYdg-1; Wed,
+ 24 Apr 2024 03:58:03 -0400
+X-MC-Unique: eCeFnLpRPaaWcCbMgYbYdg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1A18E1C4C38F;
- Wed, 24 Apr 2024 07:58:02 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9FB5E1C4C38D;
+ Wed, 24 Apr 2024 07:58:03 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 868B643FAD;
- Wed, 24 Apr 2024 07:57:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9372F3543A;
+ Wed, 24 Apr 2024 07:58:02 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Brad Smith <brad@comstyle.com>
-Subject: [PULL 04/17] tests/vm: update openbsd image to 7.5
-Date: Wed, 24 Apr 2024 09:57:22 +0200
-Message-ID: <20240424075735.248041-5-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 05/17] Revert ".travis.yml: Cache Avocado cache"
+Date: Wed, 24 Apr 2024 09:57:23 +0200
+Message-ID: <20240424075735.248041-6-thuth@redhat.com>
 In-Reply-To: <20240424075735.248041-1-thuth@redhat.com>
 References: <20240424075735.248041-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -77,41 +76,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Brad Smith <brad@comstyle.com>
+This reverts commit c1073e44b46490133e16420e1784dec7bcd4e030.
 
-tests/vm: update openbsd to release 7.5
+The Avocado tests have been removed from Travis a long time ago with
+commit c5008c76ee ("gitlab: add acceptance testing to system builds"),
+so we don't need to cache the avocado files here anymore.
 
-Signed-off-by: Brad Smith <brad@comstyle.com>
-Message-ID: <ZhaDVpNjq_ZifvPT@humpty.home.comstyle.com>
+Message-ID: <20240320104144.823425-4-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/vm/openbsd | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .travis.yml | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tests/vm/openbsd b/tests/vm/openbsd
-index 85c9863633..5e646f7c51 100755
---- a/tests/vm/openbsd
-+++ b/tests/vm/openbsd
-@@ -22,8 +22,8 @@ class OpenBSDVM(basevm.BaseVM):
-     name = "openbsd"
-     arch = "x86_64"
+diff --git a/.travis.yml b/.travis.yml
+index 8a3ae76a7c..8da88c4360 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -12,8 +12,6 @@ cache:
+   timeout: 1200
+   ccache: true
+   pip: true
+-  directories:
+-  - $HOME/avocado/data/cache
  
--    link = "https://cdn.openbsd.org/pub/OpenBSD/7.4/amd64/install74.iso"
--    csum = "a1001736ed9fe2307965b5fcdb426ae11f9b80d26eb21e404a705144a0a224a0"
-+    link = "https://cdn.openbsd.org/pub/OpenBSD/7.5/amd64/install75.iso"
-+    csum = "034435c6e27405d5a7fafb058162943c194eb793dafdc412c08d49bb56b3892a"
-     size = "20G"
-     pkgs = [
-         # tools
-@@ -124,7 +124,7 @@ class OpenBSDVM(basevm.BaseVM):
-         self.console_wait_send("Allow root ssh login",    "yes\n")
-         self.console_wait_send("timezone",                "UTC\n")
-         self.console_wait_send("root disk",               "\n")
--        self.console_wait_send("Encrypt the root disk with a passphrase", "no\n")
-+        self.console_wait_send("Encrypt the root disk with a (p)assphrase", "no\n")
-         self.console_wait_send("(W)hole disk",            "\n")
-         self.console_wait_send("(A)uto layout",           "c\n")
  
+ # The channel name "irc.oftc.net#qemu" is encrypted against qemu/qemu
 -- 
 2.44.0
 
