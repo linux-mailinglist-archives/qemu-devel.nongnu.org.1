@@ -2,61 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEEF8B0413
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1E18B041F
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:19:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXpC-0001Gp-V0; Wed, 24 Apr 2024 04:17:54 -0400
+	id 1rzXpF-0001JO-Fj; Wed, 24 Apr 2024 04:17:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXog-0000PD-Pg
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:29 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXof-0000O8-2Y
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoc-0006NN-Np
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXob-0006MQ-8X
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713946637;
+ s=mimecast20190719; t=1713946636;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=q3PB96E5geOcilAlxYVVbJAYbBbSyK2NOflBBzkZQT4=;
- b=JXJF2HwqQUiiK/lT4rTkKp9E8zeMaSF7DUiFZMeBKZfwoWIvecP0JWcr/TdTmuOq+cYz09
- qrE1Qm5xIZuzt4UI1t5+DgVNX6A2HqsR4E4gCC04G+2TxybLb1Fnd1MOhcEvGXXHXhZmQn
- ziQvEbT+h6TGtYNXEmK/g0hhKtlLEHc=
+ bh=t3fOLBPh4dp0SE7cx7ahHukai3oDTh0ff6lrbxzjRlE=;
+ b=CYS6Ncy40/ArwPeOFXhBVgQgHx0C5lelRAcT3ucH0sai2oGj02kTwCrfirzT7WkBjAb1iR
+ +hxdUIYa5v3BKekzX/si7BCRRyM52Unn1A0p5FUBS3Hn63mZhmwen37ek/QnZuajRMlrNC
+ ioFpVUAh1zIH4PidJ5i7NOO0Btap+Kg=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-601-rPfsceHKO2Cwn-MZZ7ufXA-1; Wed, 24 Apr 2024 04:17:13 -0400
-X-MC-Unique: rPfsceHKO2Cwn-MZZ7ufXA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-269-6jC6NP3HNqmgaB8QyiUHwQ-1; Wed, 24 Apr 2024 04:17:13 -0400
+X-MC-Unique: 6jC6NP3HNqmgaB8QyiUHwQ-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B28318065AF;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2CD5980D678;
  Wed, 24 Apr 2024 08:17:13 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CBBA112132A;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D0E52166B31;
  Wed, 24 Apr 2024 08:17:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D537121E66AB; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
+ id D7EAE21E65D8; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 06/25] qapi/schema: declare type for
- QAPISchemaObjectTypeMember.type
-Date: Wed, 24 Apr 2024 10:16:51 +0200
-Message-ID: <20240424081710.2907748-7-armbru@redhat.com>
+Subject: [PULL 07/25] qapi/schema: declare type for
+ QAPISchemaArrayType.element_type
+Date: Wed, 24 Apr 2024 10:16:52 +0200
+Message-ID: <20240424081710.2907748-8-armbru@redhat.com>
 In-Reply-To: <20240424081710.2907748-1-armbru@redhat.com>
 References: <20240424081710.2907748-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -83,49 +83,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-A QAPISchemaObjectTypeMember's type gets resolved only during .check().
-We have QAPISchemaObjectTypeMember.__init__() initialize self.type =
-None, and .check() assign the actual type.  Using .type before .check()
-is wrong, and hopefully crashes due to the value being None.  Works.
+A QAPISchemaArrayType's element type gets resolved only during .check().
+We have QAPISchemaArrayType.__init__() initialize self.element_type =
+None, and .check() assign the actual type.  Using .element_type before
+.check() is wrong, and hopefully crashes due to the value being None.
+Works.
 
-However, it makes for awkward typing.  With .type:
+However, it makes for awkward typing.  With .element_type:
 Optional[QAPISchemaType], mypy is of course unable to see that it's None
 before .check(), and a QAPISchemaType after.  To help it over the hump,
-we'd have to assert self.type is not None before all the (valid) uses.
-The assertion catches invalid uses, but only at run time; mypy can't
-flag them.
+we'd have to assert self.element_type is not None before all the (valid)
+uses.  The assertion catches invalid uses, but only at run time; mypy
+can't flag them.
 
-Instead, declare .type in .__init__() as QAPISchemaType *without*
-initializing it.  Using .type before .check() now certainly crashes,
-which is an improvement.  Mypy still can't flag invalid uses, but that's
-okay.
-
-Addresses typing errors such as these:
-
-qapi/schema.py:657: error: "None" has no attribute "alternate_qtype"  [attr-defined]
-qapi/schema.py:662: error: "None" has no attribute "describe"  [attr-defined]
+Instead, declare .element_type in .__init__() as QAPISchemaType
+*without* initializing it.  Using .element_type before .check() now
+certainly crashes, which is an improvement.  Mypy still can't flag
+invalid uses, but that's okay.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240315152301.3621858-7-armbru@redhat.com>
+Message-ID: <20240315152301.3621858-8-armbru@redhat.com>
 ---
  scripts/qapi/schema.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index b298c8b4f9..307f8af01a 100644
+index 307f8af01a..48f157fb91 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -786,7 +786,7 @@ def __init__(self, name, info, typ, optional, ifcond=None, features=None):
-             assert isinstance(f, QAPISchemaFeature)
-             f.set_defined_in(name)
-         self._type_name = typ
--        self.type = None
-+        self.type: QAPISchemaType  # set during check()
-         self.optional = optional
-         self.features = features or []
+@@ -381,7 +381,7 @@ def __init__(self, name, info, element_type):
+         super().__init__(name, info, None)
+         assert isinstance(element_type, str)
+         self._element_type_name = element_type
+-        self.element_type = None
++        self.element_type: QAPISchemaType
  
+     def need_has_if_optional(self):
+         # When FOO is an array, we still need has_FOO to distinguish
 -- 
 2.44.0
 
