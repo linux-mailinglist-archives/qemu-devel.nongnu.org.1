@@ -2,74 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306778B173A
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF978B1761
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:46:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzm62-00063c-Ar; Wed, 24 Apr 2024 19:32:14 -0400
+	id 1rzmIS-0000zL-Bl; Wed, 24 Apr 2024 19:45:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5s-00061e-Jg
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:32:04 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1rzmIL-0000xW-2P
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:44:57 -0400
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5r-00042Y-2W
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:32:04 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-2ac9e8e4e3dso397521a91.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:32:02 -0700 (PDT)
+ id 1rzmIJ-00028Q-IY
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:44:56 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1e4f341330fso3913405ad.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:44:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714001522; x=1714606322; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AWaHIgupDRubCdZ+Pwkx9z9dob2E973TsdkTQhijD54=;
- b=DaVogUA251nlbszpDbc+At25B2SHHQUJlnsEqWXvchHtUE4eZx2az5AtzoOssFi8j8
- tCXpj71e0LOgCQ6DKPzJ8Xg9O674EAzrQIJl/drRiL3Cod8vKM32+mCTndfKuc/yt5jV
- qAhwNv6MXolKP8Z+Ez9bEZM/OmryRmOkeKkfR58B2UTkbvhv3M4eD0uoxund86HZgAbL
- aTiJ9WG1WLzajz0j6UdGOOMPHY0jcnFy80A3TUGjDIhm/+0rkXtNNzvx2hS1f1twfEDk
- t6knBo7N1cUqCitaJMl+3+8lJZnrRNWSOcvX2fTiXzXa4c8Ash25TEZJlkvQc19bWPF6
- 3TtQ==
+ d=linaro.org; s=google; t=1714002290; x=1714607090; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=2yyd735UfzyLOYoJn2aQVItYH0NxUIsZOxgYBbVgHYY=;
+ b=bUPLlPxA2D0uVs2KkqsQOyR9Txj+njEBEA9xSnSGZJ+fDXhkjw1EjenCWEiPt+7/9H
+ zHyeAghBCb64ZQ6OFP4y03QW25vSMFMTmnEkpYZg4R3Wazr3IXyfqXRXn9L7PXXOOvHK
+ t/7qkjb8a8jpCNYcLv4goFZAXccmcjkeXZblh9zEQYnc5SmNFccBdIEwgSkgZ+lmx1ed
+ Q3hSik+z8STNvDp0swbgjt5DWqhyUkA0CDk985Cstqnhh95veF6WSeh+675tvHLy7DP5
+ 6cnhc5AEUvN5Z1fF6mIJiMb8qlqgeDJJMBGEvQ3wQFLYIQznNqkK6ru0M6EwqKH/f7wt
+ FB8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714001522; x=1714606322;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AWaHIgupDRubCdZ+Pwkx9z9dob2E973TsdkTQhijD54=;
- b=ao+15Q4Qwp7jXqWeQTN5UQuyToWT0juEjQ3gaArdQPu/4YugdqA0AI8YY59fs/S9CA
- ibpYPrS9BwkIXmURSjOzhVOPCRUbbsDi4m0ZDalJTRc/2AnBKNoXQtQCA07e3AX5BqrC
- MEWlIeG5EoIFNAJECGLbWBZQFGyGEY7KSue5rAqJE4JJl79TmIYTQxvRmOX21p2rj73W
- UtNLejMxpsbh8qD/P5Y6krowICDfXtwHkg5i07i3jxqG2ieyu7nj95w/eYWuN8RtThWo
- kpMJPBX3KWJubT2xdcH4X0ehQHDJBaZxV35QVZ19ieFQu8sSykbD3AtMfkdxqSnR76Yo
- yPuw==
-X-Gm-Message-State: AOJu0YwCOxMKBFHj+ZHsx/2ENjgl6cAIhr8MsPpbXghpCy0Z6cVGij7p
- MQM7i0kB3ISo7P9ddh6pFOyl3wEF7YkKJ/o8sOCiVfUmKjW5CPZeG96IKhNSDUwVwTzR9BWe2Pd
- o
-X-Google-Smtp-Source: AGHT+IH/d5mlwc4hSG8NtORDwKS2oU9Gpmt/7SQXD9GJW3CyBBlUt/ysiPbbV1xoFmLzCnKkFgutTQ==
-X-Received: by 2002:a17:90b:120e:b0:2a4:b831:5017 with SMTP id
- gl14-20020a17090b120e00b002a4b8315017mr2145820pjb.48.1714001521874; 
- Wed, 24 Apr 2024 16:32:01 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1714002290; x=1714607090;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=2yyd735UfzyLOYoJn2aQVItYH0NxUIsZOxgYBbVgHYY=;
+ b=N9ryJ0wgG41WkDTXKLH8p7VMkaI7EerDZ4Pj0XO6RZvqXkhj/UnPVy15TLilpeQbNh
+ J1rM2TSsI0v61twUanN+oJL6DKKCzY1S/H8MPvspJ7n74sw+IzvcgmJ2wKj+m55975K4
+ 7J+DY702FlzkEPNrhUx56nlIj9ujsl7TNh0FACiLUyvlx/P65X4tj51C97MjqgwH6dkb
+ RoUjo7HIixBoNKy40mCDivD1UxIm1PmEnsJaTEaLsuRfQXxiw8xs5qiY3OBkwBSXa4Ch
+ 6JQOiGgHA7ogj0aeTSDXoHwNzjBdRIuR8wUx7iiKEUm4Sf2zYQ8VtT0GJC/N63qflABu
+ yzSA==
+X-Gm-Message-State: AOJu0YwkHpqf1+aPKbNQtVcb91ISS7FJ3DZbCvLS0sQ+rKdu1EzOtXF/
+ t38XwyRZqRFgtY4sziplQian/i9cuBU2lkSfR62qbH4j3JYXOEmY9IIl8OzNeOPuxw4TGjGRBwy
+ R
+X-Google-Smtp-Source: AGHT+IF4tNm0PQHZjWW+ElHumU6duqqffrlimun/awsuj0LR4OPKjCGS98JMaBB9rGAo8n7zSVE6zg==
+X-Received: by 2002:a17:902:cf0e:b0:1e7:b775:64bd with SMTP id
+ i14-20020a170902cf0e00b001e7b77564bdmr5059276plg.53.1714002290141; 
+ Wed, 24 Apr 2024 16:44:50 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.32.01
+ h17-20020a170902f55100b001e49428f327sm12531642plf.176.2024.04.24.16.44.49
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 16:32:01 -0700 (PDT)
+ Wed, 24 Apr 2024 16:44:49 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 33/33] accel/tcg: Remove cpu_ldsb_code / cpu_ldsw_code
-Date: Wed, 24 Apr 2024 16:31:31 -0700
-Message-Id: <20240424233131.988727-34-richard.henderson@linaro.org>
+Subject: [PATCH 0/5] target/alpha: Implement CF_PCREL
+Date: Wed, 24 Apr 2024 16:44:31 -0700
+Message-Id: <20240424234436.995410-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240424233131.988727-1-richard.henderson@linaro.org>
-References: <20240424233131.988727-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,38 +87,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+Implement pc-relative tcg code generation.
 
-Previous commits replaced them by translator_ld* calls.
+r~
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20240405131532.40913-1-philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- include/exec/cpu_ldst.h | 10 ----------
- 1 file changed, 10 deletions(-)
+Richard Henderson (5):
+  target/alpha: Use cpu_env in preference to ALPHA_CPU
+  target/alpha: Hoist branch shift to initial decode
+  target/alpha: Split out gen_goto_tb
+  target/alpha: Split out gen_pc_disp
+  target/alpha: Implement CF_PCREL
 
-diff --git a/include/exec/cpu_ldst.h b/include/exec/cpu_ldst.h
-index eb8f3f0595..85ca104dc9 100644
---- a/include/exec/cpu_ldst.h
-+++ b/include/exec/cpu_ldst.h
-@@ -438,16 +438,6 @@ uint32_t cpu_lduw_code(CPUArchState *env, abi_ptr addr);
- uint32_t cpu_ldl_code(CPUArchState *env, abi_ptr addr);
- uint64_t cpu_ldq_code(CPUArchState *env, abi_ptr addr);
- 
--static inline int cpu_ldsb_code(CPUArchState *env, abi_ptr addr)
--{
--    return (int8_t)cpu_ldub_code(env, addr);
--}
--
--static inline int cpu_ldsw_code(CPUArchState *env, abi_ptr addr)
--{
--    return (int16_t)cpu_lduw_code(env, addr);
--}
--
- /**
-  * tlb_vaddr_to_host:
-  * @env: CPUArchState
+ target/alpha/cpu.c       |  32 ++++++++---
+ target/alpha/helper.c    |   8 +--
+ target/alpha/translate.c | 117 +++++++++++++++++++++------------------
+ 3 files changed, 91 insertions(+), 66 deletions(-)
+
 -- 
 2.34.1
 
