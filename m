@@ -2,82 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E808B140A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 22:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014E38B142E
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 22:11:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzirx-000176-Re; Wed, 24 Apr 2024 16:05:29 -0400
+	id 1rziwx-0004J2-F3; Wed, 24 Apr 2024 16:10:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rzirw-00016x-DJ
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 16:05:28 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1rziru-0008Sa-PK
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 16:05:28 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-571c22d9de4so223125a12.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 13:05:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713989123; x=1714593923; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SYORqT/gXMRj8hBF7cziEW/dwRHovily7KUN6x64r68=;
- b=C1XmogzDv5AOH8VTx/5R3mj8o3vsURda3H1zWvzAkwOnFsgXj1JdrANY7ZRCLedqdW
- H/F8vv1AAPKYzTL2KGYvhwGrTcQiMlln+g8tCFYmpA+qJd5ZAEBwAU1H9kFj7KX0jO5y
- 2FfQW+4KJSr7dvlhlw2c58swBixZmEfIuAceMYdwqU2ju2AM9XZUn7ylrRSGP4zBIoM5
- jAtyyf81HZTNZUbwPNLf/9jhEp9Sv/0quFY12sIY+08SMtQJDx91RZqtEeyDaMXNj5E3
- S8qw1gzhl3GDrBIeHy0vfIP66d7nTA/Gp/HpwxAZArJPDCjjpFZK/FOAyablgGQp0riX
- ducw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713989123; x=1714593923;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SYORqT/gXMRj8hBF7cziEW/dwRHovily7KUN6x64r68=;
- b=BaCvQXOe7jrLurtIDVdE0IO2IC0YDGfV3Wi9BujMuTH14s5jjv6ntfm3jcXFOJ2nWj
- gagRa+mwtV1tPgWvSk4JLb72wr/Fwsutn4TrXuhTjONasqP2HpBzG4Hsb6bdHpzVB3RD
- fb910N3u5ki4A22lc2MfgI9Ds44tUXl7vIRjAiafZwtfa80R/5zF3zL6VrauGn4zycRN
- mSAc9ceJYmLUl95NIoeGVOE/8nKjul8+2PmCrkZxcbVRZej07nTfO/pp4tTEEXFybnAq
- S47UG4PUSz0TiuXUqEu3LtqXkoFaXWoq/XIHyEEGG1KHcVH7dun4YFjDptwqrHpvma+H
- k7eg==
-X-Gm-Message-State: AOJu0YzSR9csdGWQhZv6xl4rYvFZRim7f9UYjYrD98Q3LHT6VkxG1IVo
- 6wHmjV0fIk1qUxgzmI1xEp2oZX/jaXMCvaWw1KmbEu0jSJW3VWgIPo0uZg==
-X-Google-Smtp-Source: AGHT+IH1DENYzUkPFcw7bnVzHDUW5rMKX68YNCAfyBq1KfnWrkFZV7E+liKwPGKfYZa3GZYxSO6ohQ==
-X-Received: by 2002:a17:906:6bda:b0:a52:1e53:febf with SMTP id
- t26-20020a1709066bda00b00a521e53febfmr2249549ejs.69.1713989123033; 
- Wed, 24 Apr 2024 13:05:23 -0700 (PDT)
-Received: from [127.0.0.1] (dynamic-078-055-120-248.78.55.pool.telefonica.de.
- [78.55.120.248]) by smtp.gmail.com with ESMTPSA id
- e20-20020a170906315400b00a5591a644c8sm6655257eje.17.2024.04.24.13.05.22
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 24 Apr 2024 13:05:22 -0700 (PDT)
-Date: Wed, 24 Apr 2024 20:05:06 +0000
-From: Bernhard Beschow <shentey@gmail.com>
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rziwJ-0003sp-Ct; Wed, 24 Apr 2024 16:10:00 -0400
+Received: from zproxy3.enst.fr ([137.194.2.222])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ines.varhol@telecom-paris.fr>)
+ id 1rziw7-00010n-Q6; Wed, 24 Apr 2024 16:09:54 -0400
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 22D4FA07A4;
+ Wed, 24 Apr 2024 22:09:38 +0200 (CEST)
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10032) with ESMTP
+ id RIPrlfySDkIi; Wed, 24 Apr 2024 22:09:37 +0200 (CEST)
+Received: from localhost (localhost [IPv6:::1])
+ by zproxy3.enst.fr (Postfix) with ESMTP id 01D7FA07A3;
+ Wed, 24 Apr 2024 22:09:37 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zproxy3.enst.fr 01D7FA07A3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=telecom-paris.fr;
+ s=A35C7578-1106-11E5-A17F-C303FDDA8F2E; t=1713989377;
+ bh=6FHgBZPyfb5RWYr02woys+s5PBCLH/D+EvcMKSccLm8=;
+ h=From:To:Date:Message-ID:MIME-Version;
+ b=3yt/3KJ/zE8qwvKUXYfqaFiu15zjXCIe5zvae9Q0BOxG2jW6vBW+OX/+Pca/u6FV9
+ w1S0BgpWNR5urVPCRp6od0cEcWTKGMPLZr5K2be4HBuDxPiqbULYCHJuyuud4IxR1l
+ +FxVrtN2yRAXPtAttAI7I2szdTuE0X1KcVUutcDo=
+X-Virus-Scanned: amavis at enst.fr
+Received: from zproxy3.enst.fr ([IPv6:::1])
+ by localhost (zproxy3.enst.fr [IPv6:::1]) (amavis, port 10026) with ESMTP
+ id l-sewHOAit4c; Wed, 24 Apr 2024 22:09:36 +0200 (CEST)
+Received: from inesv-Inspiron-3501.. (unknown
+ [IPv6:2a02:1808:204:e56c:df60:5720:79e:c1dd])
+ by zproxy3.enst.fr (Postfix) with ESMTPSA id A8E05A0770;
+ Wed, 24 Apr 2024 22:09:35 +0200 (CEST)
+From: =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>
 To: qemu-devel@nongnu.org
-CC: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Michael Roth <michael.roth@amd.com>
-Subject: Re: [PATCH 0/4] X86: Alias isa-bios area and clean up
-In-Reply-To: <20240422200625.2768-1-shentey@gmail.com>
-References: <20240422200625.2768-1-shentey@gmail.com>
-Message-ID: <7F22191C-C726-434D-BE18-ECB67134EC74@gmail.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Samuel Tardieu <sam@rfc1149.net>, qemu-arm@nongnu.org,
+ Thomas Huth <thuth@redhat.com>,
+ Arnaud Minier <arnaud.minier@telecom-paris.fr>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?q?In=C3=A8s=20Varhol?= <ines.varhol@telecom-paris.fr>,
+ Laurent Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v6 0/5] Add device DM163 (led driver,
+ matrix colors shield & display)
+Date: Wed, 24 Apr 2024 22:06:50 +0200
+Message-ID: <20240424200929.240921-1-ines.varhol@telecom-paris.fr>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=137.194.2.222;
+ envelope-from=ines.varhol@telecom-paris.fr; helo=zproxy3.enst.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,88 +82,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+Michael=20
+This device implements the IM120417002 colors shield v1.1 for Arduino
+(which relies on the DM163 8x3-channel led driving logic) and features
+a simple display of an 8x8 RGB matrix. This color shield can be plugged
+on the Arduino board (or the B-L475E-IOT01A board) to drive an 8x8
+RGB led matrix. This RGB led matrix takes advantage of retinal persistanc=
+e
+to seemingly display different colors in each row.
 
-Am 22=2E April 2024 20:06:21 UTC schrieb Bernhard Beschow <shentey@gmail=
-=2Ecom>:
->This series changes the "isa-bios" MemoryRegion to be an alias rather tha=
-n a
->
->copy in the pflash case=2E This fixes issuing pflash commands in the isa-=
-bios
->
->region which matches real hardware and which some real-world legacy biose=
-s I'm
->
->running rely on=2E Furthermore, aliasing in the isa-bios area is already =
-the
->
->current behavior in the bios (a=2Ek=2Ea=2E ROM) case, so this series cons=
-olidates
->
->behavior=2E
->
->
->
->The consolidateion results in duplicate code which is resolved in the sec=
-ond
->
->half (patches 3 and 4) in this series=2E
->
->
->
->Question: AFAIU, patch 2 changes the behavior for SEV-enabled guests sinc=
-e the
->
->isa-bios area is now encrypted=2E Does this need compat machinery or is i=
-t a
->
->bugfix?
->
->
->
->Testing done:
->
->* `make check` with qemu-system-x86_64 (QEMU 8=2E2=2E2) installed=2E All =
-tests
->
->  including migration tests pass=2E
->
->* `make check-avocado`
->
->
->
->Best regards,
->
->Bernhard
->
->
->
->Bernhard Beschow (4):
->
->  hw/i386/pc_sysfw: Remove unused parameter from pc_isa_bios_init()
->
->  hw/i386/pc_sysfw: Alias rather than copy isa-bios region
->
->  hw/i386/x86: Eliminate two if statements in x86_bios_rom_init()
->
->  hw/i386: Consolidate isa-bios creation
->
->
->
-> include/hw/i386/x86=2Eh |  2 ++
->
-> hw/i386/pc_sysfw=2Ec    | 38 ++++----------------------------------
->
-> hw/i386/x86=2Ec         | 35 +++++++++++++++++++----------------
->
-> 3 files changed, 25 insertions(+), 50 deletions(-)
->
->
->
->-- >
->2=2E44=2E0
->
->
->
+Thank you for the reviews.
+
+Changes from v5 (1st commit) :
+- use `extract16` and `deposit32` in `dm163_propagate_outputs` for
+more clarity
+- similarly, use `extract64` and `deposit32` in `dm163_bank(0|1)`
+
+Changes from v4 :
+dm163
+- redefine `DM163_NUM_LEDS` for clarity
+- change definition of `COLOR_BUFFER_SIZE`
+- rename `age_of_row` to `row_persistance_delay`
+- remove unnecessary QOM cast macro in GPIO handlers
+- remove unnecessary inline of `dm163_bank0` and `dm163_bank1`
+- replace occurrences of number 8 by the right define macro
+- use unsigned type to print GPIO input `new_stateq`
+STM32L4x5 qtests
+- add comment to explain GPIO forwarding to SoC
+B-L475E-IOT01A
+- correct formatting
+- use unsigned for gpio pins' indices
+DM163 qtest
+- use an enum for dm163 inputs
+- inline ['dm163-test'] in meson.build (I don't plan on adding qtests)
+OTHER
+- update copyrights to 2023-2024
+
+Changes from v3 (review of the 1st commit by Peter Maydell) :
+- dm163.c : instead of redrawing the entire console each frame,
+only redraw the rows that changed using a new variable `redraw`
+- reset all the fields in `dm163_reset_hold`
+- correcting typos : persistance -> persistence
+- b-l475e-iot01a.rst : correcting typo
+
+Changes from v2 : Corrected typo in the Based-on message id
+
+Changes from v1 :
+- moving the DM163 from the SoC to the B-L475E-IOT01A machine
+(changing config files and tests accordingly)
+- restricting DM163 test to ARM & DM163 availability
+- using `object_class_by_name()` to check for DM163 presence at run-time
+- exporting SYSCFG inputs to the SoC (and adapting tests accordingly)
+
+Signed-off-by: Arnaud Minier <arnaud.minier@telecom-paris.fr>
+Signed-off-by: In=C3=A8s Varhol <ines.varhol@telecom-paris.fr>
+Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+In=C3=A8s Varhol (5):
+  hw/display : Add device DM163
+  hw/arm : Pass STM32L4x5 SYSCFG gpios to STM32L4x5 SoC
+  hw/arm : Create Bl475eMachineState
+  hw/arm : Connect DM163 to B-L475E-IOT01A
+  tests/qtest : Add testcase for DM163
+
+ docs/system/arm/b-l475e-iot01a.rst  |   3 +-
+ include/hw/display/dm163.h          |  59 +++++
+ hw/arm/b-l475e-iot01a.c             | 105 +++++++--
+ hw/arm/stm32l4x5_soc.c              |   6 +-
+ hw/display/dm163.c                  | 349 ++++++++++++++++++++++++++++
+ tests/qtest/dm163-test.c            | 194 ++++++++++++++++
+ tests/qtest/stm32l4x5_gpio-test.c   |  13 +-
+ tests/qtest/stm32l4x5_syscfg-test.c |  17 +-
+ hw/arm/Kconfig                      |   1 +
+ hw/display/Kconfig                  |   3 +
+ hw/display/meson.build              |   1 +
+ hw/display/trace-events             |  14 ++
+ tests/qtest/meson.build             |   2 +
+ 13 files changed, 736 insertions(+), 31 deletions(-)
+ create mode 100644 include/hw/display/dm163.h
+ create mode 100644 hw/display/dm163.c
+ create mode 100644 tests/qtest/dm163-test.c
+
+--=20
+2.43.2
+
 
