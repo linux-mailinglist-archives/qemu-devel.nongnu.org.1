@@ -2,56 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACAA8B039F
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 09:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2748D8B039D
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 09:59:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXWB-0004i6-T1; Wed, 24 Apr 2024 03:58:15 -0400
+	id 1rzXWB-0004hu-Ly; Wed, 24 Apr 2024 03:58:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW8-0004hG-7X
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:12 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW7-0004h6-RA
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW6-00031O-MY
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1rzXW6-00031M-60
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 03:58:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1713945489;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ElLhO23GlXxM6+MXNZ/GxMant5QeGqECj4K+FaqcwsQ=;
- b=CAlRVGzMgfCTG8NwvbcjECxUJ728vc3ynPc208g0iCxN/piQE5v3CUUt6IoQj+M5UsFzki
- TVnIUIcZVxwU382oO7DRCzEhRNsNlovoWEPceOVCaz3ZXR7jaqoGuNIJWZBMVzBfNDuP8l
- JkeJpZ8nGwOs8eTNkOUDxdhO0AZtmyM=
+ bh=27FGG94zeZod4uF2dtNInCYvLM8ZTDK5Jbv/dPdMYPE=;
+ b=WzqDFij0k5mJ68QTM6HoHRCfRRPHgUQ2AlGQdJLaxFVdPRDCqwRK1Mt39MSvTx+ZrhheRZ
+ 1RWDU3mZZPmaP9GStGwcdj//aZWR7oGEkJXNy7Sa5EnvDJlYzwfbkdCc7EyWOhry+avoKY
+ /kJ798CwrVtD3Jm99c6SrnwhvRQmBz4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-195-d8y4LfKkONanSiuo6Rmhxg-1; Wed,
- 24 Apr 2024 03:58:06 -0400
-X-MC-Unique: d8y4LfKkONanSiuo6Rmhxg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-141-me6uEuEmOMC6nvXPIXR-zw-1; Wed,
+ 24 Apr 2024 03:58:07 -0400
+X-MC-Unique: me6uEuEmOMC6nvXPIXR-zw-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E75123C12828;
- Wed, 24 Apr 2024 07:58:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDDEC3C1282E;
+ Wed, 24 Apr 2024 07:58:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1B5893543A;
- Wed, 24 Apr 2024 07:58:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 314CF3543A;
+ Wed, 24 Apr 2024 07:58:06 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 07/17] .travis.yml: Update the jobs to Ubuntu 22.04
-Date: Wed, 24 Apr 2024 09:57:25 +0200
-Message-ID: <20240424075735.248041-8-thuth@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 08/17] .travis.yml: Do some more testing with Clang
+Date: Wed, 24 Apr 2024 09:57:26 +0200
+Message-ID: <20240424075735.248041-9-thuth@redhat.com>
 In-Reply-To: <20240424075735.248041-1-thuth@redhat.com>
 References: <20240424075735.248041-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
@@ -78,98 +76,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to our support policy, we'll soon drop our official support
-for Ubuntu 20.04 ("Focal Fossa") in QEMU. Thus we should update the
-Travis jobs now to a newer release (Ubuntu 22.04 - "Jammy Jellyfish")
-for future testing. Since all jobs are using this release now, we
-can drop the entries from the individual jobs and use the global
-setting again.
+We are doing a lot of cross-compilation tests with GCC in the gitlab-CI
+already, so we could get some more test coverage by using Clang in the
+Travis-CI instead. Thus let's switch two additional jobs to use Clang
+for compilation.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-ID: <20240418101056.302103-6-thuth@redhat.com>
+Message-ID: <20240320104144.823425-7-thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- .travis.yml | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ .travis.yml | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/.travis.yml b/.travis.yml
-index 196725d5a3..7527f71c05 100644
+index 7527f71c05..cef0308952 100644
 --- a/.travis.yml
 +++ b/.travis.yml
-@@ -1,5 +1,5 @@
- os: linux
--dist: focal
-+dist: jammy
- language: c
- compiler:
-   - gcc
-@@ -7,7 +7,7 @@ cache:
-   # There is one cache per branch and compiler version.
-   # characteristics of each job are used to identify the cache:
-   # - OS name (currently only linux)
--  # - OS distribution (for Linux, bionic or focal)
-+  # - OS distribution (e.g. "jammy" for Linux)
-   # - Names and values of visible environment variables set in .travis.yml or Settings panel
-   timeout: 1200
-   ccache: true
-@@ -81,7 +81,6 @@ jobs:
+@@ -113,8 +113,9 @@ jobs:
+         - CONFIG="--disable-containers --enable-fdt=system
+                   --target-list=${MAIN_SYSTEM_TARGETS} --cxx=/bin/false"
  
-     - name: "[aarch64] GCC check-tcg"
-       arch: arm64
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -116,7 +115,6 @@ jobs:
- 
-     - name: "[ppc64] GCC check-tcg"
+-    - name: "[ppc64] GCC check-tcg"
++    - name: "[ppc64] Clang check-tcg"
        arch: ppc64le
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -151,7 +149,6 @@ jobs:
- 
-     - name: "[s390x] GCC check-tcg"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -195,7 +192,6 @@ jobs:
- 
-     - name: "[s390x] GCC (other-system)"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libaio-dev
-@@ -225,7 +221,6 @@ jobs:
- 
-     - name: "[s390x] GCC (user)"
-       arch: s390x
--      dist: focal
-       addons:
-         apt_packages:
-           - libgcrypt20-dev
-@@ -240,8 +235,7 @@ jobs:
- 
-     - name: "[s390x] Clang (disable-tcg)"
-       arch: s390x
--      dist: focal
--      compiler: clang-10
 +      compiler: clang
        addons:
          apt_packages:
            - libaio-dev
-@@ -267,7 +261,6 @@ jobs:
-           - libvdeplug-dev
-           - libvte-2.91-dev
-           - ninja-build
--          - clang-10
-       env:
-         - TEST_CMD="make check-unit"
-         - CONFIG="--disable-containers --disable-tcg --enable-kvm --disable-tools
+@@ -190,8 +191,9 @@ jobs:
+               $(exit $BUILD_RC);
+           fi
+ 
+-    - name: "[s390x] GCC (other-system)"
++    - name: "[s390x] Clang (other-system)"
+       arch: s390x
++      compiler: clang
+       addons:
+         apt_packages:
+           - libaio-dev
 -- 
 2.44.0
 
