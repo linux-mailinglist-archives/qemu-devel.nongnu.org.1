@@ -2,75 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6EB8B172C
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8AFB8B1718
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:32:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzm5j-0005vI-9V; Wed, 24 Apr 2024 19:31:55 -0400
+	id 1rzm5k-0005wW-2k; Wed, 24 Apr 2024 19:31:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5d-0005qV-Et
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:49 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1rzm5e-0005qt-SL
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:51 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5b-0003TG-FA
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:48 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-2a78c2e253aso362284a91.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:31:46 -0700 (PDT)
+ id 1rzm5b-0003TQ-JL
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:50 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-5dcc4076c13so344158a12.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:31:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714001505; x=1714606305; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714001506; x=1714606306; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KENF3qoIai8EKBqtt1xiPdTvHherBETdFHxGPatGjNo=;
- b=ay3UI16VzwPNIR9/lwrs7GlF7Ug8G0PovI0WsPM9Pt1ads0+DM6/qO8oS8J/SysXjX
- k1d9UhSdpUst50BCjJ5FfNPpH6SStn3FHkgjp4HjmGutWEUdaLNnm1sGSmt9NeHGGA2/
- +GvFiBO7/L+yccob6tL92zpLQJqcMlgZ3VyHF5kjpwSVfPUVsDWCBssskwd1mQbBGBLA
- bxWCEzGTNTGpj45W/7E1L8HNJLczXJLYY7lfur+q8vkji5JByhBDfeQmE6IoEsd2/jWp
- GQyqe924WSSwEHbNWuJpt6N8aDKqis+epHrw6XbW34GnHThcKUZO1W7WGQnlA3yEIUEb
- RLQg==
+ :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=ftBOVEixPIVqS15sO6yzpwdLAXRK5ukeZC44nc/EnDQ=;
+ b=eZXE+hPQo+TLs2J+VlJtfV+zSCEsYfKkcx5dbde8bS8iDnGMWzPAe9nN/hCmjaPzp/
+ kH2uMFGMhqfespvwt/IRdzj7C+AJi2ebjP1bn0EuFg/aI4ti0er/UGTzkH+zv+nw/9tE
+ QOjqQ3fx99RSPMw/NXCVBLu1+RNrufgTGY6ZTC5BHiPlHP6Ggvpqu2enZVQg4zx+RxbR
+ xY3M23DkDWU+x226ircCJ89VGUdC9oGOaaPUYO5FhI0NKhM15h5s3uaJxzTsDzNgz5sJ
+ i6Z+gGjHJAzL4nflFJY5hI0Z4dFB3Fk8MPtmyNh7eTOV7dWP0Uc4VDu8M/10/kqpPDVM
+ /51A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714001505; x=1714606305;
+ d=1e100.net; s=20230601; t=1714001506; x=1714606306;
  h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KENF3qoIai8EKBqtt1xiPdTvHherBETdFHxGPatGjNo=;
- b=mVzWtNykNKifOYrcvKSsiykvpTBx3eIdRRnnORJ/gtsTfCy//1dFJMAKmHUvJuxr94
- yx23R9c2w5FDAhC+n9T002WOYp0cKzR/Op27DLeAP+kD6OrddV1CSsruS1VKLjlrdIIh
- Fu7rTxafZuAKMEdM5Un1I71lf/pAfNtsiEbMQZ4Tm59EZv+6MXgHnJ1/EosVgzRXy/tu
- CBVN1T3dc3lFxz5NSgmaHr0V14iTTZSdDSDz2xXhkpDFeVuIuOgp6pmw90jZT1ukli+k
- I3QYouPwfo2nxelqX4/3yy3ERcnRyVllcyageNPQYulgJQMx9Q8wzsTF/YmtQyS6bche
- jQ6w==
-X-Gm-Message-State: AOJu0YwX2SGKGaYvBRwvayIv0x5OnlXIXb+FIXjeBrpFX7G7BSkbTJm5
- J7V+s8ZMonlxK+wCoT1ou7tWzWaywIy5nxwZCj12JdaUNyI0oESXxw24detYhOslqrHOVXNnG/T
- W
-X-Google-Smtp-Source: AGHT+IFJn1RiMXYPk4yNLmKC2HHb1p615H+FUV03h3IwA0E+iZBC/VmxfWt/JZiDK8qTQUB4VIEzMg==
-X-Received: by 2002:a17:90a:fd07:b0:2a2:5e8c:3a47 with SMTP id
- cv7-20020a17090afd0700b002a25e8c3a47mr3694685pjb.48.1714001505432; 
- Wed, 24 Apr 2024 16:31:45 -0700 (PDT)
+ bh=ftBOVEixPIVqS15sO6yzpwdLAXRK5ukeZC44nc/EnDQ=;
+ b=tqVRXM7eG59i0giacv3rYsNZ/tFtOz6qfHw5dpr/NZKzjMdL4X4Enx/jGZkpCkqHuv
+ WXD/jC4NViuGe2zi05aTMsPBs0ejlB3FjkoqPiTcXPe7xrCa/diFsXothh5mdzNJdnlQ
+ woalsIr3GlToNxqmEehfextIj77vn7Loq1XVavMMuh0y/ksvOYosCke3Z6MgE4rd3qyf
+ bbJF/h4dmvtQA1peGNy0ONVaGG29DZ/ZqxB3v3tpABlLiftQbOblEiD4f2wsZDkaYaXT
+ fH7bC5HoJr2kbX4WzIIEsZiPsWk27kdq1WDA+EdcU5CVqO3PvbiwYNsGiNAXKDQviKtz
+ wQrg==
+X-Gm-Message-State: AOJu0YyJkadcsOs2stl+ZbHmKHlk2RM9HrkZDil12fDmoaeYa39omkAg
+ OcPjga/INjYFFkzbVHnbGZvj65Vs5fW1s5Zofjm+qvnBLmZAILr8Tq8HPVWQOrOY8CiVrEvF6Xo
+ l
+X-Google-Smtp-Source: AGHT+IGBTjB5DjeHT/L3xK8JmZkBDvlWp4B4GmOxwt/oiKR5Eq3cB6JbgeLHhlFWxcAmkPEKN0taNg==
+X-Received: by 2002:a17:90a:e58d:b0:29b:c31:1fe1 with SMTP id
+ g13-20020a17090ae58d00b0029b0c311fe1mr1740865pjz.10.1714001506267; 
+ Wed, 24 Apr 2024 16:31:46 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.44
+ z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.45
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 24 Apr 2024 16:31:45 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 14/33] plugins: Use DisasContextBase for
- qemu_plugin_tb_vaddr
-Date: Wed, 24 Apr 2024 16:31:12 -0700
-Message-Id: <20240424233131.988727-15-richard.henderson@linaro.org>
+Subject: [PATCH v2 15/33] plugins: Merge alloc_tcg_plugin_context into
+ plugin_gen_tb_start
+Date: Wed, 24 Apr 2024 16:31:13 -0700
+Message-Id: <20240424233131.988727-16-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424233131.988727-1-richard.henderson@linaro.org>
 References: <20240424233131.988727-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,63 +91,104 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We do not need to separately record the start of the TB.
+We don't need to allocate plugin context at startup,
+we can wait until we actually use it.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/plugin.h  | 1 -
- accel/tcg/plugin-gen.c | 3 +--
- plugins/api.c          | 3 ++-
- 3 files changed, 3 insertions(+), 4 deletions(-)
+ accel/tcg/plugin-gen.c | 36 ++++++++++++++++++++----------------
+ tcg/tcg.c              | 11 -----------
+ 2 files changed, 20 insertions(+), 27 deletions(-)
 
-diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
-index 3db0e75d16..340e10ef12 100644
---- a/include/qemu/plugin.h
-+++ b/include/qemu/plugin.h
-@@ -117,7 +117,6 @@ struct qemu_plugin_scoreboard {
- struct qemu_plugin_tb {
-     GPtrArray *insns;
-     size_t n;
--    uint64_t vaddr;
- 
-     /* if set, the TB calls helpers that might access guest memory */
-     bool mem_helper;
 diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index b036773d3c..2c52306f80 100644
+index 2c52306f80..8ebf215645 100644
 --- a/accel/tcg/plugin-gen.c
 +++ b/accel/tcg/plugin-gen.c
-@@ -188,7 +188,7 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
-     int insn_idx = -1;
+@@ -305,28 +305,32 @@ static void plugin_gen_inject(struct qemu_plugin_tb *plugin_tb)
  
-     if (unlikely(qemu_loglevel_mask(LOG_TB_OP_PLUGIN)
--                 && qemu_log_in_addr_range(plugin_tb->vaddr))) {
-+                 && qemu_log_in_addr_range(tcg_ctx->plugin_db->pc_first))) {
-         FILE *logfile = qemu_log_trylock();
-         if (logfile) {
-             fprintf(logfile, "OP before plugin injection:\n");
-@@ -318,7 +318,6 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
- 
-         ret = true;
- 
--        ptb->vaddr = db->pc_first;
-         ptb->mem_helper = false;
- 
-         tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
-diff --git a/plugins/api.c b/plugins/api.c
-index 4b6690c7d6..36ab47cdae 100644
---- a/plugins/api.c
-+++ b/plugins/api.c
-@@ -200,7 +200,8 @@ size_t qemu_plugin_tb_n_insns(const struct qemu_plugin_tb *tb)
- 
- uint64_t qemu_plugin_tb_vaddr(const struct qemu_plugin_tb *tb)
+ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db)
  {
--    return tb->vaddr;
-+    const DisasContextBase *db = tcg_ctx->plugin_db;
-+    return db->pc_first;
+-    bool ret = false;
++    struct qemu_plugin_tb *ptb;
+ 
+-    if (test_bit(QEMU_PLUGIN_EV_VCPU_TB_TRANS, cpu->plugin_state->event_mask)) {
+-        struct qemu_plugin_tb *ptb = tcg_ctx->plugin_tb;
+-
+-        /* reset callbacks */
+-        if (ptb->cbs) {
+-            g_array_set_size(ptb->cbs, 0);
+-        }
+-        ptb->n = 0;
+-
+-        ret = true;
+-
+-        ptb->mem_helper = false;
+-
+-        tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
++    if (!test_bit(QEMU_PLUGIN_EV_VCPU_TB_TRANS,
++                  cpu->plugin_state->event_mask)) {
++        return false;
+     }
+ 
+     tcg_ctx->plugin_db = db;
+     tcg_ctx->plugin_insn = NULL;
++    ptb = tcg_ctx->plugin_tb;
+ 
+-    return ret;
++    if (ptb) {
++        /* Reset callbacks */
++        if (ptb->cbs) {
++            g_array_set_size(ptb->cbs, 0);
++        }
++        ptb->n = 0;
++        ptb->mem_helper = false;
++    } else {
++        ptb = g_new0(struct qemu_plugin_tb, 1);
++        tcg_ctx->plugin_tb = ptb;
++        ptb->insns = g_ptr_array_new();
++    }
++
++    tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
++    return true;
  }
  
- struct qemu_plugin_insn *
+ void plugin_gen_insn_start(CPUState *cpu, const DisasContextBase *db)
+diff --git a/tcg/tcg.c b/tcg/tcg.c
+index 691b2342a2..6cc9f205c4 100644
+--- a/tcg/tcg.c
++++ b/tcg/tcg.c
+@@ -761,14 +761,6 @@ QEMU_BUILD_BUG_ON((int)(offsetof(CPUNegativeOffsetState, tlb.f[0]) -
+                   < MIN_TLB_MASK_TABLE_OFS);
+ #endif
+ 
+-static void alloc_tcg_plugin_context(TCGContext *s)
+-{
+-#ifdef CONFIG_PLUGIN
+-    s->plugin_tb = g_new0(struct qemu_plugin_tb, 1);
+-    s->plugin_tb->insns = g_ptr_array_new();
+-#endif
+-}
+-
+ /*
+  * All TCG threads except the parent (i.e. the one that called tcg_context_init
+  * and registered the target's TCG globals) must register with this function
+@@ -813,7 +805,6 @@ void tcg_register_thread(void)
+     qatomic_set(&tcg_ctxs[n], s);
+ 
+     if (n > 0) {
+-        alloc_tcg_plugin_context(s);
+         tcg_region_initial_alloc(s);
+     }
+ 
+@@ -1360,8 +1351,6 @@ static void tcg_context_init(unsigned max_cpus)
+         indirect_reg_alloc_order[i] = tcg_target_reg_alloc_order[i];
+     }
+ 
+-    alloc_tcg_plugin_context(s);
+-
+     tcg_ctx = s;
+     /*
+      * In user-mode we simply share the init context among threads, since we
 -- 
 2.34.1
 
