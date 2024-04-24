@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EABE68B051A
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D278B0518
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:54:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzYMv-0008AG-AX; Wed, 24 Apr 2024 04:52:45 -0400
+	id 1rzYNf-00016X-Um; Wed, 24 Apr 2024 04:53:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rzYMq-0007gX-EL; Wed, 24 Apr 2024 04:52:40 -0400
+ id 1rzYN9-0000Wf-SD; Wed, 24 Apr 2024 04:53:05 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1rzYMn-0004Cx-NY; Wed, 24 Apr 2024 04:52:40 -0400
+ id 1rzYN7-0004Cz-Nd; Wed, 24 Apr 2024 04:52:59 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 4F0C761542;
+ by isrv.corpit.ru (Postfix) with ESMTP id 5BCD161543;
  Wed, 24 Apr 2024 11:50:44 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 779E3BE0F2;
+ by tsrv.corpit.ru (Postfix) with SMTP id 85EBDBE0F3;
  Wed, 24 Apr 2024 11:50:37 +0300 (MSK)
-Received: (nullmailer pid 1179654 invoked by uid 1000);
+Received: (nullmailer pid 1179657 invoked by uid 1000);
  Wed, 24 Apr 2024 08:50:36 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-block@nongnu.org
-Subject: [PATCH 25/27] qemu-img: implement short --help,
- remove global help() function
-Date: Wed, 24 Apr 2024 11:50:33 +0300
-Message-Id: <e88d17a550ca7e12061318ce0f2f6e09786599d2.1713948448.git.mjt@tls.msk.ru>
+Subject: [PATCH 26/27] qemu-img: inline list of supported commands,
+ remove qemu-img-cmds.h include
+Date: Wed, 24 Apr 2024 11:50:34 +0300
+Message-Id: <ac85fe0aec9caf4cf8bef0f9c48564c978ed3aa8.1713948448.git.mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1713948448.git.mjt@tls.msk.ru>
 References: <cover.1713948448.git.mjt@tls.msk.ru>
@@ -59,242 +59,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-now once all individual subcommands has --help support, remove
-the large unreadable help() thing and replace it with small
-global --help, which refers to individual command --help for
-more info.
-
-While at it, also line-wrap list of formats after 75 chars.
-
-Since missing_argument() and unrecognized_option() are now unused,
-remove them.
+also add short description to each command and use it in --help
 
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 ---
- qemu-img.c | 172 ++++++++++++-----------------------------------------
- 1 file changed, 39 insertions(+), 133 deletions(-)
+ qemu-img.c | 40 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 34 insertions(+), 6 deletions(-)
 
 diff --git a/qemu-img.c b/qemu-img.c
-index 3721cf070b..39dfaa5144 100644
+index 39dfaa5144..694647f6ff 100644
 --- a/qemu-img.c
 +++ b/qemu-img.c
-@@ -94,11 +94,6 @@ typedef enum OutputFormat {
- /* Default to cache=writeback as data integrity is not important for qemu-img */
- #define BDRV_DEFAULT_CACHE "writeback"
+@@ -61,6 +61,7 @@
+ typedef struct img_cmd_t {
+     const char *name;
+     int (*handler)(const struct img_cmd_t *ccmd, int argc, char **argv);
++    const char *description;
+ } img_cmd_t;
  
--static void format_print(void *opaque, const char *name)
--{
--    printf(" %s", name);
--}
--
- static G_NORETURN
- void tryhelp(const char *argv0)
+ enum {
+@@ -127,6 +128,7 @@ void cmd_help(const img_cmd_t *ccmd,
  {
-@@ -118,18 +113,6 @@ void error_exit(const char *argv0, const char *fmt, ...)
-     tryhelp(argv0);
+     printf(
+ "Usage:\n"
++"%s.  Usage:\n"
+ "\n"
+ "  %s %s %s"
+ "\n"
+@@ -134,7 +136,7 @@ void cmd_help(const img_cmd_t *ccmd,
+ "  -h, --help\n"
+ "     print this help and exit\n"
+ "%s\n",
+-           "qemu-img", ccmd->name,
++           ccmd->description, "qemu-img", ccmd->name,
+            syntax, arguments);
+     exit(EXIT_SUCCESS);
+ }
+@@ -5828,10 +5830,36 @@ out:
  }
  
--static G_NORETURN
--void missing_argument(const char *option)
--{
--    error_exit("qemu-img", "missing argument for option '%s'", option);
--}
--
--static G_NORETURN
--void unrecognized_option(const char *option)
--{
--    error_exit("qemu-img", "unrecognized option '%s'", option);
--}
--
- /*
-  * Print --help output for a command and exit.
-  * syntax and description are multi-line with trailing EOL
-@@ -167,114 +150,6 @@ static OutputFormat parse_output_format(const char *argv0, const char *arg)
-     }
- }
- 
--/* Please keep in synch with docs/tools/qemu-img.rst */
--static G_NORETURN
--void help(void)
--{
--    const char *help_msg =
--           QEMU_IMG_VERSION
--           "usage: qemu-img [standard options] command [command options]\n"
--           "QEMU disk image utility\n"
--           "\n"
--           "    '-h', '--help'       display this help and exit\n"
--           "    '-V', '--version'    output version information and exit\n"
--           "    '-T', '--trace'      [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
--           "                         specify tracing options\n"
--           "\n"
--           "Command syntax:\n"
+ static const img_cmd_t img_cmds[] = {
 -#define DEF(option, callback, arg_string)        \
--           "  " arg_string "\n"
+-    { option, callback },
 -#include "qemu-img-cmds.h"
 -#undef DEF
--           "\n"
--           "Command parameters:\n"
--           "  'filename' is a disk image filename\n"
--           "  'objectdef' is a QEMU user creatable object definition. See the qemu(1)\n"
--           "    manual page for a description of the object properties. The most common\n"
--           "    object type is a 'secret', which is used to supply passwords and/or\n"
--           "    encryption keys.\n"
--           "  'fmt' is the disk image format. It is guessed automatically in most cases\n"
--           "  'cache' is the cache mode used to write the output disk image, the valid\n"
--           "    options are: 'none', 'writeback' (default, except for convert), 'writethrough',\n"
--           "    'directsync' and 'unsafe' (default for convert)\n"
--           "  'src_cache' is the cache mode used to read input disk images, the valid\n"
--           "    options are the same as for the 'cache' option\n"
--           "  'size' is the disk image size in bytes. Optional suffixes\n"
--           "    'k' or 'K' (kilobyte, 1024), 'M' (megabyte, 1024k), 'G' (gigabyte, 1024M),\n"
--           "    'T' (terabyte, 1024G), 'P' (petabyte, 1024T) and 'E' (exabyte, 1024P)  are\n"
--           "    supported. 'b' is ignored.\n"
--           "  'output_filename' is the destination disk image filename\n"
--           "  'output_fmt' is the destination format\n"
--           "  'options' is a comma separated list of format specific options in a\n"
--           "    name=value format. Use -o help for an overview of the options supported by\n"
--           "    the used format\n"
--           "  'snapshot_param' is param used for internal snapshot, format\n"
--           "    is 'snapshot.id=[ID],snapshot.name=[NAME]', or\n"
--           "    '[ID_OR_NAME]'\n"
--           "  '-c' indicates that target image must be compressed (qcow format only)\n"
--           "  '-u' allows unsafe backing chains. For rebasing, it is assumed that old and\n"
--           "       new backing file match exactly. The image doesn't need a working\n"
--           "       backing file before rebasing in this case (useful for renaming the\n"
--           "       backing file). For image creation, allow creating without attempting\n"
--           "       to open the backing file.\n"
--           "  '-h' with or without a command shows this help and lists the supported formats\n"
--           "  '-p' show progress of command (only certain commands)\n"
--           "  '-q' use Quiet mode - do not print any output (except errors)\n"
--           "  '-S' indicates the consecutive number of bytes (defaults to 4k) that must\n"
--           "       contain only zeros for qemu-img to create a sparse image during\n"
--           "       conversion. If the number of bytes is 0, the source will not be scanned for\n"
--           "       unallocated or zero sectors, and the destination image will always be\n"
--           "       fully allocated\n"
--           "  '--output' takes the format in which the output must be done (human or json)\n"
--           "  '-n' skips the target volume creation (useful if the volume is created\n"
--           "       prior to running qemu-img)\n"
--           "\n"
--           "Parameters to bitmap subcommand:\n"
--           "  'bitmap' is the name of the bitmap to manipulate, through one or more\n"
--           "       actions from '--add', '--remove', '--clear', '--enable', '--disable',\n"
--           "       or '--merge source'\n"
--           "  '-g granularity' sets the granularity for '--add' actions\n"
--           "  '-b source' and '-F src_fmt' tell '--merge' actions to find the source\n"
--           "       bitmaps from an alternative file\n"
--           "\n"
--           "Parameters to check subcommand:\n"
--           "  '-r' tries to repair any inconsistencies that are found during the check.\n"
--           "       '-r leaks' repairs only cluster leaks, whereas '-r all' fixes all\n"
--           "       kinds of errors, with a higher risk of choosing the wrong fix or\n"
--           "       hiding corruption that has already occurred.\n"
--           "\n"
--           "Parameters to convert subcommand:\n"
--           "  '--bitmaps' copies all top-level persistent bitmaps to destination\n"
--           "  '-m' specifies how many coroutines work in parallel during the convert\n"
--           "       process (defaults to 8)\n"
--           "  '-W' allow to write to the target out of order rather than sequential\n"
--           "\n"
--           "Parameters to snapshot subcommand:\n"
--           "  'snapshot' is the name of the snapshot to create, apply or delete\n"
--           "  '-a' applies a snapshot (revert disk to saved state)\n"
--           "  '-c' creates a snapshot\n"
--           "  '-d' deletes a snapshot\n"
--           "  '-l' lists all snapshots in the given image\n"
--           "\n"
--           "Parameters to compare subcommand:\n"
--           "  '-f' first image format\n"
--           "  '-F' second image format\n"
--           "  '-s' run in Strict mode - fail on different image size or sector allocation\n"
--           "\n"
--           "Parameters to dd subcommand:\n"
--           "  'bs=BYTES' read and write up to BYTES bytes at a time "
--           "(default: 512)\n"
--           "  'count=N' copy only N input blocks\n"
--           "  'if=FILE' read from FILE\n"
--           "  'of=FILE' write to FILE\n"
--           "  'skip=N' skip N bs-sized blocks at the start of input\n";
--
--    printf("%s\nSupported formats:", help_msg);
--    bdrv_iterate_format(format_print, NULL, false);
--    printf("\n\n" QEMU_HELP_BOTTOM "\n");
--    exit(EXIT_SUCCESS);
--}
--
- /*
-  * Is @list safe for accumulate_options()?
-  * It is when multiple of them can be joined together separated by ','.
-@@ -5960,6 +5835,16 @@ static const img_cmd_t img_cmds[] = {
++    { "amend", img_amend,
++      "Update format-specific options of the image" },
++    { "bench", img_bench,
++      "Run simple image benchmark" },
++    { "bitmap", img_bitmap,
++      "Perform modifications of the persistent bitmap in the image" },
++    { "check", img_check,
++      "Check basic image integrity" },
++    { "commit", img_commit,
++      "Commit image to its backing file" },
++    { "compare", img_compare,
++      "Check if two images have the same contents" },
++    { "convert", img_convert,
++      "Copy one image to another with optional format conversion" },
++    { "create", img_create,
++      "Create and format new image file" },
++    { "dd", img_dd,
++      "Copy input to output with optional format conversion" },
++    { "info", img_info,
++      "Display information about image" },
++    { "map", img_map,
++      "Dump image metadata" },
++    { "measure", img_measure,
++      "Calculate file size requred for a new image" },
++    { "rebase", img_rebase,
++      "Change backing file of the image" },
++    { "resize", img_resize,
++      "Resize the image to the new size" },
++    { "snapshot", img_snapshot,
++      "List or manipulate snapshots within image" },
      { NULL, NULL, },
  };
  
-+static void format_print(void *opaque, const char *name)
-+{
-+    int *np = opaque;
-+    if (*np + strlen(name) > 75) {
-+        printf("\n ");
-+        *np = 1;
-+    }
-+    *np += printf(" %s", name);
-+}
-+
- int main(int argc, char **argv)
- {
-     const img_cmd_t *cmd;
-@@ -5991,16 +5876,35 @@ int main(int argc, char **argv)
-     qemu_add_opts(&qemu_source_opts);
-     qemu_add_opts(&qemu_trace_opts);
- 
--    while ((c = getopt_long(argc, argv, "+:hVT:", long_options, NULL)) != -1) {
-+    while ((c = getopt_long(argc, argv, "+hVT:", long_options, NULL)) != -1) {
-         switch (c) {
--        case ':':
--            missing_argument(argv[optind - 1]);
--            return 0;
--        case '?':
--            unrecognized_option(argv[optind - 1]);
--            return 0;
-         case 'h':
--            help();
-+            printf(
-+QEMU_IMG_VERSION
-+"QEMU disk image utility.  Usage:\n"
-+"\n"
-+"  qemu-img [standard options] COMMAND [--help | command options]\n"
-+"\n"
-+"Standard options:\n"
-+"  -h, --help\n"
-+"     display this help and exit\n"
-+"  -V, --version\n"
-+"     display version info and exit\n"
-+"  -T,--trace TRACE\n"
-+"     specify tracing options:\n"
-+"        [[enable=]<pattern>][,events=<file>][,file=<file>]\n"
-+"\n"
-+"Recognized commands (run qemu-img COMMAND --help for command-specific help):\n\n");
-+            for (cmd = img_cmds; cmd->name != NULL; cmd++) {
-+                printf("  %s\n", cmd->name);
-+            }
-+            printf("\nSupported image formats:\n");
-+            c = 99; /* force a newline */
-+            bdrv_iterate_format(format_print, &c, false);
-+            if (c) {
-+                printf("\n");
-+            }
-+            printf("\n" QEMU_HELP_BOTTOM "\n");
-             return 0;
-         case 'V':
-             printf(QEMU_IMG_VERSION);
-@@ -6008,6 +5912,8 @@ int main(int argc, char **argv)
-         case 'T':
-             trace_opt_parse(optarg);
-             break;
-+        default:
-+            tryhelp(argv[0]);
-         }
-     }
- 
+@@ -5896,7 +5924,7 @@ QEMU_IMG_VERSION
+ "\n"
+ "Recognized commands (run qemu-img COMMAND --help for command-specific help):\n\n");
+             for (cmd = img_cmds; cmd->name != NULL; cmd++) {
+-                printf("  %s\n", cmd->name);
++                printf("  %s - %s\n", cmd->name, cmd->description);
+             }
+             printf("\nSupported image formats:\n");
+             c = 99; /* force a newline */
 -- 
 2.39.2
 
