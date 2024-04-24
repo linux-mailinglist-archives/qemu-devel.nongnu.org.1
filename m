@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5FC8B03D2
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BFB8B03D4
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXbu-0006Wq-75; Wed, 24 Apr 2024 04:04:12 -0400
+	id 1rzXc4-0006w9-JK; Wed, 24 Apr 2024 04:04:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbY-0005td-Go
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:52 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbX-0005su-3n
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbW-0003oI-H2
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:48 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXbS-0003nj-78
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:03:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713945823;
+ s=mimecast20190719; t=1713945821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZdO3ys51gFGTtlPnaZEuNtvyTcKAodScH+C3F5XFx4Q=;
- b=Yv26J/PnBazg9yB/rQb5HNyYHqeOmCJxgzLov3YG1YI1Ryjr7W0WoR9OBRcijSi8zxmsFd
- TiXtudBzQWDT3B0jyn1qOj+xQBzkJc0PK9iqEziaOd01mM6sdnkvf4Whg2tzRFea+T/zo2
- 9jUyBY6HOeOv7oPaZyBk9ptmebrYaO0=
+ bh=kXLAsN/MjWVrTQesWQIb8lj4bZIyULexZMx0u8KANK0=;
+ b=UCYKdlLgOz/Km603AA55deTGb5DNJf27q3UqRfH6lreiC1F7QUJw4IeFIFSREu7u9y6rSK
+ EKeKOHBLZrRk3p8wLASQOrDvyClCOTT/op3kYeQuFkUs70StVJ6aL2Hs9SM9JJtnQeZDUV
+ mdkQOlx0J4QTJlkQazUDewEOdwbdKxY=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-bbUme36JMGa1gPcDkbxOMw-1; Wed, 24 Apr 2024 04:03:39 -0400
-X-MC-Unique: bbUme36JMGa1gPcDkbxOMw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-185-0g-fZ5TLMgib_g2FIqKLoA-1; Wed, 24 Apr 2024 04:03:39 -0400
+X-MC-Unique: 0g-fZ5TLMgib_g2FIqKLoA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 44875812C39;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 48033834FB1;
  Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 257F5C13FA4;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 25B49400EAF;
  Wed, 24 Apr 2024 08:03:39 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 4AD0D21E65D8; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
+ id 4E07B21E65DE; Wed, 24 Apr 2024 10:03:37 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Zhao Liu <zhao1.liu@intel.com>
-Subject: [PULL 07/10] qapi: Inline and remove QERR_INVALID_PARAMETER_TYPE
- definition
-Date: Wed, 24 Apr 2024 10:03:34 +0200
-Message-ID: <20240424080337.2782594-8-armbru@redhat.com>
+ Juan Quintela <quintela@redhat.com>, Zhao Liu <zhao1.liu@intel.com>
+Subject: [PULL 08/10] qapi: Correct error message for 'vcpu_dirty_limit'
+ parameter
+Date: Wed, 24 Apr 2024 10:03:35 +0200
+Message-ID: <20240424080337.2782594-9-armbru@redhat.com>
 In-Reply-To: <20240424080337.2782594-1-armbru@redhat.com>
 References: <20240424080337.2782594-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -84,85 +84,45 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Address the comment added in commit 4629ed1e98
-("qerror: Finally unused, clean up"), from 2015:
+QERR_INVALID_PARAMETER_VALUE is defined as:
 
-  /*
-   * These macros will go away, please don't use
-   * in new code, and do not add new ones!
-   */
+  #define QERR_INVALID_PARAMETER_VALUE \
+      "Parameter '%s' expects %s"
 
-Manual changes (escaping the format in qapi/visit.py).
+The current error is formatted as:
+
+  "Parameter 'vcpu_dirty_limit' expects is invalid, it must greater then 1 MB/s"
+
+Replace by:
+
+  "Parameter 'vcpu_dirty_limit' must be greater than 1 MB/s"
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240312141343.3168265-8-armbru@redhat.com>
+Message-ID: <20240312141343.3168265-9-armbru@redhat.com>
 Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+[New error message corrected, commit message updated accordingly]
 ---
- include/qapi/qmp/qerror.h | 3 ---
- qom/object.c              | 4 ++--
- scripts/qapi/visit.py     | 5 ++---
- 3 files changed, 4 insertions(+), 8 deletions(-)
+ migration/options.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 63ab775dc5..b723830eff 100644
---- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -17,9 +17,6 @@
-  * add new ones!
-  */
+diff --git a/migration/options.c b/migration/options.c
+index bfd7753b69..d7a773aea8 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -1286,9 +1286,8 @@ bool migrate_params_check(MigrationParameters *params, Error **errp)
  
--#define QERR_INVALID_PARAMETER_TYPE \
--    "Invalid parameter type for '%s', expected: %s"
--
- #define QERR_INVALID_PARAMETER_VALUE \
-     "Parameter '%s' expects %s"
+     if (params->has_vcpu_dirty_limit &&
+         (params->vcpu_dirty_limit < 1)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+-                   "vcpu_dirty_limit",
+-                   "is invalid, it must greater then 1 MB/s");
++        error_setg(errp,
++                   "Parameter 'vcpu_dirty_limit' must be greater than 1 MB/s");
+         return false;
+     }
  
-diff --git a/qom/object.c b/qom/object.c
-index 3d96818f7d..44ec8f6460 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -23,7 +23,6 @@
- #include "qapi/qobject-input-visitor.h"
- #include "qapi/forward-visitor.h"
- #include "qapi/qapi-builtin-visit.h"
--#include "qapi/qmp/qerror.h"
- #include "qapi/qmp/qjson.h"
- #include "trace.h"
- 
-@@ -1912,7 +1911,8 @@ static Object *object_resolve_link(Object *obj, const char *name,
-     } else if (!target) {
-         target = object_resolve_path(path, &ambiguous);
-         if (target || ambiguous) {
--            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, name, target_type);
-+            error_setg(errp, "Invalid parameter type for '%s', expected: %s",
-+                             name, target_type);
-         } else {
-             error_set(errp, ERROR_CLASS_DEVICE_NOT_FOUND,
-                       "Device '%s' not found", path);
-diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
-index c56ea4d724..a21b7b1468 100644
---- a/scripts/qapi/visit.py
-+++ b/scripts/qapi/visit.py
-@@ -278,8 +278,8 @@ def gen_visit_alternate(name: str, variants: QAPISchemaVariants) -> str:
-         abort();
-     default:
-         assert(visit_is_input(v));
--        error_setg(errp, QERR_INVALID_PARAMETER_TYPE, name ? name : "null",
--                   "%(name)s");
-+        error_setg(errp, "Invalid parameter type for '%%s', expected: %(name)s",
-+                         name ? name : "null");
-         /* Avoid passing invalid *obj to qapi_free_%(c_name)s() */
-         g_free(*obj);
-         *obj = NULL;
-@@ -356,7 +356,6 @@ def _begin_user_module(self, name: str) -> None:
-         self._genc.preamble_add(mcgen('''
- #include "qemu/osdep.h"
- #include "qapi/error.h"
--#include "qapi/qmp/qerror.h"
- #include "%(visit)s.h"
- ''',
-                                       visit=visit))
 -- 
 2.44.0
 
