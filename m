@@ -2,60 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0747F8B040D
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0489A8B0432
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 10:22:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzXp9-0000x2-0E; Wed, 24 Apr 2024 04:17:51 -0400
+	id 1rzXpI-0001VU-IY; Wed, 24 Apr 2024 04:18:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXog-0000P7-6J
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:29 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXod-0000MW-KO
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoc-0006NG-As
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:21 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1rzXoa-0006M4-CN
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 04:17:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1713946637;
+ s=mimecast20190719; t=1713946635;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=/JA+E7+oxIQSq7gmDuExt2uAvYWnC5AlpRpdAm/hA4Q=;
- b=NMd+phVZS/yULyXi6GyxM/CsF/egedvc9Mb/8huFb+h7P9A4XANYVigaTOTBxd5HMLAxe1
- W71U6JIBU/po4dMdnr/lAOwjZt22FzYj0SP0jQ9LTLnmyknfQVH4ZNFCPqUqpJZp3oVSXS
- Z3EsLxb7vvf0YuE22cm3Fy000QxDDRY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-sHszDX_aPsuAVDnmoWw3jA-1; Wed,
- 24 Apr 2024 04:17:13 -0400
-X-MC-Unique: sHszDX_aPsuAVDnmoWw3jA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=Z1f9N5gj8dDzD4ofeRluY0Zm4ewm4jdZorGX3BtmJLI=;
+ b=NhKzOmhO3ZN3Sa1vao3Vh7Zwuj2yy+Gzb9u6VpIdLf7Q2bKhpkjRjtcJi4xFtG8dA9eeOV
+ /3tJFgydqQ/faetw8hczWVX9F6bAT9G61+TiVPmXh9ZU226BWv6VS5qfrtmN1cqpJGwXN4
+ rNmx2sDfFi0+Ei0HY8FI/VLRcZQ0KxQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-601-N9ZFeA_GPqufiKqkGLaxDg-1; Wed, 24 Apr 2024 04:17:13 -0400
+X-MC-Unique: N9ZFeA_GPqufiKqkGLaxDg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2D6983C108C1;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2C722834FBA;
  Wed, 24 Apr 2024 08:17:13 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.247])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D88140C5C2;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 0CE5A20296D2;
  Wed, 24 Apr 2024 08:17:13 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E0A1C21EE971; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
+ id E3A4E21D49C0; Wed, 24 Apr 2024 10:17:10 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: richard.henderson@linaro.org,
 	John Snow <jsnow@redhat.com>
-Subject: [PULL 10/25] qapi/schema: add type narrowing to lookup_type()
-Date: Wed, 24 Apr 2024 10:16:55 +0200
-Message-ID: <20240424081710.2907748-11-armbru@redhat.com>
+Subject: [PULL 11/25] qapi/schema: assert resolve_type has 'info' and 'what'
+ args on error
+Date: Wed, 24 Apr 2024 10:16:56 +0200
+Message-ID: <20240424081710.2907748-12-armbru@redhat.com>
 In-Reply-To: <20240424081710.2907748-1-armbru@redhat.com>
 References: <20240424081710.2907748-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
@@ -82,32 +83,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: John Snow <jsnow@redhat.com>
 
-This function is a bit hard to type as-is; mypy needs some assertions to
-assist with the type narrowing.
+resolve_type() is generally used to resolve configuration-provided type
+names into type objects, and generally requires valid 'info' and 'what'
+parameters.
+
+In some cases, such as with QAPISchemaArrayType.check(), resolve_type
+may be used to resolve built-in types and as such will not have an
+'info' argument, but also must not fail in this scenario.
+
+Use an assertion to sate mypy that we will indeed have 'info' and 'what'
+parameters for the error pathway in resolve_type.
+
+Note: there are only three callsites to resolve_type at present where
+"info" is perceived by mypy to be possibly None:
+
+    1) QAPISchemaArrayType.check()
+    2) QAPISchemaObjectTypeMember.check()
+    3) QAPISchemaEvent.check()
+
+    Of those three, only the first actually ever passes None; the other two
+    are limited by their base class initializers which accept info=None, but
+    neither subclass actually use a None value in practice, currently.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
 Reviewed-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20240315152301.3621858-11-armbru@redhat.com>
+Message-ID: <20240315152301.3621858-12-armbru@redhat.com>
 ---
- scripts/qapi/schema.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/qapi/schema.py | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/scripts/qapi/schema.py b/scripts/qapi/schema.py
-index e44802369d..1034825415 100644
+index 1034825415..0ef9b3398a 100644
 --- a/scripts/qapi/schema.py
 +++ b/scripts/qapi/schema.py
-@@ -989,7 +989,9 @@ def lookup_entity(self, name, typ=None):
-         return ent
- 
-     def lookup_type(self, name):
--        return self.lookup_entity(name, QAPISchemaType)
-+        typ = self.lookup_entity(name, QAPISchemaType)
-+        assert typ is None or isinstance(typ, QAPISchemaType)
-+        return typ
- 
+@@ -996,6 +996,7 @@ def lookup_type(self, name):
      def resolve_type(self, name, info, what):
          typ = self.lookup_type(name)
+         if not typ:
++            assert info and what  # built-in types must not fail lookup
+             if callable(what):
+                 what = what(info)
+             raise QAPISemError(
 -- 
 2.44.0
 
