@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 376D58B16AA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 284858B16AB
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 00:58:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzlYO-0005Sb-EQ; Wed, 24 Apr 2024 18:57:29 -0400
+	id 1rzlYR-0005Tf-CP; Wed, 24 Apr 2024 18:57:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlYK-0005Pg-2X
+ id 1rzlYK-0005Ph-5f
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:24 -0400
-Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
+Received: from mail-oi1-x235.google.com ([2607:f8b0:4864:20::235])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzlYH-0001oe-QB
+ id 1rzlYI-0001oq-Pl
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 18:57:23 -0400
-Received: by mail-pg1-x535.google.com with SMTP id
- 41be03b00d2f7-60585faa69fso307995a12.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:57:21 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id
+ 5614622812f47-3c730f599abso285706b6e.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 15:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1713999440; x=1714604240; darn=nongnu.org;
+ d=linaro.org; s=google; t=1713999441; x=1714604241; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=m6Ty8XllMR28noTCDsk0N/pyr7ynqbZ4X/2NsrzAk7g=;
- b=EIJF2JfFle4HshL+IB2q0BEng8M3pVv8dlpmDkzESnUYV9Xdw0mHZknY4Wtt28xBgB
- PMCL1SSlm4zJXxSCvaylY4neRB1pUidZRK0gTdp+O6bd6GGGm3hQlixzdvQMx1VQ27dm
- 0oTkWnMosRiXacHJVvChmjv4Ydhn44mXgCXDGilCMESKDp8IhNUG5W4UeMuYHz1SY0+I
- n6ajMcNSlOOfmudFITevwxfh/q2G9Mu4MiTZy6eE9r7KpK+Sfp2kmgt/lj1rz0QnjO/T
- MSIy6dkvtDfifhfdj13yHeGsraNw6z/hpKuDGryA8NMs+OaBwbKtDH0vvBF0/EPQbJ8q
- 5i3g==
+ :reply-to; bh=bh4lWnPe+YOgpHGdevl5r/TyXWqM+m5cBerY0p6p+5U=;
+ b=gHMWaM+qXHvRo+uYZtJMNwdm5fiwh2UowvoULAI+ApwsTRr/J3f0bS1yeFDrzQaEw9
+ rGQo4Q1BqDXdCrWupVV6s0IeeiHP5lSSlHyP8S0l16I6cP4FbyFaKv6TPJM5kkKLNdBc
+ f6IpUzqXhzBMznDUkU35kqhQuoVrjZpmcUli1cjF+ZSpwnhTGqB/lgpdibFl29/DxVRl
+ KmhGoSMtrgN2+BxzdrBASccE55bgsI8UMb2Alu2FOReGDKsh0WIddO2zlTBcYOOdEbNV
+ oqwyb9ur/yg6Wy6YknuvY8xkiscveJQ0IIXY5xofZGwrnHokvg7EAY/nat1l5D3IHu+P
+ 7dUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713999440; x=1714604240;
+ d=1e100.net; s=20230601; t=1713999441; x=1714604241;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=m6Ty8XllMR28noTCDsk0N/pyr7ynqbZ4X/2NsrzAk7g=;
- b=jeXPeDvGmytZwrXMjufH3+i5CcQ+b+tin+SUuC4rj9lFkdJiaJQ4WfFhkrP47AH9Lt
- ELBWQi+FwotJBd66ACHR5nFAzLYPaAj2RkvetcAsi8EZp9QXtIJ9o2tDwF7HLiIIFe6/
- 3QwevKKLr3hdAtB/FbVJsRV41ncdSDohLYHUlwbvHOhu5TpMekUJfbcw9j5wrX1LUgwP
- 3QBrMvfbxVr7BHPYfkk0Pq2jMXySghzIuxcvXPFoiUtN1Hdsmkat6awFWWTPkFtcSgS+
- o4cgzxDPT25vPUgjb51rJMKxqWzQqKL1SlIlTZ6U3AjIs56OmUh1+TEzuJ2+tW4jBN9k
- 7Xgw==
-X-Gm-Message-State: AOJu0Yz80XXeCasE9nosdeiyeOTaVoEB44PCtXH0tuhiEnQPen8Q607+
- JD7CE29AQobkJkrKIbXEdFeLV75IYh99EaJr8rOWBO4bdy0zTnQowAgOfFyei+9brYKsf5TcYHM
- N
-X-Google-Smtp-Source: AGHT+IFi3v3haAiVYAcS0Tq2YknEglq790m6wZExwKUTQRhXLSQ3+D27uE22H/jdfOxwFiT6kqpIug==
-X-Received: by 2002:a05:6a21:3989:b0:1a7:9ed1:fc21 with SMTP id
- ad9-20020a056a21398900b001a79ed1fc21mr1899489pzc.22.1713999440407; 
- Wed, 24 Apr 2024 15:57:20 -0700 (PDT)
+ bh=bh4lWnPe+YOgpHGdevl5r/TyXWqM+m5cBerY0p6p+5U=;
+ b=vD+EEmp+kw/84gKPZuKVo/m/WZIj6E4xyRn3x59oPwC9fVgf9iM8dzAyZwS3VJOibL
+ 91PZ7kCRxMOTFdhd11TVBWdQo3KeSZZh8MDcXq4+pNzlMQgUwZoj/wgQ9lEXtI2iMPG7
+ SmVYRZDKyIO5MviRk2AFdTEz/R30bSrWb/D+wtRPzVhqEWackuCV7Fbye0AlhT4Q0/eR
+ vQZm6FMWwwGGNQIrKOTYXeQgYWlHerBQUftfOOAVwIs1FlELhXUSQtqVQwKSznHZHyLH
+ 1A+cLWLHCA2cDRxDod1p8wJwtHyiS5xAG5Fa9oTUOlKBn22xsdhBmmGEUjvEfcZi4p1o
+ OEuA==
+X-Gm-Message-State: AOJu0YxN5sFkMmu9zoRU21DKWtfz4EsE5j4jXKVitj8yR+x7OIAaWrEH
+ yNpQiSjbAk71TunovrgLxZHvD/IUJxBIilkXv4/4vxcgTR4AbDgWiA/D0z6ww5S652ruvzoY/9N
+ D
+X-Google-Smtp-Source: AGHT+IG2EnTmoFLuwoawGqkHHf8ISHnRxeGIHWfBJmvXBM+NWISnSRVjdZnko78KCAv+G8xNwkTu/w==
+X-Received: by 2002:a05:6808:b2c:b0:3c6:e81:4272 with SMTP id
+ t12-20020a0568080b2c00b003c60e814272mr3851579oij.10.1713999441420; 
+ Wed, 24 Apr 2024 15:57:21 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- gu26-20020a056a004e5a00b006ed9760b815sm11947413pfb.211.2024.04.24.15.57.19
+ gu26-20020a056a004e5a00b006ed9760b815sm11947413pfb.211.2024.04.24.15.57.20
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 15:57:19 -0700 (PDT)
+ Wed, 24 Apr 2024 15:57:20 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v6 06/10] util/bufferiszero: Improve scalar variant
-Date: Wed, 24 Apr 2024 15:57:01 -0700
-Message-Id: <20240424225705.929812-7-richard.henderson@linaro.org>
+Subject: [PATCH v6 07/10] util/bufferiszero: Introduce biz_accel_fn typedef
+Date: Wed, 24 Apr 2024 15:57:02 -0700
+Message-Id: <20240424225705.929812-8-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424225705.929812-1-richard.henderson@linaro.org>
 References: <20240424225705.929812-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::235;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x235.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,135 +90,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Split less-than and greater-than 256 cases.
-Use unaligned accesses for head and tail.
-Avoid using out-of-bounds pointers in loop boundary conditions.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- util/bufferiszero.c | 85 +++++++++++++++++++++++++++------------------
- 1 file changed, 51 insertions(+), 34 deletions(-)
+ util/bufferiszero.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/util/bufferiszero.c b/util/bufferiszero.c
-index 02df82b4ff..c9a7ded016 100644
+index c9a7ded016..eb8030a3f0 100644
 --- a/util/bufferiszero.c
 +++ b/util/bufferiszero.c
-@@ -28,40 +28,57 @@
+@@ -26,7 +26,8 @@
+ #include "qemu/bswap.h"
+ #include "host/cpuinfo.h"
  
- static bool (*buffer_is_zero_accel)(const void *, size_t);
+-static bool (*buffer_is_zero_accel)(const void *, size_t);
++typedef bool (*biz_accel_fn)(const void *, size_t);
++static biz_accel_fn buffer_is_zero_accel;
  
--static bool buffer_is_zero_integer(const void *buf, size_t len)
-+static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
+ static bool buffer_is_zero_int_lt256(const void *buf, size_t len)
  {
--    if (unlikely(len < 8)) {
--        /* For a very small buffer, simply accumulate all the bytes.  */
--        const unsigned char *p = buf;
--        const unsigned char *e = buf + len;
--        unsigned char t = 0;
-+    uint64_t t;
-+    const uint64_t *p, *e;
- 
--        do {
--            t |= *p++;
--        } while (p < e);
--
--        return t == 0;
--    } else {
--        /* Otherwise, use the unaligned memory access functions to
--           handle the beginning and end of the buffer, with a couple
--           of loops handling the middle aligned section.  */
--        uint64_t t = ldq_he_p(buf);
--        const uint64_t *p = (uint64_t *)(((uintptr_t)buf + 8) & -8);
--        const uint64_t *e = (uint64_t *)(((uintptr_t)buf + len) & -8);
--
--        for (; p + 8 <= e; p += 8) {
--            if (t) {
--                return false;
--            }
--            t = p[0] | p[1] | p[2] | p[3] | p[4] | p[5] | p[6] | p[7];
--        }
--        while (p < e) {
--            t |= *p++;
--        }
--        t |= ldq_he_p(buf + len - 8);
--
--        return t == 0;
-+    /*
-+     * Use unaligned memory access functions to handle
-+     * the beginning and end of the buffer.
-+     */
-+    if (unlikely(len <= 8)) {
-+        return (ldl_he_p(buf) | ldl_he_p(buf + len - 4)) == 0;
-     }
-+
-+    t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
-+    p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
-+    e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
-+
-+    /* Read 0 to 31 aligned words from the middle. */
-+    while (p < e) {
-+        t |= *p++;
-+    }
-+    return t == 0;
-+}
-+
-+static bool buffer_is_zero_int_ge256(const void *buf, size_t len)
-+{
-+    /*
-+     * Use unaligned memory access functions to handle
-+     * the beginning and end of the buffer.
-+     */
-+    uint64_t t = ldq_he_p(buf) | ldq_he_p(buf + len - 8);
-+    const uint64_t *p = QEMU_ALIGN_PTR_DOWN(buf + 8, 8);
-+    const uint64_t *e = QEMU_ALIGN_PTR_DOWN(buf + len - 1, 8);
-+
-+    /* Collect a partial block at the tail end. */
-+    t |= e[-7] | e[-6] | e[-5] | e[-4] | e[-3] | e[-2] | e[-1];
-+
-+    /*
-+     * Loop over 64 byte blocks.
-+     * With the head and tail removed, e - p >= 30,
-+     * so the loop must iterate at least 3 times.
-+     */
-+    do {
-+        if (t) {
-+            return false;
-+        }
-+        t = p[0] | p[1] | p[2] | p[3] | p[4] | p[5] | p[6] | p[7];
-+        p += 8;
-+    } while (p < e - 7);
-+
-+    return t == 0;
+@@ -178,13 +179,15 @@ buffer_zero_avx2(const void *buf, size_t len)
  }
+ #endif /* CONFIG_AVX2_OPT */
  
- #if defined(CONFIG_AVX2_OPT) || defined(__SSE2__)
-@@ -173,7 +190,7 @@ select_accel_cpuinfo(unsigned info)
++
++
+ static unsigned __attribute__((noinline))
+ select_accel_cpuinfo(unsigned info)
+ {
+     /* Array is sorted in order of algorithm preference. */
+     static const struct {
+         unsigned bit;
+-        bool (*fn)(const void *, size_t);
++        biz_accel_fn fn;
+     } all[] = {
+ #ifdef CONFIG_AVX2_OPT
          { CPUINFO_AVX2,    buffer_zero_avx2 },
- #endif
-         { CPUINFO_SSE2,    buffer_zero_sse2 },
--        { CPUINFO_ALWAYS,  buffer_is_zero_integer },
-+        { CPUINFO_ALWAYS,  buffer_is_zero_int_ge256 },
-     };
- 
-     for (unsigned i = 0; i < ARRAY_SIZE(all); ++i) {
-@@ -211,7 +228,7 @@ bool test_buffer_is_zero_next_accel(void)
-     return false;
- }
- 
--#define INIT_ACCEL buffer_is_zero_integer
-+#define INIT_ACCEL buffer_is_zero_int_ge256
+@@ -231,7 +234,7 @@ bool test_buffer_is_zero_next_accel(void)
+ #define INIT_ACCEL buffer_is_zero_int_ge256
  #endif
  
- static bool (*buffer_is_zero_accel)(const void *, size_t) = INIT_ACCEL;
-@@ -232,7 +249,7 @@ bool buffer_is_zero_ool(const void *buf, size_t len)
-     if (likely(len >= 256)) {
-         return buffer_is_zero_accel(buf, len);
-     }
--    return buffer_is_zero_integer(buf, len);
-+    return buffer_is_zero_int_lt256(buf, len);
- }
+-static bool (*buffer_is_zero_accel)(const void *, size_t) = INIT_ACCEL;
++static biz_accel_fn buffer_is_zero_accel = INIT_ACCEL;
  
- bool buffer_is_zero_ge256(const void *buf, size_t len)
+ bool buffer_is_zero_ool(const void *buf, size_t len)
+ {
 -- 
 2.34.1
 
