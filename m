@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EA38B1721
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E268B1734
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 01:35:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzm5f-0005qr-HT; Wed, 24 Apr 2024 19:31:51 -0400
+	id 1rzm5d-0005qT-UH; Wed, 24 Apr 2024 19:31:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5Z-0005oc-18
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:45 -0400
-Received: from mail-pg1-x533.google.com ([2607:f8b0:4864:20::533])
+ id 1rzm5Y-0005ob-Ux
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:44 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzm5W-0003Rt-Ur
+ id 1rzm5W-0003S0-R2
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 19:31:44 -0400
-Received: by mail-pg1-x533.google.com with SMTP id
- 41be03b00d2f7-60275a82611so328313a12.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:31:41 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2a54fb929c8so340442a91.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 16:31:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714001500; x=1714606300; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714001501; x=1714606301; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=anHznBY/Cz4MfTk0yCQsZvoF8eFCJyevU6fe4oFhrBI=;
- b=GramDGr7IoCp6j4ysld0JeI0MR8LABxyBDhYVc7wN/tmo6RBFTw+gNIqoCNzFS/43H
- i1QoWrpv6u7w6AC94J+g8MFZVAH9H1HFZqPk5MZd5fBPZV+Kb6QVb2/ZTMAfsj8H8sa4
- JQDO0AFriswPfrJXSBhlpoWFUuH988Q9da8A45WLv9phIqXrl2hvb3N3zQlcMqvUBRIT
- iEAAQ2JRKTMy+f06wECG8u7kVPhn70IZ9mHMbKJW6kP+MiuVwRRPbZzFYP4tJFZSwANQ
- KnpExNr19Bbe2E2Mh6DNkry5+9+d2LZsqKgHWJzT9FrdArqSEsxxfulYsJUr1QHMg29F
- Th/Q==
+ :reply-to; bh=T2Vrez6mekYUNx0Ri9P+RnqhJ98QDuVTU99320zojAI=;
+ b=ILrRpKxmhE4zjNTCIk5BVahwlp9KytRwYBThqbPsZb8nliuSXvlgsYAob+KVhCQR39
+ US8DLDVhXkFxCGZ6SE7s8BFjxOJXmD7yqU+j7QSJk3qIJPckhMywk0VLMzbnPZSqQ25f
+ GwLtSJ10yjDdAqJ8+PxYdUaTl9Fe0CoNAEisnHg0bhfM93EyfToL+6alLCDEijUoDc7Z
+ xlhj7GK+vufpPGOw9J/T4HLyHS4NeITdFzX9N9ngntdNpCrVXMseh1Eu5pNvZzFwb9wu
+ wK3F2410lLXDTSK/DnByLCc5IUUsXPnZQZvgtHxk9eWR7SMhBXe2ZsHO7FSYno6g+0YL
+ L06Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714001500; x=1714606300;
+ d=1e100.net; s=20230601; t=1714001501; x=1714606301;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=anHznBY/Cz4MfTk0yCQsZvoF8eFCJyevU6fe4oFhrBI=;
- b=of6zHvFpPQRb2/6hr45NHrdJfiZx09VMYXuLxpq2PQUt8KS1oUkCoOmS+OmlF7JAGr
- hqoMX/OCJX5CF+CkwY9mf3GPsVX0pCScp1Rs30/3sn1bgVtXeKJ4059RnGEyzmenQ0Iy
- riArBhboVDdx1F5vEZkwhsllfZiMx8RuxsFTB9nz4KZPpgk3tL/Q4XsC+szZzJmjpln5
- Cc981nvyfw9PvW973kGTM0t0R/ueCCzpTQhHl2AuWb3z7I5LSFiASkN1cM/QgbmTOUcc
- 1W2CxovjblcHQ4M2u4KqmHUz11eSCrJv9QTiZ4qFcjXdp6r+1jji+QDPL5SpEs/T8yZ3
- qmkQ==
-X-Gm-Message-State: AOJu0YznwJHlcRQo6csL4afh4WR4GWJ8B0vmKaq/l2EpLNRVbqORBVac
- gqW7Nky0g/2GhUm8U5hd/XY2urUavISWPCPFg9qD41NomAUqZHm6/l0Rae+AHG9u81RVwrwYGJX
- X
-X-Google-Smtp-Source: AGHT+IH7pDBnjoALyZdmZ9uCcvwfyfaKrj+uXsFip5REYCUDz+b/MXKyC3J3vLnnLwJJq/JOaTQHTw==
-X-Received: by 2002:a17:90b:f17:b0:2a2:937e:f958 with SMTP id
- br23-20020a17090b0f1700b002a2937ef958mr3713406pjb.40.1714001500260; 
- Wed, 24 Apr 2024 16:31:40 -0700 (PDT)
+ bh=T2Vrez6mekYUNx0Ri9P+RnqhJ98QDuVTU99320zojAI=;
+ b=ay3uDdfwgC2YJcFgy0Nc3b2q/tqOiDp/udq2R0H6ub8ENaF4Kkl/MmOU0JkvOvMrcu
+ 9ML/5uuN6IV6vWeHddDbq8WPXkQfQBmQxJOmMFSELWiU4FqTg/w8hwukhAxjFi8EVuvq
+ yFIyqeEFvQaqJxEbJ7N50GkEoRYCM9wqd7uOUYMeteze5MZlvleUHxpgrlt6QLPfYdbS
+ eUiB/RG9OyDE51TJJzyFTMti1922NvlsY5uztoJwNNDsSQ2oKshb5yA4nE52Sg4L7cT7
+ dxnvnrhUsneBVI5nqxhq7GQuSvEtsHs8czAFXmPWvm1diA5tBgLhOzzVZJFz4IukOpMp
+ zcdA==
+X-Gm-Message-State: AOJu0Yx+0UtdM1HkGbvI4I7+orpWip4K/STIlO7MGeOfSoWpZ4Af/NYj
+ 7faEgslPXJ/Pn02v2rNCb/87UKpi7BgpQeyFBACO5Bg2RDnryGfD2pj9VCKJ4ZNcHKw9I9i0A7f
+ i
+X-Google-Smtp-Source: AGHT+IGSxH0YofhAnkCHIa/4vUIhGsZhYuz5pWwJtQyMV3R1aeor4JJZ69Xy2YSP+4EGYEYnyxYBzg==
+X-Received: by 2002:a17:90a:8405:b0:2aa:c5a0:99a7 with SMTP id
+ j5-20020a17090a840500b002aac5a099a7mr4181726pjn.12.1714001501214; 
+ Wed, 24 Apr 2024 16:31:41 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.39
+ z24-20020a17090abd9800b002a56b3931dfsm11737859pjr.49.2024.04.24.16.31.40
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 16:31:39 -0700 (PDT)
+ Wed, 24 Apr 2024 16:31:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH v2 08/33] accel/tcg: Record DisasContextBase in tcg_ctx for
- plugins
-Date: Wed, 24 Apr 2024 16:31:06 -0700
-Message-Id: <20240424233131.988727-9-richard.henderson@linaro.org>
+Subject: [PATCH v2 09/33] plugins: Copy memory in qemu_plugin_insn_data
+Date: Wed, 24 Apr 2024 16:31:07 -0700
+Message-Id: <20240424233131.988727-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240424233131.988727-1-richard.henderson@linaro.org>
 References: <20240424233131.988727-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::533;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x533.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,36 +90,111 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Instead of returning a host pointer, copy the data into
+storage provided by the caller.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h      | 1 +
- accel/tcg/plugin-gen.c | 1 +
- 2 files changed, 2 insertions(+)
+ include/qemu/qemu-plugin.h | 15 +++++++--------
+ contrib/plugins/execlog.c  |  5 +++--
+ contrib/plugins/howvec.c   |  4 ++--
+ plugins/api.c              |  7 +++++--
+ 4 files changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index 135e36d729..2a1c080bab 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -537,6 +537,7 @@ struct TCGContext {
-      * space for instructions (for variable-instruction-length ISAs).
+diff --git a/include/qemu/qemu-plugin.h b/include/qemu/qemu-plugin.h
+index 4fc6c3739b..5f36c2d1ac 100644
+--- a/include/qemu/qemu-plugin.h
++++ b/include/qemu/qemu-plugin.h
+@@ -61,7 +61,7 @@ typedef uint64_t qemu_plugin_id_t;
+ 
+ extern QEMU_PLUGIN_EXPORT int qemu_plugin_version;
+ 
+-#define QEMU_PLUGIN_VERSION 2
++#define QEMU_PLUGIN_VERSION 3
+ 
+ /**
+  * struct qemu_info_t - system information for plugins
+@@ -394,17 +394,16 @@ struct qemu_plugin_insn *
+ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx);
+ 
+ /**
+- * qemu_plugin_insn_data() - return ptr to instruction data
++ * qemu_plugin_insn_data() - copy instruction data
+  * @insn: opaque instruction handle from qemu_plugin_tb_get_insn()
++ * @dest: destination into which data is copied
++ * @len: length of dest
+  *
+- * Note: data is only valid for duration of callback. See
+- * qemu_plugin_insn_size() to calculate size of stream.
+- *
+- * Returns: pointer to a stream of bytes containing the value of this
+- * instructions opcode.
++ * Returns the number of bytes copied, minimum of @len and insn size.
+  */
+ QEMU_PLUGIN_API
+-const void *qemu_plugin_insn_data(const struct qemu_plugin_insn *insn);
++size_t qemu_plugin_insn_data(const struct qemu_plugin_insn *insn,
++                             void *dest, size_t len);
+ 
+ /**
+  * qemu_plugin_insn_size() - return size of instruction
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index fab18113d4..371db97eb1 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -258,8 +258,9 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+                                                        NULL);
+             }
+         } else {
+-            uint32_t insn_opcode;
+-            insn_opcode = *((uint32_t *)qemu_plugin_insn_data(insn));
++            uint32_t insn_opcode = 0;
++            qemu_plugin_insn_data(insn, &insn_opcode, sizeof(insn_opcode));
++
+             char *output = g_strdup_printf("0x%"PRIx64", 0x%"PRIx32", \"%s\"",
+                                            insn_vaddr, insn_opcode, insn_disas);
+ 
+diff --git a/contrib/plugins/howvec.c b/contrib/plugins/howvec.c
+index 94bbc53820..9be67f7453 100644
+--- a/contrib/plugins/howvec.c
++++ b/contrib/plugins/howvec.c
+@@ -252,7 +252,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+ {
+     int i;
+     uint64_t *cnt = NULL;
+-    uint32_t opcode;
++    uint32_t opcode = 0;
+     InsnClassExecCount *class = NULL;
+ 
+     /*
+@@ -261,7 +261,7 @@ static struct qemu_plugin_scoreboard *find_counter(
+      * They would probably benefit from a more tailored plugin.
+      * However we can fall back to individual instruction counting.
       */
-     struct qemu_plugin_tb *plugin_tb;
-+    const struct DisasContextBase *plugin_db;
+-    opcode = *((uint32_t *)qemu_plugin_insn_data(insn));
++    qemu_plugin_insn_data(insn, &opcode, sizeof(opcode));
  
-     /* descriptor of the instruction being translated */
-     struct qemu_plugin_insn *plugin_insn;
-diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
-index 3db74ae9bf..94bbad6dc7 100644
---- a/accel/tcg/plugin-gen.c
-+++ b/accel/tcg/plugin-gen.c
-@@ -329,6 +329,7 @@ bool plugin_gen_tb_start(CPUState *cpu, const DisasContextBase *db,
-         tcg_gen_plugin_cb(PLUGIN_GEN_FROM_TB);
-     }
+     for (i = 0; !cnt && i < class_table_sz; i++) {
+         class = &class_table[i];
+diff --git a/plugins/api.c b/plugins/api.c
+index 3912c9cc8f..4e9125ea29 100644
+--- a/plugins/api.c
++++ b/plugins/api.c
+@@ -216,9 +216,12 @@ qemu_plugin_tb_get_insn(const struct qemu_plugin_tb *tb, size_t idx)
+  * instruction being translated.
+  */
  
-+    tcg_ctx->plugin_db = db;
-     tcg_ctx->plugin_insn = NULL;
+-const void *qemu_plugin_insn_data(const struct qemu_plugin_insn *insn)
++size_t qemu_plugin_insn_data(const struct qemu_plugin_insn *insn,
++                             void *dest, size_t len)
+ {
+-    return insn->data->data;
++    len = MIN(len, insn->data->len);
++    memcpy(dest, insn->data->data, len);
++    return len;
+ }
  
-     return ret;
+ size_t qemu_plugin_insn_size(const struct qemu_plugin_insn *insn)
 -- 
 2.34.1
 
