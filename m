@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013168B17DD
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAE48B17D9
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:11:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmXy-0008Ft-5S; Wed, 24 Apr 2024 20:01:06 -0400
+	id 1rzmY8-0008Nr-PO; Wed, 24 Apr 2024 20:01:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXT-00088d-0e
+ id 1rzmXU-00088h-B3
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:40 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXP-00069g-Pg
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:33 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1e834159f40so3377415ad.2
+ id 1rzmXQ-00069y-9i
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:34 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2a58209b159so389516a91.3
  for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003230; x=1714608030; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003231; x=1714608031; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=sPOPP89zz2v/sO50UiLzGptqHlTjqXVxcZh0h8hT7xk=;
- b=JBykPiAJJnOAEdAqdZgEDVp0lK3YxwrCv4E35xwBcl118yZyoEzgidsOIxcaJsArbZ
- H3z4nIdew8OR4jv4B7U37lfzsNdlhCbmkhp5GOTNV8kVwBH71GOIc1tHEfwZAMSfDdkF
- Wik4Ex4sNA3UQUH9epp1L0o9A0Kv9NCRL/+49FvL9UG3K7JVeAGNd8+xybhsWD4qTNEr
- +AvDuLXLNf2YFvfnjfXl5jUwAeIqBLDeTt6Faze+1K8V8QAm4E8oEs2Au81x27kPX4OH
- V0pniLUvYyT/L24+0m2JFCkq/sT1mYtc2y/K6jXmBl0cwaoSk0u7Cyn0PiWUmIoPHCIc
- pF3A==
+ :reply-to; bh=Vx4Crlv1lb77eV2HoyqdyEXNFf4xuelX5wyOlguT8YE=;
+ b=pXU1Ybqsnd+ITC99TXMMhhTdSYu/aq4Fh8SKzDoI57t+AHSALJ1FGfS6QxI5MppGFq
+ lUr/bOul2USYKDrLn9D82HbdnEnNKTknqq1fnKpPT+H/nciN3LmctC3oxOU5fyNXCuAj
+ Kef2XCi+Qr3V/Vn/sHRNPKZ/8YvKcRZZAg0sgeNaH6bCyOANSWfGBLLuJ2hnyi4ODCmb
+ KgOKhEEnCDFK+nemx4y0eOHQstDmp4WoTU7yBDlOWXcX3/asIbygduyCRWAVfd9SOjUa
+ LZHdudY7d1ziIQHTg5XshBqzHENszBvc+pWNkLbZdo1fTcPdMMKcMf65OBiTKJpyx4K5
+ xBfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003230; x=1714608030;
+ d=1e100.net; s=20230601; t=1714003231; x=1714608031;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=sPOPP89zz2v/sO50UiLzGptqHlTjqXVxcZh0h8hT7xk=;
- b=u4BnaWS50Yrh5JuCTew0FZCTt8oMMq2lgcnEs+DooM4ihuwRP6mbZ7LRakOD08WpRW
- rYNaOnnVb+MtUAt6c4xqlN3XI8+ESffrusCTosjceMXPgNz4Y/ZTMiKnWtP3fWgk+EfC
- pRxH6qnWw1vpIjoayzIiemp4pisYtUoJpMW77MlWbY9ys+WlOq0CyRUauVwTy9IMONvx
- r1zCzQDe0uwIr8bXBzOGgBdnOPayVAVI4DiVGytCrmSMefHtbJJLBCLj9KpJJmPCfqAV
- TwIUg1zkeSItlgYITHTfyocDjQDqNFy3Iygthn3FNG1jPJwOufiboFUX6zw8yEJVO34w
- jGGw==
-X-Gm-Message-State: AOJu0YxJ1LQ6y+ZIemLatmpiGgEtk2WAyNXnqFeH99LJyz6xrjSJNCd/
- AW+eYqUgmtY4YGCK0cNnmXpIOaGbeV/mDqLKPJjuuNUuXSq8HE1urknQeIiiqPEy7cA9b9E6EDN
- v
-X-Google-Smtp-Source: AGHT+IF5AONCJfw0D+kbAFnqdA0Z8G2+P9urDtnC/x2VoHIe2Z/Z3/w+rbUlL9bi9b1oIfFxEDgfmw==
-X-Received: by 2002:a17:903:28f:b0:1e5:3c5:55a5 with SMTP id
- j15-20020a170903028f00b001e503c555a5mr5186794plr.8.1714003228481; 
- Wed, 24 Apr 2024 17:00:28 -0700 (PDT)
+ bh=Vx4Crlv1lb77eV2HoyqdyEXNFf4xuelX5wyOlguT8YE=;
+ b=eqJ98uR4wS3BeXCKoUpXJ44IY7v6lhSp6raMzryYRndMOo+kNMhfSzkH8lCd8NwFnx
+ f3jSS/UADgV4WPBtbzWOouMCIT5D4kKNu98lnTJeJetMOLtXVrPb6Fn8bWMdlu4VoeYu
+ UQzAFpqvs57nBlBo9k8ABYlfv5QsEnao+LCFDTqx+S2ABGIx+qtgnNl+ZI+zBZIkiv7X
+ XKZmx5GkdHYHpGycWo55wa+Ag+azL15GOmdOV51kh/Fh64RZVss5WRRB5tnz7ho5F6vC
+ QbG2/8FYKOy/ynAd3gqE3oMwoc/dBKGUho2YuloKH42xtYrORkZKQKgsjMSgwj6uoUC1
+ grOA==
+X-Gm-Message-State: AOJu0Yz9BrGcza0AfZyAvRFV7huvR1FvNYccNaVsKxJTpp8YncR88ZZM
+ mHnWVYxgM5KJo+MCTO7bFhrQDIg8x1IDerlQVrCJDS9/utQA3xyndRxYH2+Dqzcz8t5HjXy/Y/L
+ B
+X-Google-Smtp-Source: AGHT+IFVF/CGefarNH2I4TzadIzGWNMgwu4jDdZAWibaLBu/0maMaT9FHHi2SKnASosHaglxjzqRTw==
+X-Received: by 2002:a17:90a:c404:b0:2ab:de86:d667 with SMTP id
+ i4-20020a17090ac40400b002abde86d667mr3736416pjt.48.1714003229321; 
+ Wed, 24 Apr 2024 17:00:29 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.27
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.28
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 24 Apr 2024 17:00:28 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 02/45] target/hppa: Use hppa_form_gva_psw in hppa_cpu_get_pc
-Date: Wed, 24 Apr 2024 16:59:40 -0700
-Message-Id: <20240425000023.1002026-3-richard.henderson@linaro.org>
+Subject: [PATCH 03/45] target/hppa: Move constant destination check into
+ use_goto_tb
+Date: Wed, 24 Apr 2024 16:59:41 -0700
+Message-Id: <20240425000023.1002026-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,41 +91,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This function is for log_pc(), which needs to produce a
-similar result to cpu_get_tb_cpu_state().
+Share this check between gen_goto_tb and hppa_tr_translate_insn.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/cpu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ target/hppa/translate.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-index 1d5f5086bf..7315567910 100644
---- a/target/hppa/cpu.c
-+++ b/target/hppa/cpu.c
-@@ -38,9 +38,10 @@ static void hppa_cpu_set_pc(CPUState *cs, vaddr value)
+diff --git a/target/hppa/translate.c b/target/hppa/translate.c
+index 42fa480950..cb874e1c1e 100644
+--- a/target/hppa/translate.c
++++ b/target/hppa/translate.c
+@@ -661,9 +661,10 @@ static bool gen_illegal(DisasContext *ctx)
+     } while (0)
+ #endif
  
- static vaddr hppa_cpu_get_pc(CPUState *cs)
+-static bool use_goto_tb(DisasContext *ctx, uint64_t dest)
++static bool use_goto_tb(DisasContext *ctx, uint64_t bofs, uint64_t nofs)
  {
--    HPPACPU *cpu = HPPA_CPU(cs);
-+    CPUHPPAState *env = cpu_env(cs);
- 
--    return cpu->env.iaoq_f;
-+    return hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
-+                             env->iaoq_f & -4);
+-    return translator_use_goto_tb(&ctx->base, dest);
++    return (bofs != -1 && nofs != -1 &&
++            translator_use_goto_tb(&ctx->base, bofs));
  }
  
- void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-@@ -61,8 +62,7 @@ void cpu_get_tb_cpu_state(CPUHPPAState *env, vaddr *pc,
-     flags |= env->psw & (PSW_W | PSW_C | PSW_D | PSW_P);
-     flags |= (env->iaoq_f & 3) << TB_FLAG_PRIV_SHIFT;
+ /* If the next insn is to be nullified, and it's on the same page,
+@@ -677,16 +678,16 @@ static bool use_nullify_skip(DisasContext *ctx)
+ }
  
--    *pc = hppa_form_gva_psw(env->psw, (env->psw & PSW_C ? env->iasq_f : 0),
--                            env->iaoq_f & -4);
-+    *pc = hppa_cpu_get_pc(env_cpu(env));
-     *cs_base = env->iasq_f;
- 
-     /* Insert a difference between IAOQ_B and IAOQ_F within the otherwise zero
+ static void gen_goto_tb(DisasContext *ctx, int which,
+-                        uint64_t f, uint64_t b)
++                        uint64_t b, uint64_t n)
+ {
+-    if (f != -1 && b != -1 && use_goto_tb(ctx, f)) {
++    if (use_goto_tb(ctx, b, n)) {
+         tcg_gen_goto_tb(which);
+-        copy_iaoq_entry(ctx, cpu_iaoq_f, f, NULL);
+-        copy_iaoq_entry(ctx, cpu_iaoq_b, b, NULL);
++        copy_iaoq_entry(ctx, cpu_iaoq_f, b, NULL);
++        copy_iaoq_entry(ctx, cpu_iaoq_b, n, NULL);
+         tcg_gen_exit_tb(ctx->base.tb, which);
+     } else {
+-        copy_iaoq_entry(ctx, cpu_iaoq_f, f, cpu_iaoq_b);
+-        copy_iaoq_entry(ctx, cpu_iaoq_b, b, ctx->iaoq_n_var);
++        copy_iaoq_entry(ctx, cpu_iaoq_f, b, cpu_iaoq_b);
++        copy_iaoq_entry(ctx, cpu_iaoq_b, n, ctx->iaoq_n_var);
+         tcg_gen_lookup_and_goto_ptr();
+     }
+ }
+@@ -4743,8 +4744,7 @@ static void hppa_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
+     /* Advance the insn queue.  Note that this check also detects
+        a priority change within the instruction queue.  */
+     if (ret == DISAS_NEXT && ctx->iaoq_b != ctx->iaoq_f + 4) {
+-        if (ctx->iaoq_b != -1 && ctx->iaoq_n != -1
+-            && use_goto_tb(ctx, ctx->iaoq_b)
++        if (use_goto_tb(ctx, ctx->iaoq_b, ctx->iaoq_n)
+             && (ctx->null_cond.c == TCG_COND_NEVER
+                 || ctx->null_cond.c == TCG_COND_ALWAYS)) {
+             nullify_set(ctx, ctx->null_cond.c == TCG_COND_ALWAYS);
 -- 
 2.34.1
 
