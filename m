@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEEA8B10B9
-	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B24808B10BD
+	for <lists+qemu-devel@lfdr.de>; Wed, 24 Apr 2024 19:12:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzg8u-0004fq-A5; Wed, 24 Apr 2024 13:10:48 -0400
+	id 1rzgAf-0007Ef-DD; Wed, 24 Apr 2024 13:12:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzg8r-0004ZL-8Q
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:10:45 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1rzgAa-0007EH-Nm
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:12:33 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nifan.cxl@gmail.com>)
- id 1rzg8p-0005lQ-0f
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:10:44 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1e36b7e7dd2so338655ad.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:10:41 -0700 (PDT)
+ id 1rzgAZ-0005vI-3k
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 13:12:32 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-6eced6fd98aso160141b3a.0
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 10:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1713978640; x=1714583440; darn=nongnu.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
- bh=BgjSmDm9nEqvaBmKU8KVrKDMCb4dJzu5b3vNyI4pLQ8=;
- b=kq/YpFHo+VXfFgwmUqBNR5d5NqO4i/NJb/dLrpXd+0vr9+/xizABs6OEuH70L64La4
- 6MncigIJNXzNxF6QL5EafoC5eUdjeVa6pE/a2EiMeS+cQEAFcKxAfACaOZoQWWyicuwS
- 6SAch/2/Uvx0r0mcQjwklLeoGLkT6OyJ+E5HtISvMrGShTvxcvABEh2OJhLwdvlXYWx/
- 63Pud67Fvy/FkZrReBHEkvVgVrGKLv2WxNQevTkygGUxUBX0kMF2rIsYMh5mns2TstO0
- 6Y27TFTumMZhoFXQAziya7ggadEvbSP8K2NelA5MYI67kToKwNVZfjheIhGsTWsxR+HT
- DJbA==
+ d=gmail.com; s=20230601; t=1713978749; x=1714583549; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:date:from:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=PJx7B4fgRPYu09r5fjNBdBPXGt14luISrtxZ4rM/dAA=;
+ b=EiBeZV38NtHjBjzR1F1qAuVroX91pdasNWiBkLQutHQCogznp+57ZWTEgeWoBHyXF2
+ pQdPQ0ItTwQQKsXVyAzpY3+0JUkCDURMWGl3BYiYjDSdqJlx4QNJyei4XIKDR30YcP6G
+ 7lbIpIHgpNDdLGHA9YlYQ5oFDIZM4R/73AXaTAVwXl8Lf1WtG6usr6Q8y+dUgur1Hah5
+ SuntEikda4+yvzrL7+RGqiTFfKb12RIb3qS9EhkgCFgweYo1Ui2XoQzRpxsqhYX7GQsL
+ chdqsCxiHcMnxpFoBA8ZFSGVcMEFlMLKqEaFfd96u9mS80CLncICjvc7s843isjEQyTO
+ ZhWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1713978640; x=1714583440;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=BgjSmDm9nEqvaBmKU8KVrKDMCb4dJzu5b3vNyI4pLQ8=;
- b=C79f/3xq7dE6f6mejgD/W6IPB6Q4kkRd13e8RNhP0AZ564QdnW7FzCLstfNy0zb2Js
- 0qDVryOYjfqAWNWsWHUpE8u4jkoMaML1K36QKu2thinFTKNf+H2Oyyp5fCwuMBDewXru
- iZ/Z6ug7rbXjRSKZ68x1ou/OBajQfBU+W4aBepj8ThEaSKUKotMF+lJiiJv9SBBwqT71
- ZDdX2X0wONde66VF++BhM87giLS7KPFjcM3Y1yUDEqvwFVONPn3fcuNEu1VHEYmzQeeG
- iFsRtVwuLTnC1z/RaWkBdO+4S5IBrkwdH091JgWu5cr9/qFIaJZtvmgsvJZ2ZTsYbWVH
- +yVA==
+ d=1e100.net; s=20230601; t=1713978749; x=1714583549;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:date:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PJx7B4fgRPYu09r5fjNBdBPXGt14luISrtxZ4rM/dAA=;
+ b=GzaEvxJB/RphWC1gc/OWX60BFkVh+y8TWmtg1CbO3gH8Gg8zQ8AduvJlGEKuacSh2t
+ DI5vNGLRe6ibM7DwZEDP7ozxmGQwTXpHbAgUYtrU5GLzZRWUjdJudj3LQb1fKeQ9JItD
+ YbviqoEYCoCsNhsM0MJQD8aCn6Fl+bQMk7UHUhF0Qu5R9nHNH1ZmzjCQOdiCsch31kcK
+ mRDYcmAfITrkQNPIlOy+SgX6bG11xmFi35fy5I9WPGDK3SNC91mSZUXKy1enILRB0JDj
+ azMq6JmqUT/7RFPfr9r4qEVQK383HhLjrFGxi4XIPW+DRTi47QA8fBIlqzH2lIUyuTf3
+ hOzQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCW9deILuRllNRA8pQD/PodBMI8DDJZwxa/IMbXeA8nO0CmD/q1hWkuWTZYuQCn6tyCUsqV4taWCMEQwhwlTl+jBqgMiQdk=
-X-Gm-Message-State: AOJu0Yzj3TUQKShOKIhhEOlp7za/7D5eRzg0ojcuwsjQeBiF8SZTCL9X
- 28AMPbOPiT35gjW/TrFPj0KQ3Kfg+VdLlW4JKlW/1/mZjyP5HRqE
-X-Google-Smtp-Source: AGHT+IFrb1yUe3eATE8i9Ne+A2xiCXoLKalUBVD/ETaTOSSQr0L7gGa/lf2DfSTtL/TjWXr0quHdhg==
-X-Received: by 2002:a17:902:e5d2:b0:1e6:40f1:9357 with SMTP id
- u18-20020a170902e5d200b001e640f19357mr3836801plf.8.1713978640164; 
- Wed, 24 Apr 2024 10:10:40 -0700 (PDT)
+ AJvYcCVSArUHxD9dvJQpH2TmWqW+n0WHJ7vPz+ReCAWpfWX8x7Ld5E3+UAeQy4t/omtbHHi9GdkFJiSC4Ck7SVETzFOrEsb2S7w=
+X-Gm-Message-State: AOJu0Yyf1oL8oG5giiPrtAcF9xCOmfoachv3jFiSKRWKEVbMIUcx7XkA
+ MQLlga1eoIr8poVbtEr0xds2yxoqHvjKIWPEZN+IF3rMl4mHLXI1
+X-Google-Smtp-Source: AGHT+IEIE1XN1WJXhjD/39WDyRmROHsSznUnr2Qdm0ZdIYmjrfNZpwKAz0Ik5fOx2a0ZGv6qGRjxCw==
+X-Received: by 2002:a05:6a20:244d:b0:1a9:11e4:72b6 with SMTP id
+ t13-20020a056a20244d00b001a911e472b6mr4112692pzc.57.1713978748469; 
+ Wed, 24 Apr 2024 10:12:28 -0700 (PDT)
 Received: from debian ([2601:641:300:14de:b318:9476:706a:e82a])
  by smtp.gmail.com with ESMTPSA id
- im15-20020a170902bb0f00b001e3e081d07esm12409930plb.179.2024.04.24.10.10.37
+ b1-20020a170902d30100b001e451abffebsm12157336plc.86.2024.04.24.10.12.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 10:10:39 -0700 (PDT)
+ Wed, 24 Apr 2024 10:12:28 -0700 (PDT)
 From: fan <nifan.cxl@gmail.com>
 X-Google-Original-From: fan <fan@debian>
-Date: Wed, 24 Apr 2024 10:10:08 -0700
+Date: Wed, 24 Apr 2024 10:12:23 -0700
 To: Markus Armbruster <armbru@redhat.com>
-Cc: nifan.cxl@gmail.com, qemu-devel@nongnu.org, jonathan.cameron@huawei.com,
- linux-cxl@vger.kernel.org, gregory.price@memverge.com,
- ira.weiny@intel.com, dan.j.williams@intel.com,
- a.manzanares@samsung.com, dave@stgolabs.net,
- nmtadam.samsung@gmail.com, jim.harris@samsung.com,
- Jorgen.Hansen@wdc.com, wj28.lee@gmail.com, Fan Ni <fan.ni@samsung.com>
-Subject: Re: [PATCH v5 09/13] hw/cxl/events: Add qmp interfaces to
- add/release dynamic capacity extents
-Message-ID: <Zik88BUMsMEFb0Nr@debian>
+Cc: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
+ fan <nifan.cxl@gmail.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
+ gregory.price@memverge.com, ira.weiny@intel.com,
+ dan.j.williams@intel.com, a.manzanares@samsung.com,
+ dave@stgolabs.net, nmtadam.samsung@gmail.com,
+ jim.harris@samsung.com, Jorgen.Hansen@wdc.com, wj28.lee@gmail.com,
+ Fan Ni <fan.ni@samsung.com>
+Subject: Re: [PATCH v5 13/13] qapi/cxl.json: Add QMP interfaces to print out
+ accepted and pending DC extents
+Message-ID: <Zik9dxGopfrifCzU@debian>
 References: <20240304194331.1586191-1-nifan.cxl@gmail.com>
- <20240304194331.1586191-10-nifan.cxl@gmail.com>
- <87a5livrdr.fsf@pond.sub.org>
+ <20240304194331.1586191-14-nifan.cxl@gmail.com>
+ <20240305160908.000010c5@Huawei.com> <ZedFIp5gK4aXsqD-@redhat.com>
+ <ZedRsZee2WhTi_Nd@debian> <ZedTEa8aktb-kKwt@redhat.com>
+ <8734ravr99.fsf@pond.sub.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87a5livrdr.fsf@pond.sub.org>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=nifan.cxl@gmail.com; helo=mail-pl1-x633.google.com
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8734ravr99.fsf@pond.sub.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=nifan.cxl@gmail.com; helo=mail-pf1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -101,206 +107,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 24, 2024 at 03:09:52PM +0200, Markus Armbruster wrote:
-> nifan.cxl@gmail.com writes:
+On Wed, Apr 24, 2024 at 03:12:34PM +0200, Markus Armbruster wrote:
+> Daniel P. Berrangé <berrange@redhat.com> writes:
 > 
-> > From: Fan Ni <fan.ni@samsung.com>
+> > On Tue, Mar 05, 2024 at 09:09:05AM -0800, fan wrote:
+> >> On Tue, Mar 05, 2024 at 04:15:30PM +0000, Daniel P. Berrangé wrote:
+> >> > On Tue, Mar 05, 2024 at 04:09:08PM +0000, Jonathan Cameron via wrote:
+> >> > > On Mon,  4 Mar 2024 11:34:08 -0800
+> >> > > nifan.cxl@gmail.com wrote:
+> >> > > 
+> >> > > > From: Fan Ni <fan.ni@samsung.com>
+> >> > > > 
+> >> > > > With the change, we add the following two QMP interfaces to print out
+> >> > > > extents information in the device,
+> >> > > > 1. cxl-display-accepted-dc-extents: print out the accepted DC extents in
+> >> > > >    the device;
+> >> > > > 2. cxl-display-pending-to-add-dc-extents: print out the pending-to-add
+> >> > > >    DC extents in the device;
+> >> > > > The output is appended to a file passed to the command and by default
+> >> > > > it is /tmp/dc-extent.txt.
+> >> > > Hi Fan,
+> >> > > 
+> >> > > Is there precedence for this sort of logging to a file from a qmp
+> >> > > command?  I can see something like this being useful.
+> >> > 
+> >> > This is pretty unusual.
+> >> 
+> >> Yeah. I cannot find anything similar in existing code, my initial plan
+> >> was to print out to the screen directly, however, cannot find out how to
+> >> do it nicely, so decided to go with a file. 
+> >> 
+> >> Is there a reason why we do not want to go with this approach?
+> >> 
+> >> > 
+> >> > For runtime debugging information our strong preference is to integrate
+> >> > 'trace' probes throughout the code:
+> >> > 
+> >> >   https://www.qemu.org/docs/master/devel/tracing.html#tracing
+> >> 
+> >> I am not familiar with the trace mechanism. However, I think the
+> >> approach in this patch may be useful not only for debugging purpose.
+> >> Although not tried yet, maybe we can also use the approach to set
+> >> some parameters at runtime like what procfs does?
 > >
-> > Since fabric manager emulation is not supported yet, the change implements
-> > the functions to add/release dynamic capacity extents as QMP interfaces.
+> > Please don't invent something new unless you can show why QEMU's existing
+> > tracing system isn't sufficiently good for the problem. QEMU's tracing
+> > can dump to the terminal directly, or integrate with a variety of other
+> > backends, and data can be turned off/on at runtime per-trace point.
 > 
-> Will fabric manager emulation obsolete these commands?
+> Seconded.
 > 
 
-Hi Markus,
-Thanks for reviewing the patchset. This is v5 and we have sent out v7
-recently, there are a lot of changes from v5 to v7.
-
-FYI. v7: https://lore.kernel.org/linux-cxl/ZiaFYUB6FC9NR7W4@memverge.com/T/#t
+Thanks. 
+This patch is removed from the latest version (v7):
+https://lore.kernel.org/linux-cxl/ZiaFYUB6FC9NR7W4@memverge.com/T/#t
 
 Fan
-
-> > Note: we skips any FM issued extent release request if the exact extent
-> > does not exist in the extent list of the device. We will loose the
-> > restriction later once we have partial release support in the kernel.
-> >
-> > 1. Add dynamic capacity extents:
-> >
-> > For example, the command to add two continuous extents (each 128MiB long)
-> > to region 0 (starting at DPA offset 0) looks like below:
-> >
-> > { "execute": "qmp_capabilities" }
-> >
-> > { "execute": "cxl-add-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "region-id": 0,
-> >       "extents": [
-> >       {
-> >           "dpa": 0,
-> >           "len": 134217728
-> >       },
-> >       {
-> >           "dpa": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> >
-> > 2. Release dynamic capacity extents:
-> >
-> > For example, the command to release an extent of size 128MiB from region 0
-> > (DPA offset 128MiB) look like below:
-> >
-> > { "execute": "cxl-release-dynamic-capacity",
-> >   "arguments": {
-> >       "path": "/machine/peripheral/cxl-dcd0",
-> >       "region-id": 0,
-> >       "extents": [
-> >       {
-> >           "dpa": 134217728,
-> >           "len": 134217728
-> >       }
-> >       ]
-> >   }
-> > }
-> >
-> > Signed-off-by: Fan Ni <fan.ni@samsung.com>
-> 
-> [...]
-> 
-> > diff --git a/qapi/cxl.json b/qapi/cxl.json
-> > index 8cc4c72fa9..2645004666 100644
-> > --- a/qapi/cxl.json
-> > +++ b/qapi/cxl.json
-> > @@ -19,13 +19,16 @@
-> >  #
-> >  # @fatal: Fatal Event Log
-> >  #
-> > +# @dyncap: Dynamic Capacity Event Log
-> > +#
-> >  # Since: 8.1
-> >  ##
-> >  { 'enum': 'CxlEventLog',
-> >    'data': ['informational',
-> >             'warning',
-> >             'failure',
-> > -           'fatal']
-> > +           'fatal',
-> > +           'dyncap']
-> 
-> We tend to avoid abbreviations in QMP identifiers: dynamic-capacity.
-> 
-> >   }
-> >  
-> >  ##
-> > @@ -361,3 +364,59 @@
-> >  ##
-> >  {'command': 'cxl-inject-correctable-error',
-> >   'data': {'path': 'str', 'type': 'CxlCorErrorType'}}
-> > +
-> > +##
-> > +# @CXLDCExtentRecord:
-> 
-> Such traffic jams of capital letters are hard to read.
-> 
-> What does DC mean?
-> 
-> > +#
-> > +# Record of a single extent to add/release
-> > +#
-> > +# @offset: offset to the start of the region where the extent to be operated
-> 
-> Blank line here, please
-> 
-> > +# @len: length of the extent
-> > +#
-> > +# Since: 9.0
-> > +##
-> > +{ 'struct': 'CXLDCExtentRecord',
-> > +  'data': {
-> > +      'offset':'uint64',
-> > +      'len': 'uint64'
-> > +  }
-> > +}
-> > +
-> > +##
-> > +# @cxl-add-dynamic-capacity:
-> > +#
-> > +# Command to start add dynamic capacity extents flow. The device will
-> 
-> I think we're missing an article here.  Is it "a flow" or "the flow"?
-> 
-> > +# have to acknowledged the acceptance of the extents before they are usable.
-> 
-> to acknowledge
-> 
-> docs/devel/qapi-code-gen.rst:
-> 
->     For legibility, wrap text paragraphs so every line is at most 70
->     characters long.
-> 
->     Separate sentences with two spaces.
-> 
-> > +#
-> > +# @path: CXL DCD canonical QOM path
-> 
-> What is a CXL DCD?  Is it a device?
-> 
-> I'd prefer @qom-path, unless you can make a consistency argument for
-> @path.
-> 
-> > +# @region-id: id of the region where the extent to add
-> 
-> What's a region, and how do they get their IDs?
-> 
-> > +# @extents: Extents to add
-> 
-> Blank lines between argument descriptions, please.
-> 
-> > +#
-> > +# Since : 9.0
-> 
-> 9.1
-> 
-> > +##
-> > +{ 'command': 'cxl-add-dynamic-capacity',
-> > +  'data': { 'path': 'str',
-> > +            'region-id': 'uint8',
-> > +            'extents': [ 'CXLDCExtentRecord' ]
-> > +           }
-> > +}
-> > +
-> > +##
-> > +# @cxl-release-dynamic-capacity:
-> > +#
-> > +# Command to start release dynamic capacity extents flow. The host will
-> 
-> Article again.
-> 
-> The host?  In cxl-add-dynamic-capacity's doc comment, it's the device.
-> 
-> > +# need to respond to indicate that it has released the capacity before it
-> > +# is made unavailable for read and write and can be re-added.
-> 
-> Is "and can be re-added" relevant here?
-> 
-> > +#
-> > +# @path: CXL DCD canonical QOM path
-> > +# @region-id: id of the region where the extent to release
-> > +# @extents: Extents to release
-> > +#
-> > +# Since : 9.0
-> 
-> 9.1
-> 
-> > +##
-> > +{ 'command': 'cxl-release-dynamic-capacity',
-> > +  'data': { 'path': 'str',
-> > +            'region-id': 'uint8',
-> > +            'extents': [ 'CXLDCExtentRecord' ]
-> > +           }
-> > +}
-> 
 
