@@ -2,84 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5698C8B1FF0
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4FA88B1FCC
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:04:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwtm-0000OP-D3; Thu, 25 Apr 2024 07:04:18 -0400
+	id 1rzwtE-0008Cq-0a; Thu, 25 Apr 2024 07:04:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzws6-0007s4-0m
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:41 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsH-00085l-VR
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:47 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzws3-0008Eq-Lu
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:33 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-418e4cd2196so6836675e9.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsD-0008GT-Ov
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:02:44 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-34a00533d08so477939f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714042949; x=1714647749; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714042955; x=1714647755; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=b/DaGtvlqhC1nG0WRRs696RzTAGLW5V48G1JnVnt1qc=;
- b=qDsNuyso8EAIa1u2Bmlv2bVFIvJwqUkA0b3keiTrsJYp1M+wmLxVEFk0eOi/c1I49x
- y/j9Spnv5W2cFVH3W/JMtNSXSnEB1t/WoFawPUsR/0y2OOBq+RLT+GxcvViAsDjt3ZCE
- MuT0xhwNUf+21c3gtc6B/m828+TBcBxCqWWxofoo5VL0DF2ohZgi9rEUzO1B+5YIIhcW
- Y2KEY0/LurwxZBmWySOpgPeLd/XSp1VvFUC/K+qwWOW3UpKD6W/fp4Dd+zIdZIHuLiQM
- IRg5or8377kSgoLSe99VZs+blbioxdAaRbATG8a9H86sUvWnU6Now7aMW7hDHGtw8NXW
- +Iaw==
+ bh=wFyOmcP9zazcZyBZQtyOmZdkDwwfij0kGGeaUavMPCY=;
+ b=JM3p7lNoymgGwo9QJIAXFDLyYvg1zWCIQUh5HhR0sAs3LWhlzep73kVohA7FD0s2vC
+ 8lo0fdYq0Zz+1H9Q9PiMaouFeqw02Ia4CjrsrkcuwQdlHKiJ42h6+iVg+yKtoS4E2IyW
+ 0kOdUmeXjsAJLAZq0PKTp7gCP7clcREo4RB50sLth7LOLeJVZs77JNtkGmTVSPm0tR1+
+ upfmRvEBXwK70BG6hZn0RcUhbYiCEolR3bqwdfjOylExtwTmewNlYGh8cTBh5FSg91NQ
+ HxvAgOmmDie/fyqa/aghpkkbQBdEXQNjjIAFo205DGRVyUZ6vu2grWDXaifh/jHNuPDS
+ +m2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714042949; x=1714647749;
+ d=1e100.net; s=20230601; t=1714042955; x=1714647755;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=b/DaGtvlqhC1nG0WRRs696RzTAGLW5V48G1JnVnt1qc=;
- b=glc7XtRsSr55+y78ozAFU/VD9MPF2x291IOMrtJWxVJJIPqGarL5E+wuaDB6htqTph
- ooAPyNqvp5QTdHDhDCOwDbhmuJNUxF0qWcq5nIiE4Kfmw5lSyr2kNEZsyeBmYhuYFiu0
- shINHH/0MaPZ0+vD05pGX4rkEryQVxciSjDrnsaFiQOCq37Ox3Y9S0coqNAoZAukZ4ZY
- 8PwODP4f03gc+1I3ZfSSyUlynguGyuWqsucICGYkdV9cno5mvivYcXV1Y0ALpoRr8XEd
- AmuTKz4uVRytbZzh+HbmR0D4chgl4JSelhx2NmA8owMvIbp36oPQKfUq/PQfkqFmpcS0
- 7S8w==
-X-Gm-Message-State: AOJu0YxGks1jJ+u1ptcpibQIcTIrmWzsYLK6xI2tcpFKobj1nFfZ/Uaa
- KhCc1WIy355z5n/hokenhIDEqUzCiN8yyVB2GbRHJb5raOjvaAChPMozqV9J3DKyIaHsP7v9xDz
- r
-X-Google-Smtp-Source: AGHT+IGxA0fp45S5TMqgqmXhQYaNVa3QNit+EQ7R21X8NbKdw/H6ughSa+c5LgPpgdOWh3hwMMfjnQ==
-X-Received: by 2002:a05:600c:4f03:b0:418:ed13:315e with SMTP id
- l3-20020a05600c4f0300b00418ed13315emr3752068wmq.2.1714042949561; 
- Thu, 25 Apr 2024 04:02:29 -0700 (PDT)
+ bh=wFyOmcP9zazcZyBZQtyOmZdkDwwfij0kGGeaUavMPCY=;
+ b=Prb6W3cN8QZ/Z4k6wNl9EL2a2w5BaAxE4xQzFDhf15lwvxq3TgEL6nPZwtH+9yUnaW
+ ZarigvqMrdDjh2G5jK1lIg0rHPT0oLXN411C+jA2b7j5kGNtIOdqJlvtdD6lE73eKZ0c
+ EH1gN0jc8p1g6gJPKuiOfOdqBM+47ZhzCBVtfqvf7r1QI+cnG0WKGgA4yk6sBYtnKRdb
+ yRe1oguFL3lS5ZTM/Akb1t22fyUnfoTRNrI/vjIcL1RweXar7Px2Op+2b7ODBKF6ytAL
+ esu7fUYrGiFG8PtIeCzJAy9MP2/pQU0I8M+9r7Z/bbf2VrgrUmMeqqGmAEvY9CTDTiXd
+ Hvbw==
+X-Gm-Message-State: AOJu0YyUiD4slfzsPafcn++/esVHwfcLxJbL6rj9VrlRBKqMzkszW9Ox
+ v+QK7I9jIteWNDRswOAfzowdFuMb0tlO7ESt8PztV0Av9+v3Q+uLJROYxyjLCOW43d1kHhTWxDq
+ L
+X-Google-Smtp-Source: AGHT+IGbYXBotcggNmvYjJn0SeDlza7RBgJd8SuRBaPyoda0C+BK+2E4ZRY1R2o55gkIYXrS+UqrnQ==
+X-Received: by 2002:a5d:6709:0:b0:341:d3b0:ae7d with SMTP id
+ o9-20020a5d6709000000b00341d3b0ae7dmr4204754wru.45.1714042955056; 
+ Thu, 25 Apr 2024 04:02:35 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- f17-20020a05600c155100b00418db9e4228sm27280045wmg.29.2024.04.25.04.02.28
+ m18-20020adff392000000b00345920fcb45sm19699321wro.13.2024.04.25.04.02.33
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:02:29 -0700 (PDT)
+ Thu, 25 Apr 2024 04:02:34 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PULL 05/22] hw/core: Remove check on NEED_CPU_H in tcg-cpu-ops.h
-Date: Thu, 25 Apr 2024 13:01:38 +0200
-Message-ID: <20240425110157.20328-6-philmd@linaro.org>
+ Zhao Liu <zhao1.liu@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 06/22] target/i386: Move APIC related code to cpu-apic.c
+Date: Thu, 25 Apr 2024 13:01:39 +0200
+Message-ID: <20240425110157.20328-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
-X-Spam_action: no action
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,37 +86,296 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit fd3f7d24d4 ("include/hw/core: Remove i386 conditional
-on fake_user_interrupt") remove the need to check on NEED_CPU_H.
+Move APIC related code split in cpu-sysemu.c and
+monitor.c to cpu-apic.c.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20240321154838.95771-3-philmd@linaro.org>
+Reviewed-by: Zhao Liu <zhao1.liu@intel.com>
+Message-Id: <20240321154838.95771-4-philmd@linaro.org>
 ---
- include/hw/core/tcg-cpu-ops.h | 3 ---
- 1 file changed, 3 deletions(-)
+ target/i386/cpu-apic.c   | 112 +++++++++++++++++++++++++++++++++++++++
+ target/i386/cpu-sysemu.c |  77 ---------------------------
+ target/i386/monitor.c    |  25 ---------
+ target/i386/meson.build  |   1 +
+ 4 files changed, 113 insertions(+), 102 deletions(-)
+ create mode 100644 target/i386/cpu-apic.c
 
-diff --git a/include/hw/core/tcg-cpu-ops.h b/include/hw/core/tcg-cpu-ops.h
-index bf8ff8e3ee..dc1f16a977 100644
---- a/include/hw/core/tcg-cpu-ops.h
-+++ b/include/hw/core/tcg-cpu-ops.h
-@@ -49,7 +49,6 @@ struct TCGCPUOps {
-     /** @debug_excp_handler: Callback for handling debug exceptions */
-     void (*debug_excp_handler)(CPUState *cpu);
+diff --git a/target/i386/cpu-apic.c b/target/i386/cpu-apic.c
+new file mode 100644
+index 0000000000..d397ec94dc
+--- /dev/null
++++ b/target/i386/cpu-apic.c
+@@ -0,0 +1,112 @@
++/*
++ * QEMU x86 CPU <-> APIC
++ *
++ * Copyright (c) 2003-2004 Fabrice Bellard
++ *
++ * SPDX-License-Identifier: MIT
++ */
++
++#include "qemu/osdep.h"
++#include "qapi/qmp/qdict.h"
++#include "qapi/error.h"
++#include "monitor/monitor.h"
++#include "monitor/hmp-target.h"
++#include "sysemu/hw_accel.h"
++#include "sysemu/kvm.h"
++#include "sysemu/xen.h"
++#include "exec/address-spaces.h"
++#include "hw/qdev-properties.h"
++#include "hw/i386/apic_internal.h"
++#include "cpu-internal.h"
++
++APICCommonClass *apic_get_class(Error **errp)
++{
++    const char *apic_type = "apic";
++
++    /* TODO: in-kernel irqchip for hvf */
++    if (kvm_enabled()) {
++        if (!kvm_irqchip_in_kernel()) {
++            error_setg(errp, "KVM does not support userspace APIC");
++            return NULL;
++        }
++        apic_type = "kvm-apic";
++    } else if (xen_enabled()) {
++        apic_type = "xen-apic";
++    } else if (whpx_apic_in_platform()) {
++        apic_type = "whpx-apic";
++    }
++
++    return APIC_COMMON_CLASS(object_class_by_name(apic_type));
++}
++
++void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
++{
++    APICCommonState *apic;
++    APICCommonClass *apic_class = apic_get_class(errp);
++
++    if (!apic_class) {
++        return;
++    }
++
++    cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
++    object_property_add_child(OBJECT(cpu), "lapic",
++                              OBJECT(cpu->apic_state));
++    object_unref(OBJECT(cpu->apic_state));
++
++    /* TODO: convert to link<> */
++    apic = APIC_COMMON(cpu->apic_state);
++    apic->cpu = cpu;
++    apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
++
++    /*
++     * apic_common_set_id needs to check if the CPU has x2APIC
++     * feature in case APIC ID >= 255, so we need to set apic->cpu
++     * before setting APIC ID
++     */
++    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
++}
++
++void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
++{
++    APICCommonState *apic;
++    static bool apic_mmio_map_once;
++
++    if (cpu->apic_state == NULL) {
++        return;
++    }
++    qdev_realize(DEVICE(cpu->apic_state), NULL, errp);
++
++    /* Map APIC MMIO area */
++    apic = APIC_COMMON(cpu->apic_state);
++    if (!apic_mmio_map_once) {
++        memory_region_add_subregion_overlap(get_system_memory(),
++                                            apic->apicbase &
++                                            MSR_IA32_APICBASE_BASE,
++                                            &apic->io_memory,
++                                            0x1000);
++        apic_mmio_map_once = true;
++     }
++}
++
++void hmp_info_local_apic(Monitor *mon, const QDict *qdict)
++{
++    CPUState *cs;
++
++    if (qdict_haskey(qdict, "apic-id")) {
++        int id = qdict_get_try_int(qdict, "apic-id", 0);
++
++        cs = cpu_by_arch_id(id);
++        if (cs) {
++            cpu_synchronize_state(cs);
++        }
++    } else {
++        cs = mon_get_cpu(mon);
++    }
++
++
++    if (!cs) {
++        monitor_printf(mon, "No CPU available\n");
++        return;
++    }
++    x86_cpu_dump_local_apic_state(cs, CPU_DUMP_FPU);
++}
+diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+index 3f9093d285..227ac021f6 100644
+--- a/target/i386/cpu-sysemu.c
++++ b/target/i386/cpu-sysemu.c
+@@ -19,19 +19,12 @@
  
--#ifdef NEED_CPU_H
- #ifdef CONFIG_USER_ONLY
-     /**
-      * @fake_user_interrupt: Callback for 'fake exception' handling.
-@@ -174,8 +173,6 @@ struct TCGCPUOps {
-      */
-     bool (*need_replay_interrupt)(int interrupt_request);
- #endif /* !CONFIG_USER_ONLY */
--#endif /* NEED_CPU_H */
+ #include "qemu/osdep.h"
+ #include "cpu.h"
+-#include "sysemu/kvm.h"
+-#include "sysemu/xen.h"
+-#include "sysemu/whpx.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-visit-run-state.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qom/qom-qobject.h"
+ #include "qapi/qapi-commands-machine-target.h"
+-#include "hw/qdev-properties.h"
 -
- };
+-#include "exec/address-spaces.h"
+-#include "hw/i386/apic_internal.h"
  
- #if defined(CONFIG_USER_ONLY)
+ #include "cpu-internal.h"
+ 
+@@ -273,75 +266,6 @@ void x86_cpu_machine_reset_cb(void *opaque)
+     cpu_reset(CPU(cpu));
+ }
+ 
+-APICCommonClass *apic_get_class(Error **errp)
+-{
+-    const char *apic_type = "apic";
+-
+-    /* TODO: in-kernel irqchip for hvf */
+-    if (kvm_enabled()) {
+-        if (!kvm_irqchip_in_kernel()) {
+-            error_setg(errp, "KVM does not support userspace APIC");
+-            return NULL;
+-        }
+-        apic_type = "kvm-apic";
+-    } else if (xen_enabled()) {
+-        apic_type = "xen-apic";
+-    } else if (whpx_apic_in_platform()) {
+-        apic_type = "whpx-apic";
+-    }
+-
+-    return APIC_COMMON_CLASS(object_class_by_name(apic_type));
+-}
+-
+-void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+-{
+-    APICCommonState *apic;
+-    APICCommonClass *apic_class = apic_get_class(errp);
+-
+-    if (!apic_class) {
+-        return;
+-    }
+-
+-    cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
+-    object_property_add_child(OBJECT(cpu), "lapic",
+-                              OBJECT(cpu->apic_state));
+-    object_unref(OBJECT(cpu->apic_state));
+-
+-    /* TODO: convert to link<> */
+-    apic = APIC_COMMON(cpu->apic_state);
+-    apic->cpu = cpu;
+-    apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
+-
+-    /*
+-     * apic_common_set_id needs to check if the CPU has x2APIC
+-     * feature in case APIC ID >= 255, so we need to set apic->cpu
+-     * before setting APIC ID
+-     */
+-    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
+-}
+-
+-void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
+-{
+-    APICCommonState *apic;
+-    static bool apic_mmio_map_once;
+-
+-    if (cpu->apic_state == NULL) {
+-        return;
+-    }
+-    qdev_realize(DEVICE(cpu->apic_state), NULL, errp);
+-
+-    /* Map APIC MMIO area */
+-    apic = APIC_COMMON(cpu->apic_state);
+-    if (!apic_mmio_map_once) {
+-        memory_region_add_subregion_overlap(get_system_memory(),
+-                                            apic->apicbase &
+-                                            MSR_IA32_APICBASE_BASE,
+-                                            &apic->io_memory,
+-                                            0x1000);
+-        apic_mmio_map_once = true;
+-     }
+-}
+-
+ GuestPanicInformation *x86_cpu_get_crash_info(CPUState *cs)
+ {
+     X86CPU *cpu = X86_CPU(cs);
+@@ -385,4 +309,3 @@ void x86_cpu_get_crash_info_qom(Object *obj, Visitor *v,
+                                      errp);
+     qapi_free_GuestPanicInformation(panic_info);
+ }
+-
+diff --git a/target/i386/monitor.c b/target/i386/monitor.c
+index 3a281dab02..2d766b2637 100644
+--- a/target/i386/monitor.c
++++ b/target/i386/monitor.c
+@@ -28,8 +28,6 @@
+ #include "monitor/hmp-target.h"
+ #include "monitor/hmp.h"
+ #include "qapi/qmp/qdict.h"
+-#include "sysemu/hw_accel.h"
+-#include "sysemu/kvm.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-misc-target.h"
+ #include "qapi/qapi-commands-misc.h"
+@@ -647,26 +645,3 @@ const MonitorDef *target_monitor_defs(void)
+ {
+     return monitor_defs;
+ }
+-
+-void hmp_info_local_apic(Monitor *mon, const QDict *qdict)
+-{
+-    CPUState *cs;
+-
+-    if (qdict_haskey(qdict, "apic-id")) {
+-        int id = qdict_get_try_int(qdict, "apic-id", 0);
+-
+-        cs = cpu_by_arch_id(id);
+-        if (cs) {
+-            cpu_synchronize_state(cs);
+-        }
+-    } else {
+-        cs = mon_get_cpu(mon);
+-    }
+-
+-
+-    if (!cs) {
+-        monitor_printf(mon, "No CPU available\n");
+-        return;
+-    }
+-    x86_cpu_dump_local_apic_state(cs, CPU_DUMP_FPU);
+-}
+diff --git a/target/i386/meson.build b/target/i386/meson.build
+index 8abce725f8..075117989b 100644
+--- a/target/i386/meson.build
++++ b/target/i386/meson.build
+@@ -18,6 +18,7 @@ i386_system_ss.add(files(
+   'arch_memory_mapping.c',
+   'machine.c',
+   'monitor.c',
++  'cpu-apic.c',
+   'cpu-sysemu.c',
+ ))
+ i386_system_ss.add(when: 'CONFIG_SEV', if_true: files('sev.c'), if_false: files('sev-sysemu-stub.c'))
 -- 
 2.41.0
 
