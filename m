@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D88A8B1FD6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:04:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E35C78B1FE8
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:07:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwtw-0001UA-Of; Thu, 25 Apr 2024 07:04:28 -0400
+	id 1rzwu2-0001p4-Bt; Thu, 25 Apr 2024 07:04:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsn-0008VP-MQ
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsq-000057-3r
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:38 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsk-00007H-AO
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:16 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2def8e5ae60so4591341fa.2
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwsn-0000AB-Fr
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:19 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-41a77836f16so6566255e9.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714042989; x=1714647789; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714042994; x=1714647794; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=LU/r9zSSWOAgtXVFmIxCt1qMAeFSfB+B8bTVtMRUbL4=;
- b=WrXR9xds2luym4J6tztK66DnJaf/wuj2yu2EDa583PaxoSFJwEWk1s2L1aNchIx+/r
- bbR9UZz7iFtrCvMuaaKDwy3TZsSwGW9zzUFnkKUtVogRlNYkQ18amTlZR9yb/pPExQ2j
- fjGvhqmzFGItbBbAjuHVlaCBQNbmXskDV7Snl6aLxO67SwCZGLsYvUI6KWzLAQQ/obJ8
- MeQ9254Ek3cXhnTeh1ApAZ9/J5mkzleH+K9rKInF3B7Y1sQ4VXjXN0HdV+sqQ7CRQsXS
- xsVN1HokLi5KiqQA+3m7jZXt90Xy2TAVok0I9hsD2cFYXLzuWsODMcI6TuDobnVQOdTP
- 5GAg==
+ bh=8bJ1N9o6y+S8lNsIITbhbB1Udo8RPNY/z42IZN8n3uY=;
+ b=o9e2JvchHg5dfWSh/z2SQMfNy0QkVIe91WIGmoHqe2VYBytEsQZxCyuy43VUT0Cvqg
+ BOgDlE/7pATxN5NYjfW62/PeVsTPMm9SlQT4ksgbfOo5RRSGINZQBeMEx8al0LBuegIM
+ SVc5Vd0glybBwHQjgzkjJqsznfmrj/z7Hmn0+obklXI2F8iShdJeskrCdmvX6cfaoabm
+ R6eLWEA6UcsMFBjiIf8Bfjh1WN2Xhw6dVB3sjfhBYupFiJPtBipofJpW97qjmybVBf9O
+ +9NPuqaXFYYQ+TiIj+v4OIsqTZEGbeqIVpD5t0YH3YN+Cpvt+RYx1K41qzhwL1ior+OY
+ Sdrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714042989; x=1714647789;
+ d=1e100.net; s=20230601; t=1714042994; x=1714647794;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LU/r9zSSWOAgtXVFmIxCt1qMAeFSfB+B8bTVtMRUbL4=;
- b=nu2s1F0tXocxlkW19Um2yfxIqYJA9NKxfyGXv/B+AQvLbg+7x6k8AufPBtR0/3AswP
- usT0hPoR0qx8jl+L51fCJecDxzd9+/JriR6vcNR8OnB0qklxnf294IAcK6ePZZlym65b
- gAHw3ONgkxcLvkAGBe6zhXfHU0FaXbEMVJgGTXITR2A6wrhC175MtRQPiMz2Ggx88LLA
- QKlg4WeiyFYm4ee7oynGRzYJIo7HqbN2/ckjQjOyu+5NoULjUq6L8gt15TP1MqtPdyOg
- JAOpq7gDBW2uI/zfDaT4Fxvv923evef6gZO4xT2s9rA4vqZO/zIUZbykZsPiF2Oj26Er
- nKCg==
-X-Gm-Message-State: AOJu0Yx0dEjt7tKZ93PjPrSS53yX2mzHUmCJGY8xW4J62Ozk6LF9riWn
- xU0Azd2WSeKDZlri3jU+xAwwlI5i2glaLHyzl+8zlFHMvDrqDsa13A5V4y3VguMAyjIqlwTFQlI
- x
-X-Google-Smtp-Source: AGHT+IFO8miQl6dbOAeeTD9X+PVLuHZOUwqnZSgopxhCCr33r6EuDuv6CgJsQcLWxILvpMYPwwf/Zw==
-X-Received: by 2002:a2e:954f:0:b0:2de:81c9:14b3 with SMTP id
- t15-20020a2e954f000000b002de81c914b3mr2837508ljh.35.1714042988935; 
- Thu, 25 Apr 2024 04:03:08 -0700 (PDT)
+ bh=8bJ1N9o6y+S8lNsIITbhbB1Udo8RPNY/z42IZN8n3uY=;
+ b=l8Z+WVCvL7X5pPgTBSgm1CwRWEPo9v5ttnqxpZFFfGvgPFWC01zDONOEbp8rxzAwNb
+ QKR4bZ0uU0pR2TO4m66+VPtaaJ7G8V+LtCRmVM5WwsnVowiScp7Pbk2VtsitcHSTc3U5
+ PHGH6hJ1Zz/eZWQgw7SDehMoFLYn7twseR0twFB3ZebSOkbzRHtZSMM+KPQbg5nbDZ3n
+ 4GALWihaQc6mCot52MrchUpfIppz84cA2irCvOVHUwN1YWhKEbShz1rBJeg2KGIZ/nfN
+ JivmTixVb06sYc9RXlQ/+KBEJ3mmZOB2Tjwt4MjusqulW0m1tz9xCTy5oPORnOgAfStE
+ +w7g==
+X-Gm-Message-State: AOJu0Yy9l/E6q38fXm9DZ27lWKoeuZAuLgNp+iScC1EtKO9hFj0bT6uA
+ LtJeej1XbKSuZqby/FcAEDKHyrGdNWu15c9JCACwALBABEJHwW89gCxRvBCOvTnnBjP9f5K5DtV
+ p
+X-Google-Smtp-Source: AGHT+IExtxLJ50MnYU/IbmveQvsJjUvXAL9seoPtUBsjFHLwrfdxSyldZdl8iBPaCQOyZrDoOo9++g==
+X-Received: by 2002:a05:600c:35c7:b0:418:a7a7:990f with SMTP id
+ r7-20020a05600c35c700b00418a7a7990fmr4300251wmq.13.1714042994514; 
+ Thu, 25 Apr 2024 04:03:14 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- o20-20020a05600c511400b0041a49b10a13sm14955302wms.11.2024.04.25.04.03.07
+ fc19-20020a05600c525300b00418981b59d4sm31049322wmb.10.2024.04.25.04.03.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:03:08 -0700 (PDT)
+ Thu, 25 Apr 2024 04:03:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
@@ -62,24 +62,24 @@ Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Jonathan Cameron <jonathan.cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>
-Subject: [PULL 12/22] hw/cxl/cxl-cdat: Make ct3_load_cdat() return boolean
-Date: Thu, 25 Apr 2024 13:01:45 +0200
-Message-ID: <20240425110157.20328-13-philmd@linaro.org>
+Subject: [PULL 13/22] hw/cxl/cxl-cdat: Make ct3_build_cdat() return boolean
+Date: Thu, 25 Apr 2024 13:01:46 +0200
+Message-ID: <20240425110157.20328-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=philmd@linaro.org; helo=mail-lj1-x235.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,77 +100,66 @@ From: Zhao Liu <zhao1.liu@intel.com>
 As error.h suggested, the best practice for callee is to return
 something to indicate success / failure.
 
-So make ct3_load_cdat() return boolean, and this is the preparation for
+So make ct3_build_cdat() return boolean, and this is the preparation for
 cxl_doe_cdat_init() returning boolean.
 
 Suggested-by: Markus Armbruster <armbru@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-ID: <20240418100433.1085447-2-zhao1.liu@linux.intel.com>
+Message-ID: <20240418100433.1085447-3-zhao1.liu@linux.intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/cxl/cxl-cdat.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ hw/cxl/cxl-cdat.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/hw/cxl/cxl-cdat.c b/hw/cxl/cxl-cdat.c
-index 551545f782..b3e496857a 100644
+index b3e496857a..e7bc1380bf 100644
 --- a/hw/cxl/cxl-cdat.c
 +++ b/hw/cxl/cxl-cdat.c
-@@ -111,7 +111,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
-     cdat->entry = g_steal_pointer(&cdat_st);
+@@ -44,7 +44,7 @@ static void cdat_len_check(CDATSubHeader *hdr, Error **errp)
+     }
  }
  
--static void ct3_load_cdat(CDATObject *cdat, Error **errp)
-+static bool ct3_load_cdat(CDATObject *cdat, Error **errp)
+-static void ct3_build_cdat(CDATObject *cdat, Error **errp)
++static bool ct3_build_cdat(CDATObject *cdat, Error **errp)
  {
+     g_autofree CDATTableHeader *cdat_header = NULL;
      g_autofree CDATEntry *cdat_st = NULL;
-     g_autofree uint8_t *buf = NULL;
-@@ -127,11 +127,11 @@ static void ct3_load_cdat(CDATObject *cdat, Error **errp)
-                              &file_size, &error)) {
-         error_setg(errp, "CDAT: File read failed: %s", error->message);
-         g_error_free(error);
--        return;
-+        return false;
-     }
-     if (file_size < sizeof(CDATTableHeader)) {
-         error_setg(errp, "CDAT: File too short");
--        return;
-+        return false;
-     }
-     i = sizeof(CDATTableHeader);
-     num_ent = 1;
-@@ -139,19 +139,19 @@ static void ct3_load_cdat(CDATObject *cdat, Error **errp)
-         hdr = (CDATSubHeader *)(buf + i);
-         if (i + sizeof(CDATSubHeader) > file_size) {
-             error_setg(errp, "CDAT: Truncated table");
--            return;
-+            return false;
-         }
-         cdat_len_check(hdr, errp);
-         i += hdr->length;
-         if (i > file_size) {
-             error_setg(errp, "CDAT: Truncated table");
--            return;
-+            return false;
-         }
-         num_ent++;
-     }
-     if (i != file_size) {
-         error_setg(errp, "CDAT: File length mismatch");
+@@ -58,7 +58,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+     cdat_header = g_malloc0(sizeof(*cdat_header));
+     if (!cdat_header) {
+         error_setg(errp, "Failed to allocate CDAT header");
 -        return;
 +        return false;
      }
  
-     cdat_st = g_new0(CDATEntry, num_ent);
-@@ -185,6 +185,7 @@ static void ct3_load_cdat(CDATObject *cdat, Error **errp)
-     cdat->entry_len = num_ent;
+     cdat->built_buf_len = cdat->build_cdat_table(&cdat->built_buf,
+@@ -67,14 +67,14 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+     if (cdat->built_buf_len <= 0) {
+         /* Build later as not all data available yet */
+         cdat->to_update = true;
+-        return;
++        return true;
+     }
+     cdat->to_update = false;
+ 
+     cdat_st = g_malloc0(sizeof(*cdat_st) * (cdat->built_buf_len + 1));
+     if (!cdat_st) {
+         error_setg(errp, "Failed to allocate CDAT entry array");
+-        return;
++        return false;
+     }
+ 
+     /* Entry 0 for CDAT header, starts with Entry 1 */
+@@ -109,6 +109,7 @@ static void ct3_build_cdat(CDATObject *cdat, Error **errp)
+     cdat_st[0].length = sizeof(*cdat_header);
+     cdat->entry_len = 1 + cdat->built_buf_len;
      cdat->entry = g_steal_pointer(&cdat_st);
-     cdat->buf = g_steal_pointer(&buf);
 +    return true;
  }
  
- void cxl_doe_cdat_init(CXLComponentState *cxl_cstate, Error **errp)
+ static bool ct3_load_cdat(CDATObject *cdat, Error **errp)
 -- 
 2.41.0
 
