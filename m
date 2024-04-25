@@ -2,76 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A16F8B1B6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 09:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8010D8B1BC8
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 09:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzt8p-0006sO-64; Thu, 25 Apr 2024 03:03:35 -0400
+	id 1rztOL-0004N3-TD; Thu, 25 Apr 2024 03:19:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rzt8g-0006s6-RR
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 03:03:26 -0400
-Received: from mgamail.intel.com ([198.175.65.15])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1rzt8e-0004QO-2y
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 03:03:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714028604; x=1745564604;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=qO4v/myxkSZo6pTKczEfEvF9d1EDa0KePzRo82nRE0k=;
- b=gP+vNWx7eB4CxlWogBrILeG2e6vA9k8jC7MLrzMPdFa3A9aiRpBmW+Sg
- k/2YWOhyg+huKEGw04LqRT+kqe8CUTfHtI9xYfUXudayOeWBrIEqLkGLA
- 6TIMa9PC3+QU6TdwgzdhMNwzH9bGqo6bBbSTHKYdGr/iVzFk2y7yRaQWl
- h6I/C4zV99Uaw0815KloR/XKxACDL52fSmSEwmVqocVeVsvk87S+ij4WY
- DKbZQe0+tvb1H+jRDJWbhDSNpHuWLQZLsy4B3Bh+lMvKTzv57Kxjp6IHq
- oBYjheHqbEmzKv86m1X5+dfQWg2TYT1nXgkK1Zc5RHMS89X0u45JFDCTL g==;
-X-CSE-ConnectionGUID: 5f0hTNYmTRqGET2V8L/tMw==
-X-CSE-MsgGUID: 0qOWtXb8R6W9ZYtNIq4t+w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="13479826"
-X-IronPort-AV: E=Sophos;i="6.07,228,1708416000"; d="scan'208";a="13479826"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 00:03:21 -0700
-X-CSE-ConnectionGUID: EGiMHNZBS0ebDAMq4EDJew==
-X-CSE-MsgGUID: LhCxX+3GQBKq46HlzN5VnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,228,1708416000"; d="scan'208";a="25590748"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa008.jf.intel.com with ESMTP; 25 Apr 2024 00:03:19 -0700
-Date: Thu, 25 Apr 2024 15:17:26 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Tim Wiederhake <twiederh@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhao Liu <zhao1.liu@intel.com>
-Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
- feature name
-Message-ID: <ZioDhpYUOEdGbWgE@intel.com>
-References: <20240329101954.3954987-1-zhao1.liu@linux.intel.com>
- <fb252e78-2e71-4422-9499-9eac69102eec@intel.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rztOJ-0004Mq-1Q
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 03:19:35 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rztOH-0001Y5-Bk
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 03:19:34 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-a5557e3ebcaso114486066b.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 00:19:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1714029570; x=1714634370; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=Bvr+7vBnokuzFRKMkvufFwUQkzSJ7NtoaaYjJ2wVyE8=;
+ b=Yhf6MvXXjQDqAxVQKH+WyPAi/jtDMpESYRgSOmP8dSJ/OZwwWsETSdOzIJOzfqvDfU
+ ZLze46xviiu6RL6HdksguL+aVVSTceoOXtZn8crn33QByYxviatjgmme0AyvASB6qRIH
+ 84TKWw7UhlqgpqcVTiqviNVT9reboTC21TV09opOHflsQQObrNkzCYT8X1P+QsBHlKeM
+ ziu/Ky3IDnQYSe0qAGBHHbOcFN+l1CmTPhXHjZVl7SkY67XyJMs0asN/oDPC+WUjPfDj
+ XnjiAhQcKcgdueXg80nmX9gdHvSwCqRq+rZ+G3RqPdgIEBA8e7UWz3fyRX57tET1b/1F
+ krdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714029570; x=1714634370;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Bvr+7vBnokuzFRKMkvufFwUQkzSJ7NtoaaYjJ2wVyE8=;
+ b=IGSnO8pVeoKnZ7PiR9VGhe2PSRHn1JB5U5M+aluwuLAkX5yqcJKWTPOnH7ET+PFRCt
+ gZ613HD1LK+gdpZaZyyXhxqndNO8DVVd2LWHRAa10MufhsIWB9VPNp0CtuWOBX421t+C
+ myo777mG04akElzKIdsfzCD/glQ64Z8cwogBXErS43HZr/eodw2jXDPV+asu+UGmgl8o
+ Nws2EGetEkqXZaCfkC85npISuWc6DmdpudssMM7RaYUyVuCjav6JN6BbSR2O5B2Gybze
+ maXVWM6rCIdg0zIr6XpJhD53eZLhbHWTGLPPC4HP3vUcEeUrxxEtek14dd5mjAqJnHXG
+ BERQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUeAzX1x0lkL2ieS6K8+7ZB3GJyBz9LG3Z4CTyIia4+1cO1/k2pcLajsr1MdkYVwNk9PKSpMfZvTicjAL6uULGmZ00Acrg=
+X-Gm-Message-State: AOJu0YyLqQugjtGxzZpA/WYvzutFAMmMpMtrc9GE0scsSBt57GNYFj7t
+ qAEiIKOlUIxMx/WnAFjIbZXSsImPBWz4hsCMIV4aMEmbLwu1V+Kpln3sV4lK2doxaZblLXx2Ux0
+ v
+X-Google-Smtp-Source: AGHT+IH3jUzxqJ0yzGazLcXBsSyHHQ4ts5NxpiOAILjntaHM2x3rJGAh+XfrUMmrziadH7UmDplASg==
+X-Received: by 2002:a17:906:b283:b0:a55:9574:48a6 with SMTP id
+ q3-20020a170906b28300b00a55957448a6mr2043233ejz.30.1714029570207; 
+ Thu, 25 Apr 2024 00:19:30 -0700 (PDT)
+Received: from [192.168.69.100] ([176.187.197.201])
+ by smtp.gmail.com with ESMTPSA id
+ h26-20020a17090619da00b00a588729de82sm2330590ejd.142.2024.04.25.00.19.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Apr 2024 00:19:29 -0700 (PDT)
+Message-ID: <dc0ccf20-fa3f-4882-a179-17798ebe5106@linaro.org>
+Date: Thu, 25 Apr 2024 09:19:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb252e78-2e71-4422-9499-9eac69102eec@intel.com>
-Received-SPF: none client-ip=198.175.65.15;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -49
-X-Spam_score: -5.0
-X-Spam_bar: -----
-X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] hw/i386: Consolidate isa-bios creation
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20240422200625.2768-1-shentey@gmail.com>
+ <20240422200625.2768-5-shentey@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+In-Reply-To: <20240422200625.2768-5-shentey@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,97 +98,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Xiaoyao,
+Hi Bernhard,
 
-On Wed, Apr 24, 2024 at 11:57:11PM +0800, Xiaoyao Li wrote:
-> Date: Wed, 24 Apr 2024 23:57:11 +0800
-> From: Xiaoyao Li <xiaoyao.li@intel.com>
-> Subject: Re: [PATCH for-9.1 0/7] target/i386/kvm: Cleanup the kvmclock
->  feature name
+On 22/4/24 22:06, Bernhard Beschow wrote:
+> Now that the -bios and -pflash code paths work the same it is possible to have a
+> common implementation.
 > 
-> On 3/29/2024 6:19 PM, Zhao Liu wrote:
-> > From: Zhao Liu <zhao1.liu@intel.com>
-> > 
-> > Hi list,
-> > 
-> > This series is based on Paolo's guest_phys_bits patchset [1].
-> > 
-> > Currently, the old and new kvmclocks have the same feature name
-> > "kvmclock" in FeatureWordInfo[FEAT_KVM].
-> > 
-> > When I tried to dig into the history of this unusual naming and fix it,
-> > I realized that Tim was already trying to rename it, so I picked up his
-> > renaming patch [2] (with a new commit message and other minor changes).
-> > 
-> > 13 years age, the same name was introduced in [3], and its main purpose
-> > is to make it easy for users to enable/disable 2 kvmclocks. Then, in
-> > 2012, Don tried to rename the new kvmclock, but the follow-up did not
-> > address Igor and Eduardo's comments about compatibility.
-> > 
-> > Tim [2], not long ago, and I just now, were both puzzled by the naming
-> > one after the other.
+> While at it convert the magic number 0x100000 (== 1MiB) to increase readability.
 > 
-> The commit message of [3] said the reason clearly:
-> 
->   When we tweak flags involving this value - specially when we use "-",
->   we have to act on both.
-> 
-> So you are trying to change it to "when people want to disable kvmclock,
-> they need to use '-kvmclock,-kvmclock2' instead of '-kvmclock'"
->
-> IMHO, I prefer existing code and I don't see much value of differentiating
-> them. If the current code puzzles you, then we can add comment to explain.
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+> ---
+>   include/hw/i386/x86.h |  2 ++
+>   hw/i386/pc_sysfw.c    | 28 ++++------------------------
+>   hw/i386/x86.c         | 29 ++++++++++++++++++-----------
+>   3 files changed, 24 insertions(+), 35 deletions(-)
 
-It's enough to just enable kvmclock2 for Guest; kvmclock (old) is
-redundant in the presence of kvmclock2.
 
-So operating both feature bits at the same time is not a reasonable
-choice, we should only keep kvmclock2 for Guest. It's possible because
-the oldest linux (v4.5) which QEMU i386 supports has kvmclock2.
+> diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
+> index 6e89671c26..e529182b48 100644
+> --- a/hw/i386/pc_sysfw.c
+> +++ b/hw/i386/pc_sysfw.c
+> @@ -28,7 +28,6 @@
+>   #include "sysemu/block-backend.h"
+>   #include "qemu/error-report.h"
+>   #include "qemu/option.h"
+> -#include "qemu/units.h"
+>   #include "hw/sysbus.h"
+>   #include "hw/i386/x86.h"
+>   #include "hw/i386/pc.h"
+> @@ -40,27 +39,6 @@
+>   
+>   #define FLASH_SECTOR_SIZE 4096
+>   
+> -static void pc_isa_bios_init(MemoryRegion *rom_memory,
+> -                             MemoryRegion *flash_mem)
+> -{
+> -    int isa_bios_size;
+> -    MemoryRegion *isa_bios;
+> -    uint64_t flash_size;
+> -
+> -    flash_size = memory_region_size(flash_mem);
+> -
+> -    /* map the last 128KB of the BIOS in ISA space */
+> -    isa_bios_size = MIN(flash_size, 128 * KiB);
+> -    isa_bios = g_malloc(sizeof(*isa_bios));
+> -    memory_region_init_alias(isa_bios, NULL, "isa-bios", flash_mem,
+> -                             flash_size - isa_bios_size, isa_bios_size);
+> -    memory_region_add_subregion_overlap(rom_memory,
+> -                                        0x100000 - isa_bios_size,
+> -                                        isa_bios,
+> -                                        1);
+> -    memory_region_set_readonly(isa_bios, true);
+> -}
 
-Pls see:
-https://elixir.bootlin.com/linux/v4.5/source/arch/x86/include/uapi/asm/kvm_para.h#L22
 
-With this in mind, I'm trying to implement a silky smooth transition to
-"only kcmclock2 support".
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index 32cd22a4a8..7366b0cee4 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -1136,13 +1136,28 @@ void x86_load_linux(X86MachineState *x86ms,
+>       nb_option_roms++;
+>   }
+>   
+> +void x86_isa_bios_init(MemoryRegion *rom_memory, MemoryRegion *bios,
+> +                       bool isapc_ram_fw)
+> +{
+> +    int bios_size = memory_region_size(bios);
+> +    int isa_bios_size = MIN(bios_size, 128 * KiB);
+> +    MemoryRegion *isa_bios;
+> +
+> +    isa_bios = g_malloc(sizeof(*isa_bios));
 
-This series is now separating kvmclock and kvmclock2, and then I plan to
-go to the KVM side and deprecate kvmclock2, and then finally remove
-kvmclock (old) in QEMU. Separating the two features makes the process
-clearer.
+Pre-existing, but we shouldn't leak MR like that.
 
-Continuing to use the same name equally would have silently caused the
-CPUID to change on the Guest side, which would have hurt compatibility
-as well.
+Probably better to pass pre-allocated as argument,
+smth like:
 
-> > So, this series is to push for renaming the new kvmclock feature to
-> > "kvmclock2" and adding compatibility support for older machines (PC 9.0
-> > and older).
-> > 
-> > Finally, let's put an end to decades of doubt about this name.
-> > 
-> > 
-> > Next Step
-> > =========
-> > 
-> > This series just separates the two kvmclocks from the naming, and in
-> > subsequent patches I plan to stop setting kvmclock(old kcmclock) by
-> > default as long as KVM supports kvmclock2 (new kvmclock).
-> 
-> No. It will break existing guests that use KVM_FEATURE_CLOCKSOURCE.
+   /**
+    * x86_isa_bios_init: ... at fixed addr ...
+    * @isa_bios: MR to initialize
+    * @isa_mr: ISA bus
+    * @bios: BIOS MR to map on ISA bus
+    * @read_only: Map the BIOS as read-only
+    */
+   void x86_isa_bios_init(MemoryRegion *isa_bios,
+                          const MemoryRegion *isa_mr,
+                          const MemoryRegion *bios,
+                          bool read_only);
 
-Please refer to my elaboration on v4.5 above, where kvmclock2 is
-available, it should be used in priority.
-
-> > Also, try to deprecate the old kvmclock in KVM side.
-> > 
-> > [1]: https://lore.kernel.org/qemu-devel/20240325141422.1380087-1-pbonzini@redhat.com/
-> > [2]: https://lore.kernel.org/qemu-devel/20230908124534.25027-4-twiederh@redhat.com/
-> > [3]: https://lore.kernel.org/qemu-devel/1300401727-5235-3-git-send-email-glommer@redhat.com/
-> > [4]: https://lore.kernel.org/qemu-devel/1348171412-23669-3-git-send-email-Don@CloudSwitch.com/
-
-Thanks,
-Zhao
-
+> +    memory_region_init_alias(isa_bios, NULL, "isa-bios", bios,
+> +                             bios_size - isa_bios_size, isa_bios_size);
+> +    memory_region_add_subregion_overlap(rom_memory, 1 * MiB - isa_bios_size,
+> +                                        isa_bios, 1);
+> +    memory_region_set_readonly(isa_bios, !isapc_ram_fw);
+> +}
 
 
