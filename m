@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E338B1F6B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:42:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2EF8B1F7B
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:44:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWe-0002JX-EK; Thu, 25 Apr 2024 06:40:24 -0400
+	id 1rzwWd-0002EF-AX; Thu, 25 Apr 2024 06:40:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWZ-00023o-2D
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:19 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1rzwWX-000235-HC
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:17 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWV-0007Dm-1E
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:18 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-344047ac7e4so1079319f8f.0
+ id 1rzwWV-0007Ds-FT
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:17 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-34b3374ae22so806296f8f.0
  for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041613; x=1714646413; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041614; x=1714646414; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=35oYYuwi+Br4xakq5nYHN4Yw6o3yTK6J3eUx77p4G0k=;
- b=DkDei1sAXB/nljgjwWmicshlqifO0Xh/ZTeZGx7XJmOBEPZqyh/r9djp4IGnRjrhl4
- We7YEEGX32gGxxRJOEDpC7GprQXLCR190zV+c96ssdv8QyZ0ziQ3SfJlPaxMqgjjt6eC
- 6B/PbECG9i7/iF2odG67BCb4kU9kZmu/OyAXKMA42p5tlCORZ9HjPbiBi/OyDOGUerZ8
- 8PEmL3F5Tq15LJtMpDTn1dQMlzY5L6EsMWC05ntQWq6DPtZ77jF9CAFVsqgfzNYW22dX
- LV35GICIguPKKQpNJUlsFfsCT8/f35qUmwor1SNx+yvCEEyylaWUwIJj/WIKZuHe2gn+
- L/dQ==
+ :reply-to; bh=AMYxQWHy5jEXXCF6WIQ+tbnHt/CyfwoIHxTcgJbKUq8=;
+ b=LJ95vDO1mf4Z5f0OZy1hGXtbZNHXhcxT/KZSiZWh5PO+jrIY5CtWhmM1XCqSnPOVZz
+ tu5K+/KKjF6JPsR+PqzJ3ZP3lck1tMiTaHFr48/l2Sx0iOcA09Vg2JjLHDaa7+X5Ektj
+ LuGIkiFcbiip/i533WdbWb6I808tLgbJNEwQJD0ssEF3M0uWSlhxqKCjHbKbhma5JaMv
+ SsVSJHfuLx4eTsCldVA+L0VJ56vyKDBnfI4qlE6UbmHaTF6dgjPRrH9NVTXocYp0aaaa
+ XfCqK/jaWU4lAnXHLycQ0aqA1hxOyMLvSTq6b5cUM1hQUDTRBCythyjVj+0cd5k2+4Jc
+ ezog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041613; x=1714646413;
+ d=1e100.net; s=20230601; t=1714041614; x=1714646414;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=35oYYuwi+Br4xakq5nYHN4Yw6o3yTK6J3eUx77p4G0k=;
- b=sKT8Mn0RLo8UWoP7GWdvdtftdngDQ72TlMr3wxW9EyOS6j9BxH5t9XpCgj6141vLSn
- gcxFhSM0/2uYwEux2UFvuucyS5cpCR/SOrCHi9KuRcWgs8BsLASnqRuAAf3B/1CjWy2i
- smJmg6sCoGP+fL8aq13cgLWJbQG2y5dWTq12cmIzd7CRpEHLvEkRlV4TSktFWoa6kd4f
- yMX8dgHgTIfvVA63GyeLNisrJnuMefghRInHlf6LWr0xtWeRNPoMvKGUgxH90qsEJV2u
- +pPXBy47PI23vvH6KbfQ2DiVjZHR5z+VEq0TrvK4jPiecJhtdz5lcgkzupYiq9jGY7kI
- aiFA==
-X-Gm-Message-State: AOJu0YwfGTVoT/xuR1ACYdRVLRE2jBIL/rCCqs4I2hzTW6wNUNtg7mC+
- rFHDqbZynMEUyJ+zDMzO2JAhPb/mo8IPFk8kyLA0ia7Uo6P1oyQw49nNnpUIjYWK9h+QQHsvQdY
- 2
-X-Google-Smtp-Source: AGHT+IGfF+KPxpkk+hJ2NRT5wQslXygN22dz7N57UWmI0wITdBFgVpe00zF52qxFfFbyWmOjbRt9FA==
-X-Received: by 2002:a5d:52c8:0:b0:346:a39f:6b69 with SMTP id
- r8-20020a5d52c8000000b00346a39f6b69mr1632299wrv.24.1714041613507; 
+ bh=AMYxQWHy5jEXXCF6WIQ+tbnHt/CyfwoIHxTcgJbKUq8=;
+ b=FV3nmbHkFyxYlo0JOZMBc0YkdlQrL1ggBWZKq/QMN/2UPbjhJ82aOY+86QtATozFIb
+ rLzhDKG7nOKUSeq3EboMSzFaegVorRMG/5H32cSJkP3UsW2u9EOk6CVFyv+CUXbq8w0z
+ pCUO+jMqubN43fJl6djMmTF/sBM/3ktMVZhhMIy79N1jX87u74PO26hNjXhsuN1QNfde
+ p2nnxfd0QfYOBkzdFiwA81SIv0JVapxTyQwHdNBoAbSCfPN+lcF/ZIxwUy8H1Zf9Zlsr
+ rTXpW4V9YxbqJs5f8agPQkLEb0WCmsOdRIAdHFa5RvBH0hrSf8IDZf3l6jZ3/f1hWFOs
+ RNLw==
+X-Gm-Message-State: AOJu0YxtlM0EcF1H6YguGAquW6MeEknPQqe+SSAJADjKjivQpgG99GU9
+ hk4VDjCU7aM+8GWa9DmC+fMj6/qZkmoKetaftT61dwTsKLb0G3zJfMAioV2BDpqUQ20LPTrtW2p
+ l
+X-Google-Smtp-Source: AGHT+IHC3B9r6BAmcmuzdkAiOsnAbf7VH2QjRphyVF1OKN+Q2k5hrvE5Nh2R5gC+0Vx5Id6Kxticiw==
+X-Received: by 2002:adf:e101:0:b0:34a:4f1c:3269 with SMTP id
+ t1-20020adfe101000000b0034a4f1c3269mr4319379wrz.0.1714041613951; 
  Thu, 25 Apr 2024 03:40:13 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,18 +59,18 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Apr 2024 03:40:13 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 26/37] linux-user/flatload.c: Remove unused bFLT shared-library
- and ZFLAT code
-Date: Thu, 25 Apr 2024 11:39:47 +0100
-Message-Id: <20240425103958.3237225-27-peter.maydell@linaro.org>
+Subject: [PULL 27/37] hw/misc: Don't special case RESET_TYPE_COLD in
+ npcm7xx_clk, gcr
+Date: Thu, 25 Apr 2024 11:39:48 +0100
+Message-Id: <20240425103958.3237225-28-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,411 +93,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Ever since the bFLT format support was added in 2006, there has been
-a chunk of code in the file guarded by CONFIG_BINFMT_SHARED_FLAT
-which is supposedly for shared library support.  This is not enabled
-and it's not possible to enable it, because if you do you'll run into
-the "#error needs checking" in the calc_reloc() function.
+The npcm7xx_clk and npcm7xx_gcr device reset methods look at
+the ResetType argument and only handle RESET_TYPE_COLD,
+producing a warning if another reset type is passed. This
+is different from how every other three-phase-reset method
+we have works, and makes it difficult to add new reset types.
 
-Similarly, CONFIG_BINFMT_ZFLAT exists but can't be enabled because of
-an "#error code needs checking" in load_flat_file().
-
-This code is obviously unfinished and has never been used; nobody in
-the intervening 18 years has complained about this or fixed it, so
-just delete the dead code.  If anybody ever wants the feature they
-can always pull it out of git, or (perhaps better) write it from
-scratch based on the current Linux bFLT loader rather than the one of
-18 years ago.
+A better pattern is "assume that any reset type you don't know
+about should be handled like RESET_TYPE_COLD"; switch these
+devices to do that. Then adding a new reset type will only
+need to touch those devices where its behaviour really needs
+to be different from the standard cold reset.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-id: 20240411115313.680433-1-peter.maydell@linaro.org
+Reviewed-by: Luc Michel <luc.michel@amd.com>
+Message-id: 20240412160809.1260625-2-peter.maydell@linaro.org
 ---
- linux-user/flat.h     |   5 +-
- linux-user/flatload.c | 293 ++----------------------------------------
- 2 files changed, 11 insertions(+), 287 deletions(-)
+ hw/misc/npcm7xx_clk.c | 13 +++----------
+ hw/misc/npcm7xx_gcr.c | 12 ++++--------
+ 2 files changed, 7 insertions(+), 18 deletions(-)
 
-diff --git a/linux-user/flat.h b/linux-user/flat.h
-index ed518e2013b..e374b73e268 100644
---- a/linux-user/flat.h
-+++ b/linux-user/flat.h
-@@ -12,11 +12,8 @@
+diff --git a/hw/misc/npcm7xx_clk.c b/hw/misc/npcm7xx_clk.c
+index ac1622c38aa..2098c85ee01 100644
+--- a/hw/misc/npcm7xx_clk.c
++++ b/hw/misc/npcm7xx_clk.c
+@@ -873,20 +873,13 @@ static void npcm7xx_clk_enter_reset(Object *obj, ResetType type)
  
- #define	FLAT_VERSION			0x00000004L
+     QEMU_BUILD_BUG_ON(sizeof(s->regs) != sizeof(cold_reset_values));
  
--#ifdef CONFIG_BINFMT_SHARED_FLAT
--#define	MAX_SHARED_LIBS			(4)
--#else
-+/* QEMU doesn't support bflt shared libraries */
- #define	MAX_SHARED_LIBS			(1)
--#endif
- 
- /*
-  * To make everything easier to port and manage cross platform
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 5b62aa0a2be..04d8138d12e 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -29,8 +29,6 @@
-  *	JAN/99 -- coded full program relocation (gerg@snapgear.com)
-  */
- 
--/* ??? ZFLAT and shared library support is currently disabled.  */
--
- /****************************************************************************/
- 
- #include "qemu/osdep.h"
-@@ -64,10 +62,6 @@ struct lib_info {
-     short loaded;		/* Has this library been loaded? */
- };
- 
--#ifdef CONFIG_BINFMT_SHARED_FLAT
--static int load_flat_shared_library(int id, struct lib_info *p);
--#endif
--
- struct linux_binprm;
- 
- /****************************************************************************/
-@@ -108,153 +102,6 @@ static int target_pread(int fd, abi_ulong ptr, abi_ulong len,
-     unlock_user(buf, ptr, len);
-     return ret;
- }
--/****************************************************************************/
--
--#ifdef CONFIG_BINFMT_ZFLAT
--
--#include <linux/zlib.h>
--
--#define LBUFSIZE	4000
--
--/* gzip flag byte */
--#define ASCII_FLAG   0x01 /* bit 0 set: file probably ASCII text */
--#define CONTINUATION 0x02 /* bit 1 set: continuation of multi-part gzip file */
--#define EXTRA_FIELD  0x04 /* bit 2 set: extra field present */
--#define ORIG_NAME    0x08 /* bit 3 set: original file name present */
--#define COMMENT      0x10 /* bit 4 set: file comment present */
--#define ENCRYPTED    0x20 /* bit 5 set: file is encrypted */
--#define RESERVED     0xC0 /* bit 6,7:   reserved */
--
--static int decompress_exec(
--	struct linux_binprm *bprm,
--	unsigned long offset,
--	char *dst,
--	long len,
--	int fd)
--{
--	unsigned char *buf;
--	z_stream strm;
--	loff_t fpos;
--	int ret, retval;
--
--	DBG_FLT("decompress_exec(offset=%x,buf=%x,len=%x)\n",(int)offset, (int)dst, (int)len);
--
--	memset(&strm, 0, sizeof(strm));
--	strm.workspace = kmalloc(zlib_inflate_workspacesize(), GFP_KERNEL);
--	if (strm.workspace == NULL) {
--		DBG_FLT("binfmt_flat: no memory for decompress workspace\n");
--		return -ENOMEM;
--	}
--	buf = kmalloc(LBUFSIZE, GFP_KERNEL);
--	if (buf == NULL) {
--		DBG_FLT("binfmt_flat: no memory for read buffer\n");
--		retval = -ENOMEM;
--		goto out_free;
--	}
--
--	/* Read in first chunk of data and parse gzip header. */
--	fpos = offset;
--	ret = bprm->file->f_op->read(bprm->file, buf, LBUFSIZE, &fpos);
--
--	strm.next_in = buf;
--	strm.avail_in = ret;
--	strm.total_in = 0;
--
--	retval = -ENOEXEC;
--
--	/* Check minimum size -- gzip header */
--	if (ret < 10) {
--		DBG_FLT("binfmt_flat: file too small?\n");
--		goto out_free_buf;
--	}
--
--	/* Check gzip magic number */
--	if ((buf[0] != 037) || ((buf[1] != 0213) && (buf[1] != 0236))) {
--		DBG_FLT("binfmt_flat: unknown compression magic?\n");
--		goto out_free_buf;
--	}
--
--	/* Check gzip method */
--	if (buf[2] != 8) {
--		DBG_FLT("binfmt_flat: unknown compression method?\n");
--		goto out_free_buf;
--	}
--	/* Check gzip flags */
--	if ((buf[3] & ENCRYPTED) || (buf[3] & CONTINUATION) ||
--	    (buf[3] & RESERVED)) {
--		DBG_FLT("binfmt_flat: unknown flags?\n");
--		goto out_free_buf;
--	}
--
--	ret = 10;
--	if (buf[3] & EXTRA_FIELD) {
--		ret += 2 + buf[10] + (buf[11] << 8);
--		if (unlikely(LBUFSIZE == ret)) {
--			DBG_FLT("binfmt_flat: buffer overflow (EXTRA)?\n");
--			goto out_free_buf;
--		}
--	}
--	if (buf[3] & ORIG_NAME) {
--		for (; ret < LBUFSIZE && (buf[ret] != 0); ret++)
--			;
--		if (unlikely(LBUFSIZE == ret)) {
--			DBG_FLT("binfmt_flat: buffer overflow (ORIG_NAME)?\n");
--			goto out_free_buf;
--		}
--	}
--	if (buf[3] & COMMENT) {
--		for (;  ret < LBUFSIZE && (buf[ret] != 0); ret++)
--			;
--		if (unlikely(LBUFSIZE == ret)) {
--			DBG_FLT("binfmt_flat: buffer overflow (COMMENT)?\n");
--			goto out_free_buf;
--		}
--	}
--
--	strm.next_in += ret;
--	strm.avail_in -= ret;
--
--	strm.next_out = dst;
--	strm.avail_out = len;
--	strm.total_out = 0;
--
--	if (zlib_inflateInit2(&strm, -MAX_WBITS) != Z_OK) {
--		DBG_FLT("binfmt_flat: zlib init failed?\n");
--		goto out_free_buf;
--	}
--
--	while ((ret = zlib_inflate(&strm, Z_NO_FLUSH)) == Z_OK) {
--		ret = bprm->file->f_op->read(bprm->file, buf, LBUFSIZE, &fpos);
--		if (ret <= 0)
--			break;
--                if (is_error(ret)) {
--			break;
--                }
--		len -= ret;
--
--		strm.next_in = buf;
--		strm.avail_in = ret;
--		strm.total_in = 0;
--	}
--
--	if (ret < 0) {
--		DBG_FLT("binfmt_flat: decompression failed (%d), %s\n",
--			ret, strm.msg);
--		goto out_zlib;
--	}
--
--	retval = 0;
--out_zlib:
--	zlib_inflateEnd(&strm);
--out_free_buf:
--	kfree(buf);
--out_free:
--	kfree(strm.workspace);
--out:
--	return retval;
--}
--
--#endif /* CONFIG_BINFMT_ZFLAT */
- 
- /****************************************************************************/
- 
-@@ -268,40 +115,7 @@ calc_reloc(abi_ulong r, struct lib_info *p, int curid, int internalp)
-     abi_ulong text_len;
-     abi_ulong start_code;
- 
--#ifdef CONFIG_BINFMT_SHARED_FLAT
--#error needs checking
--    if (r == 0)
--        id = curid;	/* Relocs of 0 are always self referring */
--    else {
--        id = (r >> 24) & 0xff;	/* Find ID for this reloc */
--        r &= 0x00ffffff;	/* Trim ID off here */
+-    switch (type) {
+-    case RESET_TYPE_COLD:
+-        memcpy(s->regs, cold_reset_values, sizeof(cold_reset_values));
+-        s->ref_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        npcm7xx_clk_update_all_clocks(s);
+-        return;
 -    }
--    if (id >= MAX_SHARED_LIBS) {
--        fprintf(stderr, "BINFMT_FLAT: reference 0x%x to shared library %d\n",
--                (unsigned) r, id);
--        goto failed;
--    }
--    if (curid != id) {
--        if (internalp) {
--            fprintf(stderr, "BINFMT_FLAT: reloc address 0x%x not "
--                    "in same module (%d != %d)\n",
--                    (unsigned) r, curid, id);
--            goto failed;
--        } else if (!p[id].loaded && is_error(load_flat_shared_library(id, p))) {
--            fprintf(stderr, "BINFMT_FLAT: failed to load library %d\n", id);
--            goto failed;
--        }
--        /* Check versioning information (i.e. time stamps) */
--        if (p[id].build_date && p[curid].build_date
--            && p[curid].build_date < p[id].build_date) {
--            fprintf(stderr, "BINFMT_FLAT: library %d is younger than %d\n",
--                    id, curid);
--            goto failed;
--        }
--    }
--#else
-     id = 0;
--#endif
- 
-     start_brk = p[id].start_brk;
-     start_data = p[id].start_data;
-@@ -425,12 +239,10 @@ static int load_flat_file(struct linux_binprm * bprm,
-     if (rev == OLD_FLAT_VERSION && flat_old_ram_flag(flags))
-         flags = FLAT_FLAG_RAM;
- 
--#ifndef CONFIG_BINFMT_ZFLAT
-     if (flags & (FLAT_FLAG_GZIP|FLAT_FLAG_GZDATA)) {
--        fprintf(stderr, "Support for ZFLAT executables is not enabled\n");
-+        fprintf(stderr, "ZFLAT executables are not supported\n");
-         return -ENOEXEC;
-     }
--#endif
- 
+-
++    memcpy(s->regs, cold_reset_values, sizeof(cold_reset_values));
++    s->ref_ns = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    npcm7xx_clk_update_all_clocks(s);
      /*
-      * calculate the extra space we need to map in
-@@ -483,17 +295,9 @@ static int load_flat_file(struct linux_binprm * bprm,
-                         (int)(data_len + bss_len + stack_len), (int)datapos);
- 
-         fpos = ntohl(hdr->data_start);
--#ifdef CONFIG_BINFMT_ZFLAT
--        if (flags & FLAT_FLAG_GZDATA) {
--            result = decompress_exec(bprm, fpos, (char *) datapos,
--                                     data_len + (relocs * sizeof(abi_ulong)))
--        } else
--#endif
--        {
--            result = target_pread(bprm->src.fd, datapos,
--                                  data_len + (relocs * sizeof(abi_ulong)),
--                                  fpos);
--        }
-+        result = target_pread(bprm->src.fd, datapos,
-+                              data_len + (relocs * sizeof(abi_ulong)),
-+                              fpos);
-         if (result < 0) {
-             fprintf(stderr, "Unable to read data+bss\n");
-             return result;
-@@ -515,38 +319,12 @@ static int load_flat_file(struct linux_binprm * bprm,
-         datapos = realdatastart + indx_len;
-         reloc = (textpos + ntohl(hdr->reloc_start) + indx_len);
- 
--#ifdef CONFIG_BINFMT_ZFLAT
--#error code needs checking
--        /*
--         * load it all in and treat it like a RAM load from now on
--         */
--        if (flags & FLAT_FLAG_GZIP) {
--                result = decompress_exec(bprm, sizeof (struct flat_hdr),
--                                 (((char *) textpos) + sizeof (struct flat_hdr)),
--                                 (text_len + data_len + (relocs * sizeof(unsigned long))
--                                          - sizeof (struct flat_hdr)),
--                                 0);
--                memmove((void *) datapos, (void *) realdatastart,
--                                data_len + (relocs * sizeof(unsigned long)));
--        } else if (flags & FLAT_FLAG_GZDATA) {
--                fpos = 0;
--                result = bprm->file->f_op->read(bprm->file,
--                                (char *) textpos, text_len, &fpos);
--                if (!is_error(result)) {
--                        result = decompress_exec(bprm, text_len, (char *) datapos,
--                                         data_len + (relocs * sizeof(unsigned long)), 0);
--                }
--        }
--        else
--#endif
--        {
--            result = target_pread(bprm->src.fd, textpos,
--                                  text_len, 0);
--            if (result >= 0) {
--                result = target_pread(bprm->src.fd, datapos,
--                    data_len + (relocs * sizeof(abi_ulong)),
--                    ntohl(hdr->data_start));
--            }
-+        result = target_pread(bprm->src.fd, textpos,
-+                              text_len, 0);
-+        if (result >= 0) {
-+            result = target_pread(bprm->src.fd, datapos,
-+                                  data_len + (relocs * sizeof(abi_ulong)),
-+                                  ntohl(hdr->data_start));
-         }
-         if (result < 0) {
-             fprintf(stderr, "Unable to read code+data+bss\n");
-@@ -678,44 +456,6 @@ static int load_flat_file(struct linux_binprm * bprm,
- 
- 
- /****************************************************************************/
--#ifdef CONFIG_BINFMT_SHARED_FLAT
--
--/*
-- * Load a shared library into memory.  The library gets its own data
-- * segment (including bss) but not argv/argc/environ.
-- */
--
--static int load_flat_shared_library(int id, struct lib_info *libs)
--{
--	struct linux_binprm bprm;
--	int res;
--	char buf[16];
--
--	/* Create the file name */
--	sprintf(buf, "/lib/lib%d.so", id);
--
--	/* Open the file up */
--	bprm.filename = buf;
--	bprm.file = open_exec(bprm.filename);
--	res = PTR_ERR(bprm.file);
--	if (IS_ERR(bprm.file))
--		return res;
--
--	res = prepare_binprm(&bprm);
--
--        if (!is_error(res)) {
--		res = load_flat_file(&bprm, libs, id, NULL);
--        }
--	if (bprm.file) {
--		allow_write_access(bprm.file);
--		fput(bprm.file);
--		bprm.file = NULL;
--	}
--	return(res);
--}
--
--#endif /* CONFIG_BINFMT_SHARED_FLAT */
--
- int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
- {
-     struct lib_info libinfo[MAX_SHARED_LIBS];
-@@ -793,19 +533,6 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+      * A small number of registers need to be reset on a core domain reset,
+      * but no such reset type exists yet.
       */
-     start_addr = libinfo[0].entry;
+-    qemu_log_mask(LOG_UNIMP, "%s: reset type %d not implemented.",
+-                  __func__, type);
+ }
  
--#ifdef CONFIG_BINFMT_SHARED_FLAT
--#error here
--    for (i = MAX_SHARED_LIBS-1; i>0; i--) {
--            if (libinfo[i].loaded) {
--                    /* Push previous first to call address */
--                    --sp;
--                    if (put_user_ual(start_addr, sp))
--                        return -EFAULT;
--                    start_addr = libinfo[i].entry;
--            }
+ static void npcm7xx_clk_init_clock_hierarchy(NPCM7xxCLKState *s)
+diff --git a/hw/misc/npcm7xx_gcr.c b/hw/misc/npcm7xx_gcr.c
+index 9252f9d1488..c4c4e246d7e 100644
+--- a/hw/misc/npcm7xx_gcr.c
++++ b/hw/misc/npcm7xx_gcr.c
+@@ -159,14 +159,10 @@ static void npcm7xx_gcr_enter_reset(Object *obj, ResetType type)
+ 
+     QEMU_BUILD_BUG_ON(sizeof(s->regs) != sizeof(cold_reset_values));
+ 
+-    switch (type) {
+-    case RESET_TYPE_COLD:
+-        memcpy(s->regs, cold_reset_values, sizeof(s->regs));
+-        s->regs[NPCM7XX_GCR_PWRON] = s->reset_pwron;
+-        s->regs[NPCM7XX_GCR_MDLR] = s->reset_mdlr;
+-        s->regs[NPCM7XX_GCR_INTCR3] = s->reset_intcr3;
+-        break;
 -    }
--#endif
--
-     /* Stash our initial stack pointer into the mm structure */
-     info->start_code = libinfo[0].start_code;
-     info->end_code = libinfo[0].start_code + libinfo[0].text_len;
++    memcpy(s->regs, cold_reset_values, sizeof(s->regs));
++    s->regs[NPCM7XX_GCR_PWRON] = s->reset_pwron;
++    s->regs[NPCM7XX_GCR_MDLR] = s->reset_mdlr;
++    s->regs[NPCM7XX_GCR_INTCR3] = s->reset_intcr3;
+ }
+ 
+ static void npcm7xx_gcr_realize(DeviceState *dev, Error **errp)
 -- 
 2.34.1
 
