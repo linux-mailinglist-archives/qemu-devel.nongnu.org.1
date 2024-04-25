@@ -2,46 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A798B1C18
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 09:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FCF8B1C1D
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 09:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rztlp-00054X-IS; Thu, 25 Apr 2024 03:43:53 -0400
+	id 1rztni-0007Bo-L5; Thu, 25 Apr 2024 03:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rztln-00054B-DC; Thu, 25 Apr 2024 03:43:51 -0400
+ id 1rztne-0007Ba-4n; Thu, 25 Apr 2024 03:45:46 -0400
 Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <anjo@rev.ng>)
- id 1rztlk-0002qo-OW; Thu, 25 Apr 2024 03:43:50 -0400
+ id 1rztnb-00054L-WE; Thu, 25 Apr 2024 03:45:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
  s=dkim; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version:
  References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
  Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
  :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
  List-Post:List-Owner:List-Archive:List-Unsubscribe:List-Unsubscribe-Post:
- List-Help; bh=am18teMx8U24AJ9aSkcT4YQ9QLX2qf+QDdtlWpX0jBw=; b=O47EdotdTynrQpS
- 1nl5btETq0xQRjMhjtvjl2eDeBfroi4CclyxNh4vRsBf6CATbRS4jCy57UZCD7niKe3CV75eI9wH3
- +YHohE20I6BWJcUyd74cRh9C9efa6fDZW54xFm37TFyqxw9dX9Ktf3xxhkjSR2z1QVljx+EKMB+lx
- P0=;
-Date: Thu, 25 Apr 2024 09:44:57 +0200
+ List-Help; bh=Rq8d06m6s42X4h2ib9fAy+KULI9FU3Q5txL6pm2U1n4=; b=M4ke973ggf9J5/p
+ +c1KL9nqZalPyKaANSq98z/Ddboyx0H4d4oS8lRFlfxUbpdDwFCt6lbKOMc7JOL/9zO5stwugHk1I
+ JICNOKtRbhI5I4gloqfcVKOwMDrs1TH4cQCZz31V2BwdM/Ot498SWSToTAe2IxShO+uYK/GYUDBNx
+ NU=;
+Date: Thu, 25 Apr 2024 09:46:53 +0200
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
  Richard Henderson <richard.henderson@linaro.org>, qemu-arm@nongnu.org,
  qemu-ppc@nongnu.org, qemu-riscv@nongnu.org, 
  David Hildenbrand <david@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [PATCH 16/24] exec: Move GUEST_ADDR_MAX definition to 'cpu_ldst.h'
-Message-ID: <jrsx5qi2a2guntx5got2rnwjxfeluilrccyfzcmdgvkuoeucxm@jc7n4ets73c7>
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>, 
+ Max Filippov <jcmvbkbc@gmail.com>
+Subject: Re: [PATCH 20/24] hw/xtensa: Include missing 'exec/cpu-common.h' in
+ 'bootparam.h'
+Message-ID: <hp5oea7xa673uxb7jqf3m357bjvheehbjxn5ktxqooa3cowvq4@q3hx27in2tyj>
 References: <20240418192525.97451-1-philmd@linaro.org>
- <20240418192525.97451-17-philmd@linaro.org>
+ <20240418192525.97451-21-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240418192525.97451-17-philmd@linaro.org>
+In-Reply-To: <20240418192525.97451-21-philmd@linaro.org>
 Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -67,17 +69,29 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 18/04/24, Philippe Mathieu-Daudé wrote:
-> GUEST_ADDR_MAX is only used in accel/tcg/user-exec.c
-> and "exec/cpu_ldst.h". Move it from "exec/cpu-all.h"
-> to "exec/cpu_ldst.h" so we can avoid including
-> "exec/cpu-all.h" in accel/tcg/user-exec.c.
+> cpu_physical_memory_write() is declared in "exec/cpu-common.h".
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  include/exec/cpu-all.h  | 34 +---------------------------------
->  include/exec/cpu_ldst.h | 30 ++++++++++++++++++++++++++++++
->  accel/tcg/cpu-exec.c    |  1 -
->  3 files changed, 31 insertions(+), 34 deletions(-)
+>  hw/xtensa/bootparam.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/hw/xtensa/bootparam.h b/hw/xtensa/bootparam.h
+> index ade7891ec5..f57ff850bc 100644
+> --- a/hw/xtensa/bootparam.h
+> +++ b/hw/xtensa/bootparam.h
+> @@ -1,6 +1,8 @@
+>  #ifndef HW_XTENSA_BOOTPARAM_H
+>  #define HW_XTENSA_BOOTPARAM_H
+>  
+> +#include "exec/cpu-common.h"
+> +
+>  #define BP_TAG_COMMAND_LINE     0x1001  /* command line (0-terminated string)*/
+>  #define BP_TAG_INITRD           0x1002  /* ramdisk addr and size (bp_meminfo) */
+>  #define BP_TAG_MEMORY           0x1003  /* memory addr and size (bp_meminfo) */
+> -- 
+> 2.41.0
+> 
 
 Reviewed-by: Anton Johansson <anjo@rev.ng>
 
