@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27968B2850
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDB8B284E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:45:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s0450-0000bg-MD; Thu, 25 Apr 2024 14:44:22 -0400
+	id 1s045n-00014h-AO; Thu, 25 Apr 2024 14:45:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044y-0000bR-K0
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s045j-0000zy-Nf
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:45:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044B-0004ra-Jg
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:20 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044n-0005Sv-6p
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:45:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714070609;
+ s=mimecast20190719; t=1714070647;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kcZZ0kZSAdohuUyLtWV7fjOmIzrCShpRO748CvVclCE=;
- b=Gk5wdU/p6/HrzdnceVqMGmjhPopm9SkrOddghffgNCwELFTy9Rwjp9SvGTlmDqtAKhpJB8
- LizieSFHKubYSeqm0tiu37wz3k1rVlLvWdQgmr4n+aLfgAadp8ayJDWEQLAQ3P+5q3OJXh
- nCDBIbiwc7zsMC0Qwznko3p8i/1ndTg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-515-Y22rRTz_PEqS2jvnYdN4Ow-1; Thu, 25 Apr 2024 14:43:25 -0400
-X-MC-Unique: Y22rRTz_PEqS2jvnYdN4Ow-1
+ bh=HK/Mu4wX7TUuR/ttgNQYSivxZmZbrLJ789VRMxr4e0M=;
+ b=ZzmZ8cjbFgam47QpQy04xJVR84gkOGRX8KEHr/s8kknZzYAQLt79zANFwY80EnvRVMdxaS
+ Dq8nN5V4fdY3CMIFpXiE6q/ULmHCWvp9ECU5zhgnuj0GusNRZgqfwGGwEvbsc1/Or5l+Jc
+ KPJLYb53xkGBIMnEbKlLG1S52FUN4KE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-101-cCQf2W8ZOau6fP0D-6wOKA-1; Thu,
+ 25 Apr 2024 14:43:24 -0400
+X-MC-Unique: cCQf2W8ZOau6fP0D-6wOKA-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9992A18065AD;
- Thu, 25 Apr 2024 18:43:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E612A3C02531;
+ Thu, 25 Apr 2024 18:43:22 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0F0885AD060;
- Thu, 25 Apr 2024 18:43:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1EE825AD060;
+ Thu, 25 Apr 2024 18:43:20 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Miroslav Rezanina <mrezanin@redhat.com>
-Subject: [PATCH 1/3] hw/i386/pc: Allow to compile without CONFIG_FDC_ISA
-Date: Thu, 25 Apr 2024 20:43:13 +0200
-Message-ID: <20240425184315.553329-2-thuth@redhat.com>
+Subject: [PATCH 2/3] hw/i386/Kconfig: Allow to compile Q35 without FDC_ISA
+Date: Thu, 25 Apr 2024 20:43:14 +0200
+Message-ID: <20240425184315.553329-3-thuth@redhat.com>
 In-Reply-To: <20240425184315.553329-1-thuth@redhat.com>
 References: <20240425184315.553329-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -78,65 +78,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The q35 machine can work without FDC. But to be able to also link
-a QEMU binary that does not include the FDC code, we have to make
-it possible to disable the spots that call into the FDC code.
+The q35 machine can be used without floppy disk controller (FDC),
+but due to our current Kconfig setup, the FDC code is still always
+included in the binary. To fix this, the "PC" config option should
+only imply the "FDC_ISA" instead of always selecting it.
+
+The i440fx and the isa-pc machine currently always instantiate
+the FDC, so we have to add the select statements now there instead.
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- hw/i386/pc.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ hw/i386/Kconfig | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 08c7de416f..93c48f6747 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -439,16 +439,19 @@ static void pc_boot_set(void *opaque, const char *boot_device, Error **errp)
- 
- static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice *floppy)
- {
--    int val, nb, i;
-+    int val, nb;
-     FloppyDriveType fd_type[2] = { FLOPPY_DRIVE_TYPE_NONE,
-                                    FLOPPY_DRIVE_TYPE_NONE };
- 
-+#ifdef CONFIG_FDC_ISA
-     /* floppy type */
-     if (floppy) {
--        for (i = 0; i < 2; i++) {
-+        for (int i = 0; i < 2; i++) {
-             fd_type[i] = isa_fdc_get_drive_type(floppy, i);
-         }
-     }
-+#endif
-+
-     val = (cmos_get_fd_drive_type(fd_type[0]) << 4) |
-         cmos_get_fd_drive_type(fd_type[1]);
-     mc146818rtc_set_cmos_data(rtc_state, 0x10, val);
-@@ -1132,7 +1135,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
-     int i;
-     DriveInfo *fd[MAX_FD];
-     qemu_irq *a20_line;
--    ISADevice *fdc, *i8042, *port92, *vmmouse;
-+    ISADevice *i8042, *port92, *vmmouse;
- 
-     serial_hds_isa_init(isa_bus, 0, MAX_ISA_SERIAL_PORTS);
-     parallel_hds_isa_init(isa_bus, MAX_PARALLEL_PORTS);
-@@ -1142,11 +1145,13 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
-         create_fdctrl |= !!fd[i];
-     }
-     if (create_fdctrl) {
--        fdc = isa_new(TYPE_ISA_FDC);
-+#ifdef CONFIG_FDC_ISA
-+        ISADevice *fdc = isa_new(TYPE_ISA_FDC);
-         if (fdc) {
-             isa_realize_and_unref(fdc, isa_bus, &error_fatal);
-             isa_fdc_init_drives(fdc, fd);
-         }
-+#endif
-     }
- 
-     if (!create_i8042) {
+diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+index a6ee052f9a..0b08580862 100644
+--- a/hw/i386/Kconfig
++++ b/hw/i386/Kconfig
+@@ -32,7 +32,7 @@ config PC
+     imply VGA_PCI
+     imply VIRTIO_VGA
+     imply NVDIMM
+-    select FDC_ISA
++    imply FDC_ISA
+     select I8259
+     select I8254
+     select PCKBD
+@@ -70,6 +70,7 @@ config I440FX
+     imply VMPORT
+     imply VMMOUSE
+     select ACPI_PIIX4
++    select FDC_ISA
+     select PC_PCI
+     select PC_ACPI
+     select PCI_I440FX
+@@ -83,6 +84,7 @@ config ISAPC
+     bool
+     imply VGA_ISA
+     select ISA_BUS
++    select FDC_ISA
+     select PC
+     select IDE_ISA
+     # FIXME: it is in the same file as i440fx, and does not compile
 -- 
 2.44.0
 
