@@ -2,81 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8548B26C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 18:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CC98B270F
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 19:00:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s02Fi-0002qw-Nu; Thu, 25 Apr 2024 12:47:18 -0400
+	id 1s02ST-0007kQ-9R; Thu, 25 Apr 2024 13:00:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1s02Fd-0002kQ-68
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 12:47:14 -0400
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dorjoychy111@gmail.com>)
- id 1s02Fb-0003bv-Fn
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 12:47:12 -0400
-Received: by mail-lj1-x230.google.com with SMTP id
- 38308e7fff4ca-2dd64d6fe94so13756791fa.0
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 09:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1714063626; x=1714668426; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=LvYoBl//K1mZp4n6gQiTJLEv0WK6YOM1tJ/Mw67+Cpg=;
- b=X75ofx0eO8eI5M2rh4EIu4fhRUdbADLEuiaD/zC14hQ2mjVh4eQc2Fek/CHXBhz2q3
- U3jKBe4CwEj1055rCJiwmQNBxjokVYS9DDQwaZx9gArHsIxLKuHp78F8LqOCtEamoN9b
- /7AA7udHBTe3V5ABonysYG4jh3ahx42zo8ngzxS48PYMnOMidwFyNibYHRIMgjqFaj5p
- V/ybLEweNCw8cO1WIUp5NlNSc+20firYSMXzfpwt4t0dAbZbMjIa9SGYECdOmzbkwOj8
- xNFXFOmWWUvkfFgSpXnZZTbkBhHMOre2NX084qWLKN2UEREFnkEHKdGJd5ldfS5gWFxP
- ZR8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714063626; x=1714668426;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=LvYoBl//K1mZp4n6gQiTJLEv0WK6YOM1tJ/Mw67+Cpg=;
- b=V3iFv0JDigPM9+55HpgckbMxexbMfK2d3w89FgXBYISUkn8QP7mTDTtgcirWQv4nyt
- xAgi9AtEvgHEaVhluD/MloDM19f/lgz4oPr3CWr6LsS0H1s97ZsCI5DFcjxN7dFtk3TU
- Q7HremvCHFO0NNl7nkCCHlKACgnfpiGiyK70vW19E7iJZh8gDARZZ9JZ0Yla3O78mxxX
- hRJqa7MOtrFCVnih4sA4jskFc20Hjy5lot2ClSXjjngfBpGPm2xTx3cJ8UTrfVVWzLmZ
- 2QliXMJWfB1OIIz7noLf4OQ5ADGG1H0u52spwaYUWtVItn0ZjEsK9OesJdqvcrNIwl41
- HYRQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWi++S4ksg9VT34xnut6uzHx+w5vU5uYjECNvC8l0EwPqGsG6tF090AfNBM+XD9R0hToRxk3MnnSb8pjgWK4tT1D6BDWLo=
-X-Gm-Message-State: AOJu0YzCH+aFhhqptXiCfCsWxCBbsBL2/VWMuDdhscNnfrB28FSu2mC0
- XDQvwt3vEOQCITEfVkMUl8uWuNaAxuG8ivB0SU4+1JuBxkFOSCKRlovuNDDxHfGlBSeeLEYJCpl
- YdCSxTzgnTyCwccXvXzUI0TEriXE=
-X-Google-Smtp-Source: AGHT+IGDLv6Ts76ph9fiH8tUm6ZSHtHJsC+5s6wMmIhNSxgDl97X1NF6ekJUqnU2twYVHsIA/L0hi4B9EUUJKbwEVgw=
-X-Received: by 2002:a2e:9819:0:b0:2de:33cd:b46e with SMTP id
- a25-20020a2e9819000000b002de33cdb46emr4458770ljj.48.1714063626255; Thu, 25
- Apr 2024 09:47:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1s02Rz-0007be-RW; Thu, 25 Apr 2024 13:00:01 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <walling@linux.ibm.com>)
+ id 1s02Rx-0000Bv-UU; Thu, 25 Apr 2024 12:59:59 -0400
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43PGIDhj011648; Thu, 25 Apr 2024 16:59:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=AdDNzQmu8t9nBaLOqtbUKZLGoH8+rL6l5mpCXrWKTzA=;
+ b=DXHATM4MzZtKBtWVBLKsMhih85aZWfTyGMA0TRuQ1BEr5Aj1Vn/kv3Hrfc1zfDzr141R
+ PM6PvWfIAWvrOpylHDZhs5+lWXJK06DbOHW0jqRjUZvPD1Q8vF7rX+nvFh46oR2lj1FV
+ UiJ5YfVcszdyH4wquAQlclUqfqhQtUlmeJUN/ZGUdIdxJa+yVonWNIgjT77yMXHzqDes
+ PLrP9g4+Vk0IsIqf64ktISuubgGkql3bKmc/KLWhYdQ3JzWs5Jhfx35wXr++l5JxjlyF
+ 3+lBoUxcs5sTVepyPWx//hBbUTArRg4Jl2XHAmYpy4tRJ8yv7bn6H53/7dHkhoYdpCkz lQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xqtjf83d3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Apr 2024 16:59:48 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 43PGxmc1015105;
+ Thu, 25 Apr 2024 16:59:48 GMT
+Received: from ppma11.dal12v.mail.ibm.com
+ (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3xqtjf837g-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Apr 2024 16:59:47 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 43PE12Nm028356; Thu, 25 Apr 2024 16:56:38 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+ by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xmtr2tcx3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Thu, 25 Apr 2024 16:56:38 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
+ [10.241.53.101])
+ by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 43PGuZXk47710516
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Thu, 25 Apr 2024 16:56:37 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 45CA258062;
+ Thu, 25 Apr 2024 16:56:35 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C0BA258051;
+ Thu, 25 Apr 2024 16:56:34 +0000 (GMT)
+Received: from [9.12.68.85] (unknown [9.12.68.85])
+ by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Thu, 25 Apr 2024 16:56:34 +0000 (GMT)
+Message-ID: <55a2b9a5-47f1-4731-b7ea-106eeb9b1671@linux.ibm.com>
+Date: Thu, 25 Apr 2024 12:56:34 -0400
 MIME-Version: 1.0
-References: <20240419183135.12276-1-dorjoychy111@gmail.com>
- <f397f267-06d9-46c1-8acc-1c9ebf9c3773@linaro.org>
- <CAFEAcA8i_wU+RSRk+D1L8YKy72zHz4YFV20r2Z7m+3ARfzb51w@mail.gmail.com>
- <CAFEAcA_kHDGWVic=xRm4xOsi-cQC-fF5Z2FWRCrwe_E35KBmNw@mail.gmail.com>
-In-Reply-To: <CAFEAcA_kHDGWVic=xRm4xOsi-cQC-fF5Z2FWRCrwe_E35KBmNw@mail.gmail.com>
-From: Dorjoy Chowdhury <dorjoychy111@gmail.com>
-Date: Thu, 25 Apr 2024 22:46:54 +0600
-Message-ID: <CAFfO_h7QT=KLODM5Nj0O8ZCXwitKAwBeTc8TVcCM6Px4vRhbVg@mail.gmail.com>
-Subject: Re: [PATCH] target/arm: fix MPIDR value for ARM CPUs with SMT
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::230;
- envelope-from=dorjoychy111@gmail.com; helo=mail-lj1-x230.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] target/s390x: add support for
+ "disable-deprecated-feats" expansion option
+To: David Hildenbrand <david@redhat.com>, qemu-s390x@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: thuth@redhat.com, wangyanan55@huawei.com, philmd@linaro.org,
+ marcel.apfelbaum@gmail.com, eduardo@habkost.net, armbru@redhat.com
+References: <20240423210655.66656-1-walling@linux.ibm.com>
+ <20240423210655.66656-3-walling@linux.ibm.com>
+ <ec18d260-a882-480a-b7db-9c20aa4aacf7@redhat.com>
+ <92b62a01-1ff0-4ad3-bbed-8a0f56954279@linux.ibm.com>
+ <fa179d3e-aaf7-4297-92af-a9d152b83d8d@redhat.com>
+Content-Language: en-US
+From: Collin Walling <walling@linux.ibm.com>
+In-Reply-To: <fa179d3e-aaf7-4297-92af-a9d152b83d8d@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: esLMIqfNIPAdlBeFJEKK0Zif2agXTYBx
+X-Proofpoint-ORIG-GUID: 3SnICyjYHs0FnlBFOX4ROZv7KizUnsfR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-04-25_17,2024-04-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 suspectscore=0 spamscore=0
+ mlxscore=0 mlxlogscore=999 lowpriorityscore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2404010000
+ definitions=main-2404250124
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=walling@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,71 +119,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Apr 22, 2024 at 5:26=E2=80=AFPM Peter Maydell <peter.maydell@linaro=
-.org> wrote:
->
-> On Mon, 22 Apr 2024 at 11:46, Peter Maydell <peter.maydell@linaro.org> wr=
-ote:
-> >
-> > On Sun, 21 Apr 2024 at 06:40, Richard Henderson
-> > <richard.henderson@linaro.org> wrote:
-> > > > --- a/target/arm/cpu.c
-> > > > +++ b/target/arm/cpu.c
-> > > > @@ -1314,8 +1314,18 @@ static void arm_cpu_dump_state(CPUState *cs,=
- FILE *f, int flags)
-> > > >       }
-> > > >   }
-> > > >
-> > > > -uint64_t arm_build_mp_affinity(int idx, uint8_t clustersz)
-> > > > +uint64_t arm_build_mp_affinity(ARMCPU *cpu, int idx, uint8_t clust=
-ersz)
-> > > >   {
-> > > > +    if (cpu->has_smt) {
-> > > > +        /*
-> > > > +         * Right now, the ARM CPUs with SMT supported by QEMU only=
- have
-> > > > +         * one thread per core. So Aff0 is always 0.
-> > > > +         */
-> > >
-> > > Well, this isn't true.
-> > >
-> > >      -smp [[cpus=3D]n][,maxcpus=3Dmaxcpus][,drawers=3Ddrawers][,books=
-=3Dbooks][,sockets=3Dsockets]
-> > >                     [,dies=3Ddies][,clusters=3Dclusters][,cores=3Dcor=
-es][,threads=3Dthreads]
-> > >
-> > > I would expect all of Aff[0-3] to be settable with the proper topolog=
-y parameters.
-> >
-> > As I understand it the MPIDR value is more or less independent
-> > of the topology information as presented to the guest OS.
-> > The options to the -smp command set the firmware topology
-> > information, which doesn't/shouldn't affect the reported
-> > MPIDR values, and in particular shouldn't change whether
-> > the CPU selected has the MT bit set or not.
-> >
-> > For Arm's CPUs they fall into two categories:
-> >  * older ones don't set MT in their MPIDR, and the Aff0
-> >    field is effectively the CPU number
-> >  * newer ones do set MT in their MPIDR, but don't have
-> >    SMT, so their Aff0 is always 0 and their Aff1
-> >    is the CPU number
-> >
-> > Of all the CPUs we model, none of them are the
-> > architecturally-permitted "MT is set, CPU implements
-> > actual SMT, Aff0 indicates the thread in the CPU" type.
->
-> Looking at the TRM, Neoverse-E1 is "MT is set, actual SMT,
-> Aff0 is the thread" (Aff0 can be 0 or 1). We just don't
-> model that CPU type yet. But we should probably make
-> sure we don't block ourselves into a corner where that
-> would be awkward -- I'll have a think about this and
-> look at what x86 does with the topology info.
->
+On 4/25/24 04:10, David Hildenbrand wrote:
+> On 24.04.24 20:33, Collin Walling wrote:
+>> On 4/24/24 03:24, David Hildenbrand wrote:
+>>> On 23.04.24 23:06, Collin Walling wrote:
+>>>> Retain a list of deprecated features disjoint from any particular
+>>>> CPU model. When a query-cpu-model-expansion is provided with the
+>>>> "disable-deprecated-feats" option set, the resulting properties list
+>>>> will include all deprecated features paired with false. Example:
+>>>>
+>>>> 	{ ... "bpb": false, "csske": false, ...}
+>>>>
+>>>> It is recommended that s390 guests operate with these features
+>>>> explicitly disabled to ensure compatability with future hardware.
+>>>>
+>>>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+>>>> ---
+>>>>    target/s390x/cpu_features.c      | 14 ++++++++++++++
+>>>>    target/s390x/cpu_features.h      |  1 +
+>>>>    target/s390x/cpu_models_sysemu.c | 20 ++++++++++++--------
+>>>>    3 files changed, 27 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/target/s390x/cpu_features.c b/target/s390x/cpu_features.c
+>>>> index d28eb65845..efafc9711c 100644
+>>>> --- a/target/s390x/cpu_features.c
+>>>> +++ b/target/s390x/cpu_features.c
+>>>> @@ -212,6 +212,20 @@ void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+>>>>        };
+>>>>    }
+>>>>    
+>>>> +void s390_get_deprecated_features(S390FeatBitmap features)
+>>>> +{
+>>>> +    static const int feats[] = {
+>>>> +         /* CSSKE is deprecated on newer generations */
+>>>> +         S390_FEAT_CONDITIONAL_SSKE,
+>>>> +         S390_FEAT_BPB,
+>>>> +    };
+>>>> +    int i;
+>>>> +
+>>>> +    for (i = 0; i < ARRAY_SIZE(feats); i++) {
+>>>> +        set_bit(feats[i], features);
+>>>> +    }
+>>>> +}
+>>>> +
+>>>>    #define FEAT_GROUP_INIT(_name, _group, _desc)        \
+>>>>        {                                                \
+>>>>            .name = _name,                               \
+>>>> diff --git a/target/s390x/cpu_features.h b/target/s390x/cpu_features.h
+>>>> index a9bd68a2e1..661a8cd6db 100644
+>>>> --- a/target/s390x/cpu_features.h
+>>>> +++ b/target/s390x/cpu_features.h
+>>>> @@ -69,6 +69,7 @@ void s390_add_from_feat_block(S390FeatBitmap features, S390FeatType type,
+>>>>                              uint8_t *data);
+>>>>    void s390_feat_bitmap_to_ascii(const S390FeatBitmap features, void *opaque,
+>>>>                                   void (*fn)(const char *name, void *opaque));
+>>>> +void s390_get_deprecated_features(S390FeatBitmap features);
+>>>>    
+>>>>    /* Definition of a CPU feature group */
+>>>>    typedef struct {
+>>>> diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+>>>> index ef9fa80efd..b002819188 100644
+>>>> --- a/target/s390x/cpu_models_sysemu.c
+>>>> +++ b/target/s390x/cpu_models_sysemu.c
+>>>> @@ -171,7 +171,8 @@ static void qdict_add_enabled_feat(const char *name, void *opaque)
+>>>>    
+>>>>    /* convert S390CPUDef into a static CpuModelInfo */
+>>>>    static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+>>>> -                                bool delta_changes)
+>>>> +                                bool delta_changes,
+>>>> +                                bool disable_deprecated_feats)
+>>>>    {
+>>>>        QDict *qdict = qdict_new();
+>>>>        S390FeatBitmap bitmap;
+>>>> @@ -201,6 +202,13 @@ static void cpu_info_from_model(CpuModelInfo *info, const S390CPUModel *model,
+>>>>            s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_disabled_feat);
+>>>>        }
+>>>>    
+>>>> +    /* features flagged as deprecated */
+>>>> +    if (disable_deprecated_feats) {
+>>>> +        bitmap_zero(bitmap, S390_FEAT_MAX);
+>>>> +        s390_get_deprecated_features(bitmap);
+>>>> +        s390_feat_bitmap_to_ascii(bitmap, qdict, qdict_add_disabled_feat);
+>>>> +    }
+>>>
+>>> Likely, we should remove these features from the actual bitmap, such
+>>> that they won't appear twice in the output? I'd expect the
+>>> cpu_info_from_model() caller to handle that.
+>>>
+>>> Just adding them to the list as disabled is likely wrong.
+>>>
+>>> For example, if someone were to expend a given model with "... bpb:
+>>> true" with disable-deprecated-feat=on, that should be remove from
+>>> "bpb:true", and only replaced by "bpb=false" if it would be part of the
+>>> CPU model we would be expanding to.
+>>>
+>>> Or am I missing something?
+>>>
+>>
+>> qdict_add_disabled_feat will handle updating the feature if it already
+>> exists. I placed the code to process deprecated features as the last
+>> step of cpu_info_from_model to override any features that have already
+>> been added to the bitmap. Whether it should be the deprecated feats that
+>> take priority, or what the user requests is up in the air, however...
+> 
+> Yes, that's one of my concern. IIRC, if the user specifies the same 
+> property multiple times, it's unclear which one will win.
+> 
+> "bpb=true,bpb=false" might mean that bpb=true might win.
+> 
+> I think this is something that this interface should sort out, so it 
+> will be actually usable!
+> 
+>>
+>> ... Daniel's suggestion to modify the QMP response to include a separate
+>> list of "deprecated-props" seems like a much more efficient and readable
+>> way that alleviates both your and Markus' concerns.
+> 
+> Would you only include properties that would apply to the current model 
+> and would be set to true in the current model?
+> 
+> How would libvirt make use of this interface, and could it run into the 
+> issue spelled out above?
+> 
 
-Thanks. Let me know what should be done as part of this patch to
-properly fix the issue if you get a chance to look at it.
+The way I see having a "deprecated-props" array included in the
+expansion response is that it just simply signals to the user/management
+app which features are deprecated. From there, the next step to set up a
+CPU model with these features turned off can be performed.
 
+I've worked on the libvirt portion for the v1 of this QEMU patch set,
+and the idea is to introduce a new CPU model type called
+"host-recommended". When a libvirt domain is defined with this type,
+then the CPU model will become the host-model with deprecated features
+turned off.
+
+This is, of course, a big discussion to be had once the patches are
+upstream. They will be an RFC since I imagine a lot of ideas will be
+thrown around.
+
+Once the QEMU portion is accepted, I'll fix up what I have for libvirt
+to properly query for the deprecated features and work them into my design.
+
+-- 
 Regards,
-Dorjoy
+  Collin
+
 
