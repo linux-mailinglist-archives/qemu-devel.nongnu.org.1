@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 765978B1FED
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:09:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D43BE8B1FDF
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 13:05:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwuK-0002rz-O9; Thu, 25 Apr 2024 07:04:52 -0400
+	id 1rzwub-0003JF-Ii; Thu, 25 Apr 2024 07:05:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtN-0000Du-M8
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:03 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtX-0000IJ-HN
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:04:09 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtH-0000Jz-Lk
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:52 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-41b3692b508so6091645e9.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:43 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1rzwtN-0000Ky-B3
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 07:03:55 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-41b3692b508so6092365e9.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 04:03:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714043022; x=1714647822; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714043028; x=1714647828; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=3jM66TtA9+JPWnnaJ/wdkFyoBPGKJrTnB7XlYnSXjfw=;
- b=q67tICheuqQtUFBIwqS8xdmp9ZjCnwej4ObCq0rfBW0NnQ5jxQfOibhMOdM4cS/LZO
- 7uEqp3eN7KJ/f6mHWt0GgKd4kvOj8bCevQQIsTWS4PDAgRVEmw/JWezo/nUIlZCDleWp
- lPlHGABqys96bi7bcWl/Baf6f5EW3jNOhUcNwmrFBj/pLdJ+BcS+V4RB8VTY4X/b+ti5
- a4ZNF4Sc7vaIwUXU7DedWrG1qF9SG8ty02pFOLgjKUZnkecwOxCWWJ5Y5jQlgRwxFcYG
- uUQhoPrnbf3PSDWRrSG/RhlgDYK5kXAhZvVj86moZEn003H0yMemIislAARfYsVmG8uR
- Hbkg==
+ bh=W7uwePuX3rPWTRA+fw+W1FX6Shl9Ifmx73up+GoZgb0=;
+ b=CFwqAPvFeUPkhH4JNVmmXc9RzcanHFPge6GaaXeL2rXurKpilMQmpVqVsGz32mxv6v
+ pGWBI3PACyXx3XAKNi5uBH7D6+5BAiP5Z7GNBCfu2hidZx6UDASwjZIuS7yXeEK31Zag
+ F3mokBzLLIgZcEste0+Y+dV5FAVJKYp7OLNyHJPDxI54AqSPLZaT1shztRSONi7pvBDz
+ fN5+Ew2IS2A/T9Rwe/CT9LPzXd/+i43LDx36X9FimFBzIzk6kAvYDI9Lfze+2tHN+03B
+ IO4pYV5t/PVtQ1rKsxqZXV1IfYz+SX00FS5yACi7Nbyc0uqxVHX3o3k1xpjCWK8UiUhf
+ L9cA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714043022; x=1714647822;
+ d=1e100.net; s=20230601; t=1714043028; x=1714647828;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=3jM66TtA9+JPWnnaJ/wdkFyoBPGKJrTnB7XlYnSXjfw=;
- b=MBvshvN+3TEyZF207hQSpIV0u134DHOj7jYMY1DdMGrCEcZplqMr1JDa9HDpHTpEix
- 91G2qoA7ZyNGjplMh3GHLkGFUgRKfs89xzXo0BPW4XYfoJRMmvxFe/1O1dgx/M/12Yeq
- 6bN4kvXgCA1pxc/eC24RwGHhZfUw/zKLufwbwwYbV65wZa0NpzIrl8q2xIJeSA7O1B95
- UrkWgF8vANrvcHCcEI2uLvQy4JPPdjTv4L8BIZQyEpZw+AHfarH81kDav1JN8LIo2BzN
- 05q6tca96Sn40riTTtMa0B/ozODxJliuhdmrciQICpShj4EuG4qnoIgTg9Mr2PIE6SNQ
- E9xA==
-X-Gm-Message-State: AOJu0YzyhRznqnFYNgylpA8NuOG5Xl/+tb0+rsUBsnIaGlx6M1xUtIlp
- ag7sQJ77fjere6oQDtk1jmlGm1G6JdPB41hmV6M92M8esr1yFxFH3Ml2ktUsJNuIIZISBu02nRi
- k
-X-Google-Smtp-Source: AGHT+IFep8mayYoTqo1tEoWaxYRBNnZQKy6JlVbPvXcPmoksWBiLC7hipxkwT32wWx0hqDlaV9VWvQ==
-X-Received: by 2002:a05:600c:4ecb:b0:419:ed35:e312 with SMTP id
- g11-20020a05600c4ecb00b00419ed35e312mr4210635wmq.21.1714043022268; 
- Thu, 25 Apr 2024 04:03:42 -0700 (PDT)
+ bh=W7uwePuX3rPWTRA+fw+W1FX6Shl9Ifmx73up+GoZgb0=;
+ b=V7mYkam3QXfpO+3JbnXBqXdOV8JnxxqrqykgCylHKF86KqzPrRhvCzj7518ZLefbwT
+ VDA79d5UQBB1/XDK5/3xQ3KttqVRVXEEokKLUnHcxqK4g0UEr4KU9C7J67wQaOk0FLYj
+ LEyG96VE0/ETdKJglF7uZ25WuYUXpjbA3Y0R5u4A+NLndNaSKkb7QXE3JcZsihTdyi3/
+ rg0n8vH+iAgC4ll6uqoSVa6gs0KCi8LkLVjFAtOKbVfCp4FP/ucX5S7k+s+d5husVgvL
+ VgUvt6ZNYd+sHA8v36XHRXOTyzfT5gav+lJc5Bz3/CuAXvvcy4kRxJf+2qL3Az6jtTe4
+ OTrQ==
+X-Gm-Message-State: AOJu0YzHKzY6bP7q8vSftzNUKsbT2vVYi3PhtQcO1ppGxeys9VvZ5Bex
+ eJxjA19YAJlAz8/FISpZJi6cdXyT8ozFg4yeyt+eEJytmjLTWOvizLnfNxTgqO0zfm3AUqbCz7b
+ e
+X-Google-Smtp-Source: AGHT+IHNDMb4unbEF38ERzGAuYkwXlMJIjH7EVKROZcBO6j/BgEOn6BE5qQWhB8ADTUv7U6/8UAb4g==
+X-Received: by 2002:a05:600c:3502:b0:41a:fe41:80e4 with SMTP id
+ h2-20020a05600c350200b0041afe4180e4mr3402391wmq.0.1714043027837; 
+ Thu, 25 Apr 2024 04:03:47 -0700 (PDT)
 Received: from localhost.localdomain ([92.88.170.77])
  by smtp.gmail.com with ESMTPSA id
- u11-20020a05600c138b00b004187450e4cesm30787552wmf.29.2024.04.25.04.03.40
+ jg1-20020a05600ca00100b0041b25a70a85sm3623801wmb.30.2024.04.25.04.03.46
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 25 Apr 2024 04:03:41 -0700 (PDT)
+ Thu, 25 Apr 2024 04:03:47 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Bernhard Beschow <shentey@gmail.com>,
+Cc: qemu-riscv@nongnu.org, qemu-arm@nongnu.org, Zhao Liu <zhao1.liu@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Babu Moger <babu.moger@amd.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL 18/22] hw/i386/pc_sysfw: Remove unused parameter from
- pc_isa_bios_init()
-Date: Thu, 25 Apr 2024 13:01:51 +0200
-Message-ID: <20240425110157.20328-19-philmd@linaro.org>
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: [PULL 19/22] hw/core/machine: Introduce the module as a CPU topology
+ level
+Date: Thu, 25 Apr 2024 13:01:52 +0200
+Message-ID: <20240425110157.20328-20-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240425110157.20328-1-philmd@linaro.org>
 References: <20240425110157.20328-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,39 +98,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Bernhard Beschow <shentey@gmail.com>
+From: Zhao Liu <zhao1.liu@intel.com>
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20240422200625.2768-2-shentey@gmail.com>
+In x86, module is the topology level above core, which contains a set
+of cores that share certain resources (in current products, the resource
+usually includes L2 cache, as well as module scoped features and MSRs).
+
+Though smp.clusters could also share the L2 cache resource [1], there
+are following reasons that drive us to introduce the new smp.modules:
+
+  * As the CPU topology abstraction in device tree [2], cluster supports
+    nesting (though currently QEMU hasn't support that). In contrast,
+    (x86) module does not support nesting.
+
+  * Due to nesting, there is great flexibility in sharing resources
+    on cluster, rather than narrowing cluster down to sharing L2 (and
+    L3 tags) as the lowest topology level that contains cores.
+
+  * Flexible nesting of cluster allows it to correspond to any level
+    between the x86 package and core.
+
+  * In Linux kernel, x86's cluster only represents the L2 cache domain
+    but QEMU's smp.clusters is the CPU topology level. Linux kernel will
+    also expose module level topology information in sysfs for x86. To
+    avoid cluster ambiguity and keep a consistent CPU topology naming
+    style with the Linux kernel, we introduce module level for x86.
+
+The module is, in existing hardware practice, the lowest layer that
+contains the core, while the cluster is able to have a higher
+topological scope than the module due to its nesting.
+
+Therefore, place the module between the cluster and the core:
+
+    drawer/book/socket/die/cluster/module/core/thread
+
+With the above topological hierarchy order, introduce module level
+support in MachineState and MachineClass.
+
+[1]: https://lore.kernel.org/qemu-devel/c3d68005-54e0-b8fe-8dc1-5989fe3c7e69@huawei.com/
+[2]: https://www.kernel.org/doc/Documentation/devicetree/bindings/cpu/cpu-topology.txt
+
+Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Tested-by: Babu Moger <babu.moger@amd.com>
+Message-ID: <20240424154929.1487382-2-zhao1.liu@intel.com>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/pc_sysfw.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/hw/boards.h   | 4 ++++
+ hw/core/machine-smp.c | 2 +-
+ hw/core/machine.c     | 1 +
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/hw/i386/pc_sysfw.c b/hw/i386/pc_sysfw.c
-index 3efabbbab2..87b5bf59d6 100644
---- a/hw/i386/pc_sysfw.c
-+++ b/hw/i386/pc_sysfw.c
-@@ -41,8 +41,7 @@
- #define FLASH_SECTOR_SIZE 4096
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 69c1ba45cf..2fa800f11a 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -144,6 +144,7 @@ typedef struct {
+  *                 provided SMP configuration
+  * @books_supported - whether books are supported by the machine
+  * @drawers_supported - whether drawers are supported by the machine
++ * @modules_supported - whether modules are supported by the machine
+  */
+ typedef struct {
+     bool prefer_sockets;
+@@ -152,6 +153,7 @@ typedef struct {
+     bool has_clusters;
+     bool books_supported;
+     bool drawers_supported;
++    bool modules_supported;
+ } SMPCompatProps;
  
- static void pc_isa_bios_init(MemoryRegion *rom_memory,
--                             MemoryRegion *flash_mem,
--                             int ram_size)
-+                             MemoryRegion *flash_mem)
+ /**
+@@ -339,6 +341,7 @@ typedef struct DeviceMemoryState {
+  * @sockets: the number of sockets in one book
+  * @dies: the number of dies in one socket
+  * @clusters: the number of clusters in one die
++ * @modules: the number of modules in one cluster
+  * @cores: the number of cores in one cluster
+  * @threads: the number of threads in one core
+  * @max_cpus: the maximum number of logical processors on the machine
+@@ -350,6 +353,7 @@ typedef struct CpuTopology {
+     unsigned int sockets;
+     unsigned int dies;
+     unsigned int clusters;
++    unsigned int modules;
+     unsigned int cores;
+     unsigned int threads;
+     unsigned int max_cpus;
+diff --git a/hw/core/machine-smp.c b/hw/core/machine-smp.c
+index 27864c9507..2e68fcfdfd 100644
+--- a/hw/core/machine-smp.c
++++ b/hw/core/machine-smp.c
+@@ -266,7 +266,7 @@ void machine_parse_smp_config(MachineState *ms,
+ 
+ unsigned int machine_topo_get_cores_per_socket(const MachineState *ms)
  {
-     int isa_bios_size;
-     MemoryRegion *isa_bios;
-@@ -186,7 +185,7 @@ static void pc_system_flash_map(PCMachineState *pcms,
+-    return ms->smp.cores * ms->smp.clusters * ms->smp.dies;
++    return ms->smp.cores * ms->smp.modules * ms->smp.clusters * ms->smp.dies;
+ }
  
-         if (i == 0) {
-             flash_mem = pflash_cfi01_get_memory(system_flash);
--            pc_isa_bios_init(rom_memory, flash_mem, size);
-+            pc_isa_bios_init(rom_memory, flash_mem);
+ unsigned int machine_topo_get_threads_per_socket(const MachineState *ms)
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index 582c2df37a..9966641159 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -1157,6 +1157,7 @@ static void machine_initfn(Object *obj)
+     ms->smp.sockets = 1;
+     ms->smp.dies = 1;
+     ms->smp.clusters = 1;
++    ms->smp.modules = 1;
+     ms->smp.cores = 1;
+     ms->smp.threads = 1;
  
-             /* Encrypt the pflash boot ROM */
-             if (sev_enabled()) {
 -- 
 2.41.0
 
