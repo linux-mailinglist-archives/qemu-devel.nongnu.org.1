@@ -2,52 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7353B8B2851
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F27968B2850
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 20:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s046Z-0001kG-Nv; Thu, 25 Apr 2024 14:45:59 -0400
+	id 1s0450-0000bg-MD; Thu, 25 Apr 2024 14:44:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s046I-0001ZO-Vh
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:45:50 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044y-0000bR-K0
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s0451-00064T-1X
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:45:24 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1s044B-0004ra-Jg
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 14:44:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714070662;
+ s=mimecast20190719; t=1714070609;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=IZNhzlqbb96aONn9HHf0eCw92yR8iUfdxYqmjwWG/dY=;
- b=fAz6bkBoqA2PiMh3EquYSYMimdtREzkwwri4nhWmrMjG3747W07Ri6q/BKGWPjcpuKsuco
- ooI+rnxwuZFFMCnx/NEyJbn2V0ERj9XWO7FP+SVt5+zbP52d3gSBHFcCstOkHO9ynt60Nd
- nA8gbHk12oJwmg6ocr4gbQ0e06+KRTk=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-22-8zcUk8eoO6CSNSqhvufM0Q-1; Thu,
- 25 Apr 2024 14:43:18 -0400
-X-MC-Unique: 8zcUk8eoO6CSNSqhvufM0Q-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=kcZZ0kZSAdohuUyLtWV7fjOmIzrCShpRO748CvVclCE=;
+ b=Gk5wdU/p6/HrzdnceVqMGmjhPopm9SkrOddghffgNCwELFTy9Rwjp9SvGTlmDqtAKhpJB8
+ LizieSFHKubYSeqm0tiu37wz3k1rVlLvWdQgmr4n+aLfgAadp8ayJDWEQLAQ3P+5q3OJXh
+ nCDBIbiwc7zsMC0Qwznko3p8i/1ndTg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-Y22rRTz_PEqS2jvnYdN4Ow-1; Thu, 25 Apr 2024 14:43:25 -0400
+X-MC-Unique: Y22rRTz_PEqS2jvnYdN4Ow-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
  [10.11.54.9])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 77794299E75B;
- Thu, 25 Apr 2024 18:43:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9992A18065AD;
+ Thu, 25 Apr 2024 18:43:20 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.156])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9B1675AD060;
- Thu, 25 Apr 2024 18:43:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 0F0885AD060;
+ Thu, 25 Apr 2024 18:43:18 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
  qemu-devel@nongnu.org
 Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Miroslav Rezanina <mrezanin@redhat.com>
-Subject: [PATCH 0/3] Make it possible to compile the x86 binaries without FDC
-Date: Thu, 25 Apr 2024 20:43:12 +0200
-Message-ID: <20240425184315.553329-1-thuth@redhat.com>
+Subject: [PATCH 1/3] hw/i386/pc: Allow to compile without CONFIG_FDC_ISA
+Date: Thu, 25 Apr 2024 20:43:13 +0200
+Message-ID: <20240425184315.553329-2-thuth@redhat.com>
+In-Reply-To: <20240425184315.553329-1-thuth@redhat.com>
+References: <20240425184315.553329-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
@@ -75,33 +78,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For downstream versions of QEMU, we'd like to be able to compile QEMU
-without the FDC code included (since it's not required for modern VMs
-anymore and the FDC code has rather a bad reputation, see the VENOM CVE).
+The q35 machine can work without FDC. But to be able to also link
+a QEMU binary that does not include the FDC code, we have to make
+it possible to disable the spots that call into the FDC code.
 
-The q35 machine can already be instantiated without FDC, but for being
-able to link a binary without the FDC code, the Kconfig file needs some
-tweaks and there are two spots in the pc code that directly call functions
-from the FDC code - those need to be disabled via #ifdefs.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/i386/pc.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-The third patch changes the i440fx and isapc machine types so that
-they can work without the FDC device, too, in case it has not been
-compiled into the binary. It's marked as RFC since I assume that the
-FDC was originally a fix compononent of these motherboards, so I'm
-unsure whether we should allow the disablement there. OTOH, it seems
-to work fine, and the FDC is only disabled when it is not available
-in the binary, so I hope this patch is fine, too.
-
-Thomas Huth (3):
-  hw/i386/pc: Allow to compile without CONFIG_FDC_ISA
-  hw/i386/Kconfig: Allow to compile Q35 without FDC_ISA
-  hw/i386: Add the possibility to use i440fx and isapc without FDC
-
- hw/i386/pc.c      | 13 +++++++++----
- hw/i386/pc_piix.c |  6 ++++--
- hw/i386/Kconfig   |  2 +-
- 3 files changed, 14 insertions(+), 7 deletions(-)
-
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 08c7de416f..93c48f6747 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -439,16 +439,19 @@ static void pc_boot_set(void *opaque, const char *boot_device, Error **errp)
+ 
+ static void pc_cmos_init_floppy(MC146818RtcState *rtc_state, ISADevice *floppy)
+ {
+-    int val, nb, i;
++    int val, nb;
+     FloppyDriveType fd_type[2] = { FLOPPY_DRIVE_TYPE_NONE,
+                                    FLOPPY_DRIVE_TYPE_NONE };
+ 
++#ifdef CONFIG_FDC_ISA
+     /* floppy type */
+     if (floppy) {
+-        for (i = 0; i < 2; i++) {
++        for (int i = 0; i < 2; i++) {
+             fd_type[i] = isa_fdc_get_drive_type(floppy, i);
+         }
+     }
++#endif
++
+     val = (cmos_get_fd_drive_type(fd_type[0]) << 4) |
+         cmos_get_fd_drive_type(fd_type[1]);
+     mc146818rtc_set_cmos_data(rtc_state, 0x10, val);
+@@ -1132,7 +1135,7 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+     int i;
+     DriveInfo *fd[MAX_FD];
+     qemu_irq *a20_line;
+-    ISADevice *fdc, *i8042, *port92, *vmmouse;
++    ISADevice *i8042, *port92, *vmmouse;
+ 
+     serial_hds_isa_init(isa_bus, 0, MAX_ISA_SERIAL_PORTS);
+     parallel_hds_isa_init(isa_bus, MAX_PARALLEL_PORTS);
+@@ -1142,11 +1145,13 @@ static void pc_superio_init(ISABus *isa_bus, bool create_fdctrl,
+         create_fdctrl |= !!fd[i];
+     }
+     if (create_fdctrl) {
+-        fdc = isa_new(TYPE_ISA_FDC);
++#ifdef CONFIG_FDC_ISA
++        ISADevice *fdc = isa_new(TYPE_ISA_FDC);
+         if (fdc) {
+             isa_realize_and_unref(fdc, isa_bus, &error_fatal);
+             isa_fdc_init_drives(fdc, fd);
+         }
++#endif
+     }
+ 
+     if (!create_i8042) {
 -- 
 2.44.0
 
