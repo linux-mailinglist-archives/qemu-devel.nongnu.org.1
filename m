@@ -2,56 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51708B2B38
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 23:46:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B268B2B33
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 23:46:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s06un-0000j3-07; Thu, 25 Apr 2024 17:46:01 -0400
+	id 1s06tc-0000GE-9S; Thu, 25 Apr 2024 17:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1s06uY-0000Xz-19
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 17:45:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1s06tV-0000F8-Fq
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 17:44:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1s06uQ-0004VH-SA
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 17:45:45 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1s06tR-000462-Jf
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 17:44:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1714081536;
+ s=mimecast20190719; t=1714081474;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=S09hMLPCWaH1TC501DwThp79RvZIU7kUwkYAGjVQdtI=;
- b=Pi3g10Y2WdGwMe/Yl7wz+SXtFRo5wZEDCprPXLzTqB87OuohWyDBGnD5v6u4PL8+ANo7ql
- lQRDJP1NAhn1Lk693y55WRS5tjofXeLu9zpRfkK8JXj0AATvpUFTYJi3tcX3YNWzrFWFDq
- 4B7+jSxTI6ibApHCPWb1P7IsdPa1ORk=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=eZysKC2yo00qemxesGo1byKR5b6dl5eLiVnDeuVr7x0=;
+ b=fkK6BNCMY6yo0JV9APlobUyP1N25aK1bY7Yo/rc+C6vYsDVEnCn9AKDSdcl5h5Y9R0ed73
+ oEjQtDUz5WGRfoAgUD1RjUuBSxBL7WHa1U2pMusU2NEHiTe4I5p9og4xkPOXMHGdUw9xak
+ bjRww42qN5sj0mq/XIXrayKvCCTDho4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-uDC_xcAwMWmQ1eB1pkrjhQ-1; Thu, 25 Apr 2024 17:44:30 -0400
-X-MC-Unique: uDC_xcAwMWmQ1eB1pkrjhQ-1
+ us-mta-562-pjcn14kSOGCfchv29-wuqg-1; Thu, 25 Apr 2024 17:44:30 -0400
+X-MC-Unique: pjcn14kSOGCfchv29-wuqg-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B011281B561;
- Thu, 25 Apr 2024 21:44:29 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7E57D18065AF;
+ Thu, 25 Apr 2024 21:44:30 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.23])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 181B9EC680;
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E1588EC685;
  Thu, 25 Apr 2024 21:44:29 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, qemu-stable@nongnu.org,
- Zhu Yangyang <zhuyangyang14@huawei.com>
-Subject: [PULL 0/2] NBD patches for 2024-04-25
-Date: Thu, 25 Apr 2024 16:43:43 -0500
-Message-ID: <20240425214425.571652-4-eblake@redhat.com>
+ Zhu Yangyang <zhuyangyang14@huawei.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PULL 1/2] nbd/server: do not poll within a coroutine context
+Date: Thu, 25 Apr 2024 16:43:44 -0500
+Message-ID: <20240425214425.571652-5-eblake@redhat.com>
+In-Reply-To: <20240425214425.571652-4-eblake@redhat.com>
+References: <20240425214425.571652-4-eblake@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -59,7 +63,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,36 +79,197 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 5da72194df36535d773c8bdc951529ecd5e31707:
+From: Zhu Yangyang <zhuyangyang14@huawei.com>
 
-  Merge tag 'pull-tcg-20240424' of https://gitlab.com/rth7680/qemu into staging (2024-04-24 15:51:49 -0700)
+Coroutines are not supposed to block. Instead, they should yield.
 
-are available in the Git repository at:
+The client performs TLS upgrade outside of an AIOContext, during
+synchronous handshake; this still requires g_main_loop.  But the
+server responds to TLS upgrade inside a coroutine, so a nested
+g_main_loop is wrong.  Since the two callbacks no longer share more
+than the setting of data.complete and data.error, it's just as easy to
+use static helpers instead of trying to share a common code path.  It
+is also possible to add assertions that no other code is interfering
+with the eventual path to qio reaching the callback, whether or not it
+required a yield or main loop.
 
-  https://repo.or.cz/qemu/ericb.git tags/pull-nbd-2024-04-25
+Fixes: f95910f ("nbd: implement TLS support in the protocol negotiation")
+Signed-off-by: Zhu Yangyang <zhuyangyang14@huawei.com>
+[eblake: move callbacks to their use point, add assertions]
+Signed-off-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20240408160214.1200629-5-eblake@redhat.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ nbd/nbd-internal.h | 10 ----------
+ nbd/client.c       | 28 ++++++++++++++++++++++++----
+ nbd/common.c       | 11 -----------
+ nbd/server.c       | 28 +++++++++++++++++++++++-----
+ 4 files changed, 47 insertions(+), 30 deletions(-)
 
-for you to fetch changes up to 4fa333e08dd96395a99ea8dd9e4c73a29dd23344:
+diff --git a/nbd/nbd-internal.h b/nbd/nbd-internal.h
+index dfa02f77ee4..91895106a95 100644
+--- a/nbd/nbd-internal.h
++++ b/nbd/nbd-internal.h
+@@ -72,16 +72,6 @@ static inline int nbd_write(QIOChannel *ioc, const void *buffer, size_t size,
+     return qio_channel_write_all(ioc, buffer, size, errp) < 0 ? -EIO : 0;
+ }
 
-  nbd/server: Mark negotiation functions as coroutine_fn (2024-04-25 12:59:19 -0500)
+-struct NBDTLSHandshakeData {
+-    GMainLoop *loop;
+-    bool complete;
+-    Error *error;
+-};
+-
+-
+-void nbd_tls_handshake(QIOTask *task,
+-                       void *opaque);
+-
+ int nbd_drop(QIOChannel *ioc, size_t size, Error **errp);
 
-----------------------------------------------------------------
-NBD patches for 2024-04-25
+ #endif
+diff --git a/nbd/client.c b/nbd/client.c
+index 29ffc609a4b..c89c7504673 100644
+--- a/nbd/client.c
++++ b/nbd/client.c
+@@ -596,13 +596,31 @@ static int nbd_request_simple_option(QIOChannel *ioc, int opt, bool strict,
+     return 1;
+ }
 
-- Avoid calling poll() within coroutine
++/* Callback to learn when QIO TLS upgrade is complete */
++struct NBDTLSClientHandshakeData {
++    bool complete;
++    Error *error;
++    GMainLoop *loop;
++};
++
++static void nbd_client_tls_handshake(QIOTask *task, void *opaque)
++{
++    struct NBDTLSClientHandshakeData *data = opaque;
++
++    qio_task_propagate_error(task, &data->error);
++    data->complete = true;
++    if (data->loop) {
++        g_main_loop_quit(data->loop);
++    }
++}
++
+ static QIOChannel *nbd_receive_starttls(QIOChannel *ioc,
+                                         QCryptoTLSCreds *tlscreds,
+                                         const char *hostname, Error **errp)
+ {
+     int ret;
+     QIOChannelTLS *tioc;
+-    struct NBDTLSHandshakeData data = { 0 };
++    struct NBDTLSClientHandshakeData data = { 0 };
 
-----------------------------------------------------------------
-Eric Blake (1):
-      nbd/server: Mark negotiation functions as coroutine_fn
+     ret = nbd_request_simple_option(ioc, NBD_OPT_STARTTLS, true, errp);
+     if (ret <= 0) {
+@@ -619,18 +637,20 @@ static QIOChannel *nbd_receive_starttls(QIOChannel *ioc,
+         return NULL;
+     }
+     qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-client-tls");
+-    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
+     trace_nbd_receive_starttls_tls_handshake();
+     qio_channel_tls_handshake(tioc,
+-                              nbd_tls_handshake,
++                              nbd_client_tls_handshake,
+                               &data,
+                               NULL,
+                               NULL);
 
-Zhu Yangyang (1):
-      nbd/server: do not poll within a coroutine context
+     if (!data.complete) {
++        data.loop = g_main_loop_new(g_main_context_default(), FALSE);
+         g_main_loop_run(data.loop);
++        assert(data.complete);
++        g_main_loop_unref(data.loop);
+     }
+-    g_main_loop_unref(data.loop);
++
+     if (data.error) {
+         error_propagate(errp, data.error);
+         object_unref(OBJECT(tioc));
+diff --git a/nbd/common.c b/nbd/common.c
+index 3247c1d618a..589a748cfe6 100644
+--- a/nbd/common.c
++++ b/nbd/common.c
+@@ -47,17 +47,6 @@ int nbd_drop(QIOChannel *ioc, size_t size, Error **errp)
+ }
 
- nbd/nbd-internal.h |  10 -----
- nbd/client.c       |  28 ++++++++++--
- nbd/common.c       |  11 -----
- nbd/server.c       | 128 +++++++++++++++++++++++++++++++++--------------------
- 4 files changed, 105 insertions(+), 72 deletions(-)
 
+-void nbd_tls_handshake(QIOTask *task,
+-                       void *opaque)
+-{
+-    struct NBDTLSHandshakeData *data = opaque;
+-
+-    qio_task_propagate_error(task, &data->error);
+-    data->complete = true;
+-    g_main_loop_quit(data->loop);
+-}
+-
+-
+ const char *nbd_opt_lookup(uint32_t opt)
+ {
+     switch (opt) {
+diff --git a/nbd/server.c b/nbd/server.c
+index c3484cc1ebc..98ae0e16326 100644
+--- a/nbd/server.c
++++ b/nbd/server.c
+@@ -748,6 +748,23 @@ static int nbd_negotiate_handle_info(NBDClient *client, Error **errp)
+     return rc;
+ }
+
++/* Callback to learn when QIO TLS upgrade is complete */
++struct NBDTLSServerHandshakeData {
++    bool complete;
++    Error *error;
++    Coroutine *co;
++};
++
++static void nbd_server_tls_handshake(QIOTask *task, void *opaque)
++{
++    struct NBDTLSServerHandshakeData *data = opaque;
++
++    qio_task_propagate_error(task, &data->error);
++    data->complete = true;
++    if (!qemu_coroutine_entered(data->co)) {
++        aio_co_wake(data->co);
++    }
++}
+
+ /* Handle NBD_OPT_STARTTLS. Return NULL to drop connection, or else the
+  * new channel for all further (now-encrypted) communication. */
+@@ -756,7 +773,7 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
+ {
+     QIOChannel *ioc;
+     QIOChannelTLS *tioc;
+-    struct NBDTLSHandshakeData data = { 0 };
++    struct NBDTLSServerHandshakeData data = { 0 };
+
+     assert(client->opt == NBD_OPT_STARTTLS);
+
+@@ -777,17 +794,18 @@ static QIOChannel *nbd_negotiate_handle_starttls(NBDClient *client,
+
+     qio_channel_set_name(QIO_CHANNEL(tioc), "nbd-server-tls");
+     trace_nbd_negotiate_handle_starttls_handshake();
+-    data.loop = g_main_loop_new(g_main_context_default(), FALSE);
++    data.co = qemu_coroutine_self();
+     qio_channel_tls_handshake(tioc,
+-                              nbd_tls_handshake,
++                              nbd_server_tls_handshake,
+                               &data,
+                               NULL,
+                               NULL);
+
+     if (!data.complete) {
+-        g_main_loop_run(data.loop);
++        qemu_coroutine_yield();
++        assert(data.complete);
+     }
+-    g_main_loop_unref(data.loop);
++
+     if (data.error) {
+         object_unref(OBJECT(tioc));
+         error_propagate(errp, data.error);
 -- 
 2.44.0
 
