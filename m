@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1998B1925
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 05:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 833338B1916
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 05:00:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzpK5-0006jy-5g; Wed, 24 Apr 2024 22:58:57 -0400
+	id 1rzpK9-0006mM-2B; Wed, 24 Apr 2024 22:59:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzpJw-0006jG-V5; Wed, 24 Apr 2024 22:58:49 -0400
+ id 1rzpJy-0006ja-6T; Wed, 24 Apr 2024 22:58:50 -0400
 Received: from mgamail.intel.com ([198.175.65.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzpJt-00055o-Pm; Wed, 24 Apr 2024 22:58:48 -0400
+ id 1rzpJw-00055w-1f; Wed, 24 Apr 2024 22:58:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714013926; x=1745549926;
+ t=1714013928; x=1745549928;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UzWS39yvXKazwXHx6xonklzmLlk2yJapDzB+gzVW8+M=;
- b=Pl+Z+/MUrOccy8fms21/DOhx4gL+AwEtcAK/cwst26slv/rOScasT+Fx
- AS7gZ8qzDO2XOMpKEJlgqbKGfmjcOHl9fovjZ7Zub/RltJ8uBr39KfL6O
- dQCHNfnLzGLT9A5QF6Mn6XqLU1IYYpFZGRN1+3QQacWBStv79ZelFiuTp
- 2+6VqjkJ+CiygVaFgZUazpXQZcs/pe3PtFPeQxUTRc77Vmqh2yDHzNkwy
- GbQI7BAs2IJNyAFxrw8tiZ5WldxUNr0l6y9FNjsI/h8mhmLC45RZ9KF6N
- 9FbOCFRltoHBFiMN5ZwHQTxm7KWasxjvEsiq/hyug7IaIcQfM/1OBUtat w==;
-X-CSE-ConnectionGUID: WoD+nZARR2mvdMHrUnf7ZA==
-X-CSE-MsgGUID: VEfG/y5cTCegrXi0Mv4mSg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9605640"
+ bh=VhsAZz3GZDugXvCbTu1lmTbG6KqX61IfVZfRXKWJzJA=;
+ b=Z4L4xyhTc3BTUigtqh1blhDdxUNYLLPlR3EZrv70MTkRIruPjHmEHPP6
+ ljKMq10TSpL6B8SrlgaysVHRy1TcctCwXn46wt3uV1qqVswquPqqkkYgS
+ sX6LlkfLTvIWsD6bVy9+a3BgxfJ8HQHh3aHziY/+eWmpxSBFaML5qUHsr
+ 5vIe0PY8oe34LFlGWeeH5mUxaLiGKBogyua/WyN+flblSUCpt54QUmwpK
+ Zc2Xzg/10Gei2Aw4vANA+PqPk3Wa1Gkzy3i8IkgqWrbM9OaG/kjj14tTl
+ E2E+C8kAup2/88BAHNlEUplTTKrlabxyeYq70Zndc+tPnFSkUdfVArD56 A==;
+X-CSE-ConnectionGUID: UHX/Rnk8TFW70tE15Gxv7Q==
+X-CSE-MsgGUID: 0x3epI2hRdmmoP7pBjQmaw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9605645"
 X-IronPort-AV: E=Sophos;i="6.07,228,1708416000"; 
-   d="scan'208";a="9605640"
+   d="scan'208";a="9605645"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Apr 2024 19:58:44 -0700
-X-CSE-ConnectionGUID: DtCxYZWmQw+kAYNsZ+vd9Q==
-X-CSE-MsgGUID: jyoXAQWLRderQF3JIjyKtg==
+ 24 Apr 2024 19:58:47 -0700
+X-CSE-ConnectionGUID: zzlCY8FgSdaQP8FgQAEYww==
+X-CSE-MsgGUID: 6kUWRUHbRoyTvTSrFSDrkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,228,1708416000"; d="scan'208";a="62395656"
+X-IronPort-AV: E=Sophos;i="6.07,228,1708416000"; d="scan'208";a="62395668"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by orviesa001.jf.intel.com with ESMTP; 24 Apr 2024 19:58:41 -0700
+ by orviesa001.jf.intel.com with ESMTP; 24 Apr 2024 19:58:44 -0700
 From: Zhao Liu <zhao1.liu@intel.com>
 To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
@@ -50,10 +50,10 @@ To: Thomas Huth <thuth@redhat.com>, David Hildenbrand <david@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 1/7] target/s390x/cpu_model: Make check_compatibility()
- return boolean
-Date: Thu, 25 Apr 2024 11:12:26 +0800
-Message-Id: <20240425031232.1586401-2-zhao1.liu@intel.com>
+Subject: [PATCH v2 2/7] target/s390x/cpu_model: Drop local @err in
+ s390_realize_cpu_model()
+Date: Thu, 25 Apr 2024 11:12:27 +0800
+Message-Id: <20240425031232.1586401-3-zhao1.liu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425031232.1586401-1-zhao1.liu@intel.com>
 References: <20240425031232.1586401-1-zhao1.liu@intel.com>
@@ -83,80 +83,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As error.h suggested, the best practice for callee is to return
-something to indicate success / failure.
-
-With returned boolean, there's no need to check @err.
+Use @errp to fetch error information directly and drop the local
+variable @err.
 
 Suggested-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- target/s390x/cpu_models.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ target/s390x/cpu_models.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
 diff --git a/target/s390x/cpu_models.c b/target/s390x/cpu_models.c
-index 8ed3bb6a27b3..8cb47d905fb4 100644
+index 8cb47d905fb4..052540a866ac 100644
 --- a/target/s390x/cpu_models.c
 +++ b/target/s390x/cpu_models.c
-@@ -510,7 +510,7 @@ static void check_compat_model_failed(Error **errp,
-     return;
- }
- 
--static void check_compatibility(const S390CPUModel *max_model,
-+static bool check_compatibility(const S390CPUModel *max_model,
-                                 const S390CPUModel *model, Error **errp)
+@@ -577,7 +577,6 @@ S390CPUModel *get_max_cpu_model(Error **errp)
+ void s390_realize_cpu_model(CPUState *cs, Error **errp)
  {
      ERRP_GUARD();
-@@ -518,11 +518,11 @@ static void check_compatibility(const S390CPUModel *max_model,
- 
-     if (model->def->gen > max_model->def->gen) {
-         check_compat_model_failed(errp, max_model, "Selected CPU generation is too new");
--        return;
-+        return false;
-     } else if (model->def->gen == max_model->def->gen &&
-                model->def->ec_ga > max_model->def->ec_ga) {
-         check_compat_model_failed(errp, max_model, "Selected CPU GA level is too new");
--        return;
-+        return false;
-     }
- 
- #ifndef CONFIG_USER_ONLY
-@@ -530,14 +530,14 @@ static void check_compatibility(const S390CPUModel *max_model,
-         error_setg(errp, "The unpack facility is not compatible with "
-                    "the --only-migratable option. You must remove either "
-                    "the 'unpack' facility or the --only-migratable option");
--        return;
-+        return false;
-     }
- #endif
- 
-     /* detect the missing features to properly report them */
-     bitmap_andnot(missing, model->features, max_model->features, S390_FEAT_MAX);
-     if (bitmap_empty(missing, S390_FEAT_MAX)) {
--        return;
-+        return true;
-     }
- 
-     error_setg(errp, " ");
-@@ -546,6 +546,7 @@ static void check_compatibility(const S390CPUModel *max_model,
-                   "available in the current configuration: ");
-     error_append_hint(errp,
-                       "Consider a different accelerator, QEMU, or kernel version\n");
-+    return false;
- }
- 
- S390CPUModel *get_max_cpu_model(Error **errp)
-@@ -605,8 +606,7 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
+-    Error *err = NULL;
+     S390CPUClass *xcc = S390_CPU_GET_CLASS(cs);
+     S390CPU *cpu = S390_CPU(cs);
+     const S390CPUModel *max_model;
+@@ -606,8 +605,7 @@ void s390_realize_cpu_model(CPUState *cs, Error **errp)
      cpu->model->cpu_ver = max_model->cpu_ver;
  
      check_consistency(cpu->model);
--    check_compatibility(max_model, cpu->model, &err);
--    if (err) {
-+    if (!check_compatibility(max_model, cpu->model, &err)) {
-         error_propagate(errp, err);
+-    if (!check_compatibility(max_model, cpu->model, &err)) {
+-        error_propagate(errp, err);
++    if (!check_compatibility(max_model, cpu->model, errp)) {
          return;
      }
+ 
 -- 
 2.34.1
 
