@@ -2,84 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385438B225B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:17:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB418B22F1
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 15:36:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzyxZ-0001he-0l; Thu, 25 Apr 2024 09:16:21 -0400
+	id 1rzzGE-0002RT-Ck; Thu, 25 Apr 2024 09:35:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzyxR-0001bD-OJ
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:16:14 -0400
-Received: from mgamail.intel.com ([192.198.163.11])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rzzGA-0002R9-Nw
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:35:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1rzyxQ-0005u0-2g
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:16:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714050972; x=1745586972;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=A7f0OsES/K/K9v4IClIZ7cqsYibhqcI2JSwwGXJ6xNw=;
- b=lgH/0nNWAIvnjnmnr/8MP+JrkVKXwQNVyCkaG3LpAxIeGQHnH9W4ZJqY
- bA4cpAAIxtJFE6yJcftF8eDipt8OwZAgFAOyRYCTe/yY9mPFVlBhKfNqH
- mFrri7lDc24Q8Bf34+MX8euMSG0P+BJI3KL0yW5YC4mp8xkd6BTLsezGT
- T6zgao1NWt5kRVNq7ZIvLPh9PASBykGuHLwuhzWe16hrSZSXEkqWhHiv3
- LBxCyU0q00PF5MtGfxMJscpb7H0jojH8yOiAjOxItdOrNXflXyYKlgYuu
- lIWQDzXNgJCdup1W4tIQnJMEv+HHexUkvFzsOxlAZO/ad+X1tiwwA1Mtc Q==;
-X-CSE-ConnectionGUID: c7jclAOLQeC1qx6rZq/jOQ==
-X-CSE-MsgGUID: hh/6w/eASRyfF0yHf0AccQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="20348995"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="20348995"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 06:16:09 -0700
-X-CSE-ConnectionGUID: fguQEXsaRAWXjkNkDjn9yA==
-X-CSE-MsgGUID: OLHVs+TySlWYQflJ8I97Iw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="25017696"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orviesa009.jf.intel.com with ESMTP; 25 Apr 2024 06:16:05 -0700
-Date: Thu, 25 Apr 2024 21:30:11 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Zhuocheng Ding <zhuocheng.ding@intel.com>,
- Babu Moger <babu.moger@amd.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
- Dapeng Mi <dapeng1.mi@intel.com>, Yongwei Ma <yongwei.ma@intel.com>
-Subject: Re: [PATCH v11 00/21] i386: Introduce smp.modules and clean up cache
- topology
-Message-ID: <Zipa4+Hc3WS51sGB@intel.com>
-References: <20240424154929.1487382-1-zhao1.liu@intel.com>
- <a76a987f-3ea2-4c48-bc02-74ab42fd3c01@linaro.org>
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1rzzG7-0007pd-Ia
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 09:35:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714052130;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=deYhDDeVQ2YbPljmWRtpElyNmPdvYJQuVNd1eTOxHJU=;
+ b=SYKf3G6nA4/CAlx/5LfCTOKj2TEcss3TUW74fBQnLqI+nOlS7zWMGh5HoXznHM9T7bJJo1
+ IgT0UqvexqbW0JkZx0Rc4b0csFMfRGu0zvnWnP6g5LpKVmxAJLPF0fztY7BI67NOqqNRYA
+ wn/+uMLTMJnW/BS1UvWDCR7GF0UFAyc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-46-8NHACXKEOTyKlT9SL6AXpA-1; Thu, 25 Apr 2024 09:35:27 -0400
+X-MC-Unique: 8NHACXKEOTyKlT9SL6AXpA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9BB608947C0;
+ Thu, 25 Apr 2024 13:35:26 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.102])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 03952C13FA4;
+ Thu, 25 Apr 2024 13:35:24 +0000 (UTC)
+Date: Thu, 25 Apr 2024 14:35:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Collin Walling <walling@linux.ibm.com>
+Cc: qemu-s390x@nongnu.org, qemu-devel@nongnu.org, thuth@redhat.com,
+ david@redhat.com, wangyanan55@huawei.com, philmd@linaro.org,
+ marcel.apfelbaum@gmail.com, eduardo@habkost.net, armbru@redhat.com
+Subject: Re: [PATCH v2 1/3] cpu-models: add "disable-deprecated-feats" option
+ to cpu model expansion
+Message-ID: <ZipcG7Dy5t83HKMY@redhat.com>
+References: <20240423210655.66656-1-walling@linux.ibm.com>
+ <20240423210655.66656-2-walling@linux.ibm.com>
+ <ZijA2XFbPwxi0F4h@redhat.com>
+ <9a5fee10-4260-4311-95b9-77791217993e@linux.ibm.com>
+ <d9284ef0-abdd-4976-896d-a78eb04cb349@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a76a987f-3ea2-4c48-bc02-74ab42fd3c01@linaro.org>
-Received-SPF: pass client-ip=192.198.163.11; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+In-Reply-To: <d9284ef0-abdd-4976-896d-a78eb04cb349@linux.ibm.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,33 +86,136 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Apr 25, 2024 at 10:06:11AM +0200, Philippe Mathieu-Daudé wrote:
-> Date: Thu, 25 Apr 2024 10:06:11 +0200
-> From: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Subject: Re: [PATCH v11 00/21] i386: Introduce smp.modules and clean up
->  cache topology
+On Wed, Apr 24, 2024 at 03:12:42PM -0400, Collin Walling wrote:
+> On 4/24/24 13:51, Collin Walling wrote:
+> > On 4/24/24 04:20, Daniel P. BerrangÃ© wrote:
+> >> On Tue, Apr 23, 2024 at 05:06:53PM -0400, Collin Walling wrote:
+> >>> This optional parameter for query-cpu-model-expansion enables CPU
+> >>> model features flagged as deprecated to appear in the resulting
+> >>> list of properties.
+> >>>
+> >>> This commit does not add support beyond adding a new argument
+> >>> to the query. All queries with this option present will result
+> >>> in an error claiming this option is not supported.
+> >>>
+> >>> Signed-off-by: Collin Walling <walling@linux.ibm.com>
+> >>> ---
+> >>>  qapi/machine-target.json         | 7 ++++++-
+> >>>  target/arm/arm-qmp-cmds.c        | 7 +++++++
+> >>>  target/i386/cpu-sysemu.c         | 7 +++++++
+> >>>  target/s390x/cpu_models_sysemu.c | 7 +++++++
+> >>>  4 files changed, 27 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/qapi/machine-target.json b/qapi/machine-target.json
+> >>> index 29e695aa06..b9da284d2d 100644
+> >>> --- a/qapi/machine-target.json
+> >>> +++ b/qapi/machine-target.json
+> >>> @@ -285,6 +285,10 @@
+> >>>  #
+> >>>  # @type: expansion type, specifying how to expand the CPU model
+> >>>  #
+> >>> +# @disable-deprecated-feats: include CPU model features that are
+> >>> +#     flagged as deprecated. If supported, these features will appear
+> >>> +#     in the properties list paired with false.
+> >>> +#
+> >>>  # Returns: a CpuModelExpansionInfo describing the expanded CPU model
+> >>>  #
+> >>>  # Errors:
+> >>> @@ -298,7 +302,8 @@
+> >>>  ##
+> >>>  { 'command': 'query-cpu-model-expansion',
+> >>>    'data': { 'type': 'CpuModelExpansionType',
+> >>> -            'model': 'CpuModelInfo' },
+> >>> +            'model': 'CpuModelInfo',
+> >>> +            '*disable-deprecated-feats': 'bool' },
+> >>>    'returns': 'CpuModelExpansionInfo',
+> >>>    'if': { 'any': [ 'TARGET_S390X',
+> >>>                     'TARGET_I386',
+> >>
+> >> I think this is an odd design approach. Lets consider the
+> >> current output:
+> >>
+> >> (QEMU) query-cpu-model-expansion type=static model={"name":"z14"}
+> >> {
+> >>     "return": {
+> >>         "model": {
+> >>             "name": "z14-base",
+> >>             "props": {
+> >>                 "aefsi": true,
+> >>                 "aen": true,
+> >>                 ...snip...
+> >>                 "vxpd": true,
+> >>                 "zpci": true
+> >>             }
+> >>         }
+> >>     }
+> >> }
+> >>
+> >>
+> >> If we want to inform a mgmt app of some features being deprecated,
+> >> why not just unconditionally include that info in the reply thus:
+> >>
+> >>
+> >> (QEMU) query-cpu-model-expansion type=static model={"name":"z14"}
+> >> {
+> >>     "return": {
+> >>         "model": {
+> >>             "name": "z14-base",
+> >>             "props": {
+> >>                 "aefsi": true,
+> >>                 "aen": true,
+> >>                 ...snip...
+> >>                 "vxpd": true,
+> >>                 "zpci": true
+> >>             }
+> >>             "deprecated-props": ["ppa15", "ri"]
+> >>         }
+> >>     }
+> >> }
+> >>
+> >>
+> >>
+> >> With regards,
+> >> Daniel
+> > 
+> > That's a good idea. In this way, we're not mucking up any of the CPU
+> > model information and this makes it much more clear as to which features
+> > are actually deprecated... I like this more.
+> > 
+> > I'll work on this.
+> > 
 > 
-> Hi Zhao,
+> Follow-up question as I look more closely to the QMP response data
+> structures: should the "deprecated-props" list be added to the
+> CpuModelInfo struct, or to the CpuModelExpansionInfo struct?
 > 
-> On 24/4/24 17:49, Zhao Liu wrote:
-> 
-> > ---
-> > Zhao Liu (20):
-> >    hw/core/machine: Introduce the module as a CPU topology level
-> >    hw/core/machine: Support modules in -smp
-> >    hw/core: Introduce module-id as the topology subindex
-> >    hw/core: Support module-id in numa configuration
-> 
-> To reduce this series size, I'm taking these 4 patches to via
-> my hw-misc tree.
->
+> The former makes more sense to me, as the deprecated features are tied
+> to the actual CPU model... but unsure if other QMP commands would even
+> care about this info? I will begin with this approach, and if feedback
+> in the interim strongly sways in the other direction, then it should be
+> an easy change :)
 
-Thanks Philippe! Will add module level test in tests/unit/test-smp-parse.c.
+I hink CpuModelInfo makes more sense than CpuModelExpansionInfo.
+The CpuModelExpansionInfo struct feels pretty pointless to me
+in fact, since the only thing it contains is CpuModelInfo !
 
-Regards,
-Zhao
+I think it should also be added to 'CpuDefinitionInfo', which
+is the return type of 'query-cpu-defintions'.  This command already
+has a 'unavailable-features' array listing features which the host
+does not support. Conceptually having a 'deprecated-features' array
+alongside that is a nice fit.
+
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
