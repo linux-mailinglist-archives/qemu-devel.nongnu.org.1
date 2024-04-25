@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EC48B1F81
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C77508B1F8E
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:47:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWN-0001xn-KO; Thu, 25 Apr 2024 06:40:07 -0400
+	id 1rzwWN-0001xo-NQ; Thu, 25 Apr 2024 06:40:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWL-0001x3-Mm
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:05 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1rzwWM-0001x9-0q
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:06 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWI-0006xm-To
+ id 1rzwWK-00070Q-46
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:05 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-34be34b3296so784167f8f.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:02 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-5194cebd6caso901880e87.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041601; x=1714646401; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041602; x=1714646402; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=y6I7eopQEiXePMFfuuglLJED0IgYNow8XyLPv9LxTAY=;
- b=R98+e1E23BMmnj6FZ+bXoWlaPh+mxHpL1Qb+4PSBxsPfJ1fAgXgEMDflEm1IFSlvYb
- A8MQeC1imZkBG1uvpqVtTZW3fN2dM6j6HADlqdRjsBuM7RudH42TxpEzB8JrYzG7IDXh
- L+5Q0Lj24nx3aT3MqgtLrUkodz92XiYIO+dKgAYufc9ohtVC95AJF4f+Hve+bJ6d9A1L
- vZVMwON7uutgjQjZi6qfTCRedVN8fB8HQBGDb3qWX2NZxLd2WwJPTpdVvhoTjgJOLYnO
- MtuOUDJHU8myzaJV1vA4nnuNcKJem4FYGg4v1mbiBHWeKC3R+GhSO0NR/4JcplLOV5D+
- B3zw==
+ :reply-to; bh=UIo/4Y0jCkZhZbVf1z/K9VYt8JNRKmGPNz3rHCYkyTk=;
+ b=kmTUlo5n+PIezLqs8wHwqp1IlssJuLBtzASP4yPrLIDef8U3c6B2HG2l87/eVRfJJf
+ Ns1efYXazFPpvydnIHlLG9LmeR7FyXH8T7Crg6gMqcUeguT1AWL7vdVO2IesoiheH/X4
+ LuFUh/jzEMURxkL4cBl/ecbS8xeJTCX8aWbAbToAH1akgLaAfWVI8UGF6gSHP701ToSj
+ J6GP4xK7zSXEEQn52kO59K/Dz/l3MtU/5GcEgHB5DCSJa422JEj5VnANNEuD3gnSCHDi
+ mvTqTQwIAymAGu/roljDqVHGEW4UWx2FmzoQWsH49HysbmAup0UPgzCJBF42y4zFBh6A
+ /GJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041601; x=1714646401;
+ d=1e100.net; s=20230601; t=1714041602; x=1714646402;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=y6I7eopQEiXePMFfuuglLJED0IgYNow8XyLPv9LxTAY=;
- b=cjFMXzjuipjcyTxVvTA+9nEVLj6S0t3bLWGnGVBIZWdeze/p9it5kF9Cog8mYDgdu7
- OT1ysQ9kEeVowO9p00GHTiVqIL6zv0meu0lD08ljifXVgydAFExoW7GrJ8QnPFesHTg5
- qhs8sDgNYxSmS649AxrzA3vRkipWurXM4Iftafzels20mydU7gyo1+d73Gh/LMcI1nZ0
- SqSXEo66yLBqYNhvpPf+xuijm8jCTDzuOzlsgSgSKJL5BhPFR0icgKLQX48rLrRTrm41
- rxk26WsFiEJuLVtpZI7ouHEahuPwLrr8/WwCs3IrNd+VWuqUQUI6D4sKUoWjGcvROz2i
- yKNw==
-X-Gm-Message-State: AOJu0Yy935zI+bzsFCg3QUT5GOq+UZ9T9r4AoG6KE2b7OWcmswn3rr6w
- 7MkEfh5WBLp/xlHqUI0BDS4jsSHqoOXX7iZGSFKGeR535LS53cCq/BTYVhA4zD5FpaqXONTxhXG
- 5
-X-Google-Smtp-Source: AGHT+IFy3IqbE1xDbneFglPX26pi/zREeqlNb9QykjMaNu5wtYIjTq8Rnf51Ta2idsWnHgh6JSFhcg==
-X-Received: by 2002:a05:6000:1042:b0:343:a183:4218 with SMTP id
- c2-20020a056000104200b00343a1834218mr4625611wrx.52.1714041601143; 
- Thu, 25 Apr 2024 03:40:01 -0700 (PDT)
+ bh=UIo/4Y0jCkZhZbVf1z/K9VYt8JNRKmGPNz3rHCYkyTk=;
+ b=Y0A731qTbU0hhC3yuzEZ2Kz77WX3PxL3Hs0ufhnnR0U59TfTEkYTyPtISikYk8ioCs
+ qlYjxvto7DK6gCll8oyV6DIgB7JhArs/rpEmIU/TO2Ro1RNQwZOlIcmZmB9rEpJc0VFA
+ VUjV5u0038ky/OuTAU2AY6XtBpZpWxGJ95Qtfg7z9hm1rsaeQrcB8PK2IHAzRDIVe4fg
+ 9ZngXROAPN7qB275YNa3QTS3LYUcGdeX8FEdOfM/uzi+ppezyugWmH3yEr+Uk58FoU5s
+ tuCDkpoVi+2fUR0kGTYex70ywJUXVzIO5JLIXxAzFBMzQjGnL9BP2mZtywWzvC1wWcmk
+ ILEg==
+X-Gm-Message-State: AOJu0YxGruwP8cL3vVodNEN0YBXpxspbCLXyHI7BwZcyQTP10tFmIiP2
+ xL/pcZcDhEQtVXnavbcRVPNCyebdeLEYnRv8SuFbhiM2sE/49WM+0VkMDKnVCc5wgTQcfAABMl8
+ x
+X-Google-Smtp-Source: AGHT+IGIUXUfL8ed/1eQi8VCDsq26Ev2gMqoSW7iJUd273qsKnkkXDALYoppPKazDECXEm1E2urHKQ==
+X-Received: by 2002:ac2:4984:0:b0:51c:3e9e:98ee with SMTP id
+ f4-20020ac24984000000b0051c3e9e98eemr1261876lfl.23.1714041602293; 
+ Thu, 25 Apr 2024 03:40:02 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.00
+ h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Apr 2024 03:40:00 -0700 (PDT)
+ Thu, 25 Apr 2024 03:40:01 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 02/37] target/arm: Add PSTATE.ALLINT
-Date: Thu, 25 Apr 2024 11:39:23 +0100
-Message-Id: <20240425103958.3237225-3-peter.maydell@linaro.org>
+Subject: [PULL 03/37] target/arm: Add support for FEAT_NMI,
+ Non-maskable Interrupt
+Date: Thu, 25 Apr 2024 11:39:24 +0100
+Message-Id: <20240425103958.3237225-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::136;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,54 +94,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-When PSTATE.ALLINT is set, an IRQ or FIQ interrupt that is targeted to
-ELx, with or without superpriority is masked. As Richard suggested, place
-ALLINT bit in PSTATE in env->pstate.
-
-In the pseudocode, AArch64.ExceptionReturn() calls SetPSTATEFromPSR(), which
-treats PSTATE.ALLINT as one of the bits which are reinstated from SPSR to
-PSTATE regardless of whether this is an illegal exception return or not. So
-handle PSTATE.ALLINT the same way as PSTATE.DAIF in the illegal_return exit
-path of the exception_return helper. With the change, exception entry and
-return are automatically handled.
+Add support for FEAT_NMI. NMI (FEAT_NMI) is an mandatory feature in
+ARMv8.8-A and ARM v9.3-A.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-3-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-4-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu.h            | 1 +
- target/arm/tcg/helper-a64.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ target/arm/internals.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index bc0c84873ff..de740d223fa 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -1430,6 +1430,7 @@ void pmu_init(ARMCPU *cpu);
- #define PSTATE_D (1U << 9)
- #define PSTATE_BTYPE (3U << 10)
- #define PSTATE_SSBS (1U << 12)
-+#define PSTATE_ALLINT (1U << 13)
- #define PSTATE_IL (1U << 20)
- #define PSTATE_SS (1U << 21)
- #define PSTATE_PAN (1U << 22)
-diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
-index ebaa7f00df3..29f3ef274ae 100644
---- a/target/arm/tcg/helper-a64.c
-+++ b/target/arm/tcg/helper-a64.c
-@@ -892,8 +892,8 @@ illegal_return:
-      */
-     env->pstate |= PSTATE_IL;
-     env->pc = new_pc;
--    spsr &= PSTATE_NZCV | PSTATE_DAIF;
--    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF);
-+    spsr &= PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT;
-+    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT);
-     pstate_write(env, spsr);
-     if (!arm_singlestep_active(env)) {
-         env->pstate &= ~PSTATE_SS;
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index dd3da211a3f..516e0584bf5 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -1229,6 +1229,9 @@ static inline uint32_t aarch64_pstate_valid_mask(const ARMISARegisters *id)
+     if (isar_feature_aa64_mte(id)) {
+         valid |= PSTATE_TCO;
+     }
++    if (isar_feature_aa64_nmi(id)) {
++        valid |= PSTATE_ALLINT;
++    }
+ 
+     return valid;
+ }
 -- 
 2.34.1
 
