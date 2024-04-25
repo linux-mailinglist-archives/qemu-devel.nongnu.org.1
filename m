@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295128B17B1
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4448B17D7
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:11:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmYL-0008Re-1c; Wed, 24 Apr 2024 20:01:29 -0400
+	id 1rzmYK-0008RZ-SK; Wed, 24 Apr 2024 20:01:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXz-0008Je-2e
+ id 1rzmXz-0008Jm-Gy
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:07 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXv-0006Jr-UU
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:06 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1e9320c2ef6so2777025ad.2
+ id 1rzmXx-0006Jw-LE
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:07 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1e36b7e7dd2so3451775ad.1
  for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:01:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003261; x=1714608061; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003262; x=1714608062; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=nB3u9roeckcA1AeJ8eQuq7GKVBVSdTSl/FRX2Yw2q30=;
- b=cVvXfVXqk/w0mKPLcJ4nK4lvB244EQ+14We0heQ6ikX2GfHLgDJN2NaBCJYMoahwe6
- h/H3x+ByxUri9rh6tV8Vlv+dCeUuJF7q6rDn61Q5fCnBN/TNv/ZHX2FKSQZwaFbDDqjI
- wGwhvOUqhKizysfwoP+kZeCAo0sgAG9mesEMlwKPV3hV274/7QZHdwBfN3oehN935+MA
- xit2gbRPqgqkRasxi8VacC9ZVuXiicCSGit3bKv4MD3NLJSPOrCEmJHBEAqUv9KYbbOJ
- dvIn/SE7kxDDmxs8ZdlpLXbrCxeWOw001w8nJqXUdK8RTA3MYQE3oIjoV/VaZYCshK52
- PvIg==
+ :reply-to; bh=03YkZQCWlVOksTPNxrPCbb3bwvJD4b/91KoJpuBrF7U=;
+ b=qY7HYRJ3FEPxKKt5807lXFWOWnyqU66BlZRTCTIp65DO6SVsSUfhQsvkWO/N/q11AK
+ 3AUmjPrnGHEQIXgZg1hlJubbLnkZEM9P4+vw60J6lTC/DoidMdzbGBWh+0fOx+E0X+YP
+ sM0fmlLcsxamh7vBwBjG7ZTmr/7AaxJYyEe1Fa3Pnz6kLPl8n7ebnancEko9asCO56V0
+ BM29mlrQWGcrZyBHPFqJgCmoSJPAC+kbhpfUHsfMwIXifuwRSlMiuVbkcqWboilp1SsU
+ Vr6lYHOsyYAh/Nlo2v1y3tBsco4VtJIczSbCfH07ZQUERZRlKF8XVOb3FCwRm8YnFz2G
+ GOdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003261; x=1714608061;
+ d=1e100.net; s=20230601; t=1714003262; x=1714608062;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=nB3u9roeckcA1AeJ8eQuq7GKVBVSdTSl/FRX2Yw2q30=;
- b=JSMI1tEVCrvVqbcx9L/BRXq4wRHD73K/DJfd18NMpb2rpP5J/WIXkfe/1dKCmEyUtQ
- 4R0Ey3l3S9rGAuT5TIdZrXNJoiPhA0GeI45wtpBa9c5CPmvMx7OydgptqG03Gxfn4oiI
- YGXnY03luugd3qDf4D2TvbAzdNI46Y+BbfDQB9NDNeA4Ep7V6StKwxbo187cExXSF71k
- 3LlLGkKsdxONAx6tToRo5Dmgwcu1MDQmS0n5bDgXdYdXbz+L+QEMY8+iN2uhu46QBmzg
- cE1szvLX2C3eE623L6winhLGDMsm2yrqeklAUNFRzkrmHMGR9jNWkCjapeDzBtTH4kpl
- HW1A==
-X-Gm-Message-State: AOJu0YzkHrT8GNF0rVIAJT4aE7yIki2wloWtUVhCtkV7lzUvLGR8TF4W
- YFMEzOkocxOhut7CO0eQSp0qLJM0SM+FeD9vjLaHv2QQXirVX2xA2vDta61u5s0APU1bgQQK/hw
+ bh=03YkZQCWlVOksTPNxrPCbb3bwvJD4b/91KoJpuBrF7U=;
+ b=QNnF8NsPignzci5biTNkl7hmOwXfxkjucEsx5ppukY7ev9pt3pmAwZhNbZ5SI/Osec
+ ayRrLLHKWMN5wdCcyuhudtKjiM8eY8nkZ42qR85xiAyfvjBHiMUT2dFohE2278hoGYT9
+ rz6Qaz9JJKfMpKhCxz7wmdD2+lGM0du05JZAw/QRg4pQLEia2ZFfP8H3/iOQGSe4moHK
+ tSUKCYvL9X3CgDHgp+KuqFlAOpPIw1QKnWSUZVo2/JuERlR0rO09M2ttpu4uGN2ZOkRb
+ rJ6sZ6zxfIEEzLWKmdBr7n6mWfCJHZ+/3x9i35rLpLgsll6EthEHJk2N6GullItSVAvo
+ WQmw==
+X-Gm-Message-State: AOJu0YzB3hjstwko/XIoZjym6jKx+JnpxbIQUrEhKRzLB48PhRSJkfv6
+ HHPJlyS3+wKYHuZHPei4aVCXJZCtEGwRe5ZnG2y2ffnENnnEt2Ue7N/Rn2w/Re6Cz9iDX93fiIR
  z
-X-Google-Smtp-Source: AGHT+IEj13InH1OQZxksukctGiP+E8fGtOUbVjn92Qz++Cl82Ywk5m8GuiBKahPkFLBuxVjddn7Uxw==
-X-Received: by 2002:a17:903:120b:b0:1e2:16b6:e9b6 with SMTP id
- l11-20020a170903120b00b001e216b6e9b6mr4787724plh.48.1714003260824; 
- Wed, 24 Apr 2024 17:01:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECc+zEBpRl+ibKSwuBiW8GM7VWyacwp1mGysRZXFTy30mlBFiuxFKRrgFKtUMVkEw4Sn6rbw==
+X-Received: by 2002:a17:902:e54d:b0:1e2:6165:8086 with SMTP id
+ n13-20020a170902e54d00b001e261658086mr5257851plf.61.1714003261779; 
+ Wed, 24 Apr 2024 17:01:01 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.01.00
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.01.01
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:01:00 -0700 (PDT)
+ Wed, 24 Apr 2024 17:01:01 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 37/45] target/hppa: Implement PSW_B
-Date: Wed, 24 Apr 2024 17:00:15 -0700
-Message-Id: <20240425000023.1002026-38-richard.henderson@linaro.org>
+Subject: [PATCH 38/45] target/hppa: Implement PSW_X
+Date: Wed, 24 Apr 2024 17:00:16 -0700
+Message-Id: <20240425000023.1002026-39-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,60 +90,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PSW_B causes B,GATE to trap as an illegal instruction, removing
-the sequential execution test that was merely an approximation.
+Use PAGE_WRITE_INV to temporarily enable write permission
+on for a given page, driven by PSW_X being set.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 25 ++++++-------------------
- 1 file changed, 6 insertions(+), 19 deletions(-)
+ target/hppa/mem_helper.c | 46 +++++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 19 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index a49cf09518..a4200742bd 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -2060,11 +2060,8 @@ static void do_page_zero(DisasContext *ctx)
-         g_assert_not_reached();
+diff --git a/target/hppa/mem_helper.c b/target/hppa/mem_helper.c
+index 84785b5a5c..5eca5e8a1e 100644
+--- a/target/hppa/mem_helper.c
++++ b/target/hppa/mem_helper.c
+@@ -295,30 +295,38 @@ int hppa_get_physical_address(CPUHPPAState *env, vaddr addr, int mmu_idx,
+         goto egress;
      }
  
--    /* Check that we didn't arrive here via some means that allowed
--       non-sequential instruction execution.  Normally the PSW[B] bit
--       detects this by disallowing the B,GATE instruction to execute
--       under such conditions.  */
--    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != 4) {
-+    /* If PSW[B] is set, the B,GATE insn would trap. */
-+    if (ctx->psw_xb & PSW_B) {
-         goto do_sigill;
+-    /* In reverse priority order, check for conditions which raise faults.
+-       As we go, remove PROT bits that cover the condition we want to check.
+-       In this way, the resulting PROT will force a re-check of the
+-       architectural TLB entry for the next access.  */
+-    if (unlikely(!ent->d)) {
+-        if (type & PAGE_WRITE) {
+-            /* The D bit is not set -- TLB Dirty Bit Fault.  */
+-            ret = EXCP_TLB_DIRTY;
+-        }
+-        prot &= PAGE_READ | PAGE_EXEC;
+-    }
+-    if (unlikely(ent->b)) {
+-        if (type & PAGE_WRITE) {
+-            /* The B bit is set -- Data Memory Break Fault.  */
+-            ret = EXCP_DMB;
+-        }
+-        prot &= PAGE_READ | PAGE_EXEC;
+-    }
++    /*
++     * In priority order, check for conditions which raise faults.
++     * Remove PROT bits that cover the condition we want to check,
++     * so that the resulting PROT will force a re-check of the
++     * architectural TLB entry for the next access.
++     */
+     if (unlikely(ent->t)) {
++        prot &= PAGE_EXEC;
+         if (!(type & PAGE_EXEC)) {
+             /* The T bit is set -- Page Reference Fault.  */
+             ret = EXCP_PAGE_REF;
+         }
+-        prot &= PAGE_EXEC;
++    } else if (!ent->d) {
++        prot &= PAGE_READ | PAGE_EXEC;
++        if (type & PAGE_WRITE) {
++            /* The D bit is not set -- TLB Dirty Bit Fault.  */
++            ret = EXCP_TLB_DIRTY;
++        }
++    } else if (unlikely(ent->b)) {
++        prot &= PAGE_READ | PAGE_EXEC;
++        if (type & PAGE_WRITE) {
++            /*
++             * The B bit is set -- Data Memory Break Fault.
++             * Except when PSW_X is set, allow this single access to succeed.
++             * The write bit will be invalidated for subsequent accesses.
++             */
++            if (env->psw_xb & PSW_X) {
++                prot |= PAGE_WRITE_INV;
++            } else {
++                ret = EXCP_DMB;
++            }
++        }
      }
  
-@@ -3963,23 +3960,13 @@ static bool trans_b_gate(DisasContext *ctx, arg_b_gate *a)
- {
-     int64_t disp = a->disp;
- 
--    nullify_over(ctx);
--
--    /* Make sure the caller hasn't done something weird with the queue.
--     * ??? This is not quite the same as the PSW[B] bit, which would be
--     * expensive to track.  Real hardware will trap for
--     *    b  gateway
--     *    b  gateway+4  (in delay slot of first branch)
--     * However, checking for a non-sequential instruction queue *will*
--     * diagnose the security hole
--     *    b  gateway
--     *    b  evil
--     * in which instructions at evil would run with increased privs.
--     */
--    if (iaqe_variable(&ctx->iaq_b) || ctx->iaq_b.disp != ctx->iaq_f.disp + 4) {
-+    /* Trap if PSW[B] is set. */
-+    if (ctx->psw_xb & PSW_B) {
-         return gen_illegal(ctx);
-     }
- 
-+    nullify_over(ctx);
-+
- #ifndef CONFIG_USER_ONLY
-     if (ctx->tb_flags & PSW_C) {
-         int type = hppa_artype_for_page(cpu_env(ctx->cs), ctx->base.pc_next);
+  egress:
 -- 
 2.34.1
 
