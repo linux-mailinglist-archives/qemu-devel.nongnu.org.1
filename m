@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F9518B1F62
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0E18B1F67
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:42:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWR-0001zW-5V; Thu, 25 Apr 2024 06:40:11 -0400
+	id 1rzwWY-00022q-NB; Thu, 25 Apr 2024 06:40:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWN-0001y0-KS
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:07 -0400
-Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
+ id 1rzwWO-0001ys-G8
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:08 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWL-00079s-Ur
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:07 -0400
-Received: by mail-lj1-x22b.google.com with SMTP id
- 38308e7fff4ca-2de232989aaso8444251fa.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:05 -0700 (PDT)
+ id 1rzwWM-0007A6-H0
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:08 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-34a00533d08so465366f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041604; x=1714646404; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041605; x=1714646405; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=Mn9K63HdD8L7FJC0CZzxAEg6D39lTDIquKUS1Fhgckk=;
- b=ceY2JbRKZ3Zgw2m/X/1TV6Pvj2+EQ8i1cPc1BWrKCtlxLzjZ8SJwHUTlp0caLXwIcK
- 5Vy8/VzdbN++cb3n3wTDMfiiRbl7C+V0+4xNTUAwmZIDsystLp/pxxHnSvaRFpFqC7Tq
- cvfhJ76YwfMdwihMr/uyJoO4pxEAJrBY+EBrYDTm21dx2iJAuVHhasKna5fraHoNi3Cx
- 72sArzuZLuAfCm+9LjOKiFTk/vLLofIzvK4ohbjyK0ilqtyvQcZliTrReCRQ/o3inBrE
- nq824MBFj3rf0UKO+us+PiC9Uo73LoDDtKtzhS2OeqN139zSXS+vXXDc+4bLHW7IR0gJ
- LIpQ==
+ :reply-to; bh=aKgAIExeXe22iXmvncCzPBD6wUC7eTZRMMv1MDBAcwE=;
+ b=ZjT8EGa4SbQ2lcNkoeukDJwUQYz1onssSsS0noMIBneJQtqiDdZ6PonzUCzSk7Nfp3
+ DWteL+jCaDkVj6z1SyZS6jMeHe/Zu/7qa31WuvrLBChvTARnzsRb9WISxvBOsG6AMmlY
+ KQdd88Yfq7t5UelBOZQSiNohu+Eqy5zcUPavJ1Komm/IY0ZagveA7+gT/CVKiWPldSvb
+ C2BwufixCILM9rwr64AxP6l7LSkqhYpEXVeSi1IvrHVNTQolyYD5s6/gD/n4v+1PdlZG
+ IYQy1e342viqnoqshRkWiv3kEnXkzLMvOSgsGAIIZ6GumwHUgg2cXo4tM6cN/kjftgqF
+ W9Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041604; x=1714646404;
+ d=1e100.net; s=20230601; t=1714041605; x=1714646405;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Mn9K63HdD8L7FJC0CZzxAEg6D39lTDIquKUS1Fhgckk=;
- b=HyQRy4X1SdwCQ4IfRU3FHTqjr9ZJA1ek/NKDi+pnFG7CZjE3tgEnaXhijNOiJTrxfq
- ZIj/4HdCnVZePoEnSNAf7CQpstJxPmllkUzsd0N2tjFpl4ERyY+wE4dQloNmz3mcig2T
- poafQc5CnSf9jw2iiQjugcQyoZUrBgdfLArUofsUj377YbQihKkdXDcrE0+ct4FMCCiC
- RwtkQ+wD8zY98XYKaibdfSyXPRzPvnZuu57uK5ySHk6lZCIKe36cedj1PC28p+7CRGkV
- bWpJwzUpEN2mo/BQemzjZihwsNcN+m0B+9FE2WV36TRk1d0fLScA8O2/2U1StsjfnXRX
- oV0Q==
-X-Gm-Message-State: AOJu0YyZhEekQ29v3UQoFHBf7iNPLlWPUGsSKBuqtxL0rZVoS0n7ukGg
- cMTdWJpqSHTJJ7sNO/9mmuSjFbjAH7iA77Ir6yIA9gh3ofIE9bWLEvhCI89XbcuJnYGjkn8dVlJ
- n
-X-Google-Smtp-Source: AGHT+IGfPYl0KtmFyP4UqpaLkWP+508nQz29WNu0e90cVrFAcmuMYyjio+FVAJYoN82GnMzhi3LQTw==
-X-Received: by 2002:a2e:9dd4:0:b0:2db:348f:5c28 with SMTP id
- x20-20020a2e9dd4000000b002db348f5c28mr3336495ljj.51.1714041604274; 
- Thu, 25 Apr 2024 03:40:04 -0700 (PDT)
+ bh=aKgAIExeXe22iXmvncCzPBD6wUC7eTZRMMv1MDBAcwE=;
+ b=XHkgP43VO3WjPgEeA/9Kb6qQKXlBIKt4A4bKUlUXkV57DPrPApPm12jm4zbdV8dB/z
+ gZKWzSe6zEZcHqSo6xJJLbC14d5ej5jR/H1dgFutCofnrSoOxw3Yua43pZH4dz5OUoeD
+ 1niU6uu3cIj0qAxOKhKt5qSJpa/fz+uj9f7byBoer2fX4P7B7vKq761RZFKRlBY4UgOO
+ 7hjoUlPDgq9zIDIrd/NuXe3o/EMV/+uT8mnRF0z2z1qZg2Jx6iB+3XVu61YmVNQENoRr
+ f/TNyjqDYe9b49h7xkpdHJ81EYipKeHUJOiCSDaUp7u5k1wmqKxbhHMxQhcpaoKQDwMR
+ zVmQ==
+X-Gm-Message-State: AOJu0YzZ5J17d/w7+suwpDCJQiSWSnBKl4wvCPaypqpIEb1ribX0AQ4v
+ evb6bhFJq90BXwBLy493P6eLJ52X13n3/sKgJs2ZdddU0+CRvEgIklTFHylBloWIYSIt5Q6y+mj
+ J
+X-Google-Smtp-Source: AGHT+IH4ZI0My2ovJWqjUWMox/A0hOF+S40KWYbGcCXyVHkq2Qb1XVK3lopDxZ75yeJQdpnyx49KwA==
+X-Received: by 2002:a05:6000:1361:b0:349:9e18:9f73 with SMTP id
+ q1-20020a056000136100b003499e189f73mr5218145wrz.67.1714041605094; 
+ Thu, 25 Apr 2024 03:40:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.03
+ h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.04
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Thu, 25 Apr 2024 03:40:04 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/37] target/arm: Add support for NMI in
- arm_phys_excp_target_el()
-Date: Thu, 25 Apr 2024 11:39:28 +0100
-Message-Id: <20240425103958.3237225-8-peter.maydell@linaro.org>
+Subject: [PULL 08/37] target/arm: Handle IS/FS in ISR_EL1 for NMI,
+ VINMI and VFNMI
+Date: Thu, 25 Apr 2024 11:39:29 +0100
+Message-Id: <20240425103958.3237225-9-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::22b;
- envelope-from=peter.maydell@linaro.org; helo=mail-lj1-x22b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,31 +94,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-According to Arm GIC section 4.6.3 Interrupt superpriority, the interrupt
-with superpriority is always IRQ, never FIQ, so handle NMI same as IRQ in
-arm_phys_excp_target_el().
+Add IS and FS bit in ISR_EL1 and handle the read. With CPU_INTERRUPT_NMI or
+CPU_INTERRUPT_VINMI, both CPSR_I and ISR_IS must be set. With
+CPU_INTERRUPT_VFNMI, both CPSR_F and ISR_FS must be set.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-8-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-9-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 1 +
- 1 file changed, 1 insertion(+)
+ target/arm/cpu.h    |  2 ++
+ target/arm/helper.c | 13 +++++++++++++
+ 2 files changed, 15 insertions(+)
 
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index 08a6bc50de2..97997dbd087 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1398,6 +1398,8 @@ void pmu_init(ARMCPU *cpu);
+ #define CPSR_N (1U << 31)
+ #define CPSR_NZCV (CPSR_N | CPSR_Z | CPSR_C | CPSR_V)
+ #define CPSR_AIF (CPSR_A | CPSR_I | CPSR_F)
++#define ISR_FS (1U << 9)
++#define ISR_IS (1U << 10)
+ 
+ #define CPSR_IT (CPSR_IT_0_1 | CPSR_IT_2_7)
+ #define CACHED_CPSR_BITS (CPSR_T | CPSR_AIF | CPSR_GE | CPSR_IT | CPSR_Q \
 diff --git a/target/arm/helper.c b/target/arm/helper.c
-index f61a65d8114..4ee59b37059 100644
+index 4ee59b37059..6b6d8a349a2 100644
 --- a/target/arm/helper.c
 +++ b/target/arm/helper.c
-@@ -10763,6 +10763,7 @@ uint32_t arm_phys_excp_target_el(CPUState *cs, uint32_t excp_idx,
-     hcr_el2 = arm_hcr_el2_eff(env);
-     switch (excp_idx) {
-     case EXCP_IRQ:
-+    case EXCP_NMI:
-         scr = ((env->cp15.scr_el3 & SCR_IRQ) == SCR_IRQ);
-         hcr = hcr_el2 & HCR_IMO;
-         break;
+@@ -2021,16 +2021,29 @@ static uint64_t isr_read(CPUARMState *env, const ARMCPRegInfo *ri)
+         if (cs->interrupt_request & CPU_INTERRUPT_VIRQ) {
+             ret |= CPSR_I;
+         }
++        if (cs->interrupt_request & CPU_INTERRUPT_VINMI) {
++            ret |= ISR_IS;
++            ret |= CPSR_I;
++        }
+     } else {
+         if (cs->interrupt_request & CPU_INTERRUPT_HARD) {
+             ret |= CPSR_I;
+         }
++
++        if (cs->interrupt_request & CPU_INTERRUPT_NMI) {
++            ret |= ISR_IS;
++            ret |= CPSR_I;
++        }
+     }
+ 
+     if (hcr_el2 & HCR_FMO) {
+         if (cs->interrupt_request & CPU_INTERRUPT_VFIQ) {
+             ret |= CPSR_F;
+         }
++        if (cs->interrupt_request & CPU_INTERRUPT_VFNMI) {
++            ret |= ISR_FS;
++            ret |= CPSR_F;
++        }
+     } else {
+         if (cs->interrupt_request & CPU_INTERRUPT_FIQ) {
+             ret |= CPSR_F;
 -- 
 2.34.1
 
