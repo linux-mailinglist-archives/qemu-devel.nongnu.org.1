@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F478B1F99
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0358B1F8D
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:47:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWZ-00023h-HP; Thu, 25 Apr 2024 06:40:19 -0400
+	id 1rzwWa-00024y-9X; Thu, 25 Apr 2024 06:40:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWQ-0001zp-QU
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:10 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ id 1rzwWQ-0001zx-UP
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:11 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWO-0007BB-SG
+ id 1rzwWP-0007BM-9K
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:10 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-343e46ec237so669892f8f.2
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4196c62bb4eso6441395e9.2
  for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041607; x=1714646407; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041608; x=1714646408; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=uNspTAtU5EEDrEwByNRMRLu3g41/4uLvJCYO3m3A7Lk=;
- b=J68u941rXX9MnpxzrrzYI3EpxyLXe7AvTIRvfitpcDzO0GvXY7N43rr3S/ZzjdSvPm
- 473iqos/YUvF2j4g5m5lMPd4TeKOWkxal3v/dGnpGkpuqACFFxB9O6WRYdWYne5UPXOz
- gsCw4peL0POsRuRDh1KOy0+wMj3IMStjAVqXog8nCHJJbrBKjiW5Ywasf8Rx8xgS95Xn
- OI040NRzBDeRNBeFZBlW80ziTtNnGpnSlAtl/6kbsMI9MAc3vmbP9Z/WDc0b3S20My2A
- xhJltiaJTEpGdwRx4VaxGn+cPGHos+OyG39d+/A2APAOEJIV14omkdx8tZmvdC4qOX6M
- XQ1A==
+ :reply-to; bh=qTCnu62k+8U/GjNoTGBqIqRdrEXskM+ZoSSojfJIbBw=;
+ b=YXp1e3M1Z9c+SSQa9H77H3X3JIQ5X6PgZtrXsUGIMv4SYX1qaH0cQ7nwDa2R9iEdGv
+ zCiEAlMTkTW38+sKO1rTxDsdkhHXveY2LqF/F016nzlGHlYstwjYNXNwUn/M8b7iBGRy
+ gSP9+2m5pq9+nm7K6CP0P6jwf44wKKDv8S1fXUhPp2mS6kPtDniC4PTz3hMS+ocXQdu8
+ 070VNCKmUrJYBHysa3lZLFeDK5/NV1bDYtV3JcVdPEFtFK1W+6UxfNMPkkvw4hCLCCgd
+ BfxWhphZIBlaY2UGQa6oFY9yogCyNBlM+dyF5vpy2pUiN1fe3OOO5dyYZsNP3bXUZifO
+ iOtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041607; x=1714646407;
+ d=1e100.net; s=20230601; t=1714041608; x=1714646408;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uNspTAtU5EEDrEwByNRMRLu3g41/4uLvJCYO3m3A7Lk=;
- b=qfLgt4SJpiHpC9fjxB2IZnMW8JBWdIRnsY6vn9jqGOKz3No8fI7hfTVCNKQSVJINOu
- zXhxei/f7quELqhc1RLms+p775O/acpxYN9w35l/OaEhJvKp6rc8B+IXoiiL+/LWEbKe
- F5yATSFpNNyO3x99q/jFC0YpXyrmgZWJ5X8BbnZOuOaOn253MNTDse38WO5PdpI2yza3
- tFJEpEJrDunBFsi782yIGoaYKzkoEwiZKX8c20bLpM8g/KPk6C8pg/Ix2T7WIEEvm0n5
- /+MowfuBgkx59tdPpXD3eWzwqt+cDeAiYMv1eUNyYHIfmcGpFDSw43nZpm5VZzFYNRgs
- TC0g==
-X-Gm-Message-State: AOJu0Yyqoa+FOJuVmaJ2zid7mcNxXNpSVHRZ4tsXWixqPSKcG/q672/k
- dNp0RfZSbBZx+xyEBO3k3wuCPddhT2HSU+DoY/Fez7Lg4TzoyUXZHHVyfGzXSWHvt44uIaF2N7t
- G
-X-Google-Smtp-Source: AGHT+IETpKrHhN5BW/MZiS2IsgPcpdYDlnFnjzES2iyzJQZkN4lnxZG9giIGeJCySc+4y7alUmxjkg==
-X-Received: by 2002:a05:6000:d92:b0:343:b295:4d99 with SMTP id
- dv18-20020a0560000d9200b00343b2954d99mr3907998wrb.56.1714041607424; 
+ bh=qTCnu62k+8U/GjNoTGBqIqRdrEXskM+ZoSSojfJIbBw=;
+ b=izPigaV2FjHSfz/R/iy93c5zUMEdtjHF5mpryqH1Zc5gGJ8U9AmJPuGlMhAlWksEku
+ TieSpUFUoSKdxPWJ38doLVuRoMzagm6JZRhy18KuX7RFwHjj2BYa7Osdz/Fn7ITdv1io
+ aOwn1SD54Xc3hxlmbt06OBICIuuxLvbOyxzLMWJhSk6qTlVCWUkgf+/NOhxFMc4OxbuQ
+ gHqhYeNYscCS8X1Xr7/gJC8wBU2kKj8yNsSF8wgl7hvIe6s+QW8gCYOdhTtTA+3Xm/IX
+ VyknU5MK0nRbXB/qgeQmfFdufHvAnASOjqf7LS9aw/uZQ1Nf3VQpIRs5jxv5KdrqT1o8
+ CE0w==
+X-Gm-Message-State: AOJu0YxZgm4VBb7HY1huiT3q09pP8W/htzYJamdwRF8dOwTQqx4zpprE
+ bikzsef/DOI1QaIvO2/d20C30ufcLINtd3JGRPKdXPFjq1hjy7pZHXbusPOi/S7Hzq6jfqaM3Uj
+ N
+X-Google-Smtp-Source: AGHT+IFgvYz/LL7COI7sVcEFIk86rsMy7bHZdmbmd/IL5LKkjeAXw5WTY7QNHEBHgYe89p/qdxAbqA==
+X-Received: by 2002:a05:600c:4fd1:b0:418:be2e:df9e with SMTP id
+ o17-20020a05600c4fd100b00418be2edf9emr3499976wmq.41.1714041607855; 
  Thu, 25 Apr 2024 03:40:07 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,17 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Apr 2024 03:40:07 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/37] hw/intc/arm_gicv3: Add has-nmi property to GICv3 device
-Date: Thu, 25 Apr 2024 11:39:34 +0100
-Message-Id: <20240425103958.3237225-14-peter.maydell@linaro.org>
+Subject: [PULL 14/37] hw/intc/arm_gicv3_kvm: Not set has-nmi=true for the KVM
+ GICv3
+Date: Thu, 25 Apr 2024 11:39:35 +0100
+Message-Id: <20240425103958.3237225-15-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,80 +94,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-Add a property has-nmi to the GICv3 device, and use this to set
-the NMI bit in the GICD_TYPER register. This isn't visible to
-guests yet because the property defaults to false and we won't
-set it in the board code until we've landed all of the changes
-needed to implement FEAT_GICV3_NMI.
+So far, there is no FEAT_GICv3_NMI support in the in-kernel GIC, so make it
+an error to try to set has-nmi=true for the KVM GICv3.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-14-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-15-ruanjinjie@huawei.com
+Suggested-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/intc/gicv3_internal.h           | 1 +
- include/hw/intc/arm_gicv3_common.h | 1 +
- hw/intc/arm_gicv3_common.c         | 1 +
- hw/intc/arm_gicv3_dist.c           | 2 ++
- 4 files changed, 5 insertions(+)
+ hw/intc/arm_gicv3_kvm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
-index 29d5cdc1b69..8f4ebed2f42 100644
---- a/hw/intc/gicv3_internal.h
-+++ b/hw/intc/gicv3_internal.h
-@@ -68,6 +68,7 @@
- #define GICD_CTLR_E1NWF             (1U << 7)
- #define GICD_CTLR_RWP               (1U << 31)
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index 77eb37e1317..00a383079b9 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -805,6 +805,11 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+         return;
+     }
  
-+#define GICD_TYPER_NMI_SHIFT           9
- #define GICD_TYPER_LPIS_SHIFT          17
++    if (s->nmi_support) {
++        error_setg(errp, "NMI is not supported with the in-kernel GIC");
++        return;
++    }
++
+     gicv3_init_irqs_and_mmio(s, kvm_arm_gicv3_set_irq, NULL);
  
- /* 16 bits EventId */
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 7324c7d983f..4358c5319c1 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -249,6 +249,7 @@ struct GICv3State {
-     uint32_t num_irq;
-     uint32_t revision;
-     bool lpi_enable;
-+    bool nmi_support;
-     bool security_extn;
-     bool force_8bit_prio;
-     bool irq_reset_nonsecure;
-diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index c52f060026a..2d2cea6858a 100644
---- a/hw/intc/arm_gicv3_common.c
-+++ b/hw/intc/arm_gicv3_common.c
-@@ -569,6 +569,7 @@ static Property arm_gicv3_common_properties[] = {
-     DEFINE_PROP_UINT32("num-irq", GICv3State, num_irq, 32),
-     DEFINE_PROP_UINT32("revision", GICv3State, revision, 3),
-     DEFINE_PROP_BOOL("has-lpi", GICv3State, lpi_enable, 0),
-+    DEFINE_PROP_BOOL("has-nmi", GICv3State, nmi_support, 0),
-     DEFINE_PROP_BOOL("has-security-extensions", GICv3State, security_extn, 0),
-     /*
-      * Compatibility property: force 8 bits of physical priority, even
-diff --git a/hw/intc/arm_gicv3_dist.c b/hw/intc/arm_gicv3_dist.c
-index 35e850685c0..22ddc0d6661 100644
---- a/hw/intc/arm_gicv3_dist.c
-+++ b/hw/intc/arm_gicv3_dist.c
-@@ -389,6 +389,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-          *                      by GICD_TYPER.IDbits)
-          * MBIS == 0 (message-based SPIs not supported)
-          * SecurityExtn == 1 if security extns supported
-+         * NMI = 1 if Non-maskable interrupt property is supported
-          * CPUNumber == 0 since for us ARE is always 1
-          * ITLinesNumber == (((max SPI IntID + 1) / 32) - 1)
-          */
-@@ -402,6 +403,7 @@ static bool gicd_readl(GICv3State *s, hwaddr offset,
-         bool dvis = s->revision >= 4;
- 
-         *data = (1 << 25) | (1 << 24) | (dvis << 18) | (sec_extn << 10) |
-+            (s->nmi_support << GICD_TYPER_NMI_SHIFT) |
-             (s->lpi_enable << GICD_TYPER_LPIS_SHIFT) |
-             (0xf << 19) | itlinesnumber;
-         return true;
+     for (i = 0; i < s->num_cpu; i++) {
 -- 
 2.34.1
 
