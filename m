@@ -2,73 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8B98B24DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B578B2536
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s00pG-0006w6-Ss; Thu, 25 Apr 2024 11:15:54 -0400
+	id 1s017p-0000JC-7W; Thu, 25 Apr 2024 11:35:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s00od-0006gS-KT
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:15:24 -0400
-Received: from mgamail.intel.com ([198.175.65.14])
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1s017m-0000Io-BB
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:35:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
- id 1s00oU-0002Dd-Ja
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:15:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1714058106; x=1745594106;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=u7WG00B7+uNOK3xQT0kyO08wZ8tgfhwulD0Raj+SN5U=;
- b=Gs8+Lg0XEo/cMOKBRVCtcfDqN1HQKIZrwx5lkX+GdWu6gNy0umrea7cY
- voUE9HxazcRNGhskP01wrfPilBlnHY47vLzArgfZZK8mWBvmhVBaw/GSM
- Ms0OTI1SzuMIpFca5w4pbUQj4H8TRSQODKeeGyy30BBWzqJPyECIu8mzO
- vhBl7h6oIYWKva4FpZanCuqhWMCu0d8Ig7ZL3o0CP3j2jKtoWIme8EqlQ
- x2HcAwIlNpCN2pnUT9r61dxDyleq7CHwNrB47/M/vN/mwoP51xE7Xc4Wu
- miBJvF1Scje35Eu5lZntDdIvJVADL/isy3rAzjIMYcjk35a8yHHEQ2IyT w==;
-X-CSE-ConnectionGUID: ly+NY3TVR6CyaATcEPD94A==
-X-CSE-MsgGUID: yw0EU1YoTwmeCAhmYMuO2g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="13588209"
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="13588209"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Apr 2024 08:15:02 -0700
-X-CSE-ConnectionGUID: ftF/dONzTPa36XXj2DMJDg==
-X-CSE-MsgGUID: CdqXhzrHRJuzWz3XB778tw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="48365264"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by fmviesa002.fm.intel.com with ESMTP; 25 Apr 2024 08:15:01 -0700
-Date: Thu, 25 Apr 2024 23:29:08 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
-Subject: Re: [PATCH for-9.1 09/19] target/i386: move 60-BF opcodes to new
- decoder
-Message-ID: <Zip2xJorL/cPxm5B@intel.com>
-References: <20240409164323.776660-1-pbonzini@redhat.com>
- <20240409164323.776660-10-pbonzini@redhat.com>
- <Zhf/czBP8LaaGORr@intel.com>
- <CABgObfYMu8sAzqJvMSQiDiY6M+uxBYc-fQadpvtoT=J=waWv4w@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABgObfYMu8sAzqJvMSQiDiY6M+uxBYc-fQadpvtoT=J=waWv4w@mail.gmail.com>
-Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -50
-X-Spam_score: -5.1
-X-Spam_bar: -----
-X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+ (Exim 4.90_1) (envelope-from <aharivel@redhat.com>)
+ id 1s017k-0001Vm-6i
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:35:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1714059296;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=8SZp5Uh0oQaZ1Hq2+/IMq0uBS7yJOfARICGEcO8rEBc=;
+ b=KlCNKfFWGtCTfiwXOcI11KOgo5snQ/qqns1GpZY1DCvRxJhQBcpKckUMPWiR8+k00Hg7jW
+ uTLoKzfdGdNGruzyUXVYRAPoKt/URFH8gQ9xS7TcYkZPno9l235TOzeZY/LcGor3/Mw4nC
+ gKU8kbtJhGmNB2wrHzx36ncK0ZyQawc=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-111-59PijWDkP-O-gcBEWGKF-A-1; Thu, 25 Apr 2024 11:34:54 -0400
+X-MC-Unique: 59PijWDkP-O-gcBEWGKF-A-1
+Received: by mail-ed1-f72.google.com with SMTP id
+ 4fb4d7f45d1cf-571bfa09a5eso707500a12.0
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 08:34:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1714059294; x=1714664094;
+ h=in-reply-to:references:user-agent:from:subject:cc:to:message-id
+ :date:content-transfer-encoding:mime-version:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=8SZp5Uh0oQaZ1Hq2+/IMq0uBS7yJOfARICGEcO8rEBc=;
+ b=lbqOMa0CU45nVoWDmLwqf7rWgPRGINQqdqcQjrQiPqBWQK5CkEOBF7aFIrxcc73J+Y
+ YPF3hdimMBva5xLi3vxLkB/UIDAagCMGJa3wcrmuS1oZ/NOMoIQlUOhf6mBPsTCtYw2a
+ W/Y60A4fwNlNP/wgjRF9pQZqDSH4MGuI+1IV5s/RNyH6EK9HBjthA3HVeARCMbBX1uJc
+ Z56i0WLpcWgT6fgH+OwEq+tPujjb9N9HSbZW22TI4IKoX676G+7zIFuzYTGmaILoJCZG
+ FuncGzKzq+0QPyLJ9GgZ7HEcu5AmTDk3nbSfNnhu/d9ZUtyd0C1UdipGMdNHFzecxml2
+ n0DQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCX1ECriR6Ib1A+3DBDs4BETuBO1XErQiL14y4H4YHGPShrwN1HZ8QF/wXcaw3/YHz5tScFdN47bgWFZAZiUPsl04suF3kk=
+X-Gm-Message-State: AOJu0YzrLpmDUorHUyfORSs9T/rFpD3+qGs+4gIFp+r52O0EBwOXjlEd
+ i+R3Ho5T3kQ/+Y3KyU3npjOlpgphe167S/oV0a2WgDVUwGTbw+BuSy3ZelN2XYJDSFHzVfS+Q0u
+ J5G27i+svCXW2sooPaX6iScPZ53Z/ZPJ8Quf1gnwVE/6d8w8C1hOI
+X-Received: by 2002:a17:906:616:b0:a55:b037:dfc3 with SMTP id
+ s22-20020a170906061600b00a55b037dfc3mr84196ejb.26.1714059293709; 
+ Thu, 25 Apr 2024 08:34:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGNyY7JO0Mylu/AXuvSXYz5+Lm/2lklPL2f7V9asskNdVkYpwuadtcaP+9zmrjoLNMtEkz6hg==
+X-Received: by 2002:a17:906:616:b0:a55:b037:dfc3 with SMTP id
+ s22-20020a170906061600b00a55b037dfc3mr84177ejb.26.1714059293326; 
+ Thu, 25 Apr 2024 08:34:53 -0700 (PDT)
+Received: from localhost ([2a01:e0a:a9a:c460:2827:8723:3c60:c84a])
+ by smtp.gmail.com with ESMTPSA id
+ qq22-20020a17090720d600b00a554f6fbb25sm9586451ejb.138.2024.04.25.08.34.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 25 Apr 2024 08:34:52 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 25 Apr 2024 17:34:52 +0200
+Message-Id: <D0TBB4DMA8RL.6KN35N5NVAU@redhat.com>
+To: =?utf-8?b?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?= <berrange@redhat.com>
+Cc: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <qemu-devel@nongnu.org>,
+ <vchundur@redhat.com>, <rjarry@redhat.com>
+Subject: Re: [PATCH v5 3/3] Add support for RAPL MSRs in KVM/Qemu
+From: "Anthony Harivel" <aharivel@redhat.com>
+User-Agent: aerc/0.17.0-121-g0798a428060d
+References: <20240411121434.253353-1-aharivel@redhat.com>
+ <20240411121434.253353-4-aharivel@redhat.com> <ZiFNcLYyha3_teDT@redhat.com>
+In-Reply-To: <ZiFNcLYyha3_teDT@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aharivel@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,79 +103,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Apr 24, 2024 at 01:13:01PM +0200, Paolo Bonzini wrote:
-> Date: Wed, 24 Apr 2024 13:13:01 +0200
-> From: Paolo Bonzini <pbonzini@redhat.com>
-> Subject: Re: [PATCH for-9.1 09/19] target/i386: move 60-BF opcodes to new
->  decoder
-> 
-> On Thu, Apr 11, 2024 at 5:05 PM Zhao Liu <zhao1.liu@intel.com> wrote:
-> > HMM, I met Guest boot failure on this patch because of ata unrecognized.
-> > I haven't located the exact error yet, so let me post my log first.
-> > If there are other means I can use to dig further, I'd be happy to try
-> > that too.
-> >
-> > # Command (boot a ubuntu Guest via TCG)
-> >
-> > ./qemu/build/qemu-system-x86_64 \
-> > -smp 1 \
-> > -name ubuntu -m 4G \
-> > -cpu max -accel tcg \
-> > -hda ../img_qemu/test.qcow2 -nographic \
-> > -kernel ../img_qemu/kernel/vmlinuz-6.4.0-rc6+ \
-> > -initrd ../img_qemu/kernel/initrd.img-6.4.0-rc6+ \
-> > -append "root=/dev/sda ro console=ttyS0" \
-> > -qmp unix:/tmp/qmp-sock,server=on,wait=off
-> 
-> The issue is that INS and OUTS are using the incorrect operand size.
-> 
-> While at it I also made OUTS a bit more similar to OUT:
-> 
-> diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-> index 0951b042dfa..46682cfe070 100644
-> --- a/target/i386/tcg/decode-new.c.inc
-> +++ b/target/i386/tcg/decode-new.c.inc
-> @@ -1544,8 +1544,8 @@ static const X86OpEntry opcodes_root[256] = {
->      [0x6B] = X86_OP_ENTRY3(IMUL3, G,v, E,v, I,b, sextT0),
->      [0x6C] = X86_OP_ENTRYrr(INS, Y,b, 2,w), /* DX */
->      [0x6D] = X86_OP_ENTRYrr(INS, Y,z, 2,w), /* DX */
-> -    [0x6E] = X86_OP_ENTRYrr(OUTS, 2,w, X,b), /* DX */
-> -    [0x6F] = X86_OP_ENTRYrr(OUTS, 2,w, X,b), /* DX */
-> +    [0x6E] = X86_OP_ENTRYrr(OUTS, X,b, 2,w), /* DX */
-> +    [0x6F] = X86_OP_ENTRYrr(OUTS, X,z, 2,w), /* DX */
-> 
->      [0x78] = X86_OP_ENTRYr(Jcc, J,b),
->      [0x79] = X86_OP_ENTRYr(Jcc, J,b),
-> @@ -1592,7 +1592,7 @@ static void gen_INC(
-> 
->  static void gen_INS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
->  {
-> -    MemOp ot = decode->op[0].ot;
-> +    MemOp ot = decode->op[1].ot;
->      TCGv_i32 port = tcg_temp_new_i32();
-> 
->      tcg_gen_trunc_tl_i32(port, s->T1);
-> @@ -2310,10 +2310,10 @@ static void gen_OUT(
-> 
->  static void gen_OUTS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
->  {
-> -    MemOp ot = decode->op[2].ot;
-> +    MemOp ot = decode->op[1].ot;
->      TCGv_i32 port = tcg_temp_new_i32();
-> 
-> -    tcg_gen_trunc_tl_i32(port, s->T0);
-> +    tcg_gen_trunc_tl_i32(port, s->T1);
->      tcg_gen_ext16u_i32(port, port);
->      if (!gen_check_io(s, ot, port, SVM_IOIO_STR_MASK)) {
->          return;
-> 
-> 
-> (sorry about any word breaking)
+Hi Daniel,
 
-Thanks! With the above fix, now I re-test on each patch, and all patches
-could boot Guest properly! If there is a v2, I can continue to test it.
+Daniel P. Berrang=C3=A9, Apr 18, 2024 at 18:42:
+
+> > +    if (kvm_is_rapl_feat_enable(cs)) {
+> > +        if (!IS_INTEL_CPU(env)) {
+> > +            error_setg(errp, "RAPL feature can only be\
+> > +                              enabled with Intel CPU models");
+> > +                return false;
+> > +        }
+> > +    }
+>
+> I see a crash in kvm_is_rapl_feat_enable() from this caller,
+> when I run with this kind of command line:
+>
+>  $ qemu-system-x86_64 \
+>       -kernel /lib/modules/6.6.9-100.fc38.x86_64/vmlinuz \
+>       -initrd tiny-initrd.img  -m 2000 -serial stdio -nodefaults \
+>       -display none -accel kvm -append "console=3DttyS0 quiet"
+>
+>
+> #0  0x0000555555bc14b7 in kvm_is_rapl_feat_enable (cs=3Dcs@entry=3D0x5555=
+57b83470) at ../target/i386/kvm/kvm.c:2531
+> #1  0x0000555555bc7534 in kvm_cpu_realizefn (cs=3D0x555557b83470, errp=3D=
+0x7fffffffd2a0) at ../target/i386/kvm/kvm-cpu.c:54
+> #2  0x0000555555d2432a in accel_cpu_common_realize (cpu=3D0x555557b83470,=
+ errp=3D0x7fffffffd2a0) at ../accel/accel-target.c:130
+> #3  0x0000555555cdd955 in cpu_exec_realizefn (cpu=3Dcpu@entry=3D0x555557b=
+83470, errp=3Derrp@entry=3D0x7fffffffd2a0) at ../cpu-target.c:137
+> #4  0x0000555555c14b89 in x86_cpu_realizefn (dev=3D0x555557b83470, errp=
+=3D0x7fffffffd310) at ../target/i386/cpu.c:7320
+> #5  0x0000555555d58f4b in device_set_realized (obj=3D<optimized out>, val=
+ue=3D<optimized out>, errp=3D0x7fffffffd390) at ../hw/core/qdev.c:510
+> #6  0x0000555555d5d78d in property_set_bool (obj=3D0x555557b83470, v=3D<o=
+ptimized out>, name=3D<optimized out>, opaque=3D0x5555578558e0, errp=3D0x7f=
+ffffffd390)
+>     at ../qom/object.c:2358
+> #7  0x0000555555d60b0b in object_property_set (obj=3Dobj@entry=3D0x555557=
+b83470, name=3Dname@entry=3D0x55555607c799 "realized", v=3Dv@entry=3D0x5555=
+57b8ccb0, errp=3D0x7fffffffd390,=20
+>     errp@entry=3D0x555556e210d8 <error_fatal>) at ../qom/object.c:1472
+> #8  0x0000555555d6444f in object_property_set_qobject
+>     (obj=3Dobj@entry=3D0x555557b83470, name=3Dname@entry=3D0x55555607c799=
+ "realized", value=3Dvalue@entry=3D0x555557854800, errp=3Derrp@entry=3D0x55=
+5556e210d8 <error_fatal>)
+>     at ../qom/qom-qobject.c:28
+> #9  0x0000555555d61174 in object_property_set_bool
+>     (obj=3D0x555557b83470, name=3Dname@entry=3D0x55555607c799 "realized",=
+ value=3Dvalue@entry=3Dtrue, errp=3Derrp@entry=3D0x555556e210d8 <error_fata=
+l>) at ../qom/object.c:1541
+> #10 0x0000555555d59a3c in qdev_realize (dev=3D<optimized out>, bus=3Dbus@=
+entry=3D0x0, errp=3Derrp@entry=3D0x555556e210d8 <error_fatal>) at ../hw/cor=
+e/qdev.c:292
+> #11 0x0000555555bd51e0 in x86_cpu_new (x86ms=3D<optimized out>, apic_id=
+=3D0, errp=3D0x555556e210d8 <error_fatal>) at ../hw/i386/x86.c:105
+> #12 0x0000555555bd52ce in x86_cpus_init (x86ms=3Dx86ms@entry=3D0x555557aa=
+ed30, default_cpu_version=3D<optimized out>) at ../hw/i386/x86.c:156
+> #13 0x0000555555bdc1a7 in pc_init1 (machine=3D0x555557aaed30, pci_type=3D=
+0x55555604aa61 "i440FX") at ../hw/i386/pc_piix.c:185
+> #14 0x0000555555947a11 in machine_run_board_init (machine=3D0x555557aaed3=
+0, mem_path=3D<optimized out>, errp=3D<optimized out>, errp@entry=3D0x55555=
+6e210d8 <error_fatal>)
+>     at ../hw/core/machine.c:1547
+> #15 0x0000555555b020ed in qemu_init_board () at ../system/vl.c:2613
+> #16 qmp_x_exit_preconfig (errp=3D0x555556e210d8 <error_fatal>) at ../syst=
+em/vl.c:2705
+> #17 0x0000555555b0611e in qemu_init (argc=3D<optimized out>, argv=3D<opti=
+mized out>) at ../system/vl.c:3739
+> #18 0x0000555555897ca9 in main (argc=3D<optimized out>, argv=3D<optimized=
+ out>) at ../system/main.c:47
+>
+> The problem is that 'cs->kvm_state' is NULL here
+>
+
+After some investigation it seems that kvm_state is not yet committed=20
+at this point. Shame, because GDB showed me that we have already pass=20
+the kvm_accel_instance_init() in accel/kvm/kvm-all.c that sets the=20
+value "msr_energy.enable" in kvm_state...
+
+So should I dig more to still do the sanity check in kvm_cpu_realizefn()=20
+or should I already move the RAPL feature  from -kvm to -cpu=20
+like suggested by Zhao from Intel and then access it from the CPUState ?
+
+The last one would require more work but if I can skip a new iteration=20
+because I would need to do it anyway that would save me time in this end.=
+=20
+
+Thanks
 
 Regards,
-Zhao
+Anthony
+
 
 
