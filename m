@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4D88B17C8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569918B17B5
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:06:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmYI-0008QE-2L; Wed, 24 Apr 2024 20:01:26 -0400
+	id 1rzmY7-0008Ng-US; Wed, 24 Apr 2024 20:01:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXp-0008GN-HS
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:59 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+ id 1rzmXr-0008Gc-6N
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:01 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXl-0006H2-4x
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:55 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1e5c7d087e1so3726065ad.0
+ id 1rzmXm-0006HX-0H
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:56 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1e2c725e234so12376375ad.1
  for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003251; x=1714608051; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003252; x=1714608052; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=4k0GmsyyHp6l3HUJNBVWsFzARFivg/eO6L4ms+jh8b8=;
- b=j4XeJnoD6M1UWKM7m0qL3RCEe3oci08ZtWbD4LjBc4nE8ygTkFyJv14+Ze5ZWwVdXs
- cYS+sfL4dOJlLpELCUYAbdkL1YcckahcJe0NPRQIGB6mQFQ4Q9fK2+6fl91XwiLg/X5a
- mOZUJslemo4s5zSdv18WV2prDICGvDZjtSsmumgSmxOirvcbKYem/NzYdXQNZvo4XfTB
- nKK4t/Ve0sI6lFdQxvm5DYhomwpp5ZcnkZRSjipyZhbcVRv5tCL1v3pQYsQqqnLg2iRm
- zZl+TuWigG2ovqcCtfvkROasAW3kktX3cH0MZ5IBRbFLr7Nya00snmUVOjvWWZYJx/ti
- 32ww==
+ :reply-to; bh=NElphlnk4Z3YIuGs04YkM9tIzOkRH6mwVuLwvHi0tB8=;
+ b=RO2zMKvm7Z/8DvuXID/F6UoPRvsfz36xcvFhgr5pfxahJ2v25WZxscO3M8GuOylzks
+ qKZzbKUCtlJOw+v8ekpATMTUXtCPtQkirLM86aOrBPoyPcH8Q+4IV6Iq2ffvNiehuS59
+ qruWmzfysEwsWRkhYqV60wk0OjfCy69EcIFm1vITI0/rTkZ+GfFxMllLufs/bZ3NXbXl
+ FArjM/zF3+E2/RgBc+ijso1a2ALzKEYyPW2tblwy3+5QNkVyQ0rWkrPcoaF/k3sWrVnf
+ +PmDTjIG9mXIV2a7xz90M8ivh0rI3989OKsFemOdRBQ6ovMQ50UeF00GqxMLIocuZrqJ
+ fsAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003251; x=1714608051;
+ d=1e100.net; s=20230601; t=1714003252; x=1714608052;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4k0GmsyyHp6l3HUJNBVWsFzARFivg/eO6L4ms+jh8b8=;
- b=o6DkeLB5SIfUNwps3CFfAa8Geq03yKL6imbLQdc/j16GYZufbzSZv0KzkvpyYuvAaw
- QuAO0aTQkHDAOhAqPp0WdmYYLBt05b2dPXO50m9r27mg2JF4LW072n3IAKSgqgD75R3i
- xORmfXCS5zTbc51dVTEuujXveoOuBdX5AYiy35488f/t2r2vOaLy4DZGO+VfxHQ76Y6a
- Im7/qV/5sayERRnX43SmonuWfjXL8ZVBRmT0w4fnyZlC/NN6gAIaKw9GdxdnLbZGVKlI
- OFQaBtj77BFbOWniPFhhjY7THIvwjLgehTU/ilELzW0CQtMU2J5qctA5VN6w4gMmWKKl
- Lk3g==
-X-Gm-Message-State: AOJu0YzvwkVGOT2OJYFjdOhzvGRuxAi6f0MgqcRHqFfvyu2sEpPfIB9p
- SBG3iXNtHF3k8i7Wdv5P+YxsvEkwL/zRQ9SDmttwrCoZByVFLgRHY/DD4uHL6dmia75h5u+bFRH
- m
-X-Google-Smtp-Source: AGHT+IGaHspIF23qCZG9hocVreAWRRozgkpSbFKiwjBo4KoRDU9OqsuL/Cij2GFCyJJySm/P0WLrsQ==
-X-Received: by 2002:a17:903:2b03:b0:1e0:e85b:b9ca with SMTP id
- mc3-20020a1709032b0300b001e0e85bb9camr5949473plb.21.1714003250919; 
- Wed, 24 Apr 2024 17:00:50 -0700 (PDT)
+ bh=NElphlnk4Z3YIuGs04YkM9tIzOkRH6mwVuLwvHi0tB8=;
+ b=FlCQPEfXSXdyXuiKBhrNFIITcp9rLivjtNJOqQkiIfkyhz8RrF5VdO0c1lpSjWPFpd
+ WxiRaf4iGNca0C3XprZ2zbo59N6jNoF9K0Pykcsid7H+UFcUJC8u0Xi8NA2GzOgLYqJb
+ WoDaa03k+nulnsyqzH6KeToVEkepl0URvVZ28bGM9srrPmM0ZUuqc1CLdE+2ppymBFD8
+ 9y/g2p1Bdts/DywRouZMkLGvyzYwE8NFTCGxO3WriqplpICipsdirAwJ5su8DtBaDNzn
+ jkQu/deV5VQmKZAmDxQoLXjTpr4Ztl77CL3lB/XDM+pTX7GakzGXtwZ9s6ZqBLd+LCUC
+ cKRg==
+X-Gm-Message-State: AOJu0YzJlE28ahSB/IkDkrHcJeX5MdOw3zn4bd6A3dmnCvAT3DiNnbY/
+ HTuFa/nqV9uNuLasuuZsBhACRXCfJjEIguRtV3VhDfV9B3wBwkC3q4Yp56xgiTyWYySRROWCAXM
+ 5
+X-Google-Smtp-Source: AGHT+IEko7EhfkncaLdHcbvGRl8mWrNm1Z9OwTEv/v9Mi+Ib4FnQnDlJF4z2ePTtGTHaNEjVF3mKww==
+X-Received: by 2002:a17:903:41c6:b0:1e8:8aa2:2ded with SMTP id
+ u6-20020a17090341c600b001e88aa22dedmr1900279ple.13.1714003251810; 
+ Wed, 24 Apr 2024 17:00:51 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.50
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.51
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:00:50 -0700 (PDT)
+ Wed, 24 Apr 2024 17:00:51 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 26/45] target/hppa: Use TCG_COND_TST* in trans_ftest
-Date: Wed, 24 Apr 2024 17:00:04 -0700
-Message-Id: <20240425000023.1002026-27-richard.henderson@linaro.org>
+Subject: [PATCH 27/45] target/hppa: Remove cond_free
+Date: Wed, 24 Apr 2024 17:00:05 -0700
+Message-Id: <20240425000023.1002026-28-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,69 +90,353 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Now that we do not need to free tcg temporaries, the only
+thing cond_free does is reset the condition to never.
+Instead, simply write a new condition over the old, which
+may be simply cond_make_f() for the never condition.
+
+The do_*_cond functions do the right thing with c or cf == 0,
+so there's no need for a special case anymore.
+
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 22 ++++++----------------
- 1 file changed, 6 insertions(+), 16 deletions(-)
+ target/hppa/translate.c | 102 +++++++++++-----------------------------
+ 1 file changed, 27 insertions(+), 75 deletions(-)
 
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 4b9092b1cf..b1311e7688 100644
+index b1311e7688..5714e2ad25 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -4309,6 +4309,8 @@ static bool trans_fcmp_d(DisasContext *ctx, arg_fclass2 *a)
+@@ -372,21 +372,6 @@ static DisasCond cond_make_vv(TCGCond c, TCGv_i64 a0, TCGv_i64 a1)
+     return cond_make_tt(c, t0, t1);
+ }
  
- static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
+-static void cond_free(DisasCond *cond)
+-{
+-    switch (cond->c) {
+-    default:
+-        cond->a0 = NULL;
+-        cond->a1 = NULL;
+-        /* fallthru */
+-    case TCG_COND_ALWAYS:
+-        cond->c = TCG_COND_NEVER;
+-        break;
+-    case TCG_COND_NEVER:
+-        break;
+-    }
+-}
+-
+ static TCGv_i64 load_gpr(DisasContext *ctx, unsigned reg)
  {
-+    TCGCond tc = TCG_COND_TSTNE;
-+    uint32_t mask;
-     TCGv_i64 t;
+     if (reg == 0) {
+@@ -536,7 +521,7 @@ static void nullify_over(DisasContext *ctx)
  
-     nullify_over(ctx);
-@@ -4317,21 +4319,18 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
-     tcg_gen_ld32u_i64(t, tcg_env, offsetof(CPUHPPAState, fr0_shadow));
+         tcg_gen_brcond_i64(ctx->null_cond.c, ctx->null_cond.a0,
+                            ctx->null_cond.a1, ctx->null_lab);
+-        cond_free(&ctx->null_cond);
++        ctx->null_cond = cond_make_f();
+     }
+ }
  
-     if (a->y == 1) {
--        int mask;
--        bool inv = false;
--
-         switch (a->c) {
-         case 0: /* simple */
-             mask = R_FPSR_C_MASK;
-             break;
-         case 2: /* rej */
--            inv = true;
-+            tc = TCG_COND_TSTEQ;
-             /* fallthru */
-         case 1: /* acc */
-             mask = R_FPSR_C_MASK | R_FPSR_CQ_MASK;
-             break;
-         case 6: /* rej8 */
--            inv = true;
-+            tc = TCG_COND_TSTEQ;
-             /* fallthru */
-         case 5: /* acc8 */
-             mask = R_FPSR_C_MASK | R_FPSR_CQ0_6_MASK;
-@@ -4349,21 +4348,12 @@ static bool trans_ftest(DisasContext *ctx, arg_ftest *a)
-             gen_illegal(ctx);
-             return true;
-         }
--        if (inv) {
--            TCGv_i64 c = tcg_constant_i64(mask);
--            tcg_gen_or_i64(t, t, c);
--            ctx->null_cond = cond_make_tt(TCG_COND_EQ, t, c);
--        } else {
--            tcg_gen_andi_i64(t, t, mask);
--            ctx->null_cond = cond_make_ti(TCG_COND_EQ, t, 0);
--        }
-     } else {
-         unsigned cbit = (a->y ^ 1) - 1;
--
--        tcg_gen_extract_i64(t, t, R_FPSR_CA0_SHIFT - cbit, 1);
--        ctx->null_cond = cond_make_ti(TCG_COND_NE, t, 0);
-+        mask = R_FPSR_CA0_MASK >> cbit;
+@@ -554,7 +539,7 @@ static void nullify_save(DisasContext *ctx)
+                             ctx->null_cond.a0, ctx->null_cond.a1);
+         ctx->psw_n_nonzero = true;
+     }
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+ }
+ 
+ /* Set a PSW[N] to X.  The intention is that this is used immediately
+@@ -1164,7 +1149,6 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 orig_in1,
+     save_gpr(ctx, rt, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+     ctx->null_cond = cond;
+ }
+ 
+@@ -1261,7 +1245,6 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     save_gpr(ctx, rt, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+     ctx->null_cond = cond;
+ }
+ 
+@@ -1316,7 +1299,6 @@ static void do_cmpclr(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     save_gpr(ctx, rt, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+     ctx->null_cond = cond;
+ }
+ 
+@@ -1331,10 +1313,7 @@ static void do_log(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     save_gpr(ctx, rt, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (cf) {
+-        ctx->null_cond = do_log_cond(ctx, cf, d, dest);
+-    }
++    ctx->null_cond = do_log_cond(ctx, cf, d, dest);
+ }
+ 
+ static bool do_log_reg(DisasContext *ctx, arg_rrr_cf_d *a,
+@@ -1429,7 +1408,6 @@ static void do_unit_addsub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     }
+     save_gpr(ctx, rt, dest);
+ 
+-    cond_free(&ctx->null_cond);
+     ctx->null_cond = cond;
+ }
+ 
+@@ -1852,7 +1830,6 @@ static bool do_cbranch(DisasContext *ctx, int64_t disp, bool is_n,
+ 
+     taken = gen_new_label();
+     tcg_gen_brcond_i64(c, cond->a0, cond->a1, taken);
+-    cond_free(cond);
+ 
+     /* Not taken: Condition not satisfied; nullify on backward branches. */
+     n = is_n && disp < 0;
+@@ -2034,7 +2011,7 @@ static void do_page_zero(DisasContext *ctx)
+ 
+ static bool trans_nop(DisasContext *ctx, arg_nop *a)
+ {
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2048,7 +2025,7 @@ static bool trans_sync(DisasContext *ctx, arg_sync *a)
+     /* No point in nullifying the memory barrier.  */
+     tcg_gen_mb(TCG_BAR_SC | TCG_MO_ALL);
+ 
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2060,7 +2037,7 @@ static bool trans_mfia(DisasContext *ctx, arg_mfia *a)
+     tcg_gen_andi_i64(dest, dest, -4);
+ 
+     save_gpr(ctx, a->t, dest);
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2075,7 +2052,7 @@ static bool trans_mfsp(DisasContext *ctx, arg_mfsp *a)
+ 
+     save_gpr(ctx, rt, t0);
+ 
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2120,7 +2097,7 @@ static bool trans_mfctl(DisasContext *ctx, arg_mfctl *a)
+     save_gpr(ctx, rt, tmp);
+ 
+  done:
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2160,7 +2137,7 @@ static bool trans_mtctl(DisasContext *ctx, arg_mtctl *a)
+         tcg_gen_andi_i64(tmp, reg, ctx->is_pa20 ? 63 : 31);
+         save_or_nullify(ctx, cpu_sar, tmp);
+ 
+-        cond_free(&ctx->null_cond);
++        ctx->null_cond = cond_make_f();
+         return true;
      }
  
-+    ctx->null_cond = cond_make_ti(tc, t, mask);
+@@ -2234,7 +2211,7 @@ static bool trans_mtsarcm(DisasContext *ctx, arg_mtsarcm *a)
+     tcg_gen_andi_i64(tmp, tmp, ctx->is_pa20 ? 63 : 31);
+     save_or_nullify(ctx, cpu_sar, tmp);
+ 
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2251,7 +2228,7 @@ static bool trans_ldsid(DisasContext *ctx, arg_ldsid *a)
+ #endif
+     save_gpr(ctx, a->t, dest);
+ 
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2413,7 +2390,7 @@ static bool trans_nop_addrx(DisasContext *ctx, arg_ldst *a)
+         tcg_gen_add_i64(dest, src1, src2);
+         save_gpr(ctx, a->b, dest);
+     }
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2655,7 +2632,7 @@ static bool trans_lci(DisasContext *ctx, arg_lci *a)
+        since the entire address space is coherent.  */
+     save_gpr(ctx, a->t, ctx->zero);
+ 
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -2732,7 +2709,7 @@ static bool trans_or(DisasContext *ctx, arg_rrr_cf_d *a)
+         unsigned rt = a->t;
+ 
+         if (rt == 0) { /* NOP */
+-            cond_free(&ctx->null_cond);
++            ctx->null_cond = cond_make_f();
+             return true;
+         }
+         if (r2 == 0) { /* COPY */
+@@ -2743,7 +2720,7 @@ static bool trans_or(DisasContext *ctx, arg_rrr_cf_d *a)
+             } else {
+                 save_gpr(ctx, rt, cpu_gr[r1]);
+             }
+-            cond_free(&ctx->null_cond);
++            ctx->null_cond = cond_make_f();
+             return true;
+         }
+ #ifndef CONFIG_USER_ONLY
+@@ -2808,11 +2785,7 @@ static bool trans_uxor(DisasContext *ctx, arg_rrr_cf_d *a)
+     tcg_gen_xor_i64(dest, tcg_r1, tcg_r2);
+     save_gpr(ctx, a->t, dest);
+ 
+-    cond_free(&ctx->null_cond);
+-    if (a->cf) {
+-        ctx->null_cond = do_unit_zero_cond(a->cf, a->d, dest);
+-    }
+-
++    ctx->null_cond = do_unit_zero_cond(a->cf, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -2838,7 +2811,7 @@ static bool do_uaddcm(DisasContext *ctx, arg_rrr_cf_d *a, bool is_tc)
+             tcg_gen_subi_i64(tmp, tmp, 1);
+         }
+         save_gpr(ctx, a->t, tmp);
+-        cond_free(&ctx->null_cond);
++        ctx->null_cond = cond_make_f();
+         return true;
+     }
+ 
+@@ -3364,7 +3337,7 @@ static bool trans_ldil(DisasContext *ctx, arg_ldil *a)
+ 
+     tcg_gen_movi_i64(tcg_rt, a->i);
+     save_gpr(ctx, a->t, tcg_rt);
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -3375,7 +3348,7 @@ static bool trans_addil(DisasContext *ctx, arg_addil *a)
+ 
+     tcg_gen_addi_i64(tcg_r1, tcg_rt, a->i);
+     save_gpr(ctx, 1, tcg_r1);
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -3391,7 +3364,7 @@ static bool trans_ldo(DisasContext *ctx, arg_ldo *a)
+         tcg_gen_addi_i64(tcg_rt, cpu_gr[a->b], a->i);
+     }
+     save_gpr(ctx, a->t, tcg_rt);
+-    cond_free(&ctx->null_cond);
++    ctx->null_cond = cond_make_f();
+     return true;
+ }
+ 
+@@ -3617,10 +3590,7 @@ static bool trans_shrp_sar(DisasContext *ctx, arg_shrp_sar *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3660,10 +3630,7 @@ static bool trans_shrp_imm(DisasContext *ctx, arg_shrp_imm *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3705,10 +3672,7 @@ static bool trans_extr_sar(DisasContext *ctx, arg_extr_sar *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3741,10 +3705,7 @@ static bool trans_extr_imm(DisasContext *ctx, arg_extr_imm *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3781,10 +3742,7 @@ static bool trans_depi_imm(DisasContext *ctx, arg_depi_imm *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3817,10 +3775,7 @@ static bool trans_dep_imm(DisasContext *ctx, arg_dep_imm *a)
+     save_gpr(ctx, a->t, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (a->c) {
+-        ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, a->c, a->d, dest);
+     return nullify_end(ctx);
+ }
+ 
+@@ -3854,10 +3809,7 @@ static bool do_dep_sar(DisasContext *ctx, unsigned rt, unsigned c,
+     save_gpr(ctx, rt, dest);
+ 
+     /* Install the new nullification.  */
+-    cond_free(&ctx->null_cond);
+-    if (c) {
+-        ctx->null_cond = do_sed_cond(ctx, c, d, dest);
+-    }
++    ctx->null_cond = do_sed_cond(ctx, c, d, dest);
      return nullify_end(ctx);
  }
  
