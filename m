@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64F1A8B17D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:11:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66728B17C1
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmY6-0008N4-MK; Wed, 24 Apr 2024 20:01:14 -0400
+	id 1rzmY5-0008Lo-Im; Wed, 24 Apr 2024 20:01:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXr-0008Gd-5p
+ id 1rzmXr-0008Gl-81
  for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:01 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXm-0006Hf-Dl
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:56 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1e411e339b8so3317675ad.3
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:53 -0700 (PDT)
+ id 1rzmXm-0006Ho-SQ
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:00:57 -0400
+Received: by mail-pl1-x629.google.com with SMTP id
+ d9443c01a7336-1e50a04c317so2386935ad.1
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003252; x=1714608052; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003253; x=1714608053; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=DDHWgjyo2VgO58BUrIJ7Ba+V+lHv8+24gGeXKyuyNL0=;
- b=YCit2llKLxzQiFLcSNb7ru0TGYXwfrEFFBO5Bq7BXgDo5SeH4o5siqPHZZgI1WK9A8
- 98v/A6lgK2c5SYWWg5VwLHWmBswnv0lB0A1/RqBoC8zUFmQjWV3AxxUWwq8gguv3fmWw
- j7BmHkH2D9rvyCwPIklyeLDpUYLR6eQsLw+JDfQ7gBewiUjA7cmviWLckDmGPr1z+FNo
- G7mVLGUgtNhdiKsU3IrRMLaFtRLpFmJgtIlYc+/dWYZL/JdcCjapB0MNhjeDc+CZAu37
- pSqagb9k3FcNfg5RtvZ/Fha3YvCHRkn6zuPHwV5ZGdES0SIs2VnKeXHWL6Yk9jWHAddw
- 01/Q==
+ :reply-to; bh=5wlGs/id23E87HIx9ekP/PHGIDt2Ux5/Yk7Een8ixEg=;
+ b=PvyYCeUcAgz47cqA4rXWN0N8o9Z4hwhGEFvBYTKMfiId1BsmS+g9X1+/NtFYc0AE4W
+ zRWexKvUkoyQaw/1PqLpEu5hSsc1m+3X+I6tyBN21Wl5Ud9bd/74XkJeX6HzNFtkb2jg
+ FAzYXYaggcJdl0tv8+DyXbcbo5Klf70MuDqvbwEwQ5xUaXjiRTJaVguh2zEBJutngNGU
+ SSKqgPuaGTlkKcozA+kXfWh7PfhL06kd5Miyzgxyydjew1zZggbBd3J/AtW9B2Ai3NEZ
+ z7CU0MmHBiKibZwqNRqkvSQ9Bg5qRN4pz2YfjDiHfO4u9BSfj8i09dbfUiGEKpDy4wbW
+ L4Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003252; x=1714608052;
+ d=1e100.net; s=20230601; t=1714003253; x=1714608053;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DDHWgjyo2VgO58BUrIJ7Ba+V+lHv8+24gGeXKyuyNL0=;
- b=vKHQvgSJsDDZpFXsgsF/Wtl1lL5/+IERMYc5q2ifFdtPbbnN5CAzSp4Y0G2aDSGD/p
- 7zLc2rlvLNiBhTDtsfVxV+EW5UZyN4EKc5T/PBoSfQYCS/vehTergE3aeC4QEX+pUZ+O
- SFRhxItLwhYv7RlEYACeN8Q7xwqtr2SJM8KWds4xLrT+OoG/0xJUXXS4vdLE8yoBfVow
- H2QFimVrib6ph8YnxItF6cUy8gIOCycSgYw/x5bZ9NQBhnrFTxdhVl+91DusmEmxg3qy
- 23+ekA61s+E1SrzxzxiNoZm/SjBPTzbrB//ps6zc2nrbkVFOE4EUi2c7tyP0TsQRADY/
- JwVg==
-X-Gm-Message-State: AOJu0Ywpiymn5syU6zWpDuSpbYmuWKb5MuDkxTRFiUDuHbxKIwm/RawN
- 9SYpICoz/yvZ5hZaREmH+rUPUXialUWEhXJul92heXeocOB3qcTY2BNTaHBkXXdo6haHGNbcvld
- a
-X-Google-Smtp-Source: AGHT+IGitze3xNLPwVxQA/BDdERfZn5c+CcyqtnbPUAUjX4t582QHkehCjb5DY1pfBHvYR1N5Nu7bg==
-X-Received: by 2002:a17:902:d2c2:b0:1e2:bdfa:9c15 with SMTP id
- n2-20020a170902d2c200b001e2bdfa9c15mr5383672plc.41.1714003252613; 
- Wed, 24 Apr 2024 17:00:52 -0700 (PDT)
+ bh=5wlGs/id23E87HIx9ekP/PHGIDt2Ux5/Yk7Een8ixEg=;
+ b=V9aX89vFc+ww344FQI4FhTHdnHL3byrQ73iO17QRYdDh+j6dmQHrZ++Q4suz0Gdk/G
+ NvlsfvF2La3eRW0RFrRx8TA2cl3KjCmet8GzP/Ju5CJ85VetldfYUmBDtwS+Qnvhe3hu
+ QejOzavbbMXV72NtIEo4cWDD3D4iEsD9qlq2yW5sOSD6QqTgCAEEkNQfb0hczkmE679r
+ 2TLJAqUuPKHcVJLLkBO86QuPW2OFESHlDCEdfD/8WzgA0kvCGx0TUc6van/+hMFLXVOt
+ K4ECG5hk7QS638vAYuYZuJsf8sDcPvu+OS/9/r4wbKRZMuGHYEQ42FGVNSJzoNCf/TNn
+ 8acA==
+X-Gm-Message-State: AOJu0YxQCLrTEa3msDiyxpMmw0dEEv8G10ikXmTIxhRas5Pf81OAQO/8
+ /0AZOdec2NiQozXmglGLV6Je5lkTeByzdT6XAVM2d+QCaBVkxuj+HbUQCA2aojnYfRckcCShfIA
+ S
+X-Google-Smtp-Source: AGHT+IGipyRnGp7mvnjp68EKYK/ZVgWBDxICB1Ym8NlxAB3hrSNL8HkcAqx8VXxOXSJ8ocYSSBmztg==
+X-Received: by 2002:a17:902:ec8a:b0:1e3:e6cb:a33c with SMTP id
+ x10-20020a170902ec8a00b001e3e6cba33cmr4958074plg.65.1714003253530; 
+ Wed, 24 Apr 2024 17:00:53 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.51
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:00:52 -0700 (PDT)
+ Wed, 24 Apr 2024 17:00:53 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 28/45] target/hppa: Introduce DisasDelayException
-Date: Wed, 24 Apr 2024 17:00:06 -0700
-Message-Id: <20240425000023.1002026-29-richard.henderson@linaro.org>
+Subject: [PATCH 29/45] target/hppa: Use delay_excp for conditional traps
+Date: Wed, 24 Apr 2024 17:00:07 -0700
+Message-Id: <20240425000023.1002026-30-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,109 +90,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Allow an exception to be emitted at the end of the TranslationBlock,
-leaving only the conditional branch inline.  Use it for simple
-exception instructions like break, which happen to be nullified.
-
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 60 +++++++++++++++++++++++++++++++++++++----
- 1 file changed, 55 insertions(+), 5 deletions(-)
+ target/hppa/helper.h     |  1 -
+ target/hppa/int_helper.c |  2 +-
+ target/hppa/op_helper.c  |  7 -------
+ target/hppa/translate.c  | 41 ++++++++++++++++++++++++++++++----------
+ 4 files changed, 32 insertions(+), 19 deletions(-)
 
+diff --git a/target/hppa/helper.h b/target/hppa/helper.h
+index 5900fd70bc..3d0d143aed 100644
+--- a/target/hppa/helper.h
++++ b/target/hppa/helper.h
+@@ -1,6 +1,5 @@
+ DEF_HELPER_2(excp, noreturn, env, int)
+ DEF_HELPER_FLAGS_2(tsv, TCG_CALL_NO_WG, void, env, tl)
+-DEF_HELPER_FLAGS_2(tcond, TCG_CALL_NO_WG, void, env, tl)
+ 
+ DEF_HELPER_FLAGS_3(stby_b, TCG_CALL_NO_WG, void, env, tl, tl)
+ DEF_HELPER_FLAGS_3(stby_b_parallel, TCG_CALL_NO_WG, void, env, tl, tl)
+diff --git a/target/hppa/int_helper.c b/target/hppa/int_helper.c
+index a667ee380d..1aa3e88ef1 100644
+--- a/target/hppa/int_helper.c
++++ b/target/hppa/int_helper.c
+@@ -134,13 +134,13 @@ void hppa_cpu_do_interrupt(CPUState *cs)
+         switch (i) {
+         case EXCP_ILL:
+         case EXCP_BREAK:
++        case EXCP_COND:
+         case EXCP_PRIV_REG:
+         case EXCP_PRIV_OPR:
+             /* IIR set via translate.c.  */
+             break;
+ 
+         case EXCP_OVERFLOW:
+-        case EXCP_COND:
+         case EXCP_ASSIST:
+         case EXCP_DTLB_MISS:
+         case EXCP_NA_ITLB_MISS:
+diff --git a/target/hppa/op_helper.c b/target/hppa/op_helper.c
+index 6cf49f33b7..a8b69fd481 100644
+--- a/target/hppa/op_helper.c
++++ b/target/hppa/op_helper.c
+@@ -49,13 +49,6 @@ void HELPER(tsv)(CPUHPPAState *env, target_ulong cond)
+     }
+ }
+ 
+-void HELPER(tcond)(CPUHPPAState *env, target_ulong cond)
+-{
+-    if (unlikely(cond)) {
+-        hppa_dynamic_excp(env, EXCP_COND, GETPC());
+-    }
+-}
+-
+ static void atomic_store_mask32(CPUHPPAState *env, target_ulong addr,
+                                 uint32_t val, uint32_t mask, uintptr_t ra)
+ {
 diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index 5714e2ad25..7a92901e18 100644
+index 7a92901e18..080a52e5e4 100644
 --- a/target/hppa/translate.c
 +++ b/target/hppa/translate.c
-@@ -50,6 +50,17 @@ typedef struct DisasIAQE {
-     int64_t disp;
- } DisasIAQE;
- 
-+typedef struct DisasDelayException {
-+    struct DisasDelayException *next;
-+    TCGLabel *lab;
-+    uint32_t insn;
-+    bool set_iir;
-+    int8_t set_n;
-+    uint8_t excp;
-+    /* Saved state at parent insn. */
-+    DisasIAQE iaq_f, iaq_b;
-+} DisasDelayException;
-+
- typedef struct DisasContext {
-     DisasContextBase base;
-     CPUState *cs;
-@@ -65,6 +76,7 @@ typedef struct DisasContext {
-     DisasCond null_cond;
-     TCGLabel *null_lab;
- 
-+    DisasDelayException *delay_excp_list;
-     TCGv_i64 zero;
- 
-     uint32_t insn;
-@@ -682,13 +694,38 @@ static void gen_excp(DisasContext *ctx, int exception)
-     ctx->base.is_jmp = DISAS_NORETURN;
+@@ -1115,6 +1115,25 @@ static TCGv_i64 do_sub_sv(DisasContext *ctx, TCGv_i64 res,
+     return sv;
  }
  
-+static DisasDelayException *delay_excp(DisasContext *ctx, uint8_t excp)
++static void gen_tc(DisasContext *ctx, DisasCond *cond)
 +{
-+    DisasDelayException *e = tcg_malloc(sizeof(DisasDelayException));
++    DisasDelayException *e;
 +
-+    memset(e, 0, sizeof(*e));
-+    e->next = ctx->delay_excp_list;
-+    ctx->delay_excp_list = e;
-+
-+    e->lab = gen_new_label();
-+    e->insn = ctx->insn;
-+    e->set_iir = true;
-+    e->set_n = ctx->psw_n_nonzero ? 0 : -1;
-+    e->excp = excp;
-+    e->iaq_f = ctx->iaq_f;
-+    e->iaq_b = ctx->iaq_b;
-+
-+    return e;
++    switch (cond->c) {
++    case TCG_COND_NEVER:
++        break;
++    case TCG_COND_ALWAYS:
++        gen_excp_iir(ctx, EXCP_COND);
++        break;
++    default:
++        e = delay_excp(ctx, EXCP_COND);
++        tcg_gen_brcond_i64(cond->c, cond->a0, cond->a1, e->lab);
++        /* In the non-trap path, the condition is known false. */
++        *cond = cond_make_f();
++        break;
++    }
 +}
 +
- static bool gen_excp_iir(DisasContext *ctx, int exc)
- {
--    nullify_over(ctx);
--    tcg_gen_st_i64(tcg_constant_i64(ctx->insn),
--                   tcg_env, offsetof(CPUHPPAState, cr[CR_IIR]));
--    gen_excp(ctx, exc);
--    return nullify_end(ctx);
-+    if (ctx->null_cond.c == TCG_COND_NEVER) {
-+        tcg_gen_st_i64(tcg_constant_i64(ctx->insn),
-+                       tcg_env, offsetof(CPUHPPAState, cr[CR_IIR]));
-+        gen_excp(ctx, exc);
-+    } else {
-+        DisasDelayException *e = delay_excp(ctx, exc);
-+        tcg_gen_brcond_i64(tcg_invert_cond(ctx->null_cond.c),
-+                           ctx->null_cond.a0, ctx->null_cond.a1, e->lab);
-+        ctx->null_cond = cond_make_f();
-+    }
-+    return true;
- }
- 
- static bool gen_illegal(DisasContext *ctx)
-@@ -4695,6 +4732,19 @@ static void hppa_tr_tb_stop(DisasContextBase *dcbase, CPUState *cs)
-     default:
-         g_assert_not_reached();
+ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 orig_in1,
+                    TCGv_i64 in2, unsigned shift, bool is_l,
+                    bool is_tsv, bool is_tc, bool is_c, unsigned cf, bool d)
+@@ -1173,9 +1192,7 @@ static void do_add(DisasContext *ctx, unsigned rt, TCGv_i64 orig_in1,
+     /* Emit any conditional trap before any writeback.  */
+     cond = do_cond(ctx, cf, d, dest, uv, sv);
+     if (is_tc) {
+-        tmp = tcg_temp_new_i64();
+-        tcg_gen_setcond_i64(cond.c, tmp, cond.a0, cond.a1);
+-        gen_helper_tcond(tcg_env, tmp);
++        gen_tc(ctx, &cond);
      }
-+
-+    for (DisasDelayException *e = ctx->delay_excp_list; e ; e = e->next) {
-+        gen_set_label(e->lab);
-+        if (e->set_n >= 0) {
-+            tcg_gen_movi_i64(cpu_psw_n, e->set_n);
-+        }
-+        if (e->set_iir) {
-+            tcg_gen_st_i64(tcg_constant_i64(e->insn), tcg_env,
-+                           offsetof(CPUHPPAState, cr[CR_IIR]));
-+        }
-+        install_iaq_entries(ctx, &e->iaq_f, &e->iaq_b);
-+        gen_excp_1(e->excp);
-+    }
- }
  
- static void hppa_tr_disas_log(const DisasContextBase *dcbase,
+     /* Write back the result.  */
+@@ -1194,6 +1211,10 @@ static bool do_add_reg(DisasContext *ctx, arg_rrr_cf_d_sh *a,
+ {
+     TCGv_i64 tcg_r1, tcg_r2;
+ 
++    if (unlikely(is_tc && a->cf == 1)) {
++        /* Unconditional trap on condition. */
++        return gen_excp_iir(ctx, EXCP_COND);
++    }
+     if (a->cf) {
+         nullify_over(ctx);
+     }
+@@ -1209,6 +1230,10 @@ static bool do_add_imm(DisasContext *ctx, arg_rri_cf *a,
+ {
+     TCGv_i64 tcg_im, tcg_r2;
+ 
++    if (unlikely(is_tc && a->cf == 1)) {
++        /* Unconditional trap on condition. */
++        return gen_excp_iir(ctx, EXCP_COND);
++    }
+     if (a->cf) {
+         nullify_over(ctx);
+     }
+@@ -1223,7 +1248,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+                    TCGv_i64 in2, bool is_tsv, bool is_b,
+                    bool is_tc, unsigned cf, bool d)
+ {
+-    TCGv_i64 dest, sv, cb, cb_msb, tmp;
++    TCGv_i64 dest, sv, cb, cb_msb;
+     unsigned c = cf >> 1;
+     DisasCond cond;
+ 
+@@ -1271,9 +1296,7 @@ static void do_sub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+ 
+     /* Emit any conditional trap before any writeback.  */
+     if (is_tc) {
+-        tmp = tcg_temp_new_i64();
+-        tcg_gen_setcond_i64(cond.c, tmp, cond.a0, cond.a1);
+-        gen_helper_tcond(tcg_env, tmp);
++        gen_tc(ctx, &cond);
+     }
+ 
+     /* Write back the result.  */
+@@ -1439,9 +1462,7 @@ static void do_unit_addsub(DisasContext *ctx, unsigned rt, TCGv_i64 in1,
+     }
+ 
+     if (is_tc) {
+-        TCGv_i64 tmp = tcg_temp_new_i64();
+-        tcg_gen_setcond_i64(cond.c, tmp, cond.a0, cond.a1);
+-        gen_helper_tcond(tcg_env, tmp);
++        gen_tc(ctx, &cond);
+     }
+     save_gpr(ctx, rt, dest);
+ 
 -- 
 2.34.1
 
