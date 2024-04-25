@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFC68B1F66
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2308B1F85
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:46:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWc-0002CL-Qs; Thu, 25 Apr 2024 06:40:22 -0400
+	id 1rzwWb-000277-IV; Thu, 25 Apr 2024 06:40:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWX-00022s-2v
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:17 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ id 1rzwWW-00022m-KF
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:16 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWU-0007Dn-UX
+ id 1rzwWU-0007Dh-QI
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:16 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-418e4cd2196so6706175e9.1
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-41b6254a47cso1268565e9.3
  for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041612; x=1714646412; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041613; x=1714646413; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=PQpS8WwkI3zNhylYTqxyPFLwAk0dCYZh37pbQidxx4Q=;
- b=VD1kTuu7OVmNkNEt8g7AQlQH2zH9mYpQGBqlmWS97OVPmMyBEN08pTGxnG+2zZAAEk
- ZExSbOy/hCf4YSswDhr7H96HaOGBnF2oQGVu9cPAfcvRnGOKknPYUBnq8kCpri0yYuIG
- 0Vot1yA4lL2eYCB/f8sQ8TuX4GVU9mwcaaw6aaPODDq70BGz1VbQBoghH5RF05nqs4D7
- w4Qyb40MA8i6akGTdGFZkHnE9l6rdgio0TGVOxlUtL72nFOsq2lMNAYF0Ba2bvjz4clJ
- EkzMyzTRZIwzf4Nnx6zrpGG+Ltiit1RpPYiX0GPwFHNVHcSV0oy0ugid7KG6qBcwoyQs
- X3HA==
+ :reply-to; bh=DC9SqOM/M/fO+YfMesu8LY8qeYkZJ02Q4hHEAc7RbS4=;
+ b=Qi4WUPJJiHHmhe51nvauQDjTLKTJaOJU6OwMzEgqwR2cr6VwmkL4B7UsUzij8Hd3V+
+ wHfPjpu6Eilh0ijoImC8DG5OzkHFAdRJvAiGZ7xqX7kF/Czqu4g72dwGdW5XXmiGx+Ss
+ NFN7mGQzBh5DcuCw08Z9TSJCykQSl74ZDFwxblWjf1R4maCeKxupEtWtjgol/D4dMVWH
+ h0mj/Ohyc1lPz/bK0TFL26iE82PdL/2EMRH0FquNM2uL7e2lEGk+W4n9FvHQHgbnLYU7
+ ZS2CSfCF7/kjiGhaFisrnYNDtltgc/f3MlDXvcELcAJJff1mycV34oyp84rr+OV1xytM
+ xQYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041612; x=1714646412;
+ d=1e100.net; s=20230601; t=1714041613; x=1714646413;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PQpS8WwkI3zNhylYTqxyPFLwAk0dCYZh37pbQidxx4Q=;
- b=JX7EW7UcczsAaZsfg7Fv47k3izz4EMAZ7ja6GZ6+092oiaZ5ulwVgySqz5VZcoQQqS
- wANkwil/Nx6YZ2HiI7by1/EPbV6+rhG04XL9iceCBUAW4HDBiQSkQOf4pOijbNs/rGiE
- t7Yvvj9TvLauGKEB3D3nOsiJgYMyGPDIZYXyKqNSeJTT8bNPGrYKBVulRiX8J8TRIben
- a9HQdB7BO3V9XC9xaq+nD3/WAfAN8U5wwZLJXrDHsX6pyxVmXxitaPflENVZZoOr9MNM
- 0JD/MBqjCljvIdpKAbeUnDKF3N92XE00tDT2EbF5ozjpV46zBzAwQUrC/lSs2u5Wb9xQ
- FnBw==
-X-Gm-Message-State: AOJu0Yx84i42R57AXoc2/nJmt481g2LiJbTSTiTtXXc0kfHeXSi4J7y5
- aMVxPvO+TKRCJpOxHAfkQ+xyv1cZcuK/a2HiHBIjOI2FH8zLqq6lHWAKtaukOBtfQb/OB+e9Rv6
- W
-X-Google-Smtp-Source: AGHT+IGgkQMxhnQkQ/6ydHVOfuoavQgQUGmIQaZgiYIIcFTtS3VCp2QlpC1xgNg+f4Xj8E31eYu9gA==
-X-Received: by 2002:a05:600c:1c83:b0:41a:e995:b915 with SMTP id
- k3-20020a05600c1c8300b0041ae995b915mr4174322wms.1.1714041612495; 
- Thu, 25 Apr 2024 03:40:12 -0700 (PDT)
+ bh=DC9SqOM/M/fO+YfMesu8LY8qeYkZJ02Q4hHEAc7RbS4=;
+ b=a3YTWjCzNXhcIuTyiTBx+rQrv0BKoMB7u/o24uM21mYPXG/HHQFJVTYHUwsnUqC/+a
+ Rbh1KN9GiHLYDenm46RU+bCGTU2nt8R2fMPYqz1m01mRf9lxHi+ceXi94LFBhRLt9435
+ 4F86s6eSjw5Eewt/rm9vLVesv/pVhs+LDYPx/1u3kKmPUKrkmjaIjPCmHn2e/HXOlUeK
+ //Ij9R2Thw6BCS8BtffnPBeRlCBJiziRR7O4pubmSyRzMzr9TekLkAWtaXS+2o5TlaBQ
+ Wj3DaC8Tz4NW1NCp43BTWKZC+hIqnAxd04T+H6infIho01XcApRsedlXDlgINr3yiwvA
+ Kg1g==
+X-Gm-Message-State: AOJu0Yx1Jdm/thJS2/eGB9QH+6Cx1QIQ6jP/IafbhEX34cdC9v1GWbGI
+ WWmHP4H/Mt3y/ZV8SkXZQbQQzjyl7TQ8NDWtmEu4wc63HUnWzFJ18gR7mV4vLvNa+Kjn1jCdzD0
+ s
+X-Google-Smtp-Source: AGHT+IEUVCA6B5iR4LoelrOcCZ5jaF36bsfDYTwDO3EZfOtDJfYwLX+od6GF1oUhChTuPd2/A6ng+w==
+X-Received: by 2002:a05:6000:d87:b0:348:c2c7:9f13 with SMTP id
+ dv7-20020a0560000d8700b00348c2c79f13mr4099675wrb.65.1714041613014; 
+ Thu, 25 Apr 2024 03:40:13 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.12
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Apr 2024 03:40:12 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 24/37] hw/arm/virt: Enable NMI support in the GIC if the CPU
- has FEAT_NMI
-Date: Thu, 25 Apr 2024 11:39:45 +0100
-Message-Id: <20240425103958.3237225-25-peter.maydell@linaro.org>
+Subject: [PULL 25/37] hw/dma: avoid apparent overflow in soc_dma_set_request
+Date: Thu, 25 Apr 2024 11:39:46 +0100
+Message-Id: <20240425103958.3237225-26-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,70 +91,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-If the CPU implements FEAT_NMI, then turn on the NMI support in the
-GICv3 too.  It's permitted to have a configuration with FEAT_NMI in
-the CPU (and thus NMI support in the CPU interfaces too) but no NMI
-support in the distributor and redistributor, but this isn't a very
-useful setup as it's close to having no NMI support at all.
+In soc_dma_set_request() we try to set a bit in a uint64_t, but we
+do it with "1 << ch->num", which can't set any bits past 31;
+any use for a channel number of 32 or more would fail due to
+integer overflow.
 
-We don't need to gate the enabling of NMI in the GIC behind a
-machine version property, because none of our current CPUs
-implement FEAT_NMI, and '-cpu max' is not something we maintain
-migration compatibility across versions for. So we can always
-enable the GIC NMI support when the CPU has it.
+This doesn't happen in practice for our current use of this code,
+because the worst case is when we call soc_dma_init() with an
+argument of 32 for the number of channels, and QEMU builds with
+-fwrapv so the shift into the sign bit is well-defined. However,
+it's obviously not the intended behaviour of the code.
 
-Neither hvf nor KVM support NMI in the GIC yet, so we don't enable
-it unless we're using TCG.
+Add casts to force the shift to be done as 64-bit arithmetic,
+allowing up to 64 channels.
 
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20240407081733.3231820-25-ruanjinjie@huawei.com
-[PMM: Update comment and commit message]
-Suggested-by: Peter Maydell <peter.maydell@linaro.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: afbb5194d4 ("Handle on-chip DMA controllers in one place, convert OMAP DMA to use it.")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Message-id: 20240409115301.21829-1-abelova@astralinux.ru
+[PMM: Edit commit message to clarify that this doesn't actually
+ bite us in our current usage of this code.]
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- hw/arm/virt.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ hw/dma/soc_dma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index c4b03b09c27..3c93c0c0a61 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -729,6 +729,20 @@ static void create_v2m(VirtMachineState *vms)
-     vms->msi_controller = VIRT_MSI_CTRL_GICV2M;
- }
+diff --git a/hw/dma/soc_dma.c b/hw/dma/soc_dma.c
+index 3a430057f54..d5c52b804f8 100644
+--- a/hw/dma/soc_dma.c
++++ b/hw/dma/soc_dma.c
+@@ -209,9 +209,9 @@ void soc_dma_set_request(struct soc_dma_ch_s *ch, int level)
+     dma->enabled_count += level - ch->enable;
  
-+/*
-+ * If the CPU has FEAT_NMI, then turn on the NMI support in the GICv3 too.
-+ * It's permitted to have a configuration with NMI in the CPU (and thus the
-+ * GICv3 CPU interface) but not in the distributor/redistributors, but it's
-+ * not very useful.
-+ */
-+static bool gicv3_nmi_present(VirtMachineState *vms)
-+{
-+    ARMCPU *cpu = ARM_CPU(qemu_get_cpu(0));
-+
-+    return tcg_enabled() && cpu_isar_feature(aa64_nmi, cpu) &&
-+           (vms->gic_version != VIRT_GIC_VERSION_2);
-+}
-+
- static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
- {
-     MachineState *ms = MACHINE(vms);
-@@ -802,6 +816,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
-                               vms->virt);
-         }
-     }
-+
-+    if (gicv3_nmi_present(vms)) {
-+        qdev_prop_set_bit(vms->gic, "has-nmi", true);
-+    }
-+
-     gicbusdev = SYS_BUS_DEVICE(vms->gic);
-     sysbus_realize_and_unref(gicbusdev, &error_fatal);
-     sysbus_mmio_map(gicbusdev, 0, vms->memmap[VIRT_GIC_DIST].base);
+     if (level)
+-        dma->ch_enable_mask |= 1 << ch->num;
++        dma->ch_enable_mask |= (uint64_t)1 << ch->num;
+     else
+-        dma->ch_enable_mask &= ~(1 << ch->num);
++        dma->ch_enable_mask &= ~((uint64_t)1 << ch->num);
+ 
+     if (level != ch->enable) {
+         soc_dma_ch_freq_update(dma);
 -- 
 2.34.1
 
