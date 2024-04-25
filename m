@@ -2,88 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE60D8B2508
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8B98B24DA
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:16:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s00yf-0004Xq-8k; Thu, 25 Apr 2024 11:25:38 -0400
+	id 1s00pG-0006w6-Ss; Thu, 25 Apr 2024 11:15:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s00y7-0004TE-7N
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:25:03 -0400
-Received: from mail-ot1-x329.google.com ([2607:f8b0:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s00y5-0006hb-9v
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:25:02 -0400
-Received: by mail-ot1-x329.google.com with SMTP id
- 46e09a7af769-6eb797e10ceso681591a34.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 08:25:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714058699; x=1714663499; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=je4x5jiGT0B0ywcNHuMNctXjgVyiZbeVwC2Wv/LhaKE=;
- b=GhXRnwtc/2yb54cJVtMX0dgebWpeadMlO2l+SbgTTuEgAvs8Ue1mbSUANk/f6h5DrD
- lbsy0ZdIbO+gBYLyhv7V5ch4CnfkjvP6UZ+LSkjVZsvBgu2XLrlm2QkbpOhS0gPSZyP7
- LdFOU9+l8VNMf3PqtcoyAouuQ3PGJ7jIgpuh72jKetXSxYaKXu1Hfu6TstxwATHysfQo
- 1WKMS7BPEy0p+1/l9w81d+UE9iMEme6Q16eKnG+mdSLrKDZeJuBwHdl07SA732WvNJxS
- nz7vLZfJosF3XxjFmfr+USy27HNJpicXWEUyd/gH3deKTJrERAoQ1jtAH4GLOeS7t2yf
- fIhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714058699; x=1714663499;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=je4x5jiGT0B0ywcNHuMNctXjgVyiZbeVwC2Wv/LhaKE=;
- b=IDynBU5N8X93pS5JEQiFouN/QbI+WTim3Xuh7Zc4DJaJigwZ3q7v9su30gI6iBupnq
- LNvH1p4/Oz+7MxieMcgHmj99TuTboCPMScDbanj2ig304VffgwPnfeDOXlOBC0IqzKAW
- TpGV1FiFmPpCRZYKBWC+y55bjkd7EOy4yylwxWAHg0wuJUvLu/mpXDRYTNRo/IqG+XGC
- FXcUancO8zyhqgI75YTztjwPUAcdQln9zmvNqefQfW0uBnOLZ6NoDFq/cJSzW1pPmUIn
- oBuTPKvimmQoNZoYmk2YeZPwAnNbXg7f5QFSDMg+TTJN+mEFkeisxpmqb5Z9NHC0j8iL
- UzFQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXAqsPagmjl6Gomwj/FBWBt9+TB2+A/WyUz3EqWJr3/2uiHVWPqhBxtKoZxGPEGMVdPYEf9r+JX8kEToeXo9PUEnFkr2ZQ=
-X-Gm-Message-State: AOJu0YxJYm1x5dlgqtm124p5bQwEKyFalbY0wQHD58kXMkdR5El9Wvda
- jMrsEQI1srbega6Rat1XFdfpdiahTtHCMYTpj0AtechNtjrn6DW9LrMcfWPiKDs=
-X-Google-Smtp-Source: AGHT+IH8N86xEqaBXHH8XQpf7+5QxUfSSio/86orhmNo4957RZHoopjswxORMvWT+ydV6UzywyeN4g==
-X-Received: by 2002:a9d:4f06:0:b0:6ea:9ba:7fce with SMTP id
- d6-20020a9d4f06000000b006ea09ba7fcemr6796669otl.38.1714058699706; 
- Thu, 25 Apr 2024 08:24:59 -0700 (PDT)
-Received: from ?IPV6:2607:fb91:1ae9:8637:9f94:1f67:75f4:ea2d?
- ([2607:fb91:1ae9:8637:9f94:1f67:75f4:ea2d])
- by smtp.gmail.com with ESMTPSA id
- x9-20020a056830114900b006eb94216797sm2694229otq.58.2024.04.25.08.24.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Apr 2024 08:24:59 -0700 (PDT)
-Message-ID: <56479506-9e30-4003-9153-db6ef19ecea0@linaro.org>
-Date: Thu, 25 Apr 2024 08:24:53 -0700
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s00od-0006gS-KT
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:15:24 -0400
+Received: from mgamail.intel.com ([198.175.65.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@intel.com>)
+ id 1s00oU-0002Dd-Ja
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:15:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714058106; x=1745594106;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=u7WG00B7+uNOK3xQT0kyO08wZ8tgfhwulD0Raj+SN5U=;
+ b=Gs8+Lg0XEo/cMOKBRVCtcfDqN1HQKIZrwx5lkX+GdWu6gNy0umrea7cY
+ voUE9HxazcRNGhskP01wrfPilBlnHY47vLzArgfZZK8mWBvmhVBaw/GSM
+ Ms0OTI1SzuMIpFca5w4pbUQj4H8TRSQODKeeGyy30BBWzqJPyECIu8mzO
+ vhBl7h6oIYWKva4FpZanCuqhWMCu0d8Ig7ZL3o0CP3j2jKtoWIme8EqlQ
+ x2HcAwIlNpCN2pnUT9r61dxDyleq7CHwNrB47/M/vN/mwoP51xE7Xc4Wu
+ miBJvF1Scje35Eu5lZntDdIvJVADL/isy3rAzjIMYcjk35a8yHHEQ2IyT w==;
+X-CSE-ConnectionGUID: ly+NY3TVR6CyaATcEPD94A==
+X-CSE-MsgGUID: yw0EU1YoTwmeCAhmYMuO2g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11055"; a="13588209"
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="13588209"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Apr 2024 08:15:02 -0700
+X-CSE-ConnectionGUID: ftF/dONzTPa36XXj2DMJDg==
+X-CSE-MsgGUID: CdqXhzrHRJuzWz3XB778tw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,229,1708416000"; d="scan'208";a="48365264"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by fmviesa002.fm.intel.com with ESMTP; 25 Apr 2024 08:15:01 -0700
+Date: Thu, 25 Apr 2024 23:29:08 +0800
+From: Zhao Liu <zhao1.liu@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Subject: Re: [PATCH for-9.1 09/19] target/i386: move 60-BF opcodes to new
+ decoder
+Message-ID: <Zip2xJorL/cPxm5B@intel.com>
+References: <20240409164323.776660-1-pbonzini@redhat.com>
+ <20240409164323.776660-10-pbonzini@redhat.com>
+ <Zhf/czBP8LaaGORr@intel.com>
+ <CABgObfYMu8sAzqJvMSQiDiY6M+uxBYc-fQadpvtoT=J=waWv4w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] fix endianness bug
-To: Alexandra Diupina <adiupina@astralinux.ru>,
- Alistair Francis <alistair@alistair23.me>
-Cc: "Konrad, Frederic" <Frederic.Konrad@amd.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, sdl.qemu@linuxtesting.org
-References: <20240425134115.32057-1-adiupina@astralinux.ru>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20240425134115.32057-1-adiupina@astralinux.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::329;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x329.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABgObfYMu8sAzqJvMSQiDiY6M+uxBYc-fQadpvtoT=J=waWv4w@mail.gmail.com>
+Received-SPF: pass client-ip=198.175.65.14; envelope-from=zhao1.liu@intel.com;
+ helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.669,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,51 +84,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/25/24 06:41, Alexandra Diupina wrote:
-> +static MemTxResult xlnx_dpdma_read_descriptor(XlnxDPDMAState *s,
-> +                                    uint64_t desc_addr, DPDMADescriptor *desc)
-> +{
-> +    if (dma_memory_read(&address_space_memory, desc_addr, &desc,
-> +                            sizeof(DPDMADescriptor), MEMTXATTRS_UNSPECIFIED))
-> +        return MEMTX_ERROR;
-> +
+On Wed, Apr 24, 2024 at 01:13:01PM +0200, Paolo Bonzini wrote:
+> Date: Wed, 24 Apr 2024 13:13:01 +0200
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: Re: [PATCH for-9.1 09/19] target/i386: move 60-BF opcodes to new
+>  decoder
+> 
+> On Thu, Apr 11, 2024 at 5:05 PM Zhao Liu <zhao1.liu@intel.com> wrote:
+> > HMM, I met Guest boot failure on this patch because of ata unrecognized.
+> > I haven't located the exact error yet, so let me post my log first.
+> > If there are other means I can use to dig further, I'd be happy to try
+> > that too.
+> >
+> > # Command (boot a ubuntu Guest via TCG)
+> >
+> > ./qemu/build/qemu-system-x86_64 \
+> > -smp 1 \
+> > -name ubuntu -m 4G \
+> > -cpu max -accel tcg \
+> > -hda ../img_qemu/test.qcow2 -nographic \
+> > -kernel ../img_qemu/kernel/vmlinuz-6.4.0-rc6+ \
+> > -initrd ../img_qemu/kernel/initrd.img-6.4.0-rc6+ \
+> > -append "root=/dev/sda ro console=ttyS0" \
+> > -qmp unix:/tmp/qmp-sock,server=on,wait=off
+> 
+> The issue is that INS and OUTS are using the incorrect operand size.
+> 
+> While at it I also made OUTS a bit more similar to OUT:
+> 
+> diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
+> index 0951b042dfa..46682cfe070 100644
+> --- a/target/i386/tcg/decode-new.c.inc
+> +++ b/target/i386/tcg/decode-new.c.inc
+> @@ -1544,8 +1544,8 @@ static const X86OpEntry opcodes_root[256] = {
+>      [0x6B] = X86_OP_ENTRY3(IMUL3, G,v, E,v, I,b, sextT0),
+>      [0x6C] = X86_OP_ENTRYrr(INS, Y,b, 2,w), /* DX */
+>      [0x6D] = X86_OP_ENTRYrr(INS, Y,z, 2,w), /* DX */
+> -    [0x6E] = X86_OP_ENTRYrr(OUTS, 2,w, X,b), /* DX */
+> -    [0x6F] = X86_OP_ENTRYrr(OUTS, 2,w, X,b), /* DX */
+> +    [0x6E] = X86_OP_ENTRYrr(OUTS, X,b, 2,w), /* DX */
+> +    [0x6F] = X86_OP_ENTRYrr(OUTS, X,z, 2,w), /* DX */
+> 
+>      [0x78] = X86_OP_ENTRYr(Jcc, J,b),
+>      [0x79] = X86_OP_ENTRYr(Jcc, J,b),
+> @@ -1592,7 +1592,7 @@ static void gen_INC(
+> 
+>  static void gen_INS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+>  {
+> -    MemOp ot = decode->op[0].ot;
+> +    MemOp ot = decode->op[1].ot;
+>      TCGv_i32 port = tcg_temp_new_i32();
+> 
+>      tcg_gen_trunc_tl_i32(port, s->T1);
+> @@ -2310,10 +2310,10 @@ static void gen_OUT(
+> 
+>  static void gen_OUTS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+>  {
+> -    MemOp ot = decode->op[2].ot;
+> +    MemOp ot = decode->op[1].ot;
+>      TCGv_i32 port = tcg_temp_new_i32();
+> 
+> -    tcg_gen_trunc_tl_i32(port, s->T0);
+> +    tcg_gen_trunc_tl_i32(port, s->T1);
+>      tcg_gen_ext16u_i32(port, port);
+>      if (!gen_check_io(s, ot, port, SVM_IOIO_STR_MASK)) {
+>          return;
+> 
+> 
+> (sorry about any word breaking)
 
-Missing { } for docs/devel/style.rst.
+Thanks! With the above fix, now I re-test on each patch, and all patches
+could boot Guest properly! If there is a v2, I can continue to test it.
 
-> +static void xlnx_dpdma_write_descriptor(uint64_t desc_addr,
-> +                                                DPDMADescriptor *desc)
-> +{
-> +    /* Convert from host endianness into LE.  */
-> +    desc->control = cpu_to_le32(desc->control);
-> +    desc->descriptor_id = cpu_to_le32(desc->descriptor_id);
-> +    desc->xfer_size = cpu_to_le32(desc->xfer_size);
-> +    desc->line_size_stride = cpu_to_le32(desc->line_size_stride);
-> +    desc->timestamp_lsb = cpu_to_le32(desc->timestamp_lsb);
-> +    desc->timestamp_msb = cpu_to_le32(desc->timestamp_msb);
-> +    desc->address_extension = cpu_to_le32(desc->address_extension);
-> +    desc->next_descriptor = cpu_to_le32(desc->next_descriptor);
-> +    desc->source_address = cpu_to_le32(desc->source_address);
-> +    desc->address_extension_23 = cpu_to_le32(desc->address_extension_23);
-> +    desc->address_extension_45 = cpu_to_le32(desc->address_extension_45);
-> +    desc->source_address2 = cpu_to_le32(desc->source_address2);
-> +    desc->source_address3 = cpu_to_le32(desc->source_address3);
-> +    desc->source_address4 = cpu_to_le32(desc->source_address4);
-> +    desc->source_address5 = cpu_to_le32(desc->source_address5);
-> +    desc->crc = cpu_to_le32(desc->crc);
+Regards,
+Zhao
 
-This is incorrect, rewriting in place, because after the call,
-
->          if (xlnx_dpdma_desc_completion_interrupt(&desc)) {
-
-the memory block is still live, and the swap here has corrupted it.
-
-> +
-> +    dma_memory_write(&address_space_memory, desc_addr, &desc,
-
-This is incorrect because desc is now a pointer so &desc is DPDMADescriptor **.
-
-Do not reply to an existing thread to post a new patch.
-
-
-r~
 
