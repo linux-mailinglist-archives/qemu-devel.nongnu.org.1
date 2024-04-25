@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C77508B1F8E
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6C78B1F6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:42:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWN-0001xo-NQ; Thu, 25 Apr 2024 06:40:07 -0400
+	id 1rzwWO-0001xv-1i; Thu, 25 Apr 2024 06:40:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWM-0001x9-0q
+ id 1rzwWM-0001xS-FT
  for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:06 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWK-00070Q-46
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:05 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-5194cebd6caso901880e87.0
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:03 -0700 (PDT)
+ id 1rzwWK-000751-Oz
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:06 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-343d2b20c4bso605454f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041602; x=1714646402; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041603; x=1714646403; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=UIo/4Y0jCkZhZbVf1z/K9VYt8JNRKmGPNz3rHCYkyTk=;
- b=kmTUlo5n+PIezLqs8wHwqp1IlssJuLBtzASP4yPrLIDef8U3c6B2HG2l87/eVRfJJf
- Ns1efYXazFPpvydnIHlLG9LmeR7FyXH8T7Crg6gMqcUeguT1AWL7vdVO2IesoiheH/X4
- LuFUh/jzEMURxkL4cBl/ecbS8xeJTCX8aWbAbToAH1akgLaAfWVI8UGF6gSHP701ToSj
- J6GP4xK7zSXEEQn52kO59K/Dz/l3MtU/5GcEgHB5DCSJa422JEj5VnANNEuD3gnSCHDi
- mvTqTQwIAymAGu/roljDqVHGEW4UWx2FmzoQWsH49HysbmAup0UPgzCJBF42y4zFBh6A
- /GJQ==
+ :reply-to; bh=957rAqnR2jdbtNnjgxfqiz7CRvR1nL/QXsIUUvuurzY=;
+ b=i4et7G0tr6OLfDSOHucAWHm/rDT+IhiKqY+c9xiwX10PL0tMvtAmNnNxYOvN11Ke9+
+ UsScK4r3TZDfpkx06CxzLJT1BPuTaCa57WDKvLg0HGiWxaIx20VIohTrfPUU3rViarcW
+ uGL+hv1JF2AabOdg+YCKjvqfTLRdCfskcdkz5IP1fqE5XvgjFr6qh6IMpR8WWch7clPR
+ MP3+X89EQTmwWg5meS/RuGTBgJZ6r5zwDqJVQDEa7YhFw2NhPdHNjdoeYyGR8Qx9fUWd
+ 7sqcaF9Y0gEn3QYEk8XGShnBKmYNlIw7W9vi0kpUn671sZr/gC9PZHJVZ8ySxKVO0FCJ
+ lX8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041602; x=1714646402;
+ d=1e100.net; s=20230601; t=1714041603; x=1714646403;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=UIo/4Y0jCkZhZbVf1z/K9VYt8JNRKmGPNz3rHCYkyTk=;
- b=Y0A731qTbU0hhC3yuzEZ2Kz77WX3PxL3Hs0ufhnnR0U59TfTEkYTyPtISikYk8ioCs
- qlYjxvto7DK6gCll8oyV6DIgB7JhArs/rpEmIU/TO2Ro1RNQwZOlIcmZmB9rEpJc0VFA
- VUjV5u0038ky/OuTAU2AY6XtBpZpWxGJ95Qtfg7z9hm1rsaeQrcB8PK2IHAzRDIVe4fg
- 9ZngXROAPN7qB275YNa3QTS3LYUcGdeX8FEdOfM/uzi+ppezyugWmH3yEr+Uk58FoU5s
- tuCDkpoVi+2fUR0kGTYex70ywJUXVzIO5JLIXxAzFBMzQjGnL9BP2mZtywWzvC1wWcmk
- ILEg==
-X-Gm-Message-State: AOJu0YxGruwP8cL3vVodNEN0YBXpxspbCLXyHI7BwZcyQTP10tFmIiP2
- xL/pcZcDhEQtVXnavbcRVPNCyebdeLEYnRv8SuFbhiM2sE/49WM+0VkMDKnVCc5wgTQcfAABMl8
- x
-X-Google-Smtp-Source: AGHT+IGIUXUfL8ed/1eQi8VCDsq26Ev2gMqoSW7iJUd273qsKnkkXDALYoppPKazDECXEm1E2urHKQ==
-X-Received: by 2002:ac2:4984:0:b0:51c:3e9e:98ee with SMTP id
- f4-20020ac24984000000b0051c3e9e98eemr1261876lfl.23.1714041602293; 
+ bh=957rAqnR2jdbtNnjgxfqiz7CRvR1nL/QXsIUUvuurzY=;
+ b=H7sBMriT+71a28l2Lx2lQd1oaGa9MhlmVea9T9NZdLRqvEQI8GRxwv1/owqecnkQs+
+ f0PCXe9hf8vuiAUbwQFlKvDtcRG3eSL/o7fEnNU3aYU6Pmj4SRbLMhk0vmXs3NRJScQS
+ B1TK9W6JYDO5qa+qX9z6y6VsLwY50fGoodEPKcB2a47vj4X8wmmu/OQkDLVbyiIyQ4ru
+ ZEWezfTte0rsFQMzT+M5TIqDvFzlrmdrfTqQ20HP7SqJZ+EymEX/WaKHDxclUXtccyeM
+ LBC1Ha9TYE14rflbH2ZgfaMnNKxkKR3iO7v+Dad0r5QpljS76N4shRqOse4kKqVgZ+Uv
+ qnpQ==
+X-Gm-Message-State: AOJu0YykC4Hw28B/IGdOD3XwYR2J92NS0h582lm+WoKDeZKR05BIZxva
+ Ily1dfOomYy17nh/rMJyvsPWo5Kbtog4hfrWCH7PGq2i3oCc5JOb22E/5ItLtcNbfVnQAtZa1cd
+ a
+X-Google-Smtp-Source: AGHT+IF57MvCH0I+WRvuZIvG4vQo1H2m8Na0/u8rmqxDPUb6n9oeSOS3vISd3nPf/cr1z5K3H2yEdQ==
+X-Received: by 2002:adf:8b5d:0:b0:34b:2a61:b3c9 with SMTP id
+ v29-20020adf8b5d000000b0034b2a61b3c9mr4093361wra.40.1714041602822; 
  Thu, 25 Apr 2024 03:40:02 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.01
+ h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.02
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 25 Apr 2024 03:40:01 -0700 (PDT)
+ Thu, 25 Apr 2024 03:40:02 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 03/37] target/arm: Add support for FEAT_NMI,
- Non-maskable Interrupt
-Date: Thu, 25 Apr 2024 11:39:24 +0100
-Message-Id: <20240425103958.3237225-4-peter.maydell@linaro.org>
+Subject: [PULL 04/37] target/arm: Implement ALLINT MSR (immediate)
+Date: Thu, 25 Apr 2024 11:39:25 +0100
+Message-Id: <20240425103958.3237225-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,32 +93,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-Add support for FEAT_NMI. NMI (FEAT_NMI) is an mandatory feature in
-ARMv8.8-A and ARM v9.3-A.
+Add ALLINT MSR (immediate) to decodetree, in which the CRm is 0b000x. The
+EL0 check is necessary to ALLINT, and the EL1 check is necessary when
+imm == 1. So implement it inline for EL2/3, or EL1 with imm==0. Avoid the
+unconditional write to pc and use raise_exception_ra to unwind.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-4-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-5-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/internals.h | 3 +++
- 1 file changed, 3 insertions(+)
+ target/arm/tcg/helper-a64.h    |  1 +
+ target/arm/tcg/a64.decode      |  1 +
+ target/arm/tcg/helper-a64.c    | 12 ++++++++++++
+ target/arm/tcg/translate-a64.c | 19 +++++++++++++++++++
+ 4 files changed, 33 insertions(+)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index dd3da211a3f..516e0584bf5 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1229,6 +1229,9 @@ static inline uint32_t aarch64_pstate_valid_mask(const ARMISARegisters *id)
-     if (isar_feature_aa64_mte(id)) {
-         valid |= PSTATE_TCO;
-     }
-+    if (isar_feature_aa64_nmi(id)) {
-+        valid |= PSTATE_ALLINT;
-+    }
+diff --git a/target/arm/tcg/helper-a64.h b/target/arm/tcg/helper-a64.h
+index 575a5dab7dc..05181653999 100644
+--- a/target/arm/tcg/helper-a64.h
++++ b/target/arm/tcg/helper-a64.h
+@@ -22,6 +22,7 @@ DEF_HELPER_FLAGS_1(rbit64, TCG_CALL_NO_RWG_SE, i64, i64)
+ DEF_HELPER_2(msr_i_spsel, void, env, i32)
+ DEF_HELPER_2(msr_i_daifset, void, env, i32)
+ DEF_HELPER_2(msr_i_daifclear, void, env, i32)
++DEF_HELPER_1(msr_set_allint_el1, void, env)
+ DEF_HELPER_3(vfp_cmph_a64, i64, f16, f16, ptr)
+ DEF_HELPER_3(vfp_cmpeh_a64, i64, f16, f16, ptr)
+ DEF_HELPER_3(vfp_cmps_a64, i64, f32, f32, ptr)
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 8a20dce3c8f..0e7656fd158 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -207,6 +207,7 @@ MSR_i_DIT       1101 0101 0000 0 011 0100 .... 010 11111 @msr_i
+ MSR_i_TCO       1101 0101 0000 0 011 0100 .... 100 11111 @msr_i
+ MSR_i_DAIFSET   1101 0101 0000 0 011 0100 .... 110 11111 @msr_i
+ MSR_i_DAIFCLEAR 1101 0101 0000 0 011 0100 .... 111 11111 @msr_i
++MSR_i_ALLINT    1101 0101 0000 0 001 0100 000 imm:1 000 11111
+ MSR_i_SVCR      1101 0101 0000 0 011 0100 0 mask:2 imm:1 011 11111
  
-     return valid;
+ # MRS, MSR (register), SYS, SYSL. These are all essentially the
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index 29f3ef274ae..0ea8668ab4c 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -66,6 +66,18 @@ void HELPER(msr_i_spsel)(CPUARMState *env, uint32_t imm)
+     update_spsel(env, imm);
  }
+ 
++void HELPER(msr_set_allint_el1)(CPUARMState *env)
++{
++    /* ALLINT update to PSTATE. */
++    if (arm_hcrx_el2_eff(env) & HCRX_TALLINT) {
++        raise_exception_ra(env, EXCP_UDEF,
++                           syn_aa64_sysregtrap(0, 1, 0, 4, 1, 0x1f, 0), 2,
++                           GETPC());
++    }
++
++    env->pstate |= PSTATE_ALLINT;
++}
++
+ static void daif_check(CPUARMState *env, uint32_t op,
+                        uint32_t imm, uintptr_t ra)
+ {
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 2666d527111..976094a5c80 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -2036,6 +2036,25 @@ static bool trans_MSR_i_DAIFCLEAR(DisasContext *s, arg_i *a)
+     return true;
+ }
+ 
++static bool trans_MSR_i_ALLINT(DisasContext *s, arg_i *a)
++{
++    if (!dc_isar_feature(aa64_nmi, s) || s->current_el == 0) {
++        return false;
++    }
++
++    if (a->imm == 0) {
++        clear_pstate_bits(PSTATE_ALLINT);
++    } else if (s->current_el > 1) {
++        set_pstate_bits(PSTATE_ALLINT);
++    } else {
++        gen_helper_msr_set_allint_el1(tcg_env);
++    }
++
++    /* Exit the cpu loop to re-evaluate pending IRQs. */
++    s->base.is_jmp = DISAS_UPDATE_EXIT;
++    return true;
++}
++
+ static bool trans_MSR_i_SVCR(DisasContext *s, arg_MSR_i_SVCR *a)
+ {
+     if (!dc_isar_feature(aa64_sme, s) || a->mask == 0) {
 -- 
 2.34.1
 
