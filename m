@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C01178B17D8
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:11:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B7C8B17CD
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:10:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmYX-00007S-40; Wed, 24 Apr 2024 20:01:41 -0400
+	id 1rzmYj-0000fd-Nw; Wed, 24 Apr 2024 20:01:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXw-0008IZ-DJ
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:05 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1rzmXx-0008J2-SD
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:06 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmXr-0006Is-0c
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:01 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1e3f17c6491so3355955ad.2
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:58 -0700 (PDT)
+ id 1rzmXs-0006JR-MU
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:01:03 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2a78c2e253aso372807a91.3
+ for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:00:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003257; x=1714608057; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714003259; x=1714608059; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=RnrM6xlTtlmtawC51lsQAVs42r4HEzE1iyIC+QHuURc=;
- b=B5w1n5Q4bUKfTJ7WZfK+zAPQngmi1Zbn5ft/Xnk0T7+wy9TYJawPe87ehjjpI1nMIy
- dMnGf0lBAvXyKUfQe+H1jGw/jIUzFJznV2laqPyWnwzOs5pEJFtLkOG6R1onJ+00at3f
- FMwlBx8EXBZYVtCrt3vrfNkxKt5f6BahBsyEMkfm2i8nH7dMb1VwdzONcOkW56e3OtCh
- Z2rYHfUeuh9smJKhwzARzngc2Lp4ZnWIHrs8rZA/MUtc5haP0BYtaYnkrfdKS1JoPyxg
- Mffe110c4bKIDdjINNckLK0rBRfY4WgtVl2rPFdfXgmoQbzGz3EwQwfV+wfIRX5NjpH6
- IDyA==
+ :reply-to; bh=od3C8Is61jrhdrT5iIGSRyg1mQHZLFI1AAa4tyjr1AQ=;
+ b=GLhvnZLsI/3Z+uNKovnRt+BWaFkiBU+Ql4jGJyV7A9KBoEC3KG9Y6fkFwEF+kzpyEo
+ cLYU94A7ekOeW20ChvbcD6xvQdTJpbjmN+VPpgj/q70egYOHFFr4+0LnVz7xGAxsLaTJ
+ Jx9miizvppgXAMoeu2Z0Su16zAPZ1yIh238+XLaUWFuTtzRZ1xsJAMaHv5t/SQalBxnQ
+ sb6DOY2FnxHxBlGryIdfmP/rINJh9/iCsahg5azPIp56098VHBfcD5HyJd360N3+03W0
+ +Xtitx3rIGEsz12YdSCHqqDnHlv9lEww+bMZnssUl6oWq8NUZ08+fzf0ZvFQ1820uP/H
+ YQUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003257; x=1714608057;
+ d=1e100.net; s=20230601; t=1714003259; x=1714608059;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RnrM6xlTtlmtawC51lsQAVs42r4HEzE1iyIC+QHuURc=;
- b=ZoM8qfoSvZ1tQj/VyfQVUnlPHcoReO+gb6KlFwwK7gU+Rlw5lcdAPzS0APdIl6g32v
- 5a2SmxHAYdGuN100tl+7YlF3jrCudVRAowWH8HW/nWu5IWfz6kOTdkR+HH6SrgkA+hv3
- 1j+CuubzdRb9QrtwrTYsKWFrxMCc99CPQUbtvHXOoNpMXGxtsxPkSQ3MaILAfHpQlsq/
- PxlOTdeG580ikT6lvJpxaD+aRPHfsHkWIoQTVqyb9cDQjWESkkYCl2m6sdr9ALvuNXYO
- EOO1HftvzgNspjX/Hn+yZF4BXIiEe1ODqlXQl3pVDpqzcPbnEUqlBYr6dA/DHS5StLeg
- m9XA==
-X-Gm-Message-State: AOJu0YyQcHhJhxlzFGzliajUsrN6YO6IJoLkAmpkjhV9hCnLgJh8TooX
- 8pHQEz1FQqqoFIm90zJiaJ5EYQWR48su+H419JsR/R7m16Eo9Z304ztE9h/sZWbzZipadM6muY0
- /
-X-Google-Smtp-Source: AGHT+IH6kv5IE7r83h9iSE//RGVv7X9VTcbf8foRPi3VQa3aX7PgJ65Cmx4QsqAX/ajMbs0hvv8lxA==
-X-Received: by 2002:a17:902:b184:b0:1e8:37ea:d10 with SMTP id
- s4-20020a170902b18400b001e837ea0d10mr3367321plr.56.1714003257450; 
- Wed, 24 Apr 2024 17:00:57 -0700 (PDT)
+ bh=od3C8Is61jrhdrT5iIGSRyg1mQHZLFI1AAa4tyjr1AQ=;
+ b=nI8HnXGl/hoNWe8oz+3TkVy/dITAgBSNU6bZU7oSTsNDuYayXn8vRgRLyNcUJhJ6dG
+ QPMtZBn2w+WswXQu42un50Z1Vrm1dPy/qxvVCZS90c0mfKHQ8LCb1JygYWCoCKHHU7xE
+ aC4V//9nUlm5GBlLlepxAtzLuHKQgIXkrsvDWXYK82iFdfVgAgh6kVRVuY3k18RRr1t9
+ IEmdP8jLiO16xEYlOLAKJrakH2TGXL+klAn0jfNUNrmXi2YjZLU9qLNhzBagJS2z/eRP
+ t7n0Y6R/SbcQ1hn1QMIOlcel4MPekL+vPQvpmQNdbsWdxlygOxZruvrA4ObXcpS2Gnfp
+ rkBw==
+X-Gm-Message-State: AOJu0YyDFLf6U/ZsB/xJE4sY7+wFRwopiv3ZC7pJHRoShh5l9sdHZ8w6
+ b7mkp1kkIyd7zE0bCnBTLY7CiisjXoBf6fijRI2/nC8nUIbYbUr+1DkXTU8xKaevggWHktQQy+d
+ 8
+X-Google-Smtp-Source: AGHT+IGO+HoWJYgQUWKTP2pU+W42xjJLiG3ZDNrACmkIu8yUTSnn+9LCFST87iRfXQAZDcqgV4N5oQ==
+X-Received: by 2002:a17:90a:c244:b0:2af:9e88:d41d with SMTP id
+ d4-20020a17090ac24400b002af9e88d41dmr1791320pjx.23.1714003259102; 
+ Wed, 24 Apr 2024 17:00:59 -0700 (PDT)
 Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.56
+ t6-20020a170902e84600b001e604438791sm12465715plg.156.2024.04.24.17.00.58
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:00:57 -0700 (PDT)
+ Wed, 24 Apr 2024 17:00:58 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 33/45] target/hppa: Do not mask in copy_iaoq_entry
-Date: Wed, 24 Apr 2024 17:00:11 -0700
-Message-Id: <20240425000023.1002026-34-richard.henderson@linaro.org>
+Subject: [PATCH 35/45] target/hppa: Split PSW X and B into their own field
+Date: Wed, 24 Apr 2024 17:00:13 -0700
+Message-Id: <20240425000023.1002026-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
 References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,34 +90,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As with loads and stores, code offsets are kept intact until the
-full gva is formed.  In qemu, this is in cpu_get_tb_cpu_state.
+Generally, both of these bits are cleared at the end of each
+instruction.  By separating these, we will be able to clear
+both with a single insn, instead of 2 or 3.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- target/hppa/translate.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ target/hppa/cpu.h    | 3 ++-
+ target/hppa/helper.c | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/target/hppa/translate.c b/target/hppa/translate.c
-index cc409ffe13..fb5bc12986 100644
---- a/target/hppa/translate.c
-+++ b/target/hppa/translate.c
-@@ -636,15 +636,10 @@ static DisasIAQE iaqe_next_absv(DisasContext *ctx, TCGv_i64 var)
- static void copy_iaoq_entry(DisasContext *ctx, TCGv_i64 dest,
-                             const DisasIAQE *src)
- {
--    uint64_t mask = gva_offset_mask(ctx->tb_flags);
--
-     if (src->base == NULL) {
--        tcg_gen_movi_i64(dest, (ctx->iaoq_first + src->disp) & mask);
--    } else if (src->disp == 0) {
--        tcg_gen_andi_i64(dest, src->base, mask);
-+        tcg_gen_movi_i64(dest, ctx->iaoq_first + src->disp);
-     } else {
-         tcg_gen_addi_i64(dest, src->base, src->disp);
--        tcg_gen_andi_i64(dest, dest, mask);
-     }
+diff --git a/target/hppa/cpu.h b/target/hppa/cpu.h
+index 66cae795bd..629299653d 100644
+--- a/target/hppa/cpu.h
++++ b/target/hppa/cpu.h
+@@ -214,7 +214,8 @@ typedef struct CPUArchState {
+     uint64_t fr[32];
+     uint64_t sr[8];          /* stored shifted into place for gva */
+ 
+-    target_ulong psw;        /* All psw bits except the following:  */
++    uint32_t psw;            /* All psw bits except the following:  */
++    uint32_t psw_xb;         /* X and B, in their normal positions */
+     target_ulong psw_n;      /* boolean */
+     target_long psw_v;       /* in most significant bit */
+ 
+diff --git a/target/hppa/helper.c b/target/hppa/helper.c
+index 7d22c248fb..b79ddd8184 100644
+--- a/target/hppa/helper.c
++++ b/target/hppa/helper.c
+@@ -54,7 +54,7 @@ target_ulong cpu_hppa_get_psw(CPUHPPAState *env)
+ 
+     psw |= env->psw_n * PSW_N;
+     psw |= (env->psw_v < 0) * PSW_V;
+-    psw |= env->psw;
++    psw |= env->psw | env->psw_xb;
+ 
+     return psw;
  }
+@@ -76,8 +76,8 @@ void cpu_hppa_put_psw(CPUHPPAState *env, target_ulong psw)
+     }
+     psw &= ~reserved;
+ 
+-    env->psw = psw & (uint32_t)~(PSW_N | PSW_V | PSW_CB);
+-
++    env->psw = psw & (uint32_t)~(PSW_B | PSW_N | PSW_V | PSW_X | PSW_CB);
++    env->psw_xb = psw & (PSW_X | PSW_B);
+     env->psw_n = (psw / PSW_N) & 1;
+     env->psw_v = -((psw / PSW_V) & 1);
  
 -- 
 2.34.1
