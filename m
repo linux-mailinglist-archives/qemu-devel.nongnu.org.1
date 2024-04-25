@@ -2,46 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8527F8B18D6
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 04:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 071A28B18D2
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 04:23:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzokw-0000Ss-Rq; Wed, 24 Apr 2024 22:22:38 -0400
+	id 1rzoks-0000SP-87; Wed, 24 Apr 2024 22:22:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
- id 1rzokq-0000S8-PL
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 22:22:32 -0400
-Received: from out-178.mta1.migadu.com ([2001:41d0:203:375::b2])
+ id 1rzokp-0000S0-RV
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 22:22:31 -0400
+Received: from out-171.mta1.migadu.com ([95.215.58.171])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <hao.xiang@linux.dev>)
- id 1rzokm-0004pq-Oz
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 22:22:32 -0400
+ id 1rzokn-0004q2-9n
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 22:22:31 -0400
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and
  include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
- t=1714011742;
+ t=1714011745;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=AT1VrNIJg5OPg7ouTw0c0c/7A8vHoMshxpdvixUM6Mw=;
- b=UV+hgSLK3Df/GnNyndbRQYw4RTHHBD1REj875h29MviRzQpubaQT3IgLcyChG9lue8naWN
- OiBwtvbPWRKLNhMyCR11UV4ZYhNoKQ26fkvMAYrqQ1X0iWTX8uRu46Egqgh/l+TrtGxjlC
- CZ/42sa01B5kdAyIRzYoHS8XKl6X8dE=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lr14qF8cTKwF4Hevf4OoGD2r0msdSRvcgGtDvrTeAv0=;
+ b=qRaCfkD7MzbM0yGmJeGF6Gb05dSJfCFip2TTvZHVqQTKsKDNI+b3aHLw3ycTZn5zeg8As8
+ nGv7iPdWEontI6xq9RZKhO1eG6EpCpTUth7noray4B+fd+3C3y04jGl/pajsTmRCjhkp1z
+ +K2qDDWlj1SceccaE6Uhikzc2I0yQ5M=
 From: Hao Xiang <hao.xiang@linux.dev>
 To: marcandre.lureau@redhat.com, peterx@redhat.com, farosas@suse.de,
  armbru@redhat.com, lvivier@redhat.com, qemu-devel@nongnu.org
 Cc: Hao Xiang <hao.xiang@linux.dev>
-Subject: [PATCH v4 00/14] Use Intel DSA accelerator to offload zero page
- checking in multifd live migration.
-Date: Thu, 25 Apr 2024 02:21:03 +0000
-Message-Id: <20240425022117.4035031-1-hao.xiang@linux.dev>
+Subject: [PATCH v4 01/14] meson: Introduce new instruction set enqcmd to the
+ build system.
+Date: Thu, 25 Apr 2024 02:21:04 +0000
+Message-Id: <20240425022117.4035031-2-hao.xiang@linux.dev>
+In-Reply-To: <20240425022117.4035031-1-hao.xiang@linux.dev>
+References: <20240425022117.4035031-1-hao.xiang@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-Received-SPF: pass client-ip=2001:41d0:203:375::b2;
- envelope-from=hao.xiang@linux.dev; helo=out-178.mta1.migadu.com
+Received-SPF: pass client-ip=95.215.58.171; envelope-from=hao.xiang@linux.dev;
+ helo=out-171.mta1.migadu.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -63,288 +66,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-v4
-* Rebase on top of 85b597413d4370cb168f711192eaef2eb70535ac.
-* A separate "multifd zero page checking" patchset was split from this
-patchset's v3 and got merged into master. v4 re-applied the rest of all
-commits on top of that patchset, re-factored and re-tested.
-https://lore.kernel.org/all/20240311180015.3359271-1-hao.xiang@linux.dev/
-* There are some feedback from v3 I likely overlooked.
+Enable instruction set enqcmd in build.
+
+Signed-off-by: Hao Xiang <hao.xiang@linux.dev>
+---
+ meson.build                   | 14 ++++++++++++++
+ meson_options.txt             |  2 ++
+ scripts/meson-buildoptions.sh |  3 +++
+ 3 files changed, 19 insertions(+)
+
+diff --git a/meson.build b/meson.build
+index 95cee7046e..9e008ddc34 100644
+--- a/meson.build
++++ b/meson.build
+@@ -2824,6 +2824,20 @@ config_host_data.set('CONFIG_AVX512BW_OPT', get_option('avx512bw') \
+     int main(int argc, char *argv[]) { return bar(argv[0]); }
+   '''), error_message: 'AVX512BW not available').allowed())
  
-v3
-* Rebase on top of 7425b6277f12e82952cede1f531bfc689bf77fb1.
-* Fix error/warning from checkpatch.pl
-* Fix use-after-free bug when multifd-dsa-accel option is not set.
-* Handle error from dsa_init and correctly propogate the error.
-* Remove unnecessary call to dsa_stop.
-* Detect availability of DSA feature at compile time.
-* Implement a generic batch_task structure and a DSA specific one dsa_batch_task.
-* Remove all exit() calls and propagate errors correctly.
-* Use bytes instead of page count to configure multifd-packet-size option.
-
-v2
-* Rebase on top of 3e01f1147a16ca566694b97eafc941d62fa1e8d8.
-* Leave Juan's changes in their original form instead of squashing them.
-* Add a new commit to refactor the multifd_send_thread function to prepare for introducing the DSA offload functionality.
-* Use page count to configure multifd-packet-size option.
-* Don't use the FLAKY flag in DSA tests.
-* Test if DSA integration test is setup correctly and skip the test if
-* not.
-* Fixed broken link in the previous patch cover.
-
-* Background:
-
-I posted an RFC about DSA offloading in QEMU:
-https://patchew.org/QEMU/20230529182001.2232069-1-hao.xiang@bytedance.com/
-
-This patchset implements the DSA offloading on zero page checking in
-multifd live migration code path.
-
-* Overview:
-
-Intel Data Streaming Accelerator(DSA) is introduced in Intel's 4th generation
-Xeon server, aka Sapphire Rapids.
-https://cdrdv2-public.intel.com/671116/341204-intel-data-streaming-accelerator-spec.pdf
-https://www.intel.com/content/www/us/en/content-details/759709/intel-data-streaming-accelerator-user-guide.html
-One of the things DSA can do is to offload memory comparison workload from
-CPU to DSA accelerator hardware. This patchset implements a solution to offload
-QEMU's zero page checking from CPU to DSA accelerator hardware. We gain
-two benefits from this change:
-1. Reduces CPU usage in multifd live migration workflow across all use
-cases.
-2. Reduces migration total time in some use cases. 
-
-* Design:
-
-These are the logical steps to perform DSA offloading:
-1. Configure DSA accelerators and create user space openable DSA work
-queues via the idxd driver.
-2. Map DSA's work queue into a user space address space.
-3. Fill an in-memory task descriptor to describe the memory operation.
-4. Use dedicated CPU instruction _enqcmd to queue a task descriptor to
-the work queue.
-5. Pull the task descriptor's completion status field until the task
-completes.
-6. Check return status.
-
-The memory operation is now totally done by the accelerator hardware but
-the new workflow introduces overheads. The overhead is the extra cost CPU
-prepares and submits the task descriptors and the extra cost CPU pulls for
-completion. The design is around minimizing these two overheads.
-
-1. In order to reduce the overhead on task preparation and submission,
-we use batch descriptors. A batch descriptor will contain N individual
-zero page checking tasks where the default N is 128 (default packet size
-/ page size) and we can increase N by setting the packet size via a new
-migration option.
-2. The multifd sender threads prepares and submits batch tasks to DSA
-hardware and it waits on a synchronization object for task completion.
-Whenever a DSA task is submitted, the task structure is added to a
-thread safe queue. It's safe to have multiple multifd sender threads to
-submit tasks concurrently.
-3. Multiple DSA hardware devices can be used. During multifd initialization,
-every sender thread will be assigned a DSA device to work with. We
-use a round-robin scheme to evenly distribute the work across all used
-DSA devices.
-4. Use a dedicated thread dsa_completion to perform busy pulling for all
-DSA task completions. The thread keeps dequeuing DSA tasks from the
-thread safe queue. The thread blocks when there is no outstanding DSA
-task. When pulling for completion of a DSA task, the thread uses CPU
-instruction _mm_pause between the iterations of a busy loop to save some
-CPU power as well as optimizing core resources for the other hypercore.
-5. DSA accelerator can encounter errors. The most popular error is a
-page fault. We have tested using devices to handle page faults but
-performance is bad. Right now, if DSA hits a page fault, we fallback to
-use CPU to complete the rest of the work. The CPU fallback is done in
-the multifd sender thread.
-6. Added a new migration option multifd-dsa-accel to set the DSA device
-path. If set, the multifd workflow will leverage the DSA devices for
-offloading.
-7. Added a new migration option multifd-normal-page-ratio to make
-multifd live migration easier to test. Setting a normal page ratio will
-make live migration recognize a zero page as a normal page and send
-the entire payload over the network. If we want to send a large network
-payload and analyze throughput, this option is useful.
-8. Added a new migration option multifd-packet-size. This can increase
-the number of pages being zero page checked and sent over the network.
-The extra synchronization between the sender threads and the dsa
-completion thread is an overhead. Using a large packet size can reduce
-that overhead.
-
-* Performance:
-
-We use two Intel 4th generation Xeon servers for testing.
-
-Architecture:        x86_64
-CPU(s):              192
-Thread(s) per core:  2
-Core(s) per socket:  48
-Socket(s):           2
-NUMA node(s):        2
-Vendor ID:           GenuineIntel
-CPU family:          6
-Model:               143
-Model name:          Intel(R) Xeon(R) Platinum 8457C
-Stepping:            8
-CPU MHz:             2538.624
-CPU max MHz:         3800.0000
-CPU min MHz:         800.0000
-
-We perform multifd live migration with below setup:
-1. VM has 100GB memory. 
-2. Use the new migration option multifd-set-normal-page-ratio to control the total
-size of the payload sent over the network.
-3. Use 8 multifd channels.
-4. Use tcp for live migration.
-4. Use CPU to perform zero page checking as the baseline.
-5. Use one DSA device to offload zero page checking to compare with the baseline.
-6. Use "perf sched record" and "perf sched timehist" to analyze CPU usage.
-
-A) Scenario 1: 50% (50GB) normal pages on an 100GB vm.
-
-	CPU usage
-
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|5657.58	|		|
-	|		|multifdsend_0	|3931.563	|		|
-	|		|multifdsend_1	|4405.273	|		|
-	|		|multifdsend_2	|3941.968	|		|
-	|		|multifdsend_3	|5032.975	|		|
-	|		|multifdsend_4	|4533.865	|		|
-	|		|multifdsend_5	|4530.461	|		|
-	|		|multifdsend_6	|5171.916	|		|
-	|		|multifdsend_7	|4722.769	|41922		|
-	|---------------|---------------|---------------|---------------|
-	|DSA		|live_migration	|6129.168	|		|
-	|		|multifdsend_0	|2954.717	|		|
-	|		|multifdsend_1	|2766.359	|		|
-	|		|multifdsend_2	|2853.519	|		|
-	|		|multifdsend_3	|2740.717	|		|
-	|		|multifdsend_4	|2824.169	|		|
-	|		|multifdsend_5	|2966.908	|		|
-	|		|multifdsend_6	|2611.137	|		|
-	|		|multifdsend_7	|3114.732	|		|
-	|		|dsa_completion	|3612.564	|32568		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is calculated by adding up all multifdsend_X
-and live_migration threads runtime. DSA offloading total runtime is
-calculated by adding up all multifdsend_X, live_migration and
-dsa_completion threads runtime. 41922 msec VS 32568 msec runtime and
-that is 23% total CPU usage savings.
-
-	Latency
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram	|
-	|---------------|---------------|---------------|---------------|---------------|---------------|	
-	|Baseline	|10343 ms	|161 ms		|41007.00 mbps	|51583797 kb	|102400520 kb	|
-	|---------------|---------------|---------------|---------------|-------------------------------|
-	|DSA offload	|9535 ms	|135 ms		|46554.40 mbps	|53947545 kb	|102400520 kb	|	
-	|---------------|---------------|---------------|---------------|---------------|---------------|
-
-Total time is 8% faster and down time is 16% faster.
-
-B) Scenario 2: 100% (100GB) zero pages on an 100GB vm.
-
-	CPU usage
-	|---------------|---------------|---------------|---------------|
-	|		|comm		|runtime(msec)	|totaltime(msec)|
-	|---------------|---------------|---------------|---------------|
-	|Baseline	|live_migration	|4860.718	|		|
-	|	 	|multifdsend_0	|748.875	|		|
-	|		|multifdsend_1	|898.498	|		|
-	|		|multifdsend_2	|787.456	|		|
-	|		|multifdsend_3	|764.537	|		|
-	|		|multifdsend_4	|785.687	|		|
-	|		|multifdsend_5	|756.941	|		|
-	|		|multifdsend_6	|774.084	|		|
-	|		|multifdsend_7	|782.900	|11154		|
-	|---------------|---------------|-------------------------------|
-	|DSA offloading	|live_migration	|3846.976	|		|
-	|		|multifdsend_0	|191.880	|		|
-	|		|multifdsend_1	|166.331	|		|
-	|		|multifdsend_2	|168.528	|		|
-	|		|multifdsend_3	|197.831	|		|
-	|		|multifdsend_4	|169.580	|		|
-	|		|multifdsend_5	|167.984	|		|
-	|		|multifdsend_6	|198.042	|		|
-	|		|multifdsend_7	|170.624	|		|
-	|		|dsa_completion	|3428.669	|8700		|
-	|---------------|---------------|---------------|---------------|
-
-Baseline total runtime is 11154 msec and DSA offloading total runtime is
-8700 msec. That is 22% CPU savings.
-
-	Latency
-	|--------------------------------------------------------------------------------------------|
-	|		|total time	|down time	|throughput	|transferred-ram|total-ram   |
-	|---------------|---------------|---------------|---------------|---------------|------------|	
-	|Baseline	|4867 ms	|20 ms		|1.51 mbps	|565 kb		|102400520 kb|
-	|---------------|---------------|---------------|---------------|----------------------------|
-	|DSA offload	|3888 ms	|18 ms		|1.89 mbps	|565 kb		|102400520 kb|	
-	|---------------|---------------|---------------|---------------|---------------|------------|
-
-Total time 20% faster and down time 10% faster.
-
-* Testing:
-
-1. Added unit tests for cover the added code path in dsa.c
-2. Added integration tests to cover multifd live migration using DSA
-offloading.
-
-* Patchset
-
-Apply this patchset on top of commit
-85b597413d4370cb168f711192eaef2eb70535ac
-
-Hao Xiang (14):
-  meson: Introduce new instruction set enqcmd to the build system.
-  util/dsa: Add dependency idxd.
-  util/dsa: Implement DSA device start and stop logic.
-  util/dsa: Implement DSA task enqueue and dequeue.
-  util/dsa: Implement DSA task asynchronous completion thread model.
-  util/dsa: Implement zero page checking in DSA task.
-  util/dsa: Implement DSA task asynchronous submission and wait for
-    completion.
-  migration/multifd: Add new migration option for multifd DSA
-    offloading.
-  migration/multifd: Prepare to introduce DSA acceleration on the
-    multifd path.
-  migration/multifd: Enable DSA offloading in multifd sender path.
-  migration/multifd: Add migration option set packet size.
-  migration/multifd: Enable set packet size migration option.
-  util/dsa: Add unit test coverage for Intel DSA task submission and
-    completion.
-  migration/multifd: Add integration tests for multifd with Intel DSA
-    offloading.
-
- include/qemu/dsa.h             |  180 +++++
- linux-headers/linux/idxd.h     |  356 ++++++++++
- meson.build                    |   14 +
- meson_options.txt              |    2 +
- migration/migration-hmp-cmds.c |   15 +
- migration/multifd-zero-page.c  |   99 ++-
- migration/multifd-zlib.c       |    6 +-
- migration/multifd-zstd.c       |    6 +-
- migration/multifd.c            |   38 +-
- migration/multifd.h            |    6 +-
- migration/options.c            |   66 ++
- migration/options.h            |    2 +
- qapi/migration.json            |   43 +-
- scripts/meson-buildoptions.sh  |    3 +
- tests/qtest/migration-test.c   |   77 ++-
- tests/unit/meson.build         |    6 +
- tests/unit/test-dsa.c          |  499 ++++++++++++++
- util/dsa.c                     | 1170 ++++++++++++++++++++++++++++++++
- util/meson.build               |    1 +
- 19 files changed, 2568 insertions(+), 21 deletions(-)
- create mode 100644 include/qemu/dsa.h
- create mode 100644 linux-headers/linux/idxd.h
- create mode 100644 tests/unit/test-dsa.c
- create mode 100644 util/dsa.c
-
++config_host_data.set('CONFIG_DSA_OPT', get_option('enqcmd') \
++  .require(have_cpuid_h, error_message: 'cpuid.h not available, cannot enable ENQCMD') \
++  .require(cc.links('''
++    #include <stdint.h>
++    #include <cpuid.h>
++    #include <immintrin.h>
++    static int __attribute__((target("enqcmd"))) bar(void *a) {
++      uint64_t dst[8] = { 0 };
++      uint64_t src[8] = { 0 };
++      return _enqcmd(dst, src);
++    }
++    int main(int argc, char *argv[]) { return bar(argv[argc - 1]); }
++  '''), error_message: 'ENQCMD not available').allowed())
++
+ # For both AArch64 and AArch32, detect if builtins are available.
+ config_host_data.set('CONFIG_ARM_AES_BUILTIN', cc.compiles('''
+     #include <arm_neon.h>
+diff --git a/meson_options.txt b/meson_options.txt
+index b5c0bad9e7..63c1bf815b 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -121,6 +121,8 @@ option('avx512f', type: 'feature', value: 'disabled',
+        description: 'AVX512F optimizations')
+ option('avx512bw', type: 'feature', value: 'auto',
+        description: 'AVX512BW optimizations')
++option('enqcmd', type: 'feature', value: 'disabled',
++       description: 'MENQCMD optimizations')
+ option('keyring', type: 'feature', value: 'auto',
+        description: 'Linux keyring support')
+ option('libkeyutils', type: 'feature', value: 'auto',
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 5ace33f167..2cdfc84455 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -93,6 +93,7 @@ meson_options_help() {
+   printf "%s\n" '  avx2            AVX2 optimizations'
+   printf "%s\n" '  avx512bw        AVX512BW optimizations'
+   printf "%s\n" '  avx512f         AVX512F optimizations'
++  printf "%s\n" '  enqcmd          ENQCMD optimizations'
+   printf "%s\n" '  blkio           libblkio block device driver'
+   printf "%s\n" '  bochs           bochs image format support'
+   printf "%s\n" '  bpf             eBPF support'
+@@ -239,6 +240,8 @@ _meson_option_parse() {
+     --disable-avx512bw) printf "%s" -Davx512bw=disabled ;;
+     --enable-avx512f) printf "%s" -Davx512f=enabled ;;
+     --disable-avx512f) printf "%s" -Davx512f=disabled ;;
++    --enable-enqcmd) printf "%s" -Denqcmd=enabled ;;
++    --disable-enqcmd) printf "%s" -Denqcmd=disabled ;;
+     --enable-gcov) printf "%s" -Db_coverage=true ;;
+     --disable-gcov) printf "%s" -Db_coverage=false ;;
+     --enable-lto) printf "%s" -Db_lto=true ;;
 -- 
 2.30.2
 
