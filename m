@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B3D8B1F89
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2EE8B1F6C
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:42:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWY-00023H-Ir; Thu, 25 Apr 2024 06:40:18 -0400
+	id 1rzwWV-00021N-Ig; Thu, 25 Apr 2024 06:40:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWO-0001yv-Lt
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:08 -0400
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+ id 1rzwWP-0001zZ-RE
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:10 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWM-0007AJ-Td
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:08 -0400
-Received: by mail-wr1-x433.google.com with SMTP id
- ffacd0b85a97d-34af8b880e8so514390f8f.0
+ id 1rzwWN-0007Af-G0
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:09 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-41b5e74f7d1so1547975e9.3
  for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041605; x=1714646405; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041606; x=1714646406; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=gARoGDMIdUZMnXzrWbmOnf1y6D1PI72py8fT6x9T7So=;
- b=N9QbpVIxHKWlzqsaqCJ3MppvdyMHvEbnbbT1E0eMm9osg1KeZIZqLEOZUBYILjk3WI
- W+lBAZY2cyZPtnztqwc71SnISeJeLrd+k1cbGqAW4RUEnhMgG/GyR1y/egS1NHQOqcgl
- m1hR5anGpQ5GiZFzhxgNrJ6+gPw1lBBbUwAvdz6Iy/3X+hTWiarMy0dtd0YD5UC/CMUI
- OOwugGAZsPSGbNzSqpVETjmFL7Bqlk2jBOARN860BABDw8rrjTEAwGtisclRcVoAkwFP
- IrL8ZXw5g+yxEM8xyhXoHCs6aXs1BfJk3i02IDVti0D+hj67tv4UtfdMR+yu8xCoaW6M
- o3Xw==
+ :reply-to; bh=W1vuqdUJDiebxiqtPqaJPfGS9dPS4E9rgVyHYzZb3+c=;
+ b=p8grnZL1z3qbL89vrf5wkWOCirFMBQrxvEiCmeb4uenZSyJU1/SuJoEWAvzgP1Q2FM
+ XNPsgAcHEnGXhKSZItRfAsrg9bgIviaBIhNqqz4WDVl8Stk5S5LBmrq/wW4Z2oI/XVLn
+ bqVSl3DF1knP3pm1XR4GN4l5zyOIWDlzFv/xLJSiXWzq4kg2mXbrksr1/a1iIhsKRGJO
+ /TN+v6mRODPqDgHpTDrlSK5KoehleuVFXfBeU/R4z9e04m8vXEItRQaueZZY5xfsqeym
+ 7eq7RJRQwPY7RBp1MoNKuqSPhRHI4ugRv1yVay3bLBOHIIFMBSCFwnFFBpY+0acz8YXQ
+ RgGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041605; x=1714646405;
+ d=1e100.net; s=20230601; t=1714041606; x=1714646406;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gARoGDMIdUZMnXzrWbmOnf1y6D1PI72py8fT6x9T7So=;
- b=fYhXq1lSyrst5G6MfjIm/SyrZGr4mFeNATwAsKiEsW7Rs6V03bwJEIT1ij3kg0YIHR
- QNH5kJGhzFVhC5xHVcfdRD9li/1GLjqZM2fxiP5vP1iGScMa28+POddvAGgDIwag8Iin
- wrymCvoAGaWxWrdB2bWNXCdH8q0mVOH2zJ/jFoz717lxdPR+5dAE87y2RysYV5DGGgW3
- d5c53Sj5h473UKvsMZ/WjIrbBHz7fkEDD8Ssgrx+ioSFBxaC6JkygVoIPrWfp+uxMown
- 38AKMuZxvM4iFu1MPWMQ8xXXzGMZSYBTpGY7z1ai9eOGelZkSbpCDPGa1+8Lt084iiQ4
- bdIw==
-X-Gm-Message-State: AOJu0YzMl+yUsYTPP1vngE/McDk0wKgwoTBXfA4u1kupYyLc5Z6WzZuI
- m3hHPJCrrYEBskRSIh0ky5XhSYziCHdkxc0Gstwwc50RYnqHKZI4HvZIwtJb3Mb1FrP+seXO70x
- r
-X-Google-Smtp-Source: AGHT+IErkZXY+qwYkYiUygEITthTgLNfIPVDMdXrCNnDPmEDaW/2nXIJ7XZrxRsUPLd4Noc432qiCQ==
-X-Received: by 2002:a05:6000:1967:b0:34b:7f51:7bc4 with SMTP id
- da7-20020a056000196700b0034b7f517bc4mr1485361wrb.17.1714041605499; 
+ bh=W1vuqdUJDiebxiqtPqaJPfGS9dPS4E9rgVyHYzZb3+c=;
+ b=cbtghypzAj847iwI0M8sfGQNTfhzh0UFzl3pbXGypuVxfQcKxuZGO2aejSYVAiVHhU
+ a8RLPUMEAi3Y4LEmC0zjaEuyBinSl2/StzDuYBMoBQ4lDYrmdv45dbEZtb6pH8R8a/za
+ WEX7AldeKuJ8GcrzgTCVAdJoKYp1ZOBcKIgEar1wq8/Ka3A4ZRQZn0mXFsMBU0gwdc3R
+ T0eUPCgbDmWlGe3MfoiIHkjrVCV2nhhRuan9FgEVhbGI1efT+CP38ONhbPzw91DsAcVO
+ MSnsAtNC8U3gCExb4CgL5fIrB1fSW8W3Re5fDhVj17ho9vs0jmzjLGYRYMXEb6QZ8bPw
+ zbAQ==
+X-Gm-Message-State: AOJu0YyGi9VSK+kYo21BmC3eCarmZ4DFi2L1TtmFJSQ9fuXTYa1VTWG8
+ IBLFTRp1M21sAiuQlkyWyhrFc0SpcFEr+HsQeJHuKghsDPqumXOWKtb2jEN6d2vMWjMjiu90GQb
+ n
+X-Google-Smtp-Source: AGHT+IFILE5l75VqWQQrB+py+3SebJkG83ywHExDMjZ9HLxI4QlpyCrmH1HVNcFqYSphd26gBeCUEg==
+X-Received: by 2002:a05:600c:35d4:b0:418:f184:53f8 with SMTP id
+ r20-20020a05600c35d400b00418f18453f8mr4732350wmq.36.1714041605985; 
  Thu, 25 Apr 2024 03:40:05 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
@@ -59,16 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Apr 2024 03:40:05 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 09/37] target/arm: Handle PSTATE.ALLINT on taking an exception
-Date: Thu, 25 Apr 2024 11:39:30 +0100
-Message-Id: <20240425103958.3237225-10-peter.maydell@linaro.org>
+Subject: [PULL 10/37] hw/intc/arm_gicv3: Add external IRQ lines for NMI
+Date: Thu, 25 Apr 2024 11:39:31 +0100
+Message-Id: <20240425103958.3237225-11-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::433;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x433.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,37 +93,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-Set or clear PSTATE.ALLINT on taking an exception to ELx according to the
-SCTLR_ELx.SPINTMASK bit.
+Augment the GICv3's QOM device interface by adding one
+new set of sysbus IRQ line, to signal NMI to each CPU.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-10-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-11-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/helper.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/hw/intc/arm_gic_common.h   | 2 ++
+ include/hw/intc/arm_gicv3_common.h | 2 ++
+ hw/intc/arm_gicv3_common.c         | 6 ++++++
+ 3 files changed, 10 insertions(+)
 
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 6b6d8a349a2..5ff9e44649a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -11733,6 +11733,14 @@ static void arm_cpu_do_interrupt_aarch64(CPUState *cs)
-         }
-     }
+diff --git a/include/hw/intc/arm_gic_common.h b/include/hw/intc/arm_gic_common.h
+index 70803750081..97fea4102d3 100644
+--- a/include/hw/intc/arm_gic_common.h
++++ b/include/hw/intc/arm_gic_common.h
+@@ -71,6 +71,8 @@ struct GICState {
+     qemu_irq parent_fiq[GIC_NCPU];
+     qemu_irq parent_virq[GIC_NCPU];
+     qemu_irq parent_vfiq[GIC_NCPU];
++    qemu_irq parent_nmi[GIC_NCPU];
++    qemu_irq parent_vnmi[GIC_NCPU];
+     qemu_irq maintenance_irq[GIC_NCPU];
  
-+    if (cpu_isar_feature(aa64_nmi, cpu)) {
-+        if (!(env->cp15.sctlr_el[new_el] & SCTLR_SPINTMASK)) {
-+            new_mode |= PSTATE_ALLINT;
-+        } else {
-+            new_mode &= ~PSTATE_ALLINT;
-+        }
+     /* GICD_CTLR; for a GIC with the security extensions the NS banked version
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 4e2fb518e72..7324c7d983f 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -155,6 +155,8 @@ struct GICv3CPUState {
+     qemu_irq parent_fiq;
+     qemu_irq parent_virq;
+     qemu_irq parent_vfiq;
++    qemu_irq parent_nmi;
++    qemu_irq parent_vnmi;
+ 
+     /* Redistributor */
+     uint32_t level;                  /* Current IRQ level */
+diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+index cb55c726810..c52f060026a 100644
+--- a/hw/intc/arm_gicv3_common.c
++++ b/hw/intc/arm_gicv3_common.c
+@@ -299,6 +299,12 @@ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
+     for (i = 0; i < s->num_cpu; i++) {
+         sysbus_init_irq(sbd, &s->cpu[i].parent_vfiq);
+     }
++    for (i = 0; i < s->num_cpu; i++) {
++        sysbus_init_irq(sbd, &s->cpu[i].parent_nmi);
 +    }
-+
-     pstate_write(env, PSTATE_DAIF | new_mode);
-     env->aarch64 = true;
-     aarch64_restore_sp(env, new_el);
++    for (i = 0; i < s->num_cpu; i++) {
++        sysbus_init_irq(sbd, &s->cpu[i].parent_vnmi);
++    }
+ 
+     memory_region_init_io(&s->iomem_dist, OBJECT(s), ops, s,
+                           "gicv3_dist", 0x10000);
 -- 
 2.34.1
 
