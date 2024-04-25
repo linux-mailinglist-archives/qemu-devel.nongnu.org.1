@@ -2,78 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D12C8B17C4
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 02:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D30DA8B18B4
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 03:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzmbx-000672-80; Wed, 24 Apr 2024 20:05:16 -0400
+	id 1rzoNJ-0000Ee-Vz; Wed, 24 Apr 2024 21:58:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmb7-0005Jd-W5
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:04:22 -0400
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1rzmaw-0007ue-1F
- for qemu-devel@nongnu.org; Wed, 24 Apr 2024 20:04:11 -0400
-Received: by mail-pl1-x629.google.com with SMTP id
- d9443c01a7336-1e4bf0b3e06so4009705ad.1
- for <qemu-devel@nongnu.org>; Wed, 24 Apr 2024 17:04:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714003448; x=1714608248; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
- b=pMqXt2EIg+My+S0q42+uYmZ+cUJBMtM22sKVVCDDOFwSHcv24Kx9Ibn+/dALcrC2MC
- gG2hiwvnCIc3mAILeqPH+w+6bdtIaf0I4CIH9AnZSpZNWTRj9fx/aoLn35TeLx5lpAF1
- qtGJK/rsWf3ew9hq9ZuelQ02i+CkhrvEoK2wL+2SrIdhFX7TA+WMdbHeN8t7x+RqpQdZ
- kC91ZEP6sDagvI+XZJwAlQXhhVXU35qb9Bsx+TDTxEn8qz51gG+LGADTZU+1q+97zaF3
- U8KPaSRzhijU/fqcoCE66be0l3pRNzV+Ona58PZBofVZ+sVYVDb7jiCT3R58o3SXz1xd
- nYEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714003448; x=1714608248;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=IL2hAokqpmQr3sSx0rCsqvvhI5ki9eqOu02SaoXaEMQ=;
- b=T/BCpk34I1y7gJrAjNlmsrRsYf3+G5bm5C3+cXrYUcZrzjx/WtQL/zRhexf6jdt1E9
- Qi5fhoZVD6m3+TKIG7nkvU0VEpdRqoRZCLt5ji9RhSDQcbuRNSkeZwIx8YJ/U4NsEazs
- Ll+W0xn586dn5eSXOjtm9LM66UJl84mPN3e6Gfx1QuFh53xMDLlGpyBTYmUWXM4yZxty
- +wTwFHWK3Bpixv51FdTeogp5CaeWDdsC70uCheFsiqqkmYwkXpInNkzTaWTLB6Sbo9My
- N6Pn+rcLAWJzt/MqKcU9GQnyOsusLLMuCfQC2o0t8tHxInvkn3lBJjXflU36Exb2l/hk
- bxtw==
-X-Gm-Message-State: AOJu0Yw45bMa/nnOmJmAWs4GxAL2mt++gJ9C6HZiexzdgMtAtb9OWdPy
- uu9/4O2xexzpAcwFGfVBF37Rwak+0J2d3C7VaFyQUx3ioIVvSmg8Nw0X6BaD24BWFk9gLblVlXN
- 4
-X-Google-Smtp-Source: AGHT+IHPzEB8gO3zzYGmEHlUxgJkxzW07d6Mi5kXyJloLWNc3ioMEZayyF04iISmdFkpB0cSJiTGEA==
-X-Received: by 2002:a17:902:cf12:b0:1e5:11ac:a283 with SMTP id
- i18-20020a170902cf1200b001e511aca283mr5418959plg.9.1714003448453; 
- Wed, 24 Apr 2024 17:04:08 -0700 (PDT)
-Received: from stoup.. ([156.19.246.23]) by smtp.gmail.com with ESMTPSA id
- y20-20020a170902ed5400b001e0648dfd68sm12483717plb.296.2024.04.24.17.04.07
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 24 Apr 2024 17:04:08 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rzoNF-0000Cn-J0
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 21:58:10 -0400
+Received: from mgamail.intel.com ([192.198.163.14])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <dongwon.kim@intel.com>)
+ id 1rzoNC-0003SC-KR
+ for qemu-devel@nongnu.org; Wed, 24 Apr 2024 21:58:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1714010286; x=1745546286;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=NssENG/BLB+VQ8+Ug+hIIc9NuSReNpyZ4sH+DjGyHHw=;
+ b=ETFK0Da7w/vZ9VvgSxxusgK0bRxCA9OdmPz1Bn3YEYdByFSOZR0PF5sz
+ K2tX3EQkxqRS4Nbv5O2zwpRjAbqcJPn40VcQhN2s7SHrDHKFPeD/fQ7Xm
+ zj10ZS49gneWz2R5uy7E0KOwVALWQziVk1skTNRmRPmdvhcTPGK/Fdc0A
+ 4I7OCvY1Y4+EFk9lSBxwKrqTjKs9kvQwy+BPPOfCbsDzjfw/tkqhDbdX/
+ M8mM5/o5TwxQXF1ZOWfLgSJCl4ogoL+6HUgirhm/ti95Ys0po2Tk7Wy0d
+ GQhAAEPK5nK1umd+4/wf8BCHDaseh3USD0MMfoUCdAM2IWqZpNwJk3PGc w==;
+X-CSE-ConnectionGUID: hZdmcCEyQPubpBXCNaz43g==
+X-CSE-MsgGUID: p9rWj/QcTpOcC27jsx5CqQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11054"; a="9890067"
+X-IronPort-AV: E=Sophos;i="6.07,227,1708416000"; 
+   d="scan'208";a="9890067"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Apr 2024 18:58:02 -0700
+X-CSE-ConnectionGUID: tcq2GxEIT3O5XK8/K3P4gw==
+X-CSE-MsgGUID: gbRx3wSYQq+49D8b3a1Xaw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,227,1708416000"; d="scan'208";a="24914182"
+Received: from dongwonk-z390-aorus-ultra.fm.intel.com ([10.105.129.124])
+ by fmviesa009.fm.intel.com with ESMTP; 24 Apr 2024 18:58:03 -0700
+From: dongwon.kim@intel.com
 To: qemu-devel@nongnu.org
-Subject: [PATCH 45/45] target/hppa: Log cpu state on return-from-interrupt
-Date: Wed, 24 Apr 2024 17:00:23 -0700
-Message-Id: <20240425000023.1002026-46-richard.henderson@linaro.org>
+Cc: marcandre.lureau@redhat.com,
+	berrange@redhat.com,
+	philmd@linaro.org
+Subject: [PATCH v12 0/6] ui/console: Private QemuDmaBuf struct
+Date: Wed, 24 Apr 2024 18:53:36 -0700
+Message-Id: <20240425015342.1033815-1-dongwon.kim@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240425000023.1002026-1-richard.henderson@linaro.org>
-References: <20240425000023.1002026-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::629;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=192.198.163.14;
+ envelope-from=dongwon.kim@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -50
+X-Spam_score: -5.1
+X-Spam_bar: -----
+X-Spam_report: (-5.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.668,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,43 +80,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inverse of the logging on taking an interrupt.
+From: Dongwon Kim <dongwon.kim@intel.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- target/hppa/sys_helper.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+This series introduces privacy enhancements to the QemuDmaBuf struct
+and its contained data to bolster security. it accomplishes this by
+introducing of helper functions for allocating, deallocating, and
+accessing individual fields within the struct and replacing all direct
+references to individual fields in the struct with methods using helpers
+throughout the codebase.
 
-diff --git a/target/hppa/sys_helper.c b/target/hppa/sys_helper.c
-index 22d6c89964..9b43b556fd 100644
---- a/target/hppa/sys_helper.c
-+++ b/target/hppa/sys_helper.c
-@@ -18,6 +18,7 @@
-  */
- 
- #include "qemu/osdep.h"
-+#include "qemu/log.h"
- #include "cpu.h"
- #include "exec/exec-all.h"
- #include "exec/helper-proto.h"
-@@ -93,6 +94,17 @@ void HELPER(rfi)(CPUHPPAState *env)
-     env->iaoq_b = env->cr_back[1];
-     env->iasq_f = (env->cr[CR_IIASQ] << 32) & ~(env->iaoq_f & mask);
-     env->iasq_b = (env->cr_back[0] << 32) & ~(env->iaoq_b & mask);
-+
-+    if (qemu_loglevel_mask(CPU_LOG_INT)) {
-+        FILE *logfile = qemu_log_trylock();
-+        if (logfile) {
-+            CPUState *cs = env_cpu(env);
-+
-+            fprintf(logfile, "RFI: cpu %d\n", cs->cpu_index);
-+            hppa_cpu_dump_state(cs, logfile, 0);
-+            qemu_log_unlock(logfile);
-+        }
-+    }
- }
- 
- static void getshadowregs(CPUHPPAState *env)
+This change was made based on a suggestion from Marc-André Lureau
+<marcandre.lureau@redhat.com>
+
+(Resumitting same patch series with this new cover-leter)
+
+v6: fixed some typos in patch -
+    ui/console: Introduce dpy_gl_qemu_dmabuf_get_..() helpers)
+
+v7: included minor fix (ui/gtk: Check if fence_fd is equal to or greater than 0)
+    (Marc-André Lureau <marcandre.lureau@redhat.com>)
+
+    migrated all helpers and QemuDmaBuf struct into dmabuf.c and their prototypes
+    to dmabuf.h for better encapsulation (ui/dmabuf: New dmabuf.c and dmabuf.h..)
+    (Daniel P. Berrangé <berrange@redhat.com> and
+     Marc-André Lureau <marcandre.lureau@redhat.com>)
+
+    removed 'dpy_gl' from all helpers' names
+    Defined autoptr clean up function for QemuDmaBuf*
+    (Daniel P. Berrangé <berrange@redhat.com>)
+
+    Minor corrections
+
+v8: Introduce new dmabuf.c and dmabuf.h and all helper functions in the second
+    patch in the series (ui/console: new dmabuf.h and dmabuf.c for QemuDma....)
+    (Philippe Mathieu-Daudé <philmd@linaro.org>)
+
+v9: set dmabuf->allow_fences true when it is created in virtio-gpu-udmabuf
+
+    removed unnecessary spaces were added in the patch,
+    'ui/console: Use qemu_dmabuf_new() a...'
+
+v10: Change the license type for both dmabuf.h and dmabuf.c from MIT to
+     GPL to be in line with QEMU's default license
+     (Daniel P. Berrangé <berrange@redhat.com>)
+
+v11: New helpers added - qemu_dmabuf_dup_fd, qemu_dmabuf_close for duplicating
+     and closing dmabuf->fd. And use them in places where applicable.
+     (Daniel P. Berrangé <berrange@redhat.com>)
+
+     qemu_dmabuf_free helper now close dmabuf->fd before freeing the struct to
+     prevent any potential leakage (This eliminates the need for
+     qemu_dmabuf_close in several places as qemu_dmabuf_close is done anyway.)
+     (Daniel P. Berrangé <berrange@redhat.com>)
+
+v12: --- qemu_dmabuf_free does not include qemu_dmabuf_close as there are cases
+         where fd still needs to be used even after QemuDmaBuf struct is
+         destroyed (virtio-gpu: res->dmabuf_fd)
+
+     --- 'dmabuf' is now allocated space so it should be freed at the end of
+         dbus_scanout_texture
+
+Dongwon Kim (6):
+  ui/gtk: Check if fence_fd is equal to or greater than 0
+  ui/console: new dmabuf.h and dmabuf.c for QemuDmaBuf struct and
+    helpers
+  ui/console: Use qemu_dmabuf_get_..() helpers instead
+  ui/console: Use qemu_dmabuf_set_..() helpers instead
+  ui/console: Use qemu_dmabuf_new() and free() helpers instead
+  ui/console: move QemuDmaBuf struct def to dmabuf.c
+
+ include/hw/vfio/vfio-common.h   |   2 +-
+ include/hw/virtio/virtio-gpu.h  |   4 +-
+ include/ui/console.h            |  20 +--
+ include/ui/dmabuf.h             |  49 +++++++
+ hw/display/vhost-user-gpu.c     |  26 ++--
+ hw/display/virtio-gpu-udmabuf.c |  27 ++--
+ hw/vfio/display.c               |  32 ++---
+ ui/console.c                    |   4 +-
+ ui/dbus-console.c               |   9 +-
+ ui/dbus-listener.c              |  72 +++++-----
+ ui/dmabuf.c                     | 229 ++++++++++++++++++++++++++++++++
+ ui/egl-headless.c               |  23 +++-
+ ui/egl-helpers.c                |  59 ++++----
+ ui/gtk-egl.c                    |  52 +++++---
+ ui/gtk-gl-area.c                |  41 ++++--
+ ui/gtk.c                        |  12 +-
+ ui/spice-display.c              |  50 ++++---
+ ui/meson.build                  |   1 +
+ 18 files changed, 519 insertions(+), 193 deletions(-)
+ create mode 100644 include/ui/dmabuf.h
+ create mode 100644 ui/dmabuf.c
+
 -- 
 2.34.1
 
