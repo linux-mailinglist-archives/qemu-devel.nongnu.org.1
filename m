@@ -2,87 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57B58B249B
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4AC8B24BB
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 17:10:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1s00ei-0007iT-3e; Thu, 25 Apr 2024 11:05:00 -0400
+	id 1s00jM-0000lK-Sm; Thu, 25 Apr 2024 11:09:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s00eY-0007dF-6R
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:04:50 -0400
-Received: from mail-ot1-x32e.google.com ([2607:f8b0:4864:20::32e])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jK-0000kp-Pv
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:46 -0400
+Received: from smtp-out2.suse.de ([195.135.223.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1s00eW-00064H-G5
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:04:49 -0400
-Received: by mail-ot1-x32e.google.com with SMTP id
- 46e09a7af769-6e9e1a52b74so258126a34.0
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 08:04:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714057486; x=1714662286; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=faCSBTG7e2G2iAZaX/10h/2e6c2RfDsBfjuTVhn7P5k=;
- b=in10mLlRbp3dVsf79Wnl6zGmRJwaMPVSGZeH1rJNu5OUrWt6vyOsxT5FqN+v2aOGl1
- ehI1WH2kqSz+TkXkvN7VPth0gNocQeSV3rZknIFLxG90DLGpGQVLkgwSdzIS5xurVy6g
- u8pp4Jq9KLcA0t55g11rez/ZuwudJh3Bzm0GbzHMd/W+rRaE+EOkXmBW5vRQNsEhv2XD
- zfHRbbb6VxazsjpO7nkHJrr27LnTbHJtWPHTS/dtKGDrChtvph6/gNNnXw6uRAN0B5dC
- fMCuFA3scLC9JHH8zrUjX6VOwnjs8roG+bdEyD19a70u5S/ZtQ8++khD5GwJCfJpuDts
- YTYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714057486; x=1714662286;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=faCSBTG7e2G2iAZaX/10h/2e6c2RfDsBfjuTVhn7P5k=;
- b=WDM3MxOF232saV/js5Ghroo2WYJr6XIv58goY0Qaq7YPMzhuQqlqmM7ewf2XdkRu6C
- zwR0p66pinYtj0ooC4CHZ+33njtwXo0xuH+RGXIHpFoO1XnJxPOB7KQdzCSvUREiuwhh
- 8J+FjDogd57Z/XjbeeKDwwwcvHI9J5I5xt+Ih3dttOzmO6sbtGrHFW7Q3TgzLt3cFiIA
- OeBR0f2WMcIQoiAhU8TIspkarbuYqHr7nVsvOg0fMFPalI9jemSwNYQxHSrjMyOiCuN4
- 5Vol46v1IKUNlZR3+sC0vZnJdYy68qsdv2wIgnKGT6TLQ19USxouPulaOfWZrFCqIXGJ
- 2Nuw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUW8yBG1++LU52gbkcPX4DopagLqwATMK7ISEUTMd5an5A6EmuhoCN0jBHKFeQDLy0Drcyi1kY7vpEMXUaa+GUXl300H+I=
-X-Gm-Message-State: AOJu0Yzl/RQ5LPJcn9+JBCbCV6lY7qgCkP8Ed1Og1wKrKKcP4IQIHl64
- SjE4iZmGr1t6o0LzfApbEL3RM2bMl2KeZ2aSjGl6WvXYyWu77Afkd/VYqzyOqGU=
-X-Google-Smtp-Source: AGHT+IESMI8HaUiIfZ4mF/eSZRIsak/evxxconFmpWwsHjQIfGqtkD4WVYlgoaOvOw8Nk9htC5MYnA==
-X-Received: by 2002:a05:6830:1046:b0:6eb:7c4e:70c1 with SMTP id
- b6-20020a056830104600b006eb7c4e70c1mr6172562otp.37.1714057485816; 
- Thu, 25 Apr 2024 08:04:45 -0700 (PDT)
-Received: from ?IPV6:2607:fb91:1ae9:8637:9f94:1f67:75f4:ea2d?
- ([2607:fb91:1ae9:8637:9f94:1f67:75f4:ea2d])
- by smtp.gmail.com with ESMTPSA id
- o15-20020a0568301c4f00b006edbf653880sm32198otg.54.2024.04.25.08.04.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 25 Apr 2024 08:04:45 -0700 (PDT)
-Message-ID: <f8aee65f-7cda-46a7-8c13-3d3645f130bf@linaro.org>
-Date: Thu, 25 Apr 2024 08:04:37 -0700
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1s00jI-0000P4-TJ
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 11:09:46 -0400
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org
+ [IPv6:2a07:de40:b281:104:10:150:64:97])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1E71A5BD99;
+ Thu, 25 Apr 2024 15:09:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714057783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
+ b=vCojdrHz/aOx7ANOIHai4ny2Ykjhr6SCuUVj7UGvYfSB0qsiEjVutCXtxbX8pkJr8hxLpX
+ yAhIZAPNNiP6L5UWdevKf+yWV24k6h0GphxG1M2gAIuqKrYxxjpj4gAUhH+iSMpAUhcT1y
+ Fh8YLH1Cb3rVB+p59tkCxiuIaqH0Ft4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714057783;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
+ b=yKkWwX6t7aRdLqmE1h1QlNHD57G9arGY1/wJEImm59CboTQxe2UBxxNJXu62QvfAo3BOEt
+ +Tq1DQ2n7YKWM2Cw==
+Authentication-Results: smtp-out2.suse.de;
+ dkim=pass header.d=suse.de header.s=susede2_rsa header.b=vCojdrHz;
+ dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=yKkWwX6t
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1714057783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
+ b=vCojdrHz/aOx7ANOIHai4ny2Ykjhr6SCuUVj7UGvYfSB0qsiEjVutCXtxbX8pkJr8hxLpX
+ yAhIZAPNNiP6L5UWdevKf+yWV24k6h0GphxG1M2gAIuqKrYxxjpj4gAUhH+iSMpAUhcT1y
+ Fh8YLH1Cb3rVB+p59tkCxiuIaqH0Ft4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1714057783;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=dQtSa2hfjcdz169xmUIVMrp0H9cjYaBM46p4FRynbEc=;
+ b=yKkWwX6t7aRdLqmE1h1QlNHD57G9arGY1/wJEImm59CboTQxe2UBxxNJXu62QvfAo3BOEt
+ +Tq1DQ2n7YKWM2Cw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A94E51393C;
+ Thu, 25 Apr 2024 15:09:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+ by imap1.dmz-prg2.suse.org with ESMTPSA id AFPVGzVyKma9DQAAD6G6ig
+ (envelope-from <farosas@suse.de>); Thu, 25 Apr 2024 15:09:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Xu <peterx@redhat.com>, devel@lists.libvirt.org
+Subject: [PATCH 0/6] migration removals & deprecations
+Date: Thu, 25 Apr 2024 12:09:33 -0300
+Message-Id: <20240425150939.19268-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PULL 00/17] CI job updates, header cleanups and other misc
- patches
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Peter Xu <peterx@redhat.com>
-References: <20240424075735.248041-1-thuth@redhat.com>
- <d4b2c78e-c8d4-465c-a47e-53aa49efeb06@linaro.org>
- <91090e7f-4972-4473-8378-402c43116dba@redhat.com>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <91090e7f-4972-4473-8378-402c43116dba@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::32e;
- envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam-Score: -1.21
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 1E71A5BD99
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-1.21 / 50.00];
+ SEM_URIBL(3.50)[gitlab.com:url]; BAYES_HAM(-3.00)[100.00%];
+ DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+ NEURAL_HAM_LONG(-1.00)[-1.000]; MID_CONTAINS_FROM(1.00)[];
+ R_MISSING_CHARSET(0.50)[]; NEURAL_HAM_SHORT(-0.20)[-1.000];
+ MIME_GOOD(-0.10)[text/plain]; BAD_REP_POLICIES(0.10)[];
+ MX_GOOD(-0.01)[]; FUZZY_BLOCKED(0.00)[rspamd.com];
+ DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]; 
+ ARC_NA(0.00)[]; MIME_TRACE(0.00)[0:+]; FROM_HAS_DN(0.00)[];
+ TO_DN_SOME(0.00)[];
+ R_DKIM_ALLOW(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+ RCVD_VIA_SMTP_AUTH(0.00)[];
+ SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+ RCPT_COUNT_THREE(0.00)[4]; RCVD_COUNT_TWO(0.00)[2];
+ TO_MATCH_ENVRCPT_ALL(0.00)[]; DKIM_TRACE(0.00)[suse.de:+];
+ FROM_EQ_ENVFROM(0.00)[]; RCVD_TLS_ALL(0.00)[];
+ DBL_BLOCKED_OPENRESOLVER(0.00)[meson.build:url, imap1.dmz-prg2.suse.org:helo,
+ imap1.dmz-prg2.suse.org:rdns, suse.de:dkim]
+Received-SPF: pass client-ip=195.135.223.131; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,49 +120,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/24/24 22:11, Thomas Huth wrote:
-> On 24/04/2024 18.21, Richard Henderson wrote:
->> On 4/24/24 00:57, Thomas Huth wrote:
->>> The following changes since commit 13b1e9667737132440f4d500c31cb69320c6b15a:
->>>
->>>    Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2024-04-23 
->>> 17:35:57 -0700)
->>>
->>> are available in the Git repository at:
->>>
->>>    https://gitlab.com/thuth/qemu.git tags/pull-request-2024-04-24
->>>
->>> for you to fetch changes up to 8f29bab03ea22694a127ee33edeb4ce99eeb124e:
->>>
->>>    target/s390x: Remove KVM stubs in cpu_models.h (2024-04-24 09:45:02 +0200)
->>>
->>> ----------------------------------------------------------------
->>> * Update OpenBSD CI image to 7.5
->>> * Update/remove Ubuntu 20.04 CI jobs
->>> * Update CentOS 8 CI jobs to CentOS 9
->>> * Some clean-ups and improvements to travis.yml
->>> * Minor test fixes
->>> * s390x header clean-ups
->>> * Doc updates
->>
->> This introduces a failure in the migration-compat-x86_64 job:
->>
->> https://gitlab.com/qemu-project/qemu/-/jobs/6707154868
-> 
-> It wasn't failing for me:
-> 
->   https://gitlab.com/thuth/qemu/-/jobs/6702058896
-> 
-> And according to the diffstat of my pull request, it's only touching test files, docs, and 
-> s390x stuff, so I somehow fail to see how it could influence x86 migration at a first 
-> glance. It also looks like the job is running on opensuse, and not on CentOS or Ubuntu, so 
-> it should likely not be influenced by the changes in this PR.
-> 
-> Could you please hit the re-run button of that job? If it then passes, we're likely rather 
-> facing an intermitted failure that might have been introduced earlier already...
+Hi everyone,
 
-It did pass when re-run.
+Here's some cleaning up of deprecated code. It removes the old block
+migration and compression code. Both have suitable replacements in the
+form of the blockdev-mirror driver and multifd compression,
+respectively.
 
+There's also a deprecation for fd: + file to cope with the fact that
+the new MigrationAddress API defines transports instead of protocols
+(loose terms) like the old string API did. So we cannot map 1:1 from
+fd: to any transport because fd: allows *both* file migration and
+socket migration.
 
-r~
+CI run: https://gitlab.com/farosas/qemu/-/pipelines/1267859704
+
+Fabiano Rosas (6):
+  migration: Remove 'skipped' field from MigrationStats
+  migration: Remove 'inc' option from migrate command
+  migration: Remove 'blk/-b' option from migrate commands
+  migration: Remove block migration
+  migration: Remove non-multifd compression
+  migration: Deprecate fd: for file migration
+
+ .gitlab-ci.d/buildtest.yml       |    2 +-
+ MAINTAINERS                      |    1 -
+ docs/about/deprecated.rst        |   51 +-
+ docs/about/removed-features.rst  |  104 ++-
+ docs/devel/migration/main.rst    |    2 +-
+ hw/core/machine.c                |    1 -
+ include/migration/misc.h         |    6 -
+ meson.build                      |    2 -
+ meson_options.txt                |    2 -
+ migration/block.c                | 1019 ------------------------------
+ migration/block.h                |   52 --
+ migration/colo.c                 |    1 -
+ migration/meson.build            |    4 -
+ migration/migration-hmp-cmds.c   |   97 +--
+ migration/migration.c            |   70 +-
+ migration/migration.h            |    7 -
+ migration/options.c              |  229 -------
+ migration/ram-compress.c         |  564 -----------------
+ migration/ram.c                  |  166 +----
+ migration/savevm.c               |    5 -
+ qapi/migration.json              |  205 +-----
+ scripts/meson-buildoptions.sh    |    4 -
+ tests/qemu-iotests/183           |  147 -----
+ tests/qemu-iotests/183.out       |   66 --
+ tests/qemu-iotests/common.filter |    7 -
+ tests/qtest/migration-test.c     |  139 ----
+ 26 files changed, 130 insertions(+), 2823 deletions(-)
+ delete mode 100644 migration/block.c
+ delete mode 100644 migration/block.h
+ delete mode 100644 migration/ram-compress.c
+ delete mode 100755 tests/qemu-iotests/183
+ delete mode 100644 tests/qemu-iotests/183.out
+
+-- 
+2.35.3
+
 
