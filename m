@@ -2,55 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7078B1F75
-	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EC48B1F81
+	for <lists+qemu-devel@lfdr.de>; Thu, 25 Apr 2024 12:45:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1rzwWP-0001z9-E4; Thu, 25 Apr 2024 06:40:09 -0400
+	id 1rzwWN-0001xn-KO; Thu, 25 Apr 2024 06:40:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWK-0001wl-IW
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:04 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ id 1rzwWL-0001x3-Mm
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:05 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1rzwWI-0006xK-BY
- for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:04 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-34782453ffdso757299f8f.1
- for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:01 -0700 (PDT)
+ id 1rzwWI-0006xm-To
+ for qemu-devel@nongnu.org; Thu, 25 Apr 2024 06:40:05 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-34be34b3296so784167f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 25 Apr 2024 03:40:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1714041600; x=1714646400; darn=nongnu.org;
+ d=linaro.org; s=google; t=1714041601; x=1714646401; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=D6sUqMTkg3AZ/EzB3wSEo9MXBvR+VUgJR/HaUz5GIjY=;
- b=EW3Vt0S/Fi0dAqid9SXUDrJnwyZgZ9OZLEmiD8P9X/mfgkl2Tv9LUTJqpVwFPX9z39
- 5ytdfRR0x6Wi5aT2VXUrwFCYf8bKW6gAOPKrlXqmw6p0ft2QQMzyHeSrVKRVUyWduV86
- QnfKRncs66yGu+QldaA7x9riIOzH4OTpd7sA7yXnF9DAXnRjql6TFQBuLA1HDYnWUB7q
- Fw0/6rBTuawejhQM+HztYT/kt4Vw4K39zgysP+4Sq8XMh0qIB1K2J/Mx7Jvk2H12UG9B
- wqAZY/W2cZRcJQ9UD8UBd524OVgMHJ9/yaSFjFfGcLgcDTZlMmCKAiXQIhjrk1Q3qkLk
- 1+0g==
+ :reply-to; bh=y6I7eopQEiXePMFfuuglLJED0IgYNow8XyLPv9LxTAY=;
+ b=R98+e1E23BMmnj6FZ+bXoWlaPh+mxHpL1Qb+4PSBxsPfJ1fAgXgEMDflEm1IFSlvYb
+ A8MQeC1imZkBG1uvpqVtTZW3fN2dM6j6HADlqdRjsBuM7RudH42TxpEzB8JrYzG7IDXh
+ L+5Q0Lj24nx3aT3MqgtLrUkodz92XiYIO+dKgAYufc9ohtVC95AJF4f+Hve+bJ6d9A1L
+ vZVMwON7uutgjQjZi6qfTCRedVN8fB8HQBGDb3qWX2NZxLd2WwJPTpdVvhoTjgJOLYnO
+ MtuOUDJHU8myzaJV1vA4nnuNcKJem4FYGg4v1mbiBHWeKC3R+GhSO0NR/4JcplLOV5D+
+ B3zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1714041600; x=1714646400;
+ d=1e100.net; s=20230601; t=1714041601; x=1714646401;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=D6sUqMTkg3AZ/EzB3wSEo9MXBvR+VUgJR/HaUz5GIjY=;
- b=nAnzBscGa+wgDadqZV6GQpuox43+GP7/e38Hmt5xA8euLvA5jnhVuHhLLGTQDqI7OT
- jqwCW9Y9pPnGsMZVuaPpQQkSIKRbMBnH/GbipxIXmroucCVoecbJ+mJjXiuNTMUPw15p
- dRgikdvJX95o7Mzpcvxnk7SdEkdWDhfFuN4Pf6y0zEH542nkpmoJTCG9+Dupzyz0mtBC
- idG8K/WzXLSiFIU5hC83EGXWxDACH+6+02VyRKPpQpB71L4xnCckv1HSEDE4CSNf6AAA
- jY2JteMCWM5c2MbmsOF3nICfPkiruvN716/wkMIAeNc8Zl4RSSGde0njK6QYPgdEU3jj
- tUTQ==
-X-Gm-Message-State: AOJu0YxC62g1ziaUdqgOCWXHu3WnaXwqL2wDxVNF1BeumDWcZs3OJWZT
- Qh4n14o/psDNWMI9KlNYogJbYqoQqPS7z8kHTQcqHxXcPHmYv6ltFR3C2j/f9qX/NMlD8IWG/52
- b
-X-Google-Smtp-Source: AGHT+IHs92x3xf+ZTwwh0pG9Iug+PY7yk3F6/MmszFduc/R3keQYh/GpRWG3fVGG6Tjg/arGMzDjNg==
-X-Received: by 2002:adf:f1c4:0:b0:34a:5663:40b with SMTP id
- z4-20020adff1c4000000b0034a5663040bmr4464045wro.3.1714041600512; 
- Thu, 25 Apr 2024 03:40:00 -0700 (PDT)
+ bh=y6I7eopQEiXePMFfuuglLJED0IgYNow8XyLPv9LxTAY=;
+ b=cjFMXzjuipjcyTxVvTA+9nEVLj6S0t3bLWGnGVBIZWdeze/p9it5kF9Cog8mYDgdu7
+ OT1ysQ9kEeVowO9p00GHTiVqIL6zv0meu0lD08ljifXVgydAFExoW7GrJ8QnPFesHTg5
+ qhs8sDgNYxSmS649AxrzA3vRkipWurXM4Iftafzels20mydU7gyo1+d73Gh/LMcI1nZ0
+ SqSXEo66yLBqYNhvpPf+xuijm8jCTDzuOzlsgSgSKJL5BhPFR0icgKLQX48rLrRTrm41
+ rxk26WsFiEJuLVtpZI7ouHEahuPwLrr8/WwCs3IrNd+VWuqUQUI6D4sKUoWjGcvROz2i
+ yKNw==
+X-Gm-Message-State: AOJu0Yy935zI+bzsFCg3QUT5GOq+UZ9T9r4AoG6KE2b7OWcmswn3rr6w
+ 7MkEfh5WBLp/xlHqUI0BDS4jsSHqoOXX7iZGSFKGeR535LS53cCq/BTYVhA4zD5FpaqXONTxhXG
+ 5
+X-Google-Smtp-Source: AGHT+IFy3IqbE1xDbneFglPX26pi/zREeqlNb9QykjMaNu5wtYIjTq8Rnf51Ta2idsWnHgh6JSFhcg==
+X-Received: by 2002:a05:6000:1042:b0:343:a183:4218 with SMTP id
+ c2-20020a056000104200b00343a1834218mr4625611wrx.52.1714041601143; 
+ Thu, 25 Apr 2024 03:40:01 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  h15-20020a056000000f00b003434c764f01sm19485768wrx.107.2024.04.25.03.40.00
@@ -59,17 +59,16 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Thu, 25 Apr 2024 03:40:00 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PULL 01/37] target/arm: Handle HCR_EL2 accesses for bits introduced
- with FEAT_NMI
-Date: Thu, 25 Apr 2024 11:39:22 +0100
-Message-Id: <20240425103958.3237225-2-peter.maydell@linaro.org>
+Subject: [PULL 02/37] target/arm: Add PSTATE.ALLINT
+Date: Thu, 25 Apr 2024 11:39:23 +0100
+Message-Id: <20240425103958.3237225-3-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240425103958.3237225-1-peter.maydell@linaro.org>
 References: <20240425103958.3237225-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,61 +93,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-FEAT_NMI defines another three new bits in HCRX_EL2: TALLINT, HCRX_VINMI and
-HCRX_VFNMI. When the feature is enabled, allow these bits to be written in
-HCRX_EL2.
+When PSTATE.ALLINT is set, an IRQ or FIQ interrupt that is targeted to
+ELx, with or without superpriority is masked. As Richard suggested, place
+ALLINT bit in PSTATE in env->pstate.
+
+In the pseudocode, AArch64.ExceptionReturn() calls SetPSTATEFromPSR(), which
+treats PSTATE.ALLINT as one of the bits which are reinstated from SPSR to
+PSTATE regardless of whether this is an illegal exception return or not. So
+handle PSTATE.ALLINT the same way as PSTATE.DAIF in the illegal_return exit
+path of the exception_return helper. With the change, exception entry and
+return are automatically handled.
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Message-id: 20240407081733.3231820-2-ruanjinjie@huawei.com
+Message-id: 20240407081733.3231820-3-ruanjinjie@huawei.com
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- target/arm/cpu-features.h | 5 +++++
- target/arm/helper.c       | 8 +++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ target/arm/cpu.h            | 1 +
+ target/arm/tcg/helper-a64.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/target/arm/cpu-features.h b/target/arm/cpu-features.h
-index e5758d9fbc8..b300d0446d8 100644
---- a/target/arm/cpu-features.h
-+++ b/target/arm/cpu-features.h
-@@ -681,6 +681,11 @@ static inline bool isar_feature_aa64_sme(const ARMISARegisters *id)
-     return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, SME) != 0;
- }
- 
-+static inline bool isar_feature_aa64_nmi(const ARMISARegisters *id)
-+{
-+    return FIELD_EX64(id->id_aa64pfr1, ID_AA64PFR1, NMI) != 0;
-+}
-+
- static inline bool isar_feature_aa64_tgran4_lpa2(const ARMISARegisters *id)
- {
-     return FIELD_SEX64(id->id_aa64mmfr0, ID_AA64MMFR0, TGRAN4) >= 1;
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index a620481d7cf..7a25ea65c9a 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -6187,13 +6187,19 @@ bool el_is_in_host(CPUARMState *env, int el)
- static void hcrx_write(CPUARMState *env, const ARMCPRegInfo *ri,
-                        uint64_t value)
- {
-+    ARMCPU *cpu = env_archcpu(env);
-     uint64_t valid_mask = 0;
- 
-     /* FEAT_MOPS adds MSCEn and MCE2 */
--    if (cpu_isar_feature(aa64_mops, env_archcpu(env))) {
-+    if (cpu_isar_feature(aa64_mops, cpu)) {
-         valid_mask |= HCRX_MSCEN | HCRX_MCE2;
-     }
- 
-+    /* FEAT_NMI adds TALLINT, VINMI and VFNMI */
-+    if (cpu_isar_feature(aa64_nmi, cpu)) {
-+        valid_mask |= HCRX_TALLINT | HCRX_VINMI | HCRX_VFNMI;
-+    }
-+
-     /* Clear RES0 bits.  */
-     env->cp15.hcrx_el2 = value & valid_mask;
- }
+diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+index bc0c84873ff..de740d223fa 100644
+--- a/target/arm/cpu.h
++++ b/target/arm/cpu.h
+@@ -1430,6 +1430,7 @@ void pmu_init(ARMCPU *cpu);
+ #define PSTATE_D (1U << 9)
+ #define PSTATE_BTYPE (3U << 10)
+ #define PSTATE_SSBS (1U << 12)
++#define PSTATE_ALLINT (1U << 13)
+ #define PSTATE_IL (1U << 20)
+ #define PSTATE_SS (1U << 21)
+ #define PSTATE_PAN (1U << 22)
+diff --git a/target/arm/tcg/helper-a64.c b/target/arm/tcg/helper-a64.c
+index ebaa7f00df3..29f3ef274ae 100644
+--- a/target/arm/tcg/helper-a64.c
++++ b/target/arm/tcg/helper-a64.c
+@@ -892,8 +892,8 @@ illegal_return:
+      */
+     env->pstate |= PSTATE_IL;
+     env->pc = new_pc;
+-    spsr &= PSTATE_NZCV | PSTATE_DAIF;
+-    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF);
++    spsr &= PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT;
++    spsr |= pstate_read(env) & ~(PSTATE_NZCV | PSTATE_DAIF | PSTATE_ALLINT);
+     pstate_write(env, spsr);
+     if (!arm_singlestep_active(env)) {
+         env->pstate &= ~PSTATE_SS;
 -- 
 2.34.1
 
